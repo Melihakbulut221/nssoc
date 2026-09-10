@@ -1,0 +1,99 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+name: checks
+
+# THIS WORKFLOW IS A WRAPPER AND NOTHING ELSE. Every check it runs is
+# defined in scripts/ci_local.sh, which is also how they are run on the
+# developer's machine.
+#
+# It replaces three workflows -- licence, docs and paper -- whose steps
+# were written inline. That was a second copy of every gate, and a gate
+# that exists twice disagrees with itself eventually. It also means the
+# checks no longer depend on the runner.
+#
+# CORRECTED 2026-09-10, AND THE CORRECTION IS THE POINT. An earlier
+# version of this comment said every run since 2026-09-03 had been
+# "refused before starting" -- "nine non-starts, not nine failures". The
+# API says otherwise: 53 of the 61 runs since that date EXECUTED. Only
+# the eight from 2026-09-10 are non-starts, on
+#
+#   "The job was not started because recent account payments have failed
+#    or your spending limit needs to be increased."
+#
+# IN THIS MIRROR that history is the DEVELOPMENT repository's and
+# not this one's: this repository has its own runner, its own
+# billing and no run history at all at the moment of generation.
+# The paragraph is kept rather than deleted because it is why the
+# checks live in a script instead of in this file, and that reason
+# holds wherever the file is.
+#
+# The rest failed for real reasons, and one was in this file: the licence
+# job failed eight times on 09-08 and 09-09 with ModuleNotFoundError: No
+# module named 'yaml', because it installed pytest and ci_local.sh
+# re-runs regmap/generate.py, which imports yaml. Fixed below.
+#
+# The earlier claim came from reading today's annotation and applying it
+# backwards across a week -- a red result read wider than what it looked
+# at, which is the shape this project keeps finding, committed here in
+# the commit that announced finding it elsewhere.
+#
+# The fix is not to wait for the runner. It is to make the runner
+# unnecessary: scripts/ci_local.sh is the definition, this file calls
+# it, and the result is the same either way. When the runner comes back
+# this file adds independent re-execution, which is the one thing local
+# running cannot provide and the only reason to want CI at all.
+#
+# The two environment differences are handled by the script, which
+# SKIPS with a stated reason rather than passing silently: pandoc and a
+# TeX distribution exist here and not on the developer's machine, so the
+# pandoc site build and the paper build run only in this job.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Tools the developer's machine does not have
+        run: |
+          # PyYAML too: ci_local.sh re-runs regmap/generate.py, which
+          # imports yaml, and its absence is why the licence job failed
+          # eight times on 09-08 and 09-09 with ModuleNotFoundError. Not
+          # a billing failure -- a real one, in this file.
+          python3 -m pip install --disable-pip-version-check pytest pyyaml
+          sudo apt-get update -qq
+          # texlive-science carries siunitx; texlive-latex-extra does not.
+          # lmodern.sty is in `lmodern`, which texlive-base only Recommends
+          # and --no-install-recommends therefore drops.
+          sudo apt-get install -y --no-install-recommends \
+            pandoc texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-science lmodern
+
+      - name: Every check, from the same script the developer runs
+        run: scripts/ci_local.sh all
+
+      - name: The paper must have built here, even though it cannot there
+        run: |
+          test -s paper/main.pdf
+          test -s paper/main.bbl
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper-and-site
+          path: |
+            paper/main.pdf
+            _site
+          retention-days: 30

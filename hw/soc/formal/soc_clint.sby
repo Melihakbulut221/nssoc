@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+
+# SymbiYosys job for the core-local interruptor.
+#
+#   sby -f soc_clint.sby prove    k-induction proof of C1-C4 and P1-P3
+#   sby -f soc_clint.sby bmc      bounded check, depth 20
+#   sby -f soc_clint.sby cover    reachability of every proven behaviour
+#
+# Properties live in soc_clint_props.v, textually included at the end of
+# the soc_clint module body under `ifdef FORMAL. They are clauses of the
+# RISC-V privileged specification's machine timer and of the fabric slave
+# contract in hw/soc/rtl/soc_bus.v, with the architectural state
+# reconstructed from the ports rather than read out of the design.
+#
+# TICK_DIV is 1, which is how soc_top.v instantiates it. Nothing here
+# proves anything about a divided time base.
+#
+# H6 (docs/58) makes mtime the data field of a (72,64) SECDED codeword,
+# so the two codec modules are read here. They come from hw/rtl, which
+# docs/34 freezes by blob hash; they are READ and never modified, exactly
+# as ibex_regfile_secded.v already reads these two and as soc_wdog reads
+# tmr_voter.v. The CODE is not re-proved here -- formal/secded.sby does
+# that once, for every consumer. What is proved here is that this block
+# keeps the stored word a codeword and that the codec is invisible when
+# it is (E1, E2).
+#
+# SOC_CLINT_HARDENED is defined so that E1 and E2 elaborate: they read
+# mtime_chk_q, which exists only at HARDEN = 1, and a property file that
+# named it unconditionally could not elaborate the unhardened
+# configuration at all.
+
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 20
+prove: mode prove
+prove: depth 10
+cover: mode cover
+cover: depth 20
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -formal secded_enc.v
+read_verilog -formal secded_dec.v
+read_verilog -formal -DSOC_CLINT_HARDENED soc_clint.v
+prep -top soc_clint
+
+[files]
+../rtl/soc_clint.v
+../../rtl/secded_enc.v
+../../rtl/secded_dec.v
+soc_clint_props.v

@@ -1,0 +1,191 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+"""GENERATED FILE - edit regmap/memmap.yaml and run regmap/generate_memmap.py"""
+
+VERSION = "0.1"
+VENDOR_ID = 0x09
+BOOT_ADDR = 0xC0000000
+RESET_VECTOR = 0xC0000080
+BASE_ALIGNMENT = 0x100
+
+# name -> (base, size, type, attr, status, port or None)
+REGIONS = {
+    "RAM": (0x00000000, 0x00008000, "memory", "rwx", "implemented", "ram"),
+    "NPU": (0x10000000, 0x10000000, "memory", "rw", "implemented", "npu"),
+    "ROM": (0xC0000000, 0x00002000, "memory", "rx", "implemented", "rom"),
+    "QSPI3": (0xD0000000, 0x02000000, "memory", "rx", "reserved", None),
+    "QSPI4": (0xD8000000, 0x08000000, "memory", "rx", "reserved", None),
+    "CLINT": (0xE0000000, 0x00010000, "io", "rw", "implemented", "clint"),
+    "PLIC": (0xF8000000, 0x00400000, "io", "rw", "reserved", None),
+    "DEBUG": (0xFE000000, 0x01000000, "io", "rw", "reserved", None),
+    "APB": (0xFF900000, 0x00100000, "io", "rw", "implemented", "apb"),
+    "PNP": (0xFFFFF000, 0x00001000, "io", "r", "implemented", "pnp"),
+}
+
+# name -> prefix-compare mask; addr & MASK == base
+MASKS = {
+    "RAM": 0xFFFF8000,
+    "NPU": 0xF0000000,
+    "ROM": 0xFFFFE000,
+    "QSPI3": 0xFE000000,
+    "QSPI4": 0xF8000000,
+    "CLINT": 0xFFFF0000,
+    "PLIC": 0xFFC00000,
+    "DEBUG": 0xFF000000,
+    "APB": 0xFFF00000,
+    "PNP": 0xFFFFF000,
+}
+
+# fabric port name -> region name
+PORTS = {
+    "ram": "RAM",
+    "npu": "NPU",
+    "rom": "ROM",
+    "clint": "CLINT",
+    "apb": "APB",
+    "pnp": "PNP",
+}
+
+APB_BASE = 0xFF900000
+APB_SIZE = 0x00100000
+APB_SLOT_SIZE = 0x1000
+
+# name -> (address, slot index, irq, status)
+APB_SLOTS = {
+    "UART0": (0xFF900000, 0x000, 2, "implemented"),
+    "UART1": (0xFF901000, 0x001, 3, "reserved"),
+    "GPIO": (0xFF902000, 0x002, 4, "implemented"),
+    "TIMER0": (0xFF908000, 0x008, 8, "implemented"),
+    "TIMER1": (0xFF909000, 0x009, 12, "reserved"),
+    "SPW": (0xFF90D000, 0x00D, 16, "reserved"),
+    "CAN": (0xFF911000, 0x011, 18, "reserved"),
+    "SPI": (0xFF912000, 0x012, 19, "reserved"),
+    "I2C": (0xFF913000, 0x013, 20, "reserved"),
+    "QSPICTL": (0xFF914000, 0x014, 21, "implemented"),
+    "BUSSTAT": (0xFF915000, 0x015, 22, "implemented"),
+    "SCRUB": (0xFF916000, 0x016, 23, "implemented"),
+    "BOOTREG": (0xFF917000, 0x017, 0, "implemented"),
+    "CLKGATE": (0xFF918000, 0x018, 0, "reserved"),
+    "NPUCFG": (0xFF919000, 0x019, 24, "implemented"),
+    "APBPNP": (0xFF9FF000, 0x0FF, 0, "implemented"),
+}
+
+# Ibex interrupt identifiers, from
+# ext/ibex/doc/03_reference/exception_interrupts.rst.
+FAST_IRQ_BASE = 16
+FAST_IRQ_COUNT = 15
+VECTOR_ENTRIES = 32
+VECTOR_BYTES = 128
+
+# peripheral name -> (source number, fast line, mcause id,
+#                     vector byte offset from mtvec)
+IRQ_SOURCES = {
+    "UART0": (2, 0, 16, 0x40),
+    "UART1": (3, 1, 17, 0x44),
+    "GPIO": (4, 2, 18, 0x48),
+    "TIMER0": (8, 3, 19, 0x4C),
+    "TIMER1": (12, 4, 20, 0x50),
+    "SPW": (16, 5, 21, 0x54),
+    "CAN": (18, 6, 22, 0x58),
+    "SPI": (19, 7, 23, 0x5C),
+    "I2C": (20, 8, 24, 0x60),
+    "QSPICTL": (21, 9, 25, 0x64),
+    "BUSSTAT": (22, 10, 26, 0x68),
+    "SCRUB": (23, 11, 27, 0x6C),
+    "NPUCFG": (24, 12, 28, 0x70),
+}
+
+SPARE_FAST_LINES = [13, 14]
+
+# core input name -> (interrupt id, mcause, vector offset)
+CORE_IRQS = {
+    "MSOFT": (3, 0x80000003, 0x0C),
+    "MTIMER": (7, 0x80000007, 0x1C),
+    "MEXT": (11, 0x8000000B, 0x2C),
+    "NMI": (31, 0x8000001F, 0x7C),
+}
+
+# word index within the device table -> value
+PNP_ROM = {
+    0x000: 0x0900A020,
+    0x008: 0x0900B020,
+    0x200: 0x09001020,
+    0x201: 0x00008000,
+    0x202: 0x00000001,
+    0x204: 0x0001FFF2,
+    0x208: 0x09010020,
+    0x209: 0x10000000,
+    0x20A: 0x00000001,
+    0x20C: 0x1001F002,
+    0x210: 0x09002020,
+    0x211: 0x00002000,
+    0x212: 0x00000001,
+    0x214: 0xC001FFF2,
+    0x218: 0x09011020,
+    0x219: 0x02000000,
+    0x21A: 0x00000000,
+    0x21C: 0xD001FE02,
+    0x220: 0x09012020,
+    0x221: 0x08000000,
+    0x222: 0x00000000,
+    0x224: 0xD801F802,
+    0x228: 0x09003020,
+    0x229: 0x00010000,
+    0x22A: 0x00000001,
+    0x22C: 0xE000FFF3,
+    0x230: 0x09004020,
+    0x231: 0x00400000,
+    0x232: 0x00000000,
+    0x234: 0xF800FFC3,
+    0x238: 0x09005020,
+    0x239: 0x01000000,
+    0x23A: 0x00000000,
+    0x23C: 0xFE00FF03,
+    0x240: 0x09006020,
+    0x241: 0x00100000,
+    0x242: 0x00000001,
+    0x244: 0xFF90FFF3,
+    0x248: 0x09007020,
+    0x249: 0x00001000,
+    0x24A: 0x00000001,
+    0x24C: 0xFFF0FFF3,
+    0x3FC: 0x4E530001,
+    0x3FD: 0x00000001,
+}
+
+# word index within the peripheral device table -> value
+APB_PNP_ROM = {
+    0x000: 0x0900C022,
+    0x001: 0x0000FF01,
+    0x002: 0x0900C023,
+    0x003: 0x0100FF01,
+    0x004: 0x0901A024,
+    0x005: 0x0200FF01,
+    0x006: 0x09011028,
+    0x007: 0x0800FF01,
+    0x008: 0x0901102C,
+    0x009: 0x0900FF01,
+    0x00A: 0x0901F030,
+    0x00B: 0x0D00FF01,
+    0x00C: 0x090FE032,
+    0x00D: 0x1100FF01,
+    0x00E: 0x0902D033,
+    0x00F: 0x1200FF01,
+    0x010: 0x09028034,
+    0x011: 0x1300FF01,
+    0x012: 0x09045035,
+    0x013: 0x1400FF01,
+    0x014: 0x09052036,
+    0x015: 0x1500FF01,
+    0x016: 0x09057037,
+    0x017: 0x1600FF01,
+    0x018: 0x09087020,
+    0x019: 0x1700FF01,
+    0x01A: 0x0902C020,
+    0x01B: 0x1800FF01,
+    0x01C: 0x09013038,
+    0x01D: 0x1900FF01,
+    0x01E: 0x09000020,
+    0x01F: 0xFF00FF01,
+}

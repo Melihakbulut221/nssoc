@@ -1,0 +1,161 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+
+# SymbiYosys job for the AER event FIFO.
+#
+#   sby -f aer_fifo.sby prove      k-induction proof at default parameters
+#                                  (WIDTH=16, DEPTH=64, docs/10 EVQ sizing)
+#   sby -f aer_fifo.sby prove_d4   same proof at DEPTH=4, WIDTH=8 (fast
+#                                  parameterization check)
+#   sby -f aer_fifo.sby bmc        bounded check, depth 40
+#   sby -f aer_fifo.sby resync     POINTER REPLICA RE-CONVERGENCE, the
+#                                  clause docs/09 target #4b asks for. The
+#                                  trace starts out of reset on a state in
+#                                  which one replica of a pointer has
+#                                  already diverged, with the injection
+#                                  vectors held at zero -- the fault has
+#                                  happened and has stopped -- and the
+#                                  proof is that the three replicas agree
+#                                  again on the next edge, on the right
+#                                  value. The starting state is fully
+#                                  symbolic, so depth 2 is already
+#                                  exhaustive over the class; N = 1.
+#                                  This task carries its own property set
+#                                  (AER_PTR_RESYNC in aer_fifo_props.v)
+#                                  and NOT the one below, for the same
+#                                  reason lif_ctrl.sby's bmc_safe does:
+#                                  the invariants P5 and P10 stand on are
+#                                  false at step 0 by construction here.
+#   sby -f aer_fifo.sby resync_cover  the diverged start and the resync
+#                                  that follows it are both reachable. The
+#                                  divergence exists only at step 0, so it
+#                                  is covered by an unclocked statement; a
+#                                  clocked one is unsatisfiable by
+#                                  construction, which this job reported
+#                                  rather than left to be assumed.
+#   sby -f aer_fifo.sby cover      reachability of full/drain/drop states,
+#                                  P6, which pins the read port to the
+#                                  registered (not show-ahead) shape that
+#                                  two consumers depend on, P9, a
+#                                  corrected pointer upset during traffic,
+#                                  and P13, a detected entry upset during
+#                                  traffic followed by a good delivery
+#
+# The properties live in formal/aer_fifo_props.v, textually included at
+# the end of the aer_fifo module body under `ifdef FORMAL (read_verilog
+# -formal defines FORMAL; both files land in the same sby src directory,
+# so the include resolves).
+#
+# Every task above runs with pointer fault injection enabled, and there
+# is deliberately no task without it. hw/rtl/aer_fifo.v triplicates and
+# votes both queue pointers (docs/16 section 5.2), and under `ifdef
+# FORMAL it declares six free vectors that corrupt one replica each on
+# the way to the voter, constrained only to at most one faulty replica
+# per pointer. The fault-free design is the case where the solver picks
+# zero, so P1..P6 are proven in the presence of the fault rather than in
+# its absence, and P7/P8 add the masking and the exact reporting. A
+# separate fault-free task would prove a strictly weaker statement about
+# a design that does not exist, and a separate faulty task would let the
+# two drift apart.
+#
+# The same is true of the ENTRY-PARITY fault (docs/29): a seventh free
+# vector corrupts the fetched codeword, constrained to the weight one
+# check bit can claim, and P10..P12 say the corrupted entry is discarded
+# and reported rather than delivered. It is on in all four tasks for the
+# same reason, and P5's readout assertions are qualified by rd_pass
+# rather than rd_ok so that they state what the hardened design does.
+#
+# Cost of that decision, measured on the pinned toolchain (yosys 0.67+146,
+# yices) so that a future slowdown has a reference, and because one of
+# these numbers is large enough that it has to be defended rather than
+# discovered [all fact, 2026-08-29]:
+#
+#   prove     41 s      bmc  5 min 48 s      prove_d4  1 s
+#   cover     29 min 19 s, against 3 min 57 s for the same job on the
+#             pre-TMR sources
+#
+# Re-measured 2026-08-30 with the entry-parity fault of docs/29 added,
+# same toolchain, otherwise idle machine [fact]:
+#
+#   prove     80 s      bmc  12 min 11 s     prove_d4  3.58 s
+#   cover     41 min 55 s
+#
+# Roughly 2x on the three assertion-carrying jobs, and it is the fault
+# model rather than the properties: seventeen more free bits per cycle
+# over the fetched codeword. The properties themselves are cheap in the
+# form that shipped and were expensive in the form that did not -- an
+# earlier P10 stated over all DEPTH slots took prove past ten minutes
+# without converging, which formal/aer_fifo_props.v records next to the
+# code that replaced it.
+#
+# The cover job is the whole cost, and it is the fault model rather than
+# the redundancy that buys it. Measured on the same machine, same job,
+# three fault models [fact]:
+#
+#   injection vectors tied to zero (TMR present, no fault)   6 min 24 s
+#   pattern per replica `anyconst`, applied freely in time  24 min 51 s
+#   pattern free every cycle (what is implemented)          29 min 19 s
+#
+# So the redundancy itself costs about two and a half minutes and the
+# freedom of the fault costs the rest. The middle row is what makes the
+# choice easy: weakening the fault model to a fixed-per-trace pattern
+# gives back four and a half minutes of the twenty-three, which is not
+# worth a weaker theorem in the module whose whole purpose is tolerating
+# that fault. It also buys nothing back on the three jobs that carry
+# P1..P8: bmc is faster than the pre-TMR run and prove is 41 s.
+#
+# Two levers exist if this ever has to come down. (1) Drop injection from
+# the cover job alone, which also drops P9, the anti-vacuity check on the
+# fault model -- read the P8/P9 note in aer_fifo_props.v before doing
+# that. (2) The `btor btormc` engine returns pass on this job in under a
+# second, which is 1700x, and that is exactly why it is not used here
+# without someone first confirming that the deep cover
+# (`empty && f_seen_full`, reached by yices at step 130) is genuinely
+# reached and not silently skipped. A 0.7-second pass where the pinned
+# engine needs 29 minutes is a result to verify, not to adopt.
+#
+# The file list is aer_fifo.v and the property file, and it has to stay
+# that way: aer_fifo carries its own pointer-bank module and its own
+# inline majority rather than instantiating hw/rtl/tmr_voter.v, precisely
+# so that this job and hw/tb/Makefile can elaborate the queue from one
+# file. See the "pointer TMR" section of hw/rtl/aer_fifo.v.
+
+[tasks]
+bmc           rd_plain
+prove         rd_plain
+prove_d4      rd_plain
+cover         rd_plain
+resync        rd_resync
+resync_cover  rd_resync
+
+[options]
+bmc: mode bmc
+bmc: depth 40
+prove: mode prove
+prove: depth 15
+prove_d4: mode prove
+prove_d4: depth 15
+cover: mode cover
+cover: depth 150
+# The resync tasks answer a one-step question from a fully symbolic
+# starting state, so depth 2 is already exhaustive over the whole class of
+# diverged states. The extra steps are there to show the domain stays
+# converged rather than agreeing for one cycle, and to let the covers
+# reach a resync that happens while the queue is delivering an event.
+resync: mode bmc
+resync: depth 6
+resync_cover: mode cover
+resync_cover: depth 6
+
+[engines]
+smtbmc yices
+
+[script]
+rd_plain:  read_verilog -formal aer_fifo.v
+rd_resync: read_verilog -formal -DAER_PTR_RESYNC aer_fifo.v
+prove_d4: chparam -set DEPTH 4 -set WIDTH 8 aer_fifo
+prep -top aer_fifo
+
+[files]
+../hw/rtl/aer_fifo.v
+aer_fifo_props.v
