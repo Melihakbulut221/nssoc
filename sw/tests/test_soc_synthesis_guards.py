@@ -67,6 +67,7 @@ import importlib.util
 import json
 import math
 import os
+import pathlib
 import re
 import shutil
 import subprocess
@@ -3085,3 +3086,225 @@ def test_nothing_in_the_design_instantiates_the_boot_block_unhardened():
         text = (SOC_FLOW / name).read_text()
         assert "soc_boot.HARDEN" not in text, (
             "{} overrides soc_boot's HARDEN".format(name))
+
+
+# ---------------------------------------------------------------------
+# Every P&R configuration must declare every vendor macro the RTL builds
+# ---------------------------------------------------------------------
+
+def _macros_the_rtl_instantiates():
+    """Vendor macro module names instantiated anywhere in the RTL.
+
+    A vendor macro is instantiated by bare module name at the start of a
+    line, which is what this matches. It is deliberately not a full
+    Verilog parse: the names are distinctive (RM_/RSC_IHPSG13) and a
+    parser here would be a second thing to keep right.
+    """
+    names = set()
+    for d in (SOC_RTL, ROOT / "hw" / "rtl"):
+        for v in sorted(d.glob("*.v")):
+            for m in re.finditer(r"^\s+((?:RM|RSC)_IHPSG13[A-Za-z0-9_]*)\s",
+                                 v.read_text(), re.M):
+                names.add(m.group(1))
+    return names
+
+
+def test_every_pnr_config_declares_every_macro_the_rtl_instantiates():
+    """The defect that stopped the default place-and-route flow for
+    seven days without anybody finding out.
+
+    `hw/soc/rtl/soc_mem_sram.v` gained two
+    RM_IHPSG13_1P_512x16_c2_bm_bist as the ROM's (39,32) check macros on
+    2026-09-05, commit ed51de0. `hw/soc/pnr/config.json` -- the config
+    `flow/pnr_soc_top.sh` uses when PNR_CONFIG is unset -- went on
+    declaring two macros, so Verilator.Lint failed with two MODMISSING
+    errors and the Classic flow quit at stage 3.
+
+    IT WENT UNNOTICED FOR 56 RUNS, and the reason is the interesting
+    part: every documented invocation passes `-F Yosys.JsonHeader`,
+    which starts the flow at step 5 and skips the lint step and its
+    three checkers. Of the 56 soc_top run trees, three have a
+    `01-verilator-lint` directory, and the one that predates this test
+    linted cleanly on 2026-09-01 -- four days before the macros existed.
+    A stage that is skipped by every caller is a stage that can rot
+    silently, and this is what it rotted into.
+
+    WHAT THIS CHECKS AND WHAT IT DOES NOT. It checks DECLARATION, not
+    correctness: that every macro the RTL instantiates has an entry, not
+    that the entry points at the right GDS or the right Liberty views. A
+    config may also declare macros the RTL does not instantiate, which
+    costs nothing -- an unused blackbox is an unused blackbox -- so that
+    direction is not an error here.
+    """
+    wanted = _macros_the_rtl_instantiates()
+    assert wanted, (
+        "no vendor macro instantiation found in the RTL at all. Either "
+        "the memories stopped using\nthem or this test's pattern has "
+        "stopped matching; either way it is guarding nothing.")
+
+    # EXPERIMENT RECORDS, not live configurations. Each of these was
+    # written for one measurement, ran once against the netlist of its
+    # day, and is kept so that measurement can be re-read -- docs/64's
+    # rule. Bringing them forward would change what they record and
+    # settle nothing, because none of them will be run again.
+    #
+    # Every one is a `rom0` configuration: it hardens a netlist that does
+    # not instantiate the ROM's check macros, so two macros is the RIGHT
+    # number for it and adding a third would be the actual error.
+    #
+    # A config is listed here with the document it belongs to. Anything
+    # NOT listed is live and must be complete.
+    RECORDS = {
+        "config-npu.json": "docs/55's accelerator arm, 2026-09-04",
+        "config-synpre.json": "docs/49 and docs/62's SYNPRE arm, 2026-09-04",
+        "config-lvs-a-asconfigured.json": "docs/79's LVS arm A, 2026-09-09",
+        "config-lvs-b-blackbox.json": "docs/79's LVS arm B, 2026-09-09",
+        "config-lvs-c-ignorecells.json": "docs/79's LVS arm C, 2026-09-09",
+        "config-lvs-d-delimiters.json": "docs/79's LVS arm D, 2026-09-09",
+        "config-lvs-e-normalised.json": "docs/79's LVS arm E, 2026-09-10",
+        "config-lvs-f-equateclasses.json": "docs/79's LVS arm F, 2026-09-10",
+    }
+
+    tracked = _tracked_pnr_configs()
+
+    missing = {}
+    for cfg in sorted((ROOT / "hw" / "soc" / "pnr").glob("config*.json")):
+        if cfg.name == "config.resolved.json":
+            continue          # a resolved snapshot, not a hand-edited config
+        if cfg.name not in tracked:
+            continue          # local scratch; it is nobody's contract
+        if cfg.name in RECORDS:
+            continue
+        try:
+            declared = set((json.loads(cfg.read_text()).get("MACROS")
+                            or {}).keys())
+        except ValueError:
+            continue
+        if not declared:
+            continue          # a config that hardens no macro at all
+        gap = wanted - declared
+        if gap:
+            missing[cfg.name] = sorted(gap)
+
+    # The other direction: a name in RECORDS that no longer exists is a
+    # hole, and one that has SINCE been completed is a record somebody
+    # brought forward -- both need a person, not a silent pass.
+    stale = sorted(n for n in RECORDS
+                   if not (ROOT / "hw" / "soc" / "pnr" / n).is_file())
+    assert not stale, (
+        "these configurations are listed as experiment records and no "
+        "longer exist: {}.\nDelete the entry with the file, or restore "
+        "the file.".format(", ".join(stale)))
+
+    assert not missing, (
+        "these place-and-route configurations do not declare every vendor "
+        "macro the RTL\ninstantiates, so Verilator.Lint fails with "
+        "MODMISSING and the flow quits at stage 3:\n\n  {}\n\nThe RTL "
+        "instantiates: {}\n\nThis is only invisible while every caller "
+        "passes -F to start past the lint step.".format(
+            "\n  ".join(f"{k}: missing {', '.join(v)}"
+                        for k, v in sorted(missing.items())),
+            ", ".join(sorted(wanted))))
+
+
+def _sg13g2_tech_lef():
+    pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
+               "sg13g2_stdcell/lef/sg13g2_tech.lef")
+    lefs = sorted(Path.home().glob(pattern))
+    return lefs[-1] if lefs else None
+
+
+# The seven cut layers the detailed router announces it is NOT checking.
+# Read off hw/soc/pnr/runs/s83romecc5/38-openroad-detailedrouting, and
+# identically in every soc_top run since docs/47.
+DRT_0349_LAYERS = {"Cont", "Via1", "Via2", "Via3", "Via4",
+                   "TopVia1", "TopVia2"}
+
+
+def test_the_router_skips_every_enclosure_rule_this_pdk_declares():
+    """`[DRT-0349] LEF58_ENCLOSURE with no CUTCLASS is not supported.
+    Skipping for layer X` -- seven times, in every detailed-routing log
+    this repository has ever produced. docs/67 records it as the PDK's
+    rather than the design's, and it is: sg13g2_tech.lef states plain LEF
+    `ENCLOSURE` on all seven cut layers and qualifies none of them with
+    `CUTCLASS`, so OpenROAD's router declines all seven.
+
+    The point of a guard here is NOT to make the router check them --
+    nothing in this repository can. It is that the caveat stops being
+    true the moment the PDK adds a CUTCLASS, and a caveat that has
+    silently stopped being true is worse than no caveat: every layout
+    result in the corpus is stated with this exclusion attached. So this
+    reads the PDK and fails when the premise moves, which is the stage
+    that can actually satisfy it.
+
+    A note on the parse: PREFERENCLOSURE contains ENCLOSURE as a
+    substring and is a different rule. Matching the substring would have
+    made this pass for the wrong reason."""
+    lef = _sg13g2_tech_lef()
+    if lef is None:
+        pytest.skip("sg13g2_tech.lef not installed")
+
+    # Only TOP-LEVEL layer definitions count. A VIA definition also
+    # contains `LAYER Metal1 ;` followed by its own ENCLOSURE, indented;
+    # matching those attributed enclosure rules to seven metal layers
+    # that have no cut rules at all and made this guard fail for a reason
+    # that had nothing to do with its subject.
+    layer, is_cut, declared, qualified = None, False, {}, set()
+    for line in lef.read_text(errors="ignore").split("\n"):
+        m = re.match(r"^LAYER\s+(\S+)", line)           # column 0, not indented
+        if m:
+            layer, is_cut = m.group(1), False
+            continue
+        if re.match(r"^\s*TYPE\s+CUT\b", line):
+            is_cut = True
+            continue
+        if is_cut and re.match(r"^\s*ENCLOSURE\b", line):   # not PREFERENCLOSURE
+            declared.setdefault(layer, 0)
+            declared[layer] += 1
+            if "CUTCLASS" in line:
+                qualified.add(layer)
+
+    unchecked = set(declared) - qualified
+    assert unchecked == DRT_0349_LAYERS, (
+        "the set of cut layers whose ENCLOSURE the router will skip has "
+        "moved: expected {}, found {}. Every layout result in this corpus "
+        "is stated with that exclusion attached -- re-read docs/67 before "
+        "changing this set.".format(
+            sorted(DRT_0349_LAYERS), sorted(unchecked)))
+    assert not qualified, (
+        "{} now carries CUTCLASS, so the router no longer skips it and "
+        "the corpus-wide caveat is narrower than it was".format(
+            sorted(qualified)))
+    # And the rules really are declared -- a PDK that dropped ENCLOSURE
+    # altogether would also make `unchecked` empty, which is a different
+    # world and must not read as this one.
+    assert sum(declared.values()) >= len(DRT_0349_LAYERS), (
+        "the PDK declares fewer ENCLOSURE statements than it has cut "
+        "layers; this guard's premise no longer holds")
+
+
+def _tracked_pnr_configs():
+    """The P&R configs a CHECKOUT carries, usable where there is no git.
+
+    docs/78 section 4 states the principle for the SPDX check and it
+    applies to every guard: "a generated tree is a plain directory until
+    it is committed, and a check that cannot run there is a check that
+    does not run where it is most needed". The public mirror is exactly
+    that tree, and `git ls-files` raises there rather than answering.
+
+    Falling back to "everything present" is correct rather than lax: the
+    mirror is BUILT from `git ls-files`, so in a non-git tree every
+    config on disk is by construction a tracked one. In a git tree the
+    fallback is never taken and untracked scratch is still excluded.
+    """
+    import subprocess as _sp
+    cfg_dir = ROOT / "hw" / "soc" / "pnr"
+    on_disk = {p.name for p in cfg_dir.glob("config*.json")}
+    try:
+        out = _sp.run(["git", "ls-files", "hw/soc/pnr/config*.json"],
+                      cwd=ROOT, check=True, capture_output=True,
+                      text=True).stdout.split()
+    except (OSError, _sp.CalledProcessError):
+        return on_disk           # not a git tree; see the docstring
+    names = {pathlib.PurePosixPath(t).name for t in out}
+    return names if names else on_disk

@@ -50,6 +50,7 @@ bottom row's origin is fixed, so the admissible channel heights are
 
 import argparse
 import json
+import math
 import os
 import re
 import sys
@@ -91,6 +92,17 @@ TOP = [(RAM, "u_ram.g_ram_2048x64.u_b2", 0),
 # keeps docs/47's label: docs/67 section 5's layout is taken with the
 # ROM as docs/47 built it, because its two check-bit macros have no
 # place in this floorplan (docs/67 section 8).
+# `ecc-rom` is `ecc` plus the ROM's own codec arm: soc_mem_sram.v's
+# `WORDS == 2048 && HARDEN != 0` branch is labelled g_rom_1024x32_ecc,
+# so the two ROM banks are named through that label as well, and the two
+# check macros exist to be placed.
+ROM_ECC = {"u_rom.g_rom_1024x32.u_b0": "u_rom.g_rom_1024x32_ecc.u_b0",
+           "u_rom.g_rom_1024x32.u_b1": "u_rom.g_rom_1024x32_ecc.u_b1"}
+ROM_CHK_INSTS = ("u_rom.g_rom_1024x32_ecc.u_c0",
+                 "u_rom.g_rom_1024x32_ecc.u_c1")
+ROM_BOT_INST = "u_rom.g_rom_1024x32_ecc.u_b0"
+ROM_TOP_INST = "u_rom.g_rom_1024x32_ecc.u_b1"
+
 LABELS = {
     "docs47": {},
     "ecc": {"u_ram.g_ram_2048x64.u_b0": "u_ram.g_ram_2048x64_ecc.u_b0",
@@ -98,6 +110,7 @@ LABELS = {
             "u_ram.g_ram_2048x64.u_b2": "u_ram.g_ram_2048x64_ecc.u_b2",
             "u_ram.g_ram_2048x64.u_b3": "u_ram.g_ram_2048x64_ecc.u_b3"},
 }
+LABELS["ecc-rom"] = dict(LABELS["ecc"], **ROM_ECC)
 
 # The ROM's check-bit macro (docs/67). The RTL as it ships instantiates
 # two of these under u_rom.g_rom_1024x32_ecc, and LibreLane's
@@ -108,6 +121,40 @@ LABELS = {
 # and OpenROAD.CheckMacroInstances has nothing to check. Placing it is
 # docs/67 section 8's open item.
 ROM_CHK = "RM_IHPSG13_1P_512x16_c2_bm_bist"
+
+# --- placing it, 2026-09-12 -------------------------------------------
+#
+# docs/67 section 8's open item, closed. The paragraph above is left as
+# it was written because it is still true of `--memory ecc`; what is new
+# is `--memory ecc-rom`, which places the two check macros and therefore
+# does NOT force ROM_HARDEN = 0.
+#
+# WHERE THEY GO, AND WHY THERE IS ROOM AT ALL. The macro rows are as
+# tall as the RAM, 626.70 um, and the ROM is 336.46 um, so column 2 has
+# 290.24 um of unused height in each row. The check macro is 191.34 um
+# tall and 236.80 um wide against the ROM's 416.64, so it fits inside
+# that pocket twice over. Nothing else in the floorplan has to move to
+# make room -- the die, the core and the four RAM macros are untouched,
+# which is what keeps every measurement taken on this floorplan
+# comparable with one taken on the new one.
+#
+# WHY THE BOTTOM ROM MOVES AND THE TOP ONE DOES NOT. Both rows put their
+# pin edge against the channel: the bottom row is FS, which mirrors the
+# macro about X and lifts its pins to its top, and the top row is N,
+# which leaves them at its bottom. So the pocket in the BOTTOM row lies
+# on top of the ROM, directly over its pins, and a macro parked there
+# would sit across every wire leaving them. The bottom ROM is therefore
+# raised to the top of its own band -- its pins end up at the channel
+# rather than 290 um below it, which is better for it as well -- and the
+# check macro takes the space underneath, on the ROM's blind edge. The
+# top row needs none of this: its ROM's pins are already at the bottom
+# of the band facing the channel, and the pocket is above, on its blind
+# edge.
+#
+# Both check macros keep their row's orientation, so each one's pins
+# face the same way as the ROM it serves.
+ROM_CHK_W_UM = 236.80
+ROM_CHK_H_UM = 191.34
 
 # docs/47 section 6.1: the lower row is FS, which mirrors about X and
 # puts its pin edge at its TOP; the upper row is N, which leaves its pin
@@ -281,7 +328,59 @@ def build(channel, pdk_root, density_pct=None, cell_area=CELL_AREA):
     core = [core_x0, core_y0, round(core_x0 + core_w, 6),
             round(core_y0 + core_h, 6)]
 
-    macro_area = 4 * ram_w * ram_h + 2 * rom_w * rom_h
+    # ---- the ROM's two check macros, docs/67 section 8 ------------------
+    #
+    # Computed rather than written down, so that a change to the ROM's
+    # size, the row pitch or the insets moves them instead of silently
+    # putting them somewhere they no longer fit.
+    chk_w, chk_h = lef_size(pdk_root, ROM_CHK)
+
+    def _row_align(y):
+        """The highest row-aligned y not above `y`."""
+        rows = math.floor((y - core_y0) / SITE_H + 1e-9)
+        return round(core_y0 + rows * SITE_H, 6)
+
+    def _row_align_up(y):
+        """The lowest row-aligned y not below `y`."""
+        rows = math.ceil((y - core_y0) / SITE_H - 1e-9)
+        return round(core_y0 + rows * SITE_H, 6)
+
+    band_bot_top = round(y_bot + ram_h, 6)      # top of the bottom band
+    band_top_top = round(y_top + ram_h, 6)      # top of the top band
+    rom_x = round(core_x0 + COL_SITES[2] * SITE_W, 6)
+
+    # Bottom row: the ROM rises to the top of its band so its pins meet
+    # the channel, and the check macro takes the blind space beneath it.
+    rom_bot_y = _row_align(band_bot_top - rom_h)
+    chk_bot_y = y_bot
+    # Top row: the ROM stays where it is, pins already at the channel,
+    # and the check macro takes the blind space above it.
+    rom_top_y = y_top
+    chk_top_y = _row_align(band_top_top - chk_h)
+
+    # EACH CHECK MACRO SITS AT THE OUTER EDGE OF ITS BAND, and that was
+    # measured against the alternative rather than chosen.
+    #
+    # Placed hard against its ROM with only the halo between -- 20.34 um
+    # at the bottom, 22.64 at the top -- the power grid builds and the
+    # design does NOT route: run s83romecc4 stopped at step 31 with
+    # [GRT-0116] Global routing finished with congestion. Moving a macro
+    # into the strip between the ROM and the band edge takes that strip
+    # away from the router, and this column has the accelerator's fabric
+    # on the other side of it.
+    #
+    # At the band edge the design routes: run s83romecc2 reached step 50
+    # of 80 with global routing, detailed routing, antenna repair and
+    # the disconnected-pin checker all behind it. What it failed on is
+    # the power grid, and pdn_macro.tcl is where that is answered rather
+    # than here -- see the ROM_CHK grid it defines.
+
+    chk_place = {ROM_CHK_INSTS[0]: (chk_bot_y, ORIENT_BOTTOM),
+                 ROM_CHK_INSTS[1]: (chk_top_y, ORIENT_TOP)}
+    rom_moved = {ROM_BOT_INST: rom_bot_y, ROM_TOP_INST: rom_top_y}
+
+    macro_area = (4 * ram_w * ram_h + 2 * rom_w * rom_h
+                  + 2 * chk_w * chk_h)
     placeable = core_w * core_h - macro_area
     util = cell_area / placeable
 
@@ -312,7 +411,83 @@ def build(channel, pdk_root, density_pct=None, cell_area=CELL_AREA):
     return dict(channel=channel, die=die, core=core, core_w=core_w,
                 core_h=core_h, macros=macros, macro_area=macro_area,
                 placeable=placeable, util=util, ram=size[RAM], rom=size[ROM],
-                density_pct=density_pct, cell_area=cell_area)
+                density_pct=density_pct, cell_area=cell_area,
+                chk=(chk_w, chk_h), chk_place=chk_place, rom_moved=rom_moved,
+                core_x0=core_x0, core_y0=core_y0, rom_x=rom_x,
+                band_tops=(band_bot_top, band_top_top))
+
+
+def place_rom_check(fp):
+    """Put the ROM's two check macros into a built floorplan, and move
+    the bottom ROM off its own pins to make room.
+
+    Separate from build() so that `--memory ecc-rom` is the ONLY
+    arrangement that differs: every other mode returns exactly the
+    floorplan it returned before this function existed, which is what
+    keeps docs/47, docs/61 and docs/67's measurements comparable.
+
+    The assertions are the point. A macro that lands a row out of
+    alignment, inside another macro's halo, or over the die edge is a
+    run that fails eighty steps later with a message about routing, so
+    the geometry is checked here where the reason is still legible.
+    """
+    chk_w, chk_h = fp["chk"]
+    rom_w, rom_h = fp["rom"]
+    core = fp["core"]
+    rom_x = fp["rom_x"]
+
+    roms = fp["macros"][ROM]
+    for inst, y in fp["rom_moved"].items():
+        assert inst in roms, (
+            "%s is not in this floorplan's ROM instances %s -- "
+            "place_rom_check() is being called on an arrangement whose "
+            "labels it does not know" % (inst, sorted(roms)))
+        roms[inst]["location"][1] = y
+
+    chks = fp["macros"].setdefault(ROM_CHK, {})
+    for inst, (y, orient) in fp["chk_place"].items():
+        chks[inst] = {"location": [rom_x, y], "orientation": orient}
+
+    # ---- the assertions -------------------------------------------------
+    for inst, spec in chks.items():
+        x, y = spec["location"]
+        assert abs((x - fp["core_x0"]) / SITE_W
+                   - round((x - fp["core_x0"]) / SITE_W)) < 1e-6, \
+            "%s x is not site-aligned" % inst
+        assert abs((y - fp["core_y0"]) / SITE_H
+                   - round((y - fp["core_y0"]) / SITE_H)) < 1e-6, \
+            "%s y is not row-aligned" % inst
+        assert x >= core[0] and x + chk_w <= core[2], \
+            "%s outside core in x" % inst
+        assert y >= core[1] and y + chk_h <= core[3], \
+            "%s outside core in y" % inst
+
+    # Each check macro clears the ROM it shares a column with, by the
+    # halo, on the side it was put.
+    bot_chk_y = fp["chk_place"][ROM_CHK_INSTS[0]][0]
+    bot_rom_y = fp["rom_moved"][ROM_BOT_INST]
+    gap_bot = round(bot_rom_y - (bot_chk_y + chk_h), 6)
+    assert gap_bot >= 2 * HALO, (
+        "the bottom check macro is %.2f um below its ROM, inside the "
+        "2x%.0f um halo" % (gap_bot, HALO))
+
+    top_chk_y = fp["chk_place"][ROM_CHK_INSTS[1]][0]
+    top_rom_y = fp["rom_moved"][ROM_TOP_INST]
+    gap_top = round(top_chk_y - (top_rom_y + rom_h), 6)
+    assert gap_top >= 2 * HALO, (
+        "the top check macro is %.2f um above its ROM, inside the "
+        "2x%.0f um halo" % (gap_top, HALO))
+
+    # And neither leaves its own macro row -- a check macro that spilled
+    # into the channel would be standing in the cell field.
+    band_bot_top, band_top_top = fp["band_tops"]
+    assert bot_chk_y + chk_h <= band_bot_top, \
+        "the bottom check macro reaches above its macro row"
+    assert top_chk_y + chk_h <= band_top_top, \
+        "the top check macro reaches above its macro row"
+
+    fp["chk_gaps"] = (gap_bot, gap_top)
+    return fp
 
 
 def main():
@@ -341,6 +516,16 @@ def main():
                          "named for: docs47 = two words per row, ecc = "
                          "docs/67's one protected word per row. Same "
                          "macros, same places, different instance paths")
+    ap.add_argument("--lvs-blackbox", action="store_true",
+                    help="emit the variant that RUNS LVS with the vendor "
+                         "macro as a BLACK BOX: RUN_LVS=1 and no "
+                         "EXTRA_SPICE_MODELS. This is the only recipe in "
+                         "hw/soc/pnr/runs/s77lvs-* that matches uniquely; "
+                         "handing netgen the macro CDL while Magic "
+                         "extracts the macro from its LEF compares a "
+                         "netlist that has the transistors against a "
+                         "layout that does not, and run A measured that "
+                         "as `Netlists do not match`")
     ap.add_argument("--write", metavar="PATH", default=None,
                     help="write a whole variant of config.json to PATH; the "
                          "path must be inside hw/soc/pnr/, because "
@@ -363,12 +548,20 @@ def main():
         for kind in fp["macros"]:
             fp["macros"][kind] = {relabel.get(inst, inst): spec
                                   for inst, spec in fp["macros"][kind].items()}
-        fp["macros"][ROM_CHK] = {}
-        # And the RTL the JSON header elaborates is told to build the ROM
-        # as docs/47 did, so that the instances it finds are the instances
-        # this floorplan places: soc_top.v's ROM_HARDEN measurement knob,
-        # applied through LibreLane's own chparam list.
-        fp["synth_parameters"] = ["ROM_HARDEN=0"]
+        if a.memory == "ecc-rom":
+            # The ROM's codec arm, placed. No ROM_HARDEN override: the
+            # instances this floorplan names are the instances the RTL
+            # builds at its own default, which is the whole difference
+            # between this mode and `ecc`.
+            place_rom_check(fp)
+        else:
+            fp["macros"][ROM_CHK] = {}
+            # And the RTL the JSON header elaborates is told to build the
+            # ROM as docs/47 did, so that the instances it finds are the
+            # instances this floorplan places: soc_top.v's ROM_HARDEN
+            # measurement knob, applied through LibreLane's own chparam
+            # list.
+            fp["synth_parameters"] = ["ROM_HARDEN=0"]
 
     if a.write:
         base = json.load(open(CONFIG))
@@ -404,29 +597,135 @@ def main():
             out["PDN_MACRO_CONNECTIONS"] = [
                 _relabel_pdn(line, relabel)
                 for line in base["PDN_MACRO_CONNECTIONS"]]
+            if a.memory == "ecc-rom":
+                # THE CHECK MACROS NEED THEIR OWN POWER LINES, and the
+                # loop above cannot supply them: it RELABELS the entries
+                # config.json already has, and config.json has none for
+                # an instance it does not place. Without these the two
+                # macros are placed, routed and left unpowered, and the
+                # flow stops at Checker.DisconnectedPins with four
+                # critical pins -- which is exactly what the first run
+                # of this mode did, at step 43 of 80, on 2026-09-13.
+                #
+                # The clause above warns about the neighbouring form of
+                # this ("a relabelled instance path has to be relabelled
+                # there too or OpenROAD.Floorplan finds no macro to
+                # power and stops") and the warning did not reach the
+                # case where the instance is NEW rather than renamed.
+                #
+                # The two supply lines are the ROM's own, because it is
+                # the same vendor part family and the same two supplies:
+                # VDD! for the periphery and VDDARRAY! for the array,
+                # both returned on VSS!.
+                chk_re = r"u_rom\.g_rom_1024x32_ecc\.u_c[01]"
+                out["PDN_MACRO_CONNECTIONS"] += [
+                    chk_re + " VPWR VGND VDD! VSS!",
+                    chk_re + " VPWR VGND VDDARRAY! VSS!",
+                ]
+        if a.lvs_blackbox:
+            # docs/54: the deck that actually blocks. config.json carries
+            # EXTRA_SPICE_MODELS "so that a later LVS run has what it
+            # needs" -- that turned out to be the wrong need. Netgen
+            # builds circuit2 from the powered netlist and Magic builds
+            # circuit1 by extracting the LAYOUT, where every macro is the
+            # abstract its LEF describes. Give netgen the CDL and it
+            # expands transistors on one side only. Measured on this
+            # eight-macro layout 2026-09-13: with the CDLs, 64901 netlist
+            # nets against 63155 layout nets and `Netlists do not match`;
+            # the same layout in this mode is the run below.
+            del out["EXTRA_SPICE_MODELS"]
+            del out["//lvs"]
+            out["RUN_LVS"] = 1
+            # docs/64: the pilot's measurement is LEFT STANDING. What is
+            # no longer true of THIS file is its last sentence, because
+            # this file exists to produce the LVS result it disclaims.
+            out["//signoff_decks"] += (
+                " ||| SUPERSEDED FOR THIS FILE 2026-09-13. The sentences "
+                "above are the pilot's measurement and they stand. This "
+                "configuration is the exception they did not anticipate: it "
+                "sets RUN_LVS = 1 and it HAS an LVS result. Run s83lvsbb2 "
+                "over the eight-macro layout of s83romecc5 reports "
+                "`Circuits match uniquely` with 263 symmetries and all "
+                "seven design__lvs_* counters at zero. The pilot's third "
+                "number -- Netgen LVS 359 because the bus delimiters "
+                "differ -- is exactly why: this file drops "
+                "EXTRA_SPICE_MODELS, so the delimiters never meet. Do not "
+                "read the pass as a signoff of the macro. It is a signoff "
+                "of the connectivity INTO the macro, and the pilot's "
+                "NO-GO on RM_IHPSG13 for this PDK version is untouched. "
+                "The pilot's first prediction held: KLayout DRC over this "
+                "layout (s83kdrc) reports 11048 markers -- 6584 distinct "
+                "shapes, the two Schottky rules reporting one population "
+                "twice, docs/54 section 3.1 -- attributed to 204 "
+                "cells, all 204 inside the macro hierarchy and 0 outside, "
+                "against 2316 over 57 cells for one macro and 9668 for "
+                "six."
+            )
+            out["//lvs_blackbox"] = (
+                "THE VENDOR MACRO IS A BLACK BOX, the recipe of "
+                "config-lvs-b-blackbox.json carried to the floorplan that "
+                "places ALL THREE macro types. With no CDL in circuit2 "
+                "netgen builds a pin-list-only cell for each macro from "
+                "the powered netlist and compares it against the "
+                "pin-list-only cell Magic extracted from the macro LEF, "
+                "so LVS checks what this project drew -- every net, every "
+                "standard-cell connection, and net-by-net which top-level "
+                "net lands on which macro pin -- and not the macro "
+                "internals, which docs/12 section 7.5 measured as "
+                "un-signoff-able in this PDK version. Generated, not "
+                "copied: config-lvs-b-blackbox.json was hand-written "
+                "before the 512x16 check macros existed and still "
+                "declares two macros."
+            )
+        n_inst = sum(len(v) for v in fp["macros"].values())
         out["//floorplan48"] = (
             "GENERATED BY hw/soc/pnr/floorplan.py --arrangement "
             f"{a.arrangement} --channel {channel} --density {density} "
-            f"--cell-area {a.cell_area} --memory {a.memory}. This file differs from "
-            "config.json in FOUR keys and the generator asserts it: "
-            "DIE_AREA, CORE_AREA, MACROS (the six instance LOCATIONS only "
-            "-- same macros, same orientations, same x origins) and "
-            "PL_TARGET_DENSITY_PCT. Everything else, including every "
+            f"--cell-area {a.cell_area} --memory {a.memory}"
+            + (" --lvs-blackbox" if a.lvs_blackbox else "") +
+            ". This file differs from config.json in the keys the "
+            "generator asserts and in no others: DIE_AREA, CORE_AREA, "
+            f"MACROS (the {n_inst} instance LOCATIONS -- same macros, same "
+            "orientations, same x origins) and PL_TARGET_DENSITY_PCT"
+            + (", plus PDN_MACRO_CONNECTIONS where the instance paths are "
+               "relabelled" if relabel else "")
+            + (", plus RUN_LVS and a dated marker on //signoff_decks, and "
+               "MINUS EXTRA_SPICE_MODELS and //lvs" if a.lvs_blackbox else "")
+            + ". Everything else, including every "
             "checker binding of config.json's section on the checkers, is "
             "carried across byte for byte, so a difference in a result "
             "between this run and docs/47's is a difference of floorplan "
             "and of nothing else. docs/48, and docs/61 for the variant "
             "sized against the netlist that contains the accelerator."
         )
+        if n_inst != 6:
+            # config.json's prose counts the macros of the default build.
+            # This mode does not have six of them and the file must not
+            # say it does -- docs/54 and docs/00 both got read wrong on a
+            # count inherited this way.
+            for key in ("//", "//eqy"):
+                out[key] = out[key].replace(
+                    "six RM_IHPSG13 SRAM macros",
+                    f"{n_inst} RM_IHPSG13 SRAM macros").replace(
+                    "six blackboxes", f"{n_inst} blackboxes")
         # THE ASSERTION, the same shape flow/pnr_soc_top.sh makes about
         # VERILOG_FILES: a generator that can quietly change a fifth key
         # is a generator whose output cannot be attributed.
         added = set(out) - set(base)
-        changed = {k for k in base if base[k] != out[k]}
+        removed = set(base) - set(out)
+        changed = {k for k in base if k in out and base[k] != out[k]}
         allowed_added = {"//floorplan48"}
         if fp.get("synth_parameters"):
             allowed_added.add("SYNTH_PARAMETERS")
+        if a.lvs_blackbox:
+            allowed_added.add("//lvs_blackbox")
         assert added == allowed_added, f"generator added {added}"
+        # A generator that can quietly DROP a key is as unattributable as
+        # one that can quietly add a fifth. `--lvs-blackbox` removes two
+        # and it says which two.
+        allowed_removed = ({"EXTRA_SPICE_MODELS", "//lvs"}
+                           if a.lvs_blackbox else set())
+        assert removed == allowed_removed, f"generator removed {removed}"
         # `<=` and not `==` on purpose: at --channel 700.08 --density 40
         # this generator reproduces config.json exactly and `changed` is
         # EMPTY, which is the strongest self-check available -- the tool
@@ -434,8 +733,12 @@ def main():
         # LEF, without being told what it should come out as.
         allowed_changed = {"DIE_AREA", "CORE_AREA", "MACROS",
                            "PL_TARGET_DENSITY_PCT"}
+        if sum(len(v) for v in fp["macros"].values()) != 6:
+            allowed_changed.update({"//", "//eqy"})
         if relabel:
             allowed_changed.add("PDN_MACRO_CONNECTIONS")
+        if a.lvs_blackbox:
+            allowed_changed.update({"RUN_LVS", "//signoff_decks"})
         assert changed <= allowed_changed, f"generator changed {changed}"
         for kind in out["MACROS"]:
             if kind == ROM_CHK and kind not in base["MACROS"]:
@@ -452,8 +755,20 @@ def main():
             # applied to config.json's set by the table above and nothing
             # else: a renamed instance is still the same macro in the
             # same place.
-            assert set(out["MACROS"][kind]["instances"]) == \
-                {relabel.get(i, i) for i in base["MACROS"][kind]["instances"]}, \
+            want = {relabel.get(i, i)
+                    for i in base["MACROS"][kind]["instances"]}
+            if a.memory == "ecc-rom" and kind == ROM_CHK:
+                # The one place the set is allowed to GROW, and only by
+                # exactly these two. config.json carries this macro with
+                # an empty instance dict -- known and unplaced, docs/67
+                # section 8 -- and `--memory ecc-rom` is the mode that
+                # places them. Naming them here rather than relaxing the
+                # comparison keeps the check as strict as it was for
+                # every other macro and for every other mode: a THIRD
+                # check instance, or a differently named one, still
+                # fails.
+                want |= set(ROM_CHK_INSTS)
+            assert set(out["MACROS"][kind]["instances"]) == want, \
                 "generator renamed a macro instance"
         with open(a.write, "w") as fh:
             json.dump(out, fh, indent=4)
@@ -478,10 +793,13 @@ def main():
     if fp.get("islands"):
         print(f"island clearance below/above {fp['islands'][0]:.2f} / "
               f"{fp['islands'][1]:.2f} um")
-    for kind in (RAM, ROM):
+    for kind in (RAM, ROM, ROM_CHK):
         for inst, spec in sorted(fp["macros"].get(kind, {}).items()):
             print(f"    {inst:32s} {spec['location'][0]:9.2f} "
                   f"{spec['location'][1]:9.2f}  {spec['orientation']}")
+    if fp.get("chk_gaps"):
+        print(f"ROM check macro clearance  bottom {fp['chk_gaps'][0]:.2f} um"
+              f"  top {fp['chk_gaps'][1]:.2f} um  (halo {HALO:.0f} um)")
 
 
 if __name__ == "__main__":

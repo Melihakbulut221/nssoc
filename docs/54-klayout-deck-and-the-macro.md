@@ -194,6 +194,40 @@ Every single flagged shape is reported twice. `docs/12`'s suspicion that
 population of 1,022 shapes, not two of 1,022. The Schottky contribution
 to the headline is **1,022 shapes, not 2,044**.
 
+**Reproduced on a different layout, 2026-09-13.** Run `s83kdrc` puts
+this deck over `soc_top` with **eight** macros -- the first layout in
+this repository to carry the ROM's two `512x16` check macros -- and the
+same structure appears at a different scale **[fact, parsed from
+`hw/soc/pnr/runs/s83kdrc/01-klayout-drc/reports/drc.klayout.lyrdb`]**:
+
+| Quantity | Value |
+|---|---|
+| `Sdiod.d` items | 4,464 |
+| `Sdiod.e` items | 4,464 |
+| Shared (cell, geometry) pairs | **4,464** |
+| In one only | **0** |
+| `Cnt.c.digibnd` items | 2,120 |
+| **Markers reported** | **11,048** |
+| **Distinct shapes** | **6,584** |
+
+The set equality is exact, not approximate. Two things follow. The
+first is that this document's correction survives a change of layout:
+anyone quoting 11,048 for the eight-macro run is quoting 6,584 shapes
+twice-counted in part, exactly as 2,316 was 1,294. The second is a
+scaling check nothing here had: 2,316 markers for one macro, 9,668 for
+six, 11,048 for eight, and in all three **every marker is inside the
+vendor macro hierarchy and none outside** -- 57 cells for the single
+macro, 204 for the eight-macro layout, all 204 of them
+`RM_IHPSG13_1P_ROWDEC*`, `COLDEC*` or `RSC_IHPSG13_*`.
+
+The scope matters as much as the count, because a deck that fired three
+rules could be a deck that only looked at three. It was not: the run
+declared **173 rule categories across 47 groups** -- `M1` through `M5`,
+`V1` through `V4`, `TM1`, `TM2`, `MIM`, `NW`, `Act`, `Gat`, `Seal`,
+`Pad`, and the `Fil` family -- and three fired. The full IHP rule set
+was evaluated against the whole 113 MB layout and found nothing in any
+geometry this project drew.
+
 ### 3.2 The deep-mode number is a marker count, not a shape count
 
 LibreLane runs this deck with `run_mode=deep` because the PDK's
@@ -888,6 +922,79 @@ from the PDK, which is the point of having made that run.
    interesting than it was: if the two DRC decks disagree about SRAM
    scope, the LVS decks may too, and the LVS failure is the one that
    actually blocks.
+
+   > **WHY IT HAS STAYED OPEN THROUGH THREE RESTATEMENTS, established
+   > 2026-09-12.** It is not a deck waiting to be run. It is a deck this
+   > repository cannot feed.
+   >
+   > `libs.tech/klayout/tech/lvs/sg13g2.lvs` takes its schematic side
+   > through `RBA::NetlistSpiceReader` and through nothing else: the
+   > word `verilog` does not appear in the deck or in its `run_lvs.py`.
+   > Netgen reads gate-level Verilog natively, which is why every LVS
+   > result in this project is Netgen's and why nobody met this wall.
+   >
+   > And there is no SPICE to give it. **Every `.spice` file in every
+   > run tree under `hw/soc/pnr/runs/` begins `* NGSPICE file created
+   > from soc_top.ext`** — they are all Magic's extraction of the
+   > LAYOUT. Handing one to the deck as the schematic would compare the
+   > layout with itself, which passes and means nothing. The schematic
+   > side would have to be built: the 10.9 MB gate-level netlist
+   > converted to SPICE against the standard cells' subcircuits, plus a
+   > decision about how the six vendor macros enter, which is the very
+   > question sections 5 and 6 say the decks disagree about.
+   >
+   > So the item is **"build a Verilog-to-SPICE path"**, not "run a
+   > deck", and it should have been written that way the first time.
+   > `docopt`, which `run_lvs.py` imports and which was absent, is
+   > installed as of this date -- that part was a five-second obstacle
+   > standing in front of a real one.
+
+   > **THE MACRO-ENTRY QUESTION NOW HAS A MEASURED ANSWER, 2026-09-13,
+   > from the Netgen side.** The block above says the hard part is "a
+   > decision about how the vendor macros enter, which is the very
+   > question sections 5 and 6 say the decks disagree about". Whoever
+   > builds the SPICE path will meet that fork, and Netgen has now been
+   > run down both branches of it on the same layout -- `s83romecc5`,
+   > the first in this repository to place all **eight** macros rather
+   > than six, the ROM's two `512x16` check macros included.
+   >
+   > *Give netgen the vendor CDL* and it fails: **64,901 netlist nets
+   > against 63,155 layout nets**, `Top level cell failed pin matching`
+   > (`s83lvsbb2`'s predecessor `s83lvs`). The cause is not connectivity.
+   > It is **naming** -- the CDL spells buses `A_DIN<32>` and globals
+   > `VSS!`, `VDD!`, `VDDARRAY!` where the layout has `A_DIN[32]`,
+   > `VSS`, `VDD` -- and the +1,746 nets follow from the delimiters
+   > alone. This is `docs/12` section 7.5's third number recurring:
+   > *"Netgen LVS 359 because the GDS cell names and the CDL subcircuit
+   > names disagree and the bus delimiters differ, so none of the 188
+   > bus pins match."* One macro then, eight now, same wall.
+   >
+   > *Black-box both sides* and it matches: **63,155 = 63,155**,
+   > `Circuits match uniquely` with 263 symmetries (`s83lvsbb2`), and
+   > 268 on the antenna-repaired layout (`s83antlvs`), all seven
+   > `design__lvs_*` counters zero in both.
+   >
+   > **The trap is reading that as the better branch.** Dropping the CDL
+   > does not repair the comparison; it REMOVES the only part of it that
+   > looked inside the macro. Circuit 2 is then built from
+   > `sg13g2_stdcell.spice`, `sg13g2_io.spi` and the P&R netlist with no
+   > SRAM model at all, the extracted side carries a *"Black-box entry
+   > subcircuit"* with an empty `.subckt` per macro, and 974 macro pins
+   > are noted as disconnected nodes on both sides alike. What passes is
+   > **top-level connectivity into all eight macros' pins**, and nothing
+   > about the macro internals -- which is the correct scope given
+   > `docs/12` section 7.5's NO-GO, but is a weaker statement than
+   > "LVS passes", and the CDL list covers only two of the three macro
+   > types anyway, so the `512x16` pair was a black box in the failing
+   > run as well.
+   >
+   > For this item that is worth two things. The KLayout LVS deck, if it
+   > is ever fed, should be fed the black-box branch, because the other
+   > one is answering a question about the vendor's transistors that no
+   > deck in this PDK version can answer. And the Verilog-to-SPICE path
+   > will have to make the delimiter and `!`-suffix decision explicitly,
+   > because that -- not the macro scope, and not the reader -- is what
+   > actually broke the comparison when it was tried.
 5. **Whether `sg13g2_maximal.drc` returning 0 means anything** depends on
    a judgement about that deck's status that this document declines to
    make and section 6 explains. If IHP confirms the residual set's SRAM

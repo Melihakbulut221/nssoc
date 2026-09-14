@@ -586,7 +586,7 @@ re-raised without new evidence.
   be right, and a defect that had been correctly spotted survived its own
   review for a year of documents. It is fixed at `docs/01` section 2.2,
   where the list is now split by source.
-- **R-3** — "The EUR 27.5k NLnet ask and docs/04's EUR 20-65k MVP
+- **R-3** — "The NLnet ask *(figure held; `docs/06` carries it)* and docs/04's EUR 20-65k MVP
   envelope are unreconciled": rejected — the two numbers cover different
   phases by design; docs/06 B.6 and docs/04 section 5 place the MVP die
   on a separately funded IHP MPW, and no document claims the grant buys

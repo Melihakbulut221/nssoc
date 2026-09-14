@@ -16,9 +16,7 @@
 # reason recorded here was WRONG IN THE DIRECTION THAT MATTERS.
 #
 # *Corrected 2026-09-11.* This read: "Every workflow run on this
-# repository since 2026-09-03 was refused before starting -- 'the job
-# was not started because recent account payments have failed or your
-# spending limit needs to be increased' -- so the SPDX policy check has
+# repository since 2026-09-03 was refused before starting -- '(account status, not published)' -- so the SPDX policy check has
 # never executed there once, and neither has the paper's claim checker.
 # Nine non-starts, not nine failures."
 #
