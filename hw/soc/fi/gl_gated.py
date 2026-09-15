@@ -227,8 +227,50 @@ def make_runner(args, g):
     return Runner(args.vvp, image, g["budget"], g["rld"], g["pre"])
 
 
+# X IS A VALUE THE BENCH CAN PRINT AND -1 IS WHAT THIS FILE MEANS BY
+# "not known".  Verilog's %0d writes `x` for a field that is unknown at
+# the moment of the $display, and a gate-level model has plenty of those
+# -- a counter inside a domain whose clock never started, for instance.
+# The first campaign run died on one (`ValueError: invalid literal for
+# int() with base 10: 'x'`, 2026-09-15, arm s77gate) after 6 minutes of
+# simulation, so the parse is widened here rather than at each of the
+# thirteen call sites.  An unknown field is -1, the same value a MISSING
+# field gets, because neither is a measurement; `ii_unknown` counts them
+# so a report can say how many rather than pretending there were none.
+II_UNKNOWN = collections.Counter()
+
+
 def ii(rec, k):
-    return int(rec.get(k, "-1"))
+    v = rec.get(k, "-1")
+    try:
+        return int(v)
+    except ValueError:
+        II_UNKNOWN[k] += 1
+        return -1
+
+
+def hx(rec, k):
+    """A hex record field, with X tolerated the way ii() tolerates it.
+
+    A gate-level model prints X into %h for any bit that is unknown at
+    the moment of the $display, and a word inside a domain whose clock
+    has not started is full of them.  The first two campaign runs died
+    here -- `invalid literal for int() with base 16:
+    '0000000000000000000000000000000X'`, 2026-09-15 -- with six minutes
+    of simulation behind each.  An unknown word is -1, which is not a
+    value the design can produce and is the same "no measurement" this
+    file already uses, and HX_UNKNOWN counts them so a run reports how
+    many rather than pretending there were none.
+    """
+    v = rec.get(k, "")
+    try:
+        return int(v, 16)
+    except ValueError:
+        HX_UNKNOWN[k] += 1
+        return -1
+
+
+HX_UNKNOWN = collections.Counter()
 
 
 # =====================================================================
@@ -423,7 +465,7 @@ def cmd_direct(args):
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
         for n, (item, r) in enumerate(ex.map(job, plan), 1):
             b, k, f, cyc = item
-            if ii(r, "hit") != 1 or ii(r, "during") == int(r["before"], 16):
+            if ii(r, "hit") != 1 or ii(r, "during") == hx(r, "before"):
                 sys.exit("a force did not land: flop %d" % f["idx"])
             rows.append(row_of(args.arm, "cause_%s" % b, k, f, cyc, r, g))
             if n % 25 == 0:
@@ -438,15 +480,15 @@ def cmd_direct(args):
 
 
 def row_of(arm, kind, pos, f, cyc, r, g, cls=None, df=None):
-    word_b = int(r.get("cg_npu_word_before", "0"), 16)
-    word_a = int(r.get("cg_npu_word", "0"), 16)
+    word_b = hx(r, "cg_npu_word_before")
+    word_a = hx(r, "cg_npu_word")
     sticky_b = (word_b >> NPU_P_STICKY) & ((1 << NPU_NSTICKY) - 1)
     sticky_a = (word_a >> NPU_P_STICKY) & ((1 << NPU_NSTICKY) - 1)
     own_first = ii(r, "own_first")
     npu_first = ii(r, "cg_npu_first")
     row = {"arm": arm, "kind": kind, "pos": pos, "gl_idx": f["idx"], "gl_net": f["q"],
-           "cycle": cyc, "hit": r["hit"], "before": int(r["before"], 16),
-           "during": r["during"], "after": int(r["after"], 16),
+           "cycle": cyc, "hit": r["hit"], "before": hx(r, "before"),
+           "during": r["during"], "after": hx(r, "after"),
            "persist": r["persist"], "released": r.get("released", ""),
            "own_first": own_first,
            "own_latency": (own_first - cyc) if own_first >= 0 else -1,
@@ -586,12 +628,42 @@ def cmd_campaign(args):
                                 own_clk=args.own_clk)
 
     rows = []
+    unknown, unchanged = [], []
     t0 = time.time()
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as ex:
         for n, (item, r) in enumerate(ex.map(job, todo), 1):
             p, f = item
-            if ii(r, "hit") != 1 or ii(r, "during") == int(r["before"], 16):
-                sys.exit("a force did not land: flop %d" % f["idx"])
+            # A FORCE THAT DID NOT LAND IS A RESULT, NOT A CRASH.
+            #
+            # The first three campaign runs died here on the FIRST site
+            # of the plan, throwing away the arm [fact, 2026-09-15].
+            # The record says why:
+            #
+            #   hit=1 before=0000000000000000000000000000000X
+            #         during=x persist=0
+            #
+            # `\u_npu.u_node0.u_lif.w_data_all [72]` holds X at cycle
+            # 10672. It is a weight-data register with no reset, in a
+            # domain whose clock is stopped, and this workload never
+            # writes it: a gate-level model leaves such a flip-flop
+            # unknown until something clocks a value into it. Forcing
+            # an unknown bit to its "complement" produces another
+            # unknown, so `during == before` and the injection cannot
+            # be an upset -- there was no state to upset.
+            #
+            # That is a property of the site and the workload, and
+            # counting it is the measurement. `hit != 1` still aborts:
+            # that one means the bench never applied the force at all,
+            # which is a tool fault and not a result.
+            if ii(r, "hit") != 1:
+                sys.exit("the bench did not apply the force: flop %d"
+                         % f["idx"])
+            if hx(r, "before") < 0 or r.get("during", "").strip() in ("x", "X"):
+                unknown.append((f["idx"], f["q"].strip(), int(p["cycle"])))
+                continue
+            if ii(r, "during") == hx(r, "before"):
+                unchanged.append((f["idx"], f["q"].strip(), int(p["cycle"])))
+                continue
             cls, df = campaign.classify(r, golden)
             rows.append(row_of(args.arm, p["kind"], p.get("asleep", ""), f,
                                int(p["cycle"]), r, g, cls, df))
@@ -602,6 +674,13 @@ def cmd_campaign(args):
     path = os.path.join(out_dir, "records_gated.csv")
     write_rows(path, rows)
     say("records: %s", path)
+    say("injected %d of %d planned sites; %d held an UNKNOWN value at the "
+        "injection cycle and %d were unchanged by the force, both skipped "
+        "and neither is a fault", len(rows), len(todo), len(unknown),
+        len(unchanged))
+    for tag, lst in (("unknown", unknown), ("unchanged", unchanged)):
+        for idx, q, cyc in lst:
+            log("  %s: flop %d %s at cycle %d" % (tag, idx, q, cyc))
     summarise_campaign(say, rows)
     say("wall: %.1f s for %d simulations at %d jobs (contended); per simulation "
         "min %.1f, median %.1f, max %.1f",
@@ -611,6 +690,10 @@ def cmd_campaign(args):
         max(float(r["wall"]) for r in rows))
     log.close()
 
+    if II_UNKNOWN or HX_UNKNOWN:
+        say("unknown (x) record fields, counted not ignored: %s",
+            ", ".join("%s=%d" % kv for kv in
+                      sorted(list(II_UNKNOWN.items()) + list(HX_UNKNOWN.items()))))
 
 def summarise_campaign(say, rows):
     say("")
