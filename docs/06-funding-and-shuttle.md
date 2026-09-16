@@ -5,7 +5,7 @@
 held for scope rather than for licence: it carries grant timetable, shuttle commercials and cost figures, which is
 commercial material and not a research result.
 
-The file exists here so that citations resolve. 73 documents in
+The file exists here so that citations resolve. 74 documents in
 this corpus refer to `docs/06` in prose, and
 `sw/tests/test_doc_links.py` fails on a reference naming a file that
 does not exist. Removing it would have meant editing those documents to
