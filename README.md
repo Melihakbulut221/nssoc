@@ -1,4 +1,4 @@
-# Neuromorphic Space SoC
+# Neuromorphic Fault Tolerant SoC
 
 A fault-tolerant system-on-chip for on-board AI inference in small-satellite
 missions, implemented on a 130 nm technology with an open-source RTL-to-GDS
