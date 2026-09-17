@@ -349,6 +349,7 @@ module soc_top #(
   // count either way, but it is a change and a reader should see it
   // here rather than infer it.
   wire wdog_rst_req;
+  wire [159:0] crash_dump;
   wire rst_raw_n = rst_ni && !wdog_rst_req;
 
   reg [1:0] rst_sync;
@@ -565,7 +566,14 @@ module soc_top #(
       .scramble_req_o       (),
 
       .debug_req_i         (1'b0),
-      .crash_dump_o        (),
+      // F2, 2026-09-17: this was `()`, so the SoC exported the FACT of
+      // a double fault to a pin and dropped the EVIDENCE. Only the
+      // faulting PC is kept -- crash_dump_o[159:128] is pc_id, the
+      // instruction address in the ID stage at the moment of the fault
+      // (hw/soc/gen/ibex_core.v:1103). The other four words, pc_if,
+      // lsu_addr_last and two more, are dropped; five words would be
+      // five registers and BOOTREG's slot has room for one.
+      .crash_dump_o        (crash_dump),
       .double_fault_seen_o (double_fault_seen_o),
 
       // ibex_pkg::IbexMuBiOn = 4'b0101
@@ -767,6 +775,17 @@ module soc_top #(
       .be_i (s_be), .wdata_i (s_wdata),
       .gnt_o (s_gnt[2]), .rvalid_o (s_rvalid[2]),
       .rdata_o (s_rdata_apb), .err_o (s_err[2]),
+      // PARKED, and the parking is the measurement. soc_apb_bridge's
+      // APB_TIMEOUT defaults to 0, so this line cannot assert in the
+      // shipping configuration: every mapped slave drives PREADY
+      // constant 1 at today's parameters. Widening BUSSTAT from eight
+      // sources to nine for an event that cannot fire would add a
+      // counter of dead flip-flops to the netlist and move every
+      // BUSSTAT measurement docs/44 records, which is the opposite of
+      // what docs/41 section 6.5 asks. Turning APB_TIMEOUT on is what
+      // makes the ninth source worth its area, and that is the same
+      // commit's work, not this one's.
+      .timeout_o (),
       .psel_o (psel), .penable_o (penable), .paddr_o (paddr),
       .pwrite_o (pwrite), .pwdata_o (pwdata), .pstrb_o (pstrb),
       .prdata_i (prdata), .pready_i (pready), .pslverr_i (pslverr)
@@ -938,6 +957,13 @@ module soc_top #(
   // watchdog, the memories or the fabric.
   soc_boot #(.NSTRAP(BOOT_NSTRAP), .LIMIT(BOOT_LIMIT)) u_boot (
       .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
+      // The capture lives in soc_boot because soc_boot is already in
+      // the power-on domain: it is the one block here whose registers
+      // survive the watchdog reset that a double fault causes, and a
+      // crash record that did not survive the reset would record
+      // nothing.
+      .crash_seen_i (double_fault_seen_o),
+      .crash_pc_i   (crash_dump[159:128]),
       .psel_i (sel_bootreg), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
       .prdata_o (prdata_bootreg), .pready_o (pready_bootreg),
