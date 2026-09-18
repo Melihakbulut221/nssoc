@@ -318,6 +318,7 @@ module tb_soc;
   end
 
   initial begin
+    allow_double_fault = ($test$plusargs("allow_double_fault") != 0);
     if (!$value$plusargs("ded_word=%d", ded_word)) ded_word = -1;
     if (!$value$plusargs("ded_skip=%d", ded_skip)) ded_skip = 1;
   end
@@ -352,6 +353,8 @@ module tb_soc;
   reg saw_alert_major_int = 1'b0;
   reg saw_alert_major_bus = 1'b0;
   reg saw_double_fault    = 1'b0;
+  // Set from +allow_double_fault; see the check that reads it.
+  reg allow_double_fault  = 1'b0;
   always @(posedge clk) if (rst_n) begin
     if (alert_minor)          saw_alert_minor     <= 1'b1;
     if (alert_major_internal) saw_alert_major_int <= 1'b1;
@@ -625,7 +628,16 @@ module tb_soc;
     $display("[TB] bootreg: bstrap 0x%08x bstat 0x%08x brpt 0x%08x epoch 0x%08x",
              {dut.u_boot.valid_q, 3'h0, dut.u_boot.NSTRAP_B, 7'h0,
               dut.u_boot.wdis_q, dut.u_boot.strap_w},
-             {8'h0, dut.u_boot.LIMIT_B, 6'h0, dut.u_boot.over_limit,
+             // Bit 10 is CRASHV and was 6'h0 here until 2026-09-18.
+             // This line does not READ BSTAT, it rebuilds it from the
+             // fields, so a field added to the register is invisible
+             // here until it is added here too -- and the run that
+             // added CRASHV printed bstat 0x00030001 while the program
+             // running on the core read 0x00030401 out of the real
+             // register. The register was right and this display was
+             // wrong, which is the more dangerous way round.
+             {8'h0, dut.u_boot.LIMIT_B, 5'h0, dut.u_boot.crash_valid_q,
+              dut.u_boot.over_limit,
               dut.u_boot.last_attempt, dut.u_boot.cnt_w},
              dut.u_boot.brpt_q, dut.u_boot.epoch_q);
     if (handovers == 0) begin
@@ -693,7 +705,15 @@ module tb_soc;
       $display("[TB] FAIL: alert_major_bus_o asserted (memory integrity)");
       errors = errors + 1;
     end
-    if (saw_double_fault) begin
+    // +allow_double_fault, added 2026-09-18. A double fault is fatal
+    // and this check is right for every program but one: the
+    // -DCRASH_DUMP_DEMO build exists to TAKE a double fault, so that
+    // BOOTREG's crash record can be read back after the watchdog reset
+    // the fault leads to. Without an opt-out the testbench would have
+    // to choose between failing that run and never noticing a double
+    // fault in any other, and the first is the wrong trade. The
+    // plusarg is explicit, per-run and named after what it allows.
+    if (saw_double_fault && !allow_double_fault) begin
       $display("[TB] FAIL: double_fault_seen_o asserted during the run");
       errors = errors + 1;
     end

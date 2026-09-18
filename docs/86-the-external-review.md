@@ -26,14 +26,35 @@ the stated date.
 | | |
 |---|---|
 | **Findings worked** | 11 of 11 |
-| **Acceptance blocks met in full** | 9 |
-| **Met in part, with the shortfall stated** | 2 (F2, F6) |
+| **Acceptance blocks met in full** | 10 |
+| **Met in part, with the shortfall stated** | 1 (F6) |
 | **Front door, this repository** | 17 passed / 3 failed / 3 skipped, exit 1 → **22 / 0 / 1, exit 0** |
 | **Front door, the mirror** | 8 / 6 / 9, exit 1 → **16 / 0 / 7, exit 0** |
-| **Mirror test suite** | 499 passing / 47 skipped → **536 / 42** |
-| **`check_claims` in the mirror** | 1 wrong → **0 wrong** |
+| **Silent gate terms found in the front door** | 1 |
+| **Mirror test suite** | 499 passing / 47 skipped → **544 / 38, 0 failed** |
+| **`check_claims` in the mirror** | 1 wrong, 15 need build output → **0 wrong, 7 need build output** |
 | **Found by reproducing, not in the review** | 3 |
-| **Found by the proofs, in my own fixes** | 2 |
+| **Found by re-reading this record, not in the review** | 5 |
+| **Found by the proofs, in my own fixes** | 3 |
+
+The middle row of those last three is the one worth the space. Five
+defects were found not in the repository but in **this document and the
+work it describes**, by going back over finished sections with the same
+suspicion the review brought:
+
+* `docs/86` F8 said the unresolved equivalence partition was "one of
+  the two read ports, and only one". Reading the partition instead of
+  its name showed it holds **both** read ports and all thirty-one
+  registers — the whole substance, not a corner of it.
+* `docs/86` F1 had no cost measurement while F2's and F3's did, against
+  a standing constraint that says to measure anything added.
+* `docs/60` documented no crash register, so a register had been added
+  to the programming model and left out of the programming reference.
+* `soc_boot`'s proof harness was silent about that same register: four
+  directed tests, and nothing said for every reachable transaction.
+* `docs/60`'s APB slot split is cited as measured from
+  `regmap/memmap.yaml`, and that file stopped producing it some time
+  ago — five implemented and eleven reserved is now nine and seven.
 
 **The most useful thing the review did was not a finding.** It was the
 instruction to re-run the reproduction, because two of its diagnoses
@@ -70,11 +91,14 @@ probe is now the Makefile's own.
 
 ---
 
-## 3. The two defects the proofs found in my own fixes
+## 3. The three defects the proofs found in my own fixes
 
-Both are the reason the review's standing constraint — *re-run the
-affected proofs before claiming a fix* — is the most valuable sentence
-in it.
+All three are the reason the review's standing constraint — *re-run
+the affected proofs before claiming a fix* — is the most valuable
+sentence in it. Note what they have in common: none was found by
+writing the fix, reviewing the fix, or running the existing tests over
+the fix. A solver found each one, in seconds, after the fix looked
+finished.
 
 **The APB timeout delivered two responses for one request.** After a
 timeout fired, a slave that asserted PREADY late sent the machine back
@@ -89,6 +113,16 @@ allow-list and the `HARDEN = 0` baseline all pinned a number that the
 33 new flip-flops moved. They now name the 33 as a term rather than
 absorbing it, and `docs/68` section 9.1's 92 stays 92, because 92 is
 what it measured.
+
+**The crash register's own first property was false.** `D11`, written
+2026-09-18 to state what the new register guarantees, said no APB write
+to any offset changes it. `bmc` refuted that in seconds: a write and a
+double fault can arrive in the same cycle, and then the record does
+move — not because of the write. The carve-out is `!$past(crash_seen_i)`,
+which is `D9`'s `!prot_mismatch` one cycle across. Without the proof the
+property file would have carried a sentence the block does not honour,
+and it would have read as more assurance rather than less. **Found by
+`bmc`, on the first run, on a property I had just written to be true.**
 
 ---
 
@@ -172,7 +206,12 @@ Stating it once fixes today. `sw/tests/test_no_orphan_modules.py` makes
 the next one fail: every module under `hw/rtl/` must be reachable by
 instantiation from `tt_um_melihakbulut_nssoc` or `soc_top`, or carry a
 row in `hw/known-unbuilt.txt` with a reason. It fires in both
-directions — a new orphan, and a fossil row for a module that IS built.
+directions, and that was checked by making it fire rather than by
+reading it **[fact, 2026-09-18]**: an empty module dropped into
+`hw/rtl/` fails it by name — `assert not ['zz_orphan_probe']` — and a
+row naming a module that does not exist fails it too. Both probes were
+removed and the tree verified clean afterwards. A guard nobody has
+seen fail is a guard nobody has tested.
 
 The ledger is beside the frozen tree and not inside it. The first
 version put it in `hw/rtl/` and `test_soc_npu_guards.py` caught it
@@ -194,19 +233,57 @@ claim and deliberately weaker.
 
 | | before | after |
 |---|---|---|
-| mirror tests passing | 499 | **536** |
-| mirror tests skipped | 47 | **42** |
+| mirror tests passing | 499 | **544** |
+| mirror tests skipped | 47 | **38** |
 | `test_flow_evidence` skips | 11 | **5** |
+| `check_claims`: need build output | 15 | **7** |
+| `check_claims`: re-derived | 12 | **20** |
+
+The claims took a second pass to move. The first round of this work
+taught the TESTS to read the record and left the CLAIMS alone, so
+`check_claims` still reported fifteen. Five of those read
+`s77gate/resolved.json` and one `s81ptd/final/metrics.json` — records
+this repository already had — and two more named `s81timing` and
+`s81drv`, which the collector did not list. `check_claims` now resolves
+a run-tree path to its committed record when the tree is absent, and
+says which answered.
 
 **The acceptance asked for fewer than thirty skips and this is
-forty-two.** Twenty-two of the remainder need a whole-SoC netlist or a
-populated `hw/soc/gen`; committing those is the thing the finding
-itself says not to do. Five need the run tree's own step directories
-and logs, five need a DEF, one needs a gitignored clone of the Tiny
-Tapeout tools. Seven are the redaction guard, which is inapplicable in
-the mirror by construction and says so. Getting under thirty would
-mean committing artefacts that should not be committed, so the number
-is reported rather than reached.
+thirty-eight.** Two measurements before the table, both taken
+2026-09-18 in the generated mirror with
+`.venv/bin/python -m pytest -q`:
+
+* `check_claims` there reports **20 re-derived, 15 hand-read, 7 need
+  build output, 0 wrong**. The acceptance asked for *substantially
+  fewer than 15* needing build output; seven is that.
+* The acceptance's condition was a clone **with yosys installed**, and
+  that had not been tried. It was: the count does not move. 544 passed
+  / 38 skipped without yosys on `PATH`, 542 / 38 with it -- the same
+  thirty-eight skips, because none of them is waiting on yosys. (The
+  two that changed column went red, not green, and for a reason that
+  had nothing to do with this finding: that yosys was 0.67 where every
+  count in `test_soc_synthesis_guards.py` was measured with 0.33. Under
+  the pinned 0.33 the file is 69 passed / 2 skipped. The guards now say
+  which mapper produced a disagreeing number.)
+
+Every one of the thirty-eight is accounted for, and the reason matters
+more than the number:
+
+| count | needs | why it stays out |
+|---|---|---|
+| 17 | a whole-SoC or gate-level netlist | 17 MB of build output; the finding's own instruction is to keep `runs/` ignored |
+| 5 | `hw/soc/gen/` | gitignored by a **licensing decision**, not by size: `LICENSES.md` and `docs/14` section 2.2 both state as a **[fact]** that `git ls-files` returns nothing under it, because third-party trees here are fetched and not vendored. Committing 680 kB would falsify a published sentence in two documents |
+| 5 | the run tree's step directories and logs | not evidence in the sense this finding means |
+| 5 | the sign-off DEF | the same |
+| 3 | nothing — the redaction guard is inapplicable in a generated mirror | it says so, once per test rather than once per fragment |
+| 1 | the gitignored Tiny Tapeout clone | fetched, not vendored |
+| 1 | any run tree, to compare the record against | the comparison is what a machine holding the runs does |
+| 1 | per-step `config.json` files | sixty-seven per run, and the property is about the step directories themselves |
+
+So under thirty is reachable only by committing 17 MB of netlists or by
+breaking a licensing posture that two documents state as fact. The
+number is reported rather than reached, and the seven skips that WERE
+mine to remove were removed.
 
 These files are NOT in `docs/80-artefact-digests.tsv`. That file's own
 header says every path in it is gitignored on purpose: its job is to
@@ -233,6 +310,31 @@ assert is immediate, `blk_flush` is the exact complement of
 `blk_rst_n` at every edge, and release lands **three edges** after the
 pulse clears rather than one **[fact]**. Deleting the synchroniser
 makes it fail; it was checked that way.
+
+**Cost, and it was missing until 2026-09-18.** The standing constraint
+is to measure the cost of anything added, and this section had no
+measurement while F2's and F3's did -- the review named those two and
+this one adds logic as surely as they do. Against the same block with
+`blk_rst_n` put back to `rst_ni && !flush_pulse`, yosys 0.33,
+`synth -flatten`, `sg13g2_stdcell_typ_1p20V_25C` **[fact,
+2026-09-18]**:
+
+| | before | after | delta |
+|---|---|---|---|
+| flip-flops | 3,850 | 3,854 | **+4** |
+| cells | 11,733 | 11,732 | **−1** |
+| area, um2 | 193,087.7298 | 192,478.0914 | **−609.64** |
+| | | | **−0.32 %** |
+
+**Read the area as noise and the flip-flops as the result.** −0.32 % is
+well inside the ~1.1 % mapping noise `docs/45` section 4.3 measured on
+a block nobody had touched, so this document will not claim the fix
+made the accelerator smaller. What it does claim is the sharp half:
+**four flip-flops**, because flip-flop counts have no mapping noise.
+The source adds two — `blk_rst_sync[1:0]` — and the other two are the
+mapper's, duplication for fan-out being the usual cause; that was not
+chased, because the question the constraint asks is the size of the
+bill and the bill is four flops in a block of 3,854.
 
 The lint pragma is four lines wide and sits on the synchroniser alone.
 A reset synchroniser IS a register asynchronously reset and
@@ -265,13 +367,89 @@ Neither word is clearable.
 | of `soc_boot` | | | +20.22 % |
 | of the SoC's 933,010 um2 of standard cells | | | **+0.267 %** |
 
-**Where this falls short.** The acceptance asks for a cocotb test that
-injects a double fault and reads the PC back after the watchdog reset.
-There is no whole-SoC cocotb testbench here — every suite is per block
-— so the four new tests drive the capture directly and hold `rst_ni`
-low while `rst_por_ni` stays high, which IS the watchdog reset, three
-times over. Ibex actually taking the fault is Ibex's behaviour and is
-not what this register is. **The whole-SoC injection is not done.**
+**The block-level tests, and why they were not enough.** Four new tests
+drive the capture directly and hold `rst_ni` low while `rst_por_ni`
+stays high, which IS the watchdog reset, three times over. What they
+cannot show is Ibex actually taking the fault, because they contain no
+Ibex.
+
+**The whole-SoC injection, done 2026-09-18.** This section said until
+that date that it was not done, on the stated ground that there is no
+whole-SoC cocotb testbench here. That ground was half right and the
+conclusion was wrong: there is no whole-SoC *cocotb* testbench, but
+`hw/soc/tb/tb_soc.v` is a whole-SoC Icarus testbench that has been here
+all along, and `hw/soc/flow/sim_soc.sh` runs the real core on the real
+fabric out of a real ROM image. The acceptance asked for cocotb because
+that is what the rest of this repository uses; what it wanted was the
+injection, and the harness that could do it was already built.
+
+`crash_demo()` in `hw/soc/tb/sw/test_ibex.c`, behind
+`-DCRASH_DUMP_DEMO`, is that injection. It arms the watchdog, writes an
+unmapped address into `mtvec`, and executes `.word 0x00000000`. The
+illegal instruction traps, the trap fetches from `mtvec` and faults
+again, and Ibex raises `double_fault_seen_o`. Nothing acknowledges,
+because nothing can; the watchdog escalates and reboots the SoC. Run
+**[fact, `SOC_VVP_ARGS=+allow_double_fault
+SW_DEFINES=-DCRASH_DUMP_DEMO hw/soc/flow/sim_soc.sh`, 2026-09-18]**:
+
+```
+crash demo: boot with BSTAT 0x00030000
+crash demo: arming, then double-faulting
+[TB] watchdog stage 1 (NMI) at cycle 115460
+[TB] watchdog stage 2 (system reset) at cycle 121876
+    [... the second boot's ROM copy and verify, 5 lines ...]
+crash demo: boot with BSTAT 0x00030401
+crash demo: faulting PC 0xff9fe000
+crash demo: the record survived the reset the fault caused
+RESULT PASS
+    [... the testbench's nine per-block summaries ...]
+[TB] PASS
+```
+
+Lines 20-42 of the run's log, in the order the run produced them, with
+the two elisions marked. `RESULT PASS` is the program's own verdict and
+`[TB] PASS` is the testbench's; both are needed, because the program
+can be satisfied by a testbench that noticed something else wrong.
+
+`0xff9fe000` is the exact `mtvec` the program set, read back by a
+different boot of the same SoC across the reset the fault caused. Bit
+10 of `BSTAT` in `0x00030401` is CRASHV. That is the acceptance, end to
+end, on the real core.
+
+**And a property, because the block's strongest evidence was silent
+about it.** `soc_boot` has a proof harness carrying D1-D10, and a
+register was added to that block without adding anything to it: four
+cocotb tests sampled the new state and nothing said what was true of it
+for every reachable transaction. `D11` now does -- once `CRASHV` is up
+neither it nor the PC ever moves again, no write to any offset can
+forge or clear either, the flag rises only in the cycle after the core
+reported a fault, and the PC is zero exactly while the flag is down.
+All five `soc_boot` tasks PASS with it, `prove` among them, so it holds
+unbounded and not to a depth **[fact, `make -C hw/soc/formal boot`,
+2026-09-18]**. Three cover statements come with it and all three are
+reached, the second being the formal witness of the same thing the
+simulation above shows: a record still there on the far side of the
+system reset that the fault led to.
+
+The first version of D11 was refuted in seconds, and the refutation is
+worth more than the property. It said no write changes the record, full
+stop. A write and a double fault can land in the same cycle, and then
+the record does move -- not because of the write. The carve-out that
+fixes it is `!$past(crash_seen_i)`, which is `D9`'s `!prot_mismatch`
+one cycle across, and without the proof the file would have carried a
+sentence the block does not honour.
+
+**One testbench change was needed, and it is the interesting part.**
+`tb_soc.v` treated `double_fault_seen_o` as fatal for any program, and
+that is right for every program but this one, whose whole subject is a
+double fault. The choice was between failing the run that demonstrates
+the feature and never noticing a double fault in any other run. Neither
+is acceptable, so the check is now gated on an explicit
+`+allow_double_fault` plusarg -- tb_soc.v's own convention, alongside
+`+ram_random`, `+ded_word` and `+strap` -- which `sim_soc.sh`'s header
+documents and only this one build passes. The check is unchanged for
+every other program **[fact: the 22-check baseline run still reports
+`[TB] PASS` with the plusarg absent]**.
 
 ### F3 — the APB timeout, and what it costs in AMBA clauses
 
@@ -290,7 +468,11 @@ So at `APB_TIMEOUT != 0` the parameter costs exactly three AMBA
 clauses — **A5, A9 and A10** — each antecedent-guarded and each stated
 where it is deviated from. At `APB_TIMEOUT = 0`, the default, it costs
 none of them, and the synthesised netlist is **identical**: 193 cells
-and 93 flip-flops before and after **[fact]**. Three new invariants
+and 93 flip-flops before and after **[fact, yosys 0.33 with
+`sg13g2_stdcell_typ_1p20V_25C`; and re-measured on every run by
+`sw/tests/test_soc_synthesis_guards.py::test_the_apb_timeout_costs_nothing_at_its_default`,
+which is a stronger authority than a date because it fails the day the
+netlist stops being identical]**. Three new invariants
 (A12, A12a, A12b) are the price of keeping the rest inductive.
 
 ### F4 — the QSPI budget
@@ -313,7 +495,12 @@ variable so a measurement can replace it.
 **Then measured**, which is what a ceiling cannot give. OpenSTA 3.1.0
 over the sign-off netlist at the typical corner with the fragment
 sourced: the input path closes at **+9.4682 ns** and the SCK output
-path at **+16.7764 ns** **[fact, 2026-09-18]**.
+path at **+16.7764 ns** **[fact, 2026-09-18]**. Re-measured the same
+day from a script written fresh rather than reused -- same netlist,
+corner, period and tool -- the two come back **+9.4777** and
+**+16.7786**, which is 0.0095 and 0.0022 ns apart. The residual is not
+diagnosed and the SDC's header says so; what it is not is a disagreement
+worth hiding.
 
 **No synchroniser belongs on this path**, and the RTL now says why
 rather than leaving it to be reached for. `io_i` is source-synchronous:
@@ -349,24 +536,95 @@ so `eqy` refuses to combine them outright. `formal/eqy/regfile_shim.v`
 restricts the question to the sixteen ports upstream has, which is
 written out rather than hidden in a tool flag.
 
-With that, at `SCRUB = 0` and depth 16 **[fact, 2026-09-18]**:
+With that, at `SCRUB = 0` and depth 16, `eqy` forms **13 partitions**
+and proves 12 **[fact, 2026-09-18]**. That ratio is arithmetically true
+and rhetorically false, and the second pass through this section is
+what caught it.
 
-| | |
-|---|---|
-| partitions proved equivalent | **12 of 13** |
-| unresolved | `rdata_a_o` |
-| its verdict | `UNKNOWN` — *reached maximum number of time steps* |
+**What the twelve are.** `rcap_a_o`, `rcap_b_o` and their `u_rf.`
+counterparts; the four bits of `cheriot_enable_i`; `dummy_instr_id_i`,
+`dummy_instr_wb_i`, `test_en_i`, `wcap_a_i`. Every one is a tie-off, a
+constant, or the capability path, which at `CapWidth = 1` is one wire.
+They are the periphery of the question.
 
-**The one that did not close was not refuted.** It reached the bound
-and stopped, at depth 5 and again at depth 16, and an unbounded engine
-did not finish either. So the honest statement is that twelve of the
-thirteen output partitions of the substituted register file are proved
-equivalent to upstream's on the fault-free input space, and the
-thirteenth — one of the two read ports, and only one, which is itself
-worth a look — is bounded-unresolved. That is more than the corpus had
-and less than the review hoped for, and `formal/eqy/regfile_secded.eqy.in`
-is committed so the next person starts where this stopped rather than
-where it began.
+**What the one is.** `eqy` merges partitions that share a cone, and the
+thirteenth is where everything that matters ended up: reading the
+partition's own generated module shows it carries
+`__po_rdata_a_o__gold` **and** `__po_rdata_b_o__gold` together with all
+thirty-one `rf_reg_q` register outputs **[fact,
+`rf/partitions/regfile_shim.rdata_a_o.sv`]**. There is no separate
+`rdata_b_o` partition at all. So the unproved partition is not *one
+read port of two*; it is **the register array, both read ports, the
+write path, the encoder and the decoder** — the whole substance of the
+substitution, in one piece.
+
+An earlier draft of this section said the unresolved partition was
+"one of the two read ports, and only one, which is itself worth a
+look". It was worth a look, the look was taken, and the sentence was
+wrong: it read a partition NAME as if it were a partition's CONTENTS.
+That is this repository's own recurring failure shape and it is
+recorded rather than quietly deleted.
+
+**The verdicts on that one partition, both bounded and unbounded.**
+
+| strategy | engine | result |
+|---|---|---|
+| `sat` | eqy's own SAT, depth 16 | `UNKNOWN` — *reached maximum number of time steps*, 316 s |
+| `pdr` | `use sby`, `engine abc pdr`, `mode prove`, 3000 s cap | `TIMEOUT` at 3000 s — *did not return a status*, no traces |
+
+**How far `abc pdr` actually got is the sharper number.** That
+partition's generated miter has **172 outputs**. In 3000 seconds the
+engine reached **output 3**, timing out on output 1 alone fifty-nine
+times in its anytime retries before moving on **[fact,
+`rf/strategies/regfile_shim.rdata_a_o/pdr/.../logfile.txt`,
+2026-09-18]**. It is not close. Nor is more time obviously the answer:
+the same engine, on the same question with the codec ABSTRACTED AWAY,
+closes `regfile_scrub_abs.sby` unbounded in 44 seconds (`docs/63`
+section 23). Forty-four seconds against fifty minutes and 3 of 172 is
+the cost of the parity, measured twice by two different routes.
+
+**It was not refuted, and that is the whole of what can be said.** No
+counterexample was produced by either route: the bounded one reached
+its bound, the unbounded one reached its clock and produced no trace,
+and `eqy` itself warns that its method is sound for proofs and
+**incomplete for refutations**, so a non-verdict here is not evidence
+of a difference. What the exercise establishes positively is
+the periphery; what it establishes negatively is that the review's
+"much easier problem than `reg_ch0`" is easier but not easy, and the
+reason is the one `docs/63` section 23 already located — thirty-two
+encoders and two decoders of parity, which CDCL SAT cannot resolve in
+polynomial size and which no pinned engine here carries Gaussian
+elimination to shortcut. `formal/eqy/regfile_secded.eqy.in` carries
+both strategies so the next person starts where this stopped.
+
+### A defect the front door itself had, found 2026-09-18
+
+Running the MIRROR's front door -- not the development repository's --
+turned two gates red, and the second of them is worth the space here.
+
+`verify.sh --dispositions` printed
+
+```
+0 formal task directories, 0 not a fresh PASS, 0 undispositioned
+```
+
+and exited 1, with **nothing on stderr at all**. Three zeros and a red
+light. The counts were correct and had nothing to do with the verdict:
+the gate is a conjunction of five terms and the one that failed was
+`frozen`, the count of tracked files modified under `hw/rtl/`,
+`hw/tb/`, `tt/`, `formal/` and `hw/openlane/`. One regenerated file
+under `formal/` was uncommitted in the mirror, which is exactly what
+that term is for -- the verdict was right. The message was about
+something else.
+
+A red gate whose message names the wrong subject is worse than a red
+gate, because the reader debugs the thing it named. This is the same
+shape as the two synthesis guards further up, which blamed the design
+for a mapper version, and as `tb_soc.v`'s summary line, which blamed
+the register for a display: **three defects in one day, all of them a
+correct verdict wearing the wrong explanation, and none of them
+detectable by any test in this repository.** The term now prints what
+it found and what those trees are for.
 
 ### F7 and section 5 — documentation
 
@@ -421,6 +679,18 @@ simulated fault-injection campaign.
 ---
 
 *2026-09-18. Nothing was built for this document; it records eleven
-findings worked, three defects the reproduction added, two the proofs
-found in the fixes, and two places where the acceptance was not
-reached.*
+findings worked, three defects the reproduction added, three the proofs
+found in the fixes, five this document's own second reading found in
+the first, and one place where the acceptance was not reached.*
+
+*The second reading is the part worth keeping. The first pass through
+these eleven findings ended with a document that was true in every
+sentence a reader would check and wrong in two a reader would believe:
+"the whole-SoC injection is not done", when the testbench to do it had
+been in the tree the whole time, and "twelve of thirteen partitions
+proved", when the thirteenth was the question and the twelve were its
+margins. Neither was a lie and neither would have been caught by any
+test here. They were caught by going back over finished work with the
+suspicion the review arrived with, which is the only procedure in this
+repository that has ever found this class of defect, and which no
+amount of green CI substitutes for.*

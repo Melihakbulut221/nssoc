@@ -20,9 +20,12 @@ test that fails on a clean checkout is a test people delete. It checks
 the relationship between the two FILES, which is true in any checkout.
 """
 
+import json
 import pathlib
 import sys
 import re
+
+import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "docs" / "80-artefact-digests.tsv"
@@ -117,3 +120,82 @@ def test_the_any_state_theorem_and_the_campaign_agree():
         "the any-state theorem and the injection campaign disagree, "
         "which docs/09 gate F3 calls a blocker:\n" + out.stdout + out.stderr)
     assert "AGREE" in out.stdout, out.stdout
+
+
+# =====================================================================
+# docs/evidence/: the records, covered here rather than in the manifest
+# =====================================================================
+#
+# The external review's F6 acceptance asks that this file cover the
+# committed evidence. It does NOT ask that docs/80 list it, and the two
+# are different requests: that file's own header says every path in it
+# is gitignored on purpose, because its job is to pin what git cannot
+# see. docs/evidence/ is tracked, so git pins it already -- an edit is
+# a diff -- and adding it to a manifest of untracked things would be a
+# second, weaker copy of a guarantee git gives for free.
+#
+# What git does NOT give is the two properties below: that every run a
+# claim or a document names has its record, and that the record is the
+# one scripts/collect_evidence.py would write. Those are what this
+# covers.
+
+
+EVIDENCE = ROOT / "docs" / "evidence"
+COLLECTOR = ROOT / "scripts" / "collect_evidence.py"
+
+
+def _collector_runs():
+    if not COLLECTOR.is_file():
+        return {}
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("collect_evidence", COLLECTOR)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return dict(mod.RUNS)
+
+
+def test_every_run_the_collector_names_has_its_record_committed():
+    runs = _collector_runs()
+    if not runs:
+        pytest.skip("scripts/collect_evidence.py is not in this tree")
+    missing = []
+    for tag in sorted(runs):
+        for name in ("metrics.json", "resolved.json"):
+            if not (EVIDENCE / tag / name).is_file():
+                missing.append("%s/%s" % (tag, name))
+    assert not missing, (
+        "docs/evidence/ is missing %d files the collector names: %s. "
+        "Run scripts/collect_evidence.py on a machine that has the run "
+        "trees; without them the claims and tests that read these runs "
+        "go back to skipping, which is where this started."
+        % (len(missing), ", ".join(missing)))
+
+
+def test_every_committed_record_is_json_with_content():
+    if not EVIDENCE.is_dir():
+        pytest.skip("docs/evidence/ is not in this tree")
+    files = sorted(EVIDENCE.rglob("*.json"))
+    assert files, "docs/evidence/ carries no records at all"
+    for f in files:
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise AssertionError("%s is not JSON: %s"
+                                 % (f.relative_to(ROOT), exc))
+        assert isinstance(data, dict) and data, (
+            "%s is empty, so it records nothing" % f.relative_to(ROOT))
+
+
+def test_no_record_exists_for_a_run_the_collector_does_not_name():
+    """A fossil record is worse than none: it reads as evidence."""
+    runs = _collector_runs()
+    if not runs or not EVIDENCE.is_dir():
+        pytest.skip("collector or docs/evidence/ absent")
+    stray = sorted(d.name for d in EVIDENCE.iterdir()
+                   if d.is_dir() and d.name not in runs)
+    assert not stray, (
+        "docs/evidence/ carries records for runs the collector does not "
+        "name: %s. Either add them to RUNS with the document that cites "
+        "them, or delete them -- a record nothing points at is a number "
+        "with no claim behind it." % ", ".join(stray))
+

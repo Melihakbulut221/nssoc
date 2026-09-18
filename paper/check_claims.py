@@ -111,6 +111,21 @@ def dig(obj, path):
     return obj
 
 
+# A run-tree path -> its committed record, or None when there is none.
+# Two shapes only, because those are the two files collect_evidence.py
+# copies: <tree>/<tag>/final/metrics.json and <tree>/<tag>/resolved.json.
+_EVIDENCE_RE = re.compile(
+    r"^(?:hw/soc/pnr/runs|hw/openlane/[^/]+/runs|hw/soc/out)/"
+    r"([^/]+)/(?:final/(metrics\.json)|(resolved\.json))$")
+
+
+def _recorded(rel):
+    m = _EVIDENCE_RE.match(str(rel))
+    if not m:
+        return None
+    return ROOT / "docs" / "evidence" / m.group(1) / (m.group(2) or m.group(3))
+
+
 def run(cmd):
     return subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True,
                           text=True)
@@ -208,17 +223,32 @@ def check(c):
         # the strongest evidence available for a claim about how something
         # was configured: the artefact is the configuration.
         f = ROOT / c["file"]
+        recorded = False
+        if not f.is_file():
+            # THE RECORD, when the run tree is not here. docs/evidence/
+            # carries metrics.json and resolved.json for every run a
+            # document cites, put there by scripts/collect_evidence.py so
+            # that a clone can check a layout claim at all. It is a record
+            # and not a run -- it proves what the run reported, not that
+            # the run can be reproduced here -- so the detail says which
+            # answered. Everything else in the run tree is still absent
+            # and still skips.
+            alt = _recorded(c["file"])
+            if alt is not None and alt.is_file():
+                f, recorded = alt, True
         if not f.is_file():
             return "SKIP", (f"{c['file']} is build output and is not in this "
-                            "checkout")
+                            "checkout, and docs/evidence/ records only "
+                            "metrics.json and resolved.json")
         try:
             got = json.loads(f.read_text())[c["key"]]
         except KeyError:
             return "FAIL", f"key {c['key']!r} absent from {c['file']}"
         except json.JSONDecodeError as exc:
             return "FAIL", f"not JSON: {exc}"
-        return (("PASS", repr(got)) if str(got) == str(c["value"])
-                else ("FAIL", f"{got!r} != {c['value']!r}"))
+        note = " (from the recorded artefact, not a run tree)" if recorded else ""
+        return (("PASS", repr(got) + note) if str(got) == str(c["value"])
+                else ("FAIL", f"{got!r} != {c['value']!r}{note}"))
 
     if kind == "absent":
         hits = list(ROOT.glob(c["glob"]))

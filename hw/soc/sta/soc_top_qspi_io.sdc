@@ -64,6 +64,22 @@
 # above -- which is the answer the ceiling in soc_qspi.v's header could
 # not give, because a ceiling is not a budget.
 #
+# RE-MEASURED the same day, from a script written fresh rather than
+# reused, to check that the two numbers above are a property of the
+# design and not of one session: same netlist, same typical corner,
+# same 20 ns period, OpenSTA 3.1.0.
+#
+#   qspi_io_i[*] -> capture flop     slack +9.4777 ns (MET)
+#   -> qspi_sck_o                    slack +16.7786 ns (MET)
+#
+# That is +0.0095 ns and +0.0022 ns against the run above. The residual
+# is NOT diagnosed: the first script was not kept, so the two differ in
+# some detail neither number records -- most likely which of the other
+# files in this directory was sourced alongside this one. It is stated
+# rather than reconciled because 0.01 ns on 9.47 ns of margin does not
+# move any conclusion here, and because the alternative is two numbers
+# in one repository that quietly disagree.
+#
 # It does NOT change the design, and it is not yet part of a
 # place-and-route sign-off: this was a standalone OpenSTA run on the
 # netlist a completed run left behind, not a flow that built a layout

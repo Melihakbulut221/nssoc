@@ -1520,6 +1520,11 @@ hw/soc/flow/sv2v_ibex.sh hw/soc/ext/ibex hw/soc/gen \
 hw/soc/flow/sim_soc.sh                       # 22 checks, 185,443 cycles
 SW_DEFINES=-DWDOG_RESET_DEMO \
   hw/soc/flow/sim_soc.sh hw/soc/out/sim-soc-wdog
+# Both numerals above are as this document measured them; re-run
+# 2026-09-18 the same command reports 28 checks, fail mask 0, [TB] PASS.
+# A third form was added later and belongs to docs/86 finding F2:
+SOC_VVP_ARGS=+allow_double_fault SW_DEFINES=-DCRASH_DUMP_DEMO \
+  hw/soc/flow/sim_soc.sh hw/soc/out/sim-soc-crash
 
 cd hw/soc/tb/cocotb
 make -f Makefile.soc_bus

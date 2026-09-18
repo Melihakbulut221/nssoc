@@ -95,39 +95,45 @@ IN_MIRROR = _is_generated_mirror()
 @pytest.mark.skipif(IN_MIRROR, reason="this tree IS the generated mirror, where "
                                       "the fragment is redacted by construction; "
                                       "the mirror's own claim is the next test")
-@pytest.mark.parametrize("entry", FRAGMENTS, ids=lambda e: e[0])
-def test_the_source_still_carries_the_fragment_and_not_the_marker(entry):
-    """Upstream: the pattern matches once and the redaction is absent."""
-    rel, pattern, _replacement, marker, _why = entry
-    src = ROOT / rel
-    if not src.exists():
-        pytest.skip("%s is not in this tree" % rel)
-    text = src.read_text(encoding="utf-8")
-    n = len(re.findall(pattern, text, flags=re.S))
-    assert n == 1, (
-        "%s: the held fragment matches %d times, not once. Either the "
-        "fragment was reworded -- in which case the generator is right "
-        "to fail and this pattern needs updating -- or a second copy of "
-        "it has appeared." % (rel, n))
-    assert marker not in text, (
-        "%s carries the REDACTION marker upstream. The marker is what "
-        "licenses a zero-match, so a source file containing it would "
-        "let a live fragment through as 'already redacted'." % rel)
+def test_the_source_still_carries_the_fragment_and_not_the_marker():
+    """Upstream: the pattern matches once and the redaction is absent.
+
+    ONE test over every fragment and not one per fragment. The
+    parametrised version reads better upstream and becomes three
+    identical skips in the mirror, where the whole file is
+    inapplicable by construction; this repository's rule is that a skip
+    carries a reason worth reading, and the same reason three times is
+    one reason. Every fragment is still named on failure.
+    """
+    for rel, pattern, _replacement, marker, _why in FRAGMENTS:
+        src = ROOT / rel
+        if not src.exists():
+            continue
+        text = src.read_text(encoding="utf-8")
+        n = len(re.findall(pattern, text, flags=re.S))
+        assert n == 1, (
+            "%s: the held fragment matches %d times, not once. Either the "
+            "fragment was reworded -- in which case the generator is right "
+            "to fail and this pattern needs updating -- or a second copy of "
+            "it has appeared." % (rel, n))
+        assert marker not in text, (
+            "%s carries the REDACTION marker upstream. The marker is what "
+            "licenses a zero-match, so a source file containing it would "
+            "let a live fragment through as 'already redacted'." % rel)
 
 
 @pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
-@pytest.mark.parametrize("entry", FRAGMENTS, ids=lambda e: e[0])
-def test_this_mirror_is_redacted(entry):
+def test_this_mirror_is_redacted():
     """In the mirror the redaction is already present. That IS the claim."""
     if not IN_MIRROR:
         pytest.skip("this tree is the upstream repository, not the mirror")
-    rel, _pattern, _replacement, marker, _why = entry
-    src = ROOT / rel
-    if not src.exists():
-        pytest.skip("%s is not in this tree" % rel)
-    assert marker in src.read_text(encoding="utf-8"), (
-        "%s is in a generated mirror and does not carry the redaction "
-        "marker: the held fragment may have travelled." % rel)
+    for rel, _pattern, _replacement, marker, _why in FRAGMENTS:
+        src = ROOT / rel
+        if not src.exists():
+            continue
+        assert marker in src.read_text(encoding="utf-8"), (
+            "%s is in a generated mirror and does not carry the redaction "
+            "marker: the held fragment may have travelled." % rel)
 
 
 @pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
@@ -180,8 +186,7 @@ def test_the_generated_tree_is_redacted_and_regenerates_unchanged(tmp_path):
 @pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
 @pytest.mark.skipif(IN_MIRROR, reason="the fragment is already redacted here, so "
                                       "there is nothing left to reword")
-@pytest.mark.parametrize("entry", FRAGMENTS, ids=lambda e: e[0])
-def test_a_reworded_fragment_is_not_mistaken_for_a_redacted_one(entry):
+def test_a_reworded_fragment_is_not_mistaken_for_a_redacted_one():
     """The guarantee: reworded upstream is NOT the same as already redacted.
 
     This is the row the fix could have got wrong. It exercises the
@@ -189,18 +194,17 @@ def test_a_reworded_fragment_is_not_mistaken_for_a_redacted_one(entry):
     because building a tree whose ROADMAP has been tampered with would
     mean writing a tampered tree to disk.
     """
-    rel, pattern, _replacement, marker, _why = entry
-    src = ROOT / rel
-    if not src.exists():
-        pytest.skip("%s is not in this tree" % rel)
-    text = src.read_text(encoding="utf-8")
+    for rel, pattern, _replacement, marker, _why in FRAGMENTS:
+        src = ROOT / rel
+        if not src.exists():
+            continue
+        text = src.read_text(encoding="utf-8")
 
-    # Reword it: the fragment is gone, but nothing redacted it.
-    reworded = re.sub(pattern, "SOMETHING ELSE ENTIRELY", text, flags=re.S)
-    assert reworded != text, "the rewording did not take"
-    n = len(re.findall(pattern, reworded, flags=re.S))
-    assert n == 0
-    assert marker not in reworded, (
-        "a reworded %s must not contain the redaction marker, or the "
-        "generator would treat it as already redacted and ship it" % rel)
+        # Reword it: the fragment is gone, but nothing redacted it.
+        reworded = re.sub(pattern, "SOMETHING ELSE ENTIRELY", text, flags=re.S)
+        assert reworded != text, "%s: the rewording did not take" % rel
+        assert len(re.findall(pattern, reworded, flags=re.S)) == 0
+        assert marker not in reworded, (
+            "a reworded %s must not contain the redaction marker, or the "
+            "generator would treat it as already redacted and ship it" % rel)
     # n == 0 and marker absent is exactly the branch that raises.

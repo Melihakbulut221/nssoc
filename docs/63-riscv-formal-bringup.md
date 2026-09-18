@@ -2017,6 +2017,41 @@ property that would, and `reg_ch0` still has no verdict on either core:
 section 17.2's seven-engine sweep stands as measured, and repeating it
 costs 28 hours for the same absence.
 
+**The third route, taken and reported: equivalence.** The review that
+prompted this section ranked equivalence strongest of its three options
+-- prove `ibex_regfile_secded` equivalent to upstream's
+`ibex_register_file_ff` on the fault-free input space, using the `eqy`
+machinery `formal/eqy/` already has, which is "a much easier problem
+than `reg_ch0`". It was taken. Two obstacles first, and both are
+results in their own right. The gold side lives in `hw/soc/gen/`,
+gitignored vendored Ibex, so the job cannot run where most of this
+suite runs. And the two modules are **not interface-identical**: the
+substituted file adds `rf_ecc_err_o`, so `eqy` refuses to combine them
+at all. `formal/eqy/regfile_shim.v` restricts the question to the
+sixteen ports upstream has, written out rather than hidden in a flag.
+
+What came back is worth reading carefully, because the headline number
+misleads. `eqy` forms thirteen partitions and proves twelve. The twelve
+are the capability ports, the four `cheriot_enable_i` bits and the
+tie-offs -- the periphery. The thirteenth is where `eqy`'s cone merge
+put everything else: **both read data ports and all thirty-one
+registers in one partition**, which is the entire substance of the
+substitution, and it did not close. Bounded SAT at depth 16 returned
+`UNKNOWN` at its bound in 316 s. The unbounded route -- `abc pdr` under
+a second `eqy` strategy, the engine that closed
+`regfile_scrub_abs.sby` in 44 seconds one paragraph above -- returned
+**`TIMEOUT` at 3000 s having reached output 3 of that partition's 172**
+**[fact, 2026-09-18]**. Forty-four seconds with the codec abstracted,
+fifty minutes and 3 of 172 with it present: the same wall, measured
+from the other side. `docs/86` finding F8 carries the detail.
+
+Neither route produced a counterexample, and `eqy`'s own method is
+sound for proofs and incomplete for refutations, so nothing here is
+evidence of a difference. The reason it stalls is the reason section 23
+already located one paragraph up: parity trees, not the property. So
+the equivalence route confirms section 23's diagnosis rather than
+getting past it, and `regfile_scrub_abs.sby` remains the result.
+
 **And two smaller exclusions, restated so the section is self-contained.**
 The abstraction replaces the codec, so nothing depending on the code's
 distance is covered -- R4 under an injected upset is not claimed, as

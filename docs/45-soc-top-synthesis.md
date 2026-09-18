@@ -430,7 +430,11 @@ exactly; `docs/40` section 9 now says the same beside its own row.
 **Read that as a bound and not as a saving.** Flattening does give the
 optimiser opportunities the hierarchical builds denied it — the constant
 `cheriot_enable_i`, the unconnected `crash_dump_o` and shadow ports, the
-tied-off scramble interface — and section 6.3 measures one of those
+tied-off scramble interface [as of 2026-09-18 `crash_dump_o` is no
+longer wholly unconnected: bits 159:128, the faulting PC, now reach
+`soc_boot`'s crash register, docs/86 F2. The runs in this section
+predate that and are left as they were measured; the other 128 bits are
+still unconnected, so the direction of the argument is unchanged] — and section 6.3 measures one of those
 directly. But 1.1 % is the same order as the *noise* section 4.3 just
 measured on a block nobody touched, so **the honest statement is that
 the parts compose to within about one and a half per cent and that this

@@ -37,3 +37,16 @@ bind *
 [strategy sat]
 use sat
 depth 16
+
+# A second strategy, unbounded. The first reaches its bound on the one
+# partition that matters and returns UNKNOWN; this hands the same
+# partition to SymbiYosys with `abc pdr`, the engine that closed
+# regfile_scrub_abs.sby in 44 seconds when the codec was abstracted
+# away. eqy runs strategies in order and stops at the first that
+# proves, so the cheap twelve still close under `sat` and only the
+# thirteenth reaches this one. docs/86 F8 records what each returned.
+[strategy pdr]
+use sby
+engine abc pdr
+depth 16
+timeout 3000

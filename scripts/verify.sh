@@ -379,6 +379,23 @@ line=$(printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' \
 if [ "$SKIP_SUITES" = 1 ]; then
     printf '%d formal task directories, %d not a fresh PASS, %d undispositioned\n' \
         "$fm_dirs" "$fm_other" "$fm_undisp"
+    # SAY WHY WHEN IT IS NOT THE FORMAL COUNT. The gate below is a
+    # conjunction and `frozen` is one of its terms, so this mode could
+    # exit 1 having printed three zeros and nothing else -- which is
+    # what it did in the generated mirror on 2026-09-18, where one
+    # regenerated file under formal/ was uncommitted. The counts were
+    # right, the verdict was right, and the only thing on the screen
+    # was the count that had nothing to do with it. A red gate whose
+    # message names the wrong subject is worse than a red gate.
+    if [ "$frozen" != "0" ]; then
+        printf 'verify.sh: %d tracked file(s) under the watched trees are modified,\n' \
+            "$frozen" >&2
+        printf 'which fails this gate on its own, independently of the counts above:\n' >&2
+        git status --short hw/rtl/ hw/tb/ tt/ formal/ hw/openlane/ \
+            | grep -v '^??' >&2
+        printf 'hw/rtl/ and tt/ are frozen by docs/34; the others are watched\n' >&2
+        printf 'because a proof or a flow edited in place is a proof of nothing.\n' >&2
+    fi
 elif [ "$MODE" = "--check" ]; then
     printf 'now:  %s\n' "$line"
     [ -f "$REC" ] && printf 'last: %s\n' "$(tail -1 "$REC")"

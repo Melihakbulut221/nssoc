@@ -423,6 +423,18 @@ slave.
 **[measured, `regmap/memmap.yaml` `apb_slots`, cross-checked against
 its generated form `docs/memmap-soc.md` section 3]**
 
+*Superseded 2026-09-18, and the row above is left as it was measured.*
+Four of those eleven have been built since: **BOOTREG, GPIO, QSPICTL
+and SCRUB**. Re-measured against the same file, the split is now
+**9 implemented and 7 reserved** — implemented: APBPNP, BOOTREG,
+BUSSTAT, GPIO, NPUCFG, QSPICTL, SCRUB, TIMER0, UART0; reserved: CAN,
+CLKGATE, I2C, SPI, SPW, TIMER1, UART1 **[measured, the `status:` field
+of every `apb_slots` entry in `regmap/memmap.yaml`]**. The total of
+sixteen has not moved. This was found while adding BOOTREG's crash
+register below and is a drift in a cited measurement, not a design
+change: the blocks were built in the documents that built them, and
+this table was not re-read.
+
 The same holds one level up: of the ten system-bus regions, **four are
 reserved** — both QSPI execute-in-place windows, the PLIC region and
 the RISC-V debug module. There is no debug module. There is no JTAG.
@@ -1158,6 +1170,38 @@ generated, and the files are their own normative statements:
 
 Section 5.4. Three registers at the standard RISC-V offsets; every
 other offset in the window faults.
+
+### 8.5 BOOTREG (added 2026-09-18)
+
+`hw/soc/rtl/soc_boot.v` is the normative statement and
+`hw/soc/tb/sw/soc_boot.h` is the C view of it. The block is in the
+POWER-ON reset domain, which is the whole point of it: every word here
+survives the system reset the watchdog generates, and none of them
+survives power-on.
+
+| offset | name | access | what it holds |
+|---|---|---|---|
+| `0x000` | `BSTRAP` | r | the sampled bootstrap pins, plus the block's own description of itself in the high half |
+| `0x004` | `BSTAT` | r | the boot counter, the limit, the last/over flags, the watchdog-replica report, and CRASHV |
+| `0x008` | `BRPT` | rw | the loader's report; evidence, never authority |
+| `0x00C` | `EPOCH` | rw | the epoch word |
+| `0x010` | `CRASH` | r | the faulting PC of the **first** double fault since power-on |
+
+`CRASH` is `crash_dump_o[159:128]` from the core — the instruction
+address in ID at the moment of the fault. It is latched once: first
+fault and not last, because a fault the watchdog resets is likely to
+recur for the same reason. It is not clearable and a write does
+nothing.
+
+**Read `BSTAT` bit 10, `CRASHV`, before reading `CRASH`.** A zero PC
+and nothing having faulted are otherwise the same word.
+
+Whether the record survives the reset the fault causes is not argued
+here, it is run: `SOC_VVP_ARGS=+allow_double_fault
+SW_DEFINES=-DCRASH_DUMP_DEMO hw/soc/flow/sim_soc.sh` faults the real
+core on the real fabric, and the boot after the watchdog reset reads
+back the exact `mtvec` the boot before it set **[fact, 2026-09-18;
+`docs/86` finding F2 carries the transcript]**.
 
 ---
 

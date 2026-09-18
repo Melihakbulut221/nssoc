@@ -26,6 +26,7 @@
 #define BOOT_BSTAT  (SOC_BOOTREG_BASE + 0x04u)  /* r   the boot counter  */
 #define BOOT_BRPT   (SOC_BOOTREG_BASE + 0x08u)  /* rw  the boot report   */
 #define BOOT_EPOCH  (SOC_BOOTREG_BASE + 0x0Cu)  /* rw  the epoch word    */
+#define BOOT_CRASH  (SOC_BOOTREG_BASE + 0x10u)  /* r   the faulting PC   */
 
 /* BSTRAP. The low sixteen bits are the pins; the high half is the
  * block's own description of itself. */
@@ -35,6 +36,16 @@
 #define BOOT_STRAP_WDOGDIS  (1u << 16)          /* the watchdog's pin    */
 #define BOOT_STRAP_NSTRAP(v) (((v) >> 24) & 0xFu)
 #define BOOT_STRAP_VALID    (1u << 31)
+
+/* CRASH and its validity flag, added 2026-09-18. The word is the
+ * faulting PC of the FIRST double fault since power-on -- Ibex's
+ * crash_dump_o[159:128], the instruction address in ID at the moment
+ * of the fault -- latched in the power-on domain beside BRPT and
+ * EPOCH, so it is readable after the watchdog reset the fault leads
+ * to. A loader must read BOOT_BSTAT_CRASHV first: a zero PC and
+ * nothing having faulted are otherwise the same word. Neither is
+ * clearable, and a write to BOOT_CRASH does nothing. */
+#define BOOT_BSTAT_CRASHV   (1u << 10)
 
 /* BSTAT. CNT is the number of boots since power-on NOT COUNTING THIS
  * ONE, so the power-on boot reads zero; LIMIT is a constant of the

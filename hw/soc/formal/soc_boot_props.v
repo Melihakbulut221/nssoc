@@ -42,6 +42,20 @@
 //   D8  BSTAT's two derived flags are exactly the comparisons a loader
 //       would otherwise write down a second time.
 //
+// docs/86 finding F2 adds one, about the state that finding added:
+//
+//   D11 THE CRASH RECORD IS FIRST-FAULT AND NOT LAST, AND SOFTWARE
+//       CANNOT TOUCH IT. Once CRASHV is set, neither it nor the PC
+//       beside it ever changes again while power is on -- not on a
+//       later double fault, not on a system reset, and not on any APB
+//       write to any offset. And the two agree: the PC is non-trivial
+//       exactly when the flag says it is, so a loader that reads the
+//       flag first is reading a word that was actually latched. It is
+//       D1's and D9's shape applied to the state F2 added, and it is
+//       stated because the whole value of a crash record is that it
+//       survived something, which is a claim about every reachable
+//       transaction and every reachable reset.
+//
 // docs/69 adds two, both about B1:
 //
 //   D9  THE REPORT IS A RECORD AND NOT A REGISTER. No APB write of any
@@ -232,6 +246,49 @@
   endgenerate
 
   // ---- vacuity -----------------------------------------------------
+  // ---- D11. The crash record, added 2026-09-18 ---------------------
+  // Written over `wr` and not over a particular offset, D1's shape, so
+  // it holds for every offset the decode has and every offset it does
+  // not. rst_ni is free in this job, so "a system reset does not touch
+  // it" is not an extra assumption here -- it is what the absence of
+  // rst_ni from these assertions means.
+  always @(posedge clk_i)
+    if (f_past_valid && $past(rst_por_ni) && rst_por_ni) begin
+      // FIRST fault and not last: once the flag is up, nothing moves.
+      if ($past(crash_valid_q)) begin
+        assert (crash_valid_q);
+        assert (crash_q == $past(crash_q));
+      end
+      // No write of any value to any offset can forge or clear either.
+      //
+      // The `!$past(crash_seen_i)` carve-out is D9's `!prot_mismatch`
+      // one cycle across, and the proof is what put it there: the first
+      // version of this assertion had no carve-out and bmc refuted it
+      // immediately, because a write and a double fault can land in the
+      // same cycle and then the record DOES move. The write is not why.
+      // Writing it without the carve-out would have claimed something
+      // the block does not do, and the carve-out is exactly the set of
+      // cycles in which something other than a write is the cause.
+      if ($past(wr) && !$past(crash_seen_i)) begin
+        assert (crash_valid_q == $past(crash_valid_q));
+        assert (crash_q       == $past(crash_q));
+      end
+      // The flag rises only in the cycle after the core reported one.
+      if (!$past(crash_valid_q) && crash_valid_q) begin
+        assert ($past(crash_seen_i));
+        assert (crash_q == $past(crash_pc_i));
+      end
+      // And it does not rise without one.
+      if (!$past(crash_valid_q) && !$past(crash_seen_i))
+        assert (!crash_valid_q);
+    end
+
+  // The flag and the word are one fact, not two: the PC is only ever
+  // non-reset when the flag that qualifies it is set. This is what
+  // makes "read CRASHV first" sound advice rather than a convention.
+  always @(*)
+    if (rst_por_ni && !crash_valid_q) assert (crash_q == 32'h0);
+
   always @(posedge clk_i) begin
     // The straps get sampled at all, and to something non-zero.
     cover (f_past_valid && rst_por_ni && valid_q && strap_q != {NSTRAP{1'b0}});
@@ -245,6 +302,15 @@
     cover (f_past_valid && rst_por_ni && !rst_ni && brpt_q != 32'h0);
     cover (f_past_valid && rst_por_ni && rst_ni && $past(!rst_ni)
            && brpt_q != 32'h0 && epoch_q != 32'h0);
+    // D11's witnesses: a fault recorded at all, and -- the point of the
+    // whole register -- a fault still recorded on the far side of the
+    // system reset it led to.
+    cover (f_past_valid && rst_por_ni && crash_valid_q && crash_q != 32'h0);
+    cover (f_past_valid && rst_por_ni && rst_ni && $past(!rst_ni)
+           && crash_valid_q && crash_q != 32'h0);
+    // A second double fault that did NOT overwrite the first.
+    cover (f_past_valid && rst_por_ni && crash_valid_q && crash_seen_i
+           && crash_q != crash_pc_i);
     // And a write that was refused: the counter is non-zero and a write
     // to its own offset happened in the same cycle.
     cover (f_past_valid && rst_por_ni && $past(wr)

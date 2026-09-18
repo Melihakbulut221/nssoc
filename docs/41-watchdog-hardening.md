@@ -1005,11 +1005,20 @@ flip-flop count being impossible rather than by the area looking wrong.
 
 ## 13. Reproducing this
 
+The first line's two numerals are what this document measured and are
+left as measured. Re-run **2026-09-18**: the same command reports **28
+checks, fail mask 0**, `[TB] PASS`. The check count grew because later
+documents added checks to the same testbench; nothing here regressed.
+
 ```
 # behaviour is unchanged
 hw/soc/flow/sim_soc.sh                          # 22 checks, 185,443 cycles
 SW_DEFINES=-DWDOG_RESET_DEMO \
   hw/soc/flow/sim_soc.sh hw/soc/out/sim-soc-wdog   # the escalation ladder
+
+# Added later, and it uses this block's stage-2 reset as its mechanism:
+SOC_VVP_ARGS=+allow_double_fault SW_DEFINES=-DCRASH_DUMP_DEMO \
+  hw/soc/flow/sim_soc.sh hw/soc/out/sim-soc-crash  # the crash record
 
 cd hw/soc/tb/cocotb
 make -f Makefile.soc_bus

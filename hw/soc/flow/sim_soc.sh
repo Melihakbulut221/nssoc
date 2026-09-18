@@ -12,6 +12,20 @@
 # escalation ladder, three boots of the SoC in one simulation. See
 # wdog_demo() in hw/soc/tb/sw/test_ibex.c.
 #
+#   SOC_VVP_ARGS=+allow_double_fault SW_DEFINES=-DCRASH_DUMP_DEMO \
+#     sim_soc.sh out/sim-soc-crash
+#
+# The third form is the crash-record demonstration added 2026-09-18. The
+# program arms the watchdog, sets mtvec to an unmapped address and then
+# executes an illegal instruction, so the trap itself traps: a double
+# fault, which BOOTREG latches in the power-on domain. The watchdog then
+# reboots the SoC and the second boot reads the faulting PC back out of
+# BOOT_CRASH. It is the only program here whose SUBJECT is a double
+# fault, which is why it is also the only one that needs
+# +allow_double_fault -- tb_soc.v treats double_fault_seen_o as fatal
+# for every other program, and should. See crash_demo() in the same
+# file, and docs/86 finding F2.
+#
 # Sources: hw/soc/rtl/soc_*.v (this project's), hw/soc/gen/*.v (the
 # sv2v-converted Ibex, exactly as sim_ibex.sh reads it) and
 # hw/soc/tb/tb_soc.v. The RTL read here is the sv2v output, not the

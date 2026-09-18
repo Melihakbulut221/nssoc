@@ -212,6 +212,42 @@ YOSYS = _find_yosys()
 needs_yosys = pytest.mark.skipif(YOSYS is None, reason="yosys not available")
 
 
+def _yosys_version():
+    """The mapper's version, because every count below is a property of it."""
+    if YOSYS is None:
+        return None
+    try:
+        out = subprocess.run([YOSYS, "-V"], capture_output=True, text=True,
+                             timeout=60).stdout.strip()
+    except Exception:
+        return None
+    return out.splitlines()[0] if out else None
+
+
+YOSYS_VERSION = _yosys_version()
+PINNED_YOSYS = "Yosys 0.33"
+
+# Every cell count and flip-flop count in this file was measured with the
+# version named above, and a mapper is free to map the same RTL to a
+# different number of cells without anything in the design having moved.
+# Checked 2026-09-18: the same suite that is 69 passed / 2 skipped under
+# Yosys 0.33 is 67 passed / 2 failed under Yosys 0.67+94, and the two
+# failures read as design regressions ("the encoder was optimised away",
+# "94 flip-flops and the measurement is 93") when nothing in the design
+# changed. The tests still RUN on any version -- pinning them to one
+# would turn a real regression into a skip for everyone else -- but a
+# count that disagrees now says which mapper produced it first.
+if YOSYS_VERSION and not YOSYS_VERSION.startswith(PINNED_YOSYS):
+    MAPPER_NOTE = (
+        "\n\nBEFORE READING THIS AS A DESIGN CHANGE: this yosys is %s and "
+        "every count in this file was measured with %s. A different mapper "
+        "maps the same RTL to different numbers. Re-run with %s before "
+        "concluding anything about the design."
+        % (YOSYS_VERSION, PINNED_YOSYS, PINNED_YOSYS))
+else:
+    MAPPER_NOTE = ""
+
+
 def _sg13g2_liberty():
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib")
@@ -2587,10 +2623,10 @@ def test_the_codec_is_in_the_mapped_netlist_and_not_only_in_the_rtl(workdir):
     text = (Path(workdir) / "census.json").read_text()
     assert "u_mtime_enc" in text, (
         "no cell in the mapped netlist lies under u_mtime_enc: the "
-        "encoder was optimised away")
+        "encoder was optimised away" + MAPPER_NOTE)
     assert "u_mtime_dec" in text, (
         "no cell in the mapped netlist lies under u_mtime_dec: the "
-        "decoder was optimised away")
+        "decoder was optimised away" + MAPPER_NOTE)
 
 
 @needs_yosys
@@ -3401,3 +3437,79 @@ def _tracked_pnr_configs():
         return on_disk           # not a git tree; see the docstring
     names = {pathlib.PurePosixPath(t).name for t in out}
     return names if names else on_disk
+
+
+# =====================================================================
+# soc_apb_bridge: APB_TIMEOUT = 0 must cost nothing at all
+# =====================================================================
+#
+# The external review's F3 acceptance names a flip-flop count "from
+# sw/tests/test_soc_synthesis_guards.py" and this file did not have
+# one for the bridge -- it named the module only in two lists. So the
+# acceptance pointed at a number that did not exist, and the fix is to
+# make it exist rather than to claim it.
+#
+# WHAT IT GUARDS. APB_TIMEOUT was added so that a slave which never
+# asserts PREADY produces a bus error instead of a stall only the
+# watchdog ends. It defaults to 0, and the whole argument for merging
+# it at all is that at 0 the module is the module it was: every
+# existing netlist, every measurement and every proof stay
+# reproducible. That argument is worth exactly as much as a check on
+# it, and until this test there was none.
+
+
+def _apb_script(chparam=""):
+    lib = _sg13g2_liberty()
+    script = "read_verilog -I {} {};".format(
+        SOC_RTL, SOC_RTL / "soc_apb_bridge.v")
+    script += " hierarchy -top soc_apb_bridge;"
+    if chparam:
+        script += " " + chparam
+    script += " synth -top soc_apb_bridge -flatten;"
+    if lib is not None:
+        script += " dfflibmap -liberty {0}; abc -liberty {0};".format(lib)
+    script += " opt_clean;"
+    return script
+
+
+# Measured 2026-09-18 at yosys 0.33 with sg13g2_stdcell_typ_1p20V_25C,
+# on the module BEFORE APB_TIMEOUT existed and on the module after, and
+# the two agree. A literal is right here and not in README's pytest
+# paragraph, because this number is a property of the source and does
+# not move with build output.
+APB_BRIDGE_FF_AT_DEFAULT = 93
+
+
+@needs_yosys
+def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
+    """APB_TIMEOUT = 0 is the shipping netlist, unchanged."""
+    census = _census(_apb_script(), workdir)
+    assert census.total == APB_BRIDGE_FF_AT_DEFAULT, (
+        "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 0 and the "
+        "measurement taken when the parameter was added is {}. Either the "
+        "timeout arm is no longer fully optimised away at the default -- "
+        "in which case every netlist and measurement this repository "
+        "quotes has moved and the merge argument for the parameter is "
+        "gone -- or something else changed the bridge and this number "
+        "needs re-taking with a date."
+        .format(census.total, APB_BRIDGE_FF_AT_DEFAULT) + MAPPER_NOTE)
+
+
+@needs_yosys
+def test_the_apb_timeout_does_cost_something_when_it_is_on(workdir):
+    """The other half, and the one that makes the first mean anything.
+
+    A test that only asserted the default would stay green if the
+    parameter did nothing at all -- which is the vacuity failure
+    `docs/09` warns about, and the reason this repository writes
+    negative controls beside its guards.
+    """
+    on = _census(_apb_script("chparam -set APB_TIMEOUT 8 soc_apb_bridge;"),
+                 workdir)
+    assert on.total > APB_BRIDGE_FF_AT_DEFAULT, (
+        "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 8, which is "
+        "not more than the {} it maps to at 0. The counter and its sticky "
+        "flag are not being built, so the parameter is inert and the "
+        "timeout it is supposed to arm does not exist."
+        .format(on.total, APB_BRIDGE_FF_AT_DEFAULT))
+

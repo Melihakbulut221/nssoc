@@ -35,7 +35,9 @@ silently edited metric fails a test rather than travelling.
 | `npu2` | `hw/soc/pnr/runs` | the accelerator's own layout |
 | `s71boot` | `hw/soc/pnr/runs` | the boot-hardened six-macro layout |
 | `s77gate` | `hw/soc/pnr/runs` | the gate-level clock-gating run |
+| `s81drv` | `hw/soc/pnr/runs` | the design-rule-violation arm of the same study |
 | `s81ptd` | `hw/soc/pnr/runs` | the power and timing-derate study |
+| `s81timing` | `hw/soc/pnr/runs` | the timing-repair arm of the same study |
 | `s83ant` | `hw/soc/pnr/runs` | the antenna-repair variant of the sign-off |
 | `s83lvsbb2` | `hw/soc/pnr/runs` | the LVS run with the vendor macros black-boxed |
 | `s83romecc5` | `hw/soc/pnr/runs` | the eight-macro sign-off layout |

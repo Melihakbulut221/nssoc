@@ -75,6 +75,7 @@
 #include "soc_npucfg.h"
 #include "soc_gpio.h"
 #include "soc_qspi.h"
+#include "soc_boot.h"
 /* Both generated into the build directory by
    hw/soc/flow/gen_npu_vectors.py, which build_sw_soc.sh runs first:
    npu_regs.h is the node register map from regmap/regmap.yaml, and
@@ -663,6 +664,81 @@ static int wdog_demo(void) {
 }
 #endif
 
+#if defined(SOC_PLATFORM) && defined(CRASH_DUMP_DEMO)
+/* The crash record, end to end on the real SoC.
+ *
+ * `docs/86` F2: soc_top left Ibex's crash_dump_o unconnected, so the
+ * design exported the FACT of a double fault to a pin and dropped the
+ * evidence. BOOTREG now keeps the faulting PC at 0x010, in the
+ * power-on domain, because the reset a double fault leads to is the
+ * watchdog's and a record in the system domain would be erased by the
+ * very event it records.
+ *
+ * TWO BOOTS OF ONE IMAGE, the same shape wdog_demo() uses and for the
+ * same reason: what carries information between them cannot be RAM,
+ * because crt0.S zeroes .bss on every boot.
+ *
+ *   boot 1  CRASHV clear: arm the watchdog, point mtvec at an address
+ *           no slave answers, and take a trap. The handler fetch
+ *           faults while the first fault is still being taken, which
+ *           is a double fault; the core stops making progress and the
+ *           watchdog's stage-2 reset ends the boot.
+ *   boot 2  CRASHV set: read the PC back and report it.
+ *
+ * WHAT IT PROVES, precisely: that a double fault taken by the real
+ * core, through the real fabric, leaves a PC in a register that the
+ * reset does not erase. It does NOT check which PC -- the address
+ * depends on where the linker put the trap path -- so it checks the
+ * properties that must hold whatever it is: the flag says valid, the
+ * word is inside the program's address space, and it is not zero.
+ */
+static int crash_demo(void) {
+  uint32_t st = *(volatile uint32_t *)BOOT_BSTAT;
+  uint32_t pc = *(volatile uint32_t *)BOOT_CRASH;
+
+  puts_("crash demo: boot with BSTAT "); puthex(st); putc_('\n');
+
+  if (st & BOOT_BSTAT_CRASHV) {
+    uint32_t bad = 0;
+    puts_("crash demo: faulting PC "); puthex(pc); putc_('\n');
+    if (pc == 0u)            bad |= 1u;   /* a PC of zero is no PC */
+    if (pc < 0x00100000u)    bad |= 2u;   /* below the boot ROM */
+    /* And it must survive being written to, which is BSTAT's rule
+       applied to the same kind of record. */
+    *(volatile uint32_t *)BOOT_CRASH = 0xDEADBEEFu;
+    if (*(volatile uint32_t *)BOOT_CRASH != pc) bad |= 4u;
+    if (bad) {
+      puts_("crash demo: FAIL mask "); puthex(bad); putc_('\n');
+      puts_("RESULT FAIL\n");
+      return (int)(0xC0000000u | bad);
+    }
+    puts_("crash demo: the record survived the reset the fault caused\n");
+    puts_("RESULT PASS\n");
+    return 0;
+  }
+
+  /* First boot. Nothing may claim a crash on a part that has not
+     crashed -- the same check wdog_demo() makes of WDOGSTAT. */
+  if (pc != 0u) {
+    puts_("crash demo: CRASH is non-zero with CRASHV clear\n");
+    puts_("RESULT FAIL\n");
+    return (int)0xC0000010u;
+  }
+
+  puts_("crash demo: arming, then double-faulting\n");
+  *(volatile uint32_t *)WDOG_RLD  = WDOG_W(400u);
+  *(volatile uint32_t *)WDOG_CTRL = WDOG_W(GPT_LD);
+
+  /* mtvec at an address inside the peripheral window that no slot
+     decodes: the bridge completes it with an error rather than
+     stalling (soc_top's pready mux), so the trap handler's FETCH
+     faults while the first trap is still being taken. */
+  __asm__ volatile("csrw mtvec, %0" :: "r"(0xFF9FE000u));
+  __asm__ volatile(".word 0x00000000");   /* an illegal instruction */
+  for (;;) { }          /* whichever ends it, the watchdog is behind it */
+}
+#endif
+
 int main(void) {
 #ifdef SOC_PLATFORM
   // Nothing can be reported before this: the console is a peripheral on
@@ -673,6 +749,9 @@ int main(void) {
 #endif
 #if defined(SOC_PLATFORM) && defined(WDOG_RESET_DEMO)
   return wdog_demo();
+#endif
+#if defined(SOC_PLATFORM) && defined(CRASH_DUMP_DEMO)
+  return crash_demo();
 #endif
 
   puts_("ibex bring-up self-test\n");
