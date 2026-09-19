@@ -42,6 +42,7 @@ import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 KEY = "TIME_DERATING_CONSTRAINT"
+EVIDENCE = ROOT / "docs" / "evidence"
 
 
 def _tracked_configs():
@@ -55,12 +56,17 @@ def _tracked_configs():
         out = subprocess.run(["git", "ls-files", "*config*.json"], cwd=ROOT,
                              check=True, capture_output=True,
                              text=True).stdout
-        paths = [ROOT / p for p in out.split("\n") if p.strip()]
+        # Historical evidence is a byte-for-byte record of what the tool
+        # wrote, including its integer-demotion defect. It is NOT an input
+        # configuration to fix. The next test independently checks that fact.
+        paths = [ROOT / p for p in out.split("\n") if p.strip()
+                 and not (ROOT / p).is_relative_to(EVIDENCE)]
         if paths:
             return paths
     except (OSError, subprocess.CalledProcessError):
         pass
-    return sorted(ROOT.glob("**/*config*.json"))
+    return sorted(p for p in ROOT.glob("**/*config*.json")
+                  if not p.is_relative_to(EVIDENCE))
 
 
 def _carrying_the_key(paths):

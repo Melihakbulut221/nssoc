@@ -189,3 +189,17 @@ tools and cannot honestly be relabelled as tool skips.
 
 The Ethernet SRAM mapping was subsequently replaced after measured 125 MHz
 failure; docs/90 records the comparison and the new 24-macro physical profile.
+
+The full RTL run passed **479 tests**, with zero failures and 15 explicit
+skips. Core and NPU fault-injection builds also elaborate with the Ethernet
+sources; these are compilation checks, not new fault campaigns. All three
+GitHub jobs at `abc0791` completed successfully. Logs, digests, scopes and CI
+results are retained in [the verification record](evidence/verification-20260919.json).
+
+**Clean-clone correction after 895d6ca:** the added historical `postcts-config`
+snapshot was picked up by the editable-input float guard after it became
+tracked. That fresh run recorded **610 passed, 1 failed, 34 skipped**; its
+front-door row is retained, including the failure. The snapshot really must
+keep the integer the tool wrote. The input guard now excludes only
+`docs/evidence/`, while the separate step-record test continues to check the
+integer and compare the live bytes. Active P&R inputs still require a float.

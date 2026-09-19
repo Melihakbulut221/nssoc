@@ -1,0 +1,431 @@
+{
+  "date": "2026-09-19",
+  "scope": "Verification outcomes have separate source revisions and scopes; no physical closure or PCIe implementation is inferred",
+  "rtl_regression": {
+    "command": "bash scripts/run_cocotb.sh",
+    "source_commit": "abc079155d7c04d58f06e3c0e9d02df84549a0b8",
+    "passed": 479,
+    "failed": 0,
+    "unclean_suites": 0,
+    "skipped": 15,
+    "summary": "cocotb: 479 passed, 0 failed, 0 suite(s) not clean, 15 skipped"
+  },
+  "fresh_clone_abc0791": {
+    "commit": "abc079155d7c04d58f06e3c0e9d02df84549a0b8",
+    "ci_command": "PY=/path/to/venv/bin/python bash scripts/ci_local.sh all --record",
+    "ci_passed": 16,
+    "ci_failed": 0,
+    "ci_skipped": 7,
+    "tree_dirty_before_record": 0,
+    "pytest_command": "python -m pytest sw/tests -q -rs",
+    "pytest_passed": 605,
+    "pytest_skipped": 38,
+    "pytest_summary": " ============================\nSKIPPED [1] sw/tests/test_derate_is_a_float.py:116: no run trees on this machine -- hw/soc/pnr/runs/ is gitignored build output, so there are no step directories to measure. A skip here is evidence of nothing.\nSKIPPED [1] sw/tests/test_flow_evidence.py:263: sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-ethernet/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file.\nSKIPPED [1] sw/tests/test_flow_evidence.py:441: sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-ethernet/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file.\nSKIPPED [1] sw/tests/test_flow_evidence.py:509: sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-ethernet/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file.\nSKIPPED [1] sw/tests/test_flow_evidence.py:521: sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-ethernet/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file.\nSKIPPED [1] sw/tests/test_flow_evidence.py:540: sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-ethernet/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file.\nSKIPPED [3] sw/tests/test_gl_coverage.py:61: hw/soc/out/s70-rom0-syn/soc_top.netlist.v is a git-ignored build product and is not in this tree. hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v\nSKIPPED [1] sw/tests/test_mirror_redaction_is_idempotent.py:94: this tree IS the generated mirror, where the fragment is redacted by construction; the mirror's own claim is the next test\nSKIPPED [1] sw/tests/test_mirror_redaction_is_idempotent.py:139: generating a mirror needs the upstream tree's git history and its held files\nSKIPPED [1] sw/tests/test_mirror_redaction_is_idempotent.py:186: the fragment is already redacted here, so there is nothing left to reword\nSKIPPED [1] sw/tests/test_recorded_evidence.py:93: no run tree for any of the 21 cited runs is on this machine, so there is nothing to compare the records against. runs/ is gitignored build output; the records are what make the claims checkable here, and this comparison is what a machine holding the runs does. 42 files were looked for.\nSKIPPED [1] sw/tests/test_replica_placement.py:47: the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure\nSKIPPED [1] sw/tests/test_replica_placement.py:60: the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure\nSKIPPED [1] sw/tests/test_replica_placement.py:79: the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure\nSKIPPED [1] sw/tests/test_replica_placement.py:111: the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure\nSKIPPED [1] sw/tests/test_replica_placement.py:130: the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure\nSKIPPED [1] sw/tests/test_soc_clkgate_guards.py:288: no hw/soc/out/s76*gate netlist in this tree; SOC_MEM=sram hw/soc/flow/syn_soc_top.sh 20 <out> builds one\nSKIPPED [1] sw/tests/test_soc_regfile_guards.py:241: hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh\nSKIPPED [1] sw/tests/test_soc_regfile_guards.py:368: hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh\nSKIPPED [1] sw/tests/test_soc_regfile_guards.py:397: hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh\nSKIPPED [3] sw/tests/test_soc_shipped_netlist_guards.py:202: no whole-SoC netlist in the working tree. hw/soc/out/ and hw/soc/pnr/runs/ are git-ignored build products, so there is nothing here to audit on a fresh clone. Regenerate with:\n    hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh for a layout; docs/75 section 11 gives both command lines with the environment they need\nSKIPPED [1] sw/tests/test_soc_shipped_netlist_guards.py:257: no whole-SoC netlist in the working tree. hw/soc/out/ and hw/soc/pnr/runs/ are git-ignored build products, so there is nothing here to audit on a fresh clone. Regenerate with:\n    hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh for a layout; docs/75 section 11 gives both command lines with the environment they need\nSKIPPED [1] sw/tests/test_soc_shipped_netlist_guards.py:300: no whole-SoC netlist in the working tree. hw/soc/out/ and hw/soc/pnr/runs/ are git-ignored build products, so there is nothing here to audit on a fresh clone. Regenerate with:\n    hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh for a layout; docs/75 section 11 gives both command lines with the environment they need\nSKIPPED [1] sw/tests/test_soc_shipped_netlist_guards.py:359: no whole-SoC netlist in the working tree. hw/soc/out/ and hw/soc/pnr/runs/ are git-ignored build products, so there is nothing here to audit on a fresh clone. Regenerate with:\n    hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh for a layout; docs/75 section 11 gives both command lines with the environment they need\nSKIPPED [1] sw/tests/test_soc_shipped_netlist_guards.py:434: no whole-SoC netlist in the working tree. hw/soc/out/ and hw/soc/pnr/runs/ are git-ignored build products, so there is nothing here to audit on a fresh clone. Regenerate with:\n    hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh for a layout; docs/75 section 11 gives both command lines with the environment they need\nSKIPPED [1] sw/tests/test_soc_synthesis_guards.py:1002: hw/soc/gen is empty: run flow/sv2v_ibex.sh first\nSKIPPED [1] sw/tests/test_soc_synthesis_guards.py:1928: hw/soc/gen is empty: run flow/sv2v_ibex.sh first\nSKIPPED [1] sw/tests/test_synthesis_guards.py:961: sign-off netlist not present in this checkout\nSKIPPED [1] sw/tests/test_synthesis_guards.py:1442: no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_sky130/run_sky130.sh\nSKIPPED [1] sw/tests/test_synthesis_guards.py:1536: no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_sky130/run_sky130.sh\nSKIPPED [1] sw/tests/test_synthesis_guards.py:1581: no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent\nSKIPPED [1] sw/tests/test_synthesis_guards.py:1631: no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent\nSKIPPED [1] sw/tests/test_synthesis_guards.py:1681: no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent\nSKIPPED [1] sw/tests/test_tt_submission.py:743: tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a\n605 passed, 38 skipped in 345.30s (0:05:45)\n"
+  },
+  "native_sram256_gate_evidence": "docs/evidence/ethernet-sram256-20260919.json",
+  "fi_validation": {
+    "scope": "Compilation/elaboration only; no new FI campaign run",
+    "core": "passed",
+    "npu": "passed"
+  },
+  "sram256_netlist_guards": {
+    "scope": "three disjoint TMR bank cones and asynchronous reset source cones in retained whole-SoC netlists",
+    "command": "python -m pytest -q sw/tests/test_soc_shipped_netlist_guards.py -k 'every_replica or every_asynchronous'",
+    "passed": 4
+  },
+  "log_digests": {
+    "hw/soc/out/external-review-20260919/rtl-ethernet-all.log": {
+      "sha256": "adecbffb4672a45dadca7c72a1896a9e80319c307ae7c9e7be4f62c05acf0386",
+      "bytes": 1985
+    },
+    "hw/soc/out/external-review-20260919/fresh-clone-ethernet-ci.log": {
+      "sha256": "84d524df0e05337135a0dd5ad66d0671516d85e76df9936b8ebf609d10378006",
+      "bytes": 1921
+    },
+    "hw/soc/out/external-review-20260919/fresh-clone-ethernet-pytest.log": {
+      "sha256": "381044a91750da7e8ce22c2b57bb741861911c97ab91bad7bc0632a63a31d256",
+      "bytes": 9508
+    },
+    "hw/soc/out/external-review-20260919/eth-fi-core-build.log": {
+      "sha256": "b67d5dcad7a09badc01b15cf1aee7deadb28eb07d532d4a962884e552208705f",
+      "bytes": 1793
+    },
+    "hw/soc/out/external-review-20260919/eth-fi-npu-build.log": {
+      "sha256": "9fcd75b288f5f9d5a8bf19bf09aebfd1dcb05e82da1a4e9694395d83b8d3c4db",
+      "bytes": 1894
+    },
+    "hw/soc/out/external-review-20260919/eth256-netlist-cones.log": {
+      "sha256": "f731cc1479892c24517f223ba13a34f64f312966a07998a6eae9070cf8e4090a",
+      "bytes": 113
+    },
+    "hw/soc/out/external-review-20260919/mirror-failclosed.log": {
+      "sha256": "040c675a21adc81e5a8354eed798dbc37ff0744fe19298703ffbcc414c1f03cf",
+      "bytes": 98
+    },
+    "hw/soc/out/external-review-20260919/derate-record-guard.log": {
+      "sha256": "e8b12eb9c14e20ba6d6f42d6a6564099a0106363b2d2c716df325fb3a6e8b6f6",
+      "bytes": 98
+    },
+    "hw/soc/out/external-review-20260919/eth256-record-guards.log": {
+      "sha256": "6413719a5d79e623adc076e49955e4a396588c207d443c28c9bc8b0fe018ca11",
+      "bytes": 180
+    },
+    "hw/soc/out/external-review-20260919/fresh-clone-sram256-ci.log": {
+      "sha256": "e2d9953ca97273c05d54794d78ebcdbb807970ad1e6d45684e20246dcfd6a9af",
+      "bytes": 2836
+    }
+  },
+  "github_abc0791": {
+    "conclusion": "success",
+    "headSha": "abc079155d7c04d58f06e3c0e9d02df84549a0b8",
+    "jobs": [
+      {
+        "completedAt": "2026-09-19T16:33:56Z",
+        "conclusion": "success",
+        "databaseId": 105929298894,
+        "name": "checks",
+        "startedAt": "2026-09-19T16:32:07Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-19T16:32:08Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-19T16:32:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:10Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-09-19T16:32:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:10Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "startedAt": "2026-09-19T16:32:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:23Z",
+            "conclusion": "success",
+            "name": "Tools the developer's machine does not have",
+            "number": 4,
+            "startedAt": "2026-09-19T16:32:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:52Z",
+            "conclusion": "success",
+            "name": "Every check, from the same script the developer runs",
+            "number": 5,
+            "startedAt": "2026-09-19T16:33:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:52Z",
+            "conclusion": "success",
+            "name": "The paper must have built here, even though it cannot there",
+            "number": 6,
+            "startedAt": "2026-09-19T16:33:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:53Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 7,
+            "startedAt": "2026-09-19T16:33:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:53Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 13,
+            "startedAt": "2026-09-19T16:33:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:54Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "2026-09-19T16:33:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:54Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-09-19T16:33:54Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35455264364/job/105929298894"
+      },
+      {
+        "completedAt": "2026-09-19T16:41:38Z",
+        "conclusion": "success",
+        "databaseId": 105929299027,
+        "name": "rtl",
+        "startedAt": "2026-09-19T16:32:06Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-19T16:32:08Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-19T16:32:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:10Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-09-19T16:32:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:10Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "startedAt": "2026-09-19T16:32:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:27Z",
+            "conclusion": "success",
+            "name": "Install the simulation dependencies",
+            "number": 4,
+            "startedAt": "2026-09-19T16:32:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:32Z",
+            "conclusion": "success",
+            "name": "Prepare pinned interface IP",
+            "number": 5,
+            "startedAt": "2026-09-19T16:32:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:41:34Z",
+            "conclusion": "success",
+            "name": "Run every non-frozen RTL suite",
+            "number": 6,
+            "startedAt": "2026-09-19T16:32:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:41:35Z",
+            "conclusion": "success",
+            "name": "Retain simulator diagnostics, including failed runs",
+            "number": 7,
+            "startedAt": "2026-09-19T16:41:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:41:36Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 13,
+            "startedAt": "2026-09-19T16:41:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:41:36Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "2026-09-19T16:41:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:41:36Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 15,
+            "startedAt": "2026-09-19T16:41:36Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35455264364/job/105929299027"
+      },
+      {
+        "completedAt": "2026-09-19T17:02:12Z",
+        "conclusion": "success",
+        "databaseId": 105929299100,
+        "name": "formal-and-boot",
+        "startedAt": "2026-09-19T16:32:06Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-09-19T16:32:09Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-09-19T16:32:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:12Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-09-19T16:32:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:12Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "startedAt": "2026-09-19T16:32:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:32:29Z",
+            "conclusion": "success",
+            "name": "Run YosysHQ/setup-oss-cad-suite@v3",
+            "number": 4,
+            "startedAt": "2026-09-19T16:32:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:33:05Z",
+            "conclusion": "success",
+            "name": "Prepare the pinned processor and firmware tools",
+            "number": 5,
+            "startedAt": "2026-09-19T16:32:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:38:24Z",
+            "conclusion": "success",
+            "name": "Real-codec contract, counterexamples and upstream equivalence",
+            "number": 6,
+            "startedAt": "2026-09-19T16:33:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:43:07Z",
+            "conclusion": "success",
+            "name": "CPU interface and interrupt regression",
+            "number": 7,
+            "startedAt": "2026-09-19T16:38:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:44:14Z",
+            "conclusion": "success",
+            "name": "CPU Gigabit Ethernet packet and interrupt regression",
+            "number": 8,
+            "startedAt": "2026-09-19T16:43:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:44:40Z",
+            "conclusion": "success",
+            "name": "APB timeout, retained telemetry and NPU reset proofs",
+            "number": 9,
+            "startedAt": "2026-09-19T16:44:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:50:12Z",
+            "conclusion": "success",
+            "name": "Whole-SoC stalled peripheral and crash recovery",
+            "number": 10,
+            "startedAt": "2026-09-19T16:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T16:50:15Z",
+            "conclusion": "success",
+            "name": "Boot geometry proof and counterexamples",
+            "number": 11,
+            "startedAt": "2026-09-19T16:50:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T17:02:09Z",
+            "conclusion": "success",
+            "name": "Whole-SoC normal boot and geometry fallback",
+            "number": 12,
+            "startedAt": "2026-09-19T16:50:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T17:02:10Z",
+            "conclusion": "success",
+            "name": "Retain formal and boot evidence",
+            "number": 13,
+            "startedAt": "2026-09-19T17:02:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T17:02:10Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 25,
+            "startedAt": "2026-09-19T17:02:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T17:02:10Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 26,
+            "startedAt": "2026-09-19T17:02:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-09-19T17:02:10Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 27,
+            "startedAt": "2026-09-19T17:02:10Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35455264364/job/105929299100"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35455264364"
+  },
+  "fresh_clone_895d6ca_first_attempt": {
+    "ci_row": "2026-09-19T17:08Z\t895d6ca\tall\t15\t1\t7\ttree-dirty=0,pandoc=no,tex=tectonic",
+    "pytest_attributes": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "34",
+      "tests": "645",
+      "time": "343.977",
+      "timestamp": "2026-09-19T20:03:11.968605+03:00",
+      "hostname": "pop-os"
+    },
+    "failed_cases": [
+      {
+        "classname": "sw.tests.test_derate_is_a_float",
+        "name": "test_every_tracked_config_writes_the_derate_as_a_float",
+        "time": "0.005",
+        "detail": {
+          "message": "AssertionError: these tracked configurations write TIME_DERATING_CONSTRAINT as something other than a float:\n    docs/evidence/interfaces-eth-pnr2-postcts-config.json: 5 (int)\n  \n  OpenROAD computes the derate factor in Tcl integer arithmetic. An int 5 derates by\n  0 % and logs \"Setting timing derate to: 5%\" while doing it; 5.0 derates by 5 %. docs/72\n  section 7.1 measured the difference at 1.744 ns and 1.623 ns on one step, which is\n  larger than most of the timing findings in this repository.\nassert not [('docs/evidence/interfaces-eth-pnr2-postcts-config.json', 5)]"
+        }
+      }
+    ],
+    "disposition": "The active-input float guard incorrectly included a recorded historical config. Exclude only docs/evidence from editable inputs; preserve the integer snapshot and its separate live/record comparison."
+  }
+}
