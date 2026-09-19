@@ -2135,7 +2135,9 @@ def test_the_registered_request_phase_ships_off_and_is_forwarded():
         "the RTL selects the registered request phase somewhere: "
         "{}".format(offenders))
 
-    allowed = {"syn_soc_top.sh", "sim_soc.sh"}
+    # FI needs the same registered-request setting as the netlist it measures.
+    # Its default remains zero and the checks below bind it like both flows.
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
     # An explicit experimental profile is not a change to either default.
     # docs/88 measures this profile's different cycle count separately.
     profiles = {"implement_interfaces.sh"}

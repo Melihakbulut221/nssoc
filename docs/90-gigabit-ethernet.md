@@ -210,7 +210,7 @@ interface inputs to explicit idle levels. `fi_core.sh` now checks that
 Historical defaults remain unchanged.
 
 The current post-global-route netlist and a matching RTL build both complete
-the same ROM workload: signature `9c07ef12`, mask and exit zero, four rounds,
+the same ROM workload with watchdog disabled (`+armed=0`): signature `9c07ef12`, mask and exit zero, four rounds,
 19 UART characters with hash `6d6942c8`, and no asserted watchdog, trap, NMI,
 alert or double-fault channel. The measured cycle counters are **27,306 at
 gate level and 27,307 in RTL**, so this is a matching-answer check, not a
@@ -223,3 +223,18 @@ failed attempts. This is a zero-delay, fault-free check with idle interfaces;
 it does not establish SDF timing, an injected-fault coverage rate or Ethernet
 traffic behaviour. Missing gate-level shadow instrumentation is recorded as
 unavailable, never as a zero error count.
+
+2026-09-19, watchdog-enabled follow-up: the same native post-global-route
+netlist also completes with the watchdog armed and matches RTL's published
+answer, with no watchdog event, NMI, trap or alert. The existing software
+`FI_WDOG_RELOAD=255u` override sets a 4096-cycle interval; RTL's measured
+maximum kick gap is 2894 cycles. RTL completes in 27307 cycles and the gate
+bench in 27306; these counters are not a cycle-equivalence claim.
+
+The earlier workload's default reload 127 permits only 2048 cycles. Running
+that program with the watchdog armed produces four stage-1 events and four
+NMIs in **both** RTL and gates, despite returning the right answer. Those
+logs remain recorded as a failed clean-control condition. The software
+override, exact ROM identity and both outcomes are appended to the
+[baseline evidence](evidence/ethernet-gate-baseline-20260919.json). This is a
+fault-free control, not a completed injected-fault campaign or SDF signoff.

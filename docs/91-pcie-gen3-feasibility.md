@@ -22,6 +22,7 @@ not an implementation of that processor or a drop-in equivalent.
 | [verilog-pcie](https://github.com/alexforencich/verilog-pcie) | TLP, AXI, DMA and vendor FPGA PCIe interface modules | Useful application/controller-side logic. FPGA hard PCIe blocks remain necessary; this is not a complete ASIC PHY/link implementation. |
 | [LitePCIe](https://github.com/enjoy-digital/litepcie) | FPGA PCIe integration, DMA and host software; UltraScale support includes Gen3 | Candidate for a separate FPGA prototype, not a portable analog PHY. |
 | [openCologne-PCIE](https://github.com/chili-chips-ba/openCologne-PCIE) | GateMate-oriented Gen1 x1 project | Does not meet the requested generation or width. |
+| [OpenSerDes](https://arxiv.org/abs/2105.13256) | Research serial link in SkyWater 130 nm, with reported 2 Gb/s post-layout simulation | Neither the requested 8 GT/s per-lane rate nor a verified SG13G2 PCIe Gen3 x4 PHY/controller; a portable research SerDes is not a qualified PCIe link. |
 | [TI XIO1100](https://www.ti.com/product/XIO1100) | Discrete single-lane 2.5 Gb/s PCIe PHY | Does not meet Gen3 x4. |
 
 The [IHP reference library inventory](https://ihp-open-pdk-docs.readthedocs.io/en/main/contents/01_libraries.html)

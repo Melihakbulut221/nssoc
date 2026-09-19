@@ -279,3 +279,40 @@ The separate C/Verilog test still checks complete firmware termination.
 `make soc-crash-cocotb` builds and runs both checks. CI invokes the observer
 after its existing whole-CPU crash program and retains the cocotb result.
 The original register cost in docs/86 is unchanged: this addition is a test.
+
+### F7: upstream SRAM geometry checked rather than assumed fixed
+
+2026-09-19. The four SRAM types in the current SoC were compared with IHP's
+upstream revision `5e6d592e4002946a4616f798c357f0f3c06cf3b6` (2026-09-01).
+All four LEF files are byte-identical to the installed pinned versions.
+An independent flattened KLayout polygon XOR over every layer/datatype finds
+GDS differences only on `prBoundary.boundary` (189/4). No other polygon layer
+changed. Thus an update to these macro GDS files alone supplies no demonstrated
+fix for the manufacturing-layer SRAM DRC violations. This does not evaluate
+newer DRC decks or waive any existing failure. The installed PDK is unchanged.
+Commands, exact revisions, file identities and per-macro differences are in the
+[upstream comparison record](evidence/ihp-macro-update-check-20260919.json).
+
+### F0/F0d: FI configuration guard regression and measured correction
+
+2026-09-19. GitHub push run `35467135579` at `f3d99a1` failed `checks`:
+its Python check reported **520 passed, one failed, 126 skipped**. The new
+`fi_core.sh` request-register option was absent from the exhaustive script
+allowlist in `test_the_registered_request_phase_ships_off_and_is_forwarded`.
+The correction adds that script to the list; the guard still verifies that
+every listed script ships with request registration disabled by default.
+
+A local full Python run had already loaded the old test before this fix:
+**625 passed, one failed, 21 skipped** in 975.37 seconds. The overlapping
+`scripts/ci_local.sh all --record` run records **15 passed, one failed, seven
+skipped** against `f3d99a1`, with `tree-dirty=7`. These are working-tree
+measurements, not a clean release verdict. Both fail on the same allowlist
+check; their failures remain in the ledger and logs. The corrected focused
+check passes; the correction plus evidence/digest/link checks subsequently
+pass **160 tests**. A new GitHub run must validate the corrected revision.
+
+Commands and logs are retained under `hw/soc/out/external-review-20260919/`:
+`pytest-f3d99a1.log`, `ci-local-f3d99a1.log`,
+`github-f3d99a1-checks.log`, `fi-request-guard-fix.log`, and
+`fi-guard-and-upstream-evidence-tests.log`. This correction does not turn
+historical skips or unavailable artifacts into passes.
