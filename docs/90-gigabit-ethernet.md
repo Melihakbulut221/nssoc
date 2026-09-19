@@ -238,3 +238,29 @@ logs remain recorded as a failed clean-control condition. The software
 override, exact ROM identity and both outcomes are appended to the
 [baseline evidence](evidence/ethernet-gate-baseline-20260919.json). This is a
 fault-free control, not a completed injected-fault campaign or SDF signoff.
+
+2026-09-20, extracted candidate: `interfaces-eth256-resume-20260919-184950`
+now has detailed routing, nominal interconnect extraction and both GDS streams.
+Three independent native STA runs measure:
+
+| Corner | Whole-design setup WNS (ns) | Hold WNS (ns) | Worst GMII TX output setup / hold (ns) |
+|---|---:|---:|---:|
+| Fast | +3.283147 | −0.036038 | +3.283147 / +0.712912 |
+| Typical | +2.348404 | +0.083726 | +2.348404 / +1.370800 |
+| Slow | −1.828438 | +0.243966 | +0.632443 / +2.582863 |
+
+The slow corner has 513 setup violations and the fast corner four hold
+violations. The worst setup path runs from the APB address register to the
+Ethernet TX SRAM write enable; CPU paths also fail. All ten GMII TX data/control
+ports meet the stated core-to-port budgets, but this does not close internal
+SRAM timing or characterize a PHY, pad or package. The experimental extra
+falling-edge output stage passed six native packet tests; it is not adopted,
+since the extracted shipping outputs now meet these budgets.
+
+Router DRC is zero; three antenna nets/pins still fail. The connectivity checker
+reports zero **critical** disconnected pins, with 256 unused macro outputs
+reported as noncritical unconnected pins. Independent Magic/KLayout DRC, stream
+XOR and scoped LVS are running separately. Exact source artifacts and the
+unmodified native measurements are pinned in the
+[extracted layout record](evidence/ethernet-extracted-layout-20260920.json).
+This candidate remains a failing physical implementation.

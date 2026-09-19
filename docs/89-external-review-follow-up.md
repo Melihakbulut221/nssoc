@@ -316,3 +316,16 @@ Commands and logs are retained under `hw/soc/out/external-review-20260919/`:
 `github-f3d99a1-checks.log`, `fi-request-guard-fix.log`, and
 `fi-guard-and-upstream-evidence-tests.log`. This correction does not turn
 historical skips or unavailable artifacts into passes.
+
+2026-09-20, F2 CI correction: the `formal-and-boot` job in run `35467135579`
+also failed, after the whole-CPU C/Verilog crash test passed. The cocotb step
+never started simulation: the OSS CAD Suite launcher replaced the host Python
+home with its bundled Python. Keeping that launcher's bundled libc after
+clearing the Python home also fails on the local host's newer libpython.
+
+The observer launcher now uses the same OSS simulator and its matching
+`libvvp.so.1` with the host loader and Python dependencies. This does not alter
+the test, firmware or RTL. The actual Icarus 14/cocotb 2.0.1 retry passes one
+test, zero failures/skips, at 3,172,635 ns in 823.85 seconds. The earlier Icarus
+12 PASS is retained separately. Failure logs, exact command and source hashes
+are in the [launcher correction record](evidence/crash-cocotb-launcher-20260920.json).

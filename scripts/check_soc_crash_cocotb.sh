@@ -13,6 +13,21 @@ test -s "$BUILD/flash0.hex"
 test -x "$COCOTB_CONFIG"
 test -x "$PYGPI_PYTHON_BIN"
 test -x "$VVP"
+# OSS CAD Suite's launcher overwrites PYTHONHOME with its bundled Python,
+# which may differ from the interpreter that installed this cocotb. Its
+# bundled libc can also be older than the host Python requires. Use the
+# same simulator/libvvp with the host loader and host Python dependencies.
+# Native Icarus installations continue to use their configured launcher.
+VVP_CMD=("$VVP")
+VVP_RELEASE=$(cd "$(dirname "$(readlink -f "$VVP")")/.." && pwd -P)
+if [[ -x "$VVP_RELEASE/libexec/vvp" &&
+      -f "$VVP_RELEASE/lib/libvvp.so.1" ]] &&
+   grep -q 'export PYTHONHOME=' "$VVP"; then
+  mkdir -p "$BUILD/cocotb-runtime"
+  ln -sfn "$VVP_RELEASE/lib/libvvp.so.1" "$BUILD/cocotb-runtime/libvvp.so.1"
+  VVP_CMD=(env "LD_LIBRARY_PATH=$BUILD/cocotb-runtime" "$VVP_RELEASE/libexec/vvp")
+fi
+unset PYTHONHOME PYTHONEXECUTABLE
 export LIBPYTHON_LOC
 LIBPYTHON_LOC=$("$COCOTB_CONFIG" --libpython)
 export PYTHONPATH="$ROOT/hw/soc/tb/integration${PYTHONPATH:+:$PYTHONPATH}"
@@ -21,7 +36,7 @@ export COCOTB_RESULTS_FILE="$BUILD/crash-cocotb.xml"
 rm -f "$COCOTB_RESULTS_FILE"
 sha256sum "$BUILD/tb_soc.vvp" "$BUILD/flash0.hex" \
   "$ROOT/hw/soc/tb/integration/test_crash_recovery.py" > "$BUILD/crash-cocotb-inputs.sha256"
-"$VVP" -M "$("$COCOTB_CONFIG" --lib-dir)" -m "$("$COCOTB_CONFIG" --lib-name vpi icarus)" \
+"${VVP_CMD[@]}" -M "$("$COCOTB_CONFIG" --lib-dir)" -m "$("$COCOTB_CONFIG" --lib-name vpi icarus)" \
   "$BUILD/tb_soc.vvp" +allow_double_fault +flash0="$BUILD/flash0.hex" \
   2>&1 | tee "$BUILD/crash-cocotb.log"
 "$PYGPI_PYTHON_BIN" - "$COCOTB_RESULTS_FILE" <<'PY'

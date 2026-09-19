@@ -1,0 +1,232 @@
+{
+  "date": "2026-09-20",
+  "run": "interfaces-eth256-resume-20260919-184950",
+  "scope": "Completed detailed route, extraction, three separately executed native STA corners and both GDS streams through stage 24. This is an intermediate failing physical candidate, not a passing full flow or tapeout signoff. Independent decks and a separate antenna repair are running.",
+  "commands": [
+    "Resume pinned Interfaces flow from prior completed post-CTS state; exact flow command retained in the run flow.log.",
+    "bash hw/soc/flow/verify_interfaces_layout.sh eth256-decks-20260919 /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/24-klayout-render/state_out.json",
+    "python3 hw/soc/out/external-review-20260919/record_extracted_layout.py"
+  ],
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "design__max_slew_violation__count": 2,
+      "design__max_fanout_violation__count": 843,
+      "design__max_cap_violation__count": 11,
+      "clock__skew__worst_hold": -0.6074722008473444,
+      "clock__skew__worst_setup": 0.9799306088385523,
+      "timing__hold__ws": -0.03603795142085792,
+      "timing__setup__ws": 3.2831469583385466,
+      "timing__hold__tns": -0.08151146655025608,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": -0.03603795142085792,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 4,
+      "timing__hold_r2r__ws": -0.036038,
+      "timing__hold_r2r_vio__count": 4,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 4.454286,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_typ_1p20V_25C": {
+      "design__max_slew_violation__count": 9,
+      "design__max_fanout_violation__count": 843,
+      "design__max_cap_violation__count": 11,
+      "clock__skew__worst_hold": -0.721444147065031,
+      "clock__skew__worst_setup": 1.344726479341691,
+      "timing__hold__ws": 0.08372602848010796,
+      "timing__setup__ws": 2.3484039821924663,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.083726,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 2.573586,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "design__max_slew_violation__count": 88,
+      "design__max_fanout_violation__count": 843,
+      "design__max_cap_violation__count": 11,
+      "clock__skew__worst_hold": 1.0906176270780739,
+      "clock__skew__worst_setup": 1.9812143597582335,
+      "timing__hold__ws": 0.24396574340147253,
+      "timing__setup__ws": -1.8284378972863817,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": -311.81478193165265,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": -1.8284378972863817,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.243966,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 513,
+      "timing__setup_r2r__ws": -1.828438,
+      "timing__setup_r2r_vio__count": 512,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    }
+  },
+  "gmii_output_paths": [
+    {
+      "corner": "nom_fast_1p32V_m40C",
+      "max": {
+        "reported_paths": 10,
+        "worst": [
+          3.283147,
+          "eth_txd_o[5] (output port clocked by eth_gtx)"
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst": [
+          0.712912,
+          "eth_tx_en_o (output port clocked by eth_gtx)"
+        ]
+      }
+    },
+    {
+      "corner": "nom_slow_1p08V_125C",
+      "max": {
+        "reported_paths": 10,
+        "worst": [
+          0.632443,
+          "eth_txd_o[5] (output port clocked by eth_gtx)"
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst": [
+          2.582863,
+          "eth_tx_en_o (output port clocked by eth_gtx)"
+        ]
+      }
+    },
+    {
+      "corner": "nom_typ_1p20V_25C",
+      "max": {
+        "reported_paths": 10,
+        "worst": [
+          2.348404,
+          "eth_txd_o[5] (output port clocked by eth_gtx)"
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst": [
+          1.3708,
+          "eth_tx_en_o (output port clocked by eth_gtx)"
+        ]
+      }
+    }
+  ],
+  "route": {
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 3,
+    "antenna__violating__pins": 3,
+    "design__disconnected_pin__count": 256,
+    "design__critical_disconnected_pin__count": 0,
+    "design__instance__count__class:macro": 24,
+    "design__instance__count__class:fill_cell": 255288
+  },
+  "artifacts": {
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/resolved.json": {
+      "bytes": 40645,
+      "sha256": "ca9d284c3180c7a87e7d50b64bc21961e481794ce19123a39cb6b0440ef4bd03"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/09-openroad-detailedrouting/state_out.json": {
+      "bytes": 10917,
+      "sha256": "fab34c5b9acc6aa08f7dad72c5fe9705721b5f1aa89481f67fb0c4167c141103"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/11-openroad-checkantennas-1/reports/antenna.rpt": {
+      "bytes": 3980,
+      "sha256": "878208adaecddeef2bcaec10264c57d793e7ee840a85a88274fc239981204c0c"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/20-openroad-stapostpnr/state_out.json": {
+      "bytes": 12685,
+      "sha256": "2621bb99c53732805c2e49dc4f7802e53d31f228689537e9e689a3c0856bb01b"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/20-openroad-stapostpnr/summary.rpt": {
+      "bytes": 2774,
+      "sha256": "b18da6d1c1ac185c6635963ee416018e6693d3ec91d9ce3bb0a8bbba45146f03"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/24-klayout-render/state_out.json": {
+      "bytes": 14443,
+      "sha256": "ad279d55fc5ee99cf332eca0b6e19ad1769da0e621140369ccb9db7c9ea2f0ba"
+    },
+    "hw/soc/out/external-review-20260919/record_extracted_layout.py": {
+      "bytes": 2960,
+      "sha256": "e05d96b9c795f1ba64092aa4f10ad60d18961245ea717bc777cc63c251a58224"
+    },
+    "hw/soc/out/external-review-20260919/extracted-gmii-ports.json": {
+      "bytes": 1013,
+      "sha256": "0f905edd983d1fa70225f87f9ef5eb6fc7e6c3945be36a2dbc354008afa87b5f"
+    },
+    "hw/soc/sta/soc_interfaces.sdc": {
+      "bytes": 2236,
+      "sha256": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/18-odb-cellfrequencytables/soc_top.odb": {
+      "bytes": 183835121,
+      "sha256": "ea7715832f36a262949e8d2601cfe6f493bf175c76bbefd2c516b9cc8e59bde2"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/18-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 115621721,
+      "sha256": "32da2de2ff6d0b246b8cad119cdefa11a73eb55438b7326a4d07fc2f9270a719"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.nl.v": {
+      "bytes": 19846986,
+      "sha256": "bb268c09fd388ce39d50d20e0f485b14916f3f8c1acd0e743ce36cff29bc61a3"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29508792,
+      "sha256": "260dfc2f84dc364b12d9752cf690cd89e6653e472578969ac02ce855b70edd7f"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/22-magic-streamout/soc_top.gds": {
+      "bytes": 172166056,
+      "sha256": "9551636064ff3c6911719677e19f4c208f7d949c74191a42fe59d68016fee9b2"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/22-magic-streamout/soc_top.magic.gds": {
+      "bytes": 172166056,
+      "sha256": "9551636064ff3c6911719677e19f4c208f7d949c74191a42fe59d68016fee9b2"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/23-klayout-streamout/soc_top.klayout.gds": {
+      "bytes": 95300472,
+      "sha256": "5831269e6c1c04c2b93baf7f8ce3a2ee7acfc259c95bda4547dffa64300eea55"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/19-openroad-rcx/nom/soc_top.nom.spef": {
+      "bytes": 103443976,
+      "sha256": "18cf0127fc686a7bef110cb37d5b19ef63b1b93bfabc89dbede79c3c6cab4f4c"
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/final/metrics.json": {
+      "bytes": 10454,
+      "sha256": "2bf152db9deef6995b5b0a127cae05d96f47e408bfa1ba4c257e4f00ff160b0d"
+    },
+    "hw/soc/out/external-review-20260919/ethernet-layout-20260920.svg": {
+      "bytes": 589149,
+      "sha256": "6ec035071a49d810d6b1fd4e7077a6883a941a7f68fc4d61657736ded16676d3"
+    },
+    "hw/soc/out/external-review-20260919/ethernet-layout-20260920.json": {
+      "bytes": 7819,
+      "sha256": "0d6a6c4bf5595eea959a56ac1203a6526f3fc7c5dee46dccb7d5e26660bc8ffc"
+    },
+    "hw/soc/out/external-review-20260919/ethernet-layout-20260920.log": {
+      "bytes": 99,
+      "sha256": "f2c9247ef509a64537eeef02a4df0e218d362b8e51d0a5dd7ad42150d70d4bee"
+    }
+  },
+  "connectivity_scope": "256 noncritical unconnected pins remain (unused macro outputs); critical disconnected pins 0. Do not call the raw disconnected-pin count zero.",
+  "gmii_scope": "All ten TX data/control ports appear in each max/min native report. Core-to-port budgets only: external PHY, pad/package characterization and internal SRAM timing are separate gates.",
+  "verdict": "FAIL: slow setup, fast hold, antenna and electrical violations remain. Independent DRC/XOR/LVS pending.",
+  "main_flow_completion": {
+    "status": "FAIL",
+    "completed_through": "31-misc-reportmanufacturability",
+    "final_outputs_written": true,
+    "failed_checks": "Setup, hold, slew and capacitance violations retained. Independent physical decks still running."
+  }
+}
