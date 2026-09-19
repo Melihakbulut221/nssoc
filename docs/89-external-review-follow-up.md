@@ -226,3 +226,10 @@ conflicting identities and never borrows a hash from another run with the same
 basename. These changes preserve skips and all existing assertions. The focused
 regression passed **60 tests with 8 missing historical artifact skips**; the
 frozen pilot rail-netlist check separately skipped with its exact identity.
+
+A subsequent clean GitHub clone of `e2193ec` passed the complete front-door
+command: **16 passing gates, zero failures, 7 skips**, `tree-dirty=0`. The full
+Python suite measured **612 passed, zero failures, 34 skipped**. The additional
+pass is the artifact-identity negative control; no missing-artifact skip was
+converted into a pass. The original XML and log hashes are in the verification
+record, and the measured CI row is appended unchanged.

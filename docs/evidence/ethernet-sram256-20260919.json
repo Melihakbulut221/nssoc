@@ -239,5 +239,74 @@
     },
     "scope": "Placement-estimated RC, propagated CTS clocks; native metrics from this step only, not stale inherited state metrics",
     "postcts_config_record": "docs/evidence/interfaces-eth-pnr2-postcts-config.json"
+  },
+  "sram512_follow_up": {
+    "scope": "Standalone MAC synthesis and ideal-clock pre-layout STA only; same FIFO capacity and budgets. No wire RC, CTS or gate packet regression performed for this rejected candidate.",
+    "macro": "RM_IHPSG13_2P_512x16_c2_bm_bist",
+    "macros": 8,
+    "cells": 2593,
+    "flops": 510,
+    "cell_types": {
+      "sg13g2_inv_1": 123,
+      "sg13g2_nand2_1": 234,
+      "sg13g2_nand2b_1": 62,
+      "sg13g2_nand3b_1": 4,
+      "sg13g2_nor2_1": 182,
+      "sg13g2_or2_1": 19,
+      "sg13g2_nor3_1": 48,
+      "sg13g2_nor4_1": 16,
+      "sg13g2_or4_1": 4,
+      "sg13g2_nand3_1": 49,
+      "sg13g2_xor2_1": 183,
+      "sg13g2_xnor2_1": 269,
+      "sg13g2_nand4_1": 29,
+      "sg13g2_a21oi_1": 245,
+      "sg13g2_and2_1": 134,
+      "sg13g2_o21ai_1": 153,
+      "sg13g2_nor2b_1": 31,
+      "sg13g2_and4_1": 8,
+      "sg13g2_a22oi_1": 82,
+      "sg13g2_and3_1": 6,
+      "sg13g2_a21o_1": 18,
+      "sg13g2_a221oi_1": 35,
+      "sg13g2_mux2_1": 96,
+      "sg13g2_mux4_1": 20,
+      "sg13g2_or3_1": 2,
+      "sg13g2_buf_1": 23,
+      "sg13g2_dfrbpq_1": 510,
+      "RM_IHPSG13_2P_512x16_c2_bm_bist": 8
+    },
+    "combined_cell_macro_area_um2": 754922.4916,
+    "tx_setup_slack_ns": {
+      "fast_1p32V_m40C": 5.043968,
+      "typ_1p20V_25C": 3.382492,
+      "slow_1p08V_125C": 0.424931
+    },
+    "adopted": false,
+    "reason": "Slow TX setup margin 0.424931 ns versus 1.520293 ns for active 256-word banks; retain active mapping with larger setup budget. Physical comparison is not claimed.",
+    "scripts": {
+      "sta512_fast_1p32V_m40C.tcl": "read_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib\nread_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_fast_1p32V_m55C.lib\nread_verilog /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth.netlist.v\nlink_design soc_eth\ncreate_clock -name clk_i -period 20 [get_ports clk_i]\ncreate_clock -name rx_clk_i -period 8 [get_ports rx_clk_i]\ncreate_clock -name tx_clk_i -period 8 [get_ports tx_clk_i]\nset_clock_uncertainty 0.25 [all_clocks]\nset_clock_transition 0.15 [all_clocks]\nset_timing_derate -early 0.95\nset_timing_derate -late 1.05\nforeach src {clk_i rx_clk_i tx_clk_i} {\n foreach dst {clk_i rx_clk_i tx_clk_i} {\n  if {$src ne $dst} {\n   set_max_delay -ignore_clock_latency 8 -from [get_clocks $src] -to [get_clocks $dst]\n   set_false_path -hold -from [get_clocks $src] -to [get_clocks $dst]\n  }\n }\n}\nset_input_delay -clock clk_i -max 4 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock clk_i -min 0.5 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock rx_clk_i -max 3 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_input_delay -clock rx_clk_i -min 0.5 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_output_delay -clock clk_i -max 4 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock clk_i -min -0.5 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock tx_clk_i -max 2.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_output_delay -clock tx_clk_i -min -0.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_load 0.006 [all_outputs]\nreport_checks -path_delay max -group_path_count 3 -format full_clock_expanded -digits 6\nreport_checks -path_delay min -group_path_count 1 -format full_clock_expanded -digits 6\nreport_worst_slack -max\nreport_worst_slack -min\n",
+      "sta512_slow_1p08V_125C.tcl": "read_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib\nread_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_slow_1p08V_125C.lib\nread_verilog /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth.netlist.v\nlink_design soc_eth\ncreate_clock -name clk_i -period 20 [get_ports clk_i]\ncreate_clock -name rx_clk_i -period 8 [get_ports rx_clk_i]\ncreate_clock -name tx_clk_i -period 8 [get_ports tx_clk_i]\nset_clock_uncertainty 0.25 [all_clocks]\nset_clock_transition 0.15 [all_clocks]\nset_timing_derate -early 0.95\nset_timing_derate -late 1.05\nforeach src {clk_i rx_clk_i tx_clk_i} {\n foreach dst {clk_i rx_clk_i tx_clk_i} {\n  if {$src ne $dst} {\n   set_max_delay -ignore_clock_latency 8 -from [get_clocks $src] -to [get_clocks $dst]\n   set_false_path -hold -from [get_clocks $src] -to [get_clocks $dst]\n  }\n }\n}\nset_input_delay -clock clk_i -max 4 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock clk_i -min 0.5 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock rx_clk_i -max 3 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_input_delay -clock rx_clk_i -min 0.5 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_output_delay -clock clk_i -max 4 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock clk_i -min -0.5 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock tx_clk_i -max 2.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_output_delay -clock tx_clk_i -min -0.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_load 0.006 [all_outputs]\nreport_checks -path_delay max -group_path_count 3 -format full_clock_expanded -digits 6\nreport_checks -path_delay min -group_path_count 1 -format full_clock_expanded -digits 6\nreport_worst_slack -max\nreport_worst_slack -min\n",
+      "sta512_typ_1p20V_25C.tcl": "read_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib\nread_liberty /home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_typ_1p20V_25C.lib\nread_verilog /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth.netlist.v\nlink_design soc_eth\ncreate_clock -name clk_i -period 20 [get_ports clk_i]\ncreate_clock -name rx_clk_i -period 8 [get_ports rx_clk_i]\ncreate_clock -name tx_clk_i -period 8 [get_ports tx_clk_i]\nset_clock_uncertainty 0.25 [all_clocks]\nset_clock_transition 0.15 [all_clocks]\nset_timing_derate -early 0.95\nset_timing_derate -late 1.05\nforeach src {clk_i rx_clk_i tx_clk_i} {\n foreach dst {clk_i rx_clk_i tx_clk_i} {\n  if {$src ne $dst} {\n   set_max_delay -ignore_clock_latency 8 -from [get_clocks $src] -to [get_clocks $dst]\n   set_false_path -hold -from [get_clocks $src] -to [get_clocks $dst]\n  }\n }\n}\nset_input_delay -clock clk_i -max 4 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock clk_i -min 0.5 [get_ports {rst_ni psel_i penable_i pwrite_i paddr_i* pwdata_i* pstrb_i* mdio_i}]\nset_input_delay -clock rx_clk_i -max 3 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_input_delay -clock rx_clk_i -min 0.5 [get_ports {rxd_i* rx_dv_i rx_er_i}]\nset_output_delay -clock clk_i -max 4 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock clk_i -min -0.5 [get_ports {prdata_o* pready_o pslverr_o irq_o mdc_o mdio_o mdio_oe_o}]\nset_output_delay -clock tx_clk_i -max 2.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_output_delay -clock tx_clk_i -min -0.5 [get_ports {txd_o* tx_en_o tx_er_o}]\nset_load 0.006 [all_outputs]\nreport_checks -path_delay max -group_path_count 3 -format full_clock_expanded -digits 6\nreport_checks -path_delay min -group_path_count 1 -format full_clock_expanded -digits 6\nreport_worst_slack -max\nreport_worst_slack -min\n"
+    },
+    "sha256": {
+      "hw/soc/out/eth-sram512-probe-20260919/eth.netlist.json": "7c699ec2fbe1766f816a6bff869291b123c0fd53e4485ec820b0558d26d4683b",
+      "hw/soc/out/eth-sram512-probe-20260919/eth.netlist.v": "9da8a9ea11d5b4c757457b38d4e82dec646220c412ad7aa2d70c77478ab698e5",
+      "hw/soc/out/eth-sram512-probe-20260919/eth_ram.lib": "4bb7f78a60bf6a2d05e4ac660a51dc8e35a3cd69ea3028266d3d859216f5151d",
+      "hw/soc/out/eth-sram512-probe-20260919/eth_ram_map.v": "f862e6ff675b948e8b86f1955aff7e8a0965b0ac83cf5a35435bd76e159b62fc",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_fast_1p32V_m40C.log": "27e3d5f42f6ae38603b2fddf9768e0736fd9e31458d4213ce532b6fad4a435b5",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_fast_1p32V_m40C.tcl": "2076791cda62b3165738fbfe2b68d712eac8940a6a837fc1b00ff0ab6edac68d",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_slow_1p08V_125C.log": "f7e5e06c864b56848fe22290d6cc281dd9c3544cfe62628bf3cc4de68117a05c",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_slow_1p08V_125C.tcl": "2448d786a82a8aef67eb93c3ece2934960e7a169901695651ab802661ef5e491",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_typ_1p20V_25C.log": "0932fcd90cd83cb0d6952691f82ea07c3e4e847162e32c6f282524e5364225df",
+      "hw/soc/out/eth-sram512-probe-20260919/sta512_typ_1p20V_25C.tcl": "a0a0a4042922f16486d7431212f607ace8ae0a7fc7f172d6101358dc24193b39",
+      "hw/soc/out/eth-sram512-probe-20260919/synth.log": "a563c83784a094635ad9286b76457e10518fa668f938574dff3f7968ec85d866",
+      "hw/soc/out/eth-sram512-probe-20260919/synth.ys": "2a7652b303693f75b637c5a18bb6411010fb2c6d7298d20fa96bb83f49cf7289"
+    },
+    "mapping_sources": {
+      "synth.ys": "read_liberty -lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib\nread_liberty -lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_typ_1p20V_25C.lib\nread_verilog /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_eth.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh\nsynth -top soc_eth -flatten -run begin:fine\nmemory_libmap -lib /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth_ram.lib\ntechmap -map /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth_ram_map.v\nsynth -top soc_eth -run fine\nselect -assert-count 8 t:RM_IHPSG13_2P_512x16_c2_bm_bist\ndfflibmap -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib\nabc -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib\nsetundef -zero\nclean\ncheck -assert\nstat -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_typ_1p20V_25C.lib\nwrite_verilog -noattr /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth.netlist.v\nwrite_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-sram512-probe-20260919/eth.netlist.json\n",
+      "eth_ram.lib": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: CERN-OHL-W-2.0\nram block $__SOC_ETH_RAM_ {\n    abits 9;\n    width 16;\n    cost 64;\n    init none;\n    port sw \"W\" { clock posedge; }\n    port sr \"R\" { clock posedge; rden; }\n}\n",
+      "eth_ram_map.v": "// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n// SPDX-License-Identifier: CERN-OHL-W-2.0\nmodule $__SOC_ETH_RAM_ (\n    input PORT_W_CLK, PORT_W_WR_EN,\n    input [8:0] PORT_W_ADDR,\n    input [15:0] PORT_W_WR_DATA,\n    input PORT_R_CLK, PORT_R_RD_EN,\n    input [8:0] PORT_R_ADDR,\n    output [15:0] PORT_R_RD_DATA\n);\nRM_IHPSG13_2P_512x16_c2_bm_bist _TECHMAP_REPLACE_ (\n    .A_CLK(PORT_W_CLK), .A_MEN(PORT_W_WR_EN), .A_WEN(PORT_W_WR_EN), .A_REN(1'b0),\n    .A_ADDR(PORT_W_ADDR), .A_DIN(PORT_W_WR_DATA), .A_BM(16'hffff), .A_DLY(1'b0), .A_DOUT(),\n    .A_BIST_CLK(1'b0), .A_BIST_EN(1'b0), .A_BIST_MEN(1'b0), .A_BIST_WEN(1'b0),\n    .A_BIST_REN(1'b0), .A_BIST_ADDR(9'b0), .A_BIST_DIN(16'b0), .A_BIST_BM(16'b0),\n    .B_CLK(PORT_R_CLK), .B_MEN(PORT_R_RD_EN), .B_REN(PORT_R_RD_EN), .B_WEN(1'b0),\n    .B_ADDR(PORT_R_ADDR), .B_DIN(16'b0), .B_BM(16'b0), .B_DLY(1'b0), .B_DOUT(PORT_R_RD_DATA),\n    .B_BIST_CLK(1'b0), .B_BIST_EN(1'b0), .B_BIST_MEN(1'b0), .B_BIST_WEN(1'b0),\n    .B_BIST_REN(1'b0), .B_BIST_ADDR(9'b0), .B_BIST_DIN(16'b0), .B_BIST_BM(16'b0)\n);\nendmodule\n"
+    }
   }
 }

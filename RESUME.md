@@ -131,3 +131,30 @@ iptal edildi; onu sürdürmeyin. Ayrıntılar docs/88, 89, 90 ve kanıtlardadır
   `/home/hasanmelih/Documents/gt2n-soc/tools/oss-cad-suite`.
 - Komut/path sözleşmeleri: `tools.soc.mk printvars`.
 
+
+## 19 Eylül: kullanıcı devam ettirdi
+
+Önceki durdurma kaydı tarihseldir. Çalışma yeniden başlatıldı; 23 hash doğrulandı.
+Son gönderilen commit `e2193ec`; ek ölçüm kayıtları henüz commit edilmedi.
+Yeni temiz klon: `fresh-clone-resume-e2193ec`, 612 başarılı / 34 atlanan test,
+16 başarılı / 0 başarısız / 7 atlanan ön kapı kontrolü.
+
+- Ana fiziksel aday: `interfaces-eth256-resume-20260919-184950`. Post-GRT timing repair sürüyor.
+- BAŞARISIZ optimizasyon deneyi: `interfaces-eth256-repairs4-20260919-191325`. OpenROAD SizeUpMove assertion
+  ile durdu; state_out oluşmadı, bu adayı sürdürmeyin. Aynı post-antenna ODB girdisi ve aynı
+  resolved configuration; yalnız setup optimizasyonunda `-max_iterations 120`
+  ve `-max_repairs_per_pass 4`. Deney yalnız onarım adımını hedefliyordu fakat çöktü;
+  tamamlanmış fiziksel doğrulama değildir. Ana adayın sınırı 600'dür.
+- Deney sürücüsü: `hw/soc/out/external-review-20260919/repair_experiment.py`.
+- İki log da `hw/soc/out/external-review-20260919/<run-tag>.log` altında.
+- Devam etmeden süreçleri ve bu iki run'ın en yeni `state_out.json` dosyasını
+  kontrol edin; eski aşama 30'u körlemesine tekrar başlatmayın.
+
+Önemli tanı düzeltmesi: bağımsız STA'da yalnız `_env.tcl` yüklemek yeterli değil.
+Native süreç `_LAYER_RC_*`, `_VIA_R_*`, `_LIB_CORNER_*`, `_SDC_IN` gibi hazırlanmış
+model değişkenleri de alır. Eksik özel RC ile ölçülen -0.72 ns slow setup,
+native değerlerle aynı ODB'de -6.66 ns oldu. Kaydedilmiş global routes mevcut;
+sorun onların eksikliği değildi. Ayrıntı `docs/evidence/timing-replay-20260919.json`.
+Önceki `eth256-postcts-probe-20260919` özel probu da native RC'yi taşımadığı için
+native timing sonucu olarak kullanılmamalı. Yerel akışın kendi raporları ve
+son extracted STA esas alınacak. Kısıtlar gevşetilmedi.

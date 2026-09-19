@@ -144,3 +144,42 @@ whole-SoC synthesis input inventory and the first candidate's native post-CTS
 metrics are in [the SRAM comparison record](evidence/ethernet-sram256-20260919.json).
 The new physical run is `interfaces-eth256-20260919`; its completion and
 extracted timing must be reported separately from the setup-only comparison.
+
+## Restart and timing-replay correction
+
+The checkpoint resumed into `interfaces-eth256-resume-20260919-184950`.
+The original post-CTS design is retained; global routing and antenna repair
+ran on the resumed candidate. Final detailed routing and extracted timing
+remain pending at this update.
+
+**Diagnostic correction, 2026-09-19:** an independent read-only timing probe
+initially reported slow setup **−0.721402 ns** on the post-GRT design-repair
+ODB. It loaded the same Liberty models and SDC but omitted the native process's
+`_LAYER_RC_*` and `_VIA_R_*` environment entries, silently using tech-LEF wire
+RC defaults. This is **not comparable with the native flow**. Sourcing a step's
+`_env.tcl` alone did not reproduce its complete timing environment.
+
+Repeating that probe on the **same ODB**, with the native layer/via overrides,
+measured **−6.660567 ns** slow setup. The ODB has saved global routes; their
+absence was checked and rejected as the explanation. Neither probe is final
+extracted STA, and neither changes the ongoing repair run. The corrected
+comparison, exact scripts, model environment and artifact hashes are in
+[the replay record](evidence/timing-replay-20260919.json). The earlier ideal-clock,
+no-wire-RC SRAM comparison above has a different, explicitly pre-layout scope.
+
+A separate optimizer experiment used the identical post-antenna input state
+and identical resolved configuration, changing only the setup search to
+120 iterations and four repairs per pass. OpenROAD 26Q1-2938-g0e2d771c5e
+aborted in `rsz::SizeUpMove::doMove` with a C++ vector bounds assertion. It
+produced **no completed output state** and is rejected. The baseline flow and
+its default one-repair-per-pass policy remain unchanged. The failed trial's
+script, configuration identity and error are retained in the replay record.
+
+A subsequent standalone **512-word-bank** comparison maps the same FIFO
+capacity to **8 macros, 2593 cells and 510 flip-flops**, with combined
+cell/macro area **754922.4916 um2**. Using the same ideal-clock budgets, TX setup
+margin is +5.043968 ns fast, +3.382492 ns typical and **+0.424931 ns slow**.
+Its smaller area trades away 1.095362 ns of the active 256-word mapping's
+slow setup margin, so it was **not adopted**. This is a synthesis/STA experiment;
+no routed result or packet-regression success is claimed for the 512-word
+candidate. Scripts and hashes are appended to the SRAM comparison record.
