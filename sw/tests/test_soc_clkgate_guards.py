@@ -135,7 +135,12 @@ def test_nothing_in_the_design_selects_the_ungated_configuration():
         "the RTL selects the ungated configuration somewhere: {}".format(
             offenders))
 
-    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
+    # The interface reproduction profile pins the normal gated build; it
+    # cannot inherit an ungated experiment from the caller's environment.
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    assert re.search(r"\bSOC_CLKGATE=1\b", profile)
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh",
+               "implement_interfaces.sh"}
     setters = set()
     for p in sorted(SOC_FLOW.glob("*.sh")):
         if re.search(r"SOC_CLKGATE", p.read_text()):
@@ -543,8 +548,8 @@ def test_wake_gnt_defaults_off_and_is_forwarded():
 
 
 def test_nothing_in_the_design_selects_the_wake_qualified_grant():
-    """Only the three flow scripts that carry SOC_CLKGATE may carry
-    SOC_WAKE_GNT, and nothing in the RTL sets the parameter itself."""
+    """Only the flow scripts and the explicitly pinned reproduction profile
+    may carry SOC_WAKE_GNT; nothing in the RTL sets the parameter itself."""
     offenders = []
     for p in sorted(SOC_RTL.glob("*.v")) + sorted(SOC_RTL.glob("*.vh")):
         text = p.read_text()
@@ -556,7 +561,10 @@ def test_nothing_in_the_design_selects_the_wake_qualified_grant():
     assert not offenders, (
         "the RTL selects the wakefulness-qualified grant somewhere: "
         "{}".format(offenders))
-    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    assert re.search(r"\bSOC_WAKE_GNT=0\b", profile)
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh",
+               "implement_interfaces.sh"}
     setters = {p.name for p in sorted(SOC_FLOW.glob("*.sh"))
                if re.search(r"SOC_WAKE_GNT", p.read_text())}
     assert setters <= allowed, (
