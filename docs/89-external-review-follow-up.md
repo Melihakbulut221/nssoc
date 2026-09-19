@@ -257,3 +257,25 @@ DEF/netlist/run trees. A prepared checkout below the numeric skip threshold
 does not meet the requirement that every remaining skip be tool/PDK absence.
 The full review and product acceptance inventory is in
 [docs/92](92-product-acceptance.md).
+
+### F2: requested cocotb method now exercised
+
+2026-09-19. The earlier whole-CPU C/Verilog crash demonstration is now also
+observed by `hw/soc/tb/integration/test_crash_recovery.py`. The existing firmware
+provokes the actual double fault; cocotb observes it, waits through the watchdog
+reset, then checks two accepted APB reads of `BOOTREG.CRASH` and the attempted
+`0xdeadbeef` write between them. The returned PC is `0xff9fe000` both times.
+No crash input, stored PC or APB response is forced. The register-map suite
+also passes. Commands, counts, simulator time and file identities are in the
+[crash cocotb record](evidence/crash-cocotb-20260919.json).
+
+The first observer incorrectly sampled a combinational delta-cycle transition
+as a synchronous fault and failed with PC `0x1d0`. Its log and XML are retained;
+the corrected observer samples a settled half-cycle with the fault signal
+still high. This changed the test, not the RTL. The earlier checklist's method
+gap is now closed by a measured **one-test PASS, zero failures and skips**.
+The separate C/Verilog test still checks complete firmware termination.
+
+`make soc-crash-cocotb` builds and runs both checks. CI invokes the observer
+after its existing whole-CPU crash program and retains the cocotb result.
+The original register cost in docs/86 is unchanged: this addition is a test.

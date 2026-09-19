@@ -144,7 +144,7 @@ jobs:
         run: |
           echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
           python3 -m venv .venv
-          .venv/bin/pip install -r sw/requirements.txt
+          .venv/bin/pip install -r sw/requirements.txt -r hw/requirements.txt
           make soc-prepare
       - name: Prepared upstream compatibility and whole-SoC elaboration
         run: make soc-prepared-guards
@@ -167,6 +167,11 @@ jobs:
           SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
             SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault \
             bash hw/soc/flow/sim_soc.sh hw/soc/out/crash-demo
+      - name: Observe CPU double-fault recovery through APB with cocotb
+        run: |
+          COCOTB_CONFIG="$PWD/.venv/bin/cocotb-config" \
+            COCOTB_PYTHON="$PWD/.venv/bin/python" \
+            bash scripts/check_soc_crash_cocotb.sh hw/soc/out/crash-demo
       - name: Boot geometry proof and counterexamples
         run: |
           curl -fLsS --retry 3 -o hw/soc/tools/cbmc.deb https://github.com/diffblue/cbmc/releases/download/cbmc-6.11.0/ubuntu-22.04-cbmc-6.11.0-Linux.deb
@@ -189,6 +194,7 @@ jobs:
             hw/soc/out/boot-geometry/
             hw/soc/out/apb-timeout-demo/sim.log
             hw/soc/out/crash-demo/sim.log
+            hw/soc/out/crash-demo/crash-cocotb*
             hw/soc/out/ethernet-demo/sim.log
             hw/soc/formal/soc_busstat_*/status
             hw/soc/formal/soc_apb_bridge_*/status

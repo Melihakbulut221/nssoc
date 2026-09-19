@@ -7,13 +7,14 @@ PYTHON ?= python3
 PY := $(ROOT)/.venv/bin/python
 CBMC ?= $(ROOT)/hw/soc/tools/cbmc/usr/bin/cbmc
 
-.PHONY: help setup test rtl-test check soc-prepare soc-rtl-prepare soc-prepared-guards soc-sim soc-boot-regression rf-contract rf-equivalence boot-proof
+.PHONY: help setup test rtl-test check soc-prepare soc-rtl-prepare soc-prepared-guards soc-crash-cocotb soc-sim soc-boot-regression rf-contract rf-equivalence boot-proof
 help:
 	@echo 'make setup PYTHON=/usr/bin/python3  Python 3.9-3.13 environments'
 	@echo 'make test / rtl-test / check       Python, RTL, or local CI'
 	@echo 'make soc-prepare / soc-sim         Fetch pinned Ibex/tools, then boot the SoC'
 	@echo 'make soc-rtl-prepare              Fetch and generate processor/interface RTL only'
 	@echo 'make soc-prepared-guards          Check prepared upstream ports and SoC elaboration'
+	@echo 'make soc-crash-cocotb             CPU double-fault/reset/APB retention test'
 	@echo 'make soc-boot-regression           Normal boot and both geometry fallbacks'
 	@echo 'make rf-contract / rf-equivalence  Real-codec proofs (set OSS_CAD_SUITE)'
 	@echo 'make boot-proof CBMC=/path/to/cbmc  Check the ROM geometry predicate'
@@ -62,6 +63,13 @@ soc-prepared-guards:
 
 soc-sim:
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" bash hw/soc/flow/sim_soc.sh
+
+SOC_CRASH_BUILD ?= $(ROOT)/hw/soc/out/crash-cocotb
+soc-crash-cocotb:
+	SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+	  SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault \
+	  bash $(ROOT)/hw/soc/flow/sim_soc.sh $(SOC_CRASH_BUILD)
+	bash $(ROOT)/scripts/check_soc_crash_cocotb.sh $(SOC_CRASH_BUILD)
 
 soc-boot-regression:
 	bash $(ROOT)/scripts/check_soc_boot.sh

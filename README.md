@@ -27,6 +27,8 @@ dependencies and their absence still produces explicit skips in the full suite.
 
 For the whole-SoC boot simulation, run `make soc-prepare` and then
 `make soc-sim OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite`.
+`make soc-crash-cocotb` exercises a CPU double fault, watchdog reboot and
+retained-PC reads through APB using the cocotb environment from `make setup`.
 The additional real-codec proofs are `make rf-contract` and
 `make rf-equivalence` with the same toolchain setting. The boot range
 proof is `make boot-proof CBMC=/absolute/path/to/cbmc`.
