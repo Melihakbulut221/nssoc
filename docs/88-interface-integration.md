@@ -140,7 +140,7 @@ The CPU run with full ECC RAM/ROM, `MEM_RDREG=1`, `REQ_REG=1` and register-file
 fault-free upstream register-file equivalence tasks (both SYNPRE settings, with
 and without scrub) prove by induction. The full RTL sweep on GitHub reports
 **471 passed, 0 failed, 15 explicitly skipped**, including all eleven final
-interface tests (run `35436883155`, source commit `4ef4491`).
+interface tests (run `35446249180`, source commit `ed79766`).
 
 `SW_DEFINES=-DINTERFACE_DEMO` adds check 31 to the real Ibex firmware. The SoC
 board model loops SPI and SpaceWire at the pins, resolves the I2C open-drain
@@ -160,13 +160,15 @@ The final mapped netlist has 61,991 cells, including 8,820 resettable flip-flops
 three clock gates and eight SRAM macros. Yosys reports 977,098.6638 um² of
 standard-cell area; that figure excludes the SRAM macro areas.
 
-`interface_flow.py` preserves Classic's entire step list and its checker
-configuration, adding only `-max_iterations 600` to setup repair after CTS
+`interface_flow.py` preserves Classic's entire step list and checker
+thresholds, adding `-max_iterations 600` to setup repair after CTS
 and global routing. The installed OpenROAD otherwise allows unlimited setup
 iterations: the first attempt repeatedly returned to the same -0.501 ns
 placement estimate after iteration 330. The bound limits optimization effort;
 it does not waive timing failures, relax the 20 ns clock, or narrow the checked
-corners. The generated Tcl is saved in each resizer step's directory.
+corners. This native parameter is not a global limit on wall time or the total
+printed iteration count across internal searches. The generated Tcl is saved
+in each resizer step's directory.
 
 The first global route at the inherited 30% capacity reserve failed with
 20 Metal5 overflows. Reusing the same post-CTS placement with a 20% reserve
@@ -174,6 +176,80 @@ produced **zero global overflow on every layer**, routing 83,881 nets
 (`interfaces-route20-20260919`). The selected profile records that reserve.
 `GRT_ALLOW_CONGESTION` remains false. This global-route result does not replace
 detailed-routing DRC, final extracted timing, or the separate physical decks.
+
+### Routed implementation and extracted timing
+
+The final antenna correction is `interfaces-antfinal-20260919`, resumed from
+`interfaces-route20-20260919/10-openroad-checkantennas-1/state_out.json`.
+The parent had one Metal3 antenna violation on `net3121`, at `_058330_/B1`
+(PAR 296.62 against 200). Native repair with a 25% margin inserted five
+diodes; detailed routing then finished with **zero router DRC errors**, and
+the subsequent antenna check measured **zero violating nets and pins**.
+This run preserves the already completed post-global-route timing repair
+instead of repeating it. It does not disable the final timing checks.
+
+Fresh extracted STA from `14-openroad-stapostpnr` retains the 20 ns clock,
+0.25 ns uncertainty and 5% timing derates:
+
+| Corner | Setup worst slack (ns) | Hold worst slack (ns) | Setup / hold violations | Slew / cap violations |
+|---|---:|---:|---:|---:|
+| fast, 1.32 V, −40 °C | +8.591611 | −0.253600 | 0 / 16 | 19 / 65 |
+| typical, 1.20 V, 25 °C | +3.809705 | −0.043042 | 0 / 3 | 37 / 64 |
+| slow, 1.08 V, 125 °C | −5.774160 | +0.320549 | 2102 / 0 | 336 / 62 |
+
+**The 50 MHz target fails.** Hold also fails and cannot be repaired simply
+by lowering the clock frequency. Zero routing/antenna errors do not close
+these electrical or timing failures. The independent decks below are a
+separate verification scope, and this implementation is not tapeout-ready.
+
+Two alternatives were measured without being substituted into this result.
+Enabling Ibex's writeback stage failed the real-CPU timer check, so the
+supported RTL retains `WritebackStage=0`. A repeated native post-global-route
+electrical repair improved the slow-corner setup estimate from −8.54415 to
+−4.41091 ns, but still left 54 slew and 12 cap violations; that estimate
+does not replace extracted timing for a completed layout.
+A subsequent setup-repair study still oscillated near −3.05 ns after more than
+1,000 internal iterations and was stopped without adopting its output.
+
+The final views are saved under
+`hw/soc/pnr/runs/interfaces-export2-20260919/final/`. This continuation retained
+the antenna-clean layout and exited **2** on the four enabled timing/electrical
+checker failures. A saved GDS is therefore not a successful physical signoff.
+The layout has 244,253 placed instances: 87,744 non-fill standard cells,
+156,501 fill cells and eight SRAM macros. There are 1,717 antenna cells within
+the standard-cell count and zero disconnected pins.
+
+The separate `interfaces-lvs-20260919` run reports **Circuits match uniquely**,
+with **all seven LVS counters zero**. Both circuits contain 87,756 devices
+and 86,414 nets. This compares Magic's DEF/LEF-derived SPICE with the routed
+powered netlist, checking standard-cell and macro-pin connectivity. Vendor
+SRAM interiors are black boxes; this is not a transistor-level SRAM comparison.
+
+`interfaces-kdrc-20260919` exits **2** with **11,048** KLayout DRC markers:
+`Cnt.c.digibnd` 2,120, `Sdiod.d` 4,464 and `Sdiod.e` 4,464. The last two have
+identical `(cell, geometry)` sets, giving **6,584 distinct report-cell/geometry
+pairs** overall. These are hierarchical report coordinates, not flattened
+occurrence counts across every macro instance.
+All 204 report cells map to the 260 cell names read from the three declared
+vendor SRAM GDS files, after removing KLayout's orientation suffixes. There
+are **zero markers in other cells**. These are still errors, not waivers.
+`classify_klayout_drc.py` reproduces the attribution and refuses a report whose
+marker count disagrees with the native metric; a deliberately corrupted count
+was rejected without writing a result.
+
+The independent Magic DEF/LEF DRC run is still in progress at this record's
+checkpoint; no final Magic error count is claimed here. XOR, KLayout and LVS
+above have completed on the same geometry. The checked-in native metrics and
+resolved configurations are under `docs/evidence/`; the consolidated record
+is [interfaces-20260919.json](evidence/interfaces-20260919.json).
+
+![Measured interface-SoC placement](img/interfaces-layout.svg)
+
+This map is generated from the final DEF and the run's LEFs; all **18** geometry
+and native metric cross-checks pass. Gold rectangles are SRAM footprints, and
+teal shows logic-cell density. Synthesis flattened the logic, so no invented
+CPU or peripheral region boundaries are drawn. The separate
+[actual KLayout GDS rendering](img/interfaces-gds.png) shows the routed geometry.
 
 
 ## Reproduction
@@ -186,11 +262,53 @@ make soc-interfaces-sim
 export OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite
 make rf-equivalence
 make soc-interfaces-layout RUN_TAG=interfaces-reproduction
+# After stream-out, use the last numbered step's state_out.json:
+make soc-interfaces-decks RUN_TAG=interfaces-decks STATE=/absolute/path/to/state_out.json
+# Attribute a completed KLayout run without suppressing any marker:
+klayout -b -r hw/soc/pnr/classify_klayout_drc.py \
+  -rd run=/absolute/path/to/run -rd output=/absolute/path/to/classification.json
 ```
 
 The layout command requires the same rootless LibreLane, OpenROAD shims and
 pinned IHP PDK as the existing SoC flow. It refuses to overwrite its synthesis
 output, snapshots the RTL input hashes, binds them to the mapped netlist hash,
-and keeps the physical log under `hw/soc/out/<tag>/layout.log`. Macro-internal DRC/LVS is disabled in the inherited configuration because
-of the recorded vendor SRAM problem; this flow does not provide SRAM signoff. The wrappers and the new peripheral control state are not
-radiation-hardened replicas.
+and keeps the physical log under `hw/soc/out/<tag>/layout.log`. The P&R wrapper
+now creates a unique resolved-config snapshot for every invocation; simultaneous
+variants could previously overwrite `config.resolved.json` before the other
+process read it. A concurrent preparation check with two different profiles
+verified separate outputs and exact preservation of both input configurations.
+The interface helpers also give each run its own seed state. The inherited
+main profile disables the independent Magic/KLayout DRC, XOR and Netgen LVS
+steps because of the recorded vendor SRAM problem. Router DRC is still enabled,
+but does not replace those decks. Any separate deck runs must be reported with
+their own scope; this profile does not provide SRAM signoff. The wrappers and
+the new peripheral control state are not radiation-hardened replicas.
+
+New runs retain detailed-router DRC markers after every iteration via
+`DRT_SAVE_DRC_REPORT_ITERS=1`. The recorded `interfaces-route20-20260919` run
+started before this reporting-only addition; its immutable `resolved.json`
+records the settings actually used. Clock, routing effort and checker gates
+are unchanged by this reporting option.
+
+The selected profile also omits the optional abstract top-level LEF export.
+The superseded parent run exceeded 10 GB RSS in that export; both actual GDS
+streams had already completed. `interface_flow.py` ties the corresponding
+informational LEF antenna-metadata warning to `RUN_MAGIC_WRITE_LEF`, because
+LibreLane 3.0.5 otherwise requests a nonexistent LEF. The routed-design antenna
+check and all final timing checkers remain enabled. The delivered views are
+GDS/DEF/database/netlists, not an abstract LEF for embedding this chip as a macro.
+
+The independent-decks command refuses to overwrite a run, checks that the
+input layout matches this floorplan and clock, and hashes its DEF, database,
+netlist and both GDS streams. It enables Magic/KLayout DRC, GDS XOR and Netgen
+LVS while retaining checker thresholds. Magic DRC uses the DEF/LEF view;
+KLayout DRC evaluates the complete GDS with the unmodified PDK deck, in
+`deep` mode with `no_recommended=true`: the pinned PDK's default excludes
+optional recommended rules. No failing category is waived. The
+abstracted Magic view follows the existing eight-macro verification recipe
+in docs/67; it does not claim to check SRAM interiors. Removing the vendor SRAM CDL models
+limits LVS to standard-cell and macro-pin connectivity. Extraction uses the
+DEF/LEF view (`MAGIC_EXT_USE_GDS=false`), as in the existing
+`config-lvs-ecc-rom.json` recipe. Failures remain nonzero exits; a vendor-deck
+failure is not converted to a passing result. Input hashes and the full log
+are retained under `hw/soc/out/<deck-run-tag>/`.

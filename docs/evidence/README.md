@@ -24,10 +24,10 @@ needs one of them is still a skip, and the skip message names the
 digest in `docs/80-artefact-digests.tsv` that the absent file would
 have to match.
 
-These files are tracked by git. `docs/80-artefact-digests.tsv` pins ignored
-build artifacts, not a second copy of the tracked records. On a machine
-holding the runs, `sw/tests/test_recorded_evidence.py` compares the records
-with their original outputs.
+Git versions these records. Where the original run tree is available,
+`test_recorded_evidence.py` compares its files with the recorded copies.
+The new interface run's larger local artifacts are pinned separately in
+`interfaces-20260919.json`; the older inventory remains in `docs/80`.
 
 `closure-20260919.json` is a separate software/RTL verification
 record for `docs/87-engineering-closure.md`: formal verdicts, source hashes,
@@ -38,6 +38,9 @@ Reading this record is not a re-execution of those commands.
 |---|---|---|
 | `full3` | `hw/soc/pnr/runs` | the first whole-SoC layout |
 | `g0gates2` | `hw/openlane/aer_fifo/runs` | ROADMAP gate G0's evidence run |
+| `interfaces-export2-20260919` | `hw/soc/pnr/runs` | four-interface routed layout; extracted timing and electrical checks FAIL |
+| `interfaces-kdrc-20260919` | `hw/soc/pnr/runs` | complete-GDS KLayout deck; 11048 vendor-cell markers, FAIL |
+| `interfaces-lvs-20260919` | `hw/soc/pnr/runs` | DEF/LEF-derived connectivity LVS; SRAM interiors black-boxed, PASS |
 | `npu2` | `hw/soc/pnr/runs` | the accelerator's own layout |
 | `s71boot` | `hw/soc/pnr/runs` | the boot-hardened six-macro layout |
 | `s77gate` | `hw/soc/pnr/runs` | the gate-level clock-gating run |

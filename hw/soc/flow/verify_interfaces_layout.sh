@@ -49,14 +49,16 @@ for key in ('odb', 'def', 'nl', 'pnl', 'gds', 'mag_gds', 'klayout_gds'):
     artifacts[key] = {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
 config.update(RUN_MAGIC_DRC=True, RUN_KLAYOUT_DRC=True,
               RUN_KLAYOUT_XOR=True, RUN_LVS=True, MAGIC_DRC_USE_GDS=False,
+              MAGIC_EXT_USE_GDS=False,
               KLAYOUT_DRC_OPTIONS={'run_mode': 'deep', 'no_recommended': True})
 config.pop('EXTRA_SPICE_MODELS', None)
 config.pop('//lvs', None)
 config['//interface_decks'] = (
     'Magic DRC uses the DEF/LEF view; KLayout DRC evaluates the complete GDS '
     'with the unmodified PDK deck in deep mode, optional recommended rules off. '
-    'XOR compares both GDS streams. LVS compares standard cells and every macro '
-    'pin, but excludes vendor SRAM interiors by omitting their CDL models. '
+    'XOR compares both GDS streams. LVS compares DEF/LEF-derived SPICE with '
+    'the routed powered netlist: standard cells and every macro pin, excluding '
+    'vendor SRAM interiors by omitting their CDL models. '
     'No checker or timing constraint is relaxed.')
 out.mkdir(parents=True)
 config_path.write_text(json.dumps(config, indent=4) + '\n')
@@ -66,7 +68,7 @@ config_path.write_text(json.dumps(config, indent=4) + '\n')
     'profile_sha256': hashlib.sha256(profile.read_bytes()).hexdigest(),
     'artifacts': artifacts,
     'drc_scope': {'magic': 'DEF/LEF view', 'klayout': 'complete GDS, unmodified PDK deck; deep mode, optional recommended rules off'},
-    'lvs_scope': 'standard-cell connectivity and macro pin connectivity; SRAM interiors black-boxed',
+    'lvs_scope': 'DEF/LEF-derived SPICE versus routed powered netlist; standard-cell and macro pin connectivity; SRAM interiors black-boxed',
 }, indent=2) + '\n')
 (out / 'input-netlist.txt').write_text(str(Path(state['nl']).resolve()) + '\n')
 PY

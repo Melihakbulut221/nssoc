@@ -169,6 +169,12 @@ that regenerate them are in that file's docstring and in
   flash (`docs/66-qspi-flash-controller.md`); the execute-in-place
   windows stay reserved and that document says why. SpaceWire, CAN,
   SPI and I2C remain unbuilt.
+  *Superseded 2026-09-19:* all four now have RTL, APB, pin and interrupt
+  integration, pin-level tests and a routed GDS (`docs/88-interface-integration.md`).
+  The scope is SpaceWire PIO, classical CAN 2.0B, SPI and single-controller I2C.
+  PCI/PCIe, Ethernet and SpaceWire DMA/router remain absent. The new layout
+  passes router DRC, antenna and disconnected-pin checks but fails extracted timing at
+  50 MHz; neither these controllers nor the full chip are silicon-qualified.
 - **No SRAM macro in any hardened design.** Every result above is
   flip-flop RAM. The RM_IHPSG13 macro study is in
   `docs/12-sg13g2-flow-bringup.md`.
