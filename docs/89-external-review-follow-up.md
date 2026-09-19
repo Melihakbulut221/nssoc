@@ -339,3 +339,16 @@ suite gate passed. The ledger records `tree-dirty=0`; its prior failed
 binds the full revision, exact ledger row and log hash. These are gate counts,
 not pytest test counts. The seven skips and missing historical F6 artifacts
 remain outside the passing result, and physical signoff is a separate gate.
+
+### Hosted execution completed, 2026-09-20
+
+Both `c02aa79` [push](https://github.com/Melihakbulut221/nssoc/actions/runs/35469632101)
+and [PR](https://github.com/Melihakbulut221/nssoc/actions/runs/35469634120)
+workflows completed successfully: `checks`, `rtl`, and `formal-and-boot`.
+The RTL aggregate is **479 passed, zero failed, 15 skipped**. The whole-CPU
+cocotb crash observer passes (**one pass, zero failures/skips**, 3,172,635 ns,
+197.60 s wall time), and normal boot plus both geometry-fallback cases each
+pass **28 application checks**. The [record](evidence/github-ci-c02aa79-20260920.json)
+binds both job results and the downloaded PR log. This supersedes the earlier
+pending status for this revision without erasing the preceding failed runs.
+These jobs do not perform full physical signoff.
