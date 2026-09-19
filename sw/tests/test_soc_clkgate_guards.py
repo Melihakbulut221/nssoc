@@ -54,8 +54,9 @@ Four classes of check:
      gated nets rather than on `clk_i_regs`. `docs/33` is the record of
      what a header claim without a census is worth, and `docs/75` is the
      record of a census that counted the right number of the wrong thing.
-     The netlist half skips when no build output is present, exactly as
-     `sw/tests/test_flow_evidence.py` does.
+     Added 2026-09-20: the netlist count always audits the recorded Ethernet
+     baseline, as well as retained historical clock-gate builds. This checks
+     the recorded graph without requiring a new synthesis or a local PDK.
 
 Run with the repository-root suite::
 
@@ -70,6 +71,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+from evidence import recorded_netlist
 
 ROOT = Path(__file__).resolve().parents[2]
 SOC_RTL = ROOT / "hw" / "soc" / "rtl"
@@ -276,8 +278,9 @@ def _netlists():
     return found
 
 
-@pytest.mark.parametrize("nl", _netlists() or [None])
-def test_three_integrated_clock_gates_survive_synthesis(nl):
+@pytest.mark.parametrize("nl", _netlists() + [
+    pytest.param(None, id="recorded-ethernet-baseline")])
+def test_three_integrated_clock_gates_survive_synthesis(nl, tmp_path):
     """The count, on the netlist rather than in the header.
 
     docs/57 found the first gate by grepping the signed-off netlist for
@@ -285,8 +288,8 @@ def test_three_integrated_clock_gates_survive_synthesis(nl):
     none. This is that grep, kept as a test.
     """
     if nl is None:
-        pytest.skip("no hw/soc/out/s76*gate netlist in this tree; "
-                    "SOC_MEM=sram hw/soc/flow/syn_soc_top.sh 20 <out> builds one")
+        nl = recorded_netlist(
+            ROOT / "docs/evidence/ethernet-netlist-20260920.json", tmp_path, ROOT)
     text = nl.read_text()
     names = sorted(re.findall(r"sg13g2_lgcp_1\s+\\(\S+)", text))
     assert len(names) == 3, (

@@ -296,3 +296,39 @@ overlaps**. The [record](evidence/ethernet-lvs-20260920.json) contains the
 command and hashed inputs/reports. SRAM interiors are black boxes; standard
 cells and every macro pin are compared. This result does not cover the later
 antenna-repaired or timing-ECO candidates and does not close DRC or timing.
+
+### ECO2 native extracted follow-up, 2026-09-20
+
+`eth256-eco2-route-20260920` completed routing, native extraction, three
+separate STA corner processes, both GDS streams and rendering. Its command,
+input inventory, artifact hashes and full metrics are in the
+[ECO2 record](evidence/ethernet-eco2-extracted-20260920.json). The clock and
+I/O constraints are unchanged. This is still a **failing candidate**.
+
+| Corner | Setup worst slack (ns) | Hold worst slack (ns) | Setup violations | Cap / slew violations |
+|---|---:|---:|---:|---:|
+| fast | +3.266211 | +0.007986 | 0 | 15 / 4 |
+| typical | +2.325380 | +0.123994 | 0 | 15 / 5 |
+| slow | -1.063485 | +0.272884 | 328 | 15 / 89 |
+
+All corners have zero hold violations. Slow setup TNS is -115.755465 ns;
+327 of its 328 setup violations are register-to-register. Each corner also
+reports 892 max-fanout violations. Native detailed-router DRC and the
+subsequent independent antenna check both report zero; critical disconnected
+pins are zero, with 256 unused SRAM output pins still counted separately.
+All ten GMII TX data/control ports appear and meet the stated max/min budgets
+in all three native reports. The final design retains 24 SRAMs and 9,352
+flip-flops. These are core-level measurements, not PHY/pad/package tests.
+
+An exact comparison against the ECO2 input netlist found no removed or
+modified original instance, pin, port or assign. Routing added 523 antenna
+cells plus 255,127 filler/decap cells. This check preserves the logic but is
+not an independent extracted LVS verdict. The original baseline's independent
+DRC/LVS/XOR results do not apply to this modified geometry. The small positive
+fast hold slack is the measured value; it is not a new guard-band guarantee.
+
+The following independent `eth256-eco2-lvs-20260920` check **matches uniquely**:
+95,044 devices and 94,244 nets on each side; all seven LVS counters and the
+illegal-overlap counter are zero. Its [record](evidence/ethernet-eco2-lvs-20260920.json)
+binds the same ECO2 DEF and powered netlist. SRAM interiors remain black boxes.
+This closes this candidate's scoped LVS check; it does not close timing or DRC.

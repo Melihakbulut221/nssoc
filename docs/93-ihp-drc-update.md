@@ -101,3 +101,51 @@ KLayout checks also remain independent measurements. The original layout's
 remain unchanged. A timing ECO needs its own final extraction, streams and
 decks. This experiment does not qualify pads, packaging, analog PHYs, memory
 transistor LVS, radiation behaviour or silicon manufacturing.
+
+## Full original SoC result, 2026-09-20
+
+The complete `interfaces-eth256-resume-20260919-184950` GDS now passes the same
+unchanged upstream **main KLayout rules with zero markers**, exit zero, in
+5,013.69 seconds. FEOL, BEOL, offgrid, angle, pin, forbidden and connectivity
+checks are enabled; optional recommended checks remain off. The
+[full-chip record](evidence/ihp-full-chip-drc-20260920.json) pins the GDS,
+report, log, command and runtime rule files. This is the original 24-SRAM
+geometry, not a later timing ECO. Magic and setup/hold remain independent
+requirements; the installed PDK has not been migrated or modified.
+
+**Thread-control correction, 2026-09-20:** the earlier commands passed
+`-rd thr=2`, but this upstream revision reads `$threads`. Its run log shows
+**20 tiling threads**, not two. The resource-control argument was ineffective;
+the selected rules and measured markers are unchanged. The wrapper now sends
+`-rd threads=2`. Earlier command records remain exact historical records.
+
+## Magic comparison: remaining contact rules
+
+The unchanged 512x16 SRAM, imported using upstream's `read_sram_gds.tcl`
+helper, still produces **57 Magic error boxes** under the same upstream
+revision's full DRC style: 21 general `Cnt.c` and 36 SRAM `Cnt.c` boxes.
+The measured command, GDS hash and categories are in the
+[Magic follow-up](evidence/ihp-magic-sram-followup-20260920.json). This
+completed arm took 2,173.59 seconds; the other controlled arms are pending.
+
+The same upstream revision's
+[Magic rules](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/magic/ihp-sg13g2-drc.tech)
+use a 0.02 µm SRAM contact enclosure, while its
+[KLayout defaults](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/sg13g2_tech_default.json)
+set 0.006 µm in SRAM and 0.05 µm in DigiBnd. The matching official layout-rule
+PDF still marks section 8.3 as work in progress. This discrepancy is being
+investigated geometrically; it does not by itself prove all Magic boxes false.
+No local threshold change or blanket waiver is adopted.
+
+The completed pinned-deck full-chip control reports **22,280 markers** on
+the identical GDS: 2,768 `Cnt.c.digibnd`, 9,756 `Sdiod.d` and 9,756 `Sdiod.e`.
+Its exact cell attribution and report hash are retained in the full-chip
+record above. The isolated native DRC step exits zero despite markers; the
+report verdict is **FAIL**. The updated deck's zero is a separate measurement.
+
+The corrected thread argument was also exercised end to end on the unchanged
+512x16 SRAM: the log explicitly reports **two threads**, and the full main
+deck finishes with zero markers in 46.48 seconds;
+[record](evidence/ihp-drc-gate-20260920.json).
+The official PDF discussed above is pinned at
+[the same IHP revision](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.doc/doc/SG13G2_os_layout_rules.pdf).

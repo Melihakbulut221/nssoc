@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-20",
+  "scope": "Completed upstream-helper arm only. Pinned-helper and raw-reader arms are separate pending comparisons; this result is not full-chip Magic DRC. No rule or cell exclusion.",
+  "measurement": {
+    "arm": "upstream-helper",
+    "command": [
+      "/home/hasanmelih/.local/opt/llbin/magic",
+      "-dnull",
+      "-noconsole",
+      "-rcfile",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/upstream-magic-5e6d592/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/run.tcl"
+    ],
+    "gds_sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e",
+    "script_sha256": "ba5e57cd558e81c7384c2d234f34d5a1ad66b11a914e0aa0cf7c63d519f87720",
+    "deck": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+    "upstream_read_sram_gds_helper": true,
+    "scope": "Entire unchanged 512x16 macro GDS, full Magic DRC style, euclidean on. No black boxes or excluded geometry/rules. Count is Magic raw error boxes, not KLayout markers.",
+    "returncode": 0,
+    "elapsed_s": 2173.593814005999,
+    "boxes": 57,
+    "status": "FAIL"
+  },
+  "categories": [
+    {
+      "boxes": 21,
+      "rule": "N-diffusion overlap of N-diffusion contact < 14 (Cnt.c)"
+    },
+    {
+      "boxes": 36,
+      "rule": "N-diffusion overlap of contact in SRAM < 4 (Cnt.c SRAM exception)"
+    }
+  ],
+  "diagnostic": {
+    "magic_sram_cnt_c_um": 0.02,
+    "klayout_sram_cnt_c_um": 0.006,
+    "magic_general_cnt_c_um": 0.07,
+    "klayout_digibnd_cnt_c_um": 0.05,
+    "interpretation": "The upstream decks encode different contextual contact enclosure thresholds. This is a possible explanation, not a waiver or a proof every reported box is false. The pinned official PDF section 8.3 still says Work in progress; no arbitrary local rule change is adopted."
+  },
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/inputs.json",
+      "bytes": 883,
+      "sha256": "2ca40efb924fc974d8911a1b9e15f1fcb7c35291413f2ed3222b039442a2b920"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/result.json",
+      "bytes": 971,
+      "sha256": "1f155f8b5072cc59427bdff5b47d03cecab59091feb46a9cfa57842313618404"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/run.tcl",
+      "bytes": 1332,
+      "sha256": "ba5e57cd558e81c7384c2d234f34d5a1ad66b11a914e0aa0cf7c63d519f87720"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/run.log",
+      "bytes": 10944,
+      "sha256": "0b20a85d3dcbb303f97969008974764873d9fccf5c17eef29ba0c7678cc93add"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/categories.tsv",
+      "bytes": 128,
+      "sha256": "36104ce1d82b1c45923c07ddaa392e2ef8c26d2115acc04ce076d126033facc1"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-helper/boxes.tcl",
+      "bytes": 1508,
+      "sha256": "c1629c18131b61ae57eeec875a4cede7d3a88b85eabca2675a134c571c77e6e7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/SG13G2_os_layout_rules-5e6d592.pdf",
+      "bytes": 1438255,
+      "sha256": "66125e97386dd88ed058b50f4f8e8814c9633069e4060c2b19459d3e3e6450a2"
+    }
+  ]
+}

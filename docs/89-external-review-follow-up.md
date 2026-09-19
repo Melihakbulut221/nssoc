@@ -394,3 +394,22 @@ The preceding clean `d609e9a` source also completed
 `bash scripts/ci_local.sh all --record`: **16 passing gates, zero failures,
 seven skips**, `tree-dirty=0`; [record](evidence/ci-local-d609e9a-20260920.json).
 That result predates the netlist-loader changes above.
+
+### Fresh remote clone verified, 2026-09-20
+
+The subsequent fresh remote clone at `686e379` ran
+`PY=<shared-venv>/bin/python PYTEST_ADDOPTS="-rs --junitxml=<output>.xml" bash scripts/ci_local.sh all --record`.
+No generated dependencies, PDK files or run artifacts were copied into it.
+The result was **16 passing gates, zero failures, seven skipped gates**, with
+`tree-dirty=0`. The complete Python suite had **652 passes, zero failures/errors
+and 27 skips** in 538.209 seconds; [record with every skip reason](evidence/fresh-clone-netlist-20260920.json).
+All seven recorded-netlist structural guards ran against the distributed bytes.
+
+This meets F6's numeric fewer-than-thirty threshold, but not its complete first
+acceptance clause: several skips still require missing historical run outputs.
+The subsequent `python3 paper/check_claims.py` replay reports **20 re-derived,
+15 hand-read, seven needing build output and zero wrong**, improving the review's
+15 unavailable claims. A further clock-gate census now also uses the same
+recorded netlist and passes its focused check; that change postdates the full
+652/27 measurement. No historical signoff netlist is substituted or recreated
+from a newer design under its old name.

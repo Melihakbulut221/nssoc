@@ -95,7 +95,7 @@ def main():
     cmd = [executable, "-b", "-zz", "-r", str(entrypoint)]
     for value in ("input=" + str(gds), "topcell=" + args.top,
                   "report=" + str(output / "drc.lyrdb"), "run_mode=deep",
-                  "no_recommended=True", "thr=" + str(args.threads)):
+                  "no_recommended=True", "threads=" + str(args.threads)):
         cmd += ["-rd", value]
     (output / "inputs.json").write_text(json.dumps({
         "command": cmd, "klayout_version": version.stdout.strip(),
