@@ -137,9 +137,10 @@ SoC boundary. The CAN clock and Wishbone clock both use `clk_i`.
 The final standalone interface run reports **11 passed, 0 failed, 0 skipped**.
 The CPU run with full ECC RAM/ROM, `MEM_RDREG=1`, `REQ_REG=1` and register-file
 `SYNPRE=1` reports **29 passed application checks** in 663477 cycles. All four
-upstream register-file equivalence tasks (both SYNPRE settings, with and without
-scrub) prove by induction. The earlier full RTL sweep reports 467 passes and
-15 explicit skips; the expanded interface tests above were run subsequently.
+fault-free upstream register-file equivalence tasks (both SYNPRE settings, with
+and without scrub) prove by induction. The full RTL sweep on GitHub reports
+**471 passed, 0 failed, 15 explicitly skipped**, including all eleven final
+interface tests (run `35436883155`, source commit `4ef4491`).
 
 `SW_DEFINES=-DINTERFACE_DEMO` adds check 31 to the real Ibex firmware. The SoC
 board model loops SPI and SpaceWire at the pins, resolves the I2C open-drain
@@ -148,10 +149,31 @@ CPU interrupt entry for SPI, SpaceWire and I2C, plus CAN byte-register access.
 The standalone CAN test supplies the second transmitting/acknowledging node.
 
 The synthesis and layout profile retains ECC RAM and ROM and enables the
-existing `MEM_RDREG=1` and `REQ_REG=1` pipelines. Its 50 MHz floorplan is generated
-with a 1100 um channel and 40% placement target in `config-interfaces.json`.
+existing `MEM_RDREG=1` and `REQ_REG=1` pipelines, with `SYNPRE=1` for the
+register file. Its 50 MHz floorplan is generated with a 1100 um channel and
+40% placement target in `config-interfaces.json`; `config-interfaces-synpre.json`
+records the selected variant. The die is 2306.4 by 2475.9 um (5.7104 mm²).
 This profile does not change the RTL defaults. Results are recorded only after
 the corresponding tool run completes; synthesis is not counted as layout.
+
+The final mapped netlist has 61,991 cells, including 8,820 resettable flip-flops,
+three clock gates and eight SRAM macros. Yosys reports 977,098.6638 um² of
+standard-cell area; that figure excludes the SRAM macro areas.
+
+`interface_flow.py` preserves Classic's entire step list and its checker
+configuration, adding only `-max_iterations 600` to setup repair after CTS
+and global routing. The installed OpenROAD otherwise allows unlimited setup
+iterations: the first attempt repeatedly returned to the same -0.501 ns
+placement estimate after iteration 330. The bound limits optimization effort;
+it does not waive timing failures, relax the 20 ns clock, or narrow the checked
+corners. The generated Tcl is saved in each resizer step's directory.
+
+The first global route at the inherited 30% capacity reserve failed with
+20 Metal5 overflows. Reusing the same post-CTS placement with a 20% reserve
+produced **zero global overflow on every layer**, routing 83,881 nets
+(`interfaces-route20-20260919`). The selected profile records that reserve.
+`GRT_ALLOW_CONGESTION` remains false. This global-route result does not replace
+detailed-routing DRC, final extracted timing, or the separate physical decks.
 
 
 ## Reproduction

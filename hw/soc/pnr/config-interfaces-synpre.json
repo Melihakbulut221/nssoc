@@ -244,5 +244,7 @@
         "MEM_RDREG=1",
         "REQ_REG=1"
     ],
-    "//interfaces": "Same 50 MHz interface floorplan as config-interfaces.json; upstream-equivalent ECC SYNPRE=1 reduces the register-read decode depth. Full ECC memories, MEM_RDREG=1, REQ_REG=1 retained."
+    "//interfaces": "Same 50 MHz interface floorplan as config-interfaces.json; upstream-equivalent ECC SYNPRE=1 reduces the register-read decode depth. Full ECC memories, MEM_RDREG=1, REQ_REG=1 retained.",
+    "GRT_ADJUSTMENT": 0.2,
+    "//interface_routing": "Reserve 20 percent of routing capacity. The 30-percent inherited setting left 20 Metal5 overflows; the same post-CTS placement routes with zero global overflow at 20 percent (interfaces-route20-20260919). GRT_ALLOW_CONGESTION remains false; detailed DRC and all timing checkers remain enabled."
 }

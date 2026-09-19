@@ -22,6 +22,13 @@ record = {'configuration': {'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'clock_ns': 20},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                       for p in sorted(files)}}
+record['implementation_files'] = {
+    name: hashlib.sha256((root/name).read_bytes()).hexdigest()
+    for name in ('hw/soc/flow/implement_interfaces.sh',
+                 'hw/soc/flow/syn_soc_top.sh', 'hw/soc/flow/pnr_soc_top.sh',
+                 'hw/soc/flow/prepare_interfaces.py',
+                 'hw/soc/pnr/interface_flow.py',
+                 'hw/soc/pnr/config-interfaces-synpre.json')}
 out.write_text(json.dumps(record, indent=2)+'\n')
 PY
 IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram \
