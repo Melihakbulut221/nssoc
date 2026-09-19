@@ -227,6 +227,10 @@ fi
 # the netlist docs/84 section 5 runs hw/soc/pnr/logic_depth.py on, and
 # it is the only knob in this script whose purpose is the DEPTH of the
 # netlist rather than its area or its power. Defaults to the design, 0.
+SOC_APB_TIMEOUT=${SOC_APB_TIMEOUT:-256}
+case "$SOC_APB_TIMEOUT" in ''|*[!0-9]*) echo 'SOC_APB_TIMEOUT must be a nonnegative integer' >&2; exit 2;; esac
+TOP_CHPARAM="$TOP_CHPARAM
+chparam -set APB_TIMEOUT $SOC_APB_TIMEOUT soc_top"
 SOC_REQ_REG=${SOC_REQ_REG:-0}
 if [ "$SOC_REQ_REG" != 0 ]; then
   TOP_CHPARAM="$TOP_CHPARAM

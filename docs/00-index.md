@@ -623,3 +623,11 @@ repository public, so a Pages deploy from this tree would publish both
 the tree that decision declined and the material `LICENSES.md` section
 2.1 holds back. `docs/78-the-public-mirror.md` is where the published
 site belongs.
+
+- `docs/89-external-review-follow-up.md` — [External review follow-up and interface target](89-external-review-follow-up.md)
+
+**Re-counted 2026-09-19 after APB telemetry integration [fact].**
+`hw/soc/formal` carries **99 tasks across 22 jobs**. Four additional
+BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
+all eight BUSSTAT tasks pass. This inventory is not a claim that every
+core-level instruction property is proved. See docs/89.

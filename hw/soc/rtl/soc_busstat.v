@@ -207,7 +207,11 @@
 
 module soc_busstat #(
     // Counter width. 16 bits saturating at 65,535 is the pilot's CNT_W.
-    parameter integer CNT_W = 16
+    parameter integer CNT_W = 16,
+    // Optional ninth source. Off preserves the original block census.
+    // SoC enables it with APB_TIMEOUT; public source bit 9 leaves IRQ
+    // status bit 8 unchanged. CNT_APBTO occupies the free offset 0x02c.
+    parameter integer APB_TIMEOUT_EN = 0
 ) (
     input  wire        clk_i,
     // System reset: the interrupt enable, and nothing else.
@@ -245,6 +249,7 @@ module soc_busstat #(
     // nonzero this cycle is zero the next whether it was correctable or
     // not. THIS IS THE LAST SOURCE THAT FITS -- see S_MTECC below.
     input  wire        mt_ecc_i,
+    input  wire        apb_timeout_i, // one pulse per fabric timeout response
 
     // Level, to fast interrupt line 10 (IRQ 22 in the frozen map).
     output wire        irq_o
@@ -265,6 +270,7 @@ module soc_busstat #(
   localparam [11:0] REG_NPUTMR = 12'h024;
   // docs/58. Same rule: nothing below it moves.
   localparam [11:0] REG_MTECC  = 12'h028;
+  localparam [11:0] REG_APBTO  = 12'h02C;
 
   // Bit index of each source, shared by STATUS, IRQEN and CLR so that
   // the three cannot disagree about which bit is which. sw/tests and
@@ -285,7 +291,8 @@ module soc_busstat #(
   // and puts the sticky field on both sides of it. Neither is free, and
   // whoever needs a ninth should read docs/58 section 9 before choosing.
   localparam integer S_MTECC  = 7;
-  localparam integer NSRC     = 8;
+  localparam integer S_APBTO  = 8;
+  localparam integer NSRC     = APB_TIMEOUT_EN ? 9 : 8;
 
   localparam [CNT_W-1:0] CNT_MAX = {CNT_W{1'b1}};
 
@@ -305,11 +312,12 @@ module soc_busstat #(
   assign ev[S_NPUDET] = npu_det_i;
   assign ev[S_NPUTMR] = npu_tmr_i;
   assign ev[S_MTECC]  = mt_ecc_i;
+  generate if (APB_TIMEOUT_EN) begin : g_timeout_event
+    assign ev[S_APBTO] = apb_timeout_i;
+  end endgenerate
 
   // ---- the clear strobes --------------------------------------------
   wire [NSRC-1:0] clr;
-  assign clr = (wr && (paddr_i == REG_CLR)) ? pwdata_i[NSRC-1:0]
-                                            : {NSRC{1'b0}};
 
   // ---- the record: one counter and one sticky per source, POR domain
   //
@@ -324,6 +332,8 @@ module soc_busstat #(
   genvar gi;
   generate
     for (gi = 0; gi < NSRC; gi = gi + 1) begin : g_src
+      localparam integer PUBLIC_BIT = (gi < 8) ? gi : 9;
+      assign clr[gi] = wr && paddr_i == REG_CLR && pwdata_i[PUBLIC_BIT];
       reg [CNT_W-1:0] cnt_q;
       reg             sticky_q;
 
@@ -377,12 +387,27 @@ module soc_busstat #(
 
   // ---- the interrupt enable, system domain --------------------------
   reg [NSRC-1:0] irqen;
-  always @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni)
-      irqen <= {NSRC{1'b0}};          // nothing is enabled out of reset
-    else if (wr && (paddr_i == REG_IRQEN))
-      irqen <= pwdata_i[NSRC-1:0];
-  end
+  genvar ei;
+  generate for (ei = 0; ei < NSRC; ei = ei + 1) begin : g_irqen
+    localparam integer PUBLIC_BIT = (ei < 8) ? ei : 9;
+    always @(posedge clk_i or negedge rst_ni) begin
+      if (!rst_ni) irqen[ei] <= 1'b0;
+      else if (wr && (paddr_i == REG_IRQEN))
+        irqen[ei] <= pwdata_i[PUBLIC_BIT];
+    end
+  end endgenerate
+
+  wire timeout_sticky, timeout_irqen;
+  wire [CNT_W-1:0] timeout_count;
+  generate if (APB_TIMEOUT_EN) begin : g_timeout_read
+    assign timeout_sticky = sticky[S_APBTO];
+    assign timeout_irqen = irqen[S_APBTO];
+    assign timeout_count = cnt[S_APBTO];
+  end else begin : g_no_timeout_read
+    assign timeout_sticky = 1'b0;
+    assign timeout_irqen = 1'b0;
+    assign timeout_count = {CNT_W{1'b0}};
+  end endgenerate
 
   // Level, from the STICKY and not from the event: a one-cycle pulse on
   // a fast interrupt line is a pulse the core can be in the middle of a
@@ -400,10 +425,10 @@ module soc_busstat #(
       // rather than the interrupt moving. docs/58 took the last bit of
       // that gap; the field is now full and S_MTECC's comment says what
       // a ninth source costs.
-      REG_STATUS: prdata_o = {23'h0,
+      REG_STATUS: prdata_o = {22'h0, timeout_sticky, // 9
                               irq_o,                        // 8
-                              sticky};                      // 7..0
-      REG_IRQEN:  prdata_o = {{(32-NSRC){1'b0}}, irqen};
+                              sticky[7:0]};                 // 7..0
+      REG_IRQEN:  prdata_o = {22'h0, timeout_irqen, 1'b0, irqen[7:0]};
       REG_RFSEC:  prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_RFSEC]};
       REG_RFRD:   prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_RFRD]};
       REG_RFDED:  prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_RFDED]};
@@ -412,6 +437,7 @@ module soc_busstat #(
       REG_NPUDET: prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_NPUDET]};
       REG_NPUTMR: prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_NPUTMR]};
       REG_MTECC:  prdata_o = {{(32-CNT_W){1'b0}}, cnt[S_MTECC]};
+      REG_APBTO:  prdata_o = {{(32-CNT_W){1'b0}}, timeout_count};
       // CLR is write-only. It reads zero rather than reading back what
       // was last written, because a clear strobe has no state and a
       // register that reads back a strobe invites software to treat it

@@ -1,0 +1,141 @@
+{
+  "baseline_commit": "31ef551271d28b06bec280c7d9418e04084a9456",
+  "date": "2026-09-19",
+  "sources": {
+    "hw/soc/flow/implement_interfaces.sh": "5731cd2a6e3af73e9099d92a3b4e0612c962958f81f0248a67a2bba502ae69ac",
+    "hw/soc/flow/sim_soc.sh": "4fbe64b2036efcaed361c233c3cf6398a1f7f8002fe0d151599fc8b5036d8ecf",
+    "hw/soc/flow/syn_soc_top.sh": "e553f3372c0d995cfffd066ee4c3b33f11eaec59c12303d0b2ef411d1a9bf8d0",
+    "hw/soc/formal/Makefile": "1a7eee8a081bed334750c3858f0470ca1d3cffdd583287d79b841dee013d4ba1",
+    "hw/soc/formal/soc_busstat.sby": "4e3c4411b152ee5293ab9431ad85678fca96f0f836be6f79048286bc2f44f250",
+    "hw/soc/formal/soc_busstat_props.v": "9d19388c8bb5c7efe86dc2d6e787a27de85610f33aaa3e6aa401ff6446c7d1a8",
+    "hw/soc/rtl/soc_apb_bridge.v": "7924203af317fa046d40eb175cbaf9536fe76f32fd9a1b221c3a257204ba3701",
+    "hw/soc/rtl/soc_busstat.v": "92a7c1026206baa7ea407cd7e9bc93417a8e7e562fd9c86f56387574f6261ea9",
+    "hw/soc/rtl/soc_top.v": "58ee1fbf04a404bbedcf275547daf2461d94f2e1518cbe07110fe7f06a0218d0",
+    "hw/soc/tb/cocotb/Makefile.soc_busstat": "bb41a7574a55aa6fbeb9c736fbfb444f23632c284b0a9037dc5091315b3abfdc",
+    "hw/soc/tb/cocotb/test_soc_busstat.py": "2fc9c16cfcc0ca84dadb1a3b3d0002f4baa12f21450ba00988d1a64e4abf18de",
+    "hw/soc/tb/sw/soc_timers.h": "ef75b29d9e3a2b5bb0de33789a5729cf2a35edab804f1b381a197ec0444e5a87",
+    "hw/soc/tb/sw/test_ibex.c": "374bd749eb185034b47832296cb07531fe23c7f5480408282d8d8140398dff6d",
+    "hw/soc/tb/tb_soc.v": "f842988c425671473cd2ca11427d806d9cd127b5511f3e35548a5f37dd42ae9a",
+    "regmap/memmap.yaml": "db1a02e6752050ba4a681249f7f327ca6e7a3e10bf54456b13d46e81c9194eb4"
+  },
+  "block_synthesis": {
+    "soc_busstat-0": {
+      "cells": 794,
+      "reset_flops": 144,
+      "area_um2": 13427.316,
+      "script": "read_verilog hw/soc/rtl/soc_busstat.v; chparam -set APB_TIMEOUT_EN 0 soc_busstat; synth -top soc_busstat -flatten; dfflibmap -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; abc -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; clean; stat -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/soc_busstat-0.json\n",
+      "netlist_sha256": "df42ac9e2566e7ce877c5ce9c84e460d690412d3c5e8ce76c3142857da4f8f0d"
+    },
+    "soc_busstat-1": {
+      "cells": 892,
+      "reset_flops": 162,
+      "area_um2": 15000.5898,
+      "script": "read_verilog hw/soc/rtl/soc_busstat.v; chparam -set APB_TIMEOUT_EN 1 soc_busstat; synth -top soc_busstat -flatten; dfflibmap -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; abc -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; clean; stat -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/soc_busstat-1.json\n",
+      "netlist_sha256": "8e8a31f8d637bdb72de366493400359c9974dc04ce344a764a112d567cd543ac"
+    },
+    "soc_apb_bridge-0": {
+      "cells": 193,
+      "reset_flops": 93,
+      "area_um2": 6265.1232,
+      "script": "read_verilog hw/soc/rtl/soc_apb_bridge.v; chparam -set APB_TIMEOUT 0 soc_apb_bridge; synth -top soc_apb_bridge -flatten; dfflibmap -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; abc -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; clean; stat -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/soc_apb_bridge-0.json\n",
+      "netlist_sha256": "a9cb5a596d8005fdd3c906175c9bccf52cb9bffc03aee5726a2bc49edd8cb80f"
+    },
+    "soc_apb_bridge-256": {
+      "cells": 279,
+      "reset_flops": 102,
+      "area_um2": 7418.9682,
+      "script": "read_verilog hw/soc/rtl/soc_apb_bridge.v; chparam -set APB_TIMEOUT 256 soc_apb_bridge; synth -top soc_apb_bridge -flatten; dfflibmap -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; abc -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; clean; stat -liberty /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib; write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/soc_apb_bridge-256.json\n",
+      "netlist_sha256": "50319589486ee2515f7259acea8cf3d3708ba683fd569a492f2bfa170afc0a9b"
+    }
+  },
+  "formal": {
+    "soc_apb_bridge_bmc": {
+      "status": "PASS 0 2",
+      "log_sha256": "4964a05c9fecf483a3d298597e68992522eddc51d2818535a266cac10b4716a3"
+    },
+    "soc_apb_bridge_cover": {
+      "status": "PASS 0 0",
+      "log_sha256": "e92c0a370285d8121464b0abf595b0942365c104401622b9ded151c81c778a3e"
+    },
+    "soc_apb_bridge_cover_to": {
+      "status": "PASS 0 0",
+      "log_sha256": "fc32b9d957cccb1cc2ecf4db729defefcda2b44dccddd6b5dd550d9838c6de8a"
+    },
+    "soc_apb_bridge_prove": {
+      "status": "PASS 0 0",
+      "log_sha256": "f028163620a791e483e53ff047e43af34cbbfd768919aaedc4908a56f9660680"
+    },
+    "soc_apb_bridge_prove_to": {
+      "status": "PASS 0 1",
+      "log_sha256": "670c55f732f54fdaeb59327701e9e76f5d08221e6a9b8c05e402c282f2fd51b0"
+    },
+    "soc_busstat_bmc": {
+      "status": "PASS 0 0",
+      "log_sha256": "993fceb5b04a3db6b559cd6ad61792e6fb346e3cf31a1040fbee1482b846c824"
+    },
+    "soc_busstat_bmc_to": {
+      "status": "PASS 0 1",
+      "log_sha256": "2a879ae98f8da8a24fca36915ea2a51fba0b6d1933f2ba483e4255170a15d435"
+    },
+    "soc_busstat_cover": {
+      "status": "PASS 0 0",
+      "log_sha256": "23499afae667e08c596ebdc352cb5e0d6c11aa0966e1fcb7f3beccac3bc9c841"
+    },
+    "soc_busstat_cover_to": {
+      "status": "PASS 0 0",
+      "log_sha256": "783554bcce81fd9b22bc37af0d007e4612e55ab7d4fbddaebe48bc826de74c15"
+    },
+    "soc_busstat_prove": {
+      "status": "PASS 0 0",
+      "log_sha256": "8c81f51d9752efe97488fbb7c56ae939c6c67162fedaa2fc6d2c15cf876d72d1"
+    },
+    "soc_busstat_prove_to": {
+      "status": "PASS 0 0",
+      "log_sha256": "96a36d9b25d82dab60b1c99a80a98b795642738015d2a59821398300e3f5f8be"
+    },
+    "soc_busstat_prove_to_w16": {
+      "status": "PASS 0 1",
+      "log_sha256": "e4561b15777d536674c43fa4765c9f6591d10d28a3822d0d7c4c19880771fe45"
+    },
+    "soc_busstat_prove_w16": {
+      "status": "PASS 0 0",
+      "log_sha256": "ccb73fee72d9c3c7ee123b4cad4d7113a70727b1aea7592d885ac72b29265352"
+    },
+    "soc_npu_bmc": {
+      "status": "PASS 0 13",
+      "log_sha256": "4f247683addac8cb7bdd1bc18be37b14c8b7a77bc87fd18f18ed7ea4e5d49dba"
+    },
+    "soc_npu_cover": {
+      "status": "PASS 0 5",
+      "log_sha256": "b1b04dde65c742fba00ab4d5e574d33a01d2e69ae434349b045d8ac3690d425f"
+    },
+    "soc_npu_prove": {
+      "status": "PASS 0 6",
+      "log_sha256": "62f98a8626b48a6b234a3efc96d73c6b550cfe6ea7660d51100a8c9dc0459170"
+    }
+  },
+  "cocotb": {
+    "command": "scripts/run_cocotb.sh soc_busstat",
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "log_sha256": "d9c43282d32e0aa9893cd8fd8f8fd93491f9995c279d0e51f18ba945d4ce6789"
+  },
+  "cpu_demo": {
+    "command": "SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DAPB_TIMEOUT_DEMO SOC_VVP_ARGS=+apb_timeout_demo bash hw/soc/flow/sim_soc.sh hw/soc/out/apb-timeout-demo",
+    "log": "[TB] SoC: boot 0xc0000000, ROM image hw/soc/out/external-review-20260919/apb-timeout-demo/test_soc.hex, 8 clocks per UART bit\n[TB] RAM powered up undefined: 8192 words of data and check bits, seed -225984511\nboot: strap 0x84000000 cnt 0x00000000 of 0x00000003 stat 0x00030000 wdog 0x00000000 rpt 0x00000000 tmr 0x00000000\nboot: scrub saw the uninitialised RAM: sec 0x00000000 rd 0x00000000 ded 0x00000001 -- clearing\nboot: image 0x00000000 at 0x00018000\nboot: cycles sweep=0x0001502f open=0x00004a63 hdr=0x00000f65 copy=0x0000587e verify=0x00001e8a\nboot: entering 0x00000000[TB] boot: handed over to RAM at cycle 150192 (fetch 0x00000000)\n\nAPB timeout demo: waiting for stalled CAN and watchdog recovery\n[TB] watchdog stage 1 (NMI) at cycle 236020\n[TB] APB timeout: one error, late PREADY ignored, CPU trap returned, watchdog recovery\n[TB] watchdog stage 2 (system reset) at cycle 316036\nboot: strap 0x84000000 cnt 0x00000001 of 0x00000003 stat 0x00030001 wdog 0x00000102 rpt 0xb0000000 tmr 0x00000000\nboot: image 0x00000000 at 0x00018000\nboot: cycles sweep=0x0001502f open=0x000029c0 hdr=0x00000f65 copy=0x0000587e verify=0x00001e8a\nboot: entering 0x00000000[TB] boot: handed over to RAM at cycle 457900 (fetch 0x00000000)\n\nAPB timeout recovery: count=1 sticky=1 irqen=0\nRESULT PASS\n\n[TB] core asleep after 463419 cycles\n[TB] exit code 0x00000000\n[TB] boot: 2 hand-overs, the last at cycle 457900; 5519 cycles in the image\n[TB] bootreg: bstrap 0x84000000 bstat 0x00030001 brpt 0xb0010100 epoch 0x00000002\n[TB] console: 762 characters decoded, 0 framing errors\n[TB] watchdog: stage1 1, stage2 1, stage3 0\n[TB] gpio: pads 0x0000, driven 0x0000, irq 0\n[TB] qspi: 12 frames on CS0, 0 datasheet violations, irq 0\n[TB] scrub: ram sec/rd/ded 0/0/0, rom sec/rd/ded 0/0/0\n[TB] PASS\n/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc.v:761: $finish called at 4634395000 (1ps)\n",
+    "log_sha256": "638e86766bc3b18adabcb912376e269fcf23885740721a410ddb78a651f303d8"
+  },
+  "fresh_clone_before": {
+    "commit": "31ef551271d28b06bec280c7d9418e04084a9456",
+    "passed": 600,
+    "skipped": 38,
+    "log_sha256": "ebe4c13070ab537655f4e2f93d6151fbd3e2c26b635804cf85e6afeb4237d15b"
+  },
+  "crash_demo": {
+    "log": "[TB] SoC: boot 0xc0000000, ROM image hw/soc/out/external-review-20260919/crash-demo/test_soc.hex, 8 clocks per UART bit\n[TB] RAM powered up undefined: 8192 words of data and check bits, seed -225984511\nboot: strap 0x84000000 cnt 0x00000000 of 0x00000003 stat 0x00030000 wdog 0x00000000 rpt 0x00000000 tmr 0x00000000\nboot: scrub saw the uninitialised RAM: sec 0x00000000 rd 0x00000000 ded 0x00000001 -- clearing\nboot: image 0x00000000 at 0x00018000\nboot: cycles sweep=0x0001502f open=0x00004a63 hdr=0x00000f65 copy=0x0000623e verify=0x000021ea\nboot: entering 0x00000000[TB] boot: handed over to RAM at cycle 153552 (fetch 0x00000000)\n\ncrash demo: boot with BSTAT 0x00030000\ncrash demo: arming, then double-faulting\n[TB] watchdog stage 1 (NMI) at cycle 167220\n[TB] watchdog stage 2 (system reset) at cycle 173636\nboot: strap 0x84000000 cnt 0x00000001 of 0x00000003 stat 0x00030401 wdog 0x00000102 rpt 0xb0000000 tmr 0x00000000\nboot: image 0x00000000 at 0x00018000\nboot: cycles sweep=0x0001502f open=0x000029c0 hdr=0x00000f65 copy=0x0000623e verify=0x000021ea\nboot: entering 0x00000000[TB] boot: handed over to RAM at cycle 318860 (fetch 0x00000000)\n\ncrash demo: boot with BSTAT 0x00030401\ncrash demo: faulting PC 0xff9fe000\ncrash demo: the record survived the reset the fault caused\nRESULT PASS\n\n[TB] core asleep after 331964 cycles\n[TB] exit code 0x00000000\n[TB] boot: 2 hand-overs, the last at cycle 318860; 13104 cycles in the image\n[TB] bootreg: bstrap 0x84000000 bstat 0x00030401 brpt 0xb0010100 epoch 0x00000002\n[TB] console: 864 characters decoded, 0 framing errors\n[TB] watchdog: stage1 1, stage2 1, stage3 0\n[TB] gpio: pads 0x0000, driven 0x0000, irq 0\n[TB] qspi: 12 frames on CS0, 0 datasheet violations, irq 0\n[TB] scrub: ram sec/rd/ded 0/0/0, rom sec/rd/ded 0/0/0\n[TB] PASS\n/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc.v:761: $finish called at 3319845000 (1ps)\n",
+    "log_sha256": "7b2fa6b535297c1cc3fb315d3b9baa909d184b9a175d7bc3f777ae80ea4003e4",
+    "cycles": 331964,
+    "crash_pc": "0xff9fe000"
+  }
+}

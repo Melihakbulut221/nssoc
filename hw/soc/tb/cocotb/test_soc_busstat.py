@@ -75,6 +75,8 @@ CNT_NPUTMR = 0x024
 # docs/58's one, the CLINT's mtime codeword. Same rule again: nothing
 # below it moves.
 CNT_MTECC = 0x028
+CNT_APBTO = 0x02C
+S_APBTO = 9
 
 # Bit index of each source, shared by STATUS, IRQEN and CLR.
 S_RFSEC, S_RFRD, S_RFDED, S_TMRERR = 0, 1, 2, 3
@@ -119,6 +121,7 @@ async def setup(dut):
     dut.rf_ecc_err_i.value = 0
     dut.tmr_ev_i.value = 0
     dut.mt_ecc_i.value = 0
+    dut.apb_timeout_i.value = 0
     dut.npu_cor_i.value = 0
     dut.npu_det_i.value = 0
     dut.npu_tmr_i.value = 0
@@ -415,3 +418,56 @@ async def test_the_slot_and_the_line_are_the_frozen_maps(dut):
     assert status == "implemented", \
         "BUSSTAT is decoded by soc_top.v but the map still calls it reserved"
     assert IRQ_SOURCES["BUSSTAT"][1] == 10, "the fast interrupt line moved"
+
+
+@cocotb.test()
+async def test_timeout_record_survives_system_reset_and_preserves_irq_bit(dut):
+    """A dead peripheral is still diagnosable after watchdog recovery."""
+    await setup(dut)
+    await pulse(dut, lambda v: setattr(dut.apb_timeout_i, "value", v))
+    assert await apb_read(dut, CNT_APBTO) == 1
+    assert await apb_read(dut, STATUS) == 1 << S_APBTO
+    await apb_write(dut, IRQEN, (1 << S_APBTO) | (1 << STATUS_IRQ))
+    assert await apb_read(dut, IRQEN) == 1 << S_APBTO
+    assert await apb_read(dut, STATUS) == (1 << S_APBTO) | (1 << STATUS_IRQ)
+    assert val(dut.irq_o) == 1
+    await apb_write(dut, CLR, 1 << STATUS_IRQ)
+    assert await apb_read(dut, CNT_APBTO) == 1
+    dut.rst_ni.value = 0
+    for _ in range(3):
+        await RisingEdge(dut.clk_i)
+    dut.rst_ni.value = 1
+    await Timer(1, units="ns")
+    assert await apb_read(dut, CNT_APBTO) == 1
+    assert await apb_read(dut, STATUS) == 1 << S_APBTO
+    assert await apb_read(dut, IRQEN) == 0
+    assert val(dut.irq_o) == 0
+    await apb_write(dut, CLR, 1 << S_APBTO)
+    assert await apb_read(dut, CNT_APBTO) == 0
+    assert await apb_read(dut, STATUS) == 0
+
+
+@cocotb.test()
+async def test_timeout_event_wins_clear_without_touching_other_sources(dut):
+    await setup(dut)
+    await pulse(dut, rf(dut, S_RFSEC), n=3)
+    await pulse(dut, lambda v: setattr(dut.apb_timeout_i, "value", v), n=4)
+    assert await apb_read(dut, CNT_APBTO) == 4
+    # Arrange one simultaneous event and write-clear, then withdraw both.
+    dut.psel_i.value = 1
+    dut.penable_i.value = 0
+    dut.pwrite_i.value = 1
+    dut.paddr_i.value = CLR
+    dut.pwdata_i.value = 1 << S_APBTO
+    await RisingEdge(dut.clk_i)
+    await Timer(1, units="ns")
+    dut.penable_i.value = 1
+    dut.apb_timeout_i.value = 1
+    await RisingEdge(dut.clk_i)
+    await Timer(1, units="ns")
+    dut.psel_i.value = 0
+    dut.penable_i.value = 0
+    dut.apb_timeout_i.value = 0
+    assert await apb_read(dut, CNT_APBTO) == 1
+    assert await apb_read(dut, CNT_RFSEC) == 3
+    assert await apb_read(dut, STATUS) == (1 << S_APBTO) | (1 << S_RFSEC)

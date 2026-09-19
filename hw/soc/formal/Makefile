@@ -150,7 +150,7 @@ clint:
 # The fault counters docs/44 adds, and the two widths they are proved
 # at: CNT_W = 4 so that saturation is reachable inside a bounded model,
 # and CNT_W = 16 because that is what soc_top.v instantiates.
-BUSSTAT_TASKS := bmc prove prove_w16 cover
+BUSSTAT_TASKS := bmc prove prove_w16 cover bmc_to prove_to prove_to_w16 cover_to
 
 busstat:
 	@for t in $(BUSSTAT_TASKS); do \

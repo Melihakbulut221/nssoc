@@ -742,6 +742,35 @@ static int crash_demo(void) {
 }
 #endif
 
+#if defined(SOC_PLATFORM) && defined(APB_TIMEOUT_DEMO)
+extern volatile uint32_t nmi_no_ack;
+extern uint32_t exit_code;
+static int apb_timeout_demo(void) {
+  uint32_t count = *(volatile uint32_t *)BST_APBTO;
+  if (count) {
+    uint32_t status = *(volatile uint32_t *)BST_STATUS;
+    uint32_t enable = *(volatile uint32_t *)BST_IRQEN;
+    if (count != 1u || !(status & BST_S_APBTO) || enable != 0u) {
+      puts_("APB timeout recovery: RESULT FAIL\n");
+      return 0xA0000001u;
+    }
+    puts_("APB timeout recovery: count=1 sticky=1 irqen=0\nRESULT PASS\n");
+    return 0;
+  }
+  puts_("APB timeout demo: waiting for stalled CAN and watchdog recovery\n");
+  nmi_no_ack = 1u;
+  *(volatile uint32_t *)WDOG_RLD = WDOG_W(5000u);
+  *(volatile uint32_t *)WDOG_CTRL = WDOG_W(GPT_LD);
+  uint32_t before = trap_count;
+  (void)do_load((volatile uint32_t *)SOC_CAN_BASE);
+  /* The APB bridge is quarantined, including UART. Record in RAM for
+   * the testbench to inspect BEFORE the watchdog erases software state. */
+  exit_code = (trap_count == before + 1u && trap_mcause == 5u)
+                ? 0xAB700001u : 0xAB70BAD0u;
+  for (;;) { }
+}
+#endif
+
 int main(void) {
 #ifdef SOC_PLATFORM
   // Nothing can be reported before this: the console is a peripheral on
@@ -755,6 +784,9 @@ int main(void) {
 #endif
 #if defined(SOC_PLATFORM) && defined(CRASH_DUMP_DEMO)
   return crash_demo();
+#endif
+#if defined(SOC_PLATFORM) && defined(APB_TIMEOUT_DEMO)
+  return apb_timeout_demo();
 #endif
 
   puts_("ibex bring-up self-test\n");

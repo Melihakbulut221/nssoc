@@ -314,7 +314,7 @@ apb_slots:
   - {name: QSPICTL, slot: 0x014, irq: 21, line: 9,  status: implemented, device_id: 0x045,
      desc: "QSPI flash controller, register mode, two chip selects; docs/66", source: "family style"}
   - {name: BUSSTAT, slot: 0x015, irq: 22, line: 10, status: implemented, device_id: 0x052,
-     desc: "Fault counters and sticky status for the register file codec and the watchdog voter; AHBSTAT in spirit, not in name", source: "AHBSTAT 0xFFA06000 (GR740) remapped"}
+     desc: "Fault counters for the register file, watchdog, NPU and mtime; CNT_APBTO at 0x02C records APB timeouts across system reset, source bit 9 in STATUS/IRQEN/CLR leaves IRQ status bit 8 unchanged; docs/89", source: "AHBSTAT 0xFFA06000 (GR740) remapped"}
   - {name: SCRUB,   slot: 0x016, irq: 23, line: 11, status: implemented, device_id: 0x057,
      desc: "Memory codec counters, scrubber control and the last uncorrectable address, MEMSCRUB-like; docs/67", source: "MEMSCRUB (GR740) remapped"}
   - {name: BOOTREG, slot: 0x017, irq: 0,  status: implemented, device_id: 0x087,

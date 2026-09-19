@@ -431,6 +431,35 @@ module tb_soc;
   // is a log that simply begins again with no explanation. The first
   // watchdog bring-up run produced exactly that.
   // -------------------------------------------------------------------
+  // Explicit fault-injection run, docs/89: stall the first CAN access,
+  // then let PREADY arrive late. Neither testbench force is used normally.
+  integer apb_timeout_responses = 0;
+  reg apb_timeout_injected = 0;
+  always @(posedge clk) if (rst_n && dut.apb_timeout && dut.s_rvalid[2])
+    apb_timeout_responses = apb_timeout_responses + 1;
+  initial begin
+    if ($test$plusargs("apb_timeout_demo")) begin
+      wait (rst_n);
+      wait (dut.sel_can && !dut.penable);
+      force dut.pready_can = 1'b0;
+      apb_timeout_injected = 1;
+      wait (dut.apb_timeout);
+      repeat (20) @(negedge clk);
+      // Late completion must not return a second response to the fabric.
+      force dut.pready_can = 1'b1;
+      repeat (20) @(negedge clk);
+      if (!dut.psel || !dut.penable || apb_timeout_responses != 1)
+        $fatal(1, "APB timeout: quarantine or exactly-once response failed");
+      wait (wdog_rst);
+      if (dut.u_ram.mem[EXIT_CODE_ADDR[31:2]] !== 32'hAB700001)
+        $fatal(1, "APB timeout: CPU did not recover through load access fault");
+      if (apb_timeout_responses != 1)
+        $fatal(1, "APB timeout: duplicate response before watchdog reset");
+      release dut.pready_can;
+      $display("[TB] APB timeout: one error, late PREADY ignored, CPU trap returned, watchdog recovery");
+    end
+  end
+
   reg nmi_q = 1'b0, wdog_rst_q = 1'b0, wdog_n_q = 1'b1;
   integer wdog_stage1 = 0, wdog_stage2 = 0, wdog_stage3 = 0;
   always @(posedge clk) if (rst_n) begin

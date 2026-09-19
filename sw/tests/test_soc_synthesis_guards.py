@@ -881,7 +881,7 @@ def _busstat_nsrc():
     asking whether the three new counters had actually survived. The
     arithmetic below is what says they did.
     """
-    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*(\d+)",
+    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*APB_TIMEOUT_EN\s*\?\s*9\s*:\s*(\d+)",
                   BUSSTAT.read_text())
     assert m, "soc_busstat.v no longer declares NSRC"
     return int(m.group(1))
@@ -891,12 +891,14 @@ BUSSTAT_NSRC = _busstat_nsrc()
 
 
 @needs_yosys
-def test_the_fault_counters_survive_synthesis(workdir):
+@pytest.mark.parametrize("timeout_enabled", [0, 1])
+def test_the_fault_counters_survive_synthesis(workdir, timeout_enabled):
     """docs/44 section 6. An operator's only view of a corrected upset
     is these flip-flops; a mapper that deleted one would leave a block
     that still answers every APB read with a plausible number."""
     cnt_w = _busstat_cnt_w()
     script = ("read_verilog -I {} {};".format(SOC_RTL, BUSSTAT)
+              + " chparam -set APB_TIMEOUT_EN {} soc_busstat;".format(timeout_enabled)
               + " hierarchy -top soc_busstat;"
                 " synth -top soc_busstat -flatten;")
     lib = _sg13g2_liberty()
@@ -904,7 +906,8 @@ def test_the_fault_counters_survive_synthesis(workdir):
         script += " dfflibmap -liberty {0}; abc -liberty {0};".format(lib)
     script += " flatten; opt_clean;"
     census = _census(script, workdir)
-    expected = BUSSTAT_NSRC * cnt_w + BUSSTAT_NSRC + BUSSTAT_NSRC
+    nsrc = BUSSTAT_NSRC + timeout_enabled
+    expected = nsrc * (cnt_w + 2)
     assert census.total == expected, (
         "expected {} counters x {} bits + {} sticky + {} enable = {} "
         "flip-flops, found {}".format(
@@ -3490,7 +3493,7 @@ APB_BRIDGE_FF_AT_DEFAULT = 93
 
 @needs_yosys
 def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
-    """APB_TIMEOUT = 0 is the shipping netlist, unchanged."""
+    """APB_TIMEOUT = 0 reproduces the historical disabled block census."""
     census = _census(_apb_script(), workdir)
     assert census.total == APB_BRIDGE_FF_AT_DEFAULT, (
         "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 0 and the "

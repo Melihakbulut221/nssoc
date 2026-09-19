@@ -228,7 +228,11 @@ module soc_top #(
     // section 3. At 1 every load costs one more cycle, which is a
     // number the corpus quotes, so sw/tests pins the default for the
     // reason it pins WAKE_GNT.
-    parameter integer REQ_REG = 0
+    parameter integer REQ_REG = 0,
+    // 256 ACCESS cycles = 5.12 us at 50 MHz. Normal register slaves,
+    // including the CAN Wishbone bridge, respond in a few cycles.
+    // Zero reproduces the historical unbounded bridge configuration.
+    parameter integer APB_TIMEOUT = 256
 ) (
     input  wire        clk_i,
     // POWER-ON reset. Asynchronously asserted, and the only reset the
@@ -788,23 +792,17 @@ module soc_top #(
   wire [31:0] prdata;
   wire        pready, pslverr;
 
-  soc_apb_bridge u_apb (
+  wire apb_timeout;
+  soc_apb_bridge #(.APB_TIMEOUT(APB_TIMEOUT)) u_apb (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[2]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),
       .gnt_o (s_gnt[2]), .rvalid_o (s_rvalid[2]),
       .rdata_o (s_rdata_apb), .err_o (s_err[2]),
-      // PARKED, and the parking is the measurement. soc_apb_bridge's
-      // APB_TIMEOUT defaults to 0, so this line cannot assert in the
-      // shipping configuration: every mapped slave drives PREADY
-      // constant 1 at today's parameters. Widening BUSSTAT from eight
-      // sources to nine for an event that cannot fire would add a
-      // counter of dead flip-flops to the netlist and move every
-      // BUSSTAT measurement docs/44 records, which is the opposite of
-      // what docs/41 section 6.5 asks. Turning APB_TIMEOUT on is what
-      // makes the ninth source worth its area, and that is the same
-      // commit's work, not this one's.
-      .timeout_o (),
+      // Corrected 2026-09-19: this was parked on the premise that
+      // every slave is always ready. CAN now instantiates soc_apb_wb.
+      // Count the one fabric response, not every cycle of sticky timeout.
+      .timeout_o (apb_timeout),
       .psel_o (psel), .penable_o (penable), .paddr_o (paddr),
       .pwrite_o (pwrite), .pwdata_o (pwdata), .pstrb_o (pstrb),
       .prdata_i (prdata), .pready_i (pready), .pslverr_i (pslverr)
@@ -965,7 +963,7 @@ module soc_top #(
   // system domain so the fresh boot after that reset is not immediately
   // interrupted by a sticky bit it has not read yet (docs/40 section
   // 7.2's brick, in a new place).
-  soc_busstat u_busstat (
+  soc_busstat #(.APB_TIMEOUT_EN(APB_TIMEOUT != 0)) u_busstat (
       .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
       .psel_i (sel_busstat), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
@@ -977,6 +975,7 @@ module soc_top #(
       .npu_det_i (npu_det_ev),
       .npu_tmr_i (npu_tmr_ev),
       .mt_ecc_i (clint_mt_ecc_ev),
+      .apb_timeout_i (apb_timeout && s_rvalid[2]),
       .irq_o (busstat_irq)
   );
 

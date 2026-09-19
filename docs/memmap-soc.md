@@ -80,7 +80,7 @@ interrupt controller and the drivers cannot disagree
 | `0xFF912000` | `0x012` | SPI | 19 | 7 | implemented | SPI master, modes 0..3, two chip selects, project register map; docs/88 |
 | `0xFF913000` | `0x013` | I2C | 20 | 8 | implemented | I2C master, single command with timeout, project register map; docs/88 |
 | `0xFF914000` | `0x014` | QSPICTL | 21 | 9 | implemented | QSPI flash controller, register mode, two chip selects; docs/66 |
-| `0xFF915000` | `0x015` | BUSSTAT | 22 | 10 | implemented | Fault counters and sticky status for the register file codec and the watchdog voter; AHBSTAT in spirit, not in name |
+| `0xFF915000` | `0x015` | BUSSTAT | 22 | 10 | implemented | Fault counters for the register file, watchdog, NPU and mtime; CNT_APBTO at 0x02C records APB timeouts across system reset, source bit 9 in STATUS/IRQEN/CLR leaves IRQ status bit 8 unchanged; docs/89 |
 | `0xFF916000` | `0x016` | SCRUB | 23 | 11 | implemented | Memory codec counters, scrubber control and the last uncorrectable address, MEMSCRUB-like; docs/67 |
 | `0xFF917000` | `0x017` | BOOTREG | - | - | implemented | Bootstrap pin readback, the hardware boot counter, the boot report and epoch words that survive a reset, and CRASH at 0x010 -- the faulting PC of the first double fault since power-on, kept in the same power-on domain so it is readable after the watchdog reset the fault causes; GRGPREG-like; docs/68 |
 | `0xFF918000` | `0x018` | CLKGATE | - | - | reserved | Clock gate enable and status for NPU nodes and heavy peripherals |

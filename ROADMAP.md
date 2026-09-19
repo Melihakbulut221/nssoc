@@ -641,3 +641,9 @@ already has it.
 - **Measure the pair.** A protective mechanism is reported against a
   run of the same draws with the mechanism removed, never against its
   absence (`docs/42` onward).
+
+**Re-counted 2026-09-19 after APB telemetry integration [fact].**
+`hw/soc/formal` carries **99 tasks across 22 jobs**. Four additional
+BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
+all eight BUSSTAT tasks pass. This inventory is not a claim that every
+core-level instruction property is proved. See docs/89.
