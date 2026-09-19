@@ -73,6 +73,14 @@
     "hw/soc/out/external-review-20260919/fresh-clone-sram256-ci.log": {
       "sha256": "e2d9953ca97273c05d54794d78ebcdbb807970ad1e6d45684e20246dcfd6a9af",
       "bytes": 2836
+    },
+    "hw/soc/out/external-review-20260919/fresh-clone-sram256-fixed-ci.log": {
+      "sha256": "84d524df0e05337135a0dd5ad66d0671516d85e76df9936b8ebf609d10378006",
+      "bytes": 1921
+    },
+    "hw/soc/out/external-review-20260919/fresh-clone-sram256-fixed-pytest.xml": {
+      "sha256": "fad0c2ea9add1326eac7a5d0e47738e00877a0a98dec7aedd6815fac6fdf6321",
+      "bytes": 106219
     }
   },
   "github_abc0791": {
@@ -427,5 +435,73 @@
       }
     ],
     "disposition": "The active-input float guard incorrectly included a recorded historical config. Exclude only docs/evidence from editable inputs; preserve the integer snapshot and its separate live/record comparison."
+  },
+  "fresh_clone_882a4e0": {
+    "commit": "882a4e0d68974deea41044dda6eca6e845826427",
+    "ci_command": "PY=/path/to/venv/bin/python PYTEST_ADDOPTS=--junitxml=/path/to/results.xml bash scripts/ci_local.sh all --record",
+    "ci_row": "2026-09-19T17:15Z\t882a4e0\tall\t16\t0\t7\ttree-dirty=0,pandoc=no,tex=tectonic",
+    "ci_passed": 16,
+    "ci_failed": 0,
+    "ci_skipped": 7,
+    "tree_dirty_before_record": 0,
+    "pytest_attributes": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "34",
+      "tests": "645",
+      "time": "191.298",
+      "timestamp": "2026-09-19T20:12:39.734820+03:00",
+      "hostname": "pop-os"
+    },
+    "pytest_passed": 611,
+    "skips_by_module": {
+      "sw.tests.test_flow_evidence": 5,
+      "sw.tests.test_gl_coverage": 3,
+      "sw.tests.test_recorded_evidence": 1,
+      "sw.tests.test_replica_placement": 5,
+      "sw.tests.test_soc_clkgate_guards": 1,
+      "sw.tests.test_soc_regfile_guards": 3,
+      "sw.tests.test_soc_shipped_netlist_guards": 7,
+      "sw.tests.test_soc_synthesis_guards": 2,
+      "sw.tests.test_synthesis_guards": 6,
+      "sw.tests.test_tt_submission": 1
+    },
+    "scope": "Full sw/tests suite in clean remote clone with Yosys available. The 34 remaining skips include missing build artifacts and generated dependencies, not only missing tools; F6 remains open."
+  },
+  "github_5b196ca": {
+    "conclusion": "success",
+    "headSha": "5b196ca2da724df1fed1a74c4671e5bc501c0146",
+    "status": "completed",
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35457720777",
+    "jobs": [
+      {
+        "completedAt": "2026-09-19T18:03:30Z",
+        "conclusion": "success",
+        "databaseId": 105935864700,
+        "name": "formal-and-boot",
+        "startedAt": "2026-09-19T17:19:19Z",
+        "status": "completed",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35457720777/job/105935864700"
+      },
+      {
+        "completedAt": "2026-09-19T17:21:09Z",
+        "conclusion": "success",
+        "databaseId": 105935864861,
+        "name": "checks",
+        "startedAt": "2026-09-19T17:19:19Z",
+        "status": "completed",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35457720777/job/105935864861"
+      },
+      {
+        "completedAt": "2026-09-19T17:26:25Z",
+        "conclusion": "success",
+        "databaseId": 105935864922,
+        "name": "rtl",
+        "startedAt": "2026-09-19T17:19:19Z",
+        "status": "completed",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35457720777/job/105935864922"
+      }
+    ]
   }
 }

@@ -47,6 +47,7 @@ import subprocess
 import sys
 
 import pytest
+from evidence import artifact_identity
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 TOOL = ROOT / "hw" / "soc" / "fi" / "gl_coverage.py"
@@ -59,7 +60,8 @@ REGENERATE = ("hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 "
 def run(*args):
     if not NETLIST.is_file():
         pytest.skip(f"{NETLIST.relative_to(ROOT)} is a git-ignored build "
-                    f"product and is not in this tree. {REGENERATE}")
+                    f"product and is not in this tree. {REGENERATE}" +
+                    artifact_identity(NETLIST))
     return subprocess.run([sys.executable, str(TOOL), str(NETLIST), *args],
                           cwd=ROOT, capture_output=True, text=True,
                           timeout=3600)

@@ -25,6 +25,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from evidence import artifact_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "hw" / "openlane"))
@@ -35,7 +36,9 @@ REPLICAS = ["u_pilot.u_cfg_a", "u_pilot.u_cfg_b", "u_pilot.u_cfg_c"]
 pytestmark = pytest.mark.skipif(
     not (RUN / "final" / "def").is_dir(),
     reason="the sign-off run tree is gitignored build output; this measures a "
-           "layout, and without the layout there is nothing to measure")
+           "layout, and without the layout there is nothing to measure" +
+           artifact_identity(RUN / "final/def/tt_um_melihakbulut_nssoc.def") +
+           artifact_identity(RUN / "final/nl/tt_um_melihakbulut_nssoc.nl.v"))
 
 
 @pytest.fixture(scope="module")

@@ -68,6 +68,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from evidence import artifact_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 RTL = Path(os.environ.get("NSSOC_RTL_DIR", ROOT / "hw" / "rtl"))
@@ -959,7 +960,8 @@ _NETLIST_CELL = re.compile(r"^\s*(sg13g2_\w+)\s+(\\?\S+)\s*\(", re.M)
 
 
 @pytest.mark.skipif(not SIGNOFF_NETLIST.is_file(),
-                    reason="sign-off netlist not present in this checkout")
+                    reason="sign-off netlist not present in this checkout" +
+                    artifact_identity(SIGNOFF_NETLIST))
 def test_the_shipped_netlist_holds_one_flip_flop_per_rail():
     """Eight rails, one flip-flop each, counted in
     hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/.

@@ -68,6 +68,7 @@ import importlib.util
 from pathlib import Path
 
 import pytest
+from evidence import artifact_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 GL_NETLIST = ROOT / "hw" / "soc" / "fi" / "gl_netlist.py"
@@ -152,7 +153,8 @@ def netlists():
             "no whole-SoC netlist in the working tree. hw/soc/out/ and "
             "hw/soc/pnr/runs/ are git-ignored build products, so there "
             "is nothing here to audit on a fresh clone. Regenerate "
-            "with:\n    " + REGENERATE)
+            "with:\n    " + REGENERATE + artifact_identity(
+                "hw/soc/pnr/runs/s83romecc5/final/nl/soc_top.nl.v"))
     return found
 
 

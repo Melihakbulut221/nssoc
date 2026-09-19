@@ -48,6 +48,31 @@ NAMES = ("metrics.json", "resolved.json")
 CASES = [(tag, name) for tag in sorted(RUNS) for name in NAMES]
 
 
+def test_missing_artifact_identity_never_borrows_a_different_runs_digest(
+        tmp_path, monkeypatch):
+    """Same basename is insufficient evidence, even with identical run suffixes."""
+    monkeypatch.setattr(ev, "ROOT", tmp_path)
+    manifest = tmp_path / "docs/80-artefact-digests.tsv"
+    manifest.parent.mkdir()
+    digest = "a" * 64
+    manifest.write_text(
+        "# recorded identities\npath\tbytes\tsha256\n"
+        f"runs/original/final/nl/soc_top.nl.v\t12\t{digest}\n")
+    relative = "runs/original/final/nl/soc_top.nl.v"
+    message = ev.artifact_identity(tmp_path / relative)
+    assert digest in message and relative in message and "12 bytes" in message
+    assert "new build is a separate measurement" in message
+    for different in ("runs/changed/final/nl/soc_top.nl.v",
+                      "runs/original-copy/final/nl/soc_top.nl.v"):
+        message = ev.artifact_identity(different)
+        assert digest not in message
+        assert "No historical SHA-256" in message and different in message
+    with manifest.open("a") as f:
+        f.write(f"{relative}\t12\t{'b' * 64}\n")
+    with pytest.raises(AssertionError, match="Conflicting recorded identities"):
+        ev.artifact_identity(relative)
+
+
 @pytest.mark.skipif(not RUNS, reason="scripts/collect_evidence.py is not in this tree")
 @pytest.mark.parametrize("tag,name", CASES, ids=lambda v: v)
 def test_every_cited_run_has_its_evidence_committed(tag, name):

@@ -203,3 +203,26 @@ front-door row is retained, including the failure. The snapshot really must
 keep the integer the tool wrote. The input guard now excludes only
 `docs/evidence/`, while the separate step-record test continues to check the
 integer and compare the live bytes. Active P&R inputs still require a float.
+
+**Verified follow-up at 882a4e0, recorded after restart:** the clean remote
+clone completed with **611 passed, zero failures, 34 skipped** in the full
+Python suite. The front-door result was **16 passed, zero failed, 7 skipped**,
+with `tree-dirty=0`; its original row is now retained in `ci-local-log.tsv`.
+The earlier failed run remains in the history and verification record.
+The 34 remaining skips include absent build products and generated dependencies;
+they do not meet F6's requirement that every remaining skip be tool/PDK absence.
+All three GitHub jobs for shutdown checkpoint `5b196ca` also completed
+successfully, independently of the local physical flow.
+
+The 23 checkpoint artifact hashes verified after restart. The 24-macro physical
+flow resumed at `OpenROAD.STAMidPNR-2` from the completed post-CTS repair
+checkpoint. Its routing and final timing results are not yet available.
+
+**F6 missing-artifact diagnostics:** placement, gate-coverage and shipped-netlist
+checks now identify their historical DEF/netlist by its exact manifest path,
+byte count and SHA-256. A current rebuild is explicitly a new measurement,
+not a replacement for those historical bytes. The shared lookup refuses
+conflicting identities and never borrows a hash from another run with the same
+basename. These changes preserve skips and all existing assertions. The focused
+regression passed **60 tests with 8 missing historical artifact skips**; the
+frozen pilot rail-netlist check separately skipped with its exact identity.

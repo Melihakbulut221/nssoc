@@ -27,6 +27,7 @@ message that names the digest in `docs/80-artefact-digests.tsv` the
 absent file would have to match.
 """
 
+import csv
 import hashlib
 import json
 import pathlib
@@ -128,3 +129,32 @@ def skip_reason(tag, what, regenerate=None):
     if regenerate:
         msg += " Regenerate with: %s" % regenerate
     return msg
+
+
+def artifact_identity(path):
+    """Name the exact retained bytes, without substituting another run's hash.
+
+    Rebuilding current RTL may legitimately produce different bytes. The digest
+    identifies the historical artifact to restore; it is not a reproducibility
+    assertion about a newly generated artifact.
+    """
+    path = pathlib.Path(path)
+    if path.is_absolute():
+        path = path.relative_to(ROOT)
+    relative = path.as_posix()
+    manifest = ROOT / "docs/80-artefact-digests.tsv"
+    rows = csv.DictReader(
+        (line for line in manifest.read_text().splitlines()
+         if line.strip() and not line.startswith("#")), delimiter="\t")
+    matches = [row for row in rows if row["path"] == relative]
+    if not matches:
+        return (f" No historical SHA-256 is recorded for {relative} in "
+                "docs/80-artefact-digests.tsv; another artifact's digest "
+                "cannot establish its identity.")
+    identities = {(row["sha256"], row["bytes"]) for row in matches}
+    if len(identities) != 1:
+        raise AssertionError(f"Conflicting recorded identities for {relative}")
+    digest, size = identities.pop()
+    return (f" Historical artifact: {relative}; SHA-256 {digest}; {size} bytes "
+            "(docs/80-artefact-digests.tsv). Restore these bytes to recheck "
+            "that historical result; a new build is a separate measurement.")
