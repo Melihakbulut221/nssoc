@@ -139,3 +139,23 @@ existing `MEM_RDREG=1` and `REQ_REG=1` pipelines. Its 50 MHz floorplan is genera
 with a 1100 um channel and 40% placement target in `config-interfaces.json`.
 This profile does not change the RTL defaults. Results are recorded only after
 the corresponding tool run completes; synthesis is not counted as layout.
+
+
+## Reproduction
+
+```sh
+make setup PYTHON=/usr/bin/python3
+make soc-prepare
+make soc-interfaces-test
+make soc-interfaces-sim
+export OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite
+make rf-equivalence
+make soc-interfaces-layout RUN_TAG=interfaces-reproduction
+```
+
+The layout command requires the same rootless LibreLane, OpenROAD shims and
+pinned IHP PDK as the existing SoC flow. It refuses to overwrite its synthesis
+output, snapshots the RTL input hashes, binds them to the mapped netlist hash,
+and keeps the physical log under `hw/soc/out/<tag>/layout.log`. Macro-internal DRC/LVS is disabled in the inherited configuration because
+of the recorded vendor SRAM problem; this flow does not provide SRAM signoff. The wrappers and the new peripheral control state are not
+radiation-hardened replicas.

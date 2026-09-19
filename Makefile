@@ -64,7 +64,7 @@ soc-interfaces-test: soc-interfaces-prepare
 	cd $(ROOT) && scripts/run_cocotb.sh soc_interfaces
 
 soc-interfaces-sim:
-	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO SOC_MEM_RDREG=1 SOC_REQ_REG=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
+	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO IBEX_REGFILE=secded SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
 
 .PHONY: soc-interfaces-layout
 soc-interfaces-layout:

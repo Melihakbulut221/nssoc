@@ -2133,12 +2133,15 @@ def test_the_registered_request_phase_ships_off_and_is_forwarded():
         "{}".format(offenders))
 
     allowed = {"syn_soc_top.sh", "sim_soc.sh"}
+    # An explicit experimental profile is not a change to either default.
+    # docs/88 measures this profile's different cycle count separately.
+    profiles = {"implement_interfaces.sh"}
     setters = {f.name for f in sorted(SOC_FLOW.glob("*.sh"))
                if re.search(r"SOC_REQ_REG", f.read_text())}
-    assert setters <= allowed, (
+    assert setters <= allowed | profiles, (
         "a flow script this test does not know about carries the knob: "
         "{}. Add it here with the reason, or remove it.".format(
-            sorted(setters - allowed)))
+            sorted(setters - allowed - profiles)))
 
     # AND THE SCRIPTS THAT MAY CARRY IT MUST STILL DEFAULT IT OFF, which
     # is the half of this guard that was missing until 2026-09-16. The
