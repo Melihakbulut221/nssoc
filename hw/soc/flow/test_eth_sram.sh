@@ -11,7 +11,7 @@ eval "$(make --no-print-directory -f "$SOC_DIR/tools.soc.mk" printvars)"
 GL_IVERILOG=${GL_IVERILOG:-$HOME/.local/opt/iverilog13/usr/bin/iverilog}
 major=$("$GL_IVERILOG" -V 2>/dev/null | sed -n '1s/.*version \([0-9]*\).*/\1/p')
 [ "${major:-0}" -ge 13 ] || { echo 'Native SG13G2 models require Icarus >=13' >&2; exit 2; }
-MACRO=RM_IHPSG13_2P_1024x16_c2_bm_bist
+MACRO=RM_IHPSG13_2P_256x16_c2_bm_bist
 LIB="$SG13G2_SRAM_DIR/lib/${MACRO}_typ_1p20V_25C.lib"
 python3 "$SOC_DIR/flow/prepare_interfaces.py"
 cat > "$OUT/synth.ys" <<EOF
@@ -22,7 +22,7 @@ synth -top soc_eth -flatten -run begin:fine
 memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib
 techmap -map $SOC_DIR/techmap/eth_ram_map.v
 synth -top soc_eth -run fine
-select -assert-count 4 t:$MACRO
+select -assert-count 16 t:$MACRO
 dfflibmap -liberty $SG13G2_TYP
 abc -liberty $SG13G2_TYP
 setundef -zero

@@ -20,7 +20,7 @@ for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp'):
         files.update((root/directory).glob(ext))
 record = {'configuration': {'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
-                           'ETH_SRAM': 1, 'clock_ns': 20, 'ethernet_clock_ns': 8},
+                           'ETH_SRAM': 1, 'ETH_SRAM_BANK_WORDS': 256, 'clock_ns': 20, 'ethernet_clock_ns': 8},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                       for p in sorted(files)}}
 record['implementation_files'] = {

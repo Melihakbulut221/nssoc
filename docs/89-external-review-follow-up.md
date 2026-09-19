@@ -133,7 +133,7 @@ claim that the fewer-than-30-skips criterion is met.
 
 ## F4: explicit QSPI constraints and extracted remeasurement
 
-The active twelve-macro interface profile now sources `soc_interfaces.sdc`,
+The first twelve-macro Ethernet interface profile sources `soc_interfaces.sdc`,
 which sources the existing QSPI fragment in both P&R and final STA. The default
 QSPI sampling RTL and divider remain unchanged. Before routing this new profile,
 the completed docs/88 layout was re-timed with its extracted SPEF and explicit
@@ -160,3 +160,32 @@ Ethernet profile uses the same QSPI fragment directly from the versioned flow.
 The timing outcome remains failing; recording it satisfies the review's STA
 measurement request without changing the default sampling behavior.
 `scripts/run_cocotb.sh soc_qspi` passes **16 tests, zero failures/skips**.
+
+## Further reproduction at abc0791
+
+A clean remote clone of `abc079155d7c04d58f06e3c0e9d02df84549a0b8` passed
+`scripts/ci_local.sh all --record`: **16 passed, zero failed, 7 skipped**, with
+`tree-dirty=0`. Its exact row is appended to `ci-local-log.tsv`; the row names
+the revision actually tested, not the later commit that stores the row.
+An explicit `python -m pytest sw/tests -q -rs` in that clone measured
+**605 passed, 38 skipped**. This does not close F6.
+
+**F0a test correction, 2026-09-19:** the old public rejection test skipped and,
+upstream, only asserted regex preconditions. It never called the production
+rejection. `redact_fragment` now holds the unchanged production rule, and the
+test invokes it with altered real file text. The public tree also runs the
+two-generation idempotence test. All six mirror tests pass without skips,
+including duplicate matches with a marker present. This changes test coverage,
+not the redaction acceptance rule.
+
+**F6 additional evidence:** a byte-for-byte copy of the first Ethernet run's
+post-CTS step configuration is committed as
+[postcts-config.json](evidence/interfaces-eth-pnr2-postcts-config.json).
+`test_derate_is_a_float.py` checks its demoted integer on a clone and compares
+bytes with the live checkpoint where present. This is evidence for one actual
+LibreLane 3.0.5 checkpoint, not a reconstructed historical 1,529-step census.
+Missing historical netlists, DEF and run reports remain distinct from missing
+tools and cannot honestly be relabelled as tool skips.
+
+The Ethernet SRAM mapping was subsequently replaced after measured 125 MHz
+failure; docs/90 records the comparison and the new 24-macro physical profile.

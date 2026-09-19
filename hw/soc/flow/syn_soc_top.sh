@@ -569,7 +569,7 @@ ETH_LIB_READ="# Ethernet FIFO maps to standard cells in the legacy profile"
 SYNTH_COMMAND="synth -flatten -top soc_top"
 if [ "${SOC_ETH_SRAM:-0}" = 1 ]; then
   [ "${SOC_KEEP_HIER:-0}" = 0 ] || { echo 'SOC_ETH_SRAM requires SOC_KEEP_HIER=0' >&2; exit 2; }
-  ETH_LIB="$SG13G2_SRAM_DIR/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_typ_1p20V_25C.lib"
+  ETH_LIB="$SG13G2_SRAM_DIR/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib"
   [ -f "$ETH_LIB" ] || { echo "missing $ETH_LIB" >&2; exit 2; }
   ETH_LIB_READ="read_liberty -lib $ETH_LIB"
   SYNTH_COMMAND="synth -flatten -top soc_top -run begin:fine
@@ -577,7 +577,7 @@ select -assert-count 2 soc_top/u_eth.u_mac.*.mem
 memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib soc_top/u_eth.u_mac.*.mem
 techmap -map $SOC_DIR/techmap/eth_ram_map.v
 synth -top soc_top -run fine
-select -assert-count 4 t:RM_IHPSG13_2P_1024x16_c2_bm_bist"
+select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
 fi
 
 cat > "$OUT/soc_top_syn.ys" <<EOF

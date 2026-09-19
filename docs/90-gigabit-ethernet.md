@@ -83,7 +83,7 @@ The fresh run finishes after **159269 cycles**. Source hashes, native gate-test
 XML and the complete CPU transcript are committed in
 [the Ethernet evidence record](evidence/ethernet-20260919.json).
 
-Yosys 0.33 maps the FIFO pair to **four
+**First mapping, superseded 2026-09-19:** Yosys 0.33 maps the FIFO pair to **four
 `RM_IHPSG13_2P_1024x16_c2_bm_bist` macros**, with 508 standard-cell flip-flops
 and **2615 total cells** including macros. Combined typical Liberty area is
 **667066.4354 um2**, of which **620615.3428 um2** is SRAM. The register-array
@@ -93,8 +93,12 @@ standalone MAC synthesis figures, not placed whole-chip area.
 `SOC_ETH_SRAM=1` selects the mapping in the whole-SoC synthesis script and is
 mandatory in `implement_interfaces.sh`. Only the Ethernet memories are selected;
 the frozen accelerator's memories and protection are not remapped. The active
-floorplan extends 540 um to the right for the four new SRAMs and carries all
-twelve macro physical views, power hooks and explicit 8 ns RX/TX clocks.
+~~floorplan extends 540 um to the right for the four new SRAMs and carries all
+twelve macro physical views~~. **Corrected 2026-09-19:** the active mapping uses
+sixteen `RM_IHPSG13_2P_256x16_c2_bm_bist` macros, eight per FIFO, keeping each
+FIFO at 2048 bytes. The die is now **3326.4 × 2475.9 um**, with two new SRAM
+columns and **24 macros total**. Each has physical views and power hooks;
+RX/TX clocks remain explicitly constrained to 8 ns.
 Cross-domain paths have an 8 ns maximum datapath budget; only asynchronous
 hold checks are excepted. A broad clock-group false path would hide this bound
 and is deliberately absent. GMII input/output budgets are stated board/PHY
@@ -104,3 +108,39 @@ pad, package and PHY characterization.
 The old eight-macro routed results in docs/88 **do not validate this revision**.
 Its physical timing and DRC must be measured afresh; passing RTL/gate packet
 tests is not a physical signoff or a radiation qualification.
+
+## Measured SRAM replacement
+
+The first 1024-word-bank implementation failed 125 MHz setup after clock-tree
+construction and timing repair: **−0.805066 ns**, with 17 setup violations at
+the slow corner. The critical path starts at the TX SRAM's read output.
+Its native slow Liberty clock-to-output delay leaves too little of the 8 ns
+period for the bank mux and destination register. This is an implementation
+failure, not an input/output constraint to waive.
+
+The 256-word banks pass the same **six native gate-level packet tests**,
+including overflow, bad FCS, flush and a full-size packet. Standalone mapping
+uses **2693 cells, 512 flip-flops, 16 SRAM macros**, and **968710.3670 um2**
+of combined cell/macro area. It costs more SRAM area than the first mapping.
+The complete SoC synthesis has **65667 cells, 9352 flip-flops, 24 macros** and
+**1045780.5456 um2 of standard-cell area**, excluding macro area.
+
+Identical pre-layout STA budgets, OpenSTA 3.1.0, ideal clocks, 5% derates:
+
+| TX-domain setup margin | First 1024-word banks | Active 256-word banks |
+|---|---:|---:|
+| Fast | +4.717523 ns | +5.083783 ns |
+| Typical | +2.846943 ns | +4.077037 ns |
+| Slow | −0.434501 ns | +1.520293 ns |
+
+These are setup comparisons without wire RC or CTS; **hold still fails** in
+both pre-layout netlists. The new physical optimization includes fast, typical
+and slow corners, whereas the first candidate optimized only typical and slow.
+Signoff checker limits are unchanged. The first candidate was stopped during
+post-global-route repair; it has no completed detailed-route/GDS result.
+
+The scripts used for the comparison, exact path reports, hashes, gate-test XML,
+whole-SoC synthesis input inventory and the first candidate's native post-CTS
+metrics are in [the SRAM comparison record](evidence/ethernet-sram256-20260919.json).
+The new physical run is `interfaces-eth256-20260919`; its completion and
+extracted timing must be reported separately from the setup-only comparison.

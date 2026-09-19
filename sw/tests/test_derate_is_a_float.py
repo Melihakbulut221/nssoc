@@ -39,7 +39,6 @@ import json
 import pathlib
 import subprocess
 
-import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 KEY = "TIME_DERATING_CONSTRAINT"
@@ -112,11 +111,19 @@ def test_the_step_directories_demote_it_and_that_is_recorded_not_fixed():
     measurement rather than by a memory.
     """
     steps = sorted(ROOT.glob("hw/soc/pnr/runs/*/[0-9]*/config.json"))
+    # Review F6: a real step configuration, not a reconstruction from prose.
+    # On a clone this establishes the type at ONE named checkpoint, not the
+    # historical 1,529-step census. Compare bytes when that checkpoint exists.
+    record = ROOT / "docs/evidence/interfaces-eth-pnr2-postcts-config.json"
+    live = ROOT / ("hw/soc/pnr/runs/interfaces-eth-pnr2-20260919/"
+                   "27-openroad-resizertimingpostcts/config.json")
+    assert record.is_file(), "recorded post-CTS configuration is required"
+    if live.is_file():
+        assert live.read_bytes() == record.read_bytes(), "step snapshot changed"
     if not steps:
-        pytest.skip(
-            "no run trees on this machine -- hw/soc/pnr/runs/ is "
-            "gitignored build output, so there are no step directories "
-            "to measure. A skip here is evidence of nothing.")
+        steps = [record]
+        print("\nReading one recorded LibreLane 3.0.5 post-CTS configuration; "
+              "not remeasuring the historical step census.")
 
     carrying = _carrying_the_key(steps)
     ints = [p for p, v in carrying if not isinstance(v, float)]
