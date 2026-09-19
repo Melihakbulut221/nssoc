@@ -6,6 +6,8 @@
 [tasks]
 prove
 prove_noscrub
+prove_synpre
+prove_synpre_noscrub
 
 [options]
 mode prove
@@ -20,6 +22,8 @@ read_verilog -formal ibex_register_file_ff.v
 rename ibex_register_file_ff ibex_register_file_gold
 read_verilog -formal secded_enc.v secded_dec.v ibex_regfile_secded.v regfile_equivalence_props.v
 prove_noscrub: chparam -set SCRUB 0 regfile_equivalence_props
+prove_synpre: chparam -set SYNPRE 1 regfile_equivalence_props
+prove_synpre_noscrub: chparam -set SCRUB 0 -set SYNPRE 1 regfile_equivalence_props
 prep -top regfile_equivalence_props -flatten
 opt -full
 

@@ -76,6 +76,16 @@ software and RTL verification results. See the explicit work inventory in
 `docs/87-engineering-closure.md`; no shuttle purchase or external submission
 was made by this audit.
 
+### Interface implementation update — 2026-09-19
+
+`docs/88-interface-integration.md` supersedes the assessment-only status for
+SpaceWire, CAN, SPI and I2C: all four now occupy their APB slots in `soc_top`,
+with physical pins and IRQ lines. The checked scope is SpaceWire PIO, classical
+CAN 2.0B, byte SPI in all four modes and a single-controller I2C master. It does
+not close SpaceWire DMA/router, CAN FD, PCIe, Ethernet, pads or fabrication.
+A new layout profile retains ECC RAM and ROM and exercises the existing request
+and read-return pipelines; the interface record carries the measured results.
+
 ## 1. External clocks
 
 | Date | Event | Consequence |

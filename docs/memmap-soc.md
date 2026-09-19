@@ -75,10 +75,10 @@ interrupt controller and the drivers cannot disagree
 | `0xFF902000` | `0x002` | GPIO | 4 | 2 | implemented | GRGPIO-style general purpose I/O, 16 pins |
 | `0xFF908000` | `0x008` | TIMER0 | 8 | 3 | implemented | GPTIMER, last timer is the watchdog and is armed at reset |
 | `0xFF909000` | `0x009` | TIMER1 | 12 | 4 | reserved | Second GPTIMER |
-| `0xFF90D000` | `0x00D` | SPW | 16 | 5 | reserved | SpaceWire codec, GRSPW2-shaped registers, one DMA channel |
-| `0xFF911000` | `0x011` | CAN | 18 | 6 | reserved | CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD |
-| `0xFF912000` | `0x012` | SPI | 19 | 7 | reserved | SPICTRL-shaped SPI master |
-| `0xFF913000` | `0x013` | I2C | 20 | 8 | reserved | I2CMST, the OpenCores I2C master register map |
+| `0xFF90D000` | `0x00D` | SPW | 16 | 5 | implemented | SpaceWire Light PIO codec, 64-entry RX and 16-entry TX, project registers; docs/88 |
+| `0xFF911000` | `0x011` | CAN | 18 | 6 | implemented | CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD |
+| `0xFF912000` | `0x012` | SPI | 19 | 7 | implemented | SPI master, modes 0..3, two chip selects, project register map; docs/88 |
+| `0xFF913000` | `0x013` | I2C | 20 | 8 | implemented | I2C master, single command with timeout, project register map; docs/88 |
 | `0xFF914000` | `0x014` | QSPICTL | 21 | 9 | implemented | QSPI flash controller, register mode, two chip selects; docs/66 |
 | `0xFF915000` | `0x015` | BUSSTAT | 22 | 10 | implemented | Fault counters and sticky status for the register file codec and the watchdog voter; AHBSTAT in spirit, not in name |
 | `0xFF916000` | `0x016` | SCRUB | 23 | 11 | implemented | Memory codec counters, scrubber control and the last uncorrectable address, MEMSCRUB-like; docs/67 |

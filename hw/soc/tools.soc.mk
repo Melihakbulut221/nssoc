@@ -147,9 +147,8 @@ RVFORMAL_DIR    ?= $(SOC_DIR)/ext/riscv-formal
 # Licence compatibility with docs/14's recommendation (CERN-OHL-W-2.0 for
 # RTL): Apache-2.0 and MIT are inbound-compatible; the two LGPL cores are
 # the case docs/14 section 5.2 argues is a bad fit for silicon and
-# recommends keeping out of the funded scope. Fetching them here for
-# ASSESSMENT does not put them in the design: nothing under hw/soc/rtl
-# instantiates any of them.
+# recommends keeping out of the funded scope. The assessment-only state is superseded by docs/88: SpaceWire and CAN
+# are now instantiated in this SoC with their original LGPL notices retained.
 OPENTITAN_URL    ?= https://github.com/lowRISC/opentitan.git
 OPENTITAN_COMMIT ?= 1e1dace7680251f88ab11adedd8766222f333962
 OPENTITAN_DIR    ?= $(SOC_DIR)/ext/opentitan

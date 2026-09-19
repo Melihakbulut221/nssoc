@@ -1,3 +1,6 @@
+#ifdef INTERFACE_DEMO
+#include "soc_interfaces.h"
+#endif
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: Apache-2.0
 
@@ -1726,6 +1729,62 @@ int main(void) {
     check(30, ok);
   }
 #endif /* QSPI_DEMO */
+#endif
+
+#ifdef INTERFACE_DEMO
+  {
+    /* Check 31: actual CPU -> fabric -> APB -> pins -> CPU interrupts. */
+    int ok = 1;
+    uint8_t byte = 0;
+    uint16_t character = 0;
+    soc_if_write(SOC_SPI_BASE, 0, 8); /* mode 0 and IRQ */
+    soc_if_write(SOC_SPI_BASE, 4, 4);
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    csr_set_mie(1u << (16 + SOC_IRQLINE_SPI));
+    csr_set_mstatus(8);
+    ok &= soc_spi_byte(0xa5, &byte, 2000) == 0 && byte == 0xa5;
+    for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPI;
+    soc_if_write(SOC_SPI_BASE, 12, 2);
+    soc_if_write(SOC_SPI_BASE, 0, 0);
+
+    soc_if_write(SOC_SPW_BASE, 0, 3);
+    ok &= soc_if_wait(SOC_SPW_BASE, 4, 4, 4, 20000) == 0;
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    soc_if_write(SOC_SPW_BASE, 20, 32);
+    csr_set_mie(1u << (16 + SOC_IRQLINE_SPW));
+    csr_set_mstatus(8);
+    ok &= soc_spw_put(0x5a, 2000) == 0;
+    ok &= soc_spw_put(0x100, 2000) == 0;
+    for (int i=0; i<20000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPW;
+    ok &= soc_spw_get(&character, 20000) == 0 && character == 0x5a;
+    ok &= soc_spw_get(&character, 20000) == 0 && character == 0x100;
+    soc_if_write(SOC_SPW_BASE, 20, 0);
+    soc_if_write(SOC_SPW_BASE, 0, 4);
+
+    soc_if_write(SOC_I2C_BASE, 4, 8);
+    soc_if_write(SOC_I2C_BASE, 20, 2); /* address NACK, no device attached */
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    csr_set_mie(1u << (16 + SOC_IRQLINE_I2C));
+    csr_set_mstatus(8);
+    ok &= soc_i2c_byte(0x52, 0, 1, &byte, 20000) == -2;
+    for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_I2C;
+    soc_if_write(SOC_I2C_BASE, 20, 0);
+    soc_if_write(SOC_I2C_BASE, 24, 15);
+
+    soc_can_write(0, 1);
+    soc_can_write(31, 0x80);
+    soc_can_write(6, 0x13);
+    soc_can_write(7, 0x7f);
+    ok &= soc_can_read(6) == 0x13 && soc_can_read(7) == 0x7f;
+    puts_("interface CPU/pin/IRQ check: "); puts_(ok ? "PASS\n" : "FAIL\n");
+    check(31, ok);
+  }
 #endif
 
   check(11, trap_saw_rvc == 0u);   /* handler never had to guess a width */

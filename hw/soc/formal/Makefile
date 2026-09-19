@@ -128,7 +128,7 @@ regfilecontract:
 
 regfileequivalence:
 	@test -s ../gen/ibex_register_file_ff.v || { echo 'Run make soc-prepare at the repository root first.'; exit 1; }
-	@for t in prove prove_noscrub; do \
+	@for t in prove prove_noscrub prove_synpre prove_synpre_noscrub; do \
 	  $(SBY) -f regfile_equivalence.sby $$t || exit 1; \
 	done
 

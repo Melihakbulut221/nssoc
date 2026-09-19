@@ -118,6 +118,7 @@ module tb_soc;
   integer cycles = 0;
   always @(posedge clk) if (rst_n) cycles = cycles + 1;
 
+  wire spw_loop_d, spw_loop_s, spi_loop, i2c_scl_oe, i2c_sda_oe;
   wire uart_tx, uart_irq;
   wire wdog_n, wdog_rst, nmi, irq_timer, irq_soft, gptimer_irq;
   wire alert_minor, alert_major_internal, alert_major_bus;
@@ -223,6 +224,11 @@ module tb_soc;
   // and hw/soc/tb/cocotb/test_soc_wdog.py is where the disabled case is
   // driven.
   soc_top #(.ROM_INIT(`ROM_HEX)) dut (
+      .spw_di_i(spw_loop_d), .spw_si_i(spw_loop_s),
+      .spw_do_o(spw_loop_d), .spw_so_o(spw_loop_s),
+      .i2c_scl_i(!i2c_scl_oe), .i2c_sda_i(!i2c_sda_oe),
+      .i2c_scl_oe_o(i2c_scl_oe), .i2c_sda_oe_o(i2c_sda_oe),
+      .can_rx_i(1'b1), .spi_miso_i(spi_loop), .spi_mosi_o(spi_loop),
       .clk_i  (clk),
       .rst_ni (rst_n),
       .wdog_dis_i (1'b0),

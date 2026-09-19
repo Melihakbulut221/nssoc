@@ -112,6 +112,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends iverilog
           python3 -m venv hw/.venv
           hw/.venv/bin/pip install -r hw/requirements.txt
+      - name: Prepare pinned interface IP
+        run: make soc-interfaces-prepare
       - name: Run every non-frozen RTL suite
         run: scripts/run_cocotb.sh
       - name: Retain simulator diagnostics, including failed runs
@@ -146,6 +148,8 @@ jobs:
           make soc-prepare
       - name: Real-codec contract, counterexamples and upstream equivalence
         run: make rf-contract rf-equivalence
+      - name: CPU interface and interrupt regression
+        run: make soc-interfaces-sim
       - name: Boot geometry proof and counterexamples
         run: |
           curl -fLsS --retry 3 -o hw/soc/tools/cbmc.deb https://github.com/diffblue/cbmc/releases/download/cbmc-6.11.0/ubuntu-22.04-cbmc-6.11.0-Linux.deb

@@ -80,6 +80,11 @@ refuses a dirty checkout. `git ls-files` returns nothing under
 `hw/soc/ext/`, `hw/soc/tools/`, `hw/soc/gen/`, `hw/soc/genrvfi/` or
 `tt/tt/`.
 
+The SoC now instantiates the fetched SpaceWire Reloaded and Mohor CAN cores
+under LGPL-2.1-or-later and Alex Forencich's I2C master under MIT. The ignored
+interface bundle retains their notices and records input hashes; see
+`docs/88-interface-integration.md`. These components are not in the frozen pilot.
+
 ## 3. How the map is kept true
 
 ```bash

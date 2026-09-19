@@ -5,7 +5,8 @@
 // about the codec. Its only environmental assumption is initial reset.
 `default_nettype none
 module regfile_equivalence_props #(
-  parameter integer SCRUB = 1
+  parameter integer SCRUB = 1,
+  parameter integer SYNPRE = 0
 ) (
   input wire clk_i, rst_ni, we_a_i,
   input wire test_en_i, dummy_instr_id_i, dummy_instr_wb_i,
@@ -30,7 +31,7 @@ module regfile_equivalence_props #(
     .rdata_a_o(gold_a), .rdata_b_o(gold_b),
     .rcap_a_o(gold_cap_a), .rcap_b_o(gold_cap_b)
   );
-  ibex_register_file_ff #(.SCRUB(SCRUB)) gate (
+  ibex_register_file_ff #(.SCRUB(SCRUB), .SYNPRE(SYNPRE)) gate (
     `RF_INPUTS,
     .rdata_a_o(gate_a), .rdata_b_o(gate_b),
     .rcap_a_o(gate_cap_a), .rcap_b_o(gate_cap_b), .rf_ecc_err_o(errors)

@@ -345,6 +345,12 @@ fi
   "$SOC_DIR/rtl/soc_apb_pnp.v" \
   "$SOC_DIR/rtl/soc_uart.v" \
   "$SOC_DIR/rtl/soc_gpio.v" \
+  "$SOC_DIR/rtl/soc_spw.v" \
+  "$SOC_DIR/rtl/soc_i2c.v" \
+  "$SOC_DIR/rtl/soc_spi.v" \
+  "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_apb_wb.v" \
+  "$SOC_DIR/gen/interfaces.bundle.vh" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/tb/flash_w25q128jv.v" \
   "$SOC_DIR/rtl/soc_clint.v" \

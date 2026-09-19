@@ -101,7 +101,7 @@ failures and seven stated skips (six absent physical run trees and Pandoc). Froz
 
 ## 2. Measured artifacts
 
-`docs/evidence/closure-20260919/verification.json` records the final results,
+`docs/evidence/closure-20260919.json` records the final results,
 tool identities, commands and source digests. It is a committed measurement
 record; a clean clone can read it but must run the commands to reproduce it.
 
@@ -149,6 +149,11 @@ The Python synthesis guards still use their existing Yosys **0.33** mapper;
 their area counts are not interchangeable with the formal tool version.
 
 ## 4. Work that remains open
+
+Follow-up: `docs/88-interface-integration.md` implements the four additional
+spacecraft interfaces and records the subsequent physical work. The table below
+is the open inventory at this earlier closure commit; use docs/88 for its update.
+
 
 The repository combines a frozen pilot, a SoC prototype and a future product
 roadmap. Passing the checks above does not finish the following work.

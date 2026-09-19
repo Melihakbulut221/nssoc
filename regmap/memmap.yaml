@@ -303,14 +303,14 @@ apb_slots:
      desc: "GPTIMER, last timer is the watchdog and is armed at reset", source: "GPTIMER0 0xFF908000 (GR740, NOELVSYS)"}
   - {name: TIMER1,  slot: 0x009, irq: 12, line: 4,  status: reserved, device_id: 0x011,
      desc: "Second GPTIMER", source: "GPTIMER1 0xFF909000 (GR740)"}
-  - {name: SPW,     slot: 0x00D, irq: 16, line: 5,  status: reserved, device_id: 0x01F,
-     desc: "SpaceWire codec, GRSPW2-shaped registers, one DMA channel", source: "GR740 SpW AMBA interface slot 0xFF90D000"}
-  - {name: CAN,     slot: 0x011, irq: 18, line: 6,  status: reserved, device_id: 0x0FE,
+  - {name: SPW,     slot: 0x00D, irq: 16, line: 5,  status: implemented, device_id: 0x01F,
+     desc: "SpaceWire Light PIO codec, 64-entry RX and 16-entry TX, project registers; docs/88", source: "GR740 SpW AMBA interface slot 0xFF90D000"}
+  - {name: CAN,     slot: 0x011, irq: 18, line: 6,  status: implemented, device_id: 0x0FE,
      desc: "CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD", source: "slot only (docs/08 section 3 row 14)"}
-  - {name: SPI,     slot: 0x012, irq: 19, line: 7,  status: reserved, device_id: 0x02D,
-     desc: "SPICTRL-shaped SPI master", source: "SPICTRL (GR740 bridge 1) remapped"}
-  - {name: I2C,     slot: 0x013, irq: 20, line: 8,  status: reserved, device_id: 0x028,
-     desc: "I2CMST, the OpenCores I2C master register map", source: "family style"}
+  - {name: SPI,     slot: 0x012, irq: 19, line: 7,  status: implemented, device_id: 0x02D,
+     desc: "SPI master, modes 0..3, two chip selects, project register map; docs/88", source: "SPICTRL (GR740 bridge 1) remapped"}
+  - {name: I2C,     slot: 0x013, irq: 20, line: 8,  status: implemented, device_id: 0x028,
+     desc: "I2C master, single command with timeout, project register map; docs/88", source: "family style"}
   - {name: QSPICTL, slot: 0x014, irq: 21, line: 9,  status: implemented, device_id: 0x045,
      desc: "QSPI flash controller, register mode, two chip selects; docs/66", source: "family style"}
   - {name: BUSSTAT, slot: 0x015, irq: 22, line: 10, status: implemented, device_id: 0x052,

@@ -29,7 +29,7 @@ build artifacts, not a second copy of the tracked records. On a machine
 holding the runs, `sw/tests/test_recorded_evidence.py` compares the records
 with their original outputs.
 
-`closure-20260919/verification.json` is a separate software/RTL verification
+`closure-20260919.json` is a separate software/RTL verification
 record for `docs/87-engineering-closure.md`: formal verdicts, source hashes,
 CBMC checks and whole-SoC boot results. Its commands do not require a PDK.
 Reading this record is not a re-execution of those commands.

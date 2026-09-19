@@ -1,5 +1,8 @@
 # 00 — Index: what this is, what exists, and where to start
 
+Latest implementation: `docs/88-interface-integration.md` — RTL, pin-level verification and physical implementation of the four spacecraft interfaces.
+
+
 Entry point to the document corpus. It states what the project is, what
 physically exists in this repository today as against what is planned,
 how the twenty-odd documents relate to one another, and which of them to
@@ -553,7 +556,9 @@ default would be proving the parameter is unused. Every figure above is
 left standing.
 
 **Re-counted 2026-09-19 [fact].** `hw/soc/formal` carries
-**93 tasks across 22 jobs**. `regfile_contract.sby` adds three tasks
+**95 tasks across 22 jobs**. The interface layout work adds two
+`regfile_equivalence.sby` tasks for `SYNPRE=1` with scrub on and off.
+`regfile_contract.sby` adds three tasks
 with the real codec and inductive storage invariants; `regfile_equivalence.sby`
 adds two direct upstream-Ibex comparisons, with scrub enabled and disabled.
 The results and reproduction commands are in `docs/87-engineering-closure.md`.

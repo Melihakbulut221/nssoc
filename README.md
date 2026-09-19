@@ -345,8 +345,9 @@ proved and driven through the pins by the bring-up program
 (`docs/65-gpio-and-the-interface-ip-assessment.md`); and a
 register-mode QSPI flash controller with two chip selects that feeds
 the NPU its weight image from a modelled flash
-(`docs/66-qspi-flash-controller.md`). SpaceWire, CAN, SPI and I2C are
-fetched, pinned and priced in `docs/65` and still not built. No radiation
+(`docs/66-qspi-flash-controller.md`). SpaceWire, CAN, SPI and I2C now have RTL, APB, pin and interrupt integration
+(`docs/88-interface-integration.md`), with pin-level protocol regressions.
+SpaceWire uses PIO; PCIe/Ethernet and external PHYs are not implemented. No radiation
 test data. ~~No gate-level result for anything under `hw/soc/`.~~
 **-- corrected 2026-09-14:** `docs/74` is a gate-level fault-injection
 campaign on `soc_top`'s own sign-off netlist

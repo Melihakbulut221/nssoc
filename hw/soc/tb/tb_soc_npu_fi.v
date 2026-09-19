@@ -254,6 +254,8 @@ module tb_soc_npu_fi;
   wire npu_aer_in_stb, npu_aer_out_vld;
 
   soc_top #(.ROM_INIT(`ROM_HEX)) dut (
+      .spw_di_i(1'b0), .spw_si_i(1'b0), .i2c_scl_i(1'b1), .i2c_sda_i(1'b1),
+      .can_rx_i(1'b1), .spi_miso_i(1'b0),
       .clk_i  (clk),
       .rst_ni (rst_n),
       .wdog_dis_i (wdog_dis),
