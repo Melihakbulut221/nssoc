@@ -526,8 +526,11 @@ of it, one screen away, for two days.*
 - **The AER mesh link** (`docs/10` section 8 item 2), ranked by
   `docs/53` at a factor of 182 against the clock's 1.16. A second NPU
   node does not exist.
-- **The remaining interfaces**, with the licensing question decided
-  first for the two LGPL cores (`docs/14` section 5.2, `docs/65`).
+- **Interface follow-up:** SpaceWire endpoint, CAN 2.0B, SPI and I2C
+  are integrated with their upstream licences and pin-level tests
+  (`docs/88`, 2026-09-19). SpaceWire DMA/router and optional camera
+  integration remain separate work; PCI/PCIe and Ethernet were excluded
+  by the original scope and need an interface/PHY specification.
 - **The two upstream reports drafted in `docs/54`**, the load-bearing
   one being a question that document refuses to answer for itself: is
   0.02 um Activ enclosure inside the vendor's own SRAM marker a
@@ -604,7 +607,7 @@ already has it.
 | External interrupt input | `soc_top.v:558` `.irq_external_i (1'b0)` and no top-level pin. All fifteen fast lines are internal peripherals |
 | PLL, on-chip clock source, POR circuit, brownout detect | `clk_i` and `rst_ni` are top-level inputs |
 | Lockstep, bus integrity | Ibex's shadow outputs are unconnected. Documented as `small-pmp`, no lockstep |
-| Spacecraft interfaces: SpaceWire, CAN, SPI, I2C, event-camera | Surveyed and priced in `docs/65`; not built. Only GPIO (16 pins) and QSPI exist |
+| Spacecraft interfaces | **Updated 2026-09-19:** SpaceWire endpoint, CAN 2.0B, SPI and I2C now exist in `soc_top`, with real pin-level regressions (`docs/88`). External transceivers/pads, SpaceWire DMA/router and event-camera integration remain open. |
 | Radiation test data | No part exists (`docs/05` section 4 rules 1-2 on how this device is described) |
 
 ---

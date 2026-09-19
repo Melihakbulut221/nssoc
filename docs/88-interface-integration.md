@@ -120,13 +120,26 @@ SoC boundary. The CAN clock and Wishbone clock both use `clk_i`.
 `make rtl-test` includes `Makefile.soc_interfaces`, with actual pin-level peers:
 
 - SPI: every mode and both chip selects, varied payloads, busy-write rejection,
-  completion interrupts, invalid dividers and invalid APB accesses.
+  completion interrupts, invalid dividers and invalid APB accesses. An independent
+  peer exchanges different MOSI/MISO payloads at the minimum divider, checks
+  sampling edges and verifies exactly sixteen clock edges per byte. Continuous
+  chip select is also checked across five-byte frames.
 - SpaceWire: two real endpoints, 160 transferred characters (credit recycling),
   EOP/EEP, reverse traffic, strict timecodes, disconnect/reconnect and disable.
 - I2C: an independent pin-level slave verifies write, read, repeated START,
   address NACK, clock stretching, stuck-bus timeout, explicit abort and errors.
-- CAN: two real nodes exchange a standard-ID frame, including payload, ACK,
-  RX interrupt and buffer release; every CPU byte lane is exercised.
+  Four-byte bursts verify continuation without repeated addressing and the
+  controller's three ACKs followed by final NACK on a read.
+- CAN: two real nodes exchange standard-ID and 29-bit extended-ID frames,
+  eight-byte payloads and an extended remote request in the reverse direction,
+  including ACK, RX interrupt and buffer release; every CPU byte lane is exercised.
+
+The final standalone interface run reports **11 passed, 0 failed, 0 skipped**.
+The CPU run with full ECC RAM/ROM, `MEM_RDREG=1`, `REQ_REG=1` and register-file
+`SYNPRE=1` reports **29 passed application checks** in 663477 cycles. All four
+upstream register-file equivalence tasks (both SYNPRE settings, with and without
+scrub) prove by induction. The earlier full RTL sweep reports 467 passes and
+15 explicit skips; the expanded interface tests above were run subsequently.
 
 `SW_DEFINES=-DINTERFACE_DEMO` adds check 31 to the real Ibex firmware. The SoC
 board model loops SPI and SpaceWire at the pins, resolves the I2C open-drain

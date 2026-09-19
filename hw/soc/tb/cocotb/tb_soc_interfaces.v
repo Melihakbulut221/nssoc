@@ -10,6 +10,7 @@ module tb_soc_interfaces (
     output wire [31:0] prdata_o,
     output wire pready_o, pslverr_o,
     input wire scl_hold_i, sda_hold_i, spw_disconnect_i,
+    input wire spi_external_i, spi_miso_i,
     output wire scl, sda, spi_sck, spi_mosi,
     output wire [1:0] spi_cs,
     output wire [5:0] irq,
@@ -34,7 +35,7 @@ soc_spi u_spi1 (
  .clk_i(clk_i), .rst_ni(rst_ni), .psel_i(psel_i && dev_i == 3'd1),
  .penable_i(penable_i), .pwrite_i(pwrite_i), .paddr_i(paddr_i),
  .pwdata_i(pwdata_i), .pstrb_i(pstrb_i), .prdata_o(data[1]),
- .pready_o(ready[1]), .pslverr_o(err[1]), .irq_o(irq[1]), .miso_i(spi_mosi), .mosi_o(spi_mosi), .sck_o(spi_sck), .cs_no(spi_cs));
+ .pready_o(ready[1]), .pslverr_o(err[1]), .irq_o(irq[1]), .miso_i(spi_external_i ? spi_miso_i : spi_mosi), .mosi_o(spi_mosi), .sck_o(spi_sck), .cs_no(spi_cs));
 soc_spw u_spw2 (
  .clk_i(clk_i), .rst_ni(rst_ni), .psel_i(psel_i && dev_i == 3'd2),
  .penable_i(penable_i), .pwrite_i(pwrite_i), .paddr_i(paddr_i),

@@ -22,7 +22,8 @@ class Bus:
     async def reset(self):
         for name in ('clk_i', 'rst_ni', 'psel_i', 'penable_i', 'pwrite_i',
                      'paddr_i', 'pwdata_i', 'pstrb_i', 'dev_i', 'scl_hold_i',
-                     'sda_hold_i', 'spw_disconnect_i'):
+                     'sda_hold_i', 'spw_disconnect_i', 'spi_external_i',
+                     'spi_miso_i'):
             getattr(self.d, name).value = 0
         await self.step(8)
         self.d.rst_ni.value = 1
@@ -148,6 +149,7 @@ class I2CPeer:
         self.starts = self.stops = 0
         self.reading = False
         self.ack_clock = False
+        self.master_acks = []
 
     def tick(self):
         scl, sda = int(self.d.scl.value), int(self.d.sda.value)
@@ -175,7 +177,8 @@ class I2CPeer:
             elif self.state == 'read':
                 self.bits += 1
             elif self.state == 'master_ack':
-                self.state = 'wait'
+                self.master_acks.append(not bool(sda))
+                self.state = 'next_read' if not sda else 'wait'
         elif falling:
             if self.state == 'ack':
                 if not self.ack_clock:
@@ -190,6 +193,10 @@ class I2CPeer:
                     self.state = 'master_ack'
                 else:
                     self.d.sda_hold_i.value = not bool(self.read_data & (0x80 >> self.bits))
+            elif self.state == 'next_read':
+                self.bits = 0
+                self.state = 'read'
+                self.d.sda_hold_i.value = not bool(self.read_data & 0x80)
         self.prev_scl, self.prev_sda = scl, sda
 
 
@@ -370,3 +377,125 @@ async def spi_continuous_chip_select_frames(d):
         await b.wr(1, 0, control ^ 4, error=True)
         await b.wr(1, 0, mode)  # explicit CS release
         assert int(d.spi_cs.value) == 3
+
+
+class SPIPeer:
+    """Exchange unrelated data and check the physical sampling edge."""
+    def __init__(self, d, cpol, cpha, response):
+        self.d, self.cpol, self.cpha, self.response = d, cpol, cpha, response
+        self.prev_sck, self.prev_cs = cpol, 3
+        self.prev_mosi = 0
+        self.sampled = []
+        self.edges = 0
+        self.frames = 0
+
+    def tick(self):
+        sck, cs, mosi = (int(self.d.spi_sck.value), int(self.d.spi_cs.value),
+                         int(self.d.spi_mosi.value))
+        if cs != 3 and self.prev_cs == 3:
+            assert sck == self.cpol
+            self.d.spi_miso_i.value = (self.response >> 7) & 1
+        elif cs == 3 and self.prev_cs != 3:
+            assert self.edges == 16 and len(self.sampled) == 8
+            assert sck == self.cpol
+            self.frames += 1
+        if cs != 3 and sck != self.prev_sck:
+            self.edges += 1
+            leading = sck != self.cpol
+            if leading != bool(self.cpha):
+                assert mosi == self.prev_mosi, 'MOSI changed at the sampling edge'
+                self.sampled.append(mosi)
+            else:
+                bit = 7 - len(self.sampled)
+                self.d.spi_miso_i.value = (self.response >> bit) & 1 if bit >= 0 else 0
+        self.prev_sck, self.prev_cs, self.prev_mosi = sck, cs, mosi
+
+
+@cocotb.test()
+async def spi_independent_peer_checks_edges(d):
+    b = Bus(d)
+    await b.reset()
+    d.spi_external_i.value = 1
+    for cpol in (0, 1):
+        for cpha in (0, 1):
+            for cs in (0, 1):
+                await b.wr(1, 0, cpol | (cpha << 1) | (cs << 2))
+                await b.wr(1, 4, 2)  # fastest permitted half-period
+                for tx, rx in ((0x96, 0x3c), (0x00, 0xff), (0xff, 0x00)):
+                    peer = SPIPeer(d, cpol, cpha, rx)
+                    b.peer = peer
+                    await b.wr(1, 8, tx)
+                    await b.poll(1, 12, 1, 0)
+                    assert await b.rd(1, 8) == rx
+                    assert peer.sampled == [(tx >> bit) & 1 for bit in range(7, -1, -1)]
+                    assert peer.frames == 1
+                    b.peer = None
+
+
+@cocotb.test()
+async def i2c_burst_read_write_and_final_nack(d):
+    b = Bus(d)
+    await b.reset()
+    peer = I2CPeer(d, read_data=0x69)
+    b.peer = peer
+    await b.wr(0, 4, 8)
+    await b.wr(0, 8, 0x52)
+    payload = [0x19, 0x80, 0xff, 0x00]
+    for i, value in enumerate(payload):
+        await b.wr(0, 16, value)
+        await b.wr(0, 12, 2 | (4 if i == 0 else 0))
+        await b.poll(0, 0, 1, 0)
+    assert peer.received == payload
+    assert peer.starts == 1 and peer.stops == 0
+    for i in range(4):
+        await b.wr(0, 12, 1 | (4 if i == 0 else 0) | (8 if i == 3 else 0))
+        await b.poll(0, 0, 1, 0)
+        assert await b.rd(0, 16) == 0x69
+    assert peer.starts == 2 and peer.stops == 1
+    assert peer.master_acks == [True, True, True, False]
+    assert not (await b.rd(0, 24) & 10), 'unexpected NACK or timeout'
+
+
+@cocotb.test()
+async def can_extended_id_eight_bytes_and_remote_frame(d):
+    b = Bus(d)
+    await b.reset()
+    for dev in (3, 4):
+        await b.byte(dev, 0, 1)
+        await b.byte(dev, 31, 0x80)
+        await b.byte(dev, 6, 0)
+        await b.byte(dev, 7, 0x7f)
+        for addr in range(16, 20):
+            await b.byte(dev, addr, 0)
+        for addr in range(20, 24):
+            await b.byte(dev, addr, 255)
+        await b.byte(dev, 4, 1)
+        await b.byte(dev, 0, 0)
+    await b.step(1000)
+    ident = 0x1abcde5
+    id_bytes = [(ident >> 21) & 255, (ident >> 13) & 255,
+                (ident >> 5) & 255, (ident & 31) << 3]
+    payload = [0x00, 0xff, 0x55, 0xaa, 0x01, 0x80, 0x3c, 0xc3]
+    # Reverse direction for RTR, verifying both instances transmit and receive.
+    for tx, rx, remote in ((3, 4, False), (4, 3, True)):
+        info = 0x88 | (0x40 if remote else 0)
+        await b.byte(tx, 16, info)
+        for i, value in enumerate(id_bytes):
+            await b.byte(tx, 17+i, value)
+        if not remote:
+            for i, value in enumerate(payload):
+                await b.byte(tx, 21+i, value)
+        await b.byte(tx, 1, 1)
+        for _ in range(8000):
+            if await b.byte(rx, 2) & 1:
+                break
+        else:
+            raise AssertionError('extended CAN frame not received')
+        assert await b.byte(rx, 16) == info
+        assert [await b.byte(rx, 17+i) for i in range(4)] == id_bytes
+        if not remote:
+            assert [await b.byte(rx, 21+i) for i in range(8)] == payload
+        assert int(d.irq.value) & (1 << rx)
+        await b.byte(rx, 1, 4)
+        assert not (await b.byte(rx, 2) & 1)
+        await b.step(500)
