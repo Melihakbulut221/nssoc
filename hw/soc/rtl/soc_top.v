@@ -272,6 +272,15 @@ module soc_top #(
     input  wire [3:0]  qspi_io_i,
     output wire        qspi_irq_o,     // QSPI IEN AND (DONE OR DR), a level
 
+    // Gigabit GMII, external PHY/reference clocks; no on-chip PLL or pads.
+    input wire eth_rx_clk_i, eth_tx_clk_i,
+    input wire [7:0] eth_rxd_i,
+    input wire eth_rx_dv_i, eth_rx_er_i,
+    output wire [7:0] eth_txd_o,
+    output wire eth_tx_en_o, eth_tx_er_o, eth_gtx_clk_o,
+    input wire eth_mdio_i,
+    output wire eth_mdc_o, eth_mdio_o, eth_mdio_oe_o, eth_irq_o,
+
     // Spacecraft interfaces, docs/88. External PHY/pad cells are board-specific.
     input wire spw_di_i, spw_si_i,
     output wire spw_do_o, spw_so_o, spw_irq_o,
@@ -472,6 +481,7 @@ module soc_top #(
     // the same discipline BUSSTAT and NPUCFG follow, and the reason the
     // whole-SoC run of docs/56 is cycle-identical with this block
     // present and the program unchanged.
+    irq_fast[SOC_IRQLINE_ETH] = eth_irq_o;
     irq_fast[SOC_IRQLINE_SPW] = spw_irq;
     irq_fast[SOC_IRQLINE_I2C] = i2c_irq;
     irq_fast[SOC_IRQLINE_CAN] = can_irq;
@@ -832,11 +842,12 @@ module soc_top #(
   wire sel_spw = psel && (slot == SOC_APBSLOT_SPW);
   wire sel_i2c = psel && (slot == SOC_APBSLOT_I2C);
   wire sel_can = psel && (slot == SOC_APBSLOT_CAN);
+  wire sel_eth = psel && (slot == SOC_APBSLOT_ETH);
   wire sel_spi = psel && (slot == SOC_APBSLOT_SPI);
   wire sel_none   = psel && !sel_uart0 && !sel_gpio && !sel_qspi
                          && !sel_timer0 && !sel_busstat && !sel_scrub
                          && !sel_bootreg && !sel_npucfg && !sel_apbpnp
-                         && !sel_spw && !sel_i2c && !sel_can && !sel_spi;
+                         && !sel_spw && !sel_i2c && !sel_can && !sel_spi && !sel_eth;
 
   wire [31:0] prdata_uart0, prdata_timer0, prdata_apbpnp, prdata_busstat,
               prdata_npucfg, prdata_gpio, prdata_qspi, prdata_scrub,
@@ -867,6 +878,20 @@ module soc_top #(
   assign i2c_irq_o = i2c_irq;
 
   wire [31:0] prdata_can;
+  wire [31:0] prdata_eth;
+  wire pready_eth, pslverr_eth;
+  assign eth_gtx_clk_o = eth_tx_clk_i;
+  soc_eth u_eth (
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_eth), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_eth), .pready_o(pready_eth), .pslverr_o(pslverr_eth),
+      .irq_o(eth_irq_o), .rx_clk_i(eth_rx_clk_i), .tx_clk_i(eth_tx_clk_i),
+      .rxd_i(eth_rxd_i), .rx_dv_i(eth_rx_dv_i), .rx_er_i(eth_rx_er_i),
+      .txd_o(eth_txd_o), .tx_en_o(eth_tx_en_o), .tx_er_o(eth_tx_er_o),
+      .mdc_o(eth_mdc_o), .mdio_o(eth_mdio_o), .mdio_oe_o(eth_mdio_oe_o),
+      .mdio_i(eth_mdio_i)
+  );
+
   wire pready_can, pslverr_can;
   soc_can u_can (
       .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_can), .penable_i(penable),
@@ -1042,6 +1067,7 @@ module soc_top #(
                  : sel_spw     ? prdata_spw
                  : sel_i2c     ? prdata_i2c
                  : sel_can     ? prdata_can
+                 : sel_eth     ? prdata_eth
                  : sel_spi     ? prdata_spi
                  : sel_gpio    ? prdata_gpio
                  : sel_qspi    ? prdata_qspi
@@ -1056,6 +1082,7 @@ module soc_top #(
                  : sel_spw     ? pready_spw
                  : sel_i2c     ? pready_i2c
                  : sel_can     ? pready_can
+                 : sel_eth     ? pready_eth
                  : sel_spi     ? pready_spi
                  : sel_gpio    ? pready_gpio
                  : sel_qspi    ? pready_qspi
@@ -1070,6 +1097,7 @@ module soc_top #(
                  : sel_spw     ? pslverr_spw
                  : sel_i2c     ? pslverr_i2c
                  : sel_can     ? pslverr_can
+                 : sel_eth     ? pslverr_eth
                  : sel_spi     ? pslverr_spi
                  : sel_gpio    ? pslverr_gpio
                  : sel_qspi    ? pslverr_qspi

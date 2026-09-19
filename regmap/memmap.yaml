@@ -323,6 +323,8 @@ apb_slots:
      desc: "Clock gate enable and status for NPU nodes and heavy peripherals", source: "GRCLKGATE (GR740, GR716B)"}
   - {name: NPUCFG,  slot: 0x019, irq: 24, line: 12, status: implemented, device_id: 0x013,
      desc: "NPU fabric-level global configuration and status, and the AER event port; docs/51", source: "project-specific"}
+  - {name: ETH, slot: 0x01A, irq: 25, line: 13, status: implemented, device_id: 0xE01,
+     desc: "Gigabit full-duplex GMII MAC, packet PIO FIFOs and software MDIO; project register map, not GRETH; docs/90", source: "project-specific extension"}
   - {name: APBPNP,  slot: 0x0FF, irq: 0,  status: implemented, device_id: 0x000,
      desc: "Peripheral bus device table, two words per slot", source: "APB PnP at bridge base + 0xFF000 (GRLIB grlib.pdf 5.3), layout only"}
 

@@ -84,6 +84,13 @@ SpaceWire, CAN, SPI and I2C: all four now occupy their APB slots in `soc_top`,
 with physical pins and IRQ lines. The checked scope is SpaceWire PIO, classical
 CAN 2.0B, byte SPI in all four modes and a single-controller I2C master. It does
 not close SpaceWire DMA/router, CAN FD, PCIe, Ethernet, pads or fabrication.
+
+**2026-09-19 follow-up:** `docs/90-gigabit-ethernet.md` adds the fixed Gigabit
+GMII MAC with APB PIO, native SRAM mapping, packet/CRC/drop tests and CPU IRQ
+verification. The eight-macro GDS predates it. `docs/91-pcie-gen3-feasibility.md`
+records the PCIe research: no accessible SG13G2 Gen3 x4 controller/PHY pair was
+verified, so PCIe remains open pending actual IP/physical views. Ethernet PHY,
+DMA, buffer hardening, new physical closure and fabrication remain open.
 A new layout profile retains ECC RAM and ROM and exercises the existing request
 and read-return pipelines. The routed GDS has zero router DRC, antenna and
 disconnected-pin errors, and the two GDS streams have zero XOR differences.

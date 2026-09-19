@@ -85,6 +85,7 @@ interrupt controller and the drivers cannot disagree
 | `0xFF917000` | `0x017` | BOOTREG | - | - | implemented | Bootstrap pin readback, the hardware boot counter, the boot report and epoch words that survive a reset, and CRASH at 0x010 -- the faulting PC of the first double fault since power-on, kept in the same power-on domain so it is readable after the watchdog reset the fault causes; GRGPREG-like; docs/68 |
 | `0xFF918000` | `0x018` | CLKGATE | - | - | reserved | Clock gate enable and status for NPU nodes and heavy peripherals |
 | `0xFF919000` | `0x019` | NPUCFG | 24 | 12 | implemented | NPU fabric-level global configuration and status, and the AER event port; docs/51 |
+| `0xFF91A000` | `0x01A` | ETH | 25 | 13 | implemented | Gigabit full-duplex GMII MAC, packet PIO FIFOs and software MDIO; project register map, not GRETH; docs/90 |
 | `0xFF9FF000` | `0x0FF` | APBPNP | - | - | implemented | Peripheral bus device table, two words per slot |
 
 ## 3a. Interrupts
@@ -94,7 +95,7 @@ plug-and-play source number carried in the identification word and
 is what a platform interrupt controller would key on. **Line** is
 the index of the Ibex fast local interrupt input the source is
 physically wired to. Ibex gives each fast line a dedicated vector
-and a fixed priority, so no controller is needed for the 13
+and a fixed priority, so no controller is needed for the 14
 sources this map defines.
 
 `mcause` is the value software reads in the handler; `vector` is
@@ -117,6 +118,7 @@ Ibex's, not this project's: a fast line *n* is interrupt ID
 | BUSSTAT | 22 | 10 | `0x8000001A` | `mtvec+0x68` |
 | SCRUB | 23 | 11 | `0x8000001B` | `mtvec+0x6C` |
 | NPUCFG | 24 | 12 | `0x8000001C` | `mtvec+0x70` |
+| ETH | 25 | 13 | `0x8000001D` | `mtvec+0x74` |
 
 Core inputs that are not per-peripheral:
 
@@ -127,7 +129,7 @@ Core inputs that are not per-peripheral:
 | MEXT | 11 | `0x8000000B` | `mtvec+0x2C` | unconnected; reserved for a PLIC |
 | NMI | 31 | `0x8000001F` | `mtvec+0x7C` | watchdog stage 1 |
 
-**2 of Ibex's 15 fast lines are unassigned** (13, 14). That number is the headroom the
+**1 of Ibex's 15 fast lines are unassigned** (14). That number is the headroom the
 platform-interrupt-controller decision is measured against:
 `docs/40-interrupts-timers-watchdog.md` section 3 argues that a PLIC
 buys nothing until it reaches zero, and the generator refuses a

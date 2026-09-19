@@ -537,6 +537,15 @@ def test_the_pnr_floorplans_name_the_arms_the_rtl_has():
         seen += 1
         c = json.loads(cfg.read_text())
         for macro, spec in c["MACROS"].items():
+            if macro == "RM_IHPSG13_2P_1024x16_c2_bm_bist":
+                # These SRAMs are inferred from the two Ethernet FIFOs by
+                # techmap; they do not belong to soc_mem_sram's generate arms.
+                expected = {f"u_eth.u_mac.{direction}_fifo.fifo_inst.mem.0.{bank}"
+                            for direction in ("rx", "tx") for bank in (0, 1)}
+                assert set(spec["instances"]) == expected, cfg.name
+                mapping = ROOT / "hw/soc/techmap/eth_ram_map.v"
+                assert macro + " _TECHMAP_REPLACE_" in mapping.read_text()
+                continue
             for inst in spec["instances"]:
                 outer, block, leaf = inst.split(".")
                 assert block in labels, (

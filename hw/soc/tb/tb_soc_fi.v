@@ -208,6 +208,9 @@ module tb_soc_fi;
   wire double_fault_seen, core_sleep;
 
   soc_top #(.ROM_INIT(`ROM_HEX)) dut (
+      // Idle MAC only in this core fault campaign; GMII traffic has its own bench.
+      .eth_rx_clk_i(clk), .eth_tx_clk_i(clk), .eth_rxd_i(8'b0),
+      .eth_rx_dv_i(1'b0), .eth_rx_er_i(1'b0), .eth_mdio_i(1'b1),
       .spw_di_i(1'b0), .spw_si_i(1'b0), .i2c_scl_i(1'b1), .i2c_sda_i(1'b1),
       .can_rx_i(1'b1), .spi_miso_i(1'b0),
       .clk_i  (clk),

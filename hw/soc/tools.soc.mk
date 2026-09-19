@@ -171,6 +171,10 @@ I2C_URL     ?= https://github.com/alexforencich/verilog-i2c.git
 I2C_COMMIT  ?= a65be4045e898a52e791c6ee71f8f79a7cd2e129
 I2C_DIR     ?= $(SOC_DIR)/ext/verilog-i2c
 
+ETH_URL     ?= https://github.com/alexforencich/verilog-ethernet.git
+ETH_COMMIT  ?= 77320a9471d19c7dd383914bc049e02d9f4f1ffb
+ETH_DIR     ?= $(SOC_DIR)/ext/verilog-ethernet
+
 .PHONY: soc-toolcheck
 soc-toolcheck: toolcheck
 	@echo "---- SoC-specific tools ----"
@@ -319,3 +323,7 @@ fetch-can:
 	$(call fetch_small_ip,$(CAN_URL),$(CAN_DIR),$(CAN_COMMIT))
 fetch-verilog-i2c:
 	$(call fetch_small_ip,$(I2C_URL),$(I2C_DIR),$(I2C_COMMIT))
+
+.PHONY: fetch-verilog-ethernet
+fetch-verilog-ethernet:
+	$(call fetch_small_ip,$(ETH_URL),$(ETH_DIR),$(ETH_COMMIT))

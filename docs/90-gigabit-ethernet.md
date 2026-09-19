@@ -1,0 +1,106 @@
+<!--
+SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+SPDX-License-Identifier: CC-BY-4.0
+-->
+# Gigabit Ethernet MAC integration
+
+2026-09-19. `soc_eth` adds a fixed **1 Gb/s, full-duplex GMII MAC** to
+`soc_top`. The external copper/fibre PHY, pad ring, package and board are not
+implemented here. PCIe has a separate dependency assessment in docs/91.
+
+## RTL and software boundary
+
+The upstream MAC is `alexforencich/verilog-ethernet` at
+`77320a9471d19c7dd383914bc049e02d9f4f1ffb`, including its bundled AXIS snapshot,
+under MIT. `make soc-interfaces-prepare` fetches the clean pinned dependency;
+`prepare_interfaces.py` retains license notices and hashes every input.
+The generated bundle adds synchronous reset to the TX frame pointer, padding
+counter and error register. The upstream checkout remains unchanged. Native
+gate simulation exposed X propagation through their mapped feedback with
+FPGA initialization removed; explicit reset makes ASIC startup deterministic.
+
+The MAC inserts preamble/SFD, pads short TX payloads to 60 bytes, appends CRC32,
+and uses a 12-byte interframe gap. Each direction has a 2048-byte frame-aware
+asynchronous FIFO carrying data, last and error bits. RX bad-FCS and overflowing
+frames are discarded; oversized TX frames are discarded. Reset asserts
+asynchronously and releases synchronously in the 50 MHz APB and independent
+125 MHz RX/TX domains. The external TX clock is forwarded as `eth_gtx_clk_o`.
+GMII clocks must continue while normal packet transfers are active.
+
+The interface is programmed IO, without DMA. It cannot sustain an uninterrupted
+1 Gb/s stream through the 50 MHz APB port. It has no 10/100 Mb/s mode, MAC-address
+filter, network stack or ECC/TMR protection of the new packet buffers/control
+state. The CRC is a link-integrity check, not radiation hardening. MDIO is a
+software-controlled MDC/data/output-enable interface with synchronized input;
+there is no autonomous management transaction engine or auto-negotiation driver.
+
+APB slot `0x01A`, base **0xFF91A000**, project device ID `0xE01`, logical IRQ25
+maps to Ibex fast IRQ13 / `mip` bit29. No existing address or IRQ moved.
+
+| Register | Offset | Fields |
+|---|---:|---|
+| CTRL | 0x000 | TX enable bit0, RX enable bit1; writing bit2 flushes both FIFOs/MAC |
+| STATUS | 0x004 | TX ready bit0, RX valid bit1, RX last bit2, RX error bit3, reset active bit4 |
+| TX | 0x008 | Data bits7:0, last bit8, abort/bad bit9; one byte per write |
+| RX | 0x00C | Data bits7:0, last bit8, error bit9, valid bit31; read pops one byte |
+| EVENTS | 0x010 | Sticky W1C; a concurrent event wins over clearing |
+| IRQEN | 0x014 | Event masks bits8:0, RX-available level mask bit9 |
+| MDIO | 0x018 | MDC bit0, MDIO output bit1, output-enable bit2, synchronized input bit8 |
+| ID | 0x0FC | `0x474D4901` |
+
+Event bits0..8 are TX good, RX good, TX bad, RX bad, RX overflow,
+TX underflow, RX bad FCS, RX bad frame and TX overflow, respectively.
+Empty RX reads, disabled/full TX writes, undefined registers and writes to
+read-only registers return PSLVERR. Writes require byte strobe0; strobe1 gates
+the upper event/mask bits and TX last/abort. Firmware must enable TX/RX before
+using the FIFOs. `hw/soc/tb/sw/soc_eth.h` supplies the software constants.
+
+## Verification and physical mapping
+
+```sh
+make soc-interfaces-prepare
+scripts/run_cocotb.sh soc_eth
+SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DETHERNET_DEMO \
+  bash hw/soc/flow/sim_soc.sh hw/soc/out/ethernet-demo
+bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram
+bash hw/soc/flow/implement_interfaces.sh unique-run-tag
+```
+
+The six block tests pass in RTL and with the **native PDK SRAM and standard-cell
+models**, without initialization of DUT registers from the testbench. They
+check independently computed wire CRC/padding, 1514-byte TX/RX frames spanning
+both SRAM banks, bad-FCS discard/recovery, overflow preserving a committed RX
+frame, oversized/incomplete TX discard/flush, APB errors, byte strobes, MDIO and
+interrupt/reset behavior. The gate runner requires Icarus 13 or newer because
+Icarus 12 does not drive the PDK flip-flop delayed timing pins. These are
+functional, zero-delay tests without extracted SDF or analog PHY compliance.
+
+The CPU demo executes firmware that sends 60 bytes, loops actual GMII output
+pins into the receive pins, checks the payload/last indication, observes `mip`
+bit29 and drains the receive interrupt. It does not inject a pre-completed
+packet directly into an internal FIFO.
+The fresh run finishes after **159269 cycles**. Source hashes, native gate-test
+XML and the complete CPU transcript are committed in
+[the Ethernet evidence record](evidence/ethernet-20260919.json).
+
+Yosys 0.33 maps the FIFO pair to **four
+`RM_IHPSG13_2P_1024x16_c2_bm_bist` macros**, with 508 standard-cell flip-flops
+and **2615 total cells** including macros. Combined typical Liberty area is
+**667066.4354 um2**, of which **620615.3428 um2** is SRAM. The register-array
+experiment used 41486 flip-flops; it is not the physical profile. These are
+standalone MAC synthesis figures, not placed whole-chip area.
+
+`SOC_ETH_SRAM=1` selects the mapping in the whole-SoC synthesis script and is
+mandatory in `implement_interfaces.sh`. Only the Ethernet memories are selected;
+the frozen accelerator's memories and protection are not remapped. The active
+floorplan extends 540 um to the right for the four new SRAMs and carries all
+twelve macro physical views, power hooks and explicit 8 ns RX/TX clocks.
+Cross-domain paths have an 8 ns maximum datapath budget; only asynchronous
+hold checks are excepted. A broad clock-group false path would hide this bound
+and is deliberately absent. GMII input/output budgets are stated board/PHY
+assumptions in `soc_interfaces.sdc`; they require replacement against real
+pad, package and PHY characterization.
+
+The old eight-macro routed results in docs/88 **do not validate this revision**.
+Its physical timing and DRC must be measured afresh; passing RTL/gate packet
+tests is not a physical signoff or a radiation qualification.

@@ -625,6 +625,8 @@ the tree that decision declined and the material `LICENSES.md` section
 site belongs.
 
 - `docs/89-external-review-follow-up.md` — [External review follow-up and interface target](89-external-review-follow-up.md)
+- `docs/90-gigabit-ethernet.md` — [Gigabit Ethernet MAC and native SRAM verification](90-gigabit-ethernet.md)
+- `docs/91-pcie-gen3-feasibility.md` — [PCIe Gen3 x4 implementation dependencies](91-pcie-gen3-feasibility.md)
 
 **Re-counted 2026-09-19 after APB telemetry integration [fact].**
 `hw/soc/formal` carries **99 tasks across 22 jobs**. Four additional

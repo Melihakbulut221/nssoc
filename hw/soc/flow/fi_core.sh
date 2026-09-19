@@ -284,6 +284,7 @@ sym_opt () {
   "$SOC_DIR/rtl/soc_i2c.v" \
   "$SOC_DIR/rtl/soc_spi.v" \
   "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_eth.v" \
   "$SOC_DIR/rtl/soc_apb_wb.v" \
   "$SOC_DIR/gen/interfaces.bundle.vh" \
   "$SOC_DIR/rtl/soc_qspi.v" \

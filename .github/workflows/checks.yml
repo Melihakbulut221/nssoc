@@ -150,6 +150,11 @@ jobs:
         run: make rf-contract rf-equivalence
       - name: CPU interface and interrupt regression
         run: make soc-interfaces-sim
+      - name: CPU Gigabit Ethernet packet and interrupt regression
+        run: |
+          SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+            SW_DEFINES=-DETHERNET_DEMO \
+            bash hw/soc/flow/sim_soc.sh hw/soc/out/ethernet-demo
       - name: APB timeout, retained telemetry and NPU reset proofs
         run: make -C hw/soc/formal busstat apb npu
       - name: Whole-SoC stalled peripheral and crash recovery
@@ -182,6 +187,7 @@ jobs:
             hw/soc/out/boot-geometry/
             hw/soc/out/apb-timeout-demo/sim.log
             hw/soc/out/crash-demo/sim.log
+            hw/soc/out/ethernet-demo/sim.log
             hw/soc/formal/soc_busstat_*/status
             hw/soc/formal/soc_apb_bridge_*/status
             hw/soc/formal/soc_npu_*/status

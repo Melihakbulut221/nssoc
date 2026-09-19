@@ -58,7 +58,7 @@ boot-proof:
 
 .PHONY: soc-interfaces-prepare
 soc-interfaces-prepare:
-	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-spacewire_reloaded fetch-can
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-spacewire_reloaded fetch-can fetch-verilog-ethernet
 	$(PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py
 
 .PHONY: soc-interfaces-test soc-interfaces-sim

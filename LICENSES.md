@@ -85,6 +85,10 @@ under LGPL-2.1-or-later and Alex Forencich's I2C master under MIT. The ignored
 interface bundle retains their notices and records input hashes; see
 `docs/88-interface-integration.md`. These components are not in the frozen pilot.
 
+**2026-09-19 addition:** the Gigabit MAC and its bundled AXIS FIFO modules are
+also fetched from Alex Forencich's `verilog-ethernet` under MIT. The pinned
+commit and generated reset adaptation are documented in `docs/90-gigabit-ethernet.md`.
+
 ## 3. How the map is kept true
 
 ```bash

@@ -1,13 +1,14 @@
 # Artefact digests. Written by scripts/artefact_digests.py; described by
 # docs/80-artefact-digests.md. DO NOT EDIT BY HAND.
 #
-# Every path below is git-ignored on purpose -- .gitignore lines 4, 40,
-# 74, 118 and 136. This file pins their IDENTITY so that the evidence
+# Historical run outputs are git-ignored. Since 2026-09-19 this also
+# pins tracked docs/evidence JSON records requested by external review F6.
+# This file pins their IDENTITY so that the evidence
 # behind docs/71, docs/74, docs/75, docs/77 and docs/79 cannot be
 # silently swapped. It does NOT make the artefacts available and it does
 # NOT establish that any of them is correct.
 #
-# 329 artefacts, 0 bytes to 1.718 GB, 5.163 GB in total.
+# 376 artefacts, 0 bytes to 1.718 GB, 5.164 GB in total.
 #
 # sha256 is over the file's bytes. `metrics` is `k=v;k=v`, read out of the
 # artefact by this script's own extractors, and is a legibility aid, not a
@@ -15,6 +16,7 @@
 #
 #   scripts/artefact_digests.py --check    re-verify. MISSING is not FAILED
 #   scripts/artefact_digests.py --write    rebuild on a machine that has the runs
+#   scripts/artefact_digests.py --write-evidence  update only tracked JSON records
 
 group	cites	role	path	bytes	sha256	metrics
 pilot-signoff-gated	31,34,36,79	netlist	hw/openlane/pilot_ihp/runs/signoff-6x2-gated/final/nl/tt_um_melihakbulut_nssoc.nl.v	2565946	52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989	lines=72858;cells=33564;flops=1296
@@ -346,3 +348,50 @@ sta-compare-81	paper8	log	hw/soc/pnr/runs/s81-sta-compare/drvscan.s77gate.txt	33
 sta-compare-81	paper8	log	hw/soc/pnr/runs/s81-sta-compare/drvscan.s81drv.txt	1289326	1aaf2305ba89bd9f9a47d4962371d52f18072a12f32ea3830e03372ae283e758	lines=23258
 sta-compare-81	paper8	log	hw/soc/pnr/runs/s81-sta-compare/drvscan.s81ptd.txt	1621670	b7e79535927ea378b827bf803a8891b580be6a8f94d7c84aa07cee3999fd3d86	lines=25908
 sta-compare-81	paper8	log	hw/soc/pnr/runs/s81-sta-compare/drvscan.s81timing.txt	688402	d59cee706cced8d5fa1220beb00acb966f6fca9070586a28808ef324e6411934	lines=13485
+docs-evidence	docs/89;docs/90	text	docs/evidence/apb-timeout-20260919.json	12760	4ff1846eef37e6d55a15c72044cfde45d0f93ef39b6dab92afb8c32f3de897f3	lines=141
+docs-evidence	docs/89;docs/90	text	docs/evidence/closure-20260919.json	5468	d257ceabe26e9e5ab2206c85fa1f50dd0d5aea90baf47c6adbca4a916051b875	lines=171
+docs-evidence	docs/89;docs/90	text	docs/evidence/ethernet-20260919.json	5898	7b2de7670cb07ccfe7af9c725e40d991b3ca8fa37c1c5e1883334c8a78cfb67e	lines=44
+docs-evidence	docs/89;docs/90	text	docs/evidence/full3/metrics.json	10147	d6ea2cbd0825eab95134085841aad8b698a700aeaaf92dad6f8e9d700f09d2ba	lines=193
+docs-evidence	docs/89;docs/90	text	docs/evidence/full3/resolved.json	31408	6ed33591113bd5c4140e05910f73effe8a4ac679d14760de8e9b42ca050b4f2b	lines=746
+docs-evidence	docs/89;docs/90	text	docs/evidence/g0gates2/metrics.json	10149	d6adfb72a46e22074f18b89b39259d4a727514e2668fd0dab55af11f8bf00418	lines=199
+docs-evidence	docs/89;docs/90	text	docs/evidence/g0gates2/resolved.json	21599	98e2b3addf0e6a9ddacfbd12cc755ee010008a62549dc3e7680de86ff479af90	lines=574
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-20260919.json	51079	1b45e3fc685cee93d1c869937f555838cdbc52c76646fc15a36c58f3566269c6	lines=1096
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-export2-20260919/metrics.json	13014	fbf4a0db4edeaa57dc13be0c6d4ebd354e6679fc848f19fdc1248bee606ba407	lines=263
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-export2-20260919/resolved.json	34529	9fa4654570f54155599df1702d9912713ff0399c53a0758f6183f80dde4cf23e	lines=813
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-kdrc-20260919/metrics.json	13054	bc4d0acda08cb7227d307f7ace532fa19d4b3411fc539dbe84a9bf28d831e0cc	lines=264
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-kdrc-20260919/resolved.json	34179	c55b0c81d68a6e17e8be3f6f623de6ef30e6e0c6a0d1fd7451518fd625df11a1	lines=810
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-lvs-20260919/metrics.json	13315	863b93082a291e7a5a9cb1304d2495026ee8711431cfa178378bf4aa972a2716	lines=270
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-lvs-20260919/resolved.json	34178	54cbc95ad5a07bfbd12c3fe1c48783a0b11bfef75bc431fc69e61de069852906	lines=810
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-mdrc-20260919/metrics.json	13050	047194d2df459644b23b4f2916fe1e73288f7b719e4dd7d3f03540d0cb778146	lines=264
+docs-evidence	docs/89;docs/90	text	docs/evidence/interfaces-mdrc-20260919/resolved.json	34178	54cbc95ad5a07bfbd12c3fe1c48783a0b11bfef75bc431fc69e61de069852906	lines=810
+docs-evidence	docs/89;docs/90	text	docs/evidence/npu2/metrics.json	10163	d769feaa8ba2028c6df0bbfcb820a61a7a44c1ce117c5229da7c019aa9a5c9c9	lines=195
+docs-evidence	docs/89;docs/90	text	docs/evidence/npu2/resolved.json	31958	3e7aadc3571463bdc5c3770e52f5c8e51dfbee38ae0c7b6b7490a57124e00505	lines=753
+docs-evidence	docs/89;docs/90	text	docs/evidence/qspi-sta-20260919.json	22576	938b60ef79e5256a5c3523c9ed3f61e36d34641f20d8dfde70e52cb841f927aa	lines=333
+docs-evidence	docs/89;docs/90	text	docs/evidence/s71boot/metrics.json	10400	f1fc4d9388f6fc3245458542a7e08636c9f8240576f8d14c97d5fab8e45b6f5b	lines=201
+docs-evidence	docs/89;docs/90	text	docs/evidence/s71boot/resolved.json	34045	aa57156e5c4599b6caf57b47e69e6429c64392ba4dd42712c60ca6eaaa3ddd7c	lines=789
+docs-evidence	docs/89;docs/90	text	docs/evidence/s77gate/metrics.json	10286	09cdb61aa78a5c2cbf4ab7319ae4aca8d35d23b8b449f7a261034af0025826f1	lines=198
+docs-evidence	docs/89;docs/90	text	docs/evidence/s77gate/resolved.json	34045	aa57156e5c4599b6caf57b47e69e6429c64392ba4dd42712c60ca6eaaa3ddd7c	lines=789
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81drv/metrics.json	10327	d655e94cb3974ccc7b4d05ec3f36f7a07d6a3d41229192f3085ed1836eef4f18	lines=199
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81drv/resolved.json	34044	35260c8ed61129bf91bc72e556172b26b7d6e1a4ca4f723a1e973757bcd7b79c	lines=789
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81ptd/metrics.json	10169	14d274a28b959ff8311966c3b23d3dd21c34326756046e1e8f19b7f3437a6f2c	lines=195
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81ptd/resolved.json	34044	93f680db649f2a5fc4ee2be194aba46e6872240f2b9a74e88a6d5a180c361e88	lines=789
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81timing/metrics.json	10720	0d39c1862cf2e4f44ef0c777ab0427ccf887e279d459a1409997fab913fcd158	lines=209
+docs-evidence	docs/89;docs/90	text	docs/evidence/s81timing/resolved.json	34043	145eb32847875ecbdac1a1b366ca6f5a140944e874c448ea5152511c2502358b	lines=789
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83ant/metrics.json	11512	dd13011cdfdc65b7972a37042bedadd86dc6f9aa32767fef37e5885959cecac7	lines=225
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83ant/resolved.json	34646	5baf32815237b4bc37cf2509c2e7dd341231f48cdafe0ee4c44f0696b91243e7	lines=804
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83lvsbb2/metrics.json	11135	7c25ed0d7b0266fac14eeb2f65511d8e88ed3a1e5c3b87b8dcb26c71ad57d51c	lines=219
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83lvsbb2/resolved.json	34297	a2a340317dc36e33eb22cff515971fb82527e87b008efc529b7607627d30194f	lines=801
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83romecc5/metrics.json	10834	cf6a56ac6b8b56ffbc47292e2fc1bb8b180c926efdcf54de79d972a8146fa31f	lines=212
+docs-evidence	docs/89;docs/90	text	docs/evidence/s83romecc5/resolved.json	34646	d9f8390ed326157d8e35229d4ca727586da27c9da52279083c69947dea9fe58e	lines=804
+docs-evidence	docs/89;docs/90	text	docs/evidence/signoff-6x2/metrics.json	10124	f3889ee38760ac905e86a3d4b7bc8bac34941cae4a888592a1f05621298f2bbd	lines=198
+docs-evidence	docs/89;docs/90	text	docs/evidence/signoff-6x2/resolved.json	22814	c280970d1eb1478a0398e7e60aa69af387dac927dc744cd325c58ed76bbe7726	lines=587
+docs-evidence	docs/89;docs/90	text	docs/evidence/signoff-6x2-gated/metrics.json	10124	f3889ee38760ac905e86a3d4b7bc8bac34941cae4a888592a1f05621298f2bbd	lines=198
+docs-evidence	docs/89;docs/90	text	docs/evidence/signoff-6x2-gated/resolved.json	22870	274e69513700395332037b27c1964317db278f5cfa75531ea5d8e5346c4dbbcc	lines=587
+docs-evidence	docs/89;docs/90	text	docs/evidence/sky-14-6x2-rcmodel/metrics.json	17740	2370dd515f50a24611cb878dfaaa0c3e3c9d5e654e34a31682102ae22db91a3f	lines=316
+docs-evidence	docs/89;docs/90	text	docs/evidence/sky-14-6x2-rcmodel/resolved.json	172725	ce7ad6c6c4e927abcfddc6d547ae41019351566cfb7c72a891c2d2bd495a0171	lines=1529
+docs-evidence	docs/89;docs/90	text	docs/evidence/submission-6x2/metrics.json	10048	39a17f64239eebc14a52a86a5a75c23d8f01e85d514525aabc4c58d91b6d998a	lines=196
+docs-evidence	docs/89;docs/90	text	docs/evidence/submission-6x2/resolved.json	22715	0b73090bf441af7a92e17ea03313631b79f9eef567eee5211418e1a3907c1c5e	lines=585
+docs-evidence	docs/89;docs/90	text	docs/evidence/submission-6x2-gated/metrics.json	10048	39a17f64239eebc14a52a86a5a75c23d8f01e85d514525aabc4c58d91b6d998a	lines=196
+docs-evidence	docs/89;docs/90	text	docs/evidence/submission-6x2-gated/resolved.json	22765	1a8611663478256ba8bb2c1d6ef96eb25dc9e3cb54863cff5a5c10680cd285bf	lines=585
+docs-evidence	docs/89;docs/90	text	docs/evidence/trial-03-signoff/metrics.json	10031	ab0c3c3236087b0bc9fa2ab7d12e872d87eed2f48aba6779e2e583b15c0e367d	lines=197
+docs-evidence	docs/89;docs/90	text	docs/evidence/trial-03-signoff/resolved.json	21573	b73c95c0897f528f9aa0ed451f60b90272f4d173bce7684ef9b42501c80c7f98	lines=572

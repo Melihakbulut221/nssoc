@@ -295,8 +295,10 @@ def test_spending_the_npus_line_left_the_spares_alone():
     a slot from reserved to implemented and does not touch the count.
     """
     used = {v[1] for v in IRQ_SOURCES.values()}
-    assert len(used) == 13
-    assert sorted(set(range(15)) - used) == SPARE_FAST_LINES == [13, 14]
+    # 2026-09-19: Ethernet consumes former spare 13; NPU's line is unchanged.
+    assert IRQ_SOURCES['ETH'][1] == 13
+    assert len(used) == 14
+    assert sorted(set(range(15)) - used) == SPARE_FAST_LINES == [14]
 
 
 # ---------------------------------------------------------------------

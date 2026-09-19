@@ -117,3 +117,46 @@ an external PHY interface. PCIe Gen3 x4 requires a compatible 8 GT/s four-lane
 PHY plus link/controller integration. A TLP-only adapter or FPGA hard-IP wrapper
 is not evidence of a complete ASIC PCIe link. No PCIe PHY is instantiated in the
 current IHP core, and no PCIe completion claim is made.
+
+**2026-09-19 follow-up:** docs/90 records the now-implemented Gigabit GMII MAC,
+native SRAM gate-level packet tests and CPU interrupt test. docs/91 records
+the PCIe IP investigation. The old routed baseline still cannot validate the
+new RTL.
+
+**F6 digest correction:** the prior test comment incorrectly said the review did
+not request extending `docs/80-artefact-digests.tsv`. It explicitly does.
+`scripts/artefact_digests.py --write-evidence` now pins the committed JSON records
+while preserving every historical run digest, and `test_artefact_digests.py`
+checks exact file coverage, size and SHA-256 on a fresh clone. This closes the
+digest sub-item; it does not turn missing DEF/netlist evidence into a pass or
+claim that the fewer-than-30-skips criterion is met.
+
+## F4: explicit QSPI constraints and extracted remeasurement
+
+The active twelve-macro interface profile now sources `soc_interfaces.sdc`,
+which sources the existing QSPI fragment in both P&R and final STA. The default
+QSPI sampling RTL and divider remain unchanged. Before routing this new profile,
+the completed docs/88 layout was re-timed with its extracted SPEF and explicit
+QSPI budgets in run `qspi-review-20260919` (LibreLane 3.0.5, same pinned PDK).
+Only STAPostPNR ran in this replay; it did not place or repair a new layout.
+
+| Corner | Worst setup (ns) | Worst hold (ns) | Hold violations |
+|---|---:|---:|---:|
+| Fast | +8.591611 | -3.022404 | 27 |
+| Typical | +3.809705 | -2.488044 | 14 |
+| Slow | -5.774160 | -1.542460 | 15 |
+
+The input/output assumptions make previously unconstrained requirements
+visible. In particular, the conservative output hold budget fails; the old
+standalone typical input setup margin did not establish IO timing closure.
+Actual source-synchronous SCK, pad/package and board characterization remain
+necessary before claiming a working physical flash interface. The original
+divider arithmetic is in `soc_qspi.v` and docs/66. Native metrics, input hashes
+and summary are in [the QSPI STA record](evidence/qspi-sta-20260919.json).
+
+Reproduction uses `soc_top_qspi_io.sdc` after LibreLane's base SDC, the recorded
+input netlist/ODB/SPEF, and `OpenROAD.STAPostPNR` for all three corners. The new
+Ethernet profile uses the same QSPI fragment directly from the versioned flow.
+The timing outcome remains failing; recording it satisfies the review's STA
+measurement request without changing the default sampling behavior.
+`scripts/run_cocotb.sh soc_qspi` passes **16 tests, zero failures/skips**.

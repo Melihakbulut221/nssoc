@@ -10,8 +10,16 @@
         "dir::../rtl",
         "dir::../../rtl"
     ],
-    "CLOCK_PORT": "clk_i",
-    "CLOCK_NET": "clk_i",
+    "CLOCK_PORT": [
+        "clk_i",
+        "eth_rx_clk_i",
+        "eth_tx_clk_i"
+    ],
+    "CLOCK_NET": [
+        "clk_i",
+        "eth_rx_clk_i",
+        "eth_tx_clk_i"
+    ],
     "CLOCK_PERIOD": 20,
     "//clock": "20 ns, 50 MHz: the target docs/09 set and the one docs/45 measured 54.9 MHz against, so this run answers the question that was asked rather than an easier one. Pre-layout, with the reset fix of docs/47 section 5 and the real macros, the same netlist bisects to 16.13 ns (62.0 MHz) with hw/soc/flow/sta_soc_top.sh.",
     "SYNTH_HIERARCHY_MODE": "flatten",
@@ -24,13 +32,13 @@
     "DIE_AREA": [
         0,
         0,
-        2306.4,
+        2846.4,
         2475.9
     ],
     "CORE_AREA": [
         60.0,
         45.36,
-        2246.4,
+        2786.4,
         2430.54
     ],
     "//die": "2306.40 x 2075.22 um = 4.7863 mm2. A relative-sized die cannot be used with fixed macros: it does not reserve room for them. The core box is site-aligned by construction -- 2186.40 um wide is exactly 4555 sg13g2 sites of 0.48 um, 1984.50 um tall is exactly 525 rows of 3.78 um -- so OpenROAD.CutRows starts from a whole grid. Every macro origin below is likewise an integer number of sites from the core's left edge and an integer number of rows from its bottom.",
@@ -163,6 +171,58 @@
                     "orientation": "N"
                 }
             }
+        },
+        "RM_IHPSG13_2P_1024x16_c2_bm_bist": {
+            "gds": [
+                "pdk_dir::libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_1024x16_c2_bm_bist.gds"
+            ],
+            "lef": [
+                "pdk_dir::libs.ref/sg13g2_sram/lef/RM_IHPSG13_2P_1024x16_c2_bm_bist.lef"
+            ],
+            "vh": [
+                "dir::RM_IHPSG13_2P_1024x16_c2_bm_bist_bb.v"
+            ],
+            "lib": {
+                "nom_typ_1p20V_25C": [
+                    "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_typ_1p20V_25C.lib"
+                ],
+                "nom_slow_1p08V_125C": [
+                    "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_slow_1p08V_125C.lib"
+                ],
+                "nom_fast_1p32V_m40C": [
+                    "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_fast_1p32V_m55C.lib"
+                ]
+            },
+            "instances": {
+                "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+                    "location": [
+                        2340,
+                        60.48
+                    ],
+                    "orientation": "FS"
+                },
+                "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+                    "location": [
+                        2340,
+                        653.94
+                    ],
+                    "orientation": "N"
+                },
+                "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+                    "location": [
+                        2340,
+                        1247.4
+                    ],
+                    "orientation": "FS"
+                },
+                "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+                    "location": [
+                        2340,
+                        1840.86
+                    ],
+                    "orientation": "N"
+                }
+            }
         }
     },
     "//vh": "The vh entry is not optional and the reason is measured: Verilator.Lint runs BEFORE synthesis and aborts with 'Cannot find file containing module: RM_IHPSG13_...' without it, and the PDK's own behavioural .v cannot be used because it instantiates SRAM_1P_behavioral_bm_bist from a second file. docs/12 section 7. The two _bb.v files here are transcribed from the PDK models by machine, not by hand.",
@@ -182,7 +242,9 @@
         "u_rom\\.g_rom_1024x32_ecc\\.u_b[01] VPWR VGND VDD! VSS!",
         "u_rom\\.g_rom_1024x32_ecc\\.u_b[01] VPWR VGND VDDARRAY! VSS!",
         "u_rom\\.g_rom_1024x32_ecc\\.u_c[01] VPWR VGND VDD! VSS!",
-        "u_rom\\.g_rom_1024x32_ecc\\.u_c[01] VPWR VGND VDDARRAY! VSS!"
+        "u_rom\\.g_rom_1024x32_ecc\\.u_c[01] VPWR VGND VDDARRAY! VSS!",
+        "u_eth\\.u_mac\\.(rx|tx)_fifo\\.fifo_inst\\.mem\\.0\\.[01] VPWR VGND VDD! VSS!",
+        "u_eth\\.u_mac\\.(rx|tx)_fifo\\.fifo_inst\\.mem\\.0\\.[01] VPWR VGND VDDARRAY! VSS!"
     ],
     "//pdn": "THREE SUPPLIES PER MACRO, TWO ENTRIES EACH. The macro LEF pins carry the trailing '!' global-net marker (VDD!, VSS!, VDDARRAY!) while its Liberty pg_pins do not; PDN hookup matches on the LEF names. VPWR/VGND are this PDK's top-level design power and ground net names; the standard-cell LEF pins are VDD/VSS. VDDARRAY! is a SEPARATE ARRAY SUPPLY with no standard-cell counterpart, so it does not fall out of the default hookup and needs its own entry. Tying it to the core VPWR domain is the single-domain choice; a product design would decide separately whether to split it. docs/12 section 6.4b.",
     "//pdn_cfg": "pdn_macro.tcl is NOT a tuning. Without it the six macros have no power and the flow does not notice until IR drop, 35 steps later; see that file's header for the mechanism and for what a silent unpowered macro looks like on the way through placement, CTS and detailed routing.",
@@ -190,7 +252,8 @@
     "//streamout": "Not the default. With 'macro', Magic.StreamOut runs get_bbox.tcl over the macro GDS and reads FIXED_BBOX, which sg13g2's Magic tech derives from prBoundary (calma 189/4) -- and the RM_IHPSG13 GDS has no 189/4 layer at all, so the run aborts with 'Failed to extract PR boundary from GDSII view of macro'. 'PDK' takes get_bbox out of the flow, at the stated cost that Magic then uses the PDK's cell definitions inside the macro rather than the vendor GDS hierarchy. docs/12 section 7.4.",
     "EXTRA_SPICE_MODELS": [
         "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl",
-        "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_1024x32_c2_bm_bist.cdl"
+        "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_1024x32_c2_bm_bist.cdl",
+        "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_1024x16_c2_bm_bist.cdl"
     ],
     "//lvs": "Carried so that a later LVS run has what it needs -- the PDK's Netgen setup does not mention RM_IHPSG13 and declares no black box, so the macro CDL has to be handed over explicitly. LVS is NOT run here; see the RUN_ block below for why that is a prior measured result and not a convenience.",
     "//====== WHAT THIS RUN DOES AND DOES NOT RUN ======": "",
@@ -250,5 +313,8 @@
     "GRT_ADJUSTMENT": 0.2,
     "DRT_SAVE_DRC_REPORT_ITERS": 1,
     "//interface_drc_reports": "Retain detailed-router markers every iteration so persistent violations can be located before the router finishes. This changes reporting only; routing effort, constraints and checker gates are unchanged.",
-    "//interface_routing": "Reserve 20 percent of routing capacity. The 30-percent inherited setting left 20 Metal5 overflows; the same post-CTS placement routes with zero global overflow at 20 percent (interfaces-route20-20260919). GRT_ALLOW_CONGESTION remains false; detailed DRC and all timing checkers remain enabled."
+    "//interface_routing": "Reserve 20 percent of routing capacity. The 30-percent inherited setting left 20 Metal5 overflows; the same post-CTS placement routes with zero global overflow at 20 percent (interfaces-route20-20260919). GRT_ALLOW_CONGESTION remains false; detailed DRC and all timing checkers remain enabled.",
+    "//ethernet": "2026-09-19: add four 1024x16 true dual-port packet SRAM macros in a new right-hand column. Original eight ECC memory locations unchanged. Core/die extended 540 um in X. 50 MHz logic, 125 MHz RX and TX; PIO MAC, no PCIe PHY. New measurements are required; historical docs/88 results do not apply.",
+    "PNR_SDC_FILE": "dir::../sta/soc_interfaces.sdc",
+    "SIGNOFF_SDC_FILE": "dir::../sta/soc_interfaces.sdc"
 }

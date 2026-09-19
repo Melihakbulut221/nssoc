@@ -771,6 +771,38 @@ static int apb_timeout_demo(void) {
 }
 #endif
 
+#if defined(SOC_PLATFORM) && defined(ETHERNET_DEMO)
+#include "soc_eth.h"
+static int ethernet_demo(void) {
+  uint32_t bad=0;
+  if (*(volatile uint32_t *)ETH_ID != 0x474D4901u) bad |= 1u;
+  *(volatile uint32_t *)ETH_CTRL=ETH_ENABLE;
+  *(volatile uint32_t *)ETH_IRQEN=ETH_IRQ_RX_READY;
+  for (uint32_t i=0; i<60; i++) {
+    uint32_t timeout=10000;
+    while (!(*(volatile uint32_t *)ETH_STATUS & ETH_TX_READY) && --timeout) { }
+    if (!timeout) { bad |= 2u; break; }
+    *(volatile uint32_t *)ETH_TX=((i*13u+7u)&255u) | (i==59 ? ETH_LAST : 0u);
+  }
+  uint32_t timeout=10000;
+  while (!(*(volatile uint32_t *)ETH_STATUS & ETH_RX_READY) && --timeout) { }
+  if (!timeout) bad |= 4u;
+  else {
+    if (!(csr_read_mip() & (1u << (16u + SOC_IRQLINE_ETH)))) bad |= 8u;
+    for (uint32_t i=0; i<60; i++) {
+      uint32_t word=*(volatile uint32_t *)ETH_RX;
+      uint32_t expected=ETH_RX_VALID | ((i*13u+7u)&255u) | (i==59 ? ETH_LAST : 0u);
+      if (word != expected) bad |= 16u;
+    }
+    if (*(volatile uint32_t *)ETH_STATUS & ETH_RX_READY) bad |= 32u;
+    if (csr_read_mip() & (1u << (16u + SOC_IRQLINE_ETH))) bad |= 64u;
+  }
+  puts_("Gigabit GMII: CPU packet loopback and IRQ mask "); puthex(bad); putc_('\n');
+  puts_(bad ? "RESULT FAIL\n" : "RESULT PASS\n");
+  return (int)bad;
+}
+#endif
+
 int main(void) {
 #ifdef SOC_PLATFORM
   // Nothing can be reported before this: the console is a peripheral on
@@ -787,6 +819,9 @@ int main(void) {
 #endif
 #if defined(SOC_PLATFORM) && defined(APB_TIMEOUT_DEMO)
   return apb_timeout_demo();
+#endif
+#if defined(SOC_PLATFORM) && defined(ETHERNET_DEMO)
+  return ethernet_demo();
 #endif
 
   puts_("ibex bring-up self-test\n");

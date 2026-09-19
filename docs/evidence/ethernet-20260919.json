@@ -1,0 +1,44 @@
+{
+  "tests": [
+    "tx_padding_crc_and_full_size_frame",
+    "rx_frame_crosses_clocks_and_interrupts",
+    "bad_fcs_is_discarded_and_next_frame_recovers",
+    "rx_overflow_preserves_committed_frame",
+    "oversize_tx_and_flush_do_not_emit_partial_packets",
+    "register_strobes_phy_pins_and_reset"
+  ],
+  "passed": 6,
+  "sha256": {
+    "hw/soc/rtl/soc_eth.v": "9993c507fa378dbb34ada9355e069ca8bfad19d7a04ea2b2d190987cd3e0144c",
+    "hw/soc/gen/interfaces.bundle.vh": "e81f5608c2e62681ce8c4de196ec18256232ae58332938df3b0e5439bc646a90",
+    "hw/soc/flow/prepare_interfaces.py": "440193f2316e3d022fb709e8c2e92387b592136093380a07ef5d377ceb2e9211",
+    "hw/soc/flow/test_eth_sram.sh": "946c92864e4ecdd4e6299a2cf5690950289055526e97496a3e340f75cbe9e439",
+    "hw/soc/techmap/eth_ram.lib": "dfe5cab3cd14264fb71b6916e837840205a3e96cc17d9ddade90f7e7bdc17f84",
+    "hw/soc/techmap/eth_ram_map.v": "72f0b2337ab072efe59dcb81f602952ba77b8e64a3ce75d9ace643f8a1e5dbda",
+    "hw/soc/tb/cocotb/test_soc_eth.py": "dd8b9f5910cea773aa515cb45c1c9daf1c1bca4731b5beada23386b82693aa47",
+    "hw/soc/out/eth-sram-final-20260919/eth.netlist.v": "a1abd61289801d24a0945c0b6c2cab93d270fb84d4680b0c859af791f798a250",
+    "PDK/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+    "PDK/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_typ_1p20V_25C.lib": "bd6702406ba76f4aa818958fc18edf4cc78cf9b23ecd73a8823757341e0eb41f",
+    "PDK/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "hw/soc/rtl/soc_top.v": "90154656b104f3d977ca4fe55bc8b7cb9ef68c11f79d5bd6d5261dc979dc12ad",
+    "hw/soc/tb/tb_soc.v": "1edfffcfcbb65ef1370e769b1808387fc6e23fef6e50694d8dd7cc45b41d2a01",
+    "hw/soc/tb/sw/test_ibex.c": "c486908bfb523308f81c5f8794f9bda3f6e068f29e0ac5030f7705e17e3b168b",
+    "hw/soc/tb/sw/soc_eth.h": "91cb8123262907397449cbfd21d14c727dbb386655fb0bec1747f744016edad5",
+    "regmap/memmap.yaml": "8dad46043f185dabc512d1263ff0d939b502fad55e9cb642452fb8f5dbab95ee"
+  },
+  "date": "2026-09-19",
+  "pdk_commit": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "scope": "Zero-delay native SG13G2 cell/SRAM models; no SDF, physical signoff or PHY compliance",
+  "command": "bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-final-20260919",
+  "synthesis": {
+    "tool": "Yosys 0.33 (2584903a060)",
+    "cells": 2615,
+    "flops": 508,
+    "sram_macros": 4,
+    "area_with_macros_um2": 667066.4354,
+    "sram_area_um2": 620615.3428
+  },
+  "gate_results_xml": "<testsuites name=\"results\">\n  <testsuite name=\"all\" package=\"all\">\n    <property name=\"random_seed\" value=\"1789834674\" />\n    <testcase name=\"tx_padding_crc_and_full_size_frame\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"82\" time=\"3.146446704864502\" sim_time_ns=\"107490.0\" ratio_time=\"34162.34568150072\" />\n    <testcase name=\"rx_frame_crosses_clocks_and_interrupts\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"96\" time=\"0.29249024391174316\" sim_time_ns=\"10790.0\" ratio_time=\"36890.11932738449\" />\n    <testcase name=\"bad_fcs_is_discarded_and_next_frame_recovers\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"110\" time=\"0.26392245292663574\" sim_time_ns=\"9490.0\" ratio_time=\"35957.5318233269\" />\n    <testcase name=\"rx_overflow_preserves_committed_frame\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"125\" time=\"6.19145941734314\" sim_time_ns=\"220830.00000000003\" ratio_time=\"35666.87352927235\" />\n    <testcase name=\"oversize_tx_and_flush_do_not_emit_partial_packets\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"138\" time=\"3.747675657272339\" sim_time_ns=\"144684.0\" ratio_time=\"38606.32915744501\" />\n    <testcase name=\"register_strobes_phy_pins_and_reset\" classname=\"test_soc_eth\" file=\"/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_eth.py\" lineno=\"154\" time=\"0.06792426109313965\" sim_time_ns=\"2430.0\" ratio_time=\"35775.14073606065\" />\n  </testsuite>\n</testsuites>",
+  "cpu_command": "SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DETHERNET_DEMO bash hw/soc/flow/sim_soc.sh hw/soc/out/eth-final-cpu-20260919",
+  "cpu_log": "[TB] SoC: boot 0xc0000000, ROM image hw/soc/out/eth-final-cpu-20260919/test_soc.hex, 8 clocks per UART bit\n[TB] RAM powered up undefined: 8192 words of data and check bits, seed -225984511\nboot: strap 0x84000000 cnt 0x00000000 of 0x00000003 stat 0x00030000 wdog 0x00000000 rpt 0x00000000 tmr 0x00000000\nboot: scrub saw the uninitialised RAM: sec 0x00000000 rd 0x00000000 ded 0x00000001 -- clearing\nboot: image 0x00000000 at 0x00018000\nboot: cycles sweep=0x0001502f open=0x00004a63 hdr=0x00000f65 copy=0x0000539e verify=0x00001cda\nboot: entering 0x00000000[TB] boot: handed over to RAM at cycle 148512 (fetch 0x00000000)\n\nGigabit GMII: CPU packet loopback and IRQ mask 0x00000000\nRESULT PASS\n\n[TB] core asleep after 159269 cycles\n[TB] exit code 0x00000000\n[TB] boot: 1 hand-over , the last at cycle 148512; 10757 cycles in the image\n[TB] bootreg: bstrap 0x84000000 bstat 0x00030000 brpt 0xb0000000 epoch 0x00000001\n[TB] console: 437 characters decoded, 0 framing errors\n[TB] watchdog: stage1 0, stage2 0, stage3 0\n[TB] gpio: pads 0x0000, driven 0x0000, irq 0\n[TB] qspi: 6 frames on CS0, 0 datasheet violations, irq 0\n[TB] scrub: ram sec/rd/ded 0/0/0, rom sec/rd/ded 0/0/0\n[TB] PASS\n/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc.v:770: $finish called at 1592895000 (1ps)\n"
+}

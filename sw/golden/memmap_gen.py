@@ -68,6 +68,7 @@ APB_SLOTS = {
     "BOOTREG": (0xFF917000, 0x017, 0, "implemented"),
     "CLKGATE": (0xFF918000, 0x018, 0, "reserved"),
     "NPUCFG": (0xFF919000, 0x019, 24, "implemented"),
+    "ETH": (0xFF91A000, 0x01A, 25, "implemented"),
     "APBPNP": (0xFF9FF000, 0x0FF, 0, "implemented"),
 }
 
@@ -94,9 +95,10 @@ IRQ_SOURCES = {
     "BUSSTAT": (22, 10, 26, 0x68),
     "SCRUB": (23, 11, 27, 0x6C),
     "NPUCFG": (24, 12, 28, 0x70),
+    "ETH": (25, 13, 29, 0x74),
 }
 
-SPARE_FAST_LINES = [13, 14]
+SPARE_FAST_LINES = [14]
 
 # core input name -> (interrupt id, mcause, vector offset)
 CORE_IRQS = {
@@ -186,6 +188,8 @@ APB_PNP_ROM = {
     0x01B: 0x1800FF01,
     0x01C: 0x09013038,
     0x01D: 0x1900FF01,
-    0x01E: 0x09000020,
-    0x01F: 0xFF00FF01,
+    0x01E: 0x09E01039,
+    0x01F: 0x1A00FF01,
+    0x020: 0x09000020,
+    0x021: 0xFF00FF01,
 }

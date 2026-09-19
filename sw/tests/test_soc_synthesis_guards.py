@@ -1853,7 +1853,7 @@ def test_every_flow_that_builds_soc_top_reads_every_module_it_instantiates():
 
     flows = {name: code(name)
              for name in ("syn_soc_top.sh", "pnr_soc_top.sh", "fi_core.sh",
-                          "sim_soc.sh")}
+                          "fi_npu.sh", "sim_soc.sh")}
     checked = []
     for mod in sorted(instantiated - substituted):
         if not ((SOC_RTL / f"{mod}.v").is_file()
@@ -1960,7 +1960,7 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
         "soc_apb_bridge.v", "soc_uart.v", "soc_gpio.v", "soc_qspi.v", "soc_pnp.v",
         "soc_apb_pnp.v", "soc_clint.v", "soc_gptimer.v", "soc_wdog.v",
         "soc_busstat.v", "soc_scrub.v", "soc_boot.v", "soc_tmr_bank.v", "soc_npu.v",
-        "soc_npu_ser.v", "soc_spw.v", "soc_i2c.v", "soc_spi.v", "soc_can.v",
+        "soc_npu_ser.v", "soc_spw.v", "soc_i2c.v", "soc_spi.v", "soc_can.v", "soc_eth.v",
         "soc_apb_wb.v")]
     soc.append(interface_bundle)
     # This list is a FIFTH copy of the four the flow-list guard below
@@ -3523,4 +3523,3 @@ def test_the_apb_timeout_does_cost_something_when_it_is_on(workdir):
         "flag are not being built, so the parameter is inert and the "
         "timeout it is supposed to arm does not exist."
         .format(on.total, APB_BRIDGE_FF_AT_DEFAULT))
-

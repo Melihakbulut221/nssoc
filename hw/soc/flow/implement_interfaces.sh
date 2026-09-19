@@ -19,7 +19,8 @@ for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp'):
     for ext in ('*.v', '*.vh'):
         files.update((root/directory).glob(ext))
 record = {'configuration': {'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
-                           'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256, 'clock_ns': 20},
+                           'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
+                           'ETH_SRAM': 1, 'clock_ns': 20, 'ethernet_clock_ns': 8},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                       for p in sorted(files)}}
 record['implementation_files'] = {
@@ -28,12 +29,14 @@ record['implementation_files'] = {
                  'hw/soc/flow/syn_soc_top.sh', 'hw/soc/flow/pnr_soc_top.sh',
                  'hw/soc/flow/prepare_interfaces.py',
                  'hw/soc/pnr/interface_flow.py',
-                 'hw/soc/pnr/config-interfaces-synpre.json')}
+                 'hw/soc/pnr/config-interfaces-synpre.json',
+                 'hw/soc/techmap/eth_ram.lib', 'hw/soc/techmap/eth_ram_map.v',
+                 'hw/soc/sta/soc_interfaces.sdc', 'hw/soc/sta/soc_top_qspi_io.sdc')}
 out.write_text(json.dumps(record, indent=2)+'\n')
 PY
 IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram \
 SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1 \
-SOC_WAKE_GNT=0 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 \
+SOC_WAKE_GNT=0 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1 \
 SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 \
   bash "$SOC_DIR/flow/syn_soc_top.sh" 20 "$OUT" >"$OUT.build.log" 2>&1
 mv "$OUT.inputs.json" "$OUT/inputs.json"

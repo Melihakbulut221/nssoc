@@ -120,6 +120,10 @@ module tb_soc;
 
   wire spw_loop_d, spw_loop_s, spi_loop, i2c_scl_oe, i2c_sda_oe;
   wire uart_tx, uart_irq;
+  reg eth_clk = 1'b0;
+  always #4 eth_clk = !eth_clk;
+  wire [7:0] eth_txd;
+  wire eth_tx_en, eth_tx_er;
   wire wdog_n, wdog_rst, nmi, irq_timer, irq_soft, gptimer_irq;
   wire alert_minor, alert_major_internal, alert_major_bus;
   wire double_fault_seen, core_sleep;
@@ -246,6 +250,11 @@ module tb_soc;
       .qspi_io_i    (qspi_io),
       .qspi_irq_o   (qspi_irq),
       .wdog_no       (wdog_n),
+      .eth_rx_clk_i(eth_clk), .eth_tx_clk_i(eth_clk),
+      .eth_rxd_i(eth_txd), .eth_rx_dv_i(eth_tx_en), .eth_rx_er_i(eth_tx_er),
+      .eth_txd_o(eth_txd), .eth_tx_en_o(eth_tx_en), .eth_tx_er_o(eth_tx_er),
+      .eth_gtx_clk_o(), .eth_mdio_i(1'b1), .eth_mdc_o(), .eth_mdio_o(),
+      .eth_mdio_oe_o(), .eth_irq_o(),
       .wdog_rst_o    (wdog_rst),
       .nmi_o         (nmi),
       .irq_timer_o   (irq_timer),
