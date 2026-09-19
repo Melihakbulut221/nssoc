@@ -200,6 +200,16 @@ module tb_soc_fi_gl;
   // The netlist's soc_top: the same port list as the RTL's, and the
   // same ties tb_soc_fi.v makes.
   soc_top dut (
+`ifdef FI_GL_ETHERNET
+      // Idle MAC; packet behaviour is verified by the dedicated GMII bench.
+      .eth_rx_clk_i(clk), .eth_tx_clk_i(clk), .eth_rxd_i(8'b0),
+      .eth_rx_dv_i(1'b0), .eth_rx_er_i(1'b0), .eth_mdio_i(1'b1),
+`endif
+`ifdef FI_GL_INTERFACES
+      .spw_di_i(1'b0), .spw_si_i(1'b0),
+      .i2c_scl_i(1'b1), .i2c_sda_i(1'b1),
+      .can_rx_i(1'b1), .spi_miso_i(1'b0),
+`endif
       .clk_i  (clk),
       .rst_ni (rst_n),
       .wdog_dis_i (wdog_dis),
@@ -320,14 +330,36 @@ module tb_soc_fi_gl;
   endfunction
 
   reg [31:0] rom_img [0:2047];
+`ifdef FI_GL_ROM_ECC
+  // Use the actual frozen codec, not a second hand-copied parity matrix.
+  wire [7:0] rom_check [0:2047];
+  genvar rom_word_idx;
+  generate for (rom_word_idx=0; rom_word_idx<2048; rom_word_idx=rom_word_idx+1) begin : g_rom_encode
+    secded_enc u_enc (.data_in({32'b0,rom_img[rom_word_idx]}),
+                      .check_out(rom_check[rom_word_idx]), .code_out());
+  end endgenerate
+`endif
   integer i;
   initial begin
     for (i = 0; i < 2048; i = i + 1) rom_img[i] = 32'h0;
     $readmemh(`ROM_HEX, rom_img, `ROM_INIT_WORD);
+`ifdef FI_GL_ROM_ECC
+    // Let the combinational encoders settle before the first clock/reset release.
+    #1;
+    for (i = 0; i < 1024; i = i + 1) begin
+      dut.\u_rom.g_rom_1024x32_ecc.u_b0 .i_SRAM_1P_behavioral_bm_bist.memory[i] = rom_img[i];
+      dut.\u_rom.g_rom_1024x32_ecc.u_b1 .i_SRAM_1P_behavioral_bm_bist.memory[i] = rom_img[1024+i];
+    end
+    for (i = 0; i < 512; i = i + 1) begin
+      dut.\u_rom.g_rom_1024x32_ecc.u_c0 .i_SRAM_1P_behavioral_bm_bist.memory[i] = {2'b0,rom_check[512+i][6:0],rom_check[i][6:0]};
+      dut.\u_rom.g_rom_1024x32_ecc.u_c1 .i_SRAM_1P_behavioral_bm_bist.memory[i] = {2'b0,rom_check[1536+i][6:0],rom_check[1024+i][6:0]};
+    end
+`else
     for (i = 0; i < 1024; i = i + 1) begin
       dut.\u_rom.g_rom_1024x32.u_b0 .i_SRAM_1P_behavioral_bm_bist.memory[i] = rom_img[i];
       dut.\u_rom.g_rom_1024x32.u_b1 .i_SRAM_1P_behavioral_bm_bist.memory[i] = rom_img[1024 + i];
     end
+`endif
   end
 
   initial begin

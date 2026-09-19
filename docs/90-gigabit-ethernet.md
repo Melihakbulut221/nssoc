@@ -183,3 +183,43 @@ Its smaller area trades away 1.095362 ns of the active 256-word mapping's
 slow setup margin, so it was **not adopted**. This is a synthesis/STA experiment;
 no routed result or packet-regression success is claimed for the 512-word
 candidate. Scripts and hashes are appended to the SRAM comparison record.
+
+The native post-global-route repair subsequently completed and saved a new
+ODB/netlist. Replaying that saved state with the native layer/via RC gives
+setup/hold in ns: **fast +3.262364 / -0.150652, typical +2.042962 / +0.131439,
+slow -2.045677 / +0.385958**. The fast values agree with the fresh native
+`STAMidPNR-3` report; the other corners were explicitly remeasured rather than
+read from inherited state metrics. The worst slow path starts at register-file
+read address B bit 2 and ends at register x28 check bit 6. It is not an Ethernet
+SRAM path. These are global-route estimates, not final extracted timing.
+
+The existing netlist guards were also applied directly to this post-GRT
+netlist: boot, NPU and watchdog replica cones remain disjoint, and the
+asynchronous-reset cone guard passes. The exact saved artifacts, probe command,
+results and guard log are appended to `timing-replay-20260919.json`.
+Detailed routing is still in progress at this observation.
+
+### Native whole-netlist fault-free execution
+
+2026-09-19. The old `fi_core_gl.sh` could not elaborate this design: it
+omitted the ECC ROM check macros and dual-port Ethernet SRAM models.
+The flow now selects their native PDK models from the actual netlist, initializes
+the ROM check banks with the frozen SECDED encoder, and connects the added
+interface inputs to explicit idle levels. `fi_core.sh` now checks that
+`SOC_REQ_REG` and `SOC_RF_SYNPRE` select the requested elaborated branches.
+Historical defaults remain unchanged.
+
+The current post-global-route netlist and a matching RTL build both complete
+the same ROM workload: signature `9c07ef12`, mask and exit zero, four rounds,
+19 UART characters with hash `6d6942c8`, and no asserted watchdog, trap, NMI,
+alert or double-fault channel. The measured cycle counters are **27,306 at
+gate level and 27,307 in RTL**, so this is a matching-answer check, not a
+cycle-equivalence claim. The native gate run uses Icarus 13; the RTL bytecode
+uses its matching configured Icarus 12 runtime.
+
+The [baseline record](evidence/ethernet-gate-baseline-20260919.json) includes
+commands, both complete result records, source/model provenance, hashes and
+failed attempts. This is a zero-delay, fault-free check with idle interfaces;
+it does not establish SDF timing, an injected-fault coverage rate or Ethernet
+traffic behaviour. Missing gate-level shadow instrumentation is recorded as
+unavailable, never as a zero error count.

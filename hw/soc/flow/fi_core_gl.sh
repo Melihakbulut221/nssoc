@@ -58,12 +58,38 @@ major=$("$GL_IVERILOG" -V 2>/dev/null | sed -n '1s/.*version \([0-9]*\).*/\1/p')
 GL_VVP=$(dirname "$GL_IVERILOG")/vvp
 
 SRAM_V=$SG13G2_SRAM_DIR/verilog
+MODEL_SOURCES=(
+  "$SRAM_V/RM_IHPSG13_1P_2048x64_c2_bm_bist.v"
+  "$SRAM_V/RM_IHPSG13_1P_1024x32_c2_bm_bist.v"
+  "$SRAM_V/RM_IHPSG13_1P_core_behavioral_bm_bist.v"
+)
+PROFILE_DEFINES=()
+if grep -Fq 'u_rom.g_rom_1024x32_ecc.u_b0' "$NETLIST"; then
+  PROFILE_DEFINES+=(-DFI_GL_ROM_ECC)
+  MODEL_SOURCES+=("$SRAM_V/RM_IHPSG13_1P_512x16_c2_bm_bist.v")
+fi
+if grep -Eq 'input[[:space:]]+eth_rx_clk_i' "$NETLIST"; then
+  PROFILE_DEFINES+=(-DFI_GL_ETHERNET)
+fi
+if grep -Eq 'input[[:space:]]+spw_di_i' "$NETLIST"; then
+  PROFILE_DEFINES+=(-DFI_GL_INTERFACES)
+fi
+if grep -Fq 'RM_IHPSG13_2P_256x16_c2_bm_bist' "$NETLIST"; then
+  MODEL_SOURCES+=(
+    "$SRAM_V/RM_IHPSG13_2P_256x16_c2_bm_bist.v"
+    "$SRAM_V/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v"
+    "$SRAM_V/RM_IHPSG13_2P_core_behavioral_ideal.v"
+  )
+fi
 for f in "$SRAM_V/RM_IHPSG13_1P_2048x64_c2_bm_bist.v" \
          "$SRAM_V/RM_IHPSG13_1P_1024x32_c2_bm_bist.v" \
          "$SRAM_V/RM_IHPSG13_1P_core_behavioral_bm_bist.v" \
          "$SG13G2_VLOG" "$NETLIST" \
          "$RTL_BUILD/fi_workload.hex" "$RTL_BUILD/fi_workload.elf"; do
   [ -f "$f" ] || { echo "missing $f" >&2; exit 1; }
+done
+for f in "${MODEL_SOURCES[@]}"; do
+  [ -s "$f" ] || { echo "missing native SRAM model $f" >&2; exit 1; }
 done
 
 mkdir -p "$OUT"
@@ -85,6 +111,10 @@ cp "$RTL_BUILD/fi_workload.hex" "$OUT/fi_workload.hex"
   echo "rom hex md5 $(md5sum < "$RTL_BUILD/fi_workload.hex" | cut -c1-32)"
   echo "iverilog  $GL_IVERILOG ($("$GL_IVERILOG" -V 2>/dev/null | head -1))"
   echo "flops     $(($(wc -l < "$OUT/flops.tsv") - 1))"
+  echo "profile   ${PROFILE_DEFINES[*]:-legacy plain-ROM profile}"
+  sha256sum "$NETLIST" "$SG13G2_VLOG" "${MODEL_SOURCES[@]}" \
+    "$RTL_BUILD/fi_workload.hex" "$SOC_DIR/tb/tb_soc_fi_gl.v" \
+    "$PILOT_RTL/secded_enc.v"
 } > "$OUT/provenance.txt"
 cat "$OUT/provenance.txt"
 
@@ -126,15 +156,15 @@ RF_DEFINE=()
   -DFI_MASK_ADDR="$(sym fi_mask)" \
   -DFI_ROUNDS_ADDR="$(sym fi_rounds_done)" \
   ${RF_DEFINE+"${RF_DEFINE[@]}"} \
+  "${PROFILE_DEFINES[@]}" \
   -s tb_soc_fi_gl \
   "$SOC_DIR/tb/tb_soc_fi_gl.v" \
   "$SOC_DIR/tb/fi_rf_shadow.v" \
   "$PILOT_RTL/secded_dec.v" \
+  "$PILOT_RTL/secded_enc.v" \
   "$NETLIST" \
   "$SG13G2_VLOG" \
-  "$SRAM_V/RM_IHPSG13_1P_2048x64_c2_bm_bist.v" \
-  "$SRAM_V/RM_IHPSG13_1P_1024x32_c2_bm_bist.v" \
-  "$SRAM_V/RM_IHPSG13_1P_core_behavioral_bm_bist.v" \
+  "${MODEL_SOURCES[@]}" \
   2>&1 | tee "$OUT/iverilog.log"
 
 echo "vvp $GL_VVP" >> "$OUT/provenance.txt"

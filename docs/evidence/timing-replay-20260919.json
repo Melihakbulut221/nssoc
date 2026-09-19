@@ -144,5 +144,66 @@
     "tool": "OpenROAD 26Q1-2938-g0e2d771c5e",
     "option_reference": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/0e2d771c5e/src/rsz/README.md",
     "disposition": "Rejected; shipping interface_flow.py remains unchanged with default one repair per pass. Independent baseline run continues."
+  },
+  "post_grt_saved_state_replay": {
+    "scope": "Read-only native-RC global-route parasitic replay after setup/hold repair and re-routing. Not detailed-route extraction or signoff. Inherited other-corner metrics in STAMidPNR state are excluded.",
+    "command": "openroad -exit -no_splash hw/soc/out/external-review-20260919/postgrt-native-probe/probe.tcl",
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "setup_ns": 3.26236358272977,
+        "hold_ns": -0.15065216167645457
+      },
+      "nom_slow_1p08V_125C": {
+        "setup_ns": -2.04567746310479,
+        "hold_ns": 0.38595838728554793
+      },
+      "nom_typ_1p20V_25C": {
+        "setup_ns": 2.0429623015989766,
+        "hold_ns": 0.13143864146889617
+      }
+    },
+    "native_first_corner_agreement": "fast setup/hold match fresh STAMidPNR-3 values within native output rounding",
+    "worst_slow_path": {
+      "start": "_111017_ (register-file read address B bit 2)",
+      "end": "_118613_ (register x28 check bit 6)",
+      "setup_ns": -2.04567746310479
+    },
+    "structural_checks": {
+      "boot_tmr_disjoint": "PASS",
+      "npu_tmr_disjoint": "PASS",
+      "watchdog_tmr_disjoint": "PASS",
+      "asynchronous_reset_cones": "PASS",
+      "scope": "Existing guard functions applied directly to this one saved post-GRT netlist"
+    },
+    "files": {
+      "hw/soc/out/external-review-20260919/postgrt-native-probe/probe.tcl": {
+        "sha256": "79e6087842a5978e378ab201eef9ceed2ed2920e8996e02a814fa29dd4683f2d",
+        "bytes": 10196
+      },
+      "hw/soc/out/external-review-20260919/postgrt-native-probe/probe.log": {
+        "sha256": "f86c5d4ed186a76c42feb7b1aebf80951e435d0f6db10003f8199dce1e574875",
+        "bytes": 663718
+      },
+      "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/state_out.json": {
+        "sha256": "203d7809137648f2f67ffc42762bcd22ccf8b8c1adac4c7245406b93a5bac118",
+        "bytes": 9930
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/soc_top.odb": {
+        "sha256": "6ef77849a44870bf6c7b86d0e22370c0d64099704bb74faeae92c01f0af71af4",
+        "bytes": 82850297
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/soc_top.nl.v": {
+        "sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f",
+        "bytes": 10736965
+      },
+      "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/08-openroad-stamidpnr-3/state_out.json": {
+        "sha256": "523f2cb6e17b960fa3f3a6d971c63d1796da24b90f5eb2c5646dd3ef49d64b6e",
+        "bytes": 9957
+      },
+      "hw/soc/out/external-review-20260919/postgrt-netlist-cones.log": {
+        "sha256": "5092838e33b2c03a8eb1c90fb4a0d9dc0e1f2ea1c3b200b0de88c1c336954738",
+        "bytes": 145
+      }
+    }
   }
 }
