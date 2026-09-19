@@ -285,3 +285,14 @@ metrics and output hashes. This closes that candidate's antenna check only.
 The original extracted timing/GDS above, the ongoing independent decks, and
 the later timing ECO are distinct artifacts; their results cannot be mixed
 into a passing final candidate.
+
+### Independent extracted-netlist LVS, 2026-09-20
+
+`eth256-lvs-20260920` completed on the original 24-macro
+`interfaces-eth256-resume-20260919-184950` candidate. Netgen reports
+**Circuits match uniquely**, with **94,490 devices and 94,219 nets** on
+each side, all **seven LVS counters zero**, and **zero Magic illegal
+overlaps**. The [record](evidence/ethernet-lvs-20260920.json) contains the
+command and hashed inputs/reports. SRAM interiors are black boxes; standard
+cells and every macro pin are compared. This result does not cover the later
+antenna-repaired or timing-ECO candidates and does not close DRC or timing.

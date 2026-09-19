@@ -329,3 +329,13 @@ the test, firmware or RTL. The actual Icarus 14/cocotb 2.0.1 retry passes one
 test, zero failures/skips, at 3,172,635 ns in 823.85 seconds. The earlier Icarus
 12 PASS is retained separately. Failure logs, exact command and source hashes
 are in the [launcher correction record](evidence/crash-cocotb-launcher-20260920.json).
+
+### Clean local delivery replay, 2026-09-20
+
+`bash scripts/ci_local.sh all --record` on clean source revision `5f99411`
+completed with **16 passing gates, zero failures and seven skips**. The Python
+suite gate passed. The ledger records `tree-dirty=0`; its prior failed
+`f3d99a1` row remains visible. The [record](evidence/ci-local-20260920.json)
+binds the full revision, exact ledger row and log hash. These are gate counts,
+not pytest test counts. The seven skips and missing historical F6 artifacts
+remain outside the passing result, and physical signoff is a separate gate.
