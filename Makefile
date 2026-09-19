@@ -17,6 +17,7 @@ help:
 	@echo 'make boot-proof CBMC=/path/to/cbmc  Check the ROM geometry predicate'
 	@echo 'make soc-interfaces-test / soc-interfaces-sim  Pin and CPU interface tests'
 	@echo 'make soc-interfaces-layout RUN_TAG=name      Fresh synthesis and P&R'
+	@echo 'make soc-interfaces-decks RUN_TAG=name STATE=/path/state_out.json'
 
 setup:
 	@$(PYTHON) -c 'import sys; assert (3,9) <= sys.version_info[:2] <= (3,13), "cocotb 2.0.1 requires Python 3.9-3.13; set PYTHON to a compatible interpreter"'
@@ -70,3 +71,7 @@ soc-interfaces-sim: soc-interfaces-prepare
 .PHONY: soc-interfaces-layout
 soc-interfaces-layout:
 	bash $(ROOT)/hw/soc/flow/implement_interfaces.sh $(RUN_TAG)
+
+.PHONY: soc-interfaces-decks
+soc-interfaces-decks:
+	bash $(ROOT)/hw/soc/flow/verify_interfaces_layout.sh "$(RUN_TAG)" "$(STATE)"

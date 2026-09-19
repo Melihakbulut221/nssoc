@@ -194,6 +194,8 @@
     ],
     "//lvs": "Carried so that a later LVS run has what it needs -- the PDK's Netgen setup does not mention RM_IHPSG13 and declares no black box, so the macro CDL has to be handed over explicitly. LVS is NOT run here; see the RUN_ block below for why that is a prior measured result and not a convenience.",
     "//====== WHAT THIS RUN DOES AND DOES NOT RUN ======": "",
+    "RUN_MAGIC_WRITE_LEF": 0,
+    "//top_lef": "This is a chip-level layout. Skip the optional abstract top LEF export, which exceeded 10 GB RSS; GDS stream-out, extraction and checker settings are unchanged.",
     "RUN_MAGIC_DRC": 0,
     "RUN_KLAYOUT_DRC": 0,
     "RUN_KLAYOUT_XOR": 0,
@@ -246,5 +248,7 @@
     ],
     "//interfaces": "Same 50 MHz interface floorplan as config-interfaces.json; upstream-equivalent ECC SYNPRE=1 reduces the register-read decode depth. Full ECC memories, MEM_RDREG=1, REQ_REG=1 retained.",
     "GRT_ADJUSTMENT": 0.2,
+    "DRT_SAVE_DRC_REPORT_ITERS": 1,
+    "//interface_drc_reports": "Retain detailed-router markers every iteration so persistent violations can be located before the router finishes. This changes reporting only; routing effort, constraints and checker gates are unchanged.",
     "//interface_routing": "Reserve 20 percent of routing capacity. The 30-percent inherited setting left 20 Metal5 overflows; the same post-CTS placement routes with zero global overflow at 20 percent (interfaces-route20-20260919). GRT_ALLOW_CONGESTION remains false; detailed DRC and all timing checkers remain enabled."
 }

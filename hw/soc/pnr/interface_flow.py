@@ -1,11 +1,13 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Classic interface flow with bounded setup optimization, unchanged checkers.
+"""Classic interface flow with bounded setup optimization, unchanged checker limits.
 
 The installed OpenROAD defaults to unlimited setup iterations. On this design
 it repeatedly rolls back the same sizing moves after iteration 340. Cap the
 search, not its acceptance criteria: all timing corners and Classic checkers
 are retained. The generated Tcl is saved in each step's evidence directory.
+The optional top LEF's metadata warning runs only when that LEF is generated;
+the routed-design antenna check remains independent and enabled.
 """
 from pathlib import Path
 
@@ -44,6 +46,12 @@ SUBSTITUTIONS = {
 @Flow.factory.register()
 class Interfaces(Classic):
     Steps = [SUBSTITUTIONS.get(step, step) for step in Classic.Steps]
+    # Classic 3.0.5 leaves this informational step enabled even when its
+    # required LEF producer is disabled, causing a missing-input exception.
+    gating_config_vars = {
+        **Classic.gating_config_vars,
+        "Odb.CheckDesignAntennaProperties": ["RUN_MAGIC_WRITE_LEF"],
+    }
 
 
 if __name__ == "__main__":
