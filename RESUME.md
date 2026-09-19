@@ -5,24 +5,46 @@
 Kullanıcı yeniden devam edilmesini istedi; aşağıdaki 19 Eylül durdurma kaydı
 tarihseldir. Çalışma devam ediyor; eski durdurma talimatını yeniden uygulamayın.
 
-- Dal: `codex/complete-open-work`; son kaynak düzeltmesi `c02aa79`.
+- 20 Eylül 01:30 TRT güncellemesi. Dal: `codex/complete-open-work`;
+  GitHub'a gönderilmiş son değişiklik `3274518`.
 - Bütün inceleme ve ürün kapıları: `docs/92-product-acceptance.md`.
 - Tam 24 makrolu aday `interfaces-eth256-resume-20260919-184950` GDS
   üretti fakat setup/hold/slew/cap nedeniyle FAIL. Üç köşeli çıkarılmış
   ölçüm `docs/evidence/ethernet-extracted-layout-20260920.json` içinde.
 - Aynı adayın bağımsız deck koşusu `eth256-decks-20260919`: stream XOR 0;
   Magic DRC çalışıyor. Log `hw/soc/out/external-review-20260919/eth256-decks-20260919.log`.
+  Ayrı `eth256-lvs-20260920` koşusu: Circuits match uniquely, yedi sayaç 0,
+  her iki tarafta 94.490 device / 94.219 net. SRAM içleri black-box;
+  `docs/evidence/ethernet-lvs-20260920.json` tam kapsamı kaydeder.
 - Ayrı `eth256-antfix-20260919` adayı altı diyotla anteni sıfırladı;
   `eth256-antcheck-20260920` bağımsız kontrolü tamamlandı ve 0 net/0 pin.
 - Zamanlama ECO deneyi `hw/soc/out/external-review-20260919/timing-eco2`: 130
   eşdeğer hücre değişimi, 25 sinyal tamponu; RTL/SDC değişmedi. Tüm regular
-  sinyal rotaları silinip global route yeniden hesaplanıyor; güç special
-  wire korunuyor. `timing-eco1` yalnızca 25 yeni hattı hesapladığından
+  sinyal rotaları silinip 93.137 netin global route'u yeniden hesaplandı;
+  güç special wire korunuyor. `timing-eco1` yalnızca 25 yeni hattı hesapladığından
   zamanlama tahmini REDDEDİLDİ, bu rapordaki pozitif setup kapanış değildir.
-- ECO için fiziksel yerleştirme/yönlendirme, bağlantı eşdeğerliği, ayrıntılı
-  route, RCX ve ayrı süreçlerde üç STA köşesi tamamlanmadan kabul etmeyin.
-- GitHub c02 koşuları: 35469632101 ve 35469634120. checks/rtl geçti;
-  formal-and-boot sürüyor. Çalışan job durumunu canlı sorgulayın.
+- ECO2 bağlantı/eşdeğer işlev kontrolleri ve iki negatif kontrol geçti.
+  Global-route tahmini: slow setup -1,907482 ns; fast hold -0,137262 ns.
+  `eth256-eco2-route-20260920` ayrıntılı route/anten/RCX/STA/GDS koşusu aktif.
+  İlk route sonrası 242 anten ihlali için 469 diyot ekledi; son hüküm yok.
+  Kendi RCX ve ayrı süreçlerde üç STA köşesi tamamlanmadan kabul etmeyin.
+- `timing-eco3-sizing` SIGTERM ile durduruldu: max_iterations=50 tüm
+  endpoint taramasını sınırlamıyormuş, log 91 adımı aştı. Son netlist yok.
+  `timing-eco4-wns` repair_tns=0 / max_iterations=200 ile tek dinamik en
+  kötü endpoint üzerinde sizing yapıyor; henüz tamamlanmadı.
+- GitHub c02 koşuları 35469632101 ve 35469634120 TAMAMEN BAŞARILI:
+  checks, rtl, formal-and-boot. Yeni 3274518 koşuları 35472560839 ve
+  35472563334 ayrı ve hâlâ aktif; durumlarını canlı sorgulayın.
+- Temiz 5f99411 kaynak ağacında yerel CI: 16 başarılı kapı, 0 hata,
+  7 atlanan. Yeni kaynak değişiklikleri için teslimde yenileyin.
+- Dört SRAM'ın değişmeyen GDS'leri güncel, sabitlenmiş upstream IHP ana
+  KLayout deck'iyle 0 marker verdi. Eski deck'in başarısızlıkları korundu.
+  `docs/93-ihp-drc-update.md`, `hw/soc/flow/prepare_ihp_drc.py` ve kilit
+  dosyası GitHub'da. Kurulu PDK değiştirilmedi.
+- Tam çip için iki KLayout koşusu aktif: kurulu deck
+  `eth256-klayout-20260920`; upstream deck
+  `hw/soc/out/external-review-20260919/full-upstream-drc-20260920`.
+  Macro kontrolünü tam çip PASS olarak yorumlamayın.
 - PCIe Gen3 x4 uyumlu fiziksel IP hâlâ yok; `docs/91` araştırması açık.
   Eski F6 `signoff-6x2` ve `s70-rom0-syn` çıktıları da mevcut değil.
 - Yeni Ethernet yerleşim görseli `docs/img/interfaces-ethernet-layout.png`.

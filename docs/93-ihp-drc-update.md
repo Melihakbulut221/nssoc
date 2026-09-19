@@ -59,6 +59,37 @@ A zero process exit alone is insufficient: inspect the completed report's
 marker count. The old deck exits zero while reporting the nonzero counts above.
 Use the same pinned input hashes and KLayout version to reproduce this table.
 
+### Report-based acceptance command
+
+[check_ihp_drc.py](../hw/soc/flow/check_ihp_drc.py) runs those same locked
+main rules and writes `inputs.json`, `run.log`, `drc.lyrdb` and `result.json`
+under a new `hw/soc/out/<tag>` directory. It refuses to reuse an existing
+directory. PASS requires a successful process **and zero markers** in a
+complete report naming the requested top cell; even visited or waived markers
+are counted. Missing/malformed reports, interrupted processes and input bytes
+changed during the run produce ERROR. GDS, deck, process constants and lock
+hashes accompany the exact command. The installed PDK remains unchanged.
+
+```bash
+python3 hw/soc/flow/check_ihp_drc.py path/to/soc_top.gds \
+  --top soc_top --tag my-new-drc-run --klayout klayout
+.venv/bin/python -m pytest -q \
+  sw/tests/test_ihp_drc_preparation.py sw/tests/test_ihp_drc_result.py
+```
+
+The gate exits 0 for PASS, 1 for a completed report with violations, and 2
+for an execution/evidence error. The regression above recorded **21 passing
+tests** on 2026-09-20, including a zero-exit process with two waived/visited
+markers that must fail. It does not make this newer deck a foundry signoff
+qualification or replace the independent Magic/LVS/timing checks.
+
+The actual wrapper run on the unchanged 1024x32 macro completed with exit 0
+and **zero report markers**; [execution record](evidence/ihp-drc-gate-20260920.json).
+The same parser reproduced every count in the eight existing reports above.
+Combined preparation, result, evidence and document checks passed 181 tests;
+the record pins the command and log. This verifies the acceptance command on
+real tool output, in addition to its negative-control tests.
+
 ## Remaining physical gates
 
 The complete original 24-macro SoC GDS is running separately with the updated
