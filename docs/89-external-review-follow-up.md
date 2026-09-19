@@ -233,3 +233,27 @@ Python suite measured **612 passed, zero failures, 34 skipped**. The additional
 pass is the artifact-identity negative control; no missing-artifact skip was
 converted into a pass. The original XML and log hashes are in the verification
 record, and the measured CI row is appended unchanged.
+
+### Prepared-source clone: five generated-dependency skips resolved
+
+The same `e2193ec` clone was then prepared from pinned upstream sources using
+`make -f hw/soc/tools.soc.mk fetch-sv2v fetch-ibex`, `sv2v_ibex.sh`,
+`make soc-interfaces-prepare` and `ibex_fault_port.py`, before running the
+complete Python suite again. It measured **617 passed, zero failures,
+29 skipped**. The only tracked change in that clone was the earlier recorded
+`ci-local-log.tsv` row; its RTL and tests were not edited. Commands, XML and
+remaining skip reasons are in `verification-20260919.json`.
+
+This is a prepared checkout, not the bare clone's result. Five actual upstream
+compatibility/elaboration checks ran instead of skipping; no assertion was
+removed. They also pass with the pinned CI OSS CAD Suite. `make soc-rtl-prepare`
+now provides this preparation without downloading the firmware compiler, and
+`make soc-prepared-guards` runs the five checks explicitly. The latter fails
+early for absent generated inputs or Yosys; it does not download dependencies.
+GitHub's formal/boot job runs it after preparation.
+
+**F6 remains open:** the remaining skips still include absent historical
+DEF/netlist/run trees. A prepared checkout below the numeric skip threshold
+does not meet the requirement that every remaining skip be tool/PDK absence.
+The full review and product acceptance inventory is in
+[docs/92](92-product-acceptance.md).

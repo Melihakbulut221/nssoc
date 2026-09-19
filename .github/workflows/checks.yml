@@ -146,6 +146,8 @@ jobs:
           python3 -m venv .venv
           .venv/bin/pip install -r sw/requirements.txt
           make soc-prepare
+      - name: Prepared upstream compatibility and whole-SoC elaboration
+        run: make soc-prepared-guards
       - name: Real-codec contract, counterexamples and upstream equivalence
         run: make rf-contract rf-equivalence
       - name: CPU interface and interrupt regression

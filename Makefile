@@ -7,11 +7,13 @@ PYTHON ?= python3
 PY := $(ROOT)/.venv/bin/python
 CBMC ?= $(ROOT)/hw/soc/tools/cbmc/usr/bin/cbmc
 
-.PHONY: help setup test rtl-test check soc-prepare soc-sim soc-boot-regression rf-contract rf-equivalence boot-proof
+.PHONY: help setup test rtl-test check soc-prepare soc-rtl-prepare soc-prepared-guards soc-sim soc-boot-regression rf-contract rf-equivalence boot-proof
 help:
 	@echo 'make setup PYTHON=/usr/bin/python3  Python 3.9-3.13 environments'
 	@echo 'make test / rtl-test / check       Python, RTL, or local CI'
 	@echo 'make soc-prepare / soc-sim         Fetch pinned Ibex/tools, then boot the SoC'
+	@echo 'make soc-rtl-prepare              Fetch and generate processor/interface RTL only'
+	@echo 'make soc-prepared-guards          Check prepared upstream ports and SoC elaboration'
 	@echo 'make soc-boot-regression           Normal boot and both geometry fallbacks'
 	@echo 'make rf-contract / rf-equivalence  Real-codec proofs (set OSS_CAD_SUITE)'
 	@echo 'make boot-proof CBMC=/path/to/cbmc  Check the ROM geometry predicate'
@@ -35,10 +37,28 @@ rtl-test: soc-interfaces-prepare
 check:
 	cd $(ROOT) && scripts/ci_local.sh all
 
-soc-prepare:
-	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-sv2v fetch-ibex fetch-rvgcc
+soc-prepare: soc-rtl-prepare
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-rvgcc
+
+soc-rtl-prepare:
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-sv2v fetch-ibex
 	bash $(ROOT)/hw/soc/flow/sv2v_ibex.sh $(ROOT)/hw/soc/ext/ibex $(ROOT)/hw/soc/gen $(ROOT)/hw/soc/tools/sv2v-Linux/sv2v
 	$(MAKE) soc-interfaces-prepare
+	$(PYTHON) $(ROOT)/hw/soc/flow/ibex_fault_port.py $(ROOT)/hw/soc/gen $(ROOT)/hw/soc/genp
+
+# Preparation is explicit so an offline test run never fetches dependencies.
+# CI calls this after soc-prepare; a fresh checkout can use soc-rtl-prepare.
+soc-prepared-guards:
+	@test -s $(ROOT)/hw/soc/gen/ibex_register_file_ff.v
+	@test -s $(ROOT)/hw/soc/genp/ibex_top.v
+	@test -s $(ROOT)/hw/soc/gen/interfaces.bundle.vh
+	@command -v yosys >/dev/null || { echo 'yosys is required for prepared RTL guards'; exit 1; }
+	cd $(ROOT) && $(PY) -m pytest -q \
+	  sw/tests/test_soc_regfile_guards.py::test_upstreams_own_file_measures_the_data_flip_flops_only \
+	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_declares_upstreams_ports_in_upstreams_order \
+	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_accepts_every_parameter_ibex_top_overrides \
+	  sw/tests/test_soc_synthesis_guards.py::test_the_ibex_top_patch_applies_to_the_pinned_output \
+	  sw/tests/test_soc_synthesis_guards.py::test_the_whole_soc_elaborates_as_one_design
 
 soc-sim:
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" bash hw/soc/flow/sim_soc.sh

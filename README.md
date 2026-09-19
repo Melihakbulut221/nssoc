@@ -19,6 +19,12 @@ make rtl-test
 make check
 ```
 
+To run the processor compatibility and whole-SoC elaboration checks on a fresh
+checkout, first run `make soc-rtl-prepare`, then `make soc-prepared-guards`
+with Yosys on `PATH`. Preparation fetches the pinned RTL and converter; the
+guard target performs no downloads. Historical layout artifacts are separate
+dependencies and their absence still produces explicit skips in the full suite.
+
 For the whole-SoC boot simulation, run `make soc-prepare` and then
 `make soc-sim OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite`.
 The additional real-codec proofs are `make rf-contract` and
@@ -28,6 +34,8 @@ proof is `make boot-proof CBMC=/absolute/path/to/cbmc`.
 The 2026-09-19 changes, measured results, tool versions and remaining work
 are recorded in [the engineering closure record](docs/87-engineering-closure.md).
 The physical and radiation qualification limits described below still apply.
+The complete review checklist and product release gates are tracked in
+[the product acceptance record](docs/92-product-acceptance.md).
 
 ## Reference architecture (GR801, public brief)
 

@@ -57,6 +57,10 @@ attached and no artifact behind it yet.
 
 ## Engineering closure update — 2026-09-19
 
+The complete external-review and product acceptance checklist is maintained in
+[docs/92](docs/92-product-acceptance.md). Its open physical, IP and test gates
+must close before this core block can be described as a complete product.
+
 `docs/87-engineering-closure.md` is the current reproduction record.
 The real-codec register-file contract and direct upstream equivalence are
 now checked with inductive invariants and Bitwuzla, including both read
