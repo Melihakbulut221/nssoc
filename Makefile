@@ -34,9 +34,10 @@ rtl-test: soc-interfaces-prepare
 check:
 	cd $(ROOT) && scripts/ci_local.sh all
 
-soc-prepare: soc-interfaces-prepare
+soc-prepare:
 	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-sv2v fetch-ibex fetch-rvgcc
 	bash $(ROOT)/hw/soc/flow/sv2v_ibex.sh $(ROOT)/hw/soc/ext/ibex $(ROOT)/hw/soc/gen $(ROOT)/hw/soc/tools/sv2v-Linux/sv2v
+	$(MAKE) soc-interfaces-prepare
 
 soc-sim:
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" bash hw/soc/flow/sim_soc.sh
@@ -63,7 +64,7 @@ soc-interfaces-prepare:
 soc-interfaces-test: soc-interfaces-prepare
 	cd $(ROOT) && scripts/run_cocotb.sh soc_interfaces
 
-soc-interfaces-sim:
+soc-interfaces-sim: soc-interfaces-prepare
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO IBEX_REGFILE=secded SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
 
 .PHONY: soc-interfaces-layout

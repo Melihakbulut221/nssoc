@@ -285,6 +285,10 @@ echo "sources:   $(echo "$SRCS" | wc -l) verilog files"
 echo "pdk:       $PDK @ $PIN"
 echo "librelane: $("$VENV/bin/librelane" --version 2>/dev/null | head -1)"
 
-exec librelane --pdk "$PDK" --scl "$SCL" \
+LANE=(librelane)
+if [ "${SOC_INTERFACE_FLOW:-0}" = 1 ]; then
+  LANE=("$VENV/bin/python" "$PNR/interface_flow.py" --flow Interfaces)
+fi
+exec "${LANE[@]}" --pdk "$PDK" --scl "$SCL" \
      --run-tag "$RUN_TAG" \
      ${@+"$@"} "$RESOLVED"

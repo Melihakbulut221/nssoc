@@ -38,7 +38,7 @@ out = pathlib.Path(sys.argv[1]); p = out/'inputs.json'; record=json.loads(p.read
 record['netlist_sha256'] = hashlib.sha256((out/'soc_top.netlist.v').read_bytes()).hexdigest()
 p.write_text(json.dumps(record, indent=2)+'\n')
 PY
-PNR_CONFIG="$SOC_DIR/pnr/config-interfaces-synpre.json" \
+SOC_INTERFACE_FLOW=1 PNR_CONFIG="$SOC_DIR/pnr/config-interfaces-synpre.json" \
 SYN_NETLIST="$OUT/soc_top.netlist.v" PNR_STATE="$SOC_DIR/pnr/state/$TAG.json" \
   bash "$SOC_DIR/flow/pnr_soc_top.sh" "$TAG" \
   -F Yosys.JsonHeader -S Yosys.Synthesis -S Checker.YosysUnmappedCells \
