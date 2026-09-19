@@ -15,13 +15,11 @@ a clone, the mirror, CI -- there is nothing to compare against and the
 comparison honestly skips, while the completeness and shape checks
 still run.
 
-WHY THESE FILES ARE NOT IN docs/80-artefact-digests.tsv. That file's
-own header says every path in it is gitignored on purpose: its job is
-to pin what git cannot see. These files are tracked, so git pins them
-already -- an edit is a diff -- and listing them there would be a
-second, weaker copy of a guarantee git gives for free. What git cannot
-tell you is whether the committed copy still matches the run tree it
-was taken from, and that is what this file checks.
+CORRECTED 2026-09-19: the former paragraph said these tracked records
+should not be in docs/80-artefact-digests.tsv. Review F6 explicitly
+requires them there. They are now covered by its docs-evidence group;
+test_artefact_digests.py checks their path set, size and SHA-256. This
+file independently compares the records with live runs where available.
 """
 
 import json

@@ -57,7 +57,7 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
 
 include $(REPO)/tools.mk
 
@@ -119,6 +119,22 @@ apbwb:
 # a target that never returns is not a regression test. Its depth-40
 # k-induction and bmc tasks are likewise left out of this target.
 REGFILESCRUB_TASKS := prove_pdr cover
+.PHONY: regfilecontract regfileequivalence regfilecontrols
+REGFILECONTRACT_TASKS := prove prove_noscrub cover
+regfilecontract:
+	@for t in $(REGFILECONTRACT_TASKS); do \
+	  $(SBY) -f regfile_contract.sby $$t || exit 1; \
+	done
+
+regfileequivalence:
+	@test -s ../gen/ibex_register_file_ff.v || { echo 'Run make soc-prepare at the repository root first.'; exit 1; }
+	@for t in prove prove_noscrub prove_synpre prove_synpre_noscrub; do \
+	  $(SBY) -f regfile_equivalence.sby $$t || exit 1; \
+	done
+
+regfilecontrols:
+	python3 $(REPO)/scripts/check_regfile_contract.py --sby $(SBY) --controls-only
+
 regfilescrub:
 	@for t in $(REGFILESCRUB_TASKS); do \
 	  echo "== regfile_scrub_abs $$t"; \
@@ -134,7 +150,7 @@ clint:
 # The fault counters docs/44 adds, and the two widths they are proved
 # at: CNT_W = 4 so that saturation is reachable inside a bounded model,
 # and CNT_W = 16 because that is what soc_top.v instantiates.
-BUSSTAT_TASKS := bmc prove prove_w16 cover
+BUSSTAT_TASKS := bmc prove prove_w16 cover bmc_to prove_to prove_to_w16 cover_to
 
 busstat:
 	@for t in $(BUSSTAT_TASKS); do \

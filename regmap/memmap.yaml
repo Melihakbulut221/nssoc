@@ -303,18 +303,18 @@ apb_slots:
      desc: "GPTIMER, last timer is the watchdog and is armed at reset", source: "GPTIMER0 0xFF908000 (GR740, NOELVSYS)"}
   - {name: TIMER1,  slot: 0x009, irq: 12, line: 4,  status: reserved, device_id: 0x011,
      desc: "Second GPTIMER", source: "GPTIMER1 0xFF909000 (GR740)"}
-  - {name: SPW,     slot: 0x00D, irq: 16, line: 5,  status: reserved, device_id: 0x01F,
-     desc: "SpaceWire codec, GRSPW2-shaped registers, one DMA channel", source: "GR740 SpW AMBA interface slot 0xFF90D000"}
-  - {name: CAN,     slot: 0x011, irq: 18, line: 6,  status: reserved, device_id: 0x0FE,
+  - {name: SPW,     slot: 0x00D, irq: 16, line: 5,  status: implemented, device_id: 0x01F,
+     desc: "SpaceWire Light PIO codec, 64-entry RX and 16-entry TX, project registers; docs/88", source: "GR740 SpW AMBA interface slot 0xFF90D000"}
+  - {name: CAN,     slot: 0x011, irq: 18, line: 6,  status: implemented, device_id: 0x0FE,
      desc: "CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD", source: "slot only (docs/08 section 3 row 14)"}
-  - {name: SPI,     slot: 0x012, irq: 19, line: 7,  status: reserved, device_id: 0x02D,
-     desc: "SPICTRL-shaped SPI master", source: "SPICTRL (GR740 bridge 1) remapped"}
-  - {name: I2C,     slot: 0x013, irq: 20, line: 8,  status: reserved, device_id: 0x028,
-     desc: "I2CMST, the OpenCores I2C master register map", source: "family style"}
+  - {name: SPI,     slot: 0x012, irq: 19, line: 7,  status: implemented, device_id: 0x02D,
+     desc: "SPI master, modes 0..3, two chip selects, project register map; docs/88", source: "SPICTRL (GR740 bridge 1) remapped"}
+  - {name: I2C,     slot: 0x013, irq: 20, line: 8,  status: implemented, device_id: 0x028,
+     desc: "I2C master, single command with timeout, project register map; docs/88", source: "family style"}
   - {name: QSPICTL, slot: 0x014, irq: 21, line: 9,  status: implemented, device_id: 0x045,
      desc: "QSPI flash controller, register mode, two chip selects; docs/66", source: "family style"}
   - {name: BUSSTAT, slot: 0x015, irq: 22, line: 10, status: implemented, device_id: 0x052,
-     desc: "Fault counters and sticky status for the register file codec and the watchdog voter; AHBSTAT in spirit, not in name", source: "AHBSTAT 0xFFA06000 (GR740) remapped"}
+     desc: "Fault counters for the register file, watchdog, NPU and mtime; CNT_APBTO at 0x02C records APB timeouts across system reset, source bit 9 in STATUS/IRQEN/CLR leaves IRQ status bit 8 unchanged; docs/89", source: "AHBSTAT 0xFFA06000 (GR740) remapped"}
   - {name: SCRUB,   slot: 0x016, irq: 23, line: 11, status: implemented, device_id: 0x057,
      desc: "Memory codec counters, scrubber control and the last uncorrectable address, MEMSCRUB-like; docs/67", source: "MEMSCRUB (GR740) remapped"}
   - {name: BOOTREG, slot: 0x017, irq: 0,  status: implemented, device_id: 0x087,
@@ -323,6 +323,8 @@ apb_slots:
      desc: "Clock gate enable and status for NPU nodes and heavy peripherals", source: "GRCLKGATE (GR740, GR716B)"}
   - {name: NPUCFG,  slot: 0x019, irq: 24, line: 12, status: implemented, device_id: 0x013,
      desc: "NPU fabric-level global configuration and status, and the AER event port; docs/51", source: "project-specific"}
+  - {name: ETH, slot: 0x01A, irq: 25, line: 13, status: implemented, device_id: 0xE01,
+     desc: "Gigabit full-duplex GMII MAC, packet PIO FIFOs and software MDIO; project register map, not GRETH; docs/90", source: "project-specific extension"}
   - {name: APBPNP,  slot: 0x0FF, irq: 0,  status: implemented, device_id: 0x000,
      desc: "Peripheral bus device table, two words per slot", source: "APB PnP at bridge base + 0xFF000 (GRLIB grlib.pdf 5.3), layout only"}
 

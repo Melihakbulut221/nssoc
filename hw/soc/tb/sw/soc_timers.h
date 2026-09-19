@@ -99,6 +99,7 @@
 #define BST_NPUDET      (SOC_BUSSTAT_BASE + 0x020u)
 #define BST_NPUTMR      (SOC_BUSSTAT_BASE + 0x024u)
 #define BST_MTECC       (SOC_BUSSTAT_BASE + 0x028u)
+#define BST_APBTO       (SOC_BUSSTAT_BASE + 0x02Cu)
 
 /* One bit index per source, shared by STATUS, IRQEN and CLR. */
 #define BST_S_RFSEC     (1u << 0)
@@ -109,12 +110,14 @@
 #define BST_S_NPUDET    (1u << 5)
 #define BST_S_NPUTMR    (1u << 6)
 #define BST_S_MTECC     (1u << 7)
+#define BST_S_APBTO     (1u << 9)
 #define BST_S_ALL       (BST_S_RFSEC | BST_S_RFRD | BST_S_RFDED \
                          | BST_S_TMRERR | BST_S_NPUCOR | BST_S_NPUDET \
-                         | BST_S_NPUTMR | BST_S_MTECC)
+                         | BST_S_NPUTMR | BST_S_MTECC | BST_S_APBTO)
 /* STATUS bit 8: any enabled sticky is set, i.e. the line is asserted.
  * Bit 7 is now BST_S_MTECC and the sticky field is full: a ninth source
- * cannot be added below the interrupt bit. docs/58 section 9. */
+ * cannot be added below the interrupt bit. docs/58 section 9.
+ * 2026-09-19: APB timeout therefore uses bit 9, preserving bit 8. */
 #define BST_STATUS_IRQ  (1u << 8)
 
 /* ---- GPTIMER, hw/soc/rtl/soc_gptimer.v ------------------------------ */

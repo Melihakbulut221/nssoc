@@ -131,10 +131,9 @@ def test_the_response_register_defaults_to_off_everywhere():
 
 def test_nothing_in_the_design_turns_the_response_register_on():
     """The knob exists in three flows and all three default it off.
-    Nothing else
-    in the repository may set it, and in particular no configuration file
-    and no committed script may hard-code it on: the netlist that is
-    hardened has to be the netlist whose cycle count is published."""
+    The explicit docs/88 interface experiment selects it together with
+    REQ_REG and SYNPRE. Ordinary flows still default it off; the experiment
+    has its own CPU cycle measurement and is never the implicit default."""
     # The three flows that OFFER the knob. Each defaults it to 0 and the
     # test above checks the defaults; what is forbidden is a fourth place
     # that sets it, or any of these three hard-coding it on.
@@ -142,7 +141,11 @@ def test_nothing_in_the_design_turns_the_response_register_on():
         SOC_FLOW / "syn_soc_top.sh",
         SOC_FLOW / "sim_soc.sh",
         SOC_FLOW / "fi_core.sh",
+        # docs/88's explicit P&R profile, paired with its CPU regression.
+        SOC_FLOW / "implement_interfaces.sh",
     }
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    assert "SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1" in profile
     pattern = re.compile(r"SOC_MEM_RDREG\s*=\s*1|MEM_RDREG\s*\(\s*1'b1")
     offenders = []
     for path in list(ROOT.glob("hw/**/*.sh")) + list(ROOT.glob("hw/**/*.v")) \
@@ -534,6 +537,15 @@ def test_the_pnr_floorplans_name_the_arms_the_rtl_has():
         seen += 1
         c = json.loads(cfg.read_text())
         for macro, spec in c["MACROS"].items():
+            if macro == "RM_IHPSG13_2P_256x16_c2_bm_bist":
+                # These SRAMs are inferred from the two Ethernet FIFOs by
+                # techmap; they do not belong to soc_mem_sram's generate arms.
+                expected = {f"u_eth.u_mac.{direction}_fifo.fifo_inst.mem.0.{bank}"
+                            for direction in ("rx", "tx") for bank in range(8)}
+                assert set(spec["instances"]) == expected, cfg.name
+                mapping = ROOT / "hw/soc/techmap/eth_ram_map.v"
+                assert macro + " _TECHMAP_REPLACE_" in mapping.read_text()
+                continue
             for inst in spec["instances"]:
                 outer, block, leaf = inst.split(".")
                 assert block in labels, (

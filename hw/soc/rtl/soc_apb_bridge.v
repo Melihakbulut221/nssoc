@@ -58,6 +58,10 @@ module soc_apb_bridge #(
     // and is written and proved but instantiated nowhere. The first
     // time a real wait-state slave is wired in, this becomes live.
     //
+    // 2026-09-19 correction: CAN now instantiates soc_apb_wb. soc_top
+    // enables APB_TIMEOUT=256 and records each error in BUSSTAT; the
+    // preceding historical instantiation inventory no longer applies.
+    //
     // DEFAULT 0, WHICH IS OFF, and the module is then bit-identical to
     // what it was: every existing measurement, netlist and proof
     // remains reproducible. At a non-zero value the counter runs in

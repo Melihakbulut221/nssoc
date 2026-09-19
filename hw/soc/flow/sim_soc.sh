@@ -236,6 +236,10 @@ fi
 # it enforces WAKE_GNT's default and more strongly -- this one costs a
 # cycle on EVERY load rather than one per sleep interval, and the
 # whole-SoC cycle count is a corpus invariant.
+SOC_APB_TIMEOUT=${SOC_APB_TIMEOUT:-256}
+case "$SOC_APB_TIMEOUT" in ''|*[!0-9]*) echo 'SOC_APB_TIMEOUT must be a nonnegative integer' >&2; exit 2;; esac
+DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.APB_TIMEOUT = $SOC_APB_TIMEOUT;"
 SOC_REQ_REG=${SOC_REQ_REG:-0}
 if [ "$SOC_REQ_REG" != 0 ]; then
   DEFPARAMS="$DEFPARAMS
@@ -345,6 +349,13 @@ fi
   "$SOC_DIR/rtl/soc_apb_pnp.v" \
   "$SOC_DIR/rtl/soc_uart.v" \
   "$SOC_DIR/rtl/soc_gpio.v" \
+  "$SOC_DIR/rtl/soc_spw.v" \
+  "$SOC_DIR/rtl/soc_i2c.v" \
+  "$SOC_DIR/rtl/soc_spi.v" \
+  "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_eth.v" \
+  "$SOC_DIR/rtl/soc_apb_wb.v" \
+  "$SOC_DIR/gen/interfaces.bundle.vh" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/tb/flash_w25q128jv.v" \
   "$SOC_DIR/rtl/soc_clint.v" \

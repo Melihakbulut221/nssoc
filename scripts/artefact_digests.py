@@ -1189,8 +1189,9 @@ HEADER = """\
 # Artefact digests. Written by scripts/artefact_digests.py; described by
 # docs/80-artefact-digests.md. DO NOT EDIT BY HAND.
 #
-# Every path below is git-ignored on purpose -- .gitignore lines 4, 40,
-# 74, 118 and 136. This file pins their IDENTITY so that the evidence
+# Historical run outputs are git-ignored. Since 2026-09-19 this also
+# pins tracked docs/evidence JSON records requested by external review F6.
+# This file pins their IDENTITY so that the evidence
 # behind docs/71, docs/74, docs/75, docs/77 and docs/79 cannot be
 # silently swapped. It does NOT make the artefacts available and it does
 # NOT establish that any of them is correct.
@@ -1203,6 +1204,7 @@ HEADER = """\
 #
 #   scripts/artefact_digests.py --check    re-verify. MISSING is not FAILED
 #   scripts/artefact_digests.py --write    rebuild on a machine that has the runs
+#   scripts/artefact_digests.py --write-evidence  update only tracked JSON records
 """
 
 
@@ -1248,6 +1250,15 @@ def fmt_metrics(d):
     return ";".join(f"{k}={v}" for k, v in d.items())
 
 
+def evidence_rows():
+    """Tracked evidence, independently hashable on a fresh clone."""
+    return [{"group": "docs-evidence", "cites": "docs/89;docs/90",
+             "role": "text", "path": p.relative_to(ROOT).as_posix(),
+             "bytes": str(p.stat().st_size), "sha256": sha256(p),
+             "metrics": fmt_metrics(m_text(p))}
+            for p in sorted((ROOT / "docs/evidence").rglob("*.json"))]
+
+
 def collect():
     """Walk the GROUPS table against the working tree. Returns rows."""
     rows = []
@@ -1271,7 +1282,7 @@ def collect():
                     "sha256": sha256(path),
                     "metrics": fmt_metrics(metrics),
                 })
-    return rows
+    return rows + evidence_rows()
 
 
 def read_manifest():
@@ -1452,6 +1463,8 @@ def main():
                          "(the default). MISSING is not FAILED.")
     ap.add_argument("--write", action="store_true",
                     help="rebuild the manifest from the working tree")
+    ap.add_argument("--write-evidence", action="store_true",
+                    help="update tracked evidence rows, preserving every historical run digest")
     ap.add_argument("--list", action="store_true",
                     help="print the groups, what they cite, and what is "
                          "on disk")
@@ -1462,8 +1475,14 @@ def main():
                     help="print only the problems and the summary")
     args = ap.parse_args()
 
-    if args.write and args.check:
-        ap.error("--write and --check are different questions; pick one")
+    if sum((args.write, args.write_evidence, args.check, args.list)) > 1:
+        ap.error("choose one operation")
+    if args.write_evidence:
+        old = [r for r in read_manifest() if r['group'] != 'docs-evidence']
+        records = evidence_rows()
+        write_manifest(old + records)
+        print(f"Pinned {len(records)} evidence files; preserved {len(old)} historical rows")
+        return 0
     if args.list:
         return do_list()
     if args.write:

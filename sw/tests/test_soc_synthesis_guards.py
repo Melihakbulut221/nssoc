@@ -881,7 +881,7 @@ def _busstat_nsrc():
     asking whether the three new counters had actually survived. The
     arithmetic below is what says they did.
     """
-    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*(\d+)",
+    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*APB_TIMEOUT_EN\s*\?\s*9\s*:\s*(\d+)",
                   BUSSTAT.read_text())
     assert m, "soc_busstat.v no longer declares NSRC"
     return int(m.group(1))
@@ -891,12 +891,14 @@ BUSSTAT_NSRC = _busstat_nsrc()
 
 
 @needs_yosys
-def test_the_fault_counters_survive_synthesis(workdir):
+@pytest.mark.parametrize("timeout_enabled", [0, 1])
+def test_the_fault_counters_survive_synthesis(workdir, timeout_enabled):
     """docs/44 section 6. An operator's only view of a corrected upset
     is these flip-flops; a mapper that deleted one would leave a block
     that still answers every APB read with a plausible number."""
     cnt_w = _busstat_cnt_w()
     script = ("read_verilog -I {} {};".format(SOC_RTL, BUSSTAT)
+              + " chparam -set APB_TIMEOUT_EN {} soc_busstat;".format(timeout_enabled)
               + " hierarchy -top soc_busstat;"
                 " synth -top soc_busstat -flatten;")
     lib = _sg13g2_liberty()
@@ -904,7 +906,8 @@ def test_the_fault_counters_survive_synthesis(workdir):
         script += " dfflibmap -liberty {0}; abc -liberty {0};".format(lib)
     script += " flatten; opt_clean;"
     census = _census(script, workdir)
-    expected = BUSSTAT_NSRC * cnt_w + BUSSTAT_NSRC + BUSSTAT_NSRC
+    nsrc = BUSSTAT_NSRC + timeout_enabled
+    expected = nsrc * (cnt_w + 2)
     assert census.total == expected, (
         "expected {} counters x {} bits + {} sticky + {} enable = {} "
         "flip-flops, found {}".format(
@@ -1850,7 +1853,7 @@ def test_every_flow_that_builds_soc_top_reads_every_module_it_instantiates():
 
     flows = {name: code(name)
              for name in ("syn_soc_top.sh", "pnr_soc_top.sh", "fi_core.sh",
-                          "sim_soc.sh")}
+                          "fi_npu.sh", "sim_soc.sh")}
     checked = []
     for mod in sorted(instantiated - substituted):
         if not ((SOC_RTL / f"{mod}.v").is_file()
@@ -1927,6 +1930,9 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
     if not genp.is_file():
         pytest.skip("hw/soc/genp/ibex_top.v is absent: run a SoC flow first")
 
+    interface_bundle = gen / "interfaces.bundle.vh"
+    if not interface_bundle.is_file():
+        pytest.skip("interface IP is absent: run make soc-interfaces-prepare")
     bb = Path(workdir) / "soc_mem_bb.v"
     real = _soc_mem_ports()
     decls = ",\n".join(
@@ -1954,7 +1960,9 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
         "soc_apb_bridge.v", "soc_uart.v", "soc_gpio.v", "soc_qspi.v", "soc_pnp.v",
         "soc_apb_pnp.v", "soc_clint.v", "soc_gptimer.v", "soc_wdog.v",
         "soc_busstat.v", "soc_scrub.v", "soc_boot.v", "soc_tmr_bank.v", "soc_npu.v",
-        "soc_npu_ser.v")]
+        "soc_npu_ser.v", "soc_spw.v", "soc_i2c.v", "soc_spi.v", "soc_can.v", "soc_eth.v",
+        "soc_apb_wb.v")]
+    soc.append(interface_bundle)
     # This list is a FIFTH copy of the four the flow-list guard below
     # checks, and docs/65 found it the way docs/57 found the other four:
     # soc_gpio.v was added to every flow and this test still failed,
@@ -2128,12 +2136,15 @@ def test_the_registered_request_phase_ships_off_and_is_forwarded():
         "{}".format(offenders))
 
     allowed = {"syn_soc_top.sh", "sim_soc.sh"}
+    # An explicit experimental profile is not a change to either default.
+    # docs/88 measures this profile's different cycle count separately.
+    profiles = {"implement_interfaces.sh"}
     setters = {f.name for f in sorted(SOC_FLOW.glob("*.sh"))
                if re.search(r"SOC_REQ_REG", f.read_text())}
-    assert setters <= allowed, (
+    assert setters <= allowed | profiles, (
         "a flow script this test does not know about carries the knob: "
         "{}. Add it here with the reason, or remove it.".format(
-            sorted(setters - allowed)))
+            sorted(setters - allowed - profiles)))
 
     # AND THE SCRIPTS THAT MAY CARRY IT MUST STILL DEFAULT IT OFF, which
     # is the half of this guard that was missing until 2026-09-16. The
@@ -3482,7 +3493,7 @@ APB_BRIDGE_FF_AT_DEFAULT = 93
 
 @needs_yosys
 def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
-    """APB_TIMEOUT = 0 is the shipping netlist, unchanged."""
+    """APB_TIMEOUT = 0 reproduces the historical disabled block census."""
     census = _census(_apb_script(), workdir)
     assert census.total == APB_BRIDGE_FF_AT_DEFAULT, (
         "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 0 and the "
@@ -3512,4 +3523,3 @@ def test_the_apb_timeout_does_cost_something_when_it_is_on(workdir):
         "flag are not being built, so the parameter is inert and the "
         "timeout it is supposed to arm does not exist."
         .format(on.total, APB_BRIDGE_FF_AT_DEFAULT))
-

@@ -38,7 +38,9 @@ case (word_addr)
   10'h01B: apb_pnp_data = 32'h1800FF01;
   10'h01C: apb_pnp_data = 32'h09013038;
   10'h01D: apb_pnp_data = 32'h1900FF01;
-  10'h01E: apb_pnp_data = 32'h09000020;
-  10'h01F: apb_pnp_data = 32'hFF00FF01;
+  10'h01E: apb_pnp_data = 32'h09E01039;
+  10'h01F: apb_pnp_data = 32'h1A00FF01;
+  10'h020: apb_pnp_data = 32'h09000020;
+  10'h021: apb_pnp_data = 32'hFF00FF01;
   default: apb_pnp_data = 32'h0000_0000;
 endcase

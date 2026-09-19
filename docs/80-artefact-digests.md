@@ -953,3 +953,15 @@ retained report of the earlier single-macro experiment it returns
 directories and is not in this manifest. It is the one number in section
 8's four-part argument for the deck that has no pinned artefact behind
 it.
+
+## 14. Committed evidence coverage (2026-09-19 correction)
+
+The manifest's original scope was ignored run outputs. External review F6
+explicitly also requested hashes for the committed `docs/evidence/` JSON files;
+the earlier test comment that said otherwise was incorrect. The manifest now
+includes those records under `docs-evidence`. Run
+`python3 scripts/artefact_digests.py --write-evidence` to update that group while
+preserving every historical run row, including files absent on this machine.
+`sw/tests/test_artefact_digests.py` checks exact JSON coverage, size and SHA-256
+without a PDK or live run tree. As before, a digest establishes identity rather
+than correctness; missing DEF/netlist/GDS checks remain missing.

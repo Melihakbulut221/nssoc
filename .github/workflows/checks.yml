@@ -73,7 +73,7 @@ jobs:
           # imports yaml, and its absence is why the licence job failed
           # eight times on 09-08 and 09-09 with ModuleNotFoundError. Not
           # a billing failure -- a real one, in this file.
-          python3 -m pip install --disable-pip-version-check pytest pyyaml
+          python3 -m pip install --disable-pip-version-check -r sw/requirements.txt
           sudo apt-get update -qq
           # texlive-science carries siunitx; texlive-latex-extra does not.
           # lmodern.sty is in `lmodern`, which texlive-base only Recommends
@@ -96,4 +96,100 @@ jobs:
           path: |
             paper/main.pdf
             _site
+          retention-days: 30
+
+  rtl:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the simulation dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends iverilog
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+      - name: Prepare pinned interface IP
+        run: make soc-interfaces-prepare
+      - name: Run every non-frozen RTL suite
+        run: scripts/run_cocotb.sh
+      - name: Retain simulator diagnostics, including failed runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rtl-results
+          path: |
+            hw/soc/out/cocotb/
+            hw/tb/results*.xml
+            hw/soc/tb/cocotb/results*.xml
+            tt/test/results.xml
+          retention-days: 30
+
+  formal-and-boot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare the pinned processor and firmware tools
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m venv .venv
+          .venv/bin/pip install -r sw/requirements.txt
+          make soc-prepare
+      - name: Real-codec contract, counterexamples and upstream equivalence
+        run: make rf-contract rf-equivalence
+      - name: CPU interface and interrupt regression
+        run: make soc-interfaces-sim
+      - name: CPU Gigabit Ethernet packet and interrupt regression
+        run: |
+          SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+            SW_DEFINES=-DETHERNET_DEMO \
+            bash hw/soc/flow/sim_soc.sh hw/soc/out/ethernet-demo
+      - name: APB timeout, retained telemetry and NPU reset proofs
+        run: make -C hw/soc/formal busstat apb npu
+      - name: Whole-SoC stalled peripheral and crash recovery
+        run: |
+          SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+            SW_DEFINES=-DAPB_TIMEOUT_DEMO SOC_VVP_ARGS=+apb_timeout_demo \
+            bash hw/soc/flow/sim_soc.sh hw/soc/out/apb-timeout-demo
+          SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+            SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault \
+            bash hw/soc/flow/sim_soc.sh hw/soc/out/crash-demo
+      - name: Boot geometry proof and counterexamples
+        run: |
+          curl -fLsS --retry 3 -o hw/soc/tools/cbmc.deb https://github.com/diffblue/cbmc/releases/download/cbmc-6.11.0/ubuntu-22.04-cbmc-6.11.0-Linux.deb
+          echo 'de9fa1cc4cf51c493e708a1c7608b192ad4956717b684d9c4501e22fd22d88a0  hw/soc/tools/cbmc.deb' | sha256sum -c -
+          dpkg-deb -x hw/soc/tools/cbmc.deb hw/soc/tools/cbmc
+          make boot-proof
+      - name: Whole-SoC normal boot and geometry fallback
+        run: make soc-boot-regression
+      - name: Retain formal and boot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-and-boot-results
+          path: |
+            hw/soc/formal/regfile_contract_*/logfile.txt
+            hw/soc/formal/regfile_contract_*/status
+            hw/soc/formal/regfile_equivalence_*/logfile.txt
+            hw/soc/formal/regfile_equivalence_*/status
+            hw/soc/out/regfile-contract-checks/
+            hw/soc/out/boot-geometry/
+            hw/soc/out/apb-timeout-demo/sim.log
+            hw/soc/out/crash-demo/sim.log
+            hw/soc/out/ethernet-demo/sim.log
+            hw/soc/formal/soc_busstat_*/status
+            hw/soc/formal/soc_apb_bridge_*/status
+            hw/soc/formal/soc_npu_*/status
+            hw/soc/out/boot-regression/**/*.log
           retention-days: 30

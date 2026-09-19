@@ -1,0 +1,133 @@
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+# Yeniden başlatma kontrol noktası — 19 Eylül 2026
+
+Kullanıcı bilgisayarı kapatmak için çalışmayı durdurmamı istedi. Yerel fiziksel
+akışın süreç ağacı (191882, 191884, 193127, 203234) SIGTERM ile durduruldu.
+Yeni mühendislik çalışması başlatılmadı. Bu dosyayı okuyarak devam edin.
+
+- Çalışma dizini: `/home/hasanmelih/Documents/ChatGPT/nnsoc`
+- Dal: `codex/complete-open-work`
+- Kontrol noktası öncesi kaynak HEAD: `882a4e0d68974deea41044dda6eca6e845826427`
+- GitHub: https://github.com/Melihakbulut221/nssoc
+- Taslak PR: https://github.com/Melihakbulut221/nssoc/pull/1
+- İnceleme girdisi: `/home/hasanmelih/Downloads/nssoc-external-review.md`
+- Kullanıcı kapsamı: açık işleri tamamla, değişiklikleri GitHub'a gönder;
+  SpaceWire, I2C, Gigabit Ethernet ve GR801 benzeri PCIe Gen3 x4 hedefini takip et.
+- `hw/rtl`, `hw/tb`, `hw/openlane`, `tt` donmuş kaynaklarını değiştirmeyin.
+
+## Tam durma noktası ve fiziksel akışı sürdürme
+
+Aktif aday: `hw/soc/pnr/runs/interfaces-eth256-20260919`.
+**29-openroad-resizertimingpostcts tamamlandı** ve `state_out.json`, ODB, DEF,
+netlist ve SDC yazıldı. **30-openroad-stamidpnr-2 başladı ama tamamlanmadı**;
+`state_out.json` yok. Sentez, yerleştirme, CTS ve aşama 29 tekrar gerekmiyor.
+Yarım kalan analiz aşaması baştan çalıştırılacak; optimizer belleği saklanmıyor.
+
+Önce yerel dosyaların korunmuş olduğunu doğrulayın:
+
+```bash
+cd /home/hasanmelih/Documents/ChatGPT/nnsoc
+git status --short
+sha256sum -c checkpoints/20260919-shutdown/local-artifacts.sha256
+```
+
+Ardından yeni, benzersiz etiket ile aşama 30'un girdisini kullanın:
+
+```bash
+resume_tag="interfaces-eth256-resume-$(date -u +%Y%m%d-%H%M%S)"
+SOC_INTERFACE_FLOW=1 \
+PNR_CONFIG="$PWD/hw/soc/pnr/config-interfaces-synpre.json" \
+SYN_NETLIST="$PWD/hw/soc/out/interfaces-eth256-20260919/soc_top.netlist.v" \
+PNR_STATE="$PWD/hw/soc/pnr/state/${resume_tag}.json" \
+  bash hw/soc/flow/pnr_soc_top.sh "$resume_tag" \
+    -F OpenROAD.STAMidPNR-2 \
+    -i "$PWD/hw/soc/pnr/runs/interfaces-eth256-20260919/30-openroad-stamidpnr-2/state_in.json" \
+    > "hw/soc/out/external-review-20260919/${resume_tag}.log" 2>&1
+```
+
+Bu komut kontrol noktası kaydedilirken çalıştırılmadı. LibreLane 3.0.5 yinelenen
+adımları `-1`, `-2` ile adlandırır; hedef stage 30'dur. Eski run'ı ezmeyin.
+Ana log: `hw/soc/out/interfaces-eth256-20260919/layout.log`.
+Sürücü logu: `hw/soc/out/external-review-20260919/eth256-implementation-driver.log`.
+
+**Büyük run dosyaları, sanal ortamlar ve test çıktıları gitignore kapsamındadır;
+yalnızca bu bilgisayarın diskindedir.** GitHub kontrol noktası bunları yedeklemez.
+Disk temizliği yapmayın. Hash listesi devam için gereken yerel çıktıları işaretler.
+
+## Son tamamlanan doğrulamalar
+
+Durdurma öncesinde temiz klon testi de kendiliğinden tamamlandı:
+
+- Klon: `hw/soc/out/external-review-20260919/fresh-clone-sram256-fixed`
+- Klon HEAD: `882a4e0d68974deea41044dda6eca6e845826427`
+- `scripts/ci_local.sh all --record`: **16 passed, 0 failed, 7 skipped**,
+  kayıt `2026-09-19T17:15Z`, `tree-dirty=0,pandoc=no,tex=tectonic`.
+- Tam pytest XML: 645 toplam, **611 passed, 34 skipped**, 0 hata/başarısız,
+  191.298 saniye. XML: `hw/soc/out/external-review-20260919/fresh-clone-sram256-fixed-pytest.xml`.
+- Log: `hw/soc/out/external-review-20260919/fresh-clone-sram256-fixed-ci.log`.
+- Bu başarı henüz kök `ci-local-log.tsv`, `docs/evidence/verification-20260919.json`
+  ve ilgili dokümanlara aktarılmadı. Devamda gerçek kayıt ve hashlerle aktarın;
+  yalnızca gerekli değişikliklerden sonra tekrar test edin.
+
+Önceki tamamlanan doğrulamalar: 479 RTL başarılı/15 atlanan; yeni 256x16
+Ethernet SRAM eşlemesinde 6 native gate paket testi başarılı; 4 tam SoC
+netlist koruma testi başarılı; 135 ilgili kanıt/doküman testi başarılı;
+son guard düzeltmesi sonrası 115 ilgili test başarılı. Kaynak ve test kapsamı
+`docs/89-external-review-follow-up.md`, `docs/90-gigabit-ethernet.md` ve
+`docs/evidence/verification-20260919.json` içinde ayrılmıştır.
+
+## Mevcut tasarım ve tamamlanmamış işler
+
+Ethernet 125 MHz GMII MAC, CRC, pad, IFG ve 2 KiB TX/RX asenkron FIFO içerir.
+CPU döngü testi 159269 çevrimde geçti. Eski 4 adet 1024x16 SRAM'ın slow TX
+zamanlaması yetersizdi. Artık **16 adet 256x16 Ethernet SRAM + 8 ECC SRAM =
+24 makro**, die 3326.4 x 2475.9 um. Tam sentez 65667 hücre, 9352 FF, 3 ICG;
+standart hücre alanı 1045780.5456 um² (makrolar hariç).
+Standalone slow TX setup -0.434501 ns'den +1.520293 ns'ye düzeldi; bu fiziksel
+signoff değildir. Yerleştirme sonrası tüm corner/setup/hold sonuçları bekleniyor.
+
+- Yeni 24 makrolu akışın routing/extraction/GDS aşamalarını bitirin.
+- LibreLane 3.0.5 `STAMidPNR` yalnız ilk corner'ı raporlar. `state_out.json`
+  içindeki miras kalan corner metriklerini yeni ölçüm sanmayın. Son STAPostPNR
+  üç corner'ı ayrı çalıştırır. Resizer üç PNR corner'ını kullanır.
+- `verify_interfaces_layout.sh` ile tamamlanmış state üzerinden bağımsız
+  Magic/KLayout/XOR/LVS kontrollerini çalıştırın. Gerçek failure'ları saklayın.
+- `layout_overview.py` kontrol noktasında korunmuş küçük, henüz görsel olarak
+  doğrulanmamış değişiklik içerir: 24 makroluk lejand için dinamik iki sütun,
+  yeterli sayfa yüksekliği, kısa Ethernet bank etiketleri. Son DEF ile render
+  edip görsel doğrulayın. Durdurma isteği sırasında bu kod değiştirilmedi.
+- Temiz klonun yeni başarılı sonuçlarını kanıt dosyalarına ekleyip
+  `docs/80-artefact-digests.tsv` manifestini güncelleyin.
+- Yeni fiziksel sonuçları kaynak hashleriyle kaydedin, PR açıklamasını düzeltin,
+  commit/push ve GitHub CI durumunu doğrulayın. Kontrol noktası commit'i için
+  CI sonucu beklenmedi; buluttaki CI bilgisayar kapalıyken devam edebilir.
+- F6: 34 skip halen var; eksik tarihsel netlist/DEF/raporlar gerçek tool
+  eksikliği değildir. Sırf sayı azaltmak için PASS'a çevirmeyin.
+- QSPI gerçek I/O constraint'leri mevcut, native extracted hold/setup
+  sorunları açık. Flash/board/pad karakterizasyonu ve gerçek çözüm gerekir;
+  yeşil sonuç için kısıtları gevşetmeyin.
+- PCIe araştırması `docs/91-pcie-gen3-feasibility.md` içinde tamamlandı.
+  Erişilebilir SG13G2 Gen3 x4 controller+PHY bulunamadı. Ticari IP/uygun
+  process veya farklı FPGA köprü mimarisi gerekiyor. PIPE/boş blackbox
+  PCIe implementasyonu değildir; PCIe RTL/layout tamamlandı demeyin.
+
+Eski 8 makrolu `interfaces-export2-20260919` GDS'si mevcut ancak güncel RTL'yi
+kanıtlamaz. Router DRC/XOR/antenna/disconnected 0; KLayout/Magic ve timing
+başarısızlıkları saklanmıştır; LVS makro pinleri/standart hücre kapsamındadır.
+Eski 12 makrolu `interfaces-eth-pnr2-20260919` adayının çalışması daha önce
+iptal edildi; onu sürdürmeyin. Ayrıntılar docs/88, 89, 90 ve kanıtlardadır.
+`publish_record.py`/`collect_final.py` gibi eski yardımcıları körlemesine
+çalıştırmayın: zenginleştirilmiş kanıt kayıtlarını ezebilirler.
+
+## Araçlar
+
+- PDK `~/.ciel/ihp-sg13g2`, pin `c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c`.
+- LibreLane 3.0.5: `/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow`.
+- OpenROAD shims: `~/.local/opt/llbin`; OpenROAD 26Q1-2938-g0e2d771c5e.
+- Pytest: repo `.venv/bin/python`; cocotb PATH: repo `hw/.venv/bin`.
+- Native Icarus 13: `~/.local/opt/iverilog13/usr/bin`.
+- Yosys .33: `~/.local/bin/yosys`; formal OSS araçları:
+  `/home/hasanmelih/Documents/gt2n-soc/tools/oss-cad-suite`.
+- Komut/path sözleşmeleri: `tools.soc.mk printvars`.
+

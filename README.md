@@ -8,6 +8,27 @@ neuromorphic inference engine, on-chip SRAM, and a set of spacecraft
 interfaces — retargeted from STM 28 nm FDSOI to a 130 nm node at a scale
 that is realistic for an open PDK and a small team.
 
+## Reproduce the current checks
+
+Start with `make help`. On Linux with Python 3.9–3.13 and Icarus Verilog:
+
+```sh
+make setup PYTHON=/usr/bin/python3
+make test
+make rtl-test
+make check
+```
+
+For the whole-SoC boot simulation, run `make soc-prepare` and then
+`make soc-sim OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite`.
+The additional real-codec proofs are `make rf-contract` and
+`make rf-equivalence` with the same toolchain setting. The boot range
+proof is `make boot-proof CBMC=/absolute/path/to/cbmc`.
+
+The 2026-09-19 changes, measured results, tool versions and remaining work
+are recorded in [the engineering closure record](docs/87-engineering-closure.md).
+The physical and radiation qualification limits described below still apply.
+
 ## Reference architecture (GR801, public brief)
 
 | Block | GR801 (28 nm FDSOI) | This project (130 nm, targets under study) |
@@ -16,7 +37,7 @@ that is realistic for an open PDK and a small team.
 | AI engine | Akida 1.0, 8 nodes x 4 engines, 1/2/4-bit weights | Event-driven SNN fabric, sizing in research phase |
 | On-chip RAM | 8 MB shared + 3.2 MB Akida-private | Hundreds of kB class, ECC-protected |
 | External memory | QSPI controller, 2 chip selects | QSPI controller |
-| Interfaces | PCIe Gen3 x4, SpaceWire router 4x, GbE, CAN FD 2x, SPI, 2x I2C, 3x UART, CPI, 16 GPIO | Subset: SpaceWire codec, CAN, SPI, I2C, UART, GPIO, optional 8-bit CPI; PCIe/GbE out of scope |
+| Interfaces | PCIe Gen3 x4, SpaceWire router 4x, GbE, CAN FD 2x, SPI, 2x I2C, 3x UART, CPI, 16 GPIO | Subset: SpaceWire codec, CAN, SPI, I2C, UART, GPIO, optional 8-bit CPI, Gigabit GMII PIO MAC; PCIe and external PHYs pending |
 | Hardening | ECC on CPU/memories, fault detection on Akida memories | Layered: control TMR, memory ECC + scrub, fault counters |
 
 ## Status
@@ -324,8 +345,20 @@ proved and driven through the pins by the bring-up program
 (`docs/65-gpio-and-the-interface-ip-assessment.md`); and a
 register-mode QSPI flash controller with two chip selects that feeds
 the NPU its weight image from a modelled flash
-(`docs/66-qspi-flash-controller.md`). SpaceWire, CAN, SPI and I2C are
-fetched, pinned and priced in `docs/65` and still not built. No radiation
+(`docs/66-qspi-flash-controller.md`). SpaceWire, CAN, SPI and I2C now have RTL, APB, pin and interrupt integration
+(`docs/88-interface-integration.md`), with pin-level protocol regressions and
+a routed eight-macro GDS. **2026-09-19: the new layout has zero router DRC,
+antenna, disconnected-pin and GDS XOR errors, but fails extracted 50 MHz
+timing** (setup −5.774 ns, hold −0.254 ns at their worst corners).
+Independent DRC also fails: Magic reports 219 boxes and KLayout reports
+11,048 vendor SRAM-cell markers. Standard-cell/macro-pin LVS matches uniquely;
+SRAM interiors remain black-boxed in that comparison.
+SpaceWire uses PIO; ~~PCI/PCIe, Ethernet and external PHYs are not implemented.~~
+**2026-09-19 correction:** Gigabit GMII Ethernet now has RTL, CPU packet/IRQ tests
+and native SRAM gate-level verification (`docs/90-gigabit-ethernet.md`). The
+eight-macro layout results above predate Ethernet. PCIe and external PHYs remain
+unimplemented; `docs/91-pcie-gen3-feasibility.md` records the researched IP options
+and missing SG13G2 deliverables. No radiation
 test data. ~~No gate-level result for anything under `hw/soc/`.~~
 **-- corrected 2026-09-14:** `docs/74` is a gate-level fault-injection
 campaign on `soc_top`'s own sign-off netlist

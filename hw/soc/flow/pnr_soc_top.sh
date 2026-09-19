@@ -97,7 +97,7 @@ PNR=$SOC_DIR/pnr
 # puts its run directories in <that directory>/runs/<tag>, so the
 # resolved config has to sit beside config.json for the pdk_dir:: and
 # dir:: paths in it to mean what they say. hw/soc/pnr/runs/ and
-# hw/soc/pnr/config.resolved.json are gitignored; nothing generated is
+# hw/soc/pnr/config.resolved*.json are gitignored; nothing generated is
 # ever committed, by the rule docs/38 section 11 already applies.
 RUN_DIR=$PNR/runs
 
@@ -166,7 +166,8 @@ done
 SRCS=$(
   echo "$RTL/prim_clock_gating.v"
   ibex_sources "$SOC_DIR"
-  for f in soc_bus soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
+  echo "$SOC_DIR/gen/interfaces.bundle.vh"
+  for f in soc_eth soc_spw soc_i2c soc_spi soc_can soc_apb_wb soc_bus soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
            soc_clint soc_gptimer soc_wdog soc_busstat soc_scrub soc_boot \
            soc_mem_ecc soc_tmr_bank; do
     echo "$RTL/$f.v"
@@ -219,7 +220,10 @@ case "$PNR_CONFIG" in
 esac
 [ -f "$PNR_CONFIG" ] || { echo "no such config: $PNR_CONFIG" >&2; exit 1; }
 
-RESOLVED=$PNR/config.resolved.json
+# Concurrent variants must never rewrite a config that another LibreLane
+# invocation is about to read. Keep the unique snapshot beside config.json
+# so that all dir:: paths retain their original meaning.
+RESOLVED=$(mktemp "$PNR/config.resolved.XXXXXXXX.json")
 "$VENV/bin/python" - "$PNR_CONFIG" "$RESOLVED" <<PY
 import json, sys
 src, dst = sys.argv[1], sys.argv[2]
@@ -284,6 +288,10 @@ echo "sources:   $(echo "$SRCS" | wc -l) verilog files"
 echo "pdk:       $PDK @ $PIN"
 echo "librelane: $("$VENV/bin/librelane" --version 2>/dev/null | head -1)"
 
-exec librelane --pdk "$PDK" --scl "$SCL" \
+LANE=(librelane)
+if [ "${SOC_INTERFACE_FLOW:-0}" = 1 ]; then
+  LANE=("$VENV/bin/python" "$PNR/interface_flow.py" --flow Interfaces)
+fi
+exec "${LANE[@]}" --pdk "$PDK" --scl "$SCL" \
      --run-tag "$RUN_TAG" \
      ${@+"$@"} "$RESOLVED"

@@ -227,6 +227,10 @@ fi
 # the netlist docs/84 section 5 runs hw/soc/pnr/logic_depth.py on, and
 # it is the only knob in this script whose purpose is the DEPTH of the
 # netlist rather than its area or its power. Defaults to the design, 0.
+SOC_APB_TIMEOUT=${SOC_APB_TIMEOUT:-256}
+case "$SOC_APB_TIMEOUT" in ''|*[!0-9]*) echo 'SOC_APB_TIMEOUT must be a nonnegative integer' >&2; exit 2;; esac
+TOP_CHPARAM="$TOP_CHPARAM
+chparam -set APB_TIMEOUT $SOC_APB_TIMEOUT soc_top"
 SOC_REQ_REG=${SOC_REQ_REG:-0}
 if [ "$SOC_REQ_REG" != 0 ]; then
   TOP_CHPARAM="$TOP_CHPARAM
@@ -249,7 +253,7 @@ rm -rf "$OUT"; mkdir -p "$OUT"
 IBEX_SRCS=$(ibex_sources "$SOC_DIR" | tr '\n' ' ')
 
 SOC_SRCS="$RTL/soc_bus.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
-$RTL/soc_gpio.v $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
+$RTL/soc_gpio.v $RTL/soc_spw.v $RTL/soc_i2c.v $RTL/soc_spi.v $RTL/soc_can.v $RTL/soc_eth.v $RTL/soc_apb_wb.v $SOC_DIR/gen/interfaces.bundle.vh $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
 $RTL/soc_gptimer.v \
 $RTL/soc_wdog.v $RTL/soc_busstat.v $RTL/soc_scrub.v $RTL/soc_boot.v \
 $RTL/soc_tmr_bank.v \
@@ -561,8 +565,24 @@ set_driving_cell sg13g2_buf_4
 set_load 0.005
 EOF
 
+ETH_LIB_READ="# Ethernet FIFO maps to standard cells in the legacy profile"
+SYNTH_COMMAND="synth -flatten -top soc_top"
+if [ "${SOC_ETH_SRAM:-0}" = 1 ]; then
+  [ "${SOC_KEEP_HIER:-0}" = 0 ] || { echo 'SOC_ETH_SRAM requires SOC_KEEP_HIER=0' >&2; exit 2; }
+  ETH_LIB="$SG13G2_SRAM_DIR/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib"
+  [ -f "$ETH_LIB" ] || { echo "missing $ETH_LIB" >&2; exit 2; }
+  ETH_LIB_READ="read_liberty -lib $ETH_LIB"
+  SYNTH_COMMAND="synth -flatten -top soc_top -run begin:fine
+select -assert-count 2 soc_top/u_eth.u_mac.*.mem
+memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib soc_top/u_eth.u_mac.*.mem
+techmap -map $SOC_DIR/techmap/eth_ram_map.v
+synth -top soc_top -run fine
+select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
+fi
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
+$ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
 read_verilog -defer $IBEX_SRCS
@@ -589,7 +609,7 @@ setattr -mod -set keep_hierarchy 1 *prim_generic_flop*
 $MEM_ANCHOR
 $KEEP_HIER_SET
 
-synth -flatten -top soc_top
+$SYNTH_COMMAND
 opt -purge
 
 write_verilog $OUT/soc_top.pre_map.v
@@ -643,7 +663,9 @@ fi
 
 awk -v top=soc_top -v ge=7.2576 '
   $NF == "cells"                      { cells = $1 }
+  /Number of cells:/                  { cells = $NF }
   $NF ~ /^sg13g2_(s?df|dl[hl])/       { ff += $1 }
+  $1 ~ /^sg13g2_(s?df|dl[hl])/       { ff += $NF }
   /Chip area for module/              { gsub(/[^0-9.]/, "", $NF); area = $NF + 0 }
   END {
     printf "%-22s cells=%-6d flops=%-6d area_um2=%.4f  kGE=%.3f\n",

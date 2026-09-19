@@ -75,16 +75,17 @@ interrupt controller and the drivers cannot disagree
 | `0xFF902000` | `0x002` | GPIO | 4 | 2 | implemented | GRGPIO-style general purpose I/O, 16 pins |
 | `0xFF908000` | `0x008` | TIMER0 | 8 | 3 | implemented | GPTIMER, last timer is the watchdog and is armed at reset |
 | `0xFF909000` | `0x009` | TIMER1 | 12 | 4 | reserved | Second GPTIMER |
-| `0xFF90D000` | `0x00D` | SPW | 16 | 5 | reserved | SpaceWire codec, GRSPW2-shaped registers, one DMA channel |
-| `0xFF911000` | `0x011` | CAN | 18 | 6 | reserved | CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD |
-| `0xFF912000` | `0x012` | SPI | 19 | 7 | reserved | SPICTRL-shaped SPI master |
-| `0xFF913000` | `0x013` | I2C | 20 | 8 | reserved | I2CMST, the OpenCores I2C master register map |
+| `0xFF90D000` | `0x00D` | SPW | 16 | 5 | implemented | SpaceWire Light PIO codec, 64-entry RX and 16-entry TX, project registers; docs/88 |
+| `0xFF911000` | `0x011` | CAN | 18 | 6 | implemented | CAN 2.0B, SJA1000-shaped; documented divergence from GRCANFD |
+| `0xFF912000` | `0x012` | SPI | 19 | 7 | implemented | SPI master, modes 0..3, two chip selects, project register map; docs/88 |
+| `0xFF913000` | `0x013` | I2C | 20 | 8 | implemented | I2C master, single command with timeout, project register map; docs/88 |
 | `0xFF914000` | `0x014` | QSPICTL | 21 | 9 | implemented | QSPI flash controller, register mode, two chip selects; docs/66 |
-| `0xFF915000` | `0x015` | BUSSTAT | 22 | 10 | implemented | Fault counters and sticky status for the register file codec and the watchdog voter; AHBSTAT in spirit, not in name |
+| `0xFF915000` | `0x015` | BUSSTAT | 22 | 10 | implemented | Fault counters for the register file, watchdog, NPU and mtime; CNT_APBTO at 0x02C records APB timeouts across system reset, source bit 9 in STATUS/IRQEN/CLR leaves IRQ status bit 8 unchanged; docs/89 |
 | `0xFF916000` | `0x016` | SCRUB | 23 | 11 | implemented | Memory codec counters, scrubber control and the last uncorrectable address, MEMSCRUB-like; docs/67 |
 | `0xFF917000` | `0x017` | BOOTREG | - | - | implemented | Bootstrap pin readback, the hardware boot counter, the boot report and epoch words that survive a reset, and CRASH at 0x010 -- the faulting PC of the first double fault since power-on, kept in the same power-on domain so it is readable after the watchdog reset the fault causes; GRGPREG-like; docs/68 |
 | `0xFF918000` | `0x018` | CLKGATE | - | - | reserved | Clock gate enable and status for NPU nodes and heavy peripherals |
 | `0xFF919000` | `0x019` | NPUCFG | 24 | 12 | implemented | NPU fabric-level global configuration and status, and the AER event port; docs/51 |
+| `0xFF91A000` | `0x01A` | ETH | 25 | 13 | implemented | Gigabit full-duplex GMII MAC, packet PIO FIFOs and software MDIO; project register map, not GRETH; docs/90 |
 | `0xFF9FF000` | `0x0FF` | APBPNP | - | - | implemented | Peripheral bus device table, two words per slot |
 
 ## 3a. Interrupts
@@ -94,7 +95,7 @@ plug-and-play source number carried in the identification word and
 is what a platform interrupt controller would key on. **Line** is
 the index of the Ibex fast local interrupt input the source is
 physically wired to. Ibex gives each fast line a dedicated vector
-and a fixed priority, so no controller is needed for the 13
+and a fixed priority, so no controller is needed for the 14
 sources this map defines.
 
 `mcause` is the value software reads in the handler; `vector` is
@@ -117,6 +118,7 @@ Ibex's, not this project's: a fast line *n* is interrupt ID
 | BUSSTAT | 22 | 10 | `0x8000001A` | `mtvec+0x68` |
 | SCRUB | 23 | 11 | `0x8000001B` | `mtvec+0x6C` |
 | NPUCFG | 24 | 12 | `0x8000001C` | `mtvec+0x70` |
+| ETH | 25 | 13 | `0x8000001D` | `mtvec+0x74` |
 
 Core inputs that are not per-peripheral:
 
@@ -127,7 +129,7 @@ Core inputs that are not per-peripheral:
 | MEXT | 11 | `0x8000000B` | `mtvec+0x2C` | unconnected; reserved for a PLIC |
 | NMI | 31 | `0x8000001F` | `mtvec+0x7C` | watchdog stage 1 |
 
-**2 of Ibex's 15 fast lines are unassigned** (13, 14). That number is the headroom the
+**1 of Ibex's 15 fast lines are unassigned** (14). That number is the headroom the
 platform-interrupt-controller decision is measured against:
 `docs/40-interrupts-timers-watchdog.md` section 3 argues that a PLIC
 buys nothing until it reaches zero, and the generator refuses a
