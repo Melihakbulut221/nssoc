@@ -26,7 +26,8 @@ def main():
     scale = 860 / (x1-x0)
     top, left = 130, 60
     height = (y1-y0)*scale
-    page_height = height + top + 180
+    legend_rows = math.ceil(len(e['macros']) / 2)
+    page_height = height + top + max(180, 80 + legend_rows * 20)
     def x(v):
         return left+(v-x0)*scale
     def y(v):
@@ -57,8 +58,10 @@ def main():
     svg.append(text(60, footer, 'Teal: logic-cell density (20 µm bins). Gold: LEF macro footprints.', 14))
     svg.append(text(60, footer+23, 'Placement view only; routing is hidden. This image is not physical signoff.', 14))
     for i, m in enumerate(e['macros'], 1):
-        column, row = (i-1)//4, (i-1)%4
+        column, row = (i-1)//legend_rows, (i-1)%legend_rows
         label = m['instance'].replace('u_ram.g_ram_2048x64_ecc.', 'RAM ').replace('u_rom.g_rom_1024x32_ecc.', 'ROM ')
+        label = label.replace('u_eth.u_mac.rx_fifo.fifo_inst.mem.0.', 'ETH RX bank ')
+        label = label.replace('u_eth.u_mac.tx_fifo.fifo_inst.mem.0.', 'ETH TX bank ')
         svg.append(text(60+column*430, footer+50+row*20, f'{i}. {label}', 13))
     svg.append('</svg>')
     checks = [(name.replace('six rectangles', 'macro rectangles'), ok, detail)
