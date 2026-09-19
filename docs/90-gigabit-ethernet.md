@@ -264,3 +264,24 @@ XOR and scoped LVS are running separately. Exact source artifacts and the
 unmodified native measurements are pinned in the
 [extracted layout record](evidence/ethernet-extracted-layout-20260920.json).
 This candidate remains a failing physical implementation.
+
+![Measured placement of the 24 SRAM macro candidate](img/interfaces-ethernet-layout.png)
+
+The [vector placement view](img/interfaces-ethernet-layout.svg) is generated
+from this run's actual final DEF and metrics; all 18 geometry/metric checks
+pass. It shows macro footprints and logic density, with routing hidden.
+It is a view of the failing candidate above, not a clean-layout claim.
+
+### Antenna repair follow-up, 2026-09-20
+
+The separate `eth256-antfix-20260919` candidate raised the permitted antenna
+repair iterations to eight without changing antenna thresholds. Three further
+iterations reduced violating nets **3 → 2 → 1 → 0**, inserting **six diodes**;
+the final detailed-router DRC count is **zero**. The subsequent independent
+checker was interrupted by SIGTERM, so it was replayed against the saved route
+as `eth256-antcheck-20260920`: **zero violating nets and pins**, flow complete.
+The [record](evidence/ethernet-antenna-repair-20260920.json) binds the command,
+metrics and output hashes. This closes that candidate's antenna check only.
+The original extracted timing/GDS above, the ongoing independent decks, and
+the later timing ECO are distinct artifacts; their results cannot be mixed
+into a passing final candidate.

@@ -1,5 +1,37 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+# Aktif devam noktası — 20 Eylül 2026
+
+Kullanıcı yeniden devam edilmesini istedi; aşağıdaki 19 Eylül durdurma kaydı
+tarihseldir. Çalışma devam ediyor; eski durdurma talimatını yeniden uygulamayın.
+
+- Dal: `codex/complete-open-work`; son kaynak düzeltmesi `c02aa79`.
+- Bütün inceleme ve ürün kapıları: `docs/92-product-acceptance.md`.
+- Tam 24 makrolu aday `interfaces-eth256-resume-20260919-184950` GDS
+  üretti fakat setup/hold/slew/cap nedeniyle FAIL. Üç köşeli çıkarılmış
+  ölçüm `docs/evidence/ethernet-extracted-layout-20260920.json` içinde.
+- Aynı adayın bağımsız deck koşusu `eth256-decks-20260919`: stream XOR 0;
+  Magic DRC çalışıyor. Log `hw/soc/out/external-review-20260919/eth256-decks-20260919.log`.
+- Ayrı `eth256-antfix-20260919` adayı altı diyotla anteni sıfırladı;
+  `eth256-antcheck-20260920` bağımsız kontrolü tamamlandı ve 0 net/0 pin.
+- Zamanlama ECO deneyi `hw/soc/out/external-review-20260919/timing-eco2`: 130
+  eşdeğer hücre değişimi, 25 sinyal tamponu; RTL/SDC değişmedi. Tüm regular
+  sinyal rotaları silinip global route yeniden hesaplanıyor; güç special
+  wire korunuyor. `timing-eco1` yalnızca 25 yeni hattı hesapladığından
+  zamanlama tahmini REDDEDİLDİ, bu rapordaki pozitif setup kapanış değildir.
+- ECO için fiziksel yerleştirme/yönlendirme, bağlantı eşdeğerliği, ayrıntılı
+  route, RCX ve ayrı süreçlerde üç STA köşesi tamamlanmadan kabul etmeyin.
+- GitHub c02 koşuları: 35469632101 ve 35469634120. checks/rtl geçti;
+  formal-and-boot sürüyor. Çalışan job durumunu canlı sorgulayın.
+- PCIe Gen3 x4 uyumlu fiziksel IP hâlâ yok; `docs/91` araştırması açık.
+  Eski F6 `signoff-6x2` ve `s70-rom0-syn` çıktıları da mevcut değil.
+- Yeni Ethernet yerleşim görseli `docs/img/interfaces-ethernet-layout.png`.
+- Sonraki adım: ECO ölçümünü değerlendir; uygun aday için native fiziksel
+  akışı benzersiz etiketle çalıştır. Deck sonuçlarını gerçek ihlalleriyle
+  kaydet; açık kapıları raporla, başarısızlıkları PASS yapma.
+
+---
+
 # Yeniden başlatma kontrol noktası — 19 Eylül 2026
 
 Kullanıcı bilgisayarı kapatmak için çalışmayı durdurmamı istedi. Yerel fiziksel

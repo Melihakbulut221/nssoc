@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-20",
+  "source_head": "c02aa7979477aa8cfcae84d2744abd0d01a04198",
+  "scope": "Antenna-repaired core candidate only. Independent native CheckAntennas passes. This is not the original 24-macro GDS being checked by the independent decks, nor the later timing ECO candidate. Timing, all independent decks and final matching streams must be rerun for any accepted replacement.",
+  "runs": {
+    "repair": "eth256-antfix-20260919",
+    "independent_check": "eth256-antcheck-20260920"
+  },
+  "commands": [
+    "SOC_INTERFACE_FLOW=1 PNR_CONFIG=\"$PWD/hw/soc/pnr/config-fpeth256-antfix-20260919.json\" SYN_NETLIST=\"$PWD/hw/soc/pnr/runs/eth256-antfix-20260919/01-openroad-detailedrouting/soc_top.nl.v\" PNR_STATE=\"$PWD/hw/soc/pnr/state/eth256-antcheck-20260920-seed.json\" bash hw/soc/flow/pnr_soc_top.sh eth256-antcheck-20260920 -F OpenROAD.CheckAntennas-1 -T OpenROAD.CheckAntennas-1 -i \"$PWD/hw/soc/pnr/runs/eth256-antfix-20260919/02-odb-removeroutingobstructions/state_out.json\""
+  ],
+  "repair_iteration_limit": 8,
+  "repair_violation_net_trajectory": [
+    3,
+    2,
+    1,
+    0
+  ],
+  "added_diodes": 6,
+  "router_drc_errors": 0,
+  "independent_check": {
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "flow__warnings__count": 0,
+    "flow__errors__count": 0,
+    "flow__warnings__type_count": 0
+  },
+  "interruption": "The first independent checker after completed routing received SIGTERM. Cause was not established; no PASS was inferred. Only the interrupted checker was rerun against the saved completed route, and that replay completed successfully.",
+  "artifacts": [
+    {
+      "path": "hw/soc/pnr/runs/eth256-antfix-20260919/01-openroad-detailedrouting/or_metrics_out.json",
+      "bytes": 4045,
+      "sha256": "f47ca15c0f5dbc54f284aff97cd6b08db8e855b32e73743c7edbc253721f1570"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-antfix-20260919/01-openroad-detailedrouting/soc_top.odb",
+      "bytes": 127367376,
+      "sha256": "b312a23c347d4f707f57bb0ee13a7c3498d1de6d5356b6130a2d04e5c399c876"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-antfix-20260919/01-openroad-detailedrouting/soc_top.nl.v",
+      "bytes": 10786551,
+      "sha256": "e1c87b5672fcd019fb5e53a8f01018bc1991d6a44a282d0cb9a3c61449cb0917"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-antfix-20260919/02-odb-removeroutingobstructions/state_out.json",
+      "bytes": 10816,
+      "sha256": "04aeaf8d4187cad00f426afae563ebbdb69685faeaf3c9830fda9efd1a7713db"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-antcheck-20260920/01-openroad-checkantennas-1/or_metrics_out.json",
+      "bytes": 156,
+      "sha256": "3d4b227e662278a621fda0131aaefd786fd7ebe30a4d00f1bf707a88b019818d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/eth256-antcheck-20260920.log",
+      "bytes": 20120,
+      "sha256": "c2a2abc692306f6bec93cbbd859669183f4ded3b3487a84c3834ed4231625a49"
+    }
+  ]
+}
