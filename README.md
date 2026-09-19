@@ -350,6 +350,9 @@ the NPU its weight image from a modelled flash
 a routed eight-macro GDS. **2026-09-19: the new layout has zero router DRC,
 antenna, disconnected-pin and GDS XOR errors, but fails extracted 50 MHz
 timing** (setup −5.774 ns, hold −0.254 ns at their worst corners).
+Independent DRC also fails: Magic reports 219 boxes and KLayout reports
+11,048 vendor SRAM-cell markers. Standard-cell/macro-pin LVS matches uniquely;
+SRAM interiors remain black-boxed in that comparison.
 SpaceWire uses PIO; PCI/PCIe, Ethernet and external PHYs are not implemented. No radiation
 test data. ~~No gate-level result for anything under `hw/soc/`.~~
 **-- corrected 2026-09-14:** `docs/74` is a gate-level fault-injection

@@ -41,6 +41,7 @@ Reading this record is not a re-execution of those commands.
 | `interfaces-export2-20260919` | `hw/soc/pnr/runs` | four-interface routed layout; extracted timing and electrical checks FAIL |
 | `interfaces-kdrc-20260919` | `hw/soc/pnr/runs` | complete-GDS KLayout deck; 11048 vendor-cell markers, FAIL |
 | `interfaces-lvs-20260919` | `hw/soc/pnr/runs` | DEF/LEF-derived connectivity LVS; SRAM interiors black-boxed, PASS |
+| `interfaces-mdrc-20260919` | `hw/soc/pnr/runs` | native Magic DEF/LEF DRC checker; 219 error boxes, FAIL |
 | `npu2` | `hw/soc/pnr/runs` | the accelerator's own layout |
 | `s71boot` | `hw/soc/pnr/runs` | the boot-hardened six-macro layout |
 | `s77gate` | `hw/soc/pnr/runs` | the gate-level clock-gating run |

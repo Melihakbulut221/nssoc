@@ -82,6 +82,22 @@
       "skipped": 5,
       "failed": 0,
       "command": ".venv/bin/python -m pytest -q sw/tests/test_doc_links.py sw/tests/test_roadmap_is_current.py sw/tests/test_recorded_evidence.py sw/tests/test_flow_evidence.py sw/tests/test_soc_synthesis_guards.py sw/tests/test_documents_are_rendered.py"
+    },
+    "magic_report_reader": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_magic_report.py",
+      "passed": 10,
+      "failed": 0,
+      "scope": "Native count completion and consistency, signed coordinates, malformed/inverted boxes and trailing content; incomplete live report rejected",
+      "source_sha256": {
+        "scripts/classify_magic_drc.py": "d49675357a17a0505405611c8a6ad2cbaeb843c7f02ea0dd3e991ec583495cce",
+        "sw/tests/test_magic_report.py": "7ee4311a5260259011cd6206da998bacab733d56332ff32375b43b4396042433"
+      }
+    },
+    "final_deck_records": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_magic_report.py sw/tests/test_doc_links.py sw/tests/test_recorded_evidence.py sw/tests/test_roadmap_is_current.py",
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0
     }
   },
   "local_log_sha256": {
@@ -109,7 +125,12 @@
     "hw/soc/out/interfaces-final-20260919/layout-lvs.log": "ceb1054c9adae1338b8d976f423731ba13193d30cebf454feef126ab8636a17f",
     "hw/soc/out/interfaces-final-20260919/classifier-badcount.log": "dbbd7226720af17c8fddb7c39ac0c3f3b49db9fc30deca8260ae499a538ff5d6",
     "hw/soc/out/interfaces-final-20260919/config-concurrency.json": "f65d7f84d45e23ba4bc874b190b08a6ebc279608699abbdaad63ae340575f9e4",
-    "hw/soc/out/interfaces-final-20260919/final-validation.log": "d00b4e4c67d8195c0bd872823fb97216abb6987d056022d8c096d42204e1a619"
+    "hw/soc/out/interfaces-final-20260919/final-validation.log": "d00b4e4c67d8195c0bd872823fb97216abb6987d056022d8c096d42204e1a619",
+    "hw/soc/out/interfaces-final-20260919/layout-mdrc.log": "5cce5b36cd2e8eec8db832abd9dbe4828d5dbe9753dc6be289f0cbd239e8add0",
+    "hw/soc/out/interfaces-final-20260919/magic-classification-cli.log": "be541ad3f03dac0c2ea39427ee8b0a6b502d9fa5fc9b8de02405de0da12f6151",
+    "hw/soc/out/interfaces-final-20260919/resume-mdrc.json": "522138fdfa377c999de45fec492d66569b51683bb616dc9b9678a2274adcde90",
+    "hw/soc/out/interfaces-final-20260919/magic-classification.json": "da6b77cf17fb523ac43ff5e2894cc26a8689327467b46b77107a3f73b53033e0",
+    "hw/soc/out/interfaces-final-20260919/final-decks-validation.log": "1977cca2c3b84004300ae5ab6babeac8dacebd8faa17f59ebe6da5610e4b7093"
   },
   "synthesis": {
     "cells_including_macros": 61991,
@@ -926,9 +947,131 @@
         "scope": "Both complete GDS streams"
       },
       "magic": {
-        "run": "interfaces-decks-20260919",
-        "status": "Still running at this checkpoint; no final error count claimed",
-        "scope": "DEF/LEF view"
+        "run": "interfaces-mdrc-20260919",
+        "drc_run": "interfaces-decks-20260919",
+        "status": "FAIL",
+        "from": "Checker.MagicDRC",
+        "to": "Checker.MagicDRC",
+        "scope": "Native Magic DEF/LEF DRC followed by its unchanged native checker; not full-GDS DRC",
+        "input_state": {
+          "path": "hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json",
+          "sha256": "a06e7edaaf777c337f29a256272e0b29f029d361ba790b450fbc4e6fca23f997",
+          "bytes": 17133
+        },
+        "metrics": {
+          "magic__drc_error__count": 219
+        },
+        "exit_code": 2,
+        "classification": {
+          "report": {
+            "path": "hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/reports/drc.magic.rpt",
+            "sha256": "05006d0a4f6555bb84c5777c6b2e60f7a648859798d05ebd95c4d739adefeee8",
+            "bytes": 10682
+          },
+          "placement": {
+            "path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/12-odb-cellfrequencytables/soc_top.def",
+            "sha256": "8efeb9685c4d48872380541e946fa200c3a25348ad293f5bf63c3b973215ea60",
+            "bytes": 105248732
+          },
+          "macro_lefs": [
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_1024x32_c2_bm_bist.lef",
+              "sha256": "b345b6c44defa630a7266fb1ee878b153e4b22b88461aa8216d3883592c18db2"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_2048x64_c2_bm_bist.lef",
+              "sha256": "630e1f2efcf0c4c512fa53760bb7451f4fcf7155e6265d887c936dcf65be4bea"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_512x16_c2_bm_bist.lef",
+              "sha256": "845c080938b5e9d1200774190430dad67eea7f1e209fb3094488614e70bb1c2c"
+            }
+          ],
+          "scope": "DEF/LEF view, actual LEF macro footprints without an assumed overhang; every marker remains an error",
+          "boxes": 219,
+          "classification": {
+            "inside": 20,
+            "straddle": 0,
+            "outside": 199
+          },
+          "by_rule": {
+            "Metal2 > 10.0um with runlength > 10.0um spacing to unrelated m2 < 120 (M2.f)": {
+              "outside": 24
+            },
+            "Metal3 > 10.0um with runlength > 10.0um spacing to unrelated m3 < 120 (M3.f)": {
+              "outside": 163
+            },
+            "Metal2 minimum area < 5760 (M2.d)": {
+              "inside": 4
+            },
+            "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)": {
+              "inside": 16
+            },
+            "Metal4 > 0.39um with runlength > 1.0um spacing to unrelated m4 < 48 (M4.e)": {
+              "outside": 8
+            },
+            "Metal3 > 0.39um with runlength > 1.0um spacing to unrelated m3 < 48 (M3.e)": {
+              "outside": 2
+            },
+            "Metal2 > 0.39um with runlength > 1.0um spacing to unrelated m2 < 48 (M2.e)": {
+              "outside": 2
+            }
+          },
+          "outside_box_minimum_distance_to_nearest_macro_um": {
+            "maximum": 0.5,
+            "farther_than_0p5_um": 0
+          },
+          "distance_definition": "L-infinity separation of marker rectangle and nearest LEF footprint"
+        },
+        "recorded_metrics": {
+          "path": "docs/evidence/interfaces-mdrc-20260919/metrics.json",
+          "sha256": "047194d2df459644b23b4f2916fe1e73288f7b719e4dd7d3f03540d0cb778146",
+          "bytes": 13050
+        },
+        "recorded_config": {
+          "path": "docs/evidence/interfaces-mdrc-20260919/resolved.json",
+          "sha256": "54cbc95ad5a07bfbd12c3fe1c48783a0b11bfef75bc431fc69e61de069852906",
+          "bytes": 34178
+        },
+        "continuation": {
+          "input_state": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json",
+          "input_state_sha256": "a06e7edaaf777c337f29a256272e0b29f029d361ba790b450fbc4e6fca23f997",
+          "native_magic_boxes": 219,
+          "scope": "Completed native Magic DRC state retained; stop original helper before repeating the already completed independent KLayout/LVS runs",
+          "original_process_group_stopped": 124430,
+          "checker_command": [
+            "bash",
+            "hw/soc/flow/pnr_soc_top.sh",
+            "interfaces-mdrc-20260919",
+            "-F",
+            "Checker.MagicDRC",
+            "-T",
+            "Checker.MagicDRC",
+            "-i",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json"
+          ],
+          "checker_exit_code": 2
+        },
+        "process_stats": {
+          "time": {
+            "cpu_time_user": "01:53:22.029",
+            "cpu_time_system": "00:00:00.820",
+            "runtime": "01:53:33.350",
+            "cpu_time_iowait": "00:00:00.000"
+          },
+          "peak_resources": {
+            "cpu_percent": 109.8,
+            "memory_rss": "982MiB",
+            "memory_vms": "1000MiB",
+            "threads": 1
+          },
+          "avg_resources": {
+            "cpu_percent": 99.84687044050193,
+            "memory_rss": "918MiB",
+            "memory_vms": "937MiB",
+            "threads": 0.9999852622581168
+          }
+        }
       }
     }
   },
@@ -938,7 +1081,8 @@
     "No pad-ring, analog PHY, DFT or radiation qualification",
     "The layout fails timing and is not a tapeout release",
     "Independent physical deck results are reported separately; vendor SRAM interiors are excluded from LVS",
-    "KLayout DRC fails with 11048 vendor-cell markers; optional recommended rules were not enabled"
+    "KLayout DRC fails with 11048 vendor-cell markers; optional recommended rules were not enabled",
+    "Magic DEF/LEF DRC fails with 219 boxes: 20 within the SRAM LEF footprints and 199 outside; none waived"
   ],
   "toolchain": {
     "LibreLane": "3.0.5",
@@ -948,5 +1092,5 @@
     "KLayout": "0.30.9"
   },
   "synthesis_commit": "b09b13b9d4e1bd893f79eec03f5543367661f310",
-  "recorded_at_utc": "2026-09-19T14:46:48.011724+00:00"
+  "recorded_at_utc": "2026-09-19T15:16:49.487110+00:00"
 }

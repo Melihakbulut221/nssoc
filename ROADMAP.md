@@ -88,8 +88,10 @@ A new layout profile retains ECC RAM and ROM and exercises the existing request
 and read-return pipelines. The routed GDS has zero router DRC, antenna and
 disconnected-pin errors, and the two GDS streams have zero XOR differences.
 Extracted timing still fails: slow-corner setup −5.774 ns and fast-corner
-hold −0.254 ns at 50 MHz. The interface record carries the independent deck
-results and the measured placement; this is not a tapeout release.
+hold −0.254 ns at 50 MHz. Independent Magic and KLayout DRC finish with
+219 boxes and 11,048 markers respectively; both fail. LVS matches within the
+standard-cell/macro-pin scope, with SRAM interiors black-boxed. The interface
+record carries the results and measured placement; this is not a tapeout release.
 
 ## 1. External clocks
 

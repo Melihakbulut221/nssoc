@@ -237,11 +237,27 @@ are **zero markers in other cells**. These are still errors, not waivers.
 marker count disagrees with the native metric; a deliberately corrupted count
 was rejected without writing a result.
 
-The independent Magic DEF/LEF DRC run is still in progress at this record's
-checkpoint; no final Magic error count is claimed here. XOR, KLayout and LVS
-above have completed on the same geometry. The checked-in native metrics and
-resolved configurations are under `docs/evidence/`; the consolidated record
-is [interfaces-20260919.json](evidence/interfaces-20260919.json).
+The Magic report reader also rejects empty/interrupted reports, missing or
+inconsistent final counts, malformed boxes and boxes appearing after the count.
+Signed coordinates are retained. Ten focused tests exercise these cases; a
+still-empty live report is rejected rather than interpreted as zero errors.
+
+Magic's DEF/LEF scan completed in **1 h 53 min 33 s**, reporting **219 boxes**.
+Against the actual LEF macro footprints, **20 are inside, zero straddle and
+199 are outside**. Every outside box has a rectangle-to-footprint separation
+of at most **0.5 um**; this is a measured minimum gap, not a waiver or a claim
+that the abstracted view is the full GDS. The native and independently parsed
+box counts agree. The outside rules are M2.f (24), M3.f (163), M4.e (8),
+M3.e (2) and M2.e (2); the inside rules are M2.d (4) and M4.f (16).
+
+The completed DRC state is retained under `interfaces-decks-20260919/03-magic-drc`.
+The helper was then stopped to avoid repeating the already completed KLayout
+and LVS runs. `interfaces-mdrc-20260919` resumes that state at the unchanged
+native `Checker.MagicDRC` only and exits **2**. It does not claim to execute
+all 80 flow stages. XOR, KLayout, Magic and LVS have now completed on the same
+geometry; **both independent DRC decks fail**. The checked-in native metrics
+and resolved configurations are under `docs/evidence/`; the consolidated
+record is [interfaces-20260919.json](evidence/interfaces-20260919.json).
 
 ![Measured interface-SoC placement](img/interfaces-layout.svg)
 
@@ -267,6 +283,9 @@ make soc-interfaces-decks RUN_TAG=interfaces-decks STATE=/absolute/path/to/state
 # Attribute a completed KLayout run without suppressing any marker:
 klayout -b -r hw/soc/pnr/classify_klayout_drc.py \
   -rd run=/absolute/path/to/run -rd output=/absolute/path/to/classification.json
+# Attribute the native Magic report against the same run's actual DEF:
+python3 scripts/classify_magic_drc.py /absolute/path/to/drc-run \
+  --def /absolute/path/to/input.def --lef-dir /absolute/path/to/pinned/sram/lef
 ```
 
 The layout command requires the same rootless LibreLane, OpenROAD shims and
