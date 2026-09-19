@@ -111,34 +111,15 @@ job_licence() {
         test ! -e tt/LICENSE.PENDING.md && test -f tt/LICENSE
         cmp LICENSES/CERN-OHL-W-2.0.txt tt/LICENSE
         cmp LICENSES/Apache-2.0.txt tt/LICENSES/Apache-2.0.txt'
-    # A CHECK MUST NOT WRITE WHAT IT VERIFIES, and this one did. It ran
-    # three generators IN PLACE and then diffed, so on any run where a
-    # generator's output had legitimately changed it left the tree
-    # modified -- including tt/, which docs/34 freezes for a shuttle.
-    # That happened on 2026-09-11: this check rewrote tt/docs/info.md,
-    # tt/MANIFEST.sha256 and tt/README.md as a side effect of being run.
-    #
-    # It now refuses on a dirty tree first, so that restoring afterwards
-    # cannot destroy uncommitted work, and restores what the generators
-    # wrote whether it passed or failed. The drift is still detected;
-    # the tree is not the place it is detected in.
+    # Each generator already has a read-only check mode. Use it directly:
+    # a failed generator must never leave edits behind or restore user work.
     run "the generators still emit the tag they should" bash -c '
         set -eu
-        paths="hw/rtl hw/soc/rtl hw/soc/tb/sw sw/golden tt"
-        if [ -n "$(git status --porcelain -- $paths)" ]; then
-            echo "refusing: these paths are already modified, and this check"
-            echo "restores them afterwards. Commit or stash first:"
-            git status --short -- $paths
-            exit 1
-        fi
-        rc=0
-        "$PY" regmap/generate.py >/dev/null
-        "$PY" regmap/generate_memmap.py >/dev/null
-        "$PY" scripts/gen_tt_submission.py >/dev/null
-        "$PY" scripts/spdx_check.py >/dev/null
-        git diff --exit-code -- $paths || rc=1
-        git checkout -- $paths
-        exit $rc'
+        "$PY" regmap/generate.py --check
+        "$PY" regmap/generate_memmap.py --check
+        "$PY" scripts/gen_tt_submission.py --check
+        "$PY" scripts/spdx_check.py'
+
 }
 
 # ------------------------------------------------------------------- docs

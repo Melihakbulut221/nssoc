@@ -317,6 +317,8 @@ module tb_soc;
     end
   end
 
+  // Declared before the initial block for Icarus 14's elaboration order.
+  reg allow_double_fault = 1'b0;
   initial begin
     allow_double_fault = ($test$plusargs("allow_double_fault") != 0);
     if (!$value$plusargs("ded_word=%d", ded_word)) ded_word = -1;
@@ -353,8 +355,6 @@ module tb_soc;
   reg saw_alert_major_int = 1'b0;
   reg saw_alert_major_bus = 1'b0;
   reg saw_double_fault    = 1'b0;
-  // Set from +allow_double_fault; see the check that reads it.
-  reg allow_double_fault  = 1'b0;
   always @(posedge clk) if (rst_n) begin
     if (alert_minor)          saw_alert_minor     <= 1'b1;
     if (alert_major_internal) saw_alert_major_int <= 1'b1;

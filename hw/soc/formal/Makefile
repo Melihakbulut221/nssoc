@@ -57,7 +57,7 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
 
 include $(REPO)/tools.mk
 
@@ -119,6 +119,22 @@ apbwb:
 # a target that never returns is not a regression test. Its depth-40
 # k-induction and bmc tasks are likewise left out of this target.
 REGFILESCRUB_TASKS := prove_pdr cover
+.PHONY: regfilecontract regfileequivalence regfilecontrols
+REGFILECONTRACT_TASKS := prove prove_noscrub cover
+regfilecontract:
+	@for t in $(REGFILECONTRACT_TASKS); do \
+	  $(SBY) -f regfile_contract.sby $$t || exit 1; \
+	done
+
+regfileequivalence:
+	@test -s ../gen/ibex_register_file_ff.v || { echo 'Run make soc-prepare at the repository root first.'; exit 1; }
+	@for t in prove prove_noscrub; do \
+	  $(SBY) -f regfile_equivalence.sby $$t || exit 1; \
+	done
+
+regfilecontrols:
+	python3 $(REPO)/scripts/check_regfile_contract.py --sby $(SBY) --controls-only
+
 regfilescrub:
 	@for t in $(REGFILESCRUB_TASKS); do \
 	  echo "== regfile_scrub_abs $$t"; \

@@ -44,6 +44,9 @@ checkable against what was actually broken:
     geom0       the primary's load address, pushed into the loader's own
                 private RAM -- the check that stops an image destroying
                 the loader that is copying it
+    entry0      an odd primary entry address, with a valid header checksum
+    length0     a primary payload extending past its flash slot, with a
+                valid header checksum
     csum0       one body word of the primary
     both        the primary's magic and the secondary's body checksum
     all         both images' magic words: nothing bootable in the device
@@ -120,6 +123,11 @@ def build_slot(body, load, entry, version, corrupt):
         # An image that claims to load over the top of RAM, which is
         # where the loader's own stack is. The header still checks.
         hdr = make_header(0x7F00, len(b), 0x7F00, csum, version)
+    elif corrupt == "entry":
+        hdr = make_header(load, len(b), entry | 1, csum, version)
+    elif corrupt == "length":
+        # Header checksum remains valid; payload crosses into the next slot.
+        hdr = make_header(load, BOOT_SLOT_BYTES, entry, csum, version)
     return struct.pack("<8I", *hdr) + bytes(b)
 
 
@@ -128,6 +136,8 @@ CORRUPT = {
     "magic0": ("magic", None),
     "hdr0":   ("hdr", None),
     "geom0":  ("geom", None),
+    "entry0": ("entry", None),
+    "length0": ("length", None),
     "csum0":  ("csum", None),
     "both":   ("magic", "csum"),
     "all":    ("magic", "magic"),

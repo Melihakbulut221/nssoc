@@ -680,12 +680,6 @@ module soc_npu #(
     if (PROT_W > 64) begin : g_prot_too_wide
       ERROR_soc_npu_protected_word_exceeds_64_bits g ();
     end
-    // E_DECIDE's bound against the longest legitimate transient. WIN_MAX
-    // is derived from SER_HALF, so this fails HERE, with the reason, if
-    // someone slows the transport down and does not raise the bound.
-    if (DECIDE_MAX < 8 * WIN_MAX) begin : g_decide_too_tight
-      ERROR_soc_npu_DECIDE_MAX_must_be_at_least_8x_WIN_MAX g ();
-    end
   endgenerate
 
   // -------------------------------------------------------------------
@@ -759,6 +753,14 @@ module soc_npu #(
   // clean run is a second, longer one.
   localparam integer WIN_MAX   = 2 * (SER_GUARD_MAX + 2) + 2 + 16;
   localparam integer WIN_GRD_W = $clog2(WIN_MAX + 1);
+
+  // Declare WIN_MAX before using it in a generate condition. Icarus 14
+  // elaborates that condition before resolving a later localparam.
+  generate
+    if (DECIDE_MAX < 8 * WIN_MAX) begin : g_decide_too_tight
+      ERROR_soc_npu_DECIDE_MAX_must_be_at_least_8x_WIN_MAX g ();
+    end
+  endgenerate
 
   // E_DECIDE's bound. See the state itself for why it exists; this is
   // the number.

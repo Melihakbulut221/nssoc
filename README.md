@@ -8,6 +8,27 @@ neuromorphic inference engine, on-chip SRAM, and a set of spacecraft
 interfaces — retargeted from STM 28 nm FDSOI to a 130 nm node at a scale
 that is realistic for an open PDK and a small team.
 
+## Reproduce the current checks
+
+Start with `make help`. On Linux with Python 3.9–3.13 and Icarus Verilog:
+
+```sh
+make setup PYTHON=/usr/bin/python3
+make test
+make rtl-test
+make check
+```
+
+For the whole-SoC boot simulation, run `make soc-prepare` and then
+`make soc-sim OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite`.
+The additional real-codec proofs are `make rf-contract` and
+`make rf-equivalence` with the same toolchain setting. The boot range
+proof is `make boot-proof CBMC=/absolute/path/to/cbmc`.
+
+The 2026-09-19 changes, measured results, tool versions and remaining work
+are recorded in [the engineering closure record](docs/87-engineering-closure.md).
+The physical and radiation qualification limits described below still apply.
+
 ## Reference architecture (GR801, public brief)
 
 | Block | GR801 (28 nm FDSOI) | This project (130 nm, targets under study) |
