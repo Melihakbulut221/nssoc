@@ -158,3 +158,38 @@ def artifact_identity(path):
     return (f" Historical artifact: {relative}; SHA-256 {digest}; {size} bytes "
             "(docs/80-artefact-digests.tsv). Restore these bytes to recheck "
             "that historical result; a new build is a separate measurement.")
+
+
+def recorded_netlist(metadata, output_dir, live_root=ROOT):
+    """Unpack a hash-pinned netlist snapshot; compare its exact live run if present.
+
+    This supplies the actual graph to the existing census and mutation tests.
+    It is a recorded design, not a synthesis or physical verdict at current HEAD.
+    """
+    import gzip
+    metadata = pathlib.Path(metadata)
+    record = json.loads(metadata.read_text())
+    archive_name = record["archive"]["file"]
+    assert pathlib.Path(archive_name).name == archive_name, "Unsafe archive path"
+    archive = metadata.parent / archive_name
+    assert archive.resolve().is_relative_to(metadata.parent.resolve()), "Archive symlink escapes evidence"
+    assert archive.stat().st_size == record["archive"]["bytes"], "Archive size mismatch"
+    assert _digest(archive) == record["archive"]["sha256"], "Archive digest mismatch"
+    notice = record["component_notices"]
+    assert pathlib.Path(notice["file"]).name == notice["file"], "Unsafe notice path"
+    assert _digest(metadata.parent / notice["file"]) == notice["sha256"], "Component notices mismatch"
+    size = record["netlist"]["bytes"]
+    assert isinstance(size, int) and 0 < size <= 64 * 1024 * 1024, "Invalid netlist size"
+    with gzip.open(archive, "rb") as stream:
+        data = stream.read(size + 1)
+    assert len(data) == size, "Decompressed size mismatch"
+    assert hashlib.sha256(data).hexdigest() == record["netlist"]["sha256"], "Netlist digest mismatch"
+    original = pathlib.PurePosixPath(record["netlist"]["original_path"])
+    assert not original.is_absolute() and ".." not in original.parts, "Unsafe live path"
+    live = pathlib.Path(live_root) / original
+    if live.is_file():
+        assert _digest(live) == record["netlist"]["sha256"], "Live run differs from recorded netlist"
+    output = pathlib.Path(output_dir) / "soc_top.nl.v"
+    with output.open("xb") as stream:
+        stream.write(data)
+    return output

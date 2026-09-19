@@ -1146,6 +1146,7 @@ def m_none(path):
 
 
 EXTRACT = {
+    "netlist-gzip": m_none,  # compressed identity; expanded identity is in its JSON record
     "metrics": m_metrics_json,
     "netlist": m_netlist,
     "def": m_def,
@@ -1252,11 +1253,14 @@ def fmt_metrics(d):
 
 def evidence_rows():
     """Tracked evidence, independently hashable on a fresh clone."""
+    directory = ROOT / "docs/evidence"
+    files = sorted([*directory.rglob("*.json"), *directory.rglob("*.v.gz")])
     return [{"group": "docs-evidence", "cites": "docs/89;docs/90",
-             "role": "text", "path": p.relative_to(ROOT).as_posix(),
+             "role": "netlist-gzip" if p.name.endswith(".v.gz") else "text",
+             "path": p.relative_to(ROOT).as_posix(),
              "bytes": str(p.stat().st_size), "sha256": sha256(p),
-             "metrics": fmt_metrics(m_text(p))}
-            for p in sorted((ROOT / "docs/evidence").rglob("*.json"))]
+             "metrics": "" if p.name.endswith(".v.gz") else fmt_metrics(m_text(p))}
+            for p in files]
 
 
 def collect():

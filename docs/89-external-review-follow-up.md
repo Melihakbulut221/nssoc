@@ -352,3 +352,45 @@ pass **28 application checks**. The [record](evidence/github-ci-c02aa79-20260920
 binds both job results and the downloaded PR log. This supersedes the earlier
 pending status for this revision without erasing the preceding failed runs.
 These jobs do not perform full physical signoff.
+
+### Recorded netlist available to a clone, 2026-09-20
+
+F6 now includes the complete routed Ethernet baseline netlist, not only a
+reported counter: [source inventory and hashes](evidence/ethernet-netlist-20260920.json),
+[compressed netlist](evidence/ethernet-netlist-20260920.v.gz), and
+[component licences and notices](evidence/ethernet-netlist-20260920-NOTICES.txt).
+The archive is 2,185,152 bytes and expands to the exact 19,846,986-byte
+`interfaces-eth256-resume-20260919-184950` final netlist. Its SHA-256 matches
+the previously recorded fill-insertion artifact. The packaging command is
+recorded in the inventory. This design fails physical timing; it is not
+a signoff netlist, nor a replacement for the absent historical artifacts.
+
+`sw/tests/test_soc_shipped_netlist_guards.py` now always loads these actual
+bytes and runs the existing cone census and merged-replica negative controls.
+Missing or corrupt committed bytes fail instead of skipping. A matching live
+run must have the same hash; a later, unrelated run cannot substitute for it.
+The loader also rejects changed notices, unsafe paths, invalid sizes and
+overwriting an output file. The archive retains its component licences
+rather than acquiring the documentation's licence.
+
+The original seven netlist guards passed with live-netlist discovery disabled
+(`_netlists = lambda: []`), in 70.76 seconds. This isolated local check is
+not yet a fresh-clone result. The loader, manifest, evidence and link checks
+passed 170 tests with:
+
+```sh
+.venv/bin/python -m pytest -q sw/tests/test_recorded_netlist.py \
+  sw/tests/test_artefact_digests.py sw/tests/test_doc_links.py \
+  sw/tests/test_recorded_evidence.py
+```
+
+Logs are retained under `hw/soc/out/external-review-20260919/` as
+`recorded-netlist-only-guards.log` and `recorded-netlist-checks.log`.
+The full clean-clone skip count will be measured separately. **F6 remains
+open** while historical netlist/DEF/run outputs are absent; fewer than thirty
+skips alone cannot satisfy its second acceptance clause.
+
+The preceding clean `d609e9a` source also completed
+`bash scripts/ci_local.sh all --record`: **16 passing gates, zero failures,
+seven skips**, `tree-dirty=0`; [record](evidence/ci-local-d609e9a-20260920.json).
+That result predates the netlist-loader changes above.

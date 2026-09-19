@@ -38,11 +38,10 @@ This file is that check, and it asks a question the count cannot:
 
 WHAT IT DOES **NOT** COVER
 
-  * It reads whatever netlists the working tree has kept.
-    `hw/soc/out/` and `hw/soc/pnr/runs/` are git-ignored build products
-    (.gitignore, `docs/38` section 11's rule), so on a fresh clone
-    there is nothing to read and these tests SKIP with the command that
-    regenerates them. A skip here is not evidence of anything.
+  * It reads retained live netlists and the explicitly recorded Ethernet
+    baseline. Added 2026-09-20 for F6: a fresh clone can audit that actual
+    netlist, including the merged-replica negative control, without a PDK.
+    This does not synthesize current HEAD or replace any historical artifact.
   * It counts and partitions flip-flops. It says nothing about whether
     the three banks store the right function, which is
     `hw/soc/formal/soc_wdog_tmr.sby`, nor about whether the voter is
@@ -68,7 +67,7 @@ import importlib.util
 from pathlib import Path
 
 import pytest
-from evidence import artifact_identity
+from evidence import recorded_netlist
 
 ROOT = Path(__file__).resolve().parents[2]
 GL_NETLIST = ROOT / "hw" / "soc" / "fi" / "gl_netlist.py"
@@ -94,16 +93,6 @@ STRUCTURES = {
     "boot": ("the boot block's decision word", _G.BOOT_PROT_W, "docs/69"),
     "npu":  ("the NPU cause bank", _G.NPU_PROT_W, "docs/55 and docs/56"),
 }
-
-# The command is NAMED rather than spelled out. Writing it here would
-# put the literal `SOC_ROM_HARDEN=0` into a tracked file, and
-# test_the_memory_protection_defaults_on_and_nothing_turns_it_off in
-# sw/tests/test_soc_memory_guards.py exists to make exactly that
-# expensive -- which is the right behaviour and is how this comment came
-# to be written.
-REGENERATE = ("hw/soc/flow/syn_soc_top.sh, then hw/soc/flow/pnr_soc_top.sh "
-              "for a layout; docs/75 section 11 gives both command lines "
-              "with the environment they need")
 
 # WIDTHS THESE WORDS USED TO CARRY, so that "this netlist predates a
 # widening" and "something removed bits from a shipped netlist" stop
@@ -146,15 +135,16 @@ def _netlists():
 
 
 @pytest.fixture(scope="module")
-def netlists():
+def netlists(tmp_path_factory):
     found = _netlists()
-    if not found:
-        pytest.skip(
-            "no whole-SoC netlist in the working tree. hw/soc/out/ and "
-            "hw/soc/pnr/runs/ are git-ignored build products, so there "
-            "is nothing here to audit on a fresh clone. Regenerate "
-            "with:\n    " + REGENERATE + artifact_identity(
-                "hw/soc/pnr/runs/s83romecc5/final/nl/soc_top.nl.v"))
+    metadata = ROOT / "docs/evidence/ethernet-netlist-20260920.json"
+    assert metadata.is_file(), "The committed Ethernet netlist record is missing"
+    snapshot = recorded_netlist(metadata, tmp_path_factory.mktemp("recorded-netlist"), ROOT)
+    print("\nAuditing recorded Ethernet baseline from " + str(metadata.relative_to(ROOT))
+          + "; this is not a current-HEAD synthesis or signoff verdict.")
+    # Always audit the snapshot. The loader also compares its exact live
+    # source when available; unrelated newer runs cannot replace its hash.
+    found.append(snapshot)
     return found
 
 

@@ -147,6 +147,9 @@ def classify(rel):
 
 def path_licence(rel):
     """The licence a path-covered (untagged) file is under, for LICENSES.md."""
+    if rel in {"docs/evidence/ethernet-netlist-20260920.v.gz",
+               "docs/evidence/ethernet-netlist-20260920-NOTICES.txt"}:
+        return "CERN-OHL-W-2.0 AND Apache-2.0 AND LGPL-2.1-or-later AND MIT"
     if rel.startswith("tt/"):
         return "see tt/README.md"
     if rel.startswith(DIR_IS_DOCUMENT):

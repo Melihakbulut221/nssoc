@@ -199,7 +199,8 @@ def test_every_evidence_file_has_a_matching_manifest_digest():
         if len(fields) == 7 and fields[0] == "docs-evidence":
             assert fields[3] not in rows, "duplicate evidence digest"
             rows[fields[3]] = fields
-    actual = {p.relative_to(ROOT).as_posix(): p for p in EVIDENCE.rglob("*.json")}
+    actual = {p.relative_to(ROOT).as_posix(): p
+              for p in [*EVIDENCE.rglob("*.json"), *EVIDENCE.rglob("*.v.gz")]}
     assert rows.keys() == actual.keys(), "refresh with scripts/artefact_digests.py --write-evidence"
     for name, path in actual.items():
         assert int(rows[name][4]) == path.stat().st_size, name

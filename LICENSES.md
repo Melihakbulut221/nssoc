@@ -89,6 +89,17 @@ interface bundle retains their notices and records input hashes; see
 also fetched from Alex Forencich's `verilog-ethernet` under MIT. The pinned
 commit and generated reset adaptation are documented in `docs/90-gigabit-ethernet.md`.
 
+**2026-09-20 addition:** one compressed generated netlist is distributed as
+`docs/evidence/ethernet-netlist-20260920.v.gz` to let fresh clones run the
+structural TMR checks. Its component licences remain CERN-OHL-W-2.0,
+Apache-2.0, LGPL-2.1-or-later and MIT, as applicable; it is not relicensed
+under the documentation licence. The adjacent `-NOTICES.txt` preserves source
+notices and licence texts, and the JSON records the original source hashes,
+dependency revisions and build configuration. External source trees remain
+fetched by the pinned build recipes and can be modified and rebuilt. This
+recorded baseline has failing timing; distribution does not qualify it for
+manufacture or replace absent historical netlists.
+
 ## 3. How the map is kept true
 
 ```bash

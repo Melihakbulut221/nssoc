@@ -5,52 +5,47 @@
 Kullanıcı yeniden devam edilmesini istedi; aşağıdaki 19 Eylül durdurma kaydı
 tarihseldir. Çalışma devam ediyor; eski durdurma talimatını yeniden uygulamayın.
 
-- 20 Eylül 01:30 TRT güncellemesi. Dal: `codex/complete-open-work`;
-  GitHub'a gönderilmiş son değişiklik `3274518`.
-- Bütün inceleme ve ürün kapıları: `docs/92-product-acceptance.md`.
-- Tam 24 makrolu aday `interfaces-eth256-resume-20260919-184950` GDS
-  üretti fakat setup/hold/slew/cap nedeniyle FAIL. Üç köşeli çıkarılmış
-  ölçüm `docs/evidence/ethernet-extracted-layout-20260920.json` içinde.
-- Aynı adayın bağımsız deck koşusu `eth256-decks-20260919`: stream XOR 0;
-  Magic DRC çalışıyor. Log `hw/soc/out/external-review-20260919/eth256-decks-20260919.log`.
-  Ayrı `eth256-lvs-20260920` koşusu: Circuits match uniquely, yedi sayaç 0,
-  her iki tarafta 94.490 device / 94.219 net. SRAM içleri black-box;
-  `docs/evidence/ethernet-lvs-20260920.json` tam kapsamı kaydeder.
-- Ayrı `eth256-antfix-20260919` adayı altı diyotla anteni sıfırladı;
-  `eth256-antcheck-20260920` bağımsız kontrolü tamamlandı ve 0 net/0 pin.
-- Zamanlama ECO deneyi `hw/soc/out/external-review-20260919/timing-eco2`: 130
-  eşdeğer hücre değişimi, 25 sinyal tamponu; RTL/SDC değişmedi. Tüm regular
-  sinyal rotaları silinip 93.137 netin global route'u yeniden hesaplandı;
-  güç special wire korunuyor. `timing-eco1` yalnızca 25 yeni hattı hesapladığından
-  zamanlama tahmini REDDEDİLDİ, bu rapordaki pozitif setup kapanış değildir.
-- ECO2 bağlantı/eşdeğer işlev kontrolleri ve iki negatif kontrol geçti.
-  Global-route tahmini: slow setup -1,907482 ns; fast hold -0,137262 ns.
-  `eth256-eco2-route-20260920` ayrıntılı route/anten/RCX/STA/GDS koşusu aktif.
-  İlk route sonrası 242 anten ihlali için 469 diyot ekledi; son hüküm yok.
-  Kendi RCX ve ayrı süreçlerde üç STA köşesi tamamlanmadan kabul etmeyin.
-- `timing-eco3-sizing` SIGTERM ile durduruldu: max_iterations=50 tüm
-  endpoint taramasını sınırlamıyormuş, log 91 adımı aştı. Son netlist yok.
-  `timing-eco4-wns` repair_tns=0 / max_iterations=200 ile tek dinamik en
-  kötü endpoint üzerinde sizing yapıyor; henüz tamamlanmadı.
-- GitHub c02 koşuları 35469632101 ve 35469634120 TAMAMEN BAŞARILI:
-  checks, rtl, formal-and-boot. Yeni 3274518 koşuları 35472560839 ve
-  35472563334 ayrı ve hâlâ aktif; durumlarını canlı sorgulayın.
-- Temiz 5f99411 kaynak ağacında yerel CI: 16 başarılı kapı, 0 hata,
-  7 atlanan. Yeni kaynak değişiklikleri için teslimde yenileyin.
-- Dört SRAM'ın değişmeyen GDS'leri güncel, sabitlenmiş upstream IHP ana
-  KLayout deck'iyle 0 marker verdi. Eski deck'in başarısızlıkları korundu.
-  `docs/93-ihp-drc-update.md`, `hw/soc/flow/prepare_ihp_drc.py` ve kilit
-  dosyası GitHub'da. Kurulu PDK değiştirilmedi.
-- Tam çip için iki KLayout koşusu aktif: kurulu deck
-  `eth256-klayout-20260920`; upstream deck
-  `hw/soc/out/external-review-20260919/full-upstream-drc-20260920`.
-  Macro kontrolünü tam çip PASS olarak yorumlamayın.
-- PCIe Gen3 x4 uyumlu fiziksel IP hâlâ yok; `docs/91` araştırması açık.
-  Eski F6 `signoff-6x2` ve `s70-rom0-syn` çıktıları da mevcut değil.
-- Yeni Ethernet yerleşim görseli `docs/img/interfaces-ethernet-layout.png`.
-- Sonraki adım: ECO ölçümünü değerlendir; uygun aday için native fiziksel
-  akışı benzersiz etiketle çalıştır. Deck sonuçlarını gerçek ihlalleriyle
-  kaydet; açık kapıları raporla, başarısızlıkları PASS yapma.
+- 20 Eylül 02:12 TRT güncellemesi. Dal `codex/complete-open-work`;
+  son gönderilmiş kaynak `d609e9a`. Netlist arşivi/F6 yükleyicisi hazırlanıyor.
+- Tam kontrol listesi `docs/92-product-acceptance.md`; F6 ve ürün kapıları açık.
+- Orijinal 24 makrolu baseline: `interfaces-eth256-resume-20260919-184950`.
+  Çıkarılmış timing FAIL; bağımsız LVS PASS (SRAM içleri black-box), XOR 0.
+  Kayıtlar `docs/evidence/ethernet-{extracted-layout,lvs}-20260920.json`.
+- ECO2 `eth256-eco2-route-20260920`: native RCX ve ayrı süreçlerde STA bitti.
+  Üç köşede hold PASS; fast minimum +0,0080 ns. Slow setup -1,0635 ns,
+  328 setup, 15 cap ve 89 slew ihlali: hâlâ FAIL. Stage 14 Magic streamout
+  sürüyor; GDS/deck tamamlandı demeyin. Kendi final artifactlarıyla kaydedin.
+- `timing-eco4-wns` tamamlandı: 200 sizing işlemi, GRT slow setup -0,848798 ns.
+  Antfix kaynağına göre 306 comb + 20 FF master değişimi ve 25 buffer.
+  Bağlantı/Liberty state karşılaştırması ve iki negatif kontrol PASS.
+  `timing-eco5-wns` ECO4'ten devam ediyor: repair_tns=0, max_iterations=400,
+  sizing-only. Global-route tahmini extracted signoff değildir.
+- ECO1 eksik RC nedeniyle REDDEDİLDİ; ECO3 sınırsız outer-loop nedeniyle
+  durduruldu, son çıktı yok. Bu adayların iyimser ölçümlerini kullanmayın.
+- Orijinal baseline Magic DRC `eth256-decks-20260919` aktif (PID 78927).
+- Aynı baseline yeni kilitli IHP KLayout deck'i ile full-chip:
+  `hw/soc/out/external-review-20260919/full-upstream-drc-20260920`, PID 124084.
+  Eski pinned deck KLayout PID 94783 RAM/swap için SIGSTOP ile BEKLİYOR.
+  `sequence_drc_memory.py` watcher'ı (log `drc-memory-sequencing.log`)
+  yeni deck bitince eskiyi SIGCONT ile devam ettirecek; watcher durumunu izleyin.
+  PID'ler yeniden açılışta geçersiz olabilir; süreç kimliğini kontrol edin.
+- Magic SRAM 2x2 deneyi `magic-sram-comparison-20260920`: yeni/eski deck,
+  resmi read_sram_gds flatten helper'ı açık/kapalı. İlk upstream-helper arm
+  aktif; henüz sonuç yok. Kurulu PDK değişmedi, hiçbir hücre dışlanmadı.
+- Dört çıplak SRAM yeni kilitli KLayout deck'iyle 0 marker. Bu tam SoC PASS
+  değildir. `docs/93`, kilitli downloader ve fail-closed DRC wrapper GitHub'da.
+- F6: 2,185,152-byte tam gerçek baseline netlist arşivi + hash/kaynak/lisans
+  kaydı eklendi. Yedi mevcut TMR graph testi snapshot-only denemede PASS.
+  Yeni loader/manifest/doc/evidence/DRC testleri 182 PASS. Gerçek temiz klon
+  sayısı henüz ölçülmedi. Eski signoff-6x2 / s70-rom0-syn çıktıları eksik;
+  yeni netlist bu tarihsel kanıtların yerine geçirilemez.
+- Temiz d609e9a local CI: 16 PASS / 0 FAIL / 7 SKIP, tree-dirty=0.
+  Yeni kaynak değişiklikleri için commit sonrası temiz klon CI çalıştırın.
+- PCIe Gen3 x4 fiziksel IP hâlâ yok. docs/91 ek IHP VHiSSI araştırması
+  2,5 Gb/s SerDes gösteriyor; Gen3 x4 makro değil. Mimari seçim bekleniyor.
+- Run logları ve deney scriptleri `hw/soc/out/external-review-20260919/`.
+  `record_extracted_layout.py` gibi eski generator'ları körlemesine yeniden
+  çalıştırmayın; zenginleştirilmiş kanıtı ezebilirler.
 
 ---
 

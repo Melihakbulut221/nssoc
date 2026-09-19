@@ -67,3 +67,20 @@ consume that rate; sustained transfers need a wider/faster datapath and DMA.
 **Disposition:** no verified, freely accessible SG13G2 Gen3 x4 controller/PHY
 pair was found. The on-die implementation remains dependent on actual IP and
 physical views. An empty blackbox or constant link-up signal would not close it.
+
+## IHP-specific follow-up — 2026-09-20
+
+The [European Commission's VHiSSI final report](https://cordis.europa.eu/project/id/284389/reporting)
+documents an ACE-IC SerDes integrated with STAR-Dundee's SpaceFibre logic and
+Ramon Chips' libraries on IHP's 130 nm process. It reports operation at the
+2.5 Gbit/s design target; the 3.125 Gbit/s experiment had an unacceptable eye.
+This is evidence of a manufactured IHP serial-link design. It does not supply
+an accessible SG13G2 PCIe Gen3 x4 controller/PHY, its integration views, or
+PCIe qualification. Compatibility with this repository's exact open PDK and
+availability of licensed design files remain unverified.
+
+STAR-Dundee's [STAR-Ultra PCIe datasheet](https://www.star-dundee.com/wp-content/star_uploads/product_resources/datasheets/STAR-Ultra-PCIe.pdf)
+separately specifies a Gen3 x8 host interface on a complete SpaceFibre board.
+A board product is not a downloadable ASIC PHY macro. Neither finding closes
+the integration requirement above; no external bridge architecture, IP purchase,
+or vendor contact has been initiated.

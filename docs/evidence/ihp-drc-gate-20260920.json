@@ -181,5 +181,62 @@
       "markers": 0,
       "categories": {}
     }
-  ]
+  ],
+  "cli_negative_controls": {
+    "results": [
+      {
+        "case": "existing_run",
+        "command": [
+          "python3",
+          "hw/soc/flow/check_ihp_drc.py",
+          "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds",
+          "--top",
+          "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+          "--tag",
+          "drc-gate-macro-20260920",
+          "--klayout",
+          "/home/hasanmelih/.local/opt/llbin/klayout"
+        ],
+        "exit": 2,
+        "stderr": "usage: check_ihp_drc.py [-h] --top TOP --tag TAG [--klayout KLAYOUT]\n                        [--threads THREADS]\n                        gds\ncheck_ihp_drc.py: error: Refusing to overwrite an existing run\n"
+      },
+      {
+        "case": "escape_tag",
+        "command": [
+          "python3",
+          "hw/soc/flow/check_ihp_drc.py",
+          "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds",
+          "--top",
+          "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+          "--tag",
+          "../outside"
+        ],
+        "exit": 2,
+        "stderr": "usage: check_ihp_drc.py [-h] --top TOP --tag TAG [--klayout KLAYOUT]\n                        [--threads THREADS]\n                        gds\ncheck_ihp_drc.py: error: A safe run tag and a positive thread count are required\n"
+      },
+      {
+        "case": "missing_tool",
+        "command": [
+          "python3",
+          "hw/soc/flow/check_ihp_drc.py",
+          "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds",
+          "--top",
+          "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+          "--tag",
+          "unused",
+          "--klayout",
+          "/nonexistent/klayout"
+        ],
+        "exit": 2,
+        "stderr": "usage: check_ihp_drc.py [-h] --top TOP --tag TAG [--klayout KLAYOUT]\n                        [--threads THREADS]\n                        gds\ncheck_ihp_drc.py: error: KLayout executable not found\n"
+      }
+    ],
+    "original_run_artifacts_unchanged": true,
+    "original_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/drc-gate-macro-20260920/inputs.json": "372048b4b8008927163fa0ce7503e0d8845fd50eeb65947355bd14d6bc9f4473",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/drc-gate-macro-20260920/result.json": "16ae271734917f7b1e6066b02737ce73ea9b17d666f31b256671e19bad083b1c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/drc-gate-macro-20260920/drc.lyrdb": "28ffc238f4120dfa8b0d97c2ac868b39773d98b1b8ebb29781170a5924f37354",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/drc-gate-macro-20260920/run.log": "45cb34be04295de66a507ed7886857346ce1ef0170dae6cda1c442c240cec79f"
+    }
+  }
 }
