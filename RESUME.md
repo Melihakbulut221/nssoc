@@ -5,6 +5,56 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 15:12 TRT — F6 dosyaları bulundu; iki-net DRC/antenna PASS
+
+Son push474b9ce. Native hosted run35508536540 job106072314493 hâlâ çalışıyor;
+checks/RTL PASS, formal-and-boot devam. Yerel native boot637224cycles/28PASS
+önceki bölümdeki kanıtıyla tamam. Sonraki değişiklikler: yalnız RTL yorum
+düzeltmesi; yeni route-geometri checker14test; safe snapshot loader11test;
+F6 testlerinin orijinal kayıtlı dosyaları kullanması. Firmware/netlist değişmedi.
+
+**BULUNDU:** `/home/hasanmelih/Documents/neuromorphic-space-soc` eski checkout
+head83858e260194ea4b4a96256443ddb2cdcab05d15 içinde gerçek tarihsel dosyalar.
+Yalnız okundu; başka projeye yazılmadı. Signoff6x2 DEF8f99c979.../NL52b2debf...
+ve s70NL6294cdd8... önceden kayıtlı hashlerle TAM AYNI. G0 raw Magic/KLayout
+raporları, flow/error logs, metrics/resolved; signoff JSONheader de alındı.
+`docs/evidence/historical-recovery-20260920.{json,tar.gz}` 12dosya159directory,
+archive2734153bytes. Collector `scripts/collect_historical_recovery.py` kaynak
+bytehash ve mevcut evidence eşitliğini zorlar. 31 eski skippedguard şimdiPASS.
+
+Pinned prepared sources yeniden üretildi: `prepared-source-replay` (34Ibexv),
+`prepared-interface-replay` (30RTL/32inputs), mevcut gen ile byteaynı. 36dosya
+176162byte archive `prepared-sources-20260920.tar.gz`. Genp fixture anlık mevcut
+patcher ile oluşturulur. Hazırlanmış kaynak guard5PASS. Güvenli fixture tar
+metadata/hash/size/member/type/path/live-drift doğrular; tests11PASS.
+Tümdeğişiklikleri commit/push edip Yosys'li freshremote fullCI çalıştır;
+F6 kabulü ancak ölçümsonrası kapatılacak. `test_recorded_evidence` gerçek
+restored-original metrics ilecommittedrecords karşılaştırır; currentPNR değildir.
+
+**Physical disk stop:** originalnewROM session7253 MINFREEaltına inip
+3825s'deSIGTERM; girdi hashlerisağlam. StreamFlow finalkopyaları1.5GB yazdı.
+Byteidentical finishedoutputs hardlinked; completednewROMstep<31uniquegeometri
+SHAverifiedarchives (startup-clear-intermediate-archive). Yeni3candidate/old
+rejectarchivemanifest+completedIcarusVVParchivesdevar. Hamlogs/sourceskorundu.
+Eski analysis23716 guardnativeFAILyüzündençalışmadı; kayıtWAITINGeski, processDONE.
+
+**Yeni aktif koşular** normal LibreLane Step.start API ile finalsnapshot
+kopyaları olmadan aynı native adım/ayarlar:
+- **68089** `run_native_single_step.py startup-clear`: step35sonrasında aynı
+  BoundedPostGRT; çıktıB/startup-clear-single-step, supervisor/logaynıprefix.
+- **21435** `... halo-lift3-magic`: kendi3candidateDEF/GDS, nativeMagic.DRC;
+  çıktıB/halo-lift3-magic-single-step. Sameoriginalconfig/deck.
+Herikisinde6hbound/768MiBminimum/hashguard. Başlangıç2.2GiB. PNRsonunda
+YENİ completedstepconfig/state/env yakalayıp bağımsızcornersçalıştır;
+`analyze_startup_clear_completion.py` eski stoppedtag'i izlediği için kullanma.
+
+**Halo3:** outputODB e500c5cd4832c5a854ae5fea1c6e14a9bad350c57f391d60bf4a21b8700a3c83.
+Compare2660PASS349841cells/93311nets yalnıznet13560/net2854shapefarklı.
+NativeDRC51594DONE0/emptyreport;antenna11160DONE0net0pin. Native geometric
+positive+removedwire negativePASS. VersionedcheckeractualODB PASS. Stream85902
+DONE0, taghalo-layer-lift3-stream20260920, dedupmanifestvar.
+Magicflowilklauncher düşükdiskbaşlamadı; directStep21435 şimdi gerçekkoşu.
+
 ## 20 Eylül 14:42 TRT — Tam native açılış PASS; CI alias düzeltmesi
 
 **Yerel tam gate boot bitti:** `logicrom-startup-clear-gl`, 637224 çevrim,

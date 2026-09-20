@@ -350,11 +350,11 @@ module soc_busstat #(
       // `instr_rdata_id` -- a flip-flop Ibex does not reset at
       // SecureIbex = 0. So for the first instructions after reset the
       // read address is X in simulation, the syndrome is X, the report
-      // is X, and an ADDED X poisons the counter permanently. A
-      // BRANCHED X does not: the branch is simply not taken, which is
-      // also what happens in silicon, where the address is an
-      // unspecified but definite value, the registers are all reset to
-      // a valid codeword, and no error is reported at all.
+      // is X, and an ADDED X poisons the RTL counter permanently. An
+      // RTL BRANCHED X is optimistic: the branch is simply not taken.
+      // This is not an X filter in mapped gates or a silicon guarantee.
+      // The native-cell RAM startup counter failure in docs/95 shows
+      // why initialization must be checked beyond procedural RTL.
       //
       // The cost of the branch form, stated: in SIMULATION this counter
       // does not include any correction that happened while the read

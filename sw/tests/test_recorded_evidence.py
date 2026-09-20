@@ -88,7 +88,7 @@ def test_every_cited_run_has_its_evidence_committed(tag, name):
 
 
 @pytest.mark.skipif(not RUNS, reason="scripts/collect_evidence.py is not in this tree")
-def test_the_record_matches_the_run_tree_where_both_exist():
+def test_records_match_available_originals_including_recovered_snapshots(historical_snapshot):
     """A record that has drifted from its run is a record of nothing.
 
     ONE test and not thirty. The first version parametrised over every
@@ -106,20 +106,21 @@ def test_the_record_matches_the_run_tree_where_both_exist():
             live = base / ("final/metrics.json" if name == "metrics.json"
                            else "resolved.json")
             if not live.is_file():
+                recovered = historical_snapshot / live.relative_to(ROOT)
+                if recovered.is_file():
+                    # Original raw file restored from a separately hash-pinned
+                    # snapshot. This comparison is not a current physical rerun.
+                    recorded = ev.recorded_path(tag, name)
+                    assert recovered.read_bytes() == recorded.read_bytes(), (
+                        f'Recovered original differs from committed record: {tag}/{name}')
+                    checked.append('recovered original: %s/%s' % (tag, name))
+                    continue
                 absent.append("%s/%s" % (tag, name))
                 continue
             # evidence.load raises on a mismatch, naming both paths.
             got = ev.load(tag, name, live)
             assert got is not None and got.is_live
             checked.append("%s/%s" % (tag, name))
-    if not checked:
-        pytest.skip(
-            "no run tree for any of the %d cited runs is on this machine, "
-            "so there is nothing to compare the records against. runs/ is "
-            "gitignored build output; the records are what make the claims "
-            "checkable here, and this comparison is what a machine holding "
-            "the runs does. %d files were looked for."
-            % (len(RUNS), len(absent)))
     assert checked, "nothing compared"
 
 

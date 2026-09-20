@@ -406,3 +406,26 @@ local native-boot statements and closes the diagnosed power-on telemetry
 read defect; the original failure remains the negative baseline. It does
 not establish SDF timing, radiation qualification or final-image physical
 acceptance. The independent hosted rebuild remains a separate run.
+
+**Dated update, 2026-09-20: F6 original artifacts recovered.** The previous
+absence statements above are superseded for the signoff-6x2 DEF/netlist,
+s70-rom0 netlist and g0gates2 raw reports. A separate old local checkout
+retained the exact original files: all three large-file hashes match the
+pre-existing digest ledger, and recovered metrics/configs match the existing
+records. The [2.7 MB selected snapshot](evidence/historical-recovery-20260920.json)
+includes original JSON-header provenance and actual directory inventories.
+It is restored only into test scratch space; frozen trees are untouched.
+All 31 affected historical checks now pass, including real placement and
+netlist mutation measurements. Five additional prepared-source checks pass
+using [byte-replayed pinned dependencies](evidence/prepared-sources-20260920.json).
+Archive corruption, traversal, missing/extra/duplicate files, links and live
+file drift are rejected. [Control evidence](evidence/historical-recovery-controls-20260920.json).
+F6's full fresh-clone acceptance is pending the next remote replay.
+
+The halo's [two-net repair](evidence/ihp-two-net-route-20260920.json) passes
+whole-block native route DRC (zero markers), antenna (zero nets/pins),
+unchanged-cell/pin comparison and geometric continuity of both changed nets.
+A removed-wire negative control fails as expected. The earlier six-violation
+route is rejected. Own GDS has been generated; independent Magic is running
+with unchanged native rules. Neither this result nor the old 438-marker
+result is a verdict on the corrected-loader physical candidate.

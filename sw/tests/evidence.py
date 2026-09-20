@@ -193,3 +193,72 @@ def recorded_netlist(metadata, output_dir, live_root=ROOT):
     with output.open("xb") as stream:
         stream.write(data)
     return output
+
+
+def recorded_bundle(metadata, output_dir, live_root=ROOT):
+    """Restore selected original files into an empty scratch root, not a live run.
+
+    Validate the complete archive before writing. Original files present in the
+    checkout must agree with their recorded identities. No tar extraction API,
+    symlinks, extra members, oversized payloads or path traversal is accepted.
+    """
+    import tarfile
+    metadata, output_dir = pathlib.Path(metadata), pathlib.Path(output_dir)
+    record = json.loads(metadata.read_text())
+
+    def relative(name):
+        path = pathlib.PurePosixPath(name)
+        assert name not in ('', '.') and not path.is_absolute() and '..' not in path.parts, 'Unsafe bundle path'
+        assert str(path) == name and '\\' not in name, 'Noncanonical bundle path'
+        return path
+
+    archive_name = record['archive']['file']
+    assert relative(archive_name).name == archive_name, 'Unsafe archive path'
+    archive = metadata.parent / archive_name
+    assert archive.resolve().parent == metadata.parent.resolve(), 'Archive symlink escape'
+    assert archive.stat().st_size == record['archive']['bytes'], 'Archive size mismatch'
+    assert _digest(archive) == record['archive']['sha256'], 'Archive digest mismatch'
+    notice = record['component_notices']
+    assert relative(notice['file']).name == notice['file'], 'Unsafe notice path'
+    assert (metadata.parent / notice['file']).resolve().parent == metadata.parent.resolve(), 'Notice symlink escape'
+    assert _digest(metadata.parent / notice['file']) == notice['sha256'], 'Notice mismatch'
+    directories, files = record['directories'], record['files']
+    assert len(set(directories)) == len(directories), 'Repeated directory'
+    assert not set(directories) & files.keys(), 'File/directory collision'
+    for name in directories + list(files):
+        path = relative(name)
+        assert not any(str(parent) in files for parent in path.parents), 'File used as directory'
+    assert sum(row['bytes'] for row in files.values()) <= 256 * 1024**2, 'Bundle too large'
+    for name, row in files.items():
+        assert isinstance(row['bytes'], int) and 0 <= row['bytes'] <= 64 * 1024**2, 'Invalid file size'
+        live = pathlib.Path(live_root) / name
+        if live.is_file():
+            assert _digest(live) == row['sha256'], 'Live artifact differs: ' + name
+    data, seen = {}, set()
+    with tarfile.open(archive, 'r:gz') as stream:
+        for member in stream:
+            name = member.name
+            relative(name)
+            assert name not in seen, 'Duplicate archive member'
+            seen.add(name)
+            if name in directories:
+                assert member.isdir(), 'Expected directory'
+                continue
+            assert name in files and member.isfile(), 'Unexpected member or link'
+            row = files[name]
+            assert member.size == row['bytes'], 'Member size mismatch'
+            content = stream.extractfile(member).read(row['bytes'] + 1)
+            assert len(content) == row['bytes'], 'Truncated member'
+            assert hashlib.sha256(content).hexdigest() == row['sha256'], 'Member digest mismatch'
+            data[name] = content
+    assert seen == set(directories) | files.keys(), 'Missing archive members'
+    assert not output_dir.exists() or not any(output_dir.iterdir()), 'Scratch root must be empty'
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for name in directories:
+        (output_dir / name).mkdir(parents=True, exist_ok=True)
+    for name, content in data.items():
+        destination = output_dir / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with destination.open('xb') as output:
+            output.write(content)
+    return output_dir

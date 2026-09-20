@@ -57,6 +57,16 @@ REGENERATE = ("hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 "
               "names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v")
 
 
+@pytest.fixture(scope='module', autouse=True)
+def recovered_original_netlist(historical_snapshot):
+    global NETLIST
+    original = NETLIST
+    if not NETLIST.is_file():
+        NETLIST = historical_snapshot / NETLIST.relative_to(ROOT)
+    yield
+    NETLIST = original
+
+
 def run(*args):
     if not NETLIST.is_file():
         pytest.skip(f"{NETLIST.relative_to(ROOT)} is a git-ignored build "

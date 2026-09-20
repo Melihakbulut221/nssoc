@@ -243,3 +243,11 @@ the actual downloaded CI netlist and the local netlist now compile with
 unmodified IHP models. This compile control is not a hosted boot PASS; the
 full hosted retry remains necessary. See
 [evidence](evidence/native-boot-hosted-alias-20260920.json).
+
+Correction, 20 September 2026: the old `soc_scrub.v` / `soc_busstat.v`
+comments implied that a branch-based increment prevents startup X poisoning
+in synthesized hardware. That inference was wrong. A procedural Verilog
+branch can suppress an unknown event in RTL simulation while its mapped
+logic still propagates X. Both comments now state that limit; the counter
+logic is unchanged. The native full-boot evidence above verifies the loader
+initialization fix, rather than relying on that RTL simulation behaviour.

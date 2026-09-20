@@ -959,10 +959,7 @@ NETLIST_RAILS = (
 _NETLIST_CELL = re.compile(r"^\s*(sg13g2_\w+)\s+(\\?\S+)\s*\(", re.M)
 
 
-@pytest.mark.skipif(not SIGNOFF_NETLIST.is_file(),
-                    reason="sign-off netlist not present in this checkout" +
-                    artifact_identity(SIGNOFF_NETLIST))
-def test_the_shipped_netlist_holds_one_flip_flop_per_rail():
+def test_the_shipped_netlist_holds_one_flip_flop_per_rail(historical_snapshot):
     """Eight rails, one flip-flop each, counted in
     hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/.
 
@@ -974,7 +971,9 @@ def test_the_shipped_netlist_holds_one_flip_flop_per_rail():
     that would be an improvement rather than a failure. What must not
     change is the number of storage bits.
     """
-    cells = _NETLIST_CELL.findall(SIGNOFF_NETLIST.read_text())
+    netlist = (SIGNOFF_NETLIST if SIGNOFF_NETLIST.is_file() else
+               historical_snapshot / SIGNOFF_NETLIST.relative_to(ROOT))
+    cells = _NETLIST_CELL.findall(netlist.read_text())
     found = {}
     for rail in NETLIST_RAILS:
         found[rail] = sum(
@@ -1387,6 +1386,17 @@ RUN_TREES = (
 _NETLIST_CELL = re.compile(r"^\s*([A-Za-z]\w*)\s+(\\?\S+)\s*\(", re.M)
 
 
+_RECOVERED_HARDENING_TREE = None
+
+
+@pytest.fixture(scope='module', autouse=True)
+def recovered_hardening_tree(historical_snapshot):
+    global _RECOVERED_HARDENING_TREE
+    _RECOVERED_HARDENING_TREE = historical_snapshot / 'hw/openlane/pilot_ihp/runs'
+    yield
+    _RECOVERED_HARDENING_TREE = None
+
+
 def _hardening_netlists():
     """Final netlists of runs configured the way this design requires.
 
@@ -1403,7 +1413,12 @@ def _hardening_netlists():
     on the very symptom these tests exist to catch.
     """
     found = []
-    for tree in RUN_TREES:
+    trees = list(RUN_TREES)
+    if _RECOVERED_HARDENING_TREE is not None:
+        # Restored original netlist, resolved config and original JSON header;
+        # provenance is checked from that header, never a freshly set mtime.
+        trees.append(_RECOVERED_HARDENING_TREE)
+    for tree in trees:
         if not tree.is_dir():
             continue
         for run in sorted(tree.iterdir()):

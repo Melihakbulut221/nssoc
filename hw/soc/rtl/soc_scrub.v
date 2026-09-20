@@ -189,9 +189,11 @@ module soc_scrub #(
 
   // ---- the record: one counter and one sticky per source, POR domain
   //
-  // The event is a BRANCH CONDITION and not an addend, for the reason
-  // soc_busstat.v records at length: an X on an event line in the first
-  // cycles after reset must not poison a counter for the run.
+  // Branch-based increments retain the intended RTL event semantics.
+  // They do not filter unknown events in mapped gates: uninitialized RAM
+  // can poison startup telemetry before the first sweep. The cold loader
+  // clears RAM records after initialization without first reading them
+  // (docs/95-immutable-boot-rom.md). Warm-boot records remain preserved.
   wire [CNT_W-1:0] cnt    [0:NSRC-1];
   wire [NSRC-1:0]  sticky;
 

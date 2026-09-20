@@ -991,15 +991,14 @@ def test_the_npu_queues_report_their_protection_somewhere():
             "both of its destinations: {}".format(pat))
 
 
-def test_the_ibex_top_patch_applies_to_the_pinned_output():
+def test_the_ibex_top_patch_applies_to_the_pinned_output(prepared_sources):
     """The fault port reaches the SoC through three hunks that
     hw/soc/flow/ibex_fault_port.py applies to hw/soc/gen/ibex_top.v.
     Every anchor is asserted to occur exactly once, so a pin that moves
     the port list stops the build rather than patching the wrong place;
     this runs that check without building."""
-    gen = ROOT / "hw" / "soc" / "gen" / "ibex_top.v"
-    if not gen.is_file():
-        pytest.skip("hw/soc/gen is empty: run flow/sv2v_ibex.sh first")
+    gen = prepared_sources / "gen/ibex_top.v"
+    assert gen.is_file(), "Verified prepared source missing"
     sys.path.insert(0, str(ROOT / "hw" / "soc" / "flow"))
     import importlib.util
     spec = importlib.util.spec_from_file_location(
@@ -1908,7 +1907,7 @@ def test_the_verdict_rule_is_one_file_and_not_two_copies_of_one():
 
 
 @needs_yosys
-def test_the_whole_soc_elaborates_as_one_design(workdir):
+def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources):
     """The thing that had never been done. `hierarchy -check -top
     soc_top` over the whole source list -- Ibex, the fabric, both
     memories, every peripheral -- and it must resolve every reference.
@@ -1923,16 +1922,10 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
     about area, timing, or what the optimiser does. docs/45 is the
     measurement; this is the guard that the design still elaborates as
     one design."""
-    gen = ROOT / "hw" / "soc" / "gen"
-    if not gen.is_dir() or not list(gen.glob("*.v")):
-        pytest.skip("hw/soc/gen is empty: run flow/sv2v_ibex.sh first")
-    genp = ROOT / "hw" / "soc" / "genp" / "ibex_top.v"
-    if not genp.is_file():
-        pytest.skip("hw/soc/genp/ibex_top.v is absent: run a SoC flow first")
-
+    gen = prepared_sources / "gen"
+    genp = prepared_sources / "genp/ibex_top.v"
     interface_bundle = gen / "interfaces.bundle.vh"
-    if not interface_bundle.is_file():
-        pytest.skip("interface IP is absent: run make soc-interfaces-prepare")
+    assert genp.is_file() and interface_bundle.is_file(), "Verified dependency snapshot incomplete"
     bb = Path(workdir) / "soc_mem_bb.v"
     real = _soc_mem_ports()
     decls = ",\n".join(
