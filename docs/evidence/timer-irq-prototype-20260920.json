@@ -71,5 +71,72 @@
       "bytes": 5211046,
       "sha256": "9cbea70877ab7e9f129569040c84aa9282b437f0d5f8102356eb6168a7fbb267"
     }
-  ]
+  ],
+  "writeback_counterfactual": {
+    "date": "2026-09-20",
+    "status": "FAIL observed; run stopped after decisive failure",
+    "scope": "Separate copied-top WritebackStage=1 experiment with CLKGATE=0. The mtime test still fails. This rules out fabric/NPU clock gating as a sufficient explanation for the earlier WB1 failure in this configuration; it does not identify the root cause. Shipping WritebackStage=0 remains unchanged.",
+    "first_attempt": {
+      "scope": "WB1 plus CLKGATE=0 counterfactual, isolated source copy.",
+      "exit_code": 124,
+      "status": "NO VERDICT: wall-clock timeout after 1800s; buffered simulation output incomplete",
+      "log_sha256": "e971c821420dba23cbdfbec212a623057d7383d44b608ce59cb5875e136c4b7b",
+      "continuation": "Replay the exact compiled VVP and flash with line-buffered output and 5400s limit; no source rebuild or altered inputs."
+    },
+    "observed": "mtime a=0x00000000 b=0x00000000 mcause=0x00000000; FAIL test 0x0000000f",
+    "stop": "Only VVP PID212210 was sent SIGTERM after this failure. No full watchdog/reset completion verdict is claimed for this replay.",
+    "command": "timeout 5400 stdbuf -oL -eL ~/.local/opt/iverilog12/usr/bin/vvp -M ~/.local/opt/iverilog12/usr/lib/x86_64-linux-gnu/ivl hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/tb_soc.vvp +flash0=hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/flash0.hex +strap=0 +ram_random=1",
+    "inputs": {
+      "scope": "Isolated experiment: only Ibex WritebackStage is 1 instead of 0. Shipping RTL, source flow and active physical run unchanged. Synthesis and simulation driver copies only redirect soc_top source and resolve SOC_DIR to original repository.",
+      "sources": {
+        "hw/soc/rtl/soc_top.v": "90154656b104f3d977ca4fe55bc8b7cb9ef68c11f79d5bd6d5261dc979dc12ad",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/soc_top.v": "2b4b81353ae3dd3e2a1cd0eebf02bc876de4ee06480505391a4d82573f704fa0",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/syn_soc_top.sh": "2af7d42811351918a7bebc68055a8fd8d896b3297c47ea5dadb63cad180c7931",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim_soc.sh": "703386896e306af01bbed3ad262ab95e4f9c958ec7d63c724cc8db30e52cfd99"
+      },
+      "rejected_builds": [
+        {
+          "path": "syn-synpre0-rejected",
+          "reason": "SOC_RF_SYNPRE is a simulation knob; synthesis needs IBEX_RF_SYNPRE. Terminated with SIGTERM, no result adopted."
+        },
+        {
+          "path": "syn-no-eth-sram-rejected",
+          "reason": "Missing SOC_ETH_SRAM=1 mapped Ethernet buffers to flops; incompatible comparison, no result adopted."
+        }
+      ],
+      "current_command": "IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1 SOC_WAKE_GNT=0 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 bash hw/soc/out/external-review-20260919/ibex-wb1-probe/syn_soc_top.sh 20 hw/soc/out/external-review-20260919/ibex-wb1-probe/syn"
+    },
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/soc_top.v",
+        "bytes": 57028,
+        "sha256": "2b4b81353ae3dd3e2a1cd0eebf02bc876de4ee06480505391a4d82573f704fa0"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/simulation-clkgate0-replay-20260920.log",
+        "bytes": 744,
+        "sha256": "9f274b5e3aab8148a93ad11a9bcf0e05471e90f2142119ec16a205d6de60fdac"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/soc_param_override.v",
+        "bytes": 607,
+        "sha256": "68ee0a33a7403911bed86b4235a3f97c8b4c53fb85f1adf0e7fb788e34b2c3d3"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/flash0.hex",
+        "bytes": 393216,
+        "sha256": "cdc79a3352649e99d819bf2462fbac0477edc5a959706120cb61327d64ca21ae"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/test_soc.hex",
+        "bytes": 18144,
+        "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/tb_soc.vvp",
+        "bytes": 5212173,
+        "sha256": "bd2b81e0a928365e11c3bf0942757f8b950441ab993a0ac873ba00d4e897b669"
+      }
+    ]
+  }
 }

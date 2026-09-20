@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "scope": "Three completed SRAM reader/deck arms plus original-GDS contact measurements. Pinned-raw remains pending. No full-chip Magic verdict, rule waiver or excluded geometry.",
+  "scope": "Entire unchanged 512x16 SRAM GDS compared with pinned and upstream Magic decks, each with raw and upstream-helper readers; all four arms complete. Scope does not cover a full-chip layout. Contact geometry follow-up and historical measurements retained.",
   "measurement": {
     "arm": "upstream-helper",
     "command": [
@@ -153,6 +153,46 @@
       "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/boxes.tcl",
       "bytes": 1469101,
       "sha256": "14c5dfcad19bf0db8114fc47b33b30e0a160e7a23308a23b59bcf299b8310caf"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/inputs.json",
+      "bytes": 797,
+      "sha256": "c77ef9ca3348e7f6b93fcaa32ed13bc4f7b55f9b8fd50964de762d8f4b040110"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/result.json",
+      "bytes": 890,
+      "sha256": "95704704b1d928b4f194602ba1e2d3de208a85644ee23e9bc8c0c8c86f540b80"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/run.tcl",
+      "bytes": 1163,
+      "sha256": "028bbab544c3f1528f808987620ab5e256b9221b775ffae6bb1683250c3e99b3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/run.log",
+      "bytes": 8881,
+      "sha256": "3dca1241307661738e784f71b0f3ba9cb1a18678c614bcb5a9fc3e74fc08881b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/categories.tsv",
+      "bytes": 529,
+      "sha256": "175b01280dd9e14cfffb139ec261b1a89e7534af1388ee8d9679cc19d8dbbbc0"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/boxes.tcl",
+      "bytes": 14136773,
+      "sha256": "ca4803411a226d217c0a794fea5366f3865e31d2e9b06c6cf7172e213c574095"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/count.txt",
+      "bytes": 7,
+      "sha256": "c5c48b9bde702889c0e9fe5bee2c29ff7c06680a61215c561c37a35cad5ff67a"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/results.json",
+      "bytes": 3892,
+      "sha256": "aab38b6090719e9dde3519ac1d412a05f7383819b88a3673bb61488d092f9d5e"
     }
   ],
   "geometry_followup": {
@@ -278,5 +318,72 @@
       }
     ],
     "interpretation": "The direct hierarchical reader reports many extra hierarchy/overlap/metal-area errors. The upstream helper eliminates those in its measured arm while retaining the 21 general and 36 SRAM contact enclosure violations. Neither arm passes, and the helper changes are not treated as excluded geometry or an independent foundry waiver."
-  }
+  },
+  "pinned_raw_followup": {
+    "date": "2026-09-20",
+    "measurement": {
+      "arm": "pinned-raw",
+      "command": [
+        "/home/hasanmelih/.local/opt/llbin/magic",
+        "-dnull",
+        "-noconsole",
+        "-rcfile",
+        "/home/hasanmelih/.ciel/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-raw/run.tcl"
+      ],
+      "gds_sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e",
+      "script_sha256": "028bbab544c3f1528f808987620ab5e256b9221b775ffae6bb1683250c3e99b3",
+      "deck": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+      "upstream_read_sram_gds_helper": false,
+      "scope": "Entire unchanged 512x16 macro GDS, full Magic DRC style, euclidean on. No black boxes or excluded geometry/rules. Count is Magic raw error boxes, not KLayout markers.",
+      "returncode": 0,
+      "elapsed_s": 1931.6146077059966,
+      "boxes": 557149,
+      "status": "FAIL"
+    },
+    "categories": [
+      {
+        "boxes": 376,
+        "rule": "This layer can't abut or partially overlap between subcells"
+      },
+      {
+        "boxes": 3505,
+        "rule": "N-diffusion overlap of N-diffusion contact < 14 (Cnt.c)"
+      },
+      {
+        "boxes": 25944,
+        "rule": "Can't overlap those layers"
+      },
+      {
+        "boxes": 30720,
+        "rule": "Metal2 minimum area < 5760 (M2.d)"
+      },
+      {
+        "boxes": 172362,
+        "rule": "N-Diffusion spacing to N-well < 62 (NW.d)"
+      },
+      {
+        "boxes": 207360,
+        "rule": "N-well overlap of P-Diffusion < 62 (NW.c)"
+      },
+      {
+        "boxes": 82944,
+        "rule": "P-diffusion overlap of P-diffusion contact < 14 (Cnt.c)"
+      },
+      {
+        "boxes": 594,
+        "rule": "Extension of tie diffusion beyond tie contact < 6.0um (LU.d, LU.d1)"
+      },
+      {
+        "boxes": 64,
+        "rule": "N-diff distance to P-tap must be < 20.0um (LU.b)"
+      },
+      {
+        "boxes": 33280,
+        "rule": "Poly overhang of transistor < 36 (Gat.c)"
+      }
+    ],
+    "interpretation": "All four controlled SRAM reader/deck combinations are complete and FAIL. This completes the experiment, not SRAM DRC closure. No geometry, deck rule or threshold was edited, narrowed or waived."
+  },
+  "scope_before_completed_comparison": "Three completed SRAM reader/deck arms plus original-GDS contact measurements. Pinned-raw remains pending. No full-chip Magic verdict, rule waiver or excluded geometry."
 }

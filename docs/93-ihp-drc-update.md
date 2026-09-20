@@ -180,3 +180,9 @@ contact-enclosure boxes. The helper-reader arm's 57 boxes and this raw-reader
 result use the same unchanged macro GDS. Their different handling of hierarchy
 is consequential; neither result provides a passing Magic verdict or a waiver.
 The pinned-deck raw-reader comparison is still running.
+
+**Dated update, 2026-09-20:** the pinned raw-reader arm has also completed:
+**557,149 boxes**, FAIL, in **1,931.615 s**. All four arms are now finished.
+The [follow-up record](evidence/ihp-magic-sram-followup-20260920.json) retains
+its ten categories and exact commands/source hashes. Completion of this
+comparison does not close Magic DRC; none of the four combinations passes.

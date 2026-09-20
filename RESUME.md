@@ -317,3 +317,26 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - Yeni kanıt manifesti75dosya,329tarihselrow. İlk ara digest kontrolü yeni
   ECO10 kaydı manifest güncellemesinden önce üretildiği için FAIL olmuştu;
   güncel manifestle son doküman/digest kontrolleri9 PASS.
+
+## 04:40 TRT ek devam notu
+
+- ECO7 native tamamlandı: route DRC0, bağımsız antenna0; üç köşe holdPASS,
+  slowsetup -0.5292779698ns /109ihlal. Slow slew30/cap10/fanout881 açık.
+  docs/evidence/ethernet-eco7-extracted-20260920.json; yeni geometry için
+  bağımsız DRC/XOR/LVS henüz yok. Exact post-route bağlantı kontrolü PASS.
+- ECO12/13/14 tamamlandı. 35 testli guard artık pozitif stateless dlygate'i
+  gerçek Liberty işlevi/state/pin ile kontrol ediyor. ECO13 1489clockbuffer
+  ile fanout843->101; ECO14 165buffer ile fanout/cap0 ama slowsetup
+  -2.2517917057ns geriledi. Yeni küçük tamponlar kritik yolu yavaşlatıyor.
+  ECO15 timing-eco15-buffer-strength session34170 AKTİF: sadece ECO14'ün
+  yeni buf1/buf4 hücrelerini buf8 yapıp tam GRT; çıkışta aynı guard gerekir.
+- Ethernet gerçek CPU/GMII loopback GL probe session69172/PID222300 AKTİF:
+  ethernet-gate-probe/gl-run.log. ECO13 NL, 50MHz core/125MHz GMII,
+  8frame/2171payloadbyte, CRC/FIFOwrap/IRQ. Timeout2400; henüz verdict yok.
+- Magic SRAM 2x2 tamamlandı: pinned-raw557149FAIL; upstream-raw57916FAIL,
+  upstream-helper57FAIL,pinned-helper499098FAIL. Kayıt tüm kolları içeriyor.
+  Full baseline Magic PID78927 hâlâ aktif (DEF/LEFabstract, GDSmacro değil).
+- WB1+CLKGATE0 replay mtime0/test15FAIL, yalnız VVP212210 SIGTERM ile
+  durduruldu; rootcause bulunmadı, shippingWB0 değişmedi. İlgili timer
+  prototip kaydı güncel; NOVERDICT timeout ile FAIL ayrımı korunuyor.
+- Disk ~6.5GB boş; yeni full native flow öncesi alan kontrolü yapın.

@@ -420,3 +420,35 @@ is still **-0.502222 ns** on the processor/fault-output path; fast hold is
 **-0.389087 ns** and typical hold **-0.131440 ns**. These remain failing
 estimates. This Boolean check does not prove analog glitches, power-up X
 behaviour or final routed timing, and no release gate is closed by it alone.
+
+### Completed ECO7 extraction and later repairs, 2026-09-20
+
+**Dated update:** the ECO7 native flow described above as pending is now
+complete. Its [extracted record](evidence/ethernet-eco7-extracted-20260920.json)
+reports zero detailed-route DRC markers and zero violations in both the route
+antenna report and independent antenna check. All three nominal-RC/PVT runs
+pass hold. Fast/typical/slow setup WNS is **+3.284046 / +2.353035 /
+-0.529278 ns**; slow setup still has **109 violations**. All ten GMII TX
+ports pass both stated output budgets. Slow slew (30), capacitance (10) and
+fanout (881) remain open. Route DRC zero does not establish Magic/KLayout DRC.
+
+A separate post-route comparison preserves all 94,555 input instances and
+all their connections, adding only 481 antenna and 254,927 fill/decap cells.
+This checks emitted logical connectivity, not power connectivity or LVS.
+The record binds the comparison script, exact artifacts and native commands.
+
+The [clock/electrical repair experiments](evidence/ethernet-clock-repair-20260920.json)
+remain global-route estimates. ECO12 passes its structural guard with 145
+positive stateless cells added (84 normal buffers, 61 delay cells). ECO13
+adds 1,489 clock buffers, costing 35,121.3408 µm² in cell area, and reduces
+fanout violations from 843 to 101. ECO14 removes the remaining estimated
+fanout/capacitance violations with 165 buffers, but slow setup regresses to
+**-2.251792 ns** and slew still fails. It is not accepted as timing closure;
+the newly inserted small buffers require a separate strength experiment.
+
+The permanent guard's expanded regression now passes **35 tests**, including
+actual positive-delay functions, inverted variants and a hidden-state negative
+control. This extends the earlier 26/31-test records without replacing them.
+The isolated WB1/CLKGATE0 CPU counterfactual still fails the mtime check and
+was stopped after that decisive failure; it is recorded with the timer-IRQ
+prototype and is not adopted into the shipping core.

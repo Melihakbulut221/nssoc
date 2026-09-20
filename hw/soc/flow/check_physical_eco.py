@@ -4,7 +4,7 @@
 """Check restricted flat OpenROAD sizing/buffer ECOs against pinned inputs.
 
 Requires unchanged original instances, ports, aliases and original pin nets
-after contracting non-inverting buffers. Substituted cells must have identical
+after contracting non-inverting buffers and stateless delay cells. Substituted cells must have identical
 Liberty pin functions and complete ff/latch state declarations. Added buffers
 must form singly driven acyclic branches. SRAM bus directions come only from
 explicitly hash-pinned macro libraries; no installed-PDK discovery is implicit.
@@ -88,7 +88,7 @@ def check(before, after, inputs):
     graph = {}
     for name in added:
         master, pins = b[name]
-        if not (re.fullmatch(r'sg13g2_buf_(?:1|2|4|8|16)', master)
+        if not (re.fullmatch(r'sg13g2_(?:buf_(?:1|2|4|8|16)|dlygate4sd[123]_1)', master)
                 and set(pins) == {'A', 'X'}):
             raise ValueError((name, master, pins))
         for value in pins.values():
@@ -244,7 +244,11 @@ def check(before, after, inputs):
         raise ValueError('Buffer cycle')
     return {
         'original_instances': len(a),
-        'added_noninverting_buffers': len(added),
+        'added_stateless_positive_cells': len(added),
+        'added_noninverting_buffers': sum(b[name][0].startswith('sg13g2_buf_')
+                                        for name in added),
+        'added_delay_cells': sum(b[name][0].startswith('sg13g2_dlygate')
+                                 for name in added),
         'equivalent_combinational_substitutions': sum(
             not shape(c['old'])[1] for c in changed.values()),
         'equivalent_sequential_substitutions': sum(

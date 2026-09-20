@@ -67,3 +67,15 @@ part of F6. The later [ECO7 functional controls](evidence/ethernet-eco7-controls
 pass structural logic/state checks and the fault-free watchdog-armed workload.
 Its native routing/extraction is still pending; the ECO2 timing result above
 remains the latest completed optimized physical measurement.
+
+**Dated update, 2026-09-20:** ECO7 is no longer pending. Its
+[native extracted measurement](evidence/ethernet-eco7-extracted-20260920.json)
+passes hold in all three corners, route DRC and both antenna checks. Slow
+setup remains **-0.529278 ns / 109 violations**, with slew/capacitance/fanout
+failures. This supersedes ECO2 as the latest completed optimized native
+measurement; independent ECO7 DRC/XOR/LVS are still separate open gates.
+The [later repair experiments](evidence/ethernet-clock-repair-20260920.json)
+reduce estimated fanout to zero but still fail timing and slew. None is a
+released final layout. All four SRAM Magic comparison arms are complete and
+fail; [the evidence](evidence/ihp-magic-sram-followup-20260920.json) preserves
+the deck/reader distinctions rather than waiving a failing result.

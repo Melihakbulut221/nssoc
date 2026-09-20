@@ -38,7 +38,7 @@ def digest(path):
 @pytest.fixture
 def design(tmp_path):
     lib = tmp_path / 'std.lib'
-    lib.write_text('library (test) {\n' + ''.join(cell('sg13g2_buf_' + str(n)) for n in (1, 2, 4, 8, 16)) + cell('FF1', state=('D', 'CLK')) + cell('FF2', state=('D', 'CLK')) + '}\n')
+    lib.write_text('library (test) {\n' + ''.join(cell('sg13g2_buf_' + str(n)) for n in (1, 2, 4, 8, 16)) + ''.join(cell('sg13g2_dlygate4sd' + str(n) + '_1') for n in (1, 2, 3)) + cell('FF1', state=('D', 'CLK')) + cell('FF2', state=('D', 'CLK')) + '}\n')
     macro = tmp_path / 'macro.lib'
     macro.write_text('library(test) { cell(RM_TEST) { bus(A_DOUT) { direction : output; pin(A_DOUT[1:0]) { capacitance : 0; } } } }')
     before = tmp_path / 'before.v'
@@ -53,20 +53,41 @@ def test_bus_and_equivalent_sizing_pass(design):
     before, after, inputs, _, _ = design
     result = eco.check(before, after, inputs)
     assert result['added_noninverting_buffers'] == 1
+    assert result['added_stateless_positive_cells'] == 1
     assert result['equivalent_combinational_substitutions'] == 1
 
 
-@pytest.mark.parametrize('strength', [1, 2, 4, 8, 16])
-def test_each_legal_buffer_strength_uses_the_library_function(design, strength):
+@pytest.mark.parametrize('master', [
+    *['sg13g2_buf_' + str(n) for n in (1, 2, 4, 8, 16)],
+    *['sg13g2_dlygate4sd' + str(n) + '_1' for n in (1, 2, 3)],
+])
+def test_each_legal_buffer_or_delay_uses_the_library_function(design, master):
     before, after, inputs, lib, _ = design
-    master = 'sg13g2_buf_' + str(strength)
     after.write_text(after.read_text().replace('sg13g2_buf_8 eco', master + ' eco'))
     inputs['after_sha256'] = digest(after)
-    assert eco.check(before, after, inputs)['added_noninverting_buffers'] == 1
+    result = eco.check(before, after, inputs)
+    assert result['added_stateless_positive_cells'] == 1
+    assert result['added_noninverting_buffers'] == int('buf_' in master)
+    assert result['added_delay_cells'] == int('dlygate' in master)
     # Same family name and pin list, but a corrupted logic function must fail.
     lib.write_text(lib.read_text().replace(cell(master), cell(master, '!A')))
     inputs['liberty_sha256'] = digest(lib)
     with pytest.raises(ValueError):
+        eco.check(before, after, inputs)
+
+
+def test_positive_delay_with_hidden_state_is_rejected(design):
+    before, after, inputs, lib, _ = design
+    master = 'sg13g2_dlygate4sd3_1'
+    after.write_text(after.read_text().replace('sg13g2_buf_8 eco', master + ' eco'))
+    inputs['after_sha256'] = digest(after)
+    # Keeping function A and the expected pins must not conceal new storage.
+    ordinary = cell(master)
+    stateful = ordinary.replace('    pin (A)',
+        '    ff (IQ, IQ_N) { next_state : "A"; clocked_on : "A"; }\n    pin (A)')
+    lib.write_text(lib.read_text().replace(ordinary, stateful))
+    inputs['liberty_sha256'] = digest(lib)
+    with pytest.raises(ValueError, match='not a stateless positive buffer'):
         eco.check(before, after, inputs)
 
 
