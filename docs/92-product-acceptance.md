@@ -448,3 +448,18 @@ withdrawn. The corrected replay above leaves old measurements intact and
 adds the actual failing 5% result. A new Tcl guard rejects truncating,
 missing and invalid values before reading the ODB/SDC. The corrected loader
 is being implemented with the original native Tcl environment (`5.0`).
+
+**Paper measurement follow-up, 2026-09-20:** all six replica-placement
+claims now execute the unchanged instrument against the exact recovered
+DEF/netlist. The command prints its historical scope. The paper checker
+now reports **26 re-derived, 15 manual, one needing build output, zero wrong**;
+[command and controls](evidence/recorded-paper-replicas-20260920.json).
+The remaining absent output is the historical LVS log; no LVS is inferred.
+
+The final missing paper output was also recovered: the 67,302-byte
+[s77lvs-b-blackbox stdout](evidence/s77lvs-b-blackbox/recovery.json) exactly
+matches its pre-existing digest (`53505c83…`). The checker now reports
+**27 re-derived, 15 manual, zero needing build output, zero wrong**.
+Changed recorded bytes or a disagreeing live log fail. The historical
+62,256-device / 61,912-net match still abstracts SRAM interiors and predates
+the current RTL; no new LVS run or transistor-level verdict is inferred.

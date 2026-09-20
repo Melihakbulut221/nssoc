@@ -18,11 +18,13 @@ compute. A test that reads these files reports *checked against the
 recorded artefact*, which is a weaker claim than *checked*, and the
 difference is deliberate.
 
-**What is not here**: netlists, DEF, GDS, SPICE, reports, logs. They
-are large and they stay in the gitignored `runs/` trees. Any claim that
-needs one of them is still a skip, and the skip message names the
-digest in `docs/80-artefact-digests.tsv` that the absent file would
-have to match.
+Selected original DEF/netlist snapshots and raw reports were recovered on
+2026-09-20 and match their pre-existing digests. Separate archive manifests
+identify their provenance and restore them only into test scratch space.
+The small `s77lvs-b-blackbox/netgen-lvs.log` is also retained byte-for-byte.
+None of these historical files supplies current-layout signoff or SRAM
+transistor verification. Full GDS and other absent outputs remain in ignored
+run trees; their recorded digests identify the bytes required for a replay.
 
 Git versions these records. Where the original run tree is available,
 `test_recorded_evidence.py` compares its files with the recorded copies.
@@ -45,6 +47,7 @@ Reading this record is not a re-execution of those commands.
 | `npu2` | `hw/soc/pnr/runs` | the accelerator's own layout |
 | `s71boot` | `hw/soc/pnr/runs` | the boot-hardened six-macro layout |
 | `s77gate` | `hw/soc/pnr/runs` | the gate-level clock-gating run |
+| `s77lvs-b-blackbox` | `hw/soc/pnr/runs` | paper decks.lvs_matches: original SRAM-black-box LVS stdout; predates current RTL |
 | `s81drv` | `hw/soc/pnr/runs` | the design-rule-violation arm of the same study |
 | `s81ptd` | `hw/soc/pnr/runs` | the power and timing-derate study |
 | `s81timing` | `hw/soc/pnr/runs` | the timing-repair arm of the same study |

@@ -1254,7 +1254,8 @@ def fmt_metrics(d):
 def evidence_rows():
     """Tracked evidence, independently hashable on a fresh clone."""
     directory = ROOT / "docs/evidence"
-    files = sorted([*directory.rglob("*.json"), *directory.rglob("*.v.gz")])
+    files = sorted([*directory.rglob("*.json"), *directory.rglob("*.v.gz"),
+                    *directory.rglob("*.log")])
     return [{"group": "docs-evidence", "cites": "docs/89;docs/90",
              "role": "netlist-gzip" if p.name.endswith(".v.gz") else "text",
              "path": p.relative_to(ROOT).as_posix(),

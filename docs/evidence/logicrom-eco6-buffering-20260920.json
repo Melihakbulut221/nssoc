@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "Structural PASS; estimated setup/electrical FAIL",
+  "status": "HISTORICAL ZERO-DERATE ESTIMATE: Structural PASS; estimated setup/electrical FAIL",
   "scope": "New ROM/IRQ candidate. Seven leaf buffers followed by three slow-corner repair passes (buffering, sizing-only, buffering), each followed by placement/global routing. Buffer removal, pin swap and cloning disabled. No acceptance threshold or clock change.",
   "inputs": {
     "scope": "New IRQ+logic-ROM candidate: local buf8 at all measured Ethernet SRAM slew leaves and buf4 offload at measured capacitance drivers plus three single-strength critical/slew gates. Preserve original logical connectivity and state; estimate-only.",
@@ -1649,5 +1649,7 @@
       "bytes": 1536,
       "sha256": "207fbb6e8e602230ce1ad6f9c1a52a3f365556f1227f4d60232613426686e691"
     }
-  }
+  },
+  "historical_status_before_derate_correction": "Structural PASS; estimated setup/electrical FAIL",
+  "derate_correction": "Timing estimates used integer 5, truncated by native SDC division to zero derate. They do not establish timing at the intended 5 percent. Structural results are unchanged. See logicrom-derate-correction-20260920.json for same-route ECO8 corrected replay. Original measurement rows retained."
 }

@@ -28,9 +28,14 @@ visible.
 Claims marked `needs_run_tree` depend on a LibreLane run directory,
 which is gitignored build output. In a clone they are reported SKIPPED
 with that reason, not passed.
+
+The six replica-placement claims now re-measure the hash-verified original
+DEF/netlist snapshot in temporary space. Their output explicitly identifies
+the historical source; no physical flow is rerun by this checker.
 """
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -183,6 +188,18 @@ def check(c):
         pats = [x.strip() for x in c["pattern"].split("||")]
         globs = [g.strip() for g in c["paths"].split(",")]
         hits = []
+        record = None
+        if c.get("recorded_file"):
+            record = ROOT / c["recorded_file"]
+            if not record.is_file():
+                return "FAIL", "recorded text artifact missing"
+            identity = hashlib.sha256(record.read_bytes()).hexdigest()
+            if identity != c.get("recorded_sha256"):
+                return "FAIL", "recorded text artifact digest mismatch"
+            for glob in globs:
+                for live in ROOT.glob(glob):
+                    if live.name == record.name and live.read_bytes() != record.read_bytes():
+                        return "FAIL", "live text artifact differs from its recorded original"
         # A GLOB THAT MATCHES NOTHING IS A FAILURE, not a zero. On
         # 2026-09-10 an unterminated quote in claims.yaml swallowed the
         # rest of the line, so this claim's first glob was the literal
@@ -190,7 +207,8 @@ def check(c):
         # hits and passed. It was reporting that its own paths were
         # broken, in the shape of a clean result.
         empty = [g for g in globs if not list(ROOT.glob(g))]
-        if empty:
+        use_record = bool(empty and record is not None and len(globs) == 1)
+        if empty and not use_record:
             # A glob into a gitignored build tree is EMPTY IN A CLONE and
             # that is not a broken claim, it is an absent artefact. The
             # first version could not tell the two apart and failed the
@@ -203,7 +221,7 @@ def check(c):
                                 "this checkout")
             return "FAIL", ("these path globs match no file, so the check "
                             "looked at nothing: " + ", ".join(empty))
-        files = sorted({f for g in globs for f in ROOT.glob(g)})
+        files = [record] if use_record else sorted({f for g in globs for f in ROOT.glob(g)})
         for f in files:
             rel = f.relative_to(ROOT)
             try:
@@ -215,6 +233,8 @@ def check(c):
                     hits.append(f"{rel}:{i}")
         got = len(hits)
         detail = str(got) + ("" if not hits else "  " + ", ".join(hits[:4]))
+        if use_record:
+            detail += " (hash-verified historical recorded log; not a new LVS run)"
         return (("PASS", detail) if got == int(c["value"])
                 else ("FAIL", f"{detail} != {c['value']}"))
 
@@ -256,6 +276,7 @@ def check(c):
                 else ("FAIL", f"{len(hits)} match {c['glob']}"))
 
     if kind == "run":
+        note = ""
         if c.get("needs_run_tree"):
             probe = ROOT / "hw/openlane/pilot_ihp/runs/signoff-6x2/final/def"
             if not probe.is_dir():
@@ -273,9 +294,15 @@ def check(c):
             return "UNCHECKED", c.get("unchecked_why", "named as not re-derivable here")
         if "json_path" in c:
             try:
-                got = dig(json.loads(out.stdout), c["json_path"])
+                data = json.loads(out.stdout)
+                got = dig(data, c["json_path"])
             except json.JSONDecodeError as exc:
                 return "FAIL", f"not JSON: {exc}"
+            if "source_json_path" in c:
+                source = dig(data, c["source_json_path"])
+                if not isinstance(source, str) or not source.strip():
+                    return "FAIL", "measurement source missing from output"
+                note = " (" + source + ")"
         elif "regex" in c:
             m = re.search(c["regex"], out.stdout)
             got = m.group(1) if m else None
@@ -287,7 +314,7 @@ def check(c):
             ok = abs(float(got) - float(c["value"])) < 1e-6
         except (TypeError, ValueError):
             ok = str(got) == str(c["value"])
-        return ("PASS", str(got)) if ok else ("FAIL", f"{got} != {c['value']}")
+        return ("PASS", str(got) + note) if ok else ("FAIL", f"{got} != {c['value']}{note}")
 
     return "FAIL", f"unknown check kind {kind!r}"
 

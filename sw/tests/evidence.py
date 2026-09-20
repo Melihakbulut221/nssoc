@@ -21,10 +21,11 @@ drifted from the tree it was taken from is worse than no record, so
 `load` compares them and raises. `scripts/collect_evidence.py --check`
 is the same comparison across every run at once.
 
-WHAT IT DOES NOT DO. It does not make a netlist, a DEF or a GDS
-appear. A test that needs one still skips, and `skip_reason` gives it a
-message that names the digest in `docs/80-artefact-digests.tsv` the
-absent file would have to match.
+The small-JSON resolver does not supply layout geometry. Added 2026-09-20:
+`recorded_bundle` and `recorded_netlist` restore selected original DEF/netlist
+bytes from separately hash-pinned archives into scratch space. They do not
+produce a new layout or supply missing GDS. Unsupported absent artifacts
+still need the identity named by `docs/80-artefact-digests.tsv`.
 """
 
 import csv

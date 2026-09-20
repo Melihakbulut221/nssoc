@@ -5,6 +5,26 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 15:40 TRT — makale kayıtları yeniden ölçülebiliyor
+
+Son push65f9928 (derateFAILdüzeltmesi/F6fresh902PASS1toolSKIP). Yeni değişiklikler:
+- scripts/measure_recorded_replicas.py unchangedfrozeninstrument+orijinal
+  SHAverifiedDEF/NLscratchrestore ile6paperclaim'i gerçekyenidenhesaplıyor.
+- Eski checkout'ta s77lvs-b-blackbox/netgen-lvs.log bulundu;67302byte,
+  SHA53505c833bceb44c2578c6ff2bfbb415e7c37b89630a07d06860a99241bec06a;
+  öncedenkayıtlıdocs80ileAYNI. Companionmetrics/resolveddekorundu;runcollector
+  RUNS/CITED/EXTRA_WANTED'eeklendi. NoSRAMinterior/newLVSclaim.
+- Paperşimdi27derived15manual0missing0wrong. Recordedtextdigest/live-disagree
+  kontrolleri var.8newtest,63evidencechecksPASS. Logdahildigestcoverage.
+- ECO1–7JSONmetadata'ya da zero-deratecorrection eklendi; asılölçümler duruyor.
+
+AKTİF35930 newROMnativeenvPostGRT,21435 haloMagic devam. Sonrakiölçüm
+AKTİF3118 analyze_startup_nativeenv_completion.py: nativebaşarı+hashesbekler,
+actualTcl5.0deratecapture, fixedODBglobalrouteexport,3independentcornerreport.
+analysis-supervisor prefixstartup-clear-nativeenv-analysis;reportguardaktif.
+Hosted35508536540 nativeboot hâlârunning; diğer3jobPASS.
+Yeni paper/evidencechanges commit/push ve freshremote fullreplay yapılacak.
+
 ## 20 Eylül 15:30 TRT — F6 kapandı; yanlış derate sonucu geri çekildi
 
 Son push0727236. Freshremote0727236 tamam: 903total/902PASS/1SKIP;

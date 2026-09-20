@@ -52,6 +52,7 @@ RUNS = {
     "npu2": "hw/soc/pnr/runs",
     "s71boot": "hw/soc/pnr/runs",
     "s77gate": "hw/soc/pnr/runs",
+    "s77lvs-b-blackbox": "hw/soc/pnr/runs",
     "s81ptd": "hw/soc/pnr/runs",
     "s81timing": "hw/soc/pnr/runs",
     "s81drv": "hw/soc/pnr/runs",
@@ -71,6 +72,9 @@ RUNS = {
 WANTED = {
     "final/metrics.json": "metrics.json",
     "resolved.json": "resolved.json",
+}
+EXTRA_WANTED = {
+    "s77lvs-b-blackbox": {"01-netgen-lvs/netgen-lvs.log": "netgen-lvs.log"},
 }
 
 README = """<!--
@@ -93,11 +97,13 @@ compute. A test that reads these files reports *checked against the
 recorded artefact*, which is a weaker claim than *checked*, and the
 difference is deliberate.
 
-**What is not here**: netlists, DEF, GDS, SPICE, reports, logs. They
-are large and they stay in the gitignored `runs/` trees. Any claim that
-needs one of them is still a skip, and the skip message names the
-digest in `docs/80-artefact-digests.tsv` that the absent file would
-have to match.
+Selected original DEF/netlist snapshots and raw reports were recovered on
+2026-09-20 and match their pre-existing digests. Separate archive manifests
+identify their provenance and restore them only into test scratch space.
+The small `s77lvs-b-blackbox/netgen-lvs.log` is also retained byte-for-byte.
+None of these historical files supplies current-layout signoff or SRAM
+transistor verification. Full GDS and other absent outputs remain in ignored
+run trees; their recorded digests identify the bytes required for a replay.
 
 Git versions these records. Where the original run tree is available,
 `test_recorded_evidence.py` compares its files with the recorded copies.
@@ -122,6 +128,7 @@ CITED = {
     "npu2": "the accelerator's own layout",
     "s71boot": "the boot-hardened six-macro layout",
     "s77gate": "the gate-level clock-gating run",
+    "s77lvs-b-blackbox": "paper decks.lvs_matches: original SRAM-black-box LVS stdout; predates current RTL",
     "s81ptd": "the power and timing-derate study",
     "s81timing": "the timing-repair arm of the same study",
     "s81drv": "the design-rule-violation arm of the same study",
@@ -148,7 +155,7 @@ def collect(check):
     for tag, base in sorted(RUNS.items()):
         src_dir = ROOT / base / tag
         rows.append("| `%s` | `%s` | %s |" % (tag, base, CITED.get(tag, "")))
-        for rel, name in WANTED.items():
+        for rel, name in {**WANTED, **EXTRA_WANTED.get(tag, {})}.items():
             src = src_dir / rel
             dst = OUT / tag / name
             if not src.is_file():

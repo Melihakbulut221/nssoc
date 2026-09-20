@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "Structural PASS; timing and slew FAIL. Manual sizing did not improve setup.",
+  "status": "HISTORICAL ZERO-DERATE ESTIMATE: Structural PASS; timing and slew FAIL. Manual sizing did not improve setup.",
   "scope": "New ROM/IRQ candidate. 35 positive-buffer strength changes from the ten worst measured data paths plus two SRAM input and two capacitance offloads. No clock/constraint/RTL changes.",
   "inputs": {
     "scope": "New IRQ+logic-ROM candidate: local buf8 at all measured Ethernet SRAM slew leaves and buf4 offload at measured capacitance drivers plus three single-strength critical/slew gates. Preserve original logical connectivity and state; estimate-only.",
@@ -1355,5 +1355,7 @@
       "bytes": 1136,
       "sha256": "9adec044cdafa149d62e1c79267a6e84b894682035bb093286e9f753a91e6653"
     }
-  }
+  },
+  "historical_status_before_derate_correction": "Structural PASS; timing and slew FAIL. Manual sizing did not improve setup.",
+  "derate_correction": "Timing estimates used integer 5, truncated by native SDC division to zero derate. They do not establish timing at the intended 5 percent. Structural results are unchanged. See logicrom-derate-correction-20260920.json for same-route ECO8 corrected replay. Original measurement rows retained."
 }
