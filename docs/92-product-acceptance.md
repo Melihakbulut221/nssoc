@@ -384,3 +384,13 @@ boot and [both geometry fallback replays](evidence/logicrom-startup-clear-fallba
 immutable image manifest. The fallback runs reject primary-image geometry with
 cause 4 and boot image 1. These supersede the pending RTL statements above;
 full native mapped boot and new-image physical implementation remain pending.
+
+**Measured update, 2026-09-20:** the [routing-halo Magic replay](evidence/ihp-routing-halo-magic-20260920.json)
+completes with **438 retained errors**, independently recounted from its XML:
+436 inside the exact LEF footprints and two outside, versus the baseline's
+436 inside / 206 outside. The two remaining external Metal2 wide-spacing
+markers occur on RAM `A_DLY` and `A_ADDR[6]` pin routes. The 0.6 µm pin-aware
+keep-out removes 204 external markers but does not close the experiment's
+zero-external-marker criterion or any macro-interior requirement. The unchanged
+installed deck reads this old 24-macro candidate through DEF/LEF abstracts;
+raw process exit zero is execution success, not a clean DRC result.

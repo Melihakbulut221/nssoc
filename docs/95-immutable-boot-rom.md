@@ -196,9 +196,13 @@ After `make soc-prepare`, run:
 bash scripts/check_soc_native_boot.sh hw/soc/out/native-boot
 ```
 
-This downloads eight locked, untouched upstream files: the PDK licence, the
-typical standard-cell Liberty and the six native cell/SRAM model files used by
-the bench. `hw/soc/pnr/ihp-native-boot.lock.json` pins IHP commit `c4b8b4e` and
+This downloads ~~eight~~ **nine** locked, untouched upstream files: the PDK
+licence, typical standard-cell and Ethernet SRAM mapping Liberty, and the six
+native cell/SRAM model files used by the bench. **Correction, 2026-09-20:**
+the first hosted run passed native reset and all 28 RTL checks, then rejected
+the missing Ethernet mapping Liberty before synthesis. The original eight-file
+package was insufficient; the retained failed run is `35506681972`.
+`hw/soc/pnr/ihp-native-boot.lock.json` pins IHP commit `c4b8b4e` and
 every byte count/SHA256; the files match the installed models used in the local
 measurements. The shared downloader rejects a modified cache. It does not install
 a complete PDK or provide physical verification inputs.
