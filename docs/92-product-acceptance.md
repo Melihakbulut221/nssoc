@@ -17,7 +17,7 @@ The review's historical reproduction is in [docs/89](89-external-review-follow-u
 | F0, F0a | Verified fix | Idempotent mirror handling retains the reworded-fragment negative control; [docs/86](86-the-external-review.md). |
 | F0b | Verified fix | Upstream-prefixed historical commits retain provenance; public history is checked where applicable; docs/86. |
 | F0c | Verified fix | Transparent `mbox` rendering and renderer regression; docs/86. |
-| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `0a79a3b` replay: 816 pytest passes / 26 skips, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-0a79a3b-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
+| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `d93e64d` replay: 818 pytest passes / 26 skips, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-d93e64d-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
 | F1 | Verified fix | SoC reset synchronization, flush regression and fresh NPU proofs; frozen pilot unchanged; [docs/87](87-engineering-closure.md), docs/89. |
 | F2 | Verified fix, including cocotb | Whole-CPU firmware injection, watchdog reset, two APB retained-PC reads and ignored write pass under cocotb; [record](evidence/crash-cocotb-20260919.json). Register-map checks and added area are recorded in docs/86; full-program result in docs/89. |
 | F3 | Verified fix | Shipping timeout enabled, APB pins quarantined until reset, one fabric error, retained event counter. Timeout-zero cost guard, never-ready test and APB/BUSSTAT/NPU proofs; [APB evidence](evidence/apb-timeout-20260919.json). |
@@ -253,3 +253,32 @@ The later [reader controls](evidence/sram-lvs-reader-controls-20260920.json)
 retain an independent real-cell positive control, deliberate missing-device
 negative control and a still-failing experimental pin-reader diagnostic.
 They neither waive the SRAM failures nor close F6's historical-artifact gap.
+
+**Physical follow-up, 2026-09-20:** ECO22's own [updated main-deck DRC](evidence/ethernet-eco22-drc-20260920.json)
+now passes with **zero independently recounted XML markers**, successful
+process completion and unchanged locked input hashes. Together with its
+own stream XOR and scoped LVS this completes those three checks for that
+candidate. Its electrical failures, Magic and SRAM-interior requirements
+remain open; the later IRQ/logic-ROM design is still separate.
+
+The [ECO24 buffer-tree trial](evidence/ethernet-eco24-branches-20260920.json)
+preserves all 97,330 original routed cells, including 550 antenna diodes,
+and adds 166 positive buffers (3,915.4752 square micrometres). Exact pin,
+state and interface comparison passes. Fresh global routing has zero
+overflow and estimated fanout violations fall to zero in all three corners.
+Estimated slow setup remains -0.133847 ns and fast hold -0.325177 ns;
+slew and one capacitance violation also remain. These are estimates with
+retained failures, not native extracted or antenna acceptance results.
+
+The [clean remote d93e64d replay](evidence/fresh-clone-d93e64d-20260920.json)
+passes **818 tests / 26 skips**, with **16 passing front-door gates / zero
+failures / seven skips**. Historical-artifact absence remains the open
+part of F6.
+
+The [ECO25 driver experiment](evidence/ethernet-eco25-drivers-20260920.json)
+retains every original state element and diode, with 38 verified equivalent
+buffer substitutions and two positive offload buffers (645.9264 µm² added
+standard-cell area). Global estimates retain zero fanout violations, but have
+41/16/10 slew and three capacitance violations in fast/typical/slow corners.
+Fast hold is −0.308853 ns and slow setup is −0.117318 ns; these are failures.
+This is an intermediate old-RTL candidate, without a native reroute verdict.

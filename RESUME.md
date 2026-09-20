@@ -5,6 +5,79 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 12:17 TRT — tamamlanan ölçümler ve aktif işler
+
+Son push d93e64d. Temiz remote d93 TAMAM:818PASS26SKIP,16/0/7gates;
+record_fresh_d93e64d.py çalıştı, kanıt/ledger eklendi. Hosted d93/0a hâlâ
+in_progress (12:12 kontrolü); 7dd push/PR SUCCESS.
+
+- ECO22 mainDRC TAMAM: process0, gerçekXML0marker,5520.114737s,
+  pinnedunchangeddeck+inputhashPASS. record_eco22_drc.py çalıştı.
+- ECO24 TAMAM:166buf8 eklendi,97330originalkorundu,3915.4752µm²delta.
+  all3fanout0; electrical/timingFAIL, freshglobalestimateonly. docsrecordvar.
+- ECO25 TAMAM:38positivebuffersize+2buf8,alloriginal97496korundu,
+  area645.9264µm²; fast/typ/slow slew41/16/10,cap3/fanout0;
+  fastsetup3.380961/hold−.308853,typsetup2.183183/hold−.001729,
+  slowsetup−.117318/hold.191368ns. NativeclosureYOK. İlkvalidatorarea
+  unchangedSRAMmasterLibertydeyokdiyehata; validate_eco25_retry.py
+  yalnızchanged+newstandardcellareailePASS. Eskierror/scriptkorundu.
+  record_eco25.py çalıştı; tekrarlamayın. Kalanpinlerviolating-drivers.tsv.
+- FullmappedlogicROMboot session73417/devam; outputlogicrom-whole-gl2.
+  Bufferedstdoutboşolmasıtakılmadeğil. Ayrı5000cycleprobe~94s/5000cycle;
+  beklenen kısa-boundFAIL (firmwarebitmedi). Startup100cycleprobeaynı.
+  Asıl7200swallboundmuhtemelenkısa; PASSyok, nativeuninitializedRAM.
+- YeniROM+IRQ39327 PostGRT optimizer bitti, reGRT0overflow; sonexport
+  bekleniyor. Sonrasında actual3cornerfreshSTA (statemergedstale değil).
+- ECO23jumper10813 DRTbitti; 245antenna-net sürüyor,CheckAntennasactual
+  kaydıvar; RCX başladı. Nativeelectricalraporbeklenir, antennaclosureFAIL.
+- HaloMagic32138~80dk; sonucuyok, timeout6h. Baseline~4.5h.
+- Disk1.2GiB: session28835 dedup_completed_runs.py tümFlowcomplete+final
+  metricsruns'tabirebiraynıimmutablelargefileshashleyipshareediyor;
+  active3tag açıkçaexcluded. Dosya/yol/bytekorunur. İşlemsonucu
+  completed-runs-shared-20260920.json; completedhardlinksyerindedüzenlenmez.
+- Yeni3+1evidence/docs/ledgerhenüzcommitdeğil; --write-evidence/test/push
+  bekliyor. Frozenpilotdeğişmedi. Ürünkapılarınınhepsikapandıiddiasıyok.
+
+## 20 Eylül 11:49 TRT — yeni fiziksel aday ve tüm-SoC gate boot aktif
+
+Son gönderilmiş d93e64d, GitHubbranch/PR1 güncel; PRbody pr-body-pinned-lvs.md.
+Freshd93session78779 aktif, run_fresh_d93e64d.py; sonraki kaydı gerçekXML'den
+üretin. 0a temizklon816PASS26SKIP zaten commitd93 içinde. Hosted d93 ve0a
+sonuçları henüz alınmadı;7ddpush/PR ikisiSUCCESS doğrulandı.
+
+- Yeni ECO24 session93175, run_eco24_retry.py; çıktıBASE/timing-eco24-antenna-
+  branches2. Kaynak ECO22native01DetailedRouting ODB/NL, tüm550antennadio
+  korunur. 43 ölçülenfanoutnetine166pozitifbuf8eklendi, <=4yük/dal ağaç.
+  Yalnız yeniin-memoryadaydaki95399signalwire kaldırıldı, PGspecialwires
+  korunur; freshGRT/3cornerestimate. Orijinaldeğişmedi, henüzPASSyok.
+  İlk deneme session49515 FAILED: OpenROAD insert_buffer isme sayısuffix
+  ekler; exactrequestednameassertion patladı. Orijinalout/scriptkorundu.
+  Yeni deneme inserteddriver'ı gerçekmovednetten bulur vebuf8masterıdoğrular.
+  Sonrasında check_physical_eco.py ileaynıorijinalmantık/diodes+166bufkontrolü
+  yapılacak; substitutions={} beklenir. Orijinalgirişnetsmapping/portskorunmalı.
+- Yeni gerçek fullSoCgateboot session73417: BASE/run_logicrom_whole_gl2.py,
+  logicrom-whole-gl2. Komut/inputhash/loader manifest inputs.json'da.
+  Gerçek canonicalmapped69971cellnetlist ve aynınormalflash0.hex kullanıyor.
+  ROM/RAMpreloadyok (yalnızhariciflashreadmemh); dörtRAMmacrobaştaX.
+  Bench gerçekRAMmacroportundandatayıokur;checks28,fails0,exitmagic,UARTPASS,
+  framing0,flashviol0,watchdog1/0/0,noalert/noDFbekler. Compile0vvpaktif;
+  stdoutbuffered olduğundan run.log başta0byte; süreç~100%CPU. İki saat
+  wallbound/1Mcyclebound. İlkprepareolmayan2Pmodeladıylahata; yeni2klasör
+  doğruideal2Pikihelperi alır. Canonicalkaynakhenüzdeğişmedi, testprototype.
+  GateblockPASSönceki ayrıölçüm, bufullSoC ölçümühenüzbaşarılısaymayın.
+- LogicROM+IRQphysical session39327, taglogicrom-irq-grt-20260920 artık
+ 36-openroad-resizertimingpostgrt (önceki34tahminiyanlış). Önceki GRT0overflow,
+ repair+antenna90diode/237jumper sonrası yenidenroute/timingrepair. Tamam
+ olunca tekcornereskiSTAmetriclerini almadan üçcornerfreshraporhazırla;
+ kendi nativeDRT/RCX adayı gerekiyor. Diskpreflightönemli (~3GiB).
+- ECO23session10813:4jumperonlyiterationsaynı245net/270pinantenna.
+ Unchangedmax8iterationbırakıldı; route0DRCamaantennaPASSyok.
+- ECO22independentDRC31454 ~90dk/10GBRSS, Angle45kuralları, henüzXMLyok.
+ HaloMagic32138 ~55dk, öncekibaseline4.5h; henüzverdict yok.
+- Her şey yalnıznnsoc altında. Aktifrunları/lockedPDK/decks'i değiştirmeyin.
+ Completedhardlinkedartifacts yerindedüzenlenmez. EksikPCIeIP,pads,DFT,debug,
+ physicalclock,beam veF6artifaktlar hâlâaçık; bitmişürüniddiasıyok.
+
 ## 20 Eylül 11:38 TRT — doğrulanmış devam noktası
 
 Son gönderilmiş commit0a79a3b09ad0374947829fff2100bb10711eac89, PR1 body
