@@ -5,6 +5,94 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 11:24 TRT — SRAM iç LVS teşhisi ve teslim kontrolü
+
+Bu kayıt önceki notları günceller. Son gönderilmiş kaynak 7dd103d; bu notla
+birlikte ek doğrulama commit'i hazırlanıyor. Kullanıcı durdurma istemedi.
+
+- Yeni `sram-transistor-lvs-20260920.json`: 9 kontrollü ölçüm, 92 çıktı/girdi
+  hash'i. İki tam-makro deep FAIL; iki flat 1200s timeout, NO VERDICT.
+  Dummy minimum repro FAIL; DFPQD izole deep/flat bağlantı farkıyla FAIL.
+  WLDRV izole iki modda 4MOS/circuit Match ama strict pin verdict FAIL;
+  GDS top ports yok. Tam makro deep2NMOSeksikliği bağlam/hiyerarşi bağımlı.
+  Hiçbir model/rule/pin waiver yok. KLayout CLI0.30.9/Python0.30.10 ayrımı var.
+  run_sram-leaf-* session67598 tamamlandı. Auditor gerçek7raporureddetti.
+- İlk leaf hazırlığı nestedCDL assertion'ında durdu; yeni repro2 bağımlı
+  subckt'leri verbatim içeriyor. Tüm ölçümler ayrı dizinlerde; önceki hata
+  saklandı. Upstream PR1121 OPEN, lvsres LVS mapping hâlâ yapılmamış.
+- 191PASS/5SKIP hedefli test: lvs-delivery-tests.log. İlk yanlış yazılan
+  test_artifact_digests.py invocation hiçbir test koşmadı; doğru dosya
+  test_artefact_digests.py. SPDX468tag/341path/0missing/0wrong.
+  Frozen hw/rtl,hw/tb,hw/openlane,tt origin/main karşısında değişmedi.
+- docs92/93/95, ROM fallback/bundleprovenance, fresh7dd/ECO22LVS/halo kanıtları
+  güncel. Artefact index97kanıt+329historical. Commit sonrası GitHub PRbody
+  güncellenmeli. 7dd checks+rtl PASS; formal-and-boot ROM/fallback sürüyor.
+  6e9180a push35496401002/PR35496402427 artık ikisiSUCCESS.
+- AKTİF EDA:39327logicROM+IRQpostCTSsonrasıSTA;10813ECO23jumperDRT;
+  31454ECO22DRCoffgridkuralları;32138haloMagic. Hiçbiri yeni finalverdict değil.
+  Disk3.8GiB. Mevcut tamamlanmış dosyaları yerinde değiştirmeyin/hardlink.
+- Sonraki: commit/push vePRupdate; fiziksel tamamlananları hash/metrics/log
+  ile kaydet. Yeni logicROM+IRQ GRT sonrası kendi routing/RCX ve electrical
+  kapanışını yürüt. Eski ECO22sonuçları ona uygulanmaz. PCIe/PDK/pads/DFT/
+  debug/clock veF6historicalaçıkları hâlâ gerçekaçıklar.
+
+## 20 Eylül 11:05 TRT — ROM gönderildi, fiziksel kontroller sürüyor
+
+Bu bölüm önceki 10:40 notunun üzerindedir. Son gönderilmiş commit 7dd103d;
+PR1 açıklaması pr-body-logicrom.md ile güncellendi. Kullanıcı durdurma istemedi.
+
+- 7dd103d temiz REMOTE klon all CI tamamlandı: 825 toplam,799PASS/26SKIP;
+  16 kapı PASS/0FAIL/7SKIP. fresh-clone-7dd103d-20260920.json ve gerçek
+  ledger satırı hazır fakat henüz commit edilmedi. record_fresh_7dd103d.py
+  çalıştı; tekrar çalıştırmayın. 7dd GitHub run35497437243 checks+rtl PASS,
+  formal-and-boot en son sürüyordu; PR run35497438504 ayrıca izlenmeli.
+- Kalıcı ROM entry0 ve length0 fallback ikisi de gerçek CPU'da PASS28,
+  aynı loader manifesti. Normal RDREG1, fallbackler RDREG0. İlgili kanıt
+  güncellendi, henüz yeni commit yok. Firmware fallback session13304 bitti.
+- ECO22 LVS tamamlandı:97334device/96507net iki tarafta; 7 mismatch+illegal
+  overlap sıfır. ethernet-eco22-lvs-20260920.json hazır. SRAM içleri blackbox.
+  DRC session31454 hâlâ çalışıyor, 10:20 başladı; run_eco22_drc.py ve
+  eco22-upstream-drc-20260920. Kendi XOR zaten commit7dd içinde PASS0.
+- Halo recovery/finalize TAMAMLANDI: routeDRC0,antenna0,criticaldisconnect0;
+  93459 orijinal hücre+1075antenna korunuyor. 256 kullanılmayan SRAM çıkışı
+  raw disconnected; critical0. halo-routing-recovery-20260920.json hazır.
+  Native son state halo-recovered-finalize-20260920/09-odb-cellfrequencytables.
+- İlk halo Magic denemesi DRC başlamadan framework required gds yüzünden
+  başarısız. Kendi Magic.StreamOut'u halo-recovered-stream-20260920 altında
+  tamamlandı. Şimdi halo-recovered-magic2-20260920 aktif, session32138;
+  run_recovered_halo_magic2.py, gerçek kendi GDS'si ve DEF/LEF DRC modu.
+  Önceki orijinal aynı kapsam Magic4.5saat sürdü; henüz yeni verdict yok.
+- Yeni IRQ+logicROM physical session39327: logicrom-irq-grt-20260920,
+  run_logicrom_physical.py, 6işçi, post-GRT'ye kadar. Post-CTS bounded
+  setup repair sürüyor; baştaWNS-6.050,10iter-4.709. Bunlar nihai timing değil.
+- ECO23 session10813: eth256-eco23-jumper-20260920, run_eco23_jumper.py.
+  Aynı ECO22 pre-route seed+aynı limits, tek değişiklik jumper-only antenna
+  repair. STAPostPNR'ye kadar native; GDS aşaması yok. İlk DRT sürüyor.
+- SRAM gerçek transistor LVS yeni ölçümü: sram256-transistor-lvs-pinned
+  ve sram256-transistor-lvs-upstream deep modda ikisiFAIL;process0 aldatıcı.
+  Her ikisi24Match/4Mismatch/3NoMatch/1Skipped(top). 3NoMatch hücre:
+  RSC_CDLYX1_DUMMY (CDL LVSRES vs extracted metal1 resistor),
+  RSC_DFPQD_MSAFFX2P (4PMOS connection mismatch), RSC_WLDRVX8 (2NMOS eksik).
+  inspect_sram_lvs_mismatches.py ve sram256-lvs-deep-mismatches.json teşhisi
+  tutuyor. Vendor/CDL/deck değiştirilmedi; no-waiver. Flat kontrolları
+  session71392(upstream) ve78954(pinned) hâlâ sürüyor,20dk/6GiB sınırları var.
+  Upstream5e6d592 53LVS dosyası git-blob+SHA256 ile indirildi:
+  hw/soc/tools/ihp-lvs-5e6d592; lock BASE/ihp-lvs-upstream.lock.json.
+- Yeni henüz commit edilmemiş kalıcı guard hw/soc/flow/audit_klayout_lvs.py
+  (opsiyonel klayout Python gerekir) ve sw/tests/test_klayout_lvs_audit.py:
+  17PASS, gerçek iki deep rapordaFAIL/exit1. Süreç dönüş kodu dışında
+  karşılaştırma database+strict deck verdict'i okur. Genel extraction
+  doğruluğunu/kural-yeterliliğini iddia etmez. Flat sonuçlarını da audit edin.
+- Disk ~3.9GiB. Yalnız tamamlanmış kayıtlı run dosyalarındaki birebir
+  kopyalar hardlink yapıldı; yollar/içerikler korunuyor. Yeni dedup kayıtları:
+  completed-stage,eco22-lvs-final,halo-finalized,halo-stream,eco2-eco7-stage.
+  Tamamlanmış çıktıları yerinde değiştirmeyin. Eski/aktif dosya silinmedi.
+- Generated config-recovered-halo-magic-20260920.json yalnız bu projenin
+  .git/info/exclude'una eklendi; kaynak dosyası değil, ölçüm girdisi.
+- Sonraki: dört transistor-LVS sonucu/audit/kanıt, ROM/fresh/ECO22LVS/halo
+  notlarını docs92/93/95'e ekle; artefact_digests --write-evidence;
+  hedefli test+SPDX+frozen diff; commit/push. Aktif EDA işleri sürmeli.
+
 ## 20 Eylül 10:40 TRT — kalıcı ROM entegrasyonu
 
 Bu not en yeni devam noktasıdır; aşağıdaki eski notlardaki RUNNING/PID/session

@@ -69,6 +69,12 @@ boot regression now selects the logic profile and archives its image manifests.
 - The delivered whole SoC boots and passes 28 firmware checks, including
   its expected watchdog stage-1 interrupt. This is RTL CPU verification;
   the block gate-level test is not whole-chip gate-level boot.
+- Invalid-entry and zero-length primary-image cases also pass all 28 CPU
+  checks after selecting the secondary image. All three cases have the same
+  immutable loader manifest. Normal boot uses the registered-read profile;
+  these two fallback measurements use the default read profile. The record
+  distinguishes the interface-bundle hashes before and after the language
+  directive correction; their non-directive RTL is byte-identical.
 - Matched standalone logic-ROM mapping uses 4,236 cells, 115 flip-flops
   and 44,551.08 square micrometres of standard cells, with no SRAM macro.
   Whole-SoC synthesis uses 69,971 cells, 9,391 flip-flops and

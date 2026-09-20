@@ -68,7 +68,6 @@
     "fix": "Per-source language scope in prepare_interfaces.py, no vendor edits or suppressed errors. Repeated through Checker.LintWarnings, including Checker.LintErrors."
   },
   "pending": [
-    "geometry-fallback CPU cases still running when this record was created",
     "new netlist placement/routing and extracted timing/electrical checks",
     "independent DRC, LVS and stream XOR on new layout",
     "address/control/codec transient and radiation qualification"
@@ -201,6 +200,42 @@
     "hw/soc/out/external-review-20260919/logicrom-pnr-guards.log": {
       "bytes": 111,
       "sha256": "86067e1c8dc042ab31e21b89e3c50d26ebd82039c266232d39a29bb21e2ba519"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-entry0/sim.log": {
+      "bytes": 2261,
+      "sha256": "ee600e34c68b465759cb8235e635d80b801b360ad539370196383d720d4d90df"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-entry0/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "0de8406514eebb60d8a488ace1ae0d9e6baeb887f50c8c0a14a76a0050341e9e"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-entry0/test_soc.bin": {
+      "bytes": 3120,
+      "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-length0/sim.log": {
+      "bytes": 2262,
+      "sha256": "764722b8f3462f0ed19924604b0eb2107cdaa5040a20f1bc2592a5a42804d1a3"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-length0/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "0de8406514eebb60d8a488ace1ae0d9e6baeb887f50c8c0a14a76a0050341e9e"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-length0/test_soc.bin": {
+      "bytes": 3120,
+      "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+    },
+    "hw/soc/out/external-review-20260919/run_logic_rom_fallbacks.py": {
+      "bytes": 1132,
+      "sha256": "608fc7b92a4a963e408b04fff96c34325a3aeb3a480d03ff72648533548dd4a4"
+    },
+    "hw/soc/out/external-review-20260919/logic-rom-fallback-results.json": {
+      "bytes": 824,
+      "sha256": "d1bffa552e57b8f562787c438d54cccf648de6f8ebf57712d8fd25c1d338e80f"
+    },
+    "hw/soc/out/external-review-20260919/interfaces-before-language-scope.vh": {
+      "bytes": 521323,
+      "sha256": "e81f5608c2e62681ce8c4de196ec18256232ae58332938df3b0e5439bc646a90"
     }
   },
   "pnr_source_guards": {
@@ -208,5 +243,53 @@
     "failed": 0,
     "duration_s": 183.0,
     "command": ".venv/bin/python -m pytest -q sw/tests/test_soc_synthesis_guards.py"
+  },
+  "flash_geometry_fallbacks": [
+    {
+      "mode": "entry0",
+      "command": [
+        "timeout",
+        "1800",
+        "bash",
+        "hw/soc/flow/sim_soc.sh",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-rom-fallback-entry0"
+      ],
+      "environment": {
+        "SOC_BOOT_ROM": "logic",
+        "BOOT_CORRUPT": "entry0"
+      },
+      "returncode": 0,
+      "elapsed_s": 636.8532279439999,
+      "passed": true,
+      "same_loader_manifest_as_normal_case": true,
+      "passed_application_checks": 28
+    },
+    {
+      "mode": "length0",
+      "command": [
+        "timeout",
+        "1800",
+        "bash",
+        "hw/soc/flow/sim_soc.sh",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-rom-fallback-length0"
+      ],
+      "environment": {
+        "SOC_BOOT_ROM": "logic",
+        "BOOT_CORRUPT": "length0"
+      },
+      "returncode": 0,
+      "elapsed_s": 724.4043245140001,
+      "passed": true,
+      "same_loader_manifest_as_normal_case": true,
+      "passed_application_checks": 28
+    }
+  ],
+  "interface_bundle_provenance": {
+    "normal_cpu_and_synthesis": "e81f5608c2e62681ce8c4de196ec18256232ae58332938df3b0e5439bc646a90",
+    "entry0_fallback": "e81f5608c2e62681ce8c4de196ec18256232ae58332938df3b0e5439bc646a90",
+    "length0_fallback_and_physical_lint": "589f5a053d2a0bd6fb3d99d38c30e51db4843a5d3217441994d14b6cc3980e7b",
+    "note": "Normal CPU, entry0 fallback and synthesis ran before the parser-scope fix. The prior bundle was reconstructed from the scoped version and exactly matches the independently recorded Ethernet bundle digest. Removing only the conditional begin/end_keywords blocks leaves byte-identical RTL. The length0 fallback and subsequent lint used the final scoped bundle. Final generated-source artifact hashes below identify the delivered variant, not the earlier compile input.",
+    "payload_without_keyword_blocks_sha256": "fbba5de89146bfcee5e6e46131378840e9d5ffffe386ea6b7e1537c424a057fd",
+    "historical_digest_source": "docs/evidence/ethernet-netlist-20260920.json"
   }
 }

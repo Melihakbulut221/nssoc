@@ -228,3 +228,41 @@ preserve the netlist and placement, and complete global routing with zero
 overflow. Native detailed routing is running. A new Magic measurement is
 still required, and the inside-footprint failures are not addressed by this
 outside-ring experiment.
+
+### Recovered routing and transistor LVS, 2026-09-20
+
+The [halo continuation](evidence/halo-routing-recovery-20260920.json)
+has now completed detailed routing and independent antenna/connectivity
+checks with zero critical violations. Its own stream was generated, and
+the same installed Magic DEF/LEF check is running. The prior baseline's
+642 markers cannot be replaced until the new report completes and is
+classified against the actual macro footprints.
+
+Separately, [real 256x16 SRAM transistor LVS](evidence/sram-transistor-lvs-20260920.json)
+was measured against its vendor CDL. Both installed and pinned updated
+decks in deep mode fail: 24 matching, four mismatching, three nonmatching
+and one skipped circuit (the top). Two full-flat controls hit a 1,200-second
+bound without producing a comparison database; no verdict is assigned.
+No macro blackboxing, pin relaxation, geometry change or rule edit was used.
+
+Exact isolated-cell controls reproduce the dummy-cell `LVSRES` versus
+`res_metal1` mismatch and the sense-amplifier power-connectivity difference.
+The word-line driver extracts all four matching transistors in isolation,
+but its unlabeled top ports still fail strict comparison. This distinguishes
+context-sensitive extraction from a verified macro. Producer KLayout is
+0.30.9; the independent Python database reader is 0.30.10.
+
+`hw/soc/flow/audit_klayout_lvs.py` requires an unambiguous nonempty requested
+top, matching circuit pairs and the deck's explicit successful verdict.
+Its 17 tests pass, and it rejects all seven completed diagnostic reports.
+The real word-line case demonstrates why a database `Match` alone cannot
+override the strict port verdict. Raw CLI exit zero likewise does not mean
+LVS success. This does not characterize the upstream Python wrapper's exit
+handling or validate the adequacy of an extraction deck.
+
+The official [lvsres PR #1121](https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121)
+is still open in the recorded snapshot: its Pycell work is present but the
+KLayout LVS mapping is explicitly unfinished. It supplies no completed
+mapping fix to adopt. An ad hoc resistor alias or blanket implicit power
+connection would conceal precisely the distinctions being investigated,
+so no such change is counted as verification.
