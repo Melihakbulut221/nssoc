@@ -340,3 +340,34 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   durduruldu; rootcause bulunmadı, shippingWB0 değişmedi. İlgili timer
   prototip kaydı güncel; NOVERDICT timeout ile FAIL ayrımı korunuyor.
 - Disk ~6.5GB boş; yeni full native flow öncesi alan kontrolü yapın.
+
+## 2026-09-20 04:54 TRT — yeni ölçüm noktası
+
+- GitHub push803614b tamamlandı. c2429b6 hosted push/PR PASS;
+  53ad0cb ve803614b hosted jobs son kontrolde hâlâ aktif.
+- Full baseline Magic TAMAMLANDI:642FAIL,436LEFfootprintiçinde206dışarıda,
+  dışarıdakilerin tamamı<=0.5um. Yeni ihp-magic-full-chip-20260920.json
+  raporun tamamını/koordinatları ve exactinputları içeriyor. Sonraki aynı
+  historicalKLayout tekrarı PID226046 SIGTERM ile durduruldu; ana flowFAIL
+  beklenen sonuç. Bu invocationtamamengreen değil. Başka Magicjob kalmadı.
+- ECO15 TAMAMLANDI,156equivbufupsizes,guardPASS. Slowsetup-.2921467595,
+  fasthold-.1445643646;fanout/cap0,slew53/30/30. Native extraction değil.
+- ECO16 timing-eco16-corner-repair/session32665/PID225999 AKTİF.
+  Source15,slowcommandcorner setup +fastcommandcorner hold;3000stimeout.
+  Ara optimizer değeri finaldeğil. Çıkışta validation_sizing_candidate.py
+  değil: validate_sizing_candidate.py timing-eco16-corner-repair kullanın.
+- Gerçek EthernetCPU RTLprobe175253cyclePASS,signature00043b07,
+  8frame/2171byte/8CRC,allalarms0. GL session69172/PID222300 halen AKTİF,
+  gl-run.log boş (yalnız sonuçta yazıyor),timeout2400s başlangıç~04:26.
+  Timeout olursa NO VERDICT olarak saklayın; başarısız protokol diye yazmayın.
+- Kalıcı hw/soc/flow/ethernet_cpu_probe.py +firmware+GMII monitor eklendi.
+  Üretilen GL/RTL benchbytes orijinalprototypeileaynı. Reproducer-v3 gerçek
+  RTL175253cycleaynısonuç,ROMbinarygateileaynı.19negative/positiveunitPASS.
+  docs/evidence/ethernet-cpu-loopback-20260920.json RTLtam,GLpending.
+- İlk SPDXdenetimi yenimonitorunApachetaginireddetti; CERN-OHL-W-2.0
+  yapıldı ve450tagged/319pathcovered/0missing/0wrong. Verilogmonitorheaderi
+  generatedbench'tençıkarıldığı için testbenchbyteshiçdeğişmedi; sourcehash
+  geçmişi kayıtta açıklanıyor. 179ilgili testPASS, manifestyenidenrefreshgerekir.
+- Disk6.1GB; başka projenin dosyasına dokunmadan bir yeni native run için
+  alanı kontrol edin. YeniMagicraporu routehaloalanprojeksiyonu20336.064um²/
+  layer; HALO GERÇEKLENMEDİ, pinaccessdelikleri ve reroute+Magichenüz yok.

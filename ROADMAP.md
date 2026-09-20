@@ -658,3 +658,12 @@ already has it.
 BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
 all eight BUSSTAT tasks pass. This inventory is not a claim that every
 core-level instruction property is proved. See docs/89.
+
+**2026-09-20 measurement update to §5a:** the original 24-SRAM interface
+baseline now has a completed [abstract Magic result](docs/evidence/ihp-magic-full-chip-20260920.json):
+642 boxes, 436 inside LEF footprints and 206 outside; all outside boxes are
+within 0.5 µm of a macro. A 0.6 µm rectangular routing halo has a measured
+geometric projection of 20,336.064 µm² per layer, before pin-access openings.
+The input report, coordinates, DEF/LEF hashes and classifier command accompany
+the record. This adds a baseline and cost projection; the halo reroute itself
+has not run and this is not closure of the keep-out experiment.

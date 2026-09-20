@@ -79,3 +79,9 @@ reduce estimated fanout to zero but still fail timing and slew. None is a
 released final layout. All four SRAM Magic comparison arms are complete and
 fail; [the evidence](evidence/ihp-magic-sram-followup-20260920.json) preserves
 the deck/reader distinctions rather than waiving a failing result.
+
+The original baseline's [full-chip abstract Magic check](evidence/ihp-magic-full-chip-20260920.json)
+has completed with **642 boxes: 436 within LEF footprints and 206 outside**.
+All outside boxes are within 0.5 µm of a macro. This is a measured failure,
+not a waived abstract or a real macro-interior GDS signoff result. Its
+completion does not close the physical-verification product gate.

@@ -186,3 +186,25 @@ The pinned-deck raw-reader comparison is still running.
 The [follow-up record](evidence/ihp-magic-sram-followup-20260920.json) retains
 its ten categories and exact commands/source hashes. Completion of this
 comparison does not close Magic DRC; none of the four combinations passes.
+
+### Completed full-chip abstract Magic check, 2026-09-20
+
+The original 24-SRAM baseline's full Magic check has now completed in
+**4 h 34 min 16.429 s**: **642 boxes**, FAIL. Its actual input is the DEF
+with LEF macro abstracts (`MAGIC_DRC_USE_GDS=false`), so this is distinct
+from the real SRAM-GDS reader experiments above. The
+[full-chip record](evidence/ihp-magic-full-chip-20260920.json) includes the
+complete native report, every marker coordinate, source hashes and commands.
+
+Against exact LEF footprints, **436 boxes are inside macros** and **206
+outside**, with none straddling. Every outside box lies within 0.5 µm of a
+macro footprint. Categories are 356 `M2.d`, 174 `M3.f`, 80 `M4.f`, 29 `M2.f`
+and three `M4.e`. The older classifier's optional NWell-overhang model is
+reported separately and does not waive any marker. The named 0.6 µm routing
+halo would reserve a projected **20,336.064 µm² per affected layer** before
+pin-access openings; this is geometry arithmetic, not a reroute result.
+
+After preserving the completed Magic result, the following duplicate pinned
+KLayout step was stopped. Its parent invocation exits nonzero and is not
+called a passing verification flow. The independent completed KLayout
+controls on this same GDS remain in their original evidence record.

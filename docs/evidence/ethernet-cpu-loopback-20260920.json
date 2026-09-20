@@ -1,0 +1,207 @@
+{
+  "date": "2026-09-20",
+  "scope": "Real CPU firmware, 50MHz core/125MHz GMII, eight varying-length frames and FIFO wrap without flushing. Zero-delay, fault-free loopback; not SDF, hardware PHY, throughput qualification or upset campaign.",
+  "rtl": {
+    "status": "PASS",
+    "kind": "rtl",
+    "frames": 8,
+    "payload_bytes": 2171,
+    "signature": "00043b07",
+    "records": {
+      "site": "-1",
+      "bit": "0",
+      "cycle": "0",
+      "armed": "1",
+      "hit": "0",
+      "width": "0",
+      "before": "00000000000000000000000000000000",
+      "after": "00000000000000000000000000000000",
+      "mem": "-1",
+      "midx": "0",
+      "mbit": "0",
+      "mem_before": "00000000",
+      "mem_after": "00000000",
+      "scr_ramsec": "0",
+      "scr_ramrd": "0",
+      "scr_ramded": "0",
+      "scr_romsec": "0",
+      "scr_romrd": "0",
+      "scr_romded": "0",
+      "scr_ramaddr": "00000000",
+      "scr_romaddr": "00000000",
+      "done": "1",
+      "cycles": "175253",
+      "budget": "300000",
+      "slept": "1",
+      "expired": "0",
+      "sig": "00043b07",
+      "mask": "00000000",
+      "rounds": "8",
+      "exit": "00000000",
+      "magic": "600dc0de",
+      "console_chars": "19",
+      "console_hash": "f48b7fa1",
+      "console_framing": "0",
+      "wdog1": "0",
+      "wdog2": "0",
+      "wdog3": "0",
+      "wdog_first": "-1",
+      "traps": "0",
+      "mcause": "00000000",
+      "nmis": "0",
+      "alert_minor": "0",
+      "alert_int": "0",
+      "alert_bus": "0",
+      "dblfault": "0",
+      "win_open": "292",
+      "win_close": "173456",
+      "wdog_rld": "65535",
+      "wdog_pre": "16",
+      "kicks": "8",
+      "kick_min": "4864",
+      "kick_max": "40742",
+      "wdog_early": "0",
+      "wdog_budget": "0",
+      "wdog_win": "00000002",
+      "rf_sec": "0",
+      "rf_ded": "0",
+      "rf_sec_seen": "0",
+      "rf_ded_seen": "0"
+    },
+    "scope": "Fault-free zero-delay CPU/GMII loopback; no PHY, SDF, fault campaign or throughput qualification."
+  },
+  "gl": {
+    "status": "PENDING",
+    "candidate": "timing-eco13-clock-fanout-retry",
+    "log": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-run.log"
+  },
+  "commands": [
+    ".venv/bin/python hw/soc/flow/ethernet_cpu_probe.py --prepare hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3",
+    "bash hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/run_rtl.sh",
+    ".venv/bin/python -m pytest -q sw/tests/test_ethernet_cpu_probe.py"
+  ],
+  "regression": {
+    "passed": 19,
+    "failed": 0,
+    "controls": "Wrong signature, failure mask, incomplete frames/CRC, truncation, duplicate fields, reset/faults, timeout cycles and source-template drift fail closed."
+  },
+  "prototype_equivalence": {
+    "generated_gl_testbench_identical_to_running_prototype": true,
+    "generated_rtl_testbench_identical_to_completed_prototype": true,
+    "firmware_binary_identical_to_gate_image": true,
+    "rtl_cycle_count_matches_prototype": true
+  },
+  "preparation_inventory": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/ethernet_cpu_probe.py": "455e0f82377586e24d7104bd6fa3ff3d5bb098a50470c6fec78f4fd14c673b04",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/sw/ethernet_loopback.c": "91a95487e988e038d0597cd55c6c9b44b43d83aa62bb55d4ac150b8e6757bdac",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/ethernet_loopback_monitor.vh": "ed13f79b3f7747a5b7f4725b242d13b099aeaed677af6f76aaa4a78249a18e3a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_fi.v": "71af7a0d5d245f243b7fe419d977540cd1c5c9cddd00a887f930a69fe4457311",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_fi_gl.v": "ea82f0d3ac54dc1613c42eb7ea0a1a7a2002469a50725ab0f5d2008be1cb9713",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/build_sw_fi.sh": "77b83a891a1b48766eba941e007c2de26776d0b1f06597029b7258ffb806b8af",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/fi_core.sh": "bd599614fed6fd0de4abae82d34f6d7c50cc4634c1ec4b2478a271059166a69f",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/fi_core_gl.sh": "a4f640df0d9e06e0f4b2da33f2db663609ddd6496bfdee9fe17a0e2fabf86472"
+  },
+  "preparation_followup": "The monitor SPDX tag was corrected to CERN-OHL-W-2.0 after preparation to match repository hardware policy. The generator excludes its comment header; generated testbench bytes are unchanged. The initial one-anchor GL template attempt failed closed because both compilation and provenance reference the bench. The corrected generator explicitly requires both anchors.",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl-run.log",
+      "bytes": 1153,
+      "sha256": "3519729368daa6216a89b8c116e0116c198d1ca16e251ee2bf7a0662ae244e0c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl-verdict.json",
+      "bytes": 1607,
+      "sha256": "22bdaeb0485d8cc6075f4f7d87b2beb2254f6c95e92a5c917fe39dec374ef672"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl-build-and-run.log",
+      "bytes": 4730,
+      "sha256": "529cf0e07eb4d6814473aeb23b3fa7b3962ca59b98bfb33aa2d7b186f6e44f62"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/source-hashes.json",
+      "bytes": 1144,
+      "sha256": "60bc127fa3a49f1ea8059bcf15fa5975d06af186a6079c7b2619533b5ce4e731"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/tb_eth_rtl.v",
+      "bytes": 34764,
+      "sha256": "d15c7ee1c093e357429cd88393d28df826373e2e0293cb6ae3b4193cf0a62e74"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/tb_eth_gl.v",
+      "bytes": 36249,
+      "sha256": "4627dc917206b6ad8be0aa82e621e1d530bfc673061119cf50c5ed76e29a8219"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/run_rtl.sh",
+      "bytes": 1023,
+      "sha256": "96bc677b71322e58f9614faa426fd6eebb459aedb448a7b06c249ca53849f8f5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/run_gl.sh",
+      "bytes": 1301,
+      "sha256": "1d928f3b317b046f8f767e7d2b38ccfeb893e9064c1af7200d072fba72631db0"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/build_sw.sh",
+      "bytes": 2300,
+      "sha256": "dcab1e9e1d46ed0fd9b23f62e2242244b712903128ca8405bb9a3dcc1e0a90bb"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/build_rtl.sh",
+      "bytes": 16698,
+      "sha256": "360e241edfbbc1fa0e630ad375809682105d527c9e06f003c0f0569bb7b5568f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/build_gl.sh",
+      "bytes": 6904,
+      "sha256": "08a54adc263c68f622e51357948d7adfff5531a4d166808a7d4582f2ddb09dfa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl/fi_workload.bin",
+      "bytes": 1156,
+      "sha256": "35d53c3c10005c70c13f460072f7951a74e282e88701298858fc624d19e7ad41"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl/fi_workload.hex",
+      "bytes": 18144,
+      "sha256": "bc7ef36626cc1c57551d599a7a90c3fafcccf34631f249ef1b28db698872a8b5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl/fi_workload.elf",
+      "bytes": 17860,
+      "sha256": "401c882633207b718cd88182db412ca036db53d211898c3083b9e25f52dbe9da"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl/soc_param_override.v",
+      "bytes": 572,
+      "sha256": "8aedab8c0209de2b7e4fe29f1a037bbbf948d56cb4e91a155211e8c16f4f2575"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/rtl/tb_soc_fi.vvp",
+      "bytes": 5222783,
+      "sha256": "e1aecd67210dde1479a515c59d261a18b59657c58425f15bfe0ebd4e86666235"
+    },
+    {
+      "path": "hw/soc/flow/ethernet_cpu_probe.py",
+      "bytes": 8637,
+      "sha256": "455e0f82377586e24d7104bd6fa3ff3d5bb098a50470c6fec78f4fd14c673b04"
+    },
+    {
+      "path": "hw/soc/tb/ethernet_loopback_monitor.vh",
+      "bytes": 1881,
+      "sha256": "7fd37b66353140ef11826700e22b2933e1aae5933e47948679acc92a53caef9d"
+    },
+    {
+      "path": "hw/soc/tb/sw/ethernet_loopback.c",
+      "bytes": 1785,
+      "sha256": "91a95487e988e038d0597cd55c6c9b44b43d83aa62bb55d4ac150b8e6757bdac"
+    },
+    {
+      "path": "sw/tests/test_ethernet_cpu_probe.py",
+      "bytes": 2846,
+      "sha256": "96895f4dc9b59cfce219a821a02cf52ac11cc391f77745dd7a038acd043b4cea"
+    }
+  ]
+}

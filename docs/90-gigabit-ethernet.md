@@ -452,3 +452,47 @@ control. This extends the earlier 26/31-test records without replacing them.
 The isolated WB1/CLKGATE0 CPU counterfactual still fails the mtime check and
 was stopped after that decisive failure; it is recorded with the timer-IRQ
 prototype and is not adopted into the shipping core.
+
+The following ECO15 drive-strength experiment changes only 156 newly added
+buffer masters and passes the exact structural check. It recovers slow setup
+to **-0.292147 ns**, with fast hold **-0.144564 ns**, while estimated
+fanout/capacitance stay at zero. Slow slew still has 30 violations. The
+[repair record](evidence/ethernet-clock-repair-20260920.json) includes the
+2,540.16 µm² cell-area increment and all three corner reports. Native routing
+and extraction would still be required for any selected later candidate.
+
+### Reproducing the CPU packet probe
+
+The isolated generator reuses the established FI harness for boot, ECC ROM
+loading, memory observations and UART capture, while changing its generated
+copies to run the Ethernet firmware and an independent GMII monitor:
+
+```bash
+python3 hw/soc/flow/ethernet_cpu_probe.py --prepare hw/soc/out/ethernet-cpu-probe
+bash hw/soc/out/ethernet-cpu-probe/run_rtl.sh
+bash hw/soc/out/ethernet-cpu-probe/run_gl.sh /absolute/path/to/soc_top.nl.v
+```
+
+Use the matching 24-SRAM, registered-request/registered-memory-read/SYNPRE,
+`WAKE_GNT=1` profile for the mapped netlist. This is a 50 MHz core with
+independent 125 MHz GMII clocks. The generated GL script uses Icarus 13 and
+the pinned native cell/SRAM models; `GL_IVERILOG` selects its executable.
+`PROBE_TIMEOUT` controls wall time (default 2,400 seconds), without changing
+the 300,000-cycle simulation limit. A timeout is a non-verdict.
+
+The eight frames carry 2,171 payload bytes in total, exceeding the 2 KiB FIFO
+capacity without flushing between frames. The CPU checks every received
+byte and end marker, RX-ready interrupt assertion/clearance and MAC errors;
+the GMII monitor independently checks preamble, SFD, payload, frame length
+and CRC residue. The result parser requires signature `00043b07`, all eight
+frames and CRC checks, a clean exit/UART result and no observed fault or
+watchdog-reset event. A truncated log cannot pass. The RTL-only ECC/kick
+counters are not claimed observable in the mapped GL harness.
+
+Preparation refuses an existing directory and fails if its source-template
+anchors drift. It preserves the shipping RTL and original FI instruments.
+The [recorded RTL probe](evidence/ethernet-cpu-loopback-20260920.json) completes at **175,253 cycles**, with eight
+frames, all bytes correct and no observed fault events. The matching native
+cell GL run is still pending at this dated checkpoint. This is a fault-free
+loopback test, not SDF, a PHY link, sustained hardware throughput or an upset
+campaign. Its result-parser and preparation regression passes **19 tests**.
