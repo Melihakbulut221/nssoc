@@ -168,3 +168,15 @@ deck. The pinned Magic control, using the same macro and upstream reader
 helper, also completed: **499,098 boxes**, FAIL, in 1,961.42 seconds. Its
 five rule categories are retained alongside the upstream arm. Raw-reader
 comparisons remain pending; neither arm is a full-chip result.
+
+### Raw-reader control, 2026-09-20
+
+The upstream deck's raw hierarchical GDS-reader arm has now completed in
+**4,100.375 s** with **57,916 error boxes**, so it also fails. The dated
+[SRAM follow-up](evidence/ihp-magic-sram-followup-20260920.json) retains all
+seven categories: 30,720 Metal2 minimum-area, 25,944 layer-overlap, 594 tie
+extension, 376 subcell-abutment, 225 SRAM well-spacing, and the same 21 + 36
+contact-enclosure boxes. The helper-reader arm's 57 boxes and this raw-reader
+result use the same unchanged macro GDS. Their different handling of hierarchy
+is consequential; neither result provides a passing Magic verdict or a waiver.
+The pinned-deck raw-reader comparison is still running.

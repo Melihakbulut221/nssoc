@@ -393,3 +393,30 @@ slow setup is **-0.579369 ns**, fast hold **-0.246511 ns**, and typical hold
 **-0.023671 ns**. Setup improves but hold worsens; this candidate still fails.
 The final estimates supersede the optimizer's more optimistic intermediate
 slack within this experiment. It is not promoted to a finished physical design.
+
+An isolated [timer-interrupt register prototype](evidence/timer-irq-prototype-20260920.json)
+also completes real CPU boot and **28 software checks**, with zero failure mask,
+sleeping at cycle **635,360**. It separates CLINT's comparator from the CPU
+interrupt-control path by one free-running clock. This is a copied RTL
+experiment only: the added single state bit has no upset protection, and its
+synthesis cost, final timing and fault behaviour have not been qualified.
+It is not adopted into the shipping design or any physical result above.
+
+### Boolean-preserving bank-select experiment, 2026-09-20
+
+The [ECO10 record](evidence/ethernet-mux-eco-20260920.json) replaces nine
+NOR/AOI bank-select cones with mux/inverter pairs. Its separate bounded
+logic check derives selector equivalence through the actual positive buffers
+and checks every input combination against the pinned Liberty functions:
+**72 matching rows**, with **72 rejected wrong-polarity controls**. All
+94,611 instances outside those 18 replaced cells, all port/alias declarations
+and all original wires are unchanged. The sizing-only guard is not used to
+approve this different topology. Exact prototype scripts are included in the
+record, together with source/output hashes and the measured cell-area cost.
+
+After full global routing, the worst reported slow internal Ethernet TX path
+is **-0.097586 ns**, improved from ECO9's **-0.579369 ns**. Overall slow setup
+is still **-0.502222 ns** on the processor/fault-output path; fast hold is
+**-0.389087 ns** and typical hold **-0.131440 ns**. These remain failing
+estimates. This Boolean check does not prove analog glitches, power-up X
+behaviour or final routed timing, and no release gate is closed by it alone.

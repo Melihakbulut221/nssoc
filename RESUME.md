@@ -281,3 +281,39 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   Magic full ve raw SRAM kolları aktif. CPU prob'ları timeout1800 ile aktif;
   timer IRQ prototipi gerçek boot + test1..5 PASS, recursive fib test6 sürüyor.
 - c966a43 push ve PR GitHub CI SUCCESS. dd14c38 işleri hâlâ aktif.
+
+## 04:00 TRT ek devam notu
+
+- Son push c2429b6: tüm buf strength guard + ECO8/9 kayıtları.
+- ECO10 `timing-eco10-mux-factor` TAMAMLANDI. Dokuz TX bank-select
+  NOR/AOI konisi mux2/inverter ile değişti; 72 gerçek Liberty doğruluk satırı
+  eşleşti, 72 yanlış-polarite kontrolü reddedildi. Koniler dışında94611
+  instance, port/alias/wire bağlantıları birebir aynı. Özel kontrol
+  validate_eco10.py; sizing-only guard bunu kabul etmek için kullanılmadı.
+  Global-route slowETH iç yol -0.097586, genel slowsetup -0.50222227798,
+  fasthold -0.3890872179, typhold -0.1314397517 ns. Hâlâ FAIL, native değil.
+  docs/evidence/ethernet-mux-eco-20260920.json kaynak scriptleri de içerir.
+- ECO11 `timing-eco11-mux-feedback` sadece HAZIRLANDI, çalıştırılmadı.
+  Beş özel koni/160 truth row; ek diode/buffer yükleri yüzünden diğerlerini
+  değiştirmeyen daha büyük dönüşüm. ECO10'un iyileşmesi görüldüğü için
+  öncelik ECO12'ye verildi. ECO11'i tamamlanmış ölçüm sanmayın.
+- ECO12 `timing-eco12-setup-hold`, session43838 AKTİF. ECO10'dan setup
+  repair_tns100/max_iterations200 + yeni tam GRT + hold margin0.05 (setup
+  ihlaline izin veren seçenek YOK) + tekrar GRT. Timeout3000s. Çıkışta
+  gerçek delta için aynı boyutlandırma/buffer guard'ı ECO10'a karşı çalıştırın.
+- TimerIRQ register prototipi session55534 PASS: 28 yazılım kontrolü,
+  635360 cycle, 316098 boot handover, 1 beklenen watchdog NMI, 0 reset-stage.
+  docs/evidence/timer-irq-prototype-20260920.json kaynak patch/hashleri tutar.
+  Yeni tek FF korunmuyor; ürün RTL'sine ALINMADI, maliyet/timing/FI yok.
+- WB1 + CLKGATE0 ilk timeout1800 NO VERDICT (exit124). Aynı derlenmiş
+  VVP/flash değişmeden stdbuf ve timeout5400 ile tekrar çalışıyor:
+  session67295, simulation-clkgate0-replay-20260920.log. ShippingWB0 aynı.
+- Magic upstream-raw TAMAMLANDI FAIL57916 /4100.375s. Kategorilerle
+  ihp-magic-sram-followup kaydına eklendi; 2x2 driver pinned-raw kolunu
+  başlattı (session44110). Helper57/pinned-helper499098 geçmişi korunuyor.
+- ECO7 native session98866 hâlâ aktif. Antenna violating-net dizisi
+  223 ->22 ->3 ->1; dördüncü repair/reroute sürüyor. Final RCX/STA henüz yok.
+  Full baseline Magic PID78927 devam ediyor, DEF/LEF abstract kapsamı aynı.
+- Yeni kanıt manifesti75dosya,329tarihselrow. İlk ara digest kontrolü yeni
+  ECO10 kaydı manifest güncellemesinden önce üretildiği için FAIL olmuştu;
+  güncel manifestle son doküman/digest kontrolleri9 PASS.

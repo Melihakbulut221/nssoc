@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "scope": "Completed upstream-helper and pinned-helper arms, plus original-GDS contact geometry follow-up. Raw-reader arms are pending. No full-chip Magic verdict, rule waiver or cell exclusion.",
+  "scope": "Three completed SRAM reader/deck arms plus original-GDS contact measurements. Pinned-raw remains pending. No full-chip Magic verdict, rule waiver or excluded geometry.",
   "measurement": {
     "arm": "upstream-helper",
     "command": [
@@ -123,6 +123,36 @@
       "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/categories.tsv",
       "bytes": 268,
       "sha256": "f842cc101a7915414bb4a2ab22e847ebeea8762594fa82f727398c294822eb51"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/inputs.json",
+      "bytes": 878,
+      "sha256": "cfbb4ac770487666ebc53a420354bec9c4e284c247fb818726c32f9efd0e5b1d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/result.json",
+      "bytes": 969,
+      "sha256": "0f47c4dbecbad7dbe7035132d97e5dfa12ce7d5e2a27979fdfe449a2d2901bf3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/run.tcl",
+      "bytes": 1169,
+      "sha256": "d4475a1a218ac32517f66485b58a3249f884dd6954ea44468f41a90dae120a47"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/run.log",
+      "bytes": 8882,
+      "sha256": "7d281db73c371ddf646b960e4b1b665ff3d9debe99b6aeedbdd87ffd943a5728"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/categories.tsv",
+      "bytes": 401,
+      "sha256": "3ecb07a07489327efa430f4436189344484af474beb32f7f3b3e20fde44019c0"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/boxes.tcl",
+      "bytes": 1469101,
+      "sha256": "14c5dfcad19bf0db8114fc47b33b30e0a160e7a23308a23b59bcf299b8310caf"
     }
   ],
   "geometry_followup": {
@@ -193,5 +223,60 @@
         "rule": "Poly overhang of transistor < 36 (Gat.c)"
       }
     ]
+  },
+  "scope_before_raw_followup": "Completed upstream-helper and pinned-helper arms, plus original-GDS contact geometry follow-up. Raw-reader arms are pending. No full-chip Magic verdict, rule waiver or cell exclusion.",
+  "upstream_raw_followup": {
+    "date": "2026-09-20",
+    "measurement": {
+      "arm": "upstream-raw",
+      "command": [
+        "/home/hasanmelih/.local/opt/llbin/magic",
+        "-dnull",
+        "-noconsole",
+        "-rcfile",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/upstream-magic-5e6d592/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/upstream-raw/run.tcl"
+      ],
+      "gds_sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e",
+      "script_sha256": "d4475a1a218ac32517f66485b58a3249f884dd6954ea44468f41a90dae120a47",
+      "deck": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+      "upstream_read_sram_gds_helper": false,
+      "scope": "Entire unchanged 512x16 macro GDS, full Magic DRC style, euclidean on. No black boxes or excluded geometry/rules. Count is Magic raw error boxes, not KLayout markers.",
+      "returncode": 0,
+      "elapsed_s": 4100.375147819002,
+      "boxes": 57916,
+      "status": "FAIL"
+    },
+    "categories": [
+      {
+        "boxes": 225,
+        "rule": "N-Diffusion spacing to N-well in SRAM < 54 (NW.d exception)"
+      },
+      {
+        "boxes": 376,
+        "rule": "This layer can't abut or partially overlap between subcells"
+      },
+      {
+        "boxes": 21,
+        "rule": "N-diffusion overlap of N-diffusion contact < 14 (Cnt.c)"
+      },
+      {
+        "boxes": 25944,
+        "rule": "Can't overlap those layers"
+      },
+      {
+        "boxes": 30720,
+        "rule": "Metal2 minimum area < 5760 (M2.d)"
+      },
+      {
+        "boxes": 36,
+        "rule": "N-diffusion overlap of contact in SRAM < 4 (Cnt.c SRAM exception)"
+      },
+      {
+        "boxes": 594,
+        "rule": "Extension of tie diffusion beyond tie contact < 6.0um (LU.d, LU.d1)"
+      }
+    ],
+    "interpretation": "The direct hierarchical reader reports many extra hierarchy/overlap/metal-area errors. The upstream helper eliminates those in its measured arm while retaining the 21 general and 36 SRAM contact enclosure violations. Neither arm passes, and the helper changes are not treated as excluded geometry or an independent foundry waiver."
   }
 }
