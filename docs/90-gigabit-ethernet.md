@@ -600,3 +600,32 @@ with unchanged die size. ECO20 estimates slow setup at -0.061945 ns and fast
 hold at -0.330479 ns, with slew failures. These are still global-route
 estimates; no extracted result or physical-verification verdict is borrowed
 from ECO18.
+
+**Later on 2026-09-20:** the [ECO18 stream XOR](evidence/ethernet-eco18-xor-20260920.json)
+completes with zero differences, also checked by counting the report's XML
+items. The complete Magic/KLayout streams agree. This result does not replace
+the separate LVS or rule-deck checks, which are still running.
+
+The [ECO18 scoped LVS](evidence/ethernet-eco18-lvs-20260920.json) now also
+passes: 97,150 devices and 96,311 nets on each side, seven LVS counters and
+illegal overlap all zero. This compares DEF/LEF-derived extraction with the
+candidate powered netlist; SRAM interiors remain black boxes. Full transistor
+GDS LVS and the independent DRC/timing gates are not closed by this result.
+
+The next [repair record](evidence/ethernet-clock-repair-20260920.json)
+explicitly retains a failed sizing assumption: ECO21 requested 12 substitutions,
+but three stronger masters (`o21ai_2`, `nand3_2`, `a22oi_2`) do not exist in
+the library. OpenROAD warned and left those cells unchanged. The actual nine
+substitutions pass the structural check; the three absent replacements are
+not counted as implemented. ECO21 estimated slow setup is -0.067914 ns.
+
+ECO22 instead adds 196 positive buffers on 74 selected driver nets: the 71
+antenna-loaded fanout failures and the three weak gates without stronger
+variants. Groups of at most three loads aim to leave room for antenna loads
+when detailed routing runs. The original 96,584 cells, connectivity, state,
+ports and constraints remain intact. The measured cell-area increment is
+4,623.09 um2, with unchanged die size. Global-route estimates still fail
+(slow setup -0.173740 ns, fast hold -0.329420 ns, slew violations and one fast
+capacitance violation). A new 12-thread native run is evaluating this
+hypothesis. Its automatic guide-cleanup hook has executed and removed the
+same six orphan guides. No native result is available yet.

@@ -549,3 +549,46 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   bulunabilirliği açıkça doğrulanmalı. Native aday henüz seçilmedi.
 - PR gövdesi 743/26 temiz klon ve yeni STA sonucuyla güncellendi. e68f93d
   hosted push/PR son bakışta devam ediyordu; son SHA yeşil demeyin.
+
+## 2026-09-20 07:01 TRT — XOR/LVS tamam, ECO22 native başladı
+
+- `cfa6c2e` GitHub'a gönderildi. Gerçek temiz remote klon HEAD
+  `cfa6c2ea56d1a5299149d50d1ae55359504bb8a6`: 794 total, 768 PASS,
+  26 SKIP, 545.622s; CI16/0/7. `record_fresh_cfa6c2e.py` çalıştı,
+  evidence ve gerçek ledger satırı eklendi. session1032 exit0 tamamlandı.
+- ECO18 XOR session12160 exit0; metric0 ve bağımsız XML items0.
+  `ethernet-eco18-xor-20260920.json` oluşturuldu. Scoped LVS session40919
+  exit0, 97150 device/96311net, 7 LVS+illegal-overlap0. SRAM içleri
+  black-box. `ethernet-eco18-lvs-20260920.json` oluşturuldu. Bağımsız
+  updated main-deck DRC session46578 halen çalışıyor; klasör
+  `hw/soc/out/eco18-upstream-drc-20260920`, iki thread. Gate sonucu henüz yok.
+- ECO21 GRT tamam: actual9 sizing PASS, üç olmayan master uyarısı kayıtta.
+  GRT slow -0.067914ns, fast hold -0.330479ns. `record_eco21.py` çalıştı.
+- ECO22 `timing-eco22-antenna-headroom`: 74 driverda196 pozitifbuf8,
+  <=3 load/branch. 71 antenna-fanout neti +3 zayıf gate, hiçbir diode
+  kaldırılmadı/limit gevşetilmedi. 96584 özgün hücre değişmedi; native
+  aday96780cell. Structural guardPASS. GRT slow -0.173740ns, fast hold
+  -0.329420ns, fast1cap ve slewFAIL. Alan+4623.09um2. `record_eco22.py`
+  çalıştı; branch-repairs.tsv ve route-inputs.json yerelBASE altında.
+- ECO22 native AKTİF session62541, `run_eco22_native.py`, tag
+  `eth256-eco22-route-20260920`, DRT12 thread. Yeni guide-cleanup hook
+  gerçekten çalıştı: logda REMOVED_ORPHAN_GUIDES6. DRT→KLayout.Render;
+  supervisor kendi PG'sini free<768MiB veya6h halinde durdurur. Başlangıç
+  preflight4800MiB; yeterli alan sağlandı. Sonuç gelince yeni postrouteguard
+  (çıkış dosyası exclusive-create), native3corner record, yeniDRC/XOR/LVS.
+- Halo native session11114 ikinci optimizasyon iterasyonunda. Sonra
+  prepare_halo_magic.py→run_halo_magic.py; henüz çalıştırılmadı.
+- Veri kaybı olmadan tamamlanmış final duplicate paylaşımı: ECO18XOR ve
+  ECO18LVS için12şer dosya/1318843222byte; ayrıca baseline native,
+  ECO2LVS ve eskiKLayout finalinde37dosya/3933909447byte. Kayıtlar
+  `eco18-{xor,lvs}-final-dedup.json`, `completed-checks-final-dedup.json`.
+  Her yol veSHA256 aynı. Sadece listelenen tamamlanmış runlar; başka
+  proje/aktifçıktı yok. Şu an yaklaşık7GiB boş; immutable çıktıları
+  yerinde değiştirmeyin (hardlink). Önceki tüm dedup kayıtları korunur.
+- e68f93d hosted checks veRTL geçiyor; formal-and-boot push/PR sonbakışta
+  sürüyordu. SonSHA tümhosted yeşil denmedi. PR gövdesi enson768 güncellemesi
+  öncesinde743/26 idi; cfa768 veXOR/LVS tamam bilgisiyle güncellenecek.
+- Bu checkpoint sonrası docs/evidence/ledger değişiklikleri için manifest
+  refresh, doc/digesttest, SPDX, commit/push gerekir. KaynakRTL aynı,
+  frozenpilot değişmedi; ürünün PCIeIP/pads/DFT/debug/clock/silicon/PDK
+  gereksinimleri ve F6 tarihselartifakt eksiği açık. Tam ürün demeyin.

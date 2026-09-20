@@ -127,3 +127,23 @@ ECO19/ECO20 sizing trials are separately recorded estimates, not accepted
 native replacements. Product timing and physical-verification gates remain
 open; F6's missing historical outputs and the external product dependencies
 are unchanged.
+
+The [independent ECO18 stream XOR](evidence/ethernet-eco18-xor-20260920.json)
+now passes: both the flow metric and an independent XML item count are zero.
+This closes stream agreement for ECO18 only; its LVS/DRC and failing timing
+remain separate gates.
+
+The [ECO18 scoped LVS](evidence/ethernet-eco18-lvs-20260920.json) now passes
+with 97,150 devices / 96,311 nets on both sides and zero mismatch counters.
+SRAM interiors are still black boxes. Updated main-deck DRC is still running;
+ECO18 timing/electrical failures remain open. ECO22 is a separate native
+candidate testing 196 added load-group buffers; its passing structural
+comparison is not a native timing or antenna verdict.
+
+The [clean remote replay at cfa6c2e](evidence/fresh-clone-cfa6c2e-20260920.json)
+now measures **768 passes / 26 skips**, and **16 passing CI gates / zero
+failures / seven skips**. This includes the five automatic flow-integration
+controls and 20 postroute controls added after the earlier 743-pass replay.
+No generated dependencies or physical outputs were copied into this clone.
+The measured ledger row is preserved verbatim; F6's absent historical
+artifacts are still absent, and every skip remains explicitly reported.
