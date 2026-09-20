@@ -401,3 +401,29 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   odb.dbWireShapeItr bu bindingde yok; yarım scripti sonuç saymayın.
 - Hosted803614b pushPASS;PR ve df0c190 push/PR son okumada sürüyordu.
   Frozen dosyalara dokunulmadı. Kullanıcı tüm maddeler için devam istiyor.
+
+## 2026-09-20 05:43 TRT — GitHub ve F7 halo hazırlığı
+
+- Push5df16f8 tamamlandı; PR1 body GLPASS/fresh707/43guard/guidecleanup11
+  ile güncellendi. İlgili233testPASS; SPDX452tagged0wrong;31TTmanifestOK,
+  git diff origin/main -- hw/rtl hw/tb hw/openlane tt boş.
+- ECO18clean native session70998 devam: detailed route iteration1.
+  Erken iteration violation sayılarını finalDRC saymayın; supervisor disk
+  sınırını izliyor. Son tamamlanmış native hâlâECO7.
+- F7 saltokunur attribution tamam:206outside markerın tümü aynıkatman
+  signalroute geometryilemesafe0;PGdeğil. BASE/attribute_magic_routes.py,
+  magic-route-attribution.json. Standardcellpins/LEFobs dahil değil,
+  tekbaşına DRCsebep ispatı değil. dbWirePathItr/dbITermShapeItr çalışıyor;
+  dbTransform.apply PythonRect ile bu bindingde çalışmadı, kullanma.
+- Yeni hw/soc/flow/macro_route_halo.py +17geometrytestPASS. Orijinal
+  baseline07postGRT ODB'den24macro içinM2/M3/M4 .6umoutside ring, .45um
+  signalpin corridor clearance üretir. 2766obs;M2area17407.428um²,
+  M3/M4each20336.064um². Before/afterNLbyteeşit; DEFyalnızBLOCKAGESfarklı.
+  TekrarüretimODBsha32420646... birebir. Yerleşim/hücre/bağlantı aynı.
+- Halo BASE/macro-halo-baseline/grt session27713/PID242724 AKTİF,
+  timeout1800,4thread,ilk50extraGRTiterasyonu deneniyor. Kaynakbaseline,
+  ECO18değil. Macrohaloorijinal206markerden178full23partial5nonegeometric
+  overlap;5nonepinchannels. Magicsonucuyok,436insidehedefdeğil.
+- Yeni docs/evidence/ihp-routing-halo-20260920.json hazırlanmış sonuçları
+  saklar; aktiftimingloglarınıfinalsaymaz. ROADMAP/docs92 güncel.
+  Yeni halo source/evidence henüz commit edilmedi; digestrefresh+check gerekir.

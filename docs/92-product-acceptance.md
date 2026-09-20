@@ -98,3 +98,10 @@ and seven skips**. No run artifacts or generated dependencies were copied
 into that clone. It includes the 35-test ECO checker and 19-test Ethernet
 probe checker; the later primary-input-aware checker is tested separately.
 Historical absent-artifact skips still prevent full F6 acceptance.
+
+The [F7 routing-halo experiment](evidence/ihp-routing-halo-20260920.json)
+now has implemented, checked preparation: 2,766 blockages around the original
+24-SRAM baseline, same netlist and placement, and retained pin corridors.
+The global-route trial is running; detailed routing and a new unchanged-deck
+Magic verdict remain pending. This advances the named experiment while
+leaving physical-verification acceptance open.

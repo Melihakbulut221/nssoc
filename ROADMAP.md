@@ -667,3 +667,18 @@ geometric projection of 20,336.064 µm² per layer, before pin-access openings.
 The input report, coordinates, DEF/LEF hashes and classifier command accompany
 the record. This adds a baseline and cost projection; the halo reroute itself
 has not run and this is not closure of the keep-out experiment.
+
+**2026-09-20 preparation update to §5a:**
+[`macro_route_halo.py`](hw/soc/flow/macro_route_halo.py) now prepares a separate
+baseline ODB with 2,766 routing obstructions, retaining Metal2 pin corridors.
+Reserved routing area is **17,407.428 µm² on Metal2** and **20,336.064 µm²
+each on Metal3 and Metal4**, on the unchanged die. Seventeen geometry tests
+pass. Emitted netlists are byte-identical; emitted DEFs differ only by the
+new blockage section. A repeat produces the same ODB hash.
+The [preparation and route-attribution record](docs/evidence/ihp-routing-halo-20260920.json)
+shows that all 206 outside baseline markers touch signal-route geometry.
+The new blockages cover 178 complete marker boxes and parts of 23; five
+coincide with retained pin corridors. Global routing is being attempted;
+there is no post-halo Magic verdict yet. The 436 inside-footprint markers
+are outside this experiment's scope. Neither this preparation nor its
+geometric coverage closes §5a or product DRC.
