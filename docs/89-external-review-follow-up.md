@@ -413,3 +413,11 @@ The subsequent `python3 paper/check_claims.py` replay reports **20 re-derived,
 recorded netlist and passes its focused check; that change postdates the full
 652/27 measurement. No historical signoff netlist is substituted or recreated
 from a newer design under its old name.
+
+The next fresh remote clone, `c966a43`, completes the same full command with
+**653 passes, zero failures/errors and 26 skips** in 806.065 seconds. The
+clock-gate census now runs on the pinned complete netlist. Front-door checks
+remain **16 PASS / 0 FAIL / 7 SKIP**, `tree-dirty=0`;
+[complete record and remaining skip reasons](evidence/fresh-clone-c966a43-20260920.json).
+This predates the later physical-ECO guard. The historical missing-artifact
+skips remain failures to meet F6's full acceptance, not tool absences.

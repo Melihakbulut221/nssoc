@@ -332,3 +332,41 @@ The following independent `eth256-eco2-lvs-20260920` check **matches uniquely**:
 illegal-overlap counter are zero. Its [record](evidence/ethernet-eco2-lvs-20260920.json)
 binds the same ECO2 DEF and powered netlist. SRAM interiors remain black boxes.
 This closes this candidate's scoped LVS check; it does not close timing or DRC.
+
+## ECO7 functional controls, 2026-09-20
+
+The later `timing-eco7-cap` seed is undergoing a separate native detailed
+route and extraction. Its [completed controls](evidence/ethernet-eco7-controls-20260920.json)
+compare it directly with the antenna-repaired baseline: all 94,492 original
+instances remain, with 441 equivalent combinational substitutions, 21
+equivalent sequential substitutions and 63 added non-inverting buffers.
+Original ports, aliases, wire widths and original pin connectivity are
+preserved after buffer contraction. State definitions and pin functions come
+from the pinned Liberty files, including explicit SRAM bus directions.
+
+The reproducible guard is
+[check_physical_eco.py](../hw/soc/flow/check_physical_eco.py):
+
+```bash
+python3 hw/soc/flow/check_physical_eco.py before.nl.v after.nl.v inputs.json
+.venv/bin/python -m pytest -q sw/tests/test_physical_eco.py
+```
+
+The input JSON names `before_sha256`, `after_sha256`, `liberty`,
+`liberty_sha256`, a `macro_libraries` list of `{path, sha256}`, the exact
+`substitutions` map `{instance: {old, new}}`, and `new_buffer_drivers`
+(one entry per added buffer). The latter records the planned count; actual
+direction, single-driver connectivity and acyclicity are derived independently
+from the netlists and libraries. Unsupported syntax or a failed invariant
+exits nonzero, including under `python -O`. There is no implicit library search.
+The focused regression passes **26 tests**, including changed clock/data
+semantics, swapped memory bits, wire-width changes, reversed/duplicate drivers,
+hash corruption and unrecognized state/tristate constructs.
+
+The same seed passes the real gate-level fault-free CPU workload with the
+watchdog armed and the documented reload255 firmware override: **27,306 cycles**,
+signature `9c07ef12`, zero failure mask and the same complete answer as RTL.
+Watchdog stages, reset events, traps, NMIs and observed fault alarms remain
+zero. This is zero-delay simulation with no fault injected. It is not SDF,
+WCET, an upset campaign, memory-interior equivalence or a final-route timing
+verdict. The historic reload127 failed clean control remains unchanged.

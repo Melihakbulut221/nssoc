@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "scope": "Completed upstream-helper arm only. Pinned-helper and raw-reader arms are separate pending comparisons; this result is not full-chip Magic DRC. No rule or cell exclusion.",
+  "scope": "Completed upstream-helper and pinned-helper arms, plus original-GDS contact geometry follow-up. Raw-reader arms are pending. No full-chip Magic verdict, rule waiver or cell exclusion.",
   "measurement": {
     "arm": "upstream-helper",
     "command": [
@@ -73,6 +73,125 @@
       "path": "hw/soc/out/external-review-20260919/SG13G2_os_layout_rules-5e6d592.pdf",
       "bytes": 1438255,
       "sha256": "66125e97386dd88ed058b50f4f8e8814c9633069e4060c2b19459d3e3e6450a2"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-contact-geometry.json",
+      "bytes": 51345,
+      "sha256": "a94b690d5c904ecf4e6e2973e950b51ed0291a0e02c2c79f777e8c7263465c7d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/measure_magic_contact_boxes.py",
+      "bytes": 2493,
+      "sha256": "a0eb243fabb491386b48bab83d24eb74ab3d38884885e857ee6b8613fd747416"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-contact-geometry-cropped.log",
+      "bytes": 33,
+      "sha256": "eed80e0217712d93c50608e9dfaf8016a98908614693681285c9ab47c02f5460"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-grid-query-20260920/run.tcl",
+      "bytes": 641,
+      "sha256": "1496e0def348fd92f8644f443aa2cfda987948755f7dc784ac51e473bb6f7e4e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-grid-query-20260920/run.log",
+      "bytes": 10897,
+      "sha256": "f8438b3fd695d00506b98598706420c63f05374f32459f4523d5a230c1d92940"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/inputs.json",
+      "bytes": 802,
+      "sha256": "1227c18a44c5ddd39f252b739796713e4e631ce4c21c042aeb3d5e8ee8134c8c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/result.json",
+      "bytes": 895,
+      "sha256": "9807c779e47d11588ac88017f44cc56e33d1fa1bf5b7ffb778bf45fcbdb88484"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/run.tcl",
+      "bytes": 1326,
+      "sha256": "a55c610976758e77acc9ce5f244801cdb159cf5be9746e97bd7c47462bf381a0"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/run.log",
+      "bytes": 10946,
+      "sha256": "68de37ca3695a4be247f3fb1b730c439bd612ef9adbbde481b94d7bd22793fbd"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/categories.tsv",
+      "bytes": 268,
+      "sha256": "f842cc101a7915414bb4a2ab22e847ebeea8762594fa82f727398c294822eb51"
     }
-  ]
+  ],
+  "geometry_followup": {
+    "command": "~/.local/opt/llbin/klayout -b -zz -r hw/soc/out/external-review-20260919/measure_magic_contact_boxes.py",
+    "scope": "Read-only original GDS geometry near Magic marker coordinates. Full-polygon orthogonal growth checked at 1nm steps up to 100nm, in addition to contextual masks. No signoff or arbitrary rule waiver.",
+    "grid_validation": {
+      "command": "~/.local/opt/llbin/magic -dnull -noconsole -rcfile hw/soc/out/external-review-20260919/upstream-magic-5e6d592/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc hw/soc/out/external-review-20260919/magic-grid-query-20260920/run.tcl",
+      "measured_um": 0.004999999888241291,
+      "rounded_um_used_in_geometry": 0.005
+    },
+    "unique_contact_per_marker": true,
+    "groups": [
+      {
+        "inside_sram": false,
+        "inside_digibnd": true,
+        "measured_orthogonal_enclosure_nm": 60,
+        "count": 21
+      },
+      {
+        "inside_sram": true,
+        "inside_digibnd": true,
+        "measured_orthogonal_enclosure_nm": 10,
+        "count": 36
+      }
+    ],
+    "interpretation": "All 57 marker neighborhoods have contact enclosures below the Magic threshold and above the corresponding KLayout context threshold. This explains the observed deck disagreement on these contacts; it does not qualify a rule waiver, modified SRAM or foundry signoff."
+  },
+  "pinned_helper_control": {
+    "measurement": {
+      "arm": "pinned-helper",
+      "command": [
+        "/home/hasanmelih/.local/opt/llbin/magic",
+        "-dnull",
+        "-noconsole",
+        "-rcfile",
+        "/home/hasanmelih/.ciel/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/magic-sram-comparison-20260920/pinned-helper/run.tcl"
+      ],
+      "gds_sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e",
+      "script_sha256": "a55c610976758e77acc9ce5f244801cdb159cf5be9746e97bd7c47462bf381a0",
+      "deck": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+      "upstream_read_sram_gds_helper": true,
+      "scope": "Entire unchanged 512x16 macro GDS, full Magic DRC style, euclidean on. No black boxes or excluded geometry/rules. Count is Magic raw error boxes, not KLayout markers.",
+      "returncode": 0,
+      "elapsed_s": 1961.4157894599994,
+      "boxes": 499098,
+      "status": "FAIL"
+    },
+    "categories": [
+      {
+        "boxes": 3505,
+        "rule": "N-diffusion overlap of N-diffusion contact < 14 (Cnt.c)"
+      },
+      {
+        "boxes": 172009,
+        "rule": "N-Diffusion spacing to N-well < 62 (NW.d)"
+      },
+      {
+        "boxes": 207360,
+        "rule": "N-well overlap of P-Diffusion < 62 (NW.c)"
+      },
+      {
+        "boxes": 82944,
+        "rule": "P-diffusion overlap of P-diffusion contact < 14 (Cnt.c)"
+      },
+      {
+        "boxes": 33280,
+        "rule": "Poly overhang of transistor < 36 (Gat.c)"
+      }
+    ]
+  }
 }

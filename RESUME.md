@@ -2,70 +2,68 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 # Aktif devam noktası — 20 Eylül 2026
 
-Kullanıcı yeniden devam edilmesini istedi; aşağıdaki 19 Eylül durdurma kaydı
-tarihseldir. Çalışma devam ediyor; eski durdurma talimatını yeniden uygulamayın.
+Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
+istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
-- 20 Eylül 02:38 TRT güncellemesi. Dal `codex/complete-open-work`;
-  son gönderilmiş commit `686e379`; yeni ölçümler ve iki küçük doğrulama
-  düzeltmesi hazırlanıyor. Tüm kapılar: `docs/92-product-acceptance.md`.
-- Temiz remote 686e379 klonu: 16 CI kapısı PASS / 0 FAIL / 7 SKIP;
-  pytest 652 PASS / 27 SKIP, 538,209 s. Gerçek 2,18 MB netlist arşivi
-  üzerindeki yedi guard artık klonda çalışıyor. Clock-gate census da aynı
-  arşive bağlandı ve ayrıca PASS; bu, 652/27 ölçümünden sonra geldi.
-  F6 eski tarihsel DEF/netlistler eksik olduğu için hâlâ açık. Paper claim
-  replay: 20 re-derived / 15 hand-read / 7 missing build / 0 wrong.
-- Orijinal `interfaces-eth256-resume-20260919-184950` tam 24-SRAM GDS:
-  güncel, değişmemiş IHP 5e6d592 KLayout ana deck PASS, 0 marker,
-  5013,69 s. Aynı GDS eski c4b8b4e deck ile FAIL, 22280 marker:
-  Cnt.c.digibnd 2768, Sdiod.d 9756, Sdiod.e 9756. İki run da tamamlandı;
-  bellekte duraklatılan eski KLayout devam edip bitti, bekleyen SIGSTOP yok.
-  `docs/evidence/ihp-full-chip-drc-20260920.json` ikisini bağlar.
-- Thread parametresi düzeltildi: yeni upstream `thr` değil `threads` okuyor.
-  Eski kontrol fiilen 20 thread idi. Güncel wrapper --threads 2 ile gerçek
-  512x16 SRAM'da 2 thread / 0 marker / 46,48 s doğrulandı. Eski komutlar
-  tarihsel kayıtlarda aynen duruyor, ölçülen markerlar değişmedi.
-- ECO2 `eth256-eco2-route-20260920` GDS/RCX/3 native STA köşesi tamamlandı.
-  Üç köşede hold PASS; fast minimum +0,007986 ns. Slow setup -1,063485 ns,
-  328 setup, 15 cap, 89 slew, 892 fanout: hâlâ FAIL. Router DRC 0,
-  ayrı antenna checker 0 net/0 pin. 256 kullanılmayan SRAM çıkışı dışında
-  kritik disconnected 0. Kendi scoped LVS'si de PASS: 95044 device / 94244
-  net iki tarafta; 7 LVS sayacı ve illegal overlap 0. SRAM içleri black-box.
-  Yeni `ethernet-eco2-{extracted,lvs}-20260920.json` kayıtları.
-- ECO4 sizing bitti. ECO5 devamında 158 sizing işlemi; son GRT slow setup
-  -0,602981 ns / fast hold -0,168329 ns. Antfix'e göre 422 comb + 20 FF
-  master değişimi + 25 buffer; Liberty state ve bağlantı karşılaştırması PASS.
-- ECO6 electrical: ECO5'e 16 eşdeğer comb değişimi + 38 yerel buf8 ekledi;
-  bağlantı/driver/bus kontrolü PASS. Son GRT slow setup -0,845294 ns,
-  fast hold -0,139304 ns. Bu native extracted hüküm değildir.
-- ECO7 `timing-eco7-cap`: ECO6'nın 3 buf1'ini buf8 ve bir FF1'ini FF2 yapıyor;
-  global route aktif. Bitince v3 connectivity check ile ECO6'ya karşı
-  doğrulayın, then native detailed route/RCX/STA/GDS için yeni seed oluşturun.
-  Seed'e stale SPEF/GDS/metrics taşımayın. Diskte yaklaşık 13 GB boş yer var;
-  bir tam route ~4,2 GB. RTL ve SDC bu ECO'larda değişmedi.
-- ECO1 eksik RC nedeniyle REDDEDİLDİ; ECO3 son çıktı olmadan durduruldu.
-  RSZ sonrası global route'un ara iterasyonlarında EST-0026 uyarıları var;
-  son tahminleri ayrı native extraction yerine kullanmayın.
-- Orijinal baseline Magic DRC `eth256-decks-20260919` PID 78927 aktif.
-- Magic SRAM 2x2 deneyi `magic-sram-comparison-20260920`: upstream-helper
-  FAIL 57 kutu (21 Cnt.c + 36 SRAM Cnt.c), 2173,59 s. Pinned-helper aktif
-  (PID 171358), ardından iki raw arm otomatik çalışacak. Değişmeyen GDS'de
-  Magic 20 nm SRAM / KLayout 6 nm SRAM; DigiBnd 70/50 nm bağlam farkları
-  inceleniyor. PDF 8.3 hâlâ WIP, hiçbir kural gevşetilmedi/waiver yapılmadı.
-- Salt-okunur `measure_magic_contact_boxes.py` geometri sorgusu, 57 işareti
-  gerçek GDS temaslarına bağladı. Tam polygon-distance sürümü local crop ile
-  çalışıyor (`magic-contact-geometry-cropped.log`); ilk pahalı tüm-region
-  deneyi SIGTERM ile durduruldu. DRC runları durdurulmadı. Ayrı Magic
-  `magic-grid-query-20260920` 5 nm dönüşümünü araçtan doğrulayacak.
-- Deneyler/loglar `hw/soc/out/external-review-20260919/`. Yeni yardımcılar:
-  check_eco_connectivity_v3.py (bus output desteği, 3 negatif kontrol PASS),
-  prepare_eco_electrical.py, prepare_eco7.py. v3'te makro driver yönleri
-  gerçek Liberty'den okunuyor; nihai kayıtta tüm kullanılan Liberty hashlerini
-  saklayın. Ara deneyleri nihai ürün kaynağı yerine geçirmeyin.
-- PCIe Gen3 x4 fiziksel IP hâlâ yok; docs/91 IHP VHiSSI 2,5 Gb/s bulgusunu
-  içerir fakat Gen3 x4 makro değildir. Mimari seçimi ve lisanslı IP erişimi
-  gerekir. Kullanıcıya gönderilen önceki async sorular henüz cevaplanmadı.
-- GitHub d609e9a push/PR tümü SUCCESS. 686e379 push35475412906 ve
-  PR35475415814 hâlâ aktif; güncel sonucu canlı sorgulayın.
+- 20 Eylül 03:00 TRT. Dal `codex/complete-open-work`; son gönderilmiş commit
+  `c966a43`. Ürün ve inceleme kapıları `docs/92-product-acceptance.md` içinde.
+- ECO7 tam native route `eth256-eco7-route-20260920` aktif (PID 187301,
+  tool session 98866). 01 detailed routing devam ediyor; bitince antenna,
+  RCX, üç köşe STA ve GDS/Render otomatik devam eder. Yaklaşık 12 GB boş disk.
+  Girdi `timing-eco7-cap/route-inputs.json`; seed'de stale SPEF/GDS/metrics yok.
+- ECO7 kapı düzeyi watchdog-armed kontrol tamamlandı: 27306 cycle, RTL ile
+  aynı cevap, hata kanalları sıfır. `ethernet-eco7-controls-20260920.json`.
+  SDF/fault injection/WCET değildir. GL derleme/sim logları external-review
+  klasöründeki `eth256-eco7-fi-{build,armed}.log`; binary `eth256-eco7-fi-gl`.
+- Yeni kalıcı `hw/soc/flow/check_physical_eco.py` başlangıç antfix netlistinden
+  ECO7'ye doğrudan PASS: 94492 orijinal instance, 441 comb + 21 FF eşdeğer
+  değişim + 63 buf8. Orijinal port/alias/wire genişliği/pinler korunuyor;
+  gerçek Liberty state/functions ve SRAM bus driver yönleri karşılaştırılıyor.
+  26 pozitif/negatif kontrol; ilgili kanıt/dokümanlarla 186 PASS.
+  Tüm girdi netlist/Liberty hashleri zorunlu; python -O denetimi kapatmıyor.
+- Fresh remote c966a43 tam CI tamamlandı: 653 PASS / 26 SKIP, 806.065s;
+  16 kapı PASS / 0 FAIL / 7 SKIP, tree-dirty=0.
+  `fresh-clone-c966a43-20260920.json` tüm atlama nedenlerini ve log/XML
+  hashlerini tutar; gerçek c966a43 ledger satırı ana kayda eklendi.
+- Önceki fresh remote 686e379: 652 PASS / 27 SKIP; 16 CI kapısı PASS / 0 FAIL /
+  7 SKIP. Sonraki clock-gate census snapshot fallback'i c966a43'te. F6 sayısal
+  eşik geçilmiş olsa da tarihsel orijinal DEF/netlistler eksik: hâlâ açık.
+  Claims: 20 re-derived / 15 hand-read / 7 missing build / 0 wrong.
+- Orijinal 24-SRAM GDS değişmemiş upstream 5e6d592 KLayout main deck PASS0;
+  eski pinned deck aynı GDS'de FAIL22280. `ihp-full-chip-drc-20260920.json`.
+  Wrapper `threads` argümanı düzeltildi; gerçek SRAM run'ında 2 thread PASS0.
+- Orijinal tam-chip Magic `eth256-decks-20260919`, PID78927 / session22051
+  aktif. Sonuç çıkmadan iptal etmeyin; ardından eski KLayout/LVS adımlarını
+  yeniden çalıştırması gereksiz olabilir, tamamlanan Magic'i önce kaydedin.
+- Magic 2x2 SRAM kıyası session44110: upstream-helper FAIL57, pinned-helper
+  FAIL499098 tamamlandı; upstream-raw aktif, pinned-raw sırada.
+  Helper ile flatten edilen geometriler hariç tutulmuş değildir.
+- 57 upstream Magic işareti salt-okunur GDS ölçümünde tek tek eşlendi:
+  21 DigiBnd / SRAM dışı contact 60nm, 36 SRAM contact 10nm active enclosure.
+  Magic sınırları70/20nm, KLayout50/6nm; resmi SRAM PDF bölümü WIP.
+  `magic-grid-query-20260920/run.log` internal grid'i 0.004999999888um ölçtü.
+  `ihp-magic-sram-followup-20260920.json` hash/komutları ve pinned-helper
+  FAIL'i kapsıyor. Geometri/kural değişimi veya waiver yapılmadı.
+- ECO2 ayrı routed/extracted aday: tüm hold köşeleri PASS (min +0.007986ns),
+  slow setup -1.063485ns, cap/slew/fanout FAIL. Router DRC0, antenna0,
+  kendi scoped LVS PASS95044device94244net. DRC/XOR ayrı; baseline sonucunu
+  ECO2/ECO7 için kullanmayın. ECO1 eksik RC nedeniyle geçersiz; ECO3 durduruldu.
+- ECO7 GRT slow setup -0.845294ns, fast hold -0.157326ns; native signoff değil.
+  `eco7-endpoint-probe` salt-okunur deney geçersiz: read_guides parasitic
+  estimation desteklemiyor (GRT-0008); yalnız bu prob durduruldu, hiçbir
+  ölçüm benimsenmedi. `eco7-endpoint-grt-probe` session95022 doğru GRT
+  yeniden kurulumuyla aktif. WNS orijinalle karşılaştırılmalı. Kritik
+  endpoint hold margin ölçümü hücre küçültme olasılığını araştırıyor.
+- Deneyler `hw/soc/out/external-review-20260919`; eski record üreticilerini
+  körlemesine çalıştırmayın, zenginleşmiş kayıtları ezerler. Yeni
+  prepare_eco7.py seed ODB/NL hashleri sonraki kullanım için düzeltildi.
+- PR1 açıklaması en yeni baseline/ECO2/ECO7 kapsamlarıyla güncellendi, draft.
+  686e379 push SUCCESS; onun PR/formal ve c966a43 işlerindeki canlı sonucu
+  tekrar sorgulayın. Yeni kod/kanıtları doğruladıktan sonra commit/push yapın.
+- PCIe Gen3 x4 uyumlu controller/PHY IP yok. Ticari IP/uygun process veya
+  mimari kararı gerekiyor. Önceki async IP/mimari ve tarihsel dosya soruları
+  yanıtsız; placeholder PCIe, gerçek layout veya ürün değildir.
+- Donmuş hw/rtl, hw/tb, hw/openlane, tt kaynaklarına dokunmayın.
 
 ---
 

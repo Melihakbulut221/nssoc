@@ -1,0 +1,162 @@
+{
+  "date": "2026-09-20",
+  "scope": "ECO7 pre-route netlist. Restricted structural logic/state/connectivity check plus a zero-delay fault-free watchdog-armed gate simulation. No SDF, injected-upset campaign, timing closure, WCET, memory-interior verification or final-route equivalence claim.",
+  "status": "PASS within scope",
+  "structural_check": {
+    "original_instances": 94492,
+    "added_noninverting_buffers": 63,
+    "equivalent_combinational_substitutions": 441,
+    "equivalent_sequential_substitutions": 21,
+    "state_definitions_compared_exactly": true,
+    "unchanged_ports_and_assigns": true,
+    "unchanged_original_wire_declarations": true,
+    "all_original_pin_connections_equal_after_buffer_contraction": true
+  },
+  "gate_level": {
+    "site": "-1",
+    "bit": "0",
+    "cycle": "0",
+    "armed": "1",
+    "hit": "0",
+    "width": "1",
+    "before": "00000000000000000000000000000000",
+    "after": "00000000000000000000000000000000",
+    "during": "0",
+    "persist": "0",
+    "force_ps": "0",
+    "done": "1",
+    "cycles": "27306",
+    "budget": "35000",
+    "slept": "1",
+    "expired": "0",
+    "sig": "9c07ef12",
+    "mask": "00000000",
+    "rounds": "4",
+    "exit": "00000000",
+    "magic": "600dc0de",
+    "console_chars": "19",
+    "console_hash": "6d6942c8",
+    "console_framing": "0",
+    "console_tail": "S9c07ef12M00000000",
+    "wdog1": "0",
+    "wdog2": "0",
+    "wdog3": "0",
+    "wdog_first": "-1",
+    "wdog_rst_events": "0",
+    "traps": "0",
+    "mcause": "00000000",
+    "nmis": "0",
+    "alert_minor": "0",
+    "alert_int": "0",
+    "alert_bus": "0",
+    "dblfault": "0",
+    "win_open": "350",
+    "win_close": "25478",
+    "wdog_rld": "-1",
+    "wdog_pre": "-1",
+    "kicks": "-1",
+    "kick_min": "-1",
+    "kick_max": "-1",
+    "wdog_early": "-1",
+    "wdog_budget": "-1",
+    "wdog_win": "00000000",
+    "rf_sec": "-1",
+    "rf_ded": "-1",
+    "rf_sec_seen": "0",
+    "rf_ded_seen": "0",
+    "rf_shadow": "0",
+    "wd_mismatch": "-1",
+    "wd_tmr_count": "-1",
+    "wd_tmr_err": "0",
+    "wd_shadow": "0",
+    "own_clk": "0",
+    "own_known": "1",
+    "released": "0",
+    "release_ps": "0",
+    "own_first": "-1",
+    "own_edges": "0",
+    "cg_shadow": "0",
+    "cg_gates": "-1",
+    "cg_en_before": "xx",
+    "cg_en_during": "xx",
+    "cg_npu_first": "-1",
+    "cg_npu_edges": "-1",
+    "cg_bus_first": "-1",
+    "cg_bus_edges": "-1",
+    "cg_npu_word_before": "00000000",
+    "cg_npu_word": "00000000",
+    "cg_npu_mismatch": "-1",
+    "cg_bs_cor": "-1",
+    "cg_bs_det": "-1",
+    "cg_bs_tmr": "-1",
+    "cg_bs_cor_before": "-1",
+    "cg_bs_det_before": "-1",
+    "cg_bs_tmr_before": "-1",
+    "_end": true
+  },
+  "rtl_answer_reference": "docs/evidence/ethernet-gate-baseline-20260919.json:armed_follow_up.reload255.rtl",
+  "answer_equal_to_reference": true,
+  "commands": [
+    ".venv/bin/python hw/soc/out/external-review-20260919/replay_promoted_eco.py",
+    ".venv/bin/python -m pytest -q sw/tests/test_physical_eco.py",
+    "bash hw/soc/flow/fi_core_gl.sh hw/soc/out/external-review-20260919/timing-eco7-cap/soc_top.nl.v hw/soc/out/eth256-fi-rtl-rld255 hw/soc/out/eth256-eco7-fi-gl",
+    "timeout 1800 stdbuf -oL -eL ~/.local/opt/iverilog13/usr/bin/vvp hw/soc/out/eth256-eco7-fi-gl/tb_soc_fi_gl.vvp +site=-1 +armed=1 +budget=35000"
+  ],
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/eth256-eco7-fi-armed.log",
+      "bytes": 1354,
+      "sha256": "f8933dc089bc5e4e99305f22530b7007880ef391d0a208c92bc11d4746280219"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/eth256-eco7-fi-build.log",
+      "bytes": 5114,
+      "sha256": "d8db61c2c32c11f738b8aba1df671e57dd3e03d8fb0d77f452f2eb810982a151"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco7-cap/soc_top.nl.v",
+      "bytes": 10794869,
+      "sha256": "cf60b17c03e2d1d7f5446e175d890825688f041655e8df530dff017b26c76adc"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco7-cap/promoted-check-inputs.json",
+      "bytes": 52284,
+      "sha256": "6dd31833ba4033184df7972f6f033848a1f68961a15c0a7bcf0ad27592c913db"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco7-cap/promoted-check-result.json",
+      "bytes": 368,
+      "sha256": "0a0836975e57c6b573b01b440b413eb26a8bb8bdcc2349224088be0fe5080eb1"
+    },
+    {
+      "path": "hw/soc/flow/check_physical_eco.py",
+      "bytes": 12020,
+      "sha256": "88d841665762d428b0c313899aef28aa45cfe1e0b0b85ff80f6c2c4b6d9e9f73"
+    },
+    {
+      "path": "hw/soc/out/eth256-eco7-fi-gl/tb_soc_fi_gl.vvp",
+      "bytes": 94701577,
+      "sha256": "fce976360026884a8e75d24e39f94c5c38c1d4e5828fbf974c14159f583fdd04"
+    },
+    {
+      "path": "hw/soc/out/eth256-eco7-fi-gl/provenance.txt",
+      "bytes": 3331,
+      "sha256": "a5a2d0a9918899501036c6ce81b4c45b2c8b61f17ad3abf2ae9f3ddd0b504da0"
+    },
+    {
+      "path": "hw/soc/out/eth256-eco7-fi-gl/fi_workload.hex",
+      "bytes": 18144,
+      "sha256": "d357a4a23bf744f81cbbfd8fdfa03025b7ed1771b3cf35c199d065b366fe9f7d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/physical-eco-tests.log",
+      "bytes": 99,
+      "sha256": "b19bd753b264486da0797eed2b10e9c9ec3ebeba61f794b46567ef39b058a9c9"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/physical-eco-replay.log",
+      "bytes": 368,
+      "sha256": "0a0836975e57c6b573b01b440b413eb26a8bb8bdcc2349224088be0fe5080eb1"
+    }
+  ]
+}

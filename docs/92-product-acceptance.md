@@ -59,3 +59,11 @@ the input inventory in [the Ethernet evidence](evidence/ethernet-sram256-2026091
 The failed multi-repair optimizer and the missing-RC diagnostic correction are
 preserved in [the timing replay record](evidence/timing-replay-20260919.json).
 Neither is accepted as a replacement for the native physical flow.
+
+Added 2026-09-20: the next [fresh remote clone at c966a43](evidence/fresh-clone-c966a43-20260920.json)
+measures 653 passes / 26 skips and the same 16/0/7 CI gate totals. This adds the
+recorded-netlist clock-gate census; it does not close the historical-artifact
+part of F6. The later [ECO7 functional controls](evidence/ethernet-eco7-controls-20260920.json)
+pass structural logic/state checks and the fault-free watchdog-armed workload.
+Its native routing/extraction is still pending; the ECO2 timing result above
+remains the latest completed optimized physical measurement.

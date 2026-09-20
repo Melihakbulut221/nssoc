@@ -149,3 +149,22 @@ deck finishes with zero markers in 46.48 seconds;
 [record](evidence/ihp-drc-gate-20260920.json).
 The official PDF discussed above is pinned at
 [the same IHP revision](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.doc/doc/SG13G2_os_layout_rules.pdf).
+
+### Contact geometry and pinned Magic control, 2026-09-20
+
+The read-only geometry follow-up now maps all 57 upstream Magic boxes to
+exactly one original GDS contact each. Of these, 21 are inside DigiBnd and
+outside SRAM, with 60 nm orthogonal active enclosure; 36 are inside both
+masks, with 10 nm enclosure. The command checks complete contact polygons
+against nearby active geometry in 1 nm growth increments. A separate Magic
+query measures its internal grid as approximately 0.005 µm, validating the
+coordinate conversion. Commands, coordinates and source/log hashes are in
+the [follow-up record](evidence/ihp-magic-sram-followup-20260920.json).
+
+These enclosures are below Magic's respective 70/20 nm limits and above
+KLayout's corresponding 50/6 nm limits. This explains the disagreement for
+these contacts, but does not authorize changing SRAM geometry or waiving a
+deck. The pinned Magic control, using the same macro and upstream reader
+helper, also completed: **499,098 boxes**, FAIL, in 1,961.42 seconds. Its
+five rule categories are retained alongside the upstream arm. Raw-reader
+comparisons remain pending; neither arm is a full-chip result.
