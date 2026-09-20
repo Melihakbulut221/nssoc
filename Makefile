@@ -87,9 +87,13 @@ boot-proof:
 	cd $(ROOT) && $(PY) scripts/check_boot_geometry.py --cbmc $(CBMC)
 
 .PHONY: soc-interfaces-prepare
+SOC_INTERFACE_PROFILE ?= base
+export SOC_INTERFACE_PROFILE
 soc-interfaces-prepare:
-	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-spacewire_reloaded fetch-can fetch-verilog-ethernet
-	$(PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py
+	@case "$(SOC_INTERFACE_PROFILE)" in base|full) ;; *) echo 'SOC_INTERFACE_PROFILE must be base or full'; exit 2 ;; esac
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-verilog-ethernet
+	@if [ "$(SOC_INTERFACE_PROFILE)" = full ]; then $(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-spacewire_reloaded fetch-can; fi
+	$(PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py --profile $(SOC_INTERFACE_PROFILE)
 
 .PHONY: soc-interfaces-test soc-interfaces-sim
 soc-interfaces-test: soc-interfaces-prepare

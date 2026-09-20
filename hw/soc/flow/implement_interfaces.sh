@@ -10,15 +10,17 @@ case "$TAG" in *[!a-zA-Z0-9_-]*|'') echo 'Use an alphanumeric run tag.' >&2; exi
 OUT="$SOC_DIR/out/$TAG"
 [ ! -e "$OUT" ] || { echo "Refusing to overwrite $OUT" >&2; exit 2; }
 mkdir -p "$OUT"
-python3 "$SOC_DIR/flow/prepare_interfaces.py"
+export SOC_INTERFACE_PROFILE=${SOC_INTERFACE_PROFILE:-base}
+python3 "$SOC_DIR/flow/prepare_interfaces.py" --profile "$SOC_INTERFACE_PROFILE"
 python3 - "$ROOT" "$OUT.inputs.json" <<'PY'
-import hashlib, json, pathlib, sys
+import hashlib, json, os, pathlib, sys
 root, out = map(pathlib.Path, sys.argv[1:])
 files = set()
 for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp'):
     for ext in ('*.v', '*.vh'):
         files.update((root/directory).glob(ext))
-record = {'configuration': {'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
+record = {'configuration': {'SOC_INTERFACE_PROFILE': os.environ['SOC_INTERFACE_PROFILE'],
+                           'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
                            'ETH_SRAM': 1, 'ETH_SRAM_BANK_WORDS': 256, 'clock_ns': 20, 'ethernet_clock_ns': 8},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()

@@ -1,8 +1,9 @@
 # 88 — SpaceWire, CAN, SPI and I2C integration
 
 2026-09-19. This work extends `soc_top`, not the frozen Tiny Tapeout pilot.
-The four previously reserved slots now contain real RTL, physical pins and
-interrupts. No device is represented by a successful dummy register bank.
+In the explicitly selected full profile the four previously reserved slots
+contain real RTL, physical pins and interrupts. Since 21 September the default
+base profile includes SPI/I2C and reserves SpaceWire/CAN with bus errors.
 
 ## Scope and dependencies
 
@@ -19,22 +20,48 @@ are not binary-compatible GRLIB drivers. CAN uses the documented SJA1000 map.
 SpaceWire is PIO, not the originally proposed DMA channel or a four-port router.
 CAN is classical 2.0B, not CAN FD. SPI supports continuous-CS multi-byte transfers through its HOLD control bit.
 
-`make soc-interfaces-prepare` fetches the three commits pinned in
+`make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full` fetches four commits pinned in
 `hw/soc/tools.soc.mk` and runs `hw/soc/flow/prepare_interfaces.py`. The generator
 refuses dirty or differently pinned upstream trees. It expands their includes
-into ignored `hw/soc/gen/interfaces.bundle.vh`, retains upstream notices, and
-writes input and output SHA-256 values to `interfaces.bundle.json`. The `.vh`
+into ignored `hw/soc/gen/interfaces-full.bundle.vh`, retains upstream notices, and
+writes input and output SHA-256 values to `interfaces-full.bundle.json`. The `.vh`
 extension deliberately keeps the bundle out of the Ibex `gen/*.v` source glob.
 Verilog-2005 keyword directives permit upstream's port named `do` in Icarus's
 SystemVerilog mode; Yosys uses its native Verilog frontend. Upstream's implicit
 wire declarations are permitted within the generated bundle. No upstream
 checkout is modified.
 
-SpaceWire and CAN carry LGPL-2.1-or-later, I2C MIT. These dependencies are now
-used in this SoC build; the earlier assessment-only statement in docs/65 is
+SpaceWire and CAN carry LGPL-2.1-or-later, I2C/Ethernet MIT. The two LGPL cores are
+used only in the full profile; the earlier assessment-only statement in docs/65 is
 historical. They are not copied into the frozen pilot or relabelled under the
 project's licence. External LVDS transceivers for SpaceWire, a CAN transceiver,
 and open-drain I2C pads/pull-ups remain board/pad integration requirements.
+The CAN source retains its Bosch protocol notice; this integration provides
+no patent clearance or silicon permission.
+
+The default `SOC_INTERFACE_PROFILE=base` fetches only I2C/Ethernet and uses a
+separate `interfaces.bundle.vh`. It does not instantiate SpaceWire/CAN, even
+if their checkouts or a full bundle remain from a previous run. Their APB
+slots return errors, discovery records are zero, IRQs stay low, SpaceWire
+outputs stay low and CAN TX stays recessive. The full profile restores their
+original instances, addresses and discovery records. The generated C header
+provides each record's `SOC_<NAME>_PNP_OFF`; the static map is the full superset.
+The resolver verifies the selected manifest, input and output hashes before use.
+
+```sh
+make soc-prepare SOC_INTERFACE_PROFILE=base
+SOC_INTERFACE_PROFILE=base SW_DEFINES=-DINTERFACE_DEMO make soc-sim
+make soc-prepare SOC_INTERFACE_PROFILE=full
+SOC_INTERFACE_PROFILE=full SW_DEFINES=-DINTERFACE_DEMO make soc-sim
+SOC_INTERFACE_PROFILE=full make -C hw/soc/tb/cocotb -f Makefile.soc_interfaces
+```
+
+Pass the same variable to synthesis, PNR and FI commands. The physical launcher
+also rejects netlists whose preserved `u_spw`/`u_can` hierarchy names contradict
+the selection; that structural guard is not an equivalence proof. Existing
+historical layouts predate these profiles and remain full-interface results.
+Normal CI uses base. Manual workflow input `full_interfaces=true` selects full
+for all jobs; native whole-SoC boot separately requires `native_boot=true`.
 
 PCI/PCIe and Ethernet are separate from these four blocks. The repository's
 original scope excluded them; this change does not implement or advertise them.
@@ -337,3 +364,13 @@ DEF/LEF view (`MAGIC_EXT_USE_GDS=false`), as in the existing
 `config-lvs-ecc-rom.json` recipe. Failures remain nonzero exits; a vendor-deck
 failure is not converted to a passing result. Input hashes and the full log
 are retained under `hw/soc/out/<deck-run-tag>/`.
+
+## Profile verification — 21 September 2026
+
+[Source-bound profile evidence](evidence/interface-profiles-20260921.json)
+records 29 successful CPU checks per profile, including discovery reads and
+base-profile access-fault traps. The base and full pin suites have 8 and 11
+passes respectively, with the other profile's cases explicitly skipped.
+Both whole-SoC elaborations and all six profile-specific discovery formal tasks
+pass. A stale or altered bundle and a mismatched physical netlist are rejected.
+This does not replace the outstanding final-layout and full product gates.

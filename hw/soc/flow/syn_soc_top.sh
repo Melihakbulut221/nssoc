@@ -132,6 +132,9 @@ set -euo pipefail
 
 PERIOD_NS=${1:-20}
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 OUT=${2:-$SOC_DIR/out/soc-top}
 RTL=$SOC_DIR/rtl
 # hw/rtl/tmr_voter.v, secded_enc.v and secded_dec.v are READ from the
@@ -253,7 +256,7 @@ rm -rf "$OUT"; mkdir -p "$OUT"
 IBEX_SRCS=$(ibex_sources "$SOC_DIR" | tr '\n' ' ')
 
 SOC_SRCS="$RTL/soc_bus.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
-$RTL/soc_gpio.v $RTL/soc_spw.v $RTL/soc_i2c.v $RTL/soc_spi.v $RTL/soc_can.v $RTL/soc_eth.v $RTL/soc_apb_wb.v $SOC_DIR/gen/interfaces.bundle.vh $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
+$RTL/soc_gpio.v $RTL/soc_spw.v $RTL/soc_i2c.v $RTL/soc_spi.v $RTL/soc_can.v $RTL/soc_eth.v $RTL/soc_apb_wb.v $IF_BUNDLE $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
 $RTL/soc_gptimer.v \
 $RTL/soc_wdog.v $RTL/soc_busstat.v $RTL/soc_scrub.v $RTL/soc_boot.v \
 $RTL/soc_tmr_bank.v \
@@ -601,11 +604,11 @@ $ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
 read_verilog -defer $IBEX_SRCS
-read_verilog -I$RTL -defer $SOC_SRCS
+read_verilog $IF_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MEM_READ
 $BOOT_ROM_READ
-read_verilog -I$RTL $BOOT_ROM_DEFINE -defer $RTL/soc_top.v
+read_verilog $IF_DEFINE -I$RTL $BOOT_ROM_DEFINE -defer $RTL/soc_top.v
 
 $RF_CHPARAM
 $TOP_CHPARAM

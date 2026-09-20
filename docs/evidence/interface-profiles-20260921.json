@@ -1,0 +1,137 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "parent_head": "50b760ff53821dadbdd9b32b7903e34baad0a94d",
+  "scope": "Default-off optional LGPL interface selection; dependency, CPU, pin-level and structural checks. No new physical implementation or whole-SoC mapped acceptance.",
+  "source_sha256": {
+    "hw/soc/tb/sw/test_ibex.c": "30f2ec982d534d6cab8065b7e4bb770c77308860d092621063cc7f1a862e994f",
+    "hw/soc/tb/sw/soc_memmap.h": "39d45d99cf18588fe8d6fac90c6ce6351cddeb925e52976b871b8a0486d9b681",
+    "hw/soc/rtl/soc_top.v": "2e1c54493cf131942c8304f0570a6dd5eff21e9eadf67aeb5bc4ba26c8a6043d",
+    "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+    "hw/soc/flow/sim_soc.sh": "133fe5cba1001e5dc69fb9e178aa54ea9c87bd063d7793b236b1243650c1ef42",
+    "hw/soc/flow/interface_profile.py": "56df16c1f01f406603a000a16c9a485dd9297beede681da7c56ff2cdb2fedeaa",
+    "hw/soc/flow/prepare_interfaces.py": "34bb6f43ada8f454bf59aa2626c5077f96619921e0777d0f14f61dd605ec541c",
+    "hw/soc/tb/tb_soc.v": "79049b3378438cb8c1098d5fd38580545ab522901b7d9df9dc5e9e2e429fd097",
+    "hw/soc/gen/interfaces.bundle.vh": "3fcc60382427cfa421bc2c24238b05a435cb13bbfe377c3d19829e3b8490defc",
+    "hw/soc/gen/interfaces-full.bundle.vh": "589f5a053d2a0bd6fb3d99d38c30e51db4843a5d3217441994d14b6cc3980e7b"
+  },
+  "profiles": {
+    "base": {
+      "command": "SOC_INTERFACE_PROFILE=base SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DINTERFACE_DEMO bash hw/soc/flow/sim_soc.sh <fresh-output>",
+      "cpu": {
+        "checks": 29,
+        "fail_mask": 0,
+        "cycles": 675763,
+        "discovery": "Both optional records zero; 8 load/store access faults through actual CPU/APB",
+        "log_sha256": "16d472b4c83b46664851c7f8cc08c2aa06b5e5525b0bc92e7c2558b1dac58439",
+        "compiled_sha256": "2270e31f37f945ac8fa3ea9dcfc10c4ef9197fcfa21e1a79c6b82fe910575aaa",
+        "flash_sha256": "cbf60952d56c0d1eb6202fc6b0458749c4586d4444b70073622a2c6daf4c075b"
+      },
+      "instantiated_optional_scopes": [],
+      "cocotb": {
+        "passed": 8,
+        "skipped": 4,
+        "xml_sha256": "0b60372f4400d26b1cd7bdf687002f03caf9b7c392986f5d50e149f8dfe3cc92"
+      },
+      "pnp_formal": {
+        "bmc": {
+          "status": "PASS 0 2",
+          "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+        },
+        "prove": {
+          "status": "PASS 0 1",
+          "sha256": "82bc437cdb0ebaedde9abc25a1795f5b1cd22d37f1e4d1240fd300e529561df4"
+        },
+        "cover": {
+          "status": "PASS 0 0",
+          "sha256": "4d489b9bfaac73d73a64a4023bf4d947ca1d4216d9f72864c97bfb6a2bc07d56"
+        }
+      }
+    },
+    "full": {
+      "command": "SOC_INTERFACE_PROFILE=full SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DINTERFACE_DEMO bash hw/soc/flow/sim_soc.sh <fresh-output>",
+      "cpu": {
+        "checks": 29,
+        "fail_mask": 0,
+        "cycles": 681923,
+        "discovery": "Both optional records present",
+        "log_sha256": "783b6900ead131c37d227dff0930a13448f48ef582df14bfd24205380877f2f2",
+        "compiled_sha256": "7663d7830504c0ad6c7c7cd1bd7c6d0604d5af10e707b1398adc7a8652b5202e",
+        "flash_sha256": "9c6d96b0f75498d6202233fbc224fad5198633093cee66ab58eb1b71236f7137"
+      },
+      "instantiated_optional_scopes": [
+        "u_can",
+        "u_spw"
+      ],
+      "cocotb": {
+        "passed": 11,
+        "skipped": 1,
+        "xml_sha256": "e178f46ec94a4ccaa77ca8cca4a8d3e6bb014d83245c4988014298f896d023d4"
+      },
+      "pnp_formal": {
+        "bmc": {
+          "status": "PASS 0 2",
+          "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+        },
+        "prove": {
+          "status": "PASS 0 1",
+          "sha256": "82bc437cdb0ebaedde9abc25a1795f5b1cd22d37f1e4d1240fd300e529561df4"
+        },
+        "cover": {
+          "status": "PASS 0 0",
+          "sha256": "4d489b9bfaac73d73a64a4023bf4d947ca1d4216d9f72864c97bfb6a2bc07d56"
+        }
+      }
+    }
+  },
+  "full_bundle_matches_previous_unconditional_build": true,
+  "source_snapshot": "docs/evidence/prepared-sources-20260921.json",
+  "validation": {
+    "profiles_and_memmap_and_two_elaborations": {
+      "passed": 53,
+      "log_sha256": "0f13e5f2aefa2b3bde9a66bf6e8ad86e1f385c62ed1a2b1bc0daa30f41bda06d"
+    },
+    "physical_guard": "Original full-profile hosted netlist accepted as full and rejected as base; 7 synthetic mismatch/top checks pass.",
+    "physical_profile_and_dependency_guards": {
+      "passed": 31,
+      "log_sha256": "479a1c65c98217ea7c7f2390c78760d2a503c9b51f24a7499a4e8f9dd35133b2"
+    },
+    "publication_checks": {
+      "passed": 152,
+      "log_sha256": "a929bf0625d7a57eb9285809dbe45677b71baccffacd593fe36ec6ec31dab1ae"
+    }
+  },
+  "limits": [
+    "Interface-specific tests skip explicitly in base; the full product target is retained.",
+    "Standalone absent-slot checks are supplemented by actual whole-CPU traps and discovery reads.",
+    "PnP proof uses unchanged port-level properties; exact profile table words have independent generated-map tests.",
+    "Netlist profile guard checks preserved hierarchy names, not equivalence.",
+    "Original signed funding/licence decision and third-party notices remain unchanged; no patent clearance claimed."
+  ],
+  "verification_source_sha256": {
+    "hw/soc/flow/pnr_soc_top.sh": "eca0104399d969b007e0e9ac455361a79b47e07b768bcf3bd808188dad847faf",
+    "hw/soc/flow/syn_soc_top.sh": "c4f2fe16d72d78d7b51c48210d1328c3db63a373fe284b25614ebad621175afa",
+    "hw/soc/flow/fi_core.sh": "f66659811276e045d34aaa2f69b28ec1238eaec81c1114e4a88421545e4351ad",
+    "hw/soc/flow/fi_npu.sh": "fe1fb972071637265c80ab2f4bba4c9bc43884e2cd762c810791781bb746e794",
+    "hw/soc/flow/implement_interfaces.sh": "0bc1cf209d52bd77cc127f8b0ed9e2a496d9b6bc9e293467b0ca9c47ef87f8a1",
+    "Makefile": "17cd322e8012dc2527d6633c427b5c2637e8c0cb89415cdefcc6710400565a69",
+    ".github/workflows/checks.yml": "423060717f64e30f8326f2b2d748b7b20cdb34e1434c8e1447bd3d9934266ff5",
+    "hw/soc/tb/cocotb/tb_soc_interfaces.v": "556ceb4b2207c287e58d45b4be4e4970317144e07ae35c31a8b5d11ae1626082",
+    "hw/soc/tb/cocotb/test_soc_interfaces.py": "251da5956493ac7e26cb717dee8b097923923680e6b4d790b87bc9334797c4ed",
+    "hw/soc/tb/cocotb/Makefile.soc_interfaces": "0aa60255abcfc0f891cd6f77a794f1d8811dd6d20544e5139cb58a5cf7a6ff84",
+    "sw/tests/test_interface_profiles.py": "fbdf7c62e6195c863e3cf9687067daff84c3b348be1beba6ac0258ccd29eeac7",
+    "sw/tests/test_soc_synthesis_guards.py": "04927114061cc9118f26345350d10fdc2b119a4fc8d67402d74f98f641666564"
+  },
+  "initial_full_regression": {
+    "passed": 1058,
+    "failed": 2,
+    "skipped": 1,
+    "elapsed_s": 552.85,
+    "log_sha256": "f221baa8a309c9fb89f38bb4ea1885c9fe0e7759a921307db5f4ace9d711cb10",
+    "failures": [
+      "Old config guard prohibited the new explicit interface flag. Replaced with execution of the actual generator and exact preservation of unrelated settings.",
+      "Missing default netlist obscured outside-config rejection. Refusal moved before dependency/tool checks."
+    ],
+    "resolution": "Both failing obligations pass in the 31-check targeted rerun. Fresh committed-tree full replay remains required; this attempt is not a full PASS."
+  }
+}

@@ -21,7 +21,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 |---|---|---|
 | 0.1 | Project-specific TT test guide; regenerate manifest; synchronize TT repository | DONE. Generator updated; 18 TT checks pass / 1 absent-tool skip. Only guide and manifest changed; remote TT `main` is `aa870aba3b2c4d39460ae7a8da42918fa25df422`, verified with `git ls-remote`. Frozen RTL remains byte-identical. |
 | 1.1 | Keep host checkpoints out of publication | DONE for current tree. Continuation notes preserved locally and removed from Git tracking; ignore rules added. Earlier public commits still contain their historical copies. |
-| 1.2 | Reconcile signed LGPL decision, optional SpaceWire/CAN build, notices and licence texts | OPEN. Choose the audit's optional-build route; preserve complete interface functionality in an explicitly enabled profile. No legal advice or patent clearance is claimed. Correct docs/95 to CC-BY-4.0; inventory both source bundles and Ethernet reset patch. |
+| 1.2 | Reconcile signed LGPL decision, optional SpaceWire/CAN build, notices and licence texts | DONE for the technical optional-build route. Default base excludes the LGPL cores; explicit full retains both. CPU, pin, discovery, dependency and physical-profile guards pass; see the dated evidence below. Original signed decision and upstream/Bosch notices remain; no patent clearance or silicon permission is claimed. Both source bundles and Ethernet reset patch remain inventoried; docs/95 uses CC-BY-4.0. |
 | 1.3 | Missing Tcl shell must produce explicit tool skips | DONE. `pytest sw/tests/test_corner_reports.py sw/tests/test_interface_flow.py`: 36 pass with Tcl; `PATH=/nonexistent` with an absolute Python path: 16 pass / 20 explicit skips. |
 | 1.4 | Correct local-CI/workflow equivalence claim | DONE. Dated correction distinguishes Python/documentation gates from the workflow hardware jobs. |
 | 1.5 | Evidence publication policy; portable paths; external binary assets | OPEN. Preserve exact hashes, licences and clean-clone recovery while migrating assets. Do not delete the only reproducible source before a verified replacement exists. |
@@ -222,3 +222,25 @@ with a 1,200-second budget. This closes the missing digital receiver portion
 of audit 3.2, while its new whole-SoC layout, general FI/coverage and physical
 qualification remain open. Hosted jobs now execute the CPU control and native
 UART tests; the existing long manual acceptance run still refers to `091423c`.
+
+The [independent hosted startup run](evidence/hosted-native-startup-20260921.json)
+now rebuilds and boots `091423c` successfully: **28 checks, 653,726 cycles,
+zero failure mask**, unchanged native IHP models. The failed earlier run remains
+linked and preserved. This closes that particular hosted startup replay, not
+later UART/profile changes or physical timing. The [hosted UART block run](evidence/hosted-uart-receive-20260921.json)
+independently passes **24 native-cell tests** at `50b760f`. Its [clean remote
+regression](evidence/fresh-clone-50b760f-20260921.json) passes **1,038 Python
+checks, two explicit skips, zero failures**, plus 18 front-door passes and
+seven explicit skips. None of these counts substitutes for the full formal
+sweep or the remaining product gates.
+
+The [optional-interface record](evidence/interface-profiles-20260921.json)
+closes the technical build portion of audit 1.2. Both profiles pass **29 real-CPU
+checks**; base also requires eight read/write access faults from disabled
+SpaceWire/CAN slots and zero discovery records. Full restores their identities
+and real data/interrupt paths. Pin suites report base **8 pass / 4 explicit
+skips**, full **11 pass / 1 base-only skip**. Each discovery profile passes BMC,
+unbounded PDR and cover; independent table tests compare every word. Both
+whole-SoC hierarchies resolve. Full dependency output is byte-identical to the
+previous unconditional bundle. All optional notices and historical evidence
+remain retained. New whole-SoC mapped/physical acceptance is still separate.

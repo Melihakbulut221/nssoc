@@ -1907,7 +1907,8 @@ def test_the_verdict_rule_is_one_file_and_not_two_copies_of_one():
 
 
 @needs_yosys
-def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources):
+@pytest.mark.parametrize('interface_profile', [os.environ.get('SOC_INTERFACE_PROFILE', 'base')])
+def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources, interface_profile):
     """The thing that had never been done. `hierarchy -check -top
     soc_top` over the whole source list -- Ibex, the fabric, both
     memories, every peripheral -- and it must resolve every reference.
@@ -1924,7 +1925,8 @@ def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources):
     one design."""
     gen = prepared_sources / "gen"
     genp = prepared_sources / "genp/ibex_top.v"
-    interface_bundle = gen / "interfaces.bundle.vh"
+    interface_bundle = gen / ("interfaces-full.bundle.vh" if interface_profile == 'full'
+                              else "interfaces.bundle.vh")
     assert genp.is_file() and interface_bundle.is_file(), "Verified dependency snapshot incomplete"
     bb = Path(workdir) / "soc_mem_bb.v"
     real = _soc_mem_ports()
@@ -1989,8 +1991,8 @@ def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources):
     script = (
         prelude
         + " read_verilog -lib {};".format(bb)
-        + " read_verilog -defer -I {} -I {} {};".format(
-            SOC_RTL, PILOT_RTL,
+        + " read_verilog {} -defer -I {} -I {} {};".format(
+            '-DSOC_LGPL_INTERFACES' if interface_profile == 'full' else '', SOC_RTL, PILOT_RTL,
             " ".join(str(p) for p in ibex + soc + [SOC_RTL / "soc_top.v"]))
         + " hierarchy -check -top soc_top;")
     out = _run_yosys(script, workdir)
@@ -2311,23 +2313,44 @@ def test_the_pnr_flow_cannot_write_into_the_frozen_pilot():
     assert "hw/openlane" not in cfg_dir
 
 
-def test_the_pnr_flow_supplies_only_the_source_list():
-    """pnr_soc_top.sh merges VERILOG_FILES into a resolved copy of
-    config.json, because flow/ibex_sources.sh is the one place that
-    knows which of hw/soc/gen/ibex_register_file_ff.v and
-    hw/soc/rtl/ibex_regfile_secded.v belongs in a build. docs/34
-    section 8.5's trap was a generator that silently deleted a
-    hand-added fix from a config, so the generator here asserts that
-    VERILOG_FILES is the only key it touches -- and this test asserts
-    the assertion is still in the script."""
+@pytest.mark.parametrize('profile,defines', [
+    ('base', None), ('base', []), ('base', ['USER_SETTING']),
+    ('full', None), ('full', []), ('full', ['USER_SETTING']),
+    ('full', ['SOC_LGPL_INTERFACES', 'USER_SETTING']),
+    ('base', ['SOC_LGPL_INTERFACES']),
+])
+def test_the_pnr_flow_supplies_only_the_source_list(tmp_path, profile, defines):
+    """Execute the real config generator; only sources and the explicit
+    interface definition may change. Preserve arbitrary physical settings."""
     text = (SOC_FLOW / "pnr_soc_top.sh").read_text()
-    assert 'assert added == {"VERILOG_FILES"}' in text, (
-        "pnr_soc_top.sh no longer asserts it added only VERILOG_FILES")
-    assert "assert not changed" in text, (
-        "pnr_soc_top.sh no longer asserts it changed no existing key")
-    assert "VERILOG_FILES" not in _pnr_config(), (
-        "hw/soc/pnr/config.json carries VERILOG_FILES; the script "
-        "supplies it and would now be overriding a hand-written list")
+    start = text.index('import json, os, sys\nsrc, dst = sys.argv[1], sys.argv[2]')
+    generator = text[start:text.index('\nPY', start)]
+    generator = generator.replace('$SRCS', '/test/core.v /test/top.v')
+    generator = generator.replace('$IF_DEFINE', '-DSOC_LGPL_INTERFACES' if profile == 'full' else '')
+    base = {'MACROS': {'example': {'instances': {'u_mem': {'location': [1, 2]}}}},
+            'TIME_DERATING_CONSTRAINT': 5.0, 'CLOCK_PERIOD': 20,
+            'MANUAL_SETTING': {'preserve': ['all', 'values']}}
+    if defines is not None:
+        base['VERILOG_DEFINES'] = defines
+    src, dst = tmp_path/'base.json', tmp_path/'resolved.json'
+    src.write_text(json.dumps(base))
+    result = subprocess.run([sys.executable, '-c', generator, str(src), str(dst)],
+                            capture_output=True, text=True,
+                            env=dict(os.environ, SOC_BOOT_ROM='legacy'))
+    if profile == 'base' and defines and 'SOC_LGPL_INTERFACES' in defines:
+        assert result.returncode != 0 and 'Full-profile config' in result.stderr
+        assert not dst.exists()
+        return
+    assert result.returncode == 0, result.stderr
+    out = json.loads(dst.read_text())
+    assert out.pop('VERILOG_FILES') == ['/test/core.v', '/test/top.v']
+    selected = out.pop('VERILOG_DEFINES', [])
+    assert ('SOC_LGPL_INTERFACES' in selected) == (profile == 'full')
+    assert [d for d in selected if d != 'SOC_LGPL_INTERFACES'] == [
+        d for d in (defines or []) if d != 'SOC_LGPL_INTERFACES']
+    base.pop('VERILOG_DEFINES', None)
+    assert out == base
+    assert "VERILOG_FILES" not in _pnr_config()
 
 
 # =====================================================================

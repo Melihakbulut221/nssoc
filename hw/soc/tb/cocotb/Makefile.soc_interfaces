@@ -10,11 +10,20 @@ GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
 $(GOALS):
 	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
 else
-RTL = $(PWD)/../../rtl
-VERILOG_SOURCES = $(RTL)/soc_i2c.v $(RTL)/soc_spw.v $(RTL)/soc_spi.v $(RTL)/soc_can.v $(RTL)/soc_apb_wb.v $(RTL)/../gen/interfaces.bundle.vh $(PWD)/tb_soc_interfaces.v
+RTL := $(abspath $(dir $(THIS_MK))/../../rtl)
+SOC_INTERFACE_PROFILE ?= base
+export SOC_INTERFACE_PROFILE
+IF_BUNDLE := $(shell python3 $(RTL)/../flow/interface_profile.py --profile $(SOC_INTERFACE_PROFILE) --bundle-only)
+ifneq ($(.SHELLSTATUS),0)
+$(error Interface profile is not prepared or has changed)
+endif
+ifeq ($(SOC_INTERFACE_PROFILE),full)
+COMPILE_ARGS += -DSOC_LGPL_INTERFACES
+endif
+VERILOG_SOURCES = $(RTL)/soc_i2c.v $(RTL)/soc_spw.v $(RTL)/soc_spi.v $(RTL)/soc_can.v $(RTL)/soc_apb_wb.v $(IF_BUNDLE) $(abspath $(dir $(THIS_MK))/tb_soc_interfaces.v)
 TOPLEVEL = tb_soc_interfaces
 MODULE = test_soc_interfaces
-SIM_BUILD ?= sim_build_soc_interfaces
+SIM_BUILD ?= sim_build_soc_interfaces_$(SOC_INTERFACE_PROFILE)
 COCOTB_RESULTS_FILE ?= results_soc_interfaces.xml
 export COCOTB_RESULTS_FILE
 include $(shell cocotb-config --makefiles)/Makefile.sim

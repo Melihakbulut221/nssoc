@@ -1808,7 +1808,31 @@ int main(void) {
     /* Check 31: actual CPU -> fabric -> APB -> pins -> CPU interrupts. */
     int ok = 1;
     uint8_t byte = 0;
+    const uint32_t discovery_offsets[2] = {SOC_SPW_PNP_OFF, SOC_CAN_PNP_OFF};
+    for (unsigned i = 0; i < 2; i++) {
+      uint32_t identity = soc_if_read(SOC_APBPNP_BASE, discovery_offsets[i]);
+      uint32_t bar = soc_if_read(SOC_APBPNP_BASE, discovery_offsets[i] + 4);
+#ifdef SOC_LGPL_INTERFACES
+      ok &= identity != 0 && bar != 0;
+#else
+      ok &= identity == 0 && bar == 0;
+      const uint32_t bases[2] = {SOC_SPW_BASE, SOC_CAN_BASE};
+      /* Exercise the actual CPU/fabric/APB error path at both ends of
+         each disabled slot. An always-ready zero-data stub must fail. */
+      for (unsigned word = 0; word < 2; word++) {
+        volatile uint32_t *p = (volatile uint32_t *)(uintptr_t)(bases[i] + word * 0xffc);
+        uint32_t before = trap_count;
+        (void)do_load(p);
+        ok &= trap_count == before + 1 && trap_mcause == 5;
+        before = trap_count;
+        do_store(p, 0xdeadbeefu);
+        ok &= trap_count == before + 1 && trap_mcause == 7;
+      }
+#endif
+    }
+#ifdef SOC_LGPL_INTERFACES
     uint16_t character = 0;
+#endif
     soc_if_write(SOC_SPI_BASE, 0, 8); /* mode 0 and IRQ */
     soc_if_write(SOC_SPI_BASE, 4, 4);
     irq_marker = 0; irq_mcause = 0; irq_count = 0;
@@ -1821,6 +1845,7 @@ int main(void) {
     soc_if_write(SOC_SPI_BASE, 12, 2);
     soc_if_write(SOC_SPI_BASE, 0, 0);
 
+#ifdef SOC_LGPL_INTERFACES
     soc_if_write(SOC_SPW_BASE, 0, 3);
     ok &= soc_if_wait(SOC_SPW_BASE, 4, 4, 4, 20000) == 0;
     irq_marker = 0; irq_mcause = 0; irq_count = 0;
@@ -1836,6 +1861,7 @@ int main(void) {
     ok &= soc_spw_get(&character, 20000) == 0 && character == 0x100;
     soc_if_write(SOC_SPW_BASE, 20, 0);
     soc_if_write(SOC_SPW_BASE, 0, 4);
+#endif
 
     soc_if_write(SOC_I2C_BASE, 4, 8);
     soc_if_write(SOC_I2C_BASE, 20, 2); /* address NACK, no device attached */
@@ -1849,11 +1875,13 @@ int main(void) {
     soc_if_write(SOC_I2C_BASE, 20, 0);
     soc_if_write(SOC_I2C_BASE, 24, 15);
 
+#ifdef SOC_LGPL_INTERFACES
     soc_can_write(0, 1);
     soc_can_write(31, 0x80);
     soc_can_write(6, 0x13);
     soc_can_write(7, 0x7f);
     ok &= soc_can_read(6) == 0x13 && soc_can_read(7) == 0x7f;
+#endif
     puts_("interface CPU/pin/IRQ check: "); puts_(ok ? "PASS\n" : "FAIL\n");
     check(31, ok);
   }

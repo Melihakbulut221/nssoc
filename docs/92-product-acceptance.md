@@ -547,3 +547,11 @@ UART now has [8N1 reception and a specified software contract](97-uart-receive.m
 Block serial/APB tests and real-Ibex receive/IRQ/WFI tests cover the new
 function. Its new `uart_rx_i` port and logic still require integration into
 the final whole-SoC routed image and physical acceptance.
+
+The [independent hosted startup acceptance](evidence/hosted-native-startup-20260921.json)
+at `091423c` now completes 28 checks with zero failure mask on unchanged native
+IHP cells. It preserves the earlier failed run as a separate result. The later
+UART RX and optional interface profiles are outside that image's evidence.
+The full-interface product target is unchanged: `SOC_INTERFACE_PROFILE=full`
+selects SpaceWire/CAN; the base build implements the audit's default-off licence
+policy. See [the profile contract](88-interface-integration.md).

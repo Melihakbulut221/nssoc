@@ -21,7 +21,11 @@ def test_project_status_is_source_bound_and_matches_readme():
     assert result.returncode == 0, result.stdout + result.stderr
     status = project_status.derive()
     assert status["python"]["failures"] == 0
-    assert status["native_boot"]["status"] == "FAIL"  # Retained independent failure.
+    assert status["native_boot"]["status"] == "PASS"
+    native = json.loads((ROOT / status["sources"]["native_boot"]).read_text())
+    prior = json.loads((ROOT / native["prior_failure"]).read_text())
+    assert prior["status"] == "FAIL"  # Never delete the independent failed attempt.
+    assert native["acceptance"]["checks"] == 28
     assert status["physical"]["setup_ns"] < 0
     assert status["ram"]["negative_rejected"]
 

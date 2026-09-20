@@ -387,7 +387,8 @@ def apb_pnp_words(spec):
     """word index within the APB PnP slot -> value. Two words per slot:
     identification and one bank address register. The APB bank address
     register compares address bits [19:8], so a 4 KiB slot is expressed
-    exactly."""
+    exactly. This is the full-profile superset; the emitted RTL masks
+    optional records when SOC_LGPL_INTERFACES is absent."""
     meta = spec["meta"]
     ver = int(float(meta["version"]) * 10) & 0x1F
     apb_base = by_name(spec["regions"], "APB")["base"]
@@ -773,8 +774,17 @@ def gen_pnp_rom(spec):
         "",
         "case (word_addr)",
     ]
+    optional_words = {2*i+j for i, slot in enumerate(
+        sorted(spec['apb_slots'], key=lambda item: item['slot']))
+        if slot['name'] in ('SPW', 'CAN') for j in (0, 1)}
     for w, v in sorted(apb_words.items()):
+        if w in optional_words:
+            apb_lines += ['`ifndef SOC_LGPL_INTERFACES',
+                         f"  10'h{w:03X}: apb_pnp_data = 32'h00000000;",
+                         '`else']
         apb_lines.append(f"  10'h{w:03X}: apb_pnp_data = 32'h{v:08X};")
+        if w in optional_words:
+            apb_lines.append('`endif')
     apb_lines += ["  default: apb_pnp_data = 32'h0000_0000;", "endcase", ""]
     return body, "\n".join(apb_lines)
 
@@ -802,6 +812,9 @@ def gen_c_header(spec):
     lines.append("")
     for s in sorted(spec["apb_slots"], key=lambda x: x["slot"]):
         lines.append(f"#define SOC_{s['name']}_BASE 0x{apb_addr(spec, s):08X}u")
+    lines += ["", "/* Byte offsets of the two-word APB discovery records. */"]
+    for i, s in enumerate(sorted(spec["apb_slots"], key=lambda x: x["slot"])):
+        lines.append(f"#define SOC_{s['name']}_PNP_OFF 0x{i * 8:03X}u")
     lines += ["", f"#define SOC_APB_BASE 0x{apb['base']:08X}u", ""]
     lines += [
         "/* Interrupts. SOC_IRQ_<NAME> is the mcause value software reads in",

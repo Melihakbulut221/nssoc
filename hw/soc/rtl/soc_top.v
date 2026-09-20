@@ -875,11 +875,22 @@ module soc_top #(
 
   wire [31:0] prdata_spw;
   wire pready_spw, pslverr_spw;
+`ifdef SOC_LGPL_INTERFACES
   soc_spw u_spw (
       .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_spw), .penable_i(penable),
       .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
       .prdata_o(prdata_spw), .pready_o(pready_spw), .pslverr_o(pslverr_spw),
       .di_i(spw_di_i), .si_i(spw_si_i), .do_o(spw_do_o), .so_o(spw_so_o), .irq_o(spw_irq));
+`else
+  // Default profile has no LGPL dependency. Absent slots terminate with
+  // an APB error; they do not impersonate successful peripheral accesses.
+  assign prdata_spw = 32'd0;
+  assign pready_spw = 1'b1;
+  assign pslverr_spw = 1'b1;
+  assign spw_do_o = 1'b0;
+  assign spw_so_o = 1'b0;
+  assign spw_irq = 1'b0;
+`endif
   assign spw_irq_o = spw_irq;
 
   wire [31:0] prdata_i2c;
@@ -907,11 +918,20 @@ module soc_top #(
   );
 
   wire pready_can, pslverr_can;
+`ifdef SOC_LGPL_INTERFACES
   soc_can u_can (
       .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_can), .penable_i(penable),
       .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
       .prdata_o(prdata_can), .pready_o(pready_can), .pslverr_o(pslverr_can),
       .rx_i(can_rx_i), .tx_o(can_tx_o), .bus_off_o(can_bus_off_o), .irq_o(can_irq));
+`else
+  assign prdata_can = 32'd0;
+  assign pready_can = 1'b1;
+  assign pslverr_can = 1'b1;
+  assign can_tx_o = 1'b1; // Recessive when no CAN controller is selected.
+  assign can_bus_off_o = 1'b0;
+  assign can_irq = 1'b0;
+`endif
   assign can_irq_o = can_irq;
 
   wire [31:0] prdata_spi;

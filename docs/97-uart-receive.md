@@ -96,3 +96,9 @@ mutations are rejected. The real CPU test passes five phases in 3,251 cycles;
 its changed-byte control reports the required failure mask. The mapped block
 contains 113 flip-flops and 9,842.2128 square micrometers of standard-cell
 area; this is synthesis area, not a routed die measurement.
+
+The [independent GitHub native-cell replay](evidence/hosted-uart-receive-20260921.json)
+at `50b760f` passes the same 24 tests. Its XML inventories, model, mapped
+netlist and exact revision source hashes were checked after download. This
+is block-level functional acceptance; later SoC profiles and UART physical
+implementation require their own evidence.

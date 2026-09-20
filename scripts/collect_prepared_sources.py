@@ -7,6 +7,7 @@ The pristine Ibex sv2v output and interface bundle must match independent
 scratch replays. This is not a mapped netlist or a substitute for RTL tests.
 """
 import argparse
+from datetime import date
 import gzip
 import hashlib
 import io
@@ -33,11 +34,14 @@ def collect(ibex_replay, interface_replay, output):
     assert {p.name for p in paths} == {p.name for p in ibex_replay.glob('*.v')}
     for p in paths:
         assert p.read_bytes() == (ibex_replay / p.name).read_bytes(), p
-    for name in ['interfaces.bundle.vh', 'interfaces.bundle.json']:
+    for name in ['interfaces.bundle.vh', 'interfaces.bundle.json',
+                 'interfaces-full.bundle.vh', 'interfaces-full.bundle.json']:
         p = soc / 'gen' / name
         assert p.read_bytes() == (interface_replay / name).read_bytes(), p
         paths.append(p)
-    source_record = json.loads((soc / 'gen/interfaces.bundle.json').read_text())
+    source_record = {profile: json.loads((soc / 'gen' / name).read_text())
+                     for profile, name in [('base', 'interfaces.bundle.json'),
+                                           ('full', 'interfaces-full.bundle.json')]}
     content = {str(p.relative_to(ROOT)): p.read_bytes() for p in paths}
     files = {name: {'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
              for name, data in content.items()}
@@ -52,16 +56,18 @@ def collect(ibex_replay, interface_replay, output):
                      'Source files retain their original headers and licences. Ibex is Apache-2.0;\n'
                      'SpaceWire/CAN are LGPL-2.1-or-later; I2C/Ethernet/AXIS are MIT.\n'
                      'Exact upstream commits, transformation hashes and replay commands are in\n'
-                     'prepared-sources-20260920.json. Fetch corresponding sources with\n'
-                     'make soc-prepare soc-interfaces-prepare in this repository.\n\n'
-                     + old_notice[old_notice.index('The Ibex Project'):])
+                     + output.name + '. Fetch corresponding sources with\n'
+                     'make soc-prepare SOC_INTERFACE_PROFILE=full in this repository.\n'
+                     'The base bundle contains no SpaceWire or CAN source. The optional full\n'
+                     'bundle retains the CAN Bosch protocol notice, without a clearance claim.\n\n'
+                     + old_notice[old_notice.index('The Ibex Project'):].rstrip() + '\n')
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-    result = {'date': '2026-09-20', 'scope': __doc__, 'ibex_commit': pin,
+    result = {'date': date.today().isoformat(), 'scope': __doc__, 'ibex_commit': pin,
               'sv2v_version': subprocess.check_output([str(soc / 'tools/sv2v-Linux/sv2v'), '--version'], text=True).strip(),
               'interface_source_record': source_record,
               'replay_commands': [
                   'bash hw/soc/flow/sv2v_ibex.sh hw/soc/ext/ibex <fresh-output> hw/soc/tools/sv2v-Linux/sv2v',
-                  'prepare_interfaces.main() with SOC pointing to a fresh scratch root and read-only ext symlink'],
+                  'prepare_interfaces.prepare(base) and prepare(full) with SOC pointing to a fresh scratch root and read-only ext symlink'],
               'replays_byte_identical': True,
               'transform_sha256': {str(p.relative_to(ROOT)): sha(p) for p in
                   [soc / 'flow/sv2v_ibex.sh', soc / 'flow/prepare_interfaces.py']},

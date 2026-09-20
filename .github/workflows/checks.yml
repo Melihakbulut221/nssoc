@@ -63,12 +63,19 @@ on:
         description: Run the long four-state whole-netlist boot with native IHP cells
         type: boolean
         default: false
+      full_interfaces:
+        description: Explicitly fetch and verify LGPL SpaceWire and CAN in the full profile
+        type: boolean
+        default: false
+
+env:
+  SOC_INTERFACE_PROFILE: ${{ github.event_name == 'workflow_dispatch' && inputs.full_interfaces && 'full' || 'base' }}
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.full_interfaces && 'full' || 'base' }}
   cancel-in-progress: true
 
 jobs:

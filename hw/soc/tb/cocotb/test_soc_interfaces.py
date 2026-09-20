@@ -2,7 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 """Pin-level protocol tests through APB; no force of internal RTL state."""
 import cocotb
+import os
 from cocotb.triggers import Timer
+
+FULL_PROFILE = os.environ.get('SOC_INTERFACE_PROFILE', 'base') == 'full'
 
 
 class Bus:
@@ -28,6 +31,7 @@ class Bus:
         await self.step(8)
         self.d.rst_ni.value = 1
         await self.step(8)
+        assert bool(int(self.d.lgpl_profile_o.value)) == FULL_PROFILE
 
     async def access(self, dev, addr, data=None, strobe=15, error=False):
         d = self.d
@@ -101,7 +105,7 @@ async def spi_all_modes_and_chip_selects(d):
     await b.rd(1, 0x100, error=True)
 
 
-@cocotb.test()
+@cocotb.test(skip=not FULL_PROFILE)
 async def spacewire_packets_timecodes_and_disconnect(d):
     b = Bus(d)
     await b.reset()
@@ -266,7 +270,7 @@ async def i2c_stretch_timeout_abort_and_invalid_access(d):
     await b.wr(0, 8, 0, strobe=1, error=True)
 
 
-@cocotb.test()
+@cocotb.test(skip=not FULL_PROFILE)
 async def can_two_node_standard_frame_and_byte_lanes(d):
     b = Bus(d)
     await b.reset()
@@ -326,10 +330,24 @@ async def reset_aborts_serial_transactions(d):
     assert await b.rd(1, 12) == 0
     assert await b.rd(0, 24) == 0
     assert not (await b.rd(0, 0) & 1)
-    assert await b.rd(2, 0) == 4
+    if FULL_PROFILE:
+        assert await b.rd(2, 0) == 4
+    else:
+        await b.rd(2, 0, error=True)
 
 
-@cocotb.test()
+@cocotb.test(skip=FULL_PROFILE)
+async def disabled_optional_slots_return_errors(d):
+    b = Bus(d)
+    await b.reset()
+    for dev in (2, 3, 4, 5):
+        await b.rd(dev, 0, error=True)
+        await b.wr(dev, 0, 0xffffffff, error=True)
+    assert int(d.irq.value) & 0x3c == 0
+    assert int(d.can_bus.value) == 1
+
+
+@cocotb.test(skip=not FULL_PROFILE)
 async def spacewire_credit_backpressure_preserves_order(d):
     b = Bus(d)
     await b.reset()
@@ -456,7 +474,7 @@ async def i2c_burst_read_write_and_final_nack(d):
     assert not (await b.rd(0, 24) & 10), 'unexpected NACK or timeout'
 
 
-@cocotb.test()
+@cocotb.test(skip=not FULL_PROFILE)
 async def can_extended_id_eight_bytes_and_remote_frame(d):
     b = Bus(d)
     await b.reset()

@@ -150,6 +150,8 @@ def path_licence(rel):
     """The licence a path-covered (untagged) file is under, for LICENSES.md."""
     if rel in {"docs/evidence/prepared-sources-20260920.tar.gz",
                "docs/evidence/prepared-sources-20260920-NOTICES.txt",
+               "docs/evidence/prepared-sources-20260921.tar.gz",
+               "docs/evidence/prepared-sources-20260921-NOTICES.txt",
                "docs/evidence/ethernet-netlist-20260920.v.gz",
                "docs/evidence/ethernet-netlist-20260920-NOTICES.txt"}:
         return "CERN-OHL-W-2.0 AND Apache-2.0 AND LGPL-2.1-or-later AND MIT"

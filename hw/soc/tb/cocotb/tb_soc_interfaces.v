@@ -14,7 +14,8 @@ module tb_soc_interfaces (
     output wire scl, sda, spi_sck, spi_mosi,
     output wire [1:0] spi_cs,
     output wire [5:0] irq,
-    output wire can_bus
+    output wire can_bus,
+    output wire lgpl_profile_o
 );
 wire scl_oe, sda_oe;
 assign scl = !(scl_oe || scl_hold_i);
@@ -36,6 +37,8 @@ soc_spi u_spi1 (
  .penable_i(penable_i), .pwrite_i(pwrite_i), .paddr_i(paddr_i),
  .pwdata_i(pwdata_i), .pstrb_i(pstrb_i), .prdata_o(data[1]),
  .pready_o(ready[1]), .pslverr_o(err[1]), .irq_o(irq[1]), .miso_i(spi_external_i ? spi_miso_i : spi_mosi), .mosi_o(spi_mosi), .sck_o(spi_sck), .cs_no(spi_cs));
+`ifdef SOC_LGPL_INTERFACES
+assign lgpl_profile_o = 1'b1;
 soc_spw u_spw2 (
  .clk_i(clk_i), .rst_ni(rst_ni), .psel_i(psel_i && dev_i == 3'd2),
  .penable_i(penable_i), .pwrite_i(pwrite_i), .paddr_i(paddr_i),
@@ -56,4 +59,17 @@ soc_spw u_spw5 (
  .penable_i(penable_i), .pwrite_i(pwrite_i), .paddr_i(paddr_i),
  .pwdata_i(pwdata_i), .pstrb_i(pstrb_i), .prdata_o(data[5]),
  .pready_o(ready[5]), .pslverr_o(err[5]), .irq_o(irq[5]), .di_i(spw_disconnect_i ? 1'b0 : spw_d[0]), .si_i(spw_disconnect_i ? 1'b0 : spw_s[0]), .do_o(spw_d[1]), .so_o(spw_s[1]));
+`else
+assign lgpl_profile_o = 1'b0;
+assign can_tx = 2'b11;
+assign spw_d = 2'b00;
+assign spw_s = 2'b00;
+assign irq[5:2] = 4'd0;
+assign ready[5:2] = 4'hf;
+assign err[5:2] = 4'hf;
+assign data[2] = 32'd0;
+assign data[3] = 32'd0;
+assign data[4] = 32'd0;
+assign data[5] = 32'd0;
+`endif
 endmodule

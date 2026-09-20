@@ -49,6 +49,25 @@
 #define SOC_ETH_BASE 0xFF91A000u
 #define SOC_APBPNP_BASE 0xFF9FF000u
 
+/* Byte offsets of the two-word APB discovery records. */
+#define SOC_UART0_PNP_OFF 0x000u
+#define SOC_UART1_PNP_OFF 0x008u
+#define SOC_GPIO_PNP_OFF 0x010u
+#define SOC_TIMER0_PNP_OFF 0x018u
+#define SOC_TIMER1_PNP_OFF 0x020u
+#define SOC_SPW_PNP_OFF 0x028u
+#define SOC_CAN_PNP_OFF 0x030u
+#define SOC_SPI_PNP_OFF 0x038u
+#define SOC_I2C_PNP_OFF 0x040u
+#define SOC_QSPICTL_PNP_OFF 0x048u
+#define SOC_BUSSTAT_PNP_OFF 0x050u
+#define SOC_SCRUB_PNP_OFF 0x058u
+#define SOC_BOOTREG_PNP_OFF 0x060u
+#define SOC_CLKGATE_PNP_OFF 0x068u
+#define SOC_NPUCFG_PNP_OFF 0x070u
+#define SOC_ETH_PNP_OFF 0x078u
+#define SOC_APBPNP_PNP_OFF 0x080u
+
 #define SOC_APB_BASE 0xFF900000u
 
 /* Interrupts. SOC_IRQ_<NAME> is the mcause value software reads in

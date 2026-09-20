@@ -767,3 +767,21 @@ in a research bundle is not a determination of patent applicability or a grant
 of silicon implementation permission. No legal advice or clearance has been
 obtained or claimed in this change. The original signed decision above remains
 unaltered.
+
+### Optional-build implementation — 21 September 2026
+
+`SOC_INTERFACE_PROFILE=base` is now the default for Make targets, simulation,
+synthesis, fault campaigns and CI. It fetches only MIT I2C/Ethernet dependencies.
+`SOC_INTERFACE_PROFILE=full` explicitly adds the two LGPL cores and the
+`SOC_LGPL_INTERFACES` RTL/firmware definition. The base design reports zero
+SpaceWire/CAN discovery records, bus errors on their reserved slots, inactive
+IRQs and inactive serial outputs. Their ports retain the common package contract.
+Separate hashed dependency bundles prevent a previous full build from silently
+turning a later base build into a full one. Both profiles have CPU and pin tests;
+[docs/88](88-interface-integration.md) describes reproduction and limits.
+
+This implements the optional research route; it does not amend the signed
+funding decision or establish silicon/patent permission. Full-profile source
+bundles and mapped historical artifacts still carry their original component
+licences, complete notices and the retained Bosch notice. Historical artifacts
+are not regenerated or relabelled as base-profile results.

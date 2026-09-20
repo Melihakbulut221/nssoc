@@ -79,7 +79,7 @@
 #
 # So this script merges the list into a RESOLVED COPY of config.json in
 # the run directory, and then ASSERTS that VERILOG_FILES is the only key
-# it added or changed. docs/34 section 8.5's trap was a generator that
+# it added or changed apart from the explicit interface profile flag. docs/34 section 8.5's trap was a generator that
 # silently deleted a hand-added fix from a config; the assertion is what
 # stops this one from being able to. The resolved config is written
 # beside config.json, because LibreLane resolves `dir::` and the run
@@ -91,6 +91,20 @@ RUN_TAG=${1:?usage: pnr_soc_top.sh <run-tag> [librelane args...]}
 shift || true
 
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)
+PNR=$SOC_DIR/pnr
+# Refuse an out-of-scope config before preparation or tool availability can
+# obscure the actual error. resolve() also rejects an escaping symlink.
+if [ -n "${PNR_CONFIG:-}" ]; then
+  python3 - "$PNR" "$PNR_CONFIG" <<'PY'
+from pathlib import Path
+import sys
+if not Path(sys.argv[2]).resolve().is_relative_to(Path(sys.argv[1]).resolve()):
+    raise SystemExit('refusing: PNR_CONFIG must be under '+sys.argv[1])
+PY
+fi
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 REPO=$(cd "$SOC_DIR/../.." && pwd -P)
 PNR=$SOC_DIR/pnr
 # LibreLane resolves `dir::` against the config file's own directory and
@@ -166,7 +180,7 @@ done
 SRCS=$(
   echo "$RTL/prim_clock_gating.v"
   ibex_sources "$SOC_DIR"
-  echo "$SOC_DIR/gen/interfaces.bundle.vh"
+  echo "$IF_BUNDLE"
   for f in soc_eth soc_spw soc_i2c soc_spi soc_can soc_apb_wb soc_bus soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
            soc_clint soc_gptimer soc_wdog soc_busstat soc_scrub soc_boot \
            soc_mem_ecc soc_tmr_bank; do
@@ -215,6 +229,7 @@ SRCS=$(
 # Match the actual mapped macro hierarchy, including ECC and packet SRAMs.
 # The old six-macro default silently disagreed with hardened RTL defaults.
 SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
+python3 "$SOC_DIR/flow/interface_profile.py" --netlist "$SYN_NETLIST" --bundle-only >/dev/null
 PROFILE_ARGS=(--netlist "$SYN_NETLIST" --directory "$PNR" --rom "${SOC_BOOT_ROM:-legacy}")
 if [ -n "${PNR_CONFIG:-}" ]; then PROFILE_ARGS+=(--config "$PNR_CONFIG"); fi
 PNR_CONFIG=$("$VENV/bin/python" "$SOC_DIR/flow/select_pnr_profile.py" "${PROFILE_ARGS[@]}")
@@ -258,11 +273,22 @@ assert "VERILOG_FILES" not in base, \
     "config.json must not carry VERILOG_FILES; this script supplies it"
 out = dict(base)
 out["VERILOG_FILES"] = srcs
-# THE ASSERTION. The generator may add VERILOG_FILES and nothing else.
+# Only the explicitly selected interface flag may differ from the source
+# configuration. Preserve every unrelated definition and physical setting.
+defines = list(base.get("VERILOG_DEFINES") or [])
+if "SOC_LGPL_INTERFACES" in defines:
+    assert bool("$IF_DEFINE"), "Full-profile config cannot implement the base profile"
+elif "$IF_DEFINE":
+    defines.append("SOC_LGPL_INTERFACES")
+if defines or "VERILOG_DEFINES" in base:
+    out["VERILOG_DEFINES"] = defines
+# THE ASSERTION. Only source files and the exact profile flag may differ.
 added  = set(out) - set(base)
 changed = {k for k in base if base[k] != out[k]}
-assert added == {"VERILOG_FILES"}, f"generator added {added}"
-assert not changed, f"generator changed {changed}"
+assert "VERILOG_FILES" in added and added <= {"VERILOG_FILES", "VERILOG_DEFINES"}, f"generator added {added}"
+assert changed <= {"VERILOG_DEFINES"}, f"generator changed {changed}"
+assert [d for d in out.get("VERILOG_DEFINES", []) if d != "SOC_LGPL_INTERFACES"] == \
+       [d for d in (base.get("VERILOG_DEFINES") or []) if d != "SOC_LGPL_INTERFACES"], "unrelated defines changed"
 json.dump(out, open(dst, "w"), indent=4)
 print(f"resolved config: {dst}  ({len(srcs)} verilog files)")
 PY

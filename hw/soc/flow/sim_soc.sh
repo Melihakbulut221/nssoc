@@ -41,6 +41,9 @@
 set -euo pipefail
 
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 # hw/rtl is READ from here and never modified. docs/34 freezes that
 # directory and this flow reads seven files out of it: tmr_voter.v, the
 # proved majority primitive the watchdog's W6 protection votes with, and
@@ -283,7 +286,7 @@ fi
 
 SW_DEFINES=${SW_DEFINES:-}
 # shellcheck disable=SC2086
-"$SOC_DIR/flow/build_sw_soc.sh" "$OUT" "-DUART_SCALER_VAL=${UART_SCALER}u" $SW_DEFINES
+"$SOC_DIR/flow/build_sw_soc.sh" "$OUT" "-DUART_SCALER_VAL=${UART_SCALER}u" $IF_DEFINE $SW_DEFINES
 
 # The logic-ROM profile uses the exact loader just built. The normal
 # behavioral profile remains available for historical experiments.
@@ -332,7 +335,7 @@ endmodule
 EOF
 fi
 
-"$IVERILOG" -g2005-sv -o "$OUT/tb_soc.vvp" \
+"$IVERILOG" $IF_DEFINE -g2005-sv -o "$OUT/tb_soc.vvp" \
   "${BOOT_ROM_ARGS[@]}" \
   -I "$SOC_DIR/rtl" \
   -I "$PILOT_RTL" \
@@ -369,7 +372,7 @@ fi
   "$SOC_DIR/rtl/soc_can.v" \
   "$SOC_DIR/rtl/soc_eth.v" \
   "$SOC_DIR/rtl/soc_apb_wb.v" \
-  "$SOC_DIR/gen/interfaces.bundle.vh" \
+  "$IF_BUNDLE" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/tb/flash_w25q128jv.v" \
   "$SOC_DIR/rtl/soc_clint.v" \
