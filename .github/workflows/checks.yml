@@ -223,6 +223,48 @@ jobs:
             tt/test/results.xml
           retention-days: 30
 
+  formal-sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: sw/requirements.txt
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde # v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare pinned RTL for the complete formal regression
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -r sw/requirements.txt
+          make soc-rtl-prepare
+      - name: All declared pilot and SoC regression proofs with fresh source checks
+        run: python3 scripts/check_formal_sweep.py
+      - name: Retain every verdict and any incomplete formal run
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: formal-sweep-results
+          path: |
+            hw/soc/out/formal-sweep/
+            formal/*/config.sby
+            formal/*/logfile.txt
+            formal/*/status
+            formal/*/src/
+            formal/*/engine_*/trace*
+            hw/soc/formal/*/config.sby
+            hw/soc/formal/*/logfile.txt
+            hw/soc/formal/*/status
+            hw/soc/formal/*/src/
+            hw/soc/formal/*/engine_*/trace*
+            hw/soc/out/regfile-contract-checks/
+            hw/soc/out/peripheral-contracts/
+          retention-days: 30
+
   formal-and-boot:
     runs-on: ubuntu-24.04
     timeout-minutes: 60

@@ -169,3 +169,13 @@ skips**. [Evidence and exact ledger row](evidence/fresh-clone-c1a6f7a-20260920.j
 cover the delivered driver/direct-test changes. The later peripheral proofs,
 tool installer and corner-parser correction have their own targeted results;
 they are not part of that earlier revision's full replay.
+
+A separate `formal-sweep` CI job now runs `scripts/check_formal_sweep.py`
+from a fresh prepared checkout. It invokes the frozen pilot's `everything`
+target and the SoC's `all` target, then requires every declared regression task
+to have a new PASS and byte-identical copied sources. The current inventory is
+54 pilot plus 103 SoC tasks. Six previously documented non-closing tasks remain
+explicit exclusions in `hw/soc/formal/sweep-policy.json`; this preserves their
+unresolved status and does not close whole-core RISC-V obligations. Eight
+runner controls and the two Makefile reachability checks pass. The complete
+157-task rerun is pending, so audit item 2.2 remains open.
