@@ -512,3 +512,40 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - Son değişiklikler henüz commit edilmedi: interface_flow.py, yeni test,
   docs90 ve clock-repair evidence. Manifest refresh ve ilgili kontroller
   gerekir. Son başarılı push bilgisi `git log`/remote'dan doğrulanmalı.
+
+## 2026-09-20 06:45 TRT — ECO18 native bitti, bağımsız kontroller sürüyor
+
+- Önceki 06:24 değişiklikleri `e68f93d` olarak GitHub'a gönderilmişti.
+  ECO18-clean native exit0, 4410.31 saniye. `ethernet-eco18-extracted` kaydı
+  oluşturuldu: slow setup -0.785313/4, fast hold -0.039599/4; elektriksel
+  ihlaller sürüyor. Route/antenna/critical-disconnected 0. Exact guard:
+  96584 özgün hücre aynı, +562 anten +251774 filler/decap. 10 GMII portunun
+  max/min budget'ları üç köşede PASS. Ürün kapanışı değildir.
+- Yeni kalıcı araç `hw/soc/flow/check_postroute_connectivity.py`, 20 yeni
+  test ve gerçek ECO18 replay PASS. Boyutlandırma kontrolleriyle toplam63.
+  Yeni script verdict dosyasını overwrite etmez. Henüz bu checkpoint'in
+  değişiklikleri commit edilmedi; git durumunu kontrol edin.
+- BASE/eco18-final-dedup.json: 12 final kopyası aynı-run stage dosyalarına
+  byte-identical hardlink oldu; 1318843222 byte paylaşılır. Dosya yolu ve
+  SHA değişmedi. Tamamlanmış çıktıları yerinde değiştirmeyin.
+- Aktif ECO18 bağımsız işler: XOR session12160, LVS session40919, güncel
+  IHP main-deck DRC session46578. BASE/run_eco18_{xor,lvs,drc}.py sürücüler;
+  log/supervisor adları eth256-eco18-{xor,lvs,drc}-20260920. DRC asıl çıktısı
+  `hw/soc/out/eco18-upstream-drc-20260920`, iki thread; tüm ana kurallar,
+  önerilenler kapalı, hash-kilitli upstream deck. Henüz verdict yok.
+- Halo native session11114: ilk optimizasyon iterasyonunda, dört thread.
+  Bitince daha önce hazırlanan prepare_halo_magic.py -> run_halo_magic.py.
+  Route DRC0 olmadan Magic hazırlığı çalışmaz. Yeni sonuçları baseline
+  642 ile aynı deck/scope'ta karşılaştırın; 436 makro-içi kutu ayrı sorun.
+- ECO19 (46 sizing) +ECO20 (5 sizing) structural PASS; clock-repair evidence
+  içine record_eco19_20.py ile eklendi. ECO20 slow GRT -0.061945ns, fast
+  GRT hold -0.330479ns (GMII output; native çıktılar farklı). Yerel tahmin,
+  native kapanış değil. Alan farkları +529.81/-18.15um2.
+- ECO21 `timing-eco21-rx-slew`, session82295 halen GRT'de. İstenen12
+  değişikliğin üçü olmayan master (_o21ai_2/_nand3_2/_a22oi_2) yüzünden
+  STA-0119 uyarısıyla atlandı; script durmamış. Özgün log/isteği koruyun,
+  gerçek delta9 olmalı; validatorla ölçün, 12 yapılmış demeyin. Bu üç
+  sürücüde slew düzeltildi sayılmamalı. Sonraki hazırlıklarda master
+  bulunabilirliği açıkça doğrulanmalı. Native aday henüz seçilmedi.
+- PR gövdesi 743/26 temiz klon ve yeni STA sonucuyla güncellendi. e68f93d
+  hosted push/PR son bakışta devam ediyordu; son SHA yeşil demeyin.

@@ -554,3 +554,49 @@ controls pass, including execution with Tcl metacharacters in the helper
 path. The installed LibreLane template was also checked directly. The two
 already-running native jobs retain their original scripts and explicitly
 recorded seeds; this integration does not rewrite those measurements.
+
+### Dated update, 2026-09-20 — completed native ECO18 and targeted follow-up
+
+The clean ECO18 retry has now completed native extraction, separate STA for
+three Liberty corners with nominal extracted RC, and both GDS streams. This
+supersedes the pending status above; the
+[complete record](evidence/ethernet-eco18-extracted-20260920.json) is the
+latest completed optimized native measurement, **not a passing release**.
+
+| Corner | Setup worst slack (ns) | Hold worst slack (ns) | Setup / hold violations | Slew / capacitance / fanout violations |
+|---|---:|---:|---:|---:|
+| Fast | +3.388568 | -0.039599 | 0 / 4 | 2 / 8 / 71 |
+| Typical | +2.485622 | +0.122469 | 0 / 0 | 1 / 8 / 71 |
+| Slow | -0.785313 | +0.238602 | 4 / 0 | 29 / 7 / 71 |
+
+Route DRC, both antenna checks and critical disconnected pins report zero.
+The raw 256 disconnected pins are unused SRAM outputs. The design retains
+24 macros and 9,352 sequential cells. All ten GMII data/control output ports
+pass the stated max/min budgets in each corner. The four slow setup failures
+are internal APB data paths; the four fast hold failures are TX SRAM address
+paths. Neither group can be waived by the passing output-port checks.
+
+Exact comparison against the ECO18 seed preserves all 96,584 original cells,
+masters, pins, ports, aliases and wires; only 562 antenna cells and 251,774
+filler/decap cells were added. The reusable
+[`check_postroute_connectivity.py`](../hw/soc/flow/check_postroute_connectivity.py)
+now carries this check in the repository, with 20 controls and a replay on
+this actual netlist. Together with the 43 sizing controls, 63 tests pass.
+This unpowered netlist comparison is not extracted LVS. Independent stream
+XOR, scoped LVS and the locked updated IHP main-deck DRC have been started
+for this exact candidate and have no verdict at this checkpoint.
+
+Every one of the 71 reported fanout violations has added antenna terminals;
+subtracting that terminal count arithmetically brings each net within its
+reported limit. This diagnoses the difference from the zero-fanout pre-route
+estimate; it does not remove a diode, alter the library, or turn a native
+failure into a pass. Post-route capacitance also remains a measured failure.
+
+The [next experiments](evidence/ethernet-clock-repair-20260920.json) retain
+all original connectivity and state. ECO19 sizes 46 gates/buffers along the
+four failing APB paths; ECO20 changes five RX/TX memory-path buffer strengths.
+Their measured cell-area changes are +529.81 and -18.15 um2 respectively,
+with unchanged die size. ECO20 estimates slow setup at -0.061945 ns and fast
+hold at -0.330479 ns, with slew failures. These are still global-route
+estimates; no extracted result or physical-verification verdict is borrowed
+from ECO18.

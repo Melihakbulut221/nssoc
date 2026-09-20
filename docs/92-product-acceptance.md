@@ -115,3 +115,15 @@ is retained separately as a corrected launch error. The successful replay
 starts from a verified clean HEAD; no generated dependencies or physical
 outputs were copied into the clone. F6's historical-artifact clause remains
 open.
+
+**Dated update, 2026-09-20:** the [native ECO18 retry](evidence/ethernet-eco18-extracted-20260920.json)
+has finished. Route DRC, antenna and critical connectivity checks pass, as
+does the restricted comparison preserving all 96,584 original cells. Slow
+setup remains **-0.785313 ns / four violations** and fast hold **-0.039599 ns /
+four violations**, with electrical failures. All ten GMII output ports pass
+the stated budgets, but internal timing does not. Independent XOR/LVS and
+updated main-deck DRC are running on this exact geometry. The subsequent
+ECO19/ECO20 sizing trials are separately recorded estimates, not accepted
+native replacements. Product timing and physical-verification gates remain
+open; F6's missing historical outputs and the external product dependencies
+are unchanged.

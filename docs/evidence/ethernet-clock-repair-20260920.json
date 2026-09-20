@@ -1803,6 +1803,596 @@
       "area_scope": "Difference between successive final OpenROAD cell-area totals rounded to 0.01 um2; fixed die.",
       "command": "timeout 3000 ~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/metrics.json hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/eco.tcl",
       "checker_command": ".venv/bin/python hw/soc/out/external-review-20260919/validate_sizing_candidate.py timing-eco18-rx-enable-drive"
+    },
+    "timing-eco19-apb-drive": {
+      "status": "Structural PASS; global-route timing estimates FAIL",
+      "input_inventory": {
+        "scope": "Targeted cell strength changes only on four failing extracted ECO18 slow setup data paths. No clock/state/constraint change. Estimates require independent native reroute; hold/electrical closure not implied.",
+        "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive",
+        "seed_odb_sha256": "d41d15ab5ec7cde06f9205c3dc84ea262d1ea805fa3faa7acc5fb33aa46168c0",
+        "before_sha256": "9e23993e219675c425054c083b43977b9fb7844ec21ab57c61d2bfa0adadc29c",
+        "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+        "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+        "macro_libraries": [
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "63449ec39991d88479958d35f6e17f547b083850ad50dcc0b2fb93e387fb0041"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_64x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "363a49c4905e0899b1391903b16a37a18ba9db9cafa627f6fc4d9bc6f9e01db0"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "9a732262065fa4b7ef48e1cbe41897cd3c8256356d2cc5255aed5517ea1e4bef"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x48_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "357710ff1d4cb5d0f84264a7d07d3473ee584441cab363314cf70529912028e4"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "b4c3ab4947366ce0dea94e53924ebae9d94f8ed4aa44eda612102215f1bde9a0"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a04cff61cb4befb2290427db1ff2cb1c31c8d5990dca53ee3e5d1cc621679cd9"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_64x32_c2_slow_1p08V_125C.lib",
+            "sha256": "0304c5e8f04a4a1863c3e50d2a7b8d1ad55eb9cc4b1789d0365db8902c3abd33"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "78238e1652176a5ef2984b5a7c44432491e05614a1e18bd9cd841b1d0c97638c"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "5672945f5dc90a7e202ca1635f8f06f81adf72a6c53512ad8939ddc1c6681832"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "f23f9f8c41eff35014189b22a223295b91fd1db9d11655dba68f4591a2ed43e6"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "dbef72291cab181ffb472af4bbdb9d25f5389f7b999aec6900267286fe6d4b48"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "7838bd8ab993208d100c88445c104f23f1ce1c242f59833e5da48fd1713bdfb9"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "c09bbbe341c8ce701933d645198a4045e2cb53f5621842534722876e8243cb40"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "406d5c0127dd98c158b51fcbb7acd69dae60a5d8592392d1878e559108d8f3c5"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "855373febf7481604910cbe2af05cba58b22789553f046ac3eb31dfd81162c67"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "bb2f9d3b34098d1d9362038fa4c84df89471d463b7f7780e97b6fa9d977a9714"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "11d498b210a56addb5f81892113b9a0c99145438eb2c3ac23352a51f9faf6b8d"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "b7e1b2543d85f85aa089d9422f7bf354a85794d40227b7652190d8d7d10860af"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "8ab1090ecf527bc71f0c4dc8db05b833e0f9960b4bdb94f3b0351533463b79a2"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x16_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a329a42256675e37ecaacc1647d68fa629924d3453653e24f8c8e00b74c31283"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "9b804486ac1ccd8001836a42f65d74244877a925b553b9cdce831dc7ec1d4eb6"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_8192x32_c4_slow_1p08V_125C.lib",
+            "sha256": "190e523dfb1486b3f8781e0aa9b6bdd7d7c3f5bcc3ca73a84d3db43d52a7d0ce"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a3ce6159425a082cd741af21af36a8f098f04d6921a41f383b55193fed67fc48"
+          }
+        ],
+        "diagnostic_probe": "eco7-endpoint-grt-probe",
+        "diagnostic_matches_seed_wns_exactly": true,
+        "substitutions": {
+          "_056130_": {
+            "old": "sg13g2_nor4_1",
+            "new": "sg13g2_nor4_2"
+          },
+          "_056131_": {
+            "old": "sg13g2_and2_1",
+            "new": "sg13g2_and2_2"
+          },
+          "_063638_": {
+            "old": "sg13g2_nand2_1",
+            "new": "sg13g2_nand2_2"
+          },
+          "_063639_": {
+            "old": "sg13g2_nor2_1",
+            "new": "sg13g2_nor2_2"
+          },
+          "fanout3847": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_063640_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout3471": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_063641_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout3136": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_063642_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2879": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_063643_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2561": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_069778_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_069779_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2178": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070509_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2011": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_088317_": {
+            "old": "sg13g2_a21oi_1",
+            "new": "sg13g2_a21oi_2"
+          },
+          "_088318_": {
+            "old": "sg13g2_nor3_1",
+            "new": "sg13g2_nor3_2"
+          },
+          "_088319_": {
+            "old": "sg13g2_a21o_1",
+            "new": "sg13g2_a21o_2"
+          },
+          "fanout6549": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_063657_": {
+            "old": "sg13g2_nor2_1",
+            "new": "sg13g2_nor2_2"
+          },
+          "_063668_": {
+            "old": "sg13g2_nand2_1",
+            "new": "sg13g2_nand2_2"
+          },
+          "_063669_": {
+            "old": "sg13g2_nor2_1",
+            "new": "sg13g2_nor2_2"
+          },
+          "_063670_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout3845": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070281_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout3424": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070282_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout3110": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070283_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2835": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070284_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2533": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_070285_": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "fanout2341": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_8"
+          },
+          "_087925_": {
+            "old": "sg13g2_a21oi_1",
+            "new": "sg13g2_a21oi_2"
+          },
+          "_087929_": {
+            "old": "sg13g2_nor3_1",
+            "new": "sg13g2_nor3_2"
+          },
+          "_087930_": {
+            "old": "sg13g2_a21o_1",
+            "new": "sg13g2_a21o_2"
+          },
+          "_088602_": {
+            "old": "sg13g2_a21oi_1",
+            "new": "sg13g2_a21oi_2"
+          },
+          "_088603_": {
+            "old": "sg13g2_nor3_1",
+            "new": "sg13g2_nor3_2"
+          },
+          "_088604_": {
+            "old": "sg13g2_a21o_1",
+            "new": "sg13g2_a21o_2"
+          },
+          "_088666_": {
+            "old": "sg13g2_a21oi_1",
+            "new": "sg13g2_a21oi_2"
+          },
+          "_088667_": {
+            "old": "sg13g2_nor3_1",
+            "new": "sg13g2_nor3_2"
+          },
+          "_088668_": {
+            "old": "sg13g2_a21o_1",
+            "new": "sg13g2_a21o_2"
+          }
+        },
+        "new_buffer_drivers": {},
+        "diagnostic_report": "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt",
+        "diagnostic_sha256": "1de926a76465c1039d91bae29a4bfff8ec69195134a698e858138d1f59cfcd49",
+        "diagnostic_paths": [
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112235_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111665_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112231_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112239_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112240_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ]
+        ]
+      },
+      "structural_check": {
+        "original_instances": 96584,
+        "added_stateless_positive_cells": 0,
+        "added_noninverting_buffers": 0,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 46,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true
+      },
+      "estimated_corners": {
+        "nom_fast_1p32V_m40C": {
+          "setup_wns_ns": 3.353706074441122,
+          "hold_wns_ns": -0.3278026831648773,
+          "slew_violations": 50,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        },
+        "nom_slow_1p08V_125C": {
+          "setup_wns_ns": -0.23135272130659043,
+          "hold_wns_ns": 0.4695395316568447,
+          "slew_violations": 36,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        },
+        "nom_typ_1p20V_25C": {
+          "setup_wns_ns": 2.1558773154673276,
+          "hold_wns_ns": 0.26210678813691135,
+          "slew_violations": 28,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        }
+      },
+      "area_increment_reported_um2": 529.81,
+      "area_scope": "Difference of final printed OpenROAD cell areas (0.01 um2 resolution), fixed die. No native extraction result for this candidate.",
+      "command": "timeout 3000 ~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco19-apb-drive/metrics.json hw/soc/out/external-review-20260919/timing-eco19-apb-drive/eco.tcl",
+      "checker_command": ".venv/bin/python hw/soc/out/external-review-20260919/validate_sizing_candidate.py timing-eco19-apb-drive"
+    },
+    "timing-eco20-memory-margins": {
+      "status": "Structural PASS; global-route timing estimates FAIL",
+      "input_inventory": {
+        "scope": "Two RX setup-path buffer-strength increases and three TX hold-path decreases, selected from ECO19 global estimates and ECO18 extracted fast hold report. Preserve all clock/state/logic/constraints. All-corner GRT estimate only; native reroute required.",
+        "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco19-apb-drive",
+        "seed_odb_sha256": "d764de7e4b7805a498f20db541c7ee243e692b5a067ef6c00e97d01bfd7984f6",
+        "before_sha256": "fbc2a0edc549ccaa5964d0762b433784b9328409cdd8a2b7983d3960706f3503",
+        "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+        "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+        "macro_libraries": [
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "63449ec39991d88479958d35f6e17f547b083850ad50dcc0b2fb93e387fb0041"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_64x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "363a49c4905e0899b1391903b16a37a18ba9db9cafa627f6fc4d9bc6f9e01db0"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "9a732262065fa4b7ef48e1cbe41897cd3c8256356d2cc5255aed5517ea1e4bef"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x48_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "357710ff1d4cb5d0f84264a7d07d3473ee584441cab363314cf70529912028e4"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "b4c3ab4947366ce0dea94e53924ebae9d94f8ed4aa44eda612102215f1bde9a0"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a04cff61cb4befb2290427db1ff2cb1c31c8d5990dca53ee3e5d1cc621679cd9"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_64x32_c2_slow_1p08V_125C.lib",
+            "sha256": "0304c5e8f04a4a1863c3e50d2a7b8d1ad55eb9cc4b1789d0365db8902c3abd33"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "78238e1652176a5ef2984b5a7c44432491e05614a1e18bd9cd841b1d0c97638c"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "5672945f5dc90a7e202ca1635f8f06f81adf72a6c53512ad8939ddc1c6681832"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "f23f9f8c41eff35014189b22a223295b91fd1db9d11655dba68f4591a2ed43e6"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "dbef72291cab181ffb472af4bbdb9d25f5389f7b999aec6900267286fe6d4b48"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "7838bd8ab993208d100c88445c104f23f1ce1c242f59833e5da48fd1713bdfb9"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "c09bbbe341c8ce701933d645198a4045e2cb53f5621842534722876e8243cb40"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "406d5c0127dd98c158b51fcbb7acd69dae60a5d8592392d1878e559108d8f3c5"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "855373febf7481604910cbe2af05cba58b22789553f046ac3eb31dfd81162c67"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "bb2f9d3b34098d1d9362038fa4c84df89471d463b7f7780e97b6fa9d977a9714"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x8_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "11d498b210a56addb5f81892113b9a0c99145438eb2c3ac23352a51f9faf6b8d"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x8_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "b7e1b2543d85f85aa089d9422f7bf354a85794d40227b7652190d8d7d10860af"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "8ab1090ecf527bc71f0c4dc8db05b833e0f9960b4bdb94f3b0351533463b79a2"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x16_c3_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a329a42256675e37ecaacc1647d68fa629924d3453653e24f8c8e00b74c31283"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "9b804486ac1ccd8001836a42f65d74244877a925b553b9cdce831dc7ec1d4eb6"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_8192x32_c4_slow_1p08V_125C.lib",
+            "sha256": "190e523dfb1486b3f8781e0aa9b6bdd7d7c3f5bcc3ca73a84d3db43d52a7d0ce"
+          },
+          {
+            "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+            "sha256": "a3ce6159425a082cd741af21af36a8f098f04d6921a41f383b55193fed67fc48"
+          }
+        ],
+        "diagnostic_probe": "eco7-endpoint-grt-probe",
+        "diagnostic_matches_seed_wns_exactly": true,
+        "substitutions": {
+          "hold13899": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_4"
+          },
+          "fanout6349": {
+            "old": "sg13g2_buf_1",
+            "new": "sg13g2_buf_4"
+          },
+          "load_slew6411": {
+            "old": "sg13g2_buf_8",
+            "new": "sg13g2_buf_2"
+          },
+          "load_slew6405": {
+            "old": "sg13g2_buf_8",
+            "new": "sg13g2_buf_4"
+          },
+          "hold13816": {
+            "old": "sg13g2_buf_8",
+            "new": "sg13g2_buf_4"
+          }
+        },
+        "new_buffer_drivers": {},
+        "diagnostic_report": "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt",
+        "diagnostic_sha256": "1de926a76465c1039d91bae29a4bfff8ec69195134a698e858138d1f59cfcd49",
+        "diagnostic_paths": [
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112235_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111665_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112231_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112239_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ],
+          [
+            "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Endpoint: _112240_ (rising edge-triggered flip-flop clocked by clk_i)",
+            "Path Group: clk_i",
+            "Path Type: max"
+          ]
+        ]
+      },
+      "structural_check": {
+        "original_instances": 96584,
+        "added_stateless_positive_cells": 0,
+        "added_noninverting_buffers": 0,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 5,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true
+      },
+      "estimated_corners": {
+        "nom_fast_1p32V_m40C": {
+          "setup_wns_ns": 3.353706074441122,
+          "hold_wns_ns": -0.3304794309529522,
+          "slew_violations": 49,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        },
+        "nom_slow_1p08V_125C": {
+          "setup_wns_ns": -0.0619451174554931,
+          "hold_wns_ns": 0.471444008287149,
+          "slew_violations": 38,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        },
+        "nom_typ_1p20V_25C": {
+          "setup_wns_ns": 2.1558773154673276,
+          "hold_wns_ns": 0.2678002340128158,
+          "slew_violations": 28,
+          "capacitance_violations": 0,
+          "fanout_violations": 0
+        }
+      },
+      "area_increment_reported_um2": -18.15,
+      "area_scope": "Difference of final printed OpenROAD cell areas (0.01 um2 resolution), fixed die. No native extraction result for this candidate.",
+      "command": "timeout 3000 ~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco20-memory-margins/metrics.json hw/soc/out/external-review-20260919/timing-eco20-memory-margins/eco.tcl",
+      "checker_command": ".venv/bin/python hw/soc/out/external-review-20260919/validate_sizing_candidate.py timing-eco20-memory-margins"
     }
   },
   "checker_regression": {
@@ -2702,6 +3292,216 @@
       "path": "hw/soc/out/external-review-20260919/interface-flow-hook-validation.log",
       "bytes": 249,
       "sha256": "5144fe27b55aad075363b65d42e9c7c2a3a161fac1a0febf966bedd18c3588ef"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/inputs.json",
+      "bytes": 11871,
+      "sha256": "5bb8678020f600a07f32f02283d4a754cf7780c79ddacb56a6b9725c3add4342"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/validation-inputs.json",
+      "bytes": 11957,
+      "sha256": "13efb6e6ebbef6def81f94b37ede0a6bda24956f507c59cdd6bac4f30775485d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/connectivity-check.json",
+      "bytes": 430,
+      "sha256": "7a921ed5b0b37a8687122a83300c1513c066df13cddfe0efa2f75254db5a0d6b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/eco.tcl",
+      "bytes": 30673,
+      "sha256": "3890e44cd8e9c7f1f839b828a4bfb9413012669d0c7dad95fc80fc027e563e63"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/eco.log",
+      "bytes": 16362,
+      "sha256": "1c8d220086ea6ac60eb1b1342a96e1507b10aeb92744f2649d0310a0dc324fed"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/metrics.json",
+      "bytes": 2300,
+      "sha256": "7cfa4ff42642517d0ec0602203c53879d636e4b8aca6cc7f4d70ad9c4766e224"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/soc_top.nl.v",
+      "bytes": 11019572,
+      "sha256": "fbc2a0edc549ccaa5964d0762b433784b9328409cdd8a2b7983d3960706f3503"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/soc_top.odb",
+      "bytes": 90238259,
+      "sha256": "d764de7e4b7805a498f20db541c7ee243e692b5a067ef6c00e97d01bfd7984f6"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/soc_top.def",
+      "bytes": 23288166,
+      "sha256": "f9b3dca69856717f1e9f32ea2a2c5b9b5ecaa3bfba5773887cf9667a9b144ec9"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/soc_top.sdc",
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/validation.log",
+      "bytes": 456,
+      "sha256": "aa44f844be1a0795e0ab2905324738ecf152e162b7f620207128b260dbf78569"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_fast_1p32V_m40C-max.rpt",
+      "bytes": 41325,
+      "sha256": "c2e3be75ecd1d0f99362a0032a171d62fbfbcc90b5a853be55ad80dc5f796ac1"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_fast_1p32V_m40C-min.rpt",
+      "bytes": 41063,
+      "sha256": "0d261a0229a1050a3cd7d5b915b3871c3734a44e7b1fa0086bbcf63a72cb0fbc"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_fast_1p32V_m40C-electrical.rpt",
+      "bytes": 4226,
+      "sha256": "4ecd4b1d9df3b18259b0c751e56f03b041603049bd91ae54b2b4d3b9b26083f2"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_slow_1p08V_125C-max.rpt",
+      "bytes": 55276,
+      "sha256": "11e46938001fa0465bc6d8b26d63021b6ce30724879014d7c19cd82a640795d1"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_slow_1p08V_125C-min.rpt",
+      "bytes": 35153,
+      "sha256": "7aa332f00e1eb9f0960c2b83f44b69fb589774b91db6ec10e2788f1d09980265"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_slow_1p08V_125C-electrical.rpt",
+      "bytes": 2990,
+      "sha256": "35e2560634d020af7ee008ea702c0dd6a1f823edf62882f9bc2d5f08c28ee38d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_typ_1p20V_25C-max.rpt",
+      "bytes": 48568,
+      "sha256": "d8d411db6cc6f55072d039ce9258c6c5e893f26aea1f3c2d3c3964be0e713597"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_typ_1p20V_25C-min.rpt",
+      "bytes": 41004,
+      "sha256": "8ec51e8ef374e0fcbf814f2f73eabc57191ad7ba81a10622576d5d7bfef05781"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco19-apb-drive/nom_typ_1p20V_25C-electrical.rpt",
+      "bytes": 2434,
+      "sha256": "03f80c0a9a6278446563fd2be3e28adbd4ed05fbbac65442b2cb035916e5fd3f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/prepare_eco19.py",
+      "bytes": 2407,
+      "sha256": "eea0a32307bf25945b984ebc7b65742ce65d228c26d4bbb865f152063c9c1391"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/inputs.json",
+      "bytes": 8483,
+      "sha256": "e418193bcc72cf900ca5655c34704470a0d8e671d7e63bf2f132f4efab58df2e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/validation-inputs.json",
+      "bytes": 8569,
+      "sha256": "3be24c5f1fa8fe1269490e45ad4117ce4a46fe3747c5fa5b55abe627046dc2ec"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/connectivity-check.json",
+      "bytes": 429,
+      "sha256": "1d7a29b7258e9a469980323f47abdc8e2ee875dd24e2080c694e9862b89e3e35"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/eco.tcl",
+      "bytes": 25834,
+      "sha256": "61f3eb545c9745b72e04969440ea6a4274467f48a4309569c685bd6bbdcf6d71"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/eco.log",
+      "bytes": 16422,
+      "sha256": "a36c5a5ec3b747ae1565b451a7ff2b1072c7fc5285469548f26d8f13c965f5a7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/metrics.json",
+      "bytes": 2293,
+      "sha256": "12c23579395af4c5a3b50dd93f421d74f5ca66aacddf44e62beb21912d8e1302"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/soc_top.nl.v",
+      "bytes": 11019572,
+      "sha256": "648a106e29c7c863174cff14deb6d0cca8dea312c623cf344f723f382b2bae65"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/soc_top.odb",
+      "bytes": 90251246,
+      "sha256": "b098ee8b4ce8d3957ffd210d0b0a0eca5b088119b5442219a91b847ce4e445be"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/soc_top.def",
+      "bytes": 23288164,
+      "sha256": "85009c839ddd322392129aa0957ea4e76dacf999a7fa8ddbfc7fca140dfcb57e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/soc_top.sdc",
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/validation.log",
+      "bytes": 455,
+      "sha256": "b18b853396ceb81808d31879ddfa1cceeadb525cc14043a208fb38a10fad5def"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_fast_1p32V_m40C-max.rpt",
+      "bytes": 41325,
+      "sha256": "e5135ff4b4252b66126d9b35d1a624f102027646b114aeaeb813c75d077ccf52"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_fast_1p32V_m40C-min.rpt",
+      "bytes": 41818,
+      "sha256": "d8ec10aefc7676fe73431a8a7b7623eb654066b429cbd078c4d4f9a057f66a41"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_fast_1p32V_m40C-electrical.rpt",
+      "bytes": 4137,
+      "sha256": "8ca4fea8c837d790ed11383f8c3532863e2c3c216e1f611d7a599f8587ada4f6"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_slow_1p08V_125C-max.rpt",
+      "bytes": 54725,
+      "sha256": "7cfad8bc1da77bd455e4ada9078952753e280f8d1199718d73ff06dcb5edf34f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_slow_1p08V_125C-min.rpt",
+      "bytes": 35139,
+      "sha256": "817d83bc0b2bc64c0bdb7ad7f4cfa6af576f98ef05770f8d5aa213308f81a8b7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_slow_1p08V_125C-electrical.rpt",
+      "bytes": 3154,
+      "sha256": "ce86a63e3f1a5db7cbd072f9e7e9d6a357fc5c9f64410e9164d235459cf4cab4"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_typ_1p20V_25C-max.rpt",
+      "bytes": 47457,
+      "sha256": "6a8f21560ce7766e24620b242e15fae02f7cc321fdfb5e365b249b1fa5fa9a50"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_typ_1p20V_25C-min.rpt",
+      "bytes": 39833,
+      "sha256": "e9484aaf536ee9e0f2244b95ffc506a74662044c1802f725c8e284ba8f3634b5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco20-memory-margins/nom_typ_1p20V_25C-electrical.rpt",
+      "bytes": 2432,
+      "sha256": "ea216268749195c52c88ab2107eb8f15f9079c17b16ab65685d047839e6e4ef7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/prepare_eco20.py",
+      "bytes": 2061,
+      "sha256": "f7b0d9586ed60ff22d30c0f77d61179c3af26ae30a3175a28c199a51f2a1e046"
     }
   ],
   "rejected_attempts": [
@@ -2795,5 +3595,10 @@
     "prior_interface_flow_sha256": "6d56b83dc0a5f0adf049582440a466c8b5ab146c58a325b948c41c557247e056",
     "prior_interface_flow_revision": "8b168c1",
     "limitations": "This is a routing metadata repair, not a relaxation of DRC, timing, connectivity or library checks. The generated Tcl stays in the step directory for review."
+  },
+  "native_eco18_completion": {
+    "status": "Completed native export; setup/hold/electrical FAIL",
+    "record": "docs/evidence/ethernet-eco18-extracted-20260920.json",
+    "scope": "Latest completed optimized native measurement, not a released replacement or a passing signoff. Independent XOR/LVS and updated main-deck DRC started separately. All 71 native fanout violations include added antenna terminals; pre-route zero fanout is not a post-route verdict."
   }
 }
