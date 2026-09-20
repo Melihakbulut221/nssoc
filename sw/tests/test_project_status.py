@@ -81,3 +81,27 @@ def test_markdown_comments_hidden_but_fenced_example_preserved():
     assert "project-status" not in html
     assert "&lt;!-- example --&gt;" in html
     assert "Visible" in html
+
+
+@pytest.mark.parametrize("extensions,expected", [
+    ("+tex_math_dollars\n+pipe_tables\n", "gfm-tex_math_dollars"),
+    ("+tex_math_dollars\n-tex_math_gfm\n", "gfm-tex_math_dollars-tex_math_gfm"),
+    ("+pipe_tables\n", "gfm"),
+])
+def test_pandoc_reader_uses_only_installed_extensions(monkeypatch, extensions, expected):
+    build_docs.pandoc_input_format.cache_clear()
+    def run(command, **kwargs):
+        assert command == ["pandoc", "--list-extensions=gfm"]
+        return subprocess.CompletedProcess(command, 0, extensions, "")
+    monkeypatch.setattr(build_docs.subprocess, "run", run)
+    try:
+        assert build_docs.pandoc_input_format() == expected
+    finally:
+        build_docs.pandoc_input_format.cache_clear()
+
+
+def test_failed_pandoc_cannot_claim_a_successful_pandoc_site(tmp_path, monkeypatch):
+    monkeypatch.setattr(build_docs.shutil, "which", lambda name: "/fixture/pandoc")
+    monkeypatch.setattr(build_docs, "run_pandoc", lambda *args: None)
+    assert build_docs.build(tmp_path / "site", "pandoc", False, True) == 2
+    assert not (tmp_path / "site/manifest.json").exists()

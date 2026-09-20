@@ -39,6 +39,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import html
 import hashlib
 import json
@@ -761,6 +762,16 @@ $body$
 """
 
 
+@lru_cache(maxsize=1)
+def pandoc_input_format() -> str:
+    """Disable available math extensions without requesting unknown extensions."""
+    result = subprocess.run(["pandoc", "--list-extensions=gfm"],
+                            capture_output=True, text=True, check=True, timeout=30)
+    supported = {line.strip().lstrip("+-") for line in result.stdout.splitlines()}
+    return "gfm" + "".join("-" + name for name in ("tex_math_dollars", "tex_math_gfm")
+                         if name in supported)
+
+
 def run_pandoc(markdown: str, title: str, workdir: Path) -> str | None:
     """Convert with pandoc, returning the HTML body fragment, or None."""
     src = workdir / "page.md"
@@ -777,7 +788,7 @@ def run_pandoc(markdown: str, title: str, workdir: Path) -> str | None:
         # parses as inline LaTeX and is rendered character by character
         # as emphasis. Measured on docs/04: 144 spurious <em> elements and
         # several mangled figures. Both extensions are off here.
-        "--from=gfm-tex_math_dollars-tex_math_gfm",
+        "--from=" + pandoc_input_format(),
         "--to=html5",
         "--toc",
         "--toc-depth=3",
@@ -893,6 +904,9 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
         body = None
         if use_pandoc:
             body = run_pandoc(doc.resolved, doc.title, workdir)
+        if use_pandoc and body is None:
+            sys.stderr.write(f"error: selected pandoc backend failed for {doc.rel}\n")
+            return 2
         if body is None:
             body = toc_html(doc.headings) + render_markdown(doc.resolved, doc.headings)
 

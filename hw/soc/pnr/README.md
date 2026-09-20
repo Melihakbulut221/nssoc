@@ -1,0 +1,44 @@
+# SoC physical profiles
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
+No profile here constitutes a qualified final chip. Acceptance belongs to a
+specific netlist, PDK, toolchain, constraints, routed image and its check results;
+see [the product gates](../../../docs/92-product-acceptance.md).
+
+`flow/pnr_soc_top.sh` selects a profile by the **actual mapped SRAM inventory**
+in `SYN_NETLIST`. The default search covers the profiles below. An explicit
+`PNR_CONFIG` must also match every macro name and master, and the selected
+`SOC_BOOT_ROM` implementation. Missing, extra or mismatched macros fail before
+launching LibreLane. This prevents the former six-macro unprotected default
+from being applied silently to an ECC or Ethernet netlist.
+
+```sh
+python3 hw/soc/flow/select_pnr_profile.py \
+  --netlist /path/to/soc_top.netlist.v --directory hw/soc/pnr --rom logic
+```
+
+| Profile | Placed SRAMs | Scope |
+|---|---:|---|
+| `config-interfaces-logicrom.json` | 20 | ECC RAM, packet SRAMs and immutable logic ROM; current physical candidate family |
+| `config-interfaces-synpre.json` | 24 | ECC RAM/ROM and packet SRAMs, before the logic-ROM migration |
+| `config-interfaces.json` | 8 | ECC RAM/ROM; Ethernet packet storage is not placed as SRAM macros |
+| `config-ecc-rom.json` | 8 | Historical protected RAM and protected SRAM ROM floorplan |
+| `config-ecc.json` | 6 | Historical protected RAM and unprotected SRAM ROM |
+| `config.json` | 6 | Historical unprotected RAM/ROM baseline; never a generic hardened default |
+| `config-npu.json`, `config-synpre.json` | 6 | Historical NPU inclusion / mapping experiments |
+| `config-timing*.json` | 6 | Historical timing and electrical experiments |
+| `config-lvs-a*` through `config-lvs-f*` | 6 | Diagnostic LVS experiments; their rule changes are not product waivers |
+| `config-lvs-ecc-rom.json` | 8 | Historical ECC macro LVS experiment; not successful SRAM-interior LVS |
+
+Files named `config-fp*.json` and `config.resolved.*.json` are ignored generated
+experiments and per-run source-list snapshots. The explicitly tracked ECC and
+interface profiles remain versioned inputs even if their floorplan began with
+a generator. Preserve all historical configs while their recorded evidence
+depends on them; do not rename a diagnostic config to imply signoff.
+
+The selector verifies only macro inventory and ROM profile. It does not prove
+placement legality, complete parameter equivalence, SDC correctness, timing,
+DRC, LVS, power integrity or package integration. `macro_energy.py` still uses
+historical six-macro activity names and must not be used to claim the energy
+of an ECC/Ethernet image; that migration remains open.

@@ -38,12 +38,16 @@ def derive(root=ROOT):
         native_boot=dict(status=records["native_boot"]["status"],
                          head=records["native_boot"]["head"],
                          scope=records["native_boot"]["scope"]),
+        native_replay=dict(status=records["native_replay"]["status"],
+                           head=records["native_replay"]["head"],
+                           **records["native_replay"]["acceptance"]),
     )
 
 
 def table(status):
     p, f, ram, route, native = (status[k] for k in
                                ("python", "peripheral_formal", "ram", "physical", "native_boot"))
+    replay = status["native_replay"]
     def evidence(name, text):
         return f'[{text}]({status["sources"][name]})'
     rows = [
@@ -55,8 +59,10 @@ def table(status):
          evidence("python", "Exact revision and command")),
         ("Peripheral checks", f'{f["passed"]}/{f["total"]} new formal tasks; {ram["passed"]}/{ram["total"]} native RAM profiles',
          evidence("peripheral_formal", "Formal scope") + "; " + evidence("ram", "RAM + negative control")),
-        ("Independent native boot", f'{native["status"]} at `{native["head"][:7]}`; correction awaits acceptance',
+        ("Independent native boot", f'{native["status"]} at `{native["head"][:7]}`; hosted correction replay pending',
          evidence("native_boot", "Hosted failure retained")),
+        ("Local native correction", f'{replay["status"]}: {replay["checks"]} checks, {replay["cycles"]:,} cycles; firmware `{replay["head"][:7]}`',
+         evidence("native_replay", "Same hosted netlist, verified serial initialization")),
         ("Physical closure", f'Setup {route["setup_ns"]:.3f} ns, hold {route["hold_ns"]:.3f} ns; electrical failures',
          evidence("physical", "Fixed-route estimate scope")),
     ]

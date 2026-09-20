@@ -15,7 +15,8 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 | Frozen pilot | TTIHP26b submission; source tree frozen | [Freeze contract](docs/34-pilot-freeze.md) |
 | Python regression | 962 pass, 2 skip; commit `c1a6f7a` | [Exact revision and command](docs/evidence/fresh-clone-c1a6f7a-20260920.json) |
 | Peripheral checks | 10/10 new formal tasks; 6/6 native RAM profiles | [Formal scope](docs/evidence/peripheral-formal-20260920.json); [RAM + negative control](docs/evidence/hosted-memory-parity-20260920.json) |
-| Independent native boot | FAIL at `474b9ce`; correction awaits acceptance | [Hosted failure retained](docs/evidence/native-boot-hosted-npu-failure-20260920.json) |
+| Independent native boot | FAIL at `474b9ce`; hosted correction replay pending | [Hosted failure retained](docs/evidence/native-boot-hosted-npu-failure-20260920.json) |
+| Local native correction | PASS: 28 checks, 653,726 cycles; firmware `100cad7` | [Same hosted netlist, verified serial initialization](docs/evidence/npu-native-startup-20260921.json) |
 | Physical closure | Setup -2.867 ns, hold -0.089 ns; electrical failures | [Fixed-route estimate scope](docs/evidence/startup-native-corners-20260920.json) |
 <!-- project-status:end -->
 
@@ -87,6 +88,10 @@ Physical-board qualification remains open.
 | `paper*/`, `thesis/` | Papers and thesis sources; claims require their recorded evidence |
 
 ## Licensing and citation
+
+This repository is a published subset of a private development
+repository; the [mirror contract](docs/78-the-public-mirror.md) defines its
+publication boundary. The original provenance note is retained in HISTORY.md.
 
 The project licence decision was **signed 2026-09-09**. Component licences
 and upstream exceptions are detailed in [LICENSES.md](LICENSES.md).

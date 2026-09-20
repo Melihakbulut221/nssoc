@@ -513,3 +513,21 @@ A [fresh remote clone at 7d2484c](evidence/fresh-clone-7d2484c-20260920.json)
 completed with **930 pytest passes, one absent-tool skip, zero failures**;
 front-door gates remain 16 pass / 0 fail / 7 explicit skips. Paper checks
 re-derived 27 results with 15 manual, zero missing output and zero wrong.
+
+
+**2026-09-21 measured NPU boot correction:** the exact previously failed
+hosted netlist now completes a local native-model replay in 653,726 cycles,
+28/28 application checks, zero failure mask. The firmware initializes all
+neuron payload/check feedback through verified serial register operations.
+[Input identities, complete result and binary-equality proof](evidence/npu-native-startup-20260921.json)
+retain the original hosted failure separately. An independent hosted rebuild,
+physical closure and the other product gates above remain open.
+
+
+[Three subsequent physical ECO experiments](evidence/startup-physical-eco123-20260921.json)
+retain the 5% derating and original logical connectivity. Fanout violations
+fall from 703 to zero. ECO3 has zero capacitance/fanout violations across all
+three corners, zero slew violations at typical/slow and one at fast, but slow
+setup is **-2.750971 ns** and fast hold **-0.363958 ns**. Sizing improves electrical
+counts while worsening the earlier setup result, so none is accepted as final
+closure. These are global-route RC estimates, not extracted signoff.

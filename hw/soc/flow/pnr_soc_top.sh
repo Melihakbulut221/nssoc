@@ -212,7 +212,12 @@ SRCS=$(
 # for the same reason config.json does: the refusal above is what keeps
 # this script out of the frozen hw/openlane/, and an arbitrary config
 # path would walk around it.
-PNR_CONFIG=${PNR_CONFIG:-$PNR/config.json}
+# Match the actual mapped macro hierarchy, including ECC and packet SRAMs.
+# The old six-macro default silently disagreed with hardened RTL defaults.
+SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
+PROFILE_ARGS=(--netlist "$SYN_NETLIST" --directory "$PNR" --rom "${SOC_BOOT_ROM:-legacy}")
+if [ -n "${PNR_CONFIG:-}" ]; then PROFILE_ARGS+=(--config "$PNR_CONFIG"); fi
+PNR_CONFIG=$("$VENV/bin/python" "$SOC_DIR/flow/select_pnr_profile.py" "${PROFILE_ARGS[@]}")
 PNR_CONFIG=$(cd "$(dirname "$PNR_CONFIG")" && pwd -P)/$(basename "$PNR_CONFIG")
 case "$PNR_CONFIG" in
   "$PNR"/*) ;;

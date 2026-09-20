@@ -23,7 +23,8 @@ def main():
     manifest = json.loads((site / "manifest.json").read_text())
 
     sources = sorted(pathlib.Path("docs").glob("*.md"))
-    expected = len(sources) + 2          # README.md and ROADMAP.md
+    expected = len(sources) + sum(pathlib.Path(name).is_file() for name in
+                                  ("README.md", "ROADMAP.md", "HISTORY.md"))
 
     failures = []
     if manifest["documents"] != expected:
