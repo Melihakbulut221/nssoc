@@ -1,0 +1,242 @@
+{
+  "date": "2026-09-20",
+  "status": "FAIL with intended 5 percent timing derate; prior all-corner timing acceptance withdrawn",
+  "scope": "Same old-loader ECO8 ODB and fixed global segments, no placement or routing changes. Only TIME_DERATING_CONSTRAINT Tcl lexical value changed from 5 to 5.0. Three independent native OpenROAD processes; global-route estimated RC only.",
+  "cause": "LibreLane saved config.json converts original 5.0 to integer 5. Step.load and environment recapture carry that representation into base SDC, whose expr value / 100 truncates to zero. Logged percent alone cannot detect the issue.",
+  "supersedes": {
+    "path": "docs/evidence/logicrom-eco8-global-20260920.json",
+    "original_sha256": "667e868823cf73d38f473bdd8b244d158ac827f47a722f3bfe02964ca0babec6",
+    "other_affected_estimates": "Logic-ROM ECO1 through ECO8, logicrom-grt-analysis and logicrom-grt-analysis2, startup-clear-single-step. Numeric claims from these environments are not evidence of 5 percent closure."
+  },
+  "corrected_results": {
+    "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-environment.tcl": "7b101101fb0b3d9030523a5e3978b3173da03fbfb12c01254474d03fea059982",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-capture-clock/soc_top.odb": "938b8ceea546325751940b4c76d46ced162a680a8d4368d2d4330c507fefa2d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-capture-clock/routes.segments": "9546cb94e4b0103390faddcd84d4e625ab35469b968bf6ca9ca020ef16feb0e9",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+    },
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 13.545247938996908,
+        "setup_ns": 3.2588499488020637,
+        "hold_ns": -0.1135880310849133,
+        "electrical": {
+          "slew": 0,
+          "capacitance": 0,
+          "fanout": 0
+        },
+        "estimated_checks_pass": false
+      },
+      "nom_typ_1p20V_25C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 12.854827000999649,
+        "setup_ns": 2.2128073333341476,
+        "hold_ns": 0.1232037839954463,
+        "electrical": {
+          "slew": 0,
+          "capacitance": 0,
+          "fanout": 0
+        },
+        "estimated_checks_pass": true
+      },
+      "nom_slow_1p08V_125C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 11.802131922999251,
+        "setup_ns": -1.0493437527026992,
+        "hold_ns": 0.3916833634962434,
+        "electrical": {
+          "slew": 0,
+          "capacitance": 0,
+          "fanout": 0
+        },
+        "estimated_checks_pass": false
+      }
+    },
+    "source_unchanged": true,
+    "all_estimated_checks_pass": false
+  },
+  "negative_control": {
+    "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-grt-analysis2/environment.tcl": "db24552dd1e10ef01a876b5e71be15ad666a4920d2c2ddfbe236354820530089",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-capture-clock/soc_top.odb": "938b8ceea546325751940b4c76d46ced162a680a8d4368d2d4330c507fefa2d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco8-capture-clock/routes.segments": "9546cb94e4b0103390faddcd84d4e625ab35469b968bf6ca9ca020ef16feb0e9",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+    },
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-integer-derate-rejection/nom_fast_1p32V_m40C/report.tcl"
+        ],
+        "returncode": 1,
+        "elapsed_s": 0.11476358100117068
+      }
+    },
+    "source_unchanged": null
+  },
+  "recovery": "startup-clear-nativeenv-single-step preserves values from the original native _env.tcl (5.0) through Step.prepare_env. That corrected-loader implementation is still running; no results inherited from this old-loader control.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-grt-analysis2/environment.tcl": {
+      "bytes": 25070,
+      "sha256": "db24552dd1e10ef01a876b5e71be15ad666a4920d2c2ddfbe236354820530089"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-environment.tcl": {
+      "bytes": 25072,
+      "sha256": "7b101101fb0b3d9030523a5e3978b3173da03fbfb12c01254474d03fea059982"
+    },
+    "hw/soc/out/external-review-20260919/startup-clear-single-step-supervisor.json": {
+      "bytes": 2274,
+      "sha256": "2a7fa8fd33d1df90bfecb73493099f534aec4d8b5ea7758876b64e77bccc3560"
+    },
+    "hw/soc/out/external-review-20260919/startup-clear-nativeenv-single-step/_env.tcl": {
+      "bytes": 17055,
+      "sha256": "6ad685c2f3853bd38a475939bd661ca011fb9d41404cb8556e86082f6585252d"
+    },
+    "hw/soc/out/external-review-20260919/native_single_step_worker_preserve_env.py": {
+      "bytes": 1437,
+      "sha256": "544377830c9da17e7ae335881b3a8b7506c9695ee7b0a3a6889c1fb5b73f080c"
+    },
+    "hw/soc/out/external-review-20260919/run_native_single_step_preserve_env.py": {
+      "bytes": 2616,
+      "sha256": "6b28d3a06a845e2c8952bf7c42e88f526d47d6df68a5f235bd187023d6278c69"
+    },
+    "hw/soc/flow/report_route_corners.py": {
+      "bytes": 8304,
+      "sha256": "ca3672c2548df755cd7210caeea5ad0dabc9a55243c7f8ee4d9ebdffd62f8df2"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/result.json": {
+      "bytes": 3182,
+      "sha256": "765ae6b79967575aca1a9d5eac3c79f9024a9e968fda20fa275b16d183b42949"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/inputs.json": {
+      "bytes": 1393,
+      "sha256": "5c409a93d259d5b0d4bef2e7ca82325ce72c4f5b065d0774af7b6b3680e1c36a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/max.rpt": {
+      "bytes": 11167878,
+      "sha256": "85037fe6b797b7977b73ed1fb914837c4b086cdadcf8a9b347e48b4aba1a1a95"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/run.log": {
+      "bytes": 2323,
+      "sha256": "0b7353eba75502cd2e23f55840d6f0bdfc7e9e3d231a6649d57122f3af6a318b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/report.tcl": {
+      "bytes": 3168,
+      "sha256": "d3c51057a1db21d739946d79c4e2938cfb7d09b88ba6ac532ca058978eb69ce6"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/min.rpt": {
+      "bytes": 7605607,
+      "sha256": "2dc115b8dee3d007bd0acb5fc78fb9fafd0f8d42c4016d95379aa3461d7dc77b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_typ_1p20V_25C/electrical.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/max.rpt": {
+      "bytes": 11136617,
+      "sha256": "df81633d6e50a2342544a52bc8b5d1c1f091e152222acdb4eaa875f6ff2c9945"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/run.log": {
+      "bytes": 2353,
+      "sha256": "fda2c32a6eb079d0a56671a4d07e9d81a19b57264af681ec4afe7d8eea042646"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/report.tcl": {
+      "bytes": 3170,
+      "sha256": "e6b69469798b325249d74b28ee2ade841be991c2fcc5801fb73679778313360a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/min.rpt": {
+      "bytes": 7606444,
+      "sha256": "0c843b677e9ea1eae826ff2c9e0ea8500ddcaa9d90e3a207bee77f0c31e5a9fb"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_fast_1p32V_m40C/electrical.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/max.rpt": {
+      "bytes": 11071742,
+      "sha256": "26941c7cbedae1facd0171e3d89d5e8e360791d12758d9f370359f0abe975440"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/run.log": {
+      "bytes": 2353,
+      "sha256": "1f713ee4091bd314f1f3c361ac8d8ab3a9127cc3f184f9b2162d298234ecda1f"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/report.tcl": {
+      "bytes": 3170,
+      "sha256": "bb3bf0f3eb3bef87fc7d3ea62ea975736baf40b01a1b0bf730dd1c6815841885"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/min.rpt": {
+      "bytes": 7597829,
+      "sha256": "0179fc3219074d01340d1f4f41add6c3cf3da5b3a574ce4d7b114caeac5765bd"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco8-corrected-derate-corners/nom_slow_1p08V_125C/electrical.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-integer-derate-rejection/result.json": {
+      "bytes": 1758,
+      "sha256": "94ab5688520eff2e88d8a8561d7db126f90d251965082ac9055d146af664c498"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-integer-derate-rejection/inputs.json": {
+      "bytes": 1385,
+      "sha256": "6a9b19b70c54b175b91706a006f743ddac15364d1c4aa901e41aeda74b0fb038"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-integer-derate-rejection/nom_fast_1p32V_m40C/run.log": {
+      "bytes": 98,
+      "sha256": "a6aa13a1296e4ba0c1ef62bff17626259255e8c60727070cb59ea92b4e3340fb"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-integer-derate-rejection/nom_fast_1p32V_m40C/report.tcl": {
+      "bytes": 3158,
+      "sha256": "957495168f31ea53a23a750297397581bbd5cddfc40e777cfb15d38bc3d8ea50"
+    },
+    "hw/soc/pnr/runs/eth256-eco22-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/_env_ThreadPoolExecutor-3_2.tcl": {
+      "bytes": 16603,
+      "sha256": "de58895954f38a19f89f0572a9220cb55d6c4fe9c87614a4bd8471da86801c91"
+    },
+    "hw/soc/pnr/runs/eth256-eco22-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/_env_ThreadPoolExecutor-3_0.tcl": {
+      "bytes": 16603,
+      "sha256": "de58895954f38a19f89f0572a9220cb55d6c4fe9c87614a4bd8471da86801c91"
+    },
+    "hw/soc/pnr/runs/eth256-eco22-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/_env_ThreadPoolExecutor-3_1.tcl": {
+      "bytes": 16603,
+      "sha256": "de58895954f38a19f89f0572a9220cb55d6c4fe9c87614a4bd8471da86801c91"
+    }
+  },
+  "unaffected_native_control": "The original ECO22 extracted three-corner environments were independently inspected: all explicitly contain 5.0. Its setup/hold result is not revoked by the logic-ROM environment correction; electrical failures remain."
+}

@@ -17,13 +17,13 @@ The review's historical reproduction is in [docs/89](89-external-review-follow-u
 | F0, F0a | Verified fix | Idempotent mirror handling retains the reworded-fragment negative control; [docs/86](86-the-external-review.md). |
 | F0b | Verified fix | Upstream-prefixed historical commits retain provenance; public history is checked where applicable; docs/86. |
 | F0c | Verified fix | Transparent `mbox` rendering and renderer regression; docs/86. |
-| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `d93e64d` replay: 818 pytest passes / 26 skips, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-d93e64d-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
+| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `0727236` replay: 902 pytest passes / one tool-absence skip, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-0727236-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
 | F1 | Verified fix | SoC reset synchronization, flush regression and fresh NPU proofs; frozen pilot unchanged; [docs/87](87-engineering-closure.md), docs/89. |
 | F2 | Verified fix, including cocotb | Whole-CPU firmware injection, watchdog reset, two APB retained-PC reads and ignored write pass under cocotb; [record](evidence/crash-cocotb-20260919.json). Register-map checks and added area are recorded in docs/86; full-program result in docs/89. |
 | F3 | Verified fix | Shipping timeout enabled, APB pins quarantined until reset, one fabric error, retained event counter. Timeout-zero cost guard, never-ready test and APB/BUSSTAT/NPU proofs; [APB evidence](evidence/apb-timeout-20260919.json). |
 | F4 | Review measurement delivered; product timing OPEN | Explicit flash/board SDC, minimum-divider arithmetic and unchanged default sampling; QSPI regression passes. Extracted violations remain failures; [QSPI STA evidence](evidence/qspi-sta-20260919.json). |
 | F5 | Verified documentation fix | Orphan modules and their proofs are explicitly distinguished from instantiated hardware; docs/86. |
-| F6 | OPEN | Committed metrics/configuration and digest checks exist. The historical bare clone at `e2193ec` had 34 skips. Added 2026-09-20: the [complete recorded netlist](evidence/ethernet-netlist-20260920.json) enables seven actual structural guards; a fresh remote clone measured 652 passes and 27 skips. The numeric threshold is met, but missing historical outputs still violate the complete first clause. Paper claims needing build output fell to seven; [record](evidence/fresh-clone-netlist-20260920.json). |
+| F6 | ACCEPTANCE MET | Fresh remote `0727236`: **902 pytest passes / 1 tool-absence skip**. Exact original historical DEF/netlists and raw reports are restored from digest-checked snapshots into test scratch space. Paper: seven claims need build output, zero wrong; evidence digest tests pass. [Full clone record](evidence/fresh-clone-0727236-20260920.json). Seven front-door skips remain separately reported, not counted as passes. |
 | F7 | Review documentation delivered; physical closure OPEN | Named, costed routing keep-out experiment and accurate deck scopes in [ROADMAP](../ROADMAP.md). The original 24-SRAM GDS now passes the [updated unmodified KLayout main deck](evidence/ihp-full-chip-drc-20260920.json); Magic and the final optimized geometry still require closure. |
 | F8 | Accepted alternative proved | Real-codec contract and direct pinned-upstream equivalence with scrub on/off, induction and negative controls; docs/87. Core-level `reg_ch0` remains a non-verdict and is not relabelled PASS. |
 | F9 | Verified documentation fix | Same orphan-module scope as F5; no inference from source/proof counts to instantiated logic. |
@@ -52,7 +52,7 @@ hardware merely to increase apparent coverage.
 | Debug and interrupts | One synchronized external machine-interrupt level and vector 11 now have RTL/native-cell CPU evidence; [contract](94-external-interrupt.md). Final physical and fault qualification remain open. Usable halt/inspect/debug access remains unimplemented. |
 | Clock, reset and power | OPEN: clock-source/PLL choice, POR/brownout integration, supply integrity and characterized startup behaviour. Top-level clock/reset inputs are not physical circuits. |
 | Fault protection | Existing protection is scoped to documented structures. Lockstep/bus integrity, interface protection and radiation qualification remain open; no silicon or beam data exists. |
-| Reproducible release | OPEN until source pins, build commands, generated dependencies, final evidence, firmware and interface limitations accompany the exact delivered revision. Historical absent artifacts remain explicitly absent. |
+| Reproducible release | OPEN until source pins, build commands, generated dependencies, final evidence, firmware and interface limitations accompany the exact delivered revision. Historical artifacts recovered for F6 do not certify the current SoC. |
 
 Current physical candidate: `interfaces-eth256-resume-20260919-184950`, using
 the input inventory in [the Ethernet evidence](evidence/ethernet-sram256-20260919.json).
@@ -358,9 +358,11 @@ to those tests; they do not close whole mapped boot.
 [ECO7](evidence/logicrom-eco7-electrical-20260920.json) reaches zero electrical
 violations in all corners. The two remaining negative paths are TX SRAM outputs
 to capture flip-flops. [ECO8](evidence/logicrom-eco8-global-20260920.json) adds one
-positive delay cell on each capture-clock leaf: **all three independent corner
-global estimates pass setup, hold and electrical checks**, worst setup +0.026116
-ns and worst hold +0.023359 ns. This is still estimated RC, with no native detailed
+positive delay cell on each capture-clock leaf. **Correction, 2026-09-20:
+the originally reported all-corner PASS used integer-truncated zero derate
+and is withdrawn.** The same fixed placement and routes at the intended 5%
+derate fail fast hold (−0.113588 ns) and slow setup (−1.049344 ns);
+[corrected replay and rejected integer control](evidence/logicrom-derate-correction-20260920.json). This is still estimated RC, with no native detailed
 route/extraction verdict, and belongs to the previous loader image.
 
 The [startup counter diagnostic](evidence/logicrom-startup-counter-diagnostic-20260920.json)
@@ -429,3 +431,20 @@ A removed-wire negative control fails as expected. The earlier six-violation
 route is rejected. Own GDS has been generated; independent Magic is running
 with unchanged native rules. Neither this result nor the old 438-marker
 result is a verdict on the corrected-loader physical candidate.
+
+**Dated update, 2026-09-20: F6 acceptance measured in a fresh remote clone.**
+Head `0727236` completes the full local CI entry point with 902 pytest passes,
+zero failures and one skip for the absent pinned TinyTapeout support tool.
+The paper checker has seven claims needing build output and zero wrong.
+The [clone evidence](evidence/fresh-clone-0727236-20260920.json) retains the
+exact ledger row, hashes and skip reason. Front-door gates separately report
+16 passes and seven skips (pandoc and six live-run checker bindings).
+This closes the stated F6 acceptance, not current-image physical signoff.
+
+**Timing correction:** ECO1–8 logic-ROM estimates inherited integer `5`
+from a serialized native configuration; the native SDC divides by integer
+100, silently applying zero derate. Their unchanged-5%-derate claim is
+withdrawn. The corrected replay above leaves old measurements intact and
+adds the actual failing 5% result. A new Tcl guard rejects truncating,
+missing and invalid values before reading the ODB/SDC. The corrected loader
+is being implemented with the original native Tcl environment (`5.0`).

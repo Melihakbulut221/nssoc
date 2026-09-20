@@ -5,6 +5,36 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 15:30 TRT — F6 kapandı; yanlış derate sonucu geri çekildi
+
+Son push0727236. Freshremote0727236 tamam: 903total/902PASS/1SKIP;
+tek skip TinyTapeout destek aracının yokluğu. Paper20derived/15manual/7missing/0wrong.
+Frontdoor16PASS/0FAIL/7SKIP aynen korunur. Yeni evidence fresh-clone-0727236
+ve ledgerrow var; F6 belirtilen kabul koşulları sağlandı, currentPNR signoff değil.
+
+**ÖNEMLİ DÜZELTME:** logicrom-grt-analysis2/environment.tcl içinde derate=5
+integer! Eski ECO1–8 yüzde0 ile hesaplanmış; tüm5% closure iddiaları geriçekildi.
+SameECO8ODB/routes yeni5.0 ile üçbağımsızköşede ölçüldü: fast3.258850/-0.113588,
+typ2.212807/0.123204, slow-1.049344/0.391683ns setup/hold. Elektrik0. FAIL.
+logicrom-derate-correction-20260920.json doğruyenisonuç/eskihash/negatifkontrol.
+Eski JSON measurementrowları korunuyor ama üststatusSUPERSEDED. docs92/95 düzeltildi.
+Versionedreport_route_corners.py artıkTclintegertruncation/missing/invalidreject.
+27parser/Tcltestkontrolü; gerçekeski5integerenv OpenROAD önkontrolde FAIL.
+
+68089 directstartupstep195s tamamlandı ama aynıintegerderatehatası: GEÇERSİZ.
+ODB/DEF losslessinactive-native-viewarchive, original438MagicMAGdearchive.
+**AKTİF35930:** startup-clear-nativeenv-single-step, original_envTcl5.0korunuyor;
+originalstep35girdileri, BoundedPostGRTmax600. Logsetuprepair~210iter, halençalışıyor.
+worker_preserve_env.py prepare_env override özgün native _env.tcl değerlerini
+SAVE_*harici aynen korur. Actualgenerated_env=5.0 doğrulandı. YeniROM69441cells.
+Capture/report için integerconfigdenenvüretilMEMELİ; actualTcl biçimikorumalı.
+**AKTİF21435:** halo-lift3-magic-single-step fullnativeDRC, DEFloadingbitti.
+Worker native_single_step_worker.py çalışırkeneditlemehashguardvar.
+Disk~2GiB; başkaprojeleri temizleme; rawinput/loglar korunsun.
+
+Hosted35508536540: checks/RTL/formal-and-boot PASS; native-boot hâlârunning.
+Yeni guard/evidence/doc/F6 değişiklikleri commit/push ve PRbodyupdate bekliyor.
+
 ## 20 Eylül 15:12 TRT — F6 dosyaları bulundu; iki-net DRC/antenna PASS
 
 Son push474b9ce. Native hosted run35508536540 job106072314493 hâlâ çalışıyor;

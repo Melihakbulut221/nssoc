@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "Structural and all single-corner global timing/electrical estimates PASS; native route/extraction pending",
+  "status": "SUPERSEDED: old timing estimates used integer-truncated zero derate; required 5 percent replay FAILS setup and hold",
   "scope": "Prior immutable loader plus IRQ. Two positive dlygate4sd1 capture-clock leaves close the remaining TX SRAM output setup paths, with unchanged clock period/uncertainty/derate. Full setup and hold checked after routing in three independent corner processes. The corrected startup-clear ROM is a separate later synthesis and cannot inherit these numbers.",
   "inputs": {
     "scope": "Old fixed loader plus new IRQ: two remaining slow setup failures are SRAM TX output to two capture flops. Add one positive dlygate4sd1 to each capture clock leaf; unchanged clock period, uncertainty, derate and constraints. Fresh all-corner setup/hold including outgoing capture-register paths required. Estimate-only.",
@@ -1177,5 +1177,7 @@
       "bytes": 1526,
       "sha256": "97b2e32b3713173d8266cfb5828e557075a9488250e1977f9ba2ebe047aecefe"
     }
-  }
+  },
+  "historical_status_before_correction": "Structural and all single-corner global timing/electrical estimates PASS; native route/extraction pending",
+  "correction": "See logicrom-derate-correction-20260920.json. Original measurement rows and scope strings below are retained as historical evidence, not accepted 5 percent timing. ECO1 through ECO8 inherited the same integer environment. Structural controls are unaffected."
 }

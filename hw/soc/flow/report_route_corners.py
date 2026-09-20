@@ -20,6 +20,23 @@ import time
 from probe_generated_clock_corners import tcl_path
 
 CORNERS = ('nom_fast_1p32V_m40C', 'nom_typ_1p20V_25C', 'nom_slow_1p08V_125C')
+# LibreLane's base SDC divides this value by integer 100. JSON round trips
+# can turn 5.0 into 5; Tcl then silently applies zero derating. Reject that
+# environment before read_current_odb loads the SDC, without changing it.
+DERATE_GUARD = '''if {![info exists ::env(TIME_DERATING_CONSTRAINT)]} {
+ error "Missing TIME_DERATING_CONSTRAINT"
+}
+set derate $::env(TIME_DERATING_CONSTRAINT)
+if {![string is double -strict $derate] ||
+    [catch {expr {double($derate) >= 0 && double($derate) < 100}} valid] || !$valid} {
+ error "Invalid TIME_DERATING_CONSTRAINT"
+}
+set intended_derate [expr {double($derate) / 100.0}]
+if {[expr {$derate / 100}] != $intended_derate} {
+ error "TIME_DERATING_CONSTRAINT loses precision in the native SDC integer division"
+}
+puts "DERATE_GUARD percent=$derate early=[expr {1-$intended_derate}] late=[expr {1+$intended_derate}]"
+'''
 FILTER = '''foreach prefix {_LIB_CORNER_ _LAYER_RC_ _VIA_R_} {
  set keep {}
  foreach key [lsort -dictionary [array names ::env ${prefix}*]] {
@@ -96,8 +113,8 @@ def main(argv=None):
         directory.mkdir()
         script = (f'set ::env(SCRIPTS_DIR) {tcl_path(paths["scripts"])}\n'
                   f'set ::env(_TCL_ENV_IN) {tcl_path(paths["environment"])}\n'
-                  'source $::env(SCRIPTS_DIR)/openroad/common/io.tcl\n'
-                  f'set selected_corner {corner}\n' + FILTER +
+                  'source $::env(SCRIPTS_DIR)/openroad/common/io.tcl\n' +
+                  DERATE_GUARD + f'set selected_corner {corner}\n' + FILTER +
                   f'set ::env(CURRENT_ODB) {tcl_path(paths["odb"])}\n'
                   f'set ::env(STEP_DIR) {tcl_path(directory)}\n'
                   'foreach key [array names ::env SAVE_*] {unset ::env($key)}\n'

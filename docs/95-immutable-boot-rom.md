@@ -178,8 +178,10 @@ assembly sweep still precedes C; warm-boot records and ROM telemetry remain
 untouched. Normal RTL boot passes all 28 checks. The new 3,084-byte loader maps to
 69,441 whole-SoC cells with 9,391 flip-flops and 1,080,737.6076 µm² of standard-cell
 area. Native whole-SoC boot and fallback tests are still pending. This new immutable
-image requires its own physical implementation; the old-image ECO8 global timing
-and electrical passes do not transfer to it.
+image requires its own physical implementation. **The old-image ECO8 timing
+PASS was subsequently withdrawn:** its serialized environment applied zero
+derate. [Replaying the same routes at 5%](evidence/logicrom-derate-correction-20260920.json)
+fails fast hold and slow setup; electrical violation counts remain zero.
 
 **Verification update, 2026-09-20:** the corrected loader now passes normal RTL
 boot and [both geometry fallback replays](evidence/logicrom-startup-clear-fallback-20260920.json),

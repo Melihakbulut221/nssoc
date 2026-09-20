@@ -55,3 +55,41 @@ def test_tcl_path_is_literal_with_substitutions(tmp_path):
     result = subprocess.run(['tclsh'], input='puts ' + probe.tcl_path(value) + '\n',
                             capture_output=True, text=True, check=True)
     assert result.stdout.rstrip('\n') == str(value)
+
+
+@pytest.mark.parametrize('value', ['5', '1', '99', '-1.0', '100.0',
+                                 'NaN', 'Inf', 'garbage', ''])
+def test_native_sdc_derate_guard_rejects_truncation_and_invalid_values(value):
+    script = ('set ::env(TIME_DERATING_CONSTRAINT) ' + probe.tcl_path(value) + '\n'
+              'if {[catch {\n' + route.DERATE_GUARD +
+              '\n} message]} {puts stderr $message; exit 2}\n')
+    result = subprocess.run(['tclsh'], input=script, capture_output=True, text=True)
+    assert result.returncode == 2, result.stdout + result.stderr
+    assert 'TIME_DERATING_CONSTRAINT' in result.stderr
+    assert 'DERATE_GUARD percent=' not in result.stdout
+
+
+@pytest.mark.parametrize(('value', 'early', 'late'), [
+    ('5.0', '0.95', '1.05'), ('0', '1.0', '1.0'),
+    ('0.25', '0.9975', '1.0025'), ('5e0', '0.95', '1.05'),
+])
+def test_native_sdc_derate_guard_preserves_actual_floating_point(value, early, late):
+    script = ('set ::env(TIME_DERATING_CONSTRAINT) ' + probe.tcl_path(value) + '\n'
+              'if {[catch {\n' + route.DERATE_GUARD +
+              '\n} message]} {puts stderr $message; exit 2}\n'
+              'puts "actual=[expr {1-($::env(TIME_DERATING_CONSTRAINT)/100)}],'
+              '[expr {1+($::env(TIME_DERATING_CONSTRAINT)/100)}]"\n')
+    result = subprocess.run(['tclsh'], input=script, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert f'DERATE_GUARD percent={value} early={early} late={late}' in result.stdout
+    actual = result.stdout.split('actual=')[1].strip().split(',')
+    assert [float(x) for x in actual] == [float(early), float(late)]
+
+
+def test_native_sdc_derate_guard_requires_explicit_environment():
+    script = ('unset -nocomplain ::env(TIME_DERATING_CONSTRAINT)\n'
+              'if {[catch {\n' + route.DERATE_GUARD +
+              '\n} message]} {puts stderr $message; exit 2}\n')
+    result = subprocess.run(['tclsh'], input=script, capture_output=True, text=True)
+    assert result.returncode == 2
+    assert 'Missing TIME_DERATING_CONSTRAINT' in result.stderr
