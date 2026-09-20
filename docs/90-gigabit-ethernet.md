@@ -370,3 +370,26 @@ Watchdog stages, reset events, traps, NMIs and observed fault alarms remain
 zero. This is zero-delay simulation with no fault injected. It is not SDF,
 WCET, an upset campaign, memory-interior equivalence or a final-route timing
 verdict. The historic reload127 failed clean control remains unchanged.
+
+Added 2026-09-20: the guard now supports added buffer strengths 1, 2, 4, 8
+and 16, checking each actual Liberty function and absence of state. The
+expanded regression passes **31 tests** and the actual ECO7 replay still
+passes; the dated follow-up in the same record retains the earlier checker
+hash at commit `dd14c38`.
+
+The separate [ECO8 estimate](evidence/ethernet-eco8-estimate-20260920.json)
+replaces one critical delay cell with an equivalent positive buffer and
+increases one launching flip-flop's drive strength. Full global routing gives
+slow setup **-0.729996 ns** and fast hold **-0.157326 ns**; both remain failures.
+The restricted structural check passes with all 94,555 original instances,
+one equivalent combinational substitution and one equivalent state-preserving
+substitution. These are estimated values, separate from the still-running
+ECO7 native flow; no clock, interface budget or RTL was relaxed.
+
+The completed ECO9 buffering follow-up in that record retains all original
+instances and passes the same guard with 74 added buffers, 21 combinational
+and two sequential substitutions. After recomputing the entire global route,
+slow setup is **-0.579369 ns**, fast hold **-0.246511 ns**, and typical hold
+**-0.023671 ns**. Setup improves but hold worsens; this candidate still fails.
+The final estimates supersede the optimizer's more optimistic intermediate
+slack within this experiment. It is not promoted to a finished physical design.

@@ -158,5 +158,47 @@
       "bytes": 368,
       "sha256": "0a0836975e57c6b573b01b440b413eb26a8bb8bdcc2349224088be0fe5080eb1"
     }
-  ]
+  ],
+  "initial_checker_git_revision": "dd14c38f358466492152b843161f5218ecb66f7f",
+  "structural_check_follow_up": {
+    "date": "2026-09-20",
+    "scope": "Support each added sg13g2_buf strength 1, 2, 4, 8 and 16, with actual pinned-library stateless positive-function checks. No expansion to inverters or other transformations. Original evidence and checker hash above are retained at the initial git revision.",
+    "regression": {
+      "passed": 31,
+      "failed": 0,
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_physical_eco.py"
+    },
+    "actual_eco7_replay": {
+      "original_instances": 94492,
+      "added_noninverting_buffers": 63,
+      "equivalent_combinational_substitutions": 441,
+      "equivalent_sequential_substitutions": 21,
+      "state_definitions_compared_exactly": true,
+      "unchanged_ports_and_assigns": true,
+      "unchanged_original_wire_declarations": true,
+      "all_original_pin_connections_equal_after_buffer_contraction": true
+    },
+    "artifacts": [
+      {
+        "path": "hw/soc/flow/check_physical_eco.py",
+        "bytes": 12280,
+        "sha256": "82d67c5518825013e07d1a38ddad66d19c487f76cd5057cd39f33d14f65db6f1"
+      },
+      {
+        "path": "sw/tests/test_physical_eco.py",
+        "bytes": 8145,
+        "sha256": "59eda4ebebe4499fe580fe30c4dc36bbe07abc4b91488a346ad15b30ae67f5b9"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/physical-eco-all-strengths-tests.log",
+        "bytes": 99,
+        "sha256": "8bcbf376df7b932aad6d22cfe1bb5fd31b85f380bb090199b27d1972f5f80852"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/physical-eco-all-strengths-replay.log",
+        "bytes": 368,
+        "sha256": "0a0836975e57c6b573b01b440b413eb26a8bb8bdcc2349224088be0fe5080eb1"
+      }
+    ]
+  }
 }

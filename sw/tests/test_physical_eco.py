@@ -38,7 +38,7 @@ def digest(path):
 @pytest.fixture
 def design(tmp_path):
     lib = tmp_path / 'std.lib'
-    lib.write_text('library (test) {\n' + cell('sg13g2_buf_1') + cell('sg13g2_buf_8') + cell('FF1', state=('D', 'CLK')) + cell('FF2', state=('D', 'CLK')) + '}\n')
+    lib.write_text('library (test) {\n' + ''.join(cell('sg13g2_buf_' + str(n)) for n in (1, 2, 4, 8, 16)) + cell('FF1', state=('D', 'CLK')) + cell('FF2', state=('D', 'CLK')) + '}\n')
     macro = tmp_path / 'macro.lib'
     macro.write_text('library(test) { cell(RM_TEST) { bus(A_DOUT) { direction : output; pin(A_DOUT[1:0]) { capacitance : 0; } } } }')
     before = tmp_path / 'before.v'
@@ -56,6 +56,20 @@ def test_bus_and_equivalent_sizing_pass(design):
     assert result['equivalent_combinational_substitutions'] == 1
 
 
+@pytest.mark.parametrize('strength', [1, 2, 4, 8, 16])
+def test_each_legal_buffer_strength_uses_the_library_function(design, strength):
+    before, after, inputs, lib, _ = design
+    master = 'sg13g2_buf_' + str(strength)
+    after.write_text(after.read_text().replace('sg13g2_buf_8 eco', master + ' eco'))
+    inputs['after_sha256'] = digest(after)
+    assert eco.check(before, after, inputs)['added_noninverting_buffers'] == 1
+    # Same family name and pin list, but a corrupted logic function must fail.
+    lib.write_text(lib.read_text().replace(cell(master), cell(master, '!A')))
+    inputs['liberty_sha256'] = digest(lib)
+    with pytest.raises(ValueError):
+        eco.check(before, after, inputs)
+
+
 @pytest.mark.parametrize('old,new', [
     ('{n1,n0}', '{n0,n1}'),
     ('eco (.A(n0),.X(eco_net))', 'eco (.A(eco_net),.X(n0))'),
@@ -65,7 +79,7 @@ def test_bus_and_equivalent_sizing_pass(design):
     ('sg13g2_buf_8 b1 (.A(n1),.X(y[1]));', ''),
     ('wire n0,n1;', 'wire n0,n1; assign n0=n1;'),
     ('wire n0,n1;', 'wire [0:1] n0,n1;'),
-    ('sg13g2_buf_8 eco', 'sg13g2_buf_1 eco'),
+    ('sg13g2_buf_8 eco', 'sg13g2_inv_1 eco'),
     (' endmodule', ' unexpected statement; endmodule'),
 ])
 def test_altered_connectivity_is_rejected_even_when_rehashed(design, old, new):

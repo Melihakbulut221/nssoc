@@ -88,7 +88,8 @@ def check(before, after, inputs):
     graph = {}
     for name in added:
         master, pins = b[name]
-        if not (master == 'sg13g2_buf_8' and set(pins) == {'A', 'X'}):
+        if not (re.fullmatch(r'sg13g2_buf_(?:1|2|4|8|16)', master)
+                and set(pins) == {'A', 'X'}):
             raise ValueError((name, master, pins))
         for value in pins.values():
             if not re.fullmatch(NET, value):
@@ -168,8 +169,11 @@ def check(before, after, inputs):
     for c in changed.values():
         if shape(c['old']) != shape(c['new']):
             raise ValueError(c)
-    if shape('sg13g2_buf_8') != ({'A': ('input', None), 'X': ('output', 'A')}, ()):
-        raise ValueError('Unsupported or inconsistent ECO input')
+    # A recognized family/strength name alone is insufficient: prove the
+    # actual library function and lack of stored state for every added type.
+    for master in {b[name][0] for name in added}:
+        if shape(master) != ({'A': ('input', None), 'X': ('output', 'A')}, ()):
+            raise ValueError(('Added cell is not a stateless positive buffer', master))
     libraries = [text]
     for entry in inputs.get('macro_libraries', []):
         path = Path(entry['path'])

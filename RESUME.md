@@ -65,6 +65,47 @@ istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
   yanıtsız; placeholder PCIe, gerçek layout veya ürün değildir.
 - Donmuş hw/rtl, hw/tb, hw/openlane, tt kaynaklarına dokunmayın.
 
+## 03:26 TRT ek devam notu
+
+- Son push `dd14c38`; 26 ECO guard testi ve 186 ilgili test PASS. PR güncel.
+- ECO7 native (session98866, PID187301) ilk routing'i 0 DRC ile bitirdi;
+  223 net /244 pin antenna ihlali buldu, otomatik antenna repair #1 sonrası
+  reroute aktif. Final timing veya finalantenna PASS henüz yok.
+- `eco7-endpoint-grt-probe` tamamlandı: GRT yeniden oluşturulunca WNS
+  ECO7 ile tam aynı. Eski `read_guides` probu GRT-0008 nedeniyle geçersiz.
+  `_111988_` endpoint fast hold +0.496228 ns. Kritik kaynak `_116300_`,
+  CLINT SECDED mtime bit57; endpoint CPU fetch_addr_q[31].
+- ECO8 `timing-eco8-critical-delay`: hold23732 dlygate4sd3->buf1,
+  _116300_ dfrbpq1->2. Tam GRT bitti; slowsetup -0.7299956402,
+  fasthold -0.1573263786. ECO7'ye karşı 1 comb +1 FF eşdeğerliği PASS.
+  Native route yok. `validation-inputs.json`, `connectivity-check.json`.
+- ECO9 `timing-eco9-buffer-repair` session76866: ECO8'den, setup resizer
+  buffering ENABLED, pin swap/gate clone/buffer removal/last gasp disabled.
+  max_iterations200, repairs_per_pass1, repair_tns0, timeout2400s. Şu an
+  ilk GRT sürüyor. Çıkarsa gerçek instance delta'yı kontrol edin; sadece
+  optimizer bayrağına güvenip removed-cell yok varsaymayın. Kalıcı checker
+  yeni buffer olarak şu an yalnız buf8'i kabul eder; diğer doğru buffer
+  boyutlarını gerekirse gerçek Liberty mantığıyla doğrulayarak destekleyin.
+- `ibex-wb1-probe/sim-clkgate0-20260920`, session38286: eski WB1 FAIL
+  deneyini yalnız SOC_CLKGATE=0 ile ayıran gerçek boot/self-test simülasyonu.
+  SOC_MEM_RDREG=1, REQ_REG=1, RF_SYNPRE=1, APB_TIMEOUT=256; timeout1800s.
+  Eski WB1 mtime a=b=0 ve test15 FAIL, halen geçersiz mimari adayı.
+- `timer-irq-register-probe`, session55534: shipping top'un KOPYASINDA
+  (WritebackStage=0) CLINT MTIP ile CPU arasına 1 free-running-clock FF
+  koyan bağımsız simülasyon. Kaynak RTL/akış değiştirilmedi. Tüm boot ve
+  interrupt testleri henüz bitmedi. inputs.json/source/script hashleri mevcut.
+  Tek yeni state biti radiation qualification değildir, henüz ürün değişimi yok.
+  RISC-V v20260120 Machine ISA 2.1.2.1, mtime/mtimecmp karşılaştırmasının MTIP'e
+  gecikmeli yansımasına izin verir; bu yalnız mimari olasılığı destekler.
+  Kaynak: https://docs.riscv.org/reference/isa/v20260120/priv/machine.html
+- Magic full baseline PID78927 3sa19dk civarı hâlâ çalışıyor, native
+  MAGIC_DRC_USE_GDS=false (DEF/LEF abstracts); macro transistor içleri bu
+  full-chip run'da gerçek GDS ile test edilmiyor. Sonuç kapsamını doğru yazın.
+  2x2 raw upstream kol PID189553 aktif; diğer iki helper kol FAIL57/499098.
+- İncelenen daha küçük 2P64x32 SRAM daha hızlı değil: slow B_CLK->B_DOUT
+  tablosunun ilk noktası 5.2125 ns, 256x16'da 5.0746 ns. Bu yüzden sırf
+  küçülterek SRAM türünü değiştirmeyin; load/slew/timing tablosunu esas alın.
+
 ---
 
 # Yeniden başlatma kontrol noktası — 19 Eylül 2026
@@ -225,3 +266,18 @@ sorun onların eksikliği değildi. Ayrıntı `docs/evidence/timing-replay-20260
 Önceki `eth256-postcts-probe-20260919` özel probu da native RC'yi taşımadığı için
 native timing sonucu olarak kullanılmamalı. Yerel akışın kendi raporları ve
 son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
+
+## 03:41 TRT ek devam notu
+
+- Buffer guard tüm gerçek buf1/2/4/8/16 fonksiyonlarını kontrol ediyor;
+  31 test PASS. ECO7 gerçek replay PASS; ilk checker hashinin dd14c38
+  geçmişi korunarak kayıt zenginleştirildi. İlgili test seçimi 97 PASS/5 SKIP.
+- ECO9 tamamlandı (session76866): 74 buffer, 21 comb +2 FF, orijinal
+  94555 instance korunuyor, guard PASS. Yeniden GRT sonrası slowsetup
+  -0.5793694577, fasthold -0.2465108187, typhold -0.0236712878 ns.
+  Ara optimizer WNS -0.375 final sonuç değildir. ECO8/9 hash/komutları
+  docs/evidence/ethernet-eco8-estimate-20260920.json içinde. Native route yok.
+- ECO7 route hâlâ aktif; antenna onarımından sonraki ek routing sürüyor.
+  Magic full ve raw SRAM kolları aktif. CPU prob'ları timeout1800 ile aktif;
+  timer IRQ prototipi gerçek boot + test1..5 PASS, recursive fib test6 sürüyor.
+- c966a43 push ve PR GitHub CI SUCCESS. dd14c38 işleri hâlâ aktif.
