@@ -14,6 +14,7 @@ help:
 	@echo 'make soc-prepare / soc-sim         Fetch pinned Ibex/tools, then boot the SoC'
 	@echo 'make soc-rtl-prepare              Fetch and generate processor/interface RTL only'
 	@echo 'make soc-prepared-guards          Check prepared upstream ports and SoC elaboration'
+	@echo 'make soc-memory-parity           Array/native SRAM functional parity and negative control'
 	@echo 'make soc-crash-cocotb             CPU double-fault/reset/APB retention test'
 	@echo 'make soc-boot-regression           Normal boot and both geometry fallbacks'
 	@echo 'make rf-contract / rf-equivalence  Real-codec proofs (set OSS_CAD_SUITE)'
@@ -59,7 +60,8 @@ soc-prepared-guards:
 	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_declares_upstreams_ports_in_upstreams_order \
 	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_accepts_every_parameter_ibex_top_overrides \
 	  sw/tests/test_soc_synthesis_guards.py::test_the_ibex_top_patch_applies_to_the_pinned_output \
-	  sw/tests/test_soc_synthesis_guards.py::test_the_whole_soc_elaborates_as_one_design
+	  sw/tests/test_soc_synthesis_guards.py::test_the_whole_soc_elaborates_as_one_design \
+	  sw/tests/test_no_orphan_modules.py::test_register_file_external_entry_contract
 
 soc-sim:
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" bash hw/soc/flow/sim_soc.sh
@@ -103,3 +105,7 @@ soc-interfaces-layout:
 .PHONY: soc-interfaces-decks
 soc-interfaces-decks:
 	bash $(ROOT)/hw/soc/flow/verify_interfaces_layout.sh "$(RUN_TAG)" "$(STATE)"
+
+.PHONY: soc-memory-parity
+soc-memory-parity:
+	bash $(ROOT)/scripts/check_soc_memory_parity.sh $(PARITY_OUT)
