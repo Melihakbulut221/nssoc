@@ -29,6 +29,27 @@ SRAM_MODELS = (
 SYMBOLS = dict(EXIT_CODE_ADDR='exit_code', EXIT_MAGIC_ADDR='exit_magic',
                CHECKS_ADDR='checks', FAILS_ADDR='fails')
 
+CELL_PROBE = '''`timescale 1ns/1ps
+module tb_native_cell_gate;
+reg clk=0, rst=0, d=0;
+wire q;
+always #10 clk=~clk;
+sg13g2_dfrbpq_1 ff(.CLK(clk),.RESET_B(rst),.D(d),.Q(q));
+initial begin
+ #45; if(q!==0) $fatal(1,"Native reset assertion failed");
+ rst=1; d=1;
+ #10; if(q!==1) $fatal(1,"Native positive-edge data capture failed");
+ d=0;
+ #5; if(q!==1) $fatal(1,"Native flip-flop did not hold data");
+ #5; rst=0;
+ #1; if(q!==0) $fatal(1,"Native asynchronous reset reassertion failed");
+ #9; rst=1;
+ #20; if(q!==0) $fatal(1,"Native zero data capture failed");
+ $display("NATIVE_CELL_GATE PASS"); $finish;
+end
+endmodule
+'''
+
 
 def digest(path):
     with Path(path).open('rb') as stream:
@@ -97,6 +118,42 @@ def run_logged(command, path, timeout):
     return dict(command=command, returncode=code, elapsed_s=time.monotonic() - start)
 
 
+def check_native_cell(simulator, tool, library, out):
+    """Reject a simulator/model incompatibility before compiling the entire SoC.
+
+    The untouched IHP model routes reset through a $recrem delayed argument.
+    Compiling successfully is insufficient evidence that those signals work.
+    """
+    out.mkdir(exist_ok=False)
+    bench = out / 'tb_native_cell_gate.v'
+    bench.write_text(CELL_PROBE)
+    if simulator == 'iverilog':
+        command = [tool, '-g2005-sv', '-s', 'tb_native_cell_gate',
+                   '-o', str(out / 'sim.vvp'), str(bench), str(library)]
+        runs = [[str(Path(tool).with_name('vvp')), '-i', str(out / 'sim.vvp')]]
+    else:
+        command = [tool, '--binary', '--timing', '-Wno-fatal', '--top-module',
+                   'tb_native_cell_gate', '--Mdir', str(out / 'obj_dir'), '-j', '2',
+                   '--x-initial', 'unique', '--x-assign', 'unique', str(bench), str(library)]
+        runs = [[str(out / 'obj_dir/Vtb_native_cell_gate'), '+verilator+rand+reset+2',
+                 '+verilator+seed+' + str(seed)] for seed in (1, 29)]
+    original = digest(library)
+    result = dict(library=str(library), library_sha256=original,
+                  compile=run_logged(command, out / 'compile.log', 120), runs=[])
+    if result['compile']['returncode'] == 0:
+        for number, run in enumerate(runs):
+            log = out / f'run-{number}.log'
+            status = run_logged(run, log, 10)
+            status['pass_banner'] = 'NATIVE_CELL_GATE PASS' in log.read_text()
+            result['runs'].append(status)
+    result['passed'] = (result['compile']['returncode'] == 0
+                        and len(result['runs']) == len(runs)
+                        and all(r['returncode'] == 0 and r['pass_banner'] for r in result['runs'])
+                        and digest(library) == original)
+    (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+    return result
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('synthesis', 'firmware', 'pdk', 'output'):
@@ -154,7 +211,15 @@ def main(argv=None):
     (out / 'inputs.json').write_text(json.dumps(record, indent=2) + '\n')
     if args.prepare_only:
         return 0
-    result = dict(compile=run_logged(command, out / 'compile.log', 1800), runs=[])
+    cell_gate = check_native_cell(args.simulator, tool, sources[3], out / 'native-cell-gate')
+    if not cell_gate['passed']:
+        result = dict(native_cell_gate=cell_gate, passed=False, runs=[],
+                      reason='Native cell simulator compatibility failed; whole SoC not compiled')
+        (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+        print(json.dumps(result, indent=2))
+        return 1
+    result = dict(native_cell_gate=cell_gate,
+                  compile=run_logged(command, out / 'compile.log', 1800), runs=[])
     if result['compile']['returncode'] == 0:
         for number, run in enumerate(runs):
             log = out / f'run-{number}.log'

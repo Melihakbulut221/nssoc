@@ -86,3 +86,28 @@ def test_timeout_is_not_a_pass_and_keeps_output(tmp_path):
     assert log.read_text() == 'started\n'
     with pytest.raises(FileExistsError):
         gl.run_logged([sys.executable, '-c', 'pass'], log, 1)
+
+
+@pytest.mark.parametrize('code,banner,expected', [(0, True, True), (1, True, False),
+                                                 (0, False, False), (124, False, False)])
+def test_native_cell_gate_requires_process_and_assertions(tmp_path, monkeypatch, code, banner, expected):
+    library = tmp_path / 'cells.v'
+    library.write_text('unchanged vendor model')
+    def fake_run(command, path, timeout):
+        path.write_text('NATIVE_CELL_GATE PASS\n' if banner else '')
+        return dict(command=command, returncode=code, elapsed_s=0)
+    monkeypatch.setattr(gl, 'run_logged', fake_run)
+    result = gl.check_native_cell('iverilog', '/tools/iverilog', library, tmp_path / 'gate')
+    assert result['passed'] == expected
+    assert library.read_text() == 'unchanged vendor model'
+
+
+def test_changed_native_model_rejected(tmp_path, monkeypatch):
+    library = tmp_path / 'cells.v'
+    library.write_text('original')
+    def fake_run(command, path, timeout):
+        path.write_text('NATIVE_CELL_GATE PASS\n')
+        library.write_text('changed during execution')
+        return dict(command=command, returncode=0, elapsed_s=0)
+    monkeypatch.setattr(gl, 'run_logged', fake_run)
+    assert not gl.check_native_cell('iverilog', '/tools/iverilog', library, tmp_path / 'gate')['passed']

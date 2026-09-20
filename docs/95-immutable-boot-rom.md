@@ -136,10 +136,20 @@ Icarus 13 or newer is required by the native flip-flop models. The default run
 bound is four hours and one million clocks. Progress is flushed every 10,000
 clocks; output directories are never overwritten. Commands, model/image hashes
 and process results are retained. `--prepare-only` checks the build identity and
-writes the commands without running simulation. `--simulator verilator --tool
-/path/to/verilator` adds a faster, randomized two-state control with seeds 1 and
-29; it does not replace four-state Icarus verification. Neither mode applies SDF.
+writes the commands without running simulation. Before compiling the whole SoC,
+the runner now requires an untouched native flip-flop to pass reset, data capture,
+hold and asynchronous reset reassertion. A successful compile alone is insufficient.
 
-The driver/ROM unit suite has 24 passing tests, including mismatched-image,
+`--simulator verilator --tool /path/to/verilator` requests a randomized two-state
+control with seeds 1 and 29, subject to the same native-cell gate. **The installed
+Verilator 5.051 development build fails this gate**: the native `dfrbpq` reset
+reassertion does not work; Icarus 13 passes the identical model and stimulus.
+The preliminary Verilator whole-SoC runs timed out or were terminated after this
+incompatibility was reproduced, and provide no boot evidence. Vendor models were
+not modified to obtain a pass. Verilator documents limitations for
+[specify constructs](https://verilator.org/guide/latest/warnings.html#specifyign).
+This control does not replace four-state Icarus verification. Neither mode applies SDF.
+
+The driver/ROM unit suite has 29 passing tests, including mismatched-image,
 missing-macro, status-address and timeout negative controls. Whole-netlist boot
 measurements are in progress; this runner's availability is not a boot PASS.

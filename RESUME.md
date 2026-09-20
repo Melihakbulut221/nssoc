@@ -5,6 +5,51 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 13:11 TRT — yeni tasarım ve simülatör uyumluluğu
+
+Son push `84a049d`; temiz GitHub klonu 831 PASS / 26 SKIP, kapılar
+16 PASS / 0 FAIL / 7 SKIP. `fresh-clone-84a049d-20260920.json` ve gerçek
+ledger satırı eklendi. Çalışma sürüyor; kullanıcı durdurma istemedi.
+
+- Native yeni ROM+IRQ GRT tamam: `logicrom-irq-grt-20260920`, 36. adım,
+  7845 s. Ayrıntılı route/RCX henüz yok. Eski ECO22 sonucu bu tasarıma ait değil.
+- `logicrom-eco1-fanout2`: 712 fanout ihlali, 2611 pozitif tamponla sıfırlandı.
+  97608 özgün hücre/9391 FF korunur, exact structural PASS; +61586.1792 µm².
+  Üç bağımsız köşede slow setup -0.771703 ns; slew/cap FAIL devam.
+- `logicrom-eco2-electrical`: 61 SRAM giriş tamponu +14 çıkış offload,
+  native GRT tamam. Structural ve ayrı köşeler session45919;
+  `validate_logicrom_eco2.py`, `logicrom-eco2-corners/result.json` kontrol et.
+- ECO27 eski RTL: 33 yeni hücre/21 eşdeğer değişim structural PASS.
+  **İlk olumlu yakalanmış-env raporu geçersiz kabul:** tam etkin ECO env ve
+  seçilmiş STA köşesiyle slow setup -0.114930 ns, fast hold +0.001602 ns;
+  slew2/cap1/fanout0. `eco27-exact-environment-reports` esas ölçüm;
+  iki rapor da korunuyor. Timing PASS değil.
+- Sabit tek route segmenti üzerinde multi/single corner farkı ve yedi
+  gerçek IHP hücreli küçük kontrol tamam; generated-clock farkı var,
+  ordinary path aynı. Upstream kök neden/waiver iddiası yok.
+  Kalıcı `probe_generated_clock_corners.py`, `report_route_corners.py`,
+  13 parser/path negatif kontrolü; evidence kaydı eklendi.
+- **Verilator 5.051 native model uyumsuz:** `dfrbpq` modelindeki $recrem
+  delayed_RESET_B C++ tarafında rastgele başlangıçta kalıyor; tek hücrede
+  async reset yeniden uygulama FAIL, aynı model/stimulus Icarus13 PASS.
+  Tam native model değiştirilmedi. `native-cell-canonical-{iverilog,verilator}`
+  kontrolleri bunu doğrular. sim_logic_boot_gl artık full compile öncesi
+  bu gate'i zorunlu tutar. 5 negatif/mock kontrol eklendi.
+- Verilator koşuları (prototype25080,canonical17431,diagnostic14885)
+  kalanları neden kaydıyla sonlandırıldı: `verilator-incompatible-model-stop.json`.
+  Timeout/terminated sonuçlar PASS değil; rastgele sabit CPU/UART0 teşhis.
+- Asıl Icarus73417 `logicrom-whole-gl2` 11:46 başlangıç/7200s sınır,
+  buffered log henüz verdict yok. Yeni kalıcı **Icarus31541**
+  `logicrom-gl-canonical-iverilog` 13:08 civarı, native-cell PASS, fullcompile0,
+  unbuffered ilerleme 10k; 1Mcycle/14400s sınır. Preload yok. FullPASS bekleniyor.
+- Magic32138 `halo-recovered-magic2-20260920` 10:54 başlangıç/6h sınır,
+  hâlâ verdict yok; eski RTL halo geometrisi. Sonucu actualmarker parser ile doğrula.
+- Son hedefli kontroller74 PASS; SPDX475 tagged355 covered/0missing0wrong;
+  eski frozenpilot diff empty. Evidence index110+329 tarihsel kayıt.
+- Disk ~2GiB. Completed hardlinkler değiştirilemez; yeni nativefullroute öncesi
+  alan kontrolü yap. `completed-verilator-pch-20260920.tar.gz` SHA doğrulanmış
+  yalnız derleme cache arşivi; aktif veya tek kanıt dosyası silinmedi.
+
 ## 20 Eylül 12:31 TRT — teslimat kontrolü ve eş geometri teşhisi
 
 Boottool+negativecontrols+docs/evidence/ECOchecks212PASS, SPDX472tagged350covered,

@@ -295,3 +295,34 @@ and three equivalent sizing changes preserve original logic/state but add
 1,473.2928 µm². Slow setup (−1.239417 ns) and fast hold (−0.346552 ns) still fail;
 the additional GMII delay trades a fast hold improvement for a slow setup
 regression. No extracted or independent geometry verdict is transferred to it.
+
+The [fixed-route generated-clock control](evidence/generated-clock-corner-isolation-20260920.json)
+reproduces a difference between mixed-corner and independent single-corner STA
+on identical geometry and constraints, also in a seven-cell native-IHP example.
+This is a diagnostic discrepancy, not a timing waiver or an established upstream
+root cause. `probe_generated_clock_corners.py` reproduces the small control;
+`report_route_corners.py` reports fixed global-route segments in separate processes.
+
+The [ECO27 experiment](evidence/ethernet-eco27-separated-20260920.json) retains
+original state/connectivity with 33 added positive cells and 21 equivalent buffer
+substitutions. Its exact effective environment gives slow setup −0.114930 ns and
+fast hold +0.001602 ns; two slew and one capacitance violation remain. An earlier
+captured-environment report appeared positive but is superseded by this exact
+replay. There is no extracted timing or geometry acceptance for ECO27.
+
+The **new IRQ and immutable-ROM design** has completed native global routing.
+Its [first fanout repair](evidence/logicrom-eco1-fanout-20260920.json) preserves all
+97,608 existing instances and adds 2,611 positive buffers. Independent pin/state
+comparison passes; all 712 measured fanout violations are removed. Slow setup
+−0.771703 ns, slew and capacitance failures remain. This design still requires
+its own detailed route, extraction and geometry checks.
+
+The [native-cell simulator control](evidence/native-cell-simulator-gate-20260920.json)
+passes in Icarus 13 and fails in the installed Verilator build. The boot runner
+now rejects that incompatibility before compiling the whole SoC. The earlier
+Verilator timeouts and terminated diagnostic runs provide no boot evidence;
+full four-state boot remains pending. The PDK models were not altered.
+
+The [clean remote 84a049d replay](evidence/fresh-clone-84a049d-20260920.json)
+passes **831 tests / 26 skips** and **16 front-door gates / zero failures /
+seven skips**. F6's absent historical artifacts remain absent.
