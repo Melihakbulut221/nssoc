@@ -86,6 +86,7 @@
    answer sw/golden/lif_core.py computes for it. Checks 23 to 27 compare
    the hardware against the second and never against itself. */
 #include "npu_regs.h"
+#include "lib/soc_npu_state_init.h"
 #include "npu_vectors.h"
 #ifdef QSPI_DEMO
 /* Also generated into the build directory, by
@@ -291,7 +292,11 @@ static int npu_wait_idle(int limit) {
 static int npu_bring_up(const uint32_t *wlo, const uint32_t *whi) {
   int ok = 1;
   npu_wr(NPU_CTRL, 1u << NPU_BIT_CTRL_STATE_CLR);
-  if (!npu_wait_idle(64)) { ok = 0; puts_("  npu: state clear never ended\n"); }
+  if (!npu_wait_idle(64)) { puts_("  npu: state clear never ended\n"); return 0; }
+  if (!soc_npu_state_init(NPUV_N_NEURONS, npu_wr, npu_rd)) {
+    puts_("  npu: state initialization read-back failed\n");
+    return 0;
+  }
 
   for (int c = 0; c < NPUV_N_CFG; c++)
     npu_wr(npuv_cfg_off[c], npuv_cfg_val[c]);

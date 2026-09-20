@@ -96,6 +96,7 @@
    npu_vectors.h is the stimulus together with the answer
    sw/golden/lif_core.py computes for it. */
 #include "npu_regs.h"
+#include "lib/soc_npu_state_init.h"
 #include "npu_vectors.h"
 
 // GRLIB APBUART, grip.pdf table 126, the same offsets fi_workload.c uses.
@@ -285,7 +286,8 @@ static uint32_t npu_bring_up(void) {
   npu_wr(NPU_CTRL, 1u << NPU_BIT_CTRL_STATE_CLR);
   for (i = 0; i < FI_IDLE_MAX; i++)
     if ((npu_rd(NPU_STATUS) & (1u << NPU_BIT_STATUS_BUSY)) == 0u) break;
-  if (i == FI_IDLE_MAX) bad = F_BRINGUP;
+  if (i == FI_IDLE_MAX) return F_BRINGUP;
+  if (!soc_npu_state_init(NPUV_N_NEURONS, npu_wr, npu_rd)) return F_BRINGUP;
 
   for (i = 0; i < NPUV_N_CFG; i++)
     npu_wr(npuv_cfg_off[i], npuv_cfg_val[i]);
