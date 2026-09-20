@@ -82,3 +82,13 @@ def test_old_formal_output_is_rejected_before_execution(prepared, monkeypatch):
         sweep.main()
     assert error.value.code == 2
     assert not (prepared / "hw/soc/out/formal-sweep").exists()
+
+
+def test_default_scrub_target_invokes_every_nonexcluded_declared_task():
+    import re
+    config=ROOT/'hw/soc/formal/regfile_scrub_abs.sby'
+    required={row['task'] for row in sweep.inventory(ROOT)[0].values()
+              if row['config']==str(config.relative_to(ROOT))}
+    makefile=(ROOT/'hw/soc/formal/Makefile').read_text()
+    selected=set(re.search(r'^REGFILESCRUB_TASKS := (.+)$',makefile,re.M).group(1).split())
+    assert required==selected=={'prove','prove_pdr','cover','bmc'}

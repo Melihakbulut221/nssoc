@@ -340,3 +340,14 @@ both ROM profile arms and the common HARDEN connection. Hosted hardware CI now
 requires the physical-source lint after building its CPU-interface loader.
 This closes the audit's lint integration scope, not CDC, mapped-netlist or
 physical acceptance. The named residual warnings remain explicitly visible.
+
+The [scrub invocation correction](evidence/formal-scrub-invocation-20260921.json)
+adds both missing abstract-codec tasks to the default Makefile target and keeps
+attempting remaining scrub tasks after a failure. The separate mandatory-task
+inventory is regression-tested against that target. The original properties,
+assumptions, reset constraints and 40-cycle BMC depth remain unchanged.
+PDR closes the delivered unbounded `prove` task with fresh copied sources.
+The independent CaDiCaL BMC trial timed out after 900 seconds at frame 23;
+that is **not PASS**. Its required run now has a 7,200-second task budget and
+is incomplete at this publication. Nine runner/inventory controls pass.
+The full 157-task result and whole-core/real-codec obligations remain open.

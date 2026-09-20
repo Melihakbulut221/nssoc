@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-21",
+  "status": "PARTIAL",
+  "scope": "Mandatory abstract-codec scrub task invocation; no whole-core or real-codec storage proof closure.",
+  "source_sha256": {
+    "hw/soc/formal/Makefile": "2ed55c8651db73626b0e3fb5e77c2f61e97d8bf3b62533771d4d53a6c86d216b",
+    "hw/soc/formal/regfile_scrub_abs.sby": "320b6819c2e719f4dbf59d0f91baf5a6e6a06b3db438b4f5ead33d0fc6ecee6b",
+    "hw/soc/formal/regfile_scrub_props.v": "bcbc4282d994b9044252e421ff460d55385155303b716882cc4e435871c539b2",
+    "hw/soc/formal/ibex_regfile_secded_props.v": "3ed314baf29f300896f7e0da718f1b26401a1237a737144aeb74a75d54ba912a",
+    "hw/soc/formal/secded_identity.v": "f62ce21087df4a80fcac24a745b98bac3df04f8d7b0b54b863188ef8586c7e7e",
+    "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+    "sw/tests/test_formal_sweep.py": "27d68b602f5ca030f770559aefeaa71a5e0b9479e10273aa23d3ee2f3179767b"
+  },
+  "unbounded": {
+    "status": "PASS",
+    "engine": "abc pdr",
+    "source_state": "clean",
+    "log_sha256": "b6d9a573c3ce1af0b136e0af241745c172ca8c4843d2737d01dcaec06ea209ca",
+    "config_sha256": "f8c08278f5ebdd877157b1e58634b4130c202a751e9b46bb7734318fa5a3a183",
+    "copied_source_sha256": {
+      "src/ibex_regfile_secded_props.v": "3ed314baf29f300896f7e0da718f1b26401a1237a737144aeb74a75d54ba912a",
+      "src/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "src/secded_identity.v": "f62ce21087df4a80fcac24a745b98bac3df04f8d7b0b54b863188ef8586c7e7e",
+      "src/regfile_scrub_props.v": "bcbc4282d994b9044252e421ff460d55385155303b716882cc4e435871c539b2"
+    }
+  },
+  "bounded": {
+    "status": "NOT_COMPLETED_AT_PUBLICATION",
+    "mode": "bmc",
+    "depth": 40,
+    "engine": "abc bmc3 -c",
+    "timeout_s": 7200,
+    "initial_trial": {
+      "status": "TIMEOUT",
+      "timeout_s": 900,
+      "last_completed_frame": 23,
+      "log_sha256": "84ea38577a94f58d136e2cceff081604d865cba48e1cea835588ea1a09e3e34c"
+    }
+  },
+  "regression": {
+    "passed": 9,
+    "log_sha256": "edea1fe2e925f38d64cba1ee0f8ba3f25b2723ff28e7e65063c9b7b3e2414e63"
+  },
+  "semantics": "Properties, assumptions, reset constraints and depth are unchanged. Engine selection changes; prove remains unbounded, BMC remains an independent required depth-40 task. Both tasks now run by default; a failure does not suppress later scrub tasks.",
+  "prior_failure": "docs/evidence/hosted-formal-inventory-20260921.json"
+}

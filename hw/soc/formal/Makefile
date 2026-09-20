@@ -129,9 +129,11 @@ apbwb:
 # scrub visits every register. regfile_scrub.sby, the same wrapper on
 # the REAL codec, is deliberately not here -- every engine stalls on
 # the codec's parity network (section 23 records the measurement), and
-# a target that never returns is not a regression test. Its depth-40
-# k-induction and bmc tasks are likewise left out of this target.
-REGFILESCRUB_TASKS := prove_pdr cover
+# a target that never returns is not a regression test. The separate
+# abstract-codec prove and depth-40 BMC are mandatory: the 2026-09-21
+# inventory found they were declared but omitted here. Run every required
+# task even if one fails; historical real-codec exclusions remain explicit.
+REGFILESCRUB_TASKS := prove prove_pdr cover bmc
 .PHONY: regfilecontract regfileequivalence regfilecontrols
 REGFILECONTRACT_TASKS := prove prove_noscrub cover
 regfilecontract:
@@ -149,10 +151,10 @@ regfilecontrols:
 	python3 $(REPO)/scripts/check_regfile_contract.py --sby $(SBY) --controls-only
 
 regfilescrub:
-	@for t in $(REGFILESCRUB_TASKS); do \
+	@status=0; for t in $(REGFILESCRUB_TASKS); do \
 	  echo "== regfile_scrub_abs $$t"; \
-	  $(SBY) -f regfile_scrub_abs.sby $$t || exit 1; \
-	done
+	  $(SBY) -f regfile_scrub_abs.sby $$t || status=1; \
+	done; exit $$status
 
 clint:
 	@for t in $(TASKS); do \
