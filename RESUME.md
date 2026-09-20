@@ -662,3 +662,44 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - Aktif eski physical: ECO22native62541,halo11114,ECO18DRC46578.
   Bunlarınhiçbiri yeniIRQRTL'sini içermiyor. OriginalSDCdeğişmedi.
   YeniIRQcommit/push,cleanremoteCIreplay vePRupdate henüz yapılacak.
+
+## 2026-09-20 10:15 TRT — bağlantı kesintisi ve sistem yeniden başlatması sonrası kurtarma
+
+- Kaynak ağacı kesinti sonrası temizdi; HEAD ve GitHub branch aynı:
+  82ab25c38f39916153b43fcc1a6ae29ac0fab9bc. Önceki07:42 notunun
+  commit/push/PR bekliyor cümlesi artık eski: hepsi kesinti öncesi yapılmış.
+- Hosted82ab25c push35489687890 vePR35489689118 success. Cleanremoteclone
+  813total,787PASS26SKIP,16/0/7frontdoor; fresh-clone-82ab25c kanıtı
+  oluşturuldu, cloneledgerrow ci-local-log.tsv'ye aynen eklendi.
+- ECO18 mainDRC tamamPASS0XMLmarker; lockedinputhashler doğrulandı.
+  docs/evidence/ethernet-eco18-drc-20260920.json yeni kayıt.
+- ECO22native tamam08:29exit0: tüm3corner setup/holdPASS,
+  worstsetup+.1586286702/hold+.0455355766ns; elektrikslewmax23,
+  capmax9,fanout43fail. RouteDRC/antenna/criticaldisconnect0.
+  Postroutechecker96780orijinalcellkorundu+550antenna+251459fill.
+  docs/evidence/ethernet-eco22-extracted-20260920.json. Finalduplicate12
+  dosya1,320,628,120bytehardlinkdedup; yol/içerik değişmedi. ~4.5GBfree.
+- LogicbootROMprototype tümkoşular kesinti öncesi bitmiş: RTL/nativeGL
+  block4113read17rejectedwrite,2048adresfrozenencoderoracle; CPU28check
+  642152cyclePASS ve aynıbinary. Synthesislogic4236cell115FF44551.08um²,
+  SRAMcontrol649cell78FF10870.0704um²+4macro(alanhariç). Logic0memory/
+  0SRAM, noROMpreload. docs/evidence/logic-boot-rom-prototype-20260920.json
+  kaydı eklendi. SADECE BASE/logic-boot-rom-probe kopyatop, canonical
+  entegrasyon henüz yapılmadı. Sonraki geliştirme budur.
+- Halo eskiRUNNINGsupervisor stale; reboot sonrası hiçbirEDAprocessyoktu.
+  İlk native01stage hiçstate_outyazmamış ama drt-run-1/soc_top.odb+0DRC
+  kayıtvar. Stage1antenna894ekli. BASE/halo-interruption-20260920.json
+  eski supervisor/log/hashleri koruyor. Başarılıexport BASE/halo-recovered-
+  checkpoint/export-with-libs.tcl; ilkexport eksikderivedcornershatası
+  korunmuş. Lib/RCderivedenv eskihaloGRTscriptindenderlendi, kurallaraynı.
+  Recoveredpostroutecheck93459original+894antennaPASS,2766obstruction.
+- AKTİF YENİ İŞ: session68039, python3 BASE/run_halo_continuation.py.
+  BASE/halo-route-continuation/continue.tcl copiedupstreamDRT: tamamlanan
+  run1yenidenkoşmuyor, orijinal8antennaiterationlimitinin2.sindenbaşlıyor,
+  12thread. Inputorijinalrun1ODB, çıktılar ayrıBASE/halo-route-continuation.
+  Supervisor/tag halo-route-continuation-20260920,4h/1024MiBbound.
+  Sonrasında nativeOdb.RemoveRoutingObstructions→Odb.CellFrequencyTables
+  kalancheckler ve SAMEinstalledMagicDEF/LEFDRC gerekir; eski
+  prepare_halo_magic.py eski tamamlanmamış run tag'ına bakar, doğrudankoşmayın.
+- YeniIRQveROM eskiECO22layoutundadeğil. PCIePHY/controller,pads,DFT,
+  debug,physicalclock,silicon/beam veF6 tarihselartifakt açıkları sürüyor.

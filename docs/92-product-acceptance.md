@@ -163,3 +163,42 @@ normal firmware regression. SDC exception scope passes on the new netlist;
 its typical preplacement interstage hold slack is -0.033690 ns, retained
 as a failure. This partially implements the interrupts row, while debug,
 physical timing, pads and fault qualification remain open.
+
+**Recovery update, 2026-09-20:** the [clean 82ab25c replay](evidence/fresh-clone-82ab25c-20260920.json)
+completed with **787 pytest passes / 26 skips**, plus **16 passing front-door
+gates / zero failures / seven skips**. Its GitHub push and PR workflows also
+completed successfully (runs 35489687890 and 35489689118). These results
+include the external IRQ change. Historical-artifact skips still leave F6
+open; a skip is not a pass.
+
+The [ECO18 updated main-deck DRC](evidence/ethernet-eco18-drc-20260920.json)
+now passes with zero markers, independently recounted from the XML, and
+all locked input digests still match. This closes that deck for ECO18 only;
+its failing timing, Magic and macro-interior LVS are separate requirements.
+
+The [ECO22 native extraction](evidence/ethernet-eco22-extracted-20260920.json)
+now passes setup and hold in all three measured Liberty corners, with
+nominal RC extraction: worst setup **+0.158629 ns**, worst hold
+**+0.045536 ns**, zero setup/hold violations. Route DRC, antenna and critical
+connectivity counts are zero, and postroute comparison preserves all
+96,780 seed cells with only 550 antenna and 251,459 filler/decap additions.
+Electrical checks still fail (up to 23 slew, nine capacitance and 43 fanout
+violations). Independent DRC/XOR/LVS on this geometry remain open. Neither
+this netlist nor its GDS contains the later external IRQ or logic-ROM work.
+
+An explicit additional release gate is **physical boot-ROM contents**:
+the SRAM stand-in cannot power up with executable firmware on silicon.
+The [constant-ROM prototype](evidence/logic-boot-rom-prototype-20260920.json)
+passes all 2,048 addresses and frozen-encoder comparisons in RTL and native
+cells, rejects writes, and passes all 28 full-CPU boot/firmware checks with
+no ROM preload. It synthesizes to standard cells with zero SRAM macros.
+It is still an isolated copied-top experiment; the delivered top and layout
+have not adopted it. Integration, image provenance, physical timing and
+fault qualification remain required.
+
+The halo routing run was interrupted before its final state was written.
+A completed intermediate database preserves 93,459 original cells, 894
+added antenna cells and all 2,766 routing blockages; the structural check
+passes. Recovery resumes the remaining antenna iterations in a separate
+output directory. The earlier supervisor's `RUNNING` field is stale after
+the system restart; there is no final halo/Magic verdict yet.
