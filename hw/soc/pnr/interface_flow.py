@@ -26,6 +26,16 @@ class BoundedSetup:
         if source.count(anchor) != 1:
             raise RuntimeError(f"Unsupported LibreLane resizer script: {original}")
         source = source.replace(anchor, anchor + "lappend setup_args -max_iterations 600\n")
+        load = "read_current_odb\n"
+        if source.count(load) != 1:
+            raise RuntimeError(f"Unsupported LibreLane database load: {original}")
+        guard = Path(__file__).resolve().parents[1] / "flow/check_timing_derate.tcl"
+        if not guard.is_file():
+            raise RuntimeError(f"Missing timing derate guard: {guard}")
+        # Embed the same guard used by independent corner reports. In saved
+        # step JSON, native 5.0 becomes integer 5 and silently disables derate.
+        # Reject a bad restart before reading constraints or optimizing cells.
+        source = source.replace(load, guard.read_text() + "\n" + load)
         output = Path(self.step_dir) / "bounded_setup.tcl"
         output.write_text(source)
         return str(output)

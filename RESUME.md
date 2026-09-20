@@ -5,6 +5,20 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 15:44 TRT — fresh926PASS; native derateguard hazır
+
+Sonpush e5575b4. Freshremote fullCI926PASS/1TTtoolSKIP,927total;16/0/7gates.
+Paper27derived15manual0missing0wrong; evidencefresh-clone-e5575b4 +ledgerrowvar.
+Yeni shared hw/soc/flow/check_timing_derate.tcl bothBoundedCTS/GRT'de ODB'denönce
+çalışır; report_route_corners aynıguardıokur.36affectedtestPASS; installedLibreLane
+2templategenerationPASS, initialCTSstateinputarchivedfailedattemptkorundu.
+Active35930alreadygeneratedTclhashAYNI; bucodeeditiçalışanaracıdeğiştirmedi.
+Yeni guard/evidence/doccommit/push bekliyor. 3118correctedanalysisbekliyor;
+prepare_startup_native_fanout.py sonraki measuredviolationsdanECO1hazırlar,
+henüzçalıştırılmadı. Oldhardcoded712/2611counts kaldırıldı ama actualstructural
+checker Library/pin/statecontractkorunuyor. Önce baseline3corners bitsin.
+21435Magic hâlâfullDRC. Hostednative35508536540de hâlârunning.
+
 ## 20 Eylül 15:40 TRT — makale kayıtları yeniden ölçülebiliyor
 
 Son push65f9928 (derateFAILdüzeltmesi/F6fresh902PASS1toolSKIP). Yeni değişiklikler:

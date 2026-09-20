@@ -23,8 +23,8 @@ def flow(tmp_path, monkeypatch):
         def get_script_path(self):
             return str(script)
 
-    cts = type("PostCTS", (), {})
-    grt = type("PostGRT", (), {})
+    cts = type("PostCTS", (DetailedRouting,), {})
+    grt = type("PostGRT", (DetailedRouting,), {})
     openroad = SimpleNamespace(ResizerTimingPostCTS=cts, ResizerTimingPostGRT=grt,
                                DetailedRouting=DetailedRouting)
     classic = type("Classic", (), {"Steps": [cts, grt, DetailedRouting], "gating_config_vars": {}})
@@ -93,3 +93,29 @@ def test_literal_helper_path_is_not_tcl_substitution(flow, tmp_path, monkeypatch
     assert result.returncode == 0 and not result.stderr, result.stderr
     assert "REMOVED_ORPHAN_GUIDES 7" in result.stdout
     assert "BODY_RETAINED 1 2" in result.stdout
+
+
+@pytest.mark.parametrize('step_name', ['BoundedPostCTS', 'BoundedPostGRT'])
+@pytest.mark.parametrize('derate', ['5', '5.0'])
+def test_native_resizer_rejects_truncation_before_database_load(flow, step_name, derate):
+    module, _, script = flow
+    original = ('proc read_current_odb {} {puts DATABASE_READ}\n'
+                'read_current_odb\nset setup_args {}\nlappend setup_args -setup\n'
+                'puts "ARGS $setup_args"\n')
+    script.write_text(original)
+    step = getattr(module, step_name)()
+    step.step_dir = script.parent
+    output = Path(step.get_script_path())
+    runner = script.parent / 'run_guarded.tcl'
+    runner.write_text(f'set ::env(TIME_DERATING_CONSTRAINT) {derate}\n' + output.read_text())
+    result = subprocess.run(['tclsh', str(runner)], capture_output=True, text=True)
+    if derate == '5':
+        assert result.returncode != 0
+        assert 'loses precision' in result.stderr
+        assert 'DATABASE_READ' not in result.stdout
+    else:
+        assert result.returncode == 0, result.stderr
+        assert 'early=0.95 late=1.05' in result.stdout
+        assert 'DATABASE_READ' in result.stdout
+        assert 'ARGS -setup -max_iterations 600' in result.stdout
+    assert script.read_text() == original

@@ -23,20 +23,8 @@ CORNERS = ('nom_fast_1p32V_m40C', 'nom_typ_1p20V_25C', 'nom_slow_1p08V_125C')
 # LibreLane's base SDC divides this value by integer 100. JSON round trips
 # can turn 5.0 into 5; Tcl then silently applies zero derating. Reject that
 # environment before read_current_odb loads the SDC, without changing it.
-DERATE_GUARD = '''if {![info exists ::env(TIME_DERATING_CONSTRAINT)]} {
- error "Missing TIME_DERATING_CONSTRAINT"
-}
-set derate $::env(TIME_DERATING_CONSTRAINT)
-if {![string is double -strict $derate] ||
-    [catch {expr {double($derate) >= 0 && double($derate) < 100}} valid] || !$valid} {
- error "Invalid TIME_DERATING_CONSTRAINT"
-}
-set intended_derate [expr {double($derate) / 100.0}]
-if {[expr {$derate / 100}] != $intended_derate} {
- error "TIME_DERATING_CONSTRAINT loses precision in the native SDC integer division"
-}
-puts "DERATE_GUARD percent=$derate early=[expr {1-$intended_derate}] late=[expr {1+$intended_derate}]"
-'''
+DERATE_FILE = Path(__file__).with_name('check_timing_derate.tcl')
+DERATE_GUARD = DERATE_FILE.read_text()
 FILTER = '''foreach prefix {_LIB_CORNER_ _LAYER_RC_ _VIA_R_} {
  set keep {}
  foreach key [lsort -dictionary [array names ::env ${prefix}*]] {
@@ -101,6 +89,7 @@ def main(argv=None):
     if tool is None:
         raise ValueError('OpenROAD executable unavailable')
     tracked = {str(paths[key]): digest(paths[key]) for key in ('environment', 'odb', 'segments')}
+    tracked[str(DERATE_FILE)] = digest(DERATE_FILE)
     for name in ('io.tcl', 'set_rc.tcl'):
         p = paths['scripts'] / 'openroad/common' / name
         tracked[str(p)] = digest(p)

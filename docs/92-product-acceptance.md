@@ -463,3 +463,14 @@ matches its pre-existing digest (`53505c83…`). The checker now reports
 Changed recorded bytes or a disagreeing live log fail. The historical
 62,256-device / 61,912-net match still abstracts SRAM interiors and predates
 the current RTL; no new LVS run or transistor-level verdict is inferred.
+
+The shared [native derate guard](evidence/native-derate-guard-20260920.json)
+also runs before ODB/SDC load in both bounded native resizer steps. Actual
+installed LibreLane templates generate successfully; four Tcl controls prove
+that integer `5` stops before loading and `5.0` retains factors 0.95/1.05.
+The already-running native script is unchanged and already uses `5.0`.
+
+A [fresh remote replay at e5575b4](evidence/fresh-clone-e5575b4-20260920.json)
+measures **926 pytest passes, one absent-tool skip, zero failures**;
+27 paper results are re-derived, 15 remain manual, zero lack build output.
+This precedes the wrapper guard addition, which has 36 affected checks.
