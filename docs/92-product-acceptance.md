@@ -449,6 +449,23 @@ adds the actual failing 5% result. A new Tcl guard rejects truncating,
 missing and invalid values before reading the ODB/SDC. The corrected loader
 is being implemented with the original native Tcl environment (`5.0`).
 
+The third halo two-net repair's own GDS now passes the
+[independent upstream KLayout main deck](evidence/halo-lift3-drc-20260920.json):
+zero markers, unchanged input/deck hashes, no optional recommended rules.
+Its separate native Magic check is still running. This result belongs to the
+older 24-SRAM halo image; it is not a DRC verdict on the corrected-loader and
+external-interrupt physical implementation.
+
+That corrected-loader/interrupt implementation has now completed its native
+post-global-route timing repair with the original `5.0` derating environment.
+[Independent fixed-route corner reports](evidence/startup-native-corners-20260920.json)
+still fail: slow setup is **−2.866964 ns**, fast hold is **−0.089041 ns**,
+and each corner has **703 fanout violations**; worst slew/capacitance counts
+are 54/7. These are global-route estimates. The first report attempt rejected
+an OpenSTA fanout row with an omitted slack column; the corrected parser counts
+it as a violation, and 36 parser/derating checks pass. No timing or electrical
+limit was relaxed to accept the reports.
+
 **Paper measurement follow-up, 2026-09-20:** all six replica-placement
 claims now execute the unchanged instrument against the exact recovered
 DEF/netlist. The command prints its historical scope. The paper checker

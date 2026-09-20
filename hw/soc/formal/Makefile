@@ -57,11 +57,24 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols
 
 include $(REPO)/tools.mk
 
 TASKS := bmc prove cover
+
+.PHONY: uart pnp gptimer peripheralcontrols
+uart:
+	@for t in $(TASKS); do $(SBY) -f soc_uart.sby $$t || exit 1; done
+
+pnp:
+	@for t in $(TASKS); do $(SBY) -f soc_pnp.sby $$t || exit 1; done
+
+gptimer:
+	@for t in $(TASKS) prove_full; do $(SBY) -f soc_gptimer.sby $$t || exit 1; done
+
+peripheralcontrols:
+	python3 $(REPO)/scripts/check_peripheral_contracts.py --sby $(SBY)
 
 # docs/84's REQ_REG = 1 is carried by three more tasks, and they are in
 # this list rather than in a target of their own: the fabric's contract
@@ -338,7 +351,9 @@ clkwakegnt:
 	done
 
 clean:
-	rm -rf $(addprefix clkgate_wake_,$(CLKWAKE_TASKS)) clkgate_wake \
+	rm -rf $(addprefix soc_uart_,$(TASKS)) $(addprefix soc_pnp_,$(TASKS)) \
+	       $(addprefix soc_gptimer_,$(TASKS) prove_full) \
+	       $(addprefix clkgate_wake_,$(CLKWAKE_TASKS)) clkgate_wake \
 	       $(addprefix soc_wdog_tmr_,$(WDOG_TMR_TASKS)) soc_wdog_tmr \
 	       soc_bus soc_bus_bmc soc_bus_prove soc_bus_cover \
 	       soc_apb_bridge soc_apb_bridge_bmc soc_apb_bridge_prove \

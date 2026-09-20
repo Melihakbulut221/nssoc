@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Diagnostic report parsing must not erase failures or ambiguous paths."""
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -25,6 +26,56 @@ def test_electrical_sections_can_change_order():
               'max capacitance\ncap/X .3 .4 -.1 (VIOLATED)\n')
     assert route.electrical_counts(report) == dict(slew=1, capacitance=1, fanout=1)
     assert route.electrical_counts('') == dict(slew=0, capacitance=0, fanout=0)
+
+
+def test_opensta_fanout_without_slack_still_counts_as_violation():
+    report = ('max fanout\nPin Limit Fanout Slack\n---------\n'
+              '_120605_/Q 8 9 (VIOLATED)\n'
+              'clk/X 8 16 -8 (VIOLATED)\n')
+    assert route.electrical_counts(report) == dict(slew=0, capacitance=0, fanout=2)
+
+
+@pytest.mark.parametrize('text', [
+    'max slew\nx .38 .4 (VIOLATED)',
+    'max capacitance\nx .38 .4 (VIOLATED)',
+    'max fanout\nx 8 8 (VIOLATED)',
+    'max fanout\nx 8 7 (VIOLATED)',
+    'max fanout\nx 8 9',
+    'max fanout\nx 8 1e999 (VIOLATED)',
+    'max fanout\nx .. 9 -1 (VIOLATED)',
+])
+def test_incomplete_fanout_report_is_not_silently_accepted(text):
+    with pytest.raises(ValueError):
+        route.electrical_counts(text)
+
+
+def test_parser_failure_preserves_failed_result(tmp_path, monkeypatch):
+    for name in ('environment', 'odb', 'segments'):
+        (tmp_path / name).write_text('fixture')
+    scripts = tmp_path / 'scripts'
+    common = scripts / 'openroad/common'
+    common.mkdir(parents=True)
+    for name in ('io.tcl', 'set_rc.tcl'):
+        (common / name).write_text('fixture')
+    monkeypatch.setattr(route.shutil, 'which', lambda _: '/fixture/openroad')
+    def run(command, **kwargs):
+        report = Path(command[-1]).parent
+        (report / 'electrical.rpt').write_text('max slew\nTRUNCATED\n')
+        kwargs['stdout'].write('CORNER_RESULT nom_fast_1p32V_m40C setup 0.1 hold 0.1\n')
+        kwargs['stdout'].flush()
+        return subprocess.CompletedProcess(command, 0)
+    monkeypatch.setattr(route.subprocess, 'run', run)
+    out = tmp_path / 'result'
+    args = [item for key in ('environment', 'scripts', 'odb', 'segments')
+            for item in ('--' + key, str(tmp_path / key))]
+    with pytest.raises(RuntimeError, match='not a PASS'):
+        route.main(args + ['--output', str(out)])
+    result = json.loads((out / 'result.json').read_text())
+    row = result['results']['nom_fast_1p32V_m40C']
+    assert result['source_unchanged']
+    assert row['returncode'] == 0 and not row['estimated_checks_pass']
+    assert 'TRUNCATED' in row['report_error']
+    assert 'electrical' not in row  # Missing counts are never reported as zero.
 
 
 @pytest.mark.parametrize('text', ['Error: report failed', 'buf/X 8 9 -1 (VIOLATED)',

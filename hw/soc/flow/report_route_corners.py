@@ -54,6 +54,11 @@ def electrical_counts(text):
     headings = {'max slew': 'slew', 'max capacitance': 'capacitance',
                 'max fanout': 'fanout'}
     counts = dict.fromkeys(headings.values(), 0)
+    number = r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
+    regular_row = re.compile(rf'\S+\s+{number}\s+{number}\s+{number}\s+\(VIOLATED\)')
+    # OpenSTA can omit the slack column on a fanout violation. Require both
+    # explicit VIOLATED and actual > limit; never infer a clean row from it.
+    fanout_row = re.compile(rf'\S+\s+({number})\s+({number})\s+\(VIOLATED\)')
     kind = None
     seen = set()
     for line in text.splitlines():
@@ -68,9 +73,14 @@ def electrical_counts(text):
         elif line.startswith('Pin ') or set(line) == {'-'}:
             if kind is None:
                 raise ValueError('Electrical table without heading')
-        elif re.fullmatch(r'\S+\s+[-+\d.eE]+\s+[-+\d.eE]+\s+[-+\d.eE]+\s+\(VIOLATED\)', line):
+        elif regular_row.fullmatch(line):
             if kind is None:
                 raise ValueError('Electrical violation outside a known report section')
+            counts[kind] += 1
+        elif kind == 'fanout' and (match := fanout_row.fullmatch(line)):
+            limit, actual = map(float, match.groups())
+            if not all(map(math.isfinite, (limit, actual))) or actual <= limit:
+                raise ValueError('Inconsistent fanout violation: ' + line)
             counts[kind] += 1
         else:
             raise ValueError('Unrecognized electrical report line: ' + line)
@@ -89,6 +99,7 @@ def main(argv=None):
     if tool is None:
         raise ValueError('OpenROAD executable unavailable')
     tracked = {str(paths[key]): digest(paths[key]) for key in ('environment', 'odb', 'segments')}
+    tracked[str(Path(__file__).resolve())] = digest(Path(__file__).resolve())
     tracked[str(DERATE_FILE)] = digest(DERATE_FILE)
     for name in ('io.tcl', 'set_rc.tcl'):
         p = paths['scripts'] / 'openroad/common' / name
@@ -143,9 +154,16 @@ def main(argv=None):
             (out / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
             raise RuntimeError('Corner report failed; retained logs are not a PASS')
         row.update(setup_ns=float(found[0][1]), hold_ns=float(found[0][2]))
-        counts = electrical_counts((directory / 'electrical.rpt').read_text())
-        if not all(math.isfinite(row[k]) for k in ('setup_ns', 'hold_ns')):
-            raise ValueError('Nonfinite timing result')
+        try:
+            counts = electrical_counts((directory / 'electrical.rpt').read_text())
+            if not all(math.isfinite(row[k]) for k in ('setup_ns', 'hold_ns')):
+                raise ValueError('Nonfinite timing result')
+        except (OSError, ValueError) as exc:
+            row['report_error'] = str(exc)
+            row['estimated_checks_pass'] = False
+            record['source_unchanged'] = all(digest(Path(p)) == value for p, value in tracked.items())
+            (out / 'result.json').write_text(json.dumps(record, indent=2) + '\n')
+            raise RuntimeError('Corner report could not be parsed; retained result is not a PASS') from exc
         row['electrical'] = counts
         row['estimated_checks_pass'] = (row['setup_ns'] >= 0 and row['hold_ns'] >= 0
                                         and not any(counts.values()))

@@ -25,6 +25,16 @@ with Yosys on `PATH`. Preparation fetches the pinned RTL and converter; the
 guard target performs no downloads. Historical layout artifacts are separate
 dependencies and their absence still produces explicit skips in the full suite.
 
+On Linux x86-64, `make -f tools.mk fetch-oss-cad-suite PYTHON=python3.12`
+installs the 2026-08-04 release under `hw/soc/tools/oss-cad-suite`, after checking
+the release archive's pinned size and SHA256. Allow about 3.3 GB for download
+and extraction. The installer requires Python 3.12 or newer and refuses to
+replace an existing installation. `make -f tools.mk toolcheck` prints and checks
+the selected tools; an explicit `OSS_CAD_SUITE=/absolute/path` override remains
+supported. Tools are taken from that one checkout, without fallback to unrelated
+PATH binaries. This installs the digital suite; PDK and physical tools remain
+separate dependencies.
+
 For the whole-SoC boot simulation, run `make soc-prepare` and then
 `make soc-sim OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite`.
 `make soc-crash-cocotb` exercises a CPU double fault, watchdog reboot and

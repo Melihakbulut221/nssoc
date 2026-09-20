@@ -1,0 +1,239 @@
+{
+  "date": "2026-09-20",
+  "scope": "Port-only UART control/status/interrupt; general timers and prescaler; system/APB discovery response and noninterference",
+  "source_sha256": {
+    "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+    "hw/soc/formal/Makefile": "eb7caabb896403f888c66be29dbc5eba2105174aa526b781e5f1e27a4d176f07",
+    "hw/soc/formal/soc_gptimer.sby": "2c4b06ff616700d4002997d3d32d9c7fbff5a4d5e26a2990a22e5e7e383aebf2",
+    "hw/soc/formal/soc_gptimer_props.v": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c",
+    "hw/soc/formal/soc_pnp.sby": "a16a74a1dd10764335cde53785901b7dae36886ab3497bcfca151943bc6bf915",
+    "hw/soc/formal/soc_pnp_props.v": "1f2dcd2150bb0c952cbffda8647bc3708d6aa0a99457b24da7b36c87f52929fc",
+    "hw/soc/formal/soc_uart.sby": "5f8b1d4f5d7eab6133aeeccb504d2f75f426cae3f8184ce1b53a0b2f78c7df75",
+    "hw/soc/formal/soc_uart_props.v": "7855683b69fe2e85d016cf482b9a7ded6a0a403b8604174211c27a908f47e75c",
+    "hw/soc/rtl/soc_apb_pnp.v": "eedaa60ae788d53e17d9503a1b844c4922a03b3cce58abcb62a0f4b301d4b282",
+    "hw/soc/rtl/soc_apb_pnp_rom.vh": "6dacbf3e286241bbef309d23772c1a8b52c605d1d83b32ebb06b253531e97cf0",
+    "hw/soc/rtl/soc_gptimer.v": "2055608374d8c7117587d09d1b551193a2f7b494a4a97e9f4620912dd5adecfd",
+    "hw/soc/rtl/soc_pnp.v": "c75ebac8e74bfd38a002cbd2e565e853d21c75327e2f2fc12b121e84088d25d0",
+    "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+    "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+    "hw/soc/rtl/soc_uart.v": "a079e13c3c05c7e29ed8f0a107c58cd1f11e98a8f7432e56d05866fb671dd77c",
+    "hw/soc/rtl/soc_wdog.v": "7fd95e0a7746e08d57f12d1b1483c21be1bb1231b040dfb53d806cea45a124ce",
+    "scripts/check_peripheral_contracts.py": "bddf8b38f5c897318a08523140bc4d3286dbb9151edb736691254565af5ea4c8"
+  },
+  "tasks": [
+    {
+      "job": "soc_uart",
+      "task": "bmc",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_uart_bmc/logfile.txt",
+      "log_sha256": "8877c4e3c52231e2b494e7bdec5011f4c38b394637184bba7abf27a851ea50f1",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_uart",
+      "task": "prove",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_uart_prove/logfile.txt",
+      "log_sha256": "ceaf12b281e304ec872e00d639f72c918cb191e0faafa81ca9c3240a1f86a1cc",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_uart",
+      "task": "cover",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_uart_cover/logfile.txt",
+      "log_sha256": "6244415520717bb4743adc71224f41b2e5136acabef307065d7b5043ea54f2d2",
+      "covers_reached": 7
+    },
+    {
+      "job": "soc_pnp",
+      "task": "bmc",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_pnp_bmc/logfile.txt",
+      "log_sha256": "0417586d99cc0eb21c1cb1c6a84fd4290be7d7b6fbf29716d8f12ffa7a76486c",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_pnp",
+      "task": "prove",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_pnp_prove/logfile.txt",
+      "log_sha256": "73ed1bac3fcf9a68302e2f05441af9a4556689a3127e3d0ff4f80009fc6b9744",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_pnp",
+      "task": "cover",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_pnp_cover/logfile.txt",
+      "log_sha256": "7b1e44d2bd9bbe0b37f22ad2b3a65cf3b974f880b1fa770c35eb15e6b99aa215",
+      "covers_reached": 4
+    },
+    {
+      "job": "soc_gptimer",
+      "task": "bmc",
+      "status": "PASS 0 11",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_gptimer_bmc/logfile.txt",
+      "log_sha256": "0ffc6dbb53e0ec3992d4e35a716cfc0722d227d915c0404b454d24b52cd582c2",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_gptimer",
+      "task": "prove",
+      "status": "PASS 0 0",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_gptimer_prove/logfile.txt",
+      "log_sha256": "5c90be7a30f7d4518a17ecdc91d67cb8f320cb8aa17b754040ca3e216cee0c40",
+      "covers_reached": 0
+    },
+    {
+      "job": "soc_gptimer",
+      "task": "cover",
+      "status": "PASS 0 1",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_gptimer_cover/logfile.txt",
+      "log_sha256": "dfb524f766810f4f243a9c29afc3be4745fad7b4a042b9ec1989d17a9be18e75",
+      "covers_reached": 13
+    },
+    {
+      "job": "soc_gptimer",
+      "task": "prove_full",
+      "status": "PASS 0 2",
+      "log": "hw/soc/out/external-review-20260919/peripheral-formal-delivery/soc_gptimer_prove_full/logfile.txt",
+      "log_sha256": "4cf5b9adece77b2f516643d8ca85268807e7439adc3154cf0d57c248e3e7252a",
+      "covers_reached": 0
+    }
+  ],
+  "negative_controls": {
+    "source_sha256": {
+      "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+      "hw/soc/formal/Makefile": "1807434503bf36e4ae1f18c74abd17af9773468fcf6d922504c9b8bfee8f8b6b",
+      "hw/soc/formal/soc_gptimer.sby": "2c4b06ff616700d4002997d3d32d9c7fbff5a4d5e26a2990a22e5e7e383aebf2",
+      "hw/soc/formal/soc_gptimer_props.v": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c",
+      "hw/soc/formal/soc_pnp.sby": "a16a74a1dd10764335cde53785901b7dae36886ab3497bcfca151943bc6bf915",
+      "hw/soc/formal/soc_pnp_props.v": "1f2dcd2150bb0c952cbffda8647bc3708d6aa0a99457b24da7b36c87f52929fc",
+      "hw/soc/formal/soc_uart.sby": "5f8b1d4f5d7eab6133aeeccb504d2f75f426cae3f8184ce1b53a0b2f78c7df75",
+      "hw/soc/formal/soc_uart_props.v": "7855683b69fe2e85d016cf482b9a7ded6a0a403b8604174211c27a908f47e75c",
+      "hw/soc/rtl/soc_apb_pnp.v": "eedaa60ae788d53e17d9503a1b844c4922a03b3cce58abcb62a0f4b301d4b282",
+      "hw/soc/rtl/soc_apb_pnp_rom.vh": "6dacbf3e286241bbef309d23772c1a8b52c605d1d83b32ebb06b253531e97cf0",
+      "hw/soc/rtl/soc_gptimer.v": "2055608374d8c7117587d09d1b551193a2f7b494a4a97e9f4620912dd5adecfd",
+      "hw/soc/rtl/soc_pnp.v": "c75ebac8e74bfd38a002cbd2e565e853d21c75327e2f2fc12b121e84088d25d0",
+      "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+      "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+      "hw/soc/rtl/soc_uart.v": "a079e13c3c05c7e29ed8f0a107c58cd1f11e98a8f7432e56d05866fb671dd77c",
+      "hw/soc/rtl/soc_wdog.v": "7fd95e0a7746e08d57f12d1b1483c21be1bb1231b040dfb53d806cea45a124ce",
+      "scripts/check_peripheral_contracts.py": "bddf8b38f5c897318a08523140bc4d3286dbb9151edb736691254565af5ea4c8"
+    },
+    "controls": [
+      {
+        "name": "uart_interrupt_enable",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/uart_interrupt_enable",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/uart_interrupt_enable.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.5166236709992518,
+        "mutant_sha256": "b9af6230578b490850e06f149293d2e18f1377f229f74cd2a3ee1a9ea0369838",
+        "passed": true
+      },
+      {
+        "name": "pnp_response_missing",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/pnp_response_missing",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/pnp_response_missing.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.5659675890001381,
+        "mutant_sha256": "0c9a1398b79a7da2b193559cc2974c3b1efb64ad97d668357960ab3c797486ed",
+        "passed": true
+      },
+      {
+        "name": "pnp_signature",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/pnp_signature",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/pnp_signature.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.5658972749997702,
+        "mutant_sha256": "65a9c67b5fd00ab61f08d0024f32875e72eceeb77ba17ca9246540ecd390da9c",
+        "passed": true
+      },
+      {
+        "name": "apb_pnp_error",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/apb_pnp_error",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/apb_pnp_error.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.465842829000394,
+        "mutant_sha256": "3c082720b2379103cebf43089091b4caffb63895e930dc99eded8792f3196762",
+        "passed": true
+      },
+      {
+        "name": "timer_expiry_clear_collision",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/timer_expiry_clear_collision",
+          "hw/soc/out/external-review-20260919/peripheral-controls-v1/timer_expiry_clear_collision.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 1.0173706089999541,
+        "mutant_sha256": "6a92223430e6c188d143ebbc34a1969223b3bfaa11121d8f2398ba8a396445cb",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "sources_unchanged": true
+  },
+  "tools": {
+    "suite": "20260804",
+    "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)"
+  },
+  "limits": [
+    "No UART RX or serializer timing proof",
+    "Watchdog state policy remains in its separate proof",
+    "PnP full content oracle is test_memmap.py, not the duplicate-instance miter",
+    "No analog, FI, or physical qualification claim"
+  ],
+  "earlier_attempts": [
+    {
+      "log": "hw/soc/out/external-review-20260919/uart-pnp-formal-v1.log",
+      "result": "UART k-induction UNKNOWN; same properties proved by PDR"
+    },
+    {
+      "log": "hw/soc/out/external-review-20260919/uart-pnp-formal-v2.log",
+      "result": "PnP k-induction UNKNOWN; same properties proved by PDR"
+    },
+    {
+      "log": "hw/soc/out/external-review-20260919/gptimer-formal-v1.log",
+      "result": "Yices BMC 180 second TIMEOUT; unchanged depth 24 passes ABC bmc3"
+    }
+  ]
+}
