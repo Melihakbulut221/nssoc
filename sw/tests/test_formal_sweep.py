@@ -67,7 +67,10 @@ def test_full_sweep_rejects_incomplete_or_stale_results(prepared, monkeypatch, d
     result = json.loads((prepared / "hw/soc/out/formal-sweep/result.json").read_text())
     assert result["passed"] is (defect is None)
     assert len(result["tasks"]) == 3 and len(result["exclusions"]) == 1
-    if defect == "timeout": assert result["stages"][0]["returncode"] == 124
+    if defect == "timeout":
+        assert len(result["stages"]) == 2
+        assert all(stage["returncode"] == 124 for stage in result["stages"])
+    assert all("-k" in stage["command"] for stage in result["stages"])
 
 
 def test_old_formal_output_is_rejected_before_execution(prepared, monkeypatch):

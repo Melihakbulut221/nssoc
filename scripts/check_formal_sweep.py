@@ -72,7 +72,7 @@ def run(command, log, env, limit):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "hw/soc/out/formal-sweep")
-    parser.add_argument("--stage-timeout", type=int, default=1800)
+    parser.add_argument("--stage-timeout", type=int, default=9000)
     args = parser.parse_args()
     if args.stage_timeout <= 0: parser.error("stage timeout must be positive")
     expected, excluded = inventory(ROOT)
@@ -96,11 +96,11 @@ def main():
     env = dict(os.environ)
     try:
         for area, target, name in (("formal", "everything", "pilot"), ("hw/soc/formal", "all", "soc")):
-            stage = run(["make", "-C", area, target], out / (name + ".log"), env, args.stage_timeout)
+            stage = run(["make", "-k", "-C", area, target], out / (name + ".log"), env, args.stage_timeout)
             record["stages"].append(stage)
             result_path.write_text(json.dumps(record, indent=2) + "\n")
-            if stage["returncode"]:
-                raise RuntimeError(f"{name} sweep failed: exit {stage['returncode']}; see {out}")
+            # A failed pilot task must not suppress the independent SoC sweep.
+            # Both stages retain their nonzero verdicts in the final acceptance.
     finally:
         for path, description in expected.items():
             work = ROOT / path

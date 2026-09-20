@@ -179,3 +179,13 @@ explicit exclusions in `hw/soc/formal/sweep-policy.json`; this preserves their
 unresolved status and does not close whole-core RISC-V obligations. Eight
 runner controls and the two Makefile reachability checks pass. The complete
 157-task rerun is pending, so audit item 2.2 remains open.
+
+
+The complete formal sweep now preserves all task verdicts and six named
+historical exceptions. The initial 30-minute stage budget was too short for
+the frozen AER reachability job alone (its recorded baseline exceeds 41
+minutes). The runner now allows 150 minutes per stage and the CI job 330
+minutes including preparation/upload. `make -k` attempts independent targets
+after a failure, and the SoC stage still runs if the pilot stage fails. Neither
+a timeout nor the six exceptions is promoted to PASS. A full fresh run remains
+required; changing the time budget does not itself close audit 2.2.
