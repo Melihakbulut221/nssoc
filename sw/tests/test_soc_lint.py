@@ -64,7 +64,7 @@ def test_nettype_guard_rejects_missing_or_early_restore(tmp_path, text):
 
 def test_reviewed_policy_cannot_allow_new_owned_widths():
     p=json.loads(lint.POLICY.read_text())
-    assert set(p['profiles'])=={'base','full'}
+    assert set(p['profiles'])=={'base','full','base-sram-logic','full-sram-logic'}
     for rows in p['profiles'].values():
         assert rows and not lint.owned_policy(rows)
         assert all(type(n) is int and n>0 for n in rows.values())
@@ -77,3 +77,27 @@ def test_explicit_lint_job_fails_when_toolchain_is_absent(tmp_path):
                         text=True,capture_output=True,timeout=30)
     assert proc.returncode!=0
     assert '1 failed, 0 skipped' in proc.stdout
+
+
+def test_physical_regfile_selection_is_only_one_parameter_default():
+    text=(ROOT/'hw/soc/rtl/ibex_regfile_secded.v').read_text()
+    physical=lint.physical_regfile(text)
+    assert physical.replace('parameter integer SYNPRE = 1;', 'parameter integer SYNPRE = 0;')==text
+    assert physical.count('parameter integer SYNPRE = 1;')==1
+    with pytest.raises(ValueError): lint.physical_regfile(physical)
+    with pytest.raises(ValueError): lint.physical_regfile(text+text)
+
+
+def test_generated_source_alias_preserves_diagnostic_identity(tmp_path):
+    generated=tmp_path/'rom/soc_logic_boot_rom.v'
+    line=f"%Warning-UNUSEDPARAM: {generated}:12:4: Parameter is not used: 'INIT_WORD'"
+    rows=lint.diagnostics(line,aliases={str(generated):'hw/soc/rtl/soc_logic_boot_rom.v.in'})
+    key,=rows
+    assert json.loads(key)==['UNUSEDPARAM','hw/soc/rtl/soc_logic_boot_rom.v.in',12,4,"Parameter is not used: 'INIT_WORD'"]
+
+
+def test_generated_rom_width_warning_is_not_treated_as_external(tmp_path):
+    generated=tmp_path/'soc_logic_boot_rom.v'
+    line=f"%Warning-WIDTHEXPAND: {generated}:13:4: Operator VAR expects 32 bits but got 1 bit"
+    rows=lint.diagnostics(line,aliases={str(generated):'hw/soc/rtl/soc_logic_boot_rom.v.in'})
+    assert lint.owned_policy(rows)

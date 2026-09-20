@@ -25,7 +25,7 @@ module soc_logic_boot_rom #(
     input wire [15:0] scrub_ivl_i,
     output wire sec_o, rd_o, ded_o,
     output wire [31:0] evt_addr_o);
- generate if(WORDS!=2048 || !RO || HARDEN!=1 || ECC_BYTE || INIT_WORD!=32) begin:g_bad
+ generate if(WORDS!=2048 || RO==0 || HARDEN!=1 || ECC_BYTE!=0 || INIT_WORD!=32) begin:g_bad
   ERROR_logic_rom_profile guard();
  end endgenerate
  wire row_en,row_we;

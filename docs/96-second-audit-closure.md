@@ -36,7 +36,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
 | 3.1 | SoC orphan reachability and simulation/macro memory parity | PARTIAL. Recursive inventory now covers both RTL trees and the generated-ROM template, preserves alternate module definitions, and follows per-module edges after stripping comments/strings. Five standalone AHB probe modules have reasoned ledger rows; CAN’s soc_apb_wb remains reachable. All six supported RAM geometry/latency profiles pass native SRAM parity; a corrupted-macro negative control fails after elaboration. Legacy ROM parity remains open. |
 | 3.2 | UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures | PARTIAL. Ten new UART/timer/PnP formal tasks pass, including unbounded proofs and the shipped 32/16-bit timer widths; five mutated designs produce reachable counterexamples. Direct serial-master tests pass at HALF=2/3/7; direct TMR test covers 339 single storage-bit upsets plus a two-replica negative control. RX now has pin-driven tests and real-CPU receive/IRQ/WFI validation; see docs/97. Its final layout, broader FI/coverage and other requested work remain open. |
-| 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | PARTIAL. Whole soc_top lint now runs in local and hosted hardware CI for base/full RTL profiles; 16 owned width warnings removed and all owned module files reject implicit nets. Exact warning inventories retain frozen/upstream diagnostics. The SRAM/logic-ROM physical source variant remains to be linted; see the dated record below. |
+| 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | DONE for the defined lint gate and nettype discipline. Both base/full array and SRAM/logic-ROM/SYNPRE profiles pass exact diagnostic inventories; 20 owned width warnings are removed. Generated ROM diagnostics are attributed to the authored template. Frozen/upstream warnings remain recorded technical debt, not signoff waivers; see the dated physical-source extension below. |
 | 3.4 | REUSE compliance, upstream IHP notices, generated licence inventory | DONE for current distribution checks. REUSE 6.2.0 passes with zero missing licences or invalid expressions; IHP aggregate notices and generated component inventory are retained. Source-bound publication checks accompany the latest energy-tool record (965 covered files). Live counts are generated in LICENSES.md and required in CI; this is compliance checking, not patent clearance. |
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and copies referenced local images. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
@@ -320,3 +320,23 @@ zero failures**, followed by **146 publication checks**. REUSE covers all
 972 tracked files with zero missing/invalid licences. These results and their
 log hashes are appended to the lint record; independent hosted acceptance of
 this new revision is still pending.
+
+The [physical-source lint extension](evidence/soc-physical-source-lint-20260921.json)
+now includes both interface profiles with SRAM port declarations, a generated
+fixed ROM from the compiled loader, and the same SYNPRE=1 / WAKE_GNT=1
+selections used by synthesis. Its source snapshots include generator inputs,
+the ROM image, generated files and unchanged upstream/frozen sources.
+Generated diagnostics map back to the authored template/register file, so they
+cannot accidentally receive upstream allowances. This exposed four additional
+ROM parameter-width warnings; explicit-width instance arguments and integer
+predicates remove them without changing defaults or the ROM's port contract.
+
+All four profiles pass their exact diagnostic inventories: 987/1,015 warnings
+for array memory and 1,012/1,040 for SRAM/logic ROM. **45 focused tests** pass,
+including whole-SoC elaboration, every fixed-ROM address against the frozen
+encoder, corruption controls and memory-protection guards. The earlier guard
+failure expected the previous literal argument ordering; its replacement checks
+both ROM profile arms and the common HARDEN connection. Hosted hardware CI now
+requires the physical-source lint after building its CPU-interface loader.
+This closes the audit's lint integration scope, not CDC, mapped-netlist or
+physical acceptance. The named residual warnings remain explicitly visible.

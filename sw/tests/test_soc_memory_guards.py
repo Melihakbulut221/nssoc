@@ -310,7 +310,12 @@ def test_the_memory_protection_defaults_on_and_nothing_turns_it_off():
     assert re.search(r"parameter\s+integer\s+MEM_HARDEN\s*=\s*1\b", top)
     assert re.search(r"parameter\s+integer\s+ROM_HARDEN\s*=\s*MEM_HARDEN\b", top)
     assert ".HARDEN(MEM_HARDEN), .ECC_BYTE(1'b1)) u_ram" in top
-    assert ".HARDEN(ROM_HARDEN), .ECC_BYTE(1'b0)) u_rom" in top
+    rom = re.search(r"`ifdef SOC_LOGIC_BOOT_ROM\s+soc_logic_boot_rom #\((.*?)"
+                    r"`else\s+soc_mem #\((.*?)`endif(.*?)\) u_rom", top, re.S)
+    assert rom, "Both ROM profiles must instantiate the same protected port contract"
+    assert ".RO(32'd1)" in rom.group(1) and ".ECC_BYTE(32'd0)" in rom.group(1)
+    assert ".RO(1'b1)" in rom.group(2) and ".ECC_BYTE(1'b0)" in rom.group(2)
+    assert ".HARDEN(ROM_HARDEN)" in rom.group(3)
     for name in ("soc_mem.v", "soc_mem_sram.v", "soc_mem_ecc.v"):
         text = (SOC_RTL / name).read_text()
         assert re.search(r"parameter\s+integer\s+HARDEN\s*=\s*1\b", text), (

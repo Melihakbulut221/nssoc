@@ -792,12 +792,12 @@ module soc_top #(
   // Explicit build profile: immutable standard-cell boot image. Earlier
   // SRAM stand-in layouts retain their original profile and provenance.
 `ifdef SOC_LOGIC_BOOT_ROM
-  soc_logic_boot_rom #(.WORDS(ROM_WORDS), .RO(1'b1), .RDREG(MEM_RDREG),
+  soc_logic_boot_rom #(.WORDS(ROM_WORDS), .RO(32'd1), .ECC_BYTE(32'd0), .RDREG(MEM_RDREG),
 `else
-  soc_mem #(.WORDS(ROM_WORDS), .RO(1'b1), .RDREG(MEM_RDREG),
+  soc_mem #(.WORDS(ROM_WORDS), .RO(1'b1), .ECC_BYTE(1'b0), .RDREG(MEM_RDREG),
 `endif
             .INIT_FILE(ROM_INIT), .INIT_WORD(ROM_INIT_WORD),
-            .HARDEN(ROM_HARDEN), .ECC_BYTE(1'b0)) u_rom (
+            .HARDEN(ROM_HARDEN)) u_rom (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[1]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),

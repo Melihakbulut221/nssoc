@@ -309,6 +309,8 @@ jobs:
         run: make rf-contract rf-equivalence
       - name: CPU interface and interrupt regression
         run: make soc-interfaces-sim
+      - name: Physical-source RTL lint with compiled fixed ROM and SYNPRE register file
+        run: PY=.venv/bin/python bash scripts/lint.sh --memory sram-logic --rom-image hw/soc/out/interfaces-cpu/test_soc.bin --output hw/soc/out/lint-sram-logic
       - name: External IRQ, WFI and interrupt context regression
         run: |
           python3 hw/soc/flow/external_irq_probe.py --prepare hw/soc/out/external-irq

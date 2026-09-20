@@ -30,14 +30,16 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def diagnostics(log, root=ROOT):
+def diagnostics(log, root=ROOT, aliases=None):
     rows = Counter()
     for line in log.splitlines():
         if not line.startswith('%Warning'): continue
         match = WARNING.fullmatch(line)
         if not match: raise ValueError('Unparsed diagnostic: '+line)
         code, path, number, column, message = match.groups()
-        relative = Path(path).resolve().relative_to(root.resolve()).as_posix()
+        absolute = str(Path(path).resolve())
+        relative = (aliases or {}).get(absolute)
+        if relative is None: relative = Path(absolute).relative_to(root.resolve()).as_posix()
         key = json.dumps([code, relative, int(number), int(column), message], separators=(',', ':'))
         rows[key] += 1
     return rows
@@ -80,6 +82,18 @@ def nettype_errors(root=ROOT):
     return errors
 
 
+def physical_regfile(text):
+    """Select exactly the chparam SYNPRE=1 used by synthesis, in an output copy.
+
+    Verilator's -G applies only to the top module. Ibex has no public SYNPRE
+    parameter, so this local default substitution selects the same parameter
+    without editing the tracked drop-in register file or the upstream core.
+    """
+    old = 'parameter integer SYNPRE = 0;'
+    if text.count(old) != 1: raise ValueError('Unexpected register-file SYNPRE declaration')
+    return text.replace(old, 'parameter integer SYNPRE = 1;')
+
+
 def sources(profile):
     soc = ROOT/'hw/soc'
     bundle, define = resolve(profile, soc)
@@ -98,6 +112,8 @@ def sources(profile):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', choices=['base','full'], default=os.environ.get('SOC_INTERFACE_PROFILE','base'))
+    parser.add_argument('--memory', choices=['array','sram-logic'], default='array')
+    parser.add_argument('--rom-image', type=Path, help='Compiled loader binary; required for sram-logic lint')
     parser.add_argument('--output', type=Path, default=ROOT/'hw/soc/out/lint')
     suite = Path(os.environ.get('OSS_CAD_SUITE',ROOT/'hw/soc/tools/oss-cad-suite'))
     parser.add_argument('--verilator', type=Path, default=suite/'bin/verilator')
@@ -105,6 +121,9 @@ def main():
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'): parser.error('Output must be inside hw/soc/out')
     if out.exists(): parser.error('Refusing to replace evidence: '+str(out))
+    if args.memory == 'sram-logic' and not args.rom_image: parser.error('sram-logic requires --rom-image')
+    if args.memory == 'array' and args.rom_image: parser.error('--rom-image requires sram-logic')
+    if args.rom_image and not args.rom_image.resolve().is_relative_to(ROOT): parser.error('ROM image must be inside this repository')
     policy = json.loads(POLICY.read_text())
     errors = nettype_errors()
     if errors: parser.error('Nettype discipline failed: '+', '.join(errors))
@@ -112,24 +131,49 @@ def main():
     version = subprocess.check_output([str(args.verilator),'--version'],text=True).strip()
     if version != policy['verilator_version']: parser.error('Unreviewed Verilator version: '+version)
     out.mkdir(parents=True)
+    aliases = {}
+    additional = []
+    rom_manifest = None
+    profile_key = args.profile
+    if args.memory == 'sram-logic':
+        from gen_logic_boot_rom import generate
+        generator_inputs = [args.rom_image.resolve(), ROOT/'hw/soc/rtl/soc_logic_boot_rom.v.in',
+                            ROOT/'hw/soc/flow/gen_logic_boot_rom.py', ROOT/'sw/golden/secded.py']
+        hashes.update({str(p.relative_to(ROOT)):sha(p) for p in generator_inputs})
+        rom_manifest = generate(args.rom_image, out/'boot-rom')
+        rom = out/'boot-rom/soc_logic_boot_rom.v'
+        rf_source = ROOT/'hw/soc/rtl/ibex_regfile_secded.v'
+        rf_copy = out/'ibex_regfile_secded.v'
+        rf_copy.write_text(physical_regfile(rf_source.read_text()))
+        macros = [ROOT/'hw/soc/pnr'/f'RM_IHPSG13_1P_{size}_c2_bm_bist_bb.v'
+                  for size in ('2048x64','1024x32','512x16')]
+        files = [ROOT/'hw/soc/rtl/soc_mem_sram.v' if p.name == 'soc_mem.v' else
+                 rf_copy if p == rf_source else p for p in files]
+        files += [rom] + macros
+        aliases = {str(rom):'hw/soc/rtl/soc_logic_boot_rom.v.in', str(rf_copy):str(rf_source.relative_to(ROOT))}
+        additional = ['-DSOC_LOGIC_BOOT_ROM','-GWAKE_GNT=1']
+        watched = files + [out/'boot-rom/manifest.json']
+        hashes.update({str(p.relative_to(ROOT)):sha(p) for p in watched})
+        profile_key += '-sram-logic'
     command = [str(args.verilator.resolve()), '--lint-only', '--Wall', '-Wno-fatal', '--top-module', 'soc_top',
                '--timing', '--Mdir', str(out/'obj_dir'), '-DSG13G2_ICG_BEHAVIOURAL', '-GMEM_RDREG=1', '-GREQ_REG=1',
                '-I'+str(ROOT/'hw/soc/rtl'), '-I'+str(ROOT/'hw/rtl')]
     if define: command.append(define)
-    command += list(map(str, files))
+    command += additional + list(map(str, files))
     with (out/'verilator.log').open('x') as stream:
         proc = subprocess.run(command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,timeout=180)
     log = (out/'verilator.log').read_text()
-    actual = diagnostics(log)
-    delta = compare(actual,policy['profiles'][args.profile])
+    actual = diagnostics(log, aliases=aliases)
+    delta = compare(actual,policy['profiles'][profile_key])
     own_issues = owned_policy(actual)
     unchanged = all((ROOT/p).is_file() and sha(ROOT/p)==h for p,h in hashes.items())
     immutable_drift = [p for p,h in policy['immutable_sha256'].items()
                        if p in hashes and hashes[p] != h]
     passed = (proc.returncode == 0 and '- Verilator: Built from ' in log and
               bool(actual) and not any(delta.values()) and not own_issues and unchanged and not immutable_drift)
-    record = dict(status='PASS_WITH_RECORDED_WARNINGS' if passed else 'FAIL', profile=args.profile,
-                  scope='soc_top, SECDED register file, array RAM/legacy ROM, MEM_RDREG=1, REQ_REG=1; no physical/CDC signoff',
+    record = dict(status='PASS_WITH_RECORDED_WARNINGS' if passed else 'FAIL', profile=profile_key,
+                  scope='soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff',
+                  rom_manifest=rom_manifest, diagnostic_aliases=aliases,
                   command=command,returncode=proc.returncode,verilator_version=version,source_sha256=hashes,
                   sources_unchanged=unchanged,immutable_drift=immutable_drift,diagnostics=dict(actual),
                   counts=dict(Counter({code:sum(n for k,n in actual.items() if json.loads(k)[0]==code)
@@ -137,7 +181,7 @@ def main():
                   delta=delta,own_unaccepted=own_issues,log_sha256=sha(out/'verilator.log'))
     (out/'result.json').write_text(json.dumps(record,indent=2)+'\n')
     if not passed: raise SystemExit('FAIL: inspect '+str(out/'result.json'))
-    print(f'PASS with {sum(actual.values())} explicitly recorded warnings ({args.profile}); not warning-free RTL')
+    print(f'PASS with {sum(actual.values())} explicitly recorded warnings ({profile_key}); not warning-free RTL')
 
 
 if __name__ == '__main__':
