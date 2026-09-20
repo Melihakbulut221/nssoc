@@ -682,3 +682,11 @@ coincide with retained pin corridors. Global routing is being attempted;
 there is no post-halo Magic verdict yet. The 436 inside-footprint markers
 are outside this experiment's scope. Neither this preparation nor its
 geometric coverage closes §5a or product DRC.
+
+The subsequent global-route trial completes in **5 min 49 s** with zero
+horizontal/vertical/total overflow and **93,112 routed nets**. Its emitted
+netlist is byte-identical to the 93,459-cell input. Native detailed routing
+has started as `eth256-halo-route-20260920`; this is separate from the ECO18
+timing candidate. Slow setup is still **-2.045908 ns in global-route
+estimation**, so neither this routing experiment nor zero overflow claims
+timing closure. All reports are pinned in the same experiment record.

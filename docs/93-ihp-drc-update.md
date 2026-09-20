@@ -208,3 +208,23 @@ After preserving the completed Magic result, the following duplicate pinned
 KLayout step was stopped. Its parent invocation exits nonzero and is not
 called a passing verification flow. The independent completed KLayout
 controls on this same GDS remain in their original evidence record.
+
+### Upstream disposition and routing experiment, 2026-09-20
+
+The live IHP issue [#1024](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/1024)
+remains open. It independently reports the 0.006 µm KLayout versus 0.02 µm
+Magic contact-enclosure specification. The earlier tracking issue
+[#794](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/794) was closed after
+reader/rule-exception work, but its discussion explicitly records remaining
+contact-enclosure problems and the absence of an authoritative SRAM exception
+specification. That closed tracking issue is therefore not a zero-error
+qualification of these macros. The dated [follow-up record](evidence/ihp-magic-sram-followup-20260920.json)
+pins the read-only issue snapshots and their statuses; no vendor waiver or
+modified rule is inferred from either discussion.
+
+The separate [routing-halo experiment](evidence/ihp-routing-halo-20260920.json)
+has progressed beyond area projection: new blockages retain pin corridors,
+preserve the netlist and placement, and complete global routing with zero
+overflow. Native detailed routing is running. A new Magic measurement is
+still required, and the inside-footprint failures are not addressed by this
+outside-ring experiment.

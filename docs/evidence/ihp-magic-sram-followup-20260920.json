@@ -385,5 +385,33 @@
     ],
     "interpretation": "All four controlled SRAM reader/deck combinations are complete and FAIL. This completes the experiment, not SRAM DRC closure. No geometry, deck rule or threshold was edited, narrowed or waived."
   },
-  "scope_before_completed_comparison": "Three completed SRAM reader/deck arms plus original-GDS contact measurements. Pinned-raw remains pending. No full-chip Magic verdict, rule waiver or excluded geometry."
+  "scope_before_completed_comparison": "Three completed SRAM reader/deck arms plus original-GDS contact measurements. Pinned-raw remains pending. No full-chip Magic verdict, rule waiver or excluded geometry.",
+  "upstream_issue_disposition": {
+    "read_date": "2026-09-20",
+    "issues": [
+      {
+        "number": 1024,
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/1024",
+        "title": "[DRC][SRAM]`Cnt.c`: Different specifications between Magic rule deck and KLayout rule deck",
+        "state": "OPEN",
+        "upstream_updated_at": "2026-06-26T11:05:55Z",
+        "command": "gh issue view 1024 --repo IHP-GmbH/IHP-Open-PDK --json number,title,state,body,comments,url,updatedAt",
+        "snapshot": "hw/soc/out/external-review-20260919/ihp-issue-1024-20260920.json",
+        "bytes": 1552,
+        "sha256": "ddefadb6b931cba4943a69c790fc1eee915d1a51589e1f38508fc8228c39ec1f"
+      },
+      {
+        "number": 794,
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/794",
+        "title": "[Tracking Issue] SRAM - Magic DRC",
+        "state": "CLOSED",
+        "upstream_updated_at": "2026-04-20T07:10:18Z",
+        "command": "gh issue view 794 --repo IHP-GmbH/IHP-Open-PDK --json number,title,state,body,comments,url,updatedAt",
+        "snapshot": "hw/soc/out/external-review-20260919/ihp-issue-794-20260920.json",
+        "bytes": 20584,
+        "sha256": "9c654ba912a95787fbbe35d08a8fc3154303c443ec0fcd401e44ac9fc4899663"
+      }
+    ],
+    "interpretation": "The open contact-enclosure discrepancy independently matches the measured 6nm/20nm deck difference. The older tracking issue is closed after reader/exception work, but its discussion explicitly retains contact problems; closure is not a foundry waiver or evidence that our macro passes Magic. Read-only research; no message posted to upstream."
+  }
 }

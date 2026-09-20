@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "PREPARATION VERIFIED; global-route trial running; no post-halo Magic verdict",
+  "status": "PREPARATION and global-route connectivity PASS; native detailed routing running; timing estimates FAIL; no post-halo Magic verdict",
   "scope": "External-review F7 route keep-out experiment on the original 24-SRAM baseline. This is separate from the ECO18 timing candidate and does not close physical verification. Neither deck nor macro LEF is changed.",
   "route_attribution": {
     "scope": "Geometric proximity only, not a DRC-cause proof. All outside markers queried against native signal and special-route rectangles/via enclosures on the reported layer. Standard-cell pin geometry and LEF obstructions are excluded. Exact nearest ties retained. No routing/PDN geometry is modified.",
@@ -15941,7 +15941,7 @@
   "limitations": [
     "All 206 outside marker boxes touch signal-route geometry on their reported layers. Proximity does not establish sole causality; standard-cell pin shapes and macro LEF obstructions were excluded from this route census.",
     "178 historical marker boxes lie wholly in the new blockages, 23 partly and five not at all because they coincide with pin corridors. This geometric overlay is not a post-route DRC result.",
-    "The added obstructions reserve routing resources, not extra die area. GRT, detailed routing, antenna repair, extraction and unchanged Magic rerun remain necessary.",
+    "The added obstructions reserve routing resources, not extra die area. Global routing completes; detailed routing, antenna repair, extracted timing and unchanged Magic rerun remain required for their respective gates.",
     "The 436 original markers inside macro footprints are not addressed by this outside-ring experiment.",
     "The source ODB is ignored build output with its exact digest recorded; this is not a substitute for the absent historical artifacts in review F6."
   ],
@@ -16055,6 +16055,161 @@
       "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/route.tcl",
       "bytes": 24027,
       "sha256": "3ef22969a03d1bacb1ab8c32e612f519c2bd34cd979c28b392620911e0f7e246"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/route.log",
+      "bytes": 15371,
+      "sha256": "86bf9784e26dd9b150f224966cd545231e762e2fb8719e25282072946b94823c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/logic-check.json",
+      "bytes": 277,
+      "sha256": "0e6ff8e5ba296087f6c515c5102142bcdde0f4f211954ae4030353daf8223842"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/metrics.json",
+      "bytes": 2081,
+      "sha256": "1a02f652bfd53839d4751d112c33313d20c80e90d2456d541763f1ebc306cd1b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.odb",
+      "bytes": 82999589,
+      "sha256": "7baf7b224f6f2b925788d20a53e078ebebe18526375d8841348ee63a85590e1b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.def",
+      "bytes": 22991294,
+      "sha256": "8a088c47e2c05b5bf9d0bdf540986d1f28fa126adbfad2f66fd3bd9e9fd4f754"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.nl.v",
+      "bytes": 10736965,
+      "sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.pnl.v",
+      "bytes": 13728419,
+      "sha256": "546889008974afb38953adb531c3487743411d63f01d5a581686c68c49d97a65"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.sdc",
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_fast_1p32V_m40C-max.rpt",
+      "bytes": 39696,
+      "sha256": "2e38761d485935c9f6991fd0002461368c98358ac93362d025dab955769d68eb"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_fast_1p32V_m40C-min.rpt",
+      "bytes": 36535,
+      "sha256": "b91f656dfd51c641a74a003d609d3953a0b8da59a476adcad3632e070bb6c4c3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_fast_1p32V_m40C-electrical.rpt",
+      "bytes": 57998,
+      "sha256": "26369c02ef51f4215a98e61a8c6c973f043d56b7fff4478d4b61093e70380d8d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_slow_1p08V_125C-max.rpt",
+      "bytes": 50902,
+      "sha256": "64161ca2be4be09c713591d0f5088097afdffe34e9950f3b627e457153c140b9"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_slow_1p08V_125C-min.rpt",
+      "bytes": 35574,
+      "sha256": "1d9c0b31823722b2685c87f1bd0bcbe9780f54ff99194e94287a50c3db3e3b6a"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_slow_1p08V_125C-electrical.rpt",
+      "bytes": 58304,
+      "sha256": "af80235d5449ffacef18096f825890c3cfc3c2a6f79871e608c9a3ee4e4ab6e1"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_typ_1p20V_25C-max.rpt",
+      "bytes": 45662,
+      "sha256": "098ddf34fbc9d21e650f251e667386b2f462303e998adeb5bedc6bedcf7b73e2"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_typ_1p20V_25C-min.rpt",
+      "bytes": 35901,
+      "sha256": "1dd6cf4708d521bc82bfb9e3caa69739020ed549981772379a878c3f80f00791"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/nom_typ_1p20V_25C-electrical.rpt",
+      "bytes": 56381,
+      "sha256": "e4bc8f3466f85a062a0b7d35fa930fc1a45c84295f30c8a6cca3c257bae7a8f6"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/run_halo_native.py",
+      "bytes": 2186,
+      "sha256": "c0466e1604910732b6868c1bdb81a4f2a53e375ecd8d6171ed9cb3b6bf79f3bf"
+    },
+    {
+      "path": "hw/soc/pnr/state/eth256-halo-route-20260920.json",
+      "bytes": 913,
+      "sha256": "52e7cbad07bd83e4a720e17045609892a29c6df0e7acf6139772d60f1ec6d096"
+    },
+    {
+      "path": "hw/soc/pnr/config-fpeth256-halo-20260920.json",
+      "bytes": 32140,
+      "sha256": "41fe0ba1547dba4c57b133bf50d3410fe1084b077dd776115a967adf4f4b0c0c"
     }
-  ]
+  ],
+  "global_route_result": {
+    "status": "COMPLETED; zero global overflow is not detailed DRC closure",
+    "overflow_h_v_total": [
+      0,
+      0,
+      0
+    ],
+    "routed_nets": 93112,
+    "wirelength_um": 8123421,
+    "router_runtime": "00:05:49",
+    "logic_check": {
+      "status": "PASS",
+      "original_instances": 93459,
+      "exact_cells_ports_assigns": true,
+      "input_netlist_sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f",
+      "grt_netlist_sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f"
+    },
+    "estimated_corners": {
+      "nom_fast_1p32V_m40C": {
+        "setup_wns_ns": 3.26228986391885,
+        "hold_wns_ns": -0.1510813739099136,
+        "electrical_violation_counts": {
+          "max slew": 52,
+          "max capacitance": 6,
+          "max fanout": 753
+        }
+      },
+      "nom_slow_1p08V_125C": {
+        "setup_wns_ns": -2.045908389500443,
+        "hold_wns_ns": 0.03423372793251265,
+        "electrical_violation_counts": {
+          "max slew": 59,
+          "max capacitance": 5,
+          "max fanout": 753
+        }
+      },
+      "nom_typ_1p20V_25C": {
+        "setup_wns_ns": 2.042877036468274,
+        "hold_wns_ns": 0.03467626284264398,
+        "electrical_violation_counts": {
+          "max slew": 33,
+          "max capacitance": 5,
+          "max fanout": 753
+        }
+      }
+    }
+  },
+  "native_followup": {
+    "status": "RUNNING",
+    "tag": "eth256-halo-route-20260920",
+    "end_step": "Odb.CellFrequencyTables",
+    "threads": 4,
+    "scope": "Route, native antenna, routing DRC, disconnected-pin checks and fill insertion before a separate Magic comparison. This invocation does not yet request extraction or GDS signoff. ECO18 remains a separate candidate.",
+    "command": "python3 hw/soc/out/external-review-20260919/run_halo_native.py"
+  }
 }

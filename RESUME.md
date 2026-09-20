@@ -427,3 +427,35 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - Yeni docs/evidence/ihp-routing-halo-20260920.json hazırlanmış sonuçları
   saklar; aktiftimingloglarınıfinalsaymaz. ROADMAP/docs92 güncel.
   Yeni halo source/evidence henüz commit edilmedi; digestrefresh+check gerekir.
+
+## 2026-09-20 06:01 TRT — halo native ve kaynak CI sürüyor
+
+- Push5675eea tamamlandı. Yeni halo tool17tests, ilgili231testPASS,
+  SPDX454tagged0wrong. PR1 haloGRT/native +df0PR/803hostedPASS ile güncel.
+- HaloGRT session27713 TAMAMLANDI exit0:5m49s,93112routednets,overflow0,
+  NLsha d30fdb18...before/afteraynı93459cell. Slowsetup-2.045908ns,
+  fasthold-.151081ns GRTtahmini;timingkapanmadı. Record güncellendi.
+- Halo native session11114/PIDsupervisorJSONdan okunabilir AKTİF,
+  tag eth256-halo-route-20260920,DRT_THREADS4. SonadımOdb.CellFrequencyTables
+  (fillsonrası10), extraction/GDSyok. AyrıMagicsonra. Diskstop1536MiB.
+  BASE/run_halo_native.py; pnrcfg config-fpeth256-halo-20260920.json.
+- Nativehalo bittiğinde BASE/prepare_halo_magic.py hazır (HENÜZÇALIŞMADI).
+  Nativeexit0/routeDRC0/criticaldisconnected0 ister; yeniMagicseed/config
+  oluşturur, SYN_NETLISTactualstateNLdenalır (10stepklasöründeNLyok!).
+  Sonra BASE/run_halo_magic.py; Magic.DRCtekadım,DEF/LEFabstractaynıdeck.
+  Process exit0 DRCpassdeğil: magiccountayrıcaokunmalı.
+- ECO18 session70998 sürüyor,3.iterasyona geçti. Bittiğinde exactcellguard
+  BASE/check_postroute_connectivity.py iletiming-eco18-rx-enable-drive NL
+  karşısonNLçalıştır, eco18-postroute-connectivity.jsonüret. Sonra
+  BASE/record_eco18_extracted.pyhazır;nativefinal16olmaksızınçalıştırma.
+- Diskkorumaiçin YALNIZtamamlanmışECO7/ECO2finalkopyaları aynırunstep
+  dosyalarınaSHAeşitliksonrasıhardlinkyapıldı. 12+12dosya,2.61GBkazanıldı;
+  bütünpathlervebyteskorundu. BASE/eco7-final-dedup.json/eco2-final-dedup.json.
+  Bu tamamlanmış çıktıları yerinde EDİTETME; yenitagkullan. Aktifrundokunulmadı.
+- Freshremote5675eea sourceCI session37828 AKTİF. İlkclonebitmedenerken
+  CIbaşlatmaexit127, hiçtestçalışmadı; premature-startlog+correctionJSONkorundu.
+  Cloneexit0+HEAD5675eea doğrulanınca doğruçalışmabaşlatıldı; ...-ci.log/XML.
+  Önceki707/26 sonucu buna ait değil; yeni sonuçbekleniyor.
+- IHPissue1024liveOPEN (2026-06-26updated),794CLOSED(2026-04-20updated)
+  saltokunurghsnapshotlarıBASE'de. 1024KLayout6nm/Magic20nmfarkınıbildiriyor;
+  794remainingcontactsdispositionıiçeriyor, waive değil. docs93'eekleniyor.
