@@ -459,3 +459,21 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - IHPissue1024liveOPEN (2026-06-26updated),794CLOSED(2026-04-20updated)
   saltokunurghsnapshotlarıBASE'de. 1024KLayout6nm/Magic20nmfarkınıbildiriyor;
   794remainingcontactsdispositionıiçeriyor, waive değil. docs93'eekleniyor.
+
+## 2026-09-20 06:07 TRT — kaynak doğrulaması tamam
+
+- `89b4a38` GitHub'a gönderildi. Temiz `5675eea` klonu, session37828:
+  exit 0; 743 PASS, 26 SKIP, toplam 769 test, 568.991 saniye. CI: 16/0/7.
+  Gerçek 03:05Z ledger satırı kopyalandı; kayıt:
+  `docs/evidence/fresh-clone-5675eea-20260920.json`. Klon tamamlanmadan
+  yapılan ilk başlatmada test çalışmadı; exit127 ve düzeltme kaydı saklanıyor.
+- Halo aracının 17 testi bu temiz klonun kapsamına dahil. Global-route
+  sonrası 93.459 hücreli netlistin SHA'sı `d30fdb18...` ile aynı; hiçbir
+  hücre, port veya alias değişmedi. Halo native akışı ilk DRT iterasyonunda;
+  ECO18 ise ilk anten onarımı sonrasında yeniden yönlendiriliyor.
+- `BASE/prepare_eco18_physical_checks.py` hazır, henüz çalıştırılmadı.
+  ECO18 native akışı exit0 ve final16 durumunu ürettikten sonra aynı aday
+  için ayrı XOR ve scoped LVS sürücüleri hazırlar. Sürücüler yalnız kendi
+  process-group'larını durdurur; iki saatlik süre ve 1024 MiB boş disk
+  sınırı vardır. Başlamak için 2048 MiB gerekir. SRAM içleri yine black-box
+  kapsamındadır. Halo Magic hazırlığı ayrı `prepare_halo_magic.py` dosyasında.

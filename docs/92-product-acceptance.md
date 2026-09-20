@@ -105,3 +105,13 @@ now has implemented, checked preparation: 2,766 blockages around the original
 The global-route trial is running; detailed routing and a new unchanged-deck
 Magic verdict remain pending. This advances the named experiment while
 leaving physical-verification acceptance open.
+
+The [fresh remote source replay at 5675eea](evidence/fresh-clone-5675eea-20260920.json)
+completes with **743 passes / 26 skips** and **16 passing CI gates / zero
+failures / seven skips**. This includes the 43-test ECO guard, 19-test CPU
+probe checker, 11-test guide cleanup and 17-test halo geometry checks.
+The initial attempt to start CI before cloning finished ran no tests and
+is retained separately as a corrected launch error. The successful replay
+starts from a verified clean HEAD; no generated dependencies or physical
+outputs were copied into the clone. F6's historical-artifact clause remains
+open.
