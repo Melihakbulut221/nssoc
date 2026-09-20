@@ -282,3 +282,16 @@ standard-cell area). Global estimates retain zero fanout violations, but have
 41/16/10 slew and three capacitance violations in fast/typical/slow corners.
 Fast hold is −0.308853 ns and slow setup is −0.117318 ns; these are failures.
 This is an intermediate old-RTL candidate, without a native reroute verdict.
+
+The [jumper-only control](evidence/ethernet-eco23-jumper-20260920.json)
+completes native routing and extraction but retains 245 violating antenna nets
+and 270 pins, plus −0.002292 ns slow setup. The small magnitude is still a
+failure. It does not replace ECO22's antenna-clean geometry.
+
+The [local SRAM leaf experiment](evidence/ethernet-eco26-leaves-20260920.json)
+reduces estimated fast/typical/slow slew violations to 8/4/2, with one remaining
+capacitance violation and zero fanout violations. Its 44 buffers, 20 delay cells
+and three equivalent sizing changes preserve original logic/state but add
+1,473.2928 µm². Slow setup (−1.239417 ns) and fast hold (−0.346552 ns) still fail;
+the additional GMII delay trades a fast hold improvement for a slow setup
+regression. No extracted or independent geometry verdict is transferred to it.

@@ -112,3 +112,34 @@ before the error-checker step was not counted as acceptance.
 Placement/routing, extracted timing, electrical checks, DRC, LVS, package/pads
 and fault qualification are separate gates. ECO22's passing setup/hold and
 other historical geometry checks do not apply to the new ROM or IRQ netlist.
+
+## Reproducible whole-netlist boot
+
+`hw/soc/flow/sim_logic_boot_gl.py` pairs a synthesis directory with the normal
+firmware build. It rejects different loader manifests, changed generated ROM
+contents, changed loader bytes, legacy ROM SRAM instances and invalid firmware
+status addresses. The testbench uses native standard-cell and SRAM models;
+only the external flash is loaded. It requires all 28 firmware checks, the
+expected watchdog stage-1 event, correct UART output, no flash-protocol violation
+and a clean software exit. The normal build must use UART scaler zero.
+
+```bash
+python3 hw/soc/flow/sim_logic_boot_gl.py \
+  --synthesis hw/soc/out/logicrom-example-syn \
+  --firmware hw/soc/out/logicrom-example \
+  --pdk "$HOME/.ciel/ihp-sg13g2" \
+  --tool "$HOME/.local/opt/iverilog13/usr/bin/iverilog" \
+  --output hw/soc/out/logicrom-whole-gl
+```
+
+Icarus 13 or newer is required by the native flip-flop models. The default run
+bound is four hours and one million clocks. Progress is flushed every 10,000
+clocks; output directories are never overwritten. Commands, model/image hashes
+and process results are retained. `--prepare-only` checks the build identity and
+writes the commands without running simulation. `--simulator verilator --tool
+/path/to/verilator` adds a faster, randomized two-state control with seeds 1 and
+29; it does not replace four-state Icarus verification. Neither mode applies SDF.
+
+The driver/ROM unit suite has 24 passing tests, including mismatched-image,
+missing-macro, status-address and timeout negative controls. Whole-netlist boot
+measurements are in progress; this runner's availability is not a boot PASS.

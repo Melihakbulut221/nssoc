@@ -5,6 +5,66 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 12:31 TRT — teslimat kontrolü ve eş geometri teşhisi
+
+Boottool+negativecontrols+docs/evidence/ECOchecks212PASS, SPDX472tagged350covered,
+0missing0wrong; frozenpilotdiffempty. Icarus100cycleactualcontrol compile0,
+run1EXPECTED, resultpassedfalse/inputhashunchanged; hiçbirROM/RAMpreloadyok.
+CanonicalVerilator17431 compile0 (~225s), 50kcycleprogress; 1Mcycle/1800s/run
+limits, seeds1/29. FullPASSyok. PrototypeVerilator25080veIcarus73417aktif.
+
+Single-slowECO26globalestimate−.535962setup/.034039hold, multi−1.239417
+setup. Veri yolu tümraporsatırları aynı; forwardedcaptureclockarrivalfarklı.
+Bu henüztoolbugkanıtıdeğil: ikiGRT farklıyenidenrouteyaptı. Şimdi5581
+probe_fixed_routes.py, eco26-fixed-route-corners: ONEglobalroutesegmentfile
+exported, multireportslow/fast/typ/slow, sonrafresh3singlecornerreadsegments.
+Aynıyerleşim/routes/libvalues/SDC ilefarkıayırır; waiver/deckdeğişikliğiyok.
+CPUilerlemeyi flash.frames/opcodeve160bitcrashbusile1000cyclesgösteren
+ayrıdiagnosticsession48838; normalacceptancedeğil.
+Newlogicphysical39327 PostGRTsetup~900+last-gasp,TNSazalıyor,WNS−2.26;
+Magic32138halaaktif. D93hostedrtl/checksPASS,formal-and-bootnormal/fallback
+adımıaktif (statussnapshotd93-hosted-status-1227.json). Alan~2GiB.
+
+## 20 Eylül 12:28 TRT — aktif işler ve kalıcı gate boot aracı
+
+Son push ad0bcc8; PR1 body pr-body-drc-progress.md ile güncellendi.
+Önceki12:17başlığı elle yazılmış saat hatasıdır (fiilen12:13civarı yazıldı);
+"PostGRT optimizer bitti" ifadesi de erken yorumdu: optimizer hâlâçalışıyor.
+
+- Yeni kalıcı hw/soc/flow/sim_logic_boot_gl.py +tb_soc_logic_boot_gl.v+
+  test_logic_boot_gl.py: aynıloader/manifest/generatedRTL kontrolü,20SRAM
+  profilekontrolü,ELFstatusadreskontrolü,ROM/RAMpreloadyok,28check+UART+
+  watchdog+exit+flashcheck. Icarus>=13required;Verilator ayrı2-statecontrol.
+  --prepare-only gerçekinputsPASS,unit24PASS. Bu dosyalarhenüzcommitdeğil.
+  CanonicalVerilatorsession17431 (logicrom-gl-canonical-verilator),compile
+  sürüyor; two seed1/29,1800s/run. Icarus100cyclesexpectedFAILcontrol
+  session56774. Ana4stateprototype73417 logicrom-whole-gl2devam7200sbound.
+  PrototypeVerilator25080 logicrom-whole-verilator seed1aktif (compile140s).
+  HiçbirfullGLbootPASSsonucuhenüzyok. Yeniunit+delivery82729bekleniyor.
+- ECO23nativeTAMAM10813:0routeDRC/0critical,245antennanets270pinsFAIL,
+  slowsetup−.0022915004nsFAIL; allholdPASS. record_eco23.py çalıştı.
+- ECO26TAMAM23003 timing-eco26-macro-leaves2:41macroinputleaf+3offloadbuf,
+  20statelessdelay+3buffersize;64newcells1473.2928µm²; structuralPASS.
+  fast/typ/slow slew8/4/2,cap1fanout0; slowsetup−1.239417,fasthold−.346552.
+  İlkdeneme mevcutGMIIlastdriverbufdeğildlygateolduğuiçinexportöncesiFAIL;
+  retryexplicitpositivebuf/dlygatefamiliesdoğrulanır. record_eco26.pyçalıştı.
+  Yerelmacrobufslewiyileşti,GMII2delayfastyiholdiyileştiripslowsetupbozdu.
+- TahminiGMIIclockarrivalcornerdeğerleridikkatçekti: ECO26freshsingle-slow
+  compare session35614 eco26-single-slow-estimate2. İlkprobe49845yalnız
+  LibertycornerfiltreleyipRCcornerlistesinifiltrelemediğiiçinFAILED; retry
+  _LAYER_RC_/_VIA_R_ aynıslowdeğerlerifiltreleyipyenidenindexliyor. Original
+  dosyalarvekanıtlaraynı. Henüzestimatorbugkanıtıyok,waiveryok.
+- NewROMIRQ39327 setupoptimizer600limitsonrasılast-gasppolish~900iter,
+  worst−2.26; postexport/state_outyok. NativeDRTbaşlamadı. Üçcornerfresh
+  STAsonragerçeknativeDRT/RCXgerekir. Boyut/clockconstraintsdeğişmedi.
+- HaloMagic32138~95dk,6hbound,verdictbekleniyor.
+- Disk~2.2GiB. Completedruns52file2.91GBlogicalshare,thencompletedECO23
+  19file1.46GBlogicalshare,contents/pathsame. Bothrecordsdedupscriptvar.
+  Activeinputsdeğiştirilmez;completedhardlinksimmutable.
+- Newdocs92/95,evidenceECO23/ECO26+index105vekalıcıboottooluncommitted.
+  Testsonuçlarınıal,actualgatecontrolüdoğrula,commit/push/PRrefresh.
+  Ürün/PCIe/vendorSRAM/fizikselfinal/beam/F6kapılarıhâlâaçık.
+
 ## 20 Eylül 12:17 TRT — tamamlanan ölçümler ve aktif işler
 
 Son push d93e64d. Temiz remote d93 TAMAM:818PASS26SKIP,16/0/7gates;
