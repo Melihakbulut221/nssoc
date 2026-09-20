@@ -186,8 +186,8 @@ jobs:
           echo 'de9fa1cc4cf51c493e708a1c7608b192ad4956717b684d9c4501e22fd22d88a0  hw/soc/tools/cbmc.deb' | sha256sum -c -
           dpkg-deb -x hw/soc/tools/cbmc.deb hw/soc/tools/cbmc
           make boot-proof
-      - name: Whole-SoC normal boot and geometry fallback
-        run: make soc-boot-regression
+      - name: Whole-SoC fixed logic-ROM boot and geometry fallback
+        run: SOC_BOOT_ROM=logic make soc-boot-regression
       - name: Retain formal and boot evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -212,4 +212,5 @@ jobs:
             hw/soc/formal/soc_apb_bridge_*/status
             hw/soc/formal/soc_npu_*/status
             hw/soc/out/boot-regression/**/*.log
+            hw/soc/out/boot-regression/**/boot-rom/manifest.json
           retention-days: 30

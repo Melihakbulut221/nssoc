@@ -580,6 +580,21 @@ synth -top soc_top -run fine
 select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
 fi
 
+BOOT_ROM_READ=""
+BOOT_ROM_DEFINE=""
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    [ "$SOC_MEM" = sram ] && [ "$SOC_ROM_HARDEN" = 1 ] || {
+      echo 'Logic boot ROM requires SOC_MEM=sram and SOC_ROM_HARDEN=1' >&2; exit 2; }
+    : "${SOC_BOOT_ROM_IMAGE:?Set SOC_BOOT_ROM_IMAGE to the compiled loader binary}"
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$OUT/boot-rom"
+    BOOT_ROM_READ="read_verilog -defer $OUT/boot-rom/soc_logic_boot_rom.v"
+    BOOT_ROM_DEFINE="-DSOC_LOGIC_BOOT_ROM"
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
 $ETH_LIB_READ
@@ -589,7 +604,8 @@ read_verilog -defer $IBEX_SRCS
 read_verilog -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MEM_READ
-read_verilog -I$RTL -defer $RTL/soc_top.v
+$BOOT_ROM_READ
+read_verilog -I$RTL $BOOT_ROM_DEFINE -defer $RTL/soc_top.v
 
 $RF_CHPARAM
 $TOP_CHPARAM

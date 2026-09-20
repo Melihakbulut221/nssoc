@@ -220,14 +220,33 @@ case "$PNR_CONFIG" in
 esac
 [ -f "$PNR_CONFIG" ] || { echo "no such config: $PNR_CONFIG" >&2; exit 1; }
 
+# The immutable ROM must be the same generated module in lint, synthesis
+# and physical source views. The config owns the define; never inject it
+# silently into a legacy profile. Keep each image in its own build directory.
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    : "${SOC_BOOT_ROM_IMAGE:?Set SOC_BOOT_ROM_IMAGE to the compiled loader binary}"
+    : "${SOC_BOOT_ROM_DIR:?Set SOC_BOOT_ROM_DIR to the generated ROM directory}"
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$SOC_BOOT_ROM_DIR"
+    SRCS="$SRCS
+$(cd "$SOC_BOOT_ROM_DIR" && pwd -P)/soc_logic_boot_rom.v"
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
+export SOC_BOOT_ROM="${SOC_BOOT_ROM:-legacy}"
+
 # Concurrent variants must never rewrite a config that another LibreLane
 # invocation is about to read. Keep the unique snapshot beside config.json
 # so that all dir:: paths retain their original meaning.
 RESOLVED=$(mktemp "$PNR/config.resolved.XXXXXXXX.json")
 "$VENV/bin/python" - "$PNR_CONFIG" "$RESOLVED" <<PY
-import json, sys
+import json, os, sys
 src, dst = sys.argv[1], sys.argv[2]
 base = json.load(open(src))
+logic_rom = "SOC_LOGIC_BOOT_ROM" in (base.get("VERILOG_DEFINES") or [])
+assert logic_rom == (os.environ["SOC_BOOT_ROM"] == "logic"), \
+    "SOC_BOOT_ROM and config VERILOG_DEFINES select different ROM implementations"
 srcs = """$SRCS""".split()
 assert srcs, "empty source list"
 assert "VERILOG_FILES" not in base, \

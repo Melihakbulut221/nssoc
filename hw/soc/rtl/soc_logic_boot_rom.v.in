@@ -1,0 +1,49 @@
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: CERN-OHL-W-2.0
+// Template for gen_logic_boot_rom.py. The generated case literals implement
+// immutable boot contents in standard cells, with no power-up SRAM preload.
+// INIT_FILE is accepted for the legacy instance interface but not read;
+// the generator pins the binary selected BEFORE synthesis in its manifest.
+// Contents cannot be patched in fabricated silicon. Address/control/codec
+// faults and physical timing need separate qualification.
+`timescale 1ns/1ps
+module soc_logic_boot_rom #(
+ parameter integer WORDS=2048, RO=1, RDREG=1, HARDEN=1, ECC_BYTE=0,
+ parameter INIT_FILE="", parameter integer INIT_WORD=32
+)(
+    input wire clk_i, rst_ni, req_i,
+    input wire [31:0] addr_i,
+    input wire we_i,
+    input wire [3:0] be_i,
+    input wire [31:0] wdata_i,
+    output wire gnt_o, rvalid_o,
+    output wire [31:0] rdata_o,
+    output wire err_o,
+    input wire scrub_en_i,
+    input wire [15:0] scrub_ivl_i,
+    output wire sec_o, rd_o, ded_o,
+    output wire [31:0] evt_addr_o);
+ generate if(WORDS!=2048 || !RO || HARDEN!=1 || ECC_BYTE || INIT_WORD!=32) begin:g_bad
+  ERROR_logic_rom_profile guard();
+ end endgenerate
+ wire row_en,row_we;
+ wire [10:0] row_addr;
+ wire [38:0] row_din,row_bm;
+ reg [38:0] row_dout, lookup;
+ always @* begin
+  case(row_addr)
+@ROM_CASE@
+   default: lookup=39'h0;
+  endcase
+ end
+ always @(posedge clk_i or negedge rst_ni)
+  if(!rst_ni) row_dout<=39'h0;
+  else if(row_en && !row_we) row_dout<=lookup;
+ // Stored contents are gates; scrub writes are unnecessary and have no effect.
+ // The codec still detects/corrects transient corruption at its row interface.
+ soc_mem_ecc #(.WORDS(2048),.RO(1),.HARDEN(1),.ECC_BYTE(0),.RDREG(RDREG),.RW(39)) u_ecc (
+  .clk_i(clk_i),.rst_ni(rst_ni),.req_i(req_i),.addr_i(addr_i),.we_i(we_i),.be_i(be_i),.wdata_i(wdata_i),
+  .gnt_o(gnt_o),.rvalid_o(rvalid_o),.rdata_o(rdata_o),.err_o(err_o),
+  .row_en_o(row_en),.row_we_o(row_we),.row_addr_o(row_addr),.row_din_o(row_din),.row_bm_o(row_bm),.row_dout_i(row_dout),
+  .scrub_en_i(scrub_en_i),.scrub_ivl_i(scrub_ivl_i),.sec_o(sec_o),.rd_o(rd_o),.ded_o(ded_o),.evt_addr_o(evt_addr_o));
+endmodule

@@ -1,0 +1,108 @@
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
+# Immutable boot contents in standard cells
+
+**2026-09-20.** The SRAM implementation called ROM in earlier physical runs
+has no mechanism to load its initial contents on silicon. Simulation's
+`ROM_INIT` does not solve that problem. The optional `SOC_BOOT_ROM=logic`
+profile now generates the compiled loader as constant gates in the delivered
+`soc_top`, rather than relying on a preloaded SRAM. Earlier layout results
+remain measurements of the SRAM stand-in.
+
+The [integration record](evidence/logic-boot-rom-integration-20260920.json)
+records commands, image/source hashes, block tests, whole-CPU checks and
+synthesis. It does not assert final physical closure or radiation qualification.
+
+## Contents and interface
+
+`hw/soc/flow/gen_logic_boot_rom.py` accepts a little-endian loader binary of
+1 through 8,064 bytes. It reserves the first 32 words for the existing reset
+vector offset, pads the last partial word with zeros, and generates 2,048
+39-bit SECDED codewords. The template contains a combinational case lookup
+and a resettable row register. There is no `readmemh`, initialized memory
+array, writable code storage or ROM SRAM macro in this implementation.
+
+The existing `soc_mem_ecc` codec retains its bus protocol, read pipeline,
+write rejection and error telemetry. Scrub writes have no effect on constant
+gates. This protects data at the codec interface; it is not a claim that
+address selection, control state, decoding gates or transient propagation
+are radiation qualified. Contents are fixed before fabrication. A new
+loader needs a new synthesis/layout image, not a software ROM patch.
+
+The generator writes `manifest.json` with the binary, template, codec and
+RTL hashes. Repeating an identical build is allowed. An existing output
+with different contents is rejected; use a new build directory when changing
+the loader. `ROM_INIT` remains accepted by the instance interface for source
+compatibility but is not read by the logic ROM.
+
+## Reproduction
+
+From the repository root:
+
+```bash
+SOC_BOOT_ROM=logic SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+  SOC_WAKE_GNT=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/logicrom-example
+SOC_BOOT_ROM=logic \
+  SOC_BOOT_ROM_IMAGE="$PWD/hw/soc/out/logicrom-example/test_soc.bin" \
+  SOC_MEM=sram IBEX_REGFILE=secded IBEX_RF_SYNPRE=1 \
+  SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 \
+  SOC_WAKE_GNT=1 SOC_ETH_SRAM=1 \
+  bash hw/soc/flow/syn_soc_top.sh 20 hw/soc/out/logicrom-example-syn
+.venv/bin/python -m pytest -q sw/tests/test_logic_boot_rom.py
+SOC_BOOT_ROM=logic make soc-boot-regression
+```
+
+The simulation generates constants from the exact loader it just built.
+Synthesis requires an explicit binary and refuses a non-SRAM RAM profile or
+an unhardened ROM. The default `legacy` profile remains available for
+reproducing historical evidence. CI's existing normal/invalid-entry/zero-length
+boot regression now selects the logic profile and archives its image manifests.
+
+## Measured integration
+
+- The generator and actual RTL tests cover both read-pipeline settings,
+  all 2,048 addresses, little-endian mapping, partial words, invalid sizes,
+  reproducibility and changed-image rejection. Injecting a wrong constant
+  trips the independent frozen hardware encoder comparison.
+- The native-cell block simulation performs 4,113 reads and 17 rejected
+  writes, with scrubbing on and off, using the actual delivered generator.
+- The delivered whole SoC boots and passes 28 firmware checks, including
+  its expected watchdog stage-1 interrupt. This is RTL CPU verification;
+  the block gate-level test is not whole-chip gate-level boot.
+- Matched standalone logic-ROM mapping uses 4,236 cells, 115 flip-flops
+  and 44,551.08 square micrometres of standard cells, with no SRAM macro.
+  Whole-SoC synthesis uses 69,971 cells, 9,391 flip-flops and
+  1,079,801.1882 square micrometres of standard cells. Against the preceding
+  IRQ-enabled SRAM-ROM profile, that is +4,240 cells, +37 flip-flops and
+  +33,607.9044 square micrometres, while removing four ROM SRAM macros.
+  Twenty macros remain: four RAM and sixteen Ethernet packet banks.
+  Macro area is excluded from these standard-cell areas.
+
+## Physical profile and limits
+
+`hw/soc/pnr/config-interfaces-logicrom.json` retains the ECO22 die and the
+coordinates of the twenty surviving macros, the 20 ns SoC and 8 ns Ethernet
+budgets, derate and checker thresholds. It selects the new external-IRQ SDC
+and the logic-ROM define. Unplaced ROM library views remain declared so
+lint can parse all branches of the common SRAM wrapper. They are not
+instances in this netlist or floorplan.
+
+For `pnr_soc_top.sh`, select that config, `SOC_BOOT_ROM=logic`, the same
+`SOC_BOOT_ROM_IMAGE`, and `SOC_BOOT_ROM_DIR` pointing to synthesis's `boot-rom`
+directory. The source-list resolver checks that the profile and macro agree,
+and the generator checks the image identity. Feed the matching netlist through
+an explicit `-i` initial state. As in the existing flow, project synthesis
+supplies the mapped netlist; LibreLane synthesis must not replace it.
+
+The first lint attempt found 17 parser errors: the bundled Ethernet parameter
+checks use `$error`, but the bundle selected Verilog-2005 for every library.
+`prepare_interfaces.py` now scopes language selection per source: Ethernet
+uses SystemVerilog-2012, while CAN retains its required Verilog-2005 identifiers.
+No vendor source was edited. The repeated native lint/error/timing-construct
+check passes with zero errors and zero inferred latches; 1,139 warnings remain
+reported under the existing warning policy. A lint process returning zero
+before the error-checker step was not counted as acceptance.
+
+Placement/routing, extracted timing, electrical checks, DRC, LVS, package/pads
+and fault qualification are separate gates. ECO22's passing setup/hold and
+other historical geometry checks do not apply to the new ROM or IRQ netlist.

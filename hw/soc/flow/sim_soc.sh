@@ -285,6 +285,19 @@ SW_DEFINES=${SW_DEFINES:-}
 # shellcheck disable=SC2086
 "$SOC_DIR/flow/build_sw_soc.sh" "$OUT" "-DUART_SCALER_VAL=${UART_SCALER}u" $SW_DEFINES
 
+# The logic-ROM profile uses the exact loader just built. The normal
+# behavioral profile remains available for historical experiments.
+BOOT_ROM_ARGS=()
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    [ "$SOC_MEM_HARDEN" = 1 ] || { echo 'Logic boot ROM requires protected memory' >&2; exit 2; }
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$OUT/test_soc.bin" --output "$OUT/boot-rom"
+    BOOT_ROM_ARGS=(-DSOC_LOGIC_BOOT_ROM "$OUT/boot-rom/soc_logic_boot_rom.v")
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
+
 # Symbol addresses come out of the ELF that was just built rather than
 # being written down here, so neither file carries a constant that goes
 # stale the next time the program is edited.
@@ -320,6 +333,7 @@ EOF
 fi
 
 "$IVERILOG" -g2005-sv -o "$OUT/tb_soc.vvp" \
+  "${BOOT_ROM_ARGS[@]}" \
   -I "$SOC_DIR/rtl" \
   -I "$PILOT_RTL" \
   -DSG13G2_ICG_BEHAVIOURAL \

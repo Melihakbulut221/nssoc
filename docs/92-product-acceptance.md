@@ -202,3 +202,18 @@ added antenna cells and all 2,766 routing blockages; the structural check
 passes. Recovery resumes the remaining antenna iterations in a separate
 output directory. The earlier supervisor's `RUNNING` field is stale after
 the system restart; there is no final halo/Magic verdict yet.
+
+**Integration update, 2026-09-20:** the earlier copied-top ROM prototype is
+now followed by a [delivered logic-ROM profile](95-immutable-boot-rom.md).
+Its [record](evidence/logic-boot-rom-integration-20260920.json) verifies
+151 affected tests, a further 72 physical-source guards, the 28-check normal
+CPU regression, and the exhaustive native-cell ROM test. Synthesis removes
+the four ROM SRAMs and retains twenty RAM/Ethernet macros. The new physical
+profile includes the external IRQ and has passed the actual lint error and
+timing-construct checkers; 1,139 lint warnings remain reported. New placement
+is in progress; no old layout result is transferred to it. Flash geometry
+fallback tests are running separately.
+
+ECO22's own [Magic/KLayout stream XOR](evidence/ethernet-eco22-xor-20260920.json)
+passes with zero independently counted differences. Its own main-deck DRC
+and scoped LVS are running. The electrical failures above still apply.

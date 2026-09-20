@@ -636,3 +636,5 @@ site belongs.
 BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
 all eight BUSSTAT tasks pass. This inventory is not a claim that every
 core-level instruction property is proved. See docs/89.
+
+- `docs/95-immutable-boot-rom.md` — [Immutable boot contents and physical integration profile](95-immutable-boot-rom.md)

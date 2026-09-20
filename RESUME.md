@@ -5,6 +5,49 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 10:40 TRT — kalıcı ROM entegrasyonu
+
+Bu not en yeni devam noktasıdır; aşağıdaki eski notlardaki RUNNING/PID/session
+bilgilerini güncel süreç olarak kullanmayın. Son gönderilmiş commit 6e9180a.
+
+- İnternet ve GitHub erişimi çalışıyor. 82ab25c push/PR CI başarılı;
+  6e9180a push/PR işleri 35496401002 / 35496402427 en son sorguda sürüyordu.
+- Kalıcı logic-ROM kaynak entegrasyonu hazır: docs/95 ve
+  logic-boot-rom-integration-20260920.json. 151 ilgili +72 fiziksel kaynak
+  testi, RTL tam CPU 28 kontrol, native-cell ROM 4113 okuma/17 yazma reddi
+  PASS. Sentez 69971 hücre/9391 FF/1079801.1882um²; 4 RAM+16 ETH SRAM,
+  ROM SRAM yok. Varsayılan legacy tarihsel profile dokunmaz.
+- İlk PNR lint denemesi 17 gerçek parser hatası içeriyordu; process0 sonucu
+  kabul edilmedi. prepare_interfaces.py artık kaynak başına dil seçiyor;
+  lint2 hata checker dahil PASS0error/0latch,1139warning. Vendor/frozen
+  kaynaklar değişmedi. PNR config config-interfaces-logicrom.json.
+- Yeni native yerleştirme session39327: run_logicrom_physical.py,
+  tag logicrom-irq-grt-20260920, 6 işçi. Yosys.JsonHeader'dan post-GRT
+  resizer'a; doğrulanmış synth netlisti seed. Henüz layout/timing PASS yok.
+- CPU geometry fallback session13304, run_logic_rom_fallbacks.py: entry0,
+  sonra length0; normal koşu zaten PASS. Tamamlanınca JSON/log/manifest
+  kimliklerini entegrasyon kanıtına ekleyin. Aynı testler CI'de de logic-ROM.
+- Halo devam session68039, run_halo_continuation.py, ayrı
+  halo-route-continuation klasörü. Orijinal sekiz antenna iterasyonu
+  korunuyor; yeni son durum tamamlanmadan Magic sonucunu varsaymayın.
+  Sonraki native adımlar Odb.RemoveRoutingObstructions→Odb.CellFrequencyTables,
+  ardından aynı kapsam Magic.DRC. Eski prepare_halo_magic.py eski eksik native
+  state'i bekler; yeni tamamlanmış state'e uyarlamadan kullanmayın.
+- ECO22 XOR tamamlandı PASS0. record_eco22_xor.py ve final dedup çalıştırıldı;
+  12 dosya/1.32GB birebir hardlink paylaşıldı. Tamamlanmış hardlink çıktıları
+  yerinde düzenlemeyin. Kendi DRC session31454, LVS session50247 aktif.
+  DRC 5e6d592 kilitli main/deep/2thread; output eco22-upstream-drc-20260920.
+  LVS henüz son karşılaştırmayı bekliyor (97334device/96507net iki tarafta).
+- Disk ~4GB; yeni büyük native/GDS işi öncesi bitmiş LVS final kopyalarını
+  doğrulanmış byte-identical stage dosyalarıyla paylaşın. Aktif iş/snapshot,
+  tarihsel dosya veya diğer projelere dokunmayın.
+- ECO22 elektrik ihlalleri gerçek ve açık. eco22-fanout-attribution.json:
+  43 fanout ihlalinde son route antenna yükleri var. Sonraki deney aynı
+  pre-route seed'de jumper-only antenna repair olabilir; henüz başlatılmadı.
+- Tüm betikler hw/soc/out/external-review-20260919 altında. Mevcut record
+  üreticilerini körlemesine yeniden çalıştırmayın. Docs92 tüm kapıları tutar.
+
+
 - 20 Eylül 03:00 TRT. Dal `codex/complete-open-work`; son gönderilmiş commit
   `c966a43`. Ürün ve inceleme kapıları `docs/92-product-acceptance.md` içinde.
 - ECO7 tam native route `eth256-eco7-route-20260920` aktif (PID 187301,
