@@ -545,3 +545,12 @@ power/ground/clock nets and cleanup failure. A separate native retry,
 [record](evidence/ethernet-clock-repair-20260920.json) preserves the failed
 attempt, cleanup hashes and candidate measurements. ECO7 remains the latest
 completed optimized native timing measurement until that retry finishes.
+
+The restricted guide cleanup is now connected to future `Interfaces` flow
+invocations immediately after the database is read for detailed routing.
+The upstream routing script remains otherwise byte-identical; missing or
+duplicate insertion anchors fail closed. Sixteen combined cleanup/flow
+controls pass, including execution with Tcl metacharacters in the helper
+path. The installed LibreLane template was also checked directly. The two
+already-running native jobs retain their original scripts and explicitly
+recorded seeds; this integration does not rewrite those measurements.

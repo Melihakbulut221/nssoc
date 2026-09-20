@@ -494,3 +494,21 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   tamamlandıktan sonra ayrı Magic ölçümü. Başka eski adayın DRC veya timing
   sonucunu yeni adaya taşımayın. Her hazırlık script'i henüz çalışmamışsa
   kayıt bunu söylüyor; hazırlık, sonuç değildir.
+
+## 2026-09-20 06:24 TRT — kalıcı rota-kılavuzu düzeltmesi
+
+- `interface_flow.py` artık gelecek `Interfaces` çağrılarında DRT için
+  `read_current_odb` sonrasına `prune_orphan_guides.tcl` ekliyor. Özgün
+  LibreLane script'inin geri kalanı byte-identical. Eksik/çift anchor
+  reddediliyor; Tcl metakarakterli helper yolu gerçek tclsh ile doğrulandı.
+  `test_interface_flow.py` ve `test_orphan_guides.py`: toplam 16 PASS.
+  Gerçek kurulu LibreLane template denetimi de PASS; log BASE altında.
+- İlk ad hoc karşılaştırma bir ek newline'ı silmediği için assertion
+  verdi; karşılaştırma iki tam ek satırı çıkaracak şekilde düzeltildi.
+  Akış kodunda bu nedenle değişiklik yapılmadı; düzeltme evidence kaydında.
+- O sırada çalışan ECO18-clean ve halo süreçleri bu hook eklenmeden önce
+  başlamıştı. Mevcut `COMMANDS` dosyaları orijinal LibreLane `drt.tcl`
+  yolunu gösterir; bu akışları yeni hook çalışmış gibi raporlamayın.
+- Son değişiklikler henüz commit edilmedi: interface_flow.py, yeni test,
+  docs90 ve clock-repair evidence. Manifest refresh ve ilgili kontroller
+  gerekir. Son başarılı push bilgisi `git log`/remote'dan doğrulanmalı.

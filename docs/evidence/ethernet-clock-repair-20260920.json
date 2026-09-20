@@ -2687,6 +2687,21 @@
       "bytes": 939,
       "sha256": "6e1e97485a537d0db3a41ee34ad47906890c9ba9267b08768c5c41a7b6558c5e",
       "scope": "Delivery license header correction; cleanup procedure unchanged."
+    },
+    {
+      "path": "hw/soc/pnr/interface_flow.py",
+      "bytes": 3321,
+      "sha256": "776199dbd6ea62956962fc578643799804630bc0f5e34aebde312eb2d9e735cc"
+    },
+    {
+      "path": "sw/tests/test_interface_flow.py",
+      "bytes": 4394,
+      "sha256": "5277307de39a5631274553775a8e911169289870257b9c6776a5dcd36848fa60"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/interface-flow-hook-validation.log",
+      "bytes": 249,
+      "sha256": "5144fe27b55aad075363b65d42e9c7c2a3a161fac1a0febf966bedd18c3588ef"
     }
   ],
   "rejected_attempts": [
@@ -2769,5 +2784,16 @@
     "retry_tag": "eth256-eco18-clean-route-20260920",
     "scope": "Emitted Verilog and DEF are byte-identical before and after cleanup. The seed retains the original NL/PNL/SDC and changes only ODB guide metadata. No physical verification result is borrowed from ECO7 or the baseline.",
     "license_header_correction": "Initial SPDX audit rejected Apache-2.0 for this hardware Tcl path. Corrected to CERN-OHL-W-2.0 without changing executable statements. Both the run-time source hash and delivery source hash remain in this record."
+  },
+  "automatic_guide_cleanup_integration": {
+    "scope": "Future Interfaces flow invocations source the checked cleanup immediately after read_current_odb. The ongoing ECO18-clean and halo runs started before this integration and continue using their recorded inputs and original LibreLane routing script.",
+    "combined_unit_command": ".venv/bin/python -m pytest -q sw/tests/test_interface_flow.py sw/tests/test_orphan_guides.py",
+    "combined_unit_passed": 16,
+    "installed_template_check": "Actual LibreLane 3.0.5 drt.tcl body is unchanged except for two inserted cleanup commands; one flow substitution; missing and duplicate database-read anchors fail closed.",
+    "installed_template_log": "hw/soc/out/external-review-20260919/interface-flow-hook-validation.log",
+    "initial_validation_correction": "The first ad hoc body comparison mistakenly left one inserted newline and failed its assertion. The corrected comparison removes both complete inserted lines; the flow implementation itself was unchanged.",
+    "prior_interface_flow_sha256": "6d56b83dc0a5f0adf049582440a466c8b5ab146c58a325b948c41c557247e056",
+    "prior_interface_flow_revision": "8b168c1",
+    "limitations": "This is a routing metadata repair, not a relaxation of DRC, timing, connectivity or library checks. The generated Tcl stays in the step directory for review."
   }
 }

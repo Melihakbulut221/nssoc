@@ -8,6 +8,8 @@ search, not its acceptance criteria: all timing corners and Classic checkers
 are retained. The generated Tcl is saved in each step's evidence directory.
 The optional top LEF's metadata warning runs only when that LEF is generated;
 the routed-design antenna check remains independent and enabled.
+Before detailed routing, discard stale guides on unloaded internal outputs
+left by an ECO. Connected nets, cells and constraints remain untouched.
 """
 from pathlib import Path
 
@@ -37,9 +39,28 @@ class BoundedPostGRT(BoundedSetup, OpenROAD.ResizerTimingPostGRT):
     pass
 
 
+class CleanOrphanGuides(OpenROAD.DetailedRouting):
+    def get_script_path(self):
+        original = Path(super().get_script_path())
+        source = original.read_text()
+        anchor = "read_current_odb\n"
+        if source.count(anchor) != 1:
+            raise RuntimeError(f"Unsupported LibreLane routing script: {original}")
+        helper = Path(__file__).resolve().parents[1] / "flow" / "prune_orphan_guides.tcl"
+        if not helper.is_file():
+            raise RuntimeError(f"Missing guide cleanup script: {helper}")
+        # Quote a literal Tcl path, including workspaces with spaces/$/brackets.
+        quoted = '"' + ''.join('\\' + c if c in '\\"$[]' else c for c in str(helper)) + '"'
+        insertion = f'source {quoted}\nputs "REMOVED_ORPHAN_GUIDES [prune_orphan_guides [ord::get_db_block]]"\n'
+        output = Path(self.step_dir) / "clean_orphan_guides_drt.tcl"
+        output.write_text(source.replace(anchor, anchor + insertion))
+        return str(output)
+
+
 SUBSTITUTIONS = {
     OpenROAD.ResizerTimingPostCTS: BoundedPostCTS,
     OpenROAD.ResizerTimingPostGRT: BoundedPostGRT,
+    OpenROAD.DetailedRouting: CleanOrphanGuides,
 }
 
 
