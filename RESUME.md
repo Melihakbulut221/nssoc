@@ -2,8 +2,134 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 # Aktif devam noktası — 20 Eylül 2026
 
-Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
-istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
+**Kullanıcının son talebi: interneti kapatmadan önce devam noktasını kaydet ve yeni iş başlatma.**
+Bu kayıt 20 Eylül 2026 15:46 TRT itibarıyladır. Dönüşte önce aşağıdaki süreçlerin
+canlılığını ve sonuçlarını kontrol et; eski RUNNING kaydını sonuç kabul etme.
+
+## İnternet kesintisi için kalıcı durak noktası — 20 Eylül 15:46 TRT
+
+- Repo `/home/hasanmelih/Documents/ChatGPT/nnsoc`, branch `codex/complete-open-work`.
+- Son gönderilmiş mühendislik commit'i **18182f81f68dcd8e0c93389a7f4fd5d7ad4ead0d**.
+  PR https://github.com/Melihakbulut221/nssoc/pull/1 güncellendi;
+  son body `B/pr-body-recovered-paper.md`. Merge/release yapılmadı.
+- `B = hw/soc/out/external-review-20260919`. Ayrıntılı anlık kayıt
+  `B/internet-pause-20260920-1546.json`; çalışan script hashleri burada.
+- Yerel işler **bilerek sonlandırılmadı**; internet gerektirmiyorlar. Bilgisayar
+  kapanırsa süreçler kaybolabilir: PID yanında komut satırını ve `state_out.json`
+  dosyasını kontrol et. Aynı çıktı dizinine körlemesine tekrar çalıştırma.
+- Dondurulmuş `hw/rtl`, `hw/tb`, `hw/openlane`, `tt` kaynakları değiştirilmedi.
+  Başka projelere yazılmadı; eski checkout yalnız kurtarma için okundu.
+
+### Tamamlanan ve GitHub'a gönderilen sonuçlar
+
+1. **F6 kabul koşulları sağlandı.** Orijinal DEF/netlist/raw raporlar eski
+   `neuromorphic-space-soc` checkout'unda bulunup önceden kayıtlı hashlerle
+   doğrulandı. Güvenli arşivden yalnız test scratch dizinine açılıyorlar.
+2. Fresh remote `e5575b4`: **927 toplam, 926 PASS, 1 SKIP, 0 FAIL**. Tek skip
+   eksik TinyTapeout yardımcı aracı. Front-door **16/0/7** (7 ayrı skip) aynen
+   korunur. `docs/evidence/fresh-clone-e5575b4-20260920.json` ve ledger satırı.
+3. Paper checker **27 re-derived, 15 manual, 0 missing output, 0 wrong**.
+   Altı replica iddiası gerçek orijinal DEF/NL üzerinden yeniden hesaplanıyor.
+   Tarihsel Netgen stdout SHA53505c83… önceden kayıtlı hashle aynı; SRAM
+   black-box kapsamındadır, transistor LVS veya yeni RTL sonucu değildir.
+4. Native tam logic-ROM boot yerelde **637224 çevrim / 28 PASS**, native IHP
+   modelleri değişmeden, preload olmadan. Bunun kanıtı önceki kayıtlar/evidence.
+5. **Önemli derate düzeltmesi:** eski logic-ROM ECO1–8 tahminleri serialized
+   integer `5` yüzünden %0 derate kullanmıştı. Eski PASS geri çekildi ve tüm
+   ilgili JSON metadata/PR/docs92/docs95 düzeltildi. Aynı ECO8 ODB/routes, %5 ile
+   fast hold **−0.113588 ns**, slow setup **−1.049344 ns**, elektrik0: FAIL.
+   `logicrom-derate-correction-20260920.json`. ECO22 native extracted ortamları
+   ayrı kontrol edildi: üçü de5.0; o eski sonuç etkilenmiyor, elektrik açıkları var.
+6. Shared `hw/soc/flow/check_timing_derate.tcl`: native BoundedCTS/GRT ve
+   bağımsız corner raporları yükleme öncesi integer truncation'ı reddediyor.
+   36 ilgili kontrol PASS; gerçek LibreLane iki template üretimi PASS.
+   Son 44 wrapper/report/digest kontrolü PASS; SPDX487tag/400covered/0missing/0wrong.
+   Çalışan native Tcl bu editten önce üretilmiş ve hash'i değişmedi; zaten5.0.
+
+### Çalışan işler — dönüşte ilk kontrol edilecekler
+
+**A. Yeni startup-clear ROM, native fiziksel adım**
+- Tool session **35930**, supervisor PID95541 / worker95542 / OpenROAD95543.
+- Komut: `python3 B/run_native_single_step_preserve_env.py startup-clear-nativeenv`.
+- Çıktı `B/startup-clear-nativeenv-single-step`, aynı prefix `.log` ve
+  `-supervisor.json`. 15:46'da RUNNING, setup optimizer yaklaşık683 ilerleme.
+- Özgün step35 ODB/DEF ve özgün Tcl sayısal biçimi (`5.0`) korunuyor.
+  BoundedPostGRT, altı saat /768MiB alt sınır gözetmeni. `max_iterations 600`
+  toplam yazdırılan ilerleme sayısına eşit değildir; araç600'ü geçti diye durmuş
+  sanma. Süre sınırı gözetmende. Parametre veya zamanlama koşulu gevşetilmedi.
+- Önceki `startup-clear-single-step` (68089)195s sonuç **geçersiz %0 derate**.
+  İlk fullflow7253disk yüzünden durdu. Hiçbiri yeni adımın PASS sonucu değildir.
+
+**B. A tamamlanınca otomatik ölçüm**
+- Tool session **3118**, PID98610, `python3 B/analyze_startup_nativeenv_completion.py`.
+- `B/startup-clear-nativeenv-analysis-supervisor.json` şimdi WAITING.
+- Native başarı + unchanged hash bekler; `capture_startup_nativeenv.py` gerçek
+  `_env.tcl` içindeki5.0 değerini korur; `startup-nativeenv-export.tcl` sabitODB
+  global route segmentlerini çıkarır; üç ayrı corner `report_route_corners.py`.
+- Çıktı `B/startup-clear-nativeenv-analysis/single-corner-reports/result.json`.
+  Driver exit1 timingFAIL olabilir; mutlaka her cornerreturncode/source_unchanged
+  ve `all_estimated_checks_pass` alanlarını oku. Eski görüntünün sayıları taşınmaz.
+
+**C. Halo üçüncü iki-net düzeltmesi Magic**
+- Tool session **21435**, supervisor90046 / worker90047 / Magic90048.
+- Komut `python3 B/run_native_single_step.py halo-lift3-magic`.
+- Çıktı `B/halo-lift3-magic-single-step`; aynı prefixlog/supervisor. 15:46'da
+  fullDRC çalışıyor,93309net/2011120DEFsatırı yüklenmiş. Deck değişmedi.
+- Girdi `halo-two-net-layer-lift3`:349841cell/93311net, yalnız net13560/net2854
+  route shape farkı; native routeDRC0/antenna0/geometriccontinuityPASS.
+- Bu eski24macro görüntüdür; yeni IRQ/logicROM değildir. İlk438Magic sonucu
+  436macroiçi+2dışıFAIL idi. Yeni Magic bitmeden dış işaretlerin kapandığını söyleme.
+- Ayrı KLayout main-deck kontrolü düşünüldü ama **başlatılmadı**. Devamda
+  `check_ihp_drc.py` ile `hw/soc/pnr/runs/halo-layer-lift3-stream-20260920/01-magic-streamout/soc_top.magic.gds`
+  için yeni tag kullanılabilir; eski `run_eco18_drc.py` yalnız şablondur.
+
+**D. Son guard commit'inin temiz uzak clone CI'si**
+- Tool session **90364**, workerPID103203; `python3 B/run_fresh_18182f8.py`.
+- Clone zaten indirildi;15:46'da bütün pytest aşaması çalışıyor, internet istemez.
+- `fresh-clone-18182f8-{result.json,pytest.xml,ci.log,clone.log}`. XML çalışma
+  sırasında altpytest tarafından kısmen yazılabilir: önce resultreturncode0 ve
+  fullCIsonsatırı görülmeli. Sonra gerçek sayıları kaydet; tahmin etme.
+- Tamamlanınca yeni evidenceJSON, exactcloneledgerrow ve docs92/PR güncelle.
+
+**E. GitHub tam native boot**
+- Run **35508536540**, head474b9ce, nativejob106072314493.
+- Son kontrol: checks/RTL/formal-and-boot PASS, native-boot hâlâRUNNING.
+  İnternet dönünce `gh run view 35508536540` ile kontrol et. Hosted sonuç henüz
+  PASS diye kaydedilmedi. Biterse artifact indirip gerçek28check/sources/logları doğrula.
+
+### Ölçümden sonraki ilk mühendislik adımı
+
+- A/B tamamlandıktan sonra ölçülen fanout/electrical/timing açıklarını gider.
+- `B/prepare_startup_native_fanout.py` hazır, **henüz çalıştırılmadı**.
+  Baseline3cornerresult dosyasını doğrular, gerçekten ölçülen fanout driverlarını
+  seçer; yeni `startup-native-eco1-fanout` dizini hazırlar. Eski712driver/2611buf
+  sayıları bu yeni görüntüye dayatılmaz. Ardından oluşturduğu
+  `run_startup_native_eco1.py` ve `validate_startup_native_eco1.py` çalıştırılmalı.
+  `check_physical_eco.py` özgün state/function/pin bağlantılarını korumayı zorlar.
+- Yeni ECO için tekrar üç bağımsız corner raporu; sonra gerçekDRT/RCX/DRC/LVS/XOR.
+  Eski netlist veya %0 sonuçlarını kabul yerine kullanma.
+- Magic sonucu actual macrofootprint ile sınıflandırılmalı; iç hatalar silinmez.
+
+### Disk ve arşivler
+
+15:46'da yaklaşık2.0GiB kullanılabilir. Yalnız bu repo içindeki tamamlanmış,
+üretilmiş dosyalar hash doğrulamalı arşivleniyor; başka projeleri temizleme.
+Son arşiv `B/completed-clean-clone-workspaces2-20260920.tar.gz`, SHA
+`ffa4b5bec5a4de4b4d685170d2397ec21e508035216f80fa43f8c1f05696af32`.
+84a049d/ba9297a/860fce3/0727236/e5575b4 tamamlanmışclone'ları içerir; tümbytehash
+ve symlinkler doğrulanıp açık cwd/fd olmadığı kontrol edildi. Kaynakdizinleri
+kaldırıldı; harici CIlog/XML/result/evidence dosyaları yerinde. Aktif18182clone
+korundu. Tam manifest `B/completed-clean-clone-workspaces2-archive-20260920.json`.
+Geri açma repo kökünde orijinal yollarla yapılmalı. Önceki geometri/VVP arşivleri
+ve manifestleri önceki kayıtlarda; rawsource/loglar ve aktif girdiler korunuyor.
+
+### Hâlâ açık ürün kapıları
+
+PCIeGen3x4 uyumlu ASICcontroller/PHY erişimi; finalnewROMphysicaltiming;
+SRAMtransistorLVS/Magic; pads/ESD/package; DFT/MBIST; usabledebug;
+clocksource/POR/brownout; interface/lockstep/radiation/siliconqualification.
+Bunlar tamamlandı diye sunulmamalı. F6 ve nativeboot kapanması ürünün bittiği
+anlamına gelmiyor. Kullanıcı dönüşte devam derse bu noktadan işe devam et.
 
 ## 20 Eylül 15:44 TRT — fresh926PASS; native derateguard hazır
 
