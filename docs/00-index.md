@@ -486,6 +486,7 @@ rather than from a beam.
 | `docs/94-external-interrupt.md` | External level interrupt and preserved interrupt context. |
 | `docs/95-immutable-boot-rom.md` | Immutable boot contents and physical integration profile. |
 | `docs/96-second-audit-closure.md` | Complete second-audit requirement register, current dispositions and verification gates. |
+| [docs/97-uart-receive.md](97-uart-receive.md) | Current 8N1 TX/RX register contract, CPU fast interrupt/WFI tests and physical acceptance boundary. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 
 `sw/tests/test_doc_links.py` checks that this table names every document

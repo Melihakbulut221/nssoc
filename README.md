@@ -13,7 +13,7 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 |---|---|---|
 | Silicon / product | No silicon or radiation qualification; product gates open | [Acceptance contract](docs/92-product-acceptance.md) |
 | Frozen pilot | TTIHP26b submission; source tree frozen | [Freeze contract](docs/34-pilot-freeze.md) |
-| Python regression | 962 pass, 2 skip; commit `c1a6f7a` | [Exact revision and command](docs/evidence/fresh-clone-c1a6f7a-20260920.json) |
+| Python regression | 1020 pass, 2 skip; commit `091423c` | [Exact revision and command](docs/evidence/fresh-clone-091423c-20260921.json) |
 | Peripheral checks | 10/10 new formal tasks; 6/6 native RAM profiles | [Formal scope](docs/evidence/peripheral-formal-20260920.json); [RAM + negative control](docs/evidence/hosted-memory-parity-20260920.json) |
 | Independent native boot | FAIL at `474b9ce`; hosted correction replay pending | [Hosted failure retained](docs/evidence/native-boot-hosted-npu-failure-20260920.json) |
 | Local native correction | PASS: 28 checks, 653,726 cycles; firmware `100cad7` | [Same hosted netlist, verified serial initialization](docs/evidence/npu-native-startup-20260921.json) |
@@ -27,8 +27,10 @@ Check it with `python3 scripts/project_status.py`; update it with `--write`.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
 profile-specific layout evidence. They are not the complete GR801 interface
-set. **PCIe Gen3 x4 controller/PHY integration is unresolved.** UART currently
-transmits only; Ethernet needs an external PHY and has no DMA.
+set. **PCIe Gen3 x4 controller/PHY integration is unresolved.** UART now has
+[8N1 receive and transmit RTL with CPU tests](docs/97-uart-receive.md);
+its updated whole-SoC layout remains pending. Ethernet needs an external PHY
+and has no DMA.
 
 All release requirements remain in the [product acceptance register](docs/92-product-acceptance.md)
 and [second audit register](docs/96-second-audit-closure.md), including final

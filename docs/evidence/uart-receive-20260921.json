@@ -1,0 +1,573 @@
+{
+  "date": "2026-09-21",
+  "scope": "8N1 UART RX/TX block verification, IHP mapped native-cell simulation and real-Ibex RTL serial/IRQ/WFI integration. Whole-SoC RX layout, extracted timing, pad/CDC/SEU qualification remain OPEN.",
+  "source_sha256": {
+    "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+    "hw/soc/rtl/soc_top.v": "621e749bc72c5a4695d04d8c45c87960588d03edc61482ef81acdfb5daa5ede2",
+    "hw/soc/formal/soc_uart.sby": "b6b39ba214657d0261d6f0c1d399a2f37529237f33ade3ea5866354525ab0885",
+    "hw/soc/formal/soc_uart_props.v": "33d99d9c47dd90e281135a74b19b2955d9359c54310dae5f1fbc8c1a2d37e31c",
+    "hw/soc/tb/cocotb/Makefile.soc_uart": "1445d0886931836d83e1d20b029d2c13bdda7e1dd2e5b76d72a134ec50c48597",
+    "hw/soc/tb/cocotb/Makefile.soc_uart_rx": "e9d6687478c7cf2224dad594cc8a8d13995a9f4a1adea4c7b301877f223842fa",
+    "hw/soc/tb/cocotb/test_soc_uart.py": "2e1dc858f831a4e983902c11e5a9f90ba18271f527fff45be33fe43a01540405",
+    "hw/soc/tb/cocotb/test_soc_uart_rx.py": "9141b4a7a6529fbe98ee396d36c5c471a49a53ed964a6fb26bc5f5b146aa2eb2",
+    "hw/soc/tb/sw/uart_rx.c": "3133b8689b777fbdff686601788e1d6064e3a7d1bc84bc70d1de956369e2d77a",
+    "hw/soc/tb/uart_rx_monitor.vh": "79f976be32881d376fa3624a7541e37f224f9de9da6d462b2a42fbe2def90f4b",
+    "hw/soc/flow/uart_rx_probe.py": "6c35b223a46113474c9cc789ca84742c178b37611755c776bf8c24cd6be44976",
+    "scripts/check_uart_native.sh": "a388f7f889be48c47f7274d5e970f70570816408878cf90da42ce88288e92351",
+    ".github/workflows/checks.yml": "472a88f9739aa62ae9f148c8e4d3fe707489cae280b3afb8355318899b14b156"
+  },
+  "formal": {
+    "bmc": {
+      "status": "PASS",
+      "log_sha256": "cc11f362d893263a5b759ad56eb42d8a79dec60740c944ff58e2521aec793b11",
+      "copied_sources_match": true
+    },
+    "prove": {
+      "status": "PASS",
+      "log_sha256": "e10931354ca29af37323a8821be74770fa91806314fd994e5b53806c6b7ab1d0",
+      "copied_sources_match": true
+    },
+    "cover": {
+      "status": "PASS",
+      "log_sha256": "8749b13427f3a821d8935a4dc095802f8505be6db54c1dbfb75b47a3ff4c4130",
+      "copied_sources_match": true
+    },
+    "limits": "Port-only APB/control/status/IRQ contract; BMC depth24, unbounded ABC PDR, cover depth200 timeout1200. No serial payload, physical CDC or radiation proof."
+  },
+  "native": {
+    "status": "PASS",
+    "scope": "IHP standard-cell UART functional simulation, no SDF, layout, analog CDC or fault qualification.",
+    "source_sha256": {
+      "scripts/check_uart_native.sh": "a388f7f889be48c47f7274d5e970f70570816408878cf90da42ce88288e92351",
+      "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+      "$HOME/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "$HOME/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "hw/soc/tb/cocotb/Makefile.soc_uart": "1445d0886931836d83e1d20b029d2c13bdda7e1dd2e5b76d72a134ec50c48597",
+      "hw/soc/tb/cocotb/Makefile.soc_uart_rx": "e9d6687478c7cf2224dad594cc8a8d13995a9f4a1adea4c7b301877f223842fa",
+      "hw/soc/tb/cocotb/test_soc_uart.py": "2e1dc858f831a4e983902c11e5a9f90ba18271f527fff45be33fe43a01540405",
+      "hw/soc/tb/cocotb/test_soc_uart_rx.py": "9141b4a7a6529fbe98ee396d36c5c471a49a53ed964a6fb26bc5f5b146aa2eb2",
+      "hw/soc/tb/cocotb/test_soc_uart_defects.py": "ad7a94740927f42d9af41b7583619d7bad072ed97e6c3fd976e45bdc065cc458"
+    },
+    "sources_unchanged": true,
+    "tests": {
+      "soc_uart": {
+        "passed": 14,
+        "xml_sha256": "ca5ac7cdf5945b333f8949c14a5f4328f65ea6507581e50a552eeee88d45beff",
+        "log_sha256": "3cdbbafa1c813794540cbc8c46bc0c41212bfef9ae56fdf6ec5b0888d199f2fd"
+      },
+      "soc_uart_rx": {
+        "passed": 7,
+        "xml_sha256": "d5886a51ab97a06ea3ab930f6d0cf6fff25d2129310a849abd3e34471172a371",
+        "log_sha256": "2aeff5a5022776edc9e66576e59d1a5dc2a4ca78335f57ebeba7d916b67fcf0b"
+      },
+      "test_soc_uart_defects": {
+        "passed": 3,
+        "xml_sha256": "21ea34abda4676a9f1cf7b39bb9a9d11fe8410b5f81c4c2af013a0f907f178db",
+        "log_sha256": "eb233f394f8962e7bc293ff9a706a4111896b9b8d30b555cd706c69e1ed6f904"
+      }
+    },
+    "cell_types": {
+      "sg13g2_inv_1": 42,
+      "sg13g2_or3_1": 1,
+      "sg13g2_nor4_1": 11,
+      "sg13g2_and4_1": 3,
+      "sg13g2_o21ai_1": 56,
+      "sg13g2_a21oi_1": 67,
+      "sg13g2_nand3_1": 19,
+      "sg13g2_nand2_1": 53,
+      "sg13g2_nor2_1": 59,
+      "sg13g2_nor3_1": 22,
+      "sg13g2_nor2b_1": 7,
+      "sg13g2_nand4_1": 8,
+      "sg13g2_nand2b_1": 12,
+      "sg13g2_and2_1": 12,
+      "sg13g2_or4_1": 1,
+      "sg13g2_a22oi_1": 24,
+      "sg13g2_xnor2_1": 15,
+      "sg13g2_xor2_1": 6,
+      "sg13g2_a221oi_1": 2,
+      "sg13g2_nand3b_1": 1,
+      "sg13g2_and3_1": 2,
+      "sg13g2_a21o_1": 12,
+      "sg13g2_or2_1": 1,
+      "sg13g2_mux2_1": 23,
+      "sg13g2_buf_1": 1,
+      "sg13g2_dfrbpq_1": 113
+    },
+    "netlist_sha256": "7f771204c2703e1cf2a739816162982f1d85f065d82f22cb3c896fcf8c748309",
+    "area_report": "\n6. Printing statistics.\n\n=== soc_uart ===\n\n        +----------Local Count, excluding submodules.\n        |        +-Local Area, excluding submodules.\n        |        | \n      483        - wires\n      660        - wire bits\n       35        - public wires\n      201        - public wire bits\n       13        - ports\n       86        - port bits\n      573 9.84E+03 cells\n       12   152.41   sg13g2_a21o_1\n       67  607.824   sg13g2_a21oi_1\n        2    29.03   sg13g2_a221oi_1\n       24  260.366   sg13g2_a22oi_1\n       12  108.864   sg13g2_and2_1\n        2   25.402   sg13g2_and3_1\n        3   43.546   sg13g2_and4_1\n        1    7.258   sg13g2_buf_1\n      113 5.54E+03   sg13g2_dfrbpq_1\n       42  228.614   sg13g2_inv_1\n       23  417.312   sg13g2_mux2_1\n       53  384.653   sg13g2_nand2_1\n       12  108.864   sg13g2_nand2b_1\n       19  172.368   sg13g2_nand3_1\n        1   12.701   sg13g2_nand3b_1\n        8   87.091   sg13g2_nand4_1\n       59  428.198   sg13g2_nor2_1\n        7   63.504   sg13g2_nor2b_1\n       22  199.584   sg13g2_nor3_1\n       11   119.75   sg13g2_nor4_1\n       56  508.032   sg13g2_o21ai_1\n        1    9.072   sg13g2_or2_1\n        1   12.701   sg13g2_or3_1\n        1   14.515   sg13g2_or4_1\n       15  217.728   sg13g2_xnor2_1\n        6   87.091   sg13g2_xor2_1\n\n   Chip area for module '\\soc_uart': 9842.212800\n     of which used for sequential elements: 5535.734400 (56.24%)\n\n",
+    "yosys_version": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "iverilog_version": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+    "command": "PDK=/path/to/ihp-sg13g2 bash scripts/check_uart_native.sh hw/soc/out/uart-native; omit PDK to fetch the pinned native-model subset"
+  },
+  "rx_mutation_controls": {
+    "controls": [
+      {
+        "name": "setup_read",
+        "command": [
+          "make",
+          "-C",
+          "hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_uart_rx",
+          "VERILOG_SOURCES=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/setup_read/soc_uart.v",
+          "SIM_BUILD=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/setup_read/build",
+          "COCOTB_RESULTS_FILE=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/setup_read/results.xml"
+        ],
+        "returncode": 2,
+        "test": {
+          "name": "read_only_consumes_on_access_and_interrupt_is_gated",
+          "classname": "test_soc_uart_rx",
+          "file": "hw/soc/tb/cocotb/test_soc_uart_rx.py",
+          "lineno": "79",
+          "time": "0.008053302764892578",
+          "sim_time_ns": "1011.0",
+          "ratio_time": "125538.55598318433"
+        },
+        "source_sha256": "57adccaeedf23a9b3ba6a80b0e5d73cf67e30052405aa7fff983f2f28f90fd45",
+        "log_sha256": "d1eefa9a85475578532c65a5ec56aeb678f7aa83b261cf7052fa9816b88434c1",
+        "xml_sha256": "0277861b6022426347e76702efd2c1be85226b643e708d0975a23ab387c24da2"
+      },
+      {
+        "name": "overwrite_unread",
+        "command": [
+          "make",
+          "-C",
+          "hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_uart_rx",
+          "VERILOG_SOURCES=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/overwrite_unread/soc_uart.v",
+          "SIM_BUILD=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/overwrite_unread/build",
+          "COCOTB_RESULTS_FILE=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/overwrite_unread/results.xml"
+        ],
+        "returncode": 2,
+        "test": {
+          "name": "back_to_back_overrun_and_selective_error_clear",
+          "classname": "test_soc_uart_rx",
+          "file": "hw/soc/tb/cocotb/test_soc_uart_rx.py",
+          "lineno": "49",
+          "time": "0.011245250701904297",
+          "sim_time_ns": "1771.0",
+          "ratio_time": "157488.70762837637"
+        },
+        "source_sha256": "6cb6b98e5028643c8d7e9b7938369fc02c91ce854eb2d0014cdc4d9de65adb64",
+        "log_sha256": "6d89083fd635574088f8f762a79ad9a913cc93243e8fb5f8b0d225fee5054aa0",
+        "xml_sha256": "8e91346f9af7691ec315e1da814f3d7a44786d983944e978e3bf294f2009b561"
+      },
+      {
+        "name": "reverse_bits",
+        "command": [
+          "make",
+          "-C",
+          "hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_uart_rx",
+          "VERILOG_SOURCES=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/reverse_bits/soc_uart.v",
+          "SIM_BUILD=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/reverse_bits/build",
+          "COCOTB_RESULTS_FILE=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/reverse_bits/results.xml"
+        ],
+        "returncode": 2,
+        "test": {
+          "name": "scaler_write_during_frame_applies_to_next_frame",
+          "classname": "test_soc_uart_rx",
+          "file": "hw/soc/tb/cocotb/test_soc_uart_rx.py",
+          "lineno": "130",
+          "time": "0.01726078987121582",
+          "sim_time_ns": "3371.0",
+          "ratio_time": "195298.13091702695"
+        },
+        "source_sha256": "24e2939498e3e293ac3b21f9b92f8de57662b7bf1886b3fe560579eb4b439d18",
+        "log_sha256": "f95b1610b98e3508ff50167bfe460c233fe3fcc07674ffeafcd4e95ce50d6d6b",
+        "xml_sha256": "1b45a59f9db97c262cb42e864528065487865bf55deef6744fe653c23a044594"
+      },
+      {
+        "name": "ignore_irq_enable",
+        "command": [
+          "make",
+          "-C",
+          "hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_uart_rx",
+          "VERILOG_SOURCES=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_irq_enable/soc_uart.v",
+          "SIM_BUILD=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_irq_enable/build",
+          "COCOTB_RESULTS_FILE=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_irq_enable/results.xml"
+        ],
+        "returncode": 2,
+        "test": {
+          "name": "read_only_consumes_on_access_and_interrupt_is_gated",
+          "classname": "test_soc_uart_rx",
+          "file": "hw/soc/tb/cocotb/test_soc_uart_rx.py",
+          "lineno": "79",
+          "time": "0.0066869258880615234",
+          "sim_time_ns": "941.0",
+          "ratio_time": "140722.36117944878"
+        },
+        "source_sha256": "c0a45792a121984fffb75ee7bb547d9c612cf6b8e394e3e03e82e8832c42f91a",
+        "log_sha256": "e587c083a948c4fa2c5cdb3119c59d517bc832c47f0812d6167a5f4602f721fe",
+        "xml_sha256": "4d2c7b1ffdba4ab77a2b3b9a436f7025d7f406db54e1b50787bf32ffe7917a1e"
+      },
+      {
+        "name": "ignore_framing",
+        "command": [
+          "make",
+          "-C",
+          "hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_uart_rx",
+          "VERILOG_SOURCES=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_framing/soc_uart.v",
+          "SIM_BUILD=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_framing/build",
+          "COCOTB_RESULTS_FILE=hw/soc/out/external-review-20260919/uart-rx-controls-delivered/ignore_framing/results.xml"
+        ],
+        "returncode": 2,
+        "test": {
+          "name": "back_to_back_overrun_and_selective_error_clear",
+          "classname": "test_soc_uart_rx",
+          "file": "hw/soc/tb/cocotb/test_soc_uart_rx.py",
+          "lineno": "49",
+          "time": "0.015777587890625",
+          "sim_time_ns": "2721.0",
+          "ratio_time": "172459.82205029012"
+        },
+        "source_sha256": "f5f605ea879e5a15a6ed944efbe0dcfa47ae48df5f7303ca10a3990061ceff30",
+        "log_sha256": "33580f02b4d1c40874d3d7d98842c404ebee5d2afb4c5b3135be143ad447efac",
+        "xml_sha256": "9a61efcab548d0174956d8ca4095a9d27f0c1247b7f6605a162e51fe7ca17aeb"
+      }
+    ],
+    "source_sha256": {
+      "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+      "hw/soc/tb/cocotb/test_soc_uart_rx.py": "9141b4a7a6529fbe98ee396d36c5c471a49a53ed964a6fb26bc5f5b146aa2eb2",
+      "hw/soc/tb/cocotb/test_soc_uart.py": "2e1dc858f831a4e983902c11e5a9f90ba18271f527fff45be33fe43a01540405",
+      "hw/soc/tb/cocotb/Makefile.soc_uart_rx": "e9d6687478c7cf2224dad594cc8a8d13995a9f4a1adea4c7b301877f223842fa"
+    },
+    "original_sources_unchanged": true
+  },
+  "peripheral_formal_controls": {
+    "source_sha256": {
+      "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+      "hw/soc/formal/Makefile": "eb7caabb896403f888c66be29dbc5eba2105174aa526b781e5f1e27a4d176f07",
+      "hw/soc/formal/soc_gptimer.sby": "2c4b06ff616700d4002997d3d32d9c7fbff5a4d5e26a2990a22e5e7e383aebf2",
+      "hw/soc/formal/soc_gptimer_props.v": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c",
+      "hw/soc/formal/soc_pnp.sby": "a16a74a1dd10764335cde53785901b7dae36886ab3497bcfca151943bc6bf915",
+      "hw/soc/formal/soc_pnp_props.v": "1f2dcd2150bb0c952cbffda8647bc3708d6aa0a99457b24da7b36c87f52929fc",
+      "hw/soc/formal/soc_uart.sby": "b6b39ba214657d0261d6f0c1d399a2f37529237f33ade3ea5866354525ab0885",
+      "hw/soc/formal/soc_uart_props.v": "33d99d9c47dd90e281135a74b19b2955d9359c54310dae5f1fbc8c1a2d37e31c",
+      "hw/soc/rtl/soc_apb_pnp.v": "eedaa60ae788d53e17d9503a1b844c4922a03b3cce58abcb62a0f4b301d4b282",
+      "hw/soc/rtl/soc_apb_pnp_rom.vh": "6dacbf3e286241bbef309d23772c1a8b52c605d1d83b32ebb06b253531e97cf0",
+      "hw/soc/rtl/soc_gptimer.v": "2055608374d8c7117587d09d1b551193a2f7b494a4a97e9f4620912dd5adecfd",
+      "hw/soc/rtl/soc_pnp.v": "c75ebac8e74bfd38a002cbd2e565e853d21c75327e2f2fc12b121e84088d25d0",
+      "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+      "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+      "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+      "hw/soc/rtl/soc_wdog.v": "7fd95e0a7746e08d57f12d1b1483c21be1bb1231b040dfb53d806cea45a124ce",
+      "scripts/check_peripheral_contracts.py": "bddf8b38f5c897318a08523140bc4d3286dbb9151edb736691254565af5ea4c8"
+    },
+    "controls": [
+      {
+        "name": "uart_interrupt_enable",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/uart_interrupt_enable",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/uart_interrupt_enable.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.4661904519998643,
+        "mutant_sha256": "6d422229f37011baac91ab5de34a1c21539b5d43769cafe03a0968af8c1ffef0",
+        "passed": true
+      },
+      {
+        "name": "pnp_response_missing",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/pnp_response_missing",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/pnp_response_missing.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.46590119500069704,
+        "mutant_sha256": "0c9a1398b79a7da2b193559cc2974c3b1efb64ad97d668357960ab3c797486ed",
+        "passed": true
+      },
+      {
+        "name": "pnp_signature",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/pnp_signature",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/pnp_signature.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.4157821690005221,
+        "mutant_sha256": "65a9c67b5fd00ab61f08d0024f32875e72eceeb77ba17ca9246540ecd390da9c",
+        "passed": true
+      },
+      {
+        "name": "apb_pnp_error",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/apb_pnp_error",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/apb_pnp_error.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.3655198160013242,
+        "mutant_sha256": "3c082720b2379103cebf43089091b4caffb63895e930dc99eded8792f3196762",
+        "passed": true
+      },
+      {
+        "name": "timer_expiry_clear_collision",
+        "command": [
+          "hw/soc/tools/oss-cad-suite/bin/sby",
+          "-f",
+          "-d",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/timer_expiry_clear_collision",
+          "hw/soc/out/external-review-20260919/uart-rx-peripheral-controls-delivered/timer_expiry_clear_collision.sby",
+          "bmc"
+        ],
+        "returncode": 2,
+        "status": "FAIL",
+        "reachable_counterexample": true,
+        "elapsed_s": 0.7163005340007658,
+        "mutant_sha256": "6a92223430e6c188d143ebbc34a1969223b3bfaa11121d8f2398ba8a396445cb",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "sources_unchanged": true
+  },
+  "cpu": {
+    "normal": {
+      "status": "PASS",
+      "records": {
+        "site": "-1",
+        "bit": "0",
+        "cycle": "0",
+        "armed": "1",
+        "hit": "0",
+        "width": "0",
+        "before": "00000000000000000000000000000000",
+        "after": "00000000000000000000000000000000",
+        "mem": "-1",
+        "midx": "0",
+        "mbit": "0",
+        "mem_before": "00000000",
+        "mem_after": "00000000",
+        "scr_ramsec": "0",
+        "scr_ramrd": "0",
+        "scr_ramded": "0",
+        "scr_romsec": "0",
+        "scr_romrd": "0",
+        "scr_romded": "0",
+        "scr_ramaddr": "00000000",
+        "scr_romaddr": "00000000",
+        "done": "1",
+        "cycles": "3251",
+        "budget": "100000",
+        "slept": "1",
+        "expired": "0",
+        "sig": "a1170001",
+        "mask": "00000000",
+        "rounds": "5",
+        "exit": "00000000",
+        "magic": "600dc0de",
+        "console_chars": "19",
+        "console_hash": "46eca41c",
+        "console_framing": "0",
+        "wdog1": "0",
+        "wdog2": "0",
+        "wdog3": "0",
+        "wdog_first": "-1",
+        "traps": "0",
+        "mcause": "00000000",
+        "nmis": "0",
+        "alert_minor": "0",
+        "alert_int": "0",
+        "alert_bus": "0",
+        "dblfault": "0",
+        "win_open": "260",
+        "win_close": "1452",
+        "wdog_rld": "65535",
+        "wdog_pre": "16",
+        "kicks": "0",
+        "kick_min": "-1",
+        "kick_max": "-1",
+        "wdog_early": "0",
+        "wdog_budget": "0",
+        "wdog_win": "00000002",
+        "rf_sec": "0",
+        "rf_ded": "0",
+        "rf_sec_seen": "0",
+        "rf_ded_seen": "0"
+      },
+      "frames": 6,
+      "sleep_wakes": 1,
+      "scope": "RTL CPU/APB/serial RX/fast IRQ/WFI integration; no physical, gate-level, CDC MTBF or radiation acceptance.",
+      "sources_unchanged": true,
+      "log_sha256": "0087108ecb892b87505d73c5cf2395ea15d3ce7f6a46f4351950660c25d16ebf",
+      "source_sha256": {
+        "hw/soc/flow/uart_rx_probe.py": "6c35b223a46113474c9cc789ca84742c178b37611755c776bf8c24cd6be44976",
+        "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+        "hw/soc/rtl/soc_top.v": "621e749bc72c5a4695d04d8c45c87960588d03edc61482ef81acdfb5daa5ede2",
+        "hw/soc/tb/sw/uart_rx.c": "3133b8689b777fbdff686601788e1d6064e3a7d1bc84bc70d1de956369e2d77a",
+        "hw/soc/tb/sw/crt0.S": "f1b085987ed743847f6c6e01b15dea3afc0f8dad3838cef5aa0bb96393a7bf76",
+        "hw/soc/tb/tb_soc_fi.v": "953a2740609e1e2156c86e43ebd52d46f2190066b4d5da2281aabdf6eb802e79",
+        "hw/soc/tb/uart_rx_monitor.vh": "79f976be32881d376fa3624a7541e37f224f9de9da6d462b2a42fbe2def90f4b",
+        "hw/soc/flow/fi_core.sh": "bd599614fed6fd0de4abae82d34f6d7c50cc4634c1ec4b2478a271059166a69f",
+        "hw/soc/flow/build_sw_fi.sh": "77b83a891a1b48766eba941e007c2de26776d0b1f06597029b7258ffb806b8af"
+      }
+    },
+    "corrupted_data": {
+      "status": "EXPECTED DATA FAILURE",
+      "records": {
+        "site": "-1",
+        "bit": "0",
+        "cycle": "0",
+        "armed": "1",
+        "hit": "0",
+        "width": "0",
+        "before": "00000000000000000000000000000000",
+        "after": "00000000000000000000000000000000",
+        "mem": "-1",
+        "midx": "0",
+        "mbit": "0",
+        "mem_before": "00000000",
+        "mem_after": "00000000",
+        "scr_ramsec": "0",
+        "scr_ramrd": "0",
+        "scr_ramded": "0",
+        "scr_romsec": "0",
+        "scr_romrd": "0",
+        "scr_romded": "0",
+        "scr_ramaddr": "00000000",
+        "scr_romaddr": "00000000",
+        "done": "1",
+        "cycles": "3252",
+        "budget": "100000",
+        "slept": "1",
+        "expired": "0",
+        "sig": "a1170001",
+        "mask": "00000001",
+        "rounds": "5",
+        "exit": "00000001",
+        "magic": "600dc0de",
+        "console_chars": "19",
+        "console_hash": "80ef3e01",
+        "console_framing": "0",
+        "wdog1": "0",
+        "wdog2": "0",
+        "wdog3": "0",
+        "wdog_first": "-1",
+        "traps": "0",
+        "mcause": "00000000",
+        "nmis": "0",
+        "alert_minor": "0",
+        "alert_int": "0",
+        "alert_bus": "0",
+        "dblfault": "0",
+        "win_open": "260",
+        "win_close": "1452",
+        "wdog_rld": "65535",
+        "wdog_pre": "16",
+        "kicks": "0",
+        "kick_min": "-1",
+        "kick_max": "-1",
+        "wdog_early": "0",
+        "wdog_budget": "0",
+        "wdog_win": "00000002",
+        "rf_sec": "0",
+        "rf_ded": "0",
+        "rf_sec_seen": "0",
+        "rf_ded_seen": "0"
+      },
+      "frames": 6,
+      "sleep_wakes": 1,
+      "scope": "RTL CPU/APB/serial RX/fast IRQ/WFI integration; no physical, gate-level, CDC MTBF or radiation acceptance.",
+      "sources_unchanged": true,
+      "log_sha256": "594948f6e778fd1b260f1dd3140f1c95c3db6bd4b20c54f16a1ef6a7fa0df775",
+      "source_sha256": {
+        "hw/soc/flow/uart_rx_probe.py": "6c35b223a46113474c9cc789ca84742c178b37611755c776bf8c24cd6be44976",
+        "hw/soc/rtl/soc_uart.v": "d01eb8bc6895136968b2ca8dcb94fd4fd64083f5a82fe326c1ff37f78145eefd",
+        "hw/soc/rtl/soc_top.v": "621e749bc72c5a4695d04d8c45c87960588d03edc61482ef81acdfb5daa5ede2",
+        "hw/soc/tb/sw/uart_rx.c": "3133b8689b777fbdff686601788e1d6064e3a7d1bc84bc70d1de956369e2d77a",
+        "hw/soc/tb/sw/crt0.S": "f1b085987ed743847f6c6e01b15dea3afc0f8dad3838cef5aa0bb96393a7bf76",
+        "hw/soc/tb/tb_soc_fi.v": "953a2740609e1e2156c86e43ebd52d46f2190066b4d5da2281aabdf6eb802e79",
+        "hw/soc/tb/uart_rx_monitor.vh": "79f976be32881d376fa3624a7541e37f224f9de9da6d462b2a42fbe2def90f4b",
+        "hw/soc/flow/fi_core.sh": "bd599614fed6fd0de4abae82d34f6d7c50cc4634c1ec4b2478a271059166a69f",
+        "hw/soc/flow/build_sw_fi.sh": "77b83a891a1b48766eba941e007c2de26776d0b1f06597029b7258ffb806b8af"
+      }
+    }
+  },
+  "rtl": {
+    "tests": 24,
+    "failed": 0,
+    "breakdown": {
+      "tx": 14,
+      "rx": 7,
+      "tx_races": 3
+    },
+    "command": "PATH=hw/.venv/bin:$PATH bash scripts/run_cocotb.sh soc_uart",
+    "log_sha256": "5c735b1a1a307fcb8351d284fa6141dde107d4758f846c2e5a748ec1ffa22f18",
+    "note": "The final subsequent RTL edit only clarified the legacy bit-7 comment; native/CPU/formal results above use the delivered source bytes."
+  },
+  "prepared_whole_soc_elaboration": {
+    "passed": 6,
+    "log_sha256": "584432860eddba5e67698d921c93a7dcd7894e6945df47a8fa38fc2676b554f7"
+  },
+  "lint": {
+    "status": "PASS",
+    "command": "make -C hw/soc/tb/cocotb -f Makefile.soc_uart lint",
+    "log_sha256": "15657102ad21d29cc720d710c6a137fa9ce2834d1713f89d8e1204f572ee85ff"
+  },
+  "focused_python": {
+    "passed": 192,
+    "log_sha256": "7d0a07db9c19bcea2ef1531ad6a4c7783da4585fc4b4e916b3eeccd483f2e232"
+  },
+  "retained_failures": [
+    {
+      "run": "uart-rx-formal-v1/cover",
+      "result": "TIMEOUT after300s, overrun cover unreached; unchanged cover obligation passes with1200s budget",
+      "log_sha256": "70192cd135fd37888b03a7ae7ccc93db4a00eda49cee549a76b29122810df7f9"
+    },
+    {
+      "run": "uart-native-oss-control",
+      "result": "Tool embedding failed: OSSvvp PYTHONHOME incompatible with external Python. Delivered runner preserves selected interpreter sys.path; all24tests then pass with sameOSS Icarus14.",
+      "log_sha256": "2b8e524af5fbb2970684938c9b2b2d02807d8dbdec79cd8899c9687ae3caed56"
+    },
+    {
+      "run": "uart-rx-full-pytest",
+      "result": "1038 passed, 1 skipped, 1 failure: new evidence had not yet been inserted into the digest manifest. The manifest was regenerated; all 182 publication checks, including that case, then passed. This is not reported as a clean full-suite pass.",
+      "log_sha256": "98a77381a01417cc3d42a330b99bf758f616115585608ce71b1f5447e2bcc91f"
+    }
+  ],
+  "path_convention": "Repository-relative paths; $HOME denotes the original user home. Artifact hashes unchanged.",
+  "publication_checks": {
+    "targeted_python_passed": 182,
+    "targeted_python_log_sha256": "d5a9bb760c6ebaabb0579bb22c32106f0aba7b4c07c73be4460fd6d72700bd92",
+    "reuse_covered": 951,
+    "reuse_total": 951,
+    "reuse_log_sha256": "0d6a65002832cca666b3b870ea9bf9c54835d50a24e7051fda9e124f69aa6e4e",
+    "spdx_missing": 0,
+    "spdx_wrong": 0,
+    "spdx_log_sha256": "beae800a0974bb8f9ce241db8a6dd152501aaf3e0430f7cf8fd89feaf1848720",
+    "site_source_documents": 105,
+    "site_pages": 106,
+    "site_unresolved_references": 0,
+    "site_log_sha256": "b743bb481c4f6ba129e6e3a08fff477215fdd66ec49713721c16a640b6d3f84b"
+  }
+}

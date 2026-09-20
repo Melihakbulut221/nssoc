@@ -70,7 +70,7 @@ interrupt controller and the drivers cannot disagree
 
 | Address | Slot | Name | IRQ | Line | Status | Description |
 |---|---|---|---|---|---|---|
-| `0xFF900000` | `0x000` | UART0 | 2 | 0 | implemented | Console UART, GRLIB APBUART register map, transmit only |
+| `0xFF900000` | `0x000` | UART0 | 2 | 0 | implemented | Console UART, APBUART offset subset, 8N1 transmit and receive |
 | `0xFF901000` | `0x001` | UART1 | 3 | 1 | reserved | Second UART |
 | `0xFF902000` | `0x002` | GPIO | 4 | 2 | implemented | GRGPIO-style general purpose I/O, 16 pins |
 | `0xFF908000` | `0x008` | TIMER0 | 8 | 3 | implemented | GPTIMER, last timer is the watchdog and is armed at reset |

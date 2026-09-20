@@ -222,6 +222,7 @@ module tb_soc_fi;
       // soc_boot.v samples once and reports. Nothing in this bench
       // reads them back; they are here because soc_top has the port.
       .strap_i    (4'h0),
+      .uart_rx_i  (1'b1),
       .uart_tx_o  (uart_tx),
       .uart_irq_o (uart_irq),
       // The GPIO pins (docs/65): a board with nothing on them. The

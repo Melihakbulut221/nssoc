@@ -1,0 +1,5045 @@
+{
+  "date": "2026-09-21",
+  "status": "FAIL: macro-abstract markers remain",
+  "scope": "Original native full-style Magic DRC on third halo repair DEF and LEF abstracts. Older 24-SRAM image; no new loader, external IRQ or UART RX. No waiver or rule modification.",
+  "boxes": 436,
+  "classification": {
+    "inside": 436
+  },
+  "by_rule": {
+    "Metal2 minimum area < 5760 (M2.d)": {
+      "inside": 356
+    },
+    "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)": {
+      "inside": 80
+    }
+  },
+  "original_macro_interior_marker_set_unchanged": true,
+  "command": "magic -dnull -noconsole -rcfile $HOME/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.magicrc $HOME/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/magic/wrapper.tcl\n",
+  "supervisor": {
+    "scope": "Run the original configured native LibreLane step through Step.start, preserving checker and optimization settings. Avoid SequentialFlow.save_snapshot duplicate final copies. No rule waiver. Startup resumes from completed step35; Magic consumes own third-candidate DEF/GDS.",
+    "mode": "halo-lift3-magic",
+    "command": [
+      "$HOME/Documents/caravel-lif-crossbar/.venv-flow/bin/python",
+      "hw/soc/out/external-review-20260919/restart1_native_single_step_worker.py",
+      "halo-lift3-magic"
+    ],
+    "input_sha256": {
+      "hw/soc/pnr/state/halo-layer-lift3-magic-20260920.json": "a3c42c5a9b1853b496761667b6934f5eb0432a6f2aef8195dca0b5d0f40e4d96",
+      "hw/soc/out/external-review-20260919/restart1_native_single_step_worker.py": "cbbc08889d12694744848336af67ebaa0c06b3d5d6839f8abf613caf78d9e8cc",
+      "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/soc_top.odb": "e500c5cd4832c5a854ae5fea1c6e14a9bad350c57f391d60bf4a21b8700a3c83",
+      "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/soc_top.def": "415772700565f68377bc8230a7fca06a8c0290be2aaad48ea9472f6a7d47c9cf",
+      "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.nl.v": "7272d61ebe740f154ba3c585553a74d95ec6864ef89f9cb29a8569604ea41a72",
+      "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.pnl.v": "d580bea71fc1397262f652077a346a7f23e19f115cbffe745051e8bb45d4783b",
+      "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.sdc": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa",
+      "hw/soc/pnr/runs/halo-layer-lift3-stream-20260920/01-magic-streamout/soc_top.magic.gds": "d89ee3c06afacb062de828d9e0f332fe603937297ebea85359d30fa627581c7a",
+      "hw/soc/pnr/runs/halo-layer-lift3-stream-20260920/01-magic-streamout/soc_top.gds": "d89ee3c06afacb062de828d9e0f332fe603937297ebea85359d30fa627581c7a"
+    },
+    "status": "COMPLETED",
+    "minimum_free_bytes": 948027392,
+    "disk_stop_threshold_bytes": 805306368,
+    "pid": 12748,
+    "returncode": 0,
+    "elapsed_s": 10650.346949966,
+    "inputs_unchanged": true
+  },
+  "macro_footprints_um": {
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": [
+      2340.0,
+      60.48,
+      2759.95,
+      197.45
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": [
+      2340.0,
+      351.54,
+      2759.95,
+      488.51
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": [
+      2340.0,
+      642.6,
+      2759.95,
+      779.57
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": [
+      2340.0,
+      933.66,
+      2759.95,
+      1070.6299999999999
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": [
+      2340.0,
+      1224.72,
+      2759.95,
+      1361.69
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": [
+      2340.0,
+      1515.78,
+      2759.95,
+      1652.75
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": [
+      2340.0,
+      1806.84,
+      2759.95,
+      1943.81
+    ],
+    "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": [
+      2340.0,
+      2097.9,
+      2759.95,
+      2234.87
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": [
+      2808.0,
+      60.48,
+      3227.95,
+      197.45
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": [
+      2808.0,
+      351.54,
+      3227.95,
+      488.51
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": [
+      2808.0,
+      642.6,
+      3227.95,
+      779.57
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": [
+      2808.0,
+      933.66,
+      3227.95,
+      1070.6299999999999
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": [
+      2808.0,
+      1224.72,
+      3227.95,
+      1361.69
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": [
+      2808.0,
+      1515.78,
+      3227.95,
+      1652.75
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": [
+      2808.0,
+      1806.84,
+      3227.95,
+      1943.81
+    ],
+    "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": [
+      2808.0,
+      2097.9,
+      3227.95,
+      2234.87
+    ],
+    "u_ram.g_ram_2048x64_ecc.u_b0": [
+      120.0,
+      60.48,
+      904.48,
+      687.1800000000001
+    ],
+    "u_ram.g_ram_2048x64_ecc.u_b1": [
+      944.64,
+      60.48,
+      1729.12,
+      687.1800000000001
+    ],
+    "u_ram.g_ram_2048x64_ecc.u_b2": [
+      120.0,
+      1787.94,
+      904.48,
+      2414.6400000000003
+    ],
+    "u_ram.g_ram_2048x64_ecc.u_b3": [
+      944.64,
+      1787.94,
+      1729.12,
+      2414.6400000000003
+    ],
+    "u_rom.g_rom_1024x32_ecc.u_b0": [
+      1769.28,
+      347.76,
+      2185.92,
+      684.22
+    ],
+    "u_rom.g_rom_1024x32_ecc.u_b1": [
+      1769.28,
+      1787.94,
+      2185.92,
+      2124.4
+    ],
+    "u_rom.g_rom_1024x32_ecc.u_c0": [
+      1769.28,
+      60.48,
+      2006.08,
+      251.82
+    ],
+    "u_rom.g_rom_1024x32_ecc.u_c1": [
+      1769.28,
+      2222.64,
+      2006.08,
+      2413.98
+    ]
+  },
+  "marker_rows": [
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        1983.96,
+        251.56,
+        1984.22,
+        251.82
+      ],
+      "classification": "inside",
+      "macro": "u_rom.g_rom_1024x32_ecc.u_c0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        1995.2,
+        251.56,
+        1995.46,
+        251.82
+      ],
+      "classification": "inside",
+      "macro": "u_rom.g_rom_1024x32_ecc.u_c0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        933.66,
+        2359.28,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        933.66,
+        2376.96,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        933.66,
+        2394.64,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        933.66,
+        2412.32,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        933.66,
+        2430.0,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        933.66,
+        2447.68,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        933.66,
+        2465.36,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        933.66,
+        2483.04,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        933.66,
+        2617.17,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        933.66,
+        2634.85,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        933.66,
+        2652.53,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        933.66,
+        2669.36,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        933.66,
+        2670.21,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        933.66,
+        2687.04,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        933.66,
+        2687.89,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        933.66,
+        2704.72,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        933.66,
+        2705.57,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        933.66,
+        2722.4,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        933.66,
+        2723.25,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        933.66,
+        2740.08,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        933.66,
+        2740.93,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        933.66,
+        2757.76,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        779.31,
+        2359.28,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        779.31,
+        2376.96,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        779.31,
+        2394.64,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        779.31,
+        2412.32,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        779.31,
+        2430.0,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        779.31,
+        2447.68,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        779.31,
+        2465.36,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        779.31,
+        2483.04,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        779.31,
+        2617.17,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        779.31,
+        2634.85,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        779.31,
+        2652.53,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        779.31,
+        2669.36,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        779.31,
+        2670.21,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        779.31,
+        2687.04,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        779.31,
+        2687.89,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        779.31,
+        2704.72,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        779.31,
+        2705.57,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        779.31,
+        2722.4,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        779.31,
+        2723.25,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        779.31,
+        2740.08,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        779.31,
+        2740.93,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        779.31,
+        2757.76,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        351.54,
+        2359.28,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        351.54,
+        2376.96,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        351.54,
+        2394.64,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        351.54,
+        2412.32,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        351.54,
+        2430.0,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        351.54,
+        2447.68,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        351.54,
+        2465.36,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        351.54,
+        2483.04,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        351.54,
+        2617.17,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        351.54,
+        2634.85,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        351.54,
+        2652.53,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        351.54,
+        2669.36,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        351.54,
+        2670.21,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        351.54,
+        2687.04,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        351.54,
+        2687.89,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        351.54,
+        2704.72,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        351.54,
+        2705.57,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        351.54,
+        2722.4,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        351.54,
+        2723.25,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        351.54,
+        2740.08,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        351.54,
+        2740.93,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        351.54,
+        2757.76,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        933.66,
+        2827.28,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        933.66,
+        2844.96,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        933.66,
+        2862.64,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        933.66,
+        2880.32,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        933.66,
+        2898.0,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        933.66,
+        2915.68,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        933.66,
+        2933.36,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        933.66,
+        2951.04,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        933.66,
+        3085.17,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        933.66,
+        3102.85,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        933.66,
+        3120.53,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        933.66,
+        3137.36,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        933.66,
+        3138.21,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        933.66,
+        3155.04,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        933.66,
+        3155.89,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        933.66,
+        3172.72,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        933.66,
+        3173.57,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        933.66,
+        3190.4,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        933.66,
+        3191.25,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        933.66,
+        3208.08,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        933.66,
+        3208.93,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        933.66,
+        3225.76,
+        933.92
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        779.31,
+        2827.28,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        779.31,
+        2844.96,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        779.31,
+        2862.64,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        779.31,
+        2880.32,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        779.31,
+        2898.0,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        779.31,
+        2915.68,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        779.31,
+        2933.36,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        779.31,
+        2951.04,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        779.31,
+        3085.17,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        779.31,
+        3102.85,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        779.31,
+        3120.53,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        779.31,
+        3137.36,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        779.31,
+        3138.21,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        779.31,
+        3155.04,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        779.31,
+        3155.89,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        779.31,
+        3172.72,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        779.31,
+        3173.57,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        779.31,
+        3190.4,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        779.31,
+        3191.25,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        779.31,
+        3208.08,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        779.31,
+        3208.93,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        779.31,
+        3225.76,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        351.54,
+        2827.28,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        351.54,
+        2844.96,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        351.54,
+        2862.64,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        351.54,
+        2880.32,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        351.54,
+        2898.0,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        351.54,
+        2915.68,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        351.54,
+        2933.36,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        351.54,
+        2951.04,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        351.54,
+        3085.17,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        351.54,
+        3102.85,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        351.54,
+        3120.53,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        351.54,
+        3137.36,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        351.54,
+        3138.21,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        351.54,
+        3155.04,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        351.54,
+        3155.89,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        351.54,
+        3172.72,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        351.54,
+        3173.57,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        351.54,
+        3190.4,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        351.54,
+        3191.25,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        351.54,
+        3208.08,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        351.54,
+        3208.93,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        351.54,
+        3225.76,
+        351.8
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        197.19,
+        2359.28,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        197.19,
+        2376.96,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        197.19,
+        2394.64,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        197.19,
+        2412.32,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        197.19,
+        2430.0,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        197.19,
+        2447.68,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        197.19,
+        2465.36,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        197.19,
+        2483.04,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        197.19,
+        2617.17,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        197.19,
+        2634.85,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        197.19,
+        2652.53,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        197.19,
+        2669.36,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        197.19,
+        2670.21,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        197.19,
+        2687.04,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        197.19,
+        2687.89,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        197.19,
+        2704.72,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        197.19,
+        2705.57,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        197.19,
+        2722.4,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        197.19,
+        2723.25,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        197.19,
+        2740.08,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        197.19,
+        2740.93,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        197.19,
+        2757.76,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        197.19,
+        2827.28,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        197.19,
+        2844.96,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        197.19,
+        2862.64,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        197.19,
+        2880.32,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        197.19,
+        2898.0,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        197.19,
+        2915.68,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        197.19,
+        2933.36,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        197.19,
+        2951.04,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        197.19,
+        3085.17,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        197.19,
+        3102.85,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        197.19,
+        3120.53,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        197.19,
+        3137.36,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        197.19,
+        3138.21,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        197.19,
+        3155.04,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        197.19,
+        3155.89,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        197.19,
+        3172.72,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        197.19,
+        3173.57,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        197.19,
+        3190.4,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        197.19,
+        3191.25,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        197.19,
+        3208.08,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        197.19,
+        3208.93,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        197.19,
+        3225.76,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        1983.96,
+        2222.64,
+        1984.22,
+        2222.9
+      ],
+      "classification": "inside",
+      "macro": "u_rom.g_rom_1024x32_ecc.u_c1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        1995.2,
+        2222.64,
+        1995.46,
+        2222.9
+      ],
+      "classification": "inside",
+      "macro": "u_rom.g_rom_1024x32_ecc.u_c1"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        2097.9,
+        2359.28,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        2097.9,
+        2376.96,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        2097.9,
+        2394.64,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        2097.9,
+        2412.32,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        2097.9,
+        2430.0,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        2097.9,
+        2447.68,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        2097.9,
+        2465.36,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        2097.9,
+        2483.04,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        2097.9,
+        2617.17,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        2097.9,
+        2634.85,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        2097.9,
+        2652.53,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        2097.9,
+        2669.36,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        2097.9,
+        2670.21,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        2097.9,
+        2687.04,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        2097.9,
+        2687.89,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        2097.9,
+        2704.72,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        2097.9,
+        2705.57,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        2097.9,
+        2722.4,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        2097.9,
+        2723.25,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        2097.9,
+        2740.08,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        2097.9,
+        2740.93,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        2097.9,
+        2757.76,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        2097.9,
+        2827.28,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        2097.9,
+        2844.96,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        2097.9,
+        2862.64,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        2097.9,
+        2880.32,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        2097.9,
+        2898.0,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        2097.9,
+        2915.68,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        2097.9,
+        2933.36,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        2097.9,
+        2951.04,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        2097.9,
+        3085.17,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        2097.9,
+        3102.85,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        2097.9,
+        3120.53,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        2097.9,
+        3137.36,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        2097.9,
+        3138.21,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        2097.9,
+        3155.04,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        2097.9,
+        3155.89,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        2097.9,
+        3172.72,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        2097.9,
+        3173.57,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        2097.9,
+        3190.4,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        2097.9,
+        3191.25,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        2097.9,
+        3208.08,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        2097.9,
+        3208.93,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        2097.9,
+        3225.76,
+        2098.16
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        1943.55,
+        2359.28,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        1943.55,
+        2376.96,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        1943.55,
+        2394.64,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        1943.55,
+        2412.32,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        1943.55,
+        2430.0,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        1943.55,
+        2447.68,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        1943.55,
+        2465.36,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        1943.55,
+        2483.04,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        1943.55,
+        2617.17,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        1943.55,
+        2634.85,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        1943.55,
+        2652.53,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        1943.55,
+        2669.36,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        1943.55,
+        2670.21,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        1943.55,
+        2687.04,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        1943.55,
+        2687.89,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        1943.55,
+        2704.72,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        1943.55,
+        2705.57,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        1943.55,
+        2722.4,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        1943.55,
+        2723.25,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        1943.55,
+        2740.08,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        1943.55,
+        2740.93,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        1943.55,
+        2757.76,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        1515.78,
+        2359.28,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        1515.78,
+        2376.96,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        1515.78,
+        2394.64,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        1515.78,
+        2412.32,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        1515.78,
+        2430.0,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        1515.78,
+        2447.68,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        1515.78,
+        2465.36,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        1515.78,
+        2483.04,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        1515.78,
+        2617.17,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        1515.78,
+        2634.85,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        1515.78,
+        2652.53,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        1515.78,
+        2669.36,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        1515.78,
+        2670.21,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        1515.78,
+        2687.04,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        1515.78,
+        2687.89,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        1515.78,
+        2704.72,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        1515.78,
+        2705.57,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        1515.78,
+        2722.4,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        1515.78,
+        2723.25,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        1515.78,
+        2740.08,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        1515.78,
+        2740.93,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        1515.78,
+        2757.76,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        1943.55,
+        2827.28,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        1943.55,
+        2844.96,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        1943.55,
+        2862.64,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        1943.55,
+        2880.32,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        1943.55,
+        2898.0,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        1943.55,
+        2915.68,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        1943.55,
+        2933.36,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        1943.55,
+        2951.04,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        1943.55,
+        3085.17,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        1943.55,
+        3102.85,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        1943.55,
+        3120.53,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        1943.55,
+        3137.36,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        1943.55,
+        3138.21,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        1943.55,
+        3155.04,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        1943.55,
+        3155.89,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        1943.55,
+        3172.72,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        1943.55,
+        3173.57,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        1943.55,
+        3190.4,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        1943.55,
+        3191.25,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        1943.55,
+        3208.08,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        1943.55,
+        3208.93,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        1943.55,
+        3225.76,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2359.02,
+        1361.43,
+        2359.28,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2376.7,
+        1361.43,
+        2376.96,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2394.38,
+        1361.43,
+        2394.64,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2412.06,
+        1361.43,
+        2412.32,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2429.74,
+        1361.43,
+        2430.0,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2447.42,
+        1361.43,
+        2447.68,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2465.1,
+        1361.43,
+        2465.36,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2482.78,
+        1361.43,
+        2483.04,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2616.91,
+        1361.43,
+        2617.17,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2634.59,
+        1361.43,
+        2634.85,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2652.27,
+        1361.43,
+        2652.53,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.1,
+        1361.43,
+        2669.36,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2669.95,
+        1361.43,
+        2670.21,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2686.78,
+        1361.43,
+        2687.04,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2687.63,
+        1361.43,
+        2687.89,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2704.46,
+        1361.43,
+        2704.72,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2705.31,
+        1361.43,
+        2705.57,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.14,
+        1361.43,
+        2722.4,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2722.99,
+        1361.43,
+        2723.25,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2739.82,
+        1361.43,
+        2740.08,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2740.67,
+        1361.43,
+        2740.93,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2757.5,
+        1361.43,
+        2757.76,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        1515.78,
+        2827.28,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        1515.78,
+        2844.96,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        1515.78,
+        2862.64,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        1515.78,
+        2880.32,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        1515.78,
+        2898.0,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        1515.78,
+        2915.68,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        1515.78,
+        2933.36,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        1515.78,
+        2951.04,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        1515.78,
+        3085.17,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        1515.78,
+        3102.85,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        1515.78,
+        3120.53,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        1515.78,
+        3137.36,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        1515.78,
+        3138.21,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        1515.78,
+        3155.04,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        1515.78,
+        3155.89,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        1515.78,
+        3172.72,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        1515.78,
+        3173.57,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        1515.78,
+        3190.4,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        1515.78,
+        3191.25,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        1515.78,
+        3208.08,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        1515.78,
+        3208.93,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        1515.78,
+        3225.76,
+        1516.04
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2827.02,
+        1361.43,
+        2827.28,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2844.7,
+        1361.43,
+        2844.96,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2862.38,
+        1361.43,
+        2862.64,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2880.06,
+        1361.43,
+        2880.32,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2897.74,
+        1361.43,
+        2898.0,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2915.42,
+        1361.43,
+        2915.68,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2933.1,
+        1361.43,
+        2933.36,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        2950.78,
+        1361.43,
+        2951.04,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3084.91,
+        1361.43,
+        3085.17,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3102.59,
+        1361.43,
+        3102.85,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3120.27,
+        1361.43,
+        3120.53,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.1,
+        1361.43,
+        3137.36,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3137.95,
+        1361.43,
+        3138.21,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3154.78,
+        1361.43,
+        3155.04,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3155.63,
+        1361.43,
+        3155.89,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3172.46,
+        1361.43,
+        3172.72,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3173.31,
+        1361.43,
+        3173.57,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.14,
+        1361.43,
+        3190.4,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3190.99,
+        1361.43,
+        3191.25,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3207.82,
+        1361.43,
+        3208.08,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3208.67,
+        1361.43,
+        3208.93,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal2 minimum area < 5760 (M2.d)",
+      "box_um": [
+        3225.5,
+        1361.43,
+        3225.76,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        480.79,
+        60.48,
+        481.13,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        492.81,
+        60.48,
+        493.15,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        531.33,
+        60.48,
+        531.67,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        543.35,
+        60.48,
+        543.69,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        480.79,
+        1787.94,
+        481.13,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        492.81,
+        1787.94,
+        493.15,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        531.33,
+        1787.94,
+        531.67,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        543.35,
+        1787.94,
+        543.69,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1305.43,
+        60.48,
+        1305.77,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1317.45,
+        60.48,
+        1317.79,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1355.97,
+        60.48,
+        1356.31,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1367.99,
+        60.48,
+        1368.33,
+        687.18
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        933.66,
+        2483.165,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        933.66,
+        2510.285,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        933.66,
+        2590.005,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        933.66,
+        2617.125,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        642.6,
+        2483.165,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        642.6,
+        2510.285,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        642.6,
+        2590.005,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        642.6,
+        2617.125,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        351.54,
+        2483.165,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        351.54,
+        2510.285,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        351.54,
+        2590.005,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        351.54,
+        2617.125,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        933.66,
+        2951.165,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        933.66,
+        2978.285,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        933.66,
+        3058.005,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        933.66,
+        3085.125,
+        1070.63
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        642.6,
+        2951.165,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        642.6,
+        2978.285,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        642.6,
+        3058.005,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        642.6,
+        3085.125,
+        779.57
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        351.54,
+        2951.165,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        351.54,
+        2978.285,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        351.54,
+        3058.005,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        351.54,
+        3085.125,
+        488.51
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        60.48,
+        2483.165,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        60.48,
+        2510.285,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        60.48,
+        2590.005,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        60.48,
+        2617.125,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        60.48,
+        2951.165,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        60.48,
+        2978.285,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        60.48,
+        3058.005,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        60.48,
+        3085.125,
+        197.45
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1305.43,
+        1787.94,
+        1305.77,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1317.45,
+        1787.94,
+        1317.79,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1355.97,
+        1787.94,
+        1356.31,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        1367.99,
+        1787.94,
+        1368.33,
+        2414.64
+      ],
+      "classification": "inside",
+      "macro": "u_ram.g_ram_2048x64_ecc.u_b3"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        2097.9,
+        2483.165,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        2097.9,
+        2510.285,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        2097.9,
+        2590.005,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        2097.9,
+        2617.125,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        2097.9,
+        2951.165,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        2097.9,
+        2978.285,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        2097.9,
+        3058.005,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        2097.9,
+        3085.125,
+        2234.87
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        1806.84,
+        2483.165,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        1806.84,
+        2510.285,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        1806.84,
+        2590.005,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        1806.84,
+        2617.125,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        1515.78,
+        2483.165,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        1515.78,
+        2510.285,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        1515.78,
+        2590.005,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        1515.78,
+        2617.125,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2482.825,
+        1224.72,
+        2483.165,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2509.945,
+        1224.72,
+        2510.285,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2589.665,
+        1224.72,
+        2590.005,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2616.785,
+        1224.72,
+        2617.125,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        1806.84,
+        2951.165,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        1806.84,
+        2978.285,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        1806.84,
+        3058.005,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        1806.84,
+        3085.125,
+        1943.81
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        1515.78,
+        2951.165,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        1515.78,
+        2978.285,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        1515.78,
+        3058.005,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        1515.78,
+        3085.125,
+        1652.75
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2950.825,
+        1224.72,
+        2951.165,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        2977.945,
+        1224.72,
+        2978.285,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3057.665,
+        1224.72,
+        3058.005,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    },
+    {
+      "rule": "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)",
+      "box_um": [
+        3084.785,
+        1224.72,
+        3085.125,
+        1361.69
+      ],
+      "classification": "inside",
+      "macro": "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4"
+    }
+  ],
+  "raw_report": "soc_top\n----------------------------------------\nMetal2 minimum area < 5760 (M2.d)\n----------------------------------------\n 1983.960um 251.560um 1984.220um 251.820um\n 1995.200um 251.560um 1995.460um 251.820um\n 2359.020um 933.660um 2359.280um 933.920um\n 2376.700um 933.660um 2376.960um 933.920um\n 2394.380um 933.660um 2394.640um 933.920um\n 2412.060um 933.660um 2412.320um 933.920um\n 2429.740um 933.660um 2430.000um 933.920um\n 2447.420um 933.660um 2447.680um 933.920um\n 2465.100um 933.660um 2465.360um 933.920um\n 2482.780um 933.660um 2483.040um 933.920um\n 2616.910um 933.660um 2617.170um 933.920um\n 2634.590um 933.660um 2634.850um 933.920um\n 2652.270um 933.660um 2652.530um 933.920um\n 2669.100um 933.660um 2669.360um 933.920um\n 2669.950um 933.660um 2670.210um 933.920um\n 2686.780um 933.660um 2687.040um 933.920um\n 2687.630um 933.660um 2687.890um 933.920um\n 2704.460um 933.660um 2704.720um 933.920um\n 2705.310um 933.660um 2705.570um 933.920um\n 2722.140um 933.660um 2722.400um 933.920um\n 2722.990um 933.660um 2723.250um 933.920um\n 2739.820um 933.660um 2740.080um 933.920um\n 2740.670um 933.660um 2740.930um 933.920um\n 2757.500um 933.660um 2757.760um 933.920um\n 2359.020um 779.310um 2359.280um 779.570um\n 2376.700um 779.310um 2376.960um 779.570um\n 2394.380um 779.310um 2394.640um 779.570um\n 2412.060um 779.310um 2412.320um 779.570um\n 2429.740um 779.310um 2430.000um 779.570um\n 2447.420um 779.310um 2447.680um 779.570um\n 2465.100um 779.310um 2465.360um 779.570um\n 2482.780um 779.310um 2483.040um 779.570um\n 2616.910um 779.310um 2617.170um 779.570um\n 2634.590um 779.310um 2634.850um 779.570um\n 2652.270um 779.310um 2652.530um 779.570um\n 2669.100um 779.310um 2669.360um 779.570um\n 2669.950um 779.310um 2670.210um 779.570um\n 2686.780um 779.310um 2687.040um 779.570um\n 2687.630um 779.310um 2687.890um 779.570um\n 2704.460um 779.310um 2704.720um 779.570um\n 2705.310um 779.310um 2705.570um 779.570um\n 2722.140um 779.310um 2722.400um 779.570um\n 2722.990um 779.310um 2723.250um 779.570um\n 2739.820um 779.310um 2740.080um 779.570um\n 2740.670um 779.310um 2740.930um 779.570um\n 2757.500um 779.310um 2757.760um 779.570um\n 2359.020um 351.540um 2359.280um 351.800um\n 2376.700um 351.540um 2376.960um 351.800um\n 2394.380um 351.540um 2394.640um 351.800um\n 2412.060um 351.540um 2412.320um 351.800um\n 2429.740um 351.540um 2430.000um 351.800um\n 2447.420um 351.540um 2447.680um 351.800um\n 2465.100um 351.540um 2465.360um 351.800um\n 2482.780um 351.540um 2483.040um 351.800um\n 2616.910um 351.540um 2617.170um 351.800um\n 2634.590um 351.540um 2634.850um 351.800um\n 2652.270um 351.540um 2652.530um 351.800um\n 2669.100um 351.540um 2669.360um 351.800um\n 2669.950um 351.540um 2670.210um 351.800um\n 2686.780um 351.540um 2687.040um 351.800um\n 2687.630um 351.540um 2687.890um 351.800um\n 2704.460um 351.540um 2704.720um 351.800um\n 2705.310um 351.540um 2705.570um 351.800um\n 2722.140um 351.540um 2722.400um 351.800um\n 2722.990um 351.540um 2723.250um 351.800um\n 2739.820um 351.540um 2740.080um 351.800um\n 2740.670um 351.540um 2740.930um 351.800um\n 2757.500um 351.540um 2757.760um 351.800um\n 2827.020um 933.660um 2827.280um 933.920um\n 2844.700um 933.660um 2844.960um 933.920um\n 2862.380um 933.660um 2862.640um 933.920um\n 2880.060um 933.660um 2880.320um 933.920um\n 2897.740um 933.660um 2898.000um 933.920um\n 2915.420um 933.660um 2915.680um 933.920um\n 2933.100um 933.660um 2933.360um 933.920um\n 2950.780um 933.660um 2951.040um 933.920um\n 3084.910um 933.660um 3085.170um 933.920um\n 3102.590um 933.660um 3102.850um 933.920um\n 3120.270um 933.660um 3120.530um 933.920um\n 3137.100um 933.660um 3137.360um 933.920um\n 3137.950um 933.660um 3138.210um 933.920um\n 3154.780um 933.660um 3155.040um 933.920um\n 3155.630um 933.660um 3155.890um 933.920um\n 3172.460um 933.660um 3172.720um 933.920um\n 3173.310um 933.660um 3173.570um 933.920um\n 3190.140um 933.660um 3190.400um 933.920um\n 3190.990um 933.660um 3191.250um 933.920um\n 3207.820um 933.660um 3208.080um 933.920um\n 3208.670um 933.660um 3208.930um 933.920um\n 3225.500um 933.660um 3225.760um 933.920um\n 2827.020um 779.310um 2827.280um 779.570um\n 2844.700um 779.310um 2844.960um 779.570um\n 2862.380um 779.310um 2862.640um 779.570um\n 2880.060um 779.310um 2880.320um 779.570um\n 2897.740um 779.310um 2898.000um 779.570um\n 2915.420um 779.310um 2915.680um 779.570um\n 2933.100um 779.310um 2933.360um 779.570um\n 2950.780um 779.310um 2951.040um 779.570um\n 3084.910um 779.310um 3085.170um 779.570um\n 3102.590um 779.310um 3102.850um 779.570um\n 3120.270um 779.310um 3120.530um 779.570um\n 3137.100um 779.310um 3137.360um 779.570um\n 3137.950um 779.310um 3138.210um 779.570um\n 3154.780um 779.310um 3155.040um 779.570um\n 3155.630um 779.310um 3155.890um 779.570um\n 3172.460um 779.310um 3172.720um 779.570um\n 3173.310um 779.310um 3173.570um 779.570um\n 3190.140um 779.310um 3190.400um 779.570um\n 3190.990um 779.310um 3191.250um 779.570um\n 3207.820um 779.310um 3208.080um 779.570um\n 3208.670um 779.310um 3208.930um 779.570um\n 3225.500um 779.310um 3225.760um 779.570um\n 2827.020um 351.540um 2827.280um 351.800um\n 2844.700um 351.540um 2844.960um 351.800um\n 2862.380um 351.540um 2862.640um 351.800um\n 2880.060um 351.540um 2880.320um 351.800um\n 2897.740um 351.540um 2898.000um 351.800um\n 2915.420um 351.540um 2915.680um 351.800um\n 2933.100um 351.540um 2933.360um 351.800um\n 2950.780um 351.540um 2951.040um 351.800um\n 3084.910um 351.540um 3085.170um 351.800um\n 3102.590um 351.540um 3102.850um 351.800um\n 3120.270um 351.540um 3120.530um 351.800um\n 3137.100um 351.540um 3137.360um 351.800um\n 3137.950um 351.540um 3138.210um 351.800um\n 3154.780um 351.540um 3155.040um 351.800um\n 3155.630um 351.540um 3155.890um 351.800um\n 3172.460um 351.540um 3172.720um 351.800um\n 3173.310um 351.540um 3173.570um 351.800um\n 3190.140um 351.540um 3190.400um 351.800um\n 3190.990um 351.540um 3191.250um 351.800um\n 3207.820um 351.540um 3208.080um 351.800um\n 3208.670um 351.540um 3208.930um 351.800um\n 3225.500um 351.540um 3225.760um 351.800um\n 2359.020um 197.190um 2359.280um 197.450um\n 2376.700um 197.190um 2376.960um 197.450um\n 2394.380um 197.190um 2394.640um 197.450um\n 2412.060um 197.190um 2412.320um 197.450um\n 2429.740um 197.190um 2430.000um 197.450um\n 2447.420um 197.190um 2447.680um 197.450um\n 2465.100um 197.190um 2465.360um 197.450um\n 2482.780um 197.190um 2483.040um 197.450um\n 2616.910um 197.190um 2617.170um 197.450um\n 2634.590um 197.190um 2634.850um 197.450um\n 2652.270um 197.190um 2652.530um 197.450um\n 2669.100um 197.190um 2669.360um 197.450um\n 2669.950um 197.190um 2670.210um 197.450um\n 2686.780um 197.190um 2687.040um 197.450um\n 2687.630um 197.190um 2687.890um 197.450um\n 2704.460um 197.190um 2704.720um 197.450um\n 2705.310um 197.190um 2705.570um 197.450um\n 2722.140um 197.190um 2722.400um 197.450um\n 2722.990um 197.190um 2723.250um 197.450um\n 2739.820um 197.190um 2740.080um 197.450um\n 2740.670um 197.190um 2740.930um 197.450um\n 2757.500um 197.190um 2757.760um 197.450um\n 2827.020um 197.190um 2827.280um 197.450um\n 2844.700um 197.190um 2844.960um 197.450um\n 2862.380um 197.190um 2862.640um 197.450um\n 2880.060um 197.190um 2880.320um 197.450um\n 2897.740um 197.190um 2898.000um 197.450um\n 2915.420um 197.190um 2915.680um 197.450um\n 2933.100um 197.190um 2933.360um 197.450um\n 2950.780um 197.190um 2951.040um 197.450um\n 3084.910um 197.190um 3085.170um 197.450um\n 3102.590um 197.190um 3102.850um 197.450um\n 3120.270um 197.190um 3120.530um 197.450um\n 3137.100um 197.190um 3137.360um 197.450um\n 3137.950um 197.190um 3138.210um 197.450um\n 3154.780um 197.190um 3155.040um 197.450um\n 3155.630um 197.190um 3155.890um 197.450um\n 3172.460um 197.190um 3172.720um 197.450um\n 3173.310um 197.190um 3173.570um 197.450um\n 3190.140um 197.190um 3190.400um 197.450um\n 3190.990um 197.190um 3191.250um 197.450um\n 3207.820um 197.190um 3208.080um 197.450um\n 3208.670um 197.190um 3208.930um 197.450um\n 3225.500um 197.190um 3225.760um 197.450um\n 1983.960um 2222.640um 1984.220um 2222.900um\n 1995.200um 2222.640um 1995.460um 2222.900um\n 2359.020um 2097.900um 2359.280um 2098.160um\n 2376.700um 2097.900um 2376.960um 2098.160um\n 2394.380um 2097.900um 2394.640um 2098.160um\n 2412.060um 2097.900um 2412.320um 2098.160um\n 2429.740um 2097.900um 2430.000um 2098.160um\n 2447.420um 2097.900um 2447.680um 2098.160um\n 2465.100um 2097.900um 2465.360um 2098.160um\n 2482.780um 2097.900um 2483.040um 2098.160um\n 2616.910um 2097.900um 2617.170um 2098.160um\n 2634.590um 2097.900um 2634.850um 2098.160um\n 2652.270um 2097.900um 2652.530um 2098.160um\n 2669.100um 2097.900um 2669.360um 2098.160um\n 2669.950um 2097.900um 2670.210um 2098.160um\n 2686.780um 2097.900um 2687.040um 2098.160um\n 2687.630um 2097.900um 2687.890um 2098.160um\n 2704.460um 2097.900um 2704.720um 2098.160um\n 2705.310um 2097.900um 2705.570um 2098.160um\n 2722.140um 2097.900um 2722.400um 2098.160um\n 2722.990um 2097.900um 2723.250um 2098.160um\n 2739.820um 2097.900um 2740.080um 2098.160um\n 2740.670um 2097.900um 2740.930um 2098.160um\n 2757.500um 2097.900um 2757.760um 2098.160um\n 2827.020um 2097.900um 2827.280um 2098.160um\n 2844.700um 2097.900um 2844.960um 2098.160um\n 2862.380um 2097.900um 2862.640um 2098.160um\n 2880.060um 2097.900um 2880.320um 2098.160um\n 2897.740um 2097.900um 2898.000um 2098.160um\n 2915.420um 2097.900um 2915.680um 2098.160um\n 2933.100um 2097.900um 2933.360um 2098.160um\n 2950.780um 2097.900um 2951.040um 2098.160um\n 3084.910um 2097.900um 3085.170um 2098.160um\n 3102.590um 2097.900um 3102.850um 2098.160um\n 3120.270um 2097.900um 3120.530um 2098.160um\n 3137.100um 2097.900um 3137.360um 2098.160um\n 3137.950um 2097.900um 3138.210um 2098.160um\n 3154.780um 2097.900um 3155.040um 2098.160um\n 3155.630um 2097.900um 3155.890um 2098.160um\n 3172.460um 2097.900um 3172.720um 2098.160um\n 3173.310um 2097.900um 3173.570um 2098.160um\n 3190.140um 2097.900um 3190.400um 2098.160um\n 3190.990um 2097.900um 3191.250um 2098.160um\n 3207.820um 2097.900um 3208.080um 2098.160um\n 3208.670um 2097.900um 3208.930um 2098.160um\n 3225.500um 2097.900um 3225.760um 2098.160um\n 2359.020um 1943.550um 2359.280um 1943.810um\n 2376.700um 1943.550um 2376.960um 1943.810um\n 2394.380um 1943.550um 2394.640um 1943.810um\n 2412.060um 1943.550um 2412.320um 1943.810um\n 2429.740um 1943.550um 2430.000um 1943.810um\n 2447.420um 1943.550um 2447.680um 1943.810um\n 2465.100um 1943.550um 2465.360um 1943.810um\n 2482.780um 1943.550um 2483.040um 1943.810um\n 2616.910um 1943.550um 2617.170um 1943.810um\n 2634.590um 1943.550um 2634.850um 1943.810um\n 2652.270um 1943.550um 2652.530um 1943.810um\n 2669.100um 1943.550um 2669.360um 1943.810um\n 2669.950um 1943.550um 2670.210um 1943.810um\n 2686.780um 1943.550um 2687.040um 1943.810um\n 2687.630um 1943.550um 2687.890um 1943.810um\n 2704.460um 1943.550um 2704.720um 1943.810um\n 2705.310um 1943.550um 2705.570um 1943.810um\n 2722.140um 1943.550um 2722.400um 1943.810um\n 2722.990um 1943.550um 2723.250um 1943.810um\n 2739.820um 1943.550um 2740.080um 1943.810um\n 2740.670um 1943.550um 2740.930um 1943.810um\n 2757.500um 1943.550um 2757.760um 1943.810um\n 2359.020um 1515.780um 2359.280um 1516.040um\n 2376.700um 1515.780um 2376.960um 1516.040um\n 2394.380um 1515.780um 2394.640um 1516.040um\n 2412.060um 1515.780um 2412.320um 1516.040um\n 2429.740um 1515.780um 2430.000um 1516.040um\n 2447.420um 1515.780um 2447.680um 1516.040um\n 2465.100um 1515.780um 2465.360um 1516.040um\n 2482.780um 1515.780um 2483.040um 1516.040um\n 2616.910um 1515.780um 2617.170um 1516.040um\n 2634.590um 1515.780um 2634.850um 1516.040um\n 2652.270um 1515.780um 2652.530um 1516.040um\n 2669.100um 1515.780um 2669.360um 1516.040um\n 2669.950um 1515.780um 2670.210um 1516.040um\n 2686.780um 1515.780um 2687.040um 1516.040um\n 2687.630um 1515.780um 2687.890um 1516.040um\n 2704.460um 1515.780um 2704.720um 1516.040um\n 2705.310um 1515.780um 2705.570um 1516.040um\n 2722.140um 1515.780um 2722.400um 1516.040um\n 2722.990um 1515.780um 2723.250um 1516.040um\n 2739.820um 1515.780um 2740.080um 1516.040um\n 2740.670um 1515.780um 2740.930um 1516.040um\n 2757.500um 1515.780um 2757.760um 1516.040um\n 2827.020um 1943.550um 2827.280um 1943.810um\n 2844.700um 1943.550um 2844.960um 1943.810um\n 2862.380um 1943.550um 2862.640um 1943.810um\n 2880.060um 1943.550um 2880.320um 1943.810um\n 2897.740um 1943.550um 2898.000um 1943.810um\n 2915.420um 1943.550um 2915.680um 1943.810um\n 2933.100um 1943.550um 2933.360um 1943.810um\n 2950.780um 1943.550um 2951.040um 1943.810um\n 3084.910um 1943.550um 3085.170um 1943.810um\n 3102.590um 1943.550um 3102.850um 1943.810um\n 3120.270um 1943.550um 3120.530um 1943.810um\n 3137.100um 1943.550um 3137.360um 1943.810um\n 3137.950um 1943.550um 3138.210um 1943.810um\n 3154.780um 1943.550um 3155.040um 1943.810um\n 3155.630um 1943.550um 3155.890um 1943.810um\n 3172.460um 1943.550um 3172.720um 1943.810um\n 3173.310um 1943.550um 3173.570um 1943.810um\n 3190.140um 1943.550um 3190.400um 1943.810um\n 3190.990um 1943.550um 3191.250um 1943.810um\n 3207.820um 1943.550um 3208.080um 1943.810um\n 3208.670um 1943.550um 3208.930um 1943.810um\n 3225.500um 1943.550um 3225.760um 1943.810um\n 2359.020um 1361.430um 2359.280um 1361.690um\n 2376.700um 1361.430um 2376.960um 1361.690um\n 2394.380um 1361.430um 2394.640um 1361.690um\n 2412.060um 1361.430um 2412.320um 1361.690um\n 2429.740um 1361.430um 2430.000um 1361.690um\n 2447.420um 1361.430um 2447.680um 1361.690um\n 2465.100um 1361.430um 2465.360um 1361.690um\n 2482.780um 1361.430um 2483.040um 1361.690um\n 2616.910um 1361.430um 2617.170um 1361.690um\n 2634.590um 1361.430um 2634.850um 1361.690um\n 2652.270um 1361.430um 2652.530um 1361.690um\n 2669.100um 1361.430um 2669.360um 1361.690um\n 2669.950um 1361.430um 2670.210um 1361.690um\n 2686.780um 1361.430um 2687.040um 1361.690um\n 2687.630um 1361.430um 2687.890um 1361.690um\n 2704.460um 1361.430um 2704.720um 1361.690um\n 2705.310um 1361.430um 2705.570um 1361.690um\n 2722.140um 1361.430um 2722.400um 1361.690um\n 2722.990um 1361.430um 2723.250um 1361.690um\n 2739.820um 1361.430um 2740.080um 1361.690um\n 2740.670um 1361.430um 2740.930um 1361.690um\n 2757.500um 1361.430um 2757.760um 1361.690um\n 2827.020um 1515.780um 2827.280um 1516.040um\n 2844.700um 1515.780um 2844.960um 1516.040um\n 2862.380um 1515.780um 2862.640um 1516.040um\n 2880.060um 1515.780um 2880.320um 1516.040um\n 2897.740um 1515.780um 2898.000um 1516.040um\n 2915.420um 1515.780um 2915.680um 1516.040um\n 2933.100um 1515.780um 2933.360um 1516.040um\n 2950.780um 1515.780um 2951.040um 1516.040um\n 3084.910um 1515.780um 3085.170um 1516.040um\n 3102.590um 1515.780um 3102.850um 1516.040um\n 3120.270um 1515.780um 3120.530um 1516.040um\n 3137.100um 1515.780um 3137.360um 1516.040um\n 3137.950um 1515.780um 3138.210um 1516.040um\n 3154.780um 1515.780um 3155.040um 1516.040um\n 3155.630um 1515.780um 3155.890um 1516.040um\n 3172.460um 1515.780um 3172.720um 1516.040um\n 3173.310um 1515.780um 3173.570um 1516.040um\n 3190.140um 1515.780um 3190.400um 1516.040um\n 3190.990um 1515.780um 3191.250um 1516.040um\n 3207.820um 1515.780um 3208.080um 1516.040um\n 3208.670um 1515.780um 3208.930um 1516.040um\n 3225.500um 1515.780um 3225.760um 1516.040um\n 2827.020um 1361.430um 2827.280um 1361.690um\n 2844.700um 1361.430um 2844.960um 1361.690um\n 2862.380um 1361.430um 2862.640um 1361.690um\n 2880.060um 1361.430um 2880.320um 1361.690um\n 2897.740um 1361.430um 2898.000um 1361.690um\n 2915.420um 1361.430um 2915.680um 1361.690um\n 2933.100um 1361.430um 2933.360um 1361.690um\n 2950.780um 1361.430um 2951.040um 1361.690um\n 3084.910um 1361.430um 3085.170um 1361.690um\n 3102.590um 1361.430um 3102.850um 1361.690um\n 3120.270um 1361.430um 3120.530um 1361.690um\n 3137.100um 1361.430um 3137.360um 1361.690um\n 3137.950um 1361.430um 3138.210um 1361.690um\n 3154.780um 1361.430um 3155.040um 1361.690um\n 3155.630um 1361.430um 3155.890um 1361.690um\n 3172.460um 1361.430um 3172.720um 1361.690um\n 3173.310um 1361.430um 3173.570um 1361.690um\n 3190.140um 1361.430um 3190.400um 1361.690um\n 3190.990um 1361.430um 3191.250um 1361.690um\n 3207.820um 1361.430um 3208.080um 1361.690um\n 3208.670um 1361.430um 3208.930um 1361.690um\n 3225.500um 1361.430um 3225.760um 1361.690um\n----------------------------------------\nMetal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)\n----------------------------------------\n 480.790um 60.480um 481.130um 687.180um\n 492.810um 60.480um 493.150um 687.180um\n 531.330um 60.480um 531.670um 687.180um\n 543.350um 60.480um 543.690um 687.180um\n 480.790um 1787.940um 481.130um 2414.640um\n 492.810um 1787.940um 493.150um 2414.640um\n 531.330um 1787.940um 531.670um 2414.640um\n 543.350um 1787.940um 543.690um 2414.640um\n 1305.430um 60.480um 1305.770um 687.180um\n 1317.450um 60.480um 1317.790um 687.180um\n 1355.970um 60.480um 1356.310um 687.180um\n 1367.990um 60.480um 1368.330um 687.180um\n 2482.825um 933.660um 2483.165um 1070.630um\n 2509.945um 933.660um 2510.285um 1070.630um\n 2589.665um 933.660um 2590.005um 1070.630um\n 2616.785um 933.660um 2617.125um 1070.630um\n 2482.825um 642.600um 2483.165um 779.570um\n 2509.945um 642.600um 2510.285um 779.570um\n 2589.665um 642.600um 2590.005um 779.570um\n 2616.785um 642.600um 2617.125um 779.570um\n 2482.825um 351.540um 2483.165um 488.510um\n 2509.945um 351.540um 2510.285um 488.510um\n 2589.665um 351.540um 2590.005um 488.510um\n 2616.785um 351.540um 2617.125um 488.510um\n 2950.825um 933.660um 2951.165um 1070.630um\n 2977.945um 933.660um 2978.285um 1070.630um\n 3057.665um 933.660um 3058.005um 1070.630um\n 3084.785um 933.660um 3085.125um 1070.630um\n 2950.825um 642.600um 2951.165um 779.570um\n 2977.945um 642.600um 2978.285um 779.570um\n 3057.665um 642.600um 3058.005um 779.570um\n 3084.785um 642.600um 3085.125um 779.570um\n 2950.825um 351.540um 2951.165um 488.510um\n 2977.945um 351.540um 2978.285um 488.510um\n 3057.665um 351.540um 3058.005um 488.510um\n 3084.785um 351.540um 3085.125um 488.510um\n 2482.825um 60.480um 2483.165um 197.450um\n 2509.945um 60.480um 2510.285um 197.450um\n 2589.665um 60.480um 2590.005um 197.450um\n 2616.785um 60.480um 2617.125um 197.450um\n 2950.825um 60.480um 2951.165um 197.450um\n 2977.945um 60.480um 2978.285um 197.450um\n 3057.665um 60.480um 3058.005um 197.450um\n 3084.785um 60.480um 3085.125um 197.450um\n 1305.430um 1787.940um 1305.770um 2414.640um\n 1317.450um 1787.940um 1317.790um 2414.640um\n 1355.970um 1787.940um 1356.310um 2414.640um\n 1367.990um 1787.940um 1368.330um 2414.640um\n 2482.825um 2097.900um 2483.165um 2234.870um\n 2509.945um 2097.900um 2510.285um 2234.870um\n 2589.665um 2097.900um 2590.005um 2234.870um\n 2616.785um 2097.900um 2617.125um 2234.870um\n 2950.825um 2097.900um 2951.165um 2234.870um\n 2977.945um 2097.900um 2978.285um 2234.870um\n 3057.665um 2097.900um 3058.005um 2234.870um\n 3084.785um 2097.900um 3085.125um 2234.870um\n 2482.825um 1806.840um 2483.165um 1943.810um\n 2509.945um 1806.840um 2510.285um 1943.810um\n 2589.665um 1806.840um 2590.005um 1943.810um\n 2616.785um 1806.840um 2617.125um 1943.810um\n 2482.825um 1515.780um 2483.165um 1652.750um\n 2509.945um 1515.780um 2510.285um 1652.750um\n 2589.665um 1515.780um 2590.005um 1652.750um\n 2616.785um 1515.780um 2617.125um 1652.750um\n 2482.825um 1224.720um 2483.165um 1361.690um\n 2509.945um 1224.720um 2510.285um 1361.690um\n 2589.665um 1224.720um 2590.005um 1361.690um\n 2616.785um 1224.720um 2617.125um 1361.690um\n 2950.825um 1806.840um 2951.165um 1943.810um\n 2977.945um 1806.840um 2978.285um 1943.810um\n 3057.665um 1806.840um 3058.005um 1943.810um\n 3084.785um 1806.840um 3085.125um 1943.810um\n 2950.825um 1515.780um 2951.165um 1652.750um\n 2977.945um 1515.780um 2978.285um 1652.750um\n 3057.665um 1515.780um 3058.005um 1652.750um\n 3084.785um 1515.780um 3085.125um 1652.750um\n 2950.825um 1224.720um 2951.165um 1361.690um\n 2977.945um 1224.720um 2978.285um 1361.690um\n 3057.665um 1224.720um 3058.005um 1361.690um\n 3084.785um 1224.720um 3085.125um 1361.690um\n----------------------------------------\n[INFO] COUNT: 436\n[INFO] Should be divided by 3 or 4\n\n",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/COMMANDS",
+      "sha256": "29a05fb9ce705fe1bddcfcc190ac181fb28f18c7aa2b73b342d13aa8dcd922a9",
+      "bytes": 291
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/config.json",
+      "sha256": "cba8a30c10c745b4ebaf765636fea0d5185b397d0c7cf273070ed5c5af213a9a",
+      "bytes": 20431
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/state_out.json",
+      "sha256": "d3900ea7231cbcff7368a373f84ff813b8607b6de0c305c6d8d4b47bf2a7d956",
+      "bytes": 1434
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/magic-drc.log",
+      "sha256": "d358bf4b36099b46f64a31e98539d9a2225db488fb63de279ccbb49c8b6190a7",
+      "bytes": 9030
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/reports/drc.magic.rpt",
+      "sha256": "8f02a67e108a4812202e0fabb5c19c4b6df2408cb0484b16755305bed0d42ab5",
+      "bytes": 19538
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step/reports/drc.magic.lyrdb",
+      "sha256": "ea024dd1078db6cdefd88159738499430197a35fa008a064bdb61d1f7a96548b",
+      "bytes": 111464
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/soc_top.def",
+      "sha256": "415772700565f68377bc8230a7fca06a8c0290be2aaad48ea9472f6a7d47c9cf",
+      "bytes": 115875292
+    },
+    {
+      "path": "hw/soc/pnr/runs/halo-layer-lift3-stream-20260920/01-magic-streamout/soc_top.gds",
+      "sha256": "d89ee3c06afacb062de828d9e0f332fe603937297ebea85359d30fa627581c7a",
+      "bytes": 172234418
+    },
+    {
+      "path": "$HOME/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/magic/ihp-sg13g2.tech",
+      "sha256": "5ce21ab6a4c487d9115fe42d289af5fa0ba1612c4c2f5a3c9cc153fffbd1a967",
+      "bytes": 21937
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/halo-lift3-magic-restart1-single-step-supervisor.json",
+      "sha256": "8665d8dd664055f06153060d3a71a136ef418980b5241607aecb87a046fc6b01",
+      "bytes": 2532
+    }
+  ],
+  "interpretation": "All remaining markers must be investigated. Zero outside markers closes the measured old-image routing-halo experiment only; upstream KLayout on real GDS and Magic on DEF/LEF are different representations. Macro-interior geometric/LVS and current whole-SoC physical acceptance remain open.",
+  "path_convention": "Repository-relative paths; $HOME denotes the original user home. Artifact byte hashes are unchanged."
+}

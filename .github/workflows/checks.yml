@@ -178,6 +178,8 @@ jobs:
           hw/.venv/bin/pip install -r hw/requirements.txt
       - name: Compare array and native SRAM models, including a negative control
         run: bash scripts/check_soc_memory_parity.sh
+      - name: Mapped UART serial contracts with untouched IHP cell models
+        run: bash scripts/check_uart_native.sh
       - name: Retain every parity result
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -187,6 +189,11 @@ jobs:
             hw/soc/out/memory-parity/**/*.log
             hw/soc/out/memory-parity/**/*.json
             hw/soc/out/memory-parity/**/*.xml
+            hw/soc/out/uart-native/**/*.log
+            hw/soc/out/uart-native/**/*.json
+            hw/soc/out/uart-native/**/*.xml
+            hw/soc/out/uart-native/netlist.v
+            hw/soc/out/uart-native/area.rpt
           retention-days: 30
 
   rtl:
@@ -304,6 +311,12 @@ jobs:
           SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
             SW_DEFINES=-DETHERNET_DEMO \
             bash hw/soc/flow/sim_soc.sh hw/soc/out/ethernet-demo
+      - name: CPU UART reception, WFI and corrupted serial data control
+        run: |
+          python3 hw/soc/flow/uart_rx_probe.py --prepare hw/soc/out/uart-rx
+          bash hw/soc/out/uart-rx/run_rtl.sh
+          python3 hw/soc/flow/uart_rx_probe.py --prepare hw/soc/out/uart-rx-negative --corrupt-byte
+          bash hw/soc/out/uart-rx-negative/run_rtl.sh
       - name: APB timeout, retained telemetry and NPU reset proofs
         run: make -C hw/soc/formal busstat apb npu
       - name: Whole-SoC stalled peripheral and crash recovery

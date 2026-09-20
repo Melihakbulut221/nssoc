@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
-// Console UART, transmit only, on the peripheral bus.
+// Console UART, 8N1 transmit and receive, on the peripheral bus.
 //
 // Register map mirrored from GRLIB's APBUART (grip.pdf table 126, quoted
 // in docs/08-gr801-datasheet-notes.md section 2.5 and adopted by section
@@ -10,15 +10,17 @@
 // WHAT IS IMPLEMENTED AND WHAT IS NOT. This is a subset and the omitted
 // parts are omitted, not stubbed silently:
 //
-//   * Transmit only. There is no receiver. STATUS.DR reads 0 forever,
-//     CTRL.RE is read-only zero, and a read of the data register returns
-//     zero. A driver that waits for DR will wait forever, which is the
-//     correct behaviour for a part with no receiver and is better than a
-//     receiver that appears to exist.
+//   * One receive holding byte. DATA reads consume it only in APB ACCESS.
+//     DR reports occupancy; RI gates its level interrupt. Overrun retains
+//     the unread byte. Framing errors discard the invalid byte and set FE.
+//     OV/FE are sticky write-zero-to-clear; a new error wins over that clear.
+//     Interrupts are project-specific levels, not GRLIB holding events.
+//     Disabling RE aborts the partial frame but preserves unread data.
 //   * One holding register, not a FIFO. GRLIB's TE ("transmitter FIFO
 //     empty") and TS ("shift register empty") therefore differ by one
-//     byte rather than by a FIFO depth. TF ("FIFO full") is the holding
-//     register being occupied.
+//     byte rather than by a FIFO depth. The legacy project bit-7 flag
+//     means holding-full; GRLIB names bit 7 TH and bit 9 TF. This is not
+//     a fully compatible APBUART implementation (docs/97).
 //   * No parity, 8 data bits, one stop bit. GRLIB's parity control bits
 //     are not implemented and read as zero.
 //   * FIFO debug registers (0x10, 0x14) and the capability register
@@ -39,6 +41,7 @@
 // section 2.3).
 
 `timescale 1ns / 1ps
+`default_nettype none
 
 module soc_uart (
     input  wire        clk_i,
@@ -54,6 +57,7 @@ module soc_uart (
     output wire        pready_o,
     output wire        pslverr_o,
 
+    input  wire        rx_i,
     output wire        tx_o,
     output wire        irq_o
 );
@@ -74,6 +78,8 @@ module soc_uart (
   // ---- control and scaler ----
   reg        ctrl_te;      // transmitter enable, CTRL bit 1
   reg        ctrl_ti;      // transmitter interrupt enable, CTRL bit 3
+  reg        ctrl_re;      // receiver enable, CTRL bit 0
+  reg        ctrl_ri;      // receiver interrupt enable, CTRL bit 2
   reg [11:0] scaler;
 
   // ---- holding register and shifter ----
@@ -88,13 +94,27 @@ module soc_uart (
   wire       scaler_tick = (scaler_cnt == 12'd0);
   wire       bit_tick    = scaler_tick && (ovs_cnt == 3'd7);
 
+  reg rx_meta, rx_sync;
+  reg [7:0] rx_shift, rx_data;
+  reg rx_full, rx_overrun, rx_frame_error, rx_armed;
+  reg [2:0] rx_state, rx_bit;
+  reg [15:0] rx_timer, rx_period;
+  localparam [2:0] RX_IDLE = 3'd0, RX_START = 3'd1,
+                   RX_DATA = 3'd2, RX_STOP = 3'd3, RX_WAIT_HIGH = 3'd4;
+  wire rx_pop = access && !pwrite_i && paddr_i == REG_DATA;
+  wire rx_disable = !ctrl_re || (wr && paddr_i == REG_CTRL && !pwdata_i[0]);
+
+
   assign tx_o  = busy ? shifter[0] : 1'b1;   // idle line is high
-  assign irq_o = ctrl_ti && !thr_full;
+  assign irq_o = (ctrl_ti && !thr_full) ||
+                 (ctrl_ri && (rx_full || rx_overrun || rx_frame_error));
 
   always @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       ctrl_te    <= 1'b0;
       ctrl_ti    <= 1'b0;
+      ctrl_re    <= 1'b0;
+      ctrl_ri    <= 1'b0;
       scaler     <= 12'd0;
       thr        <= 8'h0;
       thr_full   <= 1'b0;
@@ -176,7 +196,9 @@ module soc_uart (
             thr_full <= 1'b1;
           end
           REG_CTRL: begin
+            ctrl_re <= pwdata_i[0];
             ctrl_te <= pwdata_i[1];
+            ctrl_ri <= pwdata_i[2];
             ctrl_ti <= pwdata_i[3];
           end
           REG_SCALER: scaler <= pwdata_i[11:0];
@@ -186,24 +208,118 @@ module soc_uart (
     end
   end
 
+  // Independent receive timing: two-flop synchronizer, start-bit midpoint
+  // validation, then eight midpoint samples and the stop-bit midpoint.
+  // The divider is latched per frame so a software scaler write cannot
+  // move a sample in an in-flight frame. No majority filter or parity.
+
+  always @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      rx_meta <= 1'b1;
+      rx_sync <= 1'b1;
+    end else begin
+      rx_meta <= rx_i;
+      rx_sync <= rx_meta;
+    end
+  end
+
+  always @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      rx_shift <= 8'd0;
+      rx_data <= 8'd0;
+      rx_full <= 1'b0;
+      rx_overrun <= 1'b0;
+      rx_frame_error <= 1'b0;
+      rx_armed <= 1'b0;
+      rx_state <= RX_IDLE;
+      rx_bit <= 3'd0;
+      rx_timer <= 16'd0;
+      rx_period <= 16'd8;
+    end else begin
+      if (rx_pop) rx_full <= 1'b0;
+      if (wr && paddr_i == REG_STATUS) begin
+        rx_overrun <= rx_overrun && pwdata_i[4];
+        rx_frame_error <= rx_frame_error && pwdata_i[6];
+      end
+      if (rx_disable) begin
+        rx_state <= RX_IDLE;
+        rx_armed <= 1'b0;
+        rx_timer <= 16'd0;
+      end else begin
+        case (rx_state)
+          RX_IDLE: begin
+            if (rx_sync) rx_armed <= 1'b1;
+            if (rx_armed && !rx_sync) begin
+              rx_period <= {1'b0, scaler, 3'b000} + 16'd8;
+              rx_timer <= {2'b00, scaler, 2'b00} + 16'd3;
+              rx_state <= RX_START;
+              rx_armed <= 1'b0;
+            end
+          end
+          RX_WAIT_HIGH: if (rx_sync) begin
+            rx_state <= RX_IDLE;
+            rx_armed <= 1'b1;
+          end
+          default: begin
+            if (rx_timer != 16'd0) rx_timer <= rx_timer - 16'd1;
+            else begin
+              rx_timer <= rx_period - 16'd1;
+              case (rx_state)
+                RX_START: begin
+                  if (rx_sync) begin
+                    rx_state <= RX_IDLE; // Short low pulse, not a frame.
+                    rx_armed <= 1'b1;
+                  end else begin
+                    rx_bit <= 3'd0;
+                    rx_state <= RX_DATA;
+                  end
+                end
+                RX_DATA: begin
+                  rx_shift[rx_bit] <= rx_sync;
+                  rx_bit <= rx_bit + 3'd1;
+                  if (rx_bit == 3'd7) rx_state <= RX_STOP;
+                end
+                RX_STOP: begin
+                  if (!rx_sync) rx_frame_error <= 1'b1;
+                  else if (rx_full && !rx_pop) rx_overrun <= 1'b1;
+                  else begin
+                    rx_data <= rx_shift;
+                    rx_full <= 1'b1; // New byte wins over a simultaneous read.
+                  end
+                  rx_state <= rx_sync ? RX_IDLE : RX_WAIT_HIGH;
+                  rx_armed <= rx_sync;
+                end
+                default: begin rx_state <= RX_IDLE; rx_armed <= 1'b0; end
+              endcase
+            end
+          end
+        endcase
+      end
+    end
+  end
+
   // ---- register reads ----
   //
-  // STATUS bit positions are GRLIB's: 0 DR, 1 TS, 2 TE, 7 TF. The bits
+  // STATUS uses DR/TS/TE/OV/FE and the legacy bit-7 holding-full flag. Bits
   // this part does not implement read as zero rather than as a plausible
   // value.
   always @(*) begin
     case (paddr_i)
-      REG_DATA:   prdata_o = 32'h0;                       // no receiver
+      REG_DATA:   prdata_o = {24'h0, rx_full ? rx_data : 8'h0};
       REG_STATUS: prdata_o = {24'h0,
-                              thr_full,                   // 7 TF
-                              4'h0,                       // 6..3
+                              thr_full,                   // 7 legacy holding-full
+                              rx_frame_error,             // 6 FE
+                              1'b0,                       // 5 PE unsupported
+                              rx_overrun,                 // 4 OV
+                              1'b0,                       // 3 BR unsupported
                               ~thr_full,                  // 2 TE
                               ~(busy || thr_full),        // 1 TS
-                              1'b0};                      // 0 DR
-      REG_CTRL:   prdata_o = {28'h0, ctrl_ti, 1'b0, ctrl_te, 1'b0};
+                              rx_full};                   // 0 DR
+      REG_CTRL:   prdata_o = {28'h0, ctrl_ti, ctrl_ri, ctrl_te, ctrl_re};
       REG_SCALER: prdata_o = {20'h0, scaler};
       default:    prdata_o = 32'h0;
     endcase
   end
 
 endmodule
+`default_nettype wire

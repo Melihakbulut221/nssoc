@@ -217,6 +217,7 @@ module tb_soc_fi_gl;
 `endif
       .wdog_dis_i (wdog_dis),
       .strap_i    (4'h0),
+      .uart_rx_i  (1'b1),
       .uart_tx_o  (uart_tx),
       .uart_irq_o (uart_irq),
       .gpio_i     (16'h0000),

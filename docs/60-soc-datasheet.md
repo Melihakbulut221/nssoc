@@ -12,6 +12,15 @@ flow.
 Revision 0.2, 14 September 2026 (0.1 issued 3 September 2026). Status: **preliminary, pre-silicon,
 pre-sign-off**.
 
+**21 September 2026 interface update:** UART0 now implements 8N1 reception
+through `uart_rx_i`, including data-ready/overrun/framing status and fast-line-0
+interrupts. [The current register and validation contract](97-uart-receive.md)
+supersedes the transmit-only UART descriptions below. Their 52-flop area and
+old port inventory describe earlier revisions. SpaceWire/CAN/SPI/I2C/Ethernet,
+logic-ROM boot and external interrupts also have later implementations tracked
+in [the current acceptance register](92-product-acceptance.md); the historical
+tables below must not be used as the current whole-device feature/pin list.
+
 ---
 
 ## 0. Read this page before any number in this document
@@ -835,8 +844,11 @@ fault-injection records correctly.
 ### 5.8 Console UART (`hw/soc/rtl/soc_uart.v`)
 
 GRLIB APBUART register map at slot `0x000` (`0xFF900000`), source
-number 2, fast line 0. **Transmit only.** 241 cells, 52 flip-flops,
-4,359.7764 um2 **[measured, `docs/45` section 6.2]**.
+number 2, fast line 0. The historical transmit-only design measured 241 cells,
+52 flip-flops and 4,359.7764 um2 in `docs/45` section 6.2. The current
+[8N1 TX/RX contract](97-uart-receive.md) adds a receive holding register,
+start/stop validation, overrun/framing flags and a receive interrupt enable.
+That change is not included in the historical area or layout measurements.
 
 ### 5.9 Device tables (`hw/soc/rtl/soc_pnp.v`, `soc_apb_pnp.v`)
 
@@ -2579,7 +2591,6 @@ if that stops being true. **This document modifies nothing.**
 | `docs/54-klayout-deck-and-the-macro.md` | The 2,316 examined, and the second exit closed |
 | `hw/soc/rtl/`, `hw/rtl/` | Behaviour, single source of truth |
 | `sw/golden/` | The bit-exact executable specification |
-
 
 
 

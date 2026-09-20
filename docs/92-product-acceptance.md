@@ -531,3 +531,19 @@ three corners, zero slew violations at typical/slow and one at fast, but slow
 setup is **-2.750971 ns** and fast hold **-0.363958 ns**. Sizing improves electrical
 counts while worsening the earlier setup result, so none is accepted as final
 closure. These are global-route RC estimates, not extracted signoff.
+
+
+**Measured update, 2026-09-21:** the [completed native Magic check of the
+third halo repair](evidence/halo-lift3-magic-20260921.json) reports **436
+inside-macro, zero straddling and zero outside markers**. The complete set of
+436 inside boxes, rules and macro instances is identical to the original
+baseline. The measured outside routing problem has therefore been removed
+from this old 24-SRAM candidate without changing the deck. Total Magic DRC
+still fails. This run consumes DEF and macro LEF abstracts; the independent
+upstream KLayout pass consumes real GDS. Neither result waives the macro
+errors, SRAM-interior LVS, final timing, or reimplementation of current RTL.
+
+UART now has [8N1 reception and a specified software contract](97-uart-receive.md).
+Block serial/APB tests and real-Ibex receive/IRQ/WFI tests cover the new
+function. Its new `uart_rx_i` port and logic still require integration into
+the final whole-SoC routed image and physical acceptance.

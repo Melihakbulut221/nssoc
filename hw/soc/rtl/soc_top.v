@@ -252,6 +252,7 @@ module soc_top #(
     // tb_soc.v ties them to the board's configuration.
     input  wire [BOOT_NSTRAP-1:0] strap_i,
 
+    input  wire        uart_rx_i,
     output wire        uart_tx_o,
     output wire        uart_irq_o,
 
@@ -458,13 +459,10 @@ module soc_top #(
   // level-sensitive, and a floating one would be an interrupt whose
   // source does not exist.
   //
-  // The UART's line is connected here for the first time. Note what its
-  // interrupt MEANS: soc_uart.v raises it whenever the transmit holding
-  // register is empty and CTRL.TI is set, which is GRLIB's
-  // transmitter-ready semantics -- a LEVEL that is high almost always.
-  // Software that sets TI without a handler that clears it gets an
-  // interrupt storm, and the bring-up program deliberately never sets
-  // it.
+  // UART is a level: TI with an empty TX holding register, or RI with
+  // unread RX data / sticky OV or FE. Consume data and clear errors before
+  // re-enabling the CPU interrupt. GRLIB holding-register event interrupts
+  // are not this project's level ABI; docs/97 states the compatibility limit.
   // -------------------------------------------------------------------
   reg [14:0] irq_fast;
   always @(*) begin
@@ -931,7 +929,7 @@ module soc_top #(
       .pwrite_i (pwrite), .pwdata_i (pwdata),
       .prdata_o (prdata_uart0), .pready_o (pready_uart0),
       .pslverr_o (pslverr_uart0),
-      .tx_o (uart_tx_o), .irq_o (uart_irq)
+      .rx_i (uart_rx_i), .tx_o (uart_tx_o), .irq_o (uart_irq)
   );
 
   // The GPIO port, docs/65. GRGPIO's register map (grip.pdf table 923)

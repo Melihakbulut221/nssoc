@@ -3,6 +3,10 @@
 
 """soc_uart suite: the console UART, driven against what is written down.
 
+2026-09-21: RX is now implemented and covered by test_soc_uart_rx.py.
+This suite retains the TX/APB regression; the following motivation describes
+the historical first test addition, not the current verification inventory.
+
 WHY THIS SUITE EXISTS AND WHAT RAN BEFORE IT
 --------------------------------------------
 soc_uart.v is the oldest peripheral in hw/soc/rtl and had no simulation
@@ -50,15 +54,15 @@ WHERE THE EXPECTATIONS COME FROM
   * sw/golden/memmap_gen.py, generated from regmap/memmap.yaml, for the
     slot and the interrupt line. No address literal for the block's base
     appears below.
-  * soc_uart.v's own header for the SUBSET it declares -- transmit only,
+  * soc_uart.v's own header for the TX subset tested here --
     one holding register rather than a FIFO, no parity, no FIFO-debug or
     capability registers, PREADY tied high and PSLVERR tied low. Those
     are the design's stated choices; this suite checks the part reports
     them truthfully, which is a different thing from checking the choices
     are right.
 
-WHAT THIS SUITE COULD NOT CHECK, AND SAYS SO
---------------------------------------------
+HISTORICAL SOURCE LIMIT (superseded by docs/97, 2026-09-21)
+-------------------------------------------------------
 grip.pdf is not in this repository. The OFFSETS are attested by docs/08
 section 2.5, but the BIT POSITIONS inside STATUS (0 DR, 1 TS, 2 TE, 7 TF)
 and inside CTRL (1 TE, 3 TI) appear in this tree only in soc_uart.v's own
@@ -70,8 +74,8 @@ that looks like it checked and did not.
 
 WHAT THIS SUITE DOES NOT COVER
 ------------------------------
-  * A receiver. There is none. DR is checked to stay zero and a read of
-    DATA to return zero, which is the whole of the receive story.
+  * Active reception: test_soc_uart_rx.py covers it separately. Here RX
+    stays idle high, so DR and received DATA must stay zero.
   * Parity, other frame formats, break detection, flow control, and the
     FIFO-debug and capability registers. All absent by declaration; the
     suite checks the registers read zero, not that the features would
@@ -83,7 +87,7 @@ WHAT THIS SUITE DOES NOT COVER
     it lands on fast line 0 and vectors at mtvec+0x40 is a whole-SoC
     question and the map assertion at the end is the only part of it
     checked here.
-  * Any fault model. This block is unprotected: 52 flip-flops with no
+  * Any fault model. The historical TX block had 52 flip-flops with no
     ECC, no TMR and no parity, and a single event upset in the shifter
     corrupts a console character silently. docs/60 section 5.8 records
     the cell count; nothing in this file is a hardening claim.
@@ -116,9 +120,9 @@ ST_TS = 1 << 1
 ST_TE = 1 << 2
 ST_TF = 1 << 7
 
-# CTRL bit positions, same source. RE (bit 0) is the receiver enable this
-# part does not implement.
+# CTRL bit positions; RE/RI are now implemented by the receive path.
 CT_RE = 1 << 0
+CT_RI = 1 << 2
 CT_TE = 1 << 1
 CT_TI = 1 << 3
 
@@ -156,6 +160,7 @@ async def setup(dut):
     """
     cocotb.start_soon(Clock(dut.clk_i, CLK_NS, units="ns").start())
     dut.rst_ni.value = 0
+    dut.rx_i.value = 1
     dut.psel_i.value = 0
     dut.penable_i.value = 0
     dut.paddr_i.value = 0
@@ -330,15 +335,14 @@ async def test_the_write_path_stores_the_implemented_bits_and_drops_the_rest(dut
 
     All ones is written to each register and read back, so a bit that is
     stored but not declared shows up as a read-back the specification
-    does not allow. RE (bit 0) is the receiver enable of a part with no
-    receiver: writing it must not make it appear to exist.
+    does not allow. The supported control bits are RE, TE, RI and TI.
     """
     await setup(dut)
     await apb_write(dut, CTRL, 0xFFFFFFFF)
     ctrl = await apb_read(dut, CTRL)
-    assert ctrl == (CT_TE | CT_TI), \
-        "CTRL read back {:#x}, expected only TE and TI".format(ctrl)
-    assert ctrl & CT_RE == 0, "CTRL.RE is set on a part with no receiver"
+    assert ctrl == (CT_RE | CT_TE | CT_RI | CT_TI), \
+        "CTRL read back {:#x}, expected RE, TE, RI and TI".format(ctrl)
+    assert ctrl & CT_RE, "CTRL.RE did not enable the receiver"
 
     await apb_write(dut, SCALER, 0xFFFFFFFF)
     assert await apb_read(dut, SCALER) == SCALER_MASK, \
@@ -711,25 +715,16 @@ async def test_a_byte_written_over_a_full_holding_register_replaces_it(dut):
 
 
 @cocotb.test()
-async def test_the_receiver_that_is_not_there_never_appears(dut):
-    """soc_uart.v header: "STATUS.DR reads 0 forever, CTRL.RE is
-    read-only zero, and a read of the data register returns zero. A
-    driver that waits for DR will wait forever, which is the correct
-    behaviour for a part with no receiver and is better than a receiver
-    that appears to exist."
-
-    Held to that through a whole transmitted frame, because the plausible
-    defect is a DATA register that reads back the byte last written to it
-    -- which is what a loopback test would then appear to prove.
-    """
+async def test_idle_receiver_never_mirrors_the_transmit_data(dut):
+    """RX held high must not fabricate data from DATA writes to the TX side."""
     await setup(dut)
     await apb_write(dut, CTRL, 0xFFFFFFFF)
-    assert await apb_read(dut, CTRL) & CT_RE == 0
+    assert await apb_read(dut, CTRL) & CT_RE
     await apb_write(dut, SCALER, 0)
     await apb_write(dut, DATA, 0xC3)
     for _ in range(12):
         assert await apb_read(dut, DATA) == 0, \
-            "DATA read back the byte written to it: this part has no receiver"
+            "DATA read back the TX byte while RX stayed idle"
         assert await apb_read(dut, STATUS) & ST_DR == 0, "DR was set"
         await idle(dut, bit_clocks(0))
 

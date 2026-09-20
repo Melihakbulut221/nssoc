@@ -238,6 +238,7 @@ module tb_soc;
       .irq_external_i(1'b0),
       .wdog_dis_i (1'b0),
       .strap_i    (strap),
+      .uart_rx_i  (1'b1),
       .uart_tx_o  (uart_tx),
       .uart_irq_o (uart_irq),
       .gpio_i     (gpio_pad),
