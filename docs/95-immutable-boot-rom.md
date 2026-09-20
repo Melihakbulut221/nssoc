@@ -153,3 +153,37 @@ This control does not replace four-state Icarus verification. Neither mode appli
 The driver/ROM unit suite has 29 passing tests, including mismatched-image,
 missing-macro, status-address and timeout negative controls. Whole-netlist boot
 measurements are in progress; this runner's availability is not a boot PASS.
+
+
+Correction, 2026-09-20: the first complete four-state mapped-SoC measurement
+has now returned **FAIL**, rather than remaining merely pending. The CPU clears
+RAM and prints 113 UART characters, but the banner ends with one framing error;
+the application never starts within one million cycles. The final check count
+and exit magic are zero. The identical fixed loader/application pass in RTL.
+This is independent of the Verilator reset-model incompatibility and is being
+investigated with a CPU/alert/flash progress probe. No SDF was applied and no
+ROM/RAM contents were preloaded. See the
+[retained native-Icarus failure](evidence/logicrom-whole-gl-failure-20260920.json).
+
+The subsequent [startup observation](evidence/logicrom-startup-counter-diagnostic-20260920.json)
+finds RAM SEC/DED counters containing unknown bits by cycle 100 while the CPU's
+RAM-clear loop is still executing normally. At cycle 100,000 the old loader has
+read that telemetry and CPU addresses, sleep and UART signals have become unknown.
+An isolated Liberty-derived functional-cell control reproduces the same behavior;
+this failure is not specific to the native Verilog UDP implementation.
+
+The [prepared correction](evidence/logicrom-startup-clear-progress-20260920.json)
+clears the RAM startup scrub sources on power-on without first reading them. The
+assembly sweep still precedes C; warm-boot records and ROM telemetry remain
+untouched. Normal RTL boot passes all 28 checks. The new 3,084-byte loader maps to
+69,441 whole-SoC cells with 9,391 flip-flops and 1,080,737.6076 µm² of standard-cell
+area. Native whole-SoC boot and fallback tests are still pending. This new immutable
+image requires its own physical implementation; the old-image ECO8 global timing
+and electrical passes do not transfer to it.
+
+**Verification update, 2026-09-20:** the corrected loader now passes normal RTL
+boot and [both geometry fallback replays](evidence/logicrom-startup-clear-fallback-20260920.json),
+28 application checks each, zero framing/protocol violations and the same
+immutable image manifest. The fallback runs reject primary-image geometry with
+cause 4 and boot image 1. These supersede the pending RTL statements above;
+full native mapped boot and new-image physical implementation remain pending.

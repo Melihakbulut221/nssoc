@@ -1,0 +1,1569 @@
+{
+  "date": "2026-09-20",
+  "status": "Structural PASS; estimated timing/electrical FAIL",
+  "scope": "New immutable-ROM plus IRQ candidate. Local SRAM input buffering and driver offload; unchanged clocks, constraints, logic and state. Estimate-only, not extracted timing or geometry acceptance.",
+  "inputs": {
+    "scope": "New IRQ+logic-ROM candidate: local buf8 at all measured Ethernet SRAM slew leaves and buf4 offload at measured capacitance drivers plus three single-strength critical/slew gates. Preserve original logical connectivity and state; estimate-only.",
+    "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco1-fanout2",
+    "seed_odb_sha256": "1bd145d4abe32d74942b799a503eb52fc30e87bdfc2d2fc67e041a8ba30501b6",
+    "before_sha256": "713f13cb365862ef962885eb1f9099a192287699302572479d69c5951c20dcbc",
+    "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+    "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "macro_libraries": [
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "63449ec39991d88479958d35f6e17f547b083850ad50dcc0b2fb93e387fb0041"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_64x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "363a49c4905e0899b1391903b16a37a18ba9db9cafa627f6fc4d9bc6f9e01db0"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "9a732262065fa4b7ef48e1cbe41897cd3c8256356d2cc5255aed5517ea1e4bef"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x48_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "357710ff1d4cb5d0f84264a7d07d3473ee584441cab363314cf70529912028e4"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "b4c3ab4947366ce0dea94e53924ebae9d94f8ed4aa44eda612102215f1bde9a0"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a04cff61cb4befb2290427db1ff2cb1c31c8d5990dca53ee3e5d1cc621679cd9"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_64x32_c2_slow_1p08V_125C.lib",
+        "sha256": "0304c5e8f04a4a1863c3e50d2a7b8d1ad55eb9cc4b1789d0365db8902c3abd33"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "78238e1652176a5ef2984b5a7c44432491e05614a1e18bd9cd841b1d0c97638c"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "5672945f5dc90a7e202ca1635f8f06f81adf72a6c53512ad8939ddc1c6681832"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "f23f9f8c41eff35014189b22a223295b91fd1db9d11655dba68f4591a2ed43e6"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "dbef72291cab181ffb472af4bbdb9d25f5389f7b999aec6900267286fe6d4b48"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "7838bd8ab993208d100c88445c104f23f1ce1c242f59833e5da48fd1713bdfb9"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "c09bbbe341c8ce701933d645198a4045e2cb53f5621842534722876e8243cb40"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "406d5c0127dd98c158b51fcbb7acd69dae60a5d8592392d1878e559108d8f3c5"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "855373febf7481604910cbe2af05cba58b22789553f046ac3eb31dfd81162c67"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "bb2f9d3b34098d1d9362038fa4c84df89471d463b7f7780e97b6fa9d977a9714"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "11d498b210a56addb5f81892113b9a0c99145438eb2c3ac23352a51f9faf6b8d"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "b7e1b2543d85f85aa089d9422f7bf354a85794d40227b7652190d8d7d10860af"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "8ab1090ecf527bc71f0c4dc8db05b833e0f9960b4bdb94f3b0351533463b79a2"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x16_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a329a42256675e37ecaacc1647d68fa629924d3453653e24f8c8e00b74c31283"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "9b804486ac1ccd8001836a42f65d74244877a925b553b9cdce831dc7ec1d4eb6"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_8192x32_c4_slow_1p08V_125C.lib",
+        "sha256": "190e523dfb1486b3f8781e0aa9b6bdd7d7c3f5bcc3ca73a84d3db43d52a7d0ce"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a3ce6159425a082cd741af21af36a8f098f04d6921a41f383b55193fed67fc48"
+      }
+    ],
+    "diagnostic_probe": "eco7-endpoint-grt-probe",
+    "diagnostic_matches_seed_wns_exactly": true,
+    "substitutions": {},
+    "new_buffer_drivers": {
+      "logicrom_leaf_028410": {
+        "A": "net6572",
+        "X": "logicrom_leaf_net_028409"
+      },
+      "logicrom_leaf_1028420": {
+        "A": "net6676",
+        "X": "logicrom_leaf_net_1028419"
+      },
+      "logicrom_leaf_1128421": {
+        "A": "net6551",
+        "X": "logicrom_leaf_net_1128420"
+      },
+      "logicrom_leaf_1228422": {
+        "A": "net1664",
+        "X": "logicrom_leaf_net_1228421"
+      },
+      "logicrom_leaf_128411": {
+        "A": "net13820",
+        "X": "logicrom_leaf_net_128410"
+      },
+      "logicrom_leaf_1328423": {
+        "A": "net1664",
+        "X": "logicrom_leaf_net_1328422"
+      },
+      "logicrom_leaf_1428424": {
+        "A": "net6586",
+        "X": "logicrom_leaf_net_1428423"
+      },
+      "logicrom_leaf_1528425": {
+        "A": "net6677",
+        "X": "logicrom_leaf_net_1528424"
+      },
+      "logicrom_leaf_1628426": {
+        "A": "net13910",
+        "X": "logicrom_leaf_net_1628425"
+      },
+      "logicrom_leaf_1728427": {
+        "A": "net2888",
+        "X": "logicrom_leaf_net_1728426"
+      },
+      "logicrom_leaf_1828428": {
+        "A": "net2888",
+        "X": "logicrom_leaf_net_1828427"
+      },
+      "logicrom_leaf_1928429": {
+        "A": "net13910",
+        "X": "logicrom_leaf_net_1928428"
+      },
+      "logicrom_leaf_2028430": {
+        "A": "net25111",
+        "X": "logicrom_leaf_net_2028429"
+      },
+      "logicrom_leaf_2128431": {
+        "A": "net25110",
+        "X": "logicrom_leaf_net_2128430"
+      },
+      "logicrom_leaf_2228432": {
+        "A": "net25278",
+        "X": "logicrom_leaf_net_2228431"
+      },
+      "logicrom_leaf_228412": {
+        "A": "net6528",
+        "X": "logicrom_leaf_net_228411"
+      },
+      "logicrom_leaf_2328433": {
+        "A": "net25280",
+        "X": "logicrom_leaf_net_2328432"
+      },
+      "logicrom_leaf_2428434": {
+        "A": "clknet_1_0_0_eth_tx_clk_i",
+        "X": "logicrom_leaf_net_2428433"
+      },
+      "logicrom_leaf_2528435": {
+        "A": "clknet_1_0_0_eth_tx_clk_i",
+        "X": "logicrom_leaf_net_2528434"
+      },
+      "logicrom_leaf_2628436": {
+        "A": "net6658",
+        "X": "logicrom_leaf_net_2628435"
+      },
+      "logicrom_leaf_2728437": {
+        "A": "net25100",
+        "X": "logicrom_leaf_net_2728436"
+      },
+      "logicrom_leaf_2828438": {
+        "A": "net6732",
+        "X": "logicrom_leaf_net_2828437"
+      },
+      "logicrom_leaf_2928439": {
+        "A": "net4588",
+        "X": "logicrom_leaf_net_2928438"
+      },
+      "logicrom_leaf_3028440": {
+        "A": "net5266",
+        "X": "logicrom_leaf_net_3028439"
+      },
+      "logicrom_leaf_3128441": {
+        "A": "net6618",
+        "X": "logicrom_leaf_net_3128440"
+      },
+      "logicrom_leaf_3228442": {
+        "A": "net4584",
+        "X": "logicrom_leaf_net_3228441"
+      },
+      "logicrom_leaf_328413": {
+        "A": "net13820",
+        "X": "logicrom_leaf_net_328412"
+      },
+      "logicrom_leaf_3328443": {
+        "A": "net4584",
+        "X": "logicrom_leaf_net_3328442"
+      },
+      "logicrom_leaf_3428444": {
+        "A": "net6665",
+        "X": "logicrom_leaf_net_3428443"
+      },
+      "logicrom_leaf_3528445": {
+        "A": "net6658",
+        "X": "logicrom_leaf_net_3528444"
+      },
+      "logicrom_leaf_3628446": {
+        "A": "net25100",
+        "X": "logicrom_leaf_net_3628445"
+      },
+      "logicrom_leaf_3728447": {
+        "A": "net6650",
+        "X": "logicrom_leaf_net_3728446"
+      },
+      "logicrom_leaf_3828448": {
+        "A": "net6732",
+        "X": "logicrom_leaf_net_3828447"
+      },
+      "logicrom_leaf_3928449": {
+        "A": "net4588",
+        "X": "logicrom_leaf_net_3928448"
+      },
+      "logicrom_leaf_4028450": {
+        "A": "net5266",
+        "X": "logicrom_leaf_net_4028449"
+      },
+      "logicrom_leaf_4128451": {
+        "A": "net6618",
+        "X": "logicrom_leaf_net_4128450"
+      },
+      "logicrom_leaf_4228452": {
+        "A": "net4584",
+        "X": "logicrom_leaf_net_4228451"
+      },
+      "logicrom_leaf_428414": {
+        "A": "net6528",
+        "X": "logicrom_leaf_net_428413"
+      },
+      "logicrom_leaf_4328453": {
+        "A": "net4584",
+        "X": "logicrom_leaf_net_4328452"
+      },
+      "logicrom_leaf_4428454": {
+        "A": "net6641",
+        "X": "logicrom_leaf_net_4428453"
+      },
+      "logicrom_leaf_4528455": {
+        "A": "net6727",
+        "X": "logicrom_leaf_net_4528454"
+      },
+      "logicrom_leaf_4628456": {
+        "A": "net6621",
+        "X": "logicrom_leaf_net_4628455"
+      },
+      "logicrom_leaf_4728457": {
+        "A": "net6609",
+        "X": "logicrom_leaf_net_4728456"
+      },
+      "logicrom_leaf_4828458": {
+        "A": "net6604",
+        "X": "logicrom_leaf_net_4828457"
+      },
+      "logicrom_leaf_4928459": {
+        "A": "net4582",
+        "X": "logicrom_leaf_net_4928458"
+      },
+      "logicrom_leaf_5028460": {
+        "A": "net4582",
+        "X": "logicrom_leaf_net_5028459"
+      },
+      "logicrom_leaf_5128461": {
+        "A": "net6621",
+        "X": "logicrom_leaf_net_5128460"
+      },
+      "logicrom_leaf_5228462": {
+        "A": "net6609",
+        "X": "logicrom_leaf_net_5228461"
+      },
+      "logicrom_leaf_528415": {
+        "A": "net2886",
+        "X": "logicrom_leaf_net_528414"
+      },
+      "logicrom_leaf_5328463": {
+        "A": "net4582",
+        "X": "logicrom_leaf_net_5328462"
+      },
+      "logicrom_leaf_5428464": {
+        "A": "net4589",
+        "X": "logicrom_leaf_net_5428463"
+      },
+      "logicrom_leaf_5528465": {
+        "A": "net1378",
+        "X": "logicrom_leaf_net_5528464"
+      },
+      "logicrom_leaf_5628466": {
+        "A": "net1378",
+        "X": "logicrom_leaf_net_5628465"
+      },
+      "logicrom_leaf_5728467": {
+        "A": "clknet_1_1_0_eth_tx_clk_i",
+        "X": "logicrom_leaf_net_5728466"
+      },
+      "logicrom_leaf_5828468": {
+        "A": "net4589",
+        "X": "logicrom_leaf_net_5828467"
+      },
+      "logicrom_leaf_5928469": {
+        "A": "net6608",
+        "X": "logicrom_leaf_net_5928468"
+      },
+      "logicrom_leaf_6028470": {
+        "A": "clknet_1_1_0_eth_tx_clk_i",
+        "X": "logicrom_leaf_net_6028469"
+      },
+      "logicrom_leaf_6128471": {
+        "X": "logicrom_leaf_net_6128470",
+        "A": "_017626_"
+      },
+      "logicrom_leaf_6228472": {
+        "X": "logicrom_leaf_net_6228471",
+        "A": "_021997_"
+      },
+      "logicrom_leaf_628416": {
+        "A": "net2886",
+        "X": "logicrom_leaf_net_628415"
+      },
+      "logicrom_leaf_6328473": {
+        "X": "logicrom_leaf_net_6328472",
+        "A": "_053027_"
+      },
+      "logicrom_leaf_6428474": {
+        "X": "logicrom_leaf_net_6428473",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout0 [17]"
+      },
+      "logicrom_leaf_6528475": {
+        "X": "logicrom_leaf_net_6528474",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout0 [24]"
+      },
+      "logicrom_leaf_6628476": {
+        "X": "logicrom_leaf_net_6628475",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout0 [37]"
+      },
+      "logicrom_leaf_6728477": {
+        "X": "logicrom_leaf_net_6728476",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout0 [38]"
+      },
+      "logicrom_leaf_6828478": {
+        "X": "logicrom_leaf_net_6828477",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout2 [24]"
+      },
+      "logicrom_leaf_6928479": {
+        "X": "logicrom_leaf_net_6928478",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout2 [30]"
+      },
+      "logicrom_leaf_7028480": {
+        "X": "logicrom_leaf_net_7028479",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout2 [37]"
+      },
+      "logicrom_leaf_7128481": {
+        "X": "logicrom_leaf_net_7128480",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout2 [39]"
+      },
+      "logicrom_leaf_7228482": {
+        "X": "logicrom_leaf_net_7228481",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout2 [45]"
+      },
+      "logicrom_leaf_728417": {
+        "A": "net2889",
+        "X": "logicrom_leaf_net_728416"
+      },
+      "logicrom_leaf_7328483": {
+        "X": "logicrom_leaf_net_7328482",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout3 [46]"
+      },
+      "logicrom_leaf_7428484": {
+        "X": "logicrom_leaf_net_7428483",
+        "A": "\\u_ram.g_ram_2048x64_ecc.dout3 [47]"
+      },
+      "logicrom_leaf_828418": {
+        "A": "net2889",
+        "X": "logicrom_leaf_net_828417"
+      },
+      "logicrom_leaf_928419": {
+        "A": "net6586",
+        "X": "logicrom_leaf_net_928418"
+      }
+    },
+    "diagnostic_report": "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt",
+    "diagnostic_sha256": "1de926a76465c1039d91bae29a4bfff8ec69195134a698e858138d1f59cfcd49",
+    "diagnostic_paths": [
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112235_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111665_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112231_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112239_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112240_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ]
+    ],
+    "target_drivers": [
+      "_067131_/X",
+      "_095269_/Y",
+      "clkbuf_0_eth_rx_clk_i_regs/X",
+      "clkbuf_0_eth_tx_clk_i_regs/X",
+      "clkbuf_0_g_clkgate.u_bus_cg.clk_o/X",
+      "clkbuf_leaf_0_clk_i_regs/X",
+      "clkbuf_leaf_0_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_0_u_ibex.clk/X",
+      "clkbuf_leaf_100_clk_i_regs/X",
+      "clkbuf_leaf_100_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_100_u_ibex.clk/X",
+      "clkbuf_leaf_101_clk_i_regs/X",
+      "clkbuf_leaf_101_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_101_u_ibex.clk/X",
+      "clkbuf_leaf_102_clk_i_regs/X",
+      "clkbuf_leaf_102_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_102_u_ibex.clk/X",
+      "clkbuf_leaf_103_clk_i_regs/X",
+      "clkbuf_leaf_103_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_103_u_ibex.clk/X",
+      "clkbuf_leaf_104_clk_i_regs/X",
+      "clkbuf_leaf_104_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_104_u_ibex.clk/X",
+      "clkbuf_leaf_105_clk_i_regs/X",
+      "clkbuf_leaf_105_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_105_u_ibex.clk/X",
+      "clkbuf_leaf_106_clk_i_regs/X",
+      "clkbuf_leaf_106_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_106_u_ibex.clk/X",
+      "clkbuf_leaf_107_clk_i_regs/X",
+      "clkbuf_leaf_107_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_107_u_ibex.clk/X",
+      "clkbuf_leaf_108_clk_i_regs/X",
+      "clkbuf_leaf_108_u_ibex.clk/X",
+      "clkbuf_leaf_109_clk_i_regs/X",
+      "clkbuf_leaf_109_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_109_u_ibex.clk/X",
+      "clkbuf_leaf_10_clk_i_regs/X",
+      "clkbuf_leaf_10_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_10_u_ibex.clk/X",
+      "clkbuf_leaf_110_clk_i_regs/X",
+      "clkbuf_leaf_110_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_110_u_ibex.clk/X",
+      "clkbuf_leaf_111_clk_i_regs/X",
+      "clkbuf_leaf_111_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_111_u_ibex.clk/X",
+      "clkbuf_leaf_112_clk_i_regs/X",
+      "clkbuf_leaf_112_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_112_u_ibex.clk/X",
+      "clkbuf_leaf_113_clk_i_regs/X",
+      "clkbuf_leaf_113_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_113_u_ibex.clk/X",
+      "clkbuf_leaf_114_clk_i_regs/X",
+      "clkbuf_leaf_114_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_114_u_ibex.clk/X",
+      "clkbuf_leaf_115_clk_i_regs/X",
+      "clkbuf_leaf_115_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_115_u_ibex.clk/X",
+      "clkbuf_leaf_116_clk_i_regs/X",
+      "clkbuf_leaf_116_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_116_u_ibex.clk/X",
+      "clkbuf_leaf_117_clk_i_regs/X",
+      "clkbuf_leaf_117_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_117_u_ibex.clk/X",
+      "clkbuf_leaf_118_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_118_u_ibex.clk/X",
+      "clkbuf_leaf_119_clk_i_regs/X",
+      "clkbuf_leaf_119_u_ibex.clk/X",
+      "clkbuf_leaf_11_clk_i_regs/X",
+      "clkbuf_leaf_11_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_11_u_ibex.clk/X",
+      "clkbuf_leaf_120_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_120_u_ibex.clk/X",
+      "clkbuf_leaf_121_clk_i_regs/X",
+      "clkbuf_leaf_121_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_121_u_ibex.clk/X",
+      "clkbuf_leaf_122_clk_i_regs/X",
+      "clkbuf_leaf_122_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_122_u_ibex.clk/X",
+      "clkbuf_leaf_123_clk_i_regs/X",
+      "clkbuf_leaf_123_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_123_u_ibex.clk/X",
+      "clkbuf_leaf_124_clk_i_regs/X",
+      "clkbuf_leaf_124_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_124_u_ibex.clk/X",
+      "clkbuf_leaf_125_clk_i_regs/X",
+      "clkbuf_leaf_125_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_125_u_ibex.clk/X",
+      "clkbuf_leaf_126_clk_i_regs/X",
+      "clkbuf_leaf_126_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_126_u_ibex.clk/X",
+      "clkbuf_leaf_127_clk_i_regs/X",
+      "clkbuf_leaf_127_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_127_u_ibex.clk/X",
+      "clkbuf_leaf_128_clk_i_regs/X",
+      "clkbuf_leaf_128_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_128_u_ibex.clk/X",
+      "clkbuf_leaf_129_clk_i_regs/X",
+      "clkbuf_leaf_129_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_129_u_ibex.clk/X",
+      "clkbuf_leaf_12_clk_i_regs/X",
+      "clkbuf_leaf_12_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_12_u_ibex.clk/X",
+      "clkbuf_leaf_130_clk_i_regs/X",
+      "clkbuf_leaf_130_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_130_u_ibex.clk/X",
+      "clkbuf_leaf_131_clk_i_regs/X",
+      "clkbuf_leaf_131_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_131_u_ibex.clk/X",
+      "clkbuf_leaf_132_clk_i_regs/X",
+      "clkbuf_leaf_132_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_132_u_ibex.clk/X",
+      "clkbuf_leaf_133_clk_i_regs/X",
+      "clkbuf_leaf_133_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_133_u_ibex.clk/X",
+      "clkbuf_leaf_134_clk_i_regs/X",
+      "clkbuf_leaf_134_u_ibex.clk/X",
+      "clkbuf_leaf_135_clk_i_regs/X",
+      "clkbuf_leaf_135_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_135_u_ibex.clk/X",
+      "clkbuf_leaf_136_clk_i_regs/X",
+      "clkbuf_leaf_136_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_136_u_ibex.clk/X",
+      "clkbuf_leaf_137_clk_i_regs/X",
+      "clkbuf_leaf_137_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_137_u_ibex.clk/X",
+      "clkbuf_leaf_138_clk_i_regs/X",
+      "clkbuf_leaf_138_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_138_u_ibex.clk/X",
+      "clkbuf_leaf_139_clk_i_regs/X",
+      "clkbuf_leaf_139_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_139_u_ibex.clk/X",
+      "clkbuf_leaf_13_clk_i_regs/X",
+      "clkbuf_leaf_13_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_13_u_ibex.clk/X",
+      "clkbuf_leaf_140_clk_i_regs/X",
+      "clkbuf_leaf_140_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_140_u_ibex.clk/X",
+      "clkbuf_leaf_141_clk_i_regs/X",
+      "clkbuf_leaf_141_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_141_u_ibex.clk/X",
+      "clkbuf_leaf_142_clk_i_regs/X",
+      "clkbuf_leaf_142_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_143_clk_i_regs/X",
+      "clkbuf_leaf_143_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_144_clk_i_regs/X",
+      "clkbuf_leaf_144_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_144_u_ibex.clk/X",
+      "clkbuf_leaf_145_clk_i_regs/X",
+      "clkbuf_leaf_145_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_145_u_ibex.clk/X",
+      "clkbuf_leaf_146_clk_i_regs/X",
+      "clkbuf_leaf_146_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_146_u_ibex.clk/X",
+      "clkbuf_leaf_147_clk_i_regs/X",
+      "clkbuf_leaf_147_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_147_u_ibex.clk/X",
+      "clkbuf_leaf_148_clk_i_regs/X",
+      "clkbuf_leaf_148_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_148_u_ibex.clk/X",
+      "clkbuf_leaf_149_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_149_u_ibex.clk/X",
+      "clkbuf_leaf_14_clk_i_regs/X",
+      "clkbuf_leaf_14_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_14_u_ibex.clk/X",
+      "clkbuf_leaf_150_clk_i_regs/X",
+      "clkbuf_leaf_150_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_150_u_ibex.clk/X",
+      "clkbuf_leaf_151_clk_i_regs/X",
+      "clkbuf_leaf_151_u_ibex.clk/X",
+      "clkbuf_leaf_152_clk_i_regs/X",
+      "clkbuf_leaf_152_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_152_u_ibex.clk/X",
+      "clkbuf_leaf_153_clk_i_regs/X",
+      "clkbuf_leaf_153_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_153_u_ibex.clk/X",
+      "clkbuf_leaf_154_clk_i_regs/X",
+      "clkbuf_leaf_154_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_154_u_ibex.clk/X",
+      "clkbuf_leaf_155_clk_i_regs/X",
+      "clkbuf_leaf_155_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_155_u_ibex.clk/X",
+      "clkbuf_leaf_156_clk_i_regs/X",
+      "clkbuf_leaf_156_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_156_u_ibex.clk/X",
+      "clkbuf_leaf_157_clk_i_regs/X",
+      "clkbuf_leaf_157_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_157_u_ibex.clk/X",
+      "clkbuf_leaf_158_clk_i_regs/X",
+      "clkbuf_leaf_158_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_158_u_ibex.clk/X",
+      "clkbuf_leaf_159_clk_i_regs/X",
+      "clkbuf_leaf_159_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_159_u_ibex.clk/X",
+      "clkbuf_leaf_15_clk_i_regs/X",
+      "clkbuf_leaf_15_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_15_u_ibex.clk/X",
+      "clkbuf_leaf_160_clk_i_regs/X",
+      "clkbuf_leaf_160_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_160_u_ibex.clk/X",
+      "clkbuf_leaf_161_clk_i_regs/X",
+      "clkbuf_leaf_161_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_161_u_ibex.clk/X",
+      "clkbuf_leaf_162_clk_i_regs/X",
+      "clkbuf_leaf_162_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_162_u_ibex.clk/X",
+      "clkbuf_leaf_163_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_163_u_ibex.clk/X",
+      "clkbuf_leaf_164_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_164_u_ibex.clk/X",
+      "clkbuf_leaf_165_clk_i_regs/X",
+      "clkbuf_leaf_165_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_165_u_ibex.clk/X",
+      "clkbuf_leaf_166_clk_i_regs/X",
+      "clkbuf_leaf_166_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_166_u_ibex.clk/X",
+      "clkbuf_leaf_167_clk_i_regs/X",
+      "clkbuf_leaf_167_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_167_u_ibex.clk/X",
+      "clkbuf_leaf_168_clk_i_regs/X",
+      "clkbuf_leaf_168_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_168_u_ibex.clk/X",
+      "clkbuf_leaf_169_clk_i_regs/X",
+      "clkbuf_leaf_169_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_169_u_ibex.clk/X",
+      "clkbuf_leaf_16_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_16_u_ibex.clk/X",
+      "clkbuf_leaf_170_clk_i_regs/X",
+      "clkbuf_leaf_170_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_171_clk_i_regs/X",
+      "clkbuf_leaf_171_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_171_u_ibex.clk/X",
+      "clkbuf_leaf_172_clk_i_regs/X",
+      "clkbuf_leaf_172_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_172_u_ibex.clk/X",
+      "clkbuf_leaf_173_clk_i_regs/X",
+      "clkbuf_leaf_173_u_ibex.clk/X",
+      "clkbuf_leaf_174_clk_i_regs/X",
+      "clkbuf_leaf_174_u_ibex.clk/X",
+      "clkbuf_leaf_175_clk_i_regs/X",
+      "clkbuf_leaf_175_u_ibex.clk/X",
+      "clkbuf_leaf_176_clk_i_regs/X",
+      "clkbuf_leaf_177_clk_i_regs/X",
+      "clkbuf_leaf_178_clk_i_regs/X",
+      "clkbuf_leaf_179_clk_i_regs/X",
+      "clkbuf_leaf_17_clk_i_regs/X",
+      "clkbuf_leaf_17_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_17_u_ibex.clk/X",
+      "clkbuf_leaf_180_clk_i_regs/X",
+      "clkbuf_leaf_182_clk_i_regs/X",
+      "clkbuf_leaf_183_clk_i_regs/X",
+      "clkbuf_leaf_184_clk_i_regs/X",
+      "clkbuf_leaf_185_clk_i_regs/X",
+      "clkbuf_leaf_186_clk_i_regs/X",
+      "clkbuf_leaf_187_clk_i_regs/X",
+      "clkbuf_leaf_188_clk_i_regs/X",
+      "clkbuf_leaf_189_clk_i_regs/X",
+      "clkbuf_leaf_18_clk_i_regs/X",
+      "clkbuf_leaf_18_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_18_u_ibex.clk/X",
+      "clkbuf_leaf_190_clk_i_regs/X",
+      "clkbuf_leaf_191_clk_i_regs/X",
+      "clkbuf_leaf_192_clk_i_regs/X",
+      "clkbuf_leaf_193_clk_i_regs/X",
+      "clkbuf_leaf_194_clk_i_regs/X",
+      "clkbuf_leaf_195_clk_i_regs/X",
+      "clkbuf_leaf_196_clk_i_regs/X",
+      "clkbuf_leaf_197_clk_i_regs/X",
+      "clkbuf_leaf_198_clk_i_regs/X",
+      "clkbuf_leaf_199_clk_i_regs/X",
+      "clkbuf_leaf_19_clk_i_regs/X",
+      "clkbuf_leaf_19_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_19_u_ibex.clk/X",
+      "clkbuf_leaf_1_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_1_u_ibex.clk/X",
+      "clkbuf_leaf_200_clk_i_regs/X",
+      "clkbuf_leaf_201_clk_i_regs/X",
+      "clkbuf_leaf_202_clk_i_regs/X",
+      "clkbuf_leaf_203_clk_i_regs/X",
+      "clkbuf_leaf_204_clk_i_regs/X",
+      "clkbuf_leaf_205_clk_i_regs/X",
+      "clkbuf_leaf_206_clk_i_regs/X",
+      "clkbuf_leaf_207_clk_i_regs/X",
+      "clkbuf_leaf_208_clk_i_regs/X",
+      "clkbuf_leaf_209_clk_i_regs/X",
+      "clkbuf_leaf_20_clk_i_regs/X",
+      "clkbuf_leaf_20_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_20_u_ibex.clk/X",
+      "clkbuf_leaf_210_clk_i_regs/X",
+      "clkbuf_leaf_211_clk_i_regs/X",
+      "clkbuf_leaf_212_clk_i_regs/X",
+      "clkbuf_leaf_213_clk_i_regs/X",
+      "clkbuf_leaf_214_clk_i_regs/X",
+      "clkbuf_leaf_216_clk_i_regs/X",
+      "clkbuf_leaf_217_clk_i_regs/X",
+      "clkbuf_leaf_218_clk_i_regs/X",
+      "clkbuf_leaf_219_clk_i_regs/X",
+      "clkbuf_leaf_21_clk_i_regs/X",
+      "clkbuf_leaf_21_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_21_u_ibex.clk/X",
+      "clkbuf_leaf_220_clk_i_regs/X",
+      "clkbuf_leaf_221_clk_i_regs/X",
+      "clkbuf_leaf_222_clk_i_regs/X",
+      "clkbuf_leaf_223_clk_i_regs/X",
+      "clkbuf_leaf_224_clk_i_regs/X",
+      "clkbuf_leaf_225_clk_i_regs/X",
+      "clkbuf_leaf_227_clk_i_regs/X",
+      "clkbuf_leaf_228_clk_i_regs/X",
+      "clkbuf_leaf_229_clk_i_regs/X",
+      "clkbuf_leaf_22_clk_i_regs/X",
+      "clkbuf_leaf_22_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_230_clk_i_regs/X",
+      "clkbuf_leaf_232_clk_i_regs/X",
+      "clkbuf_leaf_233_clk_i_regs/X",
+      "clkbuf_leaf_234_clk_i_regs/X",
+      "clkbuf_leaf_235_clk_i_regs/X",
+      "clkbuf_leaf_236_clk_i_regs/X",
+      "clkbuf_leaf_237_clk_i_regs/X",
+      "clkbuf_leaf_238_clk_i_regs/X",
+      "clkbuf_leaf_239_clk_i_regs/X",
+      "clkbuf_leaf_23_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_23_u_ibex.clk/X",
+      "clkbuf_leaf_240_clk_i_regs/X",
+      "clkbuf_leaf_241_clk_i_regs/X",
+      "clkbuf_leaf_242_clk_i_regs/X",
+      "clkbuf_leaf_243_clk_i_regs/X",
+      "clkbuf_leaf_244_clk_i_regs/X",
+      "clkbuf_leaf_245_clk_i_regs/X",
+      "clkbuf_leaf_246_clk_i_regs/X",
+      "clkbuf_leaf_247_clk_i_regs/X",
+      "clkbuf_leaf_248_clk_i_regs/X",
+      "clkbuf_leaf_249_clk_i_regs/X",
+      "clkbuf_leaf_24_clk_i_regs/X",
+      "clkbuf_leaf_24_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_24_u_ibex.clk/X",
+      "clkbuf_leaf_250_clk_i_regs/X",
+      "clkbuf_leaf_251_clk_i_regs/X",
+      "clkbuf_leaf_252_clk_i_regs/X",
+      "clkbuf_leaf_253_clk_i_regs/X",
+      "clkbuf_leaf_255_clk_i_regs/X",
+      "clkbuf_leaf_256_clk_i_regs/X",
+      "clkbuf_leaf_257_clk_i_regs/X",
+      "clkbuf_leaf_259_clk_i_regs/X",
+      "clkbuf_leaf_25_clk_i_regs/X",
+      "clkbuf_leaf_25_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_25_u_ibex.clk/X",
+      "clkbuf_leaf_260_clk_i_regs/X",
+      "clkbuf_leaf_261_clk_i_regs/X",
+      "clkbuf_leaf_262_clk_i_regs/X",
+      "clkbuf_leaf_263_clk_i_regs/X",
+      "clkbuf_leaf_264_clk_i_regs/X",
+      "clkbuf_leaf_266_clk_i_regs/X",
+      "clkbuf_leaf_267_clk_i_regs/X",
+      "clkbuf_leaf_268_clk_i_regs/X",
+      "clkbuf_leaf_269_clk_i_regs/X",
+      "clkbuf_leaf_26_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_26_u_ibex.clk/X",
+      "clkbuf_leaf_270_clk_i_regs/X",
+      "clkbuf_leaf_273_clk_i_regs/X",
+      "clkbuf_leaf_274_clk_i_regs/X",
+      "clkbuf_leaf_275_clk_i_regs/X",
+      "clkbuf_leaf_276_clk_i_regs/X",
+      "clkbuf_leaf_277_clk_i_regs/X",
+      "clkbuf_leaf_278_clk_i_regs/X",
+      "clkbuf_leaf_279_clk_i_regs/X",
+      "clkbuf_leaf_27_clk_i_regs/X",
+      "clkbuf_leaf_27_u_ibex.clk/X",
+      "clkbuf_leaf_280_clk_i_regs/X",
+      "clkbuf_leaf_281_clk_i_regs/X",
+      "clkbuf_leaf_283_clk_i_regs/X",
+      "clkbuf_leaf_284_clk_i_regs/X",
+      "clkbuf_leaf_285_clk_i_regs/X",
+      "clkbuf_leaf_286_clk_i_regs/X",
+      "clkbuf_leaf_287_clk_i_regs/X",
+      "clkbuf_leaf_288_clk_i_regs/X",
+      "clkbuf_leaf_289_clk_i_regs/X",
+      "clkbuf_leaf_28_clk_i_regs/X",
+      "clkbuf_leaf_28_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_28_u_ibex.clk/X",
+      "clkbuf_leaf_290_clk_i_regs/X",
+      "clkbuf_leaf_291_clk_i_regs/X",
+      "clkbuf_leaf_293_clk_i_regs/X",
+      "clkbuf_leaf_294_clk_i_regs/X",
+      "clkbuf_leaf_296_clk_i_regs/X",
+      "clkbuf_leaf_297_clk_i_regs/X",
+      "clkbuf_leaf_299_clk_i_regs/X",
+      "clkbuf_leaf_29_clk_i_regs/X",
+      "clkbuf_leaf_29_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_29_u_ibex.clk/X",
+      "clkbuf_leaf_2_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_2_u_ibex.clk/X",
+      "clkbuf_leaf_300_clk_i_regs/X",
+      "clkbuf_leaf_302_clk_i_regs/X",
+      "clkbuf_leaf_303_clk_i_regs/X",
+      "clkbuf_leaf_304_clk_i_regs/X",
+      "clkbuf_leaf_305_clk_i_regs/X",
+      "clkbuf_leaf_306_clk_i_regs/X",
+      "clkbuf_leaf_307_clk_i_regs/X",
+      "clkbuf_leaf_308_clk_i_regs/X",
+      "clkbuf_leaf_309_clk_i_regs/X",
+      "clkbuf_leaf_30_clk_i_regs/X",
+      "clkbuf_leaf_30_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_30_u_ibex.clk/X",
+      "clkbuf_leaf_310_clk_i_regs/X",
+      "clkbuf_leaf_311_clk_i_regs/X",
+      "clkbuf_leaf_312_clk_i_regs/X",
+      "clkbuf_leaf_313_clk_i_regs/X",
+      "clkbuf_leaf_314_clk_i_regs/X",
+      "clkbuf_leaf_315_clk_i_regs/X",
+      "clkbuf_leaf_316_clk_i_regs/X",
+      "clkbuf_leaf_317_clk_i_regs/X",
+      "clkbuf_leaf_318_clk_i_regs/X",
+      "clkbuf_leaf_319_clk_i_regs/X",
+      "clkbuf_leaf_31_clk_i_regs/X",
+      "clkbuf_leaf_31_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_31_u_ibex.clk/X",
+      "clkbuf_leaf_320_clk_i_regs/X",
+      "clkbuf_leaf_321_clk_i_regs/X",
+      "clkbuf_leaf_322_clk_i_regs/X",
+      "clkbuf_leaf_323_clk_i_regs/X",
+      "clkbuf_leaf_324_clk_i_regs/X",
+      "clkbuf_leaf_325_clk_i_regs/X",
+      "clkbuf_leaf_326_clk_i_regs/X",
+      "clkbuf_leaf_327_clk_i_regs/X",
+      "clkbuf_leaf_328_clk_i_regs/X",
+      "clkbuf_leaf_329_clk_i_regs/X",
+      "clkbuf_leaf_32_clk_i_regs/X",
+      "clkbuf_leaf_32_u_ibex.clk/X",
+      "clkbuf_leaf_330_clk_i_regs/X",
+      "clkbuf_leaf_331_clk_i_regs/X",
+      "clkbuf_leaf_332_clk_i_regs/X",
+      "clkbuf_leaf_333_clk_i_regs/X",
+      "clkbuf_leaf_334_clk_i_regs/X",
+      "clkbuf_leaf_335_clk_i_regs/X",
+      "clkbuf_leaf_336_clk_i_regs/X",
+      "clkbuf_leaf_337_clk_i_regs/X",
+      "clkbuf_leaf_338_clk_i_regs/X",
+      "clkbuf_leaf_339_clk_i_regs/X",
+      "clkbuf_leaf_33_clk_i_regs/X",
+      "clkbuf_leaf_33_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_33_u_ibex.clk/X",
+      "clkbuf_leaf_340_clk_i_regs/X",
+      "clkbuf_leaf_341_clk_i_regs/X",
+      "clkbuf_leaf_342_clk_i_regs/X",
+      "clkbuf_leaf_343_clk_i_regs/X",
+      "clkbuf_leaf_344_clk_i_regs/X",
+      "clkbuf_leaf_346_clk_i_regs/X",
+      "clkbuf_leaf_347_clk_i_regs/X",
+      "clkbuf_leaf_348_clk_i_regs/X",
+      "clkbuf_leaf_349_clk_i_regs/X",
+      "clkbuf_leaf_34_clk_i_regs/X",
+      "clkbuf_leaf_34_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_34_u_ibex.clk/X",
+      "clkbuf_leaf_350_clk_i_regs/X",
+      "clkbuf_leaf_351_clk_i_regs/X",
+      "clkbuf_leaf_352_clk_i_regs/X",
+      "clkbuf_leaf_353_clk_i_regs/X",
+      "clkbuf_leaf_354_clk_i_regs/X",
+      "clkbuf_leaf_355_clk_i_regs/X",
+      "clkbuf_leaf_356_clk_i_regs/X",
+      "clkbuf_leaf_357_clk_i_regs/X",
+      "clkbuf_leaf_358_clk_i_regs/X",
+      "clkbuf_leaf_35_clk_i_regs/X",
+      "clkbuf_leaf_35_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_35_u_ibex.clk/X",
+      "clkbuf_leaf_360_clk_i_regs/X",
+      "clkbuf_leaf_361_clk_i_regs/X",
+      "clkbuf_leaf_362_clk_i_regs/X",
+      "clkbuf_leaf_363_clk_i_regs/X",
+      "clkbuf_leaf_364_clk_i_regs/X",
+      "clkbuf_leaf_365_clk_i_regs/X",
+      "clkbuf_leaf_366_clk_i_regs/X",
+      "clkbuf_leaf_367_clk_i_regs/X",
+      "clkbuf_leaf_368_clk_i_regs/X",
+      "clkbuf_leaf_36_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_36_u_ibex.clk/X",
+      "clkbuf_leaf_370_clk_i_regs/X",
+      "clkbuf_leaf_371_clk_i_regs/X",
+      "clkbuf_leaf_372_clk_i_regs/X",
+      "clkbuf_leaf_373_clk_i_regs/X",
+      "clkbuf_leaf_374_clk_i_regs/X",
+      "clkbuf_leaf_375_clk_i_regs/X",
+      "clkbuf_leaf_376_clk_i_regs/X",
+      "clkbuf_leaf_377_clk_i_regs/X",
+      "clkbuf_leaf_378_clk_i_regs/X",
+      "clkbuf_leaf_37_clk_i_regs/X",
+      "clkbuf_leaf_37_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_37_u_ibex.clk/X",
+      "clkbuf_leaf_380_clk_i_regs/X",
+      "clkbuf_leaf_381_clk_i_regs/X",
+      "clkbuf_leaf_382_clk_i_regs/X",
+      "clkbuf_leaf_384_clk_i_regs/X",
+      "clkbuf_leaf_385_clk_i_regs/X",
+      "clkbuf_leaf_386_clk_i_regs/X",
+      "clkbuf_leaf_387_clk_i_regs/X",
+      "clkbuf_leaf_388_clk_i_regs/X",
+      "clkbuf_leaf_389_clk_i_regs/X",
+      "clkbuf_leaf_38_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_38_u_ibex.clk/X",
+      "clkbuf_leaf_391_clk_i_regs/X",
+      "clkbuf_leaf_392_clk_i_regs/X",
+      "clkbuf_leaf_393_clk_i_regs/X",
+      "clkbuf_leaf_394_clk_i_regs/X",
+      "clkbuf_leaf_395_clk_i_regs/X",
+      "clkbuf_leaf_396_clk_i_regs/X",
+      "clkbuf_leaf_397_clk_i_regs/X",
+      "clkbuf_leaf_398_clk_i_regs/X",
+      "clkbuf_leaf_39_clk_i_regs/X",
+      "clkbuf_leaf_39_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_39_u_ibex.clk/X",
+      "clkbuf_leaf_3_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_3_u_ibex.clk/X",
+      "clkbuf_leaf_40_clk_i_regs/X",
+      "clkbuf_leaf_40_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_40_u_ibex.clk/X",
+      "clkbuf_leaf_41_clk_i_regs/X",
+      "clkbuf_leaf_41_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_41_u_ibex.clk/X",
+      "clkbuf_leaf_42_clk_i_regs/X",
+      "clkbuf_leaf_42_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_42_u_ibex.clk/X",
+      "clkbuf_leaf_43_clk_i_regs/X",
+      "clkbuf_leaf_43_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_43_u_ibex.clk/X",
+      "clkbuf_leaf_44_clk_i_regs/X",
+      "clkbuf_leaf_44_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_44_u_ibex.clk/X",
+      "clkbuf_leaf_45_clk_i_regs/X",
+      "clkbuf_leaf_45_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_45_u_ibex.clk/X",
+      "clkbuf_leaf_46_clk_i_regs/X",
+      "clkbuf_leaf_46_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_46_u_ibex.clk/X",
+      "clkbuf_leaf_47_clk_i_regs/X",
+      "clkbuf_leaf_47_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_47_u_ibex.clk/X",
+      "clkbuf_leaf_48_clk_i_regs/X",
+      "clkbuf_leaf_48_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_48_u_ibex.clk/X",
+      "clkbuf_leaf_49_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_49_u_ibex.clk/X",
+      "clkbuf_leaf_4_clk_i_regs/X",
+      "clkbuf_leaf_4_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_4_u_ibex.clk/X",
+      "clkbuf_leaf_50_clk_i_regs/X",
+      "clkbuf_leaf_50_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_50_u_ibex.clk/X",
+      "clkbuf_leaf_51_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_51_u_ibex.clk/X",
+      "clkbuf_leaf_52_clk_i_regs/X",
+      "clkbuf_leaf_52_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_52_u_ibex.clk/X",
+      "clkbuf_leaf_53_clk_i_regs/X",
+      "clkbuf_leaf_53_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_53_u_ibex.clk/X",
+      "clkbuf_leaf_54_clk_i_regs/X",
+      "clkbuf_leaf_54_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_55_clk_i_regs/X",
+      "clkbuf_leaf_55_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_55_u_ibex.clk/X",
+      "clkbuf_leaf_56_clk_i_regs/X",
+      "clkbuf_leaf_56_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_56_u_ibex.clk/X",
+      "clkbuf_leaf_57_clk_i_regs/X",
+      "clkbuf_leaf_57_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_57_u_ibex.clk/X",
+      "clkbuf_leaf_58_clk_i_regs/X",
+      "clkbuf_leaf_58_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_58_u_ibex.clk/X",
+      "clkbuf_leaf_59_clk_i_regs/X",
+      "clkbuf_leaf_59_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_59_u_ibex.clk/X",
+      "clkbuf_leaf_5_clk_i_regs/X",
+      "clkbuf_leaf_5_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_5_u_ibex.clk/X",
+      "clkbuf_leaf_60_clk_i_regs/X",
+      "clkbuf_leaf_60_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_60_u_ibex.clk/X",
+      "clkbuf_leaf_61_clk_i_regs/X",
+      "clkbuf_leaf_61_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_61_u_ibex.clk/X",
+      "clkbuf_leaf_62_clk_i_regs/X",
+      "clkbuf_leaf_62_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_62_u_ibex.clk/X",
+      "clkbuf_leaf_63_clk_i_regs/X",
+      "clkbuf_leaf_63_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_63_u_ibex.clk/X",
+      "clkbuf_leaf_64_clk_i_regs/X",
+      "clkbuf_leaf_64_u_ibex.clk/X",
+      "clkbuf_leaf_65_clk_i_regs/X",
+      "clkbuf_leaf_65_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_65_u_ibex.clk/X",
+      "clkbuf_leaf_66_clk_i_regs/X",
+      "clkbuf_leaf_66_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_66_u_ibex.clk/X",
+      "clkbuf_leaf_67_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_67_u_ibex.clk/X",
+      "clkbuf_leaf_68_clk_i_regs/X",
+      "clkbuf_leaf_68_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_68_u_ibex.clk/X",
+      "clkbuf_leaf_69_clk_i_regs/X",
+      "clkbuf_leaf_69_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_69_u_ibex.clk/X",
+      "clkbuf_leaf_6_clk_i_regs/X",
+      "clkbuf_leaf_6_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_6_u_ibex.clk/X",
+      "clkbuf_leaf_70_clk_i_regs/X",
+      "clkbuf_leaf_70_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_70_u_ibex.clk/X",
+      "clkbuf_leaf_71_clk_i_regs/X",
+      "clkbuf_leaf_71_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_71_u_ibex.clk/X",
+      "clkbuf_leaf_72_clk_i_regs/X",
+      "clkbuf_leaf_72_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_72_u_ibex.clk/X",
+      "clkbuf_leaf_73_clk_i_regs/X",
+      "clkbuf_leaf_73_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_73_u_ibex.clk/X",
+      "clkbuf_leaf_74_clk_i_regs/X",
+      "clkbuf_leaf_74_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_75_clk_i_regs/X",
+      "clkbuf_leaf_75_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_76_clk_i_regs/X",
+      "clkbuf_leaf_76_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_76_u_ibex.clk/X",
+      "clkbuf_leaf_77_clk_i_regs/X",
+      "clkbuf_leaf_77_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_77_u_ibex.clk/X",
+      "clkbuf_leaf_78_clk_i_regs/X",
+      "clkbuf_leaf_78_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_78_u_ibex.clk/X",
+      "clkbuf_leaf_79_clk_i_regs/X",
+      "clkbuf_leaf_79_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_79_u_ibex.clk/X",
+      "clkbuf_leaf_7_clk_i_regs/X",
+      "clkbuf_leaf_7_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_7_u_ibex.clk/X",
+      "clkbuf_leaf_80_clk_i_regs/X",
+      "clkbuf_leaf_80_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_80_u_ibex.clk/X",
+      "clkbuf_leaf_81_clk_i_regs/X",
+      "clkbuf_leaf_81_u_ibex.clk/X",
+      "clkbuf_leaf_82_clk_i_regs/X",
+      "clkbuf_leaf_82_u_ibex.clk/X",
+      "clkbuf_leaf_83_clk_i_regs/X",
+      "clkbuf_leaf_83_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_83_u_ibex.clk/X",
+      "clkbuf_leaf_84_clk_i_regs/X",
+      "clkbuf_leaf_84_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_84_u_ibex.clk/X",
+      "clkbuf_leaf_85_clk_i_regs/X",
+      "clkbuf_leaf_85_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_85_u_ibex.clk/X",
+      "clkbuf_leaf_86_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_86_u_ibex.clk/X",
+      "clkbuf_leaf_87_clk_i_regs/X",
+      "clkbuf_leaf_87_u_ibex.clk/X",
+      "clkbuf_leaf_88_clk_i_regs/X",
+      "clkbuf_leaf_88_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_88_u_ibex.clk/X",
+      "clkbuf_leaf_89_clk_i_regs/X",
+      "clkbuf_leaf_89_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_89_u_ibex.clk/X",
+      "clkbuf_leaf_8_clk_i_regs/X",
+      "clkbuf_leaf_8_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_8_u_ibex.clk/X",
+      "clkbuf_leaf_90_clk_i_regs/X",
+      "clkbuf_leaf_90_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_90_u_ibex.clk/X",
+      "clkbuf_leaf_91_clk_i_regs/X",
+      "clkbuf_leaf_91_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_91_u_ibex.clk/X",
+      "clkbuf_leaf_92_clk_i_regs/X",
+      "clkbuf_leaf_92_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_92_u_ibex.clk/X",
+      "clkbuf_leaf_93_clk_i_regs/X",
+      "clkbuf_leaf_93_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_93_u_ibex.clk/X",
+      "clkbuf_leaf_94_clk_i_regs/X",
+      "clkbuf_leaf_94_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_94_u_ibex.clk/X",
+      "clkbuf_leaf_95_clk_i_regs/X",
+      "clkbuf_leaf_95_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_95_u_ibex.clk/X",
+      "clkbuf_leaf_96_clk_i_regs/X",
+      "clkbuf_leaf_96_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_96_u_ibex.clk/X",
+      "clkbuf_leaf_97_clk_i_regs/X",
+      "clkbuf_leaf_97_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_97_u_ibex.clk/X",
+      "clkbuf_leaf_98_clk_i_regs/X",
+      "clkbuf_leaf_98_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_98_u_ibex.clk/X",
+      "clkbuf_leaf_99_clk_i_regs/X",
+      "clkbuf_leaf_99_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_99_u_ibex.clk/X",
+      "clkbuf_leaf_9_clk_i_regs/X",
+      "clkbuf_leaf_9_g_clkgate.u_npu_cg.clk_o/X",
+      "clkbuf_leaf_9_u_ibex.clk/X",
+      "fanout1786/X",
+      "fanout1942/X",
+      "fanout2344/X",
+      "fanout2370/X",
+      "fanout2761/X",
+      "fanout2926/X",
+      "fanout384/X",
+      "fanout3897/X",
+      "fanout4170/X",
+      "fanout4639/X",
+      "fanout4847/X",
+      "fanout4855/X",
+      "wire6676/X"
+    ],
+    "attribution_sha256": "ae219649f9e47cb1ff1c1147b5868d2751f9e2d1e3c6762102542a05ede43478",
+    "census_sha256": "8965e065801e74d1237409cf9dcc5255cd32e4473fce1679ef2ed7e1a32caf3a",
+    "planned_macro_leaves": [
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[6]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[8]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_DIN[8]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[3]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_CLK",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[3]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_CLK",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_DIN[9]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/A_ADDR[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[0]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_ADDR[0]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/B_ADDR[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/B_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7/B_ADDR[2]",
+      "u_rom.g_rom_1024x32_ecc.u_c0/A_ADDR[8]",
+      "u_rom.g_rom_1024x32_ecc.u_c1/A_ADDR[7]",
+      "u_rom.g_rom_1024x32_ecc.u_c1/A_ADDR[8]"
+    ],
+    "environment_sha256": "db24552dd1e10ef01a876b5e71be15ad666a4920d2c2ddfbe236354820530089",
+    "report_sha256": "cb0f616bbbc8a065cda99ff208f71d5b89aac46c2671fa74c18064fdb0270d27",
+    "leaf_pins": [
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/A_ADDR[5]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/B_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/B_ADDR[5]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/B_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/B_ADDR[5]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_MEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_WEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_MEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_WEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4/B_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4/B_MEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4/B_REN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_DIN[3]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_MEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_WEN",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_DIN[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/A_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/A_ADDR[5]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[0]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[1]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_DIN[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_DIN[9]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/B_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/B_MEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/B_REN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[1]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_DIN[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_DIN[9]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/B_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/B_MEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/B_REN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/A_ADDR[5]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/A_DIN[7]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/B_ADDR[1]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/B_ADDR[5]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/B_MEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4/B_REN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5/B_ADDR[1]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5/B_MEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/A_MEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/A_WEN",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7/B_ADDR[5]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7/B_CLK"
+    ],
+    "driver_pins": [
+      "_068922_/Y",
+      "_073422_/Y",
+      "_109897_/Y",
+      "u_ram.g_ram_2048x64_ecc.u_b0/A_DOUT[17]",
+      "u_ram.g_ram_2048x64_ecc.u_b0/A_DOUT[24]",
+      "u_ram.g_ram_2048x64_ecc.u_b0/A_DOUT[37]",
+      "u_ram.g_ram_2048x64_ecc.u_b0/A_DOUT[38]",
+      "u_ram.g_ram_2048x64_ecc.u_b2/A_DOUT[24]",
+      "u_ram.g_ram_2048x64_ecc.u_b2/A_DOUT[30]",
+      "u_ram.g_ram_2048x64_ecc.u_b2/A_DOUT[37]",
+      "u_ram.g_ram_2048x64_ecc.u_b2/A_DOUT[39]",
+      "u_ram.g_ram_2048x64_ecc.u_b2/A_DOUT[45]",
+      "u_ram.g_ram_2048x64_ecc.u_b3/A_DOUT[46]",
+      "u_ram.g_ram_2048x64_ecc.u_b3/A_DOUT[47]"
+    ],
+    "planned_added_cells": 75,
+    "after_sha256": "17a884989341fc4efb79e7eacbc7cafd90f828c98032b60dd7f6d99650971d14"
+  },
+  "structural": {
+    "original_instances": 100219,
+    "added_stateless_positive_cells": 75,
+    "added_noninverting_buffers": 75,
+    "added_delay_cells": 0,
+    "equivalent_combinational_substitutions": 0,
+    "equivalent_sequential_substitutions": 0,
+    "state_definitions_compared_exactly": true,
+    "unchanged_ports_and_assigns": true,
+    "unchanged_original_wire_declarations": true,
+    "all_original_pin_connections_equal_after_buffer_contraction": true,
+    "standard_cell_area_delta_um2": 1642.032
+  },
+  "report": {
+    "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-grt-analysis2/environment.tcl": "db24552dd1e10ef01a876b5e71be15ad666a4920d2c2ddfbe236354820530089",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.odb": "b15ebe6665becac5343dd95bd4b36db54ae1609b5df9a6eb9a4416fca9cf6d17",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco2-electrical/routes.segments": "072710017760b7597547411d577443c1b5bfccde0ceec8ffb94298b3ef0e7e56",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+    },
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 11.902573714998653,
+        "setup_ns": 3.4678887409948422,
+        "hold_ns": 0.040248028271608075,
+        "electrical": {
+          "slew": 14,
+          "capacitance": 2,
+          "fanout": 0
+        },
+        "estimated_checks_pass": false
+      },
+      "nom_typ_1p20V_25C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 14.30781288199978,
+        "setup_ns": 2.490924870206598,
+        "hold_ns": 0.2607398815103341,
+        "electrical": {
+          "slew": 12,
+          "capacitance": 2,
+          "fanout": 0
+        },
+        "estimated_checks_pass": false
+      },
+      "nom_slow_1p08V_125C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 14.512934288999531,
+        "setup_ns": -0.7279084208087331,
+        "hold_ns": 0.6047267302521017,
+        "electrical": {
+          "slew": 21,
+          "capacitance": 2,
+          "fanout": 0
+        },
+        "estimated_checks_pass": false
+      }
+    },
+    "source_unchanged": true,
+    "all_estimated_checks_pass": false
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/connectivity-check.json": {
+      "bytes": 476,
+      "sha256": "b08f977c8982925ae4cc154f58746a4fb45510986f88be3a1935ad23509396a6"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_fast_1p32V_m40C-max.rpt": {
+      "bytes": 43082,
+      "sha256": "e7572e8477970904445c2134530a75105f8fbe43a5d41430bdf8d196e55f846b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.pnl.v": {
+      "bytes": 14761289,
+      "sha256": "f95fc08f1e480bcd45df15c448f80fe28bc107f22821d18f53365a886b96f01b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_slow_1p08V_125C-min.rpt": {
+      "bytes": 36982,
+      "sha256": "5a03c7bbb6e101bcfce36bc53b8cfb90d42bc9dbf77f51844bf5fbffb3f9de86"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/eco.tcl": {
+      "bytes": 8618,
+      "sha256": "3da1a0d9636a5e09327fc6974019fd5b08e9a010cd7f3ec0cd80ed4ce41254aa"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.odb": {
+      "bytes": 87784436,
+      "sha256": "b15ebe6665becac5343dd95bd4b36db54ae1609b5df9a6eb9a4416fca9cf6d17"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/eco.log": {
+      "bytes": 15218,
+      "sha256": "1cae5a8d908cb5e4e0d7c509bc3efbed6e42166b7d418d86a672570f7ac07864"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_typ_1p20V_25C-electrical.rpt": {
+      "bytes": 1400,
+      "sha256": "523644c7a89b4554fc8a95f228aff6ac4b04aa9b3f4810191fd655326d3a6491"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/validation-inputs.json": {
+      "bytes": 49836,
+      "sha256": "edb5a8f9ab6407aeee4aff4e4dbc40560b486688b495cb9f70f6f01b98790b18"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/repairs.tsv": {
+      "bytes": 6126,
+      "sha256": "e5cfdd192647dd73d6f6b723f6d8c813b7d6f501bc59e1912588b5f24220be2e"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/after_grt.guide": {
+      "bytes": 30927803,
+      "sha256": "26be3e1b640bca02f2bb470eaa7992a708464bcda54ff88b7c994261bb020e4d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.def": {
+      "bytes": 24423027,
+      "sha256": "6aef2d6883ab74780099959ba527c241ab7193b28f6a706273b4c2967214f920"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.sdc": {
+      "bytes": 30113,
+      "sha256": "f1c79a59e8dc1005cfe2d5228a020b89ebd96893c2b22ff422cecec9552fc8d0"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_typ_1p20V_25C-max.rpt": {
+      "bytes": 51144,
+      "sha256": "0a39464376d54948ac2d12ea832822e8206317bba540f319d86a63f8e1d18de0"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_slow_1p08V_125C-max.rpt": {
+      "bytes": 54123,
+      "sha256": "989d3671f88c7c4a9e7895836a42ee4ab4aba7b4f71a5c8c1884853ce32a5008"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_fast_1p32V_m40C-electrical.rpt": {
+      "bytes": 1566,
+      "sha256": "104eea090ac01705cdb6b581cb42e550260fcab277b675d57cad76c74afc3f6a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/routes.segments": {
+      "bytes": 35685168,
+      "sha256": "072710017760b7597547411d577443c1b5bfccde0ceec8ffb94298b3ef0e7e56"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_typ_1p20V_25C-min.rpt": {
+      "bytes": 37810,
+      "sha256": "73bc0860d535858a2987f7895f91775c3f0b2255ea15be0183320df0e5727472"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/inputs.json": {
+      "bytes": 41939,
+      "sha256": "257a0229bd480260625d12ccbb843fc3d448e008cfae2d1a9ed96ca3aea96456"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/metrics.json": {
+      "bytes": 2298,
+      "sha256": "388594123205dad13f8367563deea20e4474312a3fac2833e31fae8d819a056d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/supervisor.json": {
+      "bytes": 643,
+      "sha256": "ad5dca0c7a5f0e6c1c38827ef5222aa1c6efde2b782b19d1dc9cbd53baa9fba3"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/soc_top.nl.v": {
+      "bytes": 11551235,
+      "sha256": "17a884989341fc4efb79e7eacbc7cafd90f828c98032b60dd7f6d99650971d14"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_fast_1p32V_m40C-min.rpt": {
+      "bytes": 37546,
+      "sha256": "a66a3c57e71bc78395136aa7ea688caa2f9a291ab3ee7192bae1d961aaaece42"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-electrical/nom_slow_1p08V_125C-electrical.rpt": {
+      "bytes": 2048,
+      "sha256": "c39b05b54e0d34258df3e970b44e249a22970778553934df779a12f59a46df18"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/result.json": {
+      "bytes": 3120,
+      "sha256": "2d13cd8a5a0b19904ae446182cf0832b0edad86814fa4f976f0437c051f3b1ef"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/inputs.json": {
+      "bytes": 1379,
+      "sha256": "500de267c3057142840c2e34aaedafaaffc97774ffd22850a68b1fe18db7d76f"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/max.rpt": {
+      "bytes": 11113943,
+      "sha256": "558f5474b73df05c33bcd346a55eb1dfeeb9f12d00dd3fe38f8e0e61864eaa62"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/run.log": {
+      "bytes": 2271,
+      "sha256": "feeca279d16298a23df5f32e45deaa9e800a5d919dc0bf32443eabcbf49944f8"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/report.tcl": {
+      "bytes": 2519,
+      "sha256": "871269db4afa205a58881d15642446ef8cfe764401710937d9575b29126bb23c"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/min.rpt": {
+      "bytes": 7614420,
+      "sha256": "3e5478e27809ea67a008d9958fd1a5d6072b9f8a65d8da46fa162d1732b32ef1"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_typ_1p20V_25C/electrical.rpt": {
+      "bytes": 1400,
+      "sha256": "523644c7a89b4554fc8a95f228aff6ac4b04aa9b3f4810191fd655326d3a6491"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/max.rpt": {
+      "bytes": 11126855,
+      "sha256": "7994ac1c12e546a3fdcf8e5820375c3ae212ed87c00afaf6a40aa4823227becd"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/run.log": {
+      "bytes": 2303,
+      "sha256": "6834c47667b75e4a4f6911a50dfcca469a1bb82cb1d8cc59275bc9c3d509069e"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/report.tcl": {
+      "bytes": 2525,
+      "sha256": "ec254e9e139f53da8a60124f74fec5a29c722c169f1efff07175f94554781a22"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/min.rpt": {
+      "bytes": 7606319,
+      "sha256": "2f284516fb2178a53ef2cc9b83584e1c0f8e610db4fe75a07fe156c1f0cc1c51"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_fast_1p32V_m40C/electrical.rpt": {
+      "bytes": 1566,
+      "sha256": "104eea090ac01705cdb6b581cb42e550260fcab277b675d57cad76c74afc3f6a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/max.rpt": {
+      "bytes": 11096241,
+      "sha256": "f63ebdb76116aa6d8ec0ddd542e74a06f3c1278a527a69b103d35a02a7ddba94"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/clocks.rpt": {
+      "bytes": 326,
+      "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/run.log": {
+      "bytes": 2302,
+      "sha256": "1a2af28dc547608c30c6d7ae4ae27cde74532739e29b465b106a9c656865cea7"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/report.tcl": {
+      "bytes": 2525,
+      "sha256": "8f7f378b8b45571906a16ff14b2c27750ebf8a0f54e805ef824a714b58fa7b42"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/min.rpt": {
+      "bytes": 7613267,
+      "sha256": "110874e7a3b9a56b46191656af1d36b2ffe02b35b86531cb64fba0a3c6716a8a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-eco2-corners/nom_slow_1p08V_125C/electrical.rpt": {
+      "bytes": 2048,
+      "sha256": "c39b05b54e0d34258df3e970b44e249a22970778553934df779a12f59a46df18"
+    },
+    "hw/soc/out/external-review-20260919/prepare_logicrom_eco2.py": {
+      "bytes": 4003,
+      "sha256": "c4496f7ee9ff80812415c37c417b6d5cdf1ae9899fdce6229ba2b5ac1dbf80ff"
+    },
+    "hw/soc/out/external-review-20260919/run_logicrom_eco2.py": {
+      "bytes": 1771,
+      "sha256": "80e83544f22a23ca2826c3ec4bba91e27b974fd6757a9ae3e6bb66760181d2ed"
+    },
+    "hw/soc/out/external-review-20260919/validate_logicrom_eco2.py": {
+      "bytes": 1451,
+      "sha256": "058f809f90159aadb8a51f34cf084be72beaa3d61d9da2eb4f85f5ac861fb944"
+    }
+  }
+}

@@ -326,3 +326,61 @@ full four-state boot remains pending. The PDK models were not altered.
 The [clean remote 84a049d replay](evidence/fresh-clone-84a049d-20260920.json)
 passes **831 tests / 26 skips** and **16 front-door gates / zero failures /
 seven skips**. F6's absent historical artifacts remain absent.
+
+New-design SRAM refinements are measured separately:
+[ECO2](evidence/logicrom-eco2-electrical-20260920.json) adds 75 positive buffers
+and [ECO3](evidence/logicrom-eco3-electrical-20260920.json) adds another 17;
+exact original state/pin comparison passes in both. ECO3 reduces electrical
+failures to two slew/two capacitance violations with zero fanout violations;
+slow setup remains −0.727914 ns. [ECO4](evidence/logicrom-eco4-sizing-20260920.json)
+tries 35 equivalent buffer-strength changes and four additional offloads. It
+removes capacitance violations but worsens slow setup to −0.791484 ns and retains
+six slow-corner slew violations. It is not accepted as a timing improvement.
+
+The [clean remote ba9297a replay](evidence/fresh-clone-ba9297a-20260920.json)
+passes **849 tests / 26 skips**, with **16 front-door gates / zero failures /
+seven skips**; this verifies the new diagnostic and native-model guards.
+
+The [single-slow-corner sizing experiment](evidence/logicrom-eco5-sizing-20260920.json)
+reduces estimated slow setup to −0.477510 ns. Its final 92 combinational and 34
+sequential master substitutions have identical Liberty functions/state and exact
+pin connectivity; four positive buffers were added. Setup and slew still fail.
+
+Correction, 2026-09-20: the first full native-Icarus mapped-ROM boot has completed
+with [a retained failure](evidence/logicrom-whole-gl-failure-20260920.json):
+113 UART characters, one framing error, zero application checks and zero exit
+magic at the million-cycle bound. This is a separate open defect from the
+Verilator model incompatibility. Earlier RTL and block ROM passes remain scoped
+to those tests; they do not close whole mapped boot.
+
+[ECO6](evidence/logicrom-eco6-buffering-20260920.json) reduces slow setup to
+−0.152243 ns while preserving exact original state/functions/connectivity.
+[ECO7](evidence/logicrom-eco7-electrical-20260920.json) reaches zero electrical
+violations in all corners. The two remaining negative paths are TX SRAM outputs
+to capture flip-flops. [ECO8](evidence/logicrom-eco8-global-20260920.json) adds one
+positive delay cell on each capture-clock leaf: **all three independent corner
+global estimates pass setup, hold and electrical checks**, worst setup +0.026116
+ns and worst hold +0.023359 ns. This is still estimated RC, with no native detailed
+route/extraction verdict, and belongs to the previous loader image.
+
+The [startup counter diagnostic](evidence/logicrom-startup-counter-diagnostic-20260920.json)
+finds unknown RAM SEC/DED counters at cycle 100 of the native mapped simulation,
+while the CPU is still correctly clearing RAM. The old loader reads those
+power-on values before clearing them. The proposed loader correction writes the
+RAM-source clear unconditionally on power-on, without reading startup telemetry;
+warm-boot and ROM records remain preserved. Corrected RTL and whole mapped boot
+runs are pending. A changed fixed loader needs its own synthesis and physical run.
+
+To retain disk headroom, obsolete global-estimate ODB/DEF files were moved into
+[lossless local archives](evidence/local-geometry-archive-20260920.json). Every
+archived byte was SHA256-verified before unlinking its raw counterpart. The
+manifest gives original paths and restoration commands; netlists, reports,
+constraints, native routed/signoff trees and current candidates remain in place.
+This storage change does not change any pass/fail verdict.
+
+**Verification update, 2026-09-20:** the corrected loader now passes normal RTL
+boot and [both geometry fallback replays](evidence/logicrom-startup-clear-fallback-20260920.json),
+28 application checks each, zero framing/protocol violations and the same
+immutable image manifest. The fallback runs reject primary-image geometry with
+cause 4 and boot image 1. These supersede the pending RTL statements above;
+full native mapped boot and new-image physical implementation remain pending.

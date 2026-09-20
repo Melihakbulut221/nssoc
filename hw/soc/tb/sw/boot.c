@@ -444,8 +444,8 @@ uint32_t boot_main(void) {
     boot_give_up();
   }
 
-  /* THE SCRUB RECORD THE POWER-UP ITSELF CAUSED, and this is a finding
-     rather than a tidy-up. docs/44 section 11's rule is that the
+  /* DISCARD THE SCRUB RECORD THE POWER-UP ITSELF CAUSED. docs/44
+     section 11's rule is that the
      scrubbers ship ENABLED, so soc_mem_ecc.v's RAM scrubber starts
      walking on the first idle cycle after reset -- across a memory that
      boot_crt0.S has not swept yet. Every row it reaches first reads as
@@ -454,8 +454,16 @@ uint32_t boot_main(void) {
      an operator reading them as upsets would be reading the boot as a
      radiation event.
 
-     So the loader clears the RAM sources -- ONCE, on the power-on boot
-     only. On any later boot the RAM was initialised by the previous
+     Clear the RAM sources WITHOUT READING THEM FIRST -- ONCE, on the
+     power-on boot only. The mapped four-state simulation demonstrates
+     why: unknown startup SRAM codewords poison the SEC/DED counters.
+     Testing or printing those counters before the clear propagates the
+     unknown value into the CPU and stalls boot. RTL's conditional event
+     increment hid this through X optimism. The completed assembly sweep
+     makes RAM codewords valid before this write; startup telemetry has
+     no meaningful radiation interpretation in either simulation or silicon.
+
+     On any later boot the RAM was initialised by the previous
      one, the scrubber can no longer manufacture a count, and the record
      is a record: clearing it there would destroy exactly the evidence
      docs/44 built the counters for. The ROM's three counters are never
@@ -465,14 +473,8 @@ uint32_t boot_main(void) {
      the first few tens of thousands of cycles after power-on, before
      this clear, is lost. Nothing is running in that window. */
   if (cnt == 0u) {
-    uint32_t sec = rd(SCR_RAMSEC), rdc = rd(SCR_RAMRD), ded = rd(SCR_RAMDED);
-    if (sec || rdc || ded) {
-      puts_("boot: scrub saw the uninitialised RAM: sec "); puthex(sec);
-      puts_(" rd "); puthex(rdc);
-      puts_(" ded "); puthex(ded);
-      puts_(" -- clearing\n");
-      wr(SCR_CLR, SCR_S_RAMSEC | SCR_S_RAMRD | SCR_S_RAMDED);
-    }
+    wr(SCR_CLR, SCR_S_RAMSEC | SCR_S_RAMRD | SCR_S_RAMDED);
+    puts_("boot: cleared RAM startup scrub record\n");
   }
 
   /* Two counters that must agree on this SoC, reported together so that

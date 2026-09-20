@@ -296,7 +296,9 @@ module tb_logicrom_gl;
       @(negedge clk);
       finished=(core_sleep===1'b1 && ram_word(EXIT_MAGIC_ADDR)===EXIT_MAGIC);
       if(cycles%10000==0) begin
-        $display("LOGICROM_GL progress cycles=%0d uart=%0d",cycles,rx_chars);
+        $display("LOGICROM_GL progress cycles=%0d uart=%0d flash_frames=%0d crash=%040x ram_sec=%04x ram_ded=%04x",
+                 cycles,rx_chars,u_flash0.frames,dut.\u_ibex.crash_dump_o ,
+                 dut.\u_scrub.cnt[0] ,dut.\u_scrub.cnt[2] );
         $fflush();
       end
     end

@@ -5,6 +5,116 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 13:51 TRT — fallback tamam
+
+Yeni entry0/length0 RTL89062/19904 ikisi de TAMAM/PASS: 28 kontrol, cause4,
+ikincil imaj1, UART framing0, flashviol0, scrub0/0/0; normal/syn/fallback
+ROMmanifestleri aynı. `logicrom-startup-clear-fallback-20260920.json` eklendi.
+NativeGL26557 sürüyor; son50kcycle RAMsweep bilinir. Disk2.1GiB; yeni fiziksel
+başlangıçtan önce eski salt-okunur geometrinin reversiblearşivlenmesi gerekiyor.
+84a049d iki hostedrunPASS; ba9297a push/PR henüzrunning. Bootfix+kanıtları
+commit/push yap, PRgövdesini actualGLFAIL+fixpending olarak yenile.
+
+## 20 Eylül 13:43 TRT — düzeltme doğrulaması
+
+Yeni normalRTL78147 TAMAM **28checksPASS**, yeniROM3084bytes. Synthesis67566
+TAMAM:69441cells9391FF1080737.6076µm²stdcells,20macro; bootmanifestRTLileaynı.
+**Yeni native4stateGL26557** `logicrom-startup-clear-gl` nativecellgatePASS,
+compile0,fullrunaktif. Benchprogress artık PCcrash+RAMSEC/DED sayaçlarınıbasıyor;
+10k'başlangıçsayaçX bekleniyor, 100k'dan sonra clear→0 veCPUbilinirliği izle.
+**Fallback RTL89062/19904**, `logicrom-startup-clear-entry0`/`...-length0`
+çalışıyor; manifest/28checks/rejection/secondaryimage şartlarınısonuçtadoğrula.
+
+Eski130kdebug45540 TAMAM: 90kUARTpollknown;100kCPUcrashbusX,df/sleep/txX,
+UART113framing1. Liberty-derived model25239 aynı100kXfailure; aynıişi1M'e
+uzatmamak içinnedenkaydıile sonlandırıldı (`functional-model-diagnostic-stop.json`).
+`logicrom-functional-model-control-20260920.json` kanıtınıekledim. Bu kontrolnative
+modelPASSdeğil. Başlangıçsayaçlarının100cycleXolduğu kısa32225kontrolüdekanıtta.
+
+ECO8 TAMAM: 2delaycellCLKleaf structuralPASS; **tüm3köşesetup/hold/electrical
+estimatePASS**, slowsetup+.026116,fastminhold+.023359. **Yeni bootclearROM'unaait
+değil**; ayrıntılıroute/RCX de yok. `logicrom-eco8-global-20260920.json`.
+YeniROMiçinfizikselkoşu başlatılmadı;GLöncekihatanoktasınıaşınca yapılandır.
+Eski initialseed `state/logicrom-irq-20260920.json` yalnıznl+emptymetrics;
+yeniseedi yeni `logicrom-startup-clear-syn/soc_top.netlist.v`ileoluştur.
+
+YeniHEDEFtests107PASS/5beklenenabsent-artifactSKIP; normalRTL28PASS.
+SPDX475tagged366covered0missing0wrong (sonrakanıtsayısıarttı). Dosyalarhenüz
+commitdeğil; docs68datedcorrection,docs95/92,boot.c,GLbenchprogress,kanıtlar,
+ledger/indexveRESUME. Yeni kanıtlarınızba9297a'dansonra; commit/push/PRgüncelle.
+Magic32138hâlâaktif~2h50/6hbound. Disk~2.5GiB; arşivlerdeeskiODB/DEF
+restoreyollarıvar; nativeyönlendirmemakrolarıveaktifdosyalaraynıduruyor.
+
+## 20 Eylül 13:36 TRT — kritik yeni boot bulgusu ve düzeltme
+
+Son push **ba9297a** (native-cell gate ve corner araçları). Temiz remote clone:
+**849 PASS / 26 SKIP**, frontdoor16/0/7, gerçek ledger/evidence eklendi.
+Sonradan eklenen kanıtlar ve `hw/soc/tb/sw/boot.c` düzeltmesi henüz commit değil.
+
+**Boot:** İlk native Icarus tam koşusu `logicrom-whole-gl2` TAMAM/FAIL,
+5500.19 s, 1Mcycle: UART113,framing1,checks0,magic0. `inputs_unchanged=true`.
+`logicrom-whole-gl-failure-20260920.json` ve docs92/95 düzeltmesi eklendi.
+Canonical Icarus31541 aynı113 karakter/framing1/140kcycle duruşunu tekrar etti;
+aynı işi uzatmamak için yalnız model sonlandırıldı (`native-boot-duplicate-stop.json`),
+sonuç terminated/false; önceki tam FAIL korunuyor.
+
+- **Tanı45540** `logicrom-icarus-boot-stop-diagnostic`: 130k sınır/3600s;
+  aynı eski netlist/flash, rawPC/alerts/sleep/UART/flash sayaçlarını her10kbasar.
+  90kCPU UARTpoll,ilk113karaktersonuframing1; 100kçıktısını al.
+- **Kısa kontrol32225 tamam:** `logicrom-icarus-startup-counters`, ilk100cycle
+  `cnt[0]/cnt[2]=000X`, diğer4counter0. RAM SEC/DED startup X ile zehirleniyor.
+  `soc_scrub.v` if-event RTL X optimism yorumunun mappedmodelde geçerli
+  olmadığını gösteriyor. `boot.c` eski kodu bu sayaçları okuyup print edip
+  ancak sonra clear ediyordu; şüpheliCPUbozulmanoktası tam bu okumalar.
+- **Düzeltme:** boot.c güç-açılışında (`cnt==0`) RAM kaynaklarına SCR_CLR
+  write'ını koşulsuz yapar; önce sayaçları okumaz. Warm boot (`cnt>0`) kayıtları,
+  ROM sayaçları ve scrub enable aynı. Yeni UART metni "boot: cleared RAM
+  startup scrub record". Eski docs68loglarını silme; datedcorrection ekle.
+- **RTL78147** `logicrom-startup-clear-rtl`: logicROM, RDREG/REQ_REG/RF_SYNPRE/
+  WAKE_GNT1, çalışıyor; loader3084bytes üretti. Bu yeni fixedROM için
+  **synthesis67566** `logicrom-startup-clear-syn` başladı (SOC_ETH_SRAM1,
+  RAMsram, hardenedmem/ROM). İkisi bitince yeni kalıcı GL runner ile
+  eşleşen iki klasörü kullan, eski ROM'a ait netlist/layout'u aktarma.
+- **İzole model kontrolü25239** `logicrom-liberty-functional-control2`:
+  aynı eski netlist/flash/nativeSRAM, stdcell işlevleri pinnedLiberty'den
+  Yosys read_liberty/write_verilog ile; ICG statetable'literal latch_posedge
+  ayrıdiagnosticmodel. İlkcontrol ICGeksik compileFAILkorundu. Bu kontrol
+  native-cell kabul değil, model/sentez farkını ayırıyor. 60kprogress.
+  Yanlışlıkla bu sonucu ürün/nativePASS sayma.
+
+**Fiziksel (eski fixed loader + yeni IRQ):**
+- ECO2(+75buf),ECO3(+17buf),ECO4(+4buf/35size,setupkötüleşti),ECO5
+  (+4buf/126eşdeğermaster) structuralPASS; kanıtlarıdocs/evidence'e eklendi.
+- ECO6 `logicrom-eco6-buffering`: +47positivebuf,70comb+2seqeşdeğersize;
+  slowsetup−.152243,fasthold+.023361. 3slowrepairpass (buffering,size,buffering),
+  removed/cloned/pinswap0, kaynakstate/pinLibexactPASS. Kanıt eklendi.
+- ECO7 `logicrom-eco7-margin`: +18buf/36combsize, **tüm3köşeelectrical0**,
+  slowsetup−.152243; yalnız2SRAMTXreadcaptureendpoint `_122875_`,`_122876_`
+  negatif. Kanıt eklendi. NativeDRT/RCX yok.
+- **ECO8 session97904 tamam**, `logicrom-eco8-capture-clock`: yalnız bu2FFCLK
+  girişine birer dlygate4sd1, unchangedclockperiod/SDC. Structural/3corner
+  **session49450** sonuçlarınıal. OldROMimage'dir; yeni bootclear ROM'una
+  sonuçlar aktarılamaz. Önce bootdüzeltmesini doğrula; sonra yeniRTLlayout.
+
+**Alan:** ~2.5GiB, yalnızbuworkspace içinde reversiblearchiveyapıldı.
+- `inactive-verilator-build-cache-20260920.tar.gz`: 3bitmişcompile generatedC++/
+  object/cache, SHA doğrulanıprawkaldırıldı; executables/inputs/logs/resultsaynı.
+- `completed-clean-clone-workspaces-20260920.tar.gz`: 10eski tamamlanmış
+  generatedclone,15200fileSHA/symlink doğrulandı; primarycheckout ve84/ba son2clone,
+  dıştaki logs/XML/results kaldı. Manifest aynıbase'de.
+- `old-estimate-geometry-[0-4]-20260920.tar.gz`: eski globalestimateECO2,4–17,
+  19–21 ODB/DEF dosyaları SHA doğrulanarak arşive taşındı. ECO18/ECO22 native
+  geometry, netlists, scripts, reports, constraints ve tümaktifgirdiler kaldı.
+  **docs/evidence/local-geometry-archive-20260920.json** orijinalpath/hash/restore
+  komutunu içerir. Eski bir ODB/DEF'e ihtiyaç varsa arşivden önce geri yükle.
+  İlkarchivepreparation emptyfailedECO13dizininde assertoldu, hiçbirfiletaşımadı;
+  retry yalnızproof/log/ODBolan bitmişdizinleri aldı. Archiveadaylarıactivefddeğil.
+
+Magic32138 hâlâçalışıyor (10:54/6hbound, nativehalooldRTL). Henüzverdict yok.
+Yeni sourceguard/model/parser/ECOcontrols74PASS, yeni evidencechecks65PASS/5skip.
+Arşivindex yeni dosyalarla tekrarüret; git diffcheck/SPDX/frozenkontrol; RTLboot
+ve yeniGL sonuçlarına göre commit/push/PRbodygüncelle. İş sürüyor; bırakma.
+
 ## 20 Eylül 13:11 TRT — yeni tasarım ve simülatör uyumluluğu
 
 Son push `84a049d`; temiz GitHub klonu 831 PASS / 26 SKIP, kapılar
