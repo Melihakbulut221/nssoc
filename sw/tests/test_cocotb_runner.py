@@ -73,3 +73,33 @@ def test_runner_verdict(tmp_path, mode, passed, failed, skipped, clean):
     assert f"{skipped} skipped" in proc.stdout
     if mode == "partial":
         assert "second variant failed to compile" in (tmp_path / "hw/soc/out/cocotb/tb.log").read_text()
+
+
+@pytest.mark.parametrize("binding", ["complete", "missing_driver", "missing_workflow"])
+def test_native_suite_needs_a_live_external_driver_binding(tmp_path, binding):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    for name in ("run_cocotb.sh", "cocotb_results.py"):
+        shutil.copy(ROOT / "scripts" / name, scripts / name)
+    bench = tmp_path / "hw/soc/tb/cocotb"
+    bench.mkdir(parents=True)
+    (bench / "test_soc_mem_parity.py").write_text("# Native fixture module\n")
+    (bench / "Makefile").write_text(
+        "all:\n\t@printf '%s' '<testsuites><testcase/></testsuites>' > results.xml\n"
+        "clean:\n\t@rm -f results.xml\n")
+    workflow = tmp_path / ".github/workflows/checks.yml"
+    workflow.parent.mkdir(parents=True)
+    if binding != "missing_workflow":
+        workflow.write_text("      - name: Native SRAM parity\n"
+                            "        run: bash scripts/check_soc_memory_parity.sh\n")
+    if binding != "missing_driver":
+        (scripts / "check_soc_memory_parity.sh").write_text("#!/bin/sh\nexit 0\n")
+    result = subprocess.run(["bash", str(scripts / "run_cocotb.sh"), "cocotb"],
+                            env={**os.environ, "PY": sys.executable},
+                            capture_output=True, text=True, timeout=20)
+    assert (result.returncode == 0) == (binding == "complete"), result.stdout
+    if binding == "complete":
+        assert "separately run by check_soc_memory_parity.sh" in result.stdout
+        assert "1 skipped" in result.stdout
+    else:
+        assert "UNREACHED cocotb test modules" in result.stdout

@@ -243,6 +243,18 @@ for dir in hw/tb hw/soc/tb/cocotb; do
     for tf in "$ROOT/$dir"/test_*.py; do
         [ -f "$tf" ] || continue
         mod=$(basename "$tf" .py)
+        # Native SRAM parity runs in its mandatory, separately provisioned CI
+        # job. Pure RTL uses Icarus 12; the untouched PDK model needs >=13.
+        # Keep this binding checked: deleting its driver or workflow command
+        # makes the module unreachable again rather than silently exempting it.
+        if [ "$dir/$mod" = "hw/soc/tb/cocotb/test_soc_mem_parity" ] &&
+           [ -s "$ROOT/scripts/check_soc_memory_parity.sh" ] &&
+           grep -qE '^[[:space:]]+run: bash scripts/check_soc_memory_parity.sh[[:space:]]*$' \
+               "$ROOT/.github/workflows/checks.yml" 2>/dev/null; then
+            echo "SKIP $dir/$mod: separately run by check_soc_memory_parity.sh (native PDK, Icarus >=13); results belong to the memory-parity job"
+            skip_total=$((skip_total + 1))
+            continue
+        fi
         case " $SKIP_MODULES " in *" $mod "*) continue ;; esac
         # Reached if some Makefile in this directory names it as MODULE or
         # COCOTB_TEST_MODULES, or the table above lists it.
