@@ -1176,3 +1176,56 @@ nothing in `docs/05` needs the part to hold state through a power-down
 and nothing in the flow supports one. A second floorplan for power:
 `docs/48` already owns that question and the answer to it changes when
 the design gains 50 % more cells.
+
+## Correction — macro inventory and energy scope, 21 September 2026
+
+The original `macro_energy.py` calculation above hard-coded the unprotected
+four-RAM/two-ROM hierarchy. It does not describe the later ECC/packet-memory
+images. Reproduce that historical calculation only with the explicit
+`--legacy-six-macros` option, `--window`, and `--pdk-dir` (or `PWR_PDK`).
+The previous unqualified command now fails with this explanation. Historical
+numbers above remain historical; this correction does not remeasure them.
+
+The current path derives every SRAM instance and type from an explicitly
+supplied flattened netlist. `macro_activity.py` counts each physical A/B clock
+separately and all eight joint MEN/WEN/REN states, using the actual macro pins
+in a VCD. The window is a wall-clock interval `[start_ns, end_ns)`, so gated
+clocks contribute only their observed edges and dual-port clocks need not
+share a frequency. Every mapped instance and required scalar pin must be
+present. Unknown sampled controls, unknown clocks, active/unknown BIST,
+truncated windows, and controls changing at a rising-edge timestamp are
+errors. The last case is conservative: VCD does not retain delta-cycle
+sampling order. Choose a stable-control stimulus or a better-resolved trace;
+do not turn the error into zero activity.
+
+```sh
+# Dump functional macro pins at a mapped hierarchy such as tb.dut.
+python3 hw/soc/flow/macro_activity.py simulation.vcd \
+  --netlist soc_top.netlist.v --scope tb.dut \
+  --start-ns 1000 --end-ns 2000 --output macro-activity.json
+python3 hw/soc/flow/macro_energy.py macro-activity.json \
+  --netlist soc_top.netlist.v --pdk-dir "$PWR_PDK" \
+  --corner nom_typ_1p20V_25C > macro-clock-energy.json
+```
+
+The estimator binds the activity to the exact netlist hash and requires an
+exact macro/port inventory and a complete joint-state count. It parses each
+clock pin's scalar Liberty conditions and units, rejects missing/duplicate
+states and unsupported nonzero falling-edge power, and charges scalar cell
+leakage once per macro. Both ports contribute clock energy. PDK paths use
+`--pdk-dir`, `PWR_PDK`, or `PDK_ROOT/ihp-sg13g2`; no user-specific absolute
+path is built into the program.
+
+**This is SRAM clock-pin internal energy plus scalar cell leakage.** It omits
+address, data and mask pin switching, output loads, standard-cell power and
+physical parasitics. It is not total SRAM power, SoC power or a silicon
+measurement. No measured current-image workload power is claimed here.
+
+The [calibration record](evidence/macro-energy-20260921.json) covers real
+20- and 24-macro inventories, 36 and 40 functional clock ports respectively,
+using unchanged native models. A separate calibration bench drives known
+states with independent 10 ns A and 14 ns B clocks; the independent schedule
+requires seven A edges and five B edges per state. This validates extraction
+and pricing plumbing. **It is not a run of the SoC workload.** Unit controls
+also reject missing ECC/packet macros, the second Ethernet port, stale input
+hashes, invalid counts, ambiguous waveforms and unsupported Liberty tables.

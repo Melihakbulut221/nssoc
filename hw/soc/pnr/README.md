@@ -39,6 +39,17 @@ depends on them; do not rename a diagnostic config to imply signoff.
 
 The selector verifies only macro inventory and ROM profile. It does not prove
 placement legality, complete parameter equivalence, SDC correctness, timing,
-DRC, LVS, power integrity or package integration. `macro_energy.py` still uses
-historical six-macro activity names and must not be used to claim the energy
-of an ECC/Ethernet image; that migration remains open.
+DRC, LVS, power integrity or package integration. The current SRAM activity
+path below migrates the inventory; historical energy values remain tied to
+their original six-macro profile.
+
+## SRAM activity inventory
+
+Use `flow/macro_activity.py` and `flow/macro_energy.py --netlist` for current
+macro inventories; the old fixed six-instance calculation requires explicit
+`--legacy-six-macros`. The new path requires every ECC/packet macro and both
+ports of each dual-port SRAM. See [the dated power correction](../../../docs/57-power-under-a-duty-cycle.md)
+for commands, clock sampling rules and the limited energy components priced.
+A separate `flow/check_macro_activity.py` native-model calibration checks the
+reader with an inventory and independent A/B clocks; it is not a SoC workload
+power measurement.
