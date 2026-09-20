@@ -477,3 +477,20 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   process-group'larını durdurur; iki saatlik süre ve 1024 MiB boş disk
   sınırı vardır. Başlamak için 2048 MiB gerekir. SRAM içleri yine black-box
   kapsamındadır. Halo Magic hazırlığı ayrı `prepare_halo_magic.py` dosyasında.
+
+## 2026-09-20 06:17 TRT — CI bağımlılığı ve devam noktası
+
+- `8db1db6` GitHub'a gönderildi. README'deki eski üç-atlama cümlesi
+  tarihsel olarak işaretlendi; 5675eea temiz klonunun 743/26 ve 16/0/7
+  kayıtlarına bağlandı. Yeni Tcl testleri için `checks.yml` açıkça `tcl`
+  kuruyor: apt paket incelemesinde Yosys yalnız `libtcl8.6` gerektiriyor.
+  Workflow YAML parse kontrolü ve 118 ilgili test PASS; SPDX 0 eksik/yanlış.
+  Bu küçük bağımlılık değişikliği tam suite'in yeni bir ölçümü sayılmıyor.
+- ECO18 native ikinci anten-onarım döngüsünde. Antenna net sayıları
+  247 -> 28; yeni final sonuç henüz yok. Halo native ilk DRT iterasyonunda.
+  Her ikisinin sürücü/log/session bilgileri önceki devam notlarında.
+- Fiziksel sonuçlar gelince önce exact post-route bağlantı kontrolü ve
+  native üç-köşe kaydı; ardından aynı aday için XOR/LVS. Halo native
+  tamamlandıktan sonra ayrı Magic ölçümü. Başka eski adayın DRC veya timing
+  sonucunu yeni adaya taşımayın. Her hazırlık script'i henüz çalışmamışsa
+  kayıt bunu söylüyor; hazırlık, sonuç değildir.

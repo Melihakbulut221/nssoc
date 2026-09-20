@@ -78,9 +78,11 @@ jobs:
           # texlive-science carries siunitx; texlive-latex-extra does not.
           # lmodern.sty is in `lmodern`, which texlive-base only Recommends
           # and --no-install-recommends therefore drops.
+          # The route-guide guard tests execute Tcl itself. Yosys only
+          # requires the Tcl library, which does not provide tclsh.
           sudo apt-get install -y --no-install-recommends \
             pandoc texlive-latex-recommended texlive-latex-extra \
-            texlive-fonts-recommended texlive-science lmodern
+            texlive-fonts-recommended texlive-science lmodern tcl
 
       - name: Every check, from the same script the developer runs
         run: scripts/ci_local.sh all

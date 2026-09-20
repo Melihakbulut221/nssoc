@@ -466,11 +466,22 @@ It fails on an untagged or mis-tagged source file.
 scripts/ci_local.sh all --record
 ```
 
+The route-guide guard tests require `tclsh` (Debian/Ubuntu package `tcl`);
+installing Yosys alone supplies its Tcl library, not necessarily the shell.
+The workflow installs this dependency explicitly. Missing tools are reported
+as skips, not successful tests.
+
 That script is the definition; `.github/workflows/checks.yml` is a
 wrapper that calls it, so the two cannot drift, and the checks do not
-depend on a runner. **Three** checks skip locally, with the reason
-printed, because this machine has no pandoc and no TeX; a skip is not a
-pass and the summary says how many there were. *(Corrected 2026-09-11:
+depend on a runner. ~~**Three** checks skip locally, with the reason
+printed, because this machine has no pandoc and no TeX~~; a skip is not a
+pass and the summary says how many there were. **Updated 2026-09-20:**
+that was a machine-specific historical count. The same command on the
+[clean remote `5675eea` clone](docs/evidence/fresh-clone-5675eea-20260920.json)
+records **16 passing gates, zero failures and seven skips**, with each
+reason retained. Its Python suite is separately **743 passes / 26 skips**.
+The command and dated record, not a fixed skip count, are authoritative.
+*(Corrected 2026-09-11:
 this said two. The paper job skips both the build and the bibliography
 check that needs the build, and `ci-local-log.tsv` recorded skipped=3
 while this sentence said two -- the log and the prose disagreed and the
