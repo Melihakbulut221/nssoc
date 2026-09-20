@@ -1,6 +1,10 @@
 # 00 — Index: what this is, what exists, and where to start
 
-Latest implementation: `docs/88-interface-integration.md` — RTL, pin-level verification and physical implementation of the four spacecraft interfaces.
+Current entry point: [README.md](../README.md), with
+[source-bound measured status](project-status.json). Complete product and audit
+requirements are in [docs/92-product-acceptance.md](92-product-acceptance.md)
+and [docs/96-second-audit-closure.md](96-second-audit-closure.md).
+[HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
 Entry point to the document corpus. It states what the project is, what
@@ -639,3 +643,14 @@ site belongs.
 BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
 all eight BUSSTAT tasks pass. This inventory is not a claim that every
 core-level instruction property is proved. See docs/89.
+
+
+**Re-counted 2026-09-21 after peripheral contract integration [fact].**
+`hw/soc/formal` declares **109 tasks across 25 jobs**. The regression requires
+103 of these tasks and reports six explicit historical exceptions in
+`hw/soc/formal/sweep-policy.json`; the frozen pilot contributes another 54
+mandatory tasks. Thus the complete sweep requires 157 PASS verdicts, with
+source freshness checked separately. This is an inventory and acceptance
+requirement, not a claim that the currently running complete sweep has passed.
+The ten new UART/PnP/timer tasks have their own
+[measured evidence](evidence/peripheral-formal-20260920.json).

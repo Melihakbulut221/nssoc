@@ -5,7 +5,7 @@
 """Build a browsable static site from the repository's markdown corpus.
 
 Inputs are read from disk at build time: every `docs/*.md`, plus `README.md`
-and `ROADMAP.md`. Nothing about their content is embedded here, so the
+and `ROADMAP.md`/`HISTORY.md`. Nothing about their content is embedded here, so the
 generator stays correct while those files are being edited.
 
 What it does that plain `pandoc file.md` does not:
@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import hashlib
 import json
 import os
 import re
@@ -48,6 +49,7 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -59,7 +61,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOC_REF = re.compile(r"(?<![\w/.\-])docs/(\d{2})(-[a-z0-9\-]+\.md)?(?![\w\-])")
 
 # Root-level documents that the corpus also refers to by name.
-ROOT_REF = re.compile(r"(?<![\w/.\-])(README|ROADMAP)\.md(?![\w\-])")
+ROOT_REF = re.compile(r"(?<![\w/.\-])(README|ROADMAP|HISTORY)\.md(?![\w\-])")
 
 FENCE = re.compile(r"^\s*(```+|~~~+)")
 
@@ -109,7 +111,7 @@ def discover(root: Path) -> list[Document]:
                     number=number,
                 )
             )
-    for name in ("README.md", "ROADMAP.md"):
+    for name in ("README.md", "ROADMAP.md", "HISTORY.md"):
         path = root / name
         if path.is_file():
             docs.append(
@@ -354,6 +356,7 @@ def resolve_refs(doc: Document, by_number, by_filename, root_docs) -> None:
 
 INLINE = re.compile(
     r"(?P<code>`+[^`]*`+)"
+    r"|(?P<image>!\[(?P<itext>[^\[\]]*)\]\((?P<iurl>[^()\s]*)\))"
     r"|(?P<link>\[(?P<ltext>(?:[^\[\]]|\[[^\]]*\])*)\]\((?P<lurl>[^()\s]*)\))"
     r"|(?P<auto><(?P<aurl>https?://[^>\s]+)>)"
     # Bare URLs. The research documents cite sources this way and GFM
@@ -385,6 +388,10 @@ def inline_html(text: str) -> str:
         if m.group("code"):
             body = m.group("code").strip("`")
             return hold(f"<code>{html.escape(body, quote=False)}</code>")
+        if m.group("image"):
+            url = html.escape(m.group("iurl"), quote=True)
+            alt = html.escape(m.group("itext"), quote=True)
+            return hold(f'<img src="{url}" alt="{alt}" style="max-width:100%;height:auto">')
         if m.group("link"):
             url = html.escape(m.group("lurl"), quote=True)
             return hold(f'<a href="{url}">{inline_html(m.group("ltext"))}</a>')
@@ -441,6 +448,14 @@ def render_markdown(text: str, headings: list[tuple[int, str, str]]) -> str:
             continue
 
         if not line.strip():
+            i += 1
+            continue
+
+        # Metadata/status markers are comments, not visible prose. Fenced
+        # comments above remain literal code, as Markdown requires.
+        if line.lstrip().startswith("<!--"):
+            while i < n and "-->" not in lines[i]:
+                i += 1
             i += 1
             continue
 
@@ -811,6 +826,32 @@ def all_documents_page(docs: list[Document]) -> str:
 # --------------------------------------------------------------------------
 
 
+def copy_document_images(doc: Document, out_dir: Path, root: Path) -> str:
+    """Copy only locally referenced image assets; never fetch a remote image."""
+    def replace(match):
+        if not match.group("image"):
+            return match.group(0)
+        url = match.group("iurl")
+        parsed = urlsplit(url)
+        if parsed.scheme or parsed.netloc:
+            return match.group(0)
+        source = (doc.path.parent / unquote(parsed.path)).resolve()
+        if not source.is_relative_to(root.resolve()):
+            raise ValueError(f"Image escapes repository: {doc.rel}: {url}")
+        if source.suffix.lower() not in {".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp"}:
+            raise ValueError(f"Unsupported image asset: {doc.rel}: {url}")
+        data = source.read_bytes()  # A missing diagram is a build error.
+        name = hashlib.sha256(data).hexdigest()[:16] + "-" + source.name
+        asset = out_dir / "assets" / name
+        asset.parent.mkdir(exist_ok=True)
+        if asset.exists() and asset.read_bytes() != data:
+            raise ValueError("Image asset name collision")
+        asset.write_bytes(data)
+        return f'![{match.group("itext")}](assets/{name})'
+
+    return INLINE.sub(replace, doc.resolved)
+
+
 def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
     docs = discover(REPO_ROOT)
     if not docs:
@@ -846,6 +887,8 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
         total_refs += doc.refs_out
         for line, ref in doc.refs_unresolved:
             unresolved.append((doc.rel, line, ref))
+
+        doc.resolved = copy_document_images(doc, out_dir, REPO_ROOT)
 
         body = None
         if use_pandoc:

@@ -700,3 +700,14 @@ keep-out removes 204 external markers but does not close the experiment's
 zero-external-marker criterion or any macro-interior requirement. The unchanged
 installed deck reads this old 24-macro candidate through DEF/LEF abstracts;
 raw process exit zero is execution success, not a clean DRC result.
+
+
+**Re-counted 2026-09-21 after peripheral contract integration [fact].**
+`hw/soc/formal` declares **109 tasks across 25 jobs**. The regression requires
+103 of these tasks and reports six explicit historical exceptions in
+`hw/soc/formal/sweep-policy.json`; the frozen pilot contributes another 54
+mandatory tasks. Thus the complete sweep requires 157 PASS verdicts, with
+source freshness checked separately. This is an inventory and acceptance
+requirement, not a claim that the currently running complete sweep has passed.
+The ten new UART/PnP/timer tasks have their own
+[measured evidence](docs/evidence/peripheral-formal-20260920.json).
