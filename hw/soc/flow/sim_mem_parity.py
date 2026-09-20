@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import xml.etree.ElementTree as ET
 
 
@@ -23,6 +24,13 @@ def main():
     args = ap.parse_args()
     if args.words == 16384 and args.harden:
         ap.error('16384-word macro mapping is unprotected only')
+    tool = shutil.which('iverilog')
+    if not tool:
+        ap.error('iverilog is required on PATH')
+    version = subprocess.run([tool, '-V'], capture_output=True, text=True, check=True).stdout
+    match = re.search(r'Icarus Verilog version (\d+)', version)
+    if not match or int(match[1]) < 13:
+        ap.error('Native IHP SRAM models require Icarus >=13; version 12 returns unknown read data')
     from cocotb_tools.runner import get_runner
     root = Path(__file__).resolve().parents[3]
     out = args.output.resolve()

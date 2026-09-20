@@ -369,5 +369,92 @@
       "bytes": 3604,
       "sha256": "88c194bc43796af5605a98d235649647eb8dbfe25e494d83210b5286dd623997"
     }
-  ]
+  ],
+  "unsupported_simulator_control": {
+    "icarus": "12.0",
+    "result": {
+      "passed": false,
+      "sources_unchanged": true,
+      "words": 8192,
+      "harden": 0,
+      "rdreg": 0,
+      "tests": 1,
+      "macro_source_override": false,
+      "scope": "RAM bus parity; not timing or ROM initialization"
+    },
+    "failure": "Untouched SRAM model read bus is unknown after full bus initialization; same sources/models pass Icarus 13",
+    "disposition": "Fail early for Icarus <13. CI uses pinned OSS CAD Suite 2026-08-04 instead of Ubuntu apt Icarus 12.",
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/memory-parity-delivery-iverilog12/h0-w8192-r0/result.json",
+        "bytes": 208,
+        "sha256": "1fd1876a90e3be56c59267f36b6a9732de5e24b36586bfea313ec2af15e3f634"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/memory-parity-delivery-iverilog12/h0-w8192-r0/results.xml",
+        "bytes": 657,
+        "sha256": "ba8252c03a4d3cfe72b1038ae15d2b6969aa512dd5090577e7c68c25e3d62f49"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/memory-parity-delivery-iverilog12/h0-w8192-r0/inputs.json",
+        "bytes": 1591,
+        "sha256": "eaa41c5a6f2f081a9f9321489660faa468b885eed614081bd23c65d7d01df248"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/memory-parity-delivery-iverilog12/h0-w8192-r0.log",
+        "bytes": 15951,
+        "sha256": "3640081bb669c28f991f4298da7b2e8809d1dc7e4f99a6294f2e1906cb3e072b"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/memory-parity-delivery-iverilog12/iverilog-version.log",
+        "bytes": 3294,
+        "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946"
+      }
+    ]
+  },
+  "preflight_validation": {
+    "unsupported": {
+      "command": "Icarus 12 PATH: sim_mem_parity.py --pdk <PDK> --output <fresh>",
+      "returncode": 2,
+      "result": "rejected before build"
+    },
+    "supported": {
+      "passed": true,
+      "sources_unchanged": true,
+      "words": 8192,
+      "harden": 1,
+      "rdreg": 1,
+      "tests": 1,
+      "macro_source_override": false,
+      "scope": "RAM bus parity; not timing or ROM initialization"
+    },
+    "source_sha256": "da5c79a45355a201d8eedf6fb6b81c6351adfa8cb08dade57d17e314ce27db64",
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/mem-parity-preflight13-positive/result.json",
+        "sha256": "d72e347d67c70eec044ddb91732652337d642025d59a755669682f6f30518e6d",
+        "bytes": 207
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/mem-parity-preflight13-positive/results.xml",
+        "sha256": "9c4afc6af71eb9b2e13a7dcd3ec71918f63f7031ada002e585b43107fda7a8f8",
+        "bytes": 454
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/mem-parity-preflight13-positive/inputs.json",
+        "sha256": "f2b54517016b254752d7a9cd4c4940dcc8a7b5c75534f28bfe68c10f0b23834b",
+        "bytes": 1613
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/mem-parity-preflight13-positive.log",
+        "sha256": "208ffd1e417880b1fd653f07192d1886c58e9688dd8cdd602fc5bda33993ff43",
+        "bytes": 2158
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/mem-parity-unsupported-preflight.log",
+        "sha256": "b7c470b89588dc66d79e05dbc9f249ae0cb57f17a9785d59ff353ab0e380cd12",
+        "bytes": 299
+      }
+    ]
+  }
 }

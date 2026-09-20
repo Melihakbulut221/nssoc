@@ -93,3 +93,10 @@ macro-read corruption fails a functional assertion after elaboration. See
 [the measured record](evidence/memory-parity-20260920.json). This does not claim
 power-up equality: the array model initializes itself and native SRAM starts
 undefined. Legacy SRAM ROM initialization and physical timing are separate gates.
+
+The untouched SRAM model also needs Icarus 13 or newer: a version-12 control
+failed with unknown macro read data after bus initialization. The runner now
+rejects that version before building, and the CI RAM job uses the pinned
+2026-08-04 OSS CAD Suite. The preflight rejects version 12 (exit 2), and the
+protected RDREG=1 profile passes again on version 13. Both outcomes are retained
+in the RAM evidence record; the simulator failure is not a design pass.

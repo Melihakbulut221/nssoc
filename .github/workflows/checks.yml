@@ -168,10 +168,12 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: hw/requirements.txt
-      - name: Install memory simulation tools
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde # v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install memory simulation dependencies
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends iverilog
           python3 -m venv hw/.venv
           hw/.venv/bin/pip install -r hw/requirements.txt
       - name: Compare array and native SRAM models, including a negative control
