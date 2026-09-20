@@ -50,3 +50,13 @@ def prepared_sources(tmp_path_factory):
     (soc / 'genp').mkdir()
     (soc / 'genp/ibex_top.v').write_text(patcher.patch((soc / 'gen/ibex_top.v').read_text(), 'secded'))
     return soc
+
+
+@pytest.fixture
+def tclsh():
+    """Only tests that execute Tcl depend on the optional system shell."""
+    import shutil
+    executable = shutil.which("tclsh")
+    if executable is None:
+        pytest.skip("tclsh not available; apt install tcl")
+    return executable

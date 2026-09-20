@@ -1,6 +1,6 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
-<!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
-# Immutable boot contents in standard cells
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+# 95 — Immutable boot contents in standard cells
 
 **2026-09-20.** The SRAM implementation called ROM in earlier physical runs
 has no mechanism to load its initial contents on silicon. Simulation's
@@ -253,3 +253,20 @@ branch can suppress an unknown event in RTL simulation while its mapped
 logic still propagates X. Both comments now state that limit; the counter
 logic is unchanged. The native full-boot evidence above verifies the loader
 initialization fix, rather than relying on that RTL simulation behaviour.
+
+### Hosted NPU-stage failure and reboot recovery (20 September evening)
+
+The independent [hosted run 35508536540](evidence/native-boot-hosted-npu-failure-20260920.json)
+passed native-cell reset, RTL boot and gate compilation, then failed the full
+mapped boot: 24 application checks completed before unknown values appeared
+during the NPU phase. It reached the million-cycle bound without the success
+magic. The ROM and flash bytes match the distinct local passing build;
+Yosys and Icarus versions differ. Root cause remains under investigation using
+the exact hosted netlist and flash under local Icarus 13. The earlier local
+28-check pass is retained with its original scope; hosted acceptance is open.
+
+The host reboot interrupted the pending local physical runs. Their partial
+outputs are retained and input hashes rechecked before restarting in new
+`restart1` directories. Neither old RUNNING metadata nor missing final state
+files is a pass. See [recovery record](evidence/reboot-recovery-20260920-evening.json)
+The ongoing product requirements remain in [the acceptance record](92-product-acceptance.md).

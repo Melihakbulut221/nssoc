@@ -179,6 +179,12 @@ detailed-routing DRC, final extracted timing, or the separate physical decks.
 
 ### Routed implementation and extracted timing
 
+Scope clarification, 20 September 2026: routed geometry does not establish
+timing closure. Every recorded candidate has failed one or more timing or
+electrical acceptance gates; the eight-macro image also predates Ethernet
+and the immutable logic ROM. See docs/92 for the current image-specific gates.
+
+
 The final antenna correction is `interfaces-antfinal-20260919`, resumed from
 `interfaces-route20-20260919/10-openroad-checkantennas-1/state_out.json`.
 The parent had one Metal3 antenna violation on `net3121`, at `_058330_/B1`

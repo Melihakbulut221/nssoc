@@ -1,0 +1,70 @@
+# 96 — Second audit closure register
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
+Date: 20 September 2026. This register adds the second independent audit to
+[the existing product acceptance contract](92-product-acceptance.md). It does
+not replace the first review, ongoing native boot diagnosis, physical runs,
+or the PCIe Gen3 x4 and Gigabit Ethernet targets. The audit examined both
+`main` and `codex/complete-open-work`; a finding about `main` is rechecked
+against this branch before changing code.
+
+Source: user-supplied `nssoc-audit-2026-09-20 (2).md`, SHA256
+`65799fd3a98b76a8eaf043249ade20b8925feae7d82719eee48c7465bb5fced9`. The original is retained locally. Its findings are inputs to
+verification, not measured results of this branch.
+
+Statuses: OPEN needs work; PARTIAL has a narrower implemented result;
+VERIFY means a change awaits its stated checks; DONE requires evidence.
+External dependencies remain OPEN rather than being converted into exclusions.
+
+| Audit ID | Required work and acceptance | Status / current disposition |
+|---|---|---|
+| 0.1 | Project-specific TT test guide; regenerate manifest; synchronize TT repository | DONE. Generator updated; 18 TT checks pass / 1 absent-tool skip. Only guide and manifest changed; remote TT `main` is `aa870aba3b2c4d39460ae7a8da42918fa25df422`, verified with `git ls-remote`. Frozen RTL remains byte-identical. |
+| 1.1 | Keep host checkpoints out of publication | DONE for current tree. Continuation notes preserved locally and removed from Git tracking; ignore rules added. Earlier public commits still contain their historical copies. |
+| 1.2 | Reconcile signed LGPL decision, optional SpaceWire/CAN build, notices and licence texts | OPEN. Choose the audit's optional-build route; preserve complete interface functionality in an explicitly enabled profile. No legal advice or patent clearance is claimed. Correct docs/95 to CC-BY-4.0; inventory both source bundles and Ethernet reset patch. |
+| 1.3 | Missing Tcl shell must produce explicit tool skips | DONE. `pytest sw/tests/test_corner_reports.py sw/tests/test_interface_flow.py`: 36 pass with Tcl; `PATH=/nonexistent` with an absolute Python path: 16 pass / 20 explicit skips. |
+| 1.4 | Correct local-CI/workflow equivalence claim | DONE. Dated correction distinguishes Python/documentation gates from the workflow hardware jobs. |
+| 1.5 | Evidence publication policy; portable paths; external binary assets | OPEN. Preserve exact hashes, licences and clean-clone recovery while migrating assets. Do not delete the only reproducible source before a verified replacement exists. |
+| 1.6 | Topic-based history and public author identity | OPEN. Preserve a local recovery ref before any history rewrite. Current native runs and external CI refer to existing SHAs. |
+| 1.7 | Numbered index table/headings; physical and Ethernet claim scope | PARTIAL. Local native pass and independent hosted failure are now distinguished. Docs/88–95 now occupy index table rows; headings are numbered and Ethernet shared-clock/MDIO limitations are explicit. |
+| 1.8 | Close every existing product gate | OPEN. Retain all rows of docs/92, including PCIe, final timing/LVS, packaging, DFT, debug, POR and qualification. |
+| 2.1 | Hardware CI, visible pytest skips, current verification ledger, pinned/scheduled workflow | PARTIAL. Branch already has RTL, formal/boot and optional native boot; unify reusable commands, publish all counts and complete remaining workflow controls. |
+| 2.2 | Full cocotb/formal rerun and source-bound ledger freshness | OPEN. Do not replace failed or incomplete obligations with aggregate PASS counts. |
+| 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | OPEN. Preserve frozen pilot scripts; provide controlled external environment overrides where editing would violate freeze. Check translated/patched Ibex against pinned inputs. |
+| 2.4 | Valid design SDC; all relevant corners; timing/electrical closure and hold erratum | OPEN. Current native run preserves actual 5.0 percent derating. Old zero-derate ECO passes remain withdrawn. Reset exceptions need a justified timing contract, not blanket cuts. |
+| 2.5 | Collect historical s83 evidence, complete digest coverage, publish physical artifacts | PARTIAL. Existing digest/recovery mechanisms cover more than the audited main snapshot; verify every named s83 run individually and preserve missing-data failures. |
+| 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
+| 3.1 | SoC orphan reachability and simulation/macro memory parity | OPEN. CAN currently instantiates soc_apb_wb; do not wrongly classify it as unused. Probe modules need explicit scope. |
+| 3.2 | UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures | OPEN. New tests must exercise behavior and negative cases, not count files as coverage. |
+| 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | OPEN. Frozen pilot warnings are recorded, not fixed in the submitted sources. |
+| 3.4 | REUSE compliance, upstream IHP notices, generated licence inventory | PARTIAL. REUSE 6.2.0 now reports 880/880 files covered, zero invalid expressions, no missing licences. `REUSE.toml`, IHP aggregate notices and optional local/required installed CI gate are implemented. Live counts are now generated by `scripts/licence_inventory.py`; final source-bound rerun remains. |
+| 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | OPEN. Current results must retain image/tool/corner scope; no SoC operating frequency or manufacturability claim. |
+| 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | OPEN. Do not delete or move frozen pilot configs; document their historical scope instead. |
+| 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | OPEN. Frozen tests remain unchanged; test new adapters separately against their protocol. |
+| 3.8 | Single-source register offsets and bare-metal HAL | OPEN. Preserve boot acceptance and compare generated register interfaces before changing firmware. |
+| 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | OPEN. Verify each deliverable separately; no release is published while product gates fail. Do not invent a DOI or declare an external contribution policy without checking the existing mirror contract. |
+| 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
+
+The audit's section 5 is an ordering of these same requirements, not another
+set of completed results. Local continuation state records active commands and
+immutable input identities outside the public tree. Every substantive closure
+will add its command, result and applicable scope here or in docs/92.
+
+Validation commands for the first audit fixes (20 September 2026):
+
+```sh
+.venv/bin/python -m pytest -q sw/tests/test_corner_reports.py sw/tests/test_interface_flow.py sw/tests/test_doc_links.py
+# 146 passed
+PATH=/nonexistent /absolute/path/to/python -m pytest -q -rs sw/tests/test_corner_reports.py sw/tests/test_interface_flow.py
+# 16 passed, 20 skipped; all skips identify the absent Tcl shell
+.venv/bin/python scripts/gen_tt_submission.py
+.venv/bin/python -m pytest -q sw/tests/test_tt_submission.py
+# Only the test guide and its manifest entry change; 18 pass / 1 absent-tool skip.
+```
+
+The combined documentation/TT/Tcl regression after the REUSE migration
+completed with **164 passes and one absent-tool skip**. The licence front-door
+command, with `REUSE` pointing to REUSE 6.2.0, completed **6 gates, zero failures,
+zero skips**. The first local full-CI attempt is not accepted: its watched-tree
+guard correctly rejected the then-uncommitted TT guide/manifest edits. A clean
+commit replay is required; no dirty-tree exception was introduced.

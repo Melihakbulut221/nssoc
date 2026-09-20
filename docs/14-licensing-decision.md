@@ -749,3 +749,21 @@ NOT released by this signature:
 Rows 1 to 5 are complete, so `docs/13` D-6 and D-7 can be closed with
 real URLs once the public tree exists, and the application may describe
 the published state as a fact.
+
+## Dated scope reconciliation — 20 September 2026
+
+The `codex/complete-open-work` branch introduced research integration of the
+LGPL SpaceWire Reloaded and Mohor CAN cores. That engineering work did not
+amend the signed section 5.2 decision to exclude those cores from the funded
+default scope. The current unconditional instantiation is therefore an open
+integration-policy defect, recorded in docs/96 section 1.2.
+
+The selected remedy is explicit optional build profiles: the default build
+must not fetch or instantiate these two cores; a separately selected research
+profile retains their RTL, tests and source licences. Until that switch and
+its negative build tests are implemented, the requirement remains OPEN.
+The Mohor source includes a Bosch CAN protocol licensing notice. Its inclusion
+in a research bundle is not a determination of patent applicability or a grant
+of silicon implementation permission. No legal advice or clearance has been
+obtained or claimed in this change. The original signed decision above remains
+unaltered.

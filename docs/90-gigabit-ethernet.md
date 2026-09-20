@@ -2,7 +2,7 @@
 SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 SPDX-License-Identifier: CC-BY-4.0
 -->
-# Gigabit Ethernet MAC integration
+# 90 — Gigabit Ethernet MAC integration
 
 2026-09-19. `soc_eth` adds a fixed **1 Gb/s, full-duplex GMII MAC** to
 `soc_top`. The external copper/fibre PHY, pad ring, package and board are not
@@ -54,6 +54,12 @@ Empty RX reads, disabled/full TX writes, undefined registers and writes to
 read-only registers return PSLVERR. Writes require byte strobe0; strobe1 gates
 the upper event/mask bits and TX last/abort. Firmware must enable TX/RX before
 using the FIFOs. `hw/soc/tb/sw/soc_eth.h` supplies the software constants.
+
+The whole-SoC Ethernet loopback connects GMII transmit to receive with a
+shared testbench clock and holds MDIO high. It is a functional smoke test,
+not external PHY validation or an asynchronous-clock CDC qualification.
+Separate FIFO tests and any future CDC analysis must state their own clocks,
+reset assumptions and coverage.
 
 ## Verification and physical mapping
 

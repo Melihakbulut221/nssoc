@@ -471,9 +471,11 @@ installing Yosys alone supplies its Tcl library, not necessarily the shell.
 The workflow installs this dependency explicitly. Missing tools are reported
 as skips, not successful tests.
 
-That script is the definition; `.github/workflows/checks.yml` is a
-wrapper that calls it, so the two cannot drift, and the checks do not
-depend on a runner. ~~**Three** checks skip locally, with the reason
+~~That script is the definition; `.github/workflows/checks.yml` is a
+wrapper that calls it, so the two cannot drift.~~ **Correction, 2026-09-20:**
+`ci_local.sh all` defines the documentation, licence and Python gates.
+The workflow also has separate RTL, formal/boot and opt-in native-boot jobs;
+those hardware jobs are not included in the local `all` command. ~~**Three** checks skip locally, with the reason
 printed, because this machine has no pandoc and no TeX~~; a skip is not a
 pass and the summary says how many there were. **Updated 2026-09-20:**
 that was a machine-specific historical count. The same command on the

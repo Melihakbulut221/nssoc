@@ -96,9 +96,17 @@ job_licence() {
     echo "== licence"
     run "every source file carries the right SPDX tag" \
         "$PY" scripts/spdx_check.py
-    run "the four licence texts are present and canonical" bash -c '
+    run "tracked-path licence counts are current" "$PY" scripts/licence_inventory.py --check
+    if [ -n "${REUSE:-}" ]; then
+        run "REUSE licence inventory" "$REUSE" lint
+    elif "$PY" -c 'import reuse' >/dev/null 2>&1; then
+        run "REUSE licence inventory" "$PY" -m reuse lint
+    else
+        skipped "REUSE licence inventory" "install sw/requirements.txt with Python >=3.10, or set REUSE"
+    fi
+    run "the component licence texts are present" bash -c '
         set -eu
-        for f in CERN-OHL-W-2.0 Apache-2.0 CC-BY-4.0 ISC; do
+        for f in CERN-OHL-W-2.0 Apache-2.0 CC-BY-4.0 ISC LGPL-2.1-or-later MIT; do
             test -s "LICENSES/$f.txt"
         done
         echo "3b83ef96387f14655fc854ddc3c6bd57  LICENSES/Apache-2.0.txt" | md5sum -c - >/dev/null
@@ -107,7 +115,7 @@ job_licence() {
     run "the map, the memo and the tree agree" bash -c '
         set -eu
         grep -q "SIGNED 2026-09-09" docs/14-licensing-decision.md
-        test -f LICENSES.md && test -f .reuse/dep5
+        test -f LICENSES.md && test -f REUSE.toml
         test ! -e tt/LICENSE.PENDING.md && test -f tt/LICENSE
         cmp LICENSES/CERN-OHL-W-2.0.txt tt/LICENSE
         cmp LICENSES/Apache-2.0.txt tt/LICENSES/Apache-2.0.txt'
@@ -130,7 +138,10 @@ job_suite() {
     # was the doc-link one. "The checks pass" then meant SPDX, links and
     # the claim table, and nothing about the hardware. Added 2026-09-10.
     # It is about eight minutes.
-    run "the whole pytest suite" "$PY" -m pytest sw/tests -q
+    run "the whole pytest suite" "$PY" -m pytest sw/tests -q -rs
+    # Pytest's own counts/skips are separate from the front-door gate counts.
+    # Keep them visible even on success instead of hiding tool-dependent gaps.
+    printf '%s\n' "$out"
 }
 
 job_docs() {

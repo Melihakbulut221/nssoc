@@ -97,7 +97,7 @@ def test_literal_helper_path_is_not_tcl_substitution(flow, tmp_path, monkeypatch
 
 @pytest.mark.parametrize('step_name', ['BoundedPostCTS', 'BoundedPostGRT'])
 @pytest.mark.parametrize('derate', ['5', '5.0'])
-def test_native_resizer_rejects_truncation_before_database_load(flow, step_name, derate):
+def test_native_resizer_rejects_truncation_before_database_load(flow, step_name, derate, tclsh):
     module, _, script = flow
     original = ('proc read_current_odb {} {puts DATABASE_READ}\n'
                 'read_current_odb\nset setup_args {}\nlappend setup_args -setup\n'
@@ -108,7 +108,7 @@ def test_native_resizer_rejects_truncation_before_database_load(flow, step_name,
     output = Path(step.get_script_path())
     runner = script.parent / 'run_guarded.tcl'
     runner.write_text(f'set ::env(TIME_DERATING_CONSTRAINT) {derate}\n' + output.read_text())
-    result = subprocess.run(['tclsh', str(runner)], capture_output=True, text=True)
+    result = subprocess.run([tclsh, str(runner)], capture_output=True, text=True)
     if derate == '5':
         assert result.returncode != 0
         assert 'loses precision' in result.stderr

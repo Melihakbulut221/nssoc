@@ -474,3 +474,25 @@ A [fresh remote replay at e5575b4](evidence/fresh-clone-e5575b4-20260920.json)
 measures **926 pytest passes, one absent-tool skip, zero failures**;
 27 paper results are re-derived, 15 remain manual, zero lack build output.
 This precedes the wrapper guard addition, which has 36 affected checks.
+
+### Hosted NPU-stage failure and reboot recovery (20 September evening)
+
+The independent [hosted run 35508536540](evidence/native-boot-hosted-npu-failure-20260920.json)
+passed native-cell reset, RTL boot and gate compilation, then failed the full
+mapped boot: 24 application checks completed before unknown values appeared
+during the NPU phase. It reached the million-cycle bound without the success
+magic. The ROM and flash bytes match the distinct local passing build;
+Yosys and Icarus versions differ. Root cause remains under investigation using
+the exact hosted netlist and flash under local Icarus 13. The earlier local
+28-check pass is retained with its original scope; hosted acceptance is open.
+
+The host reboot interrupted the pending local physical runs. Their partial
+outputs are retained and input hashes rechecked before restarting in new
+`restart1` directories. Neither old RUNNING metadata nor missing final state
+files is a pass. See [recovery record](evidence/reboot-recovery-20260920-evening.json)
+The ongoing product requirements remain in the acceptance table above.
+
+A [fresh remote clone at 7d2484c](evidence/fresh-clone-7d2484c-20260920.json)
+completed with **930 pytest passes, one absent-tool skip, zero failures**;
+front-door gates remain 16 pass / 0 fail / 7 explicit skips. Paper checks
+re-derived 27 results with 15 manual, zero missing output and zero wrong.

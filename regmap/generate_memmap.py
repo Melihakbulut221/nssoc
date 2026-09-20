@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
+# REUSE-IgnoreStart
 
 """SoC memory map generator.
 
@@ -900,3 +901,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# REUSE-IgnoreEnd

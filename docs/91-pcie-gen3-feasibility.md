@@ -2,7 +2,7 @@
 SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 SPDX-License-Identifier: CC-BY-4.0
 -->
-# PCIe Gen3 x4: implementation dependencies
+# 91 — PCIe Gen3 x4: implementation dependencies
 
 Research date: 2026-09-19. The requested target remains Gen3 x4. No PCIe
 controller or serial PHY is instantiated in `soc_top`, and no existing GDS
