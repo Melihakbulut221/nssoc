@@ -85,3 +85,16 @@ has completed with **642 boxes: 436 within LEF footprints and 206 outside**.
 All outside boxes are within 0.5 µm of a macro. This is a measured failure,
 not a waived abstract or a real macro-interior GDS signoff result. Its
 completion does not close the physical-verification product gate.
+
+The [CPU Ethernet loopback](evidence/ethernet-cpu-loopback-20260920.json)
+now passes both RTL and the ECO13 native-cell netlist: eight frames, 2,171
+payload bytes, eight CRC checks and matching software signatures/interrupt
+checks. This closes that fault-free integration test; Ethernet PHY/pads,
+final timing, fault qualification and hardware throughput remain open.
+
+The next [clean remote replay at df0c190](evidence/fresh-clone-df0c190-20260920.json)
+measures **707 passes / 26 skips**, with **16 passing CI gates, zero failures
+and seven skips**. No run artifacts or generated dependencies were copied
+into that clone. It includes the 35-test ECO checker and 19-test Ethernet
+probe checker; the later primary-input-aware checker is tested separately.
+Historical absent-artifact skips still prevent full F6 acceptance.

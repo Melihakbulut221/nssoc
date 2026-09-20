@@ -224,7 +224,27 @@ def check(before, after, inputs):
             if direction and direction[1] == 'output':
                 result.add(pin.split('[')[0])
         return result
-    drivers = {n: [] for n in graph}
+    # Primary inputs are sources too. Only the unchanged, explicit non-ANSI
+    # scalar/packed input declarations emitted by OpenROAD are supported.
+    # Outputs and inouts must never be guessed to be external drivers.
+    if graph and any(d.startswith('inout ') for d in ports):
+        raise ValueError('Bidirectional primary ports are unsupported for buffer ECOs')
+    primary_inputs = set()
+    for declaration in ports:
+        if not declaration.startswith('input '):
+            continue
+        match = re.fullmatch(r'input\s+(?:\[(\d+):(\d+)\]\s+)?([A-Za-z_$][\w$]*)', declaration)
+        if match is None:
+            raise ValueError(('Unsupported primary input declaration', declaration))
+        high, low, name = match.groups()
+        if high is None:
+            primary_inputs.add(name)
+        else:
+            high, low = int(high), int(low)
+            if abs(high - low) > 65535:
+                raise ValueError('Unsupported primary input width')
+            primary_inputs.update(f'{name}[{i}]' for i in range(min(high, low), max(high, low) + 1))
+    drivers = {n: ['PORT/' + n] if n in primary_inputs else [] for n in graph}
     for name, (master, pins) in b.items():
         relevant = {p: v for p, v in pins.items() if any((n in graph for n in re.findall(NET, v)))}
         if not relevant:

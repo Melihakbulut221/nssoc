@@ -194,3 +194,48 @@ def test_python_optimized_mode_cannot_disable_guard(design, tmp_path):
     result = subprocess.run([sys.executable, '-O', str(SCRIPT), str(before), str(after), str(path)], capture_output=True, text=True)
     assert result.returncode == 2
     assert json.loads(result.stdout)['status'] == 'ERROR'
+
+
+@pytest.mark.parametrize('declaration,net', [
+    ('input p', 'p'), ('input [1:0] p', 'p[0]'),
+    ('input [0:1] p', 'p[1]'), ('input [9:8] p', 'p[8]'),
+])
+def test_primary_input_is_counted_as_exactly_one_driver(design, declaration, net):
+    before, after, inputs, _, _ = design
+    text = f'module chip(p,y); {declaration}; output y; sg13g2_buf_1 load (.A({net}),.X(y)); endmodule'
+    before.write_text(text)
+    after.write_text(text.replace(f'.A({net})', '.A(added_net)').replace(' endmodule',
+        f' wire added_net; sg13g2_buf_8 eco (.A({net}),.X(added_net)); endmodule'))
+    inputs.update(before_sha256=digest(before), after_sha256=digest(after), substitutions={})
+    assert eco.check(before, after, inputs)['added_noninverting_buffers'] == 1
+    # An internal output tied to that same primary input is a second driver.
+    after.write_text(after.read_text().replace(' endmodule',
+        f' sg13g2_buf_8 short (.A(added_net),.X({net})); endmodule'))
+    inputs['after_sha256'] = digest(after)
+    inputs['new_buffer_drivers']['short'] = {}
+    with pytest.raises(ValueError, match='ECO net driver count'):
+        eco.check(before, after, inputs)
+
+
+@pytest.mark.parametrize('declaration', ['output p', 'inout p', 'input wire p'])
+def test_output_inout_or_unparsed_declaration_cannot_supply_a_driver(design, declaration):
+    before, after, inputs, _, _ = design
+    text = f'module chip(p,y); {declaration}; output y; sg13g2_buf_1 load (.A(p),.X(y)); endmodule'
+    before.write_text(text)
+    after.write_text(text.replace('.A(p)', '.A(added_net)').replace(' endmodule',
+        ' wire added_net; sg13g2_buf_8 eco (.A(p),.X(added_net)); endmodule'))
+    inputs.update(before_sha256=digest(before), after_sha256=digest(after), substitutions={})
+    with pytest.raises(ValueError):
+        eco.check(before, after, inputs)
+
+
+def test_inout_with_internal_driver_is_not_treated_as_unidirectional(design):
+    before, after, inputs, _, _ = design
+    for path in (before, after):
+        path.write_text(path.read_text().replace('module chip(y);',
+            'module chip(y,n0); inout n0;'))
+    inputs.update(before_sha256=digest(before), after_sha256=digest(after))
+    # The SRAM already drives n0, but an external inout driver could also
+    # affect loads. A positive one-way buffer cannot prove that preserved.
+    with pytest.raises(ValueError, match='Bidirectional primary ports'):
+        eco.check(before, after, inputs)

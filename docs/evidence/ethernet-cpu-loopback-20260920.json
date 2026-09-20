@@ -71,14 +71,103 @@
     "scope": "Fault-free zero-delay CPU/GMII loopback; no PHY, SDF, fault campaign or throughput qualification."
   },
   "gl": {
-    "status": "PENDING",
+    "status": "PASS",
+    "kind": "gl",
+    "frames": 8,
+    "payload_bytes": 2171,
+    "signature": "00043b07",
+    "records": {
+      "site": "-1",
+      "bit": "0",
+      "cycle": "0",
+      "armed": "1",
+      "hit": "0",
+      "width": "1",
+      "before": "00000000000000000000000000000000",
+      "after": "00000000000000000000000000000000",
+      "during": "0",
+      "persist": "0",
+      "force_ps": "0",
+      "done": "1",
+      "cycles": "175252",
+      "budget": "300000",
+      "slept": "1",
+      "expired": "0",
+      "sig": "00043b07",
+      "mask": "00000000",
+      "rounds": "8",
+      "exit": "00000000",
+      "magic": "600dc0de",
+      "console_chars": "19",
+      "console_hash": "f48b7fa1",
+      "console_framing": "0",
+      "wdog1": "0",
+      "wdog2": "0",
+      "wdog3": "0",
+      "wdog_first": "-1",
+      "wdog_rst_events": "0",
+      "traps": "0",
+      "mcause": "00000000",
+      "nmis": "0",
+      "alert_minor": "0",
+      "alert_int": "0",
+      "alert_bus": "0",
+      "dblfault": "0",
+      "win_open": "292",
+      "win_close": "173456",
+      "wdog_rld": "-1",
+      "wdog_pre": "-1",
+      "kicks": "-1",
+      "kick_min": "-1",
+      "kick_max": "-1",
+      "wdog_early": "-1",
+      "wdog_budget": "-1",
+      "wdog_win": "00000000",
+      "rf_sec": "-1",
+      "rf_ded": "-1",
+      "rf_sec_seen": "0",
+      "rf_ded_seen": "0",
+      "rf_shadow": "0",
+      "wd_mismatch": "-1",
+      "wd_tmr_count": "-1",
+      "wd_tmr_err": "0",
+      "wd_shadow": "0",
+      "own_clk": "0",
+      "own_known": "1",
+      "released": "0",
+      "release_ps": "0",
+      "own_first": "-1",
+      "own_edges": "0",
+      "cg_shadow": "0",
+      "cg_gates": "-1",
+      "cg_en_before": "xx",
+      "cg_en_during": "xx",
+      "cg_npu_first": "-1",
+      "cg_npu_edges": "-1",
+      "cg_bus_first": "-1",
+      "cg_bus_edges": "-1",
+      "cg_npu_word_before": "00000000",
+      "cg_npu_word": "00000000",
+      "cg_npu_mismatch": "-1",
+      "cg_bs_cor": "-1",
+      "cg_bs_det": "-1",
+      "cg_bs_tmr": "-1",
+      "cg_bs_cor_before": "-1",
+      "cg_bs_det_before": "-1",
+      "cg_bs_tmr_before": "-1"
+    },
+    "scope": "Fault-free zero-delay CPU/GMII loopback; no PHY, SDF, fault campaign or throughput qualification.",
     "candidate": "timing-eco13-clock-fanout-retry",
-    "log": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-run.log"
+    "simulator_exit_code": 0,
+    "compiled_testbench_is_identical_to_reproducer_output": true
   },
   "commands": [
     ".venv/bin/python hw/soc/flow/ethernet_cpu_probe.py --prepare hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3",
     "bash hw/soc/out/external-review-20260919/ethernet-probe-reproducer-v3/run_rtl.sh",
-    ".venv/bin/python -m pytest -q sw/tests/test_ethernet_cpu_probe.py"
+    ".venv/bin/python -m pytest -q sw/tests/test_ethernet_cpu_probe.py",
+    "bash hw/soc/out/external-review-20260919/ethernet-gate-probe/build_gl.sh hw/soc/out/external-review-20260919/timing-eco13-clock-fanout-retry/soc_top.nl.v hw/soc/out/external-review-20260919/ethernet-gate-probe/sw hw/soc/out/external-review-20260919/ethernet-gate-probe/gl",
+    "timeout 2400 stdbuf -oL -eL ~/.local/opt/iverilog13/usr/bin/vvp hw/soc/out/external-review-20260919/ethernet-gate-probe/gl/tb_soc_fi_gl.vvp +site=-1 +armed=1 +budget=300000",
+    ".venv/bin/python hw/soc/flow/ethernet_cpu_probe.py --check hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-run.log --kind gl"
   ],
   "regression": {
     "passed": 19,
@@ -202,6 +291,179 @@
       "path": "sw/tests/test_ethernet_cpu_probe.py",
       "bytes": 2846,
       "sha256": "96895f4dc9b59cfce219a821a02cf52ac11cc391f77745dd7a038acd043b4cea"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-run.log",
+      "bytes": 1449,
+      "sha256": "d59a025a3655ad582732e94a0605df08d1d99fbdc4a4195cc916127638bbf24b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-verdict.json",
+      "bytes": 2089,
+      "sha256": "b78b6a3eaaa4060f507ed6d160d94b8b65b336390a9d4ad1de31a3c521ccd783"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl-build.log",
+      "bytes": 5273,
+      "sha256": "88167ba9b58c3201032f64bf66b3ec76a08efa6a1d3525ce35612c42b5e52dd7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl/provenance.txt",
+      "bytes": 3460,
+      "sha256": "5ebcdedbab31d25e0f9cbc09c6aeae58d59ccda7791a9d678b838a307f4ce350"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/gl/tb_soc_fi_gl.vvp",
+      "bytes": 95575710,
+      "sha256": "74eb76a528c6d67ea582537dc0fbe301fc4bc562d75c89b6fa1f1f0a2af9bcfa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/tb_eth_gl.v",
+      "bytes": 36249,
+      "sha256": "4627dc917206b6ad8be0aa82e621e1d530bfc673061119cf50c5ed76e29a8219"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/build_gl.sh",
+      "bytes": 6892,
+      "sha256": "842a27f2762b6fe0525e7a9720d629c1a7bdd16b0bf936ed9d22da644aefa81c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/build_sw.sh",
+      "bytes": 2338,
+      "sha256": "bd67aaa2bf19306f8e11adf6b8d2baf85b55c3e102f55fcc2bbd54f5894e060d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/sw/fi_workload.bin",
+      "bytes": 1156,
+      "sha256": "35d53c3c10005c70c13f460072f7951a74e282e88701298858fc624d19e7ad41"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/sw/fi_workload.hex",
+      "bytes": 18144,
+      "sha256": "bc7ef36626cc1c57551d599a7a90c3fafcccf34631f249ef1b28db698872a8b5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/sw/fi_workload.elf",
+      "bytes": 17988,
+      "sha256": "c8e34bd79871a105e9e39960d095d6622aae000bc73bd122f835e85940ade413"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/ethernet-gate-probe/workload.c",
+      "bytes": 1785,
+      "sha256": "91a95487e988e038d0597cd55c6c9b44b43d83aa62bb55d4ac150b8e6757bdac"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco13-clock-fanout-retry/soc_top.nl.v",
+      "bytes": 10996599,
+      "sha256": "285434bfdefcddcf35217616125a695daa9e568788fe6020e8fa069e1a0ec512"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/record_ethernet_gate_completion.py",
+      "bytes": 2892,
+      "sha256": "c3a546ca6e68f2c2a337af9db6c866d1d74190852ee32aee28541bcb1b3d972b"
     }
-  ]
+  ],
+  "rtl_gl_comparison": {
+    "all_compared_fields_equal": true,
+    "fields": {
+      "sig": {
+        "rtl": "00043b07",
+        "gl": "00043b07"
+      },
+      "mask": {
+        "rtl": "00000000",
+        "gl": "00000000"
+      },
+      "rounds": {
+        "rtl": "8",
+        "gl": "8"
+      },
+      "exit": {
+        "rtl": "00000000",
+        "gl": "00000000"
+      },
+      "magic": {
+        "rtl": "600dc0de",
+        "gl": "600dc0de"
+      },
+      "console_chars": {
+        "rtl": "19",
+        "gl": "19"
+      },
+      "console_hash": {
+        "rtl": "f48b7fa1",
+        "gl": "f48b7fa1"
+      },
+      "console_framing": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "traps": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "mcause": {
+        "rtl": "00000000",
+        "gl": "00000000"
+      },
+      "nmis": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "win_open": {
+        "rtl": "292",
+        "gl": "292"
+      },
+      "win_close": {
+        "rtl": "173456",
+        "gl": "173456"
+      },
+      "done": {
+        "rtl": "1",
+        "gl": "1"
+      },
+      "slept": {
+        "rtl": "1",
+        "gl": "1"
+      },
+      "expired": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "wdog1": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "wdog2": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "wdog3": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "alert_minor": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "alert_int": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "alert_bus": {
+        "rtl": "0",
+        "gl": "0"
+      },
+      "dblfault": {
+        "rtl": "0",
+        "gl": "0"
+      }
+    },
+    "printed_rtl_cycles": 175253,
+    "printed_gl_cycles": 175252,
+    "cycle_scope": "The two instruments print cycle counts differing by one; both workload window timestamps match. Do not read this as exact temporal/SDF equivalence or WCET.",
+    "unobservable_gl_counters": "Register-file ECC, watchdog kick statistics and optional gate/watchdog shadow counters are not observed in this GL build; -1 is not zero."
+  },
+  "gate_build_provenance": "netlist   /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco13-clock-fanout-retry/soc_top.nl.v\nnetlist md5 c5dbb8ff546926d6cd5ed05c84ede204\nnetlist size 10996599\ncells     /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v\ncells md5 ca98e34e6c582bfdc01eb1cd77a5d1db\nsram      /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog\nrtl build /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/ethernet-gate-probe/sw\nrom hex md5 734b03ab4abd8dda9f646ab158eda345\niverilog  /home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog (Icarus Verilog version 13.0 (stable) (v13_0-dirty))\nflops     9352\nprofile   -DFI_GL_ROM_ECC -DFI_GL_ETHERNET -DFI_GL_INTERFACES\n285434bfdefcddcf35217616125a695daa9e568788fe6020e8fa069e1a0ec512  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco13-clock-fanout-retry/soc_top.nl.v\n28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v\n54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v\neb86690331565d646b661ede3012e049468885798fa20a3f146ece311ec57669  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_1024x32_c2_bm_bist.v\ne2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v\nb0da3f6fede1779f25438e0ffada4b811ad303d938b995fe1ffa37f21c1ffe66  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_512x16_c2_bm_bist.v\n4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v\n2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v\nc02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6  /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v\nbc7ef36626cc1c57551d599a7a90c3fafcccf34631f249ef1b28db698872a8b5  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/ethernet-gate-probe/sw/fi_workload.hex\n4627dc917206b6ad8be0aa82e621e1d530bfc673061119cf50c5ed76e29a8219  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/ethernet-gate-probe/tb_eth_gl.v\n6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v\nvvp /home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp\n",
+  "status": "RTL and native-cell GL PASS within stated scope"
 }

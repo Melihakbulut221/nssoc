@@ -371,3 +371,33 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
 - Disk6.1GB; başka projenin dosyasına dokunmadan bir yeni native run için
   alanı kontrol edin. YeniMagicraporu routehaloalanprojeksiyonu20336.064um²/
   layer; HALO GERÇEKLENMEDİ, pinaccessdelikleri ve reroute+Magichenüz yok.
+
+## 2026-09-20 05:33 TRT — CPU test tamamlandı, ECO18 yeniden yönlendiriliyor
+
+- Son push df0c190. Gerçek Ethernet GL session69172 tamamlandı PASS:
+  175252 cycle, RTL175253; aynı 23 functional field,8frame/2171byte/8CRC,
+  signature00043b07,window292..173456. Zero-delay, FI/SDF/PHY değil.
+  evidence/ethernet-cpu-loopback-20260920.json artık her iki sonucu içeriyor.
+- Fresh remote df0c190 replay707PASS26SKIP, CI16PASS0FAIL7SKIP.
+  Authentic ledger row02:03Z df0c190 korundu;35guard+19probe kapsamı.
+  Sonraki43guard ayrı: primary input driver sayımı ve inout ret kontrolü.
+- ECO16 final slowsetup-1.975127ns/fast hold-.327806ns: seçilmedi.
+  ECO17 üç RX enable delay->buf1, ECO18 iki buf1->buf8; exactguardPASS.
+  ECO18 GRT slowsetup-.188810ns, fasthold-.327806ns,cap/fanout0,
+  slew47/28/29. Native sonuç değildir; record tüm köşe/hashleri içeriyor.
+- İlk native18 tag eth256-eco18-route-20260920 FAIL90s/exit2:
+  DRT-0222 hold24736/X net24735; netin tek OUTPUT terminali,0BTerm,
+  6eski guide var. Eski run/seed korunuyor. prune_orphan_guides.tcl11testPASS,
+  yalnız6guide temizlendi; Verilog+DEF before/after SHA256 birebir aynı.
+- YENİ native session70998/PID239069 AKTİF, tag
+  eth256-eco18-clean-route-20260920. Driver: BASE/run_eco18_clean_native.py,
+  log/supervisor aynı tag altında BASE'de. Kaynak ECO18 NL/PNL/SDC aynı;
+  ODB timing-eco18-clean-guides/soc_top.odb. İş pinaccess aşamasında.
+  Minimum boşdisk768MiB, başlangıç5.78GB; başka fullnative paralel başlatma.
+  BASE=hw/soc/out/external-review-20260919. Yeni extracted/DRC sonuçları
+  yokken ECO7yi en son TAMAMLANMIŞ native olarak tutun.
+- Magic baseline642FAIL ve 4 SRAM comparison FAIL önceki nottaki gibi;
+  aktif Magic kalmadı. PDN geometry attribution probe henüz tamamlanmadı.
+  odb.dbWireShapeItr bu bindingde yok; yarım scripti sonuç saymayın.
+- Hosted803614b pushPASS;PR ve df0c190 push/PR son okumada sürüyordu.
+  Frozen dosyalara dokunulmadı. Kullanıcı tüm maddeler için devam istiyor.

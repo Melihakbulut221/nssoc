@@ -496,3 +496,52 @@ frames, all bytes correct and no observed fault events. The matching native
 cell GL run is still pending at this dated checkpoint. This is a fault-free
 loopback test, not SDF, a PHY link, sustained hardware throughput or an upset
 campaign. Its result-parser and preparation regression passes **19 tests**.
+
+**Dated completion, 2026-09-20:** the matching native-cell gate run is now
+PASS: **175,252 reported cycles**, eight frames, 2,171 bytes and eight CRC
+checks. The [completed record](evidence/ethernet-cpu-loopback-20260920.json)
+binds the ECO13 netlist, compiler/model provenance and exact simulation
+command. All 23 compared functional result fields match RTL, including
+signature, exit/UART, workload window and observed fault/watchdog signals.
+The printed cycle counts differ by one; this is not an exact temporal or
+SDF equivalence claim. Unobservable gate-level counters remain `-1`, not zero.
+
+### Cross-corner repair regression and input drivers, 2026-09-20
+
+ECO16's post-setup global-route slow WNS reaches **-0.001835 ns**, but its
+subsequent hold repair and reroute regress final slow setup to **-1.975127 ns**.
+Final fast hold remains **-0.327806 ns**. Loading three corners and omitting
+`allow_setup_violations` does not establish that this repair invocation
+preserves every corner; final reports control the verdict. The actual delta
+contains 74 normal buffers, 82 delay cells and 84 equivalent substitutions,
+not merely the optimizer's last summary count. This candidate is not selected
+for native routing. The [repair record](evidence/ethernet-clock-repair-20260920.json)
+retains both intermediate and final values.
+
+The structural checker initially rejected its QSPI input buffer because the
+driver census omitted primary inputs. Its extension now recognizes unchanged
+scalar and packed input declarations, counts external and cell drivers, and
+rejects bidirectional buffer cases and unsupported declarations. All **43
+regression tests** and the actual ECO16 replay pass this restricted logic/state
+check. Timing remains a separate failure; the extension does not waive it.
+
+ECO17 replaces three measured RX-enable delay cells with equivalent positive
+buffers; ECO18 strengthens two of those buffers. Each passes the exact
+structural guard. Final ECO18 global-route estimates are **slow setup
+-0.188810 ns**, **fast hold -0.327806 ns**, zero fanout/capacitance violations
+in all three corners, and 47/28/29 slew violations (fast/slow/typical).
+The successive cell-area changes are -27.22 and +32.66 um2, with the same die.
+These estimates still fail and are not extracted signoff.
+
+The first native ECO18 attempt stops with `DRT-0222` before completing routing:
+`net24735` has one output terminal, no external port or load, and six stale
+guides left in the ECO database. The restricted
+[`prune_orphan_guides.tcl`](../hw/soc/flow/prune_orphan_guides.tcl) removes only
+that metadata. Both emitted Verilog and DEF are byte-identical before and
+after the cleanup; cells, nets and connectivity remain present. Eleven Tcl
+regression cases exercise connected nets, external ports, input/inout pins,
+power/ground/clock nets and cleanup failure. A separate native retry,
+`eth256-eco18-clean-route-20260920`, is running at this checkpoint. The
+[record](evidence/ethernet-clock-repair-20260920.json) preserves the failed
+attempt, cleanup hashes and candidate measurements. ECO7 remains the latest
+completed optimized native timing measurement until that retry finishes.
