@@ -4,6 +4,7 @@
 import copy
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -92,3 +93,13 @@ def test_floating_revision_and_missing_license_are_rejected(inputs):
     wrong["files"] = wrong["files"][:1]
     with pytest.raises(ValueError, match="licence"):
         deck.validate_lock(wrong)
+
+
+@pytest.mark.parametrize('kind,entry', [
+    ('drc', 'ihp-sg13g2.drc'), ('lvs', 'sg13g2.lvs')])
+def test_delivered_locks_bind_distinct_entrypoints_and_license(kind, entry):
+    lock = json.loads((ROOT / f'hw/soc/pnr/ihp-{kind}.lock.json').read_text())
+    deck.validate_lock(lock)
+    assert lock['entrypoint'].endswith('/' + entry)
+    assert f'/klayout/tech/{kind}/' in lock['entrypoint']
+    assert len(lock['files']) == len({r['path'] for r in lock['files']})

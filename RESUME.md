@@ -5,6 +5,46 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 11:38 TRT — doğrulanmış devam noktası
+
+Son gönderilmiş commit0a79a3b09ad0374947829fff2100bb10711eac89, PR1 body
+pr-body-lvs-audit.md. Aşağıdaki ek hazırlık/kanıt henüz commit değil.
+
+- 7dd103d GitHubpush35497437243 vePR35497438504 tümjobs SUCCESS, boot/fallback
+  dahil. 0a79a3b hostedpush35499417152/PR35499419473 en son RUNNING.
+- Freshremote0a79a3b TAMAM:842total816PASS26SKIP,16/0/7gates,659.907sCI.
+  record_fresh_0a79a3b.py çalıştı, docs/evidence JSON veledgerrow eklendi;
+  tekrar çalıştırmayın. session67735DONE. Sonraki yeniwrapper kaynaklarını
+  bu revizyonun testiylesaymayın; ayrı202PASS5SKIPtargetedlog var.
+- Yeni kalıcı prepare_ihp_lvs.py ve53dosyalı ihp-lvs.lock.json sharedDRC
+  downloader kullanır. Gerçekcache53/53hashPASS; locked-preparation.log.
+  test_ihp_drc_preparation.py iki gerçeklockcheck eklendi. İnceleme hedefli
+  lvs-repro-delivery-tests.log202PASS5SKIP, SPDX469/344/0/0.
+- sram-lvs-reader-controls-20260920.json yeni: özgünIHPinvGDS+vendorCDL
+  unmodifiedupstreamLVS+auditorPASS; disposableCDL'denNMOSsilmeFAIL.
+  WLDRV dörtetiket8/2, unchangeddeckyalnız8/25okur. AYRIcopieddeckte
+  yalnızMetal1text8/2uniondenemesi pinlerigetirdi, hâlâstrictFAIL.
+  Pin-pairs A/A,VDD!/VDD,VSS!/VSS,Z/Z hepsiMatch fakatflag_missing_portsFAIL.
+  OrijinalPDK/GDS/CDL/upstreamcachedeğişmedi. Bu DEĞİŞTİRİLMİŞokuyucu
+  sadece teşhis; unmodifieddecksPASSsaymayın. IHPissue239OPENaynısorunları
+  ve2025pinlayerbulgusunu içeriyor; yayınlanmışçözümkodu yok.
+- docs92/93 yeniölçümlerle güncellendi. Artefactindexson98, yeni0afresh
+  kaydından sonra tekrar --write-evidence gerekir. Source/deliverystaged
+  değil. Commit/push/PRrefresh bekliyor.
+- AKTİF39327 logicrom-irq-grt: globalroute0overflow,967547usage/5891045
+  capacity;33RepairDesignPostGRT ve ardından34ResizerTimingPostGRT. AraSTA
+  corner.tcl yalnızilkfastcorner'ıyeniler; statejsonslow/typ değerleri
+  eski prePNR olabilir, yeni3cornerPASSiddiaetmeyin. Sonrasında bağımsız
+  üçcorneraynıODBraporuvegerçeknativeDRT/RCXgerekli.
+- AKTİF10813ECO23jumper: ilkDRT0routeDRC,245antenna-net/270pinviol; ilk
+  -jumper_onlyonarımısonrareroute. Antenna/electricalverdict henüzyok.
+- AKTİF31454ECO22mainDRC: Acute/offgridkuralları,~75dk.32138haloMagic:
+  DEF/LEFabstractcheck~45dk,öncekiaynıkapsam4.5saat. İkisininsonucubekliyor.
+- Baselinecompleted yalnız7birebiraynıdosyada hardlinkdedup:script
+  dedup_completed_baseline.py, recordbaseline-completed-dedup-20260920.json.
+  CommittedevidenceSHA+finalstate+FAILverdictkorundu. Disk3.6GiBcivarı.
+  Tamamlanmışdosyaları yerindedeğiştirmeyin. Başka projeye dokunulmadı.
+
 ## 20 Eylül 11:24 TRT — SRAM iç LVS teşhisi ve teslim kontrolü
 
 Bu kayıt önceki notları günceller. Son gönderilmiş kaynak 7dd103d; bu notla

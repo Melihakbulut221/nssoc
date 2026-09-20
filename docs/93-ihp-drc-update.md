@@ -266,3 +266,34 @@ KLayout LVS mapping is explicitly unfinished. It supplies no completed
 mapping fix to adopt. An ad hoc resistor alias or blanket implicit power
 connection would conceal precisely the distinctions being investigated,
 so no such change is counted as verification.
+
+### Reader and auditor controls
+
+The [supplemental controls](evidence/sram-lvs-reader-controls-20260920.json)
+confirm that the word-line driver's four labels are on Metal1 datatype 2,
+while the updated reader only consumes datatype 25. A separately copied
+experimental deck reading both makes the labels visible; the strict result
+still fails. The power names remain `VDD!`/`VSS!`, whereas the reference uses
+`VDD`/`VSS`. Circuit and pin-pair matching alone still cannot override the
+deck verdict. This diagnostic changes the reader, is explicitly separate
+from unchanged-deck measurements, and supplies no signoff or waiver.
+
+As an independent positive control, an exact IHP `sg13g2_inv_1` GDS cell
+against its original vendor CDL passes both the unchanged deck and auditor.
+Deleting one NMOS from a disposable reference copy makes the same check fail.
+The [open upstream SRAM issue #239](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/239)
+describes similar resistor, hierarchy and pin-layer issues. Commercial-tool
+results or unpublished scripts for another macro do not substitute for
+verification of this design's exact inputs.
+
+The unchanged upstream LVS runtime and license are now reproducible through
+the committed 53-file `hw/soc/pnr/ihp-lvs.lock.json`:
+
+```bash
+python3 hw/soc/flow/prepare_ihp_lvs.py
+```
+
+This reuses the verified DRC downloader's immutable-hash, safe-path and
+changed-cache rejection checks, without changing the installed PDK. The
+preparation verifies all 53 actual cached files. The experimental reader
+copy is outside that cache and is not a fetched or accepted rule replacement.

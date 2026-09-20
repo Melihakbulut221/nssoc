@@ -17,7 +17,7 @@ The review's historical reproduction is in [docs/89](89-external-review-follow-u
 | F0, F0a | Verified fix | Idempotent mirror handling retains the reworded-fragment negative control; [docs/86](86-the-external-review.md). |
 | F0b | Verified fix | Upstream-prefixed historical commits retain provenance; public history is checked where applicable; docs/86. |
 | F0c | Verified fix | Transparent `mbox` rendering and renderer regression; docs/86. |
-| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `7dd103d` replay: 799 pytest passes / 26 skips, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-7dd103d-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
+| F0d | Recorded, refresh at delivery | Each ledger row names the revision actually tested. Clean remote `0a79a3b` replay: 816 pytest passes / 26 skips, 16 passing gates / zero failures / seven skips; [record](evidence/fresh-clone-0a79a3b-20260920.json). Refresh again for later substantive source changes; bare-clone evidence remains separate. |
 | F1 | Verified fix | SoC reset synchronization, flush regression and fresh NPU proofs; frozen pilot unchanged; [docs/87](87-engineering-closure.md), docs/89. |
 | F2 | Verified fix, including cocotb | Whole-CPU firmware injection, watchdog reset, two APB retained-PC reads and ignored write pass under cocotb; [record](evidence/crash-cocotb-20260919.json). Register-map checks and added area are recorded in docs/86; full-program result in docs/89. |
 | F3 | Verified fix | Shipping timeout enabled, APB pins quarantined until reset, one fabric error, retained event counter. Timeout-zero cost guard, never-ready test and APB/BUSSTAT/NPU proofs; [APB evidence](evidence/apb-timeout-20260919.json). |
@@ -45,7 +45,7 @@ hardware merely to increase apparent coverage.
 | CAN, SPI, I2C | Integrated RTL, APB access and protocol tests; docs/88. External electrical interfaces, pad timing and board validation remain product gates. |
 | Gigabit Ethernet | GMII MAC and native SRAM packet/CPU tests exist; [docs/90](90-gigabit-ethernet.md). ECO22 passes setup/hold in three Liberty corners with nominal RC; [record](evidence/ethernet-eco22-extracted-20260920.json). Electrical violations remain. The newer IRQ/logic-ROM candidate needs its own closure. PHY/pad integration and sustained traffic on hardware remain open. PIO is not a wire-rate DMA claim. |
 | PCIe Gen3 x4 | OPEN: no complete controller/PHY instantiated. [docs/91](91-pcie-gen3-feasibility.md) records researched candidates and missing compatible physical IP. An FPGA hard-block wrapper or PIPE placeholder does not satisfy this gate. |
-| Timing | OPEN: all applicable setup/hold, recovery/removal and electrical checks must pass with characterized clocks, corners and I/O budgets. The extracted baseline fails slow setup and fast hold, plus slew/capacitance. Added 2026-09-20: [ECO2 native extraction](evidence/ethernet-eco2-extracted-20260920.json) passes hold in all three corners but still fails slow setup (-1.063485 ns), capacitance, slew and fanout. Later global-route estimates are not extracted signoff. |
+| Timing | OPEN: all applicable setup/hold, recovery/removal and electrical checks must pass with characterized clocks, corners and I/O budgets. [ECO22 native extraction](evidence/ethernet-eco22-extracted-20260920.json) passes setup/hold in three Liberty corners with nominal RC, but still fails capacitance, slew and fanout. The newer external-IRQ/logic-ROM candidate requires its own extracted checks. Global-route estimates are not extracted signoff. |
 | Physical verification | OPEN: independent Magic/KLayout DRC, antenna, connectivity, stream XOR and appropriately scoped LVS. SRAM black-box LVS does not verify SRAM transistor interiors. A separate six-diode antenna repair passes its independent check; [record](evidence/ethernet-antenna-repair-20260920.json). The separate [ECO2 antenna check](evidence/ethernet-eco2-extracted-20260920.json) also reports zero, and its [scoped LVS passes](evidence/ethernet-eco2-lvs-20260920.json). Its DRC/XOR remain separate gates. The original baseline passes the updated KLayout main deck; [record](evidence/ihp-full-chip-drc-20260920.json). No failing deck is waived to obtain a green summary. |
 | Pad ring and package | OPEN: compatible I/O/ESD cells, power/ground pads, package/bond plan and board-level budgets. `soc_top` is currently a core block. |
 | DFT and memory test | OPEN: scan/test access, ATPG coverage and usable memory BIST with documented fault model. Parked BIST pins provide no array-test coverage. |
@@ -244,3 +244,12 @@ resistor model and power/hierarchy/port differences; none establishes a
 passing SRAM. The new database-and-log auditor rejects skipped circuits and
 strict-port failures even when the raw KLayout process exits zero. All
 geometry, CDL, rules and failing reports are preserved without waivers.
+
+The subsequent [clean 0a79a3b remote replay](evidence/fresh-clone-0a79a3b-20260920.json)
+passes **816 tests / 26 skips**, with the same **16/0/7** front-door totals.
+Both 7dd103d hosted workflows (35497437243 and 35497438504), including the
+whole-CPU fixed-ROM normal/fallback checks, have now completed successfully.
+The later [reader controls](evidence/sram-lvs-reader-controls-20260920.json)
+retain an independent real-cell positive control, deliberate missing-device
+negative control and a still-failing experimental pin-reader diagnostic.
+They neither waive the SRAM failures nor close F6's historical-artifact gap.
