@@ -592,3 +592,73 @@ son extracted STA esas alınacak. Kısıtlar gevşetilmedi.
   refresh, doc/digesttest, SPDX, commit/push gerekir. KaynakRTL aynı,
   frozenpilot değişmedi; ürünün PCIeIP/pads/DFT/debug/clock/silicon/PDK
   gereksinimleri ve F6 tarihselartifakt eksiği açık. Tam ürün demeyin.
+
+## 2026-09-20 07:16 TRT — harici IRQ ve bulunan CRT hatası üzerinde aktif çalışma
+
+- `4c78404` push başarılı; 768/26 ve16/0/7 temiz-klon, ECO18XOR0,
+  scopedLVS97150/96311 sonuçları PR gövdesine işlendi. Main-deck DRC
+  session46578, halo native11114 ve ECO22native62541 çalışıyor.
+- Ürün listesindeki harici IRQ için prototip BASE/external-irq-probe.
+  `prepare_external_irq_probe.py` ikiFF sync topkopyası +gerçekCPUfirmware
+  +GPIO üzerinden harici kaynak modeli hazırladı. Mevcut CRT'nin normal
+  IRQ stub'ı t0'ı marker ile eziyor ve saklamıyormuş. Ölçümnegatifkontrol:
+  unfixed-run.log 5126cycle, sig=e1700002, mask/exit=0x100;4assertion,
+  2WFIwake, traps/NMI/WDOG/alerts0. Sadece t0 korunması başarısız.
+- `fix_external_irq_probe_crt.py`: normalIRQstub stackframe açıp t0'ı
+  marker yüklemeden önce saklıyor; ortakIRQsonunda geri yüklüyor. Minimal
+  platformun NMI fallback'ı da aynı giriş sözleşmesine getirildi. Gerçek
+  SOC_PLATFORM NMI ve exception handler zaten t0 saklıyordu, değişmedi.
+  fixed-run.log 5138cycle, sig=e1700002, mask/exit0, diğerkontrolleraynı.
+  Bu ikiCPUrun tamam; sessions5585/86186. Komutlar run_{unfixed,fixed}.sh.
+- Ana kaynakta ŞİMDİ UNCOMMITTED değişiklikler var: soc_top giriş
+  irq_external_i +ungated clk_i/rst_sys_n ile2FFsync→Ibex machine-external11;
+  CRT vec11 ve tümnormalIRQstublarında t0 düzeltmesi;3RTLbench yeniIRQ0tie;
+  GLbench FI_GL_EXTERNAL_IRQ şartlı0tie ve fi_core_gl.sh netlistportdetect;
+  test_soc_npu_guards markerregex artık t0-save prologue'u kabul ediyor;
+  tb/sw/external_irq.c prototipfirmware kopyası. Frozenpilot değişmedi.
+- Bu yeniIRQ RTL'si mevcut ECO18/ECO22 layoutlarında YOK. Bunlar önceki
+  kaynakrevizyonunun ölçümleridir. YeniRTL'nin fiziksel entegrasyonu ayrı
+  profil/run ister; eski layout sonuçlarını yeniRTL'ye taşımayın.
+- Kalıcı external_irq_probe.py/monitor ve tests/docs94 henüz yazılmadı.
+  soc_top yorum docs/94'e gönderiyor: doküman mutlaka eklenecek. CPUprobe
+  kalıcı araca taşınıp canonicalRTL/CRT üzerinde tekrar çalıştırılacak;
+  GLprobe ve negatifkontrol planı var. Henüz IRQ için commit/push YOK.
+- Aynı koşullu whole-SoC synthesis maliyet kontrolü başladı: session97957,
+  BASE/external-irq-probe/syn_reference.sh 20 .../syn-reference. Env
+  SOC_MEM=sram IBEX_REGFILE=secded IBEX_RF_SYNPRE=1 SOC_MEM_RDREG=1
+  SOC_REQ_REG=1 SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_WAKE_GNT=1
+  SOC_ETH_SRAM=1. timeout2400. Log syn-reference-supervisor.log, asıl syn.log.
+  Kaynak top eskiRTL'nin immutable soc_top-reference.v kopyası. Aynı
+  ayarlarla syn_irq.sh/yeni topkopyası sonra çalıştırılacak; henüzbaşlamadı.
+- Aktif eski physical işler canonical soc_interfaces.sdc okuyor. Bu dosyayı
+  onlar sürerken DEĞİŞTİRMEYİN. YeniIRQ için ayrı wrapperSDC hazırlanabilir:
+  önce legacyinterfaces source, sonra yalnızirq_external_i portundan false
+  path (asenkron dışpin→ilkFF); FF0→FF1 timing aktif kalmalı. Eski pin yoksa
+  wrapper failclosed, yeni config açıkça bu wrapper'ı kullanmalı. Henüzbu
+  SDC yazılmadı. Pad/MTBF/SEU/radiation hiçbiriprotoilekapanmaz.
+
+## 2026-09-20 07:42 TRT — harici IRQ kaynağı doğrulandı, teslim hazırlanıyor
+
+- Önceki 07:16 notundaki kalıcı araç/doküman/sentez bekleyenleri tamamlandı:
+  external_irq_probe.py, monitor, firmware, docs94, wrapperSDC ve18 parser/
+  prepare kontrolü var. CI olumlu+eski-t0 negatif RTL koşuları ve logupload içerir.
+- CanonicalRTL ve native-cellGL ikisi5138cyclePASS,21işlevselalan aynı.
+  Negatifkontrol5126cycle, yalnızmask/exit0x100; EXPECTED t0 FAILURE.
+  BASE/external-irq-delivered ve-negative. GL session33167 exit0.
+- Matchedsyn tamam: baseline65562cell/9352FF/1046590.2972um²,
+  variant65731/9354/1046193.2838um². +169cell,+2FF,-397.0134um²,
+  globalABCmappingetkisi, IRQdevresi negatifalan demeyin.24SRAMalanıhariç.
+  Variantprototop canonicalile yalnızcomments/whitespacedifferent.
+- SDCscope standaloneOpenSTA3.1.0pass; actualsta.vFF118600/118601.
+  Typidealclocksetup19.443762/hold-0.033690ns. Holds başarısızlık,
+  fizikselkapanışdeğil. İlkOpenROADtechsizhata ve yanlışnetlist.vcellnames
+  diagnostic saklandı; yalnızirq-sdc-corrected.log kabul.
+- Normalcanonicalbringup session54611 exit0:28check/0mask,
+  642152cycle,boot322818,expectedWDOGNMI1,stage2/3=0.
+- docs/evidence/external-irq-20260920.json tümkanıt+komut+hash içerir.
+  SDC/monitorSPDX hardwareCERN-OHL-W-2.0 düzeltildi; saltlicensecomment
+  değişiminin eskiölçümhashleri kayıtta tutuldu. SPDX462tag/329covered/0wrong.
+  164targetedtestPASS (IRQ/NPU/doc/digest); docsindex94linkfix dahil.
+- Aktif eski physical: ECO22native62541,halo11114,ECO18DRC46578.
+  Bunlarınhiçbiri yeniIRQRTL'sini içermiyor. OriginalSDCdeğişmedi.
+  YeniIRQcommit/push,cleanremoteCIreplay vePRupdate henüz yapılacak.

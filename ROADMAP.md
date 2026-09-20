@@ -621,7 +621,7 @@ already has it.
 | DFT: scan chains, ATPG, compression | `soc_top` has no test ports at all. `soc_top.v:507` `.test_en_i(1'b0)`, `:587` `.scan_rst_ni(1'b1)`, both clock gates `.test_en_i (1'b0)`. `prim_clock_gating.v:22` notes `test_en_i` exists for scan; nothing drives it |
 | Memory BIST | Correctly parked at `soc_mem_sram.v:378-380` and peers. Test coverage of the SRAM arrays is therefore **zero** |
 | RISC-V debug module, JTAG TAP | `soc_top.v:567` `.debug_req_i (1'b0)`. No way to halt or inspect the core on a board |
-| External interrupt input | `soc_top.v:558` `.irq_external_i (1'b0)` and no top-level pin. All fifteen fast lines are internal peripherals |
+| External interrupt input | ~~`soc_top.v:558` `.irq_external_i (1'b0)` and no top-level pin. All fifteen fast lines are internal peripherals~~ **Corrected 2026-09-20:** a synchronized external level now reaches machine interrupt 11; [contract and verification](docs/94-external-interrupt.md). The earlier layouts lack this new pin; physical integration is still open. |
 | PLL, on-chip clock source, POR circuit, brownout detect | `clk_i` and `rst_ni` are top-level inputs |
 | Lockstep, bus integrity | Ibex's shadow outputs are unconnected. Documented as `small-pmp`, no lockstep |
 | Spacecraft interfaces | **Updated 2026-09-19:** SpaceWire endpoint, CAN 2.0B, SPI and I2C now exist in `soc_top`, with real pin-level regressions (`docs/88`). External transceivers/pads, SpaceWire DMA/router and event-camera integration remain open. |

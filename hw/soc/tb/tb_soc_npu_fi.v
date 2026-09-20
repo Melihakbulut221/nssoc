@@ -261,6 +261,7 @@ module tb_soc_npu_fi;
       .can_rx_i(1'b1), .spi_miso_i(1'b0),
       .clk_i  (clk),
       .rst_ni (rst_n),
+      .irq_external_i(1'b0),
       .wdog_dis_i (wdog_dis),
       // The bootstrap pins, docs/68. Tied to the board this campaign
       // models: boot from the flash on chip select 0, which is what

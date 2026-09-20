@@ -235,6 +235,7 @@ module tb_soc;
       .can_rx_i(1'b1), .spi_miso_i(spi_loop), .spi_mosi_o(spi_loop),
       .clk_i  (clk),
       .rst_ni (rst_n),
+      .irq_external_i(1'b0),
       .wdog_dis_i (1'b0),
       .strap_i    (strap),
       .uart_tx_o  (uart_tx),

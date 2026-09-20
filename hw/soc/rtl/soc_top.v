@@ -41,10 +41,10 @@
 //   IS   interruptible, and the interrupts are real. soc_clint.v drives
 //        irq_timer_i and irq_software_i, soc_gptimer.v and soc_uart.v
 //        drive fast local interrupt lines the generated map assigns, and
-//        the watchdog drives irq_nm_i. There is still no PLIC and
-//        irq_external_i is tied low; docs/40 section 3 is the argument
-//        for why that is a decision and not an omission, and the PLIC
-//        region stays reserved and faulting.
+//        the watchdog drives irq_nm_i. Corrected 2026-09-20: the external
+//        line was tied low. One synchronized active-high level now reaches
+//        machine-external interrupt 11; this is not a PLIC. Its reserved
+//        address region still faults. See docs/94 for the input contract.
 //   IS   resettable BY ITSELF. rst_ni is now the POWER-ON reset. The
 //        system reset the rest of this file runs on is derived from it
 //        and from the watchdog's stage-2 request, so the SoC can reset
@@ -239,6 +239,10 @@ module soc_top #(
     // watchdog obeys.
     input  wire        rst_ni,
 
+    // Active-high external level; keep asserted until the device is serviced.
+    // Synchronization runs on the ungated SoC clock so WFI can wake.
+    input  wire        irq_external_i,
+
     // Watchdog bootstrap pin. Held low in this SoC; a board that ties it
     // high has no watchdog and WDOGSTAT.DISABLED says so.
     input  wire        wdog_dis_i,
@@ -386,6 +390,13 @@ module soc_top #(
     else            rst_sync <= {rst_sync[0], 1'b1};
 
   wire rst_sys_n = rst_sync[1];
+
+  // Digital CDC synchronizer; this does not provide pulse capture or SEU
+  // protection. The external device must hold its request until serviced.
+  (* async_reg = "true" *) reg [1:0] external_irq_sync_q;
+  always @(posedge clk_i or negedge rst_sys_n)
+    if (!rst_sys_n) external_irq_sync_q <= 2'b00;
+    else external_irq_sync_q <= {external_irq_sync_q[0], irq_external_i};
 
   reg [1:0] por_sync;
   always @(posedge clk_i or negedge rst_ni)
@@ -583,13 +594,12 @@ module soc_top #(
       .trvk_revbm_rdata_intg_i (7'h0),
       .trvk_revbm_err_i        (1'b0),
 
-      // Interrupts. irq_external_i is the one that is still tied low:
-      // it is the PLIC's input and there is no PLIC (docs/40 section 3).
-      // Leaving it unconnected rather than repurposing it is what makes
-      // adding one later a wiring change and not a rework.
+      // External interrupt 11 is one synchronized level, with no PLIC.
+      // Software masks it or services the external device to clear it.
+      // Existing fast peripheral interrupt assignments remain unchanged.
       .irq_software_i (clint_irq_soft),
       .irq_timer_i    (clint_irq_timer),
-      .irq_external_i (1'b0),
+      .irq_external_i (external_irq_sync_q[1]),
       .irq_fast_i     (irq_fast),
       .irq_nm_i       (wdog_nmi),
 

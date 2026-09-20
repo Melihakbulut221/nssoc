@@ -212,6 +212,9 @@ module tb_soc_fi_gl;
 `endif
       .clk_i  (clk),
       .rst_ni (rst_n),
+`ifdef FI_GL_EXTERNAL_IRQ
+      .irq_external_i(1'b0),
+`endif
       .wdog_dis_i (wdog_dis),
       .strap_i    (4'h0),
       .uart_tx_o  (uart_tx),

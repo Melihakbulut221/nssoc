@@ -64,6 +64,10 @@ MODEL_SOURCES=(
   "$SRAM_V/RM_IHPSG13_1P_core_behavioral_bm_bist.v"
 )
 PROFILE_DEFINES=()
+# Historical mapped profiles predate the external IRQ port.
+if grep -Eq 'input[[:space:]]+irq_external_i' "$NETLIST"; then
+  PROFILE_DEFINES+=(-DFI_GL_EXTERNAL_IRQ)
+fi
 if grep -Fq 'u_rom.g_rom_1024x32_ecc.u_b0' "$NETLIST"; then
   PROFILE_DEFINES+=(-DFI_GL_ROM_ECC)
   MODEL_SOURCES+=("$SRAM_V/RM_IHPSG13_1P_512x16_c2_bm_bist.v")

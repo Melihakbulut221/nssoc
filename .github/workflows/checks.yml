@@ -154,6 +154,12 @@ jobs:
         run: make rf-contract rf-equivalence
       - name: CPU interface and interrupt regression
         run: make soc-interfaces-sim
+      - name: External IRQ, WFI and interrupt context regression
+        run: |
+          python3 hw/soc/flow/external_irq_probe.py --prepare hw/soc/out/external-irq
+          bash hw/soc/out/external-irq/run_rtl.sh
+          python3 hw/soc/flow/external_irq_probe.py --prepare hw/soc/out/external-irq-negative --legacy-t0
+          bash hw/soc/out/external-irq-negative/run_rtl.sh
       - name: CPU Gigabit Ethernet packet and interrupt regression
         run: |
           SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
@@ -198,6 +204,10 @@ jobs:
             hw/soc/out/crash-demo/sim.log
             hw/soc/out/crash-demo/crash-cocotb*
             hw/soc/out/ethernet-demo/sim.log
+            hw/soc/out/external-irq/rtl-run.log
+            hw/soc/out/external-irq/source-hashes.json
+            hw/soc/out/external-irq-negative/rtl-run.log
+            hw/soc/out/external-irq-negative/source-hashes.json
             hw/soc/formal/soc_busstat_*/status
             hw/soc/formal/soc_apb_bridge_*/status
             hw/soc/formal/soc_npu_*/status

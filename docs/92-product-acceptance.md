@@ -147,3 +147,19 @@ controls and 20 postroute controls added after the earlier 743-pass replay.
 No generated dependencies or physical outputs were copied into this clone.
 The measured ledger row is preserved verbatim; F6's absent historical
 artifacts are still absent, and every skip remains explicitly reported.
+
+**New RTL work, 2026-09-20:** [external IRQ support](94-external-interrupt.md)
+now provides one synchronized machine-external level and vector 11. A real
+CPU test exposed and reproduced an interrupt-stub `t0` clobber; the corrected
+stub passes the same test. Debug/JTAG, physical integration, synchronizer
+SEU/MTBF qualification and the full product gate remain open. Existing
+ECO18/ECO22 physical measurements refer to the earlier source without this
+new pin. Follow-up synthesis and broader firmware verification are pending.
+
+**IRQ update, 2026-09-20:** the [delivered external IRQ evidence](evidence/external-irq-20260920.json)
+now includes passing RTL/native-cell CPU tests, the expected legacy-`t0`
+negative control, matched synthesis (+2 flops), and the passing 28-check
+normal firmware regression. SDC exception scope passes on the new netlist;
+its typical preplacement interstage hold slack is -0.033690 ns, retained
+as a failure. This partially implements the interrupts row, while debug,
+physical timing, pads and fault qualification remain open.

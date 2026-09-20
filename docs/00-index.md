@@ -629,6 +629,7 @@ site belongs.
 - `docs/91-pcie-gen3-feasibility.md` — [PCIe Gen3 x4 implementation dependencies](91-pcie-gen3-feasibility.md)
 - `docs/92-product-acceptance.md` — [Complete external-review and product acceptance checklist](92-product-acceptance.md)
 - `docs/93-ihp-drc-update.md` — [SRAM checks with pinned upstream IHP verification rules](93-ihp-drc-update.md)
+- `docs/94-external-interrupt.md` — [External level interrupt and preserved interrupt context](94-external-interrupt.md)
 
 **Re-counted 2026-09-19 after APB telemetry integration [fact].**
 `hw/soc/formal` carries **99 tasks across 22 jobs**. Four additional
