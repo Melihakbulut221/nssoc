@@ -219,3 +219,27 @@ The `checks` workflow has an opt-in `native_boot` dispatch input for this long
 test and retains both successful and failed logs, loader/netlist identities and
 firmware. The ordinary push/PR RTL jobs remain separate. Adding this job is not
 evidence that its hosted execution has passed; follow its actual result.
+
+**Native boot acceptance, 2026-09-20:** the corrected loader now passes the
+[complete four-state mapped-SoC run](evidence/logicrom-startup-clear-native-pass-20260920.json):
+637,224 cycles, all 28 application checks, exit code zero, exit magic
+`600dc0de`, watchdog stages 1/0/0, zero flash protocol violations and zero
+UART framing errors. Native IHP cell and SRAM models remain unchanged, with
+no ROM/RAM preload and matching loader manifests. Input hashes stayed
+unchanged for the full 3,169.87-second simulation. This supersedes the pending
+local native-boot statements and closes the diagnosed power-on telemetry
+read defect; the original failure remains the negative baseline. It does
+not establish SDF timing, radiation qualification or final-image physical
+acceptance. The independent hosted rebuild remains a separate run.
+
+### Hosted synthesis diagnostic compatibility (20 September 2026)
+
+The next clean GitHub run (`35507310951`, head `f4e41e5`) passed native
+cell reset, all 28 RTL checks and synthesis. Gate elaboration then failed:
+Yosys 0.67 keeps `crash_dump`, while local Yosys 0.33 keeps
+`u_ibex.crash_dump_o`. The progress display used the latter alias. Removing
+this optional diagnostic leaves all acceptance conditions unchanged. Both
+the actual downloaded CI netlist and the local netlist now compile with
+unmodified IHP models. This compile control is not a hosted boot PASS; the
+full hosted retry remains necessary. See
+[evidence](evidence/native-boot-hosted-alias-20260920.json).

@@ -5,6 +5,77 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 14:42 TRT — Tam native açılış PASS; CI alias düzeltmesi
+
+**Yerel tam gate boot bitti:** `logicrom-startup-clear-gl`, 637224 çevrim,
+28 kontrol PASS, fails/code=0, magic=600dc0de, watchdog=1/0/0, UART framing=0,
+flash violation=0. 3169.87 saniye, native IHP modelleri değişmedi, ROM/RAM
+ön yüklemesi yok, kaynak hashleri koşu boyunca aynı. Kanıt
+`logicrom-startup-clear-native-pass-20260920.json`. Fiziksel/SDF/radyasyon PASS değildir.
+
+İkinci hosted native run **35507310951** / job106069202598 FAIL: RTL28 ve
+synthesis PASS; Yosys 0.67 farklı crash bus alias bıraktığı için yalnız
+progress display elaboration hatası. Optional crash çıktısı kaldırıldı;
+**gerçek indirilen CI netlisti ve yerel Yosys0.33 netlisti compile PASS**.
+Kanıt `native-boot-hosted-alias-20260920.json`. Push sonrası native_boot=true
+manual workflow yeniden başlatılmalı; henüz hosted full gate verdict yok.
+
+**Aktif fiziksel:** session7253, `logicrom-startup-clear-grt-20260920`,
+36-OpenROAD.ResizerTimingPostGRT ilerliyor; önceki ROM sonuçları devredilemez.
+Kaynak/hash/disk supervisor aktif. Yeni ROM 69441 hücre +20 SRAM makro.
+
+**Halo iki-net deneyleri:** ilk incremental DEF patch NO-OP; compare6672
+changed=[] yakaladı, duplicate DRC21272 durduruldu. Corrected wire encoder
+`halo-two-net-layer-lift2`: compare40478 PASS, yalnız iki net shape değişti;
+349841 instance/pin bağlantıları ve diğer tüm geometriler aynı. Ancak
+**native DRC36756 FAIL: 2 Metal3 short +4 minimum-area**, aday kabul edilmedi.
+Rapor `halo-two-net-layer-lift2/native-drc.rpt`. Kısa Metal2 bağlantısı fikri
+Magic minimal control'de işareti kaldırıyor, fakat geçerli yeni route gerekiyor.
+Original native MAG replay62391 **600s timeout**, kaynak değişmedi; verdict yok.
+
+**Disk:** eski başarısız ECO23 drt-run1..7 benzersiz ODB ara çıktıları
+SHA ile doğrulanmış yedi tar.gz arşivine taşındı; final geometri/raporlar
+ve bütün aktif girdiler duruyor. `eco23-route-archive-20260920.json`.
+Yaklaşık1.6GiB boş, supervisor alt sınırı768MiB.
+
+Aşağıdaki kayıtlar tarihseldir; bu bölüm güncel sonuçları geçersiz kılar.
+
+## 20 Eylül 14:23 TRT — Magic sonucu ve native CI düzeltmesi
+
+Son push **f4e41e5**, önce6341aec (nativebootCI),860fce3 (bootfix).
+6341aec manuelworkflow **35506681972**, nativejob106067578640 FAIL: nativecell
+resetPASS+RTL28PASS, ardından **Ethernet SRAM typ Liberty eksik** yüzünden
+synthesisbaşlamadı. Artefact10604800674 indirildi; `hosted-native-6341aec*`,
+`native-boot-hosted-preparation-20260920.json`retained. Lock8→9dosya; eksikLib
+upstreampin/hash/installedileeşleştirildi.32affectedtestsPASS. f4manuelretry
+**35507310951**, nativejob106069202598şuandaBuild/bootadımında; henüzverdict yok.
+
+**Magic32138 TAMAM**10650.46s/process0; gerçek **438FAIL**:436inside/2outside
+(önce642=436+206). `ihp-routing-halo-magic-20260920.json`, docs92/ROADMAPgüncellendi.
+Makrodışı2metal2marker: net13560/u_ram.u_b2/A_DLY ve net2854/u_b3/A_ADDR[6].
+RawCLI0yalnızcheckexecutiontamam; kurallaraynı/hatalarwaiveddeğil.
+Read-onlyOpenDBprobe `probe_halo_remaining_wires3.py`, sonuç
+`halo-remaining-wire-neighborhoods-vias.json`. İlkdbWireShapeItrAPIyokhatakayıtları
+korundu; dbWirePathItrcorrect. KüçüktekstubLEFkontrollerindeM2fçıkmadı; full
+nativeM2tilecontextte tekrarlandı. `halo-m2-context-minimization`28koşu108local
+rect+2uzakrect'eindirdi; parentpaintcontextönemli. `halo-minimal-rect-controls`
+longM2f1/shortM2f0, **shortstubdisconnecteddiagnostic**; ürünfix/PASSdeğil.
+`halo-native-tile-control` ilkpaintsonrasıkutuselectyapılmadı; correctedcontrol2
+fullregionchecks kullanır. Bu küçükdeneylerbütünçipDRCyokgibiokunmaz.
+
+**İkiNETlayerlift gerçekODBdeneyi** `halo-two-net-layer-lift`: read_def-incremental
+patch yalnıznet13560/net2854 uzunM2segmentleriniM4'e taşır, gerçekVia2/Via3
+bağlantılarıileM2pinstubları~2.23um. Hazırlama57592done. **Compare6672** tüm
+349841instancekonumu/master/pinbağlantısıvebaşkanetlerinshapehashlerininaynı
+olduğunu sınar; sonucu al. **NativeDRC21272** `drt::check_drc` tümçıktıODB,
+çalışıyor; check.log/native-drc.rpt. Bu henüzkabuldeğil; short/antenna/timing,
+kendineaitMagicsonucugerekli. GRTnewROMilekarıştırma, eski24macrohaloüzerinde.
+
+YeniIcarusGL26557~510kcycle, uygulamaçalışıyor ilk5checkgeçti, memorytest
+loopknown,6flashframes,ramSEC/DED0; tam28checksbekleniyor. Kaynakbench/netlist/
+image değiştirme. YeniPNR7253native `logicrom-startup-clear-grt-20260920` global
+route/antennaaşamasınıgeçiyor; PostGRTsonuçhenüzbekleniyor. Disk~1.5GiBfloor768.
+
 ## 20 Eylül 14:00 TRT — native boot CI ve yeni fiziksel koşu
 
 Bootfix push **860fce3** TAMAM. PRgövdesi actualoldGLFAIL/newfixpending olarak
