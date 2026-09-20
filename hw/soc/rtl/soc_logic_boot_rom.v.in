@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
+
+`default_nettype none
 // Template for gen_logic_boot_rom.py. The generated case literals implement
 // immutable boot contents in standard cells, with no power-up SRAM preload.
 // INIT_FILE is accepted for the legacy instance interface but not read;
@@ -47,3 +49,5 @@ module soc_logic_boot_rom #(
   .row_en_o(row_en),.row_we_o(row_we),.row_addr_o(row_addr),.row_din_o(row_din),.row_bm_o(row_bm),.row_dout_i(row_dout),
   .scrub_en_i(scrub_en_i),.scrub_ivl_i(scrub_ivl_i),.sec_o(sec_o),.rd_o(rd_o),.ded_o(ded_o),.evt_addr_o(evt_addr_o));
 endmodule
+
+`default_nettype wire

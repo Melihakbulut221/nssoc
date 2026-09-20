@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // SoC top level: Ibex, the system fabric, the memories, the peripheral
 // bridge and the two device tables.
 //
@@ -1022,7 +1024,7 @@ module soc_top #(
   // system domain so the fresh boot after that reset is not immediately
   // interrupted by a sticky bit it has not read yet (docs/40 section
   // 7.2's brick, in a new place).
-  soc_busstat #(.APB_TIMEOUT_EN(APB_TIMEOUT != 0)) u_busstat (
+  soc_busstat #(.APB_TIMEOUT_EN(APB_TIMEOUT != 0 ? 32'd1 : 32'd0)) u_busstat (
       .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
       .psel_i (sel_busstat), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
@@ -1238,3 +1240,5 @@ module soc_top #(
   assign irq_soft_o     = clint_irq_soft;
 
 endmodule
+
+`default_nettype wire

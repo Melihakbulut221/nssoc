@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // Single-command I2C master, with bounded recovery from a stuck bus.
 // Pin outputs are open-drain enables: 1 drives LOW, 0 releases the pad.
 module soc_i2c #(parameter integer TIMEOUT_CYCLES = 500000) (
@@ -22,6 +24,7 @@ module soc_i2c #(parameter integer TIMEOUT_CYCLES = 500000) (
     reg [3:0] cause, imask;
     reg scl_meta, scl_sync, sda_meta, sda_sync;
     localparam integer TW = $clog2(TIMEOUT_CYCLES+1);
+    localparam integer TIMEOUT_LAST = TIMEOUT_CYCLES-1;
     reg [TW-1:0] timer;
     wire cmd_ready, tx_ready, rx_valid, busy, bus_control, bus_active, nack;
     wire [7:0] rxdata;
@@ -41,7 +44,7 @@ module soc_i2c #(parameter integer TIMEOUT_CYCLES = 500000) (
                (pwrite_i && paddr_i == 4 && pwdata_i[15:0] < 4);
     wire launch = wr && !bad && paddr_i == 12 && !pwdata_i[4];
     wire abort = wr && !bad && paddr_i == 12 && pwdata_i[4];
-    wire timeout_hit = active && timer == TIMEOUT_CYCLES-1;
+    wire timeout_hit = active && timer == TIMEOUT_LAST[TW-1:0];
     wire done = active && seen_busy && busy_q && !busy;
     wire [3:0] events = {timeout_hit, rx_valid, nack, done};
     assign pready_o = 1'b1;
@@ -113,3 +116,5 @@ module soc_i2c #(parameter integer TIMEOUT_CYCLES = 500000) (
         endcase
     end
 endmodule
+
+`default_nettype wire

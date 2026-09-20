@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // PIO SpaceWire endpoint. Register contract: docs/88-interface-integration.md.
 // All core clocks are clk_i; the generic receiver supports up to clk_i/2.
 module soc_spw #(parameter integer CLOCK_HZ = 50000000) (
@@ -88,3 +90,5 @@ module soc_spw #(parameter integer CLOCK_HZ = 50000000) (
         endcase
     end
 endmodule
+
+`default_nettype wire

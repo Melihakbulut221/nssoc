@@ -303,6 +303,8 @@ jobs:
           make soc-prepare
       - name: Prepared upstream compatibility and whole-SoC elaboration
         run: make soc-prepared-guards
+      - name: Whole-SoC lint with exact diagnostic inventory
+        run: PY=.venv/bin/python bash scripts/ci_local.sh lint
       - name: Real-codec contract, counterexamples and upstream equivalence
         run: make rf-contract rf-equivalence
       - name: CPU interface and interrupt regression
@@ -363,6 +365,7 @@ jobs:
             hw/soc/out/crash-demo/sim.log
             hw/soc/out/crash-demo/crash-cocotb*
             hw/soc/out/ethernet-demo/sim.log
+            hw/soc/out/lint-*/
             hw/soc/out/external-irq/rtl-run.log
             hw/soc/out/external-irq/source-hashes.json
             hw/soc/out/external-irq-negative/rtl-run.log

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // soc_npu: the CPU-side NPU interface, and the frozen pilot behind it.
 //
 // docs/39-soc-bus-and-memory-map.md section 9 item 4 is the gap this
@@ -2465,3 +2467,5 @@ module soc_npu #(
 `endif
 
 endmodule
+
+`default_nettype wire

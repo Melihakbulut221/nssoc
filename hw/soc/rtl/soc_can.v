@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 module soc_can (
     input wire clk_i, rst_ni,
     input wire psel_i, penable_i, pwrite_i,
@@ -36,3 +38,5 @@ module soc_can (
         .rx_i(rx_i), .tx_o(tx_o), .bus_off_on(bus_off_n),
         .irq_on(irq_n), .clkout_o());
 endmodule
+
+`default_nettype wire

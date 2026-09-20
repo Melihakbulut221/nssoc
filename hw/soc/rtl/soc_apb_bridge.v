@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // System bus to AMBA APB bridge.
 //
 // This is the one place in the SoC where a standard bus protocol is
@@ -204,3 +206,5 @@ module soc_apb_bridge #(
 `endif
 
 endmodule
+
+`default_nettype wire

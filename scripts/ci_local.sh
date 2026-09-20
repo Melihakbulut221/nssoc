@@ -91,6 +91,23 @@ skipped() {  # skipped <name> <reason>
     printf '  %-46s skip  (%s)\n' "$1" "$2"; skip=$((skip+1))
 }
 
+# --------------------------------------------------------------- RTL lint
+job_lint() {
+    echo "== lint"
+    local suite="${OSS_CAD_SUITE:-$PWD/hw/soc/tools/oss-cad-suite}"
+    if [ ! -x "$suite/bin/verilator" ] || [ ! -s hw/soc/genp/ibex_top.v ]; then
+        if [ "$JOB" = lint ]; then
+            run "prepared whole-SoC lint prerequisites" false
+        else
+            skipped "prepared whole-SoC lint" "run soc-rtl-prepare and install pinned OSS CAD Suite; hardware CI requires this gate"
+        fi
+        return
+    fi
+    # Every run gets a fresh evidence directory; no old verdict is reused.
+    local out="hw/soc/out/lint-$(date -u +%Y%m%dT%H%M%S)-$$"
+    run "prepared whole-SoC lint" bash scripts/lint.sh --output "$out"
+}
+
 # ---------------------------------------------------------------- licence
 job_licence() {
     echo "== licence"
@@ -371,6 +388,7 @@ job_mirror() {
 }
 
 case "$JOB" in
+    lint)     job_lint ;;
     licence)  job_licence ;;
     docs)     job_docs ;;
     paper)    job_paper ;;
@@ -378,8 +396,8 @@ case "$JOB" in
     checkers) job_checkers ;;
     mirror)   job_mirror ;;
     all)      job_licence; echo; job_docs; echo; job_paper; echo; job_checkers
-              echo; job_mirror; echo; job_suite ;;
-    *) echo "usage: $0 [licence|docs|paper|checkers|mirror|suite|all] [--record]" >&2
+              echo; job_mirror; echo; job_suite; echo; job_lint ;;
+    *) echo "usage: $0 [lint|licence|docs|paper|checkers|mirror|suite|all] [--record]" >&2
        exit 2 ;;
 esac
 

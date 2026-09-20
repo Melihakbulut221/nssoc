@@ -292,7 +292,7 @@ module soc_busstat #(
   // whoever needs a ninth should read docs/58 section 9 before choosing.
   localparam integer S_MTECC  = 7;
   localparam integer S_APBTO  = 8;
-  localparam integer NSRC     = APB_TIMEOUT_EN ? 9 : 8;
+  localparam integer NSRC     = (APB_TIMEOUT_EN != 0) ? 9 : 8;
 
   localparam [CNT_W-1:0] CNT_MAX = {CNT_W{1'b1}};
 
@@ -312,7 +312,7 @@ module soc_busstat #(
   assign ev[S_NPUDET] = npu_det_i;
   assign ev[S_NPUTMR] = npu_tmr_i;
   assign ev[S_MTECC]  = mt_ecc_i;
-  generate if (APB_TIMEOUT_EN) begin : g_timeout_event
+  generate if (APB_TIMEOUT_EN != 0) begin : g_timeout_event
     assign ev[S_APBTO] = apb_timeout_i;
   end endgenerate
 
@@ -399,7 +399,7 @@ module soc_busstat #(
 
   wire timeout_sticky, timeout_irqen;
   wire [CNT_W-1:0] timeout_count;
-  generate if (APB_TIMEOUT_EN) begin : g_timeout_read
+  generate if (APB_TIMEOUT_EN != 0) begin : g_timeout_read
     assign timeout_sticky = sticky[S_APBTO];
     assign timeout_irqen = irqen[S_APBTO];
     assign timeout_count = cnt[S_APBTO];

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // The memory codec and the scrubber: what stands between the fabric and
 // a row of storage, in ONE file for both memory implementations.
 //
@@ -272,7 +274,7 @@ module soc_mem_ecc #(
   endgenerate
 
   generate
-    if (HARDEN && ECC_BYTE) begin : g_dec_byte
+    if ((HARDEN != 0) && ECC_BYTE) begin : g_dec_byte
       genvar l, b;
       for (l = 0; l < 4; l = l + 1) begin : g_lane
         wire [63:0] d64_unused;
@@ -296,7 +298,7 @@ module soc_mem_ecc #(
         assign rd_word[8*l +: 8] = row_dout_i[8*l +: 8] ^ mask;
       end
     end
-    if (HARDEN && !ECC_BYTE) begin : g_dec_word
+    if ((HARDEN != 0) && !ECC_BYTE) begin : g_dec_word
       wire [63:0] d64_unused;
       wire [7:0]  syn;
       wire        sec_dec_unused, ded_dec_unused;
@@ -320,7 +322,7 @@ module soc_mem_ecc #(
       assign ded[3:1] = 3'b000;
       assign rd_word  = row_dout_i[31:0] ^ mask;
     end
-    if (!HARDEN) begin : g_dec_plain
+    if (HARDEN == 0) begin : g_dec_plain
       assign rd_word = row_dout_i[31:0];
       assign sec     = 4'b0000;
       assign ded     = 4'b0000;
@@ -390,7 +392,7 @@ module soc_mem_ecc #(
   wire [AW-1:0] sptr_w;
 
   generate
-    if (HARDEN) begin : g_scrub
+    if (HARDEN != 0) begin : g_scrub
       reg [AW-1:0] sptr;
       reg [15:0]   stick;
       reg          srd_q;
@@ -417,7 +419,7 @@ module soc_mem_ecc #(
         end
       end
     end
-    if (!HARDEN) begin : g_noscrub
+    if (HARDEN == 0) begin : g_noscrub
       assign s_go   = 1'b0;
       assign s_hit  = 1'b0;
       assign s_wb   = 1'b0;
@@ -436,7 +438,7 @@ module soc_mem_ecc #(
   wire [RW-1:0] bm_wb;    // the scrub write-back's mask, from sec
 
   generate
-    if (HARDEN && ECC_BYTE) begin : g_enc_byte
+    if ((HARDEN != 0) && ECC_BYTE) begin : g_enc_byte
       genvar l;
       for (l = 0; l < 4; l = l + 1) begin : g_lane
         wire [7:0]  chk;
@@ -454,7 +456,7 @@ module soc_mem_ecc #(
         assign bm_wb[32+8*l +: 8]     = {8{sec[l]}};
       end
     end
-    if (HARDEN && !ECC_BYTE) begin : g_enc_word
+    if ((HARDEN != 0) && !ECC_BYTE) begin : g_enc_word
       wire [7:0]  chk;
       wire [71:0] code_unused;
       secded_enc u_enc (
@@ -469,7 +471,7 @@ module soc_mem_ecc #(
       assign bm_bus    = {RW{1'b0}};
       assign bm_wb     = {RW{1'b1}};
     end
-    if (!HARDEN) begin : g_enc_plain
+    if (HARDEN == 0) begin : g_enc_plain
       assign row_din_o = {{CW{1'b0}}, enc_in};
       assign bm_bus    = {{CW{1'b0}}, {8{be_i[3]}}, {8{be_i[2]}},
                                       {8{be_i[1]}}, {8{be_i[0]}}};
@@ -494,3 +496,5 @@ module soc_mem_ecc #(
 `endif
 
 endmodule
+
+`default_nettype wire

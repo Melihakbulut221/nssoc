@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-21",
+  "status": "FAIL",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35538794260",
+  "tested_head": "091423c7acd807aba9ff1af27cda6aa6bd06ec52",
+  "raw_result_sha256": "72a9d6185d5e18bc0ea956f03b11011fa983bcfb6a7bb78f548eec51133ed846",
+  "stages": [
+    {
+      "command": [
+        "make",
+        "-k",
+        "-C",
+        "formal",
+        "everything"
+      ],
+      "returncode": 0,
+      "elapsed_s": 4481.253725657
+    },
+    {
+      "command": [
+        "make",
+        "-k",
+        "-C",
+        "hw/soc/formal",
+        "all"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1452.7363045909997
+    }
+  ],
+  "sources_unchanged": true,
+  "passed_count": 155,
+  "nonpassing": {
+    "hw/soc/formal/regfile_scrub_abs_prove": {
+      "config": "hw/soc/formal/regfile_scrub_abs.sby",
+      "task": "prove",
+      "status": "MISSING",
+      "source_state": "unchecked",
+      "log_sha256": null
+    },
+    "hw/soc/formal/regfile_scrub_abs_bmc": {
+      "config": "hw/soc/formal/regfile_scrub_abs.sby",
+      "task": "bmc",
+      "status": "MISSING",
+      "source_state": "unchecked",
+      "log_sha256": null
+    }
+  },
+  "historical_exclusions": {
+    "hw/soc/formal/regfile_scrub_prove": "docs/63 section 23: real-codec storage/scrub proofs have not closed; engine runs stalled or timed out. The abstract-codec proof and newer real-codec contract/equivalence tasks are separate, narrower results.",
+    "hw/soc/formal/regfile_scrub_bmc": "docs/63 section 23: real-codec storage/scrub proofs have not closed; engine runs stalled or timed out. The abstract-codec proof and newer real-codec contract/equivalence tasks are separate, narrower results.",
+    "hw/soc/formal/regfile_scrub_cover": "docs/63 section 23: real-codec storage/scrub proofs have not closed; engine runs stalled or timed out. The abstract-codec proof and newer real-codec contract/equivalence tasks are separate, narrower results.",
+    "hw/soc/formal/regfile_scrub_prove_pdr": "docs/63 section 23: real-codec storage/scrub proofs have not closed; engine runs stalled or timed out. The abstract-codec proof and newer real-codec contract/equivalence tasks are separate, narrower results.",
+    "hw/soc/formal/regfile_scrub_bmc_btor": "docs/63 section 23: real-codec storage/scrub proofs have not closed; engine runs stalled or timed out. The abstract-codec proof and newer real-codec contract/equivalence tasks are separate, narrower results.",
+    "hw/soc/formal/regfile_scrub_abs_prove12": "docs/63 section 23: depth-12 k-induction returned UNKNOWN. The unbounded prove_pdr task remains mandatory."
+  },
+  "diagnosis": "Both make stages returned zero, but regfilescrub only invokes prove_pdr and cover. Declared prove and bmc were missing. The completeness guard correctly rejected the aggregate. No exclusion is added to turn this failure green."
+}

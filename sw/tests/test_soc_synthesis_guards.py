@@ -881,7 +881,7 @@ def _busstat_nsrc():
     asking whether the three new counters had actually survived. The
     arithmetic below is what says they did.
     """
-    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*APB_TIMEOUT_EN\s*\?\s*9\s*:\s*(\d+)",
+    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*\(APB_TIMEOUT_EN\s*!=\s*0\)\s*\?\s*9\s*:\s*(\d+)",
                   BUSSTAT.read_text())
     assert m, "soc_busstat.v no longer declares NSRC"
     return int(m.group(1))

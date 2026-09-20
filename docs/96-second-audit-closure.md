@@ -36,7 +36,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
 | 3.1 | SoC orphan reachability and simulation/macro memory parity | PARTIAL. Recursive inventory now covers both RTL trees and the generated-ROM template, preserves alternate module definitions, and follows per-module edges after stripping comments/strings. Five standalone AHB probe modules have reasoned ledger rows; CAN’s soc_apb_wb remains reachable. All six supported RAM geometry/latency profiles pass native SRAM parity; a corrupted-macro negative control fails after elaboration. Legacy ROM parity remains open. |
 | 3.2 | UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures | PARTIAL. Ten new UART/timer/PnP formal tasks pass, including unbounded proofs and the shipped 32/16-bit timer widths; five mutated designs produce reachable counterexamples. Direct serial-master tests pass at HALF=2/3/7; direct TMR test covers 339 single storage-bit upsets plus a two-replica negative control. RX now has pin-driven tests and real-CPU receive/IRQ/WFI validation; see docs/97. Its final layout, broader FI/coverage and other requested work remain open. |
-| 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | OPEN. Frozen pilot warnings are recorded, not fixed in the submitted sources. |
+| 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | PARTIAL. Whole soc_top lint now runs in local and hosted hardware CI for base/full RTL profiles; 16 owned width warnings removed and all owned module files reject implicit nets. Exact warning inventories retain frozen/upstream diagnostics. The SRAM/logic-ROM physical source variant remains to be linted; see the dated record below. |
 | 3.4 | REUSE compliance, upstream IHP notices, generated licence inventory | DONE for current distribution checks. REUSE 6.2.0 passes with zero missing licences or invalid expressions; IHP aggregate notices and generated component inventory are retained. Source-bound publication checks accompany the latest energy-tool record (965 covered files). Live counts are generated in LICENSES.md and required in CI; this is compliance checking, not patent clearance. |
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and copies referenced local images. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
@@ -262,3 +262,61 @@ zero failures** and **18 front-door checks, seven explicit skips**. It closes
 the two failed PNR guard obligations from the earlier dirty-tree attempt;
 that attempt's failure remains recorded. The subsequent energy-tool change
 has its separate evidence above.
+
+
+On 21 September, the [whole-SoC lint record](evidence/soc-lint-20260921.json)
+adds `scripts/lint.sh` and `scripts/ci_local.sh lint`. The hardware CI invokes
+this required gate after pinned source preparation. `all` explicitly skips it
+on a source-only machine without the prepared processor or pinned Verilator;
+the explicit `lint` command fails on missing prerequisites. Its selected
+profile follows `SOC_INTERFACE_PROFILE=base|full`.
+
+The runner uses Verilator `--lint-only --Wall` without disabling any warning
+class. `-Wno-fatal` lets it collect the complete list; acceptance then requires
+an exact match of file, line, column, message and multiplicity against
+`hw/soc/lint-policy.json`, the reviewed Verilator version, unchanged inputs and
+pinned frozen/upstream source hashes. New or removed diagnostics require review.
+Unknown diagnostic syntax and compiler errors fail. This is a regression gate
+with **987 base / 1,015 full recorded warnings**, not warning-free RTL.
+
+Sixteen owned width warnings were removed through explicit integer predicates,
+a width-matched I2C timeout limit and explicit observation-row zero extension.
+No parameter defaults, register ABI, frozen pilot RTL or pristine upstream
+checkout changed. All owned `.v` files, including standalone AHB probes, and
+the logic-ROM template now scope `default_nettype none` and restore `wire`
+after their module definitions. The synthesis guard's NSRC parser follows the
+explicit boolean syntax while preserving its expected eight-source default.
+
+Only the three named behavioural clock-gate latches and five named reset
+chains qualify for the architectural diagnostic allowances; an exact record
+is still required. The one upstream CAN implicit wire is a driven one-bit
+`can_bsp` to `can_btl` connection. Ethernet range diagnostics arise from
+unselected ID/DEST and PTP branches in this profile. These records do not
+waive CDC, timing or physical qualification, or approve a different profile.
+
+Validation: **63 focused Python checks**, **25 elaboration/register-file/formal
+runner guards**, **11 full-profile peripheral tests / one profile-specific
+skip**, and **all six native-SRAM parity configurations** pass. The deliberately
+corrupted SRAM is rejected. Separate compiled lint controls reject a new width
+mismatch and an undeclared signal. The initial elaboration-test collection
+failed because its source parser still expected the old NSRC expression; the
+corrected parser's rerun passed. The initial diagnostic logs and failed control
+outputs remain retained with the final evidence.
+
+The [independent hosted formal inventory](evidence/hosted-formal-inventory-20260921.json)
+at `091423c` remains **FAIL**: 155 tasks passed with fresh sources, but the
+Makefile never invoked two declared abstract-codec scrub tasks (`prove`, `bmc`).
+Both Make stages returned zero; the separate inventory correctly prevented a
+false aggregate PASS. The two obligations remain mandatory and are being run;
+no exclusion was added. This failure is independent of the same revision's
+passing native boot test.
+
+The [clean remote replay at a79af62](evidence/fresh-clone-a79af62-20260921.json)
+validates the delivered macro-energy and profile changes. It predates these
+lint edits; its counts must not be treated as validation of a later tree.
+
+The final local lint tree passes **1,128 Python tests, one absent-tool skip,
+zero failures**, followed by **146 publication checks**. REUSE covers all
+972 tracked files with zero missing/invalid licences. These results and their
+log hashes are appended to the lint record; independent hosted acceptance of
+this new revision is still pending.

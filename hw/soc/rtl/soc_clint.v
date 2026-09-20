@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // Core-local interruptor: the RISC-V machine timer and the machine
 // software interrupt.
 //
@@ -470,3 +472,5 @@ module soc_clint #(
 `endif
 
 endmodule
+
+`default_nettype wire

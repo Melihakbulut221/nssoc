@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // The watchdog.
 //
 // =====================================================================
@@ -1187,3 +1189,5 @@ module soc_wdog #(
 `endif
 
 endmodule
+
+`default_nettype wire

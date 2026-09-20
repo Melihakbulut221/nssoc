@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // soc_mem, built on IHP SG13G2 RM_IHPSG13 SRAM macros.
 //
 // THIS FILE DECLARES A MODULE CALLED `soc_mem`. It is a drop-in
@@ -661,3 +663,5 @@ module soc_mem #(
   endgenerate
 
 endmodule
+
+`default_nettype wire

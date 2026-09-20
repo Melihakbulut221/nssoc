@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // Eight-bit SPI master, modes 0..3, two active-low chip selects.
 // CTRL bits: CPOL=0, CPHA=1, CS index=2, interrupt enable=3, hold CS between bytes=4.
 // DIV is the number of system clocks per half SCK period (minimum 2).
@@ -88,3 +90,5 @@ module soc_spi (
         endcase
     end
 endmodule
+
+`default_nettype wire
