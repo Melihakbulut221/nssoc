@@ -1,0 +1,126 @@
+{
+  "date": "2026-09-20",
+  "scope": "Clean-environment native boot preparation and compatibility controls; whole hosted boot is not yet executed.",
+  "upstream_lock": {
+    "repository": "https://github.com/IHP-GmbH/IHP-Open-PDK",
+    "commit": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "scope": "Unmodified native models and typical standard-cell Liberty for mapped functional boot. Not a complete PDK, physical kit or signoff deck.",
+    "entrypoint": "ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+    "files": [
+      {
+        "path": "LICENSE",
+        "bytes": 11357,
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "bytes": 53835,
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "bytes": 6900,
+        "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "bytes": 3932,
+        "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "bytes": 12655,
+        "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "bytes": 6067,
+        "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08"
+      },
+      {
+        "path": "ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+        "bytes": 4051,
+        "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+      }
+    ]
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_native_boot_preparation.py sw/tests/test_ihp_drc_preparation.py sw/tests/test_logic_boot_gl.py",
+    "passed": 32
+  },
+  "downloaded_model_control": {
+    "library": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+    "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "compile": {
+      "command": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_native_cell_gate",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-boot-downloaded-model-control/sim.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-boot-downloaded-model-control/tb_native_cell_gate.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.01624041200011561
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "-i",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-boot-downloaded-model-control/sim.vvp"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.008215855001253658,
+        "pass_banner": true
+      }
+    ],
+    "passed": true
+  },
+  "incompatible_tool_negative": {
+    "command": "bash scripts/check_soc_native_boot.sh hw/soc/out/external-review-20260919/native-driver-local-incompatible",
+    "returncode": 1,
+    "refused_before_rtl_or_synthesis": true
+  },
+  "artifacts": {
+    "hw/soc/pnr/ihp-native-boot.lock.json": {
+      "bytes": 1977,
+      "sha256": "a2f02cedb668db09d7547c6ffeac5dc50a1578cc887c8a56b8762114a8afc60e"
+    },
+    "hw/soc/flow/prepare_ihp_native_boot.py": {
+      "bytes": 1010,
+      "sha256": "60d6698dbda61ea752fada71da6cc6a6c3790c29c514efa1b24a32656bfe333e"
+    },
+    "scripts/check_soc_native_boot.sh": {
+      "bytes": 2733,
+      "sha256": "47d7a5b175cc926a23e9874e7d8bd24a9b76349f8b1d9575a05a208e4b0648f6"
+    },
+    ".github/workflows/checks.yml": {
+      "bytes": 10913,
+      "sha256": "f5e37d6c2e8ed8412f0e6e11ab5904a6471ccb13aeb730007260971714560dad"
+    },
+    "hw/soc/out/external-review-20260919/native-boot-preparation-tests.log": {
+      "bytes": 99,
+      "sha256": "e1ef70a15987d998a18028c33b66c12c08bad335632eec4d60a9f276baf57cf0"
+    },
+    "hw/soc/out/external-review-20260919/native-driver-local-incompatible.log": {
+      "bytes": 196,
+      "sha256": "b11c1ee79a299b2178db4636864c9ae53def1a815da1e8b06c2dc92291f57fbd"
+    },
+    "hw/soc/out/external-review-20260919/native-boot-downloaded-model-control/result.json": {
+      "bytes": 1279,
+      "sha256": "f6172d174d9217d8664a2daaf0f9457838d2e6d06f04666c8729b480e2cc23e5"
+    },
+    "hw/soc/out/external-review-20260919/native-boot-downloaded-model-control/run-0.log": {
+      "bytes": 192,
+      "sha256": "ca9bb712b917be6114dd18b976161dcd83b061241003388983e1ac8574da1048"
+    }
+  }
+}

@@ -187,3 +187,31 @@ boot and [both geometry fallback replays](evidence/logicrom-startup-clear-fallba
 immutable image manifest. The fallback runs reject primary-image geometry with
 cause 4 and boot image 1. These supersede the pending RTL statements above;
 full native mapped boot and new-image physical implementation remain pending.
+
+### Replaying native boot from a clean checkout
+
+After `make soc-prepare`, run:
+
+```bash
+bash scripts/check_soc_native_boot.sh hw/soc/out/native-boot
+```
+
+This downloads eight locked, untouched upstream files: the PDK licence, the
+typical standard-cell Liberty and the six native cell/SRAM model files used by
+the bench. `hw/soc/pnr/ihp-native-boot.lock.json` pins IHP commit `c4b8b4e` and
+every byte count/SHA256; the files match the installed models used in the local
+measurements. The shared downloader rejects a modified cache. It does not install
+a complete PDK or provide physical verification inputs.
+
+The wrapper refuses to replace prior evidence. It checks Icarus version and
+native reset/data behavior, builds normal RTL firmware, maps the same fixed
+loader, then runs the four-state whole-SoC test. It sets the profile explicitly
+and removes inherited firmware corruption/fault-injection overrides. Tools resolve
+through `tools.soc.mk`, and their actual versions accompany the output. Rebuilding
+with a different Yosys version is a new measurement, not a reproduction of an old
+cell count. Stage timeouts fail the run; they never become passes.
+
+The `checks` workflow has an opt-in `native_boot` dispatch input for this long
+test and retains both successful and failed logs, loader/netlist identities and
+firmware. The ordinary push/PR RTL jobs remain separate. Adding this job is not
+evidence that its hosted execution has passed; follow its actual result.

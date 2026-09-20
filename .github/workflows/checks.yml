@@ -53,11 +53,51 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      native_boot:
+        description: Run the long four-state whole-netlist boot with native IHP cells
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
+  native-boot:
+    if: github.event_name == 'workflow_dispatch' && inputs.native_boot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare pinned processor, interfaces and firmware tools
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -r sw/requirements.txt
+          make soc-prepare
+      - name: Build and boot the same immutable image in RTL and native gates
+        run: bash scripts/check_soc_native_boot.sh
+      - name: Retain successful or failed native boot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-boot-results
+          path: |
+            hw/soc/out/native-boot/**/*.log
+            hw/soc/out/native-boot/**/*.json
+            hw/soc/out/native-boot/synthesis/soc_top.netlist.v
+            hw/soc/out/native-boot/synthesis/area.rpt
+            hw/soc/out/native-boot/rtl/test_soc.bin
+            hw/soc/out/native-boot/rtl/app.elf
+            hw/soc/out/native-boot/rtl/flash0.hex
+          retention-days: 30
+
   checks:
     runs-on: ubuntu-24.04
     steps:

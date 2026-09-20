@@ -5,6 +5,36 @@
 Kullanıcı çalışmaya devam edilmesini ve incelemedeki her maddenin kapanmasını
 istedi. Alttaki eski durdurma kaydı tarihseldir; yeni bir durdurma isteği yok.
 
+## 20 Eylül 14:00 TRT — native boot CI ve yeni fiziksel koşu
+
+Bootfix push **860fce3** TAMAM. PRgövdesi actualoldGLFAIL/newfixpending olarak
+güncellendi. Freshremote860fce3: **849PASS/26SKIP**,16/0/7; gerçekledgerrow ve
+`fresh-clone-860fce3-20260920.json` eklendi (henüzsonraki commitdeğil).
+YeniGL26557 eski100kfailurepoint geçti: CPUknown, RAMSEC/DED0, flash6frames;
+~180k'da kopyalamayı sürdürüyor. Tam28checks henüzbekleniyor.
+Yeniimage **nativePNR7253** `logicrom-startup-clear-grt-20260920` başladı:
+`run_startup_clear_physical.py`, sourcehashpins,6hbound/diskfloor768MiB,
+3000MiBpreflight, yeni69441cellnetlist; seedaynıtagJSON. HedefPostGRT.
+Magic32138 ~3haktif, sonuçyok. Kaynakbench/netlist/ROM'da değişiklik yapma.
+
+Yeni kalıcı `prepare_ihp_native_boot.py`, `ihp-native-boot.lock.json` ve
+`scripts/check_soc_native_boot.sh`:8upstreamdosya SHAchecked/installedileaynı,
+normalRTL+synthesis+Icarusnativeboot. 32testsPASS; indirilenuntouchedmodel
+Icarus13positivePASS; yerelIcarus12 wrappernegative RTLöncesireddedildi.
+checks.yml **workflow_dispatch native_boot=true** checkboxeklendi; henüzpush
+vehostedrunyok. Commit/pushsonrası `gh workflow run checks.yml --ref
+codex/complete-open-work -f native_boot=true` ile gerçekhostedjobu başlat.
+SonucuhenüzPASSdeğil. docs95scopeanlatır; native-boot-preparationkanıtıeklendi.
+
+Diskiçin ek reversiblearchive: intermediate-estimate-geometry-0..2 (ECO24–27,
+oldlogicROMECO1–7) ve native-intermediate-geometry-0..6 (3eskinativePNR'nin
+31öncesi uniquelink ODB/DEFdosyaları) SHAverifiedarşivlendi. Netlist/report,
+finalrouted/signoffgeometry,ECO8, aktifMagic/newGLgirdilerikaldı. Restorepaths
+`intermediate-geometry-archive-20260920.json` ve
+`native-intermediate-archive-20260920.json` kanıtlarındadır. Eski dosyagerekirse
+archive'denrestoreet. Tümönceki "native unchanged"scope'larıtarihselbeyandır;
+artıkbu3koşununyönlendirmeöncesiaraODB/DEF'leri compressedarşivdedir.
+
 ## 20 Eylül 13:51 TRT — fallback tamam
 
 Yeni entry0/length0 RTL89062/19904 ikisi de TAMAM/PASS: 28 kontrol, cause4,
