@@ -562,3 +562,15 @@ cone clears an unknown count to zero under the same boundary stimulus for
 which the original 71-cell cone fails. The short old-SoC observation also
 shows DED still unknown after the loader's clear. Both are appended to the
 same correction record; complete boot reruns are still independent gates.
+
+The subsequent complete working-tree Python regression passes **1,260 tests,
+one explicit skip, zero failures** in 619.74 seconds. Its XML/log identities
+and skip reason are appended to the SCRUBCTL record. It includes the new
+native-runner guards and thesis packaging tests, but is not a completed
+whole-SoC native run or an independent clean-clone result.
+
+That single skip is subsequently exercised: the ignored TinyTapeout helper
+checkout is restored cleanly at its required `01d5d2814fa9dd61e9d211e0b235a4a592a9316a`
+revision, and all **19 submission controls pass with zero skips**. No frozen
+submission source changes. The original full-suite result remains 1,260 pass /
+one skip; this is a separately recorded follow-up, not a second full rerun.

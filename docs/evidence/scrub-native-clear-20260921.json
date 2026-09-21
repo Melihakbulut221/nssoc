@@ -284,5 +284,32 @@
         "bytes": 12565
       }
     }
+  },
+  "full_working_tree_python": {
+    "passed": 1260,
+    "skipped": [
+      {
+        "test": "sw.tests.test_tt_submission.test_the_vendored_tooling_is_the_commit_the_documents_name",
+        "reason": "tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+      }
+    ],
+    "failed": 0,
+    "elapsed_s": 619.74,
+    "scope": "Working-tree regression including corrected counter, new native runner guards and thesis distribution tests. Evidence annotations changed during execution and have separate publication checks; not an independent clean-clone or hosted-native result.",
+    "logs": {
+      "hw/soc/out/external-review-20260919/scrub-mask-full-pytest.xml": "e040cba38d12961efcdd4d2792eda4b2509b3f213d9548c51b8dcbf93e8d1c6e",
+      "hw/soc/out/external-review-20260919/scrub-mask-full-pytest.log": "b37e1af3f81f3606f7d2b116c97c20dd5ee0566a71d3bbe725870731b9db8323"
+    },
+    "restored_skipped_dependency": {
+      "path": "tt/tt (ignored local tool checkout)",
+      "head": "01d5d2814fa9dd61e9d211e0b235a4a592a9316a",
+      "checkout_clean": true,
+      "targeted_suite": "sw/tests/test_tt_submission.py",
+      "passed": 19,
+      "skipped": 0,
+      "scope": "Follow-up after the full suite; does not rewrite its original one-skip result or claim a second complete suite. No frozen submission source changed.",
+      "log": "hw/soc/out/external-review-20260919/tt-restored-controls.log",
+      "log_sha256": "aefec41ff0671ec93dd0bddac11947a25858df8b32aa2336eb3cde41393dc583"
+    }
   }
 }
