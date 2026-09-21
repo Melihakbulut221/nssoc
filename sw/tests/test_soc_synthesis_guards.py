@@ -237,6 +237,9 @@ PINNED_YOSYS = "Yosys 0.33"
 # changed. The tests still RUN on any version -- pinning them to one
 # would turn a real regression into a skip for everyone else -- but a
 # count that disagrees now says which mapper produced it first.
+# 2026-09-21: the two known tool-dependent checks now use actual codec
+# connectivity and a paired, same-mapper pre-timeout RTL baseline. The
+# historical literal 93 remains checked on 0.33; it is not rewritten as 94.
 if YOSYS_VERSION and not YOSYS_VERSION.startswith(PINNED_YOSYS):
     MAPPER_NOTE = (
         "\n\nBEFORE READING THIS AS A DESIGN CHANGE: this yosys is %s and "
@@ -2625,37 +2628,60 @@ def test_harden_zero_removes_the_check_bits_and_nothing_else(workdir):
             CLINT_BASE_FF, census.total))
 
 
+def _assert_clint_codec_connectivity(path):
+    """Check stored codeword, encoded D inputs and decoder feedback cones.
+
+    Yosys 0.67 purges the encoder instance-name aliases that 0.33 retained.
+    A missing name is not missing logic. These endpoints survive both flows;
+    widths, distinct storage and actual connectivity are all required.
+    This is structural coverage, not a proof of the XOR truth tables.
+    """
+    gl = _gl()
+    netlist = gl.JsonNetlist(str(path))
+    stored = netlist.net('g_mtime_secded.u_mtime_dec.code_in')
+    aliases = [netlist.net(name) for name in ('g_mtime_secded.code_unused',
+                                                'g_mtime_secded.u_mtime_enc.code_out')]
+    aliases = [bits for bits in aliases if bits]
+    assert aliases and all(bits == aliases[0] for bits in aliases), 'Encoder aliases disagree or are absent'
+    encoded = aliases[0]
+    report = netlist.net('mt_ecc_o')
+    assert len(stored) == len(encoded) == 72 and len(report) == 1, 'Missing codec endpoints'
+    assert len(set(stored)) == 72, 'Codeword storage aliases or constants'
+    state = set()
+    for bit in stored:
+        frontier = gl.cone_flops(netlist.driver, netlist.cells, bit)
+        assert len(frontier) == 1, 'Codeword bit has no unique storage flop'
+        state |= frontier
+    assert len(state) == 72, 'Codeword storage collapsed'
+    # Each encoded check output must reach its own stored check-bit D pin.
+    # Combinational feedback must include all 64 data and eight check flops:
+    # removing the correction feedback keeps the census but fails this cone.
+    for index in range(64, 72):
+        driver = netlist.driver[stored[index]]
+        assert netlist.cells[driver][1]['D'] == [encoded[index]], 'Check-bit D disconnected from encoder'
+        assert gl.cone_flops(netlist.driver, netlist.cells, encoded[index]) == state, 'Codec feedback missing'
+    assert gl.cone_flops(netlist.driver, netlist.cells, report[0]) == state, 'Decoder report disconnected'
+
+
 @needs_yosys
 def test_the_codec_is_in_the_mapped_netlist_and_not_only_in_the_rtl(workdir):
-    """Both cones, by instance path, after the post-mapping flatten.
-
-    Reported and not merely counted, because the ENCODER is the half a
-    reader would expect to disappear: its output goes to eight
-    flip-flops whose only consumer is the decoder, and a pass that could
-    prove the inductive invariant `chk == encode(mtime)` would be
-    entitled to delete the pair. Nothing in this flow can prove a
-    sequential invariant, so nothing does -- but that is a property of
-    the tool and this is the measurement that says it held."""
     census = _census(_clint_script(CLINT_SOURCES), workdir)
-    enc = census.in_instance("u_mtime_enc")
-    dec = census.in_instance("u_mtime_dec")
-    # Neither codec has any state of its own -- both modules are purely
-    # combinational -- so the FLIP-FLOP count under them is zero by
-    # construction and counting it would prove nothing.
-    assert enc == 0 and dec == 0, (
-        "secded_enc and secded_dec are combinational; a flip-flop under "
-        "one of them means the module changed: enc={} dec={}".format(
-            enc, dec))
-    # What is asserted is that the cones are there at all.
-    assert census.from_file("secded_enc.v") == 0
-    assert census.cells > 0
-    text = (Path(workdir) / "census.json").read_text()
-    assert "u_mtime_enc" in text, (
-        "no cell in the mapped netlist lies under u_mtime_enc: the "
-        "encoder was optimised away" + MAPPER_NOTE)
-    assert "u_mtime_dec" in text, (
-        "no cell in the mapped netlist lies under u_mtime_dec: the "
-        "decoder was optimised away" + MAPPER_NOTE)
+    assert census.total == CLINT_BASE_FF + CLINT_CHK_FF
+    _assert_clint_codec_connectivity(Path(workdir) / 'census.json')
+
+
+@needs_yosys
+@pytest.mark.parametrize('mutation', ['bypass-correction', 'drop-error-report'])
+def test_codec_connectivity_rejects_mapped_rtl_mutations(workdir, mutation):
+    changes = {
+        'bypass-correction': [('.data_out (mtime)', '.data_out ()'),
+                              ('wire       sec, ded;', 'wire       sec, ded; assign mtime = mtime_q;')],
+        'drop-error-report': [('assign mt_ecc_o = sec | ded;', "assign mt_ecc_o = 1'b0;")],
+    }
+    sources = _clint_mutant(workdir, 'codec-' + mutation, changes[mutation])
+    _census(_clint_script(sources), workdir)
+    with pytest.raises(AssertionError):
+        _assert_clint_codec_connectivity(Path(workdir) / 'census.json')
 
 
 @needs_yosys
@@ -3487,10 +3513,10 @@ def _tracked_pnr_configs():
 # it, and until this test there was none.
 
 
-def _apb_script(chparam=""):
+def _apb_script(chparam="", source=None):
     lib = _sg13g2_liberty()
     script = "read_verilog -I {} {};".format(
-        SOC_RTL, SOC_RTL / "soc_apb_bridge.v")
+        SOC_RTL, source or SOC_RTL / "soc_apb_bridge.v")
     script += " hierarchy -top soc_apb_bridge;"
     if chparam:
         script += " " + chparam
@@ -3503,25 +3529,32 @@ def _apb_script(chparam=""):
 
 # Measured 2026-09-18 at yosys 0.33 with sg13g2_stdcell_typ_1p20V_25C,
 # on the module BEFORE APB_TIMEOUT existed and on the module after, and
-# the two agree. A literal is right here and not in README's pytest
-# paragraph, because this number is a property of the source and does
-# not move with build output.
+# the two agree. Keep that dated 0.33 measurement; other mapper versions
+# compare the same two pinned RTL sources instead of imposing this count
+# on a different tool. The fixture carries its original licence and hash.
 APB_BRIDGE_FF_AT_DEFAULT = 93
+
+
+def _legacy_apb_source():
+    # Exact published, pre-timeout implementation. A fixture is needed because
+    # source archives and the public mirror need not contain Git history.
+    import hashlib
+    path = ROOT / 'hw/soc/tb/fixtures/apb_timeout_disabled_293d9a5.v'
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == '6b9b092d3e82bf5df4fff9b1a5389403ac99f0a86538087a1575ba06efc22d85'
+    return path
 
 
 @needs_yosys
 def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
-    """APB_TIMEOUT = 0 reproduces the historical disabled block census."""
+    """Default and pre-timeout RTL must cost the same on the SAME mapper."""
+    baseline = _census(_apb_script(source=_legacy_apb_source()), workdir)
     census = _census(_apb_script(), workdir)
-    assert census.total == APB_BRIDGE_FF_AT_DEFAULT, (
-        "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 0 and the "
-        "measurement taken when the parameter was added is {}. Either the "
-        "timeout arm is no longer fully optimised away at the default -- "
-        "in which case every netlist and measurement this repository "
-        "quotes has moved and the merge argument for the parameter is "
-        "gone -- or something else changed the bridge and this number "
-        "needs re-taking with a date."
-        .format(census.total, APB_BRIDGE_FF_AT_DEFAULT) + MAPPER_NOTE)
+    assert (census.total, census.cells) == (baseline.total, baseline.cells), (
+        'Disabled timeout changes mapped state/logic versus the pinned legacy source'
+        + MAPPER_NOTE)
+    if YOSYS_VERSION and YOSYS_VERSION.startswith(PINNED_YOSYS):
+        # Preserve the original measurement, rather than rewriting 93 as 94.
+        assert baseline.total == APB_BRIDGE_FF_AT_DEFAULT
 
 
 @needs_yosys
@@ -3533,11 +3566,12 @@ def test_the_apb_timeout_does_cost_something_when_it_is_on(workdir):
     `docs/09` warns about, and the reason this repository writes
     negative controls beside its guards.
     """
+    off = _census(_apb_script(source=_legacy_apb_source()), workdir)
     on = _census(_apb_script("chparam -set APB_TIMEOUT 8 soc_apb_bridge;"),
                  workdir)
-    assert on.total > APB_BRIDGE_FF_AT_DEFAULT, (
+    assert on.total > off.total, (
         "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 8, which is "
         "not more than the {} it maps to at 0. The counter and its sticky "
         "flag are not being built, so the parameter is inert and the "
         "timeout it is supposed to arm does not exist."
-        .format(on.total, APB_BRIDGE_FF_AT_DEFAULT))
+        .format(on.total, off.total))

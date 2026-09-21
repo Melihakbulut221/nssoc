@@ -1,0 +1,121 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "parent_commit": "e454bd53bcb22db43f389c97b8ce5ba6a7580a7f",
+  "scope": "Mapped structural guards on historical and pinned digital mappers. No RTL change, new functional proof, physical timing or signoff claim.",
+  "source_sha256": {
+    "sw/tests/test_soc_synthesis_guards.py": "414a622c6a98be07322c47364694a4f5f1cbd5c2365ed2239f58c78a0af4dca9",
+    "hw/soc/tb/fixtures/apb_timeout_disabled_293d9a5.v": "6b9b092d3e82bf5df4fff9b1a5389403ac99f0a86538087a1575ba06efc22d85",
+    "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+    "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+    "hw/soc/fi/gl_netlist.py": "c5be7678e0e5e1dc8df037db0febaa3041e019413f0034de35631820822500b9"
+  },
+  "baseline_commit": "293d9a5e7da6bbaa2e1d671001a0aad7f8f557fb",
+  "measurements": {
+    "Yosys 0.67+146 (468ba27d9-dirty)": {
+      "legacy-apb": {
+        "flops": 94,
+        "cells": 191,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/legacy-apb/census.json",
+          "sha256": "169d48a623659a1100bce934496902d6e80f9c573876131fa47b0258b1365b37",
+          "bytes": 104387
+        }
+      },
+      "current-apb": {
+        "flops": 94,
+        "cells": 191,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/current-apb/census.json",
+          "sha256": "960f0d59861323da822df39446397e9febfba35b84611428a9f1470c8b20895c",
+          "bytes": 98989
+        }
+      },
+      "clint": {
+        "flops": 171,
+        "cells": 1537,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/clint/census.json",
+          "sha256": "51a85163130714bf5f9aa23957ee92a8aef52fbd05d180bbafde678c0993c462",
+          "bytes": 724302
+        }
+      }
+    },
+    "Yosys 0.33 (2584903a060)": {
+      "legacy-apb": {
+        "flops": 93,
+        "cells": 193,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/legacy-apb-033/census.json",
+          "sha256": "f9233b6a84216452e3c60bcd903ec34b6de7860e38e740cab0949d163ffaab6c",
+          "bytes": 101645
+        }
+      },
+      "current-apb": {
+        "flops": 93,
+        "cells": 193,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/current-apb-033/census.json",
+          "sha256": "de7aaca20e47c671bc9796b33a68a87688093a78ef75646d42a6ed796a48eae0",
+          "bytes": 99914
+        }
+      },
+      "clint": {
+        "flops": 171,
+        "cells": 1537,
+        "netlist": {
+          "path": "hw/soc/out/external-review-20260919/mapper-census-20260921/clint-033/census.json",
+          "sha256": "0464e70c749f6a4845c085210e4f46e94c8077bb99667da54e041573156c52be",
+          "bytes": 725025
+        }
+      }
+    }
+  },
+  "controls": {
+    "pinned": {
+      "passed": 5,
+      "failed": 0,
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/mapper-census-pinned-controls-final.log",
+        "sha256": "b219bd371a8abef4bcc4e550938008d89a3b65e46177ef97e8ae85c3a3c7423e",
+        "bytes": 113
+      }
+    },
+    "historical": {
+      "passed": 5,
+      "failed": 0,
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/mapper-census-historical-controls-final.log",
+        "sha256": "ba3e58f7ed626839cb01e2622e628d1d349f70c3458042eba96b8dcc7ebcaa32",
+        "bytes": 113
+      }
+    }
+  },
+  "initial_failures": {
+    "broad_run": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-full-python.log",
+      "sha256": "b0c7bf3fde6d1dbec2f880d94b24ebd231cf506db96f65cc9bc4d9166f295e7f",
+      "bytes": 7454
+    },
+    "first_historical_alias_attempt": {
+      "path": "hw/soc/out/external-review-20260919/mapper-census-historical-controls.log",
+      "sha256": "fdc797c9ee03b4ae9b128f1d43dba4d2608abd38da31a486e79fe4e5e0bf4f44",
+      "bytes": 1989
+    },
+    "disposition": "Original broad run fails three checks. Digest fixed separately. The old instance-name and literal-count checks are replaced by connectivity and same-tool reference comparison. First helper used only the new alias; corrected to accept both exact wire aliases, require equality if both exist, and reject missing endpoints."
+  },
+  "guard_contract": {
+    "apb": "Pinned byte-identical pre-timeout reference and current disabled-timeout implementation must have identical state and total cell counts on the same mapper/Liberty. Enabled timeout must add state. Original 93-flop measurement remains mandatory on Yosys 0.33. Counts are not functional equivalence.",
+    "clint": "72 distinct stored codeword flops; all eight encoder check outputs directly drive their respective check D pins; each check feedback cone and the decoder error report depend on the same 72 stored bits. Width/missing/alias checks fail closed. Structural connectivity does not prove XOR truth tables.",
+    "negative_controls": [
+      "Mapped RTL decoder-correction bypass rejected after successful elaboration",
+      "Mapped RTL error-report tie-off rejected after successful elaboration"
+    ]
+  },
+  "liberty": {
+    "name": "sg13g2_stdcell_typ_1p20V_25C.lib",
+    "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+  }
+}

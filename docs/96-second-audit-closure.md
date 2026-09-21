@@ -651,3 +651,22 @@ identity claim. This completes the requested offset-generator/shared-library
 work in 3.8. Bit-field generation was not part of that audit acceptance;
 firmware security, hardware throughput, upset campaigns and final physical
 acceptance retain their separate product gates. No production RTL changed.
+
+**Synthesis-guard portability, 21 September 2026:**
+[Paired measurements](evidence/mapper-independent-census-20260921.json) close
+the two documented Yosys 0.33 versus 0.67+146 guard failures without changing
+production RTL. The byte-pinned APB implementation from before timeout support
+and today's timeout-disabled block both map to 93 flops / 193 cells on 0.33,
+and 94 / 191 on 0.67+146. The guard now compares the two sources with the same
+tool, library and recipe; the original 93-flop historical assertion remains
+on its original tool. Enabling timeout must still add state. This is a cost
+comparison, not a new sequential-equivalence proof.
+
+CLINT checking now follows actual stored-codeword and feedback connections:
+72 distinct flops, all eight encoder outputs connected to the proper D pins,
+and feedback/error cones reaching all 72 stored bits. It no longer infers
+missing logic from a purged instance-name alias. Real RTL mutations bypassing
+correction or dropping the error report elaborate successfully and are rejected
+by the guard. All five relevant tests pass on each mapper. The initial broad
+regression and first historical-alias attempt remain recorded failures; broader
+current-source regression and final physical gates are separate results.
