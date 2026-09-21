@@ -1,5 +1,7 @@
 # Neuromorphic Fault Tolerant SoC
 
+[![checks](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml/badge.svg?branch=codex%2Fcomplete-open-work)](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml)
+
 An experimental RISC-V and spiking-neural-network SoC for IHP SG13G2.
 The design combines an Ibex management core, ECC-protected storage, scrub,
 TMR control and spacecraft interfaces. Product acceptance remains open.
@@ -117,7 +119,7 @@ Fetched IP retains its own licence, including LGPL/MIT/Apache components;
 this table does not relicense it. SPDX and REUSE checks cover the distribution.
 
 Use [CITATION.cff](CITATION.cff) and the exact commit for attribution. There is
-no release DOI or qualified silicon release. Report reproducible defects in
-[GitHub Issues](https://github.com/Melihakbulut221/nssoc/issues), including the
-commit, command and failing log. Third-party source contributions remain subject
-to the [licensing and contribution boundary](docs/14-licensing-decision.md).
+no release DOI or qualified silicon release. [CONTRIBUTING.md](CONTRIBUTING.md)
+explains defect reporting, the mirror/contribution boundary and development
+checks. Use [SECURITY.md](SECURITY.md) for private vulnerability reporting.
+The [changelog](CHANGELOG.md) indexes unreleased changes.

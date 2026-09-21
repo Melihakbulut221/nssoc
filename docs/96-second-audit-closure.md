@@ -42,7 +42,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
 | 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
-| 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. CITATION.cff identifies the source repository and author without inventing a release or DOI. Other deliverables remain open; no release is published while product gates fail. The existing mirror contract still governs publication. |
+| 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope; a dedicated CI job is configured. Other-paper/thesis claims/build/freshness, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
 The audit's section 5 is an ordering of these same requirements, not another
@@ -485,3 +485,29 @@ front-door passes/two skips and 1,125 Python passes/113 environment skips.
 Those hosted skips remain explicit; the separate hardware/native/formal jobs
 are not inferred complete. This closes the documentation CI integration failure
 recorded above, while retaining the failed `4302d46` result.
+
+The [developer workflow record](evidence/developer-workflow-20260921.json)
+adds the contribution boundary, private security-report route, conduct guidance,
+issue/PR templates, CODEOWNERS and an unreleased changelog. Private reporting
+was enabled and checked through the repository API; no test report was sent.
+The policy preserves the signed inbound-licensing and mirror decisions.
+
+Pinned Ruff checks fatal errors across `sw/`; mypy checks twelve model/driver
+files and requires annotations on the handwritten golden-model functions.
+Three model ASTs are identical after removing annotations and annotation-only
+imports. Incorrect typed calls and undefined names are rejected. The first
+Ruff run found three references to undefined `REGENERATE` in netlist diagnostics;
+these now preserve the intended skip/assertion/report, with three exercised
+failure-path controls. Four automatic pre-commit hooks and both base/full
+manual Verilator hooks pass. The latter retain the existing 987/1015 warnings;
+they do not declare warning-free RTL. The initial manual hook attempt was
+invalidated by concurrent staging and is retained as a failed attempt.
+The final targeted model, network, transport and netlist regression passes
+**127 tests, zero failures and zero skips**.
+
+The earlier full-profile hosted run at `9ffe83b` has also finished. Its
+[formal inventory record](evidence/hosted-formal-inventory-20260921.json)
+retains **155 PASS, two MISSING**, despite zero returns from both Makefile
+stages. The later required-task correction and local depth-40 result do not
+retroactively turn this older run into a pass. Newer hosted native/formal
+results remain separate until complete.

@@ -150,7 +150,7 @@ class PilotLink:
                               (int(bool(scrub)) << FIELDS['CTRL']['SCRUB_EN']))
 
     async def _drain(self):
-        events = []
+        events: list[int] = []
         for _ in range(self.poll_limit):
             status = await self._frame(False, ADDR['STATUS'])
             if not status & (1 << FIELDS['STATUS']['BUSY']) and status & (1 << FIELDS['STATUS']['EVQ_OUT_EMPTY']):

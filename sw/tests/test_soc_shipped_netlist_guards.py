@@ -71,6 +71,10 @@ from evidence import recorded_netlist
 
 ROOT = Path(__file__).resolve().parents[2]
 GL_NETLIST = ROOT / "hw" / "soc" / "fi" / "gl_netlist.py"
+REGENERATE = (
+    "make soc-interfaces-layout RUN_TAG=<fresh-tag>; prepare the pinned tools "
+    "and select the matching interface/memory profile first (docs/98 and docs/88)"
+)
 
 # The widths are DERIVED from the RTL, by the same functions the
 # block-level guards derive them with, so that widening a protected word
@@ -446,3 +450,37 @@ def test_the_cone_walker_stops_at_every_flip_flop(netlists):
                 assert GL.is_flop(known[inst])
         return
     pytest.skip("no retained netlist contains the watchdog")
+
+
+def test_stale_netlist_reports_skip_instead_of_name_error(tmp_path):
+    import os
+    path = tmp_path / "old.v"
+    path.write_text("// diagnostic-only fixture\n")
+    os.utime(path, (1, 1))
+    with pytest.raises(pytest.skip.Exception, match="Regenerate with"):
+        test_every_asynchronous_reset_is_driven_by_a_flip_flop_that_dominates_it([path])
+
+
+def test_missing_reset_register_keeps_the_hardware_failure(monkeypatch, tmp_path):
+    import os
+    path = tmp_path / "broken.v"
+    path.write_text("// reset-cone diagnostic fixture\n")
+    cutoff = (ROOT / "hw/soc/rtl/soc_wdog.v").stat().st_mtime
+    os.utime(path, (cutoff + 1, cutoff + 1))
+    monkeypatch.setattr(GL, "reset_cones", lambda _: [
+        {"sources": {"u_prot_a.bit0", "u_prot_b.bit0", "u_prot_c.bit0"}}])
+    with pytest.raises(AssertionError, match="in_reset_q is NOT among them"):
+        test_every_asynchronous_reset_is_driven_by_a_flip_flop_that_dominates_it([path])
+
+
+def test_retired_width_diagnostic_does_not_crash(monkeypatch, capsys, tmp_path):
+    # Isolate the old-width diagnostic; the actual cone checker has its own
+    # shipped-netlist and merged-replica controls above.
+    namespace = globals()
+    monkeypatch.setitem(namespace, "_census", lambda *_: [{"width": 1}])
+    monkeypatch.setitem(namespace, "_check", lambda *_: 1)
+    monkeypatch.setitem(STRUCTURES, "diagnostic", ("old word", 2, "docs/74"))
+    monkeypatch.setitem(RETIRED_WIDTHS, "diagnostic", {1: "historical fixture"})
+    test_every_replica_in_every_retained_netlist_is_a_disjoint_cone(
+        [tmp_path / "old.v"], "diagnostic")
+    assert "Regenerate with: " + REGENERATE in capsys.readouterr().out

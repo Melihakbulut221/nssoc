@@ -14,7 +14,10 @@ class RP2040SPI:
         if serial_hz <= 0 or system_hz <= 0 or 4 * serial_hz > system_hz:
             raise ValueError('SER_SCK must not exceed clk/4')
         if sleep_us is None:
-            from time import sleep_us
+            # This import runs only on MicroPython; CPython host tests inject
+            # the clock. Keep the same failure on an unsupported host.
+            from time import sleep_us as micropython_sleep_us  # type: ignore[attr-defined]
+            sleep_us = micropython_sleep_us
         self.spi, self.cs, self.sleep_us = spi, cs, sleep_us
         self.gap_us = max(1, (1000000 + serial_hz - 1) // serial_hz)
         self.cs(1)

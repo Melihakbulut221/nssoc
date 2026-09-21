@@ -71,6 +71,8 @@ and detects any 2-bit error, but makes no claim about 3-bit errors beyond
 the miscorrection guard above.
 """
 
+from typing import Iterable, Optional
+
 DATA_BITS = 64
 CHECK_BITS = 8
 CODE_BITS = DATA_BITS + CHECK_BITS  # 72-bit physical word (spec section 5)
@@ -105,14 +107,14 @@ ROW_MASKS = tuple(
 )
 
 
-def _check_int(name, value):
+def _check_int(name: str, value: object) -> int:
     """Reject anything that is not a plain int (floats, bools, numpy)."""
     if type(value) is not int:
         raise TypeError(f"{name} must be a plain int, got {type(value).__name__}")
     return value
 
 
-def _check_range(name, value, bits):
+def _check_range(name: str, value: int, bits: int) -> int:
     _check_int(name, value)
     if not 0 <= value < (1 << bits):
         raise ValueError(f"{name} = {value} outside [0, 2**{bits})")
@@ -176,20 +178,21 @@ class DecodeResult:
 
     __slots__ = ("data", "sec", "ded", "syndrome", "err_index")
 
-    def __init__(self, data, sec, ded, syndrome_value, err_index):
+    def __init__(self, data: int, sec: int, ded: int, syndrome_value: int,
+                 err_index: Optional[int]) -> None:
         self.data = data
         self.sec = sec
         self.ded = ded
         self.syndrome = syndrome_value
         self.err_index = err_index
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, DecodeResult):
             return NotImplemented
         return (self.data, self.sec, self.ded, self.syndrome, self.err_index) == (
             other.data, other.sec, other.ded, other.syndrome, other.err_index)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (f"DecodeResult(data=0x{self.data:016X}, sec={self.sec}, "
                 f"ded={self.ded}, syndrome=0x{self.syndrome:02X}, "
                 f"err_index={self.err_index})")
@@ -210,7 +213,7 @@ def decode(code: int) -> DecodeResult:
     return DecodeResult(data, 0, 1, s, None)
 
 
-def flip(code: int, positions) -> int:
+def flip(code: int, positions: Iterable[int]) -> int:
     """Inject bit flips into a 72-bit word (the ECC_INJ verification hook).
 
     positions is an iterable of codeword bit indices; repeated indices
@@ -289,7 +292,7 @@ class EccCounters:
     hw/tb/test_npu_regbank.py and in formal/npu_regbank.sby.
     """
 
-    def __init__(self, width: int = 32):
+    def __init__(self, width: int = 32) -> None:
         _check_int("width", width)
         if width < 1:
             raise ValueError("counter width must be >= 1")
@@ -297,14 +300,14 @@ class EccCounters:
         self.max_count = (1 << width) - 1
         self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         """rst_n: every modelled register back to its reset value."""
         self.cnt_sec = 0
         self.cnt_ded = 0
         self.fault_addr = 0
         self.ded_seen = 0
 
-    def fault_clr(self, mask: int = FAULT_CLR_ALL):
+    def fault_clr(self, mask: int = FAULT_CLR_ALL) -> None:
         """FAULT_CLR (0x88) write: clear the selected fault-block registers.
 
         DED_SEEN is deliberately untouched: it is STATUS bit 5 and is
@@ -318,7 +321,7 @@ class EccCounters:
         if mask & FAULT_CLR_FAULT_ADDR:
             self.fault_addr = 0
 
-    def status_clr(self, mask: int = STATUS_DED_SEEN):
+    def status_clr(self, mask: int = STATUS_DED_SEEN) -> None:
         """STATUS_CLR (0x14) write: clear the sticky STATUS bits selected.
 
         Only DED_SEEN (bit 5) belongs to this block; the other sticky bits
@@ -329,7 +332,7 @@ class EccCounters:
         if mask & STATUS_DED_SEEN:
             self.ded_seen = 0
 
-    def observe(self, result: DecodeResult, word_index: int = 0):
+    def observe(self, result: DecodeResult, word_index: int = 0) -> DecodeResult:
         """Account one decode. word_index is the weight SRAM word index."""
         _check_int("word_index", word_index)
         if word_index < 0:
