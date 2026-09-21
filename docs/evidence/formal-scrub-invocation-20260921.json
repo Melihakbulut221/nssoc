@@ -1,6 +1,6 @@
 {
   "date": "2026-09-21",
-  "status": "PARTIAL",
+  "status": "PASS_FOR_TWO_PREVIOUSLY_MISSING_LOCAL_TASKS",
   "scope": "Mandatory abstract-codec scrub task invocation; no whole-core or real-codec storage proof closure.",
   "source_sha256": {
     "hw/soc/formal/Makefile": "2ed55c8651db73626b0e3fb5e77c2f61e97d8bf3b62533771d4d53a6c86d216b",
@@ -25,7 +25,7 @@
     }
   },
   "bounded": {
-    "status": "NOT_COMPLETED_AT_PUBLICATION",
+    "status": "PASS",
     "mode": "bmc",
     "depth": 40,
     "engine": "abc bmc3 -c",
@@ -35,6 +35,19 @@
       "timeout_s": 900,
       "last_completed_frame": 23,
       "log_sha256": "84ea38577a94f58d136e2cceff081604d865cba48e1cea835588ea1a09e3e34c"
+    },
+    "earlier_publication_status": "NOT_COMPLETED_AT_PUBLICATION",
+    "source_state": "clean",
+    "elapsed_s": 5798,
+    "status_file": "PASS 0 5798",
+    "log_path": "hw/soc/out/external-review-20260919/regfile-abs-bmc-required/logfile.txt",
+    "log_sha256": "6c0def801e5c1d4850547f66fcf5c1371452f8b79e0e5958a308287af7ecfd73",
+    "config_sha256": "d0b2e81836a87cf9b5345bae0c22d115d3a6eeab26298cd58ddd3393f8ea26b7",
+    "copied_source_sha256": {
+      "src/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "src/ibex_regfile_secded_props.v": "3ed314baf29f300896f7e0da718f1b26401a1237a737144aeb74a75d54ba912a",
+      "src/regfile_scrub_props.v": "bcbc4282d994b9044252e421ff460d55385155303b716882cc4e435871c539b2",
+      "src/secded_identity.v": "f62ce21087df4a80fcac24a745b98bac3df04f8d7b0b54b863188ef8586c7e7e"
     }
   },
   "regression": {
@@ -42,5 +55,6 @@
     "log_sha256": "edea1fe2e925f38d64cba1ee0f8ba3f25b2723ff28e7e65063c9b7b3e2414e63"
   },
   "semantics": "Properties, assumptions, reset constraints and depth are unchanged. Engine selection changes; prove remains unbounded, BMC remains an independent required depth-40 task. Both tasks now run by default; a failure does not suppress later scrub tasks.",
-  "prior_failure": "docs/evidence/hosted-formal-inventory-20260921.json"
+  "prior_failure": "docs/evidence/hosted-formal-inventory-20260921.json",
+  "remaining": "Full clean 157-task aggregate and whole-core/real-codec obligations remain OPEN. The local two-task result does not replace independent hosted sweep acceptance."
 }

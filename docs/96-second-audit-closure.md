@@ -453,3 +453,12 @@ checks** pass. The real installer exits **2 before download** because available
 space is below its 1,465,162,272-byte requirement; it is not an installed or
 smoke-tested toolchain. Full-kit bootstrap and physical acceptance remain open.
 The operational contract is docs/98.
+
+The required 40-cycle abstract-codec register-file BMC subsequently completes
+**PASS in 5,798 seconds**, using the unchanged original properties, reset
+constraints and depth. Its copied sources and the earlier unbounded PDR
+proof both match the tracked inputs. The updated
+[two-task record](evidence/formal-scrub-invocation-20260921.json) preserves the
+900-second timeout and earlier incomplete publication status. Both previously
+missing tasks now have local PASS evidence. The clean 157-task aggregate, six
+historical non-closing obligations and whole-core/real-codec proofs remain open.
