@@ -1,8 +1,8 @@
 {
   "date": "2026-09-21",
   "parent_head": "a4cf067b3fe07e31aec2a0ade189c87dcbd3ceaf",
-  "status": "PARTIAL_BOOTSTRAP_CONTROLS_PASS_REAL_INSTALL_BLOCKED_BY_SPACE",
-  "scope": "Checksum-pinned devshell installer and project-local/explicit-environment physical tool selection. No AppImage execution, full PDK install or place-and-route acceptance is claimed.",
+  "status": "PASS_HOSTED_DEVSHELL_FULL_IHP_SPM_LOCAL_INSTALL_STILL_BLOCKED_BY_SPACE",
+  "scope": "Pinned x86-64 devshell downloaded and executed on a clean GitHub runner; full pinned IHP kit and upstream 420-cell SPM flow pass. This does not reproduce the SoC, RAM macro LVS, historical tools or another host architecture.",
   "source_sha256": {
     "scripts/bootstrap_flow.py": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2",
     "hw/soc/flow/physical_env.sh": "76e025414d355f1e9fcb7c886b09016717a3cb17f3b885f02b6be72fc5485e06",
@@ -83,5 +83,170 @@
     "controls_failed": 0,
     "xml_sha256": "287e08bc855493813e3e34223b415cd52949a9890812d387fcf1f1eea181699b",
     "scope": "Fresh full IHP kit and upstream SPM tool/PDK integration; not SoC signoff. Existing workstation disk refusal remains unchanged."
+  },
+  "initial_status": "PARTIAL_BOOTSTRAP_CONTROLS_PASS_REAL_INSTALL_BLOCKED_BY_SPACE",
+  "initial_scope": "Checksum-pinned devshell installer and project-local/explicit-environment physical tool selection. No AppImage execution, full PDK install or place-and-route acceptance is claimed.",
+  "hosted_spm": {
+    "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35552817322",
+    "tested_head": "6de81709fb29395549f2034219eadb48629ec8af",
+    "job_id": 106190607852,
+    "artifact_id": 10619720032,
+    "artifact_bytes": 1030569,
+    "raw_result": {
+      "path": "hw/soc/out/external-review-20260919/hosted-physical-bootstrap-6de8170/physical-bootstrap/result.json",
+      "sha256": "6b36da21d9fb80503df84c932de76b68e60c2764241b6905c49b729803cc0ff3"
+    },
+    "job_log_sha256": "3171549564bf720b82c5dc62cc26b77065021660328b194387761795f79bcad8",
+    "receipt": {
+      "status": "PASS",
+      "scope": "LibreLane devshell / full IHP PDK / upstream SPM example only",
+      "source_sha256": "6512144ace4f5791916273c126f857d3d73c9b46a19b00eeee5802577f97b5e5",
+      "commands": [
+        {
+          "command": [
+            "librelane",
+            "--version"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.8157720479999853,
+          "log_sha256": "0eaf500dff5de49997f4f0e0f49c015bd59b72d00ab4a48b6f7aff39ee2972be"
+        },
+        {
+          "command": [
+            "openroad",
+            "-version"
+          ],
+          "returncode": 0,
+          "elapsed_s": 1.0665672360000258,
+          "log_sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+        },
+        {
+          "command": [
+            "yosys",
+            "-V"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.11450792999994519,
+          "log_sha256": "76e506cbb7d03bec5a2d7083d6c4b1a6e99eae2efdbfc0b499710840c232c5dd"
+        },
+        {
+          "command": [
+            "ciel",
+            "enable",
+            "--pdk",
+            "ihp-sg13g2",
+            "--pdk-root",
+            "<repo>/hw/soc/tools/pdk-bootstrap",
+            "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c"
+          ],
+          "returncode": 0,
+          "elapsed_s": 8.534387702000004,
+          "log_sha256": "b838daab419456b2a2037288d34193e13848ca0912f74c4993e9fa5ee67eb2f7"
+        },
+        {
+          "command": [
+            "librelane",
+            "--pdk",
+            "ihp-sg13g2",
+            "--pdk-root",
+            "<repo>/hw/soc/tools/pdk-bootstrap",
+            "--run-tag",
+            "BOOTSTRAP",
+            "--run-example",
+            "spm"
+          ],
+          "returncode": 0,
+          "elapsed_s": 103.005018184,
+          "log_sha256": "fca4ff27bb732ddcad47eaeb0f7f70e9ac58b67bb9ec601af343b6f8d5e59f00"
+        }
+      ],
+      "librelane_version": "3.0.5",
+      "pdk_pin": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+      "pdk_hashes_sha256": "bf6b5088fb0fbd2874a6a52440331fbabc7455f6a2a227cb4da8999939d80153",
+      "tools": {
+        "librelane": {
+          "path": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/bin/librelane",
+          "sha256": "95cfb030f81200fb943e306213235193b731c89aa94378ddb45f8cba0340a2a8"
+        },
+        "ciel": {
+          "path": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/bin/ciel",
+          "sha256": "cc95bee252719cf6d166f79486d04fa3bb125b19f7a3fe609910852b19784f41"
+        },
+        "openroad": {
+          "path": "/nix/store/mdidx1z155x3fgnmslssk76wi9jmw45f-openroad-2026-02-17-python3-3.13.9-env/bin/openroad",
+          "sha256": "e41c3de2e496258357b41e9e9bdc8d9036cff6f53ffda2c2f61daef5bc827afc"
+        },
+        "yosys": {
+          "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys",
+          "sha256": "63b1229caf9f50360cf9c61d6b812a82b2d81155306e3d3c72fd89b675b732ba"
+        },
+        "magic": {
+          "path": "/nix/store/i68lxdmnc7422hvlabbmrhss4sqqkjzq-magic-vlsi-8.3.623/bin/magic",
+          "sha256": "9ffdc249b0464611c2ecdf58d5bd65ff21907f91281a6eb23a8f83cfb622f0a8"
+        },
+        "klayout": {
+          "path": "/nix/store/c8mymw0gckkiw7lqwnm2l6mqnd99xmzy-klayout-0.30.7/bin/klayout",
+          "sha256": "9871282c43f561b7e3094f15f71fbd825bb0bf4f376f4651999cad15e115d67a"
+        },
+        "netgen": {
+          "path": "/nix/store/kw3frc6fbv3zi2m9n0wv93y1nfiyjiy6-netgen-1.5.316/bin/netgen",
+          "sha256": "ee0e49db5f9c1804ae3404f37bef23bb0facb6f7aa99dc05e3c5780f8abe41cf"
+        }
+      },
+      "enabled_pdk": "<repo>/hw/soc/tools/pdk-bootstrap/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+      "views": {
+        "spm/runs/BOOTSTRAP/final/gds/spm.gds": {
+          "bytes": 690098,
+          "sha256": "1311170d72e605f540725aac2712e6b8082863d34188ebdbc6014d6fb08f1a8e"
+        },
+        "spm/runs/BOOTSTRAP/final/klayout_gds/spm.klayout.gds": {
+          "bytes": 409604,
+          "sha256": "18d13162c79dcd6daf9bc1aef387c4946408d67285bebb0621cf050f649288ef"
+        },
+        "spm/runs/BOOTSTRAP/final/mag_gds/spm.magic.gds": {
+          "bytes": 690098,
+          "sha256": "1311170d72e605f540725aac2712e6b8082863d34188ebdbc6014d6fb08f1a8e"
+        },
+        "spm/runs/BOOTSTRAP/final/def/spm.def": {
+          "bytes": 364518,
+          "sha256": "420c440159969c16b2ab816b73bafe4e0cda8aaaf4dc22749c9a0e52a29e6148"
+        },
+        "spm/runs/BOOTSTRAP/final/nl/spm.nl.v": {
+          "bytes": 52238,
+          "sha256": "2e2187da1861de63ebf72a5c61da272ea1e6028eb15057335fd71c6f1778793b"
+        },
+        "spm/runs/BOOTSTRAP/final/pnl/spm.pnl.v": {
+          "bytes": 74876,
+          "sha256": "630ef2ba81c079044270272dc64250b5c41ebafae9993600276c185700d2a18e"
+        }
+      }
+    },
+    "metrics": {
+      "design__instance__count__stdcell": 420,
+      "route__drc_errors": 0,
+      "design__xor_difference__count": 0,
+      "magic__drc_error__count": 0,
+      "klayout__drc_error__count": 0,
+      "design__lvs_error__count": 0,
+      "timing__setup__ws": 5.897000832334225,
+      "timing__hold__ws": 0.33975240249493766
+    },
+    "metrics_sha256": "65998ddd9462020748330d8cb5cafe2592e9fc61f8de583973754f21572ff16a",
+    "versions": {
+      "openroad": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+      "yosys": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)"
+    },
+    "warnings": [
+      "Detailed router does not support some LEF58_ENCLOSURE rules without CUTCLASS",
+      "Wire-length threshold was not configured; that checker skipped",
+      "VSRC_LOC_FILES absent; IR-drop result is not top-level supply qualification",
+      "Example-only IO spacing adjustment"
+    ],
+    "limits": [
+      "420 standard cells; no SoC or SRAM macro interior acceptance",
+      "Package tool versions differ from the historical custom toolchain",
+      "Local installation still blocked by disk capacity; AArch64 unexecuted",
+      "SoC derated timing, DRC/LVS, pads and qualification remain docs/92 gates"
+    ]
   }
 }

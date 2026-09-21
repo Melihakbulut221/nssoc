@@ -105,3 +105,22 @@ controls pass locally. Those fixtures do not download the image or run a real
 physical flow. Hosted installation/SPM acceptance is pending until its actual
 receipt is collected. Even a passing SPM flow would cover this tool/PDK example,
 not SoC timing/LVS, the frozen pilot, or another host architecture.
+
+**Measured update, 21 September 2026:** the independent
+[hosted run](https://github.com/Melihakbulut221/nssoc/actions/runs/35552817322)
+at `6de8170` passed the actual verified download, full IHP installation and
+retained SPM flow. The package pin is
+`c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c`. Its 420-standard-cell example has
+zero final route, Magic, KLayout, XOR and LVS error counts. Setup slack is
+5.897 ns and hold slack 0.340 ns in that example's own constraints. The
+[receipt](evidence/physical-tool-bootstrap-20260921.json) binds the driver,
+commands, tools, logs, metrics and final view hashes to the hosted revision.
+
+The bundled Yosys is 0.62, Magic is 8.3.623 and KLayout is 0.30.7; OpenROAD
+identifies commit `dcf36133a369abc8f3c5e5738cd4d82e4903c0e0`.
+These differ from the historical custom flow tools. They are now explicit
+reproducibility inputs, not evidence of equivalent SoC results. The example
+also leaves its wire-length threshold unset and lacks top-level voltage-source
+locations; its router reports unsupported LEF58 enclosure clauses. Those
+warnings are retained. This does not close SoC, SRAM-interior, package or
+supply qualification. The workstation's disk-space refusal still stands.

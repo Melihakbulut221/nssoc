@@ -30,7 +30,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 1.8 | Close every existing product gate | OPEN. Retain all rows of docs/92, including PCIe, final timing/LVS, packaging, DFT, debug, POR and qualification. |
 | 2.1 | Hardware CI, visible pytest skips, current verification ledger, pinned/scheduled workflow | PARTIAL. Hardware jobs now also include native-model RAM parity and its negative control. Every action is pinned to a verified commit, every job has a timeout, dependency caching and weekly dependency-update configuration are present. Nightly normal hardware jobs are configured; GitHub schedules become active only on the default branch. Full native boot remains explicit opt-in. |
 | 2.2 | Full cocotb/formal rerun and source-bound ledger freshness | OPEN. Do not replace failed or incomplete obligations with aggregate PASS counts. |
-| 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | PARTIAL. Digital tools now default to the project-local checkout; the checksum-pinned OSS CAD Suite installer preserves existing installations and explicit overrides. No unrelated PATH fallback. Physical devshell download is now checksum-pinned, and PNR/checker defaults use project paths with explicit overrides. Real devshell installation, full PDK bootstrap and translated/patched Ibex equivalence remain open; preserve frozen pilot scripts. |
+| 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | PARTIAL. Digital tools use project-local, pinned installations and explicit overrides. The checksum-pinned physical devshell, full IHP kit and upstream 420-cell SPM flow now pass on a clean hosted runner. PNR/checker defaults no longer select sibling projects. Current SoC reproduction with this different pinned tool package, translated/patched Ibex equivalence and workstation capacity remain open; preserve frozen pilot scripts. |
 | 2.4 | Valid design SDC; all relevant corners; timing/electrical closure and hold erratum | OPEN. Current native run preserves actual 5.0 percent derating. Old zero-derate ECO passes remain withdrawn. Reset exceptions need a justified timing contract, not blanket cuts. |
 | 2.5 | Collect historical s83 evidence, complete digest coverage, publish physical artifacts | PARTIAL. Existing digest/recovery mechanisms cover more than the audited main snapshot; verify every named s83 run individually and preserve missing-data failures. |
 | 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
@@ -517,3 +517,18 @@ also covers 47 remaining I2C address literals in auxiliary interface tests.
 Expanding generated names back to numbers gives the identical Python AST.
 The actual pin-level suites pass 8 tests / 4 profile skips in base and
 11 tests / 1 profile skip in full. CAN banked offsets and fields remain open.
+
+The clean remote replay at `4d4b948` passes **1,240 Python tests, two skips**
+and **18 front-door gates, zero failures, three skips**; see
+[its exact revision record](evidence/fresh-clone-4d4b948-20260921.json).
+The separate hosted Python-quality job passes Ruff, mypy and hook-configuration
+validation. These results do not include the later physical runner changes.
+
+The [independent physical-tool bootstrap](evidence/physical-tool-bootstrap-20260921.json)
+at `6de8170` now passes actual x86-64 AppImage verification/execution, the full
+pinned IHP kit, and the upstream SPM example. Its 420-cell final layout has
+zero recorded route/Magic/KLayout/XOR/LVS error counts and positive setup/hold
+slack under the example's constraints. Native output identities and retained
+warnings are recorded. The bundled tools differ from the historical custom
+flow; the current SoC still needs its own reproduced physical result. This
+closes the hosted tool/PDK/example check, not the rest of audit 2.3 or docs/92.
