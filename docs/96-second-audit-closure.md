@@ -701,3 +701,18 @@ Four isolated controls verify project selection, explicit override, fallback
 and rejection of a missing override, stopping before any synthesis/layout.
 All 35 flow/profile tests pass. This final shell-only follow-up does not
 claim a new physical run or close the legacy physical profile's limitations.
+
+**22 September 2026 — completed hosted evidence:** the
+[161-task formal sweep](evidence/formal-sweep-3c5045f-20260922.json) passes on
+PR merge `c292afa`, whose Git tree equals branch head `3c5045f`. Independent
+checks verify every status/log hash, all 533 copied source files and 173 tracked
+source hashes. Six named historical exclusions remain unresolved. This is the
+first completed full inventory including the four real-codec scrub tasks;
+whole-core/M-extension acceptance is still open.
+
+The separate [native replay at 1d99a78](evidence/native-recovery-1d99a78-20260922.json)
+passes both base and full profiles: each executes 647,591 cycles and 28 checks,
+with zero failure mask, flash violations or UART framing errors. Artifact CRCs,
+input digests and SCRUBCTL controls were checked independently. It predates
+the later CAN/HAL migration and is not attributed to a newer firmware or layout.
+Historical completed/failed records remain available.

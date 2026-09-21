@@ -5,7 +5,10 @@
 set -euo pipefail
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 ROOT=$(cd "$SOC_DIR/../.." && pwd)
-TAG=${1:?usage: implement_interfaces.sh unique-run-tag}
+TAG=${1:?usage: implement_interfaces.sh unique-run-tag [--synthesis-only] [librelane args...]}
+shift
+synthesis_only=0
+if [ "${1:-}" = --synthesis-only ]; then synthesis_only=1; shift; fi
 case "$TAG" in *[!a-zA-Z0-9_-]*|'') echo 'Use an alphanumeric run tag.' >&2; exit 2;; esac
 OUT="$SOC_DIR/out/$TAG"
 [ ! -e "$OUT" ] || { echo "Refusing to overwrite $OUT" >&2; exit 2; }
@@ -18,16 +21,29 @@ if [ -z "${INTERFACE_PYTHON:-}" ] && [ -x "$ROOT/.venv/bin/python" ]; then
     interface_python="$ROOT/.venv/bin/python"
 fi
 "$interface_python" "$SOC_DIR/flow/prepare_interfaces.py" --profile "$SOC_INTERFACE_PROFILE"
-python3 - "$ROOT" "$OUT.inputs.json" <<'PY'
+# This entrypoint implements the current bootable profile. Historical knobs
+# remain available through the individual synthesis/PNR scripts.
+export IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram
+export SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1
+export SOC_WAKE_GNT=1 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1
+export SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 SOC_BOOT_ROM=logic
+export SOC_BOOT_ROM_IMAGE="$OUT/firmware/test_soc.bin" SOC_BOOT_ROM_DIR="$OUT/synthesis/boot-rom"
+# Rebuild the loader used by both synthesis and PNR; do not inherit fault
+# demonstration settings or a caller's stale ROM image.
+BOOT_CORRUPT=none bash "$SOC_DIR/flow/build_sw_soc.sh" "$OUT/firmware" >"$OUT/firmware.log" 2>&1
+python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$OUT/boot-rom-reference"
+python3 - "$ROOT" "$OUT/inputs.json" <<'PY'
 import hashlib, json, os, pathlib, sys
 root, out = map(pathlib.Path, sys.argv[1:])
 files = set()
-for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp'):
-    for ext in ('*.v', '*.vh'):
-        files.update((root/directory).glob(ext))
+for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp', 'hw/soc/tb/sw'):
+    for ext in ('*.v', '*.vh', '*.c', '*.h', '*.S', '*.ld'):
+        files.update((root/directory).rglob(ext))
 record = {'configuration': {'SOC_INTERFACE_PROFILE': os.environ['SOC_INTERFACE_PROFILE'],
                            'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
+                           'WAKE_GNT': 1, 'BOOT_HARDEN': 1, 'CLKGATE': 1,
+                           'SOC_BOOT_ROM': 'logic', 'IBEX_REGFILE': 'secded', 'IBEX_FAULT_PORT': 1,
                            'ETH_SRAM': 1, 'ETH_SRAM_BANK_WORDS': 256, 'clock_ns': 20, 'ethernet_clock_ns': 8},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                       for p in sorted(files)}}
@@ -35,30 +51,48 @@ record['implementation_files'] = {
     name: hashlib.sha256((root/name).read_bytes()).hexdigest()
     for name in ('hw/soc/flow/implement_interfaces.sh',
                  'hw/soc/flow/syn_soc_top.sh', 'hw/soc/flow/pnr_soc_top.sh',
-                 'hw/soc/flow/prepare_interfaces.py',
+                 'hw/soc/flow/prepare_interfaces.py', 'hw/soc/flow/interface_profile.py',
+                 'hw/soc/rtl/soc_logic_boot_rom.v.in', 'sw/golden/secded.py',
                  'hw/soc/pnr/interface_flow.py',
-                 'hw/soc/pnr/config-interfaces-synpre.json',
+                 'hw/soc/flow/build_sw_soc.sh', 'hw/soc/flow/gen_logic_boot_rom.py',
+                 'hw/soc/flow/select_pnr_profile.py', 'hw/soc/flow/physical_env.sh',
                  'hw/soc/techmap/eth_ram.lib', 'hw/soc/techmap/eth_ram_map.v',
-                 'hw/soc/sta/soc_interfaces.sdc', 'hw/soc/sta/soc_top_qspi_io.sdc')}
+                 'hw/soc/sta/soc_interfaces.sdc', 'hw/soc/sta/soc_top_qspi_io.sdc',
+                 'hw/soc/sta/soc_interfaces_external_irq.sdc')}
+record['boot_image_sha256'] = hashlib.sha256(pathlib.Path(os.environ['SOC_BOOT_ROM_IMAGE']).read_bytes()).hexdigest()
+record['boot_rom_sha256'] = hashlib.sha256((out.parent/'boot-rom-reference/soc_logic_boot_rom.v').read_bytes()).hexdigest()
 out.write_text(json.dumps(record, indent=2)+'\n')
 PY
-IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram \
-SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1 \
-SOC_WAKE_GNT=0 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1 \
-SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 \
-  bash "$SOC_DIR/flow/syn_soc_top.sh" 20 "$OUT" >"$OUT.build.log" 2>&1
-mv "$OUT.inputs.json" "$OUT/inputs.json"
-mv "$OUT.build.log" "$OUT/build.log"
+bash "$SOC_DIR/flow/syn_soc_top.sh" 20 "$OUT/synthesis" >"$OUT/build.log" 2>&1
+# Validate the actual mapped macro inventory and choose the matching ROM
+# profile. Keep an explicit compatible floorplan override, if supplied.
+profile_args=(--netlist "$OUT/synthesis/soc_top.netlist.v" --directory "$SOC_DIR/pnr" --rom logic)
+if [ -n "${PNR_CONFIG:-}" ]; then profile_args+=(--config "$PNR_CONFIG"); fi
+export PNR_CONFIG
+PNR_CONFIG=$(python3 "$SOC_DIR/flow/select_pnr_profile.py" "${profile_args[@]}")
 # Bind the resulting netlist to its input inventory before P&R starts.
 python3 - "$OUT" <<'PY'
 import hashlib, json, pathlib, sys
 out = pathlib.Path(sys.argv[1]); p = out/'inputs.json'; record=json.loads(p.read_text())
-record['netlist_sha256'] = hashlib.sha256((out/'soc_top.netlist.v').read_bytes()).hexdigest()
+import os
+config = pathlib.Path(os.environ['PNR_CONFIG'])
+record['physical_config'] = {'path': config.name, 'sha256': hashlib.sha256(config.read_bytes()).hexdigest()}
+assert record['boot_image_sha256'] == hashlib.sha256(pathlib.Path(os.environ['SOC_BOOT_ROM_IMAGE']).read_bytes()).hexdigest(), 'Boot image changed during synthesis'
+assert record['boot_rom_sha256'] == hashlib.sha256((out/'synthesis/boot-rom/soc_logic_boot_rom.v').read_bytes()).hexdigest(), 'Generated ROM changed during synthesis'
+root = out.parents[3]
+for section in ('sources', 'implementation_files'):
+    for name, expected in record[section].items():
+        assert hashlib.sha256((root/name).read_bytes()).hexdigest() == expected, 'Source changed during synthesis: '+name
+record['netlist_sha256'] = hashlib.sha256((out/'synthesis/soc_top.netlist.v').read_bytes()).hexdigest()
 p.write_text(json.dumps(record, indent=2)+'\n')
 PY
-SOC_INTERFACE_FLOW=1 PNR_CONFIG="$SOC_DIR/pnr/config-interfaces-synpre.json" \
-SYN_NETLIST="$OUT/soc_top.netlist.v" PNR_STATE="$SOC_DIR/pnr/state/$TAG.json" \
+if [ "$synthesis_only" = 1 ]; then
+    echo "Synthesis/profile preparation complete: $OUT (no placement or signoff)"
+    exit 0
+fi
+SOC_INTERFACE_FLOW=1 \
+SYN_NETLIST="$OUT/synthesis/soc_top.netlist.v" PNR_STATE="$SOC_DIR/pnr/state/$TAG.json" \
   bash "$SOC_DIR/flow/pnr_soc_top.sh" "$TAG" \
   -F Yosys.JsonHeader -S Yosys.Synthesis -S Checker.YosysUnmappedCells \
   -S Checker.YosysSynthChecks -S Checker.NetlistAssignStatements \
-  -i "$SOC_DIR/pnr/state/$TAG.json" >"$OUT/layout.log" 2>&1
+  -i "$SOC_DIR/pnr/state/$TAG.json" "$@" >"$OUT/layout.log" 2>&1

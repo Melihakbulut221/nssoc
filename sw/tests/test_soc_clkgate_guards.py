@@ -565,7 +565,9 @@ def test_nothing_in_the_design_selects_the_wake_qualified_grant():
         "the RTL selects the wakefulness-qualified grant somewhere: "
         "{}".format(offenders))
     profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
-    assert re.search(r"\bSOC_WAKE_GNT=0\b", profile)
+    # The current logic-ROM physical candidate uses the measured WAKE=1
+    # boot profile; legacy module and standalone flow defaults remain zero.
+    assert re.search(r"\bSOC_WAKE_GNT=1\b", profile)
     allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh",
                "implement_interfaces.sh"}
     setters = {p.name for p in sorted(SOC_FLOW.glob("*.sh"))

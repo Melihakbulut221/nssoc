@@ -124,3 +124,47 @@ also leaves its wire-length threshold unset and lacks top-level voltage-source
 locations; its router reports unsupported LEF58 enclosure clauses. Those
 warnings are retained. This does not close SoC, SRAM-interior, package or
 supply qualification. The workstation's disk-space refusal still stands.
+
+## 5. Current SoC implementation entrypoint
+
+`implement_interfaces.sh` now builds the loader afresh and explicitly selects
+logic ROM, WAKE_GNT=1, protected RAM/ROM, SYNPRE=1, MEM_RDREG=1, REQ_REG=1,
+clock gating, the 256-cycle APB timeout and 256-word Ethernet SRAM banks. This
+corrects its obsolete WAKE_GNT=0 / SRAM-ROM reproduction profile. Standalone
+synthesis defaults and historical configs remain unchanged.
+
+```sh
+# After make soc-prepare and full-kit installation; inside the devshell:
+export FLOW_TOOL_MODE=environment
+export PDK_ROOT="$PWD/hw/soc/tools/pdk-bootstrap"
+SOC_INTERFACE_PROFILE=full bash hw/soc/flow/implement_interfaces.sh unique-tag
+# Compile and map without claiming placement or routing:
+SOC_INTERFACE_PROFILE=full bash hw/soc/flow/implement_interfaces.sh another-tag --synthesis-only
+```
+
+The selected `base`/`full` interface policy remains explicit. Each unique output
+contains `firmware/`, `boot-rom-reference/`, `synthesis/`, logs and `inputs.json`.
+Synthesis owns and replaces only its own child directory. The flow compares
+its generated ROM against the reference, checks listed source hashes after
+mapping, and selects the floorplan from the actual SRAM instance inventory.
+An explicit incompatible `PNR_CONFIG`, changed loader or changed source fails
+before placement. Existing output directories are refused, and failure logs
+remain available. Additional LibreLane arguments follow the tag.
+
+The separate `soc-physical` workflow installs the verified digital/physical
+toolchains and complete PDK on a fresh runner, retains the upstream control,
+then runs this entrypoint for the full-interface core. Its 330-minute job budget
+and retained reports are execution limits, not passing verdicts. A configured
+workflow alone does not close SoC reproduction. A successful core flow also
+still needs the independent DRC, SRAM-interior LVS, electrical/timing, pad,
+package and qualification gates in docs/92; the existing core config does not
+automatically run every independent deck.
+
+The [22 September local measurement](evidence/current-implementation-entry-20260922.json)
+passes actual full-profile mapping on Yosys 0.67+146: 68,534 cells, 9,459
+flip-flops and twenty SRAM macros (four RAM, sixteen Ethernet, zero boot-ROM
+macros). The loader and generated ROM identities match across the handoff;
+all inventoried source hashes remain unchanged. There are 191 unique synthesis
+warnings / 199 occurrences, retained in the record. Eighty-four flow/profile
+checks pass, including six new end-to-end shell handoff/failure controls.
+This measurement deliberately stops before placement.

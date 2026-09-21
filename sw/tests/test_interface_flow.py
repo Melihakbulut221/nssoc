@@ -154,3 +154,112 @@ def test_direct_layout_preparation_selects_python_before_any_synthesis(tmp_path,
     else:
         assert log.read_text().splitlines() == [str(script.parent/'prepare_interfaces.py'),
                                                '--profile', 'full']
+
+
+@pytest.fixture
+def implementation_project(tmp_path):
+    """Exercise the shell handoff with real ROM/profile generators.
+
+    Only the expensive compiler/synthesizer/router are replaced; their
+    argument and environment captures expose stale-profile handoffs.
+    """
+    import json
+    project = tmp_path / 'project'
+    flow = project / 'hw/soc/flow'
+    flow.mkdir(parents=True)
+    for pattern in ('hw/soc/flow/*', 'hw/soc/pnr/*.json', 'hw/soc/pnr/interface_flow.py',
+                    'hw/soc/techmap/*', 'hw/soc/sta/*.sdc', 'hw/soc/rtl/soc_logic_boot_rom.v.in',
+                    'sw/golden/*.py'):
+        for source in ROOT.glob(pattern):
+            if source.is_file():
+                target = project / source.relative_to(ROOT)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+    (flow/'prepare_interfaces.py').write_text('# preparation stub\n')
+    (flow/'build_sw_soc.sh').write_text('set -eu\nmkdir -p "$1"\nprintf "loader" > "$1/test_soc.bin"\n')
+    config = json.loads((project/'hw/soc/pnr/config-interfaces-logicrom.json').read_text())
+    netlist = 'module soc_top();\n' + ''.join(
+        f'{master} \\{name} ();\n' for master, data in config['MACROS'].items()
+        for name in data['instances']) + 'endmodule\n'
+    (flow/'mapped-fixture.v').write_text(netlist)
+    (flow/'syn_soc_top.sh').write_text('''set -eu
+flow=$(dirname "$0")
+# Match the real synthesizer's output-directory replacement behavior.
+rm -rf "$2"
+mkdir -p "$2"
+env | sort > "$2/environment.txt"
+cp "$flow/mapped-fixture.v" "$2/soc_top.netlist.v"
+python3 "$flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$2/boot-rom"
+case "${TEST_MUTATION:-}" in
+ image) printf corrupt >> "$SOC_BOOT_ROM_IMAGE" ;;
+ source) printf '# drift\n' >> "$flow/build_sw_soc.sh" ;;
+ failed-synthesis) exit 79 ;;
+esac
+''')
+    (flow/'pnr_soc_top.sh').write_text('set -eu\nenv | sort > "$NSSOC_PNR_CAPTURE"\nprintf "%s\\n" "$@" > "$NSSOC_PNR_CAPTURE.args"\n')
+    return project
+
+
+def run_implementation(project, *args, mutation=None, config=None):
+    import os
+    env = {key: value for key, value in os.environ.items()
+           if key not in ('PYTHON', 'INTERFACE_PYTHON', 'PNR_CONFIG')}
+    env.update(SOC_BOOT_ROM='legacy', SOC_WAKE_GNT='0', SOC_BOOT_ROM_IMAGE='/stale/image',
+               SOC_MEM_HARDEN='0', NSSOC_PNR_CAPTURE=str(project/'pnr.env'))
+    if mutation: env['TEST_MUTATION'] = mutation
+    if config: env['PNR_CONFIG'] = str(config)
+    return subprocess.run(['bash', str(project/'hw/soc/flow/implement_interfaces.sh'), 'trial', *args],
+                          env=env, text=True, capture_output=True)
+
+
+def test_current_boot_profile_reaches_router_with_identical_rom(implementation_project):
+    import hashlib
+    import json
+    project = implementation_project
+    result = run_implementation(project, '-T', 'OpenROAD.GlobalRouting')
+    assert result.returncode == 0, result.stdout + result.stderr
+    out = project/'hw/soc/out/trial'
+    record = json.loads((out/'inputs.json').read_text())
+    assert record['boot_image_sha256'] == hashlib.sha256(b'loader').hexdigest()
+    assert record['configuration']['WAKE_GNT'] == 1
+    assert record['configuration']['SOC_BOOT_ROM'] == 'logic'
+    assert record['physical_config']['path'] == 'config-interfaces-logicrom.json'
+    for capture in (out/'synthesis/environment.txt', project/'pnr.env'):
+        env = dict(line.split('=', 1) for line in capture.read_text().splitlines() if '=' in line)
+        assert env['SOC_BOOT_ROM'] == 'logic' and env['SOC_WAKE_GNT'] == '1'
+        assert env['SOC_BOOT_ROM_IMAGE'] == str(out/'firmware/test_soc.bin')
+        assert env['SOC_BOOT_ROM_DIR'] == str(out/'synthesis/boot-rom')
+        assert env['SOC_MEM_HARDEN'] == '1'
+    assert (out/'boot-rom-reference/soc_logic_boot_rom.v').read_bytes() == (out/'synthesis/boot-rom/soc_logic_boot_rom.v').read_bytes()
+    assert (project/'pnr.env.args').read_text().splitlines()[-2:] == ['-T', 'OpenROAD.GlobalRouting']
+    assert (out/'firmware.log').exists() and (out/'build.log').exists()
+    # Retrying may not destroy the retained loader, logs or routed candidate.
+    again = run_implementation(project)
+    assert again.returncode == 2 and 'Refusing to overwrite' in again.stderr
+    assert (out/'firmware/test_soc.bin').read_bytes() == b'loader'
+
+
+@pytest.mark.parametrize('mutation', ['image', 'source', 'failed-synthesis'])
+def test_implementation_rejects_drift_and_preserves_failure_logs(implementation_project, mutation):
+    project = implementation_project
+    result = run_implementation(project, mutation=mutation)
+    assert result.returncode != 0
+    assert not (project/'pnr.env').exists()
+    out = project/'hw/soc/out/trial'
+    assert (out/'build.log').exists() and (out/'inputs.json').exists()
+    if mutation != 'failed-synthesis':
+        assert 'changed during synthesis' in result.stderr
+
+
+def test_old_sram_rom_floorplan_is_rejected_before_router(implementation_project):
+    project = implementation_project
+    result = run_implementation(project, config=project/'hw/soc/pnr/config-interfaces-synpre.json')
+    assert result.returncode != 0 and 'ROM profile mismatch' in result.stderr
+    assert not (project/'pnr.env').exists()
+
+
+def test_synthesis_only_does_not_claim_or_start_layout(implementation_project):
+    result = run_implementation(implementation_project, '--synthesis-only')
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert 'no placement or signoff' in result.stdout
+    assert not (implementation_project/'pnr.env').exists()

@@ -555,3 +555,12 @@ UART RX and optional interface profiles are outside that image's evidence.
 The full-interface product target is unchanged: `SOC_INTERFACE_PROFILE=full`
 selects SpaceWire/CAN; the base build implements the audit's default-off licence
 policy. See [the profile contract](88-interface-integration.md).
+
+**22 September 2026 — current implementation handoff:** the physical entrypoint
+now selects the measured logic-ROM/WAKE_GNT=1 profile, builds its own loader and
+matches the floorplan to the synthesized macro inventory. It preserves firmware
+and failure receipts outside the synthesizer's disposable output directory.
+[The reproduction contract](98-physical-tool-bootstrap.md#5-current-soc-implementation-entrypoint)
+and separate hosted SoC workflow provide the current-source execution path.
+This corrects the obsolete entrypoint; it does not turn prior failing physical
+results into passes or close missing IP, pads, test/debug or qualification gates.
