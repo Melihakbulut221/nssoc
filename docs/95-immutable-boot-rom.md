@@ -270,3 +270,11 @@ outputs are retained and input hashes rechecked before restarting in new
 `restart1` directories. Neither old RUNNING metadata nor missing final state
 files is a pass. See [recovery record](evidence/reboot-recovery-20260920-evening.json)
 The ongoing product requirements remain in [the acceptance record](92-product-acceptance.md).
+
+**Further base-profile failure, 21 September:** the new HAL image passes the
+full-profile hosted boot but fails the independent base profile. Its mapped
+SCRUBCTL clear retains an unknown bit through reconvergent logic. The earlier
+firmware clear remains necessary, but is insufficient for every mapping.
+[The hardware correction and actual failing cone](evidence/scrub-native-clear-20260921.json)
+now have targeted native, RTL and formal checks. Whole-SoC reruns remain pending;
+earlier passing runs do not certify this later design.

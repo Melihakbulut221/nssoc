@@ -189,11 +189,13 @@ module soc_scrub #(
 
   // ---- the record: one counter and one sticky per source, POR domain
   //
-  // Branch-based increments retain the intended RTL event semantics.
-  // They do not filter unknown events in mapped gates: uninitialized RAM
-  // can poison startup telemetry before the first sweep. The cold loader
-  // clears RAM records after initialization without first reading them
-  // (docs/95-immutable-boot-rom.md). Warm-boot records remain preserved.
+  // Undefined startup SRAM reports may poison these counters. The cold
+  // loader clears them after initializing RAM, without reading them first.
+  // Mask the old count BEFORE saturation/increment, retaining both stage
+  // boundaries through mapping. A clear must not depend on the old bits:
+  // ABC previously factored a clear into x & !x, which cannot recover X
+  // in native four-state simulation. Unknown events remain visible; a
+  // simultaneous known event and clear records one. Warm records persist.
   wire [CNT_W-1:0] cnt    [0:NSRC-1];
   wire [NSRC-1:0]  sticky;
 
@@ -202,22 +204,20 @@ module soc_scrub #(
     for (gi = 0; gi < NSRC; gi = gi + 1) begin : g_src
       reg [CNT_W-1:0] cnt_q;
       reg             sticky_q;
+      (* keep = 1 *) wire [CNT_W-1:0] count_before_event =
+          clr[gi] ? {CNT_W{1'b0}} : cnt_q;
+      (* keep = 1 *) wire [CNT_W-1:0] count_after_event =
+          (&count_before_event) ? count_before_event :
+          count_before_event + {{(CNT_W-1){1'b0}}, 1'b1};
 
       always @(posedge clk_i or negedge rst_por_ni) begin
         if (!rst_por_ni) begin
           cnt_q    <= {CNT_W{1'b0}};
           sticky_q <= 1'b0;
-        end else if (clr[gi]) begin
-          if (ev[gi]) begin
-            cnt_q    <= {{(CNT_W-1){1'b0}}, 1'b1};
-            sticky_q <= 1'b1;
-          end else begin
-            cnt_q    <= {CNT_W{1'b0}};
-            sticky_q <= 1'b0;
-          end
-        end else if (ev[gi]) begin
-          sticky_q <= 1'b1;
-          if (~&cnt_q) cnt_q <= cnt_q + {{(CNT_W-1){1'b0}}, 1'b1};
+        end else begin
+          cnt_q <= ev[gi] ? count_after_event : count_before_event;
+          if (clr[gi]) sticky_q <= ev[gi];
+          else if (ev[gi]) sticky_q <= 1'b1;
         end
       end
 

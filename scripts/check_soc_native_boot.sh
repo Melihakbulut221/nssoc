@@ -45,6 +45,12 @@ if not result['passed']:
     raise SystemExit('Native model compatibility failed before RTL/synthesis')
 PY
 
+# Recoverability is checked before the hours-long whole-chip run. The
+# historical failing mapped cone must still fail its functional assertion.
+python3 scripts/check_scrub_native.py --tools "$(dirname "$IVERILOG")" \
+  --pdk "$PDK_ROOT/ihp-sg13g2" --output "$OUT/scrub-native" \
+  > "$OUT/scrub-native-driver.log" 2>&1
+
 unset BOOT_CORRUPT SW_DEFINES SOC_VVP_ARGS SOC_BOOT_ROM_DIR SOC_BOOT_ROM_IMAGE
 unset SOC_RAM_RDREG SOC_ROM_RDREG SOC_SCRUB_IVL SOC_DED_WORD SOC_STRAP SOC_TIMEOUT_CYCLES
 export UART_SCALER=0 SOC_PROBE=0 SOC_RAM_RANDOM=1 SOC_CLKGATE=1 SOC_APB_TIMEOUT=256

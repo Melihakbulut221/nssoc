@@ -532,3 +532,19 @@ slack under the example's constraints. Native output identities and retained
 warnings are recorded. The bundled tools differ from the historical custom
 flow; the current SoC still needs its own reproduced physical result. This
 closes the hosted tool/PDK/example check, not the rest of audit 2.3 or docs/92.
+
+The [shared-HAL hosted native runs](evidence/hosted-native-hal-20260921.json)
+now have different outcomes: full `4d4b948` passes all 28 baseline checks in
+647,591 cycles, while base `bb0ea7d` fails before application completion.
+Neither result includes the separate interface-demo firmware. The base failure
+remains recorded; the full result does not waive it.
+
+The [SCRUBCTL correction](evidence/scrub-native-clear-20260921.json) addresses
+a mapped clear path that retains an unknown startup counter bit through
+reconvergent logic. An unchanged 71-cell cone from the failed netlist reproduces
+the defect and is retained as a failing control. Masking the old count before
+increment/saturation passes native IHP tests for all six sources, clear/event
+priority, saturation and reset policy. Twelve existing RTL tests, four unchanged
+formal tasks and 64 runner/register/lint guards pass. All four exact warning
+inventories remain unchanged. New base/full whole-SoC native acceptance is
+pending in its own CI workflow; this is not final physical or product closure.
