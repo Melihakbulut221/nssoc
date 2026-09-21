@@ -44,7 +44,7 @@
 #
 # Same discipline hw/openlane/run_trial.sh established in docs/12: no
 # docker, no root, no system package install. Per-tool shim wrappers in
-# ~/.local/opt/llbin that each set their own LD_LIBRARY_PATH (the
+# an explicitly configured tool directory that each set LD_LIBRARY_PATH (the
 # OpenROAD build ships a newer glibc that segfaults host binaries if it
 # leaks into the ambient environment), a LibreLane virtualenv, and an
 # oss-cad-suite checkout for Yosys.
@@ -120,24 +120,18 @@ case "$PNR" in
                    exit 1 ;;
 esac
 
-SHIMS="${SHIMS:-$HOME/.local/opt/llbin}"
-VENV="${VENV:-$HOME/Documents/caravel-lif-crossbar/.venv-flow}"
-OSS_CAD="${OSS_CAD:-$HOME/Documents/gt2n-soc/tools/oss-cad-suite/bin}"
-export PDK_ROOT="${PDK_ROOT:-$HOME/.ciel}"
+# shellcheck source=hw/soc/flow/physical_env.sh
+. "$SOC_DIR/flow/physical_env.sh"
 
 PDK=ihp-sg13g2
 SCL=sg13g2_stdcell
 
-[ -x "$SHIMS/openroad" ]     || { echo "missing shims at $SHIMS" >&2; exit 1; }
-[ -x "$VENV/bin/librelane" ] || { echo "missing librelane venv at $VENV" >&2; exit 1; }
-
-export PATH="$SHIMS:$VENV/bin:$OSS_CAD:$PATH"
-# Deliberate: the shims set LD_LIBRARY_PATH themselves, per tool. An
-# inherited value here would apply the OpenROAD glibc to every process.
-unset LD_LIBRARY_PATH
+[ -x "$FLOW_OPENROAD" ] || { echo "missing OpenROAD; configure physical tools (docs/98)" >&2; exit 1; }
+[ -x "$LIBRELANE" ] || { echo "missing LibreLane; configure physical tools (docs/98)" >&2; exit 1; }
+[ -x "$FLOW_PY" ] || { echo "missing FLOW_PY interpreter: $FLOW_PY" >&2; exit 1; }
 
 # ---- the PDK pin, read out of the tool rather than written down ------
-PIN="$("$VENV/bin/python" - "$PDK" <<'PY'
+PIN="$("$FLOW_PY" - "$PDK" <<'PY'
 import sys, importlib.util, os, re
 spec = importlib.util.find_spec("librelane")
 path = os.path.join(os.path.dirname(spec.origin), "pdk_hashes.yaml")
@@ -232,7 +226,7 @@ SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
 python3 "$SOC_DIR/flow/interface_profile.py" --netlist "$SYN_NETLIST" --bundle-only >/dev/null
 PROFILE_ARGS=(--netlist "$SYN_NETLIST" --directory "$PNR" --rom "${SOC_BOOT_ROM:-legacy}")
 if [ -n "${PNR_CONFIG:-}" ]; then PROFILE_ARGS+=(--config "$PNR_CONFIG"); fi
-PNR_CONFIG=$("$VENV/bin/python" "$SOC_DIR/flow/select_pnr_profile.py" "${PROFILE_ARGS[@]}")
+PNR_CONFIG=$("$FLOW_PY" "$SOC_DIR/flow/select_pnr_profile.py" "${PROFILE_ARGS[@]}")
 PNR_CONFIG=$(cd "$(dirname "$PNR_CONFIG")" && pwd -P)/$(basename "$PNR_CONFIG")
 case "$PNR_CONFIG" in
   "$PNR"/*) ;;
@@ -260,7 +254,7 @@ export SOC_BOOT_ROM="${SOC_BOOT_ROM:-legacy}"
 # invocation is about to read. Keep the unique snapshot beside config.json
 # so that all dir:: paths retain their original meaning.
 RESOLVED=$(mktemp "$PNR/config.resolved.XXXXXXXX.json")
-"$VENV/bin/python" - "$PNR_CONFIG" "$RESOLVED" <<PY
+"$FLOW_PY" - "$PNR_CONFIG" "$RESOLVED" <<PY
 import json, os, sys
 src, dst = sys.argv[1], sys.argv[2]
 base = json.load(open(src))
@@ -322,7 +316,7 @@ SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
 PNR_STATE=${PNR_STATE:-$PNR/state/syn_soc_top.state.json}
 if [ -f "$SYN_NETLIST" ]; then
   mkdir -p "$(dirname "$PNR_STATE")"
-  "$VENV/bin/python" -c "import json,os,sys; json.dump({'nl': os.path.abspath(sys.argv[1]), 'metrics': {}}, open(sys.argv[2],'w'), indent=1)" \
+  "$FLOW_PY" -c "import json,os,sys; json.dump({'nl': os.path.abspath(sys.argv[1]), 'metrics': {}}, open(sys.argv[2],'w'), indent=1)" \
       "$SYN_NETLIST" "$PNR_STATE"
   echo "netlist:   $SYN_NETLIST"
   echo "state:     $PNR_STATE"
@@ -336,11 +330,11 @@ echo "run tag:   $RUN_TAG"
 echo "run dir:   $RUN_DIR/$RUN_TAG"
 echo "sources:   $(echo "$SRCS" | wc -l) verilog files"
 echo "pdk:       $PDK @ $PIN"
-echo "librelane: $("$VENV/bin/librelane" --version 2>/dev/null | head -1)"
+echo "librelane: $("$LIBRELANE" --version 2>/dev/null | head -1)"
 
-LANE=(librelane)
+LANE=("$LIBRELANE")
 if [ "${SOC_INTERFACE_FLOW:-0}" = 1 ]; then
-  LANE=("$VENV/bin/python" "$PNR/interface_flow.py" --flow Interfaces)
+  LANE=("$FLOW_PY" "$PNR/interface_flow.py" --flow Interfaces)
 fi
 exec "${LANE[@]}" --pdk "$PDK" --scl "$SCL" \
      --run-tag "$RUN_TAG" \

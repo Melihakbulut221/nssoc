@@ -291,7 +291,7 @@ PY
 # and checker_audit.py imports librelane, which the repository venv does
 # not carry -- it needs the flow venv, whose path its own docstring gives
 # and which FLOW_PY overrides.
-FLOW_PY="${FLOW_PY:-$HOME/Documents/caravel-lif-crossbar/.venv-flow/bin/python}"
+FLOW_PY="${FLOW_PY:-$(pwd -P)/hw/soc/tools/flow-venv/bin/python}"
 
 # run tree | the checkers dispositioned as not gating, verbatim from
 # checker_audit.py's "NOT gating in full:" line | what the run is

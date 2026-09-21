@@ -30,7 +30,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 1.8 | Close every existing product gate | OPEN. Retain all rows of docs/92, including PCIe, final timing/LVS, packaging, DFT, debug, POR and qualification. |
 | 2.1 | Hardware CI, visible pytest skips, current verification ledger, pinned/scheduled workflow | PARTIAL. Hardware jobs now also include native-model RAM parity and its negative control. Every action is pinned to a verified commit, every job has a timeout, dependency caching and weekly dependency-update configuration are present. Nightly normal hardware jobs are configured; GitHub schedules become active only on the default branch. Full native boot remains explicit opt-in. |
 | 2.2 | Full cocotb/formal rerun and source-bound ledger freshness | OPEN. Do not replace failed or incomplete obligations with aggregate PASS counts. |
-| 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | PARTIAL. Digital tools now default to the project-local checkout; the checksum-pinned OSS CAD Suite installer preserves existing installations and explicit overrides. No unrelated PATH fallback. Physical tool/PDK bootstrap and translated/patched Ibex equivalence remain open; preserve frozen pilot scripts. |
+| 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | PARTIAL. Digital tools now default to the project-local checkout; the checksum-pinned OSS CAD Suite installer preserves existing installations and explicit overrides. No unrelated PATH fallback. Physical devshell download is now checksum-pinned, and PNR/checker defaults use project paths with explicit overrides. Real devshell installation, full PDK bootstrap and translated/patched Ibex equivalence remain open; preserve frozen pilot scripts. |
 | 2.4 | Valid design SDC; all relevant corners; timing/electrical closure and hold erratum | OPEN. Current native run preserves actual 5.0 percent derating. Old zero-derate ECO passes remain withdrawn. Reset exceptions need a justified timing contract, not blanket cuts. |
 | 2.5 | Collect historical s83 evidence, complete digest coverage, publish physical artifacts | PARTIAL. Existing digest/recovery mechanisms cover more than the audited main snapshot; verify every named s83 run individually and preserve missing-data failures. |
 | 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
@@ -442,3 +442,14 @@ corpus, checks the exact page inventory and independently rechecks emitted
 links and asset hashes. Twelve direct CLI regression/negative tests pass.
 [The failure and correction record](evidence/document-site-ci-gate-20260921.json)
 preserves both failed runs; a new clean revision replay remains required.
+
+The [physical tool bootstrap controls](evidence/physical-tool-bootstrap-20260921.json)
+remove sibling-project defaults from the SoC PNR driver and optional CI checker.
+A pinned LibreLane 3.0.5 devshell installer checks both upstream image sizes and
+SHA256 values, space before network access, and atomic no-clobber publication.
+Explicit existing-tool overrides still answer their version probes. All **57
+installer/tool-selection/PNR/memory guards** and the **160 combined documentation
+checks** pass. The real installer exits **2 before download** because available
+space is below its 1,465,162,272-byte requirement; it is not an installed or
+smoke-tested toolchain. Full-kit bootstrap and physical acceptance remain open.
+The operational contract is docs/98.

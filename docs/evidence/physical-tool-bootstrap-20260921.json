@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-21",
+  "parent_head": "a4cf067b3fe07e31aec2a0ade189c87dcbd3ceaf",
+  "status": "PARTIAL_BOOTSTRAP_CONTROLS_PASS_REAL_INSTALL_BLOCKED_BY_SPACE",
+  "scope": "Checksum-pinned devshell installer and project-local/explicit-environment physical tool selection. No AppImage execution, full PDK install or place-and-route acceptance is claimed.",
+  "source_sha256": {
+    "scripts/bootstrap_flow.py": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2",
+    "hw/soc/flow/physical_env.sh": "76e025414d355f1e9fcb7c886b09016717a3cb17f3b885f02b6be72fc5485e06",
+    "hw/soc/flow/pnr_soc_top.sh": "b96679c3f860807c8aea64c7d183f1a70f27f065fa3b31953047f789ec18bf80",
+    "scripts/ci_local.sh": "81184ef10bff56b1102cdf66ef8abf79266040e3fd23ac6321ebf594c9238706",
+    "sw/tests/test_flow_bootstrap.py": "aba22d22be50220122599dce2afc6e3e5ac13a8bd88b56c953a313d2ceb71acf"
+  },
+  "release": {
+    "url": "https://github.com/librelane/librelane/releases/tag/3.0.5",
+    "tag": "3.0.5",
+    "asset_digest_crosscheck": "PASS",
+    "assets": {
+      "x86_64": {
+        "bytes": 1398053408,
+        "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+      },
+      "aarch64": {
+        "bytes": 1346154144,
+        "sha256": "6e49311c30bdf1e2a1285a6971078d2db47c0e21038cff5e6bad833cc7a11870"
+      }
+    },
+    "metadata": {
+      "path": "hw/soc/out/external-review-20260919/librelane-3.0.5-release.json",
+      "sha256": "9e47b12f65edab467e1dd227294445d2979cb936e63289220fabd23aaf2e5b57"
+    }
+  },
+  "checks": {
+    "installer_tool_selection_pnr_memory_tests_passed": 57,
+    "expanded_log": {
+      "path": "hw/soc/out/external-review-20260919/flow-bootstrap-expanded-tests.log",
+      "sha256": "65813bbb49b79be2e83ad6367ba7214d50319a8160e021b9f3e479336b2d2296"
+    },
+    "documentation_combined_passed": 160,
+    "documentation_log": {
+      "path": "hw/soc/out/external-review-20260919/flow-bootstrap-tests-final.log",
+      "sha256": "910930870d1fedcfac373daf686d85445db0bd42f084f6aafb5b9a69cbfc3911"
+    },
+    "documentation_xml": {
+      "path": "hw/soc/out/external-review-20260919/flow-bootstrap-tests-final.xml",
+      "sha256": "1059604a9d7d6d46c75ad0dbdd2263f68880dcb786806eb11c61aeaf85d77db5"
+    },
+    "bash_syntax": "PASS"
+  },
+  "explicit_existing_host_tools": {
+    "status": "PASS_VERSION_PREFLIGHT_ONLY",
+    "librelane": "3.0.5",
+    "openroad": "26Q1-2938-g0e2d771c5e",
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/flow-bootstrap-explicit-host-tools.log",
+      "sha256": "66f8d2f11f46f42be5736053d6597a74386acfa5c441ccae901af732ce00b486"
+    },
+    "scope": "Existing custom tools selected via explicit overrides, not the new AppImage and not a physical design run."
+  },
+  "real_installer_attempt": {
+    "status": "BLOCKED_BEFORE_DOWNLOAD",
+    "exit_code": 2,
+    "required_free_bytes": 1465162272,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/flow-bootstrap-real-preflight.log",
+      "sha256": "5564139bc1bcc54413a2959af6e4f0ba127b1627dadc25f696e0cca0e6d61715"
+    },
+    "installed": false
+  },
+  "remaining": [
+    "Full physical PDK bootstrap and pin validation",
+    "AppImage host prerequisites and smoke test",
+    "Fresh tool identities and independently reproduced physical flow",
+    "Timing/electrical/DRC/LVS product acceptance"
+  ]
+}
