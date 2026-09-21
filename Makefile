@@ -88,12 +88,15 @@ boot-proof:
 
 .PHONY: soc-interfaces-prepare
 SOC_INTERFACE_PROFILE ?= base
+# CAN map generation needs PyYAML installed by make setup. A hosted job
+# without a venv may use its provisioned PYTHON; explicit override stays possible.
+INTERFACE_PYTHON ?= $(if $(wildcard $(PY)),$(PY),$(PYTHON))
 export SOC_INTERFACE_PROFILE
 soc-interfaces-prepare:
 	@case "$(SOC_INTERFACE_PROFILE)" in base|full) ;; *) echo 'SOC_INTERFACE_PROFILE must be base or full'; exit 2 ;; esac
 	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-verilog-ethernet
 	@if [ "$(SOC_INTERFACE_PROFILE)" = full ]; then $(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-spacewire_reloaded fetch-can; fi
-	$(PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py --profile $(SOC_INTERFACE_PROFILE)
+	$(INTERFACE_PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py --profile $(SOC_INTERFACE_PROFILE)
 
 .PHONY: soc-interfaces-test soc-interfaces-sim
 soc-interfaces-test: soc-interfaces-prepare

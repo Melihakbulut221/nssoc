@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "soc_can_regs.h"
 #include "lib/soc_hal.h"
 
 /* Project register maps, not GRLIB-compatible. See docs/88. */

@@ -374,3 +374,34 @@ passes respectively, with the other profile's cases explicitly skipped.
 Both whole-SoC elaborations and all six profile-specific discovery formal tasks
 pass. A stale or altered bundle and a mismatched physical netlist are rejected.
 This does not replace the outstanding final-layout and full product gates.
+
+
+## CAN single-source byte banks — 21 September 2026
+
+`regmap/can.yaml` defines 70 named byte offsets across eight banks, including
+intentional BasicCAN/PeliCAN and reset/active aliases. `generate_can.py` emits
+`soc_can_regs.h`, Python dictionaries and named constants in the prepared CAN
+register/FIFO/top modules. The pinned upstream checkout stays unchanged.
+The Make preparation target uses the project Python environment installed by
+`make setup`, or the provisioned `PYTHON` when no environment exists;
+`INTERFACE_PYTHON` can explicitly override it. Firmware and pin tests use
+these definitions; interface manifests separately
+hash the project adaptation inputs and the pinned upstream files.
+
+```sh
+.venv/bin/python regmap/generate_can.py --check
+.venv/bin/python -m pytest -q sw/tests/test_can_regmap.py sw/tests/test_interface_profiles.py
+SOC_INTERFACE_PROFILE=full make -C hw/soc/tb/cocotb -f Makefile.soc_interfaces
+```
+
+The [measured regression](evidence/can-bank-regmap-20260921.json) includes
+standard and extended PeliCAN frames, remote frames, bank/address aliases and
+a BasicCAN two-node frame with separate transmit/receive windows. Full has
+13 passing tests and one base-only skip; base has eight passes and six
+full-only skips. The original register-read address truncation is retained;
+write, FIFO and read-side-effect decodes keep their original full widths.
+All four firmware images match their pre-migration bytes in both profiles.
+Both elaborations and all four lint profiles pass their defined gates.
+The prepared-source archive has fresh independent conversion/preparation
+replays. These results do not establish new layout or physical CAN-bus
+qualification; those gates remain open.

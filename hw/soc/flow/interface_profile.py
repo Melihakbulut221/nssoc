@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 import shlex
 
-from prepare_interfaces import SOC, selected_pins
+from prepare_interfaces import SOC, selected_pins, project_sources
 
 
 def check_netlist(path, profile):
@@ -37,6 +37,13 @@ def resolve(profile='base', soc=SOC):
     digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     if digest(bundle) != manifest.get('bundle_sha256'):
         raise ValueError('Interface bundle was modified')
+    projects = project_sources(profile)
+    recorded_projects = manifest.get('project_inputs', {})
+    if not isinstance(recorded_projects, dict) or set(recorded_projects) != set(projects):
+        raise ValueError('Unexpected or missing project transformation inputs')
+    for name, path in projects.items():
+        if digest(path) != recorded_projects[name]:
+            raise ValueError('Interface project transformation changed: ' + name)
     inputs = manifest.get('inputs', {})
     if not inputs:
         raise ValueError('Empty interface source inventory')

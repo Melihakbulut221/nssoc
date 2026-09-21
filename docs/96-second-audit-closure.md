@@ -41,7 +41,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and publishes referenced assets and API pages with checked local file targets. The current datasheet contract is reconciled in docs/60 section 0.4, with prior text preserved and a frozen-pilot scope note in docs/21. The errata index links the original corrections and reproduction paths. Broader index claim reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
-| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
+| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the banked CAN map now adds 70 semantic byte offsets with prepared-RTL/C/Python bindings and byte-identical firmware. Register bit fields and remaining firmware/coverage work stay open. See the separate records below. |
 | 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope; a dedicated CI job is configured. Other-paper/thesis claims/build/freshness, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
@@ -605,3 +605,32 @@ profile, mismatched revisions, failed or changed-source results, and removed,
 missing or stale formal tasks. New hosted artifacts also retain generated
 boot-ROM sources and scrub counterexamples; the older artifacts' missing ROM
 source files remain explicitly recorded rather than claimed recovered.
+
+
+**CAN byte-bank closure, 21 September 2026:**
+[Source-bound evidence](evidence/can-bank-regmap-20260921.json) adds all 70
+semantic offsets in eight SJA1000 banks to the existing thirteen word-oriented
+maps. Intentional reset/active and BasicCAN/PeliCAN aliases are represented
+explicitly. The generated constants retain five-bit register-read aliases and
+full-width write, FIFO-selection and read-side-effect decoding. Only prepared
+copies of three upstream modules receive local parameters; upstream checkouts
+remain clean and pinned. Independent expansion preserves their original tokens
+and both pre-existing CAN frame tests' normalized ASTs.
+
+New pin tests exercise byte-bank aliases, ignored high-address writes,
+reset-only acceptance/bit-timing updates and an actual two-node eight-byte
+BasicCAN frame. The full suite passes **13 tests / one other-profile skip**;
+base passes **eight / six other-profile skips**, with zero failures. Both
+firmware profiles' application, loader and flash images remain byte-identical.
+Both whole-SoC Yosys elaborations pass, as do 99 targeted Python guards and
+all four lint profiles. The 324 relocated diagnostics in each full lint
+profile map to identical original source lines; warning counts, categories,
+messages and multiplicities remain unchanged. Initial stale-baseline failures
+are preserved, not accepted.
+
+The [new prepared-source archive](evidence/prepared-sources-can-bank-20260921.json)
+is checked against fresh sv2v and interface-preparation replays; the older
+snapshot remains available as the independent pre-migration reference.
+This closes the byte-offset portion of 3.8, not bit-field definitions, all
+firmware coverage, native-netlist testing of this revision or final physical
+and hardware qualification.

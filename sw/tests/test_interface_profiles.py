@@ -88,7 +88,7 @@ def test_mismatched_or_modified_bundle_rejected(fake_sources, corruption):
         profile.resolve('base', soc)
 
 
-def test_full_requires_explicit_selection_and_preserves_separate_base(fake_sources):
+def test_full_requires_explicit_selection_and_preserves_separate_base(fake_sources, monkeypatch):
     soc, queried, prepare, profile = fake_sources
     base = prepare.prepare()
     original = base.read_bytes()
@@ -100,11 +100,22 @@ def test_full_requires_explicit_selection_and_preserves_separate_base(fake_sourc
     can = soc/'ext/can/rtl/verilog'
     can.mkdir(parents=True)
     (can/'can_top.v').write_text('// optional CAN source\n')
+    # This fixture checks profile selection, not the immutable CAN decoder.
+    # Actual decoder adaptation has separate pinned-source and pin tests.
+    monkeypatch.setattr(prepare, 'bind_can', lambda name, data: data)
     bundle = prepare.prepare('full')
     assert base.read_bytes() == original and bundle != base
     assert profile.resolve('full', soc) == (bundle.resolve(), '-DSOC_LGPL_INTERFACES')
     assert 'CAN_WISHBONE_IF' in bundle.read_text()
     assert set(queried) == set(prepare.PINS)
+    manifest_path = bundle.with_suffix('.json')
+    manifest = json.loads(manifest_path.read_text())
+    assert set(manifest['project_inputs']) == set(prepare.CAN_PROJECT_INPUTS)
+    for bad in [{}, {**manifest['project_inputs'], '../escape': '0'*64},
+                {**manifest['project_inputs'], 'regmap/can.yaml': '0'*64}]:
+        manifest_path.write_text(json.dumps({**manifest, 'project_inputs': bad}))
+        with pytest.raises(ValueError): profile.resolve('full', soc)
+    manifest_path.write_text(json.dumps(manifest))
     with pytest.raises(ValueError):
         prepare.selected_pins('typo')
 
@@ -121,7 +132,7 @@ def test_make_fetches_only_explicitly_selected_dependencies(tmp_path, selection,
     stub.chmod(0o755)
     result = subprocess.run(['make','--no-print-directory','soc-interfaces-prepare',
                              'SOC_INTERFACE_PROFILE='+selection,'MAKE='+str(stub),
-                             'PYTHON='+str(stub)], cwd=ROOT, capture_output=True, text=True)
+                             'INTERFACE_PYTHON='+str(stub)], cwd=ROOT, capture_output=True, text=True)
     words = log.read_text().split() if log.exists() else []
     assert {w for w in words if w.startswith('fetch-')} == expected
     assert (result.returncode == 0) == (selection != 'invalid')

@@ -1,7 +1,8 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Pin-level protocol tests through APB; no force of internal RTL state."""
-from peripheral_registers import SPI, SPW, I2C
+from peripheral_registers import (SPI, SPW, I2C, CAN_COMMON, CAN_BASIC_RESET, CAN_BASIC_TX, CAN_BASIC_RX,
+                                  CAN_EXTENDED, CAN_EXTENDED_RESET, CAN_EXTENDED_TX, CAN_EXTENDED_RX)
 import cocotb
 import os
 from cocotb.triggers import Timer
@@ -278,37 +279,37 @@ async def can_two_node_standard_frame_and_byte_lanes(d):
     # SJA1000 PeliCAN: reset, extended register mode, accept all IDs,
     # 1 MHz nominal bit rate on the 50 MHz system clock (BRP=0, 25 TQ).
     for dev in (3, 4):
-        await b.byte(dev, 0, 1)
-        await b.byte(dev, 31, 0x80)
-        await b.byte(dev, 6, 0)
-        await b.byte(dev, 7, 0x7f)
-        for addr in range(16, 20):
+        await b.byte(dev, CAN_COMMON['MODE'], 1)
+        await b.byte(dev, CAN_COMMON['CDR'], 0x80)
+        await b.byte(dev, CAN_COMMON['BTR0'], 0)
+        await b.byte(dev, CAN_COMMON['BTR1'], 0x7f)
+        for addr in range(CAN_EXTENDED_RESET['ACR0'], CAN_EXTENDED_RESET['AMR0']):
             await b.byte(dev, addr, 0)
-        for addr in range(20, 24):
+        for addr in range(CAN_EXTENDED_RESET['AMR0'], CAN_EXTENDED_RESET['AMR3']+1):
             await b.byte(dev, addr, 255)
-        await b.byte(dev, 4, 1)
-        await b.byte(dev, 0, 0)
+        await b.byte(dev, CAN_EXTENDED['IER'], 1)
+        await b.byte(dev, CAN_COMMON['MODE'], 0)
     await b.step(1000)
     ident, payload = 0x321, [0x12, 0x34, 0x56]
-    for addr, val in [(16, len(payload)), (17, ident >> 3), (18, (ident & 7) << 5)]:
+    for addr, val in [(CAN_EXTENDED_TX['DATA0'], len(payload)), (CAN_EXTENDED_TX['DATA1'], ident >> 3), (CAN_EXTENDED_TX['DATA2'], (ident & 7) << 5)]:
         await b.byte(3, addr, val)
     for i, val in enumerate(payload):
-        await b.byte(3, 19+i, val)
-    await b.byte(3, 1, 1)
+        await b.byte(3, CAN_EXTENDED_TX['DATA3']+i, val)
+    await b.byte(3, CAN_COMMON['COMMAND'], 1)
     for _ in range(4000):
-        status = await b.byte(4, 2)
+        status = await b.byte(4, CAN_COMMON['STATUS'])
         if status & 1:
             break
     else:
         raise AssertionError(f'CAN frame not received: status {status:x}')
     assert int(d.irq.value) & (1 << 4)
-    assert await b.byte(4, 16) & 15 == len(payload)
-    assert await b.byte(4, 17) == ident >> 3
-    assert await b.byte(4, 18) >> 5 == ident & 7
-    assert [await b.byte(4, 19+i) for i in range(3)] == payload
-    await b.byte(4, 1, 4)  # release RX buffer
-    assert not (await b.byte(4, 2) & 1)
-    await b.rd(3, I2C['STATUS'], error=True)  # multi-byte accesses are not silently truncated
+    assert await b.byte(4, CAN_EXTENDED_RX['DATA0']) & 15 == len(payload)
+    assert await b.byte(4, CAN_EXTENDED_RX['DATA1']) == ident >> 3
+    assert await b.byte(4, CAN_EXTENDED_RX['DATA2']) >> 5 == ident & 7
+    assert [await b.byte(4, CAN_EXTENDED_RX['DATA3']+i) for i in range(3)] == payload
+    await b.byte(4, CAN_COMMON['COMMAND'], 4)  # release RX buffer
+    assert not (await b.byte(4, CAN_COMMON['STATUS']) & 1)
+    await b.rd(3, CAN_EXTENDED['IER'], error=True)  # multi-byte accesses are not silently truncated
     await b.rd(3, 0x100, strobe=1, error=True)
 
 
@@ -480,16 +481,16 @@ async def can_extended_id_eight_bytes_and_remote_frame(d):
     b = Bus(d)
     await b.reset()
     for dev in (3, 4):
-        await b.byte(dev, 0, 1)
-        await b.byte(dev, 31, 0x80)
-        await b.byte(dev, 6, 0)
-        await b.byte(dev, 7, 0x7f)
-        for addr in range(16, 20):
+        await b.byte(dev, CAN_COMMON['MODE'], 1)
+        await b.byte(dev, CAN_COMMON['CDR'], 0x80)
+        await b.byte(dev, CAN_COMMON['BTR0'], 0)
+        await b.byte(dev, CAN_COMMON['BTR1'], 0x7f)
+        for addr in range(CAN_EXTENDED_RESET['ACR0'], CAN_EXTENDED_RESET['AMR0']):
             await b.byte(dev, addr, 0)
-        for addr in range(20, 24):
+        for addr in range(CAN_EXTENDED_RESET['AMR0'], CAN_EXTENDED_RESET['AMR3']+1):
             await b.byte(dev, addr, 255)
-        await b.byte(dev, 4, 1)
-        await b.byte(dev, 0, 0)
+        await b.byte(dev, CAN_EXTENDED['IER'], 1)
+        await b.byte(dev, CAN_COMMON['MODE'], 0)
     await b.step(1000)
     ident = 0x1abcde5
     id_bytes = [(ident >> 21) & 255, (ident >> 13) & 255,
@@ -498,23 +499,87 @@ async def can_extended_id_eight_bytes_and_remote_frame(d):
     # Reverse direction for RTR, verifying both instances transmit and receive.
     for tx, rx, remote in ((3, 4, False), (4, 3, True)):
         info = 0x88 | (0x40 if remote else 0)
-        await b.byte(tx, 16, info)
+        await b.byte(tx, CAN_EXTENDED_TX['DATA0'], info)
         for i, value in enumerate(id_bytes):
-            await b.byte(tx, 17+i, value)
+            await b.byte(tx, CAN_EXTENDED_TX['DATA1']+i, value)
         if not remote:
             for i, value in enumerate(payload):
-                await b.byte(tx, 21+i, value)
-        await b.byte(tx, 1, 1)
+                await b.byte(tx, CAN_EXTENDED_TX['DATA5']+i, value)
+        await b.byte(tx, CAN_COMMON['COMMAND'], 1)
         for _ in range(8000):
-            if await b.byte(rx, 2) & 1:
+            if await b.byte(rx, CAN_COMMON['STATUS']) & 1:
                 break
         else:
             raise AssertionError('extended CAN frame not received')
-        assert await b.byte(rx, 16) == info
-        assert [await b.byte(rx, 17+i) for i in range(4)] == id_bytes
+        assert await b.byte(rx, CAN_EXTENDED_RX['DATA0']) == info
+        assert [await b.byte(rx, CAN_EXTENDED_RX['DATA1']+i) for i in range(4)] == id_bytes
         if not remote:
-            assert [await b.byte(rx, 21+i) for i in range(8)] == payload
+            assert [await b.byte(rx, CAN_EXTENDED_RX['DATA5']+i) for i in range(8)] == payload
         assert int(d.irq.value) & (1 << rx)
-        await b.byte(rx, 1, 4)
-        assert not (await b.byte(rx, 2) & 1)
+        await b.byte(rx, CAN_COMMON['COMMAND'], 4)
+        assert not (await b.byte(rx, CAN_COMMON['STATUS']) & 1)
         await b.step(500)
+
+
+@cocotb.test(skip=not FULL_PROFILE)
+async def can_bank_aliases_preserve_full_width_write_decode(d):
+    b = Bus(d)
+    await b.reset()
+    await b.byte(3, CAN_COMMON['MODE'], 1)
+    await b.byte(3, CAN_BASIC_RESET['ACR0'], 0x5a)
+    await b.byte(3, CAN_BASIC_RESET['AMR0'], 0xa5)
+    assert await b.byte(3, CAN_BASIC_RESET['ACR0']) == 0x5a
+    assert await b.byte(3, CAN_BASIC_RESET['AMR0']+32) == 0xa5
+    # Read aliases use five bits; writes use the entire eight-bit address.
+    await b.byte(3, CAN_BASIC_RESET['AMR0']+32, 0x11)
+    assert await b.byte(3, CAN_BASIC_RESET['AMR0']) == 0xa5
+    await b.byte(3, CAN_COMMON['CDR'], 0x80)
+    assert await b.byte(3, CAN_EXTENDED_RESET['ACR0']) == 0x5a
+    await b.byte(3, CAN_EXTENDED['IER'], 7)
+    assert await b.byte(3, CAN_EXTENDED['IER']) == 7
+    assert await b.byte(3, CAN_EXTENDED_RESET['ACR0']) == 0x5a
+    await b.byte(3, CAN_EXTENDED_RESET['ACR1'], 0x96)
+    assert await b.byte(3, CAN_EXTENDED_RESET['ACR1']+32) == 0x96
+    await b.byte(3, CAN_EXTENDED_RESET['ACR1']+32, 0x12)
+    assert await b.byte(3, CAN_EXTENDED_RESET['ACR1']) == 0x96
+    await b.byte(3, CAN_COMMON['BTR0'], 0x13)
+    await b.byte(3, CAN_COMMON['MODE'], 0)
+    # Active writes target TX storage, and timing writes require reset mode.
+    await b.byte(3, CAN_EXTENDED_TX['DATA0'], 0x01)
+    await b.byte(3, CAN_COMMON['BTR0'], 0x31)
+    await b.byte(3, CAN_COMMON['MODE'], 1)
+    assert await b.byte(3, CAN_EXTENDED_RESET['ACR0']) == 0x5a
+    assert await b.byte(3, CAN_COMMON['BTR0']) == 0x13
+
+
+@cocotb.test(skip=not FULL_PROFILE)
+async def can_basic_mode_frame_uses_separate_tx_rx_windows(d):
+    b = Bus(d)
+    await b.reset()
+    for dev in (3, 4):
+        await b.byte(dev, CAN_COMMON['MODE'], 1)
+        await b.byte(dev, CAN_COMMON['CDR'], 0)
+        await b.byte(dev, CAN_COMMON['BTR0'], 0)
+        await b.byte(dev, CAN_COMMON['BTR1'], 0x7f)
+        await b.byte(dev, CAN_BASIC_RESET['ACR0'], 0)
+        await b.byte(dev, CAN_BASIC_RESET['AMR0'], 255)
+        await b.byte(dev, CAN_COMMON['MODE'], 2)  # RX interrupt enable, reset released
+    await b.step(1000)
+    ident = 0x547
+    payload = [0x80, 0x01, 0xff, 0x00, 0x55, 0xaa, 0x3c, 0xc3]
+    frame = [ident >> 3, ((ident & 7) << 5) | len(payload)] + payload
+    for i, value in enumerate(frame):
+        await b.byte(3, CAN_BASIC_TX['DATA0']+i, value)
+    assert await b.byte(3, CAN_BASIC_TX['DATA0']) == frame[0]
+    await b.byte(3, CAN_COMMON['COMMAND'], 1)
+    for _ in range(8000):
+        if await b.byte(4, CAN_COMMON['STATUS']) & 1:
+            break
+    else:
+        raise AssertionError('basic-mode CAN frame not received')
+    assert [await b.byte(4, CAN_BASIC_RX['DATA0']+i) for i in range(len(frame))] == frame
+    assert int(d.irq.value) & (1 << 4)
+    await b.byte(4, CAN_COMMON['COMMAND'], 4)
+    assert not (await b.byte(4, CAN_COMMON['STATUS']) & 1)
+    await b.byte(3, CAN_COMMON['MODE'], 1)
+    assert await b.byte(3, CAN_BASIC_TX['DATA0']) == 255

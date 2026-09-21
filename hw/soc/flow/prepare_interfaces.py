@@ -7,9 +7,13 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 SOC = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = SOC.parents[1]
+CAN_PROJECT_INPUTS = ('regmap/can.yaml', 'regmap/generate_can.py',
+                      'regmap/generate_peripherals.py', 'hw/soc/flow/prepare_interfaces.py')
 PINS = {
     'verilog-ethernet': '77320a9471d19c7dd383914bc049e02d9f4f1ffb',
     'verilog-i2c': 'a65be4045e898a52e791c6ee71f8f79a7cd2e129',
@@ -23,6 +27,19 @@ def selected_pins(profile):
         raise ValueError('Interface profile must be base or full')
     return {name: pin for name, pin in PINS.items()
             if profile == 'full' or name in ('verilog-i2c', 'verilog-ethernet')}
+
+
+def project_sources(profile):
+    selected_pins(profile)
+    return {name: PROJECT_ROOT / name for name in CAN_PROJECT_INPUTS} if profile == 'full' else {}
+
+
+def bind_can(name, data):
+    # Optional map preparation uses the same declared PyYAML dependency as
+    # the other register generators. Resolving a bundle needs only stdlib.
+    sys.path.insert(0, str(PROJECT_ROOT / 'regmap'))
+    from generate_can import adapt, load
+    return adapt(name, data, load(PROJECT_ROOT / 'regmap/can.yaml'))
 
 
 def prepare(profile='base'):
@@ -60,6 +77,8 @@ def prepare(profile='base'):
                 raise RuntimeError(f'unresolved include {path}: {name}')
             return expand(included)
         data = re.sub(r'`include\s+"([^"\n]+)"', include, data)
+        if path.parent == can and path.name in ('can_registers.v', 'can_top.v', 'can_fifo.v'):
+            data = bind_can(path.name, data)
         if path == eth / 'rtl/axis_gmii_tx.v':
             # FPGA register initialization does not reset an ASIC flop. The
             # mapped frame pointer MSB otherwise remains X in the native PDK
@@ -89,8 +108,11 @@ def prepare(profile='base'):
     dest.parent.mkdir(exist_ok=True)
     dest.write_text(text + '\n`default_nettype wire\n')
     dest.with_suffix('.json').write_text(json.dumps({'profile': profile, 'pins': pins, 'inputs': hashes,
+        'project_inputs': {name: hashlib.sha256(path.read_bytes()).hexdigest()
+                           for name, path in project_sources(profile).items()},
         'adaptations': ['axis_gmii_tx: reset frame pointer, padding count and error for ASIC power-on',
-                       'Per-source keyword scopes: Verilog-2005 for CAN/SpaceWire/I2C, SystemVerilog-2012 for Ethernet parameter guards'],
+                       'Per-source keyword scopes: Verilog-2005 for CAN/SpaceWire/I2C, SystemVerilog-2012 for Ethernet parameter guards'] +
+                      (['CAN: generated banked byte offsets with pinned-literal and inverse-byte checks; upstream checkout unchanged'] if profile == 'full' else []),
         'bundle_sha256': hashlib.sha256(dest.read_bytes()).hexdigest()}, indent=2) + '\n')
     print(f'{dest}: {len(sources)} upstream RTL files, {len(hashes)} inputs')
     return dest

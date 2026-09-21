@@ -1877,11 +1877,11 @@ int main(void) {
     soc_if_write(SOC_I2C_BASE, SOC_I2C_EVENTS_OFF, 15);
 
 #ifdef SOC_LGPL_INTERFACES
-    soc_can_write(0, 1);
-    soc_can_write(31, 0x80);
-    soc_can_write(6, 0x13);
-    soc_can_write(7, 0x7f);
-    ok &= soc_can_read(6) == 0x13 && soc_can_read(7) == 0x7f;
+    soc_can_write(SOC_CAN_COMMON_MODE_OFF, 1);
+    soc_can_write(SOC_CAN_COMMON_CDR_OFF, 0x80);
+    soc_can_write(SOC_CAN_COMMON_BTR0_OFF, 0x13);
+    soc_can_write(SOC_CAN_COMMON_BTR1_OFF, 0x7f);
+    ok &= soc_can_read(SOC_CAN_COMMON_BTR0_OFF) == 0x13 && soc_can_read(SOC_CAN_COMMON_BTR1_OFF) == 0x7f;
 #endif
     puts_("interface CPU/pin/IRQ check: "); puts_(ok ? "PASS\n" : "FAIL\n");
     check(31, ok);

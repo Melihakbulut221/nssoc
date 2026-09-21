@@ -657,3 +657,15 @@ source freshness checked separately. This is an inventory and acceptance
 requirement, not a claim that the currently running complete sweep has passed.
 The ten new UART/PnP/timer tasks have their own
 [measured evidence](evidence/peripheral-formal-20260920.json).
+
+
+**Re-counted 2026-09-21 after real-codec scrub integration [fact].**
+`hw/soc/formal` declares **113 tasks across 26 jobs**. Four new mandatory
+storage/scrub tasks prove and cover the real codec at both SYNPRE settings;
+[their measured results](evidence/regfile-scrub-complete-20260921.json) include six reachable mutation controls.
+The SoC sweep requires 107 tasks, retaining six historical exclusions;
+with the unchanged 54 pilot tasks it requires 161 fresh PASS verdicts.
+Earlier completed 157-task hosted sweeps predate these four tasks and are
+not re-labelled as 161-task results. This correction also resolves the
+stale inventory detected by the hosted `test_roadmap_is_current` guard at
+`1d99a78`; the failing run remains recorded as a failure.

@@ -70,7 +70,9 @@ def collect(ibex_replay, interface_replay, output):
                   'prepare_interfaces.prepare(base) and prepare(full) with SOC pointing to a fresh scratch root and read-only ext symlink'],
               'replays_byte_identical': True,
               'transform_sha256': {str(p.relative_to(ROOT)): sha(p) for p in
-                  [soc / 'flow/sv2v_ibex.sh', soc / 'flow/prepare_interfaces.py']},
+                  [soc / 'flow/sv2v_ibex.sh', soc / 'flow/prepare_interfaces.py',
+                   ROOT / 'regmap/can.yaml', ROOT / 'regmap/generate_can.py',
+                   ROOT / 'regmap/generate_peripherals.py']},
               'directories': [], 'files': files,
               'archive': {'file': archive.name, 'bytes': archive.stat().st_size, 'sha256': sha(archive)},
               'component_notices': {'file': notice.name, 'sha256': sha(notice)}}
