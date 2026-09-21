@@ -60,3 +60,22 @@ Reading this record is not a re-execution of those commands.
 | `submission-6x2` | `hw/openlane/pilot_ihp/runs` | the shuttle submission |
 | `submission-6x2-gated` | `hw/openlane/pilot_ihp/runs` | the shuttle submission with the checkers bound |
 | `trial-03-signoff` | `hw/openlane/aer_fifo/runs` | the earlier AER FIFO sign-off |
+
+## Standalone documentation site publication
+
+`python3 scripts/build_docs.py --strict --out _site` requires a Git checkout.
+It reads the current working-tree versions of tracked files; stage a new
+publication asset before building. The main corpus and linked API Markdown
+are rendered as HTML. Explicitly linked tracked files are copied below
+`files/` with their repository paths preserved. `manifest.json` records their
+byte counts and SHA256 hashes, and the count/result of emitted local file-link
+checks. SPDX notices inside copied sources remain byte-identical; `REUSE.toml`,
+`LICENSES.md`, licence texts and associated `.license` sidecars accompany them.
+
+Untracked/ignored files, directories, symlinks and paths escaping the checkout
+are rejected. Each copied asset is limited to 16 MiB, with a 64 MiB total
+budget. A new large artifact needs a reviewed publication plan; a missing
+file is never replaced with a success placeholder. Remote URLs are not fetched
+or certified. JSON strings referring to raw local runs are evidence metadata,
+not automatically published artifacts. Neither URL fragments nor the external
+binary recovery obligations are closed by the local file-target check.
