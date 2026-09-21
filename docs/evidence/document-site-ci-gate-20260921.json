@@ -1,7 +1,7 @@
 {
   "date": "2026-09-21",
   "parent_head": "4302d46f1218eebd364ec2b24e7156a2726919e2",
-  "status": "PASS_FOR_CI_GATE_CORRECTION_REQUIRES_NEW_CLEAN_REPLAY",
+  "status": "PASS_FOR_DELIVERED_DOCUMENTATION_CI_GATE",
   "source_sha256": {
     "scripts/ci_gate_docs.py": "e0074ac6159ba24f09d0fa8ab998aa4c60024a6c7e91aeb57d28db1591d222bd",
     "scripts/build_docs.py": "20dccead58788f3b2aebfc374aa551dced05897efb0e560c9fe91b864dfe5aa3",
@@ -55,5 +55,29 @@
       "sha256": "70a6dddc78ec1aeb2516e0f57e02cd185cfb359a8958263bcf82641dd0a9d719"
     }
   },
-  "remaining": "A new clean remote replay and hosted Pandoc gate must complete before claiming delivered aggregate CI PASS. Physical bootstrap work is separate."
+  "remaining": "Documentation CI correction reproduced locally and in hosted Pandoc/builtin jobs. All product and separate hardware acceptance gates remain independent.",
+  "earlier_status": "PASS_FOR_CI_GATE_CORRECTION_REQUIRES_NEW_CLEAN_REPLAY",
+  "delivered_replay": {
+    "head": "c830d72852acc918b91d3ad6b327ba64a6da0d9c",
+    "fresh_record": "docs/evidence/fresh-clone-c830d72-20260921.json",
+    "hosted_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35550659413",
+    "hosted_checks_job": 106184713170,
+    "hosted_gate_counts": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 2
+    },
+    "hosted_pytest_counts": {
+      "passed": 1125,
+      "skipped": 113,
+      "failed": 0
+    },
+    "pandoc_gate": "PASS",
+    "builtin_gate": "PASS",
+    "hosted_log": {
+      "path": "hw/soc/out/external-review-20260919/hosted-c830d72-checks.log",
+      "sha256": "8e09bb3624610e65494ece9e7af520a046686af0e630f9634ea6eaf4ba5cc94a"
+    },
+    "scope": "checks job only; separate long hardware/formal/native jobs are not inferred complete."
+  }
 }

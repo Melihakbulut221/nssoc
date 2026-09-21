@@ -38,7 +38,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.2 | UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures | PARTIAL. Ten new UART/timer/PnP formal tasks pass, including unbounded proofs and the shipped 32/16-bit timer widths; five mutated designs produce reachable counterexamples. Direct serial-master tests pass at HALF=2/3/7; direct TMR test covers 339 single storage-bit upsets plus a two-replica negative control. RX now has pin-driven tests and real-CPU receive/IRQ/WFI validation; see docs/97. Its final layout, broader FI/coverage and other requested work remain open. |
 | 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | DONE for the defined lint gate and nettype discipline. Both base/full array and SRAM/logic-ROM/SYNPRE profiles pass exact diagnostic inventories; 20 owned width warnings are removed. Generated ROM diagnostics are attributed to the authored template. Frozen/upstream warnings remain recorded technical debt, not signoff waivers; see the dated physical-source extension below. |
 | 3.4 | REUSE compliance, upstream IHP notices, generated licence inventory | DONE for current distribution checks. REUSE 6.2.0 passes with zero missing licences or invalid expressions; IHP aggregate notices and generated component inventory are retained. Source-bound publication checks accompany the latest energy-tool record (965 covered files). Live counts are generated in LICENSES.md and required in CI; this is compliance checking, not patent clearance. |
-| 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and publishes referenced assets and API pages with checked local file targets. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
+| 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and publishes referenced assets and API pages with checked local file targets. The current datasheet contract is reconciled in docs/60 section 0.4, with prior text preserved and a frozen-pilot scope note in docs/21. The errata index links the original corrections and reproduction paths. Broader index claim reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
 | 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
@@ -462,3 +462,26 @@ proof both match the tracked inputs. The updated
 900-second timeout and earlier incomplete publication status. Both previously
 missing tasks now have local PASS evidence. The clean 157-task aggregate, six
 historical non-closing obligations and whole-core/real-codec proofs remain open.
+
+Datasheet revision 0.3 adds a current contract to docs/60 section 0.4, retaining
+every earlier line. It distinguishes profile-dependent interfaces, core ports
+from package pins, protected RAM/ROM capacity, the actual `(40,32)` register
+codec, clock enables, HAL capabilities and bounded versus unbounded proofs.
+The eight M-extension instructions and whole-core `reg_ch0` remain unclosed;
+the abstract-codec result is explicitly separate. Docs/21 now points SoC
+readers to that contract while preserving the frozen pilot's scope. The
+validation command `.venv/bin/python -m pytest -q sw/tests/test_doc_links.py
+sw/tests/test_documents_are_rendered.py` passes **114 tests**; no RTL or physical
+acceptance result is changed by this documentation reconciliation.
+
+The subsequent clean replay of `c830d72` passes **1,236 Python tests**, two
+explicit skips and zero failures, with **18 front-door passes**, zero failures
+and three skips. The optional flow checker now reports one absent project-local
+interpreter instead of probing six unavailable historical run trees; no physical
+check became a pass. [The clean revision record](evidence/fresh-clone-c830d72-20260921.json)
+preserves the complete commands and skip reasons. The independent hosted
+`checks` job also passes both **Pandoc and built-in site gates**, with 19
+front-door passes/two skips and 1,125 Python passes/113 environment skips.
+Those hosted skips remain explicit; the separate hardware/native/formal jobs
+are not inferred complete. This closes the documentation CI integration failure
+recorded above, while retaining the failed `4302d46` result.
