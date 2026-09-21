@@ -77,3 +77,31 @@ Shell controls verify project paths from a different working directory, paths
 with spaces, explicit overrides, environment opt-in and missing tools. They do
 not run placement/routing, establish AppImage host compatibility or reproduce
 historical timing. The complete physical acceptance obligations remain docs/92.
+
+## 4. Independent devshell / IHP integration job
+
+The `physical-tools` workflow uses a fresh Ubuntu 22.04 runner, verifies the
+same x86-64 AppImage and executes `scripts/check_flow_smoke.py` inside it.
+The script requires LibreLane 3.0.5 and the physical tool executables, records
+their identities, installs the full IHP PDK at the package's exact pin into a
+fresh project directory, then runs the upstream `spm` example with IHP. It
+retains the flow directory instead of using the upstream smoke command that
+deletes its outputs. This follows the upstream release's
+[AppImage command invocation](https://github.com/librelane/librelane/blob/3.0.5/.github/workflows/ci.yml).
+
+```sh
+# Run only after the checksum check above and with enough free PDK/run storage.
+hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python3 scripts/check_flow_smoke.py
+```
+
+Existing output/PDK paths are refused. Nonzero commands, a wrong enabled PDK,
+or absent/empty final GDS, DEF or netlist views fail the check. JSON/log receipts
+survive both success and failure. CI uploads those diagnostics and view hashes;
+it does not copy the PDK into Git. The workflow runs when its installer/runner
+changes, with a separate concurrency group from long SoC native/formal jobs.
+
+The runner's twelve failure-path fixtures and the sixteen installer/environment
+controls pass locally. Those fixtures do not download the image or run a real
+physical flow. Hosted installation/SPM acceptance is pending until its actual
+receipt is collected. Even a passing SPM flow would cover this tool/PDK example,
+not SoC timing/LVS, the frozen pilot, or another host architecture.
