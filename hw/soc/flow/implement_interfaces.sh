@@ -11,7 +11,13 @@ OUT="$SOC_DIR/out/$TAG"
 [ ! -e "$OUT" ] || { echo "Refusing to overwrite $OUT" >&2; exit 2; }
 mkdir -p "$OUT"
 export SOC_INTERFACE_PROFILE=${SOC_INTERFACE_PROFILE:-base}
-python3 "$SOC_DIR/flow/prepare_interfaces.py" --profile "$SOC_INTERFACE_PROFILE"
+# Match the Make entrypoint: full CAN preparation imports the declared PyYAML
+# dependency from the project environment; honor an explicit interpreter.
+interface_python=${INTERFACE_PYTHON:-${PYTHON:-python3}}
+if [ -z "${INTERFACE_PYTHON:-}" ] && [ -x "$ROOT/.venv/bin/python" ]; then
+    interface_python="$ROOT/.venv/bin/python"
+fi
+"$interface_python" "$SOC_DIR/flow/prepare_interfaces.py" --profile "$SOC_INTERFACE_PROFILE"
 python3 - "$ROOT" "$OUT.inputs.json" <<'PY'
 import hashlib, json, os, pathlib, sys
 root, out = map(pathlib.Path, sys.argv[1:])

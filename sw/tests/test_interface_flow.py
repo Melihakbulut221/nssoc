@@ -119,3 +119,38 @@ def test_native_resizer_rejects_truncation_before_database_load(flow, step_name,
         assert 'DATABASE_READ' in result.stdout
         assert 'ARGS -setup -max_iterations 600' in result.stdout
     assert script.read_text() == original
+
+
+@pytest.mark.parametrize('selection,code', [('project', 74), ('override', 75),
+                                          ('fallback', 73), ('missing-override', 127)])
+def test_direct_layout_preparation_selects_python_before_any_synthesis(tmp_path, selection, code):
+    import os
+    # Run the actual shell entrypoint in an isolated project. The selected
+    # interpreter records its arguments then deliberately stops preparation;
+    # neither synthesis nor layout can run in this test.
+    script = tmp_path / 'hw/soc/flow/implement_interfaces.sh'
+    script.parent.mkdir(parents=True)
+    shutil.copyfile(ROOT / 'hw/soc/flow/implement_interfaces.sh', script)
+    project_python = tmp_path / '.venv/bin/python'
+    fallback_python = tmp_path / 'bin/python3'
+    override_python = tmp_path / 'explicit-python'
+    for path, status in [(fallback_python, 73), (project_python, 74), (override_python, 75)]:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$NSSOC_TEST_PY_LOG"\nexit '+str(status)+'\n')
+        path.chmod(0o755)
+    env = {k: v for k, v in os.environ.items() if k not in ('PYTHON', 'INTERFACE_PYTHON')}
+    log = tmp_path / 'interpreter.log'
+    env.update(PATH=str(fallback_python.parent)+os.pathsep+env['PATH'],
+               SOC_INTERFACE_PROFILE='full', NSSOC_TEST_PY_LOG=str(log))
+    if selection == 'fallback': project_python.unlink()
+    elif selection == 'override': env['INTERFACE_PYTHON'] = str(override_python)
+    elif selection == 'missing-override': env['INTERFACE_PYTHON'] = str(tmp_path/'absent-python')
+    result = subprocess.run(['bash', str(script), 'python-contract'], env=env,
+                            capture_output=True, text=True)
+    assert result.returncode == code, result.stdout + result.stderr
+    assert not (tmp_path/'hw/soc/out/python-contract.inputs.json').exists()
+    if selection == 'missing-override':
+        assert not log.exists()
+    else:
+        assert log.read_text().splitlines() == [str(script.parent/'prepare_interfaces.py'),
+                                               '--profile', 'full']

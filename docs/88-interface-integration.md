@@ -382,7 +382,8 @@ This does not replace the outstanding final-layout and full product gates.
 intentional BasicCAN/PeliCAN and reset/active aliases. `generate_can.py` emits
 `soc_can_regs.h`, Python dictionaries and named constants in the prepared CAN
 register/FIFO/top modules. The pinned upstream checkout stays unchanged.
-The Make preparation target uses the project Python environment installed by
+The Make and direct-layout preparation entrypoints use the project Python
+environment installed by
 `make setup`, or the provisioned `PYTHON` when no environment exists;
 `INTERFACE_PYTHON` can explicitly override it. Firmware and pin tests use
 these definitions; interface manifests separately

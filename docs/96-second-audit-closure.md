@@ -689,3 +689,15 @@ now agrees in both interpreters, still equals the pre-migration tests, and
 rejects an inserted failing assertion. All 19 CAN guard tests pass on each
 interpreter. This test-only follow-up comes after the 1,293-test run; it is
 not retrospectively added to that run's tested source identity.
+
+
+**Hosted general checks and direct entrypoint, 21 September 2026:**
+[The general GitHub job at `5cdcfe6`](evidence/delivery-validation-20260921.json)
+passes **1,178 tests / 115 explicit tool/environment skips**, and **19
+front-door gates / zero failures / two skips**. Long formal/hardware jobs
+remain separate. The direct layout shell entrypoint now selects the same
+project Python environment as Make for CAN's declared PyYAML dependency.
+Four isolated controls verify project selection, explicit override, fallback
+and rejection of a missing override, stopping before any synthesis/layout.
+All 35 flow/profile tests pass. This final shell-only follow-up does not
+claim a new physical run or close the legacy physical profile's limitations.
