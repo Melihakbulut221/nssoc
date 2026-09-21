@@ -41,7 +41,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and publishes referenced assets and API pages with checked local file targets. The current datasheet contract is reconciled in docs/60 section 0.4, with prior text preserved and a frozen-pilot scope note in docs/21. The errata index links the original corrections and reproduction paths. Broader index claim reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
-| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the banked CAN map now adds 70 semantic byte offsets with prepared-RTL/C/Python bindings and byte-identical firmware. Register bit fields and remaining firmware/coverage work stay open. See the separate records below. |
+| 3.8 | Single-source register offsets and bare-metal HAL | DONE for the requested register-offset generators and shared HAL. Thirteen word-oriented maps (113 offsets) and eight CAN banks (70 semantic byte offsets) provide RTL/C/Python bindings with independent ABI controls. All eight boot/application/FI/probe programs use the shared HAL; the final three probe migrations pass real-CPU tests and 77 HAL/probe guards. Bit-field schema extensions and broader product firmware/fault qualification are not claimed. See the dated records below. |
 | 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope; a dedicated CI job is configured. Other-paper/thesis claims/build/freshness, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
@@ -634,3 +634,20 @@ snapshot remains available as the independent pre-migration reference.
 This closes the byte-offset portion of 3.8, not bit-field definitions, all
 firmware coverage, native-netlist testing of this revision or final physical
 and hardware qualification.
+
+
+**Remaining HAL consumers, 21 September 2026:**
+[Three final CPU probes](evidence/hal-remaining-probes-20260921.json) now use
+the shared exact-width MMIO, UART output and hexadecimal formatting functions.
+UART receive passes six serial frames and one IRQ/WFI wake in 3,246 cycles;
+external IRQ passes four input assertions and two WFI wakes in 5,144 cycles;
+Ethernet passes eight frames, 2,171 payload bytes and eight CRC checks in
+175,258 cycles. Every run has zero failure mask, expected signature and clean
+trap/alert/watchdog records. The 77 HAL and probe checker tests pass.
+
+The three application sizes remain 1,892 / 1,892 / 1,668 bytes respectively,
+but their bytes change: these are newly executed firmware tests, not an image
+identity claim. This completes the requested offset-generator/shared-library
+work in 3.8. Bit-field generation was not part of that audit acceptance;
+firmware security, hardware throughput, upset campaigns and final physical
+acceptance retain their separate product gates. No production RTL changed.

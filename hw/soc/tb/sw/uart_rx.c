@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // Real CPU/APB reception; GPIO is only the external peer's phase handshake.
 #include <stdint.h>
+#include "lib/soc_hal.h"
 #include "soc_reg_offsets.h"
 #include "soc_gpio.h"
 volatile uint32_t fi_phase, fi_sig, fi_mask, fi_rounds_done;
 extern volatile uint32_t irq_marker, irq_mcause, irq_count;
-static void wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
-static uint32_t rd(uint32_t a) { return *(volatile uint32_t *)a; }
+#define wr soc_write32
+#define rd soc_read32
 static uint32_t mip(void) { uint32_t v; __asm__ volatile("csrr %0,mip":"=r"(v)); return v; }
 static void peer(uint32_t phase) {
     wr(GPIO_OUTPUT, phase);
@@ -16,8 +17,8 @@ static void peer(uint32_t phase) {
     if (!n) fi_mask |= 0x100u;
 }
 static void check(uint32_t ok, uint32_t bit) { if (!ok) fi_mask |= bit; }
-static void putc_(char c) { while (!(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&4u)) {} wr(SOC_UART0_BASE + SOC_UART_DATA_OFF,c); }
-static void hex(uint32_t x) { const char *d="0123456789abcdef"; for(int n=28;n>=0;n-=4) putc_(d[(x>>n)&15]); }
+#define putc_ soc_uart_putc
+static void hex(uint32_t value) { soc_uart_hex32(value, 0); }
 int main(void) {
     wr(SOC_UART0_BASE + SOC_UART_SCALER_OFF, 0); wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF, 3); wr(GPIO_DIR, 15);
     __asm__ volatile("csrc mstatus,%0; csrw mie,zero"::"r"(8u):"memory");
