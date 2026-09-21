@@ -511,3 +511,9 @@ retains **155 PASS, two MISSING**, despite zero returns from both Makefile
 stages. The later required-task correction and local depth-40 result do not
 retroactively turn this older run into a pass. Newer hosted native/formal
 results remain separate until complete.
+
+The [register migration record](evidence/peripheral-registers-20260921.json)
+also covers 47 remaining I2C address literals in auxiliary interface tests.
+Expanding generated names back to numbers gives the identical Python AST.
+The actual pin-level suites pass 8 tests / 4 profile skips in base and
+11 tests / 1 profile skip in full. CAN banked offsets and fields remain open.

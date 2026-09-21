@@ -210,30 +210,30 @@ async def i2c_write_read_repeated_start_and_nack(d):
     b = Bus(d)
     await b.reset()
     peer = I2CPeer(d); b.peer = peer
-    await b.wr(0, 4, 8)
-    await b.wr(0, 8, 0x52)
-    await b.wr(0, 20, 15)
-    await b.wr(0, 16, 0x39)
+    await b.wr(0, I2C['PRESCALE'], 8)
+    await b.wr(0, I2C['ADDRESS'], 0x52)
+    await b.wr(0, I2C['IRQEN'], 15)
+    await b.wr(0, I2C['DATA'], 0x39)
     # WRITE+START without STOP, followed by a repeated-start READ+STOP.
-    await b.wr(0, 12, 6)
-    await b.poll(0, 0, 1, 0)
+    await b.wr(0, I2C['COMMAND'], 6)
+    await b.poll(0, I2C['STATUS'], 1, 0)
     assert peer.received == [0x39]
     assert peer.starts == 1 and peer.stops == 0
-    assert (await b.rd(0, 24)) & 1
-    await b.wr(0, 24, 15)
-    await b.wr(0, 12, 13)
-    await b.poll(0, 0, 1, 0)
-    assert await b.rd(0, 16) == 0xa6
+    assert (await b.rd(0, I2C['EVENTS'])) & 1
+    await b.wr(0, I2C['EVENTS'], 15)
+    await b.wr(0, I2C['COMMAND'], 13)
+    await b.poll(0, I2C['STATUS'], 1, 0)
+    assert await b.rd(0, I2C['DATA']) == 0xa6
     assert peer.starts == 2 and peer.stops == 1
-    await b.wr(0, 24, 15)
+    await b.wr(0, I2C['EVENTS'], 15)
     await b.step(2)
     assert not int(d.irq.value) & 1
-    await b.wr(0, 8, 0x53)  # unaddressed device NACK
-    await b.wr(0, 12, 14)
-    await b.poll(0, 0, 1, 0)
-    assert (await b.rd(0, 24)) & 2
+    await b.wr(0, I2C['ADDRESS'], 0x53)  # unaddressed device NACK
+    await b.wr(0, I2C['COMMAND'], 14)
+    await b.poll(0, I2C['STATUS'], 1, 0)
+    assert (await b.rd(0, I2C['EVENTS'])) & 2
     assert int(d.irq.value) & 1
-    await b.rd(0, 16, error=True)
+    await b.rd(0, I2C['DATA'], error=True)
 
 
 @cocotb.test()
@@ -241,34 +241,34 @@ async def i2c_stretch_timeout_abort_and_invalid_access(d):
     b = Bus(d)
     await b.reset()
     peer = I2CPeer(d); b.peer = peer
-    await b.wr(0, 4, 8)
-    await b.wr(0, 8, 0x52)
-    await b.wr(0, 16, 0x73)
-    await b.wr(0, 12, 14)
+    await b.wr(0, I2C['PRESCALE'], 8)
+    await b.wr(0, I2C['ADDRESS'], 0x52)
+    await b.wr(0, I2C['DATA'], 0x73)
+    await b.wr(0, I2C['COMMAND'], 14)
     await b.step(100)
     d.scl_hold_i.value = 1
     await b.step(200)
-    assert await b.rd(0, 0) & 1
-    await b.wr(0, 12, 14, error=True)
-    await b.wr(0, 4, 5, error=True)
+    assert await b.rd(0, I2C['STATUS']) & 1
+    await b.wr(0, I2C['COMMAND'], 14, error=True)
+    await b.wr(0, I2C['PRESCALE'], 5, error=True)
     d.scl_hold_i.value = 0
-    await b.poll(0, 0, 1, 0)
+    await b.poll(0, I2C['STATUS'], 1, 0)
     assert peer.received == [0x73]
-    await b.wr(0, 24, 15)
+    await b.wr(0, I2C['EVENTS'], 15)
     d.scl_hold_i.value = 1
-    await b.wr(0, 12, 14)
-    await b.poll(0, 0, 1, 0, count=5000)
-    assert (await b.rd(0, 24)) & 8
+    await b.wr(0, I2C['COMMAND'], 14)
+    await b.poll(0, I2C['STATUS'], 1, 0, count=5000)
+    assert (await b.rd(0, I2C['EVENTS'])) & 8
     d.scl_hold_i.value = 0
     await b.step(10)
-    await b.wr(0, 12, 14)
-    await b.wr(0, 12, 16)  # explicit abort
-    assert not (await b.rd(0, 0) & 1)
+    await b.wr(0, I2C['COMMAND'], 14)
+    await b.wr(0, I2C['COMMAND'], 16)  # explicit abort
+    assert not (await b.rd(0, I2C['STATUS']) & 1)
     await b.step(10)
     assert int(d.scl.value) and int(d.sda.value)
-    await b.wr(0, 4, 0, error=True)
+    await b.wr(0, I2C['PRESCALE'], 0, error=True)
     await b.rd(0, 0x100, error=True)
-    await b.wr(0, 8, 0, strobe=1, error=True)
+    await b.wr(0, I2C['ADDRESS'], 0, strobe=1, error=True)
 
 
 @cocotb.test(skip=not FULL_PROFILE)
@@ -319,8 +319,8 @@ async def reset_aborts_serial_transactions(d):
     await b.wr(1, SPI['DIV'], 100)
     await b.wr(1, SPI['DATA'], 0x59)
     assert int(d.spi_cs.value) == 2
-    await b.wr(0, 4, 100)
-    await b.wr(0, 12, 14)
+    await b.wr(0, I2C['PRESCALE'], 100)
+    await b.wr(0, I2C['COMMAND'], 14)
     await b.step(10)
     d.rst_ni.value = 0
     await b.step(8)
@@ -329,8 +329,8 @@ async def reset_aborts_serial_transactions(d):
     d.rst_ni.value = 1
     await b.step(8)
     assert await b.rd(1, SPI['STATUS']) == 0
-    assert await b.rd(0, 24) == 0
-    assert not (await b.rd(0, 0) & 1)
+    assert await b.rd(0, I2C['EVENTS']) == 0
+    assert not (await b.rd(0, I2C['STATUS']) & 1)
     if FULL_PROFILE:
         assert await b.rd(2, SPW['CTRL']) == 4
     else:
@@ -457,22 +457,22 @@ async def i2c_burst_read_write_and_final_nack(d):
     await b.reset()
     peer = I2CPeer(d, read_data=0x69)
     b.peer = peer
-    await b.wr(0, 4, 8)
-    await b.wr(0, 8, 0x52)
+    await b.wr(0, I2C['PRESCALE'], 8)
+    await b.wr(0, I2C['ADDRESS'], 0x52)
     payload = [0x19, 0x80, 0xff, 0x00]
     for i, value in enumerate(payload):
-        await b.wr(0, 16, value)
-        await b.wr(0, 12, 2 | (4 if i == 0 else 0))
-        await b.poll(0, 0, 1, 0)
+        await b.wr(0, I2C['DATA'], value)
+        await b.wr(0, I2C['COMMAND'], 2 | (4 if i == 0 else 0))
+        await b.poll(0, I2C['STATUS'], 1, 0)
     assert peer.received == payload
     assert peer.starts == 1 and peer.stops == 0
     for i in range(4):
-        await b.wr(0, 12, 1 | (4 if i == 0 else 0) | (8 if i == 3 else 0))
-        await b.poll(0, 0, 1, 0)
-        assert await b.rd(0, 16) == 0x69
+        await b.wr(0, I2C['COMMAND'], 1 | (4 if i == 0 else 0) | (8 if i == 3 else 0))
+        await b.poll(0, I2C['STATUS'], 1, 0)
+        assert await b.rd(0, I2C['DATA']) == 0x69
     assert peer.starts == 2 and peer.stops == 1
     assert peer.master_acks == [True, True, True, False]
-    assert not (await b.rd(0, 24) & 10), 'unexpected NACK or timeout'
+    assert not (await b.rd(0, I2C['EVENTS']) & 10), 'unexpected NACK or timeout'
 
 
 @cocotb.test(skip=not FULL_PROFILE)
