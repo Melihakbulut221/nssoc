@@ -89,6 +89,7 @@
 
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 #include "soc_npucfg.h"
 
@@ -210,22 +211,13 @@ volatile uint32_t fi_bst_tmr;  /* BST_NPUTMR: cause-bank votes masked */
 static uint16_t got[GOT_N];
 
 // -------------------------------------------------------------------
-static void uart_init(void) {
-  *(volatile uint32_t *)UART_SCALER = UART_SCALER_VAL;
-  *(volatile uint32_t *)UART_CTRL   = UART_CTRL_TE;
-}
+static void uart_init(void) { soc_uart_init(UART_SCALER_VAL, UART_CTRL_TE); }
 
-static void putc_(char c) {
-  while (!(*(volatile uint32_t *)UART_STATUS & UART_STATUS_TE)) { }
-  *(volatile uint32_t *)UART_DATA = (uint32_t)c;
-}
+#define putc_ soc_uart_putc
 
-static void puts_(const char *s) { while (*s) putc_(*s++); }
+#define puts_ soc_uart_puts
 
-static void puthex(uint32_t v) {
-  const char *d = "0123456789abcdef";
-  for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xfu]);
-}
+static void puthex(uint32_t v) { soc_uart_hex32(v, 0); }
 
 // The kick. Keyed, because soc_wdog.v W5 ignores every write that is
 // not -- a runaway core cannot pet this watchdog by accident.
@@ -261,8 +253,8 @@ static uint32_t npu_rd(uint32_t off) {
   wdog_kick();
   return v;
 }
-static uint32_t cfg_rd(uint32_t a) { return *(volatile uint32_t *)a; }
-static void cfg_wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
+#define cfg_rd soc_read32
+#define cfg_wr soc_write32
 
 // Bit numbers in fi_mask. One per self-check, so a failure says which,
 // and so the campaign can separate the classes docs/16 section 1.6

@@ -102,7 +102,7 @@ CFLAGS=(-march=rv32imc_zicsr_zifencei -mabi=ilp32 -mcmodel=medlow
 # no MMU, not of this link; the PMP is where execution permission is
 # expressed on this core (test_ibex.c's HAVE_PMP checks).
 "$GCC" "${CFLAGS[@]}" -Wl,--no-warn-rwx-segments -T "$SW/link_app.ld" "$@" \
-  "$SW/crt0.S" "$SW/test_ibex.c" \
+  "$SW/crt0.S" "$SW/test_ibex.c" "$SW/lib/soc_hal.c" \
   -o "$OUT/app.elf" -lgcc
 
 "$OBJDUMP" -d -S "$OUT/app.elf" > "$OUT/app.dis"
@@ -122,7 +122,7 @@ python3 "$SOC_DIR/flow/gen_boot_image.py" "$OUT" \
 
 # ---- 3. the loader, into the boot ROM -------------------------------
 "$GCC" "${CFLAGS[@]}" -T "$SW/link_boot.ld" "$@" \
-  "$SW/boot_crt0.S" "$SW/boot.c" \
+  "$SW/boot_crt0.S" "$SW/boot.c" "$SW/lib/soc_hal.c" \
   -o "$OUT/test_soc.elf" -lgcc
 
 "$OBJDUMP" -d -S "$OUT/test_soc.elf" > "$OUT/test_soc.dis"

@@ -111,6 +111,7 @@
 
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 #include "soc_qspi.h"
 #include "soc_scrub.h"
@@ -139,19 +140,12 @@ extern volatile uint32_t boot_fault_cause, boot_fault_pc, boot_fault_count;
    part of the sweep's correctness a C program can still observe. */
 extern char __bss_start[], __boot_stack_top[], __boot_private[];
 
-static inline uint32_t rd(uint32_t a) { return *(volatile uint32_t *)a; }
-static inline void wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
+#define rd soc_read32
+#define wr soc_write32
 
-static void putc_(char c) {
-  while (!(rd(UART_STATUS) & UART_STATUS_TE)) { }
-  wr(UART_DATA, (uint32_t)c);
-}
-static void puts_(const char *s) { while (*s) putc_(*s++); }
-static void puthex(uint32_t v) {
-  const char *d = "0123456789abcdef";
-  putc_('0'); putc_('x');
-  for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xf]);
-}
+#define putc_ soc_uart_putc
+#define puts_ soc_uart_puts
+static void puthex(uint32_t v) { soc_uart_hex32(v, 1); }
 
 /* ---- the watchdog ---------------------------------------------------
  *

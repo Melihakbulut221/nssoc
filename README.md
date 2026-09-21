@@ -13,7 +13,7 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 |---|---|---|
 | Silicon / product | No silicon or radiation qualification; product gates open | [Acceptance contract](docs/92-product-acceptance.md) |
 | Frozen pilot | TTIHP26b submission; source tree frozen | [Freeze contract](docs/34-pilot-freeze.md) |
-| Python regression | 1131 pass, 2 skip; commit `328021c` | [Exact revision and command](docs/evidence/fresh-clone-328021c-20260921.json) |
+| Python regression | 1158 pass, 2 skip; commit `3b20b20` | [Exact revision and command](docs/evidence/fresh-clone-3b20b20-20260921.json) |
 | Peripheral checks | 10/10 new formal tasks; 6/6 native RAM profiles | [Formal scope](docs/evidence/peripheral-formal-20260920.json); [RAM + negative control](docs/evidence/hosted-memory-parity-20260920.json) |
 | Independent native boot | PASS at `9ffe83b`; functional four-state simulation | [Hosted result and retained prior failure](docs/evidence/hosted-native-interfaces-20260921.json) |
 | Local native correction | PASS: 28 checks, 653,726 cycles; firmware `100cad7` | [Same hosted netlist, verified serial initialization](docs/evidence/npu-native-startup-20260921.json) |

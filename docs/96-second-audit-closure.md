@@ -41,7 +41,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and copies referenced local images. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
-| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Twelve block maps (105 offsets) now generate RTL constants, C and Python definitions with an independent ABI guard. Both firmware profiles remain byte-identical. GPTIMER's dynamic layout, the upstream CAN byte map and common HAL remain open; see the migration record below. |
+| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Twelve block maps (105 offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; GPTIMER's dynamic layout, the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
 | 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. CITATION.cff identifies the source repository and author without inventing a release or DOI. Other deliverables remain open; no release is published while product gates fail. The existing mirror contract still governs publication. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
@@ -379,3 +379,28 @@ and eight skips. The additional skip explicitly names the unprepared lint
 boundary. [The revision record](evidence/fresh-clone-328021c-20260921.json)
 preserves the exact commands and results. The register migration's working-tree
 checks are separate from that earlier delivered snapshot.
+
+The subsequent [shared HAL](evidence/soc-hal-20260921.json) removes duplicated
+console and basic MMIO code from the bootloader, SoC bring-up application and
+three FI workloads. Interface polling and CAN byte access use its common
+primitives. Bounded UART operations perform no transfer on a zero budget or
+timeout; compiled host mutations verify those failure paths. Existing console
+callers retain their blocking/watchdog policy and hexadecimal formatting.
+The [API contract](../hw/soc/tb/sw/lib/README.md) states the ownership and timeout
+rules. Firmware images change in this step: the earlier byte-identity result
+applies only to the register-constant migration.
+
+Both actual CPU profiles pass **29 checks**, zero failure mask and watchdog
+stages **1/0/0**, with **669,731 base** and **675,757 full** cycles. All three FI
+programs also complete fault-free runs. Rebuilding and replaying their earlier
+`3b20b20` sources under the same hardware settings yields identical signatures,
+console hashes, trap/NMI and watchdog outcomes. The dense kernel has four
+stage-1 NMIs in both versions; that is not a zero-NMI claim or a new injection
+campaign. New firmware also passes both SRAM/logic-ROM lint profiles without
+changing the warning ledger. Its whole-SoC native and physical acceptance
+remain separate pending work.
+
+The clean remote replay of `3b20b20` completes **1,158 Python passes**, two
+explicit skips, zero failures, and **18 front-door passes**, zero failures and
+eight skips. [That revision record](evidence/fresh-clone-3b20b20-20260921.json)
+covers the register migration; the HAL has its own later checks above.

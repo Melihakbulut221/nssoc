@@ -36,7 +36,9 @@ that guard and firmware compatibility.
 
 GPTIMER's parameter-dependent timer/watchdog layout and the upstream CAN
 controller's banked byte map remain outside this first migration. Bit fields,
-access behavior, the common HAL and complete auxiliary-test deduplication also
-remain work items in audit 3.8. Reserved/unimplemented offsets in negative tests
+access behavior and complete auxiliary-test deduplication also remain work
+items in audit 3.8. Common access and console operations are now provided by
+the [bare-metal HAL](../../hw/soc/tb/sw/lib/README.md).
+Reserved/unimplemented offsets in negative tests
 are deliberately independent. This tooling does not establish protocol or
 physical compliance.

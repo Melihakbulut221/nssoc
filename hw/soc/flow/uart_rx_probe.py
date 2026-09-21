@@ -98,7 +98,8 @@ def prepare(output, corrupt_byte=False):
                SOC/'rtl/soc_top.v', SOC/'tb/sw/uart_rx.c', SOC/'tb/sw/crt0.S',
                SOC/'tb/tb_soc_fi.v', SOC/'tb/uart_rx_monitor.vh',
                SOC/'flow/fi_core.sh', SOC/'flow/build_sw_fi.sh',
-               *sorted((SOC/'tb/sw').rglob('*.h'))]
+               *sorted((SOC/'tb/sw').rglob('*.h')),
+               *sorted((SOC/'tb/sw/lib').glob('*.c'))]
     (output/'source-hashes.json').write_text(json.dumps(
         {str(p.relative_to(SOC.parents[1])): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}, indent=2)+'\n')
     (output/'prepared-hashes.json').write_text(json.dumps({

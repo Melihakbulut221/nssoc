@@ -80,6 +80,7 @@
 
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 
 // GRLIB APBUART, grip.pdf table 126, the same offsets test_ibex.c uses.
@@ -223,22 +224,13 @@ volatile uint32_t fi_bst_tmr;
 static uint8_t buf[BUF_N];
 
 // -------------------------------------------------------------------
-static void uart_init(void) {
-  *(volatile uint32_t *)UART_SCALER = UART_SCALER_VAL;
-  *(volatile uint32_t *)UART_CTRL   = UART_CTRL_TE;
-}
+static void uart_init(void) { soc_uart_init(UART_SCALER_VAL, UART_CTRL_TE); }
 
-static void putc_(char c) {
-  while (!(*(volatile uint32_t *)UART_STATUS & UART_STATUS_TE)) { }
-  *(volatile uint32_t *)UART_DATA = (uint32_t)c;
-}
+#define putc_ soc_uart_putc
 
-static void puts_(const char *s) { while (*s) putc_(*s++); }
+#define puts_ soc_uart_puts
 
-static void puthex(uint32_t v) {
-  const char *d = "0123456789abcdef";
-  for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xfu]);
-}
+static void puthex(uint32_t v) { soc_uart_hex32(v, 0); }
 
 // The kick. Keyed, because soc_wdog.v W5 ignores every write that is
 // not -- a runaway core cannot pet this watchdog by accident.

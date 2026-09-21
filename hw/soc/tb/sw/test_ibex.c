@@ -75,6 +75,7 @@
 #ifdef SOC_PLATFORM
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 #include "soc_npucfg.h"
 #include "soc_gpio.h"
@@ -113,19 +114,13 @@
 #define UART_SCALER_VAL 0u
 #endif
 
-static void uart_init(void) {
-  *(volatile uint32_t *)UART_SCALER = UART_SCALER_VAL;
-  *(volatile uint32_t *)UART_CTRL   = UART_CTRL_TE;
-}
+static void uart_init(void) { soc_uart_init(UART_SCALER_VAL, UART_CTRL_TE); }
 
 // Poll before writing. The minimal testbench's character port accepted a
 // byte every cycle; a real UART does not, and a driver that ignores that
 // drops most of its output. This is the only behavioural difference the
 // eleven original checks see.
-static void putc_(char c) {
-  while (!(*(volatile uint32_t *)UART_STATUS & UART_STATUS_TE)) { }
-  *(volatile uint32_t *)UART_DATA = (uint32_t)c;
-}
+#define putc_ soc_uart_putc
 #else
 #define PUTC_ADDR 0x00100000u
 #define HALT_ADDR 0x00100004u
@@ -167,6 +162,10 @@ extern volatile uint32_t irq_marker, irq_mcause, irq_count, nmi_count;
 extern char __pmp_buf[] __attribute__((aligned(64)));
 extern char trap_vectors[];
 
+#ifdef SOC_PLATFORM
+#define puts_ soc_uart_puts
+static void puthex(uint32_t v) { soc_uart_hex32(v, 1); }
+#else
 static void puts_(const char *s) { while (*s) putc_(*s++); }
 
 static void puthex(uint32_t v) {
@@ -174,6 +173,7 @@ static void puthex(uint32_t v) {
   putc_('0'); putc_('x');
   for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xf]);
 }
+#endif
 
 static uint32_t fails = 0;
 static uint32_t checks = 0;
@@ -271,8 +271,8 @@ static void npu_wr(uint32_t off, uint32_t v) {
 static uint32_t npu_rd(uint32_t off) {
   return *(volatile uint32_t *)NPU_NODE(0, off);
 }
-static uint32_t cfg_rd(uint32_t a) { return *(volatile uint32_t *)a; }
-static void cfg_wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
+#define cfg_rd soc_read32
+#define cfg_wr soc_write32
 
 /* Wait for the node to go idle. STATUS.BUSY is bit 0 (regmap/regmap.yaml
    through the generated header). */

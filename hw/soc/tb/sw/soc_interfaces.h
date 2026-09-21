@@ -5,18 +5,18 @@
 #include <stdint.h>
 #include "soc_memmap.h"
 #include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 
 /* Project register maps, not GRLIB-compatible. See docs/88. */
 static inline uint32_t soc_if_read(uint32_t base, uint32_t offset) {
-    return *(volatile uint32_t *)(uintptr_t)(base + offset);
+    return soc_read32((uintptr_t)(base + offset));
 }
 static inline void soc_if_write(uint32_t base, uint32_t offset, uint32_t value) {
-    *(volatile uint32_t *)(uintptr_t)(base + offset) = value;
+    soc_write32((uintptr_t)(base + offset), value);
 }
 static inline int soc_if_wait(uint32_t base, uint32_t offset,
                               uint32_t mask, uint32_t value, unsigned limit) {
-    while (limit--) if ((soc_if_read(base, offset) & mask) == value) return 0;
-    return -1;
+    return soc_wait32((uintptr_t)(base + offset), mask, value, limit);
 }
 static inline int soc_spi_byte(uint8_t tx, uint8_t *rx, unsigned limit) {
     if (soc_if_read(SOC_SPI_BASE, SOC_SPI_STATUS_OFF) & 1) return -1;
@@ -57,9 +57,9 @@ static inline int soc_i2c_byte(uint8_t address, int read, int stop,
 }
 /* SJA1000 byte registers; word accesses deliberately fault. */
 static inline uint8_t soc_can_read(unsigned offset) {
-    return *(volatile uint8_t *)(uintptr_t)(SOC_CAN_BASE + offset);
+    return soc_read8((uintptr_t)(SOC_CAN_BASE + offset));
 }
 static inline void soc_can_write(unsigned offset, uint8_t data) {
-    *(volatile uint8_t *)(uintptr_t)(SOC_CAN_BASE + offset) = data;
+    soc_write8((uintptr_t)(SOC_CAN_BASE + offset), data);
 }
 #endif
