@@ -1,0 +1,59 @@
+{
+  "date": "2026-09-21",
+  "parent_head": "4302d46f1218eebd364ec2b24e7156a2726919e2",
+  "status": "PASS_FOR_CI_GATE_CORRECTION_REQUIRES_NEW_CLEAN_REPLAY",
+  "source_sha256": {
+    "scripts/ci_gate_docs.py": "e0074ac6159ba24f09d0fa8ab998aa4c60024a6c7e91aeb57d28db1591d222bd",
+    "scripts/build_docs.py": "20dccead58788f3b2aebfc374aa551dced05897efb0e560c9fe91b864dfe5aa3",
+    "scripts/ci_local.sh": "0f3fe9390b9e831c843344190dd9b89c58cf0964b932e0fe626eb7d8b5094504",
+    "sw/tests/test_doc_ci_gate.py": "e7ac132364f4f834040d08cdc141fc272ccb7b29274f30d601125958ff2ea4bc"
+  },
+  "failed_clean_replay": {
+    "head": "4302d46f1218eebd364ec2b24e7156a2726919e2",
+    "python_passed": 1207,
+    "python_skipped": 2,
+    "python_failed": 0,
+    "frontdoor_passed": 17,
+    "frontdoor_failed": 1,
+    "frontdoor_skipped": 8,
+    "reason": "Site gate expected 105 main documents but builder correctly emitted 109 including linked API/licence pages.",
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-4302d46-ci.log",
+      "sha256": "4e60292c0d65c782a5449d362e6c5a43a47cdc6be0d3f4d4234803fc12542c10"
+    },
+    "xml": {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-4302d46-pytest.xml",
+      "sha256": "adf91c3071a00c386c3cfb97c304653eff1848a0f5b81ded5049f40bbfab61d8"
+    }
+  },
+  "failed_hosted_checks": {
+    "run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35549741278",
+    "job_id": 106182185506,
+    "failed_gates": [
+      "pandoc manifest document count",
+      "builtin manifest document count"
+    ],
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/hosted-4302d46-checks.log",
+      "sha256": "7c8b2cdf50702565bb6c558a7a6e92caeb6839e6ca18cc0da72266c5ccd8dbb6"
+    },
+    "scope": "Both site builds themselves completed; count gate failed. Other hardware jobs were still running at inspection."
+  },
+  "correction": {
+    "description": "Exact reachable corpus and page inventory; recheck emitted local files and copied asset sizes/hashes. No count threshold relaxed.",
+    "cli_tests_passed": 12,
+    "tests": {
+      "path": "hw/soc/out/external-review-20260919/docs-ci-gate-tests.log",
+      "sha256": "c7aa3ddf39cf9b86ad264d7889fb2fc88f296f01788c7e4a7fe3690bfc6869e4"
+    },
+    "frontdoor_passed": 3,
+    "frontdoor_failed": 0,
+    "frontdoor_skipped": 1,
+    "skip_reason": "pandoc absent locally",
+    "frontdoor_log": {
+      "path": "hw/soc/out/external-review-20260919/docs-ci-gate-frontdoor.log",
+      "sha256": "70a6dddc78ec1aeb2516e0f57e02cd185cfb359a8958263bcf82641dd0a9d719"
+    }
+  },
+  "remaining": "A new clean remote replay and hosted Pandoc gate must complete before claiming delivered aggregate CI PASS. Physical bootstrap work is separate."
+}

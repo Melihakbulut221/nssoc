@@ -430,3 +430,15 @@ the existing documentation/status checks pass (**136 tests**). See the
 [publication record](evidence/document-site-links-20260921.json). Remote URL
 availability, fragment validity and paths embedded inside evidence JSON remain
 outside this file-target check; external evidence migration is still open.
+
+The clean replay of `4302d46` exposed a separate integration failure: its
+**1,207 Python tests pass** (two explicit skips), but the front-door site gate
+expects only 105 main documents and rejects the four new API/licence pages.
+Its local CI result is **FAIL: 17 passes, one failure, eight skips**; hosted CI
+also rejects both renderer gates for the same 109-versus-105 count. This does
+not invalidate the local file-target tests, but it prevents treating that
+revision as a clean CI pass. The gate now derives the complete reachable
+corpus, checks the exact page inventory and independently rechecks emitted
+links and asset hashes. Twelve direct CLI regression/negative tests pass.
+[The failure and correction record](evidence/document-site-ci-gate-20260921.json)
+preserves both failed runs; a new clean revision replay remains required.
