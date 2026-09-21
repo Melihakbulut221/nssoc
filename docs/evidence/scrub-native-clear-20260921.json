@@ -237,5 +237,52 @@
       "hw/soc/out/external-review-20260919/scrub-mask-reuse.log": "a158c10c01058503a5bc4a6d15478dcca83403057fb9b9378980363664e7bb0a",
       "hw/soc/out/external-review-20260919/scrub-mask-site.log": "facd7ddca44d94809228b91b7da56ed5dca0f6ca719cba7ee74bfb82888c609a"
     }
+  },
+  "whole_soc_counter_cone": {
+    "status": "PASS",
+    "scope": "Unchanged cell subgraphs extracted from the old and corrected whole-SoC mapped netlists. Clock, POR, event and decoded-clear boundaries only; no forcing storage, PDK edits or rewriting cells. This is a cone-level check, not a complete boot.",
+    "old_cells": 71,
+    "corrected_cells": 97,
+    "old_result": "FAIL: known clear retains X",
+    "corrected_result": "PASS: known clear produces zero after unknown-event poisoning",
+    "whole_native_diagnostic": "Old base netlist short-bound observation fails at 130096 cycles as expected; after the firmware clear RAM SEC is zero but DED retains X. It is not acceptance or a new completed full run.",
+    "artifacts": {
+      "hw/soc/out/external-review-20260919/extract_counter.py": {
+        "sha256": "8f825897de93cd177c0fd4d0bffa29066032798a7a94bd746dbfc343af8b13c8",
+        "bytes": 2325
+      },
+      "hw/soc/out/external-review-20260919/extract_corrected_counter.py": {
+        "sha256": "eaf3f9710cecbb6d3475a0704c424ce244e6ef42b5c7637df5dae326e7395dd3",
+        "bytes": 2413
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/actual-cone/cone.v": {
+        "sha256": "9c656a485250e741b5a4eaef12b6ef03c1d9a603f7649b6b518fbab467ac3108",
+        "bytes": 8943
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/actual-cone/run.log": {
+        "sha256": "37fbd5ee072ede2a05ee242bb958acdae61e1db00d2835c75ca7e951476f11bc",
+        "bytes": 222
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/corrected-cone/cone.v": {
+        "sha256": "77fe943ea9045f9d28e7fd424b5ac53f91c65a2992e033d2e6578c9c3bc027ee",
+        "bytes": 13800
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/corrected-cone/run.log": {
+        "sha256": "b60a13887a7e00edb3e702298d17e462c770bb52e86f127f4a67c9c286ad97e5",
+        "bytes": 192
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/result.json": {
+        "sha256": "c42d8332b987a40a704f4e9ae969e49486782eef8431cd917d644d5ad1db237f",
+        "bytes": 2288
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/bench.v": {
+        "sha256": "455a4ce18aa16a56a16f218189882bb1d5fad76b198ce21bc3c1181612254bc5",
+        "bytes": 12658
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/run.log": {
+        "sha256": "5d2bf57af672236d6df10860c59796c425098de34fa90427ca3036b11ad7db7a",
+        "bytes": 12565
+      }
+    }
   }
 }

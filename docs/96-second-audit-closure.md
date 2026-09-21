@@ -548,3 +548,17 @@ priority, saturation and reset policy. Twelve existing RTL tests, four unchanged
 formal tasks and 64 runner/register/lint guards pass. All four exact warning
 inventories remain unchanged. New base/full whole-SoC native acceptance is
 pending in its own CI workflow; this is not final physical or product closure.
+
+The [thesis distribution correction](evidence/thesis-distribution-20260921.json)
+adds chapter, figure and recipe dependencies to the PDF target and includes
+all eight chapters and figures in its source archive. Four tests exercise
+Make's rebuild decisions and inspect the actual tarball, including recursive
+TeX inputs and byte-identical graphics. This closes those two packaging defects;
+a fresh PDF build, all-paper claims and the rest of audit 3.9 remain open.
+
+A subsequent cone check uses the corrected **whole-SoC mapped netlist**, not
+only the standalone SCRUBCTL synthesis: its unchanged 97-cell DED-counter
+cone clears an unknown count to zero under the same boundary stimulus for
+which the original 71-cell cone fails. The short old-SoC observation also
+shows DED still unknown after the loader's clear. Both are appended to the
+same correction record; complete boot reruns are still independent gates.
