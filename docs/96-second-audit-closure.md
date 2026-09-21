@@ -670,3 +670,22 @@ correction or dropping the error report elaborate successfully and are rejected
 by the guard. All five relevant tests pass on each mapper. The initial broad
 regression and first historical-alias attempt remain recorded failures; broader
 current-source regression and final physical gates are separate results.
+
+
+**Complete local regression, 21 September 2026:**
+[The tested tree committed as `2fe5503`](evidence/local-regression-2fe5503-20260921.json)
+passes **1,293 Python tests, zero failures and zero skips** in 464.54 seconds
+with the pinned digital Yosys. All 1,072 tracked/staged input hashes stayed
+unchanged and the resulting commit tree exactly matches those inputs.
+This includes the CAN bank migration, remaining HAL consumers and corrected
+mapper guards. It is a prepared local run; the earlier clean-clone records,
+formal sweeps, native boot and physical evidence retain their separate scope.
+The codec/APB checks also pass with generic cells and no Liberty installation.
+
+The CAN commit's hosted Python 3.12 run separately exposed a formatting
+change in `ast.dump` relative to local Python 3.14. The
+[portable semantic fingerprint](evidence/can-ast-portability-20260921.json)
+now agrees in both interpreters, still equals the pre-migration tests, and
+rejects an inserted failing assertion. All 19 CAN guard tests pass on each
+interpreter. This test-only follow-up comes after the 1,293-test run; it is
+not retrospectively added to that run's tested source identity.

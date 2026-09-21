@@ -134,10 +134,26 @@ def normalized_pin_tests(text):
     functions = [node for node in ast.parse(text).body
                  if isinstance(node, ast.AsyncFunctionDef) and node.name in names]
     assert len(functions) == 2
-    return '\n'.join(ast.dump(Expand().visit(node), include_attributes=False) for node in functions)
+    def canonical(node):
+        # ast.dump changed empty-field formatting between Python 3.12/3.14.
+        # Serialize semantic nodes ourselves, ignoring only absent/empty
+        # optional fields and source locations, consistently on both versions.
+        if isinstance(node, ast.AST):
+            return {'node': type(node).__name__, **{
+                field: canonical(value) for field, value in ast.iter_fields(node)
+                if value is not None and value != []}}
+        if isinstance(node, list):
+            return [canonical(value) for value in node]
+        return node
+    return json.dumps([canonical(Expand().visit(node)) for node in functions], sort_keys=True)
 
 
 def test_existing_can_frames_change_only_constant_spellings():
-    actual = normalized_pin_tests((ROOT / 'hw/soc/tb/cocotb/test_soc_interfaces.py').read_text())
+    source = (ROOT / 'hw/soc/tb/cocotb/test_soc_interfaces.py').read_text()
+    actual = normalized_pin_tests(source)
     # Taken from the two pre-migration test ASTs after resolving old I2C[STATUS].
-    assert hashlib.sha256(actual.encode()).hexdigest() == '8a326b5a834315c03fa6b579e18e7024787955e1b5d1b20038f4cdebe850297f'
+    assert hashlib.sha256(actual.encode()).hexdigest() == '6e56a349e45a5f119d2665485ef3b9ca7837b649318fc091bea3d0f038f740e6'
+    anchor = 'async def can_two_node_standard_frame_and_byte_lanes(d):'
+    assert source.count(anchor) == 1
+    mutant = source.replace(anchor, anchor + '\n    assert False', 1)
+    assert normalized_pin_tests(mutant) != actual
