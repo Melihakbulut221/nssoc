@@ -19,14 +19,15 @@
 #define SOC_BOOT_H
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 
 /* ---- BOOTREG, hw/soc/rtl/soc_boot.v --------------------------------- */
 
-#define BOOT_BSTRAP (SOC_BOOTREG_BASE + 0x00u)  /* r   the sampled pins  */
-#define BOOT_BSTAT  (SOC_BOOTREG_BASE + 0x04u)  /* r   the boot counter  */
-#define BOOT_BRPT   (SOC_BOOTREG_BASE + 0x08u)  /* rw  the boot report   */
-#define BOOT_EPOCH  (SOC_BOOTREG_BASE + 0x0Cu)  /* rw  the epoch word    */
-#define BOOT_CRASH  (SOC_BOOTREG_BASE + 0x10u)  /* r   the faulting PC   */
+#define BOOT_BSTRAP (SOC_BOOTREG_BASE + SOC_BOOT_BSTRAP_OFF)  /* r   the sampled pins  */
+#define BOOT_BSTAT  (SOC_BOOTREG_BASE + SOC_BOOT_BSTAT_OFF)  /* r   the boot counter  */
+#define BOOT_BRPT   (SOC_BOOTREG_BASE + SOC_BOOT_BRPT_OFF)  /* rw  the boot report   */
+#define BOOT_EPOCH  (SOC_BOOTREG_BASE + SOC_BOOT_EPOCH_OFF)  /* rw  the epoch word    */
+#define BOOT_CRASH  (SOC_BOOTREG_BASE + SOC_BOOT_CRASH_OFF)  /* r   the faulting PC   */
 
 /* BSTRAP. The low sixteen bits are the pins; the high half is the
  * block's own description of itself. */

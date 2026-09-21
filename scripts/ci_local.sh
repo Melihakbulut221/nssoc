@@ -142,6 +142,7 @@ job_licence() {
         set -eu
         "$PY" regmap/generate.py --check
         "$PY" regmap/generate_memmap.py --check
+        "$PY" regmap/generate_peripherals.py --check
         "$PY" scripts/gen_tt_submission.py --check
         "$PY" scripts/spdx_check.py'
 

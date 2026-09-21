@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Pin-level protocol tests through APB; no force of internal RTL state."""
+from peripheral_registers import SPI, SPW, I2C
 import cocotb
 import os
 from cocotb.triggers import Timer
@@ -87,21 +88,21 @@ async def spi_all_modes_and_chip_selects(d):
     await b.reset()
     for mode in range(4):
         for cs in range(2):
-            await b.wr(1, 0, mode | (cs << 2) | 8)
-            await b.wr(1, 4, 3)
+            await b.wr(1, SPI['CTRL'], mode | (cs << 2) | 8)
+            await b.wr(1, SPI['DIV'], 3)
             for value in [0, 255, 0x81, 0x5a, 0xa5]:
-                await b.wr(1, 8, value)
+                await b.wr(1, SPI['DATA'], value)
                 assert int(d.spi_cs.value) == (1 if cs else 2)
-                await b.wr(1, 8, 0, error=True)
-                await b.poll(1, 12, 1, 0)
-                assert await b.rd(1, 8) == value
+                await b.wr(1, SPI['DATA'], 0, error=True)
+                await b.poll(1, SPI['STATUS'], 1, 0)
+                assert await b.rd(1, SPI['DATA']) == value
                 assert int(d.spi_cs.value) == 3
                 assert int(d.spi_sck.value) == (mode & 1)
                 assert int(d.irq.value) & 2
-                await b.wr(1, 12, 2)
+                await b.wr(1, SPI['STATUS'], 2)
                 assert not (int(d.irq.value) & 2)
-    await b.wr(1, 4, 0, error=True)
-    await b.wr(1, 0, 1, strobe=1, error=True)
+    await b.wr(1, SPI['DIV'], 0, error=True)
+    await b.wr(1, SPI['CTRL'], 1, strobe=1, error=True)
     await b.rd(1, 0x100, error=True)
 
 
@@ -109,37 +110,37 @@ async def spi_all_modes_and_chip_selects(d):
 async def spacewire_packets_timecodes_and_disconnect(d):
     b = Bus(d)
     await b.reset()
-    await b.wr(2, 0, 3)
-    await b.wr(5, 0, 3)
-    await b.poll(2, 4, 4, 4)
-    await b.poll(5, 4, 4, 4)
-    await b.wr(5, 20, 0x3f)
+    await b.wr(2, SPW['CTRL'], 3)
+    await b.wr(5, SPW['CTRL'], 3)
+    await b.poll(2, SPW['STATUS'], 4, 4)
+    await b.poll(5, SPW['STATUS'], 4, 4)
+    await b.wr(5, SPW['IRQEN'], 0x3f)
     # Exercise credit recycling beyond one 64-entry receiver FIFO.
     for i in range(160):
         v = ((i * 37) & 255) if i % 13 != 12 else 0x100
-        await b.poll(2, 4, 8, 8)
-        await b.wr(2, 12, v)
-        await b.poll(5, 4, 16, 16)
+        await b.poll(2, SPW['STATUS'], 8, 8)
+        await b.wr(2, SPW['TX'], v)
+        await b.poll(5, SPW['STATUS'], 16, 16)
         assert int(d.irq.value) & (1 << 5)
-        assert await b.rd(5, 16) == v
-    await b.rd(5, 16, error=True)
+        assert await b.rd(5, SPW['RX']) == v
+    await b.rd(5, SPW['RX'], error=True)
     # EEP control character in the reverse direction.
-    await b.wr(5, 12, 0x101)
-    await b.poll(2, 4, 16, 16)
-    assert await b.rd(2, 16) == 0x101
-    await b.wr(2, 28, 0)
-    await b.poll(5, 24, 0x10, 0x10)
-    await b.wr(5, 24, 0x10)
-    await b.wr(2, 28, 1)
-    await b.poll(5, 24, 0x10, 0x10)
-    assert await b.rd(5, 32) == 1
-    await b.wr(5, 24, 0x10)
+    await b.wr(5, SPW['TX'], 0x101)
+    await b.poll(2, SPW['STATUS'], 16, 16)
+    assert await b.rd(2, SPW['RX']) == 0x101
+    await b.wr(2, SPW['TIME_TX'], 0)
+    await b.poll(5, SPW['EVENTS'], 0x10, 0x10)
+    await b.wr(5, SPW['EVENTS'], 0x10)
+    await b.wr(2, SPW['TIME_TX'], 1)
+    await b.poll(5, SPW['EVENTS'], 0x10, 0x10)
+    assert await b.rd(5, SPW['TIME_RX']) == 1
+    await b.wr(5, SPW['EVENTS'], 0x10)
     d.spw_disconnect_i.value = 1
-    await b.poll(5, 24, 1, 1)
+    await b.poll(5, SPW['EVENTS'], 1, 1)
     d.spw_disconnect_i.value = 0
-    await b.poll(5, 4, 4, 4)
-    await b.wr(2, 0, 4)
-    await b.poll(2, 4, 4, 0)
+    await b.poll(5, SPW['STATUS'], 4, 4)
+    await b.wr(2, SPW['CTRL'], 4)
+    await b.poll(2, SPW['STATUS'], 4, 0)
 
 
 class I2CPeer:
@@ -307,7 +308,7 @@ async def can_two_node_standard_frame_and_byte_lanes(d):
     assert [await b.byte(4, 19+i) for i in range(3)] == payload
     await b.byte(4, 1, 4)  # release RX buffer
     assert not (await b.byte(4, 2) & 1)
-    await b.rd(3, 0, error=True)  # multi-byte accesses are not silently truncated
+    await b.rd(3, I2C['STATUS'], error=True)  # multi-byte accesses are not silently truncated
     await b.rd(3, 0x100, strobe=1, error=True)
 
 
@@ -315,8 +316,8 @@ async def can_two_node_standard_frame_and_byte_lanes(d):
 async def reset_aborts_serial_transactions(d):
     b = Bus(d)
     await b.reset()
-    await b.wr(1, 4, 100)
-    await b.wr(1, 8, 0x59)
+    await b.wr(1, SPI['DIV'], 100)
+    await b.wr(1, SPI['DATA'], 0x59)
     assert int(d.spi_cs.value) == 2
     await b.wr(0, 4, 100)
     await b.wr(0, 12, 14)
@@ -327,13 +328,13 @@ async def reset_aborts_serial_transactions(d):
     assert int(d.scl.value) == 1 and int(d.sda.value) == 1
     d.rst_ni.value = 1
     await b.step(8)
-    assert await b.rd(1, 12) == 0
+    assert await b.rd(1, SPI['STATUS']) == 0
     assert await b.rd(0, 24) == 0
     assert not (await b.rd(0, 0) & 1)
     if FULL_PROFILE:
-        assert await b.rd(2, 0) == 4
+        assert await b.rd(2, SPW['CTRL']) == 4
     else:
-        await b.rd(2, 0, error=True)
+        await b.rd(2, SPW['CTRL'], error=True)
 
 
 @cocotb.test(skip=FULL_PROFILE)
@@ -351,30 +352,30 @@ async def disabled_optional_slots_return_errors(d):
 async def spacewire_credit_backpressure_preserves_order(d):
     b = Bus(d)
     await b.reset()
-    await b.wr(2, 0, 3)
-    await b.wr(5, 0, 3)
-    await b.poll(2, 4, 4, 4)
+    await b.wr(2, SPW['CTRL'], 3)
+    await b.wr(5, SPW['CTRL'], 3)
+    await b.poll(2, SPW['STATUS'], 4, 4)
     expected = []
     # Do not drain RX. Flow control must stall the transmitter without loss.
     for _ in range(300):
-        if await b.rd(2, 4) & 8:
+        if await b.rd(2, SPW['STATUS']) & 8:
             val = len(expected) & 255
-            await b.wr(2, 12, val)
+            await b.wr(2, SPW['TX'], val)
             expected.append(val)
         await b.step(30)
     assert len(expected) >= 64 and len(expected) < 100
-    await b.wr(2, 12, 0xde, error=True)
+    await b.wr(2, SPW['TX'], 0xde, error=True)
     received = []
     for _ in expected:
-        await b.poll(5, 4, 16, 16)
-        received.append(await b.rd(5, 16))
+        await b.poll(5, SPW['STATUS'], 16, 16)
+        received.append(await b.rd(5, SPW['RX']))
     assert received == expected
-    await b.poll(2, 4, 8, 8)
-    await b.wr(2, 12, 0x100)
-    await b.poll(5, 4, 16, 16)
-    assert await b.rd(5, 16) == 0x100
-    await b.wr(2, 4, 0, error=True)
-    await b.wr(2, 0, 0, strobe=1, error=True)
+    await b.poll(2, SPW['STATUS'], 8, 8)
+    await b.wr(2, SPW['TX'], 0x100)
+    await b.poll(5, SPW['STATUS'], 16, 16)
+    assert await b.rd(5, SPW['RX']) == 0x100
+    await b.wr(2, SPW['STATUS'], 0, error=True)
+    await b.wr(2, SPW['CTRL'], 0, strobe=1, error=True)
     await b.rd(2, 0x100, error=True)
 
 
@@ -384,16 +385,16 @@ async def spi_continuous_chip_select_frames(d):
     await b.reset()
     for mode in range(4):
         control = mode | 16
-        await b.wr(1, 0, control)
+        await b.wr(1, SPI['CTRL'], control)
         for byte in (0x9f, 0, 0, 0, 0x5a):
-            await b.wr(1, 8, byte)
-            await b.poll(1, 12, 1, 0)
-            assert await b.rd(1, 8) == byte
+            await b.wr(1, SPI['DATA'], byte)
+            await b.poll(1, SPI['STATUS'], 1, 0)
+            assert await b.rd(1, SPI['DATA']) == byte
             assert int(d.spi_cs.value) == 2
             await b.step(30)
             assert int(d.spi_cs.value) == 2
-        await b.wr(1, 0, control ^ 4, error=True)
-        await b.wr(1, 0, mode)  # explicit CS release
+        await b.wr(1, SPI['CTRL'], control ^ 4, error=True)
+        await b.wr(1, SPI['CTRL'], mode)  # explicit CS release
         assert int(d.spi_cs.value) == 3
 
 
@@ -437,14 +438,14 @@ async def spi_independent_peer_checks_edges(d):
     for cpol in (0, 1):
         for cpha in (0, 1):
             for cs in (0, 1):
-                await b.wr(1, 0, cpol | (cpha << 1) | (cs << 2))
-                await b.wr(1, 4, 2)  # fastest permitted half-period
+                await b.wr(1, SPI['CTRL'], cpol | (cpha << 1) | (cs << 2))
+                await b.wr(1, SPI['DIV'], 2)  # fastest permitted half-period
                 for tx, rx in ((0x96, 0x3c), (0x00, 0xff), (0xff, 0x00)):
                     peer = SPIPeer(d, cpol, cpha, rx)
                     b.peer = peer
-                    await b.wr(1, 8, tx)
-                    await b.poll(1, 12, 1, 0)
-                    assert await b.rd(1, 8) == rx
+                    await b.wr(1, SPI['DATA'], tx)
+                    await b.poll(1, SPI['STATUS'], 1, 0)
+                    assert await b.rd(1, SPI['DATA']) == rx
                     assert peer.sampled == [(tx >> bit) & 1 for bit in range(7, -1, -1)]
                     assert peer.frames == 1
                     b.peer = None

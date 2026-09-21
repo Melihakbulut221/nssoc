@@ -421,15 +421,15 @@ module soc_boot #(
     input  wire        wdog_dis_i
 );
 
-  localparam [11:0] REG_BSTRAP = 12'h000;
-  localparam [11:0] REG_BSTAT  = 12'h004;
-  localparam [11:0] REG_BRPT   = 12'h008;
-  localparam [11:0] REG_EPOCH  = 12'h00C;
+  localparam [11:0] REG_BSTRAP = 12'h000; // regmap:boot:BSTRAP
+  localparam [11:0] REG_BSTAT  = 12'h004; // regmap:boot:BSTAT
+  localparam [11:0] REG_BRPT   = 12'h008; // regmap:boot:BRPT
+  localparam [11:0] REG_EPOCH  = 12'h00C; // regmap:boot:EPOCH
   // 0x010, the next free offset in this slot's own space. The
   // memory map names slots, not registers, so nothing outside
   // this file had to change for it; docs/memmap-soc.md carries the
   // register table and is updated with it.
-  localparam [11:0] REG_CRASH  = 12'h010;
+  localparam [11:0] REG_CRASH  = 12'h010; // regmap:boot:CRASH
 
   localparam [CNT_W-1:0] CNT_MAX = {CNT_W{1'b1}};
 

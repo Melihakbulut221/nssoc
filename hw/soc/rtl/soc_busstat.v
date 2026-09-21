@@ -255,22 +255,22 @@ module soc_busstat #(
     output wire        irq_o
 );
 
-  localparam [11:0] REG_STATUS = 12'h000;
-  localparam [11:0] REG_IRQEN  = 12'h004;
-  localparam [11:0] REG_RFSEC  = 12'h008;
-  localparam [11:0] REG_RFRD   = 12'h00C;
-  localparam [11:0] REG_RFDED  = 12'h010;
-  localparam [11:0] REG_TMRERR = 12'h014;
-  localparam [11:0] REG_CLR    = 12'h018;
+  localparam [11:0] REG_STATUS = 12'h000; // regmap:busstat:STATUS
+  localparam [11:0] REG_IRQEN  = 12'h004; // regmap:busstat:IRQEN
+  localparam [11:0] REG_RFSEC  = 12'h008; // regmap:busstat:RFSEC
+  localparam [11:0] REG_RFRD   = 12'h00C; // regmap:busstat:RFRD
+  localparam [11:0] REG_RFDED  = 12'h010; // regmap:busstat:RFDED
+  localparam [11:0] REG_TMRERR = 12'h014; // regmap:busstat:TMRERR
+  localparam [11:0] REG_CLR    = 12'h018; // regmap:busstat:CLR
   // docs/55. CLR keeps 0x018 -- it is in hw/soc/tb/sw/soc_busstat.h and
   // in every program that has been written against this block -- and the
   // three new counters go above it rather than displacing anything.
-  localparam [11:0] REG_NPUCOR = 12'h01C;
-  localparam [11:0] REG_NPUDET = 12'h020;
-  localparam [11:0] REG_NPUTMR = 12'h024;
+  localparam [11:0] REG_NPUCOR = 12'h01C; // regmap:busstat:NPUCOR
+  localparam [11:0] REG_NPUDET = 12'h020; // regmap:busstat:NPUDET
+  localparam [11:0] REG_NPUTMR = 12'h024; // regmap:busstat:NPUTMR
   // docs/58. Same rule: nothing below it moves.
-  localparam [11:0] REG_MTECC  = 12'h028;
-  localparam [11:0] REG_APBTO  = 12'h02C;
+  localparam [11:0] REG_MTECC  = 12'h028; // regmap:busstat:MTECC
+  localparam [11:0] REG_APBTO  = 12'h02C; // regmap:busstat:APBTO
 
   // Bit index of each source, shared by STATUS, IRQEN and CLR so that
   // the three cannot disagree about which bit is which. sw/tests and

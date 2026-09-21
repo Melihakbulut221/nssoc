@@ -57,25 +57,26 @@ from cocotb.triggers import RisingEdge, Timer
 _REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(_REPO / "sw"))
 from golden.memmap_gen import APB_SLOTS, IRQ_SOURCES  # noqa: E402
+from peripheral_registers import BUSSTAT as _REG_OFFSETS
 
 # Register offsets inside the 4 KiB slot.
-STATUS = 0x000
-IRQEN = 0x004
-CNT_RFSEC = 0x008
-CNT_RFRD = 0x00C
-CNT_RFDED = 0x010
-CNT_TMRERR = 0x014
-CLR = 0x018
+STATUS = _REG_OFFSETS['STATUS']
+IRQEN = _REG_OFFSETS['IRQEN']
+CNT_RFSEC = _REG_OFFSETS['RFSEC']
+CNT_RFRD = _REG_OFFSETS['RFRD']
+CNT_RFDED = _REG_OFFSETS['RFDED']
+CNT_TMRERR = _REG_OFFSETS['TMRERR']
+CLR = _REG_OFFSETS['CLR']
 # docs/55's three, added above CLR rather than displacing it: CLR's
 # offset is in hw/soc/tb/sw/soc_timers.h and in every program written
 # against this block.
-CNT_NPUCOR = 0x01C
-CNT_NPUDET = 0x020
-CNT_NPUTMR = 0x024
+CNT_NPUCOR = _REG_OFFSETS['NPUCOR']
+CNT_NPUDET = _REG_OFFSETS['NPUDET']
+CNT_NPUTMR = _REG_OFFSETS['NPUTMR']
 # docs/58's one, the CLINT's mtime codeword. Same rule again: nothing
 # below it moves.
-CNT_MTECC = 0x028
-CNT_APBTO = 0x02C
+CNT_MTECC = _REG_OFFSETS['MTECC']
+CNT_APBTO = _REG_OFFSETS['APBTO']
 S_APBTO = 9
 
 # Bit index of each source, shared by STATUS, IRQEN and CLR.

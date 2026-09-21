@@ -41,7 +41,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and copies referenced local images. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
-| 3.8 | Single-source register offsets and bare-metal HAL | OPEN. Preserve boot acceptance and compare generated register interfaces before changing firmware. |
+| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Twelve block maps (105 offsets) now generate RTL constants, C and Python definitions with an independent ABI guard. Both firmware profiles remain byte-identical. GPTIMER's dynamic layout, the upstream CAN byte map and common HAL remain open; see the migration record below. |
 | 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. CITATION.cff identifies the source repository and author without inventing a release or DOI. Other deliverables remain open; no release is published while product gates fail. The existing mirror contract still governs publication. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
@@ -351,3 +351,31 @@ The independent CaDiCaL BMC trial timed out after 900 seconds at frame 23;
 that is **not PASS**. Its required run now has a 7,200-second task budget and
 is incomplete at this publication. Nine runner/inventory controls pass.
 The full 157-task result and whole-core/real-codec obligations remain open.
+
+The [first register migration](evidence/peripheral-registers-20260921.json)
+covers BOOT, BUSSTAT, CLINT, Ethernet, GPIO, I2C, NPUCFG, QSPI, SCRUB, SPI,
+SpaceWire and UART. Each block's YAML feeds the actual decoder constants,
+firmware offset header and Python test definitions. The generator rejects
+ambiguous definitions and stale bindings; a separate pre-migration ABI digest
+prevents a coordinated change to all generated files from silently moving the
+105 existing registers. Both base/full application, loader and flash artifacts
+remain byte-identical to the captured pre-migration builds. Probe identities
+now include firmware headers. Four lint profiles retain precisely the same
+warning classes, messages and counts; only owned-source line positions moved.
+GPTIMER/CAN maps and the shared HAL remain explicit work, not an exemption.
+See [the generator contract](../regmap/peripherals/README.md).
+
+A later [independent hosted native boot](evidence/hosted-native-interfaces-20260921.json)
+at `9ffe83b` also passes all **28 baseline checks** in **653,726 cycles**, with
+zero failure mask, flash violations or UART framing errors. This revision has
+UART RX and explicitly selects the full SpaceWire/CAN RTL profile. Its image
+is the baseline boot program, not the separate 29-check interface demo. Input
+hashes were checked against that exact Git revision and the downloaded artifact;
+no final layout, timing or additional interface-test coverage is inferred.
+
+The clean remote replay at `328021c` passes **1,131 Python tests**, two explicit
+skips and zero failures; its front-door checks report **18 passes**, zero failures
+and eight skips. The additional skip explicitly names the unprepared lint
+boundary. [The revision record](evidence/fresh-clone-328021c-20260921.json)
+preserves the exact commands and results. The register migration's working-tree
+checks are separate from that earlier delivered snapshot.

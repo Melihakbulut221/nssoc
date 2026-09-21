@@ -215,25 +215,25 @@ module soc_gpio #(
 );
 
   // grip.pdf table 923.
-  localparam [11:0] REG_DATA    = 12'h000;
-  localparam [11:0] REG_OUTPUT  = 12'h004;
-  localparam [11:0] REG_DIR     = 12'h008;
-  localparam [11:0] REG_IMASK   = 12'h00C;
-  localparam [11:0] REG_IPOL    = 12'h010;
-  localparam [11:0] REG_IEDGE   = 12'h014;
-  localparam [11:0] REG_BYPASS  = 12'h018;
-  localparam [11:0] REG_CAP     = 12'h01C;
-  localparam [11:0] REG_IAVAIL  = 12'h040;
-  localparam [11:0] REG_IFLAG   = 12'h044;
-  localparam [11:0] REG_OUTPUT_OR   = 12'h054;
-  localparam [11:0] REG_DIR_OR      = 12'h058;
-  localparam [11:0] REG_IMASK_OR    = 12'h05C;
-  localparam [11:0] REG_OUTPUT_AND  = 12'h064;
-  localparam [11:0] REG_DIR_AND     = 12'h068;
-  localparam [11:0] REG_IMASK_AND   = 12'h06C;
-  localparam [11:0] REG_OUTPUT_XOR  = 12'h074;
-  localparam [11:0] REG_DIR_XOR     = 12'h078;
-  localparam [11:0] REG_IMASK_XOR   = 12'h07C;
+  localparam [11:0] REG_DATA    = 12'h000; // regmap:gpio:DATA
+  localparam [11:0] REG_OUTPUT  = 12'h004; // regmap:gpio:OUTPUT
+  localparam [11:0] REG_DIR     = 12'h008; // regmap:gpio:DIR
+  localparam [11:0] REG_IMASK   = 12'h00C; // regmap:gpio:IMASK
+  localparam [11:0] REG_IPOL    = 12'h010; // regmap:gpio:IPOL
+  localparam [11:0] REG_IEDGE   = 12'h014; // regmap:gpio:IEDGE
+  localparam [11:0] REG_BYPASS  = 12'h018; // regmap:gpio:BYPASS
+  localparam [11:0] REG_CAP     = 12'h01C; // regmap:gpio:CAP
+  localparam [11:0] REG_IAVAIL  = 12'h040; // regmap:gpio:IAVAIL
+  localparam [11:0] REG_IFLAG   = 12'h044; // regmap:gpio:IFLAG
+  localparam [11:0] REG_OUTPUT_OR   = 12'h054; // regmap:gpio:OUTPUT_OR
+  localparam [11:0] REG_DIR_OR      = 12'h058; // regmap:gpio:DIR_OR
+  localparam [11:0] REG_IMASK_OR    = 12'h05C; // regmap:gpio:IMASK_OR
+  localparam [11:0] REG_OUTPUT_AND  = 12'h064; // regmap:gpio:OUTPUT_AND
+  localparam [11:0] REG_DIR_AND     = 12'h068; // regmap:gpio:DIR_AND
+  localparam [11:0] REG_IMASK_AND   = 12'h06C; // regmap:gpio:IMASK_AND
+  localparam [11:0] REG_OUTPUT_XOR  = 12'h074; // regmap:gpio:OUTPUT_XOR
+  localparam [11:0] REG_DIR_XOR     = 12'h078; // regmap:gpio:DIR_XOR
+  localparam [11:0] REG_IMASK_XOR   = 12'h07C; // regmap:gpio:IMASK_XOR
 
   // grip.pdf table 931. The fields this configuration reports, named
   // so the read multiplexer and the suite cannot disagree about where

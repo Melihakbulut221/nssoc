@@ -3,14 +3,15 @@
 #ifndef SOC_ETH_H
 #define SOC_ETH_H
 #include "soc_memmap.h"
-#define ETH_CTRL   (SOC_ETH_BASE + 0x000u)
-#define ETH_STATUS (SOC_ETH_BASE + 0x004u)
-#define ETH_TX     (SOC_ETH_BASE + 0x008u)
-#define ETH_RX     (SOC_ETH_BASE + 0x00Cu)
-#define ETH_EVENTS (SOC_ETH_BASE + 0x010u)
-#define ETH_IRQEN  (SOC_ETH_BASE + 0x014u)
-#define ETH_MDIO   (SOC_ETH_BASE + 0x018u)
-#define ETH_ID     (SOC_ETH_BASE + 0x0FCu)
+#include "soc_reg_offsets.h"
+#define ETH_CTRL   (SOC_ETH_BASE + SOC_ETH_CTRL_OFF)
+#define ETH_STATUS (SOC_ETH_BASE + SOC_ETH_STATUS_OFF)
+#define ETH_TX     (SOC_ETH_BASE + SOC_ETH_TX_OFF)
+#define ETH_RX     (SOC_ETH_BASE + SOC_ETH_RX_OFF)
+#define ETH_EVENTS (SOC_ETH_BASE + SOC_ETH_EVENTS_OFF)
+#define ETH_IRQEN  (SOC_ETH_BASE + SOC_ETH_IRQEN_OFF)
+#define ETH_MDIO   (SOC_ETH_BASE + SOC_ETH_MDIO_OFF)
+#define ETH_ID     (SOC_ETH_BASE + SOC_ETH_ID_OFF)
 #define ETH_ENABLE 3u
 #define ETH_FLUSH  4u
 #define ETH_TX_READY 1u

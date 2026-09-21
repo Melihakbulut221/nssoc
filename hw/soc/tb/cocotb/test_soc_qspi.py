@@ -58,13 +58,14 @@ sys.path.insert(0, str(_REPO / "sw"))
 sys.path.insert(0, str(_REPO / "hw" / "soc" / "flow"))
 from golden.memmap_gen import APB_SLOTS, IRQ_SOURCES  # noqa: E402
 import gen_flash_image as img                          # noqa: E402
+from peripheral_registers import QSPI as _REG_OFFSETS
 
 NCS = int(os.environ.get("NCS", "2"))
 DIV_W = int(os.environ.get("DIV_W", "4"))
 LEN_W = int(os.environ.get("LEN_W", "16"))
 
 # soc_qspi.v's register map.
-CONF, CTRL, STAT, RX, TX, CMD, ADDR = 0x00, 0x04, 0x08, 0x0C, 0x10, 0x14, 0x18
+CONF, CTRL, STAT, RX, TX, CMD, ADDR = _REG_OFFSETS['CONF'], _REG_OFFSETS['CTRL'], _REG_OFFSETS['STAT'], _REG_OFFSETS['RX'], _REG_OFFSETS['TX'], _REG_OFFSETS['CMD'], _REG_OFFSETS['ADDR']
 CTRL_RST, CTRL_IEN = 1 << 0, 1 << 1
 ST_BUSY, ST_DR, ST_DONE, ST_LOST, ST_TXE = 1, 2, 4, 8, 16
 F_ADDR, F_AQUAD, F_DQUAD, F_WRITE = 1 << 12, 1 << 13, 1 << 14, 1 << 15

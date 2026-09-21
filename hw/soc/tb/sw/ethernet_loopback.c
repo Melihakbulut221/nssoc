@@ -1,18 +1,19 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: Apache-2.0
 #include <stdint.h>
+#include "soc_reg_offsets.h"
 #include "soc_eth.h"
 #include "soc_timers.h"
 volatile uint32_t fi_phase, fi_sig, fi_mask, fi_rounds_done;
 static uint32_t rd(uint32_t a) {return *(volatile uint32_t *)a;}
 static void wr(uint32_t a,uint32_t v) {*(volatile uint32_t *)a=v;}
 static uint32_t mip(void) {uint32_t x;__asm__ volatile("csrr %0, mip":"=r"(x));return x;}
-static void putc_(char c) {while (!(rd(SOC_UART0_BASE+4)&4u)) {} wr(SOC_UART0_BASE,(uint32_t)c);}
+static void putc_(char c) {while (!(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&4u)) {} wr(SOC_UART0_BASE + SOC_UART_DATA_OFF,(uint32_t)c);}
 static void hex(uint32_t x) {const char *d="0123456789abcdef";for(int n=28;n>=0;n-=4)putc_(d[(x>>n)&15u]);}
 int main(void) {
  static const uint32_t lengths[8]={60,61,300,511,127,512,300,300};
  uint32_t bad=0,sig=0;
- wr(SOC_UART0_BASE+12,0);wr(SOC_UART0_BASE+8,2);
+ wr(SOC_UART0_BASE + SOC_UART_SCALER_OFF,0);wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF,2);
  if(rd(ETH_ID)!=0x474d4901u)bad|=1;
  wr(ETH_CTRL,ETH_ENABLE);wr(ETH_IRQEN,ETH_IRQ_RX_READY);
  fi_phase=1;

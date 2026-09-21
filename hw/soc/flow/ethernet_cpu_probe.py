@@ -117,7 +117,8 @@ def prepare(output):
         (output / f'run_{kind}.sh').write_text(script)
     sources = [Path(__file__), SOC/'tb/sw/ethernet_loopback.c', SOC/'tb/ethernet_loopback_monitor.vh',
                *[SOC/'tb'/name for name in ('tb_soc_fi.v', 'tb_soc_fi_gl.v')],
-               *[SOC/'flow'/name for name in ('build_sw_fi.sh', 'fi_core.sh', 'fi_core_gl.sh')]]
+               *[SOC/'flow'/name for name in ('build_sw_fi.sh', 'fi_core.sh', 'fi_core_gl.sh')],
+               *sorted((SOC/'tb/sw').rglob('*.h'))]
     inventory = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
     (output / 'source-hashes.json').write_text(json.dumps(inventory, indent=2) + '\n')
     return {'prepared': str(output), 'run': ['bash ' + q(str(output/'run_rtl.sh')), 'bash ' + q(str(output/'run_gl.sh')) + ' /path/to/soc_top.nl.v']}

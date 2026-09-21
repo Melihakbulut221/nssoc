@@ -142,18 +142,18 @@ module soc_scrub #(
     output wire        irq_o
 );
 
-  localparam [11:0] REG_STATUS  = 12'h000;
-  localparam [11:0] REG_IRQEN   = 12'h004;
-  localparam [11:0] REG_RAMSEC  = 12'h008;
-  localparam [11:0] REG_RAMRD   = 12'h00C;
-  localparam [11:0] REG_RAMDED  = 12'h010;
-  localparam [11:0] REG_ROMSEC  = 12'h014;
-  localparam [11:0] REG_ROMRD   = 12'h018;
-  localparam [11:0] REG_ROMDED  = 12'h01C;
-  localparam [11:0] REG_CLR     = 12'h020;
-  localparam [11:0] REG_CTRL    = 12'h024;
-  localparam [11:0] REG_RAMADDR = 12'h028;
-  localparam [11:0] REG_ROMADDR = 12'h02C;
+  localparam [11:0] REG_STATUS  = 12'h000; // regmap:scrub:STATUS
+  localparam [11:0] REG_IRQEN   = 12'h004; // regmap:scrub:IRQEN
+  localparam [11:0] REG_RAMSEC  = 12'h008; // regmap:scrub:RAMSEC
+  localparam [11:0] REG_RAMRD   = 12'h00C; // regmap:scrub:RAMRD
+  localparam [11:0] REG_RAMDED  = 12'h010; // regmap:scrub:RAMDED
+  localparam [11:0] REG_ROMSEC  = 12'h014; // regmap:scrub:ROMSEC
+  localparam [11:0] REG_ROMRD   = 12'h018; // regmap:scrub:ROMRD
+  localparam [11:0] REG_ROMDED  = 12'h01C; // regmap:scrub:ROMDED
+  localparam [11:0] REG_CLR     = 12'h020; // regmap:scrub:CLR
+  localparam [11:0] REG_CTRL    = 12'h024; // regmap:scrub:CTRL
+  localparam [11:0] REG_RAMADDR = 12'h028; // regmap:scrub:RAMADDR
+  localparam [11:0] REG_ROMADDR = 12'h02C; // regmap:scrub:ROMADDR
 
   // Bit index of each source, shared by STATUS, IRQEN and CLR.
   // hw/soc/tb/sw/soc_scrub.h carries the same names.

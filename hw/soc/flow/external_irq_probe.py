@@ -116,7 +116,8 @@ def prepare(output, legacy_t0=False):
         (output/f'run_{kind}.sh').write_text(script)
     sources = [Path(__file__), SOC/'rtl/soc_top.v', SOC/'tb/sw/crt0.S', SOC/'tb/sw/external_irq.c', SOC/'tb/external_irq_monitor.vh',
                *[SOC/'tb'/p for p in ('tb_soc_fi.v','tb_soc_fi_gl.v')],
-               *[SOC/'flow'/p for p in ('build_sw_fi.sh','fi_core.sh','fi_core_gl.sh')]]
+               *[SOC/'flow'/p for p in ('build_sw_fi.sh','fi_core.sh','fi_core_gl.sh')],
+               *sorted((SOC/'tb/sw').rglob('*.h'))]
     (output/'source-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},indent=2)+'\n')
     return {'prepared':str(output),'legacy_t0_negative_control':legacy_t0}
 

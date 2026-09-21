@@ -79,13 +79,14 @@
 #include <stdint.h>
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 #include "soc_timers.h"
 
 // GRLIB APBUART, grip.pdf table 126, the same offsets test_ibex.c uses.
-#define UART_DATA   (SOC_UART0_BASE + 0x00u)
-#define UART_STATUS (SOC_UART0_BASE + 0x04u)
-#define UART_CTRL   (SOC_UART0_BASE + 0x08u)
-#define UART_SCALER (SOC_UART0_BASE + 0x0Cu)
+#define UART_DATA   (SOC_UART0_BASE + SOC_UART_DATA_OFF)
+#define UART_STATUS (SOC_UART0_BASE + SOC_UART_STATUS_OFF)
+#define UART_CTRL   (SOC_UART0_BASE + SOC_UART_CTRL_OFF)
+#define UART_SCALER (SOC_UART0_BASE + SOC_UART_SCALER_OFF)
 #define UART_STATUS_TE (1u << 2)
 #define UART_CTRL_TE   (1u << 1)
 

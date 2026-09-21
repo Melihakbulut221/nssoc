@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: Apache-2.0
 #include <stdint.h>
+#include "soc_reg_offsets.h"
 #include "soc_gpio.h"
 volatile uint32_t fi_phase,fi_sig,fi_mask,fi_rounds_done;
 extern volatile uint32_t irq_marker,irq_mcause,irq_count;
@@ -10,10 +11,10 @@ static uint32_t mip(void){uint32_t x;__asm__ volatile("csrr %0,mip":"=r"(x));ret
 static uint32_t mie(void){uint32_t x;__asm__ volatile("csrr %0,mie":"=r"(x));return x;}
 static void wait_level(uint32_t high,uint32_t bit){uint32_t n=5000;while (!!(mip()&0x800u)!=high && --n){} if(!n)fi_mask|=bit;}
 static void pause_(void){for(volatile uint32_t i=0;i<32;i++)__asm__ volatile("nop");}
-static void putc_(char c){while(!(rd(SOC_UART0_BASE+4)&4u)){}wr(SOC_UART0_BASE,c);}
+static void putc_(char c){while(!(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&4u)){}wr(SOC_UART0_BASE + SOC_UART_DATA_OFF,c);}
 static void hex(uint32_t x){const char*d="0123456789abcdef";for(int n=28;n>=0;n-=4)putc_(d[(x>>n)&15]);}
 int main(void){
- wr(SOC_UART0_BASE+12,0);wr(SOC_UART0_BASE+8,2);wr(GPIO_DIR,15);
+ wr(SOC_UART0_BASE + SOC_UART_SCALER_OFF,0);wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF,2);wr(GPIO_DIR,15);
  __asm__ volatile("csrc mstatus,%0; csrw mie,zero"::"r"(8u):"memory");
  fi_phase=1;wr(GPIO_OUTPUT,1);wait_level(1,1);pause_();if(irq_count)fi_mask|=2;
  wr(GPIO_OUTPUT,2);wait_level(0,4);

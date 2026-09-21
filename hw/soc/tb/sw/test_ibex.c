@@ -74,6 +74,7 @@
 
 #ifdef SOC_PLATFORM
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 #include "soc_timers.h"
 #include "soc_npucfg.h"
 #include "soc_gpio.h"
@@ -98,10 +99,10 @@
 // GRLIB APBUART register offsets and bits (grip.pdf table 126, adopted
 // by docs/08 section 3 row 9 and implemented as a subset in
 // hw/soc/rtl/soc_uart.v).
-#define UART_DATA   (SOC_UART0_BASE + 0x00u)
-#define UART_STATUS (SOC_UART0_BASE + 0x04u)
-#define UART_CTRL   (SOC_UART0_BASE + 0x08u)
-#define UART_SCALER (SOC_UART0_BASE + 0x0Cu)
+#define UART_DATA   (SOC_UART0_BASE + SOC_UART_DATA_OFF)
+#define UART_STATUS (SOC_UART0_BASE + SOC_UART_STATUS_OFF)
+#define UART_CTRL   (SOC_UART0_BASE + SOC_UART_CTRL_OFF)
+#define UART_SCALER (SOC_UART0_BASE + SOC_UART_SCALER_OFF)
 #define UART_STATUS_TE (1u << 2)      /* transmit holding register empty */
 #define UART_CTRL_TE   (1u << 1)      /* transmitter enable              */
 
@@ -1833,8 +1834,8 @@ int main(void) {
 #ifdef SOC_LGPL_INTERFACES
     uint16_t character = 0;
 #endif
-    soc_if_write(SOC_SPI_BASE, 0, 8); /* mode 0 and IRQ */
-    soc_if_write(SOC_SPI_BASE, 4, 4);
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_CTRL_OFF, 8); /* mode 0 and IRQ */
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_DIV_OFF, 4);
     irq_marker = 0; irq_mcause = 0; irq_count = 0;
     csr_set_mie(1u << (16 + SOC_IRQLINE_SPI));
     csr_set_mstatus(8);
@@ -1842,14 +1843,14 @@ int main(void) {
     for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
     csr_clr_mstatus(8);
     ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPI;
-    soc_if_write(SOC_SPI_BASE, 12, 2);
-    soc_if_write(SOC_SPI_BASE, 0, 0);
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_STATUS_OFF, 2);
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_CTRL_OFF, 0);
 
 #ifdef SOC_LGPL_INTERFACES
-    soc_if_write(SOC_SPW_BASE, 0, 3);
-    ok &= soc_if_wait(SOC_SPW_BASE, 4, 4, 4, 20000) == 0;
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_CTRL_OFF, 3);
+    ok &= soc_if_wait(SOC_SPW_BASE, SOC_SPW_STATUS_OFF, 4, 4, 20000) == 0;
     irq_marker = 0; irq_mcause = 0; irq_count = 0;
-    soc_if_write(SOC_SPW_BASE, 20, 32);
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_IRQEN_OFF, 32);
     csr_set_mie(1u << (16 + SOC_IRQLINE_SPW));
     csr_set_mstatus(8);
     ok &= soc_spw_put(0x5a, 2000) == 0;
@@ -1859,12 +1860,12 @@ int main(void) {
     ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPW;
     ok &= soc_spw_get(&character, 20000) == 0 && character == 0x5a;
     ok &= soc_spw_get(&character, 20000) == 0 && character == 0x100;
-    soc_if_write(SOC_SPW_BASE, 20, 0);
-    soc_if_write(SOC_SPW_BASE, 0, 4);
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_IRQEN_OFF, 0);
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_CTRL_OFF, 4);
 #endif
 
-    soc_if_write(SOC_I2C_BASE, 4, 8);
-    soc_if_write(SOC_I2C_BASE, 20, 2); /* address NACK, no device attached */
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_PRESCALE_OFF, 8);
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_IRQEN_OFF, 2); /* address NACK, no device attached */
     irq_marker = 0; irq_mcause = 0; irq_count = 0;
     csr_set_mie(1u << (16 + SOC_IRQLINE_I2C));
     csr_set_mstatus(8);
@@ -1872,8 +1873,8 @@ int main(void) {
     for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
     csr_clr_mstatus(8);
     ok &= irq_count == 1 && irq_mcause == SOC_IRQ_I2C;
-    soc_if_write(SOC_I2C_BASE, 20, 0);
-    soc_if_write(SOC_I2C_BASE, 24, 15);
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_IRQEN_OFF, 0);
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_EVENTS_OFF, 15);
 
 #ifdef SOC_LGPL_INTERFACES
     soc_can_write(0, 1);

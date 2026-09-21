@@ -21,6 +21,10 @@ module soc_spi (
     output wire [1:0] cs_no,
     output wire irq_o
 );
+    localparam [11:0] REG_CTRL = 12'h000; // regmap:spi:CTRL
+    localparam [11:0] REG_DIV = 12'h004; // regmap:spi:DIV
+    localparam [11:0] REG_DATA = 12'h008; // regmap:spi:DATA
+    localparam [11:0] REG_STATUS = 12'h00C; // regmap:spi:STATUS
     reg [4:0] control;
     reg [15:0] divider, count;
     reg [7:0] txshift, rxshift, result;
@@ -28,11 +32,11 @@ module soc_spi (
     reg busy, done, cs_active;
     wire access = psel_i && penable_i;
     wire wr = access && pwrite_i;
-    wire bad = (paddr_i != 0 && paddr_i != 4 && paddr_i != 8 && paddr_i != 12) ||
+    wire bad = (paddr_i != REG_CTRL && paddr_i != REG_DIV && paddr_i != REG_DATA && paddr_i != REG_STATUS) ||
                (pwrite_i && pstrb_i != 4'hf) ||
-               (pwrite_i && busy && paddr_i != 12) ||
-               (pwrite_i && paddr_i == 0 && cs_active && pwdata_i[2:0] != control[2:0]) ||
-               (pwrite_i && paddr_i == 4 && pwdata_i[15:0] < 2);
+               (pwrite_i && busy && paddr_i != REG_STATUS) ||
+               (pwrite_i && paddr_i == REG_CTRL && cs_active && pwdata_i[2:0] != control[2:0]) ||
+               (pwrite_i && paddr_i == REG_DIV && pwdata_i[15:0] < 2);
     wire leading = !edges[0];
     wire sample_edge = leading != control[1];
     assign pready_o = 1'b1;
@@ -46,17 +50,17 @@ module soc_spi (
             busy <= 0; done <= 0; cs_active <= 0; sck_o <= 0; mosi_o <= 0;
         end else begin
             if (wr && !bad) case (paddr_i)
-                0: begin
+                REG_CTRL: begin
                     control <= pwdata_i[4:0]; sck_o <= pwdata_i[0];
                     if (!pwdata_i[4]) cs_active <= 0;
                 end
-                4: divider <= pwdata_i[15:0];
-                8: begin
+                REG_DIV: divider <= pwdata_i[15:0];
+                REG_DATA: begin
                     busy <= 1; done <= 0; cs_active <= 1; count <= divider-1'b1; edges <= 0;
                     txshift <= pwdata_i[7:0]; rxshift <= 0;
                     mosi_o <= control[1] ? 1'b0 : pwdata_i[7];
                 end
-                12: if (pwdata_i[1]) done <= 0;
+                REG_STATUS: if (pwdata_i[1]) done <= 0;
                 default: ;
             endcase
             if (busy) begin
@@ -82,10 +86,10 @@ module soc_spi (
     always @* begin
         prdata_o = 0;
         case (paddr_i)
-            0: prdata_o = {27'b0, control};
-            4: prdata_o = {16'b0, divider};
-            8: prdata_o = {24'b0, result};
-            12: prdata_o = {29'b0, cs_active, done, busy};
+            REG_CTRL: prdata_o = {27'b0, control};
+            REG_DIV: prdata_o = {16'b0, divider};
+            REG_DATA: prdata_o = {24'b0, result};
+            REG_STATUS: prdata_o = {29'b0, cs_active, done, busy};
             default: ;
         endcase
     end

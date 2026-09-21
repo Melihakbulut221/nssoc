@@ -104,12 +104,13 @@ from cocotb.triggers import RisingEdge, Timer
 _REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(_REPO / "sw"))
 from golden.memmap_gen import APB_SLOTS, IRQ_SOURCES  # noqa: E402
+from peripheral_registers import UART as _REG_OFFSETS
 
 # docs/08 section 2.5, the APBUART row.
-DATA = 0x000
-STATUS = 0x004
-CTRL = 0x008
-SCALER = 0x00C
+DATA = _REG_OFFSETS['DATA']
+STATUS = _REG_OFFSETS['STATUS']
+CTRL = _REG_OFFSETS['CTRL']
+SCALER = _REG_OFFSETS['SCALER']
 FIFO_DEBUG = 0x010
 FIFO_DEBUG_CTRL = 0x014
 CAPABILITY = 0x018

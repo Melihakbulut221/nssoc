@@ -494,19 +494,25 @@ def test_the_scrubbers_ship_enabled():
     assert "soc_scrub" in (SOC_FLOW / "syn_soc.sh").read_text()
 
 
-def test_the_software_header_matches_the_block():
+def test_the_software_header_matches_the_block(tmp_path):
     """hw/soc/tb/sw/soc_scrub.h carries the offsets and bit numbers of
     soc_scrub.v; the two are compared here so a driver cannot read the
     wrong register."""
     scrub = (SOC_RTL / "soc_scrub.v").read_text()
     hdr = (SOC_TB / "sw" / "soc_scrub.h").read_text()
     regs = dict(re.findall(r"localparam \[11:0\] REG_(\w+)\s*=\s*12'h([0-9A-Fa-f]+);", scrub))
-    for name, off in regs.items():
-        m = re.search(r"#define SCR_%s\s+\(SOC_SCRUB_BASE \+ 0x([0-9A-Fa-f]+)u\)" % name, hdr)
-        assert m, "soc_scrub.h has no SCR_{}".format(name)
-        assert int(m.group(1), 16) == int(off, 16), (
-            "SCR_{} is at 0x{} in the header and 0x{} in the RTL".format(
-                name, m.group(1), off))
+    assert len(regs) == 12, "The complete scrub register bank must be compared"
+    source = '#include <stdint.h>\n#include "soc_scrub.h"\n'
+    source += '\n'.join(
+        f'_Static_assert(SCR_{name} - SOC_SCRUB_BASE == 0x{off}u, "SCR_{name} offset");'
+        for name, off in regs.items())
+    # Resolve generated aliases with the actual C preprocessor, while taking
+    # the comparison values independently from the RTL decoder declarations.
+    result = subprocess.run(
+        ['cc', '-std=c11', '-Werror', '-x', 'c', '-c', '-',
+         '-I', str(SOC_TB / 'sw'), '-o', str(tmp_path / 'scrub.o')],
+        input=source, text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
     bits = dict(re.findall(r"localparam integer S_(\w+)\s*=\s*(\d+);", scrub))
     for name, idx in bits.items():
         m = re.search(r"#define SCR_S_%s\s+\(1u << (\d+)\)" % name, hdr)

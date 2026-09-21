@@ -26,9 +26,14 @@ module soc_eth #(
     output wire mdc_o, mdio_o, mdio_oe_o,
     input wire mdio_i
 );
-localparam [11:0] R_CTRL=12'h000, R_STATUS=12'h004, R_TX=12'h008,
-    R_RX=12'h00c, R_EVENTS=12'h010, R_IRQEN=12'h014, R_MDIO=12'h018,
-    R_ID=12'h0fc;
+localparam [11:0] R_CTRL = 12'h000; // regmap:eth:CTRL
+localparam [11:0] R_STATUS = 12'h004; // regmap:eth:STATUS
+localparam [11:0] R_TX = 12'h008; // regmap:eth:TX
+localparam [11:0] R_RX = 12'h00C; // regmap:eth:RX
+localparam [11:0] R_EVENTS = 12'h010; // regmap:eth:EVENTS
+localparam [11:0] R_IRQEN = 12'h014; // regmap:eth:IRQEN
+localparam [11:0] R_MDIO = 12'h018; // regmap:eth:MDIO
+localparam [11:0] R_ID = 12'h0FC; // regmap:eth:ID
 reg [1:0] enable_q;
 reg flush_q;
 wire mac_rst_n = rst_ni && !flush_q;

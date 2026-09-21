@@ -62,10 +62,10 @@ module soc_uart (
     output wire        irq_o
 );
 
-  localparam [11:0] REG_DATA   = 12'h000;
-  localparam [11:0] REG_STATUS = 12'h004;
-  localparam [11:0] REG_CTRL   = 12'h008;
-  localparam [11:0] REG_SCALER = 12'h00C;
+  localparam [11:0] REG_DATA   = 12'h000; // regmap:uart:DATA
+  localparam [11:0] REG_STATUS = 12'h004; // regmap:uart:STATUS
+  localparam [11:0] REG_CTRL   = 12'h008; // regmap:uart:CTRL
+  localparam [11:0] REG_SCALER = 12'h00C; // regmap:uart:SCALER
 
   assign pready_o  = 1'b1;
   assign pslverr_o = 1'b0;

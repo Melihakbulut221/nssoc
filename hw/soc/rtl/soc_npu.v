@@ -556,24 +556,24 @@ module soc_npu #(
   // -------------------------------------------------------------------
   // NPUCFG register offsets.
   //
-  // This block's own register map, written here, exactly as soc_uart's
-  // and soc_gptimer's are: regmap/memmap.yaml describes where a block
-  // lives and has never described what is inside one. The NODE window's
-  // map is different -- it IS regmap/regmap.yaml -- and this module
-  // does not restate a single offset of it.
+  // Generated from regmap/peripherals/npucfg.yaml. The base address
+  // remains in regmap/memmap.yaml. The NODE window uses its separate
+  // frozen map in regmap/regmap.yaml; no node offset is restated here.
+  // generate_peripherals.py --check verifies these decoder constants
+  // together with the matching firmware and host-test definitions.
   // -------------------------------------------------------------------
-  localparam [11:0] R_ID       = 12'h000;
-  localparam [11:0] R_VERSION  = 12'h004;
-  localparam [11:0] R_CTRL     = 12'h008;
-  localparam [11:0] R_STATUS   = 12'h00C;
-  localparam [11:0] R_IRQCAUSE = 12'h010;
-  localparam [11:0] R_IRQMASK  = 12'h014;
-  localparam [11:0] R_EVQ_IN   = 12'h018;
-  localparam [11:0] R_EVQ_OUT  = 12'h01C;
-  localparam [11:0] R_EVQ_STAT = 12'h020;
-  localparam [11:0] R_GEOM     = 12'h024;
-  localparam [11:0] R_CNT      = 12'h028;
-  localparam [11:0] R_CNT_DROP = 12'h02C;
+  localparam [11:0] R_ID       = 12'h000; // regmap:npucfg:ID
+  localparam [11:0] R_VERSION  = 12'h004; // regmap:npucfg:VERSION
+  localparam [11:0] R_CTRL     = 12'h008; // regmap:npucfg:CTRL
+  localparam [11:0] R_STATUS   = 12'h00C; // regmap:npucfg:STATUS
+  localparam [11:0] R_IRQCAUSE = 12'h010; // regmap:npucfg:IRQCAUSE
+  localparam [11:0] R_IRQMASK  = 12'h014; // regmap:npucfg:IRQMASK
+  localparam [11:0] R_EVQ_IN   = 12'h018; // regmap:npucfg:EVQ_IN
+  localparam [11:0] R_EVQ_OUT  = 12'h01C; // regmap:npucfg:EVQ_OUT
+  localparam [11:0] R_EVQ_STAT = 12'h020; // regmap:npucfg:EVQ_STAT
+  localparam [11:0] R_GEOM     = 12'h024; // regmap:npucfg:GEOM
+  localparam [11:0] R_CNT      = 12'h028; // regmap:npucfg:CNT
+  localparam [11:0] R_CNT_DROP = 12'h02C; // regmap:npucfg:CNT_DROP
 
   // "NPUC": the fabric controller, next to the node's own "NPU1"
   // (regmap/regmap.yaml ID). Same convention, one letter apart, so a

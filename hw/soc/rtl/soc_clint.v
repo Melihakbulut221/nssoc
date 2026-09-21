@@ -278,11 +278,11 @@ module soc_clint #(
 );
 
   // Offsets within the region. Sixteen bits is the whole 64 KiB window.
-  localparam [15:0] REG_MSIP      = 16'h0000;
-  localparam [15:0] REG_MTIMECMPL = 16'h4000;
-  localparam [15:0] REG_MTIMECMPH = 16'h4004;
-  localparam [15:0] REG_MTIMEL    = 16'hBFF8;
-  localparam [15:0] REG_MTIMEH    = 16'hBFFC;
+  localparam [15:0] REG_MSIP      = 16'h0000; // regmap:clint:MSIP
+  localparam [15:0] REG_MTIMECMPL = 16'h4000; // regmap:clint:MTIMECMPL
+  localparam [15:0] REG_MTIMECMPH = 16'h4004; // regmap:clint:MTIMECMPH
+  localparam [15:0] REG_MTIMEL    = 16'hBFF8; // regmap:clint:MTIMEL
+  localparam [15:0] REG_MTIMEH    = 16'hBFFC; // regmap:clint:MTIMEH
 
   wire [15:0] off = addr_i[15:0];
 

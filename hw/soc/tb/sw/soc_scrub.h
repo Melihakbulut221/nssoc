@@ -3,8 +3,8 @@
 
 /* SCRUB, hw/soc/rtl/soc_scrub.v (docs/67): the memory codec's counters,
  * the scrubbers' control and the address of the last uncorrectable
- * word. Register offsets are the block's own and are defined here; the
- * slot base comes from the generated map.
+ * word. Register offsets come from regmap/peripherals/scrub.yaml through
+ * soc_reg_offsets.h; the slot base comes from the generated memory map.
  *
  *   SCR_RAMSEC   ROWS THE SCRUBBER REPAIRED in the RAM: the upset-rate
  *   SCR_ROMSEC   counter of each memory, one per row repaired.
@@ -25,19 +25,20 @@
 #define SOC_SCRUB_H
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 
-#define SCR_STATUS      (SOC_SCRUB_BASE + 0x000u)
-#define SCR_IRQEN       (SOC_SCRUB_BASE + 0x004u)
-#define SCR_RAMSEC      (SOC_SCRUB_BASE + 0x008u)
-#define SCR_RAMRD       (SOC_SCRUB_BASE + 0x00Cu)
-#define SCR_RAMDED      (SOC_SCRUB_BASE + 0x010u)
-#define SCR_ROMSEC      (SOC_SCRUB_BASE + 0x014u)
-#define SCR_ROMRD       (SOC_SCRUB_BASE + 0x018u)
-#define SCR_ROMDED      (SOC_SCRUB_BASE + 0x01Cu)
-#define SCR_CLR         (SOC_SCRUB_BASE + 0x020u)
-#define SCR_CTRL        (SOC_SCRUB_BASE + 0x024u)
-#define SCR_RAMADDR     (SOC_SCRUB_BASE + 0x028u)
-#define SCR_ROMADDR     (SOC_SCRUB_BASE + 0x02Cu)
+#define SCR_STATUS      (SOC_SCRUB_BASE + SOC_SCRUB_STATUS_OFF)
+#define SCR_IRQEN       (SOC_SCRUB_BASE + SOC_SCRUB_IRQEN_OFF)
+#define SCR_RAMSEC      (SOC_SCRUB_BASE + SOC_SCRUB_RAMSEC_OFF)
+#define SCR_RAMRD       (SOC_SCRUB_BASE + SOC_SCRUB_RAMRD_OFF)
+#define SCR_RAMDED      (SOC_SCRUB_BASE + SOC_SCRUB_RAMDED_OFF)
+#define SCR_ROMSEC      (SOC_SCRUB_BASE + SOC_SCRUB_ROMSEC_OFF)
+#define SCR_ROMRD       (SOC_SCRUB_BASE + SOC_SCRUB_ROMRD_OFF)
+#define SCR_ROMDED      (SOC_SCRUB_BASE + SOC_SCRUB_ROMDED_OFF)
+#define SCR_CLR         (SOC_SCRUB_BASE + SOC_SCRUB_CLR_OFF)
+#define SCR_CTRL        (SOC_SCRUB_BASE + SOC_SCRUB_CTRL_OFF)
+#define SCR_RAMADDR     (SOC_SCRUB_BASE + SOC_SCRUB_RAMADDR_OFF)
+#define SCR_ROMADDR     (SOC_SCRUB_BASE + SOC_SCRUB_ROMADDR_OFF)
 
 #define SCR_S_RAMSEC    (1u << 0)
 #define SCR_S_RAMRD     (1u << 1)

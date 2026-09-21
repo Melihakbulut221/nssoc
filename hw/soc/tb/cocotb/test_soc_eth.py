@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 """Independent GMII wire expectations: preamble, CRC32, padding and drops."""
 import binascii
+from peripheral_registers import ETH as _REG_OFFSETS
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
 
-CTRL, STATUS, TX, RX, EVENTS, IRQEN, MDIO, ID = 0, 4, 8, 12, 16, 20, 24, 252
+CTRL, STATUS, TX, RX, EVENTS, IRQEN, MDIO, ID = _REG_OFFSETS['CTRL'], _REG_OFFSETS['STATUS'], _REG_OFFSETS['TX'], _REG_OFFSETS['RX'], _REG_OFFSETS['EVENTS'], _REG_OFFSETS['IRQEN'], _REG_OFFSETS['MDIO'], _REG_OFFSETS['ID']
 
 async def cycles(d, n=1):
     for _ in range(n):

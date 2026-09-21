@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Reject incomplete CPU reception evidence, including a silent peer corruption."""
 import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import pytest
@@ -72,3 +73,16 @@ def test_isolated_preparation_and_shell_quoting(tmp_path):
 def test_changed_source_anchor_rejected():
     with pytest.raises(ValueError):
         probe.once('twice twice', 'twice', 'replacement')
+
+
+def test_generated_register_header_is_part_of_probe_identity(tmp_path):
+    output = tmp_path/'header-identity'
+    probe.prepare(output)
+    manifest = output/'source-hashes.json'
+    sources = json.loads(manifest.read_text())
+    header = 'hw/soc/tb/sw/soc_reg_offsets.h'
+    assert header in sources
+    sources[header] = '0'*64
+    manifest.write_text(json.dumps(sources))
+    with pytest.raises(ValueError, match='Input changed'):
+        probe.verify_sources(output)
