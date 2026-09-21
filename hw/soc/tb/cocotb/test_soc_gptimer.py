@@ -43,6 +43,7 @@ WHAT THIS SUITE DOES NOT COVER
 import sys
 from pathlib import Path
 
+from peripheral_registers import GPTIMER, GPTIMER_TIMER, GPTIMER_TIMER_STRIDE
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
@@ -57,29 +58,29 @@ NT = NGEN + 1
 IRQ_NUM = APB_SLOTS["TIMER0"][2]
 
 # grip.pdf table 463.
-REG_SCALER = 0x000
-REG_SCRELOAD = 0x004
-REG_CONFIG = 0x008
-REG_LATCHCFG = 0x00C
+REG_SCALER = GPTIMER['SCALER']
+REG_SCRELOAD = GPTIMER['SCRELOAD']
+REG_CONFIG = GPTIMER['CONFIG']
+REG_LATCHCFG = GPTIMER['LATCHCFG']
 
 
 def T_CNT(n):
-    return 0x10 * n
+    return GPTIMER_TIMER_STRIDE * n + GPTIMER_TIMER['CNT']
 
 
 def T_RLD(n):
-    return 0x10 * n + 4
+    return GPTIMER_TIMER_STRIDE * n + GPTIMER_TIMER['RLD']
 
 
 def T_CTRL(n):
-    return 0x10 * n + 8
+    return GPTIMER_TIMER_STRIDE * n + GPTIMER_TIMER['CTRL']
 
 
 def T_LATCH(n):
-    return 0x10 * n + 0xC
+    return GPTIMER_TIMER_STRIDE * n + GPTIMER_TIMER['LATCH']
 
 
-REG_WDOGSTAT = 0x10 * (NT + 1)
+REG_WDOGSTAT = GPTIMER_TIMER_STRIDE * (NT + 1)
 
 B_EN, B_RS, B_LD, B_IE, B_IP, B_CH = 1, 2, 4, 8, 16, 32
 

@@ -6,8 +6,8 @@
  *
  * Slot bases come from generated soc_memmap.h. CLINT and BUSSTAT
  * offsets come from generated soc_reg_offsets.h and their YAML files
- * in regmap/peripherals. GPTIMER's parameter-dependent layout is still
- * defined below; its migration remains a separate obligation.
+ * in regmap/peripherals. GPTIMER's generated stride and relative offsets
+ * retain the parameter-dependent timer/watchdog layout below.
  *
  * The CLINT offsets are the standard RISC-V ones; the GPTIMER offsets
  * are GRLIB's (grip.pdf table 463); WDOGSTAT and the key are this
@@ -117,13 +117,13 @@
 #define BST_STATUS_IRQ  (1u << 8)
 
 /* ---- GPTIMER, hw/soc/rtl/soc_gptimer.v ------------------------------ */
-#define GPT_SCALER      (SOC_TIMER0_BASE + 0x000u)
-#define GPT_SCRELOAD    (SOC_TIMER0_BASE + 0x004u)
-#define GPT_CONFIG      (SOC_TIMER0_BASE + 0x008u)
-#define GPT_TIMER(n)    (SOC_TIMER0_BASE + 0x10u * (n))
-#define GPT_CNT(n)      (GPT_TIMER(n) + 0x0u)
-#define GPT_RLD(n)      (GPT_TIMER(n) + 0x4u)
-#define GPT_CTRL(n)     (GPT_TIMER(n) + 0x8u)
+#define GPT_SCALER      (SOC_TIMER0_BASE + SOC_GPTIMER_SCALER_OFF)
+#define GPT_SCRELOAD    (SOC_TIMER0_BASE + SOC_GPTIMER_SCRELOAD_OFF)
+#define GPT_CONFIG      (SOC_TIMER0_BASE + SOC_GPTIMER_CONFIG_OFF)
+#define GPT_TIMER(n)    (SOC_TIMER0_BASE + SOC_GPTIMER_TIMER_STRIDE * (n))
+#define GPT_CNT(n)      (GPT_TIMER(n) + SOC_GPTIMER_TIMER_CNT_OFF)
+#define GPT_RLD(n)      (GPT_TIMER(n) + SOC_GPTIMER_TIMER_RLD_OFF)
+#define GPT_CTRL(n)     (GPT_TIMER(n) + SOC_GPTIMER_TIMER_CTRL_OFF)
 
 /* GRLIB timer control bits, grip.pdf table 463. */
 #define GPT_EN  (1u << 0)
@@ -140,11 +140,11 @@
 #define WDOG_CNT      GPT_CNT(WDOG_TIMER)
 #define WDOG_RLD      GPT_RLD(WDOG_TIMER)
 #define WDOG_CTRL     GPT_CTRL(WDOG_TIMER)
-#define WDOG_STAT     (SOC_TIMER0_BASE + 0x10u * (WDOG_TIMER + 1))
+#define WDOG_STAT     (SOC_TIMER0_BASE + SOC_GPTIMER_TIMER_STRIDE * (WDOG_TIMER + 1))
 /* WDOGWIN, soc_wdog.v W7 and W8. It sits at the watchdog's own +0xC,
  * which is a general timer's LATCH register in GRLIB (grip.pdf table
  * 463) and which this block has never decoded for the watchdog. */
-#define WDOG_WIN      (GPT_TIMER(WDOG_TIMER) + 0xCu)
+#define WDOG_WIN      (GPT_TIMER(WDOG_TIMER) + SOC_GPTIMER_TIMER_LATCH_OFF)
 
 /* Every write to a watchdog register carries this in bits 31:16 or has
  * no effect at all (soc_wdog.v W5). */

@@ -34,11 +34,48 @@ def unique_mapping(loader, node, deep=False):
 UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, unique_mapping)
 
 
+def validate_registers(registers, block, bits):
+    if not isinstance(registers, dict) or not registers:
+        raise ValueError(f'Empty register map: {block}')
+    offsets, rtl_names = set(), set()
+    for name, reg in registers.items():
+        if not isinstance(name, str) or not NAME.fullmatch(name) or not isinstance(reg, dict) or set(reg) != {'offset', 'rtl'}:
+            raise ValueError(f'Invalid register: {block}/{name}')
+        offset, rtl = reg['offset'], reg['rtl']
+        if type(offset) is not int or offset < 0 or offset >= 1 << bits or offset % 4:
+            raise ValueError(f'Invalid word register offset: {block}/{name}')
+        if not isinstance(rtl, str) or not NAME.fullmatch(rtl):
+            raise ValueError(f'Invalid RTL name: {block}/{name}')
+        if offset in offsets or rtl in rtl_names:
+            raise ValueError(f'Duplicate register: {block}/{name}')
+        offsets.add(offset)
+        rtl_names.add(rtl)
+
+
+def definitions(spec):
+    """Public name, RTL name, RTL width, RTL value for every binding.
+
+    Window selectors are word indices in RTL, byte offsets in the C/Python
+    interfaces. The stride remains a byte count in all three outputs.
+    """
+    result = [(name, reg['rtl'], spec['address_bits'], reg['offset'])
+              for name, reg in spec['registers'].items()]
+    if 'window' in spec:
+        window = spec['window']
+        result.append((window['name']+'_STRIDE', window['rtl_stride'],
+                       spec['address_bits'], window['stride']))
+        width = (window['stride']//4 - 1).bit_length()
+        result += [(window['name']+'_'+name, reg['rtl'], width, reg['offset']//4)
+                   for name, reg in window['registers'].items()]
+    return result
+
+
 def load(directory):
     result = {}
     for path in sorted(directory.glob('*.yaml')):
         spec = yaml.load(path.read_text(), Loader=UniqueLoader)
-        if not isinstance(spec,dict) or set(spec) != {'schema','block','base','address_bits','registers'}:
+        required = {'schema','block','base','address_bits','registers'}
+        if not isinstance(spec,dict) or not required <= set(spec) or set(spec)-required-{'window'}:
             raise ValueError(f'Invalid peripheral schema: {path.name}')
         block = spec['block']
         if type(spec['schema']) is not int or spec['schema'] != 1 or not isinstance(block, str) or block != path.stem or not re.fullmatch('[a-z][a-z0-9_]*',block):
@@ -47,17 +84,23 @@ def load(directory):
             raise ValueError(f'Invalid base reference: {block}')
         bits = spec['address_bits']
         if type(bits) is not int or not 2 <= bits <= 32: raise ValueError(f'Invalid address width: {block}')
-        if not isinstance(spec['registers'],dict) or not spec['registers']: raise ValueError(f'Empty register map: {block}')
-        offsets, rtl_names = set(), set()
-        for name, reg in spec['registers'].items():
-            if not isinstance(name,str) or not NAME.fullmatch(name) or not isinstance(reg,dict) or set(reg) != {'offset','rtl'}:
-                raise ValueError(f'Invalid register: {block}/{name}')
-            offset, rtl = reg['offset'], reg['rtl']
-            if type(offset) is not int or offset < 0 or offset >= 1 << bits or offset % 4:
-                raise ValueError(f'Invalid word register offset: {block}/{name}')
-            if not isinstance(rtl,str) or not NAME.fullmatch(rtl): raise ValueError(f'Invalid RTL name: {block}/{name}')
-            if offset in offsets or rtl in rtl_names: raise ValueError(f'Duplicate register: {block}/{name}')
-            offsets.add(offset);rtl_names.add(rtl)
+        validate_registers(spec['registers'], block, bits)
+        if 'window' in spec:
+            window = spec['window']
+            if not isinstance(window, dict) or set(window) != {'name','stride','rtl_stride','registers'}:
+                raise ValueError(f'Invalid window schema: {block}')
+            for key in ('name','rtl_stride'):
+                if not isinstance(window[key], str) or not NAME.fullmatch(window[key]):
+                    raise ValueError(f'Invalid window {key}: {block}')
+            stride = window['stride']
+            if type(stride) is not int or stride < 8 or stride >= 1 << bits or stride & (stride-1):
+                raise ValueError(f'Invalid power-of-two window stride: {block}')
+            validate_registers(window['registers'], block+'/'+window['name'], stride.bit_length()-1)
+            if any(reg['offset'] >= stride for reg in spec['registers'].values()):
+                raise ValueError(f'Global register overlaps indexed window: {block}')
+        bindings = definitions(spec)
+        if len({row[0] for row in bindings}) != len(bindings) or len({row[1] for row in bindings}) != len(bindings):
+            raise ValueError(f'Conflicting window/global names: {block}')
         result[block] = spec
     if not result: raise ValueError('No peripheral specifications')
     return result
@@ -68,18 +111,18 @@ def rtl_output(spec, root):
     source = {'npucfg': 'npu'}.get(block, block)
     path = root/'hw/soc/rtl'/('soc_'+source+'.v')
     text = path.read_text()
-    bits = spec['address_bits']
-    for name, reg in spec['registers'].items():
-        pattern = re.compile(r"(?m)^(\s*localparam \["+str(bits-1)+r":0\]\s+"+re.escape(reg['rtl'])+r"\s*=\s*)\d+'h[0-9a-fA-F]+(\s*;[^\n]*)$")
+    bindings = definitions(spec)
+    for name, rtl, bits, value in bindings:
+        pattern = re.compile(r"(?m)^(\s*localparam \["+str(bits-1)+r":0\]\s+"+re.escape(rtl)+r"\s*=\s*)\d+'h[0-9a-fA-F]+(\s*;[^\n]*)$")
         if len(pattern.findall(text)) != 1: raise ValueError(f'Missing/duplicate RTL binding: {block}/{name}')
         marker = f' // regmap:{block}:{name}'
         def replacement(match):
             tail = match.group(2)
             if tail.endswith(marker): tail=tail[:-len(marker)]
-            return match.group(1)+f"{bits}'h{reg['offset']:0{(bits+3)//4}X}"+tail+marker
+            return match.group(1)+f"{bits}'h{value:0{(bits+3)//4}X}"+tail+marker
         text = pattern.sub(replacement,text)
     markers = re.findall(r'// regmap:'+re.escape(block)+r':([A-Z0-9_]+)', text)
-    if sorted(markers) != sorted(spec['registers']):
+    if sorted(markers) != sorted(row[0] for row in bindings):
         raise ValueError(f'Orphan/duplicate RTL register marker: {block}')
     return str(path.relative_to(root)), text
 
@@ -99,6 +142,16 @@ def outputs(specs, root=ROOT):
             c.append(f'#define SOC_{upper}_{name}_OFF 0x{offset:0{(bits+3)//4}X}u')
         c.append('')
         py.append(upper+' = '+repr(values));py.append('')
+        if 'window' in spec:
+            window = spec['window']
+            prefix = upper+'_'+window['name']
+            c.append(f'#define SOC_{prefix}_STRIDE 0x{window["stride"]:X}u')
+            for name, reg in window['registers'].items():
+                c.append(f'#define SOC_{prefix}_{name}_OFF 0x{reg["offset"]:X}u')
+            c.append('')
+            py.append(prefix+'_STRIDE = '+str(window['stride']))
+            py.append(prefix+' = '+repr({name: reg['offset'] for name, reg in window['registers'].items()}))
+            py.append('')
         rtl_path, rtl_text = rtl_output(spec, root)
         result[rtl_path] = rtl_text
     c.append('#endif /* SOC_REG_OFFSETS_H */')

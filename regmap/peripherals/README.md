@@ -34,8 +34,16 @@ of the pre-migration offset map guards compatibility even if all generated
 outputs change together. A deliberate ABI change needs an explicit review of
 that guard and firmware compatibility.
 
-GPTIMER's parameter-dependent timer/watchdog layout and the upstream CAN
-controller's banked byte map remain outside this first migration. Bit fields,
+GPTIMER now adds four global offsets and four window-relative offsets, for
+13 blocks and 113 offsets. Its optional `window` defines `name`, `stride`,
+`rtl_stride` and `registers`. The stride is a power-of-two byte count; globals
+occupy the prefix below that stride. Window registers use byte offsets in
+C/Python and word selectors in RTL. The timer index and watchdog status
+address remain derived from the stride and the existing `NGEN` parameter.
+Independent C assertions and unchanged formal properties guard the shipped
+timer/watchdog ABI.
+
+The upstream CAN controller's banked byte map remains pending. Bit fields,
 access behavior and complete auxiliary-test deduplication also remain work
 items in audit 3.8. Common access and console operations are now provided by
 the [bare-metal HAL](../../hw/soc/tb/sw/lib/README.md).

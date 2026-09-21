@@ -41,7 +41,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.5 | Concise README, preserved errata, block diagram, measured status registry, datasheet/index | PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and copies referenced local images. Datasheet reconciliation remains open; no SoC operating frequency or manufacturability claim. |
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
-| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Twelve block maps (105 offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; GPTIMER's dynamic layout, the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
+| 3.8 | Single-source register offsets and bare-metal HAL | PARTIAL. Thirteen block maps (113 global/window offsets) generate RTL constants, C and Python definitions with an independent ABI guard. That constant-only migration preserves both firmware images. A subsequent shared HAL now passes both CPU profiles and FI baseline comparisons; the upstream CAN byte map and remaining firmware/coverage work stay open. See the separate records below. |
 | 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. CITATION.cff identifies the source repository and author without inventing a release or DOI. Other deliverables remain open; no release is published while product gates fail. The existing mirror contract still governs publication. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
@@ -362,7 +362,7 @@ prevents a coordinated change to all generated files from silently moving the
 remain byte-identical to the captured pre-migration builds. Probe identities
 now include firmware headers. Four lint profiles retain precisely the same
 warning classes, messages and counts; only owned-source line positions moved.
-GPTIMER/CAN maps and the shared HAL remain explicit work, not an exemption.
+The later GPTIMER and shared HAL steps are recorded below. CAN remains open.
 See [the generator contract](../regmap/peripherals/README.md).
 
 A later [independent hosted native boot](evidence/hosted-native-interfaces-20260921.json)
@@ -404,3 +404,15 @@ The clean remote replay of `3b20b20` completes **1,158 Python passes**, two
 explicit skips, zero failures, and **18 front-door passes**, zero failures and
 eight skips. [That revision record](evidence/fresh-clone-3b20b20-20260921.json)
 covers the register migration; the HAL has its own later checks above.
+
+The [GPTIMER migration](evidence/gptimer-registers-20260921.json) adds the
+parameter-dependent timer/watchdog map to the same generator. Global byte
+offsets, indexed-window stride and selectors now feed RTL, C and Python.
+The existing register addresses and alias behavior are preserved: all ten
+base/full firmware artifacts are byte-identical to the accepted HAL builds.
+Independent C assertions guard the shipped watchdog addresses. All **10 timer
+simulations**, **four unchanged formal tasks** (including the shipped 32/16-bit
+proof), **61 register/HAL guards** and four lint profiles pass. Lint changes
+only two owned-source diagnostic line positions per profile; its classes,
+messages and counts remain unchanged. CAN, bit fields and the remaining
+firmware/coverage obligations are still open.
