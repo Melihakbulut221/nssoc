@@ -33,7 +33,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 2.3 | Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration | PARTIAL. Digital tools use project-local, pinned installations and explicit overrides. The checksum-pinned physical devshell, full IHP kit and upstream 420-cell SPM flow now pass on a clean hosted runner. PNR/checker defaults no longer select sibling projects. Current SoC reproduction with this different pinned tool package, translated/patched Ibex equivalence and workstation capacity remain open; preserve frozen pilot scripts. |
 | 2.4 | Valid design SDC; all relevant corners; timing/electrical closure and hold erratum | OPEN. Current native run preserves actual 5.0 percent derating. Old zero-derate ECO passes remain withdrawn. Reset exceptions need a justified timing contract, not blanket cuts. |
 | 2.5 | Collect historical s83 evidence, complete digest coverage, publish physical artifacts | PARTIAL. Existing digest/recovery mechanisms cover more than the audited main snapshot; verify every named s83 run individually and preserve missing-data failures. |
-| 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Added contract/equivalence proofs do not imply a closed whole-core reg_ch0 or M-extension proof. Reconcile dispositions and document actual limits. |
+| 2.6 | Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet | PARTIAL. Real-codec storage/scrub R1–R4 now pass unbounded induction and complete-walk covers at both SYNPRE settings, with six reachable mutation controls; docs/87. Whole-core reg_ch0 and M-extension remain open. |
 | 3.1 | SoC orphan reachability and simulation/macro memory parity | PARTIAL. Recursive inventory now covers both RTL trees and the generated-ROM template, preserves alternate module definitions, and follows per-module edges after stripping comments/strings. Five standalone AHB probe modules have reasoned ledger rows; CAN’s soc_apb_wb remains reachable. All six supported RAM geometry/latency profiles pass native SRAM parity; a corrupted-macro negative control fails after elaboration. Legacy ROM parity remains open. |
 | 3.2 | UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures | PARTIAL. Ten new UART/timer/PnP formal tasks pass, including unbounded proofs and the shipped 32/16-bit timer widths; five mutated designs produce reachable counterexamples. Direct serial-master tests pass at HALF=2/3/7; direct TMR test covers 339 single storage-bit upsets plus a two-replica negative control. RX now has pin-driven tests and real-CPU receive/IRQ/WFI validation; see docs/97. Its final layout, broader FI/coverage and other requested work remain open. |
 | 3.3 | Whole-SoC lint and targeted warnings; nettype discipline | DONE for the defined lint gate and nettype discipline. Both base/full array and SRAM/logic-ROM/SYNPRE profiles pass exact diagnostic inventories; 20 owned width warnings are removed. Generated ROM diagnostics are attributed to the authored template. Frozen/upstream warnings remain recorded technical debt, not signoff waivers; see the dated physical-source extension below. |
@@ -574,3 +574,34 @@ checkout is restored cleanly at its required `01d5d2814fa9dd61e9d211e0b235a4a592
 revision, and all **19 submission controls pass with zero skips**. No frozen
 submission source changes. The original full-suite result remains 1,260 pass /
 one skip; this is a separately recorded follow-up, not a second full rerun.
+
+The [completed native recovery](evidence/native-recovery-completed-20260921.json)
+now passes on independently hosted **base and full at df01ea4**: each completes
+647,591 cycles and all 28 baseline checks, with zero failure mask, flash protocol
+violations or UART framing errors. The separate local base replay also passes.
+The original failed base run is retained; this closes the diagnosed SCRUBCTL
+startup recovery defect. Interface-demo firmware, SDF and final layout remain
+separate acceptance obligations.
+
+Both [completed mandatory formal sweeps](evidence/formal-sweep-completed-20260921.json)
+have **157 PASS, zero missing/stale tasks**, at bb0ea7d and 4d4b948 respectively.
+Artifact CRCs and revision source hashes were independently checked. Six named
+historical exceptions remain open. These runs precede the SCRUBCTL correction;
+its four local proofs are recorded separately and are not silently substituted
+for a new whole-suite run. Audit 2.2 still includes current-revision freshness
+and broader hardware coverage.
+
+The [real-codec scrub closure](evidence/regfile-scrub-complete-20260921.json)
+adds four passing tasks and six expected reachable failures. It closes the
+fault-free R1–R4 storage/scrub contract at both syndrome placements; it does
+not close the core-level or M-extension obligations in audit 2.6. Its complete
+walk witnesses verify every register after a nonzero write and a pointer wrap.
+No production RTL or frozen source changes. The mandatory sweep inventory is
+now 161; a fresh aggregate run remains distinct from the older 157-task records.
+
+The generated README now selects the completed base/full native result and
+dated formal inventories. Negative controls reject a missing/duplicated native
+profile, mismatched revisions, failed or changed-source results, and removed,
+missing or stale formal tasks. New hosted artifacts also retain generated
+boot-ROM sources and scrub counterexamples; the older artifacts' missing ROM
+source files remain explicitly recorded rather than claimed recovered.

@@ -172,3 +172,41 @@ The physical tools were found on this machine, but this run did not execute
 their multi-hour experiments. Those rows are unfinished engineering, not
 missing-tool excuses and not completed items. The original dated measurements
 and their limitations remain intact.
+
+## 5. Real-codec scrub retention closure (21 September 2026)
+
+`regfile_scrub_complete.sby` now proves the original R1–R4 fault-free
+storage/scrub contract with the real, unchanged codecs and register-file RTL.
+It covers both SYNPRE=0 and the physical candidate's SYNPRE=1. Both unbounded
+induction tasks pass; neither substitutes the identity codec. The assertions
+include both read ports, codeword validity, pointer hold during core writes,
+advance/wrap during scrubbing, nonzero scrub addresses and no fault-free error
+reports. Per-register reference/storage invariants are assertions, not assumed
+correctness or constrained data values.
+
+The watched address and 32-bit value are arbitrary constants. Once that value
+is written, the environment does not rewrite that address until reset: exactly
+the original R1 premise. Other writes and both read addresses remain free;
+x0 writes and subsequent resets are permitted. Initial reset comes from the
+existing architectural-contract harness.
+
+Both cover tasks complete within the unchanged depth of 40. Each has five
+reached goals, including **one trace** that retains a nonzero written word,
+visits all 31 registers, advances the scrub 32 times and reads the same value
+through both ports. The retained VCDs were independently checked for all
+addresses 1–31, the complete visited mask and matching read data. Six scratch
+mutations (data/check writes, port B, scrub data, pointer skipping and missing
+stall) each produce a reachable BMC counterexample. See the
+[source-bound record](evidence/regfile-scrub-complete-20260921.json).
+
+```sh
+make -C hw/soc/formal regfilescrubcomplete regfilescrubcontrols
+```
+
+Both targets are in the default sweep. There are now 161 mandatory tasks,
+including these four, and the same six explicitly historical exclusions.
+The two previously completed 157-task sweeps predate this addition. Old
+`regfile_scrub.sby` timeouts and the abstract `prove12` UNKNOWN remain recorded;
+this is a new proof of the functional contract, not a retroactive engine verdict
+or a fresh depth-40 BMC pass. Core-level `reg_ch0`, M-extension, injected-fault
+behavior and physical acceptance remain separate obligations.

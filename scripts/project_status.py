@@ -16,6 +16,37 @@ START = "<!-- project-status:start -->"
 END = "<!-- project-status:end -->"
 
 
+def native_status(record):
+    runs = record["runs"]
+    profiles = [run["profile"] for run in runs]
+    if sorted(profiles) != ["base", "full"]:
+        raise ValueError("Native acceptance needs exactly one base and one full run")
+    if record["status"] != "PASS" or any(
+            run["head"] != record["head"] or run["status"] != "PASS"
+            or run["result"].get("passed") is not True
+            or run["result"].get("sources_unchanged") is not True for run in runs):
+        raise ValueError("Native profile verdict/source identity does not support aggregate PASS")
+    return dict(status=record["status"], head=record["head"],
+                scope=record["scope"], profiles=sorted(profiles))
+
+
+def formal_status(record):
+    rows = []
+    for run in record["runs"]:
+        result = run["result"]
+        tasks = result["tasks"]
+        if (not tasks or len(tasks) != record["expected_task_count"] or result.get("passed") is not True or
+                result.get("sources_unchanged") is not True or any(
+                    task["status"] != "PASS" or task["source_state"] != "clean"
+                    for task in tasks.values())):
+            raise ValueError("Formal inventory does not support aggregate PASS")
+        rows.append(dict(head=result["head"], passed=len(tasks),
+                         exclusions=len(result["exclusions"])))
+    if not rows:
+        raise ValueError("Formal evidence has no completed runs")
+    return rows
+
+
 def derive(root=ROOT):
     sources = json.loads((root / "docs/status-sources.json").read_text())
     records = {key: json.loads((root / path).read_text()) for key, path in sources.items()}
@@ -35,9 +66,8 @@ def derive(root=ROOT):
                       setup_ns=min(x["setup_ns"] for x in corners.values()),
                       hold_ns=min(x["hold_ns"] for x in corners.values()),
                       max_fanout_violations=max(x["electrical"]["fanout"] for x in corners.values())),
-        native_boot=dict(status=records["native_boot"]["status"],
-                         head=records["native_boot"]["head"],
-                         scope=records["native_boot"]["scope"]),
+        native_boot=native_status(records["native_boot"]),
+        formal_sweep=formal_status(records["formal_sweep"]),
         native_replay=dict(status=records["native_replay"]["status"],
                            head=records["native_replay"]["head"],
                            **records["native_replay"]["acceptance"]),
@@ -59,7 +89,10 @@ def table(status):
          evidence("python", "Exact revision and command")),
         ("Peripheral checks", f'{f["passed"]}/{f["total"]} new formal tasks; {ram["passed"]}/{ram["total"]} native RAM profiles',
          evidence("peripheral_formal", "Formal scope") + "; " + evidence("ram", "RAM + negative control")),
-        ("Independent native boot", f'{native["status"]} at `{native["head"][:7]}`; functional four-state simulation',
+        ("Mandatory formal sweep", "; ".join(
+            f'{row["passed"]} PASS at `{row["head"][:7]}`, {row["exclusions"]} historical exclusions'
+            for row in status["formal_sweep"]), evidence("formal_sweep", "Dated source-bound inventories")),
+        ("Independent native boot", f'{native["status"]} base + full at `{native["head"][:7]}`; functional four-state simulation',
          evidence("native_boot", "Hosted result and retained prior failure")),
         ("Local native correction", f'{replay["status"]}: {replay["checks"]} checks, {replay["cycles"]:,} cycles; firmware `{replay["head"][:7]}`',
          evidence("native_replay", "Same hosted netlist, verified serial initialization")),

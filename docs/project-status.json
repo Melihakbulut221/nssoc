@@ -4,16 +4,18 @@
     "peripheral_formal": "docs/evidence/peripheral-formal-20260920.json",
     "ram": "docs/evidence/hosted-memory-parity-20260920.json",
     "physical": "docs/evidence/startup-native-corners-20260920.json",
-    "native_boot": "docs/evidence/hosted-native-interfaces-20260921.json",
-    "native_replay": "docs/evidence/npu-native-startup-20260921.json"
+    "native_boot": "docs/evidence/native-recovery-completed-20260921.json",
+    "native_replay": "docs/evidence/npu-native-startup-20260921.json",
+    "formal_sweep": "docs/evidence/formal-sweep-completed-20260921.json"
   },
   "source_sha256": {
     "python": "4d23eb38b1fdb12669c0d3553506ce935d643be6522d791b6091fd354cc35b91",
     "peripheral_formal": "1840d9d46a5e4c44ae5f9cc1d39d6894cc33370af4dabca365056aef43ac97bc",
     "ram": "119770adcd6ca86992ba0bb9370f94e2bbad2744d32958d26f0a080bb69f452f",
     "physical": "bb6ad1f61caa054f47ad7c671d3aeb806987ae16bca13b4092c62b7331146384",
-    "native_boot": "d86443b4b97b9a99dacf28cbba15a904ac4b189be189098b0d9d75b9faae6351",
-    "native_replay": "151f141732ead00fdb938d85f0688f9c50310cc245c4c9c5fa8d5a021f428f02"
+    "native_boot": "6c3d2284d8980947e126eb37229011f4c3b0baf3bfb1f371d682490934c5cbdb",
+    "native_replay": "151f141732ead00fdb938d85f0688f9c50310cc245c4c9c5fa8d5a021f428f02",
+    "formal_sweep": "0e1de9b4fab0d5e752d388d1dfa57fe3f4f09c33263f09e0ddf99dbd8eef9fe7"
   },
   "python": {
     "head": "4d4b948ca9904198150aa85e3bbebc68fda3282b",
@@ -40,9 +42,25 @@
   },
   "native_boot": {
     "status": "PASS",
-    "head": "9ffe83b414d9c6f901741a9f23ef9b796744f668",
-    "scope": "Independent GitHub rebuild and four-state native functional boot at the exact indicated revision, with UART RX and the explicit full interface RTL profile; this image exercises the 28 baseline boot checks, not the separate 29-check interface firmware. No SDF, final layout or fault qualification."
+    "head": "df01ea45ee1430df7f8598335654abc18b6ccd8f",
+    "scope": "Corrected SCRUBCTL whole-SoC native IHP functional boot, base/full profiles; 28 baseline checks each. No interface-demo, SDF, final layout or fault acceptance.",
+    "profiles": [
+      "base",
+      "full"
+    ]
   },
+  "formal_sweep": [
+    {
+      "head": "bb0ea7de4da141dcf58901d97896333e030da24d",
+      "passed": 157,
+      "exclusions": 6
+    },
+    {
+      "head": "4d4b948ca9904198150aa85e3bbebc68fda3282b",
+      "passed": 157,
+      "exclusions": 6
+    }
+  ],
   "native_replay": {
     "status": "PASS",
     "head": "100cad7b996dcc989d394d18daf8c8fcda296a91",

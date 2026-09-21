@@ -24,10 +24,36 @@ def test_project_status_is_source_bound_and_matches_readme():
     assert status["native_boot"]["status"] == "PASS"
     native = json.loads((ROOT / status["sources"]["native_boot"]).read_text())
     prior = json.loads((ROOT / native["prior_failure"]).read_text())
-    assert prior["status"] == "FAIL"  # Never delete the independent failed attempt.
+    assert any(run["status"] == "FAIL" for run in prior["runs"])
+    assert status["native_boot"]["profiles"] == ["base", "full"]
     assert native["acceptance"]["checks"] == 28
     assert status["physical"]["setup_ns"] < 0
     assert status["ram"]["negative_rejected"]
+
+
+@pytest.mark.parametrize("defect", ["missing", "duplicate", "failed", "changed", "different_head"])
+def test_native_status_rejects_incomplete_profile_acceptance(defect):
+    record = json.loads((ROOT / "docs/evidence/native-recovery-completed-20260921.json").read_text())
+    if defect == "missing": record["runs"].pop()
+    elif defect == "duplicate": record["runs"][1] = record["runs"][0]
+    elif defect == "failed": record["runs"][0]["result"]["passed"] = False
+    elif defect == "changed": record["runs"][0]["result"]["sources_unchanged"] = False
+    else: record["runs"][0]["head"] = "0" * 40
+    with pytest.raises(ValueError): project_status.native_status(record)
+
+
+@pytest.mark.parametrize("defect", ["missing", "removed", "stale", "failed", "changed", "empty"])
+def test_formal_status_rejects_stale_or_nonpassing_tasks(defect):
+    record = json.loads((ROOT / "docs/evidence/formal-sweep-completed-20260921.json").read_text())
+    result = record["runs"][0]["result"]
+    task = next(iter(result["tasks"].values()))
+    if defect == "missing": task["status"] = "MISSING"
+    elif defect == "removed": result["tasks"].pop(next(iter(result["tasks"])))
+    elif defect == "stale": task["source_state"] = "stale"
+    elif defect == "failed": result["passed"] = False
+    elif defect == "changed": result["sources_unchanged"] = False
+    else: result["tasks"].clear()
+    with pytest.raises(ValueError): project_status.formal_status(record)
 
 
 def test_readme_migration_preserves_every_original_byte():

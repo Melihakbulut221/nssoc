@@ -1,7 +1,7 @@
 {
   "date": "2026-09-21",
-  "status": "PARTIAL",
-  "scope": "SCRUBCTL startup-X recovery correction. Targeted native, known-value RTL and formal controls pass; new whole-SoC native runs are pending. Physical timing and fault acceptance remain open.",
+  "status": "PASS",
+  "scope": "SCRUBCTL startup-X recovery correction; targeted controls and corrected base/full whole-SoC native IHP baseline boot pass. Physical timing and fault acceptance remain open.",
   "failure": "docs/evidence/hosted-native-hal-20260921.json",
   "diagnosis": "The failing base mapped DED-counter cone has a reconvergent x & !x dependence on an old unknown counter bit even during software clear. The unchanged 71-cell cone reproduces the failure through only event/clear/clock/POR boundary inputs; no forced storage value or PDK patch. Standalone old RTL mapping did not reproduce the particular optimization, so the actual failing mapped cone is retained as the negative control.",
   "change": "Mask the old count before saturating increment and retain intermediate mapping boundaries. Known clear/event priority, saturation, POR/system-reset policy and MMIO ABI are unchanged. Unknown event values remain observable.",
@@ -155,11 +155,12 @@
     "status": "PASS with unchanged exact warning inventories, not warning-free RTL"
   },
   "whole_soc": {
-    "status": "PENDING",
+    "status": "PASS",
     "base_local_output": "hw/soc/out/external-review-20260919/base-scrub-mask-gl",
     "netlist_sha256": "0b27b001b127eafb14bfc0ac8f714169fc4d12592191fc833ab2983cc1aba38e",
     "synthesis_source_token_parity": true,
-    "independent_workflow": ".github/workflows/native-recovery.yml"
+    "independent_workflow": ".github/workflows/native-recovery.yml",
+    "completion_record": "docs/evidence/native-recovery-completed-20260921.json"
   },
   "artifacts": {
     "hw/soc/rtl/soc_scrub.v": {
@@ -311,5 +312,6 @@
       "log": "hw/soc/out/external-review-20260919/tt-restored-controls.log",
       "log_sha256": "aefec41ff0671ec93dd0bddac11947a25858df8b32aa2336eb3cde41393dc583"
     }
-  }
+  },
+  "completed_whole_soc": "docs/evidence/native-recovery-completed-20260921.json"
 }

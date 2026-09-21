@@ -17,11 +17,11 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 | Frozen pilot | TTIHP26b submission; source tree frozen | [Freeze contract](docs/34-pilot-freeze.md) |
 | Python regression | 1240 pass, 2 skip; commit `4d4b948` | [Exact revision and command](docs/evidence/fresh-clone-4d4b948-20260921.json) |
 | Peripheral checks | 10/10 new formal tasks; 6/6 native RAM profiles | [Formal scope](docs/evidence/peripheral-formal-20260920.json); [RAM + negative control](docs/evidence/hosted-memory-parity-20260920.json) |
-| Independent native boot | PASS at `9ffe83b`; functional four-state simulation | [Hosted result and retained prior failure](docs/evidence/hosted-native-interfaces-20260921.json) |
+| Mandatory formal sweep | 157 PASS at `bb0ea7d`, 6 historical exclusions; 157 PASS at `4d4b948`, 6 historical exclusions | [Dated source-bound inventories](docs/evidence/formal-sweep-completed-20260921.json) |
+| Independent native boot | PASS base + full at `df01ea4`; functional four-state simulation | [Hosted result and retained prior failure](docs/evidence/native-recovery-completed-20260921.json) |
 | Local native correction | PASS: 28 checks, 653,726 cycles; firmware `100cad7` | [Same hosted netlist, verified serial initialization](docs/evidence/npu-native-startup-20260921.json) |
 | Physical closure | Setup -2.867 ns, hold -0.089 ns; electrical failures | [Fixed-route estimate scope](docs/evidence/startup-native-corners-20260920.json) |
 <!-- project-status:end -->
-
 These rows name different measured revisions and scopes; they are not a
 combined signoff result. The [machine-readable status](docs/project-status.json)
 is generated from [selected evidence records](docs/status-sources.json).

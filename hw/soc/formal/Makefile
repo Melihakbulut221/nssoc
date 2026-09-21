@@ -57,7 +57,7 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols
 
 include $(REPO)/tools.mk
 
@@ -149,6 +149,16 @@ regfileequivalence:
 
 regfilecontrols:
 	python3 $(REPO)/scripts/check_regfile_contract.py --sby $(SBY) --controls-only
+
+.PHONY: regfilescrubcomplete regfilescrubcontrols
+REGFILESCRUB_COMPLETE_TASKS := prove cover prove_synpre cover_synpre
+regfilescrubcomplete:
+	@status=0; for t in $(REGFILESCRUB_COMPLETE_TASKS); do \
+	  $(SBY) -f regfile_scrub_complete.sby $$t || status=1; \
+	done; exit $$status
+
+regfilescrubcontrols:
+	python3 $(REPO)/scripts/check_regfile_scrub.py --sby $(SBY)
 
 regfilescrub:
 	@status=0; for t in $(REGFILESCRUB_TASKS); do \
