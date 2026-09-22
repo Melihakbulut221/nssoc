@@ -723,3 +723,17 @@ Earlier completed 157-task hosted sweeps predate these four tasks and are
 not re-labelled as 161-task results. This correction also resolves the
 stale inventory detected by the hosted `test_roadmap_is_current` guard at
 `1d99a78`; the failing run remains recorded as a failure.
+
+
+**Re-counted 2026-09-22 after PCIe block integration [fact].**
+`hw/soc/formal` declares **119 tasks across 28 jobs**. The six new tasks
+cover the standalone transaction backend and DWORD packet adapter with
+BMC, unbounded proofs and reachability covers. Their measured block results
+are in [docs/98](docs/98-pcie-transaction-backend.md).
+The SoC sweep now requires 113 tasks, retaining six historical exclusions;
+with the unchanged 54 pilot tasks it requires 167 fresh PASS verdicts.
+This is the current inventory, not a completed 167-task sweep or a PCIe
+product/link/layout verdict. The earlier complete 161-task result remains
+bound to its original sources. The full Python regression exposed the stale
+113-task/26-job documentation; both inventories are corrected here without
+rewriting the earlier dated measurements.
