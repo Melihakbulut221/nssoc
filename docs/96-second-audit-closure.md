@@ -788,3 +788,22 @@ CRC, implement DLL/LTSSM/PHY, add burst transactions or connect to `soc_top`.
 The earlier backend-only hosted run is independently verified in
 [this record](evidence/pcie-runtime-hosted-20260922.json). Both audit documents'
 remaining product gates are still required; no full PCIe/layout closure is claimed.
+
+**22 September, complete Python replay and physical recovery:** the
+[source-bound Python replay](evidence/pcie-full-python-20260922.json) passes
+1329 tests at `f279755`, with unchanged hashes for all measured tracked files.
+The earlier stale-inventory failure was corrected; two unsuccessful local
+retries exposed exhausted temporary storage and an inappropriate in-repository
+temporary directory. Their logs remain retained; neither is counted as PASS.
+Subsequent physical-recovery changes require their own focused validation.
+
+The [current full-core physical attempt](evidence/current-physical-timeout-20260922.json)
+was cancelled during post-GRT setup optimization, before detailed routing.
+Its artifact contains reports but omits the state-referenced physical files.
+The workflow now captures a relocatable, hash-checked restart bundle from the
+latest completed state and leaves time for artifact collection. Post-GRT
+search is bounded separately, without relaxing timing or electrical checks.
+[The recovery controls](evidence/physical-recovery-controls-20260922.json) pass
+83 focused tests. A local native-read control hit a database-version mismatch
+and is not counted as PASS; restoring a physical database requires matching
+tools. Audit 2.4, physical delivery in 2.5 and every final layout gate remain OPEN.

@@ -53,3 +53,33 @@ for commands, clock sampling rules and the limited energy components priced.
 A separate `flow/check_macro_activity.py` native-model calibration checks the
 reader with an inventory and independent A/B clocks; it is not a SoC workload
 power measurement.
+
+## Recoverable physical runs
+
+The first hosted `current-full` attempt hit its 330-minute job limit in
+post-GRT setup repair; its artifact omitted the actual ODB/DEF views. See the
+[source-bound failure record](../../../docs/evidence/current-physical-timeout-20260922.json).
+The workflow now limits the implementation step to 300 minutes, leaving time
+for checkpoint collection within the job budget. Post-GRT setup search uses
+100 iterations; post-CTS keeps 600. This bounds optimization effort, not
+acceptance: timing, derating, electrical and physical-verification criteria
+remain unchanged. The shorter search may leave violations that need another
+repair; a completed flow is not automatically a passing product.
+
+```sh
+python3 scripts/collect_physical_checkpoint.py capture \
+  --run hw/soc/pnr/runs/current-full --out hw/soc/out/current-full-checkpoint
+# After downloading the checkpoint directory to a new machine:
+python3 scripts/collect_physical_checkpoint.py restore \
+  --bundle /absolute/path/to/current-full-checkpoint
+```
+
+Capture selects the last completed top-level step and includes every file
+referenced by its state, with hashes and relative paths. Missing or external
+views, an invalid latest state and changed inputs fail explicitly; no older
+state is silently substituted. Restore verifies the files and writes
+`state.local.json` with paths for its current location. Existing outputs are
+never overwritten. Use that state as the input to the appropriate next flow
+step with the matching pinned tools, PDK and configuration. This does not
+reconstruct an interrupted optimizer's uncommitted in-memory changes, and
+the older incomplete artifact cannot supply missing views retroactively.

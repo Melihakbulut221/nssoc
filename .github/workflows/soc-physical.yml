@@ -6,6 +6,8 @@ on:
     paths:
       - .github/workflows/soc-physical.yml
       - hw/soc/flow/implement_interfaces.sh
+      - hw/soc/pnr/interface_flow.py
+      - scripts/collect_physical_checkpoint.py
   workflow_dispatch:
 permissions:
   contents: read
@@ -50,11 +52,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python3 scripts/check_flow_smoke.py
       - name: Implement current full-interface core with immutable loader
+        timeout-minutes: 300
         env:
           FLOW_TOOL_MODE: environment
         run: |
           export PDK_ROOT="$PWD/hw/soc/tools/pdk-bootstrap"
           hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage bash hw/soc/flow/implement_interfaces.sh current-full
+      - name: Capture restart files from the last completed physical step
+        if: always()
+        run: |
+          if [ -d hw/soc/pnr/runs/current-full ]; then
+            python3 scripts/collect_physical_checkpoint.py capture --run hw/soc/pnr/runs/current-full --out hw/soc/out/current-full-checkpoint
+          else
+            echo 'No physical run directory exists; no restart checkpoint can be captured.'
+          fi
       - name: Retain source identities and physical success or failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -67,6 +78,7 @@ jobs:
             hw/soc/out/physical-bootstrap/**/*.json
             hw/soc/out/current-full/**/*.log
             hw/soc/out/current-full/**/*.json
+            hw/soc/out/current-full-checkpoint/
             hw/soc/out/current-full/synthesis/soc_top.netlist.v
             hw/soc/out/current-full/synthesis/area.rpt
             hw/soc/out/current-full/synthesis/boot-rom/

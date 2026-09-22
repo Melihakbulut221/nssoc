@@ -64,6 +64,19 @@ is still running at this dated observation; no final timing, electrical,
 DRC or LVS pass has been accepted for it. This is a core implementation,
 without a PCIe controller/PHY or a finished pad ring/package.
 
+**Later 22 September result:** [the hosted current-full run](evidence/current-physical-timeout-20260922.json)
+was cancelled at its 330-minute limit during post-global-route timing repair.
+Placement, CTS, global routing and the antenna-repair checkpoint completed;
+detailed routing and extracted signoff did not. The last optimizer progress
+line still reports setup WNS -4.175 ns and 2538 violating endpoints. This is
+an unfinished global-route estimate, not a final STA result. The inherited
+timing fields in the preceding state JSON are not a replacement for it.
+The retained artifact omitted ODB/DEF/GDS views, so it cannot restore that
+physical state on another runner. The subsequent flow change captures actual
+restart files and separately bounds the post-GRT search at 100 iterations;
+post-CTS retains 600. All clocks, derating and acceptance limits remain.
+The new run must produce its own results; no product gate is closed here.
+
 Historical initial physical candidate: `interfaces-eth256-resume-20260919-184950`, using
 the input inventory in [the Ethernet evidence](evidence/ethernet-sram256-20260919.json).
 The failed multi-repair optimizer and the missing-RC diagnostic correction are

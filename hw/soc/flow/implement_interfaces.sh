@@ -56,6 +56,8 @@ record['implementation_files'] = {
                  'hw/soc/pnr/interface_flow.py',
                  'hw/soc/flow/build_sw_soc.sh', 'hw/soc/flow/gen_logic_boot_rom.py',
                  'hw/soc/flow/select_pnr_profile.py', 'hw/soc/flow/physical_env.sh',
+                 'hw/soc/flow/check_timing_derate.tcl',
+                 'hw/soc/flow/prune_orphan_guides.tcl',
                  'hw/soc/techmap/eth_ram.lib', 'hw/soc/techmap/eth_ram_map.v',
                  'hw/soc/sta/soc_interfaces.sdc', 'hw/soc/sta/soc_top_qspi_io.sdc',
                  'hw/soc/sta/soc_interfaces_external_irq.sdc')}

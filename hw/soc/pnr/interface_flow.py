@@ -19,13 +19,15 @@ from librelane.steps import OpenROAD
 
 
 class BoundedSetup:
+    max_setup_iterations = 600
+
     def get_script_path(self):
         original = Path(super().get_script_path())
         source = original.read_text()
         anchor = "lappend setup_args -setup\n"
         if source.count(anchor) != 1:
             raise RuntimeError(f"Unsupported LibreLane resizer script: {original}")
-        source = source.replace(anchor, anchor + "lappend setup_args -max_iterations 600\n")
+        source = source.replace(anchor, anchor + f"lappend setup_args -max_iterations {self.max_setup_iterations}\n")
         load = "read_current_odb\n"
         if source.count(load) != 1:
             raise RuntimeError(f"Unsupported LibreLane database load: {original}")
@@ -46,7 +48,11 @@ class BoundedPostCTS(BoundedSetup, OpenROAD.ResizerTimingPostCTS):
 
 
 class BoundedPostGRT(BoundedSetup, OpenROAD.ResizerTimingPostGRT):
-    pass
+    # The 20-macro hosted candidate spent nearly four hours in this search
+    # and was cancelled at iteration 430/600 before detailed routing. Bound
+    # this search separately so route/extraction and unchanged checkers run.
+    # An unfinished timing repair remains a timing failure, not a waiver.
+    max_setup_iterations = 100
 
 
 class CleanOrphanGuides(OpenROAD.DetailedRouting):
