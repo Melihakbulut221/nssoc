@@ -687,3 +687,14 @@ product/link/layout verdict. The earlier complete 161-task result remains
 bound to its original sources. The full Python regression exposed the stale
 113-task/26-job documentation; both inventories are corrected here without
 rewriting the earlier dated measurements.
+
+
+**Re-counted 2026-09-23 after request-register proof integration [fact].**
+`hw/soc/formal` declares **122 tasks across 29 jobs**. The three new mandatory
+request-register tasks cover reset, backpressure, payload preservation and
+one-entry occupancy using BMC, induction and reachability. The SoC sweep now
+requires 116 tasks, retaining the six historical exclusions; with the unchanged
+54 pilot tasks it requires 170 fresh PASS verdicts. This inventory does not
+re-label earlier completed sweeps or certify the new whole-processor timing
+candidate. Its block results and acceptance boundary are recorded in
+[docs/100](100-routed-closure.md).

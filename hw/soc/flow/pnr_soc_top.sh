@@ -175,7 +175,7 @@ SRCS=$(
   echo "$RTL/prim_clock_gating.v"
   ibex_sources "$SOC_DIR"
   echo "$IF_BUNDLE"
-  for f in soc_eth soc_spw soc_i2c soc_spi soc_can soc_apb_wb soc_bus soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
+  for f in soc_eth soc_spw soc_i2c soc_spi soc_can soc_apb_wb soc_bus soc_req_pipe soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
            soc_clint soc_gptimer soc_wdog soc_busstat soc_scrub soc_boot \
            soc_mem_ecc soc_tmr_bank; do
     echo "$RTL/$f.v"

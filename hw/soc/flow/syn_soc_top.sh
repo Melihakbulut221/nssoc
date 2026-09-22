@@ -239,6 +239,15 @@ if [ "$SOC_REQ_REG" != 0 ]; then
   TOP_CHPARAM="$TOP_CHPARAM
 chparam -set REQ_REG $SOC_REQ_REG soc_top"
 fi
+SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'Core pipeline parameters must be zero or one' >&2; exit 2;;
+esac
+TOP_CHPARAM="$TOP_CHPARAM
+chparam -set CORE_REQ_REG $SOC_CORE_REQ_REG soc_top
+chparam -set CORE_WB_STAGE $SOC_CORE_WB_STAGE soc_top"
 # shellcheck source=hw/soc/flow/ibex_sources.sh
 . "$SOC_DIR/flow/ibex_sources.sh"
 
@@ -255,7 +264,7 @@ rm -rf "$OUT"; mkdir -p "$OUT"
 
 IBEX_SRCS=$(ibex_sources "$SOC_DIR" | tr '\n' ' ')
 
-SOC_SRCS="$RTL/soc_bus.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
+SOC_SRCS="$RTL/soc_bus.v $RTL/soc_req_pipe.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
 $RTL/soc_gpio.v $RTL/soc_spw.v $RTL/soc_i2c.v $RTL/soc_spi.v $RTL/soc_can.v $RTL/soc_eth.v $RTL/soc_apb_wb.v $IF_BUNDLE $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
 $RTL/soc_gptimer.v \
 $RTL/soc_wdog.v $RTL/soc_busstat.v $RTL/soc_scrub.v $RTL/soc_boot.v \

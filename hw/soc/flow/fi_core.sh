@@ -290,6 +290,7 @@ sym_opt () {
   "$SOC_DIR/tb/tb_soc_fi.v" \
   "$SOC_DIR/rtl/soc_top.v" \
   "$SOC_DIR/rtl/soc_bus.v" \
+  "$SOC_DIR/rtl/soc_req_pipe.v" \
   "$SOC_DIR/rtl/soc_apb_bridge.v" \
   "$SOC_DIR/rtl/soc_mem.v" \
   "$SOC_DIR/rtl/soc_mem_ecc.v" \

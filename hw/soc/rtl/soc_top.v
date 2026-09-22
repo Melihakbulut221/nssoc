@@ -231,6 +231,11 @@ module soc_top #(
     // number the corpus quotes, so sw/tests pins the default for the
     // reason it pins WAKE_GNT.
     parameter integer REQ_REG = 0,
+    // Timing candidates; historical configurations remain at zero. The
+    // request register adds a cycle before fabric arbitration. Ibex's optional
+    // writeback stage separates ALU work from protected-register re-encoding.
+    parameter integer CORE_REQ_REG = 0,
+    parameter integer CORE_WB_STAGE = 0,
     // 256 ACCESS cycles = 5.12 us at 50 MHz. Normal register slaves,
     // including the CAN Wishbone bridge, respond in a few cycles.
     // Zero reproduces the historical unbounded bridge configuration.
@@ -539,7 +544,7 @@ module soc_top #(
       .RV32ZC          (0),
       .RegFile         (0),
       .BranchTargetALU (0),
-      .WritebackStage  (0),
+      .WritebackStage  (CORE_WB_STAGE),
       .ICache          (0),
       .ICacheECC       (0),
       .BranchPredictor (0),
@@ -729,6 +734,30 @@ module soc_top #(
   end
   endgenerate
 
+  wire bus_data_req, bus_data_gnt, bus_data_we;
+  wire [3:0] bus_data_be;
+  wire [31:0] bus_data_addr, bus_data_wdata;
+  generate
+    if (CORE_REQ_REG != 0) begin : g_core_req_reg
+      soc_req_pipe u_data_request (
+          .clk_i (clk_i), .rst_ni (rst_sys_n),
+          .req_i (data_req), .gnt_o (data_gnt),
+          .addr_i (data_addr), .we_i (data_we),
+          .be_i (data_be), .wdata_i (data_wdata),
+          .req_o (bus_data_req), .gnt_i (bus_data_gnt),
+          .addr_o (bus_data_addr), .we_o (bus_data_we),
+          .be_o (bus_data_be), .wdata_o (bus_data_wdata)
+      );
+    end else begin : g_core_req_direct
+      assign bus_data_req = data_req;
+      assign data_gnt = bus_data_gnt;
+      assign bus_data_addr = data_addr;
+      assign bus_data_we = data_we;
+      assign bus_data_be = data_be;
+      assign bus_data_wdata = data_wdata;
+    end
+  endgenerate
+
   soc_bus #(
       .REQ_REG (REQ_REG)
   ) u_bus (
@@ -743,12 +772,12 @@ module soc_top #(
       .mi_rdata_o  (instr_rdata),
       .mi_err_o    (instr_err),
 
-      .md_req_i    (data_req),
-      .md_addr_i   (data_addr),
-      .md_we_i     (data_we),
-      .md_be_i     (data_be),
-      .md_wdata_i  (data_wdata),
-      .md_gnt_o    (data_gnt),
+      .md_req_i    (bus_data_req),
+      .md_addr_i   (bus_data_addr),
+      .md_we_i     (bus_data_we),
+      .md_be_i     (bus_data_be),
+      .md_wdata_i  (bus_data_wdata),
+      .md_gnt_o    (bus_data_gnt),
       .md_rvalid_o (data_rvalid),
       .md_rdata_o  (data_rdata),
       .md_err_o    (data_err),

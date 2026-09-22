@@ -248,6 +248,15 @@ if [ "$SOC_REQ_REG" != 0 ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.REQ_REG = $SOC_REQ_REG;"
 fi
+SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'Core pipeline parameters must be zero or one' >&2; exit 2;;
+esac
+DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.CORE_REQ_REG = $SOC_CORE_REQ_REG;
+  defparam tb_soc.dut.CORE_WB_STAGE = $SOC_CORE_WB_STAGE;"
 if [ -n "$DEFPARAMS" ]; then
   RF_ROOT=(-s soc_param_override)
   RF_SRC=("$OUT/soc_param_override.v")
@@ -357,6 +366,7 @@ fi
   "$SOC_DIR/tb/tb_soc.v" \
   "$SOC_DIR/rtl/soc_top.v" \
   "$SOC_DIR/rtl/soc_bus.v" \
+  "$SOC_DIR/rtl/soc_req_pipe.v" \
   "$SOC_DIR/rtl/soc_apb_bridge.v" \
   "$SOC_DIR/rtl/soc_mem.v" \
   "$SOC_DIR/rtl/soc_mem_ecc.v" \

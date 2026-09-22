@@ -92,3 +92,56 @@ physical-ECO regression, pass 95 tests. The current routed baseline still fails
 setup/electrical acceptance. Full manufacturing verification, pad/package
 integration and PCIe PHY integration remain separate open product gates in
 [docs/92](92-product-acceptance.md).
+
+
+## Optional core pipeline candidate, 2026-09-23
+
+Sizing and load buffering leave paths from protected register data through
+syndrome correction, ALU/address generation and fabric selection, or back into
+protected write data. The candidate introduces two independent parameters,
+`CORE_REQ_REG` and `CORE_WB_STAGE`, both defaulting to zero. The latter selects
+Ibex's existing writeback stage. The former inserts
+[`soc_req_pipe`](../hw/soc/rtl/soc_req_pipe.v) between the core's data-request
+port and the fabric, before arbitration. `SOC_CORE_REQ_REG` and
+`SOC_CORE_WB_STAGE` select them explicitly in the simulation and synthesis
+scripts; historical/default builds keep their previous behavior.
+
+The request register transfers a 69-bit address/write/byte-enable/data token
+on upstream grant. It holds that token until downstream grant, permits one
+pending token and has no combinational downstream-grant path or fallthrough.
+It adds one request stage and a bubble between accepted tokens. Ordered
+responses retain the existing return path. Both endpoints use the common
+system reset; reset discards a pending token. Only valid state needs reset:
+payload is meaningful when the downstream request is asserted. The register
+uses the ungated core clock, and its valid request wakes the existing bus gate.
+
+The [source-bound block receipt](evidence/core-request-pipeline-20260923.json)
+and [raw proof/control archive](evidence/core-request-pipeline-20260923.tar.gz)
+retain the successful runs and deliberately failing mutations.
+
+The real RTL passed a 1,200-cycle scoreboard with 209 accepted requests,
+207 delivered requests, two reset-discarded requests and 714 stalled cycles.
+The three new formal tasks passed bounded checking to 24 steps, induction
+with depth 12, and four reachability covers. Inputs are unconstrained after
+the initial reset, including payload changes during stalls and grants while
+empty. Checks cover token order/content, occupancy, stable blocked output,
+reset clamping and absence of overwrite/bypass. Four deliberate RTL mutations
+(payload corruption, early release, overwrite and bypass) fail both the
+scoreboard and bounded formal assertions. These are block-level results,
+not a whole-processor equivalence proof.
+
+A source-list guard initially found two fault-injection entrypoints missing
+the new module. Both lists were corrected; the guard and five RTL cases then
+passed. The first wider guard run remains recorded as 99 passed / one failed,
+not rewritten as a clean run. The formal inventory now has 122 SoC tasks in
+29 jobs, with the same six historical exclusions.
+
+The full-interface, native-SRAM synthesis with both parameters enabled has
+70,376 mapped cells and 9,601 flip-flops. This is a candidate only. Its matched
+whole-CPU simulations and placement measurement are still pending at this
+snapshot. No timing result is inferred from cell count or combinational depth.
+Pre-placement STA also cannot qualify this candidate: unbuffered clocks and
+high-fanout nets drive the cell models outside useful ranges. The original
+20 ns / 8 ns clocks, corner set and 5% timing derates remain the physical
+acceptance constraints. The delivered implementation entrypoint does not yet
+select this candidate by default.
