@@ -752,6 +752,14 @@ freshness mutation starts from a separately accepted fixture. This closes the
 local build/freshness tooling portion of audit 3.9, not the outstanding claim
 review, release/DOI or any physical/silicon product gate.
 
+The [independent hosted publication run](evidence/publications-hosted-20260922.json)
+also passes all four fresh builds. Run `35672519255` tested merge `e684b8b`,
+whose Git tree exactly matches branch commit `c42a29c`. Its downloaded artifact
+digest, every input against Git, command-log hashes, PDF/bibliography/archive
+hashes and archive source members were independently verified. Extracted PDF
+text matches the accepted local build for all four documents. This verifies
+publication reproduction, not the unreviewed scientific claims or a layout.
+
 ```sh
 python3 scripts/check_publications.py --check
 python3 scripts/check_publications.py --out hw/soc/out/publications-new \

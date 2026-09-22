@@ -54,7 +54,17 @@ hardware merely to increase apparent coverage.
 | Fault protection | Existing protection is scoped to documented structures. Lockstep/bus integrity, interface protection and radiation qualification remain open; no silicon or beam data exists. |
 | Reproducible release | OPEN until source pins, build commands, generated dependencies, final evidence, firmware and interface limitations accompany the exact delivered revision. Historical artifacts recovered for F6 do not certify the current SoC. |
 
-Current physical candidate: `interfaces-eth256-resume-20260919-184950`, using
+**Current candidate, 22 September 2026:** the full-interface `current-full`
+implementation at `eec1b44` uses the immutable logic boot ROM, wake-on-grant,
+protected RAM and sixteen Ethernet SRAM banks (twenty SRAM macros in total).
+The [source-bound entrypoint record](evidence/current-implementation-entry-20260922.json)
+contains the completed synthesis result. The independent
+[physical run](https://github.com/Melihakbulut221/nssoc/actions/runs/35665542067)
+is still running at this dated observation; no final timing, electrical,
+DRC or LVS pass has been accepted for it. This is a core implementation,
+without a PCIe controller/PHY or a finished pad ring/package.
+
+Historical initial physical candidate: `interfaces-eth256-resume-20260919-184950`, using
 the input inventory in [the Ethernet evidence](evidence/ethernet-sram256-20260919.json).
 The failed multi-repair optimizer and the missing-RC diagnostic correction are
 preserved in [the timing replay record](evidence/timing-replay-20260919.json).
