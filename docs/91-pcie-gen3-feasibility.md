@@ -96,3 +96,90 @@ no PCIe link is present in any layout. Full Endpoint/Root Port, DLL/LTSSM and
 Gen3 x4 PHY development and qualification remain open. This update changes
 "no project-authored digital block" into a measured partial implementation,
 not the controller/PHY integration verdict above.
+
+## Custom PHY feasibility reassessment — 2026-09-22
+
+The absence of a ready macro is an integration dependency, not a reason to
+exclude development of a project-owned PHY. The user explicitly requested
+research into designing it. The following evidence makes a custom SG13G2
+development path worth investigating; it does not establish a working PCIe IP.
+
+### Evidence beyond the earlier supplier search
+
+* Christian Bohn's 2024 KIT dissertation,
+  [Broadband Circuits for High-Speed Short Reach Optical Transceivers](https://publikationen.bibliothek.kit.edu/1000170334),
+  section 5.1, printed pages 91–102, describes a **fabricated and measured
+  10.4 Gb/s 8:1 serializer in SG13G2**. It combines CMOS stages with a
+  BiCMOS current-mode final multiplexer. The test uses an external clock;
+  the transmitter targets CEI-11G-SR. The measured-eye result is evidence
+  for high-speed serialization in this process, not for a PCIe receiver,
+  clock recovery, integrated PLL, compliance or radiation qualification.
+  No reusable, licensed layout/netlist package for that circuit was located
+  in the inspected thesis repository record.
+* The [IHP Open PDK](https://github.com/IHP-GmbH/IHP-Open-PDK) supplies MOS,
+  HBT and passive models for analog simulation. Those model families also
+  exist in this project's pinned PDK. They support investigating custom
+  circuits, but transistor transition-frequency figures do not prove a
+  complete link's bandwidth, jitter, power or yield.
+* [OpenSERDES](https://github.com/SparcLab/OpenSERDES) actually publishes
+  serializer, receiver/CDR and physical design files. Its
+  [paper](https://arxiv.org/abs/2105.13256) reports **2 Gb/s post-layout
+  simulation in SkyWater 130 nm**, not measured SG13G2 Gen3 operation.
+  The repository identifies GPL-3.0 licensing. It is a research reference;
+  its files have not been imported into this project.
+* A [2026 SG13G2 LC-VCO/PLL publication](https://arxiv.org/abs/2607.08852)
+  and its [design repository](https://github.com/Manimohan05/SG13G2_2.4GHz_LC_VCO_FPLL)
+  provide an additional clock-design reference at 2.4 GHz. The inspected
+  repository tree `18822c15f453cc394dc4869547ad4185ec55ef12` contains
+  schematics, GDS and verification report paths. File presence is not an
+  independently reproduced PASS; GitHub did not identify a repository
+  license. Reuse rights and suitability for a PCIe clock remain unresolved.
+* The [JKU SG13G2 analog/mixed-signal tutorial](https://iic-jku.github.io/ihp-sg13g2-ams-chip-template/index.html)
+  documents schematic simulation, mismatch characterization, layout,
+  DRC/LVS and parasitic extraction using open tools. This supplies a
+  development workflow, not a high-speed PHY implementation.
+
+### Proposed development sequence and acceptance boundaries
+
+This is an engineering proposal, not a measured architecture or schedule.
+Start with one lane and establish its electrical behavior before replicating
+it four times or assigning a final SoC floorplan region.
+
+1. Derive the electrical, clocking, channel and training requirements from
+   the applicable PCIe/PIPE specifications. Maintain traceable requirements
+   and test vectors. Public summaries alone do not supply every limit.
+   [PCI-SIG's Gen3 FAQ](https://pcisig.com/faq?field_category_value%5B%5D=pci_express_3.0)
+   identifies 8 GT/s signaling and negotiated equalization; an arbitrary
+   fast serial connection cannot substitute for those behaviors.
+2. Characterize SG13G2 transistor-level current-mode latches, multiplexers,
+   level conversion and programmable differential TX stages. Compare
+   full-rate/half-rate clocking and voltage domains using actual models;
+   do not extrapolate standard-cell RTL timing to the serial pins.
+3. Develop termination, receiver detection, electrical-idle handling,
+   equalization, sampling/CDR and reference-clock/PLL circuitry. Use channel
+   models and PRBS tests, including noise, jitter and PVT/mismatch sweeps.
+   Receiver topology and equalizer complexity must follow these measurements.
+4. Lay out the lane and clock macros; run device-level LVS, DRC, extraction
+   and post-layout analog/channel simulations. High-frequency interconnect,
+   package, pad/ESD and power coupling need appropriate models, including
+   electromagnetic analysis where lumped RC is insufficient.
+5. Integrate four lanes with the digital PCS/controller, lane alignment,
+   Gen1/2 fallback, training and reset/power states. The existing DWORD
+   transaction adapter is only one small part of this implementation.
+6. Produce GDS/LEF, CDL/SPICE, characterized digital-boundary timing views,
+   behavioral/channel models and integration constraints from the verified
+   circuit. Liberty alone cannot describe analog link acceptance. Fabricated
+   test silicon and suitable measurement equipment are required to establish
+   measured silicon performance and compliance.
+
+The agent can develop and exercise the design files, simulations, automation,
+layout and integration checks with available tools and models. A successful
+Gen3 PHY cannot be promised before those checks; fabricated-device behavior
+cannot be established from generated files. This investigation has not added
+a PHY, run a new transistor-level simulation or changed the SoC layout.
+
+**Updated disposition:** custom PHY R&D is a technically motivated path,
+supported by published SG13G2 serializer measurements. A ready, qualified
+SG13G2 Gen3 x4 PHY has still not been found or implemented. Treat its design
+and characterization as remaining work, not as an impossible process feature
+or an already integrated macro.
