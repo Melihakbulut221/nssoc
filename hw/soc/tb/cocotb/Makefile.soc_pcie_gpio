@@ -10,6 +10,10 @@ GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
 $(GOALS):
 	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
 else
+# Preserve the cocotb interpreter's stdlib/site-packages when OSS CAD Suite's
+# vvp launcher replaces PYTHONHOME with its bundled Python installation.
+PCIE_PYTHON := $(shell cocotb-config --python-bin)
+export PYTHONPATH := $(shell "$(PCIE_PYTHON)" -c 'import os,sys; print(os.pathsep.join(sys.path))')
 RTL := $(abspath $(dir $(THIS_MK))/../../rtl)
 VERILOG_SOURCES = $(RTL)/pcie/soc_pcie_tlp_regs.v $(RTL)/soc_gpio.v $(abspath $(dir $(THIS_MK))/tb_soc_pcie_gpio.v)
 TOPLEVEL = tb_soc_pcie_gpio

@@ -77,7 +77,14 @@ failed; no cell-model patch or X masking was used.
 The regular cocotb discovery, complete SoC formal target and hosted RTL job
 include the new suites/obligations. The separate `pcie-transaction` workflow
 repeats the controls, GPIO fixture, formal tasks and native-cell replay using
-checksum-verified IHP library files. Configuration is not a hosted PASS result.
+checksum-verified IHP library files. The first hosted run failed before simulation because the OSS CAD Suite
+launcher replaced the embedded Python search path. Both PCIe Makefiles now
+preserve the interpreter selected by cocotb. The same clean-environment
+failure was reproduced locally, then all 18 descriptor executions, five
+mutation controls, two GPIO tests and six native tests passed with the fix.
+[The portability record](evidence/pcie-runtime-portability-20260922.json)
+preserves the failed hosted artifact and the new source-bound local results.
+The corrected hosted replay is pending; configuration is not a hosted PASS.
 
 The initial local tests also expected an incorrect four-byte count for a
 zero-length read. Independent review against the

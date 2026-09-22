@@ -1,0 +1,209 @@
+{
+  "date": "2026-09-22",
+  "base_commit": "cb6723623cf7488b49419e282a6f9f3ff73b1b30",
+  "scope": "PCIe transaction test runtime portability only; no new RTL/link/layout claim",
+  "status": "Local clean-environment replay PASS; corrected hosted replay pending",
+  "first_hosted_failure": {
+    "run_id": 35684974197,
+    "conclusion": "failure",
+    "cause": "OSS CAD Suite vvp replaces PYTHONHOME; Python 3.12 embedding fails before the first test. Formal and native steps skipped.",
+    "artifact": {
+      "path": "hw/soc/out/external-review-20260919/pcie-hosted-first.zip",
+      "bytes": 11174,
+      "sha256": "a1026a84e946a3476ed1749567a52a57387f2b7c1807e10bbee62d292103656c"
+    },
+    "workflow_log": {
+      "path": "hw/soc/out/external-review-20260919/pcie-hosted-first.log",
+      "bytes": 48677,
+      "sha256": "a23dd9cc6d7f6d85774c761d2dfac30b69c9771059e6f598f1e99f1da92abc0c"
+    }
+  },
+  "local_reproduction": {
+    "path": "hw/soc/out/external-review-20260919/pcie-runtime-before.log",
+    "bytes": 4688,
+    "sha256": "317a893cffbebe60d6e1e826ddbf07fd904fb2239f432a77ae8df156530bfe5e"
+  },
+  "fix": "Both Makefiles preserve sys.path from the interpreter selected by cocotb-config --python-bin. RTL and test assertions unchanged.",
+  "replay_environment": "env -u PYTHONPATH PATH=$PWD/hw/.venv/bin:$PWD/hw/soc/tools/oss-cad-suite/bin:$PATH",
+  "mutation_controls": {
+    "status": "PASS",
+    "scope": "Transaction-layer RTL controls, no link or PHY",
+    "inputs": {
+      "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+      "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "e7a9fce8a56cdca283f13341d25d768062c2e94f858892804a153256e75d2c5e",
+      "scripts/check_pcie_tlp_controls.py": "c450b5787031f183e2c2140f284a6ba861205eeae6579e6314e31d7713593b56",
+      "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "runs": {
+      "baseline": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "71058ed036fd881e73e89c7c89acf789a8a93289ee7b7c6742ab201197b9bc73",
+        "xml_sha256": "4364bfc158f2f92daaf046fb902adeeba9a1639d3f3e9cdf6a3e8c620676817d",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_1": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "56a640b3cfa118d8a248abc8b75e075d88369ff4e96a43da708ddd54c5cafa59",
+        "xml_sha256": "645ba130618114c75f5eb9f2c40ecbb037942070fdcdba01d5ca2440ac459762",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_256": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "eccbe25d052c074b3cc34073bcfdea0b84bbecfaa29d3e1868fcf8a1b0bd2b2b",
+        "xml_sha256": "ef1c86d414f28086bd8a6f4e6305a54bba81b7ae5625859af786542c04aadaf3",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "zero_length_count": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "fd60f47ce1e88b82538bac71c25a9b91f1400458fffe0349dc2f24fac458c438",
+        "xml_sha256": "26d061450ee222d0903502ddb6d15109fa32d15fbf72249773cb7a9ea83c6c60",
+        "rtl_sha256": "dfb85e9e0f082707d1e19f13b23fc3fd7e951f18ae40c86d5f0a597273856119"
+      },
+      "bar_decode": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "25b77dcb663345071372e1823c452cdeaa2d52c29eb57fe6b390827970d99df3",
+        "xml_sha256": "3297927441ff59dfbaec90c3b3c0b6eeae5be56c9a253deedd98c97596a42de0",
+        "rtl_sha256": "57d4a71321701dd568ae6babe4eb2cac69ea2d13d4904b2b6c484d54d888f6c8"
+      },
+      "byte_strobes": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "0a41f3fe31abb994921e9472c12b38487055ba0f40c22f9a4a273a1b2b8eb8da",
+        "xml_sha256": "1e66c6db8a7aa3ff6029b961419879cf72454f191f733dd44c958e3136e51400",
+        "rtl_sha256": "a5f109e2dee4e6a8cf972e0c586ff6fa663514d2bea8f64284594b5a9bddd7af"
+      },
+      "abort_status": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "2cf6056df5fa78e2422cc99347843571beff4dc133ae8d88f55b0fda57d898e4",
+        "xml_sha256": "142f4d99e1ad2faff67a22162b0f24370d7a9bb02a10a6284d1f5c3595385bea",
+        "rtl_sha256": "f5e00c1fbffb3b006dc81c9411f846e27424242d367414bee22a4cf8df8cd5ac"
+      },
+      "completion_tag": {
+        "counts": [
+          0,
+          6,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "d8488b016f3d512768f8e5702e6df4a58392c44fe6315bf9e30ad24513abec6e",
+        "xml_sha256": "127501971595a242c681cada48e1b42a99ffcb60540cad2853553a8e0571b732",
+        "rtl_sha256": "bbc9a0374f814b2cd0e1e00b253e8d176d798d4464695206aa2df33cc5946270"
+      }
+    }
+  },
+  "native": {
+    "status": "PASS",
+    "scope": "IHP mapped block simulation; no SDF/layout/link/PHY",
+    "inputs": {
+      "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+      "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "e7a9fce8a56cdca283f13341d25d768062c2e94f858892804a153256e75d2c5e",
+      "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+      "scripts/check_pcie_tlp_native.py": "2e1833b52cb38c8cb5933b602d0ec7eac8b85e4630d160b1324249a1742e2f2a"
+    },
+    "liberty_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+    "models_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+    "commands": [
+      {
+        "argv": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/pcie-native-runtime-replay/map.ys"
+        ],
+        "returncode": 0,
+        "log_sha256": "aeec44afbef65bf7bd59a7212b012708d6da904928b44fc768b94d0ae592690a"
+      },
+      {
+        "argv": [
+          "make",
+          "-C",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_pcie_tlp_regs",
+          "VERILOG_SOURCES=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/pcie-native-runtime-replay/mapped.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/pcie-ci-inputs/sg13g2_stdcell.v",
+          "COMPILE_ARGS=-g2012 -gspecify",
+          "PCIE_APB_TIMEOUT=256",
+          "SIM_BUILD=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/pcie-native-runtime-replay/sim",
+          "COCOTB_RESULTS_FILE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/pcie-native-runtime-replay/results.xml"
+        ],
+        "returncode": 0,
+        "log_sha256": "ea2ca1820ff0db4d830c49168d797862c1da46ca8ef6537331bc7f801108406c"
+      }
+    ],
+    "cells": 916,
+    "tests": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "outputs": {
+      "mapped.json": "c68b4fbfcb34acb8ef0dba31d5f241a9a49521304dc1ec6af53c904d0ad1d4fa",
+      "mapped.v": "a7c5c9ddda686788163782600e01673458476a2dd5c461c9e7ee59ab82ca7759",
+      "results.xml": "0c5b1e9bb7bf2faa01d1a4e901e683cd9a7b42f04e14f5cef67527772ea653a2",
+      "map.ys": "5934a25d84d277440ced247e0f3b5c173af532868b3ddb0b5b3b507e1757880b"
+    }
+  },
+  "gpio": {
+    "counts": [
+      2,
+      0,
+      0
+    ],
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/pcie-gpio-runtime-fixed.log",
+      "bytes": 5340,
+      "sha256": "7faeb7b1e6fcc99847503d2ae890f898d659b0bb6310e470723691e2d8f23015"
+    },
+    "xml": {
+      "path": "hw/soc/out/external-review-20260919/pcie-gpio-runtime-fixed/results.xml",
+      "bytes": 723,
+      "sha256": "34687dea817da175917d588b56c5d314c4dc03a8d55429bedc0686b55edfc9a0"
+    }
+  },
+  "source_sha256": {
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gpio": "f073dd4c6473bb943b78549badddb3a7037b2ae4589c2af4a3d038c22ce924ef",
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "e7a9fce8a56cdca283f13341d25d768062c2e94f858892804a153256e75d2c5e"
+  },
+  "other_attempts": [
+    "Native replay initially supplied non-existent cells.lib/cells.v aliases; stopped before mapping. Corrected exact input filenames and used a fresh output directory."
+  ],
+  "historical_evidence": "pcie-transaction-backend-20260922.json remains the original source-bound local record; its old Makefile hashes are not current."
+}
