@@ -169,6 +169,14 @@ adapter plus backend maps to 1942 IHP cells, with a 39,963.332 square-micrometre
 Liberty area sum. Six tests pass on unmodified IHP cell models, at default
 timeout 256 and unassigned IDs. This has no SDF, placement or extracted timing.
 
+The [hosted packet replay](evidence/pcie-packet-hosted-20260922.json) also
+passes at `5fe8623`. The downloaded archive independently reproduces both
+blocks' 36 RTL parameter executions, ten detected mutations, twelve native
+tests, two GPIO tests and six formal statuses. Fifteen copied formal Verilog
+sources and every recorded simulation/mapping input hash match the tested
+Git revision; its PR merge tree equals the branch tree. These are block
+results, not the full 167-task repository sweep.
+
 ```sh
 python3 scripts/check_pcie_tlp_controls.py --top soc_pcie_tlp_stream \
   --out hw/soc/out/pcie-stream-controls-new
