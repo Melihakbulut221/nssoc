@@ -1,0 +1,68 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: pcie-transaction
+on:
+  push:
+    paths: &pcie_paths
+      - .github/workflows/pcie-transaction.yml
+      - hw/soc/rtl/pcie/**
+      - hw/soc/rtl/soc_gpio.v
+      - hw/soc/formal/soc_pcie_tlp_regs*
+      - hw/soc/formal/Makefile
+      - hw/soc/tb/cocotb/*soc_pcie*
+      - scripts/check_pcie_tlp_*.py
+      - scripts/cocotb_results.py
+      - tools.mk
+      - hw/requirements.txt
+  pull_request:
+    paths: *pcie_paths
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pcie-transaction-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  block-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde # v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare simulation and verify the exact two IHP library files
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+          echo "$PWD/hw/.venv/bin" >> "$GITHUB_PATH"
+          mkdir -p hw/soc/out/pcie-libraries
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib' -o hw/soc/out/pcie-libraries/cells.lib
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v' -o hw/soc/out/pcie-libraries/cells.v
+          echo '968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  hw/soc/out/pcie-libraries/cells.lib' | sha256sum --check
+          echo '28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4  hw/soc/out/pcie-libraries/cells.v' | sha256sum --check
+      - name: Descriptor tests, real GPIO and five functional mutation controls
+        run: |
+          python3 scripts/check_pcie_tlp_controls.py --out hw/soc/out/pcie-controls
+          make -C hw/soc/tb/cocotb -f Makefile.soc_pcie_gpio
+      - name: Independent formal safety and reachability checks
+        run: make -C hw/soc/formal pcietlp
+      - name: IHP mapping and unmodified native-cell simulation
+        run: |
+          python3 scripts/check_pcie_tlp_native.py --out hw/soc/out/pcie-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
+      - name: Preserve block evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pcie-transaction-results
+          path: |
+            hw/soc/out/pcie-controls/
+            hw/soc/out/pcie-native/
+            hw/soc/formal/soc_pcie_tlp_regs_*/
+            hw/soc/tb/cocotb/results_soc_pcie_gpio.xml
+          retention-days: 30

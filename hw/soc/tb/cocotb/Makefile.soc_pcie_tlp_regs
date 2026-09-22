@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+VENV_BIN := $(abspath $(dir $(THIS_MK))/../../../.venv/bin)
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+else
+RTL := $(abspath $(dir $(THIS_MK))/../../rtl)
+VERILOG_SOURCES = $(RTL)/pcie/soc_pcie_tlp_regs.v
+TOPLEVEL = soc_pcie_tlp_regs
+MODULE = test_soc_pcie_tlp_regs
+PCIE_APB_TIMEOUT ?= 8
+export PCIE_APB_TIMEOUT
+COMPILE_ARGS += -Psoc_pcie_tlp_regs.VENDOR_ID=4660 -Psoc_pcie_tlp_regs.DEVICE_ID=22136 -Psoc_pcie_tlp_regs.APB_TIMEOUT=$(PCIE_APB_TIMEOUT)
+SIM_BUILD ?= sim_build_soc_pcie_tlp_regs
+COCOTB_RESULTS_FILE ?= results_soc_pcie_tlp_regs.xml
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

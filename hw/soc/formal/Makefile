@@ -57,11 +57,15 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols pcietlp
 
 include $(REPO)/tools.mk
 
 TASKS := bmc prove cover
+
+.PHONY: pcietlp
+pcietlp:
+	@for t in $(TASKS); do $(SBY) -f soc_pcie_tlp_regs.sby $$t || exit 1; done
 
 .PHONY: uart pnp gptimer peripheralcontrols
 uart:

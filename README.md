@@ -29,7 +29,7 @@ Check it with `python3 scripts/project_status.py`; update it with `--write`.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
 profile-specific layout evidence. They are not the complete GR801 interface
-set. **PCIe Gen3 x4 controller/PHY integration is unresolved.** UART now has
+set. **PCIe Gen3 x4 remains open:** the tested [transaction backend](docs/98-pcie-transaction-backend.md) is not connected to the SoC/PHY. UART now has
 [8N1 receive and transmit RTL with CPU tests](docs/97-uart-receive.md);
 its updated whole-SoC layout remains pending. Ethernet needs an external PHY
 and has no DMA.

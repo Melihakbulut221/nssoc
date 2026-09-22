@@ -84,3 +84,15 @@ separately specifies a Gen3 x8 host interface on a complete SpaceFibre board.
 A board product is not a downloadable ASIC PHY macro. Neither finding closes
 the integration requirement above; no external bridge architecture, IP purchase,
 or vendor contact has been initiated.
+
+
+## Project-authored digital work — 2026-09-22
+
+The user requested implementation rather than waiting solely for third-party
+IP. [The new transaction-layer register backend](98-pcie-transaction-backend.md)
+implements a tested configuration/BAR0 subset and single-DWORD APB transactions.
+It is an independently built block; no instance is connected to `soc_top` and
+no PCIe link is present in any layout. Full Endpoint/Root Port, DLL/LTSSM and
+Gen3 x4 PHY development and qualification remain open. This update changes
+"no project-authored digital block" into a measured partial implementation,
+not the controller/PHY integration verdict above.

@@ -767,3 +767,13 @@ python3 scripts/check_publications.py --out hw/soc/out/publications-new \
 # Maintainers only, after reviewing a successful fresh build:
 # use --record instead of --compare-thesis to refresh tracked PDF/bbl/receipt.
 ```
+
+
+**22 September 2026 — project-authored PCIe digital work:** the
+[transaction-layer register backend](98-pcie-transaction-backend.md) has
+configuration/BAR0 and single-DWORD APB RTL, twenty positive RTL parameter/
+GPIO tests, six IHP mapped-cell tests, three formal tasks and five detected
+functional mutations. The corrected zero-length-read case and unsuccessful
+preliminary runs remain documented. It is not instantiated in soc_top and
+does not implement a link, DLL/LTSSM or PHY. Audit 1.8 and the PCIe product
+gate remain OPEN; this is a measured implementation step toward them.

@@ -486,6 +486,8 @@ rather than from a beam.
 | `docs/94-external-interrupt.md` | External level interrupt and preserved interrupt context. |
 | `docs/95-immutable-boot-rom.md` | Immutable boot contents and physical integration profile. |
 | `docs/96-second-audit-closure.md` | Complete second-audit requirement register, current dispositions and verification gates. |
+| `docs/97-uart-receive.md` | UART receive/status/interrupt contract and pin/CPU validation. |
+| `docs/98-pcie-transaction-backend.md` | Project-authored PCIe transaction-to-APB block, exact subset, tests and remaining link/PHY implementation. |
 | [docs/97-uart-receive.md](97-uart-receive.md) | Current 8N1 TX/RX register contract, CPU fast interrupt/WFI tests and physical acceptance boundary. |
 | [docs/98-physical-tool-bootstrap.md](98-physical-tool-bootstrap.md) | Portable physical-tool entry points, pinned devshell installer and remaining full-PDK acceptance boundary. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
