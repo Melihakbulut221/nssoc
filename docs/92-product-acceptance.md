@@ -38,6 +38,14 @@ hardware merely to increase apparent coverage.
 
 ## Product release gates
 
+**23 September routed update:** detailed routing completed, but slow setup is
+−7.173567 ns and all three corners retain electrical violations. Router DRC and
+antenna checks pass within their scope. Independent foundry DRC and complete
+transistor LVS are now running; neither has an accepted final verdict at this
+snapshot. [docs/100](100-routed-closure.md) records the source-bound baseline,
+active repairs and functional safeguards. Earlier dated RUNNING observations
+below are historical.
+
 | Requirement | Current implementation and closure condition |
 |---|---|
 | Integrated functional core | ECC memory, protected register file, boot recovery and telemetry have block/formal/CPU evidence. Final RTL and final netlist must match the delivered layout. |
