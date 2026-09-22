@@ -246,7 +246,9 @@ jobs:
       - name: Run every non-frozen RTL suite
         run: scripts/run_cocotb.sh
       - name: Check PCIe transaction-layer functional mutation controls
-        run: python3 scripts/check_pcie_tlp_controls.py --out hw/soc/out/pcie-tlp-controls
+        run: |
+          python3 scripts/check_pcie_tlp_controls.py --out hw/soc/out/pcie-tlp-controls
+          python3 scripts/check_pcie_tlp_controls.py --top soc_pcie_tlp_stream --out hw/soc/out/pcie-stream-controls
       - name: Retain simulator diagnostics, including failed runs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -255,6 +257,7 @@ jobs:
           path: |
             hw/soc/out/cocotb/
             hw/soc/out/pcie-tlp-controls/
+            hw/soc/out/pcie-stream-controls/
             hw/tb/results*.xml
             hw/soc/tb/cocotb/results*.xml
             tt/test/results.xml

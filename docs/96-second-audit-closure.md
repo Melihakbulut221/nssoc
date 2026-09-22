@@ -777,3 +777,14 @@ functional mutations. The corrected zero-length-read case and unsuccessful
 preliminary runs remain documented. It is not instantiated in soc_top and
 does not implement a link, DLL/LTSSM or PHY. Audit 1.8 and the PCIe product
 gate remain OPEN; this is a measured implementation step toward them.
+
+**22 September, subsequent packet adapter:** a synchronous DWORD assembler
+and completion serializer now wrap that backend. Actual payload counting,
+discard/resynchronization, upstream integrity-error handling and output
+backpressure have 18 parameterized RTL test executions, six native-cell
+tests, five functional mutation controls and three formal tasks;
+[record](evidence/pcie-packet-adapter-20260922.json). This does not calculate
+CRC, implement DLL/LTSSM/PHY, add burst transactions or connect to `soc_top`.
+The earlier backend-only hosted run is independently verified in
+[this record](evidence/pcie-runtime-hosted-20260922.json). Both audit documents'
+remaining product gates are still required; no full PCIe/layout closure is claimed.

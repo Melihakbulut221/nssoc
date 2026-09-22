@@ -26,6 +26,7 @@ def quote(path):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--top', choices=('soc_pcie_tlp_regs', 'soc_pcie_tlp_stream'), default='soc_pcie_tlp_regs')
     p.add_argument('--liberty', type=Path, required=True)
     p.add_argument('--models', type=Path, required=True)
     p.add_argument('--yosys', type=Path, required=True)
@@ -42,23 +43,26 @@ def main():
     if not version or int(version[1]) < 13:
         p.error('Unmodified IHP delayed timing inputs require Icarus >=13')
     out.mkdir(parents=True)
-    sources = [ROOT/'hw/soc/rtl/pcie/soc_pcie_tlp_regs.v',
-               ROOT/'hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py',
-               ROOT/'hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs',
+    rtl = [ROOT/'hw/soc/rtl/pcie/soc_pcie_tlp_regs.v']
+    if a.top == 'soc_pcie_tlp_stream':
+        rtl.append(ROOT/'hw/soc/rtl/pcie/soc_pcie_tlp_stream.v')
+    sources = [*rtl,
+               ROOT/f'hw/soc/tb/cocotb/test_{a.top}.py',
+               ROOT/f'hw/soc/tb/cocotb/Makefile.{a.top}',
                ROOT/'scripts/cocotb_results.py', Path(__file__).resolve()]
     before = {str(f.relative_to(ROOT)): sha(f) for f in sources}
-    record = {'status': 'FAIL', 'scope': 'IHP mapped block simulation; no SDF/layout/link/PHY',
+    record = {'status': 'FAIL', 'top': a.top, 'scope': 'IHP mapped block simulation; no SDF/layout/link/PHY',
               'inputs': before, 'liberty_sha256': sha(a.liberty), 'models_sha256': sha(a.models),
               'iverilog': iv.splitlines()[0], 'commands': []}
     try:
-        script = ('read_liberty -lib '+quote(a.liberty)+'; read_verilog -sv '+quote(sources[0])+
-                  '; hierarchy -check -top soc_pcie_tlp_regs; synth -top soc_pcie_tlp_regs -noabc; '
+        script = ('read_liberty -lib '+quote(a.liberty)+'; read_verilog -sv '+' '.join(map(quote, rtl))+
+                  '; hierarchy -check -top '+a.top+'; flatten -noscopeinfo; synth -top '+a.top+' -noabc; '
                   'dfflibmap -liberty '+quote(a.liberty)+'; abc -liberty '+quote(a.liberty)+
                   '; clean; check -assert; stat -liberty '+quote(a.liberty)+
                   '; write_json '+quote(out/'mapped.json')+'; write_verilog -noattr -noexpr '+quote(out/'mapped.v'))
         (out/'map.ys').write_text(script+'\n')
         commands = [[str(a.yosys.resolve()), '-Q', '-T', '-s', str(out/'map.ys')],
-                    ['make', '-C', str(ROOT/'hw/soc/tb/cocotb'), '-f', 'Makefile.soc_pcie_tlp_regs',
+                    ['make', '-C', str(ROOT/'hw/soc/tb/cocotb'), '-f', 'Makefile.'+a.top,
                      'VERILOG_SOURCES='+str(out/'mapped.v')+' '+str(a.models),
                      'COMPILE_ARGS=-g2012 -gspecify', 'PCIE_APB_TIMEOUT=256',
                      'SIM_BUILD='+str(out/'sim'), 'COCOTB_RESULTS_FILE='+str(out/'results.xml')]]
@@ -68,7 +72,7 @@ def main():
                 proc = subprocess.run(command, env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=120)
             record['commands'].append({'argv': command, 'returncode': proc.returncode, 'log_sha256': sha(log)})
             assert proc.returncode == 0, 'Command failed: '+str(log)
-        cells = json.loads((out/'mapped.json').read_text())['modules']['soc_pcie_tlp_regs']['cells']
+        cells = json.loads((out/'mapped.json').read_text())['modules'][a.top]['cells']
         assert cells and all(c['type'].startswith('sg13g2_') for c in cells.values()), 'Unmapped cell'
         assert count_results([out/'results.xml']) == (6, 0, 0), 'Incomplete native simulation'
         assert before == {str(f.relative_to(ROOT)): sha(f) for f in sources}, 'Source drift'

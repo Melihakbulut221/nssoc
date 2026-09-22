@@ -31,3 +31,4 @@ ahbl_arbiter	Arbiter used only beneath the standalone probe_ahbl_top experiment 
 ahbl_interconnect	AHB address decoder used only beneath the standalone probe_ahbl_top experiment; retained for its architecture comparison, absent from the product SoC hierarchy.
 ahbl2apb	AHB-to-APB adapter used only beneath the standalone probe_ahbl_top experiment. Product soc_top uses soc_apb_bridge; soc_apb_wb remains instantiated separately by soc_can.
 soc_pcie_tlp_regs	Standalone PCIe transaction-layer register backend; block simulation and synthesis only. No soc_top instance, link/data-link layer or PHY; docs/98 records its exact scope.
+soc_pcie_tlp_stream	Standalone DWORD packet assembler/serializer wrapping the PCIe register backend. No soc_top instance, CRC/data-link or PHY; block verification does not establish host integration or a Gen3 x4 link.

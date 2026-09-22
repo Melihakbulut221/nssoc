@@ -24,6 +24,13 @@ MUTATIONS = {
     'completion_tag': ('cid,status,1\'b0,bytes_left,rid,req_tag,1\'b0,low_addr,32\'b0}',
                        'cid,status,1\'b0,bytes_left,rid,8\'b0,1\'b0,low_addr,32\'b0}'),
 }
+STREAM_MUTATIONS = {
+    'header_width': ('header_size<=rx_data_i[29] ? 4 : 3;', 'header_size<=3;'),
+    'actual_payload_count': ("payload_count<=payload_count+1'b1;", 'payload_count<=1;'),
+    'integrity_error': ('end else if (rx_error_i) begin', "end else if (1'b0) begin"),
+    'early_submission': ('if (rx_eop_i) state<=SUBMIT;', 'state<=SUBMIT;'),
+    'output_backpressure': ('end else if (tx_busy && tx_ready_i) begin', 'end else if (tx_busy) begin'),
+}
 
 
 def sha(path):
@@ -33,31 +40,37 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--top', choices=('soc_pcie_tlp_regs', 'soc_pcie_tlp_stream'), default='soc_pcie_tlp_regs')
     args = parser.parse_args()
     out = args.out.resolve()
     if out.exists() or not out.is_relative_to(ROOT/'hw/soc/out'):
         parser.error('Use a fresh output directory below hw/soc/out')
     out.mkdir(parents=True)
-    files = [ROOT/RTL, BENCH/'test_soc_pcie_tlp_regs.py',
-             BENCH/'Makefile.soc_pcie_tlp_regs', Path(__file__).resolve(),
+    rtl_path = ROOT/f'hw/soc/rtl/pcie/{args.top}.v'
+    files = [rtl_path, BENCH/f'test_{args.top}.py',
+             BENCH/f'Makefile.{args.top}', Path(__file__).resolve(),
              ROOT/'scripts/cocotb_results.py']
+    is_stream = args.top == 'soc_pcie_tlp_stream'
+    if is_stream:
+        files.append(ROOT/RTL)
     original = {str(p.relative_to(ROOT)): sha(p) for p in files}
-    record = {'status': 'FAIL', 'scope': 'Transaction-layer RTL controls, no link or PHY',
+    record = {'status': 'FAIL', 'top': args.top, 'scope': 'Transaction-layer RTL controls, no link or PHY',
               'inputs': original, 'runs': {}}
-    source = (ROOT/RTL).read_text()
+    source = rtl_path.read_text()
+    mutations = STREAM_MUTATIONS if is_stream else MUTATIONS
     try:
-        for name, mutation in [('baseline', None), ('timeout_1', None), ('timeout_256', None), *MUTATIONS.items()]:
+        for name, mutation in [('baseline', None), ('timeout_1', None), ('timeout_256', None), *mutations.items()]:
             target = out/name
             target.mkdir()
             text = source
             if mutation:
                 assert text.count(mutation[0]) == 1, 'Mutation location drifted: '+name
                 text = text.replace(*mutation)
-            rtl = target/'soc_pcie_tlp_regs.v'
+            rtl = target/f'{args.top}.v'
             rtl.write_text(text)
             xml = target/'results.xml'
-            command = ['make', '-C', str(BENCH), '-f', 'Makefile.soc_pcie_tlp_regs',
-                       'VERILOG_SOURCES='+str(rtl), 'SIM_BUILD='+str(target/'sim'),
+            command = ['make', '-C', str(BENCH), '-f', 'Makefile.'+args.top,
+                       'VERILOG_SOURCES='+str(rtl)+(' '+str(ROOT/RTL) if is_stream else ''), 'SIM_BUILD='+str(target/'sim'),
                        'COCOTB_RESULTS_FILE='+str(xml),
                        'PCIE_APB_TIMEOUT='+({'timeout_1': '1', 'timeout_256': '256'}.get(name, '8'))]
             log = target/'driver.log'

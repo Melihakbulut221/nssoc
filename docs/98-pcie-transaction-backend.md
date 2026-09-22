@@ -3,7 +3,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
 22 September 2026. The requested Gen3 x4 link remains open. This is the
-first project-authored digital block toward it, not a complete PCIe controller,
+project-authored digital work toward it, not a complete PCIe controller,
 PIPE implementation, PHY, enumerated device or layout. It is deliberately
 listed in `hw/known-unbuilt.txt`: no instance is connected to `soc_top` yet.
 The existing full-core physical run therefore does not contain this block.
@@ -84,7 +84,10 @@ failure was reproduced locally, then all 18 descriptor executions, five
 mutation controls, two GPIO tests and six native tests passed with the fix.
 [The portability record](evidence/pcie-runtime-portability-20260922.json)
 preserves the failed hosted artifact and the new source-bound local results.
-The corrected hosted replay is pending; configuration is not a hosted PASS.
+The corrected [hosted backend replay](evidence/pcie-runtime-hosted-20260922.json)
+passes at `7cdbc35`; every recorded source, command/output hash and XML count
+was independently checked from the downloaded artifact. This dated run does
+not contain the subsequently added packet adapter below.
 
 The initial local tests also expected an incorrect four-byte count for a
 zero-length read. Independent review against the
@@ -117,9 +120,65 @@ python3 scripts/check_pcie_tlp_native.py --out hw/soc/out/pcie-native-new \
   --models /absolute/sg13g2_stdcell.v
 ```
 
+## DWORD packet assembly and completion serialization
+
+[`soc_pcie_tlp_stream.v`](../hw/soc/rtl/pcie/soc_pcie_tlp_stream.v) now wraps
+the register backend with a synchronous 32-bit valid/ready packet stream.
+This standalone module also has no instance in `soc_top`. Accepted beats
+carry `rx_data_i`, SOP, EOP and an integrity-error sideband. Header DWORDs
+arrive in order DW0, DW1, DW2, then DW3 for a four-DWORD header. The numeric
+DWORD representation matches the descriptor above; payload byte lanes match
+APB. This is a project-local stream contract, not an electrical interface,
+PIPE, an FPGA vendor interface or a claim of Gen3 throughput.
+
+The adapter waits for the complete header and accepted EOP, counts actual
+payload beats independently of the header Length field, and retains the
+first payload DWORD. The backend still only executes the single-DWORD
+subset above; buffering/counting longer packets does not add burst support.
+More than 1024 payload DWORDs enter discard state without wrapping the count.
+Truncated headers, orphan beats, unsupported prefix formats and an asserted
+integrity-error sideband are discarded. A fresh SOP resynchronizes a partial
+or discarded frame and reports an abandoned partial frame. Invalid cycles
+are ignored, including their sideband values. An indefinitely paused partial
+frame needs a new SOP or reset; there is no packet timeout here.
+
+Upstream must report any LCRC/ECRC or other integrity failure **no later than
+the accepted EOP beat**. This adapter does not calculate CRCs; an error arriving
+after EOP cannot undo a submitted transaction. Sequence/ACK/replay, credits,
+routing checks and clock-domain crossing remain upstream obligations.
+The local error output combines framing and backend error pulses.
+
+Completions are serialized as three header DWORDs and, when present, one
+payload DWORD. Data, SOP and EOP stay stable while valid and not ready.
+The serializer, backend response register and completed receive packet
+provide bounded buffering; a stalled output eventually deasserts RX ready.
+Reset flushes these buffers and resets the backend's BAR/memory enable.
+
+[The packet-adapter evidence](evidence/pcie-packet-adapter-20260922.json)
+records six port-driven tests at each timeout 1, 8 and 256, five detected
+functional mutations, and native-cell replay. Tests cover both header sizes,
+all byte enables, malformed/oversized packets, every integrity-error beat,
+late EOP, interrupted frames, randomized TX stalls and reset during receive,
+APB access and held completion. The output scoreboard checks complete packet
+order and boundaries without reading internal registers.
+
+Additional port-only formal checks pass depth-32 BMC, unbounded PDR and four
+reachability covers. They prove completion framing/stability and APB safety
+at timeout 8; they are not a proof of every input protocol rule. The packet
+adapter plus backend maps to 1942 IHP cells, with a 39,963.332 square-micrometre
+Liberty area sum. Six tests pass on unmodified IHP cell models, at default
+timeout 256 and unassigned IDs. This has no SDF, placement or extracted timing.
+
+```sh
+python3 scripts/check_pcie_tlp_controls.py --top soc_pcie_tlp_stream \
+  --out hw/soc/out/pcie-stream-controls-new
+make -C hw/soc/formal pciestream
+# Add --top soc_pcie_tlp_stream to the native-cell command above.
+```
+
 ## Remaining implementation
 
-The next digital boundaries are complete packet assembly/validation, full
+The next digital boundaries are CRC/integrity validation, full
 Endpoint configuration/capabilities, multi-DWORD transfer/completion handling,
 interrupts, DLL sequence/ACK/NAK/replay and credit flow control, and PHY-side
 LTSSM/training/Gen3 encoding/equalization/lane alignment. Root Port behavior

@@ -7,7 +7,7 @@ on:
       - .github/workflows/pcie-transaction.yml
       - hw/soc/rtl/pcie/**
       - hw/soc/rtl/soc_gpio.v
-      - hw/soc/formal/soc_pcie_tlp_regs*
+      - hw/soc/formal/soc_pcie_tlp_*
       - hw/soc/formal/Makefile
       - hw/soc/tb/cocotb/*soc_pcie*
       - scripts/check_pcie_tlp_*.py
@@ -49,12 +49,14 @@ jobs:
       - name: Descriptor tests, real GPIO and five functional mutation controls
         run: |
           python3 scripts/check_pcie_tlp_controls.py --out hw/soc/out/pcie-controls
+          python3 scripts/check_pcie_tlp_controls.py --top soc_pcie_tlp_stream --out hw/soc/out/pcie-stream-controls
           make -C hw/soc/tb/cocotb -f Makefile.soc_pcie_gpio
       - name: Independent formal safety and reachability checks
-        run: make -C hw/soc/formal pcietlp
+        run: make -C hw/soc/formal pcietlp pciestream
       - name: IHP mapping and unmodified native-cell simulation
         run: |
           python3 scripts/check_pcie_tlp_native.py --out hw/soc/out/pcie-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
+          python3 scripts/check_pcie_tlp_native.py --top soc_pcie_tlp_stream --out hw/soc/out/pcie-stream-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
       - name: Preserve block evidence, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -63,6 +65,8 @@ jobs:
           path: |
             hw/soc/out/pcie-controls/
             hw/soc/out/pcie-native/
-            hw/soc/formal/soc_pcie_tlp_regs_*/
+            hw/soc/out/pcie-stream-controls/
+            hw/soc/out/pcie-stream-native/
+            hw/soc/formal/soc_pcie_tlp_*/
             hw/soc/tb/cocotb/results_soc_pcie_gpio.xml
           retention-days: 30
