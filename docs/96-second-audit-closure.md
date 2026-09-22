@@ -42,7 +42,7 @@ External dependencies remain OPEN rather than being converted into exclusions.
 | 3.6 | Correct PNR profile selection, config inventory and energy hierarchy | DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing, LVS and actual workload-power acceptance remain separate open gates. |
 | 3.7 | Transport-independent pilot driver, cocotb/host/RP2040 backends | PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open. |
 | 3.8 | Single-source register offsets and bare-metal HAL | DONE for the requested register-offset generators and shared HAL. Thirteen word-oriented maps (113 offsets) and eight CAN banks (70 semantic byte offsets) provide RTL/C/Python bindings with independent ABI controls. All eight boot/application/FI/probe programs use the shared HAL; the final three probe migrations pass real-CPU tests and 77 HAL/probe guards. Bit-field schema extensions and broader product firmware/fault qualification are not claimed. See the dated records below. |
-| 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope; a dedicated CI job is configured. Other-paper/thesis claims/build/freshness, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail. |
+| 3.9 | Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI | PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope. The other three papers and thesis now have recursive lint, fresh PDF/archive builds, selected measured-claim checks and a source-bound tracked-thesis gate; see the 22 September record below. Complete scientific-claim review, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail. |
 | 4 | Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification | OPEN. These remain engineering or external acceptance dependencies; a checklist alone does not close them. |
 
 The audit's section 5 is an ordering of these same requirements, not another
@@ -716,3 +716,46 @@ with zero failure mask, flash violations or UART framing errors. Artifact CRCs,
 input digests and SCRUBCTL controls were checked independently. It predates
 the later CAN/HAL migration and is not attributed to a newer firmware or layout.
 Historical completed/failed records remain available.
+
+
+**22 September 2026 — other-paper and thesis publication gates:**
+[The fresh-build receipt](evidence/publications-current.json) binds all four
+manuscript source sets, their bibliography/figures/recipes and checker code to
+four actual PDF/source-archive builds. The tracked thesis PDF and bibliography
+are byte-bound to that accepted build. CI first checks source/output freshness,
+then builds in an empty directory and compares fresh thesis text with the
+tracked PDF. Tectonic 0.17.0 is checksum pinned; the workflow retains success
+or failure diagnostics. Hosted execution has a separate result from the local
+build; configuration alone is not a CI pass.
+
+The structural linter now expands literal chapter inputs. Previously it counted
+zero labels/references in the thesis; it now reaches all eight chapters and
+checks 74 labels and 42 referenced names. Missing/cyclic/nonliteral/escaping
+inputs, duplicate labels and missing citations fail. All four builds reject
+undefined references and overfull boxes and pass the PDF overlap check. Four
+previously ungated overflow paragraphs and two manuscripts' incorrectly
+rendered micro-unit glyphs were repaired. The resulting thesis has 90 pages.
+
+Twelve selected historical numeric transcriptions are checked against the
+SHA256-bound s83 metrics, including the negative antenna-repaired hold result.
+Each manuscript also has an explicit UNCHECKED group for its remaining
+scientific claims. These registries are not exhaustive scientific acceptance.
+The main paper still has 27 re-derived and 15 manual checks. Date-marked
+corrections withdraw the erroneous hold attribution and the claim that failing
+SRAM-interior LVS is only a naming issue. Historical results are explicitly
+separated from the current interface/boot-ROM RTL.
+
+The [validation record](evidence/publication-validation-20260922.json) includes
+**37 passing controls**, including source/PDF drift, missing bibliography,
+chapter errors, altered measurements and historical evidence tampering. Each
+freshness mutation starts from a separately accepted fixture. This closes the
+local build/freshness tooling portion of audit 3.9, not the outstanding claim
+review, release/DOI or any physical/silicon product gate.
+
+```sh
+python3 scripts/check_publications.py --check
+python3 scripts/check_publications.py --out hw/soc/out/publications-new \
+  --tectonic /absolute/path/to/tectonic --compare-thesis
+# Maintainers only, after reviewing a successful fresh build:
+# use --record instead of --compare-thesis to refresh tracked PDF/bbl/receipt.
+```

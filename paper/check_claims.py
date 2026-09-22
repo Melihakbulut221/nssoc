@@ -140,6 +140,40 @@ def check(c):
     """Return (state, detail). State is PASS, FAIL, SKIP or UNCHECKED."""
     kind = c.get("check")
 
+    if kind == "tex_json":
+        # Compare the displayed rounded number with a digest-bound historical
+        # metric. A number present only in a TeX comment cannot satisfy this.
+        f = ROOT / c["file"]
+        tex = ROOT / c["tex"]
+        if not f.is_file() or not tex.is_file():
+            return "FAIL", "missing metric or manuscript"
+        if hashlib.sha256(f.read_bytes()).hexdigest() != c["sha256"]:
+            return "FAIL", "historical metric digest changed"
+        try:
+            got = json.loads(f.read_text())[c["key"]]
+            if isinstance(got, bool) or not isinstance(got, (int, float)):
+                return "FAIL", "metric is not numeric"
+            style = c["format"]
+            if not re.fullmatch(r"[+]?([.]\d{1,6}f|d)", style):
+                return "FAIL", "unsupported numeric format"
+            value = format(got, style)
+            pattern = c["literal"]
+            if pattern.count("@VALUE@") != 1:
+                return "FAIL", "literal must bind exactly one measured value"
+            sys.path.insert(0, str(ROOT / "scripts"))
+            from tex_lint import strip_comments
+            text = strip_comments(tex.read_text())
+            expected = pattern.replace("@VALUE@", value)
+        except (KeyError, ValueError, TypeError) as error:
+            return "FAIL", str(error)
+        return (("PASS", expected + " (historical metric transcription)")
+                if expected in text else ("FAIL", "displayed number missing or differs: " + expected))
+
+    if kind == "outstanding":
+        if not c.get("artefact") or not c.get("read"):
+            return "FAIL", "outstanding review needs a source and reason"
+        return "UNCHECKED", c["read"]
+
     if kind == "manual":
         if not c.get("artefact") or not c.get("read"):
             return "FAIL", "manual claim names no artefact or no reading"
@@ -322,9 +356,12 @@ def check(c):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--claims", type=Path, default=ROOT / "paper" / "claims.yaml")
     args = ap.parse_args()
 
-    claims = load(ROOT / "paper" / "claims.yaml")
+    claims = load(args.claims)
+    if not claims or any(not c.get("id") for c in claims) or len({c["id"] for c in claims}) != len(claims):
+        raise SystemExit("Claims must have nonempty unique IDs")
     if args.list:
         for c in claims:
             print(f"{c['id']:34s} {c.get('check','?'):9s} {c.get('text','')}")
@@ -348,11 +385,11 @@ def main():
         if state == "FAIL":
             bad.append(c["id"])
 
-    print(f"\n{tally['PASS']} re-derived, {tally['UNCHECKED']} read from a "
-          f"named artefact by hand, {tally['SKIP']} need build output not in "
+    print(f"\n{tally['PASS']} re-derived, {tally['UNCHECKED']} manual or outstanding, "
+          f" {tally['SKIP']} need build output not in "
           f"this checkout, {tally['FAIL']} wrong")
     if tally["UNCHECKED"]:
-        print("The hand-read claims are the paper's weakest evidence and the "
+        print("Manual and outstanding claims are not automatically verified; the "
               "count is printed\nso the ratio is visible rather than implied.")
     if stale:
         print(f"\n{len(stale)} of these are measured on a soc_top layout that "
