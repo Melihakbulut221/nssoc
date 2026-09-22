@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Four independent experimental TX cells, shared analog supply/substrate.
+* No lane bonding, serializer, equalization, clock generator or receiver.
+.subckt nssoc_tx_bank4 ip0 in0 op0 on0 ref0 ip1 in1 op1 on1 ref1
++ ip2 in2 op2 on2 ref2 ip3 in3 op3 on3 ref3 avdd avss sub
+X0 ip0 in0 op0 on0 avdd avss sub ref0 nssoc_tx_cml
+X1 ip1 in1 op1 on1 avdd avss sub ref1 nssoc_tx_cml
+X2 ip2 in2 op2 on2 avdd avss sub ref2 nssoc_tx_cml
+X3 ip3 in3 op3 on3 avdd avss sub ref3 nssoc_tx_cml
+.ends nssoc_tx_bank4

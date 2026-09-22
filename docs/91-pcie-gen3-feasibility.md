@@ -99,6 +99,12 @@ not the controller/PHY integration verdict above.
 
 ## Custom PHY feasibility reassessment — 2026-09-22
 
+**Implementation follow-up:** [docs/99](99-pcie-phy-development.md) now records
+project-authored HBT TX and four-cell-bank netlists and 43 actual 8 GT/s
+pre-layout simulations. The result is REVIEW because hot-corner numerical
+warnings remain. Ideal loads/reference sources are still present; there is
+no physical PHY macro, receiver or PCIe link yet.
+
 The absence of a ready macro is an integration dependency, not a reason to
 exclude development of a project-owned PHY. The user explicitly requested
 research into designing it. The following evidence makes a custom SG13G2

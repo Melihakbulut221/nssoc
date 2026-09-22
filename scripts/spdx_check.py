@@ -87,6 +87,7 @@ SYNTAX = {
     ".sdc": HASH, ".sby": HASH, ".tcl": HASH, ".py": HASH, ".sh": HASH,
     ".mk": HASH, ".yml": HASH, ".yaml": HASH, ".awk": HASH, ".cfg": HASH,
     ".ys": HASH,
+    ".spice": ("* ", ""),
     ".tex": PCT, ".bib": PCT,
 }
 
@@ -111,7 +112,7 @@ DOCUMENT_SUFFIXES = {".tex", ".bib", ".yaml", ".yml", ".csv", ".tsv"}
 # Apache-2.0. The boundary is `docs/14` section 6.5: tooling is permissive
 # so that it can be offered upstream to yosys, LibreLane and IHP-Open-PDK,
 # none of which takes reciprocal code.
-HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys"}
+HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys", ".spice"}
 
 
 def strip_template(name):

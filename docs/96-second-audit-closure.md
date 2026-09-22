@@ -820,3 +820,12 @@ A separate hosted continuation starts at detailed routing without repeating
 synthesis/placement or weakening clocks and derating. Final extracted timing,
 electrical, foundry DRC, antenna, stream consistency and scoped LVS acceptance
 remain OPEN. This layout does not include the standalone PCIe transaction blocks.
+
+
+**22 September 2026 — custom analog TX development:**
+[docs/99](99-pcie-phy-development.md) records project-authored SG13G2 HBT TX
+and four-cell-bank netlists, 43 actual SPICE simulations, fault detection,
+measured eye overlays and the physical-integration work list. The overall
+result is REVIEW: 13 hot-corner solves retain numerical warnings. Ideal
+resistors/reference/input drivers remain, and no PCIe PHY layout, receiver
+or complete link is delivered. Audit 1.8 and all product gates remain OPEN.
