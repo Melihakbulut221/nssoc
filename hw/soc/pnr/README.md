@@ -83,3 +83,26 @@ never overwritten. Use that state as the input to the appropriate next flow
 step with the matching pinned tools, PDK and configuration. This does not
 reconstruct an interrupted optimizer's uncommitted in-memory changes, and
 the older incomplete artifact cannot supply missing views retroactively.
+
+
+The retry reached detailed routing, including three intermediate passes with
+zero router DRC violations, but timed out in antenna repair iteration 3.
+The last antenna check still had 11 net / 12 pin violations. Its
+[pinned archive receipt](../../../docs/evidence/physical-route-checkpoint-20260922.json)
+identifies the completed pre-route state and ten verified physical views.
+`scripts/resume_physical.py` validates the entire archive, all 138 prepared
+source/configuration hashes, boot image, mapped netlist and checkpoint hashes.
+It restores the original resolved configuration (including native `5.0`
+derating) beside the original design directory. The dedicated
+`soc-physical-resume` workflow starts at `OpenROAD.DetailedRouting` with the
+same pinned runtime and PDK. No synthesis or placement is repeated.
+
+```sh
+python3 scripts/resume_physical.py --archive /absolute/path/to/source.zip --verify-only
+```
+
+Omit `--verify-only` only in a freshly prepared checkout with space for the
+restart views. The restore itself does not start the physical tools. The flow
+retains the existing configuration's disabled built-in foundry DRC/LVS steps;
+independent foundry deck checks and SRAM-interior LVS remain separate open
+acceptance requirements. Intermediate router DRC is not foundry signoff.

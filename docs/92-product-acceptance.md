@@ -587,3 +587,16 @@ and failure receipts outside the synthesizer's disposable output directory.
 and separate hosted SoC workflow provide the current-source execution path.
 This corrects the obsolete entrypoint; it does not turn prior failing physical
 results into passes or close missing IP, pads, test/debug or qualification gates.
+
+
+**22 September — detailed-route restart:** the bounded retry now reaches
+routing; three intermediate router passes report zero DRC violations, while
+the last completed antenna check still reports 11 net / 12 pin violations.
+The implementation timed out during another antenna repair pass. Its
+[checkpoint receipt](evidence/physical-route-checkpoint-20260922.json) binds the
+archive, original configuration and last completed state. All ten restart
+views and 138 prepared input/configuration hashes have been verified locally.
+A separate hosted continuation starts at detailed routing without repeating
+synthesis/placement or weakening clocks and derating. Final extracted timing,
+electrical, foundry DRC, antenna, stream consistency and scoped LVS acceptance
+remain OPEN. This layout does not include the standalone PCIe transaction blocks.
