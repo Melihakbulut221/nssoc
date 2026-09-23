@@ -4,8 +4,10 @@ Latest measurement: the [actual-segment replay](evidence/global-route-segment-re
 avoids the defective estimated-SPEF exporter and reproduces in-memory timing.
 Its three-corner global-route estimates have no slew, capacitance or negative
 hold violations, but slow setup remains **-3.657322 ns**. Detailed-route RCX
-verification and full foundry DRC are pending; full transistor LVS has failed.
-No final physical or manufacturing gate is declared closed.
+verification is pending. The original routed baseline now passes the locked
+upstream main DRC rules: 549 report categories, zero markers, successful tool
+exit and unchanged inputs. This result does not transfer to the new layouts.
+Full transistor LVS still fails; overall physical/manufacturing closure is open.
 
 ## Baseline measured on 23 September 2026
 
@@ -451,3 +453,58 @@ reduces from 333 definitions to 150 with identical retained bodies and top.
 Twenty-nine schematic-builder controls and 24 LVS-auditor controls pass.
 This input normalization is not an extracted LVS pass; context-dependent
 SRAM hierarchy and model differences still require separate resolution.
+
+## Completed main-rule DRC of the routed baseline
+
+The [source-bound DRC receipt](evidence/routed-baseline-main-drc-20260923.json)
+records **PASS, zero markers across 549 report categories** for the complete
+original `soc_top` GDS, SHA-256
+`c8dc9462313e5f3484111a8ed23d683fedb18b2e1b7e65bec636efc8309ec838`.
+KLayout 0.30.7 completes the unchanged upstream `5e6d592` main deck in its
+official tiling mode, using four threads, 500 micrometre tiles and 30 micrometre
+borders. Rule execution takes 10,650.74 seconds. Tool exit zero and every
+recorded input digest are verified separately from the zero-marker report.
+
+A real physical negative control uses the same tool/deck and adds one
+0.02 micrometre-wide Metal1 rectangle beside an original vendor inverter.
+It reports exactly one `M1.a` violation. Although KLayout exits zero, the
+report-aware gate correctly fails this case. The [raw archive](evidence/routed-baseline-main-drc-20260923.tar.gz)
+retains both complete reports, logs, commands, locks and the negative geometry.
+
+No cell, region or main rule is excluded. Optional recommended rules remain
+off. This result covers the exact original routed core, rather than all
+supplementary rules, pads/package or silicon acceptance. The ECO19 and new
+pipelined-core layouts need their own checks after routing. Baseline timing
+and full transistor LVS remain unsuccessful.
+
+## SRAM resistor-width mismatch and rejected reader generalization
+
+The [SRAM diagnosis](evidence/sram-width-diagnosis-20260923.json) retains a
+small original bit-cell GDS tree and its verbatim vendor CDL. The six physical
+Metal2/Metal3 resistor markers are each 0.20 by 0.60 micrometres, while all six
+CDL resistor statements specify width 0.26 and length 0.60 micrometres.
+The drawing-metal intersections fully cover the markers, so the difference
+is already present in the source geometry and reference, independent of the
+experimental reader. The generic layout bit-cell name and size-qualified
+schematic bit-cell name are both preserved in the witness.
+
+An isolated original Metal1 dummy cell does match when a copied reader
+implements the [documented Metal1 `lvsres` width/length comparison](https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/lvs/04_05_res.html).
+Doubling reference width, doubling length or deleting the resistor each
+fails. This bounded result **does not justify applying a Metal1 alias to the
+whole SRAM**. Inspection of its context-flattened graph finds 8,336 Metal2
+and 8,384 Metal3 resistor definitions, plus the shared Metal1 dummy definition;
+physical widths include 0.20 and 0.24 micrometres. The global Metal1 experiment
+is explicitly rejected. Width comparison is not disabled and the vendor
+reference is not rewritten from the extracted result.
+
+Separate strict power-connection and hierarchy experiments resolve some
+child-comparison obstacles while preserving devices, but never establish a
+passing macro. The unseeded full graph comparison reaches its 600-second
+bound; seeded KLayout and supplemental Netgen comparisons are stopped after
+the invalid model generalization is identified. None is accepted as a pass.
+The [diagnostic archive](evidence/sram-width-diagnosis-20260923.tar.gz) includes
+the width witness, positive/negative controls, copied deck changes, input
+hashes, graph dumps and the last completed failing macro database. Original
+PDK files and production checks remain unchanged. A consistent, independently
+justified SRAM reference and extraction treatment are still required for LVS.
