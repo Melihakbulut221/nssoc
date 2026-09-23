@@ -1,5 +1,12 @@
 # 100 — Routed timing and full-transistor verification
 
+Latest measurement: the [actual-segment replay](evidence/global-route-segment-replay-20260923.json)
+avoids the defective estimated-SPEF exporter and reproduces in-memory timing.
+Its three-corner global-route estimates have no slew, capacitance or negative
+hold violations, but slow setup remains **-3.657322 ns**. Detailed-route RCX
+verification and full foundry DRC are pending; full transistor LVS has failed.
+No final physical or manufacturing gate is declared closed.
+
 ## Baseline measured on 23 September 2026
 
 [Hosted run 35743942451](https://github.com/Melihakbulut221/nssoc/actions/runs/35743942451)
@@ -345,3 +352,34 @@ nets and malformed inputs. It does not certify RC accuracy or extracted
 timing. No guessed capacitances are inserted into the measured files.
 The running detailed-route/RCX flow uses the actual ODB geometry, rather than
 this rejected global-route SPEF, and remains the next verification boundary.
+
+### Independent replay from actual routing segments
+
+The [replacement measurement](evidence/global-route-segment-replay-20260923.json)
+does not export estimated SPEF. It records the actual global-route segment
+graph, loads that graph with `read_global_route_segments` in a fresh OpenROAD
+process, and estimates/reports timing in memory at all three Liberty corners.
+The ODB, DEF, netlist, SDC and routing guides are all byte-identical to ECO19.
+The fresh slow result reproduces the original in-memory setup and hold values
+within 0.000001 ns, resolving the previous measurement discrepancy without
+inventing replacement capacitances.
+
+| Liberty corner, nominal estimated RC | Setup WNS (ns) | Hold WNS (ns) | Slew violations | Capacitance violations |
+| --- | ---: | ---: | ---: | ---: |
+| Fast | +3.643677 | +0.011810 | 0 | 0 |
+| Typical | +2.579708 | +0.159314 | 0 | 0 |
+| Slow | **-3.657322** | +0.435448 | 0 | 0 |
+
+These measurements establish the electrical/negative-hold result only for
+this estimated routing graph. Slow setup still fails and the minimum hold
+margin is only 11.8 ps. The exact same geometry is undergoing detailed routing
+and extracted-RC checks; it is not a final accepted layout. The unchanged
+netlist reuses the verified ECO19 Boolean proof, and the unannotated-driver
+report is byte-identical to its checked list of 1,048 unloaded outputs.
+
+The [replay archive](evidence/global-route-segment-replay-20260923.tar.gz)
+contains the actual segment graph, producer/replay scripts, all corner reports,
+source identities and the rejected guide-only diagnostic. Merely reading
+guide rectangles emits `GRT-0008` and does not restore the full routing graph;
+that diagnostic is explicitly invalid. The rejected SPEF-based tables above
+remain rejected rather than being retroactively accepted by this new result.
