@@ -1,0 +1,135 @@
+{
+  "date": "2026-09-23",
+  "status": "Targeted integration fixes verified; complete make check not clean",
+  "changes": [
+    "Require declared nets in soc_req_pipe without changing logic.",
+    "Reach bmc/prove/cover through the normal SoC Make all target.",
+    "Refresh only existing soc_top diagnostic line coordinates in all four lint profiles."
+  ],
+  "scope": "Default pipeline settings remain unchanged. No new routed timing, native mapped boot, complete formal sweep, LVS or manufacturing acceptance is asserted.",
+  "original_full_check": {
+    "pytest_passed": 1470,
+    "pytest_failed": 2,
+    "frontdoor_passed": 16,
+    "frontdoor_failed": 3,
+    "frontdoor_skipped": 2,
+    "outstanding": "Historical formal-output disposition audit remains failing. Missing Pandoc and configured flow-venv interpreter remain skips."
+  },
+  "after_fixes": {
+    "targeted_tests_passed": 26,
+    "reqpipe_formal": {
+      "bmc": "PASS",
+      "prove": "PASS",
+      "cover": "PASS"
+    },
+    "lint": {
+      "base": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "warnings": 987,
+        "log_sha256": "cebb7573591deca70cb4817fd65cb8a9d321f5a4b5f351076f6b12818b8f66b5",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff"
+      },
+      "full": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "warnings": 1015,
+        "log_sha256": "2c0a2b8df0f1e5d1264f80e27a81543ae6daa70ea7c9e804b87d4f783f7955d0",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff"
+      },
+      "base-sram-logic": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "warnings": 1012,
+        "log_sha256": "89d5604aa941000ad06bb28aeb1b44fcf98095e34da2fb35666639b65a81d75f",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff"
+      },
+      "full-sram-logic": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "warnings": 1040,
+        "log_sha256": "15e9314e8bc73b342cd6adebf195c013e904dd2f25727fa2e544bba692da9464",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff"
+      }
+    },
+    "policy_refresh": {
+      "scope": "Update only the line coordinates of already-dispositioned soc_top warnings. Code, path, column, message, multiplicity, tool version and disposition reasons are unchanged; no new warning is accepted.",
+      "line_map": {
+        "555": 563,
+        "557": 565,
+        "582": 590,
+        "583": 591,
+        "589": 597,
+        "592": 600,
+        "609": 617,
+        "640": 648,
+        "641": 649,
+        "642": 650,
+        "643": 651,
+        "644": 652,
+        "645": 653,
+        "646": 654,
+        "647": 655,
+        "648": 656,
+        "292": 300,
+        "296": 304,
+        "387": 395,
+        "390": 398,
+        "404": 412
+      },
+      "profiles": {
+        "base": {
+          "count": 987,
+          "warning_identity_and_counts_unchanged": true
+        },
+        "full": {
+          "count": 1015,
+          "warning_identity_and_counts_unchanged": true
+        },
+        "base-sram-logic": {
+          "count": 1012,
+          "warning_identity_and_counts_unchanged": true
+        },
+        "full-sram-logic": {
+          "count": 1040,
+          "warning_identity_and_counts_unchanged": true
+        }
+      }
+    }
+  },
+  "archive": {
+    "path": "docs/evidence/reqpipe-integration-20260923.tar.gz",
+    "sha256": "5e7c53f5391bf36ec527e5dc40d1d3347931181eb00eabb87a1a2920b29e259a",
+    "bytes": 320940,
+    "members": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_reqpipe_integration.py": "9ce38cac009c0b53ff971f2a8509225c6223f8935220712cdea0aac5fbf0b3bf",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/supplemental-make-check.log": "2e7e0ba5d3362679689fadafe401aa9d5a0caae900199a0092a4b2c39588f026",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/reqpipe-integration-final-tests.log": "bad2ded424f2878fb34c9a6a6268feea3fa672a8b3381e9d0b50a3f5d4f7a384",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/reqpipe-make-formal.log": "5ea307bf91c430606f2857c87ff530824a64463d08518e5e16933cf1fee110cf",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/lint-location-refresh.json": "5fc14c582c495a9ef9b6ef18ef843232b7361f81d13be321a7617581126b139b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/lint-policy-before-location-refresh.json": "8522d24c92ac84fb78cc52d1a52bf71fcb706a0a906b8c411426cce47c6a2ece",
+      "hw/soc/out/reqpipe-lint-base-20260923/result.json": "1fb7ef2d99aaf67d9f74b8eede9197a348205d6998c843f735e4500d40e0b7be",
+      "hw/soc/out/reqpipe-lint-base-20260923/verilator.log": "cebb7573591deca70cb4817fd65cb8a9d321f5a4b5f351076f6b12818b8f66b5",
+      "hw/soc/out/reqpipe-lint-full-20260923/result.json": "b70d6bc8cb5a02ec7f536907deb2865699a32214dcc851ac628d7d93a5c52fb2",
+      "hw/soc/out/reqpipe-lint-full-20260923/verilator.log": "2c0a2b8df0f1e5d1264f80e27a81543ae6daa70ea7c9e804b87d4f783f7955d0",
+      "hw/soc/out/reqpipe-lint-base-sram-logic-20260923/result.json": "46de4cbb37dd1adfbbf294617f44fe5533b841651dfc391307c074fb06d882b0",
+      "hw/soc/out/reqpipe-lint-base-sram-logic-20260923/verilator.log": "89d5604aa941000ad06bb28aeb1b44fcf98095e34da2fb35666639b65a81d75f",
+      "hw/soc/out/reqpipe-lint-base-sram-logic-20260923/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "hw/soc/out/reqpipe-lint-full-sram-logic-20260923/result.json": "b88a113fd97b57768f0a613f523febcc28de225ced1728400cbab860f54cddb9",
+      "hw/soc/out/reqpipe-lint-full-sram-logic-20260923/verilator.log": "15e9314e8bc73b342cd6adebf195c013e904dd2f25727fa2e544bba692da9464",
+      "hw/soc/out/reqpipe-lint-full-sram-logic-20260923/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "hw/soc/formal/soc_req_pipe_bmc/status": "cc738ba80399aa89c77984a8ed44a7d391c3f0e429624f66e5696894862bb383",
+      "hw/soc/formal/soc_req_pipe_bmc/logfile.txt": "3195482957cda0951c382ae5b91ce434a1abc4c327cba69a3cbc387ce2abe09e",
+      "hw/soc/formal/soc_req_pipe_prove/status": "82bc437cdb0ebaedde9abc25a1795f5b1cd22d37f1e4d1240fd300e529561df4",
+      "hw/soc/formal/soc_req_pipe_prove/logfile.txt": "89d2a039e7f3f1d3596509f65cf9df7b107fd2b152da49885c445fa71433c410",
+      "hw/soc/formal/soc_req_pipe_cover/status": "4d489b9bfaac73d73a64a4023bf4d947ca1d4216d9f72864c97bfb6a2bc07d56",
+      "hw/soc/formal/soc_req_pipe_cover/logfile.txt": "2ed323fbfc753e9961d5e3b0efe7bddc8e313ab0d711712736a96b0bd06d73e4",
+      "hw/soc/rtl/soc_req_pipe.v": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac",
+      "hw/soc/rtl/soc_top.v": "bac971eeab25162608cd5a331c9268834992476cdef1c235b53dc00bd40b05e7",
+      "hw/soc/formal/Makefile": "5a1ec9f2be43d5c749383e3feef418079d2ad7c0c03fc65a163ec714de1be7fd",
+      "hw/soc/formal/soc_req_pipe.sby": "3f21ffc0c3896d84e05780264e890829101acce212ac5bb31f2d7c428bad4902",
+      "hw/soc/formal/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "hw/soc/lint-policy.json": "103548c0d80b59a183a6f1a529999d17acd7c4e044852b1eb6890b65d6d2e129",
+      "scripts/check_soc_lint.py": "ec9faf393fccf794aff3a48d2c32313cd1c2cd2923f9610f202ade67c638634b",
+      "sw/tests/test_soc_req_pipe.py": "0e5eae0030d8f05cac23caf5dd0b2cbde2f3e4edb8933ee652a7a1ea5a37507e",
+      "sw/tests/test_soc_lint.py": "f98d7bdcfad4115581e42c06410f4bdd1d843fc51ab3d61336c70ad3135e02d2",
+      "sw/tests/test_formal_tasks_are_reachable.py": "41db8b446276be5835c1bf5f9389a450722fb90e176ccde7ab5e049d8de78d8f"
+    }
+  }
+}

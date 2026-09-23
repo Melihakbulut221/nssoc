@@ -553,6 +553,56 @@ therefore has an empty fill region and is not accepted as successful fill.
 For the separate core experiment, copies of the macros select an explicit
 prBoundary derived from the actual DEF DIEAREA, with their spacing and shape
 rules unchanged. This adds a boundary marker, not a fabricated seal ring.
-The full-core experiment is still running. The small controls do not qualify
+Full-core filling remains under investigation. The small controls do not qualify
 the full layout or its timing; the effects of floating fill on parasitics
 must also be addressed before accepting timing for a filled layout.
+
+This distinction follows the [OpenRCX input model](https://openroad.readthedocs.io/en/latest/main/src/rcx/README.html):
+extraction uses the routed LEF/DEF database. The GDS-only fill experiment does
+not update that database, so reusing its previous SPEF would omit the added
+geometry. Inspection of the pinned
+[OpenROAD context construction](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rcx/src/extFlow.cpp#L991)
+also shows explicit net-shape traversal; the 50 pinned RCX source files examined
+contain no `dbFill` or `getFills` reference. This source inspection is not a
+numerical fill-capacitance validation. A justified extraction treatment for
+floating fill remains required.
+
+The first flat full-core fill attempt stops with `std::bad_alloc` after
+909.69 seconds under its 12 GiB address-space limit, without an accepted output.
+The [memory-scaling controls](evidence/core-fill-memory-controls-20260923.json)
+retain that failure and two alternatives. Hierarchical Boolean operations,
+flattened only at the final fill calls, reproduce the small flat control's
+complete per-cell geometry and instance graph with no additions or removals.
+A second method processes bounded windows with a 30 micrometre context halo.
+Four 50 micrometre windows cover the small control; its original geometry is
+retained and both recommended main DRC and density pass. The
+[raw evidence](evidence/core-fill-memory-controls-20260923.tar.gz) includes
+the actual per-window macros. The single-process full-core clipped attempt
+also reaches its memory limit during the third window after two completed
+windows, without an accepted complete GDS. Its replacement runs each window
+in a fresh process and writes a GDS checkpoint with verified source/output
+hashes after each window. On the small control, this reproduces all 47 cells'
+geometry and instance graph from the single-process result exactly. The
+35-window full-core checkpointed run remains pending; small controls establish
+neither full-core completion nor fill-aware timing.
+
+## Pipeline integration regression repair
+
+The complete local `make check` run found two integration regressions after
+1,470 passing tests: the new request register lacked implicit-net guards,
+and its formal jobs were unreachable from the normal Make target. Both are
+fixed without changing the register logic or default pipeline settings.
+The [verification receipt](evidence/reqpipe-integration-20260923.json) records
+26 passing targeted tests and fresh `bmc`, `prove` and `cover` results reached
+through `make -C hw/soc/formal reqpipe`.
+
+All four lint profiles pass with their previously recorded warnings: 987 for
+base, 1,015 for full, 1,012 for base SRAM/logic-ROM and 1,040 for full
+SRAM/logic-ROM. Only existing `soc_top` diagnostic line coordinates moved;
+warning codes, messages, multiplicities and dispositions are unchanged.
+The [raw archive](evidence/reqpipe-integration-20260923.tar.gz) retains both
+the original failures and the post-fix measurements. The complete check is
+not reported clean: its historical formal-output disposition audit failed,
+and missing Pandoc and the configured flow interpreter were skips. These
+targeted results do not replace a current complete formal sweep, mapped-boot
+qualification or routed timing/LVS acceptance.

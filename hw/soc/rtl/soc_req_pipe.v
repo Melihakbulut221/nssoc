@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
+`default_nettype none
 // One-entry request register. Upstream grant transfers ownership of the
 // complete request into this register; downstream grant releases it. There is
 // no combinational downstream-ready -> upstream-grant path and no bypass.
@@ -37,3 +38,4 @@ module soc_req_pipe (
   always @(posedge clk_i)
     if (gnt_o) payload_q <= {addr_i, we_i, be_i, wdata_i};
 endmodule
+`default_nettype wire
