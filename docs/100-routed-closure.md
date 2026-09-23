@@ -4,12 +4,15 @@ Latest [actual routed RCX/STA](evidence/eco19-extracted-timing-20260923.json)
 reduces slow setup failure to **−4.326671 ns**, but retains 101 slow-corner
 slew violations, two capacitance violations in each corner and two fast hold
 failures. The original 20 ns core/8 ns Ethernet constraints are unchanged.
-The original unfilled baseline passes locked upstream main DRC (549 categories,
-zero markers). Its new [complete density-filled layout](evidence/full-core-fill-density-20260923.json)
+ECO19 now [passes locked full main DRC with recommended rules](evidence/eco19-recommended-main-drc-20260923.json):
+**560 categories, zero markers**. Its independent foundry antenna/density checks
+remain separate. The original unfilled baseline also passes main DRC with
+recommended rules off (549 categories, zero markers).
+Its new [complete density-filled layout](evidence/full-core-fill-density-20260923.json)
 passes the separate density deck, closing the previous 158 density markers
-for that baseline. These are distinct GDS inputs: neither result transfers to
-ECO19. New-layout main/antenna/density checks and filled-layout main/antenna
-checks remain open. Full transistor LVS fails; overall physical/manufacturing
+for that baseline. These are distinct GDS inputs: its density result does not
+transfer to ECO19. Filled-layout main/antenna checks remain open.
+Full transistor LVS fails; overall physical/manufacturing
 closure remains open.
 
 ## Baseline measured on 23 September 2026
@@ -897,3 +900,54 @@ The dummy connectivity schematic is not an LVS reference. This result supplies
 no whole-chip fill-aware SPEF, validated resistance extraction, minimum/maximum
 RC corners or final timing acceptance. Full-chip fill-aware verification remains
 open, alongside setup, hold, electrical-limit and SRAM LVS closure.
+
+## ECO19 complete recommended main DRC
+
+The newly streamed ECO19 GDS, SHA-256
+`983b4dc8fa54a0e23193b309949e38b6a31ff83961ff02895653d16082a1e9a5`,
+[passes the complete locked main deck](evidence/eco19-recommended-main-drc-20260923.json)
+with recommended checks enabled. KLayout 0.30.7 reports **560 categories and
+zero markers**, successful exit and 9,826.04 seconds of rule execution. The
+complete category-name/description fingerprint matches the validated inventory;
+all recorded GDS, deck, lock and runner hashes verify independently before
+publication. The [archive](evidence/eco19-recommended-main-drc-20260923.tar.gz)
+retains the complete report, log, command, identities and reproducer.
+
+This closes this exact GDS's main-deck gate. It does not substitute for the
+separate foundry antenna/density checks, SRAM-interior LVS, fill-aware extraction
+or final timing. The original-baseline filled GDS and later repair candidates
+require their own measurements. No violations, rule tables or cells were waived.
+
+## Rejected circuit and SRAM geometry alternatives
+
+The [hypothesis measurements](evidence/closure-hypotheses-20260923.json) retain
+two isolated register-file alternatives with matched synthesis and zero-wire
+STA. Correcting each stored word before read selection increases area from
+159,272.9082 to 210,282.1182 square micrometres and slow register-to-read arrival
+from 3.283180 to 3.426965 ns. Explicit one-hot read selection produces
+159,943.2534 square micrometres and 3.317870 ns. Both also worsen address-to-read
+arrival in all three corners. Neither changes tracked RTL or supplies a
+whole-SoC result; no equivalence or physical acceptance is claimed for them.
+
+SRAM experiments retain the independent original CDL dimensions. Symmetric
+widening of actual metal and markers to 0.26 by 0.60 micrometres introduces
+ten locked spacing failures: eight `M2.b` and two `M3.b`. A bounded asymmetric
+alternative preserves all six local resistor terminal pairs, with a bijection
+of 15 Metal2 and five Metal3 conductor partitions. Shorted and missing-metal
+controls fail. Other flattened witness layers and texts are unchanged.
+An earlier hierarchy-handling attempt retained child markers and accidentally
+produced two 0.64 micrometre lengths; it is separately rejected.
+
+The corrected local geometry was then inserted into a **separate copy** of the
+complete 256x16 SRAM macro. All 168 other cells preserve their shape, text and
+instance fingerprints. Full recommended main DRC passes the original macro
+with 560 categories and zero markers, but the copied candidate fails with
+**19,200 `M3.b` markers**. Local spacing/connectivity success therefore does not
+survive the actual macro context. This candidate is rejected before adoption;
+no original PDK GDS, CDL, rule, tolerance or production layout changes.
+
+The [archive](evidence/closure-hypotheses-20260923.tar.gz) and
+[component notices](evidence/closure-hypotheses-20260923-NOTICES.txt) retain raw
+reports, copied candidates, scripts, source hashes and rejected attempts.
+SRAM closure still requires a coherent macro design/reference pair and complete
+verification; changing mask metal would also require new characterization.
