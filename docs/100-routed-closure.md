@@ -7,7 +7,8 @@ hold violations, but slow setup remains **-3.657322 ns**. Detailed-route RCX
 verification is pending. The original routed baseline now passes the locked
 upstream main DRC rules: 549 report categories, zero markers, successful tool
 exit and unchanged inputs. This result does not transfer to the new layouts.
-Full transistor LVS still fails; overall physical/manufacturing closure is open.
+Its separate complete density check fails with 158 markers. Full transistor
+LVS still fails; overall physical/manufacturing closure is open.
 
 ## Baseline measured on 23 September 2026
 
@@ -529,11 +530,31 @@ python hw/soc/flow/check_ihp_drc.py routed.gds --top soc_top \
 ```
 
 Run these commands in the pinned physical environment. They do not turn the
-completed main-rule result into supplemental acceptance. A separate complete
-baseline density measurement is in progress as of 23 September, 06:02 TRT;
-it has no final verdict yet. Its input is the same original baseline GDS
-identified above. Cell filler insertion does not itself prove that metal
-density rules pass.
+completed main-rule result into supplemental acceptance. The complete
+baseline density measurement finishes at 07:00 TRT on 23 September with
+**158 markers and a failing verdict**, despite KLayout exiting zero. Its
+input is the same original baseline GDS identified above. Cell filler
+insertion does not itself prove that metal density rules pass.
+
+The [complete density receipt](evidence/baseline-density-and-rcx-20260923.json)
+records 151 local minimum-density violations in Metal2 through Metal5 and
+seven global violations in Activ, Metal2 through Metal5 and TopMetal1/2.
+Global densities printed by the locked deck are:
+
+| Layer | Density | Minimum |
+| --- | ---: | ---: |
+| Activ | 34.83% | 35% |
+| Metal2 | 20.10% | 35% |
+| Metal3 | 23.34% | 35% |
+| Metal4 | 18.95% | 35% |
+| Metal5 | 2.56% | 35% |
+| TopMetal1 | 6.28% | 25% |
+| TopMetal2 | 5.66% | 25% |
+
+The [raw archive](evidence/baseline-density-and-rcx-20260923.tar.gz) retains
+the report, execution log and verified input identities. No density limit
+or rule is relaxed. The hierarchical fill attempt subsequently times out
+after 1,800 seconds; this also remains a failed experiment.
 
 The [small physical controls](evidence/supplemental-drc-controls-20260923.json)
 exercise the added switches with the actual locked deck and KLayout 0.30.7.
@@ -606,3 +627,20 @@ not reported clean: its historical formal-output disposition audit failed,
 and missing Pandoc and the configured flow interpreter were skips. These
 targeted results do not replace a current complete formal sweep, mapped-boot
 qualification or routed timing/LVS acceptance.
+
+## Extracted SPEF conservation control
+
+The capacitance auditor accepts explicit coupling entries only with
+`--allow-coupling`. Each net's declared total must equal its serialized
+ground and coupling entries within the existing rounding tolerance. The
+default still rejects coupled files. This checks serialization integrity;
+it does not establish a correct coupling model or unique physical total
+capacitance across nets.
+
+The original baseline's actual OpenRCX SPEF passes for all 95,587 nets,
+including 1,946,224 coupling entries. An exact first-net excerpt passes;
+deleting either one original pin-node capacitance or one original coupling
+entry fails. Sixteen tests cover both grounded and coupled behavior. The
+[source-bound receipt and controls](evidence/baseline-density-and-rcx-20260923.json)
+retain these results. The earlier estimated-SPEF failures remain rejected;
+this result qualifies neither new routed SPEF nor fill-aware timing.

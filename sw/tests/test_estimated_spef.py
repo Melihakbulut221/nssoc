@@ -63,3 +63,30 @@ def test_six_digit_rounding_is_not_an_omission(tmp_path):
     result = module.audit(sample(tmp_path, '*D_NET n 0.123457\n*CAP\n'
                                 '1 n:1 0.1\n2 cell:A 0.0234568\n*END\n'))
     assert result['status'] == 'PASS within scope'
+
+
+def test_coupled_rcx_totals_and_missing_pin_capacitance(tmp_path):
+    # Each net reports the shared coupling once; the per-net sum includes it
+    # twice across the pair and must not be advertised as unique physical C.
+    body = ('*D_NET n .007\n*CAP\n1 n:1 .003\n2 cell:A .001\n'
+            '3 n:1 m:1 .003\n*END\n'
+            '*D_NET m .008\n*CAP\n1 m:1 .005\n2 n:1 m:1 .003\n*END\n')
+    path = sample(tmp_path, body)
+    result = module.audit(path, allow_coupling=True)
+    assert result['status'] == 'PASS within scope'
+    assert result['coupling_entries'] == 2
+    assert result['serialized_total_pf'] == pytest.approx(.015)
+    # The opt-in does not excuse omitted pin-node ground or coupling entries.
+    for missing in ['2 cell:A .001\n', '3 n:1 m:1 .003\n']:
+        path.write_text('*DESIGN_FLOW "PIN_CAP NONE"\n*C_UNIT 1 PF\n' +
+                        body.replace(missing, ''))
+        result = module.audit(path, allow_coupling=True)
+        assert result['status'] == 'FAIL'
+        assert result['inconsistent_nets'] == 1
+
+
+@pytest.mark.parametrize('value', ['NaN', '-.001', 'inf'])
+def test_invalid_coupling_is_rejected_even_with_opt_in(tmp_path, value):
+    path = sample(tmp_path, f'*D_NET n .003\n*CAP\n1 n:1 m:1 {value}\n*END\n')
+    with pytest.raises(ValueError, match='finite and nonnegative'):
+        module.audit(path, allow_coupling=True)
