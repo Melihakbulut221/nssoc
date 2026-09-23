@@ -66,6 +66,27 @@ def test_input_change_invalidates_even_a_clean_report(tmp_path):
     assert "Input changed" in result["error"]
 
 
+@pytest.mark.parametrize("markers", ["", MARKER])
+def test_density_boundary_warning_invalidates_report_even_with_exit_zero(tmp_path, markers):
+    (tmp_path / "drc.lyrdb").write_text(report(markers))
+    (tmp_path / "run.log").write_text(
+        "Layout extent (313600.0 um^2) > chip boundary (250000.0 um^2). "
+        "Shapes exist outside boundary.\n")
+    result = drc.record_result(tmp_path, "chip", 0, {}, deck="density")
+    assert result["status"] == "ERROR"
+    assert result["markers"] == markers.count("<item>")
+    assert "normalization" in result["error"]
+
+
+def test_density_requires_log_and_preserves_a_valid_failure(tmp_path):
+    (tmp_path / "drc.lyrdb").write_text(report(MARKER))
+    assert drc.record_result(tmp_path, "chip", 0, {}, deck="density")["status"] == "ERROR"
+    (tmp_path / "run.log").write_text("Using prBoundary (189/0) for chip area: 250000.0 um^2.\n")
+    assert drc.record_result(tmp_path, "chip", 0, {}, deck="density")["status"] == "FAIL"
+    (tmp_path / "drc.lyrdb").write_text(report())
+    assert drc.record_result(tmp_path, "chip", 0, {}, deck="density")["status"] == "PASS"
+
+
 def test_separate_locked_decks_and_explicit_rule_coverage(tmp_path):
     main = tmp_path / "ihp-sg13g2.drc"
     antenna = tmp_path / "rule_decks/antenna.drc"

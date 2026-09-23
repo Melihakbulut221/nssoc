@@ -683,3 +683,30 @@ corresponding Rust source, the boundary patch, Python orchestration, exact
 controls and [component notices](evidence/gdsfill-controls-20260923-NOTICES.txt).
 These controls do not establish complete-core DRC, density, LVS or fill-aware
 parasitic/timing acceptance.
+
+## Rejecting invalid density normalization
+
+A real filled window exposes a false acceptance in the report-only density
+gate. Its declared 500 by 500 micrometre boundary excludes the 30 micrometre
+context halo, but the locked deck counts the halo material in its global
+numerators. The deck logs `Shapes exist outside boundary.` without adding a
+violation marker. Its zero-marker report therefore cannot establish density
+compliance. The runner now rejects that warning as an **ERROR**, even when
+KLayout exits successfully, and requires the density log to be present.
+The foundry deck and density thresholds are unchanged.
+
+The [physical controls](evidence/density-boundary-guard-20260923.json) retain
+the original misleading report and its corrected rejection. A tightly clipped
+diagnostic copy of the same region instead reports two real violations:
+Metal2 is 29.26% and Metal3 is 34.07%, against the 35% minimum. These are
+regional measurements; the accepted full-chip verification input will not
+be cropped or have failing regions excluded.
+
+An independent 100 micrometre control passes with the new runner. Adding a
+5 by 5 micrometre Metal2 rectangle outside its unchanged boundary produces
+the **same zero-marker report**, but is correctly rejected from the logged
+boundary inconsistency. Thirty-three runner/preparation tests pass, including
+missing-log and boundary-warning cases. The [raw archive](evidence/density-boundary-guard-20260923.tar.gz)
+includes both small physical GDS inputs, all diagnostic reports, historical
+and corrected runner snapshots, the lock and tests. This guard covers the
+reported normalization warning; it is not full-core density closure.

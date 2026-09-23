@@ -67,7 +67,7 @@ def deck_options(entrypoint, locked_paths, deck, mode, recommended):
     return selected, switches
 
 
-def record_result(output, top, returncode, expected_inputs):
+def record_result(output, top, returncode, expected_inputs, *, deck="main"):
     """A fresh report and a successful process are both required for PASS."""
     output = Path(output)
     result = {"status": "ERROR", "process_returncode": returncode}
@@ -78,6 +78,13 @@ def record_result(output, top, returncode, expected_inputs):
         report = output / "drc.lyrdb"
         result.update(read_report(report, top))
         result["report_sha256"] = digest(report)
+        if deck == "density":
+            # The locked deck only logs this condition: it divides the total
+            # material area by the smaller declared boundary area. A halo can
+            # therefore hide a minimum-density failure without a DRC marker.
+            log = (output / "run.log").read_text()
+            if "Shapes exist outside boundary." in log:
+                raise ValueError("Density normalization is invalid: shapes exist outside the chip boundary")
         if returncode == 0:
             result["status"] = "PASS" if result["markers"] == 0 else "FAIL"
         else:
@@ -148,7 +155,7 @@ def main():
         except OSError as error:
             stream.write(str(error) + "\n")
             returncode = 127
-    result = record_result(output, args.top, returncode, expected)
+    result = record_result(output, args.top, returncode, expected, deck=args.deck)
     print(json.dumps(result, indent=2))
     raise SystemExit({"PASS": 0, "FAIL": 1, "ERROR": 2}[result["status"]])
 
