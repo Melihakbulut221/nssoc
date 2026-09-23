@@ -118,3 +118,29 @@ def test_interface_preserves_escaped_supply_and_bus_range():
     text = SCHEMATIC.interfaces({'RAM'}, PORTS)
     assert 'inout \\VDD! ;' in text
     assert 'inout [1:0] \\Q ;' in text
+
+
+def test_reachable_cdl_preserves_shared_device_bodies_and_continuations():
+    definitions = {
+        'MEM': '.SUBCKT MEM A B\nX1 A\n+ B leaf\nX2 B A LEAF\n.ENDS',
+        'LEAF': '.SUBCKT LEAF A B\nR1 A B lvsres w=0.26u l=0.6u\n.ENDS',
+        'UNUSED': '.SUBCKT UNUSED A\nX1 A MISSING\n.ENDS',
+    }
+    assert SCHEMATIC.reachable_cdl(definitions, ['mem']) == {
+        name: definitions[name] for name in ('MEM', 'LEAF')}
+    # Making a previously unused helper reachable must reveal its missing body.
+    with pytest.raises(ValueError, match='Unresolved'):
+        SCHEMATIC.reachable_cdl(definitions, ['MEM', 'UNUSED'])
+
+
+@pytest.mark.parametrize('call, message', [
+    ('X1 A MISSING', 'Unresolved'),
+    ('X1 A MEM', 'Recursive'),
+    ('X1 A LEAF P=1', 'parameterized'),
+    ('X1', 'parameterized'),
+])
+def test_reachable_cdl_refuses_incomplete_or_ambiguous_hierarchy(call, message):
+    definitions = {'MEM': '.SUBCKT MEM A\n' + call + '\n.ENDS',
+                   'LEAF': '.SUBCKT LEAF A\n.ENDS'}
+    with pytest.raises(ValueError, match=message):
+        SCHEMATIC.reachable_cdl(definitions, ['MEM'])

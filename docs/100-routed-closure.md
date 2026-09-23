@@ -416,3 +416,38 @@ provides a way to require the physical parent connection rather than assume
 it. These controls validate that mechanism and the auditor, **not the actual
 SRAM macros or the SoC**. Their existing LVS failures remain open; no blanket
 power merge, resistor alias, geometry exclusion or SRAM blackbox is accepted.
+
+## Native mapped qualification of the timing candidate
+
+The [completed candidate run](https://github.com/Melihakbulut221/nssoc/actions/runs/35804632644)
+at `95cbb15c0b41e26f2a2bd9086f5b8a6cb8b4e4e6` passes **both base and full
+interface profiles** with request registration, writeback and branch-target
+ALU enabled. Each native IHP gate simulation completes 28 firmware checks in
+630,363 cycles, with zero failure mask, watchdog counts 1/0/0, no flash timing
+violations and no UART framing errors. The native SCRUBCTL positive and
+negative controls also pass. The earlier pending native-candidate status above
+is superseded by this result.
+
+The [source-bound receipt](evidence/core-pipeline-native-boot-20260923.json)
+checks both downloaded artifact digests and all 16 recorded gate inputs per
+profile against retained files, the exact run commit and the locked original
+PDK models. Synthesis logs independently confirm the enabled parameters.
+The tested workflow omitted the RTL parameter file because its artifact path
+had the wrong filename; the receipt records that omission. Commit `73a6759`
+fixes subsequent retention. The [raw archive](evidence/core-pipeline-native-boot-20260923.tar.gz)
+includes both profiles' netlists, firmware, ROMs, logs, model locks and results.
+This is four-state functional gate simulation without SDF or memory preload;
+physical timing, DRC, LVS and silicon qualification remain separate.
+
+## Reachable source-side transistor hierarchy
+
+The schematic builder now emits only vendor definitions reachable from the
+actual implementation cell types. Every retained subcircuit body and the
+powered top connectivity remain verbatim. Unresolved, recursive and
+parameterized subcircuit calls fail explicitly. This removes uninstantiated
+library alternatives from the comparison input without discarding any used
+device or rewriting its connectivity. The original baseline source schematic
+reduces from 333 definitions to 150 with identical retained bodies and top.
+Twenty-nine schematic-builder controls and 24 LVS-auditor controls pass.
+This input normalization is not an extracted LVS pass; context-dependent
+SRAM hierarchy and model differences still require separate resolution.

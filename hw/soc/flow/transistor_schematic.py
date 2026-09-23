@@ -60,6 +60,39 @@ def port_groups(pins):
     return groups
 
 
+def reachable_cdl(definitions, roots):
+    """Keep verbatim device bodies reachable from the actual implementation.
+
+    Uninstantiated library helpers are not additional schematic top circuits.
+    Reject unresolved/recursive/parameterized calls rather than dropping them.
+    """
+    names = {name.casefold(): name for name in definitions}
+    reachable, active = set(), set()
+
+    def visit(requested):
+        name = names.get(requested.casefold())
+        if name is None:
+            raise ValueError('Unresolved CDL subcircuit: ' + requested)
+        if name in active:
+            raise ValueError('Recursive CDL hierarchy: ' + name)
+        if name in reachable:
+            return
+        active.add(name)
+        logical = re.sub(r'\n\s*\+\s*', ' ', definitions[name])
+        for line in logical.splitlines():
+            fields = line.split()
+            if fields and fields[0].upper().startswith('X'):
+                if len(fields) < 3 or any('=' in field for field in fields):
+                    raise ValueError('Unsupported parameterized CDL call: ' + line)
+                visit(fields[-1])
+        active.remove(name)
+        reachable.add(name)
+
+    for name in roots:
+        visit(name)
+    return {name: body for name, body in definitions.items() if name in reachable}
+
+
 def interfaces(types, ports):
     lines = []
     for name in sorted(types):
@@ -167,14 +200,16 @@ def main():
     module = json.loads((output / 'powered.json').read_text())['modules'][args.top]
     body, floating = assemble(module, args.top, ports,
                               declared_outputs(args.standard_cell_verilog.read_text()))
+    selected = reachable_cdl(definitions, {cell['type'] for cell in module['cells'].values()})
     if any(digest(p) != sha for p, sha in expected.items()):
         raise ValueError('Source changed during schematic construction')
     schematic = output / 'schematic.cir'
     schematic.write_text('* Original vendor transistor CDL and powered implementation connectivity\n' +
-                         '\n'.join(definitions.values()) + '\n' + body)
+                         '\n'.join(selected.values()) + '\n' + body)
     (output / 'sources.json').write_text(json.dumps({
         'scope': 'Source-side full transistor schematic; requires separate extracted LVS',
-        'top': args.top, 'instances': len(module['cells']), 'cdl_definitions': len(definitions),
+        'top': args.top, 'instances': len(module['cells']), 'cdl_definitions': len(selected),
+        'excluded_uninstantiated_definitions': sorted(set(definitions) - set(selected)),
         'floating_outputs': floating, 'sources': expected,
         'schematic_sha256': digest(schematic),
     }, indent=2) + '\n')
