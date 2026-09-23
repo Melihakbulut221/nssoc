@@ -1,10 +1,12 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Classic interface flow with bounded setup optimization, unchanged checker limits.
+"""Classic interface flow with bounded timing optimization, unchanged checker limits.
 
 The installed OpenROAD defaults to unlimited setup iterations. On this design
 it repeatedly rolls back the same sizing moves after iteration 340. Cap the
-search, not its acceptance criteria: all timing corners and Classic checkers
+search, not its acceptance criteria. Hold repair can likewise keep inserting
+buffers without improving its worst slack. Bound that search independently so
+the step can save its views: all timing corners and Classic checkers
 are retained. The generated Tcl is saved in each step's evidence directory.
 The optional top LEF's metadata warning runs only when that LEF is generated;
 the routed-design antenna check remains independent and enabled.
@@ -20,6 +22,7 @@ from librelane.steps import OpenROAD
 
 class BoundedSetup:
     max_setup_iterations = 600
+    max_hold_iterations = 1000
 
     def get_script_path(self):
         original = Path(super().get_script_path())
@@ -28,6 +31,10 @@ class BoundedSetup:
         if source.count(anchor) != 1:
             raise RuntimeError(f"Unsupported LibreLane resizer script: {original}")
         source = source.replace(anchor, anchor + f"lappend setup_args -max_iterations {self.max_setup_iterations}\n")
+        hold = "lappend hold_args -hold\n"
+        if source.count(hold) != 1:
+            raise RuntimeError(f"Unsupported LibreLane hold resizer script: {original}")
+        source = source.replace(hold, hold + f"lappend hold_args -max_iterations {self.max_hold_iterations}\n")
         load = "read_current_odb\n"
         if source.count(load) != 1:
             raise RuntimeError(f"Unsupported LibreLane database load: {original}")

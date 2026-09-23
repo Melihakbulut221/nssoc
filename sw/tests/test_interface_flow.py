@@ -101,6 +101,8 @@ def test_native_resizer_rejects_truncation_before_database_load(flow, step_name,
     module, _, script = flow
     original = ('proc read_current_odb {} {puts DATABASE_READ}\n'
                 'read_current_odb\nset setup_args {}\nlappend setup_args -setup\n'
+                'set hold_args {}\nlappend hold_args -hold\n'
+                'puts "HOLD_ARGS $hold_args"\n'
                 'puts "ARGS $setup_args"\n')
     script.write_text(original)
     step = getattr(module, step_name)()
@@ -119,7 +121,20 @@ def test_native_resizer_rejects_truncation_before_database_load(flow, step_name,
         assert 'DATABASE_READ' in result.stdout
         expected = 100
         assert f'ARGS -setup -max_iterations {expected}' in result.stdout
+        assert 'HOLD_ARGS -hold -max_iterations 1000' in result.stdout
     assert script.read_text() == original
+
+
+@pytest.mark.parametrize('step_name', ['BoundedPostCTS', 'BoundedPostGRT'])
+@pytest.mark.parametrize('hold_body', ['', 'lappend hold_args -hold\n' * 2])
+def test_hold_template_drift_rejected_before_writing_step(flow, step_name, hold_body):
+    module, _, script = flow
+    script.write_text('read_current_odb\nlappend setup_args -setup\n' + hold_body)
+    step = getattr(module, step_name)()
+    step.step_dir = script.parent
+    with pytest.raises(RuntimeError, match='Unsupported LibreLane hold resizer script'):
+        step.get_script_path()
+    assert not (script.parent / 'bounded_setup.tcl').exists()
 
 
 @pytest.mark.parametrize('selection,code', [('project', 74), ('override', 75),

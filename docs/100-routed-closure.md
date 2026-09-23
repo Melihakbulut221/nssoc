@@ -1040,7 +1040,89 @@ a specified supply ramp and first-write sequence, not arbitrary power-up.
 The [archive](evidence/independent-sram-prototype-20260923.tar.gz) and
 [notices](evidence/independent-sram-prototype-20260923-NOTICES.txt) include generated
 GDS/circuit views, actual repairs, raw reports/waveforms, negative controls and
-reproduction scripts. An all-address transistor run is separate and pending.
+reproduction scripts. The later all-address attempt and numerical controls are
+reported below; the original archive remains an unchanged historical receipt.
 PEX, complete functional/PVT characterization, setup/hold and Liberty models,
 capacity/port-compatible banking, final chip verification and reliability remain
 open. The existing SoC SRAM and failing full-chip LVS are unchanged.
+
+
+## SRAM all-address attempt and numerical controls
+
+The [new numerical-control receipt](evidence/sram-convergence-controls-20260923.json)
+retains an actual failure: the first 5,120 ns all-address transistor trial
+aborts at **226.917 ns**, with a timestep-collapse diagnostic at q0. The simulator
+returns zero, but the verifier rejects its incomplete waveform. It is not a
+full-memory pass.
+
+The same circuit, models, startup and first 300 ns of stimulus were then run
+with a 0.05 ns maximum step under trapezoidal and second-order Gear integration.
+The first Gear attempt hits its 900-second wall-time bound before reaching the
+stop time and remains rejected. Repeating that unchanged numerical case with
+an 1,800-second bound completes in 1,190 seconds. Both methods complete all
+15 writes without convergence diagnostics; independently reparsed outputs
+differ by at most **0.124972 mV**, below the 1 mV comparison tolerance.
+
+A new 128-write/128-read, 5,120 ns half-step trial follows these controls and is
+still running at this receipt's timestamp. The [archive](evidence/sram-convergence-controls-20260923.tar.gz)
+and [notices](evidence/sram-convergence-controls-20260923-NOTICES.txt) retain the
+failed and timed-out attempts, complete control waveforms and scripts. This
+closes only the short numerical-control check. Complete memory functionality,
+PEX/PVT characterization, density, SoC integration and full-chip LVS remain open.
+
+## Bound hold repair without changing acceptance
+
+The separate pipeline candidate's post-CTS hold search keeps adding buffers
+while its worst slack remains −2.555 ns. The regular physical flow now bounds
+hold repair to **1,000 iterations**, independently of the existing 100-iteration
+setup bound. Both actual LibreLane 3.0.5 post-CTS/post-global-route templates
+retain their repair calls and final view export. Missing or duplicated template
+anchors fail before a generated script is written. The focused Python/Tcl
+regressions pass 34 tests.
+
+The already running, unmodified search remains a separate comparison. A fresh
+setup-100/hold-1000 epoch starts from the same saved source-bound CTS state;
+its continuation requires functional proof and fresh routing/extraction.
+An iteration limit saves a measurable intermediate state; it never changes
+clocks, derates, electrical limits or the final failing timing classification.
+
+
+## Correct a cumulative SRAM slew-conversion defect
+
+A [minimal timing-engine regression](../hw/soc/flow/check_sta_load_slew.py)
+uses one unchanged IHP buffer and one SRAM. One connected mask input passes
+in the original tool. With 64 electrically equivalent mask inputs, the original
+OpenSTA 2.7.0 reports a 1.06524014 ns driver transition but SRAM pin transitions
+ranging from 1.42032015 to **105,566,200 ns**. Each sink should receive the same
+single threshold conversion: `(40 / 0.5) / (60 / 1) = 4/3`.
+
+Inspection of the pinned OpenSTA source identifies the shared driver-slew
+variable being modified inside the load loop. The measured local backport
+uses a fresh load-slew variable for each pin, corresponding to the
+[upstream correction](https://github.com/The-OpenROAD-Project/OpenSTA/commit/818596f25aff382d8a085d4464b3b1b9d481e30b).
+Separate original and corrected executables are built from the same pinned
+source. The original fails the 64-load control in all three library corner
+sets; the corrected version passes all one-load and 64-load checks with less
+than 0.00000012 ns conversion error. The native image is also retained as a
+failing control. The existing fast mapping uses −40°C standard cells and −55°C
+SRAM models; these controls do not establish uniform-temperature qualification.
+
+The [receipt](evidence/sta-load-threshold-repair-20260923.json),
+[archive](evidence/sta-load-threshold-repair-20260923.tar.gz) and
+[component notices](evidence/sta-load-threshold-repair-20260923-NOTICES.txt) retain
+original/modified source, build records, complete miniature controls, raw timing
+reports and reproducibility scripts. External Liberty implementations and
+executables are separately obtained inputs. Genuine electrical violations of
+the deliberately heavily loaded probe remain visible: this PASS concerns the
+calculation, not the design's slew limit.
+
+Replaying the same actual ECO19 routed netlist, saved SDC and nominal extracted
+SPEF with both executables produces **identical setup, hold, slew-count and
+capacitance-count results in all three corner sets**. Therefore this correction
+does not remove ECO19's real −4.326671 ns setup failure, 101 slow slew failures,
+two capacitance failures per corner or fast hold failure. Separate zero-wire
+pre-PNR diagnostics lose the spurious huge SRAM values but still fail on
+unbuffered control/reset fanout; those are not routed results. The pinned
+LibreLane/OpenROAD image and already running jobs remain unchanged. The fixed
+standalone STA is an independently measured candidate, not a blanket tool-flow
+or manufacturing acceptance.

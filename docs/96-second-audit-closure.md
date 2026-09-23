@@ -844,3 +844,14 @@ A filled copy retains three density failures. Small-pattern transistor corner
 checks and all-address behavioral checks do not supply extracted timing,
 complete memory qualification, SoC integration or final chip LVS. Audit 2.4 and
 all corresponding product gates remain open; see [docs/100](100-routed-closure.md).
+
+
+**23 September — timing-engine and SRAM numerical controls:**
+The [same-source STA correction](evidence/sta-load-threshold-repair-20260923.json)
+removes a reproduced cumulative SRAM slew-conversion error; an unchanged-input
+routed replay still has the real setup/electrical failures. Hold optimization
+now has a separate bounded search, without weaker acceptance limits.
+[Short transistor numerical controls](evidence/sram-convergence-controls-20260923.json)
+pass after retaining a failed all-address trial and a timed-out solve. Full
+memory, final timing, density and chip LVS gates remain open; see
+[the detailed evidence and scope](100-routed-closure.md).
