@@ -1483,3 +1483,47 @@ The prototype still needs characterized Liberty, transistor PVT/read-write
 margins, native bit-mask/MEN/BIST interface compatibility and SoC integration.
 These standalone results do not close the original full-chip SRAM LVS failure
 or the SoC's routed timing and manufacturing gates.
+
+
+## Corrected-word precomputation: functional pass, timing rejection
+
+The [isolated register-file experiment](evidence/rf-correction-precompute-20260923.json)
+moves the existing frozen decoder ahead of both read selectors, computing a
+corrected word for every register. Storage, scrub and error reporting retain
+their original implementation. The experimental parameter exists only in the
+archived candidate; no tracked RTL or SoC implementation adopts it.
+
+Full-file Yosys equivalence against the same candidate with correction
+precomputation disabled proves **5,513 points, with zero unproven**. Flipping
+one corrected output bit makes the same proof fail. The existing storage-fault
+suite passes all six tests with scrub enabled and all six with scrub disabled,
+including its negative controls. These checks do not qualify transient faults
+in the added combinational logic or silicon radiation behavior.
+
+Matched synthesis uses **ABC `-D 20000` ps**, typical Liberty, the same driving
+cell and load, followed by three-corner ideal-clock STA at 20 ns with 0.95/1.05
+derates. It does not reproduce historical synthesis using `-D 20` ps. Results:
+
+| Isolated register file | SYNPRE control | Correction before selection |
+| --- | ---: | ---: |
+| Mapped cells | 10,446 | 15,841 |
+| Cell area (µm²) | 158,074.7994 | 211,484.2716 |
+| Slow address-to-read arrival (ns) | 6.795877 | 6.852174 |
+| Slow register-to-read arrival (ns) | 3.510923 | 3.432322 |
+| Slow worst setup slack (ns) | 7.425277 | 7.415466 |
+| Fast worst hold slack (ns) | −0.046169 | −0.033656 |
+
+Address-to-output arrivals include the same **4 ns external input delay**.
+That path worsens in all three corners despite the small register-to-output
+improvement. Both candidates also retain the displayed ideal fast hold failure.
+The additional area therefore has no demonstrated benefit for the target
+address path, and **the candidate is not adopted**. There is no placement, clock
+tree or extracted RC in this comparison; its positive isolated setup slack
+cannot replace the failing full-SoC routed measurement.
+
+The [archive](evidence/rf-correction-precompute-20260923.tar.xz) preserves both
+RTL modes, the incorrect negative control, synthesis netlists, complete formal
+and timing reports, test results and reconstruction scripts. See its
+[notices](evidence/rf-correction-precompute-20260923-NOTICES.txt). Existing routed
+setup/slew, qualified RC, fill-aware timing and full-chip transistor LVS gates
+remain open.
