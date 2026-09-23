@@ -508,3 +508,51 @@ the width witness, positive/negative controls, copied deck changes, input
 hashes, graph dumps and the last completed failing macro database. Original
 PDK files and production checks remain unchanged. A consistent, independently
 justified SRAM reference and extraction treatment are still required for LVS.
+
+## Separate supplemental DRC runs
+
+The checked-in `hw/soc/flow/check_ihp_drc.py` runner also selects the locked
+upstream antenna and density decks. Each invocation requires a fresh output
+directory and records the exact deck, execution mode, input hashes and report.
+Density enables the upstream boundary sanity checks and disables precheck mode;
+its upstream implementation requires deep mode. Recommended rules can be
+enabled for a separate main-deck measurement. Unsupported combinations and
+decks absent from the immutable lock fail before execution.
+
+```sh
+python hw/soc/flow/check_ihp_drc.py routed.gds --top soc_top \
+  --tag routed-main-recommended --mode tiling --recommended
+python hw/soc/flow/check_ihp_drc.py routed.gds --top soc_top \
+  --tag routed-antenna --deck antenna
+python hw/soc/flow/check_ihp_drc.py routed.gds --top soc_top \
+  --tag routed-density --deck density
+```
+
+Run these commands in the pinned physical environment. They do not turn the
+completed main-rule result into supplemental acceptance. A separate complete
+baseline density measurement is in progress as of 23 September, 06:02 TRT;
+it has no final verdict yet. Its input is the same original baseline GDS
+identified above. Cell filler insertion does not itself prove that metal
+density rules pass.
+
+The [small physical controls](evidence/supplemental-drc-controls-20260923.json)
+exercise the added switches with the actual locked deck and KLayout 0.30.7.
+With recommended checks enabled, the original inverter passes all 560 report
+categories; its narrow-Metal1 negative reports one `M1.a` marker and fails.
+A 100 by 100 micrometre boundary around the inverter fails nine global density
+checks before fill. Filling that same region passes both the density deck and
+the recommended main deck. A separate geometry audit retains every original
+shape and original instance while permitting 13 new fill-cell definitions;
+deleting original Metal1 geometry is correctly rejected. The
+[raw archive](evidence/supplemental-drc-controls-20260923.tar.gz) retains the
+positive and negative layouts, reports, copied macros and commands.
+
+The original vendor fill macros select `EdgeSeal.holes`; the baseline core
+contains no EdgeSeal drawing or prBoundary shapes. An unmodified invocation
+therefore has an empty fill region and is not accepted as successful fill.
+For the separate core experiment, copies of the macros select an explicit
+prBoundary derived from the actual DEF DIEAREA, with their spacing and shape
+rules unchanged. This adds a boundary marker, not a fabricated seal ring.
+The full-core experiment is still running. The small controls do not qualify
+the full layout or its timing; the effects of floating fill on parasitics
+must also be addressed before accepting timing for a filled layout.

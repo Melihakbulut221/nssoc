@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Run the locked upstream IHP main DRC rules and require zero report markers.
+"""Run a locked upstream IHP DRC deck and require zero report markers.
 
 This is a separate verification measurement, not a replacement for the installed
-PDK's checks. No cell, region or main rule is excluded. Recommended rules remain
-off, matching the controlled comparison documented in docs/93.
+PDK's checks. No cell or region is excluded. Main, antenna and density are
+separate measurements; passing one never implies that the other decks passed.
+The default preserves the main-rule comparison documented in docs/93.
 """
 import argparse
 from collections import Counter
@@ -40,7 +41,30 @@ def read_report(path, top):
             raise ValueError("Malformed DRC marker")
         # Count waived/visited markers too. Neither flag can make this gate pass.
         counts[item.findtext("category")] += 1
-    return {"markers": sum(counts.values()), "categories": dict(sorted(counts.items()))}
+    return {"markers": sum(counts.values()), "categories": dict(sorted(counts.items())),
+            "category_count": len(categories.findall("category"))}
+
+
+def deck_options(entrypoint, locked_paths, deck, mode, recommended):
+    """Select only an immutable, locked deck; never substitute edited rules."""
+    if deck not in ("main", "antenna", "density") or mode not in ("deep", "tiling"):
+        raise ValueError("Unsupported deck or run mode")
+    if recommended and deck != "main":
+        raise ValueError("Recommended rules apply only to the main deck")
+    selected = (entrypoint if deck == "main" else
+                entrypoint.parent / "rule_decks" / (deck + ".drc"))
+    if selected not in locked_paths:
+        raise ValueError("Selected deck is absent from the immutable lock")
+    # Upstream density explicitly selects deep mode itself. Do not advertise a
+    # user-supplied tiling mode that this deck would ignore.
+    if deck == "density" and mode != "deep":
+        raise ValueError("The upstream density deck requires deep mode")
+    switches = ["run_mode=" + mode, "precheck_drc=False"]
+    if deck == "main":
+        switches.append("no_recommended=" + str(not recommended))
+    if deck == "density":
+        switches.append("density_sanity=True")
+    return selected, switches
 
 
 def record_result(output, top, returncode, expected_inputs):
@@ -71,6 +95,10 @@ def main():
     parser.add_argument("--tag", required=True, help="New output directory under hw/soc/out")
     parser.add_argument("--klayout", default="klayout")
     parser.add_argument("--threads", type=int, default=2)
+    parser.add_argument("--deck", choices=("main", "antenna", "density"), default="main")
+    parser.add_argument("--mode", choices=("deep", "tiling"), default="deep")
+    parser.add_argument("--recommended", action="store_true",
+                        help="Also enable recommended rules in the main deck")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", args.tag) or args.threads < 1:
         parser.error("A safe run tag and a positive thread count are required")
@@ -86,21 +114,32 @@ def main():
     lock = json.loads(LOCK.read_text())
     cache = SOC / "tools/ihp-drc-5e6d592"
     entrypoint = prepare(lock, cache)
-    expected = {gds: digest(gds), LOCK: digest(LOCK)}
+    expected = {gds: digest(gds), LOCK: digest(LOCK),
+                Path(__file__).resolve(): digest(__file__)}
     expected.update({cache / row["path"]: row["sha256"] for row in lock["files"]})
+    try:
+        entrypoint, switches = deck_options(entrypoint, set(expected), args.deck,
+                                           args.mode, args.recommended)
+    except ValueError as error:
+        parser.error(str(error))
     version = subprocess.run([executable, "-v"], capture_output=True, text=True)
     if version.returncode or not version.stdout.strip():
         parser.error("Cannot record the KLayout version")
     output.mkdir(parents=True, exist_ok=False)
     cmd = [executable, "-b", "-zz", "-r", str(entrypoint)]
     for value in ("input=" + str(gds), "topcell=" + args.top,
-                  "report=" + str(output / "drc.lyrdb"), "run_mode=deep",
-                  "no_recommended=True", "threads=" + str(args.threads)):
+                  "report=" + str(output / "drc.lyrdb"), "threads=" + str(args.threads),
+                  *switches):
         cmd += ["-rd", value]
     (output / "inputs.json").write_text(json.dumps({
         "command": cmd, "klayout_version": version.stdout.strip(),
         "deck_commit": lock["commit"], "top": args.top,
-        "scope": "Complete input GDS; unmodified upstream main rules, deep mode; optional recommended checks off",
+        "deck": args.deck, "mode": args.mode, "recommended": args.recommended,
+        "density_sanity": args.deck == "density",
+        "scope": ("Complete input GDS; unmodified upstream " + args.deck
+                  + " deck, " + args.mode + " mode; recommended checks "
+                  + ("on" if args.recommended else "off")
+                  + "; no acceptance inherited for other decks or layouts"),
         "input_sha256": {str(path): sha for path, sha in expected.items()},
     }, indent=2) + "\n")
     with (output / "run.log").open("w") as stream:

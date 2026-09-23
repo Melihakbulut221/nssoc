@@ -64,3 +64,41 @@ def test_input_change_invalidates_even_a_clean_report(tmp_path):
     result = drc.record_result(tmp_path, "chip", 0, expected)
     assert result["status"] == "ERROR"
     assert "Input changed" in result["error"]
+
+
+def test_separate_locked_decks_and_explicit_rule_coverage(tmp_path):
+    main = tmp_path / "ihp-sg13g2.drc"
+    antenna = tmp_path / "rule_decks/antenna.drc"
+    density = tmp_path / "rule_decks/density.drc"
+    locked = {main, antenna, density}
+    selected, switches = drc.deck_options(main, locked, "main", "deep", False)
+    assert selected == main
+    assert "no_recommended=True" in switches
+    selected, switches = drc.deck_options(main, locked, "main", "tiling", True)
+    assert "run_mode=tiling" in switches
+    assert "no_recommended=False" in switches
+    selected, switches = drc.deck_options(main, locked, "density", "deep", False)
+    assert selected == density
+    assert "density_sanity=True" in switches
+    assert "precheck_drc=False" in switches
+    selected, switches = drc.deck_options(main, locked, "antenna", "deep", False)
+    assert selected == antenna
+    assert not any(value.startswith("no_recommended=") for value in switches)
+
+
+@pytest.mark.parametrize("deck,mode,recommended,include_deck", [
+    ("density", "tiling", False, True),
+    ("antenna", "deep", True, True),
+    ("density", "deep", True, True),
+    ("antenna", "deep", False, False),
+    ("main", "flat", False, True),
+    ("unknown", "deep", False, True),
+])
+def test_reject_unlocked_or_misrepresented_deck_options(
+        tmp_path, deck, mode, recommended, include_deck):
+    main = tmp_path / "ihp-sg13g2.drc"
+    locked = {main}
+    if include_deck:
+        locked.add(tmp_path / "rule_decks" / (deck + ".drc"))
+    with pytest.raises(ValueError):
+        drc.deck_options(main, locked, deck, mode, recommended)
