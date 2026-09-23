@@ -145,3 +145,47 @@ high-fanout nets drive the cell models outside useful ranges. The original
 20 ns / 8 ns clocks, corner set and 5% timing derates remain the physical
 acceptance constraints. The delivered implementation entrypoint does not yet
 select this candidate by default.
+
+## Completed transistor LVS and processor controls
+
+The later [full-chip LVS result](evidence/full-chip-transistor-lvs-20260923.json)
+is **FAIL**. The deck finished, wrote the complete 1.39 GB comparison database,
+and the independent auditor checked that finished file. All input hashes
+remained unchanged. The tool process returned zero, but the deck explicitly
+reported a mismatch; process completion is not a successful LVS verdict.
+The [compact raw archive](evidence/full-chip-transistor-lvs-20260923.tar.gz)
+contains the deck log, audited circuit inventory, exact input receipt and
+extracted/reference bodies of the three failing SRAM child circuits.
+
+Of 90 circuit pairs, 79 match, five are schematic-only mismatches, three do not
+match and three are skipped. The nonmatching children are
+`RSC_IHPSG13_CDLYX1_DUMMY`, `RSC_IHPSG13_DFPQD_MSAFFX2P` and
+`RSC_IHPSG13_WLDRVX8`. Their failures prevent comparison of both SRAM macro
+types and `soc_top`. Thus the result does not establish top-level connectivity.
+The dummy cell has the vendor `lvsres` versus extracted `res_metal1` model
+difference. The sense amplifier exposes separate `VDD!` and `VDD!$1` networks;
+the word-line driver has two extracted PMOS devices in this hierarchy versus
+four reference devices. These reproduce the context-sensitive macro/extraction
+problems measured in [docs/93](93-ihp-drc-update.md). No resistor alias, implicit
+power connection, blackbox, geometry exclusion or modified comparison rule is
+accepted as a fix. Full DRC is still pending in this snapshot.
+
+The [whole-processor controls](evidence/core-pipeline-controls-20260923.json)
+and their [raw logs](evidence/core-pipeline-controls-20260923.tar.gz) also
+supersede the earlier pending candidate status.
+With `CORE_REQ_REG=0, CORE_WB_STAGE=0`, both Icarus 14 development and Icarus 12
+pass the complete 28-check firmware in 647,591 cycles. The isolated request
+register (`1,0`) passes the same firmware in 700,166 cycles, handing over from
+the loader at cycle 358,606. All three successful runs decode 1,094 UART
+characters with zero framing errors, observe watchdog counts 1/0/0, and check
+six QSPI frames with zero datasheet violations.
+
+The combined (`1,1`) candidate fails boot acceptance in both simulators. The
+isolated writeback (`0,1`) candidate also remains in the loader's trap loop
+without handing over through 600,000 cycles. Those failing diagnostic runs
+were intentionally stopped; they are not completed timeout benchmarks. The
+request register's block proof and successful `1,0` firmware run do not qualify
+Ibex's writeback option. The `1,1` placement experiment was cancelled before
+detailed placement/clock-tree acceptance. Existing zero defaults remain in
+effect. Timing-driven placement is now being measured on the successful
+`0,0` control using the same clock periods, corners and derates.

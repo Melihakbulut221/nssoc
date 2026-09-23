@@ -1,0 +1,140 @@
+{
+  "date": "2026-09-23",
+  "status": "PARTIAL: control and request-only firmware PASS; writeback candidate FAILS boot acceptance",
+  "scope": "Full-interface behavioral-memory CPU firmware with random SRAM power-up, RF_SYNPRE=MEM_RDREG=REQ_REG=WAKE_GNT=1. Firmware checks are not complete processor equivalence or physical acceptance.",
+  "repository_commit": "ea1a7e4a6c709d83a5eb9271a46df088e119305d",
+  "runs": {
+    "core-pipeline-control": {
+      "CORE_REQ_REG": 0,
+      "CORE_WB_STAGE": 0,
+      "simulator": "Icarus 14 development",
+      "status": "PASS",
+      "firmware_sha256": {
+        "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+        "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      "compiled_simulation_sha256": "3ff77b429481d604844e7067d27880c8c555f071b1e555f3bf8b60082f169b31",
+      "override_sha256": "2dd1258f78ff8aaacc127fffdfd5efad0ac4a6f6b7af335bac66d6e4aa546d29",
+      "log_sha256": "e1bfccf706f04c582b16407701634f4b52902d567c344bc84dfc0bf7894a7b74",
+      "cycles": 647591,
+      "handover_cycle": 325860,
+      "checks": 28,
+      "uart_characters": 1094,
+      "uart_framing_errors": 0,
+      "watchdog": [
+        1,
+        0,
+        0
+      ],
+      "qspi_frames": 6,
+      "qspi_datasheet_violations": 0
+    },
+    "core-control-icarus12": {
+      "CORE_REQ_REG": 0,
+      "CORE_WB_STAGE": 0,
+      "simulator": "Icarus 12",
+      "status": "PASS",
+      "firmware_sha256": {
+        "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+        "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      "compiled_simulation_sha256": "9055a52e695a15ba0ee7d8c07d2f532a49f46cea1a84a428d8addb1d75c00a9b",
+      "override_sha256": "2dd1258f78ff8aaacc127fffdfd5efad0ac4a6f6b7af335bac66d6e4aa546d29",
+      "log_sha256": "7199b999eb95797be54721b130830b49d8c528c4c7ee359f284d989934e29dcc",
+      "cycles": 647591,
+      "handover_cycle": 325860,
+      "checks": 28,
+      "uart_characters": 1094,
+      "uart_framing_errors": 0,
+      "watchdog": [
+        1,
+        0,
+        0
+      ],
+      "qspi_frames": 6,
+      "qspi_datasheet_violations": 0
+    },
+    "core-request-only": {
+      "CORE_REQ_REG": 1,
+      "CORE_WB_STAGE": 0,
+      "simulator": "Icarus 12",
+      "status": "PASS",
+      "firmware_sha256": {
+        "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+        "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      "compiled_simulation_sha256": "d54b88961030d9bebef801775a91d8a0bdad213553646b555c12e4946c46d6be",
+      "override_sha256": "95a9e3adebabe07ec004873684a9659412752c50d888c97ed4bc2ea9d55abf50",
+      "log_sha256": "fc73b4ca54a45f836d2e4112b4fe1355c28a82aa00f8231d1814976105000db6",
+      "cycles": 700166,
+      "handover_cycle": 358606,
+      "checks": 28,
+      "uart_characters": 1094,
+      "uart_framing_errors": 0,
+      "watchdog": [
+        1,
+        0,
+        0
+      ],
+      "qspi_frames": 6,
+      "qspi_datasheet_violations": 0
+    },
+    "core-writeback-only": {
+      "CORE_REQ_REG": 0,
+      "CORE_WB_STAGE": 1,
+      "simulator": "Icarus 12",
+      "status": "FAIL_BOOT_ACCEPTANCE; intentionally interrupted",
+      "firmware_sha256": {
+        "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+        "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      "compiled_simulation_sha256": "53e03a718a54b9f0242b5fd5eaba8383ba23782d3fe66e95f4421e9858c17767",
+      "override_sha256": "0ede254fbba2b2e9ac9f049add769d9f9df4029597508784e088bdfca25d4757",
+      "log_sha256": "6de1322503d650539b56e6a6e271e6179593d3307ad435850f0caa888ae99a44",
+      "observation": "No handover; boot trap loop through 600000 cycles. Not a completed timeout benchmark.",
+      "termination": {
+        "status": "FAIL_BOOT_ACCEPTANCE; diagnostic run intentionally stopped",
+        "reason": "Writeback-only configuration remains in boot_spin (PC c0000984), no RAM handover through 600000 cycles. Same loader/image and baseline without writeback passed. This is not a completed timeout benchmark.",
+        "signal": "SIGTERM",
+        "pid": 240473
+      }
+    }
+  },
+  "common_firmware_sha256": {
+    "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+    "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+  },
+  "source_sha256": {
+    "hw/soc/rtl/soc_top.v": "947e947bbbc496e2094d8401e44fd614caee187922f7c402ec6796cd51d2b24d",
+    "hw/soc/rtl/soc_req_pipe.v": "16643f4fd3c76376f67d931c56d3118e0cf1114a7e1847fd59c5deb453982cc8",
+    "hw/soc/flow/sim_soc.sh": "ef6e3c8f47082fde1dfc6d083dd0e78d25c40ee5660aa8a3fee722c46256ea65",
+    "hw/soc/tb/tb_soc.v": "79049b3378438cb8c1098d5fd38580545ab522901b7d9df9dc5e9e2e429fd097"
+  },
+  "archive": {
+    "path": "docs/evidence/core-pipeline-controls-20260923.tar.gz",
+    "bytes": 66424,
+    "sha256": "7f9abb032627f636bf9cbcf6ff6c17f04d6e4045f431aa343521deef99b4b620",
+    "members": {
+      "core-pipeline-control/sim.log": "e1bfccf706f04c582b16407701634f4b52902d567c344bc84dfc0bf7894a7b74",
+      "core-pipeline-control/soc_param_override.v": "2dd1258f78ff8aaacc127fffdfd5efad0ac4a6f6b7af335bac66d6e4aa546d29",
+      "core-pipeline-control/test_soc.dis": "e0276f1fd38a384d466cf577dbcb6846d9ad4a1865ebb50d9fae11236583a9f3",
+      "core-pipeline-control/iverilog.log": "4b87bc52b06884ce65740a0b6560902fdda4aa6de8cbc801c9ac9d6f8eadb2ba",
+      "core-control-icarus12/sim.log": "7199b999eb95797be54721b130830b49d8c528c4c7ee359f284d989934e29dcc",
+      "core-control-icarus12/soc_param_override.v": "2dd1258f78ff8aaacc127fffdfd5efad0ac4a6f6b7af335bac66d6e4aa546d29",
+      "core-control-icarus12/test_soc.dis": "e0d4b7786706f2a56bcbfa2609c61bf54ff7ba8114e992eaabbedc4d11ced3db",
+      "core-control-icarus12/iverilog.log": "5572a61d268ff45e4c0a18f0a7d45c67c58b03311b1e569ce8c0dfe0348d69ae",
+      "core-request-only/sim.log": "fc73b4ca54a45f836d2e4112b4fe1355c28a82aa00f8231d1814976105000db6",
+      "core-request-only/soc_param_override.v": "95a9e3adebabe07ec004873684a9659412752c50d888c97ed4bc2ea9d55abf50",
+      "core-request-only/test_soc.dis": "014d1f812410b0e0dad575a80e5491c7c121fa60dd1eba97b0bd96b317566cb8",
+      "core-request-only/iverilog.log": "5572a61d268ff45e4c0a18f0a7d45c67c58b03311b1e569ce8c0dfe0348d69ae",
+      "core-writeback-only/sim.log": "6de1322503d650539b56e6a6e271e6179593d3307ad435850f0caa888ae99a44",
+      "core-writeback-only/soc_param_override.v": "0ede254fbba2b2e9ac9f049add769d9f9df4029597508784e088bdfca25d4757",
+      "core-writeback-only/test_soc.dis": "8573ecff286c1244882f2eb60104b729b9f9b1888c43d5e230f17a5dfe4ef1ba",
+      "core-writeback-only/iverilog.log": "5572a61d268ff45e4c0a18f0a7d45c67c58b03311b1e569ce8c0dfe0348d69ae",
+      "core-pipeline-observed-failure.txt": "0c0539c8cf1a3f6e585b8547ec0ee44a76fac7a54305a8a00e43c2383b0f8b0f",
+      "core-pipeline-observed-probe.log": "27ccb3c205f7e6cbbd30b304f05051ab9038941d2b52533a24817bf4778ef589",
+      "core-writeback-only-stopped.json": "3a3c57df2c5ad478451891b072c349c5297666a29102409ec9dbba86c490f1fb",
+      "core-pipeline-synthesis-comparison.json": "e2a2076e4b08b7abc137ca36d176451a964409c8ca39ac50d0e69f2cfc7ce8ad"
+    }
+  }
+}
