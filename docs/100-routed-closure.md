@@ -801,8 +801,10 @@ metrics include invalid, extremely large slacks and are not verdicts.
 Both downloaded artifact hashes and all ten checkpoint views per run verify.
 The pipeline checkpoint is restored in a separate checkout of its exact
 source commit; all 139 recorded source/configuration inputs verify. The
-normal post-CTS search is now bounded to 100 iterations, matching the existing
-post-global-route bound. Timing thresholds, clocks, derates and final checkers
+normal post-CTS search was configured with an iteration value of 100, matching
+the post-global-route setting. This value is not a global runtime bound: setup
+search applies its pass limit per endpoint, and hold search checks its bound
+between whole endpoint passes. Separate process deadlines bound wall time. Timing thresholds, clocks, derates and final checkers
 are unchanged. Twenty-four interface-flow tests and Ruff pass. Local candidate
 continuation waits for the current main DRC and sufficient memory; it still
 requires logic checking, routing, fresh extraction and independent timing.
@@ -1404,3 +1406,12 @@ equivalence. The original nominal model's zero-capacitance result is explicitly
 limited to that model. Min/max RC qualification, fill-aware extraction and full
 physical acceptance remain open. Earlier custom-corner LEF mapping and auditor
 startup errors are preserved alongside the corrected run.
+
+
+The setup iteration scope was checked against both the pinned
+[February implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairSetup.cc)
+and the newer
+[legacy setup policy](https://github.com/The-OpenROAD-Project/OpenROAD/blob/08f67ee5ecd14db5a42be8c610bbfd1ccf079299/src/rsz/src/policy/SetupLegacyPolicy.cc).
+The configured pass limit is applied to each endpoint. The newer trial's
+progress counter consequently continues past 100; this is not completion or a
+missing timeout. Its independent three-hour process deadline remains active.
