@@ -1371,3 +1371,36 @@ These are two-address, 50 MHz, 5 fF schematic tests. They do not establish
 125 MHz operation, full address/mask/collision coverage, extracted timing,
 Liberty characterization or native SoC integration. The existing full-chip SRAM
 LVS failure remains open.
+
+## Experimental RC-model comparison on the same ECO24 route
+
+The [12-corner comparison](evidence/eco24-experimental-rc-comparison-20260923.json)
+and its [report archive](evidence/eco24-experimental-rc-comparison-20260923.tar.gz)
+keep the routed geometry, netlist, 20/8/8/8 ns clocks and derates unchanged.
+Four RC extraction rule sets are each combined with the same three Liberty
+corners. The original nominal rules reproduce all previously published metrics.
+All four SPEFs contain 96,443 nets and pass the limited capacitance arithmetic
+check; that does not validate the physical RC values.
+
+| RC rule set | Slow setup (ns) | Slow hold (ns) | Slow slew violations | Slow capacitance violations |
+| --- | ---: | ---: | ---: | ---: |
+| Existing nominal | −3.254664 | +0.273627 | 75 | 0 |
+| Experimental Magic minimum | −22.536873 | +0.497673 | 10,695 | 2,017 |
+| Experimental Magic nominal | −26.533215 | +0.379753 | 13,801 | 2,547 |
+| Experimental Magic maximum | −30.642238 | +0.184382 | 16,909 | 3,092 |
+
+The experimental maximum model also fails fast-corner setup/hold
+(−0.011536/−0.027719 ns). The [pinned upstream configuration](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/librelane/config.tcl)
+enables the existing nominal rules and leaves the Magic-derived alternatives
+commented as experimental choices. None is promoted here to a qualified
+manufacturing corner. Their substantially different results require model
+validation, rather than selecting whichever model passes.
+
+A separate replay using the qualified newer OpenROAD executable confirms the
+experimental nominal model's slow setup near **−26.533173 ns**, with the same
+13,801 slew violations. Capacitance counts differ by 20 (2,547 versus 2,527);
+therefore this is not an assertion of exact cross-version electrical-check
+equivalence. The original nominal model's zero-capacitance result is explicitly
+limited to that model. Min/max RC qualification, fill-aware extraction and full
+physical acceptance remain open. Earlier custom-corner LEF mapping and auditor
+startup errors are preserved alongside the corrected run.
