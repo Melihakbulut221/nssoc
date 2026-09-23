@@ -189,3 +189,78 @@ Ibex's writeback option. The `1,1` placement experiment was cancelled before
 detailed placement/clock-tree acceptance. Existing zero defaults remain in
 effect. Timing-driven placement is now being measured on the successful
 `0,0` control using the same clock periods, corners and derates.
+
+## Store/branch correction and complete candidate firmware
+
+The [later correction](evidence/core-writeback-branch-fix-20260923.json)
+identifies the writeback failure rather than bypassing the firmware check.
+In the pinned CPU, a taken branch behind a store awaiting its response can
+use the comparison result as its target when writeback is enabled without
+the dedicated branch-target ALU. A short independent program reproduces the
+exact wrong target `254 - 2008 = 0xfffff926`, also seen in the loader failure.
+The default two-stage CPU passes that program; the unsupported writeback-only
+combination fails; writeback with the dedicated branch-target ALU passes.
+
+`soc_top` now selects both CPU options with `CORE_WB_STAGE`. Its zero default
+still selects the historical configuration. No vendor sources are changed.
+The [regression](../hw/soc/tb/tb_ibex_branch_stall.v) exercises response delays
+of 1, 2, 3, 5 and 8 cycles with writeback off and on, checks one accepted store
+and the subsequent delayed readback, and detects the two shared-ALU negative
+controls. Thirteen hazard/configuration tests pass; together with the request
+register tests, 18 pass on both Icarus 12 and the project Icarus 14 development
+build. The implementation/configuration suite adds coverage for forwarding and
+recording both core parameters: 42 focused tests pass. The initial pytest
+collection error and all earlier failing processor runs remain recorded.
+
+With request register, writeback and branch-target ALU enabled together, the
+complete protected SoC passes all 28 firmware checks in **630,363 cycles**.
+It hands over to RAM at cycle 307,606, decodes 1,094 UART characters without
+framing errors, observes watchdog counts 1/0/0 and six QSPI frames without
+datasheet violations. Full-interface synthesis has 69,944 cells, 9,600
+flip-flops and 20 SRAM instances. Reported standard-cell area is
+1,079,471.232 square micrometres; it excludes the SRAM footprints. The 191
+unique synthesis warnings / 199 occurrences remain disclosed.
+
+The [raw archive](evidence/core-writeback-branch-fix-20260923.tar.gz) retains
+the source identities, firmware logs, negative controls and synthesis report.
+These results do not establish whole-ISA equivalence, native-gate behavior or
+physical timing. The physical workflow has an explicit `core_pipeline` input,
+default false, and runs the hazard tests and complete CPU firmware before
+implementing the enabled candidate. The implementation receipt now records
+both pipeline parameters and the corresponding branch-target ALU selection.
+
+## Incremental electrical repair and cross-corner rejection
+
+The [incremental-repair measurement](evidence/incremental-electrical-20260923.json)
+starts from the original CPU configuration and applies three bounded
+incremental routing/repair passes with 20% electrical repair margins.
+It reaches zero slow-corner slew and capacitance violations in the running
+OpenROAD session, while setup remains negative. The resulting netlist passes
+the restricted sizing/buffering equation check against the original routed
+implementation. Repeated runs produce the identical netlist.
+
+Exporting the estimated global-route parasitics and loading them into separate
+STA processes reveals remaining violations:
+
+| Liberty corner | Setup WNS (ns) | Hold WNS (ns) | Slew violations | Capacitance violations |
+| --- | ---: | ---: | ---: | ---: |
+| Fast | +3.667775 | -0.293292 | 11 | 0 |
+| Typical | +2.551240 | -0.040082 | 3 | 0 |
+| Slow | -2.898450 | +0.423281 | 0 | 0 |
+
+This candidate is **not accepted**. Besides these violations, the fresh slow
+SPEF import does not numerically reproduce the in-memory setup result of
+-3.657322 ns; that discrepancy remains unresolved. Neither value is final
+extracted timing. An earlier export incorrectly called the RCX exporter,
+which reported no extraction data and produced no SPEF; its STA attempts are
+explicitly invalid. The corrected export uses the tool's documented global
+routing estimator and verifies that the file exists. All reports and the
+failed export control are in the [measurement archive](evidence/incremental-electrical-20260923.tar.gz).
+
+The separate timing-driven placement attempt on the original CPU was stopped
+during its first resizer iteration after growing to approximately 11 GB of
+virtual memory alongside the full DRC process. It produced no accepted
+detailed-placement result. The duplicate deep-mode DRC attempt was also
+stopped for memory; the complete unchanged-deck tiling-mode check continues.
+No interrupted check is counted as a pass, and the completed full LVS failure
+above remains an open manufacturing gate.

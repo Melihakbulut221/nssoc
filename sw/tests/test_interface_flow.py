@@ -240,6 +240,33 @@ def test_current_boot_profile_reaches_router_with_identical_rom(implementation_p
     assert (out/'firmware/test_soc.bin').read_bytes() == b'loader'
 
 
+@pytest.mark.parametrize('request_reg,writeback', [(0, 0), (1, 0), (0, 1), (1, 1)])
+def test_core_pipeline_configuration_is_recorded_and_forwarded(
+        implementation_project, monkeypatch, request_reg, writeback):
+    import json
+    monkeypatch.setenv('SOC_CORE_REQ_REG', str(request_reg))
+    monkeypatch.setenv('SOC_CORE_WB_STAGE', str(writeback))
+    project = implementation_project
+    result = run_implementation(project, '--synthesis-only')
+    assert result.returncode == 0, result.stdout + result.stderr
+    out = project/'hw/soc/out/trial'
+    config = json.loads((out/'inputs.json').read_text())['configuration']
+    assert config['CORE_REQ_REG'] == request_reg
+    assert config['CORE_WB_STAGE'] == writeback
+    assert config['CORE_BRANCH_TARGET_ALU'] == writeback
+    env = dict(line.split('=', 1) for line in
+               (out/'synthesis/environment.txt').read_text().splitlines() if '=' in line)
+    assert env['SOC_CORE_REQ_REG'] == str(request_reg)
+    assert env['SOC_CORE_WB_STAGE'] == str(writeback)
+
+
+def test_invalid_core_pipeline_is_rejected_before_work(implementation_project, monkeypatch):
+    monkeypatch.setenv('SOC_CORE_WB_STAGE', '2')
+    result = run_implementation(implementation_project)
+    assert result.returncode == 2 and 'must be 0 or 1' in result.stderr
+    assert not (implementation_project/'hw/soc/out/trial').exists()
+
+
 @pytest.mark.parametrize('mutation', ['image', 'source', 'failed-synthesis'])
 def test_implementation_rejects_drift_and_preserves_failure_logs(implementation_project, mutation):
     project = implementation_project

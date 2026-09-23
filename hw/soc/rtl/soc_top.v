@@ -234,6 +234,9 @@ module soc_top #(
     // Timing candidates; historical configurations remain at zero. The
     // request register adds a cycle before fabric arbitration. Ibex's optional
     // writeback stage separates ALU work from protected-register re-encoding.
+    // It also requires the dedicated branch-target ALU: the pinned core's
+    // shared-ALU branch path misdirects a taken branch stalled behind a store
+    // in writeback. tb_ibex_branch_stall retains that failing counterexample.
     parameter integer CORE_REQ_REG = 0,
     parameter integer CORE_WB_STAGE = 0,
     // 256 ACCESS cycles = 5.12 us at 50 MHz. Normal register slaves,
@@ -543,7 +546,7 @@ module soc_top #(
       .RV32B           (0),
       .RV32ZC          (0),
       .RegFile         (0),
-      .BranchTargetALU (0),
+      .BranchTargetALU (CORE_WB_STAGE),
       .WritebackStage  (CORE_WB_STAGE),
       .ICache          (0),
       .ICacheECC       (0),

@@ -9,10 +9,16 @@ on:
       - hw/soc/pnr/interface_flow.py
       - scripts/collect_physical_checkpoint.py
   workflow_dispatch:
+    inputs:
+      core_pipeline:
+        description: 'Measure the request/writeback pipeline with its required branch-target ALU'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: soc-physical-${{ github.ref }}
+  group: soc-physical-${{ github.ref }}-${{ inputs.core_pipeline && 'pipeline' || 'baseline' }}
   cancel-in-progress: false
 jobs:
   full-core:
@@ -20,6 +26,8 @@ jobs:
     timeout-minutes: 330
     env:
       SOC_INTERFACE_PROFILE: full
+      SOC_CORE_REQ_REG: ${{ inputs.core_pipeline && '1' || '0' }}
+      SOC_CORE_WB_STAGE: ${{ inputs.core_pipeline && '1' || '0' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -40,6 +48,16 @@ jobs:
           mkdir -p hw/soc/out/current-physical-tools
           yosys -V > hw/soc/out/current-physical-tools/mapping-yosys.log
           hw/soc/tools/rvgcc/bin/riscv-none-elf-gcc --version > hw/soc/out/current-physical-tools/firmware-gcc.log
+      - name: Check candidate branch hazard and complete CPU firmware
+        if: ${{ inputs.core_pipeline }}
+        timeout-minutes: 30
+        run: |
+          test -s hw/soc/gen/ibex_top.v
+          command -v iverilog
+          command -v vvp
+          python3 -m pytest -q sw/tests/test_ibex_branch_stall.py sw/tests/test_soc_req_pipe.py
+          export SOC_RF_SYNPRE=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_WAKE_GNT=1
+          bash hw/soc/flow/sim_soc.sh hw/soc/out/core-pipeline-acceptance
       - name: Verify physical devshell and install runtime prerequisite
         run: |
           sudo apt-get update -qq
@@ -73,6 +91,10 @@ jobs:
           name: soc-physical-full-results
           path: |
             hw/soc/out/current-physical-tools/*.log
+            hw/soc/out/core-pipeline-acceptance/*.log
+            hw/soc/out/core-pipeline-acceptance/soc_param_override.v
+            hw/soc/out/core-pipeline-acceptance/test_soc.bin
+            hw/soc/out/core-pipeline-acceptance/app.bin
             hw/soc/out/physical-bootstrap-download/*.log
             hw/soc/out/physical-bootstrap/**/*.log
             hw/soc/out/physical-bootstrap/**/*.json

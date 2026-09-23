@@ -10,6 +10,12 @@ shift
 synthesis_only=0
 if [ "${1:-}" = --synthesis-only ]; then synthesis_only=1; shift; fi
 case "$TAG" in *[!a-zA-Z0-9_-]*|'') echo 'Use an alphanumeric run tag.' >&2; exit 2;; esac
+export SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+export SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'SOC_CORE_REQ_REG and SOC_CORE_WB_STAGE must be 0 or 1.' >&2; exit 2 ;;
+esac
 OUT="$SOC_DIR/out/$TAG"
 [ ! -e "$OUT" ] || { echo "Refusing to overwrite $OUT" >&2; exit 2; }
 mkdir -p "$OUT"
@@ -41,6 +47,9 @@ for directory in ('hw/rtl', 'hw/soc/rtl', 'hw/soc/gen', 'hw/soc/genp', 'hw/soc/t
         files.update((root/directory).rglob(ext))
 record = {'configuration': {'SOC_INTERFACE_PROFILE': os.environ['SOC_INTERFACE_PROFILE'],
                            'MEM_RDREG': 1, 'REQ_REG': 1, 'SYNPRE': 1,
+                           'CORE_REQ_REG': int(os.environ['SOC_CORE_REQ_REG']),
+                           'CORE_WB_STAGE': int(os.environ['SOC_CORE_WB_STAGE']),
+                           'CORE_BRANCH_TARGET_ALU': int(os.environ['SOC_CORE_WB_STAGE']),
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
                            'WAKE_GNT': 1, 'BOOT_HARDEN': 1, 'CLKGATE': 1,
                            'SOC_BOOT_ROM': 'logic', 'IBEX_REGFILE': 'secded', 'IBEX_FAULT_PORT': 1,
