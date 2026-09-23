@@ -1345,10 +1345,28 @@ capacitance violations**. This comparison does not close any physical failure.
 The first replay's decimal-format assertion and first probe's missing output
 directory error are retained with the corrected runs.
 
-A separate bounded replay of the original `setup25` repair script is running
-with this executable. Its optimization, resulting logic and freshly routed
-parasitics require their own verification. The completed read-only tests do not
-establish repaired timing, routing compatibility, foundry DRC/LVS or signoff.
+A separate bounded replay of the original `setup25` repair script **failed**
+after 2,526.83 seconds. The executable aborted in
+`rsz::SizeUpGenerator::loadStageContext` with a timing-graph `TableBlock` vector
+assertion. The [follow-up receipt](evidence/physical-tool-format-followup-20260923.json)
+and [complete failure log and diagnostic scripts](evidence/physical-tool-format-followup-20260923.tar.gz)
+preserve this negative result. No completed repaired state or new routed result
+was accepted. The completed read-only tests do not establish optimization,
+routing compatibility, foundry DRC/LVS or signoff.
+
+The later [upstream endpoint-path correction](https://github.com/The-OpenROAD-Project/OpenROAD/pull/11215)
+addresses references invalidated by earlier committed repair moves. A separate
+source build containing this correction is being prepared for qualification;
+it has not yet demonstrated a fix for this design's failure.
+
+An unchanged-design compatibility experiment also found that the newer OpenDB
+schema cannot be read directly by the original tool. A DEF round trip preserves
+the exact geometry and passes retained-cell logic checking, but loses routing
+guides. Explicitly importing the text guides restores their counts and boxes,
+while 96,443 nets still differ in guide metadata. Any future cross-version
+candidate therefore needs regenerated global routing and a fresh detailed
+route, extraction and timing run. This experiment does not authorize reusing
+the old routed results for a new candidate.
 
 ### Dual-port SRAM half-step and temperature/voltage controls
 
@@ -1407,11 +1425,19 @@ limited to that model. Min/max RC qualification, fill-aware extraction and full
 physical acceptance remain open. Earlier custom-corner LEF mapping and auditor
 startup errors are preserved alongside the corrected run.
 
+The [independent coupling audit](evidence/physical-tool-format-followup-20260923.json)
+checks all four generated SPEFs for finite nonnegative capacitances, node
+ownership, equal mirrored coupling values and missing or duplicate entries.
+All 96,443 nets in each model pass these bookkeeping checks. Five deliberately
+corrupted miniature inputs are rejected. The larger experimental coupling sums
+are therefore not explained by unpaired or duplicate coupling records; this
+does not establish which model matches fabricated interconnect.
 
 The setup iteration scope was checked against both the pinned
 [February implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairSetup.cc)
 and the newer
 [legacy setup policy](https://github.com/The-OpenROAD-Project/OpenROAD/blob/08f67ee5ecd14db5a42be8c610bbfd1ccf079299/src/rsz/src/policy/SetupLegacyPolicy.cc).
 The configured pass limit is applied to each endpoint. The newer trial's
-progress counter consequently continues past 100; this is not completion or a
-missing timeout. Its independent three-hour process deadline remains active.
+progress counter consequently continued past 100 before the assertion failure;
+this did not mean completion or a missing timeout. An independent three-hour
+process deadline also bounded the trial.
