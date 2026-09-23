@@ -644,3 +644,42 @@ entry fails. Sixteen tests cover both grounded and coupled behavior. The
 [source-bound receipt and controls](evidence/baseline-density-and-rcx-20260923.json)
 retain these results. The earlier estimated-SPEF failures remain rejected;
 this result qualifies neither new routed SPEF nor fill-aware timing.
+
+## Bounded input geometry for fill generation
+
+The IHP [chip-finishing documentation](https://ihp-open-pdk-docs.readthedocs.io/en/latest/finishing/filler.html)
+also identifies `gdsfill` as a fill-generation option. A separate experiment
+pins [its Rust source](https://github.com/aesc-silicon/gdsfill/tree/db268cbf366dd219d1e077d9b2c68782c48c00c5)
+and changes only the two SG13G2 boundary selectors to the explicit core marker.
+The unmodified tool correctly rejects the absent seal ring. This adapter does
+not create a physical seal ring or qualify the core as a finished die.
+
+The [small controls](evidence/gdsfill-controls-20260923.json) retain a real
+failure: default targets pass recommended main DRC but leave two TopMetal
+density violations on the 100 micrometre control. Raising the fill target
+for both upper metals to 60% produces a control with no main or density
+markers; original geometry is retained. Foundry rules and spacing checks
+remain unchanged. The direct full-core attempt still exceeds its 12 GiB
+allocation limit after 28.49 seconds and is rejected.
+
+The replacement clips actual input geometry to each window plus a 30
+micrometre context halo. Layer indices keep their original GDS layer and
+datatype identities. Each filled clip passes a geometry-preservation audit;
+only added fill polygons inside the window are merged into the unchanged
+complete hierarchy. Subsequent windows include already generated fill.
+Actual complete-layout GDS checkpoints and their hashes are retained after
+each window. Resume verifies the original inputs and latest checkpoint.
+
+A 200 micrometre control completes two windows, resumes for two more, and
+passes final geometry preservation, recommended main DRC (560 categories,
+zero markers) and density. A deliberately wrong checkpoint digest is
+rejected before filling. The complete 35-window core experiment is pending.
+Its first complete-layout checkpoint independently preserves all 425 original
+cells and their instance graph, adding one fill-only cell with 22,063 polygons.
+This verifies that first checkpoint's geometry preservation, not physical
+acceptance of the partial fill or completion of the other 34 windows.
+The [reproducer archive](evidence/gdsfill-controls-20260923.tar.gz) includes
+corresponding Rust source, the boundary patch, Python orchestration, exact
+controls and [component notices](evidence/gdsfill-controls-20260923-NOTICES.txt).
+These controls do not establish complete-core DRC, density, LVS or fill-aware
+parasitic/timing acceptance.
