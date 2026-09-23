@@ -1309,3 +1309,41 @@ fault controls and exact source/tool identities. Transistor operation/PVT,
 extracted timing, characterized Liberty, routing-access LEF, native enable/BIST
 compatibility and bank composition remain open. These standalone results do
 not close the existing full-chip SRAM-interior LVS or routed setup/slew failures.
+
+## Separate OpenROAD tool qualification and setup-crash follow-up
+
+The [read-only qualification receipt](evidence/openroad26-readonly-qualification-20260923.json),
+[raw reports and replay scripts](evidence/openroad26-readonly-qualification-20260923.tar.gz)
+and [component notices](evidence/openroad26-readonly-qualification-20260923-NOTICES.txt)
+record a separately extracted OpenROAD `26Q2-1164-g08f67ee5ec` executable. The
+original LibreLane image and PDK remain unchanged. The public Ubuntu 24.04
+package is identified by SHA-256
+`f3f1eeaa18f327503f72cc45dcef5b1514ec2e89726ec53b4553bf4f951168a3`;
+project-local runtime packages, executable, wrappers and resolved shared objects
+are also hashed. Nothing was installed into the system.
+
+[Upstream PR 10225](https://github.com/The-OpenROAD-Project/OpenROAD/pull/10225)
+fixes stale input-path handling in resizer moves, including the `SizeUpMove`
+chain implicated by the earlier `setup25` crash. Git ancestry confirms that the
+new binary's source includes that fix and another 513 commits. This is a reason
+to test the newer tool, not proof that the fix alone explains this design's crash.
+
+All six one-load/64-load slew controls pass across the configured fast, typical
+and slow libraries. Reading the original `setup25` ODB reproduces its output
+netlist byte for byte: 98,441 instances, 96,653 nets and 144 top-level ports.
+The retained-cell checker separately passes for 73,531 cells and 24,910 positive
+buffers, with no resizing or pin permutation. The four clock periods remain
+20/8/8/8 ns.
+
+Read-only replay of the exact completed ECO24 netlist, SDC and nominal SPEF also
+completes in all three corners. The maximum setup/hold difference is
+`0.000001776357 ns` (about 1.8 fs); violation counts are identical. Slow setup
+remains **−3.254662 ns**, hold **+0.273628 ns**, with **75 slew violations and zero
+capacitance violations**. This comparison does not close any physical failure.
+The first replay's decimal-format assertion and first probe's missing output
+directory error are retained with the corrected runs.
+
+A separate bounded replay of the original `setup25` repair script is running
+with this executable. Its optimization, resulting logic and freshly routed
+parasitics require their own verification. The completed read-only tests do not
+establish repaired timing, routing compatibility, foundry DRC/LVS or signoff.

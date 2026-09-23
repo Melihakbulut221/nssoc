@@ -884,3 +884,11 @@ against a 35% minimum. The 9,218 behavioral checks do not qualify transistor
 timing, native interfaces or a four-bank replacement. The existing SoC is
 unchanged; full-chip LVS, accepted filled-layout checks and setup/slew closure
 remain **OPEN**. See [docs/100](100-routed-closure.md) for the exact scope.
+
+A [separate OpenROAD read-only qualification](evidence/openroad26-readonly-qualification-20260923.json)
+now reproduces the old ODB netlist exactly and all three ECO24 timing corners
+within 1.8 fs. The six minimal slew controls pass. The tool includes an upstream
+resizer crash fix, but the subsequent optimization has not yet been accepted;
+slow setup, 75 slew violations and the existing full-chip physical acceptance
+gates remain open. No clock relaxation or transfer of earlier GDS acceptance is
+used.
