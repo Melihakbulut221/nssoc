@@ -242,7 +242,7 @@ jobs:
           python3 -m venv hw/.venv
           hw/.venv/bin/pip install -r hw/requirements.txt
       - name: Prepare pinned interface IP
-        run: make soc-interfaces-prepare
+        run: make soc-interfaces-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
       - name: Run every non-frozen RTL suite
         run: scripts/run_cocotb.sh
       - name: Check PCIe transaction-layer functional mutation controls
