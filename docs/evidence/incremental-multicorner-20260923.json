@@ -1,6 +1,6 @@
 {
   "date": "2026-09-23",
-  "status": "PARTIAL: all-corner hold/slew/cap pass on estimated global-route RC; setup and physical acceptance remain open",
+  "status": "NOT ACCEPTED: imported estimated SPEF fails capacitance conservation; timing/electrical closure claims withdrawn",
   "scope": "Original routed baseline CPU configuration; no final detailed-route RC or foundry acceptance. Original 20 ns and 8 ns clocks and 0.95/1.05 derates are retained. No false/multicycle paths added.",
   "method": "ECO18 repeats ECO17 and inserts eleven buf_8 cells at independently measured fast-corner SRAM clock/address slew endpoints. ECO19 adds eleven dlygate4sd3_1 cells at the measured negative hold endpoints; incremental legalization and global routing follow each stage. Fresh independent STA imports each exact netlist, SDC and global-route SPEF at all three PVT corners.",
   "runs": {
@@ -184,10 +184,9 @@
     }
   },
   "measurement_consistency": {
-    "status": "UNRESOLVED, not accepted for final timing closure",
-    "in_memory_slow_setup_ns": -3.657321660152063,
-    "imported_slow_setup_ns": -2.8984495624000313,
-    "control": "The same ECO18 SPEF produces exactly the same slow setup/hold in standalone OpenSTA and OpenROAD. The difference therefore remains between in-memory global-route estimates and exported/imported parasitics, not between those two STA front ends."
+    "status": "Resolved exporter defect: missing pin-node wire capacitance invalidates imported timing",
+    "evidence": "docs/evidence/estimated-spef-integrity-20260923.json",
+    "scope": "Raw earlier numbers remain as biased diagnostics; do not use imported SPEF timing as acceptance."
   },
   "remaining": [
     "Slow setup remains negative. A separate request/writeback/branch-target pipeline candidate is running physical implementation.",
@@ -271,5 +270,6 @@
       "electrical18-openroad-sta/missing-lef.log": "7216d2fe8053a7c839b438ef45e4e6648b8944e17a0041ecbc5f0ead2ca98e46",
       "electrical18-openroad-sta/slow-min.rpt": "a3ecf7a51613e543bb2a6f2f6a3fd73f392cac0ee934d31bf5afa115f98656dd"
     }
-  }
+  },
+  "superseding_integrity_audit": "docs/evidence/estimated-spef-integrity-20260923.json"
 }

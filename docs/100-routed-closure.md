@@ -250,7 +250,8 @@ STA processes reveals remaining violations:
 
 This candidate is **not accepted**. Besides these violations, the fresh slow
 SPEF import does not numerically reproduce the in-memory setup result of
--3.657322 ns; that discrepancy remains unresolved. Neither value is final
+-3.657322 ns. The subsequent integrity audit below identifies omitted pin-node
+wire capacitance and rejects the imported result. Neither value is final
 extracted timing. An earlier export incorrectly called the RCX exporter,
 which reported no extraction data and produced no SPEF; its STA attempts are
 explicitly invalid. The corrected export uses the tool's documented global
@@ -265,13 +266,16 @@ stopped for memory; the complete unchanged-deck tiling-mode check continues.
 No interrupted check is counted as a pass, and the completed full LVS failure
 above remains an open manufacturing gate.
 
-## Three-corner electrical and hold repair, pending extracted verification
+## Electrical and hold ECOs: exported timing rejected after integrity audit
 
 The [next measured ECOs](evidence/incremental-multicorner-20260923.json)
 insert eleven local buffers at the fast-corner SRAM slew endpoints, followed
 by eleven delay cells at the remaining negative hold endpoints. Each change
 is legalized and incrementally routed. Independent imports of the resulting
-ECO19 global-route SPEF give:
+ECO19 global-route SPEF originally gave the following numbers. **The subsequent
+capacitance-conservation audit below rejects this SPEF; these biased results
+are retained for diagnosis and do not close any three-corner timing or
+electrical gate.**
 
 | Liberty corner | Setup WNS (ns) | Hold WNS (ns) | Slew violations | Capacitance violations |
 | --- | ---: | ---: | ---: | ---: |
@@ -279,9 +283,9 @@ ECO19 global-route SPEF give:
 | Typical | +2.596816 | +0.152010 | 0 | 0 |
 | Slow | -2.898450 | +0.423281 | 0 | 0 |
 
-This closes the measured electrical and negative-hold violations **only on
-estimated global-route RC**. The 0.4 ps minimum hold margin is especially
-fragile. Slow setup still fails; this is not an accepted final layout.
+The original apparent removal of electrical and negative-hold violations is
+withdrawn as a closure result. Slow setup fails even with the underestimated
+capacitance; this is not an accepted final layout.
 Detailed routing, antenna/connectivity checks, RC extraction and three-corner
 STA have been started from this exact ECO19 database. Their results are
 pending and cannot be inferred from the table.
@@ -298,9 +302,9 @@ driver in that list; this does not establish RC accuracy.
 
 An additional control imports the same ECO18 SPEF into both OpenROAD and
 standalone OpenSTA. They reproduce exactly the same slow setup and hold
-numbers. The unresolved difference is between in-memory global-route timing
-and exported/imported parasitics, rather than between those two STA front
-ends. Both results still fail setup. The
+numbers. This localized the difference to the exported/imported parasitics,
+rather than those two STA front ends. The integrity audit below subsequently
+identified omitted capacitance. Both results still fail setup. The
 [raw archive](evidence/incremental-multicorner-20260923.tar.gz) retains the
 scripts, reports, bounded logic proofs and annotation audits.
 
@@ -315,3 +319,29 @@ workflow now has a default-off `core_pipeline` input, validates and records
 the requested core parameters before acquiring tools, and retains the RTL
 parameter overrides. Seven native-preparation controls pass, including
 invalid-selector rejection and recording the baseline/enabled configurations.
+
+### Estimated SPEF integrity failure
+
+The pinned estimator [adds half of each pin stub's wire capacitance to the
+pin node](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/est/src/MakeWireParasitics.cpp#L336).
+Its [SPEF writer skips ground-capacitance entries for pin nodes](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/dbSta/src/SpefWriter.cc#L200),
+despite including them in each `D_NET` total. This is wire capacitance;
+the `PIN_CAP NONE` convention for Liberty pin capacitance does not restore it.
+
+The [independent integrity audit](evidence/estimated-spef-integrity-20260923.json)
+finds a deficit in every one of ECO19's 96,100 exported nets, totaling about
+94.228 pF. For example, `_013646_` declares 0.0162618 pF but serializes
+0.015831794 pF. The 0.000430006 pF deficit accounts for the observed load
+capacitance difference on that path. ECO17 and ECO18 fail the same check.
+The previous imported timing tables remain recorded, explicitly invalid as
+closure evidence; the restricted Boolean proofs and unloaded-driver audits
+have separate scopes and still stand.
+
+The new [grounded estimated-SPEF guard](../hw/soc/flow/audit_estimated_spef.py)
+requires per-net capacitance conservation with rounding tolerance and rejects
+truncated, coupled or unsupported input. Twelve controls include this actual
+omission pattern, restoration of the missing entry, units, zero-capacitance
+nets and malformed inputs. It does not certify RC accuracy or extracted
+timing. No guessed capacitances are inserted into the measured files.
+The running detailed-route/RCX flow uses the actual ODB geometry, rather than
+this rejected global-route SPEF, and remains the next verification boundary.

@@ -1,6 +1,6 @@
 {
   "date": "2026-09-23",
-  "status": "NOT ACCEPTED: partial single-corner electrical improvement, multi-corner violations remain",
+  "status": "NOT ACCEPTED: imported estimated SPEF fails capacitance conservation; timing/electrical closure claims withdrawn",
   "scope": "Old baseline CPU configuration. Complete routing graph estimated RC, not final detailed routing/extraction. Original 20 ns/8 ns clocks and 0.95/1.05 derates. No timing exceptions added.",
   "method": "Fresh full global route from ECO12, then three bounded incremental repair_design passes with 20% slew/cap repair margins. Netlist sizing/buffering equation check compared to the original routed implementation.",
   "in_memory_slow": {
@@ -29,7 +29,11 @@
       "capacitance_violations": 0
     }
   },
-  "measurement_consistency": "UNRESOLVED: fresh slow SPEF import does not numerically reproduce the in-memory slow setup result. Both methods fail timing. Do not treat the better imported number as accepted closure.",
+  "measurement_consistency": {
+    "status": "Resolved exporter defect: missing pin-node wire capacitance invalidates imported timing",
+    "evidence": "docs/evidence/estimated-spef-integrity-20260923.json",
+    "scope": "Raw earlier numbers remain as biased diagnostics; do not use imported SPEF timing as acceptance."
+  },
   "logic_check": {
     "retained_cells": 72992,
     "positive_buffers_before": 24054,
@@ -119,5 +123,6 @@
       "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-before.rpt": "fe34e99435e6c86008249593e82766427c920665f6a2ba273c6795f1e1ef09fd",
       "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-0.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
-  }
+  },
+  "superseding_integrity_audit": "docs/evidence/estimated-spef-integrity-20260923.json"
 }
