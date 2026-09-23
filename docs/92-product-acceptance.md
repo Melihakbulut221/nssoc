@@ -640,3 +640,14 @@ now has a separate bounded search, without weaker acceptance limits.
 pass after retaining a failed all-address trial and a timed-out solve. Full
 memory, final timing, density and chip LVS gates remain open; see
 [the detailed evidence and scope](100-routed-closure.md).
+
+
+**23 September — 512x64 SRAM bank prototype:** the
+[independent bank](evidence/independent-sp512-sram-prototype-20260923.json)
+passes recommended main DRC, antenna and strict LVS of 202,510 MOS devices,
+before and after fill. Both supply-short and wrong-width controls are rejected.
+Fill reduces density markers from 43 to one; active density remains 25.786%
+against a 35% minimum. The 9,218 behavioral checks do not qualify transistor
+timing, native interfaces or a four-bank replacement. The existing SoC is
+unchanged; full-chip LVS, accepted filled-layout checks and setup/slew closure
+remain **OPEN**. See [docs/100](100-routed-closure.md) for the exact scope.

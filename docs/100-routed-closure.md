@@ -1264,3 +1264,48 @@ independent fault controls. The next half-step and hot/slow/cold/fast trials
 remain separate pending measurements. Port-2 writes, transistor-level byte masks,
 all addresses and collisions, PEX, Liberty/LEF and complete SoC integration are
 still open. The existing full-chip LVS failure is unchanged.
+
+## Independent 512x64 SRAM bank: physical checks and remaining density failure
+
+The [new bank prototype](evidence/independent-sp512-sram-prototype-20260923.json)
+scales the independent single-port circuit to **512 words × 64 bits**, with
+eight byte enables. The generator explicitly rejects a 2048-word request;
+that failed attempt is retained. Four such banks and a qualified interface
+wrapper would be needed for one existing 2048x64 macro. No replacement has
+been integrated into the SoC.
+
+The independent schematic contains **202,510 MOS devices**. The original
+generated footprint is 719.14 × 168.775 µm. Implant enclosure repairs add
+47.0016 µm² outside existing active regions; two internal Metal4 supply straps
+and 22 Via3 connections join the 11 VDD and 11 VSS rails. These changes preserve
+the independently generated schematic. All **148 terminals** have matching
+GDS labels and pin regions contained in actual conductors.
+
+| Independent check | Strapped layout | Filled layout |
+|---|---|---|
+| Recommended main DRC | 560 categories, 0 markers | 560 categories, 0 markers |
+| Antenna DRC | 31 categories, 0 markers | 31 categories, 0 markers |
+| Strict transistor LVS | 46 matching circuit pairs | 46 matching circuit pairs |
+| Density, including boundary sanity | **43 markers** | **1 marker: active density** |
+
+The filled export has an enclosing **720 × 170 µm** outline and **5,903 added
+fill shapes**. Every original shape and instance is preserved. Its remaining
+active-area density is **25.786%**, below the **35%** global minimum. Metal
+density and boundary markers are resolved, but standalone density still fails;
+the final integrated chip must satisfy the global rules on its own geometry.
+The outline is not reduced and no rule is waived.
+
+Two independent fault controls introduce a real VDD/VSS short and change a
+reference transistor width. Each is rejected with 45 matching pairs and one
+nonmatching pair. A separate behavioral copy corrects eight write-address
+indices and passes **9,218 checks** over all 512 addresses, all eight byte
+masks, write-disabled reads and registered read selection; the original model
+fails the same bench. This does not prove transistor/model equivalence.
+
+The [raw archive](evidence/independent-sp512-sram-prototype-20260923.tar.gz) and
+[notices](evidence/independent-sp512-sram-prototype-20260923-NOTICES.txt) retain
+the independent circuits/layouts, repairs, failed capacity attempt, checks,
+fault controls and exact source/tool identities. Transistor operation/PVT,
+extracted timing, characterized Liberty, routing-access LEF, native enable/BIST
+compatibility and bank composition remain open. These standalone results do
+not close the existing full-chip SRAM-interior LVS or routed setup/slew failures.
