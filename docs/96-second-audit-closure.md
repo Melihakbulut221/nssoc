@@ -829,3 +829,18 @@ measured eye overlays and the physical-integration work list. The overall
 result is REVIEW: 13 hot-corner solves retain numerical warnings. Ideal
 resistors/reference/input drivers remain, and no PCIe PHY layout, receiver
 or complete link is delivered. Audit 1.8 and all product gates remain OPEN.
+
+
+### 23 September: physical follow-up and independent SRAM prototype
+
+ECO19's same-GDS [foundry antenna check passes; density fails with 157 markers](evidence/eco19-supplemental-physical-20260923.json).
+[ECO24's retained-cell functional proof passes](evidence/eco24-functional-repair-20260923.json),
+but its setup estimate still fails and its fresh route is separate. A later
+optimizer crash is retained as rejected, without replacing the proven state.
+The [new 128x8 SRAM prototype](evidence/independent-sram-prototype-20260923.json)
+passes complete recommended main DRC, antenna and transistor LVS after actual
+implant and supply-strap repairs; wrong-width and shorted-supply controls fail.
+A filled copy retains three density failures. Small-pattern transistor corner
+checks and all-address behavioral checks do not supply extracted timing,
+complete memory qualification, SoC integration or final chip LVS. Audit 2.4 and
+all corresponding product gates remain open; see [docs/100](100-routed-closure.md).

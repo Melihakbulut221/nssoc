@@ -5,8 +5,8 @@ reduces slow setup failure to **−4.326671 ns**, but retains 101 slow-corner
 slew violations, two capacitance violations in each corner and two fast hold
 failures. The original 20 ns core/8 ns Ethernet constraints are unchanged.
 ECO19 now [passes locked full main DRC with recommended rules](evidence/eco19-recommended-main-drc-20260923.json):
-**560 categories, zero markers**. Its independent foundry antenna/density checks
-remain separate. The original unfilled baseline also passes main DRC with
+**560 categories, zero markers**. Its [independent foundry antenna check](evidence/eco19-supplemental-physical-20260923.json)
+also passes with 31 categories and zero markers; density fails with 157 markers. The original unfilled baseline also passes main DRC with
 recommended rules off (549 categories, zero markers).
 Its new [complete density-filled layout](evidence/full-core-fill-density-20260923.json)
 passes the separate density deck, closing the previous 158 density markers
@@ -951,3 +951,96 @@ The [archive](evidence/closure-hypotheses-20260923.tar.gz) and
 reports, copied candidates, scripts, source hashes and rejected attempts.
 SRAM closure still requires a coherent macro design/reference pair and complete
 verification; changing mask metal would also require new characterization.
+
+
+## ECO19 supplemental checks and retained ECO24 repair
+
+The [fresh supplemental measurements](evidence/eco19-supplemental-physical-20260923.json)
+use the same ECO19 GDS as the 560-category main DRC pass. Foundry antenna checking
+passes all 31 reported categories with zero markers. The separate density deck,
+with boundary sanity checking enabled, reports **157 markers** in 18 categories:
+one Activ global failure; Metal2–5 global failures and 37/29/36/48 respective
+window failures; and one failure on each top-metal layer. The
+[raw archive](evidence/eco19-supplemental-physical-20260923.tar.gz) preserves both
+successful tool exits and the density wrapper's expected failing exit. Antenna's
+log has no runtime footer; completion is established by its completed wrapper,
+successful tool exit and complete report inventory, not an invented runtime.
+
+The [ECO24 repair](evidence/eco24-functional-repair-20260923.json) completes 300
+setup iterations and retains a saved checkpoint. Its independent retained-cell
+logic comparison passes for 73,531 cells: 343 additional positive buffers,
+53 equivalent size substitutions and 86 equivalent input permutations. SRAM
+interfaces remain exact opaque equations; this proof does not inspect their
+transistor interiors. The initial repair uses ECO19's actual nominal extracted
+loads, followed by refreshed global-route estimates. The intermediate setup
+estimate is still **−2.586 ns**; the final hold-repair estimate is +0.052 ns.
+Neither is a fresh routed-corner acceptance result.
+
+A subsequent, separately recorded `setup25` experiment crashes with signal 11 in
+`SizeUpMove` before producing an accepted checkpoint. Its preserved log and
+inputs are in the [repair archive](evidence/eco24-functional-repair-20260923.tar.gz).
+The upstream [similar crash report](https://github.com/The-OpenROAD-Project/OpenROAD/issues/10210)
+does not establish this instance's cause. The failed experiment is rejected.
+The proven ECO24 state is queued for independent detailed routing, extraction
+and STA. A new candidate epoch disables buffer removal and limits each path
+repair pass to one change. The original 20 ns/8 ns periods and 0.95/1.05 derates
+remain unchanged. Bounded process-group supervision also terminates descendants
+on timeout; an intentionally TERM-resistant child verifies this behavior.
+
+## Independent SRAM replacement prototype
+
+A new [128x8 research macro](evidence/independent-sram-prototype-20260923.json)
+provides a coherent independently generated circuit/layout pair. It uses
+[Chips4Makers' SG13G2 generator](https://gitlab.com/Chips4Makers/c4m-pdk-ihpsg13g2)
+at commit `987abb383bcf659258c2f6c890a0f0ebcaaeccbf`, with recorded dependency
+commits. Its upstream flow skips SRAM DRC/LVS and leaves Liberty generation
+unfinished; those are not accepted as verification. The generator supports
+128/256/512-word configurations, so this prototype cannot directly replace the
+SoC's larger and dual-port SRAM macros.
+
+The original generated geometry has 384 pSD contact-enclosure violations.
+Adding the missing implant enclosure outside active silicon removes them:
+1.9584 square micrometres in 384 regions, at most 15 nm growth, with active
+doping classification and all other layers unchanged. LVS then identifies
+unresolved VDD connections. Two actual Metal4 straps and ten Via3 connections
+join five VDD and five VSS rails; the independent schematic remains byte-identical.
+The LVS syntax adapter changes only 151 MOS instance designators from `X` to
+`M`, with unchanged pins, models and dimensions and an exact reverse comparison.
+It never constructs the reference from the extracted layout.
+
+The strapped macro passes **560-category recommended main DRC**, **31-category
+antenna checking**, and strict inspection of transistor LVS: **44 matching
+circuit pairs and 7,282 devices on each side**, with no unresolved extraction
+warnings. The foundry deck's existing SP6T hierarchy integration stays enabled;
+no new implicit-net waiver or black box is added. Deliberately doubling a
+bitcell pull-up width in a negative reference fails comparison, as does an
+actual Metal4 VDD–VSS short. Both raw failing controls are retained.
+
+The first standalone density result is rejected because hierarchical placement
+boundaries omit parts of the actual layout. A separate export declares one
+132 by 60 micrometre outline enclosing every shape and preserves all other
+layer regions. Adding 338 fill shapes preserves the original geometry. This
+filled copy again passes main DRC, antenna and transistor LVS, but retains
+**three global density failures: Activ, Metal2 and Metal3**. This small macro is
+not a whole die; its eventual placement and chip density must be checked in
+context. Neither changing the normalization area nor ignoring these failures
+is claimed as closure.
+
+The original generated behavioral model writes the previous clocked address
+and fails a directed two-address test. A separate corrected copy writes the
+current address and passes 1,536 checks over all 128 words and four patterns.
+A 7,282-MOS schematic simulation independently confirms writes/reads of A5/C3
+at addresses 0/1. The same small pattern passes tt/1.2V/25°C, ss/1.08V/125°C and
+ff/1.32V/−40°C with 5 fF ideal output loads and 50 MHz stimulus. Halving the
+maximum step from 0.1 to 0.05 ns changes sampled typical outputs by at most
+0.339 mV. All accepted transients reach their full stop time without convergence
+warnings; an earlier aborted startup is retained as rejected. These tests use
+a specified supply ramp and first-write sequence, not arbitrary power-up.
+
+The [archive](evidence/independent-sram-prototype-20260923.tar.gz) and
+[notices](evidence/independent-sram-prototype-20260923-NOTICES.txt) include generated
+GDS/circuit views, actual repairs, raw reports/waveforms, negative controls and
+reproduction scripts. An all-address transistor run is separate and pending.
+PEX, complete functional/PVT characterization, setup/hold and Liberty models,
+capacity/port-compatible banking, final chip verification and reliability remain
+open. The existing SoC SRAM and failing full-chip LVS are unchanged.

@@ -47,9 +47,13 @@ their scope. The original unfilled baseline passes independent main DRC
 passes the density deck, reducing its 158 earlier density markers to zero.
 Those baseline results do not transfer to ECO19. Its own new GDS now
 [passes full main DRC with recommended rules](evidence/eco19-recommended-main-drc-20260923.json):
-560 categories, zero markers. Independent foundry antenna/density checks and
-filled-layout main/antenna checks remain separate. Complete transistor LVS fails, including
+560 categories, zero markers. Its [foundry antenna check](evidence/eco19-supplemental-physical-20260923.json)
+also passes (31 categories, zero markers); density retains 157 markers.
+Filled-layout main/antenna checks remain separate. Complete transistor LVS fails, including
 an unresolved original SRAM GDS/CDL resistor-width inconsistency.
+A separate [128x8 SRAM prototype](evidence/independent-sram-prototype-20260923.json)
+passes main DRC, antenna and transistor LVS after actual implant/power repairs,
+but retains density and characterization gaps and is not integrated into the SoC.
 [docs/100](100-routed-closure.md) records the distinct source-bound measurements,
 active repairs and functional safeguards. Earlier dated observations below
 remain historical.
