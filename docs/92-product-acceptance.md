@@ -88,7 +88,10 @@ timing fields in the preceding state JSON are not a replacement for it.
 The retained artifact omitted ODB/DEF/GDS views, so it cannot restore that
 physical state on another runner. The subsequent flow change captures actual
 restart files and separately bounds the post-GRT search at 100 iterations;
-post-CTS retains 600. All clocks, derating and acceptance limits remain.
+post-CTS retains 600. All clocks, derating and acceptance limits remain. The later
+23 September hosted candidate also exhausted that post-CTS search; its bound
+is now 100, with verified restart files and unchanged acceptance gates in
+[docs/100](100-routed-closure.md).
 The new run must produce its own results; no product gate is closed here.
 
 Historical initial physical candidate: `interfaces-eth256-resume-20260919-184950`, using

@@ -44,7 +44,10 @@ class BoundedSetup:
 
 
 class BoundedPostCTS(BoundedSetup, OpenROAD.ResizerTimingPostCTS):
-    pass
+    # The request/writeback candidate exhausted the hosted 300-minute step
+    # at iteration 140/600, losing the entire unfinished repair. Preserve a
+    # completed stage for subsequent routing and extracted timing checks.
+    max_setup_iterations = 100
 
 
 class BoundedPostGRT(BoundedSetup, OpenROAD.ResizerTimingPostGRT):

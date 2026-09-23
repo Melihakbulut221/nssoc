@@ -322,11 +322,14 @@ scripts, reports, bounded logic proofs and annotation audits.
 
 The separate [pipelined-core physical run](https://github.com/Melihakbulut221/nssoc/actions/runs/35803297886)
 at `e5f610cec8ffab23500303190fa09fdf48300675` passed its hosted hazard/full-CPU
-firmware gate and entered implementation. No physical result is available yet.
+firmware gate and entered implementation. It subsequently exhausted its
+300-minute implementation limit in post-CTS repair; the verified checkpoint
+and bounded continuation are recorded below.
 The [native-cell qualification run](https://github.com/Melihakbulut221/nssoc/actions/runs/35804632644)
 at `95cbb15c0b41e26f2a2bd9086f5b8a6cb8b4e4e6` separately tests the enabled
 core pipeline with untouched IHP cell/SRAM models in both interface profiles.
-It is pending, without SDF, and cannot replace extracted timing. The native
+It subsequently passes both profiles, without SDF, as recorded below; that
+functional result cannot replace extracted timing. The native
 workflow now has a default-off `core_pipeline` input, validates and records
 the requested core parameters before acquiring tools, and retains the RTL
 parameter overrides. Seven native-preparation controls pass, including
@@ -777,3 +780,38 @@ This is the original baseline with the explicit DEF core boundary, not ECO19.
 The filled GDS still needs its own main DRC and antenna results, complete LVS,
 and fill-aware parasitic/timing verification. Unfilled ODB/SPEF timing is not
 inherited by this GDS-only fill result.
+
+## Hosted timeout checkpoints and bounded continuation
+
+The [pipeline and matched-control receipts](evidence/hosted-pipeline-resume-20260923.json)
+retain both interrupted runs at `e5f610cec8ffab23500303190fa09fdf48300675`.
+Each exhausted its 300-minute implementation limit. The control had reached
+an antenna-rerouting iteration inside detailed routing; its last complete
+state is step 37, before detailed routing. The pipeline candidate reached
+iteration 140 of a 600-iteration post-CTS search; its last complete state is
+step 28, immediately after CTS timing analysis. Neither supplies an accepted
+final route or extracted timing result. Inherited intermediate slow/typical
+metrics include invalid, extremely large slacks and are not verdicts.
+
+Both downloaded artifact hashes and all ten checkpoint views per run verify.
+The pipeline checkpoint is restored in a separate checkout of its exact
+source commit; all 139 recorded source/configuration inputs verify. The
+normal post-CTS search is now bounded to 100 iterations, matching the existing
+post-global-route bound. Timing thresholds, clocks, derates and final checkers
+are unchanged. Twenty-four interface-flow tests and Ruff pass. Local candidate
+continuation waits for the current main DRC and sufficient memory; it still
+requires logic checking, routing, fresh extraction and independent timing.
+
+The only historical RTL difference from the current request register is the
+addition of two `default_nettype` directives. Their removal reproduces the
+original bytes exactly. A separate module comparison with common `async2sync`
+normalization proves all 141 equivalence cells; a deliberately wrong request
+output is rejected. Initial attempts unsupported by the asynchronous SAT model
+remain recorded as errors. This module result does not relabel the historical
+whole-SoC physical or native-boot result as current-head acceptance.
+
+The [archive](evidence/hosted-pipeline-resume-20260923.tar.gz) and
+[notices](evidence/hosted-pipeline-resume-20260923-NOTICES.txt) retain hosted
+metadata, interrupted-stage logs, restoration/proof scripts and controls.
+The complete large hosted ZIP files and restored physical views remain locally
+hash-pinned.

@@ -117,7 +117,7 @@ def test_native_resizer_rejects_truncation_before_database_load(flow, step_name,
         assert result.returncode == 0, result.stderr
         assert 'early=0.95 late=1.05' in result.stdout
         assert 'DATABASE_READ' in result.stdout
-        expected = 600 if step_name == 'BoundedPostCTS' else 100
+        expected = 100
         assert f'ARGS -setup -max_iterations {expected}' in result.stdout
     assert script.read_text() == original
 
