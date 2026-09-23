@@ -1180,8 +1180,8 @@ A separate copy changing four write indices passes **1,540 checks**, including
 all addresses, both ports, alternating byte masks and concurrent accesses to
 different addresses. The original fails the same test. This does not establish
 transistor/model equivalence, simultaneous same-address behavior or 125 MHz
-operation. A separate nominal transistor simulation is still running at this
-receipt's timestamp and supplies no acceptance claim.
+operation. The original physical receipt predates the separately recorded
+nominal transistor result below.
 
 The [raw archive](evidence/independent-dp-sram-prototype-20260923.tar.gz) and
 [notices](evidence/independent-dp-sram-prototype-20260923-NOTICES.txt) preserve the
@@ -1236,3 +1236,31 @@ Final setup/slew closure, relevant min/max RC corners, fill-aware extraction,
 all foundry decks on the accepted filled layout and complete SRAM-interior LVS
 remain release requirements. Passing nominal-RC hold and capacitance in this
 specific measurement closes neither those requirements nor the full audit.
+
+## Dual-port nominal transistor simulation and independent stimulus audit
+
+The [completed schematic simulation](evidence/dp-sram-nominal-transistors-20260923.json)
+uses all 36,776 MOS devices of the independent 256x16 circuit, nominal
+1.2 V/25 °C models, two 50 MHz clocks offset by 10 ns and 5 fF output loads.
+There are no forced initial states or extracted wire parasitics. Over 90 ns,
+port 1 writes `A55A` and `C33C` to addresses 0 and 1; two port-1 and four
+port-2 settled 16-bit observations all match. Model/convergence diagnostics
+are absent. An independent waveform audit verifies both clocks, supply and
+every address/data/write-enable stimulus bit at those observations. Six controls
+corrupt an address, output or clock, truncate the waveform, insert NaN or reverse
+time; all are rejected.
+
+The first Sparse-solver run reaches its 3,600-second wall limit and remains
+**failed/incomplete**. The completed KLU run takes 1,140.950 seconds with the same
+circuit, stimuli, models and 0.05 ns maximum step; only the solver option and
+wave output path differ. A separate completed 128x8 control compares four
+settled samples against Sparse, with maximum output difference `1e-11 V`.
+This does not imply full-waveform solver agreement or a benchmarked speedup;
+the runs experienced different concurrent host loads.
+
+The [raw archive](evidence/dp-sram-nominal-transistors-20260923.tar.gz) preserves
+the timeout, completed logs/waves, benches, tool/model identities, scripts and
+independent fault controls. The next half-step and hot/slow/cold/fast trials
+remain separate pending measurements. Port-2 writes, transistor-level byte masks,
+all addresses and collisions, PEX, Liberty/LEF and complete SoC integration are
+still open. The existing full-chip LVS failure is unchanged.
