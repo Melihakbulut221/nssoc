@@ -1,14 +1,16 @@
 # 100 — Routed timing and full-transistor verification
 
-Latest measurement: the [actual-segment replay](evidence/global-route-segment-replay-20260923.json)
-avoids the defective estimated-SPEF exporter and reproduces in-memory timing.
-Its three-corner global-route estimates have no slew, capacitance or negative
-hold violations, but slow setup remains **-3.657322 ns**. Detailed-route RCX
-verification is pending. The original routed baseline now passes the locked
-upstream main DRC rules: 549 report categories, zero markers, successful tool
-exit and unchanged inputs. This result does not transfer to the new layouts.
-Its separate complete density check fails with 158 markers. Full transistor
-LVS still fails; overall physical/manufacturing closure is open.
+Latest [actual routed RCX/STA](evidence/eco19-extracted-timing-20260923.json)
+reduces slow setup failure to **−4.326671 ns**, but retains 101 slow-corner
+slew violations, two capacitance violations in each corner and two fast hold
+failures. The original 20 ns core/8 ns Ethernet constraints are unchanged.
+The original unfilled baseline passes locked upstream main DRC (549 categories,
+zero markers). Its new [complete density-filled layout](evidence/full-core-fill-density-20260923.json)
+passes the separate density deck, closing the previous 158 density markers
+for that baseline. These are distinct GDS inputs: neither result transfers to
+ECO19. New-layout main/antenna/density checks and filled-layout main/antenna
+checks remain open. Full transistor LVS fails; overall physical/manufacturing
+closure remains open.
 
 ## Baseline measured on 23 September 2026
 
@@ -297,8 +299,8 @@ The original apparent removal of electrical and negative-hold violations is
 withdrawn as a closure result. Slow setup fails even with the underestimated
 capacitance; this is not an accepted final layout.
 Detailed routing, antenna/connectivity checks, RC extraction and three-corner
-STA have been started from this exact ECO19 database. Their results are
-pending and cannot be inferred from the table.
+STA subsequently completed from this exact ECO19 database. Their actual
+results are recorded below and supersede the estimated counts in this table.
 
 Both ECO18 and ECO19 pass the restricted netlist equation check against the
 original routed design: 72,992 retained cells, 266 equivalent size changes and
@@ -353,8 +355,8 @@ truncated, coupled or unsupported input. Twelve controls include this actual
 omission pattern, restoration of the missing entry, units, zero-capacitance
 nets and malformed inputs. It does not certify RC accuracy or extracted
 timing. No guessed capacitances are inserted into the measured files.
-The running detailed-route/RCX flow uses the actual ODB geometry, rather than
-this rejected global-route SPEF, and remains the next verification boundary.
+The subsequent detailed-route/RCX flow uses the actual ODB geometry, rather
+than this rejected global-route SPEF; its actual results are recorded below.
 
 ### Independent replay from actual routing segments
 
@@ -375,8 +377,8 @@ inventing replacement capacitances.
 
 These measurements establish the electrical/negative-hold result only for
 this estimated routing graph. Slow setup still fails and the minimum hold
-margin is only 11.8 ps. The exact same geometry is undergoing detailed routing
-and extracted-RC checks; it is not a final accepted layout. The unchanged
+margin is only 11.8 ps. Subsequent detailed routing and extracted-RC checks
+report failures below; this is not a final accepted layout. The unchanged
 netlist reuses the verified ECO19 Boolean proof, and the unannotated-driver
 report is byte-identical to its checked list of 1,048 unloaded outputs.
 
@@ -604,8 +606,8 @@ windows, without an accepted complete GDS. Its replacement runs each window
 in a fresh process and writes a GDS checkpoint with verified source/output
 hashes after each window. On the small control, this reproduces all 47 cells'
 geometry and instance graph from the single-process result exactly. The
-35-window full-core checkpointed run remains pending; small controls establish
-neither full-core completion nor fill-aware timing.
+35-window vendor-macro core run subsequently completed generation; its physical
+acceptance remains open. Small controls establish no fill-aware timing.
 
 ## Pipeline integration regression repair
 
@@ -673,7 +675,8 @@ each window. Resume verifies the original inputs and latest checkpoint.
 A 200 micrometre control completes two windows, resumes for two more, and
 passes final geometry preservation, recommended main DRC (560 categories,
 zero markers) and density. A deliberately wrong checkpoint digest is
-rejected before filling. The complete 35-window core experiment is pending.
+rejected before filling. The complete 35-window Rust core generation and
+density check subsequently passed, as recorded below.
 Its first complete-layout checkpoint independently preserves all 425 original
 cells and their instance graph, adding one fill-only cell with 22,063 polygons.
 This verifies that first checkpoint's geometry preservation, not physical
@@ -710,3 +713,67 @@ missing-log and boundary-warning cases. The [raw archive](evidence/density-bound
 includes both small physical GDS inputs, all diagnostic reports, historical
 and corrected runner snapshots, the lock and tests. This guard covers the
 reported normalization warning; it is not full-core density closure.
+
+## Actual RC extraction after ECO19 routing
+
+The [new routed measurement](evidence/eco19-extracted-timing-20260923.json)
+supersedes the earlier estimated-RC electrical counts for this layout.
+Detailed routing finishes with zero router DRC markers. The subsequent
+independent OpenROAD antenna check reports zero violating nets and pins.
+Fresh RCX produces 96,100 nets; every net passes the serialized-capacitance
+conservation audit, including 1,949,542 coupling entries. This arithmetic
+check does not establish RC-model accuracy or timing closure.
+
+The original 20 ns core and 8 ns Ethernet constraints and 0.95/1.05 derates
+remain in force. All three configured Liberty corners use nominal extracted
+RC. Results are:
+
+| Configured corner | Setup slack, ns | Hold slack, ns | Slew violations | Capacitance violations |
+| --- | ---: | ---: | ---: | ---: |
+| Fast | +3.240561 | -0.006398 | 0 | 2 |
+| Typical | +2.422747 | +0.125240 | 0 | 2 |
+| Slow | -4.326671 | +0.295344 | 101 | 2 |
+
+The flow fails its timing gates. Both capacitance violations are physical
+loads above the 0.300 pF limit: `fanout3467/X` at 0.330216 pF and
+`fanout3099/X` at 0.305765 pF. Two fast-corner hold paths start at
+`_117085_/Q` and end at `_122627_/D` and `_122647_/D`.
+
+The reports retain 256 disconnected pins classified as noncritical, zero
+critical disconnected pins, and 1,048 raw unannotated nets filtered to zero
+by the flow. Those raw counts are not erased or represented as universally
+complete connectivity/annotation. Clock reports explicitly contain core,
+Ethernet RX/TX and generated GTX clocks; the base-SDC warning precedes the
+custom Ethernet clock definitions.
+
+The [evidence archive](evidence/eco19-extracted-timing-20260923.tar.gz)
+includes step states, exact output netlist/constraints, all three electrical
+and clock reports, worst-slack reports, and minimum-slack path excerpts for
+each path group. Complete large path reports remain locally hash-pinned.
+The fresh GDS is exported from the new DEF with inherited GDS views removed;
+its separate recommended main, antenna and density checks remain pending.
+This is not full-RC-corner, post-density-fill or SRAM-interior LVS acceptance.
+
+## Complete core fill and density result
+
+All 35 windows of the original-baseline Rust fill run completed. The
+[generation receipt](evidence/full-core-fill-generation-20260923.json) verifies
+every checkpoint digest and full-layout preservation of all 425 original cells
+and their instance graph. The output adds 35 fill-only cells containing 896,230
+shape definitions. The [generation archive](evidence/full-core-fill-generation-20260923.tar.gz)
+retains orchestration, configuration, logs and geometry audits; large GDS
+checkpoints remain locally hash-pinned.
+
+The whole output GDS then [passes the locked density deck](evidence/full-core-fill-density-20260923.json):
+zero markers, successful tool exit, unchanged inputs and no outside-boundary
+warning. Sanity checks are enabled. Original-baseline global/local density
+failures totalled 158 markers; none remain on this filled input. Reported global
+densities are Activ 38.89%, GatPoly 26.75%, Metal1–5 38.77%, 37.84%, 40.49%,
+47.58%, 47.62%, and TopMetal1–2 41.95%, 43.43%.
+The [raw density archive](evidence/full-core-fill-density-20260923.tar.gz)
+retains the complete log, report, input identities and unchanged runner.
+
+This is the original baseline with the explicit DEF core boundary, not ECO19.
+The filled GDS still needs its own main DRC and antenna results, complete LVS,
+and fill-aware parasitic/timing verification. Unfilled ODB/SPEF timing is not
+inherited by this GDS-only fill result.

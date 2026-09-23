@@ -38,13 +38,19 @@ hardware merely to increase apparent coverage.
 
 ## Product release gates
 
-**23 September routed update:** detailed routing completed, but slow setup is
-−7.173567 ns and all three corners retain electrical violations. Router DRC and
-antenna checks pass within their scope. Independent foundry DRC and complete
-transistor LVS are now running; neither has an accepted final verdict at this
-snapshot. [docs/100](100-routed-closure.md) records the source-bound baseline,
-active repairs and functional safeguards. Earlier dated RUNNING observations
-below are historical.
+**23 September routed update:** ECO19 detailed routing and fresh nominal-RC
+extraction completed. Slow setup is −4.326671 ns with 101 slew violations;
+all corners retain two capacitance violations, and the fast corner has two
+negative-hold paths. Router DRC and the subsequent antenna check pass within
+their scope. The original unfilled baseline passes independent main DRC
+(549 categories, zero markers). Its separate complete density-filled layout
+passes the density deck, reducing its 158 earlier density markers to zero.
+Those results do not transfer to ECO19; new-layout physical checks and filled
+layout main/antenna checks remain open. Complete transistor LVS fails, including
+an unresolved original SRAM GDS/CDL resistor-width inconsistency.
+[docs/100](100-routed-closure.md) records the distinct source-bound measurements,
+active repairs and functional safeguards. Earlier dated observations below
+remain historical.
 
 | Requirement | Current implementation and closure condition |
 |---|---|
