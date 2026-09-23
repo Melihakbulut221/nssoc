@@ -264,3 +264,54 @@ detailed-placement result. The duplicate deep-mode DRC attempt was also
 stopped for memory; the complete unchanged-deck tiling-mode check continues.
 No interrupted check is counted as a pass, and the completed full LVS failure
 above remains an open manufacturing gate.
+
+## Three-corner electrical and hold repair, pending extracted verification
+
+The [next measured ECOs](evidence/incremental-multicorner-20260923.json)
+insert eleven local buffers at the fast-corner SRAM slew endpoints, followed
+by eleven delay cells at the remaining negative hold endpoints. Each change
+is legalized and incrementally routed. Independent imports of the resulting
+ECO19 global-route SPEF give:
+
+| Liberty corner | Setup WNS (ns) | Hold WNS (ns) | Slew violations | Capacitance violations |
+| --- | ---: | ---: | ---: | ---: |
+| Fast | +3.667775 | +0.000411 | 0 | 0 |
+| Typical | +2.596816 | +0.152010 | 0 | 0 |
+| Slow | -2.898450 | +0.423281 | 0 | 0 |
+
+This closes the measured electrical and negative-hold violations **only on
+estimated global-route RC**. The 0.4 ps minimum hold margin is especially
+fragile. Slow setup still fails; this is not an accepted final layout.
+Detailed routing, antenna/connectivity checks, RC extraction and three-corner
+STA have been started from this exact ECO19 database. Their results are
+pending and cannot be inferred from the table.
+
+Both ECO18 and ECO19 pass the restricted netlist equation check against the
+original routed design: 72,992 retained cells, 266 equivalent size changes and
+102 Boolean input permutations. ECO19 adds 513 positive buffers/delay cells
+relative to that original netlist. This proof excludes timing, analog behavior,
+SRAM internals, initialization, CDC and extracted physical connectivity.
+All 1,048 unannotated drivers in each imported SPEF measurement are checked
+against the source-bound netlist and library interfaces: 585 are disconnected
+declared outputs, and 463 have no logical sinks. There is no loaded missing
+driver in that list; this does not establish RC accuracy.
+
+An additional control imports the same ECO18 SPEF into both OpenROAD and
+standalone OpenSTA. They reproduce exactly the same slow setup and hold
+numbers. The unresolved difference is between in-memory global-route timing
+and exported/imported parasitics, rather than between those two STA front
+ends. Both results still fail setup. The
+[raw archive](evidence/incremental-multicorner-20260923.tar.gz) retains the
+scripts, reports, bounded logic proofs and annotation audits.
+
+The separate [pipelined-core physical run](https://github.com/Melihakbulut221/nssoc/actions/runs/35803297886)
+at `e5f610cec8ffab23500303190fa09fdf48300675` passed its hosted hazard/full-CPU
+firmware gate and entered implementation. No physical result is available yet.
+The [native-cell qualification run](https://github.com/Melihakbulut221/nssoc/actions/runs/35804632644)
+at `95cbb15c0b41e26f2a2bd9086f5b8a6cb8b4e4e6` separately tests the enabled
+core pipeline with untouched IHP cell/SRAM models in both interface profiles.
+It is pending, without SDF, and cannot replace extracted timing. The native
+workflow now has a default-off `core_pipeline` input, validates and records
+the requested core parameters before acquiring tools, and retains the RTL
+parameter overrides. Seven native-preparation controls pass, including
+invalid-selector rejection and recording the baseline/enabled configurations.
