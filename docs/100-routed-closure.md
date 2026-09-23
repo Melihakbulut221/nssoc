@@ -853,3 +853,47 @@ GDS controls, raw reports, commands, source hashes and reproducer. These control
 validate this execution method only; they do not establish full-core DRC, antenna,
 density, LVS or production acceptance. The active monolithic ECO19 run continues
 with its original pinned runner.
+
+## Floating-fill field extraction controls
+
+The [small field experiment](evidence/fill-field-controls-20260923.json) compares
+two 5 by 0.5 micrometre Metal1 rails, with and without two separate 1 by 0.5
+micrometre floating fill rectangles. KLayout-PEX 0.4.4 retains both fill bodies;
+FasterCap 6.0.7 solves their nominal IHP technology model. Each fill body has its
+own unknown potential. A Schur reduction enforces zero net charge on each;
+grounding the fill is explicitly rejected as a different circuit.
+
+At an actual 12 micrometre field margin, the reduced A/B diagonal capacitances
+are 0.671055/0.671101 fF without fill and 0.684853/0.685252 fF with fill.
+The corresponding mutual capacitance magnitude rises from approximately
+0.102749 to 0.115399 fF. An independent 8 micrometre domain changes the reduced
+matrix elements by at most **1.207%**. The experimental comparison uses a 2%
+tolerance; it is not a calibrated process-corner accuracy bound. The solver
+uses Galerkin discretization and a 0.005 refinement criterion. No measured
+matrix is forcibly symmetrized.
+
+Independent checks require finite positive diagonals, nonpositive coupling,
+near reciprocity, bounded row sums and a positive-definite symmetric part.
+A three-capacitor circuit with two floating nodes checks the reduction against
+its analytic result. A separate mesh closure check operates on the generator's
+0.0001 micrometre grid: closed and T-junction controls pass; missing, duplicate
+and reversed faces fail. Removing a real signal triangle also fails in all four
+exported models. These checks concern the numerical surface mesh, not mask DRC.
+
+Two earlier zero-exit collocation results fail numerical checks and remain
+rejected. The installed export CLI also parses field-margin/geometry-check
+options without forwarding them: a requested 4 micrometre domain actually
+used its 8 micrometre default. The attempted duplicate-domain comparison is
+rejected. Only explicit API options, measured bounding boxes and independently
+checked meshes support the accepted 8/12 micrometre comparison. The original
+package is unchanged. Raw logs reparse to the recorded matrices exactly;
+recorded input/mesh hashes verify. Dependency wheel RECORD checks were performed
+after the experiment and are labelled accordingly.
+
+The [archive](evidence/fill-field-controls-20260923.tar.gz) and
+[notices](evidence/fill-field-controls-20260923-NOTICES.txt) retain small geometries,
+models, meshes, solver logs, rejected attempts and reproduction scripts.
+The dummy connectivity schematic is not an LVS reference. This result supplies
+no whole-chip fill-aware SPEF, validated resistance extraction, minimum/maximum
+RC corners or final timing acceptance. Full-chip fill-aware verification remains
+open, alongside setup, hold, electrical-limit and SRAM LVS closure.
