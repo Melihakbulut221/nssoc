@@ -18,7 +18,26 @@ if [ -e "$OUT" ]; then
   echo "Refusing to replace existing evidence: $OUT" >&2
   exit 2
 fi
+export SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+export SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'Native boot core selectors must be 0 or 1' >&2; exit 2 ;;
+esac
 mkdir -p "$OUT"
+python3 - "$OUT/core-configuration.json" <<'PY'
+import json
+import os
+from pathlib import Path
+import sys
+Path(sys.argv[1]).write_text(json.dumps({
+    'CORE_REQ_REG': int(os.environ['SOC_CORE_REQ_REG']),
+    'CORE_WB_STAGE': int(os.environ['SOC_CORE_WB_STAGE']),
+    'CORE_BRANCH_TARGET_ALU': int(os.environ['SOC_CORE_WB_STAGE']),
+    'interface_profile': os.environ.get('SOC_INTERFACE_PROFILE', 'base'),
+    'status': 'requested configuration; consult RTL, synthesis and gate results',
+}, indent=2) + '\n')
+PY
 
 python3 hw/soc/flow/prepare_ihp_native_boot.py | tee "$OUT/prepare-models.log"
 export PDK_ROOT="$ROOT/hw/soc/tools/ihp-native-boot-c4b8b4e"

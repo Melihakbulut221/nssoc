@@ -3,9 +3,12 @@
 """Native boot preparation must be self-contained without altering a PDK."""
 import importlib.util
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -61,3 +64,36 @@ def test_native_wrapper_refuses_overwriting_completed_output(tmp_path):
     assert result.returncode == 2
     assert 'Refusing to replace existing evidence' in result.stderr
     assert evidence.read_text() == '{"passed":false}\n'
+
+
+@pytest.mark.parametrize('selectors', [None, ('1', '1'), ('1', '0'), ('bad', '1')])
+def test_native_core_selection_is_validated_and_recorded_before_tools(tmp_path, selectors):
+    root = tmp_path / 'checkout'
+    scripts = root / 'scripts'
+    scripts.mkdir(parents=True)
+    script = scripts / 'check_soc_native_boot.sh'
+    script.write_bytes((ROOT / 'scripts/check_soc_native_boot.sh').read_bytes())
+    flow = root / 'hw/soc/flow'
+    flow.mkdir(parents=True)
+    # Stop at the first dependency boundary; never download or simulate here.
+    (flow / 'prepare_ihp_native_boot.py').write_text('raise SystemExit(77)\n')
+    env = {k: v for k, v in os.environ.items()
+           if k not in ('SOC_CORE_REQ_REG', 'SOC_CORE_WB_STAGE')}
+    env['SOC_INTERFACE_PROFILE'] = 'full'
+    if selectors is not None:
+        env.update(zip(('SOC_CORE_REQ_REG', 'SOC_CORE_WB_STAGE'), selectors))
+    output = root / 'hw/soc/out/qualify'
+    result = subprocess.run(['bash', str(script), str(output)], env=env,
+                            text=True, capture_output=True)
+    if selectors == ('bad', '1'):
+        assert result.returncode == 2
+        assert 'core selectors must be 0 or 1' in result.stderr
+        assert not output.exists()
+    else:
+        assert result.returncode == 77
+        record = json.loads((output / 'core-configuration.json').read_text())
+        req, wb = map(int, selectors or ('0', '0'))
+        assert record['CORE_REQ_REG'] == req
+        assert record['CORE_WB_STAGE'] == record['CORE_BRANCH_TARGET_ALU'] == wb
+        assert record['interface_profile'] == 'full'
+        assert record['status'].startswith('requested configuration;')
