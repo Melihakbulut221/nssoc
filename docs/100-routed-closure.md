@@ -1441,3 +1441,45 @@ The configured pass limit is applied to each endpoint. The newer trial's
 progress counter consequently continued past 100 before the assertion failure;
 this did not mean completion or a missing timeout. An independent three-hour
 process deadline also bounded the trial.
+
+## Physical abstract and pin access for the independent 512×64 SRAM
+
+The [physical abstract receipt](evidence/independent-sp512-physical-abstract-20260923.json),
+[GDS/LEF, raw checks and reproduction scripts](evidence/independent-sp512-physical-abstract-20260923.tar.xz)
+and [component notices](evidence/independent-sp512-physical-abstract-20260923-NOTICES.txt)
+add a standalone LEF view for the independently generated SRAM. The macro stays
+**720 × 170 µm**, with **148 terminals**. Its GDS is translated by (+0.5, +0.5) µm
+to place the lower boundary at the origin. Physical polygons match by XOR after
+translation, and text anchors are checked separately. Every later LEF revision
+uses that same normalized GDS byte for byte.
+
+OpenDB reads the actual LEF and an independent checker compares its ports with
+the GDS pin markers and circuit terminals. It also checks that obstructions
+cover real drawing/fill conductors and via cuts without covering the pins.
+Three deliberately malformed LEFs import successfully but fail the independent
+checks: a shifted clock pin, a renamed write-enable terminal and missing Metal1
+obstructions.
+
+The first two conservative abstracts failed physical pin access at the clock.
+The final abstract opens empty access corridors to the nearest macro boundary,
+with a 0.4 µm margin; actual conductors and cuts remain protected. A standalone
+R0 instance at (40, 40) µm now completes TritonRoute pin access. Inspection of its
+serialized database finds **2,826 macro access points across all 146 signal
+terminals**, with **at least four per terminal**, plus 146 boundary-terminal
+points. The router reports 1,646 via-access options and zero macro pins lacking
+access. This does not qualify other placements, supply routing or complete
+signal routing. Its warnings about unsupported LEF58 enclosure rules remain in
+the logs.
+
+Fresh checks of the exact normalized GDS pass **560 main-DRC categories with
+zero markers**, **31 antenna categories with zero markers**, and strict
+transistor LVS with **46 matching circuit pairs and 202,510 MOS devices**.
+Density still fails one `AFil.g` check. The first LVS audit invocation lacked
+the KLayout Python module; rerunning the same auditor against the unchanged
+comparison database in the pinned bundled runtime passes. That correction does
+not alter the schematic, extracted devices or rule deck.
+
+The prototype still needs characterized Liberty, transistor PVT/read-write
+margins, native bit-mask/MEN/BIST interface compatibility and SoC integration.
+These standalone results do not close the original full-chip SRAM LVS failure
+or the SoC's routed timing and manufacturing gates.
