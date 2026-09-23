@@ -1,0 +1,74 @@
+{
+  "date": "2026-09-23",
+  "status": "Annotation-only correction rejected: all six proposed 0.26um marker widths extend outside actual metal",
+  "scope": "Read-only bit-cell geometry/CDL feasibility check. No mask, marker, reference, extraction rule or tolerance changed. Not an LVS verdict and not a proposed qualified SRAM respin.",
+  "measurement": {
+    "scope": "Read-only feasibility of annotation-only correction to independent original CDL width; no geometry or reference changes and no LVS acceptance",
+    "rows": [
+      {
+        "metal": "Metal2",
+        "marker_bbox": "(-1820,-300;-1620,300)",
+        "proposed_annotation_bbox": "(-1850,-300;-1590,300)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox": "(-1165,-300;-965,300)",
+        "proposed_annotation_bbox": "(-1195,-300;-935,300)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox": "(965,-300;1165,300)",
+        "proposed_annotation_bbox": "(935,-300;1195,300)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox": "(1620,-300;1820,300)",
+        "proposed_annotation_bbox": "(1590,-300;1850,300)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      },
+      {
+        "metal": "Metal3",
+        "marker_bbox": "(-300,-510;300,-310)",
+        "proposed_annotation_bbox": "(-300,-540;300,-280)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      },
+      {
+        "metal": "Metal3",
+        "marker_bbox": "(-300,310;300,510)",
+        "proposed_annotation_bbox": "(-300,280;300,540)",
+        "original_drawing_covers_vendor_cdl_width": false,
+        "uncovered_area_um2": 0.036000000000000004
+      }
+    ],
+    "input_sha256": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.gds": "0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.cdl": "b19996838910e43b54458b225b0ba39bf75ed4d841d865b03d6497efa9855ba3"
+    },
+    "verbatim_reference_widths_m": [
+      2.6e-07,
+      2.6e-07,
+      2.6e-07,
+      2.6e-07,
+      2.6e-07,
+      2.6e-07
+    ],
+    "script_sha256": "0b599770ae01b76a5974a622d9b13e15a84f576c9ecd9926bf7150f8d533360a"
+  },
+  "source_witness": "docs/evidence/sram-width-diagnosis-20260923.json",
+  "source_archive": "docs/evidence/sram-width-diagnosis-20260923.tar.gz",
+  "reproducer": {
+    "command": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python hw/soc/out/external-review-20260919/route-closure-20260923/check_sram_marker_enclosure.py",
+    "script_sha256": "0b599770ae01b76a5974a622d9b13e15a84f576c9ecd9926bf7150f8d533360a",
+    "script": "from pathlib import Path\nimport json,hashlib,re\nimport klayout.db as db\nc=Path('hw/soc/out/external-review-20260919/route-closure-20260923');p=c/'sram-bitcell-width-witness/bitcell.gds'\ncdl=c/'sram-bitcell-width-witness/bitcell.cdl'\ninputs={str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in (p,cdl)}\nwidths=[float(x) for x in re.findall(r'\\blvsres w=([^ ]+)',cdl.read_text())]\nassert len(widths)==6 and all(abs(w-0.26e-6)<1e-15 for w in widths)\nl=db.Layout();l.read(str(p));cell=l.cell('RM_IHPSG13_2P_BITKIT_CELL');rows=[]\nfor layer,name in [(10,'Metal2'),(30,'Metal3')]:\n # Determine the existing marker datatype from the witness layer inventory.\n for idx in l.layer_indexes():\n  inf=l.get_info(idx)\n  if inf.layer==layer:print('Layer',inf.to_s(),'shapes',cell.shapes(idx).size())\nfor layer,name in [(10,'Metal2'),(30,'Metal3')]:\n metal=db.Region(cell.begin_shapes_rec(l.layer(layer,0))).merged()\n marks=db.Region(cell.begin_shapes_rec(l.layer(layer,29))).merged()\n for poly in marks.each():\n  box=poly.bbox();is_vertical=box.height()>box.width()\n  delta=round((0.26/l.dbu-(box.width() if is_vertical else box.height()))/2)\n  expanded=db.Box(box.left-delta if is_vertical else box.left,box.bottom if is_vertical else box.bottom-delta,box.right+delta if is_vertical else box.right,box.top if is_vertical else box.top+delta)\n  missing=db.Region(expanded)-metal\n  rows.append(dict(metal=name,marker_bbox=box.to_s(),proposed_annotation_bbox=expanded.to_s(),original_drawing_covers_vendor_cdl_width=missing.is_empty(),uncovered_area_um2=missing.area()*l.dbu*l.dbu))\nresult=dict(scope='Read-only feasibility of annotation-only correction to independent original CDL width; no geometry or reference changes and no LVS acceptance',rows=rows)\nassert len(rows)==6\nassert all(hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest for name,digest in inputs.items())\nresult['input_sha256']=inputs\nresult['verbatim_reference_widths_m']=widths\nresult['script_sha256']=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()\n(c/'sram-marker-enclosure.json').write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(result,indent=2))\n",
+    "log_sha256": "f555dc51455c39704bf24e6461a648fc3ad009a3e487477cf038c6ddefd8f601",
+    "log": "Layer 10/0 shapes 10\nLayer 10/2 shapes 11\nLayer 10/29 shapes 0\nLayer 10/25 shapes 11\nLayer 30/0 shapes 3\nLayer 30/2 shapes 5\nLayer 30/29 shapes 0\nLayer 30/25 shapes 5\n{\n  \"scope\": \"Read-only feasibility of annotation-only correction to independent original CDL width; no geometry or reference changes and no LVS acceptance\",\n  \"rows\": [\n    {\n      \"metal\": \"Metal2\",\n      \"marker_bbox\": \"(-1820,-300;-1620,300)\",\n      \"proposed_annotation_bbox\": \"(-1850,-300;-1590,300)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    },\n    {\n      \"metal\": \"Metal2\",\n      \"marker_bbox\": \"(-1165,-300;-965,300)\",\n      \"proposed_annotation_bbox\": \"(-1195,-300;-935,300)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    },\n    {\n      \"metal\": \"Metal2\",\n      \"marker_bbox\": \"(965,-300;1165,300)\",\n      \"proposed_annotation_bbox\": \"(935,-300;1195,300)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    },\n    {\n      \"metal\": \"Metal2\",\n      \"marker_bbox\": \"(1620,-300;1820,300)\",\n      \"proposed_annotation_bbox\": \"(1590,-300;1850,300)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    },\n    {\n      \"metal\": \"Metal3\",\n      \"marker_bbox\": \"(-300,-510;300,-310)\",\n      \"proposed_annotation_bbox\": \"(-300,-540;300,-280)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    },\n    {\n      \"metal\": \"Metal3\",\n      \"marker_bbox\": \"(-300,310;300,510)\",\n      \"proposed_annotation_bbox\": \"(-300,280;300,540)\",\n      \"original_drawing_covers_vendor_cdl_width\": false,\n      \"uncovered_area_um2\": 0.036000000000000004\n    }\n  ],\n  \"input_sha256\": {\n    \"hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.gds\": \"0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918\",\n    \"hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.cdl\": \"b19996838910e43b54458b225b0ba39bf75ed4d841d865b03d6497efa9855ba3\"\n  },\n  \"verbatim_reference_widths_m\": [\n    2.6e-07,\n    2.6e-07,\n    2.6e-07,\n    2.6e-07,\n    2.6e-07,\n    2.6e-07\n  ],\n  \"script_sha256\": \"0b599770ae01b76a5974a622d9b13e15a84f576c9ecd9926bf7150f8d533360a\"\n}\n"
+  }
+}

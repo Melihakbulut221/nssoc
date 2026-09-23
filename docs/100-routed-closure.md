@@ -815,3 +815,41 @@ The [archive](evidence/hosted-pipeline-resume-20260923.tar.gz) and
 metadata, interrupted-stage logs, restoration/proof scripts and controls.
 The complete large hosted ZIP files and restored physical views remain locally
 hash-pinned.
+
+## SRAM annotation-only correction is insufficient
+
+A [read-only enclosure check](evidence/sram-marker-enclosure-20260923.json)
+tests whether the original CDL widths could be represented by corrected LVS
+markers without changing fabricated metal. Each of the six original bit-cell
+resistors specifies 0.26 micrometre width in the CDL, whereas its marker is
+0.20 by 0.60 micrometres. Expanding only the short dimension to 0.26 leaves
+0.036 square micrometres outside the original metal drawing for **every**
+resistor. The proposed correction therefore cannot fit within the existing
+metal geometry. No marker, mask, reference, rule or tolerance was changed.
+The result retains both source hashes, the complete reproducer and raw output;
+it rules out this annotation-only hypothesis without claiming LVS closure.
+
+## Complete main-rule partition controls
+
+The new `hw/soc/flow/check_ihp_drc_partitioned.py` runs the locked main deck in
+**two sequential processes**, using its existing table selector. It requires all
+37 tables: 18 FEOL/geometry tables and 19 BEOL tables. Recommended checks remain
+on, and no rule, region or cell is excluded. Separate processes release FEOL
+connectivity data before BEOL starts; a full-core memory improvement has not yet
+been measured.
+
+The [control evidence](evidence/drc-partition-controls-20260923.json) compares the
+complete main deck with both parts on clean and deliberately faulty layouts.
+Category names/descriptions and marker geometries match exactly: **560 categories,
+0 markers** on the positive control and **3 markers** on the negative control
+(`Act.a`, `LU.b`, `M1.a`). The standalone runner also passes the positive control
+and returns failure on the negative control. It rejects missing/duplicate tables,
+changed category inventories, inconsistent counts, failed processes and changed
+inputs. Its category fingerprints cover 443 FEOL/geometry categories plus 117
+BEOL categories. The selected DRC preparation/result/partition tests pass **55/55**.
+
+The [archive](evidence/drc-partition-controls-20260923.tar.gz) preserves the small
+GDS controls, raw reports, commands, source hashes and reproducer. These controls
+validate this execution method only; they do not establish full-core DRC, antenna,
+density, LVS or production acceptance. The active monolithic ECO19 run continues
+with its original pinned runner.
