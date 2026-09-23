@@ -1347,3 +1347,27 @@ A separate bounded replay of the original `setup25` repair script is running
 with this executable. Its optimization, resulting logic and freshly routed
 parasitics require their own verification. The completed read-only tests do not
 establish repaired timing, routing compatibility, foundry DRC/LVS or signoff.
+
+### Dual-port SRAM half-step and temperature/voltage controls
+
+The independent 256×16 dual-port prototype now also completes three 90 ns
+schematic controls: typical 1.2 V/25 °C with a 25 ps maximum step, slow
+1.08 V/125 °C and fast 1.32 V/−40 °C with 50 ps steps. All six settled word
+observations pass in each run, with no simulator/model/convergence diagnostics.
+The typical half-step comparison changes settled outputs by at most
+**8.727358 µV**, below the declared 1 mV tolerance.
+
+The [receipt](evidence/dp-sram-pvt-controls-20260923.json),
+[complete waveforms, benches and logs](evidence/dp-sram-pvt-controls-20260923.tar.gz)
+and [notices](evidence/dp-sram-pvt-controls-20260923-NOTICES.txt) retain an
+independent audit of all stimulus bits, both clocks and supply at 18 read
+observations. Twenty-one deliberately corrupted-wave controls are rejected.
+An initial failed audit control is retained: inconsistent floating-point time
+conversion selected the other equidistant sample for mutation. Using the same
+time expression for observation and mutation fixes that auditor defect without
+changing any circuit or simulation waveform.
+
+These are two-address, 50 MHz, 5 fF schematic tests. They do not establish
+125 MHz operation, full address/mask/collision coverage, extracted timing,
+Liberty characterization or native SoC integration. The existing full-chip SRAM
+LVS failure remains open.
