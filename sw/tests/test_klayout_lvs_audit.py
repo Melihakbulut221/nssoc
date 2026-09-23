@@ -59,3 +59,29 @@ def test_deck_failure_after_compare_is_not_hidden(log):
 
 def test_other_top_is_not_evidence_for_requested_top():
     assert audit.assess([matched()], 'different_memory', SUCCESS)['reasons']
+
+
+@pytest.mark.parametrize('severity', ['Warning', 'Error', 'NoSeverity', 'future-severity'])
+def test_extraction_diagnostics_reject_an_otherwise_successful_comparison(severity):
+    entry = {'severity': severity, 'category': 'must-connect', 'cell': 'memory',
+             'message': 'Must-connect subnets of VDD must be connected further up'}
+    result = audit.assess([matched()], 'memory', SUCCESS, [entry])
+    assert result['status'] == 'FAIL'
+    assert result['extraction_diagnostics'] == [entry]
+
+
+def test_must_connect_cannot_be_downgraded_to_information():
+    entry = {'severity': 'Info', 'category': 'must-connect'}
+    assert audit.assess([matched()], 'memory', SUCCESS, [entry])['status'] == 'FAIL'
+
+
+def test_unclassified_extraction_warning_also_requires_review():
+    entry = {'severity': 'Warning', 'category': 'unknown-extractor'}
+    assert audit.assess([matched()], 'memory', SUCCESS, [entry])['status'] == 'FAIL'
+
+
+def test_plain_extraction_information_is_retained_without_being_a_failure():
+    entry = {'severity': 'Info', 'category': 'statistics', 'message': '4 devices'}
+    result = audit.assess([matched()], 'memory', SUCCESS, [entry])
+    assert result['status'] == 'PASS within comparison scope'
+    assert result['extraction_diagnostics'] == [entry]

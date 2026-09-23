@@ -383,3 +383,36 @@ source identities and the rejected guide-only diagnostic. Merely reading
 guide rectangles emits `GRT-0008` and does not restore the full routing graph;
 that diagnostic is explicitly invalid. The rejected SPEF-based tables above
 remain rejected rather than being retroactively accepted by this new result.
+
+## Physical power-open controls for hierarchical LVS
+
+A [two-inverter physical control](evidence/must-connect-lvs-controls-20260923.json)
+tests hierarchical power connections without altering any production layout or
+pinned rule deck. Two original IHP inverter cells have separate VDD islands;
+the parent either contains their Metal1 bridge or omits exactly that bridge.
+An independent geometry comparison confirms that this is the only layout
+difference. A separately copied diagnostic deck requests a cell-scoped
+implicit connection and explicitly selects strict or permissive top-level
+handling.
+
+The joined, strict case passes. The cut, strict case fails extraction with a
+must-connect error. Deleting the reference NMOS also fails comparison. The
+cut, permissive case exposes a dangerous distinction: all circuit pairs match
+and the deck prints success, while the database still records an unresolved
+physical connection warning. The previous comparison-only auditor accepted
+that case; this behavior is reproduced from the recorded earlier revision.
+
+The auditor now reads database extraction diagnostics as well as circuit
+pairs and the final text verdict. It rejects warnings, errors, unknown
+severities and outstanding must-connect requirements; ordinary informational
+entries remain visible. The same valid joined report still passes, while the
+hidden open is now rejected. Twenty-four unit controls and the real report
+replays validate this change. The [raw archive](evidence/must-connect-lvs-controls-20260923.tar.gz)
+contains both GDS variants, reference/negative CDL, reports, exact experimental
+deck, source identities and the legacy/fixed audit outcomes.
+
+[KLayout's documented strict top-level mode](https://www.klayout.de/doc/manual/lvs_connect.html)
+provides a way to require the physical parent connection rather than assume
+it. These controls validate that mechanism and the auditor, **not the actual
+SRAM macros or the SoC**. Their existing LVS failures remain open; no blanket
+power merge, resistor alias, geometry exclusion or SRAM blackbox is accepted.

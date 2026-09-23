@@ -14,11 +14,17 @@ import json
 from pathlib import Path
 
 
-def read_pairs(report):
+def read_pairs(report, extraction_diagnostics=None):
     import klayout.db as db
 
     lvs = db.LayoutVsSchematic()
     lvs.read(str(report))
+    if extraction_diagnostics is not None:
+        extraction_diagnostics.extend(
+            {'severity': str(entry.severity), 'category': entry.category_name,
+             'cell': entry.cell_name, 'net': entry.net_name,
+             'message': entry.message}
+            for entry in lvs.each_log_entry())
     xref = lvs.xref()
     if xref is None:
         raise ValueError('Database contains no comparison cross-reference')
@@ -49,7 +55,8 @@ def read_pairs(report):
     return rows
 
 
-def assess(rows, top, deck_log):
+def assess(rows, top, deck_log, extraction_diagnostics=()):
+    extraction_diagnostics = list(extraction_diagnostics)
     reasons = []
     if not rows:
         reasons.append('Empty circuit comparison')
@@ -71,8 +78,15 @@ def assess(rows, top, deck_log):
         reasons.append('Missing explicit successful deck verdict')
     if "ERROR : Netlists don't match" in deck_log:
         reasons.append('Deck explicitly reported a mismatch')
+    # KLayout can report all circuit pairs as Match and print a successful
+    # verdict while retaining a must-connect open in the database's extraction
+    # log. It need not appear in the text log. Never discard those diagnostics.
+    if any(entry.get('severity') != 'Info' or entry.get('category') == 'must-connect'
+           for entry in extraction_diagnostics):
+        reasons.append('Unresolved extraction warning, error or must-connect requirement')
     return {'status': 'FAIL' if reasons else 'PASS within comparison scope',
             'top': top, 'reasons': reasons,
+            'extraction_diagnostics': list(extraction_diagnostics),
             'circuit_status_counts': dict(Counter(r['status'] for r in rows)),
             'circuits': rows}
 
@@ -85,7 +99,9 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     try:
-        result = assess(read_pairs(args.report), args.top, args.deck_log.read_text())
+        diagnostics = []
+        rows = read_pairs(args.report, diagnostics)
+        result = assess(rows, args.top, args.deck_log.read_text(), diagnostics)
         result['inputs'] = {}
         for p in (args.report, args.deck_log):
             with p.open('rb') as stream:
