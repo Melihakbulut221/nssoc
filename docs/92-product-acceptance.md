@@ -38,11 +38,13 @@ hardware merely to increase apparent coverage.
 
 ## Product release gates
 
-**23 September routed update:** ECO19 detailed routing and fresh nominal-RC
-extraction completed. Slow setup is −4.326671 ns with 101 slew violations;
-all corners retain two capacitance violations, and the fast corner has two
-negative-hold paths. Router DRC and the subsequent antenna check pass within
-their scope. The original unfilled baseline passes independent main DRC
+**23 September routed update:** [ECO24 detailed routing and fresh nominal-RC
+extraction](evidence/eco24-extracted-timing-20260923.json) completed. Slow setup
+is −3.254664 ns with 75 slew violations. Capacitance violations are zero and
+worst hold slack is positive in all three Liberty corners. Router DRC and
+OpenROAD antenna checks pass within their scope. ECO24 still needs independent
+foundry checks on its own new GDS; prior GDS passes do not transfer.
+The original unfilled baseline passes independent main DRC
 (549 categories, zero markers). Its separate complete density-filled layout
 passes the density deck, reducing its 158 earlier density markers to zero.
 Those baseline results do not transfer to ECO19. Its own new GDS now

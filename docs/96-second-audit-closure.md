@@ -864,3 +864,12 @@ retains four global density violations. A corrected behavioral copy passes
 1,540 checks, but transistor characterization and native-macro integration are
 not complete. This does not close audit 2.4 or the existing SoC's SRAM-interior
 LVS and physical timing gates.
+
+
+ECO24's [completed independent route/RCX/STA](evidence/eco24-extracted-timing-20260923.json)
+closes capacitance violations and nominal-RC negative hold in all three corners
+for that exact unfilled layout. Slow setup remains −3.254664 ns, with 75 slew
+violations. Audit 2.4 and final physical delivery remain **OPEN**: new foundry
+checks, complete transistor LVS, min/max RC and fill-aware acceptance are still
+required. [docs/100](100-routed-closure.md) retains actual failures and the next
+repair rather than transferring older GDS acceptance.

@@ -1,9 +1,11 @@
 # 100 — Routed timing and full-transistor verification
 
-Latest [actual routed RCX/STA](evidence/eco19-extracted-timing-20260923.json)
-reduces slow setup failure to **−4.326671 ns**, but retains 101 slow-corner
-slew violations, two capacitance violations in each corner and two fast hold
-failures. The original 20 ns core/8 ns Ethernet constraints are unchanged.
+Latest [actual ECO24 routed RCX/STA](evidence/eco24-extracted-timing-20260923.json)
+reduces slow setup failure to **−3.254664 ns** and slow slew violations to **75**.
+Capacitance violations are now **zero in all three corners**, and all three
+worst hold slacks are positive. The original 20 ns core/8 ns Ethernet constraints
+and 0.95/1.05 derates are unchanged. This remains a nominal-RC, unfilled-layout
+measurement; setup and slew closure are still open.
 ECO19 now [passes locked full main DRC with recommended rules](evidence/eco19-recommended-main-drc-20260923.json):
 **560 categories, zero markers**. Its [independent foundry antenna check](evidence/eco19-supplemental-physical-20260923.json)
 also passes with 31 categories and zero markers; density fails with 157 markers. The original unfilled baseline also passes main DRC with
@@ -981,9 +983,9 @@ A subsequent, separately recorded `setup25` experiment crashes with signal 11 in
 inputs are in the [repair archive](evidence/eco24-functional-repair-20260923.tar.gz).
 The upstream [similar crash report](https://github.com/The-OpenROAD-Project/OpenROAD/issues/10210)
 does not establish this instance's cause. The failed experiment is rejected.
-The proven ECO24 state is queued for independent detailed routing, extraction
-and STA. A new candidate epoch disables buffer removal and limits each path
-repair pass to one change. The original 20 ns/8 ns periods and 0.95/1.05 derates
+The proven ECO24 state has now completed independent detailed routing, extraction
+and STA, with the actual measurements recorded below. A new candidate epoch
+disables buffer removal and limits each path repair pass to one change. The original 20 ns/8 ns periods and 0.95/1.05 derates
 remain unchanged. Bounded process-group supervision also terminates descendants
 on timeout; an intentionally TERM-resistant child verifies this behavior.
 
@@ -1195,3 +1197,42 @@ top instances unchanged. Its only geometry change is the top placement boundary
 on layer 189/4. The archived comparison therefore finds no transistor,
 interconnect or bitcell-resistor correction in that update. It is not adopted
 as an LVS fix, and no new LVS success is inferred from the version change.
+
+## ECO24 actual extracted timing and next repair
+
+The [new completed measurement](evidence/eco24-extracted-timing-20260923.json)
+uses a fresh detailed route and nominal SPEF, SHA-256
+`2df4bfa9cc026692522c57c49bab4a9a18119fe16dca62d7bc1b80caf65ea5c6`.
+All 96,443 nets pass serialized-capacitance conservation; this arithmetic check
+does not establish physical RC accuracy or complete parasitic annotation.
+
+| Liberty corner, nominal extracted RC | Worst setup (ns) | Worst hold (ns) | Slew violations | Capacitance violations |
+|---|---:|---:|---:|---:|
+| Fast | +3.282231 | +0.036887 | 0 | 0 |
+| Typical | +2.137891 | +0.147579 | 0 | 0 |
+| Slow | **−3.254664** | +0.273627 | **75** | 0 |
+
+The flow exits **2** because real final timing/electrical checks fail. It reports
+zero router DRC violations, zero OpenROAD antenna nets/pins and zero critical
+disconnected pins; all raw disconnected and unannotated counts are preserved in
+the receipt and raw checks. No counts are waived to claim full closure.
+The [archive](evidence/eco24-extracted-timing-20260923.tar.gz) retains reports,
+exact netlist/SDC, state identities and minimum reported path excerpts per group.
+Its fresh unfilled GDS is
+`af8ccf9bb86db5decd6ea0e075936d991fdb8df00a033e01cd419f319668d699`.
+**ECO19's foundry DRC/antenna passes do not qualify this different GDS.**
+
+The worst slow path starts at register-file address bit `raddr_b_i[1]`, passes
+through register selection/ECC and processor logic, and ends at `_119494_`.
+The path includes a minimum-drive NAND4 with 0.129041 pF reported load and
+1.938393 ns cell delay. The worst slew is 3.171175 ns against a 2.507400 ns limit.
+A separate ECO27 experiment uses these actual loads and a 40-percent slew repair
+margin, followed by refreshed global routing and bounded timing repair.
+The physical limits themselves are unchanged. Its estimates, even if improved,
+will require a new logic proof, detailed route, extraction and independent checks.
+The separate request/writeback pipeline candidate also remains under evaluation.
+
+Final setup/slew closure, relevant min/max RC corners, fill-aware extraction,
+all foundry decks on the accepted filled layout and complete SRAM-interior LVS
+remain release requirements. Passing nominal-RC hold and capacitance in this
+specific measurement closes neither those requirements nor the full audit.
