@@ -54,6 +54,10 @@ an unresolved original SRAM GDS/CDL resistor-width inconsistency.
 A separate [128x8 SRAM prototype](evidence/independent-sram-prototype-20260923.json)
 passes main DRC, antenna and transistor LVS after actual implant/power repairs,
 but retains density and characterization gaps and is not integrated into the SoC.
+A [256x16 dual-port research macro](evidence/independent-dp-sram-prototype-20260923.json)
+also passes recommended main DRC, antenna and transistor LVS, including both
+fault controls. Its filled copy retains four density violations; behavioral
+checks do not establish transistor timing, native-macro compatibility or SoC adoption.
 [docs/100](100-routed-closure.md) records the distinct source-bound measurements,
 active repairs and functional safeguards. Earlier dated observations below
 remain historical.

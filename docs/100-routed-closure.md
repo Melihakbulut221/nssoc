@@ -1074,7 +1074,7 @@ PEX/PVT characterization, density, SoC integration and full-chip LVS remain open
 
 The separate pipeline candidate's post-CTS hold search keeps adding buffers
 while its worst slack remains −2.555 ns. The regular physical flow now bounds
-hold repair to **1,000 iterations**, independently of the existing 100-iteration
+hold repair with **`-max_iterations 1000`**, independently of the existing 100-iteration
 setup bound. Both actual LibreLane 3.0.5 post-CTS/post-global-route templates
 retain their repair calls and final view export. Missing or duplicated template
 anchors fail before a generated script is written. The focused Python/Tcl
@@ -1085,6 +1085,14 @@ setup-100/hold-1000 epoch starts from the same saved source-bound CTS state;
 its continuation requires functional proof and fresh routing/extraction.
 An iteration limit saves a measurable intermediate state; it never changes
 clocks, derates, electrical limits or the final failing timing classification.
+
+Runtime follow-up clarifies this parameter's granularity: the pinned
+[OpenROAD hold implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairHold.cc)
+checks the limit between complete passes over its failing endpoints. The
+counter increments inside that pass, so a first pass containing 9,395 endpoints
+can exceed 1,000 before the next limit check. It is not a strict bound on the
+displayed endpoint counter or wall time. The separate process timeout remains
+necessary. The running experiment and its saved inputs are unchanged.
 
 
 ## Correct a cumulative SRAM slew-conversion defect
@@ -1126,3 +1134,64 @@ unbuffered control/reset fanout; those are not routed results. The pinned
 LibreLane/OpenROAD image and already running jobs remain unchanged. The fixed
 standalone STA is an independently measured candidate, not a blanket tool-flow
 or manufacturing acceptance.
+
+## Independent 256x16 dual-port SRAM physical checks
+
+The [dual-port prototype receipt](evidence/independent-dp-sram-prototype-20260923.json)
+extends the independent SRAM work to 256 words of 16 bits, two clocks and two
+byte-write enables per port. The initial one-enable generator request fails
+because this factory requires eight bits per enable. The successful two-enable
+generation retains that rejected attempt. Its independent schematic has 88
+terminals; all match the actual GDS pin-label inventory. The simulator-to-LVS
+adapter changes only 162 primitive instance designators, with a reversible
+comparison of every pin, model and dimension.
+
+The original layout fails 2,560 `Cnt.g2` checks and retains an unresolved supply
+must-connect requirement. Adding 13.056 µm² of implant outside active regions,
+then 18 Via3 connections and two internal Metal4 supply straps, resolves these
+specific physical defects. The independent circuit reference is unchanged.
+The repaired layout passes **560 recommended main DRC categories**, **31 antenna
+categories**, and strict transistor LVS: **52 matching circuit pairs and 36,776
+recursive MOS devices**, with no unresolved extraction diagnostics. No SRAM
+interior is blackboxed. A physical VDD–VSS short and a deliberately wrong
+transistor width each produce a real LVS mismatch. Initial postprocessor errors
+from a Python environment lacking KLayout remain recorded separately from the
+successful, version-recorded re-audits.
+
+A separate 322×119 µm standalone outline encloses all mask geometry. Adding
+1,877 fill shapes preserves the original circuit geometry and again passes
+main DRC, antenna and LVS. Density still fails four global minimum checks:
+
+| Layer | Measured density | Required minimum |
+|---|---:|---:|
+| Activ | 27.68% | 35% |
+| Metal1 | 32.71% | 35% |
+| Metal2 | 33.58% | 35% |
+| Metal3 | 34.83% | 35% |
+
+These are results from the unchanged foundry deck, with boundary sanity enabled.
+Fill-tool progress estimates are not density acceptance. No rule is waived and
+the normalization boundary is not reduced.
+
+The upstream behavioral model writes the previous latched address on both ports.
+A separate copy changing four write indices passes **1,540 checks**, including
+all addresses, both ports, alternating byte masks and concurrent accesses to
+different addresses. The original fails the same test. This does not establish
+transistor/model equivalence, simultaneous same-address behavior or 125 MHz
+operation. A separate nominal transistor simulation is still running at this
+receipt's timestamp and supplies no acceptance claim.
+
+The [raw archive](evidence/independent-dp-sram-prototype-20260923.tar.gz) and
+[notices](evidence/independent-dp-sram-prototype-20260923-NOTICES.txt) preserve the
+generated circuit/GDS, geometry repairs, all completed reports and fault controls.
+Density, extracted timing, complete PVT/function characterization, Liberty/LEF,
+native bit-mask/MEN/BIST compatibility and SoC integration remain open. Existing
+SoC SRAMs and the failing complete-chip LVS are unchanged.
+
+An upstream alternative was checked before treating this as a replacement path:
+the official [28 January 2026 GDS update](https://github.com/IHP-GmbH/IHP-Open-PDK/commit/994d7f6a886da628ff64cbe47d5a151eef893ce5)
+for the existing vendor 256x16 two-port macro leaves 168 internal cells and all
+top instances unchanged. Its only geometry change is the top placement boundary
+on layer 189/4. The archived comparison therefore finds no transistor,
+interconnect or bitcell-resistor correction in that update. It is not adopted
+as an LVS fix, and no new LVS success is inferred from the version change.

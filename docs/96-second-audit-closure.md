@@ -855,3 +855,12 @@ now has a separate bounded search, without weaker acceptance limits.
 pass after retaining a failed all-address trial and a timed-out solve. Full
 memory, final timing, density and chip LVS gates remain open; see
 [the detailed evidence and scope](100-routed-closure.md).
+
+**23 September — independent dual-port SRAM:** the new
+[256x16 prototype](evidence/independent-dp-sram-prototype-20260923.json) passes
+recommended main DRC, antenna and transistor LVS after geometric repairs;
+both shorted-supply and wrong-width controls fail as intended. Its filled copy
+retains four global density violations. A corrected behavioral copy passes
+1,540 checks, but transistor characterization and native-macro integration are
+not complete. This does not close audit 2.4 or the existing SoC's SRAM-interior
+LVS and physical timing gates.
