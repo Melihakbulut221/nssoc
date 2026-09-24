@@ -1758,3 +1758,36 @@ and timing reports, test results and reconstruction scripts. See its
 [notices](evidence/rf-correction-precompute-20260923-NOTICES.txt). Existing routed
 setup/slew, qualified RC, fill-aware timing and full-chip transistor LVS gates
 remain open.
+
+## Independent audit of complete 128-word transistor runs
+
+The [completed all-address evidence](evidence/independent-sram-all-addresses-20260924.json)
+records both Sparse and KLU runs of the independent 128×8 single-port schematic.
+Each run performs 128 permuted writes followed by 128 differently permuted
+reads, at TT, 1.2 V, 25 °C, 50 MHz and 5 fF per output. Both complete 5.12 µs
+without simulator diagnostics. Their runtimes are 15,001 and 16,416 seconds;
+the KLU budget extension is preserved explicitly.
+
+An independent streaming auditor reconstructs memory from measured rising-edge
+writes, checks the observed address/data/control schedule, and checks every
+saved output sample in each cycle's 17.5–19.5 ns window. It does not use the
+original runner's output measurements as its oracle. Each solver passes
+**256 clock edges, all 128 addresses, 10,240 stable-window samples and 81,920
+bit observations**. Minimum low/high threshold margins are 0.298467 V and
+0.299851 V, relative to the declared 0.3/0.9 V thresholds. The maximum
+pointwise difference across all saved voltage vectors is **53 nV**.
+
+Six deliberately damaged waveform controls fail: wrong output, wrong address,
+nonfinite output, intermediate output voltage, reversed time and truncation.
+The [lossless raw archive](evidence/independent-sram-all-addresses-20260924.tar.xz)
+contains both complete 107,303-row waveforms, simulator logs, testbenches,
+per-cycle measurements and the independent auditor. Its
+[notices](evidence/independent-sram-all-addresses-20260924-NOTICES.txt)
+identify the included material and separately pinned circuit/model inputs.
+
+Sparse and KLU are linear solvers within the same ngspice engine. Their
+agreement is a numerical cross-check, not an independent transistor model or
+simulator validation. One pattern per address is not a complete March test,
+PVT/read-write-margin characterization, extracted simulation or Liberty model.
+This result does not qualify the larger 512×64 bank or close original full-chip
+SRAM LVS and final timing.
