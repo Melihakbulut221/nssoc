@@ -1862,3 +1862,40 @@ terminals have access: **2,753 points, minimum three per terminal**, versus
 and [notices](evidence/independent-sp512-mx-access-20260924-NOTICES.txt)
 retain this separate placement result. It does not qualify other track phases,
 supply routing, complete routing or timing.
+
+## 125 MHz dual-port read hold and the native Ethernet memory interface
+
+The [completed TT snapshot](evidence/dp125-tt-native-fifo-20260924.json) runs the
+complete 36,776-MOS dual-port schematic at 1.2 V, 25 °C and 5 fF per output.
+Nominal clock periods are 8 ns. Six read edges access two addresses; the read
+clock has a deliberate 24 ns edge interval and remains low from 34 to 54 ns.
+A byte write through the other port overwrites the last-read address at 50 ns.
+The read output retains the previous value until the next read edge.
+
+The 78 ns run passes its eight sample points. Independent reconstruction from
+measured write inputs also passes **120 stable-window and 392 stopped-clock
+samples**; five damaged-wave controls fail. The [raw archive](evidence/dp125-tt-native-fifo-20260924.tar.xz)
+and [notices](evidence/dp125-tt-native-fifo-20260924-NOTICES.txt) retain the full
+waveform, circuit, stimulus, checks and original IHP behavioral references.
+Other PVT and half-step cases are excluded from this completed TT snapshot.
+
+This exposes a second defect in the generated behavioral model. Even after
+correcting its write address, its combinational `mem[latched_address]` read
+output changes when the other port overwrites that location with the read clock
+stopped. Both the transistor circuit and the native IHP reference retain the
+output. A separate research model now registers each read output on its own
+clock edge, and a wrapper preserves the native read-enable hold behavior.
+
+Copies of the **actual Ethernet technology map**, changed only in top/module
+names for the comparison harness, pass **18,439 native-reference observations**.
+These cover all 256 addresses, full-word writes, disabled reads, stopped read
+clocks and simultaneous accesses to different addresses. The transparent old
+model, stale write-address model, wrong read-address variant and missing-hold
+variant all fail. No production memory binding is changed.
+
+The tested profile has a write-only port A and read-only port B, full-word write
+masks and disabled BIST. Same-address simultaneous collisions, arbitrary
+bidirectional usage, complete transistor/model equivalence, setup/hold margins,
+PEX/Liberty characterization and full-chip integration remain open. This is a
+small TT operation test with a clock pause, not continuous-traffic or complete
+125 MHz macro qualification.
