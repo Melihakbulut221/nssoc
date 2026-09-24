@@ -1,7 +1,7 @@
 # 100 — Routed timing and full-transistor verification
 
-Latest [actual ECO24 routed RCX/STA](evidence/eco24-extracted-timing-20260923.json)
-reduces slow setup failure to **−3.254664 ns** and slow slew violations to **75**.
+The best completed [ECO27 routed RCX/STA candidate](evidence/eco27-completed-route-20260924.json)
+reduces slow setup failure to **−3.185676 ns** and slow slew violations to **10**.
 Capacitance violations are now **zero in all three corners**, and all three
 worst hold slacks are positive. The original 20 ns core/8 ns Ethernet constraints
 and 0.95/1.05 derates are unchanged. This remains a nominal-RC, unfilled-layout
@@ -13,9 +13,88 @@ recommended rules off (549 categories, zero markers).
 Its new [complete density-filled layout](evidence/full-core-fill-density-20260923.json)
 passes the separate density deck, closing the previous 158 density markers
 for that baseline. These are distinct GDS inputs: its density result does not
-transfer to ECO19. Filled-layout main/antenna checks remain open.
+transfer to ECO19. The [completed filled-baseline checks](evidence/filled-baseline-foundry-checks-20260924.json)
+now also pass complete main DRC with recommended rules (560 categories),
+antenna (31 categories) and density (7 categories), each with zero markers.
+All three checks bind the same filled GDS; they do not qualify newer ECO layouts.
 Full transistor LVS fails; overall physical/manufacturing
 closure remains open.
+
+## Filled baseline and controlled gate duplication — 24 September
+
+The completed ECO27 route improves the prior ECO24 measurement, but still
+fails final timing. Its [full stage reports and logs](evidence/eco27-completed-route-20260924.tar.xz)
+retain the failures as well as the successful checks. Fresh nominal extracted
+RC gives the following results:
+
+| Liberty corner | Worst setup (ns) | Worst hold (ns) | Slew violations | Capacitance violations |
+|---|---:|---:|---:|---:|
+| Fast | +3.229701 | +0.038694 | 0 | 0 |
+| Typical | +2.051979 | +0.136560 | 0 | 0 |
+| Slow | **−3.185676** | +0.257405 | **10** | 0 |
+
+The separate [pipelined-core physical candidate](evidence/pipeline-completed-route-20260924.json)
+is rejected for adoption: actual routing gives slow setup **−11.970121 ns**,
+fast hold **−1.502509 ns**, typical hold **−0.229218 ns**, and slow slew/capacitance
+counts of **182/3**. Its [complete reports and logs](evidence/pipeline-completed-route-20260924.tar.xz)
+supersede earlier placement/global-route estimates. Both candidates retain the
+same 20 ns / 8 ns clocks and early/late derates of 0.95/1.05. Neither is a
+fill-aware RC-corner timing signoff.
+
+The later [scene-adapted September-tool candidate](evidence/september-scene-route-20260924.json)
+also finishes fresh routing, extraction and STA, but regresses to slow setup
+**−3.483718 ns** and **50** slew violations. Capacitance remains zero in all
+three corners; worst hold is +0.023618 ns fast, +0.147806 ns typical and
++0.266723 ns slow. The receipt carries complete metrics, raw clock/worst-slack
+reports and hashes of the full local reports/views. Its fresh SPEF passes the
+arithmetic auditor and its new GDS is exported; neither result is timing or
+full-transistor LVS acceptance. Gate cloning is being measured separately.
+
+The [full report archive](evidence/filled-baseline-foundry-checks-20260924.tar.xz)
+contains both sequential main-rule partitions, their complete category inventories,
+antenna and density reports, commands, logs and input hashes. The 159,418,848-byte
+filled GDS has SHA-256
+`18fc950bb1394bb879c0430e5863cf84f03bdd04a6572a135be1dee9ed77f950`.
+All 37 locked main rule tables are covered, including recommended rules.
+No category or region was omitted. The prior geometry audit confirms retention
+of all 425 source cells and their geometry, with 35 fill cells and 896,230
+added fill shape definitions. Full transistor LVS and fill-aware final timing
+remain separate, unsuccessful or incomplete gates.
+
+To allow timing repair by load splitting, `hw/soc/flow/check_eco_logic_clones.py`
+adds a conservative gate-duplication proof in front of the existing retained-cell
+checker. Each added non-buffer must compute every output of an original retained
+combinational gate from the same canonical sources, using the actual Liberty
+Boolean functions. Proven copies are contracted before the unchanged checker
+validates every original cell input, state equation and top port. Added state,
+opaque macro copies, removed original instances and duplicate dependency cycles
+are rejected. This does not prove timing, initialization, SRAM interiors or
+extracted physical connectivity.
+
+The original and new checker tests pass 48 cases, including wrong inputs,
+functions, clocks, top outputs, extra drivers, unsupported interfaces and
+cycles. A separate in-memory control on the actual routed-design graph accepts
+one equivalent NAND copy feeding a real sink and rejects its wrong-input
+variant. This is verification infrastructure, not an adopted physical repair.
+The separately queued clone-enabled repair must pass this proof, fresh detailed
+routing, RC extraction and three-corner STA under the unchanged 20 ns / 8 ns
+constraints before any timing improvement can be accepted.
+
+The [repair diagnostics](evidence/closure-repair-diagnostics-20260924.json)
+record the first clone-enabled attempt's signal 11 in the optimizer before a
+candidate could be proved. Its route was therefore forbidden; a separate
+retry limits each pass to one repair. A fixed-wire buffer-sizing sweep improves
+the measured slow setup estimate from −3.185676 to −2.320180 ns, still failing;
+that diagnostic has no new placement, routing or RC extraction acceptance.
+
+Two separate SRAM mask-interface experiments are also rejected: a 512×64
+per-bit-enable layout has 2,109 DRC markers and fails LVS, while the first
+512×128 paired-storage layout has 92 markers and fails LVS. The latter uses
+two physical bits per potential logical bit so that 64 two-bit write groups
+could implement a 64-bit mask; no native wrapper or SoC change is adopted.
+A subsequent placement experiment uses physical column count when selecting
+where to place the clock generator, preserving the independently generated
+schematic byte-for-byte. It needs fresh physical checks and timing models.
 
 ## Baseline measured on 23 September 2026
 
@@ -390,7 +469,7 @@ report failures below; this is not a final accepted layout. The unchanged
 netlist reuses the verified ECO19 Boolean proof, and the unannotated-driver
 report is byte-identical to its checked list of 1,048 unloaded outputs.
 
-The [replay archive](evidence/global-route-segment-replay-20260923.tar.gz)
+The [replay archive](evidence/global-route-segment-replay-20260923.tar.xz)
 contains the actual segment graph, producer/replay scripts, all corner reports,
 source identities and the rejected guide-only diagnostic. Merely reading
 guide rectangles emits `GRT-0008` and does not restore the full routing graph;
@@ -514,7 +593,7 @@ child-comparison obstacles while preserving devices, but never establish a
 passing macro. The unseeded full graph comparison reaches its 600-second
 bound; seeded KLayout and supplemental Netgen comparisons are stopped after
 the invalid model generalization is identified. None is accepted as a pass.
-The [diagnostic archive](evidence/sram-width-diagnosis-20260923.tar.gz) includes
+The [diagnostic archive](evidence/sram-width-diagnosis-20260923.tar.xz) includes
 the width witness, positive/negative controls, copied deck changes, input
 hashes, graph dumps and the last completed failing macro database. Original
 PDK files and production checks remain unchanged. A consistent, independently
@@ -982,7 +1061,7 @@ Neither is a fresh routed-corner acceptance result.
 
 A subsequent, separately recorded `setup25` experiment crashes with signal 11 in
 `SizeUpMove` before producing an accepted checkpoint. Its preserved log and
-inputs are in the [repair archive](evidence/eco24-functional-repair-20260923.tar.gz).
+inputs are in the [repair archive](evidence/eco24-functional-repair-20260923.tar.xz).
 The upstream [similar crash report](https://github.com/The-OpenROAD-Project/OpenROAD/issues/10210)
 does not establish this instance's cause. The failed experiment is rejected.
 The proven ECO24 state has now completed independent detailed routing, extraction
@@ -1349,7 +1428,7 @@ A separate bounded replay of the original `setup25` repair script **failed**
 after 2,526.83 seconds. The executable aborted in
 `rsz::SizeUpGenerator::loadStageContext` with a timing-graph `TableBlock` vector
 assertion. The [follow-up receipt](evidence/physical-tool-format-followup-20260923.json)
-and [complete failure log and diagnostic scripts](evidence/physical-tool-format-followup-20260923.tar.gz)
+and [complete failure log and diagnostic scripts](evidence/physical-tool-format-followup-20260923.tar.xz)
 preserve this negative result. No completed repaired state or new routed result
 was accepted. The completed read-only tests do not establish optimization,
 routing compatibility, foundry DRC/LVS or signoff.
