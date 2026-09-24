@@ -94,7 +94,77 @@ two physical bits per potential logical bit so that 64 two-bit write groups
 could implement a 64-bit mask; no native wrapper or SoC change is adopted.
 A subsequent placement experiment uses physical column count when selecting
 where to place the clock generator, preserving the independently generated
-schematic byte-for-byte. It needs fresh physical checks and timing models.
+schematic byte-for-byte. The completed physical repair below supersedes that
+initial failing layout; characterized timing models remain open.
+
+## Paired-storage SRAM clock repair — 24 September
+
+The [completed physical repair](evidence/paired-sram-clock-repair-20260924.json)
+fixes the independent 512×128 candidate's clock-generator placement, exports
+its actual clock pin and separates two clock/write-enable crossings using
+Metal3 and Via2. Hierarchy-aware trimming removes exactly **41.1648 µm²** from
+the affected Metal3 rails and their pin markers. Flattened-region checks reject
+any change outside those declared strips. The independently generated reference
+schematic remains byte-for-byte unchanged.
+
+The repaired candidate passes the locked recommended main DRC: **560 categories,
+zero markers**. Strict transistor LVS matches **all 44 circuit pairs and all
+405,006 MOS devices**, with no extraction diagnostics. The independent antenna
+check also passes **31 categories with zero markers**. Doubling one reference
+PMOS width makes the same LVS comparison fail; the earlier physical clock short
+also fails. No failed intermediate layout or cancelled check is counted as a pass.
+
+Density is **not qualified**: its boundary sanity check reports 34 geometries
+outside the inherited outline, alongside active and upper-metal density markers
+(39 total). This is an explicit `ERROR`, not a passing density result. A separate
+outline correction is needed before evaluating density on this macro. Full
+[raw reports, GDS/reference revisions and repair scripts](evidence/paired-sram-clock-repair-20260924.tar.xz)
+retain the failed intermediate attempts and exact hashes; see the
+[component notices](evidence/paired-sram-clock-repair-20260924-NOTICES.txt).
+
+This paired-storage macro is an independent research result. It has no qualified
+Liberty, PEX/PVT characterization, native integration or complete-chip acceptance.
+The smaller byte-mask adapter below is sufficient for the actual SoC RAM mask
+contract and avoids the paired-storage capacity overhead. Original full-chip
+SRAM LVS and routed timing remain open.
+
+## Native RAM mask compatibility — 24 September
+
+The [actual RTL and adapter evidence](evidence/byte-mask-native-adapter-20260924.json)
+resolves an earlier overly broad interface concern: the SoC RAM codec produces
+uniform **eight-bit mask groups**, including background scrub writes. A
+one-step symbolic SAT check over the actual 8,192-row codec proves the mask
+property with HARDEN=0 and HARDEN=1; a deliberately broken mask bit is rejected.
+The 13 meaningful SECDED bits per byte do not require arbitrary per-bit macro
+writes, because the stored check field and its write mask remain byte-wide.
+This does not qualify unrelated vendor BIST or arbitrary bit-mask requests.
+
+A research adapter combines four existing independent 512×64 byte-mask SRAM
+models into a 2,048×64 bank. It preserves the held read output, bank selection
+and native simultaneous read/write behavior. Against the original IHP
+behavioral reference it passes **146,498 comparisons** over all addresses,
+individual byte masks, disabled cycles and mixed controls. Wrong-bank,
+wrong-byte-enable, missing-output-hold and original stale-write-address models
+are all rejected by the same stimulus. The generated SRAM model's explicit
+current-address correction remains a behavioral hypothesis requiring separate
+transistor validation.
+
+The adapter then replaces only the macro model in an isolated compile of the
+actual `soc_mem_sram.v`, `soc_mem_ecc.v` and existing array/parity harness.
+All six supported combinations pass: 8,192 words with HARDEN=0/1 and RDREG=0/1,
+and 16,384 unprotected words with RDREG=0/1. Together they exercise **814,680
+clock cycles**, all addresses, byte enables, bank boundaries, foreground/scrub
+contention and reset retention. The first launch was rejected before elaboration
+by the existing Icarus version guard; the successful retry uses Icarus 14 from
+the installed OSS CAD Suite. The guard and test assertions are unchanged.
+
+[Complete source, proof/test logs and failed controls](evidence/byte-mask-native-adapter-20260924.tar.xz)
+and [component notices](evidence/byte-mask-native-adapter-20260924-NOTICES.txt)
+retain the scope. BIST is disabled and nonuniform masks are rejected. All four
+research macro clocks currently run continuously. These fault-free tests do not
+replace fault-injection coverage, full sequential equivalence, transistor/PEX/PVT
+characterization, Liberty, density, physical integration or full-chip LVS.
+No tracked SoC RTL or active physical candidate was changed by this experiment.
 
 ## Baseline measured on 23 September 2026
 
