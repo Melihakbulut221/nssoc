@@ -114,10 +114,14 @@ check also passes **31 categories with zero markers**. Doubling one reference
 PMOS width makes the same LVS comparison fail; the earlier physical clock short
 also fails. No failed intermediate layout or cancelled check is counted as a pass.
 
-Density is **not qualified**: its boundary sanity check reports 34 geometries
-outside the inherited outline, alongside active and upper-metal density markers
-(39 total). This is an explicit `ERROR`, not a passing density result. A separate
-outline correction is needed before evaluating density on this macro. Full
+The first density run reports `ERROR`: 34 geometries lie outside the inherited
+outline, with 39 markers in total. A separate export enlarges only the outline
+to (−0.5, −6)–(1405.5, 169) µm. An all-layer flattened-region XOR verifies that
+all other physical layers are unchanged, and the reference remains identical.
+Fresh density checking of that export removes all boundary errors but still
+**fails five categories**: active area, Metal4, Metal5, TopMetal1 and TopMetal2.
+Main DRC/LVS/antenna results above bind the original repaired GDS; they are not
+reported as fresh checks of this later boundary export. Full
 [raw reports, GDS/reference revisions and repair scripts](evidence/paired-sram-clock-repair-20260924.tar.xz)
 retain the failed intermediate attempts and exact hashes; see the
 [component notices](evidence/paired-sram-clock-repair-20260924-NOTICES.txt).
@@ -1334,7 +1338,7 @@ transistor/model equivalence, simultaneous same-address behavior or 125 MHz
 operation. The original physical receipt predates the separately recorded
 nominal transistor result below.
 
-The [raw archive](evidence/independent-dp-sram-prototype-20260923.tar.gz) and
+The [raw archive](evidence/independent-dp-sram-prototype-20260923.tar.xz) and
 [notices](evidence/independent-dp-sram-prototype-20260923-NOTICES.txt) preserve the
 generated circuit/GDS, geometry repairs, all completed reports and fault controls.
 Density, extracted timing, complete PVT/function characterization, Liberty/LEF,
@@ -1453,7 +1457,7 @@ indices and passes **9,218 checks** over all 512 addresses, all eight byte
 masks, write-disabled reads and registered read selection; the original model
 fails the same bench. This does not prove transistor/model equivalence.
 
-The [raw archive](evidence/independent-sp512-sram-prototype-20260923.tar.gz) and
+The [raw archive](evidence/independent-sp512-sram-prototype-20260923.tar.xz) and
 [notices](evidence/independent-sp512-sram-prototype-20260923-NOTICES.txt) retain
 the independent circuits/layouts, repairs, failed capacity attempt, checks,
 fault controls and exact source/tool identities. Transistor operation/PVT,

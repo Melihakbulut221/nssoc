@@ -2,6 +2,81 @@
   "date": "2026-09-24",
   "status": "PAIRED_MACRO_MAIN_DRC_AND_TRANSISTOR_LVS_PASS",
   "scope": "Independent512x128 research macro only. General64-bit-mask storage could use one bit per physical pair. The actual SoC byte-uniform mask permits the smaller byte-mask adapter instead. No complete-chip LVS or timing closure.",
+  "standalone_boundary_followup": {
+    "generation": {
+      "status": "GENERATED_REQUIRES_INDEPENDENT_CHECKS",
+      "top": "SP6TSRAM512x128PAIRED",
+      "scope": "Apply the same15nm supply-rail edge trim to three inherited metal/pin cell definitions; original top-only trimming was covered by unchanged child drawing metal. Hierarchy and independent transistor reference preserved.",
+      "input_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/repair_paired_v7_inherited_rails.py": "8e956e92adf0b40fda96cd2db6a398f4ed4c5ecedd6379983f0a807f77a51d76",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v5/candidate.gds": "e957c911995acb1a9d017121322b924691b0c64904803fc8a013ec340209c333",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v5/reference.spice": "d9e4326802f685fec8d4a9f0570fe9c3ecd849af268da7ab60f2a18b70337162",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v5/generation.json": "fe8918d2900ea451c9fa84014467588a78c6559f799bec6a15000e6a996abae0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/export_paired_v7_boundary.py": "70b7bb0944e05201c3f53e9a0efc3668f8f5d255c6ffbab87fe8708248169373"
+      },
+      "modified_cells": [
+        "SP6TColumnBlock_COL128R_CP2B_CM4MN26L580W1R_PC26L100W_64WE",
+        "SP6TColumn_128R_CP2B_CM4MN26L580W1R_PC26L100W",
+        "SP6TColPeriph2B_PC26L100W_CM4MN26L580W1R",
+        "SP6TSRAM512x128PAIRED"
+      ],
+      "flattened_geometry_checks": [
+        {
+          "layer": [
+            30,
+            0
+          ],
+          "removed_area_um2": 41.1648,
+          "added_area_um2": 0.0,
+          "exact_global_strip_difference": true
+        },
+        {
+          "layer": [
+            30,
+            2
+          ],
+          "removed_area_um2": 41.1648,
+          "added_area_um2": 0.0,
+          "exact_global_strip_difference": true
+        }
+      ],
+      "reference_unchanged": true,
+      "output_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/candidate.gds": "9d08d0707c774d9da092047f4a897888b6542f267b85cef130c63dff2fcb9c49",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/candidate.v": "ed19e0c680e973dbd4ade8a6388a5ca6d86d7b1d8c5078e3c5c2db7dcb1179f0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/simulation.spice": "fffba754365a92ce9563c2bc3cb529a9cdff25f7a06bb33278ab9447ca01dd84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/reference.spice": "d9e4326802f685fec8d4a9f0570fe9c3ecd849af268da7ab60f2a18b70337162"
+      },
+      "parent_generation_sha256": "a2d583fdb2935e6167220cff3026ade45887c3b24fb05920ed00f2337e85692e",
+      "standalone_outline": {
+        "original_boundary_polygons": 1,
+        "outline_um": [
+          -0.5,
+          -6,
+          1405.5,
+          169
+        ],
+        "purpose": "Standalone macro measurement outline, not chip floorplan or density waiver",
+        "all_other_layer_regions_unchanged": true,
+        "reference_unchanged": true
+      }
+    },
+    "density": {
+      "status": "FAIL",
+      "process_returncode": 0,
+      "markers": 5,
+      "categories": {
+        "'AFil.g'": 1,
+        "'M4.j'": 1,
+        "'M5.j'": 1,
+        "'TM1.c'": 1,
+        "'TM2.c'": 1
+      },
+      "category_count": 12,
+      "report_sha256": "7fb17f1baf66d21df1bb165bdb5b86c432311836fb5fb6c8b0a672df738d2175"
+    },
+    "scope": "Boundary-only change verified by all-layer region XOR; five real density deficiencies remain. Main DRC/LVS/antenna results above bind the original v7 GDS, not this exported copy."
+  },
   "top": "SP6TSRAM512x128PAIRED",
   "gds_sha256": "ed170b3f272787df49f6f74c22d0da16022c8ded2c5ef15f47675d742955d837",
   "reference_sha256": "d9e4326802f685fec8d4a9f0570fe9c3ecd849af268da7ab60f2a18b70337162",
@@ -1145,14 +1220,15 @@
   ],
   "archive": {
     "path": "docs/evidence/paired-sram-clock-repair-20260924.tar.xz",
-    "sha256": "834e6008c017178dc1d7ae66d7205c18dda980352c8a2dc73a9d2a56c963267a",
-    "bytes": 427256,
+    "sha256": "51819b75b54b0dea3976e740e9d5eb26bc2cbbdc190315850348f00802747bd1",
+    "bytes": 431624,
     "members": {
       "docs/evidence/paired-sram-clock-repair-20260924-NOTICES.txt": "65f8ab1bb35d97294c22076d153ff71ab26babbe58dc4ebe318b944d1fa2233a",
       "hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
       "hw/soc/flow/check_ihp_drc.py": "0e72fc48bb0d793b73ba22d38381c15d60e0cc64d047009fb9727b3dc6dd2a4c",
       "hw/soc/flow/check_ihp_drc_partitioned.py": "0681efb44a3cc165290d872cda23068ca96c31ecc488dba27575cd2b96a682e9",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/audit_paired_v5_geometry.py": "23c01425729249afdd09b747acedbe92cc1cb34416a5f254a37b835579d7e8d9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_paired_v7_boundary_density.py": "1c112d0632839476c6d6be05271cda2a53f0d0e2daceff6f29dd051f1f82e830",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_paired_v7_supplemental.py": "60fef291221d66401a1355b9eeb10d4508855974c4d72dccffbf2c80ff778908",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_paired_v7_wrong_width.py": "828ee90d20b73f1fff6c7f6cf7e0fa91ae8d91f90a37875e15f712a7b2e4c0fe",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512x128_paired_v2_strapped.py": "af643e52ab2590bb1b00776c82bb4d3aaf87e0950db47dae8e159d452fbb75c6",
@@ -1161,6 +1237,7 @@
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512x128_paired_v5.py": "1d8df3d04a7579d9029982a9b27be7666e755ddbeb3b7fc5a256dbc97dfe0c4e",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512x128_paired_v6.py": "e0c5e65564cf51e01f8e619916de3a1e19a769bab06362c920a07953f6169e75",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512x128_paired_v7.py": "7301d8304626589f724e10d031df752b16a4af8c8e38c1e22d3bdb17be2ce2f6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/export_paired_v7_boundary.py": "70b7bb0944e05201c3f53e9a0efc3668f8f5d255c6ffbab87fe8708248169373",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generate_ihp_sp512x128_paired.py": "c6c8553fe9aa8104bf4c86e9d70d69c9a02d5362d80fe9e4bfdcd2f678477fee",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generate_ihp_sp512x128_paired_v2.py": "da348b32786bb4df2df86a2a2ac70971e47d7f55b2e29f392a1fdd3c139107cc",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v2-strapped/candidate.gds": "04ed2963491c2f75b29b5fa6fc0654a8d35eaa915ff1256187fabb73c28a3f97",
@@ -1189,6 +1266,11 @@
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7/generation.json": "a2d583fdb2935e6167220cff3026ade45887c3b24fb05920ed00f2337e85692e",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7/reference.spice": "d9e4326802f685fec8d4a9f0570fe9c3ecd849af268da7ab60f2a18b70337162",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7/simulation.spice": "fffba754365a92ce9563c2bc3cb529a9cdff25f7a06bb33278ab9447ca01dd84",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/candidate.gds": "9d08d0707c774d9da092047f4a897888b6542f267b85cef130c63dff2fcb9c49",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/candidate.v": "ed19e0c680e973dbd4ade8a6388a5ca6d86d7b1d8c5078e3c5c2db7dcb1179f0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/generation.json": "5d444a916ca72b505cb9f3fa6536ea9d59c901d3c0b8d7bc9d82ac480ff80774",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/reference.spice": "d9e4326802f685fec8d4a9f0570fe9c3ecd849af268da7ab60f2a18b70337162",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-boundary/simulation.spice": "fffba754365a92ce9563c2bc3cb529a9cdff25f7a06bb33278ab9447ca01dd84",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-wrong-width/candidate.gds": "ed170b3f272787df49f6f74c22d0da16022c8ded2c5ef15f47675d742955d837",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-wrong-width/generation.json": "a460327816011afeb867051723a1b6d1d126831a545a4500bf8cba79975d712f",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x128-paired-v7-wrong-width/reference.spice": "9c8f7e6390c5d687bf9756f66306e5dd280f798f481da80754f72091944bf8e0",
@@ -1273,7 +1355,8 @@
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-512x128-paired-v7-wrong-width/lvs/inputs.json": "97a01e4935bf1812447d6d30f3754d3f3385d5ea2510a7bf20e255500cf9326b",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-512x128-paired-v7-wrong-width/lvs/run.log": "b15fda9733a582b68b4b86142f31b72ebf8a66639613943613405c8dc7f1ce12",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-512x128-paired-v7-wrong-width/progress.json": "24d3be2b6671646c5c66957fdd96c04310edfbe363cd5cc1b2170f0ab4808ce0",
-      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_paired_sram_repair.py": "b3453ceedbeffd0842fed8dff965f43767dc6881d5a6a7175a1e2d856c2bd1c3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/queue_paired_v7_boundary_density.py": "1fa0384a45b63f13fe98ec6289deb62d2db80beef1e749cbe259e5977a02ea91",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_paired_sram_repair.py": "4b44110cdca9c42cf5750bbb302fffc73a2a7586c5bc4ca8ce0978505bca662e",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/repair_paired_v3_clock_and_spacing.py": "d1dd441e3bc54d65fc02f04bb80069f7a8d257a79a686a6a9b133189f48738f5",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/repair_paired_v4_clock_crossover.py": "bbabf383edaecbc47c1b033ccf0f1e312337ff44e85984071ece4e760f7a2208",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/repair_paired_v5_clock_crossover.py": "c8c80c8119108a2e22f12097cf7b4fadd95eb7922e1bcf62f650cfd5f0e1130e",
@@ -1286,10 +1369,16 @@
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-paired-v7/antenna.log": "924dce4c2abe4fa894adb566abea6d0c99806bd49d697274996948ddb487810c",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-paired-v7/density.log": "0f97f299ef7b0c26f164e72b087155ef4570d4c5e2a584b73ad44e25663bf2a8",
       "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-paired-v7/progress.json": "a009047883b9bf0ae0292e7a5286d5c0edd9e8008433107c1fd52e6bf843118e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-paired-v7-boundary/density.log": "722fcc33d996291c503abf31c40eef7172dc8f3a63feebd13d1aba08199eaca6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-paired-v7-boundary/progress.json": "36b7bcbbe5adfa84fa247a768ad23a68523cd7393e47e4409ab48dcff9f4aa31",
       "hw/soc/out/srampaired-v7-antenna-20260924/drc.lyrdb": "7d3e90927a81ac4bc8b564d50ff9c97fca0a81b798007b5916fa325b66fc327b",
       "hw/soc/out/srampaired-v7-antenna-20260924/inputs.json": "e05b94519b45fdf5b9d35c542a0cfcd499ca4ba10b8e9acb0bbc210977c1ad8d",
       "hw/soc/out/srampaired-v7-antenna-20260924/result.json": "924dce4c2abe4fa894adb566abea6d0c99806bd49d697274996948ddb487810c",
       "hw/soc/out/srampaired-v7-antenna-20260924/run.log": "38f9c8f3f9c51f389511d3aedb5f10431d4126279561a0cd51ee076c8c6e8e75",
+      "hw/soc/out/srampaired-v7-boundary-density-20260924/drc.lyrdb": "7fb17f1baf66d21df1bb165bdb5b86c432311836fb5fb6c8b0a672df738d2175",
+      "hw/soc/out/srampaired-v7-boundary-density-20260924/inputs.json": "a7ffaeaad0772f4fb475e1a41fb6d9f47dc52ee6af5d67bc337cb4f4ed71bc36",
+      "hw/soc/out/srampaired-v7-boundary-density-20260924/result.json": "722fcc33d996291c503abf31c40eef7172dc8f3a63feebd13d1aba08199eaca6",
+      "hw/soc/out/srampaired-v7-boundary-density-20260924/run.log": "20dca46ac53a95dd474485dfe7fe0eb35c29f00d8b2508b8d7d1fc7d0c2b6d11",
       "hw/soc/out/srampaired-v7-density-20260924/drc.lyrdb": "3e14b5053fccd58d4c0527b37038e9ad87def2e8eaba5b46f859743dfc7efb32",
       "hw/soc/out/srampaired-v7-density-20260924/inputs.json": "31d0eba0b01817c6e1237dfdc4bd6ff344f6e55a7d67d6e509d00c04190fda78",
       "hw/soc/out/srampaired-v7-density-20260924/result.json": "0f97f299ef7b0c26f164e72b087155ef4570d4c5e2a584b73ad44e25663bf2a8",
