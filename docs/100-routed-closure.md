@@ -97,6 +97,84 @@ where to place the clock generator, preserving the independently generated
 schematic byte-for-byte. The completed physical repair below supersedes that
 initial failing layout; characterized timing models remain open.
 
+## Parallel-prefix ALU candidate — 24 September
+
+The [source-bound ALU experiment](evidence/alu-prefix-research-20260924.json)
+replaces one 33-bit addition with six levels of explicitly retained parallel
+carry logic in an isolated copy of the actual generated Ibex ALU. It adds no
+state or cycle latency. The active SoC uses RV32B=0, which is the measured mode.
+An all-output combinational SAT miter proves the original and candidate RTL
+for arbitrary inputs; a one-bit wrong-sum control fails. A second miter proves
+all outputs of the two actually mapped ALUs equivalent, using the real Liberty
+Boolean functions.
+
+The matched isolated measurement uses a 20 ns virtual clock, zero external
+delays, a `buf_4` input driver, 5 fF output loads, 0.95/1.05 derates and **no wire
+parasitics**. Both mappings keep the historical ABC target of 20 ps. Results:
+
+| Liberty corner | Original worst delay (ns) | Prefix worst delay (ns) |
+|---|---:|---:|
+| Fast | 3.162165 | 1.759283 |
+| Typical | 4.773912 | 2.632093 |
+| Slow | 7.542938 | 4.166013 |
+
+The slow operand-to-adder-output path separately improves from 6.379248 to
+2.118846 ns. Isolated area grows from 10,554.9318 to 13,919.2452 µm², and cells
+from 1,009 to 1,380. These figures are **not routed SoC timing**.
+
+Matched full-interface synthesis retains native RAMs, the compiled logic ROM,
+SYNPRE, registered memory/request interfaces and CORE_REQ_REG=CORE_WB_STAGE=0.
+The original control reproduces the previous complete netlist **byte for byte**
+with the original Yosys 0.67+146. Changing only the ALU source gives 70,132 cells
+versus 68,534, and cell area 1,068,782.2992 versus 1,067,793.7158 µm², about
+**0.093% more whole-design cell area**. No tracked RTL or default profile adopts
+the candidate. Native gate-level boot and fresh physical implementation remain
+separate required checks.
+
+The full unplaced STA runs are dominated by unbuffered clock/reset fanouts of
+thousands of pins and remain severely negative: slow worst setup is −122.164796
+ns for the control and −121.928014 ns for the candidate. These zero-wire,
+pre-clock-tree figures cannot predict the final routed gain. The initial
+missing dual-port macro LEF error is retained; the corrected run supplies all
+macro masters and preserves the same SDC and libraries.
+
+Proof setup failures are also retained. The first internal-name proof left one
+ROM-related point unproven; the first SAT attempt could not import that ROM.
+The completed all-output proof explicitly maps the combinational ROM before
+SAT. Separately, an unrestricted RTL-to-mapped check already fails for the
+original ALU when multiplication/division selection overlaps the subtraction
+condition in its upstream `unique case` operand mux. That baseline discrepancy
+is not waived. The independent mapped-control versus mapped-prefix proof passes
+for all input combinations. Full processor acceptance still requires the native
+and physical checks above.
+
+The [complete isolated circuits, proofs, synthesis and timing reports](evidence/alu-prefix-research-20260924.tar.xz)
+include failed attempts and negative controls; see the
+[component notices](evidence/alu-prefix-research-20260924-NOTICES.txt).
+Large full-SoC netlists remain local and hash-bound in the receipt. Original
+SRAM-interior LVS, final extracted timing, qualified RC/fill and product release
+gates remain open.
+
+## Rebuilt data-buffer forests — 24 September
+
+The [completed repair and logic proof](evidence/data-tree-repair-20260924.json)
+remove exactly **1,573 selected positive buffers** and rebuild those data trees.
+An exact before/after instance inventory guards the removal. The first attempt
+passed a nested Tcl list and accidentally selected all 25,177 eligible buffers;
+that candidate was stopped and rejected before proof. A separate corrected run
+expands the arguments and checks every removed instance against the selection.
+
+The corrected run proves all **73,531 retained cells**, their input equations and
+state definitions. Its final positive-buffer count falls from 25,050 to 24,825.
+The global-route setup estimate is still **−3.152627 ns**, with electrical
+violations remaining. Fresh detailed routing, extraction and final STA are
+pending under the unchanged 20 ns / 8 ns clocks and 0.95/1.05 derates. This is
+not an accepted timing result or full-chip LVS pass. The
+[repair scripts, selection, logs and reports](evidence/data-tree-repair-20260924.tar.xz)
+and [notices](evidence/data-tree-repair-20260924-NOTICES.txt) retain the scope;
+large implementation inputs and generated proof graphs remain hash-bound local
+artifacts rather than being duplicated in this compact report archive.
+
 ## Paired-storage SRAM clock repair — 24 September
 
 The [completed physical repair](evidence/paired-sram-clock-repair-20260924.json)
