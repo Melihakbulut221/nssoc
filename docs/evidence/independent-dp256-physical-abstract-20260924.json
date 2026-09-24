@@ -1,0 +1,761 @@
+{
+  "date": "2026-09-24",
+  "status": "GEOMETRY_ACCESS_MAIN_DRC_LVS_ANTENNA_PASS_DENSITY_FAIL",
+  "scope": "Independent256x16dual-port SRAM physical abstract only; no original SRAM replacement or SoC acceptance.",
+  "abstract": {
+    "status": "GENERATED_REQUIRES_INDEPENDENT_LEF_AND_ACCESS_CHECKS",
+    "scope": "Conservative geometry abstract with0.4um pin-access openings; actual conductors/cuts are restored, freshly normalized GDS with all-layer XOR and text-anchor translation proof; no Liberty, antenna characterization, pin-access acceptance or SoC integration.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/build_dp256_abstract.py": "34ab88442960bdff571de5459989c7324fadf1a5f4f52328c7230206319dc1f3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/candidate.gds": "809e6f53fb37c86cece19fd301173db11cb5dc21af1ee0d39fcf7c386c9fb51a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9"
+    },
+    "normalization_translation_um": [
+      0.5,
+      0.5
+    ],
+    "geometry_xor_all_layers_empty": true,
+    "all_text_anchors_preserved": true,
+    "size_um": [
+      322,
+      119
+    ],
+    "pin_access_opening_margin_um": 0.4,
+    "openings_extended_to_nearest_boundary": true,
+    "normalization_proof_reused_from_identical_gds": false,
+    "gds_sha256": "43ff562ef11f96d87d6319c78a291bc6896a768c012629e6de78b49cfa408c32",
+    "lef_sha256": "bd3f1fbd2fdc0be13f86ff329d3f7d9404a48562d3192971db97638977464034",
+    "klayout_version": "0.30.11"
+  },
+  "port_count": 88,
+  "geometry_controls": {
+    "status": "PASS_STANDALONE_GEOMETRY_WITH_NEGATIVE_CONTROLS",
+    "scope": "Standalone macro abstract geometry and port consistency, plus three actual malformed LEF imports. No routing-access, Liberty, antenna or full-chip physical acceptance.",
+    "cases": [
+      {
+        "name": "valid",
+        "command": [
+          "env",
+          "NSSOC_LEF_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/valid",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_splash",
+          "-exit",
+          "-python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 4.275156702991808,
+        "lef_sha256": "bd3f1fbd2fdc0be13f86ff329d3f7d9404a48562d3192971db97638977464034",
+        "opendb_sha256": "b508ce42b75fc8b43b1f1f7a206d44b6ea0865f3f0f91dd27da375a020d60eec",
+        "measurements": {
+          "ports": 88,
+          "physical_layers": 10
+        },
+        "status": "PASS_GEOMETRY_ONLY"
+      },
+      {
+        "name": "shifted-clock-pin",
+        "command": [
+          "env",
+          "NSSOC_LEF_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/shifted-clock-pin",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_splash",
+          "-exit",
+          "-python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 3.570548730000155,
+        "lef_sha256": "ed870ad35a8583185b6e9fa14c151074c984da40da6fc91e659c3beb12c98769",
+        "opendb_sha256": "23c88a3da8a16fe02c8b408dfa4bead14b8a09540b17009ca8d563142b4dfb38",
+        "status": "REJECTED",
+        "reason": "('pin geometry', 'clk1', 'Metal2')"
+      },
+      {
+        "name": "wrong-write-enable-port",
+        "command": [
+          "env",
+          "NSSOC_LEF_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/wrong-write-enable-port",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_splash",
+          "-exit",
+          "-python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 2.745987522008363,
+        "lef_sha256": "a12aa074ac7dc0caf0477dd20566845ddffe57195894f229a4cec4e0345a5877",
+        "opendb_sha256": "3aad1d91c0f6e285bf197e0fea7e7549f1a5bd08eccc9a82cdee09bbd1005001",
+        "status": "REJECTED",
+        "reason": "CDL port set mismatch"
+      },
+      {
+        "name": "missing-metal1-obstruction",
+        "command": [
+          "env",
+          "NSSOC_LEF_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/missing-metal1-obstruction",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_splash",
+          "-exit",
+          "-python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 3.0066767529933713,
+        "lef_sha256": "823162a88c170f9ad89d17316cd299946e27034626a4064875084eab63732e8a",
+        "opendb_sha256": "2fb74b896a54acdf07679176838aceee2f0bb7e8bbc94280c0b86e808e645474",
+        "status": "REJECTED",
+        "reason": "('uncovered internal metal/cuts', 'Metal1')"
+      }
+    ],
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/audit_dp256_abstract.py": "2b924e1964bb3699532140d4ca804a3c8e5b29b5dfc2edd9de3c176b55d19aa1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py": "37f7e0361e695e9023bdff90faeedb6f3b10daed78cff47a14fe104b5a56ad42",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/tech/sg13g2.map": "7a359ddacd8f4517b5986e6cc46c436ba2232aaf6951f7d0f2849c920f338207",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/result.json": "8fc26b6b56850c697fdae8073d2388b3d8986de948fa5805151fc35ad4828ce5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/DP8TSRAMDP256x16.gds": "43ff562ef11f96d87d6319c78a291bc6896a768c012629e6de78b49cfa408c32",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/DP8TSRAMDP256x16.lef": "bd3f1fbd2fdc0be13f86ff329d3f7d9404a48562d3192971db97638977464034",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48"
+    }
+  },
+  "pin_access": [
+    {
+      "orientation": "R0",
+      "steps": [
+        {
+          "mode": "create",
+          "command": [
+            "env",
+            "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0",
+            "NSSOC_DP_ACCESS_MODE=create",
+            "NSSOC_DP_ORIENT=R0",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "-python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256_access_worker.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.7265450530103408
+        },
+        {
+          "mode": "access",
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/access.tcl"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 10.185081764007919
+        },
+        {
+          "mode": "audit",
+          "command": [
+            "env",
+            "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0",
+            "NSSOC_DP_ACCESS_MODE=audit",
+            "NSSOC_DP_ORIENT=R0",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "-python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256_access_worker.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.7718920499901287
+        }
+      ],
+      "audit": {
+        "status": "PASS_ALL_86_SIGNAL_TERMINALS_HAVE_ACCESS",
+        "scope": "Standalone placement at40,40um only; not complete routing, supply routing, antenna or SoC acceptance.",
+        "orientation": "R0",
+        "macro_signal_terminal_count": 86,
+        "macro_access_point_count": 1466,
+        "boundary_access_point_count": 86,
+        "minimum_points_per_signal_terminal": 3,
+        "odb_sha256": "acaa6f2dff3c16fbd0ea82b157bf86020b33787a6d475cbaacf6631d1195dd09"
+      }
+    },
+    {
+      "orientation": "MX",
+      "steps": [
+        {
+          "mode": "create",
+          "command": [
+            "env",
+            "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX",
+            "NSSOC_DP_ACCESS_MODE=create",
+            "NSSOC_DP_ORIENT=MX",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "-python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256_access_worker.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 2.080095133977011
+        },
+        {
+          "mode": "access",
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/access.tcl"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 7.881447405001381
+        },
+        {
+          "mode": "audit",
+          "command": [
+            "env",
+            "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX",
+            "NSSOC_DP_ACCESS_MODE=audit",
+            "NSSOC_DP_ORIENT=MX",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "openroad",
+            "-no_splash",
+            "-exit",
+            "-python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256_access_worker.py"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 1.166855591989588
+        }
+      ],
+      "audit": {
+        "status": "PASS_ALL_86_SIGNAL_TERMINALS_HAVE_ACCESS",
+        "scope": "Standalone placement at40,40um only; not complete routing, supply routing, antenna or SoC acceptance.",
+        "orientation": "MX",
+        "macro_signal_terminal_count": 86,
+        "macro_access_point_count": 1466,
+        "boundary_access_point_count": 86,
+        "minimum_points_per_signal_terminal": 3,
+        "odb_sha256": "e4d58a21e345177092d65a1c76dc51e51c474b17cfa531e1d8b3df508d3a5f67"
+      }
+    }
+  ],
+  "main_drc": {
+    "status": "PASS",
+    "process_returncode": 0,
+    "markers": 0,
+    "categories": {},
+    "category_count": 560,
+    "report_sha256": "e32c4f1e8ae1e541e25e347dd909805f4c94b468db2dbf72e06f2c30288bc3a8"
+  },
+  "strict_lvs": {
+    "status": "PASS within comparison scope",
+    "top": "DP8TSRAMDP256x16",
+    "reasons": [],
+    "extraction_diagnostics": [],
+    "circuit_status_counts": {
+      "Match": 52
+    },
+    "circuits": [
+      {
+        "layout": "DP8TArray_16X16",
+        "schematic": "DP8TARRAY_16X16",
+        "status": "Match",
+        "layout_devices_recursive": 2048,
+        "schematic_devices_recursive": 2048
+      },
+      {
+        "layout": "DP8TArray_16X32",
+        "schematic": "DP8TARRAY_16X32",
+        "status": "Match",
+        "layout_devices_recursive": 4096,
+        "schematic_devices_recursive": 4096
+      },
+      {
+        "layout": "DP8TArray_16X8",
+        "schematic": "DP8TARRAY_16X8",
+        "status": "Match",
+        "layout_devices_recursive": 1024,
+        "schematic_devices_recursive": 1024
+      },
+      {
+        "layout": "DP8TArray_2X1",
+        "schematic": "DP8TARRAY_2X1",
+        "status": "Match",
+        "layout_devices_recursive": 16,
+        "schematic_devices_recursive": 16
+      },
+      {
+        "layout": "DP8TArray_2X2",
+        "schematic": "DP8TARRAY_2X2",
+        "status": "Match",
+        "layout_devices_recursive": 32,
+        "schematic_devices_recursive": 32
+      },
+      {
+        "layout": "DP8TArray_32X32",
+        "schematic": "DP8TARRAY_32X32",
+        "status": "Match",
+        "layout_devices_recursive": 8192,
+        "schematic_devices_recursive": 8192
+      },
+      {
+        "layout": "DP8TArray_4X2",
+        "schematic": "DP8TARRAY_4X2",
+        "status": "Match",
+        "layout_devices_recursive": 64,
+        "schematic_devices_recursive": 64
+      },
+      {
+        "layout": "DP8TArray_4X4",
+        "schematic": "DP8TARRAY_4X4",
+        "status": "Match",
+        "layout_devices_recursive": 128,
+        "schematic_devices_recursive": 128
+      },
+      {
+        "layout": "DP8TArray_64X32BC",
+        "schematic": "DP8TARRAY_64X32BC",
+        "status": "Match",
+        "layout_devices_recursive": 16384,
+        "schematic_devices_recursive": 16384
+      },
+      {
+        "layout": "DP8TArray_8X4",
+        "schematic": "DP8TARRAY_8X4",
+        "status": "Match",
+        "layout_devices_recursive": 256,
+        "schematic_devices_recursive": 256
+      },
+      {
+        "layout": "DP8TArray_8X8",
+        "schematic": "DP8TARRAY_8X8",
+        "status": "Match",
+        "layout_devices_recursive": 512,
+        "schematic_devices_recursive": 512
+      },
+      {
+        "layout": "DP8TCell",
+        "schematic": "DP8TCELL",
+        "status": "Match",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 8
+      },
+      {
+        "layout": "DP8TClockGen_4S11341D1R",
+        "schematic": "DP8TCLOCKGEN_4S11341D1R",
+        "status": "Match",
+        "layout_devices_recursive": 44,
+        "schematic_devices_recursive": 44
+      },
+      {
+        "layout": "DP8TClockWE_T",
+        "schematic": "DP8TCLOCKWE_T",
+        "status": "Match",
+        "layout_devices_recursive": 32,
+        "schematic_devices_recursive": 32
+      },
+      {
+        "layout": "DP8TColMux_4MN26L580W1RR_bl2",
+        "schematic": "DP8TCOLMUX_4MN26L580W1RR_BL2",
+        "status": "Match",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 8
+      },
+      {
+        "layout": "DP8TColMux_4MN26L580W1R_bl1",
+        "schematic": "DP8TCOLMUX_4MN26L580W1R_BL1",
+        "status": "Match",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 8
+      },
+      {
+        "layout": "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl1",
+        "schematic": "DP8TCOLPERIPH8B_PC26L100W_CM4MN26L580W1R_BL1",
+        "status": "Match",
+        "layout_devices_recursive": 544,
+        "schematic_devices_recursive": 544
+      },
+      {
+        "layout": "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl2",
+        "schematic": "DP8TCOLPERIPH8B_PC26L100W_CM4MN26L580W1R_BL2",
+        "status": "Match",
+        "layout_devices_recursive": 544,
+        "schematic_devices_recursive": 544
+      },
+      {
+        "layout": "DP8TColumnBlock_COL64R_CP8B_CM4MN26L580W1R_PC26L100W_2WE",
+        "schematic": "DP8TCOLUMNBLOCK_COL64R_CP8B_CM4MN26L580W1R_PC26L100W_2WE",
+        "status": "Match",
+        "layout_devices_recursive": 34944,
+        "schematic_devices_recursive": 34944
+      },
+      {
+        "layout": "DP8TColumn_64R_CP8B_CM4MN26L580W1R_PC26L100W",
+        "schematic": "DP8TCOLUMN_64R_CP8B_CM4MN26L580W1R_PC26L100W",
+        "status": "Match",
+        "layout_devices_recursive": 17472,
+        "schematic_devices_recursive": 17472
+      },
+      {
+        "layout": "DP8TDec_and3_x1",
+        "schematic": "DP8TDEC_AND3_X1",
+        "status": "Match",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 8
+      },
+      {
+        "layout": "DP8TDec_dff_x1",
+        "schematic": "DP8TDEC_DFF_X1",
+        "status": "Match",
+        "layout_devices_recursive": 24,
+        "schematic_devices_recursive": 24
+      },
+      {
+        "layout": "DP8TDec_inv_x1",
+        "schematic": "DP8TDEC_INV_X1",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "DP8TDec_inv_x2",
+        "schematic": "DP8TDEC_INV_X2",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "DP8TDec_nand2_x0",
+        "schematic": "DP8TDEC_NAND2_X0",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "DP8TDirectColDec_A2B2R",
+        "schematic": "DP8TDIRECTCOLDEC_A2B2R",
+        "status": "Match",
+        "layout_devices_recursive": 76,
+        "schematic_devices_recursive": 76
+      },
+      {
+        "layout": "DP8TNonOvlClock_4S1R",
+        "schematic": "DP8TNONOVLCLOCK_4S1R",
+        "status": "Match",
+        "layout_devices_recursive": 26,
+        "schematic_devices_recursive": 26
+      },
+      {
+        "layout": "DP8TPrecharge_26L100W_bl1",
+        "schematic": "DP8TPRECHARGE_26L100W_BL1",
+        "status": "Match",
+        "layout_devices_recursive": 3,
+        "schematic_devices_recursive": 3
+      },
+      {
+        "layout": "DP8TPrecharge_26L100W_bl2",
+        "schematic": "DP8TPRECHARGE_26L100W_BL2",
+        "status": "Match",
+        "layout_devices_recursive": 3,
+        "schematic_devices_recursive": 3
+      },
+      {
+        "layout": "DP8TReadWrite_CM4MN26L580W1R_RW26L380WS",
+        "schematic": "DP8TREADWRITE_CM4MN26L580W1R_RW26L380WS",
+        "status": "Match",
+        "layout_devices_recursive": 44,
+        "schematic_devices_recursive": 44
+      },
+      {
+        "layout": "DP8TRowDecPage_PD3B3BDH",
+        "schematic": "DP8TROWDECPAGE_PD3B3BDH",
+        "status": "Match",
+        "layout_devices_recursive": 48,
+        "schematic_devices_recursive": 48
+      },
+      {
+        "layout": "DP8TRowDec_PD3B3B_PAG3B3B0_wl1",
+        "schematic": "DP8TROWDEC_PD3B3B_PAG3B3B0_WL1",
+        "status": "Match",
+        "layout_devices_recursive": 668,
+        "schematic_devices_recursive": 668
+      },
+      {
+        "layout": "DP8TRowDec_PD3B3B_PAG3B3B0_wl2",
+        "schematic": "DP8TROWDEC_PD3B3B_PAG3B3B0_WL2",
+        "status": "Match",
+        "layout_devices_recursive": 668,
+        "schematic_devices_recursive": 668
+      },
+      {
+        "layout": "DP8TRowDecoderNand3X2",
+        "schematic": "DP8TROWDECODERNAND3X2",
+        "status": "Match",
+        "layout_devices_recursive": 12,
+        "schematic_devices_recursive": 12
+      },
+      {
+        "layout": "DP8TRowPeriph_PD3B3BR_LD2B2R_wl2",
+        "schematic": "DP8TROWPERIPH_PD3B3BR_LD2B2R_WL2",
+        "status": "Match",
+        "layout_devices_recursive": 744,
+        "schematic_devices_recursive": 744
+      },
+      {
+        "layout": "DP8TRowPeriph_PD3B3B_LD2B2R_wl1",
+        "schematic": "DP8TROWPERIPH_PD3B3B_LD2B2R_WL1",
+        "status": "Match",
+        "layout_devices_recursive": 744,
+        "schematic_devices_recursive": 744
+      },
+      {
+        "layout": "DP8TRowPredecoders_A3B3B_wl1",
+        "schematic": "DP8TROWPREDECODERS_A3B3B_WL1",
+        "status": "Match",
+        "layout_devices_recursive": 284,
+        "schematic_devices_recursive": 284
+      },
+      {
+        "layout": "DP8TRowPredecoders_A3B3B_wl2",
+        "schematic": "DP8TROWPREDECODERS_A3B3B_WL2",
+        "status": "Match",
+        "layout_devices_recursive": 284,
+        "schematic_devices_recursive": 284
+      },
+      {
+        "layout": "DP8TSRAMDP256x16",
+        "schematic": "DP8TSRAMDP256X16",
+        "status": "Match",
+        "layout_devices_recursive": 36776,
+        "schematic_devices_recursive": 36776
+      },
+      {
+        "layout": "DP8TWLDriverCol_64RN26L400WP26L800W_wl1",
+        "schematic": "DP8TWLDRIVERCOL_64RN26L400WP26L800W_WL1",
+        "status": "Match",
+        "layout_devices_recursive": 128,
+        "schematic_devices_recursive": 128
+      },
+      {
+        "layout": "DP8TWLDriverCol_64RN26L400WP26L800W_wl2",
+        "schematic": "DP8TWLDRIVERCOL_64RN26L400WP26L800W_WL2",
+        "status": "Match",
+        "layout_devices_recursive": 128,
+        "schematic_devices_recursive": 128
+      },
+      {
+        "layout": "DP8TWLDriver_N26L400WP26L800W_wl1",
+        "schematic": "DP8TWLDRIVER_N26L400WP26L800W_WL1",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "DP8TWLDriver_N26L400WP26L800W_wl2",
+        "schematic": "DP8TWLDRIVER_N26L400WP26L800W_WL2",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "buf_x1",
+        "schematic": "BUF_X1",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "buf_x2",
+        "schematic": "BUF_X2",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "buf_x4",
+        "schematic": "BUF_X4",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "dff_x1",
+        "schematic": "DFF_X1",
+        "status": "Match",
+        "layout_devices_recursive": 24,
+        "schematic_devices_recursive": 24
+      },
+      {
+        "layout": "inv_x0",
+        "schematic": "INV_X0",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "inv_x3",
+        "schematic": "INV_X3",
+        "status": "Match",
+        "layout_devices_recursive": 2,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "nand2_x0",
+        "schematic": "NAND2_X0",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "nor2_x0",
+        "schematic": "NOR2_X0",
+        "status": "Match",
+        "layout_devices_recursive": 4,
+        "schematic_devices_recursive": 4
+      },
+      {
+        "layout": "nsnrlatch_x1",
+        "schematic": "NSNRLATCH_X1",
+        "status": "Match",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 8
+      }
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/candidate.lvsdb": {
+        "bytes": 1424426,
+        "sha256": "6e43faac77c80b49801012b9ca0a527ccff744be873394d0f2727f332d5239dc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/deck.log": {
+        "bytes": 37550,
+        "sha256": "0db02710e502020a786b7f82ed62d0d278ef692a8f8c2c6b8e9da5587bf8f9cb"
+      }
+    }
+  },
+  "supplemental": {
+    "antenna": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 31,
+      "report_sha256": "7ff5f99d791c1e78c92b9fbdabc4930d3ae52b8962a69ab49b642094b1b70fcc"
+    },
+    "density": {
+      "status": "FAIL",
+      "process_returncode": 0,
+      "markers": 4,
+      "categories": {
+        "'AFil.g'": 1,
+        "'M1.j'": 1,
+        "'M2.j'": 1,
+        "'M3.j'": 1
+      },
+      "category_count": 11,
+      "report_sha256": "0a63e23e2bb24e13338ccf680371efb69af16e1e64af1d1702324dd950d24313"
+    }
+  },
+  "limitations": [
+    "Translation by(+0.5,+0.5)um places the322x119um outline at the origin. Flattened polygon XOR on every layer and every text anchor match the original filled GDS after translation. No conductor or reference-device change.",
+    "All88ports match independent circuit terminals and actual imported OpenDB geometry. Both clocks are CLOCK ports,32read data ports are OUTPUT, supplies are INOUT. Actual conductors/cuts remain obstructed; pin openings extend to the nearest macro boundary.",
+    "R0andMX standalone carriers at40,40um each have1466macro access points over86signal terminals, minimum3each. This is not supply routing, complete detailed routing or arbitrary-placement qualification. Router LEF58 warnings are retained.",
+    "Fresh exact-GDS mainDRC560categories/0markers, antenna31/0 and strictLVS52matching pairs pass. Density still failsAFil.g,M1.j,M2.j,M3.j. No boundary or density waiver.",
+    "An initial check script used an incorrectly adapted filename and failed before invoking any checker. Its source and failure receipt are retained; the corrected script uses a fresh output directory.",
+    "Characterized Liberty, extracted transistor behavior, native125MHzFIFO enable/hold compatibility, SoC integration and full-chip LVS/final timing remain open."
+  ],
+  "archive": {
+    "path": "docs/evidence/independent-dp256-physical-abstract-20260924.tar.xz",
+    "sha256": "23b74da6c6800eb7506b1a2f8f83c7ecf946a08a75744fe8d4f03fd2d1dcb695",
+    "bytes": 549160,
+    "members": {
+      "docs/evidence/independent-dp256-physical-abstract-20260924-NOTICES.txt": "a61103792da94ffbc6e98c37c998d23434281c4e4ebb21d8a9e781be38ddfca8",
+      "hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+      "hw/soc/flow/check_ihp_drc.py": "0e72fc48bb0d793b73ba22d38381c15d60e0cc64d047009fb9727b3dc6dd2a4c",
+      "hw/soc/flow/check_ihp_drc_partitioned.py": "0681efb44a3cc165290d872cda23068ca96c31ecc488dba27575cd2b96a682e9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/audit_dp256_abstract.py": "2b924e1964bb3699532140d4ca804a3c8e5b29b5dfc2edd9de3c176b55d19aa1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/build_dp256_abstract.py": "34ab88442960bdff571de5459989c7324fadf1a5f4f52328c7230206319dc1f3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_dp256_access.py": "66cf9bd9faa19247f3d60e33046c97c0bafe00e7db39ad3b5b822d92062df29a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_dp256_normalized.py": "8fb19ed0e8a599418f84fb2745c6ed966672e9fcf6d5b9cab1f625d74c512d08",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_dp256_normalized_supplemental.py": "76ca98c5859e367f79d5f4bc332c8cbe01bea215f92d6fc479f2c7ed071ff120",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_dp256_normalized_v2.py": "843c6c9b4a16932f67e1b304783580ba41dcb5abd04331d458a6ec824225c3af",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/missing-metal1-obstruction/DP8TSRAMDP256x16.lef": "823162a88c170f9ad89d17316cd299946e27034626a4064875084eab63732e8a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/missing-metal1-obstruction/opendb.json": "2fb74b896a54acdf07679176838aceee2f0bb7e8bbc94280c0b86e808e645474",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/missing-metal1-obstruction/read.log": "d936276958f70289a5e4a9b211f4b8b8bf804aa04f8a7b420dd99bf2ae2e53f6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/result.json": "9f50f786eda73c9bf18b6bec7d32b35ad1cb55c91362e96d63e8354e3d5baed4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/shifted-clock-pin/DP8TSRAMDP256x16.lef": "ed870ad35a8583185b6e9fa14c151074c984da40da6fc91e659c3beb12c98769",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/shifted-clock-pin/opendb.json": "23c88a3da8a16fe02c8b408dfa4bead14b8a09540b17009ca8d563142b4dfb38",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/shifted-clock-pin/read.log": "eea6cf228696b7ecf9277eb4988191638e20f10b28faaeb65a3920fa37992f9f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/valid/DP8TSRAMDP256x16.lef": "bd3f1fbd2fdc0be13f86ff329d3f7d9404a48562d3192971db97638977464034",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/valid/opendb.json": "b508ce42b75fc8b43b1f1f7a206d44b6ea0865f3f0f91dd27da375a020d60eec",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/valid/read.log": "a843a18e6d2b8fd9a5ac9a4da5274c1649aa2e56bc40085841192a70a7ae2951",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/wrong-write-enable-port/DP8TSRAMDP256x16.lef": "a12aa074ac7dc0caf0477dd20566845ddffe57195894f229a4cec4e0345a5877",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/wrong-write-enable-port/opendb.json": "3aad1d91c0f6e285bf197e0fea7e7549f1a5bd08eccc9a82cdee09bbd1005001",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-abstract-audit/wrong-write-enable-port/read.log": "4fdeeb8be7b79bca0b96687b8158d5f545d0af3fee3986b0129ad6b1f45e55d3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/DP8TSRAMDP256x16.gds": "43ff562ef11f96d87d6319c78a291bc6896a768c012629e6de78b49cfa408c32",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/DP8TSRAMDP256x16.lef": "bd3f1fbd2fdc0be13f86ff329d3f7d9404a48562d3192971db97638977464034",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-physical-abstract/result.json": "8fc26b6b56850c697fdae8073d2388b3d8986de948fa5805151fc35ad4828ce5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/access.log": "c3d33c88dfc084d7b0b22b1c79b0e197683f1842bdfbc7b3ff5bc3d11caabdbb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/access.odb": "e4d58a21e345177092d65a1c76dc51e51c474b17cfa531e1d8b3df508d3a5f67",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/access.tcl": "886d99c0287092e6266722327a59fb1ea080e8a78d81f9e8bb7bcaf2a840a792",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/audit.log": "ff29418cf28ce67ed4358f5b90aa96fcf3c0c692631c338edd46733c0159d8c6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/carrier.def": "63e31b79b265446321499ad36c883cb6a9a02f39587efd10ac0aea25f1763b83",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/carrier.json": "316b265a9d579e973a0f994a119183bf2dcbe4770b4effa98c0eee1208550388",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/carrier.odb": "32090ac0ba1ce54500404b4fdf2208139acffbe2db6a73212b1063451acc72f2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/create.log": "3887fd3cf6ab51d03c6c65902fb8f63a46ff70b2608b58cb292308d9bdc2849c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/MX/point-audit.json": "c2593e45cdaba49ee45ce9ebedfd208c71d553ab057bbdb405c6d228b7d0f39d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/access.log": "8f8cdb938e5b647235e9331afa0b1dc794640f1ae87e6414a764adf6502c2465",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/access.odb": "acaa6f2dff3c16fbd0ea82b157bf86020b33787a6d475cbaacf6631d1195dd09",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/access.tcl": "e3651370b43e3308d8a0de8092cf02fbc398f17ddfd27aae4ba47c0e3bed9d33",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/audit.log": "beec22998915340131ba36e61722c3bf347530403a61b84a7861f97ebad8a69c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/carrier.def": "e9cb7fef2e0825ff4ea81ab9834a26b3e51de64faa97e03d13541da4187ad1d1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/carrier.json": "2727bd1a382ca9df23a6293685cd09944c0d6679fe7fa62238cf93381e99364c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/carrier.odb": "9594c1fcb3ee40af63f176ab3a782c53e7bc2aa3c5577b432d5685489609466d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/create.log": "3887fd3cf6ab51d03c6c65902fb8f63a46ff70b2608b58cb292308d9bdc2849c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/R0/point-audit.json": "1fdb897a20e2c98148caab691b2608078905fd68e25c8ec13b3c26aed341e037",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256-pin-access/result.json": "456756e116231b4d8a434ee78f9239aa7f8ed1914e0ecffc3e10ebd77720b211",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/dp256_access_worker.py": "cb3d1a4e6d63432dd32c215aaa17a0395f6de96716b9ba507ee639558952c118",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/candidate.gds": "809e6f53fb37c86cece19fd301173db11cb5dc21af1ee0d39fcf7c386c9fb51a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/ihp-dev-sram/LICENSE.md": "10b6ec42123b3f41b3f8d708563805b69cf78c3a7940c1ca80893422475b6618",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized/initial-error.json": "eb18b35ef177e7213c0835387deba9dba9adcf67902654af9365de7c4abd1817",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/drc/drc.lyrdb": "e32c4f1e8ae1e541e25e347dd909805f4c94b468db2dbf72e06f2c30288bc3a8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/drc/inputs.json": "29fa7c714a8caa9d7359902877eabf253085578d13b7e8b706eb916ef14c959f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/drc/result.json": "2c8c9272e97e2761e50096f3c2ce40906e21cd5ee1e7cc50cfaeaba045385aa5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/drc/run.log": "38653e5dbaf462f4076ef167b2a8e245806d71560afc6c4ac4175926e465ed61",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/audit.json": "2005f46a6c200cc26127e84d9d48d5600ef9d45a3251e12192a05112b7969bfe",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/candidate.lvsdb": "6e43faac77c80b49801012b9ca0a527ccff744be873394d0f2727f332d5239dc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/deck.log": "0db02710e502020a786b7f82ed62d0d278ef692a8f8c2c6b8e9da5587bf8f9cb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/extracted.cir": "dae95ca9d898757e657a3d96c5180fa0e76fcc48f38e9c3fd86f3317d9c57512",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/inputs.json": "e353867cb7497e1bdce0e2cf36caa742d30a8ed9c3b249d7a77c31544abd5af6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/lvs/run.log": "7ba69f0fa91bf4a9ead57f5cb3da404b08bfdc222a810eec51fc90d1ea7c9cf7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/physical-checks-dp256x16-normalized-v2/progress.json": "9138c57ca83bc6a5935e133118dbbbd704b8e0265505a9f1a3a08b141d6d04d0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/read_dp256_lef.py": "37f7e0361e695e9023bdff90faeedb6f3b10daed78cff47a14fe104b5a56ad42",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_dp256_abstract.py": "e948a6b8f6148d389d343f64ebaaa4787c438a7cb55108a57c9544e121efe354",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-dp256x16-normalized/antenna.log": "22f7869c362aff6e4829fddce05b957cff3a7a82f907c47befd92b865eed3c38",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-dp256x16-normalized/density.log": "062dbcc67b60d8411012547f2da172677e4c6cbdda8c8aa0e2b27bc84bce6f45",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/supplemental-dp256x16-normalized/progress.json": "265f799f05071ce00ee6a198eca53aba9c24b042bbe1f650303ac349e6f37e3f",
+      "hw/soc/out/sramdp256x16-normalized-antenna-20260924/drc.lyrdb": "7ff5f99d791c1e78c92b9fbdabc4930d3ae52b8962a69ab49b642094b1b70fcc",
+      "hw/soc/out/sramdp256x16-normalized-antenna-20260924/inputs.json": "3bc421c5e18360227209d3976238a46621abf378025e2425894cca3e397ef9d9",
+      "hw/soc/out/sramdp256x16-normalized-antenna-20260924/result.json": "22f7869c362aff6e4829fddce05b957cff3a7a82f907c47befd92b865eed3c38",
+      "hw/soc/out/sramdp256x16-normalized-antenna-20260924/run.log": "d2466a934a0a6d0c26f93f76551f2ec8df766d4f57ed04a751e94afc65452cd9",
+      "hw/soc/out/sramdp256x16-normalized-density-20260924/drc.lyrdb": "0a63e23e2bb24e13338ccf680371efb69af16e1e64af1d1702324dd950d24313",
+      "hw/soc/out/sramdp256x16-normalized-density-20260924/inputs.json": "38a4e2fbe59adeef0ecba2860f09657e052f177c600fa61aedec9ddd4ed69fd7",
+      "hw/soc/out/sramdp256x16-normalized-density-20260924/result.json": "062dbcc67b60d8411012547f2da172677e4c6cbdda8c8aa0e2b27bc84bce6f45",
+      "hw/soc/out/sramdp256x16-normalized-density-20260924/run.log": "650e9d5d73e22cd0df0d0e1a12d91f09da3e54979f6eaaa8decd2dc29f72e58f",
+      "hw/soc/pnr/ihp-drc.lock.json": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a",
+      "hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532"
+    }
+  }
+}

@@ -48,7 +48,18 @@ three corners; worst hold is +0.023618 ns fast, +0.147806 ns typical and
 +0.266723 ns slow. The receipt carries complete metrics, raw clock/worst-slack
 reports and hashes of the full local reports/views. Its fresh SPEF passes the
 arithmetic auditor and its new GDS is exported; neither result is timing or
-full-transistor LVS acceptance. Gate cloning is being measured separately.
+full-transistor LVS acceptance.
+
+The [one-repair-per-pass candidate](evidence/clone-single-completed-route-20260924.json)
+also completes fresh routing and fails timing: slow setup **−3.248475 ns** and
+**46** slew violations, with zero capacitance violations. Worst hold remains
+positive: +0.016087 ns fast, +0.110190 ns typical and +0.226943 ns slow.
+Its earlier −2.159757 ns global-route estimate is superseded. No actual gate
+clones were generated. The [complete raw reports](evidence/clone-single-completed-route-20260924.tar.xz)
+and [notices](evidence/clone-single-completed-route-20260924-NOTICES.txt)
+preserve all three corners, source-bound logic proof and extraction/streamout
+receipts. ECO27 remains the best completed candidate; neither SPEF arithmetic
+nor GDS export establishes timing, DRC or LVS acceptance.
 
 The [full report archive](evidence/filled-baseline-foundry-checks-20260924.tar.xz)
 contains both sequential main-rule partitions, their complete category inventories,
@@ -678,7 +689,7 @@ profile against retained files, the exact run commit and the locked original
 PDK models. Synthesis logs independently confirm the enabled parameters.
 The tested workflow omitted the RTL parameter file because its artifact path
 had the wrong filename; the receipt records that omission. Commit `73a6759`
-fixes subsequent retention. The [raw archive](evidence/core-pipeline-native-boot-20260923.tar.gz)
+fixes subsequent retention. The [raw archive](evidence/core-pipeline-native-boot-20260923.tar.xz)
 includes both profiles' netlists, firmware, ROMs, logs, model locks and results.
 This is four-state functional gate simulation without SDF or memory preload;
 physical timing, DRC, LVS and silicon qualification remain separate.
@@ -985,7 +996,7 @@ complete connectivity/annotation. Clock reports explicitly contain core,
 Ethernet RX/TX and generated GTX clocks; the base-SDC warning precedes the
 custom Ethernet clock definitions.
 
-The [evidence archive](evidence/eco19-extracted-timing-20260923.tar.gz)
+The [evidence archive](evidence/eco19-extracted-timing-20260923.tar.xz)
 includes step states, exact output netlist/constraints, all three electrical
 and clock reports, worst-slack reports, and minimum-slack path excerpts for
 each path group. Complete large path reports remain locally hash-pinned.
@@ -1181,7 +1192,7 @@ with 560 categories and zero markers, but the copied candidate fails with
 survive the actual macro context. This candidate is rejected before adoption;
 no original PDK GDS, CDL, rule, tolerance or production layout changes.
 
-The [archive](evidence/closure-hypotheses-20260923.tar.gz) and
+The [archive](evidence/closure-hypotheses-20260923.tar.xz) and
 [component notices](evidence/closure-hypotheses-20260923-NOTICES.txt) retain raw
 reports, copied candidates, scripts, source hashes and rejected attempts.
 SRAM closure still requires a coherent macro design/reference pair and complete
@@ -1272,7 +1283,7 @@ maximum step from 0.1 to 0.05 ns changes sampled typical outputs by at most
 warnings; an earlier aborted startup is retained as rejected. These tests use
 a specified supply ramp and first-write sequence, not arbitrary power-up.
 
-The [archive](evidence/independent-sram-prototype-20260923.tar.gz) and
+The [archive](evidence/independent-sram-prototype-20260923.tar.xz) and
 [notices](evidence/independent-sram-prototype-20260923-NOTICES.txt) include generated
 GDS/circuit views, actual repairs, raw reports/waveforms, negative controls and
 reproduction scripts. The later all-address attempt and numerical controls are
@@ -1449,7 +1460,7 @@ The flow exits **2** because real final timing/electrical checks fail. It report
 zero router DRC violations, zero OpenROAD antenna nets/pins and zero critical
 disconnected pins; all raw disconnected and unannotated counts are preserved in
 the receipt and raw checks. No counts are waived to claim full closure.
-The [archive](evidence/eco24-extracted-timing-20260923.tar.gz) retains reports,
+The [archive](evidence/eco24-extracted-timing-20260923.tar.xz) retains reports,
 exact netlist/SDC, state identities and minimum reported path excerpts per group.
 Its fresh unfilled GDS is
 `af8ccf9bb86db5decd6ea0e075936d991fdb8df00a033e01cd419f319668d699`.
@@ -1791,3 +1802,63 @@ simulator validation. One pattern per address is not a complete March test,
 PVT/read-write-margin characterization, extracted simulation or Liberty model.
 This result does not qualify the larger 512×64 bank or close original full-chip
 SRAM LVS and final timing.
+
+
+## Inductive proof of the byte-bank adapter protocol
+
+The [adapter induction evidence](evidence/byte-adapter-induction-20260924.json)
+proves read-bank selection, byte write enables and output retention after the
+first valid read for arbitrary subsequent input sequences. The actual adapter
+is unchanged except for observation ports; removing these additions recovers
+its source byte for byte. Each bank supplies an independent arbitrary 64-bit
+value on every clock. The mask is constrained to the already-proven byte-uniform
+SoC contract; read/write/enable sequences and bank values remain unrestricted.
+
+All-step temporal induction passes. Wrong-bank selection, incorrect held-output
+updates and shifted byte enables each fail with a retained counterexample.
+The [raw proof archive](evidence/byte-adapter-induction-20260924.tar.xz) and
+[notices](evidence/byte-adapter-induction-20260924-NOTICES.txt) include every
+variant, property, tool command and proof log. This proves the adapter protocol
+under its explicit bank abstraction. It does not prove SRAM memory contents,
+transistor timing or native-macro equivalence, and leaves the initial output
+before the first read unspecified.
+
+## Dual-port SRAM physical abstract and fresh physical checks
+
+The [256×16 dual-port abstract](evidence/independent-dp256-physical-abstract-20260924.json)
+is derived from the independently checked filled GDS. Translating by
+(+0.5, +0.5) µm places its **322 × 119 µm** outline at the origin; all flattened
+physical polygons and text anchors match after translation. No conductor or
+independent reference-device dimension changes.
+
+OpenDB imports all **88 ports**, including two clock pins and 32 output bits.
+An independent comparison checks pin roles, geometry and circuit terminals,
+and confirms obstruction coverage of real conductors and via cuts. Shifted
+clock, renamed write-enable and missing-Metal1-obstruction controls all fail.
+TritonRoute pin access passes both R0 and MX placements at (40, 40) µm: each has
+**1,466 macro access points over 86 signal terminals**, with at least three per
+terminal. These are standalone access checks, not complete signal/supply routing.
+
+Fresh verification of this exact normalized GDS passes recommended main DRC
+(**560 categories / zero markers**), antenna (**31 / zero**) and strict
+transistor LVS (**52 matching circuit pairs**, no extraction diagnostics).
+Density still fails four global rules: `AFil.g`, `M1.j`, `M2.j`, `M3.j`.
+The first checker launcher had an incorrectly adapted filename and stopped
+before either checker ran; its failed attempt is retained separately.
+
+The [GDS/LEF and full raw checks](evidence/independent-dp256-physical-abstract-20260924.tar.xz)
+and [component notices](evidence/independent-dp256-physical-abstract-20260924-NOTICES.txt)
+retain the evidence and router warnings. Characterized Liberty, extracted
+transistor operation, native 125 MHz FIFO enable/hold behavior and complete SoC
+integration remain open. This standalone result does not close the original
+full-chip LVS failure or final timing.
+
+
+The [additional mirrored single-port access check](evidence/independent-sp512-mx-access-20260924.json)
+uses the unchanged 512×64 GDS/LEF in an MX carrier at (40, 40) µm. All 146 signal
+terminals have access: **2,753 points, minimum three per terminal**, versus
+2,826/minimum four in the earlier R0 carrier. The
+[raw databases and scripts](evidence/independent-sp512-mx-access-20260924.tar.xz)
+and [notices](evidence/independent-sp512-mx-access-20260924-NOTICES.txt)
+retain this separate placement result. It does not qualify other track phases,
+supply routing, complete routing or timing.
