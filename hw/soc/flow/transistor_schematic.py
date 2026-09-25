@@ -47,11 +47,16 @@ def read_cdl(paths):
     return definitions, ports
 
 
+def split_bus_pin(pin):
+    """Read vendor angle buses and independently generated square buses."""
+    match = re.fullmatch(r'(.+)(?:<(\d+)>|\[(\d+)\])', pin)
+    return (match[1], int(match[2] or match[3])) if match else (pin, None)
+
+
 def port_groups(pins):
     groups = {}
     for pin in pins:
-        match = re.fullmatch(r'(.+)<(\d+)>', pin)
-        base, index = (match[1], int(match[2])) if match else (pin, None)
+        base, index = split_bus_pin(pin)
         groups.setdefault(base, []).append(index)
     for base, indices in groups.items():
         if indices != [None] and (None in indices or
@@ -149,8 +154,8 @@ def assemble(module, top, ports, outputs):
             raise ValueError('Missing input/power or extra port: ' + inst)
         args = []
         for pin in ports[typ]:
-            match = re.fullmatch(r'(.+)<(\d+)>', pin)
-            base, offset = (match[1], int(match[2]) - min(groups[match[1]])) if match else (pin, 0)
+            base, index_in_bus = split_bus_pin(pin)
+            offset = index_in_bus - min(groups[base]) if index_in_bus is not None else 0
             if base in absent:
                 if groups[base] != [None]:
                     raise ValueError('Missing bus output is unsupported')
@@ -168,6 +173,16 @@ def assemble(module, top, ports, outputs):
     return '\n'.join(body) + '\n', floating
 
 
+def instantiated_types(text):
+    """Find named cells regardless of vendor prefix; unknown CDL fails closed.
+
+    The independent Verilog hierarchy reader remains authoritative and rejects
+    constructs or cell instances that this preliminary scan does not recognize.
+    """
+    return set(re.findall(
+        r'^\s*(?!module\b)([A-Za-z_]\w*)\s+(?:\\\S+|\w+)\s*\(', text, re.M))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('powered_netlist', type=Path)
@@ -182,7 +197,7 @@ def main():
     expected = {str(p.resolve()): digest(p) for p in inputs}
     definitions, ports = read_cdl(args.cdl)
     text = args.powered_netlist.read_text()
-    types = set(re.findall(r'^\s*((?:sg13g2_|RM_IHPSG13_)\w+)\s+(?:\\\S+|\w+)\s*\(', text, re.M))
+    types = instantiated_types(text)
     if not types or types - set(ports):
         parser.error('Missing used-cell CDL')
     output = args.output.resolve()

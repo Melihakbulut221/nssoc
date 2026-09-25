@@ -41,6 +41,27 @@ def test_bus_order_power_and_distinct_floating_output(design):
     assert 'X0 VPWR VGND y[0] y[1] clk RAM' in SCHEMATIC.assemble(swapped, 'chip', PORTS, OUTPUTS)[0]
 
 
+def test_generated_square_bus_preserves_reference_order(design):
+    ports = {**PORTS, 'RAM': ['VDD!', 'VSS!', 'Q[1]', 'Q[0]', 'CLK']}
+    assert SCHEMATIC.assemble(design, 'chip', ports, OUTPUTS) == SCHEMATIC.assemble(
+        design, 'chip', PORTS, OUTPUTS)
+    with pytest.raises(ValueError, match='Noncontiguous'):
+        SCHEMATIC.port_groups(['Q[0]', 'Q<0>'])
+
+
+def test_unprefixed_cell_types_are_not_silently_omitted():
+    text = '''module chip (a);
+    SP6TSRAM512x64 \\ram.bank[0].mem  (.clk(a));
+    DP8TSRAMDP256x16 fifo (.clk1(a));
+    unexpected_missing_reference bad (.A(a));
+    sg13g2_inv_1 u0 (.A(a));
+    endmodule
+    '''
+    assert SCHEMATIC.instantiated_types(text) == {
+        'SP6TSRAM512x64', 'DP8TSRAMDP256x16',
+        'unexpected_missing_reference', 'sg13g2_inv_1'}
+
+
 @pytest.mark.parametrize('pin', ['CLK', 'VDD!', 'VSS!'])
 def test_missing_input_or_power_is_rejected(design, pin):
     del design['cells']['mem']['connections'][pin]

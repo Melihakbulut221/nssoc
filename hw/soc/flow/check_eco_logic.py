@@ -32,6 +32,8 @@ def main():
     parser.add_argument('--top', default='soc_top')
     parser.add_argument('--liberty', required=True, type=Path)
     parser.add_argument('--macro-liberty', action='append', type=Path, default=[])
+    parser.add_argument('--macro-verilog', action='append', type=Path, default=[],
+                        help='Opaque macro port declarations when no characterized Liberty exists')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     import re
@@ -39,7 +41,7 @@ def main():
         parser.error('Unsupported top identifier')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
-    sources = [args.before, args.after, args.liberty, *args.macro_liberty,
+    sources = [args.before, args.after, args.liberty, *args.macro_liberty, *args.macro_verilog,
                Path(__file__), Path(__file__).with_name('eco_logic.py')]
     expected = {str(p.resolve()): digest(p) for p in sources}
     version = subprocess.run(['yosys', '-V'], capture_output=True, text=True, check=True).stdout.strip()
@@ -48,6 +50,8 @@ def main():
     for name, netlist in [('before', args.before), ('after', args.after)]:
         script = '\n'.join('read_liberty -lib ' + quote(p.resolve())
                            for p in [args.liberty, *args.macro_liberty])
+        for path in args.macro_verilog:
+            script += '\nread_verilog -lib ' + quote(path.resolve())
         script += f'\nwrite_json {quote(output / (name + "-libraries.json"))}\n'
         script += f'read_verilog {quote(netlist.resolve())}\nhierarchy -check -top {args.top}\n'
         script += f'write_json {quote(output / (name + ".json"))}\n'

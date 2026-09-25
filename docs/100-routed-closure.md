@@ -1,5 +1,16 @@
 # 100 — Routed timing and full-transistor verification
 
+The [32-SRAM integration candidate](evidence/sram-chip-integration-20260925.json)
+now passes **full-chip transistor LVS, including all SRAM interiors**:
+**130 matching circuit pairs**, **5,129,488 recursive primitive devices on both
+sides**, no skipped circuits and no extraction diagnostics. The exact final
+`soc_top` GDS is compared with an independent powered transistor schematic
+using the unchanged locked IHP deck. This candidate contains sixteen 512×64
+single-port banks and sixteen 256×16 dual-port memories. It is a routed core
+without a padframe; no timing or manufacturing acceptance follows from LVS.
+The integration and its correction history are recorded at the end of this page.
+
+
 The best completed [ECO27 routed RCX/STA candidate](evidence/eco27-completed-route-20260924.json)
 reduces slow setup failure to **−3.185676 ns** and slow slew violations to **10**.
 Capacitance violations are now **zero in all three corners**, and all three
@@ -17,7 +28,7 @@ transfer to ECO19. The [completed filled-baseline checks](evidence/filled-baseli
 now also pass complete main DRC with recommended rules (560 categories),
 antenna (31 categories) and density (7 categories), each with zero markers.
 All three checks bind the same filled GDS; they do not qualify newer ECO layouts.
-Full transistor LVS fails; overall physical/manufacturing
+Full transistor LVS of those native-memory layouts fails; overall physical/manufacturing
 closure remains open.
 
 ## Filled baseline and controlled gate duplication — 24 September
@@ -1899,3 +1910,73 @@ bidirectional usage, complete transistor/model equivalence, setup/hold margins,
 PEX/Liberty characterization and full-chip integration remain open. This is a
 small TT operation test with a clock pause, not continuous-traffic or complete
 125 MHz macro qualification.
+
+## Full-chip integration of independent SRAMs (2026-09-25)
+
+The [local verification receipt](evidence/sram-chip-integration-20260925.json)
+binds the real prefix-ALU `soc_top`, all 32 new SRAM instances and the exact
+final routed GDS/netlists/OpenDB. Four original 2048×64 memories become sixteen
+512×64 banks; sixteen Ethernet FIFO memories become sixteen 256×16 dual-port
+macros. All 70,112 original non-memory instances and their connections are
+preserved before physical optimization. The supported integration profile has
+BIST disabled, a byte-uniform single-port write mask, and Ethernet write-A /
+read-B operation with paused read-clock output retention. General BIST, arbitrary
+bit masks and simultaneous same-address dual-port behavior are not qualified.
+
+Real supply opens found during integration were repaired by connecting the
+macros' vertical Metal4 landing areas to horizontal TopMetal2 straps through
+actual via stacks. Internal Metal3 redistribution stays intact and remains a
+LEF obstruction. Unfilled macro geometry is used for supply access; all-layer
+XOR and text-anchor checks preserve the independently verified circuits under
+translation. Shared GDS cell definitions are checked before stream-out.
+
+The completed physical run ends with **zero router DRC violations and zero
+OpenROAD antenna violations** after four diode-repair rounds adding 744 diodes.
+Both complete final power grids pass with all **401,566 instances** retained.
+A separate read-only OpenDB audit identifies exactly 256 unconnected SRAM pins:
+the unused `q1[0:15]` outputs on each of the sixteen dual-port memories. This
+is not a claim of zero disconnected outputs. The run took 25,127.88 seconds;
+the recorded supervision extension raised the effective budget from six to
+eight hours without changing or restarting the implementation engine.
+
+The first complete transistor comparison failed with 129 matching pairs,
+seven skipped parents and three unmatched DP leaf circuits. Both sides already
+contained 5,129,488 primitives. In the mixed SP/DP hierarchy, extracted DP leaves
+contained direct MOS devices while the reference retained shared generic-gate
+subcircuits. A source-only inliner expands nine shared helpers in eight parent
+circuits. Independent source-to-source graph comparison proves every changed
+circuit equivalent, with width and gate-miswire faults rejected. All other
+retained definitions and interfaces remain identical. No reference is copied
+from the extracted layout and no transistor or geometry is removed. Fresh
+full-GDS extraction and strict comparison then pass all 130 circuit pairs.
+The original failure and diagnostic corrections remain in the raw evidence.
+
+The full-chip negative control swaps `a[0]`/`a[1]` on one real SP SRAM instance
+in the reference while retaining the same GDS and deck. It completes normally
+and is rejected: 129 circuit pairs Match and `soc_top` NoMatch, with no
+extraction diagnostics. Both KLayout processes exit zero; the independent
+auditor accepts the original and rejects the control. The final acceptance
+check binds all input hashes and the exact final GDS, netlists and OpenDB.
+
+The final mapped-to-routed digital connection proof passes with SRAM interfaces
+kept explicit; real write-enable and clock miswire controls are rejected. The
+same firmware passes all **28 boot checks at 647,591 cycles** using actual IHP
+standard-cell models and independently tested SRAM behavioral models, without
+RAM preload or SDF. The helper regression suite passes **106 tests**.
+
+The companion archives retain final physical views, full LVS databases,
+extracted and independent schematics, complete reports/logs, source proofs,
+functional evidence, exact design sources, reproduction inputs and
+[component notices](evidence/sram-chip-integration-20260925-NOTICES.txt).
+The relocated replay launcher checks all design files, include directories,
+26 pinned PDK inputs and the exact AppImage. Header replay and input-corruption
+controls pass; a second complete physical replay is not claimed. Its default
+physical wall budget is explicitly eight hours.
+
+These results close full transistor connectivity comparison for this specific
+32-SRAM core candidate. They do not repair the historical native-SRAM views or
+adopt uncharacterized memories as the default production profile. SRAM
+Liberty/PEX characterization, final setup/hold/slew/capacitance, independent
+full-chip foundry DRC/density on this GDS, pads, PCIe PHY and manufacturing
+qualification remain separate open gates. The earlier ECO27 timing numbers
+belong to a different native-memory layout and cannot qualify this candidate.

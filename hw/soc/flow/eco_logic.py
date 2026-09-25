@@ -3,7 +3,7 @@
 """Restricted local-function proof for a Yosys-elaborated physical ECO.
 
 Compare every retained cell's input equations after contracting verified
-positive buffers. State and SRAM boundaries remain explicit. This is not an
+positive buffers and Liberty-proven tie cells. State and SRAM boundaries remain explicit. This is not an
 SRAM-interior, analog, initialization, delay, CDC or extracted-layout proof.
 The caller must pin the netlists, elaboration commands, libraries and outputs.
 """
@@ -115,8 +115,20 @@ def positive_buffer(cell, models):
             and set(cell['connections']) == {'A', 'X'})
 
 
+def constant_driver(cell, models):
+    """Only the exact stateless IHP tie-cell interface/function is contractible."""
+    for master, pin, value in [('sg13g2_tielo', 'L_LO', '0'),
+                               ('sg13g2_tiehi', 'L_HI', '1')]:
+        if (cell['type'] == master and
+                models.get(master) == ({pin: ('output', value)}, ()) and
+                set(cell['connections']) == {pin} and
+                len(cell['connections'][pin]) == 1):
+            return cell['connections'][pin][0], value
+    return None
+
+
 def canonical_design(module, libraries, models):
-    drivers, buffers, retained = {}, {}, {}
+    drivers, buffers, retained, constants = {}, {}, {}, {}
 
     def drive(bit, driver):
         if type(bit) is not int or bit in drivers:
@@ -148,7 +160,11 @@ def canonical_design(module, libraries, models):
             if info['direction'] == 'output':
                 for index, bit in enumerate(pins[pin]):
                     drive(bit, ('cell', name, pin, index))
-        if positive_buffer(cell, models):
+        constant = constant_driver(cell, models)
+        if constant is not None:
+            bit, value = constant
+            constants[bit] = value
+        elif positive_buffer(cell, models):
             if len(pins['A']) != 1 or len(pins['X']) != 1:
                 raise ValueError('Invalid buffer width')
             buffers[pins['X'][0]] = pins['A'][0]
@@ -171,6 +187,8 @@ def canonical_design(module, libraries, models):
             value = cache[bit]
         elif bit in ('0', '1'):
             value = ('constant', bit)
+        elif bit in constants:
+            value = ('constant', constants[bit])
         elif bit not in drivers:
             raise ValueError('Undriven signal: ' + str(bit))
         else:
@@ -198,6 +216,20 @@ def functions_equal(old, new, a_items, b_items):
     return True
 
 
+def unobserved_output_pins(module, libraries):
+    """Explicit NC nets may be added by write_verilog, but cannot feed a sink."""
+    observed = {bit for port in module['ports'].values() for bit in port['bits']}
+    for cell in module['cells'].values():
+        ports = libraries[cell['type']]['ports']
+        for pin, bits in cell['connections'].items():
+            if ports[pin]['direction'] != 'output':
+                observed.update(bits)
+    return {(name, pin) for name, cell in module['cells'].items()
+            for pin, bits in cell['connections'].items()
+            if libraries[cell['type']]['ports'][pin]['direction'] == 'output'
+            and not observed.intersection(bits)}
+
+
 def compare(before, after, libraries, models):
     a, ar, acount = canonical_design(before, libraries, models)
     b, br, bcount = canonical_design(after, libraries, models)
@@ -212,10 +244,17 @@ def compare(before, after, libraries, models):
                 [ar(x) for x in original['bits']] != [br(x) for x in target['bits']]):
             raise ValueError('Top port semantics changed: ' + pin)
     swapped = sized = 0
+    a_unused = unobserved_output_pins(before, libraries)
+    b_unused = unobserved_output_pins(after, libraries)
+    nc_changes = 0
     for name, old in a.items():
         new = b[name]
-        if set(old['connections']) != set(new['connections']):
+        a_only = set(old['connections']) - set(new['connections'])
+        b_only = set(new['connections']) - set(old['connections'])
+        if (any((name, pin) not in a_unused for pin in a_only) or
+                any((name, pin) not in b_unused for pin in b_only)):
             raise ValueError('Connected cell pins changed: ' + name)
+        nc_changes += len(a_only) + len(b_only)
         am, bm = old['type'], new['type']
         if am != bm:
             if am not in models or bm not in models or models[am] != models[bm]:
@@ -247,4 +286,9 @@ def compare(before, after, libraries, models):
         swapped += 1
     return {'retained_cells': len(a), 'positive_buffers_before': acount,
             'positive_buffers_after': bcount, 'equivalent_sizes': sized,
+            'proven_tie_cells_before': sum(constant_driver(c, models) is not None
+                                          for c in before['cells'].values()),
+            'proven_tie_cells_after': sum(constant_driver(c, models) is not None
+                                         for c in after['cells'].values()),
+            'unobserved_output_port_changes': nc_changes,
             'equivalent_input_permutations': swapped}
