@@ -9,6 +9,9 @@ using the unchanged locked IHP deck. This candidate contains sixteen 512×64
 single-port banks and sixteen 256×16 dual-port memories. It is a routed core
 without a padframe; no timing or manufacturing acceptance follows from LVS.
 The integration and its correction history are recorded at the end of this page.
+The following [local SRAM characterization and physical campaign](101-sram-characterization.md)
+records transistor measurements and a boundary-only geometry correction while
+keeping timing-library, extracted-parasitic and manufacturing gates separate.
 
 
 The best completed [ECO27 routed RCX/STA candidate](evidence/eco27-completed-route-20260924.json)

@@ -32,6 +32,9 @@ passes full transistor LVS including all memory interiors: **130 matching
 circuits**, **5,129,488 primitive devices per side**, and no extraction
 diagnostics. This is a separate connectivity candidate; its SRAM timing
 characterization, final timing and manufacturing gates remain open.
+The [local characterization campaign](docs/101-sram-characterization.md) records
+measured transistor timing/energy, model-sharing controls and independent
+physical checks, with incomplete qualification explicitly separated.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
 profile-specific layout evidence. They are not the complete GR801 interface

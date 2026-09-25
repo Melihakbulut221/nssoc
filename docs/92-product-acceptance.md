@@ -47,6 +47,18 @@ connectivity candidate; its timing, independent foundry DRC/density, padframe
 and production gates remain open. [docs/100](100-routed-closure.md) distinguishes
 this result from the historical native-memory LVS failure below.
 
+**Local SRAM qualification:** [docs/101](101-sram-characterization.md) records
+source-bound transistor waveform measurements, shared-model equivalence controls
+and independent physical checks. Selected DP delay/load/slew and supply-energy
+points are measured. They are not complete Liberty tables, final SoC STA or
+manufacturing acceptance. The nominal-PEX route has both a body-tap contact
+coverage gap and a demonstrated resistor-terminal attachment failure in its
+standalone cell export. It is not accepted for extracted timing. The boundary-only
+GDS correction passes independent antenna checking (31 categories, zero markers),
+but complete density checking fails with 177 markers. Main DRC remains
+unverified: the 12 and 16 GiB attempts exhaust address space during connectivity
+extraction. Complete records and scope are in docs/101.
+
 **23 September routed update:** [ECO24 detailed routing and fresh nominal-RC
 extraction](evidence/eco24-extracted-timing-20260923.json) completed. Slow setup
 is −3.254664 ns with 75 slew violations. Capacitance violations are zero and
