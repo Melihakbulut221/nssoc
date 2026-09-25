@@ -1973,6 +1973,24 @@ The relocated replay launcher checks all design files, include directories,
 controls pass; a second complete physical replay is not claimed. Its default
 physical wall budget is explicitly eight hours.
 
+The following immutable commit links expose every bundle without adding large
+binary downloads to the documentation site. Sizes and SHA-256 hashes are in the
+[verification receipt](evidence/sram-chip-integration-20260925.json). Each archive
+contains its own member manifest; unpack bundles into separate empty directories
+to preserve those manifests. The replay bundle documents its own launcher.
+
+| Bundle | Contents | Size (MiB) |
+|---|---|---:|
+| [physical-views](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-physical-views.tar.xz) | Final GDS, OpenDB and routed netlists | 31.92 |
+| [verification-lvs-positive](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-verification-lvs-positive.tar.xz) | Accepted full-chip LVS, independent source and extracted database | 30.56 |
+| [verification-lvs-negative](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-verification-lvs-negative.tar.xz) | Full-chip address-swap rejection and extracted database | 24.61 |
+| [verification-lvs-predecessor](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-verification-lvs-predecessor.tar.xz) | Preserved initial full-chip LVS mismatch | 28.90 |
+| [verification-digital](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-verification-digital.tar.xz) | Final digital proofs and real write-enable/clock fault controls | 19.11 |
+| [verification](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-verification.tar.xz) | Power, routing, boot, source-equivalence, tests and acceptance records | 5.62 |
+| [methods](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-methods.tar.xz) | Source-bound integration and verification methods | 3.94 |
+| [replay-inputs](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-replay-inputs.tar.xz) | Pinned physical replay inputs and portable launcher | 1.03 |
+| [corresponding-sources](https://github.com/Melihakbulut221/nssoc/blob/3843c922dc0582489b6f7c26c22d1b295a9d7dfa/docs/evidence/sram-chip-integration-20260925-corresponding-sources.tar.xz) | Exact corresponding RTL, mapped sources and original notices | 0.42 |
+
 These results close full transistor connectivity comparison for this specific
 32-SRAM core candidate. They do not repair the historical native-SRAM views or
 adopt uncharacterized memories as the default production profile. SRAM
