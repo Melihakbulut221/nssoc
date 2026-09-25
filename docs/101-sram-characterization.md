@@ -190,6 +190,13 @@ product gates in [docs/92](92-product-acceptance.md).
 
 ## 7. Reproduction and evidence boundaries
 
+The four lossless bundles are pinned to immutable commit `f03269e`:
+
+- [Boundary-corrected GDS and contact diagnostic geometry](https://github.com/Melihakbulut221/nssoc/blob/f03269ea40440a77f795c52ae91bbae797af2947/docs/evidence/sram-qualification-20260925-physical-views.tar.xz)
+- [Complete transistor stimuli, waveforms, model controls and PEX records](https://github.com/Melihakbulut221/nssoc/blob/f03269ea40440a77f795c52ae91bbae797af2947/docs/evidence/sram-qualification-20260925-analog.tar.xz)
+- [Full density/antenna records and retained main-DRC resource failures](https://github.com/Melihakbulut221/nssoc/blob/f03269ea40440a77f795c52ae91bbae797af2947/docs/evidence/sram-qualification-20260925-physical-checks.tar.xz)
+- [Reproduction scripts, exact rule sources, source bindings, test logs and notices](https://github.com/Melihakbulut221/nssoc/blob/f03269ea40440a77f795c52ae91bbae797af2947/docs/evidence/sram-qualification-20260925-methods.tar.xz)
+
 The campaign archives retain complete stimuli, raw waveforms, simulator/deck
 logs, measurement scripts, per-file SHA-256 manifests and the boundary-corrected
 GDS. Failed and resource-limited predecessors remain included. The original

@@ -42,8 +42,8 @@ hardware merely to increase apparent coverage.
 passes full transistor LVS with all SRAM interiors included: 130 matching
 circuit pairs, 5,129,488 primitives per side and no extraction diagnostics.
 Both full power grids, final digital connectivity, digital write-enable/clock
-miswire controls and 28 firmware boot checks also pass. This is a separate uncharacterized-memory
-connectivity candidate; its timing, independent foundry DRC/density, padframe
+miswire controls and 28 firmware boot checks also pass. This is a separate memory
+connectivity candidate without qualified timing models; its timing, independent foundry DRC/density, padframe
 and production gates remain open. [docs/100](100-routed-closure.md) distinguishes
 this result from the historical native-memory LVS failure below.
 
