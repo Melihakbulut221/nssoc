@@ -823,3 +823,43 @@ and [raw replay archive](https://github.com/Melihakbulut221/nssoc/blob/codex/com
 retain the complete JUnit inventory, skipped reasons, command, logs and source
 tree. This is a local clone, not a GitHub runner or a new physical measurement.
 The earlier prepared-fixture and lint results retain their separate scopes.
+
+**26 September — all fourteen pytest skips executed:** a new isolated local
+clone of `edc4e2da7b6e806c021dc90cec46939fb242846e`, with freshly regenerated
+Ibex RTL and the pinned TinyTapeout tooling, completes the full suite with
+**1,669 passes, zero failures and zero skips**. The test inventory is identical
+to the earlier 1,655-pass/14-skip replay. No test assertions, skip conditions or
+RTL sources were changed to obtain this result.
+
+The [audited prepared replay](evidence/prepared-pytest-edc4e2d-20260926.json)
+identifies all fourteen previously skipped cases individually. Twelve exercise
+Ibex delayed-store/branch behavior, including the two required failing-control
+configurations; one checks the generated register-file entry contract; one
+verifies the TinyTapeout tool revision. The
+[raw archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/prepared-pytest-edc4e2d-20260926.tar.xz)
+contains the full JUnit inventory, preparation and pytest logs, runner and
+independent audit source, with per-member and archive SHA-256 digests.
+
+Preparation checked out Ibex `34b0705760ef3dfa00e99637432473d2be8f22f3` and
+TinyTapeout tools `01d5d2814fa9dd61e9d211e0b235a4a592a9316a`. It downloaded
+sv2v v0.0.13, verified its release ZIP against the repository's pinned SHA-256,
+and regenerated all 34 Verilog files through `hw/soc/flow/sv2v_ibex.sh`.
+Icarus Verilog 12.0 executed the CPU simulations. The prepared clone remains
+clean; fetched/generated dependencies are confined to ignored directories.
+
+To prepare these particular dependencies in a fresh checkout with the existing
+Python test environment and Icarus available:
+
+```sh
+make -f hw/soc/tools.soc.mk fetch-sv2v fetch-ibex
+bash hw/soc/flow/sv2v_ibex.sh hw/soc/ext/ibex hw/soc/gen hw/soc/tools/sv2v-Linux/sv2v
+git clone https://github.com/TinyTapeout/tt-support-tools tt/tt
+git -C tt/tt checkout --detach 01d5d2814fa9dd61e9d211e0b235a4a592a9316a
+.venv/bin/python -m pytest sw/tests -q -rs
+```
+
+Other suite dependencies remain as documented by the project; the archive
+records the actual local environment and commands. This closes the fourteen
+pytest skips, not the three separate historical CI front-door skips or the
+outstanding characterization/manufacturing gates. The earlier clean-clone
+record remains unchanged as historical evidence.
