@@ -106,8 +106,8 @@ measurements remain explicitly tied to their original revisions; the
 
 ## Licensing and citation
 
-The [mirror contract](docs/78-the-public-mirror.md) defines this published subset's
-boundary. The original private-development provenance note is in HISTORY.md.
+This repository is a published subset of a private development tree.
+The [mirror contract](docs/78-the-public-mirror.md) defines its boundary; original provenance is in HISTORY.md.
 
 The licence decision was **signed 2026-09-09**; see [LICENSES.md](LICENSES.md) for components and exceptions.
 
