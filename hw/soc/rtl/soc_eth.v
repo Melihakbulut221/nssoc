@@ -8,6 +8,10 @@
 module soc_eth #(
     parameter integer FIFO_DEPTH = 2048
 ) (
+`ifdef SOC_ETH_MBIST
+    input wire mbist_por_ni,
+    output wire [1:0] mbist_done_o, mbist_failed_o,
+`endif
     input wire clk_i, rst_ni,
     input wire psel_i, penable_i, pwrite_i,
     input wire [11:0] paddr_i,
@@ -36,7 +40,19 @@ localparam [11:0] R_MDIO = 12'h018; // regmap:eth:MDIO
 localparam [11:0] R_ID = 12'h0FC; // regmap:eth:ID
 reg [1:0] enable_q;
 reg flush_q;
+`ifdef SOC_ETH_MBIST
+wire [1:0] fifo_done, fifo_failed;
+(* ASYNC_REG = "TRUE" *) reg [1:0] done_meta, done_sync, fail_meta, fail_sync;
+always @(posedge clk_i or negedge mbist_por_ni) begin
+    if (!mbist_por_ni) begin done_meta<=0; done_sync<=0; fail_meta<=0; fail_sync<=0; end
+    else begin done_meta<=fifo_done; done_sync<=done_meta; fail_meta<=fifo_failed; fail_sync<=fail_meta; end
+end
+assign mbist_done_o = done_sync;
+assign mbist_failed_o = fail_sync;
+wire mac_rst_n = rst_ni && !flush_q && (&done_sync) && !(|fail_sync);
+`else
 wire mac_rst_n = rst_ni && !flush_q;
+`endif
 // Asynchronous assertion, synchronous release independently in all domains.
 (* ASYNC_REG = "TRUE" *) reg [1:0] rx_reset, tx_reset, logic_reset;
 always @(posedge rx_clk_i or negedge mac_rst_n)
@@ -122,6 +138,9 @@ eth_mac_1g_fifo #(
     .TX_FRAME_FIFO(1), .RX_FRAME_FIFO(1), .ENABLE_PADDING(1),
     .MIN_FRAME_LENGTH(64), .RX_DROP_BAD_FRAME(1), .RX_DROP_WHEN_FULL(1)
 ) u_mac (
+`ifdef SOC_ETH_MBIST
+    .mbist_por_ni(mbist_por_ni), .mbist_done_o(fifo_done), .mbist_failed_o(fifo_failed),
+`endif
     .logic_clk(clk_i), .logic_rst(logic_reset[1]),
     .rx_clk(rx_clk_i), .rx_rst(rx_reset[1]),
     .tx_clk(tx_clk_i), .tx_rst(tx_reset[1]),

@@ -248,6 +248,9 @@ module soc_top #(
     // POWER-ON reset. Asynchronously asserted, and the only reset the
     // watchdog obeys.
     input  wire        rst_ni,
+`ifdef SOC_ETH_MBIST
+    output wire [1:0] eth_mbist_done_o, eth_mbist_failed_o,
+`endif
 `ifdef SOC_SRAM_MBIST
     // Power-on destructive system-RAM test. These are core test outputs,
     // not implemented package pads. A new external reset reruns the test.
@@ -409,6 +412,14 @@ module soc_top #(
 `ifdef SOC_SRAM_MBIST
 `ifndef SOC_LOGIC_BOOT_ROM
   SOC_SRAM_MBIST_requires_immutable_logic_boot_ROM invalid_mbist_rom();
+`endif
+  wire ram_mbist_done, ram_mbist_failed;
+`ifdef SOC_ETH_MBIST
+  assign mbist_done_o = ram_mbist_done && (&eth_mbist_done_o);
+  assign mbist_failed_o = ram_mbist_failed || (|eth_mbist_failed_o);
+`else
+  assign mbist_done_o = ram_mbist_done;
+  assign mbist_failed_o = ram_mbist_failed;
 `endif
   wire mbist_pass = mbist_done_o && !mbist_failed_o;
   assign mbist_busy_o = rst_por_sync_n && !mbist_done_o;
@@ -838,8 +849,8 @@ module soc_top #(
   soc_mem #(.WORDS(RAM_WORDS), .RO(1'b0), .RDREG(MEM_RDREG),
             .HARDEN(MEM_HARDEN), .ECC_BYTE(1'b1)) u_ram (
 `ifdef SOC_SRAM_MBIST
-      .mbist_rst_ni(rst_por_sync_n), .mbist_done_o(mbist_done_o),
-      .mbist_failed_o(mbist_failed_o), .mbist_fail_addr_o(mbist_fail_addr_o),
+      .mbist_rst_ni(rst_por_sync_n), .mbist_done_o(ram_mbist_done),
+      .mbist_failed_o(ram_mbist_failed), .mbist_fail_addr_o(mbist_fail_addr_o),
       .mbist_fail_expected_o(mbist_fail_expected_o), .mbist_fail_actual_o(mbist_fail_actual_o),
       .mbist_fail_phase_o(mbist_fail_phase_o), .mbist_fail_background_o(mbist_fail_background_o),
 `endif
@@ -973,6 +984,10 @@ module soc_top #(
   wire pready_eth, pslverr_eth;
   assign eth_gtx_clk_o = eth_tx_clk_i;
   soc_eth u_eth (
+`ifdef SOC_ETH_MBIST
+      .mbist_por_ni(rst_por_sync_n), .mbist_done_o(eth_mbist_done_o),
+      .mbist_failed_o(eth_mbist_failed_o),
+`endif
       .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_eth), .penable_i(penable),
       .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
       .prdata_o(prdata_eth), .pready_o(pready_eth), .pslverr_o(pslverr_eth),

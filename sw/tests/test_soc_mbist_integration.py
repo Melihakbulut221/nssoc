@@ -37,7 +37,8 @@ def test_clean_independent_verdict_is_required():
 @pytest.mark.parametrize(
     "enabled,logic", [(False, False), (False, True), (True, False), (True, True)]
 )
-def test_physical_config_mbist_profile_preserves_settings(tmp_path, enabled, logic):
+@pytest.mark.parametrize("eth_sram", [False, True])
+def test_physical_config_mbist_profile_preserves_settings(tmp_path, enabled, logic, eth_sram):
     import json
     import os
     import subprocess
@@ -62,6 +63,7 @@ def test_physical_config_mbist_profile_preserves_settings(tmp_path, enabled, log
             os.environ,
             SOC_BOOT_ROM="logic" if logic else "legacy",
             SOC_SRAM_MBIST="1" if enabled else "0",
+            SOC_ETH_SRAM="1" if eth_sram else "0",
         ),
         capture_output=True,
         text=True,
@@ -75,4 +77,6 @@ def test_physical_config_mbist_profile_preserves_settings(tmp_path, enabled, log
         assert actual.pop("VERILOG_FILES") == ["/test/core.v", "/test/top.v"]
         if enabled:
             actual["VERILOG_DEFINES"].remove("SOC_SRAM_MBIST")
+            if eth_sram:
+                actual["VERILOG_DEFINES"].remove("SOC_ETH_MBIST")
         assert actual == original

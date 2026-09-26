@@ -14,14 +14,27 @@ major=$("$GL_IVERILOG" -V 2>/dev/null | sed -n '1s/.*version \([0-9]*\).*/\1/p')
 MACRO=RM_IHPSG13_2P_256x16_c2_bm_bist
 LIB="$SG13G2_SRAM_DIR/lib/${MACRO}_typ_1p20V_25C.lib"
 python3 "$SOC_DIR/flow/prepare_interfaces.py"
+MBIST_DEFINE=""
+MBIST_READ=""
+MAP_COMMAND="synth -top soc_eth -flatten -run begin:fine
+memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib
+techmap -map $SOC_DIR/techmap/eth_ram_map.v
+synth -top soc_eth -run fine"
+case "${SOC_ETH_MBIST:-0}" in
+  0) ;;
+  1)
+    MBIST_DEFINE="-DSOC_ETH_MBIST"
+    MBIST_READ="read_verilog -sv $SOC_DIR/rtl/dft/soc_sram_mbist.v $SOC_DIR/rtl/dft/soc_sram_zero_check.v $SOC_DIR/rtl/dft/soc_eth_fifo_sram.v"
+    MAP_COMMAND="synth -top soc_eth -flatten"
+    ;;
+  *) echo 'SOC_ETH_MBIST must be 0 or 1' >&2; exit 2 ;;
+esac
 cat > "$OUT/synth.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
 read_liberty -lib $LIB
-read_verilog $SOC_DIR/rtl/soc_eth.v $SOC_DIR/gen/interfaces.bundle.vh
-synth -top soc_eth -flatten -run begin:fine
-memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib
-techmap -map $SOC_DIR/techmap/eth_ram_map.v
-synth -top soc_eth -run fine
+$MBIST_READ
+read_verilog -sv -defer $MBIST_DEFINE $SOC_DIR/rtl/soc_eth.v $SOC_DIR/gen/interfaces.bundle.vh
+$MAP_COMMAND
 select -assert-count 16 t:$MACRO
 dfflibmap -liberty $SG13G2_TYP
 abc -liberty $SG13G2_TYP
@@ -53,7 +66,8 @@ import hashlib, json, pathlib, sys, xml.etree.ElementTree as ET
 out, soc, *libraries = map(pathlib.Path, sys.argv[1:])
 cases = ET.parse(out/'results.xml').findall('.//testcase')
 assert len(cases) >= 6 and all(len(c) == 0 for c in cases), 'Gate-level regression failed/skipped'
-paths = [soc/'rtl/soc_eth.v', soc/'gen/interfaces.bundle.vh',
+paths = [soc/'rtl/dft/soc_sram_mbist.v', soc/'rtl/dft/soc_sram_zero_check.v',
+         soc/'rtl/dft/soc_eth_fifo_sram.v', soc/'flow/adapt_eth_mbist.py', soc/'rtl/soc_eth.v', soc/'gen/interfaces.bundle.vh',
          soc/'flow/prepare_interfaces.py', soc/'flow/test_eth_sram.sh',
          soc/'techmap/eth_ram.lib', soc/'techmap/eth_ram_map.v',
          soc/'tb/cocotb/test_soc_eth.py', out/'eth.netlist.v', *libraries]

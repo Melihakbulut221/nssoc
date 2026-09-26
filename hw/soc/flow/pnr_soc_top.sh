@@ -249,6 +249,7 @@ $(cd "$SOC_BOOT_ROM_DIR" && pwd -P)/soc_logic_boot_rom.v"
   *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
 esac
 export SOC_BOOT_ROM="${SOC_BOOT_ROM:-legacy}"
+export SOC_ETH_SRAM="${SOC_ETH_SRAM:-0}"
 export SOC_SRAM_MBIST="${SOC_SRAM_MBIST:-0}"
 case "$SOC_SRAM_MBIST" in
   0) ;;
@@ -256,14 +257,18 @@ case "$SOC_SRAM_MBIST" in
     [ "$SOC_BOOT_ROM" = logic ] || { echo 'MBIST requires logic boot ROM' >&2; exit 2; }
     SRCS="$SRCS
 $RTL/dft/soc_sram_mbist.v
-$RTL/dft/soc_sram_test_port.v"
+$RTL/dft/soc_sram_test_port.v
+$RTL/dft/soc_eth_fifo_sram.v
+$RTL/dft/soc_sram_zero_check.v"
     # A pre-MBIST netlist must never masquerade as an integrated layout.
     python3 - "$SYN_NETLIST" <<'PY_CHECK'
-import re, sys
+import os, re, sys
 text = open(sys.argv[1]).read()
 for name in ("mbist_done_o", "mbist_failed_o", "mbist_fail_addr_o"):
     assert re.search(r"\boutput\s+(?:\[[^]]+\]\s*)?" + name + r"\b", text), name
 assert "u_test_port" in text, "MBIST hierarchy absent from supplied netlist"
+if os.environ.get("SOC_ETH_SRAM") == "1":
+    assert "eth_mbist_done_o" in text and "u_sram.u_b" in text, "Ethernet MBIST absent from supplied netlist"
 PY_CHECK
     ;;
   *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
@@ -295,6 +300,11 @@ if "SOC_SRAM_MBIST" in defines:
     assert os.environ.get("SOC_SRAM_MBIST", "0") == "1", "MBIST config/profile mismatch"
 elif os.environ.get("SOC_SRAM_MBIST", "0") == "1":
     defines.append("SOC_SRAM_MBIST")
+eth_mbist = os.environ.get("SOC_SRAM_MBIST", "0") == "1" and os.environ.get("SOC_ETH_SRAM", "0") == "1"
+if "SOC_ETH_MBIST" in defines:
+    assert eth_mbist, "Ethernet MBIST config/profile mismatch"
+elif eth_mbist:
+    defines.append("SOC_ETH_MBIST")
 if "SOC_LGPL_INTERFACES" in defines:
     assert bool("$IF_DEFINE"), "Full-profile config cannot implement the base profile"
 elif "$IF_DEFINE":
@@ -306,8 +316,8 @@ added  = set(out) - set(base)
 changed = {k for k in base if base[k] != out[k]}
 assert "VERILOG_FILES" in added and added <= {"VERILOG_FILES", "VERILOG_DEFINES"}, f"generator added {added}"
 assert changed <= {"VERILOG_DEFINES"}, f"generator changed {changed}"
-assert [d for d in out.get("VERILOG_DEFINES", []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST")] == \
-       [d for d in (base.get("VERILOG_DEFINES") or []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST")], "unrelated defines changed"
+assert [d for d in out.get("VERILOG_DEFINES", []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST", "SOC_ETH_MBIST")] == \
+       [d for d in (base.get("VERILOG_DEFINES") or []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST", "SOC_ETH_MBIST")], "unrelated defines changed"
 json.dump(out, open(dst, "w"), indent=4)
 print(f"resolved config: {dst}  ({len(srcs)} verilog files)")
 PY

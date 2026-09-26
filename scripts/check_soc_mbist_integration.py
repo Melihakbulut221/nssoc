@@ -54,6 +54,7 @@ def main():
         "--simulator", choices=("iverilog", "verilator"), default="iverilog"
     )
     parser.add_argument("--profile", choices=("base", "full"), default="base")
+    parser.add_argument("--eth-mbist", action="store_true", help="Include both physical Ethernet FIFO MBISTs")
     args = parser.parse_args()
     out = args.output.resolve()
     if not out.is_relative_to(ROOT / "hw/soc/out"):
@@ -104,6 +105,11 @@ def main():
             "RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
         )
     ]
+    if args.eth_mbist:
+        files += [models / name for name in (
+            "RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+            "RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+            "RM_IHPSG13_2P_core_behavioral_ideal.v")]
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     tracked = files + [
         asm,
@@ -125,6 +131,7 @@ def main():
         passed=False,
         scope="Actual soc_top RAM MBIST and Ibex ECC boot; functional native models, no layout claim",
         profile=args.profile,
+        eth_mbist=args.eth_mbist,
         simulator=args.simulator,
         input_sha256=pins,
         cases=[],
@@ -144,6 +151,8 @@ def main():
             "-o",
             str(out / "run.vvp"),
         ]
+        if args.eth_mbist:
+            command.append("-DSOC_ETH_MBIST")
         if define:
             command.append(define)
         executable = [args.vvp, out / "run.vvp"]
@@ -167,18 +176,22 @@ def main():
             pins[str(verilator)] = sha(verilator)
         result["compile_command"] = list(map(str, command + files))
         run(command + files, out / "compile.log", timeout=600)
-        for name, plus in [
+        cases = [
             ("success", []),
             ("por-restart", ["+restart=1"]),
             ("illegal-state", ["+illegal=1"]),
-        ] + [(f"fault-bank-{bank}", [f"+fault_bank={bank}"]) for bank in range(4)]:
+        ] + [(f"fault-bank-{bank}", [f"+fault_bank={bank}"]) for bank in range(4)]
+        if args.eth_mbist:
+            cases += [("eth-fault-tx", ["+ethfault=0"]), ("eth-fault-rx", ["+ethfault=1"]),
+                      ("eth-missing-clock", ["+ethstall=1"])]
+        for name, plus in cases:
             log = out / (name + ".log")
             run([*executable, *plus], log, timeout=1800)
             if not passed_log(log.read_text()):
                 raise RuntimeError("Missing pass or error in test log: " + name)
             result["cases"].append(dict(name=name, passed=True, log_sha256=sha(log)))
         result["sources_unchanged"] = all(sha(Path(p)) == h for p, h in pins.items())
-        result["passed"] = result["sources_unchanged"] and len(result["cases"]) == 7
+        result["passed"] = result["sources_unchanged"] and len(result["cases"]) == len(cases)
     finally:
         (out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     return 0 if result["passed"] else 1

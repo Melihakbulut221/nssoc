@@ -17,12 +17,23 @@ async def cycles(d, n=1):
 async def setup(d):
     for name in ('rst_ni','psel_i','penable_i','pwrite_i','paddr_i','pwdata_i','pstrb_i','rxd_i','rx_dv_i','rx_er_i'):
         getattr(d,name).value = 0
+    if hasattr(d, "mbist_por_ni"):
+        d.mbist_por_ni.value = 0
     d.mdio_i.value = 1
     cocotb.start_soon(Clock(d.clk_i,20,units='ns').start())
     cocotb.start_soon(Clock(d.tx_clk_i,8,units='ns').start())
     await Timer(3,units='ns')
     cocotb.start_soon(Clock(d.rx_clk_i,8,units='ns').start())
     await cycles(d,8)
+    if hasattr(d, "mbist_por_ni"):
+        d.mbist_por_ni.value = 1
+        for _ in range(1200):
+            await Timer(10, units='us')
+            if int(d.mbist_done_o.value) == 3:
+                break
+        else:
+            raise AssertionError('Ethernet MBIST timeout')
+        assert int(d.mbist_failed_o.value) == 0
     d.rst_ni.value=1
     await cycles(d,20)
     await apb(d,CTRL,3)
@@ -172,6 +183,15 @@ async def register_strobes_phy_pins_and_reset(d):
     await apb(d,TX,256,error=True)
     d.rst_ni.value=0
     await cycles(d,5)
+    if hasattr(d, "mbist_por_ni"):
+        d.mbist_por_ni.value = 1
+        for _ in range(1200):
+            await Timer(10, units='us')
+            if int(d.mbist_done_o.value) == 3:
+                break
+        else:
+            raise AssertionError('Ethernet MBIST timeout')
+        assert int(d.mbist_failed_o.value) == 0
     d.rst_ni.value=1
     await cycles(d,20)
     assert await apb(d,CTRL)==0

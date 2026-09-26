@@ -56,7 +56,11 @@ def owned_policy(rows):
     gates = ('soc_top.u_ibex.core_clock_gate_i.en_latch',
              'soc_top.g_clkgate.u_npu_cg.en_latch', 'soc_top.g_clkgate.u_bus_cg.en_latch')
     resets = {'hw/soc/rtl/soc_top.v': ('soc_top.rst_sync', 'soc_top.por_sync'),
-              'hw/soc/rtl/soc_eth.v': tuple('soc_top.u_eth.'+x+'_reset' for x in ('logic','rx','tx'))}
+              'hw/soc/rtl/soc_eth.v': tuple('soc_top.u_eth.'+x+'_reset' for x in ('logic','rx','tx')),
+              # Each POR chain asserts asynchronously and releases in its own SRAM clock domain.
+              'hw/soc/rtl/dft/soc_eth_fifo_sram.v': tuple(
+                  f'soc_top.u_eth.u_mac.{fifo}_fifo.fifo_inst.u_sram.{chain}'
+                  for fifo in ('rx', 'tx') for chain in ('wp', 'rp'))}
     for key in rows:
         code, path, _, _, message = json.loads(key)
         if not path.startswith('hw/soc/rtl/'): continue
@@ -118,10 +122,12 @@ def main():
     parser.add_argument('--output', type=Path, default=ROOT/'hw/soc/out/lint')
     suite = Path(os.environ.get('OSS_CAD_SUITE',ROOT/'hw/soc/tools/oss-cad-suite'))
     parser.add_argument('--verilator', type=Path, default=suite/'bin/verilator')
+    parser.add_argument("--eth-mbist", action="store_true", help="Include explicit Ethernet SRAM MBIST; requires --mbist")
     args = parser.parse_args()
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'): parser.error('Output must be inside hw/soc/out')
     if out.exists(): parser.error('Refusing to replace evidence: '+str(out))
+    if args.eth_mbist and not args.mbist: parser.error("--eth-mbist requires --mbist")
     if args.mbist and args.memory != 'sram-logic': parser.error('--mbist requires --memory sram-logic')
     if args.memory == 'sram-logic' and not args.rom_image: parser.error('sram-logic requires --rom-image')
     if args.memory == 'array' and args.rom_image: parser.error('--rom-image requires sram-logic')
@@ -158,11 +164,19 @@ def main():
         hashes.update({str(p.relative_to(ROOT)):sha(p) for p in watched})
         profile_key += '-sram-logic'
     if args.mbist:
-        mbist_files = sorted((ROOT/'hw/soc/rtl/dft').glob('*.v'))
+        mbist_names = ['soc_sram_mbist.v', 'soc_sram_test_port.v']
+        if args.eth_mbist: mbist_names += ['soc_eth_fifo_sram.v', 'soc_sram_zero_check.v']
+        mbist_files = [ROOT/'hw/soc/rtl/dft'/name for name in mbist_names]
         files += mbist_files
         hashes.update({str(p.relative_to(ROOT)):sha(p) for p in mbist_files})
         additional.append('-DSOC_SRAM_MBIST')
         profile_key += '-mbist'
+    if args.eth_mbist:
+        additional.append('-DSOC_ETH_MBIST')
+        macro = ROOT/'hw/soc/pnr/RM_IHPSG13_2P_256x16_c2_bm_bist_bb.v'
+        files.append(macro)
+        hashes[str(macro.relative_to(ROOT))] = sha(macro)
+        profile_key += '-eth'
     command = [str(args.verilator.resolve()), '--lint-only', '--Wall', '-Wno-fatal', '--top-module', 'soc_top',
                '--timing', '--Mdir', str(out/'obj_dir'), '-DSG13G2_ICG_BEHAVIOURAL', '-GMEM_RDREG=1', '-GREQ_REG=1',
                '-I'+str(ROOT/'hw/soc/rtl'), '-I'+str(ROOT/'hw/rtl')]

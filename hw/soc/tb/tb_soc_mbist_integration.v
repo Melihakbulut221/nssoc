@@ -6,7 +6,8 @@ module tb_soc_mbist_integration;
     reg clk=0, por=0;
     always #10 clk=~clk;
     reg eth_clk=0;
-    always #4 eth_clk=~eth_clk;
+    reg eth_run=1;
+    always #4 if(eth_run) eth_clk=~eth_clk;
     wire busy, done, failed;
     wire [12:0] fail_addr;
     wire [63:0] expected, actual;
@@ -23,6 +24,7 @@ module tb_soc_mbist_integration;
         .mbist_fail_addr_o(fail_addr), .mbist_fail_expected_o(expected),
         .mbist_fail_actual_o(actual), .mbist_fail_phase_o(phase),
         .mbist_fail_background_o(background));
+    integer ethfault=-1, ethstall=0;
     integer fault_bank=-1, restart=0, illegal=0, count=0, cycles=0;
     integer bank_count[0:3];
     integer k;
@@ -33,6 +35,13 @@ module tb_soc_mbist_integration;
     // The fault is BELOW ECC and in a check bit. A codec-level test could
     // accidentally correct/hide it. Here the raw MBIST comparison must stop.
     initial begin
+`ifdef SOC_ETH_MBIST
+        if ($value$plusargs("ethfault=%d", ethfault)) begin end
+        if ($value$plusargs("ethstall=%d", ethstall)) begin end
+        if (ethfault==0) force dut.u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bq=16'h8000;
+        if (ethfault==1) force dut.u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bq=16'h8000;
+        if (ethstall!=0) eth_run=0;
+`endif
         if ($value$plusargs("fault_bank=%d", fault_bank)) begin end
         if ($value$plusargs("restart=%d", restart)) begin end
         if ($value$plusargs("illegal=%d", illegal)) begin end
@@ -56,10 +65,26 @@ module tb_soc_mbist_integration;
             @(negedge clk); force dut.u_ram.g_ram_2048x64_ecc.u_test_port.u_mbist.state_q=2'b11;
             @(negedge clk); release dut.u_ram.g_ram_2048x64_ecc.u_test_port.u_mbist.state_q;
         end
+`ifdef SOC_ETH_MBIST
+        if (ethstall!=0) begin
+            wait(dut.ram_mbist_done);
+            repeat(20) @(negedge clk);
+            if(done || dut.rst_sys_n) $fatal(1,"CPU released before Ethernet clocks/test");
+            eth_run=1;
+        end
+`endif
         wait(done===1);
         $display("MBIST completed cycles=%0d accesses=%0d failed=%0d",cycles,count,failed);
         @(negedge clk);
-        if (illegal != 0) begin
+        if (ethfault>=0) begin
+`ifdef SOC_ETH_MBIST
+            repeat(20) @(negedge clk);
+            if (!failed || dut.rst_sys_n || dut.eth_mbist_failed_o != (2'b01 << ethfault))
+                $fatal(1,"Ethernet MBIST did not hold chip reset or wrong FIFO diagnosis");
+            $display("PASS Ethernet MBIST failure holds CPU reset fifo=%0d",ethfault);
+            $finish;
+`endif
+        end else if (illegal != 0) begin
             repeat(20) @(negedge clk);
             if (!failed || dut.rst_sys_n !== 0 || dut.u_ram.g_ram_2048x64_ecc.row_en !== 0)
                 $fatal(1,"abnormal MBIST termination released CPU");

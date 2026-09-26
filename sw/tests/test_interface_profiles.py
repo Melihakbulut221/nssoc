@@ -29,6 +29,7 @@ def fake_sources(tmp_path, monkeypatch, modules):
     prepare, profile = modules
     soc = tmp_path/'soc'
     monkeypatch.setattr(prepare, 'SOC', soc)
+    monkeypatch.setattr(prepare, "adapt_eth", lambda name, data: data)
     queried = []
 
     def git(command, **kwargs):
@@ -110,7 +111,7 @@ def test_full_requires_explicit_selection_and_preserves_separate_base(fake_sourc
     assert set(queried) == set(prepare.PINS)
     manifest_path = bundle.with_suffix('.json')
     manifest = json.loads(manifest_path.read_text())
-    assert set(manifest['project_inputs']) == set(prepare.CAN_PROJECT_INPUTS)
+    assert set(manifest['project_inputs']) == set(prepare.project_sources('full'))
     for bad in [{}, {**manifest['project_inputs'], '../escape': '0'*64},
                 {**manifest['project_inputs'], 'regmap/can.yaml': '0'*64}]:
         manifest_path.write_text(json.dumps({**manifest, 'project_inputs': bad}))

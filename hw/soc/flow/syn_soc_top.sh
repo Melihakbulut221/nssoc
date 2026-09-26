@@ -617,6 +617,12 @@ case "${SOC_SRAM_MBIST:-0}" in
       echo 'SOC_SRAM_MBIST=1 requires SOC_MEM=sram and SOC_BOOT_ROM=logic' >&2; exit 2; }
     MBIST_DEFINE="-DSOC_SRAM_MBIST"
     MBIST_READ="read_verilog -sv -defer $RTL/dft/soc_sram_mbist.v $RTL/dft/soc_sram_test_port.v"
+    if [ "${SOC_ETH_SRAM:-0}" = 1 ]; then
+      MBIST_DEFINE="$MBIST_DEFINE -DSOC_ETH_MBIST"
+      MBIST_READ="$MBIST_READ $RTL/dft/soc_eth_fifo_sram.v $RTL/dft/soc_sram_zero_check.v"
+      SYNTH_COMMAND="synth -flatten -top soc_top
+select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
+    fi
     MEM_READ="${MEM_READ//read_verilog -I/read_verilog $MBIST_DEFINE -I}"
     ;;
   *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
@@ -628,7 +634,7 @@ $ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
 read_verilog -defer $IBEX_SRCS
-read_verilog $IF_DEFINE -I$RTL -defer $SOC_SRCS
+read_verilog -sv $IF_DEFINE $MBIST_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MBIST_READ
 $MEM_READ

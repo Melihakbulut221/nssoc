@@ -456,3 +456,72 @@ passes. Both documentation renderers and the prepared whole-SoC lint passed.
 The [release manifest](evidence/mbist-chip-assets-20260926.json) binds the two
 raw-evidence archives, including source snapshots, logs, preliminary failures
 and licence notices. No earlier GDS/LVS/STA receipt is promoted to this source.
+
+## Ethernet FIFO MBIST and refreshed physical integration
+
+The `SOC_SRAM_MBIST=1 SOC_ETH_SRAM=1` synthesis profile now selects
+`SOC_ETH_MBIST` as well. Both 2048-word Ethernet FIFOs instantiate eight
+256x16 dual-port SRAMs directly. A guarded transformation of the pinned upstream
+FIFO replaces its memory and first read pipeline stage without adding a cycle.
+The upstream checkout remains unchanged, and both interface manifests hash the
+transformation. Unsupported depth/width/non-frame configurations fail elaboration.
+Legacy profiles retain inferred memory and their original interface.
+
+Each FIFO uses its existing write and read clocks, with no clock switching:
+
+1. Port A runs the six-background March campaign over all 2048 x 16 bits.
+2. Port B reads every zero left by A before it may overwrite anything.
+3. Port B runs the same complete March campaign.
+4. Port A reads every zero left by B before releasing the memory.
+
+That is 122,880 March accesses per port plus 2,048 cross-port reads per direction,
+**249,856 test accesses per FIFO**. All physical bits, including the six unused
+payload bits, are exercised. The test has no claimed exhaustive silicon defect
+coverage percentage; retention, at-speed timing, arbitrary simultaneous dual
+writes and analog read/write collision qualification are separate matters.
+
+POR asserts asynchronously and releases through a two-flop chain in each clock
+domain. Sticky handshakes cross two-flop synchronizers. Functional FIFO requests
+remain isolated until both ports pass. Comparison failure or controller abort
+holds the chip in reset; the top-level `mbist_done_o`/`mbist_failed_o` aggregate
+system RAM and both FIFOs. `eth_mbist_done_o[1:0]` and
+`eth_mbist_failed_o[1:0]` identify TX (bit 0) and RX (bit 1). Existing detailed
+fault address/data outputs still describe **system RAM only**. These are core
+signals, not implemented test pads or JTAG access.
+
+Both external GMII clocks must be supplied during power-on testing. A missing
+clock prevents boot rather than silently bypassing a memory. The board/PHY must
+provide these clocks before firmware starts; software MDIO initialization cannot
+be a prerequisite for the clocks needed by MBIST. A watchdog reset or Ethernet
+flush resets functional logic without destroying live SRAM by rerunning MBIST.
+External POR reruns the complete test.
+
+The replacement SRAM technology map now supports reads and byte-uniform writes
+on both DP ports, including output hold when read enable is low. Vendor BIST
+pins remain disabled: tests access the real A/B functional ports. Macro geometry
+and independent CDL are reused only with exact hashes; new control logic needs
+fresh routing and transistor LVS. Old GDS acceptance is not transferred.
+
+Reproduce functional verification with the pinned tools and prepared interfaces:
+
+```sh
+python3 scripts/check_eth_mbist.py --pdk "$PDK_ROOT/ihp-sg13g2" \
+  --output hw/soc/out/eth-mbist-native
+python3 scripts/check_soc_mbist_integration.py --eth-mbist \
+  --simulator verilator --profile full --pdk "$PDK_ROOT/ihp-sg13g2" \
+  --output hw/soc/out/eth-mbist-chip
+SOC_ETH_MBIST=1 GL_IVERILOG=/path/to/icarus-13-or-newer/bin/iverilog \
+  bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-mbist-mapped-mac
+```
+
+`check_eth_mbist.py --replacement-model PATH` additionally tests the real
+replacement adapter against the explicitly supplied independent digital SRAM
+contract model. This is functional evidence, not transistor characterization.
+Native mapped-cell simulation also requires a compatible Cocotb/Python runtime;
+the tool wrapper must not overwrite it with an incompatible bundled Python.
+
+**Verification checkpoint:** new full-interface placement/routing, mapped MAC
+simulation and final source-bound regression are in progress locally. New layout
+DRC/LVS is not yet accepted; SRAM Liberty/RC, final STA and manufacturing approval
+remain separate open gates. Results and exact artifact hashes will replace this
+checkpoint when the runs complete.

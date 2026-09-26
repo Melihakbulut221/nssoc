@@ -65,7 +65,8 @@ def test_nettype_guard_rejects_missing_or_early_restore(tmp_path, text):
 def test_reviewed_policy_cannot_allow_new_owned_widths():
     p=json.loads(lint.POLICY.read_text())
     assert set(p['profiles'])=={'base','full','base-sram-logic','full-sram-logic',
-                                'base-sram-logic-mbist','full-sram-logic-mbist'}
+                                'base-sram-logic-mbist','full-sram-logic-mbist',
+                                'base-sram-logic-mbist-eth','full-sram-logic-mbist-eth'}
     for rows in p['profiles'].values():
         assert rows and not lint.owned_policy(rows)
         assert all(type(n) is int and n>0 for n in rows.values())
