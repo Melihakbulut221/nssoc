@@ -138,6 +138,48 @@ def test_mutated_input_rejected(tmp_path):
         drc.verify_inputs(expected)
 
 
+@pytest.mark.parametrize("reference", ["metal2_drw_Offgrid", "'metal2_drw_Offgrid'"])
+def test_native_identifier_marker_references_preserve_faults(tmp_path, reference, monkeypatch):
+    # Observed in actual native KLayout offgrid/acute reports. The marker must
+    # remain a failure, not be discarded or mistaken for a missing category.
+    report = tmp_path / "native.lyrdb"
+    report.write_text(f"""<report-database><categories><category>
+        <name>metal2_drw_Offgrid</name><description>offgrid</description>
+        </category></categories><cells><cell><name>chip</name></cell></cells>
+        <items><item><category>{reference}</category><cell>chip</cell>
+        </item></items></report-database>""")
+    inventory = drc.read_categories(report)
+    empty = {"M1.a": "width"}
+    monkeypatch.setattr(drc, "CATALOGS", {
+        "feol_and_geometry": drc.catalog_identity(inventory),
+        "beol": drc.catalog_identity(empty),
+        "complete": drc.catalog_identity({**inventory, **empty}),
+    })
+    result = drc.combine({
+        "feol_and_geometry": {"category_inventory": inventory, "result": {
+            "status": "FAIL", "process_returncode": 0, "markers": 1,
+            "categories": {reference: 1}, "category_count": 1}},
+        "beol": {"category_inventory": empty, "result": {
+            "status": "PASS", "process_returncode": 0, "markers": 0,
+            "categories": {}, "category_count": 1}},
+    })
+    assert result["status"] == "FAIL" and result["markers"] == 1
+    assert result["categories"] == {reference: 1}
+
+
+@pytest.mark.parametrize("reference", ["unknown", "'unknown'", "M1.a",
+                                       "metal2_drw_Offgrid'", "'metal2_drw_Offgrid"])
+def test_unknown_or_malformed_category_reference_is_rejected(tmp_path, reference):
+    report = tmp_path / "unknown.lyrdb"
+    report.write_text(f"""<report-database><categories>
+        <category><name>metal2_drw_Offgrid</name><description>offgrid</description></category>
+        <category><name>M1.a</name><description>width</description></category>
+        </categories><cells><cell><name>chip</name></cell></cells><items><item>
+        <category>{reference}</category><cell>chip</cell></item></items></report-database>""")
+    with pytest.raises(ValueError, match="unknown"):
+        drc.read_categories(report)
+
+
 @pytest.mark.parametrize("cells,reference", [
     ("<cell><name>macro</name><variant>1</variant></cell>", "macro:1"),
     ("<cell><name>macro</name><variant>1</variant></cell>"

@@ -71,6 +71,14 @@ def partition_tables(entrypoint, locked_paths):
     return groups
 
 
+def category_references(categories):
+    """KLayout quotes punctuation-bearing names but may leave identifiers bare."""
+    references = {"'" + name + "'" for name in categories}
+    references.update(name for name in categories
+                      if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*", name))
+    return references
+
+
 def read_categories(report):
     root = ET.parse(report).getroot()
     categories = {}
@@ -91,7 +99,7 @@ def read_categories(report):
         if qualified in cells:
             raise ValueError("Duplicate DRC cell identity")
         cells.add(qualified)
-    category_refs = {"'" + key + "'" for key in categories}
+    category_refs = category_references(categories)
     for item in root.findall("items/item"):
         if (item.findtext("category") not in category_refs
                 or item.findtext("cell") not in cells):
@@ -124,7 +132,7 @@ def combine(parts):
             raise ValueError("Inconsistent partition result")
         if (result["markers"] != sum(result["categories"].values())
                 or result["category_count"] != len(inventory)
-                or any(key not in {"'" + cat + "'" for cat in inventory}
+                or any(key not in category_references(inventory)
                        for key in result["categories"])
                 or any(type(value) is not int or value < 1
                        for value in result["categories"].values())):
