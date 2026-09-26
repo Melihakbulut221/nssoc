@@ -23,7 +23,10 @@ def test_existing_evidence_preserved(tmp_path, monkeypatch):
     assert (out/'result.json').read_text() == 'old failure'
 
 
-def test_escaping_output_rejected(tmp_path):
+def test_escaping_output_rejected(tmp_path, monkeypatch):
+    # The test must remain outside its synthetic repository even when pytest's
+    # --basetemp is inside the real repository's hw/soc/out directory.
+    monkeypatch.setattr(runner, 'ROOT', tmp_path/'repo')
     with pytest.raises(ValueError, match='under hw/soc/out'):
         runner.check(tmp_path/'outside', tmp_path, tmp_path)
     assert not (tmp_path/'outside').exists()

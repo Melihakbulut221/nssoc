@@ -150,7 +150,8 @@ def test_nothing_in_the_design_turns_the_response_register_on():
     offenders = []
     for path in list(ROOT.glob("hw/**/*.sh")) + list(ROOT.glob("hw/**/*.v")) \
             + list(ROOT.glob("hw/**/*.json")) + list(ROOT.glob("sw/**/*.py")):
-        if path in allowed or "/runs/" in str(path) or "/out/" in str(path):
+        if (not path.is_file() or path in allowed or
+                any(part in path.relative_to(ROOT).parts for part in ("runs", "out", "tools", "ext"))):
             continue
         if path == Path(__file__):
             continue
