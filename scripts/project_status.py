@@ -34,6 +34,8 @@ def python_status(record):
 
 
 def core_physical_status(record):
+    if record.get("status") == "PASS_PUBLISHED_ETH_MBIST_CORE_PHYSICAL_ONLY":
+        return eth_mbist_physical_status(record)
     physical = record["physical"]
     if (record.get("status") != "PASS_PUBLISHED_EXACT_CORE_PHYSICAL_CHECKPOINT_ONLY" or
             physical.get("status") != "PASS_EXACT_NEW_CORE_PHYSICAL_CHECKS_NO_TIMING_OR_FOUNDRY_APPROVAL" or
@@ -65,6 +67,87 @@ def core_physical_status(record):
     return dict(candidate_sha256=candidate, main_categories=560, density_categories=7,
                 antenna_categories=31, supplemental_categories=11, lvs_circuits=130,
                 lvs_primitives_each=5129488, timing_accepted=False,
+                manufacturing_approval=False, scope=record["scope"])
+
+
+def eth_mbist_physical_status(record):
+    """Require the fresh MBIST GDS, complete physical inventory and a real fault control."""
+    lvs, drc = record["lvs"], record["drc"]
+    if (record.get("manufacturing_approval") is not False or
+            record.get("final_sta_accepted") is not False or any(
+                item.get("manufacturing_approval") is not False or
+                item.get("timing_acceptance") is not False for item in (lvs, drc))):
+        raise ValueError("MBIST core verification cannot imply timing or manufacturing approval")
+    gds, candidate = lvs["candidate_gds"], lvs["gds_sha256"]
+    if (not re.fullmatch(r"[0-9a-f]{64}", candidate) or
+            drc.get("gds_sha256") != candidate or
+            any(item["input_sha256"].get(gds) != candidate for item in (lvs, drc)) or
+            record["members"].get(gds.removeprefix("${REPOSITORY}/")) != candidate):
+        raise ValueError("MBIST checks must bind the same archived GDS")
+    if (lvs.get("status") != "PASS_NEW_MBIST_CORE_FULL_TRANSISTOR_LVS_AND_DP_SWAP_REJECTED" or
+            drc.get("status") != "PASS_NEW_LAYOUT_ALL_PHYSICAL_RULES" or
+            record["logic"].get("status") != "PASS_WITHIN_LOCAL_EQUATION_SCOPE" or
+            record["logic"].get("returncode") != 0):
+        raise ValueError("Incomplete MBIST core verification")
+    expected = dict(density=7, antenna=31, feol_devices=52,
+                    geometry_pin_forbidden=20, geometry_grid=161,
+                    geometry_angle=210, beol=117, supplemental_wide=11)
+    steps = drc["steps"]
+    if len(steps) != len(expected) or {step["name"] for step in steps} != set(expected):
+        raise ValueError("Missing or duplicate native physical rule group")
+    for step in steps:
+        check = step["measurement"]
+        if (step.get("status") != "PASS" or check.get("status") != "PASS" or
+                check.get("markers") != 0 or check.get("categories") or
+                check.get("category_count") != expected[step["name"]] or
+                check.get("process_returncode") != 0 or
+                not re.fullmatch(r"[0-9a-f]{64}", check.get("report_sha256", ""))):
+            raise ValueError("Failed or incomplete MBIST physical measurement")
+    main = drc["main"]
+    if (main.get("status") != "PASS" or main.get("category_count") != 560 or
+            main.get("markers") != 0 or main.get("categories")):
+        raise ValueError("Incomplete main rule coverage")
+    def hierarchy(audit):
+        circuits = audit["circuits"]
+        if (audit.get("status") != "PASS within comparison scope" or audit.get("reasons") or
+                audit.get("extraction_diagnostics") or not circuits or
+                audit.get("circuit_status_counts") != {"Match": len(circuits)} or any(
+                    c["status"] != "Match" or
+                    c["layout"].casefold() != c["schematic"].casefold() or
+                    type(c["layout_devices_recursive"]) is not int or
+                    c["layout_devices_recursive"] <= 0 or
+                    c["layout_devices_recursive"] != c["schematic_devices_recursive"]
+                    for c in circuits)):
+            raise ValueError("Unmatched, skipped or empty transistor hierarchy")
+        rows = sorted((c["layout"].casefold(), c["schematic"].casefold(),
+                       c["layout_devices_recursive"], c["schematic_devices_recursive"])
+                      for c in circuits)
+        if len({row[0] for row in rows}) != len(rows):
+            raise ValueError("Duplicate transistor circuit")
+        return rows
+    positive = hierarchy(lvs["positive"])
+    if hierarchy(lvs["extraction_roundtrip"]) != positive:
+        raise ValueError("Cached extraction changed the transistor comparison")
+    tops = [row for row in positive if row[0] == "soc_top"]
+    if len(tops) != 1 or tops[0][2] <= 5_000_000:
+        raise ValueError("Full core transistor inventory is missing")
+    negative = lvs["negative"]
+    mutation = lvs["mutation"]
+    if (negative.get("status") != "FAIL" or not negative.get("reasons") or
+            not any(c["layout"].casefold() == "soc_top" and c["status"] != "Match"
+                    for c in negative["circuits"]) or
+            mutation.get("pins") != ["a2[0]", "a2[1]"] or
+            len(set(mutation.get("original_nets", []))) != 2):
+        raise ValueError("Actual DP address mutation was not rejected")
+    executions = {step["name"]: step["returncode"] for step in lvs["steps"]}
+    if (any(executions.get(name) != 0 for name in
+            ("positive", "positive-audit", "extracted-roundtrip", "extracted-roundtrip-audit")) or
+            executions.get("wrong-dp-address-audit") != 1):
+        raise ValueError("LVS process or negative-control audit failed")
+    return dict(candidate_sha256=candidate, main_categories=560, density_categories=7,
+                antenna_categories=31, supplemental_categories=11,
+                lvs_circuits=len(positive), lvs_primitives_each=tops[0][2],
+                ethernet_fifo_mbist=True, timing_accepted=False,
                 manufacturing_approval=False, scope=record["scope"])
 
 
