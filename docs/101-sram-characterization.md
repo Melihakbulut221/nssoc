@@ -675,7 +675,9 @@ per side), seven density categories, 31 antenna categories and the eleven
 unshielded wide-line rules. The completed supplemental run uses eight threads,
 50 µm tiles and a 30 µm border; its independent six-case geometry audit passes.
 The earlier flat and two-thread full-core supplement timeouts remain failures.
-All 560 native main categories still require the fresh run to finish.
+The fresh 443-category FEOL/geometry partition also passes with zero markers;
+the remaining 117-category BEOL partition is still running. The combined
+560-category main verdict remains pending until that independent result completes.
 
 Both repaired SRAM macros also pass fresh MOS graph and full C-export audits:
 37,076 DP and 202,800 SP transistors, including all named ports, with deliberate
@@ -739,3 +741,30 @@ bad-model run and the intentionally stopped old SP run produce their expected
 verdicts. The SP finalizer will still require the entire new 150 ns waveform,
 read/write/hold checks and deliberately corrupted-wave controls before accepting
 that single C-only functional point. Full RC and timing qualification stay open.
+
+
+The first fresh repaired-DP C-only TT run now completes the full 78 ns pattern:
+37,076 MOS devices and all 202,674 capacitors, 1.2 V, 25 °C, 100 ps input ramps,
+5 fF loads and a 50 ps maximum step. Six reads, both addresses, byte writes and
+the clock-pause hold checks pass across 694 stable samples. Its 20 rising and
+20 falling transitions give a maximum delay of **2.642352 ns**, maximum
+20%–80% slew of **0.242744 ns**, and **118.176514 pJ** total supply energy over
+8–78 ns. Wrong-output and wrong-supply waveform controls are rejected. This is
+a new measurement of the repaired geometry, not a copied old result; the
+50 ps numerical resolution bound and missing distributed resistance remain
+explicit. The [complete point record](evidence/sram-repaired-dp-tt-20260926.json)
+includes the archive hash and every member hash; the
+[lossless waveform/model archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-repaired-dp-tt-20260926.tar.xz)
+contains the actual measured circuit, stimuli, log and waveform. Pinned external
+PDK, OSDI and simulator dependencies are identified separately; no tool binary is
+redistributed. SS and FF transistor-corner runs follow from this passing TT result.
+
+A separate 25 ps maximum-step replay is running to measure numerical sensitivity
+for all forty observed transitions. A dependent one-arc setup measurement waits
+for that complete baseline and then measures a fresh read-address capture and
+5% delay-degradation bracket; it does not reuse the schematic bracket. Its
+preflight retains the initial rejection of a 50 ps waveform by the 25 ps
+sample-count gate. An explicitly separate 50 ps replay uses the corresponding
+40-sample minimum and rejects four waveform faults; the queued 25 ps campaign
+still requires at least 80 stable samples. These are pending measurements, not
+completed setup tables or Liberty qualification.

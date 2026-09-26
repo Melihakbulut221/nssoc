@@ -47,7 +47,9 @@ wide-line checks with physical fault controls. Fresh whole-core checks are
 running. Fresh full-core transistor LVS now also passes with 130 matching
 circuits and 5,129,488 primitives on each side. Fresh density (seven categories),
 antenna (31 categories) and the eleven-rule unshielded supplement also pass
-with zero markers. Full main DRC and parasitic/timing qualification remain open. The candidate cannot inherit the earlier
+with zero markers. The fresh 443-category FEOL/geometry partition now also
+passes; the 117-category BEOL partition is still running. Full main DRC and
+parasitic/timing qualification remain open. The candidate cannot inherit the earlier
 GDS's passes or timing measurements. See the latest section of
 [docs/101](101-sram-characterization.md). Production acceptance remains open.
 
