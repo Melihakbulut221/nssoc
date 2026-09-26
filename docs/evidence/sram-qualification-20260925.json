@@ -1,0 +1,2408 @@
+{
+  "status": "INITIAL_LOCAL_CHARACTERIZATION_AND_PHYSICAL_CAMPAIGN_RECORDED",
+  "date": "2026-09-25",
+  "scope": "Selected schematic transistor characterization of the two independent SRAM macros in the previously LVS-accepted 32-SRAM core; fresh boundary-corrected physical checks.",
+  "characterization_complete": false,
+  "liberty_qualified": false,
+  "post_layout_timing_qualified": false,
+  "final_soc_timing_acceptance": false,
+  "production_acceptance": false,
+  "prior_full_chip_lvs": "sram-chip-integration-20260925.json",
+  "circuit_binding": {
+    "status": "PASS_COMPLETE_SIMULATION_CIRCUITS_BOUND_TO_ACCEPTED_LVS_SOURCE",
+    "cases": [
+      {
+        "name": "sp",
+        "top": "SP6TSRAM512x64",
+        "recursive_mos": 202800,
+        "converted_leaf_definitions": 155,
+        "geometry_count": 24,
+        "all_other_source_lines_identical": true,
+        "controls": [
+          {
+            "fault": "wrong_terminal",
+            "status": "REJECTED"
+          },
+          {
+            "fault": "wrong_width",
+            "status": "REJECTED"
+          }
+        ]
+      },
+      {
+        "name": "dp",
+        "top": "DP8TSRAMDP256x16",
+        "recursive_mos": 37076,
+        "converted_leaf_definitions": 162,
+        "geometry_count": 23,
+        "all_other_source_lines_identical": true,
+        "controls": [
+          {
+            "fault": "wrong_terminal",
+            "status": "REJECTED"
+          },
+          {
+            "fault": "wrong_width",
+            "status": "REJECTED"
+          }
+        ]
+      }
+    ],
+    "count_scope": "Explicit unsimplified schematic MOS instances; LVS recursive counts are after the locked deck simplification and are reported separately."
+  },
+  "model_controls": {
+    "shared-model-controls": "PASS_ALL_SRAM_GEOMETRIES_THREE_PVT_DC_AND_WIDTH_CONTROL",
+    "shared-transient-controls": "PASS_ALL_GEOMETRIES_THREE_PVT_TRANSIENT_AND_CAPACITANCE_CONTROL"
+  },
+  "dp_original_shared_equivalence": {
+    "status": "PASS_FULL_DP_ORIGINAL_AND_SHARED_MODEL_WAVES",
+    "comparison": {
+      "samples": 1632,
+      "columns": 87,
+      "max_voltage_error_v": 9.999999717180685e-10,
+      "per_column_max_voltage_error_v": {
+        "v(vdd)": 0,
+        "v(clk1)": 4.1743060738087456e-23,
+        "v(clk2)": 3.683879453186257e-23,
+        "v(a1_0)": 0,
+        "v(a1_1)": 0,
+        "v(a1_2)": 0,
+        "v(a1_3)": 0,
+        "v(a1_4)": 0,
+        "v(a1_5)": 0,
+        "v(a1_6)": 0,
+        "v(a1_7)": 0,
+        "v(a2_0)": 1.8419397265931284e-23,
+        "v(a2_1)": 0,
+        "v(a2_2)": 0,
+        "v(a2_3)": 0,
+        "v(a2_4)": 0,
+        "v(a2_5)": 0,
+        "v(a2_6)": 0,
+        "v(a2_7)": 0,
+        "v(we1_0)": 0,
+        "v(we1_1)": 0,
+        "v(we2_0)": 0,
+        "v(we2_1)": 0,
+        "v(d1_0)": 0,
+        "v(d1_1)": 1.8419397265931284e-23,
+        "v(d1_2)": 0,
+        "v(d1_3)": 0,
+        "v(d1_4)": 0,
+        "v(d1_5)": 0,
+        "v(d1_6)": 1.8419397265931284e-23,
+        "v(d1_7)": 0,
+        "v(d1_8)": 0,
+        "v(d1_9)": 0,
+        "v(d1_10)": 1.8419397265931284e-23,
+        "v(d1_11)": 0,
+        "v(d1_12)": 0,
+        "v(d1_13)": 1.8419397265931284e-23,
+        "v(d1_14)": 0,
+        "v(d1_15)": 0,
+        "v(d2_0)": 0,
+        "v(d2_1)": 0,
+        "v(d2_2)": 0,
+        "v(d2_3)": 0,
+        "v(d2_4)": 0,
+        "v(d2_5)": 0,
+        "v(d2_6)": 0,
+        "v(d2_7)": 0,
+        "v(d2_8)": 0,
+        "v(d2_9)": 0,
+        "v(d2_10)": 0,
+        "v(d2_11)": 0,
+        "v(d2_12)": 0,
+        "v(d2_13)": 0,
+        "v(d2_14)": 0,
+        "v(d2_15)": 0,
+        "v(q1_0)": 9.999999960041972e-12,
+        "v(q1_1)": 9.999999960041972e-11,
+        "v(q1_2)": 1.0000000393722841e-11,
+        "v(q1_3)": 9.999999960041972e-13,
+        "v(q1_4)": 1.0000000502143058e-12,
+        "v(q1_5)": 1.0000000176882406e-11,
+        "v(q1_6)": 8.999999964037775e-12,
+        "v(q1_7)": 9.999999960041972e-12,
+        "v(q1_8)": 0,
+        "v(q1_9)": 9.999999960041972e-12,
+        "v(q1_10)": 1.0000000502143058e-12,
+        "v(q1_11)": 2.0000000787445682e-11,
+        "v(q1_12)": 1.0000000502143058e-12,
+        "v(q1_13)": 9.999999960041972e-11,
+        "v(q1_14)": 9.999999960041972e-12,
+        "v(q1_15)": 9.999999960041972e-13,
+        "v(q2_0)": 9.999999439624929e-11,
+        "v(q2_1)": 9.999999960041972e-12,
+        "v(q2_2)": 9.999998051846148e-11,
+        "v(q2_3)": 1.0000001044244144e-12,
+        "v(q2_4)": 9.999999717180685e-10,
+        "v(q2_5)": 9.999999092680234e-12,
+        "v(q2_6)": 1.0000001044244144e-12,
+        "v(q2_7)": 9.999999960041972e-12,
+        "v(q2_8)": 0,
+        "v(q2_9)": 9.999999092680234e-12,
+        "v(q2_10)": 1.0000001044244144e-12,
+        "v(q2_11)": 9.999999717180685e-10,
+        "v(q2_12)": 9.999999960041972e-12,
+        "v(q2_13)": 9.999999960041972e-13,
+        "v(q2_14)": 9.999999092680234e-12,
+        "v(q2_15)": 1.0000000393722841e-11
+      },
+      "tolerance_v": 0.024
+    },
+    "controls": [
+      {
+        "fault": "held_output_bit",
+        "status": "REJECTED",
+        "reason": "Analog waveform mismatch 1.1994091323759999"
+      },
+      {
+        "fault": "output_shift_300ps",
+        "status": "REJECTED",
+        "reason": "Analog waveform mismatch 1.2081726104"
+      }
+    ],
+    "timing_tolerance_ns": 0.1,
+    "max_timing_difference_ns": 1.112125946889364e-10
+  },
+  "dp_points": [
+    {
+      "name": "tt-slow-input-5f",
+      "status": "PASS_REAL_WAVE_TIMING_AND_FIVE_CORRUPTION_CONTROLS",
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 1.5548008141778682,
+          "max_delay_ns": 1.5985982320565186,
+          "min_slew_20_80_ns": 0.16923631748210552,
+          "max_slew_20_80_ns": 0.1703382825125957
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.652070705399135,
+          "max_delay_ns": 1.716035121692001,
+          "min_slew_20_80_ns": 0.1271907837701205,
+          "max_slew_20_80_ns": 0.15616686594172516
+        }
+      },
+      "supply_energy": {
+        "window_start_ns": 8,
+        "window_end_ns": 78.0,
+        "total_pj": 55.73240941608116,
+        "mean_mw": 0.7961772773725881,
+        "scope": "Total schematic supply energy for the specified pattern; not per-arc internal power or isolated leakage"
+      },
+      "controls": [
+        {
+          "fault": "wrong_output",
+          "status": "REJECTED",
+          "reason": "Wrong output or hold failure"
+        },
+        {
+          "fault": "extra_read_clock",
+          "status": "REJECTED",
+          "reason": "Missing or extra clock edge"
+        },
+        {
+          "fault": "wrong_write_address",
+          "status": "REJECTED",
+          "reason": "Stimulus mismatch"
+        },
+        {
+          "fault": "wrong_supply",
+          "status": "REJECTED",
+          "reason": "Supply differs from corner"
+        },
+        {
+          "fault": "wrong_clock_transition",
+          "status": "REJECTED",
+          "reason": "Clock edge differs from stimulus"
+        }
+      ],
+      "configuration": {
+        "voltage": 1.2,
+        "maxstep_ns": 0.05,
+        "input_transition_ns": 0.5,
+        "output_load_ff": 5,
+        "stop_ns": 78,
+        "write_schedule": [
+          {
+            "edge": 10,
+            "addr": 0,
+            "data": 42330,
+            "we": 3
+          },
+          {
+            "edge": 18,
+            "addr": 1,
+            "data": 49980,
+            "we": 3
+          },
+          {
+            "edge": 26,
+            "addr": 0,
+            "data": 27030,
+            "we": 3
+          },
+          {
+            "edge": 34,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 42,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 50,
+            "addr": 0,
+            "data": 26985,
+            "we": 1
+          },
+          {
+            "edge": 58,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 66,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 74,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          }
+        ],
+        "read_schedule": [
+          {
+            "edge": 14,
+            "addr": 0,
+            "expected": 42330
+          },
+          {
+            "edge": 22,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 30,
+            "addr": 0,
+            "expected": 27030
+          },
+          {
+            "edge": 54,
+            "addr": 0,
+            "expected": 26985
+          },
+          {
+            "edge": 62,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 70,
+            "addr": 0,
+            "expected": 26985
+          }
+        ]
+      }
+    },
+    {
+      "name": "tt-slow-input-20f",
+      "status": "PASS_REAL_WAVE_TIMING_AND_FIVE_CORRUPTION_CONTROLS",
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 1.6483638115191612,
+          "max_delay_ns": 1.69208781494105,
+          "min_slew_20_80_ns": 0.23343167859566913,
+          "max_slew_20_80_ns": 0.23589692670930942
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.7487958685922342,
+          "max_delay_ns": 1.8328660786983382,
+          "min_slew_20_80_ns": 0.2648893675929865,
+          "max_slew_20_80_ns": 0.3179895344917556
+        }
+      },
+      "supply_energy": {
+        "window_start_ns": 8,
+        "window_end_ns": 78.0,
+        "total_pj": 56.40477139654126,
+        "mean_mw": 0.8057824485220181,
+        "scope": "Total schematic supply energy for the specified pattern; not per-arc internal power or isolated leakage"
+      },
+      "controls": [
+        {
+          "fault": "wrong_output",
+          "status": "REJECTED",
+          "reason": "Wrong output or hold failure"
+        },
+        {
+          "fault": "extra_read_clock",
+          "status": "REJECTED",
+          "reason": "Missing or extra clock edge"
+        },
+        {
+          "fault": "wrong_write_address",
+          "status": "REJECTED",
+          "reason": "Stimulus mismatch"
+        },
+        {
+          "fault": "wrong_supply",
+          "status": "REJECTED",
+          "reason": "Supply differs from corner"
+        },
+        {
+          "fault": "wrong_clock_transition",
+          "status": "REJECTED",
+          "reason": "Clock edge differs from stimulus"
+        }
+      ],
+      "configuration": {
+        "voltage": 1.2,
+        "maxstep_ns": 0.05,
+        "input_transition_ns": 0.5,
+        "output_load_ff": 20,
+        "stop_ns": 78,
+        "write_schedule": [
+          {
+            "edge": 10,
+            "addr": 0,
+            "data": 42330,
+            "we": 3
+          },
+          {
+            "edge": 18,
+            "addr": 1,
+            "data": 49980,
+            "we": 3
+          },
+          {
+            "edge": 26,
+            "addr": 0,
+            "data": 27030,
+            "we": 3
+          },
+          {
+            "edge": 34,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 42,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 50,
+            "addr": 0,
+            "data": 26985,
+            "we": 1
+          },
+          {
+            "edge": 58,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 66,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 74,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          }
+        ],
+        "read_schedule": [
+          {
+            "edge": 14,
+            "addr": 0,
+            "expected": 42330
+          },
+          {
+            "edge": 22,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 30,
+            "addr": 0,
+            "expected": 27030
+          },
+          {
+            "edge": 54,
+            "addr": 0,
+            "expected": 26985
+          },
+          {
+            "edge": 62,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 70,
+            "addr": 0,
+            "expected": 26985
+          }
+        ]
+      }
+    },
+    {
+      "name": "ss-hot-slow-input-20f",
+      "status": "PASS_REAL_WAVE_TIMING_AND_FIVE_CORRUPTION_CONTROLS",
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 2.6883918364754353,
+          "max_delay_ns": 2.7683814663922965,
+          "min_slew_20_80_ns": 0.39134159113562456,
+          "max_slew_20_80_ns": 0.3924941844518002
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 2.8380869187115647,
+          "max_delay_ns": 2.9987784214255875,
+          "min_slew_20_80_ns": 0.4275744454722414,
+          "max_slew_20_80_ns": 0.5400769669373179
+        }
+      },
+      "supply_energy": {
+        "window_start_ns": 8,
+        "window_end_ns": 78.0,
+        "total_pj": 45.1787491924942,
+        "mean_mw": 0.6454107027499173,
+        "scope": "Total schematic supply energy for the specified pattern; not per-arc internal power or isolated leakage"
+      },
+      "controls": [
+        {
+          "fault": "wrong_output",
+          "status": "REJECTED",
+          "reason": "Wrong output or hold failure"
+        },
+        {
+          "fault": "extra_read_clock",
+          "status": "REJECTED",
+          "reason": "Missing or extra clock edge"
+        },
+        {
+          "fault": "wrong_write_address",
+          "status": "REJECTED",
+          "reason": "Stimulus mismatch"
+        },
+        {
+          "fault": "wrong_supply",
+          "status": "REJECTED",
+          "reason": "Supply differs from corner"
+        },
+        {
+          "fault": "wrong_clock_transition",
+          "status": "REJECTED",
+          "reason": "Clock edge differs from stimulus"
+        }
+      ],
+      "configuration": {
+        "voltage": 1.08,
+        "maxstep_ns": 0.05,
+        "input_transition_ns": 0.5,
+        "output_load_ff": 20,
+        "stop_ns": 78,
+        "write_schedule": [
+          {
+            "edge": 10,
+            "addr": 0,
+            "data": 42330,
+            "we": 3
+          },
+          {
+            "edge": 18,
+            "addr": 1,
+            "data": 49980,
+            "we": 3
+          },
+          {
+            "edge": 26,
+            "addr": 0,
+            "data": 27030,
+            "we": 3
+          },
+          {
+            "edge": 34,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 42,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 50,
+            "addr": 0,
+            "data": 26985,
+            "we": 1
+          },
+          {
+            "edge": 58,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 66,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 74,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          }
+        ],
+        "read_schedule": [
+          {
+            "edge": 14,
+            "addr": 0,
+            "expected": 42330
+          },
+          {
+            "edge": 22,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 30,
+            "addr": 0,
+            "expected": 27030
+          },
+          {
+            "edge": 54,
+            "addr": 0,
+            "expected": 26985
+          },
+          {
+            "edge": 62,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 70,
+            "addr": 0,
+            "expected": 26985
+          }
+        ]
+      }
+    },
+    {
+      "name": "dp-tt",
+      "status": "PASS_REAL_WAVE_TIMING_AND_FIVE_CORRUPTION_CONTROLS",
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 1.5011603710205472,
+          "max_delay_ns": 1.5457622066207335,
+          "min_slew_20_80_ns": 0.16952235216100933,
+          "max_slew_20_80_ns": 0.17060695450566102
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.5990551731251907,
+          "max_delay_ns": 1.6645275035253397,
+          "min_slew_20_80_ns": 0.12728148801299535,
+          "max_slew_20_80_ns": 0.15746403036696002
+        }
+      },
+      "supply_energy": {
+        "window_start_ns": 8,
+        "window_end_ns": 78.0,
+        "total_pj": 55.67731017580115,
+        "mean_mw": 0.795390145368588,
+        "scope": "Total schematic supply energy for the specified pattern; not per-arc internal power or isolated leakage"
+      },
+      "controls": [
+        {
+          "fault": "wrong_output",
+          "status": "REJECTED",
+          "reason": "Wrong output or hold failure"
+        },
+        {
+          "fault": "extra_read_clock",
+          "status": "REJECTED",
+          "reason": "Missing or extra clock edge"
+        },
+        {
+          "fault": "wrong_write_address",
+          "status": "REJECTED",
+          "reason": "Stimulus mismatch"
+        },
+        {
+          "fault": "wrong_supply",
+          "status": "REJECTED",
+          "reason": "Supply differs from corner"
+        },
+        {
+          "fault": "wrong_clock_transition",
+          "status": "REJECTED",
+          "reason": "Clock edge differs from stimulus"
+        }
+      ],
+      "configuration": {
+        "voltage": 1.2,
+        "maxstep_ns": 0.05,
+        "input_transition_ns": 0.1,
+        "output_load_ff": 5,
+        "stop_ns": 78,
+        "write_schedule": [
+          {
+            "edge": 10,
+            "addr": 0,
+            "data": 42330,
+            "we": 3
+          },
+          {
+            "edge": 18,
+            "addr": 1,
+            "data": 49980,
+            "we": 3
+          },
+          {
+            "edge": 26,
+            "addr": 0,
+            "data": 27030,
+            "we": 3
+          },
+          {
+            "edge": 34,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 42,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 50,
+            "addr": 0,
+            "data": 26985,
+            "we": 1
+          },
+          {
+            "edge": 58,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 66,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          },
+          {
+            "edge": 74,
+            "addr": 0,
+            "data": 0,
+            "we": 0
+          }
+        ],
+        "read_schedule": [
+          {
+            "edge": 14,
+            "addr": 0,
+            "expected": 42330
+          },
+          {
+            "edge": 22,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 30,
+            "addr": 0,
+            "expected": 27030
+          },
+          {
+            "edge": 54,
+            "addr": 0,
+            "expected": 26985
+          },
+          {
+            "edge": 62,
+            "addr": 1,
+            "expected": 49980
+          },
+          {
+            "edge": 70,
+            "addr": 0,
+            "expected": 26985
+          }
+        ]
+      }
+    }
+  ],
+  "sp_result": {
+    "status": "PASS_FULL_SP_WAVE_AND_FOUR_CORRUPTION_CONTROLS",
+    "characterization_complete": false,
+    "measurement": {
+      "status": "PASS_FULL_SP_TWO_ADDRESS_BYTE_WRITE_PATTERN",
+      "reads": [
+        {
+          "address": 0,
+          "expected": 11914892717959772205,
+          "time_ns": 50.05,
+          "observed_samples": 106
+        },
+        {
+          "address": 257,
+          "expected": 6531851355749779410,
+          "time_ns": 70.05,
+          "observed_samples": 106
+        },
+        {
+          "address": 0,
+          "expected": 11915060943238821933,
+          "time_ns": 110.05,
+          "observed_samples": 106
+        },
+        {
+          "address": 257,
+          "expected": 6531851355749779410,
+          "time_ns": 130.05,
+          "observed_samples": 99
+        }
+      ],
+      "stable_samples": 417,
+      "transitions": [
+        {
+          "bit": 0,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 1,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 2,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 3,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 4,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 5,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 6,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 7,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 8,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 9,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 10,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 11,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 12,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 13,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 14,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 15,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 16,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 17,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 18,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 19,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 20,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 21,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 22,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 23,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 24,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 25,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 26,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 27,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 28,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 29,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 30,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 31,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 32,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 33,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 34,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 35,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 36,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 37,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 38,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 39,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 40,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 41,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 42,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 43,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 44,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 45,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 46,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 47,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 48,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 49,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 50,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 51,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 52,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 53,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 54,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 55,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 56,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 57,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 58,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 59,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 60,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 61,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 62,
+          "read_time_ns": 70.05,
+          "direction": "rise",
+          "delay_ns": 2.0811381934064888,
+          "slew_20_80_ns": 0.2636896986625584
+        },
+        {
+          "bit": 63,
+          "read_time_ns": 70.05,
+          "direction": "fall",
+          "delay_ns": 2.1919094944290247,
+          "slew_20_80_ns": 0.30819738820432363
+        },
+        {
+          "bit": 0,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 1,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 2,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 3,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 4,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 5,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 6,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 7,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 8,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 9,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 10,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 11,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 12,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 13,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 14,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 15,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 16,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 17,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 18,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 19,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 20,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 21,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 22,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 23,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 24,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 25,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 26,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 27,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 28,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 29,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 30,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 31,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 32,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 33,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 34,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 35,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 36,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 37,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 38,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 39,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 48,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 49,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 50,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 51,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 52,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 53,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 54,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 55,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 56,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 57,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 58,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 59,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 60,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 61,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        },
+        {
+          "bit": 62,
+          "read_time_ns": 130.05,
+          "direction": "rise",
+          "delay_ns": 2.090472972212061,
+          "slew_20_80_ns": 0.2639108685932703
+        },
+        {
+          "bit": 63,
+          "read_time_ns": 130.05,
+          "direction": "fall",
+          "delay_ns": 2.206444186681968,
+          "slew_20_80_ns": 0.3140747633816302
+        }
+      ],
+      "summary": {
+        "rise": {
+          "count": 60,
+          "max_delay_ns": 2.090472972212061,
+          "max_slew_20_80_ns": 0.2639108685932703
+        },
+        "fall": {
+          "count": 60,
+          "max_delay_ns": 2.206444186681968,
+          "max_slew_20_80_ns": 0.3140747633816302
+        }
+      },
+      "timing_scope": "Consecutive read cycles only; 50% delay and 20%-80% output slew, 50 ps maximum step",
+      "characterization_complete": false
+    },
+    "controls": [
+      {
+        "fault": "wrong_read_bit",
+        "status": "REJECTED",
+        "reason": "SP readback/byte-mask mismatch"
+      },
+      {
+        "fault": "ignored_byte_write",
+        "status": "REJECTED",
+        "reason": "SP readback/byte-mask mismatch"
+      },
+      {
+        "fault": "extra_clock",
+        "status": "REJECTED",
+        "reason": "Missing or extra SP clock edge"
+      },
+      {
+        "fault": "wrong_address",
+        "status": "REJECTED",
+        "reason": "SP stimulus mismatch"
+      }
+    ],
+    "supply_energy": {
+      "start_ns": 8,
+      "end_ns": 150,
+      "total_pj": 143.69269656148393,
+      "mean_mw": 1.0119203983203093,
+      "scope": "Total supply energy of this complete schematic pattern; not isolated leakage or a per-arc Liberty power table"
+    }
+  },
+  "sp_configuration": {
+    "status": "PASS_SP_CONFIGURATION_BOUND_TO_AUDITED_BENCH",
+    "output_loads": 64,
+    "output_load_ff": 20,
+    "corner": "mos_tt",
+    "temperature_c": 25,
+    "supply_v": 1.2,
+    "clock_period_ns": 20,
+    "clock_full_swing_transition_ns": 0.1,
+    "transient_stop_ns": 150,
+    "maxstep_ns": 0.05,
+    "scope": "Reported stimulus settings only; not an additional electrical simulation."
+  },
+  "setup_screen": {
+    "status": "COMPLETE_ONE_ARC_SETUP_SCREEN",
+    "cases": [
+      {
+        "name": "p500ps",
+        "requested_setup_ns": 0.5,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 522.9393618379836,
+        "measured_setup_ns": 0.5000000000000012,
+        "stable_samples": 106,
+        "observed_words": [
+          49980
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": true,
+        "wave_sha256": "19f1ae05d63e0c846738c35bfa352841f0f71bb77786f19fab4997e4ff637446"
+      },
+      {
+        "name": "p100ps",
+        "requested_setup_ns": 0.1,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 630.5576824930031,
+        "measured_setup_ns": 0.1000000000000009,
+        "stable_samples": 106,
+        "observed_words": [
+          49980
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": true,
+        "wave_sha256": "bb784c80898c0a15bb29e762ca2d634fdd8a908d7eb45ce93a56c00fd468d365"
+      },
+      {
+        "name": "p0ps",
+        "requested_setup_ns": 0,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 331.42295755195664,
+        "measured_setup_ns": 0.0,
+        "stable_samples": 106,
+        "observed_words": [
+          49980
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": true,
+        "wave_sha256": "11d001a35e32c8e689c93255c39917aca18e58ecb6163260f881503ddf2d747a"
+      },
+      {
+        "name": "m100ps",
+        "requested_setup_ns": -0.1,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 304.7235002529924,
+        "measured_setup_ns": -0.1000000000000009,
+        "stable_samples": 106,
+        "observed_words": [
+          49980
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": true,
+        "wave_sha256": "66b43b6cae20146c19700803bd424be71f97b9a3c4df62a6b40c8cb1592a3503"
+      },
+      {
+        "name": "m500ps",
+        "requested_setup_ns": -0.5,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 488.63507946097525,
+        "measured_setup_ns": -0.5000000000000012,
+        "stable_samples": 106,
+        "observed_words": [
+          42330
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": false,
+        "wave_sha256": "940b8f46c21cfd01238b55d83417ab1b820bd3ec0cf66d7b8c832c9f872b87f9"
+      },
+      {
+        "name": "m2000ps",
+        "requested_setup_ns": -2,
+        "status": "COMPLETE_CAPTURE_MEASUREMENT",
+        "returncode": 0,
+        "diagnostics": [],
+        "elapsed_seconds": 601.4718238579808,
+        "measured_setup_ns": -2.0000000000000013,
+        "stable_samples": 106,
+        "observed_words": [
+          42330
+        ],
+        "ambiguous_samples": 0,
+        "capture_pass": false,
+        "wave_sha256": "050f7b798d192f7d4fc8b637d0e3f722d2e8b59931714ba78562da1c84312904"
+      }
+    ],
+    "scope": "One DP a2[0] 0->1 read-address setup arc, TT1.2V25C,100ps transition,5fF outputs,30ns full-circuit waveform. Negative setup means input50 after clock50; no other address arcs, hold, PVT or Liberty acceptance.",
+    "characterization_complete": false,
+    "has_pass_and_reject": true
+  },
+  "pex": {
+    "status": "ERROR_NO_ACCEPTED_PEX",
+    "scope": "Independent full DP macro nominal 2.5D RC extraction; not a foundry-calibrated PEX corner or post-layout timing qualification.",
+    "production_acceptance": false,
+    "tool_version": "kpex 0.4.4",
+    "address_space_bytes": 5368709120,
+    "timeout_seconds": 5400,
+    "returncode": -15,
+    "elapsed_seconds": 2561.368101600965
+  },
+  "pex_stop": {
+    "status": "STOPPED_AFTER_FAILED_RC_EXPORT_CONTROL",
+    "timestamp": "2026-09-25T22:34:53.160556+03:00",
+    "pid": 1138031,
+    "process_group": 1138031,
+    "reason": "Independent exact-layout bitcell RC export has 92 resistors in components with <=1 electrical anchor each; the same unmodified netlist expander does not split transistor terminals onto distributed R nodes. Continuing this full macro extraction cannot qualify that export path. Preserve current evidence; no completed full-macro RC result is claimed.",
+    "full_macro_pex_completed": false,
+    "production_acceptance": false
+  },
+  "bitcell_pex_audit": {
+    "status": "FAIL_BITCELL_RC_TERMINAL_ATTACHMENT",
+    "mos_devices": 8,
+    "capacitors": 51,
+    "resistors": 92,
+    "zero_ohm_resistors": 24,
+    "sum_coupling_capacitance_f": 4.2565571200000004e-15,
+    "resistance_components": [
+      {
+        "nodes": [
+          "\\$8.$0.24",
+          "\\$8.$1.18",
+          "\\$8.$2.25",
+          "\\$8.$3.18",
+          "\\$8.$4.17",
+          "\\$8.$5.18",
+          "\\$8.P0.17",
+          "\\$8.P0.24",
+          "\\$8.P0.25",
+          "\\$8.P1.17",
+          "\\$8.P1.24",
+          "\\$8.P2.24"
+        ],
+        "electrical_anchors": [],
+        "anchor_count": 0,
+        "resistors": 12
+      },
+      {
+        "nodes": [
+          "\\$9.$0.24",
+          "\\$9.$1.18",
+          "\\$9.$2.25",
+          "\\$9.$3.18",
+          "\\$9.$4.17",
+          "\\$9.$5.18",
+          "\\$9.P0.17",
+          "\\$9.P0.24",
+          "\\$9.P0.25",
+          "\\$9.P1.17",
+          "\\$9.P1.24",
+          "\\$9.P2.24"
+        ],
+        "electrical_anchors": [],
+        "anchor_count": 0,
+        "resistors": 12
+      },
+      {
+        "nodes": [
+          "bl1",
+          "bl1.$0.18",
+          "bl1.$1.19",
+          "bl1.$2.24",
+          "bl1.$3.18",
+          "bl1.P0.24"
+        ],
+        "electrical_anchors": [
+          "bl1"
+        ],
+        "anchor_count": 1,
+        "resistors": 5
+      },
+      {
+        "nodes": [
+          "bl1_n",
+          "bl1_n.$0.18",
+          "bl1_n.$1.19",
+          "bl1_n.$2.24",
+          "bl1_n.$3.18",
+          "bl1_n.P0.24"
+        ],
+        "electrical_anchors": [
+          "bl1_n"
+        ],
+        "anchor_count": 1,
+        "resistors": 5
+      },
+      {
+        "nodes": [
+          "bl2",
+          "bl2.$0.18",
+          "bl2.$1.19",
+          "bl2.$2.24",
+          "bl2.$3.18",
+          "bl2.P0.24"
+        ],
+        "electrical_anchors": [
+          "bl2"
+        ],
+        "anchor_count": 1,
+        "resistors": 5
+      },
+      {
+        "nodes": [
+          "bl2_n",
+          "bl2_n.$0.18",
+          "bl2_n.$1.19",
+          "bl2_n.$2.24",
+          "bl2_n.$3.18",
+          "bl2_n.P0.24"
+        ],
+        "electrical_anchors": [
+          "bl2_n"
+        ],
+        "anchor_count": 1,
+        "resistors": 5
+      },
+      {
+        "nodes": [
+          "vdd",
+          "vdd.$0.18",
+          "vdd.$1.19",
+          "vdd.$2.18",
+          "vdd.$3.19",
+          "vdd.$4.25",
+          "vdd.$5.18",
+          "vdd.$6.25",
+          "vdd.$7.18",
+          "vdd.P0.25",
+          "vdd.P1.25"
+        ],
+        "electrical_anchors": [
+          "vdd"
+        ],
+        "anchor_count": 1,
+        "resistors": 10
+      },
+      {
+        "nodes": [
+          "vss",
+          "vss.$0.18",
+          "vss.$1.19",
+          "vss.$2.18",
+          "vss.$3.19",
+          "vss.$4.24",
+          "vss.$5.18",
+          "vss.$6.24",
+          "vss.$7.18",
+          "vss.P0.24",
+          "vss.P1.24"
+        ],
+        "electrical_anchors": [
+          "vss"
+        ],
+        "anchor_count": 1,
+        "resistors": 10
+      },
+      {
+        "nodes": [
+          "wl1",
+          "wl1.$0.18",
+          "wl1.$1.19",
+          "wl1.$10.17",
+          "wl1.$11.18",
+          "wl1.$2.18",
+          "wl1.$3.19",
+          "wl1.$4.19",
+          "wl1.$5.20",
+          "wl1.$6.19",
+          "wl1.$7.20",
+          "wl1.$8.17",
+          "wl1.$9.18",
+          "wl1.P0.17",
+          "wl1.P1.17"
+        ],
+        "electrical_anchors": [
+          "wl1"
+        ],
+        "anchor_count": 1,
+        "resistors": 14
+      },
+      {
+        "nodes": [
+          "wl2",
+          "wl2.$0.18",
+          "wl2.$1.19",
+          "wl2.$10.17",
+          "wl2.$11.18",
+          "wl2.$2.18",
+          "wl2.$3.19",
+          "wl2.$4.19",
+          "wl2.$5.20",
+          "wl2.$6.19",
+          "wl2.$7.20",
+          "wl2.$8.17",
+          "wl2.$9.18",
+          "wl2.P0.17",
+          "wl2.P1.17"
+        ],
+        "electrical_anchors": [
+          "wl2"
+        ],
+        "anchor_count": 1,
+        "resistors": 14
+      }
+    ],
+    "component_anchor_counts": {
+      "0": 2,
+      "1": 8
+    },
+    "floating_body_nodes": [
+      "\\$1"
+    ],
+    "subcircuit_ports": [
+      "bl1",
+      "vss",
+      "vdd",
+      "bl1_n",
+      "bl2_n",
+      "wl1",
+      "nwell",
+      "wl2",
+      "bl2"
+    ],
+    "interpretation": "Every extracted R component has zero or one node attached to a transistor, capacitor or external pin; R-only dangling components cannot represent distributed device-to-device interconnect resistance. Original transistor terminals remain on unsplit ideal nets. The standalone cell also has an unexported, disconnected body node.",
+    "scope": "Exact observed bitcell export topology. This is not a new full-macro LVS or a claim that the full macro has the same body-pin omission.",
+    "post_layout_timing_qualified": false,
+    "production_acceptance": false
+  },
+  "pex_body_contacts": {
+    "status": "CLASSIFIED_UNMODELED_BODY_TAP_CONTACTS",
+    "missing_contacts": {
+      "polygons_merged": 7504,
+      "area_dbu2": 192102400
+    },
+    "extra_classified": {
+      "polygons_merged": 0,
+      "area_dbu2": 0
+    },
+    "missing_outside_taps": {
+      "polygons_merged": 0,
+      "area_dbu2": 0
+    },
+    "body_contact_rc_qualified": false,
+    "scope": "Exact geometric classification only. The nominal KPEX stack has no explicit contact_above for body taps; do not claim complete substrate/body contact RC coverage.",
+    "overlay_sha256": "ac81aed32121399c68f929f461dd1f4548cb847e211d4d116dd45905fa1acba8"
+  },
+  "boundary_transform": {
+    "status": "PASS_BOUNDARY_ONLY_TRANSFORM_REQUIRES_NEW_PHYSICAL_CHECKS",
+    "source_sha256": "ed8320031457647da0cb1bb1b135d6f50020fdaeaa32f9aca69b2e0fd4e07a40",
+    "changed_layer": [
+      189,
+      0
+    ],
+    "inherited_boundary_shapes_removed": {
+      "SP6TSRAM512x64": 1,
+      "DP8TSRAMDP256x16": 1
+    },
+    "original_die_box_dbu": [
+      0,
+      0,
+      3326400,
+      2475900
+    ],
+    "dbu_um": 0.001,
+    "unchanged_other_layers_text_and_hierarchy": true,
+    "tool_version": "0.30.12",
+    "manufacturing_acceptance": false,
+    "script_sha256": "f50d66f5fd26d2875b57cac6e9d699636062282500847107a025722cb899d69d"
+  },
+  "physical_checks": {
+    "status": "OPEN_PHYSICAL_GATES",
+    "cases": [
+      {
+        "deck": "density",
+        "status": "FAIL",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python3",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_ihp_drc.py",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-qualification-20260925/core-boundary/soc_top.gds",
+          "--top",
+          "soc_top",
+          "--tag",
+          "sram-core-boundary-density-20260925",
+          "--threads",
+          "1",
+          "--deck",
+          "density"
+        ],
+        "address_space_bytes": 12884901888,
+        "tag": "sram-core-boundary-density-20260925",
+        "returncode": 1,
+        "elapsed_seconds": 1978.861148002965,
+        "measurement": {
+          "status": "FAIL",
+          "process_returncode": 0,
+          "markers": 177,
+          "categories": {
+            "'AFil.g'": 1,
+            "'AFil.g2'": 7,
+            "'M2.j'": 1,
+            "'M2Fil.h'": 36,
+            "'M3.j'": 1,
+            "'M3Fil.h'": 31,
+            "'M4.j'": 1,
+            "'M4Fil.h'": 48,
+            "'M5.j'": 1,
+            "'M5Fil.h'": 48,
+            "'TM1.c'": 1,
+            "'TM2.c'": 1
+          },
+          "category_count": 19,
+          "report_sha256": "0cff44b55961f57f5d385ffc43c4c29de87aac873756c5fc6531db79b60e3f52"
+        },
+        "result_sha256": "fd0fb05de95fd00f8db4b28089849d3f6a2ed571cbe5ce5024ce7a123b5dbb93"
+      },
+      {
+        "deck": "main",
+        "status": "ERROR",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python3",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_ihp_drc_partitioned.py",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-qualification-20260925/core-boundary/soc_top.gds",
+          "--top",
+          "soc_top",
+          "--tag",
+          "sram-core-boundary-main-20260925",
+          "--threads",
+          "1",
+          "--timeout-seconds",
+          "7200"
+        ],
+        "address_space_bytes": 12884901888,
+        "tag": "sram-core-boundary-main-20260925",
+        "returncode": 2,
+        "elapsed_seconds": 1595.2207922650268,
+        "measurement": {
+          "status": "ERROR",
+          "error": "Missing DRC category inventory",
+          "parts": {},
+          "scope": "All 37 main tables in two sequential processes; antenna, density, LVS and other layouts require separate acceptance"
+        },
+        "result_sha256": "d3b5e99f1e60610c1e83c9698caa339141e545cb514cc1aa99b37941f92d548b"
+      },
+      {
+        "deck": "antenna",
+        "status": "PASS",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python3",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_ihp_drc.py",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-qualification-20260925/core-boundary/soc_top.gds",
+          "--top",
+          "soc_top",
+          "--tag",
+          "sram-core-boundary-antenna-20260925",
+          "--threads",
+          "1",
+          "--deck",
+          "antenna"
+        ],
+        "address_space_bytes": 12884901888,
+        "tag": "sram-core-boundary-antenna-20260925",
+        "returncode": 0,
+        "elapsed_seconds": 1750.386118562019,
+        "measurement": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 31,
+          "report_sha256": "de315aff22356004a293add1f2a7a4e7a4c5b66851885e0919f902cd14bc347e"
+        },
+        "result_sha256": "0e31e302f74636f51a9aab1562cdce83b04c6c89f7fb6d113121d8064387472c"
+      }
+    ],
+    "scope": "Fresh unchanged-rule main/antenna/density of boundary-corrected full core; no acceptance inherited from original GDS.",
+    "manufacturing_acceptance": false
+  },
+  "main_retry": {
+    "status": "ERROR",
+    "scope": "Exact boundary-corrected GDS, unchanged locked main tables and recommended rules; only address-space budget increases from 12 to 16 GiB after independent memory admission.",
+    "manufacturing_acceptance": false,
+    "address_space_bytes": 17179869184,
+    "admission_available_bytes": 15895224320,
+    "max_output_file_bytes": 419430400,
+    "returncode": 2,
+    "elapsed_seconds": 1603.6434593769955,
+    "measurement": {
+      "status": "ERROR",
+      "error": "Missing DRC category inventory",
+      "parts": {},
+      "scope": "All 37 main tables in two sequential processes; antenna, density, LVS and other layouts require separate acceptance"
+    },
+    "measurement_sha256": "d3b5e99f1e60610c1e83c9698caa339141e545cb514cc1aa99b37941f92d548b"
+  },
+  "helper_checks": {
+    "status": "PASS",
+    "steps": [
+      {
+        "name": "pytest",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "sw/tests/test_sram_wave_measurement.py",
+          "sw/tests/test_sp_sram_measurement.py",
+          "sw/tests/test_process_budget.py",
+          "sw/tests/test_sram_physical_gate.py",
+          "sw/tests/test_ihp_drc_preparation.py",
+          "sw/tests/test_ihp_drc_result.py",
+          "sw/tests/test_ihp_drc_partitioned.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "native-boundary",
+        "command": [
+          "hw/soc/tools/kpex-env/bin/python",
+          "hw/soc/flow/tests/test_core_boundary.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "name": "ruff",
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "hw/soc/flow/bounded_process.py",
+          "hw/soc/flow/check_sram_core_physical.py",
+          "hw/soc/flow/measure_sram_wave.py",
+          "hw/soc/flow/measure_sp_sram_wave.py",
+          "hw/soc/flow/normalize_core_boundary.py",
+          "hw/soc/flow/share_sram_psp_models.py",
+          "hw/soc/flow/tests/test_core_boundary.py",
+          "sw/tests/test_sram_wave_measurement.py",
+          "sw/tests/test_sp_sram_measurement.py",
+          "sw/tests/test_process_budget.py",
+          "sw/tests/test_sram_physical_gate.py"
+        ],
+        "returncode": 0
+      }
+    ]
+  },
+  "archives": {
+    "physical-views": {
+      "path": "docs/evidence/sram-qualification-20260925-physical-views.tar.xz",
+      "sha256": "9ce1aea7ba2612815e15f0f092ab56d8f58543a938f856a9aa8cccb9f0662183",
+      "bytes": 10272456,
+      "members": 12,
+      "member_manifest_sha256": "f96ead9fe968cc73c36debe6c3f1e51cba62521a134c6a2c92260db64169b9bb"
+    },
+    "analog": {
+      "path": "docs/evidence/sram-qualification-20260925-analog.tar.xz",
+      "sha256": "c910340061b1263dd009bff0f8b12f985325ffb3c7aed8042daf07347feac6c1",
+      "bytes": 9644088,
+      "members": 133,
+      "member_manifest_sha256": "377f9b6874eef516bd14107ae179a55a424dfa93a50222ce320d157d0de55dd3"
+    },
+    "physical-checks": {
+      "path": "docs/evidence/sram-qualification-20260925-physical-checks.tar.xz",
+      "sha256": "722983d13d98c319710c8bdfa719a412d3e1db79b730707f7c668d69b2bd5f84",
+      "bytes": 58484,
+      "members": 49,
+      "member_manifest_sha256": "04f3b4e327355af947af1e0df15dcb32709db620c438108ab6c3f4f749a90cc9"
+    },
+    "methods": {
+      "path": "docs/evidence/sram-qualification-20260925-methods.tar.xz",
+      "sha256": "c6f21753bb43af22e90282201f7b9601f2cc9cc8b295a943338c31d90b3e7923",
+      "bytes": 244760,
+      "members": 124,
+      "member_manifest_sha256": "84b443956abefad57ecb21a90dfeee44c3c92b656aa0a8e91354fffa48cb57e9"
+    }
+  },
+  "prior_wave_points": {
+    "tt": {
+      "status": "PASS_OBSERVED_PATTERN_TIMING",
+      "stable_samples": 694,
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 1.5011603710205472,
+          "max_delay_ns": 1.5457622066207335,
+          "min_slew_20_80_ns": 0.16952235216100933,
+          "max_slew_20_80_ns": 0.17060695450566102
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.5990551731251907,
+          "max_delay_ns": 1.6645275035253397,
+          "min_slew_20_80_ns": 0.12728148801299535,
+          "max_slew_20_80_ns": 0.15746403036696002
+        }
+      },
+      "supply_energy": null,
+      "interpolation": "Linear voltage threshold interpolation",
+      "timing_resolution_bound_ns": 0.05,
+      "characterization_complete": false
+    },
+    "ss-hot": {
+      "status": "PASS_OBSERVED_PATTERN_TIMING",
+      "stable_samples": 694,
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 2.4549515176552377,
+          "max_delay_ns": 2.534932116405641,
+          "min_slew_20_80_ns": 0.2827337996293051,
+          "max_slew_20_80_ns": 0.28650941901262755
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 2.610012244254423,
+          "max_delay_ns": 2.7297082530850387,
+          "min_slew_20_80_ns": 0.20260668654509068,
+          "max_slew_20_80_ns": 0.26388593376754743
+        }
+      },
+      "supply_energy": null,
+      "interpolation": "Linear voltage threshold interpolation",
+      "timing_resolution_bound_ns": 0.05,
+      "characterization_complete": false
+    },
+    "ff-cold": {
+      "status": "PASS_OBSERVED_PATTERN_TIMING",
+      "stable_samples": 698,
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 0.9992125854914633,
+          "max_delay_ns": 1.0261183897405353,
+          "min_slew_20_80_ns": 0.11034824085126166,
+          "max_slew_20_80_ns": 0.11313001640793892
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.0607629573418451,
+          "max_delay_ns": 1.0915908846906317,
+          "min_slew_20_80_ns": 0.07867264287048989,
+          "max_slew_20_80_ns": 0.09418233233814058
+        }
+      },
+      "supply_energy": null,
+      "interpolation": "Linear voltage threshold interpolation",
+      "timing_resolution_bound_ns": 0.05,
+      "characterization_complete": false
+    },
+    "tt-halfstep": {
+      "status": "PASS_OBSERVED_PATTERN_TIMING",
+      "stable_samples": 1313,
+      "summary": {
+        "rise": {
+          "count": 20,
+          "min_delay_ns": 1.4767111032652387,
+          "max_delay_ns": 1.522015655629144,
+          "min_slew_20_80_ns": 0.1663414645883427,
+          "max_slew_20_80_ns": 0.16816802158340455
+        },
+        "fall": {
+          "count": 20,
+          "min_delay_ns": 1.5717419110140136,
+          "max_delay_ns": 1.6372576697426608,
+          "min_slew_20_80_ns": 0.12600343965910998,
+          "max_slew_20_80_ns": 0.15656729860566007
+        }
+      },
+      "supply_energy": null,
+      "interpolation": "Linear voltage threshold interpolation",
+      "timing_resolution_bound_ns": 0.025,
+      "characterization_complete": false
+    }
+  },
+  "raw_record_sha256": {
+    "dp-wave-audits/result.json": "24c4e27b80238c3fadb46fd07be3cee8b90f8018e80d78c14bcb51212b8a3b4f",
+    "load-slew/result.json": "bfc42e692b37d32fba10b2aeb67d36865b167bf9a75a265fbfbb12390cac267b",
+    "dp-read-setup/result.json": "8962108ff062303b0f7030af480c86cab476cb93c4bc3ccaa8f90684ebc43b89",
+    "sp-wave-audit/result.json": "1f68e0b877a5d1163711042b1e942c1e3eb31d1513c12ed11e8377e51c6d2230",
+    "bitcell-pex-v2/result.json": "009348c77a1320f6f4edf8cfea00971b08b60d87cc5779f6bfc97a7084eccedf",
+    "bitcell-pex/result.json": "ba3373bcca5af09e7f1b2f7357bcb40512973a2849bb4396669e03e37dfff10d",
+    "corrected-physical/result.json": "92ec760277b1eeaa906eef6ddaab77e2f4b2fbac1b1e0f2dcb036be5b81fa2ac",
+    "shared-dp-models/result.json": "5ca47d297af8fbac7da9adf44bb944dd1b17fb871f76c963e7cae90cf8cddd16",
+    "helper-tests/result.json": "61e30a5dcff56dc833b08bce876da1d4042d3ec2afec1fa104d7f9daac007c04",
+    "core-boundary/result.json": "b6628752ada80522424263feb5e36aef6bbc4ba35760c2b53be6716a6e93183a",
+    "shared-transient-controls/result.json": "7b8f0d7189d2893a31f287fd0078c58dc99e7339daa80d52ea73c36637443bca",
+    "main-16g/result.json": "f060ad018e06da25193bddb7f4206f5e728303ae39be2f94104179c645205e9e",
+    "shared-sp-models/result.json": "0c0266d3c533bea860548724bbb4ca996c72b1ac6cf53570c39cfe19164aca86",
+    "shared-model-controls/result.json": "184a9556d9d5057650a2c330f7b67264114570dd9f2abf925031c0c5c07e8177",
+    "shared-sram-transients/result.json": "e4597780d5b07c3c8f85215b0972db43330eb1cbc6e67822896ad31d38453895",
+    "dp-pex/result.json": "687a8e181603a6eca441aa2a205db9a5ec1eb7e6a2ecfed73a948de530d43f68",
+    "dp-wave-audits/tt-slow-input-5f/result.json": "883dcb497dd2bf71a27245c033cbe00994adb4e370108091e9787d5022a2b071",
+    "dp-wave-audits/tt-slow-input-20f/result.json": "6a53a2f2e287e9d008bd9c7624a40bb17591906c33fb1865cb0ab6e1171575b1",
+    "dp-wave-audits/ss-hot-slow-input-20f/result.json": "9c0b010e466536a69ff23bcdb19d12fee0f13831105088ee59c4e8b2ae6bbdaf",
+    "dp-wave-audits/dp-tt/result.json": "2bcb67905907abb13485f44404258c9f7d6d0af128ea7f26d8923027bc40543d"
+  }
+}

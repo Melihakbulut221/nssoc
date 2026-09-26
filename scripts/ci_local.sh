@@ -91,14 +91,39 @@ skipped() {  # skipped <name> <reason>
     printf '  %-46s skip  (%s)\n' "$1" "$2"; skip=$((skip+1))
 }
 
+# --------------------------------------------------------------- RTL lint
+job_lint() {
+    echo "== lint"
+    local suite="${OSS_CAD_SUITE:-$PWD/hw/soc/tools/oss-cad-suite}"
+    if [ ! -x "$suite/bin/verilator" ] || [ ! -s hw/soc/genp/ibex_top.v ]; then
+        if [ "$JOB" = lint ]; then
+            run "prepared whole-SoC lint prerequisites" false
+        else
+            skipped "prepared whole-SoC lint" "run soc-rtl-prepare and install pinned OSS CAD Suite; hardware CI requires this gate"
+        fi
+        return
+    fi
+    # Every run gets a fresh evidence directory; no old verdict is reused.
+    local out="hw/soc/out/lint-$(date -u +%Y%m%dT%H%M%S)-$$"
+    run "prepared whole-SoC lint" bash scripts/lint.sh --output "$out"
+}
+
 # ---------------------------------------------------------------- licence
 job_licence() {
     echo "== licence"
     run "every source file carries the right SPDX tag" \
         "$PY" scripts/spdx_check.py
-    run "the four licence texts are present and canonical" bash -c '
+    run "tracked-path licence counts are current" "$PY" scripts/licence_inventory.py --check
+    if [ -n "${REUSE:-}" ]; then
+        run "REUSE licence inventory" "$REUSE" lint
+    elif "$PY" -c 'import reuse' >/dev/null 2>&1; then
+        run "REUSE licence inventory" "$PY" -m reuse lint
+    else
+        skipped "REUSE licence inventory" "install sw/requirements.txt with Python >=3.10, or set REUSE"
+    fi
+    run "the component licence texts are present" bash -c '
         set -eu
-        for f in CERN-OHL-W-2.0 Apache-2.0 CC-BY-4.0 ISC; do
+        for f in CERN-OHL-W-2.0 Apache-2.0 CC-BY-4.0 ISC LGPL-2.1-or-later MIT; do
             test -s "LICENSES/$f.txt"
         done
         echo "3b83ef96387f14655fc854ddc3c6bd57  LICENSES/Apache-2.0.txt" | md5sum -c - >/dev/null
@@ -107,38 +132,21 @@ job_licence() {
     run "the map, the memo and the tree agree" bash -c '
         set -eu
         grep -q "SIGNED 2026-09-09" docs/14-licensing-decision.md
-        test -f LICENSES.md && test -f .reuse/dep5
+        test -f LICENSES.md && test -f REUSE.toml
         test ! -e tt/LICENSE.PENDING.md && test -f tt/LICENSE
         cmp LICENSES/CERN-OHL-W-2.0.txt tt/LICENSE
         cmp LICENSES/Apache-2.0.txt tt/LICENSES/Apache-2.0.txt'
-    # A CHECK MUST NOT WRITE WHAT IT VERIFIES, and this one did. It ran
-    # three generators IN PLACE and then diffed, so on any run where a
-    # generator's output had legitimately changed it left the tree
-    # modified -- including tt/, which docs/34 freezes for a shuttle.
-    # That happened on 2026-09-11: this check rewrote tt/docs/info.md,
-    # tt/MANIFEST.sha256 and tt/README.md as a side effect of being run.
-    #
-    # It now refuses on a dirty tree first, so that restoring afterwards
-    # cannot destroy uncommitted work, and restores what the generators
-    # wrote whether it passed or failed. The drift is still detected;
-    # the tree is not the place it is detected in.
+    # Each generator already has a read-only check mode. Use it directly:
+    # a failed generator must never leave edits behind or restore user work.
     run "the generators still emit the tag they should" bash -c '
         set -eu
-        paths="hw/rtl hw/soc/rtl hw/soc/tb/sw sw/golden tt"
-        if [ -n "$(git status --porcelain -- $paths)" ]; then
-            echo "refusing: these paths are already modified, and this check"
-            echo "restores them afterwards. Commit or stash first:"
-            git status --short -- $paths
-            exit 1
-        fi
-        rc=0
-        "$PY" regmap/generate.py >/dev/null
-        "$PY" regmap/generate_memmap.py >/dev/null
-        "$PY" scripts/gen_tt_submission.py >/dev/null
-        "$PY" scripts/spdx_check.py >/dev/null
-        git diff --exit-code -- $paths || rc=1
-        git checkout -- $paths
-        exit $rc'
+        "$PY" regmap/generate.py --check
+        "$PY" regmap/generate_memmap.py --check
+        "$PY" regmap/generate_peripherals.py --check
+        "$PY" regmap/generate_can.py --check
+        "$PY" scripts/gen_tt_submission.py --check
+        "$PY" scripts/spdx_check.py'
+
 }
 
 # ------------------------------------------------------------------- docs
@@ -149,7 +157,10 @@ job_suite() {
     # was the doc-link one. "The checks pass" then meant SPDX, links and
     # the claim table, and nothing about the hardware. Added 2026-09-10.
     # It is about eight minutes.
-    run "the whole pytest suite" "$PY" -m pytest sw/tests -q
+    run "the whole pytest suite" "$PY" -m pytest sw/tests -q -rs
+    # Pytest's own counts/skips are separate from the front-door gate counts.
+    # Keep them visible even on success instead of hiding tool-dependent gaps.
+    printf '%s\n' "$out"
 }
 
 job_docs() {
@@ -281,7 +292,7 @@ PY
 # and checker_audit.py imports librelane, which the repository venv does
 # not carry -- it needs the flow venv, whose path its own docstring gives
 # and which FLOW_PY overrides.
-FLOW_PY="${FLOW_PY:-$HOME/Documents/caravel-lif-crossbar/.venv-flow/bin/python}"
+FLOW_PY="${FLOW_PY:-$(pwd -P)/hw/soc/tools/flow-venv/bin/python}"
 
 # run tree | the checkers dispositioned as not gating, verbatim from
 # checker_audit.py's "NOT gating in full:" line | what the run is
@@ -379,6 +390,7 @@ job_mirror() {
 }
 
 case "$JOB" in
+    lint)     job_lint ;;
     licence)  job_licence ;;
     docs)     job_docs ;;
     paper)    job_paper ;;
@@ -386,8 +398,8 @@ case "$JOB" in
     checkers) job_checkers ;;
     mirror)   job_mirror ;;
     all)      job_licence; echo; job_docs; echo; job_paper; echo; job_checkers
-              echo; job_mirror; echo; job_suite ;;
-    *) echo "usage: $0 [licence|docs|paper|checkers|mirror|suite|all] [--record]" >&2
+              echo; job_mirror; echo; job_suite; echo; job_lint ;;
+    *) echo "usage: $0 [lint|licence|docs|paper|checkers|mirror|suite|all] [--record]" >&2
        exit 2 ;;
 esac
 

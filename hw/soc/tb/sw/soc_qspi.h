@@ -18,14 +18,15 @@
 #define SOC_QSPI_H
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 
-#define QSPI_CONF   (SOC_QSPICTL_BASE + 0x00u)  /* rw  DIV, CS         */
-#define QSPI_CTRL   (SOC_QSPICTL_BASE + 0x04u)  /* rw  RST, IEN        */
-#define QSPI_STAT   (SOC_QSPICTL_BASE + 0x08u)  /* r/w1c               */
-#define QSPI_RX     (SOC_QSPICTL_BASE + 0x0Cu)  /* r   clears DR       */
-#define QSPI_TX     (SOC_QSPICTL_BASE + 0x10u)  /* w                   */
-#define QSPI_CMD    (SOC_QSPICTL_BASE + 0x14u)  /* rw  write starts    */
-#define QSPI_ADDR   (SOC_QSPICTL_BASE + 0x18u)  /* rw  24 bits         */
+#define QSPI_CONF   (SOC_QSPICTL_BASE + SOC_QSPI_CONF_OFF)  /* rw  DIV, CS         */
+#define QSPI_CTRL   (SOC_QSPICTL_BASE + SOC_QSPI_CTRL_OFF)  /* rw  RST, IEN        */
+#define QSPI_STAT   (SOC_QSPICTL_BASE + SOC_QSPI_STAT_OFF)  /* r/w1c               */
+#define QSPI_RX     (SOC_QSPICTL_BASE + SOC_QSPI_RX_OFF)  /* r   clears DR       */
+#define QSPI_TX     (SOC_QSPICTL_BASE + SOC_QSPI_TX_OFF)  /* w                   */
+#define QSPI_CMD    (SOC_QSPICTL_BASE + SOC_QSPI_CMD_OFF)  /* rw  write starts    */
+#define QSPI_ADDR   (SOC_QSPICTL_BASE + SOC_QSPI_ADDR_OFF)  /* rw  24 bits         */
 
 #define QSPI_CONF_DIV(d)   ((uint32_t)(d) & 0xFu)
 #define QSPI_CONF_CS(c)    (((uint32_t)(c) & 0xFu) << 8)

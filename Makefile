@@ -1,0 +1,118 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+.DEFAULT_GOAL := help
+ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+PYTHON ?= python3
+PY := $(ROOT)/.venv/bin/python
+CBMC ?= $(ROOT)/hw/soc/tools/cbmc/usr/bin/cbmc
+
+.PHONY: help setup test rtl-test check soc-prepare soc-rtl-prepare soc-prepared-guards soc-crash-cocotb soc-sim soc-boot-regression rf-contract rf-equivalence boot-proof
+help:
+	@echo 'make setup PYTHON=/usr/bin/python3  Python 3.9-3.13 environments'
+	@echo 'make test / rtl-test / check       Python, RTL, or local CI'
+	@echo 'make soc-prepare / soc-sim         Fetch pinned Ibex/tools, then boot the SoC'
+	@echo 'make soc-rtl-prepare              Fetch and generate processor/interface RTL only'
+	@echo 'make soc-prepared-guards          Check prepared upstream ports and SoC elaboration'
+	@echo 'make soc-memory-parity           Array/native SRAM functional parity and negative control'
+	@echo 'make soc-crash-cocotb             CPU double-fault/reset/APB retention test'
+	@echo 'make soc-boot-regression           Normal boot and both geometry fallbacks'
+	@echo 'make rf-contract / rf-equivalence  Real-codec proofs (set OSS_CAD_SUITE)'
+	@echo 'make boot-proof CBMC=/path/to/cbmc  Check the ROM geometry predicate'
+	@echo 'make soc-interfaces-test / soc-interfaces-sim  Pin and CPU interface tests'
+	@echo 'make soc-interfaces-layout RUN_TAG=name      Fresh synthesis and P&R'
+	@echo 'make soc-interfaces-decks RUN_TAG=name STATE=/path/state_out.json'
+
+setup:
+	@$(PYTHON) -c 'import sys; assert (3,9) <= sys.version_info[:2] <= (3,13), "cocotb 2.0.1 requires Python 3.9-3.13; set PYTHON to a compatible interpreter"'
+	$(PYTHON) -m venv $(ROOT)/.venv
+	$(PYTHON) -m venv $(ROOT)/hw/.venv
+	$(PY) -m pip install -r $(ROOT)/sw/requirements.txt
+	$(ROOT)/hw/.venv/bin/python -m pip install -r $(ROOT)/hw/requirements.txt
+
+test:
+	cd $(ROOT) && $(PY) -m pytest -q
+
+rtl-test: soc-interfaces-prepare
+	cd $(ROOT) && scripts/run_cocotb.sh
+
+check:
+	cd $(ROOT) && scripts/ci_local.sh all
+
+soc-prepare: soc-rtl-prepare
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-rvgcc
+
+soc-rtl-prepare:
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-sv2v fetch-ibex
+	bash $(ROOT)/hw/soc/flow/sv2v_ibex.sh $(ROOT)/hw/soc/ext/ibex $(ROOT)/hw/soc/gen $(ROOT)/hw/soc/tools/sv2v-Linux/sv2v
+	$(MAKE) soc-interfaces-prepare
+	$(PYTHON) $(ROOT)/hw/soc/flow/ibex_fault_port.py $(ROOT)/hw/soc/gen $(ROOT)/hw/soc/genp
+
+# Preparation is explicit so an offline test run never fetches dependencies.
+# CI calls this after soc-prepare; a fresh checkout can use soc-rtl-prepare.
+soc-prepared-guards:
+	@test -s $(ROOT)/hw/soc/gen/ibex_register_file_ff.v
+	@test -s $(ROOT)/hw/soc/genp/ibex_top.v
+	@test -s $(ROOT)/hw/soc/gen/interfaces.bundle.vh
+	@command -v yosys >/dev/null || { echo 'yosys is required for prepared RTL guards'; exit 1; }
+	cd $(ROOT) && $(PY) -m pytest -q \
+	  sw/tests/test_soc_regfile_guards.py::test_upstreams_own_file_measures_the_data_flip_flops_only \
+	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_declares_upstreams_ports_in_upstreams_order \
+	  sw/tests/test_soc_regfile_guards.py::test_the_substitute_accepts_every_parameter_ibex_top_overrides \
+	  sw/tests/test_soc_synthesis_guards.py::test_the_ibex_top_patch_applies_to_the_pinned_output \
+	  sw/tests/test_soc_synthesis_guards.py::test_the_whole_soc_elaborates_as_one_design \
+	  sw/tests/test_no_orphan_modules.py::test_register_file_external_entry_contract
+
+soc-sim:
+	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" bash hw/soc/flow/sim_soc.sh
+
+SOC_CRASH_BUILD ?= $(ROOT)/hw/soc/out/crash-cocotb
+soc-crash-cocotb:
+	SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 \
+	  SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault \
+	  bash $(ROOT)/hw/soc/flow/sim_soc.sh $(SOC_CRASH_BUILD)
+	bash $(ROOT)/scripts/check_soc_crash_cocotb.sh $(SOC_CRASH_BUILD)
+
+soc-boot-regression:
+	bash $(ROOT)/scripts/check_soc_boot.sh
+
+rf-contract:
+	$(MAKE) -C $(ROOT)/hw/soc/formal regfilecontract
+	$(MAKE) -C $(ROOT)/hw/soc/formal regfilecontrols
+
+rf-equivalence:
+	$(MAKE) -C $(ROOT)/hw/soc/formal regfileequivalence
+
+boot-proof:
+	cd $(ROOT) && $(PY) scripts/check_boot_geometry.py --cbmc $(CBMC)
+
+.PHONY: soc-interfaces-prepare
+SOC_INTERFACE_PROFILE ?= base
+# CAN map generation needs PyYAML installed by make setup. A hosted job
+# without a venv may use its provisioned PYTHON; explicit override stays possible.
+INTERFACE_PYTHON ?= $(if $(wildcard $(PY)),$(PY),$(PYTHON))
+export SOC_INTERFACE_PROFILE
+soc-interfaces-prepare:
+	@case "$(SOC_INTERFACE_PROFILE)" in base|full) ;; *) echo 'SOC_INTERFACE_PROFILE must be base or full'; exit 2 ;; esac
+	$(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-verilog-ethernet
+	@if [ "$(SOC_INTERFACE_PROFILE)" = full ]; then $(MAKE) -f $(ROOT)/hw/soc/tools.soc.mk fetch-spacewire_reloaded fetch-can; fi
+	$(INTERFACE_PYTHON) $(ROOT)/hw/soc/flow/prepare_interfaces.py --profile $(SOC_INTERFACE_PROFILE)
+
+.PHONY: soc-interfaces-test soc-interfaces-sim
+soc-interfaces-test: soc-interfaces-prepare
+	cd $(ROOT) && scripts/run_cocotb.sh soc_interfaces
+
+soc-interfaces-sim: soc-interfaces-prepare
+	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO IBEX_REGFILE=secded SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
+
+.PHONY: soc-interfaces-layout
+soc-interfaces-layout:
+	bash $(ROOT)/hw/soc/flow/implement_interfaces.sh $(RUN_TAG)
+
+.PHONY: soc-interfaces-decks
+soc-interfaces-decks:
+	bash $(ROOT)/hw/soc/flow/verify_interfaces_layout.sh "$(RUN_TAG)" "$(STATE)"
+
+.PHONY: soc-memory-parity
+soc-memory-parity:
+	bash $(ROOT)/scripts/check_soc_memory_parity.sh $(PARITY_OUT)

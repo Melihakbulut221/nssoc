@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
+# REUSE-IgnoreStart
 
 """Check -- and, with --apply, insert -- the SPDX header on every source file.
 
@@ -17,7 +18,7 @@ applies to the flow's own gates.
 WHAT IS TAGGED INLINE, AND WHAT IS NOT
 
 A file is tagged inline when it is a SOURCE FILE and its syntax has a
-comment. Everything else is covered by path, in `.reuse/dep5` and
+comment. Everything else is covered by path, in `REUSE.toml` and
 `LICENSES.md`, and this script checks that those two agree with the
 classification below -- so a file that cannot carry a tag is still
 covered by a rule, not by silence.
@@ -67,11 +68,11 @@ THIRD_PARTY = {
     "hw/soc/rvformal/insns/insn_rem.v": "ISC",
 }
 
-# Path prefixes covered by .reuse/dep5 instead of an inline tag.
+# Path prefixes covered by REUSE.toml instead of an inline tag.
 UNTAGGED_PREFIXES = ("tt/", "LICENSES/", ".reuse/")
 UNTAGGED_SUFFIXES = (".json", ".md", ".csv", ".tsv", ".sha256", ".svg",
                      ".gitignore", ".txt", ".ini")
-UNTAGGED_NAMES = {"LICENSE", "pytest.ini", ".gitignore"}
+UNTAGGED_NAMES = {"LICENSE", "pytest.ini", ".gitignore", "REUSE.toml"}
 
 # Comment syntax by suffix. The value is (prefix, suffix); a suffix of ""
 # means a line comment.
@@ -86,6 +87,7 @@ SYNTAX = {
     ".sdc": HASH, ".sby": HASH, ".tcl": HASH, ".py": HASH, ".sh": HASH,
     ".mk": HASH, ".yml": HASH, ".yaml": HASH, ".awk": HASH, ".cfg": HASH,
     ".ys": HASH,
+    ".spice": ("* ", ""),
     ".tex": PCT, ".bib": PCT,
 }
 
@@ -110,7 +112,7 @@ DOCUMENT_SUFFIXES = {".tex", ".bib", ".yaml", ".yml", ".csv", ".tsv"}
 # Apache-2.0. The boundary is `docs/14` section 6.5: tooling is permissive
 # so that it can be offered upstream to yosys, LibreLane and IHP-Open-PDK,
 # none of which takes reciprocal code.
-HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys"}
+HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys", ".spice"}
 
 
 def strip_template(name):
@@ -147,6 +149,19 @@ def classify(rel):
 
 def path_licence(rel):
     """The licence a path-covered (untagged) file is under, for LICENSES.md."""
+    if rel in {"docs/evidence/prepared-sources-20260920.tar.gz",
+               "docs/evidence/prepared-sources-20260920-NOTICES.txt",
+               "docs/evidence/prepared-sources-20260921.tar.gz",
+               "docs/evidence/prepared-sources-20260921-NOTICES.txt",
+               "docs/evidence/prepared-sources-can-bank-20260921.tar.gz",
+               "docs/evidence/prepared-sources-can-bank-20260921-NOTICES.txt",
+               "docs/evidence/prepared-sources-eth-mbist-20260926-NOTICES.txt",
+               "docs/evidence/ethernet-netlist-20260920.v.gz",
+               "docs/evidence/ethernet-netlist-20260920-NOTICES.txt"}:
+        return "CERN-OHL-W-2.0 AND Apache-2.0 AND LGPL-2.1-or-later AND MIT"
+    if rel in {"docs/evidence/historical-recovery-20260920.tar.gz",
+               "docs/evidence/historical-recovery-20260920-NOTICES.txt"}:
+        return "CERN-OHL-W-2.0 AND Apache-2.0"
     if rel.startswith("tt/"):
         return "see tt/README.md"
     if rel.startswith(DIR_IS_DOCUMENT):
@@ -295,3 +310,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# REUSE-IgnoreEnd

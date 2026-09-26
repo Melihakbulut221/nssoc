@@ -1,0 +1,67 @@
+{
+  "date": "2026-09-20",
+  "status": "Native startup diagnostic reproduces unknown RAM SEC/DED counters",
+  "scope": "Same old immutable mapped SoC, untouched native IHP models, erased/uninitialized RAM and same external flash. 1000-cycle non-acceptance observation; final short-bound FAIL expected. No forced counter/memory value.",
+  "observations": "At cycles 100 through 1000, RAM SEC and DED counters contain X while CPU reset-vector RAM sweep progresses with known addresses. ROM event counters and RAM read-correction counter are zero. Old loader reads these power-on counters before clearing them, consistent with the separate full boot failure at that point. The prepared firmware correction clears RAM sources without reading them on power-on only; full corrected boot is pending.",
+  "result": {
+    "scope": "Short non-acceptance progress diagnostic: same mapped SoC and flash, 1000-cycle bound, flash-frame and raw crash-bus progress, unbuffered verbose output. Expected timeout before firmware completion; not a normal test pass.",
+    "compile_command": [
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+      "-g2005-sv",
+      "-DFUNCTIONAL",
+      "-s",
+      "tb_logicrom_gl",
+      "-o",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/sim.vvp",
+      "-DEXIT_CODE_ADDR=32'h00001e64",
+      "-DEXIT_MAGIC_ADDR=32'h00001e68",
+      "-DCHECKS_ADDR=32'h00001e9c",
+      "-DFAILS_ADDR=32'h00001ea0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/tb_logicrom_gl.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-soc-synthesis/soc_top.netlist.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+    ],
+    "run_command": [
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+      "-i",
+      "-v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/sim.vvp",
+      "+flash0=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/flash0.hex"
+    ],
+    "compile_returncode": 0,
+    "run_returncode": 1,
+    "elapsed_s": 12.95656107799914
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/sim.vvp": {
+      "bytes": 64185882,
+      "sha256": "331166c266898c56dc3b793bce1fd6647dd36316044432e23a6435ebab25dc2b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/result.json": {
+      "bytes": 2484,
+      "sha256": "0e2664904672ce1b95794cf2aef6c96372a1d342ed597b82bfe50d095a0df88c"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/tb_logicrom_gl.v": {
+      "bytes": 12338,
+      "sha256": "3ad1b65829628233b490bba8e0db8b4078402865296e6a13f77bf007c9280bcd"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/run.log": {
+      "bytes": 3241,
+      "sha256": "a6d1be95b6425253d10c48a7b85eb596b3f4792297d251c333fcda138a8bcef3"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-startup-counters/compile.log": {
+      "bytes": 1720,
+      "sha256": "a9ec9c1f144760dd32f0f8479727f7086e4749e7135fd50bbd8ce518b32644f9"
+    },
+    "hw/soc/out/external-review-20260919/probe_logicrom_startup_counters.py": {
+      "bytes": 1894,
+      "sha256": "7de6d9c64d69f9cc52097585ca06424ee87585a8d6c4a3befc588224a76ba827"
+    }
+  }
+}

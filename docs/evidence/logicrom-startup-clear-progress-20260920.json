@@ -1,0 +1,141 @@
+{
+  "date": "2026-09-20",
+  "status": "Power-on startup scrub clear: normal RTL boot PASS, mapped synthesis complete; whole native gate boot and fallback runs pending",
+  "scope": "On boot count zero, clear RAM startup SEC/RD/DED sources without first reading unknown startup telemetry. Nonzero boot count and ROM sources remain untouched. Rebuilds actual immutable loader; not a simulation ROM/RAM preload. Old mapped-native boot FAIL remains the negative baseline.",
+  "source_sha256": "3908d85dc86f479cf3bd98b78ed7c5968efeb7e1a75d7df5fbb0a509a989619d",
+  "image_manifest": {
+    "format": 1,
+    "module": "soc_logic_boot_rom",
+    "image_bytes": 3084,
+    "image_sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+    "words": 2048,
+    "first_image_word": 32,
+    "codeword_bits": 39,
+    "template_sha256": "2ea27354ad115c58ba5782901d5913b4fbc253bd29f12197c912a5326d2c7b04",
+    "golden_codec_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+    "rtl_sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+    "scope": "Fixed standard-cell ROM contents. No SRAM preload or writable code storage. Physical and fault qualification remain separate."
+  },
+  "normal_rtl": {
+    "checks": 28,
+    "failed_checks": 0,
+    "command": [
+      "bash",
+      "hw/soc/flow/sim_soc.sh",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl"
+    ],
+    "environment": {
+      "SOC_BOOT_ROM": "logic",
+      "SOC_MEM_RDREG": "1",
+      "SOC_REQ_REG": "1",
+      "SOC_RF_SYNPRE": "1",
+      "SOC_WAKE_GNT": "1"
+    }
+  },
+  "synthesis": {
+    "command": [
+      "bash",
+      "hw/soc/flow/syn_soc_top.sh",
+      "20",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn"
+    ],
+    "environment": {
+      "SOC_BOOT_ROM": "logic",
+      "SOC_BOOT_ROM_IMAGE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/test_soc.bin",
+      "SOC_MEM": "sram",
+      "IBEX_REGFILE": "secded",
+      "IBEX_RF_SYNPRE": "1",
+      "SOC_MEM_RDREG": "1",
+      "SOC_REQ_REG": "1",
+      "SOC_MEM_HARDEN": "1",
+      "SOC_ROM_HARDEN": "1",
+      "SOC_WAKE_GNT": "1",
+      "SOC_ETH_SRAM": "1"
+    },
+    "cells": 69441,
+    "flip_flops": 9391,
+    "standard_cell_area_um2": 1080737.6076,
+    "RAM_macros": 4,
+    "Ethernet_macros": 16,
+    "ROM_SRAM_macros": 0
+  },
+  "pending": [
+    "Two geometry fallback RTL cases",
+    "Full native four-state mapped boot",
+    "New ROM-image physical implementation and all downstream signoff gates"
+  ],
+  "artifacts": {
+    "hw/soc/tb/sw/boot.c": {
+      "bytes": 25839,
+      "sha256": "3908d85dc86f479cf3bd98b78ed7c5968efeb7e1a75d7df5fbb0a509a989619d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/sim.log": {
+      "bytes": 2013,
+      "sha256": "a9dcc10298608069715d7b7334a87f0bac982fc855730fe15a15236d2978feee"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/soc_param_override.v": {
+      "bytes": 608,
+      "sha256": "f50afcd816d312edc8ec43674f3bcb67a4b42ba63ece28607478ce6c5a7138e5"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/test_soc.bin": {
+      "bytes": 3084,
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/test_soc.elf": {
+      "bytes": 32688,
+      "sha256": "1cc98b23f5b52e540cb3cc6a3a78d34b6107f2e34cf77249fd9bd62ecb20180a"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/app.elf": {
+      "bytes": 57192,
+      "sha256": "7fe618c4ad743d1a4d4d425a69f5f2f63128bf8a958705083289812fc705ac3f"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/boot-rom/soc_logic_boot_rom.v": {
+      "bytes": 26618,
+      "sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top_syn.ys": {
+      "bytes": 8918,
+      "sha256": "a82143d8456d9d9f4d303d12aa5ddbbb820042186e65956625cc5a8c5b252e6f"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/area.rpt": {
+      "bytes": 2234,
+      "sha256": "8b124d1e29e21512edc3d06cf37ec659f835e090fc66f87d3435e74193dde38e"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/hierarchy.rpt": {
+      "bytes": 2045,
+      "sha256": "6e954f2e5b46a8f788aba78714e7b91228012febb9d8e770c27a3e6172bac736"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v": {
+      "bytes": 9565137,
+      "sha256": "c76766629773761beae4ddf069d9d6ab5f6696f8efd3c618e490f599093fb773"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/syn.log": {
+      "bytes": 7778726,
+      "sha256": "c9077a0fc81c2b63fd61a5c6148f5dd009ca99049ec3df47c7bded0d0d117ea7"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl-driver.log": {
+      "bytes": 5058,
+      "sha256": "8c9fe219ed940017bbd34bb96e43bae876d8e2ccf975d02c25ca8db64bda6cd5"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn-driver.log": {
+      "bytes": 1378,
+      "sha256": "1993c8f2845171612afd5eb447e11420b243ce561ac215e102164a03c3faabc6"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-boot-stop-diagnostic/run.log": {
+      "bytes": 3780,
+      "sha256": "e63b0b4e977b16a6cb57d15090ef0c5ed282d72011918f98a673d690f74080f3"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-icarus-boot-stop-diagnostic/result.json": {
+      "bytes": 2499,
+      "sha256": "46fad69904dd4d17af5542a2f2769301273ece76d07753de4ece5f82971c940e"
+    }
+  }
+}

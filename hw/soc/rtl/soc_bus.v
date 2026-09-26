@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // System fabric: two Ibex-native masters onto four slave ports plus an
 // internal error slave.
 //
@@ -832,3 +834,5 @@ module soc_bus #(
 `endif
 
 endmodule
+
+`default_nettype wire

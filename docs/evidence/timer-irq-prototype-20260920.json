@@ -1,0 +1,142 @@
+{
+  "scope": "Isolated candidate only: default WritebackStage=0 and existing CLINT unchanged. Register raw timer interrupt once at SoC integration on ungated clk_i. No shipping RTL, constraints or active layout changes. Single new storage bit is not radiation-qualified. Functional simulation and final mapping/timing remain required.",
+  "base_soc_top_sha256": "90154656b104f3d977ca4fe55bc8b7cb9ef68c11f79d5bd6d5261dc979dc12ad",
+  "candidate_soc_top_sha256": "874e2f04a16dcb88f8adfbec150c996505ae048feaaf222394993c7046a721f0",
+  "motivation": "Measured ECO7 path from SECDED mtime storage through MTIP and core control to fetch_addr_q exceeds the slow setup budget. Separate the comparator and core combinational cones; leave mtime reads and compare registers untouched.",
+  "architectural_source": "https://docs.riscv.org/reference/isa/v20260120/priv/machine.html",
+  "inference": "The ISA permits delayed reflection of the mtime/mtimecmp comparison in MTIP. This supports investigating a bounded one-clock delivery delay, but does not prove system correctness or validate an implementation.",
+  "date": "2026-09-20",
+  "status": "Functional prototype PASS; not adopted",
+  "commands": [
+    "SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SOC_APB_TIMEOUT=256 timeout 1800 stdbuf -oL -eL bash hw/soc/out/external-review-20260919/timer-irq-register-probe/sim_soc.sh hw/soc/out/external-review-20260919/timer-irq-register-probe/sim"
+  ],
+  "result": {
+    "software_checks_passed": 28,
+    "software_failure_mask": "00000000",
+    "core_sleep_cycle": 635360,
+    "boot_handover_cycle": 316098,
+    "cycles_in_ram_image": 319262,
+    "watchdog_stage1_expected_test_events": 1,
+    "watchdog_stage2_events": 0,
+    "watchdog_stage3_events": 0,
+    "console_characters": 1150,
+    "console_framing_errors": 0,
+    "qspi_frames": 6,
+    "qspi_datasheet_violations": 0
+  },
+  "limitations": [
+    "Adds one unprotected state bit; a protected implementation, synthesis cost, timing, fault controls and final physical flow would be required before adoption.",
+    "Architectural source permits delayed MTIP updates, but is not a substitute for whole-system validation.",
+    "No change to shipping RTL, timing constraints or active route."
+  ],
+  "source_patch": "--- a/hw/soc/rtl/soc_top.v\n+++ b/hw/soc/rtl/soc_top.v\n@@ -1131,13 +1131,22 @@\n   // bring-up program compute an exact deadline. A real part needs an\n   // always-on time base; soc_clint.v says so.\n   // -------------------------------------------------------------------\n+  // Isolated timing experiment: one free-running clock of MTIP latency.\n+  // Not a shipping change or a radiation qualification claim.\n+  wire clint_irq_timer_raw;\n+  reg clint_irq_timer_sample;\n+  always @(posedge clk_i or negedge rst_sys_n)\n+    if (!rst_sys_n) clint_irq_timer_sample <= 1'b0;\n+    else clint_irq_timer_sample <= clint_irq_timer_raw;\n+  assign clint_irq_timer = clint_irq_timer_sample;\n+\n   soc_clint #(.TICK_DIV(1)) u_clint (\n       .clk_i (clk_i), .rst_ni (rst_sys_n),\n       .req_i (s_req[4]), .addr_i (s_addr), .we_i (s_we),\n       .be_i (s_be), .wdata_i (s_wdata),\n       .gnt_o (s_gnt[4]), .rvalid_o (s_rvalid[4]),\n       .rdata_o (s_rdata_clint), .err_o (s_err[4]),\n-      .irq_timer_o (clint_irq_timer),\n+      .irq_timer_o (clint_irq_timer_raw),\n       .irq_software_o (clint_irq_soft),\n       .mt_ecc_o (clint_mt_ecc_ev)\n   );\n",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/inputs.json",
+      "bytes": 1097,
+      "sha256": "a309551c3863841704427fbe4685db1a37c4f2c0c02bd43a923bb8fa3ac5019c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/soc_top.v",
+      "bytes": 57433,
+      "sha256": "874e2f04a16dcb88f8adfbec150c996505ae048feaaf222394993c7046a721f0"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/sim_soc.sh",
+      "bytes": 19334,
+      "sha256": "9e2d793e3753a677a0d5c093a5787e1c43ca22d1eccfafdc4ee6f7ae681b0832"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/simulation.log",
+      "bytes": 4491,
+      "sha256": "043e1d3f9c65ad8e66988082aee8c7f8c55f8b37b10cc60a58176d66f1eafb9c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/sim/test_soc.hex",
+      "bytes": 18144,
+      "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/sim/flash0.hex",
+      "bytes": 393216,
+      "sha256": "cdc79a3352649e99d819bf2462fbac0477edc5a959706120cb61327d64ca21ae"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/sim/soc_param_override.v",
+      "bytes": 572,
+      "sha256": "15c1e7e1b5d689dac87d08a2b38efc19d3cf1cbeeecb1ad72b719001e2babf2e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timer-irq-register-probe/sim/tb_soc.vvp",
+      "bytes": 5211046,
+      "sha256": "9cbea70877ab7e9f129569040c84aa9282b437f0d5f8102356eb6168a7fbb267"
+    }
+  ],
+  "writeback_counterfactual": {
+    "date": "2026-09-20",
+    "status": "FAIL observed; run stopped after decisive failure",
+    "scope": "Separate copied-top WritebackStage=1 experiment with CLKGATE=0. The mtime test still fails. This rules out fabric/NPU clock gating as a sufficient explanation for the earlier WB1 failure in this configuration; it does not identify the root cause. Shipping WritebackStage=0 remains unchanged.",
+    "first_attempt": {
+      "scope": "WB1 plus CLKGATE=0 counterfactual, isolated source copy.",
+      "exit_code": 124,
+      "status": "NO VERDICT: wall-clock timeout after 1800s; buffered simulation output incomplete",
+      "log_sha256": "e971c821420dba23cbdfbec212a623057d7383d44b608ce59cb5875e136c4b7b",
+      "continuation": "Replay the exact compiled VVP and flash with line-buffered output and 5400s limit; no source rebuild or altered inputs."
+    },
+    "observed": "mtime a=0x00000000 b=0x00000000 mcause=0x00000000; FAIL test 0x0000000f",
+    "stop": "Only VVP PID212210 was sent SIGTERM after this failure. No full watchdog/reset completion verdict is claimed for this replay.",
+    "command": "timeout 5400 stdbuf -oL -eL ~/.local/opt/iverilog12/usr/bin/vvp -M ~/.local/opt/iverilog12/usr/lib/x86_64-linux-gnu/ivl hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/tb_soc.vvp +flash0=hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/flash0.hex +strap=0 +ram_random=1",
+    "inputs": {
+      "scope": "Isolated experiment: only Ibex WritebackStage is 1 instead of 0. Shipping RTL, source flow and active physical run unchanged. Synthesis and simulation driver copies only redirect soc_top source and resolve SOC_DIR to original repository.",
+      "sources": {
+        "hw/soc/rtl/soc_top.v": "90154656b104f3d977ca4fe55bc8b7cb9ef68c11f79d5bd6d5261dc979dc12ad",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/soc_top.v": "2b4b81353ae3dd3e2a1cd0eebf02bc876de4ee06480505391a4d82573f704fa0",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/syn_soc_top.sh": "2af7d42811351918a7bebc68055a8fd8d896b3297c47ea5dadb63cad180c7931",
+        "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim_soc.sh": "703386896e306af01bbed3ad262ab95e4f9c958ec7d63c724cc8db30e52cfd99"
+      },
+      "rejected_builds": [
+        {
+          "path": "syn-synpre0-rejected",
+          "reason": "SOC_RF_SYNPRE is a simulation knob; synthesis needs IBEX_RF_SYNPRE. Terminated with SIGTERM, no result adopted."
+        },
+        {
+          "path": "syn-no-eth-sram-rejected",
+          "reason": "Missing SOC_ETH_SRAM=1 mapped Ethernet buffers to flops; incompatible comparison, no result adopted."
+        }
+      ],
+      "current_command": "IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1 SOC_WAKE_GNT=0 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 bash hw/soc/out/external-review-20260919/ibex-wb1-probe/syn_soc_top.sh 20 hw/soc/out/external-review-20260919/ibex-wb1-probe/syn"
+    },
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/soc_top.v",
+        "bytes": 57028,
+        "sha256": "2b4b81353ae3dd3e2a1cd0eebf02bc876de4ee06480505391a4d82573f704fa0"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/simulation-clkgate0-replay-20260920.log",
+        "bytes": 744,
+        "sha256": "9f274b5e3aab8148a93ad11a9bcf0e05471e90f2142119ec16a205d6de60fdac"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/soc_param_override.v",
+        "bytes": 607,
+        "sha256": "68ee0a33a7403911bed86b4235a3f97c8b4c53fb85f1adf0e7fb788e34b2c3d3"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/flash0.hex",
+        "bytes": 393216,
+        "sha256": "cdc79a3352649e99d819bf2462fbac0477edc5a959706120cb61327d64ca21ae"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/test_soc.hex",
+        "bytes": 18144,
+        "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/ibex-wb1-probe/sim-clkgate0-20260920/tb_soc.vvp",
+        "bytes": 5212173,
+        "sha256": "bd2b81e0a928365e11c3bf0942757f8b950441ab993a0ac873ba00d4e897b669"
+      }
+    ]
+  }
+}

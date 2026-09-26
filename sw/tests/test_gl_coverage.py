@@ -47,6 +47,7 @@ import subprocess
 import sys
 
 import pytest
+from evidence import artifact_identity
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 TOOL = ROOT / "hw" / "soc" / "fi" / "gl_coverage.py"
@@ -56,10 +57,21 @@ REGENERATE = ("hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 "
               "names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v")
 
 
+@pytest.fixture(scope='module', autouse=True)
+def recovered_original_netlist(historical_snapshot):
+    global NETLIST
+    original = NETLIST
+    if not NETLIST.is_file():
+        NETLIST = historical_snapshot / NETLIST.relative_to(ROOT)
+    yield
+    NETLIST = original
+
+
 def run(*args):
     if not NETLIST.is_file():
         pytest.skip(f"{NETLIST.relative_to(ROOT)} is a git-ignored build "
-                    f"product and is not in this tree. {REGENERATE}")
+                    f"product and is not in this tree. {REGENERATE}" +
+                    artifact_identity(NETLIST))
     return subprocess.run([sys.executable, str(TOOL), str(NETLIST), *args],
                           cwd=ROOT, capture_output=True, text=True,
                           timeout=3600)

@@ -1,0 +1,111 @@
+{
+  "date": "2026-09-20",
+  "status": "Independent functional-cell model reproduces old boot failure",
+  "scope": "Diagnostic only. Same old mapped netlist and native SRAM/flash. Standard-cell logic from unchanged pinned IHP Liberty using Yosys, with the documented ICG statetable translated literally to a transparent-low latch. No vendor model altered. Not native-cell signoff and not a boot PASS.",
+  "result": {
+    "scope": "Diagnostic alternative functional-cell model derived by Yosys from pinned IHP Liberty. Same mapped SoC, native SRAM, same flash, no ROM/RAM preload. Not a native Verilog model acceptance. Yosys omitted lgcp statetable; this retry supplies its literal low-level-transparent latch and output equation, explicitly a diagnostic model.",
+    "compile": {
+      "command": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=1000000",
+        "-DEXIT_CODE_ADDR=32'h00001e64",
+        "-DEXIT_MAGIC_ADDR=32'h00001e68",
+        "-DCHECKS_ADDR=32'h00001e9c",
+        "-DFAILS_ADDR=32'h00001ea0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/tb.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-soc-synthesis/soc_top.netlist.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/functional_cells.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/clock_gate_from_statetable.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 8.535894654000003
+    },
+    "run": {
+      "command": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+        "-i",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/sim.vvp",
+        "+flash0=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/flash0.hex"
+      ],
+      "returncode": 0,
+      "elapsed_s": 937.0556386980006
+    }
+  },
+  "stop": {
+    "reason": "Independent Liberty-derived functional models reproduce identical 113-character framing failure and unknown CPU state at 100k. Stop diagnostic; it is not a native boot acceptance run. Same mapped logic and native SRAM, no ROM/RAM preload.",
+    "targets": [
+      66360
+    ]
+  },
+  "observations": "Same first 113 UART characters, framing error and unknown CPU crash/sleep/UART outputs at 100k as native Verilog models. Initial missing-ICG compile failure preserved separately.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/sim.vvp": {
+      "bytes": 74650780,
+      "sha256": "3423ceb840b0fb43a2a4128c61db8038c0b2dcef1818713fc5c61aa4ee110975"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/result.json": {
+      "bytes": 2860,
+      "sha256": "f51b28ba448baa1f9423d7dee7b35dd2964cb42772bc8d30eb29854b61fb011c"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/run.log": {
+      "bytes": 1846,
+      "sha256": "b5126515f5ad461a41f0a570af95d4d68865a86752dddcf550ee7adf6f92c0be"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/generate.log": {
+      "bytes": 3376,
+      "sha256": "6012bd01a25f441f116ed778cae5e37b081c64eb271902273e65f48567ca443d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/clock_gate_from_statetable.v": {
+      "bytes": 271,
+      "sha256": "23b3dec624dac6733f1f1bca63a4eb25dbd9493fae5af23c802813f130989f0c"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/tb.v": {
+      "bytes": 12299,
+      "sha256": "4df38daaeb7cfe3236b918adf5b253055d36d49cbcd8356bc26eb7682b80b1a9"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/inputs.json": {
+      "bytes": 11689,
+      "sha256": "67f955d15f88de917125c83cb734cb050af705aba20d9bfd069fc03f068e9ed8"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/functional_cells.v": {
+      "bytes": 19380,
+      "sha256": "65335618c9b76695e022d99112f88c355ddb691de0ad22dec1aa838c1a53b95d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control2/generate.ys": {
+      "bytes": 363,
+      "sha256": "6ebbd56abfaa65cdb824620e409704bb338dd70eb9b551d6960c0acbc4a0a842"
+    },
+    "hw/soc/out/external-review-20260919/functional-model-diagnostic-stop.json": {
+      "bytes": 287,
+      "sha256": "e7e424e9c5819a526d1c36093c9ea6e33a125347738c2dd4c83b54695790ed5a"
+    },
+    "hw/soc/out/external-review-20260919/run_logicrom_functional_control2.py": {
+      "bytes": 524,
+      "sha256": "08dea2e709561561c08d410524c832a65b522bd243aa650c837dae695bf0e934"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control/generate.log": {
+      "bytes": 3376,
+      "sha256": "6012bd01a25f441f116ed778cae5e37b081c64eb271902273e65f48567ca443d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-liberty-functional-control/compile.log": {
+      "bytes": 631,
+      "sha256": "de2f3d2ddcd1684b460f089d325baef2f343e877fb588e9baf6854ffd09a7790"
+    }
+  }
+}

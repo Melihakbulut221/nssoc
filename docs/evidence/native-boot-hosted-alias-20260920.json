@@ -1,0 +1,176 @@
+{
+  "date": "2026-09-20",
+  "status": "Hosted elaboration failure preserved; actual hosted and local netlists compile after removing optional synthesis-dependent crash diagnostic",
+  "tested_head": "f4e41e5e5c78e0254bca9a1a5487daecfd9df657",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35507310951",
+  "job_id": 106069202598,
+  "failure": "Newer Yosys retains crash_dump, older local Yosys retains u_ibex.crash_dump_o. Optional diagnostic referenced the latter and failed elaboration. Native cell reset control, RTL 28 checks and synthesis completed; full gate simulation never started.",
+  "fix": "Remove only optional crash bus display and its hierarchical reference. All boot acceptance conditions and progress counters unchanged.",
+  "controls": {
+    "scope": "Compile-only validation of both original local and actual downloaded hosted synthesized netlists with unchanged native PDK models. No simulation verdict inferred. Only the optional crash diagnostic was removed; acceptance unchanged.",
+    "results": [
+      {
+        "name": "local-yosys033",
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_logicrom_gl",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-ci-alias-compile-controls/local-yosys033.vvp",
+          "-DFUNCTIONAL",
+          "-DTIMEOUT_CYCLES=1000000",
+          "-DEXIT_CODE_ADDR=32'h00001e64",
+          "-DEXIT_MAGIC_ADDR=32'h00001e68",
+          "-DCHECKS_ADDR=32'h00001e9c",
+          "-DFAILS_ADDR=32'h00001ea0",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 2.171140713002387,
+        "sources": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v": {
+            "sha256": "0464c3416b81042e9309fe01630bd4dbb5bf39b74ea6a4b680ddcbad6bc7f6aa",
+            "bytes": 12437
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v": {
+            "sha256": "c76766629773761beae4ddf069d9d6ab5f6696f8efd3c618e490f599093fb773",
+            "bytes": 9565137
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v": {
+            "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+            "bytes": 20792
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+            "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+            "bytes": 53835
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+            "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+            "bytes": 6900
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+            "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+            "bytes": 3932
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+            "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+            "bytes": 12655
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+            "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+            "bytes": 6067
+          },
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+            "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+            "bytes": 4051
+          }
+        }
+      },
+      {
+        "name": "hosted-yosys067",
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_logicrom_gl",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-ci-alias-compile-controls/hosted-yosys067.vvp",
+          "-DFUNCTIONAL",
+          "-DTIMEOUT_CYCLES=1000000",
+          "-DEXIT_CODE_ADDR=32'h00001e64",
+          "-DEXIT_MAGIC_ADDR=32'h00001e68",
+          "-DCHECKS_ADDR=32'h00001e9c",
+          "-DFAILS_ADDR=32'h00001ea0",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/hosted-native-f4e41e5-artifacts/synthesis/soc_top.netlist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 2.2204025169994566,
+        "sources": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v": {
+            "sha256": "0464c3416b81042e9309fe01630bd4dbb5bf39b74ea6a4b680ddcbad6bc7f6aa",
+            "bytes": 12437
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/hosted-native-f4e41e5-artifacts/synthesis/soc_top.netlist.v": {
+            "sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+            "bytes": 9451228
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v": {
+            "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+            "bytes": 20792
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+            "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+            "bytes": 53835
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+            "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+            "bytes": 6900
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+            "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+            "bytes": 3932
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+            "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+            "bytes": 12655
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+            "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+            "bytes": 6067
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+            "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+            "bytes": 4051
+          }
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/hosted-native-f4e41e5.log": {
+      "bytes": 34194,
+      "sha256": "2dae7ac2519baa1386cbdd47f68e3bcc4c5a2af944e5ca468a5d748ca2881e83"
+    },
+    "hw/soc/out/external-review-20260919/native-ci-alias-compile-controls/result.json": {
+      "bytes": 9156,
+      "sha256": "15404aeb91a4e0f46249b2419c076b0a2c1b3ab88f460d3d69c730a6dc83b479"
+    },
+    "hw/soc/tb/tb_soc_logic_boot_gl.v": {
+      "bytes": 12437,
+      "sha256": "0464c3416b81042e9309fe01630bd4dbb5bf39b74ea6a4b680ddcbad6bc7f6aa"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-f4e41e5-artifacts/gates/result.json": {
+      "bytes": 2927,
+      "sha256": "b92592d4b132eab3f3a4afc72dae212a1a5719841c7efc378c728d492f107953"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-f4e41e5-artifacts/gates/inputs.json": {
+      "bytes": 9859,
+      "sha256": "05c8ccc9745bf0accd19d702c767ddb70365a6d7e5f27d1648092dca1e581c0d"
+    },
+    "hw/soc/out/external-review-20260919/native-ci-alias-compile-controls/hosted-yosys067.log": {
+      "bytes": 1632,
+      "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+    },
+    "hw/soc/out/external-review-20260919/native-ci-alias-compile-controls/local-yosys033.log": {
+      "bytes": 1720,
+      "sha256": "a9ec9c1f144760dd32f0f8479727f7086e4749e7135fd50bbd8ce518b32644f9"
+    }
+  }
+}

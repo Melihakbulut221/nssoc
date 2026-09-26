@@ -41,6 +41,9 @@
 set -euo pipefail
 
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 # hw/rtl is READ from here and never modified. docs/34 freezes that
 # directory and this flow reads seven files out of it: tmr_voter.v, the
 # proved majority primitive the watchdog's W6 protection votes with, and
@@ -236,11 +239,24 @@ fi
 # it enforces WAKE_GNT's default and more strongly -- this one costs a
 # cycle on EVERY load rather than one per sleep interval, and the
 # whole-SoC cycle count is a corpus invariant.
+SOC_APB_TIMEOUT=${SOC_APB_TIMEOUT:-256}
+case "$SOC_APB_TIMEOUT" in ''|*[!0-9]*) echo 'SOC_APB_TIMEOUT must be a nonnegative integer' >&2; exit 2;; esac
+DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.APB_TIMEOUT = $SOC_APB_TIMEOUT;"
 SOC_REQ_REG=${SOC_REQ_REG:-0}
 if [ "$SOC_REQ_REG" != 0 ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.REQ_REG = $SOC_REQ_REG;"
 fi
+SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'Core pipeline parameters must be zero or one' >&2; exit 2;;
+esac
+DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.CORE_REQ_REG = $SOC_CORE_REQ_REG;
+  defparam tb_soc.dut.CORE_WB_STAGE = $SOC_CORE_WB_STAGE;"
 if [ -n "$DEFPARAMS" ]; then
   RF_ROOT=(-s soc_param_override)
   RF_SRC=("$OUT/soc_param_override.v")
@@ -279,7 +295,20 @@ fi
 
 SW_DEFINES=${SW_DEFINES:-}
 # shellcheck disable=SC2086
-"$SOC_DIR/flow/build_sw_soc.sh" "$OUT" "-DUART_SCALER_VAL=${UART_SCALER}u" $SW_DEFINES
+"$SOC_DIR/flow/build_sw_soc.sh" "$OUT" "-DUART_SCALER_VAL=${UART_SCALER}u" $IF_DEFINE $SW_DEFINES
+
+# The logic-ROM profile uses the exact loader just built. The normal
+# behavioral profile remains available for historical experiments.
+BOOT_ROM_ARGS=()
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    [ "$SOC_MEM_HARDEN" = 1 ] || { echo 'Logic boot ROM requires protected memory' >&2; exit 2; }
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$OUT/test_soc.bin" --output "$OUT/boot-rom"
+    BOOT_ROM_ARGS=(-DSOC_LOGIC_BOOT_ROM "$OUT/boot-rom/soc_logic_boot_rom.v")
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
 
 # Symbol addresses come out of the ELF that was just built rather than
 # being written down here, so neither file carries a constant that goes
@@ -315,7 +344,8 @@ endmodule
 EOF
 fi
 
-"$IVERILOG" -g2005-sv -o "$OUT/tb_soc.vvp" \
+"$IVERILOG" $IF_DEFINE -g2005-sv -o "$OUT/tb_soc.vvp" \
+  "${BOOT_ROM_ARGS[@]}" \
   -I "$SOC_DIR/rtl" \
   -I "$PILOT_RTL" \
   -DSG13G2_ICG_BEHAVIOURAL \
@@ -336,6 +366,7 @@ fi
   "$SOC_DIR/tb/tb_soc.v" \
   "$SOC_DIR/rtl/soc_top.v" \
   "$SOC_DIR/rtl/soc_bus.v" \
+  "$SOC_DIR/rtl/soc_req_pipe.v" \
   "$SOC_DIR/rtl/soc_apb_bridge.v" \
   "$SOC_DIR/rtl/soc_mem.v" \
   "$SOC_DIR/rtl/soc_mem_ecc.v" \
@@ -345,6 +376,13 @@ fi
   "$SOC_DIR/rtl/soc_apb_pnp.v" \
   "$SOC_DIR/rtl/soc_uart.v" \
   "$SOC_DIR/rtl/soc_gpio.v" \
+  "$SOC_DIR/rtl/soc_spw.v" \
+  "$SOC_DIR/rtl/soc_i2c.v" \
+  "$SOC_DIR/rtl/soc_spi.v" \
+  "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_eth.v" \
+  "$SOC_DIR/rtl/soc_apb_wb.v" \
+  "$IF_BUNDLE" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/tb/flash_w25q128jv.v" \
   "$SOC_DIR/rtl/soc_clint.v" \

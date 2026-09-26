@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-23",
+  "status": "PASS: complete routed baseline GDS under locked upstream main DRC rules",
+  "result": {
+    "status": "PASS",
+    "process_returncode": 0,
+    "markers": 0,
+    "categories": {},
+    "report_sha256": "3fe89c316f52c785f69e10f0f87261ff461a047a979827c8e99d4f497e0f9541"
+  },
+  "report_category_count": 549,
+  "input_gds": {
+    "path": "hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/klayout_gds/soc_top.klayout.gds",
+    "sha256": "c8dc9462313e5f3484111a8ed23d683fedb18b2e1b7e65bec636efc8309ec838",
+    "bytes": 102056564,
+    "source_receipt": "docs/evidence/routed-closure-baseline-20260923.json",
+    "source_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35743942451"
+  },
+  "scope": "Complete input GDS; unmodified upstream main rules, upstream tiling mode (500um tiles, 30um borders); optional recommended checks off",
+  "deck_commit": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "klayout_version": "KLayout 0.30.7",
+  "reported_rule_execution_seconds": 10650.74,
+  "source_integrity": "Every recorded GDS/deck/lock/runner digest verified before the run, by the completed producer after the run, and independently before publication.",
+  "physical_negative_control": {
+    "geometry": "Exact vendor inverter plus a separate 0.02um-wide Metal1 rectangle",
+    "result": {
+      "status": "FAIL",
+      "process_returncode": 0,
+      "markers": 1,
+      "categories": {
+        "'M1.a'": 1
+      },
+      "report_sha256": "87001282df25601c9da8753047414be7c9df89a9c9660c37e8855b85d7b45494"
+    },
+    "same_deck_and_tool": true,
+    "scope": "The tool exits zero while reporting actual M1.a minimum-width violations; the report-aware acceptance gate correctly returns failure."
+  },
+  "limitations": "Applies only to this exact original routed baseline GDS. Does not accept the ongoing ECO19 or pipelined-core layouts. Optional recommended rules are off; this is main-rule coverage, not every supplementary foundry rule or product/pad/package/silicon acceptance. Baseline setup/electrical timing and complete SRAM-interior LVS still fail.",
+  "archive": {
+    "path": "docs/evidence/routed-baseline-main-drc-20260923.tar.gz",
+    "sha256": "b2030addcc43f9d2be217a8f9376ac19cf5316830bf7006d2d7550670858f588",
+    "bytes": 47114,
+    "members": {
+      "hw/soc/out/route-closure-baseline-drc-tiling-20260923/inputs.json": "c1121cd545068e8c2aacfb6029b2b9d186488ad65600f67a18e7a6ae3f13039e",
+      "hw/soc/out/route-closure-baseline-drc-tiling-20260923/result.json": "9dc877832ab5015b8570e2ebcff62e2b6aeb8c8e939983e31b3bac17a861d3fe",
+      "hw/soc/out/route-closure-baseline-drc-tiling-20260923/run.log": "c34bd2b05c4fe12e4d177f850b4ae409e3faa113650ddf18aa747ad36a711f3e",
+      "hw/soc/out/route-closure-baseline-drc-tiling-20260923/drc.lyrdb": "3fe89c316f52c785f69e10f0f87261ff461a047a979827c8e99d4f497e0f9541",
+      "hw/soc/out/route-closure-main-negative-20260923/inputs.json": "0a319990feb584f5ac09632cda626f6c7103e61346766156f3865fdb8f4f9e8b",
+      "hw/soc/out/route-closure-main-negative-20260923/result.json": "66602a57c6b1486016338560d38c1a01f2276f2a5cd069ae7dda6ab5ec407dc2",
+      "hw/soc/out/route-closure-main-negative-20260923/run.log": "2a968f40eabb5291729444d99df83a5c72f5b02fd78933787688de827b932643",
+      "hw/soc/out/route-closure-main-negative-20260923/drc.lyrdb": "87001282df25601c9da8753047414be7c9df89a9c9660c37e8855b85d7b45494",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/run_tiling_drc.py": "cc896b310530e3ad8e8eebee666791e4292ec8ab63861ee10b1e79aaff958b11",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/prepare_drc_negative.py": "bcc81e1df9943da9b0a7d78edbcf968a7ade7e31c734e60c670beb1dc15da71a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_full_main_drc.py": "d08ee91e738b1292658a005027ce8233e4b67fd7574f22adffe5d06d241d4171",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/main-drc-negative/negative.gds": "697c37209cd0c20cb813ca2f90e950df13fe2f6281205258ab645558bd4dab55",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/main-drc-negative/inputs.json": "febb1ecd2c89c77e5fcfffb61cec95573826914bfdccc4dbf7e246eea1199859",
+      "hw/soc/pnr/ihp-drc.lock.json": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a",
+      "hw/soc/flow/prepare_ihp_drc.py": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47"
+    }
+  }
+}

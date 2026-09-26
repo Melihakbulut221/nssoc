@@ -1,0 +1,171 @@
+{
+  "date": "2026-09-19",
+  "baseline_commit": "473b84f56cb26ab97aa2a5d409c779568c2507a3",
+  "scope": "Local software/RTL verification; no new physical layout or radiation qualification. Hosted CI changes have not executed.",
+  "tools": {
+    "formal_suite": "OSS CAD Suite 2026-08-04",
+    "yosys_formal": "0.67+146",
+    "yosys_python_guards": "0.33",
+    "bitwuzla": "0.9.1",
+    "cbmc": "6.11.0",
+    "iverilog_rtl": "12.0",
+    "iverilog_soc": "14.0",
+    "cocotb": "2.0.1",
+    "ibex_commit": "34b0705760ef3dfa00e99637432473d2be8f22f3",
+    "sv2v": "0.0.13",
+    "riscv_gcc": "15.2.0-1"
+  },
+  "rtl_sweep": {
+    "command": "scripts/run_cocotb.sh",
+    "passed": 460,
+    "failed": 0,
+    "skipped": 15,
+    "unclean_suites": 0,
+    "note": "Frozen fi/gl/glfi suites excluded by the existing default.",
+    "post_edit_npu_regression": {
+      "command": "scripts/run_cocotb.sh npu",
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "formal": [
+    {
+      "job": "soc_npu_bmc",
+      "status": "PASS",
+      "elapsed_seconds": 7,
+      "source_state": "clean"
+    },
+    {
+      "job": "soc_npu_prove",
+      "status": "PASS",
+      "elapsed_seconds": 3,
+      "source_state": "clean"
+    },
+    {
+      "job": "soc_npu_cover",
+      "status": "PASS",
+      "elapsed_seconds": 2,
+      "source_state": "clean"
+    },
+    {
+      "job": "regfile_contract_prove",
+      "status": "PASS",
+      "elapsed_seconds": 26,
+      "source_state": "clean"
+    },
+    {
+      "job": "regfile_contract_prove_noscrub",
+      "status": "PASS",
+      "elapsed_seconds": 22,
+      "source_state": "clean"
+    },
+    {
+      "job": "regfile_contract_cover",
+      "status": "PASS",
+      "elapsed_seconds": 37,
+      "source_state": "clean"
+    },
+    {
+      "job": "regfile_equivalence_prove",
+      "status": "PASS",
+      "elapsed_seconds": 60,
+      "source_state": "clean"
+    },
+    {
+      "job": "regfile_equivalence_prove_noscrub",
+      "status": "PASS",
+      "elapsed_seconds": 51,
+      "source_state": "clean"
+    }
+  ],
+  "register_file_controls": [
+    {
+      "mutation": "wrong_write",
+      "status": "FAIL",
+      "expected": true,
+      "meaning": "reachable bounded counterexample"
+    },
+    {
+      "mutation": "wrong_check",
+      "status": "FAIL",
+      "expected": true,
+      "meaning": "reachable bounded counterexample"
+    },
+    {
+      "mutation": "wrong_port_b",
+      "status": "FAIL",
+      "expected": true,
+      "meaning": "reachable bounded counterexample"
+    }
+  ],
+  "cbmc": {
+    "checks": 21,
+    "failed": 0,
+    "controls": {
+      "odd_entry": "expected FAIL",
+      "cross_slot": "expected FAIL"
+    },
+    "scope": "Pure geometry predicate and per-word copy address arithmetic, not the entire boot program."
+  },
+  "soc_boot": [
+    {
+      "mode": "none",
+      "status": "PASS",
+      "application_checks": 28,
+      "cycles_to_sleep": 420416,
+      "geometry_rejected": false,
+      "secondary_selected": false
+    },
+    {
+      "mode": "entry0",
+      "status": "PASS",
+      "application_checks": 28,
+      "cycles_to_sleep": 434161,
+      "geometry_rejected": true,
+      "secondary_selected": true
+    },
+    {
+      "mode": "length0",
+      "status": "PASS",
+      "application_checks": 28,
+      "cycles_to_sleep": 434161,
+      "geometry_rejected": true,
+      "secondary_selected": true
+    }
+  ],
+  "source_sha256": {
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+    "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+    "hw/soc/rtl/soc_npu.v": "4c37128a368494cbd7ae8077e86b0f60e3a4439975b54662ce6a234057ce7634",
+    "hw/soc/formal/ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+    "hw/soc/formal/regfile_contract.sby": "fc22e0dcf7d72368867efeaff2c8080e559c843c0aaf1b362127f8bc3d716d9a",
+    "hw/soc/formal/regfile_equivalence.sby": "d4051136db5e912a60408bd3772cd2fdc4e44c4e0fc8ab293fb5f37f5900a084",
+    "hw/soc/formal/regfile_equivalence_props.v": "de4e892d94d637e8ef96c37d697e43be6e01c1a3bbe7bd2e7ec49bbb4b99d972",
+    "hw/soc/tb/sw/boot.c": "9b96aa261de9ef5ad23ab873cae4ec4a935bf59b977a74d2e790692b743a67a9",
+    "hw/soc/tb/sw/boot_geometry.h": "8ff86665a36b36371967c9555a0e16374379480ce794073e2eda2f950c7fdee5",
+    "hw/soc/tb/tb_soc.v": "d2964d25aab7ef8c0d87ec35b039ebdb668f21e6480fb9e914e239a13448e943",
+    "hw/soc/flow/gen_boot_image.py": "41991d84b32ac6905fd841c51c5385a1bbcd37b6946c925db113885943cf13a9",
+    "sw/formal/boot_geometry.c": "dbfb9f9387ca64743d103e3c3c22640a0cc2663d3197ecc41d98ac7598e9b461"
+  },
+  "commands": [
+    "make test",
+    "make rtl-test",
+    "make check",
+    "make soc-prepare",
+    "make rf-contract rf-equivalence OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite",
+    "make boot-proof CBMC=/absolute/path/to/cbmc",
+    "make soc-boot-regression OSS_CAD_SUITE=/absolute/path/to/oss-cad-suite"
+  ],
+  "local_ci": {
+    "command": "scripts/ci_local.sh all",
+    "passed_gates": 16,
+    "failed_gates": 0,
+    "skipped_gates": 7,
+    "skip_reasons": "Six absent physical run trees and pandoc unavailable.",
+    "python_suite": "PASS; invoked by the local CI suite gate",
+    "python_collection": 619,
+    "collection_note": "Collected separately with pytest --collect-only; this is not a pass count."
+  }
+}

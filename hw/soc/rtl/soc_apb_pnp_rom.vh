@@ -18,10 +18,26 @@ case (word_addr)
   10'h007: apb_pnp_data = 32'h0800FF01;
   10'h008: apb_pnp_data = 32'h0901102C;
   10'h009: apb_pnp_data = 32'h0900FF01;
+`ifndef SOC_LGPL_INTERFACES
+  10'h00A: apb_pnp_data = 32'h00000000;
+`else
   10'h00A: apb_pnp_data = 32'h0901F030;
+`endif
+`ifndef SOC_LGPL_INTERFACES
+  10'h00B: apb_pnp_data = 32'h00000000;
+`else
   10'h00B: apb_pnp_data = 32'h0D00FF01;
+`endif
+`ifndef SOC_LGPL_INTERFACES
+  10'h00C: apb_pnp_data = 32'h00000000;
+`else
   10'h00C: apb_pnp_data = 32'h090FE032;
+`endif
+`ifndef SOC_LGPL_INTERFACES
+  10'h00D: apb_pnp_data = 32'h00000000;
+`else
   10'h00D: apb_pnp_data = 32'h1100FF01;
+`endif
   10'h00E: apb_pnp_data = 32'h0902D033;
   10'h00F: apb_pnp_data = 32'h1200FF01;
   10'h010: apb_pnp_data = 32'h09028034;
@@ -38,7 +54,9 @@ case (word_addr)
   10'h01B: apb_pnp_data = 32'h1800FF01;
   10'h01C: apb_pnp_data = 32'h09013038;
   10'h01D: apb_pnp_data = 32'h1900FF01;
-  10'h01E: apb_pnp_data = 32'h09000020;
-  10'h01F: apb_pnp_data = 32'hFF00FF01;
+  10'h01E: apb_pnp_data = 32'h09E01039;
+  10'h01F: apb_pnp_data = 32'h1A00FF01;
+  10'h020: apb_pnp_data = 32'h09000020;
+  10'h021: apb_pnp_data = 32'hFF00FF01;
   default: apb_pnp_data = 32'h0000_0000;
 endcase

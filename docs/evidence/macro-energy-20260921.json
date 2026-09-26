@@ -1,0 +1,2647 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "scope": "Energy-tool calibration and inventory migration only. Synthetic independent-clock native SRAM testbenches; not a SoC workload, total chip power or physical qualification.",
+  "calibrations": {
+    "20": {
+      "status": "PASS",
+      "scope": "Calibrate the SRAM activity reader against native models and a real inventory.\n\nThis constructs a separate testbench containing the netlist's SRAM instances,\nwith known controls and independent A/B clocks. It does NOT simulate the SoC\nworkload and its energy numbers must never be quoted as SoC power.\n",
+      "netlist_sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+      "macros": 20,
+      "clock_ports": 36,
+      "model_sha256": {
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+      },
+      "commands": [
+        [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native20-v2/sim.vvp",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native20-v2/tb.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+        ],
+        [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/vvp",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native20-v2/sim.vvp"
+        ]
+      ],
+      "source_sha256": {
+        "hw/soc/flow/check_macro_activity.py": "ffd3577963169fe5c98088310baf0cf268681a9c8ff5934a430dcdc5361c8ad1",
+        "hw/soc/flow/macro_activity.py": "d16ee4fd201833b9f5b8aa45e9115f5183ee5983bb164e97c519828190c09b32",
+        "hw/soc/flow/macro_energy.py": "0bc6e5ea9958a4f82fb8964aada4c74938a82a4d30f0c10ae3720bab36fe97c7",
+        "hw/soc/flow/select_pnr_profile.py": "214177f964a4f7f264f731ec7ab9a99f3b945304d817feb92566e7009d834e7e",
+        "hw/soc/flow/vcd_activity.py": "1ae2ae54a6ba8777dc0e656ab6fa0e52ea4b92c3b2bfacee1ff99c7f10a69260"
+      },
+      "artifacts": {
+        "tb.v": "ffc798dc625100db615032b4e6ea16ea65a4b45c167a2c5d2c5b6a41b3f999de",
+        "calibration.vcd": "6b574e6d6bea242bf57226f9bbd0040495f55fb79738a57fdf9d6ea003bd972b",
+        "activity.json": "c8a447a04be670cd4f3496678f814a23ae318ac24f741f7078445ca78ca053f2",
+        "simulation.log": "c9256964cfe76164af6c647be770d76348263b4119c2ef641d5c9090c73c2d4f"
+      },
+      "calibration_energy_only": {
+        "typ_1p20V_25C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+          "corner": "typ_1p20V_25C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib": "491d34328c5b4225277ccb72f1c254ba34e1f18eb1664ace80c890376cf83c23",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib": "9aefb0cb245b15ced86b10401e71bf2002da31c4e1356b23bf6f4c789bee254f"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            }
+          },
+          "clock_energy_pj": 22711.990400000002,
+          "leakage_energy_pj": 4.255163229200001,
+          "modelled_power_mw": 40.63729081078569
+        },
+        "slow_1p08V_125C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+          "corner": "slow_1p08V_125C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            }
+          },
+          "clock_energy_pj": 18361.360800000002,
+          "leakage_energy_pj": 27.6347680492,
+          "modelled_power_mw": 32.8962353632365
+        },
+        "fast_1p32V_m55C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+          "corner": "fast_1p32V_m55C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib": "66fe1b1783f2578c8f5c4a65eaa102b8cc888c8456170503789b9e84c9b0aa01",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib": "32ad633416cb9f107b57136ea4305290510400fa065eb136e912f9616400f7f9"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            }
+          },
+          "clock_energy_pj": 28195.158799999997,
+          "leakage_energy_pj": 10.420132294,
+          "modelled_power_mw": 50.45720739229695
+        }
+      },
+      "activity": {
+        "format": 1,
+        "scope": "Mapped SRAM functional-port rising-edge activity; BIST disabled.",
+        "state_order": [
+          "MEN",
+          "WEN",
+          "REN"
+        ],
+        "start_ns": 2,
+        "end_ns": 561,
+        "elapsed_ns": 559,
+        "source_sha256": {
+          "vcd": "6b574e6d6bea242bf57226f9bbd0040495f55fb79738a57fdf9d6ea003bd972b",
+          "netlist": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af"
+        },
+        "macros": {
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b0": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b1": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b2": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b3": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          }
+        }
+      },
+      "calibration_schedule": {
+        "A_period_ns": 10,
+        "B_period_ns": 14,
+        "state_duration_ns": 70,
+        "A_edges_per_state": 7,
+        "B_edges_per_state": 5,
+        "start_ns": 2,
+        "end_ns": 561
+      }
+    },
+    "24": {
+      "status": "PASS",
+      "scope": "Calibrate the SRAM activity reader against native models and a real inventory.\n\nThis constructs a separate testbench containing the netlist's SRAM instances,\nwith known controls and independent A/B clocks. It does NOT simulate the SoC\nworkload and its energy numbers must never be quoted as SoC power.\n",
+      "netlist_sha256": "d1c613b2ed941c0c68854a07b9907ad8ba7819117e9cbf76579b5d5dacd6d400",
+      "macros": 24,
+      "clock_ports": 40,
+      "model_sha256": {
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_1024x32_c2_bm_bist.v": "eb86690331565d646b661ede3012e049468885798fa20a3f146ece311ec57669",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_512x16_c2_bm_bist.v": "b0da3f6fede1779f25438e0ffada4b811ad303d938b995fe1ffa37f21c1ffe66",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+        "libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+      },
+      "commands": [
+        [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native24-v2/sim.vvp",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native24-v2/tb.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_1024x32_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_512x16_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "<pdk>/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+        ],
+        [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/vvp",
+          "<repo>/hw/soc/out/external-review-20260919/macro-calibration-native24-v2/sim.vvp"
+        ]
+      ],
+      "source_sha256": {
+        "hw/soc/flow/check_macro_activity.py": "ffd3577963169fe5c98088310baf0cf268681a9c8ff5934a430dcdc5361c8ad1",
+        "hw/soc/flow/macro_activity.py": "d16ee4fd201833b9f5b8aa45e9115f5183ee5983bb164e97c519828190c09b32",
+        "hw/soc/flow/macro_energy.py": "0bc6e5ea9958a4f82fb8964aada4c74938a82a4d30f0c10ae3720bab36fe97c7",
+        "hw/soc/flow/select_pnr_profile.py": "214177f964a4f7f264f731ec7ab9a99f3b945304d817feb92566e7009d834e7e",
+        "hw/soc/flow/vcd_activity.py": "1ae2ae54a6ba8777dc0e656ab6fa0e52ea4b92c3b2bfacee1ff99c7f10a69260"
+      },
+      "artifacts": {
+        "tb.v": "34239a5b693485272498daa78b487690bae41361b7af68c3dd85c3af56c6b019",
+        "calibration.vcd": "0077da5c3c54335a9a8c35f8719a199756d14c9f548db2e5e5d1782e59dd4bab",
+        "activity.json": "435fab0d6f8e08829932d3f055bd2a34b910aec86f9b90f0c1e9573d43839a92",
+        "simulation.log": "39e697e96c800d1f5d11828a6f4fa2907965fe6f6cafc17074d6ab7dc6854eac"
+      },
+      "calibration_energy_only": {
+        "typ_1p20V_25C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "d1c613b2ed941c0c68854a07b9907ad8ba7819117e9cbf76579b5d5dacd6d400",
+          "corner": "typ_1p20V_25C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib": "491d34328c5b4225277ccb72f1c254ba34e1f18eb1664ace80c890376cf83c23",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib": "9aefb0cb245b15ced86b10401e71bf2002da31c4e1356b23bf6f4c789bee254f",
+            "RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib": "4eba4f904ad61e1c0dbb78a6b636e486335be19803370048276438e41a0c26d3",
+            "RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib": "44c6ff102ab0a3fc8766b92cbb40a9723bac5aa084a00a111a5a70a772d30a1e"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 653.8296,
+              "leakage_energy_pj": 0.0445663868
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3062.6792,
+              "leakage_energy_pj": 0.8855252601000001
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 1198.1676,
+              "leakage_energy_pj": 0.221381329
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 1198.1676,
+              "leakage_energy_pj": 0.221381329
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c0": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 492.37930000000006,
+              "leakage_energy_pj": 0.05534530430000001
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c1": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 492.37930000000006,
+              "leakage_energy_pj": 0.05534530430000001
+            }
+          },
+          "clock_energy_pj": 26093.0842,
+          "leakage_energy_pj": 4.808616495800001,
+          "modelled_power_mw": 46.68674922450054
+        },
+        "slow_1p08V_125C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "d1c613b2ed941c0c68854a07b9907ad8ba7819117e9cbf76579b5d5dacd6d400",
+          "corner": "slow_1p08V_125C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+            "RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c",
+            "RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 540.1800000000001,
+              "leakage_energy_pj": 0.2664074374
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 2429.6202,
+              "leakage_energy_pj": 5.8430622627
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 935.7761,
+              "leakage_energy_pj": 1.4607655517
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 935.7761,
+              "leakage_energy_pj": 1.4607655517
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c0": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 399.9779,
+              "leakage_energy_pj": 0.36519140190000005
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c1": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 399.9779,
+              "leakage_energy_pj": 0.36519140190000005
+            }
+          },
+          "clock_energy_pj": 21032.8688,
+          "leakage_energy_pj": 31.286681956400002,
+          "modelled_power_mw": 37.68185238274848
+        },
+        "fast_1p32V_m55C": {
+          "scope": "SRAM functional-clock internal energy plus scalar cell leakage only. Excludes address/data/mask pin switching, external loads, standard cells, extracted parasitics and silicon qualification.",
+          "netlist_sha256": "d1c613b2ed941c0c68854a07b9907ad8ba7819117e9cbf76579b5d5dacd6d400",
+          "corner": "fast_1p32V_m55C",
+          "elapsed_ns": 559,
+          "library_sha256": {
+            "RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib": "66fe1b1783f2578c8f5c4a65eaa102b8cc888c8456170503789b9e84c9b0aa01",
+            "RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib": "32ad633416cb9f107b57136ea4305290510400fa065eb136e912f9616400f7f9",
+            "RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib": "d9102b5ca8be02e7d4837fde022f1a229f30d899d51a0e67ef09354c95a09adb",
+            "RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib": "4cb993f5108050e09de3bd01a5bf0ad433d25380f5dd873e9903f415e1d4c1e2"
+          },
+          "macros": {
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+              "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56,
+                "B": 40
+              },
+              "clock_energy_pj": 814.9716,
+              "leakage_energy_pj": 0.1262520506
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b2": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_ram.g_ram_2048x64_ecc.u_b3": {
+              "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 3788.9033,
+              "leakage_energy_pj": 2.1000248711
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b0": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 1501.9102,
+              "leakage_energy_pj": 0.5250062038000001
+            },
+            "u_rom.g_rom_1024x32_ecc.u_b1": {
+              "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 1501.9102,
+              "leakage_energy_pj": 0.5250062038000001
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c0": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 611.408,
+              "leakage_energy_pj": 0.13125157890000003
+            },
+            "u_rom.g_rom_1024x32_ecc.u_c1": {
+              "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+              "rising_edges": {
+                "A": 56
+              },
+              "clock_energy_pj": 611.408,
+              "leakage_energy_pj": 0.13125157890000003
+            }
+          },
+          "clock_energy_pj": 32421.7952,
+          "leakage_energy_pj": 11.7326478594,
+          "modelled_power_mw": 58.02062226808479
+        }
+      },
+      "activity": {
+        "format": 1,
+        "scope": "Mapped SRAM functional-port rising-edge activity; BIST disabled.",
+        "state_order": [
+          "MEN",
+          "WEN",
+          "REN"
+        ],
+        "start_ns": 2,
+        "end_ns": 561,
+        "elapsed_ns": 559,
+        "source_sha256": {
+          "vcd": "0077da5c3c54335a9a8c35f8719a199756d14c9f548db2e5e5d1782e59dd4bab",
+          "netlist": "d1c613b2ed941c0c68854a07b9907ad8ba7819117e9cbf76579b5d5dacd6d400"
+        },
+        "macros": {
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+            "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              },
+              "B": {
+                "rising_edges": 40,
+                "state_edges": {
+                  "000": 5,
+                  "001": 5,
+                  "010": 5,
+                  "011": 5,
+                  "100": 5,
+                  "101": 5,
+                  "110": 5,
+                  "111": 5
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b0": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b1": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b2": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_ram.g_ram_2048x64_ecc.u_b3": {
+            "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_rom.g_rom_1024x32_ecc.u_b0": {
+            "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_rom.g_rom_1024x32_ecc.u_b1": {
+            "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_rom.g_rom_1024x32_ecc.u_c0": {
+            "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          },
+          "u_rom.g_rom_1024x32_ecc.u_c1": {
+            "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+            "ports": {
+              "A": {
+                "rising_edges": 56,
+                "state_edges": {
+                  "000": 7,
+                  "001": 7,
+                  "010": 7,
+                  "011": 7,
+                  "100": 7,
+                  "101": 7,
+                  "110": 7,
+                  "111": 7
+                }
+              }
+            }
+          }
+        }
+      },
+      "calibration_schedule": {
+        "A_period_ns": 10,
+        "B_period_ns": 14,
+        "state_duration_ns": 70,
+        "A_edges_per_state": 7,
+        "B_edges_per_state": 5,
+        "start_ns": 2,
+        "end_ns": 561
+      }
+    }
+  },
+  "unit_tests": {
+    "passed": 44,
+    "log_sha256": "a87d95137f791352cd5f9dce750d13d130bc328e10e91cb11f3c6d5abe999158"
+  },
+  "test_source_sha256": "300eeb394e3120a5572d2e8850702a28923a991cb689e130831e128f7eca49fb",
+  "limits": [
+    "Complete macro inventory is taken from the exact flattened mapped netlist.",
+    "Native models are unchanged and all 8 joint MEN/WEN/REN states are measured at each functional clock port.",
+    "Only clock internal energy and scalar cell leakage are priced; input/mask/output switching and physical parasitics are omitted.",
+    "Missing/ambiguous/X activity is rejected, not replaced with zero.",
+    "Historical six-macro arithmetic requires explicit opt-in and is not relabelled as a current-image result."
+  ],
+  "publication_checks": {
+    "passed": 174,
+    "log_sha256": "0a06a586ae0a0c4842fe2a74f51dacfd4039afd305e0f1740acb1c6a4e8f6071",
+    "reuse": {
+      "covered_files": 965,
+      "missing_licences": 0,
+      "invalid_expressions": 0,
+      "log_sha256": "b02f19fbfe68eb483f226d5d966ab3d454f25e7b8bfc1c298a83ceb4fd2df900"
+    },
+    "spdx": {
+      "inline": 535,
+      "path_covered": 441,
+      "missing": 0,
+      "wrong": 0
+    }
+  }
+}

@@ -6,7 +6,9 @@
     python3 scripts/tex_lint.py paper/main.tex
 
 WHAT THIS IS NOT. It is not a compile, and nothing it says is evidence
-that the document builds. There is no TeX installation on the machine
+that the document builds. The following describes the original environment;
+as of 2026-09-22, check_publications.py also performs actual fresh builds
+using an explicitly selected compiler. Originally, there was no TeX installation on the machine
 this paper is written on -- pdflatex, xelatex, lualatex, latexmk and
 tectonic are all absent and apt needs a password.
 
@@ -115,17 +117,62 @@ def strip_comments(text):
     return "\n".join(out)
 
 
+def load_tex(path, root=None, stack=()):
+    """Expand literal project inputs so chapter defects cannot evade lint.
+
+    This is deliberately not a TeX interpreter: computed paths fail instead
+    of being silently omitted. Includes resolve from the main document's
+    directory, as in this repository's TeX builds.
+    """
+    path = Path(path).resolve()
+    root = path.parent if root is None else root
+    if not path.is_relative_to(root):
+        raise ValueError(f"TeX input escapes document directory: {path}")
+    if path in stack:
+        raise ValueError("Cyclic TeX input: " + " -> ".join(p.name for p in (*stack, path)))
+    text = path.read_text(encoding="utf-8")
+    visible = strip_comments(strip_verbatim(text))
+    result = []
+    for raw, code in zip(text.splitlines(), visible.splitlines()):
+        cursor = 0
+        expanded = ''
+        for match in re.finditer(r"\\(?:input|include)\s*\{([^}]+)\}", code):
+            name = match[1]
+            if not name or any(c in name for c in '\\#$~'):
+                raise ValueError(f"Nonliteral TeX input in {path.name}: {name}")
+            child = root / name
+            if not child.suffix:
+                child = child.with_suffix('.tex')
+            expanded += raw[cursor:match.start()] + '\n' + load_tex(child, root, (*stack, path)) + '\n'
+            cursor = match.end()
+        # A command form the expander cannot understand must not be skipped.
+        if re.search(r"\\(?:input|include)\b", re.sub(r"\\(?:input|include)\s*\{[^}]+\}", '', code)):
+            raise ValueError(f"Unsupported TeX input syntax in {path.name}: {code.strip()}")
+        result.append(expanded + raw[cursor:])
+    return '\n'.join(result) + '\n'
+
+
 def main():
     if len(sys.argv) != 2:
         raise SystemExit("usage: tex_lint.py <main.tex>")
     tex_path = Path(sys.argv[1])
-    tex = tex_path.read_text(encoding="utf-8")
+    try:
+        tex = load_tex(tex_path)
+    except (OSError, ValueError) as error:
+        print("FAIL:", error)
+        return 1
+    semantic = strip_comments(strip_verbatim(tex))
     bib_path = tex_path.parent / "refs.bib"
     problems = []
 
     # 1. references and labels
-    labels = set(re.findall(r"\\label\{([^}]+)\}", tex))
-    refs = set(re.findall(r"\\(?:page)?ref\{([^}]+)\}", tex))
+    labels_found = re.findall(r"\\label\{([^}]+)\}", semantic)
+    labels = set(labels_found)
+    for label in sorted(labels):
+        if labels_found.count(label) != 1:
+            problems.append(f"Duplicate label: {label}")
+    refs = {item.strip() for group in re.findall(r"\\(?:pageref|ref|cref|Cref)\{([^}]+)\}", semantic)
+            for item in group.split(",")}
     for r in sorted(refs - labels):
         problems.append(f"\\ref{{{r}}} has no \\label")
 
@@ -134,7 +181,7 @@ def main():
         bib = bib_path.read_text(encoding="utf-8")
         keys = set(re.findall(r"^@\w+\{([^,]+),", bib, re.M))
         cited = set()
-        for m in re.findall(r"\\cite\w*\{([^}]+)\}", tex):
+        for m in re.findall(r"\\cite\w*\{([^}]+)\}", semantic):
             cited |= {c.strip() for c in m.split(",")}
         for c in sorted(cited - keys):
             problems.append(f"\\cite{{{c}}} is in no entry of refs.bib")
@@ -172,7 +219,7 @@ def main():
     body = strip_comments(novrb)
     lines = body.split("\n")
     raw_lines = novrb.split("\n")
-    ALIGN_ENVS = ("tabular", "tabularx", "tabular*", "array", "align",
+    ALIGN_ENVS = ("tabular", "tabularx", "tabular*", "longtable", "array", "align",
                   "align*", "matrix", "pmatrix", "bmatrix", "cases")
     DEFINERS = (r"\\newcommand", r"\\renewcommand", r"\\providecommand",
                 r"\\def", r"\\newcolumntype", r"\\newenvironment",

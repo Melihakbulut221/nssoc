@@ -1,0 +1,142 @@
+{
+  "date": "2026-09-23",
+  "status": "FUNCTIONAL_ECO_PROOF_PASS_TIMING_NOT_CLOSED",
+  "scope": "Retained cell input equations and state definitions; verified positive buffer contraction and Boolean pin permutations. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity.",
+  "proof": {
+    "retained_cells": 73531,
+    "positive_buffers_before": 24567,
+    "positive_buffers_after": 24910,
+    "equivalent_sizes": 53,
+    "equivalent_input_permutations": 86,
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/before.nl.v": "ae35b515b6b4bd551b9188b63a3bf043a31530dfc43b4a461e077e55996c7b37",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.nl.v": "cd0a3a4c0c1fe2e5a19fb0af037f9b49d00e3a5d3e6faad7c0f454751ed67ea5",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic.py": "da9eeb156f61502c881a099eedfcc9ea29505bbd126c8586c04cd39d17db6601",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "48174c6b90ed532266d2dddf39e6722c482e15bd4a53473a0f785e1d93b831b2"
+    },
+    "scope": "Retained cell input equations and state definitions; verified positive buffer contraction and Boolean pin permutations. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity.",
+    "generated": {
+      "after.ys": "e00c1a32a08b1833b176e498c7d6bac86a1b66ce2bab973c2177ca6ed527af16",
+      "before.json": "72f005180c97710701aef9592208f9e6e2d5e4baf1e4d933cd055ba0dd805fea",
+      "before-libraries.json": "a9514614aab15f25b97a26c9cd12764de18f9007fa2deff13d64ffe3e3d19e01",
+      "after.json": "248102a4122610ae21c1ee0774c7da1420e3fa76df2ee654832b0989276e434e",
+      "after.log": "fe0efad88da168aec01f9a47ee79517e13e9b2fd8ad489c1458832ccafc4f0fa",
+      "after-libraries.json": "a9514614aab15f25b97a26c9cd12764de18f9007fa2deff13d64ffe3e3d19e01",
+      "before.log": "e27e143351fcaa22e6393fd67ad4b6aaec1f8fd67f351e24d271deb4f831e61d",
+      "before.ys": "2d9c4ac823cd7126235c4e107d7fa18118bf0148573b3954c22c3f254c8cd047"
+    }
+  },
+  "inputs": {
+    "scope": "Initial optimizer seed uses actual ECO19 RC after initializing global routing and its estimator. Modified nets and later setup/hold optimization use updated global-route estimates, never wire-load models. No result is accepted without fresh detailed route, RCX, 3-corner STA and logic proof. Existing detailed wires are discarded only in the working database before rebuilding the global graph; source ODB/SPEF identities are retained.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/08-openroad-rcx/state_out.json": "c1ce2777422e5117162468ee448c0ce11b4169ac0a2acd3fa3649468273639e7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/08-openroad-rcx/nom/soc_top.nom.spef": "40ea3635e89f1de8698576c42bde9705d8e5d90daec737ad9ff215a1dbf50b6e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/config-route19-fast.json": "63c786856f430ac5d837f4034e33d7d5756c96f4de9245556bd4b6b17689d8aa",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/07-openroad-fillinsertion/soc_top.odb": "588fded7c76c0cb69773197697b49edb7bb2d84836bdf9526b035129f9b02e67",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/07-openroad-fillinsertion/soc_top.nl.v": "2d749612b20876811c8c7353bb4c8b93e1ab3841a9f9f4bdb3f524e87190824a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/07-openroad-fillinsertion/soc_top.sdc": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/07-openroad-fillinsertion/soc_top.def": "391020e905d1bcd613a73a83d79e39df946cfdbe6b493ad3841469f812f3e8d7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-route19-fast/07-openroad-fillinsertion/soc_top.pnl.v": "409d8bfb65afe65badca892f486b060256e3e7d8d1f088b7ec6fd4a99812a9d1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/extracted24.tcl": "3de23d0dc895b00afb68b0302bc0186bcbc8da327144a6f3b1ef05e1ce12ccd0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/extracted24_flow.py": "703c92ea3691af6da6fdc2498d766a5549c8434cca5cfccb136117e6601f3577",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/state-extracted24.json": "42bf79f04ef51560417cdf25b83f6894b9a7908752fe7ff8bc15c4debfa534ee"
+    }
+  },
+  "outputs": {
+    "odb": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.odb",
+      "sha256": "b54aec0519c7ff763f207ae7be4f51562f0b3c688e27807cd169f8549ddb01de"
+    },
+    "nl": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.nl.v",
+      "sha256": "cd0a3a4c0c1fe2e5a19fb0af037f9b49d00e3a5d3e6faad7c0f454751ed67ea5"
+    },
+    "def": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.def",
+      "sha256": "2f97dcd89ef1be6b4e99c418ae97c8d6c2ac2151aa5a2ef722e2176889bb106d"
+    },
+    "sdc": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.sdc",
+      "sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289"
+    }
+  },
+  "intermediate_only": {
+    "setup_estimate_ns": -2.586,
+    "hold_repair_estimate_ns": 0.052,
+    "setup_iterations": 300,
+    "setup_buffers": 95,
+    "hold_buffers": 75,
+    "design_repair_buffers": 173
+  },
+  "failed_followup": {
+    "status": "REJECTED_TOOL_CRASH",
+    "step": "setup25",
+    "signal": 11,
+    "stack": "LibertyPort::capacitance -> BaseMove::upsizeCell -> SizeUpMove::doMove",
+    "accepted_outputs": false,
+    "related_upstream_report": "https://github.com/The-OpenROAD-Project/OpenROAD/issues/10210",
+    "root_cause_proven": false
+  },
+  "limitations": [
+    "Initial repair used actual ECO19 nominal extracted loads; subsequent intermediate optimization used a refreshed global-route estimate.",
+    "Setup still fails. Hold progress is not a final routed-corner measurement. No final slew/capacitance closure is inferred.",
+    "Saved proven checkpoint must receive fresh detailed routing, extraction, STA and physical checks; setup25 crashed in SizeUpMove before producing accepted output; the proven ECO24 checkpoint is retained for an independently queued fresh route.",
+    "Core20ns/Ethernet8ns and original0.95/1.05 derates remain unchanged."
+  ],
+  "archive": {
+    "path": "docs/evidence/eco24-functional-repair-20260923.tar.xz",
+    "sha256": "c51334b8ccb3afbc3c33fe930ab3948a3a31c564af9a3a0ec0a6c1778ef2c858",
+    "bytes": 1683624,
+    "members": {
+      "LICENSES/Apache-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "LICENSES/CC-BY-4.0.txt": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "LICENSES/CERN-OHL-W-2.0.txt": "c1432111d0aeefc9d1ced8105d2d4ed07d5dcb1fd43abb5d4616c4f9ef96e08f",
+      "LICENSES/LGPL-2.1-or-later.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "LICENSES/MIT.txt": "8ea57f95365e9b16a5b516f422b71269183a1ae53bab5878ae6d69039e58fe77",
+      "docs/evidence/eco24-functional-repair-20260923-NOTICES.txt": "17091657108f1dbff505fe52d8aac1dbad2d93b455642358ef7d2a20ab91e41d",
+      "docs/evidence/ethernet-netlist-20260920-NOTICES.txt": "52e849f38dcf654e32b2bf350723b2fc613b21bd5f2d49d18f247895c08a32e6",
+      "hw/soc/flow/check_eco_logic.py": "da9eeb156f61502c881a099eedfcc9ea29505bbd126c8586c04cd39d17db6601",
+      "hw/soc/flow/eco_logic.py": "48174c6b90ed532266d2dddf39e6722c482e15bd4a53473a0f785e1d93b831b2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/bounded-process-controls.json": "a8c5ee13496d9bfe105c681548d1cdc4f1d7417b61472bbf09c1ac43f59be1d8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/continue_extracted24_v5.py": "ffd36380bff78c1a55a7498826b97877561fbd2a270b09699b1b76cdecceee41",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-continuation-v4.json": "db31316268e1a12380e8e4dffe464f60c065c46dae90944cb84a78575de0212a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-driver.log": "052386fd113646235ecd4b095e4a502aef585d2af23aa11b27202931ed5dd737",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-inputs.json": "9c336a638ddf2e898fa16e0de9149cca422c742019e4834e628e7ecf6d0c994f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-logic-proof/after.log": "fe0efad88da168aec01f9a47ee79517e13e9b2fd8ad489c1458832ccafc4f0fa",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-logic-proof/after.ys": "e00c1a32a08b1833b176e498c7d6bac86a1b66ce2bab973c2177ca6ed527af16",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-logic-proof/before.log": "e27e143351fcaa22e6393fd67ad4b6aaec1f8fd67f351e24d271deb4f831e61d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-logic-proof/before.ys": "2d9c4ac823cd7126235c4e107d7fa18118bf0148573b3954c22c3f254c8cd047",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24-logic-proof/result.json": "c56f7e2f238a8b73bdfb2f410496b4dcad5d57d1e44a65ca3035a28ef5e3a85c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24.tcl": "3de23d0dc895b00afb68b0302bc0186bcbc8da327144a6f3b1ef05e1ce12ccd0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/extracted24_flow.py": "703c92ea3691af6da6fdc2498d766a5549c8434cca5cfccb136117e6601f3577",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/queue_route24_proven.py": "597fae2f323dbf8fb42bb04f8637e65bd1edc644c46499da3aa5f5f940a4ceed",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_physical_followup.py": "0b4913543aaf9f4b26854019ecbf3af1dac2a71168c1f3e2ec27d3d343a71f1c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/before.nl.v": "ae35b515b6b4bd551b9188b63a3bf043a31530dfc43b4a461e077e55996c7b37",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/extracted-before-electrical.rpt": "f22fcfc51d16b72240d5c68b3f9700fb53f32f9bb9376cb734e049cc94dac90a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/extracted-before-setup.rpt": "0d548bd154d0cc4d4d50a98326f29649b50d8d4066e30ce30d58f375dfa846d2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.nl.v": "cd0a3a4c0c1fe2e5a19fb0af037f9b49d00e3a5d3e6faad7c0f454751ed67ea5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/soc_top.sdc": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/runs/extracted24/1-openroad-resizertimingpostgrt/state_out.json": "ec4d645cd66f2063202794e85756cfdb1f557d8857387976d7b491105c016734",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/setup25-driver.log": "a0022a22b79eb5b79f88ad9b8a452e2d4ae4572134028ffc39c702392ce26874",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/setup25.tcl": "9443c518017631ad0883d6c1fd2ff6711d3c2d37504b4463bec74bcb8da98acc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/setup25_flow.py": "b2b7d842b8b6057ddbf778b972be9e8f038182a7871d11fd60cf660c0f3a65f3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/setup26.tcl": "f6f705549adb0d416da4481c4c3e547dd179d7cd85394fad9958099396f355ca",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/setup26_flow.py": "ae423e8200c7bc6f37a13c21133da4c7daa4a5215e75e53835a24b7df8428d6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/test_bounded_process.py": "429c0940897a3f3eab913dbebc926ea13d88073b64228cff5a5cf772ff4f25bd"
+    },
+    "recompression": {
+      "original_path": "docs/evidence/eco24-functional-repair-20260923.tar.gz",
+      "original_sha256": "fc75cc103ef97236f8ea3fac721029095eb85957245c7de794284a07d6c5f710",
+      "original_bytes": 3062765,
+      "decompressed_tar_sha256": "b2460eadebd35052ee4bd48549c1ccda905790579fd1d49fcfbf49fae74640cc"
+    }
+  }
+}

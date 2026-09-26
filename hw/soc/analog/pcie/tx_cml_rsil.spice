@@ -1,0 +1,18 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Experimental TX with native SG13G2 three-terminal, self-heating resistors.
+* Nominal 50-ohm geometry; contact current capacity and full PEX not qualified.
+* External 1.5mA reference and ideal complementary predriver remain required.
+* Zero-volt VTAIL/VRP/VRN are measurement probes, not physical devices.
+.subckt nssoc_tx_cml_rsil inp inn outp outn avdd avss sub iref
++ params: load_w=10u load_l=70.215u load_heat=1
+XREF iref iref avss sub npn13G2 Nx=1
+XTAIL tail iref tailmon sub npn13G2 Nx=8
+VTAIL tailmon avss 0
+XP outn inp tail sub npn13G2 Nx=8
+XN outp inn tail sub npn13G2 Nx=8
+VRP avdd loadp 0
+VRN avdd loadn 0
+XRP loadp outp sub rsil w={load_w} l={load_l} sw_et={load_heat}
+XRN loadn outn sub rsil w={load_w} l={load_l} sw_et={load_heat}
+.ends nssoc_tx_cml_rsil

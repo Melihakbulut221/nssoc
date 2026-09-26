@@ -1,5 +1,12 @@
 # 00 — Index: what this is, what exists, and where to start
 
+Current entry point: [README.md](../README.md), with
+[source-bound measured status](project-status.json). Complete product and audit
+requirements are in [docs/92-product-acceptance.md](92-product-acceptance.md)
+and [docs/96-second-audit-closure.md](96-second-audit-closure.md).
+[HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
+
+
 Entry point to the document corpus. It states what the project is, what
 physically exists in this repository today as against what is planned,
 how the twenty-odd documents relate to one another, and which of them to
@@ -166,6 +173,12 @@ that regenerate them are in that file's docstring and in
   flash (`docs/66-qspi-flash-controller.md`); the execute-in-place
   windows stay reserved and that document says why. SpaceWire, CAN,
   SPI and I2C remain unbuilt.
+  *Superseded 2026-09-19:* all four now have RTL, APB, pin and interrupt
+  integration, pin-level tests and a routed GDS (`docs/88-interface-integration.md`).
+  The scope is SpaceWire PIO, classical CAN 2.0B, SPI and single-controller I2C.
+  PCI/PCIe, Ethernet and SpaceWire DMA/router remain absent. The new layout
+  passes router DRC, antenna and disconnected-pin checks but fails extracted timing at
+  50 MHz; neither these controllers nor the full chip are silicon-qualified.
 - **No SRAM macro in any hardened design.** Every result above is
   flip-flop RAM. The RM_IHPSG13 macro study is in
   `docs/12-sg13g2-flow-bringup.md`.
@@ -461,8 +474,28 @@ rather than from a beam.
 | `docs/84-the-registered-request-phase.md` | `docs/72` section 15 item 5 named the registered request phase and did not price it; `docs/83` showed nothing else explains the depth. This builds it behind `soc_bus.v`'s **`REQ_REG`**, defaulted off, and prices both sides. The default is proved unchanged by a yosys miter --- *Of those cells 231 are proven and 0 are unproven* --- rather than argued from a cell count, which here would have suggested the opposite. All six SymbiYosys tasks pass at both settings; one property failed induction at `REQ_REG = 1` and was made **stronger**, not weaker. **The deepest endpoint class in the design, the CLINT's response registers, goes from 81 combinational levels to 16**, the maximum from 81 to 69 and the median from 39 to 20 --- and the same workload goes from **416,673 cycles to 520,398, 24.89 % more**, `[TB] PASS` at both. The recommendation is to keep the default and run one layout, because no layout says how much slack the shorter chain returns. 2026-09-16. |
 | `docs/85-what-page-68-was-hiding.md` | The owner read the published thesis and reported that page 68 had writing on top of itself. It did: every macro in the floorplan figure printed its name across its own dimensions, in two published revisions, because the label offsets were in **data coordinates** --- 14 um on an axis 2,000 um tall --- where points were meant. Building the check the owner had just performed by eye found **three more defects of three more kinds**: a micro sign printing as a **t-cedilla in 46 places**, three fragments of editing instructions **typeset as body text** (one of them an 890 pt overfull row in a table), and a table that pushed its own caption onto the **page number**. All four were invisible in the source and in the build log. Reading a rendered table then found a fifth that no tool had reported and that matters most: siunitx was putting a thousands separator **inside the decimal part** of 44 numbers, so the design's worst setup slack printed as **7.575,8 ns** and its hold margin as **0.029,6 ns** in every revision so far. Three gates now sit in both document Makefiles --- no overfull box, no text over other text, no separator inside a decimal --- and the second was proved to fire on a page built to collide. The three pre-correction wire-share figures the SoC paper had honestly *named* are also now **corrected**. Nothing was built. 2026-09-16. |
 | `docs/86-the-external-review.md` | An independent third party read the public mirror at `36efe03`, reproduced every claim on a fresh clone, and wrote eleven findings with a reproduction, an acceptance block and a scope guard each. All eleven are worked here: **nine acceptance blocks met in full, two in part with the shortfall stated**. The front door goes from 17 passed / 3 failed / 3 skipped to **22 / 0 / 1** in this repository and from 8 / 6 / 9 to **16 / 0 / 7** in the mirror; `docs/evidence/` puts 722 kB of `metrics.json` and `resolved.json` in git so a clone can check a layout claim at last, lifting the mirror from 499 passing to 536. The review's own instruction to re-run each reproduction is what paid: **three defects it did not have** came out of doing so, and **two more were found by the proofs, inside my own fixes** -- an APB timeout that answered one request twice, and a crash register that broke five guards which were all right to break. Two of the review's diagnoses were wrong and both are recorded. Nothing was built. 2026-09-18. |
+| `docs/87-engineering-closure.md` | Fresh-clone audit: register-file contract and direct upstream equivalence with real ECC, boot geometry safety, strict simulator verdicts, reproducible entry points, and remaining physical/product work. 2026-09-19. |
 | `thesis/main.pdf` | **Not a numbered document, and the only thing here that is not one.** A design description of the whole part, assembled from `thesis/chapters/*.tex`: the mission case, the architecture, the accelerator, the hardening and what each mechanism costs, the verification programme layer by layer, the physical design with the die drawn four ways, and the measurements together. It cites the numbered documents rather than restating them, and it is the file to hand someone who has not read any of them. Its layout maps are generated by `thesis/figures/make_layout_figures.py` from a sign-off run's own DEF and netlist. 2026-09-15. |
 | `LICENSES.md` | *Row added 2026-09-10.* The licensing map and publication scope `docs/14` section 6.4 and section 9 stage 1 call for, signed 2026-09-09: the three licences applied to paths, and the boundary of what the public mirror carries. It is the third markdown source at the repository root and section 2.1's markdown-file row predates it. |
+| `docs/88-interface-integration.md` | SpaceWire, CAN, SPI and I2C register contracts, verification and measured physical limitations. |
+| `docs/89-external-review-follow-up.md` | External review follow-up and interface target. |
+| `docs/90-gigabit-ethernet.md` | Gigabit Ethernet MAC and native SRAM verification. |
+| `docs/91-pcie-gen3-feasibility.md` | PCIe Gen3 x4 implementation dependencies. |
+| `docs/92-product-acceptance.md` | Complete external-review and product acceptance checklist. |
+| `docs/93-ihp-drc-update.md` | SRAM checks with pinned upstream IHP verification rules. |
+| `docs/94-external-interrupt.md` | External level interrupt and preserved interrupt context. |
+| `docs/95-immutable-boot-rom.md` | Immutable boot contents and physical integration profile. |
+| `docs/96-second-audit-closure.md` | Complete second-audit requirement register, current dispositions and verification gates. |
+| `docs/97-uart-receive.md` | UART receive/status/interrupt contract and pin/CPU validation. |
+| `docs/98-pcie-transaction-backend.md` | Project-authored PCIe transaction-to-APB block, exact subset, tests and remaining link/PHY implementation. |
+| [docs/97-uart-receive.md](97-uart-receive.md) | Current 8N1 TX/RX register contract, CPU fast interrupt/WFI tests and physical acceptance boundary. |
+| [docs/98-physical-tool-bootstrap.md](98-physical-tool-bootstrap.md) | Portable physical-tool entry points, pinned devshell installer and remaining full-PDK acceptance boundary. |
+| [docs/99-pcie-phy-development.md](99-pcie-phy-development.md) | Custom SG13G2 TX cell and four-cell bank, measured 8 GT/s pre-layout simulations, numerical warnings and physical-integration gates. |
+| [docs/100-routed-closure.md](100-routed-closure.md) | Current routed setup/electrical failures, source-bound repair checks and full-transistor DRC/LVS work. |
+| [docs/101-sram-characterization.md](101-sram-characterization.md) | Local SRAM waveform characterization, model identity controls, extracted-parasitic work and independent production checks. |
+| [docs/102-remaining-product-gaps.md](102-remaining-product-gaps.md) | 26 September source-bound audit of both reviews, live characterization, protocol/physical blockers and external manufacturing requirements; not signoff. |
+| [docs/103-local-closure-progress.md](103-local-closure-progress.md) | Local full-profile RTL and native memory replay, complementary skip coverage, SRAM numerical-step evidence and native-resistor TX correction. |
+| [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 
 `sw/tests/test_doc_links.py` checks that this table names every document
@@ -551,6 +584,16 @@ timeout is a different machine from the default and proving only the
 default would be proving the parameter is unused. Every figure above is
 left standing.
 
+**Re-counted 2026-09-19 [fact].** `hw/soc/formal` carries
+**95 tasks across 22 jobs**. The interface layout work adds two
+`regfile_equivalence.sby` tasks for `SYNPRE=1` with scrub on and off.
+`regfile_contract.sby` adds three tasks
+with the real codec and inductive storage invariants; `regfile_equivalence.sby`
+adds two direct upstream-Ibex comparisons, with scrub enabled and disabled.
+The results and reproduction commands are in `docs/87-engineering-closure.md`.
+These are register-file proofs, not a claim that the core-level `reg_ch0`
+or the M-extension instruction checks have closed.
+
 The formal figure is the one worth a sentence, because it had been
 corrected once already and the correction was wrong too: this file said
 52 across fourteen, `ROADMAP.md` amended that to 56 across 14, and both
@@ -603,3 +646,58 @@ repository public, so a Pages deploy from this tree would publish both
 the tree that decision declined and the material `LICENSES.md` section
 2.1 holds back. `docs/78-the-public-mirror.md` is where the published
 site belongs.
+
+
+**Re-counted 2026-09-19 after APB telemetry integration [fact].**
+`hw/soc/formal` carries **99 tasks across 22 jobs**. Four additional
+BUSSTAT tasks exercise timeout telemetry at counter widths 4 and 16;
+all eight BUSSTAT tasks pass. This inventory is not a claim that every
+core-level instruction property is proved. See docs/89.
+
+
+**Re-counted 2026-09-21 after peripheral contract integration [fact].**
+`hw/soc/formal` declares **109 tasks across 25 jobs**. The regression requires
+103 of these tasks and reports six explicit historical exceptions in
+`hw/soc/formal/sweep-policy.json`; the frozen pilot contributes another 54
+mandatory tasks. Thus the complete sweep requires 157 PASS verdicts, with
+source freshness checked separately. This is an inventory and acceptance
+requirement, not a claim that the currently running complete sweep has passed.
+The ten new UART/PnP/timer tasks have their own
+[measured evidence](evidence/peripheral-formal-20260920.json).
+
+
+**Re-counted 2026-09-21 after real-codec scrub integration [fact].**
+`hw/soc/formal` declares **113 tasks across 26 jobs**. Four new mandatory
+storage/scrub tasks prove and cover the real codec at both SYNPRE settings;
+[their measured results](evidence/regfile-scrub-complete-20260921.json) include six reachable mutation controls.
+The SoC sweep requires 107 tasks, retaining six historical exclusions;
+with the unchanged 54 pilot tasks it requires 161 fresh PASS verdicts.
+Earlier completed 157-task hosted sweeps predate these four tasks and are
+not re-labelled as 161-task results. This correction also resolves the
+stale inventory detected by the hosted `test_roadmap_is_current` guard at
+`1d99a78`; the failing run remains recorded as a failure.
+
+
+**Re-counted 2026-09-22 after PCIe block integration [fact].**
+`hw/soc/formal` declares **119 tasks across 28 jobs**. The six new tasks
+cover the standalone transaction backend and DWORD packet adapter with
+BMC, unbounded proofs and reachability covers. Their measured block results
+are in [docs/98](98-pcie-transaction-backend.md).
+The SoC sweep now requires 113 tasks, retaining six historical exclusions;
+with the unchanged 54 pilot tasks it requires 167 fresh PASS verdicts.
+This is the current inventory, not a completed 167-task sweep or a PCIe
+product/link/layout verdict. The earlier complete 161-task result remains
+bound to its original sources. The full Python regression exposed the stale
+113-task/26-job documentation; both inventories are corrected here without
+rewriting the earlier dated measurements.
+
+
+**Re-counted 2026-09-23 after request-register proof integration [fact].**
+`hw/soc/formal` declares **122 tasks across 29 jobs**. The three new mandatory
+request-register tasks cover reset, backpressure, payload preservation and
+one-entry occupancy using BMC, induction and reachability. The SoC sweep now
+requires 116 tasks, retaining the six historical exclusions; with the unchanged
+54 pilot tasks it requires 170 fresh PASS verdicts. This inventory does not
+re-label earlier completed sweeps or certify the new whole-processor timing
+candidate. Its block results and acceptance boundary are recorded in
+[docs/100](100-routed-closure.md).

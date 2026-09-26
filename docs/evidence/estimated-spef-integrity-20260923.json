@@ -1,0 +1,444 @@
+{
+  "date": "2026-09-23",
+  "status": "FAIL: ECO17/18/19 estimated SPEF omits pin-node wire capacitance; imported timing is rejected",
+  "cause": "The estimator adds half the pin-to-grid wire capacitance to the pin node. The pinned SPEF exporter emits only non-pin node ground capacitances, but D_NET totals include all node capacitance. Liberty pin capacitance remains separate under PIN_CAP NONE.",
+  "scope": "Independent conservation check of grounded global-route estimates. No guessed replacement capacitance, coupling support, RC accuracy or signoff claim. Detailed-route RCX has not been audited or accepted by this result.",
+  "audits": {
+    "ECO17": {
+      "status": "FAIL",
+      "nets": 96078,
+      "inconsistent_nets": 96078,
+      "declared_total_pf": 1431.740659622007,
+      "serialized_total_pf": 1337.53775889868,
+      "difference_pf": 94.20290072332682,
+      "examples": [
+        {
+          "net": "_000000_[0]",
+          "declared_pf": 0.0289967,
+          "serialized_pf": 0.028393265,
+          "difference_pf": 0.0006034349999999994
+        },
+        {
+          "net": "_000000_[1]",
+          "declared_pf": 0.0259531,
+          "serialized_pf": 0.025323553000000002,
+          "difference_pf": 0.0006295469999999977
+        },
+        {
+          "net": "_000000_[2]",
+          "declared_pf": 0.0581935,
+          "serialized_pf": 0.05664224700000001,
+          "difference_pf": 0.0015512529999999955
+        },
+        {
+          "net": "_000000_[3]",
+          "declared_pf": 0.0306366,
+          "serialized_pf": 0.030134665999999997,
+          "difference_pf": 0.0005019340000000025
+        },
+        {
+          "net": "_000000_[4]",
+          "declared_pf": 0.0442499,
+          "serialized_pf": 0.0436779201,
+          "difference_pf": 0.0005719798999999984
+        },
+        {
+          "net": "_000000_[5]",
+          "declared_pf": 0.0312436,
+          "serialized_pf": 0.030656212,
+          "difference_pf": 0.0005873880000000012
+        },
+        {
+          "net": "_000000_[6]",
+          "declared_pf": 0.0278696,
+          "serialized_pf": 0.027189735,
+          "difference_pf": 0.0006798650000000017
+        },
+        {
+          "net": "_000000_[7]",
+          "declared_pf": 0.0466967,
+          "serialized_pf": 0.046237184,
+          "difference_pf": 0.0004595160000000001
+        },
+        {
+          "net": "_000000_[8]",
+          "declared_pf": 0.0458335,
+          "serialized_pf": 0.045287638,
+          "difference_pf": 0.0005458620000000011
+        },
+        {
+          "net": "_000001_[0]",
+          "declared_pf": 0.0117378,
+          "serialized_pf": 0.01134844,
+          "difference_pf": 0.00038936000000000005
+        },
+        {
+          "net": "_000001_[1]",
+          "declared_pf": 0.0105865,
+          "serialized_pf": 0.009851268,
+          "difference_pf": 0.0007352320000000006
+        },
+        {
+          "net": "_000001_[2]",
+          "declared_pf": 0.00995869,
+          "serialized_pf": 0.00924119,
+          "difference_pf": 0.0007174999999999994
+        },
+        {
+          "net": "_000001_[3]",
+          "declared_pf": 0.0165153,
+          "serialized_pf": 0.016221865000000002,
+          "difference_pf": 0.00029343499999999814
+        },
+        {
+          "net": "_000001_[4]",
+          "declared_pf": 0.0210799,
+          "serialized_pf": 0.020330663000000002,
+          "difference_pf": 0.0007492369999999964
+        },
+        {
+          "net": "_000001_[5]",
+          "declared_pf": 0.00570931,
+          "serialized_pf": 0.005339362900000001,
+          "difference_pf": 0.0003699470999999994
+        },
+        {
+          "net": "_000001_[6]",
+          "declared_pf": 0.0119256,
+          "serialized_pf": 0.011442299999999999,
+          "difference_pf": 0.00048330000000000074
+        },
+        {
+          "net": "_000001_[7]",
+          "declared_pf": 0.0107485,
+          "serialized_pf": 0.01024493,
+          "difference_pf": 0.0005035700000000001
+        },
+        {
+          "net": "_000001_[8]",
+          "declared_pf": 0.0112463,
+          "serialized_pf": 0.01054321,
+          "difference_pf": 0.00070309
+        },
+        {
+          "net": "_000002_",
+          "declared_pf": 0.00153393,
+          "serialized_pf": 0.000766964,
+          "difference_pf": 0.000766966
+        },
+        {
+          "net": "_000003_",
+          "declared_pf": 0.00876554,
+          "serialized_pf": 0.008035790000000001,
+          "difference_pf": 0.0007297499999999995
+        }
+      ],
+      "input_sha256": "63e377b8dfa83ec2acaf0430513ae99ae00ae848d6ee5da68cab0e226e1ff176",
+      "scope": "Grounded wire-capacitance conservation only; excludes RC accuracy, connectivity, coupling, timing and manufacturing acceptance."
+    },
+    "ECO18": {
+      "status": "FAIL",
+      "nets": 96089,
+      "inconsistent_nets": 96089,
+      "declared_total_pf": 1431.3024185320066,
+      "serialized_total_pf": 1337.0889808528789,
+      "difference_pf": 94.21343767912776,
+      "examples": [
+        {
+          "net": "_000000_[0]",
+          "declared_pf": 0.0289967,
+          "serialized_pf": 0.028393265,
+          "difference_pf": 0.0006034349999999994
+        },
+        {
+          "net": "_000000_[1]",
+          "declared_pf": 0.0259531,
+          "serialized_pf": 0.025323553000000002,
+          "difference_pf": 0.0006295469999999977
+        },
+        {
+          "net": "_000000_[2]",
+          "declared_pf": 0.0581935,
+          "serialized_pf": 0.05664224700000001,
+          "difference_pf": 0.0015512529999999955
+        },
+        {
+          "net": "_000000_[3]",
+          "declared_pf": 0.0306366,
+          "serialized_pf": 0.030134665999999997,
+          "difference_pf": 0.0005019340000000025
+        },
+        {
+          "net": "_000000_[4]",
+          "declared_pf": 0.0442499,
+          "serialized_pf": 0.0436779201,
+          "difference_pf": 0.0005719798999999984
+        },
+        {
+          "net": "_000000_[5]",
+          "declared_pf": 0.0312436,
+          "serialized_pf": 0.030656212,
+          "difference_pf": 0.0005873880000000012
+        },
+        {
+          "net": "_000000_[6]",
+          "declared_pf": 0.0278696,
+          "serialized_pf": 0.027189735,
+          "difference_pf": 0.0006798650000000017
+        },
+        {
+          "net": "_000000_[7]",
+          "declared_pf": 0.0466967,
+          "serialized_pf": 0.046237184,
+          "difference_pf": 0.0004595160000000001
+        },
+        {
+          "net": "_000000_[8]",
+          "declared_pf": 0.0458335,
+          "serialized_pf": 0.045287638,
+          "difference_pf": 0.0005458620000000011
+        },
+        {
+          "net": "_000001_[0]",
+          "declared_pf": 0.0117378,
+          "serialized_pf": 0.01134844,
+          "difference_pf": 0.00038936000000000005
+        },
+        {
+          "net": "_000001_[1]",
+          "declared_pf": 0.0105865,
+          "serialized_pf": 0.009851268,
+          "difference_pf": 0.0007352320000000006
+        },
+        {
+          "net": "_000001_[2]",
+          "declared_pf": 0.00995869,
+          "serialized_pf": 0.00924119,
+          "difference_pf": 0.0007174999999999994
+        },
+        {
+          "net": "_000001_[3]",
+          "declared_pf": 0.0165153,
+          "serialized_pf": 0.016221865000000002,
+          "difference_pf": 0.00029343499999999814
+        },
+        {
+          "net": "_000001_[4]",
+          "declared_pf": 0.0210799,
+          "serialized_pf": 0.020330663000000002,
+          "difference_pf": 0.0007492369999999964
+        },
+        {
+          "net": "_000001_[5]",
+          "declared_pf": 0.00570931,
+          "serialized_pf": 0.005339362900000001,
+          "difference_pf": 0.0003699470999999994
+        },
+        {
+          "net": "_000001_[6]",
+          "declared_pf": 0.0119256,
+          "serialized_pf": 0.011442299999999999,
+          "difference_pf": 0.00048330000000000074
+        },
+        {
+          "net": "_000001_[7]",
+          "declared_pf": 0.0107485,
+          "serialized_pf": 0.01024493,
+          "difference_pf": 0.0005035700000000001
+        },
+        {
+          "net": "_000001_[8]",
+          "declared_pf": 0.0112463,
+          "serialized_pf": 0.01054321,
+          "difference_pf": 0.00070309
+        },
+        {
+          "net": "_000002_",
+          "declared_pf": 0.00153393,
+          "serialized_pf": 0.000766964,
+          "difference_pf": 0.000766966
+        },
+        {
+          "net": "_000003_",
+          "declared_pf": 0.00876554,
+          "serialized_pf": 0.008035790000000001,
+          "difference_pf": 0.0007297499999999995
+        }
+      ],
+      "input_sha256": "23d8c07d57564f42759542a801e5ac3536e5d9e49e2ea6de70a775b434cd1f77",
+      "scope": "Grounded wire-capacitance conservation only; excludes RC accuracy, connectivity, coupling, timing and manufacturing acceptance."
+    },
+    "ECO19": {
+      "status": "FAIL",
+      "nets": 96100,
+      "inconsistent_nets": 96100,
+      "declared_total_pf": 1431.1694771310067,
+      "serialized_total_pf": 1336.9417085527778,
+      "difference_pf": 94.22776857822896,
+      "examples": [
+        {
+          "net": "_000000_[0]",
+          "declared_pf": 0.0289967,
+          "serialized_pf": 0.028393265,
+          "difference_pf": 0.0006034349999999994
+        },
+        {
+          "net": "_000000_[1]",
+          "declared_pf": 0.0259531,
+          "serialized_pf": 0.025323553000000002,
+          "difference_pf": 0.0006295469999999977
+        },
+        {
+          "net": "_000000_[2]",
+          "declared_pf": 0.0581935,
+          "serialized_pf": 0.05664224700000001,
+          "difference_pf": 0.0015512529999999955
+        },
+        {
+          "net": "_000000_[3]",
+          "declared_pf": 0.0306366,
+          "serialized_pf": 0.030134665999999997,
+          "difference_pf": 0.0005019340000000025
+        },
+        {
+          "net": "_000000_[4]",
+          "declared_pf": 0.0442499,
+          "serialized_pf": 0.0436779201,
+          "difference_pf": 0.0005719798999999984
+        },
+        {
+          "net": "_000000_[5]",
+          "declared_pf": 0.0312436,
+          "serialized_pf": 0.030656212,
+          "difference_pf": 0.0005873880000000012
+        },
+        {
+          "net": "_000000_[6]",
+          "declared_pf": 0.0278696,
+          "serialized_pf": 0.027189735,
+          "difference_pf": 0.0006798650000000017
+        },
+        {
+          "net": "_000000_[7]",
+          "declared_pf": 0.0466967,
+          "serialized_pf": 0.046237184,
+          "difference_pf": 0.0004595160000000001
+        },
+        {
+          "net": "_000000_[8]",
+          "declared_pf": 0.0458335,
+          "serialized_pf": 0.045287638,
+          "difference_pf": 0.0005458620000000011
+        },
+        {
+          "net": "_000001_[0]",
+          "declared_pf": 0.0117378,
+          "serialized_pf": 0.01134844,
+          "difference_pf": 0.00038936000000000005
+        },
+        {
+          "net": "_000001_[1]",
+          "declared_pf": 0.0105865,
+          "serialized_pf": 0.009851268,
+          "difference_pf": 0.0007352320000000006
+        },
+        {
+          "net": "_000001_[2]",
+          "declared_pf": 0.00995869,
+          "serialized_pf": 0.00924119,
+          "difference_pf": 0.0007174999999999994
+        },
+        {
+          "net": "_000001_[3]",
+          "declared_pf": 0.0165153,
+          "serialized_pf": 0.016221865000000002,
+          "difference_pf": 0.00029343499999999814
+        },
+        {
+          "net": "_000001_[4]",
+          "declared_pf": 0.0210799,
+          "serialized_pf": 0.020330663000000002,
+          "difference_pf": 0.0007492369999999964
+        },
+        {
+          "net": "_000001_[5]",
+          "declared_pf": 0.00570931,
+          "serialized_pf": 0.005339362900000001,
+          "difference_pf": 0.0003699470999999994
+        },
+        {
+          "net": "_000001_[6]",
+          "declared_pf": 0.0119256,
+          "serialized_pf": 0.011442299999999999,
+          "difference_pf": 0.00048330000000000074
+        },
+        {
+          "net": "_000001_[7]",
+          "declared_pf": 0.0107485,
+          "serialized_pf": 0.01024493,
+          "difference_pf": 0.0005035700000000001
+        },
+        {
+          "net": "_000001_[8]",
+          "declared_pf": 0.0112463,
+          "serialized_pf": 0.01054321,
+          "difference_pf": 0.00070309
+        },
+        {
+          "net": "_000002_",
+          "declared_pf": 0.00153393,
+          "serialized_pf": 0.000766964,
+          "difference_pf": 0.000766966
+        },
+        {
+          "net": "_000003_",
+          "declared_pf": 0.00876554,
+          "serialized_pf": 0.008035790000000001,
+          "difference_pf": 0.0007297499999999995
+        }
+      ],
+      "input_sha256": "50d1b776275fe4449ad899fc06927966479e69de804546815eddbec7adcd1982",
+      "scope": "Grounded wire-capacitance conservation only; excludes RC accuracy, connectivity, coupling, timing and manufacturing acceptance."
+    }
+  },
+  "sources": {
+    "hw/soc/flow/audit_estimated_spef.py": "1e9eee64b199a9dc7c2e1cf34bff43be452cf4e88b590422a29a938ef05465cc",
+    "sw/tests/test_estimated_spef.py": "ab12b369ff587b782352bffdd19fd8684935bc589ae9914c82e16066159fbeda"
+  },
+  "upstream_source": [
+    {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/est/src/MakeWireParasitics.cpp#L336",
+      "download_sha256": "ebd86b2b43928f59f6dabf41715d62e5ae5f89c4b071ffff9666e2d3a693878f"
+    },
+    {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/dbSta/src/SpefWriter.cc#L204",
+      "download_sha256": "8f84f7f1fbe26bdd784cb5cb7445a47cacae9534fe2a09c2682d937e19d033de"
+    }
+  ],
+  "validation": {
+    "tests": 12,
+    "result": "PASS: omission/restoration, numeric units, zero nets, rounding and rejection controls",
+    "example_net": "_013646_",
+    "declared_pf": 0.0162618,
+    "serialized_pf": 0.015831794,
+    "missing_pf": 0.000430006
+  },
+  "invalidated_claim": "ECO19 apparent three-corner hold/slew/cap closure from the imported estimated SPEF is withdrawn. All earlier measured values are retained as biased diagnostics. In-memory slow results, Boolean proofs and unloaded-driver audits have distinct scopes.",
+  "archive": {
+    "path": "docs/evidence/estimated-spef-integrity-20260923.tar.gz",
+    "sha256": "1a45ba19408d007e4e0454ec22de533d68349de429eb2f988fd9a4deedfc86c0",
+    "bytes": 5094,
+    "members": {
+      "rc-consistency/eco17-integrity.json": "4e5af424d975bd11e9e27ca725de96540f9dd122ae2e70443f0586bfe3be3951",
+      "rc-consistency/eco17-integrity.log": "0aad033cd6454a7633ffd230808eaca4569126c408687dd2539f40ef0c8e8a4e",
+      "rc-consistency/eco18-integrity.json": "cded62b4fc2602d43fb9c88192bf9eeadfe45f926b9d3aefb011ce590086cd6b",
+      "rc-consistency/eco18-integrity.log": "3915c9a9a8d1d33afdee32f0de80d4723108033d9b5c1c82939327474f8c34e8",
+      "rc-consistency/eco19-integrity.json": "06e37971483928cd91e71d5ba6a1dad1b8b7dfacf196d73eb712f9291c5f4d2b",
+      "rc-consistency/eco19-integrity.log": "37c7ab17dee6fc2053f604123f48a6e34eddb12ccf5ec143535ed8dd72764d19",
+      "rc-consistency/guard-tests.log": "7f583a2c445f84b18a624c4d264696604a97eb6a81b10fcd006081d2627781da",
+      "rc-consistency/slow-common-path.rpt": "6db08c05c65e86d4ab16c07ac917249c38ccd0c1455ea5b8fc06f33554dd4c05",
+      "rc-consistency/slow-common-path.tcl": "4546bffe6800328947f1e223bf2c7c5f2ded2f20d027efa3e976a20fb7651195",
+      "rc-consistency/slow-common-path.log": "608d7428bc815afaccb70f748d0f1986e31bd615f6788aa0227471b2e681ed75"
+    }
+  }
+}

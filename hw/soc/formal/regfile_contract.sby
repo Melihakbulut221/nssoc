@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# Fault-free architectural contract with the REAL codecs and storage.
+# Proves both read ports against a resettable 31-word reference array.
+# Codeword validity is an inductive assertion, never an assumption.
+
+[tasks]
+prove
+prove_noscrub
+cover
+
+[options]
+prove: mode prove
+prove_noscrub: mode prove
+prove: depth 3
+prove_noscrub: depth 3
+cover: mode cover
+cover: depth 36
+timeout 180
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+read_verilog -formal secded_enc.v secded_dec.v ibex_regfile_secded.v
+prove_noscrub: chparam -set SCRUB 0 ibex_register_file_ff
+prep -top ibex_register_file_ff
+
+[files]
+../../rtl/secded_enc.v
+../../rtl/secded_dec.v
+../rtl/ibex_regfile_secded.v
+ibex_regfile_secded_props.v ibex_regfile_contract_props.v

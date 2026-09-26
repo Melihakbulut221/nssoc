@@ -1,0 +1,228 @@
+{
+  "date": "2026-09-20",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35508536540",
+  "head": "474b9ce",
+  "status": "FAIL",
+  "scope": "Independent hosted Yosys 0.67 rebuild; native four-state whole-SoC execution, no preload or model edits. Not a withdrawal of the distinct local Yosys 0.33 pass.",
+  "result": {
+    "native_cell_gate": {
+      "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.015674278999995295
+      },
+      "runs": [
+        {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+            "-i",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.007607042000017827,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "compile": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=1000000",
+        "-DEXIT_CODE_ADDR=32'h00001e64",
+        "-DEXIT_MAGIC_ADDR=32'h00001e68",
+        "-DCHECKS_ADDR=32'h00001e9c",
+        "-DFAILS_ADDR=32'h00001ea0",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 3.3737006909999536
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+          "-i",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+          "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/rtl/flash0.hex"
+        ],
+        "returncode": 1,
+        "elapsed_s": 4067.217513023,
+        "pass_banner": false
+      }
+    ],
+    "sources_unchanged": true,
+    "passed": false
+  },
+  "observations": {
+    "completed_checks": 24,
+    "cycles": 1000096,
+    "first_unknown_progress_cycle": 620000,
+    "uart_framing_errors": 1,
+    "flash_protocol_violations": 0,
+    "exit_magic": "00000000",
+    "diagnosis": "Failure follows test 0x19 at NPU bring-up/inference. Root cause unestablished; replaying exact hosted netlist and identical flash under local Icarus 13. Loader ROM and flash bytes match local passing build."
+  },
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/compile.log",
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/inputs.json",
+      "bytes": 9859,
+      "sha256": "57361edd08dea845956c2f2731a1007ad34ae74781b58126377fc4571ada0832"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/native-cell-gate/compile.log",
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/native-cell-gate/result.json",
+      "bytes": 1134,
+      "sha256": "7b72f4dfb1d3c4541b8202541be539fb98aaeed7b8fa33b1244e9857aabf7339"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/native-cell-gate/run-0.log",
+      "bytes": 154,
+      "sha256": "631c98f8921b366cc48dea137a394a40ebcdbb10908bc9b0c21abe0dfc0827a7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/result.json",
+      "bytes": 3292,
+      "sha256": "f81d224f2d4312f2b897916630a5c7d9202507ad5f02ab15c108922238af7086"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates/run-0.log",
+      "bytes": 9760,
+      "sha256": "ff91ad7bd81ac2a1b528ec38ab8adca8c96db26865f38970768c0a94c6dec3ee"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/gates-driver.log",
+      "bytes": 3292,
+      "sha256": "f81d224f2d4312f2b897916630a5c7d9202507ad5f02ab15c108922238af7086"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/iverilog-version.log",
+      "bytes": 3410,
+      "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/model-lock.json",
+      "bytes": 2221,
+      "sha256": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/native-cell-preflight/compile.log",
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/native-cell-preflight/result.json",
+      "bytes": 1130,
+      "sha256": "8a954bb3db75f8433e513166259d2f1754fdd8936a944e650ea322d4d09ed9bc"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/native-cell-preflight/run-0.log",
+      "bytes": 153,
+      "sha256": "081976156e0d48a7ea641ced6ffeaebeba1c7ae8290c78ccfee1f2614a134748"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/prepare-models.log",
+      "bytes": 152,
+      "sha256": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/app.elf",
+      "bytes": 57124,
+      "sha256": "34d618df6954fbdaa029d004d0e4042f1d85f88a83730f5f7e3e3287ba0e265a"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/boot-rom/manifest.json",
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/flash0.hex",
+      "bytes": 393216,
+      "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/iverilog.log",
+      "bytes": 1441,
+      "sha256": "1a178288dadb7fe41d69118a2ce2686dceff1f87f17e627b017f6faf41e94c6d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/sim.log",
+      "bytes": 1996,
+      "sha256": "b14690458d2da93b72eb1770ae5b7e8475d6ca2fdb1d32d3809612e5911d5845"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl/test_soc.bin",
+      "bytes": 3084,
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/rtl-driver.log",
+      "bytes": 4951,
+      "sha256": "e7e6c91392d27beb456d42c12a5b48e7438d5065bdaf347791a222c7d9f4b4fc"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/synthesis/area.rpt",
+      "bytes": 2178,
+      "sha256": "7e6af2907b678e988d038fb2d203c0b65093b4f2c25815dc2410ee68180cd49d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/synthesis/boot-rom/manifest.json",
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/synthesis/soc_top.netlist.v",
+      "bytes": 9451228,
+      "sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/synthesis/syn.log",
+      "bytes": 6552957,
+      "sha256": "5c8113b094e295ca751131047d71296afe125328522bca8f51846d675b21d5ea"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/synthesis-driver.log",
+      "bytes": 1367,
+      "sha256": "bc5f5ce173a3cfab42c93229c38a7c4194571460de3dc08befbef786875d92f3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/native-hosted-35508536540-artifacts/yosys-version.log",
+      "bytes": 82,
+      "sha256": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93"
+    }
+  ]
+}

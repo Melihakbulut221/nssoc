@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: Reproducible defect
+description: Report a failing design, test, tool or documented claim
+body:
+  - type: markdown
+    attributes:
+      value: For sensitive security reports, use the private route in SECURITY.md.
+  - type: input
+    id: revision
+    attributes:
+      label: Exact commit and interface profile
+      placeholder: Commit SHA, base or full, relevant parameters
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and tools
+      description: Commands, tool versions and a minimal input; omit secrets and private data.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and observed result
+      description: Include the failing log and any explicit skips. Link the claim if reporting documentation.
+    validations:
+      required: true

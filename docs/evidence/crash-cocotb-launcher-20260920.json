@@ -1,0 +1,74 @@
+{
+  "date": "2026-09-20",
+  "scope": "Real CPU crash observer using the CI OSS CAD Suite Icarus 14 simulator, pinned cocotb 2.0.1 and host Python 3.12. Same hardware observer, firmware fault, PC and APB assertions as the earlier Icarus 12 PASS.",
+  "failure": {
+    "run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35467135579",
+    "job": 105961438277,
+    "reason": "OSS CAD Suite vvp wrapper forced its bundled PYTHONHOME while cocotb linked host libpython3.12; Python failed before simulation. The CPU crash C/Verilog step itself passed."
+  },
+  "rejected_attempt": "Retaining the bundled dynamic loader after clearing PYTHONHOME still failed: bundled libm lacks GLIBC_2.38 required by host Python. No simulation result claimed for that attempt.",
+  "fix": "For the detected OSS CAD Suite launcher layout, execute its exact libexec/vvp with the host loader and a build-local directory containing only a symlink to its matching libvvp.so.1. Do not expose the bundled libc/libm or overwrite the tool installation. Native Icarus launchers retain their existing path.",
+  "test": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "name": "double_fault_pc_survives_watchdog_and_apb_write",
+    "classname": "test_crash_recovery",
+    "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/integration/test_crash_recovery.py",
+    "lineno": "8",
+    "time": "823.8526380062103",
+    "sim_time_ns": "3172635.0",
+    "ratio_time": "3850.973892221832"
+  },
+  "commands": [
+    "OSS_CAD_SUITE=/home/hasanmelih/Documents/gt2n-soc/tools/oss-cad-suite SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DCRASH_DUMP_DEMO SOC_ELAB_ONLY=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/crash-oss-wrapper-20260919",
+    "VVP=/home/hasanmelih/Documents/gt2n-soc/tools/oss-cad-suite/bin/vvp bash scripts/check_soc_crash_cocotb.sh hw/soc/out/crash-oss-wrapper-20260919"
+  ],
+  "build_scope": "SOC_ELAB_ONLY was not a supported option: the standard simulation started and was stopped after bytecode and firmware generation. Its partial output is not a PASS. A first observer invocation also selected an absent root cocotb executable; the successful invocation used the configured hw/.venv. The independent cocotb observer then ran to PASS with the matching Icarus 14 bytecode.",
+  "artifacts": {
+    "scripts/check_soc_crash_cocotb.sh": {
+      "bytes": 2657,
+      "sha256": "083c79f29997866d807da1552d315eb6773ebeeef5ea30fb26580fa7b7e5fabf"
+    },
+    "hw/soc/tb/integration/test_crash_recovery.py": {
+      "bytes": 2101,
+      "sha256": "a4f0eda508de99212d4ac907d3d40cd84a3fe87fbbcb23135f01aff43302c05c"
+    },
+    "hw/soc/out/crash-oss-wrapper-20260919/tb_soc.vvp": {
+      "bytes": 5185089,
+      "sha256": "85ca83b6edf32240e2951a5c3287715da7ce45917502cd822d68cd8bef4cd9dd"
+    },
+    "hw/soc/out/crash-oss-wrapper-20260919/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "1c93ab85ef75c85d7607f392a98b571015d813988546364af9b5176c7eafbbe8"
+    },
+    "hw/soc/out/crash-oss-wrapper-20260919/crash-cocotb.xml": {
+      "bytes": 438,
+      "sha256": "3f43e464495fa3ef3be986379684e2255d97856707a8e0158121ca0160cdf2b3"
+    },
+    "hw/soc/out/crash-oss-wrapper-20260919/crash-cocotb.log": {
+      "bytes": 3516,
+      "sha256": "4984c106352498dec4ae0ddd98e96623826a3d2e0bc14bf4ae28ea4f23a82cdc"
+    },
+    "hw/soc/out/crash-oss-wrapper-20260919/crash-cocotb-inputs.sha256": {
+      "bytes": 464,
+      "sha256": "1cd03ba9c3936820fb28cf614babca21739e575f499d3c6c25df147f1219df99"
+    },
+    "hw/soc/out/external-review-20260919/github-f3d99a1-formal.log": {
+      "bytes": 270192,
+      "sha256": "7bc29c181f923c5b547b46a68135418ec97274460ff031a8248011e78f588b46"
+    },
+    "hw/soc/out/external-review-20260919/crash-oss-old-libc-failed.log": {
+      "bytes": 479,
+      "sha256": "03ed6ac3e042b87e490596b51cb90ba4c446b03f1fcb8274c435a7d9cfd79aea"
+    },
+    "hw/soc/out/external-review-20260919/crash-oss-wrapper-build.log": {
+      "bytes": 2572,
+      "sha256": "59fcfb7b5c621281f8eed1d79f657cb959b619ff6c060e86f39c7ee7d581ba0c"
+    },
+    "hw/soc/out/external-review-20260919/crash-oss-wrapper-test.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

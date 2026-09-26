@@ -1,0 +1,238 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS_FOR_RECORDED_DEVELOPER_SCOPE",
+  "scope": "Community guidance, pinned developer checks, type annotations and netlist diagnostic fix; not a product release or complete audit 3.9 closure.",
+  "sources": {
+    ".editorconfig": "1df6414c79be6151912940142c380a78d0f2d46d015dcd4ef740d5d746147747",
+    ".github/CODEOWNERS": "e261de4849c170883e9aa21c2270d45890bc2331a53d8e31c34d37ccb22d8224",
+    ".github/ISSUE_TEMPLATE/bug_report.yml": "3c5fecd068bf91e40ac7af707bd4f9338946297ca58c4bbcc50af5f915e0186b",
+    ".github/ISSUE_TEMPLATE/config.yml": "865acdc098f7b7823c541e8e755abee61db0ad780c142f88f93ae8bf43ee046b",
+    ".github/pull_request_template.md": "75f2bceab2029d47dd0a9550cddb2a506227101050dbafdcd075f73fba0cfa06",
+    ".github/workflows/checks.yml": "c30fb353001041225baa3486b46afb14fc3a2d9bb29df84fe9fab61df3a6f2c1",
+    ".pre-commit-config.yaml": "77c66920453309a016554a34a11882e38d5b0c91ba4ef4bfdb961d72cdd15275",
+    "CHANGELOG.md": "e56bd69277eabec63a434ea2b7971e340f6d5eca2f459b6dcef196e2cb0be4fc",
+    "CODE_OF_CONDUCT.md": "c20abb1a6cd74aa6fce3e70a2a24bb5b669aad38af04add671fdaea795931f07",
+    "CONTRIBUTING.md": "8a5d25bc214b2ac505c47bddd555294f26db96dd095c7e8cfbc7514d89f6b612",
+    "SECURITY.md": "131e32869d5e59ad88e61319596c39db28b6798bb72e77f465dd31c1119c58be",
+    "pyproject.toml": "8c88ae6dcf538797626a05e48f1a1dd7bca52f93487993464303e7b01faf8fc1",
+    "scripts/precommit_soc_lint.py": "1a2dbbff5d4ea3637ec41f0a62882f1a66cb953b71b73cce795925206b008fbe",
+    "sw/requirements-dev.txt": "89bfcb05e81f385333a1294a3b3573b8c1ecc4365eba2dd50260be9f66a3b871",
+    "sw/golden/lif_core.py": "3e0bd52e0da43e230e7c492f9c7071950a49de3e74bf7fcbca44eef09aa9561a",
+    "sw/golden/network.py": "0870e3854b4f7eb91eadb4d01112a6f7bd2432593ab64bb9755043a8db2af24e",
+    "sw/golden/secded.py": "58c4003227ed8f79767c77046c44919876e796cbc08c4f1135283afce72a8d91",
+    "sw/pilotlink/link.py": "c749d0f294a4b3045503422ff15ab66fb5defc460f7461479d2c6db70fe99f35",
+    "sw/pilotlink/rp2040.py": "8d199debc3a0d1abddd621e4b496c62b0d5edd59a3839dc19fb258183885b356",
+    "sw/tests/test_soc_shipped_netlist_guards.py": "bf529fef0c9fa643cceee31c2955a414c893b7ddc177579f671e1b1aaa312d7e"
+  },
+  "tools": {
+    "ruff": "0.16.8",
+    "mypy": "2.3.1",
+    "pre-commit": "4.6.2"
+  },
+  "ruff_scope": "84 Python files in sw; E9/F63/F7/F82; no global reformat or generated-source edits",
+  "mypy_scope": "12 golden model / pilotlink files; complete function annotations required in the three handwritten golden models; test/script typing and complete transport annotations are not claimed",
+  "negative_controls": {
+    "undefined_name": "F821 rejected",
+    "golden_wrong_argument_type": "arg-type rejected"
+  },
+  "model_annotation_parity": {
+    "sw/golden/lif_core.py": {
+      "old_sha256": "5369fce6ac2596a5955710befeb9b0736b9c296bc106c9e1eb381d5ea6cbc251",
+      "new_sha256": "3e0bd52e0da43e230e7c492f9c7071950a49de3e74bf7fcbca44eef09aa9561a",
+      "annotation_stripped_AST_identical": true
+    },
+    "sw/golden/network.py": {
+      "old_sha256": "bcf668778a0c6a13c43869e257c63f8705d24d9a86d4a93c4d8a37b5f141f1a1",
+      "new_sha256": "0870e3854b4f7eb91eadb4d01112a6f7bd2432593ab64bb9755043a8db2af24e",
+      "annotation_stripped_AST_identical": true
+    },
+    "sw/golden/secded.py": {
+      "old_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+      "new_sha256": "58c4003227ed8f79767c77046c44919876e796cbc08c4f1135283afce72a8d91",
+      "annotation_stripped_AST_identical": true
+    }
+  },
+  "precommit": {
+    "automatic_hooks": {
+      "passed": 4,
+      "failed": 0
+    },
+    "manual_lint_verified": {
+      "base": "PASS; 987 inventoried warnings",
+      "full": "PASS; 1015 inventoried warnings"
+    },
+    "initial_manual_attempts": "FAIL: the index/working diff was edited concurrently while the hooks ran. Both underlying lint checks passed, but pre-commit correctly rejected changed files. Repeated with editing/staging stopped: both hooks passed and the before/after tracked diff was byte-identical.",
+    "frozen_files_changed": false
+  },
+  "private_reporting": {
+    "endpoint": "https://api.github.com/repos/Melihakbulut221/nssoc/private-vulnerability-reporting",
+    "action": "PUT enabled; subsequent GET returned enabled=true",
+    "verified_date": "2026-09-21",
+    "report_url": "https://github.com/Melihakbulut221/nssoc/security/advisories/new",
+    "test_report_sent": false
+  },
+  "lint_results": [
+    {
+      "result": "hw/soc/out/precommit-lint-20260921T014510Z-d328e2a9/result.json",
+      "sha256": "a9ced5da5507745fd6539dc4afe674f41f6df3f5bcebd3f49ced4a54827be41b",
+      "profile": "base",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "counts": {
+        "PROCASSINIT": 136,
+        "CASEINCOMPLETE": 5,
+        "SYNCASYNCNET": 5,
+        "DECLFILENAME": 9,
+        "PINCONNECTEMPTY": 106,
+        "UNUSEDSIGNAL": 81,
+        "GENUNNAMED": 15,
+        "LATCH": 3,
+        "ASCRANGE": 2,
+        "TIMESCALEMOD": 33,
+        "SELRANGE": 3,
+        "UNUSEDPARAM": 289,
+        "VARHIDDEN": 4,
+        "WIDTHTRUNC": 51,
+        "WIDTHEXPAND": 150,
+        "PINMISSING": 86,
+        "BLKSEQ": 9
+      }
+    },
+    {
+      "result": "hw/soc/out/precommit-lint-20260921T014518Z-1c0ef174/result.json",
+      "sha256": "f9939b2df824557f2e8883fc60e15b91300d57932531cb8ed7a865a5187a7530",
+      "profile": "full",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "counts": {
+        "SELRANGE": 3,
+        "PINMISSING": 86,
+        "LATCH": 3,
+        "PROCASSINIT": 136,
+        "UNUSEDSIGNAL": 89,
+        "ASCRANGE": 2,
+        "IMPLICIT": 1,
+        "BLKSEQ": 9,
+        "CASEX": 1,
+        "SYNCASYNCNET": 6,
+        "VARHIDDEN": 4,
+        "DECLFILENAME": 9,
+        "PINCONNECTEMPTY": 107,
+        "CMPCONST": 1,
+        "WIDTHTRUNC": 57,
+        "GENUNNAMED": 15,
+        "TIMESCALEMOD": 33,
+        "WIDTHEXPAND": 159,
+        "UNUSEDPARAM": 289,
+        "CASEINCOMPLETE": 5
+      }
+    },
+    {
+      "result": "hw/soc/out/precommit-lint-20260921T014603Z-61e2fd4e/result.json",
+      "sha256": "4585e645879d18f910b36a3006419bba907921b25fa41a1f9ad0dfd1cd755a39",
+      "profile": "base",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "counts": {
+        "SELRANGE": 3,
+        "GENUNNAMED": 15,
+        "PINMISSING": 86,
+        "DECLFILENAME": 9,
+        "CASEINCOMPLETE": 5,
+        "WIDTHTRUNC": 51,
+        "UNUSEDPARAM": 289,
+        "TIMESCALEMOD": 33,
+        "VARHIDDEN": 4,
+        "ASCRANGE": 2,
+        "SYNCASYNCNET": 5,
+        "BLKSEQ": 9,
+        "PROCASSINIT": 136,
+        "PINCONNECTEMPTY": 106,
+        "UNUSEDSIGNAL": 81,
+        "WIDTHEXPAND": 150,
+        "LATCH": 3
+      }
+    },
+    {
+      "result": "hw/soc/out/precommit-lint-20260921T014610Z-899606b2/result.json",
+      "sha256": "bcda598765fa038a0850121c71b869f97e4509622d19c088829363e563c6c039",
+      "profile": "full",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "counts": {
+        "PINMISSING": 86,
+        "IMPLICIT": 1,
+        "WIDTHEXPAND": 159,
+        "BLKSEQ": 9,
+        "PINCONNECTEMPTY": 107,
+        "UNUSEDSIGNAL": 89,
+        "TIMESCALEMOD": 33,
+        "UNUSEDPARAM": 289,
+        "ASCRANGE": 2,
+        "SYNCASYNCNET": 6,
+        "DECLFILENAME": 9,
+        "SELRANGE": 3,
+        "GENUNNAMED": 15,
+        "CASEINCOMPLETE": 5,
+        "PROCASSINIT": 136,
+        "CASEX": 1,
+        "VARHIDDEN": 4,
+        "CMPCONST": 1,
+        "WIDTHTRUNC": 57,
+        "LATCH": 3
+      }
+    }
+  ],
+  "raw_logs": {
+    "hw/soc/out/external-review-20260919/developer-precommit.log": "ae65546ab1ca87736f9b1d6db675528ecce2e3794bfd4ac91a095a78484a9e1b",
+    "hw/soc/out/external-review-20260919/developer-lint-base.log": "e6dd53bb30acf68a16cdd6745d234ca52bde7b8d21b255a567b931eeebf538d3",
+    "hw/soc/out/external-review-20260919/developer-lint-full.log": "eb65e5919a0fff1787fbbf4cbdcd68e4d90d7a93a680de343df390bcbdeda947",
+    "hw/soc/out/external-review-20260919/developer-lint-base-verified.log": "53e3d93df51aed9caca24d30585cffe806b25b593b7dd077bdc76602f2a23bb6",
+    "hw/soc/out/external-review-20260919/developer-lint-full-verified.log": "53e3d93df51aed9caca24d30585cffe806b25b593b7dd077bdc76602f2a23bb6",
+    "hw/soc/out/external-review-20260919/developer-ruff-negative.log": "ed332aea9c476bb72f47136f1a005d83986f2256a6ecbfb536192146fc5a22ee",
+    "hw/soc/out/external-review-20260919/developer-type-negative.log": "8936f7af1a0eabc23fdaa368134395ae47566dc6b42be872a5b890b81a2d530c",
+    "hw/soc/out/external-review-20260919/developer-reuse.log": "7393dbe210e48064fe8c69bb2ced46d9b3f60216f4f1bdac158b7959f5bb3959",
+    "hw/soc/out/external-review-20260919/developer-docsite.log": "c4cc57b0ecac7a3594ffd0aa69eb53874873a2ecd37d4219796de7c1036512e5",
+    "hw/soc/out/external-review-20260919/dev-ruff-before.log": "a7e8b8fbc74173b35671f3b2f4d00fcc9c514c50416c74ccb5534fa3bcb5a931",
+    "hw/soc/out/external-review-20260919/dev-mypy-before.log": "18103f2bb40dd81b5c9712430f6bcf11b56bbbcfaa1614f5a772c3c7ffc75a46"
+  },
+  "remaining": [
+    "Other-paper/thesis claims and builds, thesis PDF freshness",
+    "Release/DOI, history publication and all docs/92 product gates",
+    "Broad Python annotation coverage beyond the stated modules"
+  ],
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_lif_core.py sw/tests/test_secded.py sw/tests/test_multipass.py sw/tests/test_e2e.py sw/tests/test_pilotlink.py sw/tests/test_soc_shipped_netlist_guards.py",
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "xml_sha256": "cba7e91953ceee04263ad3c6b96d24eea5a4b7c154c09fff6e7407f32d57e236",
+    "log_sha256": "7940edef61482c52ed0fba20246043c921a56013de698d4188a45a2c33d11055"
+  },
+  "publication_initial": {
+    "passed": 163,
+    "failed": 1,
+    "reason": "README grew to 128 lines; preserved 125-line brevity gate correctly failed. Removed repeated defect-report text now covered by CONTRIBUTING.md; no gate relaxation.",
+    "log_sha256": "91869e0c3c4b07aeec34bebede4fbb8207e1b314fb3277ec8a2e2689e39af54a"
+  },
+  "publication_final": {
+    "passed": 164,
+    "failed": 0,
+    "skipped": 0,
+    "xml_sha256": "792ef2df83a419e308853179a2c5dcba488696ab279bf687ce4722d3792fb334",
+    "log_sha256": "3c735c85157727998c51ce463fc175106d2a42491a327c7ae31e78f0a48d310c",
+    "site_snapshot": {
+      "documents": 115,
+      "html_pages": 116,
+      "local_targets": 9460,
+      "broken_local_targets": 0,
+      "published_assets": 161,
+      "build_log_sha256": "85ba768f7f5d8b4a36958a81e3672e2edd5bc7dfd5fea3b3aa615bd85f30593a"
+    },
+    "reuse_final_log_sha256": "3281db00be4f41f7c1aca012af8063aa81c62a40886ada69e9984ff5c3214ce5"
+  },
+  "hosted_python_quality": {
+    "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35552265918",
+    "job_id": 106189083617,
+    "tested_head": "4d4b948ca9904198150aa85e3bbebc68fda3282b",
+    "status": "PASS",
+    "log_sha256": "3724b5016632df8659056fc367f7481cd19873ca73324796e2c6786d20fce472",
+    "scope": "Ruff, mypy (12 files), pre-commit configuration; separate native/formal jobs are not covered"
+  }
+}

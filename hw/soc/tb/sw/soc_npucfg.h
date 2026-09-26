@@ -3,12 +3,9 @@
 
 /* NPUCFG register map, for the bare-metal program.
  *
- * This is the FABRIC-LEVEL block's own map -- the event port and the
- * interrupt -- and it is written here rather than generated, exactly as
- * soc_timers.h is for the GPTIMER and for the same reason: regmap/
- * memmap.yaml says where a block lives and has never said what is
- * inside one (docs/40 section 8.1). The base address IS generated, from
- * soc_memmap.h, so nothing here knows where the slot is.
+ * FABRIC-LEVEL offsets come from regmap/peripherals/npucfg.yaml via
+ * generated soc_reg_offsets.h. The slot base comes from soc_memmap.h.
+ * This header retains the public absolute-address aliases and bit fields.
  *
  * The NODE register map is a different thing entirely and is NOT here.
  * It is docs/10 section 10, it has a single source in
@@ -22,19 +19,20 @@
 #define SOC_NPUCFG_H
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 
-#define NPUCFG_ID        (SOC_NPUCFG_BASE + 0x000u)
-#define NPUCFG_VERSION   (SOC_NPUCFG_BASE + 0x004u)
-#define NPUCFG_CTRL      (SOC_NPUCFG_BASE + 0x008u)
-#define NPUCFG_STATUS    (SOC_NPUCFG_BASE + 0x00Cu)
-#define NPUCFG_IRQCAUSE  (SOC_NPUCFG_BASE + 0x010u)
-#define NPUCFG_IRQMASK   (SOC_NPUCFG_BASE + 0x014u)
-#define NPUCFG_EVQ_IN    (SOC_NPUCFG_BASE + 0x018u)
-#define NPUCFG_EVQ_OUT   (SOC_NPUCFG_BASE + 0x01Cu)
-#define NPUCFG_EVQ_STAT  (SOC_NPUCFG_BASE + 0x020u)
-#define NPUCFG_GEOM      (SOC_NPUCFG_BASE + 0x024u)
-#define NPUCFG_CNT       (SOC_NPUCFG_BASE + 0x028u)
-#define NPUCFG_CNT_DROP  (SOC_NPUCFG_BASE + 0x02Cu)
+#define NPUCFG_ID        (SOC_NPUCFG_BASE + SOC_NPUCFG_ID_OFF)
+#define NPUCFG_VERSION   (SOC_NPUCFG_BASE + SOC_NPUCFG_VERSION_OFF)
+#define NPUCFG_CTRL      (SOC_NPUCFG_BASE + SOC_NPUCFG_CTRL_OFF)
+#define NPUCFG_STATUS    (SOC_NPUCFG_BASE + SOC_NPUCFG_STATUS_OFF)
+#define NPUCFG_IRQCAUSE  (SOC_NPUCFG_BASE + SOC_NPUCFG_IRQCAUSE_OFF)
+#define NPUCFG_IRQMASK   (SOC_NPUCFG_BASE + SOC_NPUCFG_IRQMASK_OFF)
+#define NPUCFG_EVQ_IN    (SOC_NPUCFG_BASE + SOC_NPUCFG_EVQ_IN_OFF)
+#define NPUCFG_EVQ_OUT   (SOC_NPUCFG_BASE + SOC_NPUCFG_EVQ_OUT_OFF)
+#define NPUCFG_EVQ_STAT  (SOC_NPUCFG_BASE + SOC_NPUCFG_EVQ_STAT_OFF)
+#define NPUCFG_GEOM      (SOC_NPUCFG_BASE + SOC_NPUCFG_GEOM_OFF)
+#define NPUCFG_CNT       (SOC_NPUCFG_BASE + SOC_NPUCFG_CNT_OFF)
+#define NPUCFG_CNT_DROP  (SOC_NPUCFG_BASE + SOC_NPUCFG_CNT_DROP_OFF)
 
 /* an offset the block does not implement; reserved offsets are a bus
  * error, never a read of zero */

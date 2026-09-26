@@ -1,0 +1,109 @@
+{
+  "date": "2026-09-23",
+  "status": "PASS within RTL firmware and focused hazard-test scope; physical and native-gate acceptance pending",
+  "cause": "Pinned CPU with WritebackStage=1 and BranchTargetALU=0 misdirects a taken branch behind a delayed store response to ALU comparison result 254-2008=0xfffff926. This reproduces independently of the protected register file and SoC fabric.",
+  "fix": "CORE_WB_STAGE now also selects BranchTargetALU. Both remain zero in the historical/default configuration; no upstream vendor files changed.",
+  "regression": {
+    "focused_hazard_tests": 13,
+    "positive_data_response_delays": [
+      1,
+      2,
+      3,
+      5,
+      8
+    ],
+    "positive_writeback_settings": [
+      0,
+      1
+    ],
+    "negative_shared_alu_controls": [
+      5,
+      8
+    ],
+    "with_request_pipeline_scoreboard": 18,
+    "simulators": [
+      "Icarus 12",
+      "project Icarus 14 development"
+    ],
+    "flow_plus_hazard_plus_request_tests": 42,
+    "final_flow_hazard_resume_evidence_tests": 96,
+    "initial_flow_collection": "Failed because request is a reserved pytest parameter; renamed request_reg. Original error log retained."
+  },
+  "full_cpu": {
+    "CORE_REQ_REG": 1,
+    "CORE_WB_STAGE": 1,
+    "BranchTargetALU": 1,
+    "simulator": "Icarus 12",
+    "checks": 28,
+    "fail_mask": 0,
+    "cycles": 630363,
+    "handover_cycle": 307606,
+    "uart_characters": 1094,
+    "uart_framing_errors": 0,
+    "watchdog": [
+      1,
+      0,
+      0
+    ],
+    "qspi_frames": 6,
+    "qspi_datasheet_violations": 0,
+    "firmware_sha256": {
+      "app.bin": "576f42828bc9a2c8aef98b2c12b0324a6504added154f50034750e69e8ec09b7",
+      "test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+    },
+    "compiled_simulation_sha256": "36f64b5bf83892749cb5ad096cab8692131bff9be14afd2f5c0481473f54581c"
+  },
+  "synthesis": {
+    "cells": 69944,
+    "flops": 9600,
+    "standard_cell_area_um2": 1079471.232,
+    "macro_instances": 20,
+    "macro_area_included": false,
+    "unique_warnings": 191,
+    "warning_occurrences": 199,
+    "netlist_sha256": "65663e261d3363ac44570954622b98cda3155b7e7a2275a066dadbeddbc7ba6f"
+  },
+  "source_sha256": {
+    "hw/soc/rtl/soc_top.v": "bac971eeab25162608cd5a331c9268834992476cdef1c235b53dc00bd40b05e7",
+    "hw/soc/tb/ibex_min_system.v": "7b196d87abb3ec1d1d14b292473b133fddbe4a19cb35d8b039b7f459c5f765b2",
+    "hw/soc/tb/tb_ibex_branch_stall.v": "fc4bb011f380aa406a1d22a28d0e086c0cf000af1700fac3aec617e2d463308b",
+    "sw/tests/test_ibex_branch_stall.py": "628546ac41d72d8d200c3620221586fa47adf85d61e3f5c0e86a0cd11dc176d5",
+    "hw/soc/flow/implement_interfaces.sh": "488fcb8a43ec872de60075217dd0e313cd68d11e300d32d41a0b87b3133f7ad5",
+    "sw/tests/test_interface_flow.py": "42c8c8ebabe5e3f5733fda5ff97b1c77b77481b412dbb75d190a996be2c9e062",
+    ".github/workflows/soc-physical.yml": "b0b25adfacacf93daa9a83a3fe90603d6b78f4d2e75b22b87c089e965caaf86e"
+  },
+  "scope": "Firmware/hazard checks do not prove complete ISA equivalence, native gate behavior, CDC, physical timing or manufacturing acceptance. The earlier failing candidate runs remain separate historical evidence.",
+  "archive": {
+    "path": "docs/evidence/core-writeback-branch-fix-20260923.tar.gz",
+    "bytes": 10210,
+    "sha256": "bc290f29dacb77e4d403df7e4a2278daabf5196e2674de8d51b9aa3c81bb3d0f",
+    "members": {
+      "core-fixed-source-snapshot.json": "c4bb07be88a6200935b2d231395b45ed333704fba64a6f192ffd1822fb4031c8",
+      "branch-stall-readback-regression.log": "3a75ee8aa2044d17cb7d7092a9647d36a431ab8f0a255b66da696f0a2bac5565",
+      "branch-stall-project-iverilog-tests.log": "a921e70c30d07a4bcc70c886b966fa17e5a693990db6708a95212ba80a56a1b4",
+      "branch-stall-project-iverilog-version.log": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f",
+      "core-fixed-flow-regression.log": "7852998390e5f1579ef1b2e7edaf8a45c9bdac08ab9d5f683f5dfcefd3927a17",
+      "core-fixed-flow-regression-run2.log": "2977522b77e8a4aa1550229ba169bffe49eeff4052463572e7d8e23cd12c669c",
+      "core-fix-final-regression.log": "54dec62703e176a7bb45c54f6e8634fd64c663174e729bad3943751633ea4f9b",
+      "core-writeback-probe-driver.log": "0635d4c08ebfc610397f57ac6584512ff6b32a7eaa09f2e0a98c436d13ae6710",
+      "core-writeback-bta1-driver.log": "884a1fe8ae06b7524b53bf55bdc9f38751aa888ff2dc3fe3a32635fb429a65d3",
+      "wb_probe.v": "7729cc98c713fb97a747da1ccc6911e0d987f0ae8cab9adfc01f56dc26b106e4",
+      "wb-bta1-experiment.json": "ba233d5cc3a3ab948e477276023d6d11a4af676f279a9240804373ef207cf1fa",
+      "core-fixed-writeback-full-driver.log": "46da4526403143e188c3f3dc501af6d36fd75bf77e5248dcff1c36cc129c9a56",
+      "core-fixed-synthesis-driver.log": "6b36f02eff3c76531a03f7d42391f244936676a13a6976c1fa6452d2fe688a3b",
+      "core-fixed-synthesis/area.rpt": "7e1cea4e5ba925a8e3eee8b9b1d363099a76679c5a320a659fe316cc1b7d63a4",
+      "core-fixed-synthesis/soc_top_syn.ys": "57b72ea1358868c5158fa4d60b814c3a1ab3a279dec5389e803aa17f48d68985",
+      "core-fixed-writeback-full/soc_param_override.v": "2c4fbde057edb115b8778a30ae939fcd1435cae0fd17aa2ea8eb50e1a28c4eb2",
+      "core-fixed-writeback-full/sim.log": "d23b252ef161628b8344dd0f37f0b4488b836c237bad5cf2dd0a952d3490ee1f",
+      "core-fixed-writeback-full/iverilog.log": "5572a61d268ff45e4c0a18f0a7d45c67c58b03311b1e569ce8c0dfe0348d69ae",
+      "branch-reproducer/test-readback.S": "1e957c6da150183086d8a017ad40e4c956750053aa23fa3b918822e41e3fe986",
+      "branch-reproducer/test.S": "2e30d98b0787cf67635580acc80c8a5bfaaf8bd9568c5dc7d02ae22221c9048d",
+      "branch-reproducer/wb0-bta0-run.log": "4facdaca811d75484b2b1cbc65ee5c113d51b0993dbd7d948fa3ad57e4605e66",
+      "branch-reproducer/wb1-bta0-run.log": "5936d308d309d9c501ea4c1087c62d4e0d043bb0d804a2cbd74941fe11deeeb8",
+      "branch-reproducer/wb1-bta1-run.log": "c81038c92fb51be1fd9b5f9d9b8aeb38fcac3b2c369548a043bc831b622705a7",
+      "branch-reproducer/wb0-bta0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "branch-reproducer/wb1-bta0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "branch-reproducer/wb1-bta1-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

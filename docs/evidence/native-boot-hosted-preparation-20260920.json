@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-20",
+  "status": "Hosted native boot preparation FAIL; required Ethernet mapping Liberty added to lock, rerun pending",
+  "tested_head": "6341aec86cb933b63e94378f7e6cde12938454a3",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35506681972",
+  "job_id": 106067578640,
+  "artifact_id": 10604800674,
+  "artifact_archive_sha256_from_GitHub": "a8c5dd4b6e4839db503c636f15d9a2ebbea8c1ac83d05242ab92433d6aa2f190",
+  "scope": "Native reset control and 28 RTL checks pass. Synthesis refuses missing RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib; no netlist or whole gate-level acceptance in this run. Failed result preserved.",
+  "fix": "Add exact same immutable upstream Ethernet SRAM mapping Liberty, verified against installed native PDK. Dependency guard now derives SRAM mapping libraries from the real synthesis command source. Lock has nine files; unchanged existing files retained.",
+  "controls": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_native_boot_preparation.py sw/tests/test_ihp_drc_preparation.py sw/tests/test_logic_boot_gl.py",
+    "passed": 32
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec.log": {
+      "bytes": 29432,
+      "sha256": "b6ac26b36b9fd516dc032f47987ac2a5729f3879878443bea9527aec9dff9422"
+    },
+    "hw/soc/out/external-review-20260919/native-boot-mapping-lock-tests.log": {
+      "bytes": 99,
+      "sha256": "e1ef70a15987d998a18028c33b66c12c08bad335632eec4d60a9f276baf57cf0"
+    },
+    "hw/soc/pnr/ihp-native-boot.lock.json": {
+      "bytes": 2221,
+      "sha256": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/iverilog-version.log": {
+      "bytes": 3410,
+      "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/model-lock.json": {
+      "bytes": 1977,
+      "sha256": "a2f02cedb668db09d7547c6ffeac5dc50a1578cc887c8a56b8762114a8afc60e"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/native-cell-preflight/compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/native-cell-preflight/result.json": {
+      "bytes": 1130,
+      "sha256": "6941b9dbd5eb2cdb9994e88f1fca67a7f9a9a38475f273f95e1482f755525a6a"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/native-cell-preflight/run-0.log": {
+      "bytes": 153,
+      "sha256": "081976156e0d48a7ea641ced6ffeaebeba1c7ae8290c78ccfee1f2614a134748"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/prepare-models.log": {
+      "bytes": 152,
+      "sha256": "530e29a49032e99520ba01a5c6d86e07758aab65d67954538dac6ce5df5f8cd4"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/app.elf": {
+      "bytes": 57124,
+      "sha256": "337b8c07ded032e0bbaac25d3f94c04eedc9fc7f20565d623029d9024cd777d6"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/iverilog.log": {
+      "bytes": 1441,
+      "sha256": "1a178288dadb7fe41d69118a2ce2686dceff1f87f17e627b017f6faf41e94c6d"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/sim.log": {
+      "bytes": 1996,
+      "sha256": "b14690458d2da93b72eb1770ae5b7e8475d6ca2fdb1d32d3809612e5911d5845"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl/test_soc.bin": {
+      "bytes": 3084,
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/rtl-driver.log": {
+      "bytes": 4951,
+      "sha256": "e7e6c91392d27beb456d42c12a5b48e7438d5065bdaf347791a222c7d9f4b4fc"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/synthesis-driver.log": {
+      "bytes": 234,
+      "sha256": "b04355d28bd22be1f3138b6216273eb39065442561ed43c945c0bc89bd95e4f7"
+    },
+    "hw/soc/out/external-review-20260919/hosted-native-6341aec-artifacts/yosys-version.log": {
+      "bytes": 82,
+      "sha256": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93"
+    }
+  }
+}

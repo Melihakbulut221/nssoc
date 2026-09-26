@@ -118,7 +118,12 @@ module tb_soc;
   integer cycles = 0;
   always @(posedge clk) if (rst_n) cycles = cycles + 1;
 
+  wire spw_loop_d, spw_loop_s, spi_loop, i2c_scl_oe, i2c_sda_oe;
   wire uart_tx, uart_irq;
+  reg eth_clk = 1'b0;
+  always #4 eth_clk = !eth_clk;
+  wire [7:0] eth_txd;
+  wire eth_tx_en, eth_tx_er;
   wire wdog_n, wdog_rst, nmi, irq_timer, irq_soft, gptimer_irq;
   wire alert_minor, alert_major_internal, alert_major_bus;
   wire double_fault_seen, core_sleep;
@@ -223,10 +228,17 @@ module tb_soc;
   // and hw/soc/tb/cocotb/test_soc_wdog.py is where the disabled case is
   // driven.
   soc_top #(.ROM_INIT(`ROM_HEX)) dut (
+      .spw_di_i(spw_loop_d), .spw_si_i(spw_loop_s),
+      .spw_do_o(spw_loop_d), .spw_so_o(spw_loop_s),
+      .i2c_scl_i(!i2c_scl_oe), .i2c_sda_i(!i2c_sda_oe),
+      .i2c_scl_oe_o(i2c_scl_oe), .i2c_sda_oe_o(i2c_sda_oe),
+      .can_rx_i(1'b1), .spi_miso_i(spi_loop), .spi_mosi_o(spi_loop),
       .clk_i  (clk),
       .rst_ni (rst_n),
+      .irq_external_i(1'b0),
       .wdog_dis_i (1'b0),
       .strap_i    (strap),
+      .uart_rx_i  (1'b1),
       .uart_tx_o  (uart_tx),
       .uart_irq_o (uart_irq),
       .gpio_i     (gpio_pad),
@@ -240,6 +252,11 @@ module tb_soc;
       .qspi_io_i    (qspi_io),
       .qspi_irq_o   (qspi_irq),
       .wdog_no       (wdog_n),
+      .eth_rx_clk_i(eth_clk), .eth_tx_clk_i(eth_clk),
+      .eth_rxd_i(eth_txd), .eth_rx_dv_i(eth_tx_en), .eth_rx_er_i(eth_tx_er),
+      .eth_txd_o(eth_txd), .eth_tx_en_o(eth_tx_en), .eth_tx_er_o(eth_tx_er),
+      .eth_gtx_clk_o(), .eth_mdio_i(1'b1), .eth_mdc_o(), .eth_mdio_o(),
+      .eth_mdio_oe_o(), .eth_irq_o(),
       .wdog_rst_o    (wdog_rst),
       .nmi_o         (nmi),
       .irq_timer_o   (irq_timer),
@@ -317,6 +334,8 @@ module tb_soc;
     end
   end
 
+  // Declared before the initial block for Icarus 14's elaboration order.
+  reg allow_double_fault = 1'b0;
   initial begin
     allow_double_fault = ($test$plusargs("allow_double_fault") != 0);
     if (!$value$plusargs("ded_word=%d", ded_word)) ded_word = -1;
@@ -353,8 +372,6 @@ module tb_soc;
   reg saw_alert_major_int = 1'b0;
   reg saw_alert_major_bus = 1'b0;
   reg saw_double_fault    = 1'b0;
-  // Set from +allow_double_fault; see the check that reads it.
-  reg allow_double_fault  = 1'b0;
   always @(posedge clk) if (rst_n) begin
     if (alert_minor)          saw_alert_minor     <= 1'b1;
     if (alert_major_internal) saw_alert_major_int <= 1'b1;
@@ -425,6 +442,35 @@ module tb_soc;
   // is a log that simply begins again with no explanation. The first
   // watchdog bring-up run produced exactly that.
   // -------------------------------------------------------------------
+  // Explicit fault-injection run, docs/89: stall the first CAN access,
+  // then let PREADY arrive late. Neither testbench force is used normally.
+  integer apb_timeout_responses = 0;
+  reg apb_timeout_injected = 0;
+  always @(posedge clk) if (rst_n && dut.apb_timeout && dut.s_rvalid[2])
+    apb_timeout_responses = apb_timeout_responses + 1;
+  initial begin
+    if ($test$plusargs("apb_timeout_demo")) begin
+      wait (rst_n);
+      wait (dut.sel_can && !dut.penable);
+      force dut.pready_can = 1'b0;
+      apb_timeout_injected = 1;
+      wait (dut.apb_timeout);
+      repeat (20) @(negedge clk);
+      // Late completion must not return a second response to the fabric.
+      force dut.pready_can = 1'b1;
+      repeat (20) @(negedge clk);
+      if (!dut.psel || !dut.penable || apb_timeout_responses != 1)
+        $fatal(1, "APB timeout: quarantine or exactly-once response failed");
+      wait (wdog_rst);
+      if (dut.u_ram.mem[EXIT_CODE_ADDR[31:2]] !== 32'hAB700001)
+        $fatal(1, "APB timeout: CPU did not recover through load access fault");
+      if (apb_timeout_responses != 1)
+        $fatal(1, "APB timeout: duplicate response before watchdog reset");
+      release dut.pready_can;
+      $display("[TB] APB timeout: one error, late PREADY ignored, CPU trap returned, watchdog recovery");
+    end
+  end
+
   reg nmi_q = 1'b0, wdog_rst_q = 1'b0, wdog_n_q = 1'b1;
   integer wdog_stage1 = 0, wdog_stage2 = 0, wdog_stage3 = 0;
   always @(posedge clk) if (rst_n) begin

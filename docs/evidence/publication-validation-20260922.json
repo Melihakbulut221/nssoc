@@ -1,0 +1,80 @@
+{
+  "date": "2026-09-22",
+  "status": "PASS",
+  "scope": "Local fresh publication builds, recursive lint, selected historical transcription checks, PDF freshness and negative controls. Not full scientific-claim or product acceptance.",
+  "base_commit": "eec1b443265ab0bf5839c407c38a34187c62bb8f",
+  "receipt": {
+    "path": "docs/evidence/publications-current.json",
+    "sha256": "0d6473ac871b11159f33a431160596de82eb316565387b31e63c914ee6b900be"
+  },
+  "compiler": "Tectonic 0.17.0",
+  "documents": {
+    "paper-soc": {
+      "pages": 16,
+      "pdf_sha256": "519b8328456d770e9922087b886c2d2eb2549ffc05d2d70596e55b27e82e0c08",
+      "archive_sha256": "7314322375feced6ffb5dc69df5c3360a062bd393cc958bdf0a16563188c686f"
+    },
+    "paper-design": {
+      "pages": 7,
+      "pdf_sha256": "6b2d4990cc827a77a91c6ba0edfa2dcbc8f92a68d656ba7ca7333ec3633c5bfe",
+      "archive_sha256": "e776ab9f45614be0b04cd732aa0789be39d93175aa341ee95c48ca30e095224d"
+    },
+    "paper-residual": {
+      "pages": 8,
+      "pdf_sha256": "9340dfb2fc1287c0aadc4d85b1d97d590a96311b1a616fa76e33e8a7bc9c87ce",
+      "archive_sha256": "d59c2dd323ebe02ae64e9b6e0b9081cdc2fda2a49ed09288e5a7141b14afdcfa"
+    },
+    "thesis": {
+      "pages": 90,
+      "pdf_sha256": "6db4e12ea6ff515ecaf1c9c7f5d391e3c6e90a5c9821e51eb2f5474c55284f8f",
+      "archive_sha256": "0e29affaa8cfd4fba782376b6e16ca1626e7d2f854a081610ce93818acc1bd9e"
+    }
+  },
+  "selected_historical_transcriptions": 12,
+  "outstanding_scientific_groups": 4,
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_publication_gates.py sw/tests/test_thesis_distribution.py sw/tests/test_recorded_text_claims.py sw/tests/test_recorded_replica_claims.py",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "log": "hw/soc/out/external-review-20260919/publication-final-controls.log",
+    "sha256": "09d526d67fe9c5f889b670856a8e06aa8f097482e096c8fd44ae04e8dc69625f"
+  },
+  "visual_review": "All-page contact sheets reviewed, then final thesis abstract, changed design pages 5/6, residual first page and corrected micro glyph examined as rendered page images. No clipping or overlaps observed; automated overlap and TeX overfull checks also pass.",
+  "retained_failures": [
+    "Initial strict gate found four previously ungated residual-paper overfull paragraphs.",
+    "Correcting the micro glyph exposed a design-paper paragraph overflow; wording repaired, fresh build repeated.",
+    "Stale source/PDF gate rejected an intermediate receipt after source edits. These were not recorded as passing builds."
+  ],
+  "hosted_workflow": "Configured; result must be collected from the actual published commit.",
+  "other_checks": [
+    "Ruff: PASS",
+    "mypy: PASS, 13 files",
+    "Selected project status: unchanged and verified"
+  ],
+  "open": [
+    "Remaining scientific claims in all four manuscripts",
+    "Complete typing",
+    "Release and DOI",
+    "All unresolved docs/92 physical, IP, DFT, packaging and silicon acceptance gates"
+  ],
+  "delivery_regression": {
+    "passed": 207,
+    "failed": 0,
+    "skipped": 0,
+    "log": "hw/soc/out/external-review-20260919/publication-delivery-regression.log",
+    "sha256": "5a711ef3d69f8eb5833224f8dafd48aa6b1d7fcf2387a72abd3ff5add0f7da9c"
+  },
+  "distribution": {
+    "reuse_files": 1077,
+    "spdx_inline": 595,
+    "spdx_path_covered": 493,
+    "missing": 0,
+    "wrong": 0,
+    "site_documents": 115,
+    "resolved_references": 8346,
+    "local_targets": 9492,
+    "broken_targets": 0,
+    "frozen_changes": 0
+  }
+}

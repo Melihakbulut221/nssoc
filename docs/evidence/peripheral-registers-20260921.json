@@ -1,0 +1,482 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS_FOR_12_STATIC_BLOCKS",
+  "scope": "Single-source generation of 105 existing word-register offsets; no ABI or functional change. GPTIMER, CAN banked byte registers, fields and shared HAL remain open.",
+  "blocks": [
+    "boot",
+    "busstat",
+    "clint",
+    "eth",
+    "gpio",
+    "i2c",
+    "npucfg",
+    "qspi",
+    "scrub",
+    "spi",
+    "spw",
+    "uart"
+  ],
+  "register_count": 105,
+  "original_abi_sha256": "a54e0ce33860a041c2d878ab4a7c6b8e15aeadec434675a73b824c090069b7de",
+  "commands": [
+    "python3 regmap/generate_peripherals.py --check",
+    "python3 -m pytest -q sw/tests/test_peripheral_regmap.py",
+    "bash hw/soc/flow/build_sw_soc.sh <output> -DINTERFACE_DEMO [full: -DSOC_LGPL_INTERFACES]"
+  ],
+  "source_sha256": {
+    "hw/soc/lint-policy.json": "fe1aa3cd42b6188067e710fd90c5ccc5406b64587d4070f8d9c8eb9049d43d91",
+    "hw/soc/tb/cocotb/peripheral_registers.py": "77f1cbacc0e3ed565c4ee3203972adfe6e9df62c7f4a1b645705bd89cc218cf9",
+    "hw/soc/tb/sw/soc_reg_offsets.h": "778fb745374b901cb7d97d4f26463b7060645e9022f7be52970e777d8b7db114",
+    "regmap/generate_peripherals.py": "a9f45af009c40f037d02c178c5ed5735cac559b7e7feed9be5f71c9692aa1230",
+    "regmap/peripherals/boot.yaml": "a466c7223ae275fd76019a39c2c511a8f3fa035896733f8d17494c5b04cda043",
+    "regmap/peripherals/busstat.yaml": "42413830eb727167315fb9ead46c303fdd926bd399e1801e872010eb5115a10e",
+    "regmap/peripherals/clint.yaml": "64fccbb9ffcd0edcc972daf701e3e7a749d45d02756bbf4090b2fed5435b563f",
+    "regmap/peripherals/eth.yaml": "026a55d04e05b6de211491b64a55209efb09941bf7aec342a146da4314980bb2",
+    "regmap/peripherals/gpio.yaml": "9ac82319ba69ff8b59071418fba696eaac845f82a4d058cdd9bd450aea600bb9",
+    "regmap/peripherals/i2c.yaml": "ca4e9e5ae70bf45c7a77406c0062f80ff4408a3c4ac60d1fb828ed3f4011dacc",
+    "regmap/peripherals/npucfg.yaml": "a281d673322652de2f7ba75f85df4ebaabaa8cb6afdcd3f0ed94417fded5d085",
+    "regmap/peripherals/qspi.yaml": "0cb5c25a8fc3875bdd2da38eec6f58b41a6e5a17cff30ed4dfdf05c463c70892",
+    "regmap/peripherals/scrub.yaml": "0bc0c2c0bd8c1c1982c4b6a45c00ef2c777b1ec6a651cbc00f19b89480be5dc0",
+    "regmap/peripherals/spi.yaml": "0854ba6905a34d67afb0bd8f7ba04011aed12b46bc753e730b6135f5e2a72752",
+    "regmap/peripherals/spw.yaml": "7cea68bd5c1b9856464697dc5364e5acd63779e022d4c42a0a01d5488b6c7144",
+    "regmap/peripherals/uart.yaml": "2d71e24dd361b88ba5f39a6387d707c173addbff9d3c2d83f90fff840e3c35b6",
+    "scripts/ci_local.sh": "0f3fe9390b9e831c843344190dd9b89c58cf0964b932e0fe626eb7d8b5094504",
+    "sw/golden/peripheral_regs_gen.py": "953b7c7beb85ca27b971956edca2257882c8d3eddfc0c577e4f88b93caedf6da",
+    "sw/tests/test_peripheral_regmap.py": "527764c43938836feaa65f5765ad67b929d0c85b58c057d24210dad22f4635c8",
+    "sw/tests/test_soc_memory_guards.py": "572429ae71d4cc3413d6278ebdce465b368fdd9903624656f680d862e2018916",
+    "sw/tests/test_uart_rx_probe.py": "bd50cad32fd53dd5090a2586576ea4d614afacc50b515e54697be8b5d7b31a2a"
+  },
+  "firmware_binary_parity": {
+    "status": "PASS",
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-base/test_soc.bin",
+        "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-base/app.bin",
+        "sha256": "a521e3ea56a2664ca605a89d7ff344b673dc00ebc04cbd76a1c6101803e1aacf"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-base/test_soc.hex",
+        "sha256": "1fa1d593738f81258e8f8b4b2d920146d9ef08c64a48983ff5250c60f0719068"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-base/flash1.hex",
+        "sha256": "142c5f09d98b67d85b4d53225d3208edf80e920438d9e78466d16a863db79688"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-base/flash0.hex",
+        "sha256": "cbf60952d56c0d1eb6202fc6b0458749c4586d4444b70073622a2c6daf4c075b"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-full/test_soc.bin",
+        "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-full/app.bin",
+        "sha256": "d4474ad21974134a2996e2fcd2f7a018ac4b18a4904865e2f663368debc9419b"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-full/test_soc.hex",
+        "sha256": "1fa1d593738f81258e8f8b4b2d920146d9ef08c64a48983ff5250c60f0719068"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-full/flash1.hex",
+        "sha256": "142c5f09d98b67d85b4d53225d3208edf80e920438d9e78466d16a863db79688"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/hal-regmap12-full/flash0.hex",
+        "sha256": "9c6d96b0f75498d6202233fbc224fad5198633093cee66ab58eb1b71236f7137"
+      }
+    ]
+  },
+  "cocotb": [
+    {
+      "suite": "uart",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_uart",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-uart/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-uart/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 1.3676457405090332,
+      "tests": 14,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "d4633bfe62a025248dc9e4acd36b79bd63c42d94b8ac42f5ec1575d9f86593e5",
+      "log_sha256": "e3e77afb8af14400f11a294a2d2994525e42040f4ff5f46ca469a315ed64ae25"
+    },
+    {
+      "suite": "gpio",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_gpio",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-gpio/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-gpio/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 1.3675637245178223,
+      "tests": 14,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "dbdd3dbbf4bed3ab2b23c524e86fe75a2ade20515d048fc450ff2e92dd5db9c9",
+      "log_sha256": "cf988172f74eece0bb0f9b036220ac8c6b18da1a2292038330473345d85a1a84"
+    },
+    {
+      "suite": "qspi",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_qspi",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-qspi/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-qspi/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 2.3702917098999023,
+      "tests": 16,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "833d08562a36f5b52b5fab6852001401dcac9cff01e6fd11fb760f93dbd1d34c",
+      "log_sha256": "dd8cc25e1080c685ec1aedec16b0f74225a42ce6608bdf4669af8f71a2310629"
+    },
+    {
+      "suite": "clint",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_clint",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-clint/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-clint/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 1.4680776596069336,
+      "tests": 17,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "d386242b886c320ae5b2fecbaa1bc1a60c4f5b085862bacfffa5d97fa8fbfa9c",
+      "log_sha256": "801dd21c6710818a04cb342e7dbda4ed6e5435b9f77b65e90673f3cb853bbb0a"
+    },
+    {
+      "suite": "busstat",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_busstat",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-busstat/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-busstat/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 4.776896953582764,
+      "tests": 12,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "e03498c620b197cfa5562903cd687acdae5d13030874896084315a96548f65d6",
+      "log_sha256": "8a39aa7594d8637397b8b16877b4a8599bf6180858f78978aa01b47d983660a0"
+    },
+    {
+      "suite": "scrub",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_scrub",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-scrub/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-scrub/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 10.692371368408203,
+      "tests": 12,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "8c0e78645daf8098bd21180dadd768b69b33d92c862851ae4978a6d28266aa1c",
+      "log_sha256": "4852230d6ed0d7f8e5692667191e3b19191a1dbe771c1b3e9fcd5617091d802f"
+    },
+    {
+      "suite": "boot",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_boot",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-static-boot/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-static-boot/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 1.4675838947296143,
+      "tests": 22,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "4014d2e3e05e24d6e8616d3f6f7a6afc21535ad506b3944f47daa30e4b55dc7c",
+      "log_sha256": "44a466ce9f6a003d8af431441ee9cd53e3d43cadfd5178bfd842f615d4d2616b"
+    },
+    {
+      "suite": "interfaces",
+      "profile": "base",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_interfaces",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-interfaces-base/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-interfaces-base/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 3.5231356620788574,
+      "tests": 12,
+      "failures": 0,
+      "skipped": 4,
+      "xml_sha256": "0cf75113f395dee79e6233c49a9ca8fde1bec1a3b20519826367b61ea6ab9c74",
+      "log_sha256": "e6c67828ec160221995c761abb955f753c1153d5bfab80918d80135aa33e9460"
+    },
+    {
+      "suite": "interfaces",
+      "profile": "full",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_interfaces",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-interfaces-full/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-interfaces-full/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 19.913515329360962,
+      "tests": 12,
+      "failures": 0,
+      "skipped": 1,
+      "xml_sha256": "6846955faf246ec254fc55c90dc45374a2f9af16482e039346f6ed89b1014843",
+      "log_sha256": "2aa08f4f70629a3b5f7412d5da3309639d8ca5a17eb9fc669c9ffb487049e9b0"
+    },
+    {
+      "suite": "eth",
+      "profile": "base",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_eth",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-eth-base/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-eth-base/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 11.041800737380981,
+      "tests": 6,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "e2f7acb4e05f7c93c7aadecf5584611c64988bdb80c35bbe6ac4d66c237d8f3e",
+      "log_sha256": "0fd503c890791f66bb303b1fc2cccd2bc7cd6fa3dc223bb542157a2bd7851895"
+    },
+    {
+      "suite": "npu",
+      "profile": "base",
+      "command": [
+        "make",
+        "-f",
+        "Makefile.soc_npu",
+        "SIM_BUILD=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-npu-base/sim",
+        "COCOTB_RESULTS_FILE=${REPO}/hw/soc/out/external-review-20260919/hal-regmap12-npu-base/results.xml"
+      ],
+      "returncode": 0,
+      "seconds": 286.73801469802856,
+      "tests": 36,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "be3646b52a53b36afd1f01e6b7ce4cc94c08c9d122dc42e1553d8fd0d6f167d8",
+      "log_sha256": "67c7edb4f0ac1fc38d7ae73c8aa17715858f4fb0acad3324adbbb42bceff6504"
+    }
+  ],
+  "lint": {
+    "base": {
+      "warnings": 987,
+      "log_sha256": "6fb356cec27b893f861620e85e6ef293a19b39c4f0e1e48a8bb3b787e24afb1d",
+      "result_sha256": "94cb564a594339ffc77eb5628b51991399f688373643d2eacb9c2a6ce234b799"
+    },
+    "base-sram-logic": {
+      "warnings": 1012,
+      "log_sha256": "7e73afdb09960b75bc598e899f99ceebc2e3287b4a44b4d0e149a31f9b20b0d7",
+      "result_sha256": "6f4eb31f181ce473af3f1230ad950d8b594bf1c9a3935efcb55ba59d5a8095f4"
+    },
+    "full": {
+      "warnings": 1015,
+      "log_sha256": "3c7f768867c5b90be45b4516fc1da5290de189a4d6f6082ca9bac2b89c9b6165",
+      "result_sha256": "b68c78068539cd1e82e7f32fbf6782698c30670cb072f0b7dc386b95e1a724c2"
+    },
+    "full-sram-logic": {
+      "warnings": 1040,
+      "log_sha256": "dcbc3faf44c45745da8d94ea4388f9a1a7095bac152b415638276d5b993d4e1a",
+      "result_sha256": "9c447a29adef9ddb7bb6acfc6df2921f7581302a3b88ea348c4a447dfb93c5a1"
+    }
+  },
+  "lint_review": [
+    {
+      "profile": "base",
+      "diagnostics": 987,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",132,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",74,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        },
+        "stale": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",127,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",66,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "base-sram-logic",
+      "diagnostics": 1012,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",132,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",74,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        },
+        "stale": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",127,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",66,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "full",
+      "diagnostics": 1015,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",132,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",74,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        },
+        "stale": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",127,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",66,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "full-sram-logic",
+      "diagnostics": 1040,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",132,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",73,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",74,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",41,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        },
+        "stale": {
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_eth.v\",127,31,\"Instance pin connected by name with empty reference: 'rx_axis_tkeep'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,10,\"Instance pin connected by name with empty reference: 'm_axis_data_tlast'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",65,50,\"Instance pin connected by name with empty reference: 'scl_o'\"]": 1,
+          "[\"PINCONNECTEMPTY\",\"hw/soc/rtl/soc_i2c.v\",66,28,\"Instance pin connected by name with empty reference: 'sda_o'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,56,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.logic_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,36,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.rx_reset'\"]": 1,
+          "[\"SYNCASYNCNET\",\"hw/soc/rtl/soc_eth.v\",36,46,\"Signal flopped as both synchronous and async: 'soc_top.u_eth.tx_reset'\"]": 1
+        }
+      }
+    }
+  ],
+  "pending": [],
+  "initial_controls": [
+    "Old C-literal regex guard failed after alias generation; replaced by compiling C static assertions against independent RTL literals.",
+    "Strict lint rejected moved diagnostic locations; review proved identical warnings and immutable upstream diagnostics before updating owned source positions."
+  ],
+  "limitations": [
+    "No shared HAL yet.",
+    "Auxiliary test literals not all migrated.",
+    "Whole formal sweep and product/physical acceptance remain open."
+  ],
+  "python_initial_full_sweep": {
+    "passed": 1155,
+    "failed": 1,
+    "skipped": 1,
+    "seconds": 536.72,
+    "xml_sha256": "0bcbccd9e92fdd96906db9cd35fe9dc42dc9ba41b2530556d2be2241cae471c6",
+    "log_sha256": "85dee25b937fd23152ce4acb97b30b2ccc264d254a91600f75298bd333fb11b6",
+    "failure": "Evidence digest manifest had not yet been regenerated; failure retained, corrected by standard manifest generation."
+  },
+  "python_final_targeted": {
+    "generator_probe_lint_passed": 63,
+    "publication_passed": 130,
+    "guard_xml_sha256": "b886c50223df675a59f406fa496a41af1b8d6c4a05c7848950589a3ec6983a58",
+    "publication_log_sha256": "dce16e12bd5bd9b324d70d28cf533d290cddbf4fc492b0cb97a1e5a9c0926c6a",
+    "scope": "Publication rerun includes the formerly failed digest test. Three additional generator/probe controls were added after the full sweep collected tests; covered by the 63-test final run."
+  },
+  "distribution": {
+    "reuse_files": 995,
+    "reuse_log_sha256": "198cc239e7a06c00144acadd8ac1814e7be663a66f3d3856e31fb1b9fb3df7d1",
+    "documentation_log_sha256": "4d3175e566a5af03a373f24588df41ffc3e471cd998d06617684382a049ec5ac"
+  },
+  "i2c_auxiliary_followup": {
+    "source": "hw/soc/tb/cocotb/test_soc_interfaces.py",
+    "old_sha256": "1f94d121868889580060c80d1844f666826cfe863e540e16d6e40b3014262946",
+    "new_sha256": "ae647363b09fb988d8d645bc49aa795f99371577c4f31420b444a59c149b2852",
+    "replaced_calls": 47,
+    "resolved_ast_identical": true,
+    "map": {
+      "STATUS": 0,
+      "PRESCALE": 4,
+      "ADDRESS": 8,
+      "COMMAND": 12,
+      "DATA": 16,
+      "IRQEN": 20,
+      "EVENTS": 24,
+      "TIMEOUT": 28
+    },
+    "date": "2026-09-21",
+    "scope": "Generated I2C offsets replace 47 auxiliary cocotb bus-address literals; RTL, firmware and all assertions/stimuli remain unchanged.",
+    "status": "PASS",
+    "profiles": {
+      "base": {
+        "passed": 8,
+        "skipped": 4,
+        "failed": 0,
+        "xml_sha256": "d5debe2a8a456ac340525e2622859d0044591c61974524b442f7105f325bb022",
+        "log_sha256": "84c578e4a0eb6f742b165ead08af234d2413644d3c207503746106ac31a0e9a1"
+      },
+      "full": {
+        "passed": 11,
+        "skipped": 1,
+        "failed": 0,
+        "xml_sha256": "ade956f1f8a6e3357dfd5a5188938723aea09bca95deecbd7b36bf351f72e091",
+        "log_sha256": "4559f4928b45dfdce95c0c06085daf6803a5850bd16e4ffe7d70e94f243c9292"
+      }
+    }
+  }
+}

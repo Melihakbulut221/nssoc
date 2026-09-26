@@ -1,0 +1,10 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Four independent TX cells; no lane bonding or PCIe qualification.
+.subckt nssoc_tx_bank4_rsil ip0 in0 op0 on0 ref0 ip1 in1 op1 on1 ref1
++ ip2 in2 op2 on2 ref2 ip3 in3 op3 on3 ref3 avdd avss sub
+X0 ip0 in0 op0 on0 avdd avss sub ref0 nssoc_tx_cml_rsil
+X1 ip1 in1 op1 on1 avdd avss sub ref1 nssoc_tx_cml_rsil
+X2 ip2 in2 op2 on2 avdd avss sub ref2 nssoc_tx_cml_rsil
+X3 ip3 in3 op3 on3 avdd avss sub ref3 nssoc_tx_cml_rsil
+.ends nssoc_tx_bank4_rsil

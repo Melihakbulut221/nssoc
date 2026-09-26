@@ -1,6 +1,6 @@
 *.pyc
 __pycache__/
-.venv/
+.venv
 runs/
 *.vcd
 *.fst
@@ -119,12 +119,14 @@ hw/soc/pnr/state/
 # an absolute path to a netlist and is written by flow/pnr_soc_top.sh.
 hw/soc/pnr/runs/
 hw/soc/pnr/config.resolved.json
+hw/soc/pnr/config.resolved.*.json
 hw/soc/pnr/state/
 
 # docs/48: the floorplan variants. hw/soc/pnr/floorplan.py writes them
 # from the PDK's own LEF and from config.json, and reproduces docs/47's
-# floorplan exactly at --channel 700.08 --density 40, so committing one
-# would be vendoring a thing the tree can regenerate.
+# floorplan exactly at --channel 700.08 --density 40. Ad-hoc config-fp*
+# variants are ignored; the explicitly tracked ECC/interface profiles remain
+# versioned inputs and are not covered by this pattern.
 hw/soc/pnr/config-fp*.json
 
 # docs/73: config-ecc.json plus MANUAL_GLOBAL_PLACEMENTS, written by
@@ -215,8 +217,11 @@ paper-soc/arxiv.tar.gz
 # regfile_scrub_* were committed by accident on 2026-09-14 in df1e3df
 # (164 files) and amended out; the existing rule below did not name them.
 hw/soc/formal/*_prove/
+hw/soc/formal/*_prove_full/
 hw/soc/formal/*_cover/
 hw/soc/formal/*_bmc/
+hw/soc/formal/regfile_contract_*/
+hw/soc/formal/regfile_equivalence_*/
 # sby's per-job status databases (the bare <job>/ directory beside <job>_bmc/ etc.)
 hw/soc/formal/*/status.sqlite*
 
@@ -250,3 +255,15 @@ thesis/*.fls
 .claude/
 .cursor/
 .aider*
+
+# Local continuation notes and host-specific checkpoints are not publication artifacts.
+/RESUME.md
+/checkpoints/
+/.mypy_cache/
+/.ruff_cache/
+
+# Completed raw evidence is delivered as checksum-verified GitHub Release assets.
+docs/evidence/pcie-native-resistor-20260926-part*.tar.xz
+docs/evidence/local-rtl-regression-1baeb63-20260926.tar.xz
+docs/evidence/sram-repaired-dp-timestep-20260926.tar.xz
+docs/evidence/prepared-pytest-bb5ddb1-20260926.tar.xz

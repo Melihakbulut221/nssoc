@@ -1,0 +1,80 @@
+{
+  "date": "2026-09-20",
+  "scope": "Public pilot driver: host API mocks plus actual frozen RTL through TT pins; hardware transport not qualified",
+  "source_sha256": {
+    "sw/pilotlink/rp2040.py": "91a01373fd2082aab5b39853efca0e1c7db3baad8efb2033ec13b82d5bf6fc0b",
+    "sw/pilotlink/cocotb_transport.py": "e2badfd33cc6894f339b4afdc4aa78ba9446efe0bdce8851978b49e2df023373",
+    "sw/pilotlink/host.py": "0b781693d8112f493a7d8acce23cc20047bc4d6803a3e17c32eb48d213f80d61",
+    "sw/pilotlink/link.py": "f1271e07210ca5cb15a5e4c5fc0679dabc233db60857ce9665ba0a170ebdf255",
+    "sw/pilotlink/__init__.py": "05710f44baa874c7d8e732bcf297378769002c2b19c8caed6fe6e6ba16b2367b",
+    "sw/tests/test_pilotlink.py": "168da2f5f596701559a7440037a084e770ac8a4db3d9bbec6781d2ec77300799",
+    "hw/soc/tb/cocotb/Makefile.pilotlink": "56b04c1c3efcb3a6d50224299f4c7478b2030c1b0b9ef3fbdd9b400313af2018",
+    "hw/soc/tb/cocotb/test_pilotlink.py": "914904cb6ab97a21c02d463a87ec1fe77897db54e02d59e3881dd632b4dd7404"
+  },
+  "unit_tests": {
+    "passed": 27,
+    "failed": 0,
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_pilotlink.py"
+  },
+  "rtl": {
+    "passed": 2,
+    "failed": 0,
+    "icarus": "12.0",
+    "cocotb": "2.0.1",
+    "geometry": {
+      "neurons": 8,
+      "axons": 8,
+      "input_queue": 4,
+      "output_queue": 4
+    },
+    "sim_time_ns": 622900.0,
+    "command": "make -C hw/soc/tb/cocotb -f Makefile.pilotlink SIM_BUILD=<fresh>/build COCOTB_RESULTS_FILE=<fresh>/results.xml",
+    "observations": [
+      "ID and scratch byte order",
+      "state clear/address/pattern/zero readbacks",
+      "signed weights and configuration",
+      "eight spikes through five-event buffered path",
+      "every event and final neuron state matches integer model",
+      "zero SEC/DED counters",
+      "cancelled partial write releases CS without committing"
+    ]
+  },
+  "frozen_sources": {
+    "hw/rtl/tt_um_melihakbulut_nssoc.v": "292bcd44d146efb94e34f2a2f827d8f7950d94d48b4d628b35c5897735c79b4f",
+    "hw/rtl/npu_regbank.v": "c1844ee17a8cb44ad12f8c751fc7e1c957244c3d66d7423fce7e3a453d35c7a2",
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+    "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+    "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+    "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+    "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+  },
+  "limitations": [
+    "No physical RP2040, FTDI or shuttle run",
+    "Raw UART bridge has no additional CRC or replay protection",
+    "Existing frozen test helpers remain unchanged; new suite uses shared driver"
+  ],
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/pilotlink-unit.xml",
+      "bytes": 3279,
+      "sha256": "231c53df1e32d976a4fbb38fa8db5e35430a20b463b48e8c5f653dce1d7a8fd7"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/pilotlink-unit.log",
+      "bytes": 99,
+      "sha256": "def9dcb35aac50bf4083ddf3a5ca1e7c9accaad627430b6a814a53ff01cbaf46"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/pilotlink-cocotb-final/results.xml",
+      "bytes": 695,
+      "sha256": "81d1c1716e2cea765664a37eed5ee13edb6c08c76e9ec50e68a2ac8aaf1556b5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/pilotlink-cocotb-final.log",
+      "bytes": 4957,
+      "sha256": "353e31cff4e4e0edb9212ed7cea3c94cbd8e28f50184d2511731214d2083cd62"
+    }
+  ]
+}

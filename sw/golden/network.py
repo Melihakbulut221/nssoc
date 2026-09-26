@@ -24,14 +24,14 @@ wider layers at construction.
 Integer-only, like everything in the golden path.
 """
 
-from .lif_core import EVENT_ID_SPAN, LIFCore
+from .lif_core import EVENT_ID_SPAN, LIFConfig, LIFCore
 
 
 class LayerSpec:
     """One fully-connected spiking layer: weights [n_axons][n_neurons]
     plus its LIFConfig (one configuration per pass, spec section 6)."""
 
-    def __init__(self, weights, config):
+    def __init__(self, weights: list[list[int]], config: LIFConfig) -> None:
         if not weights or not weights[0]:
             raise ValueError("layer weights must be a non-empty 2-D list")
         self.weights = weights
@@ -43,7 +43,8 @@ class LayerSpec:
 class NetworkRunner:
     """Executes a stack of LayerSpecs on one core-sized resource."""
 
-    def __init__(self, layers, core_neurons=512, core_axons=512):
+    def __init__(self, layers: list[LayerSpec], core_neurons: int = 512,
+                 core_axons: int = 512) -> None:
         if not layers:
             raise ValueError("need at least one layer")
         for i, layer in enumerate(layers):
@@ -66,15 +67,15 @@ class NetworkRunner:
         self.core_neurons = core_neurons
         self.core_axons = core_axons
 
-    def layer_passes(self, layer):
+    def layer_passes(self, layer: LayerSpec) -> int:
         """Number of neuron-tile passes needed for one layer."""
         return -(-layer.n_neurons // self.core_neurons)
 
     @property
-    def total_passes(self):
+    def total_passes(self) -> int:
         return sum(self.layer_passes(layer) for layer in self.layers)
 
-    def run(self, frames):
+    def run(self, frames: list[list[int]]) -> list[list[int]]:
         """frames: list of timesteps, each a list of input axon ids in
         arrival order. Returns the final layer's per-timestep spike ids,
         in the canonical (event-order, then scan-order) sequence of E8.
@@ -83,7 +84,7 @@ class NetworkRunner:
             frames = self._run_layer(layer, frames)
         return frames
 
-    def _run_layer(self, layer, frames):
+    def _run_layer(self, layer: LayerSpec, frames: list[list[int]]) -> list[list[int]]:
         # One pass per neuron tile: a fresh core-sized configuration and
         # weight slice, the full event stream replayed (spec section 9).
         # Emissions are recorded per (timestep, event) so the tiles can be
@@ -113,7 +114,7 @@ class NetworkRunner:
         return merged
 
 
-def spike_counts(frames, n_neurons):
+def spike_counts(frames: list[list[int]], n_neurons: int) -> list[int]:
     """Total emitted spikes per neuron id over all timesteps."""
     counts = [0] * n_neurons
     for timestep in frames:

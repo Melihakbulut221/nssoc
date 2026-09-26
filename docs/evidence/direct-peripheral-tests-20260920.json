@@ -1,0 +1,171 @@
+{
+  "date": "2026-09-20",
+  "scope": "Directed RTL properties and storage-upset controls; not radiation qualification or mapped placement proof",
+  "results": [
+    {
+      "name": "tmr-bank-direct",
+      "passed": 1,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "all_storage_bits_single_upset_masked_and_recaptured",
+          "sim_time_ns": 4501.0
+        }
+      ]
+    },
+    {
+      "name": "npuser-direct-h2",
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "waveform_and_request_capture",
+          "sim_time_ns": 10340.0
+        },
+        {
+          "name": "reset_aborts_then_next_frame_completes",
+          "sim_time_ns": 1951.0
+        },
+        {
+          "name": "guard_upset_produces_explicit_timeout_and_recovers",
+          "sim_time_ns": 1770.0
+        }
+      ]
+    },
+    {
+      "name": "npuser-direct-h3",
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "waveform_and_request_capture",
+          "sim_time_ns": 15440.0
+        },
+        {
+          "name": "reset_aborts_then_next_frame_completes",
+          "sim_time_ns": 2891.0
+        },
+        {
+          "name": "guard_upset_produces_explicit_timeout_and_recovers",
+          "sim_time_ns": 2620.0
+        }
+      ]
+    },
+    {
+      "name": "npuser-direct-h7",
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "waveform_and_request_capture",
+          "sim_time_ns": 35840.0
+        },
+        {
+          "name": "reset_aborts_then_next_frame_completes",
+          "sim_time_ns": 6651.0
+        },
+        {
+          "name": "guard_upset_produces_explicit_timeout_and_recovers",
+          "sim_time_ns": 6020.0
+        }
+      ]
+    }
+  ],
+  "tools": {
+    "icarus": "12.0",
+    "cocotb": "2.0.1"
+  },
+  "source_sha256": {
+    "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+    "hw/soc/rtl/soc_npu_ser.v": "53ecfb54c7ececc529b53392c718b6b76820d5e08cd50ff1e4c0a1dc877c5e75",
+    "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+    "hw/soc/tb/cocotb/tb_soc_tmr_bank.v": "e41876e373a525412a1f6c8bb0bd6bd5e992b1772167fc244adfffe02af8d659",
+    "hw/soc/tb/cocotb/test_soc_tmr_bank.py": "8216241990b7ec18a320d0521bdf2ef9cc2820c916a137ef0505fafe5baa4d6b",
+    "hw/soc/tb/cocotb/test_soc_npu_ser.py": "3327ad65a4f2fa10dd37a006e6a643188d507f9b87f011bd485f274f3e8ea864",
+    "hw/soc/tb/cocotb/Makefile.soc_tmr_bank": "d8e054e1d8b452c0eb3afff14813a176fcb0779e4d41d46e13c2f0acc36f8398",
+    "hw/soc/tb/cocotb/Makefile.soc_npu_ser": "c169221af7f574fec3b32e7029f11d1c95967e553df0f15970f0112e9ce75096"
+  },
+  "tmr": {
+    "widths": [
+      4,
+      5,
+      8,
+      32,
+      64
+    ],
+    "replicas": 3,
+    "single_storage_bit_upsets": 339,
+    "checks": [
+      "decoded capture",
+      "nonzero asynchronous reset",
+      "single-replica upsets masked by voter with mismatch",
+      "next capture repairs stored value",
+      "two aligned replica faults demonstrably corrupt output"
+    ]
+  },
+  "serial": {
+    "half_period_clock_cycles": [
+      2,
+      3,
+      7
+    ],
+    "checks": [
+      "40 serialized bits match captured request despite changing inputs",
+      "busy start ignored",
+      "MISO command byte discarded",
+      "H1/H2/H3 gaps and exact half-periods",
+      "done pulse and readback",
+      "mid-frame asynchronous reset and next frame",
+      "guard beyond limit produces explicit timeout then recovers"
+    ]
+  },
+  "commands": [
+    "make -C hw/soc/tb/cocotb -f Makefile.soc_tmr_bank",
+    "make -C hw/soc/tb/cocotb -f Makefile.soc_npu_ser HALF=2",
+    "make -C hw/soc/tb/cocotb -f Makefile.soc_npu_ser HALF=3",
+    "make -C hw/soc/tb/cocotb -f Makefile.soc_npu_ser HALF=7"
+  ],
+  "ci_scope": "Default cocotb discovery runs TMR and serial HALF=2; HALF=3/7 are explicit local matrix variants",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/tmr-bank-direct/results.xml",
+      "bytes": 433,
+      "sha256": "d25b0209b3b7e16b2feea799e2ada17af4901bdfffccd05f1256e724853ecc3f"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/tmr-bank-direct.log",
+      "bytes": 4068,
+      "sha256": "3fd3eafd889a6b9a33ff0ac050ef7d9d8db990aae1629fd8db4016a72470b5a8"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h2/results.xml",
+      "bytes": 962,
+      "sha256": "f22f7110e7755367abad400dc3022b63d37563ee7ac03af6b73144d5e6a26d2e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h2.log",
+      "bytes": 4765,
+      "sha256": "4464f18d5fece2fa696be41294bfd290871e8f2c9686cb2929a6df6295436894"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h3/results.xml",
+      "bytes": 956,
+      "sha256": "5eb7a4cc7be74587c873abe6050632c1ee1169c9fdcb398a699f9f78f19a24ff"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h3.log",
+      "bytes": 4765,
+      "sha256": "efc14f77015de2001195d63cd72c75a0ade877e617960bf14e0cc9ef60a3b9e4"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h7/results.xml",
+      "bytes": 960,
+      "sha256": "0dfa8a20584330255c66aa5c7f15c60daeb1d26ca36adc3f2246b01dba475f91"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/npuser-direct-h7.log",
+      "bytes": 4765,
+      "sha256": "430cf8a12720867ae03b1be570ec79b4cc73706fe12df90d3bcfa653cb2c8b83"
+    }
+  ]
+}

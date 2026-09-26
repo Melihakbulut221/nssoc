@@ -23,6 +23,9 @@
 set -euo pipefail
 
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 PILOT_RTL=$(cd "$SOC_DIR/../rtl" && pwd)
 OUT=${1:-$SOC_DIR/out/fi-core}
 
@@ -138,6 +141,17 @@ fi
 # elaboration is the same one, and it is what makes a discarded override
 # a failed run rather than a run of the other design.
 SOC_MEM_RDREG=${SOC_MEM_RDREG:-0}
+# The current routed profile also registers bus requests and precomputes
+# register-file syndromes. Keep historical defaults, but permit a matching
+# RTL control for that netlist instead of silently ignoring these settings.
+SOC_REQ_REG=${SOC_REQ_REG:-0}
+SOC_RF_SYNPRE=${SOC_RF_SYNPRE:-0}
+for setting in "$SOC_REQ_REG" "$SOC_RF_SYNPRE"; do
+  case "$setting" in 0|1) ;; *) echo 'SOC_REQ_REG and SOC_RF_SYNPRE must be 0 or 1' >&2; exit 1;; esac
+done
+if [ "$SOC_RF_SYNPRE" = 1 ] && [ "${IBEX_REGFILE:-secded}" != secded ]; then
+  echo 'SOC_RF_SYNPRE requires the SECDED register file' >&2; exit 1
+fi
 
 # SOC_MEM_HARDEN=0 is docs/67's counterfactual -- the memories as plain
 # arrays with no check bits and no scrubber -- and SOC_SCRUB_IVL is the
@@ -166,6 +180,10 @@ SOC_CLKGATE=${SOC_CLKGATE:-1}
 # 1 is the measurement build of docs/77 section 18.
 SOC_WAKE_GNT=${SOC_WAKE_GNT:-0}
 DEFPARAMS=""
+[ "$SOC_REQ_REG" = 0 ] || DEFPARAMS="$DEFPARAMS
+  defparam tb_soc_fi.dut.REQ_REG = $SOC_REQ_REG;"
+[ "$SOC_RF_SYNPRE" = 0 ] || DEFPARAMS="$DEFPARAMS
+  defparam tb_soc_fi.dut.u_ibex.gen_regfile_ff.register_file_i.SYNPRE = $SOC_RF_SYNPRE;"
 [ "$SOC_MEM_RDREG" = 0 ] || DEFPARAMS="$DEFPARAMS
   defparam tb_soc_fi.dut.MEM_RDREG = $SOC_MEM_RDREG;"
 [ "$SOC_MEM_HARDEN" = 1 ] || DEFPARAMS="$DEFPARAMS
@@ -186,6 +204,7 @@ if [ -n "$DEFPARAMS" ]; then
 //   SOC_MEM_RDREG=$SOC_MEM_RDREG  SOC_MEM_HARDEN=$SOC_MEM_HARDEN
 //   SOC_SCRUB_IVL=${SOC_SCRUB_IVL:-default}  SOC_ROM_HARDEN=${SOC_ROM_HARDEN:-default}
 //   SOC_CLKGATE=$SOC_CLKGATE  SOC_WAKE_GNT=$SOC_WAKE_GNT
+//   SOC_REQ_REG=$SOC_REQ_REG  SOC_RF_SYNPRE=$SOC_RF_SYNPRE
 // NOT PART OF THE DESIGN. A second elaboration root whose only content
 // is defparams -- see the header.
 module soc_param_override;$DEFPARAMS
@@ -241,7 +260,7 @@ sym_opt () {
   if [ -n "$a" ]; then echo "32'h$a"; else echo "32'h0"; fi
 }
 
-"$IVERILOG" -g2005-sv -o "$OUT/tb_soc_fi.vvp" \
+"$IVERILOG" $IF_DEFINE -g2005-sv -o "$OUT/tb_soc_fi.vvp" \
   -I "$SOC_DIR/rtl" \
   -I "$PILOT_RTL" \
   -I "$OUT" \
@@ -271,6 +290,7 @@ sym_opt () {
   "$SOC_DIR/tb/tb_soc_fi.v" \
   "$SOC_DIR/rtl/soc_top.v" \
   "$SOC_DIR/rtl/soc_bus.v" \
+  "$SOC_DIR/rtl/soc_req_pipe.v" \
   "$SOC_DIR/rtl/soc_apb_bridge.v" \
   "$SOC_DIR/rtl/soc_mem.v" \
   "$SOC_DIR/rtl/soc_mem_ecc.v" \
@@ -280,6 +300,13 @@ sym_opt () {
   "$SOC_DIR/rtl/soc_apb_pnp.v" \
   "$SOC_DIR/rtl/soc_uart.v" \
   "$SOC_DIR/rtl/soc_gpio.v" \
+  "$SOC_DIR/rtl/soc_spw.v" \
+  "$SOC_DIR/rtl/soc_i2c.v" \
+  "$SOC_DIR/rtl/soc_spi.v" \
+  "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_eth.v" \
+  "$SOC_DIR/rtl/soc_apb_wb.v" \
+  "$IF_BUNDLE" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/rtl/soc_clint.v" \
   "$SOC_DIR/rtl/soc_gptimer.v" \
@@ -320,5 +347,20 @@ if [ -z "$SOC_ROM_HARDEN" ] || [ "$SOC_ROM_HARDEN" = "$SOC_MEM_HARDEN" ]; then
   fi
 fi
 echo "== memory codec: $want (SOC_MEM_HARDEN=$SOC_MEM_HARDEN, scrub interval ${SOC_SCRUB_IVL:-default})"
+
+check_profile_arm () {
+  local knob=$1 value=$2 on=$3 off=$4 expected unexpected
+  if [ "$value" = 1 ]; then expected=$on; unexpected=$off; else expected=$off; unexpected=$on; fi
+  grep -qa "\"$expected\"" "$OUT/tb_soc_fi.vvp" || {
+    echo "== $knob=$value did not elaborate $expected" >&2; exit 1; }
+  if grep -qa "\"$unexpected\"" "$OUT/tb_soc_fi.vvp"; then
+    echo "== contradictory $knob elaboration: $unexpected is present" >&2; exit 1
+  fi
+  echo "== $knob=$value: $expected, opposite arm absent"
+}
+check_profile_arm SOC_REQ_REG "$SOC_REQ_REG" g_req_reg g_req_comb
+if [ "${IBEX_REGFILE:-secded}" = secded ]; then
+  check_profile_arm SOC_RF_SYNPRE "$SOC_RF_SYNPRE" g_synpre g_synpost
+fi
 
 echo "== elaborated $OUT/tb_soc_fi.vvp"

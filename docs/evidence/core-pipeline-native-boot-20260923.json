@@ -1,0 +1,506 @@
+{
+  "date": "2026-09-23",
+  "status": "PASS: both interface profiles with native IHP models, within functional simulation scope",
+  "run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35804632644",
+  "commit": "95cbb15c0b41e26f2a2bd9086f5b8a6cb8b4e4e6",
+  "scope": "Icarus four-state mapped boot with unmodified locked IHP standard-cell and SRAM models. CORE_REQ_REG=1, CORE_WB_STAGE=1, BranchTargetALU=1. No ROM/RAM preload and no SDF; this does not establish physical timing, extracted connectivity or silicon acceptance.",
+  "profiles": {
+    "base": {
+      "status": "PASS: functional mapped boot and SCRUBCTL controls",
+      "parameters_confirmed_in_synthesis": {
+        "CORE_REQ_REG": 1,
+        "CORE_WB_STAGE": 1,
+        "BranchTargetALU": 1,
+        "WritebackStage": 1
+      },
+      "cycles": 630363,
+      "firmware_checks": 28,
+      "failure_mask": "00000000",
+      "watchdog_counts": [
+        1,
+        0,
+        0
+      ],
+      "flash_violations": 0,
+      "uart_pass": true,
+      "framing_errors": 0,
+      "artifact": {
+        "id": 10728822757,
+        "name": "native-recovery-base",
+        "digest": "sha256:5899cfef9aa913a1be57e537567271718531dc48e436606f25cbbc4bd047a1e0",
+        "size_in_bytes": 1463699
+      },
+      "verified_gate_sources": [
+        {
+          "source": "hw/soc/tb/tb_soc_logic_boot_gl.v",
+          "sha256": "eaaadd5c07c081c6bab51695aaa9844ba07df9047bd5bb2e2f243b0adacc5b19",
+          "bytes": 12463,
+          "verification": "exact run commit"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+          "sha256": "dcfc0bd55d8c6868cd8ac347e3bedfd8bda884d389e1bd1a04f5baeb404e2172",
+          "bytes": 8122556,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/tb/flash_w25q128jv.v",
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+          "bytes": 20792,
+          "verification": "exact run commit"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "bytes": 53835,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+          "bytes": 6900,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+          "bytes": 3932,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+          "bytes": 12655,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+          "bytes": 6067,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+          "bytes": 4051,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/app.elf",
+          "sha256": "7db0e9b488f38128bae43f93dec6496ab52b02fc60ed9c2ec6177baec6c6bb7c",
+          "bytes": 62220,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/flash0.hex",
+          "sha256": "04d59a2c59b68df6297c9cd56b601c6397586797a9ee533df71beed0dc179c13",
+          "bytes": 393216,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/test_soc.bin",
+          "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+          "bytes": 3084,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/boot-rom/manifest.json",
+          "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+          "bytes": 633,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/boot-rom/soc_logic_boot_rom.v",
+          "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+          "bytes": 27684,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/boot-rom/manifest.json",
+          "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+          "bytes": 633,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/boot-rom/soc_logic_boot_rom.v",
+          "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+          "bytes": 27684,
+          "verification": "retained artifact"
+        }
+      ],
+      "gate_result": {
+        "native_cell_gate": {
+          "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "compile": {
+            "command": [
+              "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-s",
+              "tb_native_cell_gate",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.03179559100010465
+          },
+          "runs": [
+            {
+              "command": [
+                "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp"
+              ],
+              "returncode": 0,
+              "elapsed_s": 0.015682110000057037,
+              "pass_banner": true
+            }
+          ],
+          "passed": true
+        },
+        "compile": {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-s",
+            "tb_logicrom_gl",
+            "-o",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+            "-DFUNCTIONAL",
+            "-DTIMEOUT_CYCLES=1000000",
+            "-DEXIT_CODE_ADDR=32'h00001f94",
+            "-DEXIT_MAGIC_ADDR=32'h00001f98",
+            "-DCHECKS_ADDR=32'h00001fcc",
+            "-DFAILS_ADDR=32'h00001fd0",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+          ],
+          "returncode": 0,
+          "elapsed_s": 3.3724448210000446
+        },
+        "runs": [
+          {
+            "command": [
+              "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+              "-i",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+              "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/rtl/flash0.hex"
+            ],
+            "returncode": 0,
+            "elapsed_s": 2684.5922385129998,
+            "pass_banner": true
+          }
+        ],
+        "sources_unchanged": true,
+        "passed": true
+      },
+      "scrub_status": "PASS"
+    },
+    "full": {
+      "status": "PASS: functional mapped boot and SCRUBCTL controls",
+      "parameters_confirmed_in_synthesis": {
+        "CORE_REQ_REG": 1,
+        "CORE_WB_STAGE": 1,
+        "BranchTargetALU": 1,
+        "WritebackStage": 1
+      },
+      "cycles": 630363,
+      "firmware_checks": 28,
+      "failure_mask": "00000000",
+      "watchdog_counts": [
+        1,
+        0,
+        0
+      ],
+      "flash_violations": 0,
+      "uart_pass": true,
+      "framing_errors": 0,
+      "artifact": {
+        "id": 10729456313,
+        "name": "native-recovery-full",
+        "digest": "sha256:e3ce371814e6d160b0d86204cc892480a5bac16a579ebd86967ab6a8f041bba4",
+        "size_in_bytes": 1693876
+      },
+      "verified_gate_sources": [
+        {
+          "source": "hw/soc/tb/tb_soc_logic_boot_gl.v",
+          "sha256": "eaaadd5c07c081c6bab51695aaa9844ba07df9047bd5bb2e2f243b0adacc5b19",
+          "bytes": 12463,
+          "verification": "exact run commit"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+          "sha256": "65663e261d3363ac44570954622b98cda3155b7e7a2275a066dadbeddbc7ba6f",
+          "bytes": 9715103,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/tb/flash_w25q128jv.v",
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+          "bytes": 20792,
+          "verification": "exact run commit"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "bytes": 53835,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+          "bytes": 6900,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+          "bytes": 3932,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+          "bytes": 12655,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+          "bytes": 6067,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+          "bytes": 4051,
+          "verification": "independently verified pinned PDK model"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/app.elf",
+          "sha256": "7eddebadda48288c6af2f8c01103dd8bb92b6b1288c3643d27a181c040554e2c",
+          "bytes": 62220,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/flash0.hex",
+          "sha256": "04d59a2c59b68df6297c9cd56b601c6397586797a9ee533df71beed0dc179c13",
+          "bytes": 393216,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/test_soc.bin",
+          "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+          "bytes": 3084,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/boot-rom/manifest.json",
+          "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+          "bytes": 633,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/synthesis/boot-rom/soc_logic_boot_rom.v",
+          "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+          "bytes": 27684,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/boot-rom/manifest.json",
+          "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+          "bytes": 633,
+          "verification": "retained artifact"
+        },
+        {
+          "source": "hw/soc/out/native-boot/rtl/boot-rom/soc_logic_boot_rom.v",
+          "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+          "bytes": 27684,
+          "verification": "retained artifact"
+        }
+      ],
+      "gate_result": {
+        "native_cell_gate": {
+          "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "compile": {
+            "command": [
+              "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-s",
+              "tb_native_cell_gate",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.031994336000025214
+          },
+          "runs": [
+            {
+              "command": [
+                "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp"
+              ],
+              "returncode": 0,
+              "elapsed_s": 0.015973959000120885,
+              "pass_banner": true
+            }
+          ],
+          "passed": true
+        },
+        "compile": {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-s",
+            "tb_logicrom_gl",
+            "-o",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+            "-DFUNCTIONAL",
+            "-DTIMEOUT_CYCLES=1000000",
+            "-DEXIT_CODE_ADDR=32'h00001f94",
+            "-DEXIT_MAGIC_ADDR=32'h00001f98",
+            "-DCHECKS_ADDR=32'h00001fcc",
+            "-DFAILS_ADDR=32'h00001fd0",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+          ],
+          "returncode": 0,
+          "elapsed_s": 4.475867728999901
+        },
+        "runs": [
+          {
+            "command": [
+              "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+              "-i",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/gates/sim.vvp",
+              "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/native-boot/rtl/flash0.hex"
+            ],
+            "returncode": 0,
+            "elapsed_s": 3840.079234652,
+            "pass_banner": true
+          }
+        ],
+        "sources_unchanged": true,
+        "passed": true
+      },
+      "scrub_status": "PASS"
+    }
+  },
+  "artifact_limitation": "The workflow at the tested commit retained the wrong RTL parameter-file name, so soc_param_override.v is absent. Selected parameters are independently confirmed by the retained synthesis log and core-configuration.json. Commit 73a6759 fixes retention for subsequent runs.",
+  "archive": {
+    "path": "docs/evidence/core-pipeline-native-boot-20260923.tar.xz",
+    "sha256": "aa719fc73abf8e89cf28694d90080b359574093eecd2c2a24eb7cce2f1a89acc",
+    "bytes": 1672256,
+    "members": {
+      "native-candidate-base/iverilog-version.log": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f",
+      "native-candidate-base/yosys-version.log": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93",
+      "native-candidate-base/scrub-native-driver.log": "faab5912ee40e6db5c81e4a053a58a479c4f015dfcfc958a541c9e60c849cb3e",
+      "native-candidate-base/synthesis-driver.log": "303a636ac8e0f533769234b3f8c1d82b7b459ad3bc0183a88243686b3017b69c",
+      "native-candidate-base/core-configuration.json": "e59ceca056cb742645ecb30f6b976e2855848114bc49edab740979d73209ce9f",
+      "native-candidate-base/model-lock.json": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e",
+      "native-candidate-base/rtl-driver.log": "4d9aa941d64f63c829643c57644151e84ce3fd4f9617c63379dd16d293fe1a1c",
+      "native-candidate-base/gates-driver.log": "da57b7c2aaf47782b3407460098bda8fcfa878ed5f3ae83d01b732c54ec560cd",
+      "native-candidate-base/prepare-models.log": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3",
+      "native-candidate-base/rtl/test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+      "native-candidate-base/rtl/sim.log": "bf4f8f2fb6afde7691355b0c0bbed6ce9784a2eb718dd4b13a5d0f2af4c1834d",
+      "native-candidate-base/rtl/app.elf": "7db0e9b488f38128bae43f93dec6496ab52b02fc60ed9c2ec6177baec6c6bb7c",
+      "native-candidate-base/rtl/iverilog.log": "793c54d137612280a3986e05f9c0822fa351c22214a3b479c8034d4728746651",
+      "native-candidate-base/rtl/flash0.hex": "04d59a2c59b68df6297c9cd56b601c6397586797a9ee533df71beed0dc179c13",
+      "native-candidate-base/synthesis/area.rpt": "31c34832c5ac9083b85dd34070b76bf534276fcf33062ba8ee78cb74910f0d3e",
+      "native-candidate-base/synthesis/soc_top.netlist.v": "dcfc0bd55d8c6868cd8ac347e3bedfd8bda884d389e1bd1a04f5baeb404e2172",
+      "native-candidate-base/synthesis/syn.log": "ad9037d5ff7b679be6deab6b3b1b8d3f2fbe9ac03cd52d17e2b97d7f2e591877",
+      "native-candidate-base/native-cell-preflight/run-0.log": "081976156e0d48a7ea641ced6ffeaebeba1c7ae8290c78ccfee1f2614a134748",
+      "native-candidate-base/native-cell-preflight/result.json": "d5caf02c9831bdb71bc538f01d5b48fb4ff24351580720b64c3abd640b5d56c2",
+      "native-candidate-base/native-cell-preflight/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/gates/run-0.log": "ee3680a1143423ba25b2b51dc23612431b2cfb0c68d20d4bcf864e3e8d4bc706",
+      "native-candidate-base/gates/result.json": "da57b7c2aaf47782b3407460098bda8fcfa878ed5f3ae83d01b732c54ec560cd",
+      "native-candidate-base/gates/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/gates/inputs.json": "8220e84505b95a078350ce042fdc02920618bfe6dee070063912c7bb95ab4b4c",
+      "native-candidate-base/scrub-native/positive-run.log": "f30ccf13f34cfc5ce3d7a887653e6360da2be3fb4c4a18700a4241b527ed7bd9",
+      "native-candidate-base/scrub-native/positive-compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/scrub-native/synthesis.log": "88a25de7b73cf7b1ac09aa0fc93aada37da0b0d1258ec7d5f34498a8c83a0322",
+      "native-candidate-base/scrub-native/result.json": "faab5912ee40e6db5c81e4a053a58a479c4f015dfcfc958a541c9e60c849cb3e",
+      "native-candidate-base/scrub-native/negative-compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/scrub-native/negative-run.log": "a622ca17bc4a10c7ff255d407d90249b82fe9bc51436bfd10d77aa62d714fd37",
+      "native-candidate-base/scrub-native/native-cell/run-0.log": "1b9159cf03594c89ef5ea5d80fd7d5929a90ad688804a6f6c6e70f267cb4d620",
+      "native-candidate-base/scrub-native/native-cell/result.json": "9235b2957a074e4349137859b4ac8aded5e1cceb282df6d20c2bcd357758d65b",
+      "native-candidate-base/scrub-native/native-cell/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/gates/native-cell-gate/run-0.log": "631c98f8921b366cc48dea137a394a40ebcdbb10908bc9b0c21abe0dfc0827a7",
+      "native-candidate-base/gates/native-cell-gate/result.json": "713b7fd36421b9480a339bb1dbae1363cc251d90d41861d83734446831b2f65d",
+      "native-candidate-base/gates/native-cell-gate/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-base/synthesis/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+      "native-candidate-base/synthesis/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "native-candidate-base/rtl/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+      "native-candidate-base/rtl/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "native-candidate-full/iverilog-version.log": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f",
+      "native-candidate-full/yosys-version.log": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93",
+      "native-candidate-full/scrub-native-driver.log": "78e0534f693754200066d9693f85703f1e27c385c83d529e4f8b0c72b06bd143",
+      "native-candidate-full/synthesis-driver.log": "ed3cb0257bd89b2262b5ee670ed621b9afaa94bb257f13c003f977f7da1dcabd",
+      "native-candidate-full/core-configuration.json": "fc47b55e162bc0ec085299c51d33000bae49d273823f7ead73dc3143354469fc",
+      "native-candidate-full/model-lock.json": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e",
+      "native-candidate-full/rtl-driver.log": "248c9b98d7fa3df403243efbcb5bd5b07f114db3df1c632e123ab0f6eb81ede1",
+      "native-candidate-full/gates-driver.log": "faa5d7bea0048c6357284d75d8b42a4f9ccb18c035240131080f7f8bb510870e",
+      "native-candidate-full/prepare-models.log": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3",
+      "native-candidate-full/rtl/test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+      "native-candidate-full/rtl/sim.log": "bf4f8f2fb6afde7691355b0c0bbed6ce9784a2eb718dd4b13a5d0f2af4c1834d",
+      "native-candidate-full/rtl/app.elf": "7eddebadda48288c6af2f8c01103dd8bb92b6b1288c3643d27a181c040554e2c",
+      "native-candidate-full/rtl/iverilog.log": "f696da3f76add61140619d77030922265b1c13315f354c40f0bfb941aad4ad9b",
+      "native-candidate-full/rtl/flash0.hex": "04d59a2c59b68df6297c9cd56b601c6397586797a9ee533df71beed0dc179c13",
+      "native-candidate-full/synthesis/area.rpt": "7e1cea4e5ba925a8e3eee8b9b1d363099a76679c5a320a659fe316cc1b7d63a4",
+      "native-candidate-full/synthesis/soc_top.netlist.v": "65663e261d3363ac44570954622b98cda3155b7e7a2275a066dadbeddbc7ba6f",
+      "native-candidate-full/synthesis/syn.log": "b73c8d80c0b7e9db468afecf6507d0abf9df1f744e0a7983275dfa745dac5851",
+      "native-candidate-full/native-cell-preflight/run-0.log": "081976156e0d48a7ea641ced6ffeaebeba1c7ae8290c78ccfee1f2614a134748",
+      "native-candidate-full/native-cell-preflight/result.json": "4d47b1978cbfe0088549bd34d76d50dae3441a5846bd2bd34f5b0b77fd8416a4",
+      "native-candidate-full/native-cell-preflight/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/gates/run-0.log": "ee3680a1143423ba25b2b51dc23612431b2cfb0c68d20d4bcf864e3e8d4bc706",
+      "native-candidate-full/gates/result.json": "faa5d7bea0048c6357284d75d8b42a4f9ccb18c035240131080f7f8bb510870e",
+      "native-candidate-full/gates/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/gates/inputs.json": "498f65b71b946c2426a7b94edef69c2199e41ecce649bd7a85106b7adbcc1071",
+      "native-candidate-full/scrub-native/positive-run.log": "f30ccf13f34cfc5ce3d7a887653e6360da2be3fb4c4a18700a4241b527ed7bd9",
+      "native-candidate-full/scrub-native/positive-compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/scrub-native/synthesis.log": "f5c27386d846dfd052cc1c144151bb19c00da8df766ae27417333a0909b1e711",
+      "native-candidate-full/scrub-native/result.json": "78e0534f693754200066d9693f85703f1e27c385c83d529e4f8b0c72b06bd143",
+      "native-candidate-full/scrub-native/negative-compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/scrub-native/negative-run.log": "a622ca17bc4a10c7ff255d407d90249b82fe9bc51436bfd10d77aa62d714fd37",
+      "native-candidate-full/scrub-native/native-cell/run-0.log": "1b9159cf03594c89ef5ea5d80fd7d5929a90ad688804a6f6c6e70f267cb4d620",
+      "native-candidate-full/scrub-native/native-cell/result.json": "0644ce20b10b7f9b543ee3c49f4de9d68ce7a3612cb0cca07b4c9144d9a1dc3e",
+      "native-candidate-full/scrub-native/native-cell/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/gates/native-cell-gate/run-0.log": "631c98f8921b366cc48dea137a394a40ebcdbb10908bc9b0c21abe0dfc0827a7",
+      "native-candidate-full/gates/native-cell-gate/result.json": "5ce566ebd2f7b349edf4d610a4be91017c3f7948391108bff165ddec18cd8fa7",
+      "native-candidate-full/gates/native-cell-gate/compile.log": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "native-candidate-full/synthesis/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+      "native-candidate-full/synthesis/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "native-candidate-full/rtl/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+      "native-candidate-full/rtl/boot-rom/manifest.json": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b",
+      "native-candidate-completed-run.json": "2ac0cdbed4bf5c069aae7c32715f2b795117edfdd0dca6d78319b1560f1fcdba",
+      "native-candidate-artifacts-final.json": "3aa0a1a393da43103f497af678da27b200325a01490b37f9448e826b54a7b392",
+      "record_native_candidate.py": "dd4bc51f9e853ba42a9579aad63af913d08a81391e28324598cdf79492fdc92c"
+    },
+    "recompression": {
+      "original_path": "docs/evidence/core-pipeline-native-boot-20260923.tar.gz",
+      "original_sha256": "8afb7cbe6729d9dc8f2b641703e0e1d2f902ff8ed46420f02f719161ae96446d",
+      "original_bytes": 2880067,
+      "decompressed_tar_sha256": "b4c3e772d4c848fd5e2b3fab828da441a11f4fcb3ce87baeab23e08f79184dc4"
+    }
+  }
+}

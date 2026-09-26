@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+schema: 1
+block: gptimer
+base: SOC_TIMER0_BASE
+address_bits: 12
+registers:
+  SCALER: {offset: 0, rtl: REG_SCALER}
+  SCRELOAD: {offset: 4, rtl: REG_SCRELOAD}
+  CONFIG: {offset: 8, rtl: REG_CONFIG}
+  LATCHCFG: {offset: 12, rtl: REG_LATCHCFG}
+window:
+  name: TIMER
+  stride: 16
+  rtl_stride: REG_TIMER_STRIDE
+  registers:
+    CNT: {offset: 0, rtl: SEL_CNT}
+    RLD: {offset: 4, rtl: SEL_RLD}
+    CTRL: {offset: 8, rtl: SEL_CTRL}
+    LATCH: {offset: 12, rtl: SEL_LATCH}

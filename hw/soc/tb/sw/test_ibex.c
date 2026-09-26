@@ -1,3 +1,6 @@
+#ifdef INTERFACE_DEMO
+#include "soc_interfaces.h"
+#endif
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: Apache-2.0
 
@@ -71,6 +74,8 @@
 
 #ifdef SOC_PLATFORM
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 #include "soc_npucfg.h"
 #include "soc_gpio.h"
@@ -83,6 +88,7 @@
    answer sw/golden/lif_core.py computes for it. Checks 23 to 27 compare
    the hardware against the second and never against itself. */
 #include "npu_regs.h"
+#include "lib/soc_npu_state_init.h"
 #include "npu_vectors.h"
 #ifdef QSPI_DEMO
 /* Also generated into the build directory, by
@@ -94,10 +100,10 @@
 // GRLIB APBUART register offsets and bits (grip.pdf table 126, adopted
 // by docs/08 section 3 row 9 and implemented as a subset in
 // hw/soc/rtl/soc_uart.v).
-#define UART_DATA   (SOC_UART0_BASE + 0x00u)
-#define UART_STATUS (SOC_UART0_BASE + 0x04u)
-#define UART_CTRL   (SOC_UART0_BASE + 0x08u)
-#define UART_SCALER (SOC_UART0_BASE + 0x0Cu)
+#define UART_DATA   (SOC_UART0_BASE + SOC_UART_DATA_OFF)
+#define UART_STATUS (SOC_UART0_BASE + SOC_UART_STATUS_OFF)
+#define UART_CTRL   (SOC_UART0_BASE + SOC_UART_CTRL_OFF)
+#define UART_SCALER (SOC_UART0_BASE + SOC_UART_SCALER_OFF)
 #define UART_STATUS_TE (1u << 2)      /* transmit holding register empty */
 #define UART_CTRL_TE   (1u << 1)      /* transmitter enable              */
 
@@ -108,19 +114,13 @@
 #define UART_SCALER_VAL 0u
 #endif
 
-static void uart_init(void) {
-  *(volatile uint32_t *)UART_SCALER = UART_SCALER_VAL;
-  *(volatile uint32_t *)UART_CTRL   = UART_CTRL_TE;
-}
+static void uart_init(void) { soc_uart_init(UART_SCALER_VAL, UART_CTRL_TE); }
 
 // Poll before writing. The minimal testbench's character port accepted a
 // byte every cycle; a real UART does not, and a driver that ignores that
 // drops most of its output. This is the only behavioural difference the
 // eleven original checks see.
-static void putc_(char c) {
-  while (!(*(volatile uint32_t *)UART_STATUS & UART_STATUS_TE)) { }
-  *(volatile uint32_t *)UART_DATA = (uint32_t)c;
-}
+#define putc_ soc_uart_putc
 #else
 #define PUTC_ADDR 0x00100000u
 #define HALT_ADDR 0x00100004u
@@ -162,6 +162,10 @@ extern volatile uint32_t irq_marker, irq_mcause, irq_count, nmi_count;
 extern char __pmp_buf[] __attribute__((aligned(64)));
 extern char trap_vectors[];
 
+#ifdef SOC_PLATFORM
+#define puts_ soc_uart_puts
+static void puthex(uint32_t v) { soc_uart_hex32(v, 1); }
+#else
 static void puts_(const char *s) { while (*s) putc_(*s++); }
 
 static void puthex(uint32_t v) {
@@ -169,6 +173,7 @@ static void puthex(uint32_t v) {
   putc_('0'); putc_('x');
   for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xf]);
 }
+#endif
 
 static uint32_t fails = 0;
 static uint32_t checks = 0;
@@ -266,8 +271,8 @@ static void npu_wr(uint32_t off, uint32_t v) {
 static uint32_t npu_rd(uint32_t off) {
   return *(volatile uint32_t *)NPU_NODE(0, off);
 }
-static uint32_t cfg_rd(uint32_t a) { return *(volatile uint32_t *)a; }
-static void cfg_wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
+#define cfg_rd soc_read32
+#define cfg_wr soc_write32
 
 /* Wait for the node to go idle. STATUS.BUSY is bit 0 (regmap/regmap.yaml
    through the generated header). */
@@ -288,7 +293,11 @@ static int npu_wait_idle(int limit) {
 static int npu_bring_up(const uint32_t *wlo, const uint32_t *whi) {
   int ok = 1;
   npu_wr(NPU_CTRL, 1u << NPU_BIT_CTRL_STATE_CLR);
-  if (!npu_wait_idle(64)) { ok = 0; puts_("  npu: state clear never ended\n"); }
+  if (!npu_wait_idle(64)) { puts_("  npu: state clear never ended\n"); return 0; }
+  if (!soc_npu_state_init(NPUV_N_NEURONS, npu_wr, npu_rd)) {
+    puts_("  npu: state initialization read-back failed\n");
+    return 0;
+  }
 
   for (int c = 0; c < NPUV_N_CFG; c++)
     npu_wr(npuv_cfg_off[c], npuv_cfg_val[c]);
@@ -739,6 +748,67 @@ static int crash_demo(void) {
 }
 #endif
 
+#if defined(SOC_PLATFORM) && defined(APB_TIMEOUT_DEMO)
+extern volatile uint32_t nmi_no_ack;
+extern uint32_t exit_code;
+static int apb_timeout_demo(void) {
+  uint32_t count = *(volatile uint32_t *)BST_APBTO;
+  if (count) {
+    uint32_t status = *(volatile uint32_t *)BST_STATUS;
+    uint32_t enable = *(volatile uint32_t *)BST_IRQEN;
+    if (count != 1u || !(status & BST_S_APBTO) || enable != 0u) {
+      puts_("APB timeout recovery: RESULT FAIL\n");
+      return 0xA0000001u;
+    }
+    puts_("APB timeout recovery: count=1 sticky=1 irqen=0\nRESULT PASS\n");
+    return 0;
+  }
+  puts_("APB timeout demo: waiting for stalled CAN and watchdog recovery\n");
+  nmi_no_ack = 1u;
+  *(volatile uint32_t *)WDOG_RLD = WDOG_W(5000u);
+  *(volatile uint32_t *)WDOG_CTRL = WDOG_W(GPT_LD);
+  uint32_t before = trap_count;
+  (void)do_load((volatile uint32_t *)SOC_CAN_BASE);
+  /* The APB bridge is quarantined, including UART. Record in RAM for
+   * the testbench to inspect BEFORE the watchdog erases software state. */
+  exit_code = (trap_count == before + 1u && trap_mcause == 5u)
+                ? 0xAB700001u : 0xAB70BAD0u;
+  for (;;) { }
+}
+#endif
+
+#if defined(SOC_PLATFORM) && defined(ETHERNET_DEMO)
+#include "soc_eth.h"
+static int ethernet_demo(void) {
+  uint32_t bad=0;
+  if (*(volatile uint32_t *)ETH_ID != 0x474D4901u) bad |= 1u;
+  *(volatile uint32_t *)ETH_CTRL=ETH_ENABLE;
+  *(volatile uint32_t *)ETH_IRQEN=ETH_IRQ_RX_READY;
+  for (uint32_t i=0; i<60; i++) {
+    uint32_t timeout=10000;
+    while (!(*(volatile uint32_t *)ETH_STATUS & ETH_TX_READY) && --timeout) { }
+    if (!timeout) { bad |= 2u; break; }
+    *(volatile uint32_t *)ETH_TX=((i*13u+7u)&255u) | (i==59 ? ETH_LAST : 0u);
+  }
+  uint32_t timeout=10000;
+  while (!(*(volatile uint32_t *)ETH_STATUS & ETH_RX_READY) && --timeout) { }
+  if (!timeout) bad |= 4u;
+  else {
+    if (!(csr_read_mip() & (1u << (16u + SOC_IRQLINE_ETH)))) bad |= 8u;
+    for (uint32_t i=0; i<60; i++) {
+      uint32_t word=*(volatile uint32_t *)ETH_RX;
+      uint32_t expected=ETH_RX_VALID | ((i*13u+7u)&255u) | (i==59 ? ETH_LAST : 0u);
+      if (word != expected) bad |= 16u;
+    }
+    if (*(volatile uint32_t *)ETH_STATUS & ETH_RX_READY) bad |= 32u;
+    if (csr_read_mip() & (1u << (16u + SOC_IRQLINE_ETH))) bad |= 64u;
+  }
+  puts_("Gigabit GMII: CPU packet loopback and IRQ mask "); puthex(bad); putc_('\n');
+  puts_(bad ? "RESULT FAIL\n" : "RESULT PASS\n");
+  return (int)bad;
+}
+#endif
+
 int main(void) {
 #ifdef SOC_PLATFORM
   // Nothing can be reported before this: the console is a peripheral on
@@ -752,6 +822,12 @@ int main(void) {
 #endif
 #if defined(SOC_PLATFORM) && defined(CRASH_DUMP_DEMO)
   return crash_demo();
+#endif
+#if defined(SOC_PLATFORM) && defined(APB_TIMEOUT_DEMO)
+  return apb_timeout_demo();
+#endif
+#if defined(SOC_PLATFORM) && defined(ETHERNET_DEMO)
+  return ethernet_demo();
 #endif
 
   puts_("ibex bring-up self-test\n");
@@ -1726,6 +1802,90 @@ int main(void) {
     check(30, ok);
   }
 #endif /* QSPI_DEMO */
+#endif
+
+#ifdef INTERFACE_DEMO
+  {
+    /* Check 31: actual CPU -> fabric -> APB -> pins -> CPU interrupts. */
+    int ok = 1;
+    uint8_t byte = 0;
+    const uint32_t discovery_offsets[2] = {SOC_SPW_PNP_OFF, SOC_CAN_PNP_OFF};
+    for (unsigned i = 0; i < 2; i++) {
+      uint32_t identity = soc_if_read(SOC_APBPNP_BASE, discovery_offsets[i]);
+      uint32_t bar = soc_if_read(SOC_APBPNP_BASE, discovery_offsets[i] + 4);
+#ifdef SOC_LGPL_INTERFACES
+      ok &= identity != 0 && bar != 0;
+#else
+      ok &= identity == 0 && bar == 0;
+      const uint32_t bases[2] = {SOC_SPW_BASE, SOC_CAN_BASE};
+      /* Exercise the actual CPU/fabric/APB error path at both ends of
+         each disabled slot. An always-ready zero-data stub must fail. */
+      for (unsigned word = 0; word < 2; word++) {
+        volatile uint32_t *p = (volatile uint32_t *)(uintptr_t)(bases[i] + word * 0xffc);
+        uint32_t before = trap_count;
+        (void)do_load(p);
+        ok &= trap_count == before + 1 && trap_mcause == 5;
+        before = trap_count;
+        do_store(p, 0xdeadbeefu);
+        ok &= trap_count == before + 1 && trap_mcause == 7;
+      }
+#endif
+    }
+#ifdef SOC_LGPL_INTERFACES
+    uint16_t character = 0;
+#endif
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_CTRL_OFF, 8); /* mode 0 and IRQ */
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_DIV_OFF, 4);
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    csr_set_mie(1u << (16 + SOC_IRQLINE_SPI));
+    csr_set_mstatus(8);
+    ok &= soc_spi_byte(0xa5, &byte, 2000) == 0 && byte == 0xa5;
+    for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPI;
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_STATUS_OFF, 2);
+    soc_if_write(SOC_SPI_BASE, SOC_SPI_CTRL_OFF, 0);
+
+#ifdef SOC_LGPL_INTERFACES
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_CTRL_OFF, 3);
+    ok &= soc_if_wait(SOC_SPW_BASE, SOC_SPW_STATUS_OFF, 4, 4, 20000) == 0;
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_IRQEN_OFF, 32);
+    csr_set_mie(1u << (16 + SOC_IRQLINE_SPW));
+    csr_set_mstatus(8);
+    ok &= soc_spw_put(0x5a, 2000) == 0;
+    ok &= soc_spw_put(0x100, 2000) == 0;
+    for (int i=0; i<20000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_SPW;
+    ok &= soc_spw_get(&character, 20000) == 0 && character == 0x5a;
+    ok &= soc_spw_get(&character, 20000) == 0 && character == 0x100;
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_IRQEN_OFF, 0);
+    soc_if_write(SOC_SPW_BASE, SOC_SPW_CTRL_OFF, 4);
+#endif
+
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_PRESCALE_OFF, 8);
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_IRQEN_OFF, 2); /* address NACK, no device attached */
+    irq_marker = 0; irq_mcause = 0; irq_count = 0;
+    csr_set_mie(1u << (16 + SOC_IRQLINE_I2C));
+    csr_set_mstatus(8);
+    ok &= soc_i2c_byte(0x52, 0, 1, &byte, 20000) == -2;
+    for (int i=0; i<2000 && !irq_count; i++) __asm__ volatile("nop");
+    csr_clr_mstatus(8);
+    ok &= irq_count == 1 && irq_mcause == SOC_IRQ_I2C;
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_IRQEN_OFF, 0);
+    soc_if_write(SOC_I2C_BASE, SOC_I2C_EVENTS_OFF, 15);
+
+#ifdef SOC_LGPL_INTERFACES
+    soc_can_write(SOC_CAN_COMMON_MODE_OFF, 1);
+    soc_can_write(SOC_CAN_COMMON_CDR_OFF, 0x80);
+    soc_can_write(SOC_CAN_COMMON_BTR0_OFF, 0x13);
+    soc_can_write(SOC_CAN_COMMON_BTR1_OFF, 0x7f);
+    ok &= soc_can_read(SOC_CAN_COMMON_BTR0_OFF) == 0x13 && soc_can_read(SOC_CAN_COMMON_BTR1_OFF) == 0x7f;
+#endif
+    puts_("interface CPU/pin/IRQ check: "); puts_(ok ? "PASS\n" : "FAIL\n");
+    check(31, ok);
+  }
 #endif
 
   check(11, trap_saw_rvc == 0u);   /* handler never had to guess a width */

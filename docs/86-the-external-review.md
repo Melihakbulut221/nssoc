@@ -510,6 +510,13 @@ to the shift sequencer and corrupt every word read.
 
 ### F8 — the register-file property
 
+**Follow-up, 2026-09-19.** `docs/87-engineering-closure.md` closes the
+direct register-file equivalence question with the real codecs and
+asserted storage invariants. The supported interface agrees with the pinned
+upstream file by unbounded induction, with scrub both enabled and disabled.
+The EQY timeouts below remain the results of those earlier configurations;
+they are superseded for this block-level question, not for core `reg_ch0`.
+
 Two of the three acceptance bullets were already met before the review
 was written: `docs/63` section 23 records both the bounded route (the
 real codec, which does not close, with the reason located in the

@@ -1,0 +1,87 @@
+{
+  "sources": {
+    "python": "docs/evidence/local-ci-drc-parser-20260926.json",
+    "peripheral_formal": "docs/evidence/peripheral-formal-20260920.json",
+    "ram": "docs/evidence/hosted-memory-parity-20260920.json",
+    "physical": "docs/evidence/startup-native-corners-20260920.json",
+    "native_boot": "docs/evidence/native-recovery-1d99a78-20260922.json",
+    "native_replay": "docs/evidence/npu-native-startup-20260921.json",
+    "formal_sweep": "docs/evidence/formal-170-local-20260926.json",
+    "core_physical": "docs/evidence/sram-repaired-core-physical-20260926.json"
+  },
+  "source_sha256": {
+    "python": "04a6d0707529effa6cf55ea94d407a9abdba0da3e7304a4631bbda564eed5ffd",
+    "peripheral_formal": "1840d9d46a5e4c44ae5f9cc1d39d6894cc33370af4dabca365056aef43ac97bc",
+    "ram": "119770adcd6ca86992ba0bb9370f94e2bbad2744d32958d26f0a080bb69f452f",
+    "physical": "bb6ad1f61caa054f47ad7c671d3aeb806987ae16bca13b4092c62b7331146384",
+    "native_boot": "9cf558c039bb4ee478fdca868b014e80370076b05ad5f26a6e3b01ec7b730650",
+    "native_replay": "151f141732ead00fdb938d85f0688f9c50310cc245c4c9c5fa8d5a021f428f02",
+    "formal_sweep": "64e4b65ca6ba4037eb0d99a489f1997a832bfe4b308fe74b32602d0e15e55f85",
+    "core_physical": "80be22de683c624bb4998c0b5fc39ea08c9366b13a6728d08129ec181a5a6400"
+  },
+  "python": {
+    "head": "ffe1ba737f4f047762650ca23e575bb4aa647b39",
+    "passed": 1848,
+    "skipped": 0,
+    "failures": 0
+  },
+  "core_physical": {
+    "candidate_sha256": "f218313c8a9e3ebe95e35cf0fc505852d88d342e9c2c6b4423f10a309f1a4cf1",
+    "main_categories": 560,
+    "density_categories": 7,
+    "antenna_categories": 31,
+    "supplemental_categories": 11,
+    "lvs_circuits": 130,
+    "lvs_primitives_each": 5129488,
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "scope": "Exact32SRAMcore physical evidence, not full product or timing/manufacturing approval. Full SRAM characterization, coupled RC, final STA, PCIe Gen3x4 PHY, padframe/package/DFT and external foundry acceptance remain open."
+  },
+  "peripheral_formal": {
+    "passed": 10,
+    "total": 10
+  },
+  "ram": {
+    "passed": 6,
+    "total": 6,
+    "negative_rejected": true
+  },
+  "physical": {
+    "scope": "corrected-loader/IRQ native global-route estimates; 5% derating",
+    "setup_ns": -2.866963636531179,
+    "hold_ns": -0.08904055522699121,
+    "max_fanout_violations": 703
+  },
+  "native_boot": {
+    "status": "PASS",
+    "head": "1d99a78b045a4c9be9899cd1cf24bd3e5ea8c255",
+    "scope": "Base/full whole-SoC native IHP boot at 1d99a78 only; each has 28 baseline checks. No interface-demo, SDF, current layout or fault qualification claim.",
+    "profiles": [
+      "base",
+      "full"
+    ]
+  },
+  "formal_sweep": [
+    {
+      "head": "1baeb635453dccc8b122c0fc40ff3ee1613159a1",
+      "passed": 170,
+      "exclusions": 6
+    }
+  ],
+  "native_replay": {
+    "status": "PASS",
+    "head": "100cad7b996dcc989d394d18daf8c8fcda296a91",
+    "cycles": 653726,
+    "checks": 28,
+    "fail_mask": 0,
+    "exit_code": 0,
+    "success_magic": "600dc0de",
+    "watchdog": [
+      1,
+      0,
+      0
+    ],
+    "flash_protocol_violations": 0,
+    "uart_framing_errors": 0
+  }
+}

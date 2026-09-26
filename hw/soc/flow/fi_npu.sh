@@ -32,6 +32,9 @@
 set -euo pipefail
 
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 PILOT_RTL=$(cd "$SOC_DIR/../rtl" && pwd)
 OUT=${1:-$SOC_DIR/out/fi-npu}
 
@@ -116,7 +119,7 @@ sym () {
   echo "32'h$a"
 }
 
-"$IVERILOG" -g2005-sv -o "$OUT/tb_soc_npu_fi.vvp" \
+"$IVERILOG" $IF_DEFINE -g2005-sv -o "$OUT/tb_soc_npu_fi.vvp" \
   -I "$SOC_DIR/rtl" \
   -I "$PILOT_RTL" \
   -I "$OUT" \
@@ -147,6 +150,7 @@ sym () {
   "$SOC_DIR/tb/tb_soc_npu_fi.v" \
   "$SOC_DIR/rtl/soc_top.v" \
   "$SOC_DIR/rtl/soc_bus.v" \
+  "$SOC_DIR/rtl/soc_req_pipe.v" \
   "$SOC_DIR/rtl/soc_apb_bridge.v" \
   "$SOC_DIR/rtl/soc_mem.v" \
   "$SOC_DIR/rtl/soc_mem_ecc.v" \
@@ -156,6 +160,13 @@ sym () {
   "$SOC_DIR/rtl/soc_apb_pnp.v" \
   "$SOC_DIR/rtl/soc_uart.v" \
   "$SOC_DIR/rtl/soc_gpio.v" \
+  "$SOC_DIR/rtl/soc_spw.v" \
+  "$SOC_DIR/rtl/soc_i2c.v" \
+  "$SOC_DIR/rtl/soc_spi.v" \
+  "$SOC_DIR/rtl/soc_can.v" \
+  "$SOC_DIR/rtl/soc_eth.v" \
+  "$SOC_DIR/rtl/soc_apb_wb.v" \
+  "$IF_BUNDLE" \
   "$SOC_DIR/rtl/soc_qspi.v" \
   "$SOC_DIR/rtl/soc_clint.v" \
   "$SOC_DIR/rtl/soc_gptimer.v" \

@@ -5,7 +5,7 @@
 """Build a browsable static site from the repository's markdown corpus.
 
 Inputs are read from disk at build time: every `docs/*.md`, plus `README.md`
-and `ROADMAP.md`. Nothing about their content is embedded here, so the
+and `ROADMAP.md`/`HISTORY.md`. Nothing about their content is embedded here, so the
 generator stays correct while those files are being edited.
 
 What it does that plain `pandoc file.md` does not:
@@ -19,7 +19,10 @@ What it does that plain `pandoc file.md` does not:
      test_doc_links.py` is the gate that decides whether an unresolvable
      reference is acceptable.
   2. Emits a table of contents per document.
-  3. Emits `all-documents.html`, a generated listing of every source file
+  3. Publishes explicitly linked tracked repository files with SHA256 hashes,
+     renders linked API Markdown, and checks every emitted local href/src.
+     Retains licence attribution; no ignored output or symlink is exported.
+  4. Emits `all-documents.html`, a generated listing of every source file
      with its title and one-line purpose, so a document cannot be absent
      from the site merely because the hand-written index has not caught up
      with it yet.
@@ -34,12 +37,20 @@ quotes and horizontal rules. Pure standard library, no network, no root.
 Usage:
     python3 scripts/build_docs.py [--out _site] [--renderer auto|pandoc|builtin]
                                   [--strict] [--quiet]
+
+The input must be a Git checkout (a public mirror checkout is supported).
+Tracked files are read from the working tree; untracked assets fail closed.
+The site manifest records copied assets, not a claim of remote URL availability
+or of embedded JSON evidence paths being downloadable. Each asset is limited
+to 16 MiB and all copied assets together to 64 MiB.
 """
 
 from __future__ import annotations
 
 import argparse
+from functools import lru_cache
 import html
+import hashlib
 import json
 import os
 import re
@@ -48,6 +59,8 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit, urlunsplit
+from html.parser import HTMLParser
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -59,7 +72,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOC_REF = re.compile(r"(?<![\w/.\-])docs/(\d{2})(-[a-z0-9\-]+\.md)?(?![\w\-])")
 
 # Root-level documents that the corpus also refers to by name.
-ROOT_REF = re.compile(r"(?<![\w/.\-])(README|ROADMAP)\.md(?![\w\-])")
+ROOT_REF = re.compile(r"(?<![\w/.\-])(README|ROADMAP|HISTORY)\.md(?![\w\-])")
 
 FENCE = re.compile(r"^\s*(```+|~~~+)")
 
@@ -109,7 +122,7 @@ def discover(root: Path) -> list[Document]:
                     number=number,
                 )
             )
-    for name in ("README.md", "ROADMAP.md"):
+    for name in ("README.md", "ROADMAP.md", "HISTORY.md"):
         path = root / name
         if path.is_file():
             docs.append(
@@ -238,19 +251,30 @@ def build_targets(docs: list[Document]) -> tuple[dict[str, Document], dict[str, 
 
 
 def split_fences(text: str) -> list[tuple[bool, str]]:
-    """Split into (is_code, chunk) runs so fenced blocks are left untouched."""
+    """Keep both fence delimiters and their contents out of prose rewriting."""
     out: list[tuple[bool, str]] = []
     buf: list[str] = []
-    in_fence = False
+    fence = ""
     for line in text.splitlines(keepends=True):
-        if FENCE.match(line):
-            out.append((in_fence, "".join(buf)))
+        match = FENCE.match(line)
+        if not fence and match:
+            if buf:
+                out.append((False, "".join(buf)))
             buf = [line]
-            in_fence = not in_fence
-            continue
-        buf.append(line)
-    out.append((in_fence, "".join(buf)))
-    return [(c, t) for c, t in out if t]
+            fence = match.group(1)
+        elif fence:
+            buf.append(line)
+            if (match and match.group(1)[0] == fence[0]
+                    and len(match.group(1)) >= len(fence)
+                    and not line[match.end():].strip()):
+                out.append((True, "".join(buf)))
+                buf = []
+                fence = ""
+        else:
+            buf.append(line)
+    if buf:
+        out.append((bool(fence), "".join(buf)))
+    return out
 
 
 # Inline code spans are matched one line at a time and only in the simple
@@ -316,34 +340,39 @@ def resolve_refs(doc: Document, by_number, by_filename, root_docs) -> None:
 
         return ROOT_REF.sub(sub, DOC_REF.sub(sub, segment))
 
-    out_lines: list[str] = []
-    line_no = 0
+    out: list[str] = []
+    line_no = 1
+    def plain(text):
+        nonlocal line_no
+        for line in text.splitlines(keepends=True):
+            out.append(rewrite_plain(line, line_no))
+            line_no += line.count("\n")
+
     for is_code, chunk in split_fences(doc.text):
-        for raw in chunk.splitlines(keepends=True):
-            line_no += 1
-            if is_code:
-                out_lines.append(raw)
-                continue
-            body = raw.rstrip("\n")
-            tail = raw[len(body) :]
-            pos = 0
-            pieces: list[str] = []
-            for m in CODE_SPAN.finditer(body):
-                pieces.append(rewrite_plain(body[pos : m.start()], line_no))
-                inner = m.group(0)[1:-1]
+        if is_code:
+            out.append(chunk)
+            line_no += chunk.count("\n")
+            continue
+        pos = 0
+        for match in INLINE.finditer(chunk):
+            plain(chunk[pos:match.start()])
+            token = match.group(0)
+            if match.group("code"):
+                inner = token.strip("`")
                 dest = target_for(inner)
                 if dest is not None and dest is not doc:
                     count += 1
-                    pieces.append(f"[`{inner}`]({dest.out_name})")
-                else:
-                    if dest is None and is_reference(inner):
-                        unresolved.append((line_no, inner))
-                    pieces.append(m.group(0))
-                pos = m.end()
-            pieces.append(rewrite_plain(body[pos:], line_no))
-            out_lines.append("".join(pieces) + tail)
+                    token = f"[`{inner}`]({dest.out_name})"
+                elif dest is None and is_reference(inner):
+                    unresolved.append((line_no, inner))
+            # Existing links (including multiline labels), images and URLs
+            # are not prose references. Preserve the entire token.
+            out.append(token)
+            line_no += match.group(0).count("\n")
+            pos = match.end()
+        plain(chunk[pos:])
 
-    doc.resolved = "".join(out_lines)
+    doc.resolved = "".join(out)
     doc.refs_out = count
     doc.refs_unresolved = unresolved
 
@@ -353,7 +382,8 @@ def resolve_refs(doc: Document, by_number, by_filename, root_docs) -> None:
 # --------------------------------------------------------------------------
 
 INLINE = re.compile(
-    r"(?P<code>`+[^`]*`+)"
+    r"(?P<code>`+[^`\n]*`+)"
+    r"|(?P<image>!\[(?P<itext>[^\[\]]*)\]\((?P<iurl>[^()\s]*)\))"
     r"|(?P<link>\[(?P<ltext>(?:[^\[\]]|\[[^\]]*\])*)\]\((?P<lurl>[^()\s]*)\))"
     r"|(?P<auto><(?P<aurl>https?://[^>\s]+)>)"
     # Bare URLs. The research documents cite sources this way and GFM
@@ -385,6 +415,10 @@ def inline_html(text: str) -> str:
         if m.group("code"):
             body = m.group("code").strip("`")
             return hold(f"<code>{html.escape(body, quote=False)}</code>")
+        if m.group("image"):
+            url = html.escape(m.group("iurl"), quote=True)
+            alt = html.escape(m.group("itext"), quote=True)
+            return hold(f'<img src="{url}" alt="{alt}" style="max-width:100%;height:auto">')
         if m.group("link"):
             url = html.escape(m.group("lurl"), quote=True)
             return hold(f'<a href="{url}">{inline_html(m.group("ltext"))}</a>')
@@ -429,10 +463,15 @@ def render_markdown(text: str, headings: list[tuple[int, str, str]]) -> str:
 
         fence = FENCE.match(line)
         if fence:
-            marker = fence.group(1)[0] * 3
+            marker = fence.group(1)
             body: list[str] = []
             i += 1
-            while i < n and not lines[i].strip().startswith(marker):
+            while i < n:
+                closing = FENCE.match(lines[i])
+                if (closing and closing.group(1)[0] == marker[0]
+                        and len(closing.group(1)) >= len(marker)
+                        and not lines[i][closing.end():].strip()):
+                    break
                 body.append(lines[i])
                 i += 1
             i += 1
@@ -441,6 +480,14 @@ def render_markdown(text: str, headings: list[tuple[int, str, str]]) -> str:
             continue
 
         if not line.strip():
+            i += 1
+            continue
+
+        # Metadata/status markers are comments, not visible prose. Fenced
+        # comments above remain literal code, as Markdown requires.
+        if line.lstrip().startswith("<!--"):
+            while i < n and "-->" not in lines[i]:
+                i += 1
             i += 1
             continue
 
@@ -746,6 +793,16 @@ $body$
 """
 
 
+@lru_cache(maxsize=1)
+def pandoc_input_format() -> str:
+    """Disable available math extensions without requesting unknown extensions."""
+    result = subprocess.run(["pandoc", "--list-extensions=gfm"],
+                            capture_output=True, text=True, check=True, timeout=30)
+    supported = {line.strip().lstrip("+-") for line in result.stdout.splitlines()}
+    return "gfm" + "".join("-" + name for name in ("tex_math_dollars", "tex_math_gfm")
+                         if name in supported)
+
+
 def run_pandoc(markdown: str, title: str, workdir: Path) -> str | None:
     """Convert with pandoc, returning the HTML body fragment, or None."""
     src = workdir / "page.md"
@@ -762,7 +819,7 @@ def run_pandoc(markdown: str, title: str, workdir: Path) -> str | None:
         # parses as inline LaTeX and is rendered character by character
         # as emphasis. Measured on docs/04: 144 spurious <em> elements and
         # several mangled figures. Both extensions are off here.
-        "--from=gfm-tex_math_dollars-tex_math_gfm",
+        "--from=" + pandoc_input_format(),
         "--to=html5",
         "--toc",
         "--toc-depth=3",
@@ -811,14 +868,173 @@ def all_documents_page(docs: list[Document]) -> str:
 # --------------------------------------------------------------------------
 
 
+def copy_document_images(doc: Document, out_dir: Path, root: Path) -> str:
+    """Copy only locally referenced image assets; never fetch a remote image."""
+    def replace(match):
+        if not match.group("image"):
+            return match.group(0)
+        url = match.group("iurl")
+        parsed = urlsplit(url)
+        if parsed.scheme or parsed.netloc:
+            return match.group(0)
+        source = (doc.path.parent / unquote(parsed.path)).resolve()
+        if not source.is_relative_to(root.resolve()):
+            raise ValueError(f"Image escapes repository: {doc.rel}: {url}")
+        if source.suffix.lower() not in {".svg", ".png", ".jpg", ".jpeg", ".gif", ".webp"}:
+            raise ValueError(f"Unsupported image asset: {doc.rel}: {url}")
+        data = source.read_bytes()  # A missing diagram is a build error.
+        name = hashlib.sha256(data).hexdigest()[:16] + "-" + source.name
+        asset = out_dir / "assets" / name
+        asset.parent.mkdir(exist_ok=True)
+        if asset.exists() and asset.read_bytes() != data:
+            raise ValueError("Image asset name collision")
+        asset.write_bytes(data)
+        return f'![{match.group("itext")}](assets/{name})'
+
+    return rewrite_inline(doc.resolved, replace)
+
+
+
+def rewrite_inline(text, replace):
+    """Apply the corpus inline grammar outside fenced and inline code."""
+    return "".join(chunk if code else INLINE.sub(
+        lambda m: m.group(0) if m.group("code") else replace(m), chunk)
+        for code, chunk in split_fences(text))
+
+
+def tracked_files(root):
+    result = subprocess.run(["git", "-C", str(root), "ls-files", "-z"],
+                            capture_output=True, check=True)
+    return {name for name in result.stdout.decode().split("\0") if name}
+
+
+def local_source(doc, url, root, tracked):
+    """A local publication target must be a regular, tracked, contained file."""
+    parsed = urlsplit(url)
+    if parsed.scheme or parsed.netloc or not parsed.path:
+        return None
+    root = root.resolve()
+    source = (doc.path.parent / unquote(parsed.path)).absolute()
+    resolved = source.resolve()
+    if not resolved.is_relative_to(root):
+        raise ValueError(f"Link escapes repository: {doc.rel}: {url}")
+    # Symlinks are not publication inputs, including a symlinked parent.
+    cursor = source
+    while cursor != root and cursor != cursor.parent:
+        if cursor.is_symlink():
+            raise ValueError(f"Symlink publication target: {doc.rel}: {url}")
+        cursor = cursor.parent
+    if not resolved.is_file() or resolved.relative_to(root).as_posix() not in tracked:
+        raise ValueError(f"Missing or untracked publication target: {doc.rel}: {url}")
+    return resolved
+
+
+def linked_documents(docs, root, tracked):
+    """Include API and licence markdown reachable from the main corpus."""
+    known = {doc.path.resolve() for doc in docs}
+    for doc in docs:  # Appended documents are traversed too; cycles terminate.
+        def visit(match):
+            url = match.group("lurl") if match.group("link") else None
+            if url:
+                source = local_source(doc, url, root, tracked)
+                if source and source.suffix == ".md" and source not in known:
+                    rel = source.relative_to(root).as_posix()
+                    text = path_read(source)
+                    slug = "source-" + hashlib.sha256(rel.encode()).hexdigest()[:16]
+                    docs.append(Document(source, rel, slug, None, text,
+                                         extract_title(text) or rel, extract_purpose(text),
+                                         extract_headings(text)))
+                    known.add(source)
+            return match.group(0)
+        rewrite_inline(doc.text, visit)
+    return docs
+
+
+
+MAX_ASSET_BYTES = 16 * 1024 * 1024
+MAX_SITE_ASSET_BYTES = 64 * 1024 * 1024
+
+
+def publish_file(source, out_dir, root, assets):
+    relative = source.relative_to(root).as_posix()
+    if relative in assets:
+        return assets[relative]["output"]
+    size = source.stat().st_size
+    if size > MAX_ASSET_BYTES or size + sum(a["bytes"] for a in assets.values()) > MAX_SITE_ASSET_BYTES:
+        raise ValueError(f"Publication asset budget exceeded: {relative}")
+    target = "files/" + relative
+    output = out_dir / target
+    output.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, output)
+    assets[relative] = {"output": target, "sha256": hashlib.sha256(
+        output.read_bytes()).hexdigest(), "bytes": size}
+    return target
+
+def publish_links(doc, docs, out_dir, root, tracked, assets):
+    by_path = {d.path.resolve(): d.out_name for d in docs}
+    generated = {d.out_name for d in docs}
+    def replace(match):
+        if not (match.group("link") or match.group("image")):
+            return match.group(0)
+        is_image = bool(match.group("image"))
+        url = match.group("iurl") if is_image else match.group("lurl")
+        parsed = urlsplit(url)
+        if parsed.scheme or parsed.netloc or not parsed.path:
+            return match.group(0)
+        if not is_image and parsed.path in generated:
+            return match.group(0)  # A resolved prose reference.
+        source = local_source(doc, url, root, tracked)
+        if source in by_path and not is_image:
+            target = by_path[source]
+        else:
+            target = publish_file(source, out_dir, root, assets)
+        target = urlunsplit(("", "", quote(target), parsed.query, parsed.fragment))
+        label = match.group("itext") if is_image else match.group("ltext")
+        return ("!" if is_image else "") + f"[{label}]({target})"
+    return rewrite_inline(doc.resolved, replace)
+
+
+class PageLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.urls = []
+    def handle_starttag(self, tag, attrs):
+        for name, value in attrs:
+            if value and name in {"href", "src"}:
+                self.urls.append(value)
+
+
+def check_site_links(out_dir):
+    """Check every emitted local href/src after rendering, for either backend."""
+    root = out_dir.resolve()
+    broken, count = [], 0
+    for page in sorted(out_dir.glob("*.html")):
+        parser = PageLinks()
+        parser.feed(page.read_text())
+        for url in parser.urls:
+            parsed = urlsplit(url)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            count += 1
+            target = (page.parent / unquote(parsed.path)).resolve()
+            if not target.is_relative_to(root) or not target.is_file():
+                broken.append({"page": page.name, "url": url})
+    return count, broken
+
 def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
     docs = discover(REPO_ROOT)
+    tracked = tracked_files(REPO_ROOT)
+    try:
+        docs = linked_documents(docs, REPO_ROOT, tracked)
+    except (ValueError, OSError) as error:
+        sys.stderr.write(f"error: {error}\n")
+        return 2
     if not docs:
         sys.stderr.write("error: no markdown sources found\n")
         return 2
 
     by_number, by_filename = build_targets(docs)
-    root_docs = {d.path.name: d for d in docs if not d.rel.startswith("docs/")}
+    root_docs = {d.path.name: d for d in docs if d.path.parent == REPO_ROOT}
 
     for doc in docs:
         resolve_refs(doc, by_number, by_filename, root_docs)
@@ -831,6 +1047,11 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
             return 2
     backend = "pandoc" if use_pandoc else "builtin"
 
+    destination = out_dir.resolve()
+    if (REPO_ROOT.resolve().is_relative_to(destination)
+            or any((REPO_ROOT / name).resolve().is_relative_to(destination) for name in tracked)):
+        sys.stderr.write("error: site output would replace repository sources\n")
+        return 2
     if out_dir.exists():
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True)
@@ -839,6 +1060,7 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
     workdir = out_dir / ".work"
     workdir.mkdir()
 
+    assets = {}
     total_refs = 0
     unresolved: list[tuple[str, int, str]] = []
 
@@ -847,9 +1069,18 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
         for line, ref in doc.refs_unresolved:
             unresolved.append((doc.rel, line, ref))
 
+        try:
+            doc.resolved = publish_links(doc, docs, out_dir, REPO_ROOT, tracked, assets)
+        except (ValueError, OSError) as error:
+            sys.stderr.write(f"error: {error}\n")
+            return 2
+
         body = None
         if use_pandoc:
             body = run_pandoc(doc.resolved, doc.title, workdir)
+        if use_pandoc and body is None:
+            sys.stderr.write(f"error: selected pandoc backend failed for {doc.rel}\n")
+            return 2
         if body is None:
             body = toc_html(doc.headings) + render_markdown(doc.resolved, doc.headings)
 
@@ -860,7 +1091,8 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
             footer=(
                 f"Rendered from <code>{html.escape(doc.rel)}</code> by "
                 f"<code>scripts/build_docs.py</code> ({backend} backend). "
-                f"{doc.refs_out} cross-reference(s) resolved on this page."
+                f"{doc.refs_out} cross-reference(s) resolved on this page. "
+                '<a href="files/LICENSES.md">Source licence inventory</a>.'
             ),
         )
         (out_dir / doc.out_name).write_text(page, encoding="utf-8")
@@ -882,8 +1114,25 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
 
     shutil.rmtree(workdir)
 
+    # Carry the distribution's licence attribution and licence texts with
+    # copied assets; inline notices in source files are preserved byte-for-byte.
+    licence_inputs = {name for name in tracked if name.startswith("LICENSES/")}
+    licence_inputs.update(name for name in ("REUSE.toml", "LICENSES.md") if name in tracked)
+    licence_inputs.update(name + ".license" for name in assets if name + ".license" in tracked)
+    try:
+        for name in sorted(licence_inputs):
+            source = local_source(Document(REPO_ROOT / "README.md", "README.md", "README", None),
+                                  name, REPO_ROOT, tracked)
+            publish_file(source, out_dir, REPO_ROOT, assets)
+    except (ValueError, OSError) as error:
+        sys.stderr.write(f"error: {error}\n")
+        return 2
+    local_links, broken_links = check_site_links(out_dir)
     manifest = {
         "backend": backend,
+        "local_links_checked": local_links,
+        "broken_local_links": broken_links,
+        "assets": assets,
         "documents": len(docs),
         "cross_references_resolved": total_refs,
         "unresolved": [
@@ -903,9 +1152,11 @@ def build(out_dir: Path, renderer: str, strict: bool, quiet: bool) -> int:
         print(f"unresolved references: {len(unresolved)}")
         for f, ln, r in unresolved:
             print(f"  {f}:{ln}: {r}")
+        print(f"local link targets:    {local_links} checked / {len(broken_links)} broken")
+        print(f"published assets:      {len(assets)}")
         print(f"output:                {out_dir}")
 
-    if strict and unresolved:
+    if broken_links or (strict and unresolved):
         return 1
     return 0
 

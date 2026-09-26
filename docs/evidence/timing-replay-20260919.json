@@ -1,0 +1,209 @@
+{
+  "scope": "Controlled read-only comparison on the same post-GRT design-repair ODB. Native RC overrides versus tech-LEF defaults. Neither result is final extracted timing; optimization continues separately.",
+  "files": {
+    "hw/soc/out/external-review-20260919/grt-corner-probe/probe.tcl": {
+      "sha256": "f9f3c273a1e9dfc814621062d9eeb4bb0f78ae58a35352a302af1c170670024a",
+      "bytes": 4508
+    },
+    "hw/soc/out/external-review-20260919/grt-corner-probe/probe.log": {
+      "sha256": "862057d6bf4e3b4dd0370fe9cb6846671a70975a2c53540b627a6edc703fcf26",
+      "bytes": 88094
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/state_out.json": {
+      "sha256": "f60c505853b6aa439ecdad59ca818ca49e00afaf2e71be0a21658b4eb09ae150",
+      "bytes": 9732
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/soc_top.odb": {
+      "sha256": "51041b7439676ddb7605dd66f1b64ab2f9be59bb4b56c8c2b09d638352a33e5f",
+      "bytes": 81454138
+    },
+    "hw/soc/sta/soc_interfaces.sdc": {
+      "sha256": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec",
+      "bytes": 2236
+    },
+    "hw/soc/sta/soc_top_qspi_io.sdc": {
+      "sha256": "985772749a6cbd356205dace27dc1686d244c85f56aec64e552cc8d772e95894",
+      "bytes": 5901
+    },
+    "hw/soc/out/external-review-20260919/grt-corner-probe/native-rc-probe.tcl": {
+      "sha256": "d4735a08e7f60e2adb7b117a3d3cc189e539b77f827e9ec6568d6508111d8357",
+      "bytes": 10190
+    },
+    "hw/soc/out/external-review-20260919/grt-corner-probe/native-rc-probe.log": {
+      "sha256": "13cbafffacdc9789dd950a3d3c0734e7ecb81cfbcf65351821238fc5dcb9944f",
+      "bytes": 88438
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-repairs4-20260919-191325/resolved.json": {
+      "sha256": "ca9d284c3180c7a87e7d50b64bc21961e481794ce19123a39cb6b0440ef4bd03",
+      "bytes": 40645
+    },
+    "hw/soc/pnr/runs/interfaces-eth256-repairs4-20260919-191325/01-openroad-resizertimingpostgrt/repairs4_setup.tcl": {
+      "sha256": "ed7f1f9714adfc705ac771bdbc9bb3f8a8f56629e42ee9ff440d897e17f34e89",
+      "bytes": 2781
+    },
+    "hw/soc/out/external-review-20260919/interfaces-eth256-repairs4-20260919-191325.log": {
+      "sha256": "a7b9e62f787624535bd3fd546f278cdae0f021ccc97f8d4b513fed37e04ba6ee",
+      "bytes": 28874
+    },
+    "hw/soc/out/external-review-20260919/repair_experiment.py": {
+      "sha256": "872aa11ae2f27f0acf3b94d1692b70a18a34c8195c910a42f97c576c93299a73",
+      "bytes": 1019
+    }
+  },
+  "diagnosis": "The initial probe sourced _env.tcl but omitted _LAYER_RC_* and _VIA_R_* entries prepared in the native process environment. The saved ODB does carry global routes (grt::have_routes=1); absence of route data was checked and rejected as the cause. Native per-layer RC and via resistance override the tech-LEF defaults in set_rc.tcl.",
+  "run": "interfaces-eth256-resume-20260919-184950",
+  "stage": "04-openroad-repairdesignpostgrt",
+  "native_model_environment": {
+    "_SDC_IN": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces.sdc",
+    "_LAYER_RC_14": "nom_typ_1p20V_25C Metal5 0.000684051 0.0000857431",
+    "_LAYER_RC_11": "nom_typ_1p20V_25C Metal2 0.00253519 0.000169121",
+    "_LAYER_RC_10": "nom_typ_1p20V_25C Metal1 0.00854576 1E-10",
+    "_LAYER_RC_13": "nom_typ_1p20V_25C Metal4 0.000631424 0.000166454",
+    "_LAYER_RC_12": "nom_typ_1p20V_25C Metal3 0.00154329 0.000182832",
+    "_VIA_R_20": "nom_typ_1p20V_25C TopVia2 0.00022",
+    "_LAYER_RC_8": "nom_slow_1p08V_125C Metal4 0.000631424 0.000166454",
+    "_LAYER_RC_9": "nom_slow_1p08V_125C Metal5 0.000684051 0.0000857431",
+    "_LAYER_RC_6": "nom_slow_1p08V_125C Metal2 0.00253519 0.000169121",
+    "_LAYER_RC_7": "nom_slow_1p08V_125C Metal3 0.00154329 0.000182832",
+    "_LAYER_RC_4": "nom_fast_1p32V_m40C Metal5 0.000684051 0.0000857431",
+    "_LAYER_RC_5": "nom_slow_1p08V_125C Metal1 0.00854576 1E-10",
+    "_LAYER_RC_2": "nom_fast_1p32V_m40C Metal3 0.00154329 0.000182832",
+    "_LAYER_RC_3": "nom_fast_1p32V_m40C Metal4 0.000631424 0.000166454",
+    "_LAYER_RC_0": "nom_fast_1p32V_m40C Metal1 0.00854576 1E-10",
+    "_LAYER_RC_1": "nom_fast_1p32V_m40C Metal2 0.00253519 0.000169121",
+    "_LIB_CORNER_2": "nom_typ_1p20V_25C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib",
+    "_LIB_CORNER_0": "nom_fast_1p32V_m40C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib",
+    "_LIB_CORNER_1": "nom_slow_1p08V_125C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+    "_VIA_R_15": "nom_typ_1p20V_25C Via1 0.0020",
+    "_VIA_R_14": "nom_typ_1p20V_25C Cont 0.0022",
+    "_VIA_R_17": "nom_typ_1p20V_25C Via3 0.0020",
+    "_VIA_R_16": "nom_typ_1p20V_25C Via2 0.0020",
+    "_VIA_R_11": "nom_slow_1p08V_125C Via4 0.0020",
+    "_VIA_R_10": "nom_slow_1p08V_125C Via3 0.0020",
+    "_VIA_R_13": "nom_slow_1p08V_125C TopVia2 0.00022",
+    "_VIA_R_12": "nom_slow_1p08V_125C TopVia1 0.0004",
+    "_VIA_R_19": "nom_typ_1p20V_25C TopVia1 0.0004",
+    "_VIA_R_18": "nom_typ_1p20V_25C Via4 0.0020",
+    "_PNR_EXCLUDED_CELLS": "sg13g2_slgcp_1 sg13g2_lgcp_1 sg13g2_sdfbbp_1 sg13g2_sighold sg13g2_dfrbp_2",
+    "_VIA_R_6": "nom_fast_1p32V_m40C TopVia2 0.00022",
+    "_VIA_R_7": "nom_slow_1p08V_125C Cont 0.0022",
+    "_VIA_R_4": "nom_fast_1p32V_m40C Via4 0.0020",
+    "_VIA_R_5": "nom_fast_1p32V_m40C TopVia1 0.0004",
+    "_VIA_R_2": "nom_fast_1p32V_m40C Via2 0.0020",
+    "_VIA_R_3": "nom_fast_1p32V_m40C Via3 0.0020",
+    "_VIA_R_0": "nom_fast_1p32V_m40C Cont 0.0022",
+    "_VIA_R_1": "nom_fast_1p32V_m40C Via1 0.0020",
+    "_VIA_R_8": "nom_slow_1p08V_125C Via1 0.0020",
+    "_VIA_R_9": "nom_slow_1p08V_125C Via2 0.0020"
+  },
+  "cases": {
+    "missing_native_rc": {
+      "script": "set ::env(SCRIPTS_DIR) /home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts\nset ::env(STEP_DIR) /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/grt-corner-probe\nset ::env(_TCL_ENV_IN) /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/_env.tcl\nsource $::env(SCRIPTS_DIR)/openroad/common/io.tcl\nset ::env(_LIB_CORNER_0) {nom_typ_1p20V_25C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib}}\nset ::env(_LIB_CORNER_1) {nom_slow_1p08V_125C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib}}\nset ::env(_LIB_CORNER_2) {nom_fast_1p32V_m40C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib}}\nset ::env(_SDC_IN) {/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces.sdc}\nset ::env(_PNR_EXCLUDED_CELLS) {}\nset ::env(CURRENT_ODB) {/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/soc_top.odb}\nread_current_odb\nsource $::env(SCRIPTS_DIR)/openroad/common/set_rc.tcl\nestimate_parasitics -global_routing\nforeach {corner object} [lln::get_corner_dict] {\n lln::set_sta_cmd_corner $corner\n puts \"CORNER $corner setup [worst_slack -corner $corner -max] hold [worst_slack -corner $corner -min]\"\n report_checks -corner $corner -path_delay max -group_path_count 1 -format full_clock_expanded -digits 6\n report_checks -corner $corner -path_delay min -group_path_count 1 -format full_clock_expanded -digits 6\n}\n",
+      "worst_slack_ns": {
+        "nom_fast_1p32V_m40C": {
+          "setup": 3.2172792007815083,
+          "hold": -0.18040602855560314
+        },
+        "nom_slow_1p08V_125C": {
+          "setup": -0.7214016255219853,
+          "hold": -0.17852297923028013
+        },
+        "nom_typ_1p20V_25C": {
+          "setup": 2.022462254914097,
+          "hold": -0.17790247556426808
+        }
+      }
+    },
+    "native_rc": {
+      "script": "set ::env(SCRIPTS_DIR) /home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts\nset ::env(STEP_DIR) /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/grt-corner-probe\nset ::env(_TCL_ENV_IN) /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/_env.tcl\nsource $::env(SCRIPTS_DIR)/openroad/common/io.tcl\nset ::env(_LIB_CORNER_0) {nom_typ_1p20V_25C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib}}\nset ::env(_LIB_CORNER_1) {nom_slow_1p08V_125C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib}}\nset ::env(_LIB_CORNER_2) {nom_fast_1p32V_m40C {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib} {/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib}}\nset ::env(_SDC_IN) {/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces.sdc}\nset ::env(_PNR_EXCLUDED_CELLS) {}\nset ::env(_LAYER_RC_0) {nom_fast_1p32V_m40C Metal1 0.00854576 1E-10}\nset ::env(_LAYER_RC_1) {nom_fast_1p32V_m40C Metal2 0.00253519 0.000169121}\nset ::env(_LAYER_RC_10) {nom_typ_1p20V_25C Metal1 0.00854576 1E-10}\nset ::env(_LAYER_RC_11) {nom_typ_1p20V_25C Metal2 0.00253519 0.000169121}\nset ::env(_LAYER_RC_12) {nom_typ_1p20V_25C Metal3 0.00154329 0.000182832}\nset ::env(_LAYER_RC_13) {nom_typ_1p20V_25C Metal4 0.000631424 0.000166454}\nset ::env(_LAYER_RC_14) {nom_typ_1p20V_25C Metal5 0.000684051 0.0000857431}\nset ::env(_LAYER_RC_2) {nom_fast_1p32V_m40C Metal3 0.00154329 0.000182832}\nset ::env(_LAYER_RC_3) {nom_fast_1p32V_m40C Metal4 0.000631424 0.000166454}\nset ::env(_LAYER_RC_4) {nom_fast_1p32V_m40C Metal5 0.000684051 0.0000857431}\nset ::env(_LAYER_RC_5) {nom_slow_1p08V_125C Metal1 0.00854576 1E-10}\nset ::env(_LAYER_RC_6) {nom_slow_1p08V_125C Metal2 0.00253519 0.000169121}\nset ::env(_LAYER_RC_7) {nom_slow_1p08V_125C Metal3 0.00154329 0.000182832}\nset ::env(_LAYER_RC_8) {nom_slow_1p08V_125C Metal4 0.000631424 0.000166454}\nset ::env(_LAYER_RC_9) {nom_slow_1p08V_125C Metal5 0.000684051 0.0000857431}\nset ::env(_LIB_CORNER_0) {nom_fast_1p32V_m40C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib}\nset ::env(_LIB_CORNER_1) {nom_slow_1p08V_125C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib}\nset ::env(_LIB_CORNER_2) {nom_typ_1p20V_25C /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib}\nset ::env(_PNR_EXCLUDED_CELLS) {sg13g2_slgcp_1 sg13g2_lgcp_1 sg13g2_sdfbbp_1 sg13g2_sighold sg13g2_dfrbp_2}\nset ::env(_SDC_IN) {/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces.sdc}\nset ::env(_VIA_R_0) {nom_fast_1p32V_m40C Cont 0.0022}\nset ::env(_VIA_R_1) {nom_fast_1p32V_m40C Via1 0.0020}\nset ::env(_VIA_R_10) {nom_slow_1p08V_125C Via3 0.0020}\nset ::env(_VIA_R_11) {nom_slow_1p08V_125C Via4 0.0020}\nset ::env(_VIA_R_12) {nom_slow_1p08V_125C TopVia1 0.0004}\nset ::env(_VIA_R_13) {nom_slow_1p08V_125C TopVia2 0.00022}\nset ::env(_VIA_R_14) {nom_typ_1p20V_25C Cont 0.0022}\nset ::env(_VIA_R_15) {nom_typ_1p20V_25C Via1 0.0020}\nset ::env(_VIA_R_16) {nom_typ_1p20V_25C Via2 0.0020}\nset ::env(_VIA_R_17) {nom_typ_1p20V_25C Via3 0.0020}\nset ::env(_VIA_R_18) {nom_typ_1p20V_25C Via4 0.0020}\nset ::env(_VIA_R_19) {nom_typ_1p20V_25C TopVia1 0.0004}\nset ::env(_VIA_R_2) {nom_fast_1p32V_m40C Via2 0.0020}\nset ::env(_VIA_R_20) {nom_typ_1p20V_25C TopVia2 0.00022}\nset ::env(_VIA_R_3) {nom_fast_1p32V_m40C Via3 0.0020}\nset ::env(_VIA_R_4) {nom_fast_1p32V_m40C Via4 0.0020}\nset ::env(_VIA_R_5) {nom_fast_1p32V_m40C TopVia1 0.0004}\nset ::env(_VIA_R_6) {nom_fast_1p32V_m40C TopVia2 0.00022}\nset ::env(_VIA_R_7) {nom_slow_1p08V_125C Cont 0.0022}\nset ::env(_VIA_R_8) {nom_slow_1p08V_125C Via1 0.0020}\nset ::env(_VIA_R_9) {nom_slow_1p08V_125C Via2 0.0020}\nset ::env(CURRENT_ODB) {/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/04-openroad-repairdesignpostgrt/soc_top.odb}\nread_current_odb\nsource $::env(SCRIPTS_DIR)/openroad/common/set_rc.tcl\nestimate_parasitics -global_routing\nforeach {corner object} [lln::get_corner_dict] {\n lln::set_sta_cmd_corner $corner\n puts \"CORNER $corner setup [worst_slack -corner $corner -max] hold [worst_slack -corner $corner -min]\"\n report_checks -corner $corner -path_delay max -group_path_count 1 -format full_clock_expanded -digits 6\n report_checks -corner $corner -path_delay min -group_path_count 1 -format full_clock_expanded -digits 6\n}\n",
+      "worst_slack_ns": {
+        "nom_fast_1p32V_m40C": {
+          "setup": 3.1142858062756247,
+          "hold": -0.42428839420556824
+        },
+        "nom_slow_1p08V_125C": {
+          "setup": -6.66056739725635,
+          "hold": -0.4053295591670618
+        },
+        "nom_typ_1p20V_25C": {
+          "setup": 0.7967715601709255,
+          "hold": -0.4192369903229628
+        }
+      }
+    }
+  },
+  "optimizer_experiment": {
+    "run": "interfaces-eth256-repairs4-20260919-191325",
+    "status": "FAILED: native OpenROAD assertion in SizeUpMove; no completed output state",
+    "setup_max_iterations": 120,
+    "max_repairs_per_pass": 4,
+    "resolved_configuration_identical_to_baseline": true,
+    "input_state_sha256": "b65424425fccdc96c30227632ad8333fedc0885a98d0390c1da731f88c740422",
+    "driver_source": "\"\"\"Isolated optimizer experiment; same inputs and acceptance constraints.\"\"\"\nimport sys\nfrom pathlib import Path\nroot=Path(__file__).resolve().parents[4]\nsys.path.insert(0,str(root/'hw/soc/pnr'))\nfrom interface_flow import Interfaces, BoundedPostGRT\nfrom librelane.flows import Flow\n\nclass Repairs4PostGRT(BoundedPostGRT):\n    def get_script_path(self):\n        original=Path(super().get_script_path())\n        source=original.read_text()\n        anchor='lappend setup_args -max_iterations 600\\n'\n        assert source.count(anchor)==1\n        source=source.replace(anchor,'lappend setup_args -max_iterations 120\\nlappend setup_args -max_repairs_per_pass 4\\n')\n        output=Path(self.step_dir)/'repairs4_setup.tcl'\n        output.write_text(source)\n        return str(output)\n\n@Flow.factory.register()\nclass Repairs4Experiment(Interfaces):\n    Steps=[Repairs4PostGRT if s.id=='OpenROAD.ResizerTimingPostGRT' else s for s in Interfaces.Steps]\n\nif __name__=='__main__':\n    from librelane.__main__ import cli\n    cli()\n",
+    "error_excerpt": "/usr/include/c++/11/bits/stl_vector.h:1063: std::vector<_Tp,                    \n_Alloc>::const_reference std::vector<_Tp, _Alloc>::operator[](std::vector<_Tp,  \n_Alloc>::size_type) const [with _Tp = sta::TableBlock<sta::Edge>*; _Alloc =     \nstd::allocator<sta::TableBlock<sta::Edge>*>; std::vector<_Tp,                   \n_Alloc>::const_reference = sta::TableBlock<sta::Edge>* const&; std::vector<_Tp, \n_Alloc>::size_type = long unsigned int]: Assertion '__n < this->size()' failed. \nSignal 6 received                                                               \nStack trace:                                                                    \n 0# 0x0000000000DB6FC7 in                                                       \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n 1# 0x0000000000045330 in /lib/x86_64-linux-gnu/libc.so.6                       \n 2# pthread_kill in /lib/x86_64-linux-gnu/libc.so.6                             \n 3# gsignal in /lib/x86_64-linux-gnu/libc.so.6                                  \n 4# abort in /lib/x86_64-linux-gnu/libc.so.6                                    \n 5# 0x0000000000DAE568 in                                                       \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n 6# 0x000000000105CE03 in                                                       \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n 7# rsz::SizeUpMove::doMove(sta::Path const*, float) in                         \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n 8# rsz::RepairSetup::repairEndpoint(sta::Pin*, sta::Delay, float) in           \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n 9# rsz::RepairSetup::repairSetup_Legacy(float, int, int, int, bool, int&,      \nfloat, float&, char) in                                                         \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n10# rsz::RepairSetup::repairSetup(float, double, int, int, int, bool,           \nstd::vector<rsz::MoveType, std::allocator<rsz::MoveType> > const&, char const*, \nbool, bool, bool, bool, bool, bool, bool, bool) in                              \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n11# rsz::Resizer::repairSetup(double, double, int, int, int, bool, bool,        \nstd::vector<rsz::MoveType, std::allocator<rsz::MoveType> > const&, char const*, \nbool, bool, bool, bool, bool, bool, bool, bool) in                              \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n12# 0x0000000000E8FABE in                                                       \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n13# TclNRRunCallbacks in /lib/x86_64-linux-gnu/libtcl8.6.so                     \n14# 0x000000000003F6BC in /lib/x86_64-linux-gnu/libtcl8.6.so                    \n15# Tcl_EvalEx in /lib/x86_64-linux-gnu/libtcl8.6.so                            \n16# Tcl_Eval in /lib/x86_64-linux-gnu/libtcl8.6.so                              \n17# sta::sourceTclFile(char const*, bool, bool, Tcl_Interp*) in                 \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/install/OpenROAD/bin/openroad                                                 \n18# 0x00000000036B769F in                                                       \n/home/hasanmelih/Documents/gt2n-soc/tools/orfs-rootfs/OpenROAD-flow-scripts/tool\ns/insta",
+    "tool": "OpenROAD 26Q1-2938-g0e2d771c5e",
+    "option_reference": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/0e2d771c5e/src/rsz/README.md",
+    "disposition": "Rejected; shipping interface_flow.py remains unchanged with default one repair per pass. Independent baseline run continues."
+  },
+  "post_grt_saved_state_replay": {
+    "scope": "Read-only native-RC global-route parasitic replay after setup/hold repair and re-routing. Not detailed-route extraction or signoff. Inherited other-corner metrics in STAMidPNR state are excluded.",
+    "command": "openroad -exit -no_splash hw/soc/out/external-review-20260919/postgrt-native-probe/probe.tcl",
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "setup_ns": 3.26236358272977,
+        "hold_ns": -0.15065216167645457
+      },
+      "nom_slow_1p08V_125C": {
+        "setup_ns": -2.04567746310479,
+        "hold_ns": 0.38595838728554793
+      },
+      "nom_typ_1p20V_25C": {
+        "setup_ns": 2.0429623015989766,
+        "hold_ns": 0.13143864146889617
+      }
+    },
+    "native_first_corner_agreement": "fast setup/hold match fresh STAMidPNR-3 values within native output rounding",
+    "worst_slow_path": {
+      "start": "_111017_ (register-file read address B bit 2)",
+      "end": "_118613_ (register x28 check bit 6)",
+      "setup_ns": -2.04567746310479
+    },
+    "structural_checks": {
+      "boot_tmr_disjoint": "PASS",
+      "npu_tmr_disjoint": "PASS",
+      "watchdog_tmr_disjoint": "PASS",
+      "asynchronous_reset_cones": "PASS",
+      "scope": "Existing guard functions applied directly to this one saved post-GRT netlist"
+    },
+    "files": {
+      "hw/soc/out/external-review-20260919/postgrt-native-probe/probe.tcl": {
+        "sha256": "79e6087842a5978e378ab201eef9ceed2ed2920e8996e02a814fa29dd4683f2d",
+        "bytes": 10196
+      },
+      "hw/soc/out/external-review-20260919/postgrt-native-probe/probe.log": {
+        "sha256": "f86c5d4ed186a76c42feb7b1aebf80951e435d0f6db10003f8199dce1e574875",
+        "bytes": 663718
+      },
+      "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/state_out.json": {
+        "sha256": "203d7809137648f2f67ffc42762bcd22ccf8b8c1adac4c7245406b93a5bac118",
+        "bytes": 9930
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/soc_top.odb": {
+        "sha256": "6ef77849a44870bf6c7b86d0e22370c0d64099704bb74faeae92c01f0af71af4",
+        "bytes": 82850297
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/07-openroad-resizertimingpostgrt/soc_top.nl.v": {
+        "sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f",
+        "bytes": 10736965
+      },
+      "hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/08-openroad-stamidpnr-3/state_out.json": {
+        "sha256": "523f2cb6e17b960fa3f3a6d971c63d1796da24b90f5eb2c5646dd3ef49d64b6e",
+        "bytes": 9957
+      },
+      "hw/soc/out/external-review-20260919/postgrt-netlist-cones.log": {
+        "sha256": "5092838e33b2c03a8eb1c90fb4a0d9dc0e1f2ea1c3b200b0de88c1c336954738",
+        "bytes": 145
+      }
+    }
+  }
+}

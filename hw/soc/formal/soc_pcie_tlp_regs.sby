@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+[tasks]
+bmc
+prove
+cover
+[options]
+bmc: mode bmc
+bmc: depth 24
+prove: mode prove
+prove: depth 12
+cover: mode cover
+cover: depth 24
+timeout 300
+[engines]
+prove: abc pdr
+~prove: smtbmc yices
+[script]
+read_verilog -sv soc_pcie_tlp_regs.v
+read_verilog -formal soc_pcie_tlp_regs_props.v
+prep -top soc_pcie_tlp_regs_props -flatten
+async2sync
+dffunmap
+[files]
+../rtl/pcie/soc_pcie_tlp_regs.v
+soc_pcie_tlp_regs_props.v

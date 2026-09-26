@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "scope": "Portable AST-based guard for unchanged pre-existing CAN pin tests; test-infrastructure-only change after the complete 1293-test run. No production RTL, firmware or pin stimulus changed.",
+  "failed_hosted_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35638895646",
+  "failed_hosted_log": {
+    "path": "hw/soc/out/external-review-20260919/hosted-eb0e1cf-checks.log",
+    "bytes": 62417,
+    "sha256": "d06d7976ee26bd8cc0a69e6963f1a0400fe1335587197c0ce3d0684dda88b44d"
+  },
+  "root_cause": "ast.dump omits different empty fields between Python 3.12 and 3.14. A fixed dump hash encoded the interpreter representation rather than only program semantics.",
+  "fix": "Canonical JSON of AST node kinds/semantic fields, excluding empty optional fields and source locations. The frozen fingerprint is derived from the original pre-migration tests; adding a failing assertion must change it.",
+  "old_pin_test_commit": "1d99a78b045a4c9be9899cd1cf24bd3e5ea8c255",
+  "old_pin_test_sha256": "ae647363b09fb988d8d645bc49aa795f99371577c4f31420b444a59c149b2852",
+  "guard_sha256": "90335dd715c497ee71a41e7996020dc7fa047d9afee0c88a790377667a401ce3",
+  "pin_test_sha256": "4f57c23b79362af27ada48e910522b7f1fe4647ca7096130e34c268a2545bc77",
+  "environments": {
+    "312": {
+      "python": "3.12.3",
+      "status": "PASS",
+      "pre_migration_equals_current": true,
+      "changed_statement_rejected": true,
+      "canonical_sha256": "6e56a349e45a5f119d2665485ef3b9ca7837b649318fc091bea3d0f038f740e6",
+      "tests_passed": 19,
+      "tests_failed": 0,
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/can-ast-pytest312-final.log",
+        "bytes": 99,
+        "sha256": "408093f06ea4ae7097cc84b8612de462ff0b91c8867a24307c55c4430a4a098f"
+      }
+    },
+    "314": {
+      "python": "3.14.7",
+      "status": "PASS",
+      "pre_migration_equals_current": true,
+      "changed_statement_rejected": true,
+      "canonical_sha256": "6e56a349e45a5f119d2665485ef3b9ca7837b649318fc091bea3d0f038f740e6",
+      "tests_passed": 19,
+      "tests_failed": 0,
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/can-ast-pytest314-final.log",
+        "bytes": 99,
+        "sha256": "799a95b7e0bdf4aa8a74d6956a27d993a8eb122b9ccddbf32792f3e2a9ad9143"
+      }
+    }
+  }
+}

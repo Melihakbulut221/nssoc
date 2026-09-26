@@ -237,6 +237,9 @@ PINNED_YOSYS = "Yosys 0.33"
 # changed. The tests still RUN on any version -- pinning them to one
 # would turn a real regression into a skip for everyone else -- but a
 # count that disagrees now says which mapper produced it first.
+# 2026-09-21: the two known tool-dependent checks now use actual codec
+# connectivity and a paired, same-mapper pre-timeout RTL baseline. The
+# historical literal 93 remains checked on 0.33; it is not rewritten as 94.
 if YOSYS_VERSION and not YOSYS_VERSION.startswith(PINNED_YOSYS):
     MAPPER_NOTE = (
         "\n\nBEFORE READING THIS AS A DESIGN CHANGE: this yosys is %s and "
@@ -881,7 +884,7 @@ def _busstat_nsrc():
     asking whether the three new counters had actually survived. The
     arithmetic below is what says they did.
     """
-    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*(\d+)",
+    m = re.search(r"localparam\s+integer\s+NSRC\s*=\s*\(APB_TIMEOUT_EN\s*!=\s*0\)\s*\?\s*9\s*:\s*(\d+)",
                   BUSSTAT.read_text())
     assert m, "soc_busstat.v no longer declares NSRC"
     return int(m.group(1))
@@ -891,12 +894,14 @@ BUSSTAT_NSRC = _busstat_nsrc()
 
 
 @needs_yosys
-def test_the_fault_counters_survive_synthesis(workdir):
+@pytest.mark.parametrize("timeout_enabled", [0, 1])
+def test_the_fault_counters_survive_synthesis(workdir, timeout_enabled):
     """docs/44 section 6. An operator's only view of a corrected upset
     is these flip-flops; a mapper that deleted one would leave a block
     that still answers every APB read with a plausible number."""
     cnt_w = _busstat_cnt_w()
     script = ("read_verilog -I {} {};".format(SOC_RTL, BUSSTAT)
+              + " chparam -set APB_TIMEOUT_EN {} soc_busstat;".format(timeout_enabled)
               + " hierarchy -top soc_busstat;"
                 " synth -top soc_busstat -flatten;")
     lib = _sg13g2_liberty()
@@ -904,7 +909,8 @@ def test_the_fault_counters_survive_synthesis(workdir):
         script += " dfflibmap -liberty {0}; abc -liberty {0};".format(lib)
     script += " flatten; opt_clean;"
     census = _census(script, workdir)
-    expected = BUSSTAT_NSRC * cnt_w + BUSSTAT_NSRC + BUSSTAT_NSRC
+    nsrc = BUSSTAT_NSRC + timeout_enabled
+    expected = nsrc * (cnt_w + 2)
     assert census.total == expected, (
         "expected {} counters x {} bits + {} sticky + {} enable = {} "
         "flip-flops, found {}".format(
@@ -988,15 +994,14 @@ def test_the_npu_queues_report_their_protection_somewhere():
             "both of its destinations: {}".format(pat))
 
 
-def test_the_ibex_top_patch_applies_to_the_pinned_output():
+def test_the_ibex_top_patch_applies_to_the_pinned_output(prepared_sources):
     """The fault port reaches the SoC through three hunks that
     hw/soc/flow/ibex_fault_port.py applies to hw/soc/gen/ibex_top.v.
     Every anchor is asserted to occur exactly once, so a pin that moves
     the port list stops the build rather than patching the wrong place;
     this runs that check without building."""
-    gen = ROOT / "hw" / "soc" / "gen" / "ibex_top.v"
-    if not gen.is_file():
-        pytest.skip("hw/soc/gen is empty: run flow/sv2v_ibex.sh first")
+    gen = prepared_sources / "gen/ibex_top.v"
+    assert gen.is_file(), "Verified prepared source missing"
     sys.path.insert(0, str(ROOT / "hw" / "soc" / "flow"))
     import importlib.util
     spec = importlib.util.spec_from_file_location(
@@ -1850,7 +1855,7 @@ def test_every_flow_that_builds_soc_top_reads_every_module_it_instantiates():
 
     flows = {name: code(name)
              for name in ("syn_soc_top.sh", "pnr_soc_top.sh", "fi_core.sh",
-                          "sim_soc.sh")}
+                          "fi_npu.sh", "sim_soc.sh")}
     checked = []
     for mod in sorted(instantiated - substituted):
         if not ((SOC_RTL / f"{mod}.v").is_file()
@@ -1905,7 +1910,8 @@ def test_the_verdict_rule_is_one_file_and_not_two_copies_of_one():
 
 
 @needs_yosys
-def test_the_whole_soc_elaborates_as_one_design(workdir):
+@pytest.mark.parametrize('interface_profile', [os.environ.get('SOC_INTERFACE_PROFILE', 'base')])
+def test_the_whole_soc_elaborates_as_one_design(workdir, prepared_sources, interface_profile):
     """The thing that had never been done. `hierarchy -check -top
     soc_top` over the whole source list -- Ibex, the fabric, both
     memories, every peripheral -- and it must resolve every reference.
@@ -1920,13 +1926,11 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
     about area, timing, or what the optimiser does. docs/45 is the
     measurement; this is the guard that the design still elaborates as
     one design."""
-    gen = ROOT / "hw" / "soc" / "gen"
-    if not gen.is_dir() or not list(gen.glob("*.v")):
-        pytest.skip("hw/soc/gen is empty: run flow/sv2v_ibex.sh first")
-    genp = ROOT / "hw" / "soc" / "genp" / "ibex_top.v"
-    if not genp.is_file():
-        pytest.skip("hw/soc/genp/ibex_top.v is absent: run a SoC flow first")
-
+    gen = prepared_sources / "gen"
+    genp = prepared_sources / "genp/ibex_top.v"
+    interface_bundle = gen / ("interfaces-full.bundle.vh" if interface_profile == 'full'
+                              else "interfaces.bundle.vh")
+    assert genp.is_file() and interface_bundle.is_file(), "Verified dependency snapshot incomplete"
     bb = Path(workdir) / "soc_mem_bb.v"
     real = _soc_mem_ports()
     decls = ",\n".join(
@@ -1954,7 +1958,9 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
         "soc_apb_bridge.v", "soc_uart.v", "soc_gpio.v", "soc_qspi.v", "soc_pnp.v",
         "soc_apb_pnp.v", "soc_clint.v", "soc_gptimer.v", "soc_wdog.v",
         "soc_busstat.v", "soc_scrub.v", "soc_boot.v", "soc_tmr_bank.v", "soc_npu.v",
-        "soc_npu_ser.v")]
+        "soc_npu_ser.v", "soc_spw.v", "soc_i2c.v", "soc_spi.v", "soc_can.v", "soc_eth.v",
+        "soc_apb_wb.v")]
+    soc.append(interface_bundle)
     # This list is a FIFTH copy of the four the flow-list guard below
     # checks, and docs/65 found it the way docs/57 found the other four:
     # soc_gpio.v was added to every flow and this test still failed,
@@ -1988,8 +1994,8 @@ def test_the_whole_soc_elaborates_as_one_design(workdir):
     script = (
         prelude
         + " read_verilog -lib {};".format(bb)
-        + " read_verilog -defer -I {} -I {} {};".format(
-            SOC_RTL, PILOT_RTL,
+        + " read_verilog {} -defer -I {} -I {} {};".format(
+            '-DSOC_LGPL_INTERFACES' if interface_profile == 'full' else '', SOC_RTL, PILOT_RTL,
             " ".join(str(p) for p in ibex + soc + [SOC_RTL / "soc_top.v"]))
         + " hierarchy -check -top soc_top;")
     out = _run_yosys(script, workdir)
@@ -2042,6 +2048,9 @@ def test_the_sram_memory_declares_soc_mems_ports():
     neither file claims."""
     real = _soc_mem_ports()
     text = (SOC_RTL / "soc_mem_sram.v").read_text()
+    # Compare the legacy drop-in interface. The explicit physical MBIST
+    # profile adds POR/result pins and is elaborated by native chip tests.
+    text = re.sub(r"`ifdef SOC_SRAM_MBIST.*?`endif", "", text, flags=re.S)
     body = text.split("module soc_mem", 1)[1]
     body = body.split(") (", 1)[1].split(");", 1)[0]
     got = []
@@ -2127,13 +2136,18 @@ def test_the_registered_request_phase_ships_off_and_is_forwarded():
         "the RTL selects the registered request phase somewhere: "
         "{}".format(offenders))
 
-    allowed = {"syn_soc_top.sh", "sim_soc.sh"}
+    # FI needs the same registered-request setting as the netlist it measures.
+    # Its default remains zero and the checks below bind it like both flows.
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
+    # An explicit experimental profile is not a change to either default.
+    # docs/88 measures this profile's different cycle count separately.
+    profiles = {"implement_interfaces.sh"}
     setters = {f.name for f in sorted(SOC_FLOW.glob("*.sh"))
                if re.search(r"SOC_REQ_REG", f.read_text())}
-    assert setters <= allowed, (
+    assert setters <= allowed | profiles, (
         "a flow script this test does not know about carries the knob: "
         "{}. Add it here with the reason, or remove it.".format(
-            sorted(setters - allowed)))
+            sorted(setters - allowed - profiles)))
 
     # AND THE SCRIPTS THAT MAY CARRY IT MUST STILL DEFAULT IT OFF, which
     # is the half of this guard that was missing until 2026-09-16. The
@@ -2305,23 +2319,44 @@ def test_the_pnr_flow_cannot_write_into_the_frozen_pilot():
     assert "hw/openlane" not in cfg_dir
 
 
-def test_the_pnr_flow_supplies_only_the_source_list():
-    """pnr_soc_top.sh merges VERILOG_FILES into a resolved copy of
-    config.json, because flow/ibex_sources.sh is the one place that
-    knows which of hw/soc/gen/ibex_register_file_ff.v and
-    hw/soc/rtl/ibex_regfile_secded.v belongs in a build. docs/34
-    section 8.5's trap was a generator that silently deleted a
-    hand-added fix from a config, so the generator here asserts that
-    VERILOG_FILES is the only key it touches -- and this test asserts
-    the assertion is still in the script."""
+@pytest.mark.parametrize('profile,defines', [
+    ('base', None), ('base', []), ('base', ['USER_SETTING']),
+    ('full', None), ('full', []), ('full', ['USER_SETTING']),
+    ('full', ['SOC_LGPL_INTERFACES', 'USER_SETTING']),
+    ('base', ['SOC_LGPL_INTERFACES']),
+])
+def test_the_pnr_flow_supplies_only_the_source_list(tmp_path, profile, defines):
+    """Execute the real config generator; only sources and the explicit
+    interface definition may change. Preserve arbitrary physical settings."""
     text = (SOC_FLOW / "pnr_soc_top.sh").read_text()
-    assert 'assert added == {"VERILOG_FILES"}' in text, (
-        "pnr_soc_top.sh no longer asserts it added only VERILOG_FILES")
-    assert "assert not changed" in text, (
-        "pnr_soc_top.sh no longer asserts it changed no existing key")
-    assert "VERILOG_FILES" not in _pnr_config(), (
-        "hw/soc/pnr/config.json carries VERILOG_FILES; the script "
-        "supplies it and would now be overriding a hand-written list")
+    start = text.index('import json, os, sys\nsrc, dst = sys.argv[1], sys.argv[2]')
+    generator = text[start:text.index('\nPY', start)]
+    generator = generator.replace('$SRCS', '/test/core.v /test/top.v')
+    generator = generator.replace('$IF_DEFINE', '-DSOC_LGPL_INTERFACES' if profile == 'full' else '')
+    base = {'MACROS': {'example': {'instances': {'u_mem': {'location': [1, 2]}}}},
+            'TIME_DERATING_CONSTRAINT': 5.0, 'CLOCK_PERIOD': 20,
+            'MANUAL_SETTING': {'preserve': ['all', 'values']}}
+    if defines is not None:
+        base['VERILOG_DEFINES'] = defines
+    src, dst = tmp_path/'base.json', tmp_path/'resolved.json'
+    src.write_text(json.dumps(base))
+    result = subprocess.run([sys.executable, '-c', generator, str(src), str(dst)],
+                            capture_output=True, text=True,
+                            env=dict(os.environ, SOC_BOOT_ROM='legacy'))
+    if profile == 'base' and defines and 'SOC_LGPL_INTERFACES' in defines:
+        assert result.returncode != 0 and 'Full-profile config' in result.stderr
+        assert not dst.exists()
+        return
+    assert result.returncode == 0, result.stderr
+    out = json.loads(dst.read_text())
+    assert out.pop('VERILOG_FILES') == ['/test/core.v', '/test/top.v']
+    selected = out.pop('VERILOG_DEFINES', [])
+    assert ('SOC_LGPL_INTERFACES' in selected) == (profile == 'full')
+    assert [d for d in selected if d != 'SOC_LGPL_INTERFACES'] == [
+        d for d in (defines or []) if d != 'SOC_LGPL_INTERFACES']
+    base.pop('VERILOG_DEFINES', None)
+    assert out == base
+    assert "VERILOG_FILES" not in _pnr_config()
 
 
 # =====================================================================
@@ -2596,37 +2631,60 @@ def test_harden_zero_removes_the_check_bits_and_nothing_else(workdir):
             CLINT_BASE_FF, census.total))
 
 
+def _assert_clint_codec_connectivity(path):
+    """Check stored codeword, encoded D inputs and decoder feedback cones.
+
+    Yosys 0.67 purges the encoder instance-name aliases that 0.33 retained.
+    A missing name is not missing logic. These endpoints survive both flows;
+    widths, distinct storage and actual connectivity are all required.
+    This is structural coverage, not a proof of the XOR truth tables.
+    """
+    gl = _gl()
+    netlist = gl.JsonNetlist(str(path))
+    stored = netlist.net('g_mtime_secded.u_mtime_dec.code_in')
+    aliases = [netlist.net(name) for name in ('g_mtime_secded.code_unused',
+                                                'g_mtime_secded.u_mtime_enc.code_out')]
+    aliases = [bits for bits in aliases if bits]
+    assert aliases and all(bits == aliases[0] for bits in aliases), 'Encoder aliases disagree or are absent'
+    encoded = aliases[0]
+    report = netlist.net('mt_ecc_o')
+    assert len(stored) == len(encoded) == 72 and len(report) == 1, 'Missing codec endpoints'
+    assert len(set(stored)) == 72, 'Codeword storage aliases or constants'
+    state = set()
+    for bit in stored:
+        frontier = gl.cone_flops(netlist.driver, netlist.cells, bit)
+        assert len(frontier) == 1, 'Codeword bit has no unique storage flop'
+        state |= frontier
+    assert len(state) == 72, 'Codeword storage collapsed'
+    # Each encoded check output must reach its own stored check-bit D pin.
+    # Combinational feedback must include all 64 data and eight check flops:
+    # removing the correction feedback keeps the census but fails this cone.
+    for index in range(64, 72):
+        driver = netlist.driver[stored[index]]
+        assert netlist.cells[driver][1]['D'] == [encoded[index]], 'Check-bit D disconnected from encoder'
+        assert gl.cone_flops(netlist.driver, netlist.cells, encoded[index]) == state, 'Codec feedback missing'
+    assert gl.cone_flops(netlist.driver, netlist.cells, report[0]) == state, 'Decoder report disconnected'
+
+
 @needs_yosys
 def test_the_codec_is_in_the_mapped_netlist_and_not_only_in_the_rtl(workdir):
-    """Both cones, by instance path, after the post-mapping flatten.
-
-    Reported and not merely counted, because the ENCODER is the half a
-    reader would expect to disappear: its output goes to eight
-    flip-flops whose only consumer is the decoder, and a pass that could
-    prove the inductive invariant `chk == encode(mtime)` would be
-    entitled to delete the pair. Nothing in this flow can prove a
-    sequential invariant, so nothing does -- but that is a property of
-    the tool and this is the measurement that says it held."""
     census = _census(_clint_script(CLINT_SOURCES), workdir)
-    enc = census.in_instance("u_mtime_enc")
-    dec = census.in_instance("u_mtime_dec")
-    # Neither codec has any state of its own -- both modules are purely
-    # combinational -- so the FLIP-FLOP count under them is zero by
-    # construction and counting it would prove nothing.
-    assert enc == 0 and dec == 0, (
-        "secded_enc and secded_dec are combinational; a flip-flop under "
-        "one of them means the module changed: enc={} dec={}".format(
-            enc, dec))
-    # What is asserted is that the cones are there at all.
-    assert census.from_file("secded_enc.v") == 0
-    assert census.cells > 0
-    text = (Path(workdir) / "census.json").read_text()
-    assert "u_mtime_enc" in text, (
-        "no cell in the mapped netlist lies under u_mtime_enc: the "
-        "encoder was optimised away" + MAPPER_NOTE)
-    assert "u_mtime_dec" in text, (
-        "no cell in the mapped netlist lies under u_mtime_dec: the "
-        "decoder was optimised away" + MAPPER_NOTE)
+    assert census.total == CLINT_BASE_FF + CLINT_CHK_FF
+    _assert_clint_codec_connectivity(Path(workdir) / 'census.json')
+
+
+@needs_yosys
+@pytest.mark.parametrize('mutation', ['bypass-correction', 'drop-error-report'])
+def test_codec_connectivity_rejects_mapped_rtl_mutations(workdir, mutation):
+    changes = {
+        'bypass-correction': [('.data_out (mtime)', '.data_out ()'),
+                              ('wire       sec, ded;', 'wire       sec, ded; assign mtime = mtime_q;')],
+        'drop-error-report': [('assign mt_ecc_o = sec | ded;', "assign mt_ecc_o = 1'b0;")],
+    }
+    sources = _clint_mutant(workdir, 'codec-' + mutation, changes[mutation])
+    _census(_clint_script(sources), workdir)
+    with pytest.raises(AssertionError):
+        _assert_clint_codec_connectivity(Path(workdir) / 'census.json')
 
 
 @needs_yosys
@@ -3458,10 +3516,10 @@ def _tracked_pnr_configs():
 # it, and until this test there was none.
 
 
-def _apb_script(chparam=""):
+def _apb_script(chparam="", source=None):
     lib = _sg13g2_liberty()
     script = "read_verilog -I {} {};".format(
-        SOC_RTL, SOC_RTL / "soc_apb_bridge.v")
+        SOC_RTL, source or SOC_RTL / "soc_apb_bridge.v")
     script += " hierarchy -top soc_apb_bridge;"
     if chparam:
         script += " " + chparam
@@ -3474,25 +3532,32 @@ def _apb_script(chparam=""):
 
 # Measured 2026-09-18 at yosys 0.33 with sg13g2_stdcell_typ_1p20V_25C,
 # on the module BEFORE APB_TIMEOUT existed and on the module after, and
-# the two agree. A literal is right here and not in README's pytest
-# paragraph, because this number is a property of the source and does
-# not move with build output.
+# the two agree. Keep that dated 0.33 measurement; other mapper versions
+# compare the same two pinned RTL sources instead of imposing this count
+# on a different tool. The fixture carries its original licence and hash.
 APB_BRIDGE_FF_AT_DEFAULT = 93
+
+
+def _legacy_apb_source():
+    # Exact published, pre-timeout implementation. A fixture is needed because
+    # source archives and the public mirror need not contain Git history.
+    import hashlib
+    path = ROOT / 'hw/soc/tb/fixtures/apb_timeout_disabled_293d9a5.v'
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == '6b9b092d3e82bf5df4fff9b1a5389403ac99f0a86538087a1575ba06efc22d85'
+    return path
 
 
 @needs_yosys
 def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
-    """APB_TIMEOUT = 0 is the shipping netlist, unchanged."""
+    """Default and pre-timeout RTL must cost the same on the SAME mapper."""
+    baseline = _census(_apb_script(source=_legacy_apb_source()), workdir)
     census = _census(_apb_script(), workdir)
-    assert census.total == APB_BRIDGE_FF_AT_DEFAULT, (
-        "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 0 and the "
-        "measurement taken when the parameter was added is {}. Either the "
-        "timeout arm is no longer fully optimised away at the default -- "
-        "in which case every netlist and measurement this repository "
-        "quotes has moved and the merge argument for the parameter is "
-        "gone -- or something else changed the bridge and this number "
-        "needs re-taking with a date."
-        .format(census.total, APB_BRIDGE_FF_AT_DEFAULT) + MAPPER_NOTE)
+    assert (census.total, census.cells) == (baseline.total, baseline.cells), (
+        'Disabled timeout changes mapped state/logic versus the pinned legacy source'
+        + MAPPER_NOTE)
+    if YOSYS_VERSION and YOSYS_VERSION.startswith(PINNED_YOSYS):
+        # Preserve the original measurement, rather than rewriting 93 as 94.
+        assert baseline.total == APB_BRIDGE_FF_AT_DEFAULT
 
 
 @needs_yosys
@@ -3504,12 +3569,12 @@ def test_the_apb_timeout_does_cost_something_when_it_is_on(workdir):
     `docs/09` warns about, and the reason this repository writes
     negative controls beside its guards.
     """
+    off = _census(_apb_script(source=_legacy_apb_source()), workdir)
     on = _census(_apb_script("chparam -set APB_TIMEOUT 8 soc_apb_bridge;"),
                  workdir)
-    assert on.total > APB_BRIDGE_FF_AT_DEFAULT, (
+    assert on.total > off.total, (
         "soc_apb_bridge maps to {} flip-flops at APB_TIMEOUT = 8, which is "
         "not more than the {} it maps to at 0. The counter and its sticky "
         "flag are not being built, so the parameter is inert and the "
         "timeout it is supposed to arm does not exist."
-        .format(on.total, APB_BRIDGE_FF_AT_DEFAULT))
-
+        .format(on.total, off.total))

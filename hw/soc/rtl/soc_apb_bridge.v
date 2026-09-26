@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // System bus to AMBA APB bridge.
 //
 // This is the one place in the SoC where a standard bus protocol is
@@ -57,6 +59,10 @@ module soc_apb_bridge #(
     // pready mux. `soc_apb_wb.v` has a genuinely non-constant PREADY
     // and is written and proved but instantiated nowhere. The first
     // time a real wait-state slave is wired in, this becomes live.
+    //
+    // 2026-09-19 correction: CAN now instantiates soc_apb_wb. soc_top
+    // enables APB_TIMEOUT=256 and records each error in BUSSTAT; the
+    // preceding historical instantiation inventory no longer applies.
     //
     // DEFAULT 0, WHICH IS OFF, and the module is then bit-identical to
     // what it was: every existing measurement, netlist and proof
@@ -200,3 +206,5 @@ module soc_apb_bridge #(
 `endif
 
 endmodule
+
+`default_nettype wire

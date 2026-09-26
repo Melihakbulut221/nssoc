@@ -15,13 +15,11 @@ a clone, the mirror, CI -- there is nothing to compare against and the
 comparison honestly skips, while the completeness and shape checks
 still run.
 
-WHY THESE FILES ARE NOT IN docs/80-artefact-digests.tsv. That file's
-own header says every path in it is gitignored on purpose: its job is
-to pin what git cannot see. These files are tracked, so git pins them
-already -- an edit is a diff -- and listing them there would be a
-second, weaker copy of a guarantee git gives for free. What git cannot
-tell you is whether the committed copy still matches the run tree it
-was taken from, and that is what this file checks.
+CORRECTED 2026-09-19: the former paragraph said these tracked records
+should not be in docs/80-artefact-digests.tsv. Review F6 explicitly
+requires them there. They are now covered by its docs-evidence group;
+test_artefact_digests.py checks their path set, size and SHA-256. This
+file independently compares the records with live runs where available.
 """
 
 import json
@@ -50,6 +48,31 @@ NAMES = ("metrics.json", "resolved.json")
 CASES = [(tag, name) for tag in sorted(RUNS) for name in NAMES]
 
 
+def test_missing_artifact_identity_never_borrows_a_different_runs_digest(
+        tmp_path, monkeypatch):
+    """Same basename is insufficient evidence, even with identical run suffixes."""
+    monkeypatch.setattr(ev, "ROOT", tmp_path)
+    manifest = tmp_path / "docs/80-artefact-digests.tsv"
+    manifest.parent.mkdir()
+    digest = "a" * 64
+    manifest.write_text(
+        "# recorded identities\npath\tbytes\tsha256\n"
+        f"runs/original/final/nl/soc_top.nl.v\t12\t{digest}\n")
+    relative = "runs/original/final/nl/soc_top.nl.v"
+    message = ev.artifact_identity(tmp_path / relative)
+    assert digest in message and relative in message and "12 bytes" in message
+    assert "new build is a separate measurement" in message
+    for different in ("runs/changed/final/nl/soc_top.nl.v",
+                      "runs/original-copy/final/nl/soc_top.nl.v"):
+        message = ev.artifact_identity(different)
+        assert digest not in message
+        assert "No historical SHA-256" in message and different in message
+    with manifest.open("a") as f:
+        f.write(f"{relative}\t12\t{'b' * 64}\n")
+    with pytest.raises(AssertionError, match="Conflicting recorded identities"):
+        ev.artifact_identity(relative)
+
+
 @pytest.mark.skipif(not RUNS, reason="scripts/collect_evidence.py is not in this tree")
 @pytest.mark.parametrize("tag,name", CASES, ids=lambda v: v)
 def test_every_cited_run_has_its_evidence_committed(tag, name):
@@ -65,7 +88,7 @@ def test_every_cited_run_has_its_evidence_committed(tag, name):
 
 
 @pytest.mark.skipif(not RUNS, reason="scripts/collect_evidence.py is not in this tree")
-def test_the_record_matches_the_run_tree_where_both_exist():
+def test_records_match_available_originals_including_recovered_snapshots(historical_snapshot):
     """A record that has drifted from its run is a record of nothing.
 
     ONE test and not thirty. The first version parametrised over every
@@ -83,20 +106,21 @@ def test_the_record_matches_the_run_tree_where_both_exist():
             live = base / ("final/metrics.json" if name == "metrics.json"
                            else "resolved.json")
             if not live.is_file():
+                recovered = historical_snapshot / live.relative_to(ROOT)
+                if recovered.is_file():
+                    # Original raw file restored from a separately hash-pinned
+                    # snapshot. This comparison is not a current physical rerun.
+                    recorded = ev.recorded_path(tag, name)
+                    assert recovered.read_bytes() == recorded.read_bytes(), (
+                        f'Recovered original differs from committed record: {tag}/{name}')
+                    checked.append('recovered original: %s/%s' % (tag, name))
+                    continue
                 absent.append("%s/%s" % (tag, name))
                 continue
             # evidence.load raises on a mismatch, naming both paths.
             got = ev.load(tag, name, live)
             assert got is not None and got.is_live
             checked.append("%s/%s" % (tag, name))
-    if not checked:
-        pytest.skip(
-            "no run tree for any of the %d cited runs is on this machine, "
-            "so there is nothing to compare the records against. runs/ is "
-            "gitignored build output; the records are what make the claims "
-            "checkable here, and this comparison is what a machine holding "
-            "the runs does. %d files were looked for."
-            % (len(RUNS), len(absent)))
     assert checked, "nothing compared"
 
 

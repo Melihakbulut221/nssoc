@@ -1,0 +1,302 @@
+{
+  "date": "2026-09-21",
+  "parent_commit": "1d99a78b045a4c9be9899cd1cf24bd3e5ea8c255",
+  "status": "PASS",
+  "scope": "CAN banked byte-offset migration and additional pin regressions. No new native boot, mapped-netlist equivalence or layout signoff is claimed.",
+  "sources": {
+    "Makefile": "36751e9d22ef5de3718f7c8977bc0bdddf6b092d802468e8a07ff593cc95629c",
+    "regmap/can.yaml": "366a79aac1c2219239384100dcedeb52c87466a321878b47739ff76a9c11af00",
+    "regmap/generate_can.py": "d61232a65ddd729d73629524bd3265f94013c1fa51702cf94909eeea358a21a2",
+    "regmap/generate_peripherals.py": "ba8f3fb3bb72c3591509c7da99ffa00f84e0ca50c3deef35be9cc40775981ca7",
+    "hw/soc/flow/prepare_interfaces.py": "f895137c8f16427631dcca00ccbcfa70e1c44e685762096516edbb6a799df1cd",
+    "hw/soc/flow/interface_profile.py": "fb1dc8b55c11804bb8a2aba6bbad66ae5b4167d673f8dd72457e84716b619cf1",
+    "hw/soc/tb/sw/soc_can_regs.h": "0127e7768d69b15078006ed98e72609ea88fe98cb90972892a6f593128bf8661",
+    "hw/soc/tb/sw/soc_interfaces.h": "5eae880a9d7827c47efa9a0eea6ceb9a17234e7b110eb77c58d34934046693dc",
+    "hw/soc/tb/sw/test_ibex.c": "11888d1c7fc00be943b49aafeb8dfaba7d0fc8b7d7427bab4289874ae931fcb6",
+    "sw/golden/can_regs_gen.py": "67d3b7becb27549ff0a0f343fee0c3e30cfb2708b96d9fe7a1e73158693ad0f6",
+    "hw/soc/tb/cocotb/peripheral_registers.py": "47ad09c78134c632493a0c98a01ff636e4ca5d798dff13409c7a55d72d422f6e",
+    "hw/soc/tb/cocotb/test_soc_interfaces.py": "4f57c23b79362af27ada48e910522b7f1fe4647ca7096130e34c268a2545bc77",
+    "sw/tests/test_can_regmap.py": "60167b5c676bfb1ccac5679ed5a27ef9aaadc0017c65124249aeaf27ee9f9d66",
+    "sw/tests/test_interface_profiles.py": "ac82ce3c82f65d054eb6175650be026a1d4dd3a8c8b6a4e7b158f508c60bdb56",
+    "hw/soc/lint-policy.json": "8522d24c92ac84fb78cc52d1a52bf71fcb706a0a906b8c411426cce47c6a2ece",
+    "scripts/collect_prepared_sources.py": "af66bafde75ebc95f0ec6557e3552403747ddf1608af17e299447588dafce23f"
+  },
+  "abi": {
+    "semantic_offsets": 70,
+    "banks": 8,
+    "register_read_bits": 5,
+    "write_fifo_side_effect_address_bits": 8,
+    "bank_aliases_preserved": true,
+    "bank_map_sha256": "8e92918e15ae7edc7cd0b194494d6b46b53512c021e3e176729d9c0a6594b19b"
+  },
+  "identity_checks": {
+    "prepared_modules": [
+      "can_registers.v",
+      "can_top.v",
+      "can_fifo.v"
+    ],
+    "method": "Independent constant expansion restores identical pinned tokens; generator also inverse-round-trips every replacement to exact original bytes before adding localparams.",
+    "existing_pin_tests": 2,
+    "normalized_test_ast_sha256": "8a326b5a834315c03fa6b579e18e7024787955e1b5d1b20038f4cdebe850297f"
+  },
+  "upstream": {
+    "can": {
+      "commit": "470f0e7ab174dfef01a05f5d5ad01f28f6f4dc17",
+      "clean": true
+    },
+    "verilog-i2c": {
+      "commit": "a65be4045e898a52e791c6ee71f8f79a7cd2e129",
+      "clean": true
+    },
+    "verilog-ethernet": {
+      "commit": "77320a9471d19c7dd383914bc049e02d9f4f1ffb",
+      "clean": true
+    },
+    "spacewire_reloaded": {
+      "commit": "450d2254bb980dc08825a575e205acbbefbc8a69",
+      "clean": true
+    }
+  },
+  "firmware": {
+    "base": {
+      "build_flags": "-DINTERFACE_DEMO",
+      "images": {
+        "app.bin": {
+          "sha256": "c053d07d8039ed0ec75d8bb57857d88cdcc0526aefd210d2e04c909ef2aad83e",
+          "bytes": 8596,
+          "byte_identical": true
+        },
+        "test_soc.bin": {
+          "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+          "bytes": 3084,
+          "byte_identical": true
+        },
+        "flash0.hex": {
+          "sha256": "d8069e37f24286c50ff86631d83aed55c15a9faa59b725397ed8ce3dad4a2b91",
+          "bytes": 393216,
+          "byte_identical": true
+        },
+        "test_soc.hex": {
+          "sha256": "fca30e36eccece5791ba994651405d12519df95a1cff2416d89447d873b4f502",
+          "bytes": 18144,
+          "byte_identical": true
+        }
+      }
+    },
+    "full": {
+      "build_flags": "-DINTERFACE_DEMO -DSOC_LGPL_INTERFACES",
+      "images": {
+        "app.bin": {
+          "sha256": "ebcbb9f6af26fa3ff79bf9df066edd94d52edd6599ecbbbd32950d008895a943",
+          "bytes": 8852,
+          "byte_identical": true
+        },
+        "test_soc.bin": {
+          "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+          "bytes": 3084,
+          "byte_identical": true
+        },
+        "flash0.hex": {
+          "sha256": "0e177aa4b2a8e475049b106948874d8b76d22c72408c479c64bf716ab073db4b",
+          "bytes": 393216,
+          "byte_identical": true
+        },
+        "test_soc.hex": {
+          "sha256": "fca30e36eccece5791ba994651405d12519df95a1cff2416d89447d873b4f502",
+          "bytes": 18144,
+          "byte_identical": true
+        }
+      }
+    }
+  },
+  "pin_tests": {
+    "base": {
+      "command": "PATH=hw/soc/tools/oss-cad-suite/bin:hw/.venv/bin:$PATH make -C hw/soc/tb/cocotb -f Makefile.soc_interfaces SOC_INTERFACE_PROFILE=base SIM_BUILD=<fresh-build> COCOTB_RESULTS_FILE=<results.xml>",
+      "passed": 8,
+      "skipped_other_profile": 6,
+      "failed": 0,
+      "xml": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-base-final.xml",
+        "sha256": "7310da508bec113944807c95042156885da49b5e1faf1ac55aa70fc3701630db",
+        "bytes": 3996
+      },
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-base-final.log",
+        "sha256": "31b3658c524a334df533610aa7e58e38fd65a2074b19acb264e61a74add0878d",
+        "bytes": 9992
+      }
+    },
+    "full": {
+      "command": "PATH=hw/soc/tools/oss-cad-suite/bin:hw/.venv/bin:$PATH make -C hw/soc/tb/cocotb -f Makefile.soc_interfaces SOC_INTERFACE_PROFILE=full SIM_BUILD=<fresh-build> COCOTB_RESULTS_FILE=<results.xml>",
+      "passed": 13,
+      "skipped_other_profile": 1,
+      "failed": 0,
+      "xml": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-full-final.xml",
+        "sha256": "2c3777c2dc5feb65c577d70b7e3adb6bb127f30d92a59d803a9cf8e91a538c44",
+        "bytes": 4032
+      },
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-full-final.log",
+        "sha256": "5a10f143ba17d47f2b4a79756680a0bb72cf5189f5ae9094f28fe0bc1bece45c",
+        "bytes": 10681
+      }
+    }
+  },
+  "lint": [
+    {
+      "profile": "base",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-lint-base-ready/result.json",
+        "sha256": "3b7d00d0a2de633b24f99e19355ad08f2bb98e0760f95cb175c5532020187d22",
+        "bytes": 148966
+      },
+      "status": "PASS_WITH_RECORDED_WARNINGS"
+    },
+    {
+      "profile": "full",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-lint-full-ready/result.json",
+        "sha256": "324ba43969021fb3cd7637452519617dc79f9ea825f09f6d5d6aefdb4700d2a6",
+        "bytes": 155413
+      },
+      "status": "PASS_WITH_RECORDED_WARNINGS"
+    },
+    {
+      "profile": "base-sram-logic",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-lint-base-sram-ready/result.json",
+        "sha256": "c524a268fb47b9bcc21ae88f5a94273d01201924733baec809d1ffd8f3098150",
+        "bytes": 155227
+      },
+      "status": "PASS_WITH_RECORDED_WARNINGS"
+    },
+    {
+      "profile": "full-sram-logic",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-lint-full-sram-ready/result.json",
+        "sha256": "ad415d9f1dd5e4e994368faf49510c9c737485735ba4877ec8fe2138b0203608",
+        "bytes": 161675
+      },
+      "status": "PASS_WITH_RECORDED_WARNINGS"
+    }
+  ],
+  "lint_line_review": [
+    {
+      "profile": "full",
+      "warning_count": 1015,
+      "relocated": 324,
+      "new_warning_messages": 0,
+      "method": "Every prior warning remains at the identical unchanged source line via SequenceMatcher; code/path/column/message/multiplicity unchanged"
+    },
+    {
+      "profile": "full-sram-logic",
+      "warning_count": 1040,
+      "relocated": 324,
+      "new_warning_messages": 0,
+      "method": "Every prior warning remains at the identical unchanged source line via SequenceMatcher; code/path/column/message/multiplicity unchanged"
+    }
+  ],
+  "lint_warning_counts": {
+    "base": 987,
+    "full": 1015,
+    "base-sram-logic": 1012,
+    "full-sram-logic": 1040
+  },
+  "initial_lint_failures": "Retained under can-offset-lint-* before final; rejected changed source hashes/line positions. Every relocated diagnostic was reviewed against identical original source text, without deleting or waiving warnings.",
+  "targeted_guards": {
+    "passed": 99,
+    "failed": 0,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-regmap-guards-final.log",
+      "sha256": "6c74d2a50b0c66f428fcd827f4921c01f288e5303b067f452d7a339e99ebb6fd",
+      "bytes": 179
+    },
+    "scope": "CAN map, interface profiles, peripheral map and lint guards"
+  },
+  "elaboration": {
+    "base": {
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-elaboration-base.log",
+        "sha256": "32d5cba676e1d428a4c6588409b9e94d0aedecf5d06928dc05ce57e72e44287a",
+        "bytes": 124
+      },
+      "scope": "Yosys whole-SoC elaboration; SRAM blackboxes, no mapped-netlist result. Base additionally checks the Ibex fault-port patch."
+    },
+    "full": {
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/can-offset-elaboration-full.log",
+        "sha256": "c3b74a76a4e201cbadd409e8c12f1ea40e9ddfdc98363765bb5a89c7595ac0e9",
+        "bytes": 124
+      },
+      "scope": "Yosys whole-SoC elaboration; SRAM blackboxes, no mapped-netlist result. Base additionally checks the Ibex fault-port patch."
+    }
+  },
+  "additional_hal_guards": {
+    "passed": 22,
+    "failed": 0,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-hal-tests.log",
+      "sha256": "0b84182d2fb719266800649f3bbc7a26497ef292ba354a9c76ddfb69e6cbe112",
+      "bytes": 99
+    }
+  },
+  "post_license_and_inventory_guards": {
+    "passed": 22,
+    "failed": 0,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-post-license-tests.log",
+      "sha256": "54115cc09e2be14e3eb5c5826395ecc8edf05bbedc975848ee67f75de51d4a58",
+      "bytes": 99
+    }
+  },
+  "prepared_sources": {
+    "path": "docs/evidence/prepared-sources-can-bank-20260921.json",
+    "sha256": "3ab460227a07d708d71954953d8e512a296e893acc140b917813258c8290e1c3",
+    "bytes": 14067
+  },
+  "prepared_replay": "Fresh actual sv2v conversion and base/full interface preparation byte-match all 38 retained files; archive includes original upstream licensing notices. Old pre-migration snapshot remains intact.",
+  "make_entrypoint": {
+    "passed": true,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-make-prepare.log",
+      "sha256": "787b110026b802c1f22e988836ebe5c113c782c614c59ac57d12472848313602",
+      "bytes": 1873
+    },
+    "tests_passed": 41,
+    "tests_log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-entrypoint-tests.log",
+      "sha256": "8150cf4fe0d85c2cf49401c21ce452afcd361aa0aa47a66eceb9e23e6a587a30",
+      "bytes": 99
+    }
+  },
+  "broad_python_attempt": {
+    "passed": 1288,
+    "failed": 3,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-full-python.log",
+      "sha256": "b0c7bf3fde6d1dbec2f880d94b24ebd231cf506db96f65cc9bc4d9166f295e7f",
+      "bytes": 7454
+    },
+    "status": "FAIL",
+    "disposition": "Evidence digest was stale during publication and is corrected in the 204-test publication pass. Two historical Yosys 0.33 census expectations fail with pinned digital Yosys 0.67+146; both pass on their documented 0.33 mapper. These are retained tool-profile failures, not a green aggregate."
+  },
+  "historical_mapper_followup": {
+    "passed": 2,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-historical-mapper-controls.log",
+      "sha256": "0a0ff8027a556e0f27455c1a85dd4030bf8aa79d75c99b740a15fa37598956c2",
+      "bytes": 113
+    },
+    "tool": "Yosys 0.33 (git sha1 2584903a060)"
+  },
+  "publication_followup": {
+    "passed": 204,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/can-offset-publication-final.log",
+      "sha256": "acf6b97cb7af2827476e708b6754dc01d5438151c5ee818af6fe07d93ba84151",
+      "bytes": 260
+    }
+  },
+  "remaining": "Register bit-field schema, broader firmware/coverage work, final physical timing and electrical/protocol hardware qualification remain open."
+}
