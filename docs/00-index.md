@@ -493,6 +493,7 @@ rather than from a beam.
 | [docs/99-pcie-phy-development.md](99-pcie-phy-development.md) | Custom SG13G2 TX cell and four-cell bank, measured 8 GT/s pre-layout simulations, numerical warnings and physical-integration gates. |
 | [docs/100-routed-closure.md](100-routed-closure.md) | Current routed setup/electrical failures, source-bound repair checks and full-transistor DRC/LVS work. |
 | [docs/101-sram-characterization.md](101-sram-characterization.md) | Local SRAM waveform characterization, model identity controls, extracted-parasitic work and independent production checks. |
+| [docs/102-remaining-product-gaps.md](102-remaining-product-gaps.md) | 26 September source-bound audit of both reviews, live characterization, protocol/physical blockers and external manufacturing requirements; not signoff. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 
