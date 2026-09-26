@@ -82,9 +82,18 @@ def read_categories(report):
         categories[name] = category.findtext("description") or ""
     if not categories:
         raise ValueError("Missing DRC category inventory")
-    cells = {cell.findtext("name") for cell in root.findall("cells/cell")}
+    cells = set()
+    for cell in root.findall("cells/cell"):
+        name, variant = cell.findtext("name"), cell.findtext("variant")
+        if not name:
+            raise ValueError("Missing DRC cell name")
+        qualified = name + (":" + variant if variant else "")
+        if qualified in cells:
+            raise ValueError("Duplicate DRC cell identity")
+        cells.add(qualified)
+    category_refs = {"'" + key + "'" for key in categories}
     for item in root.findall("items/item"):
-        if (item.findtext("category") not in {"'" + key + "'" for key in categories}
+        if (item.findtext("category") not in category_refs
                 or item.findtext("cell") not in cells):
             raise ValueError("Marker references an unknown category or cell")
     return categories

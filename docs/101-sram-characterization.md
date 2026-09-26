@@ -675,9 +675,24 @@ per side), seven density categories, 31 antenna categories and the eleven
 unshielded wide-line rules. The completed supplemental run uses eight threads,
 50 µm tiles and a 30 µm border; its independent six-case geometry audit passes.
 The earlier flat and two-thread full-core supplement timeouts remain failures.
-The fresh 443-category FEOL/geometry partition also passes with zero markers;
-the remaining 117-category BEOL partition is still running. The combined
-560-category main verdict remains pending until that independent result completes.
+The fresh 443-category FEOL/geometry and 117-category BEOL partitions now
+both pass: **all 560 native main categories have zero markers**. The
+[physical checkpoint](evidence/sram-repaired-core-physical-20260926.json) binds
+all results to that exact GDS; the
+[lossless GDS/report archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-repaired-core-physical-20260926.tar.xz)
+retains the actual candidate, raw reports and source identities. This is a
+32-SRAM digital core, not a complete pad-framed product or manufacturing approval.
+
+The original V4 controller still records its final error because it required
+the earlier failed two-thread supplement. The independent finalizer verifies
+every complete native report, the exact 560-category inventory, LVS database,
+GDS hash and the successful separately validated eight-thread supplement.
+No failed or timed-out measurement is promoted. The report parser was updated
+only after both physical consumers reached terminal states: exact declared
+`name:variant` cell identities are now supported, with all markers retained.
+Thirty-one public parser tests pass, including nine new cases; the two actual
+failing macro reports retain their 16/8 markers, and ten corrupted reports are
+rejected. Original parser/test source bytes remain explicitly snapshotted.
 
 Both repaired SRAM macros also pass fresh MOS graph and full C-export audits:
 37,076 DP and 202,800 SP transistors, including all named ports, with deliberate
@@ -757,7 +772,7 @@ includes the archive hash and every member hash; the
 [lossless waveform/model archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-repaired-dp-tt-20260926.tar.xz)
 contains the actual measured circuit, stimuli, log and waveform. Pinned external
 PDK, OSDI and simulator dependencies are identified separately; no tool binary is
-redistributed. SS and FF transistor-corner runs follow from this passing TT result.
+redistributed. The completed SS and FF transistor-corner results are listed below.
 
 A separate 25 ps maximum-step replay is running to measure numerical sensitivity
 for all forty observed transitions. A dependent one-arc setup measurement waits
@@ -768,3 +783,34 @@ sample-count gate. An explicitly separate 50 ps replay uses the corresponding
 40-sample minimum and rejects four waveform faults; the queued 25 ps campaign
 still requires at least 80 stable samples. These are pending measurements, not
 completed setup tables or Liberty qualification.
+
+### Fresh repaired-DP transistor corners
+
+Both additional 78 ns corner patterns complete with six reads, two addresses,
+byte writes, hold checks and both deliberately corrupted-wave checks passing.
+Each uses the exact same 37,076-MOS, 202,674-capacitor circuit, 100 ps input ramps,
+5 fF output loads and 50 ps maximum timestep. Each point measures twenty rising
+and twenty falling transitions.
+
+| Transistor corner | Supply / temperature | Maximum delay | Maximum 20%–80% slew | Supply energy, 8–78 ns |
+|---|---|---|---|---|
+| TT | 1.20 V / 25 °C | 2.642352 ns | 0.242744 ns | 118.176514 pJ |
+| SS | 1.08 V / 125 °C | 4.406603 ns | 0.422727 ns | 90.134740 pJ |
+| FF | 1.32 V / −40 °C | 1.711751 ns | 0.154099 ns | 145.967020 pJ |
+
+The [corner record](evidence/sram-repaired-dp-corners-20260926.json) and
+[lossless corner waveforms](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-repaired-dp-corners-20260926.tar.xz)
+reference the already published TT circuit/model archive and preserve exact
+corner stimuli, logs and hashes. These change transistor PVT with nominal
+geometric capacitance; they are not qualified RC process corners. The generic
+energy helper retains its historical “schematic” scope string; the actual
+measured circuit contains all stated capacitors. Energy is total pattern supply
+energy, not per-arc internal power or isolated leakage. Distributed resistance,
+complete Liberty tables, final SoC timing and manufacturing acceptance stay open.
+
+The [dated local-method checkpoint](evidence/sram-local-methods-20260926.json)
+and its [source archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-local-methods-20260926.tar.xz)
+preserve 345 source/record members, including geometry repair, verification,
+prior failed supplements, parser source history and code for pending simulations.
+Pending-job code is not evidence of completed execution. The full SP, step
+sensitivity and one-arc setup campaigns remain active and are not frozen as passes.

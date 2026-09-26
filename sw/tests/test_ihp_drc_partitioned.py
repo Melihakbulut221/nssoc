@@ -136,3 +136,41 @@ def test_mutated_input_rejected(tmp_path):
     gds.write_bytes(b"replacement")
     with pytest.raises(ValueError, match="Input changed"):
         drc.verify_inputs(expected)
+
+
+@pytest.mark.parametrize("cells,reference", [
+    ("<cell><name>macro</name><variant>1</variant></cell>", "macro:1"),
+    ("<cell><name>macro</name><variant>1</variant></cell>"
+     "<cell><name>macro</name><variant>2</variant></cell>", "macro:2"),
+    ("<cell><name>macro</name></cell>"
+     "<cell><name>macro</name><variant>1</variant></cell>", "macro"),
+])
+def test_declared_variant_cell_references_are_supported(tmp_path, cells, reference):
+    report = tmp_path / "variants.lyrdb"
+    text = f"""<report-database><categories><category><name>M3.e</name>
+        <description>wide spacing</description></category></categories>
+        <cells>{cells}</cells><items><item><category>'M3.e'</category>
+        <cell>{reference}</cell></item></items></report-database>"""
+    report.write_text(text)
+    assert drc.read_categories(report) == {"M3.e": "wide spacing"}
+    assert report.read_text() == text
+
+
+@pytest.mark.parametrize("cells,reference,reason", [
+    ("<cell><name>macro</name><variant>1</variant></cell>", "macro", "unknown"),
+    ("<cell><name>macro</name><variant>1</variant></cell>", "macro:2", "unknown"),
+    ("<cell><name>macro</name></cell>", "macro:1", "unknown"),
+    ("<cell><name/></cell>", "", "Missing"),
+    ("<cell><name>macro</name></cell>" * 2, "macro", "Duplicate"),
+    ("<cell><name>macro</name><variant>1</variant></cell>" * 2,
+     "macro:1", "Duplicate"),
+])
+def test_undeclared_and_duplicate_variant_identities_are_rejected(
+        tmp_path, cells, reference, reason):
+    report = tmp_path / "bad-variants.lyrdb"
+    report.write_text(f"""<report-database><categories><category><name>M3.e</name>
+        <description>wide spacing</description></category></categories>
+        <cells>{cells}</cells><items><item><category>'M3.e'</category>
+        <cell>{reference}</cell></item></items></report-database>""")
+    with pytest.raises(ValueError, match=reason):
+        drc.read_categories(report)

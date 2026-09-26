@@ -27,12 +27,12 @@ combined signoff result. The [machine-readable status](docs/project-status.json)
 is generated from [selected evidence records](docs/status-sources.json).
 Check it with `python3 scripts/project_status.py`; update it with `--write`.
 
-The [26 September SRAM continuation](docs/101-sram-characterization.md#8-26-september-fill-route-grid-repair-and-additional-sp-corners)
-repairs six off-grid routes and adds fill. The changed 32-SRAM core passes fresh
-full transistor LVS, density and antenna checks; complete main DRC remains open.
-Both SRAM transistor topologies are independently matched. DP capacitance-only
-and SP schematic patterns pass at TT/SS/FF. Distributed RC, complete timing/power
-libraries, final SoC timing and manufacturing approval remain open.
+The [26 September SRAM continuation](docs/101-sram-characterization.md#current-rail-and-pin-candidate-and-process-reference)
+repairs route grids, fill and SRAM wide-line gaps. The exact 32-SRAM core passes
+560-category main DRC, density, antenna, supplemental spacing and transistor LVS.
+Fresh DP capacitance-only patterns pass at TT/SS/FF; fresh SP runs remain pending.
+Qualified coupled RC, complete SRAM timing/power libraries, final SoC timing,
+PCIe PHY/padframe integration and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
 profile-specific layout evidence. **PCIe Gen3 x4 remains open:** the tested
