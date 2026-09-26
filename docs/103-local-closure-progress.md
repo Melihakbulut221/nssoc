@@ -536,9 +536,26 @@ The new prepared-source archive is independently byte-replayed and available as
 a hash-checked release asset. The initial stale-source-fixture regression fails
 and remains recorded separately; it is not counted as a passing campaign.
 
-All three [release assets](evidence/eth-mbist-assets-20260926.json) have been
+All four [release assets](evidence/eth-mbist-assets-20260926.json) have been
 fully downloaded, SHA-256/size verified and checked again anonymously. The
 functional source and CI source are separately identified. These digital
 integration results are published; new full-interface routing and independent
 layout DRC/LVS are still running locally. SRAM Liberty/RC, final STA and
 manufacturing approval remain separate open gates.
+
+The [subsequent local replay](evidence/local-ci-drc-parser-20260926.json) of
+`ffe1ba7` passes **1,848 pytest cases with zero failures/errors/skips** and the
+same 20 front-door checks (six absent historical physical trees remain explicit
+skips). The earlier `b9b59fe` campaign remains a separate historical receipt.
+The native DRC report parser now accepts declared bare category identifiers as
+well as quoted identifiers, while rejecting unknown or malformed references.
+This preserves actual off-grid and acute-angle failures instead of failing to
+parse their report. Seven new regression tests cover these cases.
+
+The native FEOL/geometry rules are split into four sequential processes to bound
+memory. On both a clean layout and a deliberately faulty layout, their union
+exactly reproduces the complete 443-category run, including all 13 fault marker
+geometries. No rule or marker is waived. These small control layouts validate
+the partitioning method; they do not constitute acceptance of the new core GDS.
+The fourth asset preserves this proof, the old parser/control failure, the
+intermediate missing-digest CI failure and the complete successful replay.

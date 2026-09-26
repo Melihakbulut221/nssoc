@@ -191,10 +191,17 @@ python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/mbist-chip-ass
 ports of all sixteen Ethernet SRAM macros, chip reset interlocks, real MAC
 traffic and rejected faulty adapters. [Fresh local CI](local-ci-eth-mbist-20260926.json)
 records 1,841 pytest passes with zero test skips, plus six separate historical
-physical-run gate skips. [Three verified assets](eth-mbist-assets-20260926.json)
+physical-run gate skips. [Four verified assets](eth-mbist-assets-20260926.json)
 include full logs, source snapshots, initial failures and the independently
 replayed prepared-source bundle. New layout verification remains pending.
 
 ```sh
 python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/eth-mbist-assets-20260926.json --out hw/soc/out/eth-mbist-evidence
 ```
+
+[The subsequent parser/CI replay](local-ci-drc-parser-20260926.json) records
+1,848 pytest passes at `ffe1ba7`, zero test skips and the same six historical
+physical gate skips. Native clean/faulty control layouts establish exact rule
+category and marker-geometry equality for the four FEOL/geometry partitions.
+The fourth asset includes these controls and the preserved earlier failures;
+full new-core physical acceptance remains pending.
