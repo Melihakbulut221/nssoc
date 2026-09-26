@@ -27,14 +27,17 @@ combined signoff result. The [machine-readable status](docs/project-status.json)
 is generated from [selected evidence records](docs/status-sources.json).
 Check it with `python3 scripts/project_status.py`; update it with `--write`.
 
-The [25 September 32-SRAM core integration](docs/100-routed-closure.md) now
-passes full transistor LVS including all memory interiors: **130 matching
-circuits**, **5,129,488 primitive devices per side**, and no extraction
-diagnostics. This is a separate connectivity candidate; its SRAM timing
-characterization, final timing and manufacturing gates remain open.
-The [local characterization campaign](docs/101-sram-characterization.md) records
-measured transistor timing/energy, model-sharing controls and independent
-physical checks, with incomplete qualification explicitly separated.
+The [26 September SRAM continuation](docs/101-sram-characterization.md#8-26-september-fill-route-grid-repair-and-additional-sp-corners)
+repairs six off-grid routes and adds density fill. The exact changed 32-SRAM
+core passes fresh full transistor LVS (**130 matching circuits, 5,129,488
+simplified primitives per side**), density and antenna checks. Full main DRC
+remains open while the remaining metal categories run.
+
+Both SRAM transistor topologies are independently matched. The DP simulation
+with every extracted layout capacitance passes its nominal read/hold/byte-write
+pattern; SP schematic measurements cover TT, SS/hot and FF/cold. These are
+scoped measurements. Distributed RC, complete timing/power libraries, final
+SoC timing and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
 profile-specific layout evidence. They are not the complete GR801 interface

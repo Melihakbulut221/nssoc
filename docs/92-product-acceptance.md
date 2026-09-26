@@ -38,6 +38,17 @@ hardware merely to increase apparent coverage.
 
 ## Product release gates
 
+**Manufacturing authority, checked 26 September 2026:** IHP's
+[official PDK status](https://github.com/IHP-GmbH/IHP-Open-PDK#current-status----preview)
+still describes the open release as a preview that is not intended for
+production. A local passing report cannot supply foundry approval. The
+[official open-silicon MPW service](https://dk.ihp-microelectronics.com/OpenSourceRequest.php)
+is a separate submission route. No application, accepted fabrication slot,
+foundry review result or silicon qualification is recorded for this candidate.
+The local work continues toward a reviewable engineering package; manufacturing
+approval stays open until its actual external evidence exists.
+
+
 **25 September SRAM integration:** the [32-SRAM core candidate](evidence/sram-chip-integration-20260925.json)
 passes full transistor LVS with all SRAM interiors included: 130 matching
 circuit pairs, 5,129,488 primitives per side and no extraction diagnostics.
@@ -58,6 +69,22 @@ GDS correction passes independent antenna checking (31 categories, zero markers)
 but complete density checking fails with 177 markers. Main DRC remains
 unverified: the 12 and 16 GiB attempts exhaust address space during connectivity
 extraction. Complete records and scope are in docs/101.
+
+**26 September continuation:** the repaired, filled 32-SRAM core passes fresh
+full transistor LVS (130 matching circuits, 5,129,488 primitives per side),
+density and antenna. Both repaired SRAM macros separately pass complete main
+DRC and transistor LVS. Additional full-SP SS/hot and FF/cold schematic patterns
+pass. The first full-core main attempt on this new geometry reaches its 8 GiB
+limit in angle checking. The 16 GiB retry passes its complete 443-category
+FEOL/geometry partition with zero markers. Its original BEOL run was explicitly
+superseded, and an independent deep-mode attempt timed out. The full BEOL run
+continues with smaller tiles, unchanged rule bodies and unchanged borders.
+Independent checks establish both corrected SRAM transistor topologies and
+preserve every source capacitor through a separately repaired Magic serializer.
+Distributed RC qualification remains open. These results supersede the older
+candidate's density failure, but do not close full characterization, extracted
+STA or manufacturing approval.
+[docs/101](101-sram-characterization.md) records the exact scopes.
 
 **23 September routed update:** [ECO24 detailed routing and fresh nominal-RC
 extraction](evidence/eco24-extracted-timing-20260923.json) completed. Slow setup
@@ -93,7 +120,7 @@ remain historical.
 | Gigabit Ethernet | GMII MAC and native SRAM packet/CPU tests exist; [docs/90](90-gigabit-ethernet.md). ECO22 passes setup/hold in three Liberty corners with nominal RC; [record](evidence/ethernet-eco22-extracted-20260920.json). Electrical violations remain. The newer IRQ/logic-ROM candidate needs its own closure. PHY/pad integration and sustained traffic on hardware remain open. PIO is not a wire-rate DMA claim. |
 | PCIe Gen3 x4 | OPEN: no complete controller/PHY instantiated. A standalone [transaction-layer register backend and DWORD packet adapter](98-pcie-transaction-backend.md) have block, native-cell and formal evidence; neither is connected to soc_top or a PHY. [Custom HBT TX development](99-pcie-phy-development.md) now has 43 pre-layout simulations and a four-cell bank, with ideal-load limitations and numerical warnings requiring review. No PHY GDS/LEF or receiver exists. CRC, DLL/LTSSM and host integration remain absent. [docs/91](91-pcie-gen3-feasibility.md) records researched candidates. An FPGA hard-block wrapper or PIPE placeholder does not satisfy this gate. |
 | Timing | OPEN: all applicable setup/hold, recovery/removal and electrical checks must pass with characterized clocks, corners and I/O budgets. [ECO22 native extraction](evidence/ethernet-eco22-extracted-20260920.json) passes setup/hold in three Liberty corners with nominal RC, but still fails capacitance, slew and fanout. The newer external-IRQ/logic-ROM candidate requires its own extracted checks. Global-route estimates are not extracted signoff. |
-| Physical verification | OPEN overall. The [32-SRAM candidate](evidence/sram-chip-integration-20260925.json) passes full transistor LVS including SRAM interiors, with no skipped pairs or extraction diagnostics. Its independent foundry DRC/density and timing remain open. Historical checks: independent Magic/KLayout DRC, antenna, connectivity, stream XOR and appropriately scoped LVS. SRAM black-box LVS does not verify SRAM transistor interiors. A separate six-diode antenna repair passes its independent check; [record](evidence/ethernet-antenna-repair-20260920.json). The separate [ECO2 antenna check](evidence/ethernet-eco2-extracted-20260920.json) also reports zero, and its [scoped LVS passes](evidence/ethernet-eco2-lvs-20260920.json). Its DRC/XOR remain separate gates. The original baseline passes the updated KLayout main deck; [record](evidence/ihp-full-chip-drc-20260920.json). No failing deck is waived to obtain a green summary. |
+| Physical verification | OPEN overall. The [32-SRAM candidate](evidence/sram-chip-integration-20260925.json) passes full transistor LVS including SRAM interiors, with no skipped pairs or extraction diagnostics. The separately repaired and filled [26 September candidate](101-sram-characterization.md#8-26-september-fill-route-grid-repair-and-additional-sp-corners) passes fresh full transistor LVS, density and antenna checks; its complete main DRC and timing remain open. Historical checks: independent Magic/KLayout DRC, antenna, connectivity, stream XOR and appropriately scoped LVS. SRAM black-box LVS does not verify SRAM transistor interiors. A separate six-diode antenna repair passes its independent check; [record](evidence/ethernet-antenna-repair-20260920.json). The separate [ECO2 antenna check](evidence/ethernet-eco2-extracted-20260920.json) also reports zero, and its [scoped LVS passes](evidence/ethernet-eco2-lvs-20260920.json). Its DRC/XOR remain separate gates. The original baseline passes the updated KLayout main deck; [record](evidence/ihp-full-chip-drc-20260920.json). No failing deck is waived to obtain a green summary. |
 | Pad ring and package | OPEN: compatible I/O/ESD cells, power/ground pads, package/bond plan and board-level budgets. `soc_top` is currently a core block. |
 | DFT and memory test | OPEN: scan/test access, ATPG coverage and usable memory BIST with documented fault model. Parked BIST pins provide no array-test coverage. |
 | Debug and interrupts | One synchronized external machine-interrupt level and vector 11 now have RTL/native-cell CPU evidence; [contract](94-external-interrupt.md). Final physical and fault qualification remain open. Usable halt/inspect/debug access remains unimplemented. |

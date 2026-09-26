@@ -220,3 +220,331 @@ acceptance, and cleanup of a timed-out process whose child ignores SIGTERM.
 Ruff and the document build are checked separately. These software checks
 validate the measurement machinery; they do not replace transistor, timing or
 physical results.
+
+
+## 8. 26 September: fill, route grid repair and additional SP corners
+
+A subsequent local campaign adds 991,043 fill shapes in 35 bounded regions.
+An independent serialized-GDS audit preserves all original device/routing
+geometry, text and instance transforms. Density checking of this filled
+precursor completes with **zero markers**. Its active density is 36.54%;
+Metal1–Metal5 are 38.36%, 38.26%, 40.25%, 46.99% and 46.88%; TopMetal1 and
+TopMetal2 are 42.03% and 42.84%. These measured densities replace the previous
+177-marker failure only for this changed candidate.
+
+A separate grid audit finds six off-grid Metal2 polygons in the generated
+SRAM routes: two in SP512×64 and four in DP256×16. The source-bound repair
+moves their coordinates by at most 2 nm onto the required 5 nm grid. Independent
+comparison of the written GDS proves that these are the only changed polygons;
+the total cell-definition XOR area is 0.00348 µm². A complete local-coordinate
+scan checks 1,998,803 polygons and all instance placements without an off-grid
+result. This geometric audit alone is not DRC acceptance.
+
+Both corrected standalone macros pass the unchanged recommended main deck:
+**560 categories and zero markers each**. Their transistor LVS also passes.
+The exact repaired, filled **full core** independently passes fresh density
+and antenna checks with zero markers, and fresh full transistor LVS with
+**130 matching circuits and 5,129,488 simplified recursive primitives per side**.
+No circuit is skipped. The historical address-swap negative control remains
+bound to its original GDS; it is not presented as a newly repeated test.
+
+Complete main DRC is still being closed. A new execution profile retains all
+37 upstream tables and all recommended rules, running FEOL/geometry in deep
+mode and BEOL in tiling mode. Positive and deliberately faulty controls match
+the complete unchanged deck's category descriptions and exact marker geometry:
+560 categories, respectively zero and three markers. On the full repaired core,
+the first 8 GiB run reaches its address-space limit in the angle table. Its
+415-category partial report has zero markers, but **is not a pass**. The same
+complete profile is retried at 16 GiB with one worker. Its FEOL/geometry
+partition now completes normally: **443 categories, zero markers**, in 4,204.42 s.
+The original 500 µm tiled BEOL attempt was explicitly superseded after its
+long-running Metal1 spacing operation; its incomplete result is not accepted.
+A separate 8 GiB deep-mode attempt reaches its one-hour bound in `M1.e` and
+also has no complete verdict.
+
+A fresh full 117-category BEOL run uses 50 µm execution tiles and the original
+30 µm tile borders. The isolated entrypoint differs only in the tile-size
+setting; all rule bodies, thresholds, selectors and recommended checks match
+the lock. Positive and negative controls retain all 560 category descriptions
+and exactly the same unique error geometries. Overlapping tiles emit one
+duplicate Metal1 error in the faulty control: all five raw markers are retained
+and correspond to the reference's four unique errors. No deduplication or
+waiver is applied to the full-core acceptance, which requires zero raw markers.
+The two-thread full-core attempt was explicitly superseded after the Metal1
+spacing step ran for approximately 50 minutes. Fresh one-versus-eight-thread
+controls have identical complete 117-category inventories and raw marker
+multisets for both the clean and faulty geometries. A bounded eight-thread run
+now uses the same GDS, rule bodies, tile size and borders. The combined main
+DRC gate remains open until every category completes on that exact GDS.
+
+The complete 202,800-MOS SP schematic also completes both additional PVT
+patterns, with the same 100 ps input ramps, 20 fF loads and 50 ps maximum step.
+Each case checks four reads, the byte write, 60 rising and 60 falling transitions,
+and rejects five actual-wave/input corruptions.
+
+| Corner | Maximum delay (ns) | Maximum 20%–80% slew (ns) | Pattern supply energy (pJ) |
+|---|---:|---:|---:|
+| SS, 1.08 V, 125 °C | 3.666113 | 0.513396 | 116.711508 |
+| FF, 1.32 V, −40 °C | 1.446675 | 0.185632 | 182.129327 |
+
+These extend the TT measurements above. They remain schematic points for the
+specified two-address pattern, not complete timing/power tables or extracted
+signoff. Supply energy covers 8–150 ns and includes both switching and leakage.
+
+An isolated KLayout-PEX exporter experiment preserves native terminal provenance
+and reconnects all 24 D/G/S terminals of the eight-MOS bitcell to their extracted
+resistor networks. Independent graph checks reject a wrong terminal and a removed
+resistor branch. All original MOS parameters, capacitances and resistance
+connectivity/values are preserved. Capacitor-only internal nodes and incomplete
+body/tap modeling remain, so this is **not qualified distributed RC**. The
+installed extractor is unchanged; original and modified GPL sources are retained.
+An alternative full-macro extraction using the original IHP Magic technology
+exposes a different problem. Its VIA1/VIA2 import performs a morphological closing
+operation which can join cuts on distinct signals at their legal spacing. The
+full extracted circuit retains 37,076 MOS devices but has 10,258 nets, against
+10,272 in the independent source. Pin annotation polygons are completely within
+the actual drawing geometry; making labels unique does not resolve the mismatch.
+No RC timing result from this original import is accepted.
+
+An isolated copy of the technology removes only the two via-array closing
+sequences while retaining the existing 5 nm import expansion. The installed PDK,
+source GDS, extraction parameter tables and independent DRC/LVS decks remain
+unchanged. With that experimental import, an independent graph proof establishes
+a complete net bijection and exact MOS edge/width/length multiset: **37,076 MOS,
+10,272 nets and all 88 named ports**. Drain/source symmetry is allowed; gates,
+bulk terminals and external pin identities are preserved. No device or net is
+skipped. Normalizing floating-point representations changes dimensions by at
+most 4.44×10⁻¹⁶ µm. A real gate short, a 5 nm width change and swapped output
+ports are each rejected. This qualifies the measured transistor-connectivity
+transformation, not distributed RC, process models or manufacturing.
+
+The same corrected import now also passes the complete SP graph comparison:
+**202,800 MOS, 68,588 nets and all 148 named ports**, with the same three
+short/width/output-swap faults rejected. This independently establishes both
+macro transistor topologies; it does not transfer parasitic qualification.
+
+Four independent via controls now reproduce and isolate the import fault:
+VIA1 and VIA2 each have a separately routed case and an intentional metal bridge.
+All four pass the unchanged recommended 560-category main DRC. The original
+import shorts the separate routes; the corrected import keeps them separate
+while preserving both the real bridges and the actual via connections. The first
+control geometry had an insufficient Metal1 enclosure and correctly failed DRC;
+that failed control is retained alongside the corrected legal geometry.
+
+A separate PSP specialization preserves the extracted AS/AD/PS/PD junction
+parameters and requires an explicit `pre_layout` choice. It matches the untouched
+PDK wrappers for all 158 distinct junction profiles in the full DP extraction,
+plus two zero-AS fallback controls, at TT/SS/FF and both layout settings. DC and
+transient drain/gate currents differ by at most 4.45×10⁻¹⁶ A in positive cases.
+A changed drain junction and a wrong layout-mode choice are both rejected.
+The initial source-junction fault was unobservable because source and body were
+tied; its failed experiment is retained and the corrected control exercises the
+independently pulsed drain. These checks qualify the measured wrapper conversion,
+not extractor accuracy, capacitance coverage or complete SRAM RC timing.
+
+The capacitance export itself exposed another tool limitation: Magic 8.3.623's
+SI formatter writes 79,534 positive capacitances below 1 aF as zero; increasing
+`-y` does not affect this path. An isolated build from upstream commit
+`fd12c39c37f26a0fe6e04698b1011e31b8bd3229` first reproduces every original MOS
+node/parameter and capacitor endpoint/value. Four output statements, covering
+both flat and hierarchical nodal/coupling capacitors, are then changed to write
+double-precision farads. Geometry, extraction coefficients, MOS and resistor
+serialization are unchanged. The first two-statement experiment missed the
+hierarchical path and failed; it remains in the evidence.
+
+The corrected export accounts for **all 202,642 positive capacitors** against
+the original `.ext` file after resolving every alias. There are no zero-valued
+exported capacitors. The 20 zero-valued source nodes and zero substrate entry
+are explicitly counted; no positive source capacitor is omitted. Total source
+capacitance is 27.418462 pF, including 0.026241 pF lost to zero in the original
+formatter. Maximum per-pair export error is 3.125×10⁻²¹ F, within the recorded
+1×10⁻²³ F + 1×10⁻⁵ relative tolerance. Removing a real capacitor or moving its
+endpoint is rejected. This establishes serialization fidelity, not field-solver
+accuracy or conservation after distributed resistance extraction.
+
+The same complete capacitance accounting now passes for the SP macro:
+**821,222 positive capacitors**, no zero-valued exports, 116.687724 pF total,
+and a maximum per-pair rounding difference of 1.5625×10⁻²¹ F. The 18 zero-valued
+source entries are explicitly counted. All 202,800 MOS nodes and junction
+parameters are preserved; removing a capacitor or changing its endpoint is
+rejected. SP-specific junction-profile equivalence also passes DC/transient
+checks at TT/SS/FF in both layout settings, with junction and layout-mode faults
+rejected. These are export/model-conversion checks; SP parasitic timing remains
+separate.
+
+The one-arc DP read-address experiment is also refined: the original −100 ps
+setup point passes, while −125, −150 and −175 ps fail to capture the new word.
+The measured pass/fail bracket is now 25 ps for rising `a2[0]`, TT/1.2 V/25 °C,
+100 ps ramps and 5 fF output load, with a 25 ps maximum integration step. Negative
+setup here means the input crosses 50% after the clock does. This does not close
+other pins, edge directions, loads, slews, PVT corners, hold or extracted timing.
+
+The first original-import RC run timed out after 30 minutes. A longer original
+retry was stopped once the connectivity mismatch was established. Both partial
+results are retained. With the independently checked import, full DP resistance
+extraction completes in 4,749.58 seconds and accounts for all 10,272 original
+nets. The resulting 148,334-resistor / 116,681-capacitor export fails the strict
+RC acceptance check because **259 capacitor values are negative**. No value is
+clipped, removed or silently accepted.
+
+A separate topology-only diagnostic preserves those signed values to isolate
+the fault. Collapsing every resistor reproduces the exact 37,076-MOS graph and
+all 88 ports; deliberately disconnecting a real MOS terminal is rejected.
+There are no unanchored resistor components or capacitor-only nodes. This is
+not a pass for the RC circuit. Projecting all exported capacitors through that
+proved mapping finds **189,054 missing, 20 extra and 10,251 mismatched net pairs**
+against the independently audited C-only matrix. The totals are 43.910525 pF
+versus 27.418462 pF.
+
+Inspection of the pinned Magic source explains the coupling-matrix change:
+`ResReadCapacitor` adds each coupling capacitance to both nodal totals in signal
+mode, `ResDistributeCapacitance` distributes those totals by node area, and
+`efFlatSingleCap` drops coupling attached to a killed original node. The negative
+values need a separate diagnosis; they are not presumed to have the same cause.
+A small-cell reproducer identifies two additional area-allocation defects.
+The single-breakpoint east/west width has the opposite sign to the north/south
+formula. Fixing that line alone still fails: labels spanning several tiles
+also force their common lower-left drive point onto tiles that do not contain
+it. In the NOR control, point (238, 268) is applied to tile (238, 325)–(280, 794),
+producing an area contribution of −2,394 internal units².
+
+An isolated experiment corrects the width sign and only assigns a label point
+to tiles containing it. NOR, flip-flop, 8T bitcell and read/write-block controls
+then have no negative resistance-node area or exported capacitor. Their source
+`.ext` record multisets remain identical, allowing unordered capacitor endpoints.
+All four resistor-collapsed MOS graphs match and all four deliberately disconnected
+terminal controls are rejected. Resistance values and intermediate nodes do change
+with corrected point placement; no resistance-accuracy claim is inferred from the
+graph proof. The fresh full DP extraction now completes with these repairs:
+146,385 positive resistors and 115,837 positive capacitors, no zero components,
+no self-resistors, no unanchored resistor groups and no capacitor-only nodes.
+Its collapsed graph matches all 37,076 MOS and 88 ports, and the disconnected
+terminal control is rejected. The separate capacitor-matrix audit still fails:
+189,054 missing pairs, 20 extra pairs and 10,251 mismatched pairs, with total
+43.910549 pF versus the 27.418462 pF reference. Removing negative capacitances
+does not restore the coupling matrix. Original, failed one-line and diagnostic
+builds and controls are retained.
+
+A source comparison with official Magic 8.3.684, commit
+`4f53bb3091d1e4a9b2009a58f157a8a4331d4c84`, finds that upstream has already
+corrected the single-breakpoint width sign. Its
+[signal-mode coupling substitution](https://github.com/RTimothyEdwards/magic/blob/4f53bb3091d1e4a9b2009a58f157a8a4331d4c84/resis/ResReadExt.c)
+and sub-attofarad SI formatter behavior remain in the retrieved source.
+An isolated build of that exact upstream commit also reproduces SIGSEGV on
+the native two-port wire control, during extraction and before an RC netlist
+exists. The source archive, configure/build/install logs, runtime hashes and
+failed control are retained. No active 8.3.623 runtime or installed PDK was
+replaced. The newer driver/sink implementation is not qualified by this
+failed diagnostic comparison.
+
+The extraction remains unqualified. The published technology's nwell/dnwell
+resistance limitations also remain. The independent full DP simulation with all 202,642 audited layout capacitors
+and no distributed resistance passes its 78 ns TT pattern at 1.2 V / 25 °C,
+100 ps input ramps and 5 fF loads. All read/hold/byte-write checks pass and
+wrong-output / wrong-supply controls are rejected. The maximum measured delay
+is 2.642361 ns; pattern supply energy over 8–78 ns is 118.177575 pJ. These are
+measurements of this capacitance-only netlist, not full distributed-RC signoff.
+The same pattern also passes at SS/hot and FF/cold, using the same nominal
+layout capacitances; these are transistor PVT points, not independent RC corners.
+Each has 20 rising and 20 falling checked transitions and rejects the two faults.
+
+| Corner | Maximum delay (ns) | Maximum slew (ns) | Energy, 8–78 ns (pJ) |
+|---|---:|---:|---:|
+| TT, 1.20 V, 25 °C | 2.642361 | 0.242731 | 118.177575 |
+| SS, 1.08 V, 125 °C | 4.406627 | 0.422697 | 90.135549 |
+| FF, 1.32 V, −40 °C | 1.711762 | 0.154103 | 145.968695 |
+
+The generic energy helper retains its historical “schematic” scope string in
+raw records; the pinned circuit actually contains all audited layout capacitors.
+No raw measurement record is rewritten to change that label.
+
+The full SP capacitance-only transient is running with four simulator threads.
+A full-DP 0–5 ns startup control produces byte-identical voltage/current output
+at one and four threads; elapsed time decreases from 341.970 to 280.886 seconds.
+That limited benchmark justifies the execution change, not complete SP waveform
+equivalence. The slow single-thread SP attempt was explicitly superseded and
+retained without a waveform acceptance result.
+
+The campaign retains every failed or explicitly superseded run. The 105
+intermediate fill GDS payloads are losslessly archived with manifests; the
+original per-file xz streams were independently reconstructed byte-for-byte
+before redundant transport copies were removed. Final campaign publication
+and complete main/PEX outcomes are pending. Full characterization, final SoC
+STA, pad/package qualification and foundry manufacturing approval remain open.
+
+The original two-port sheet-resistance controls terminate with SIGSEGV before
+producing a resistance network, including an independent build of upstream
+8.3.684. A retained backtrace identifies an uninitialized coordinate for an
+aliased port without a canonical `NODE` record. An isolated 8.3.623 experiment
+initializes that coordinate and suppresses redundant alias-port extraction until
+its canonical node exists. It checks all 88 DP and 148 SP logical ports, including
+repeated physical port regions, and the 28 deliberately aliased wire controls.
+Missing/wrong aliases and conflicting port indices are rejected.
+
+The repaired wire experiment then exposes a separate resistor-reader offset:
+a float-valued resistance still receives an obsolete half-unit rounding addition,
+creating a 0.0005 Ω error. Removing that addition makes all 28 rectangular sheet
+controls match the technology's nominal sheet resistance times length/width:
+seven metals, two orientations and two aspect ratios. Wrong values, endpoints
+and a duplicate resistor are rejected. These checks do not calibrate process
+resistivity or qualify contacts, wells, coupling or complete SRAM RC accuracy.
+
+Four actual-cell controls compare the area/label-point runtime with the additional
+alias-port and resistor-reader repairs. Their raw internal node names can differ;
+a complete independent weighted-network comparison instead establishes a unique
+electrical node mapping, exact resistor values/multiplicity and physical MOS
+geometry, terminals and junction parameters. Capacitance differences stay within
+explicit six-significant-digit source-printing intervals. Repeated `RNODE` records
+are counted and summed according to the retained reader implementation, rather
+than discarded. All 16 deliberate lost-resistor, wrong-value, gate and capacitance
+faults are rejected. The earlier strict-string and duplicate-record failures
+remain in the archive. Full-macro RC and capacitance conservation remain separate
+mandatory checks; the known coupling-to-ground substitution is still unqualified.
+The completed full-DP resistor-reader re-export also preserves every MOS and
+capacitor and all 146,385 resistor branches/endpoints, with exactly the expected
+0.0005 Ω correction within the recorded output-rounding intervals. All three
+wrong-value/lost-branch/wrong-endpoint controls are rejected.
+
+The pinned Magic extraction technology explicitly leaves reverse-biased well
+capacitances and nwell/dnwell resistances unspecified and describes fringe
+capacitance approximation. Its MOS channel capacitances are delegated to the
+device model. This campaign therefore preserves the measured nominal wiring
+capacitances and extracted junction geometry, while keeping process-model
+accuracy and substrate-network qualification open.
+
+A further via/lead control exposes an independent RC-corner parser defect.
+The original nominal cases match the published coefficients, but fractional
+TopMetal2 sheet values (14.5 and 7.5 mΩ/square) enter a parser branch that exits
+before registering their resistance class. The high/low corner outputs omit
+that metal's contribution and emit truncation/class-inventory diagnostics.
+A rejected experiment multiplying coefficients and changing `rscale` shows why
+unit rescaling alone is insufficient: exported resistances become ten times
+larger. Both failures remain evidence, with their original logs and outputs.
+
+A separate complete Magic build instead retains sheet coefficients and their
+class serialization as floating-point values. All other process coefficients,
+units and the installed PDK are unchanged. It passes 84 analytic rectangular
+sheet cases (seven metals, three resistance corners, two orientations and two
+aspect ratios) plus 18 analytic single-via/rectangular-lead cases (six vias and
+three resistance corners). Each family rejects three real value/connection
+faults. The via ports are on separate conductor leads: the initial coincident
+contact-label control lost its layer identity and is retained as a failed
+control, not used to justify the fix. These are native extractor controls,
+not a DRC-qualified via test chip or measured process calibration.
+
+Four actual SRAM subcircuits also retain the same source records and complete
+weighted R/MOS graphs under this fractional-sheet build. All 16 graph/value/
+capacitance faults are rejected. One cell changes 25 internal node names;
+the unique graph mapping accounts for every node instead of treating text
+identity as electrical equivalence. These new small-control passes do not
+replace the full-macro RC result or repair its failed coupling conservation.
+
+A separate same-geometry test also checks whether named extraction variants
+actually provide wiring capacitance. The nominal two-conductor structure emits
+three positive capacitors totaling 2.658826 fF. Each of `hrhc`, `lrhc`, `hrlc` and
+`lrlc` emits **zero** wiring capacitors. All five processes complete normally;
+this is a completed **FAIL_MISSING_WIRING_CAPACITANCE_CORNERS**. The pinned
+technology restricts the wiring-capacitance definitions to its nominal variant.
+The sheet/via resistance tests above therefore establish resistance corners
+only. Neither the variant names nor the three transistor PVT patterns establish
+qualified high/low RC corners. No missing corner coefficient is fabricated.

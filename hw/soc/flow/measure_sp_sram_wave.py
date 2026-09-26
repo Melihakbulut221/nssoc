@@ -6,22 +6,23 @@ import argparse
 import bisect
 import hashlib
 import json
+import math
 from pathlib import Path
 
 from measure_sram_wave import read_wave, crossings, require
 
 
-def analyze(header, rows, plan):
+def analyze(header, rows, plan, vdd=1.2):
+    require(math.isfinite(vdd) and vdd > 0, 'Invalid SP supply')
     idx = {s: i for i, s in enumerate(header)}
-    vdd = 1.2
     times = [r[0] for r in rows]
-    edges = crossings(rows, idx['v(clk)'], .6)
+    edges = crossings(rows, idx['v(clk)'], vdd*.5)
     require(len(edges) == len(plan), 'Missing or extra SP clock edge')
 
     def word(row, prefix, width):
         values = [row[idx[f'v({prefix}_{i})']] for i in range(width)]
-        require(all(v <= .3 or v >= .9 for v in values), 'Ambiguous SP input/output')
-        return sum(int(v >= .9) << i for i, v in enumerate(values))
+        require(all(v <= vdd*.25 or v >= vdd*.75 for v in values), 'Ambiguous SP input/output')
+        return sum(int(v >= vdd*.75) << i for i, v in enumerate(values))
 
     state, reads, transitions = {}, [], []
     previous_read = None
@@ -77,6 +78,7 @@ def analyze(header, rows, plan):
         summary[direction] = dict(count=len(subset), max_delay_ns=max(m['delay_ns'] for m in subset),
                                   max_slew_20_80_ns=max(m['slew_20_80_ns'] for m in subset))
     return dict(status='PASS_FULL_SP_TWO_ADDRESS_BYTE_WRITE_PATTERN',
+                supply_v=vdd,
                 reads=reads, stable_samples=stable_count, transitions=transitions, summary=summary,
                 timing_scope='Consecutive read cycles only; 50% delay and 20%-80% output slew, 50 ps maximum step',
                 characterization_complete=False)
@@ -87,9 +89,10 @@ def main():
     parser.add_argument('wave', type=Path)
     parser.add_argument('--plan', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--vdd', type=float, default=1.2)
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text())['cycles']
-    result = analyze(*read_wave(args.wave, .05, 150), plan)
+    result = analyze(*read_wave(args.wave, .05, 150), plan, args.vdd)
     result['input_sha256'] = {str(q.resolve()): hashlib.sha256(q.read_bytes()).hexdigest()
                               for q in [args.wave, args.plan, Path(__file__),
                                         Path(__file__).with_name('measure_sram_wave.py')]}

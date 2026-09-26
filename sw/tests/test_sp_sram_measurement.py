@@ -58,3 +58,21 @@ def test_readback_byte_write_and_known_timing():
 def test_reject_memory_faults(fault):
     with pytest.raises(ValueError):
         analyze(*fixture(fault))
+
+
+@pytest.mark.parametrize('vdd', [1.08, 1.32])
+def test_corner_supply_thresholds_and_wrong_supply(vdd):
+    header, rows, plan = fixture()
+    scaled = [[row[0], *(x*vdd/1.2 for x in row[1:])] for row in rows]
+    result = analyze(header, scaled, plan, vdd)
+    for row in result['summary'].values():
+        assert row['max_delay_ns'] == pytest.approx(1)
+        assert row['max_slew_20_80_ns'] == pytest.approx(.24)
+    with pytest.raises(ValueError, match='Unexpected supply'):
+        analyze(header, scaled, plan)
+
+
+@pytest.mark.parametrize('vdd', [0, -1, float('inf'), float('nan')])
+def test_invalid_supply(vdd):
+    with pytest.raises(ValueError, match='Invalid SP supply'):
+        analyze([], [], [], vdd)
