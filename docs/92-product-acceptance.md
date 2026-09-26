@@ -41,8 +41,13 @@ hardware merely to increase apparent coverage.
 **26 September wide-spacing discovery:** additional physical fault controls
 show that the locked wide-line spacing expression can miss illegal gaps because
 of polygon shielding. Six actual SRAM rail pairs require a 30 nm edge repair;
-the first repaired candidate also needs matching pin annotation cuts. The new
-candidate is undergoing independent DRC/LVS and cannot inherit the earlier
+the first repaired candidate also needs matching pin annotation cuts. Both macros of the rail-and-pin candidate pass all 560 unchanged main
+categories and full transistor LVS, as well as eleven additional unshielded
+wide-line checks with physical fault controls. Fresh whole-core checks are
+running. Fresh full-core transistor LVS now also passes with 130 matching
+circuits and 5,129,488 primitives on each side. Fresh density (seven categories),
+antenna (31 categories) and the eleven-rule unshielded supplement also pass
+with zero markers. Full main DRC and parasitic/timing qualification remain open. The candidate cannot inherit the earlier
 GDS's passes or timing measurements. See the latest section of
 [docs/101](101-sram-characterization.md). Production acceptance remains open.
 
@@ -78,15 +83,17 @@ but complete density checking fails with 177 markers. Main DRC remains
 unverified: the 12 and 16 GiB attempts exhaust address space during connectivity
 extraction. Complete records and scope are in docs/101.
 
-**26 September continuation:** the repaired, filled 32-SRAM core passes fresh
+**26 September grid-repair predecessor:** that repaired, filled 32-SRAM core passes fresh
 full transistor LVS (130 matching circuits, 5,129,488 primitives per side),
 density and antenna. Both repaired SRAM macros separately pass complete main
 DRC and transistor LVS. Additional full-SP SS/hot and FF/cold schematic patterns
 pass. The first full-core main attempt on this new geometry reaches its 8 GiB
 limit in angle checking. The 16 GiB retry passes its complete 443-category
 FEOL/geometry partition with zero markers. Its original BEOL run was explicitly
-superseded, and an independent deep-mode attempt timed out. The full BEOL run
-continues with smaller tiles, unchanged rule bodies and unchanged borders.
+superseded, and an independent deep-mode attempt timed out. The completed smaller-tile BEOL run reports 672 raw Metal3 wide-spacing
+markers. Independent controls demonstrate real illegal gaps and a shielding
+blind spot in the native wide-line rule; this predecessor is not accepted.
+The subsequent rail-and-pin repair described above has fresh checks of its own.
 Independent checks establish both corrected SRAM transistor topologies and
 preserve every source capacitor through a separately repaired Magic serializer.
 Distributed RC qualification remains open. These results supersede the older

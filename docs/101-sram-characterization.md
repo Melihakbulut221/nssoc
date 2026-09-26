@@ -458,7 +458,10 @@ The generic energy helper retains its historical “schematic” scope string in
 raw records; the pinned circuit actually contains all audited layout capacitors.
 No raw measurement record is rewritten to change that label.
 
-The full SP capacitance-only transient is running with four simulator threads.
+The predecessor SP capacitance-only transient used four simulator threads.
+It was later explicitly stopped when the repaired geometry changed its model;
+its partial output is preserved without timing acceptance. A fresh repaired-SP
+transient now uses the audited new model.
 A full-DP 0–5 ns startup control produces byte-identical voltage/current output
 at one and four threads; elapsed time decreases from 341.970 to 280.886 seconds.
 That limited benchmark justifies the execution change, not complete SP waveform
@@ -645,3 +648,94 @@ base-SRAM-logic and full-SRAM-logic lint profiles also complete with their
 existing 987, 1,015, 1,012 and 1,040 warnings respectively: no new/stale inventory
 entries, no unaccepted own-source warnings and no RTL source drift. These are
 separate measurements, not edits to the historical clean-clone skip record.
+
+For the two-conductor control, the bundled stack has a 0.54 µm Metal1–Metal2
+surface gap and dielectric constant 4.1. Its ideal parallel-plate value for
+10 µm² is 0.6722624 fF, within 18.5 ppm of Magic's area coefficient result.
+Nine native offset extractions, including ±5 nm and ±10 nm, show a continuous
+response around coincident edges at those sampled points. Thus neither an
+area-term discrepancy nor a large sampled edge discontinuity explains away the
+49.7% finite-conductor difference. Fringing, shielding, substrate treatment and
+process calibration remain to be resolved. No model coefficient is adjusted.
+
+The eleven-rule transparent supplement also has a validated 50 µm tile / 30 µm
+border / two-thread execution variant. Exact offending-edge coverage agrees
+with flat execution on short controls, 686.08 µm controls crossing many tiles,
+and both original/repaired macros. Raw duplicated and clipped tile markers
+are retained; the audit compares physical coverage and rejects deleted gaps,
+spurious gaps and truncated coverage. This validates the tested execution
+variant; its whole-core result remains a separate required measurement.
+
+
+### Current rail-and-pin candidate and process reference
+
+The exact repaired whole-core GDS (`f218313c8a9e3ebe95e35cf0fc505852d88d342e9c2c6b4423f10a309f1a4cf1`)
+now passes full transistor LVS (130 matching circuits and 5,129,488 primitives
+per side), seven density categories, 31 antenna categories and the eleven
+unshielded wide-line rules. The completed supplemental run uses eight threads,
+50 µm tiles and a 30 µm border; its independent six-case geometry audit passes.
+The earlier flat and two-thread full-core supplement timeouts remain failures.
+All 560 native main categories still require the fresh run to finish.
+
+Both repaired SRAM macros also pass fresh MOS graph and full C-export audits:
+37,076 DP and 202,800 SP transistors, including all named ports, with deliberate
+connection/width/output faults rejected. Comparison through independently proved
+net bijections preserves every transistor including junction parameters, but
+changes 1,300 DP and 1,184 SP capacitor endpoint pairs. Even with ideal fixed
+supplies, 971 DP and 793 SP pairs change. Consequently the earlier layout
+transient measurements are historical results, not timing acceptance for this
+new geometry. Fresh simulations are required.
+
+The pinned SG13G2 process specification Rev. 1.2, pages 6, 18 and 24,
+provides useful **informational** area-capacitance references. Visual and XML
+inspection confirms that the section 2.17 limits are bold blue: they are
+measured on each wafer but do not cause wafer rejection. The stated test is
+250 × 1,200 µm² at 0 V and 100 kHz. Published adjacent-metal min/target/max
+values are 54/68/82 aF/µm² for M1–M2 through M4–M5, 36/42.5/49 for
+M5–TopMetal1 and 10/13/16 for TopMetal1–TopMetal2. These are not a complete
+qualified RC corner model; see the official
+[process parameter tables](https://ihp-open-pdk-docs.readthedocs.io/en/main/process_specs/02_process_control_params.html)
+and [parameter classification](https://ihp-open-pdk-docs.readthedocs.io/en/main/process_specs/01_02_process_control.html).
+
+Reproducing that large plate exposes another extractor arithmetic defect:
+Magic's overlap/shield area uses signed 32-bit integers. A 250 × 1,200 µm²
+rectangle at the actual 5 nm grid contains 12 billion grid squares; its mutual
+capacitance disappears in the predecessor runtime. An isolated 64-bit-area
+build retains the process coefficients and passes ten actual extraction
+controls spanning the overflow boundary and fully intervening Metal2 shields.
+Five of those same structures fail on the predecessor runtime. Native `.ext`
+six-significant-digit rounding is explicitly bounded; the initially tighter
+1 ppm comparison failure is retained rather than discarded.
+
+The isolated build extracts nominal area coefficients of 67.225, 42.708 and
+12.965 aF/µm² for those three groups, respectively, on both the published test
+area and the 10 µm² control. They lie within the informational ranges; this
+checks the area term only. Full SRAM re-extraction with this runtime now passes both complete MOS graph
+and capacitor-export audits. Independent canonical comparisons find **zero**
+changed transistor/junction records or capacitor endpoint-pair sums against the
+already audited repaired-geometry models, for both macros. The new-geometry
+transient inputs therefore represent the same C-only equations; this does not
+transfer any old-geometry timing result or qualify distributed RC.
+The finite-wire fringing discrepancy, coupled-RC conservation, correlated
+process corners, complete characterization, final STA and manufacturing
+approval remain unresolved. No global PDK or running tool was replaced.
+
+
+The fresh SP run also exposes a convergence-reporting distinction. Ngspice 42
+reports an initial singular matrix, then completes dynamic GMIN stepping. The
+matching distribution source resets temporary diagonal conductance to the
+configured `gshunt` and performs a final Newton iteration before reporting
+completion; the default `gshunt` is zero and the benchmark does not override it.
+This is recorded numerical startup recovery, not evidence of a completed
+transient. The [ngspice 42 manual](https://ngspice.sourceforge.io/docs/ngspice-42-manual.pdf)
+describes this operating-point recovery sequence.
+
+The new `check_ngspice_transient.py` requires a completed ngspice 42 footer,
+matching waveform row count and exactly ordered startup recovery. It retains
+the specific recovered warning and rejects unknown, repeated, late or
+unrecovered warnings. All 24 focused tests pass. Two actual small circuit runs
+(direct and forced dynamic GMIN), three completed DP waveform replays, an actual
+bad-model run and the intentionally stopped old SP run produce their expected
+verdicts. The SP finalizer will still require the entire new 150 ns waveform,
+read/write/hold checks and deliberately corrupted-wave controls before accepting
+that single C-only functional point. Full RC and timing qualification stay open.
