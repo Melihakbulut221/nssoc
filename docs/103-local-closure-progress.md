@@ -418,7 +418,8 @@ python3 scripts/check_soc_mbist_integration.py --simulator verilator \
 The full profile additionally requires the repository's explicit LGPL interface
 selection. Verilator results are two-state functional evidence, not X-propagation,
 at-speed, retention, DRC/LVS or STA evidence. The runner also supports Icarus
-13 or newer; selecting it is not a claim that this separate campaign passed.
+13 or newer. The separate accepted four-state campaign below stops after the
+complete raw test and reset release; it is not a full firmware replay in Icarus.
 The physical launcher rejects a supplied pre-MBIST netlist when the MBIST
 profile is enabled. It records the profile in implementation inputs and forwards
 the same define and sources through synthesis and P&R.
@@ -427,3 +428,31 @@ This closes the previous **uninstantiated system-RAM MBIST** limitation. It does
 not test Ethernet dual-port FIFO SRAM, add scan/ATPG/debug access, or qualify
 replacement SRAM silicon. Existing routed GDS, LVS and timing reports predate
 this netlist change and remain evidence only for their original source.
+
+
+The [chip integration receipt](evidence/sram-mbist-chip-integration-20260926.json)
+records **14 passing cases** across the base/full interface profiles, a separate
+complete healthy four-state native-model raw MBIST/reset-release run, and four
+rejected integration mutations. The latter deliberately bypass reset isolation,
+reset the read-bank selector in the wrong domain, hide comparison failure or
+hide abnormal abort. These are executable digital fault controls, not a silicon
+coverage percentage. The six lint profiles retain identical diagnostic identities
+and multiplicities, with updated source lines and no new warning waiver.
+SG13G2 synthesis retains four system-RAM and sixteen Ethernet macros; the latter
+remain outside MBIST. The 59,094-cell mapped design is a new netlist, not a routed
+or timing-qualified layout.
+
+A mapped native-cell Verilator compatibility check failed before whole-chip
+simulation (native flip-flop reset/capture); its failure is retained and no
+mapped-chip simulation pass is claimed. Earlier testbench time-bound/watchdog
+and verdict-parser failures are also preserved separately from accepted runs.
+The final parser rejects fatal diagnostics even following a pass banner.
+
+At source `fad89ce`, the [fresh local CI receipt](evidence/local-ci-mbist-chip-20260926.json)
+contains **1,836 pytest passes, zero failures and zero pytest skips**. All 14
+previously skipped tests executed. The front-door CI reports 20 passes and six
+explicit unavailable historical physical-tree skips, which are not new physical
+passes. Both documentation renderers and the prepared whole-SoC lint passed.
+The [release manifest](evidence/mbist-chip-assets-20260926.json) binds the two
+raw-evidence archives, including source snapshots, logs, preliminary failures
+and licence notices. No earlier GDS/LVS/STA receipt is promoted to this source.

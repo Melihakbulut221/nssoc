@@ -168,3 +168,19 @@ verify the six archives without extracting or executing them:
 ```sh
 python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/mbist-formal-assets-20260926.json --out hw/soc/out/mbist-formal-evidence
 ```
+
+
+### System-RAM MBIST chip integration (2026-09-26)
+
+[Chip integration](sram-mbist-chip-integration-20260926.json) records 14 passing
+actual-SoC/Ibex cases, one complete four-state raw test/reset-release run, four
+rejected integration mutations, six lint profiles and SG13G2 synthesis.
+[Fresh local CI](local-ci-mbist-chip-20260926.json) records 1,836 passing pytest
+cases with zero test skips, and six explicit missing historical physical trees.
+The [two-asset manifest](mbist-chip-assets-20260926.json) supplies raw sources,
+logs and notices. The archived mapped-cell simulator compatibility failure is
+not waived; new GDS, final STA, FIFO MBIST, pads and scan/ATPG are not claimed.
+
+```sh
+python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/mbist-chip-assets-20260926.json --out hw/soc/out/mbist-chip-evidence
+```
