@@ -71,6 +71,7 @@ def collect(ibex_replay, interface_replay, output):
               'replays_byte_identical': True,
               'transform_sha256': {str(p.relative_to(ROOT)): sha(p) for p in
                   [soc / 'flow/sv2v_ibex.sh', soc / 'flow/prepare_interfaces.py',
+                   soc / 'flow/adapt_eth_mbist.py',
                    ROOT / 'regmap/can.yaml', ROOT / 'regmap/generate_can.py',
                    ROOT / 'regmap/generate_peripherals.py']},
               'directories': [], 'files': files,

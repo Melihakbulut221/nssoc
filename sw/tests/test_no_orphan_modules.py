@@ -23,7 +23,9 @@ RTL = ROOT / "hw/rtl"
 SOC_RTL = ROOT / "hw/soc/rtl"
 LEDGER = ROOT / "hw/known-unbuilt.txt"
 ROOTS = ("tt_um_melihakbulut_nssoc", "soc_top")
-EXTERNAL_ENTRY_POINTS = ("ibex_register_file_ff",)
+# The FIFO SRAM is instantiated by the hash-pinned upstream adaptation,
+# outside the owned RTL scan. Verify that real generated boundary below.
+EXTERNAL_ENTRY_POINTS = ("ibex_register_file_ff", "soc_eth_fifo_sram")
 # Preserve token separation when stripping comments and quoted strings.
 COMMENT_RE = re.compile(r'"(?:\\.|[^"\\])*"|//[^\n]*|/\*.*?\*/', re.S)
 MODULE_RE = re.compile(r"\bmodule\s+([A-Za-z_]\w*)\b(.*?)\bendmodule\b", re.S)
@@ -127,3 +129,16 @@ def test_register_file_external_entry_contract():
     modules = _modules([(generated, generated.read_text())])
     assert "ibex_register_file_ff" in _instantiations(
         modules["ibex_top"][0][1], {"ibex_register_file_ff"})
+
+
+def test_ethernet_sram_external_entry_contract(prepared_sources):
+    bundle = prepared_sources / "gen/interfaces.bundle.vh"
+    modules = _modules([(bundle, bundle.read_text())])
+    chain = [("eth_mac_1g_fifo", "axis_async_fifo_adapter"),
+             ("axis_async_fifo_adapter", "axis_async_fifo"),
+             ("axis_async_fifo", "soc_eth_fifo_sram")]
+    for parent, child in chain:
+        assert child in _instantiations(modules[parent][0][1], {child})
+    owned = _declared()
+    assert "eth_mac_1g_fifo" in _instantiations(owned["soc_eth"][0][1], {"eth_mac_1g_fifo"})
+    assert "soc_sram_zero_check" in _reachable(owned, ("soc_eth_fifo_sram",))

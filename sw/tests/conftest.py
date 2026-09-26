@@ -33,7 +33,7 @@ def prepared_sources(tmp_path_factory):
     import json
     import re
     from evidence import ROOT, recorded_bundle
-    metadata = ROOT / 'docs/evidence/prepared-sources-can-bank-20260921.json'
+    metadata = ROOT / 'docs/evidence/prepared-sources-eth-mbist-20260926.json'
     record = json.loads(metadata.read_text())
     pin = re.search(r'^IBEX_COMMIT\s*\?=\s*(\w+)',
                     (ROOT / 'hw/soc/tools.soc.mk').read_text(), re.M).group(1)
@@ -41,7 +41,22 @@ def prepared_sources(tmp_path_factory):
     for name, digest in record['transform_sha256'].items():
         assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest, (
             'Dependency transform changed; regenerate source snapshot: ' + name)
-    restored = recorded_bundle(metadata, tmp_path_factory.mktemp('prepared-sources'))
+    # Prepared RTL lives in a hash-pinned Release asset, not a new binary in Git.
+    # A verified local cache keeps this usable offline after the first fetch.
+    import shutil
+    sys.path.insert(0, str(ROOT / 'scripts'))
+    from fetch_evidence_assets import validate, fetch
+    rows = validate(record['release_assets'])
+    assert len(rows) == 1 and rows[0]['name'] == record['archive']['file']
+    cache = ROOT / 'hw/soc/out/prepared-source-cache'
+    cache.mkdir(parents=True, exist_ok=True)
+    fetch(rows[0], cache)
+    package = tmp_path_factory.mktemp('prepared-source-package')
+    shutil.copy2(metadata, package / metadata.name)
+    shutil.copy2(metadata.parent / record['component_notices']['file'],
+                 package / record['component_notices']['file'])
+    shutil.copy2(cache / rows[0]['name'], package / rows[0]['name'])
+    restored = recorded_bundle(package / metadata.name, tmp_path_factory.mktemp('prepared-sources'))
     soc = restored / 'hw/soc'
     spec = importlib.util.spec_from_file_location('recorded_ibex_patch',
                                                  ROOT / 'hw/soc/flow/ibex_fault_port.py')
