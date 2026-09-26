@@ -814,3 +814,12 @@ preserve 345 source/record members, including geometry repair, verification,
 prior failed supplements, parser source history and code for pending simulations.
 Pending-job code is not evidence of completed execution. The full SP, step
 sensitivity and one-arc setup campaigns remain active and are not frozen as passes.
+
+The exact local commit `e5da995bcda6b5e8a23ee57007f8672ae3831130` passes a
+fresh clean-clone replay before pushing: **1,655 pytest passes, zero failures,
+14 explicit fixture/tool skips**; the front door records 18 passes, zero failures
+and three skips. The [audited replay](evidence/sram-local-replay-e5da995-20260926.json)
+and [raw replay archive](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/sram-local-replay-e5da995-20260926.tar.xz)
+retain the complete JUnit inventory, skipped reasons, command, logs and source
+tree. This is a local clone, not a GitHub runner or a new physical measurement.
+The earlier prepared-fixture and lint results retain their separate scopes.
