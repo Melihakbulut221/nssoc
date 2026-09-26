@@ -309,3 +309,50 @@ coverage, retention/mask-line test, at-speed characterization or assembled-chip
 MBIST result is supplied by this addition. Integrating them changes the netlist
 and requires a new physical and timing campaign; the existing accepted GDS is
 not represented as containing this logic.
+
+## Completed local verification and delivery
+
+The [mandatory formal replay](evidence/formal-170-local-20260926.json) completed
+all **170 tasks** at source `1baeb635453dccc8b122c0fc40ff3ee1613159a1`:
+54 pilot and 116 SoC tasks. Every saved source copy and task log was checked again
+before packaging. Six historical exclusions remain explicit. The working copy
+has an upstream dependency symlink and two generated proof directories; these
+are recorded, rather than describing it as wholly pristine. Of 190 broad source
+pins, only the status-rendering script differs at the later publication source.
+This is not a proof of the new MBIST, whole-core RVFI or M-extension obligations.
+
+The [MBIST digital receipt](evidence/sram-mbist-digital-20260926.json) records
+36 passing targeted cases, including five synthesized-port replays, plus fifteen
+native IHP functional-model port cases. The small 4x4 array campaign executes
+1,277 explicit faulty scenarios: 64 stuck/transition cases, twelve address aliases,
+240 inversion-coupling cases, 960 state-coupling cases and one unknown-read case.
+Six deliberately broken controller variants are detected. The initial abort
+fixture and synthesized-module parameter failures are retained with their corrected
+replays. Standalone Verilator lint reports no warnings or errors. All these are
+digital component checks, with the chip-level limitations stated above.
+
+A fresh local checkout of `299f86ea23cee729cfc3c7a389b292ca079fa883`, with
+regenerated pinned Ibex and interface dependencies, completed
+[`ci_local.sh all`](evidence/local-ci-mbist-20260926.json): **1,825 pytest passes,
+zero failures, zero skips**. All fourteen formerly skipped tests execute.
+The separate front-door tally is twenty passing gates, zero failures and six
+skips for absent historical physical run directories. Pandoc and builtin document
+builds, paper build, licensing, mirror generation and prepared SoC lint execute.
+This does not recreate those six historical physical runs.
+
+The earlier run in the long-lived working tree had four pytest failures. Corrections
+add the two standalone modules to the unbuilt-in-product ledger, pin ten previously
+published evidence files omitted from the digest manifest, restrict the response
+register guard to actual project files rather than tool-cache directories, and
+make the output-escape test independent of pytest's temporary-directory location.
+That first run also reports 644 undispositioned historical/experimental formal
+outputs. The passing fresh-checkout gate does not erase or disposition those old
+working-tree records; P13's historical evidence reconciliation remains open.
+
+Six lossless archives are available through the
+[verified release manifest](evidence/mbist-formal-assets-20260926.json).
+They separate passing component/formal/SP receipts, rejected RC extraction,
+queued methods and the prior/final CI runs. The release is an engineering
+prerelease, not a product release. README selects the new source-bound pytest
+and formal receipts; physical acceptance remains bound to the previously measured
+32-SRAM core. No manufacturing approval or complete-product closure is recorded.

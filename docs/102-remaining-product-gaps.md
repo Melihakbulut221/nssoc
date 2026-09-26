@@ -189,3 +189,11 @@ The later [destructive SRAM test engine](103-local-closure-progress.md#destructi
 adds a raw-word March engine and exclusive test-port wrapper with executable
 fault and native functional-model checks. It narrows P10's missing implementation
 work but does not close chip-level MBIST access, scan/ATPG or debug qualification.
+
+The [subsequent completed campaign](103-local-closure-progress.md#completed-local-verification-and-delivery)
+closes the stale 170-task formal-inventory result at its recorded revision and
+adds a full 1,825-case local Python replay with zero skips. Repaired SP TT selected
+patterns also pass independent completion checks. The new full DP resistor
+extraction **fails capacitance conservation**, so P02/P03 remain blocked by an
+actual measured defect, not merely an unexecuted job. SP SS/FF and queued TT25
+remain pending, and P01/P04–P14 are not promoted to complete by these receipts.

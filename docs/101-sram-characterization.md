@@ -964,3 +964,49 @@ The combined raw controller inherited the word “ten” in its free-text scope
 from the historical run. Its actual coordinate-difference records contain nine;
 the public metadata records this prose erratum without changing frozen inputs
 of the ongoing extraction. The numeric checks and verdict are unaffected.
+
+## Repaired SP TT completion and full DP RC rejection
+
+The [completed repaired SP TT receipt](evidence/sram-repaired-sp-tt-20260926.json)
+records 202,800 MOS devices and 821,222 geometry capacitors, a 150 ns pattern,
+100 ps input ramps, 20 fF output loads and a 50 ps maximum numerical step.
+All four reads at two addresses, including a byte-masked write, pass 417 stable
+samples. Wrong output, ignored byte write, extra clock, wrong address and wrong
+supply waveforms are each rejected. Across 120 measured transitions the largest
+rising/falling delays are 3.889866/3.965940 ns and the corresponding maximum
+20–80% slews are 0.430800/0.404061 ns. Integrated pattern supply energy from
+8 to 150 ns is 377.998133 pJ. These selected measurements are not timing tables,
+isolated internal power or leakage characterization.
+
+The original producer reports ERROR because it rejects every warning. Its log
+contains a singular-matrix startup warning, followed by successful dynamic GMIN
+recovery and completed transient execution. The separate completion auditor,
+implemented before the result was available, verifies that recovery, the complete
+waveform, unchanged inputs and the five negative controls. Both verdicts and the
+warning remain in the raw archive. Neither a zero-warning claim nor a final STA
+acceptance follows. Repaired SP SS/FF patterns are running. A 25 ps TT replay is
+queued behind both corner jobs to limit memory use; its
+[method snapshot](evidence/closure-followup-methods-20260926.json) is not a result.
+
+The new [full repaired DP RC diagnostic](evidence/sram-repaired-dp-rc-diagnostic-20260926.json)
+contains 146,385 resistors and 115,869 capacitors. After collapsing resistors, an
+exact graph bijection matches all 37,076 MOS devices, 10,272 nets and 88 ports to
+the independent schematic. Removing a real terminal resistor breaks that match.
+All resistor components have anchors; no capacitor endpoint is an isolated
+capacitor-only node. Terminal resistance attachment and physical model accuracy
+still require review. The first audit attempt lacked KLayout in its interpreter;
+its failure was retained before executing the unchanged audit with `kpex-env`.
+
+**Capacitance conservation fails.** Relative to the independently audited
+capacitance-only export, 189,054 node pairs are missing, twenty are extra and
+10,251 retained pairs have different values. The reference capacitor-value sum
+is 27.396033 pF versus 51.847337 pF in the RC export; this sum is a diagnostic,
+not a circuit's equivalent capacitance. The
+[text-stage attribution](evidence/closure-followup-methods-20260926.json) finds
+that native resistor extraction grounds incident coupling during distribution,
+while some original ground and coupling records remain in the serialized output.
+It accounts for the output to the recorded residual on one power pair. Restoring
+intrinsic ground C in the reader therefore does not supply a conserved spatial
+coupled-C model. This RC export is rejected for final timing or simulation claims
+that require qualified RC. No characterized Liberty or final STA is generated
+from it.

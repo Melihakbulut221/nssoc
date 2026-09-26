@@ -144,3 +144,27 @@ A fifth archive supplies the complete source-stage comparison for the running
 repaired DP extraction. Its 350,997 matching native records establish input
 geometry/C consistency only; the unfinished resistance output is not included
 or accepted by that check.
+
+### Local MBIST, formal and SRAM continuation — 26 September 2026
+
+- [Six verified release assets](mbist-formal-assets-20260926.json): exact sizes,
+  SHA-256 digests, URLs, source commit and byte-for-byte download checks.
+- [170 mandatory formal tasks](formal-170-local-20260926.json): completed at
+  `1baeb635`; six exclusions and whole-core obligations remain outside the pass.
+- [MBIST digital checks](sram-mbist-digital-20260926.json): standalone RTL/native
+  functional models, fault campaign and synthesized replay, without chip integration.
+- [Full local CI replay](local-ci-mbist-20260926.json): 1,825 pytest passes and zero
+  test skips at `299f86e`; six separate historical physical-run gate skips retained.
+- [Repaired SP TT](sram-repaired-sp-tt-20260926.json): completed C-only waveform,
+  startup-recovery audit and five rejected faults, not complete characterization.
+- [Rejected full DP RC](sram-repaired-dp-rc-diagnostic-20260926.json): exact collapsed
+  transistor topology but failed capacitance conservation; not usable for final STA.
+- [Follow-up methods](closure-followup-methods-20260926.json): read-only RC diagnosis
+  and queued TT25 replay. A waiting-method snapshot is not a completed simulation.
+
+Each corresponding `-NOTICES.txt` explains source licences and scope. Fetch and
+verify the six archives without extracting or executing them:
+
+```sh
+python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/mbist-formal-assets-20260926.json --out hw/soc/out/mbist-formal-evidence
+```
