@@ -607,6 +607,21 @@ case "${SOC_BOOT_ROM:-legacy}" in
   *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
 esac
 
+# Opt-in physical integration; legacy netlists remain reproducible.
+MBIST_DEFINE=""
+MBIST_READ=""
+case "${SOC_SRAM_MBIST:-0}" in
+  0) ;;
+  1)
+    [ "$SOC_MEM" = sram ] && [ "${SOC_BOOT_ROM:-legacy}" = logic ] || {
+      echo 'SOC_SRAM_MBIST=1 requires SOC_MEM=sram and SOC_BOOT_ROM=logic' >&2; exit 2; }
+    MBIST_DEFINE="-DSOC_SRAM_MBIST"
+    MBIST_READ="read_verilog -sv -defer $RTL/dft/soc_sram_mbist.v $RTL/dft/soc_sram_test_port.v"
+    MEM_READ="${MEM_READ//read_verilog -I/read_verilog $MBIST_DEFINE -I}"
+    ;;
+  *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
+esac
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
 $ETH_LIB_READ
@@ -615,9 +630,10 @@ read_verilog -defer $RTL/prim_clock_gating.v
 read_verilog -defer $IBEX_SRCS
 read_verilog $IF_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
+$MBIST_READ
 $MEM_READ
 $BOOT_ROM_READ
-read_verilog $IF_DEFINE -I$RTL $BOOT_ROM_DEFINE -defer $RTL/soc_top.v
+read_verilog $IF_DEFINE -I$RTL $BOOT_ROM_DEFINE $MBIST_DEFINE -defer $RTL/soc_top.v
 
 $RF_CHPARAM
 $TOP_CHPARAM

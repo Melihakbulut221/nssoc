@@ -32,5 +32,3 @@ ahbl_interconnect	AHB address decoder used only beneath the standalone probe_ahb
 ahbl2apb	AHB-to-APB adapter used only beneath the standalone probe_ahbl_top experiment. Product soc_top uses soc_apb_bridge; soc_apb_wb remains instantiated separately by soc_can.
 soc_pcie_tlp_regs	Standalone PCIe transaction-layer register backend; block simulation and synthesis only. No soc_top instance, link/data-link layer or PHY; docs/98 records its exact scope.
 soc_pcie_tlp_stream	Standalone DWORD packet assembler/serializer wrapping the PCIe register backend. No soc_top instance, CRC/data-link or PHY; block verification does not establish host integration or a Gen3 x4 link.
-soc_sram_mbist	Standalone destructive raw-word March engine; simulation, synthesized replay and native functional-model port checks only. No soc_top instance or manufactured-array coverage; docs/103 records the test contract.
-soc_sram_test_port	Standalone exclusive raw SRAM port wrapper around soc_sram_mbist. CPU/ECC isolation and external test access are integration prerequisites, not delivered chip features; docs/103.

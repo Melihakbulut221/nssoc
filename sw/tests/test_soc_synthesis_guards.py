@@ -2048,6 +2048,9 @@ def test_the_sram_memory_declares_soc_mems_ports():
     neither file claims."""
     real = _soc_mem_ports()
     text = (SOC_RTL / "soc_mem_sram.v").read_text()
+    # Compare the legacy drop-in interface. The explicit physical MBIST
+    # profile adds POR/result pins and is elaborated by native chip tests.
+    text = re.sub(r"`ifdef SOC_SRAM_MBIST.*?`endif", "", text, flags=re.S)
     body = text.split("module soc_mem", 1)[1]
     body = body.split(") (", 1)[1].split(");", 1)[0]
     got = []

@@ -98,10 +98,11 @@
 //     macros loads the two check macros, through the same row port and
 //     the same encoder, or the first fetch traps. docs/67 section 8.
 //
-//   * NO BIST. Every macro's A_BIST_* port set is parked: A_BIST_EN is
-//     tied low and the rest are tied to zero, which is what makes the
-//     functional port set the one that is timed. The macros carry a
-//     BIST interface and this design does not drive it.
+//   * SOC_SRAM_MBIST adds power-on destructive MBIST to the 8192-row RAM
+//     through its raw A-port path, below ECC. All 64 bits are tested. The
+//     vendor A_BIST_* pins remain parked; no clock mux is introduced.
+//     Other builds retain the historical interface and no MBIST. This
+//     profile requires the immutable logic boot ROM in soc_top.
 //
 //   * A_REN IS QUALIFIED ON THE MACRO'S OWN ENABLE, 2026-09-12, and
 //     it buys the one actionable milliwatt this design had left in it.
@@ -203,6 +204,17 @@ module soc_mem #(
     output wire        rd_o,
     output wire        ded_o,
     output wire [31:0] evt_addr_o
+`ifdef SOC_SRAM_MBIST
+    // Physical 8192-row RAM profile only; independent power-on reset.
+    , input wire mbist_rst_ni
+    , output wire mbist_done_o
+    , output wire mbist_failed_o
+    , output wire [12:0] mbist_fail_addr_o
+    , output wire [63:0] mbist_fail_expected_o
+    , output wire [63:0] mbist_fail_actual_o
+    , output wire [2:0] mbist_fail_phase_o
+    , output wire [7:0] mbist_fail_background_o
+`endif
 );
 
   // ===================================================================
@@ -222,6 +234,11 @@ module soc_mem #(
   // paths byte for byte; the codec arms take their response from
   // soc_mem_ecc.v and drive the ports from there.
   // ===================================================================
+`ifdef SOC_SRAM_MBIST
+  generate if (WORDS != 8192 || RO) begin : g_invalid_mbist_profile
+    SOC_SRAM_MBIST_requires_8192_row_writable_RAM invalid_configuration();
+  end endgenerate
+`endif
   localparam PLAIN = (WORDS == 16384) || (WORDS == 2048 && HARDEN == 0);
 
   // The raw read return of the PLAIN arms, driven by whichever of them
@@ -468,6 +485,30 @@ module soc_mem #(
     wire        row_en, row_we;
     wire [12:0] row_addr;
     wire [63:0] row_din, row_bm, row_dout;
+`ifdef SOC_SRAM_MBIST
+    wire        func_row_en, func_row_we;
+    wire [12:0] func_row_addr;
+    wire [63:0] func_row_din, func_row_bm;
+    wire mbist_busy_unused, mbist_aborted, mbist_failed, functional_ready_unused;
+    assign mbist_failed_o = mbist_failed || mbist_aborted;
+    // One March address space spans every row of all four physical banks.
+    // The normal A ports are muxed: replacement macros need no vendor BIST
+    // clock mux. Their A_BIST_* inputs remain parked.
+    soc_sram_test_port #(.WIDTH(64), .DEPTH(8192)) u_test_port (
+        .clk_i(clk_i), .rst_ni(mbist_rst_ni),
+        .test_mode_i(!mbist_done_o || mbist_failed_o),
+        .start_i(1'b1), .abort_i(1'b0),
+        .func_req_i(func_row_en && rst_ni), .func_we_i(func_row_we),
+        .func_addr_i(func_row_addr), .func_wdata_i(func_row_din),
+        .func_wmask_i(func_row_bm), .functional_ready_o(functional_ready_unused),
+        .mem_req_o(row_en), .mem_we_o(row_we), .mem_addr_o(row_addr),
+        .mem_wdata_o(row_din), .mem_wmask_o(row_bm), .mem_rdata_i(row_dout),
+        .busy_o(mbist_busy_unused), .done_o(mbist_done_o),
+        .failed_o(mbist_failed), .aborted_o(mbist_aborted),
+        .fail_addr_o(mbist_fail_addr_o), .fail_expected_o(mbist_fail_expected_o),
+        .fail_actual_o(mbist_fail_actual_o), .fail_phase_o(mbist_fail_phase_o),
+        .fail_background_o(mbist_fail_background_o));
+`endif
 
     soc_mem_ecc #(
         .WORDS (8192), .RO (RO), .HARDEN (HARDEN), .ECC_BYTE (1'b1),
@@ -477,8 +518,13 @@ module soc_mem #(
         .req_i (req_i), .addr_i (addr_i), .we_i (we_i), .be_i (be_i),
         .wdata_i (wdata_i), .gnt_o (gnt_o), .rvalid_o (rvalid_o),
         .rdata_o (rdata_o), .err_o (err_o),
+`ifdef SOC_SRAM_MBIST
+        .row_en_o (func_row_en), .row_we_o (func_row_we), .row_addr_o (func_row_addr),
+        .row_din_o (func_row_din), .row_bm_o (func_row_bm), .row_dout_i (row_dout),
+`else
         .row_en_o (row_en), .row_we_o (row_we), .row_addr_o (row_addr),
         .row_din_o (row_din), .row_bm_o (row_bm), .row_dout_i (row_dout),
+`endif
         .scrub_en_i (scrub_en_i), .scrub_ivl_i (scrub_ivl_i),
         .sec_o (sec_o), .rd_o (rd_o), .ded_o (ded_o), .evt_addr_o (evt_addr_o)
     );
@@ -492,8 +538,14 @@ module soc_mem #(
     // The bank select is captured on a READ and held across writes, so
     // the multiplexer follows A_DOUT, which itself holds across a write.
     reg [1:0] bank_q;
+`ifdef SOC_SRAM_MBIST
+    // The read selector must run while the CPU/ECC domain is held reset.
+    always @(posedge clk_i or negedge mbist_rst_ni)
+      if (!mbist_rst_ni) bank_q <= 2'b00;
+`else
     always @(posedge clk_i or negedge rst_ni)
       if (!rst_ni)      bank_q <= 2'b00;
+`endif
       else if (rden)    bank_q <= bank;
 
     reg [63:0] dsel;

@@ -356,3 +356,74 @@ queued methods and the prior/final CI runs. The release is an engineering
 prerelease, not a product release. README selects the new source-bound pytest
 and formal receipts; physical acceptance remains bound to the previously measured
 32-SRAM core. No manufacturing approval or complete-product closure is recorded.
+
+## Power-on SRAM MBIST integrated into soc_top
+
+`SOC_SRAM_MBIST` now connects the existing March engine to the **actual system
+RAM raw row port**, below ECC and ahead of the four 2048x64 macro banks. Its
+8192-row, 64-bit address space includes every data/check bit and all bank
+boundaries. It uses the functional A ports with full test write masks; vendor
+BIST clock/port pins remain parked. No clock mux is added. The named physical
+product flow, `implement_interfaces.sh`, enables this integration by default;
+legacy direct synthesis remains reproducible with the feature disabled.
+
+The engine starts once after synchronized external power-on reset. CPU, fabric,
+peripherals and RAM codec/scrubber remain in system reset until successful
+completion. Functional raw requests are additionally isolated at the memory
+mux. The raw read bank selector belongs to the POR domain so it can follow
+MBIST while the CPU domain is stopped. The watchdog itself stays in POR until
+MBIST finishes; a subsequent watchdog reset preserves the result and does not
+rerun the destructive test. External reset cancels outstanding requests and
+starts a fresh complete test. A comparison failure or abnormal engine abort
+keeps the functional domain in reset.
+
+`soc_top` exposes `mbist_busy_o`, `mbist_done_o`, `mbist_failed_o`, the 13-bit
+physical row address, 64-bit expected/actual values, three-bit March element and
+eight-bit background. Address bits 12:11 identify the macro bank and 10:0 the
+row. Results persist until external reset. An abnormal internal termination
+sets failure even when there is no comparison address; this is not a silicon
+fault diagnosis. These are digital core outputs, **not implemented test pads or
+JTAG registers**. Software is not required to start the test and cannot bypass a
+failed test.
+
+This profile requires writable 8192-row RAM and the immutable logic ROM;
+unsupported memory/ROM builds fail elaboration or flow preflight. The final
+MBIST pass clears/checks raw zero. For this repository's specific byte SECDED
+code, that is an encoded zero, subsequently verified through real CPU reads.
+The immutable boot image is never overwritten. Historical SRAM-ROM builds do
+not silently acquire a destructive test.
+
+The chip bench instantiates real `soc_top` and Ibex with IHP native **functional**
+SRAM models. A healthy schedule has 655,360 raw accesses, 163,840 per bank, and
+completes at cycle 983,048 of the bench. Its assembly ROM reads all 8192 zero
+words, then writes/reads every word and exercises byte stores through ECC. It
+services the watchdog during this long software test. Other cases exercise POR
+interruption/restart, a warm watchdog reset, a raw check-bit fault in each bank,
+and illegal controller state. First-failure metadata, memory isolation and
+fail-closed reset behavior are checked. Test logs containing a fatal/error are
+rejected even when they also contain a pass marker.
+
+Reproduce the chip-level functional campaign after preparing Ibex, interface
+bundles and the pinned tools:
+
+```sh
+python3 scripts/check_soc_mbist_integration.py --simulator verilator \
+  --profile base --pdk "$PDK_ROOT/ihp-sg13g2" \
+  --output hw/soc/out/mbist-chip-base
+python3 scripts/check_soc_mbist_integration.py --simulator verilator \
+  --profile full --pdk "$PDK_ROOT/ihp-sg13g2" \
+  --output hw/soc/out/mbist-chip-full
+```
+
+The full profile additionally requires the repository's explicit LGPL interface
+selection. Verilator results are two-state functional evidence, not X-propagation,
+at-speed, retention, DRC/LVS or STA evidence. The runner also supports Icarus
+13 or newer; selecting it is not a claim that this separate campaign passed.
+The physical launcher rejects a supplied pre-MBIST netlist when the MBIST
+profile is enabled. It records the profile in implementation inputs and forwards
+the same define and sources through synthesis and P&R.
+
+This closes the previous **uninstantiated system-RAM MBIST** limitation. It does
+not test Ethernet dual-port FIFO SRAM, add scan/ATPG/debug access, or qualify
+replacement SRAM silicon. Existing routed GDS, LVS and timing reports predate
+this netlist change and remain evidence only for their original source.

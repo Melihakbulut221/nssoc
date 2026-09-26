@@ -248,6 +248,18 @@ module soc_top #(
     // POWER-ON reset. Asynchronously asserted, and the only reset the
     // watchdog obeys.
     input  wire        rst_ni,
+`ifdef SOC_SRAM_MBIST
+    // Power-on destructive system-RAM test. These are core test outputs,
+    // not implemented package pads. A new external reset reruns the test.
+    output wire        mbist_busy_o,
+    output wire        mbist_done_o,
+    output wire        mbist_failed_o,
+    output wire [12:0] mbist_fail_addr_o,
+    output wire [63:0] mbist_fail_expected_o,
+    output wire [63:0] mbist_fail_actual_o,
+    output wire [2:0]  mbist_fail_phase_o,
+    output wire [7:0]  mbist_fail_background_o,
+`endif
 
     // Active-high external level; keep asserted until the device is serviced.
     // Synchronization runs on the ungated SoC clock so WFI can wake.
@@ -391,9 +403,23 @@ module soc_top #(
   // watchdog that counts clk_i edges already had, since it could not
   // count either way, but it is a change and a reader should see it
   // here rather than infer it.
+  wire rst_por_sync_n;
   wire wdog_rst_req;
   wire [159:0] crash_dump;
+`ifdef SOC_SRAM_MBIST
+`ifndef SOC_LOGIC_BOOT_ROM
+  SOC_SRAM_MBIST_requires_immutable_logic_boot_ROM invalid_mbist_rom();
+`endif
+  wire mbist_pass = mbist_done_o && !mbist_failed_o;
+  assign mbist_busy_o = rst_por_sync_n && !mbist_done_o;
+  wire rst_raw_n = rst_ni && !wdog_rst_req && mbist_pass;
+  // Keep the watchdog in POR until MBIST completes. Watchdog resets must
+  // neither erase the result nor destructively rerun MBIST on live RAM.
+  wire timer_por_n = rst_por_sync_n && mbist_pass;
+`else
   wire rst_raw_n = rst_ni && !wdog_rst_req;
+  wire timer_por_n = rst_por_sync_n;
+`endif
 
   reg [1:0] rst_sync;
   always @(posedge clk_i or negedge rst_raw_n)
@@ -414,7 +440,7 @@ module soc_top #(
     if (!rst_ni) por_sync <= 2'b00;
     else         por_sync <= {por_sync[0], 1'b1};
 
-  wire rst_por_sync_n = por_sync[1];
+  assign rst_por_sync_n = por_sync[1];
 
   assign wdog_rst_o = wdog_rst_req;
 
@@ -811,6 +837,12 @@ module soc_top #(
   // soc_scrub.v's control and report into it.
   soc_mem #(.WORDS(RAM_WORDS), .RO(1'b0), .RDREG(MEM_RDREG),
             .HARDEN(MEM_HARDEN), .ECC_BYTE(1'b1)) u_ram (
+`ifdef SOC_SRAM_MBIST
+      .mbist_rst_ni(rst_por_sync_n), .mbist_done_o(mbist_done_o),
+      .mbist_failed_o(mbist_failed_o), .mbist_fail_addr_o(mbist_fail_addr_o),
+      .mbist_fail_expected_o(mbist_fail_expected_o), .mbist_fail_actual_o(mbist_fail_actual_o),
+      .mbist_fail_phase_o(mbist_fail_phase_o), .mbist_fail_background_o(mbist_fail_background_o),
+`endif
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[0]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),
@@ -1035,7 +1067,7 @@ module soc_top #(
       .WDOG_RST_CYCLES (16),
       .WDOG_ESCALATE   (2)
   ) u_timer0 (
-      .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
+      .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (timer_por_n),
       .psel_i (sel_timer0), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
       .prdata_o (prdata_timer0), .pready_o (pready_timer0),

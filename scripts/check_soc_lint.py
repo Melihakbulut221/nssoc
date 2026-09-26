@@ -113,6 +113,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', choices=['base','full'], default=os.environ.get('SOC_INTERFACE_PROFILE','base'))
     parser.add_argument('--memory', choices=['array','sram-logic'], default='array')
+    parser.add_argument('--mbist', action='store_true', help='Power-on system SRAM MBIST; requires sram-logic')
     parser.add_argument('--rom-image', type=Path, help='Compiled loader binary; required for sram-logic lint')
     parser.add_argument('--output', type=Path, default=ROOT/'hw/soc/out/lint')
     suite = Path(os.environ.get('OSS_CAD_SUITE',ROOT/'hw/soc/tools/oss-cad-suite'))
@@ -121,6 +122,7 @@ def main():
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'): parser.error('Output must be inside hw/soc/out')
     if out.exists(): parser.error('Refusing to replace evidence: '+str(out))
+    if args.mbist and args.memory != 'sram-logic': parser.error('--mbist requires --memory sram-logic')
     if args.memory == 'sram-logic' and not args.rom_image: parser.error('sram-logic requires --rom-image')
     if args.memory == 'array' and args.rom_image: parser.error('--rom-image requires sram-logic')
     if args.rom_image and not args.rom_image.resolve().is_relative_to(ROOT): parser.error('ROM image must be inside this repository')
@@ -155,6 +157,12 @@ def main():
         watched = files + [out/'boot-rom/manifest.json']
         hashes.update({str(p.relative_to(ROOT)):sha(p) for p in watched})
         profile_key += '-sram-logic'
+    if args.mbist:
+        mbist_files = sorted((ROOT/'hw/soc/rtl/dft').glob('*.v'))
+        files += mbist_files
+        hashes.update({str(p.relative_to(ROOT)):sha(p) for p in mbist_files})
+        additional.append('-DSOC_SRAM_MBIST')
+        profile_key += '-mbist'
     command = [str(args.verilator.resolve()), '--lint-only', '--Wall', '-Wno-fatal', '--top-module', 'soc_top',
                '--timing', '--Mdir', str(out/'obj_dir'), '-DSG13G2_ICG_BEHAVIOURAL', '-GMEM_RDREG=1', '-GREQ_REG=1',
                '-I'+str(ROOT/'hw/soc/rtl'), '-I'+str(ROOT/'hw/rtl')]

@@ -32,6 +32,9 @@ fi
 export IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM=sram
 export SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_BOOT_HARDEN=1 SOC_CLKGATE=1
 export SOC_WAKE_GNT=1 SOC_ABC_D_PS=0 SOC_APB_TIMEOUT=256 SOC_ETH_SRAM=1
+# The current physical product profile includes POR RAM MBIST. Set zero
+# explicitly only to reproduce pre-MBIST designs; no old GDS is promoted.
+export SOC_SRAM_MBIST=${SOC_SRAM_MBIST:-1}
 export SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1 SOC_BOOT_ROM=logic
 export SOC_BOOT_ROM_IMAGE="$OUT/firmware/test_soc.bin" SOC_BOOT_ROM_DIR="$OUT/synthesis/boot-rom"
 # Rebuild the loader used by both synthesis and PNR; do not inherit fault
@@ -53,6 +56,7 @@ record = {'configuration': {'SOC_INTERFACE_PROFILE': os.environ['SOC_INTERFACE_P
                            'MEM_HARDEN': 1, 'ROM_HARDEN': 1, 'APB_TIMEOUT': 256,
                            'WAKE_GNT': 1, 'BOOT_HARDEN': 1, 'CLKGATE': 1,
                            'SOC_BOOT_ROM': 'logic', 'IBEX_REGFILE': 'secded', 'IBEX_FAULT_PORT': 1,
+                           'SOC_SRAM_MBIST': int(os.environ['SOC_SRAM_MBIST']),
                            'ETH_SRAM': 1, 'ETH_SRAM_BANK_WORDS': 256, 'clock_ns': 20, 'ethernet_clock_ns': 8},
           'sources': {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
                       for p in sorted(files)}}

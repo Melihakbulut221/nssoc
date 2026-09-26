@@ -249,6 +249,25 @@ $(cd "$SOC_BOOT_ROM_DIR" && pwd -P)/soc_logic_boot_rom.v"
   *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
 esac
 export SOC_BOOT_ROM="${SOC_BOOT_ROM:-legacy}"
+export SOC_SRAM_MBIST="${SOC_SRAM_MBIST:-0}"
+case "$SOC_SRAM_MBIST" in
+  0) ;;
+  1)
+    [ "$SOC_BOOT_ROM" = logic ] || { echo 'MBIST requires logic boot ROM' >&2; exit 2; }
+    SRCS="$SRCS
+$RTL/dft/soc_sram_mbist.v
+$RTL/dft/soc_sram_test_port.v"
+    # A pre-MBIST netlist must never masquerade as an integrated layout.
+    python3 - "$SYN_NETLIST" <<'PY_CHECK'
+import re, sys
+text = open(sys.argv[1]).read()
+for name in ("mbist_done_o", "mbist_failed_o", "mbist_fail_addr_o"):
+    assert re.search(r"\boutput\s+(?:\[[^]]+\]\s*)?" + name + r"\b", text), name
+assert "u_test_port" in text, "MBIST hierarchy absent from supplied netlist"
+PY_CHECK
+    ;;
+  *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
+esac
 
 # Concurrent variants must never rewrite a config that another LibreLane
 # invocation is about to read. Keep the unique snapshot beside config.json
@@ -261,6 +280,8 @@ base = json.load(open(src))
 logic_rom = "SOC_LOGIC_BOOT_ROM" in (base.get("VERILOG_DEFINES") or [])
 assert logic_rom == (os.environ["SOC_BOOT_ROM"] == "logic"), \
     "SOC_BOOT_ROM and config VERILOG_DEFINES select different ROM implementations"
+assert os.environ.get("SOC_SRAM_MBIST", "0") != "1" or logic_rom, \
+    "MBIST requires immutable logic ROM"
 srcs = """$SRCS""".split()
 assert srcs, "empty source list"
 assert "VERILOG_FILES" not in base, \
@@ -270,6 +291,10 @@ out["VERILOG_FILES"] = srcs
 # Only the explicitly selected interface flag may differ from the source
 # configuration. Preserve every unrelated definition and physical setting.
 defines = list(base.get("VERILOG_DEFINES") or [])
+if "SOC_SRAM_MBIST" in defines:
+    assert os.environ.get("SOC_SRAM_MBIST", "0") == "1", "MBIST config/profile mismatch"
+elif os.environ.get("SOC_SRAM_MBIST", "0") == "1":
+    defines.append("SOC_SRAM_MBIST")
 if "SOC_LGPL_INTERFACES" in defines:
     assert bool("$IF_DEFINE"), "Full-profile config cannot implement the base profile"
 elif "$IF_DEFINE":
@@ -281,8 +306,8 @@ added  = set(out) - set(base)
 changed = {k for k in base if base[k] != out[k]}
 assert "VERILOG_FILES" in added and added <= {"VERILOG_FILES", "VERILOG_DEFINES"}, f"generator added {added}"
 assert changed <= {"VERILOG_DEFINES"}, f"generator changed {changed}"
-assert [d for d in out.get("VERILOG_DEFINES", []) if d != "SOC_LGPL_INTERFACES"] == \
-       [d for d in (base.get("VERILOG_DEFINES") or []) if d != "SOC_LGPL_INTERFACES"], "unrelated defines changed"
+assert [d for d in out.get("VERILOG_DEFINES", []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST")] == \
+       [d for d in (base.get("VERILOG_DEFINES") or []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST")], "unrelated defines changed"
 json.dump(out, open(dst, "w"), indent=4)
 print(f"resolved config: {dst}  ({len(srcs)} verilog files)")
 PY
