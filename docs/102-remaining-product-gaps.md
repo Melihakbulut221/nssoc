@@ -184,3 +184,8 @@ closes the previously absent single experimental TX-cell geometry with main
 DRC, strict LVS and negative controls. It also completes one repaired DP read
 setup bracket and complementary retention observation. P01 and P05 remain open
 at product scope: these are neither a complete SRAM library nor a Gen3 x4 PHY.
+
+The later [destructive SRAM test engine](103-local-closure-progress.md#destructive-sram-test-engine-and-raw-port)
+adds a raw-word March engine and exclusive test-port wrapper with executable
+fault and native functional-model checks. It narrows P10's missing implementation
+work but does not close chip-level MBIST access, scan/ATPG or debug qualification.

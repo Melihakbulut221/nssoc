@@ -249,3 +249,63 @@ The [full-DP source preflight](evidence/repaired-dp-rc-source-preflight-20260926
 checks all 350,997 native input records against the accepted repaired
 capacitance-only source and rejects a missing coupling. Final RC serialization
 and the separate long SP/formal campaigns remain unfinished.
+
+## Destructive SRAM test engine and raw port
+
+The new `hw/soc/rtl/dft/soc_sram_mbist.v` runs a six-element March C-minus
+sequence over each raw memory word, repeating it with all-zero and bit-partition
+backgrounds. A final all-zero pass both clears and verifies the array. For a word
+width W and depth D, the complete schedule contains
+`10 * D * (ceil(log2(W)) + 2)` accesses. Read latency is an explicit positive
+parameter; no bus backpressure is supported. Non-power-of-two depths and widths
+are supported. This is independently written RTL, not a port of a vendor's
+software routine. The [Microchip memory-test background](https://onlinedocs.microchip.com/oxy/GUID-1BC922B5-0BDE-4D42-AC92-68359BB22BEC-en-US-1/GUID-81A68B22-3BC9-479D-A63A-DAD6B44A852F.html)
+explains the underlying March algorithm; its word-oriented implementation and
+coverage claims are not claimed for this different repeated-background schedule.
+
+On the first failed comparison the engine stops and retains address, expected
+and observed words, March element and background. Completion, failure and abort
+are separate sticky results, cleared by a newly accepted start or reset. A held
+start does not repeat a completed destructive test; starts while busy are ignored.
+Reset and abort suppress requests, including before the next sampling edge.
+RTL X/Z reads fail the simulation comparison; this is not an X detector in silicon.
+
+`soc_sram_test_port.v` arbitrates one synchronous raw memory port. An explicit
+`test_mode_i` ownership grant isolates functional traffic while the engine owns
+the port, including after completion. Revoking that grant aborts the test before
+functional ownership resumes. Test writes enable every physical data bit;
+functional write masks are preserved. This wrapper does not switch clocks.
+Integrators must first quiesce every other port/master, bypass ECC/scrubbing,
+provide a trusted start/status path, and reinitialize encoded memory before boot.
+Raw zeros are not automatically a valid codeword for every ECC implementation.
+
+The independent testbench checks the entire operation trace, not just a done bit.
+It enumerates stuck-at, transition, address-alias, inversion-coupling and
+state-coupling faults in a 4-word by 4-bit model. Its fault models are explicit
+executable models, not a percentage of silicon defect coverage. Larger healthy
+models check all addresses and word bits, multiple read latencies and non-power-of-two
+parameters. Controller mutations test whether comparison, address traversal,
+background generation, final clearing and abort failures are actually rejected.
+The port bench additionally exercises competing functional writes, masked writes,
+reset/ownership revocation and read corruption. A synthesized gate-level replay
+uses the same port assertions.
+
+Reproduce the digital tests with:
+
+```sh
+python3 -m pytest sw/tests/test_soc_sram_mbist.py -q
+python3 scripts/check_sram_mbist_native.py --pdk "$PDK_ROOT/ihp-sg13g2" --output /tmp/mbist-native
+```
+
+The second command requires Icarus and actual IHP model files; missing prerequisites
+fail, rather than creating a passing skipped campaign. It executes normal,
+abort, ownership-revocation, reset and corrupted-read cases on the native
+512x16, 1024x32 and 2048x64 single-port functional models. These vendor models
+are not transistor models of the replacement SRAM geometry.
+
+P10 remains open at product scope. These modules are not instantiated in
+`soc_top`, and no scan chain, ATPG report, test-pad/JTAG access, dual-port collision
+coverage, retention/mask-line test, at-speed characterization or assembled-chip
+MBIST result is supplied by this addition. Integrating them changes the netlist
+and requires a new physical and timing campaign; the existing accepted GDS is
+not represented as containing this logic.
