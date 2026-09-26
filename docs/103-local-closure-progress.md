@@ -132,3 +132,13 @@ acceptance verdict. The upstream [ResReadCapacitor implementation](https://githu
 contains a signal-extraction path that adds each coupling to both terminal
 node capacitances. That observation motivates the diagnostic; it does not
 prove that grounding is the only source of the measured discrepancy.
+
+## Ethernet software continuation
+
+The [PHY management driver](90-gigabit-ethernet.md#phy-management-software-26-september-2026)
+adds tested Clause 22 access, configuration readback and bounded gigabit-only
+negotiation through the existing MDIO register. This closes the absent software
+management routine sub-item, with host-model and RV32 compile evidence only.
+It does not close DMA, external PHY/pad integration, board tests or wire-rate
+acceptance. The earlier 1,707-test receipt remains bound to `bb5ddb1`; this
+subsequent driver has its own explicit test inventory.

@@ -32,7 +32,8 @@ The interface is programmed IO, without DMA. It cannot sustain an uninterrupted
 filter, network stack or ECC/TMR protection of the new packet buffers/control
 state. The CRC is a link-integrity check, not radiation hardening. MDIO is a
 software-controlled MDC/data/output-enable interface with synchronized input;
-there is no autonomous management transaction engine or auto-negotiation driver.
+there is no autonomous hardware management engine. The software driver below
+adds standard Clause 22 access and bounded 1000BASE-T full-duplex negotiation.
 
 APB slot `0x01A`, base **0xFF91A000**, project device ID `0xE01`, logical IRQ25
 maps to Ibex fast IRQ13 / `mip` bit29. No existing address or IRQ moved.
@@ -635,3 +636,44 @@ ports and constraints remain intact. The measured cell-area increment is
 capacitance violation). A new 12-thread native run is evaluating this
 hypothesis. Its automatic guide-cleanup hook has executed and removed the
 same six orphan guides. No native result is available yet.
+
+## PHY management software, 26 September 2026
+
+`hw/soc/tb/sw/lib/soc_mdio.c` uses the existing MDIO register through the real
+HAL accessors. Every Clause 22 transaction emits a 32-bit preamble. Reads
+release MDIO throughout turnaround/data, require the pull-up/PHY `Z0` response,
+consume all sixteen bits on failure, and leave the destination unchanged on
+error. Valid reads and writes finish with MDC low and MDIO released. The board
+must supply a pull-up, correct IO voltage/pads and exclusive bus ownership.
+
+Applications provide a calibrated `delay_us(context, us)` callback. Each
+half-period waits at least 1 microsecond, limiting MDC to 500 kHz and allowing
+the existing two-flop input synchronizer to settle. The callback must preserve
+that minimum across interrupts. No uncalibrated CPU loop is assumed.
+
+`soc_eth_phy_start_1000fd` checks standard AN/extended/gigabit capability,
+advertises only 1000BASE-T full duplex, requests automatic master/slave
+selection, restarts negotiation and reads back configuration. It does not
+enable the MAC or configure vendor-specific straps/GMII mode/reset pins.
+Writes lack a Clause 22 acknowledgement; a failed multi-register setup can
+leave partial configuration and must be handled by the caller.
+
+`soc_eth_phy_wait_1000fd` has a caller-specified poll bound and waits 1 ms
+between unsuccessful polls. Each poll verifies local configuration, reads
+latch-low BMSR twice, then requires link/AN completion, partner gigabit full
+duplex and both receiver-status bits. Remote and master/slave faults return
+an error. Zero polls performs no IO. There is no 10/100 or half-duplex fallback
+for this fixed-speed MAC. Register/frame definitions were cross-checked with
+the [TI DP83867 datasheet, sections 7.4.1 and 8](https://www.ti.com/lit/ds/symlink/dp83867ir.pdf).
+This standard-register driver does not select or qualify that external PHY.
+
+Build an application's firmware with `lib/soc_mdio.c`, include
+`lib/soc_mdio.h`, and supply the timing callback before calling start/wait.
+The [local software receipt](evidence/mdio-driver-20260926.json) covers thirty
+host tests of the real C driver against an independent edge-driven PHY model
+and four deliberately broken driver variants. The model checks frame fields,
+MSB ordering, direction/turnaround, half-period timing, missing/stuck PHYs,
+capability/configuration rejection, last-poll success, timeouts and faults.
+The driver is also cross-compiled as freestanding RV32IM/Zicsr code. These are
+software/model results; no actual PHY, board or new whole-SoC MDIO firmware
+simulation is claimed. DMA and uninterrupted wire-rate traffic remain open.
