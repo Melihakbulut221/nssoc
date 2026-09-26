@@ -14,7 +14,7 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 |---|---|---|
 | Silicon / product | No silicon or radiation qualification; product gates open | [Acceptance contract](docs/92-product-acceptance.md) |
 | Frozen pilot | TTIHP26b submission; source tree frozen | [Freeze contract](docs/34-pilot-freeze.md) |
-| Python regression | 1669 pass, 0 skip; commit `edc4e2d` | [Exact revision and command](docs/evidence/prepared-pytest-edc4e2d-20260926.json) |
+| Python regression | 1707 pass, 0 skip; commit `bb5ddb1` | [Exact revision and command](docs/evidence/prepared-pytest-bb5ddb1-20260926.json) |
 | Peripheral checks | 10/10 new formal tasks; 6/6 native RAM profiles | [Formal scope](docs/evidence/peripheral-formal-20260920.json); [RAM + negative control](docs/evidence/hosted-memory-parity-20260920.json) |
 | Mandatory formal sweep | 161 PASS at `c292afa`, 6 historical exclusions | [Dated source-bound inventories](docs/evidence/formal-sweep-3c5045f-20260922.json) |
 | Independent native boot | PASS base + full at `1d99a78`; functional four-state simulation | [Hosted result and retained prior failure](docs/evidence/native-recovery-1d99a78-20260922.json) |

@@ -6,6 +6,20 @@ This continuation implements and checks the next work identified by
 [the product audit](102-remaining-product-gaps.md). No final product or foundry
 acceptance is recorded. Every receipt identifies the source and measurement scope.
 
+## Prepared source regression
+
+The [complete pytest replay](evidence/prepared-pytest-bb5ddb1-20260926.json)
+checks source `bb5ddb1` in a fresh local clone with pinned Ibex/TinyTapeout
+dependencies. All **1,707 cases pass with zero failures and zero skips** in
+375.78 seconds. All 1,669 previous testcase identities remain present; 38
+new cases cover status, analog measurement and release-asset validation.
+The fourteen previously skipped fixture cases all execute successfully.
+The original unpublished intermediate controller count error is retained
+in the archive and is separate from this successful final-source replay.
+Publication after this source commit changes only documentation, records
+and ignore/licence metadata; running physical/formal jobs retain their own
+source identities. This does not replace their acceptance requirements.
+
 ## Current RTL and native memory replay
 
 The [audited local replay](evidence/local-rtl-regression-1baeb63-20260926.json)
@@ -106,3 +120,15 @@ The new raw archives in this continuation are delivered as
 [release assets](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260926-local-closure),
 with [SHA-256, sizes and retrieval instructions](evidence/README.md#new-raw-evidence-delivery)
 kept in Git. This follows the external review's binary-delivery requirement.
+
+## RC coupling diagnostic
+
+A [new matrix comparison](evidence/rc-grounding-diagnostic-20260926.json) tests
+whether grounding every reference coupling explains the RC mismatch. It does
+not: 13,138 pairs still differ. The coupled reference totals 27.418462 pF; the
+fully grounded approximation totals 46.855160 pF, versus 43.910549 pF in the
+actual RC export. This changes neither the extracted circuit nor its failed
+acceptance verdict. The upstream [ResReadCapacitor implementation](https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResReadExt.c)
+contains a signal-extraction path that adds each coupling to both terminal
+node capacitances. That observation motivates the diagnostic; it does not
+prove that grounding is the only source of the measured discrepancy.
