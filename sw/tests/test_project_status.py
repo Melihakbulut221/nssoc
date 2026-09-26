@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 import hashlib
+import copy
 import json
 from pathlib import Path
 import subprocess
@@ -29,6 +30,48 @@ def test_project_status_is_source_bound_and_matches_readme():
     assert native["acceptance"]["checks"] == 28
     assert status["physical"]["setup_ns"] < 0
     assert status["ram"]["negative_rejected"]
+    assert status["core_physical"]["timing_accepted"] is False
+    assert status["core_physical"]["manufacturing_approval"] is False
+
+
+@pytest.mark.parametrize("defect", ["failed", "skipped", "empty", "count", "dirty", "head", "boolean"])
+def test_prepared_pytest_status_rejects_unearned_pass(defect):
+    record = json.loads((ROOT / "docs/evidence/prepared-pytest-edc4e2d-20260926.json").read_text())
+    if defect == "failed": record["failed"] = 1
+    elif defect == "skipped": record["skipped"] = 1
+    elif defect == "empty": record["collected"] = record["passed"] = 0
+    elif defect == "count": record["passed"] -= 1
+    elif defect == "dirty": record["final_source_status"] = "DIRTY"
+    elif defect == "head": record["source_head"] = "latest"
+    else: record["skipped"] = False
+    with pytest.raises(ValueError): project_status.python_status(record)
+
+
+@pytest.mark.parametrize("defect", ["main_markers", "incomplete_density", "antenna_error",
+                                    "supplement_missing", "supplement_error", "lvs_count",
+                                    "gds_binding", "gds_archive", "timing", "manufacturing"])
+def test_physical_status_cannot_promote_failed_or_unbound_candidate(defect):
+    record = json.loads((ROOT / "docs/evidence/sram-repaired-core-physical-20260926.json").read_text())
+    physical = record["physical"]
+    if defect == "main_markers": physical["main"]["markers"] = 1
+    elif defect == "incomplete_density": physical["density"]["category_count"] -= 1
+    elif defect == "antenna_error": physical["antenna"]["process_returncode"] = 1
+    elif defect == "supplement_missing": physical["supplemental"].clear()
+    elif defect == "supplement_error": physical["supplemental"][0]["measurement"]["status"] = "ERROR"
+    elif defect == "lvs_count": physical["lvs"]["primitives_each"] -= 1
+    elif defect == "gds_binding": physical["input_sha256"][physical["candidate_gds"]] = "0" * 64
+    elif defect == "gds_archive": record["members"] = {n: h for n, h in record["members"].items() if not n.endswith(".gds")}
+    elif defect == "timing": record["final_sta_accepted"] = True
+    else: record["manufacturing_approval"] = True
+    with pytest.raises(ValueError): project_status.core_physical_status(record)
+
+
+def test_physical_status_preserves_failed_attempt_without_rejecting_independent_completed_checks():
+    record = json.loads((ROOT / "docs/evidence/sram-repaired-core-physical-20260926.json").read_text())
+    original = copy.deepcopy(record)
+    assert record["physical"]["native_controller_status"] == "ERROR_OR_OPEN_PHYSICAL_GATE"
+    assert project_status.core_physical_status(record)["lvs_primitives_each"] == 5129488
+    assert record == original
 
 
 @pytest.mark.parametrize("defect", ["missing", "duplicate", "failed", "changed", "different_head"])

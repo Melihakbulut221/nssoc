@@ -79,3 +79,24 @@ file is never replaced with a success placeholder. Remote URLs are not fetched
 or certified. JSON strings referring to raw local runs are evidence metadata,
 not automatically published artifacts. Neither URL fragments nor the external
 binary recovery obligations are closed by the local file-target check.
+
+## New raw evidence delivery
+
+The 26 September local closure continuation stores new raw archives as
+[GitHub Release assets](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260926-local-closure).
+Git retains measurements, component notices and the
+[exact asset inventory](local-evidence-assets-20260926.json), including SHA-256
+and byte counts. Every asset is downloaded again and verified before release.
+Older checked-in archives remain historical records. These experimental results
+do not grant PCIe qualification, final timing closure or manufacturing approval.
+
+```sh
+python3 scripts/fetch_evidence_assets.py \
+  --manifest docs/evidence/local-evidence-assets-20260926.json \
+  --out hw/soc/out/release-evidence-20260926
+```
+
+The fetcher checks every byte, rejects damaged or oversized downloads, and
+never extracts archives. Existing files must match their recorded identities.
+New public metadata uses project-relative paths and `$PDK`/`$HOME` placeholders;
+original records inside the archives retain their exact provenance.

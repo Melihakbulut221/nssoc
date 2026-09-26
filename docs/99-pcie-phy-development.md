@@ -200,3 +200,12 @@ models and physical-device resources used as the development basis. The
 the simulator and control language. High-speed SG13G2 research and its
 limitations are assessed in [docs/91](91-pcie-gen3-feasibility.md); no external
 research netlist or unlicensed layout has been copied into these cells.
+
+## Native resistor implementation continuation
+
+The [26 September local work](103-local-closure-progress.md#native-resistor-tx)
+adds self-heating, three-terminal IHP `rsil` load cells, their native PCell
+geometry and a separate characterization driver. The original ideal-resistor
+sources and their historical measurements are retained. The new unit geometry
+is one resistor, not the TX bank or a complete PHY; contact-current, extracted
+interconnect and substrate-contact integration remain qualification work.

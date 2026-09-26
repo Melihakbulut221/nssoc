@@ -1605,7 +1605,7 @@ A separate bounded replay of the original `setup25` repair script **failed**
 after 2,526.83 seconds. The executable aborted in
 `rsz::SizeUpGenerator::loadStageContext` with a timing-graph `TableBlock` vector
 assertion. The [follow-up receipt](evidence/physical-tool-format-followup-20260923.json)
-and [complete failure log and diagnostic scripts](evidence/physical-tool-format-followup-20260923.tar.xz)
+and [complete failure log and diagnostic scripts](https://github.com/Melihakbulut221/nssoc/blob/1baeb635453dccc8b122c0fc40ff3ee1613159a1/docs/evidence/physical-tool-format-followup-20260923.tar.xz)
 preserve this negative result. No completed repaired state or new routed result
 was accepted. The completed read-only tests do not establish optimization,
 routing compatibility, foundry DRC/LVS or signoff.

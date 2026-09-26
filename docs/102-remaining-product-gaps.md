@@ -168,3 +168,13 @@ functional qualification. Refresh the complete regression and release evidence
 against that exact result, then seek the applicable external fabrication review.
 There is no defensible completion percentage or manufacturing date from the
 current evidence.
+
+## Subsequent local closure work
+
+The dated observations above remain the audit snapshot. The
+[local continuation](103-local-closure-progress.md) publishes subsequent RTL
+regression, complementary profile coverage, DP numerical-step comparison and
+native-resistor TX engineering. README/project-status now selects the completed
+1,669-case pytest receipt and the exact 32-SRAM physical checkpoint, retaining
+historical timing as historical. These changes close evidence freshness items
+within those scopes; they do not close P01–P14 as complete product gates.

@@ -863,3 +863,19 @@ records the actual local environment and commands. This closes the fourteen
 pytest skips, not the three separate historical CI front-door skips or the
 outstanding characterization/manufacturing gates. The earlier clean-clone
 record remains unchanged as historical evidence.
+
+## 25 ps numerical-step publication
+
+The [completed comparison](evidence/sram-repaired-dp-timestep-20260926.json)
+now publishes the full 25 ps waveform and all forty transition comparisons.
+Only the maximum numerical step changes from the separately published 50 ps
+TT case: circuit, model specialization, load and stimulus bytes are identical
+after normalizing output-directory paths. Maximum absolute differences are
+0.020866732 ns delay and 0.001574689 ns slew; total supply energies are
+118.176514 and 118.116859 pJ. Both functional error controls were rejected.
+The archive retains the failed initial invocation and its failed comparison.
+This measures numerical sensitivity; it does not establish the zero-step limit,
+complete Liberty tables or qualified distributed/coupled RC.
+
+The [local closure continuation](103-local-closure-progress.md) records newer
+RTL/profile checks separately from these transistor-level measurements.
