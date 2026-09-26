@@ -520,8 +520,25 @@ contract model. This is functional evidence, not transistor characterization.
 Native mapped-cell simulation also requires a compatible Cocotb/Python runtime;
 the tool wrapper must not overwrite it with an incompatible bundled Python.
 
-**Verification checkpoint:** new full-interface placement/routing, mapped MAC
-simulation and final source-bound regression are in progress locally. New layout
-DRC/LVS is not yet accepted; SRAM Liberty/RC, final STA and manufacturing approval
-remain separate open gates. Results and exact artifact hashes will replace this
-checkpoint when the runs complete.
+The [functional integration receipt](evidence/ethernet-fifo-mbist-integration-20260926.json)
+records source `c50b425`: 37 native-SRAM and 37 replacement-adapter scenarios,
+ten full-interface chip scenarios, six native RTL MAC tests and six native
+standard-cell mapped MAC tests all pass. Three deliberately faulty adapters are
+rejected at simulation runtime. Eight lint profiles pass with enumerated warning
+identities. The chip run uses Verilator's two-state execution; the unit and MAC
+runs use Icarus with the actual four-state native functional models. The mapped
+MAC is not a mapped full-CPU simulation or a transistor timing qualification.
+
+The [fresh local CI replay](evidence/local-ci-eth-mbist-20260926.json) checks
+`b9b59fe`: **1,841 pytest passed, zero failures/errors/skips**, and 20 front-door
+checks pass. Six absent historical physical run trees are explicitly skipped.
+The new prepared-source archive is independently byte-replayed and available as
+a hash-checked release asset. The initial stale-source-fixture regression fails
+and remains recorded separately; it is not counted as a passing campaign.
+
+All three [release assets](evidence/eth-mbist-assets-20260926.json) have been
+fully downloaded, SHA-256/size verified and checked again anonymously. The
+functional source and CI source are separately identified. These digital
+integration results are published; new full-interface routing and independent
+layout DRC/LVS are still running locally. SRAM Liberty/RC, final STA and
+manufacturing approval remain separate open gates.

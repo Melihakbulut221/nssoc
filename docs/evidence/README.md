@@ -184,3 +184,17 @@ not waived; new GDS, final STA, FIFO MBIST, pads and scan/ATPG are not claimed.
 ```sh
 python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/mbist-chip-assets-20260926.json --out hw/soc/out/mbist-chip-evidence
 ```
+
+### Ethernet FIFO MBIST — 26 September 2026
+
+[Functional integration](ethernet-fifo-mbist-integration-20260926.json) covers both
+ports of all sixteen Ethernet SRAM macros, chip reset interlocks, real MAC
+traffic and rejected faulty adapters. [Fresh local CI](local-ci-eth-mbist-20260926.json)
+records 1,841 pytest passes with zero test skips, plus six separate historical
+physical-run gate skips. [Three verified assets](eth-mbist-assets-20260926.json)
+include full logs, source snapshots, initial failures and the independently
+replayed prepared-source bundle. New layout verification remains pending.
+
+```sh
+python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/eth-mbist-assets-20260926.json --out hw/soc/out/eth-mbist-evidence
+```
