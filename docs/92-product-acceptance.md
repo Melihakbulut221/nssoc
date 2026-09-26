@@ -38,6 +38,14 @@ hardware merely to increase apparent coverage.
 
 ## Product release gates
 
+**26 September wide-spacing discovery:** additional physical fault controls
+show that the locked wide-line spacing expression can miss illegal gaps because
+of polygon shielding. Six actual SRAM rail pairs require a 30 nm edge repair;
+the first repaired candidate also needs matching pin annotation cuts. The new
+candidate is undergoing independent DRC/LVS and cannot inherit the earlier
+GDS's passes or timing measurements. See the latest section of
+[docs/101](101-sram-characterization.md). Production acceptance remains open.
+
 **Manufacturing authority, checked 26 September 2026:** IHP's
 [official PDK status](https://github.com/IHP-GmbH/IHP-Open-PDK#current-status----preview)
 still describes the open release as a preview that is not intended for

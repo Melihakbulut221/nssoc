@@ -548,3 +548,100 @@ technology restricts the wiring-capacitance definitions to its nominal variant.
 The sheet/via resistance tests above therefore establish resistance corners
 only. Neither the variant names nor the three transistor PVT patterns establish
 qualified high/low RC corners. No missing corner coefficient is fabricated.
+
+### 26 September update: wide-metal spacing checks exposed a real gap
+
+The completed 50 µm tiled main run on GDS `8874f5c5…` reports **672 raw
+`M3.e` markers across the complete 560-category inventory**. None is waived.
+An unchanged-deck comparison on the full SP macro passes in deep, flat and
+500 µm tiled modes, but reports 30 markers with 50 µm tiles. This discrepancy
+is **not evidence that the smaller-tile markers are harmless**.
+
+A new independent geometry control contains five pairs of 0.7 µm-wide
+parallel conductors, lengths 10–686.08 µm, with a deliberately illegal
+0.21 µm gap. Two additional pairs use the legal 0.24 µm gap. The locked
+`Mn.e` implementation misses all five faults in deep, flat and tiled modes.
+KLayout documents that default shielding can hide coincident features when
+one checked layer is a subset of the other; this applies to the wide subset
+produced by erosion followed by dilation. See its
+[shielding explanation](https://www.klayout.de/doc/about/drc_ref_layer.html#width).
+
+A separate **supplemental** flat check adds `transparent` to that operation,
+retaining the locked 0.39 µm width, 0.24 µm gap and >1 µm parallel-run limits.
+It detects all five faulty pairs (ten directed markers), with no markers on
+the two legal pairs. On the actual SRAMs it identifies **two distinct pairs
+in SP and four in DP**, across Metal2 and Metal3. The original deck and all
+contradictory/failing reports are preserved. A historical unchanged-deck PASS
+therefore does not close wide-line spacing or production acceptance.
+
+A new geometry candidate retracts the six affected rail edges by 30 nm,
+without altering the circuit hierarchy or device layers. Its complete
+flattened metal differences match the six prescribed cuts exactly. Both
+macros then pass the supplemental check. The first candidate's unchanged
+main check catches pin annotation polygons extending beyond the trimmed
+metal; a second candidate also trims those corresponding pin polygons.
+Full main DRC, transistor LVS, fresh parasitic characterization and chip
+integration of the final candidate are required before it replaces the
+previous evidence. No timing or physical PASS is transferred to a changed GDS.
+
+The clean **local** source replay at `de73328` completes 1,607 pytest passes,
+zero failures and 14 explicitly recorded skips; its front door has 18 passes,
+zero failures and three skips. Earlier README-length and missing-publication-
+marker failures are retained. This is source regression evidence, not a
+foundry approval or a replacement for the open physical gates.
+
+The rail-and-pin second candidate now passes **all 560 unchanged main categories
+and full transistor LVS for both standalone macros**. An expanded independent
+check covers eleven wide-line rules (Metal1–Metal5 `e`/`f`, plus recommended
+TopMetal2 `bR`). Eleven deliberately illegal controls are detected and their
+eleven legal counterparts produce no markers; both repaired macros also have
+zero supplemental markers. Fresh whole-core checks are still running. Trimming
+a 0.70 µm rail to 0.67 µm changes its resistance and current density, so old
+parasitic, timing or reliability results cannot be carried over as acceptance.
+
+### Independent two-conductor capacitance benchmark
+
+A nominal FasterCap/KPEX benchmark uses two overlapping but electrically
+separate 10 µm by 1 µm Metal1/Metal2 rectangles. The original export has **no
+exposed subcircuit ports**, even when matching pin polygons are supplied. Its
+five positive capacitors do reproduce the grounded 2×2 numerical matrix within
+the export's six-significant-digit rounding, but the native empty-port component
+is not a usable connected model. A separate explicit three-port matrix model
+passes two ngspice AC excitations; actual coupling-deletion and 10% coefficient
+fault circuits fail the expected current-column check.
+
+The 0.01 and 0.003 requested numerical tolerances complete normally. The latter
+reports a 0.00177261 final refinement difference; the grounded matrix changes
+by **0.815%** relative to the coarse result. The stricter 0.001 attempt fails at
+its 2 GiB address-space bound. KPEX nevertheless returns zero and exports an
+intermediate matrix, so the independent child-log audit explicitly **rejects**
+that result. Successful wrapper exit alone is not a solver acceptance gate.
+
+The completed 0.003 result gives 1.006375 fF mutual capacitance; the native Magic
+control gives 0.67225 fF, a **49.7% difference**. Both use the same two conductor
+rectangles, but their dielectric, substrate and fringing approximations are
+not independently process-calibrated equivalents. This comparison establishes
+a discrepancy to resolve, not which extractor is physically correct. It is not
+a SRAM extraction, an RC process corner, a calibrated parasitic model or foundry
+approval; no arbitrary scale factor is applied to force agreement.
+
+The public `check_fastercap_completion.py` now rejects fatal diagnostics even
+when a caller supplies return code zero. It also requires the final matrix,
+completion footer and achieved requested tolerance. Fifteen focused tests pass;
+replaying the actual two completed logs and the masked out-of-memory log gives
+the expected two accepts and one rejection. This is an execution gate, not
+parasitic-model qualification.
+
+The repaired macros also pass fresh OpenDB LEF imports checked against their
+new GDS and independent CDL: 148 SP ports and 88 DP ports, named pin metal
+coverage, direction/use and internal geometry coverage by obstructions or pins.
+Four actually imported corrupt LEFs (shifted clock pin or missing Metal1
+obstruction, for each macro) are rejected. The nominal macro outlines and
+Metal4 external power accesses remain unchanged.
+
+A separate prepared-fixture replay executes all fourteen tests skipped by the
+clean local clone, with fourteen passes and no skips. The base, full-array,
+base-SRAM-logic and full-SRAM-logic lint profiles also complete with their
+existing 987, 1,015, 1,012 and 1,040 warnings respectively: no new/stale inventory
+entries, no unaccepted own-source warnings and no RTL source drift. These are
+separate measurements, not edits to the historical clean-clone skip record.
