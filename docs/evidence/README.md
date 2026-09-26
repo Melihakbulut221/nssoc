@@ -100,3 +100,21 @@ The fetcher checks every byte, rejects damaged or oversized downloads, and
 never extracts archives. Existing files must match their recorded identities.
 New public metadata uses project-relative paths and `$PDK`/`$HOME` placeholders;
 original records inside the archives retain their exact provenance.
+
+The later [TX cell and SRAM read-arc release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260926-tx-cell-sram-arcs)
+contains six TX archive parts, one completed SRAM read-arc archive and one
+**methods-only snapshot of running corner jobs**. The
+[separate eight-asset inventory](tx-cell-sram-arc-assets-20260926.json) provides
+independent sizes and SHA-256 digests. Retrieve it with:
+
+```sh
+python3 scripts/fetch_evidence_assets.py \
+  --manifest docs/evidence/tx-cell-sram-arc-assets-20260926.json \
+  --out hw/soc/out/tx-cell-sram-read-evidence
+```
+
+The TX main DRC/LVS result covers one experimental transmitter cell. Its
+87-case device screen omits metal RC and retains numerical warnings. The SRAM
+result covers one TT read-setup boundary and complementary old-word retention;
+it is not a complete Liberty characterization. The running-method archive
+contains no completed-corner waveform or PASS verdict.

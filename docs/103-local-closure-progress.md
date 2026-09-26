@@ -142,3 +142,80 @@ management routine sub-item, with host-model and RV32 compile evidence only.
 It does not close DMA, external PHY/pad integration, board tests or wire-rate
 acceptance. The earlier 1,707-test receipt remains bound to `bb5ddb1`; this
 subsequent driver has its own explicit test inventory.
+
+## Complete experimental TX cell layout
+
+The [TX cell evidence](evidence/pcie-tx-cell-20260926.json) now covers a complete
+experimental current-steering cell: four native `npn13G2` instances with emitter
+multiplicities 1/8/8/8, two 10 µm × 70.215 µm native `rsil` loads, eight native
+2 µm × 2 µm substrate contacts and routed Metal1–Metal5 connections. This is
+one TX cell; it is not a complete PCIe PHY or integrated four-lane chip macro.
+
+The final GDS passes all 560 main DRC categories with zero markers. Strict LVS
+matches seven combined devices, including the parallel-combined substrate
+contact, with no extraction diagnostics. Wrong resistor width, wrong HBT
+multiplicity, missing contact and wrong input connection each produce an actual
+`NoMatch`. The failed first geometry remains in the archive: Metal2 spacing,
+an incorrectly placed substrate label and an omitted schematic tap model were
+corrected without suppressing rules or disabling tap extraction.
+
+The layout-derived device netlist is translated to the native simulation models
+with its actual terminals and substrate contact retained. The native area and
+perimeter formula gives 10.208333 Ω for the combined contacts. Three zero-volt
+current probes are the only added measurement devices. All **87 single-cell
+cases** complete: 84 normal cases pass the existing screen and three injected
+faults are rejected. The minimum sampled signed differential margin is
+0.227035 V. Twenty-seven simulations retain numerical/startup warnings, and
+OpenVAF retains three constant-`$simparam` warnings. The result is an engineering
+screen requiring review, not model or PCIe compliance qualification.
+
+Peak measured load and tail currents are 9.799280 mA and 13.249469 mA. The
+layout was widened after this measurement: load via stacks have two rows, the
+tail collector has two rows, the reference collector has four columns, and the
+shared tail/ground buses are 8 µm wide. The final DRC/LVS replay passes again.
+Its translated device model is **byte-identical** to the simulated model; this
+transfers only device connectivity/model results, not metal parasitic timing.
+Actual GDS cut counts are audited. Nominal capacity calculations use the
+[IHP 105°C current table](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html#maximum-current-densities).
+They do not establish current sharing, native bar-contact limits, 125°C
+lifetime derating, package behavior or foundry EM acceptance.
+
+The generator is [make_pcie_tx_cell.py](../hw/soc/flow/make_pcie_tx_cell.py).
+The strict [device-netlist adapter](../scripts/translate_pcie_tx_cell.py) and
+existing load monitor pass 36 targeted tests with zero skips. This is a scoped
+new test run, not a replacement for the earlier complete pytest receipt.
+The raw GDS, LVS database, every simulation waveform, warnings, scripts and
+failed iterations are delivered through the
+[TX/SRAM evidence release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260926-tx-cell-sram-arcs).
+Metal/substrate PEX, RX/CDR/PLL, serialization, full controller, pad/ESD and chip
+integration remain open.
+
+## Repaired SRAM read-constraint measurement
+
+The [completed read-arc evidence](evidence/sram-repaired-dp-read-arcs-20260926.json)
+uses eight fresh transistor simulations of the repaired DP capacitance-only
+layout at TT, 1.2 V, 25°C, 100 ps input ramps and 5 fF load. It measures only
+rising `a2[0]` at the read clock. Correct capture plus at most 5% per-bit delay
+degradation passes at −250 ps and fails at −265.625 ps. The measured bracket is
+15.625 ps wide; the solver maximum step remains 25 ps. This is not a claim of
+physical accuracy finer than that numerical step.
+
+The same waveforms independently show retention of the old word when the
+address changes 265.625 ps after the read clock; a 250 ps delay does not retain
+it. This is a complementary capture/retention observation, **not a separately
+simulated hold constraint** or a delay-degradation hold table. Four setup and
+four retention measurement faults are rejected. The failed initial retention
+method preflight is preserved and superseded by the audited method. Every
+waveform and input digest is checked before publication.
+
+Full slew/load/PVT and transition coverage, write/data/mask constraints, pulse
+widths, leakage/internal power, coupled RC and independent Liberty validation
+still need completion. The long SP corner and mandatory formal campaigns have
+separate live status and are not promoted to PASS by these completed sub-items.
+
+The [next corner methods](evidence/sram-corner-step25-methods-20260926.json)
+are published separately as a **running-job snapshot**, not a result: SS at
+1.08 V/125°C and FF at 1.32 V/−40°C repeat the 78 ns pattern at 25 ps. An observer
+waits for successful completion and checks exact model/stimulus identity before
+comparing all forty transitions with the completed 50 ps patterns. These runs
+retain nominal geometry capacitances and do not supply RC process corners.

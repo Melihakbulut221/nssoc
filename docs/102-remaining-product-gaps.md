@@ -178,3 +178,9 @@ native-resistor TX engineering. README/project-status now selects the completed
 1,669-case pytest receipt and the exact 32-SRAM physical checkpoint, retaining
 historical timing as historical. These changes close evidence freshness items
 within those scopes; they do not close P01–P14 as complete product gates.
+
+The subsequent [TX-cell and read-arc work](103-local-closure-progress.md#complete-experimental-tx-cell-layout)
+closes the previously absent single experimental TX-cell geometry with main
+DRC, strict LVS and negative controls. It also completes one repaired DP read
+setup bracket and complementary retention observation. P01 and P05 remain open
+at product scope: these are neither a complete SRAM library nor a Gen3 x4 PHY.

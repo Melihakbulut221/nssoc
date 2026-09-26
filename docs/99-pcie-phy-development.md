@@ -209,3 +209,14 @@ geometry and a separate characterization driver. The original ideal-resistor
 sources and their historical measurements are retained. The new unit geometry
 is one resistor, not the TX bank or a complete PHY; contact-current, extracted
 interconnect and substrate-contact integration remain qualification work.
+
+## Routed TX cell continuation, 26 September 2026
+
+[The complete experimental TX cell layout](103-local-closure-progress.md#complete-experimental-tx-cell-layout)
+adds four native HBT instances, both native loads and eight explicitly modelled
+substrate contacts. Final main DRC and strict LVS pass, and all four deliberately
+incorrect references fail. The 87-case device-netlist screen retains its
+numerical warnings and does not include interconnect RC. Wider power paths and
+via arrays have been rechecked geometrically. This closes the absent **single
+TX-cell geometry** sub-item; it does not supply a full Gen3 x4 PHY, controller,
+padframe, chip integration or PCIe qualification.

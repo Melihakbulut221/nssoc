@@ -879,3 +879,14 @@ complete Liberty tables or qualified distributed/coupled RC.
 
 The [local closure continuation](103-local-closure-progress.md) records newer
 RTL/profile checks separately from these transistor-level measurements.
+
+### Repaired DP read setup and complementary retention, 26 September
+
+[The completed eight-run measurement](103-local-closure-progress.md#repaired-sram-read-constraint-measurement)
+finds a rising `a2[0]` setup boundary between −265.625 ps (fail) and −250 ps
+(pass) for the repaired capacitance-only layout at TT/1.2 V/25°C, 100 ps ramps,
+5 fF load and 25 ps maximum step. Old-word retention on those same waveforms
+passes at +265.625 ps but fails at +250 ps. That observation is not an
+independent hold-characterization run. Full tables, both transition directions,
+other pins and PVT/load/slew coverage remain required; no Liberty acceptance
+is implied by this single boundary.
