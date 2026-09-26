@@ -28,29 +28,23 @@ is generated from [selected evidence records](docs/status-sources.json).
 Check it with `python3 scripts/project_status.py`; update it with `--write`.
 
 The [26 September SRAM continuation](docs/101-sram-characterization.md#8-26-september-fill-route-grid-repair-and-additional-sp-corners)
-repairs six off-grid routes and adds density fill. The exact changed 32-SRAM
-core passes fresh full transistor LVS (**130 matching circuits, 5,129,488
-simplified primitives per side**), density and antenna checks. Full main DRC
-remains open while the remaining metal categories run.
-
-Both SRAM transistor topologies are independently matched. The DP simulation
-with every extracted layout capacitance passes its nominal read/hold/byte-write
-pattern; SP schematic measurements cover TT, SS/hot and FF/cold. These are
-scoped measurements. Distributed RC, complete timing/power libraries, final
-SoC timing and manufacturing approval remain open.
+repairs six off-grid routes and adds fill. The changed 32-SRAM core passes fresh
+full transistor LVS, density and antenna checks; complete main DRC remains open.
+Both SRAM transistor topologies are independently matched. DP capacitance-only
+and SP schematic patterns pass at TT/SS/FF. Distributed RC, complete timing/power
+libraries, final SoC timing and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
-profile-specific layout evidence. They are not the complete GR801 interface
-set. **PCIe Gen3 x4 remains open:** the tested [transaction backend](docs/98-pcie-transaction-backend.md) is not connected to the SoC/PHY. UART now has
-[8N1 receive and transmit RTL with CPU tests](docs/97-uart-receive.md);
-its updated whole-SoC layout remains pending. Ethernet needs an external PHY
-and has no DMA.
+profile-specific layout evidence. **PCIe Gen3 x4 remains open:** the tested
+[transaction backend](docs/98-pcie-transaction-backend.md) is not connected to the SoC/PHY.
+UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated
+whole-SoC layout pending. Ethernet needs an external PHY and has no DMA.
+The complete GR801 interface set is not implemented.
 
-All release requirements remain in the [product acceptance register](docs/92-product-acceptance.md)
-and [second audit register](docs/96-second-audit-closure.md), including final
-DRC/LVS/timing, clocks/POR, pads/package, DFT/debug and radiation qualification.
-Earlier claims, corrections and withdrawn measurements are preserved verbatim
-in [HISTORY.md](HISTORY.md), with a [migration digest](docs/evidence/readme-migration-20260920.json).
+The [product acceptance register](docs/92-product-acceptance.md) and
+[second audit register](docs/96-second-audit-closure.md) track all remaining gates.
+Earlier claims and corrections are preserved in [HISTORY.md](HISTORY.md), with a
+[migration digest](docs/evidence/readme-migration-20260920.json).
 
 ## Reproduce
 
@@ -67,10 +61,9 @@ make rtl-test
 make check
 ```
 
-The digital installer checks the pinned 2026-08-04 archive's SHA256 and size,
-uses a project-local directory and refuses to replace an existing installation.
-Allow about 4 GB during installation. `OSS_CAD_SUITE=/absolute/path` selects
-another explicit checkout. Physical tools and the PDK are separate dependencies.
+The installer verifies the pinned 2026-08-04 archive, uses a project-local
+folder and refuses to replace an existing installation. Allow about 4 GB;
+`OSS_CAD_SUITE=/absolute/path` selects another checkout. Physical tools/PDK are separate.
 
 The local `make check` command covers Python, licensing and documentation;
 hardware jobs are separate. Missing dependencies are reported as skips.
@@ -86,11 +79,10 @@ The default `SOC_INTERFACE_PROFILE=base` includes I2C/Ethernet and SPI.
 Explicitly set `SOC_INTERFACE_PROFILE=full` for LGPL SpaceWire/CAN, including
 preparation and every subsequent build command. See [interface profiles](docs/88-interface-integration.md).
 
-On a fresh prepared checkout, `python3 scripts/check_formal_sweep.py` runs the
-complete declared pilot/SoC formal regression and checks every copied source.
-Documented non-closing tasks remain explicit exceptions, not passes. The
-workflow has separate RTL, RAM parity, formal sweep and processor/boot jobs;
-whole-netlist native boot is an explicit long-running workflow option.
+On a prepared checkout, `python3 scripts/check_formal_sweep.py` runs the declared
+pilot/SoC formal regression with source checks and explicit non-closing exceptions.
+RTL, RAM parity, formal and processor/boot jobs remain separate; whole-netlist
+native boot is an explicit long-running workflow option.
 
 The [pilot driver](sw/pilotlink/README.md) shares register, state, weight and
 frame operations across cocotb, a serial bridge and RP2040 SPI backends.
@@ -114,12 +106,10 @@ measurements remain explicitly tied to their original revisions; the
 
 ## Licensing and citation
 
-This repository is a published subset of a private development
-repository; the [mirror contract](docs/78-the-public-mirror.md) defines its
-publication boundary. The original provenance note is retained in HISTORY.md.
+The [mirror contract](docs/78-the-public-mirror.md) defines this published subset's
+boundary. The original private-development provenance note is in HISTORY.md.
 
-The project licence decision was **signed 2026-09-09**. Component licences
-and upstream exceptions are detailed in [LICENSES.md](LICENSES.md).
+The licence decision was **signed 2026-09-09**; see [LICENSES.md](LICENSES.md) for components and exceptions.
 
 | Material | Project licence |
 |---|---|
@@ -130,8 +120,6 @@ and upstream exceptions are detailed in [LICENSES.md](LICENSES.md).
 Fetched IP retains its own licence, including LGPL/MIT/Apache components;
 this table does not relicense it. SPDX and REUSE checks cover the distribution.
 
-Use [CITATION.cff](CITATION.cff) and the exact commit for attribution. There is
-no release DOI or qualified silicon release. [CONTRIBUTING.md](CONTRIBUTING.md)
-explains defect reporting, the mirror/contribution boundary and development
-checks. Use [SECURITY.md](SECURITY.md) for private vulnerability reporting.
-The [changelog](CHANGELOG.md) indexes unreleased changes.
+Use [CITATION.cff](CITATION.cff) and the exact commit; there is no release DOI or qualified silicon release.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for reporting, boundaries and development checks,
+[SECURITY.md](SECURITY.md) for private vulnerability reports, and [CHANGELOG.md](CHANGELOG.md) for unreleased changes.
