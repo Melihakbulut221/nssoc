@@ -118,3 +118,29 @@ The TX main DRC/LVS result covers one experimental transmitter cell. Its
 result covers one TT read-setup boundary and complementary old-word retention;
 it is not a complete Liberty characterization. The running-method archive
 contains no completed-corner waveform or PASS verdict.
+
+The [RC reader experiment release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260926-rc-reader)
+contains isolated native source/runtime snapshots, actual-cell A/B extractions,
+failed methods, final checks and historical full-macro diagnostic inputs.
+The [asset inventory](rc-reader-assets-20260926.json) provides verified sizes
+and hashes. Retrieve it with the same fetcher:
+
+```sh
+python3 scripts/fetch_evidence_assets.py \
+  --manifest docs/evidence/rc-reader-assets-20260926.json \
+  --out hw/soc/out/rc-reader-evidence
+```
+
+These results close the intrinsic-capacitance reader defect within the measured
+scope. Coupled/spatial RC and production qualification remain open. The archived
+running full-macro method is explicitly not an accepted result.
+
+The same release also includes the completed SS/FF SRAM timestep waveforms and
+comparisons, replacing no historical record. Both 25 ps patterns finish and
+are compared against their 50 ps counterparts. The separate full-RC audit
+method archive remains a waiting-job snapshot without an acceptance verdict.
+
+A fifth archive supplies the complete source-stage comparison for the running
+repaired DP extraction. Its 350,997 matching native records establish input
+geometry/C consistency only; the unfinished resistance output is not included
+or accepted by that check.

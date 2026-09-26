@@ -890,3 +890,77 @@ passes at +265.625 ps but fails at +250 ps. That observation is not an
 independent hold-characterization run. Full tables, both transition directions,
 other pins and PVT/load/slew coverage remain required; no Liberty acceptance
 is implied by this single boundary.
+
+## Native intrinsic-ground-capacitance reader repair
+
+The [reader experiment](evidence/magic-groundcap-reader-20260926.json) identifies
+another specific defect in Magic 8.3.623: `ResReadCapacitor` adds incident coupling
+to the extresist nodal total, while `ResReadNode` did not read the intrinsic
+node-to-ground capacitance in field 3 of the native `.ext` record. The isolated
+[source patcher](../scripts/patch_magic_groundcap_reader.py) now adds that field.
+It accepts only two exact, recorded source identities and writes a new file;
+it does not change the installed PDK or any previous runtime.
+
+Four actual cells were extracted with and without this change, first on the
+historical tool configuration and then on the combined fractional-sheet,
+port-alias and serialization configuration with the repaired DP GDS. Each pair
+passes an [independent accounting audit](../scripts/audit_magic_groundcap.py):
+source geometry/capacitance records agree; physical MOS instances establish an
+explicit node bijection; every weighted resistor, MOS terminal and `killnode`
+record agrees; and the added capacitance on each logical net equals the native
+intrinsic input within the existing serialization tolerance. Resistors are
+not collapsed for the topology comparison. Repeated `rnode` names are summed,
+as the native reader does, instead of overwriting earlier records.
+
+The four intrinsic totals are 842.073617, 3084.704356, 1517.165600 and
+8402.020590 aF. Both tool configurations pass all four paired controls and
+reject 24 deliberate faults each. Twenty targeted software tests pass with
+zero skips. Bytewise/order-dependent initial checks and incomplete accounting
+attempts remain archived. The largest cell has ten historical and nine combined
+coordinate-metadata differences despite identical weighted topology; these are
+reported explicitly, and **spatial capacitance placement is not proved**.
+
+[Historical stage inputs](evidence/rc-stage-inputs-20260926.json) make the
+separate full-macro diagnostic replayable. Native record removal explains
+189,054 lost coupling pairs; distributed ground capacitance mostly reflects
+incident coupling alone. One supply-pair residual remains. Repairing the
+intrinsic input does not preserve those coupling pairs, remove duplicated
+retained capacitances, establish physical RC corners or qualify extraction.
+The existing capacitance-conservation failure is not changed into a PASS.
+
+The archive also contains an immutable method snapshot of the next **running**
+RC extraction on the repaired full DP macro. It contains no accepted full-macro
+result. Final capacitance-only characterization evidence remains separate
+until topology, coupling, parasitic models and process corners are validated.
+
+The [completed corner timestep comparison](evidence/sram-dp-corner-timestep-20260926.json)
+now adds SS at 1.08 V/125°C and FF at 1.32 V/−40°C to the earlier TT comparison.
+Both fresh 78 ns patterns complete at a 25 ps maximum step, using the same
+repaired 37,076-transistor, 202,674-capacitor macro, 100 ps ramps and 5 fF loads.
+Each passes the observed read/write/hold/byte pattern and rejects the two
+measurement faults. All forty read transitions per corner are compared against
+identical-model/stimulus 50 ps runs; neither run has a recorded warning/error.
+
+| Transistor corner | Maximum absolute delay change | Maximum absolute output-slew change | 50 ps / 25 ps supply energy |
+|---|---:|---:|---:|
+| SS, 1.08 V, 125°C | 16.273267 ps | 1.050383 ps | 90.134740 / 90.176169 pJ |
+| FF, 1.32 V, −40°C | 22.532888 ps | 4.746665 ps | 145.967020 / 145.827227 pJ |
+
+These measured differences are numerical sensitivity, not a zero-step limit
+or an accuracy guarantee. They do not supply additional slew/load points,
+complete timing constraints or RC process corners. The earlier methods-only
+running snapshot remains unchanged; this new record contains completed results.
+
+The [new full-DP source preflight](evidence/repaired-dp-rc-source-preflight-20260926.json)
+also passes: all 350,997 native source records, including 37,076 MOS devices
+and 192,423 coupling records, match the independently audited repaired
+capacitance-only extraction up to record order and capacitor orientation.
+A removed coupling is detected. The reference was restored from its published
+archive and matched its original digest. This verifies the completed input
+extraction stage while the resistance extraction continues; it does not accept
+the unfinished RC network or its serialized capacitance matrix.
+
+The combined raw controller inherited the word “ten” in its free-text scope
+from the historical run. Its actual coordinate-difference records contain nine;
+the public metadata records this prose erratum without changing frozen inputs
+of the ongoing extraction. The numeric checks and verdict are unaffected.

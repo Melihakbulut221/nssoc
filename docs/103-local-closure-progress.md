@@ -219,3 +219,33 @@ are published separately as a **running-job snapshot**, not a result: SS at
 waits for successful completion and checks exact model/stimulus identity before
 comparing all forty transitions with the completed 50 ps patterns. These runs
 retain nominal geometry capacitances and do not supply RC process corners.
+
+## RC reader defect isolated and repaired
+
+The [native ground-capacitance experiment](evidence/magic-groundcap-reader-20260926.json)
+closes a specific reader defect: intrinsic node capacitance was omitted from
+the distributed RC total. Two isolated tool configurations each pass four
+actual-cell comparisons and reject 24 deliberately corrupted controls. The
+combined configuration preserves the earlier fractional-sheet and port-alias
+repairs. Twenty targeted software tests pass. No installed PDK or active
+simulation input was modified.
+
+The comparison proves exact weighted resistor/MOS topology and per-net input
+capacitance increments, including repeated native node records. It does not
+prove spatial placement: coordinate metadata differences remain explicit.
+The [complete historical diagnostic inputs](evidence/rc-stage-inputs-20260926.json)
+also preserve the independently measured coupling-loss failure. A new repaired
+full-DP extraction is running; this is not final RC acceptance or final STA.
+
+The [SS/FF timestep replays](evidence/sram-dp-corner-timestep-20260926.json)
+subsequently completed: both 78 ns patterns pass at 25 ps, with forty observed
+read transitions compared per corner against the 50 ps results. Maximum delay
+changes are 16.273267 ps for SS and 22.532888 ps for FF. These are completed
+capacitance-only numerical checks at one load/slew, not complete characterization.
+The separate [full-RC audit methods](evidence/repaired-dp-rc-audit-methods-20260926.json)
+were captured while waiting for extraction and contain no acceptance verdict.
+
+The [full-DP source preflight](evidence/repaired-dp-rc-source-preflight-20260926.json)
+checks all 350,997 native input records against the accepted repaired
+capacitance-only source and rejects a missing coupling. Final RC serialization
+and the separate long SP/formal campaigns remain unfinished.
