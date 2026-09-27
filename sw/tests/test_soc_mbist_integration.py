@@ -34,6 +34,26 @@ def test_clean_independent_verdict_is_required():
     assert mbist.passed_log("MBIST completed\nPASS chip MBIST accesses=655360\n")
 
 
+@pytest.mark.parametrize("req_reg,writeback", [(0, 0), (0, 1), (1, 0), (1, 1)])
+def test_elaborated_pipeline_identity_is_required(req_reg, writeback):
+    row = (f"PIPELINE core_req_reg={req_reg} core_wb_stage={writeback} "
+           f"branch_target_alu={writeback}\nRF_SYNPRE=1\n")
+    assert mbist.pipeline_log_matches(row + "PASS chip\n", req_reg, writeback)
+    assert not mbist.pipeline_log_matches("PASS chip\n", req_reg, writeback)
+    assert not mbist.pipeline_log_matches(row + row, req_reg, writeback)
+    assert not mbist.pipeline_log_matches(row, 1-req_reg, writeback)
+    assert not mbist.pipeline_log_matches(row, req_reg, 1-writeback)
+    assert not mbist.pipeline_log_matches(row, req_reg, writeback, 0)
+    assert not mbist.pipeline_log_matches(row.replace("RF_SYNPRE=1\n", ""), req_reg, writeback)
+    assert not mbist.pipeline_log_matches(row + "RF_SYNPRE=2\n", req_reg, writeback)
+    assert not mbist.pipeline_log_matches(row + "PIPELINE malformed\n", req_reg, writeback)
+    assert mbist.pipeline_log_matches(row.replace("RF_SYNPRE=1", "RF_SYNPRE=0"),
+                                      req_reg, writeback, 0)
+    assert not mbist.pipeline_log_matches(
+        row.replace(f"branch_target_alu={writeback}", f"branch_target_alu={1-writeback}"),
+        req_reg, writeback)
+
+
 @pytest.mark.parametrize(
     "enabled,logic", [(False, False), (False, True), (True, False), (True, True)]
 )

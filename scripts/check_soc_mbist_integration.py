@@ -41,8 +41,24 @@ def passed_log(text):
     )
 
 
+def pipeline_log_matches(text, core_req_reg, core_wb_stage, rf_synpre=1):
+    """Require the elaborated DUT configuration, not just a requested CLI flag."""
+    import re
+
+    pipeline = re.findall(
+        r"(?m)^PIPELINE core_req_reg=([01]) core_wb_stage=([01]) branch_target_alu=([01])$",
+        text,
+    )
+    return (
+        pipeline == [(str(core_req_reg), str(core_wb_stage), str(core_wb_stage))]
+        and re.findall(r"(?m)^RF_SYNPRE=([01])$", text) == [str(rf_synpre)]
+        and len(re.findall(r"(?m)^PIPELINE\b.*$", text)) == 1
+        and len(re.findall(r"(?m)^RF_SYNPRE=.*$", text)) == 1
+    )
+
+
 def main():
-    from check_soc_lint import sources
+    from check_soc_lint import physical_regfile, sources
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdk", type=Path, required=True)
@@ -55,6 +71,10 @@ def main():
     )
     parser.add_argument("--profile", choices=("base", "full"), default="base")
     parser.add_argument("--eth-mbist", action="store_true", help="Include both physical Ethernet FIFO MBISTs")
+    parser.add_argument("--core-req-reg", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--core-wb-stage", type=int, choices=(0, 1), default=0)
+    parser.add_argument("--rf-synpre", type=int, choices=(0, 1), default=1,
+                        help="Match the physical SYNPRE=1 profile; 0 is a separate control")
     args = parser.parse_args()
     out = args.output.resolve()
     if not out.is_relative_to(ROOT / "hw/soc/out"):
@@ -71,6 +91,13 @@ def main():
     (out / "iverilog-version.log").write_text(version)
     files, define, _ = sources(args.profile)
     soc = ROOT / "hw/soc"
+    regfile_source = soc / "rtl/ibex_regfile_secded.v"
+    if args.rf_synpre:
+        regfile_copy = out / "ibex_regfile_secded.v"
+        regfile_copy.write_text(physical_regfile(regfile_source.read_text()))
+        if files.count(regfile_source) != 1:
+            raise ValueError("Expected exactly one SECDED register file")
+        files = [regfile_copy if p == regfile_source else p for p in files]
     asm = soc / "tb/sw/mbist_boot.S"
     gcc = soc / "tools/rvgcc/bin/riscv-none-elf-gcc"
     objcopy = gcc.with_name("riscv-none-elf-objcopy")
@@ -112,6 +139,7 @@ def main():
             "RM_IHPSG13_2P_core_behavioral_ideal.v")]
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     tracked = files + [
+        regfile_source,
         asm,
         Path(__file__).resolve(),
         gcc,
@@ -132,6 +160,9 @@ def main():
         scope="Actual soc_top RAM MBIST and Ibex ECC boot; functional native models, no layout claim",
         profile=args.profile,
         eth_mbist=args.eth_mbist,
+        core_req_reg=args.core_req_reg,
+        core_wb_stage=args.core_wb_stage,
+        rf_synpre=args.rf_synpre,
         simulator=args.simulator,
         input_sha256=pins,
         cases=[],
@@ -150,6 +181,8 @@ def main():
             "tb_soc_mbist_integration",
             "-o",
             str(out / "run.vvp"),
+            f"-Ptb_soc_mbist_integration.CORE_REQ_REG={args.core_req_reg}",
+            f"-Ptb_soc_mbist_integration.CORE_WB_STAGE={args.core_wb_stage}",
         ]
         if args.eth_mbist:
             command.append("-DSOC_ETH_MBIST")
@@ -170,6 +203,8 @@ def main():
                 "tb_soc_mbist_integration",
                 "--Mdir",
                 str(out / "obj_dir"),
+                f"-GCORE_REQ_REG={args.core_req_reg}",
+                f"-GCORE_WB_STAGE={args.core_wb_stage}",
                 *defines,
             ]
             executable = [out / "obj_dir/Vtb_soc_mbist_integration"]
@@ -189,6 +224,9 @@ def main():
             run([*executable, *plus], log, timeout=1800)
             if not passed_log(log.read_text()):
                 raise RuntimeError("Missing pass or error in test log: " + name)
+            if not pipeline_log_matches(log.read_text(), args.core_req_reg, args.core_wb_stage,
+                                        args.rf_synpre):
+                raise RuntimeError("Elaborated pipeline configuration mismatch: " + name)
             result["cases"].append(dict(name=name, passed=True, log_sha256=sha(log)))
         result["sources_unchanged"] = all(sha(Path(p)) == h for p, h in pins.items())
         result["passed"] = result["sources_unchanged"] and len(result["cases"]) == len(cases)

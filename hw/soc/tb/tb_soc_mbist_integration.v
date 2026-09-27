@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 `timescale 1ns/1ps
 `default_nettype none
-module tb_soc_mbist_integration;
+module tb_soc_mbist_integration #(
+    parameter integer CORE_REQ_REG = 0,
+    parameter integer CORE_WB_STAGE = 0
+);
     reg clk=0, por=0;
     always #10 clk=~clk;
     reg eth_clk=0;
@@ -13,7 +16,8 @@ module tb_soc_mbist_integration;
     wire [63:0] expected, actual;
     wire [2:0] phase;
     wire [7:0] background;
-    soc_top #(.MEM_RDREG(1), .REQ_REG(1), .WAKE_GNT(1)) dut (
+    soc_top #(.MEM_RDREG(1), .REQ_REG(1), .WAKE_GNT(1),
+              .CORE_REQ_REG(CORE_REQ_REG), .CORE_WB_STAGE(CORE_WB_STAGE)) dut (
         .clk_i(clk), .rst_ni(por), .irq_external_i(1'b0), .wdog_dis_i(1'b0),
         .strap_i(4'b0), .uart_rx_i(1'b1), .gpio_i(16'b0), .qspi_io_i(4'hf),
         .eth_rx_clk_i(eth_clk), .eth_tx_clk_i(eth_clk), .eth_rxd_i(8'b0),
@@ -35,6 +39,9 @@ module tb_soc_mbist_integration;
     // The fault is BELOW ECC and in a check bit. A codec-level test could
     // accidentally correct/hide it. Here the raw MBIST comparison must stop.
     initial begin
+        $display("PIPELINE core_req_reg=%0d core_wb_stage=%0d branch_target_alu=%0d",
+                 dut.CORE_REQ_REG, dut.u_ibex.WritebackStage, dut.u_ibex.BranchTargetALU);
+        $display("RF_SYNPRE=%0d", dut.u_ibex.gen_regfile_ff.register_file_i.SYNPRE);
 `ifdef SOC_ETH_MBIST
         if ($value$plusargs("ethfault=%d", ethfault)) begin end
         if ($value$plusargs("ethstall=%d", ethstall)) begin end
