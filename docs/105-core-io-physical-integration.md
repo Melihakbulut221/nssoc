@@ -277,3 +277,29 @@ the original watchdog must remain paused while the worker is still running;
 resume it for final validation only after the worker has exited, or to handle
 a logged error. Its intentional stopped state must not be mistaken for a
 stopped KLayout worker.
+
+
+## Local output capacity while the physical jobs continue
+
+The September 27 hourly follow-up found less than 700 MiB of free local disk.
+To preserve capacity for pending routed views, only archived intermediate copies
+were reclaimed. The [reclamation receipt](evidence/resource-reclamation-20260927.json)
+records each removed path, original byte count, SHA-256 and exact archive member.
+All original bytes remain recoverable; active inputs and final views remain local.
+
+The first group comprises 28 pre-route assembly ODB/DEF copies and two superseded
+I/O diagnostic GDS files, already present in independently verified published
+archives: 208,197,902 bytes. A new [early pipeline stage archive](evidence/pipeline-early-stage-assets-20260927.json)
+preserves a further 28 completed intermediate ODB/DEF files: 897,208,888 bytes.
+The initial selection guard rejected a still-referenced stage-30 view, so the
+final selection excludes it along with every original input pin and every
+stage-31-or-later state reference. Nothing was removed until all archive members
+and authenticated and anonymous GitHub downloads had passed byte verification.
+
+Total reclaimed space is 1,105,406,790 bytes. The new archive contains 48 members,
+is 98,348,800 bytes, and has SHA-256
+`cc4c0c527dec0f808afe808791a4553abd8d9adf6a0afa11c93bcca7742f0f69`.
+This is storage recovery, not a new physical pass. The initial detailed routing
+reached zero router violations before antenna repair triggered another routing
+pass; intermediate violations from that ongoing pass are not its final verdict.
+The unchanged whole-chip BEOL measurement remains a separate unfinished check.
