@@ -40,12 +40,12 @@ def fixture(contract):
             consumed.add(b['output'])
         else:
             declarations += [f'pullup({n});']
-        for value in [0, (1 << width)-1]:
+        for value in [0] + [1 << i for i in range(width)] + [(1 << width)-1]:
             statements += [f'dut.u_core.{b["enable"]}=0; en_{n}=1; ext_{n}={width}\'h{value:x}; #2;',
                            f'if(dut.u_core.{b["input"]} !== {width}\'h{value:x}) $fatal(1,"{n} input");']
         statements += [f'en_{n}=0; #2;']
         if b.get('output'):
-            for value in [0, (1 << width)-1, int('10' * ((width+1)//2), 2) & ((1 << width)-1)]:
+            for value in [0] + [1 << i for i in range(width)] + [(1 << width)-1]:
                 statements += [f'dut.u_core.{b["enable"]}={width}\'h{(1<<width)-1:x};',
                                f'dut.u_core.{b["output"]}={width}\'h{value:x}; #2;',
                                f'if({n} !== {width}\'h{value:x}) $fatal(1,"{n} output");',
@@ -132,12 +132,17 @@ def main():
     mutations = {'baseline': None,
                  'i2c_drives_high': (".c2p(1'b0)", ".c2p(1'b1)"),
                  'gpio_always_drives': ('.c2p_en(gpio_oe_o[0])', ".c2p_en(1'b1)"),
+                 'gpio_lane_permutation': ('GPIO_LANE_PERMUTATION', ''),
                  'gpio_input_swap': ('.p2c(gpio_i[0])', '.p2c(gpio_i[1])'),
                  'status_payload_swap': ('mbist_fail_actual_o, mbist_fail_expected_o',
                                          'mbist_fail_expected_o, mbist_fail_actual_o')}
     for name, mutation in mutations.items():
         source = wrapper
-        if mutation:
+        if name == 'gpio_lane_permutation':
+            a, b = '.p2c(gpio_i[0])', '.p2c(gpio_i[2])'
+            assert source.count(a) == source.count(b) == 1
+            source = source.replace(a, '__SWAP_PIN__').replace(b, a).replace('__SWAP_PIN__', b)
+        elif mutation:
             old, new = mutation
             assert old in source
             source = source.replace(old, new)

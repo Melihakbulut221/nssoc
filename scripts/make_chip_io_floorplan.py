@@ -87,12 +87,19 @@ def place(cells, macros):
         placements.append(dict(instance=f'u_corner_{side}',master='sg13g2_Corner',
                                rotation=side,x_nm=ox,y_nm=oy))
         span = (width if side%2 == 0 else height)-2*corner
-        needed = sum(macros[c['master']]['size'][0] for c in group)
+        guard_master = 'sg13g2_Filler200'
+        guard_width = macros[guard_master]['size'][0]
+        needed = sum(macros[c['master']]['size'][0] + guard_width for c in group)
         if needed > span:
             raise ValueError('Insufficient pad-row space')
         slack = span-needed
         # Complete each row with native filler sizes read from LEF, not names.
-        row = list(group)
+        # Native supply cells can expose contacts only 0.175 um from an
+        # adjacent cell's contacts. Native 1 um spacers preserve all rail
+        # abutments while avoiding direct active-cell boundary adjacency.
+        row = []
+        for number, cell in enumerate(group):
+            row += [cell, dict(instance=f'u_guard_{side}_{number}', master=guard_master)]
         fillers = sorted(((name, entry['size'][0]) for name, entry in macros.items()
                           if name.startswith('sg13g2_Filler')), key=lambda pair: -pair[1])
         for master, step in fillers:

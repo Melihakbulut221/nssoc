@@ -81,9 +81,10 @@ utility decodes a capture; it does not communicate with fabricated hardware.
 - Native IHP Verilog I/O models exercise all mapped signal pins, bidirectional
   release/readback, I2C open-drain behavior and an exact 192-bit MBIST frame.
   The core in this transport fixture is an explicitly labelled pin-stimulus
-  stub, **not a CPU execution result**. Four wrapper mutations are rejected:
-  I2C driving high, GPIO permanently enabled, swapped input wiring and exchanged
-  expected/actual status words.
+  stub, **not a CPU execution result**. Five wrapper mutations are rejected:
+  I2C driving high, GPIO permanently enabled, an invalid input connection, a
+  genuine two-lane permutation and exchanged expected/actual status words.
+  Walking-one stimulus checks every input/output lane independently.
 - Independent mailbox RTL tests exercise repeated frames, source changes before
   serial acknowledgement, stopped clocks, idle behavior, zero fill and POR.
   Five RTL mutations are rejected. Verilator reports no warnings for the mailbox.
@@ -100,11 +101,21 @@ utility decodes a capture; it does not communicate with fabricated hardware.
 `scripts/make_chip_io_floorplan.py` generates `nssoc_io_floorplan`: an initial
 4,000 × 3,200 µm ring with the 106 signal/supply cells, four native corners and
 native fillers. Filler dimensions come from LEF; their names are not lengths.
-All 204 placements are checked for non-overlapping LEF footprints and die
-containment. Each of 816 adjacent TopMetal1 supply-pin contacts is checked for
+All 314 placements are checked for non-overlapping LEF footprints and die
+containment. Each of 1,256 adjacent TopMetal1 supply-pin contacts is checked for
 continuity and different-rail separation. A missing cell and a wrongly rotated
 cell are rejected. GDS readback must reproduce every master, orientation and
 coordinate exactly.
+
+The first direct-abutment ring produced 82 native `Cnt.b` contact-spacing
+markers at supply-cell boundaries. A native 1 µm filler after each signal/supply
+cell removes those direct active-cell adjacencies while preserving all four
+abstract supply rails. The new GDS passes all nine selected native contact
+categories with zero markers. No foundry rule or native cell geometry was
+modified. The original full FEOL/geometry run also exceeded its 3 GiB address
+space limit in native angle processing; its partial report is not a pass.
+A fresh all-main-rule run uses separately checked table groups and resource
+admission for the larger angle job. Its completion is a separate required gate.
 
 This GDS contains **only the I/O ring**. It excludes the digital core and new
 serial logic, signal routes, completed bond pads/passivation/seal ring and

@@ -758,7 +758,7 @@ active simulation inputs and the accepted core GDS remain in place.
 The [new chip shell](104-chip-io-and-test-access.md) connects a selected mapped
 core through 102 native IHP signal I/O cells and four supply cells, and provides
 a coherent read-only serial MBIST frame. Native-model wiring tests and five
-mailbox fault mutations pass their stated acceptance checks; four wrong pad
+mailbox fault mutations pass their stated acceptance checks; five wrong pad
 connections are rejected. A separate native-cell IO-ring GDS passes placement
 and abstract rail-abutment checks. The ring does not contain the core/serial
 logic or signal routing and is not a completed padframe. P08/P10 advance at
