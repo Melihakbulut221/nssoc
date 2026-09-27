@@ -335,3 +335,28 @@ This small published archive includes the successful BEOL report and first
 failed attempt, the pipeline disk-full diagnostics, 59-test log and continuation
 source. The large routing checkpoint archive is separately still undergoing
 public byte verification at this snapshot and is not claimed complete here.
+
+
+## Remaining native rule campaign and timing diagnosis
+
+A [resource-serialized campaign](evidence/chip-full-rule-campaign-20260927.json)
+is queued behind the pipeline recovery. It uses the exact same pre-fill
+core-plus-ring GDS as the completed BEOL check and reuses only that hash-bound
+117-category result. Fresh measurements cover 7 density, 31 antenna,
+443 FEOL/geometry and 11 supplemental categories. The native table/catalog
+checks and rule decks remain unchanged. The prior successful deep-angle method
+uses one worker and a 12 GiB address-space cap; there is no elapsed-time cutoff.
+Execution errors remain errors and any geometry markers remain failures.
+This queued campaign does not establish full-chip LVS or production approval.
+
+The separate pipeline's completed global-route estimate reports worst listed
+setup -7.733286 ns and hold -1.810861 ns, with eight maximum-capacitance
+violations. The setup path runs from register-file x8 bit19 to mcycle bit1;
+the hold path ends at `qspi_io_oe_o[3]`. These are intermediate estimates,
+not the pending post-route parasitic measurement or final timing.
+
+The [method archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-full-rule-campaign-methods-20260927.tar.xz) preserves the queued controller source,
+timestamped snapshot, raw intermediate timing reports and 84 passing native
+result/catalog regression tests. 19 members, 65,176 bytes,
+SHA-256 `098bddf5156f4deec57a0eb00fcf51e72f784b41253a270b7cbbc712ab206302`; every member and both download channels were
+byte-verified. [Asset inventory](evidence/chip-full-rule-campaign-assets-20260927.json).
