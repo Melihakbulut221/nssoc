@@ -155,3 +155,14 @@ Archive size is 134,860,300 bytes; SHA-256
 and anonymous GitHub downloads match the local archive. Native tool binaries
 and the original core ODB remain hash-bound replay dependencies identified
 in the archive. Publication is not manufacturing approval.
+
+The [follow-up method and delivery-check archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/core-io-followup-methods-and-checks-20260927.tar.xz)
+contains the completed 290-test/documentation/license/digest checks, the
+lossless scratch-reclamation inventory and a dated snapshot of the still-active
+local BEOL and separate pipeline-timing jobs. The BEOL method checks the exact
+new chip GDS against 117 pinned native categories under a 6 GiB address-space
+limit and a 90-minute execution bound. **Its running snapshot is not a DRC
+pass.** The separate core's intermediate setup slack remains negative; its
+post-route equation comparison has not executed. Archive SHA-256
+`971d30cf3e7b2fe80b7bf6f89dd5829d6e6f445f0fa7e01797fb239667b3ae66` (78,696 bytes) is verified locally and through both
+GitHub download paths.
