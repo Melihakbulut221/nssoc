@@ -303,3 +303,35 @@ This is storage recovery, not a new physical pass. The initial detailed routing
 reached zero router violations before antenna repair triggered another routing
 pass; intermediate violations from that ongoing pass are not its final verdict.
 The unchanged whole-chip BEOL measurement remains a separate unfinished check.
+
+
+## Completed BEOL and queued pipeline recovery
+
+The pre-fill core-plus-ring BEOL run finished at 19:24:58 TRT on September 27,
+after 19,069.96 seconds. [The completed result](evidence/chip-beol-complete-20260927.json)
+records exit zero, all 117 selected native categories and zero markers.
+The deadline-free observer resumed the original controller after worker exit;
+its original input-hash, log and category checks completed successfully.
+This supersedes the running BEOL status above. Full-chip FEOL, density, antenna,
+transistor LVS and final timing remain separate gates. The focused DRC-result,
+deadline-supervisor and asset-verification regression suite passes 59 tests.
+
+The separate pipeline-1/1 core finished routing and filler insertion with zero
+router violations, zero antenna net/pin violations and zero disconnected pins.
+Its cell-frequency-report step then failed while writing an ODB on a full
+filesystem. [Recovery evidence](evidence/pipeline-disk-recovery-20260927.json)
+retains the failure and exact completed stage-40 state. A local continuation
+waits for both download channels of the large checkpoint archive to be verified,
+then reclaims only those archived intermediate/partial files and resumes the
+unchanged flow from `Odb.CellFrequencyTables` in a fresh directory. The original
+failure stays recorded. RCX, final diagnostic STA and post-route equation proof
+remain pending; routing and physical/timing checks are not bypassed.
+
+[Completed native reports and recovery methods](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-beol-completed-native-reports-20260927.tar.xz):
+137,976 bytes, 41 members, SHA-256
+`1d89b46f34d3dd0114646ea16c85ced3caabcd00511976b6e8e80f1a68950b66`. Every member and both authenticated and anonymous downloads
+were byte-verified. [Asset inventory](evidence/chip-beol-complete-assets-20260927.json).
+This small published archive includes the successful BEOL report and first
+failed attempt, the pipeline disk-full diagnostics, 59-test log and continuation
+source. The large routing checkpoint archive is separately still undergoing
+public byte verification at this snapshot and is not claimed complete here.
