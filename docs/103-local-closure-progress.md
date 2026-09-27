@@ -622,3 +622,67 @@ This closes the Ethernet FIFO MBIST integration and its refreshed **core
 geometry/connectivity** verification. It does not provide final timing,
 complete SRAM characterization/RC, test pads/scan/ATPG, a complete PCIe PHY,
 foundry manufacturing approval or silicon qualification.
+
+
+## Final timing attempt and production prerequisites, 27 September 2026
+
+The [fresh timing diagnostic](evidence/final-timing-diagnostic-20260927.json)
+uses the actual MBIST core routed netlist and nominal interconnect SPEF, all
+three standard-cell corners, propagated clocks, explicit interface SDC and
+5% timing derating. **Final timing acceptance fails.** It is not a signoff
+measurement: both replacement SRAM types lack characterized Liberty, all 32
+instances are black boxes, and this SPEF precedes dummy fill. No old macro
+library, invented arc, clock relaxation or timing exception was substituted.
+
+| Standard-cell corner | Worst setup (ns) | Worst hold (ns) | Setup violations | Hold violations | Slew violations | Capacitance violations |
+|---|---:|---:|---:|---:|---:|---:|
+| Fast, 1.32 V, −40°C | +2.593065 | −2.867511 | 0 | 6307 | 0 | 31 |
+| Typical, 1.20 V, 25°C | −3.231548 | −2.271814 | 1140 | 193 | 10 | 28 |
+| Slow, 1.08 V, 125°C | −17.516037 | −1.217248 | 2408 | 54 | 400 | 27 |
+
+These counts include the tool's setup/hold categories under the documented
+core I/O budgets. Register-to-register hold slack also fails: approximately
+−0.237/−0.237/−0.266 ns at fast/typical/slow. Each corner reports 1033 fanout
+violations, one unconstrained endpoint and 7254 SPEF connection warnings at
+unmodeled SRAM instances. These are STA linking/annotation diagnostics, not
+a replacement for the independently passing transistor LVS. The tool's filtered unannotated-net count of zero
+must not hide those warnings or the missing macro timing. The native process
+finishes successfully, but its results are explicitly rejected for final STA.
+The worst typical/slow setup path ends at registered bus write data
+`s_wdata[25]`; fast's worst setup path ends in Ethernet MBIST background state.
+Generated whole-core Liberty/SDF from this diagnostic must not be used as
+qualified models.
+
+The first replay consumed a resolved extraction configuration that omitted
+`SIGNOFF_SDC_FILE`, so it fell back to the old PNR SDC without the new MBIST
+output constraints. Its final-view copy also exhausted local disk space.
+Both failures are retained. The corrected replay uses the original explicit
+configuration, checks its floating-point `5.0` derate and all four clock report
+entries, and preserves native STA reports without duplicating large input views.
+Completed report scratch was losslessly archived and byte-verified before
+reclaiming space. The accepted GDS and running analog inputs were not changed.
+
+A read-only audit of accepted GDS `baa6145e133c58eca36a4c6b7a08adf1c406abd5e9e5b7914c9f5acf4b049c05`
+finds zero EdgeSeal (39/0) and Passiv (9/0) shapes, and no instantiated cell
+from the pinned 22-cell IHP I/O LEF inventory. It remains a core without the
+required finished seal ring/padframe. Passing existing core DRC/LVS does not
+satisfy those whole-product prerequisites.
+
+IHP's [submission procedure](https://github.com/IHP-GmbH/Open-Silicon-MPW/blob/main/Submission-process.md)
+requires foundry evaluation and subsequent confirmation. Its
+[development checklist](https://github.com/IHP-GmbH/Open-Silicon-MPW/blob/main/IP-development-steps.md)
+requires a seal ring, fill, clean final DRC/LVS and a consistent release package.
+The inspected template still names an earlier July run; it is not evidence of
+an available slot for this design. The
+[open-silicon service](https://dk.ihp-microelectronics.com/OpenSourceRequest.php)
+requires a participation agreement. No submission, signed agreement, slot,
+foundry acceptance or silicon qualification is asserted. Official source
+snapshots and commit identities are retained. Local reports cannot issue that
+external acceptance.
+
+The [raw engineering release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-signoff-diagnostics)
+preserves both diagnostic attempts, scripts, source hashes, reports and the
+new completed SRAM corner measurements. Its asset is checked byte-for-byte
+through authenticated and anonymous downloads. Final SRAM Liberty, conserved
+and process-qualified RC including fill, real timing/electrical repair,
+padframe/package/DFT and external foundry acceptance remain open.

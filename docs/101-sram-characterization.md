@@ -1010,3 +1010,27 @@ intrinsic ground C in the reader therefore does not supply a conserved spatial
 coupled-C model. This RC export is rejected for final timing or simulation claims
 that require qualified RC. No characterized Liberty or final STA is generated
 from it.
+
+
+## Repaired SP SS/FF completion, 27 September 2026
+
+The [completed corner audit](evidence/sram-repaired-sp-corners-20260927.json)
+recomputes both completed repaired-SP corner patterns from their stored raw
+waveforms and rechecks every pinned input. Both 150 ns, 50 ps-step patterns
+pass four reads at two addresses, including a byte-masked write. Each has
+417 stable samples and 120 measured transitions; five waveform corruption
+controls are rejected per corner. The recovered startup singular-matrix
+warning is retained in each result.
+
+| Corner | Maximum rise/fall delay (ns) | Pattern supply energy (pJ) |
+|---|---|---:|
+| SS, 1.08 V, 125°C | 6.614174 / 6.703558 | 302.499846 |
+| FF, 1.32 V, −40°C | 2.520201 / 2.559011 | 467.680740 |
+
+These measurements retain nominal geometry capacitances, 100 ps input ramps
+and 20 fF loads. They complete the two formerly pending corner patterns, not
+full slew/load/arc coverage, leakage/internal-power tables, distributed RC,
+Liberty qualification or manufacturing acceptance. The separate 25 ps TT
+replay remains a separate job and is not included as a completed measurement.
+Raw models, stimuli, waves, warnings and replay scripts accompany the
+[verified engineering release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-signoff-diagnostics).

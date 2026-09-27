@@ -205,3 +205,15 @@ closes the refreshed core geometry/connectivity checks for system-RAM and
 Ethernet FIFO MBIST. It does not close P10's external test access/scan/ATPG/debug
 gates or P01–P03/P08/P14 product qualification. The original audit measurements
 above retain their historical source and GDS identities.
+
+
+The [27 September local timing attempt](evidence/final-timing-diagnostic-20260927.json)
+measures new failures on the MBIST core's nominal pre-fill interconnect:
+slow setup −17.516037 ns and fast hold −2.867511 ns. Missing SRAM Liberty,
+SPEF connection warnings and electrical violations prevent acceptance; these
+numbers do not replace qualified final STA. Actual GDS inspection confirms no
+seal ring/passivation or pinned IHP I/O cells. P02/P03/P08/P14 remain open.
+The [repaired SP SS/FF patterns](evidence/sram-repaired-sp-corners-20260927.json)
+are now complete within their one-load/one-slew capacitance-only scope; P01
+still requires full characterization. See the new final sections of docs/101
+and docs/103 for raw-source identities and official foundry requirements.
