@@ -794,3 +794,13 @@ zero markers, independently recounted from complete raw reports. The
 [ring evidence](104-chip-io-and-test-access.md#public-evidence) is published and
 byte-verified. It does not extend the earlier core acceptance to an integrated
 chip, and it does not close the remaining P08–P10/P14 obligations.
+
+
+A [published post-route equation-check method](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-timing-repair-candidates/pipeline-postroute-proof-method-20260927.tar.xz)
+is queued behind B's complete physical run. It requires a successful terminal
+producer, unchanged pinned inputs and the actual final-state netlist before
+comparing digital equations with the original mapped pipeline netlist. Its
+13-hour bounded wait and 15-minute comparison fail closed on error. Publication
+and syntax checking are complete; the final comparison has **not executed**.
+The byte-verified method archive is 12,968 bytes with SHA-256
+`1715ce3fbc18b346bbed51c618f43590837dfb56749185c6aebb31cb0a60efa1`.
