@@ -419,3 +419,47 @@ its local SHA and current GitHub identity; the exact restore URL/hash are retain
 Byte-identical immutable CI-clone archives were hard-linked, retaining every path
 and byte while recovering about 1.99 GB. These shared archived files must be
 copied before any future modification. This storage work is not physical signoff.
+
+
+## Completed chip density failure and controller recovery
+
+The corrected-boundary native density measurement finished with process exit
+zero but **207 violation markers**. It is a failed physical check, not acceptance.
+All 37 density/slit rules ran; the report has 18 categories, of which 11 contain
+markers. Seven slit categories are always emitted by this upstream deck, while
+other categories appear only when a violation is found. The controller's old
+fixed seven-category assertion therefore failed after the valid measurement.
+Both the original controller error and native report are preserved.
+
+The [new coverage check](../hw/soc/flow/check_ihp_density_coverage.py) requires the
+complete ordered execution inventory and final completion record, rejects tool
+errors, invalid boundary normalization, missing slit categories and unknown
+categories, and retains every marker. 104 focused regression tests pass,
+including failing-report and incomplete-execution controls. The continuation
+also rechecks all original input, report and log hashes before reusing this
+completed density **failure**; no density rerun or waiver is used.
+
+| Native violation | Markers |
+| --- | ---: |
+| Local active minimum (`AFil.g2`) | 4 |
+| Global M2/M3/M4/M5 minimum | 4 |
+| Local M2 filler minimum | 55 |
+| Local M3 filler minimum | 24 |
+| Local M4 filler minimum | 59 |
+| Local M5 filler minimum | 59 |
+| Global TM1/TM2 minimum | 2 |
+
+Global M2/M3/M4/M5 densities are 13.77/29.89/17.95/17.63 percent against
+35 percent minima; TM1/TM2 are 23.64/18.27 percent against 25 percent minima.
+The remaining unchanged antenna, FEOL/geometry, BEOL and supplemental checks
+are queued behind the memory-admission guard. Whole-chip fill and fresh checks
+will be required; the new controller does not turn this layout into a passing one.
+The separate timing ECO remains in progress and is not this chip's geometry.
+
+[Completed evidence](evidence/chip-density-recovery-20260927.json) and
+[asset inventory](evidence/chip-density-recovery-assets-20260927.json) bind the
+raw density report/log, retained controller failure, repaired continuation and
+104-test log to the [immutable archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-density-failure-and-campaign-recovery-20260927.tar.xz).
+All 28 archive members and both public download channels were byte-verified:
+144,660 bytes, SHA-256 `8ef5c6df7f707a26c94e0ec89466ab6c4f6c53f641d4ae976ce855e02504a0ff`.
+Full-chip LVS, qualified final timing and manufacturing approval remain open.
