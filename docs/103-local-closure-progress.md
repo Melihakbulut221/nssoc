@@ -752,3 +752,15 @@ anonymous downloads; their sizes and SHA-256 identities are in the candidate
 receipt. They are recovery inputs, not completed physical results. Only
 reproducible scratch or byte-verified archived views were reclaimed locally;
 active simulation inputs and the accepted core GDS remain in place.
+
+## Chip I/O and external MBIST-result access
+
+The [new chip shell](104-chip-io-and-test-access.md) connects a selected mapped
+core through 102 native IHP signal I/O cells and four supply cells, and provides
+a coherent read-only serial MBIST frame. Native-model wiring tests and five
+mailbox fault mutations pass their stated acceptance checks; four wrong pad
+connections are rejected. A separate native-cell IO-ring GDS passes placement
+and abstract rail-abutment checks. The ring does not contain the core/serial
+logic or signal routing and is not a completed padframe. P08/P10 advance at
+implementation scope; physical CDC timing, bond/package/power/ESD qualification,
+scan/ATPG/debug and full-chip signoff remain open.

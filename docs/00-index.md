@@ -495,6 +495,7 @@ rather than from a beam.
 | [docs/101-sram-characterization.md](101-sram-characterization.md) | Local SRAM waveform characterization, model identity controls, extracted-parasitic work and independent production checks. |
 | [docs/102-remaining-product-gaps.md](102-remaining-product-gaps.md) | 26 September source-bound audit of both reviews, live characterization, protocol/physical blockers and external manufacturing requirements; not signoff. |
 | [docs/103-local-closure-progress.md](103-local-closure-progress.md) | Local full-profile RTL and native memory replay, complementary skip coverage, SRAM numerical-step evidence and native-resistor TX correction. |
+| [docs/104-chip-io-and-test-access.md](104-chip-io-and-test-access.md) | Native IHP I/O shell, coherent read-only serial MBIST access, mapped-core linkage and separate IO-only pad-ring placement; no product signoff. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 

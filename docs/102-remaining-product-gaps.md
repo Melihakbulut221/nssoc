@@ -226,3 +226,10 @@ a distinct pipeline-enabled netlist passes synthesis and SRAM mapping.
 Fresh physical jobs remain separate from the accepted older GDS, and estimated
 timing still fails. These changes advance P03 but do not close final timing,
 SRAM characterization/RC or manufacturing acceptance.
+
+The [IHP chip-shell continuation](104-chip-io-and-test-access.md) adds dedicated
+read-only MBIST-result access and native digital I/O instances around a selected
+mapped core. Its separately placed IO-only GDS has footprint/abstract supply
+contact checks. These supersede the absence of any test-access/pad implementation
+at candidate scope, but do not establish integrated padframe routing, final
+CDC timing, scan/ATPG, package/ESD or P08/P10/P14 acceptance.
