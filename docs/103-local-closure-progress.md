@@ -686,3 +686,61 @@ new completed SRAM corner measurements. Its asset is checked byte-for-byte
 through authenticated and anonymous downloads. Final SRAM Liberty, conserved
 and process-qualified RC including fill, real timing/electrical repair,
 padframe/package/DFT and external foundry acceptance remain open.
+
+## Verified physical-profile MBIST and timing-repair candidates
+
+The [27 September candidate receipt](evidence/timing-repair-candidates-20260927.json)
+records an actual verification mismatch and its repair: synthesis selected
+register-file `SYNPRE=1`, while whole-chip MBIST simulation implicitly used
+`SYNPRE=0`. Commit `59e0a2f` makes the physical setting explicit and adds
+`--core-req-reg`, `--core-wb-stage` and `--rf-synpre` controls. Testbench output
+identifies the elaborated pipeline, branch ALU and register-file settings;
+missing, duplicate or mismatched identities fail the runner. The generated
+register-file copy stays local to each campaign. Production RTL defaults are
+unchanged.
+
+Two native full-interface campaigns now each pass **10 scenarios** with
+`SYNPRE=1`: the existing CPU configuration (request/writeback stages 0/0) and
+the separate pipeline candidate (1/1, branch-target ALU enabled). Independent
+checks bind source hashes, executable identities and exact scenario messages.
+Each campaign covers all four system-RAM fault banks, TX/RX FIFO faults,
+illegal MBIST state, power-on restart, missing Ethernet clocks and post-MBIST
+Ibex ECC/byte-store boot. The earlier pipelined `SYNPRE=0` run is retained as
+a separate control. These are functional-model tests, not SRAM transistor or
+gate-level timing acceptance. The final source checks pass 60 MBIST/interface/
+branch tests and 26 distinct physical-profile/lint/native-boot tests.
+
+**Candidate A** keeps the existing CPU architecture and repairs standard
+cells. Its equation proof preserves 70,950 retained cells, checks 27 equivalent
+cell sizes and 75 equivalent input permutations, and verifies the interfaces
+of all 32 opaque SRAM instances. Positive buffers increase from 13,003 to
+21,941. SRAM masters, positions and orientations remain unchanged. The first
+attempt failed because blanket macro protection prevented input-net buffering;
+that failure and its inputs remain available.
+
+After repair and placement, global-route estimates still report **setup
+−7.588405 ns, hold −1.383924 ns, 15 slew and 3 capacitance violations**. These
+are not final extracted results and are not directly comparable to the earlier
+standalone STA figures. Clocks remain 20 ns CPU / 8 ns Ethernet, with the
+explicit interface constraints and 5% derating. The fresh detailed-route job
+clears the old SPEF before extracting changed wires. Its running results are
+excluded from completed acceptance evidence.
+
+**Candidate B** is a separate architectural experiment enabling the two CPU
+pipeline stages. Full SoC synthesis completes; replacement mapping preserves
+74,057 nonmemory cells and produces 16 SP plus 16 DP SRAM instances. Its mapped
+netlist SHA-256 is
+`13dd615dabe769c4c2809dfb1e4b2e182f55c265256aea0f279e4d31c8005e48`.
+A fresh physical flow is queued behind candidate A with input hashes, memory,
+disk and execution-time limits. Candidate A's route must never be presented
+as candidate B's layout.
+
+The [candidate release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-timing-repair-candidates)
+contains completed cell-repair views, raw equation proof, native campaign logs,
+source/license material, synthesis/mapping and replay inputs. Its 36,586,776-byte
+candidate archive was checked through both authenticated and anonymous downloads
+against SHA-256
+`c161effbe3f41cd71bb50c0fe1432d9d7180e8c89ce33f50aa83dd28de4202c8`.
+Neither candidate inherits the prior filled core's DRC/LVS acceptance. Final
+SRAM models/RC, filled-layout timing, padframe/DFT, complete PCIe PHY and foundry
+approval remain open product gates.

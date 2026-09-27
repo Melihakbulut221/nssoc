@@ -217,3 +217,12 @@ The [repaired SP SS/FF patterns](evidence/sram-repaired-sp-corners-20260927.json
 are now complete within their one-load/one-slew capacitance-only scope; P01
 still requires full characterization. See the new final sections of docs/101
 and docs/103 for raw-source identities and official foundry requirements.
+
+The [subsequent timing-repair candidates](103-local-closure-progress.md#verified-physical-profile-mbist-and-timing-repair-candidates)
+close the MBIST simulation's register-file setting mismatch: both the existing
+CPU profile and a pipelined candidate pass ten native-model scenarios with
+physical `SYNPRE=1`. Actual standard-cell repair passes a scoped equation proof;
+a distinct pipeline-enabled netlist passes synthesis and SRAM mapping.
+Fresh physical jobs remain separate from the accepted older GDS, and estimated
+timing still fails. These changes advance P03 but do not close final timing,
+SRAM characterization/RC or manufacturing acceptance.
