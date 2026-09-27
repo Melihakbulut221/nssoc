@@ -360,3 +360,62 @@ timestamped snapshot, raw intermediate timing reports and 84 passing native
 result/catalog regression tests. 19 members, 65,176 bytes,
 SHA-256 `098bddf5156f4deec57a0eb00fcf51e72f784b41253a270b7cbbc712ab206302`; every member and both download channels were
 byte-verified. [Asset inventory](evidence/chip-full-rule-campaign-assets-20260927.json).
+
+
+## Corrected chip boundary and completed pipeline timing measurement
+
+The fresh whole-chip density run identified an actual input error: its inherited
+`prBoundary` covered only 8,235,833.76 square micrometres while the complete
+4,000 by 3,200 micrometre chip occupied 12,800,000. The native deck explicitly
+reported shapes outside that boundary. That measurement was stopped for invalid
+normalization, not for elapsed time; its controller error and log remain retained.
+
+The existing boundary normalizer replaced only layer 189/0 using the exact
+parent die rectangle on 189/4. A full GDS serialization roundtrip preserves every
+other cell shape, text and instance transformation exactly; four positive/error
+controls pass. Corrected GDS SHA-256 is `f9dc37b738fb33f2919c847263cc11cc6fc857653d1c394634ce9c4cd8966f52`.
+[The evidence](evidence/chip-boundary-timing-followup-20260927.json) distinguishes
+this geometry-preservation result from native DRC/LVS acceptance. All native
+groups, including BEOL, must run freshly on this new GDS; the old BEOL pass is
+not transferred. The corrected density run is in progress, followed by antenna,
+FEOL/geometry, BEOL and supplemental checks under the resource-admission guard.
+
+The separate pipeline-1/1 recovery completed RC extraction, all three timing
+corners and GDS streamout. Its source-bound digital equation check passes within
+its stated scope. The actual timing measurement **fails**:
+
+| Corner | Setup WNS (ns) | Hold WNS (ns) | Setup endpoints | Hold endpoints | Cap violations | Slew violations |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Fast | 3.107980 | -2.428406 | 0 | 76 | 22 | 0 |
+| Typical | 0.548414 | -1.586352 | 0 | 30 | 22 | 3 |
+| Slow | -9.014226 | -0.096859 | 1445 | 6 | 22 | 170 |
+
+The reports contain `clk_i`, both Ethernet clock groups and generated `eth_gtx`,
+in addition to asynchronous/path-delay groups. Despite the tool's generic
+base-SDC warning, the explicit signoff SDC was supplied and these groups were
+measured. Missing Liberty for 32 SRAM instances and nominal RC still preclude
+qualified final timing even independently of the numerical failures.
+
+A fresh standard-cell repair candidate now enables gate cloning, raises the
+buffer allowance, and gives setup/hold repair 2,000/1,000 algorithm iterations
+with 40-percent electrical margins. CPU/Ethernet periods remain 20/8 ns. Macro
+masters, placements and orientations must remain unchanged. Hold repair may
+trade setup slack; both must pass fresh measurements afterward. It reroutes and
+re-extracts before another equation check, with no elapsed-time termination.
+This is a running repair attempt, not a closed timing result.
+
+The [complete corrected-boundary and measured-pipeline archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-boundary-and-pipeline-measurements-20260927.tar.xz)
+contains 174 members (139,110,184 bytes), including the new chip GDS,
+completed pipeline GDS/ODB/SPEF, raw three-corner reports, equation proof, retained
+failures, and both running-method snapshots. SHA-256 `257c2c816582c22332838b0bd09e0935e1145ca6a47c1d953aeb3c95e2269f78`.
+[The asset inventory](evidence/chip-boundary-timing-followup-assets-20260927.json)
+also records the now fully verified large routing-recovery archive and the
+small corrected-restart method archive. All members and both public download
+channels were verified.
+
+Local storage recovery preserved all original measurement trees: a previously
+verified published 1,223,361,276-byte archive cache was reclaimed after rechecking
+its local SHA and current GitHub identity; the exact restore URL/hash are retained.
+Byte-identical immutable CI-clone archives were hard-linked, retaining every path
+and byte while recovering about 1.99 GB. These shared archived files must be
+copied before any future modification. This storage work is not physical signoff.
