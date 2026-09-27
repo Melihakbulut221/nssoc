@@ -248,3 +248,32 @@ and post-route equation checks have not completed at this checkpoint. Neither
 running process establishes final timing or full-chip DRC acceptance. Qualified
 SRAM Liberty/distributed RC, the complete PCIe Gen3 x4 PHY/controller,
 complete DFT and actual manufacturer acceptance remain separate open gates.
+
+
+## User-requested removal of the active BEOL time limit
+
+The user subsequently requested that this BEOL run continue until it finishes,
+without termination solely because its 90-minute deadline expires. The active
+worker was **not restarted**: PID 1856520 and its original birth identity,
+GDS, rule deck, command and resource limits are preserved. Input hashes were
+verified before the handover. The previous running snapshot above records the
+original policy; [this policy receipt](evidence/chip-beol-no-deadline-20260927.json)
+supersedes its elapsed-time limit.
+
+The [deadline-free supervisor](../hw/soc/flow/wait_without_deadline.py) pauses
+only the original Python watchdog, PID 1856502, which is in a different process
+group from KLayout. It leaves KLayout running. When the worker exits, it resumes
+the original watchdog, whose completion check precedes its timeout check, so
+that the original process exit status, input-hash checks and report/catalog
+validation remain authoritative. A logged execution error also resumes the
+original error handler, which precedes the timeout check. Memory limits and
+rejection of incomplete/error-bearing reports remain in force.
+
+Three live-process controls verify completion beyond the former deadline,
+preservation of a nonzero worker exit, and preservation of the execution-error
+handler. The receipt's `WAITING_WITHOUT_DEADLINE` state is a running-policy
+record, **not a completed or passing DRC result**. If this observer is interrupted,
+the original watchdog must remain paused while the worker is still running;
+resume it for final validation only after the worker has exited, or to handle
+a logged error. Its intentional stopped state must not be mistaken for a
+stopped KLayout worker.
