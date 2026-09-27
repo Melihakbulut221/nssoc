@@ -1034,3 +1034,29 @@ Liberty qualification or manufacturing acceptance. The separate 25 ps TT
 replay remains a separate job and is not included as a completed measurement.
 Raw models, stimuli, waves, warnings and replay scripts accompany the
 [verified engineering release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-signoff-diagnostics).
+
+
+## Repaired SP TT 25 ps completion, 27 September 2026
+
+The [independent step replay](evidence/sram-sp-tt25-replay-20260927.json)
+now completes the pending 150 ns TT simulation at a 25 ps maximum timestep.
+The raw execution finishes with 6,131 waveform rows. Independent replay checks
+the actual bench and sample grid, selected two-address byte-write pattern,
+all 120 transition identities, supply-energy integration and five rejected
+waveform corruptions against the earlier 50 ps run.
+
+Maximum measured rise/fall delays are 3.878372 / 3.953394 ns. The largest
+absolute delay change from 50 ps is 13.321332 ps; the largest slew change is
+1.112733 ps. Pattern energy from 8 to 150 ns is 377.818924 pJ versus
+377.998133 pJ at 50 ps. Both runs retain nominal extracted capacitances,
+100 ps input ramps and 20 fF loads. The analyzer's historical description
+contains a fixed “50 ps” phrase; the independently checked new bench, sample
+grid and explicit comparison fields establish the actual 25 ps step.
+
+Both waveforms, benches, extracted/simulation models, raw logs and auditors
+are in the [verified raw-data asset](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-signoff-diagnostics/sram-sp-tt25-step-replay-20260927.tar.xz).
+It is 27,071,132 bytes with SHA-256
+`d8f18e8b6822849e9e12557dcaa789527efad8f144fb2282044d38bb5c2528b3`;
+authenticated and anonymous downloads match. This closes the pending numerical
+comparison, not full SRAM characterization, capacitance-conserving distributed
+RC, Liberty coverage or final timing/manufacturing acceptance.

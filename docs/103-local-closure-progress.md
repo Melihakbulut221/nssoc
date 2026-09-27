@@ -764,3 +764,33 @@ and abstract rail-abutment checks. The ring does not contain the core/serial
 logic or signal routing and is not a completed padframe. P08/P10 advance at
 implementation scope; physical CDC timing, bond/package/power/ESD qualification,
 scan/ATPG/debug and full-chip signoff remain open.
+
+
+## Candidate selection and completed SRAM step replay
+
+The [27 September disposition](evidence/timing-candidate-disposition-20260927.json)
+supersedes the running/queued state above. Candidate A's detailed route was
+explicitly stopped to allocate resources to the functionally tested pipeline
+candidate B. A retains negative global-route timing estimates and 69,399
+initial-route markers; neither figure is a final routed result. The controller
+records its interrupted route as an error, not a completed acceptance.
+All completed A optimization views and proofs remain in its published archive.
+
+Candidate B has started fresh placement, clock-tree construction and routing.
+Its 20 ns CPU and 8 ns Ethernet clock constraints remain unchanged. A new
+post-route timing result, physical proof and verification are still required;
+the previously accepted core geometry cannot certify this new layout.
+
+
+The [SRAM TT25 replay](101-sram-characterization.md#repaired-sp-tt-25-ps-completion-27-september-2026)
+has completed and its raw data is published. Independent replay rejects all
+five corruptions and compares 120 transitions with TT50; maximum delay change
+is 13.321332 ps. This supersedes the earlier “running” state, while P01–P03
+remain open beyond this selected capacitance-only measurement.
+
+
+The separate spaced IO-only ring now passes all 560 main DRC categories with
+zero markers, independently recounted from complete raw reports. The
+[ring evidence](104-chip-io-and-test-access.md#public-evidence) is published and
+byte-verified. It does not extend the earlier core acceptance to an integrated
+chip, and it does not close the remaining P08–P10/P14 obligations.

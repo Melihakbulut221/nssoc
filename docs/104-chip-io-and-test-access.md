@@ -114,8 +114,8 @@ abstract supply rails. The new GDS passes all nine selected native contact
 categories with zero markers. No foundry rule or native cell geometry was
 modified. The original full FEOL/geometry run also exceeded its 3 GiB address
 space limit in native angle processing; its partial report is not a pass.
-A fresh all-main-rule run uses separately checked table groups and resource
-admission for the larger angle job. Its completion is a separate required gate.
+The completed follow-up below closes all 560 native main categories for this
+exact IO-only ring; the failed process remains part of its provenance.
 
 This GDS contains **only the I/O ring**. It excludes the digital core and new
 serial logic, signal routes, completed bond pads/passivation/seal ring and
@@ -138,3 +138,33 @@ hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/make_chip_i
 The shell's manifest hashes the core JSON, pin contract and generator. Local
 reports must be tied to that exact core and the pinned native models. A modified
 core or pad assignment requires a new structural, functional and physical run.
+
+## Public evidence
+
+The [source-bound receipt](evidence/chip-io-and-status-20260927.json) selects
+source `0a6d336`, 152 passing tests without skips, native-model transport,
+mapped-core linkage, the spaced IO-only GDS and the nine contact categories.
+The [engineering release](https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io)
+contains the raw reports, GDS, native cell views, corresponding source and
+license notices. Its 13,488,344-byte archive has SHA-256
+`4b0e011174d1103c11c56facb1162088ff3509b1c260e7336ffdda0d4aef263a`;
+both authenticated and anonymous downloads match. The original contact failure
+and incomplete DRC attempt are preserved. Active full-main DRC is excluded
+from that archive's accepted results.
+
+
+The [independent complete main-DRC audit](evidence/chip-io-ring-main-drc-20260927.json)
+subsequently passes all **560 native main categories with zero markers** on GDS
+SHA-256 `cbce32efe978a2577f2d2a7b34314681dd6d4988b5279216dd57cbc903f21804`.
+Three completed partitions are reused after exact GDS/deck/report checks;
+BEOL and angle complete under a 6 GiB address-space limit. No native rule,
+category or violation is waived. The independent auditor recomputes the entire
+category union and marker totals from the raw reports.
+
+The [separate main-DRC archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-io-ring-main-drc-20260927.tar.xz)
+retains both failed and completed processes, the exact GDS, processing-tile
+deck copy and replay/audit scripts. It is 4,091,184 bytes with SHA-256
+`edd480e7647e1d5ffa8dcfc1105e4c49a027542178a997101d6ef24c4f694bb9`;
+both remote download checks match. This is a main-DRC result for the IO-only
+ring. Density, antenna, extracted connectivity/LVS, integrated core/signal
+routes, seal/bond/package, physical CDC and manufacturing gates remain separate.
