@@ -166,3 +166,85 @@ pass.** The separate core's intermediate setup slack remains negative; its
 post-route equation comparison has not executed. Archive SHA-256
 `971d30cf3e7b2fe80b7bf6f89dd5829d6e6f445f0fa7e01797fb239667b3ae66` (78,696 bytes) is verified locally and through both
 GitHub download paths.
+
+## I/O resistor recognition repair and remaining transistor mismatches
+
+Source `def94d52bf54991a7cb3b6293ac8264fd45cb558` resolves a specific extraction
+failure in the installed `c4b8b4e` I/O library. The physical resistor bodies,
+poly, implant, salicide-block and extraction-block masks were already present,
+but their **PolyRes recognition layer `128/0` was missing**. The unchanged
+`5e6d592` LVS deck requires this layer. Without it, the 1 × 2 µm secondary
+protection resistor disappears and its `pad` and `core` nodes appear shorted.
+
+The new [repair generator](../hw/soc/flow/repair_io_resistor_markers.py) binds
+the exact original GDS, CDL and electrical model hashes. It creates a separate
+library and adds only 27 recognition rectangles: one in
+`sg13g2_SecondaryProtection` and 26 in `sg13g2_RCClampResistor`. The 26 clamp
+resistors each have width 1 µm and length 20 µm, independently specified in
+the original CDL. It does not edit the installed PDK or promote this candidate
+into the previously published chip GDS.
+
+A read-back comparison covers all **46 cells and 41 layer/datatype pairs**:
+all other polygon regions, all texts, and all child instance transforms/arrays
+are preserved. An independent fixture passes; eight injected faults covering
+missing recognition, mask changes, wrong dimensions, active overlap, text and
+hierarchy changes are rejected by the repair/preservation checks.
+
+A second, separate discrepancy is the default `ps=180n` spacing parameter on
+straight resistors. The hash-bound native `rppd` electrical model uses `ps`
+only in `leff=(b+1)*l+(2/kappa*weff+ps)*b`. For explicitly specified **`b=0`**,
+this reduces to `leff=l`, independent of `ps`. The conversion canonicalizes
+these 29 straight-resistor declarations to `ps=0`, which the native extractor
+emits. It preserves every terminal and every other parameter. Bent resistors
+are unchanged; missing, duplicate or symbolic bend/spacing values are rejected.
+Tap area/perimeter comparisons remain enabled and unchanged.
+
+Completed results on this new library are:
+
+| Measurement | Result and limit |
+|---|---|
+| `sg13g2_RCClampResistor` native transistor LVS | Pass, unchanged native comparison; the 26 series resistors reduce to one 1 × 520 µm resistor on each side |
+| Native LVS fault controls | Missing marker, wrong physical resistor length and wrong schematic connection each fail with a real `NoMatch` |
+| RC clamp and input-pad main DRC | Both pass, zero markers; each catalog matches all 560 native main categories, including recommended rules |
+| Seven I/O masters, transistor LVS | **All seven still fail** after the repair; no skipped circuit is accepted |
+| Source regression | 181 tests pass, no skips; REUSE 1,477/1,477 at the source commit |
+
+The input-pad experiment now extracts the secondary resistor with the correct
+1 × 2 µm dimensions and separate `pad`/`core` nets. Remaining failures include
+substrate-tap area/perimeter disagreement and supply/hierarchy connectivity.
+For example, the DCN tap CDL specifies `A=141.253 µm²`, `P=47.54 µm`, while
+native extraction gives `A=141.2964 µm²`, `P=221.76 µm`. Simply flattening and
+making `sub!` explicit as a schematic global still fails. No tap parameter was
+replaced by an extracted value to obtain a pass; no supply island was virtually
+shorted to hide a physical connectivity requirement. A subcell success is not
+seven-master or full-chip LVS acceptance. The two successful main DRC runs
+also do not establish density, antenna, ESD, package or manufacturing approval.
+
+The [repair receipt](evidence/io-resistor-repair-20260927.json),
+[asset manifest](evidence/io-resistor-repair-assets-20260927.json) and
+[complete experiment archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/io-resistor-recognition-and-native-checks-20260927.tar.xz)
+retain the original failures, repaired GDS/CDL, sources, native reports and
+fault controls. The archive has 179 members and 10,227,692 bytes, SHA-256
+`f0ac1e16db48a2a87eaac40bcab89504602e28ba44237f5bbcdcc6b5141885ce`.
+Every member was read back; authenticated and anonymous GitHub downloads match.
+
+## Full-chip DRC resource failure and timing checkpoint
+
+The first BEOL attempt on chip GDS `40b683...` emitted repeated
+`ERROR: Worker thread: std::bad_alloc` under its 6 GiB address-space limit.
+It was stopped and recorded as **ERROR**, with its original log retained.
+A strengthened [DRC gate](../hw/soc/flow/check_ihp_drc.py) now requires the
+execution log for every deck and rejects worker errors, allocation failures,
+crashes and tracebacks even if the process returns zero and the report contains
+zero markers. The relevant regression has 46 passing cases, included in the
+181 total above.
+
+The separately recorded retry uses the identical chip GDS and unchanged
+117-category BEOL rule selection, one thread, a 10 GiB address-space limit
+and a 90-minute bound. It terminates early on a logged execution error.
+The archive captures it **running**, not passed. The pipeline-1/1 core has
+progressed through setup/hold repair into detailed routing. Its final RCX/STA
+and post-route equation checks have not completed at this checkpoint. Neither
+running process establishes final timing or full-chip DRC acceptance. Qualified
+SRAM Liberty/distributed RC, the complete PCIe Gen3 x4 PHY/controller,
+complete DFT and actual manufacturer acceptance remain separate open gates.
