@@ -536,11 +536,11 @@ The new prepared-source archive is independently byte-replayed and available as
 a hash-checked release asset. The initial stale-source-fixture regression fails
 and remains recorded separately; it is not counted as a passing campaign.
 
-All four [release assets](evidence/eth-mbist-assets-20260926.json) have been
-fully downloaded, SHA-256/size verified and checked again anonymously. The
-functional source and CI source are separately identified. These digital
-integration results are published; new full-interface routing and independent
-layout DRC/LVS are still running locally. SRAM Liberty/RC, final STA and
+All five [release assets](evidence/eth-mbist-assets-20260926.json) have been
+fully downloaded and SHA-256/size verified through authenticated and anonymous
+access. The functional, CI and physical source identities are separately
+recorded. Fresh MBIST-enabled core routing and independent layout DRC/LVS are
+now complete within the scope detailed below. SRAM Liberty/RC, final STA and
 manufacturing approval remain separate open gates.
 
 The [subsequent local replay](evidence/local-ci-drc-parser-20260926.json) of
@@ -559,3 +559,66 @@ geometries. No rule or marker is waived. These small control layouts validate
 the partitioning method; they do not constitute acceptance of the new core GDS.
 The fourth asset preserves this proof, the old parser/control failure, the
 intermediate missing-digest CI failure and the complete successful replay.
+
+
+## Fresh MBIST-enabled core physical verification, 27 September 2026
+
+The [new core receipt](evidence/ethernet-mbist-core-physical-20260927.json)
+accepts exact filled GDS `baa6145e133c58eca36a4c6b7a08adf1c406abd5e9e5b7914c9f5acf4b049c05`. It contains the integrated
+system-RAM and Ethernet TX/RX FIFO MBIST controls, including the sixteen
+dual-port FIFO SRAM instances. This supersedes the pending physical check for
+that integration; the earlier non-MBIST GDS remains a separate historical
+measurement.
+
+| Check on this GDS | Result |
+|---|---|
+| Native main DRC | 560 categories, 0 markers |
+| Native density | 7 categories, 0 markers |
+| Native antenna | 31 categories, 0 markers |
+| Supplemental wide-metal spacing | 11 categories, 0 markers |
+| Full transistor LVS, including SRAM interiors | 130 matched circuits; 5,166,170 recursive devices per core side; no skipped/blackboxed circuits |
+| Extracted-netlist readback | Identical matched hierarchy and device counts |
+| Deliberate DP SRAM B-address pin swap | Rejected: 129 matched circuits, one nonmatching core |
+| Routed digital equations | PASS within retained-cell equations/state and 32 opaque SRAM interfaces; transistor LVS independently covers their interiors |
+
+A persistent SRAM address-route crossing was repaired by moving its long
+Metal5 segment onto TopMetal2 while retaining exactly the same eight terminals.
+The actual routed upper-metal segment measures 802.560 micrometres; Metal5
+length on that net falls from 1034.680 to 15.980 micrometres. Final OpenROAD
+routing and antenna checks report zero violations; the native checks above are
+independent acceptance evidence.
+
+The core boundary annotation was normalized without changing physical
+geometry. Before dummy fill, this new streamout failed native density with
+**174 markers**. Dummy fill was then added across 35 windows. A global audit preserves all
+original shapes, text, cells and instance placements; only designated fill
+layers gain shapes. Final TopMetal2 coverage is approximately 42.65%. Failed
+raw-density results and intermediate route failures remain in the archive and
+are not presented as passes. The first native angle run exhausted an 8 GiB
+address-space limit; the successful retry reruns the unchanged angle deck with
+one thread and a 12 GiB bound. Completed independent groups are reused only
+with unchanged GDS, report, log and rule hashes. Native foundry rule contents
+are unchanged.
+
+The [physical archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260926-eth-mbist-layout/ethernet-mbist-core-physical-20260926.tar.xz) includes the new
+GDS, final netlists, raw native reports, positive/negative LVS evidence, routing
+and fill preservation audits, exact replay scripts and source/license notices.
+Old fill checkpoints are losslessly compressed with byte-roundtrip receipts.
+External tool/PDK identities and original path bindings are explicit; relocation
+requires deliberate rebinding and fresh checks. The release retains the AGPL
+source and documented boundary-selector patch for the fill tool.
+
+The accepted GDS archive member is
+`hw/soc/out/eth-mbist-20260926/density-fill/windows/tile-034/checkpoint.gds`.
+
+The [latest prepared-checkout CI](evidence/local-ci-mbist-physical-guards-20260927.json)
+at `136119c` passes **1,872 pytest cases, zero failures/errors/skips**. Its 24
+new acceptance-guard cases cover missing rules, mixed GDS identities, skipped
+circuits, changed extracted inventories and incorrectly accepted mutations.
+The six separate historical physical-tree skips remain explicit. CI log/XML,
+exact source identities and the earlier digital campaigns remain available.
+
+This closes the Ethernet FIFO MBIST integration and its refreshed **core
+geometry/connectivity** verification. It does not provide final timing,
+complete SRAM characterization/RC, test pads/scan/ATPG, a complete PCIe PHY,
+foundry manufacturing approval or silicon qualification.
