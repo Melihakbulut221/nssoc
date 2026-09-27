@@ -744,3 +744,11 @@ against SHA-256
 Neither candidate inherits the prior filled core's DRC/LVS acceptance. Final
 SRAM models/RC, filled-layout timing, padframe/DFT, complete PCIe PHY and foundry
 approval remain open product gates.
+
+The same release also preserves the queued pipeline flow
+configuration/scripts and a separate lossless archive of superseded ODB/DEF
+views. Both recovery assets are byte-verified through authenticated and
+anonymous downloads; their sizes and SHA-256 identities are in the candidate
+receipt. They are recovery inputs, not completed physical results. Only
+reproducible scratch or byte-verified archived views were reclaimed locally;
+active simulation inputs and the accepted core GDS remain in place.
