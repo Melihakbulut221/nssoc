@@ -168,3 +168,12 @@ deck copy and replay/audit scripts. It is 4,091,184 bytes with SHA-256
 both remote download checks match. This is a main-DRC result for the IO-only
 ring. Density, antenna, extracted connectivity/LVS, integrated core/signal
 routes, seal/bond/package, physical CDC and manufacturing gates remain separate.
+
+
+## Core and I/O physical integration follow-up
+
+The [new assembly and I/O transistor audit](105-core-io-physical-integration.md)
+combines the preserved pre-fill core with the native ring and serial logic.
+Four required abstract supply-connectivity checks pass. Independent native-cell
+LVS fails all seven selected I/O masters; therefore neither the earlier
+IO-only DRC pass nor this integration establishes full-chip production acceptance.

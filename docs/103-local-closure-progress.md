@@ -804,3 +804,12 @@ comparing digital equations with the original mapped pipeline netlist. Its
 and syntax checking are complete; the final comparison has **not executed**.
 The byte-verified method archive is 12,968 bytes with SHA-256
 `1715ce3fbc18b346bbed51c618f43590837dfb56749185c6aebb31cb0a60efa1`.
+
+
+## Core and I/O physical integration follow-up
+
+The [new assembly and I/O transistor audit](105-core-io-physical-integration.md)
+combines the preserved pre-fill core with the native ring and serial logic.
+Four required abstract supply-connectivity checks pass. Independent native-cell
+LVS fails all seven selected I/O masters; therefore neither the earlier
+IO-only DRC pass nor this integration establishes full-chip production acceptance.
