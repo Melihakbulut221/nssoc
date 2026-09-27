@@ -35,10 +35,36 @@ MARKER = '''<item><category>'M1.a'</category><cell>chip</cell>
 ])
 def test_process_and_report_are_both_required(tmp_path, returncode, markers, status):
     (tmp_path / "drc.lyrdb").write_text(report(markers))
+    (tmp_path / "run.log").write_text("DRC finished\n")
     result = drc.record_result(tmp_path, "chip", returncode, {})
     assert result["status"] == status
     assert result["markers"] == markers.count("<item>")
     assert result == json.loads((tmp_path / "result.json").read_text())
+
+
+@pytest.mark.parametrize("deck", ["main", "antenna", "density"])
+@pytest.mark.parametrize("failure", [
+    "ERROR: Worker thread: std::bad_alloc",
+    "std::bad_array_new_length", "FATAL: failed rule evaluation",
+    "Cannot allocate memory", "Segmentation fault",
+    "terminate called after throwing an instance of std::runtime_error",
+    "Traceback (most recent call last):",
+])
+def test_worker_failure_cannot_pass_with_zero_exit_and_zero_markers(tmp_path, deck, failure):
+    (tmp_path / "drc.lyrdb").write_text(report())
+    (tmp_path / "run.log").write_text(failure + "\n")
+    result = drc.record_result(tmp_path, "chip", 0, {}, deck=deck)
+    assert result["status"] == "ERROR"
+    assert result["markers"] == 0
+    assert result["execution_errors"] == [failure]
+    assert result["execution_error_count"] == 1
+
+
+@pytest.mark.parametrize("deck", ["main", "antenna", "density"])
+def test_missing_execution_log_never_passes(tmp_path, deck):
+    (tmp_path / "drc.lyrdb").write_text(report())
+    result = drc.record_result(tmp_path, "chip", 0, {}, deck=deck)
+    assert result["status"] == "ERROR"
 
 
 @pytest.mark.parametrize("contents", [

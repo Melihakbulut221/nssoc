@@ -78,11 +78,23 @@ def record_result(output, top, returncode, expected_inputs, *, deck="main"):
         report = output / "drc.lyrdb"
         result.update(read_report(report, top))
         result["report_sha256"] = digest(report)
+        # A worker can fail while the parent still writes a well-formed report.
+        # Neither exit zero nor an empty marker list proves all rules ran.
+        log = (output / "run.log").read_text()
+        result["log_sha256"] = digest(output / "run.log")
+        failures = [line for line in log.splitlines() if re.search(
+            r"\b(?:ERROR|FATAL)\b|std::bad_alloc|std::bad_array_new_length|"
+            r"out of memory|cannot allocate memory|segmentation fault|"
+            r"terminate called|Traceback \(most recent call last\)",
+            line, re.IGNORECASE)]
+        if failures:
+            result["execution_errors"] = failures[:20]
+            result["execution_error_count"] = len(failures)
+            raise ValueError("DRC execution log contains errors; report is incomplete evidence")
         if deck == "density":
             # The locked deck only logs this condition: it divides the total
             # material area by the smaller declared boundary area. A halo can
             # therefore hide a minimum-density failure without a DRC marker.
-            log = (output / "run.log").read_text()
             if "Shapes exist outside boundary." in log:
                 raise ValueError("Density normalization is invalid: shapes exist outside the chip boundary")
         if returncode == 0:
