@@ -497,3 +497,13 @@ The already measured 207 density violations remain open and are not rerun by thi
 workflow. A passing antenna/main shard would not close density, full-chip LVS,
 qualified SRAM/RC timing, PCIe or manufacturing approval. These jobs measure the
 current geometry; any subsequent fill or repair requires fresh checks.
+
+
+[GitHub run 36376213858](https://github.com/Melihakbulut221/nssoc/actions/runs/36376213858)
+started all seven worker jobs at source commit
+`849a5998d2822e3272af104dd071e1b86674b34f`.
+The [start receipt](evidence/chip-native-parallel-start-20260928.json) records
+running jobs, not physical verdicts. The idle local DRC controller is intentionally
+paused after verifying its identity and absence of native children; the local
+timing repair remains active. Local real-bundle preparation, 112 targeted tests,
+REUSE and strict documentation checks passed before dispatch.
