@@ -592,3 +592,33 @@ PDN ring spacing of four micrometres. Net connectivity and the complete marker
 population still need correlation before a physical repair. The source GDS is
 unchanged. No antenna, spacing, density, timing or manufacturing gate is closed
 by the waiter recovery or this localization.
+
+## PDN spacing candidate with preserved I/O placement
+
+The sampled TM2 gap is now traced to the VDD and VSS core-ring segments in the
+original routed DEF. Both rings are eight micrometres wide; their lower centres
+are at y=191.84 and y=179.84 micrometres, leaving a four-micrometre gap. The native
+TM2 wide-line rule requires five micrometres for these long parallel segments.
+
+An [isolated candidate](evidence/chip-pdn-spacing-candidate-20260928.json) changes
+only `PDN_CORE_RING_HSPACING` from 4 to 5 in the original assembly configuration.
+It regenerates floorplanning and PDN from the same source netlist. Independent
+DEF inspection measures five-micrometre gaps at both the top and bottom rings
+and confirms the same masters, coordinates and orientations for all 314 native
+I/O instances and the core instance. OpenROAD reports all shapes connected on
+VDD, VSS, IOVDD and IOVSS. This is a power-connectivity and PDN-geometry result.
+
+Two setup failures are retained: a missing required output directory and an old
+pre-PDN database removed during earlier cache compaction. Regenerating from the
+source netlist avoids relying on the absent intermediate. Raw warnings remain,
+including unavailable core Liberty, macro antenna metadata and omitted via
+locations. They are not waived by the four connected power-rail results.
+
+The [immutable candidate asset](evidence/chip-pdn-spacing-candidate-assets-20260928.json)
+contains 155 members: methods, both failed attempts, the successful PDN run,
+original/candidate DEF evidence and the verification record. All archive members
+and authenticated/anonymous release downloads were byte-checked. The original
+GDS and running timing repair are unchanged. The candidate still needs placement,
+routing, native DRC/antenna/density and extracted connectivity checks; the original
+296 supplemental markers, four antenna markers and 207 density markers remain
+open until a complete repaired layout passes those measurements.
