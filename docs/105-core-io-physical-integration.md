@@ -622,3 +622,36 @@ GDS and running timing repair are unchanged. The candidate still needs placement
 routing, native DRC/antenna/density and extracted connectivity checks; the original
 296 supplemental markers, four antenna markers and 207 density markers remain
 open until a complete repaired layout passes those measurements.
+
+## Completed BEOL recovery and full main-category coverage
+
+[BEOL recovery run 36381684222](https://github.com/Melihakbulut221/nssoc/actions/runs/36381684222)
+completed successfully after 14,087 seconds of native execution. Its raw report
+contains all 117 expected BEOL categories and zero markers. Independent local
+verification checked the 108 input hashes, GDS identity, report and log hashes,
+process exit and complete category names/descriptions. The six earlier groups
+were also reverified against their original 106-input inventories, using the
+archived original runner for that runner's changed source hash.
+
+The [combined record](evidence/chip-main-drc-completed-20260928.json) establishes
+all **560 main categories with zero markers** on GDS `f9dc37b7...`. The combined
+catalog hash matches the locked complete-main reference. This excludes the
+separate failing antenna (4), supplemental wide-metal (296) and density (207)
+results, all retained. Full-chip DRC, LVS, final timing and manufacturing approval
+therefore remain unaccepted.
+
+The [published raw evidence](evidence/chip-main-drc-completed-assets-20260928.json)
+includes the BEOL artifact and completed job log, local verification method and
+result, and the separate repaired-ring routing queue setup. All 22 archive
+members and both public download channels were checked. Earlier raw results
+remain in their existing immutable assets.
+
+The 5-micrometre ring candidate is queued to continue after PDN generation into
+placement, routing and streamout in a fresh directory. Admission requires 6 GiB
+available memory and 1.5 GiB free disk; execution has a 4 GiB address-space cap
+and no elapsed timeout. At dispatch it is waiting for memory, not running native
+routing. A first idle queue was replaced before any native child started because
+preflight found that the final state uses `klayout_gds`; its original method and
+disposition are retained. The corrected queue leaves the active core timing ECO
+and completed cloud inputs untouched. Its eventual GDS still requires full
+physical audits, including whole-chip boundary verification.
