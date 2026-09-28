@@ -798,3 +798,37 @@ and real LibreLane configuration/netlist-state loading passes. Physical placemen
 connectivity, native antenna/DRC, density and timing still require verification.
 This candidate is not an antenna closure claim. The completed unbuffered routing
 workflow is now manual-only, avoiding redundant routing when shared code changes.
+
+## IRQ buffer routed; independent physical checks pending
+
+[Run 36445480475](https://github.com/Melihakbulut221/nssoc/actions/runs/36445480475)
+completed the buffer candidate's full floorplan-to-GDS flow. The
+[completed routing audit](evidence/chip-irq-routing-completed-20260928.json)
+verifies the source commit, eight method pins, all 781 bundled inputs and exact
+configuration/state relocation. The final DEF retains the buffer at (2148,
+2853.9) micrometres, the original 315 core/I/O placements and both 5 micrometre
+horizontal ring gaps. Its buffer output net connects only to the original core
+IRQ terminal; the long input net connects the pad, buffer input and two native
+antenna cells. The final netlist preserves that same buffer path.
+
+GDS comparison verifies the unchanged embedded core and native I/O hierarchy
+and all 217 selected cell geometries. The added buffer also matches the native
+standard-cell GDS exactly. Mirrored antenna cells abutting the buffer share its
+GDS transform anchor; the audit identifies the buffer by native geometry and
+transform, rather than treating every cell at that anchor as the buffer.
+OpenROAD checks on the final routed ODB pass for VDD, VSS, IOVDD and IOVSS.
+These connectivity checks do not establish transistor LVS or IR/EM acceptance.
+
+Whole-chip boundary normalization changes only annotation layer 189/0 and
+preserves every other shape, text and hierarchy record. The
+[immutable completed-routing archive](evidence/chip-irq-routing-completed-assets-20260928.json)
+retains the raw run, audits, final GDS and original producer sources. The
+[new native input bundle](evidence/chip-irq-native-input-assets-20260928.json)
+uses that normalized GDS with unchanged native rules. The separate
+`chip-irq-native` workflow runs antenna and wide-metal checks on it.
+
+Router DRC and antenna counts are zero. Native antenna closure is still pending;
+the prior four-marker failure remains evidence on the preceding unbuffered GDS.
+The earlier wide-metal pass also does not transfer automatically to this newly
+routed geometry. Full native main DRC, density/fill, extracted LVS, final timing,
+SRAM characterization, PCIe PHY, DFT and manufacturing approval remain open.
