@@ -759,3 +759,42 @@ six-hour job limit remains. Existing healthy workers are not cancelled.
 The earlier general checks repair has now passed in both push and PR checks
 jobs; their formal sweeps are still running. The publication job's PyPI timeout
 was recovered by rerunning only that failed job; its second attempt passed.
+
+## Wide-metal repair verified; IRQ antenna ECO candidate
+
+The [fresh native results](evidence/chip-ring-native-results-20260928.json)
+independently verify all 108 input hashes per worker, process exit codes, raw
+reports and exact category names/descriptions. All eleven supplemental wide-metal
+categories now have zero markers on the routed five-micrometre ring layout.
+This closes the previously observed 296 wide-metal markers for this candidate.
+The [immutable raw results](evidence/chip-ring-native-results-assets-20260928.json)
+retain both completed measurements, including the failed antenna report.
+
+Antenna still reports four markers in its 31-category inventory. They identify
+the same two receiver gate polygons on `u_core/input31`, connected to
+`irq_external_i`; the cumulative ratio remains 24,287.697565 against 20,000 with
+an existing diode. The spacing repair did not resolve this independent failure.
+
+The [IRQ buffer candidate](evidence/chip-irq-buffer-candidate-20260928.json)
+inserts one native `sg13g2_buf_16` between the IRQ input pad and the existing core
+terminal. The embedded core and all other chip connections are unchanged; only
+that core input connection, one new wire and the buffer instance change. Its
+proposed location, (2148, 2853.9) micrometres, is an existing north-oriented
+standard-cell row outside the core and its halo, near the north IRQ pin. The
+resizer protection pattern includes the new buffer and its two nets.
+
+The native standard-cell Verilog model passes a 0/1/X/Z receiver-chain check;
+a deliberately inverted buffer fails. These are functional checks without
+propagation-delay or analog qualification. Icarus timing-check warnings from
+unrelated cells in the complete library are retained. Fifty-six focused
+source-transformation, relocation, archive and delivery tests pass locally.
+
+The [portable ECO inputs](evidence/chip-irq-buffer-input-assets-20260928.json)
+retain 762 previous bundle members unchanged and preserve all new candidate
+sources and simulation records. A dedicated `chip-irq-route` workflow starts
+from the new mapped netlist and regenerates floorplan, PDN, placement and routing;
+it cannot reuse a stale routed database. Local preparation verifies 781 inputs
+and real LibreLane configuration/netlist-state loading passes. Physical placement, buffer retention,
+connectivity, native antenna/DRC, density and timing still require verification.
+This candidate is not an antenna closure claim. The completed unbuffered routing
+workflow is now manual-only, avoiding redundant routing when shared code changes.

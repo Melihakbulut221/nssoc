@@ -66,8 +66,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--archive", type=Path)
+    parser.add_argument("--manifest", type=Path, default=ROOT /
+                        "docs/evidence/chip-ring-routing-input-assets-20260928.json")
+    parser.add_argument("--output", type=Path, default=ROOT / "hw/soc/out/cloud-ring-routing")
+    parser.add_argument("--from-start", action="store_true",
+                        help="Start from the supplied mapped netlist, regenerating floorplan and PDN")
     args = parser.parse_args()
-    out = ROOT / "hw/soc/out/cloud-ring-routing"
+    out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     rec = dict(status="PREPARING", physical_acceptance=False, manufacturing_approval=False)
 
@@ -76,7 +81,7 @@ def main():
 
     try:
         save()
-        manifest = ROOT / "docs/evidence/chip-ring-routing-input-assets-20260928.json"
+        manifest = args.manifest.resolve()
         rows = validate(json.loads(manifest.read_text()))
         if len(rows) != 1:
             raise ValueError("Exactly one input bundle required")
@@ -95,6 +100,10 @@ def main():
             relocated = relocate(template, original, bundle, meta)
             (out / (kind + ".json")).write_text(json.dumps(relocated, indent=2) + "\n")
         config = json.loads((out / "config.json").read_text())
+        if args.from_start:
+            state = json.loads((out / "state.json").read_text())
+            if {key for key, value in state.items() if value and key != "metrics"} != {"nl"}:
+                raise ValueError("Full restart requires only the mapped netlist, without stale physical views")
         if config["DESIGN_NAME"] != "nssoc_chip" or config["PDN_CORE_RING_HSPACING"] != 5:
             raise ValueError("Wrong repaired-ring candidate")
         flow = (bundle / meta["flow"]).resolve()
@@ -104,10 +113,11 @@ def main():
         verify_tool(app, "x86_64")
         command = [str(app), "python", str(flow), "--flow", "ChipAssembly", "--manual-pdk",
                    "--pdk-root", str(bundle / "pdk"), "--pdk", "ihp-sg13g2",
-                   "--force-run-dir", str(out / "run"), "--from", "Odb.RemovePDNObstructions",
+                   "--force-run-dir", str(out / "run"),
+                   *([] if args.from_start else ["--from", "Odb.RemovePDNObstructions"]),
                    "--with-initial-state", str(out / "state.json"), str(out / "config.json")]
         rec.update(status="PREPARED", input_bundle_sha256=rows[0]["sha256"],
-                   input_files=len(inventory), command=command,
+                   input_files=len(inventory), command=command, start_from_mapped_netlist=args.from_start,
                    scope="Repaired-ring routing candidate only; core0/0; all native physical and final timing gates remain required.")
         pins = {str(p): digest(p) for p in [Path(__file__).resolve(),
                 ROOT / "scripts/run_chip_native_shard.py", ROOT / "scripts/fetch_evidence_assets.py",

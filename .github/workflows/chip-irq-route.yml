@@ -1,12 +1,16 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-name: chip-ring-route
+name: chip-irq-route
 on:
+  push:
+    paths:
+      - .github/workflows/chip-irq-route.yml
+      - docs/evidence/chip-irq-buffer-input-assets-20260928.json
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: chip-ring-route-${{ github.ref }}
+  group: chip-irq-route-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   route:
@@ -23,17 +27,20 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           python3 scripts/bootstrap_flow.py --check
-      - name: Route exact repaired-ring candidate
-        run: python3 scripts/run_chip_ring_route.py
+      - name: Route native IRQ buffer candidate
+        run: >-
+          python3 scripts/run_chip_ring_route.py --from-start
+          --manifest docs/evidence/chip-irq-buffer-input-assets-20260928.json
+          --output hw/soc/out/cloud-irq-routing
       - name: Preserve routing outputs and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: chip-ring-routing
+          name: chip-irq-routing
           path: |
-            hw/soc/out/cloud-ring-routing/result.json
-            hw/soc/out/cloud-ring-routing/config.json
-            hw/soc/out/cloud-ring-routing/state.json
-            hw/soc/out/cloud-ring-routing/run.log
-            hw/soc/out/cloud-ring-routing/run/
+            hw/soc/out/cloud-irq-routing/result.json
+            hw/soc/out/cloud-irq-routing/config.json
+            hw/soc/out/cloud-irq-routing/state.json
+            hw/soc/out/cloud-irq-routing/run.log
+            hw/soc/out/cloud-irq-routing/run/
           retention-days: 30
