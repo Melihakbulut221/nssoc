@@ -115,15 +115,18 @@ def main():
     parser.add_argument("--group", required=True, choices=GROUPS)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--archive", type=Path)
+    parser.add_argument("--manifest", type=Path, default=ROOT /
+                        "docs/evidence/chip-native-parallel-input-v2-assets-20260928.json")
+    parser.add_argument("--output", type=Path, default=ROOT / "hw/soc/out/github-chip-checks")
     args = parser.parse_args()
-    out = ROOT / "hw/soc/out/github-chip-checks" / args.group
+    out = args.output.resolve() / args.group
     out.mkdir(parents=True, exist_ok=False)
     record = dict(status="PREPARING", group=args.group, manufacturing_approval=False)
     def save():
         (out / "result.json").write_text(json.dumps(record, indent=2) + "\n")
     save()
     try:
-        manifest = ROOT / "docs/evidence/chip-native-parallel-input-v2-assets-20260928.json"
+        manifest = args.manifest.resolve()
         rows = validate(json.loads(manifest.read_text()))
         if len(rows) != 1:
             raise ValueError("Exactly one immutable bundle required")
@@ -155,7 +158,7 @@ def main():
             .replace("@REPORT@", str(report)) for x in config["commands"][args.group]]
         record.update(status="PREPARED", command=command, gds_sha256=digest(gds),
                       native_dependencies_checked=dependencies,
-                      scope=config["scope"], known_density_markers=207,
+                      scope=config["scope"], known_density_markers=config.get("known_density_markers"),
                       input_sha256={str(p): v for p, v in pins.items()})
         save()
         if args.prepare_only:

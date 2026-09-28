@@ -58,7 +58,7 @@ def run(command, log, env, limit):
         child = subprocess.Popen(command, cwd=ROOT, env=env, stdout=stream,
                                  stderr=subprocess.STDOUT, start_new_session=True)
         try:
-            code = child.wait(timeout=limit)
+            code = child.wait(timeout=limit or None)
         except subprocess.TimeoutExpired:
             os.killpg(child.pid, signal.SIGTERM)
             try: child.wait(timeout=10)
@@ -72,10 +72,18 @@ def run(command, log, env, limit):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "hw/soc/out/formal-sweep")
-    parser.add_argument("--stage-timeout", type=int, default=9000)
+    parser.add_argument("--stage-timeout", type=int, default=0,
+                        help="Optional stage limit in seconds; default 0 waits without an elapsed limit")
+    parser.add_argument("--stage", choices=("all", "pilot", "soc"), default="all")
     args = parser.parse_args()
-    if args.stage_timeout <= 0: parser.error("stage timeout must be positive")
+    if args.stage_timeout < 0: parser.error("stage timeout must be nonnegative; zero disables it")
     expected, excluded = inventory(ROOT)
+    stages = [("formal", "everything", "pilot"), ("hw/soc/formal", "all", "soc")]
+    if args.stage != "all":
+        stages = [stage for stage in stages if stage[2] == args.stage]
+        prefix = stages[0][0] + "/"
+        expected = {p: row for p, row in expected.items() if p.startswith(prefix)}
+        excluded = {p: reason for p, reason in excluded.items() if p.startswith(prefix)}
     existing = [str(p) for area in ("formal", "hw/soc/formal")
                 for p in (ROOT / area).glob("*/config.sby")]
     if existing:
@@ -90,12 +98,13 @@ def main():
     hashes = {p: digest(ROOT / p) for p in watched}
     hashes["hw/soc/gen/ibex_register_file_ff.v"] = digest(ROOT / "hw/soc/gen/ibex_register_file_ff.v")
     record = dict(head=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-                  source_sha256=hashes, exclusions=excluded, stages=[], tasks={}, passed=False)
+                  source_sha256=hashes, exclusions=excluded, stages=[], tasks={}, passed=False,
+                  selected_stage=args.stage, complete_sweep=args.stage == "all")
     result_path = out / "result.json"
     result_path.write_text(json.dumps(record, indent=2) + "\n")
     env = dict(os.environ)
     try:
-        for area, target, name in (("formal", "everything", "pilot"), ("hw/soc/formal", "all", "soc")):
+        for area, target, name in stages:
             stage = run(["make", "-k", "-C", area, target], out / (name + ".log"), env, args.stage_timeout)
             record["stages"].append(stage)
             result_path.write_text(json.dumps(record, indent=2) + "\n")
@@ -111,7 +120,7 @@ def main():
                                           log_sha256=digest(work / "logfile.txt") if (work / "logfile.txt").exists() else None)
         record["sources_unchanged"] = all((ROOT / p).is_file() and digest(ROOT / p) == value
                                            for p, value in hashes.items())
-        record["passed"] = (len(record["stages"]) == 2 and
+        record["passed"] = (len(record["stages"]) == len(stages) and
                             all(s["returncode"] == 0 for s in record["stages"]) and
                             record["sources_unchanged"] and bool(expected) and all(
             row["status"] == "PASS" and row["source_state"] == "clean" for row in record["tasks"].values())
@@ -119,7 +128,7 @@ def main():
         result_path.write_text(json.dumps(record, indent=2) + "\n")
     if not record["passed"]:
         raise RuntimeError(f"Formal task inventory is incomplete, stale or non-PASS; see {result_path}")
-    print(f"PASS {len(expected)} fresh formal tasks; {len(excluded)} explicit historical non-closing tasks excluded")
+    print(f"PASS {args.stage}: {len(expected)} fresh formal tasks; {len(excluded)} explicit historical non-closing tasks excluded")
 
 
 if __name__ == "__main__":

@@ -712,3 +712,50 @@ identity and local handoff. A second same-source push run was still pending with
 no jobs and was cancelled as a duplicate. The active worker was retained. After
 successful local preflight, the disposable extracted bundle cache was removed
 to reclaim disk; the verified release archive and original inputs remain.
+
+## Completed repaired-ring routing and fresh native checks
+
+[Run 36422747834](https://github.com/Melihakbulut221/nssoc/actions/runs/36422747834)
+completed routing in 1,101 seconds. The
+[completed routing audit](evidence/chip-ring-routing-completed-20260928.json)
+checks its eight method pins, 767 bundle inputs and exact relocated configuration
+and state. The embedded core and native I/O geometry remain unchanged; all 315
+fixed placements and both 5 micrometre horizontal power-ring gaps are verified
+in the final outputs. The whole-chip density annotation now covers the actual
+4,000 by 3,200 micrometre die; every other shape, text and hierarchy record is
+preserved across that transformation.
+
+The new normalized GDS is
+`52d0b63d8db96ac69d582e493d138d4c3291a3a33dd5c7fe7c666c5687798432`.
+Router DRC and antenna counts are zero, but native physical acceptance remains
+open. The previous layout's 560-category pass and its antenna, wide-metal and
+density failures do not certify this new geometry. Density on this GDS is
+unmeasured. Core parameters remain request/writeback 0/0; the active local 1/1
+core timing ECO is separate.
+
+The [raw completed routing asset](evidence/chip-ring-routing-completed-assets-20260928.json)
+preserves the run, audit records, original producer methods and normalized GDS.
+The [fresh native input asset](evidence/chip-ring-native-input-assets-20260928.json)
+uses this new GDS and retains all 100 rule/license members byte-for-byte from the
+previous native bundle. Local preparation checks 84 dependencies and 108 input
+pins. A separate `chip-ring-native` workflow runs antenna and supplemental wide
+metal checks on independent workers. Old chip checks remain manually available;
+source pushes no longer repeat completed old-GDS BEOL work. Full native main
+DRC, density/fill, LVS and final timing are still required.
+
+## Formal stage timeout recovery
+
+The [retained diagnosis](evidence/chip-formal-stage-recovery-20260928.json)
+shows that the old PR sweep stopped its SoC stage at the runner's 9,000-second
+limit while QSPI cover reachability was advancing. Its inventory contains 125
+PASS and 45 missing tasks, with unchanged sources; this is an incomplete proof,
+not a passing result or a demonstrated design counterexample. New checks split
+pilot and SoC into separate workers and disable that internal elapsed watchdog.
+Each worker still requires every declared nonexcluded task in its scope, fresh
+source checks and zero stage exit status. Partial-stage reports explicitly deny
+complete-sweep scope; both workers must pass for the workflow to pass. The hosted
+six-hour job limit remains. Existing healthy workers are not cancelled.
+
+The earlier general checks repair has now passed in both push and PR checks
+jobs; their formal sweeps are still running. The publication job's PyPI timeout
+was recovered by rerunning only that failed job; its second attempt passed.

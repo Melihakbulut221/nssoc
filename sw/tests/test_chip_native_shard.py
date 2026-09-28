@@ -78,3 +78,38 @@ def test_native_runtime_dependencies_are_checked_before_execution(tmp_path, defe
         assert runner.validate_deck_dependencies(tmp_path, config) == 2
     else:
         with pytest.raises(ValueError): runner.validate_deck_dependencies(tmp_path, config)
+
+
+@pytest.mark.parametrize("density", [None, 207])
+def test_prepare_uses_selected_manifest_and_layout_density(tmp_path, monkeypatch, density):
+    """A new layout must not inherit the previous chip's measured marker count."""
+    manifest = tmp_path / "selected.json"
+    manifest.write_text('{"selected": true}')
+    output = tmp_path / "separate-campaign"
+    monkeypatch.setattr(sys, "argv", ["runner", "--group", "antenna", "--prepare-only",
+                                     "--manifest", str(manifest), "--output", str(output)])
+    row = {"name": "selected.tar"}
+    def validate(value):
+        assert value == {"selected": True}
+        return [row]
+    def restore(path, bundle):
+        assert path == output / "antenna/selected.tar"
+        bundle.mkdir()
+        (bundle / "chip.gds").write_bytes(b"selected-layout")
+        (bundle / "config.json").write_text(json.dumps(dict(
+            gds="chip.gds", gds_sha256="digest", scope="new layout",
+            commands={"antenna": ["-r", "@ROOT@/native.drc"]},
+            known_density_markers=density)))
+        return {}
+    monkeypatch.setattr(runner, "validate", validate)
+    monkeypatch.setattr(runner, "fetch", lambda selected, out: None)
+    monkeypatch.setattr(runner, "restore", restore)
+    monkeypatch.setattr(runner, "validate_config", lambda config: None)
+    monkeypatch.setattr(runner, "validate_deck_dependencies", lambda bundle, config: 84)
+    monkeypatch.setattr(runner, "verify_tool", lambda app, arch: None)
+    monkeypatch.setattr(runner, "digest", lambda path: "digest")
+    runner.main()
+    result = json.loads((output / "antenna/result.json").read_text())
+    assert result["status"] == "PREPARED"
+    assert result["known_density_markers"] == density
+    assert str(manifest) in result["input_sha256"]

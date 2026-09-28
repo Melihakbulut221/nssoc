@@ -1,26 +1,23 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-name: chip-native-parallel
+name: chip-ring-native
 on:
+  push:
+    paths:
+      - .github/workflows/chip-ring-native.yml
+      - docs/evidence/chip-ring-native-input-assets-20260928.json
   workflow_dispatch:
-    inputs:
-      group:
-        description: 'Recover one group; all explicitly reruns every native group'
-        type: choice
-        default: beol
-        options: [beol, antenna, feol_devices, geometry_pin_forbidden, geometry_grid, geometry_angle, supplemental_wide, all]
 permissions:
   contents: read
 concurrency:
-  group: chip-native-parallel-${{ github.ref }}
+  group: chip-ring-native-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   native:
     strategy:
       fail-fast: false
       matrix:
-        # Historical GDS recovery is explicit; new layouts use a separate bundle.
-        group: ${{ fromJSON(inputs.group == 'all' && '["antenna","feol_devices","geometry_pin_forbidden","geometry_grid","geometry_angle","beol","supplemental_wide"]' || format('["{0}"]', inputs.group || 'beol')) }}
+        group: [antenna, supplemental_wide]
     runs-on: ubuntu-22.04
     # Hosted job maximum; there is no native process elapsed-time watchdog.
     timeout-minutes: 360
@@ -38,16 +35,19 @@ jobs:
       - name: Verify exact chip bundle and run unchanged native rules
         env:
           CHIP_GROUP: ${{ matrix.group }}
-        run: python3 scripts/run_chip_native_shard.py --group "$CHIP_GROUP"
+        run: >-
+          python3 scripts/run_chip_native_shard.py --group "$CHIP_GROUP"
+          --manifest docs/evidence/chip-ring-native-input-assets-20260928.json
+          --output hw/soc/out/github-ring-checks
       - name: Preserve measurements, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: chip-native-${{ matrix.group }}
+          name: chip-ring-native-${{ matrix.group }}
           path: |
-            hw/soc/out/github-chip-checks/${{ matrix.group }}/*.json
-            hw/soc/out/github-chip-checks/${{ matrix.group }}/*.log
-            hw/soc/out/github-chip-checks/${{ matrix.group }}/*.lyrdb
+            hw/soc/out/github-ring-checks/${{ matrix.group }}/*.json
+            hw/soc/out/github-ring-checks/${{ matrix.group }}/*.log
+            hw/soc/out/github-ring-checks/${{ matrix.group }}/*.lyrdb
           retention-days: 30
       - name: Require zero markers and complete category coverage
         env:
@@ -56,6 +56,6 @@ jobs:
           python3 - <<'PY'
           import json, os
           from pathlib import Path
-          result = json.loads((Path('hw/soc/out/github-chip-checks') / os.environ['CHIP_GROUP'] / 'result.json').read_text())
+          result = json.loads((Path('hw/soc/out/github-ring-checks') / os.environ['CHIP_GROUP'] / 'result.json').read_text())
           assert result['status'] == 'PASS' and result.get('category_inventory'), result['status']
           PY

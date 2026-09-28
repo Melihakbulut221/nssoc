@@ -84,6 +84,28 @@ def test_old_formal_output_is_rejected_before_execution(prepared, monkeypatch):
     assert not (prepared / "hw/soc/out/formal-sweep").exists()
 
 
+@pytest.mark.parametrize("stage,count", [("pilot", 2), ("soc", 1)])
+def test_independent_stage_cannot_claim_complete_sweep(prepared, monkeypatch, stage, count):
+    monkeypatch.setattr(sys, "argv", ["sweep", "--stage", stage, "--stage-timeout", "0"])
+    area = "formal" if stage == "pilot" else "hw/soc/formal"
+    expected, _ = sweep.inventory(prepared)
+    def run(command, log, env, limit):
+        assert command[3] == area and limit == 0
+        for path in expected:
+            if not path.startswith(area + "/"): continue
+            p = prepared / path
+            p.mkdir()
+            (p / "status").write_text("PASS")
+        return dict(returncode=0)
+    monkeypatch.setattr(sweep, "run", run)
+    monkeypatch.setattr(sweep, "source_state", lambda path: "clean")
+    sweep.main()
+    result = json.loads((prepared / "hw/soc/out/formal-sweep/result.json").read_text())
+    assert result["passed"] and not result["complete_sweep"]
+    assert result["selected_stage"] == stage and len(result["tasks"]) == count
+    assert len(result["stages"]) == 1
+
+
 def test_default_scrub_target_invokes_every_nonexcluded_declared_task():
     import re
     config=ROOT/'hw/soc/formal/regfile_scrub_abs.sby'

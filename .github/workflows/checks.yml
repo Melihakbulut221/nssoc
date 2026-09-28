@@ -265,8 +265,14 @@ jobs:
           retention-days: 30
 
   formal-sweep:
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: [pilot, soc]
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
+    # Independent workers remove the former shared 9000s stage deadline.
+    # Only the hosted six-hour job limit remains; incomplete results still fail.
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
@@ -284,12 +290,14 @@ jobs:
           python3 -m pip install -r sw/requirements.txt
           make soc-rtl-prepare
       - name: All declared pilot and SoC regression proofs with fresh source checks
-        run: python3 scripts/check_formal_sweep.py
+        env:
+          FORMAL_STAGE: ${{ matrix.stage }}
+        run: python3 scripts/check_formal_sweep.py --stage "$FORMAL_STAGE" --stage-timeout 0
       - name: Retain every verdict and any incomplete formal run
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: formal-sweep-results
+          name: formal-sweep-results-${{ matrix.stage }}
           path: |
             hw/soc/out/formal-sweep/
             formal/*/config.sby
