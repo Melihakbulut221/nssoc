@@ -558,3 +558,37 @@ preserve the original seven raw results (including BEOL failure), marker locatio
 verification and recovery methods, and the corrected input bundle. Every archive
 member and both public download channels were checked. Neither this dependency
 repair nor the partial passing catalogs establish full-chip physical acceptance.
+
+## Recovering the post-route proof waiter
+
+The original equation-check helper reached its 46,800-second waiting limit while
+the physical timing repair was still progressing. It recorded an error before
+running any proof; the physical producer continued. The
+[recovery record](evidence/pipeline-proof-wait-recovery-20260928.json) preserves
+that error, the original method hash and the replacement's initial input hashes.
+
+`scripts/verify_completed_pipeline.py` replaces the elapsed waiting cutoff with
+checks of the producer PID and Linux process start identity. It rejects an exited
+or reused process, failed/unknown producer status, changed input inventory or
+bytes, and an incomplete final netlist/library/macro configuration. A successful
+producer exit during the final-result read is handled explicitly. Its output is
+written to a fresh `postroute-proof-v2` directory; the original failure remains.
+Neither waiting nor equation execution has an elapsed timeout. The proof process
+retains its 4 GiB address-space limit. Eighteen focused tests exercise these gates,
+including waiting beyond the old 13-hour limit. The live replacement has verified
+53 pinned inputs and is waiting for the same physical producer to finish.
+
+At this recovery, the local timing repair reached iteration 650 with estimated
+WNS -5.676 ns and TNS -5161.5 ns, compared with iteration 590 at -6.029 ns and
+-5479.3 ns. These are intermediate global-route estimates, not final STA.
+GitHub BEOL run 36381684222 remains in its native execution step; its live log is
+not yet available through the job log API, so within-step progress is unknown.
+
+Read-only marker localization also identifies the antenna gate shapes inside
+`sg13g2_buf_1$1` at placement (2151.680, 2788.810) micrometres. A sampled TM2
+violation lies between top-cell strips ending at y=183.84 and starting at
+y=187.84 micrometres. This four-micrometre gap is consistent with the configured
+PDN ring spacing of four micrometres. Net connectivity and the complete marker
+population still need correlation before a physical repair. The source GDS is
+unchanged. No antenna, spacing, density, timing or manufacturing gate is closed
+by the waiter recovery or this localization.
