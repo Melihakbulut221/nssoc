@@ -463,3 +463,37 @@ raw density report/log, retained controller failure, repaired continuation and
 All 28 archive members and both public download channels were byte-verified:
 144,660 bytes, SHA-256 `8ef5c6df7f707a26c94e0ec89466ab6c4f6c53f641d4ae976ce855e02504a0ff`.
 Full-chip LVS, qualified final timing and manufacturing approval remain open.
+
+
+## Parallel native chip checks on GitHub workers
+
+The `chip-native-parallel` workflow separates antenna, FEOL devices, pin/forbidden,
+grid, angle, BEOL and supplemental wide-metal checks into seven independent jobs.
+Each restores the same corrected chip GDS
+`f9dc37b738fb33f2919c847263cc11cc6fc857653d1c394634ce9c4cd8966f52`
+and the exact previously pinned native/adapted decks. The bundle preserves the
+validated table selectors, 50-micrometre BEOL tiling and supplemental rules;
+it changes no geometries, thresholds or exclusions. It includes expected category
+names and descriptions from complete prior controls, whose combined main catalog
+must match all 560 native categories. Every new report must match its own catalog.
+
+The [input asset inventory](evidence/chip-native-parallel-input-assets-20260928.json)
+binds all 102 bundle members, including the GDS and rule inputs. Archive size is
+19,206,144 bytes; SHA-256
+`89f0c98d84bbaa2ba2bc656e8fe2306fd950fee0fe2e74c39641d3911692f5ce`.
+Local member checks and both public download channels were verified. Workers
+recheck the archive, each extracted file and the pinned LibreLane executable;
+input hashes, raw reports, execution logs and failure results are retained.
+Unsafe paths, links, duplicate/unlisted members and changed bytes are rejected.
+
+There is no native elapsed-time watchdog. GitHub-hosted jobs have a six-hour
+platform limit; a truncated or missing result is incomplete evidence and requires
+recovery, never acceptance. `fail-fast: false` lets independent groups finish even
+when another group fails. The local timing ECO keeps running. Once the cloud run
+starts, only the idle local DRC controller may be paused after checking its PID,
+birth identity and lack of a running native child, avoiding duplicate work.
+
+The already measured 207 density violations remain open and are not rerun by this
+workflow. A passing antenna/main shard would not close density, full-chip LVS,
+qualified SRAM/RC timing, PCIe or manufacturing approval. These jobs measure the
+current geometry; any subsequent fill or repair requires fresh checks.
