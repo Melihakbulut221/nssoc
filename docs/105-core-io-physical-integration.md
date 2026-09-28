@@ -914,3 +914,36 @@ work is not accepted. The completed candidate must undergo fresh native density,
 main DRC, antenna, wide-metal, extracted connectivity and RC/timing verification.
 The running unfilled-layout checks remain useful independent evidence and are
 not cancelled. Full-chip acceptance and manufacturing approval remain open.
+
+## Complete fill candidate; fresh native measurements required
+
+[Fill run 36474119630](https://github.com/Melihakbulut221/nssoc/actions/runs/36474119630)
+completed all 56 windows. The [independent verification receipt](evidence/chip-filled-candidate-20260928.json)
+binds the source commit, all 77 input/method hashes, the executed corruption
+controls, exact window bounds and every completed checkpoint. It verifies the
+1,505,717,713-byte tile ZIP against its GitHub artifact digest and streams every
+compressed and decompressed tile input, output and checkpoint through checksum
+validation. Each of the 56 per-window geometry reports agrees with its recorded
+input/output hashes and reports no preservation errors. This streaming check
+avoids storing another 1.5 GB on the local disk.
+
+The final geometry audit retains all 264 original cells and adds 56 fill cells
+containing 1,171,794 polygons on designated filler layers. The candidate GDS
+SHA-256 is `6198700f94cfcbd57cfd86bace7b3de848249695351b4366237cf44eac7d14a3`.
+The [verification archive](evidence/chip-filled-candidate-assets-20260928.json)
+contains the raw audits, producer sources, verification methods and both the
+failed initial archive-reader attempt and successful direct streaming check.
+The final GDS is retained in the [immutable native input bundle](evidence/chip-filled-native-input-assets-20260928.json).
+A separate archival worker copies both original GitHub ZIP artifacts unchanged
+into the existing release and verifies their authenticated and public bytes;
+archival completion requires its successful receipt.
+
+The `chip-filled-native` workflow runs all eight native groups on this new GDS:
+five main DRC partitions, antenna, supplemental wide metal and density. The 100
+rule/license members remain byte-identical to the preceding bundle. Local
+preparation verifies the new GDS, all method pins and native dependencies before
+dispatch. Neither the previous 443-category pass nor the previous 207 density
+markers are results for this filled geometry. The earlier BEOL measurement
+continues independently on its original input. Generation and preserved source
+geometry do not establish density closure, native DRC, extracted LVS, RC/timing,
+PCIe PHY completion, DFT or manufacturing approval.
