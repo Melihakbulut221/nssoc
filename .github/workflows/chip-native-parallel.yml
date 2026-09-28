@@ -6,8 +6,14 @@ on:
     paths:
       - .github/workflows/chip-native-parallel.yml
       - scripts/run_chip_native_shard.py
-      - docs/evidence/chip-native-parallel-input-assets-20260928.json
+      - docs/evidence/chip-native-parallel-input-v2-assets-20260928.json
   workflow_dispatch:
+    inputs:
+      group:
+        description: 'Recover one group; all explicitly reruns every native group'
+        type: choice
+        default: beol
+        options: [beol, antenna, feol_devices, geometry_pin_forbidden, geometry_grid, geometry_angle, supplemental_wide, all]
 permissions:
   contents: read
 concurrency:
@@ -18,7 +24,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        group: [antenna, feol_devices, geometry_pin_forbidden, geometry_grid, geometry_angle, beol, supplemental_wide]
+        # Pushes recover only the failed BEOL execution on this unchanged GDS.
+        group: ${{ fromJSON(inputs.group == 'all' && '["antenna","feol_devices","geometry_pin_forbidden","geometry_grid","geometry_angle","beol","supplemental_wide"]' || format('["{0}"]', inputs.group || 'beol')) }}
     runs-on: ubuntu-22.04
     # Hosted job maximum; there is no native process elapsed-time watchdog.
     timeout-minutes: 360

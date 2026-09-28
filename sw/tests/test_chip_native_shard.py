@@ -60,3 +60,21 @@ def test_does_not_overwrite_existing_restoration(tmp_path):
 def test_rejects_missing_shards():
     with pytest.raises(ValueError, match="shard"):
         runner.validate_config(dict(commands={}, catalogs={}))
+
+
+@pytest.mark.parametrize("defect", [None, "missing", "empty", "escape", "include"])
+def test_native_runtime_dependencies_are_checked_before_execution(tmp_path, defect):
+    deck = tmp_path / "tech/drc/main.drc"
+    deck.parent.mkdir(parents=True)
+    parameters = deck.parent / "values.json"
+    if defect != "missing":
+        parameters.write_text(json.dumps({"drc_rules": {} if defect == "empty" else {"width": 1}}))
+    relative = "../../../foreign.json" if defect == "escape" else "values.json"
+    text = "$drc_json = File.expand_path(File.join(script_dir, '" + relative + "'))\n"
+    if defect == "include": text += "# %include missing.drc\n"
+    deck.write_text(text)
+    config = dict(commands={"beol": ["-r", "@ROOT@/tech/drc/main.drc"]})
+    if defect is None:
+        assert runner.validate_deck_dependencies(tmp_path, config) == 2
+    else:
+        with pytest.raises(ValueError): runner.validate_deck_dependencies(tmp_path, config)

@@ -524,3 +524,37 @@ all members and both public downloads were byte-verified.
 [Asset inventory](evidence/chip-native-first-two-assets-20260928.json).
 These partial passes do not remove the 207 density violations or close whole-chip
 DRC, LVS, final timing or manufacturing acceptance.
+
+
+## Completed cloud attempt and BEOL dependency repair
+
+The [complete first attempt](evidence/chip-native-complete-attempt-20260928.json)
+ended with four passing groups: FEOL devices 52, grid 161, pin/forbidden 20 and
+angle 210 categories, all with zero markers (443 total). Antenna completed with
+four markers: two each under `Ant.e_TopMetal1` and `Ant.e_TopMetal2`.
+The supplemental wide-metal check completed with 296 `TM2.bR.transparent` markers.
+These are real reported failures, retained without waiver. The six completed
+measurements were independently checked against the exact 106 input hashes per
+job and their complete category names/descriptions, reports and exit codes.
+
+BEOL failed before rule execution because its adapted deck could not find its
+TECH JSON at the original relative path. The portable bundle also lacked that
+deck's default parameter JSON. Both files existed in the local method and match
+unchanged checksum-locked upstream data. The new bundle adds those two copies;
+all 100 existing non-packaging members, including the GDS and native rules, are
+byte-identical. A new preflight rejects the old bundle and validates 84 native
+include/parameter dependencies in the repaired bundle before extraction. Local
+real-bundle preparation passes. Push-triggered recovery now runs only BEOL;
+manual dispatch can explicitly select one group or all groups.
+
+Raw antenna markers identify two gate polygons near (2152.22, 2790) micrometres,
+with cumulative metal/gate ratio about 24,287.7 against the native diode-protected
+20,000 limit. The supplemental markers include four-micrometre TM2 gaps along
+the lower I/O region. These locations guide the next geometry/connectivity
+investigation; they are not yet repaired. The 207 density violations also remain.
+
+[Both immutable assets](evidence/chip-native-complete-attempt-assets-20260928.json)
+preserve the original seven raw results (including BEOL failure), marker locations,
+verification and recovery methods, and the corrected input bundle. Every archive
+member and both public download channels were checked. Neither this dependency
+repair nor the partial passing catalogs establish full-chip physical acceptance.

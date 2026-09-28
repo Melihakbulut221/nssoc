@@ -11,6 +11,7 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 import resource
+import re
 import subprocess
 import sys
 import tarfile
@@ -25,6 +26,36 @@ from fetch_evidence_assets import fetch, validate, verify
 
 GROUPS = ("antenna", "feol_devices", "geometry_pin_forbidden", "geometry_grid",
           "geometry_angle", "beol", "supplemental_wide")
+
+
+def validate_deck_dependencies(bundle, config):
+    """Check native includes and runtime parameter files before costly extraction."""
+    bundle = bundle.resolve()
+    checked = set()
+    def visit(path):
+        path = path.resolve()
+        if not path.is_relative_to(bundle) or not path.is_file():
+            raise ValueError("Missing or escaping native dependency: " + str(path))
+        if path in checked:
+            return
+        checked.add(path)
+        source = path.read_text()
+        for relative in re.findall(r"^# %include ([^\n]+)$", source, re.M):
+            visit(path.parent / relative.strip())
+        for relative in re.findall(r"File\.join\(script_dir, '([^']+\.json)'\)", source):
+            dependency = (path.parent / relative).resolve()
+            if not dependency.is_relative_to(bundle) or not dependency.is_file():
+                raise ValueError("Missing or escaping native parameter file: " + str(dependency))
+            values = json.loads(dependency.read_text())
+            if not isinstance(values.get("drc_rules"), dict) or not values["drc_rules"]:
+                raise ValueError("Missing native rule parameters")
+            checked.add(dependency)
+    for command in config["commands"].values():
+        deck = command[command.index("-r") + 1]
+        if not deck.startswith("@ROOT@/"):
+            raise ValueError("Native deck must be inside the verified bundle")
+        visit(bundle / deck[len("@ROOT@/"):])
+    return len(checked)
 
 
 def restore(archive, output):
@@ -92,7 +123,7 @@ def main():
         (out / "result.json").write_text(json.dumps(record, indent=2) + "\n")
     save()
     try:
-        manifest = ROOT / "docs/evidence/chip-native-parallel-input-assets-20260928.json"
+        manifest = ROOT / "docs/evidence/chip-native-parallel-input-v2-assets-20260928.json"
         rows = validate(json.loads(manifest.read_text()))
         if len(rows) != 1:
             raise ValueError("Exactly one immutable bundle required")
@@ -107,6 +138,7 @@ def main():
         inventory = restore(archive, bundle)
         config = json.loads((bundle / "config.json").read_text())
         validate_config(config)
+        dependencies = validate_deck_dependencies(bundle, config)
         gds = bundle / config["gds"]
         if digest(gds) != config["gds_sha256"]:
             raise ValueError("Wrong GDS identity")
@@ -122,6 +154,7 @@ def main():
             x.replace("@ROOT@", str(bundle)).replace("@GDS@", str(gds))
             .replace("@REPORT@", str(report)) for x in config["commands"][args.group]]
         record.update(status="PREPARED", command=command, gds_sha256=digest(gds),
+                      native_dependencies_checked=dependencies,
                       scope=config["scope"], known_density_markers=207,
                       input_sha256={str(p): v for p, v in pins.items()})
         save()
