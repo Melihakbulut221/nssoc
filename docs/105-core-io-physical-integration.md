@@ -681,3 +681,26 @@ now finish while newer checks wait. The
 preserves both failed job logs, run snapshots and repair sources; all nine
 archive members and authenticated/anonymous download bytes were verified.
 This CI repair does not change physical inputs or close manufacturing gates.
+
+## Independent worker for repaired-ring routing
+
+The local routing queue remains below its 6 GiB memory admission threshold while
+the core timing repair continues. The
+[portable routing preparation](evidence/chip-ring-cloud-preparation-20260928.json)
+moves that separate ring candidate to a dedicated GitHub worker. Before dispatch,
+the idle local queue was identity-checked and paused with no native child running.
+It must not resume while the cloud attempt is active.
+
+The [immutable input bundle](evidence/chip-ring-routing-input-assets-20260928.json)
+contains 768 members, including the unchanged PDN state and physical inputs,
+required local PDK views and flow method. Every member and both public download
+channels were checked. The runner permits only JSON path relocation; scalar
+changes, changed source-file selection, missing files and path escapes are
+rejected. Local preparation and real LibreLane configuration/state loading pass.
+The dedicated workflow resumes after PDN generation, retains outputs on failure,
+and does not cancel healthy work on new pushes. It has the hosted six-hour limit
+and a 4 GiB process address-space cap, with no additional elapsed watchdog.
+
+This is a routing dispatch mechanism. It does not waive the remaining antenna,
+wide-metal, density, LVS or timing failures; its new GDS requires independent
+boundary, assembly and complete native physical checks before acceptance.
