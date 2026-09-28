@@ -872,3 +872,45 @@ and 207 density markers are historical and cannot be transferred. Any subsequent
 fill changes require fresh geometry-specific verification. Full-chip transistor
 LVS, final setup/hold/slew/capacitance timing, SRAM characterization, PCIe PHY,
 DFT and actual manufacturer acceptance remain open.
+
+## Density measurement and chip fill candidate
+
+The [fresh partial native results](evidence/chip-irq-full-native-partial-20260928.json)
+show **443 FEOL/geometry categories with zero markers** and a **207-marker density failure** on the
+IRQ-buffered GDS. The 117-category BEOL partition is still running. All 37 density rules executed in order and the process exited
+successfully; the density failure is a real geometric finding. The
+[immutable raw reports](evidence/chip-irq-full-native-partial-assets-20260928.json)
+retain each marker, native description, execution log and exact input hashes.
+
+The deficits comprise four local active-area windows, six global metal-density
+checks (Metal2–5 and TopMetal1–2), and 197 local Metal2–5 windows. All are minimum
+coverage failures. Although the total equals the preceding layout's 207 markers,
+this result is independently measured on the current GDS, not inherited.
+
+The [fill method controls](evidence/chip-irq-fill-method-20260928.json) exercise
+two real generator windows, resume after the first window and final geometry
+preservation. Three deliberate mutations—removing original geometry, adding a
+non-fill shape and removing an original instance—are all rejected. The
+[method evidence archive](evidence/chip-irq-fill-method-assets-20260928.json)
+contains exact tested sources, inputs, outputs, logs, compressed checkpoints and
+full-chip preparation provenance. These small controls establish the method's
+behavior; they do not qualify the full-chip candidate.
+
+The [portable fill inputs](evidence/chip-irq-fill-input-assets-20260928.json)
+include the unchanged chip GDS, pinned prebuilt generator, complete corresponding
+source and target configuration. The generator's existing local patch changes
+only its fill/density boundary mapping from layer 39 to 189; no rule thresholds
+change. Generation proceeds sequentially through 56 windows of at most 500 by
+500 micrometres, with a 30 micrometre geometry halo. Each window sees the current
+layout, including previously inserted neighboring fill. The merge retains the
+original chip and adds only audited differences on designated fill layers.
+Original geometry and hierarchy are independently compared again after the
+last window. Per-window inputs, outputs and checkpoints are retained.
+
+The separate `chip-irq-fill` worker runs the real corruption controls before full
+chip generation. Neither generation nor geometry preservation has a native
+elapsed-time watchdog; the hosted platform limit remains. Partial or interrupted
+work is not accepted. The completed candidate must undergo fresh native density,
+main DRC, antenna, wide-metal, extracted connectivity and RC/timing verification.
+The running unfilled-layout checks remain useful independent evidence and are
+not cancelled. Full-chip acceptance and manufacturing approval remain open.

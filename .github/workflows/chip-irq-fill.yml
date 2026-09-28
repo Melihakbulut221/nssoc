@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: chip-irq-fill
+on:
+  push:
+    paths:
+      - .github/workflows/chip-irq-fill.yml
+      - docs/evidence/chip-irq-fill-input-assets-20260928.json
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chip-irq-fill-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  fill:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical executable
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Verify inputs, exercise corruption controls, generate fill candidate
+        run: >-
+          python3 scripts/run_chip_fill.py
+          --manifest docs/evidence/chip-irq-fill-input-assets-20260928.json
+          --output hw/soc/out/cloud-irq-fill
+      - name: Preserve candidate and completion records
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-irq-fill-candidate
+          path: |
+            hw/soc/out/cloud-irq-fill/*.json
+            hw/soc/out/cloud-irq-fill/*.log
+            hw/soc/out/cloud-irq-fill/probe/**/*.json
+            hw/soc/out/cloud-irq-fill/probe/**/*.log
+            hw/soc/out/cloud-irq-fill/fill/*.json
+            hw/soc/out/cloud-irq-fill/fill/*.log
+            hw/soc/out/cloud-irq-fill/fill/checkpoint.gds
+          retention-days: 30
+      - name: Preserve tile inputs, outputs, audits and compressed checkpoints
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-irq-fill-tiles
+          path: hw/soc/out/cloud-irq-fill/fill/tile-*/
+          retention-days: 30
+      - name: Require complete generation and source geometry preservation
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path('hw/soc/out/cloud-irq-fill/result.json').read_text())
+          assert result['status'] == 'CANDIDATE_REQUIRES_NATIVE_CHECKS'
+          assert result['completed_tiles'] == 56 and not result['geometry']['errors']
+          PY
