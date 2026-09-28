@@ -704,3 +704,11 @@ and a 4 GiB process address-space cap, with no additional elapsed watchdog.
 This is a routing dispatch mechanism. It does not waive the remaining antenna,
 wide-metal, density, LVS or timing failures; its new GDS requires independent
 boundary, assembly and complete native physical checks before acceptance.
+
+[Run 36422747834](https://github.com/Melihakbulut221/nssoc/actions/runs/36422747834)
+has entered its routing step on source `ea16be5`; the
+[dispatch receipt](evidence/chip-ring-cloud-start-20260928.json) records its
+identity and local handoff. A second same-source push run was still pending with
+no jobs and was cancelled as a duplicate. The active worker was retained. After
+successful local preflight, the disposable extracted bundle cache was removed
+to reclaim disk; the verified release archive and original inputs remain.
