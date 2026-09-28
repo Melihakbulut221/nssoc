@@ -76,7 +76,8 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}-${{ inputs.full_interfaces && 'full' || 'base' }}
-  cancel-in-progress: true
+  # Evidence pushes must not repeatedly interrupt healthy long formal proofs.
+  cancel-in-progress: false
 
 jobs:
   python-quality:
@@ -166,7 +167,7 @@ jobs:
           # The route-guide guard tests execute Tcl itself. Yosys only
           # requires the Tcl library, which does not provide tclsh.
           sudo apt-get install -y --no-install-recommends \
-            pandoc texlive-latex-recommended texlive-latex-extra \
+            iverilog pandoc texlive-latex-recommended texlive-latex-extra \
             texlive-fonts-recommended texlive-science lmodern tcl
 
       - name: Every check, from the same script the developer runs

@@ -655,3 +655,29 @@ preflight found that the final state uses `klayout_gds`; its original method and
 disposition are retained. The corrected queue leaves the active core timing ECO
 and completed cloud inputs untouched. Its eventual GDS still requires full
 physical audits, including whole-chip boundary verification.
+
+## General CI dependency and hierarchy-inventory repair
+
+Hourly inspection found seven failures in both general checks jobs for source
+`6218d09`: six mailbox behavior tests could not find Icarus, and the lexical RTL
+inventory omitted the generated `nssoc_chip` wrapper and falsely classified
+`soc_status_serial` as an orphan. The
+[diagnosis](evidence/chip-ci-recovery-20260928.json) retains the original totals:
+1,826 passed, seven failed and 168 skipped in that job. Other job successes do
+not erase these failures or turn the skips into passes.
+
+The checks job now installs Icarus. Inventory reachability includes the actual
+generated chip wrapper as a root; the mailbox was not added to an exception list.
+A negative control removes its generated instance and verifies that it becomes
+unreachable. Forty focused mailbox, inventory and interface-profile tests pass
+locally, together with the relevant lint, configuration and YAML checks. Hosted
+re-execution is still pending.
+
+The workflow also disables cancellation of in-progress runs on subsequent
+pushes. Earlier hourly runs repeatedly show cancelled conclusions; the previous
+workflow explicitly enabled this cancellation. Current long formal proofs can
+now finish while newer checks wait. The
+[immutable evidence asset](evidence/chip-ci-recovery-assets-20260928.json)
+preserves both failed job logs, run snapshots and repair sources; all nine
+archive members and authenticated/anonymous download bytes were verified.
+This CI repair does not change physical inputs or close manufacturing gates.

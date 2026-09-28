@@ -13,8 +13,10 @@ by ibex_sources.sh, because the Ibex parent is fetched/generated outside these
 source trees. A separate test checks that boundary when its parent is present.
 Unbuilt standalone experiments remain visible in hw/known-unbuilt.txt.
 """
+import json
 import pathlib
 import re
+import runpy
 
 import pytest
 
@@ -22,7 +24,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 RTL = ROOT / "hw/rtl"
 SOC_RTL = ROOT / "hw/soc/rtl"
 LEDGER = ROOT / "hw/known-unbuilt.txt"
-ROOTS = ("tt_um_melihakbulut_nssoc", "soc_top")
+ROOTS = ("tt_um_melihakbulut_nssoc", "soc_top", "nssoc_chip")
 # The FIFO SRAM is instantiated by the hash-pinned upstream adaptation,
 # outside the owned RTL scan. Verify that real generated boundary below.
 EXTERNAL_ENTRY_POINTS = ("ibex_register_file_ff", "soc_eth_fifo_sram")
@@ -46,7 +48,13 @@ def _modules(sources):
 
 
 def _declared():
-    return _modules((f, f.read_text()) for f in _sources())
+    # The physical assembly wrapper is generated rather than checked in. Scan
+    # its real generated hierarchy so its mailbox is not falsely orphaned.
+    generator = runpy.run_path(str(ROOT / "scripts/generate_chip_io.py"))
+    contract = json.loads(generator["CONTRACT"].read_text())
+    chip, _ = generator["generate"](contract)
+    return _modules([*((f, f.read_text()) for f in _sources()),
+                     ("generated:nssoc_chip", chip)])
 
 
 def _instantiations(text, known):
@@ -102,6 +110,18 @@ def test_every_hw_rtl_module_is_built_or_declared_unbuilt():
 def test_every_unbuilt_row_carries_a_reason():
     for name, why in _ledger().items():
         assert len(why) > 40, f"{name}: an unbuilt module needs a specific reason"
+
+
+def test_generated_chip_root_reaches_mailbox_and_core():
+    modules = _declared()
+    assert {"soc_status_serial", "soc_top"} <= _reachable(modules, ("nssoc_chip",))
+    # Merely declaring the mailbox or keeping it in the same source inventory
+    # must not count as integration when its actual instance is removed.
+    path, body = modules["nssoc_chip"][0]
+    changed = body.replace("soc_status_serial u_status", "missing_status u_status")
+    assert changed != body
+    modules["nssoc_chip"] = [(path, changed)]
+    assert "soc_status_serial" not in _reachable(modules, ROOTS + EXTERNAL_ENTRY_POINTS)
 
 
 def test_module_boundaries_comments_and_duplicate_variants():
