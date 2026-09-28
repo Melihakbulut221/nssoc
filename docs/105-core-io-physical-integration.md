@@ -507,3 +507,20 @@ running jobs, not physical verdicts. The idle local DRC controller is intentiona
 paused after verifying its identity and absence of native children; the local
 timing repair remains active. Local real-bundle preparation, 112 targeted tests,
 REUSE and strict documentation checks passed before dispatch.
+
+
+The first [two completed cloud measurements](evidence/chip-native-first-two-results-20260928.json)
+have been downloaded and independently verified against all 106 input hashes,
+including the exact chip GDS, rule files, executable and method. Grid checks
+passed 161 categories with zero markers; pin/forbidden checks passed 20 categories
+with zero markers. Raw report/log hashes, process exit codes and exact category
+names/descriptions were checked. The other five groups were still running at
+this snapshot; the running antenna log endpoint returned HTTP 404, so no live-log
+progress claim is inferred from that unavailable response.
+
+The [raw evidence archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-native-first-two-results-20260928.tar.xz) contains 21 members,
+51,732 bytes, SHA-256 `9665e4991f10f6d969b65add80a5123a7fdf5d6fdee38f2daef5cacce0fa5447`;
+all members and both public downloads were byte-verified.
+[Asset inventory](evidence/chip-native-first-two-assets-20260928.json).
+These partial passes do not remove the 207 density violations or close whole-chip
+DRC, LVS, final timing or manufacturing acceptance.
