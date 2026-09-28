@@ -947,3 +947,71 @@ markers are results for this filled geometry. The earlier BEOL measurement
 continues independently on its original input. Generation and preserved source
 geometry do not establish density closure, native DRC, extracted LVS, RC/timing,
 PCIe PHY completion, DFT or manufacturing approval.
+
+## Filled-layout density closure and remaining BEOL measurement
+
+The [verified filled-layout measurements](evidence/chip-filled-native-partial-20260929.json)
+from [run 36481064898](https://github.com/Melihakbulut221/nssoc/actions/runs/36481064898)
+are bound to GDS `6198700f94cfcbd57cfd86bace7b3de848249695351b4366237cf44eac7d14a3`.
+All **37 density rules execute with zero markers**. Antenna has 31 categories
+with zero markers, supplemental wide metal has 11 with zero markers, and the
+four completed main partitions cover 443 FEOL/geometry categories with zero
+markers. The filled-layout BEOL partition remains pending; these results do
+not establish a complete 560-category main DRC pass. Native rules and thresholds
+are unchanged. Each completed worker's source, input hashes, native category
+inventory, report/log digests and exit status were checked independently.
+
+The [native evidence archive](evidence/chip-filled-native-partial-assets-20260929.json)
+preserves the seven completed raw reports and verification method. The
+[original fill ZIP archives](evidence/chip-filled-raw-artifacts-assets-20260929.json)
+are now permanent release assets: 41,621,861 bytes for the candidate and
+1,505,717,713 bytes for all raw tile records. Their exact original bytes were
+verified against artifact digests and authenticated/public release downloads;
+the large tile archive was independently streamed and checked locally.
+
+Separately, the unfilled GDS's BEOL measurement completed successfully. Its
+[completed receipt](evidence/chip-irq-full-native-completed-20260929.json) and
+[raw archive](evidence/chip-irq-full-native-completed-assets-20260929.json)
+record all 560 main DRC categories with zero markers, alongside the original
+207 density violations. This is historical evidence for GDS `dbaf641d...`,
+not BEOL acceptance of the filled candidate. No physical result is transferred
+between the two geometries.
+
+## I/O tap parameter and ground-port diagnosis
+
+The [read-only diagnosis](evidence/io-tap-and-supply-contract-20260929.json)
+compares the pinned original vendor GDS, CDL, electrical model, native extractor
+and existing failed LVS database. All 64 CDL taps use square width/length and
+perimeter `2*(w+l)`. For the DCN and DCP diode taps, those square dimensions
+match the physical area's square root rounded to the 5 nm grid. Native
+extraction instead measures the actual perforated tap region:
+
+| Tap | Physical area (µm²) | Physical perimeter (µm) | CDL area (µm²) | CDL perimeter (µm) |
+|---|---:|---:|---:|---:|
+| DCN | 141.2964 | 221.76 | 141.253 | 47.54 |
+| DCP | 33.5104 | 197.12 | 33.524 | 23.16 |
+
+Direct geometry calculations exactly reproduce the native extracted area and
+perimeter. The pinned `ptap1` electrical subcircuit uses its supplied resistance;
+its width/length parameters are declared but unused. This explains the view
+contract discrepancy, but does not justify substituting measured values into
+the reference or disabling parameter comparison. The tap reference/extractor
+contract still needs an independently justified resolution.
+
+The diode child ports split by extraction are physically joined to the same
+`pad` net at their parent. Separately, the input pad has **two distinct `iovss`
+clusters**. Both are exposed by the original LEF: their TopMetal2 rectangles
+span y=8.5–31 and 36–58.5 µm for one cluster, and y=127.5–132.5 µm for the other,
+all across x=0–80 µm. The native per-net TopMetal2 regions exactly match those
+LEF rectangles and are subsets of the original GDS drawing. Consequently,
+parent routing must connect both clusters; their shared name alone cannot
+establish continuity. This diagnostic does not prove that the current routed
+chip joins them. The existing abstract OpenROAD power-grid check remains
+separate from transistor-level connectivity.
+
+The [diagnostic archive](evidence/io-tap-and-supply-contract-assets-20260929.json)
+retains the methods, original small reference inputs, native LVS database,
+logs and intermediate attempts. No mask, reference value, extraction rule or
+connectivity requirement was changed. All seven I/O master LVS failures and
+full-chip LVS remain open, along with final RC/timing, complete SRAM
+characterization, PCIe Gen3 x4 PHY/controller, DFT and manufacturer acceptance.
