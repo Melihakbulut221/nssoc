@@ -832,3 +832,43 @@ the prior four-marker failure remains evidence on the preceding unbuffered GDS.
 The earlier wide-metal pass also does not transfer automatically to this newly
 routed geometry. Full native main DRC, density/fill, extracted LVS, final timing,
 SRAM characterization, PCIe PHY, DFT and manufacturing approval remain open.
+
+## IRQ buffer native antenna closure and full-chip checks
+
+[Run 36452984245](https://github.com/Melihakbulut221/nssoc/actions/runs/36452984245)
+completed both independent checks on normalized IRQ-buffered GDS
+`dbaf641d4839e977855e3a6bd4df646ff4a7da9a31a45ec2d67df71e45661ac6`.
+The [verified results](evidence/chip-irq-native-results-20260928.json) show
+**31 antenna categories with zero markers** and **11 supplemental wide-metal
+categories with zero markers**. Verification covers all 108 input/method hashes
+per worker, source commit, native category names/descriptions, successful exit,
+raw report/log hashes and parsed marker counts. The previous four antenna
+markers belong to the preceding unbuffered layout and remain preserved as failed
+evidence. Their closure is established by a fresh native measurement on the
+buffered geometry, without changing rule thresholds or receiver gate metadata.
+
+The [immutable result archive](evidence/chip-irq-native-results-assets-20260928.json)
+contains both raw reports, logs, provenance, verifier and original producer
+sources. These two passing groups do not establish full-chip DRC, LVS or timing.
+
+The [full native input bundle](evidence/chip-irq-full-native-input-assets-20260928.json)
+keeps the same GDS and 101 members byte-for-byte unchanged, including all native
+rule/dependency files. Only the packaging method and configuration change to add
+the complete native density command. The `chip-irq-full-native` workflow runs
+five main DRC partitions and density on independent workers. Main partitions
+must match the complete 560-category catalog. Density requires all 37 ordered
+rule-execution records, successful completion and valid boundary normalization;
+its report has seven mandatory slit categories and additional categories only
+when violations occur. A fixed report-category count cannot prove density
+coverage. Deep mode, recommended checks and density sanity checks remain enabled.
+No native process elapsed-time watchdog is added; hosted platform limits still
+apply, and an interrupted measurement cannot pass.
+
+Local preparation verifies the complete immutable bundle, native dependencies,
+GDS and pinned executable before dispatch. Forty-six focused bundle/coverage
+tests pass, including missing-rule and disabled-check rejection. Main DRC and
+density results on this GDS are pending; the previous layout's 560-category pass
+and 207 density markers are historical and cannot be transferred. Any subsequent
+fill changes require fresh geometry-specific verification. Full-chip transistor
+LVS, final setup/hold/slew/capacitance timing, SRAM characterization, PCIe PHY,
+DFT and actual manufacturer acceptance remain open.

@@ -113,3 +113,63 @@ def test_prepare_uses_selected_manifest_and_layout_density(tmp_path, monkeypatch
     assert result["status"] == "PREPARED"
     assert result["known_density_markers"] == density
     assert str(manifest) in result["input_sha256"]
+
+
+def config_with_density():
+    base = "@ROOT@/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/density.drc"
+    command = ["-b", "-zz", "-r", base]
+    for value in ("input=@GDS@", "topcell=nssoc_chip", "report=@REPORT@", "threads=1",
+                  "run_mode=deep", "precheck_drc=False", "no_recommended=False", "density_sanity=True"):
+        command += ["-rd", value]
+    config = dict(commands={name: [] for name in runner.BASE_GROUPS},
+                  catalogs={name: {} for name in runner.BASE_GROUPS},
+                  top="nssoc_chip", gds="input/chip.gds")
+    config["commands"]["density"] = command
+    for name, size in [("antenna", 31), ("supplemental_wide", 11)]:
+        config["catalogs"][name] = {str(i): "native category" for i in range(size)}
+    return config
+
+
+@pytest.mark.parametrize("include_density", [True, False])
+def test_optional_density_preserves_legacy_bundles(monkeypatch, include_density):
+    config = config_with_density()
+    monkeypatch.setattr(runner, "check_catalog", lambda name, cats: None)
+    if not include_density:
+        del config["commands"]["density"]
+    runner.validate_config(config)
+
+
+@pytest.mark.parametrize("defect", ["sanity", "mode", "recommended", "duplicate", "fixed_catalog", "missing_shard"])
+def test_density_cannot_disable_checks_or_use_fixed_category_count(monkeypatch, defect):
+    config = config_with_density()
+    monkeypatch.setattr(runner, "check_catalog", lambda name, cats: None)
+    command = config["commands"]["density"]
+    if defect == "sanity": command[-1] = "density_sanity=False"
+    elif defect == "mode": command[command.index("run_mode=deep")] = "run_mode=tiling"
+    elif defect == "recommended": command[command.index("no_recommended=False")] = "no_recommended=True"
+    elif defect == "duplicate": command += ["-rd", "density_sanity=True"]
+    elif defect == "fixed_catalog": config["catalogs"]["density"] = {}
+    else: del config["commands"]["beol"]
+    with pytest.raises(ValueError): runner.validate_config(config)
+
+
+def test_density_runner_uses_execution_coverage(tmp_path):
+    import xml.etree.ElementTree as ET
+    from check_ihp_density_coverage import RULES, SLITS
+    root = ET.Element("report-database")
+    ET.SubElement(root, "top-cell").text = "nssoc_chip"
+    cats = ET.SubElement(root, "categories")
+    for name in SLITS:
+        ET.SubElement(ET.SubElement(cats, "category"), "name").text = name
+    ET.SubElement(ET.SubElement(ET.SubElement(root, "cells"), "cell"), "name").text = "nssoc_chip"
+    ET.SubElement(root, "items")
+    ET.ElementTree(root).write(tmp_path / "drc.lyrdb")
+    log = "\n".join("Executing rule " + rule for rule in RULES)
+    log += "\nKLayout DRC run for density table completed in 1.0 seconds\n"
+    (tmp_path / "run.log").write_text(log)
+    result = runner.shard_coverage("density", dict(top="nssoc_chip"), tmp_path, 0)
+    assert result["status"] == "PASS" and result["executed_rule_count"] == 37
+    assert len(result["category_inventory"]) == 7
+    (tmp_path / "run.log").write_text(log.replace("Executing rule M2.j\n", ""))
+    with pytest.raises(ValueError, match="Incomplete"):
+        runner.shard_coverage("density", dict(top="nssoc_chip"), tmp_path, 0)

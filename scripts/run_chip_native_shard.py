@@ -21,11 +21,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "hw/soc/flow"))
 from check_ihp_drc import digest, record_result
 from check_ihp_drc_partitioned import check_catalog, read_categories
+from check_ihp_density_coverage import validate_density_coverage
 from bootstrap_flow import verify as verify_tool
 from fetch_evidence_assets import fetch, validate, verify
 
-GROUPS = ("antenna", "feol_devices", "geometry_pin_forbidden", "geometry_grid",
+BASE_GROUPS = ("antenna", "feol_devices", "geometry_pin_forbidden", "geometry_grid",
           "geometry_angle", "beol", "supplemental_wide")
+GROUPS = (*BASE_GROUPS, "density")
 
 
 def validate_deck_dependencies(bundle, config):
@@ -93,8 +95,21 @@ def restore(archive, output):
 
 
 def validate_config(config):
-    if set(config["commands"]) != set(GROUPS) or set(config["catalogs"]) != set(GROUPS):
+    if (set(config["commands"]) not in (set(BASE_GROUPS), set(GROUPS))
+            or set(config["catalogs"]) != set(BASE_GROUPS)):
         raise ValueError("Missing or unexpected shard")
+    if "density" in config["commands"]:
+        command = config["commands"]["density"]
+        options = [command[i + 1] for i, value in enumerate(command) if value == "-rd"]
+        required = {"input=@GDS@", "topcell=nssoc_chip", "report=@REPORT@",
+                    "threads=1", "run_mode=deep", "precheck_drc=False",
+                    "no_recommended=False", "density_sanity=True"}
+        if (len(command) != 4 + 2 * len(required)
+                or command[4::2] != ["-rd"] * len(required)
+                or len(options) != len(required) or set(options) != required
+                or command[:4] != ["-b", "-zz", "-r",
+                    "@ROOT@/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/density.drc"]):
+            raise ValueError("Density requires the complete native deep-mode command")
     feol = {}
     for name in GROUPS[1:5]:
         cats = config["catalogs"][name]
@@ -108,6 +123,17 @@ def validate_config(config):
             raise ValueError("Incomplete auxiliary catalog")
     if config["top"] != "nssoc_chip" or config["gds"] != "input/chip.gds":
         raise ValueError("Unexpected chip identity")
+
+
+def shard_coverage(group, config, output, returncode):
+    """Density categories are conditional; require execution of all 37 rules."""
+    if group == "density":
+        return validate_density_coverage(output / "drc.lyrdb", output / "run.log",
+                                         config["top"], returncode)
+    inventory = read_categories(output / "drc.lyrdb")
+    if inventory != config["catalogs"][group]:
+        raise ValueError("Native category names/descriptions differ from reference")
+    return dict(category_inventory=inventory)
 
 
 def main():
@@ -141,6 +167,8 @@ def main():
         inventory = restore(archive, bundle)
         config = json.loads((bundle / "config.json").read_text())
         validate_config(config)
+        if args.group not in config["commands"]:
+            raise ValueError("Selected shard is absent from this immutable bundle")
         dependencies = validate_deck_dependencies(bundle, config)
         gds = bundle / config["gds"]
         if digest(gds) != config["gds_sha256"]:
@@ -151,6 +179,9 @@ def main():
         for path in (app, Path(__file__).resolve(), manifest,
                      ROOT / "hw/soc/flow/check_ihp_drc.py",
                      ROOT / "hw/soc/flow/check_ihp_drc_partitioned.py"):
+            pins[path] = digest(path)
+        if args.group == "density":
+            path = ROOT / "hw/soc/flow/check_ihp_density_coverage.py"
             pins[path] = digest(path)
         report = out / "drc.lyrdb"
         command = [str(app), "klayout"] + [
@@ -179,17 +210,19 @@ def main():
                     print(line, end="", flush=True)
                 code = child.wait()
         # record_result writes result.json; preserve the full provenance below.
-        measurement = record_result(out, config["top"], code, pins,
-                                    deck="antenna" if args.group == "antenna" else "main")
+        deck = args.group if args.group in ("antenna", "density") else "main"
+        measurement = record_result(out, config["top"], code, pins, deck=deck)
         record.update(status=measurement["status"], measurement=measurement,
                       elapsed_seconds=time.monotonic() - started)
         save()
         if measurement["status"] == "ERROR":
             raise ValueError("Native execution failed")
-        inventory = read_categories(report)
-        if inventory != config["catalogs"][args.group]:
-            raise ValueError("Native category names/descriptions differ from reference")
-        record["category_inventory"] = inventory
+        coverage = shard_coverage(args.group, config, out, code)
+        record["category_inventory"] = coverage["category_inventory"]
+        if args.group == "density":
+            if coverage["status"] != measurement["status"]:
+                raise ValueError("Density coverage and measurement status disagree")
+            record["density_coverage"] = coverage
         save()
     except Exception as exc:
         record.update(status="ERROR", error=repr(exc))
