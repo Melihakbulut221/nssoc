@@ -1060,3 +1060,43 @@ It is 27,071,132 bytes with SHA-256
 authenticated and anonymous downloads match. This closes the pending numerical
 comparison, not full SRAM characterization, capacitance-conserving distributed
 RC, Liberty coverage or final timing/manufacturing acceptance.
+
+## Reusable RC capacitance audit, 29 September 2026
+
+The tracked `scripts/audit_rc_capacitance.py` now provides a repeatable pairwise
+check for flat capacitance-only and distributed-RC exports. It consumes node
+identities from an independent topology proof, checks every resistor remains
+within one mapped net, and compares every capacitor pair after mapping.
+It rejects missing endpoints, conflicting case-insensitive identities,
+self-pairs, duplicate passive instances, invalid/nonpositive values, external
+includes and multiple subcircuits. SPICE suffixes and generated node names
+containing `$` are supported. The fixed pairwise tolerances remain 1e-23 F
+absolute and 1e-5 relative, matching the earlier diagnostic.
+
+Seventeen tests include a deliberate coupling-to-ground substitution with
+exactly the same total capacitance: the pair audit rejects it. Other controls
+exercise an incorrectly joined resistor, missing endpoints and changed pair
+values. A successful matrix comparison still sets `qualified_pex=false` and
+`timing_accepted=false`; the supplied maps are not themselves a MOS topology
+proof, and neither spatial capacitor attachment nor extractor accuracy is
+qualified by this tool.
+
+The [real repaired-DP replay](evidence/sram-rc-pair-replay-20260929.json) derives
+132,305 RC node identities from the existing independently checked MOS graph
+bijection and uses the unchanged 37,076-device exports. It reproduces the
+original rejection: 189,054 missing pairs, 20 extra pairs and 10,251 changed
+pairs; the reference sum remains 27.396033 pF and RC sum 51.847337 pF.
+The native `ResReadCapacitor` signal path adds coupling capacitance to both
+endpoint substrate-capacitance accumulators; the signal extraction mode is
+selected in `ResRex.c`. These pinned source files are retained alongside the
+replay. This is a model limitation requiring a spatially justified coupled-RC
+solution, not an arithmetic tolerance to increase.
+
+The [replay bundle](evidence/sram-rc-pair-audit-assets-20260929.json) preserves
+both exact exports, the derived node map, original topology proof, new auditor,
+tests and source attribution. After extracting it, run the tracked auditor
+with `--reference reference.spice --rc rc.spice --reference-map
+reference-node-map.json --rc-map rc-node-map.json --output NEW_RESULT.json`.
+Exit status 1 and `FAIL_RC_CAPACITANCE_CONSERVATION` are the expected rejection
+for this input. No Liberty or final STA approval is generated from the failed
+network.

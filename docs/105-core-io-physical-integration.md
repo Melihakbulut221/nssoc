@@ -1387,3 +1387,14 @@ The [raw partial-native and supply-audit package](evidence/chip-offset-filled-na
 preserves seven native reports, the failed flat attempt, the running
 hierarchical method/snapshot, all control versions and native reference files.
 Local timing checkpoint4 continues independently with its pinned inputs.
+
+### 2026-09-29 — fourth recoverable timing checkpoint
+
+The [fourth checkpoint](evidence/timing-checkpoint004-20260929.json) completed
+and its saved ODB, DEF, netlist, SDC and reports were independently rehashed.
+The predecessor archive was also checked member by member. Setup is
+−6.364772 ns and hold −1.838065 ns; both still fail global-route estimates.
+The fifth batch is running with the same clock constraints, SRAM placements
+and pinned controller inputs. Its [raw checkpoint views](evidence/timing-checkpoint004-assets-20260929.json)
+are preserved separately from the running fifth batch. Final routing,
+qualified RC/SRAM Liberty, STA and equivalence remain required.
