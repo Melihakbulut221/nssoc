@@ -497,6 +497,7 @@ rather than from a beam.
 | [docs/103-local-closure-progress.md](103-local-closure-progress.md) | Local full-profile RTL and native memory replay, complementary skip coverage, SRAM numerical-step evidence and native-resistor TX correction. |
 | [docs/104-chip-io-and-test-access.md](104-chip-io-and-test-access.md) | Native IHP I/O shell, coherent read-only serial MBIST access, mapped-core linkage and separate IO-only pad-ring placement; no product signoff. |
 | [docs/105-core-io-physical-integration.md](105-core-io-physical-integration.md) | Core/ring/mailbox assembly, actual-GDS obstruction coverage, four supply checks and unresolved native I/O transistor LVS; no manufacturing acceptance. |
+| [docs/106-timing-repair-research.md](106-timing-repair-research.md) | Checkpoint9 setup/hold bottlenecks, version-checked repair profiles and ranked physical experiments; speedup and timing closure remain unmeasured. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 
@@ -703,4 +704,3 @@ requires 116 tasks, retaining the six historical exclusions; with the unchanged
 re-label earlier completed sweeps or certify the new whole-processor timing
 candidate. Its block results and acceptance boundary are recorded in
 [docs/100](100-routed-closure.md).
-

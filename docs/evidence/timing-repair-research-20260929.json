@@ -1,0 +1,627 @@
+{
+  "schema": 1,
+  "recorded": "2026-09-29T21:39:54.382811+03:00",
+  "source_head": "d1ab2ae064ac9c5b493dbebbacc3a2c27089e2ca",
+  "status": "RESEARCH_AND_NATIVE_PARSER_COMPATIBILITY_ONLY",
+  "scope": "C9 report/netlist/DEF analysis. Profiles are opt-in, not applied or queued; native test mocks C++ optimization. No speed benchmark, physical ECO or final STA.",
+  "native_openroad_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "native_parser_log": "OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \nFeatures included (+) or not (-): +GPU +GUI +Python\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\nComponents of this program may be licensed under more restrictive licenses which must be honored.\nBASELINE_NATIVE_ARGS setup 0.1 1.0 10000 100 1 0 1 {} 0 0 1 0 1 0 0 0\nBATCH4_NATIVE_ARGS setup 0.1 1.0 10000 100 4 0 1 {} 0 0 1 0 1 0 0 0\nHOLD_NATIVE_ARGS hold 0.1 0.15 0 0.4 10000 100 0 1\nPASS_NATIVE_PARSER_ONLY_NO_DATABASE_STA_OR_SPEED_BENCHMARK\n",
+  "initial_probe_harness_failure": "OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \nFeatures included (+) or not (-): +GPU +GUI +Python\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\nComponents of this program may be licensed under more restrictive licenses which must be honored.\nError: timing_repair_profiles_native.tcl, 17 expected boolean value but got \"setup 0.1 1.0 10000 100 1 0 1 {} 0 0 1 0 1 0 0 0\"\n",
+  "initial_failure_reason": "Mock returned Tcl list instead of boolean; corrected mock returns zero.",
+  "input_sha256": {
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/soc_top.nl.v": "10044b45b85bd5aa36b4f71b25cf65ea6c87fafd1de30de33173935a90e3b509",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/soc_top.def": "b04922541af2f5d8f0a94f450c338166bf60b68dee194b584c76ec3b611cb940",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/soc_top.sdc": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/estimated-after-setup.rpt": "ab43d6cc85a585336e10244b96e95fb230876b2a15845a1ee1e6881a350188ff",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/estimated-after-hold.rpt": "278f54d72c2a1d39db9c0c9959ddedbb22cd93f9de163205658c03242059c989",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/estimated-after-electrical.rpt": "37c1c8090ac13b8e2fdf38ea37fa09dbe7a0035a42af8aea6da532add2bd0bda",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.process_stats.json": "cbc84703252daa10ec1cbf2308f4505c2ba55ad22b7bc4fe2cb47a27f377cb89",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-009/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log": "8a1352d246e88373314addf920490b4fd9c617c3d6eaa02b222097ba5e4fd699",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/run.py": "2c7a99bf24e422c6eab0aacbfdc6d2ea5845cb0ea84973605d19798599ed25af",
+    "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/repair.tcl": "5f3638f017cb87aed5af100432880ef1c4a69be03e35e4c261a0c16727a7eda2",
+    "hw/soc/pnr/timing_repair_experiment.tcl": "7608550b42b56e7a648bc9280b0c39a6893f4e516119220106ff0440dd5d1b2a",
+    "sw/tests/timing_repair_profiles_native.tcl": "3580fbd7c747fb19e7bed814bebf521cfc1c61cceb938aac8b0b003b3812761c",
+    "hw/soc/sta/soc_top_qspi_io.sdc": "985772749a6cbd356205dace27dc1686d244c85f56aec64e552cc8d772e95894",
+    "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+    "hw/soc/tb/flash_w25q128jv.v": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+    "hw/soc/out/timing-pipeline-20260927/config.json": "b760dffbe680ecadf5480a4d6a2415450a0d69fe884edb4ab449ad24c8dc5b3b"
+  },
+  "raw_checkpoint_manifest": {
+    "release_tag": "evidence-20260927-chip-io",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "source_commit": "a81a07cdebefbd68541764cd863eec0da1b0c97f",
+    "assets": [
+      {
+        "name": "timing-checkpoint9-20260929.tar.xz",
+        "bytes": 18324336,
+        "sha256": "02e3b48ad400807a8b057b219f8dbccd981bc097b4c1d7d934e7934a90ac870d",
+        "members": 25,
+        "source_commit": "a81a07cdebefbd68541764cd863eec0da1b0c97f",
+        "local_roundtrip_verified": true,
+        "scope": "Completed checkpoint9 ODB/DEF/netlist/SDC, reports and verifier. Setup-4.898848ns and hold-1.838546ns both fail global-route estimates; full routed timing, SRAM Liberty/qualified RC and equivalence remain open.",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/timing-checkpoint9-20260929.tar.xz",
+        "asset_id": 598836360,
+        "authenticated_roundtrip_verified": true,
+        "anonymous_roundtrip_verified": true
+      }
+    ],
+    "scope": "Completed checkpoint9 ODB/DEF/netlist/SDC, reports and verifier. Setup-4.898848ns and hold-1.838546ns both fail global-route estimates; full routed timing, SRAM Liberty/qualified RC and equivalence remain open.",
+    "manufacturing_approval": false
+  },
+  "completed_batches": [
+    {
+      "index": 1,
+      "mode": "setup",
+      "elapsed_seconds": 3701.473106235033,
+      "setup_wns_ns": -6.877901,
+      "hold_wns_ns": -1.839746
+    },
+    {
+      "index": 2,
+      "mode": "setup",
+      "elapsed_seconds": 4053.1487263819436,
+      "setup_wns_ns": -6.640525,
+      "hold_wns_ns": -1.838572
+    },
+    {
+      "index": 3,
+      "mode": "setup",
+      "elapsed_seconds": 6152.998305705027,
+      "setup_wns_ns": -6.438917,
+      "hold_wns_ns": -1.990734
+    },
+    {
+      "index": 4,
+      "mode": "setup",
+      "elapsed_seconds": 7268.462925532018,
+      "setup_wns_ns": -6.364772,
+      "hold_wns_ns": -1.838065
+    },
+    {
+      "index": 5,
+      "mode": "setup",
+      "elapsed_seconds": 7999.17019267194,
+      "setup_wns_ns": -6.157546,
+      "hold_wns_ns": -1.988766
+    },
+    {
+      "index": 6,
+      "mode": "setup",
+      "elapsed_seconds": 10461.483921186067,
+      "setup_wns_ns": -5.990112,
+      "hold_wns_ns": -1.980585
+    },
+    {
+      "index": 7,
+      "mode": "setup",
+      "elapsed_seconds": 3741.6217684389558,
+      "setup_wns_ns": -5.515583,
+      "hold_wns_ns": -1.840246
+    },
+    {
+      "index": 8,
+      "mode": "setup",
+      "elapsed_seconds": 8072.012261098949,
+      "setup_wns_ns": -5.360166,
+      "hold_wns_ns": -1.840246
+    },
+    {
+      "index": 9,
+      "mode": "setup",
+      "elapsed_seconds": 4239.907848692965,
+      "setup_wns_ns": -4.898848,
+      "hold_wns_ns": -1.838546
+    }
+  ],
+  "completed_batch_hours": 15.469521959984139,
+  "reported_setup_paths": 60,
+  "worst_setup": {
+    "startpoint": "_133854_",
+    "endpoint": "_132609_",
+    "group": "clk_i",
+    "slack_ns": -4.898848,
+    "raw": "Startpoint: _133854_ (rising edge-triggered flip-flop clocked by clk_i)\nEndpoint: _132609_ (rising edge-triggered flip-flop clocked by clk_i)\nPath Group: clk_i\nPath Type: max\nCorner: nom_slow_1p08V_125C\n\nFanout         Cap        Slew       Delay        Time   Description\n---------------------------------------------------------------------------------------------\n                                  0.000000    0.000000   clock clk_i (rise edge)\n                                  3.680099    3.680099   clock network delay (propagated)\n                      0.088285    0.000000    3.680099 ^ _133854_/CLK (sg13g2_dfrbpq_2)\n     6    0.094008    0.306043    0.517811    4.197910 ^ _133854_/Q (sg13g2_dfrbpq_2)\n     1    0.030512    0.431767    0.540457    4.738367 ^ _072579_/Y (sg13g2_xnor2_1)\n     1    0.033086    0.490832    0.587291    5.325657 ^ _072580_/Y (sg13g2_xnor2_1)\n     1    0.008420    0.192968    0.320273    5.645931 ^ _072582_/Y (sg13g2_xnor2_1)\n     1    0.088638    1.153508    0.987785    6.633716 ^ _072583_/Y (sg13g2_xnor2_1)\n     1    0.008877    0.233103    0.418466    7.052182 v _072584_/Y (sg13g2_xnor2_1)\n     2    0.059375    0.065453    0.228616    7.280798 v rebuffer12470/X (sg13g2_buf_8)\n     1    0.005218    0.205978    0.181071    7.461869 ^ _072598_/Y (sg13g2_a22oi_1)\n     1    0.029517    0.572155    0.601322    8.063190 v _072599_/Y (sg13g2_nand4_1)\n     1    0.009535    0.192091    0.316357    8.379547 ^ _072600_/Y (sg13g2_nor3_2)\n     4    0.037705    0.054944    0.196962    8.576509 ^ rebuffer12502/X (sg13g2_buf_8)\n     5    0.027899    0.284232    0.111234    8.687743 v _073677_/Y (sg13g2_a21oi_2)\n     2    0.012179    0.144676    0.214206    8.901950 ^ _075044_/Y (sg13g2_nand3b_1)\n     1    0.003070    0.112632    0.148543    9.050493 v _075045_/Y (sg13g2_xnor2_1)\n     2    0.026661    0.087054    0.202264    9.252757 v rebuffer21957/X (sg13g2_buf_2)\n     1    0.009169    0.204823    0.230420    9.483177 ^ _075047_/Y (sg13g2_o21ai_1)\n     2    0.052074    0.065146    0.209418    9.692595 ^ rebuffer12422/X (sg13g2_buf_8)\n     1    0.005593    0.106430    0.144401    9.836996 v _075052_/Y (sg13g2_o21ai_1)\n     2    0.021305    0.072812    0.188609   10.025605 v rebuffer12383/X (sg13g2_buf_2)\n     3    0.017790    0.131480    0.276950   10.302555 v _075054_/X (sg13g2_mux2_1)\n     1    0.007349    0.208089    0.224684   10.527240 ^ _075055_/Y (sg13g2_nor3_1)\n     2    0.014326    0.225840    0.238869   10.766109 v _075057_/Y (sg13g2_o21ai_1)\n     3    0.013979    0.365821    0.448312   11.214421 ^ _075131_/Y (sg13g2_a221oi_1)\n     2    0.009991    0.125985    0.195991   11.410412 v _075132_/Y (sg13g2_nor3_1)\n     3    0.017384    0.306465    0.325295   11.735707 ^ _075135_/Y (sg13g2_o21ai_1)\n     3    0.019356    0.145562    0.249857   11.985564 v _075137_/Y (sg13g2_a21oi_2)\n     2    0.008223    0.181260    0.226866   12.212430 ^ _075139_/Y (sg13g2_o21ai_1)\n     3    0.013846    0.199372    0.241527   12.453957 v _075141_/Y (sg13g2_a21oi_1)\n     2    0.012821    0.244339    0.311512   12.765469 ^ _075143_/Y (sg13g2_o21ai_1)\n     4    0.026038    0.110903    0.319732   13.085200 ^ _075145_/X (sg13g2_a21o_2)\n     2    0.009044    0.084096    0.229451   13.314651 ^ _075147_/X (sg13g2_a21o_1)\n     2    0.010934    0.181111    0.175635   13.490286 v _075149_/Y (sg13g2_a21oi_1)\n     3    0.016726    0.223852    0.247029   13.737315 ^ _075150_/Y (sg13g2_nor3_2)\n     2    0.010243    0.206118    0.157912   13.895226 v _075151_/Y (sg13g2_nor3_1)\n     2    0.011973    0.233126    0.303959   14.199185 ^ _075153_/Y (sg13g2_o21ai_1)\n     4    0.026836    0.170163    0.255671   14.454856 v _075155_/Y (sg13g2_a21oi_2)\n     2    0.010098    0.209514    0.260275   14.715132 ^ _075157_/Y (sg13g2_o21ai_1)\n     2    0.007267    0.070379    0.254068   14.969199 ^ _075160_/X (sg13g2_a21o_2)\n     2    0.008634    0.176081    0.201551   15.170751 v _075161_/Y (sg13g2_nand3b_1)\n     4    0.024740    0.208334    0.252939   15.423690 ^ _075162_/Y (sg13g2_nand3_1)\n     2    0.008216    0.125451    0.205558   15.629248 v _075164_/Y (sg13g2_a21oi_1)\n     3    0.014697    0.274917    0.305038   15.934285 ^ _075166_/Y (sg13g2_o21ai_1)\n     2    0.008153    0.164816    0.265988   16.200274 v _075167_/Y (sg13g2_nand3b_1)\n     1    0.003312    0.103542    0.116446   16.316719 ^ _075168_/Y (sg13g2_nand3_1)\n     3    0.028684    0.105676    0.205628   16.522346 ^ rebuffer12381/X (sg13g2_buf_2)\n     2    0.009754    0.175281    0.233090   16.755436 v _075169_/Y (sg13g2_nand3b_1)\n     2    0.010332    0.128702    0.169921   16.925358 ^ _075170_/Y (sg13g2_nand3b_1)\n     1    0.007326    0.095752    0.147997   17.073355 v _075341_/Y (sg13g2_nand2_1)\n     1    0.008917    0.158839    0.186006   17.259361 ^ _075343_/Y (sg13g2_xnor2_1)\n     4    0.129574    0.111308    0.216625   17.475986 ^ rebuffer12385/X (sg13g2_buf_8)\n     3    0.022769    0.154961    0.324764   17.800751 ^ _075344_/X (sg13g2_buf_1)\n     8    0.073633    0.138984    0.287233   18.087984 ^ fanout565/X (sg13g2_buf_4)\n     3    0.053114    0.177880    0.280473   18.368456 ^ _076092_/X (sg13g2_buf_2)\n     2    0.048211    0.163234    0.286310   18.654766 ^ fanout559/X (sg13g2_buf_2)\n     2    0.048727    0.164482    0.283967   18.938732 ^ fanout20978/X (sg13g2_buf_2)\n     1    0.003844    0.125065    0.162075   19.100807 v _076093_/Y (sg13g2_xnor2_1)\n     1    0.012832    0.348097    0.391175   19.491982 ^ _076137_/Y (sg13g2_a221oi_1)\n     1    0.009059    0.156239    0.213831   19.705812 v _076138_/Y (sg13g2_o21ai_1)\n     1    0.010343    0.179642    0.219082   19.924894 ^ _076139_/Y (sg13g2_a21oi_1)\n     1    0.008335    0.146360    0.162149   20.087044 v _076140_/Y (sg13g2_o21ai_1)\n     1    0.004891    0.116852    0.158735   20.245779 ^ _076141_/Y (sg13g2_a21oi_1)\n     2    0.014195    0.174965    0.189200   20.434978 v _076142_/Y (sg13g2_o21ai_1)\n     1    0.013250    0.364883    0.417908   20.852886 ^ _076249_/Y (sg13g2_a221oi_1)\n     1    0.006267    0.064570    0.260043   21.112928 ^ _076635_/X (sg13g2_or2_1)\n     1    0.010485    0.162766    0.166796   21.279726 v _076942_/Y (sg13g2_o21ai_1)\n     2    0.120176    0.097996    0.216934   21.496660 v rebuffer12398/X (sg13g2_buf_8)\n     3    0.015748    0.239311    0.330358   21.827017 ^ _077020_/Y (sg13g2_a21oi_1)\n     8    0.031388    0.117314    0.270964   22.097980 ^ fanout532/X (sg13g2_buf_2)\n     1    0.004696    0.086052    0.151690   22.249672 ^ _077038_/Y (sg13g2_nand2b_1)\n     2    0.012759    0.279828    0.322672   22.572342 v _077041_/Y (sg13g2_nand4_1)\n     1    0.009965    0.236497    0.318872   22.891214 ^ _082372_/Y (sg13g2_nor4_2)\n     2    0.054610    0.067495    0.219732   23.110947 ^ rebuffer12447/X (sg13g2_buf_8)\n     2    0.009985    0.132962    0.176680   23.287626 v _082374_/Y (sg13g2_o21ai_1)\n     2    0.008472    0.120536    0.139604   23.427231 ^ _082375_/Y (sg13g2_nand3_1)\n     1    0.009608    0.170751    0.204409   23.631639 v _082389_/Y (sg13g2_a221oi_1)\n     4    0.014969    0.276376    0.318144   23.949783 ^ _082392_/Y (sg13g2_o21ai_1)\n     1    0.005269    0.077947    0.319735   24.269518 ^ _082400_/X (sg13g2_and4_1)\n     2    0.047821    0.161226    0.237542   24.507061 ^ _082401_/X (sg13g2_buf_2)\n     8    0.112059    0.192470    0.327901   24.834961 ^ fanout483/X (sg13g2_buf_4)\n     5    0.024725    0.171997    0.343222   25.178185 ^ _082405_/X (sg13g2_a21o_1)\n     4    0.050265    0.290134    0.325842   25.504026 v _082408_/Y (sg13g2_a21oi_2)\n     3    0.049515    0.151296    0.373099   25.877125 v _083334_/X (sg13g2_and4_2)\n     1    0.006199    0.088189    0.148257   26.025381 ^ _083335_/Y (sg13g2_nand3_1)\n     5    0.026983    0.179573    0.240119   26.265501 ^ _083336_/X (sg13g2_buf_1)\n     3    0.090588    0.166903    0.316664   26.582165 ^ _083337_/X (sg13g2_buf_4)\n     8    0.087589    0.160646    0.314081   26.896246 ^ fanout346/X (sg13g2_buf_4)\n     3    0.018998    0.132792    0.234580   27.130827 ^ _120281_/X (sg13g2_buf_1)\n     8    0.063463    0.209974    0.302670   27.433496 ^ fanout303/X (sg13g2_buf_2)\n     1    0.005287    0.134408    0.165713   27.599209 v _120282_/Y (sg13g2_nand2_1)\n     1    0.003386    0.124544    0.096229   27.695438 ^ _120283_/Y (sg13g2_o21ai_1)\n     2    0.043171    0.151684    0.247626   27.943064 ^ rebuffer12488/X (sg13g2_buf_2)\n                      0.153132    0.012584   27.955648 ^ _132609_/D (sg13g2_dfrbpq_1)\n                                             27.955648   data arrival time\n\n                                 20.000000   20.000000   clock clk_i (rise edge)\n                                  3.283563   23.283564   clock network delay (propagated)\n                                 -0.250000   23.033566   clock uncertainty\n                                  0.257291   23.290855   clock reconvergence pessimism\n                                             23.290855 ^ _132609_/CLK (sg13g2_dfrbpq_1)\n                                 -0.234056   23.056799   library setup time\n                                             23.056799   data required time\n---------------------------------------------------------------------------------------------\n                                             23.056799   data required time\n                                            -27.955648   data arrival time\n---------------------------------------------------------------------------------------------\n                                             -4.898848   slack (VIOLATED)\n\n\n",
+    "launch_cell": {
+      "instance": "_133854_",
+      "master": "sg13g2_dfrbpq_2",
+      "ports": {
+        "RESET_B": "net6020",
+        "D": "_008375_",
+        "Q": "\\u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[10].rf_reg_q [31]",
+        "CLK": "\\clknet_leaf_29_u_ibex.clk"
+      }
+    },
+    "capture_cell": {
+      "instance": "_132609_",
+      "master": "sg13g2_dfrbpq_1",
+      "ports": {
+        "RESET_B": "net9882",
+        "D": "net12488",
+        "Q": "\\u_ibex.gen_regfile_ff.register_file_i.raddr_a_i [2]",
+        "CLK": "\\clknet_leaf_61_u_ibex.clk"
+      }
+    }
+  },
+  "reported_hold_paths": [
+    {
+      "startpoint": "_134721_",
+      "endpoint": "_129808_",
+      "group": "asynchronous",
+      "slack_ns": 0.043243,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134721_",
+      "endpoint": "_129848_",
+      "group": "asynchronous",
+      "slack_ns": 0.09377,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134721_",
+      "endpoint": "_134519_",
+      "group": "asynchronous",
+      "slack_ns": 0.099616,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_135246_",
+      "endpoint": "_135247_",
+      "group": "asynchronous",
+      "slack_ns": 0.12311,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_135246_",
+      "endpoint": "_135248_",
+      "group": "asynchronous",
+      "slack_ns": 0.123517,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134721_",
+      "endpoint": "_127776_",
+      "group": "asynchronous",
+      "slack_ns": 0.125015,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134725_",
+      "endpoint": "_129326_",
+      "group": "asynchronous",
+      "slack_ns": 0.131797,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134725_",
+      "endpoint": "_129427_",
+      "group": "asynchronous",
+      "slack_ns": 0.132442,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134725_",
+      "endpoint": "_129426_",
+      "group": "asynchronous",
+      "slack_ns": 0.135425,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134733_",
+      "endpoint": "_134633_",
+      "group": "asynchronous",
+      "slack_ns": 0.149937,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134918_",
+      "endpoint": "qspi_io_oe_o[3]",
+      "group": "clk_i",
+      "slack_ns": -1.838546,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134915_",
+      "endpoint": "qspi_io_oe_o[0]",
+      "group": "clk_i",
+      "slack_ns": -1.827122,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134917_",
+      "endpoint": "qspi_io_oe_o[2]",
+      "group": "clk_i",
+      "slack_ns": -1.778709,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134916_",
+      "endpoint": "qspi_io_oe_o[1]",
+      "group": "clk_i",
+      "slack_ns": -1.671636,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134927_",
+      "endpoint": "qspi_sck_o",
+      "group": "clk_i",
+      "slack_ns": -1.666968,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_129676_",
+      "endpoint": "qspi_cs_no[0]",
+      "group": "clk_i",
+      "slack_ns": -1.487525,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134919_",
+      "endpoint": "qspi_io_o[0]",
+      "group": "clk_i",
+      "slack_ns": -1.432612,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_129677_",
+      "endpoint": "qspi_cs_no[1]",
+      "group": "clk_i",
+      "slack_ns": -1.413893,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134921_",
+      "endpoint": "qspi_io_o[2]",
+      "group": "clk_i",
+      "slack_ns": -1.215175,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_134920_",
+      "endpoint": "qspi_io_o[1]",
+      "group": "clk_i",
+      "slack_ns": -1.085638,
+      "family": "qspi_output"
+    },
+    {
+      "startpoint": "_131617_",
+      "endpoint": "eth_tx_er_o",
+      "group": "eth_gtx",
+      "slack_ns": -0.525305,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135276_",
+      "endpoint": "eth_txd_o[4]",
+      "group": "eth_gtx",
+      "slack_ns": -0.52047,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135272_",
+      "endpoint": "eth_txd_o[0]",
+      "group": "eth_gtx",
+      "slack_ns": -0.51232,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135278_",
+      "endpoint": "eth_txd_o[6]",
+      "group": "eth_gtx",
+      "slack_ns": -0.507154,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135273_",
+      "endpoint": "eth_txd_o[1]",
+      "group": "eth_gtx",
+      "slack_ns": -0.506232,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135277_",
+      "endpoint": "eth_txd_o[5]",
+      "group": "eth_gtx",
+      "slack_ns": -0.505417,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135258_",
+      "endpoint": "eth_tx_en_o",
+      "group": "eth_gtx",
+      "slack_ns": -0.505277,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135257_",
+      "endpoint": "eth_txd_o[7]",
+      "group": "eth_gtx",
+      "slack_ns": -0.503588,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135275_",
+      "endpoint": "eth_txd_o[3]",
+      "group": "eth_gtx",
+      "slack_ns": -0.497285,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "_135274_",
+      "endpoint": "eth_txd_o[2]",
+      "group": "eth_gtx",
+      "slack_ns": -0.488692,
+      "family": "gmii_tx_output"
+    },
+    {
+      "startpoint": "eth_rx_er_i",
+      "endpoint": "_134685_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.288475,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[6]",
+      "endpoint": "_134651_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.272681,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[7]",
+      "endpoint": "_134652_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.271452,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[2]",
+      "endpoint": "_134647_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.261612,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[4]",
+      "endpoint": "_134649_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.255931,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[5]",
+      "endpoint": "_134650_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.254876,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[1]",
+      "endpoint": "_134646_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.246276,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[3]",
+      "endpoint": "_134648_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.229067,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "eth_rxd_i[0]",
+      "endpoint": "_134645_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.22727,
+      "family": "gmii_rx_input"
+    },
+    {
+      "startpoint": "_134503_",
+      "endpoint": "_129427_",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.059819,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134732_",
+      "endpoint": "_134733_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -0.122471,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_129832_",
+      "endpoint": "_129832_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -0.039832,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_127790_",
+      "endpoint": "_127790_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -0.025886,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_139580_",
+      "endpoint": "_139580_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -0.006645,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_139591_",
+      "endpoint": "_139591_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.006489,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_134524_",
+      "endpoint": "_127784_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.011484,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_139594_",
+      "endpoint": "_139594_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.01885,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_139587_",
+      "endpoint": "_139587_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.035618,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_139582_",
+      "endpoint": "_139582_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.036939,
+      "family": "internal_register"
+    },
+    {
+      "startpoint": "_132398_",
+      "endpoint": "_135273_",
+      "group": "eth_tx_clk_i",
+      "slack_ns": 0.037026,
+      "family": "internal_register"
+    }
+  ],
+  "violating_hold_sample_counts": {
+    "qspi_output": 10,
+    "gmii_tx_output": 10,
+    "gmii_rx_input": 9,
+    "internal_register": 5
+  },
+  "gmii_tx_setup_sample": [
+    {
+      "startpoint": "_135274_",
+      "endpoint": "eth_txd_o[2]",
+      "group": "eth_gtx",
+      "slack_ns": 3.735519
+    },
+    {
+      "startpoint": "_135275_",
+      "endpoint": "eth_txd_o[3]",
+      "group": "eth_gtx",
+      "slack_ns": 3.750676
+    },
+    {
+      "startpoint": "_135258_",
+      "endpoint": "eth_tx_en_o",
+      "group": "eth_gtx",
+      "slack_ns": 3.763139
+    },
+    {
+      "startpoint": "_135257_",
+      "endpoint": "eth_txd_o[7]",
+      "group": "eth_gtx",
+      "slack_ns": 3.773001
+    },
+    {
+      "startpoint": "_135273_",
+      "endpoint": "eth_txd_o[1]",
+      "group": "eth_gtx",
+      "slack_ns": 3.776514
+    },
+    {
+      "startpoint": "_135277_",
+      "endpoint": "eth_txd_o[5]",
+      "group": "eth_gtx",
+      "slack_ns": 3.77818
+    },
+    {
+      "startpoint": "_135278_",
+      "endpoint": "eth_txd_o[6]",
+      "group": "eth_gtx",
+      "slack_ns": 3.785733
+    },
+    {
+      "startpoint": "_135272_",
+      "endpoint": "eth_txd_o[0]",
+      "group": "eth_gtx",
+      "slack_ns": 3.797697
+    },
+    {
+      "startpoint": "_131617_",
+      "endpoint": "eth_tx_er_o",
+      "group": "eth_gtx",
+      "slack_ns": 3.816676
+    },
+    {
+      "startpoint": "_135276_",
+      "endpoint": "eth_txd_o[4]",
+      "group": "eth_gtx",
+      "slack_ns": 3.819765
+    }
+  ],
+  "critical_net": {
+    "name": "_018489_",
+    "driver": {
+      "instance": "_072583_",
+      "master": "sg13g2_xnor2_1",
+      "ports": {
+        "Y": "_018489_",
+        "A": "_018484_",
+        "B": "_018488_"
+      }
+    },
+    "load": {
+      "instance": "_072584_",
+      "master": "sg13g2_xnor2_1",
+      "ports": {
+        "Y": "_018490_",
+        "A": "_018479_",
+        "B": "_018489_"
+      }
+    },
+    "instance_origin_positions_um": [
+      [
+        908.16,
+        1349.46
+      ],
+      [
+        1216.8,
+        1504.44
+      ]
+    ],
+    "instance_origin_manhattan_um": 463.62,
+    "not_routed_wire_length": true,
+    "output_cap_pf": 0.088638,
+    "output_slew_ns": 1.153508,
+    "reported_increment_ns": 0.987785,
+    "increment_includes_unreported_net_contribution": true
+  },
+  "process_stats_c9": {
+    "time": {
+      "cpu_time_user": "02:09:22.810",
+      "cpu_time_system": "00:57:35.480",
+      "runtime": "01:10:38.684",
+      "cpu_time_iowait": "00:00:00.000"
+    },
+    "peak_resources": {
+      "cpu_percent": 318.8,
+      "memory_rss": "4GiB",
+      "memory_vms": "5GiB",
+      "threads": 3
+    },
+    "avg_resources": {
+      "cpu_percent": 264.64621567789374,
+      "memory_rss": "4GiB",
+      "memory_vms": "4GiB",
+      "threads": 2.999336083843128
+    }
+  },
+  "controller_inputs_unchanged": true,
+  "speedup_measured": false,
+  "chip_profile_applied": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

@@ -1744,3 +1744,16 @@ upstream drivers. The unchanged running tenth batch must not be overwritten
 with this older candidate. Any later integration must reconcile against its
 latest output and revalidate affected instances. The complete-I/O extraction
 queue remains separate and still waits for sufficient RAM.
+
+
+### 2026-09-29 — investigation of faster setup and hold repair
+
+[The timing-repair study](106-timing-repair-research.md) identifies a native
+four-repairs-per-pass experiment, setup-preserving early GMII hold repair,
+remaining electrical ECOs and a specific long XNOR connection on checkpoint9's
+critical path. The opt-in profiles passed native Tcl argument validation only;
+their physical speedup and resulting timing remain unmeasured. The active
+baseline and all constraints are unchanged. The study also corrects the tempting
+assumption that selecting ten percent of endpoints guarantees tenfold faster
+repair: this version can spend its entire iteration budget following the worst
+path before visiting the remaining endpoints.
