@@ -1477,3 +1477,36 @@ controller inputs and every member of the archived fourth checkpoint were
 rechecked. The sixth batch is active with unchanged constraints and SRAM
 placements. Its predecessor's [raw views](evidence/timing-checkpoint005-assets-20260929.json)
 are preserved; no final routed timing or equivalence acceptance is claimed.
+
+### 2026-09-29 — conductor-piece probes and native I/O topology
+
+`scripts/probe_supply_components.py` prepares the next whole-ring connectivity
+measurement. It intersects each supply search window with the registered
+conductor layer, decomposes its polygons into convex, hole-free pieces and
+queries an interior witness in every piece. Queries use the original extracted
+layer, preserving connections outside the window. Empty windows, multiple
+identities and child-local circuit identities cannot pass as one top-level net.
+
+Six small geometry controls pass: a hole at the window centre, disconnected
+islands, a connection outside the window, an empty required port, a one-database-
+unit-wide conductor and two floating instances with identical child-local IDs.
+The first development attempt used `each_point_hull` on a `SimplePolygon` and
+failed; its source and traceback are retained. The corrected binding uses
+`each_point`, and all six controls run through the pinned KLayout executable.
+
+The [native-cell measurement](evidence/native-io-component-probes-20260929.json)
+then exercised all 13 I/O masters used in the chip. Seven native conducting
+metals and six vias were extracted locally under a 768 MiB address-space cap.
+All 494 declared supply windows resolve to cell-level nets, and an independent
+comparison matches every window, including multiplicity, against the previously
+verified whole-ring inventory. The [raw package](evidence/native-io-component-probes-assets-20260929.json)
+preserves the methods, controls, native derivation references, LEF and results.
+
+Same-named supply windows can resolve to distinct **cell-local** nets: for
+example, `sg13g2_IOPadIn` has two IOVSS identities, and the output/bidirectional
+pads have two IOVDD and two IOVSS identities. Filler cells can also expose
+separate conductors across layers. Their physical parent must provide the
+intended joins. These standalone measurements do not establish a chip-level
+open or a successful chip connection. The active 27-input-pad extraction is
+unchanged; complete 314-instance continuity, transistor/substrate LVS and final
+timing remain open.
