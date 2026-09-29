@@ -1295,3 +1295,56 @@ contains both native reports, the complete first-batch archive, the second
 checkpoint ODB/DEF/netlist/SDC and reports, the current running snapshot and
 archival preparation. Its timing archive was also checked member by member.
 All existing failures and incomplete product gates remain recorded.
+
+### 2026-09-29 — offset fill verified; full native campaign prepared
+
+The offset fill producer completed all 56 windows. The
+[fill verification](evidence/chip-offset-filled-verification-20260929.json)
+binds input `8e26e98cbedfbf924e4a9655a1e2584ba4b52a77e4ae55320483d4a3363d66c5`
+to filled GDS `a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff`.
+All 77 input hashes and corruption controls were checked. A complete streamed
+read of the 1,508,405,039-byte tile ZIP checked every compressed file and its
+expanded GDS against the producer's per-window record. The independent local
+geometry audit retained all original per-cell shapes and instances: 271
+original cells, 56 new fill cells and 1,206,127 added fill shape definitions.
+These checks establish preservation and provenance; density and electrical
+acceptance are separate measurements.
+
+The [raw candidate and tile ZIPs](evidence/chip-offset-filled-raw-assets-20260929.json)
+are now permanent release assets. Archival worker
+[36523414115](https://github.com/Melihakbulut221/nssoc/actions/runs/36523414115)
+completed on `b4deabfca0b41d1849c57f9341bd298132ca5d55`; its plan, utility,
+helper and producer identity were rechecked against that commit. Exact ZIP
+sizes and digests match both the original artifact metadata and release API;
+the worker verified authenticated and anonymous downloads. Local streaming
+also independently verified the tile ZIP and all 392 member files.
+
+The new `chip-offset-filled-native` workflow uses a
+[hash-bound filled input bundle](evidence/chip-offset-filled-native-input-assets-20260929.json)
+for all eight groups: antenna, supplemental wide, FEOL devices, pin/forbidden
+geometry, grid, angle, BEOL and density. All 100 rule and licence members are
+unchanged from the prior offset bundle. No old GDS result is transferred to
+this filled geometry, and a queued or running job is not a passing result.
+
+The [previous inset campaign](evidence/chip-supply-inset-native-completed-20260929.json)
+also completed: BEOL has 117 categories and 72 `TM2.bR` markers, all at the
+known north gap between y=2966.88 and y=2971.8 micrometres. The native and
+transparent supplemental checks divide the edge pairs differently; exact
+marker strings are not equal. The unchanged inset candidate still fails
+wide spacing and density (206 markers). These historical failures remain
+separate from the new offset filled candidate.
+
+The [third saved timing checkpoint](evidence/timing-checkpoint003-20260929.json)
+has setup −6.438917 ns and hold −1.990734 ns: setup improved from checkpoint2,
+while hold worsened. Both remain failing global-route estimates. All output
+hashes and the previous checkpoint archive were rechecked. The fourth batch
+resumed after a resource wait: 282,397,867 bytes of old route extraction
+copies were removed only after exact comparison with the retained original
+ZIP, verified release identity and exclusion of active timing inputs. No
+healthy job was stopped and no clock, SRAM macro or native rule was relaxed.
+
+[Raw verification and checkpoint3 views](evidence/chip-offset-filled-verification-assets-20260929.json)
+preserve the new proof records, previous inset failures and timing reports.
+Full chip transistor LVS, SRAM Liberty/distributed RC, final routed timing,
+complete PCIe Gen3 x4 PHY/controller, DFT and actual manufacturer approval
+remain open.
