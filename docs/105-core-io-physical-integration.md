@@ -1093,3 +1093,67 @@ to archive redundant fixture copies exhausted the available space; their
 incomplete output archives were removed, and the source fixtures were not
 removed by those failed attempts. No timing or manufacturing approval is
 claimed.
+
+### 29 September: supply-contact repair verified and checkpoint parser recovered
+
+The [new route](https://github.com/Melihakbulut221/nssoc/actions/runs/36501093402)
+completed from commit `5eb9ad79fb8508601f1b593f3add5328fffc6a5a`.
+The [original 515-member artifact ZIP](evidence/chip-supply-inset-route-raw-assets-20260929.json)
+is permanently published and verified against authenticated and anonymous
+downloads. Input provenance covers 783 bundle members and eight method pins.
+All 315 original core/I/O placements and the native IRQ buffer are retained;
+recursive native core/I/O/buffer geometry matches the original libraries.
+The router inserted three actual `sg13g2_antennanp/A` diodes, consistent with
+the resolved PDK configuration. An initial verifier that expected a different
+diode master rejected the result; that failed log is preserved. The corrected
+verifier checks the actual configured master and IRQ net connections.
+
+The [supply-contact audit](evidence/chip-supply-inset-contact-verification-20260929.json)
+covers 10,526 named supply-port rectangles on all 314 native I/O instances,
+across Metal2–Metal5 and TopMetal1–TopMetal2. It uses the pinned native
+conductor derivation: drawing plus filler, minus slit and resistor recognition,
+with inductor recognition removed from the top metals. No port conductor
+intersects routing or via enclosures assigned to an opposite supply. All seven
+previously verified bad contacts remain detectable using the historical
+routing and have zero overlap with the new routing. This closes those seven
+direct-contact defects within the measured interface scope. It does not prove
+complete rail continuity, transistor LVS or absence of shorts elsewhere.
+
+Raw GDS SHA-256 is
+`3cf5276540e3fabe6c9eeea4a267635fa15b3ed0eb9e74b58a54578fb4ec5c58`.
+Normalization changes only the inherited density boundary on layer 189/0 to
+the actual 4000 × 3200 µm die, preserving every other shape, text and hierarchy
+record through serialization. The resulting GDS SHA-256 is
+`0c2ca467f735b72c06e2d62065cc9d27d3677508040ed9c7524ef652f5737027`.
+The [fresh native-check inputs](evidence/chip-supply-inset-native-input-assets-20260929.json)
+retain all 100 rule/license members unchanged. The `chip-supply-inset-native`
+workflow runs all eight groups on that exact new GDS. Density is remeasured;
+no old marker count or pass is inherited. New fill may still be necessary.
+
+The [historical filled layout checks](evidence/chip-filled-native-completed-20260929.json)
+also completed: 560 main DRC categories, 31 antenna categories, 11 supplemental
+wide-metal categories and all 37 executed density rules have zero markers.
+BEOL finished in 15,432 seconds. These measurements belong only to GDS
+`6198700f94cfcbd57cfd86bace7b3de848249695351b4366237cf44eac7d14a3`,
+which has the previously established supply short. DRC clearance does not
+establish correct electrical connectivity, and these results do not qualify
+the new geometry.
+
+The first 100-iteration local timing batch exited successfully, preserved all
+32 SRAM macro placements and wrote its ODB, DEF, netlist and SDC. The controller
+then rejected the valid `worst slack max/min` report format. The
+[parser recovery](evidence/timing-checkpoint-parser-recovery-20260929.json)
+preserves that failure, verifies the complete checkpoint and original input
+hashes, and accepts only one numeric value with the expected max/min mode
+inside unique report delimiters. Wrong-mode, malformed and duplicate reports
+are rejected. A separate controller continues from the saved checkpoint;
+it does not repeat the completed initial electrical repair. The recovered
+global-route estimates are setup −8.121617 ns and hold −1.844665 ns. Both fail.
+Missing SRAM Liberty and final extracted RC remain independent timing gates;
+these estimates are not full-chip signoff.
+
+The [verification and checkpoint archive](evidence/chip-supply-inset-verification-assets-20260929.json)
+contains raw audits, historical native reports, failure logs, recovery methods
+and the completed timing ODB/DEF/netlist/SDC. Native checks, full power
+continuity, I/O transistor LVS, SRAM characterization, final timing, complete
+PCIe PHY/controller, DFT and actual manufacturer acceptance remain open.
