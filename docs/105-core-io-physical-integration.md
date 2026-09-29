@@ -1203,3 +1203,53 @@ measurement continues. Local checkpointed setup repair also continues;
 intermediate optimization values do not establish final timing. No supply
 continuity, full-chip LVS, density, timing or manufacturing gate is accepted
 by this preparation.
+
+### 29 September: routed offset geometry verified; fill gated by native checks
+
+The [horizontal-offset routing run](https://github.com/Melihakbulut221/nssoc/actions/runs/36513698428)
+completed from commit `daa1e7e48177737b9fc0e2c98ea2e9f0b4707fca`.
+Its [original artifact ZIP](evidence/chip-ring-offset-route-raw-assets-20260929.json)
+is permanently archived; all 532 members were streamed and checked, with
+420 final-state/metadata/report files retained locally. Provenance checks
+cover 785 bundled inputs and eight method pins. Exact recursive native core,
+I/O and IRQ-buffer geometry and all fixed placements are preserved.
+
+The [new audit](evidence/chip-ring-offset-route-verification-20260929.json)
+measures the north VDD stripe-to-ring gap at **6.42 µm** in the final routed
+database, exceeding the 5 µm requirement. The original stripe edge remains
+at y=2966.88 µm, while the ring edge moves to y=2973.30 µm. The database hash
+is matched to the original artifact inventory. This verifies the intended
+geometric change; the complete unchanged native wide-metal rule set must
+still run on the streamed GDS. All 10,526 named native I/O supply-port
+rectangles again have zero opposite-net routing/via-enclosure contacts under
+the pinned conductor derivation. Full rail continuity and transistor LVS
+remain separate requirements.
+
+Raw GDS SHA-256 is
+`8bb61b107bdb01b8ad5b9d02cd26e1de98b49320e52509ca8bd0e37d9d1eae6e`.
+The boundary-only normalization preserves every other shape, text and
+hierarchy record. Its output SHA-256 is
+`8e26e98cbedfbf924e4a9655a1e2584ba4b52a77e4ae55320483d4a3363d66c5`.
+Both the [native-rule input](evidence/chip-ring-offset-native-input-assets-20260929.json)
+and [fill input](evidence/chip-ring-offset-fill-input-assets-20260929.json)
+contain that exact GDS. Actual runner preflights verify 108 and 77 input/method
+hashes respectively. All 100 native rule/license members remain unchanged;
+the fill binary, corresponding source, existing boundary-layer patch and
+configuration are also unchanged from the earlier fill campaign.
+
+The `chip-ring-offset-fill` workflow first runs native antenna and supplemental
+wide-metal checks on separate workers. The fill job depends on **both jobs
+succeeding**, including complete category coverage and zero markers. If either
+fails, generation does not start. If both pass, the existing audited 56-window
+fill generator runs automatically, including corruption controls and source
+geometry preservation. Generation success will still require new main DRC,
+antenna, wide-metal and density measurements on the actual filled output;
+no earlier-layout result is transferred.
+
+The [verification archive](evidence/chip-ring-offset-route-verification-assets-20260929.json)
+retains the new audits, preparation methods, preflight receipts and timing
+snapshot. To preserve room for local checkpoint generation, only historical
+route files and archive download copies with exact reconstruction/immutable
+release proofs were removed. Current geometry and active timing inputs were
+retained. The new workflow is a verification and candidate-generation chain,
+not full-chip LVS, final timing or manufacturing acceptance.
