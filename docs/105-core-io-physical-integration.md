@@ -1757,3 +1757,20 @@ baseline and all constraints are unchanged. The study also corrects the tempting
 assumption that selecting ten percent of endpoints guarantees tenfold faster
 repair: this version can spend its entire iteration budget following the worst
 path before visiting the remaining endpoints.
+
+### 2026-09-29 — three timing methods implemented and queued locally
+
+The [three-method campaign](106-timing-repair-research.md) now has immutable
+local copies and an active controller. It waits for checkpoint10 to finish,
+then verifies the completed views before trying targeted XNOR placement, early
+setup-preserving hold repair and a one-versus-four setup comparison from the
+same input. The old parent controller is intentionally paused; its current
+OpenROAD child continues. This prevents a competing checkpoint11 from starting.
+
+The [launch receipt](evidence/timing-three-methods-launch-20260929.json) records
+the handover, source/configuration hashes and 45 passing process/selection/archive
+tests. Native parser and synthetic placement controls also pass. No chip result
+or speedup from these new profiles is available at this snapshot. The existing
+local/GitHub progress monitor now runs every three hours and retains autonomous
+stall investigation. SRAM, final timing, extraction and product acceptance
+requirements remain unchanged.

@@ -1,5 +1,9 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
+**Implementation update:** the three-method local campaign and its controlled
+handover are now running. See the implementation section below. The original
+checkpoint is still finishing; no full-chip speedup is claimed yet.
+
 **29 September 2026: research and native command compatibility, not a measured
 speedup or timing closure.** The latest completed input for this investigation
 is checkpoint9: setup **−4.898848 ns**, hold **−1.838546 ns**, using global-route
@@ -129,3 +133,88 @@ Legalization, incremental routing and updated multi-corner STA come first;
 detailed routing, qualified RC extraction, equivalence and physical checks
 remain required for final closure. The previously clean filled-chip DRC result
 belongs to a different physical candidate and is not transferred to this one.
+
+## Three-method local campaign, 29 September 2026
+
+The user authorized applying all three methods and changed monitoring from
+hourly to **every three hours**. The existing heartbeat was updated in place;
+it still checks local and GitHub progress, investigates actual stalls and
+continues the remaining product work. No duplicate automation was created.
+
+The [local controller](../scripts/run_timing_experiments.py),
+[measured LibreLane step](../hw/soc/pnr/timing_experiment_step.tcl),
+[flow entry point](../hw/soc/pnr/timing_experiment_flow.py) and
+[critical placement helper](../hw/soc/pnr/critical_xnor_placement.tcl) implement:
+
+1. A target-specific XNOR placement candidate, followed by legalization,
+   incremental global routing and fresh measurements. Cell/net identities must
+   still match the latest checkpoint. A shorter connection must survive
+   legalization; logical netlist bytes and all 32 SRAM placements must remain
+   unchanged. A changed connection is rejected for investigation, not silently
+   treated as the old path.
+2. Early hold repair with `allow_setup=0` and the existing +0.1/+0.15 ns margins.
+3. A one-versus-four setup repair comparison from exactly the same selected
+   input checkpoint. The one-repair run is the control, not a fourth method.
+
+Each candidate has complete before/after setup and hold WNS/TNS, violating
+endpoint counts, slew/capacitance counts, area, instance count and duration.
+Setup A/B requires identical input hashes, exact initial counts and initial
+numeric measurements agreeing within 1e-6 absolute / 1e-12 relative tolerance;
+the different profile names do not invalidate the comparison. Eligible results
+must improve their target timing class without worsening the other measured
+timing/electrical classes. Source-checkpoint WNS is also preserved; the older
+checkpoint lacks the new full metric set, so unavailable source TNS/counts are
+not fabricated. Subsequent selected inputs provide the complete metric set.
+Batch4 is called faster than an eligible control only if both measured setup
+WNS and TNS improvement per wall-clock hour increase. This is a single-run
+comparison, not a general performance guarantee.
+
+The new controller is **2506944**, Linux starttime **66086546**, with its plan
+and outputs under `hw/soc/out/timing-three-methods-20260929`. These are dated
+identities, not reusable PID authorization. The
+[launch receipt](evidence/timing-three-methods-launch-20260929.json) binds the
+actual command, immutable method copies, configuration, handover and tests.
+The current status is `WAITING_FOR_ORIGINAL_CHECKPOINT`: the three profiles are
+implemented and automatically sequenced, but their chip measurements have not
+started at this snapshot.
+
+Only the old Python controller was paused, preventing it from launching
+checkpoint11. Its separate-session checkpoint10 child continues normally.
+After native completion, the new controller verifies the child's exit code,
+completion markers, SRAM preservation, every input pin and output views before
+retiring the old controller. It archives checkpoint9 only after the newer state
+is verified and no longer references it. Every archive is checked member by
+member before expanded copies are removed; selected views remain available.
+
+The [process guard](../scripts/timing_process_guard.py) uses a pidfd and exact
+PID/starttime/argv identity, rather than signaling a numeric PID blindly.
+Each new heavy stage requires 5 GiB available RAM and 1 GiB free disk, with an
+8 GiB address-space cap and no elapsed-time kill. The independent supply queue
+uses its existing 9 GiB threshold. The timing controller can reserve an idle
+supply queue by pausing only its verified controller and rechecking for a
+startup race; it restores that controller after the heavy stage exits. A live
+orphan worker prevents release of this reservation. A crashed controller's
+reservation requires inspection by the heartbeat, not blind resumption.
+
+**Validation completed:** 45 small process/selection/archive tests passed,
+including an actual synthetic orphan, identity mismatch rejection, corrupt
+archive rejection and cross-domain timing regression rejection. The native
+profile parser passed. The native OpenDB/OpenDP placement control shortened a
+synthetic connection from **400 to 202 µm**, including actual legalization, and
+passed placement checking; negative controls reject connection/macro changes
+and lost improvement. These synthetic results are not a chip placement result.
+A native two-flop smoke check matched the new measurement getters to the
+printed timing reports. The installed LibreLane CLI/flow boundary was checked
+without loading the full chip.
+
+To recover local space, ten untracked archive caches totaling **484,813,540
+bytes** were removed only after matching their local bytes to authenticated
+GitHub asset metadata and existing public/authenticated download proofs. Their
+release assets remain available; active timing/supply inputs were excluded.
+The first cleanup attempt assumed one release for every asset and stopped
+before deleting anything. The corrected attempt queries each exact asset ID.
+No other project's files were touched.
+
+All resulting geometry still needs detailed routing, qualified extraction,
+equivalence, DRC/LVS and final timing review. The controller's selection is an
+estimate for further verification, never a production acceptance decision.
