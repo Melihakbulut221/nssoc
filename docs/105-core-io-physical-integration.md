@@ -1575,3 +1575,38 @@ estimates. All output and controller input hashes and the preceding checkpoint
 archive were verified. The [raw views](evidence/timing-checkpoint007-assets-20260929.json)
 are preserved, and the eighth batch is active. Final routed timing, qualified
 SRAM RC/Liberty and equivalence remain open.
+
+
+### 2026-09-29 — checkpoint verification in a separate process
+
+The previous synchronous save helper temporarily holds both the original and
+reloaded connectivity graphs. `scripts/supply_checkpoint_staged.py` adds a
+separate-process path for future large extractions. `prepare` saves the compressed
+database, registered layers, original probe snapshot and input/method hashes to
+`prepared.json`. This is explicitly unverified; existing consumers cannot load
+it. The producer then exits. A fresh process verifies the independently pinned
+prepared receipt, source/database hashes, tool version, registered layers and
+probe equivalence before creating `manifest.json`. The existing complete-window
+consumer can then use that manifest without changing its acceptance rules.
+
+Linux process birth and boot identifiers prevent verification while the original
+producer remains alive. Verification rejects incomplete records, changed source
+pins, corrupted databases, altered probe expectations, method changes and an
+existing final manifest. It preserves the original prepared record. The original
+synchronous helper remains unchanged for small controls and historical replay.
+
+The [native staged controls](evidence/supply-checkpoint-staged-controls-20260929.json)
+run actual KLayout producers and CLI verifiers in separate processes under a
+256 MiB address-space limit. A connected hierarchy remains connected; floating
+child instances remain unresolved. Live-producer verification, prepared-only
+consumption, five provenance/data corruptions and final-manifest overwrite are
+rejected. The [raw package](evidence/supply-checkpoint-staged-controls-assets-20260929.json)
+contains those native databases, receipts, logs and the runnable control script
+`sw/tests/supply_checkpoint_staged_native.py`.
+
+These small controls establish serialization behavior, not whole-chip memory
+requirements or rail continuity. The active 27-input-pad cloud extraction is
+unchanged and has no checkpoint output. A future complete 314-instance run must
+enable floating retention before extraction, prepare its checkpoint, exit, run
+the staged verifier, then audit all 10,526 declared supply windows. Full-chip
+transistor/substrate LVS, final timing and manufacturing acceptance remain open.
