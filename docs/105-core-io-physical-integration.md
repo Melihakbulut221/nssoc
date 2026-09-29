@@ -1704,3 +1704,43 @@ are retained in the [diagnostic package](evidence/timing-checkpoint008-diagnosis
 which references the independently published raw checkpoint. These are concrete
 remaining repair targets; none was waived or claimed closed by the checkpoint.
 The independently queued complete-I/O extraction still requires sufficient RAM.
+
+
+### 2026-09-29 — ninth timing checkpoint and isolated buffer candidate
+
+The [ninth checkpoint](evidence/timing-checkpoint009-20260929.json) has setup
+−4.898848 ns and hold −1.838546 ns. Both improved from checkpoint8 but remain
+failing global-route estimates. All output/controller hashes and every member
+of the archived eighth checkpoint were checked. The tenth batch is active;
+its ninth-checkpoint inputs and clock/macro constraints remain unchanged.
+The [raw ninth checkpoint](evidence/timing-checkpoint009-assets-20260929.json)
+contains the native database, netlist, constraints and reports.
+
+Electrical repair is still required: the ninth report has two slew and four
+capacitance violations. An [isolated netlist candidate](evidence/checkpoint009-buffer-candidate-20260929.json)
+changes exactly four `sg13g2_buf_1` instances. `fanout1387` and `fanout1391`
+become `sg13g2_buf_4`; `fanout1228` and `fanout1593` become `sg13g2_buf_2`.
+The first pair's reported loads are 0.556475 and 0.547383 against the original
+0.3 capacity limit; the other pair is 0.335437 and 0.329623. The native output
+limits are 1.2 for buf4 and 0.6 for buf2 in each of the three selected PVT
+libraries. Selection reserves 20 percent of that capacity; no library limit,
+clock period or timing constraint is relaxed.
+
+The candidate preserves all instance names and pin connections. Reversing only
+those four master substitutions reproduces the original netlist byte for byte.
+Native Liberty functions and two-pin interfaces agree across all three PVT
+corners. An exhaustive local test of the four replacements runs all 256 input
+combinations over 0, 1, X and Z using the original native Verilog models. It
+passes. Icarus warnings about unsupported timing checks elsewhere in the full
+cell-model file are retained; this is a combinational functional test, not a
+timing simulation or a full-chip equivalence proof.
+
+The [candidate package](evidence/checkpoint009-buffer-candidate-assets-20260929.json)
+preserves the modified netlist, generator, native three-corner Liberty files,
+original Verilog models, testbench and raw log. This candidate has **not** been
+applied to an ODB or layout. Larger cells need legal placement, routing, fresh
+parasitics and renewed timing/DRC checks; higher input capacitance may affect
+upstream drivers. The unchanged running tenth batch must not be overwritten
+with this older candidate. Any later integration must reconcile against its
+latest output and revalidate affected instances. The complete-I/O extraction
+queue remains separate and still waits for sufficient RAM.
