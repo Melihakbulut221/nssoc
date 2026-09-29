@@ -1253,3 +1253,45 @@ route files and archive download copies with exact reconstruction/immutable
 release proofs were removed. Current geometry and active timing inputs were
 retained. The new workflow is a verification and candidate-generation chain,
 not full-chip LVS, final timing or manufacturing acceptance.
+
+### 29 September: native spacing and antenna gates pass; fill runs automatically
+
+The [offset-layout native results](evidence/chip-ring-offset-native-gates-20260929.json)
+pass all **31 antenna categories and 11 supplemental wide-metal categories
+with zero markers** on GDS `8e26e98c…`. Both reports were independently parsed
+and matched to the full category catalogs, logs, 108 input/method hashes and
+worker commit `9a1dd0055eff603190881e98ad4d9b3ebed3ba70`. Thus the previous
+72 north stripe/ring spacing markers are closed on this particular unfilled
+candidate under the unchanged native check. This does not certify main DRC,
+density, full power continuity, transistor LVS or any subsequent filled GDS.
+
+Both required jobs succeeded and the same workflow automatically started
+fill at 04:16:53 UTC. The producer subsequently completed successfully.
+Its candidate and tile artifacts are being independently checked; no filled
+GDS or density acceptance is claimed from the workflow conclusion alone.
+The [exact producer archival plan](evidence/chip-ring-offset-fill-archive-plan-20260929.json)
+binds the source run, full commit, branch, workflow, push event and two expected
+artifact names. The separate `chip-ring-offset-fill-archive` worker waits for
+that producer to finish successfully, resolves the final artifact IDs and
+SHA-256 digests, and retains the exact original ZIPs as immutable release
+assets. It checks downloaded bytes, existing-asset identity, authenticated
+release downloads and anonymous downloads. Different existing bytes are never
+overwritten. Failed or incomplete producers cannot authorize publication;
+partial downloads and error receipts are retained. The worker has the hosted
+platform limit and adds no internal elapsed-time cutoff.
+
+The [next saved local timing checkpoint](evidence/timing-checkpoint002-20260929.json)
+completed another 100-iteration setup batch, preserved the SRAM macro guard
+and saved all required views. Independently rechecked output hashes bind setup
+−6.640525 ns and hold −1.838572 ns, both still violating. The third batch is
+running. The previous completed batch was compressed and every archived
+member was checked before the controller reclaimed its expanded files;
+the new state did not refer to those removed files. This is recoverable
+optimization progress, not final timing closure. SRAM Liberty, qualified RC,
+final routing/STA and equivalence remain required.
+
+The [new raw archive](evidence/chip-offset-native-gates-and-timing-assets-20260929.json)
+contains both native reports, the complete first-batch archive, the second
+checkpoint ODB/DEF/netlist/SDC and reports, the current running snapshot and
+archival preparation. Its timing archive was also checked member by member.
+All existing failures and incomplete product gates remain recorded.
