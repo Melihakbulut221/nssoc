@@ -1510,3 +1510,39 @@ intended joins. These standalone measurements do not establish a chip-level
 open or a successful chip connection. The active 27-input-pad extraction is
 unchanged; complete 314-instance continuity, transistor/substrate LVS and final
 timing remain open.
+
+### 2026-09-29 — reusable connectivity checkpoints and sixth timing result
+
+`scripts/supply_checkpoint.py` prepares a reusable record for a future complete
+I/O connectivity run. It writes the native compressed KLayout database, reads
+it back and compares registered layer names, database units and sampled net
+equivalence. Raw cluster numbers may be renumbered; the comparison preserves
+the connectivity relation across all queried windows, including unresolved
+child-local identities. Loading requires an independently pinned manifest and
+matching database size/hash, method hashes and KLayout version.
+
+The [checkpoint controls](evidence/supply-checkpoint-controls-20260929.json)
+found that the default extraction configuration can omit floating child
+instances when saving. Their geometry disappeared after reload, so the first
+attempt failed. The caller must set `include_floating_subcircuits=True`
+**before extraction**; the save helper rejects a disabled flag and verifies
+the resulting roundtrip. This retains isolated instances without joining them.
+Three corrected roundtrips pass: a connected seven-metal hierarchy, a floating
+hierarchy that remains unresolved, and windows with outside connections,
+separate islands and empty geometry. Six rejection cases cover damaged files,
+wrong/changed manifest pins, wrong source pins, overwrite and disabled floating
+retention. The [raw controls](evidence/supply-checkpoint-controls-assets-20260929.json)
+preserve both failed attempts and the successful database files.
+
+This is a tested checkpoint mechanism, not a completed chip checkpoint. The
+active cloud extractor and its pinned inputs remain unchanged; it does not
+currently serialize its graph. A future run must enable floating retention
+before extraction and use complete I/O probe coverage. Full-chip continuity,
+transistor/substrate LVS and manufacturing acceptance remain open.
+
+The [sixth timing checkpoint](evidence/timing-checkpoint006-20260929.json)
+completed with setup −5.990112 ns and hold −1.980585 ns. Both improved slightly
+from checkpoint5 but remain failing global-route estimates. Output hashes,
+controller inputs and every member of the predecessor archive were verified.
+The seventh batch is running; the completed [raw checkpoint views](evidence/timing-checkpoint006-assets-20260929.json)
+are separately preserved. No final routed timing or equivalence pass is claimed.
