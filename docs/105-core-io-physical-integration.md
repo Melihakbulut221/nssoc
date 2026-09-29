@@ -1015,3 +1015,81 @@ logs and intermediate attempts. No mask, reference value, extraction rule or
 connectivity requirement was changed. All seven I/O master LVS failures and
 full-chip LVS remain open, along with final RC/timing, complete SRAM
 characterization, PCIe Gen3 x4 PHY/controller, DFT and manufacturer acceptance.
+
+## Confirmed supply contacts and a new ring-clearance candidate
+
+The [physical contact diagnosis](evidence/chip-supply-short-diagnosis-20260929.json)
+finds **seven VDD routing contacts to native input-pad VSS metal** in the
+IRQ-buffered chip. The same preliminary connectivity finding occurs before
+and after fill. A follow-up geometric check uses the pinned native TopMetal1
+conductor definition: drawing plus filler, minus slit, resistor and inductor
+recognition regions. All seven contacts retain nonzero conductive overlap.
+
+Four contacts are on the north edge, each with 2.288 µm² overlap, and three
+are on the south edge, each with 6.952 µm² overlap. For example, a VDD stripe
+at x=2783.06–2785.26 µm reaches y=3023.04 µm and intersects the preserved
+native VSS port beginning at y=3022 µm. The routed database assigns that
+stripe to VDD. Native pad geometry and the independently extracted contact
+region establish the wrong-rail connection. The earlier OpenROAD power-grid
+check did not detect this physical interface defect. Existing DRC passes
+therefore do not establish correct power connectivity.
+
+The initial drawing-only TopMetal1/TopVia2/TopMetal2 graph also reports separate
+IOVSS components. Those preliminary reports omit lower-layer connections and
+are not a full-chip open-circuit verdict. Their sources, positive/missing-via
+controls, initial API/parser failures and subsequent contact verification are
+retained in the [diagnostic archive](evidence/chip-supply-diagnosis-and-recovery-assets-20260929.json).
+The authoritative finding here is the seven direct opposite-supply contacts;
+complete power connectivity and transistor LVS remain open.
+
+The [new candidate](evidence/chip-supply-inset-candidate-20260929.json) changes
+`CORE_AREA` from `[200, 200, 3800, 3000]` to `[230, 230, 3770, 2970]` µm.
+This moves the generated ring and stripe endpoints inward by 30 µm, away
+from the native pad supply bands. The mapped netlist, fixed native I/O and
+core placements, IRQ buffer placement, clocks, PDK, ring widths and spacings
+are unchanged. The [portable inputs](evidence/chip-supply-inset-input-assets-20260929.json)
+verify 777 unchanged prior bundle members; three copies/templates of the
+configuration and the candidate metadata change, with two preparation records
+added. Local preparation verifies all 783 bundle inputs and eight method/input
+hashes, then loads the actual LibreLane configuration and netlist state.
+
+The `chip-supply-inset-route` workflow regenerates floorplan, PDN and routing
+from the mapped netlist. This is a proposed geometric repair. Its output must
+be checked for opposite-supply contacts, continuity of all required pad
+components, native DRC/antenna/density, full transistor LVS and timing. Previous
+physical results cannot certify the new geometry. This chip candidate still
+uses the previously bundled core; the separate pipeline timing candidate has
+not yet been integrated into it.
+
+## Timing allocation failure and checkpointed recovery
+
+The long local setup repair stopped with **`std::bad_alloc` and signal 6** after
+29 hours 20 minutes of OpenROAD runtime. It ran under an 8 GiB address-space
+limit; its last reported iteration was 1290, with estimated WNS −3.935 ns and
+TNS −3264.3 ns. No completed repair checkpoint was emitted. The producer and
+its postroute verifier correctly record failure. These intermediate numbers
+are not final timing results.
+
+The [recovery record](evidence/timing-checkpointed-recovery-20260929.json)
+starts from the unchanged pre-repair state. A fresh OpenROAD process performs
+at most 100 setup or hold iterations per batch, then must emit a complete
+state, preserve all 32 SRAM masters/locations/orientations and satisfy input
+hash and explicit-completion checks before that checkpoint is promoted.
+The next process uses the completed state. A failed batch leaves the last
+completed checkpoint intact. Older completed batches are compressed and
+verified before cleanup, and are retained uncompressed if the current state
+still references them. No elapsed-time watchdog is added. Routing, extracted
+RC, final setup/hold/slew/capacitance checks and logic equivalence remain
+mandatory after estimated repair converges.
+
+The first recovery launch failed command-line validation because its output
+directory had not been created; no native stage ran. The separate corrected
+attempt is now performing setup repair. Its methods and running snapshot,
+the original allocation failure and resource-cleanup receipts are preserved
+in the diagnostic archive. Disk cleanup removed only verified duplicate test
+fixtures/Git objects and release-backed untracked download copies; originals
+or checksum-bound release assets remain available. Two unsuccessful attempts
+to archive redundant fixture copies exhausted the available space; their
+incomplete output archives were removed, and the source fixtures were not
+removed by those failed attempts. No timing or manufacturing approval is
+claimed.
