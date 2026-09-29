@@ -1157,3 +1157,49 @@ contains raw audits, historical native reports, failure logs, recovery methods
 and the completed timing ODB/DEF/netlist/SDC. Native checks, full power
 continuity, I/O transistor LVS, SRAM characterization, final timing, complete
 PCIe PHY/controller, DFT and actual manufacturer acceptance remain open.
+
+### 29 September: fresh inset checks expose a north-ring spacing defect
+
+[Seven completed groups](evidence/chip-supply-inset-native-partial-20260929.json)
+on the normalized inset GDS `0c2ca467…` were independently checked against
+the exact worker source, input hashes and complete category inventories.
+Antenna passes all 31 categories with zero markers. FEOL and geometry pass
+443 main categories with zero markers. BEOL is still running on this same
+geometry; its eventual result must remain separate from later candidates.
+
+The unchanged supplemental wide-metal rules find **72 `TM2.bR.transparent`
+markers**, and all 37 density rules execute with **206 density markers**.
+These failures are retained. The [spacing diagnosis](evidence/chip-ring-offset-candidate-20260929.json)
+locates every wide-metal marker between the same two north TopMetal2 edges:
+the horizontal VDD stripe ends at y=2966.88 µm, and the VDD ring begins at
+y=2971.80 µm. Their gap is 4.92 µm, below the required 5 µm. Both shapes are
+assigned to VDD in the routed database; being on the same net does not waive
+the physical spacing rule. The previous ring-to-ring 5 µm check did not cover
+this stripe-to-ring interface.
+
+The [next routing input](evidence/chip-ring-offset-input-assets-20260929.json)
+changes only `PDN_CORE_RING_HOFFSET` from 4.5 to 6.0 µm in the three matching
+configuration copies/templates. The 30 µm core-area inset, fixed core/I/O/IRQ
+placements, mapped netlist, clocks, PDK, ring widths and ring spacings remain
+unchanged. This proposes a 1.5 µm outward displacement of the horizontal ring
+sections. If the stripe phase remains unchanged, the measured north gap
+would become 6.42 µm; that is a prediction requiring verification of the new
+routed geometry. Original preparation records remain in the new bundle;
+779 prior members are byte-identical, and two new preparation records are
+added. Real LibreLane configuration and state loading verifies the intended
+parameters before dispatch through `chip-ring-offset-route`.
+
+The [raw measurement and preparation archive](evidence/chip-ring-offset-preparation-assets-20260929.json)
+retains all seven native result groups, complete catalogs and logs, the exact
+spacing diagnosis, candidate recipe, preflight and current timing snapshot.
+The first cache-cleanup check stopped because the real Python import had
+created one additional bytecode file; all inventoried source files matched.
+The subsequent cleanup recorded that generated file and removed only the
+reconstructible extraction cache. Active timing inputs were not changed.
+
+Density fill is deferred until the spacing candidate has been routed and
+checked, so fill is generated for the intended geometry. The healthy BEOL
+measurement continues. Local checkpointed setup repair also continues;
+intermediate optimization values do not establish final timing. No supply
+continuity, full-chip LVS, density, timing or manufacturing gate is accepted
+by this preparation.
