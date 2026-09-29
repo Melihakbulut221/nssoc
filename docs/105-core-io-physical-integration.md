@@ -1610,3 +1610,54 @@ unchanged and has no checkpoint output. A future complete 314-instance run must
 enable floating retention before extraction, prepare its checkpoint, exit, run
 the staged verifier, then audit all 10,526 declared supply windows. Full-chip
 transistor/substrate LVS, final timing and manufacturing acceptance remain open.
+
+
+### 2026-09-29 — hosted extraction timeout and local complete-I/O recovery
+
+[Run 36551234397](https://github.com/Melihakbulut221/nssoc/actions/runs/36551234397)
+was cancelled at 18:46 TRT. The job annotation explicitly reports the hosted
+six-hour execution limit. Its preserved extraction record stops at
+`EXTRACTING_FULL_METAL`; no rail result, completed graph or native exit-code file
+exists. The artifact ZIP digest and every extracted member were checked, as
+were all 108 preparation pins, seven extraction pins, the unchanged filled GDS,
+original native references and source method at commit `4313fe5`. This is a
+[verified failure record](evidence/chip-supply-local-recovery-20260929.json),
+not a completed connectivity measurement. The previous native DRC results are
+unchanged.
+
+`scripts/extract_supply_checkpoint.py` now prepares the complete 314-instance,
+10,526-window graph for local recovery. It checks the pinned GDS, independent
+window-plan hash and native conductor/via definitions, retains floating
+hierarchy before extraction and saves a staged checkpoint. The controller then
+waits for producer exit, verifies the checkpoint in a separate process and runs
+the complete-window consumer. No elapsed-time watchdog terminates these local
+steps. All source inputs are hashed before queueing and rechecked before each
+stage; failed attempts remain available.
+
+Integration controls found another persistence distinction: raw source layers
+used during Boolean preparation appear in `layer_names()` but are omitted from
+the saved connected graph. Omitting their names did not fix this, and explicit
+re-registration was rejected by the native API. The corrected producer declares
+its checkpoint contract **before serialization**: all seven native conducting
+metals and all six vias. The helper records excluded preparation-layer names,
+requires every probe layer in the declared contract and still demands exact
+reloaded layer/probe equivalence. No required conductor, via, probe or electrical
+connection is removed. The original synchronous save helper remains unchanged.
+
+Thirteen exact Boolean-layer controls verify drawing plus fill, slit/resistor
+cuts, top-metal inductor cuts and the MIM exclusion on TopVia1. Four synthetic
+GDS cases then exercise extraction, staged save, fresh-process verification and
+all-window audit: connected supplies pass; a short, a split and an absent port
+fail. Omission of a probe layer is rejected. The previous staged native controls
+also pass again. Failed attempts and corrected controls are preserved in the
+[raw recovery package](evidence/chip-supply-local-recovery-assets-20260929.json).
+These controls do not establish actual chip continuity or full-chip LVS.
+
+The detached local controller is queued with an 8 GiB address-space cap,
+requiring 9 GiB available RAM (including a 1 GiB reserve) and 1 GiB free disk
+before each stage. Only about 1.4 GiB RAM was available at queue creation, so
+**the full extraction has not started**. These are conservative execution
+settings, not measured minimum chip memory requirements. The controller checks
+resources every 30 seconds and starts automatically when they are sufficient.
+The running timing repair remains untouched. No replacement hosted extraction
+was launched; the timeout outputs and local continuation state are retained.

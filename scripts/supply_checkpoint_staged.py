@@ -38,7 +38,7 @@ def check_sources(pins):
             raise ValueError("Checkpoint input hash mismatch")
 
 
-def prepare(db, extractor, output, probes, top, input_sha256):
+def prepare(db, extractor, output, probes, top, input_sha256, checkpoint_layers=None):
     """Write data and a PREPARED receipt only; caller must then exit."""
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -47,6 +47,12 @@ def prepare(db, extractor, output, probes, top, input_sha256):
     if not probes:
         raise ValueError("Explicit probes required")
     check_sources(input_sha256)
+    available_layers = list(extractor.layer_names())
+    layers = available_layers if checkpoint_layers is None else checkpoint_layers
+    if (not layers or len(set(layers)) != len(layers)
+            or not set(layers) <= set(available_layers)
+            or not {p["layer"] for p in probes} <= set(layers)):
+        raise ValueError("Checkpoint layer contract must include every probe layer")
     before = snapshot(db, extractor, probes, top)
     database = output / "connectivity.l2n.gz"
     extractor.write(str(database))
@@ -66,7 +72,8 @@ def prepare(db, extractor, output, probes, top, input_sha256):
         method_sha256=sha(Path(supply_checkpoint.__file__)),
         probe_method_sha256=sha(Path(__file__).with_name("probe_supply_components.py")),
         klayout_version=db.__version__,
-        layers=list(extractor.layer_names()),
+        layers=layers,
+        excluded_preparation_layers=[name for name in available_layers if name not in layers],
         dbu=extractor.internal_layout().dbu,
         top=top,
         probes=probes,
