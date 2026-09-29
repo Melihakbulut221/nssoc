@@ -6,6 +6,14 @@ It is an engineering candidate, **not production acceptance**. The independent
 I/O-cell LVS campaign fails all seven selected signal/supply masters. Full-chip
 LVS, finishing, full timing and manufacturer acceptance therefore remain open.
 
+**29 September audit correction:** the inset and offset contact audits treated
+quarter-turn placement codes as degrees. Their historical all-314-port
+no-opposite-contact claims are withdrawn. A corrected replay on the current
+filled GDS now verifies all 314 placements and 10,526 windows with zero direct
+opposite-supply contacts; the final section below contains its evidence. This
+does not invalidate native DRC, which uses actual GDS geometry, or the running
+27-input-pad connectivity extraction, which reads actual GDS transforms.
+
 ## Exact core and power domains
 
 This assembly uses the preserved **CORE_REQ_REG=0 / CORE_WB_STAGE=0** core,
@@ -1108,16 +1116,13 @@ the resolved PDK configuration. An initial verifier that expected a different
 diode master rejected the result; that failed log is preserved. The corrected
 verifier checks the actual configured master and IRQ net connections.
 
-The [supply-contact audit](evidence/chip-supply-inset-contact-verification-20260929.json)
-covers 10,526 named supply-port rectangles on all 314 native I/O instances,
-across Metal2–Metal5 and TopMetal1–TopMetal2. It uses the pinned native
-conductor derivation: drawing plus filler, minus slit and resistor recognition,
-with inductor recognition removed from the top metals. No port conductor
-intersects routing or via enclosures assigned to an opposite supply. All seven
-previously verified bad contacts remain detectable using the historical
-routing and have zero overlap with the new routing. This closes those seven
-direct-contact defects within the measured interface scope. It does not prove
-complete rail continuity, transistor LVS or absence of shorts elsewhere.
+The historical [supply-contact audit](evidence/chip-supply-inset-contact-verification-20260929.json)
+attempted 10,526 named supply-port rectangles on 314 native I/O instances.
+Its all-port result is withdrawn: the method interpreted placement quarter-turn
+codes 0–3 as degrees in `ICplxTrans`. Consequently its transformed port locations
+on the rotated sides were wrong. The original result remains preserved as a
+failed verification method, not evidence of complete contact closure. A correct
+replay must use 0/90/180/270 degrees and check every transform against the GDS.
 
 Raw GDS SHA-256 is
 `3cf5276540e3fabe6c9eeea4a267635fa15b3ed0eb9e74b58a54578fb4ec5c58`.
@@ -1220,10 +1225,9 @@ database, exceeding the 5 µm requirement. The original stripe edge remains
 at y=2966.88 µm, while the ring edge moves to y=2973.30 µm. The database hash
 is matched to the original artifact inventory. This verifies the intended
 geometric change; the complete unchanged native wide-metal rule set must
-still run on the streamed GDS. All 10,526 named native I/O supply-port
-rectangles again have zero opposite-net routing/via-enclosure contacts under
-the pinned conductor derivation. Full rail continuity and transistor LVS
-remain separate requirements.
+still run on the streamed GDS. The associated all-10,526-port no-opposite-contact
+claim is withdrawn for the same quarter-turn/degrees bug described above.
+Full rail continuity and transistor LVS remain separate requirements.
 
 Raw GDS SHA-256 is
 `8bb61b107bdb01b8ad5b9d02cd26e1de98b49320e52509ca8bd0e37d9d1eae6e`.
@@ -1435,3 +1439,41 @@ Any future passing extraction proves only the 27 input-pad power ports through
 seven metals and six vias. It does not establish every chip pin, transistor or
 substrate connection, nor replace full-chip LVS. The recovery job has no
 accepted chip result at this delivery.
+
+### 2026-09-29 — corrected I/O transforms and fifth timing checkpoint
+
+The [corrected contact audit](evidence/chip-filled-corrected-io-contacts-20260929.json)
+converts the placement file's quarter-turn codes 0–3 into 0/90/180/270 degrees
+before constructing complex transforms. Every one of the 314 native I/O
+placements is checked against an actual instance in the filled `a5c…` GDS.
+Replaying the native conductor/opposite-routed-supply contact measurement with
+those corrected transforms reports zero contacts in all 10,526 port windows.
+The original inset and unfilled offset receipts remain invalid historical
+method outputs; this new result applies to the current filled GDS only.
+
+The new `scripts/plan_chip_supply_probes.py` independently enumerates every
+POWER/GROUND rectangle from the original IO LEF, verifies placement multiplicity
+against the actual GDS hierarchy and checks every transformed rectangle with
+KLayout. It rejects unsupported geometry, incomplete pins, invalid coordinates
+and ambiguous rotation encodings. Its output agrees exactly, including
+multiplicity, with the corrected audit: IOVDD 3,188, IOVSS 4,781, VDD 1,279 and
+VSS 1,278 windows across six metal layers. Twenty-one planner tests cover these
+parsing and transform hazards. This inventory is preparation for a complete
+ring connectivity measurement. Windows alone do not prove conductor coverage;
+the extractor must intersect them with native geometry and account for every
+resulting component. Neither the inventory nor the direct-contact audit proves
+rail continuity, transistor/substrate LVS or manufacturing readiness.
+
+The [raw correction package](evidence/chip-filled-corrected-io-contacts-assets-20260929.json)
+preserves the old failure, corrected method/log/result, independent inventory,
+placement/LEF inputs, routed supply boxes, native rule references and tests.
+The running 27-input-pad cloud extraction uses actual GDS transforms directly
+and is unaffected by the metadata conversion bug; it remains a separate job.
+
+The [fifth timing checkpoint](evidence/timing-checkpoint005-20260929.json)
+completed with setup −6.157546 ns and hold −1.988766 ns. Setup improved while
+hold worsened; both remain failing global-route estimates. Saved outputs,
+controller inputs and every member of the archived fourth checkpoint were
+rechecked. The sixth batch is active with unchanged constraints and SRAM
+placements. Its predecessor's [raw views](evidence/timing-checkpoint005-assets-20260929.json)
+are preserved; no final routed timing or equivalence acceptance is claimed.
