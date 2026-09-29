@@ -1774,3 +1774,17 @@ or speedup from these new profiles is available at this snapshot. The existing
 local/GitHub progress monitor now runs every three hours and retains autonomous
 stall investigation. SRAM, final timing, extraction and product acceptance
 requirements remain unchanged.
+
+### 2026-09-30 — checkpoint10 and recovery of the three-method campaign
+
+[Checkpoint10 and the recovery receipt](evidence/timing-three-methods-recovery-20260930.json)
+confirm setup −4.710829 ns, hold −1.840329 ns, two slew and six capacitance
+violations. The first three-method campaign failed at CLI directory validation
+before chip loading. The corrected controller creates fresh run directories,
+revalidates the completed baseline and has started the targeted placement
+candidate. [The timing study](106-timing-repair-research.md) explains the failure,
+new native launch regression and remaining timing/physical acceptance scope.
+The placement candidate subsequently completed: the connection shortened from
+463.620 to 233.940 µm, but its before/after summary timing did not improve. It
+was rejected and guarded hold repair started from checkpoint10. Monitoring
+now runs every eight hours. No new candidate result is accepted yet.

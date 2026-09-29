@@ -218,3 +218,60 @@ No other project's files were touched.
 All resulting geometry still needs detailed routing, qualified extraction,
 equivalence, DRC/LVS and final timing review. The controller's selection is an
 estimate for further verification, never a production acceptance decision.
+
+## 30 September: failed launch corrected; checkpoint10 retained
+
+Checkpoint10 completed at the end of the original repair sequence. Independent
+replay of all 15 output pins, the native log and reports confirms setup
+**−4.710829 ns** and hold **−1.840329 ns**. Setup improved by 0.188019 ns from
+checkpoint9, while hold worsened by 0.001783 ns. There are still two slew and
+six capacitance violations. These are global-route estimates, not final timing.
+The original two-XNOR connection remains intact and its instance-origin
+Manhattan distance remains 463.620 µm.
+
+The first campaign then failed before loading the chip: the installed
+LibreLane CLI requires `--force-run-dir` to name an existing directory. The
+controller had not created its candidate directories. Critical placement,
+guarded hold and the setup control each exited with code 2; batch4 never
+started. The earlier CLI smoke test exercised the `--from`/`--to` boundary
+without this directory argument, so it did not catch the error. The earlier
+45 passing tests did not establish a complete native launch.
+
+The controller now creates each candidate directory exclusively before launch;
+existing directories are rejected to preserve old evidence. A new
+[native CLI regression](../sw/tests/timing_experiment_flow_native.py) invokes
+the actual entry point with the real configuration, PDK and completed state:
+a missing directory is rejected, and creating it reaches the native flow
+boundary. Only the expensive execution boundary is intercepted in this test.
+A separate controller regression verifies directory creation before process
+spawn and refuses reuse. Recovery controls rehash the completed baseline,
+compare log measurements to its receipt, require the recorded successful native
+exit, reject a live predecessor or unreleased resource reservation, and preserve
+the original failed campaign unchanged. All 54 controller/process tests pass.
+
+The new immutable campaign lives at
+`hw/soc/out/timing-three-methods-20260930-retry1`; its controller started at
+02:28 TRT as PID2549495, starttime67663117. The first candidate completed in 270.05 seconds. It shortened the connection
+from 463.620 to 233.940 µm and preserved the native netlist byte for byte.
+However, its fresh-route before/after metrics are identical: setup WNS
+−4.909516 ns, hold WNS −1.840965 ns, setup TNS −4320.800144 ns and hold
+TNS −26.461045 ns. The candidate was therefore rejected; checkpoint10 remains
+the selected input and guarded hold repair has started. The original
+checkpoint and freshly rebuilt global-route estimates must not be conflated. The
+[recovery receipt](evidence/timing-three-methods-recovery-20260930.json) and
+[raw package](evidence/timing-three-methods-recovery-assets-20260930.json)
+preserve checkpoint10, failed logs, corrected methods and launch controls.
+
+The latest GitHub `checks` jobs also failed their SPDX gate: five Tcl files
+used Apache-2.0 where this repository requires CERN-OHL-W-2.0. Correcting only
+those headers makes SPDX, all five generator checks and the derived paper
+claims gate pass locally. The paper check reports 27 re-derived claims,
+15 manual/outstanding claims and zero wrong claims; those outstanding claims
+are not treated as accepted. The 9c80233 CI run had 2031 passing tests and
+126 skips, independently of its failed licence gate; formal work was still
+running at the inspection snapshot. Corrected CI results require a new run.
+
+The user subsequently changed monitoring to **every eight hours**. The actual
+existing heartbeat setting was verified active at that interval. The separate
+full-I/O supply extraction still waits for its unchanged 9 GiB available-memory
+threshold. No final timing, complete LVS or manufacturing approval is claimed.

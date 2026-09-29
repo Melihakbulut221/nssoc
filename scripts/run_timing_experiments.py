@@ -204,6 +204,53 @@ def limits():
     os.nice(10)
 
 
+def completed_slacks(log):
+    for marker in ("ALL_32_HARD_MACRO_MASTERS_LOCATIONS_ORIENTATIONS_PRESERVED",
+                   "COMPLETE_CHECKPOINT_REQUIRES_FRESH_ROUTING_RCX_STA_AND_EQUIVALENCE"):
+        if log.count(marker) != 1:
+            raise RuntimeError(f"Original checkpoint missing unique marker: {marker}")
+    values = {}
+    for kind in ("SETUP", "HOLD"):
+        start, end = f"CHUNK_{kind}_WNS_BEGIN", f"CHUNK_{kind}_WNS_END"
+        if log.count(start) != 1 or log.count(end) != 1:
+            raise RuntimeError("Non-unique original slack markers")
+        part = log.split(start)[1].split(end)[0]
+        match = re.fullmatch(r"\s*worst slack (?:min|max)\s+(-?[0-9]+(?:\.[0-9]+)?)\s*", part)
+        if match is None:
+            raise RuntimeError("Unparseable original slack")
+        values[f"{kind.lower()}_wns_ns"] = float(match[1])
+    return values
+
+
+def resume_verified_checkpoint(resume):
+    """Reuse a pinned completed baseline, never a failed candidate's output."""
+    verify_pins({resume["proof"]: resume["proof_sha256"],
+                 resume["previous_result"]: resume["previous_result_sha256"]})
+    proof = json.loads(Path(resume["proof"]).read_text())
+    previous = json.loads(Path(resume["previous_result"]).read_text())
+    identity = resume["previous_controller"]
+    current = snapshot(identity["pid"])
+    if (current is not None and current["birth"] == identity["birth"]
+            and current["boot_id"] == identity["boot_id"] and current["state"] != "Z"):
+        raise RuntimeError("Previous campaign controller is still active")
+    if (previous["status"] != "FAILED_LAST_COMPLETE_CHECKPOINT_PRESERVED"
+            or not previous.get("old_controller_retired")
+            or any(not row.get("released") for row in previous.get("reservations", []))):
+        raise RuntimeError("Previous campaign is not safely retired")
+    if previous.get("baseline") != proof:
+        raise RuntimeError("Baseline proof differs from previous campaign")
+    if proof["original_exit"]["state"] != "Z" or proof["original_exit"]["exit_status_raw"] != 0:
+        raise RuntimeError("Baseline lacks successful original exit evidence")
+    pins = state_pins(proof["state"])
+    if pins != proof["output_sha256"]:
+        raise RuntimeError("Completed baseline views changed")
+    log = Path(proof["state"]).parent / "openroad-resizertimingpostgrt.log"
+    verify_pins({str(log): proof["log_sha256"]})
+    if completed_slacks(log.read_text()) != proof["metrics"]:
+        raise RuntimeError("Completed baseline metrics changed")
+    return proof
+
+
 class Campaign:
     def __init__(self, directory):
         self.directory = Path(directory).resolve()
@@ -226,6 +273,12 @@ class Campaign:
 
     def handover(self):
         plan = self.plan
+        if "resume_verified_checkpoint" in plan:
+            proof = resume_verified_checkpoint(plan["resume_verified_checkpoint"])
+            write_json(self.directory / "baseline-verified.json", proof)
+            self.save(status="COMPLETED_BASELINE_REVERIFIED", baseline=proof,
+                      resume_source=plan["resume_verified_checkpoint"])
+            return proof["state"], proof["metrics"]
         old, child = plan["old_controller"], plan["old_child"]
         # Only the old controller is stopped. Its separate-session child runs.
         parent = snapshot(old["pid"])
@@ -249,20 +302,7 @@ class Campaign:
         verify_pins(plan["handover_input_sha256"])
         step = Path(plan["checkpoint_step"])
         log = (step / "openroad-resizertimingpostgrt.log").read_text()
-        for marker in ("ALL_32_HARD_MACRO_MASTERS_LOCATIONS_ORIENTATIONS_PRESERVED",
-                       "COMPLETE_CHECKPOINT_REQUIRES_FRESH_ROUTING_RCX_STA_AND_EQUIVALENCE"):
-            if marker not in log:
-                raise RuntimeError(f"Original checkpoint incomplete: {marker}")
-        values = {}
-        for kind in ("SETUP", "HOLD"):
-            start, end = f"CHUNK_{kind}_WNS_BEGIN", f"CHUNK_{kind}_WNS_END"
-            if log.count(start) != 1 or log.count(end) != 1:
-                raise RuntimeError("Non-unique original slack markers")
-            part = log.split(start)[1].split(end)[0]
-            match = re.fullmatch(r"\s*worst slack (?:min|max)\s+(-?[0-9]+(?:\.[0-9]+)?)\s*", part)
-            if match is None:
-                raise RuntimeError("Unparseable original slack")
-            values[f"{kind.lower()}_wns_ns"] = float(match[1])
+        values = completed_slacks(log)
         state = step / "state_out.json"
         pins = state_pins(state)
         proof = dict(recorded=now(), original_exit=current, input_sha256=plan["handover_input_sha256"],
@@ -404,6 +444,9 @@ class Campaign:
                "--with-initial-state", state, str(self.directory / "config.json")]
         row["command"] = cmd
         try:
+            # LibreLane's Click validator requires this directory to exist.
+            # Refuse reuse so an earlier result cannot be overwritten.
+            run.mkdir(exist_ok=False)
             verify_pins(row["input_sha256"])
             verify_pins(self.plan["method_sha256"])
             self.save(status="RUNNING_EXPERIMENT")

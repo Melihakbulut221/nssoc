@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CERN-OHL-W-2.0
 # Run in a fresh process against an immutable copied checkpoint. The controller
 # must pin this file, the selected helper, libraries, SDC and checkpoint inputs.
 

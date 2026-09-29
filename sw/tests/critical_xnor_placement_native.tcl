@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CERN-OHL-W-2.0
 # Native OpenDB + OpenDP control, not a whole-chip STA or routing test.
 # Run from repo root with pinned LibreLane AppImage openroad -no_init -exit FILE.
 source hw/soc/pnr/critical_xnor_placement.tcl

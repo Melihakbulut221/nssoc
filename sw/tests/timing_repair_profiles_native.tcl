@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CERN-OHL-W-2.0
 # Run from repo root: pinned LibreLane AppImage openroad -no_init -exit FILE
 # Tests the installed Tcl command parser and translated C++ argument contract.
 # C++ optimization/parasitics calls are replaced: NO DB, STA or speed benchmark.

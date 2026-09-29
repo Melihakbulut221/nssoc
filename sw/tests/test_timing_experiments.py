@@ -138,6 +138,91 @@ def test_relative_required_view_cannot_escape_pin_inventory(tmp_path, monkeypatc
         experiments.state_pins(path)
 
 
+def resume_fixture(tmp_path):
+    state, views = native_state(tmp_path)
+    log = tmp_path / "openroad-resizertimingpostgrt.log"
+    log.write_text("ALL_32_HARD_MACRO_MASTERS_LOCATIONS_ORIENTATIONS_PRESERVED\n"
+                   "CHUNK_SETUP_WNS_BEGIN\nworst slack max -4.7\nCHUNK_SETUP_WNS_END\n"
+                   "CHUNK_HOLD_WNS_BEGIN\nworst slack min -1.8\nCHUNK_HOLD_WNS_END\n"
+                   "COMPLETE_CHECKPOINT_REQUIRES_FRESH_ROUTING_RCX_STA_AND_EQUIVALENCE\n")
+    proof = dict(state=str(state), output_sha256=experiments.state_pins(state),
+                 original_exit=dict(state="Z", exit_status_raw=0),
+                 metrics=dict(setup_wns_ns=-4.7, hold_wns_ns=-1.8),
+                 log_sha256=experiments.sha(log))
+    proof_path = tmp_path / "proof.json"
+    experiments.write_json(proof_path, proof)
+    result = tmp_path / "previous.json"
+    experiments.write_json(result, dict(status="FAILED_LAST_COMPLETE_CHECKPOINT_PRESERVED",
+                                       old_controller_retired=True, baseline=proof,
+                                       reservations=[dict(released=True)]))
+    resume = dict(proof=str(proof_path), proof_sha256=experiments.sha(proof_path),
+                  previous_result=str(result), previous_result_sha256=experiments.sha(result),
+                  previous_controller=dict(pid=99999999, birth="10", boot_id="fixture"))
+    return resume, proof, views
+
+
+def test_completed_baseline_can_resume_without_old_live_controller(tmp_path, monkeypatch):
+    resume, proof, _ = resume_fixture(tmp_path)
+    monkeypatch.setattr(experiments, "snapshot", lambda _: None)
+    assert experiments.resume_verified_checkpoint(resume) == proof
+
+
+@pytest.mark.parametrize("defect", ["proof", "view", "log", "metrics", "reservation", "exit", "live"])
+def test_resume_rejects_changed_or_unreleased_evidence(tmp_path, monkeypatch, defect):
+    resume, proof, views = resume_fixture(tmp_path)
+    monkeypatch.setattr(experiments, "snapshot", lambda _: None)
+    if defect == "proof":
+        Path(resume["proof"]).write_text("changed")
+    elif defect == "view":
+        Path(views["odb"]).write_text("changed")
+    elif defect == "log":
+        (tmp_path / "openroad-resizertimingpostgrt.log").write_text("changed")
+    elif defect == "live":
+        monkeypatch.setattr(experiments, "snapshot", lambda _: resume["previous_controller"] | dict(state="S"))
+    else:
+        previous = json.loads(Path(resume["previous_result"]).read_text())
+        if defect == "reservation":
+            previous["reservations"][0]["released"] = False
+        else:
+            if defect == "metrics":
+                proof["metrics"]["setup_wns_ns"] = 0.0
+            else:
+                proof["original_exit"]["exit_status_raw"] = 256
+            previous["baseline"] = proof
+            experiments.write_json(resume["proof"], proof)
+            resume["proof_sha256"] = experiments.sha(resume["proof"])
+        experiments.write_json(resume["previous_result"], previous)
+        resume["previous_result_sha256"] = experiments.sha(resume["previous_result"])
+    with pytest.raises(RuntimeError):
+        experiments.resume_verified_checkpoint(resume)
+
+
+def test_native_run_directory_created_before_spawn_and_never_reused(tmp_path, monkeypatch):
+    state, _ = native_state(tmp_path)
+    campaign = object.__new__(experiments.Campaign)
+    campaign.directory = tmp_path
+    campaign.root = tmp_path
+    campaign.plan = dict(app="native-app", pdk_root="pdk", method_sha256={})
+    campaign.record = dict(stages=[])
+    monkeypatch.setattr(campaign, "reserve_resources", lambda: None)
+    monkeypatch.setattr(campaign, "release_resources", lambda: None)
+    monkeypatch.setattr(campaign, "save", lambda **kw: None)
+    calls = []
+
+    def stop_before_native(command, **kwargs):
+        run = Path(command[command.index("--force-run-dir") + 1])
+        assert run.is_dir()
+        calls.append(command)
+        raise RuntimeError("Reached native boundary with existing run directory")
+
+    monkeypatch.setattr(experiments.subprocess, "Popen", stop_before_native)
+    with pytest.raises(RuntimeError, match="Reached native boundary"):
+        campaign.run_stage("critical_xnor", str(state), {})
+    with pytest.raises(FileExistsError):
+        campaign.run_stage("critical_xnor", str(state), {})
+    assert len(calls) == 1
+
+
 def test_archive_roundtrip_preserves_all_bytes(tmp_path):
     directory = tmp_path / "checkpoint"
     (directory / "nested").mkdir(parents=True)

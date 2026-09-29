@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CERN-OHL-W-2.0
 # Opt-in physical experiment for the checkpoint-9 critical XNOR connection.
 # Sourcing does not mutate the design. Invoke apply AFTER removing fillers and
 # before detailed placement; invoke verify immediately AFTER detailed placement

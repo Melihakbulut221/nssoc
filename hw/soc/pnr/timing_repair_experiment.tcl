@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: CERN-OHL-W-2.0
 # Opt-in experiments; sourcing this file does not change a loaded design.
 # See docs/106-timing-repair-research.md. These are NOT validated chip results.
 # The caller must load the same isolated post-CTS checkpoint, propagated clocks,
