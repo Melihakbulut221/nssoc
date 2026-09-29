@@ -1674,3 +1674,33 @@ and [raw controller package](evidence/chip-supply-local-queue-correction-assets-
 preserve the drift, old identity and replacement method. Resource thresholds
 and physical acceptance requirements are unchanged; the replacement still
 waits for sufficient RAM.
+
+
+### 2026-09-29 — eighth timing checkpoint and mapped-path diagnosis
+
+The [eighth checkpoint](evidence/timing-checkpoint008-20260929.json) completed
+with setup −5.360166 ns and hold −1.840246 ns. Setup improved by 0.155417 ns
+from checkpoint7; hold is unchanged. Both remain failing global-route estimates.
+All output/controller hashes and every member of the archived preceding
+checkpoint were verified. The ninth batch started from these outputs with the
+same clocks and SRAM placements. The [raw checkpoint package](evidence/timing-checkpoint008-assets-20260929.json)
+preserves ODB, DEF, netlist, constraints and native reports.
+
+An independent [report-to-netlist diagnostic](evidence/timing-checkpoint008-diagnosis-20260929.json)
+locates the worst reported setup path at the slow corner: register-file x16
+bit13 (`_133180_/Q`) to instruction-fetch address bit31 (`_126138_/D`). The
+endpoint Q maps to `prefetch_buffer_i.fetch_addr_q[31]`. Arrival is 28.596535 ns
+against a 23.236368 ns requirement with the unchanged 20 ns core clock. This
+establishes the mapped endpoints and reported combinational path, not a source
+RTL repair or final delay qualification. The diagnostic covers the 60 setup
+paths in this report, not every path in the chip.
+
+The worst of 50 reported hold paths is the fast-corner QSPI output-enable
+`qspi_io_oe_o[3]`: arrival 2.409754 ns against 4.250000 ns required. The electrical
+report still contains **two slew violations and three capacitance violations**.
+Both slew failures are `fanout1387/X` and `fanout1391/X`; those two and
+`fanout3120/X` fail capacitance. Their exact mapped buffer masters and port nets
+are retained in the [diagnostic package](evidence/timing-checkpoint008-diagnosis-assets-20260929.json),
+which references the independently published raw checkpoint. These are concrete
+remaining repair targets; none was waived or claimed closed by the checkpoint.
+The independently queued complete-I/O extraction still requires sufficient RAM.
