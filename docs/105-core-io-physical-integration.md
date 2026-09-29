@@ -1546,3 +1546,32 @@ from checkpoint5 but remain failing global-route estimates. Output hashes,
 controller inputs and every member of the predecessor archive were verified.
 The seventh batch is running; the completed [raw checkpoint views](evidence/timing-checkpoint006-assets-20260929.json)
 are separately preserved. No final routed timing or equivalence pass is claimed.
+
+### 2026-09-29 — complete window-plan consumer and seventh timing result
+
+`scripts/audit_supply_checkpoint.py` connects the verified window inventory to
+a saved physical connectivity database. Its CLI requires independent hashes
+for the checkpoint manifest and the window plan. It rejects different GDS
+identities, incorrect units, missing floating-hierarchy retention, incomplete
+instance/master/rail/layer counts and malformed windows. Every declared window
+is queried through `probe_supply_components`; missing windows, split rails,
+child-local identities and shared nets between different supplies prevent a
+pass. Layer mapping uses the registered native `metal8` through `metal134`
+conductors; names never create virtual connections.
+
+The [consumer controls](evidence/supply-checkpoint-plan-controls-20260929.json)
+exercise the full save/load/CLI path on four small, explicitly synthetic
+layouts: connected rails pass; a short, a split rail and an absent port fail.
+A window plan bound to a different GDS is also rejected. Ten additional plan
+validation regressions pass. The [raw control package](evidence/supply-checkpoint-plan-controls-assets-20260929.json)
+contains the exact GDS, plans, databases, manifests, results and test methods.
+These are consumer tests, not a chip-level connectivity result. The actual
+314-instance/10,526-window plan is ready, but its full-chip checkpoint has not
+yet been produced. The running 27-input-pad cloud job is unchanged.
+
+The [seventh timing checkpoint](evidence/timing-checkpoint007-20260929.json)
+has setup −5.515583 ns and hold −1.840246 ns, both still failing global-route
+estimates. All output and controller input hashes and the preceding checkpoint
+archive were verified. The [raw views](evidence/timing-checkpoint007-assets-20260929.json)
+are preserved, and the eighth batch is active. Final routed timing, qualified
+SRAM RC/Liberty and equivalence remain open.
