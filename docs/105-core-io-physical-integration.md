@@ -1348,3 +1348,42 @@ preserve the new proof records, previous inset failures and timing reports.
 Full chip transistor LVS, SRAM Liberty/distributed RC, final routed timing,
 complete PCIe Gen3 x4 PHY/controller, DFT and actual manufacturer approval
 remain open.
+
+### 2026-09-29 — filled density and seven native groups verified
+
+The [partial native result](evidence/chip-offset-filled-native-partial-20260929.json)
+for [36527710008](https://github.com/Melihakbulut221/nssoc/actions/runs/36527710008)
+is independently tied to source `cb76088b65e58ae6b3d0d53e10c1083d94595fbc`
+and filled GDS `a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff`.
+Antenna has 31 categories/zero markers, supplemental wide has 11/zero,
+and FEOL plus geometry has 443/zero. All 37 native density rules executed
+with zero markers. Each report, log, category catalog and 108 input hashes
+(109 for density) was checked. BEOL is still running; the seven completed
+groups do not establish a complete native DRC pass.
+
+A [supply connectivity investigation](evidence/chip-offset-filled-supply-investigation-20260929.json)
+now probes the actual GDS without using labels or abstract net joins. The
+upper-metal-only extraction sees separate VDD and VSS, but three IOVSS
+clusters at the 27 input pads. This limited stack cannot decide whether lower
+metals join those clusters, so it is not proof of a full-chip open circuit.
+The attempted seven-metal flat extraction exceeded its 1.5 GiB address-space
+cap while constructing Metal1; its failure and method are retained. A separate
+hierarchical extraction preserves the same cap, uses all seven native metal
+conductors and six via layers, and excludes MIM-covered TopVia1. Native
+conductor derivations and connection rules were checked against the pinned
+LVS sources. That extraction is still running and has no accepted result.
+
+Small seven-metal controls exposed a query hazard: two disconnected instances
+can return the same child-local circuit/cluster ID. Optional path probing in
+this binding did not distinguish those instances. The acceptance guard now
+requires all cross-instance supply probes to resolve to the top circuit;
+child-local identities remain unresolved. The parent-bridge control passes
+and the disconnected-instance control is rejected. The ongoing extraction's
+raw result must pass this separate guard before any continuity claim. Even
+then, its scope is the input-pad power probes; transistor/substrate extraction,
+other pins, resistance, final timing and manufacturing acceptance remain open.
+
+The [raw partial-native and supply-audit package](evidence/chip-offset-filled-native-supply-assets-20260929.json)
+preserves seven native reports, the failed flat attempt, the running
+hierarchical method/snapshot, all control versions and native reference files.
+Local timing checkpoint4 continues independently with its pinned inputs.
