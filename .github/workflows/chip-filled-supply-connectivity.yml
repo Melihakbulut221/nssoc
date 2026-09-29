@@ -1,0 +1,64 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: chip-filled-supply-connectivity
+on:
+  push:
+    paths:
+      - .github/workflows/chip-filled-supply-connectivity.yml
+      - scripts/check_chip_supply_connectivity.py
+      - docs/evidence/chip-filled-supply-recovery-assets-20260929.json
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chip-filled-supply-connectivity-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  supply:
+    runs-on: ubuntu-22.04
+    # Hosted platform limit only; no native elapsed-time watchdog.
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned executable and unchanged GDS
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          python3 scripts/run_chip_native_shard.py --group beol --prepare-only --manifest docs/evidence/chip-offset-filled-native-input-assets-20260929.json --output hw/soc/out/github-supply-recovery/prepared
+          python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/chip-filled-supply-recovery-assets-20260929.json --out hw/soc/out/github-supply-recovery/inputs
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from run_chip_native_shard import restore
+          root=Path('hw/soc/out/github-supply-recovery')
+          restore(root/'inputs/chip-filled-supply-recovery-20260929.tar.xz', root/'supplement')
+          PY
+      - name: Check hierarchical controls and extract actual supply connectivity
+        run: |
+          set +e
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/check_chip_supply_connectivity.py \
+            --gds hw/soc/out/github-supply-recovery/prepared/beol/bundle/input/chip.gds \
+            --lef hw/soc/out/github-supply-recovery/supplement/sg13g2_io.lef \
+            --references hw/soc/out/github-supply-recovery/supplement/native-reference \
+            --output hw/soc/out/github-supply-recovery/extraction \
+            2>&1 | tee hw/soc/out/github-supply-recovery/run.log
+          code=${PIPESTATUS[0]}
+          echo "$code" > hw/soc/out/github-supply-recovery/exit-code.txt
+          exit "$code"
+      - name: Preserve stage, resources, results and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-filled-supply-connectivity
+          path: |
+            hw/soc/out/github-supply-recovery/extraction/*.json
+            hw/soc/out/github-supply-recovery/*.log
+            hw/soc/out/github-supply-recovery/*.txt
+            hw/soc/out/github-supply-recovery/prepared/beol/result.json
+          retention-days: 30

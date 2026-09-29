@@ -1398,3 +1398,40 @@ The fifth batch is running with the same clock constraints, SRAM placements
 and pinned controller inputs. Its [raw checkpoint views](evidence/timing-checkpoint004-assets-20260929.json)
 are preserved separately from the running fifth batch. Final routing,
 qualified RC/SRAM Liberty, STA and equivalence remain required.
+
+### 2026-09-29 — filled native DRC complete; supply extraction recovery
+
+The [completed verification](evidence/chip-offset-filled-native-completed-20260929.json)
+checks all eight groups of run36527710008 against the same filled GDS
+`a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff`.
+BEOL completed in 13,018.79 seconds with all 117 categories and zero markers.
+Together with FEOL and geometry, all 560 main categories pass. Antenna has
+31 categories/zero markers, supplemental wide has 11/zero, and all 37 density
+rules executed with zero markers. The verifier independently rechecks every
+report, log, category catalog, input bundle member and source-method digest.
+This closes this candidate's eight native DRC groups; transistor LVS, qualified
+RC, final timing and manufacturer acceptance are separate unfinished gates.
+
+The [hierarchical supply extraction](evidence/chip-filled-supply-recovery-20260929.json)
+has now failed with `std::bad_alloc` in `LayoutToNetlist.extract_netlist` under
+its 1.5 GiB address-space cap. It produced no accepted connectivity result.
+The original method and failure log are retained. The
+[recovery package](evidence/chip-filled-supply-recovery-assets-20260929.json)
+also preserves all eight raw DRC reports, the original IO LEF and unchanged
+native metal/via derivation references.
+
+`chip-filled-supply-connectivity` prepares that exact GDS and runs
+`scripts/check_chip_supply_connectivity.py` on a separate GitHub worker.
+The extraction cap is the smaller of 12 GiB and available memory minus 1 GiB;
+the worker must have at least 4 GiB for extraction. Controls run before the
+full chip, and stage/resource/error records survive failed runs. There is no
+inner elapsed-time watchdog; the hosted platform still imposes its six-hour
+job limit. Existing healthy local timing work is unchanged.
+
+The new acceptance guard rejects child-local circuit IDs, shorted supplies,
+split identities and missing rails. Local hierarchical positive and
+disconnected-instance controls pass, as do five acceptance regression tests.
+Any future passing extraction proves only the 27 input-pad power ports through
+seven metals and six vias. It does not establish every chip pin, transistor or
+substrate connection, nor replace full-chip LVS. The recovery job has no
+accepted chip result at this delivery.
