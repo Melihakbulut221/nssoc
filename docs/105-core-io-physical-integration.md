@@ -1661,3 +1661,16 @@ settings, not measured minimum chip memory requirements. The controller checks
 resources every 30 seconds and starts automatically when they are sufficient.
 The running timing repair remains untouched. No replacement hosted extraction
 was launched; the timeout outputs and local continuation state are retained.
+
+
+The final delivery check detected a changed timeout-receipt hash in the first
+idle local queue: re-running the failure verifier had refreshed that receipt
+after queue creation. No extraction stage had started, and all physical inputs
+and method hashes were unchanged. The old controller's PID/birth, process group
+and absence of children were verified before stopping it. The replacement queue
+binds its own immutable receipt copy; all pinned inputs were checked again.
+The [correction record](evidence/chip-supply-local-queue-correction-20260929.json)
+and [raw controller package](evidence/chip-supply-local-queue-correction-assets-20260929.json)
+preserve the drift, old identity and replacement method. Resource thresholds
+and physical acceptance requirements are unchanged; the replacement still
+waits for sufficient RAM.

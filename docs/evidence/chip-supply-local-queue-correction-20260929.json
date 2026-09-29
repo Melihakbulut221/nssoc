@@ -1,0 +1,28 @@
+{
+  "status": "IDLE_QUEUE_REPLACED_BEFORE_ANY_EXTRACTION",
+  "recorded": "2026-09-29T19:00:45.441041+03:00",
+  "stopped_controller": {
+    "pid": 2457699,
+    "birth": "64935274",
+    "parent": 1,
+    "group": 2457699
+  },
+  "stopped_command": "python3 hw/soc/out/chip-ring-offset-20260929/local-supply-recovery/run.py ",
+  "old_stages": [],
+  "changed_pin": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/supply-cloud-timeout-verified.json": {
+      "expected": "77673ebebeaa7eb08bed8825435ad32aa1112d761558d023fa1e86a51910b697",
+      "actual": "c80a755bee819bc1364ee002ca8346ad045f87a43911c8bb9c9f75e52bafd3ae"
+    }
+  },
+  "cause": "Re-running the timeout verifier updated its receipt after queue creation. Input guard caught the drift before any native extraction. The immutable GDS and methods were unchanged.",
+  "new_controller_pid": 2460217,
+  "new_script": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/local-supply-recovery-v2/run.py",
+  "new_script_sha256": "a59a518a66b124887aa6d521c9de40bad3d386c71b7455b8c8a4aeacbfaef132",
+  "immutable_timeout_receipt": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/local-supply-recovery-v2/cloud-timeout-verified.json",
+  "immutable_timeout_sha256": "c80a755bee819bc1364ee002ca8346ad045f87a43911c8bb9c9f75e52bafd3ae",
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "raw_assets_manifest": "docs/evidence/chip-supply-local-queue-correction-assets-20260929.json",
+  "scope": "Corrected idle local supply queue: mutable timeout receipt drift detected before any extraction. Old verified childless controller stopped, v2 binds immutable receipt; all new pins checked. No native result or manufacturing acceptance."
+}
