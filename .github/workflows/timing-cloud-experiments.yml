@@ -25,7 +25,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       CLOUD_PROFILE: ${{ matrix.profile }}
       CLOUD_OUTPUT: ${{ github.workspace }}/timing-cloud-result
-      CLOUD_WORK: ${{ runner.temp }}/timing-cloud-input
+      CLOUD_WORK: ${{ github.workspace }}/timing-cloud-input
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "recorded": "2026-09-30T21:04:27.530494+03:00",
-  "status": "PORTABLE_INPUT_AND_CLOUD_RUNNER_VERIFIED_LAUNCH_PENDING",
+  "recorded": "2026-09-30T21:16:36.643624+03:00",
+  "status": "WORKFLOW_CONTEXT_REPAIRED_CLOUD_RELAUNCH_PENDING",
   "source_head": "05aa57f665dddd872ea3270bd2c6e5d3a33b3c44",
   "portability": {
     "recorded": "2026-09-30T20:56:41.018403+03:00",
@@ -39,12 +39,27 @@
   "manufacturing_approval": false,
   "local_validation": {
     "selected_tests_passed": 97,
-    "new_cloud_tests_passed": 37,
+    "new_cloud_tests_passed": 38,
     "regression_scope": "Pinned input restore and translation, observer lifecycle, incomplete captures, source regressions, and existing timing/process guard regression."
   },
   "method_sha256": {
     "scripts/run_cloud_timing_experiment.py": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
-    "sw/tests/test_cloud_timing_experiment.py": "f2ee925d38b6cf56a44d27e987d8f9752a8e25e90e37b26fdb876f7105da355e",
-    ".github/workflows/timing-cloud-experiments.yml": "86ee5d6f2765bbfe1f494d8759313b5f39728c127481b7b89b8ad3876217e5f1"
+    "sw/tests/test_cloud_timing_experiment.py": "bd84049437d8d9dd0751daefb6f04eae20cfc427056a819aa99785275c7a77a7",
+    ".github/workflows/timing-cloud-experiments.yml": "07faec0e6b07be08112522ba23a6fdfb922053fb089d52355a6bb6a80430318e"
+  },
+  "workflow_schema_repair": {
+    "failed_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/36756710604",
+    "failed_commit": "a747b3347800860ada52da0b9c34e706349d6743",
+    "docs": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+    "actionlint_release_url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz",
+    "archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+    "binary_sha256": "c872d6db8c6bf83a8eaa704fc93999f027d55dffbc63b8a6abdccb47df5f4cd4",
+    "workflow_sha256": "07faec0e6b07be08112522ba23a6fdfb922053fb089d52355a6bb6a80430318e",
+    "original_workflow_sha256": "86ee5d6f2765bbfe1f494d8759313b5f39728c127481b7b89b8ad3876217e5f1",
+    "fixed_exit_code": 0,
+    "original_exit_code": 1,
+    "tests": "38 passed; ruff and git diff --check passed",
+    "server_error": "(Line: 28, Col: 19): Unrecognized named-value: 'runner'. Located at position 1 within expression: runner.temp",
+    "native_jobs_started": 0
   }
 }

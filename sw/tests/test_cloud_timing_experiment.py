@@ -264,3 +264,18 @@ def test_resource_failure_never_launches_or_downloads(tmp_path,monkeypatch):
         cloud.start(mp,'setup_baseline',tmp_path/'output',tmp_path/'work')
     assert json.loads((tmp_path/'output/result.json').read_text())['status']=='FAILED_PRESERVED'
     assert not (tmp_path/'output/launch.json').exists()
+
+
+def test_job_environment_uses_only_server_available_contexts():
+    # GitHub rejects runner context before scheduling jobs.<id>.env.
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability
+    import re
+    import yaml
+    allowed={'github','needs','strategy','matrix','vars','secrets','inputs'}
+    workflow=yaml.load((ROOT/'.github/workflows/timing-cloud-experiments.yml').read_text(),Loader=yaml.BaseLoader)
+    for job in workflow['jobs'].values():
+        for value in job.get('env',{}).values():
+            for expression in re.findall(r"\$\{\{(.*?)\}\}",value):
+                contexts=set(re.findall(r"\b([a-zA-Z_][a-zA-Z_0-9]*)\s*\.",expression))
+                assert contexts <= allowed, (expression,contexts-allowed)
+    assert workflow['jobs']['setup']['env']['CLOUD_WORK']=='${{ github.workspace }}/timing-cloud-input'
