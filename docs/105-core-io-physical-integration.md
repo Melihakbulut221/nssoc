@@ -1804,3 +1804,73 @@ for a subsequent isolated experiment. It has not yet run on the chip. The
 [verification receipt](evidence/timing-hold-targeted-20260930.json) retains that
 scope; the current campaign, constraints and incomplete physical acceptance
 remain intact.
+
+### 2026-09-30, afternoon — completed hold experiment rejected; setup awaits RAM
+
+The [completed hold review](evidence/timing-guarded-hold-complete-20260930.json)
+verifies the 8 h 50 min native result and all 31 archived files. Negative hold
+endpoints fall from 113 to 11, with final global-estimate hold WNS −1.078148 ns.
+The candidate adds one negative setup endpoint and is worse than C10's selected
+setup WNS, so it is rejected and C10 remains selected. The preserved result is
+not final routed timing or physical acceptance.
+
+The native child exited cleanly and the supply reservation was released.
+At 14:25 the next setup experiment waits for 5 GiB available RAM; approximately
+3.2 GiB is available. Supply extraction separately requires 9 GiB. The
+[timing study](106-timing-repair-research.md) records the exact comparisons,
+resource diagnosis and tested reporting improvement for future controller
+copies. The active immutable campaign and all acceptance requirements remain
+unchanged. All four `761f147` GitHub workflows are independently verified
+successful; their software/formal scope does not establish chip signoff.
+
+### 2026-09-30 — preserve I/O substrate globals and isolate an unchanged cell hierarchy
+
+The native I/O CDL declares `*.GLOBAL sub!`, which the pinned SPICE reader treats
+as a comment. Previously, selecting reachable subcircuits also discarded this
+library-level declaration. `normalize_io_cdl.py` now converts this explicit CDL
+metadata to `.GLOBAL`; `io_cell_schematic.py` retains the declaration when
+selecting cells. It never infers a global from a node name or connects it to a
+chosen supply. For the real Vdd reference, the change is exactly the addition of
+`.GLOBAL sub!` before the previous selected device bodies. A native four-resistor
+control confirms that the two child substrate nets now bind to one declared
+global; the old comment form and a wrong-global negative control leave them
+separate. Device parameters are unchanged. The full-chip reference generator has
+not yet been migrated to this helper, and no whole-chip LVS pass is implied.
+
+The adapter also rejects output/receipt path aliases, uses exclusive writes and
+rejects CRLF inputs instead of silently changing bodies claimed to be preserved.
+Seventy-three related regressions pass. These checks do not repair the remaining
+physical device or substrate mismatches by changing expected parameters.
+
+Loading the full 71,399,990-byte I/O GDS exceeded the isolated diagnostic address
+space caps before LVS comparison. `scripts/extract_gds_hierarchy.py` now streams
+only the chosen root and every referenced cell while copying their original
+records unchanged. Vdd needs four of the 46 cells, producing 2,435,898 bytes.
+Library header/units and every selected cell hash are preserved; output is
+independently re-indexed. Unsupported records, malformed dependencies, missing
+references, cycles and unsafe output paths are rejected. Actual extraction used
+19,896 KiB peak RSS under a 100 MiB address-space cap. Thirty-five tests pass,
+including a native geometry/XOR control with both single and array references.
+This preserves the selected root's geometry, not all unselected library cells.
+
+The [I/O global and hierarchy evidence](evidence/io-substrate-global-repair-20260930.json)
+records the exact source hashes, native control and cell-comparison outcomes,
+including resource failures. The [raw package](evidence/timing-guarded-hold-complete-assets-20260930.json)
+retains failed attempts alongside the corrected methods. The seven I/O
+transistor LVS gates and full-chip acceptance remain separate requirements.
+
+The native Vdd A/B comparison now completes with the unchanged deck and GDS.
+The extracted netlists are byte-identical; the schematic differs only by the
+explicit vendor global declaration. `sg13g2_RCClampResistor` changes from
+`NoMatch` to `Match`. Overall Vdd still fails: `sg13g2_Clamp_N43N43D4R` and
+`sg13g2_RCClampInverter` remain `NoMatch`, and the parent is `Skipped`.
+Tap area/perimeter differences and split child terminals requiring actual
+parent connectivity remain under investigation; no expected parameters,
+physical nets or comparison rules were changed to obtain the child match.
+
+The first subset run hit a proven thread-creation failure at a 1 GiB virtual
+address-space cap. Its failure and guarded cleanup are retained. Both subsequent
+comparisons completed under a 1.5 GiB cap, using approximately 454 MiB peak RSS;
+there was no elapsed-time watchdog. Only Vdd was rerun with the new adapter,
+and no seven-master or whole-chip acceptance is claimed. The combined controller,
+I/O and GDS extraction regression suite passes all 168 selected tests.

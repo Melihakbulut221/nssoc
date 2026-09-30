@@ -5,23 +5,34 @@
 
 Remove an empty .PARAM declaration, map X-prefixed ptap1/ntap1 pseudo-devices
 to R-prefixed native CustomTap devices, and map the res_rppd model spelling
-to the reader's rppd name. Nodes and parameter values are unchanged. This is
-an LVS dialect conversion, not a SPICE simulation model or an LVS pass.
+to the reader's rppd name. Activate explicitly declared CDL *.GLOBAL metadata
+as SPICE .GLOBAL. Primitive node tokens and parameter values are unchanged;
+the declared globals now share their intended net across the hierarchy. This
+is an LVS dialect conversion, not a SPICE simulation model or an LVS pass.
+Preserve globals when selecting cells with io_cell_schematic.py.
 """
 import argparse
 import json
 import re
 from pathlib import Path
 
-from transistor_schematic import digest, read_cdl
+from io_cell_schematic import global_line, parse_io_cdl, read_io_cdl_text
+from transistor_schematic import digest
 
 
 def normalize(text):
+    if "\r" in text:
+        raise ValueError("CDL input must use LF newlines; CRLF conversion is not implicit")
     lines, changes = text.splitlines(keepends=True), []
     for index, original in enumerate(lines):
         words = original.split()
         candidate, reason = original, None
-        if re.fullmatch(r"\s*\.PARAM\s*", original, re.I):
+        declared_globals = global_line(original)
+        if declared_globals is not None and original.lstrip().startswith("*"):
+            star = original.index("*")
+            candidate = original[:star] + original[star + 1:]
+            reason = "native_explicit_global_declaration"
+        elif re.fullmatch(r"\s*\.PARAM\s*", original, re.I):
             candidate, reason = "", "empty_parameter_declaration"
         elif words and words[0].startswith("X") and any("=" in x for x in words):
             if (len(words) != 10 or words[3] != "/"
@@ -60,21 +71,26 @@ def main():
     parser.add_argument("output", type=Path)
     parser.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
+    if args.output.resolve() == args.receipt.resolve():
+        parser.error("Output and receipt must use distinct paths")
     if args.output.exists() or args.receipt.exists():
         parser.error("Choose fresh output and receipt paths")
     source_hash = digest(args.source)
-    output, changes = normalize(args.source.read_text())
+    output, changes = normalize(read_io_cdl_text(args.source))
+    definitions, globals_ = parse_io_cdl(output)
     if digest(args.source) != source_hash:
         raise ValueError("Source changed")
     with args.output.open("x") as stream:
         stream.write(output)
-    definitions, _ = read_cdl([args.output])
     receipt = dict(status="DIALECT_CONVERSION_REQUIRES_NATIVE_READER_AND_LVS",
                    source_sha256=source_hash, output_sha256=digest(args.output),
                    changes=changes, subcircuits=len(definitions),
+                   explicit_globals=globals_,
                    native_reader_verified=False, lvs_accepted=False,
                    manufacturing_approval=False)
-    args.receipt.write_text(json.dumps(receipt, indent=2) + "\n")
+    with args.receipt.open("x") as stream:
+        json.dump(receipt, stream, indent=2)
+        stream.write("\n")
     print(receipt["status"])
 
 

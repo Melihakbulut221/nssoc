@@ -197,6 +197,44 @@ def test_resume_rejects_changed_or_unreleased_evidence(tmp_path, monkeypatch, de
         experiments.resume_verified_checkpoint(resume)
 
 
+@pytest.mark.parametrize("available,disk", [
+    (3 * experiments.GIB, experiments.GIB),
+    (5 * experiments.GIB, experiments.GIB - 1),
+    (3 * experiments.GIB, experiments.GIB - 1),
+])
+def test_resource_wait_reports_pending_stage_without_touching_workers(tmp_path, monkeypatch, available, disk):
+    campaign = object.__new__(experiments.Campaign)
+    campaign.directory = campaign.root = tmp_path
+    campaign.result = tmp_path / "result.json"
+    campaign.plan = dict(method_sha256={}, supply_controller={})
+    experiments.write_json(tmp_path / "plan.json", campaign.plan)
+    campaign.record = dict(stages=[], plan_sha256=experiments.sha(tmp_path / "plan.json"))
+    monkeypatch.setattr(experiments, "resource_sample", lambda root:
+                        dict(available_memory_bytes=available, free_disk_bytes=disk))
+
+    def poll_boundary(seconds):
+        assert seconds == 30
+        raise InterruptedError("Observed first resource wait")
+
+    def no_workers(*args, **kwargs):
+        raise AssertionError("Insufficient resources must not touch workers")
+
+    monkeypatch.setattr(experiments.time, "sleep", poll_boundary)
+    monkeypatch.setattr(experiments, "snapshot", no_workers)
+    monkeypatch.setattr(experiments.subprocess, "Popen", no_workers)
+    with pytest.raises(InterruptedError, match="Observed first resource wait"):
+        campaign.run_stage("setup_baseline", "/not-yet-loaded/state.json", {})
+    record = json.loads(campaign.result.read_text())
+    assert record["status"] == "WAITING_FOR_LOCAL_RESOURCES"
+    assert record["pending_stage"]["profile"] == "setup_baseline"
+    assert record["pending_stage"]["requested_at"]
+    assert record["resources"]["required_available_memory_bytes"] == 5 * experiments.GIB
+    assert record["resources"]["required_free_disk_bytes"] == experiments.GIB
+    assert record["resources"]["missing_memory_bytes"] == max(0, 5 * experiments.GIB - available)
+    assert record["resources"]["missing_disk_bytes"] == max(0, experiments.GIB - disk)
+    assert record["stages"] == [] and not (tmp_path / "setup_baseline").exists()
+
+
 def test_native_run_directory_created_before_spawn_and_never_reused(tmp_path, monkeypatch):
     state, _ = native_state(tmp_path)
     campaign = object.__new__(experiments.Campaign)

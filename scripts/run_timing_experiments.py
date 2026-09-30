@@ -336,6 +336,10 @@ class Campaign:
             if sha(self.directory / "plan.json") != self.record["plan_sha256"]:
                 raise RuntimeError("Immutable campaign plan changed")
             sample = resource_sample(self.root)
+            sample.update(required_available_memory_bytes=5 * GIB,
+                          required_free_disk_bytes=GIB,
+                          missing_memory_bytes=max(0, 5 * GIB - sample["available_memory_bytes"]),
+                          missing_disk_bytes=max(0, GIB - sample["free_disk_bytes"]))
             if sample["available_memory_bytes"] < 5 * GIB or sample["free_disk_bytes"] < GIB:
                 self.save(status="WAITING_FOR_LOCAL_RESOURCES", resources=sample)
                 time.sleep(30)
@@ -427,6 +431,9 @@ class Campaign:
         return found
 
     def run_stage(self, profile, state, source):
+        # Reserve before constructing the native run, but retain which stage
+        # is waiting and when the request began across repeated resource polls.
+        self.save(pending_stage=dict(profile=profile, input_state=state, requested_at=now()))
         self.reserve_resources()
         row = dict(profile=profile, input_state=state, input_sha256=state_pins(state), status="PREPARED")
         self.record["stages"].append(row)
@@ -449,7 +456,7 @@ class Campaign:
             run.mkdir(exist_ok=False)
             verify_pins(row["input_sha256"])
             verify_pins(self.plan["method_sha256"])
-            self.save(status="RUNNING_EXPERIMENT")
+            self.save(status="RUNNING_EXPERIMENT", pending_stage=None)
             start = time.monotonic()
             with (self.directory / f"{profile}.log").open("x") as log:
                 child = subprocess.Popen(cmd, cwd=self.root, env=env, stdout=log, stderr=subprocess.STDOUT,

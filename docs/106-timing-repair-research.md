@@ -359,3 +359,57 @@ contracts. Merely increasing the software divider, inserting a sequencer
 register, or adding a multicycle exception is not a demonstrated physical hold
 fix. Existing divider/abort/lane tests pass (three selected tests); those RTL
 checks do not qualify board or pad timing. The active constraints are unchanged.
+
+## 30 September, afternoon: guarded hold completed and rejected
+
+The guarded hold experiment completed at 11:23 TRT with native exit code zero,
+after 31,832 seconds (8 h 50 min). Independent streaming verification checks all
+31 archived files, the final completion markers, the unchanged SDC, all 32 SRAM
+master/placement/orientation records and all 303 top-level DEF pin records.
+The following values are measured **after legalization and the incremental
+global-route parasitic update**, not the earlier progress table:
+
+| Metric | Freshly rebuilt input | Completed hold candidate |
+|---|---:|---:|
+| Setup WNS (ns) | −4.909516 | −4.875384 |
+| Setup TNS (ns) | −4320.800144 | −4283.189810 |
+| Negative setup endpoints | 1384 | 1385 |
+| Hold WNS (ns) | −1.840965 | −1.078148 |
+| Hold TNS (ns) | −26.461045 | −4.776081 |
+| Negative hold endpoints | 113 | 11 |
+| Slew / capacitance violation counts | 0 / 1 | 0 / 1 |
+| Instance count | 103697 | 108085 |
+
+The candidate is **rejected**, despite the substantial hold improvement. It adds
+one negative setup endpoint, and its setup WNS is 0.164555 ns worse than the
+selected C10 checkpoint's recorded −4.710829 ns. Both independent regression
+checks fail. The rebuilt input above is a separate reference; beating it does
+not permit regression from the selected checkpoint. C10 remains selected. The
+raw rejected output is retained and published; no timing result is waived or
+relabelled as accepted. The [completed hold review](evidence/timing-guarded-hold-complete-20260930.json)
+and [raw asset inventory](evidence/timing-guarded-hold-complete-assets-20260930.json)
+preserve the exact comparison and native evidence.
+
+At 14:25 TRT the controller has no live native child and is waiting to start
+`setup_baseline`. Approximately 3.2 GiB of memory is available against its
+unchanged 5 GiB requirement; swap is nearly exhausted and disk headroom is
+approximately 1 GiB. The supply reservation was correctly released at 11:23;
+that separate queue now waits for its own unchanged 9 GiB memory requirement.
+Neither queue is a running physical measurement. Scoped process inspection
+finds no leftover large NSSOC worker to retire safely. Other projects and
+applications are untouched, and no duplicate heavy job is launched.
+
+Future controller copies now record the pending profile, original request time,
+required memory/disk and exact shortfall while waiting, so an updated heartbeat
+timestamp cannot be mistaken for native progress. Sixty controller/process
+tests pass, including insufficient-memory/disk controls that prohibit worker
+inspection or launch before resources are available. The active campaign's
+19 pinned inputs and fixed thresholds remain unchanged. Its next stages are
+still the same-input one-repair versus four-repairs setup comparison; the
+targeted hold profile remains an unexecuted chip experiment.
+
+All four workflows for `761f1478dd876b21e2136326d091036af26d5bfc` are verified
+successful: 2043 pytest passes and 126 skips per checks run, 503 RTL passes with
+22 reported skips, and 116 SoC plus 54 pilot formal passes. The six historical
+excluded attempts and the conditional native-boot skip remain explicit. These
+CI results do not close the physical or product acceptance requirements.
