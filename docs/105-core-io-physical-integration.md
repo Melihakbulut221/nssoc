@@ -1874,3 +1874,55 @@ comparisons completed under a 1.5 GiB cap, using approximately 454 MiB peak RSS;
 there was no elapsed-time watchdog. Only Vdd was rerun with the new adapter,
 and no seven-master or whole-chip acceptance is claimed. The combined controller,
 I/O and GDS extraction regression suite passes all 168 selected tests.
+
+
+### 2026-09-30 — tiled cloud supply extraction replaces the monolithic recovery job
+
+The previous hosted whole-graph extraction reached GitHub's six-hour job limit
+without a complete connectivity result. The new `chip-supply-tiled` workflow
+uses 64 independent native extraction jobs over an 8 × 8 spatial partition.
+Preparation retains the complete chip geometry, all seven conducting metals
+and six via levels, and the pinned inventory of 314 I/O instances and 10,526
+port windows. Two-DBU overlaps include all 210 face and corner adjacencies.
+Tiles are joined only by matching physical overlap geometry and identical
+interior witness locations. Supply names and reused child cluster IDs never
+create connections. Unsupported arbitrary-slope clipping fails explicitly.
+
+Each extraction process exits before a separate native checkpoint replay.
+The aggregate checks every tile, overlap and window; it also verifies the
+actual prepared/promoted manifests, compressed connectivity database hashes,
+source/method/tool identities and canonical replayed witness partitions.
+Missing or conflicting evidence is a failure. This addresses the previously
+unsplittable extraction stage; production-chip preparation runtime and memory
+requirements have not yet been measured for this new method.
+
+Thirteen small native cases match the complete window equivalence classes of
+independent unsplit extraction. They include exact tile-corner contact, a
+one-DBU gap, all six via levels, a missing via, MIM exclusion, resistor cuts,
+multiple components, open/short faults and repeated floating child instances.
+Eleven corrupted coverage/checkpoint cases and one unsafe clipping case are
+rejected. Fifty-one focused Python tests, Ruff and workflow/Bash parsing pass.
+The native controls use KLayout 0.30.7 and peak at 90,388 KiB RSS. The workflow
+runs both the Python and native controls before preparing the chip geometry.
+
+The [migration receipt](evidence/chip-supply-tiled-migration-20260930.json)
+records exact source, input and validation hashes. The compact
+[raw control package](evidence/chip-supply-tiled-native-controls-assets-20260930.json)
+is an 81,044-byte release asset containing 460 inventoried files; local,
+authenticated and anonymous download round trips agree. Its archived source
+snapshots are bound by hashes and explicitly distinguished from their base
+Git commit. No large production layout is copied into the documentation site.
+
+The initial workflow uses fresh inputs. Recovery uses a new dispatch with
+both `resume_run_id` and an independently verified `resume_bundle_sha256`;
+input and method hashes must still agree. Completed tile checkpoints are
+replayed before reuse, and absent tiles are extracted. Rerunning every job of
+the same run can collide with its immutable artifact names, so explicit new-run
+resume is preferred. Native phases use a 4 GiB address-space cap and a 1 GiB
+available-memory reserve; eight workers may run concurrently. GitHub's
+360-minute per-job limit remains, without a native elapsed-time watchdog.
+
+At this evidence snapshot the production-chip tiled run has not started.
+The local immutable supply queue was not modified. These controls establish
+the migration method, not an accepted full-chip supply result, transistor LVS,
+RC extraction, final timing or manufacturing approval.

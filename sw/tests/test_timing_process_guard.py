@@ -17,9 +17,17 @@ import timing_process_guard as guard
 
 
 def wait_state(pid, states):
+    """Observe a fixture transition without accepting an unstable identity."""
     deadline = time.monotonic() + 5
     while time.monotonic() < deadline:
-        current = guard.snapshot(pid)
+        try:
+            current = guard.snapshot(pid)
+        except guard.ProcessGuardError as error:
+            # An exiting/stopping child can change state around /proc reads.
+            # Retry only that observation race, never malformed/denied reads.
+            if str(error) != f"Process {pid} changed during identity inspection":
+                raise
+            current = None
         if current is not None and current["state"] in states:
             return current
         time.sleep(.01)
@@ -87,6 +95,47 @@ def test_fixture_exec_wait_rejects_an_exited_child():
     child = SimpleNamespace(pid=123, args=["synthetic", "sleep"], poll=lambda: 7)
     with pytest.raises(AssertionError, match="exited before stable exec identity: 7"):
         wait_exec_identity(child)
+
+
+def test_fixture_state_wait_retries_only_an_identity_transition(monkeypatch):
+    zombie = dict(pid=123, state="Z", command=[], exit_status_raw=7 << 8)
+    observations = iter([
+        guard.ProcessGuardError("Process 123 changed during identity inspection"),
+        dict(pid=123, state="R"), zombie,
+    ])
+
+    def observe(pid):
+        assert pid == 123
+        value = next(observations)
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+    monkeypatch.setattr(guard, "snapshot", observe)
+    monkeypatch.setattr(time, "sleep", lambda seconds: None)
+    assert wait_state(123, {"Z"}) == zombie
+
+
+def test_fixture_state_wait_transition_has_a_bounded_deadline(monkeypatch):
+    times = iter(range(7))
+    monkeypatch.setattr(time, "monotonic", lambda: next(times))
+    monkeypatch.setattr(time, "sleep", lambda seconds: None)
+
+    def unstable(pid):
+        raise guard.ProcessGuardError(f"Process {pid} changed during identity inspection")
+
+    monkeypatch.setattr(guard, "snapshot", unstable)
+    with pytest.raises(AssertionError, match="did not reach"):
+        wait_state(123, {"Z"})
+
+
+def test_fixture_state_wait_preserves_other_guard_errors(monkeypatch):
+    def malformed(pid):
+        raise guard.ProcessGuardError("Malformed Linux process stat")
+
+    monkeypatch.setattr(guard, "snapshot", malformed)
+    with pytest.raises(guard.ProcessGuardError, match="Malformed Linux process stat"):
+        wait_state(123, {"Z"})
 
 
 def test_stat_parser_handles_spaces_and_parentheses():

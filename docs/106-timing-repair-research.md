@@ -449,3 +449,13 @@ equivalence and final timing acceptance remain separate requirements.
 The [migration receipt](evidence/timing-cloud-migration-20260930.json) records
 input verification and distinguishes preparation from a running or completed
 cloud experiment.
+
+The first submission failed before starting any job because the job-level
+environment used the unavailable `runner` context. The corrected definition
+passes actionlint 1.7.12, and the original definition is a verified negative
+control. [The replacement run](https://github.com/Melihakbulut221/nssoc/actions/runs/36757448901)
+started native global routing for `setup_batch4`: its startup artifact verifies
+32 macros and 14.69 GiB available host memory before launch. This is not a peak
+RSS measurement. The idle local timing controller was paused only after
+checking its exact identity, absence of children and all 19 immutable inputs.
+The baseline worker is starting; no completed comparison is claimed.
