@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: io-parent-lvs
+on:
+  push:
+    paths:
+      - .github/workflows/io-parent-lvs.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: io-parent-lvs-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  vdd-parent-context:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    env:
+      QT_QPA_PLATFORM: offscreen
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify input, strict-audit and negative-control contracts
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_io_parent_lvs.py sw/tests/test_io_cdl_globals.py
+      - name: Bootstrap exact runtime and unmodified native LVS deck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          python3 hw/soc/flow/prepare_ihp_lvs.py
+      - name: Restore only the published immutable Vdd inputs
+        run: |
+          python3 scripts/run_io_parent_lvs.py --prepare-only --output hw/soc/out/github-io-parent-lvs/prepared
+      - name: Native physical-parent and negative controls
+        run: |
+          set -o pipefail
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python sw/tests/io_parent_lvs_native.py hw/soc/out/github-io-parent-lvs/controls 2>&1 | tee hw/soc/out/github-io-parent-lvs/controls.log
+      - name: Strict Vdd deep and flat comparison; a mismatch fails this job
+        run: |
+          set -o pipefail
+          python3 scripts/run_io_parent_lvs.py \
+            --archive hw/soc/out/github-io-parent-lvs/prepared/asset/timing-hold-review-and-io-global-repair-20260930.tar.gz \
+            --controls hw/soc/out/github-io-parent-lvs/controls/result.json \
+            --output hw/soc/out/github-io-parent-lvs/comparison \
+            2>&1 | tee hw/soc/out/github-io-parent-lvs/comparison.log
+      - name: Preserve successful, mismatching and incomplete evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: io-parent-lvs-attempt-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/github-io-parent-lvs/prepared/result.json
+            hw/soc/out/github-io-parent-lvs/controls/
+            hw/soc/out/github-io-parent-lvs/comparison/
+            hw/soc/out/github-io-parent-lvs/*.log
+          if-no-files-found: error
+          retention-days: 30
