@@ -1922,7 +1922,10 @@ resume is preferred. Native phases use a 4 GiB address-space cap and a 1 GiB
 available-memory reserve; eight workers may run concurrently. GitHub's
 360-minute per-job limit remains, without a native elapsed-time watchdog.
 
-At this evidence snapshot the production-chip tiled run has not started.
-The local immutable supply queue was not modified. These controls establish
-the migration method, not an accepted full-chip supply result, transistor LVS,
-RC extraction, final timing or manufacturing approval.
+[The production-chip cloud run](https://github.com/Melihakbulut221/nssoc/actions/runs/36758126140)
+passed its pinned-input and native-control gates and began full geometry
+preparation at 21:24 TRT. Its prepared bundle and tile measurements are not yet
+complete. The idle local supply controller was intentionally paused after
+identity, zero-child and input-pin checks. The immutable input files remain
+unchanged. No accepted full-chip supply result, transistor LVS, RC extraction,
+final timing or manufacturing approval follows from startup.

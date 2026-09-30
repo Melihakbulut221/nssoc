@@ -458,4 +458,14 @@ started native global routing for `setup_batch4`: its startup artifact verifies
 32 macros and 14.69 GiB available host memory before launch. This is not a peak
 RSS measurement. The idle local timing controller was paused only after
 checking its exact identity, absence of children and all 19 immutable inputs.
-The baseline worker is starting; no completed comparison is claimed.
+The baseline worker also entered native global routing, with 14.46 GiB
+available before launch. Both startup captures have identical input, runtime,
+method and SDC identities; no completed comparison is claimed. The final local
+regression includes 101 timing/process tests and 51 supply tests, all passing.
+
+The [validation and startup package](evidence/cloud-migration-validation-assets-20260930.json)
+retains all earlier failed checks beside their corrected successful runs, both
+verified native startup artifacts and the exact committed source snapshots.
+It is independently verified after publication. The first available-memory
+measurements establish that the local launch blocker is bypassed; they do not
+establish a speedup, successful repair or final timing closure.
