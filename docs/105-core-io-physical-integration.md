@@ -1788,3 +1788,19 @@ The placement candidate subsequently completed: the connection shortened from
 463.620 to 233.940 µm, but its before/after summary timing did not improve. It
 was rejected and guarded hold repair started from checkpoint10. Monitoring
 now runs every eight hours. No new candidate result is accepted yet.
+
+### 2026-09-30, morning — CI closure and diagnosis of the long hold sweep
+
+All four `f206286` GitHub workflows now pass. Native job logs and selected
+artifact hashes independently confirm the result, including 116 SoC and
+54 pilot formal tasks; skips and historical excluded attempts retain their
+separate status. [The timing study](106-timing-repair-research.md) records why
+the live hold job exceeds the nominal 100-iteration setting: the native inner
+sweep visits all 4073 endpoints below the requested positive margin before
+checking that limit. CPU and log progress are confirmed; it was not stopped.
+The supply queue remains intentionally reserved while timing runs. A bounded
+per-pin method passed a native three-corner, three-flop regression and is available
+for a subsequent isolated experiment. It has not yet run on the chip. The
+[verification receipt](evidence/timing-hold-targeted-20260930.json) retains that
+scope; the current campaign, constraints and incomplete physical acceptance
+remain intact.

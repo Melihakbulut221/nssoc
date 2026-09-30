@@ -495,7 +495,7 @@ class Campaign:
             output = step / "state_out.json"
             row.update(status="COMPLETE_ESTIMATE_ONLY", before=before, after=after,
                        output_state=str(output), output_sha256=state_pins(output))
-            domain = "hold" if profile == "hold_guarded" else "setup"
+            domain = "hold" if profile in {"hold_guarded", "hold_guarded_targeted"} else "setup"
             row["eligible_estimate"] = eligible(before, after, source, domain)
             if profile.startswith("setup_"):
                 row["setup_gain_per_hour"] = setup_rates(row)

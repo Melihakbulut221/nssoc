@@ -8,6 +8,7 @@ import signal
 import subprocess
 import sys
 import time
+from types import SimpleNamespace
 
 import pytest
 
@@ -25,16 +26,67 @@ def wait_state(pid, states):
     raise AssertionError(f"Synthetic process {pid} did not reach {states}")
 
 
+def wait_exec_identity(child):
+    """Wait for this fixture's exec transition, without relaxing signal guards."""
+    deadline = time.monotonic() + 5
+    previous = None
+    last = None
+    while time.monotonic() < deadline:
+        code = child.poll()
+        if code is not None:
+            raise AssertionError(f"Synthetic child exited before stable exec identity: {code}")
+        try:
+            last = guard.snapshot(child.pid)
+        except guard.ProcessGuardError:
+            last = None
+        if (last is not None and last["state"] in {"R", "S"}
+                and last["command"] == child.args and last["group"] == child.pid):
+            current = (last["birth"], tuple(last["command"]), last["group"])
+            if current == previous:
+                return last
+            previous = current
+        else:
+            previous = None
+        time.sleep(.005)
+    raise AssertionError(f"Synthetic child did not reach stable exec identity: {last}")
+
+
 @pytest.fixture
 def sleeper():
     child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"], start_new_session=True)
     try:
+        wait_exec_identity(child)
         yield child
     finally:
         if child.poll() is None:
             child.send_signal(signal.SIGCONT)
             child.terminate()
         child.wait(timeout=5)
+
+
+def test_fixture_waits_for_two_stable_exec_observations(monkeypatch):
+    child = SimpleNamespace(pid=123, args=["synthetic", "sleep"], poll=lambda: None)
+    ready = dict(state="S", command=child.args, group=child.pid, birth="99")
+    observations = iter([ready | {"command": []}, ready, ready])
+    monkeypatch.setattr(guard, "snapshot", lambda pid: next(observations))
+    monkeypatch.setattr(time, "sleep", lambda seconds: None)
+    assert wait_exec_identity(child) == ready
+
+
+def test_fixture_exec_wait_has_a_bounded_deadline(monkeypatch):
+    child = SimpleNamespace(pid=123, args=["synthetic", "sleep"], poll=lambda: None)
+    times = iter(range(7))
+    monkeypatch.setattr(time, "monotonic", lambda: next(times))
+    monkeypatch.setattr(time, "sleep", lambda seconds: None)
+    monkeypatch.setattr(guard, "snapshot", lambda pid: dict(state="R", command=[]))
+    with pytest.raises(AssertionError, match="did not reach stable exec identity"):
+        wait_exec_identity(child)
+
+
+def test_fixture_exec_wait_rejects_an_exited_child():
+    child = SimpleNamespace(pid=123, args=["synthetic", "sleep"], poll=lambda: 7)
+    with pytest.raises(AssertionError, match="exited before stable exec identity: 7"):
+        wait_exec_identity(child)
 
 
 def test_stat_parser_handles_spaces_and_parentheses():

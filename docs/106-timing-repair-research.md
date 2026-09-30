@@ -275,3 +275,87 @@ The user subsequently changed monitoring to **every eight hours**. The actual
 existing heartbeat setting was verified active at that interval. The separate
 full-I/O supply extraction still waits for its unchanged 9 GiB available-memory
 threshold. No final timing, complete LVS or manufacturing approval is claimed.
+
+## 30 September, morning: CI fixed; hold sweep behavior identified
+
+All four GitHub workflows for `f20628639d550ee665156b872c0bcdc46f730cfe`
+completed successfully: both `checks` runs, `publications` and `pcie-transaction`.
+The previous licence-gate failures are resolved. This is software/formal CI
+completion, not physical timing, complete LVS, PCIe PHY or production acceptance.
+Per checks run, 2040 pytest cases pass and 126 are skipped; RTL cocotb reports
+503 passes and 22 skips. Verified formal artifacts contain 116 passing SoC
+and 54 passing pilot tasks. Six historical engine attempts are explicitly
+excluded, with their original stalled/unknown outcomes retained; the required
+replacement proofs remain in the passing task set. The two duplicate push/PR
+runs are not added together. The PR merge commit and source commit have the
+same Git tree. The receipt preserves the exact task/exclusion inventories.
+
+The local guarded-hold job remains active. Between the 02:40 delivery and the
+06:25 observation, the same native process accumulated 3,486,489 CPU ticks and
+advanced from approximately iteration170 to2430. All 19 immutable method/input
+pins still match. Supply extraction remains intentionally reserved while this
+heavy job runs; its stopped controller is not a failed extractor.
+
+The nearly flat progress table required source-level diagnosis. In the pinned
+[RepairHold implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairHold.cc#L413-L529),
+`max_iterations` and `max_passes` are checked outside a sweep, while the inner
+loop visits every endpoint collected for that sweep. The present run collects
+**4073 endpoints below the requested +0.15 ns margin**; only **113 endpoints**
+have negative hold slack in the initial full measurement. Consequently,
+`-max_iterations 100` does not stop this hold sweep at its hundredth row, and
+simply reducing `max_passes` would not bound the inner sweep either. The setup
+comparison uses a different implementation; this finding is specific to hold.
+
+Most reported negative-slack improvement occurs early: rounded TNS changes
+from −26.461 ns to −5.128 ns by iteration110. After that, the run spends much
+of its work increasing positive margins; the rounded WNS remains about
+−1.091 ns and TNS about −5.125 ns. These are intermediate figures, not completed
+post-legalization measurements. The table's endpoint column is the global worst
+endpoint, not necessarily the endpoint currently being repaired. The buffer
+counter can reset after a journal rollback; it is not a cumulative chip total.
+Those details follow the
+[rollback and reporting code](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairHold.cc#L651-L815).
+They rule out treating a repeated endpoint label or a reset counter as proof
+that the native job is hung. The healthy running process and its pinned inputs
+are preserved.
+
+The new opt-in `hold_guarded_targeted` profile selects the 16 worst distinct
+negative-hold endpoints across loaded corners and gives each one a single native
+repair pass. Its helper accepts 1–32 targets. It preserves the +0.10 ns setup
+margin, +0.15 ns hold margin and setup protection, records immutable target/result
+receipts, and requires the usual legalization and full timing/electrical
+remeasurement. A shared budget limits actual instance growth to 40% of the
+initial cell count. The native per-pin limit resets at each call, so the wrapper
+checks growth before and after every call and rejects the isolated candidate if
+native repair overshoots the shared budget. A pass can still visit several
+drivers; this is not a wall-time
+guarantee. Remaining positive-margin work is explicitly unfinished. The pinned
+private API is version-specific. The tracked flow accepts this profile, but the
+ongoing four-stage campaign and its immutable copies continue unchanged; no chip
+speedup or result from this new method is claimed.
+
+`sw/tests/timing_hold_targeted_native.tcl` exercises actual native repair on a
+three-flop SG13G2 fixture with fast, typical and slow corners. Selecting one target
+inserts one buffer and improves its hold slack from −0.683040 to −0.437707 ns;
+the unselected output remains −0.478646 ns. Setup remains positive
+(16.680 to 16.143 ns), and SDC bytes are unchanged. A separate setup-tight target
+rejects insertion and preserves both cell count and setup slack. Invalid limits,
+missing native API, receipt overwrite and no-negative-target controls also pass.
+The native two-target control stops after consuming its one-cell shared budget;
+a separate native two-buffer insertion exceeds that budget and is rejected.
+These are small-fixture regression results, not chip timing closure. The
+[verification receipt](evidence/timing-hold-targeted-20260930.json) and
+[published raw evidence](evidence/timing-hold-targeted-assets-20260930.json)
+preserve the CI inventories, upstream implementation, QSPI audit and native
+regression inputs/results.
+
+The separate QSPI audit traces its 4.25 ns hold requirement to a −4.0 ns
+`clk_i`-referenced output delay plus 0.25 ns clock uncertainty. The −4.0 ns is
+the repository flash model's 2.0 ns hold value plus an assumed 2.0 ns board/pad
+allowance. SCK, data, OE and chip-select currently share this budget even though
+they have different roles. Replacing it requires independently validated SCK
+and data flight-time, output-enable/disable, chip-select and read-turnaround
+contracts. Merely increasing the software divider, inserting a sequencer
+register, or adding a multicycle exception is not a demonstrated physical hold
+fix. Existing divider/abort/lane tests pass (three selected tests); those RTL
+checks do not qualify board or pad timing. The active constraints are unchanged.

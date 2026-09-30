@@ -79,7 +79,7 @@ if {![info exists ::env(NSSOC_TIMING_EXPERIMENT_PROFILE)]} {
     error "NSSOC_TIMING_EXPERIMENT_PROFILE is required"
 }
 set profile $::env(NSSOC_TIMING_EXPERIMENT_PROFILE)
-if {$profile ni {setup_baseline setup_batch4 hold_guarded critical_xnor}} {
+if {$profile ni {setup_baseline setup_batch4 hold_guarded hold_guarded_targeted critical_xnor}} {
     error "Unknown NSSOC timing experiment: $profile"
 }
 set recipe [file join [file dirname [info script]] timing_repair_experiment.tcl]
