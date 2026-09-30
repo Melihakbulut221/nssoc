@@ -413,3 +413,39 @@ successful: 2043 pytest passes and 126 skips per checks run, 503 RTL passes with
 22 reported skips, and 116 SoC plus 54 pilot formal passes. The six historical
 excluded attempts and the conditional native-boot skip remain explicit. These
 CI results do not close the physical or product acceptance requirements.
+
+## 30 September, evening: move the setup comparison to GitHub workers
+
+The local controllers remain unable to start the next experiment while available
+memory is below their 5 GiB timing and 9 GiB supply-extraction guards. The public
+repository can use standard GitHub Linux workers with 16 GB RAM. The platform
+has a six-hour limit per job; moving a calculation does not remove that limit.
+See the [worker specifications](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+and [execution limits](https://docs.github.com/en/actions/reference/limits).
+
+The cloud setup comparison gives `setup_baseline` and `setup_batch4` separate
+workers, using the same selected C10 checkpoint and the exact six immutable
+method files from the existing campaign. The new
+[input manifest](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/timing-cloud-input-20260930.json) pins every dependency,
+including all 5080 PDK files, the SRAM views, transitive SDC sources and every
+view referenced by the original state. The
+[published input archive](evidence/timing-cloud-input-assets-20260930.json)
+contains 5180 files and is independently verified after upload. The PDK root
+symlink is materialized as ordinary files; only JSON path values are relocated.
+Reversing the 30 recorded path substitutions exactly recovers the original
+configuration and state. Original native geometry and constraint files retain
+their hashes. Historical SDF, Liberty and GDS views carried with the checkpoint
+are not new candidate signoff results.
+
+The cloud runner retains the original 8 GiB native address-space cap, timing
+constraints and 100-iteration repair recipes. It does not impose an elapsed-time
+native watchdog. Bounded polling steps can save progress while the worker keeps
+running; these snapshots are explicitly incomplete and cannot serve as restart
+checkpoints. Completed outputs require native completion markers, unchanged
+inputs and constraints, all 32 SRAM placements, and the same before/after and
+selected-C10 regression guards. Only matching initial measurements permit the
+one-repair versus four-repairs speed comparison. Routing, RC extraction,
+equivalence and final timing acceptance remain separate requirements.
+The [migration receipt](evidence/timing-cloud-migration-20260930.json) records
+input verification and distinguishes preparation from a running or completed
+cloud experiment.

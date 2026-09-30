@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "recorded": "2026-09-30T21:04:27.530494+03:00",
+  "status": "PORTABLE_INPUT_AND_CLOUD_RUNNER_VERIFIED_LAUNCH_PENDING",
+  "source_head": "05aa57f665dddd872ea3270bd2c6e5d3a33b3c44",
+  "portability": {
+    "recorded": "2026-09-30T20:56:41.018403+03:00",
+    "portable_config_inverse_equals_original": true,
+    "portable_state_inverse_equals_original": true,
+    "original_log_slacks_verified": {
+      "setup_wns_ns": -4.710829,
+      "hold_wns_ns": -1.840329
+    },
+    "relocated_paths": 30,
+    "pdk_files": 5080,
+    "state_sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "scope": "Byte-identical underlying files; invertible JSON path-only relocation. No native chip result."
+  },
+  "input_assets_manifest": "docs/evidence/timing-cloud-input-assets-20260930.json",
+  "input_manifest": "docs/evidence/timing-cloud-input-20260930.json",
+  "source_manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+  "platform": {
+    "repository_public": true,
+    "runner": "ubuntu-22.04",
+    "documented_ram_gb": 16,
+    "maximum_job_hours": 6,
+    "native_elapsed_watchdog": false,
+    "source_urls": [
+      "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+      "https://docs.github.com/en/actions/reference/limits"
+    ]
+  },
+  "profiles": [
+    "setup_baseline",
+    "setup_batch4"
+  ],
+  "scope": "Launch readiness only. Same-input setup A/B will be assessed only after complete native outputs and immutable final captures. No timing closure or speedup has been measured in cloud yet.",
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "local_validation": {
+    "selected_tests_passed": 97,
+    "new_cloud_tests_passed": 37,
+    "regression_scope": "Pinned input restore and translation, observer lifecycle, incomplete captures, source regressions, and existing timing/process guard regression."
+  },
+  "method_sha256": {
+    "scripts/run_cloud_timing_experiment.py": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
+    "sw/tests/test_cloud_timing_experiment.py": "f2ee925d38b6cf56a44d27e987d8f9752a8e25e90e37b26fdb876f7105da355e",
+    ".github/workflows/timing-cloud-experiments.yml": "86ee5d6f2765bbfe1f494d8759313b5f39728c127481b7b89b8ad3876217e5f1"
+  }
+}

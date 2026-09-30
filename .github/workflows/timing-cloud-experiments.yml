@@ -1,0 +1,175 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-cloud-experiments
+on:
+  push:
+    paths:
+      - .github/workflows/timing-cloud-experiments.yml
+      - docs/evidence/timing-cloud-input-20260930.json
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: timing-cloud-experiments-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  setup:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # GitHub-hosted platform ceiling; no native watchdog.
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        profile: [setup_baseline, setup_batch4]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CLOUD_PROFILE: ${{ matrix.profile }}
+      CLOUD_OUTPUT: ${{ github.workspace }}/timing-cloud-result
+      CLOUD_WORK: ${{ runner.temp }}/timing-cloud-input
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install only AppImage runtime prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Verify portable C10 inputs and start isolated native worker
+        id: launch
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py start \
+            --manifest docs/evidence/timing-cloud-input-20260930.json \
+            --profile "$CLOUD_PROFILE" --output "$CLOUD_OUTPUT" --work "$CLOUD_WORK"
+      - name: Observe native startup without stopping work
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py wait --output "$CLOUD_OUTPUT" --seconds 60
+      - name: Capture startup identity and resource evidence
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py capture --output "$CLOUD_OUTPUT" \
+            --destination timing-cloud-startup
+      - name: Upload startup evidence promptly
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-cloud-startup-${{ matrix.profile }}-${{ github.run_attempt }}
+          path: timing-cloud-startup/
+          retention-days: 30
+          compression-level: 1
+      - name: Observe first interval without stopping native work
+        id: first
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 9000 --github-output "$GITHUB_OUTPUT"
+      - name: Preserve first immutable progress snapshot
+        continue-on-error: true
+        if: always()
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py capture --output "$CLOUD_OUTPUT" \
+            --destination timing-cloud-first
+      - name: Upload first progress before the platform deadline
+        continue-on-error: true
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-cloud-progress-first-${{ matrix.profile }}-${{ github.run_attempt }}
+          path: timing-cloud-first/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1
+      - name: Observe second interval without stopping native work
+        id: second
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 7200 --github-output "$GITHUB_OUTPUT"
+      - name: Preserve second immutable progress snapshot
+        continue-on-error: true
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py capture --output "$CLOUD_OUTPUT" \
+            --destination timing-cloud-second
+      - name: Upload second progress before the platform deadline
+        continue-on-error: true
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-cloud-progress-second-${{ matrix.profile }}-${{ github.run_attempt }}
+          path: timing-cloud-second/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1
+      - name: Keep waiting for native completion
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        run: python3 scripts/run_cloud_timing_experiment.py wait --output "$CLOUD_OUTPUT"
+      - name: Capture complete views or explicitly incomplete evidence
+        if: always()
+        run: |
+          python3 scripts/run_cloud_timing_experiment.py capture --output "$CLOUD_OUTPUT" \
+            --destination timing-cloud-final
+      - name: Upload native outputs even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-cloud-final-${{ matrix.profile }}-${{ github.run_attempt }}
+          path: timing-cloud-final/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1
+      - name: Require completed experiment, independently of timing eligibility
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          result = Path(os.environ['CLOUD_OUTPUT']) / 'result.json'
+          status = json.loads(result.read_text())['status'] if result.exists() else 'NO_RESULT'
+          print(status)
+          raise SystemExit(0 if status == 'COMPLETE_ESTIMATE_ONLY' else 1)
+          PY
+  compare:
+    needs: setup
+    if: always()
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Download only final artifacts from this attempt
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: timing-cloud-final-*-${{ github.run_attempt }}
+          path: timing-cloud-results
+      - name: Compare same-input A/B with all timing and electrical guards
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import subprocess, sys
+          from pathlib import Path
+          command = [sys.executable, 'scripts/run_cloud_timing_experiment.py', 'compare',
+                     '--output', 'timing-cloud-comparison.json',
+                     '--manifest', 'docs/evidence/timing-cloud-input-20260930.json']
+          for result in sorted(Path('timing-cloud-results').glob('*/result.json')):
+              command += ['--result', str(result)]
+          raise SystemExit(subprocess.call(command))
+          PY
+      - name: Retain comparison including missing or interrupted jobs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-cloud-comparison-${{ github.run_attempt }}
+          path: timing-cloud-comparison.json
+          if-no-files-found: error
+          retention-days: 30
