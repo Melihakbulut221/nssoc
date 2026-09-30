@@ -7,8 +7,11 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import time
+from types import SimpleNamespace
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'scripts'))
@@ -116,3 +119,127 @@ def test_build_cannot_reuse_stale_output(tmp_path):
     with pytest.raises(ValueError, match='existing'):
         publications.build(tmp_path, out)
     assert (out/'main.pdf').read_bytes() == b'keep this old evidence'
+
+
+def publication_workflow():
+    return yaml.safe_load((ROOT/'.github/workflows/publications.yml').read_text())
+
+
+def warmup_code():
+    steps = publication_workflow()['jobs']['manuscripts']['steps']
+    warmup = next(step for step in steps if step.get('name', '').startswith('Warm dependencies'))
+    return warmup['run'].split("python3 - <<'PY'\n", 1)[1].rsplit('\nPY', 1)[0]
+
+
+@pytest.fixture
+def warmup_project(tmp_path, monkeypatch):
+    tool = tmp_path/'hw/soc/tools/publications/tectonic'
+    tool.parent.mkdir(parents=True)
+    tool.write_bytes(b'fixture engine identity; no native compilation claim')
+    for name in publications.DOCUMENTS:
+        (tmp_path/name/'chapters').mkdir(parents=True)
+        (tmp_path/name/'main.tex').write_text('fixture '+name)
+        (tmp_path/name/'chapters/one.tex').write_text('included source '+name)
+        (tmp_path/name/'refs.bib').write_text('fixture bibliography')
+    (tmp_path/'thesis/main.pdf').write_bytes(b'preserve accepted output')
+
+    def inventory(root, name):
+        return {str(path.relative_to(root)): publications.sha(path)
+                for path in sorted((root/name).rglob('*'))
+                if path.suffix in ('.tex', '.bib')}
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv('TECTONIC_CACHE_DIR', str(tmp_path/'.cache/tectonic'))
+    monkeypatch.setattr(publications, 'inputs', inventory)
+    return tmp_path
+
+
+def execute_warmup():
+    with pytest.raises(SystemExit) as completed:
+        exec(compile(warmup_code(), '<publication dependency warmup>', 'exec'), {})
+    return completed.value.code
+
+
+def test_dependency_warmup_uses_exact_scratch_inputs_and_shared_budget(warmup_project, monkeypatch):
+    root = warmup_project
+    ticks = iter([0, 10, 110, 210, 310, 320])
+    monkeypatch.setattr(time, 'monotonic', lambda: next(ticks))
+    calls = []
+
+    def engine(command, **kwargs):
+        directory = kwargs['cwd']
+        name = directory.name
+        for path, digest in publications.inputs(root, name).items():
+            assert publications.sha(directory.parent/path) == digest
+        assert directory != root/name
+        assert kwargs['env']['SOURCE_DATE_EPOCH'] == '1789776000'
+        kwargs['stdout'].write('downloaded dependency fixture\n')
+        (directory/'main.pdf').write_bytes(b'preliminary, never accepted')
+        calls.append((command, kwargs['timeout']))
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(subprocess, 'run', engine)
+    assert execute_warmup() == 0
+    record = json.loads((root/'hw/soc/out/publication-cache-warmup/result.json').read_text())
+    assert record['status'] == 'PASS' and record['accepted_deliverables'] is False
+    assert record['scope'] == 'CACHE_PREPARATION_ONLY'
+    assert [timeout for _, timeout in calls] == [890, 790, 690, 590]
+    assert len(calls) == 4 and all(command[1:4] == ['-X', 'compile', 'main.tex'] for command, _ in calls)
+    assert (root/'thesis/main.pdf').read_bytes() == b'preserve accepted output'
+    assert not (root/'hw/soc/out/publications').exists()
+
+
+@pytest.mark.parametrize('failure', ['latex_error', 'timeout', 'source_change'])
+def test_warmup_never_retries_or_accepts_failed_preparation(warmup_project, monkeypatch, failure):
+    root = warmup_project
+    calls = []
+
+    def engine(command, **kwargs):
+        calls.append(command)
+        kwargs['stdout'].write('preserved native diagnostic\n')
+        if failure == 'timeout':
+            raise subprocess.TimeoutExpired(command, kwargs['timeout'])
+        if failure == 'source_change':
+            (root/'paper-soc/main.tex').write_text('changed during preparation')
+        return SimpleNamespace(returncode=2 if failure == 'latex_error' else 0)
+
+    monkeypatch.setattr(subprocess, 'run', engine)
+    assert execute_warmup() == 1
+    out = root/'hw/soc/out/publication-cache-warmup'
+    record = json.loads((out/'result.json').read_text())
+    assert record['status'] == 'FAIL' and not record['accepted_deliverables']
+    assert len(calls) == (4 if failure == 'source_change' else 1)
+    row = record['documents']['paper-soc']
+    assert row['log_sha256'] == publications.sha(out/'paper-soc.log')
+    assert (out/'paper-soc.log').read_text() == 'preserved native diagnostic\n'
+    if failure == 'timeout':
+        assert row['timed_out'] and row['returncode'] is None
+    assert not (root/'hw/soc/out/publications').exists()
+
+
+def test_warmup_refuses_existing_evidence(warmup_project, monkeypatch):
+    out = warmup_project/'hw/soc/out/publication-cache-warmup'
+    out.mkdir(parents=True)
+    (out/'result.json').write_text('preserve previous failure')
+    monkeypatch.setattr(subprocess, 'run', lambda *args, **kwargs: pytest.fail('Engine must not run'))
+    with pytest.raises(FileExistsError):
+        execute_warmup()
+    assert (out/'result.json').read_text() == 'preserve previous failure'
+
+
+def test_workflow_cache_and_warmup_never_replace_final_validation():
+    job = publication_workflow()['jobs']['manuscripts']
+    steps = job['steps']
+    cache = next(step for step in steps if step.get('name', '').startswith('Restore Tectonic'))
+    final = next(step for step in steps if step.get('name', '').startswith('Verify tracked freshness'))
+    upload = next(step for step in steps if step.get('name', '').startswith('Retain PDFs'))
+    assert cache['with']['path'] == '.cache/tectonic'
+    assert 'hw/soc/out' not in cache['with']['path']
+    assert final['run'].splitlines() == [
+        'python3 scripts/check_publications.py --check',
+        'python3 scripts/check_publications.py --out hw/soc/out/publications '
+        '--tectonic "$PWD/hw/soc/tools/publications/tectonic" --compare-thesis']
+    assert 'continue-on-error' not in final
+    assert upload['if'] == 'always()'
+    assert 'publication-cache-warmup/result.json' in upload['with']['path']
+    assert job['timeout-minutes'] == 45
