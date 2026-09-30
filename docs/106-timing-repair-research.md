@@ -469,3 +469,61 @@ verified native startup artifacts and the exact committed source snapshots.
 It is independently verified after publication. The first available-memory
 measurements establish that the local launch blocker is bypassed; they do not
 establish a speedup, successful repair or final timing closure.
+
+
+## 30 September, late evening: completed cloud comparison
+
+Both native setup jobs and their strict comparison completed successfully on
+GitHub. The [completed paired audit](evidence/timing-cloud-ab-complete-20260930.json)
+verifies their exact source/runtime/input identities, all captured output
+bytes and inherited dependencies, 32 SRAM placements and unchanged SDCs.
+Their freshly rebuilt initial timing, electrical and area measurements match.
+The [baseline and comparison archive](evidence/timing-cloud-baseline-and-comparison-assets-20260930.json)
+and the separate [batch-four archive](evidence/timing-cloud-batch4-complete-assets-20260930.json)
+retain both complete native results. The local RAM guards were preserved;
+the deliberately paused local controllers did not run duplicate jobs.
+
+| Same-input global-route experiment | One repair per pass | Up to four repairs per pass |
+|---|---:|---:|
+| Native elapsed minutes | 96.01 | 74.51 |
+| Completed setup WNS (ns) | -4.331184300 | -4.255827690 |
+| Completed setup TNS (ns) | -3632.587777 | -3595.444468 |
+| Setup violating endpoints (initially 1,384) | 1340 | 1313 |
+| Setup WNS gain per hour (ns/hour) | 0.361419 | 0.526387 |
+| Setup TNS gain per hour (ns/hour) | 430.086304 | 584.097601 |
+| Accepted by existing no-regression checks | No | No |
+
+Batch-four took **22.39% less wall time in this one paired trial**, with a
+better setup endpoint count and improvement per hour. Separate hosted workers
+and one observation do not establish a general speed guarantee. Both candidates
+retain 113 hold endpoints, hold WNS -1.840965380 ns, zero slew violations and one
+capacitance violation. Both have the same hold TNS change from
+-26.461044910775 ns to -26.461059121630 ns. The unchanged 0.000001 ns guard rejects
+that change and also rejects the hold WNS difference from selected C10's
+recorded -1.840329 ns. The latter difference already exists before either
+setup optimization; it must not be attributed entirely to repair. No numerical
+noise exception or comparison waiver has been applied.
+
+The comparison therefore has **no eligible profile and no selected candidate**.
+C10 remains selected, and its preserved files are unchanged. The next step is
+to diagnose the source-versus-rebuilt timing difference and the common hold TNS
+change with matched parasitic/reproducibility evidence, then test a repair that
+passes the existing guards. GitHub job success means complete measured outputs;
+it does not mean final timing closure. Routing, qualified RC extraction,
+multi-corner timing and equivalence remain required.
+
+
+A bounded log/source follow-up found that the four before/after hold reports
+across both profiles are byte-identical (102,796 bytes each). They contain
+50 selected paths, including 34 reported violations, rather than a complete
+census of all 113 violating endpoints. Their equality therefore cannot prove
+that every hold path is unchanged. The C10-to-fresh worst endpoint is the same
+`qspi_io_oe_o[3]` at the fast corner. Restart preparation removes database wires
+and rebuilds global routing, estimated parasitics, legalization and mirroring
+before setup repair; the reference difference must be investigated at that
+boundary. Both TNS values in seconds are exactly representable as float32,
+eight representable steps apart. That observation supports a numerical or
+aggregation-order hypothesis but does not establish it. A matched-state no-op
+measurement and full-precision endpoint census are still required; the existing
+guards and both rejected verdicts remain unchanged. The diagnosis and its raw
+pins are included in the paired audit and durable archive above.

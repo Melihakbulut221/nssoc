@@ -2048,3 +2048,17 @@ and selected C10 remains unchanged. The next comparison must first verify the
 baseline's input identity and fresh measurements, then diagnose the rejected
 hold checks without waiving them. These are global-route estimates; final
 routing, qualified RC, multi-corner timing and equivalence remain open.
+
+### 2026-09-30 — both cloud timing profiles and comparison completed
+
+The baseline subsequently completed, and the
+[paired result](evidence/timing-cloud-ab-complete-20260930.json) supersedes the
+pending-baseline snapshot above. It took 96.01 minutes and reached setup WNS
+-4.331184300 ns with 1,340 violating endpoints, versus batch-four's 74.51 minutes,
+-4.255827690 ns and 1,313 endpoints. Both fresh initial measurements agree.
+Both candidates fail the existing hold guards, so the strict comparison selects
+neither. This one paired trial supports an observed performance improvement;
+it does not accept a new layout or establish final timing. The
+[detailed comparison](106-timing-repair-research.md) records the measurements,
+limitations and next diagnostic work. Local RAM no longer blocks these completed
+experiments; the immutable local fallback controllers stay paused.
