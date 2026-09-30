@@ -11,8 +11,16 @@ quarter-turn placement codes as degrees. Their historical all-314-port
 no-opposite-contact claims are withdrawn. A corrected replay on the current
 filled GDS now verifies all 314 placements and 10,526 windows with zero direct
 opposite-supply contacts; the final section below contains its evidence. This
-does not invalidate native DRC, which uses actual GDS geometry, or the running
-27-input-pad connectivity extraction, which reads actual GDS transforms.
+does not invalidate native DRC, which uses actual GDS geometry. The complete
+314-I/O physical connectivity audit subsequently passed on 30 September; see
+the completed tiled result below.
+
+**30 September completed connectivity audit:** all 10,526 declared supply
+windows on 314 I/O instances now pass the complete tiled metal-connectivity
+check, with independently verified geometry and checkpoint chains. Each of
+VDD, VSS, IOVDD and IOVSS is one distinct physical component. This closes the
+declared-window continuity check for the pinned filled GDS; transistor LVS,
+RC, electrical qualification and final timing remain separate.
 
 ## Exact core and power domains
 
@@ -1924,8 +1932,119 @@ available-memory reserve; eight workers may run concurrently. GitHub's
 
 [The production-chip cloud run](https://github.com/Melihakbulut221/nssoc/actions/runs/36758126140)
 passed its pinned-input and native-control gates and began full geometry
-preparation at 21:24 TRT. Its prepared bundle and tile measurements are not yet
-complete. The idle local supply controller was intentionally paused after
+preparation at 21:24 TRT. At that startup snapshot, the prepared bundle and
+tile measurements were incomplete; the completed result below supersedes that
+status. The idle local supply controller was intentionally paused after
 identity, zero-child and input-pin checks. The immutable input files remain
-unchanged. No accepted full-chip supply result, transistor LVS, RC extraction,
-final timing or manufacturing approval follows from startup.
+unchanged. Startup alone did not establish connectivity or physical acceptance.
+
+### 2026-09-30 — complete tiled supply result and independent archive replay
+
+[Run 36758126140](https://github.com/Melihakbulut221/nssoc/actions/runs/36758126140)
+completed at 21:53:40 TRT: preparation, all 64 extraction/replay jobs and the
+strict aggregate passed. The full hosted workflow took 31 minutes 3 seconds,
+including setup and queueing; the geometry preparation itself took 365.154
+seconds. All 314 I/O instances and 10,526 declared windows have exactly one
+physical component per supply, with four different components for the four
+rails. Every one of 210 overlaps agrees across 63,774 conductor witnesses.
+No label-based connections or comparison-rule exceptions were introduced.
+
+The [completed result](evidence/chip-supply-tiled-complete-20260930.json) binds
+the result to filled GDS `a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff`,
+plan and bundle hashes. Independently downloaded 67 original artifact ZIPs
+match GitHub's recorded sizes and SHA-256 values. The local auditor streams
+all 1,043,577,744 bytes of prepared geometry, checks all 64 separate prepared
+receipts and every native checkpoint's source, promotion, database and witness
+chain, then recombines the graph and compares every window assignment with
+the cloud result. It passed in 4.45 seconds with 126,136 KiB peak RSS under
+a 768 MiB address-space cap. This reuses recorded native measurements; it
+does not repeat native geometry extraction locally.
+
+The [durable raw archives](evidence/chip-supply-tiled-complete-assets-20260930.json)
+retain the complete prepared geometry, all native databases, measurements,
+logs, method snapshots and independent replay receipts. Twenty new archive
+identity/path/corruption controls pass; the selected archive, supply and
+publication regression totals 102 passing tests. Native GDS read warnings
+remain visible in the raw logs; each serializer's geometry XOR checks passed.
+
+This accepted result covers the declared I/O supply-window metal graph of
+this exact layout. It does not certify transistor devices, ESD behavior,
+current capacity, extracted RC, final timing or a different core candidate.
+The seven I/O transistor LVS failures remain open. The local monolithic
+supply controller stays intentionally paused after its cloud handover.
+
+### 2026-09-30 — strict Vdd parent-context comparison completed; mismatches remain
+
+The Vdd clamp reference has 172 MOS fingers at 4.4 µm, for 756.8 µm total
+width. The extracted child has 22 devices with the same total width, but
+separate drain ports that physically join in the parent. The latest
+explicit-global Vdd subset had not previously been tested using the native
+deck's flat parent context. An isolated
+[cloud comparison](https://github.com/Melihakbulut221/nssoc/actions/runs/36768228777)
+used the same byte-preserved GDS and schematic for deep and flat modes.
+All 53 pinned deck files, strict top ports, tap extraction and A/P comparisons
+remain unchanged. No expected parameter is replaced by an extracted value.
+
+The [runner evidence](evidence/io-parent-context-lvs-20260930.json) records
+84 selected Python tests and eight small native framework controls. A real
+parent metal/via bridge passes; same-name disconnected drains, a missing via,
+wrong MOS W/L, tap A/P and reversed tap terminals are rejected. These generic
+KLayout controls are not an IHP device or Vdd acceptance result. The actual
+Vdd comparison uses the unmodified IHP deck on an isolated cloud worker with
+a 4 GiB address-space cap, a 5 GiB available-RAM guard and no elapsed native
+watchdog. Mismatching or incomplete native results remain failures and their
+artifacts are retained. Both real Vdd comparisons completed and failed strict
+LVS. The flat layout correctly combines the clamp into one 756.8 µm / 0.6 µm
+MOS, confirming the parent-drain diagnosis. It still has nine primitive devices
+against eight in the reference, two separate IOVSS nets, and three extracted
+taps against two reference taps. Tap area/perimeter disagreements remain.
+The 625,063-byte raw artifact, 106 input pins, 12 native output hashes and
+40 control output hashes were independently verified. Reopening both native
+LVS databases reproduces the failures without repeating geometry extraction.
+These results identify the remaining boundary/connectivity and tap-reference
+problems; they do not accept Vdd or any of the seven I/O masters. The complete
+chip's declared-window metal result above is a separate comparison scope.
+
+The [follow-up raw evidence](evidence/cloud-supply-and-io-followup-assets-20260930.json)
+retains the real deep/flat databases, reports, failed diagnostic attempts,
+native controls and independent replays.
+
+The separate [publication CI failure](evidence/publication-cache-repair-20260930.json)
+was resolved by a bounded scratch dependency preparation stage and a resource
+cache. The final freshness checks and 300-second final command budget remain
+unchanged. Both corrected CI runs passed; one complete artifact was independently
+checked against 39 exact source inputs, four fresh documents and their content
+and archive digests. This publication result is separate from physical acceptance.
+
+### 2026-09-30 — cloud batch-four timing repair completed; candidate not adopted
+
+The [batch-four cloud job](https://github.com/Melihakbulut221/nssoc/actions/runs/36757448901)
+completed its native experiment in 4,470.62 seconds (74 minutes 31 seconds).
+The [independent audit](evidence/timing-cloud-batch4-complete-20260930.json)
+verified all 41 ZIP members, the complete captured/inherited dependency closure,
+32 unchanged SRAM masters/locations/orientations and byte-identical source,
+before, after and output SDCs. The
+[durable archive](evidence/timing-cloud-batch4-complete-assets-20260930.json)
+contains the actual native outputs and the review; inherited GDS/SDF/Liberty
+views are identified as old inputs, not new signoff results.
+
+| Global-route estimate | Fresh before | Completed batch-four |
+|---|---:|---:|
+| Setup WNS (ns) | -4.909516349 | -4.255827690 |
+| Setup TNS (ns) | -4320.800144342 | -3595.444468374 |
+| Setup violating endpoints | 1,384 | 1,313 |
+| Hold WNS (ns) | -1.840965380 | -1.840965380 |
+| Hold violating endpoints | 113 | 113 |
+| Slew / capacitance violations | 0 / 1 | 0 / 1 |
+
+Despite the setup improvement, the existing no-regression policy rejects this
+candidate. Hold TNS worsens by 0.0000142108547 ns relative to the fresh before
+measurement, and hold WNS is 0.0006363801399 ns worse than selected C10's
+recorded -1.840329 ns. Both exceed the unchanged 0.000001 ns comparison tolerance.
+The latter difference is already present in the fresh before measurement;
+it is not all introduced by the setup repair. The baseline job remains active
+at this snapshot. No completed A/B speedup or preferred profile is established,
+and selected C10 remains unchanged. The next comparison must first verify the
+baseline's input identity and fresh measurements, then diagnose the rejected
+hold checks without waiving them. These are global-route estimates; final
+routing, qualified RC, multi-corner timing and equivalence remain open.
