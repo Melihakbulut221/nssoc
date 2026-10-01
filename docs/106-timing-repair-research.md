@@ -527,3 +527,31 @@ aggregation-order hypothesis but does not establish it. A matched-state no-op
 measurement and full-precision endpoint census are still required; the existing
 guards and both rejected verdicts remain unchanged. The diagnosis and its raw
 pins are included in the paired audit and durable archive above.
+
+### 2026-10-01 — isolate full-endpoint hold readback on GitHub
+
+The completed cloud A/B removed the local available-memory wait; it did not
+close timing. The next isolated workflow, `timing-hold-diagnostic`, reuses the
+same published C10 input archive and LibreLane runtime. Its diagnostic methods
+are separately copied and hashed, leaving the previous campaign's methods and
+all local fallback inputs intact. It requires at least 9 GiB available memory
+before native execution and retains the 8 GiB address-space cap. Tiny native
+controls must pass before the full chip is loaded. No new local physical job is
+started on the memory-constrained workstation.
+
+The measurement separates initial ODB reload, rebuilt global routes, and the
+published A/B legalization boundary from repeated queries and invalidated
+STA caches on an otherwise unchanged state. It exports every native endpoint
+at each corner in SI seconds, together with full-precision native aggregates
+and deterministic endpoint sums. Constraint, connectivity, placement, routing
+and observable Pi/Elmore model fingerprints identify the no-op boundary.
+Unconstrained endpoints and missing models are explicit. These are estimated
+parasitic observations, not qualified extracted-RC signoff.
+
+The runner rejects incomplete census, wrong units, changed source inputs or
+changed no-op fingerprints. It preserves startup, progress and final artifacts
+on GitHub, including failed controls; observers do not impose a native elapsed
+timeout. The hosted platform's six-hour job ceiling still applies. Neither a
+successful diagnostic nor a floating-point discrepancy changes the existing
+acceptance tolerance, selects a candidate or closes a production gate. New
+native results must be reviewed independently before drawing a timing conclusion.

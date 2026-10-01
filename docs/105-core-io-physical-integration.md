@@ -2062,3 +2062,34 @@ it does not accept a new layout or establish final timing. The
 [detailed comparison](106-timing-repair-research.md) records the measurements,
 limitations and next diagnostic work. Local RAM no longer blocks these completed
 experiments; the immutable local fallback controllers stay paused.
+
+### 2026-10-01 — distinguish parent connectivity from the strict tap contract
+
+A [new bounded audit](evidence/io-tap-contract-audit-20261001.json) recursively
+resolves ordered CDL ports and local/global net scopes, then sums explicit tap
+area/perimeter using decimal arithmetic. It uses the captured strict Vdd
+flat/deep netlists; it does not run LVS or change layout/reference geometry.
+Unsupported multipliers and unknown tap/instance parameters are rejected.
+Legacy positive R/W/L metadata is recorded under the pinned reader's explicit
+A/P precedence. Thirty-one tests cover quantity, scope, terminal ordering,
+unknown parameters and the conditional metal-only join calculation.
+
+If tap-recognition masks and their measured A/P remain fixed, hypothetically
+joining the two IOVSS pieces gives area 2117.58205 square micrometres and
+perimeter 1113.69 micrometres, versus reference 2104.583 and 243.16. The separate
+VSS A/P disagreement remains. This calculation proves that **metal-only joining
+under those fixed-mask assumptions is insufficient**; it does not predict an
+actual ring-parent extraction whose overlapping recognition regions change.
+Both currently pinned upstream main (`5e6d592`) and dev (`c702f87`) retain the
+same Vdd tap totals. A library update alone is not a demonstrated Vdd fix.
+
+A separate source-supported correction was identified: the old
+`sg13g2_IOPadVss` DCN guard maps to `iovss`, whereas current upstream maps it to
+`iovdd`, consistent with the [IHP developer's correction](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/714#issuecomment-3396005804).
+It has not been applied blindly: formal port order also changed, so a coherent
+GDS/CDL/LEF version and actual parent-context comparison are required. The
+[IHP library discussion](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4352461493)
+also describes arbitrary tap shapes and hierarchical overlap. These sources
+identify missing contract/geometry work; they do not authorize dropping A/P or
+using virtual name joins as transistor LVS. All seven I/O masters and full-chip
+transistor LVS remain open.
