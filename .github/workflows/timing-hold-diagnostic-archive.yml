@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-hold-diagnostic-archive
+on:
+  push:
+    paths:
+      - .github/workflows/timing-hold-diagnostic-archive.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-hold-diagnostic-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only the exact completed producer source
+        run: git fetch --no-tags --depth=1 origin ad4d8bb3a1294693f80e0e633d2312104f9899e3
+      - name: Verify full diagnostic and archive original bytes without native rerun
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: >-
+          python3 scripts/archive_hold_diagnostic.py --publish
+          --output "$RUNNER_TEMP/hold-diagnostic-archive"
+      - name: Preserve compact verification and publication receipts even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-hold-diagnostic-archive-receipt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hold-diagnostic-archive/review/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1
