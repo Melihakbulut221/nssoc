@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from dataclasses import dataclass
 import json
 import math
 import os
@@ -20,6 +21,7 @@ import subprocess
 import struct
 import sys
 import time
+from typing import Callable
 
 sys.dont_write_bytecode = True
 import run_cloud_timing_experiment as common
@@ -46,6 +48,35 @@ NATIVE_NS_SCALE_SECONDS = struct.unpack('!f', struct.pack('!f', 1e-9))[0]
 UNIT_REPRESENTATION = 'IEEE-754 binary32 promoted to Tcl double'
 
 
+@dataclass(frozen=True)
+class DiagnosticSpec:
+    """Explicit extension point; default readback and its control gate stay fixed."""
+    name: str
+    sources: tuple[str, ...]
+    entrypoint: str
+    step: str
+    validator: Callable
+
+    def __post_init__(self):
+        if (not self.name or not self.name.replace('_', '').isalnum()
+                or type(self.sources) is not tuple
+                or len(set(self.sources)) != len(self.sources)
+                or not set(SOURCES) <= set(self.sources)
+                or self.entrypoint not in self.sources or self.step not in self.sources
+                or not callable(self.validator)):
+            raise ValueError('Invalid explicit diagnostic specification')
+        for name in self.sources:
+            common.safe_relative(name)
+
+
+def diagnostic_spec(spec=None):
+    return spec if spec is not None else DiagnosticSpec(
+        name='hold_readback', sources=SOURCES,
+        entrypoint='scripts/run_cloud_hold_diagnostic.py',
+        step='hw/soc/pnr/timing_hold_diagnostic_step.tcl',
+        validator=validate_diagnostic)
+
+
 
 
 def method_root():
@@ -62,10 +93,10 @@ def file_inventory(root):
     return result
 
 
-def stage_methods(root, destination):
+def stage_methods(root, destination, sources=None):
     destination.mkdir(exist_ok=False)
     inventory = {}
-    for name in SOURCES:
+    for name in SOURCES if sources is None else sources:
         source = Path(root)/name
         if source.is_symlink() or not source.is_file():
             raise ValueError('Missing or symlink diagnostic source: '+name)
@@ -77,18 +108,20 @@ def stage_methods(root, destination):
     return inventory
 
 
-def validate_methods(root, inventory):
-    if set(inventory) != set(SOURCES):
+def validate_methods(root, inventory, sources=None):
+    if set(inventory) != set(SOURCES if sources is None else sources):
         raise ValueError('Diagnostic source inventory changed')
     common.verify_bundle(root, inventory)
 
 
-def prepare(manifest_path, output, work):
+def prepare(manifest_path, output, work, spec=None):
+    spec = diagnostic_spec(spec)
     output = common.fresh_directory(output)
     record = dict(status='PREPARING', recorded=common.now(), timing_accepted=False,
                   manufacturing_approval=False, candidate_adopted=False,
                   selected_checkpoint_preserved=True, native_elapsed_watchdog=False,
-                  github_source_commit=os.environ.get('GITHUB_SHA'), diagnostic_only=True)
+                  github_source_commit=os.environ.get('GITHUB_SHA'), diagnostic_only=True,
+                  diagnostic_kind=spec.name)
     common.save(output/'result.json', record)
     try:
         manifest_path = Path(manifest_path).resolve()
@@ -99,7 +132,7 @@ def prepare(manifest_path, output, work):
         sample = common.resource_sample(work)
         if sample['available_memory_bytes'] < 9*GIB or sample['free_disk_bytes'] < required:
             raise ValueError(f'Cloud resource guard failed: {sample}; disk required {required}')
-        methods = stage_methods(method_root(), output/'methods')
+        methods = stage_methods(method_root(), output/'methods', spec.sources)
         record.update(resources_before=sample, work=str(work), manifest_sha256=common.sha(manifest_path),
                       bundle_sha256=manifest['archive']['sha256'], method_files=methods,
                       selected_source_metrics=manifest['selected_source_metrics'],
@@ -125,7 +158,7 @@ def prepare(manifest_path, output, work):
         (output/'run').mkdir()
         record.update(status='PREPARED', prepared_sha256={name: common.sha(prepared/name) for name in ('config.json', 'state.json')})
         common.save(output/'result.json', record)
-        command = [sys.executable, '-B', str(output/'methods/scripts/run_cloud_hold_diagnostic.py'), '_worker', '--output', str(output)]
+        command = [sys.executable, '-B', str(output/'methods'/spec.entrypoint), '_worker', '--output', str(output)]
         with (output/'worker.log').open('xb') as log:
             child = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
                                      start_new_session=True, close_fds=True)
@@ -138,7 +171,10 @@ def prepare(manifest_path, output, work):
         raise
 
 
-def verify_inputs(output, record):
+def verify_inputs(output, record, spec=None):
+    spec = diagnostic_spec(spec)
+    if record.get('diagnostic_kind', 'hold_readback') != spec.name:
+        raise ValueError('Diagnostic kind differs from its pinned entrypoint')
     manifest = common.validate_manifest(json.loads((output/'source-manifest.json').read_text()))
     if common.sha(output/'source-manifest.json') != record['manifest_sha256']:
         raise ValueError('Manifest changed')
@@ -147,7 +183,7 @@ def verify_inputs(output, record):
     work = Path(record['work'])
     common.verify_bundle(work/'bundle', manifest['files'])
     common.verify_file(work/'runtime.AppImage', manifest['runtime'])
-    validate_methods(output/'methods', record['method_files'])
+    validate_methods(output/'methods', record['method_files'], spec.sources)
     for key, name in [('config', 'config.json'), ('initial_state', 'state.json')]:
         path = output/'prepared'/name
         if common.sha(path) != record['prepared_sha256'][name]:
@@ -387,13 +423,14 @@ def validate_diagnostic(step, source_sdc_sha, expected_corners):
                 timing_accepted=False, manufacturing_approval=False, thresholds_changed=False)
 
 
-def worker(output):
+def worker(output, spec=None):
+    spec = diagnostic_spec(spec)
     output = Path(output).resolve()
     record = json.loads((output/'result.json').read_text())
     try:
         if record['status'] != 'PREPARED':
             raise ValueError('Worker requires PREPARED input')
-        manifest = verify_inputs(output, record)
+        manifest = verify_inputs(output, record, spec)
         work, methods = Path(record['work']), output/'methods'
         app = str(work/'runtime.AppImage')
         policy = common.load_policy(work/'bundle', manifest)
@@ -408,14 +445,14 @@ def worker(output):
         execute(control_command, output, record, 'native-controls', env)
         controls = validate_controls(output/'native-controls/result.json', record['method_files'])
         common.save(output/'native-control-validation.json', controls)
-        verify_inputs(output, record)
-        command = [app, 'python', str(methods/'scripts/run_cloud_hold_diagnostic.py'), '_native_flow',
+        verify_inputs(output, record, spec)
+        command = [app, 'python', str(methods/spec.entrypoint), '_native_flow',
                    '--flow', 'HoldDiagnostics', '--manual-pdk', '--pdk-root', str(work/'bundle'/manifest['pdk_root']),
                    '--pdk', manifest['pdk'], '--force-run-dir', str(output/'run'),
                    '--from', 'OpenROAD.ResizerTimingPostGRT', '--to', 'OpenROAD.ResizerTimingPostGRT',
                    '--with-initial-state', str(output/'prepared/state.json'), str(output/'prepared/config.json')]
         execute(command, output, record, 'native-diagnostic', env)
-        verify_inputs(output, record)
+        verify_inputs(output, record, spec)
         policy.verify_pins(input_pins)
         steps = list((output/'run').glob('*-openroad-resizertimingpostgrt'))
         if len(steps) != 1:
@@ -423,7 +460,7 @@ def worker(output):
         source_sdc = Path(json.loads((output/'prepared/state.json').read_text())['sdc'])
         validate_controls(output/'native-controls/result.json', record['method_files'])
         expected_corners = json.loads((output/'source-config.json').read_text())['PNR_CORNERS']
-        diagnostic = validate_diagnostic(steps[0], common.sha(source_sdc), expected_corners)
+        diagnostic = spec.validator(steps[0], common.sha(source_sdc), expected_corners)
         outputs = file_inventory(output/'run')
         record.update(status='COMPLETE_DIAGNOSTIC_ONLY', completed=common.now(), diagnostic=diagnostic,
                       sdc_sha256=common.sha(source_sdc), output_files=outputs,
@@ -507,8 +544,9 @@ def capture(output, destination):
     return row
 
 
-def validate_capture(directory, manifest_path=None):
+def validate_capture(directory, manifest_path=None, spec=None):
     """Independently recheck a completed artifact; a partial snapshot never qualifies."""
+    spec = diagnostic_spec(spec)
     directory = Path(directory)
     capture = json.loads((directory/'capture.json').read_text())
     if capture.get('complete_diagnostic_evidence') is not True or capture.get('observation', {}).get('status') != 'COMPLETE_DIAGNOSTIC_ONLY':
@@ -520,6 +558,8 @@ def validate_capture(directory, manifest_path=None):
     if actual != set(inventory) | {'capture.json'}:
         raise ValueError('Uninventoried snapshot files')
     row = json.loads((directory/'result.json').read_text())
+    if row.get('diagnostic_kind', 'hold_readback') != spec.name:
+        raise ValueError('Artifact diagnostic kind differs from selected verifier')
     if row.get('status') != 'COMPLETE_DIAGNOSTIC_ONLY' or any(row.get(key) is not False for key in ('candidate_adopted','timing_accepted','manufacturing_approval')):
         raise ValueError('Incomplete or unsafe diagnostic result')
     manifest = common.validate_manifest(json.loads((directory/'source-manifest.json').read_text()))
@@ -533,7 +573,7 @@ def validate_capture(directory, manifest_path=None):
         raise ValueError('Selected C10 source changed')
     for key, filename in [('initial_state', 'state.json'), ('config', 'config.json')]:
         common.verify_file(directory/('source-'+filename), manifest['files'][manifest[key]])
-    validate_methods(directory/'methods', row['method_files'])
+    validate_methods(directory/'methods', row['method_files'], spec.sources)
     initial = json.loads((directory/'source-state.json').read_text())
     if not initial['sdc'].startswith('@BUNDLE@/'):
         raise ValueError('SDC is not a pinned bundle view')
@@ -552,12 +592,13 @@ def validate_capture(directory, manifest_path=None):
     validate_controls(directory/'native-controls/result.json', row['method_files'])
     steps = list((directory/'run').glob('*-openroad-resizertimingpostgrt'))
     expected_corners = json.loads((directory/'source-config.json').read_text())['PNR_CORNERS']
-    if len(steps) != 1 or validate_diagnostic(steps[0], expected_sdc, expected_corners) != row['diagnostic']:
+    if len(steps) != 1 or spec.validator(steps[0], expected_sdc, expected_corners) != row['diagnostic']:
         raise ValueError('Independent diagnostic reconstruction differs')
     return row
 
 
-def native_flow():
+def native_flow(spec=None):
+    spec = diagnostic_spec(spec)
     # Imports are deferred: ordinary source tests require no native tool runtime.
     from librelane.flows import Flow
     from librelane.flows.classic import Classic
@@ -568,7 +609,7 @@ def native_flow():
         outputs = []  # Readback only; no new physical checkpoint is produced.
 
         def get_script_path(self):
-            return str(method_root()/'hw/soc/pnr/timing_hold_diagnostic_step.tcl')
+            return str(method_root()/spec.step)
 
     @Flow.factory.register()
     class HoldDiagnostics(Classic):
@@ -596,9 +637,9 @@ def native_flow():
     cli()
 
 
-def main():
+def main(spec=None):
     if len(sys.argv) > 1 and sys.argv[1] == '_native_flow':
-        return native_flow()
+        return native_flow(spec)
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='mode', required=True)
     start = commands.add_parser('start')
@@ -619,15 +660,15 @@ def main():
     final.add_argument('--manifest', type=Path, required=True)
     args = parser.parse_args()
     if args.mode == 'start':
-        prepare(args.manifest, args.output, args.work)
+        prepare(args.manifest, args.output, args.work, spec)
     elif args.mode == '_worker':
-        return worker(args.output)
+        return worker(args.output, spec)
     elif args.mode == 'wait':
         wait(args.output, args.seconds, args.github_output)
     elif args.mode == 'capture':
         capture(args.output, args.destination)
     else:
-        validate_capture(args.directory, args.manifest)
+        validate_capture(args.directory, args.manifest, spec)
     return 0
 
 
