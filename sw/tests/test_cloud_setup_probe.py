@@ -5,6 +5,7 @@ from dataclasses import FrozenInstanceError, replace
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 from types import ModuleType, SimpleNamespace
 
@@ -38,8 +39,9 @@ def fixture(root):
                   candidate_adopted=False, timing_accepted=False, manufacturing_approval=False, thresholds_changed=False,
                   provisional_stages=['after_repair_native'],
                   sram_macro_count=32, sram_placement_preserved=True,
-                  repair_invocation=dict(command=probe.REPAIR_COMMAND, call_count=1, max_passes=1,
+                  repair_invocation=dict(command=probe.REPAIR_COMMAND, call_count=1, max_passes=2,
                       max_repairs_per_pass=4, max_iterations=1, allow_setup_violations=False,
+                      effective_global_pass_budget=1, journal_boundary_workaround='max_passes_gt_max_iterations',
                       skip_last_gasp=True, skip_crit_vt_swap=True, native_setup_buffer_percentage_enforced=False,
                       initial_instance_count=50, actual_instance_count=50,
                       global_instance_growth_budget=20, actual_instance_growth=0,
@@ -101,13 +103,51 @@ def test_complete_probe_reconstructs_all_endpoint_pairs_without_acceptance(tmp_p
     assert all(checked[k] is False for k in ('candidate_adopted', 'timing_accepted', 'manufacturing_approval', 'thresholds_changed'))
 
 
+def test_native_tcl_uses_the_safe_journal_boundary_without_more_global_work():
+    source = (ROOT/'hw/soc/pnr/timing_setup_hold_probe_step.tcl').read_text()
+    # Execute the production Tcl command construction, without loading tools or
+    # a design. This catches divergence between native argv and Python receipts.
+    command = source[source.index('set repair_command [list '):source.index('set initial_instances ')]
+    result = subprocess.run(['tclsh'], input=command+'\nforeach word $repair_command {puts $word}\n',
+                            text=True, capture_output=True, check=True, timeout=5)
+    argv = result.stdout.splitlines()
+    assert argv == probe.REPAIR_COMMAND
+    assert argv[argv.index('-max_iterations')+1] == '1'
+    assert argv[argv.index('-max_passes')+1] == '2'
+    assert argv[argv.index('-max_repairs_per_pass')+1] == '4'
+    assert '-skip_last_gasp' in argv and '-skip_crit_vt_swap' in argv
+
+
+@pytest.mark.parametrize('fault', ['old-unsafe-boundary', 'extra-global-pass', 'forged-effective-budget', 'missing-workaround'])
+def test_repair_contract_rejects_unsafe_boundary_and_larger_effective_budget(tmp_path, fault):
+    step, row = fixture(tmp_path)
+    invocation = row['repair_invocation']
+    invocation['command'] = list(invocation['command'])
+    if fault == 'old-unsafe-boundary':
+        invocation['max_passes'] = 1
+        invocation['command'][invocation['command'].index('-max_passes')+1] = '1'
+    if fault == 'extra-global-pass':
+        invocation['max_iterations'] = 2
+        invocation['command'][invocation['command'].index('-max_iterations')+1] = '2'
+    if fault == 'forged-effective-budget':
+        invocation['effective_global_pass_budget'] = 2
+    if fault == 'missing-workaround':
+        del invocation['journal_boundary_workaround']
+    # Even internally consistent argv/log/receipt pairs must fail these bounds.
+    log = '\n'.join((probe.BEGIN_MARKER,
+        'NSSOC_SETUP_HOLD_PROBE_REPAIR_COMMAND '+' '.join(invocation['command']),
+        probe.END_MARKER, probe.COMPLETE_MARKER))+'\n'
+    with pytest.raises(ValueError):
+        probe.validate_repair(row, log)
+
+
 @pytest.mark.parametrize('fault', ['extra-call', 'passes', 'repairs', 'iterations', 'argv', 'permission', 'interval',
                                    'begin-missing', 'end-duplicate', 'marker-order', 'completion', 'stage', 'acceptance', 'sram'])
 def test_probe_rejects_unbounded_or_incomplete_claims(tmp_path, fault):
     step, row = fixture(tmp_path)
     invocation = row['repair_invocation']
     if fault == 'extra-call': invocation['call_count'] = 2
-    if fault == 'passes': invocation['max_passes'] = 2
+    if fault == 'passes': invocation['max_passes'] = 3
     if fault == 'repairs': invocation['max_repairs_per_pass'] = 8
     if fault == 'iterations': invocation['max_iterations'] = 200
     if fault == 'argv': invocation['command'] = invocation['command'] + ['-allow_setup_violations']

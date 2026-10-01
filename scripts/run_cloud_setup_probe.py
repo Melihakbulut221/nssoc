@@ -15,7 +15,7 @@ COMPLETE_MARKER = 'NSSOC_SETUP_HOLD_PROBE_COMPLETE_NO_ADOPTION'
 BEGIN_MARKER = 'NSSOC_SETUP_HOLD_PROBE_REPAIR_BEGIN'
 END_MARKER = 'NSSOC_SETUP_HOLD_PROBE_REPAIR_END'
 REPAIR_COMMAND = ['repair_timing', '-setup', '-setup_margin', '0.1',
-                  '-max_iterations', '1', '-max_passes', '1',
+                  '-max_iterations', '1', '-max_passes', '2',
                   '-max_repairs_per_pass', '4', '-repair_tns', '100',
                   '-max_buffer_percent', '40', '-skip_buffer_removal',
                   '-skip_size_down', '-skip_last_gasp', '-skip_crit_vt_swap', '-verbose']
@@ -30,10 +30,13 @@ def validate_repair(row, log):
     invocation = row.get('repair_invocation', {})
     if invocation.get('command') != REPAIR_COMMAND:
         raise ValueError('Probe does not use the exact reviewed setup command')
-    for key, expected in {'call_count': 1, 'max_passes': 1,
-                          'max_repairs_per_pass': 4, 'max_iterations': 1}.items():
+    for key, expected in {'call_count': 1, 'max_passes': 2,
+                          'max_repairs_per_pass': 4, 'max_iterations': 1,
+                          'effective_global_pass_budget': 1}.items():
         if type(invocation.get(key)) is not int or invocation[key] != expected:
             raise ValueError('Probe repair call/pass bounds differ')
+    if invocation.get('journal_boundary_workaround') != 'max_passes_gt_max_iterations':
+        raise ValueError('Pinned runtime journal boundary workaround must be explicit')
     if invocation.get('allow_setup_violations') is not False:
         raise ValueError('Setup violation permission is not part of the probe')
     if any(invocation.get(key) is not True for key in ('skip_last_gasp', 'skip_crit_vt_swap')):
@@ -132,7 +135,9 @@ def validate_diagnostic(step, source_sdc_sha, expected_corners):
     return dict(native=row, independently_checked_stages=checked, repair_invocation=repair,
                 full_endpoint_comparisons=comparisons, candidate_adopted=False,
                 timing_accepted=False, manufacturing_approval=False, thresholds_changed=False,
-                scope='One setup invocation bounded by max_iterations=1, max_passes=1, max_repairs_per_pass=4, '
+                scope='One setup invocation bounded by max_iterations=1, max_passes=2, max_repairs_per_pass=4, '
+                      'with the global limit preventing a second endpoint pass. The per-endpoint cap of two '
+                      'avoids the pinned runtime double-journal-close boundary. '
                       'disabled last-gasp/critical-VT sweeps and a post-call net-instance-growth guard. '
                       'This does not guarantee only four total physical changes and never promotes a candidate.')
 

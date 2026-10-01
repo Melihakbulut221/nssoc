@@ -63,11 +63,15 @@ nssoc_setup_probe_stage matched_before
 
 # Pinned RepairSetup.cc: max_passes is per endpoint; max_iterations is the
 # global optimization-iteration budget. Disable post-loop sweeps explicitly.
+# With both limits set to 1, an improving pass closes the journal, then the
+# iteration-limit branch closes it again (pinned RepairSetup.cc:416-468).
+# A per-endpoint cap of 2 keeps that journal open for the global limit to close.
+# The global limit stays 1, so no second pass or endpoint iteration can run.
 # Up to four successful driver moves are attempted within the one iteration;
 # each move can affect multiple cells. This is not a four-cell change limit.
 # All work-budget differences from the old batch4 campaign are recorded below.
 set repair_command [list repair_timing -setup -setup_margin 0.1 \
-    -max_iterations 1 -max_passes 1 -max_repairs_per_pass 4 -repair_tns 100 \
+    -max_iterations 1 -max_passes 2 -max_repairs_per_pass 4 -repair_tns 100 \
     -max_buffer_percent 40 -skip_buffer_removal -skip_size_down \
     -skip_last_gasp -skip_crit_vt_swap -verbose]
 set initial_instances [llength [[ord::get_db_block] getInsts]]
@@ -84,14 +88,15 @@ set growth [expr {$actual_instances-$initial_instances}]
 set argv_json {}
 foreach word $repair_command {lappend argv_json [nssoc_hold_jstr $word]}
 set invocation [dict create command "\[[join $argv_json ,]\]" call_count 1 \
-    max_iterations 1 max_passes 1 max_repairs_per_pass 4 allow_setup_violations false \
+    max_iterations 1 max_passes 2 max_repairs_per_pass 4 allow_setup_violations false \
+    effective_global_pass_budget 1 journal_boundary_workaround [nssoc_hold_jstr max_passes_gt_max_iterations] \
     skip_last_gasp true skip_crit_vt_swap true \
     started_ms $started_ms finished_ms $finished_ms elapsed_ms [expr {$finished_ms-$started_ms}] \
     initial_instance_count $initial_instances actual_instance_count $actual_instances \
     global_instance_growth_budget $growth_budget actual_instance_growth $growth \
     native_setup_buffer_percentage_enforced false \
-    granularity [nssoc_hold_jstr {One global endpoint optimization iteration, at most one endpoint pass, up to four successful driver moves; a move may mutate multiple cells. No post-loop last-gasp or critical-VT sweep.}] \
-    work_budget_changes [nssoc_hold_jstr {Compared with frozen setup_batch4: max_iterations 100 to 1, max_passes default10000 to 1, skip_last_gasp and skip_crit_vt_swap enabled. Setup margin0.1ns and all physical acceptance thresholds unchanged.}] \
+    granularity [nssoc_hold_jstr {One global endpoint optimization iteration and thus at most one executed endpoint pass despite a configured per-endpoint cap of two. Up to four successful driver moves; a move may mutate multiple cells. No post-loop last-gasp or critical-VT sweep.}] \
+    work_budget_changes [nssoc_hold_jstr {Compared with frozen setup_batch4: max_iterations 100 to 1, max_passes default10000 to 2, skip_last_gasp and skip_crit_vt_swap enabled. The per-endpoint cap of two avoids the pinned runtime double-journal-close boundary; max_iterations remains one and prevents a second pass. Setup margin0.1ns and all physical acceptance thresholds unchanged.}] \
     growth_guard_scope [nssoc_hold_jstr {Pinned repair_timing forwards max_buffer_percent only to hold repair. This diagnostic adds a post-call net-instance-growth guard of floor(40% of initial instances); it is not a count of all inserted or transient cells. No accepted candidate is emitted.}]]
 nssoc_hold_write_json [file join $::env(STEP_DIR) repair-invocation.json] [nssoc_hold_jobject $invocation]
 if {$growth < 0 || $growth > $growth_budget} {error "Setup probe net-instance-growth budget violated"}
