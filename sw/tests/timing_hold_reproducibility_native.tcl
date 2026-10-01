@@ -52,7 +52,7 @@ set_output_delay -min -0.6 -clock clk [get_ports q_bad2]
 set_output_delay -min 0 -clock clk [get_ports q_good]
 set_wire_rc -signal -layer Metal2
 set_wire_rc -clock -layer Metal2
-set_routing_layers -signal Metal2:Metal5 -clock Metal2:Metal5
+set_routing_layers -signal Metal2-Metal5 -clock Metal2-Metal5
 global_route -allow_congestion
 estimate_parasitics -global_routing
 set snapshots {}

@@ -555,3 +555,14 @@ timeout. The hosted platform's six-hour job ceiling still applies. Neither a
 successful diagnostic nor a floating-point discrepancy changes the existing
 acceptance tolerance, selects a candidate or closes a production gate. New
 native results must be reviewed independently before drawing a timing conclusion.
+
+The first [native startup attempt](https://github.com/Melihakbulut221/nssoc/actions/runs/36812467876)
+confirmed 15,678,377,984 bytes available before native execution. Its tiny
+fixture failed at the routing-layer range parser (`Metal2:Metal5`); the pinned
+OpenROAD command requires `Metal2-Metal5`. Full-chip execution did not begin.
+Independent ZIP review also caught GitHub's default omission of the staged
+`.github` workflow file. The rerun fixes the range syntax and explicitly
+includes hidden files from the curated diagnostic output directories. The
+first failed ZIP remains incomplete and is not retrospectively accepted.
+The [method, completed CI and I/O audit archive](evidence/cloud-hold-methods-ci-and-io-audit-assets-20261001.json)
+preserves the pre-rerun source and validation; new native results are separate.

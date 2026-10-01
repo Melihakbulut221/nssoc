@@ -238,7 +238,12 @@ def test_workflow_resource_and_progress_contract():
     assert 'timeout ' not in command
     assert command.count(' start ') == 1
     assert 'docs/evidence/timing-cloud-input-20260930.json' in command
-    assert len([step for step in steps if step.get('uses','').startswith('actions/upload-artifact@')]) == 4
+    uploads = [step for step in steps if step.get('uses','').startswith('actions/upload-artifact@')]
+    assert len(uploads) == 4
+    # The capture inventories the staged methods/.github/workflows source.
+    # Default artifact handling would omit it and break the byte/hash closure.
+    assert all(step['with'].get('include-hidden-files') == 'true' for step in uploads)
+    assert all(step['with']['path'].startswith('hold-diagnostic-') for step in uploads)
     assert all(step.get('if') == 'always()' for step in steps if step.get('name','').startswith('Preserve outputs'))
 
 
