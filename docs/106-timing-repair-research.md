@@ -576,3 +576,21 @@ the native binary32 value and the separate nominal unit. Adjacent binary32
 values, binary64 substitution and wrong units are rejected. No raw slack is
 rescaled and no timing tolerance is changed. This metadata correction does not
 establish the cause of the earlier chip hold TNS difference.
+
+The [corrected native run](https://github.com/Melihakbulut221/nssoc/actions/runs/36813322010)
+passed all four tiny control cases and entered full-chip global routing.
+[Independent startup review](evidence/cloud-hold-native-startup-20261001.json)
+verified all 80 captured files, seven method files, original input templates,
+path relocations, and the native controls' complete five-stage replay: 12
+endpoints, three corners and two negative endpoints per stage. Repeated/cache
+updates preserved the physical fingerprints; the real rerouted mutation was
+rejected as a no-op. The full-chip log shows 32 SRAM macros, 55,952 blockages,
+1,313 clock nets and extra global-route iteration 1/50. Available memory before
+that native phase was 15,689,404,416 bytes. This is verified cloud execution,
+not a measured peak memory figure or a completed timing result.
+
+The [original startup and failure archive](evidence/cloud-hold-native-startup-assets-20261001.json)
+retains the raw ZIPs and corrections. The full-chip eight-stage diagnostic is
+still incomplete at this snapshot; no candidate or timing result is accepted.
+The deliberately paused local controllers remain paused and their inputs were
+verified unchanged. Further progress is followed on this existing cloud run.
