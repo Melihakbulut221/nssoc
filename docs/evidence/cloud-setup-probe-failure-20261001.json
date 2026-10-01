@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "status": "FAILED_NATIVE_JOURNAL_ASSERTION_BEFORE_POST_REPAIR_EVIDENCE",
+  "source_run": 36858091870,
+  "source_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870",
+  "source_commit": "0e76a3a4d9b3234b4958ab9f5da6c5ab55ee246a",
+  "workflow_completed_utc": "2026-10-01T12:01:09Z",
+  "native_elapsed_seconds": 405.029180687,
+  "native_returncode": 1,
+  "native_signal": 6,
+  "root_error": "std::stack<odb::dbJournal*>::top(): Assertion !this->empty() failed",
+  "stack": [
+    "odb::dbDatabase::commitEco",
+    "rsz::Resizer::journalEnd",
+    "rsz::RepairSetup::repairSetup"
+  ],
+  "global_route_completed": true,
+  "global_route_overflow": 0,
+  "matched_before_endpoint_count": 23527,
+  "matched_before_negative_hold_endpoints": 113,
+  "repair_begin_marker": true,
+  "repair_end_marker": false,
+  "complete_diagnostic": false,
+  "repair_result_available": false,
+  "available_memory_before_native_bytes": 15690600448,
+  "native_address_space_limit_bytes": 8589934592,
+  "source_diagnosis": {
+    "scope": "Source-supported explanation; native retry still required",
+    "openroad_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "path": "src/rsz/src/RepairSetup.cc",
+    "saved_source_sha256": "d0c293ba31d9b8908e1e2ea829f81016d837f17e3966c8d672304321c72df89b",
+    "better_branch_commit_line": 416,
+    "reopen_only_if_pass_less_than_max_passes_line": 417,
+    "unconditional_iteration_limit_commit_line": 468,
+    "explanation": "When first pass improves slack with max_passes=1, the better branch closes its journal and does not reopen it. max_iterations=1 then enters the unguarded second journalEnd path with an empty journal stack.",
+    "workaround": "Keep max_iterations=1 and allow max_passes=2, so the better branch reopens the journal before the global one-iteration limit closes it; that same limit exits both loops before a second pass. This changes only the allowed per-endpoint pass ceiling, not total work or timing acceptance."
+  },
+  "retry_status": "CORRECTED_SOURCE_TESTED_AND_CLOUD_RETRY_RUNNING",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "thresholds_changed": false,
+  "evidence": [
+    {
+      "path": "hw/soc/out/timing-status-20261001-2040/selected/result.json",
+      "bytes": 6403,
+      "sha256": "c1af4b9996a8592240fbc0046efa8024bde15e9b3f8ad9d76517a3737c40c905"
+    },
+    {
+      "path": "hw/soc/out/timing-status-20261001-2040/selected/capture.json",
+      "bytes": 22133,
+      "sha256": "5189e158f246fa801cfbc7b3bc3eef9d6559fa95a2a3c83f745661a2ad4a1a30"
+    },
+    {
+      "path": "hw/soc/out/timing-status-20261001-2040/selected/native-diagnostic.log",
+      "bytes": 28443,
+      "sha256": "32f721d79eb589879ba0a706c788d575cdddd211aa74ddd324de241dd073c13e"
+    },
+    {
+      "path": "hw/soc/out/timing-status-20261001-2040/selected/run/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log",
+      "bytes": 10195,
+      "sha256": "2fa18da7ff954c0fc2dbb2db87d03e529d27fc4a8b5ca7d85679e98edb2962c0"
+    },
+    {
+      "path": "hw/soc/out/timing-status-20261001-2040/selected-review.json",
+      "bytes": 2376,
+      "sha256": "8e583e097fa851439e891e5358c11a5b917c0c643e92a8b2cdaa32d3881a985a"
+    }
+  ],
+  "retry": {
+    "run_id": 36901798029,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029",
+    "source_commit": "df3dd93fca89487dac46e6506c005713dd294430",
+    "max_iterations": 1,
+    "max_passes": 2,
+    "effective_global_pass_budget": 1,
+    "max_repairs_per_pass": 4,
+    "selected_pytest_passed": 172,
+    "native_completion_verified": false,
+    "startup_review": {
+      "schema": 1,
+      "status": "PASS_RETRY_STARTUP_PINS_AND_CONTROL_STATUS_ONLY",
+      "source_commit": "df3dd93fca89487dac46e6506c005713dd294430",
+      "run_id": 36901798029,
+      "artifact_id": 11181399842,
+      "artifact_name": "setup-probe-startup-1",
+      "artifact_pin": {
+        "sha256": "54e87ca61506718b473333352612729872cc835452b2c299c73b9e7af358a4ad",
+        "bytes": 378692
+      },
+      "observed_capture": "2026-10-01T17:48:47.150022+00:00",
+      "observed_result": "2026-10-01T17:48:38.085040+00:00",
+      "api_run_status": "in_progress",
+      "api_run_conclusion": null,
+      "phase": "native-diagnostic",
+      "result_status": "RUNNING",
+      "current_job_steps": [
+        {
+          "name": "Observe first interval without a native timeout",
+          "status": "in_progress"
+        }
+      ],
+      "verified_method_count": 11,
+      "verified_snapshot_file_count": 76,
+      "changed_method_pins": {
+        "hw/soc/pnr/timing_setup_hold_probe_step.tcl": {
+          "bytes": 9932,
+          "sha256": "b4ccb88fe58e9de09d6ff12d9a78c53c75dcd08b5ede08ab8d7a02e3f1be97cd"
+        },
+        "scripts/run_cloud_setup_probe.py": {
+          "bytes": 10198,
+          "sha256": "35e2536344cd204a1e2dab0c00dd74fac88f699e6ebf652021e6d835ad75dcbf"
+        }
+      },
+      "control_cases": {
+        "complete_coverage": {
+          "passed": true
+        },
+        "bad_coverage": {
+          "passed": true
+        },
+        "corrupt_units": {
+          "passed": true
+        },
+        "route_mutation": {
+          "passed": true
+        }
+      },
+      "control_returncode": 0,
+      "control_elapsed_seconds": 15.004700942999989,
+      "resources_before_native": {
+        "available_memory_bytes": 15701712896,
+        "free_disk_bytes": 88397905920
+      },
+      "available_ram_gib": 14.623359680175781,
+      "native_address_space_limit_bytes": 8589934592,
+      "actual_progress": "C10 native flow started; 32 macros loaded; global_route extra iteration 3/50 at startup capture.",
+      "setup_repair_result_available": false,
+      "timing_accepted": false,
+      "candidate_adopted": false,
+      "manufacturing_approval": false,
+      "limitations": [
+        "Startup is a historical non-atomic partial snapshot, not a completed diagnostic.",
+        "Exact 11 commit source blobs, all capture byte pins and four control PASS receipts checked; full tiny fixture semantic replay intentionally not repeated.",
+        "No proof yet that native setup repair reached or passed the previous journal boundary.",
+        "Existing SRAM Liberty and base SDC multi-clock warnings remain; no final signoff claim."
+      ],
+      "review_input_pins": {
+        "run.json": {
+          "sha256": "ca21493af28d2c7598e269d0934e5b0ea63bfc020aaf78a19503bb451cb68f11",
+          "bytes": 13452
+        },
+        "jobs.json": {
+          "sha256": "9d075b742722ee495c66c0aa58739cbdc93ac681b3e447557a143739f8c54b02",
+          "bytes": 4199
+        },
+        "artifacts.json": {
+          "sha256": "e1d513df02f356f156bdec8a7cd5d2d8d3d1511cd326232bdc5fbab63364f792",
+          "bytes": 743
+        },
+        "verify_startup.py": {
+          "sha256": "7b8034a576abf6aa10441b6fa4dec917370e149befbf3eaaa76a73800fddd075",
+          "bytes": 5141
+        }
+      }
+    },
+    "status": "FOUR_NATIVE_CONTROLS_PASS_FULL_CHIP_RUNNING"
+  },
+  "original_artifact_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870/artifacts/11160082372",
+  "durable_archive_status": "CLOUD_ARCHIVAL_PREPARATION",
+  "raw_assets_pending": "docs/evidence/cloud-setup-probe-failure-assets-20261001.json"
+}

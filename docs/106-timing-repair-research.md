@@ -680,3 +680,40 @@ log reached extra iteration 3/50. This clears the local resource bottleneck for
 this run. Startup does not prove the repair or four final chip snapshots have
 completed. The native log still reports missing SRAM Liberty models and a
 base-flow multi-clock warning; this remains diagnostic global-route timing.
+
+
+### 2026-10-01, 20:40 TRT — setup probe stopped by native journal assertion
+
+The [probe failure receipt](evidence/cloud-setup-probe-failure-20261001.json)
+supersedes the earlier running snapshot. Run 36858091870 finished with failure
+at 15:01 TRT. Its native phase ran for 405.029 seconds: global routing completed
+with zero overflow, and the initial snapshot exported 23,527 endpoints with 113
+negative hold endpoints. Setup repair began, then OpenROAD aborted with signal 6
+at `dbDatabase::commitEco` / `Resizer::journalEnd` because its journal stack was
+empty. No post-repair snapshot or accepted timing result exists. The
+[original failed artifact](https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870/artifacts/11160082372)
+is retained unchanged; this was a native assertion, not a RAM-availability wait.
+
+Inspection of the pinned OpenROAD `RepairSetup.cc` identifies a boundary case:
+when pass 1 improves timing with `max_passes=1`, the improvement branch commits
+and closes the journal. The `max_iterations=1` branch then commits it again
+without checking `journal_open`. The proposed compatible correction keeps the
+global iteration limit at 1 and allows a per-endpoint ceiling of 2, reopening the
+journal before the global limit closes it and exits both loops. A second pass is
+still prevented by that global limit. This source-supported workaround requires
+native verification; no runtime binary, setup/hold margin, acceptance tolerance,
+physical input or selected candidate is changed.
+
+The corrected source `df3dd93fca89487dac46e6506c005713dd294430` passed 172
+selected tests, including execution of the actual Tcl command construction and
+rejection of the unsafe old limits. [Retry 36901798029](https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029)
+was started on GitHub at 20:45 TRT. It remains incomplete; the source correction
+is not a claim of successful physical repair. The four generic CI checks for
+the previous delivered `48b34dd` commit completed successfully.
+
+The corrected retry startup was independently checked: all eleven method files
+match `df3dd93`, all 76 captured files match their recorded hashes, and the four
+native controls passed. The new Tcl arguments retain the one-iteration budget
+with the corrected per-endpoint cap. Native chip work started with 14.62 GiB
+available RAM and an 8 GiB address-space cap. The startup snapshot shows global
+routing, not a completed repair or proof that the former crash boundary passed.

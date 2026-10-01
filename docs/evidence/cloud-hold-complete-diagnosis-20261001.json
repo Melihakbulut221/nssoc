@@ -102,7 +102,7 @@
     "causal_conclusion": "The old 14.210854715fs TNS drift is not reproduced by no-op queries, cache invalidation, RC reestimation or no-repair incremental route in this single matched run. Repair-induced endpoint changes versus incremental TNS update arithmetic remain unresolved. Historical C10 producer RC state was not restored; the rounded source WNS discrepancy is not resolved."
   },
   "next_experiment": {
-    "status": "NATIVE_CONTROLS_PASS_FULL_CHIP_NATIVE_RUNNING_COMPLETION_PENDING",
+    "status": "FAILED_NATIVE_JOURNAL_ASSERTION_NO_COMPLETED_REPAIR",
     "purpose": "A new diagnostic-only matched setup experiment must export complete endpoint/corner rise/fall/min values before repair, immediately after repair, and after full timing recomputation; retain original native regression guards and compare deterministic math.fsum as additional evidence. No candidate adoption from this no-op run.",
     "candidate_adoption_allowed": false,
     "run_id": 36858091870,
@@ -126,7 +126,17 @@
     "native_controls_passed": 4,
     "available_memory_before_native_bytes": 15690600448,
     "native_controls_elapsed_seconds": 15.054464585999995,
-    "full_chip_native_started": true
+    "full_chip_native_started": true,
+    "failure_evidence": "docs/evidence/cloud-setup-probe-failure-20261001.json",
+    "corrected_retry": {
+      "run_id": 36901798029,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029",
+      "source_commit": "df3dd93fca89487dac46e6506c005713dd294430",
+      "status": "RUNNING_NATIVE_RESULT_PENDING",
+      "max_iterations": 1,
+      "max_passes": 2,
+      "effective_global_pass_budget": 1
+    }
   },
   "limits": [
     "Pi/Elmore getter values do not distinguish absent from zero Elmore delays.",
