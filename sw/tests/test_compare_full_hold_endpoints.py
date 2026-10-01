@@ -150,3 +150,50 @@ def test_native_tns_roundoff_is_reported_without_acceptance(tmp_path):
     result = M.compare(after, after)
     assert result['corners']['fast']['after']['native_tns_after_seconds'] != result['corners']['fast']['after']['fsum_seconds']
     assert result['timing_accepted'] is False
+
+
+def test_changed_endpoint_cli_persistence_reconstructs_exactly(tmp_path, monkeypatch):
+    """Exercise the saved-result boundary that a nonempty native comparison hit."""
+    before = fixture(tmp_path)
+    after = fixture(tmp_path, 'after', {
+        'a': (-3e-9, -1e-9, -3e-9),  # Real regression, no rounding/tolerance waiver.
+        'b': (2e-9, 3e-9, 2e-9),
+        'u': (-1e-9, None, -1e-9),  # Preserve JSON null and missing-path meaning.
+    })
+    receipt = tmp_path/'stages.json'
+    receipt.write_text(json.dumps({'stages': [before, after]}))
+    config = tmp_path/'config.json'
+    config.write_text(json.dumps({'PNR_CORNERS': CORNERS}))
+    output = tmp_path/'comparison.json'
+    monkeypatch.setattr('sys.argv', [
+        'compare_full_hold_endpoints.py', '--before-root', str(tmp_path),
+        '--before-receipt', str(receipt), '--before-stage', 'before',
+        '--after-root', str(tmp_path), '--after-receipt', str(receipt), '--after-stage', 'after',
+        '--config', str(config), '--expected-sdc-sha256', before['files']['constraints.sdc']['sha256'],
+        '--output', str(output)])
+    M.main()
+    saved = json.loads(output.read_text())
+    saved_inputs = saved.pop('source_inputs')
+    assert saved_inputs == {'before_receipt': M.file_pin(receipt),
+                            'after_receipt': M.file_pin(receipt), 'config': M.file_pin(config)}
+    # Reopen the producer receipt; do not reuse only in-memory fixture rows.
+    native = json.loads(receipt.read_text())['stages']
+    reconstructed = M.compare(load(tmp_path, native[0]), load(tmp_path, native[1]))
+    assert saved == reconstructed
+    assert saved['changed_endpoint_corner_count'] == 6
+    assert saved['corners']['fast']['columns']['min']['regressed'] == 1
+    assert saved['corners']['fast']['columns']['min']['unconstrained_to_finite'] == 1
+    assert saved['all_changed_endpoint_corners'][-1]['before_seconds'] == [None, None, None]
+    assert saved['thresholds_changed'] is saved['candidate_adopted'] is False
+
+
+def test_persisted_identity_change_still_rejected(tmp_path):
+    before = fixture(tmp_path)
+    after = fixture(tmp_path, 'after', {
+        'different_a': (-2e-9, -1e-9, -2e-9), 'b': (1e-9, 2e-9, 1e-9), 'u': (None, None, None)})
+    receipt = tmp_path/'identity-change.json'
+    receipt.write_text(json.dumps([before, after]))
+    restored = json.loads(receipt.read_text())
+    # Counts, corner coverage, pins and values match; identity mismatch must fail.
+    with pytest.raises(ValueError, match='identities changed'):
+        M.compare(load(tmp_path, restored[0]), load(tmp_path, restored[1]))

@@ -135,7 +135,10 @@ def compare(before, after):
         for endpoint in sorted(before['endpoints']):
             left, right = before['paths'][corner][endpoint], after['paths'][corner][endpoint]
             if left != right:
-                changes.append(dict(corner=corner, endpoint=endpoint, before_seconds=left, after_seconds=right))
+                # Receipts are persisted as JSON and independently reconstructed.
+                # Emit JSON-native arrays so a changed pair roundtrips exactly.
+                changes.append(dict(corner=corner, endpoint=endpoint,
+                                    before_seconds=list(left), after_seconds=list(right)))
             for index, column in enumerate(columns):
                 a, b = left[index], right[index]
                 if a == b:
