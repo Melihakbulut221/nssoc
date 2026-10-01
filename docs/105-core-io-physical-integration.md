@@ -2093,3 +2093,42 @@ also describes arbitrary tap shapes and hierarchical overlap. These sources
 identify missing contract/geometry work; they do not authorize dropping A/P or
 using virtual name joins as transistor LVS. All seven I/O masters and full-chip
 transistor LVS remain open.
+
+
+### 2026-10-01 — Vss reference migration contract verified; native LVS remains open
+
+The [ordered-interface audit](evidence/io-tap-topology-contract-20261001.json)
+checks the old `c4b8b4e` library against pinned upstream main `5e6d592` and dev
+`c702f87`. The upstream
+[coordinated I/O update](https://github.com/IHP-GmbH/IHP-Open-PDK/commit/1a29eb4980d520d9ce7273593dc1599310cb81a9)
+changes the Vss pad's DCN guard from `iovss` to `iovdd` and changes its formal
+port order in the same GDS/CDL/LEF revision. Named diode-terminal comparison
+confirms the old reference mismatch and the newer reference match. This is a
+schematic interface result, not a transistor extraction result.
+
+The old Vss formal order is `(iovdd, iovss, vdd, vss)`; the new order is
+`(vdd, vss, iovdd, iovss)`. For positional callers, the zero-based permutation
+`[2, 3, 0, 1]` preserves the named rail mapping. Blindly reusing the old argument
+list swaps core and I/O rails in the four-distinct-rail control. Actual chip
+callers and the active PDK were not changed. Mixed old-GDS/new-reference
+controls are rejected; 18 new topology tests and 31 existing contract tests pass.
+
+The Vss LEF macro body is byte-identical across the three checked versions,
+while the complete GDS identities differ. This does not establish which device
+shapes changed. Old GDS bytes were stream-verified; newer main/dev GDS views
+are bound to upstream Git blob metadata but were not downloaded or geometrically
+compared in this bounded audit. A coherent single-revision GDS/CDL/LEF candidate
+and strict native parent-context LVS are still required. Tap A/P mismatches,
+all seven I/O-master failures and full-chip transistor LVS remain open.
+
+The separate [completed timing diagnostic](106-timing-repair-research.md)
+now establishes stable complete hold-endpoint exports across seven post-routing
+no-op stages, with 113/31/10 violations at fast/typical/slow corners. It did not
+reproduce the historical after-repair TNS change and did not select a new core.
+The assembly therefore inherits no new timing or production acceptance from
+this diagnostic or from the Vss reference audit.
+
+The [compact follow-up archive](evidence/cloud-hold-complete-and-io-topology-followup-assets-20261001.json)
+retains the raw upstream commit/API observations, ordered-port contract audit,
+source snapshots and controls for this update. This publication does not change
+the open native transistor LVS result.

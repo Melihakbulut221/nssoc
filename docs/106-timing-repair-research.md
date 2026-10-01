@@ -1,8 +1,11 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
-**Implementation update:** the three-method local campaign and its controlled
-handover are now running. See the implementation section below. The original
-checkpoint is still finishing; no full-chip speedup is claimed yet.
+**1 October status:** the cloud setup A/B and full-endpoint no-op diagnostic
+have completed. Both setup candidates remain rejected; the diagnostic preserves
+all seven post-routing endpoint exports but does not reproduce the prior hold
+TNS drift. No new checkpoint is selected. The final section records the result
+and the next planned repair-boundary measurement. Earlier sections retain their
+dated research and execution snapshots.
 
 **29 September 2026: research and native command compatibility, not a measured
 speedup or timing closure.** The latest completed input for this investigation
@@ -594,3 +597,86 @@ retains the raw ZIPs and corrections. The full-chip eight-stage diagnostic is
 still incomplete at this snapshot; no candidate or timing result is accepted.
 The deliberately paused local controllers remain paused and their inputs were
 verified unchanged. Further progress is followed on this existing cloud run.
+
+
+### 2026-10-01 — completed no-op diagnostic; repair-boundary cause still open
+
+[Run 36813322010](https://github.com/Melihakbulut221/nssoc/actions/runs/36813322010)
+completed successfully at 07:17 TRT. The full-chip native phase took 705.054
+seconds; the preceding tiny controls took 15.004 seconds. This supersedes the
+startup-only snapshot above. The
+[completed diagnostic receipt](evidence/cloud-hold-complete-diagnosis-20261001.json)
+records eight stages and independent replay of all 16 endpoint tables against
+the producer's recorded byte counts and hashes. It exports 23,527 endpoint
+identities and 70,581 endpoint/corner rows per stage. Each corner has 17,145
+constrained and 6,382 explicitly unconstrained endpoints; complete export does
+not imply complete timing constraints.
+
+All seven stages after global-route reconstruction have **identical complete
+endpoint values and identical constraint, netlist, placement, route and
+observable Pi/Elmore fingerprints**. Repeated queries, arrival invalidation,
+full timing invalidation, RC re-estimation and incremental routing without
+repair produce zero hold TNS change in this run. The 32 SRAM placements and
+original SDC remain preserved. The separate initial ODB reload has no rebuilt
+estimated parasitics and must not be used as the matched timing reference.
+
+| Rebuilt global-route corner | Negative hold endpoints | Hold WNS (ns) | Native hold TNS (ns) |
+|---|---:|---:|---:|
+| Fast, 1.32 V, −40 °C | 113 | −1.840965380 | −26.461044911 |
+| Typical, 1.20 V, 25 °C | 31 | −0.925876931 | −10.257279470 |
+| Slow, 1.08 V, 125 °C | 10 | −0.282388224 | −2.074237226 |
+
+The result reproduces the earlier A/B **before** TNS exactly, but does not
+reproduce its −14.210855 fs after-repair change. Native TNS agrees with a single
+binary32 rounding of the independently summed endpoint values in this run;
+that observation does not explain the historical change. The old after-repair
+results lack complete endpoint exports, so repair-induced path changes and
+incremental aggregate arithmetic remain unresolved alternatives. The original
+C10 producer's estimated-RC cache was not restored; its rounded −1.840329 ns
+hold WNS still differs from the rebuilt −1.840965380 ns. Neither difference is
+waived. Pi/Elmore getters also cannot distinguish an absent Elmore value from a
+zero value, so their unchanged fingerprints have that explicit limit.
+
+The new [bounded setup probe](https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870)
+is running on GitHub at source `0e76a3a4d9b3234b4958ab9f5da6c5ab55ee246a`; native completion
+is pending. It captures full endpoint/corner values before repair, immediately
+after repair, after normal legalization/routing/RC update, and after full timing
+cache recomputation. The immediate post-repair stage is explicitly provisional.
+One global optimization iteration and one endpoint pass are allowed, with at
+most four driver moves; a move can change multiple cells. Post-loop last-gasp
+and critical-VT sweeps are disabled. These are experiment work-budget limits,
+not relaxed timing requirements. The native setup API does not enforce its
+`max_buffer_percent` option; the probe additionally checks net instance growth
+against 40% of its initial population. It cannot adopt a candidate. The existing
+0.000001 ns comparison tolerance, selected C10 reference and production gates
+remain unchanged. All 167 selected source tests passed. Native execution requires
+9 GiB available memory and is capped at 8 GiB address space on the cloud worker;
+no native process was launched locally.
+
+The original final artifact is 478,807,891 bytes and contains 144 files
+(945,676,244 bytes expanded). Because local storage cannot safely hold the
+complete download and extraction, the isolated
+[archive run](https://github.com/Melihakbulut221/nssoc/actions/runs/36857496790)
+verified the complete ZIP and reran the exact producer-commit verifier on
+GitHub before publishing its unchanged bytes. That archive job completed
+successfully. Independent local review verified all 26 compact receipt files,
+the exact native and archival Git sources, and fresh release API metadata.
+The [original full diagnostic ZIP](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/timing-hold-diagnostic-complete-20261001.zip)
+was checked byte for byte after both authenticated and anonymous cloud downloads. No native physical calculation was repeated for
+archival verification. A successful diagnostic or archive publication does
+not close final timing, extracted RC or signoff.
+
+The [compact follow-up archive](evidence/cloud-hold-complete-and-io-topology-followup-assets-20261001.json)
+preserves the independent endpoint analysis, full-archive verification receipt,
+I/O topology source audit and exact setup-probe methods. Its members and complete
+compressed bytes were verified after both authenticated and anonymous downloads.
+
+The [setup-probe startup archive](evidence/cloud-setup-probe-startup-assets-20261001.json)
+proves that four tiny native controls passed and full-chip native work started.
+The 378,274-byte original ZIP, 76 captured files, eleven exact Git method sources
+and 26 relocated input references were independently checked. Available memory
+before native chip work was 15,690,600,448 bytes (14.61 GiB); the recorded route
+log reached extra iteration 3/50. This clears the local resource bottleneck for
+this run. Startup does not prove the repair or four final chip snapshots have
+completed. The native log still reports missing SRAM Liberty models and a
+base-flow multi-clock warning; this remains diagnostic global-route timing.
