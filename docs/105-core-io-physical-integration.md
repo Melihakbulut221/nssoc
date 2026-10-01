@@ -2132,3 +2132,28 @@ The [compact follow-up archive](evidence/cloud-hold-complete-and-io-topology-fol
 retains the raw upstream commit/API observations, ordered-port contract audit,
 source snapshots and controls for this update. This publication does not change
 the open native transistor LVS result.
+
+
+### 2026-10-01 — isolated coherent Vss library experiment
+
+The new `coherent-io-lvs` workflow prepares an isolated comparison using GDS,
+CDL and LEF from the same IHP commit
+`5e6d592e4002946a4616f798c357f0f3c06cf3b6`, with the matching pinned native
+LVS deck. All three downloaded views must match their exact Git blob identity
+and byte count. The experiment extracts the unchanged Vss hierarchy and runs
+strict deep and flat LVS after the existing physical-parent positive and
+negative controls. It does not replace the active PDK or chip layout.
+
+The current CDL uses an explicit two-terminal `XR` tap with `A` and `P` values.
+A reversible dialect adapter changes only its instance prefix to `R`; ordered
+terminals, model and both parameters stay unchanged. The exact Vss and two
+diode reference dependencies are selected first, because two unrelated library
+cells contain model-less tap declarations. No model is invented for those
+cells and no implicit `sub!` global or virtual connection is added. The old
+positional-caller migration contract remains `[2, 3, 0, 1]`; no caller changes
+are part of this experiment.
+
+Native comparison remains pending. Any mismatch or extraction warning is
+retained as failure; a future Vss-only pass would not establish seven-master
+or full-chip transistor LVS, repair the separate Vdd tap mismatch, or grant
+production acceptance.
