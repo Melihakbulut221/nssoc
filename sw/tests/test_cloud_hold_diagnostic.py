@@ -273,7 +273,9 @@ def stage_fixture(directory, name, extra_corner=False):
     row = dict(name=name, endpoint_count=3, engine_endpoint_count=3, exported_endpoint_count=3,
                negative_vertex_endpoints=2, engine_negative_vertex_endpoints=2,
                corners=corners, all_endpoint_coverage=True, value_units='seconds',time_unit_seconds=1e-9,
-               numeric_format='%.17g',raw_getters='SWIG Slack delayAsFloat -> Tcl double, SI seconds')
+               numeric_format='%.17g',raw_getters='SWIG Slack delayAsFloat -> Tcl double, SI seconds',
+               native_time_unit_seconds=diagnostic.NATIVE_NS_SCALE_SECONDS,
+               time_unit_representation=diagnostic.UNIT_REPRESENTATION)
     write(directory/'native.json', row)
     repin_stage(directory, row)
     return row
@@ -485,3 +487,25 @@ def native_control_fixture(root,pins):
     write(root/'native/fixture.json',dict(status='PASS_NATIVE_HOLD_FIXTURE_NATIVE_ONLY',cases=row['cases'],stages=stages))
     row['files'] = diagnostic.file_inventory(root)
     return row
+
+
+@pytest.mark.parametrize('fault',[None,'binary64-raw','corrupt-raw','corrupt-nominal','representation','missing-raw'])
+def test_native_float32_unit_scale_is_exact_without_changing_slack_units(tmp_path,fault):
+    directory = tmp_path/'stage'
+    row = stage_fixture(directory,'matched_before')
+    assert diagnostic.NATIVE_NS_SCALE_SECONDS == 9.999999717180685e-10
+    assert diagnostic.NATIVE_NS_SCALE_SECONDS != 1e-9
+    if fault == 'binary64-raw': row['native_time_unit_seconds'] = 1e-9
+    if fault == 'corrupt-raw': row['native_time_unit_seconds'] = 1.
+    if fault == 'corrupt-nominal': row['time_unit_seconds'] = diagnostic.NATIVE_NS_SCALE_SECONDS
+    if fault == 'representation': row['time_unit_representation'] = 'assumed decimal'
+    if fault == 'missing-raw': del row['native_time_unit_seconds']
+    write(directory/'native.json',{key:value for key,value in row.items() if key not in ('files','fingerprints')})
+    repin_stage(directory,row)
+    if fault is None:
+        checked = diagnostic.validate_stage(directory,row,row['files']['constraints.sdc']['sha256'])
+        # Raw SI seconds are left untouched, not rescaled by the UI units.
+        assert checked['reductions']['slow']['fixed_order_tns_seconds'] == -3.75e-10
+    else:
+        with pytest.raises(ValueError,match='exact native float32 scale'):
+            diagnostic.validate_stage(directory,row,row['files']['constraints.sdc']['sha256'])

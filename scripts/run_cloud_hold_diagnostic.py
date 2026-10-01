@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 import sys
 import time
 
@@ -39,6 +40,11 @@ FINGERPRINT_FILES = {'constraints': 'constraints.sdc', 'netlist': 'connectivity.
                      'placement': 'placement.tsv', 'routing': 'routes.txt',
                      'parasitics': 'parasitics.tsv.gz'}
 CONTROL_CASES = {'complete_coverage', 'bad_coverage', 'corrupt_units', 'route_mutation'}
+# OpenSTA 857316ff Unit::scale and SWIG unit_scale use C++ float. This is the
+# exact native representation, not an engineering tolerance or a slack conversion.
+NATIVE_NS_SCALE_SECONDS = struct.unpack('!f', struct.pack('!f', 1e-9))[0]
+UNIT_REPRESENTATION = 'IEEE-754 binary32 promoted to Tcl double'
+
 
 
 
@@ -269,9 +275,11 @@ def validate_stage(directory, row, source_sdc_sha):
     if row.get('all_endpoint_coverage') is not True:
         raise ValueError('Incomplete native endpoint coverage')
     if (row.get('value_units') != 'seconds' or row.get('time_unit_seconds') != 1e-9
+            or row.get('native_time_unit_seconds') != NATIVE_NS_SCALE_SECONDS
+            or row.get('time_unit_representation') != UNIT_REPRESENTATION
             or row.get('numeric_format') != '%.17g'
             or row.get('raw_getters') != 'SWIG Slack delayAsFloat -> Tcl double, SI seconds'):
-        raise ValueError('Native time units must be explicitly seconds with pinned ns Liberty scale')
+        raise ValueError('Expected SI-second values, nominal ns units and the exact native float32 scale')
     if inventory['constraints.sdc']['sha256'] != source_sdc_sha:
         raise ValueError('Timing constraints changed')
     expected_fingerprints = {name: inventory[filename]['sha256'] for name, filename in FINGERPRINT_FILES.items()}

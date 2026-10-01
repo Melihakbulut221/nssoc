@@ -102,7 +102,10 @@ set receipt [nssoc_hold_jobject [dict create schema 1 status [nssoc_hold_jstr CO
     timing_accepted false candidate_adopted false manufacturing_approval false \
     all_endpoint_coverage true source_sram_macros_preserved 32 \
     sram_macro_count 32 sram_placement_preserved true \
-    time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] value_units [nssoc_hold_jstr seconds] \
+    time_unit_seconds [nssoc_hold_assert_units [sta::unit_scale time]] \
+    native_time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] \
+    time_unit_representation [nssoc_hold_jstr {IEEE-754 binary32 promoted to Tcl double}] \
+    value_units [nssoc_hold_jstr seconds] \
     sdc_files "\[[join $sdc_files ,]\]" stages "\[[join $stages ,]\]" \
     scope [nssoc_hold_jstr {No-op timing-cache and explicit route/parasitic boundary diagnosis only; no acceptance-tolerance change, repair, candidate adoption or signoff.}]]]
 nssoc_hold_write_json [file join $::env(STEP_DIR) hold-diagnostic.json] $receipt

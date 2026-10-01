@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import struct
 import subprocess
 
 
@@ -35,6 +36,8 @@ def validate_stage(root, stage):
     assert {(r['corner'], r['endpoint']) for r in paths} == {
         (corner, name) for corner in ('fast', 'slow', 'typical') for name in names}
     assert stage['time_unit_seconds'] == 1e-9 and stage['value_units'] == 'seconds'
+    assert stage['native_time_unit_seconds'] == struct.unpack('f', struct.pack('f', 1e-9))[0]
+    assert stage['time_unit_representation'] == 'IEEE-754 binary32 promoted to Tcl double'
 
 
 def main():

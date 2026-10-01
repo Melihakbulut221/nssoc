@@ -99,7 +99,11 @@ if {![catch {nssoc_hold_assert_coverage $expected [lrange $all_names 1 end] $neg
 if {![catch {nssoc_hold_assert_path_coverage [dict create q_bad1 -1e-9] [dict create]}]} {
     error "Finite negative endpoint omitted in every corner incorrectly accepted"
 }
-if {![catch {nssoc_hold_assert_units 1.0}]} {error "Corrupt time units incorrectly accepted"}
+foreach corrupt_scale {1.0 1e9 1e-12 1e-9} {
+    if {![catch {nssoc_hold_assert_units $corrupt_scale}]} {
+        error "Corrupt or wrong-precision time units incorrectly accepted: $corrupt_scale"
+    }
+}
 nssoc_hold_assert_units [sta::unit_scale time]
 
 # Actually move and reroute a cell; the no-op guard must reject it.

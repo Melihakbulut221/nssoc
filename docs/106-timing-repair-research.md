@@ -566,3 +566,13 @@ includes hidden files from the curated diagnostic output directories. The
 first failed ZIP remains incomplete and is not retrospectively accepted.
 The [method, completed CI and I/O audit archive](evidence/cloud-hold-methods-ci-and-io-audit-assets-20261001.json)
 preserves the pre-rerun source and validation; new native results are separate.
+
+The [second native attempt](https://github.com/Melihakbulut221/nssoc/actions/runs/36812843776)
+passed the routing parser but exposed a time-unit metadata assertion bug before
+full-chip loading. Pinned OpenSTA `unit_scale` returns a C++ `float`: nominal
+1 ns is represented as `9.9999997171806854e-10` seconds, not binary64 literal
+`1e-9`. The helper and independent reader now preserve and exactly check both
+the native binary32 value and the separate nominal unit. Adjacent binary32
+values, binary64 substitution and wrong units are rejected. No raw slack is
+rescaled and no timing tolerance is changed. This metadata correction does not
+establish the cause of the earlier chip hold TNS difference.

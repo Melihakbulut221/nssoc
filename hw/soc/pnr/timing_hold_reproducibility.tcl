@@ -50,8 +50,14 @@ proc nssoc_hold_assert_coverage {expected names negative engine_negative} {
 proc nssoc_hold_assert_units {scale} {
     nssoc_hold_number $scale
     # This experiment is bound to the SG13G2 libraries in the published bundle.
-    # Raw getters below are seconds regardless of this UI scale.
-    if {$scale != 1e-9} {error "Published SG13G2 time-unit contract differs"}
+    # Util.i:unit_scale and Units.hh:Unit::scale return C++ float, promoted to
+    # Tcl double. Compare its exact binary32 representation, not a binary64
+    # literal or a tolerance. Raw Slack getters remain SI seconds.
+    binary scan [binary format f 1e-9] f expected
+    if {$scale != $expected} {
+        error "Published SG13G2 time-unit contract differs: actual=[nssoc_hold_number $scale] expected_native_binary32=[nssoc_hold_number $expected] nominal_seconds=1e-9"
+    }
+    return 1e-9
 }
 proc nssoc_hold_assert_path_coverage {vertices path_minima} {
     dict for {name slack} $vertices {
@@ -300,7 +306,10 @@ proc nssoc_hold_snapshot {name output} {
         exported_endpoint_count [llength $ordered] negative_vertex_endpoints $negative \
         engine_negative_vertex_endpoints $engine_negative all_endpoint_coverage true \
         vertex_path_semantics_match true \
-        time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] value_units [nssoc_hold_jstr seconds] \
+        time_unit_seconds [nssoc_hold_assert_units [sta::unit_scale time]] \
+        native_time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] \
+        time_unit_representation [nssoc_hold_jstr {IEEE-754 binary32 promoted to Tcl double}] \
+        value_units [nssoc_hold_jstr seconds] \
         numeric_format [nssoc_hold_jstr %.17g] \
         raw_getters [nssoc_hold_jstr {SWIG Slack delayAsFloat -> Tcl double, SI seconds}] \
         parasitic_observation_scope [nssoc_hold_jstr {All Pi/Elmore getter tuples observed; find_elmore returns zero for both absent and zero load delay, so this is not a complete parasitic topology/annotation-existence proof.}] \
