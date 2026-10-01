@@ -717,3 +717,65 @@ native controls passed. The new Tcl arguments retain the one-iteration budget
 with the corrected per-endpoint cap. Native chip work started with 14.62 GiB
 available RAM and an 8 GiB address-space cap. The startup snapshot shows global
 routing, not a completed repair or proof that the former crash boundary passed.
+
+
+### 2026-10-01 — native setup probe completed; persisted JSON comparison corrected
+
+[Retry 36901798029](https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029)
+completed all four native snapshots at source `df3dd93`. The controls returned 0
+in 15.005 seconds and the full-chip native phase returned 0 in 855.061 seconds.
+This verifies passage through the previous journal assertion boundary. The
+overall workflow nevertheless **failed** during final independent capture
+validation: changed endpoint records used Python tuples, which became lists
+when saved as JSON. Reconstructing the same values then failed exact dictionary
+equality. The original failed workflow and artifact remain preserved.
+
+Commit `bebfbe704748d8ab347db9a4db86b53670a6624c` makes those two array fields
+JSON-stable. It changes no slack value, identity check, threshold or acceptance
+guard. A persisted CLI roundtrip test fails with the original implementation
+and passes after the correction; all 24 comparator tests pass. Independent
+replay of the real result finds exactly 666 tuple/list fields across three
+nonempty comparisons, with no other comparison value or structural difference.
+All five stored comparisons now reconstruct exactly. No native rerun was needed
+for this representation correction.
+
+The [completed probe diagnosis](evidence/cloud-setup-probe-complete-diagnosis-20261001.json)
+pins all 16 selected native metadata, SDC and endpoint files, plus the original
+source configuration. Each stage exports 23,527 endpoint identities and 70,581
+endpoint/corner rows. There are 6,382 explicitly unconstrained identities per
+corner; complete export is not complete timing-constraint coverage.
+
+| Stage | Setup WNS (ns) | Setup TNS (ns) | Setup violations | Hold violations |
+|---|---:|---:|---:|---:|
+| Matched before | −4.909516349 | −4320.800144342 | 1384 | 113 |
+| Immediately after repair, provisional | −4.738650361 | −4104.378149350 | 1377 | 113 |
+| After legalization/routing/RC update | −4.738764048 | −4104.394975002 | 1377 | 113 |
+| After full timing-cache update | −4.738764048 | −4104.394975002 | 1377 | 113 |
+
+Repair changes 37 endpoint minima in each corner, or 111 endpoint/corner pairs.
+Every changed minimum remains positive, but some hold margins do decrease:
+fast and slow each have 15 regressions and 22 improvements; typical has 16
+regressions and 21 improvements. Among the changed fast-corner endpoints, the
+smallest margin is 26.215 ps before and 17.773 ps after. These reductions are
+retained in the diagnosis. All 113 negative global endpoint values, and all
+negative per-corner rise/fall/minimum values, are exactly unchanged. Native hold
+TNS and the independent negative-slack sums also remain unchanged. Subsequent
+legalization/RC and full-cache updates cause no additional hold endpoint changes.
+The historical −14.210855 fs TNS difference remains unreproduced and unresolved.
+
+The original 72,242,239-byte journal-failure ZIP is now durably published and
+[independently reviewed](evidence/cloud-setup-probe-failure-assets-20261001.json),
+including authenticated and anonymous cloud byte roundtrips. The **new**
+269,855,333-byte completed-native artifact has now passed the separate
+[full cloud archive verification](evidence/cloud-setup-probe-complete-assets-20261001.json).
+Run 36915992602 checked all 125 original members and reran the producer verifier
+with only the pinned JSON array correction. Original measurements and capture
+bytes remain unchanged. The original verifier reproduced the recorded failure;
+the corrected verifier passed with a 4 GiB address-space limit. No native
+calculation was repeated. Independent local review checked all 48 compact
+receipt members, original and overlaid Git sources, and fresh release metadata.
+The unchanged ZIP is publicly archived with verified authenticated and anonymous
+cloud byte roundtrips. This verifies the captured diagnostic's inventories and
+recorded physical/parasitic fingerprints, not qualified extracted-RC signoff.
+No candidate is adopted, and setup/hold closure, qualified extracted timing,
+SRAM Liberty coverage and production approval remain open.

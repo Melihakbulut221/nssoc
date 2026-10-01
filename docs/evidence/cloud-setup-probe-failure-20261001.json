@@ -25,7 +25,7 @@
   "available_memory_before_native_bytes": 15690600448,
   "native_address_space_limit_bytes": 8589934592,
   "source_diagnosis": {
-    "scope": "Source-supported explanation; native retry still required",
+    "scope": "Historical source-supported cause; corrected retry now completes all native stages, with a separate final JSON reconstruction failure.",
     "openroad_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
     "path": "src/rsz/src/RepairSetup.cc",
     "saved_source_sha256": "d0c293ba31d9b8908e1e2ea829f81016d837f17e3966c8d672304321c72df89b",
@@ -35,7 +35,7 @@
     "explanation": "When first pass improves slack with max_passes=1, the better branch closes its journal and does not reopen it. max_iterations=1 then enters the unguarded second journalEnd path with an empty journal stack.",
     "workaround": "Keep max_iterations=1 and allow max_passes=2, so the better branch reopens the journal before the global one-iteration limit closes it; that same limit exits both loops before a second pass. This changes only the allowed per-endpoint pass ceiling, not total work or timing acceptance."
   },
-  "retry_status": "CORRECTED_SOURCE_TESTED_AND_CLOUD_RETRY_RUNNING",
+  "retry_status": "NATIVE_RETRY_COMPLETED_FINAL_JSON_RECONSTRUCTION_FAILED_FIX_REPLAYED",
   "candidate_adopted": false,
   "timing_accepted": false,
   "manufacturing_approval": false,
@@ -76,7 +76,7 @@
     "effective_global_pass_budget": 1,
     "max_repairs_per_pass": 4,
     "selected_pytest_passed": 172,
-    "native_completion_verified": false,
+    "native_completion_verified": true,
     "startup_review": {
       "schema": 1,
       "status": "PASS_RETRY_STARTUP_PINS_AND_CONTROL_STATUS_ONLY",
@@ -164,9 +164,27 @@
         }
       }
     },
-    "status": "FOUR_NATIVE_CONTROLS_PASS_FULL_CHIP_RUNNING"
+    "status": "NATIVE_COMPLETE_FINAL_JSON_RECONSTRUCTION_FAILED",
+    "workflow_conclusion": "failure",
+    "native_returncode": 0,
+    "native_elapsed_seconds": 855.060948964,
+    "native_stages_completed": 4,
+    "completion_evidence": "docs/evidence/cloud-setup-probe-complete-diagnosis-20261001.json",
+    "startup_review_is_historical": true,
+    "json_representation_fix_commit": "bebfbe704748d8ab347db9a4db86b53670a6624c",
+    "full_archive_verification": "PASS_CLOUD_COMPLETE_NATIVE_CAPTURE_WITH_JSON_ONLY_VERIFIER_FIX",
+    "full_archive_assets": "docs/evidence/cloud-setup-probe-complete-assets-20261001.json"
   },
   "original_artifact_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870/artifacts/11160082372",
-  "durable_archive_status": "CLOUD_ARCHIVAL_PREPARATION",
-  "raw_assets_pending": "docs/evidence/cloud-setup-probe-failure-assets-20261001.json"
+  "durable_archive_status": "PASS_CLOUD_PUBLISHED_FAILURE_EVIDENCE_INDEPENDENTLY_REVIEWED",
+  "raw_assets": "docs/evidence/cloud-setup-probe-failure-assets-20261001.json",
+  "durable_archive": {
+    "run_id": 36902739998,
+    "bytes": 72242239,
+    "sha256": "429bee9737177359086e0f1aef4c1604ba37b3ce2d2cfcb5c98de091c6417deb",
+    "original_zip_unchanged": true,
+    "cloud_authenticated_and_anonymous_roundtrips_verified": true,
+    "local_compact_receipt_and_source_replay_verified": true,
+    "original_failed_native_outcome_unchanged": true
+  }
 }

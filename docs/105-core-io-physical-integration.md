@@ -2157,3 +2157,17 @@ Native comparison remains pending. Any mismatch or extraction warning is
 retained as failure; a future Vss-only pass would not establish seven-master
 or full-chip transistor LVS, repair the separate Vdd tap mismatch, or grant
 production acceptance.
+
+
+The first coherent run, [36916335752](https://github.com/Melihakbulut221/nssoc/actions/runs/36916335752),
+passed its eight native physical-parent controls but stopped before Vss LVS.
+The conservative GDS subset reader rejected padding after `ENDLIB` at byte
+71,422,884. A bounded read of the pinned upstream file confirms a four-byte
+`ENDLIB` followed by exactly 1,116 zero bytes, ending at byte 71,424,000.
+This is a transport-format preparation failure, not a new transistor LVS
+verdict. The [preparation failure receipt](evidence/coherent-vss-preparation-failure-20261001.json)
+records a runner-specific adapter that retains the original view and creates a
+separate byte-identical prefix through `ENDLIB`, with explicit source/prefix/tail
+hashes. The shared strict GDS parser remains unchanged. All 147 selected tests,
+including the unchanged subset-reader regression tests and five new corruption
+controls, pass. The corrected native retry still requires validation.

@@ -50,6 +50,9 @@ def fixture_views(tmp_path, monkeypatch, fault=None):
     content = {'gds':library(cell('sg13g2_DCNDiode'),cell('sg13g2_DCPDiode'),
         cell(runner.TOP,ref('sg13g2_DCNDiode')+ref('sg13g2_DCPDiode'))),
         'cdl':text.encode(), 'lef':LEF.encode()}
+    monkeypatch.setattr(runner, 'GDS_PREFIX_BYTES', len(content['gds']))
+    monkeypatch.setattr(runner, 'GDS_ZERO_PADDING_BYTES', 12)
+    content['gds'] += bytes(12)
     pins = {}
     for kind, raw in content.items():
         path = tmp_path/('source.'+kind)
@@ -82,7 +85,10 @@ def test_prepare_uses_one_commit_and_preserves_byte_subset_and_reference(tmp_pat
     assert record['tap_parameters_changed'] is False
     assert (out/'inputs/sg13g2_io.cdl').read_bytes() == content['cdl']
     assert (out/'inputs/sg13g2_io.gds').read_bytes() == content['gds']
-    assert (out/'inputs/subset/subset.gds').read_bytes() == content['gds']
+    assert (out/'inputs/subset/subset.gds').read_bytes() == content['gds'][:-12]
+    assert (out/'inputs/unpadded-source.gds').read_bytes() == content['gds'][:-12]
+    assert record['padding_transport_adapter']['padding']['bytes'] == 12
+    assert record['padding_transport_adapter']['original_retained'] is True
     assert 'R0 anode sub! ptap1 A=141.253p P=47.54u' in (out/'inputs/schematic.cir').read_text()
 
 
@@ -114,6 +120,35 @@ def test_download_never_overwrites_an_existing_input(tmp_path):
     with pytest.raises(FileExistsError):
         runner.download_view('gds',dest)
     assert dest.read_bytes() == b'original'
+
+
+@pytest.mark.parametrize('fault', ['nonzero-tail','wrong-length','wrong-endlib','source-mutation','occupied-output'])
+def test_padding_transport_rejects_nonpadding_corruption_and_preserves_original(tmp_path,monkeypatch,fault):
+    content=fixture_views(tmp_path,monkeypatch)
+    source=tmp_path/'padded.gds';source.write_bytes(content['gds'])
+    output=tmp_path/'prefix.gds'
+    if fault=='nonzero-tail': source.write_bytes(content['gds'][:-1]+b'X')
+    if fault=='wrong-length': source.write_bytes(content['gds']+b'\0')
+    if fault=='wrong-endlib':
+        raw=bytearray(content['gds']);raw[runner.GDS_PREFIX_BYTES-2]=5;source.write_bytes(raw)
+    # Pin malformed fixtures deliberately so ENDLIB/tail rules, not just the
+    # upstream hash check, must reject them.
+    identity=runner.topology.file_identity(source)
+    runner.VIEWS['gds']=(identity['bytes'],identity['git_blob_sha1'])
+    before=source.read_bytes()
+    if fault=='occupied-output': output.write_bytes(b'existing')
+    if fault=='source-mutation':
+        verify=runner.topology.verify_view
+        def changed(*args):
+            result=verify(*args)
+            data=bytearray(source.read_bytes());data[10]^=1;source.write_bytes(data)
+            return result
+        monkeypatch.setattr(runner.topology,'verify_view',changed)
+    with pytest.raises((ValueError,FileExistsError)):
+        runner.unpad_coherent_gds(source,output)
+    if fault=='occupied-output': assert output.read_bytes()==b'existing'
+    else: assert not output.exists()
+    if fault!='source-mutation': assert source.read_bytes()==before
 
 
 def test_exact_native_flags_do_not_add_virtual_joins_or_parameter_exemptions(tmp_path):

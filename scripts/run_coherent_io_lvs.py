@@ -7,11 +7,13 @@ No active PDK or chip view is updated. A mismatch is retained as a failure;
 reference A/P, ordered terminals and undeclared globals are never inferred.
 """
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import stat
 import sys
 import urllib.request
 
@@ -29,6 +31,8 @@ VIEWS = {
     'cdl': (38738, 'fb26e68b55bddf20c28a523f7676beba582920fd'),
     'lef': (96886, '4ad7181d2871258b6afa151e5835dfa06eadadfb'),
 }
+GDS_PREFIX_BYTES = 71422884
+GDS_ZERO_PADDING_BYTES = 1116
 METHODS = (
     'scripts/run_coherent_io_lvs.py', 'scripts/run_io_parent_lvs.py',
     'scripts/extract_gds_hierarchy.py', 'scripts/io_tap_topology_audit.py',
@@ -111,6 +115,61 @@ def vss_reference(raw):
     return selected_raw, selected, changes, list(reachable), globals_
 
 
+def unpad_coherent_gds(source, destination):
+    """Retain the pinned original; remove only its exact zero tail after ENDLIB.
+
+    The derived prefix is subsequently validated by the unchanged strict GDS
+    extractor. No record, coordinate, label or cell is rewritten here.
+    """
+    if source.resolve() == destination.resolve() or destination.exists() or destination.is_symlink():
+        raise FileExistsError('Unpadded derivative must be a fresh distinct file')
+    expected = topology.verify_view(source, metadata('gds'), COMMIT, 'gds')
+    if expected['bytes'] != GDS_PREFIX_BYTES+GDS_ZERO_PADDING_BYTES:
+        raise ValueError('Pinned GDS/prefix/padding lengths differ')
+    source_hash, prefix_hash = hashlib.sha256(), hashlib.sha256()
+    created = False
+    try:
+        with os.fdopen(os.open(source, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK), 'rb') as stream:
+            before = os.fstat(stream.fileno())
+            if not stat.S_ISREG(before.st_mode):
+                raise ValueError('Pinned GDS must be a regular file')
+            with destination.open('xb') as output:
+                created = True
+                remaining, last = GDS_PREFIX_BYTES, b''
+                while remaining:
+                    chunk = stream.read(min(1024**2, remaining))
+                    if not chunk:
+                        raise ValueError('Truncated GDS prefix')
+                    remaining -= len(chunk)
+                    source_hash.update(chunk)
+                    prefix_hash.update(chunk)
+                    output.write(chunk)
+                    last = (last+chunk)[-4:]
+                if last != bytes.fromhex('00040400'):
+                    raise ValueError('Expected exact ENDLIB at the pinned prefix boundary')
+                tail = stream.read(GDS_ZERO_PADDING_BYTES+1)
+                if len(tail) != GDS_ZERO_PADDING_BYTES or any(tail):
+                    raise ValueError('Expected only the exact zero padding after ENDLIB')
+                source_hash.update(tail)
+            after = os.fstat(stream.fileno())
+            visible = source.stat()
+            identity = lambda value: (value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns)
+            if identity(before) != identity(after) or identity(after) != identity(visible):
+                raise ValueError('Original GDS changed while copying its prefix')
+        if source_hash.hexdigest() != expected['sha256'] or native.sha(destination) != prefix_hash.hexdigest():
+            raise ValueError('Original or derived GDS digest changed')
+        return dict(status='EXACT_ZERO_PADDING_ONLY_DERIVATIVE', original=expected,
+            prefix=dict(bytes=GDS_PREFIX_BYTES,sha256=prefix_hash.hexdigest()),
+            padding=dict(bytes=GDS_ZERO_PADDING_BYTES,sha256=hashlib.sha256(tail).hexdigest(),all_zero=True),
+            endlib_offset=GDS_PREFIX_BYTES-4,endlib_hex='00040400',
+            original_retained=True,padding_only_difference=True,geometry_records_modified=False,
+            strict_prefix_validation='Required separately by unchanged extract_gds_hierarchy.py',lvs_accepted=False)
+    except BaseException:
+        if created:
+            destination.unlink(missing_ok=True)
+        raise
+
+
 def prepare(output):
     inputs = output/'inputs'
     inputs.mkdir()
@@ -127,13 +186,15 @@ def prepare(output):
         stream.write(selected)
     with (inputs/'selected-source.cdl').open('x') as stream:
         stream.write(selected_raw)
-    subset = gds.extract(inputs/'sg13g2_io.gds', [TOP], inputs/'subset', views['gds']['identity']['sha256'])
+    unpadded = inputs/'unpadded-source.gds'
+    padding = unpad_coherent_gds(inputs/'sg13g2_io.gds', unpadded)
+    subset = gds.extract(unpadded, [TOP], inputs/'subset', padding['prefix']['sha256'])
     permutations = topology.migration_indices(['iovdd','iovss','vdd','vss'], contract['formal_order'])
     if permutations != [2,3,0,1]:
         raise ValueError('Unexpected old-caller migration contract')
     receipt = dict(status='PREPARED_COHERENT_VSS_NATIVE_LVS_PENDING', commit=COMMIT, views=views,
         reference_contract=contract, dialect_changes=changes, dialect_line_scope='selected-source.cdl',
-        explicit_globals=globals_, selected_subcircuits=cells, subset=subset,
+        explicit_globals=globals_, selected_subcircuits=cells, subset=subset, padding_transport_adapter=padding,
         ordered_pin_contract=dict(current_formals=contract['formal_order'],
             old_formals=['iovdd','iovss','vdd','vss'], old_actual_indices_for_new_order=permutations,
             old_callers_changed=False, parent_wrapper_added=False),
