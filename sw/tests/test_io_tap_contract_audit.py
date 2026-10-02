@@ -44,6 +44,87 @@ def test_local_wells_do_not_merge_across_instances():
     assert {t["well"] for t in taps} == {"top/x0/local", "top/x1/local"}
 
 
+@pytest.mark.parametrize("well", ["sub!", "SUB!", "bulk"])
+def test_undeclared_well_stays_local_in_parent_and_both_children(well):
+    # This is the native coherent Vss reference's substrate topology: three
+    # independent nodes despite the same spelling in each subcircuit body.
+    text = f""".subckt leaf tie
+R0 tie {well} ptap1 A=2p P=6u
+.ends
+.subckt top vss
+R0 vss {well} ptap1 A=3p P=7u
+X0 vss leaf
+X1 vss leaf
+.ends
+"""
+    taps = MODULE.flatten_taps(text, "top")
+    assert {tap["well"] for tap in taps} == {
+        f"top/{well.lower()}", f"top/x0/{well.lower()}", f"top/x1/{well.lower()}"
+    }
+    assert len(MODULE.combine(taps)) == 3
+    declared = MODULE.flatten_taps(f".gLoBaL {well.swapcase()}\n" + text, "TOP")
+    assert {tap["well"] for tap in declared} == {well.lower()}
+    assert [(tap["area_um2"], tap["perimeter_um"]) for tap in MODULE.combine(declared)] == [
+        (Decimal(7), Decimal(19))
+    ]
+
+
+def test_explicit_global_does_not_globalize_other_bang_names():
+    text = """.GLOBAL SUB!
+.subckt leaf tie
+R0 tie sUb! ptap1 A=2p P=6u
+R1 tie other! ptap1 A=3p P=7u
+.ends
+.subckt top vss
+X0 vss leaf
+X1 vss leaf
+.ends
+"""
+    taps = MODULE.flatten_taps(text, "top")
+    assert {tap["well"] for tap in taps} == {"sub!", "top/x0/other!", "top/x1/other!"}
+    assert len(MODULE.combine(taps)) == 3
+
+
+def test_explicit_parent_terminal_connection_preserves_local_well_identity():
+    # Real call-site connectivity may join child terminals; names alone may not.
+    text = """.subckt leaf tie bulk
+R0 tie bulk ptap1 A=2p P=6u
+.ends
+.subckt top vss
+X0 vss sub! leaf
+X1 vss sub! leaf
+.ends
+"""
+    taps = MODULE.flatten_taps(text, "top")
+    assert {tap["well"] for tap in taps} == {"top/sub!"}
+    assert len(MODULE.combine(taps)) == 1
+
+
+def test_spice_ground_remains_global_without_declaration():
+    text = ".subckt leaf tie\nR0 tie 0 ptap1 A=2p P=6u\n.ends\n.subckt top vss\nX0 vss leaf\nX1 vss leaf\n.ends\n"
+    taps = MODULE.flatten_taps(text, "top")
+    assert {tap["well"] for tap in taps} == {"0"}
+    assert len(MODULE.combine(taps)) == 1
+
+
+def test_counterfactual_audit_rejects_undeclared_child_well_union():
+    reference = """.subckt leaf tie
+R0 tie sub! ptap1 A=2p P=6u
+.ends
+.subckt sg13g2_IOPadVdd iovss vss
+R0 iovss sub! ptap1 A=3p P=7u
+R1 vss sub! ptap1 A=4p P=8u
+X0 iovss leaf
+.ends
+"""
+    flat = ".subckt sg13g2_IOPadVdd iovss vss\nR0 iovss sub! ptap1 A=5p P=13u\nR1 vss sub! ptap1 A=4p P=8u\n.ends\n"
+    with pytest.raises(MODULE.ContractError, match="one combined ptap per tie: iovss"):
+        MODULE.audit(reference, flat, flat)
+    declared = MODULE.audit(".GLOBAL sub!\n" + reference, flat, flat)
+    assert all(item["parameters_equal"] for item in declared["parameter_comparisons"])
+    assert not declared["lvs_accepted"]
+
+
 @pytest.mark.parametrize("value,expected", [("1.97n", "0.00000000197"), ("24.01p", "0.00000000002401"), ("19.6u", "0.0000196"), ("1e-6", "0.000001")])
 def test_exact_spice_units(value, expected):
     assert MODULE.quantity(value) == Decimal(expected)

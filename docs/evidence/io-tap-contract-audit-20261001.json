@@ -15,7 +15,7 @@
     "main": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
     "dev": "c702f87d2a6de6256ea38a0f281355e302981ba9"
   },
-  "new_finding_latest_references": "Current main and dev retain exactly the same Vdd tap topology/combined A/P as the local reference despite CDL syntax and formal port ordering changes. A whole-library update alone does not provide a corrected Vdd tap contract.",
+  "new_finding_latest_references": "Superseded on 2026-10-02: the earlier helper incorrectly treated every name ending in ! as global. The local Vdd reference explicitly declares .GLOBAL sub!, and its original A/P deltas replay unchanged. Pinned main and dev references do not declare that global; their child well nodes remain distinct and the one-combined-tap-per-tie comparison now correctly rejects them. Their topology or combined A/P equivalence to the local reference is not established. No library update has demonstrated strict Vdd LVS closure.",
   "connection_only_counterfactual": {
     "assumptions": [
       "Only external metal connectivity changes; tap-recognition masks and extracted tap parameters remain fixed.",
@@ -115,5 +115,21 @@
   "full_chip_lvs_accepted": false,
   "manufacturing_approval": false,
   "raw_diagnosis_sha256": "941e707cb7c5a6304fc9f6d3dde1a3eab23855477e5018ac72f8b87559937064",
-  "evidence_asset_manifest": "cloud-hold-methods-ci-and-io-audit-assets-20261001.json"
+  "evidence_asset_manifest": "cloud-hold-methods-ci-and-io-audit-assets-20261001.json",
+  "superseded_claims": [
+    {
+      "corrected_on_utc": "2026-10-02",
+      "key": "new_finding_latest_references",
+      "historical_value": "Current main and dev retain exactly the same Vdd tap topology/combined A/P as the local reference despite CDL syntax and formal port ordering changes. A whole-library update alone does not provide a corrected Vdd tap contract.",
+      "historical_document_sha256": "11274bd60b0bdd24a875f315b22edde5b02588f714834d84a6e90854b7c2019c",
+      "reason": "The previous arithmetic helper inferred global scope from a ! suffix without an explicit .GLOBAL declaration.",
+      "replacement_evidence": "io-vss-native-diagnosis-20261002.json",
+      "historical_raw_records_preserved": true,
+      "affected_historical_records": [
+        "hw/soc/out/io-tap-contract-20261001/main-contract-final.json",
+        "hw/soc/out/io-tap-contract-20261001/dev-contract-final.json"
+      ],
+      "unchanged_scope": "The local explicit-.GLOBAL Vdd reference parameter comparisons and all original native FAIL verdicts are unchanged."
+    }
+  ]
 }

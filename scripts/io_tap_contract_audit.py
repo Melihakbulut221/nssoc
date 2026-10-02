@@ -94,7 +94,10 @@ def flatten_taps(text, top):
         def net(token):
             if token in mapping:
                 return mapping[token]
-            if token in global_nets or token.endswith("!") or token == "0":
+            # The pinned KLayout reader keeps undeclared ``sub!`` local to
+            # each instance.  A punctuation suffix is not a .GLOBAL directive.
+            # SPICE ground remains global independently of its declaration.
+            if token in global_nets or token == "0":
                 return token
             return scope + "/" + token
 

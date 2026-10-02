@@ -2080,8 +2080,15 @@ perimeter 1113.69 micrometres, versus reference 2104.583 and 243.16. The separat
 VSS A/P disagreement remains. This calculation proves that **metal-only joining
 under those fixed-mask assumptions is insufficient**; it does not predict an
 actual ring-parent extraction whose overlapping recognition regions change.
-Both currently pinned upstream main (`5e6d592`) and dev (`c702f87`) retain the
-same Vdd tap totals. A library update alone is not a demonstrated Vdd fix.
+The original claim that upstream main (`5e6d592`) and dev (`c702f87`) have the
+same combined Vdd tap topology and totals was **superseded on 2026-10-02**.
+The arithmetic helper had treated every `!`-suffixed node as global. Only the
+local reference explicitly declares `.GLOBAL sub!`; its numbers above replay
+unchanged. Main and dev leave child substrate nodes local, so the corrected
+helper rejects their one-combined-tap comparison. Their equivalence to the local
+reference is not established. The [correction and native Vss diagnosis](evidence/io-vss-native-diagnosis-20261002.json)
+preserve the historical claim and evidence. No library update has demonstrated
+strict Vdd LVS closure.
 
 A separate source-supported correction was identified: the old
 `sg13g2_IOPadVss` DCN guard maps to `iovss`, whereas current upstream maps it to
@@ -2153,8 +2160,9 @@ cells and no implicit `sub!` global or virtual connection is added. The old
 positional-caller migration contract remains `[2, 3, 0, 1]`; no caller changes
 are part of this experiment.
 
-Native comparison remains pending. Any mismatch or extraction warning is
-retained as failure; a future Vss-only pass would not establish seven-master
+Native comparison subsequently completed with strict deep and flat failures,
+as recorded below. Any mismatch or extraction warning is retained as failure;
+a future Vss-only pass would not establish seven-master
 or full-chip transistor LVS, repair the separate Vdd tap mismatch, or grant
 production acceptance.
 
@@ -2170,4 +2178,62 @@ records a runner-specific adapter that retains the original view and creates a
 separate byte-identical prefix through `ENDLIB`, with explicit source/prefix/tail
 hashes. The shared strict GDS parser remains unchanged. All 147 selected tests,
 including the unchanged subset-reader regression tests and five new corruption
-controls, pass. The corrected native retry still requires validation.
+controls, pass. The corrected native retry completed and is diagnosed below.
+
+
+### 2026-10-02 — coherent Vss native failure localized; global-scope audit corrected
+
+Run [36917255183](https://github.com/Melihakbulut221/nssoc/actions/runs/36917255183),
+from source `fb3f7492ea94c8e6a3c98cebbf4dbc4892cfe4f9`, completed both native
+comparisons using coherent `5e6d592` GDS/CDL/LEF and the unchanged matching deck.
+Its eight generic physical-parent controls passed. Strict Vss LVS did not pass.
+The [bounded diagnosis](evidence/io-vss-native-diagnosis-20261002.json) checks
+14 exact producer method files, the lock, 53 deck files and 15 selected native
+file pins. It verifies selected ZIP member CRCs and recorded SHA256 values;
+it does not claim a local whole-ZIP, runtime-binary or GDS rehash.
+
+In deep mode, DCN and DCP each have three extracted devices against two in the
+reference, so the parent is skipped. Each extracted diode pair has distinct
+child terminals that the physical parent connects together. Flat extraction
+therefore reduces both pairs to `m=2`, but the top still fails with five layout
+devices against six reference devices. Two physically distinct IOVSS conductor
+components remain. The layout has one substrate node; the captured reference
+has `SUB!`, `I1.SUB!` and `I2.SUB!`, because the vendor CDL declares no `.GLOBAL`.
+Matching names alone authorize neither a physical join nor a reference change.
+
+Tap area/perimeter mismatches remain independently visible:
+
+| Same-cell tap role | Layout A (µm²) / P (µm) | Reference A (µm²) / P (µm) |
+| --- | --- | --- |
+| DCN diode tap | 141.2964 / 221.76 | 141.253 / 47.54 |
+| DCP diode tap | 33.5104 / 197.12 | 33.524 / 23.16 |
+| Parent IOVSS tap, deep extraction | 5379.0466 / 677.04 | 5329 / 292 |
+| Parent VSS tap | 24 / 160.6 | 23.523 / 19.4 |
+
+These are role-based diagnostic comparisons, not accepted device matches.
+With fixed tap-recognition masks and parameters, external metal-only joining
+cannot remove the independent VSS mismatch. An actual parent extraction might
+change overlapping recognition regions; that has not been measured here.
+
+The pure arithmetic helper now globalizes only explicit `.GLOBAL` declarations
+and SPICE ground `0`. Its local, undeclared-`sub!`, mixed-case, explicit-global
+and parent-terminal controls pass, as do the affected topology and runner tests:
+131 selected tests, Ruff and diff-check pass. Replaying the historical local
+Vdd reference retains its original A/P deltas. Historical main/dev comparisons
+now correctly reject undeclared child-well merging; their earlier equivalence
+claim is retained with superseded metadata in the original evidence document.
+The producer's original methods and native failure records remain unchanged.
+
+The next useful experiment is cloud-only attribution of the exact recognized
+tap masks and their area/perimeter, together with an authoritative substrate
+and physical-parent boundary contract. No PDK, native comparison rule, tap
+parameter or chip layout was changed. All seven I/O masters, full-chip
+transistor LVS and manufacturing approval remain open.
+
+The complete unchanged 27,596,825-byte native failure ZIP is now
+[durably archived](evidence/coherent-vss-failure-assets-20261002.json). Cloud
+run 36961542217 verified all 65 members, the exact producer sources, 53 deck
+files, 119 input pins, eight controls and both strict FAIL assessments.
+Authenticated and public download hashes match the original artifact. Local
+independent review used only the compact receipt; no native extraction was
+repeated and no runtime binary rehash or new LVS pass is claimed.

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "status": "PASS_PURE_SOURCE_CONTROLS_NATIVE_EXECUTION_DEFERRED_TO_GITHUB",
+  "method_sha256": {
+    "scripts/run_cloud_targeted_hold.py": "c9030b18887f59e6629754da3992dede50468cec51b525f6f7e982c99cfafc1f",
+    "hw/soc/pnr/timing_targeted_hold_probe_step.tcl": "72dadcd5a73a308ad95a6179344c71e3ccbbe5de1ef4f3a2f23468d4bf870ff1",
+    "hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl": "96eaf697951bc81e25bde7f41059872bd0e88fee304e70944f964297a3224888",
+    ".github/workflows/timing-targeted-hold.yml": "e9ca7b3be6bb0637b00f1f92347815233612864b1f056e70ec8e8b514418b0fa",
+    "sw/tests/test_cloud_targeted_hold.py": "b060da994a5a566c238db6949d7ac8d021be91a3bf0d13ffa0c7594e14360bcd"
+  },
+  "pytest": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_targeted_hold.py sw/tests/test_cloud_hold_diagnostic.py sw/tests/test_cloud_setup_probe.py sw/tests/test_compare_full_hold_endpoints.py",
+    "passed": 196,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "native_executed_locally": false,
+  "source_push_or_dispatch": false,
+  "production_baseline": {
+    "endpoint_count": 23527,
+    "negative_vertex_endpoints": 113,
+    "corners": [
+      "fast",
+      "slow",
+      "typical"
+    ]
+  },
+  "existing_recipe_sha256": "77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb",
+  "existing_fixture_sha256": "066982c820626c0690ae8bcb3e0893189054e264dc1845f27982fa8a532fa3ac",
+  "shared_sources_edited": false,
+  "guard_tolerances_changed": false,
+  "candidate_adopted": false,
+  "representation_correction": {
+    "source_revision": "857316ff001b2a8dbbdc5996944d08a6d38c87ab",
+    "source_sha256": {
+      "Units.cc": "859d5792b9f770bb3697fb5e507e669a89a0e847bae92c0c404fa6ac73c039fc",
+      "Units.hh": "918af7d6f05f92493b86ff58a3c79eddc0bf38c37b94c3a6389f919114400bf4",
+      "StaTclTypes.i": "dc2f0537650c83cd6855e1295380f5dbd37ae396cff7ce6a3f112e55ed3a3f3a"
+    },
+    "chain": [
+      "PropertyValue typemap -> Unit::asString(value.floatValue(),6)",
+      "Unit::asString uses float32 division, abs(scaled_value)<1e-6 clamp, %.6f",
+      "Existing recipe ranks rounded UI slack then endpoint, first lexicographic corner on ties",
+      "Validator reproduces this presentation exactly, raw full endpoint SI values and aggregate timing guards unchanged"
+    ]
+  },
+  "validation_receipt": {
+    "path": "hw/soc/out/timing-heartbeat-20261002-0628/targeted-hold-source-validation/validation.json",
+    "bytes": 2333,
+    "sha256": "6530b1a04c3238eb2873862c459e7698cfc9951976d685508b960bcdf29328d8"
+  },
+  "launch_scope": "New opt-in cloud diagnostic; this source-validation record does not establish actual tiny native or full-chip success. Existing C10, source guards and immutable old evidence are preserved."
+}

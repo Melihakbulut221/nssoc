@@ -800,3 +800,45 @@ a new source run is required before claiming the whole CI is green. The
 separate SoC formal job in run 36917226540 completed with 116 fresh tasks and
 six explicitly recorded historical exclusions; it does not establish physical
 or PCIe PHY qualification.
+
+The repaired source `52977da` now passed the actual GitHub
+[`checks` job](https://github.com/Melihakbulut221/nssoc/actions/runs/36960651450/job/110693372453):
+2,553 Python tests passed with 127 explicit skips, and the repository check
+summary reports 19 passed, zero failed and two skipped. The same source's RTL,
+memory-parity, Python-quality, PCIe transaction and publication jobs also passed.
+Formal jobs were still running at this observation; this is not a claim that
+the entire workflow or any production acceptance gate has passed.
+
+
+### 2026-10-02 — bounded negative-endpoint hold probe
+
+The new `timing-targeted-hold` cloud workflow reuses the pinned existing
+`hold_guarded_targeted` recipe on original C10: at most 16 distinct negative
+endpoints, ranked across all three corners, with one native pass per endpoint.
+Setup margin remains 0.1 ns, hold margin 0.15 ns, setup-violation insertion is
+disallowed, and the entire batch shares the original 40% instance-growth budget.
+The four-stage export records matched-before, provisional post-repair,
+post-legalization/routing/RC and full-cache-update endpoint values. It retains
+all configured corners, fixed SDC and 32 SRAM masters/positions/orientations.
+
+Before C10 is loaded, the exact same native executable must pass the existing
+small targeted fixture, including setup-headroom and global-budget negative
+controls. Before any full-chip repair, the matched baseline must reproduce
+23,527 endpoints, 113 negative hold endpoints and the fast/slow/typical corners.
+An unexpected baseline stops repair. The independent verifier checks the
+complete selection/call history, all stage inventories and original C10 as
+well as matched-before aggregate guards.
+
+This is a new measurement experiment, not a completed hold reduction or a
+resumable candidate. It exports no full-chip ODB/DEF and never adopts the
+result automatically. Original C10 remains selected; its historical-vs-fresh
+timing discrepancy and qualified SRAM Liberty/RC limitations remain open.
+Actual native fixture, chip result and any speed improvement require the
+new GitHub run's evidence; local pure-Python/Tcl tests cannot establish them.
+
+The [source-validation record](evidence/timing-targeted-hold-source-20261002.json)
+pins all five new methods and the unchanged existing native fixture/recipe.
+All 196 selected pure-Python/Tcl tests passed. Review also caught OpenSTA's
+six-decimal UI slack formatting: target-receipt comparison now reproduces the
+pinned native float32 division, small-value clamp and formatting exactly.
+Full endpoint SI values and acceptance tolerances remain unchanged.
