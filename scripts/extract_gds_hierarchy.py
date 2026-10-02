@@ -154,7 +154,7 @@ def index_stream(stream):
     stream.seek(0)
     total_hash, header_hash = hashlib.sha256(), hashlib.sha256()
     cells, units, current, element = {}, None, None, None
-    header_pos, header_end, endlib, size, reference_count = 0, None, None, 0, 0
+    header_pos, header_end, endlib, size, unique_reference_count = 0, None, None, 0, 0
     fields, order, pending_property = {}, -1, False
     header_types = [0x00, 0x01, 0x02, 0x03]
     for offset, kind, payload, raw in records(stream):
@@ -209,10 +209,12 @@ def index_stream(stream):
             if pending_property:
                 raise GDSFormatError('PROPATTR lacks PROPVALUE')
             reference = validate_element(element, fields)
-            if reference is not None:
+            if reference is not None and reference not in current['references']:
+                # The index stores unique parent-to-master edges, not instances.
+                # Repeated SREF/AREF records are streamed and allocate no new edge.
                 current['references'].add(reference)
-                reference_count += 1
-                if reference_count > MAX_REFERENCES:
+                unique_reference_count += 1
+                if unique_reference_count > MAX_REFERENCES:
                     raise GDSFormatError('Reference index memory bound exceeded')
             element = None
         elif kind == 0x2B:

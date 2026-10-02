@@ -216,5 +216,27 @@
   ],
   "cell_lvs_accepted": false,
   "full_chip_lvs_accepted": false,
-  "manufacturing_approval": false
+  "manufacturing_approval": false,
+  "parser_repair": {
+    "original_run": 36988770532,
+    "source_commit": "d36e2607f17ef3d48c3319781f93fb02753648bd",
+    "failure_before_parent_measurement": "Reference index memory bound exceeded",
+    "cause": "Streamed repeated SREF/AREF instances were charged to an index that stores only unique parent-to-master edges.",
+    "correction": "Apply unchanged 100000 index bound to the actually stored unique edges; validate and hash every original record.",
+    "source_files": {
+      "scripts/extract_gds_hierarchy.py": {
+        "bytes": 16968,
+        "sha256": "c40a6abed5f80907af840525b1aa8b51a867b57d3f546e1b90340ff5c8f48d41"
+      },
+      "sw/tests/test_extract_gds_hierarchy.py": {
+        "bytes": 11677,
+        "sha256": "1d501543779f740528029db68912973d3d69a09120807cd25882f4a4fe0b311a"
+      },
+      ".github/workflows/io-parent-path-probe.yml": {
+        "bytes": 2276,
+        "sha256": "7e7ec940239d1f590c1813b243b00b7b59ddc61f8b4ad17453a32fbfa3adb669"
+      }
+    },
+    "actual_parent_result": null
+  }
 }

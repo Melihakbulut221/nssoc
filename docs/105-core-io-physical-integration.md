@@ -2341,3 +2341,11 @@ checksum-verified runtime: connected, same-name-open, missing-via and rotated
 adjacency cases. Actual chip geometry will be measured on GitHub; no local chip
 extraction has run. Neither these controls nor a future proved parent join close
 the independent tap A/P, substrate-reference or full-chip LVS requirements.
+
+The first cloud attempt, run36988770532, passed its native controls but stopped
+before parent geometry measurement. The byte-preserving GDS index charged every
+repeated instance to a memory bound for unique referenced masters. The narrow
+parser correction counts stored parent-to-master edges while retaining the
+100,000-edge bound, every record validation and whole-file byte hashes. Repeated
+SREF/AREF preservation and unique-edge exhaustion regressions cover the fix.
+This failure provides no parent connection or LVS verdict.

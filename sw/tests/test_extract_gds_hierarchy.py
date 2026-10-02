@@ -192,6 +192,27 @@ def test_reads_are_bounded_and_not_whole_file():
     assert len(output.getvalue()) < len(raw)
 
 
+def test_repeated_sref_aref_do_not_consume_unique_index_budget(tmp_path, monkeypatch):
+    monkeypatch.setattr(gds, 'MAX_REFERENCES', 1)
+    data = library(cell('leaf', boundary()),
+                   cell('root', (ref('leaf')+ref('leaf', True))*10))
+    original = source(tmp_path, data)
+    receipt = gds.extract(original, ['root'], tmp_path/'out')
+    assert (tmp_path/'out/subset.gds').read_bytes() == data
+    assert receipt['cells']['root']['source']['references'] == ['leaf']
+
+
+@pytest.mark.parametrize('same_parent', [True, False])
+def test_unique_reference_index_memory_guard_is_preserved(monkeypatch, same_parent):
+    monkeypatch.setattr(gds, 'MAX_REFERENCES', 1)
+    if same_parent:
+        data = library(cell('a'), cell('b'), cell('root', ref('a')+ref('b')))
+    else:
+        data = library(cell('leaf'), cell('a', ref('leaf')), cell('b', ref('leaf')))
+    with pytest.raises(gds.GDSFormatError, match='Reference index memory bound exceeded'):
+        gds.index_stream(io.BytesIO(data))
+
+
 NATIVE_CODE = r'''
 import json, resource, sys
 from pathlib import Path
