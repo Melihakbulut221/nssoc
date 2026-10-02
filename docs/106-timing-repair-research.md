@@ -1128,3 +1128,15 @@ reported arc. A separate path from `_132612_` remains at −4.717023 ns and has
 a 320.76 µm single-sink NAND4 connection `_074829_/Y` to `_074831_/B`, whose
 reported arc is 1.057705 ns. These are the next two bounded buffering targets;
 their observed delays are not predictions of attainable timing improvement.
+
+
+The [four-buffer method](evidence/timing-xor-four-method-20261002.json) now replays
+the two verified targets before adding the RF30 and NAND4 buffers, each with
+its own timing snapshot. All six stages retain complete hold endpoint/corner
+reports. Exact four-buffer graph contraction includes every original cell,
+port, signal and supply connection, and all 32 SRAM placements remain fixed.
+The original two-buffer producer's 26 source files are unchanged. A real tiny
+13-to-17-cell native control passes with missing, wrong and extra sinks tested
+for all four target connections; 108 adjacent source tests pass. Actual chip
+measurements are still required; neither historical guards nor adoption
+requirements are relaxed.

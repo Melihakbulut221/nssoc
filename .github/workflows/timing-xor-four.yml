@@ -1,0 +1,128 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-xor-four
+on:
+  push:
+    paths:
+      - .github/workflows/timing-xor-four.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: timing-xor-four-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted platform ceiling; no native elapsed watchdog.
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CLOUD_OUTPUT: ${{ github.workspace }}/xor-four-result
+      CLOUD_WORK: ${{ github.workspace }}/xor-four-input
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install only AppImage runtime prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Start native controls and four fixed C10 XOR/XNOR buffer trials
+        id: launch
+        run: |
+          python3 scripts/run_cloud_xor_four.py start \
+            --manifest docs/evidence/timing-cloud-input-20260930.json \
+            --output "$CLOUD_OUTPUT" --work "$CLOUD_WORK"
+      - name: Observe startup without stopping the worker
+        if: always() && steps.launch.outcome == 'success'
+        run: python3 scripts/run_cloud_xor_four.py wait --output "$CLOUD_OUTPUT" --seconds 60
+      - name: Preserve startup evidence
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_xor_four.py capture --output "$CLOUD_OUTPUT" \
+            --destination xor-four-startup
+      - name: Upload startup evidence promptly
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: xor-four-startup-${{ github.run_attempt }}
+          path: xor-four-startup/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe first interval without a native timeout
+        id: first
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_xor_four.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 9000 --github-output "$GITHUB_OUTPUT"
+      - name: Capture first immutable progress
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_xor_four.py capture --output "$CLOUD_OUTPUT" \
+            --destination xor-four-first
+      - name: Upload first progress before the platform deadline
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: xor-four-first-${{ github.run_attempt }}
+          path: xor-four-first/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe second interval without a native timeout
+        id: second
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_xor_four.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 7200 --github-output "$GITHUB_OUTPUT"
+      - name: Capture second immutable progress
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_xor_four.py capture --output "$CLOUD_OUTPUT" \
+            --destination xor-four-second
+      - name: Upload second progress before the platform deadline
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: xor-four-second-${{ github.run_attempt }}
+          path: xor-four-second/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Wait for healthy native work to finish
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        run: python3 scripts/run_cloud_xor_four.py wait --output "$CLOUD_OUTPUT"
+      - name: Capture final diagnostic or explicit failure evidence
+        if: always()
+        run: |
+          python3 scripts/run_cloud_xor_four.py capture --output "$CLOUD_OUTPUT" \
+            --destination xor-four-final
+      - name: Preserve outputs even when native controls or chip diagnosis fail
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: xor-four-final-${{ github.run_attempt }}
+          path: xor-four-final/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Require full xor-four evidence without candidate adoption
+        if: always()
+        run: |
+          python3 scripts/run_cloud_xor_four.py validate \
+            --directory xor-four-final \
+            --manifest docs/evidence/timing-cloud-input-20260930.json
