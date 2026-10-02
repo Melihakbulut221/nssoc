@@ -2349,3 +2349,35 @@ parser correction counts stored parent-to-master edges while retaining the
 100,000-edge bound, every record validation and whole-file byte hashes. Repeated
 SREF/AREF preservation and unique-edge exhaustion regressions cover the fix.
 This failure provides no parent connection or LVS verdict.
+
+
+### 2026-10-02 — actual parent supply connection proved
+
+[The corrected native run](https://github.com/Melihakbulut221/nssoc/actions/runs/36989535029)
+at `9e70e2b98376a849720d02241ee762ec5d3db3a9` proves that all three exposed
+Vss IOVSS bands join in the seven actual placed supply/filler instances.
+Their native conductor identity is the same (`PATH:2`), and explicit 13-node
+and 17-node metal/via paths agree. The upper/lower join uses the actual
+IOVss Metal2 strap, within x=0…134 µm and y=839…914 µm. Via2 witnesses at
+(33.010, 904.470) µm and (130.245, 892.370) µm connect that strap to the two
+Metal3 conductors. No new strap, virtual connection or device conduction
+was introduced.
+
+The [independent compact receipt](evidence/io-parent-path-native-20261002.json)
+verifies 15 exact Git sources, 53 unchanged deck files, four native controls
+and ten selected output hashes/ZIP CRCs. A separate rational-coordinate
+calculation checks all 28 path edges, including polygon holes and boundaries.
+It also records the complete witness geometry and its inspection source.
+Local review did not download the full ZIP/GDS or repeat chip extraction.
+
+Actual Vss flattened polygon geometry equals the coherent library on every
+layer, but the other four selected masters have differences. The measured path
+depends on 27 raw layer/datatype pairs; none is among those differences. This
+supports only a restricted transfer of the conductor-path geometry. It is
+neither whole-library equivalence nor a native coherent-parent LVS result.
+
+The apparent isolated Vss IOVSS open is therefore resolved for this actual
+parent context. Strict transistor LVS remains open: the tap area/perimeter
+and substrate/reference contracts require a seven-instance comparison against
+the matched original CDL. Its explicitly declared substrate global must be
+preserved; fitted device parameters or inferred global joins are not repairs.
