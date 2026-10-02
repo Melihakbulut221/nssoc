@@ -57,6 +57,10 @@ FIELDS=(
  ('u_npu.u_node0.dstate',2),('u_scrub.cnt[0]',16),('u_scrub.cnt[2]',16))
 GATES=('g_clkgate.u_bus_cg.u_icg','g_clkgate.u_npu_cg.u_icg','u_ibex.core_clock_gate_i.u_icg')
 SRAMS=tuple(f'u_ram.g_ram_2048x64_ecc.u_b{i}' for i in range(4))
+# These retained Yosys aliases have no driver AND no consumer in either pinned
+# netlist. Keep their Z values in the trace; never use them as first-X triggers.
+UNDRIVEN_ALIASES={'u_bus.push':list(range(6)), 'u_apb.state':[0],
+                 CORE+'if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fetch_addr_q':[1]}
 
 
 def ref(name):
@@ -70,6 +74,74 @@ def declarations(text):
         q.require(name not in result,'Duplicate named wire: '+name)
         result[name]=abs(int(match[1])-int(match[2]))+1 if match[1] else 1
     return result
+
+
+def alias_driver_witness(text,models):
+    """Resolve every sampled bit through native output terminals/assign aliases.
+
+    This is structural evidence, not a proof that a driven signal stays known.
+    Only the exact unconsumed aliases above may be undriven. Unknown syntax,
+    assignment loops, multiple drivers, or a newly consumed alias fail closed.
+    """
+    widths=declarations(text)
+    ranges={m[3].strip().removeprefix('\\'):(int(m[1]),int(m[2])) if m[1] else (0,0)
+            for m in re.finditer(r'^  wire(?: \[(\d+):(\d+)\])? (\\\S+ |[A-Za-z_]\w*);$',text,re.M)}
+    def bits(expr):
+        expr=expr.strip()
+        if expr.startswith('{') and expr.endswith('}'):
+            return [b for part in expr[1:-1].split(',') for b in bits(part)]
+        constant=re.fullmatch(r"(\d+)'([hb])([0-9a-f]+)",expr,re.I)
+        if constant:
+            width=int(constant[1]);value=int(constant[3],16 if constant[2].lower()=='h' else 2)
+            q.require(value<2**width,'Constant overflow in alias witness')
+            return [('constant',(value>>i)&1) for i in range(width-1,-1,-1)]
+        net=re.fullmatch(r'(?:\\(\S+)\s*|([A-Za-z_]\w*))\s*(?:\[(\d+)(?::(\d+))?\])?',expr)
+        q.require(net is not None,'Unsupported alias expression: '+expr)
+        name=net[1] or net[2]
+        q.require(name in widths,'Undeclared alias expression: '+name)
+        high=int(net[3]) if net[3] else ranges[name][0]
+        low=int(net[4]) if net[4] else (high if net[3] else ranges[name][1])
+        q.require(ranges[name][1]<=low<=high<=ranges[name][0],'Alias slice outside declaration: '+expr)
+        return [(name,i) for i in range(high,low-1,-1)]
+    drivers={};used=set()
+    def add(bit,driver):
+        q.require(bit not in drivers,'Multiple alias drivers: '+str(bit))
+        drivers[bit]=driver
+    ports={}
+    for module in re.finditer(r'\bmodule\s+(sg13g2_\w+)\s*\(.*?endmodule',models['sg13g2_stdcell.v'],re.S):
+        ports[module[1]]={p.strip() for decl in re.findall(r'\boutput\s+([^;]+);',module[0]) for p in decl.split(',')}
+    for cell in re.finditer(r'^  (\w+) (\\\S+ |\w+) \(\n(.*?)^  \);',text,re.M|re.S):
+        for port,expr in re.findall(r'\.([A-Za-z0-9_]+)\(([^()]+)\)',cell[3]):
+            connected=bits(expr)
+            if port in ports.get(cell[1],set()):
+                for bit in connected:add(bit,dict(kind='native_output',cell_type=cell[1],instance=cell[2].strip().removeprefix('\\'),port=port))
+            else:used.update(connected)
+    for assignment in re.finditer(r'^  assign (.*?) = (.*?);$',text,re.M):
+        lhs=bits(assignment[1]);rhs=bits(assignment[2])
+        q.require(len(lhs)==len(rhs),'Alias assignment width differs')
+        for dst,src in zip(lhs,rhs,strict=True):add(dst,dict(kind='assignment',source=src,statement=assignment[0].strip()))
+        used.update(rhs)
+    def resolve(bit,seen):
+        q.require(bit not in seen,'Cyclic alias assignment')
+        if bit[0]=='constant':return dict(kind='constant',value=bit[1])
+        driver=drivers.get(bit)
+        if driver is None:return dict(kind='undriven',name=bit[0],bit=bit[1],consumed=bit in used)
+        if driver['kind']=='native_output':return driver
+        return dict(kind='assignment',statement=driver['statement'],source=list(driver['source']),
+                    root=resolve(driver['source'],seen|{bit}))
+    rows={};undriven={}
+    for name,width in FIELDS:
+        rows[name]={}
+        for bit in range(width):
+            witness=resolve((name,bit),set());rows[name][str(bit)]=witness;root=witness
+            while root['kind']=='assignment':root=root['root']
+            if root['kind']=='undriven':
+                q.require(root['name']==name and root['bit']==bit and not root['consumed'],'Undriven consumed/indirect alias: '+name)
+                undriven.setdefault(name,[]).append(bit)
+    q.require(undriven==UNDRIVEN_ALIASES,'Changed undriven alias inventory: '+repr(undriven))
+    return dict(fields=rows,undriven_unconsumed_bits=undriven,
+                trigger_exclusion={'u_bus.push':list(range(6))},
+                scope='Every sampled bit resolves to a native output or known constant, except the exact listed unconsumed aliases. No runtime X/Z filtering.')
 
 
 def validate_bindings(text,models):
@@ -90,6 +162,7 @@ def validate_bindings(text,models):
     for name in ('MEN','WEN','REN','ADDR','BM','DIN','CLK'):
         q.require(name+'_MUX' in behavior,'Native SRAM sample signal missing')
     return dict(fields=[dict(name=n,width=w,expression=ref(n)) for n,w in FIELDS],
+                alias_driver_witness=alias_driver_witness(text,models),
                 cells=cells,packed_bits=sum(w for _,w in FIELDS),sample_order='FIELDS[0] is most significant',
                 memory_sampling='Actual vendor CLK_MUX posedge; current active controls/address/masked DIN before native NBA',
                 monitor_start_cycle=START,milestone_start_cycle=1_500_000,
@@ -112,6 +185,10 @@ def request_unknown():
         " === 1'b1 && "+unknown(['('+ref('bus_data_wdata')+' & '+mask+')'])+')))')
 
 
+def fabric_unknown():
+    return unknown([ref('u_bus.g_req_reg.r_val'),ref('u_bus.push')+'[6]',ref('u_npu.rvalid_o'),ref('u_apb.rvalid_o')])
+
+
 def bindings():
     f=lambda name:ref(name)
     checks=[unknown([f(n) for n in ('rst_raw_n','rst_por_sync_n','rst_sync','g_core_req_reg.u_data_request.rst_ni')]),
@@ -120,7 +197,7 @@ def bindings():
                 'g_core_req_reg.u_data_request.valid_q',CORE+'id_stage_i.controller_i.instr_valid_i')]),
         '('+f(CORE+'id_stage_i.controller_i.instr_valid_i')+" === 1'b1 && "+unknown([f(CORE+'id_stage_i.controller_i.instr_i')])+')',
         request_unknown(),
-        unknown([f(n) for n in ('u_bus.g_req_reg.r_val','u_bus.push','u_npu.rvalid_o','u_apb.rvalid_o')]),
+        fabric_unknown(),
         unknown([f(n) for n in ('u_npu.ev_state','u_npu.win_state','u_npu.u_ser.state','u_npu.blk_rst_n')]),
         unknown([f(n) for n in ('u_scrub.cnt[0]','u_scrub.cnt[2]')]),
         '('+f('u_npu.rvalid_o')+" === 1'b1 && "+unknown([f('s_rdata_npu'),f('u_npu.err_o')])+')',
@@ -194,6 +271,35 @@ endmodule
     return rows
 
 
+def fabric_trigger_control(iverilog,vvp,output):
+    """Native control using the generated expression, including real floating bits."""
+    output.mkdir()
+    source=output/'fabric.v';source.write_text('''module fixture;
+wire [6:0] \\u_bus.push ;reg active=0;
+assign \\u_bus.push [6]=active;
+reg \\u_bus.g_req_reg.r_val =0, \\u_npu.rvalid_o =0, \\u_apb.rvalid_o =0;
+endmodule
+module tiny;fixture dut();wire bad='''+fabric_unknown()+''';
+initial begin
+  #1;if(dut.\\u_bus.push !==7'b0zzzzzz || bad!==0)$fatal(1,"Unconsumed Z alias must remain visible without triggering");
+  if((^dut.\\u_bus.push )!==1'bx)$fatal(1,"Original whole-alias trigger was not reproduced");
+  dut.active=1'bx;#1;if(bad!==1)$fatal(1,"Driven push X must trigger");
+  dut.active=1'bz;#1;if(bad!==1)$fatal(1,"Driven push Z must trigger");
+  dut.active=1;#1;if(bad!==0)$fatal(1,"Known active push must pass");
+  dut.\\u_bus.g_req_reg.r_val =1'bx;#1;if(bad!==1)$fatal(1,"Request valid X must trigger");
+  dut.\\u_bus.g_req_reg.r_val =0;dut.\\u_npu.rvalid_o =1'bx;#1;if(bad!==1)$fatal(1,"NPU response X must trigger");
+  dut.\\u_npu.rvalid_o =0;dut.\\u_apb.rvalid_o =1'bz;#1;if(bad!==1)$fatal(1,"APB response Z must trigger");
+  $display("SOURCE_DRIVEN_FABRIC_GATE PASS");$finish;
+end
+endmodule
+''')
+    compile_result=q.alu.execute([iverilog,'-g2005-sv','-s','tiny','-o',output/'fabric.vvp',source],output,'compile')
+    q.require(compile_result['returncode']==0,'Fabric trigger control compilation failed')
+    execution=q.alu.execute([vvp,'-i',output/'fabric.vvp'],output,'run')
+    q.require(execution['returncode']==0 and (output/'run.log').read_text().count('SOURCE_DRIVEN_FABRIC_GATE PASS')==1,'Fabric trigger control failed')
+    return dict(compile=compile_result,execution=execution,scope='Generated fabric expression: real unconsumed Z accepted; every consumed control X/Z rejected. No SoC acceptance.')
+
+
 def prepare(output,work,variant):
     q.require(os.environ.get('GITHUB_ACTIONS')=='true','Actual SoC preparation is cloud-only')
     for name,sha in (BASE_PINS|HELPER_PINS).items():
@@ -206,6 +312,7 @@ def prepare(output,work,variant):
             dest=output/'methods'/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,dest);row['methods'][name]=q.pin(dest)
             if name in HELPER_PINS:q.require(row['methods'][name]['sha256']==HELPER_PINS[name],'Dynamic helper changed during preparation')
         toolroot=work/'oss-cad-suite';row['trace_controls']=tiny_controls(toolroot/'bin/iverilog',toolroot/'bin/vvp',output/'trace-controls')
+        row['fabric_trigger_control']=fabric_trigger_control(toolroot/'bin/iverilog',toolroot/'bin/vvp',output/'fabric-trigger-control')
         net=work/'producer'/('synthesis-'+variant)/'soc_top.netlist.v'
         q.require(q.common.sha(net)==q.EXPECTED_NETLISTS[variant],'Trace netlist differs')
         models={n:(work/'inputs/models'/n).read_text() for n in ('sg13g2_stdcell.v','RM_IHPSG13_1P_2048x64_c2_bm_bist.v','RM_IHPSG13_1P_core_behavioral_bm_bist.v')}

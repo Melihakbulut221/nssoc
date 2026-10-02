@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        candidate: [electrical-margin-final, alu-partition-incomplete, alu-qualification-final]
+        candidate: [residual-final, alu-refinement-incomplete, alu-trace-first, ack-qualification-final]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -35,7 +35,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: >-
           python3 scripts/archive_chip_run_artifacts.py
-          --plan docs/evidence/closure-${{ matrix.candidate }}-archive-plan-20261002.json
+          --plan docs/evidence/closure-${{ matrix.candidate }}-archive-plan-20261003.json
           --output "${{ runner.temp }}/closure-${{ matrix.candidate }}"
       - name: Preserve publication receipt even on failure
         if: always()

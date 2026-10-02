@@ -1,0 +1,799 @@
+{
+  "schema": 1,
+  "status": "SOURCE_AND_TINY_CONTROLS_REVIEWED_FULL_BENCHMARK_NOT_RUN",
+  "validation": {
+    "status": "FROZEN_FOR_INDEPENDENT_REVIEW",
+    "methods": {
+      "scripts/run_cloud_alu_prefix.py": {
+        "bytes": 14684,
+        "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+      },
+      "scripts/prepare_alu_prefix.py": {
+        "bytes": 3824,
+        "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+      },
+      "scripts/run_cloud_timing_experiment.py": {
+        "bytes": 32423,
+        "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+      },
+      "scripts/bootstrap_oss.py": {
+        "bytes": 4879,
+        "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+      },
+      "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+        "bytes": 43759,
+        "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+      },
+      "docs/evidence/timing-cloud-input-20260930.json": {
+        "bytes": 1089565,
+        "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+      },
+      "scripts/prove_alu_mapped_state.py": {
+        "bytes": 25957,
+        "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+      },
+      "scripts/replay_alu_state_counterexample.py": {
+        "bytes": 13385,
+        "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+      },
+      "scripts/prove_alu_state_repair.py": {
+        "bytes": 15236,
+        "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+      },
+      "scripts/prove_alu_state_partitions.py": {
+        "bytes": 29376,
+        "sha256": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8"
+      },
+      "sw/tests/test_alu_state_partitions.py": {
+        "bytes": 12506,
+        "sha256": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4"
+      },
+      ".github/workflows/timing-alu-state-partitions.yml": {
+        "bytes": 5354,
+        "sha256": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542"
+      },
+      "scripts/prove_alu_state_refinement.py": {
+        "bytes": 26265,
+        "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+      },
+      "sw/tests/test_alu_state_refinement.py": {
+        "bytes": 18337,
+        "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+      },
+      ".github/workflows/timing-alu-state-refinement.yml": {
+        "bytes": 5494,
+        "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+      },
+      "hw/soc/pnr/alu-state-refinement-input.lock.json": {
+        "bytes": 3135,
+        "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+      },
+      "scripts/benchmark_alu_state_bits.py": {
+        "bytes": 21781,
+        "sha256": "c02f2998e53ccdfd252e264568c1c6184c1bb2b50f360a43549dee646b4b627e"
+      },
+      "sw/tests/test_alu_state_bit_benchmark.py": {
+        "bytes": 13527,
+        "sha256": "293661d9eea054f60dfc80956902069e9d8f70a037f031b15c54731743823382"
+      },
+      ".github/workflows/timing-alu-state-bit-benchmark.yml": {
+        "bytes": 1988,
+        "sha256": "61dd34583da412172e00519559c7ca6cc64175ce4e553550f49fc222bf4e0106"
+      },
+      "hw/soc/pnr/alu-state-bit-benchmark-input.lock.json": {
+        "bytes": 5826,
+        "sha256": "1273fe62a2c3fa7d1b7ff375cd2c581e3e70fd4d4f74ee45c7bfea2da18a2a3b"
+      }
+    },
+    "focused_tests": {
+      "passed": 151,
+      "seconds": 4.59
+    },
+    "ruff_pass": true,
+    "actionlint_pass": true,
+    "tiny_native": {
+      "status": "TINY_NATIVE_CONTROLS_PASS",
+      "seconds": 5.521171289998165,
+      "pins": {
+        "runtime": {
+          "bytes": 1398053408,
+          "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+        },
+        "library": {
+          "bytes": 1715351,
+          "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+        }
+      },
+      "results": {
+        "equal": {
+          "status": "PROVED_ALL_PARTITIONED_BINARY_BOUNDARY_EQUATIONS",
+          "state_bijection_proved": true,
+          "complete_groups": 9,
+          "proved_groups": 9,
+          "complete_output_obligation_bits": 9,
+          "symbolic_input_bits": 6,
+          "no_internal_assumptions": true,
+          "original_failed_proof_preserved": true,
+          "monolithic_timeout_preserved": true,
+          "candidate_adopted": false,
+          "full_soc_functional_accepted": false,
+          "timing_accepted": false,
+          "manufacturing_approval": false
+        },
+        "wrong_clock": {
+          "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+          "state_bijection_proved": false,
+          "complete_groups": 9,
+          "proved_groups": 8,
+          "complete_output_obligation_bits": 9,
+          "symbolic_input_bits": 6,
+          "no_internal_assumptions": true,
+          "original_failed_proof_preserved": true,
+          "monolithic_timeout_preserved": true,
+          "candidate_adopted": false,
+          "full_soc_functional_accepted": false,
+          "timing_accepted": false,
+          "manufacturing_approval": false
+        },
+        "wrong_output": {
+          "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+          "state_bijection_proved": false,
+          "complete_groups": 9,
+          "proved_groups": 8,
+          "complete_output_obligation_bits": 9,
+          "symbolic_input_bits": 6,
+          "no_internal_assumptions": true,
+          "original_failed_proof_preserved": true,
+          "monolithic_timeout_preserved": true,
+          "candidate_adopted": false,
+          "full_soc_functional_accepted": false,
+          "timing_accepted": false,
+          "manufacturing_approval": false
+        }
+      }
+    },
+    "scope": "Only tiny native controls were run locally. Full benchmark is cloud-only and not dispatched. Exactly 16 sampled output equations do not close complete equivalence or the unresolved boot failure.",
+    "outputs": {
+      "actionlint.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ruff.log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      "tests-final.log": {
+        "bytes": 260,
+        "sha256": "b5177af22636a9f3b0a9af12d1691b2622d3419ab8592866f087fc21cd5762fc"
+      },
+      "tiny-native/equal/0.tcl": {
+        "bytes": 3990,
+        "sha256": "60271515afb888f22c36635b5a61de50838047ee9fbc865965598cfba5175e40"
+      },
+      "tiny-native/equal/1.tcl": {
+        "bytes": 2712,
+        "sha256": "010d7a6fcde7fa360e9f05e111ea605dfee62799a9e48f73f669a62501d96972"
+      },
+      "tiny-native/equal/2.tcl": {
+        "bytes": 2712,
+        "sha256": "ff2b3898abfac42c626bde6cf3cbb3d74997a009f0d1cf6d0630dc95d63d5d88"
+      },
+      "tiny-native/equal/3.tcl": {
+        "bytes": 2712,
+        "sha256": "a5ec7a50273f7e1faf517305ac9d33e3bf28bc30b1de410d0c83a6a0cd40ccf9"
+      },
+      "tiny-native/equal/__nssoc_obligation_0000.log": {
+        "bytes": 1748,
+        "sha256": "34230b7e187c7ed3b66f228539291b169749656a43e703c59af55aa65e11f6aa"
+      },
+      "tiny-native/equal/__nssoc_obligation_0001.log": {
+        "bytes": 1748,
+        "sha256": "8ddc7577a0ee76b65176e60a5cba146b2977cad1e37b16847224ca2ed0dad9ec"
+      },
+      "tiny-native/equal/__nssoc_obligation_0002.log": {
+        "bytes": 1748,
+        "sha256": "41d8852669e69924f4767228f497a12ac421fb88ac66985ebea3a8db3d293a1a"
+      },
+      "tiny-native/equal/__nssoc_obligation_0003.log": {
+        "bytes": 1748,
+        "sha256": "904fc2d6076b31cf7a0a42d440becd1c1303adf56c134ea6d9337c41e57ed7f2"
+      },
+      "tiny-native/equal/__nssoc_obligation_0004.log": {
+        "bytes": 1748,
+        "sha256": "b6e3fd3edac9410aa8bc56b9bbd379a83e0e2449041fe03d33f8851d0fb87de9"
+      },
+      "tiny-native/equal/__nssoc_obligation_0005.log": {
+        "bytes": 1748,
+        "sha256": "87fe3c6e6b47b978627b60dfaf4d2415b5bf1d6c1cace27bc878f25ccdd4d0fa"
+      },
+      "tiny-native/equal/__nssoc_obligation_0006.log": {
+        "bytes": 1748,
+        "sha256": "50543d25e375f3deca5e4ac305d0c3090ee2a44f3e3997529f7864d8eb18bd89"
+      },
+      "tiny-native/equal/__nssoc_obligation_0007.log": {
+        "bytes": 1748,
+        "sha256": "6c189ad2201111c25ef42dc2bd4bd19187ec44a0e616320feb4952ced28922cb"
+      },
+      "tiny-native/equal/__nssoc_obligation_0008.log": {
+        "bytes": 1789,
+        "sha256": "e8498f21b09f84461365047ecf58980e729c9a6fe7095b4bed7036bf50800cae"
+      },
+      "tiny-native/equal/build-execution.json": {
+        "bytes": 517,
+        "sha256": "e5791007b712a1b4563ddcc2c3ed2cd5f53ff892c77ae535f531c6f068e733e8"
+      },
+      "tiny-native/equal/build.log": {
+        "bytes": 6725,
+        "sha256": "82c7149a00e28a507e244b750453af0eabcd0939fe9847d7671475dc007857b7"
+      },
+      "tiny-native/equal/build.ys": {
+        "bytes": 428,
+        "sha256": "3716a9c16dc2d7fd4201c9009ff205543dc09f3149ce844218d4719a393a0bdc"
+      },
+      "tiny-native/equal/common.il": {
+        "bytes": 21988,
+        "sha256": "c982e17b2a2c7248718ba5ed1899ddbe89aa511b614ba58c2e41b5f3f3509825"
+      },
+      "tiny-native/equal/groups.json": {
+        "bytes": 3937,
+        "sha256": "9eb8ed7f289093bd4f593aca4d72ea3952796e8c89ae7f31e4754ca172b5f773"
+      },
+      "tiny-native/equal/interface.json": {
+        "bytes": 32117,
+        "sha256": "255d855578e453fb30aa53b84d197d8bce86cc53ea5638fd20d59f67888ab0e3"
+      },
+      "tiny-native/equal/left.json": {
+        "bytes": 3178,
+        "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+      },
+      "tiny-native/equal/observations.v": {
+        "bytes": 4980,
+        "sha256": "cf255fb769937ed18179235bd2aaaf045f72ae5d0f04d702943e6c9a02e9b16a"
+      },
+      "tiny-native/equal/original-execution.json": {
+        "bytes": 522,
+        "sha256": "0b122e609c97e752f1aec9b146f3a4d59be93edde1e9861ecaf125eb21ca708a"
+      },
+      "tiny-native/equal/original-interface.json": {
+        "bytes": 18302,
+        "sha256": "526697a9379a49c50b765d919028947b99491c7a58dd7fe328337db103f745ff"
+      },
+      "tiny-native/equal/original.il": {
+        "bytes": 9742,
+        "sha256": "d59de3ba696089d387f3aa703ae8c6afd70f51edc6e4b8def4ba8bfcc1ffbbf2"
+      },
+      "tiny-native/equal/original.log": {
+        "bytes": 21166,
+        "sha256": "167a76ad0c0cb699952d79552d5ed3a8a2f21579167381e07bb6da71955401be"
+      },
+      "tiny-native/equal/original.ys": {
+        "bytes": 1137,
+        "sha256": "b464426356c0132de077a5fde306996d8e0d68697335ed029c1db6f615686d69"
+      },
+      "tiny-native/equal/plan.json": {
+        "bytes": 2102,
+        "sha256": "9d6ab1305358df3d6cfc76392e7d324aaf22a28854c73aa4d22992a6f9e8603d"
+      },
+      "tiny-native/equal/right.json": {
+        "bytes": 3178,
+        "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+      },
+      "tiny-native/equal/selection.json": {
+        "bytes": 1480,
+        "sha256": "11f0e761b7beab6a01cf02eca64a1bf79a34489500be06c7ddad6d5363570467"
+      },
+      "tiny-native/equal/shard0-execution.json": {
+        "bytes": 515,
+        "sha256": "8a10f7121e66e69e78b71d5907dd3de2c1b9be9b1ceb10f39a3763030a31b504"
+      },
+      "tiny-native/equal/shard0.log": {
+        "bytes": 5823,
+        "sha256": "7b40db542ec2b12bfeffdd9667a5c6b4a86eaa55fedbd448a4845f22ddaa8093"
+      },
+      "tiny-native/equal/shard1-execution.json": {
+        "bytes": 514,
+        "sha256": "e2a33a2faf5a7e467ce888735498ccbf4d950f077a3eaae1fe1e0927d11ad3e8"
+      },
+      "tiny-native/equal/shard1.log": {
+        "bytes": 3901,
+        "sha256": "6414d9cbde647cee0ac68723c67e5415de33f4e6892b64f1670a340f4d6b7e4b"
+      },
+      "tiny-native/equal/shard2-execution.json": {
+        "bytes": 514,
+        "sha256": "2115d21b9c4a5e4a1549565ed1cc93b1d50a1d784885ae8da17f2d78570e6e61"
+      },
+      "tiny-native/equal/shard2.log": {
+        "bytes": 3901,
+        "sha256": "e7783fb91c9900904ecf9507ec55b00a2e7d13200bdecdbecdce496a6d314336"
+      },
+      "tiny-native/equal/shard3-execution.json": {
+        "bytes": 515,
+        "sha256": "a4e9d4aed5040f2e763b71b2e91aa205bb440c59b1fb882c8f9fcafbe7642ac8"
+      },
+      "tiny-native/equal/shard3.log": {
+        "bytes": 3901,
+        "sha256": "95359b1814b696b74b3749de026f09473c942ecf0a24c601ff372b13df6c6e69"
+      },
+      "tiny-native/result.json": {
+        "bytes": 22267,
+        "sha256": "ad984c2bece7553b16dae6e7317c98ec13381c8d3050c1ecb27ad0ee5b608aba"
+      },
+      "tiny-native/wrong_clock/0.tcl": {
+        "bytes": 4032,
+        "sha256": "4021ea393c9f31318c768719e81c3026c483ea4e1075a1e6b235fee90e7ae24a"
+      },
+      "tiny-native/wrong_clock/1.tcl": {
+        "bytes": 2742,
+        "sha256": "7b49ad5e4e2fe6745360fa58f4e957d6c4cb656f64ee5b3a2e3b04fa879e42e1"
+      },
+      "tiny-native/wrong_clock/2.tcl": {
+        "bytes": 2742,
+        "sha256": "15c6bc54bdb9b4746fab014a7f2d81f24bfb739608b0f9c52f9200e6a5a8c4fa"
+      },
+      "tiny-native/wrong_clock/3.tcl": {
+        "bytes": 2742,
+        "sha256": "f8d40025c57d96b9ad91f1c7572b8df826cc17324b656ebe7e9161dbffb7f222"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0000.json": {
+        "bytes": 475,
+        "sha256": "0aa11d5916b2649b572dd9f52c71b212fc712ad6dcff36ceb0791f6ed1f7a45f"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0000.log": {
+        "bytes": 2588,
+        "sha256": "b193677e2b6a7f88bfbdbad3d82e25d293d11586f2b4b4a173e0fe3a7a0972c0"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0000.vcd": {
+        "bytes": 720,
+        "sha256": "0e043e361267a4dbadb749ab507bcd53ef2fbd0852338aec7bfacc807715ff47"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0001.log": {
+        "bytes": 1748,
+        "sha256": "c5b6a58672cac5c55608cdab89745eafdb0df74fdb6949ff3df05532b0a6388a"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0002.log": {
+        "bytes": 1748,
+        "sha256": "2019ebe2c255a18b55fc74dad78381fa50217f5fa474e0792bf523abb8905d59"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0003.log": {
+        "bytes": 1748,
+        "sha256": "401943a940cf1ea7f0595429de05e945b7a0e6de70533f4278ec91da4ff07714"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0004.log": {
+        "bytes": 1748,
+        "sha256": "163f7d8d4fb2daed10538a3ffec395a455a452d08b137220868406cb30837dd8"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0005.log": {
+        "bytes": 1748,
+        "sha256": "570f74a1f891d6f2f605ab5c9d79e10ad207b03d127882ccccde3633fd2e1f84"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0006.log": {
+        "bytes": 1748,
+        "sha256": "d76b110c7cf381378095645144d087925ac22c5ae71c498f172d650ead8094cf"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0007.log": {
+        "bytes": 1748,
+        "sha256": "9f8269e7e46fed8303ceb6997f4178ffffd3d7fcd3fd8cd4de24745d59060d8b"
+      },
+      "tiny-native/wrong_clock/__nssoc_obligation_0008.log": {
+        "bytes": 1789,
+        "sha256": "d31e84196bcb3d6e9825efd9164fd38207f1d046996139ae91d773969bd07c93"
+      },
+      "tiny-native/wrong_clock/build-execution.json": {
+        "bytes": 523,
+        "sha256": "6e20a320f63078fdeb1c6d2db5dc80037f8781a4a81ba7597d1d84b6ccf62eaa"
+      },
+      "tiny-native/wrong_clock/build.log": {
+        "bytes": 6821,
+        "sha256": "bcc950303958474906b08b533393c65ebcc9a35ea88d09acec1f62ab12a5555b"
+      },
+      "tiny-native/wrong_clock/build.ys": {
+        "bytes": 452,
+        "sha256": "6e5497fee89cf6055708421dc7d4a66ec131ad5736fbc8d81af61e68e91d2bb7"
+      },
+      "tiny-native/wrong_clock/common.il": {
+        "bytes": 22076,
+        "sha256": "f32871a81bd6a82ede18452863260f7131979d28ce31c0e06b995c1035dead2c"
+      },
+      "tiny-native/wrong_clock/groups.json": {
+        "bytes": 3927,
+        "sha256": "09b981ea91f0c9885e16f7e2babb73d2c8ee43f7938ff9d5257c621759811118"
+      },
+      "tiny-native/wrong_clock/interface.json": {
+        "bytes": 32462,
+        "sha256": "3a42ead122a1f6764a1fa6cc204e1459b40d72a4e634561b559685737805dc3b"
+      },
+      "tiny-native/wrong_clock/left.json": {
+        "bytes": 3178,
+        "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+      },
+      "tiny-native/wrong_clock/observations.v": {
+        "bytes": 4980,
+        "sha256": "cf255fb769937ed18179235bd2aaaf045f72ae5d0f04d702943e6c9a02e9b16a"
+      },
+      "tiny-native/wrong_clock/original-execution.json": {
+        "bytes": 528,
+        "sha256": "643c9c269a51194374e10eff274c00a33ed7bf98aa23d54ce66f06fcba6fd8c5"
+      },
+      "tiny-native/wrong_clock/original-interface.json": {
+        "bytes": 19589,
+        "sha256": "12071eb96ffc001b173469ee611a684a53d359b2f249f36a7d3870a3250284dd"
+      },
+      "tiny-native/wrong_clock/original.il": {
+        "bytes": 10156,
+        "sha256": "239e15f836f6d47240c1befb97199a6b5ad3027830787af8512bf2c5ef4be8ab"
+      },
+      "tiny-native/wrong_clock/original.log": {
+        "bytes": 21245,
+        "sha256": "00b50bf4a26cc390bd19c97827251dd97b0f8cbd2c7e87f6f0b2409367a626a1"
+      },
+      "tiny-native/wrong_clock/original.ys": {
+        "bytes": 1161,
+        "sha256": "2f99f95e0a216bf4a28a74fcdd709ab946008449ab629035d436db033a0d8663"
+      },
+      "tiny-native/wrong_clock/plan.json": {
+        "bytes": 2102,
+        "sha256": "9d6ab1305358df3d6cfc76392e7d324aaf22a28854c73aa4d22992a6f9e8603d"
+      },
+      "tiny-native/wrong_clock/right.json": {
+        "bytes": 3182,
+        "sha256": "7ab3533b6594f01f2e7f2c5a6167b5c172fed13e624d5b1a5e74bbddec43f7b1"
+      },
+      "tiny-native/wrong_clock/selection.json": {
+        "bytes": 1480,
+        "sha256": "11f0e761b7beab6a01cf02eca64a1bf79a34489500be06c7ddad6d5363570467"
+      },
+      "tiny-native/wrong_clock/shard0-execution.json": {
+        "bytes": 520,
+        "sha256": "a3550b942170dfa5d5ad54ed7b4ffcd37a30db10e6a3c21d1fad64f69e4e87cc"
+      },
+      "tiny-native/wrong_clock/shard0.log": {
+        "bytes": 6669,
+        "sha256": "85813ba13e2c6dcf8854c2e6ff188ec30e551c908ebbbfffdeedff496af82b36"
+      },
+      "tiny-native/wrong_clock/shard1-execution.json": {
+        "bytes": 521,
+        "sha256": "493f41cb63355a070c1c646913aa40549881db9c5f6d8c983062c583291f6fe4"
+      },
+      "tiny-native/wrong_clock/shard1.log": {
+        "bytes": 3907,
+        "sha256": "c7a119108826f2570f7e12a87b060572d056ddde02bb9f041f773280a69de6f8"
+      },
+      "tiny-native/wrong_clock/shard2-execution.json": {
+        "bytes": 519,
+        "sha256": "9510769a98f26bb2bac7b96a14ba615eaec6eb15bb5ba5a9c3da16b2200772ca"
+      },
+      "tiny-native/wrong_clock/shard2.log": {
+        "bytes": 3907,
+        "sha256": "67f259324252149a5f6a36eacee2fcc8698a23c2f28288f926d40404b6fd6f0d"
+      },
+      "tiny-native/wrong_clock/shard3-execution.json": {
+        "bytes": 520,
+        "sha256": "2fd7f1defcc6f03cf96da1f291941adf2c9dcd40b5e7169434c162cf55a236e7"
+      },
+      "tiny-native/wrong_clock/shard3.log": {
+        "bytes": 3907,
+        "sha256": "0d7b8bb23a6086883659ae988751f8de49170025cc475aaf69d07f7d322d839c"
+      },
+      "tiny-native/wrong_output/0.tcl": {
+        "bytes": 4039,
+        "sha256": "0da91ec6eb975261d9af46354f3ff54e84c642d51dbd2a202d38d4fb09202146"
+      },
+      "tiny-native/wrong_output/1.tcl": {
+        "bytes": 2747,
+        "sha256": "c4f4c8aa6c1c24041584124dd3066683bb64695edc38b38d51b033a685dddc61"
+      },
+      "tiny-native/wrong_output/2.tcl": {
+        "bytes": 2747,
+        "sha256": "1b8411745229cd2d97dd6db9a83075cda07b317b34862c82e34e3d6b60a06377"
+      },
+      "tiny-native/wrong_output/3.tcl": {
+        "bytes": 2747,
+        "sha256": "797eef46406eb3d88942c6dba76d896fe6a39a3f5c3238570148fda2d334368e"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0000.log": {
+        "bytes": 1748,
+        "sha256": "f073fe0af6e95a3f1cff2d3f23ee9bd1d3adb3e89b66fae7a417851cd3a43178"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0001.log": {
+        "bytes": 1748,
+        "sha256": "c5b6a58672cac5c55608cdab89745eafdb0df74fdb6949ff3df05532b0a6388a"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0002.log": {
+        "bytes": 1748,
+        "sha256": "2019ebe2c255a18b55fc74dad78381fa50217f5fa474e0792bf523abb8905d59"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0003.log": {
+        "bytes": 1748,
+        "sha256": "401943a940cf1ea7f0595429de05e945b7a0e6de70533f4278ec91da4ff07714"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0004.log": {
+        "bytes": 1748,
+        "sha256": "163f7d8d4fb2daed10538a3ffec395a455a452d08b137220868406cb30837dd8"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0005.log": {
+        "bytes": 1748,
+        "sha256": "570f74a1f891d6f2f605ab5c9d79e10ad207b03d127882ccccde3633fd2e1f84"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0006.json": {
+        "bytes": 475,
+        "sha256": "45f6df795304e3eb28d7b701c0d56968de6d10530fa3c394e24c484c6a9a660a"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0006.log": {
+        "bytes": 2590,
+        "sha256": "b9751c69dbcab7f8c84fd8b5ac8824da0ec8854d24efd2c4b55588686a31975e"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0006.vcd": {
+        "bytes": 721,
+        "sha256": "43c8990117bf9a7161925cc9aa6edb546393335284a63007ccbf38780f878721"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0007.log": {
+        "bytes": 1748,
+        "sha256": "9f8269e7e46fed8303ceb6997f4178ffffd3d7fcd3fd8cd4de24745d59060d8b"
+      },
+      "tiny-native/wrong_output/__nssoc_obligation_0008.log": {
+        "bytes": 1789,
+        "sha256": "d31e84196bcb3d6e9825efd9164fd38207f1d046996139ae91d773969bd07c93"
+      },
+      "tiny-native/wrong_output/build-execution.json": {
+        "bytes": 523,
+        "sha256": "89b1af3d86e5798b1a8278edfa33b158006a13f778435e39549be51b84e6fd34"
+      },
+      "tiny-native/wrong_output/build.log": {
+        "bytes": 6826,
+        "sha256": "c12462f2dc4ac563f28767f5c9f767c886b6e6fb27a4169e96db9b0edf07990b"
+      },
+      "tiny-native/wrong_output/build.ys": {
+        "bytes": 456,
+        "sha256": "b6cd5378fb3ddb519ab7193b4d2b712c822c306a0805690984faf920d5cd9e24"
+      },
+      "tiny-native/wrong_output/common.il": {
+        "bytes": 22260,
+        "sha256": "e29e11f88e998fd75d3c63d5607c79801c7d2a46d38ec2720c0b4a1bf58a2a38"
+      },
+      "tiny-native/wrong_output/groups.json": {
+        "bytes": 3928,
+        "sha256": "e2bfb375b80640a8843a0a8372becfda589fe3ab3bf17c7854257f8644aea9e4"
+      },
+      "tiny-native/wrong_output/interface.json": {
+        "bytes": 32545,
+        "sha256": "8c2b9cdd8699e5a0ff15a032b675098b7bf4afb7067eddc600bd9584a53808dd"
+      },
+      "tiny-native/wrong_output/left.json": {
+        "bytes": 3178,
+        "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+      },
+      "tiny-native/wrong_output/observations.v": {
+        "bytes": 4980,
+        "sha256": "cf255fb769937ed18179235bd2aaaf045f72ae5d0f04d702943e6c9a02e9b16a"
+      },
+      "tiny-native/wrong_output/original-execution.json": {
+        "bytes": 529,
+        "sha256": "1fd2fd04789d7a644e80b2cf194bb404a3275d7b252c56bdbd552a78e04c7340"
+      },
+      "tiny-native/wrong_output/original-interface.json": {
+        "bytes": 19613,
+        "sha256": "356d553f604d70ef8bc55825324041c16a962e2c730e94c89fa935c4d289fdf2"
+      },
+      "tiny-native/wrong_output/original.il": {
+        "bytes": 10248,
+        "sha256": "949f7886aad5fde0843f013ab15183099cc57d6654ba5eeca6d2cb023d570b7f"
+      },
+      "tiny-native/wrong_output/original.log": {
+        "bytes": 22130,
+        "sha256": "0495bb0b7699a4872e45db53a80181febf907b5e767efb069a6df79c7723fa7e"
+      },
+      "tiny-native/wrong_output/original.ys": {
+        "bytes": 1165,
+        "sha256": "d597547379f18f3cbf71ea5ba215c0484533c3040469049169d554984eceb09e"
+      },
+      "tiny-native/wrong_output/plan.json": {
+        "bytes": 2102,
+        "sha256": "9d6ab1305358df3d6cfc76392e7d324aaf22a28854c73aa4d22992a6f9e8603d"
+      },
+      "tiny-native/wrong_output/right.json": {
+        "bytes": 3180,
+        "sha256": "5834860664f68a2400a4cff60ad7dcf23bb2d72cf0d4df30f0e3b8fbbaae990a"
+      },
+      "tiny-native/wrong_output/selection.json": {
+        "bytes": 1480,
+        "sha256": "11f0e761b7beab6a01cf02eca64a1bf79a34489500be06c7ddad6d5363570467"
+      },
+      "tiny-native/wrong_output/shard0-execution.json": {
+        "bytes": 522,
+        "sha256": "a7a20e32df7c7f0c5c38045d4df46e02e60b8ae760201dea3cf14e2f1dabde50"
+      },
+      "tiny-native/wrong_output/shard0.log": {
+        "bytes": 5830,
+        "sha256": "d34c8b754a3d8c65085bc652b9b936ed285f461233db7a19e23f7e311b01fd2a"
+      },
+      "tiny-native/wrong_output/shard1-execution.json": {
+        "bytes": 522,
+        "sha256": "907e8c85b43d913e35019c6ec5860bb41a04428a8065fc5517fd16410cde37ed"
+      },
+      "tiny-native/wrong_output/shard1.log": {
+        "bytes": 3908,
+        "sha256": "c3d8bdd481a1ac44d2bbf94119c15b9744223b73ce0801e33f22cf4967f72915"
+      },
+      "tiny-native/wrong_output/shard2-execution.json": {
+        "bytes": 522,
+        "sha256": "b7fdd291bdacace967bf5d5457c53868871ccb4e02e3584768c674c505264bf3"
+      },
+      "tiny-native/wrong_output/shard2.log": {
+        "bytes": 4751,
+        "sha256": "5d36f50c5259b4d738e9e699ef270bdcfd44e1b40990c4985ff3cbad3c626615"
+      },
+      "tiny-native/wrong_output/shard3-execution.json": {
+        "bytes": 522,
+        "sha256": "fc1a8ba66ac8db7340eef6b77bbc0e19634e7a215e6432cdd93f783129d189ee"
+      },
+      "tiny-native/wrong_output/shard3.log": {
+        "bytes": 3908,
+        "sha256": "c52cc7ee39b45c62e34b167cb9a75771d94c576f95296a953a8816ad20f0419b"
+      }
+    }
+  },
+  "independent_review": {
+    "status": "READ_ONLY_PEER_REVIEW_NO_LAUNCH_BLOCKER",
+    "source_receipt": {
+      "bytes": 24662,
+      "sha256": "1a3e727d5a839790bfb92168a5bc5dd6b7f358f8280d3677285a099d47df2b48"
+    },
+    "methods_rehashed": {
+      "scripts/run_cloud_alu_prefix.py": {
+        "bytes": 14684,
+        "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+      },
+      "scripts/prepare_alu_prefix.py": {
+        "bytes": 3824,
+        "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+      },
+      "scripts/run_cloud_timing_experiment.py": {
+        "bytes": 32423,
+        "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+      },
+      "scripts/bootstrap_oss.py": {
+        "bytes": 4879,
+        "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+      },
+      "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+        "bytes": 43759,
+        "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+      },
+      "docs/evidence/timing-cloud-input-20260930.json": {
+        "bytes": 1089565,
+        "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+      },
+      "scripts/prove_alu_mapped_state.py": {
+        "bytes": 25957,
+        "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+      },
+      "scripts/replay_alu_state_counterexample.py": {
+        "bytes": 13385,
+        "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+      },
+      "scripts/prove_alu_state_repair.py": {
+        "bytes": 15236,
+        "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+      },
+      "scripts/prove_alu_state_partitions.py": {
+        "bytes": 29376,
+        "sha256": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8"
+      },
+      "sw/tests/test_alu_state_partitions.py": {
+        "bytes": 12506,
+        "sha256": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4"
+      },
+      ".github/workflows/timing-alu-state-partitions.yml": {
+        "bytes": 5354,
+        "sha256": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542"
+      },
+      "scripts/prove_alu_state_refinement.py": {
+        "bytes": 26265,
+        "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+      },
+      "sw/tests/test_alu_state_refinement.py": {
+        "bytes": 18337,
+        "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+      },
+      ".github/workflows/timing-alu-state-refinement.yml": {
+        "bytes": 5494,
+        "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+      },
+      "hw/soc/pnr/alu-state-refinement-input.lock.json": {
+        "bytes": 3135,
+        "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+      },
+      "scripts/benchmark_alu_state_bits.py": {
+        "bytes": 21781,
+        "sha256": "c02f2998e53ccdfd252e264568c1c6184c1bb2b50f360a43549dee646b4b627e"
+      },
+      "sw/tests/test_alu_state_bit_benchmark.py": {
+        "bytes": 13527,
+        "sha256": "293661d9eea054f60dfc80956902069e9d8f70a037f031b15c54731743823382"
+      },
+      ".github/workflows/timing-alu-state-bit-benchmark.yml": {
+        "bytes": 1988,
+        "sha256": "61dd34583da412172e00519559c7ca6cc64175ce4e553550f49fc222bf4e0106"
+      },
+      "hw/soc/pnr/alu-state-bit-benchmark-input.lock.json": {
+        "bytes": 5826,
+        "sha256": "1273fe62a2c3fa7d1b7ff375cd2c581e3e70fd4d4f74ee45c7bfea2da18a2a3b"
+      }
+    },
+    "output_pin_count": 119,
+    "raw_native_controls_reparsed": {
+      "equal": {
+        "status": "PROVED_ALL_PARTITIONED_BINARY_BOUNDARY_EQUATIONS",
+        "state_bijection_proved": true,
+        "complete_groups": 9,
+        "proved_groups": 9,
+        "complete_output_obligation_bits": 9,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      },
+      "wrong_clock": {
+        "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+        "state_bijection_proved": false,
+        "complete_groups": 9,
+        "proved_groups": 8,
+        "complete_output_obligation_bits": 9,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      },
+      "wrong_output": {
+        "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+        "state_bijection_proved": false,
+        "complete_groups": 9,
+        "proved_groups": 8,
+        "complete_output_obligation_bits": 9,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      }
+    },
+    "independent_tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest -q -p no:cacheprovider sw/tests/test_alu_state_bit_benchmark.py sw/tests/test_alu_state_refinement.py sw/tests/test_alu_state_partitions.py --basetemp=/dev/shm/nssoc-bit-peer-tests",
+      "passed": 151,
+      "seconds": 3.77
+    },
+    "findings": [],
+    "scope_checks": [
+      "Every original symbolic input is forwarded into the preserved exact miter, with no internal cutpoint or assumptions.",
+      "Only 16 locked output bits are sampled; 33505 prior proved bits and all 816 unresolved bits remain explicitly distinguished.",
+      "Native raw unknown/error/missing/duplicate verdicts fail closed; timeouts and counterexamples are preserved.",
+      "The existing original and refinement receipts, all methods, runtime, library and common miter are checked before/after native work.",
+      "The workflow downloads immutable artifacts using run/source/size/digest pins; no git-show dependency needs deep checkout.",
+      "All full proof, boot, adoption, timing and manufacturing acceptance flags remain false."
+    ],
+    "limitations": [
+      "No full-chip miter downloaded or new native mapping/SAT run by this reviewer.",
+      "Current artifact acquisition requires unexpired GitHub Actions artifacts; exact current IDs/digests are locked."
+    ]
+  },
+  "root_focused_tests": {
+    "passed": 83,
+    "scope": "bit benchmark and artifact archive tests",
+    "seconds": 2.28
+  },
+  "root_methods_and_captured_outputs_rehashed": true,
+  "complete_state_equivalence": false,
+  "unresolved_four_state_boot_failure": true,
+  "candidate_adopted": false
+}

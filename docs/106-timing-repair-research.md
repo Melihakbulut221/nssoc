@@ -1880,3 +1880,74 @@ cases are [permanently archived](evidence/closure-final-native-archives-20261002
 Twelve unchanged ZIP assets have verified cloud-local, authenticated release,
 and anonymous release roundtrips. The incomplete proof and both failed candidate
 boots keep their original verdicts. Publication is preservation, not acceptance.
+
+### 2026-10-03 resumed work and completed residual results
+
+The [completed residual repair](evidence/timing-residual-repair-native-20261003.json)
+adds eleven buffers. Both fresh reloads reproduce 1,311 setup and 58 hold
+violations, zero slew violations and zero capacitance violations. Setup WNS is
+−4.230063411 ns; hold WNS is −0.157984292 ns. The earlier input had 67 hold
+violations and one capacitance violation. However, setup WNS regresses by about
+30 ps against that input. The unchanged parent guards therefore reject the
+candidate. The selected C10 design has not been replaced.
+
+Root verifies 462 compact archive members and 48 Git-bound methods, independently
+replays all five full endpoint exports and both protected-status tables, and
+reproduces the rejection. Both reloads agree exactly on their complete 70,581
+endpoint/corner records. The two limited digital ECO proofs pass within their
+published scope. Large physical views and the full artifact ZIP were not
+downloaded or rehashed locally; permanent cloud archival is a separate action.
+
+The [next-step analysis](evidence/timing-residual-next-step-20261003.json)
+locates the setup change on the same `_134021_` to `_132609_` path. Fresh-route
+parasitics on `fanout483` and `fanout639` account for most of the extra arrival
+delay. An isolated drive-strength experiment is being prepared. The worst
+hold endpoint `_135215_/D` receives no buffer despite positive setup slack.
+The existing log does not identify which native eligibility or rollback guard
+prevented insertion; additional targeted diagnostics are required. Neither an
+unsupported root cause nor a relaxed acceptance limit is assumed.
+
+The [completed refined proof](evidence/alu-state-refinement-incomplete-native-20261003.json)
+proves another 1,616 output bits: 33,505 of 34,321 are now proved. Exactly 51
+refined groups, covering 816 bits, time out. All four workers completed;
+there are no counterexamples or infrastructure failures in this run. The
+aggregate correctly remains failed/incomplete. Independent review reparses
+all 421 old and new native group verdicts and verifies the compact shard ZIPs.
+
+The [bounded per-bit benchmark](evidence/alu-state-bit-benchmark-method-20261003.json)
+selects sixteen remaining equations to measure whether smaller observations
+reduce SAT cost. It preserves the original graph, all 10,828 symbolic inputs,
+and the exact prior proof coverage. No internal assumptions or new state
+pairing are introduced. Each SAT call has a 120-second limit. Native tiny
+controls prove the equal case and reject changed clocks or outputs; independent
+review verifies their captured logs. This sample cannot establish full
+equivalence, and the unresolved four-state boot failure still blocks adoption.
+
+The [completed trace and ACK review](evidence/alu-trace-and-ack-final-native-20261003.json)
+confirms that both ACK candidates fail the original finite boot workload while
+both references pass. The first ALU trace is diagnostic-only: unused,
+undriven bits of a retained `u_bus.push` alias trigger the recorder immediately
+after MBIST in both designs. Its identical early windows therefore do not
+capture the later failure. The counter milestones remain useful: printed
+check labels skip 11 until the end, so counter value 24 after label 25 is
+expected. The earlier interpretation of a missing counter-25 write was
+incorrect. No RTL cause has yet been established.
+
+The [corrected trace trigger](evidence/alu-boot-trace-driven-alias-method-20261003.json)
+resolves every one of the 441 sampled bits in each exact netlist to native
+outputs, constants or eight explicitly unconsumed aliases. Only the six
+unused `push[5:0]` bits are removed from the first-unknown condition; every raw
+field remains recorded. Active request, response, clock and SRAM unknowns
+still trigger. Native controls reproduce the old floating-Z trigger and reject
+active X/Z cases. Independent review passes 62 focused tests and checks both
+full binding receipts. The same bounded original/candidate pair must now run
+again; the original failed qualification is unchanged.
+
+Separately, the [APB CI guard correction](evidence/apb-timeout-disabled-ci-20261003.json)
+addresses a tool-dependent total-cell comparison. The disabled-timeout RTL
+and its pinned predecessor both retain 93 flip-flops and identical pre-ABC
+primitive counts, but generic ABC decomposes them into 104 versus 103 cells.
+The test now checks exact pre-ABC cost, retained flip-flops, constant timeout
+outputs and actual native equivalence of all 97 compared points. Changed
+address wiring and reset behavior fail the negative controls. Five focused
+tests pass independently; no design RTL or historical fixture was changed.

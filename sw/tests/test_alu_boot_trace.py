@@ -14,10 +14,13 @@ import run_cloud_alu_boot_trace as trace
 
 
 def fixture():
-    lines=[]
+    lines=['  wire clk_i;']
     for name,width in trace.FIELDS:
         declaration=('\\'+name+' ') if '.' in name else name
         lines.append('  wire '+(f'[{width-1}:0] ' if width>1 else '')+declaration+';')
+        for bit in range(width):
+            if bit not in trace.UNDRIVEN_ALIASES.get(name,[]):
+                lines.append('  assign '+declaration+(f'[{bit}]' if width>1 else '')+" = 1'h0;")
     for name in trace.GATES:lines.append('  sg13g2_lgcp_1 \\'+name+'  (\n    .CLK(clk_i)\n  );')
     for name in trace.SRAMS:lines.append('  RM_IHPSG13_1P_2048x64_c2_bm_bist \\'+name+'  (\n    .A_CLK(clk_i)\n  );')
     models={'sg13g2_stdcell.v':'''module sg13g2_lgcp_1 (GCLK, GATE, CLK);
@@ -34,6 +37,34 @@ def test_all_aliases_and_native_instances_bound():
     assert len(result['cells'])==7
     assert result['fields'][0]['expression']=='dut.rst_raw_n'
     assert trace.ref('u_scrub.cnt[0]')=='dut.\\u_scrub.cnt[0] '
+    assert result['alias_driver_witness']['undriven_unconsumed_bits']==trace.UNDRIVEN_ALIASES
+
+
+@pytest.mark.parametrize('fault',['new_undriven','consumed_undriven','consumed_cell_input','driven_excluded','indirect_undriven','multiple_driver','cycle'])
+def test_source_driver_witness_rejects_changed_alias_contract(fault):
+    text,models=fixture()
+    if fault=='new_undriven':text=text.replace("  assign rst_raw_n = 1'h0;",'')
+    elif fault=='consumed_undriven':text=text.replace("  assign rst_raw_n = 1'h0;",'  assign rst_raw_n = \\u_bus.push [0];')
+    elif fault=='consumed_cell_input':text+='\n  opaque_cell extra (\n    .A(\\u_bus.push [0])\n  );'
+    elif fault=='driven_excluded':text+="\n  assign \\u_bus.push [0] = 1'h0;"
+    elif fault=='indirect_undriven':text=text.replace("  assign rst_raw_n = 1'h0;",'  wire unused;\n  assign rst_raw_n = unused;')
+    elif fault=='multiple_driver':text+="\n  assign rst_raw_n = 1'h1;"
+    else:text=text.replace("  assign rst_raw_n = 1'h0;",'  assign rst_raw_n = rst_por_sync_n;').replace("  assign rst_por_sync_n = 1'h0;",'  assign rst_por_sync_n = rst_raw_n;')
+    with pytest.raises(ValueError):trace.alias_driver_witness(text,models)
+
+
+def test_native_output_and_nonzero_based_assignment_witness():
+    text,models=fixture()
+    text=text.replace("  assign rst_raw_n = 1'h0;",'''  wire [31:24] partial;
+  sg13g2_buf_1 real_driver (
+    .X(partial[24]),
+    .A(clk_i)
+  );
+  assign rst_raw_n = partial[24];''')
+    models['sg13g2_stdcell.v']+='\nmodule sg13g2_buf_1 (X,A); output X; input A; endmodule'
+    witness=trace.alias_driver_witness(text,models)['fields']['rst_raw_n']['0']
+    assert witness['source']==['partial',24]
+    assert witness['root']==dict(kind='native_output',cell_type='sg13g2_buf_1',instance='real_driver',port='X')
 
 
 @pytest.mark.parametrize('fault',['missing_alias','wrong_width','duplicate_alias','missing_gate','wrong_sram','wrong_edge'])
@@ -99,6 +130,13 @@ def test_real_tiny_monitor_positive_masked_and_high_bit_negative_controls(tmp_pa
     with pytest.raises(ValueError,match='incomplete'):trace.validate_log(text,known,boot=False)
 
 
+def test_native_generated_fabric_trigger_preserves_active_unknown_failures(tmp_path):
+    assert trace.fabric_unknown() in trace.bindings()
+    iverilog=shutil.which('iverilog');vvp=shutil.which('vvp');assert iverilog and vvp
+    result=trace.fabric_trigger_control(Path(iverilog),Path(vvp),tmp_path/'fabric')
+    assert result['execution']['returncode']==0
+
+
 def test_full_soc_entrypoints_reject_local_execution(monkeypatch,tmp_path):
     monkeypatch.delenv('GITHUB_ACTIONS',raising=False)
     with pytest.raises(ValueError,match='cloud-only'):trace.prepare(tmp_path/'out',tmp_path/'work','candidate')
@@ -118,9 +156,9 @@ endmodule
 module RM_IHPSG13_1P_2048x64_c2_bm_bist(input A_CLK);
 wire [63:0] A_DOUT;SRAM_1P_behavioral_bm_bist i_SRAM_1P_behavioral_bm_bist();
 endmodule
-module namespace_dut(input clk_i);
+module namespace_dut;
 '''+declarations+'\nendmodule\n'
-    bench=trace.instrument('module tb_logicrom_gl; reg clk=0;integer cycles=0;namespace_dut dut(clk);\nendmodule\n')
+    bench=trace.instrument('module tb_logicrom_gl; reg clk=0;integer cycles=0;namespace_dut dut();\nendmodule\n')
     source=tmp_path/'namespace.v';source.write_text(stub+bench)
     execution=trace.q.alu.execute([iverilog,'-g2005-sv','-s','tb_logicrom_gl','-o',tmp_path/'namespace.vvp',ROOT/trace.MONITOR,source],tmp_path,'compile')
     assert execution['returncode']==0,(tmp_path/'compile.log').read_text()

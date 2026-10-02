@@ -3516,14 +3516,15 @@ def _tracked_pnr_configs():
 # it, and until this test there was none.
 
 
-def _apb_script(chparam="", source=None):
-    lib = _sg13g2_liberty()
+def _apb_script(chparam="", source=None, *, before_abc=False):
+    lib = None if before_abc else _sg13g2_liberty()
     script = "read_verilog -I {} {};".format(
         SOC_RTL, source or SOC_RTL / "soc_apb_bridge.v")
     script += " hierarchy -top soc_apb_bridge;"
     if chparam:
         script += " " + chparam
-    script += " synth -top soc_apb_bridge -flatten;"
+    script += " synth {}-top soc_apb_bridge -flatten;".format(
+        "-noabc " if before_abc else "")
     if lib is not None:
         script += " dfflibmap -liberty {0}; abc -liberty {0};".format(lib)
     script += " opt_clean;"
@@ -3547,17 +3548,92 @@ def _legacy_apb_source():
     return path
 
 
-@needs_yosys
-def test_the_apb_timeout_costs_nothing_at_its_default(workdir):
-    """Default and pre-timeout RTL must cost the same on the SAME mapper."""
+def _prove_disabled_apb_equivalence(source, workdir):
+    """Prove all paired outputs/state, including the new constant-zero port.
+
+    Generic ABC can choose different gate decompositions for equivalent RTL,
+    even with the same version. A cell count alone cannot prove preservation.
+    Keep the immutable legacy fixture and add only its specified disabled
+    timeout output in this temporary reference; never modify the fixture.
+    """
+    reference = _legacy_apb_source().read_text()
+    port = "    input  wire        clk_i,"
+    body = "  localparam [1:0] ST_IDLE"
+    assert reference.count(port) == reference.count(body) == 1
+    reference = reference.replace(port, port + "\n    output wire timeout_o,", 1)
+    reference = reference.replace(body, "  assign timeout_o = 1'b0;\n" + body, 1)
+    gold = Path(workdir) / 'apb_disabled_reference.v'
+    gold.write_text(reference)
+    recipe = "proc; opt; async2sync; dffunmap; opt_clean;"
+    script = (
+        f"read_verilog {gold}; {recipe} rename soc_apb_bridge gold; "
+        f"read_verilog -I {SOC_RTL} {source}; {recipe} "
+        "rename soc_apb_bridge gate; equiv_make gold gate equiv; "
+        "hierarchy -top equiv; equiv_simple; equiv_induct -seq 3; "
+        "equiv_status -assert;")
+    log = _run_yosys(script, workdir)
+    (Path(workdir) / 'apb_disabled_equivalence.log').write_text(log)
+    assert re.search(r'Found [1-9][0-9]* \$equiv cells in equiv:', log)
+    assert 'Equivalence successfully proven!' in log
+
+
+def _assert_disabled_apb_cost_and_behavior(workdir, source=None):
+    source = source or SOC_RTL / 'soc_apb_bridge.v'
     baseline = _census(_apb_script(source=_legacy_apb_source()), workdir)
-    census = _census(_apb_script(), workdir)
-    assert (census.total, census.cells) == (baseline.total, baseline.cells), (
-        'Disabled timeout changes mapped state/logic versus the pinned legacy source'
+    census = _census(_apb_script(source=source), workdir)
+    assert census.total == baseline.total, (
+        'Disabled timeout changes retained state versus the pinned legacy source'
         + MAPPER_NOTE)
     if YOSYS_VERSION and YOSYS_VERSION.startswith(PINNED_YOSYS):
         # Preserve the original measurement, rather than rewriting 93 as 94.
         assert baseline.total == APB_BRIDGE_FF_AT_DEFAULT
+    # Before ABC, enforce the same structural cost as well as functional
+    # equivalence. Do not allow an extra gate or ignore added timeout logic.
+    pre_abc = []
+    for rtl in (_legacy_apb_source(), source):
+        count = _census(_apb_script(source=rtl, before_abc=True), workdir)
+        module = json.loads((Path(workdir) / 'census.json').read_text())['modules']['soc_apb_bridge']
+        types = sorted(cell['type'] for cell in module['cells'].values())
+        pre_abc.append((count.total, count.cells, types))
+    assert pre_abc[0] == pre_abc[1], 'Disabled timeout adds pre-ABC state or logic'
+    assert module['ports']['timeout_o']['bits'] == ['0'], 'Disabled timeout output is not zero'
+    assert module['netnames']['to_fired']['bits'] == ['0'], 'Disabled timeout state survives'
+    _prove_disabled_apb_equivalence(source, workdir)
+
+
+@needs_yosys
+@pytest.mark.parametrize('generic_mapping', [False, True])
+def test_the_apb_timeout_costs_nothing_at_its_default(workdir, monkeypatch, generic_mapping):
+    """Preserve state, pre-ABC cost and behavior with/without library mapping."""
+    if generic_mapping:
+        monkeypatch.setattr(sys.modules[__name__], '_sg13g2_liberty', lambda: None)
+    _assert_disabled_apb_cost_and_behavior(workdir)
+
+
+@needs_yosys
+def test_disabled_apb_equivalence_rejects_same_cost_output_mutation(workdir):
+    source = (SOC_RTL / 'soc_apb_bridge.v').read_text()
+    old = 'paddr_o  <= addr_i[19:0];'
+    assert source.count(old) == 1
+    mutant = Path(workdir) / 'apb_wrong_address.v'
+    mutant.write_text(source.replace(old, 'paddr_o  <= {addr_i[19:2], addr_i[0], addr_i[1]};'))
+    original_cost = _census(_apb_script(before_abc=True), workdir)
+    mutated_cost = _census(_apb_script(source=mutant, before_abc=True), workdir)
+    assert (original_cost.total, original_cost.cells) == (mutated_cost.total, mutated_cost.cells)
+    # Independently invoke the actual native proof, not just its cost guard.
+    with pytest.raises(AssertionError, match='yosys failed'):
+        _prove_disabled_apb_equivalence(mutant, workdir)
+
+
+@needs_yosys
+def test_disabled_apb_guard_rejects_asserted_timeout(workdir):
+    source = (SOC_RTL / 'soc_apb_bridge.v').read_text()
+    old = "timeout_o <= 1'b0;"
+    assert source.count(old) == 1
+    mutant = Path(workdir) / 'apb_wrong_timeout.v'
+    mutant.write_text(source.replace(old, "timeout_o <= 1'b1;"))
+    with pytest.raises(AssertionError, match='Disabled timeout output is not zero'):
+        _assert_disabled_apb_cost_and_behavior(workdir, mutant)
 
 
 @needs_yosys

@@ -1,0 +1,90 @@
+{
+  "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_soc_synthesis_guards.py",
+  "source_sha256": "a037ce70da29642ae0dcb5369b10fa914dad1c0a1ac6c5adf343a94e5f5dc226",
+  "yosys": "/home/hasanmelih/.local/bin/yosys",
+  "yosys_version": "Yosys 0.33 (git sha1 2584903a060)",
+  "library": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+  "library_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+  "native_results": [
+    {
+      "case": "positive",
+      "passed": true,
+      "log_sha256": "433babfb1ba57cfbd0063fc599142ac3351623c2725ff16d64b81e3e2ca5a796"
+    },
+    {
+      "case": "wrong_address_reset",
+      "passed": false,
+      "log_sha256": "2010ae6c2b0f1311cf32d0ee29fc6b3e240175c9a1c6f9a12a6fb89cf5cf624a"
+    },
+    {
+      "case": "wrong_state_reset",
+      "passed": false,
+      "log_sha256": "85abcd8de048d8675a02a068f06694578a2570335a9ce26edfaddd13da6c7fb7"
+    }
+  ],
+  "scope": "Paired binary RTL equivalence under identical async2sync conversion; no analog asynchronous recovery/removal, four-state initialization, or physical claim.",
+  "verdict": "NO_BLOCKER_FOUND",
+  "focused_native_tests": {
+    "passed": 5,
+    "deselected": 79,
+    "seconds": 2.38,
+    "installed_liberty_and_forced_generic": true
+  },
+  "positive_equivalence_cells": 97,
+  "positive_proven_cells": 97,
+  "unchanged_method_source_verified": true,
+  "files": {
+    "positive/apb_disabled_reference.v": {
+      "bytes": 4855,
+      "sha256": "ce8107da9d902621288d32d39e9b3c96d7448fc59101d412e7429074b954cf7c"
+    },
+    "positive/native.log": {
+      "bytes": 36967,
+      "sha256": "433babfb1ba57cfbd0063fc599142ac3351623c2725ff16d64b81e3e2ca5a796"
+    },
+    "positive/native.ys": {
+      "bytes": 476,
+      "sha256": "595a18bcb506fd50a923b358258435cade3f89675dd4f80f477538c535384153"
+    },
+    "wrong_address_reset/apb_disabled_reference.v": {
+      "bytes": 4855,
+      "sha256": "ce8107da9d902621288d32d39e9b3c96d7448fc59101d412e7429074b954cf7c"
+    },
+    "wrong_address_reset/mutant.v": {
+      "bytes": 8696,
+      "sha256": "7010b96b131584c57d8778694e298245bd5bf9209ac6109c4fdea0fe5388219b"
+    },
+    "wrong_address_reset/native.log": {
+      "bytes": 42285,
+      "sha256": "2010ae6c2b0f1311cf32d0ee29fc6b3e240175c9a1c6f9a12a6fb89cf5cf624a"
+    },
+    "wrong_address_reset/native.ys": {
+      "bytes": 487,
+      "sha256": "ba6bac274b21a47919edfeca63214fd26006ed5882a3ea4e4c414e10f7741455"
+    },
+    "wrong_address_reset/rejection.txt": {
+      "bytes": 3078,
+      "sha256": "55fff668b3dd12486ad8854209a7aa9ea43fbb2a5c201e048678e8fdea74237d"
+    },
+    "wrong_state_reset/apb_disabled_reference.v": {
+      "bytes": 4855,
+      "sha256": "ce8107da9d902621288d32d39e9b3c96d7448fc59101d412e7429074b954cf7c"
+    },
+    "wrong_state_reset/mutant.v": {
+      "bytes": 8698,
+      "sha256": "c8bd09c7278ae5a350a00fdb2bfad9b962726bb314c792b90acec8cbe7552871"
+    },
+    "wrong_state_reset/native.log": {
+      "bytes": 42193,
+      "sha256": "85abcd8de048d8675a02a068f06694578a2570335a9ce26edfaddd13da6c7fb7"
+    },
+    "wrong_state_reset/native.ys": {
+      "bytes": 483,
+      "sha256": "a8fc97f14787a56d0c2d35fa487306326e07b1a0d113f2b9a0f7813b99359f92"
+    },
+    "wrong_state_reset/rejection.txt": {
+      "bytes": 3078,
+      "sha256": "f1731e064a677e439b9e9b7d9609bd3c18706fdc5dd5ca5142ea943ff1e736b4"
+    }
+  }
+}
