@@ -15,35 +15,101 @@ from pathlib import Path
 import re
 import subprocess
 
+GLOBAL = re.compile(r'^\s*(\*)?\.GLOBAL(?:\s+(.*?))?\s*$', re.I)
+NODE = re.compile(r'[A-Za-z0-9_!./<>\[\]:+-]+')
+BLOCK = re.compile(r'^\.SUBCKT\b.*?^\.ENDS[^\n]*', re.M | re.S | re.I)
+
 
 def digest(path):
     with Path(path).open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def read_cdl(paths):
+def read_cdl_text(path):
+    """Do not normalize newlines while claiming verbatim CDL device bodies."""
+    content = Path(path).read_bytes().decode('utf-8')
+    if '\r' in content:
+        raise ValueError('CDL input must use LF newlines; CRLF conversion is not implicit')
+    return content
+
+
+def global_line(line):
+    """Only explicit SPICE .GLOBAL or CDL *.GLOBAL declares a global node."""
+    match = GLOBAL.fullmatch(line.rstrip('\r\n'))
+    if match is None:
+        return None
+    names = (match[2] or '').split()
+    if not names or any(not NODE.fullmatch(name) for name in names):
+        raise ValueError('Unsupported CDL global declaration: ' + line.rstrip())
+    if len({name.casefold() for name in names}) != len(names):
+        raise ValueError('Duplicate CDL global name: ' + line.rstrip())
+    return names
+
+
+def merge_globals(destination, names):
+    for name in names:
+        previous = next((old for old in destination if old.casefold() == name.casefold()), None)
+        if previous is not None and previous != name:
+            raise ValueError('Ambiguous global-name case: ' + name)
+        if previous is None:
+            destination.append(name)
+
+
+def merge_cdl(definitions, ports, chunks):
+    for chunk in chunks:
+        logical = re.sub(r'\n\s*\+\s*', ' ', chunk)
+        header = logical.splitlines()[0].split()
+        if len(header) < 2:
+            raise ValueError('Missing CDL subcircuit name')
+        name = header[1]
+        if not re.fullmatch(r'\w+', name) or len({p.casefold() for p in header[2:]}) != len(header[2:]):
+            raise ValueError('Ambiguous CDL name or duplicate port: ' + name)
+        existing = next((n for n in definitions if n.casefold() == name.casefold()), None)
+        if existing is not None:
+            old = re.sub(r'\n\s*\+\s*', ' ', definitions[existing])
+            if existing != name or re.sub(r'\s+', ' ', old) != re.sub(r'\s+', ' ', logical):
+                raise ValueError('Conflicting CDL definition: ' + name)
+        else:
+            definitions[name], ports[name] = chunk, header[2:]
+
+
+def parse_cdl_text(content):
+    """Return verbatim subcircuits, ports and retained explicit global names."""
+    if '\r' in content:
+        raise ValueError('CDL input must use LF newlines; CRLF conversion is not implicit')
+    chunks = BLOCK.findall(content)
+    if not chunks:
+        raise ValueError('Unsupported CDL outside subcircuits: no subcircuits')
+    for chunk in chunks:
+        if any(global_line(line) is not None for line in chunk.splitlines()[1:]):
+            raise ValueError('CDL globals must be declared outside subcircuits')
+    globals_ = []
+    for line in BLOCK.sub('', content).splitlines():
+        names = global_line(line)
+        if names is not None:
+            merge_globals(globals_, names)
+        elif line.strip() and not line.lstrip().startswith('*'):
+            raise ValueError('Unsupported CDL outside subcircuits: ' + line)
     definitions, ports = {}, {}
-    pattern = re.compile(r'^\.SUBCKT\b.*?^\.ENDS[^\n]*', re.M | re.S | re.I)
+    merge_cdl(definitions, ports, chunks)
+    return definitions, ports, globals_
+
+
+def read_cdl_with_globals(paths):
+    """Merge multiple vendor sources without dropping their global contract."""
+    definitions, ports, globals_ = {}, {}, []
     for path in paths:
-        content = Path(path).read_text()
-        chunks = pattern.findall(content)
-        outside = pattern.sub('', content)
-        if not chunks or any(line.strip() and not line.lstrip().startswith('*')
-                             for line in outside.splitlines()):
-            raise ValueError('Unsupported CDL outside subcircuits: ' + str(path))
-        for chunk in chunks:
-            logical = re.sub(r'\n\s*\+\s*', ' ', chunk)
-            header = logical.splitlines()[0].split()
-            name = header[1]
-            if not re.fullmatch(r'\w+', name) or len(set(header[2:])) != len(header[2:]):
-                raise ValueError('Ambiguous CDL name or duplicate port: ' + name)
-            existing = next((n for n in definitions if n.casefold() == name.casefold()), None)
-            if existing is not None:
-                old = re.sub(r'\n\s*\+\s*', ' ', definitions[existing])
-                if existing != name or re.sub(r'\s+', ' ', old) != re.sub(r'\s+', ' ', logical):
-                    raise ValueError('Conflicting CDL definition: ' + name)
-            else:
-                definitions[name], ports[name] = chunk, header[2:]
+        cells, _, declared = parse_cdl_text(read_cdl_text(path))
+        merge_cdl(definitions, ports, cells.values())
+        merge_globals(globals_, declared)
+    return definitions, ports, globals_
+
+
+def read_cdl(paths):
+    """Legacy body-only API must reject declarations it cannot return/retain."""
+    definitions, ports, globals_ = read_cdl_with_globals(paths)
+    if globals_:
+        raise ValueError('Unsupported CDL outside subcircuits: explicit globals require the retaining reader')
     return definitions, ports
 
 
@@ -119,7 +185,7 @@ def declared_outputs(verilog):
     return result
 
 
-def assemble(module, top, ports, outputs):
+def assemble(module, top, ports, outputs, globals_=()):
     names, top_pins = {}, []
     for port, value in module['ports'].items():
         if not re.fullmatch(r'[A-Za-z_][\w$]*', port):
@@ -134,6 +200,7 @@ def assemble(module, top, ports, outputs):
             names[bit] = name
             top_pins.append(name)
     reserved = set(top_pins)
+    global_names = {name.casefold() for name in globals_}
 
     def net(bit):
         if type(bit) is not int:
@@ -141,6 +208,8 @@ def assemble(module, top, ports, outputs):
         name = names.get(bit, 'n' + str(bit))
         if bit not in names and name in reserved:
             raise ValueError('Generated net collides with top port')
+        if bit not in names and name.casefold() in global_names:
+            raise ValueError('Generated net collides with declared global')
         return name
 
     body, floating = ['.SUBCKT ' + top + ' ' + ' '.join(top_pins)], []
@@ -162,6 +231,8 @@ def assemble(module, top, ports, outputs):
                 node = f'float_{index}_{base}'
                 if node in reserved:
                     raise ValueError('Floating net collides with top port')
+                if node.casefold() in global_names:
+                    raise ValueError('Floating net collides with declared global')
                 floating.append({'instance': inst, 'type': typ, 'output': base})
                 args.append(node)
             else:
@@ -195,7 +266,7 @@ def main():
         parser.error('Unsupported top identifier')
     inputs = [args.powered_netlist, *args.cdl, args.standard_cell_verilog, Path(__file__)]
     expected = {str(p.resolve()): digest(p) for p in inputs}
-    definitions, ports = read_cdl(args.cdl)
+    definitions, ports, globals_ = read_cdl_with_globals(args.cdl)
     text = args.powered_netlist.read_text()
     types = instantiated_types(text)
     if not types or types - set(ports):
@@ -214,18 +285,25 @@ def main():
                        stderr=subprocess.STDOUT, check=True)
     module = json.loads((output / 'powered.json').read_text())['modules'][args.top]
     body, floating = assemble(module, args.top, ports,
-                              declared_outputs(args.standard_cell_verilog.read_text()))
+                              declared_outputs(args.standard_cell_verilog.read_text()), globals_)
     selected = reachable_cdl(definitions, {cell['type'] for cell in module['cells'].values()})
     if any(digest(p) != sha for p, sha in expected.items()):
         raise ValueError('Source changed during schematic construction')
     schematic = output / 'schematic.cir'
-    schematic.write_text('* Original vendor transistor CDL and powered implementation connectivity\n' +
-                         '\n'.join(selected.values()) + '\n' + body)
+    prefix = '.GLOBAL ' + ' '.join(globals_) + '\n' if globals_ else ''
+    rendered = ('* Original vendor transistor CDL and powered implementation connectivity\n' +
+                prefix + '\n'.join(selected.values()) + '\n' + body)
+    actual, _, actual_globals = parse_cdl_text(rendered)
+    if actual != {**selected, args.top: body.rstrip('\n')} or actual_globals != globals_:
+        raise ValueError('Assembled schematic changed a device body or explicit global')
+    schematic.write_text(rendered)
     (output / 'sources.json').write_text(json.dumps({
         'scope': 'Source-side full transistor schematic; requires separate extracted LVS',
         'top': args.top, 'instances': len(module['cells']), 'cdl_definitions': len(selected),
         'excluded_uninstantiated_definitions': sorted(set(definitions) - set(selected)),
         'floating_outputs': floating, 'sources': expected,
+        'globals': globals_, 'explicit_global_declarations_preserved': True,
+        'global_scope': 'Only explicit .GLOBAL or *.GLOBAL declarations; no bang-name inference or physical connection claim.',
         'schematic_sha256': digest(schematic),
     }, indent=2) + '\n')
     print(schematic)

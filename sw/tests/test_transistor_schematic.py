@@ -3,7 +3,11 @@
 """Source-side LVS must not hide missing pins, bus swaps or changed device bodies."""
 import copy
 import importlib.util
+import json
 from pathlib import Path
+import shutil
+import subprocess
+import sys
 
 import pytest
 
@@ -122,11 +126,97 @@ def test_cdl_bodies_are_preserved_and_deduplicated(tmp_path):
         SCHEMATIC.read_cdl([a, b])
 
 
-def test_global_directives_cannot_be_silently_discarded(tmp_path):
+@pytest.mark.parametrize('declaration', ['.GLOBAL VDD VSS', '*.GLOBAL sub!'])
+def test_global_directives_cannot_be_silently_discarded(tmp_path, declaration):
     path = tmp_path / 'x.cdl'
-    path.write_text('.GLOBAL VDD VSS\n.SUBCKT INV Y A\n.ENDS INV\n')
+    path.write_text(declaration + '\n.SUBCKT INV Y A\n.ENDS INV\n')
     with pytest.raises(ValueError, match='outside subcircuits'):
         SCHEMATIC.read_cdl([path])
+
+
+def test_multiple_cdl_globals_keep_case_order_and_verbatim_bodies(tmp_path):
+    a, b = tmp_path/'a.cdl', tmp_path/'b.cdl'
+    left = '.SUBCKT LEFT a b\nR0  a sub! 1000\nR1 sub! b 1000\n.ENDS LEFT'
+    right = '.SUBCKT RIGHT a b\nX0 a\n+ b LEFT\n.ENDS RIGHT'
+    a.write_text('*.GLOBAL sub!\n' + left + '\n')
+    b.write_text('.GLOBAL sub! WELL!\n' + right + '\n')
+    cells, ports, globals_ = SCHEMATIC.read_cdl_with_globals([a, b])
+    assert cells == {'LEFT': left, 'RIGHT': right}
+    assert ports == {'LEFT': ['a', 'b'], 'RIGHT': ['a', 'b']}
+    assert globals_ == ['sub!', 'WELL!']
+    b.write_text('.GLOBAL SUB!\n' + right + '\n')
+    with pytest.raises(ValueError, match='Ambiguous global-name case'):
+        SCHEMATIC.read_cdl_with_globals([a, b])
+    b.write_text('.GLOBAL sub!\n' + left.replace('1000', '1001') + '\n')
+    with pytest.raises(ValueError, match='Conflicting CDL definition'):
+        SCHEMATIC.read_cdl_with_globals([a, b])
+
+
+@pytest.mark.parametrize('line', ['.INCLUDE another.cdl', '.CONNECT sub! VSS',
+    '.GLOBAL', '*.GLOBAL sub! SUB!', '.PARAM R=1', '+ sub!'])
+def test_retaining_reader_refuses_unknown_or_ambiguous_outside_lines(line):
+    with pytest.raises(ValueError):
+        SCHEMATIC.parse_cdl_text(line + '\n.SUBCKT leaf a b\nR0 a b 1000\n.ENDS leaf\n')
+
+
+def test_retaining_reader_never_infers_global_from_bang_or_prose():
+    body = '.SUBCKT leaf a b\nR0 a sub! 1000\nR1 sub! b 1000\n.ENDS leaf'
+    cells, _, globals_ = SCHEMATIC.parse_cdl_text('* .GLOBAL is merely prose\n' + body + '\n')
+    assert cells == {'leaf': body} and globals_ == []
+    with pytest.raises(ValueError, match='outside subcircuits'):
+        SCHEMATIC.parse_cdl_text(body.replace('R0', '*.GLOBAL sub!\nR0'))
+    with pytest.raises(ValueError, match='LF newlines'):
+        SCHEMATIC.parse_cdl_text(body.replace('\n', '\r\n'))
+
+
+@pytest.mark.parametrize('kind', ['internal', 'floating'])
+def test_declared_global_cannot_alias_generated_unrelated_net(design, kind):
+    if kind == 'internal':
+        design['cells']['mem']['connections']['CLK'] = [100]
+        globals_ = ['N100']
+    else:
+        globals_ = ['FLOAT_1_y']
+    with pytest.raises(ValueError, match='collides with declared global'):
+        SCHEMATIC.assemble(design, 'chip', PORTS, OUTPUTS, globals_)
+
+
+@pytest.mark.parametrize('declared', [False, True])
+def test_full_chip_cli_preserves_explicit_globals_and_uninferred_hierarchical_nodes(tmp_path, declared):
+    # This executes the real Yosys connectivity reader on a two-cell circuit.
+    # It is source construction, not transistor extraction or an LVS verdict.
+    assert shutil.which('yosys'), 'The small integration test requires the installed Yosys reader'
+    body = '.SUBCKT CELL A Y VDD VSS\nR0 A sub! 1000\nR1 sub! Y 1000\n.ENDS CELL'
+    unused = '.SUBCKT UNUSED A Y\nR0 A local! 500\nR1 local! Y 500\n.ENDS UNUSED'
+    a, b = tmp_path/'cells.cdl', tmp_path/'more.cdl'
+    a.write_text(('*.GLOBAL sub!\n' if declared else '') + body + '\n')
+    b.write_text(('.GLOBAL sub! WELL!\n' if declared else '') + unused + '\n')
+    models = tmp_path/'models.v'
+    models.write_text('module CELL (A,Y,VDD,VSS); input A; output Y; inout VDD,VSS; endmodule\n')
+    powered = tmp_path/'powered.v'
+    powered.write_text('''module chip(input a, output y, inout p, inout n);
+wire middle;
+CELL u0(.A(a), .Y(middle), .VDD(p), .VSS(n));
+CELL u1(.A(middle), .Y(y), .VDD(p), .VSS(n));
+endmodule
+''')
+    output = tmp_path/'result'
+    completed = subprocess.run([sys.executable, str(SCRIPT), str(powered), '--top', 'chip',
+        '--cdl', str(a), '--cdl', str(b), '--standard-cell-verilog', str(models), '--output', str(output)],
+        capture_output=True, text=True, check=False)
+    assert completed.returncode == 0, completed.stderr
+    text = (output/'schematic.cir').read_text()
+    cells, _, globals_ = SCHEMATIC.parse_cdl_text(text)
+    assert cells['CELL'] == body
+    assert set(cells) == {'CELL', 'chip'}
+    assert sum(line.endswith(' CELL') for line in cells['chip'].splitlines()) == 2
+    assert globals_ == (['sub!', 'WELL!'] if declared else [])
+    assert ('.GLOBAL ' in text) is declared
+    receipt = json.loads((output/'sources.json').read_text())
+    assert receipt['globals'] == globals_
+    assert receipt['explicit_global_declarations_preserved'] is True
+    assert receipt['excluded_uninstantiated_definitions'] == ['UNUSED']
+    assert receipt['sources'][str(a.resolve())] == SCHEMATIC.digest(a)
+    assert receipt['sources'][str(b.resolve())] == SCHEMATIC.digest(b)
 
 
 @pytest.mark.parametrize('pins', [['Q<0>', 'Q<2>'], ['Q', 'Q<0>'], ['Q<0>', 'Q<0>']])

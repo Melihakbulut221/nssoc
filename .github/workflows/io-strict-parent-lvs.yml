@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: io-strict-parent-lvs
+on:
+  push:
+    paths:
+      - .github/workflows/io-strict-parent-lvs.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: io-strict-parent-lvs
+  cancel-in-progress: false
+jobs:
+  strict-seven-instance-parent:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      QT_QPA_PLATFORM: offscreen
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pure source and reference-contract controls
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_io_strict_parent_lvs.py
+      - name: Retrieve exact successful physical parent artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: io-parent-path-probe-1
+          run-id: '36989535029'
+          github-token: ${{ github.token }}
+          path: hw/soc/out/github-io-strict-parent-source
+      - name: Bootstrap pinned runtime and unchanged strict deck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          python3 hw/soc/flow/prepare_ihp_lvs.py
+      - name: Native controls then strict deep and flat parent baseline
+        run: >-
+          python3 scripts/run_io_strict_parent_lvs.py
+          --parent-inputs hw/soc/out/github-io-strict-parent-source
+          --output hw/soc/out/github-io-strict-parent-lvs
+      - name: Preserve every comparison, source and failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: io-strict-parent-lvs-${{ github.run_attempt }}
+          path: hw/soc/out/github-io-strict-parent-lvs/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1

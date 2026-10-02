@@ -2381,3 +2381,20 @@ parent context. Strict transistor LVS remains open: the tap area/perimeter
 and substrate/reference contracts require a seven-instance comparison against
 the matched original CDL. Its explicitly declared substrate global must be
 preserved; fitted device parameters or inferred global joins are not repairs.
+
+The [strict parent method](evidence/io-strict-parent-method-20261002.json) now
+uses the exact successful adjacency GDS and original c4 CDL to build an
+eleven-subcircuit reference with seven correctly ordered top instances.
+It runs both deep and flat extraction with tap parameters and top ports checked.
+Comparison failures are preserved explicitly; successful workflow completion
+means the comparisons ran, not that their LVS verdict passed.
+
+The full-chip reference generator also now retains explicit `.GLOBAL` and
+`*.GLOBAL` declarations. Previously it rejected the former and could discard
+the latter as a comment. A shared reader preserves device bodies, combines
+declared globals across input files and rejects collisions with generated nets.
+The old body-only API rejects globals it cannot retain. The I/O reader uses
+the same parser, without changing its API or this prepared reference's SHA-256.
+Two real small Yosys CLI cases verify declared and undeclared substrate scope;
+217 affected tests pass. The normal CI job now installs Yosys for these tests.
+This fixes reference construction; a new native comparison is still required.
