@@ -779,3 +779,24 @@ cloud byte roundtrips. This verifies the captured diagnostic's inventories and
 recorded physical/parasitic fingerprints, not qualified extracted-RC signoff.
 No candidate is adopted, and setup/hold closure, qualified extracted timing,
 SRAM Liberty coverage and production approval remain open.
+
+
+### 2026-10-02 — archive tests work in shallow CI checkouts
+
+The general checks at source `fb3f749` failed twelve archive-helper tests because
+the fixture read the historical `df3dd93` commit with `git show`, while GitHub's
+checkout contained only the current commit. This was a test-input availability
+failure, not a change to timing measurements or an RTL failure. The
+[history-free reproduction](evidence/ci-archive-fixture-fix-20261002.json) first
+reproduced all twelve failures in a one-commit repository without that history.
+The fixed fixture stores the exact 11,341-byte producer source and verifies both
+its original SHA-256 and the corrected comparator's SHA-256 before testing the
+representation-only difference. Production archival still fetches and verifies
+its exact Git sources. No source pin or acceptance guard was relaxed.
+
+All 38 tests pass in the history-free reproduction, and 112 selected archival
+regression tests pass in the project. The original failing CI remains preserved;
+a new source run is required before claiming the whole CI is green. The
+separate SoC formal job in run 36917226540 completed with 116 fresh tasks and
+six explicitly recorded historical exclusions; it does not establish physical
+or PCIe PHY qualification.

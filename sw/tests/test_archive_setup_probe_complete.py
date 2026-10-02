@@ -5,7 +5,6 @@ import hashlib
 import io
 import json
 from pathlib import Path
-import subprocess
 import sys
 import types
 
@@ -14,6 +13,8 @@ import pytest
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'scripts'))
 import archive_setup_probe_complete as archive
+
+COMPARATOR_FIXTURE=Path(__file__).parent/'fixtures/archive_setup_probe_complete/compare_full_hold_endpoints.df3dd93.py.txt'
 
 
 def identity():
@@ -44,8 +45,28 @@ def test_workflow_failure_and_exact_native_artifact_lineage_required(fault):
 
 
 def comparator_pair():
-    original=subprocess.check_output(['git','show',archive.SOURCE+':'+archive.COMPARATOR],cwd=ROOT)
-    return original,original.replace(archive.OLD_LINE,archive.NEW_LINES)
+    # Exact df3dd93 producer blob; tests also run in history-free/shallow checkouts.
+    # Production archival still fetches and verifies its pinned Git commits.
+    original=COMPARATOR_FIXTURE.read_bytes()
+    assert hashlib.sha256(original).hexdigest()==archive.OLD_SHA
+    assert original.count(archive.OLD_LINE)==1
+    fixed=original.replace(archive.OLD_LINE,archive.NEW_LINES)
+    assert hashlib.sha256(fixed).hexdigest()==archive.FIX_SHA
+    return original,fixed
+
+
+def test_comparator_fixture_needs_no_git_or_network(monkeypatch):
+    def forbidden(*args,**kwargs):raise AssertionError('Fixture must not start Git or network processes')
+    monkeypatch.setattr(archive.subprocess,'check_output',forbidden)
+    original,fixed=comparator_pair()
+    assert archive.exact_overlay(original,fixed)
+
+
+def test_changed_frozen_comparator_fixture_is_rejected(tmp_path,monkeypatch):
+    changed=tmp_path/'changed-fixture.txt'
+    changed.write_bytes(COMPARATOR_FIXTURE.read_bytes()+b'\n')
+    monkeypatch.setattr(sys.modules[__name__],'COMPARATOR_FIXTURE',changed)
+    with pytest.raises(AssertionError):comparator_pair()
 
 
 @pytest.mark.parametrize('fault',[None,'old-source','extra-edit','wrong-float','wrong-threshold','same-source'])

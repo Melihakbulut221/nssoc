@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "status": "PASS_HISTORY_FREE_ARCHIVE_TEST_FIX",
+  "source_head": "fb3f7492ea94c8e6a3c98cebbf4dbc4892cfe4f9",
+  "original_ci_run": 36917226540,
+  "original_ci_failure": "12 fixture cases failed because git show of historical df3 commit is unavailable in fetch-depth:1 CI.",
+  "reproduction": {
+    "history_commit_count": 1,
+    "historical_df3_commit_available": false,
+    "before": {
+      "failed": 12,
+      "passed": 24,
+      "returncode": 1
+    },
+    "after": {
+      "passed": 38,
+      "failed": 0,
+      "returncode": 0
+    },
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-c",
+      "/dev/null",
+      "--rootdir",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/no-history-repo",
+      "-p",
+      "no:cacheprovider",
+      "sw/tests/test_archive_setup_probe_complete.py"
+    ]
+  },
+  "fixture_provenance": {
+    "commit": "df3dd93fca89487dac46e6506c005713dd294430",
+    "path": "scripts/compare_full_hold_endpoints.py",
+    "exact_git_blob_bytes_verified": true,
+    "bytes": 11341,
+    "sha256": "5e539b320b44187d032f70b9535328e9e618a21f1376de8a2869d9c1fe92fefd"
+  },
+  "tests_added": [
+    "Git/network process invocation prohibited in fixture lookup",
+    "Changed frozen fixture bytes rejected before overlay tests"
+  ],
+  "changed_files": {
+    "sw/tests/test_archive_setup_probe_complete.py": {
+      "bytes": 12195,
+      "sha256": "4309a4f9302e1f43e27612255f75bc5426fd933ba72a781101c878ae42db4fb5"
+    },
+    "sw/tests/fixtures/archive_setup_probe_complete/compare_full_hold_endpoints.df3dd93.py.txt": {
+      "bytes": 11341,
+      "sha256": "5e539b320b44187d032f70b9535328e9e618a21f1376de8a2869d9c1fe92fefd"
+    }
+  },
+  "production_sources_unchanged": {
+    "scripts/archive_setup_probe_complete.py": {
+      "bytes": 15668,
+      "sha256": "2a4b7f96441d1b1b5a7d0094a4fdf93c7a4ea6495875deb15571d52a9e7331dd"
+    },
+    "scripts/archive_hold_diagnostic.py": {
+      "bytes": 18026,
+      "sha256": "04b89e92cee0bc60d68bc0f1d0d1f313231f622c56333547997108e65cea2c06"
+    },
+    ".github/workflows/timing-setup-probe-complete-archive.yml": {
+      "bytes": 1856,
+      "sha256": "a018cad4521863d67888587f45482c75ce3a20acf22a895a65dd94fde4e0e550"
+    }
+  },
+  "network_required_for_test_fixture": false,
+  "native_work_started": false,
+  "large_downloads": false,
+  "evidence": {
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/after-no-history.log": {
+      "bytes": 99,
+      "sha256": "f657c77aa5bcb72b55f91333cac16a801dab85f893cc5a0a90f6d849f9652e3e"
+    },
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/before-no-history.log": {
+      "bytes": 67113,
+      "sha256": "34e84d6f672d7ee288b5b269789f6feb61b1bab9a26832fd1023c6217136bb80"
+    },
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/failed-checks.log": {
+      "bytes": 161137,
+      "sha256": "41e4ecf344cf5ed2ea8cca7d5cd78b276bdabfc3bf934b68612a2ff161882257"
+    },
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/jobs.json": {
+      "bytes": 32067,
+      "sha256": "1fd084dab6edcb80d3874c7714af1bd8e757d7aba0018e5a518030966a5577a1"
+    },
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/reproduction.json": {
+      "bytes": 586,
+      "sha256": "73fd9cbb433b4b2bb9d9c7a22054fc87bd6a36d707589aa02d76bc12f1014ba4"
+    },
+    "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/run.json": {
+      "bytes": 14999,
+      "sha256": "155402220e501118c83666a746a16d07d8d7b69a929865bf86b76c1c6280beed"
+    }
+  },
+  "validation_receipt": {
+    "path": "hw/soc/out/timing-heartbeat-20261002-0628/archive-fixture-fix/validation.json",
+    "bytes": 3290,
+    "sha256": "c50fdc9dc86f7a6e420c90404703d0ee069b536998da5ae6df3c9cd21aea21c7"
+  },
+  "github_fixed_source_ci": "PENDING_NEW_SOURCE_RUN",
+  "scope": "Unit-fixture source availability fixed and reproduced without Git history. Production archival source verification and all physical acceptance requirements are unchanged."
+}
