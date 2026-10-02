@@ -2398,3 +2398,35 @@ the same parser, without changing its API or this prepared reference's SHA-256.
 Two real small Yosys CLI cases verify declared and undeclared substrate scope;
 217 affected tests pass. The normal CI job now installs Yosys for these tests.
 This fixes reference construction; a new native comparison is still required.
+
+
+### 2026-10-02 — strict actual-parent baseline and missing resistor recognition
+
+[Run 36992719056](https://github.com/Melihakbulut221/nssoc/actions/runs/36992719056)
+at `103528bc68cfc4bb8b36509ef3037787c73201af` completes both native comparisons,
+and **both strict LVS verdicts are FAIL**. Deep and flat extraction take 5.05
+and 5.61 seconds. Eight native controls pass; neither comparison reports an
+extraction diagnostic. Workflow success here records completed comparisons.
+The [compact independent replay](evidence/io-strict-parent-native-20261002.json)
+preserves 142 selected hashes, 17 source identities and 53 unchanged deck files.
+One hidden workflow file was omitted by artifact upload; its pinned bytes are
+recovered from the exact Git commit, explicitly distinguished from captured
+bytes. The future upload includes hidden files; no native rerun is needed
+solely for that packaging correction.
+
+Deep comparison reports one missing circuit, five nonmatches and five skipped
+circuits. `RCClampResistor` is missing on the extracted side even though its
+15134-byte cell exists in the original GDS hierarchy. Other child nonmatches
+include the clamp, DCN/DCP, filler and inverter. The flat top has 16 extracted
+devices versus 18 reference devices and also fails. Explicit substrate globals
+are retained, and the original prepared reference is byte-identical to the
+preflight. Its tap dimensions and terminals were not adjusted.
+
+The absent resistor circuit and merged resistor-terminal labels point to a
+recognition problem. They do not, alone, prove a particular GDS marker is
+missing. The next bounded repair will first require empty PolyRes recognition,
+the exact 26 resistor-mask intersections from the original c4 template, and
+no active-silicon overlap. Only then may it add the 26 recognition rectangles,
+prove preservation of every other polygon/text/instance, and repeat the same
+strict reference comparison. This is an actual repair candidate with a
+falsifiable precondition; no tap parameter fit or LVS waiver is involved.

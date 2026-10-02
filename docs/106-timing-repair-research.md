@@ -1059,3 +1059,14 @@ including both exact sink sets, graph contraction, power and three corners.
 Missing/wrong/extra sinks, invalid supply links and repeated insertion reject.
 The root's 91 adjacent source tests pass. Actual two-buffer chip timing remains
 pending; neither the fixture nor the method receipt predicts acceptance.
+
+An [independent cloud ECO proof method](evidence/timing-eco-logic-method-20261002.json)
+will first replay the complete original single-buffer capture using its own
+Git-verified producer validator. It then compares original C10 with the exported
+netlist using the existing retained-input/state and combinational-clone equation
+checker. Actual standard-cell Liberty and unchanged SRAM port declarations are
+pinned inputs. The checker now accepts opaque macro Verilog interfaces as well
+as Liberty interfaces; its equation proof engine is unchanged. Tiny native
+controls accept a positive buffer and reject changed macro inputs or unknown
+pins; 78 source tests pass. This proof cannot establish SRAM internal behavior,
+analog operation, CDC, timing, extracted connectivity or physical acceptance.

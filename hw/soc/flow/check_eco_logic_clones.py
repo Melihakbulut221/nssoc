@@ -4,13 +4,14 @@
 """Prove retained ECO equations plus explicitly checked combinational duplication.
 
 Run in the pinned LibreLane tool environment. All inputs and generated JSON are
-hashed; Yosys only elaborates connectivity with the actual Liberty interfaces.
+hashed; Yosys elaborates connectivity with actual Liberty and opaque macro interfaces.
 See eco_logic_clones.py and eco_logic.py for the limited equivalence scope.
 """
 import argparse
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
 
 from eco_logic import standard_models
@@ -23,7 +24,15 @@ def digest(path):
 
 
 def quote(path):
+    if any(c in str(path) for c in ('\n', '\r', '\0')):
+        raise ValueError('Unsupported control character in Yosys path')
     return '"' + str(path).replace('\\', '\\\\').replace('"', '\\"') + '"'
+
+
+def library_script(liberties, macro_verilog):
+    return '\n'.join(
+        ['read_liberty -lib ' + quote(p.resolve()) for p in liberties]
+        + ['read_verilog -lib ' + quote(p.resolve()) for p in macro_verilog])
 
 
 def main():
@@ -33,6 +42,8 @@ def main():
     parser.add_argument('--top', default='soc_top')
     parser.add_argument('--liberty', required=True, type=Path)
     parser.add_argument('--macro-liberty', action='append', type=Path, default=[])
+    parser.add_argument('--macro-verilog', action='append', type=Path, default=[],
+                        help='Unchanged opaque macro interfaces; no SRAM behavioral proof')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     import re
@@ -40,16 +51,17 @@ def main():
         parser.error('Unsupported top identifier')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
-    sources = [args.before, args.after, args.liberty, *args.macro_liberty,
+    sources = [args.before, args.after, args.liberty, *args.macro_liberty, *args.macro_verilog,
                Path(__file__), Path(__file__).with_name('eco_logic.py'),
                Path(__file__).with_name('eco_logic_clones.py')]
     expected = {str(p.resolve()): digest(p) for p in sources}
+    executable = Path(shutil.which('yosys') or '').resolve(strict=True)
+    executable_sha = digest(executable)
     version = subprocess.run(['yosys', '-V'], capture_output=True, text=True, check=True).stdout.strip()
     models = standard_models(args.liberty.read_text())
     modules = []
     for name, netlist in [('before', args.before), ('after', args.after)]:
-        script = '\n'.join('read_liberty -lib ' + quote(p.resolve())
-                           for p in [args.liberty, *args.macro_liberty])
+        script = library_script([args.liberty, *args.macro_liberty], args.macro_verilog)
         script += f'\nwrite_json {quote(output / (name + "-libraries.json"))}\n'
         script += f'read_verilog {quote(netlist.resolve())}\nhierarchy -check -top {args.top}\n'
         script += f'write_json {quote(output / (name + ".json"))}\n'
@@ -64,7 +76,10 @@ def main():
     result = compare(*modules, libraries, models)
     if any(digest(p) != sha for p, sha in expected.items()):
         raise ValueError('Input changed during proof')
+    if digest(executable) != executable_sha:
+        raise ValueError('Yosys executable changed during proof')
     result.update(status='PASS within scope', yosys_version=version, sources=expected,
+                  yosys_executable=dict(path=str(executable), sha256=executable_sha),
                   scope=('Combinational duplicate output equations, retained cell inputs and state '
                          'definitions; positive buffer contraction and Boolean pin permutations. '
                          'Added state and opaque macro duplicates are forbidden. Unchanged opaque masters require '

@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "status": "SOURCE_AND_TINY_NATIVE_PASS_FULL_CLOUD_PROOF_PENDING",
+  "producer_run": 36990647399,
+  "producer_source": "945881e8bd9854419f1f3066039c380658693a81",
+  "validation": {
+    "status": "FROZEN_SOURCE_ONLY_WITH_TINY_NATIVE_CONTROLS",
+    "sources": {
+      "scripts/run_cloud_eco_logic_proof.py": {
+        "bytes": 13139,
+        "sha256": "093cd8bfedce21561b57c049d935f1a80d3b6a09fd06b673b1ea0c58659f1c6e"
+      },
+      "hw/soc/flow/check_eco_logic_clones.py": {
+        "bytes": 4874,
+        "sha256": "98e3a62b740b213abf6d3bd34513da31b863fdd831884a1fa30366838b0c044c"
+      },
+      "sw/tests/eco_logic_native.py": {
+        "bytes": 3742,
+        "sha256": "3dce4feb4ec8dca696f08d7eaf7ca890cd6054eef88b70f289d698b7318dc3b0"
+      },
+      "sw/tests/test_cloud_eco_logic_proof.py": {
+        "bytes": 6522,
+        "sha256": "828abf491580e4d8a623be51b54880e87cd00213b445db9356bc8c07d2fd08da"
+      },
+      "sw/tests/test_check_eco_logic_clones.py": {
+        "bytes": 1245,
+        "sha256": "b90e9b35dabd1674ffdb4bde01bc955afb688da8969b824389b9f80a5789c3da"
+      },
+      ".github/workflows/timing-eco-logic-proof.yml": {
+        "bytes": 2365,
+        "sha256": "fe691c612c9eb7bd22fc772efaa4343b1a2eb5f407b883d1120b0255eaa03fb3"
+      }
+    },
+    "tests": {
+      "pure": "78 passed in0.12s",
+      "ruff": "PASS",
+      "actionlint": "PASS"
+    },
+    "native_control": {
+      "path": "hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/result.json",
+      "pin": {
+        "bytes": 7741,
+        "sha256": "9824ea78665aa3a1a92713b4594f1199412ca05869c89c5c73889bb713994778"
+      },
+      "result": {
+        "status": "PASS_NATIVE_ECO_CONTROLS",
+        "cases": {
+          "buffered_macro": {
+            "expected_equivalent": true,
+            "returncode": 0,
+            "unexpected_pass": false,
+            "command": [
+              "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic_clones.py",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/before.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/buffered_macro.v",
+              "--liberty",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+              "--macro-verilog",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/macro.v",
+              "--output",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/buffered_macro"
+            ]
+          },
+          "changed_macro_input": {
+            "expected_equivalent": false,
+            "returncode": 1,
+            "unexpected_pass": false,
+            "command": [
+              "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic_clones.py",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/before.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/changed_macro_input.v",
+              "--liberty",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+              "--macro-verilog",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/macro.v",
+              "--output",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/changed_macro_input"
+            ]
+          },
+          "unknown_macro_pin": {
+            "expected_equivalent": false,
+            "returncode": 1,
+            "unexpected_pass": false,
+            "command": [
+              "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic_clones.py",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/before.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/unknown_macro_pin.v",
+              "--liberty",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+              "--macro-verilog",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/macro.v",
+              "--output",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/unknown_macro_pin"
+            ]
+          }
+        },
+        "sources": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/eco_logic_native.py": "3dce4feb4ec8dca696f08d7eaf7ca890cd6054eef88b70f289d698b7318dc3b0",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic_clones.py": "98e3a62b740b213abf6d3bd34513da31b863fdd831884a1fa30366838b0c044c",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/macro.v": "3a3263f07048cd08e2a775979d7c6fbad7923e397021ce75eedb1dcb6848b936",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/eco-logic-native-controls-frozen/before.v": "b3fbdeaffbb474097f5ba65fff2d3769c92f025902ff86d064da82745a08ea37"
+        },
+        "outputs": {
+          "buffered_macro.log": "35b23279942b89bd4816b2ac596a5acb5b5e8f0093a58f24517bcd29e6ce26ab",
+          "before.v": "b3fbdeaffbb474097f5ba65fff2d3769c92f025902ff86d064da82745a08ea37",
+          "buffered_macro.v": "3df9b909a2085a021049c47b77cffbecc87d84362a6fc3e5b4a1f436f47c68ff",
+          "macro.v": "3a3263f07048cd08e2a775979d7c6fbad7923e397021ce75eedb1dcb6848b936",
+          "changed_macro_input.v": "f852e3fe0ad2a689b11e6cc12b5a8b25265766554f25bce3cf01e5df6d510af6",
+          "unknown_macro_pin.v": "174a9ea4f524616565d0331def09521d71e670b00d78ac470c9c33e57eb038e7",
+          "unknown_macro_pin.log": "58552491f1150554ddf4b5346ba2e0c736a71888f280c151964fcda60503869a",
+          "changed_macro_input.log": "5e73449e533f69c0b71b41c24a0d10c29044236340de319d9e5c95f0d94d2d85",
+          "changed_macro_input/after.ys": "5ae3585c5c90b8edde45dc2ecad42110271b45713db5c60ec57ac318634a3c85",
+          "changed_macro_input/before.json": "701da7aabd590f25dadf8932fec673da06d398540a0d9965bfd20d0d5157c2f2",
+          "changed_macro_input/before-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "changed_macro_input/after.json": "262347221ee57149dda71cfee966c384cb6c3105cf1606d67377e17eb6f4c387",
+          "changed_macro_input/after.log": "17705a3d524ee9c5fbba46e8e7b8a24c1a842f873a9e5b52b39aff96a967e18e",
+          "changed_macro_input/after-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "changed_macro_input/before.log": "f5be28b120f71afc5e5b96f5f81fde23755d1ae85d38e46e76cf474099e695f8",
+          "changed_macro_input/before.ys": "3c326fd6fc58c1204f948eaa37d2e7426da485a20ff1da720f0090988a6069da",
+          "unknown_macro_pin/after.ys": "3d32c689847486a5c586724ebb2f7f6bd4429269621bba7d21bbb247b637e440",
+          "unknown_macro_pin/before.json": "701da7aabd590f25dadf8932fec673da06d398540a0d9965bfd20d0d5157c2f2",
+          "unknown_macro_pin/before-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "unknown_macro_pin/after.log": "ef89ad6fbea05e3725e37f3a3c7e75893fc73165c9de416f21f0ce657e0c5b20",
+          "unknown_macro_pin/after-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "unknown_macro_pin/before.log": "db68439558695420e267bd65173987c54f5a8142cb6194743495e0a5fa922b3c",
+          "unknown_macro_pin/before.ys": "edbc84977f7d02c39f528c9392f82869f101b3d2669e146f5806d8029f3d1342",
+          "buffered_macro/result.json": "9688bc4de7e09babc34ed26307e37a90579f038de8ba47aa80b5871802b1a740",
+          "buffered_macro/after.ys": "6c52e225f2a22856e0c3a1de680acbc9c7253394baf2a5b9ea479355260a4180",
+          "buffered_macro/before.json": "701da7aabd590f25dadf8932fec673da06d398540a0d9965bfd20d0d5157c2f2",
+          "buffered_macro/before-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "buffered_macro/after.json": "a5a60b8562485413f16e462e99835a4321d35109a4a5fa1e0f6a48d7515028f5",
+          "buffered_macro/after.log": "8162f2aff978faaae0fa5d44bd2e070649418e0d2fa98d2f55c7954a63ada756",
+          "buffered_macro/after-libraries.json": "4afbc1237f879691256b1da4b264d3440f5e6c32fe239792b32e97ad7ddeb7ba",
+          "buffered_macro/before.log": "c3af8db8950902c153bde81db192bf4732e40ea1ad6d7411467932a2c0606aa0",
+          "buffered_macro/before.ys": "8faed03a7adcf3d793e068332811e0543ba58a9383dc1bad60c9b8698264f535"
+        },
+        "candidate_adopted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      }
+    },
+    "full_chip_proof_run": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "root_validation": {
+    "tests_passed": 78,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "actual_producer_git_methods_verified": 21
+  },
+  "method_files": {
+    "scripts/run_cloud_eco_logic_proof.py": {
+      "bytes": 13139,
+      "sha256": "093cd8bfedce21561b57c049d935f1a80d3b6a09fd06b673b1ea0c58659f1c6e"
+    },
+    "hw/soc/flow/check_eco_logic_clones.py": {
+      "bytes": 4874,
+      "sha256": "98e3a62b740b213abf6d3bd34513da31b863fdd831884a1fa30366838b0c044c"
+    },
+    "sw/tests/eco_logic_native.py": {
+      "bytes": 3742,
+      "sha256": "3dce4feb4ec8dca696f08d7eaf7ca890cd6054eef88b70f289d698b7318dc3b0"
+    },
+    "sw/tests/test_cloud_eco_logic_proof.py": {
+      "bytes": 6522,
+      "sha256": "828abf491580e4d8a623be51b54880e87cd00213b445db9356bc8c07d2fd08da"
+    },
+    "sw/tests/test_check_eco_logic_clones.py": {
+      "bytes": 1245,
+      "sha256": "b90e9b35dabd1674ffdb4bde01bc955afb688da8969b824389b9f80a5789c3da"
+    },
+    ".github/workflows/timing-eco-logic-proof.yml": {
+      "bytes": 2365,
+      "sha256": "fe691c612c9eb7bd22fc772efaa4343b1a2eb5f407b883d1120b0255eaa03fb3"
+    }
+  },
+  "scope": "Replay original full capture with its exact producer validator, then limited retained-input/state and clone equations using actual Liberty and unchanged opaque SRAM interfaces.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false
+}
