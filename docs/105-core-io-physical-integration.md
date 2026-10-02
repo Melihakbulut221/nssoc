@@ -2324,3 +2324,20 @@ paths through real adjacent cells, fillers and a joining corner or supply
 junction. The earlier 314-I/O proof belongs to another GDS and can only be
 reused after exact master geometry, transforms, material layers and source
 identity are reconciled. No parent-path repair has yet been demonstrated.
+
+
+### 2026-10-02 — actual supply-cell parent path probe
+
+The [new bounded method](evidence/io-parent-path-method-20261002.json) uses seven
+real consecutive instances from the selected offset-filled chip: Vdd, Vss,
+IOVdd, IOVss and their intervening fillers. Native checks first bind their actual
+parent transforms and compare flattened polygon geometry with the coherent
+library. A physical metal/via graph must agree with native connectivity and
+retain explicit polygon witnesses. Names and substrate devices cannot create
+connections. A missing path in this subgraph is inconclusive for the full chip.
+
+Forty-one pure tests pass. Four tiny native controls also pass locally with the
+checksum-verified runtime: connected, same-name-open, missing-via and rotated
+adjacency cases. Actual chip geometry will be measured on GitHub; no local chip
+extraction has run. Neither these controls nor a future proved parent join close
+the independent tap A/P, substrate-reference or full-chip LVS requirements.
