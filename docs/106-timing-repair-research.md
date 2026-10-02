@@ -1630,3 +1630,37 @@ repeated focused tests pass; full-chip execution remains a cloud experiment.
 The first electrical result and the earlier narrow-observer result are now
 [permanently archived](evidence/closure-electrical-observer-archives-native-20261002.json)
 with their limitations and rejection decisions unchanged.
+
+### Exact C10 request-ack qualification and complete ALU proof continuation
+
+The corrected actual-core protocol result is now
+[permanently archived](evidence/closure-core-ack-full-width-archive-native-20261002.json).
+The [request-ack qualification method](evidence/core-ack-qualification-method-20261002.json)
+requires those exact bytes and all nine directed outcomes before synthesis.
+It restores the original 81 C10 sources, changes only the isolated request-pipe
+candidate, and requires byte reproduction of original synthesis and 32-SRAM
+mapping. Four independent full-SoC boots then compare original/candidate with
+vendor/independent SRAM models, the unchanged loader, power-on MBIST and all
+28 firmware checks. Clock periods and the three-million-cycle bound remain
+unchanged. This is finite workload qualification; the extra acknowledgement
+cycle still requires architectural and physical review before adoption.
+Root and peer independently pass 100 focused source/receipt/worker controls;
+no full-core simulation or synthesis was executed locally for this change.
+
+The corrected ALU boundary proof in
+[run 37009833162](https://github.com/Melihakbulut221/nssoc/actions/runs/37009833162)
+[times out](evidence/alu-state-repair-timeout-native-20261002.json).
+The native SAT solver reaches its 1,800-second bound, with 1,353,890 variables
+and 3,486,072 clauses. It reports neither a proof nor a new counterexample.
+All 10,828 inputs remain symbolic and all 34,321 output obligations are present;
+the three corrected state pairings retain all 10,009 original/candidate state
+identities. Root verifies 33 captured compact outputs and eleven Git-bound
+methods. The final post-proof input recheck was not reached and the large graph
+was not downloaded locally. The complete failed artifact will be preserved
+without changing its verdict.
+
+The next proof implementation partitions every original output obligation
+exactly once while retaining its unconstrained combinational dependencies.
+No internal matching assumption or omitted output can count as closure. Until
+all groups pass, the ALU physical experiment and default RTL adoption remain
+gated. The selected C10 layout and open transistor LVS findings are unchanged.
