@@ -976,3 +976,31 @@ roundtrip hashes match. Independent local review uses only its compact
 receipt, exact Git sources and fresh release metadata. This establishes
 durable, verified diagnostic evidence; it does not supply a resumable physical
 checkpoint, qualified RC timing, transistor LVS or manufacturing acceptance.
+
+
+## 2 October: preserve repair progress across independent native reloads
+
+[Two new isolated repair methods](evidence/timing-closure-method-20261002.json)
+are prepared from the same original C10. The combined method applies the
+existing 100-iteration setup batch-four recipe, followed by at most four guarded
+16-target hold batches. It retains the original setup/hold margins and a
+cumulative 40% growth bound. It exports an isolated ODB/DEF even when rejected,
+then measures that export in two independent native processes. Original C10
+and matched-before guards apply to the reloaded values. Exact replay agreement
+does not replace detailed routing, qualified RC, equivalence or physical signoff.
+A tiny ODB/SDC child-process control must pass before the expensive setup work.
+
+The second method targets the current worst setup launch cone: `_071517_/X`
+drives only `_071519_/A` through net `_017423_`, with 345.06 µm Manhattan
+instance-origin separation. A single `sg13g2_buf_2` near the XOR is intended to
+unload the long connection. Moving the sink alone would lengthen its two other
+short local connections. Actual improvement requires the new routed measurement.
+The trial checks the complete original connection graph after contracting only
+the inserted non-inverting buffer, including power connections and top ports.
+
+The local three-cell native fixture passes after inserting one buffer: all three
+corners are reported, SDC and contracted connectivity are preserved, and missing
+API, extra-fanout and repeated-insertion controls reject invalid changes. This
+is a tiny fixture result; no new chip timing improvement has yet been measured.
+All full chip calculations remain on GitHub. Rejected outputs are retained and
+never automatically replace the selected checkpoint.
