@@ -1853,3 +1853,30 @@ prior-proof and prepared-model inventories again after execution. Root passes
 peer review independently verifies complete coverage and positive/negative
 proof behavior. Full native proof remains separate. The actual four-state boot
 failure blocks physical use even if this binary refinement eventually passes.
+
+### Source-bound residual capacitance and hold repair
+
+The [next isolated repair method](evidence/timing-residual-repair-method-20261002.json)
+uses the completed, rejected margin candidate as its explicit experimental input.
+It repairs the single remaining `fanout3120` capacitance net and attempts ten
+exact hold endpoints: the nine newly negative endpoints and the worst endpoint.
+The native six-terminal net graph and all ten actual flip-flop data pins are
+checked before mutation. One bounded pass per negative hold endpoint retains
+the native setup guard, with 100 ps setup and 20 ps hold repair margins. These
+targets do not alter the SDC, Liberty limits, or timing acceptance conditions.
+
+Two independent baseline processes must first reproduce the complete parent.
+Acceptance then requires all five timing references, the complete endpoint
+census, all protected connections and 32 SRAM placements, two identical fresh
+reloads, and both limited digital ECO proofs. Native repair can affect sibling
+loads, so the full-design guards remain mandatory. Tiny real OpenROAD controls
+show two inserted buffers for the positive case and no insertion when setup
+blocks repair; negative controls reject unsafe targets. Root and independent
+review each pass 221 focused tests. Full-chip repair and final acceptance remain
+separate; this method does not adopt the parent candidate.
+
+The margin result, incomplete partition proof and all four completed ALU boot
+cases are [permanently archived](evidence/closure-final-native-archives-20261002.json).
+Twelve unchanged ZIP assets have verified cloud-local, authenticated release,
+and anonymous release roundtrips. The incomplete proof and both failed candidate
+boots keep their original verdicts. Publication is preservation, not acceptance.
