@@ -32,6 +32,22 @@ FIRMWARE='hw/soc/tb/sw/core_ack_protocol.S'
 OWN=('scripts/run_core_ack_protocol.py','sw/tests/test_core_ack_protocol.py',TEMPLATE,FIRMWARE,
      'scripts/prepare_core_ack_register.py','.github/workflows/timing-core-ack-protocol.yml',EVIDENCE,LOCK)
 PROFILE=dict(CORE_REQ_REG=1,CORE_WB_STAGE=1,SYNPRE=1,MEM_RDREG=1,REQ_REG=1,WAKE_GNT=1)
+# GCC 10 rejects the later `_zicsr` architecture spelling. This is assembly
+# input, so use its known RV32IM spelling and explicitly select GAS ISA 2.2,
+# where CSR instructions belong to I. Pass the ISA version to GAS with -Wa:
+# GCC 10 itself also predates the driver's -misa-spec option. A real opcode
+# gate below proves CSR/WFI/MRET encodings before compiling the workload.
+FIRMWARE_FLAGS=('-march=rv32im','-mabi=ilp32','-Wa,-misa-spec=2.2')
+FIRMWARE_PROBE=''' .option norvc
+ .section .text
+ .global _start
+_start:
+ csrr a0, mstatus
+ csrw mstatus, a0
+ wfi
+ mret
+'''
+PROBE_WORDS=(0x30002573,0x30051073,0x10500073,0x30200073)
 LIMITATIONS=[
     'Finite directed actual-core RTL simulation is not an exhaustive formal or sequential-equivalence proof.',
     'The actual C10 core/SECDED/LSU/PMP/ID/WB and clock-enable logic are used; the SoC fabric, peripherals, SRAM/MBIST and reset distribution are not instantiated.',
@@ -243,6 +259,29 @@ def execute(command,directory,name):
     return row
 
 
+def verify_firmware_probe(raw):
+    require(raw==struct.pack('<4I',*PROBE_WORDS),'Compiler CSR/WFI/MRET opcode control failed')
+    return dict(status='PASS_EXACT_RV32_CSR_WFI_MRET_ENCODINGS',
+                flags=list(FIRMWARE_FLAGS),words=[f'{w:08x}' for w in PROBE_WORDS],
+                bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+
+
+def firmware_toolchain_probe(gcc,objcopy,output):
+    output.mkdir()
+    source=output/'probe.S';source.write_text(FIRMWARE_PROBE)
+    compiled=execute([gcc,*FIRMWARE_FLAGS,'-nostdlib','-Wl,--build-id=none','-Wl,--no-relax',
+                      '-Wl,-Ttext=0x80','-Wl,-e,_start',source,'-o',output/'probe.elf'],output,'compile')
+    require(compiled['returncode']==0,'Compiler cannot assemble required RV32 CSR instructions')
+    copied=execute([objcopy,'-j','.text','-O','binary',output/'probe.elf',output/'probe.bin'],output,'objcopy')
+    require(copied['returncode']==0,'Compiler opcode control extraction failed')
+    # This also verifies the actual RV32 ELF machine, endianness and entry.
+    firmware_hex(output/'probe.bin',output/'probe.elf')
+    result=verify_firmware_probe((output/'probe.bin').read_bytes())
+    result.update(compile=compiled,objcopy=copied)
+    save(output/'result.json',result)
+    return result
+
+
 def run(prepared,output):
     require(os.environ.get('GITHUB_ACTIONS')=='true' and re.fullmatch('[0-9a-f]{40}',os.environ.get('GITHUB_SHA','')),
             'Actual-core RTL workloads are cloud-only after source review')
@@ -261,7 +300,9 @@ def run(prepared,output):
         for name,path in tools.items():
             execution=execute([path,'-V' if name in ('iverilog','vvp') else '--version'],output,name+'-version')
             require(execution['returncode']==0,'Tool version capture failed: '+name)
-        compiled=execute([tools['riscv64-unknown-elf-gcc'],'-march=rv32im_zicsr','-mabi=ilp32','-nostdlib',
+        row['firmware_toolchain_probe']=firmware_toolchain_probe(tools['riscv64-unknown-elf-gcc'],
+            tools['riscv64-unknown-elf-objcopy'],output/'firmware-toolchain-probe')
+        compiled=execute([tools['riscv64-unknown-elf-gcc'],*FIRMWARE_FLAGS,'-nostdlib',
             '-Wl,--build-id=none','-Wl,--no-relax','-Wl,-T,'+str(prepared/'link.ld'),
             prepared/'firmware.S','-o',output/'firmware.elf'],output,'firmware-compile')
         require(compiled['returncode']==0,'Directed firmware did not compile')

@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-state-repair
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-state-repair.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: timing-alu-state-repair-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prove:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check exact bijection identities and complete obligation conservation
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_state_repair.py sw/tests/test_alu_state_counterexample.py sw/tests/test_alu_mapped_state.py
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Prove every boundary equation under the explicit corrected proposal
+        run: |
+          python3 scripts/prove_alu_state_repair.py \
+            --output "$GITHUB_WORKSPACE/alu-state-repair-result" \
+            --work "$RUNNER_TEMP/alu-state-repair-work"
+      - name: Preserve proof or counterexample and complete corrected lifted graph
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-state-repair-${{ github.run_attempt }}
+          path: alu-state-repair-result/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30

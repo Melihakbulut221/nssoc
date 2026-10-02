@@ -33,7 +33,7 @@ jobs:
         run: python3 -m pytest -q sw/tests/test_core_ack_protocol.py sw/tests/test_core_ack_register.py
       - name: Prepare exact source-bound actual-core experiment
         run: python3 scripts/run_core_ack_protocol.py prepare --output "$GITHUB_WORKSPACE/core-ack-prepared"
-      - name: Run actual core with directed faults, clock checks and negative controls
+      - name: Check compiler opcodes and run actual core protocol cases
         run: |
           python3 scripts/run_core_ack_protocol.py run --prepared "$GITHUB_WORKSPACE/core-ack-prepared" \
             --output "$GITHUB_WORKSPACE/core-ack-result"

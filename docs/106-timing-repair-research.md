@@ -1512,3 +1512,43 @@ starting candidate all remain acceptance references. Original-to-parent and
 parent-to-electrical retained-state/logic equation checks are mandatory; their
 limited scope does not establish transistor LVS or SRAM internals. All-corner
 zero violations and detailed-route signoff remain required after this experiment.
+
+
+### Mapped counterexample localized to QSPI state correspondence
+
+[Run 37006276805](https://github.com/Melihakbulut221/nssoc/actions/runs/37006276805)
+[reproduces the saved counterexample](evidence/alu-state-replay-native-20261002.json)
+and exposes all compared boundaries. Root verifies the complete compact artifact,
+all ten Git method blobs, all 10,828 fixed input bits and every one of the 34,321
+output comparisons. Exactly 14 next-state D bits differ, all in QSPI logic.
+For this assignment, external outputs, SRAM inputs, FF clocks/resets and
+clock-gate boundary functions agree.
+
+The anonymous FF proposal crossed unrelated QSPI, UART and CAN state cells.
+A corrected correspondence is being checked against the exact cell identities
+before a fresh unconstrained proof. Matching one saved assignment, or locating
+the pairing defect, cannot establish equivalence. The original failed proof and
+all candidate-adoption restrictions remain unchanged.
+
+### Corrected state correspondence and actual-core compiler retry
+
+The [new unconstrained proof method](evidence/alu-state-repair-method-20261002.json)
+corrects exactly three anonymous FF pairings, at indices 9982, 9983 and 9988.
+Exact cell identities and independent QSPI, CAN and UART fanout witnesses bind
+the proposal to the original mapped netlists. All 10,828 symbolic input bits and
+34,321 compared boundary bits remain; no counterexample input is fixed. The
+original failed proof and its method remain unchanged. Actual small native
+controls reject the wrong permutation and a wrong reset, and prove the corrected
+permutation. The full chip proof is a separate cloud run, still required before
+ALU adoption.
+
+The first actual-core run failed before RTL compilation because Ubuntu's GCC
+10.2 rejects the newer `_zicsr` spelling. The
+[compiler correction](evidence/core-ack-compiler-fix-20261002.json) passes ISA 2.2
+directly to the assembler and checks the exact CSR, WFI and MRET opcodes before
+compiling firmware. Local linking produces the same 4,228 firmware bytes; the
+actual Ibex instance, testbench and firmware source are unchanged. The rerun must
+still pass on the cloud compiler and execute every directed protocol case.
+Root independently passes 125 focused tests and both workflow/source linters.
+Neither preparation result establishes timing closure, transistor LVS or
+manufacturing approval.
