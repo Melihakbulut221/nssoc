@@ -1458,3 +1458,30 @@ downloads these same pinned bytes and reports every compared boundary bit for
 the saved assignment. Its actual tiny native control finds all seven injected
 differences; 52 focused tests pass. This diagnostic fixes inputs solely to locate
 the known counterexample and cannot establish equivalence.
+
+
+### Actual-core acknowledgement experiment ready for native execution
+
+The [directed actual-core harness](evidence/core-ack-protocol-method-20261002.json)
+restores all 81 sources from the exact C10 archive and embeds the original
+`soc_top` Ibex instance verbatim. It uses the current SECDED register file,
+writeback stage, branch-target ALU, LSU, PMP and actual core clock-enable logic.
+All 47 tracked inputs and any existing generated checkout files are cross-checked;
+a clean checkout does not regenerate Ibex or change the source profile.
+
+Five positive cases cover the original queue, registered acknowledgement, and
+three common-reset placements. Firmware checks aligned and split data accesses,
+load-use/branch dependencies, eight first/second-beat PMP or bus faults with
+exact trap cause/address/PC, and WFI/software-interrupt wakeup. Observers check
+held requests, token/response ownership, real clock edges at acknowledgement and
+six actual stopped-clock intervals. Four deliberate mutations test unsolicited
+grant, early downstream exposure, corrupted payload and a stuck-open clock gate.
+The last check was added after peer review found that a sleep Boolean alone
+did not establish clock stoppage.
+
+Preparation, firmware assembly/linking and 55 focused tests pass. Root verifies
+the source/prepared-file pins and independently runs the new tests. Native Ibex
+execution is delegated to the new cloud workflow. The external memories are
+explicit protocol models; full SoC fabric, SRAM/MBIST, exhaustive exception
+interleavings and physical timing remain separate gates. No core-level or
+product acceptance follows from preparing this harness.

@@ -1,0 +1,204 @@
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: CERN-OHL-W-2.0
+// The actual core drives all upstream signals. No assume, force or core stub.
+// External instruction/data memories are explicit ordered protocol models.
+`timescale 1ns/1ps
+module tb_core_ack_protocol;
+  reg clk_i=0, rst_sys_n=0;
+  always #5 clk_i=~clk_i;
+  localparam CORE_WB_STAGE=1;
+  localparam [31:0] SOC_BOOT_ADDR=0;
+  wire instr_req, instr_gnt, data_req, data_gnt, data_we;
+  wire [31:0] instr_addr, data_addr, data_wdata;
+  wire [3:0] data_be;
+  reg instr_rvalid=0, instr_err=0, data_rvalid=0, data_err=0;
+  reg [31:0] instr_rdata=0, data_rdata=0;
+  reg clint_irq_soft=0;
+  wire clint_irq_timer=0, wdog_nmi=0;
+  wire [1:0] external_irq_sync_q=0;
+  wire [14:0] irq_fast=0;
+  wire [159:0] crash_dump;
+  wire double_fault_seen_o, rf_ecc_err, alert_minor_o;
+  wire alert_major_internal_o, alert_major_bus_o, core_sleep_o;
+@@CORE_INSTANCE@@
+  defparam u_ibex.gen_regfile_ff.register_file_i.SYNPRE=1;
+  wire bus_req, bus_gnt, bus_we;
+  wire [31:0] bus_addr, bus_wdata;
+  wire [3:0] bus_be;
+  soc_req_pipe pipe(.clk_i(clk_i),.rst_ni(rst_sys_n),
+    .req_i(data_req),.gnt_o(data_gnt),.addr_i(data_addr),.we_i(data_we),
+    .be_i(data_be),.wdata_i(data_wdata),.req_o(bus_req),.gnt_i(bus_gnt),
+    .addr_o(bus_addr),.we_o(bus_we),.be_o(bus_be),.wdata_o(bus_wdata));
+
+  reg [31:0] mem[0:4095];
+  integer cycles=0, delay_q=0;
+  reg response_pending=0, response_error=0;
+  reg [31:0] response_data=0;
+  reg done=0, wake_armed=0;
+  integer k, lane;
+  // Registered responses, >=1 cycle after a real downstream grant, in order.
+  // Periodic backpressure is external stimulus, never an upstream assumption.
+  assign instr_gnt=rst_sys_n && instr_req && (cycles%3 != 0);
+  assign bus_gnt=rst_sys_n && bus_req && !response_pending && (cycles%7 >= 3);
+  wire current_bus_error=(bus_addr[31:2]==(32'h3204>>2)) ||
+                         (bus_addr[31:2]==(32'h3308>>2)) || (bus_addr>=32'h4000);
+  integer bus_errors=0, bus_stalls=0;
+  always @(posedge clk_i) begin
+    cycles<=cycles+1;
+    if(cycles>30000) $fatal(1,"CORE_PROTOCOL timeout pc=%h mcause=%h mtval=%h",
+      instr_addr,u_ibex.u_ibex_core.cs_registers_i.mcause_q,u_ibex.u_ibex_core.cs_registers_i.mtval_q);
+    if(!rst_sys_n) begin
+      instr_rvalid<=0; instr_err<=0; data_rvalid<=0; data_err<=0;
+      response_pending<=0; delay_q<=0; done<=0; wake_armed<=0;
+    end else begin
+      instr_rvalid<=instr_req && instr_gnt;
+      instr_err<=instr_req && instr_gnt && instr_addr>=32'h4000;
+      if(instr_req && instr_gnt && instr_addr<32'h4000) instr_rdata<=mem[instr_addr[31:2]];
+      data_rvalid<=0; data_err<=0;
+      if(response_pending) begin
+        if(delay_q==0) begin
+          data_rvalid<=1; data_err<=response_error; data_rdata<=response_data;
+          response_pending<=0;
+        end else delay_q<=delay_q-1;
+      end
+      if(bus_req && !bus_gnt) bus_stalls=bus_stalls+1;
+      if(bus_req && bus_gnt) begin
+        response_pending<=1; delay_q<=3;
+        response_error<=current_bus_error;
+        response_data<=bus_addr<32'h4000 ? mem[bus_addr[31:2]] : 32'h0;
+        if(current_bus_error) bus_errors=bus_errors+1;
+        if(bus_we && !current_bus_error) begin
+          for(lane=0;lane<4;lane=lane+1)
+            if(bus_be[lane]) mem[bus_addr[31:2]][lane*8+:8]<=bus_wdata[lane*8+:8];
+          if(bus_addr==32'h3fe8 && bus_wdata==1) wake_armed<=1;
+          if(bus_addr==32'h3ff0) begin
+            if(bus_wdata!==32'h600dc0de || bus_be!==4'hf)
+              $fatal(1,"CORE_PROTOCOL firmware selfcheck failed mcause=%h mtval=%h mepc=%h",
+                u_ibex.u_ibex_core.cs_registers_i.mcause_q,u_ibex.u_ibex_core.cs_registers_i.mtval_q,u_ibex.u_ibex_core.csr_mepc);
+            done<=1;
+          end
+        end
+      end
+    end
+  end
+
+  wire raw_req=u_ibex.u_ibex_core.data_req_out;
+  wire pmp_deny=u_ibex.u_ibex_core.pmp_req_err[2];
+  wire [68:0] upstream_payload={data_addr,data_we,data_be,data_wdata};
+  wire [68:0] downstream_payload={bus_addr,bus_we,bus_be,bus_wdata};
+  reg previous_reset=0, previous_req=0, previous_grant=0;
+  reg [68:0] previous_payload=0, owned_payload=0;
+  integer owned=0, accepted=0, delivered=0, cancelled=0, responses=0;
+  integer first_pmp_cycles=0, second_pmp_cycles=0, split_second_acks=0;
+  integer held_cycles=0, resets=0, stopped_clock_cycles=0;
+  integer pending_responses=0, cancelled_responses=0;
+  always @(posedge clk_i) begin
+    if(!rst_sys_n) begin
+      if(previous_reset) resets=resets+1;
+      if(data_gnt || bus_req) $fatal(1,"CORE_PROTOCOL active transfer in reset");
+      cancelled=cancelled+owned; owned=0;
+      cancelled_responses=cancelled_responses+pending_responses; pending_responses=0;
+    end else begin
+      if((data_req!==0 && data_req!==1) || (data_gnt!==0 && data_gnt!==1) ||
+         (bus_req!==0 && bus_req!==1)) $fatal(1,"CORE_PROTOCOL unknown handshake");
+      if(data_req !== (raw_req && !pmp_deny)) $fatal(1,"CORE_PROTOCOL actual PMP request mask changed");
+      if(previous_reset && previous_req && !previous_grant) begin
+        held_cycles=held_cycles+1;
+        if(data_req!==1'b1 || upstream_payload!==previous_payload)
+          $fatal(1,"CORE_PROTOCOL actual core changed held request or payload pc=%h",instr_addr);
+      end
+      if(data_gnt && (data_req!==1'b1 || pmp_deny!==1'b0)) $fatal(1,"CORE_PROTOCOL ack without permission-qualified intent");
+      if(data_gnt && bus_req) $fatal(1,"CORE_PROTOCOL exposed token before acknowledgement edge completes");
+      if(bus_req) begin
+        if(owned!=1 || downstream_payload!==owned_payload)
+          $fatal(1,"CORE_PROTOCOL lost reordered corrupted or unacknowledged token");
+        if(bus_gnt) begin owned=0; delivered=delivered+1; pending_responses=pending_responses+1; end
+      end
+      if(data_gnt) begin
+        if(^upstream_payload===1'bx) $fatal(1,"CORE_PROTOCOL unknown accepted payload");
+        if(owned) $fatal(1,"CORE_PROTOCOL duplicate grant or overwritten token");
+        owned=1; owned_payload=upstream_payload; accepted=accepted+1;
+        if(u_ibex.u_ibex_core.load_store_unit_i.addr_incr_req_o) split_second_acks=split_second_acks+1;
+      end
+      if(data_rvalid) begin
+        if(pending_responses<1) $fatal(1,"CORE_PROTOCOL orphan response");
+        pending_responses=pending_responses-1; responses=responses+1;
+      end
+      if(raw_req && pmp_deny) begin
+        if(data_addr[31:2]==(32'h3004>>2)) first_pmp_cycles=first_pmp_cycles+1;
+        if(data_addr[31:2]==(32'h3108>>2)) second_pmp_cycles=second_pmp_cycles+1;
+      end
+      if(alert_minor_o || alert_major_internal_o || alert_major_bus_o || rf_ecc_err || double_fault_seen_o)
+        $fatal(1,"CORE_PROTOCOL core alert or double fault");
+    end
+    previous_reset=rst_sys_n; previous_req=data_req; previous_grant=data_gnt;
+    previous_payload=upstream_payload;
+  end
+  // Observe actual internal clock events; a clock-enable Boolean is insufficient.
+  time last_core_edge=0, acknowledgement_time=0, sleeping_edge=0;
+  always @(posedge u_ibex.clk) last_core_edge=$time;
+  always @(posedge clk_i) if(rst_sys_n && data_gnt) begin
+    acknowledgement_time=$time;
+    #1;
+    if(last_core_edge!=acknowledgement_time) $fatal(1,"CORE_PROTOCOL acknowledgement missed by gated core clock");
+  end
+
+  integer reset_phase=0, reset_injected=0;
+  reg [2047:0] image_path, signature_path;
+  initial begin
+    if(!$value$plusargs("image=%s",image_path) || !$value$plusargs("signature=%s",signature_path))
+      $fatal(1,"CORE_PROTOCOL missing image/signature path");
+    if($value$plusargs("reset_phase=%d",reset_phase)) begin end
+    for(k=0;k<4096;k=k+1) mem[k]=0;
+    $readmemh(image_path,mem);
+    if(u_ibex.PMPEnable!=1 || u_ibex.PMPNumRegions!=4 || u_ibex.PMPGranularity!=0 ||
+       u_ibex.WritebackStage!=1 || u_ibex.BranchTargetALU!=1 || u_ibex.SecureIbex!=0 ||
+       u_ibex.BaseIsa!=0 || u_ibex.RV32M!=2 || u_ibex.RegFile!=0 ||
+       u_ibex.gen_regfile_ff.register_file_i.SYNPRE!=1)
+      $fatal(1,"CORE_PROTOCOL actual elaborated C10 core profile differs");
+    repeat(5) @(negedge clk_i);
+    rst_sys_n=1;
+`ifdef ACK_CANDIDATE
+    if(reset_phase==1) wait(pipe.ack_q===1);
+    if(reset_phase==2) wait(bus_req && !bus_gnt);
+    if(reset_phase==3) wait(response_pending);
+    if(reset_phase!=0) begin
+      @(negedge clk_i); rst_sys_n=0; reset_injected=reset_phase;
+      repeat(5) @(negedge clk_i);
+      rst_sys_n=1;
+    end
+`else
+    if(reset_phase!=0) $fatal(1,"CORE_PROTOCOL unsupported baseline reset case");
+`endif
+    wait(done && core_sleep_o && !bus_req && !response_pending && !data_rvalid);
+    repeat(3) @(negedge clk_i);
+    if(owned!=0 || pending_responses!=0 || accepted!=delivered+cancelled ||
+       delivered!=responses+cancelled_responses || held_cycles<1 || bus_stalls<5 ||
+       first_pmp_cycles<2 || second_pmp_cycles<2 || split_second_acks<8 ||
+       bus_errors!=4 || stopped_clock_cycles<6 || mem[32'h3fe0>>2]!==8 || mem[32'h3fe4>>2]!==1 ||
+       reset_injected!=reset_phase || (reset_phase!=0 && resets!=1))
+      $fatal(1,"CORE_PROTOCOL missing coverage/accounting accepted=%0d delivered=%0d cancelled=%0d responses=%0d pending=%0d held=%0d first=%0d second=%0d split=%0d errors=%0d stopped=%0d traps=%h irq=%h resets=%0d",
+        accepted,delivered,cancelled,responses,pending_responses,held_cycles,first_pmp_cycles,second_pmp_cycles,
+        split_second_acks,bus_errors,stopped_clock_cycles,mem[32'h3fe0>>2],mem[32'h3fe4>>2],resets);
+    $writememh(signature_path,mem,2048,4095);
+    $display("PASS_ACTUAL_CORE_DIRECTED_PROTOCOL reset_phase=%0d cycles=%0d accepted=%0d delivered=%0d cancelled=%0d responses=%0d cancelled_responses=%0d held=%0d stalls=%0d pmp_first=%0d pmp_second=%0d split_second=%0d bus_errors=%0d stopped_clock=%0d traps=8 irq=1",
+      reset_phase,cycles,accepted,delivered,cancelled,responses,cancelled_responses,held_cycles,bus_stalls,
+      first_pmp_cycles,second_pmp_cycles,split_second_acks,bus_errors,stopped_clock_cycles);
+    $finish;
+  end
+  // Raise a real level interrupt only after the actual clock has slept.
+  initial begin
+    wait(rst_sys_n);
+    wait(wake_armed && core_sleep_o && !bus_req && !response_pending && !data_rvalid);
+    @(negedge clk_i); sleeping_edge=last_core_edge;
+    repeat(6) begin
+      @(negedge clk_i);
+      if(core_sleep_o!==1'b1 || last_core_edge!=sleeping_edge)
+        $fatal(1,"CORE_PROTOCOL clock edge during asserted sleep");
+      stopped_clock_cycles=stopped_clock_cycles+1;
+    end
+    clint_irq_soft=1;
+    repeat(80) @(negedge clk_i);
+    clint_irq_soft=0;
+  end
+endmodule
