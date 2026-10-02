@@ -2556,3 +2556,9 @@ tap-disable mode does not satisfy this strict comparison. The remaining work
 requires a consistent library geometry/reference/extraction contract or an
 independently qualified library redesign; copying extracted A/P into the
 reference would not provide that independent evidence.
+
+
+Both the original case-mismatched boundary result and the corrected-name
+result are [permanently archived](evidence/closure-boundary-archives-native-20261002.json).
+The unchanged original ZIPs and authenticated/anonymous release downloads
+were hash verified. Both overall LVS failures remain preserved.

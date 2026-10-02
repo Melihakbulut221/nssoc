@@ -1,0 +1,54 @@
+{
+  "status": "SOURCE_AND_INPUTS_VALIDATED_NATIVE_CLOUD_EXECUTION_REQUIRED",
+  "source_pins": {
+    "scripts/run_cloud_alu_qualification.py": {
+      "bytes": 28008,
+      "sha256": "cc918fbe661e7cd18f935795a08133c8b5438a256b5f50202195840f544fd429"
+    },
+    "sw/tests/test_alu_qualification.py": {
+      "bytes": 12840,
+      "sha256": "8c6abcb397824c99f3abad61fc7599ebf7b4c03e614e8f56cd8dda69a61d2815"
+    },
+    ".github/workflows/timing-alu-qualification.yml": {
+      "bytes": 4154,
+      "sha256": "777d566224bb3af9667cf997b3797b1b6829e721995bf31809aefafd4fd7352a"
+    },
+    "hw/soc/pnr/alu-qualification-input.lock.json": {
+      "bytes": 11333,
+      "sha256": "5848b42bbdf8817205d629d7db2ef9619f82a62f12d8667fd85e749f219511c2"
+    },
+    "docs/evidence/alu-qualification-input-20261002.tar.xz": {
+      "bytes": 120452,
+      "sha256": "1dc213afd35b4587a3888bc3e32b1c3459f036f625ee91ddd8d488cb342ca9d9"
+    },
+    "docs/evidence/alu-qualification-input-20261002-NOTICES.txt": {
+      "bytes": 1489,
+      "sha256": "caf235b92ef1da21599c769beb5cf60be29ab7504bfcd49d6a8c5aa8f12312e2"
+    }
+  },
+  "root_and_agent_focused_tests_passed": 68,
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "root_native_elf_symbols": {
+    "checks": 7836,
+    "exit_code": 7780,
+    "exit_magic": 7784,
+    "fails": 7840
+  },
+  "source_archive_members": 35,
+  "original_loader_bytes": 3120,
+  "source_qualification": {
+    "mapping": "Original byte reproduction then candidate32-memory mapping; all retained nonmemory cell equations and ports checked.",
+    "boot": "Four-state native IHP cells, original and candidate, vendor and independent SRAM models. Real power-on system/Ethernet MBIST and28 firmware checks; no RAM/ROM preload.",
+    "observation": "Compile-stage startup artifact before long native execution. Flushed cycle markers and immutable progress receipts. No elapsed native watchdog.",
+    "cycle_bound": 3000000,
+    "cycle_reason": "Measured original MBIST alone takes983048 cycles; obsolete1M-cycle total bound does not cover complete boot.",
+    "functional_clock_period_ns": 20,
+    "ethernet_clock_period_ns": 8
+  },
+  "candidate_adopted": false,
+  "mapped_core_equivalence_accepted": false,
+  "timing_accepted": false,
+  "lvs_accepted": false,
+  "manufacturing_approval": false
+}

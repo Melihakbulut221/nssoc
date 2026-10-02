@@ -1290,3 +1290,29 @@ preserves generated netlists, raw reports, methods and upstream notices. An
 earlier report-parser failure remains recorded; the final method reran all
 proofs and six timing cases successfully. Full-SoC correspondence, physical
 placement, extracted RC and all-corner closure remain required.
+
+
+### Actual mapped boot and memory replacement gate prepared
+
+The [qualification method](evidence/alu-qualification-method-20261002.json)
+consumes the exact permanently archived pair of completed synthesis outputs;
+it does not synthesize again. The original 20-to-32 SRAM replacement must
+reproduce its historical byte hash before candidate replacement proceeds.
+Every retained nonmemory cell pin equation and external port remains checked,
+alongside the exact 16 SP and 16 DP physical memory instance identities.
+
+Four separate native jobs cover original/candidate cores with vendor/independent
+behavioral SRAM models. They use the actual 3120-byte C10 loader, regenerated
+ROM identity and unchanged firmware flash. The obsolete earlier 3084-byte
+loader is rejected. Native cell compatibility and full compilation must pass
+before the startup artifact is published; only then does simulation begin.
+The test requires successful system and Ethernet power-on MBIST plus all
+28 firmware checks. A 3,000,000-cycle functional bound accommodates the
+983,048-cycle MBIST; the 20 ns system and 8 ns Ethernet clocks are unchanged.
+No ROM/RAM preload or elapsed native watchdog is introduced. Flushed cycle
+markers appear live and immutable log-prefix receipts preserve progress.
+
+Root and independent source review pass 68 focused tests, Ruff and Actionlint.
+This prepares real simulation; no native map/boot success is inferred from
+source tests. Original/candidate mapped equivalence remains a separate gate,
+and fresh geometry must start from the new netlist after qualification.
