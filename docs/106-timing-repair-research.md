@@ -1316,3 +1316,46 @@ Root and independent source review pass 68 focused tests, Ruff and Actionlint.
 This prepares real simulation; no native map/boot success is inferred from
 source tests. Original/candidate mapped equivalence remains a separate gate,
 and fresh geometry must start from the new netlist after qualification.
+
+
+### Independent mapped-state proof gate
+
+The [mapped-state method](evidence/alu-mapped-state-method-20261002.json)
+compares the archived full original/candidate netlists without resynthesis.
+It exposes only actual storage: 10,009 reset FFs, three clock-gate latches, and
+20 opaque SRAMs. Every mapped combinational cell remains in the proof. All
+34,321 external-output, FF data/clock/reset, gate enable/clock/latch-next and
+memory-input equations must agree for every shared binary assignment.
+
+Public Q aliases propose 9,892 state correspondences; 117 anonymous FF pairs
+are only an untrusted ordering proposal until their complete equations pass.
+Clock-gate state and output equations are checked against the exact pinned
+Liberty latch table. No named combinational cutpoint is assumed equal.
+Twenty-seven pure tests and five tiny native controls pass: the equal case
+proves, while wrong state pairing, reset, output and gate-latch mutations each
+produce a real counterexample. Root rechecks all source and tiny output pins.
+
+The full native proof is still required on GitHub. A pass would establish
+binary next-state correspondence under equal corresponding initial states
+and identical SRAM contracts; reset reachability, four-state behavior, clock
+domain crossing, memory interiors and physical acceptance remain separate.
+A failed or timed-out proof preserves its actual outcome and cannot pass this
+gate or be replaced by the narrower buffer-only ECO checker.
+
+
+[Run 37002748526](https://github.com/Melihakbulut221/nssoc/actions/runs/37002748526)
+now passes the [actual memory replacement and all four native compile gates](evidence/alu-qualification-startup-native-20261002.json).
+Original replacement reproduces its exact hash; the candidate retains all
+74,524 pre-existing nonmemory cells, their pin equations and 79 external ports,
+with the required 32 physical SRAM identities. Native cell compatibility and
+actual complete-core compilation succeed in all four cases. Root repeats the
+110-member compact source, recipe, model, firmware and log checks. The eight
+identical IHP specify warnings about unsupported edge-sensitive `ifnone` paths
+are retained; the real functional reset/capture/hold control passes, while
+SDF/timing-model qualification is outside these tests.
+
+The four boot/MBIST simulations are running. Startup success is not a completed
+boot result. Their flushed progress is preserved by the producer, but available
+read-only APIs do not expose unfinished job logs; no throughput or completion
+estimate is inferred from elapsed time. Mapped equivalence and fresh physical
+timing remain independent gates.
