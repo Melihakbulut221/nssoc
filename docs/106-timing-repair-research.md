@@ -1485,3 +1485,30 @@ execution is delegated to the new cloud workflow. The external memories are
 explicit protocol models; full SoC fabric, SRAM/MBIST, exhaustive exception
 interleavings and physical timing remain separate gates. No core-level or
 product acceptance follows from preparing this harness.
+
+
+### Three-net electrical continuation prepared from the saved physical candidate
+
+The [electrical continuation](evidence/timing-electrical-method-20261002.json)
+starts from the exact archived combined-repair ODB/SDC. It first replays that
+producer's complete source-bound validator and reproduces all five physical
+fingerprints and the fresh 1311/66 setup/hold baseline. The original C10 state
+remains unchanged; no new 100-iteration setup batch is needed.
+
+The full candidate netlist member is CRC/SHA verified through a ranged read.
+The actual three driver connections are `fanout1387/X→net1387` and
+`fanout1391/X→net1391` (eight SRAM data loads each), and
+`fanout1228/X→net1228` (four SRAM data loads plus a buffer input). The pinned
+OpenROAD revision exposes a native single-net repair API, confirmed against its
+implementation and upstream test. A real four-cell IHP control passes, reduces
+total capacitance violations from two to one, preserves the unrelated driver
+and constraints, and rejects wrong/protected/missing targets and a missing API.
+The remaining unrelated fixture violation is not represented as closure.
+
+The cloud experiment calls that API only for the three observed nets, preserves
+protected/clock objects and all 32 SRAM placements, exports the result, and
+performs two independent native reloads. Historical C10, matched C10 and the
+starting candidate all remain acceptance references. Original-to-parent and
+parent-to-electrical retained-state/logic equation checks are mandatory; their
+limited scope does not establish transistor LVS or SRAM internals. All-corner
+zero violations and detailed-route signoff remain required after this experiment.
