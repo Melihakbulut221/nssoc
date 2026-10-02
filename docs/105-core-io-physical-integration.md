@@ -2237,3 +2237,38 @@ files, 119 input pins, eight controls and both strict FAIL assessments.
 Authenticated and public download hashes match the original artifact. Local
 independent review used only the compact receipt; no native extraction was
 repeated and no runtime binary rehash or new LVS pass is claimed.
+
+
+### 2026-10-02 — captured tap footprints and bounded mask attribution
+
+[Replaying the captured terminal polygons](evidence/io-vss-captured-tap-shapes-20261002.json)
+independently reproduces all seven native tap area/perimeter pairs without
+repeating extraction. Both deep and flat VSS footprints are exactly an
+80 × 0.3 µm stripe, giving A=24 µm² and P=160.6 µm. Orthogonal cut contours
+require cancellation of retraced hole bridges when measuring perimeter; the
+receipt includes the inspection source and original native database hashes.
+This establishes the measured footprint, not permission to change the vendor
+reference or a repair for its mismatch.
+
+The deep parent IOVSS tap and transformed DCP child sum to 5412.5570 µm²,
+whereas the flat tap is 5407.1 µm²: a 5.4570 µm² difference. The pinned
+TapDeviceCombiner only adds A/P for matching ordered terminals, so arithmetic
+combination alone cannot subtract this area. Parent/child overlap and changed
+recognition geometry remain hypotheses until their actual intersection and
+union-versus-flat XOR are measured.
+
+The new isolated `io-tap-mask-probe` cloud method includes the exact pinned
+layer/derivation files in their original order and stops before connectivity,
+extraction and comparison. It exports copied polygon values and first requires
+zero XOR against the captured native TIE geometry. It then measures source-mask
+coverage of the VSS stripe and parent/DCP intersection, union and flat XOR.
+Tiny native geometry and hierarchy controls must pass before actual cell input.
+A discrepancy stops interpretation. PDK, GDS, reference and strict LVS verdicts
+remain unchanged; this diagnostic cannot certify a cell or chip LVS pass.
+
+
+The [source-method receipt](evidence/io-vss-mask-attribution-method-20261002.json)
+pins the new workflow, runner, helper and tests. Twenty-five pure tests, Ruff,
+Actionlint and expanded Ruby syntax checks pass. The six native geometry
+controls, derived-mask identity and overlap attribution require the new
+cloud execution; local source checks do not establish those results.

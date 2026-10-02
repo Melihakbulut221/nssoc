@@ -890,3 +890,18 @@ ZIP unchanged, verify all 114 captured members, replay bounded source/control
 receipts and publish only after authenticated and anonymous byte roundtrips.
 Its source tests passed; publication is not asserted until the cloud receipt
 is verified. Neither this archive nor the retry adopts a physical candidate.
+
+
+The original failed ZIP is now [published and independently verified](evidence/timing-targeted-hold-failure-assets-20261002.json):
+cloud archive run 36968700231 checked all 114 members and both public/private
+byte roundtrips. Local compact-receipt review replayed original source/control
+checks and the unchanged 23,527/113 baseline. This preserves the failure.
+
+[Corrected retry 36968724381](https://github.com/Melihakbulut221/nssoc/actions/runs/36968724381)
+runs exact source `ea0d78f4be2f808318508f020b0d81c44ff380c7`. Its
+[verified startup capture](evidence/timing-targeted-hold-startup-20261002.json)
+now passes the actual native targeted gate, all three runtime identities and
+the independent corrected validator; both wrapper captures are regular files.
+The 05:25:53 UTC snapshot precedes matched-before export and the repair-begin
+marker. The run continues; no reduction or full four-stage completion is yet
+claimed.
