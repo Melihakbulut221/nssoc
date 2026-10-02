@@ -2622,3 +2622,12 @@ from the run commit, rather than counted as present in the ZIP. The
 [upload correction](evidence/io-tap-contact-capture-method-20261003.json)
 includes hidden files on the next run. The native helper and runner are
 unchanged; this packaging correction does not resolve the strict LVS mismatch.
+
+The [corrected cloud capture](evidence/io-tap-contact-complete-cloud-capture-20261003.json)
+from [run 37075371452](https://github.com/Melihakbulut221/nssoc/actions/runs/37075371452)
+now contains all 84 declared outputs, including the actual hidden workflow
+file. Root hashes every one of its 86 ZIP members, verifies thirteen Git-bound
+source files and replays all 169 members of the original input archive.
+The 234 contact rows, original masks, analysis and eleven native controls still
+agree with the local result. This closes the capture omission only; the tap
+model/geometry contract and qualified LVS acceptance remain unresolved.

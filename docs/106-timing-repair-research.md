@@ -2019,3 +2019,13 @@ The APB correction also [passes the actual cloud checks job](evidence/apb-timeou
 check wrapper reports nineteen passes and two skips. These outcomes do not
 cover the separate still-running formal jobs and do not turn unavailable-tool
 or PDK skips into passes.
+
+The critical followup is now running as
+[37075371532](https://github.com/Melihakbulut221/nssoc/actions/runs/37075371532).
+Its [immutable startup capture](evidence/timing-critical-followup-startup-20261003.json)
+matches all 56 source files against the published commit. Acquisition and the
+original residual producer's validator pass in the cloud. Four base native
+controls pass, and the captured worker is proceeding through logical controls.
+Independent review and root rehash 156 selected compact members; the full ZIP
+digest is API-provided, not locally recomputed. This early snapshot does not
+yet contain the new sizing preflight, hold child or a full-chip timing result.
