@@ -1811,3 +1811,25 @@ passes MBIST and all 28 checks at the same cycle 1,596,123. Root verifies its
 201 outputs and 23 Git-bound methods. Candidate results remain independent;
 this passing reference is not acknowledgement-pipeline acceptance. The selected
 C10 layout and unresolved qualified I/O tap extraction contract remain unchanged.
+
+The [ALU candidate/independent-memory case](evidence/alu-qualification-candidate-independent-failure-native-20261002.json)
+now fails with the same finite-workload symptoms as the vendor-memory case.
+Both logs match after normalizing only the fatal source-line number. Root
+verifies all 332 compact outputs, ten Git-bound methods and 300 progress-prefix
+receipts. Both original cases pass and both candidate cases fail. The unchanged
+qualification outcome must be diagnosed before any candidate physical work.
+
+The [paired diagnostic trace method](evidence/alu-boot-trace-method-20261002.json)
+replays the exact original and candidate vendor netlists with a separate
+1.6-million-cycle diagnostic bound. It observes 51 validated aliases (441 bits),
+all three native clock gates and all four actual SRAM sampling interfaces.
+Recording begins immediately after MBIST; bounded buffers preserve the first
+unknown and its context. Counter-write milestones observe address `0x1e9c`,
+byte enables, data, grant and the actual SRAM row. Disabled write bytes are
+masked; active unknown controls still trigger. The original three-million-cycle
+qualification and all DUT statements, firmware, reset and clocks stay unchanged.
+Root repeats 53 tests and native tiny controls; independent review checks the
+actual SRAM event order. Both dynamically imported ROM/boot helpers are pinned
+to their original Git bytes and captured. A trace is diagnostic evidence;
+possible simulation scheduling effects and the failed qualification still
+require interpretation. No native full-SoC trace has run locally.
