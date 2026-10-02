@@ -952,7 +952,9 @@ def linked_documents(docs, root, tracked):
 
 
 MAX_ASSET_BYTES = 16 * 1024 * 1024
-MAX_SITE_ASSET_BYTES = 64 * 1024 * 1024
+# The linked, source-pinned engineering corpus has grown beyond 64 MiB.
+# Keep a finite total budget and the existing per-file bound.
+MAX_SITE_ASSET_BYTES = 96 * 1024 * 1024
 
 
 def publish_file(source, out_dir, root, assets):

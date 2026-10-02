@@ -1140,3 +1140,34 @@ The original two-buffer producer's 26 source files are unchanged. A real tiny
 for all four target connections; 108 adjacent source tests pass. Actual chip
 measurements are still required; neither historical guards nor adoption
 requirements are relaxed.
+
+
+### Current-profile PMP comparator candidate: complete binary-output proof
+
+The two-buffer critical path still traverses approximately 4.318 ns of ALU
+carry/sum logic and 4.726 ns of PMP comparison logic; these measured path sections
+motivate parallel arithmetic experiments beyond local buffering. Their full
+routed timing benefit has not yet been measured.
+
+The [PMP experiment](evidence/pmp-prefix-current-20261002.json) changes only the
+two unsigned greater-than/less-than expressions in the exact C10 generated PMP
+source. A balanced most-significant-difference reduction replaces their serial
+mapping opportunity. Every remaining source byte is preserved by reversible
+transformation. Address masks, permissions, region priority and the existing
+pipeline configuration are unchanged; default generated RTL is not overwritten.
+
+A fresh native Yosys all-output combinational miter passes for every binary input
+with the current granularity=0, four regions and **three** channels. No internal
+name correspondence or input assumptions are used. The wrong-comparison negative
+control fails as required. Eighteen tests include real HDL comparison controls
+at seven widths, unsigned high-bit and equality boundaries, corrupted source
+and prepared-input rejection. The [complete small evidence archive](evidence/pmp-prefix-current-20261002.tar.xz)
+retains original/candidate/negative source, scripts and both raw proof logs.
+This proves the stated functional transformation; it does not cover four-state
+X propagation, other PMP configurations, mapped timing or physical acceptance.
+
+The completed one-buffer, two-buffer, digital-core proof and parent-marker
+artifacts are now [permanently archived](evidence/closure-archives-native-20261002.json).
+Cloud publication verifies each unchanged original ZIP and both authenticated
+and anonymous release downloads. These archives preserve failures and rejected
+candidates as recorded; publication does not convert them into accepted results.

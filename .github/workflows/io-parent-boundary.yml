@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: io-parent-boundary
+on:
+  workflow_dispatch:
+  push:
+    branches: ['codex/complete-open-work']
+    paths: ['.github/workflows/io-parent-boundary.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: io-parent-boundary
+  cancel-in-progress: false
+jobs:
+  witnessed-boundary-diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      QT_QPA_PLATFORM: offscreen
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Byte preservation and boundary source controls
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_io_parent_boundary.py sw/tests/test_io_parent_marker_repair.py
+      - name: Retrieve exact completed marker candidate and original comparisons
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: io-parent-marker-repair-1
+          run-id: '36995165800'
+          github-token: ${{ github.token }}
+          path: hw/soc/out/github-io-boundary-source
+      - name: Bootstrap pinned runtime and unmodified original deck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          python3 hw/soc/flow/prepare_ihp_lvs.py
+      - name: Witness physical boundary and compare isolated annotation wrapper
+        run: >-
+          python3 scripts/run_io_parent_boundary.py
+          --marker-inputs hw/soc/out/github-io-boundary-source
+          --output hw/soc/out/github-io-boundary
+      - name: Preserve original verdicts, wrapper and exact overlay
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: io-parent-boundary-${{ github.run_attempt }}
+          path: hw/soc/out/github-io-boundary/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 1

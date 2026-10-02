@@ -1,0 +1,156 @@
+{
+  "status": "PMP_CURRENT_PROFILE_ALL_OUTPUT_FORMAL_PASS_ROUTED_GAIN_UNMEASURED",
+  "schema": 1,
+  "proof": {
+    "status": "PASS_ALL_PMP_OUTPUTS_AND_REJECT_WRONG_COMPARISON",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "profile": {
+      "PMPGranularity": 0,
+      "PMPNumRegions": 4,
+      "PMPNumChan": 3
+    },
+    "command": [
+      "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "yosys"
+    ],
+    "method_and_executable_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/prepare_pmp_prefix.py": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "source_sha256": {
+      "original.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+      "candidate.v": "bd64ab21095362d2ee3dc018e1e8ce56ba75189155ed7140e6a904c4ec29df01",
+      "negative.v": "4e21eddd25cd25561bf2e868589f5d119436df5500a705980b7a87931280bbf9"
+    },
+    "cases": [
+      {
+        "name": "candidate",
+        "returncode": 0,
+        "elapsed_seconds": 8.686003115002677,
+        "script_sha256": "245987125ed1f2a1c03847ee13e3f7aa9d499ab23330057c53f0a128dc7e5ed9",
+        "log_sha256": "8892203936dcd8a08beed449e6585619c184be09742b8b8f97c339b67287439d"
+      },
+      {
+        "name": "negative",
+        "returncode": 1,
+        "elapsed_seconds": 6.733299317002093,
+        "script_sha256": "3245d0d7bc33cf0c2557fbc8a53dd4ea74a0200f1cb3e9d268c3f67a55bc599a",
+        "log_sha256": "f9d96e93346f56cee7394d3cfe2a815db3db333f719a67c49709599d9e5feb8a"
+      }
+    ],
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "scope": "All binary inputs at the unchanged C10 PMP profile; no internal-name matching, assumptions, permissions changes, timing or physical acceptance."
+  },
+  "preparation": {
+    "status": "PREPARED_NOT_ADOPTED",
+    "original_sha256": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+    "edits": [
+      {
+        "before": "\t\t\t\tassign region_match_gt[(c * PMPNumRegions) + r] = pmp_req_addr_i[(((PMPNumChan - 1) - c) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)] > region_start_addr[r][ibex_pkg_PMP_ADDR_MSB:PMPGranularity + ibex_pkg_PMP_ADDR_LSB];",
+        "after": "\t\t\t\tassign region_match_gt[(c * PMPNumRegions) + r] = nssoc_pmp_gt(pmp_req_addr_i[(((PMPNumChan - 1) - c) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)], region_start_addr[r][ibex_pkg_PMP_ADDR_MSB:PMPGranularity + ibex_pkg_PMP_ADDR_LSB]);"
+      },
+      {
+        "before": "\t\t\t\tassign region_match_lt[(c * PMPNumRegions) + r] = pmp_req_addr_i[(((PMPNumChan - 1) - c) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)] < csr_pmp_addr_i[(((PMPNumRegions - 1) - r) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)];",
+        "after": "\t\t\t\tassign region_match_lt[(c * PMPNumRegions) + r] = nssoc_pmp_gt(csr_pmp_addr_i[(((PMPNumRegions - 1) - r) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)], pmp_req_addr_i[(((PMPNumChan - 1) - c) * 34) + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? ibex_pkg_PMP_ADDR_MSB : (ibex_pkg_PMP_ADDR_MSB + (ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)) - 1)-:(ibex_pkg_PMP_ADDR_MSB >= (PMPGranularity + ibex_pkg_PMP_ADDR_LSB) ? (ibex_pkg_PMP_ADDR_MSB - (PMPGranularity + ibex_pkg_PMP_ADDR_LSB)) + 1 : ((PMPGranularity + ibex_pkg_PMP_ADDR_LSB) - ibex_pkg_PMP_ADDR_MSB) + 1)]);"
+      }
+    ],
+    "profile": {
+      "PMPGranularity": 0,
+      "PMPNumRegions": 4,
+      "PMPNumChan": 3
+    },
+    "sources": {
+      "original.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+      "candidate.v": "bd64ab21095362d2ee3dc018e1e8ce56ba75189155ed7140e6a904c4ec29df01",
+      "negative.v": "4e21eddd25cd25561bf2e868589f5d119436df5500a705980b7a87931280bbf9"
+    },
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "tests": {
+    "passed": 18,
+    "iverilog_widths": [
+      1,
+      2,
+      4,
+      5,
+      16,
+      31,
+      32
+    ],
+    "scope": "Exhaustive widths1,2,4,5; seeded random, equality, unsigned high-bit and bit-boundary cases at16,31,32."
+  },
+  "archive": {
+    "path": "docs/evidence/pmp-prefix-current-20261002.tar.xz",
+    "bytes": 35668,
+    "sha256": "1d7e3d3946ecd0727d2effe332db19eaa8d0eee7e051b7730ed79df7d58dbe8b",
+    "members": 17,
+    "roundtrip_verified": true,
+    "upstream_ibex_notice_and_credits_retained": true
+  },
+  "source_files": {
+    "scripts/prepare_pmp_prefix.py": {
+      "bytes": 9107,
+      "sha256": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d"
+    },
+    "sw/tests/test_pmp_prefix.py": {
+      "bytes": 4297,
+      "sha256": "c315fcbb66e61e70c17f6b54d7d57cf23856ced242e5f0df75c3028edd3b1997"
+    }
+  },
+  "scope": "Changes only gt/lt comparison expressions and adds unsigned prefix reduction. Permissions, address masks, region priority, ECC, register state and default RTL are unchanged. All binary inputs atPMPGranularity0/PMPNumRegions4/PMPNumChan3, no proof assumptions. Not 4-state X equivalence or routed timing.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "independent_review": {
+    "status": "PASS_READ_ONLY_SOURCE_AND_PROOF_REVIEW",
+    "recorded": "2026-10-02T10:49:08.450214+00:00",
+    "source_pins": {
+      "scripts/prepare_pmp_prefix.py": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d",
+      "sw/tests/test_pmp_prefix.py": "c315fcbb66e61e70c17f6b54d7d57cf23856ced242e5f0df75c3028edd3b1997"
+    },
+    "original_sha256": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+    "candidate_sha256": "bd64ab21095362d2ee3dc018e1e8ce56ba75189155ed7140e6a904c4ec29df01",
+    "exact_edits": 2,
+    "profile": {
+      "PMPGranularity": 0,
+      "PMPNumRegions": 4,
+      "PMPNumChan": 3
+    },
+    "proof_status": "PASS_ALL_PMP_OUTPUTS_AND_REJECT_WRONG_COMPARISON",
+    "proof_case_receipts": [
+      {
+        "name": "candidate",
+        "returncode": 0,
+        "elapsed_seconds": 8.686003115002677,
+        "script_sha256": "245987125ed1f2a1c03847ee13e3f7aa9d499ab23330057c53f0a128dc7e5ed9",
+        "log_sha256": "8892203936dcd8a08beed449e6585619c184be09742b8b8f97c339b67287439d"
+      },
+      {
+        "name": "negative",
+        "returncode": 1,
+        "elapsed_seconds": 6.733299317002093,
+        "script_sha256": "3245d0d7bc33cf0c2557fbc8a53dd4ea74a0200f1cb3e9d268c3f67a55bc599a",
+        "log_sha256": "f9d96e93346f56cee7394d3cfe2a815db3db333f719a67c49709599d9e5feb8a"
+      }
+    ],
+    "review_conclusions": [
+      "Prefix combines higher-significance group before lower group, including odd widths.",
+      "At actual granularity0 both operand slices are unsigned32 bits, matching helper width.",
+      "Less-than reverses operands and permission/address mask/priority logic is restored byte-exact by inverse transformation.",
+      "Miter includes all three output bits under explicit actual profile and has no binary input restrictions."
+    ],
+    "scope": [
+      "No new native proof executed by reviewer.",
+      "Binary combinational behavior only; four-state X propagation may differ.",
+      "Other profile parameters, mapped/routed timing and whole-SoC acceptance not reviewed as proven."
+    ],
+    "blockers": [],
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  }
+}

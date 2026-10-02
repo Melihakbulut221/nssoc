@@ -2479,3 +2479,32 @@ terminal contracts remain separate defects. No tap value, transistor dimension,
 terminal, top-port or strict deck setting was changed to obtain the resistor
 match. This candidate has not yet been propagated into a new full-chip GDS,
 DRC run or accepted full-chip LVS result.
+
+
+### Boundary contract isolated from remaining tap mismatches
+
+Read-only inspection of the completed small flat LVS database pairs all 16
+non-tap primitives successfully; the two tap devices still have parameter
+warnings. The extracted top has four unintended internal RC labels and lacks
+the explicitly declared substrate port. The source wrapper therefore needs an
+independently justified diagnostic boundary, rather than a relaxed port check.
+
+The [boundary method](evidence/io-parent-boundary-method-20261002.json) probes
+53 transformed original-LEF TopMetal1 rectangle centers in the captured native
+database. They prove four distinct connected supply rails. Ten body terminals
+share one fifth physical substrate cluster, separate from the rails; a chosen
+substrate annotation point lies on that same cluster. This bounded local native
+inspection reads the already captured sub-MB database without loading actual
+GDS or running new extraction.
+
+The separate diagnostic wrapper removes only inventoried conductive-layer
+TEXT annotations and adds the four witnessed rail labels plus the body label.
+Every polygon, instance transform and device-recognition text is preserved.
+The original 53-file deck remains pinned. A separate copied deck adds only
+`connect(pwell_sub, substrate_text)`, attaching the body label to existing
+physical material. It neither joins disconnected bodies by name nor changes
+tap parameters, tolerances or strict port checks. Tiny native controls reject
+open bodies, identically named disconnected bodies, wrong and missing labels;
+89 adjacent source tests pass. Actual wrapper deep/flat comparisons are pending,
+and even a future diagnostic match is distinct from acceptance under the
+unmodified qualified deck or full-chip signoff.
