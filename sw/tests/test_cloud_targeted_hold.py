@@ -4,6 +4,7 @@
 import json
 import os
 from pathlib import Path
+import shutil
 import struct
 import subprocess
 import sys
@@ -147,6 +148,10 @@ def test_native_gate_failure_precedes_c10_loading(tmp_path):
     env=dict(os.environ,NSSOC_TARGETED_METHOD_ROOT=str(methods),NSSOC_TARGETED_CONTROL_OUT=str(tmp_path/'native-controls/targeted'),
         NSSOC_TARGETED_PDK_ROOT=str(tmp_path/'pdk'),NSSOC_HOLD_DIAGNOSTIC_HELPER=str(ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl'),
         STEP_DIR=str(tmp_path),SCRIPTS_DIR=str(tmp_path/'must-not-be-read'))
+    tcl=Path(shutil.which('tclsh'))
+    for name,path in (('launcher',tcl),('native_entry',tcl),('actual_elf',tcl.resolve())):
+        for key,value in dict(path=str(path),bytes=path.stat().st_size,sha256=probe.shared.common.sha(path)).items():
+            env[f'NSSOC_TARGETED_{name.upper()}_{key.upper()}']=str(value)
     script='''
 rename exec real_exec
 proc exec {args} {
@@ -205,17 +210,27 @@ def test_workflow_has_single_opt_in_and_no_native_elapsed_watchdog():
     assert len(uploads)==4 and all(s['with']['include-hidden-files']=='true' for s in uploads)
 
 
-def targeted_control_fixture(output):
+def targeted_control_fixture(output,monkeypatch):
     root=output/'native-controls/targeted';root.mkdir(parents=True)
+    # Small synthetic wrappers exercise the binding logic, with no native tool.
+    identity={name:dict(pin) for name,pin in probe.NATIVE_IDENTITY.items()}
+    for wrapper,target in (('launcher','native_entry'),('native_entry','actual_elf')):
+        path=root/f'runtime-{wrapper}.bin'
+        path.write_text("synthetic wrapper: makeCWrapper '"+identity[target]['path']+"'\n")
+        identity[wrapper].update(bytes=path.stat().st_size,sha256=probe.shared.common.sha(path))
+    monkeypatch.setattr(probe,'NATIVE_IDENTITY',identity)
     for name in (probe.RECIPE,probe.FIXTURE):
         path=output/'methods'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes((ROOT/name).read_bytes())
-    write(output/'native-controls/result.json',dict(native_executable_sha256='a'*64))
+    write(output/'result.json',dict(runtime_sha256=probe.RUNTIME_SHA))
+    write(output/'native-controls/result.json',dict(native_executable_sha256=identity['launcher']['sha256'],
+        command=[identity['launcher']['path'],'-exit','fixture.tcl']))
     for name in ('before.sdc','after.sdc','blocked-setup/before.sdc','blocked-setup/after.sdc'):
         path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('fixed original constraints\n')
     (root/'native.log').write_text('\n'.join(probe.CONTROL_MARKERS)+'\n')
     (root/'tiny-after.odb').write_bytes(b'tiny fixture database')
     row=dict(status='PASS_TARGETED_NATIVE_GATE',returncode=0,recipe_sha256=probe.RECIPE_SHA,fixture_sha256=probe.FIXTURE_SHA,
-        executable_sha256='a'*64,timing_accepted=False,candidate_adopted=False,manufacturing_approval=False,
+        executable_sha256=identity['native_entry']['sha256'],native_identity={name:dict(pin) for name,pin in identity.items()},
+        timing_accepted=False,candidate_adopted=False,manufacturing_approval=False,
         selection=dict(corners=['fast','slow','typical'],selected_count=2,targets=[{'endpoint':'q_bad1'},{'endpoint':'q_bad2'}],
             setup_margin_ns=0.1,hold_margin_ns=0.15,allow_setup_violations=0,max_passes_per_endpoint=1,
             initial_instance_count=3,global_buffer_budget=1),
@@ -227,9 +242,10 @@ def targeted_control_fixture(output):
 
 
 @pytest.mark.parametrize('fault',[None,'exit','recipe','fixture','executable','method-bytes','output-bytes','extra-output',
-    'marker','constraints','selection','margin','budget','overrun','adoption'])
-def test_targeted_native_gate_requires_pinned_complete_real_control_evidence(tmp_path,fault):
-    root,row=targeted_control_fixture(tmp_path)
+    'marker','constraints','selection','margin','budget','overrun','adoption','runtime','launcher','native_entry',
+    'actual_elf','launcher-path','base-launcher','launcher-bytes','entry-bytes','wrapper-target'])
+def test_targeted_native_gate_requires_pinned_complete_real_control_evidence(tmp_path,monkeypatch,fault):
+    root,row=targeted_control_fixture(tmp_path,monkeypatch)
     if fault=='exit':row['returncode']=1
     if fault=='recipe':row['recipe_sha256']='0'*64
     if fault=='fixture':row['fixture_sha256']='0'*64
@@ -244,6 +260,21 @@ def test_targeted_native_gate_requires_pinned_complete_real_control_evidence(tmp
     if fault=='budget':row['result']['remaining_buffer_budget']=1
     if fault=='overrun':row['overrun']['actual_instance_count']=5;row['overrun']['actual_instance_growth']=1
     if fault=='adoption':row['candidate_adopted']=True
+    if fault=='runtime':write(tmp_path/'result.json',dict(runtime_sha256='0'*64))
+    if fault in ('launcher','native_entry','actual_elf'):row['native_identity'][fault]['sha256']='0'*64
+    if fault=='launcher-path':row['native_identity']['launcher']['path']='/untrusted/openroad'
+    if fault=='base-launcher':
+        path=tmp_path/'native-controls/result.json';base=json.loads(path.read_text())
+        base['native_executable_sha256']='0'*64;write(path,base)
+    if fault in ('launcher-bytes','entry-bytes','wrapper-target'):
+        wrapper='native_entry' if fault=='entry-bytes' else 'launcher'
+        path=root/f'runtime-{wrapper}.bin';path.write_bytes(b'altered wrapper without the pinned target')
+        if fault=='wrapper-target':
+            # Even independently pinned bytes cannot silently point elsewhere.
+            pin=probe.NATIVE_IDENTITY[wrapper];pin.update(bytes=path.stat().st_size,sha256=probe.shared.common.sha(path))
+            row['native_identity'][wrapper]=dict(pin)
+            basepath=tmp_path/'native-controls/result.json';base=json.loads(basepath.read_text())
+            base['native_executable_sha256']=pin['sha256'];write(basepath,base)
     if fault in ('marker','constraints'):
         row['files']={k:v for k,v in probe.shared.file_inventory(root).items() if k!='gate.json'}
     write(root/'gate.json',row)
@@ -252,24 +283,38 @@ def test_targeted_native_gate_requires_pinned_complete_real_control_evidence(tmp
         with pytest.raises(ValueError):probe.validate_targeted_controls(tmp_path)
 
 
-@pytest.mark.parametrize('fault',[None,'endpoint-count','negative-count','corner','receipt'])
+@pytest.mark.parametrize('fault',[None,'endpoint-count','negative-count','corner','receipt',
+    'tiny-corner-aliases','duplicate-corner','extra-corner','wrong-pvt'])
 def test_known_c10_baseline_rejects_changed_census(tmp_path,fault):
-    row=dict(endpoint_names=[f'e{i}' for i in range(23527)],negative_vertex_endpoints=113,corner_names=['typical','fast','slow'])
+    # Actual matched_before export from run36962503055: source-config.json
+    # SHA52456f4e2e7c281926bcbbb4f70c3bdd34d030989bea5bb168534a32a08b3c6c.
+    # Its complete, correct census previously failed before any chip repair.
+    corners=['nom_fast_1p32V_m40C','nom_slow_1p08V_125C','nom_typ_1p20V_25C']
+    row=dict(endpoint_names=[f'e{i}' for i in range(23527)],negative_vertex_endpoints=113,corner_names=corners[::-1])
     receipt=dict(probe.BASELINE_CENSUS)
     if fault=='endpoint-count':row['endpoint_names'].pop()
     if fault=='negative-count':row['negative_vertex_endpoints']=112
     if fault=='corner':row['corner_names']=['fast','slow']
+    if fault=='tiny-corner-aliases':row['corner_names']=['fast','slow','typical']
+    if fault=='duplicate-corner':row['corner_names']=[corners[0],corners[0],corners[2]]
+    if fault=='extra-corner':row['corner_names'].append('nom_fast_1p32V_25C')
+    if fault=='wrong-pvt':row['corner_names'][0]='nom_typ_1p08V_25C'
     if fault=='receipt':receipt['negative_vertex_endpoints']=112
     if fault is None:assert probe.validate_baseline(row,receipt)==probe.BASELINE_CENSUS
     else:
         with pytest.raises(ValueError,match='known C10'):probe.validate_baseline(row,receipt)
     # Native early gate consumes the actual engine census, without a chip load.
     script=tmp_path/'baseline.tcl'
-    script.write_text('source [lindex $argv 0]\nset code [catch {nssoc_targeted_assert_baseline [lindex $argv 1] [lindex $argv 2] [lindex $argv 3]} message]\nputs $code\n')
+    script.write_text('source [lindex $argv 4]\nsource [lindex $argv 0]\nset code [catch {nssoc_targeted_assert_baseline [lindex $argv 1] [lindex $argv 2] [lindex $argv 3]} message]\nputs $code\nif {!$code} {puts [nssoc_hold_jobject $message]}\n')
     result=subprocess.run(['tclsh',str(script),str(ROOT/'hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl'),
-        str(len(row['endpoint_names'])),str(row['negative_vertex_endpoints']),' '.join(row['corner_names'])],capture_output=True,text=True,timeout=5)
+        str(len(row['endpoint_names'])),str(row['negative_vertex_endpoints']),' '.join(row['corner_names']),
+        str(ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl')],capture_output=True,text=True,timeout=5)
     assert result.returncode==0,result.stderr
-    assert result.stdout.strip()==('1' if fault in ('endpoint-count','negative-count','corner') else '0')
+    failed=fault is not None and fault!='receipt'
+    assert result.stdout.splitlines()[0]==('1' if failed else '0')
+    if not failed:
+        assert json.loads(result.stdout.splitlines()[1])==dict(
+            endpoint_count=23527,negative_vertex_endpoints=113,corners=corners)==probe.BASELINE_CENSUS
     step=(ROOT/probe.specification().step).read_text()
     assert step.index('nssoc_targeted_assert_baseline')<step.index('NSSOC_TARGETED_HOLD_PROBE_REPAIR_BEGIN')
 
@@ -304,8 +349,8 @@ puts [nssoc_targeted_result_json $result]
 
 @pytest.mark.parametrize('fault',[None,'recipe','fixture','duplicate-run','wrong-run'])
 def test_native_environment_is_authoritative_and_pins_existing_profile(tmp_path,monkeypatch,fault):
-    targeted_control_fixture(tmp_path)
-    write(tmp_path/'result.json',dict(work=str(tmp_path/'work')))
+    targeted_control_fixture(tmp_path,monkeypatch)
+    write(tmp_path/'result.json',dict(work=str(tmp_path/'work'),runtime_sha256=probe.RUNTIME_SHA))
     calls=[]
     def verify(output,record,spec):
         calls.append((output,record,spec));return dict(pdk_root='pdk')
@@ -323,6 +368,57 @@ def test_native_environment_is_authoritative_and_pins_existing_profile(tmp_path,
         assert os.environ['NSSOC_TARGETED_METHOD_ROOT']==str(tmp_path/'methods')
         assert os.environ['NSSOC_TARGETED_CONTROL_OUT']==str(tmp_path/'native-controls/targeted')
         assert os.environ['NSSOC_TARGETED_PDK_ROOT']==str(tmp_path/'work/bundle/pdk')
+        for name,pin in probe.NATIVE_IDENTITY.items():
+            for key,value in pin.items():
+                assert os.environ[f'NSSOC_TARGETED_{name.upper()}_{key.upper()}']==str(value)
+
+
+@pytest.mark.parametrize('fault',[None,'launcher','native_entry','actual_elf','path','bytes','missing-pin'])
+def test_tcl_native_identity_rejects_wrong_chain_before_launch(tmp_path,fault):
+    env=dict(os.environ);paths=[];expected={}
+    for name in ('launcher','native_entry','actual_elf'):
+        path=tmp_path/name;path.write_text('distinct synthetic '+name);paths.append(str(path))
+        expected[name]=dict(path=str(path),bytes=path.stat().st_size,sha256=probe.shared.common.sha(path))
+        for key,value in expected[name].items():env[f'NSSOC_TARGETED_{name.upper()}_{key.upper()}']=str(value)
+    if fault in expected:(tmp_path/fault).write_text('changed same or different bytes')
+    if fault=='path':env['NSSOC_TARGETED_LAUNCHER_PATH']='/untrusted/launcher'
+    if fault=='bytes':env['NSSOC_TARGETED_ACTUAL_ELF_BYTES']='1'
+    if fault=='missing-pin':del env['NSSOC_TARGETED_NATIVE_ENTRY_SHA256']
+    script=tmp_path/'identity.tcl'
+    script.write_text('source [lindex $argv 0]\nsource [lindex $argv 1]\n'
+        'set code [catch {nssoc_targeted_native_identity {*}[lrange $argv 2 4]} message]\n'
+        'puts $code\nputs $message\n')
+    result=subprocess.run(['tclsh',str(script),str(ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl'),
+        str(ROOT/'hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl'),*paths],env=env,capture_output=True,text=True,timeout=5)
+    assert result.returncode==0,result.stderr
+    assert result.stdout.splitlines()[0]==('0' if fault is None else '1')
+    if fault is None:assert json.loads(result.stdout.splitlines()[1])==expected
+
+
+@pytest.mark.parametrize('fault',[None,'wrong-size','wrong-sha','existing-destination'])
+def test_tcl_capture_dereferences_launcher_symlink_into_pinned_regular_bytes(tmp_path,fault):
+    source=tmp_path/'native-wrapper';source.write_bytes(bytes(range(256))+b'\x00\r\n\xffwrapper')
+    launcher=tmp_path/'openroad';launcher.symlink_to(source.name)
+    captured=tmp_path/'capture';captured.mkdir()
+    destination=captured/'runtime-launcher.bin'
+    expected_bytes=source.stat().st_size;expected_sha=probe.shared.common.sha(source)
+    if fault=='wrong-size':expected_bytes+=1
+    if fault=='wrong-sha':expected_sha='0'*64
+    if fault=='existing-destination':destination.write_bytes(b'preserve existing evidence')
+    script=tmp_path/'capture-wrapper.tcl'
+    script.write_text('source [lindex $argv 0]\nsource [lindex $argv 1]\n'
+        'set code [catch {nssoc_targeted_capture_binary {*}[lrange $argv 2 5]} message]\n'
+        'puts $code\nputs $message\n')
+    result=subprocess.run(['tclsh',str(script),str(ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl'),
+        str(ROOT/'hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl'),str(launcher),str(destination),
+        str(expected_bytes),expected_sha],capture_output=True,text=True,timeout=5)
+    assert result.returncode==0,result.stderr
+    assert result.stdout.splitlines()[0]==('0' if fault is None else '1')
+    assert launcher.is_symlink() and not destination.is_symlink()
+    if fault=='existing-destination':assert destination.read_bytes()==b'preserve existing evidence'
+    else:assert destination.read_bytes()==source.read_bytes()
+    if fault is None:
+        assert probe.shared.file_inventory(captured)['runtime-launcher.bin']==dict(bytes=expected_bytes,sha256=expected_sha)
 
 
 def test_existing_base_control_validator_and_capture_preserve_additional_targeted_directory(tmp_path):

@@ -22,6 +22,17 @@ RECIPE = 'hw/soc/pnr/timing_repair_experiment.tcl'
 FIXTURE = 'sw/tests/timing_hold_targeted_native.tcl'
 RECIPE_SHA = '77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb'
 FIXTURE_SHA = '066982c820626c0690ae8bcb3e0893189054e264dc1845f27982fa8a532fa3ac'
+RUNTIME_SHA = 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+# Read-only hashes from that exact AppImage. Nix has two binary wrappers:
+# PATH launcher -> native entry (Tcl argv0) -> actual /proc/self/exe ELF.
+NATIVE_IDENTITY = {
+    'launcher': dict(path='/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/openroad',
+        bytes=16032,sha256='e41c3de2e496258357b41e9e9bdc8d9036cff6f53ffda2c2f61daef5bc827afc'),
+    'native_entry': dict(path='/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/openroad',
+        bytes=16088,sha256='b1daf182a2702687868c777a722924afeb45f85fc125029357b28a5f73ba8860'),
+    'actual_elf': dict(path='/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/.openroad-wrapped',
+        bytes=103633024,sha256='25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b'),
+}
 SOURCES = shared.SOURCES + ('.github/workflows/timing-targeted-hold.yml',
     'scripts/run_cloud_targeted_hold.py','scripts/compare_full_hold_endpoints.py',
     'scripts/run_timing_experiments.py','scripts/timing_process_guard.py',
@@ -31,7 +42,10 @@ CONTROL_MARKERS = ('PASS_NATIVE_BATCH_GLOBAL_BUDGET_EXHAUSTION_PREVENTS_SECOND_C
     'PASS_NATIVE_SETUP_GUARD_REJECTS_UNSAFE_DELAY_INSERTION',
     'PASS_REAL_NATIVE_BUDGET_OVERRUN_REJECTED',
     'PASS_REAL_NATIVE_TARGETED_HOLD_SMALL_FIXTURE_NOT_CHIP_SIGNOFF')
-BASELINE_CENSUS = dict(endpoint_count=23527,negative_vertex_endpoints=113,corners=['fast','slow','typical'])
+# These are the exact PNR_CORNERS in the pinned C10 source configuration.
+# The separate tiny native fixture deliberately uses fast/slow/typical aliases.
+BASELINE_CENSUS = dict(endpoint_count=23527,negative_vertex_endpoints=113,
+    corners=['nom_fast_1p32V_m40C','nom_slow_1p08V_125C','nom_typ_1p20V_25C'])
 
 
 def require(condition,message):
@@ -65,8 +79,17 @@ def validate_targeted_controls(output):
     require(row.get('recipe_sha256')==RECIPE_SHA and row.get('fixture_sha256')==FIXTURE_SHA,
             'Targeted gate used different native methods')
     base=json.loads((output/'native-controls/result.json').read_text())
-    require(row.get('executable_sha256')==base['native_executable_sha256'],
-            'Targeted and base controls used different native executables')
+    require(json.loads((output/'result.json').read_text()).get('runtime_sha256')==RUNTIME_SHA,
+            'Targeted native identity requires the exact pinned runtime')
+    require(row.get('native_identity')==NATIVE_IDENTITY,'Targeted native launcher/entry/ELF identity differs')
+    require(base['native_executable_sha256']==NATIVE_IDENTITY['launcher']['sha256']
+            and base['command'][0]==NATIVE_IDENTITY['launcher']['path']
+            and row.get('executable_sha256')==NATIVE_IDENTITY['native_entry']['sha256'],
+            'Native control launcher or targeted entry differs from pinned chain')
+    for wrapper,target in (('launcher','native_entry'),('native_entry','actual_elf')):
+        path=root/f'runtime-{wrapper}.bin';shared.common.verify_file(path,NATIVE_IDENTITY[wrapper])
+        require(("makeCWrapper '"+NATIVE_IDENTITY[target]['path']+"'").encode() in path.read_bytes(),
+                'Pinned native wrapper target is absent')
     for name,digest in ((RECIPE,RECIPE_SHA),(FIXTURE,FIXTURE_SHA)):
         require(shared.common.sha(output/'methods'/name)==digest,'Staged targeted native source changed')
     shared.verify_evidence_files(root,row.get('files'))
@@ -250,12 +273,20 @@ def configure_native_environment(argv):
     require(run.name=='run','Unexpected isolated run directory')
     record=json.loads((output/'result.json').read_text())
     manifest=shared.verify_inputs(output,record,specification())
+    require(record.get('runtime_sha256')==RUNTIME_SHA,'Unexpected runtime for pinned native identity')
+    base=json.loads((output/'native-controls/result.json').read_text())
+    require(base['command'][0]==NATIVE_IDENTITY['launcher']['path']
+            and base['native_executable_sha256']==NATIVE_IDENTITY['launcher']['sha256'],
+            'Base control launcher differs from pinned native identity')
     methods=output/'methods'
     for name,digest in ((RECIPE,RECIPE_SHA),(FIXTURE,FIXTURE_SHA)):
         require(shared.common.sha(methods/name)==digest,'Existing targeted native methods changed')
     os.environ.update(NSSOC_TARGETED_METHOD_ROOT=str(methods),
         NSSOC_TARGETED_CONTROL_OUT=str(output/'native-controls/targeted'),
         NSSOC_TARGETED_PDK_ROOT=str(Path(record['work'])/'bundle'/manifest['pdk_root']))
+    for name,pin in NATIVE_IDENTITY.items():
+        for key,value in pin.items():
+            os.environ[f'NSSOC_TARGETED_{name.upper()}_{key.upper()}']=str(value)
 
 
 def main():

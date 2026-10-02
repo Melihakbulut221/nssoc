@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: CERN-OHL-W-2.0
 # JSON adapters and a separate tiny native gate; no design load on source.
 proc nssoc_targeted_assert_baseline {endpoints negative corners} {
-    if {$endpoints != 23527 || $negative != 113 || [lsort $corners] ne {fast slow typical}} {
+    # C10 PNR names are distinct from the separate tiny fixture's aliases.
+    set expected_corners {nom_fast_1p32V_m40C nom_slow_1p08V_125C nom_typ_1p20V_25C}
+    if {$endpoints != 23527 || $negative != 113 || [lsort $corners] ne $expected_corners} {
         error "Matched-before census differs from known C10: endpoints=$endpoints negative=$negative corners=$corners"
     }
-    return [dict create endpoint_count $endpoints negative_vertex_endpoints $negative corners {["fast","slow","typical"]}]
+    return [dict create endpoint_count $endpoints negative_vertex_endpoints $negative \
+        corners {["nom_fast_1p32V_m40C","nom_slow_1p08V_125C","nom_typ_1p20V_25C"]}]
 }
 proc nssoc_targeted_read {path} {
     set stream [open $path r]
@@ -65,6 +68,39 @@ proc nssoc_targeted_files_json {root {prefix {}}} {
     }
     return $files
 }
+proc nssoc_targeted_native_identity {launcher entry elf} {
+    set identities {}
+    foreach name {launcher native_entry actual_elf} path [list $launcher $entry $elf] {
+        set prefix "NSSOC_TARGETED_[string toupper $name]"
+        foreach field {PATH BYTES SHA256} {
+            if {![info exists ::env(${prefix}_$field)]} {error "Missing pinned native $name $field"}
+        }
+        set size [file size $path]
+        set digest [nssoc_hold_sha $path]
+        if {$path ne $::env(${prefix}_PATH) || $size != $::env(${prefix}_BYTES) ||
+                $digest ne $::env(${prefix}_SHA256)} {error "Pinned native identity differs: $name"}
+        dict set identities $name [nssoc_hold_jobject [dict create path [nssoc_hold_jstr $path] \
+            bytes $size sha256 [nssoc_hold_jstr $digest]]]
+    }
+    return [nssoc_hold_jobject $identities]
+}
+proc nssoc_targeted_capture_binary {source destination expected_bytes expected_sha} {
+    # The PATH launcher is a symlink. Capture its opened bytes, not the link.
+    set input [open $source rb]
+    try {
+        set output [open $destination {WRONLY CREAT EXCL}]
+        try {
+            fconfigure $output -translation binary
+            fcopy $input $output
+        } finally {
+            close $output
+        }
+    } finally {
+        close $input
+    }
+    if {[file type $destination] ne "file" || [file size $destination] != $expected_bytes ||
+            [nssoc_hold_sha $destination] ne $expected_sha} {error "Native binary capture differs: $destination"}
+}
 proc nssoc_targeted_native_gate {} {
     foreach key {NSSOC_TARGETED_METHOD_ROOT NSSOC_TARGETED_CONTROL_OUT NSSOC_TARGETED_PDK_ROOT} {
         if {![info exists ::env($key)]} {error "$key is required"}
@@ -77,6 +113,9 @@ proc nssoc_targeted_native_gate {} {
     set recipe_hash [nssoc_hold_sha $recipe]
     set executable [file normalize [info nameofexecutable]]
     set executable_hash [nssoc_hold_sha $executable]
+    set launcher $::env(NSSOC_TARGETED_LAUNCHER_PATH)
+    set actual_elf [file readlink /proc/[pid]/exe]
+    set native_identity [nssoc_targeted_native_identity $launcher $executable $actual_elf]
     if {[file exists $out] || [file exists "$out.log"]} {error "Targeted native gate output already exists"}
     file mkdir [file dirname $out]
     set ::env(NSSOC_PDK_ROOT) $::env(NSSOC_TARGETED_PDK_ROOT)
@@ -93,7 +132,7 @@ proc nssoc_targeted_native_gate {} {
         }
     }
     set receipt [dict create status [nssoc_hold_jstr [expr {$code ? "FAIL_TARGETED_NATIVE_GATE" : "PASS_TARGETED_NATIVE_GATE"}]] \
-        returncode $exitcode executable_sha256 [nssoc_hold_jstr $executable_hash] \
+        returncode $exitcode executable_sha256 [nssoc_hold_jstr $executable_hash] native_identity $native_identity \
         fixture_sha256 [nssoc_hold_jstr $fixture_hash] recipe_sha256 [nssoc_hold_jstr $recipe_hash] \
         timing_accepted false candidate_adopted false manufacturing_approval false]
     if {$code} {
@@ -103,7 +142,14 @@ proc nssoc_targeted_native_gate {} {
     if {[nssoc_hold_sha $fixture] ne $fixture_hash || [nssoc_hold_sha $recipe] ne $recipe_hash || [nssoc_hold_sha $executable] ne $executable_hash} {
         error "Targeted native gate inputs changed"
     }
+    if {[nssoc_targeted_native_identity $launcher $executable $actual_elf] ne $native_identity} {
+        error "Targeted native identity changed during fixture execution"
+    }
     file copy "$out.log" [file join $out native.log]
+    nssoc_targeted_capture_binary $launcher [file join $out runtime-launcher.bin] \
+        $::env(NSSOC_TARGETED_LAUNCHER_BYTES) $::env(NSSOC_TARGETED_LAUNCHER_SHA256)
+    nssoc_targeted_capture_binary $executable [file join $out runtime-native_entry.bin] \
+        $::env(NSSOC_TARGETED_NATIVE_ENTRY_BYTES) $::env(NSSOC_TARGETED_NATIVE_ENTRY_SHA256)
     dict set receipt selection [nssoc_targeted_selection_json [nssoc_targeted_read [file join $out hold-targeted-selection.tcldict]]]
     dict set receipt result [nssoc_targeted_result_json [nssoc_targeted_read [file join $out hold-targeted-result.tcldict]]]
     set failure [nssoc_targeted_read [file join $out native-budget-overrun hold-targeted-budget-failure.tcldict]]

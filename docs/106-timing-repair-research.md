@@ -1,5 +1,10 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
+**2 October update:** the first targeted hold run stopped before repair because
+the C10 guard expected the small fixture's corner aliases. The exact PVT names
+and distinct native wrapper identities are corrected below. No hold reduction
+or new checkpoint has yet been demonstrated by this retry.
+
 **1 October status:** the cloud setup A/B and full-endpoint no-op diagnostic
 have completed. Both setup candidates remain rejected; the diagnostic preserves
 all seven post-routing endpoint exports but does not reproduce the prior hold
@@ -824,7 +829,9 @@ all configured corners, fixed SDC and 32 SRAM masters/positions/orientations.
 Before C10 is loaded, the exact same native executable must pass the existing
 small targeted fixture, including setup-headroom and global-budget negative
 controls. Before any full-chip repair, the matched baseline must reproduce
-23,527 endpoints, 113 negative hold endpoints and the fast/slow/typical corners.
+23,527 endpoints, 113 negative hold endpoints and the source PVT corners.
+The original implementation mistakenly used the tiny fixture aliases; the
+correction and failed native evidence are recorded below.
 An unexpected baseline stops repair. The independent verifier checks the
 complete selection/call history, all stage inventories and original C10 as
 well as matched-before aggregate guards.
@@ -842,3 +849,44 @@ All 196 selected pure-Python/Tcl tests passed. Review also caught OpenSTA's
 six-decimal UI slack formatting: target-receipt comparison now reproduces the
 pinned native float32 division, small-value clamp and formatting exactly.
 Full endpoint SI values and acceptance tolerances remain unchanged.
+
+
+### 2026-10-02 — actual pre-repair failure and exact runtime identity correction
+
+[Run 36962503055](https://github.com/Melihakbulut221/nssoc/actions/runs/36962503055)
+passed its small native fixture, loaded C10, globally routed and exported the
+matched baseline. It then stopped **before any chip repair**: the baseline
+guard compared C10's exact `nom_fast_1p32V_m40C`, `nom_slow_1p08V_125C` and
+`nom_typ_1p20V_25C` names with the tiny fixture's `fast/slow/typical` aliases.
+The original source configuration and native endpoint table independently
+confirm 23,527 unique endpoints and 113 negative endpoints. The repair-begin
+marker and all post-repair stages are absent. The original failed artifact
+remains failed; it is not evidence of an unsuccessful optimization attempt.
+
+The [retry diagnosis](evidence/timing-targeted-hold-retry-20261002.json)
+records reproduction of both original Python/Tcl rejections and acceptance of
+the same actual census after correcting the exact corner names. It also
+preserves a second, independent validator defect: the base fixture hashes the
+PATH launcher, while the targeted fixture hashes Tcl's native entry wrapper.
+Their hashes legitimately differ. Read-only inspection of the exact pinned
+AppImage proves launcher → entry wrapper → actual ELF, with separate exact
+paths, byte lengths and SHA-256 values. The new gate checks all three before
+C10 loading and again after its small fixture, retains the two small wrapper
+files, and requires the base command to use the pinned launcher. A different
+file is rejected; hash equality is not waived. Wrapper evidence is captured
+through an exclusive binary stream so the launcher symlink becomes verified
+regular-file bytes; binary-content and conflict regressions cover this case. The original failed receipt
+is preserved separately from a prospective validator reconstruction.
+
+All 257 selected pure tests passed, covering the corrected guard, runtime
+identity mutations, archive boundaries and existing hold/setup comparators.
+No local native calculation was performed. Source recipe, fixture, setup/hold
+thresholds, fixed SDC, SRAM placement and all acceptance guards are unchanged.
+New cloud native evidence is still required to demonstrate that these repairs
+allow the full four-stage diagnostic to finish.
+
+The separate failure-archive workflow will preserve the original 72,449,994-byte
+ZIP unchanged, verify all 114 captured members, replay bounded source/control
+receipts and publish only after authenticated and anonymous byte roundtrips.
+Its source tests passed; publication is not asserted until the cloud receipt
+is verified. Neither this archive nor the retry adopts a physical candidate.
