@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Archive exact artifacts from a pinned successful producer; never replace assets."""
+"""Archive exact artifacts from a pinned producer outcome; never replace assets.
+
+Success remains the default required conclusion. A failed proof may be preserved
+only by a plan explicitly pinning failure; archiving cannot turn it into success.
+"""
 import argparse
 import hashlib
 import json
@@ -17,8 +21,10 @@ from archive_chip_fill import REPO, TAG, api, stream_hash
 def validate_plan(plan):
     required = {'source_run', 'source_commit', 'source_branch', 'source_workflow',
                 'source_event', 'artifacts'}
-    if set(plan) != required:
+    if not required <= set(plan) <= required | {'expected_producer_conclusion'}:
         raise ValueError('Unexpected archival plan fields')
+    if plan.get('expected_producer_conclusion', 'success') not in ('success', 'failure'):
+        raise ValueError('Unsupported expected producer conclusion')
     if type(plan['source_run']) is not int or plan['source_run'] <= 0:
         raise ValueError('Invalid source run')
     if not re.fullmatch(r'[0-9a-f]{40}', plan['source_commit']):
@@ -51,8 +57,9 @@ def producer_ready(source, plan):
         raise ValueError('Unexpected producer identity')
     if source['status'] != 'completed':
         return False
-    if source['conclusion'] != 'success':
-        raise ValueError('Producer completed without success')
+    expected_conclusion = plan.get('expected_producer_conclusion', 'success')
+    if source['conclusion'] != expected_conclusion:
+        raise ValueError('Producer completed without required conclusion: ' + expected_conclusion)
     return True
 
 

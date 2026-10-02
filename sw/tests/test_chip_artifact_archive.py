@@ -103,3 +103,31 @@ def test_unsupported_source_events_remain_rejected(event):
     value = plan();value['source_event'] = event
     with pytest.raises(ValueError, match='branch/workflow/event'):
         archive.validate_plan(value)
+
+
+def test_failed_proof_requires_explicit_exact_failure_plan():
+    value = plan();value['expected_producer_conclusion'] = 'failure'
+    checked = archive.validate_plan(value)
+    source = producer();source['conclusion'] = 'failure'
+    assert archive.producer_ready(source, checked)
+    assert checked['expected_producer_conclusion'] == 'failure'
+    with pytest.raises(ValueError, match='required conclusion: success'):
+        archive.producer_ready(source, plan())
+    with pytest.raises(ValueError, match='required conclusion: failure'):
+        archive.producer_ready(producer(), checked)
+    source['head_sha'] = 'c' * 40
+    with pytest.raises(ValueError, match='Unexpected producer identity'):
+        archive.producer_ready(source, checked)
+
+
+@pytest.mark.parametrize('conclusion', ['cancelled', 'timed_out', 'neutral', 'skipped', None, True, 'any'])
+def test_nonfinal_or_wildcard_outcome_cannot_authorize_failure_archive(conclusion):
+    value = plan();value['expected_producer_conclusion'] = conclusion
+    with pytest.raises(ValueError, match='Unsupported expected producer conclusion'):
+        archive.validate_plan(value)
+
+
+def test_failure_plan_waits_for_real_completion():
+    value = plan();value['expected_producer_conclusion'] = 'failure'
+    source = producer();source.update(status='in_progress', conclusion=None)
+    assert not archive.producer_ready(source, archive.validate_plan(value))

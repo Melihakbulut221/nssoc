@@ -1386,3 +1386,65 @@ handling, load-use and writeback hazards, clock-gating/interrupt behavior, and
 common-reset cancellation. The existing immediate-grant request-pipe proof
 does not establish this narrower contract. No timing improvement, sequential
 equivalence or full-core qualification is claimed for this candidate yet.
+
+
+### Combined physical repair completed; electrical regression prevents adoption
+
+[Run 36990647336](https://github.com/Melihakbulut221/nssoc/actions/runs/36990647336)
+finishes normally after 7,905.65 seconds of native execution. The
+[verified result](evidence/timing-combined-repair-native-20261002.json) retains
+the original 100-iteration setup batch and four guarded hold batches. Two fresh
+native processes reload the exported ODB/SDC and agree exactly on all metrics,
+fingerprints and 70,581 endpoint/corner records. Root independently repeats the
+compact review of 123 selected files, 21 methods and unchanged acceptance guards;
+large physical views and full endpoint validation are verified in the producer,
+not recomputed locally.
+
+| Estimated GRT quantity | Matched C10 baseline | Fresh repaired reload |
+| --- | ---: | ---: |
+| Setup violating endpoints | 1,384 | 1,311 |
+| Setup WNS, ns | −4.909516349 | −4.209004700 |
+| Setup TNS, ns | −4320.800144342 | −3554.924433047 |
+| Hold violating endpoints | 113 | 66 |
+| Hold WNS, ns | −1.840965380 | −0.155300439 |
+| Hold TNS, ns | −26.461044911 | −2.117501507 |
+| Slew / capacitance violations | 0 / 1 | 2 / 3 |
+| Instances | 103,697 | 103,889 |
+
+All 32 SRAM placements remain unchanged. The pre-export in-memory state had
+57 hold endpoints and zero slew violations; independent rerouting changes the
+parasitic estimates and exposes 66 hold endpoints and two slew violations.
+Netlist, placement and SDC remain identical across this transition. The two
+fresh reloads agree with each other, so the fresh values govern this candidate.
+
+The historical selected-C10 guard passes, but the matched-baseline guard fails
+on electrical regression. `fanout1387/X` and `fanout1391/X` exceed both slew and
+capacitance limits; `fanout1228/X` also exceeds capacitance. Consequently the
+aggregate guard rejects the candidate despite setup and hold improvements.
+The exported state supports a separate electrical-repair continuation with an
+exactly reproduced baseline; the original C10 remains selected. Detailed-route
+RC, zero-violation timing, physical verification and adoption are still open.
+
+The [full rejected candidate archive](evidence/closure-combined-archive-native-20261002.json)
+is permanently published with its original 329,082,361 bytes, SHA-256 and both
+authenticated and anonymous download roundtrips verified. Publication preserves
+the measured failure and does not promote the candidate.
+
+
+### Full mapped ALU state relation failed; counterexample preserved
+
+[Run 37003975081](https://github.com/Melihakbulut221/nssoc/actions/runs/37003975081)
+completes both native frontends and reaches the full binary equivalence check.
+It [finds a real counterexample](evidence/alu-mapped-state-failure-20261002.json)
+after 252.39 seconds. Root independently verifies the source pins, compact logs,
+failed result and all 10,828 binary input/state bits in the counterexample.
+This is a failed proof, not a missing tool, skipped check or resource timeout.
+
+The proposed relation contains 9,892 anchored and 117 anonymously paired FFs;
+the latter pairing was explicitly untrusted pending proof. The first miter
+exposes an aggregate mismatch only, so this result does not yet distinguish
+incorrect state pairing from a genuine mapped-logic difference. A separate
+replay will expose every original/candidate boundary output for the exact saved
+assignment. It will retain the failed unconstrained proof and introduce no new
+internal-state assumptions. ALU adoption remains blocked, independently of the
+four still-running boot/MBIST simulations and physical timing qualification.
