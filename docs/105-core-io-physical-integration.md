@@ -2430,3 +2430,22 @@ no active-silicon overlap. Only then may it add the 26 recognition rectangles,
 prove preservation of every other polygon/text/instance, and repeat the same
 strict reference comparison. This is an actual repair candidate with a
 falsifiable precondition; no tap parameter fit or LVS waiver is involved.
+
+
+The [bounded marker repair method](evidence/io-parent-marker-method-20261002.json)
+is implemented and its 80 adjacent tests pass. A tiny native layout verifies
+seven rejection cases, including existing markers, changed masks, active overlap
+and unrelated polygon, text or instance changes. The candidate is built by
+inserting exactly 1664 GDS bytes before the original clamp cell's ENDSTR; removal
+of that insertion must reproduce every original byte. Native round-trip geometry
+comparison provides a separate check.
+
+Cloud execution will first preserve the completed baseline, then compare the
+candidate against the identical original schematic in deep and flat modes.
+A separately reported second comparison canonicalizes only 26 explicit straight
+resistor spacings from `ps=180n` to `ps=0`: in the pinned original model,
+`leff=(b+1)*l+(2/kappa*weff+ps)*b`, so at `b=0` the spacing has no electrical
+effect. Resistance, dimensions, multiplicity, terminals and all tap parameters
+stay unchanged. The original-reference failures remain visible even if this
+second case improves. No actual-parent repair or new LVS pass is claimed by
+the source and tiny-control receipt.
