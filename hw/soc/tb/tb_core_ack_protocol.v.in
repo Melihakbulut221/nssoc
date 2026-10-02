@@ -18,7 +18,8 @@ module tb_core_ack_protocol;
   wire [1:0] external_irq_sync_q=0;
   wire [14:0] irq_fast=0;
   wire [159:0] crash_dump;
-  wire double_fault_seen_o, rf_ecc_err, alert_minor_o;
+  wire double_fault_seen_o, alert_minor_o;
+  wire [2:0] rf_ecc_err;
   wire alert_major_internal_o, alert_major_bus_o, core_sleep_o;
 @@CORE_INSTANCE@@
   defparam u_ibex.gen_regfile_ff.register_file_i.SYNPRE=1;

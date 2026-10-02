@@ -219,6 +219,12 @@ def firmware_hex(binary,elf):
     return ''.join(f'{word:08x}\n' for word, in struct.iter_unpack('<I',raw))
 
 
+def validate_compile_log(code,log):
+    require(code==0,'Actual-core harness did not compile')
+    require(re.search(r'(?im)\bwarning: Port \d+[^\n]*\bexpects \d+ bits?, got \d+',log) is None,
+            'Actual-core port-width mismatch in compiler log')
+
+
 def parse_positive(code,log,reset):
     lines=[line for line in log.splitlines() if line.startswith('PASS_ACTUAL_CORE_DIRECTED_PROTOCOL ')]
     require(code==0 and len(lines)==1 and 'FATAL:' not in log,'Actual core protocol workload failed/incomplete')
@@ -291,7 +297,7 @@ def run(prepared,output):
     require(all(p.is_file() for p in tools.values()),'Required RTL/firmware tools unavailable')
     output.mkdir(parents=True,exist_ok=False)
     row=dict(schema=1,status='EXECUTING_ACTUAL_CORE_DIRECTED_PROTOCOL',github_source_commit=os.environ['GITHUB_SHA'],
-             preparation=pin(prepared/'preparation.json'),methods=preparation['source_methods'],cases={},
+             preparation=pin(prepared/'preparation.json'),methods=preparation['source_methods'],cases={},compilations={},
              runtime={n:dict(path=str(p.resolve()),**pin(p)) for n,p in tools.items()},
              limitations=LIMITATIONS,actual_core_protocol_proved=False,whole_soc_verified=False,
              sequential_equivalence_proved=False,candidate_adopted=False,timing_accepted=False)
@@ -332,7 +338,9 @@ def run(prepared,output):
                      '-o',directory/'simulation.vvp']
             if name!='original':command+=['-DACK_CANDIDATE']
             build=execute(command+[prepared/'tb_core_ack_protocol.v',pipe,*selected],directory,'compile')
-            require(build['returncode']==0,'Actual-core harness did not compile: '+name)
+            row['compilations'][name]=dict(execution=build,log=pin(directory/'compile.log'))
+            save(output/'result.json',row)
+            validate_compile_log(build['returncode'],(directory/'compile.log').read_text())
             for reset in (range(4) if name=='candidate' else (0,)):
                 key=name+'-reset'+str(reset)
                 directory=output/key;directory.mkdir()

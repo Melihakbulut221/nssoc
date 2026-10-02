@@ -29,7 +29,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends iverilog gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
           python3 -m pip install pytest==8.4.2
-      - name: Pure source and evidence rejection tests
+      - name: Source, full-width alert observer and evidence rejection tests
         run: python3 -m pytest -q sw/tests/test_core_ack_protocol.py sw/tests/test_core_ack_register.py
       - name: Prepare exact source-bound actual-core experiment
         run: python3 scripts/run_core_ack_protocol.py prepare --output "$GITHUB_WORKSPACE/core-ack-prepared"

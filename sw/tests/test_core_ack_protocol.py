@@ -3,8 +3,10 @@
 """Pure preparation and evidence rejection; these tests do not execute Ibex."""
 import json
 from pathlib import Path
+import re
 import struct
 import shutil
+import subprocess
 import sys
 
 import pytest
@@ -25,6 +27,38 @@ def test_preparation_copies_actual_c10_core_without_regeneration(tmp_path):
     assert 'hw/soc/rtl/ibex_regfile_secded.v' in row['selected_core_sources']
     assert not any('ibex_register_file_ff.v' in s for s in row['selected_core_sources'])
     assert not row['actual_core_protocol_proved'] and not row['whole_soc_verified']
+
+
+@pytest.mark.parametrize('injected',[0,1,2,4])
+def test_all_actual_rf_alert_port_bits_reach_observer(tmp_path,injected):
+    # Compile only the real observer declarations/condition against the pinned
+    # core's actual output-port width. This is a tiny observer wiring control,
+    # not an execution of Ibex or an injection into its register file.
+    out=tmp_path/'prepared';core.prepare(out)
+    native=(out/'sources/hw/soc/genp/ibex_top.v').read_text()
+    declaration=re.findall(r'output wire \[\d+:\d+\] rf_ecc_err_o;',native)
+    assert declaration==['output wire [2:0] rf_ecc_err_o;']
+    bench=(out/'tb_core_ack_protocol.v').read_text()
+    wires=re.findall(r'^  wire[^;]*\brf_ecc_err\b[^;]*;',bench,re.M)
+    assert len(wires)==1
+    guard=re.search(r'if\(alert_minor_o[^\n]+\)\n\s+\$fatal\(1,"CORE_PROTOCOL core alert or double fault"\);',bench)
+    assert guard and '.rf_ecc_err_o           (rf_ecc_err)' in bench
+    source=tmp_path/'observer.v'
+    source.write_text('module alert_source(rf_ecc_err_o);\n'+declaration[0]+
+        f'\nassign rf_ecc_err_o=3\'d{injected};\nendmodule\nmodule observer;\n'+wires[0]+
+        '\nreg alert_minor_o=0, alert_major_internal_o=0, alert_major_bus_o=0, double_fault_seen_o=0;\n'
+        'alert_source dut(.rf_ecc_err_o(rf_ecc_err));\ninitial begin #1;\n'+guard[0]+
+        '\n$display("OBSERVER_NO_ALERT"); $finish; end\nendmodule\n')
+    simulator=tmp_path/'observer.vvp'
+    compile_result=subprocess.run(['iverilog','-g2012','-s','observer','-o',str(simulator),str(source)],
+                                  capture_output=True,text=True)
+    assert compile_result.returncode==0 and 'warning' not in compile_result.stderr.lower()
+    result=subprocess.run(['vvp',str(simulator)],capture_output=True,text=True)
+    if injected:
+        assert result.returncode!=0 and 'CORE_PROTOCOL core alert or double fault' in result.stdout
+        assert 'OBSERVER_NO_ALERT' not in result.stdout
+    else:
+        assert result.returncode==0 and 'OBSERVER_NO_ALERT' in result.stdout
 
 
 def test_clean_cloud_checkout_does_not_need_ignored_generated_ibex(tmp_path):
@@ -72,6 +106,14 @@ def fixture_log(values):
 
 def test_parser_accepts_complete_directed_coverage_fixture():
     assert core.parse_positive(0,fixture_log(COUNTS),0)==COUNTS
+
+
+def test_actual_native_port_width_warning_cannot_pass_compile_gate():
+    core.validate_compile_log(0,'')
+    original='tb_core_ack_protocol.v:43: warning: Port 56 (rf_ecc_err_o) of ibex_top expects 3 bits, got 1.\n'
+    for warning in (original,original.replace('expects 3 bits, got 1','expects 1 bits, got 3')):
+        with pytest.raises(ValueError,match='port-width mismatch'):core.validate_compile_log(0,warning)
+    with pytest.raises(ValueError,match='did not compile'):core.validate_compile_log(1,'')
 
 
 @pytest.mark.parametrize('field,value',[('accepted',21),('responses',19),('reset_phase',1),

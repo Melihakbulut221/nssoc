@@ -1552,3 +1552,55 @@ still pass on the cloud compiler and execute every directed protocol case.
 Root independently passes 125 focused tests and both workflow/source linters.
 Neither preparation result establishes timing closure, transistor LVS or
 manufacturing approval.
+
+### Actual-core finite test result and alert-observer correction
+
+[Run 37009833138](https://github.com/Melihakbulut221/nssoc/actions/runs/37009833138)
+executes five positive and four deliberate negative cases. Both independent
+reviews verify the complete 2.5 MB artifact, all 71 result files, 87 prepared
+files and eight Git-bound methods. The original and candidate complete the
+directed program in 807 and 839 cycles, respectively, and produce the same
+2,048-word architectural memory signature. Reset cancellation, eight precise
+faults and six stopped-clock intervals are observed.
+
+The [raw result and correction](evidence/core-ack-observer-fix-20261002.json)
+also preserve a real testbench defect discovered in the compile logs: its
+one-bit wire truncated the actual three-bit register-file ECC alert output.
+This result cannot qualify the corrected observer. The wire now retains all
+three bits; four small native controls accept zero and reject each individual
+error bit. A new compile gate rejects port-width warnings and records all six
+compilation results. Root passes 56 focused tests, including these controls;
+the complete actual-core cloud workload must run again before the next gate.
+Default RTL and directed firmware remain unchanged.
+
+The earlier compiler failure and fixed-assignment ALU diagnostic are now
+[permanently archived](evidence/closure-replay-ack-archives-native-20261002.json),
+with both original outcomes and exact bytes preserved. Successful archival
+does not alter either engineering result.
+
+### Electrical repair closes slew but fresh capacitance and timing guards fail
+
+[Run 37007664485](https://github.com/Melihakbulut221/nssoc/actions/runs/37007664485)
+finishes in 1,530 seconds. The
+[independently reviewed result](evidence/timing-electrical-first-native-20261002.json)
+preserves all 32 SRAM placements, adds three positive buffers and passes both
+limited digital equation checks: original C10 to combined candidate, then
+combined candidate to this electrical candidate. These checks exclude physical
+connectivity and SRAM interiors.
+
+Both fresh native reloads agree: setup 1,312, hold 65, setup WNS −4.255417 ns,
+hold WNS −0.158980 ns, slew zero and capacitance three. Their fingerprints and
+all 70,581 exported endpoint/corner records agree. In-memory zero capacitance
+violations therefore did not survive new routing and parasitic estimation.
+The candidate is rejected: capacitance still exceeds matched C10, and several
+setup/hold metrics regress against the combined candidate.
+
+Fresh capacitance is 0.329943 pF at `fanout1387/X`, 0.309706 pF at
+`fanout1391/X`, and 0.309938 pF at the previously untargeted `fanout1593/X`,
+against a 0.300000 pF limit. These are original drivers; the three inserted
+buffers are not the violating pins. `fanout1228` is no longer violated.
+The next isolated continuation will start from these saved candidate bytes and
+target the measured remaining nets. A tighter repair target is experimental
+headroom, not proof of a bound on routing-estimation error: `fanout1387` rose
+from approximately 0.145 pF incrementally to 0.330 pF after fresh routing.
+Every original acceptance guard and the fresh reload checks remain required.
