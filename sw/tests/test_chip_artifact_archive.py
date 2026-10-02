@@ -80,3 +80,26 @@ def test_ambiguous_or_unbound_artifact_is_rejected(defect):
     elif defect == 'incomplete': value['total_count'] = 2
     else: row['name'] = 'not-requested'
     with pytest.raises(ValueError): archive.resolve_artifacts(value, plan())
+
+
+@pytest.mark.parametrize('requested,observed,accepted', [
+    ('push', 'push', True), ('workflow_dispatch', 'workflow_dispatch', True),
+    ('push', 'workflow_dispatch', False), ('workflow_dispatch', 'push', False),
+])
+def test_supported_events_still_require_exact_producer_event(requested, observed, accepted):
+    value = plan();value['source_event'] = requested
+    checked = archive.validate_plan(value)
+    source = producer();source['event'] = observed
+    if accepted:
+        assert archive.producer_ready(source, checked)
+        assert checked['source_event'] == requested
+    else:
+        with pytest.raises(ValueError, match='Unexpected producer identity'):
+            archive.producer_ready(source, checked)
+
+
+@pytest.mark.parametrize('event', ['pull_request', 'repository_dispatch'])
+def test_unsupported_source_events_remain_rejected(event):
+    value = plan();value['source_event'] = event
+    with pytest.raises(ValueError, match='branch/workflow/event'):
+        archive.validate_plan(value)

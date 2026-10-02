@@ -25,7 +25,7 @@ def validate_plan(plan):
         raise ValueError('Invalid source commit')
     if (not re.fullmatch(r'codex/[a-zA-Z0-9_-]+', plan['source_branch'])
             or not re.fullmatch(r'\.github/workflows/[a-zA-Z0-9_-]+\.yml', plan['source_workflow'])
-            or plan['source_event'] != 'push'):
+            or plan['source_event'] not in {'push', 'workflow_dispatch'}):
         raise ValueError('Unexpected producer branch/workflow/event')
     rows = plan['artifacts']
     if not isinstance(rows, list) or not rows:

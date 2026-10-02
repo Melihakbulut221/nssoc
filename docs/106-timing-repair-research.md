@@ -1,9 +1,10 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
-**2 October update:** the first targeted hold run stopped before repair because
-the C10 guard expected the small fixture's corner aliases. The exact PVT names
-and distinct native wrapper identities are corrected below. No hold reduction
-or new checkpoint has yet been demonstrated by this retry.
+**2 October update:** the corrected targeted hold diagnostic completed. Hold
+violations decrease from 113 to 104 with setup aggregates unchanged, but the
+historical C10 setup guard still fails and post-routing endpoint regressions
+remain. No checkpoint is adopted. The final sections record the completed
+native result, its limits and the separately preserved original failure.
 
 **1 October status:** the cloud setup A/B and full-endpoint no-op diagnostic
 have completed. Both setup candidates remain rejected; the diagnostic preserves
@@ -905,3 +906,55 @@ the independent corrected validator; both wrapper captures are regular files.
 The 05:25:53 UTC snapshot precedes matched-before export and the repair-begin
 marker. The run continues; no reduction or full four-stage completion is yet
 claimed.
+
+
+### 2026-10-02 — targeted hold diagnostic completed; nine violations closed
+
+The corrected [native run 36968724381](https://github.com/Melihakbulut221/nssoc/actions/runs/36968724381)
+completed all four stages and passed its full capture validator. The
+[compact independent review](evidence/timing-targeted-hold-complete-20261002.json)
+checks the 16 exact producer methods, native controls, all four raw global
+endpoint tables, target ordering, calls, budget, fixed SDC and unchanged
+acceptance policy. Each table contains 23,527 identities, of which 17,145 have
+finite timing values; the 6,382 unconstrained identities remain explicit.
+Complete export does not mean complete constraint coverage.
+
+| Stage | Hold WNS (ns) | Hold TNS (ns) | Negative endpoints |
+| --- | ---: | ---: | ---: |
+| Matched before | −1.840965380 | −26.461044911 | 113 |
+| Immediately after repair, provisional | −1.091349233 | −12.089680368 | 104 |
+| After legalization/routing/RC | −1.078215073 | −11.974233161 | 104 |
+| After full timing-cache update | −1.078215073 | −11.974233161 | 104 |
+
+The native repair call took 59.334 seconds; the full native phase including
+loading and four exports took 645.056 seconds. All 16 selected endpoints receive
+one pass, and instance count increases by 66, from 103,697 to 103,763. Nine
+negative endpoints close and no new negative global endpoint appears. Setup
+WNS remains −4.909516349 ns, TNS −4320.800144342 ns and violating count 1,384
+through every stage. Slew/capacitance violation counts remain 0/1. These are
+global-route estimates and a single bounded experiment, not final extracted
+timing or a measured whole-flow speedup.
+
+Post-routing tradeoffs are retained: 55 global endpoint minima improve and
+59 regress. Of the latter, 58 remain positive; already-negative `eth_tx_en_o`
+changes from −0.503306286 to −0.509050246 ns, a 5.743961 ps regression. The
+largest regression, 6.019185 ps at `_134889_/D`, remains positive. Before
+routing/RC updates there were 24 improvements and no regressions. The two
+final raw global endpoint tables are byte-identical, so a further timing-cache
+update does not remove these measured regressions.
+
+The historical selected C10 setup WNS is −4.710829 ns. Its 0.198687349 ns gap
+from the fresh matched baseline already exists before repair and is unchanged
+afterward. This is the failing historical aggregate guard; the historical
+manifest has no setup TNS, violating-count or electrical-count values to support
+a comparison of those quantities. The matched-before aggregate guard passes,
+while the selected-C10 guard and overall estimate acceptance remain false.
+No threshold or epsilon is changed to hide that gap or individual regressions.
+
+**No candidate is adopted, and this diagnostic exports no resumable ODB/DEF.**
+The next timing work must resolve the historical-versus-fresh setup
+reproducibility gap and account for the post-routing endpoint regressions
+before selecting a new physical checkpoint. Local review deliberately used
+compact members; full physical/all-corner-path replay and durable publication
+are performed separately in the cloud. The producer's own full capture
+validator already passed, including its 32-SRAM and physical fingerprint checks.

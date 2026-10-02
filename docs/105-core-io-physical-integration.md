@@ -2303,3 +2303,24 @@ undeclared child substrate scope, reference tap parameters and seven-cell/
 full-chip transistor LVS remain open. The next physical-parent investigation
 must use these proved shapes while preserving the reference contract; matching
 extracted values by editing the reference is not a demonstrated repair.
+
+
+The unchanged 21,232,646-byte output ZIP is now
+[durably published](evidence/io-vss-mask-attribution-assets-20261002.json).
+Archive run 36969725738 verifies the exact producer/attempt/artifact identity,
+full ZIP SHA-256 and authenticated/public byte roundtrips. Local independent
+review verifies the compact receipt, exact source/plan and fresh release digest.
+This archive proves preservation of bytes; the native conclusions remain
+those of the separately reviewed mask-attribution run above.
+
+
+The [next parent-path measurement](evidence/io-vss-parent-boundary-next-action-20261002.json)
+identifies exact captured components N3 (`R$5.TIE`, two lower IOVSS bands)
+and N4 (`R$6.TIE`, the upper IOVSS band). All three exposed bands reach the
+macro boundary and match same-source LEF bands. The abstract adjacency helper
+requires a contacting rectangle per named rail, which does not establish that
+every exposed band joins. The next check must trace actual placed metal/via
+paths through real adjacent cells, fillers and a joining corner or supply
+junction. The earlier 314-I/O proof belongs to another GDS and can only be
+reused after exact master geometry, transforms, material layers and source
+identity are reconciled. No parent-path repair has yet been demonstrated.
