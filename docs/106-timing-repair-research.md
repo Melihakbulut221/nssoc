@@ -1833,3 +1833,23 @@ actual SRAM event order. Both dynamically imported ROM/boot helpers are pinned
 to their original Git bytes and captured. A trace is diagnostic evidence;
 possible simulation scheduling effects and the failed qualification still
 require interpretation. No native full-SoC trace has run locally.
+
+The [first trace launch](evidence/alu-boot-trace-history-fix-20261002.json) stops
+before compilation or native SoC execution: shallow checkout lacks the exact
+historical producer commit needed by `git show`. Both compact failure artifacts
+and the raw error are preserved. The workflow now fetches Git history; all seven
+original producer method blobs are reproduced locally. Runner, observer,
+workload and qualification conditions remain byte-identical.
+
+The [refined proof method](evidence/alu-state-refinement-method-20261002.json)
+reuses the exact original common miter and all six original proof artifacts.
+A pure observation wrapper splits only the 19 timeout groups into 152 groups
+of 16 bits. Every original input remains symbolic; no new internal equality
+or state mapping is introduced. Final acceptance reparses all 250 prior PASS
+groups plus every new native verdict and requires disjoint, exhaustive coverage
+of the same 34,321 original outputs. Four workers recheck complete source,
+prior-proof and prepared-model inventories again after execution. Root passes
+213 selected controls and independently rehashes 129 tiny native outputs;
+peer review independently verifies complete coverage and positive/negative
+proof behavior. Full native proof remains separate. The actual four-state boot
+failure blocks physical use even if this binary refinement eventually passes.
