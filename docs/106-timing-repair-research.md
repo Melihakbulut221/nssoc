@@ -1070,3 +1070,61 @@ as Liberty interfaces; its equation proof engine is unchanged. Tiny native
 controls accept a positive buffer and reject changed macro inputs or unknown
 pins; 78 source tests pass. This proof cannot establish SRAM internal behavior,
 analog operation, CDC, timing, extracted connectivity or physical acceptance.
+
+
+### First buffer: independent digital-core equation proof completed
+
+[Run 36994331741](https://github.com/Melihakbulut221/nssoc/actions/runs/36994331741)
+at `4290c9f89b941f3c9475d7a2bfe66f5617897c01` passes the limited digital-core
+proof after independently replaying all 144 files of the original immutable
+capture in the cloud. The original 21 producer methods match their exact Git
+source before their validator runs. The [native proof receipt](evidence/timing-eco-logic-native-20261002.json)
+records the separately verified runtime, original C10 and candidate netlists,
+standard-cell Liberty, SRAM port declarations and three native controls.
+
+The proof retains 75,750 cell equations; positive buffers increase from 23,234
+to 23,235 and 4,713 tie cells remain unchanged. These totals reconcile exactly
+to 103,697 and 103,698 netlist cells. There are no resizing, input permutation,
+clone or disconnected-output changes. All 32 opaque SRAM instance interfaces
+retain their input equations. The whole cloud step takes 66 seconds; the two
+Yosys elaborations peak at about 891 and 883 MB.
+
+Independent compact review and root rechecking cover 31 selected output hashes,
+eight proof-source Git identities, return codes and the reconciled counts.
+No full netlist equation calculation or full ZIP download ran locally. This
+establishes only the stated mapped digital-core contract: SRAM interiors,
+padframe, analog behavior, initialization, CDC, timing, physical connectivity
+and manufacturing approval remain outside the proof. It does not override the
+failed historical timing guards or adopt the candidate.
+
+
+### Two-buffer result: reproducible first improvement, smaller second gain
+
+[Run 36993662400](https://github.com/Melihakbulut221/nssoc/actions/runs/36993662400)
+at `2df6aff4479c5b8bd05c327391e309c71b34d600` completes native execution in
+900.09 seconds. The [independent review](evidence/timing-xor-pair-native-20261002.json)
+verifies 26 exact method sources, 146 selected captured files, complete graph
+contraction and all 23,527 endpoint values across three corners and four stages.
+Root independently repeats these compact checks. The original baseline and
+first-buffer graph and metrics exactly reproduce the earlier single-buffer run.
+
+| Quantity | Matched C10 | First buffer | Both buffers |
+| --- | ---: | ---: | ---: |
+| Setup violating endpoints | 1,384 | 1,378 | 1,376 |
+| Setup WNS, ns | −4.909516349 | −4.744947546 | −4.721119495 |
+| Setup TNS, ns | −4320.800144342 | −4144.873855694 | −4120.158337173 |
+| Hold violating endpoints | 113 | 113 | 113 |
+
+All hold endpoint/corner values remain unchanged, as do the 32 SRAM placements
+and SDC. The explicit timing-cache update changes no metric. The matched fresh
+no-regression check passes, but the original historical setup/hold guards still
+fail; the rejected candidate is retained and not adopted. This review did not
+download the full 326 MB ZIP, candidate database or DEF, or repeat their native
+routing locally.
+
+The new worst path starts at RF x30 bit12 (`_133935_`); a measured 317.22 µm
+single-sink XNOR connection `_072567_/Y` to `_072570_/A` has a 0.850183 ns
+reported arc. A separate path from `_132612_` remains at −4.717023 ns and has
+a 320.76 µm single-sink NAND4 connection `_074829_/Y` to `_074831_/B`, whose
+reported arc is 1.057705 ns. These are the next two bounded buffering targets;
+their observed delays are not predictions of attainable timing improvement.

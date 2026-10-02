@@ -2449,3 +2449,33 @@ effect. Resistance, dimensions, multiplicity, terminals and all tap parameters
 stay unchanged. The original-reference failures remain visible even if this
 second case improves. No actual-parent repair or new LVS pass is claimed by
 the source and tiny-control receipt.
+
+
+### 2026-10-02 — missing resistor markers repaired in the actual parent
+
+[Run 36995165800](https://github.com/Melihakbulut221/nssoc/actions/runs/36995165800)
+at `64fafdc470c5379529fd5be0afb286110f748dd9` confirms that the actual parent
+has no PolyRes markers and exactly the 26 expected source-mask intersections.
+The repair inserts 1664 bytes, preserves every original GDS byte, and passes
+native geometry/text/instance comparison. Its candidate GDS SHA-256 is
+`d846215231733f66265b2cbfe3eb4859c001723d8b2819bd4a236b0f255ac895`.
+The [compact native receipt](evidence/io-parent-marker-native-20261002.json)
+independently verifies 144 selected member hashes, 22 Git-bound methods and
+all four strict audit verdicts. No large GDS or LVS database was downloaded
+or rerun locally.
+
+The missing resistor circuit is now extracted. Each clamp's 26 series segments
+combine to one 1 µm wide, 520 µm long straight resistor. The flat parent changes
+from 16 to 18 extracted devices, matching the reference's device count and
+removing the previously merged resistor-terminal connection. With the original
+reference, the resistor comparison still reports its nonzero `ps` mismatch.
+In the separately retained model-proven `b=0 / ps=0` case, RCClampResistor is
+**Match**. This closes the resistor-recognition issue within the actual parent.
+
+All four parent comparisons still **FAIL**: the straight-spacing deep result
+has five nonmatching child circuits and five skipped parents; flat comparison
+has 18 devices on each side but does not match. Tap area/perimeter and substrate
+terminal contracts remain separate defects. No tap value, transistor dimension,
+terminal, top-port or strict deck setting was changed to obtain the resistor
+match. This candidate has not yet been propagated into a new full-chip GDS,
+DRC run or accepted full-chip LVS result.
