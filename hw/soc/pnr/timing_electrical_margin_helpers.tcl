@@ -8,7 +8,9 @@ proc nssoc_electrical_margin_graph {driver netname expected} {
         set inst [$term getInst]
         lappend actual [list [$inst getName] [[$inst getMaster] getName] [[$term getMTerm] getName]]
     }
-    if {[lsort $actual] ne [lsort $expected]} {error "Exact electrical target terminal graph differs: $driver $netname"}
+    if {[lsort $actual] ne [lsort $expected]} {
+        error "Exact electrical target terminal graph differs: $driver $netname; actual=[lsort $actual]; expected=[lsort $expected]"
+    }
     return [lsort $actual]
 }
 proc nssoc_electrical_margin_repair {driver netname} {

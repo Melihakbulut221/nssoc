@@ -1664,3 +1664,66 @@ exactly once while retaining its unconstrained combinational dependencies.
 No internal matching assumption or omitted output can count as closure. Until
 all groups pass, the ALU physical experiment and default RTL adoption remain
 gated. The selected C10 layout and open transistor LVS findings are unchanged.
+
+### Request-ack synthesis reproduced; both original ALU boot cases passed
+
+[Run 37016005414](https://github.com/Melihakbulut221/nssoc/actions/runs/37016005414)
+passes the corrected actual-core prerequisite, exact original synthesis and
+32-SRAM mapping gates. The
+[four compact startup artifacts](evidence/core-ack-qualification-startup-native-20261002.json)
+carry identical synthesis/mapping receipts. Original netlists reproduce the
+expected bytes; the request-ack candidate has synthesis hash `a0f6f4b0…` and
+mapped hash `f476fb89…`. All four native-cell and compile gates pass. Root
+independently hashes every compact ZIP, its 40 outputs and 23 Git-bound methods.
+The large mapping artifact was verified by its producer and was not downloaded
+or fully replayed locally. Four boot workers have started; these startup
+artifacts do not establish any completed boot or timing result.
+
+In the separate ALU qualification run, both original-design cases now pass:
+[vendor SRAM](evidence/alu-qualification-original-vendor-native-20261002.json)
+and [independent SRAM](evidence/alu-qualification-original-independent-native-20261002.json).
+Each records power-on MBIST at cycle 983,043 and finishes at cycle 1,596,123,
+with all 28 checks passing, zero failure mask, the required watchdog result,
+no flash violations and a valid UART pass message. Root independently verifies
+both complete compact artifacts and every result/method pin. The native-library
+warnings concern unsupported timing-path constructs in functional, no-SDF
+simulation; this is not cell timing validation. Both ALU candidate results are
+still pending at this observation.
+
+The failed monolithic proof is also
+[permanently archived](evidence/closure-alu-state-timeout-archive-native-20261002.json)
+with its timeout and missing proof verdict preserved.
+
+### Exact native graph spelling repaired; complete parallel ALU proof prepared
+
+The first margin experiment
+[stopped before mutation](evidence/timing-electrical-margin-first-native-20261002.json).
+Both native baseline processes reproduced setup 1,312, hold 65, zero slew and
+three capacitance violations with all five physical fingerprints identical.
+The exact graph guard then rejected the spelling of four SRAM bank instances:
+OpenDB retains a literal backslash before each bracket, while the source
+Verilog identifier does not. No repair call ran and no new candidate exists.
+
+The [representation correction](evidence/timing-electrical-margin-name-fix-method-20261002.json)
+retains both spellings, binds the native names to the captured placement, and
+compares all 19 native terminal rows exactly. It does not strip characters from
+observed names. A real four-cell OpenROAD fixture accepts the native escaped
+name and rejects the unescaped name, wrong pin and omitted terminal before
+mutation. A separate query of the exact C10 SRAM LEF confirms that `d[21]`,
+`d[23]` and `d[15]` themselves remain literal, unescaped INPUT/SIGNAL pin names.
+Root verifies 129 compact failed-run captures, the immutable producer methods,
+the native control evidence and 155 focused tests. The retry retains both
+pre-repair baselines, all four rejection guards, both final independent reloads
+and both limited digital ECO proofs.
+
+The [complete partitioned ALU method](evidence/alu-state-partitions-method-20261002.json)
+builds one optimized miter and distributes 269 output groups over four workers.
+It covers every one of the original 34,321 output bits exactly once, with all
+10,828 original input/state bits symbolic. Each group starts from the same
+immutable graph; pruning removes only unobserved output cones. No internal
+cutpoint or assumed equality is introduced. Acceptance reparses all raw native
+verdicts and requires every group to pass. Tiny positive, wrong-output and
+wrong-clock cases verify actual native proof behavior, continuation after a
+counterexample, and rejection of missing/duplicate group evidence. Root and
+independent review pass 105 focused tests. Full-chip proof remains a separate
+cloud execution; timeout or partial coverage is explicitly unproved.

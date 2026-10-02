@@ -46,13 +46,32 @@ def lock(root):
     graph = row['graph_evidence']
     require(graph['netlist_sha256'] == row['candidate_files']['soc_top.v']['sha256']
             and set(graph['targets']) == {x['driver'] for x in row['targets']}, 'Target graph source differs')
+    witness = graph['native_instance_witness']
+    require(witness['member_pin']['sha256'] == row['baseline_fingerprints']['placement'],
+            'Native instance witness is not the exact candidate placement')
+    native_names = {x['verilog_instance']: (x['odb_instance'], x['master']) for x in witness['instances']}
+    require(len(native_names) == len(witness['instances']) == 4, 'Native SRAM name witness is incomplete')
+    reverse_names = {name: logical for logical, (name, _) in native_names.items()}
+    require(len(reverse_names) == 4, 'Native SRAM name witness is not bijective')
+    witnessed = set()
     for target in row['targets']:
         item = graph['targets'][target['driver']]
         require(item['net'] == target['net'] and item['master'] == 'sg13g2_buf_1'
-                and dict(instance=target['driver'], master=item['master'], port='X') in item['terminals'],
+                and any(t['instance'] == t['odb_instance'] == target['driver']
+                        and t['master'] == item['master'] and t['port'] == 'X' for t in item['terminals']),
                 'Target graph driver differs')
-        terms = [tuple(t[k] for k in ('instance', 'master', 'port')) for t in item['terminals']]
+        for term in item['terminals']:
+            if term['odb_instance'] in reverse_names:
+                require(term['instance'] == reverse_names[term['odb_instance']], 'Logical SRAM identity differs from witness')
+            if term['instance'] in native_names:
+                require((term['odb_instance'], term['master']) == native_names[term['instance']],
+                        'Native terminal name does not match captured placement')
+                witnessed.add(term['instance'])
+            else:
+                require(term['odb_instance'] == term['instance'], 'Unwitnessed native name substitution')
+        terms = [tuple(t[k] for k in ('odb_instance', 'master', 'port')) for t in item['terminals']]
         require(len(terms) == len(set(terms)) and len(terms) >= 2, 'Invalid target terminal census')
+    require(witnessed == set(native_names), 'Unused or omitted native SRAM identity witness')
     return row
 
 
@@ -107,7 +126,7 @@ def verify_protected(before, after):
 def baseline_script(locked):
     """Bind expected metrics, physical hashes and measured terminal graphs."""
     def atom(text):
-        require(isinstance(text, str) and re.fullmatch(r'[A-Za-z0-9_./\[\]]+', text),
+        require(isinstance(text, str) and re.fullmatch(r'(?:[A-Za-z0-9_./\[\]]|\\[\[\]])+', text),
                 'Unsafe target graph Tcl atom')
         return '{'+text+'}'
     lines = ['# Generated only from the tracked immutable candidate lock.',
@@ -121,7 +140,7 @@ def baseline_script(locked):
         lines.append(f'    {shared.FINGERPRINT_FILES[name]} {digest} \\')
     lines += [']', 'set nssoc_electrical_expected_targets [dict create \\']
     for driver, graph in locked['graph_evidence']['targets'].items():
-        terms = ' '.join('[list '+' '.join(atom(term[k]) for k in ('instance', 'master', 'port'))+']'
+        terms = ' '.join('[list '+' '.join(atom(term[k]) for k in ('odb_instance', 'master', 'port'))+']'
                          for term in graph['terminals'])
         lines.append(f'    {atom(driver)} [list {terms}] \\')
     return '\n'.join(lines+[']', ''])
@@ -130,7 +149,7 @@ def baseline_script(locked):
 def verify_graph(path, locked):
     rows = list(shared.read_rows(path, ['driver', 'net', 'instance', 'master', 'port']))
     actual = [tuple(row[k] for k in ('driver', 'net', 'instance', 'master', 'port')) for row in rows]
-    expected = [(driver, graph['net'], *(term[k] for k in ('instance', 'master', 'port')))
+    expected = [(driver, graph['net'], *(term[k] for k in ('odb_instance', 'master', 'port')))
                 for driver, graph in locked['graph_evidence']['targets'].items() for term in graph['terminals']]
     require(sorted(actual) == sorted(expected), 'Observed pre-repair target terminal graph differs')
     return dict(netlist_sha256=locked['graph_evidence']['netlist_sha256'],
@@ -171,7 +190,9 @@ def validate_diagnostic(step, source_sdc_sha, expected_corners):
             and gate['call']['slew_margin_percent'] == gate['call']['cap_margin_percent'] == 20
             and gate['real_capacitance_after'] < gate['real_capacitance_before'], 'Tiny native electrical gate failed')
     for key in ('missing_api_rejected', 'wrong_net_rejected', 'missing_driver_rejected',
-                'dont_touch_rejected', 'wrong_graph_rejected', 'constraints_preserved', 'unrelated_driver_preserved'):
+                'dont_touch_rejected', 'wrong_graph_rejected', 'unescaped_name_rejected',
+                'omitted_terminal_rejected', 'native_escaped_name_verified',
+                'constraints_preserved', 'unrelated_driver_preserved'):
         require(gate.get(key) is True, 'Missing real native control: '+key)
     require((step/'electrical-control.log').read_text().splitlines().count(
         'PASS_NATIVE_ELECTRICAL_CONTROL_NO_CHIP_ACCEPTANCE') == 1, 'Native fixture completion missing')

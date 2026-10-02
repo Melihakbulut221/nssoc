@@ -185,7 +185,7 @@ def test_generated_baseline_tcl_preserves_actual_graph_brackets_and_margins(tmp_
     result = subprocess.run(['tclsh'], input=f'source {{{path}}}\nputs [llength [dict get $nssoc_electrical_expected_targets fanout1593]]\nputs [dict get $nssoc_electrical_expected_metrics instance_count]\n',
         capture_output=True, text=True, check=True)
     assert result.stdout.splitlines() == ['7', '103892'] and not result.stderr
-    l['graph_evidence']['targets']['fanout1593']['terminals'][0]['instance'] = 'unsafe;exec'
+    l['graph_evidence']['targets']['fanout1593']['terminals'][0]['odb_instance'] = 'unsafe;exec'
     with pytest.raises(ValueError, match='Unsafe target graph'): repair.baseline_script(l)
 
 
@@ -193,23 +193,56 @@ def write_graph(path, l):
     text = 'driver\tnet\tinstance\tmaster\tport\n'
     for driver, graph in l['graph_evidence']['targets'].items():
         for term in graph['terminals']:
-            text += '\t'.join([driver, graph['net'], *(term[k] for k in ('instance','master','port'))])+'\n'
+            text += '\t'.join([driver, graph['net'], *(term[k] for k in ('odb_instance','master','port'))])+'\n'
     path.write_text(text)
 
 
-@pytest.mark.parametrize('fault', [None, 'antenna-removed', 'wrong-sram-bit', 'wrong-net', 'duplicate'])
+@pytest.mark.parametrize('fault', [None, 'antenna-removed', 'wrong-sram-bit', 'wrong-net', 'duplicate', 'unescaped-native-name'])
 def test_actual_new_driver_graph_includes_antenna_and_exact_sram_bits(tmp_path, fault):
     l = locked(); path = tmp_path/'graph.tsv'; write_graph(path, l); text = path.read_text()
     if fault == 'antenna-removed': text = '\n'.join(x for x in text.splitlines() if 'ANTENNA_2087' not in x)+'\n'
     if fault == 'wrong-sram-bit': text = text.replace('d[15]', 'd[16]')
     if fault == 'wrong-net': text = text.replace('net1593', 'net1594')
     if fault == 'duplicate': text += text.splitlines()[1]+'\n'
+    if fault == 'unescaped-native-name': text = text.replace('bank\\[0\\]', 'bank[0]')
     path.write_text(text)
     if fault is None:
         result = repair.verify_graph(path, l)
         assert result['exact'] and result['terminal_count'] == 19
     else:
         with pytest.raises(ValueError, match='terminal graph'): repair.verify_graph(path, l)
+
+
+@pytest.mark.parametrize('fault', [None, 'placement-hash', 'unwitnessed-rename', 'native-name', 'macro-master', 'logical-name', 'omitted-witness'])
+def test_native_instance_spelling_is_bound_to_exact_captured_placement(tmp_path, fault):
+    l = locked(); graph = l['graph_evidence']; witness = graph['native_instance_witness']
+    term = next(t for t in graph['targets']['fanout1387']['terminals'] if 'bank[0]' in t['instance'])
+    if fault == 'placement-hash': witness['member_pin']['sha256'] = '0'*64
+    if fault == 'unwitnessed-rename': graph['targets']['fanout1387']['terminals'][0]['odb_instance'] += '_different'
+    if fault == 'native-name': term['odb_instance'] = term['instance']
+    if fault == 'macro-master': term['master'] = 'different'
+    if fault == 'logical-name': term['instance'] = term['odb_instance']
+    if fault == 'omitted-witness': witness['instances'].pop()
+    path = tmp_path/repair.LOCK; path.parent.mkdir(parents=True); path.write_text(json.dumps(l))
+    if fault is None: assert repair.lock(tmp_path) == l
+    else:
+        with pytest.raises(ValueError): repair.lock(tmp_path)
+
+
+def test_generated_tcl_retains_literal_native_backslashes_and_does_not_unescape_ports(tmp_path):
+    l = locked(); path = tmp_path/'baseline.tcl'; path.write_text(repair.baseline_script(l))
+    result = subprocess.run(['tclsh'], input=f'source {{{path}}}\nforeach term [dict get $nssoc_electrical_expected_targets fanout1387] {{puts [join $term |]}}\n',
+        capture_output=True, text=True, check=True)
+    expected = ['|'.join(t[k] for k in ('odb_instance','master','port'))
+                for t in l['graph_evidence']['targets']['fanout1387']['terminals']]
+    assert result.stdout.splitlines() == expected and not result.stderr
+    assert any('bank\\[0\\].mem|SP6TSRAM512x64|d[21]' in line for line in expected)
+
+
+@pytest.mark.parametrize('atom', ['bad\\nname', 'bad\\;name', 'bad\\[0\\];exec', 'bad\\\nname', '{bad}', 'bad name'])
+def test_native_name_support_does_not_accept_arbitrary_tcl_escapes(atom):
+    l = locked(); l['graph_evidence']['targets']['fanout1387']['terminals'][0]['odb_instance'] = atom
+    with pytest.raises(ValueError, match='Unsafe target graph'): repair.baseline_script(l)
 
 
 def parent_record(l):

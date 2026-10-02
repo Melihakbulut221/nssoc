@@ -20,7 +20,7 @@ set f [open [file join $out before.v] {WRONLY CREAT EXCL}]
 puts $f {module tiny(input clk,input rst_n,input d,input independent,output q,output q2);
  wire target,guarded;
  sg13g2_buf_1 driver(.A(d),.X(target));
- sg13g2_dfrbpq_1 sink(.CLK(clk),.RESET_B(rst_n),.D(target),.Q(q));
+ sg13g2_dfrbpq_1 \bank[0].sink (.CLK(clk),.RESET_B(rst_n),.D(target),.Q(q));
  sg13g2_buf_1 untouched(.A(independent),.X(guarded));
  sg13g2_dfrbpq_1 sink2(.CLK(clk),.RESET_B(rst_n),.D(guarded),.Q(q2));
 endmodule}
@@ -29,7 +29,8 @@ read_verilog [file join $out before.v]
 link_design tiny
 initialize_floorplan -die_area {0 0 12000 100} -core_area {5 5 11995 95} -site CoreSite
 make_tracks
-foreach name {driver sink untouched sink2} x {20160 11000160 50400 70560} {
+set native_sink {bank\[0\].sink}
+foreach name [list driver $native_sink untouched sink2] x {20160 11000160 50400 70560} {
     set inst [[ord::get_db_block] findInst $name]
     $inst setLocation $x 15120; $inst setOrient R0; $inst setPlacementStatus PLACED
 }
@@ -67,9 +68,15 @@ unset_dont_touch [get_nets target]
 if {!$missing || !$wrong || !$absent || !$protected || [llength [[ord::get_db_block] getInsts]] != $count} {
     error "Electrical boundary negative controls failed or mutated fixture"
 }
-nssoc_electrical_margin_graph driver target {{driver sg13g2_buf_1 X} {sink sg13g2_dfrbpq_1 D}}
-set wrong_graph [catch {nssoc_electrical_margin_graph driver target {{driver sg13g2_buf_1 X} {sink sg13g2_dfrbpq_1 CLK}}}]
-if {!$wrong_graph || [llength [[ord::get_db_block] getInsts]] != $count} {error "Native wrong-terminal graph was not rejected before mutation"}
+set actual_sink [[ord::get_db_block] findInst $native_sink]
+if {$actual_sink eq "NULL" || [$actual_sink getName] ne $native_sink} {error "Native escaped instance spelling differs"}
+nssoc_electrical_margin_graph driver target [list [list driver sg13g2_buf_1 X] [list $native_sink sg13g2_dfrbpq_1 D]]
+set wrong_graph [catch {nssoc_electrical_margin_graph driver target [list [list driver sg13g2_buf_1 X] [list $native_sink sg13g2_dfrbpq_1 CLK]]}]
+set unescaped_name [catch {nssoc_electrical_margin_graph driver target {{driver sg13g2_buf_1 X} {{bank[0].sink} sg13g2_dfrbpq_1 D}}}]
+set omitted_terminal [catch {nssoc_electrical_margin_graph driver target {{driver sg13g2_buf_1 X}}}]
+if {!$wrong_graph || !$unescaped_name || !$omitted_terminal || [llength [[ord::get_db_block] getInsts]] != $count} {
+    error "Native terminal graph negative controls were not rejected before mutation"
+}
 set untouched [list [[[[ord::get_db_block] findInst untouched] getMaster] getName] \
     [[[[ord::get_db_block] findInst untouched] findITerm X] getNet]]
 set call [nssoc_electrical_margin_repair driver target]
@@ -91,6 +98,7 @@ if {[nssoc_hold_sha [file join $out before.sdc]] ne [nssoc_hold_sha [file join $
 nssoc_hold_write_json [file join $out result.json] [nssoc_hold_jobject [dict create \
     status [nssoc_hold_jstr PASS_NATIVE_ELECTRICAL_CONTROL] missing_api_rejected true \
     wrong_net_rejected true missing_driver_rejected true dont_touch_rejected true wrong_graph_rejected true \
+    unescaped_name_rejected true omitted_terminal_rejected true native_escaped_name_verified true \
     real_capacitance_before $before real_capacitance_after $after unrelated_driver_preserved true \
     call [nssoc_hold_jobject $call] constraints_preserved true \
     candidate_adopted false timing_accepted false manufacturing_approval false]]
