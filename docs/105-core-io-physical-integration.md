@@ -2272,3 +2272,34 @@ pins the new workflow, runner, helper and tests. Twenty-five pure tests, Ruff,
 Actionlint and expanded Ruby syntax checks pass. The six native geometry
 controls, derived-mask identity and overlap attribution require the new
 cloud execution; local source checks do not establish those results.
+
+
+### 2026-10-02 — native mask attribution completed
+
+[Cloud run 36969108553](https://github.com/Melihakbulut221/nssoc/actions/runs/36969108553)
+completed on exact source `70916de3a8d35d84a33252d3de565d143362be4e`.
+The [independent compact review](evidence/io-vss-mask-attribution-native-20261002.json)
+checks ten Git source/lock files, 53 unchanged deck files, six native controls
+and eleven selected output members. Native reconstruction reproduces all
+seven captured A/P pairs; both derived TIE masks have zero XOR with their
+captured native footprints. Local review did not download the full ZIP/GDS
+or repeat native extraction.
+
+The parent/DCP overlap is exactly the rectangle x=0…0.15 µm,
+y=65…101.38 µm: **5.457 µm²**. Their geometric union exactly equals the
+captured flat tap, with A=5407.1 µm² and P=703.48 µm; both directional
+differences and XOR are empty. This proves the deep/flat area difference
+comes from overlapping parent/child recognition geometry, rather than a
+non-additive device-combiner rule. Deep and flat derivation took 4.40 and
+4.46 seconds; analysis took 0.81 seconds on this cloud runner.
+
+The VSS stripe spans x=0…80 µm, y=156.85…157.15 µm. In both modes it is
+fully covered by original Activ drawing, has zero Activ-filler contribution
+and zero overlap with tap exclusion masks. This closes its source attribution;
+it does not resolve the independent reference A/P mismatch.
+
+**Only geometry attribution is closed.** Separate IOVSS conductor components,
+undeclared child substrate scope, reference tap parameters and seven-cell/
+full-chip transistor LVS remain open. The next physical-parent investigation
+must use these proved shapes while preserving the reference contract; matching
+extracted values by editing the reference is not a demonstrated repair.
