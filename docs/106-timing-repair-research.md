@@ -1943,6 +1943,14 @@ active X/Z cases. Independent review passes 62 focused tests and checks both
 full binding receipts. The same bounded original/candidate pair must now run
 again; the original failed qualification is unchanged.
 
+[Run 37071773733](https://github.com/Melihakbulut221/nssoc/actions/runs/37071773733)
+now [passes startup verification](evidence/alu-boot-trace-driven-alias-startup-20261003.json)
+for both exact netlists. Each complete 92-member compact archive matches its
+API digest; 91 output hashes and sixteen Git-bound methods per case reproduce.
+Native observer controls pass, both actual core compilations succeed and
+the two long replays start. Firmware, models, runtime and observer bench are
+identical across the pair. Complete native trace results remain pending.
+
 Separately, the [APB CI guard correction](evidence/apb-timeout-disabled-ci-20261003.json)
 addresses a tool-dependent total-cell comparison. The disabled-timeout RTL
 and its pinned predecessor both retain 93 flip-flops and identical pre-ABC

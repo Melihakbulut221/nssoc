@@ -2562,3 +2562,52 @@ Both the original case-mismatched boundary result and the corrected-name
 result are [permanently archived](evidence/closure-boundary-archives-native-20261002.json).
 The unchanged original ZIPs and authenticated/anonymous release downloads
 were hash verified. Both overall LVS failures remain preserved.
+
+
+### Source-bound contact ownership and the remaining tap contract
+
+The [bounded contact diagnostic](evidence/io-tap-contact-attribution-native-20261003.json)
+replays the exact seven-cell capture and original mask derivations locally.
+All 234 direct contacts in the Vss stripe belong to physical VSS and SUB!
+clusters. The original derived TIE and substrate masks reproduce the captured
+extraction with zero XOR area; the combined VSS tap again measures
+98.034 µm² / 657.76 µm. This uses the disclosed substrate-label diagnostic
+overlay's database and does not establish acceptance under the qualified deck.
+
+The selected contacts have the current 70 nm enclosure witness, with none
+of the relevant EdgeSeal, SRAM, DigiBnd, Activ-mask or NWell exceptions.
+Their expanded projection union measures 70.2 µm. A region that preserves
+these contacts, their ownership and recognized enclosure role therefore needs
+at least 140.4 µm perimeter, already exceeding the combined reference value
+87.9 µm. This conditional geometric bound does not establish electrical
+invalidity, a full DRC pass or authority to change the model. It rules out
+simply shrinking that recognized tap to the literal reference while retaining
+those conditions.
+
+Independent review repeats eleven native controls and the actual seven-cell
+analysis in bounded scratch memory. All 234 contact records are byte-identical;
+71 input hashes, 84 output hashes and all 169 original archive members are
+verified. Sixty-eight focused source tests pass. The strict tap A/P comparison
+remains unresolved; reference values, physical geometry and qualified comparison
+rules are unchanged. The next step is to establish a consistent, independently
+justified reference/model/extraction contract.
+
+The [reference-model investigation](evidence/io-tap-reference-model-contract-20261003.json)
+identifies the published tap model as a two-terminal resistance supplied by
+the schematic. Xschem/PCell sources derive LVS area and perimeter from a
+rectangle; all 64 original I/O CDL tap records use square dimensions and
+reproduce that resistance formula within printed rounding. Root independently
+rechecks every row and the exact source hashes. This establishes where the
+numbers come from, but does not establish a qualified conversion for the
+actual nonrectangular, overlapping tap geometry.
+
+The native reader already handles explicit `A` and `Perim` with the correct
+units. Replacing the strict geometric check with a resistance check would
+not repair this contract: even an arithmetic extension of the rectangle
+formula gives about 1.29665 Ω from the extracted VSS geometry versus
+5.29707 Ω from the combined reference. Those are illustrative calculations,
+not qualified substrate-resistance estimates. The remaining correction needs
+consistent intended geometry and simulation/LVS parameters from the library
+owner, or an independently specified and qualified library redesign. The
+reproducible evidence packet is prepared; no external request was sent and
+no expected parameter, contact or comparison rule was changed.
