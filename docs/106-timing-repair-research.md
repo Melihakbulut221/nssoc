@@ -1359,3 +1359,30 @@ boot result. Their flushed progress is preserved by the producer, but available
 read-only APIs do not expose unfinished job logs; no throughput or completion
 estimate is inferred from elapsed time. Mapped equivalence and fresh physical
 timing remain independent gates.
+
+
+### Registered acknowledgement candidate: actual-core contract still required
+
+The measured critical path continues from the PMP result through the request
+grant, LSU completion and ID/RF next-address logic; that final section contributes
+6.596 ns in the retained path report. The current request queue captures the
+payload in a register but returns its upstream grant combinationally from the
+permission-qualified request. An [isolated acknowledgement-register
+experiment](evidence/core-ack-candidate-method-20261002.json) cuts this feedback
+at the cost of one additional acknowledgement and downstream-request cycle.
+The helper transforms the exact C10 request-pipe source reversibly; default
+RTL and all 81 pinned C10 source inputs remain unchanged.
+
+The actual candidate module passes a held-request, stalled-downstream and
+common-reset simulation. Six negative controls reject withdrawn request,
+changed payload, changed permission, unsolicited grant, premature downstream
+exposure and corrupted payload. Root repeats all 22 focused tests, checks the
+source and raw output hashes independently, and retains the native log text.
+These are finite module-contract controls, **not proof of actual Ibex behavior**.
+
+Before adoption, the actual core must demonstrate stable permission-approved
+requests through delayed acknowledgement, precise split-transfer and error
+handling, load-use and writeback hazards, clock-gating/interrupt behavior, and
+common-reset cancellation. The existing immediate-grant request-pipe proof
+does not establish this narrower contract. No timing improvement, sequential
+equivalence or full-core qualification is claimed for this candidate yet.
