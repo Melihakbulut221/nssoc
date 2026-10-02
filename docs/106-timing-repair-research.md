@@ -1727,3 +1727,19 @@ wrong-clock cases verify actual native proof behavior, continuation after a
 counterexample, and rejection of missing/duplicate group evidence. Root and
 independent review pass 105 focused tests. Full-chip proof remains a separate
 cloud execution; timeout or partial coverage is explicitly unproved.
+
+The [first partition preparation](evidence/alu-state-partition-preparation-failure-20261002.json)
+stops before native miter construction. Its direct Python comparison of the
+corrected proposal rejects integer dictionary keys after JSON has serialized
+them as strings. The [corrected preparation method](evidence/alu-state-partitions-repair-method-20261002.json)
+uses the frozen producer's serializer and requires the exact preserved proposal
+size and SHA-256. Wrong state mappings still fail; graph and label comparisons
+remain exact and are now reported separately. Independent review also requires
+complete method/output inventories and the manifest-pinned runtime at every
+common-artifact boundary. Root passes 114 tests, verifies all 83 tiny native
+outputs, and confirms ten proof-construction/verdict functions are unchanged.
+No proof result is inferred from the failed preparation or these local controls.
+
+The earlier electrical graph-guard failure is
+[permanently archived](evidence/closure-electrical-margin-first-archive-native-20261002.json),
+including the unchanged two baseline results and the zero-repair-call outcome.

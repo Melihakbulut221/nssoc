@@ -272,6 +272,15 @@ def timeout_archive(path):
     state.common.download(dict(TIMEOUT_ZIP, url=TIMEOUT_URL), path)
 
 
+def verify_proposal_serialization(proposal, output, expected):
+    # The frozen producer uses integer mapping keys in Python. JSON writes
+    # those keys as strings; reproduce its exact serializer and byte pin rather
+    # than treating that required JSON conversion as a changed proposal.
+    state.common.save(output, proposal)
+    state.common.verify_file(output, expected)
+    return state.archived.pin(output)
+
+
 def prepare(output, work):
     state.require(os.environ.get('GITHUB_ACTIONS') == 'true', 'Full miter construction is cloud-only')
     output, work = state.common.fresh_directory(output), state.common.fresh_directory(work)
@@ -299,9 +308,14 @@ def prepare(output, work):
         fixed, fixed_labels, fixed_proposal = correction.corrected_proposal(docs['original']['modules']['soc_top'],
             docs['candidate']['modules']['soc_top'], proposed, labels)
         expected = json.loads((second/'corrected-candidate-lifted.json').read_text())
-        state.require(expected['modules']['soc_top'] == fixed
-                      and json.loads((second/'corrected-candidate-obligations.json').read_text()) == fixed_labels
-                      and json.loads((second/'corrected-state-proposal.json').read_text()) == fixed_proposal,
+        row['reconstruction_checks'] = dict(graph_object_equal=expected['modules']['soc_top'] == fixed,
+            labels_object_equal=json.loads((second/'corrected-candidate-obligations.json').read_text()) == fixed_labels)
+        common_record = work/'rebuilt-state-proposal.json'
+        row['reconstruction_checks']['proposal_exact_serialized_pin'] = verify_proposal_serialization(
+            fixed_proposal, common_record, TIMEOUT_MEMBERS['corrected-state-proposal.json'])
+        state.common.save(output/'result.json', row)
+        state.require(row['reconstruction_checks']['graph_object_equal']
+                      and row['reconstruction_checks']['labels_object_equal'],
                       'Rebuilt exact corrected relation differs from preserved timeout')
         left = docs['original']['modules']['soc_top']; plan = make_plan(left, fixed)
         state.require((plan['symbolic_input_bits'], plan['total_output_bits'], len(plan['groups'])) == (10828, 34321, 269),
@@ -348,15 +362,32 @@ def verify_common(bundle):
     state.require(row['status'] == 'COMMON_MITER_PREPARED_NOT_PROVED' and row['complete_inputs_rechecked'] is True,
                   'Common miter incomplete')
     state.require(row['github_source_commit'] == os.environ.get('GITHUB_SHA'), 'Different preparation/current source')
-    for name, expected in row['outputs'].items(): state.common.verify_file(bundle/name, expected)
+    state.require(set(row['methods']) == set(PINS) | set(OWN), 'Incomplete/extra common method inventory')
+    verify_inventory(bundle, row['outputs'])
     for name, expected in row['methods'].items():
         state.common.verify_file(ROOT/name, expected)
+        state.common.verify_file(bundle/'methods'/name, expected)
+        if name in PINS:
+            state.require(expected['sha256'] == PINS[name], 'Common frozen producer changed')
+    manifest = state.common.validate_manifest(json.loads((ROOT/state.archived.MANIFEST).read_text()))
+    state.require(row['runtime'] == manifest['runtime'], 'Prepared runtime differs from pinned manifest')
     state.common.verify_file(bundle/'common-miter.il', row['common_miter'])
     state.common.verify_file(bundle/'plan.json', row['plan'])
     plan = validate_plan(json.loads((bundle/'plan.json').read_text()))
     state.require((plan['symbolic_input_bits'], plan['total_output_bits'], len(plan['groups'])) == (10828, 34321, 269),
                   'Full common boundary census differs')
     return row, plan
+
+
+def verify_inventory(directory, inventory):
+    actual = set()
+    for path in directory.rglob('*'):
+        state.require(not path.is_symlink(), 'Linked proof artifact member')
+        if path.is_file() and path != directory/'result.json':
+            actual.add(str(path.relative_to(directory)))
+    state.require(set(inventory) == actual, 'Incomplete/extra proof artifact inventory')
+    for name, expected in inventory.items():
+        state.common.verify_file(directory/state.common.safe_relative(name), expected)
 
 
 def run_shard(bundle, shard, output, work):
@@ -395,7 +426,7 @@ def aggregate_directories(bundle, directories, output):
                       and row['github_source_commit'] == prepared['github_source_commit']
                       and row['common_miter'] == prepared['common_miter'] and row['plan'] == prepared['plan']
                       and row['methods'] == prepared['methods'], 'Unmatched/incomplete proof shard')
-        for name, expected in row['outputs'].items(): state.common.verify_file(directory/name, expected)
+        verify_inventory(directory, row['outputs'])
         parsed = parse_shard((directory/'partitions.log').read_text(), plan, row['shard'], directory, write_logs=False)
         state.require(parsed == row['groups'], 'Captured group verdict differs from raw native log')
         rows.append(row)

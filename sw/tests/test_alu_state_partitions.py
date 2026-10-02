@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Complete independent output obligations, with no assumed internal cutpoints."""
 import copy
+import json
 from pathlib import Path
+import shutil
 import sys
 
 import pytest
@@ -144,6 +146,16 @@ def test_timeout_download_is_permanent_public_and_exactly_pinned(tmp_path, monke
     assert '/releases/download/' in part.TIMEOUT_URL and '/actions/' not in part.TIMEOUT_URL
 
 
+def test_proposal_integer_keys_reproduce_exact_frozen_json_bytes(tmp_path):
+    proposal = {'pairs': [['original', 'candidate']], 'candidate_old_position_for_new': {9982: 9983, 9983: 9988, 9988: 9982}}
+    captured = tmp_path/'captured.json'; part.state.common.save(captured, proposal)
+    assert json.loads(captured.read_text()) != proposal
+    pin = part.state.archived.pin(captured)
+    assert part.verify_proposal_serialization(proposal, tmp_path/'rebuilt.json', pin) == pin
+    wrong = copy.deepcopy(proposal); wrong['candidate_old_position_for_new'][9982] = 9988
+    with pytest.raises(ValueError): part.verify_proposal_serialization(wrong, tmp_path/'wrong.json', pin)
+
+
 def test_common_interface_keeps_exact_all_symbolic_inputs():
     _, plan = fixture()
     ports = {'in_'+n: dict(direction='input', bits=list(range(w))) for n, w in plan['symbolic_inputs'].items()}
@@ -160,3 +172,46 @@ def test_full_proofs_are_cloud_only(tmp_path, monkeypatch):
     with pytest.raises(ValueError): part.prepare(tmp_path/'out', tmp_path/'work')
     with pytest.raises(ValueError): part.run_shard(tmp_path/'bundle', 0, tmp_path/'out', tmp_path/'work')
     assert not (tmp_path/'out').exists()
+
+
+def prepared_bundle(tmp_path, monkeypatch):
+    root = tmp_path/'checkout'; bundle = tmp_path/'common'; bundle.mkdir()
+    methods = {}
+    for name in (*part.PINS, *part.OWN):
+        source = part.ROOT/name
+        for dest in (root/name, bundle/'methods'/name):
+            dest.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(source, dest)
+        methods[name] = part.state.archived.pin(source)
+    monkeypatch.setattr(part, 'ROOT', root); monkeypatch.setenv('GITHUB_SHA', 'fixture-source')
+    module = dict(ports={'data': dict(direction='input', bits=[1]*10828),
+                         'answer': dict(direction='output', bits=[1]*34321)})
+    plan = part.make_plan(module, module)
+    (bundle/'plan.json').write_text(json.dumps(plan)); (bundle/'common-miter.il').write_text('fixture common graph')
+    row = dict(status='COMMON_MITER_PREPARED_NOT_PROVED', complete_inputs_rechecked=True,
+        github_source_commit='fixture-source', methods=methods,
+        runtime=json.loads((root/part.state.archived.MANIFEST).read_text())['runtime'],
+        common_miter=part.state.archived.pin(bundle/'common-miter.il'), plan=part.state.archived.pin(bundle/'plan.json'),
+        outputs={str(p.relative_to(bundle)): part.state.archived.pin(p) for p in bundle.rglob('*') if p.is_file()})
+    (bundle/'result.json').write_text(json.dumps(row))
+    return bundle, row
+
+
+def test_common_receipt_has_complete_source_output_runtime_closure(tmp_path, monkeypatch):
+    bundle, _ = prepared_bundle(tmp_path, monkeypatch)
+    row, plan = part.verify_common(bundle)
+    assert row['complete_inputs_rechecked'] and plan['total_output_bits'] == 34321
+
+
+@pytest.mark.parametrize('fault', ['missing_method', 'extra_method', 'missing_output', 'extra_file',
+                                  'changed_runtime', 'changed_source', 'symlink'])
+def test_incomplete_common_receipt_or_changed_runtime_is_rejected(tmp_path, monkeypatch, fault):
+    bundle, row = prepared_bundle(tmp_path, monkeypatch)
+    if fault == 'missing_method': row['methods'].pop(next(iter(row['methods'])))
+    if fault == 'extra_method': row['methods']['unreviewed.py'] = dict(bytes=1, sha256='0'*64)
+    if fault == 'missing_output': row['outputs'].pop('common-miter.il')
+    if fault == 'extra_file': (bundle/'unexpected.log').write_text('extra')
+    if fault == 'changed_runtime': row['runtime']['sha256'] = '0'*64
+    if fault == 'changed_source': row['github_source_commit'] = 'other-source'
+    if fault == 'symlink': (bundle/'linked.log').symlink_to(bundle/'plan.json')
+    (bundle/'result.json').write_text(json.dumps(row))
+    with pytest.raises(ValueError): part.verify_common(bundle)
