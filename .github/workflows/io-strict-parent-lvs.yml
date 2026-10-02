@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 name: io-strict-parent-lvs
 on:
-  push:
-    paths:
-      - .github/workflows/io-strict-parent-lvs.yml
+  # The first reviewed push registered and executed this baseline. Future
+  # packaging edits must not repeat its unchanged native comparison.
   workflow_dispatch:
 permissions:
   contents: read
@@ -56,6 +55,7 @@ jobs:
         with:
           name: io-strict-parent-lvs-${{ github.run_attempt }}
           path: hw/soc/out/github-io-strict-parent-lvs/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
           compression-level: 1

@@ -1,5 +1,11 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
+**2 October, later update:** one physical XOR-buffer ECO reduces setup
+violations from 1,384 to 1,378 and WNS from −4.909516 to −4.744948 ns, with
+all measured hold endpoints unchanged. The original C10 guard still fails;
+the exported candidate remains rejected. Combined setup/hold repair and
+independent reloads are running separately. Details and evidence follow below.
+
 **2 October update:** the corrected targeted hold diagnostic completed. Hold
 violations decrease from 113 to 104 with setup aggregates unchanged, but the
 historical C10 setup guard still fails and post-routing endpoint regressions
@@ -1004,3 +1010,52 @@ API, extra-fanout and repeated-insertion controls reject invalid changes. This
 is a tiny fixture result; no new chip timing improvement has yet been measured.
 All full chip calculations remain on GitHub. Rejected outputs are retained and
 never automatically replace the selected checkpoint.
+
+
+## 2 October: first targeted physical buffer result and next measured target
+
+[Run 36990647399](https://github.com/Melihakbulut221/nssoc/actions/runs/36990647399)
+completed at exact source `945881e8bd9854419f1f3066039c380658693a81`.
+Native execution took 585.22 seconds. The one inserted `sg13g2_buf_2` preserves
+the entire original graph after contraction, including power connections.
+All 32 SRAM placements and constraints are unchanged. The
+[independent compact review](evidence/timing-xor-buffer-native-20261002.json)
+verifies 21 original source files, native controls, 131 selected capture members,
+and the complete 23,527-endpoint population at each of three corners per stage.
+Full geometry replay and independent candidate ODB/DEF reload are still separate.
+
+| Measured quantity | Matched original C10 | After one buffer and routing |
+| --- | ---: | ---: |
+| Setup violating endpoints | 1,384 | 1,378 |
+| Setup WNS, ns | −4.909516349 | −4.744947546 |
+| Setup TNS, ns | −4320.800144342 | −4144.873855694 |
+| Hold violating endpoints | 113 | 113 |
+| Hold WNS, ns | −1.840965380 | −1.840965380 |
+| Hold TNS, ns | −26.461044911 | −26.461044911 |
+| Slew / capacitance violations | 0 / 1 | 0 / 1 |
+
+The final explicit timing-cache update changes neither these aggregates nor
+the full hold path/endpoint values. Relative to the matched fresh baseline the
+aggregate no-regression guard passes, but historical C10 setup/hold guards remain
+unmet. This is measured progress, not an accepted checkpoint or timing closure.
+The rejected candidate's ODB, DEF, netlist and SDC are retained in the original
+cloud artifact with hashes; the large database/DEF bytes were not downloaded
+or reloaded locally.
+
+The critical path moves from RF x24 bit25 to RF x11 bit27 (`_134050_`), which
+starts seven of the ten reported worst core-clock paths. The next fixed
+experiment keeps the proved first buffer and targets `_070589_/Y` on
+`_016495_`. This XNOR drives exactly `_070602_/A2` and `_072894_/A1`, whose
+origins are 319.56 and 302.88 µm away. Its reported load is 0.068221621 pF.
+A second nearby buffer must preserve both sinks and contract back to the same
+original graph. Other startpoints already reach −4.717023 ns, so this next
+target alone is not guaranteed to satisfy the historical −4.710829 ns guard.
+
+The [two-buffer method](evidence/timing-xor-pair-method-20261002.json) is now
+implemented independently of the frozen first producer. It starts from original
+C10, measures the first buffer before inserting the second, and retains four
+complete stages. Its tiny native fixture passes from seven to nine cells,
+including both exact sink sets, graph contraction, power and three corners.
+Missing/wrong/extra sinks, invalid supply links and repeated insertion reject.
+The root's 91 adjacent source tests pass. Actual two-buffer chip timing remains
+pending; neither the fixture nor the method receipt predicts acceptance.
