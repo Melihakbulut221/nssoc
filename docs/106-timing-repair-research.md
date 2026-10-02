@@ -1959,3 +1959,63 @@ The test now checks exact pre-ABC cost, retained flip-flops, constant timeout
 outputs and actual native equivalence of all 97 compared points. Changed
 address wiring and reset behavior fail the negative controls. Five focused
 tests pass independently; no design RTL or historical fixture was changed.
+
+The completed residual repair, incomplete refinement, first diagnostic trace
+and final ACK qualification are now
+[permanently archived](evidence/closure-resumed-results-archives-native-20261003.json).
+All fourteen original ZIP assets have cloud-local, authenticated release and
+anonymous release hash checks. Independent review verifies all four publication
+receipts and fresh source/release metadata; the large residual ZIP stayed in
+the cloud. The rejected timing candidate, incomplete proof and failed boots
+retain their original outcomes.
+
+### Isolated critical-buffer and hold-journal followup
+
+The [new source-bound method](evidence/timing-critical-followup-method-20261003.json)
+starts from the exact rejected residual candidate. A separate native process
+attempts one guarded repair of `_135215_/D` and records eligibility, buffer
+selection, journal actions and rise/fall timing at all three corners. Its
+mutated database never feeds the setup experiment. Native journal messages do
+not reveal the transient values inside the rollback condition; an unobserved
+slew-versus-setup cause must remain unresolved.
+
+After that child exits, the original residual database is independently loaded
+and its full baseline reproduced. Exactly `fanout639` changes from
+`sg13g2_buf_4` to `sg13g2_buf_8`. Native graph, placement, power connections,
+master geometry and protection flags are checked before the change. Placement
+legalization and fresh global routing are necessary because the larger cell
+occupies thirteen rather than eight sites and changes its input capacitance.
+Two fresh reloads, every endpoint, all 32 SRAM placements, protected objects,
+both limited digital ECO proofs and all six historical timing references remain
+mandatory. This is an experiment using estimated route parasitics; the selected
+C10 design and acceptance limits remain unchanged.
+
+The frozen method passes 367 focused and adjacent tests; independent source
+review passes 155 of those tests. Real four-cell OpenROAD controls verify the
+replacement, eighteen rejection cases, deliberately created overlap and its
+legalization, unchanged connections and constraints, and three timed corners.
+The final control completes in 0.970 seconds with a 2 GiB address-space bound.
+A separate small native check verifies the hold rise/fall report APIs. No full
+chip was loaded locally for these method checks. The cloud workflow retains
+startup and intermediate captures and has no native elapsed watchdog; its
+hosted job still has a 360-minute platform ceiling. Actual chip results remain
+pending.
+
+The [completed per-bit benchmark](evidence/alu-state-bit-benchmark-native-20261003.json)
+proves twelve of sixteen selected equations. Four actual SAT calls reach the
+120-second limit: `ff_d[738]`, `ff_d[5732]`, `gate_enable[0]` and `gate_next[0]`.
+There are no counterexamples. Combining only these exact twelve proofs with
+the prior disjoint coverage gives 33,517 of 34,321 bits proved; 804 remain.
+Independent review reparses all sixteen new logs and all 421 earlier group
+verdicts and reproduces the observation wrapper. Root rechecks every member
+of the complete compact ZIP and all twenty Git-bound methods. The useful next
+step is single-bit evaluation of the 800 previously untested bits, while the
+four measured hard cones need a separately validated solver experiment.
+The sample is not full equivalence, and the failed four-state boot remains a
+separate blocker.
+
+The APB correction also [passes the actual cloud checks job](evidence/apb-timeout-disabled-cloud-ci-20261003.json):
+3,834 pytest tests pass, 34 are skipped and one warning is retained. The outer
+check wrapper reports nineteen passes and two skips. These outcomes do not
+cover the separate still-running formal jobs and do not turn unavailable-tool
+or PDK skips into passes.

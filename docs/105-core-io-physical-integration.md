@@ -2611,3 +2611,14 @@ consistent intended geometry and simulation/LVS parameters from the library
 owner, or an independently specified and qualified library redesign. The
 reproducible evidence packet is prepared; no external request was sent and
 no expected parameter, contact or comparison rule was changed.
+
+[Cloud run 37072273004](https://github.com/Melihakbulut221/nssoc/actions/runs/37072273004)
+[reproduces the local contact result](evidence/io-tap-contact-cloud-capture-20261003.json).
+Independent review hashes the complete 9.3 MB ZIP and streams its 85 members;
+the 234 contact rows, masks, analysis and eleven controls agree with the local
+run. There is one capture omission: the upload action excluded the hidden
+`sources/.github/workflows` file. Its exact source was separately recovered
+from the run commit, rather than counted as present in the ZIP. The
+[upload correction](evidence/io-tap-contact-capture-method-20261003.json)
+includes hidden files on the next run. The native helper and runner are
+unchanged; this packaging correction does not resolve the strict LVS mismatch.

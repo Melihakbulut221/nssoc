@@ -1,0 +1,132 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-critical-followup (isolated hold journal and one source-bound sizing trial)
+on:
+  push:
+    paths:
+      - .github/workflows/timing-critical-followup.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-critical-followup-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted platform ceiling; no native elapsed watchdog.
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CLOUD_OUTPUT: ${{ github.workspace }}/critical-followup-result
+      CLOUD_WORK: ${{ github.workspace }}/critical-followup-input
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # Exact original producer methods must be verified against Git.
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install only AppImage runtime prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Diagnose one hold endpoint, reload original source, size one buffer and replay twice
+        id: launch
+        env:
+          GH_TOKEN: ${{ github.token }} # Read-only run/artifact identity before native work.
+        run: |
+          python3 scripts/run_cloud_critical_followup.py start \
+            --manifest docs/evidence/timing-cloud-input-20260930.json \
+            --output "$CLOUD_OUTPUT" --work "$CLOUD_WORK"
+      - name: Observe startup without stopping the worker
+        if: always() && steps.launch.outcome == 'success'
+        run: python3 scripts/run_cloud_critical_followup.py wait --output "$CLOUD_OUTPUT" --seconds 60
+      - name: Preserve startup evidence
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_critical_followup.py capture --output "$CLOUD_OUTPUT" \
+            --destination critical-followup-startup
+      - name: Upload startup evidence promptly
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: critical-followup-startup-${{ github.run_attempt }}
+          path: critical-followup-startup/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe first interval without a native timeout
+        id: first
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_critical_followup.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 900 --github-output "$GITHUB_OUTPUT"
+      - name: Capture first immutable progress
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_critical_followup.py capture --output "$CLOUD_OUTPUT" \
+            --destination critical-followup-first
+      - name: Upload first progress before the platform deadline
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: critical-followup-first-${{ github.run_attempt }}
+          path: critical-followup-first/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe second interval without a native timeout
+        id: second
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_critical_followup.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 900 --github-output "$GITHUB_OUTPUT"
+      - name: Capture second immutable progress
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_critical_followup.py capture --output "$CLOUD_OUTPUT" \
+            --destination critical-followup-second
+      - name: Upload second progress before the platform deadline
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: critical-followup-second-${{ github.run_attempt }}
+          path: critical-followup-second/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Wait for healthy native work to finish
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        run: python3 scripts/run_cloud_critical_followup.py wait --output "$CLOUD_OUTPUT"
+      - name: Capture final diagnostic or explicit failure evidence
+        if: always()
+        run: |
+          python3 scripts/run_cloud_critical_followup.py capture --output "$CLOUD_OUTPUT" \
+            --destination critical-followup-final
+      - name: Preserve outputs even when native controls or chip diagnosis fail
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: critical-followup-final-${{ github.run_attempt }}
+          path: critical-followup-final/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Validate isolated diagnosis, sizing, logical proofs and all original guards
+        if: always()
+        run: |
+          python3 scripts/run_cloud_critical_followup.py validate \
+            --directory critical-followup-final \
+            --manifest docs/evidence/timing-cloud-input-20260930.json
