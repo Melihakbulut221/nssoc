@@ -1604,3 +1604,29 @@ target the measured remaining nets. A tighter repair target is experimental
 headroom, not proof of a bound on routing-estimation error: `fanout1387` rose
 from approximately 0.145 pF incrementally to 0.330 pF after fresh routing.
 Every original acceptance guard and the fresh reload checks remain required.
+
+### Full-width actual-core replay passed; measured-net continuation prepared
+
+[Run 37012329552](https://github.com/Melihakbulut221/nssoc/actions/runs/37012329552)
+passes the [corrected finite actual-core workload](evidence/core-ack-full-width-native-20261002.json).
+All six compile logs are empty, the full three-bit ECC alert is observed, and
+all five positive/four negative cases retain the expected verdicts. Root
+independently rehashes the complete artifact and every result/preparation/source
+pin, replays coverage parsing, and checks all architectural signatures. The
+cloud firmware is byte-identical to the preceding cloud run; a different local
+compiler's binary hash is kept distinct. This closes this finite test gate,
+while exhaustive refinement, full-SoC boot and physical timing remain required.
+
+The [next electrical method](evidence/timing-electrical-margin-method-20261002.json)
+uses the three remaining measured drivers with 20% tighter repair targets. It
+verifies their complete 19-terminal graph, including the actual antenna input,
+and reproduces the saved candidate in two native processes before mutation.
+Two final reloads and both limited logic proofs remain mandatory. Four original
+references are preserved: historical C10, matched C10, the combined candidate
+and the electrical candidate. Clearing capacitance alone cannot conceal an
+existing setup/hold regression. A real tiny native control and 140 independently
+repeated focused tests pass; full-chip execution remains a cloud experiment.
+
+The first electrical result and the earlier narrow-observer result are now
+[permanently archived](evidence/closure-electrical-observer-archives-native-20261002.json)
+with their limitations and rejection decisions unchanged.
