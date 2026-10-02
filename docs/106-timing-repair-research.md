@@ -958,3 +958,21 @@ before selecting a new physical checkpoint. Local review deliberately used
 compact members; full physical/all-corner-path replay and durable publication
 are performed separately in the cloud. The producer's own full capture
 validator already passed, including its 32-SRAM and physical fingerprint checks.
+
+
+The subsequent [full archive replay and publication](evidence/timing-targeted-hold-complete-assets-20261002.json)
+now closes the deferred captured-data checks. Cloud run 36971230497 at
+`1c14157656de96986df09e9eb6d41b645b250e98` verifies the original
+270,228,757-byte ZIP, all 153 members and 518,785,253 expanded bytes. It fetches
+the exact original 16 methods, manifest and two licenses from immutable
+`ea0d78f`, runs the original Python validator without an overlay, and rechecks
+all source/capture bytes afterward. Full physical inventories, corner/path
+exports and endpoint comparisons pass this captured-data replay; no native
+calculation is repeated. The original C10 estimate guard remains false.
+
+The unchanged ZIP is publicly archived as
+`timing-targeted-hold-complete-20261002.zip`; authenticated and anonymous
+roundtrip hashes match. Independent local review uses only its compact
+receipt, exact Git sources and fresh release metadata. This establishes
+durable, verified diagnostic evidence; it does not supply a resumable physical
+checkpoint, qualified RC timing, transistor LVS or manufacturing acceptance.
