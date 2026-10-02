@@ -2533,3 +2533,26 @@ Root repeats the seven small native cases and 40 focused tests; the wider agent
 check passes 92 tests. A corrected actual-parent cloud comparison remains
 required. No tap fitting, conductor change, rule relaxation or complete LVS
 acceptance follows from this metadata correction.
+
+
+### Corrected native boundary verified; strict tap parameters remain unresolved
+
+[Run 37000437137](https://github.com/Melihakbulut221/nssoc/actions/runs/37000437137)
+verifies the [corrected five-name boundary](evidence/io-parent-boundary-case-native-20261002.json).
+Both deep and flat captured databases pass the supplemental strict top-port
+check. Root independently repeats the compact source/audit checks and read-only
+native inspection. Flat comparison pairs all 16 non-tap primitives, with matching
+ordered tap terminals; exactly two tap devices retain A/P warnings. Their
+parameters are unchanged from the original marker candidate. Whole comparison
+remains FAIL: deep has five mismatches and five skipped parents, while flat has
+one nonmatching top circuit. A passed naming check on the diagnostic overlay
+is not acceptance under the original qualified deck.
+
+A [fresh upstream contract review](evidence/io-tap-upstream-recheck-20261002.json)
+finds no new authoritative correction for these values. The latest inspected
+dev I/O GDS/CDL/LEF blobs and tap extraction code equal the already audited
+versions; the historical hierarchy correction is already present. The optional
+tap-disable mode does not satisfy this strict comparison. The remaining work
+requires a consistent library geometry/reference/extraction contract or an
+independently qualified library redesign; copying extracted A/P into the
+reference would not provide that independent evidence.

@@ -1251,3 +1251,42 @@ replacement into 32 physical SRAM macros; that transformation has not yet been
 verified for this candidate. Current-profile mapped correspondence, full boot
 and MBIST, memory replacement, fresh layout and all-corner timing remain
 required. No timing benefit or accepted candidate is claimed from synthesis.
+
+
+The complete four-buffer and ALU synthesis artifacts are also
+[permanently archived and roundtrip verified](evidence/closure-archives-second-native-20261002.json).
+This retains the 469.9 MB rejected physical candidate and the 11.0 MB matched
+synthesis/proof output unchanged; archive publication adds no timing acceptance.
+
+
+### Mapped PMP candidate: unconstrained proofs and three-corner block timing
+
+The [bounded isolated PMP experiment](evidence/pmp-prefix-mapped-20261002.json)
+passes three independent all-output comparisons: original RTL to its mapped
+netlist, candidate RTL to its mapped netlist, and mapped original to mapped
+candidate. Each covers every binary assignment to all 278 input bits; no
+internal cutpoints or input assumptions are used. The deliberately wrong
+comparison produces retained JSON/VCD counterexamples. All three output ports
+are timed independently at typical, slow and fast corners.
+
+| Isolated zero-wire quantity | Original | Parallel comparator |
+| --- | ---: | ---: |
+| Mapped cells | 3,697 | 3,942 |
+| Library cell area, µm² | 35,618.6376 | 37,278.7002 |
+| Slow worst arrival, ns | 4.973281860 | 4.824049473 |
+
+Worst arrival improves by 106.175 ps at typical, 149.232 ps at slow and
+70.862 ps at fast, with a 4.66% block-area increase. These measurements use
+identical 20 ns virtual clock, input driving cell, output load and 5% derates,
+with **zero wire parasitics**. They do not establish routed setup or hold gain.
+The mapper is pinned AppImage Yosys 0.62; exact whole-C10 synthesis remains a
+separate step using its original 0.67+146 runtime. Default RTL is unchanged.
+
+Two independent reviews verify all 33 input/generated pins, 38 output files,
+three proof logs, the negative counterexample and all six native STA logs.
+Root repeats the source/output hashing and report parsing. Forty-four focused
+tests and Ruff pass. The [complete small native capsule](evidence/pmp-prefix-mapped-20261002.tar.xz)
+preserves generated netlists, raw reports, methods and upstream notices. An
+earlier report-parser failure remains recorded; the final method reran all
+proofs and six timing cases successfully. Full-SoC correspondence, physical
+placement, extracted RC and all-corner closure remain required.
