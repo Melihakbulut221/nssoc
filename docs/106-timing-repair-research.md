@@ -1448,3 +1448,13 @@ replay will expose every original/candidate boundary output for the exact saved
 assignment. It will retain the failed unconstrained proof and introduce no new
 internal-state assumptions. ALU adoption remains blocked, independently of the
 four still-running boot/MBIST simulations and physical timing qualification.
+
+The [original failed artifact](evidence/closure-alu-state-failure-archive-native-20261002.json)
+is now permanently archived, including both large lifted graphs and the exact
+counterexample. Its archival plan explicitly requires the producer's failure;
+successful publication cannot convert that proof outcome into a pass.
+The [separate replay method](evidence/alu-state-replay-method-20261002.json)
+downloads these same pinned bytes and reports every compared boundary bit for
+the saved assignment. Its actual tiny native control finds all seven injected
+differences; 52 focused tests pass. This diagnostic fixes inputs solely to locate
+the known counterexample and cannot establish equivalence.
