@@ -1,0 +1,106 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-physical
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-alu-physical-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check immutable constraints, geometry and complete proof acceptance
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_cloud_alu_physical.py sw/tests/test_alu_state_partitions.py
+      - name: Require complete proof and resolved four-state boot failure before native work
+        run: |
+          PYTHONPATH=scripts python3 - <<'PY'
+          import run_cloud_alu_physical as flow
+          flow.require_execution_ready()
+          PY
+  physical:
+    needs: preflight
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        variant: [original, candidate]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Verify all proof artifacts then run fresh placement, CTS and global routing
+        run: |
+          python3 scripts/run_cloud_alu_physical.py --variant '${{ matrix.variant }}' \
+            --output "$GITHUB_WORKSPACE/alu-physical" --work "$RUNNER_TEMP/alu-physical-work"
+      - name: Preserve native evidence and any rejected candidate
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-physical-${{ matrix.variant }}-${{ github.run_attempt }}
+          path: alu-physical/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+      - name: Preserve compact matched comparison inputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-physical-summary-${{ matrix.variant }}-${{ github.run_attempt }}
+          path: alu-physical-summary/
+          if-no-files-found: error
+          retention-days: 30
+  compare:
+    needs: physical
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-physical-summary-original-${{ github.run_attempt }}
+          path: original
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-physical-summary-candidate-${{ github.run_attempt }}
+          path: candidate
+      - name: Compare only runs with identical actual pins, macros and constraints
+        run: |
+          python3 scripts/run_cloud_alu_physical.py --compare-original original \
+            --compare-candidate candidate --output alu-physical-comparison.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-physical-comparison-${{ github.run_attempt }}
+          path: alu-physical-comparison.json
+          if-no-files-found: error
+          retention-days: 30

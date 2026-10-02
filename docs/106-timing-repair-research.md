@@ -1,5 +1,14 @@
 # 106 — Faster setup and hold repair: measured bottlenecks and controlled experiments
 
+**2 October, 15:18 UTC update:** the electrical margin repair completes with
+repeatable estimates of **1,311 setup, 67 hold, zero slew and one capacitance
+violation**. It improves setup and capacitance but regresses hold against its
+parent, so the candidate remains rejected. Complete ALU partition traversal
+proves 250 of 269 groups; 19 time out. The ALU candidate/vendor four-state boot
+fails near the NPU test despite passing power-on MBIST. The physical method
+therefore remains blocked. These are experimental results, not final timing
+or full-chip LVS closure; the latest evidence and next steps are below.
+
 **2 October, later update:** one physical XOR-buffer ECO reduces setup
 violations from 1,384 to 1,378 and WNS from −4.909516 to −4.744948 ns, with
 all measured hold endpoints unchanged. The original C10 guard still fails;
@@ -1743,3 +1752,62 @@ No proof result is inferred from the failed preparation or these local controls.
 The earlier electrical graph-guard failure is
 [permanently archived](evidence/closure-electrical-margin-first-archive-native-20261002.json),
 including the unchanged two baseline results and the zero-repair-call outcome.
+
+[Retry 37019936771](https://github.com/Melihakbulut221/nssoc/actions/runs/37019936771)
+now [completes common-miter preparation](evidence/alu-state-partitions-common-native-20261002.json).
+Native construction takes 205.97 seconds, with exact graph/label reproduction
+and the original proposal bytes verified. Root checks 99 compact captured
+members, twelve Git-bound methods, the full 269-group plan and all tiny native
+verdicts. Four proof workers are running. The 187.9 MB common miter was not
+downloaded or rehashed locally; complete native group results remain required.
+The initial preparation failure is
+[archived separately](evidence/closure-alu-partition-first-archive-native-20261002.json)
+with its failure verdict unchanged.
+
+### Final electrical margin result and remaining functional proof failures
+
+The [completed margin repair](evidence/timing-electrical-margin-native-20261002.json)
+reproduces both original baselines, passes the exact 19-terminal graph guard,
+and inserts three buffers. Two independent reloads agree on all 70,581
+endpoint/corner records and five physical fingerprints. Setup WNS is
+−4.199984360 ns and hold WNS is −0.160562008 ns. The remaining electrical
+violation is `fanout3120/X`: 0.308227360 pF against a 0.300000012 pF limit.
+Both limited digital ECO proofs pass. Historical/matched C10 guards pass, but
+hold regresses against both nearer parents; all original rejection guards
+remain active. Root verifies 186 compact captures, 41 Git-bound methods and
+recomputes the rejection. Large physical views were not downloaded locally.
+The next repair must address the residual capacitance and regressed hold
+paths together, using this complete, repeatable result.
+
+[Complete partition traversal](evidence/alu-state-partitions-incomplete-native-20261002.json)
+visits all 269 groups. Exactly 250 prove; 19 time out, leaving 2,432 of the
+34,321 output equations unproved. No counterexample is reported in this run.
+Root and independent review verify all four compact shard archives and reparse
+every native verdict; successful worker completion alone is not a proof.
+Only the timed-out groups will be refined into smaller observation slices,
+without changing inputs, state pairing, or introducing internal assumptions.
+
+The [ALU candidate/vendor boot](evidence/alu-qualification-candidate-vendor-failure-native-20261002.json)
+passes MBIST at cycle 983,043 but fails the complete finite workload. Its raw
+log is identical to the passing original for 14,040 bytes through test 25,
+then reports a UART framing error and X-valued RAM ECC counters. It reaches
+the unchanged three-million-cycle bound without the pass marker. Root verifies
+all 331 compact outputs and ten immutable methods. This narrows the diagnostic
+window; it does not yet identify the faulty logic or simulation behavior.
+A separate bounded, read-only internal trace is being prepared. The failed
+qualification remains intact, and no timing result can waive that failure.
+
+The [matched physical method](evidence/alu-physical-method-20261002.json)
+retains the same source constraints, 301 signal-terminal geometries and exact
+32 SRAM placements for fresh original/candidate placement, CTS and global
+routing. Independent native API review corrects missing routing configuration
+inheritance; root repeats 73 focused tests. The manual-only workflow is blocked
+by both the absent complete formal proof and the explicit unresolved boot
+failure. No full-chip physical experiment was dispatched for this method.
+
+Separately, the request-ack workflow's
+[unchanged original/vendor reference](evidence/core-ack-qualification-original-vendor-native-20261002.json)
+passes MBIST and all 28 checks at the same cycle 1,596,123. Root verifies its
+201 outputs and 23 Git-bound methods. Candidate results remain independent;
+this passing reference is not acknowledgement-pipeline acceptance. The selected
+C10 layout and unresolved qualified I/O tap extraction contract remain unchanged.
