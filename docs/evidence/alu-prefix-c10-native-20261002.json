@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "status": "VERIFIED_FRESH_ALU_RTL_PROOF_AND_MATCHED_C10_SYNTHESIS",
+  "run": {
+    "id": 36998734236,
+    "source_commit": "b4387d7dc2436f0b223be17f93310b883c7344c1",
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36998734236",
+    "conclusion": "success",
+    "created_at": "2026-10-02T11:01:44Z",
+    "updated_at": "2026-10-02T11:09:48Z",
+    "native_step": {
+      "name": "Prove complete ALU and optionally synthesize matched current profile",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 6,
+      "started_at": "2026-10-02T11:02:45Z",
+      "completed_at": "2026-10-02T11:09:44Z"
+    }
+  },
+  "artifact": {
+    "id": 11223062019,
+    "name": "alu-prefix-synthesis-1",
+    "size_in_bytes": 10989784,
+    "digest": "sha256:bc8345496dbcee984b9497eb6d3fd0d39b287a38e6d1e16d795c713bc11f5871",
+    "expired": false
+  },
+  "profile": {
+    "CORE_REQ_REG": 1,
+    "CORE_WB_STAGE": 1,
+    "SYNPRE": 1,
+    "MEM_RDREG": 1,
+    "REQ_REG": 1,
+    "WAKE_GNT": 1
+  },
+  "source_snapshot": {
+    "path": "docs/evidence/alu-prefix-c10-input-20261002.tar.xz",
+    "bytes": 627080,
+    "sha256": "80360ad330aef4f6bb353c2a14ca0e9e5fef1a6b6421bd9f5876828554e69695"
+  },
+  "proof": {
+    "runtime": {
+      "url": "https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage",
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "bytes": 1398053408
+    },
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "cases": [
+      {
+        "name": "candidate",
+        "returncode": 0,
+        "log": {
+          "bytes": 218658,
+          "sha256": "5cd38220042f3d717872ea42120cf5cf8aa7b2cdf05680379ab6a4e3d2285f17"
+        },
+        "miter": {
+          "bytes": 573,
+          "sha256": "80993e225391eb444114b88c9b7117a18e079102da8da9067fce5d261a54fb5a"
+        }
+      },
+      {
+        "name": "negative",
+        "returncode": 1,
+        "log": {
+          "bytes": 218604,
+          "sha256": "493eefce8d77b4be152e72993bcd5d53e69feb454f5361fea93edbe61e519092"
+        },
+        "miter": {
+          "bytes": 572,
+          "sha256": "4d71f1114cfbd80d85f57c517f4915e87b818395fc8e366086d91bd6bc834712"
+        }
+      }
+    ],
+    "scope": "Complete original-versus-prefix RV32B=0 combinational ALU, all outputs and all binary input assignments; real wrong-sum negative rejected. No state or latency change."
+  },
+  "synthesis_runtime": {
+    "archive_sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd",
+    "archive_bytes": 737555999,
+    "url": "https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-08-04/oss-cad-suite-linux-x64-20260804.tgz",
+    "yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    },
+    "version": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)"
+  },
+  "synthesis": {
+    "original": {
+      "execution": {
+        "command": [
+          "/home/runner/work/nssoc/nssoc/alu-prefix-work/oss-cad-suite/bin/yosys",
+          "-s",
+          "/home/runner/work/nssoc/nssoc/alu-prefix-result/synthesis-original/synthesis.ys"
+        ],
+        "returncode": 0
+      },
+      "netlist": {
+        "bytes": 10274923,
+        "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+      },
+      "recipe": {
+        "bytes": 10387,
+        "sha256": "3b2e739db1a124dd51397fd8717022b3f31eaef21e21aadd935c4578353ffe68"
+      },
+      "area_report": {
+        "bytes": 2218,
+        "sha256": "4287d707b8d5dbdb2d04c3891582772239efb8a5a0a2fcd169226cd151c9a15c"
+      },
+      "reported_cells": 74077,
+      "known_cell_area_um2": 1128717.828,
+      "macro_area_unknown": true,
+      "dff_count": 10009,
+      "clock_gate_count": 3,
+      "opaque_macro_count": 20,
+      "read_sources_verified": 79,
+      "native_seconds": 188.55,
+      "peak_memory_mb": 838.09
+    },
+    "candidate": {
+      "execution": {
+        "command": [
+          "/home/runner/work/nssoc/nssoc/alu-prefix-work/oss-cad-suite/bin/yosys",
+          "-s",
+          "/home/runner/work/nssoc/nssoc/alu-prefix-result/synthesis-candidate/synthesis.ys"
+        ],
+        "returncode": 0
+      },
+      "netlist": {
+        "bytes": 10370597,
+        "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+      },
+      "recipe": {
+        "bytes": 10396,
+        "sha256": "68355eef195006ad020b6c7ce1b486df2b06a65dbcafe06864a016e0b9a48905"
+      },
+      "area_report": {
+        "bytes": 2320,
+        "sha256": "6d2a747be91d267c888f794c64289a01c389100580b79fd9b73b91af4f6f4aac"
+      },
+      "reported_cells": 74544,
+      "known_cell_area_um2": 1133966.8116,
+      "macro_area_unknown": true,
+      "dff_count": 10009,
+      "clock_gate_count": 3,
+      "opaque_macro_count": 20,
+      "read_sources_verified": 79,
+      "native_seconds": 196.54,
+      "peak_memory_mb": 818.21
+    }
+  },
+  "baseline_reproduction": {
+    "observed": {
+      "bytes": 10274923,
+      "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+    },
+    "expected_sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8",
+    "scope": "Exact emitted bytes required. Path relocation could alter emitted bytes independently of function; a mismatch is preserved for diagnosis and is never accepted automatically."
+  },
+  "area_delta_um2": 5248.9835999999195,
+  "area_delta_percent": 0.46503948726501765,
+  "caveat": "Historical original RTL-to-mapped comparison has an unconstrained unique-case overlapping-control counterexample. This fresh original-vs-prefix all-output proof does not erase it or establish full-SoC mapped equivalence.",
+  "checks": {
+    "pure_cloud_tests": 33,
+    "git_method_files_verified": 7,
+    "git_current_sources_verified": 47,
+    "source_snapshot_members_verified": 99,
+    "synthesis_receipt_inputs_verified": 89,
+    "selected_members_verified": 33,
+    "range_bytes": 5202352,
+    "range_requests": 6,
+    "whole_zip_sha_verified_locally": false,
+    "candidate_full_netlist_downloaded_locally": false,
+    "native_full_soc_rerun_locally": false
+  },
+  "source_pins": {
+    "scripts/run_cloud_alu_prefix.py": {
+      "bytes": 14684,
+      "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+    },
+    "scripts/prepare_alu_prefix.py": {
+      "bytes": 3824,
+      "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+    },
+    "scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "scripts/bootstrap_oss.py": {
+      "bytes": 4879,
+      "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+    },
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    },
+    "docs/evidence/timing-cloud-input-20260930.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    ".github/workflows/timing-alu-prefix.yml": {
+      "bytes": 2101,
+      "sha256": "cba2429906174d105e4b44f79a948f692af5e594d782c96da30b5a30b7ca552f"
+    }
+  },
+  "selected_artifact_pins": {
+    "candidate-proof-execution.json": {
+      "bytes": 228,
+      "sha256": "bf7f77c6548edc94aeb5d8a76e7aab636afdd6d43128849e213663b69725394c"
+    },
+    "candidate-proof.log": {
+      "bytes": 218658,
+      "sha256": "5cd38220042f3d717872ea42120cf5cf8aa7b2cdf05680379ab6a4e3d2285f17"
+    },
+    "candidate-proof.ys": {
+      "bytes": 573,
+      "sha256": "80993e225391eb444114b88c9b7117a18e079102da8da9067fce5d261a54fb5a"
+    },
+    "methods/.github/workflows/timing-alu-prefix.yml": {
+      "bytes": 2101,
+      "sha256": "cba2429906174d105e4b44f79a948f692af5e594d782c96da30b5a30b7ca552f"
+    },
+    "methods/docs/evidence/timing-cloud-input-20260930.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    "methods/scripts/bootstrap_oss.py": {
+      "bytes": 4879,
+      "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+    },
+    "methods/hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    },
+    "methods/scripts/prepare_alu_prefix.py": {
+      "bytes": 3824,
+      "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+    },
+    "methods/scripts/run_cloud_alu_prefix.py": {
+      "bytes": 14684,
+      "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+    },
+    "methods/scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "negative-proof-execution.json": {
+      "bytes": 227,
+      "sha256": "ba4b726787e28749f153bdc240e4dc84255eb1356c54395bea5fb6296029f592"
+    },
+    "negative-proof.log": {
+      "bytes": 218604,
+      "sha256": "493eefce8d77b4be152e72993bcd5d53e69feb454f5361fea93edbe61e519092"
+    },
+    "negative-proof.ys": {
+      "bytes": 572,
+      "sha256": "4d71f1114cfbd80d85f57c517f4915e87b818395fc8e366086d91bd6bc834712"
+    },
+    "prepared/candidate.v": {
+      "bytes": 36451,
+      "sha256": "0acd9876c32aa855e959a44939803083adb7b88ce71246cf7c2a2e4fb66f6c18"
+    },
+    "prepared/negative.v": {
+      "bytes": 36451,
+      "sha256": "8ecf518f7055b09f57fbca16e9338d2ad74864721d97e03affc1a0ef503fa6dc"
+    },
+    "prepared/original.v": {
+      "bytes": 35378,
+      "sha256": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063"
+    },
+    "proof-runtime-version-execution.json": {
+      "bytes": 134,
+      "sha256": "7b1aa9141f8ea0899ae192fecf56d3e6aedbdb3306ee83140bcf7578fff8b4ca"
+    },
+    "result.json": {
+      "bytes": 19281,
+      "sha256": "00ad4d1bdc6a0f3d1bd3bc0b461609d0c924fb83ada14c26f8771115fdfceb00"
+    },
+    "proof-runtime-version.log": {
+      "bytes": 89,
+      "sha256": "76e506cbb7d03bec5a2d7083d6c4b1a6e99eae2efdbfc0b499710840c232c5dd"
+    },
+    "synthesis-candidate/area.rpt": {
+      "bytes": 2320,
+      "sha256": "6d2a747be91d267c888f794c64289a01c389100580b79fd9b73b91af4f6f4aac"
+    },
+    "synthesis-candidate/area_hier.rpt": {
+      "bytes": 29949,
+      "sha256": "963381a2df7d8cd39da4a7fb9a20a26f46db17d3873029ffc26bfb2b8fcdb4e1"
+    },
+    "synthesis-candidate/hierarchy.rpt": {
+      "bytes": 1516,
+      "sha256": "0451b8eb01aed0379e4bbd7603cdea44528614ee31413911b5f05cf8f1e37fa8"
+    },
+    "synthesis-candidate/read-inputs.json": {
+      "bytes": 15671,
+      "sha256": "c72e172a256d7aa427cef36ad8d837445983ef35351d0d2867f25a9ac17236c5"
+    },
+    "synthesis-candidate/synthesis-execution.json": {
+      "bytes": 216,
+      "sha256": "e843c558de8d805b7c551613abfcc53aca312fc809da93b3ef8dd76005d40af1"
+    },
+    "synthesis-candidate/synthesis.log": {
+      "bytes": 23854692,
+      "sha256": "4967eb86383f3f5febdbbdde9e56b0c628077b747f70a3115cecb368e9c612c0"
+    },
+    "synthesis-candidate/synthesis.ys": {
+      "bytes": 10396,
+      "sha256": "68355eef195006ad020b6c7ce1b486df2b06a65dbcafe06864a016e0b9a48905"
+    },
+    "synthesis-original/area.rpt": {
+      "bytes": 2218,
+      "sha256": "4287d707b8d5dbdb2d04c3891582772239efb8a5a0a2fcd169226cd151c9a15c"
+    },
+    "synthesis-original/area_hier.rpt": {
+      "bytes": 29676,
+      "sha256": "72458adc61ba6d7f52748330acef0af143599021d418d2a0fe3e0d22ffbaf622"
+    },
+    "synthesis-original/hierarchy.rpt": {
+      "bytes": 1441,
+      "sha256": "bbf6f80965d4487dffec983892a0bee0692ae66114e6d135f3a10e4a6851e686"
+    },
+    "synthesis-original/read-inputs.json": {
+      "bytes": 15669,
+      "sha256": "2393897a1805610bbead984e539f96bad068ffed951963c35c8ee18db9b1110e"
+    },
+    "synthesis-original/synthesis-execution.json": {
+      "bytes": 215,
+      "sha256": "412c5d6740881e8683472e146dcb57fd68da55c6ad3887cd7fcfda021e1990de"
+    },
+    "synthesis-original/synthesis.log": {
+      "bytes": 23609699,
+      "sha256": "dcd6eb464acf6fcd98a0cac8c86f45d038be1b2056c6b3bc77a14e05ec092c4f"
+    },
+    "synthesis-original/synthesis.ys": {
+      "bytes": 10387,
+      "sha256": "3b2e739db1a124dd51397fd8717022b3f31eaef21e21aadd935c4578353ffe68"
+    }
+  },
+  "next_required": [
+    "Fresh current-profile native full-interface boot/MBIST",
+    "Mapped original-versus-prefix functional correspondence",
+    "Independent SRAM replacement mapping",
+    "Fresh physical placement/routing and all-corner timing, RC, DRC/LVS"
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "full_soc_functional_accepted": false,
+  "root_independent_compact_replay": true
+}

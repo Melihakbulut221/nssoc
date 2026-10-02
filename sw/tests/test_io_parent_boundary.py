@@ -16,8 +16,8 @@ from test_extract_gds_hierarchy import library, cell, boundary, ref  # noqa: E40
 
 
 def labels():
-    return [dict(name=n,layer=[126,25],point_nm=[10+20*i,50]) for i,n in enumerate(b.RAILS)]+[
-        dict(name='sub!',layer=[40,25],point_nm=[50,100])]
+    return [dict(name=n,layer=[126,25],point_nm=[10+20*i,50]) for i,n in enumerate(b.PORT_NAMES[:-1])]+[
+        dict(name='SUB!',layer=[40,25],point_nm=[50,100])]
 
 
 def fixture():
@@ -42,10 +42,11 @@ def test_only_conductive_texts_replaced_no_device_recognition_or_geometry_edit()
     assert list(records(io.BytesIO(changed)))
 
 
-@pytest.mark.parametrize('fault',['name','order','layer','missing','truncated','absent-top'])
+@pytest.mark.parametrize('fault',['name','case','order','layer','missing','truncated','absent-top'])
 def test_annotation_contract_rejects_unproven_names_and_layers(fault):
     original=fixture();selected=labels()
     if fault=='name':selected[0]['name']='shorted'
+    if fault=='case':selected[0]['name']='iovdd'
     if fault=='order':selected.reverse()
     if fault=='layer':selected[0]['layer']=[63,0]
     if fault=='missing':selected.pop()

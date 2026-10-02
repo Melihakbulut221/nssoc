@@ -19,6 +19,7 @@ from io_parent_path_probe import CHAIN, TOP, db_module, require  # noqa: E402
 from repair_parent_resistor_markers import record, region  # noqa: E402
 
 RAILS = ('iovdd', 'iovss', 'vdd', 'vss')
+PORT_NAMES = ('IOVDD', 'IOVSS', 'VDD', 'VSS', 'SUB!')
 NET_LABELS = {(n, 25) for n in (8, 10, 30, 50, 67, 126, 134)}
 SOURCE_GDS_SHA = 'd846215231733f66265b2cbfe3eb4859c001723d8b2819bd4a236b0f255ac895'
 SOURCE_DB_SHA = 'a5600482612ff5139dc02fedd2014578662db969a24fef773323dd226e3c288d'
@@ -71,11 +72,14 @@ def boundary_witness(database, lef):
     substrate_point = [1000, 834000]
     net = lvs.probe_net(lvs.layer_by_index(1), db.Point(*substrate_point))
     require(net is not None and net.cluster_id == substrate, 'Boundary substrate annotation misses physical body')
-    labels = [dict(name=rail, layer=[126, 25], point_nm=next(p['point_nm'] for p in points if p['rail'] == rail)) for rail in RAILS]
-    labels.append(dict(name='sub!', layer=[40, 25], point_nm=substrate_point))
+    native_ports = [pin.name() for pin in lvs.reference.circuit_by_name(TOP).each_pin()]
+    require(native_ports == list(PORT_NAMES), 'Exact native reference port spellings differ')
+    labels = [dict(name=name, layer=[126, 25], point_nm=next(p['point_nm'] for p in points if p['rail'] == rail))
+              for rail, name in zip(RAILS, PORT_NAMES)]
+    labels.append(dict(name=PORT_NAMES[-1], layer=[40, 25], point_nm=substrate_point))
     return dict(status='PASS_PHYSICAL_BOUNDARY_WITNESS', rail_points=points, substrate_terminals=bodies,
         rail_clusters={k:next(iter(v)) for k,v in rail_ids.items()}, substrate_cluster=substrate,
-        labels=labels, source_database_sha256=SOURCE_DB_SHA, original_lef_sha256=LEF_SHA,
+        labels=labels, native_reference_ports=native_ports, source_database_sha256=SOURCE_DB_SHA, original_lef_sha256=LEF_SHA,
         no_virtual_connections=True, new_extraction=False)
 
 
@@ -88,7 +92,7 @@ def text_record(label):
 
 def annotate_bytes(raw, labels):
     original = index_stream(io.BytesIO(raw)); require(TOP in original['cells'], 'Missing exact diagnostic top')
-    require([v['name'] for v in labels] == [*RAILS, 'sub!'], 'Wrong boundary names/order')
+    require([v['name'] for v in labels] == list(PORT_NAMES), 'Wrong exact native boundary names/order')
     require([v['layer'] for v in labels] == [[126, 25]]*4+[[40, 25]], 'Wrong boundary label layers')
     kept = []; removed = []; element = []; cell = None; current_kind = None
     for offset, kind, payload, data in records(io.BytesIO(raw)):
@@ -161,20 +165,21 @@ def prepare(source, database, lef, output):
 def controls(output):
     """Generic resistor geometry tests label attachment and strict missing ports."""
     db = db_module(); output.mkdir(parents=True, exist_ok=False); rows = {}
-    for case in ('connected', 'mislabeled', 'open_substrate', 'same_name_open', 'missing_substrate_label'):
+    for case in ('connected', 'case_mismatch', 'parameter_mismatch', 'mislabeled', 'open_substrate', 'same_name_open', 'missing_substrate_label'):
         lvs = db.LayoutVsSchematic('CONTROL', .001)
         wires = db.Region(); contacts = db.Region(); metal = db.Region()
         body = db.Region(db.Box(-200, -100, 0, 800)); labels = db.Texts()
-        body_labels = db.Texts([db.Text('sub!', db.Trans(-100, 10))])
+        body_labels = db.Texts([db.Text('sub!' if case == 'case_mismatch' else 'SUB!', db.Trans(-100, 10))])
         if case in ('open_substrate', 'same_name_open'):
             body = db.Region([db.Box(-200, i*200, 0, i*200+100) for i in range(4)])
-        if case == 'same_name_open': body_labels = db.Texts([db.Text('sub!', db.Trans(-100, i*200+10)) for i in range(4)])
+        if case == 'same_name_open': body_labels = db.Texts([db.Text('SUB!', db.Trans(-100, i*200+10)) for i in range(4)])
         if case == 'missing_substrate_label': body_labels = db.Texts()
         for i, rail in enumerate(RAILS):
             y = i*200; right = 1000+i*100
             wires.insert(db.Box(0, y, right, y+100)); contacts.insert(db.Box(-100, y, 0, y+100))
             contacts.insert(db.Box(right, y, right+100, y+100)); metal.insert(db.Box(right, y, right+100, y+100))
-            labels.insert(db.Text('wrong' if case == 'mislabeled' and i == 0 else rail, db.Trans(right+50, y+50)))
+            spelling = 'WRONG' if case == 'mislabeled' and i == 0 else rail if case == 'case_mismatch' else rail.upper()
+            labels.insert(db.Text(spelling, db.Trans(right+50, y+50)))
         for name, layer in [('wire', wires), ('contact', contacts), ('metal', metal), ('body', body), ('labels', labels), ('body_labels', body_labels)]:
             lvs.register(layer, name)
         lvs.extract_devices(db.DeviceExtractorResistor('R', 1), {'R':wires, 'C':contacts})
@@ -184,13 +189,17 @@ def controls(output):
         ref = db.Netlist(); cls = db.DeviceClassResistor(); cls.name = 'R'; ref.add(cls)
         top = db.Circuit(); top.name = 'CONTROL'; ref.add(top); nets = {}
         for name in (*RAILS, 'sub!'):
-            nets[name] = top.create_net(name); pin = top.create_pin(name); top.connect_pin(pin.id(), nets[name])
+            nets[name] = top.create_net(name.upper()); pin = top.create_pin(name.upper()); top.connect_pin(pin.id(), nets[name])
         for i, rail in enumerate(RAILS):
             device = top.create_device(cls, 'R'+str(i)); device.connect_terminal('A', nets['sub!'])
-            device.connect_terminal('B', nets[rail]); device.set_parameter('R', 10+i)
+            device.connect_terminal('B', nets[rail]); device.set_parameter('R', 1000 if case == 'parameter_mismatch' and i == 0 else 10+i)
         lvs.reference = ref; compared = lvs.compare(db.NetlistComparer())
-        strict = lvs.flag_missing_ports(lvs.netlist().circuit_by_name('CONTROL')) if compared else False
-        require(strict == (case == 'connected'), 'Boundary negative control accepted: '+case)
+        strict = lvs.flag_missing_ports(lvs.netlist().circuit_by_name('CONTROL'))
+        if case not in ('open_substrate', 'same_name_open'):
+            require(strict == (case in ('connected', 'parameter_mismatch')), 'Boundary port control differs: '+case)
+        require((compared and strict) == (case == 'connected'), 'Boundary negative control accepted: '+case)
+        if case == 'case_mismatch': require(compared and not strict, 'Case mismatch must pass graph comparison but fail strict naming')
+        if case == 'parameter_mismatch': require(not compared and strict, 'Parameter mismatch must fail graph comparison but preserve strict naming')
         lvs.write(str(output/(case+'.lvsdb.gz')))
         rows[case] = dict(compare=compared, strict_ports=strict, expected=case == 'connected')
     # Exercise the actual GDS TEXT filter and round-trip, including protected
@@ -202,8 +211,8 @@ def controls(output):
     child.shapes(layout.layer(63, 0)).insert(db.Text('ptap1', db.Trans(30, 40)))
     top.insert(db.CellInstArray(child.cell_index(), db.Trans(3, False, 500, 600)))
     original = output/'annotation-original.gds'; layout.write(str(original))
-    annotation_labels = [dict(name=n, layer=[126,25], point_nm=[10+20*i,50]) for i,n in enumerate(RAILS)]
-    annotation_labels.append(dict(name='sub!', layer=[40,25], point_nm=[50,100]))
+    annotation_labels = [dict(name=n, layer=[126,25], point_nm=[10+20*i,50]) for i,n in enumerate(PORT_NAMES[:-1])]
+    annotation_labels.append(dict(name=PORT_NAMES[-1], layer=[40,25], point_nm=[50,100]))
     changed, edits = annotate_bytes(original.read_bytes(), annotation_labels)
     target = output/'annotation-wrapper.gds'; target.write_bytes(changed)
     restored = db.Layout(); restored.read(str(target))

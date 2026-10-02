@@ -2508,3 +2508,28 @@ open bodies, identically named disconnected bodies, wrong and missing labels;
 89 adjacent source tests pass. Actual wrapper deep/flat comparisons are pending,
 and even a future diagnostic match is distinct from acceptance under the
 unmodified qualified deck or full-chip signoff.
+
+
+### Exact native port spelling correction before strict acceptance
+
+[Run 36998483392](https://github.com/Melihakbulut221/nssoc/actions/runs/36998483392)
+completes both comparisons; [its original failure is retained](evidence/io-parent-boundary-native-20261002.json).
+The new annotation wrapper preserves all primitive parameters and physical
+geometry. All 16 non-tap devices pair successfully in flat comparison, while
+two tap devices retain area/perimeter warnings. Five top-level pin pairs are
+matched by the graph comparer, but the separate strict-port check still fails.
+
+A native control identifies the cause: SPICE import normalizes reference pin
+names to uppercase, whereas the first wrapper used lowercase annotations.
+Graph matching accepts this difference; `flag_missing_ports` requires exact
+spelling. The [corrected method](evidence/io-parent-boundary-case-method-20261002.json)
+reads and checks the exact five native reference names before emitting
+`IOVDD`, `IOVSS`, `VDD`, `VSS`, and `SUB!` at the previously witnessed points.
+Only text spelling changes. A positive control passes both checks; a lowercase
+mutation passes graph comparison but fails strict naming. A separate wrong
+resistor parameter fails graph comparison while retaining a passing port check,
+showing that pin spelling and device parameters are independent requirements.
+Root repeats the seven small native cases and 40 focused tests; the wider agent
+check passes 92 tests. A corrected actual-parent cloud comparison remains
+required. No tap fitting, conductor change, rule relaxation or complete LVS
+acceptance follows from this metadata correction.

@@ -1194,3 +1194,60 @@ only the 33-bit addition and introduces no state or latency; default RTL remains
 unchanged. The earlier RTL-to-mapped unique-case counterexample is retained as a
 separate qualification issue. Fresh boot/MBIST, mapped correspondence, memory
 mapping, physical layout and all-corner timing remain required after synthesis.
+
+
+### Four buffers measured: local buffering reaches diminishing returns
+
+[Run 36997063834](https://github.com/Melihakbulut221/nssoc/actions/runs/36997063834)
+completes the [four-buffer experiment](evidence/timing-xor-four-native-20261002.json).
+Root and an independent review verify all 31 methods, the full contracted
+connection graph, unchanged 32 SRAM placements and every hold endpoint/corner
+value across six stages. The original baseline and first two insertions reproduce
+the earlier experiments exactly.
+
+| Quantity | Two buffers | Three buffers | Four buffers |
+| --- | ---: | ---: | ---: |
+| Setup violating endpoints | 1,376 | 1,376 | 1,376 |
+| Setup WNS, ns | −4.721119495 | −4.717023216 | −4.716302016 |
+| Setup TNS, ns | −4120.158337173 | −4115.444880881 | −4113.288468943 |
+| Hold violating endpoints | 113 | 113 | 113 |
+
+The last two insertions gain only 4.817 ps of worst setup slack and close no
+additional endpoint. Hold values remain unchanged, with zero slew and one
+capacitance violation. The explicit full timing update repeats the fourth-stage
+metrics. The original C10 acceptance guard still fails, and the exported
+candidate remains rejected. Compact review does not repeat physical extraction
+or download the complete 469,941,582-byte artifact.
+
+The new worst path starts at RF x1 bit1 (`_133476_`) and ends at `_132609_`;
+the top ten reports share that startpoint. Its next long connection alone is
+not sufficient justification for another buffer-only experiment. The parallel
+ALU and PMP candidates target the shared logical delay instead.
+
+
+### Current-profile ALU proof and exact baseline synthesis completed
+
+[Run 36998734236](https://github.com/Melihakbulut221/nssoc/actions/runs/36998734236)
+passes the [fresh all-output proof and matched synthesis](evidence/alu-prefix-c10-native-20261002.json).
+The wrong-sum negative produces a real counterexample. The relocated original
+recipe reproduces the C10 synthesis netlist byte-for-byte; only then is the
+parallel-adder candidate synthesized. Both native synthesis runs report zero
+structural problems. Root repeats the compact source, input, recipe and proof
+log review independently, including all 99 snapshot members and 47 tracked
+source pins.
+
+| Synthesis quantity | Original | Parallel adder |
+| --- | ---: | ---: |
+| Mapped cells | 74,077 | 74,544 |
+| Known-cell area, µm² | 1,128,717.828 | 1,133,966.812 |
+| DFF cells | 10,009 | 10,009 |
+| Clock-gating cells | 3 | 3 |
+| Abstract SRAM instances before physical replacement | 20 | 20 |
+
+Known-cell area rises 0.465%; this excludes unknown macro areas and is not total
+physical die area. Original and candidate synthesis take 188.55 and 196.54
+seconds, respectively. The 20 abstract memories require the established
+replacement into 32 physical SRAM macros; that transformation has not yet been
+verified for this candidate. Current-profile mapped correspondence, full boot
+and MBIST, memory replacement, fresh layout and all-corner timing remain
+required. No timing benefit or accepted candidate is claimed from synthesis.
