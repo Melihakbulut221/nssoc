@@ -42,7 +42,7 @@ The input must be a Git checkout (a public mirror checkout is supported).
 Tracked files are read from the working tree; untracked assets fail closed.
 The site manifest records copied assets, not a claim of remote URL availability
 or of embedded JSON evidence paths being downloadable. Each asset is limited
-to 16 MiB and all copied assets together to 64 MiB.
+to 16 MiB and all copied assets together to 96 MiB.
 """
 
 from __future__ import annotations

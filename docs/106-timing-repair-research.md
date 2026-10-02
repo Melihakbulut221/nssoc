@@ -1171,3 +1171,26 @@ artifacts are now [permanently archived](evidence/closure-archives-native-202610
 Cloud publication verifies each unchanged original ZIP and both authenticated
 and anonymous release downloads. These archives preserve failures and rejected
 candidates as recorded; publication does not convert them into accepted results.
+
+
+### Current-profile ALU experiment queued for real synthesis
+
+The [critical-path source mapping](evidence/critical-path-prefix-analysis-20261002.json)
+locates the persistent serial carry and PMP suffix in both measured critical
+paths. The [ALU method](evidence/alu-prefix-c10-method-20261002.json) packages the
+exact original C10 synthesis recipe and 99 source/license members in a 627,080-byte
+snapshot. Forty-seven current tracked inputs match the receipt; generated inputs
+also remain bound to the original C10 source hashes. CORE_REQ_REG, CORE_WB_STAGE,
+SYNPRE, MEM_RDREG, REQ_REG and WAKE_GNT stay enabled, with ECC, PMP, all interfaces
+and both memory-test integrations retained.
+
+Cloud execution first proves every original-versus-prefix ALU output and rejects
+a wrong-sum mutation. Only then does it run the original pinned Yosys 0.67+146
+recipe on the relocated baseline. The emitted netlist must reproduce the C10
+synthesis hash before the candidate is synthesized. A path-related or other
+baseline byte mismatch is preserved for diagnosis and cannot silently pass.
+Thirty-three source/recipe/proof-failure tests pass. The current candidate changes
+only the 33-bit addition and introduces no state or latency; default RTL remains
+unchanged. The earlier RTL-to-mapped unique-case counterexample is retained as a
+separate qualification issue. Fresh boot/MBIST, mapped correspondence, memory
+mapping, physical layout and all-corner timing remain required after synthesis.

@@ -1,0 +1,275 @@
+{
+  "schema": 1,
+  "status": "READ_ONLY_CURRENT_PATH_ANALYSIS_NO_RTL_CHANGE",
+  "sources": [
+    {
+      "path": "hw/soc/out/resume-20261002-0800/xor-buffer-cloud/final-selected/run/01-openroad-resizertimingpostgrt/after_full_update-setup.rpt",
+      "bytes": 254362,
+      "sha256": "a564c1f3ab034f0d0ac43011b81e8e97bf2619169c348c0549bbc7cd1fbfb79c"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/xor-pair-cloud/final-selected/run/01-openroad-resizertimingpostgrt/after_full_update-setup.rpt",
+      "bytes": 257044,
+      "sha256": "fcbf68a01ac68c29503c92bc981fa6a00c6896b77752c96c368d87e77f19939f"
+    },
+    {
+      "path": "hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-010/01-openroad-resizertimingpostgrt/soc_top.nl.v",
+      "bytes": 12107530,
+      "sha256": "f0b2fd9416104124bf67fe4fbabddd2da1cd069a0209d2d361e66a87eeff7ef4"
+    },
+    {
+      "path": "hw/soc/out/timing-repair2-20260927/synthesis-pipeline/result.json",
+      "bytes": 15444,
+      "sha256": "8a6caa6e2c670d43d79a9394064226d5387fc846f5559f1db0ce3fcacf97bfd5"
+    },
+    {
+      "path": "docs/evidence/alu-prefix-research-20260924.json",
+      "bytes": 147419,
+      "sha256": "549f087db3bef226a1b0eeb074cf8218153ecaf1cfc9a8b0cfebada7ca2223ab"
+    }
+  ],
+  "measured": {
+    "original_start": "_134050_",
+    "original_q": "RF[11].rf_reg_q[27]",
+    "pair_start": "_133935_",
+    "pair_q": "RF[30].rf_reg_q[12]",
+    "endpoint": "_132609_",
+    "endpoint_q": "u_ibex.gen_regfile_ff.register_file_i.raddr_a_i[2]",
+    "corner": "nom_slow_1p08V_125C",
+    "clock": "clk_i 20ns unchanged",
+    "original_sections": [
+      {
+        "section": "RF syndrome, read selection, correction and ALU operand selection",
+        "start_pin": "_134050_/CLK",
+        "end_pin": "_075129_/Y",
+        "start_arrival_ns": 3.732118607,
+        "end_arrival_ns": 10.844867706,
+        "delay_ns": 7.112749099
+      },
+      {
+        "section": "ALU carry/sum suffix",
+        "start_pin": "_075129_/Y",
+        "end_pin": "_075389_/X",
+        "start_arrival_ns": 10.844867706,
+        "end_arrival_ns": 15.164740562,
+        "delay_ns": 4.319872856
+      },
+      {
+        "section": "ALU-result distribution",
+        "start_pin": "_075389_/X",
+        "end_pin": "fanout633/X",
+        "start_arrival_ns": 15.164740562,
+        "end_arrival_ns": 16.540201187,
+        "delay_ns": 1.375460625
+      },
+      {
+        "section": "PMP address comparison and permission/prioritization",
+        "start_pin": "fanout633/X",
+        "end_pin": "_076942_/Y",
+        "start_arrival_ns": 16.540201187,
+        "end_arrival_ns": 21.266342163,
+        "delay_ns": 4.726140976
+      },
+      {
+        "section": "grant/LSU completion, ID advance and RF next read-address control",
+        "start_pin": "_076942_/Y",
+        "end_pin": "_132609_/D",
+        "start_arrival_ns": 21.266342163,
+        "end_arrival_ns": 27.862571716,
+        "delay_ns": 6.596229553
+      }
+    ],
+    "pair_sections": [
+      {
+        "section": "RF syndrome, read selection, correction and ALU operand selection",
+        "start_pin": "_133935_/CLK",
+        "end_pin": "_075057_/Y",
+        "start_arrival_ns": 3.793242693,
+        "end_arrival_ns": 10.822455406,
+        "delay_ns": 7.029212713
+      },
+      {
+        "section": "ALU carry/sum suffix",
+        "start_pin": "_075057_/Y",
+        "end_pin": "_075389_/X",
+        "start_arrival_ns": 10.822455406,
+        "end_arrival_ns": 15.14091301,
+        "delay_ns": 4.318457604
+      },
+      {
+        "section": "ALU-result distribution",
+        "start_pin": "_075389_/X",
+        "end_pin": "fanout633/X",
+        "start_arrival_ns": 15.14091301,
+        "end_arrival_ns": 16.516372681,
+        "delay_ns": 1.375459671
+      },
+      {
+        "section": "PMP address comparison and permission/prioritization",
+        "start_pin": "fanout633/X",
+        "end_pin": "_076942_/Y",
+        "start_arrival_ns": 16.516372681,
+        "end_arrival_ns": 21.242513657,
+        "delay_ns": 4.726140976
+      },
+      {
+        "section": "grant/LSU completion, ID advance and RF next read-address control",
+        "start_pin": "_076942_/Y",
+        "end_pin": "_132609_/D",
+        "start_arrival_ns": 21.242513657,
+        "end_arrival_ns": 27.83874321,
+        "delay_ns": 6.596229553
+      }
+    ],
+    "pair_slack_ns": -4.721119404,
+    "shared_suffix": "Both paths rejoin at _075131_ and retain exactly the reported carry/sum, PMP, LSU/ID and register-read-address suffix.",
+    "numeric_partition_scope": "Stage boundary names are a source-supported functional interpretation; delay subtraction is directly measured. Cell delays include associated interconnect contribution in this report format."
+  },
+  "source_mapping": [
+    {
+      "section": "RF correction",
+      "evidence": "First XORs directly consume rf_reg_q[27]/[26]/[6] and rf_chk_q[4]; RTL SYNPRE computes one syndrome per word then selects it, compares with constant error columns and XORs correction mask.",
+      "rtl": "hw/soc/rtl/ibex_regfile_secded.v:600-632"
+    },
+    {
+      "section": "ALU carry",
+      "evidence": "_075131_ through _075389_ is an alternating AOI/OAI carry chain ending in XOR sum. Its side cones include ALU operand/immediate/multdiv state; resulting sum fans directly into PMP-address comparisons. Generated ALU source is exact C10 synthesis input81fa8c\u2026, unchanged from archived prefix experiment.",
+      "rtl": "hw/soc/gen/ibex_alu.v and hw/soc/ext/ibex/rtl/ibex_alu.sv:104-109"
+    },
+    {
+      "section": "PMP",
+      "evidence": "_075572_ combines the sum with a start-address selection from csr_pmp_addr[16]/[50]; continuing gates use csr_pmp_addr[31]/[65], cfg mode, bounds and permission. Only four regions are configured, but the magnitude comparison traverses many serial address-bit groups.",
+      "rtl": "hw/soc/ext/ibex/rtl/ibex_pmp.sv:179-228 and253-265"
+    },
+    {
+      "section": "completion feedback",
+      "evidence": "After PMP, gates include data-request queue valid, ls_fsm_ns, controller_run_o and instruction-valid controls before next read-address flop. CORE_REQ_REG gates gnt_o with req_i, so request/PMP latency can still reach LSU completion; it does not register this internal address-to-control cone.",
+      "rtl": "hw/soc/rtl/soc_req_pipe.v:27-40; hw/soc/ext/ibex/rtl/ibex_load_store_unit.sv:470-487 and632; hw/soc/gen/ibex_id_stage.v:845"
+    }
+  ],
+  "conclusion": "There is no single two-buffer electrical bottleneck. The persistent carry/PMP suffix plus result distribution contributes about10.42ns of the roughly24ns path. RF/ECC/select and final handshake/control remain serial around it. The first low-state-risk higher-leverage experiment is replacing only the33-bit ALU addition with the already-proven combinational parallel-prefix equivalent; keep PMP/ECC/protocol/pipeline/SDC unchanged.",
+  "next_fix": {
+    "change": "Generate isolated candidate from exact generated ibex_alu.v, replacing exactly one33+33->34 unsigned addition with six-level carry generate/propagate network. Keep complete34-bit sum, all outputs and original mux semantics. No state, latency or default adoption.",
+    "why_now": "The exact original ALU bytes are still present in all-current-C10 source receipt. New pair worst shares the same carry suffix. Prior isolated evidence identifies a measurable structural gain rather than an arbitrary speculative rewrite.",
+    "historical_evidence": {
+      "rtl_all_output_status": "PASS_WHOLE_ALU_AND_REJECT_WRONG_SUM",
+      "mapped_pair_status": "PASS_MAPPED_PREFIX_ALU_AGAINST_MAPPED_BASELINE_ALL_INPUTS",
+      "slow_operand_to_adder_ns": {
+        "original": 6.379247665,
+        "candidate": 2.118846416
+      },
+      "current_layout_gain_claimed": false,
+      "old_full_soc_profile": {
+        "CORE_REQ_REG": 0,
+        "CORE_WB_STAGE": 0
+      },
+      "caveat": "Historical unconstrained RTL-to-mapped baseline has a unique-case overlapping-control counterexample; preserve it. Mapped-original versus mapped-prefix all-input proof passes separately. Old unplaced/full-profile numbers do not establish C10 timing."
+    },
+    "validation": [
+      "Fresh exact-source all-output combinational SAT miter, arbitrary ALU/multdiv inputs and every output, plus wrong-sum negative control.",
+      "Current CORE_REQ_REG=CORE_WB_STAGE=SYNPRE=MEM_RDREG=REQ_REG=WAKE_GNT=1 source preparation and unchanged PMPEnable1/PMPNumRegions4/ECC checks.",
+      "Fresh matched baseline/candidate full-interface native boot/MBIST and synthesized interface/state boundary checks; reject changed exception/retirement behavior.",
+      "Cloud current-profile synthesis/replacement memory mapping and new physical run under identical periods/corners/derates; compare setup/hold/electrical and routed parasitics. Do not apply the C10 retained-cell ECO checker blindly: ALU combinational cells legitimately change and require cone-level formal correspondence."
+    ]
+  },
+  "alternatives": {
+    "pmp": "A balanced unsigned comparator is the next independent candidate if ALU prefix gain persists but leaves PMP depth dominant. Preserve full34-bit bounds, granularity, all region modes and lowest-region priority with all-input formal proof before timing. It is not yet implemented or validated.",
+    "grant": "Do not simply remove req_i from gnt_o: this changes the existing transfer condition and can grant a PMP-masked request unless LSU/error ownership is re-proven. A new request/control pipeline changes latency and needs broader sequential proof."
+  },
+  "current_profile": {
+    "CORE_REQ_REG": 1,
+    "CORE_WB_STAGE": 1,
+    "SYNPRE": 1,
+    "MEM_RDREG": 1,
+    "REQ_REG": 1,
+    "WAKE_GNT": 1
+  },
+  "current_source_files_verified": {
+    "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+    "hw/soc/rtl/soc_boot.v": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+    "hw/soc/rtl/soc_scrub.v": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+    "hw/soc/rtl/soc_pnp.v": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b",
+    "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+    "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+    "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+    "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+    "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+    "hw/soc/pnr/RM_IHPSG13_1P_1024x32_c2_bm_bist_bb.v": "8b93e94a0c7b23cc253f2893fd1a8ff5d2245a5b2a28dc1b92b5dd3437f7dc14",
+    "hw/soc/rtl/soc_i2c.v": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36",
+    "hw/soc/rtl/dft/soc_sram_zero_check.v": "0c21e27081729d3eae743d2e6953c08ddf716de4ecd87a88f0c496efe70a5676",
+    "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+    "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+    "hw/soc/rtl/soc_spi.v": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373",
+    "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+    "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+    "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+    "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+    "hw/soc/pnr/RM_IHPSG13_1P_512x16_c2_bm_bist_bb.v": "a4849a8e8bf98bfffa294f532363dc4781d2759b5da0c31f4506be8ec9ab01c7",
+    "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+    "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+    "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+    "hw/soc/rtl/dft/soc_eth_fifo_sram.v": "857ad9421790d69921e08cdcdae9ee9d19b12e32da556b0fe347773d47bf1f4c",
+    "hw/soc/rtl/soc_uart.v": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92",
+    "hw/soc/rtl/soc_npu_ser.v": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8",
+    "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+    "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+    "hw/soc/rtl/soc_mem_sram.v": "be28b3f37ec2d180db772974b4877531c1675b3745fe1a677ecdf94ab2c50026",
+    "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+    "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+    "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+    "hw/soc/rtl/soc_can.v": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5",
+    "hw/soc/rtl/soc_bus.v": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93",
+    "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+    "hw/soc/rtl/dft/soc_sram_mbist.v": "4bdf54566b8244023ba167df01b539bd1c0b21c985987718329689b8c2f3bb81",
+    "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+    "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+    "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+    "hw/soc/rtl/soc_memmap.vh": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f",
+    "hw/soc/rtl/dft/soc_sram_test_port.v": "bbf044e7a5a5d606cab60e6d7fef09dea7b596a5668586ffc0674d028481854c",
+    "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+    "hw/soc/rtl/soc_busstat.v": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388",
+    "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+    "hw/soc/rtl/soc_eth.v": "055eb892a5ef4a390d6afcb317dc0a836f7f035e35e7cc957f8ddb44e7055deb",
+    "hw/soc/gen/interfaces-full.bundle.vh": "53bfd786fdaa2837d17c3151c8cfd0e8c49824ed9c469d6d0cf2824104fb6c8a",
+    "hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9",
+    "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+    "hw/soc/rtl/soc_wdog.v": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5",
+    "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+    "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+    "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+    "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+    "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+    "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+    "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+    "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+    "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+    "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+    "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+    "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+    "hw/soc/rtl/soc_spw.v": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9",
+    "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+    "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+    "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+    "hw/soc/rtl/soc_apb_pnp.v": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994",
+    "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+    "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+    "hw/soc/rtl/soc_req_pipe.v": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac",
+    "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+    "hw/soc/rtl/soc_top.v": "14ad32ea914b1273c2c7359809312a456eafd54864e05e17a003c5d2bd56124a",
+    "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+    "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+    "hw/soc/rtl/soc_npu.v": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a",
+    "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+    "hw/soc/rtl/prim_clock_gating.v": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024",
+    "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+    "hw/soc/rtl/soc_apb_wb.v": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86"
+  },
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "follow_on_pmp_experiment": "docs/evidence/pmp-prefix-current-20261002.json",
+  "historical_analysis_note": "The read-only analysis preceded the separately recorded PMP implementation; its not-yet-implemented alternative describes that earlier point."
+}
