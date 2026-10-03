@@ -2464,3 +2464,42 @@ checked against live GitHub metadata before dispatch. The existing archive
 method requires unchanged bytes and both release download roundtrips.
 Publication and independent review remain pending; these plans do not imply
 timing acceptance or a passing candidate boot.
+
+The [completed pair audit and capture correction](evidence/timing-pair-hold-final-native-20261003.json)
+separate two failures. The native experiment completes and both limited ECO
+proofs pass, but fresh global routing changes setup violations from 1,310 to
+1,311 and hold from 57 to 59. Both intended targets become positive; four
+other endpoints become negative. The pre-route insertion snapshot had 55
+hold violations, so those gains do not survive fresh routing and its two
+matching reloads. Slew and capacitance remain zero. The candidate is rejected.
+All 23,527 endpoints at three corners in four stages, original placement and
+protected-object records were independently checked; this remains estimated
+global-route RC, not final timing.
+
+Separately, capture omitted the actual tiny fixture's `before.def` from its
+physical-file allowlist. It copied two other files and then failed, leaving
+an incomplete manifest. The historical archive stays invalid as a complete
+capture. The one-name correction is independently replayed against all 73
+saved tiny native outputs: the old error reproduces, and the fixed fresh
+capture inventories all 74 files including status. Unexpected files and
+symlinks remain rejected; 202 focused tests pass in the root replay. Native
+chip execution is not repeated merely to repair packaging.
+
+The [completed paired NPU cone trace](evidence/npu-cone-final-native-20261003.json)
+passes all 28 original boot checks at cycle 1,596,123; the candidate still
+fails after 3,000,096 cycles with 24 checks. Both compact ZIPs, 95 output pins
+and 24 Git-bound methods per variant are independently verified and replayed
+locally. The first observed candidate X callback is `_107554_/A1` on
+`_028688_`, followed by `_028689_`; their frontier drivers are `_084115_/Y`
+and `_084116_/Y`. The shared `_047302_` signal is downstream of these inputs.
+The 161-cycle observation is not a lossless simulator-delta trace and does
+not yet justify an RTL or cell-model change. The next diagnostic follows
+these exact frontiers to their semantic sequential boundaries.
+
+The [completed general CI and upstream review](evidence/closure-ci-upstream-20261003-2148.json)
+is tied to `60e351d` and its verified PR merge: both main suites report
+4,601 passes and 34 skips. The raw required formal inventory contains 170
+PASS results, with six historical exclusions retained; native whole-netlist
+boot remains an opt-in skipped job in that general workflow. IHP's inspected
+main/dev sources and issue 955 are unchanged from the preceding tap packet.
+There is no new qualified LVS correction or manufacturing acceptance.

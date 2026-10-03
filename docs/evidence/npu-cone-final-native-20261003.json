@@ -1,0 +1,1074 @@
+{
+  "schema": 1,
+  "status": "ORIGINAL_BOOT_PASS_CANDIDATE_BOOT_FAIL_UPSTREAM_X_FRONTIER_IDENTIFIED",
+  "source_run": 37129489438,
+  "source_commit": "7ea275379790204a57067b6e945fc2c762c48082",
+  "review_source": {
+    "bytes": 235457,
+    "sha256": "bed0f4ce3528191725c40897193ea9b9d9a935913c447244d727a4d7e78ba831"
+  },
+  "review": {
+    "schema": 1,
+    "status": "BOTH_COMPLETE_NATIVE_CONE_CAPTURES_INDEPENDENTLY_VERIFIED_NO_ACCEPTANCE",
+    "checked_at": "2026-10-03T21:53:22.135124+00:00",
+    "run": 37129489438,
+    "source": "7ea275379790204a57067b6e945fc2c762c48082",
+    "variants": {
+      "original": {
+        "artifact": {
+          "id": 11277881428,
+          "node_id": "MDg6QXJ0aWZhY3QxMTI3Nzg4MTQyOA==",
+          "name": "npu-cone-trace-final-original-1",
+          "size_in_bytes": 569222,
+          "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11277881428",
+          "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11277881428/zip",
+          "expired": false,
+          "digest": "sha256:60a560870177db52e23fcdc147e42d29631a4c5e0894f032e52468b75ab3c154",
+          "created_at": "2026-10-03T15:46:42Z",
+          "updated_at": "2026-10-03T15:46:42Z",
+          "expires_at": "2026-11-02T15:46:40Z",
+          "workflow_run": {
+            "id": 37129489438,
+            "repository_id": 1364721142,
+            "head_repository_id": 1364721142,
+            "head_branch": "codex/complete-open-work",
+            "head_sha": "7ea275379790204a57067b6e945fc2c762c48082"
+          }
+        },
+        "zip": {
+          "bytes": 569222,
+          "sha256": "60a560870177db52e23fcdc147e42d29631a4c5e0894f032e52468b75ab3c154"
+        },
+        "all_zip_crcs_checked": true,
+        "output_count": 95,
+        "git_methods": 24,
+        "frozen_dependencies": 20,
+        "startup_members_unchanged": 93,
+        "startup_zip": {
+          "bytes": 544686,
+          "sha256": "d0595a68da34259483c4fdea7c3f17f84c90c9e6ed09a0dd0138be6ed6a31fab"
+        },
+        "native_status": "NPU_CONE_CAPTURE_COMPLETE_NOT_ACCEPTANCE",
+        "observed_boot_pass": true,
+        "boot_execution": {
+          "command": [
+            "/home/runner/work/_temp/npu-cone-trace-work/oss-cad-suite/bin/vvp",
+            "-i",
+            "/home/runner/work/_temp/npu-cone-trace-work/sim.vvp",
+            "+flash0=/home/runner/work/nssoc/nssoc/npu-cone-trace/firmware/flash0.hex",
+            "+npu_cone_dir=/home/runner/work/nssoc/nssoc/npu-cone-trace"
+          ],
+          "returncode": 0,
+          "elapsed_s": 4841.553834597
+        },
+        "signals": 117,
+        "native_cells": 16,
+        "observation": {
+          "start": 1569360,
+          "last": 1569520,
+          "width": 117,
+          "events": 2570,
+          "samples": 161,
+          "sequence": 2732,
+          "final_cycle": 1596123,
+          "initialization_cycle": 1569359,
+          "event_cycle_bounds": [
+            1569359,
+            1569520
+          ],
+          "initial_static_unknowns": [
+            {
+              "signal": 7,
+              "value": "x"
+            },
+            {
+              "signal": 10,
+              "value": "x"
+            },
+            {
+              "signal": 18,
+              "value": "x"
+            },
+            {
+              "signal": 21,
+              "value": "x"
+            },
+            {
+              "signal": 29,
+              "value": "x"
+            },
+            {
+              "signal": 32,
+              "value": "x"
+            },
+            {
+              "signal": 40,
+              "value": "x"
+            },
+            {
+              "signal": 43,
+              "value": "x"
+            }
+          ],
+          "first_new_unknown": null,
+          "raw_event_file": {
+            "bytes": 537696,
+            "sha256": "e118b4d1a26964a7106408853f493d5c87a6a5d2f76096645008ffec01329b34"
+          },
+          "new_unknown_transition_count": 0
+        },
+        "first_new_unknown_bound": null,
+        "first_new_unknowns": [],
+        "boot_tail": [
+          "LOGICROM_GL progress cycles=1570000 uart=848 flash_frames=6 ram_sec=0000 ram_ded=0000",
+          "npu: 0x0000000c events, cnt=0x000cLOGICROM_GL progress cycles=1580000 uart=882 flash_frames=6 ram_sec=0000 ram_ded=0000",
+          "0016 status=0x0000002a",
+          "  ok   test 0x0000001a",
+          "  ok   test 0x0000001b",
+          "  ok   test 0x0000001c",
+          "  ok   test LOGICROM_GL progress cycles=1590000 uart=986 flash_frames=6 ram_sec=0000 ram_ded=0000",
+          "0x0000000b",
+          "checks run: 0x0000001c  fail mask: 0x00000000",
+          "RESULT PASS",
+          "LOGICROM_GL cycles=1596123 checks=28 fails=00000000 code=00000000 magic=600dc0de watchdog=1/0/0 flash_violations=0 uart_pass=1 framing=0",
+          "LOGICROM_GL PASS checks=28",
+          "/home/runner/work/nssoc/nssoc/npu-cone-trace/tb_qualification_boot.v:331: $finish called at 31922860000 (1ps)",
+          "NPU_CONE_SUMMARY start=1569360 last=1569520 width=117 events=2570 samples=161 sequence=2732 final_cycle=1596123 armed=1"
+        ],
+        "critical_files": {
+          "boot.log": {
+            "bytes": 14899,
+            "sha256": "24f8a06b054781e6a3c21dc467c2231485ddb68af88813165e4d7b2f21b31909"
+          },
+          "cone-bindings.json": {
+            "bytes": 56206,
+            "sha256": "ac2ac606e7f5781feebb8829117fe46a695f1517110aa5cb00b27ee953172aaf"
+          },
+          "npu-cone-events.log": {
+            "bytes": 537696,
+            "sha256": "e118b4d1a26964a7106408853f493d5c87a6a5d2f76096645008ffec01329b34"
+          },
+          "result.json": {
+            "bytes": 109376,
+            "sha256": "4e061f06cdd6d4e54c3dde2a6855d0be8790bec92a036f4c2f6bf2ad6476570c"
+          }
+        }
+      },
+      "candidate": {
+        "artifact": {
+          "id": 11280264259,
+          "node_id": "MDg6QXJ0aWZhY3QxMTI4MDI2NDI1OQ==",
+          "name": "npu-cone-trace-final-candidate-1",
+          "size_in_bytes": 575762,
+          "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11280264259",
+          "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11280264259/zip",
+          "expired": false,
+          "digest": "sha256:bf537a8c5db2b42f21200f9b317d062bbc25871be9aa58a3f19a92481b4f2901",
+          "created_at": "2026-10-03T17:56:54Z",
+          "updated_at": "2026-10-03T17:56:54Z",
+          "expires_at": "2026-11-02T17:56:54Z",
+          "workflow_run": {
+            "id": 37129489438,
+            "repository_id": 1364721142,
+            "head_repository_id": 1364721142,
+            "head_branch": "codex/complete-open-work",
+            "head_sha": "7ea275379790204a57067b6e945fc2c762c48082"
+          }
+        },
+        "zip": {
+          "bytes": 575762,
+          "sha256": "bf537a8c5db2b42f21200f9b317d062bbc25871be9aa58a3f19a92481b4f2901"
+        },
+        "all_zip_crcs_checked": true,
+        "output_count": 95,
+        "git_methods": 24,
+        "frozen_dependencies": 20,
+        "startup_members_unchanged": 93,
+        "startup_zip": {
+          "bytes": 543828,
+          "sha256": "5b9726c6a74eaa888232cf8eeb394284867667cb53880c50fe42870f324b3205"
+        },
+        "native_status": "NPU_CONE_CAPTURE_COMPLETE_NOT_ACCEPTANCE",
+        "observed_boot_pass": false,
+        "boot_execution": {
+          "command": [
+            "/home/runner/work/_temp/npu-cone-trace-work/oss-cad-suite/bin/vvp",
+            "-i",
+            "/home/runner/work/_temp/npu-cone-trace-work/sim.vvp",
+            "+flash0=/home/runner/work/nssoc/nssoc/npu-cone-trace/firmware/flash0.hex",
+            "+npu_cone_dir=/home/runner/work/nssoc/nssoc/npu-cone-trace"
+          ],
+          "returncode": 1,
+          "elapsed_s": 12645.994706573
+        },
+        "signals": 114,
+        "native_cells": 17,
+        "observation": {
+          "start": 1569360,
+          "last": 1569520,
+          "width": 114,
+          "events": 2678,
+          "samples": 161,
+          "sequence": 2840,
+          "final_cycle": 3000096,
+          "initialization_cycle": 1569359,
+          "event_cycle_bounds": [
+            1569359,
+            1569520
+          ],
+          "initial_static_unknowns": [
+            {
+              "signal": 7,
+              "value": "x"
+            },
+            {
+              "signal": 10,
+              "value": "x"
+            },
+            {
+              "signal": 18,
+              "value": "x"
+            },
+            {
+              "signal": 21,
+              "value": "x"
+            },
+            {
+              "signal": 29,
+              "value": "x"
+            },
+            {
+              "signal": 32,
+              "value": "x"
+            },
+            {
+              "signal": 40,
+              "value": "x"
+            },
+            {
+              "signal": 43,
+              "value": "x"
+            }
+          ],
+          "first_new_unknown": {
+            "sequence": 692,
+            "cycle": 1569430,
+            "realtime_ns": "31388990.000",
+            "signal": 108,
+            "prior": "1",
+            "value": "x"
+          },
+          "raw_event_file": {
+            "bytes": 550699,
+            "sha256": "b49ebb72649cbc27a86eef68e8aabfab8a477032e11d63617241490f2b571c40"
+          },
+          "new_unknown_transition_count": 986
+        },
+        "first_new_unknown_bound": {
+          "kind": "EV",
+          "sequence": 692,
+          "cycle": 1569430,
+          "time": "31388990.000",
+          "signal": 108,
+          "prior": "1",
+          "value": "x",
+          "binding": {
+            "index": 108,
+            "instance": "_107554_",
+            "field": "A1",
+            "expression": "dut._107554_.A1",
+            "role": "cone"
+          },
+          "all": "1x010x1101101010010011110111101001010010011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+        },
+        "first_new_unknowns": [
+          {
+            "kind": "EV",
+            "sequence": 692,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 108,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 108,
+              "instance": "_107554_",
+              "field": "A1",
+              "expression": "dut._107554_.A1",
+              "role": "cone"
+            },
+            "all": "1x010x1101101010010011110111101001010010011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 693,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 112,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 112,
+              "instance": "_107554_",
+              "field": "int_fwire_0",
+              "expression": "dut._107554_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11011x101001001111011110100101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 694,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 113,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 113,
+              "instance": "_107554_",
+              "field": "int_fwire_1",
+              "expression": "dut._107554_.int_fwire_1",
+              "role": "cone"
+            },
+            "all": "xxx10x11x11x10100100111101111010x101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 695,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 111,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 111,
+              "instance": "_107554_",
+              "field": "Y",
+              "expression": "dut._107554_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11x11x10100100111101111010x101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 696,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 102,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 102,
+              "instance": "_107540_",
+              "field": "A",
+              "expression": "dut._107540_.A",
+              "role": "cone"
+            },
+            "all": "xxx10x11x11x10100100111101111010x101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 697,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 77,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 77,
+              "instance": "_107532_",
+              "field": "A",
+              "expression": "dut._107532_.A",
+              "role": "cone"
+            },
+            "all": "xxx10x11x11x10100100111101111010x101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 698,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 74,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 74,
+              "instance": "_107555_",
+              "field": "C",
+              "expression": "dut._107555_.C",
+              "role": "cone"
+            },
+            "all": "xxx10x11x11x10100100111101111010x101x01x011001101010000110110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 699,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 105,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 105,
+              "instance": "_107540_",
+              "field": "int_fwire_0",
+              "expression": "dut._107540_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100110x010000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 700,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 81,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 81,
+              "instance": "_107532_",
+              "field": "int_fwire_0",
+              "expression": "dut._107532_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100110x010000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 701,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 104,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 104,
+              "instance": "_107540_",
+              "field": "Y",
+              "expression": "dut._107540_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100x10x0x0000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 702,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 80,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 80,
+              "instance": "_107532_",
+              "field": "Y",
+              "expression": "dut._107532_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100x10x0x0000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 703,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 65,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 65,
+              "instance": "_107541_",
+              "field": "A2",
+              "expression": "dut._107541_.A2",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100x10x0x0000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 704,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 58,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 58,
+              "instance": "_107538_",
+              "field": "A",
+              "expression": "dut._107538_.A",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01x01100x10x0x0000x10110101110101x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 705,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 68,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 68,
+              "instance": "_107541_",
+              "field": "int_fwire_0",
+              "expression": "dut._107541_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01xx1100x1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 706,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 63,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 63,
+              "instance": "_107538_",
+              "field": "int_fwire_0",
+              "expression": "dut._107538_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01x01xx1100x1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 707,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 73,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 73,
+              "instance": "_107555_",
+              "field": "B",
+              "expression": "dut._107555_.B",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xx1xx110xx1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 708,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 66,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 66,
+              "instance": "_107541_",
+              "field": "B1",
+              "expression": "dut._107541_.B1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xx1xx110xx1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 709,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 62,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 62,
+              "instance": "_107538_",
+              "field": "Y",
+              "expression": "dut._107538_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xx1xx110xx1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 710,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 51,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 51,
+              "instance": "_107556_",
+              "field": "A2",
+              "expression": "dut._107556_.A2",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xx1xx110xx1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 711,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 45,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 45,
+              "instance": "_107542_",
+              "field": "A2",
+              "expression": "dut._107542_.A2",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xx1xx110xx1xx0xx000x101101x11101x1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 712,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 76,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 76,
+              "instance": "_107555_",
+              "field": "int_fwire_0",
+              "expression": "dut._107555_.int_fwire_0",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10110xx1110xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 713,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 69,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 69,
+              "instance": "_107541_",
+              "field": "int_fwire_1",
+              "expression": "dut._107541_.int_fwire_1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10110xx1110xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 714,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 75,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 75,
+              "instance": "_107555_",
+              "field": "Y",
+              "expression": "dut._107555_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x10xx1x10xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 715,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 67,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 67,
+              "instance": "_107541_",
+              "field": "Y",
+              "expression": "dut._107541_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x10xx1x10xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 716,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 52,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 52,
+              "instance": "_107556_",
+              "field": "B1",
+              "expression": "dut._107556_.B1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x10xx1x10xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 717,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 46,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 46,
+              "instance": "_107542_",
+              "field": "B1",
+              "expression": "dut._107542_.B1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x10xx1x10xx1x00x1101100x00x1101100x00x1101100x00x1101100"
+          },
+          {
+            "kind": "EV",
+            "sequence": 718,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 55,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 55,
+              "instance": "_107556_",
+              "field": "int_fwire_1",
+              "expression": "dut._107556_.int_fwire_1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 719,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 49,
+            "prior": "1",
+            "value": "x",
+            "binding": {
+              "index": 49,
+              "instance": "_107542_",
+              "field": "int_fwire_1",
+              "expression": "dut._107542_.int_fwire_1",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 720,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 53,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 53,
+              "instance": "_107556_",
+              "field": "Y",
+              "expression": "dut._107556_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 721,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 47,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 47,
+              "instance": "_107542_",
+              "field": "Y",
+              "expression": "dut._107542_.Y",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 722,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 37,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 37,
+              "state_bit": 3,
+              "field": "delayed_D",
+              "expression": "dut._131364_.delayed_D",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 723,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 33,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 33,
+              "state_bit": 3,
+              "field": "D",
+              "expression": "dut._131364_.D",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 724,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 4,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 4,
+              "state_bit": 0,
+              "field": "delayed_D",
+              "expression": "dut._131361_.delayed_D",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 725,
+            "cycle": 1569430,
+            "time": "31388990.000",
+            "signal": 0,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 0,
+              "state_bit": 0,
+              "field": "D",
+              "expression": "dut._131361_.D",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x00x11x110xx00x1101100x00x1101100x00x11x110x"
+          },
+          {
+            "kind": "EV",
+            "sequence": 743,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 41,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 41,
+              "state_bit": 3,
+              "field": "int_fwire_IQ",
+              "expression": "dut._131364_.int_fwire_IQ",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          },
+          {
+            "kind": "EV",
+            "sequence": 744,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 8,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 8,
+              "state_bit": 0,
+              "field": "int_fwire_IQ",
+              "expression": "dut._131361_.int_fwire_IQ",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          },
+          {
+            "kind": "EV",
+            "sequence": 745,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 34,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 34,
+              "state_bit": 3,
+              "field": "Q",
+              "expression": "dut._131364_.Q",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          },
+          {
+            "kind": "EV",
+            "sequence": 746,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 1,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 1,
+              "state_bit": 0,
+              "field": "Q",
+              "expression": "dut._131361_.Q",
+              "role": "state_register"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx110xxxxx0xx000x10x1xxx1x1xxx1x0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          },
+          {
+            "kind": "EV",
+            "sequence": 747,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 70,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 70,
+              "instance": "_082120_",
+              "field": "A",
+              "expression": "dut._082120_.A",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx1xxxxxxx0xx000xxxx1xxxxxxxxxxx0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          },
+          {
+            "kind": "EV",
+            "sequence": 748,
+            "cycle": 1569431,
+            "time": "31389010.000",
+            "signal": 56,
+            "prior": "0",
+            "value": "x",
+            "binding": {
+              "index": 56,
+              "instance": "_082119_",
+              "field": "A",
+              "expression": "dut._082119_.A",
+              "role": "cone"
+            },
+            "all": "xxx10x11xx1x10100100111101111010xx01xxxxx1xxxxxxx0xx000xxxx1xxxxxxxxxxx0xx11x11xxx00x1101100x00x1101100x0xx11x11xx"
+          }
+        ],
+        "boot_tail": [
+          "LOGICROM_GL progress cycles=2910000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2920000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2930000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2940000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2950000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2960000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2970000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2980000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=2990000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL progress cycles=3000000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+          "LOGICROM_GL cycles=3000096 checks=24 fails=00000000 code=00000000 magic=00000000 watchdog=1/0/0 flash_violations=0 uart_pass=0 framing=1",
+          "FATAL: /home/runner/work/nssoc/nssoc/npu-cone-trace/tb_qualification_boot.v:325: Whole mapped SoC logic-ROM boot failed",
+          "       Time: 60002320000  Scope: tb_logicrom_gl",
+          "NPU_CONE_SUMMARY start=1569360 last=1569520 width=114 events=2678 samples=161 sequence=2840 final_cycle=3000096 armed=1"
+        ],
+        "critical_files": {
+          "boot.log": {
+            "bytes": 26890,
+            "sha256": "6335384fe44822fc1a59c564b83d2151e72477dd2ff891612730d14b36fcbe8c"
+          },
+          "cone-bindings.json": {
+            "bytes": 55096,
+            "sha256": "5405c2f2d054ecbb4971db4f0dc54d10d7ecd1aee74480b04eb7790f7b755b18"
+          },
+          "npu-cone-events.log": {
+            "bytes": 550699,
+            "sha256": "b49ebb72649cbc27a86eef68e8aabfab8a477032e11d63617241490f2b571c40"
+          },
+          "result.json": {
+            "bytes": 278632,
+            "sha256": "9ba777881b42db84b014bda60f30fae9c974ebc016d625d09f43ffa2ded72895"
+          }
+        }
+      }
+    },
+    "prior_startup_review": {
+      "bytes": 13691,
+      "sha256": "70b3347f06a9e71fefe79283081408c880c8f4a3a44703869a23fb0b14320f1e"
+    },
+    "scope": "Complete compact ZIP SHA/CRC, all outputs and immutable Git methods, byte-identical startup source bindings and compile/model/firmware/runtime records, raw event parsing and native 3M boot verdicts. Full netlist and compiled VVP are not locally downloaded or re-executed. Callback order is not a lossless simulator delta trace.",
+    "candidate_adopted": false,
+    "full_chip_native_executed_locally": false,
+    "script": {
+      "bytes": 7146,
+      "sha256": "f0e4db67303e96cb4558686ee59e757ffe1f97e056935c00db59e1b2818f2278"
+    }
+  },
+  "root_replay": {
+    "recorded": "2026-10-03T21:59:40.591556+00:00",
+    "status": "ROOT_REPLAY_OF_TWO_COMPACT_FINALS_PASS_CANDIDATE_BOOT_STILL_FAIL",
+    "source_commit": "7ea275379790204a57067b6e945fc2c762c48082",
+    "source_run": 37129489438,
+    "variants": {
+      "original": {
+        "zip": {
+          "bytes": 569222,
+          "sha256": "60a560870177db52e23fcdc147e42d29631a4c5e0894f032e52468b75ab3c154"
+        },
+        "artifact_id": 11277881428,
+        "outputs": 95,
+        "git_methods": 24,
+        "raw_event_records": 2732,
+        "new_x_events": 0,
+        "first_new_x": null,
+        "boot_pass": true,
+        "boot_returncode": 0,
+        "final_cycle": 1596123,
+        "model_and_bench_changed": false
+      },
+      "candidate": {
+        "zip": {
+          "bytes": 575762,
+          "sha256": "bf537a8c5db2b42f21200f9b317d062bbc25871be9aa58a3f19a92481b4f2901"
+        },
+        "artifact_id": 11280264259,
+        "outputs": 95,
+        "git_methods": 24,
+        "raw_event_records": 2840,
+        "new_x_events": 986,
+        "first_new_x": {
+          "sequence": 692,
+          "cycle": 1569430,
+          "binding": {
+            "index": 108,
+            "instance": "_107554_",
+            "field": "A1",
+            "expression": "dut._107554_.A1",
+            "role": "cone"
+          }
+        },
+        "boot_pass": false,
+        "boot_returncode": 1,
+        "final_cycle": 3000096,
+        "model_and_bench_changed": false
+      }
+    },
+    "scope": "Whole compact ZIP SHA/CRC, all output bytes, Git methods, exact instrumented bench, scalar callback histories checked against all161 settled samples, and original parser replay. EV all-vector is live callback-time state, not a per-event delta; parallel changes may already be visible. No full chip execution or silicon acceptance."
+  },
+  "review_method": {
+    "bytes": 7146,
+    "sha256": "f0e4db67303e96cb4558686ee59e757ffe1f97e056935c00db59e1b2818f2278",
+    "source_utf8": "from pathlib import Path\nimport datetime,hashlib,json,re,subprocess,sys,tempfile,zipfile,concurrent.futures\nR=Path.cwd();O=R/'hw/soc/out/heartbeat-20261003-2148/npu';PRIOR=R/'hw/soc/out/heartbeat-20261003-1347/npu-cone-startup'\nSRC='7ea275379790204a57067b6e945fc2c762c48082';RUN=37129489438\nsys.dont_write_bytecode=True;sys.path.insert(0,str(R/'scripts'));import run_cloud_npu_cone_trace as m\npin=lambda b:dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())\ndef require(x,msg):\n if not x:raise AssertionError(msg)\nmeta=json.loads((O/'artifacts.json').read_text());run=json.loads((O/'run.json').read_text());require((run['id'],run['head_sha'],run['status'],run['conclusion'])==(RUN,SRC,'completed','success'),'Run identity')\ntoken=subprocess.check_output(['gh','auth','token'],timeout=5).decode().strip()\ndef download(variant):\n a=next(a for a in meta['artifacts'] if a['name']==f'npu-cone-trace-final-{variant}-1');expected=dict(bytes=a['size_in_bytes'],sha256=a['digest'].split(':')[1]);require(a['workflow_run']['id']==RUN and a['workflow_run']['head_sha']==SRC and not a['expired'],'Artifact source')\n p=O/(variant+'.zip')\n if not p.exists():\n  command=['curl','-fsSL','--connect-timeout','10','--max-time','45','--config','-',f'https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/{a[\"id\"]}/zip']\n  result=subprocess.run(command,input=('header = \"Authorization: Bearer '+token+'\"\\n').encode(),capture_output=True,timeout=50)\n  require(result.returncode==0,('Download failure',result.stderr.decode()));require(pin(result.stdout)==expected,'ZIP bytes');p.write_bytes(result.stdout)\n require(pin(p.read_bytes())==expected,'Saved ZIP pin');return variant,a\nwith concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:downloaded=list(pool.map(download,['original','candidate']))\nsummary={};allfiles={};rawdecoded={}\nfor variant,a in downloaded:\n with zipfile.ZipFile(O/(variant+'.zip')) as z:\n  require(z.testzip() is None and len(z.namelist())==len(set(z.namelist())),'CRC or duplicate');files={n:z.read(n) for n in z.namelist()}\n row=json.loads(files['result.json']);require(set(files)==set(row['outputs'])|{'result.json'},'Output inventory')\n for name,p in row['outputs'].items():require(pin(files[name])==p,'Output pin '+name)\n require(row['github_source_commit']==SRC and row['variant']==variant and row['memory']=='vendor' and row['cycle_bound']==3000000,'Variant contract')\n require(row['status']=='NPU_CONE_CAPTURE_COMPLETE_NOT_ACCEPTANCE','Complete capture')\n require(set(row['methods'])==set(m.PINS)|set(m.OWN),'Method set')\n for name,p in row['methods'].items():\n  raw=subprocess.check_output(['git','show',SRC+':'+name]);require(pin(raw)==p and files['methods/'+name]==raw,'Git method '+name)\n for name,sha in m.PINS.items():require(row['methods'][name]['sha256']==sha,'Frozen dependency')\n require(all(row[k] is False for k in ('candidate_adopted','timing_accepted','manufacturing_approval','mapped_core_equivalence_accepted','full_soc_functional_accepted')),'Unexpected acceptance')\n # Reuse the exact fully checked startup after independently pinning every byte.\n with zipfile.ZipFile(PRIOR/(variant+'.zip')) as z:\n  require(z.testzip() is None,'Startup CRC');priorfiles={n:z.read(n) for n in z.namelist()}\n pmeta=json.loads((PRIOR/(variant+'-metadata.json')).read_text());require(pin((PRIOR/(variant+'.zip')).read_bytes())==dict(bytes=pmeta['size_in_bytes'],sha256=pmeta['digest'].split(':')[1]),'Startup zip')\n prior=json.loads(priorfiles['result.json'])\n for name,p in prior['outputs'].items():require(pin(priorfiles[name])==p and files[name]==priorfiles[name],'Startup member unchanged '+name)\n allowed={'status','boot_execution','cone_observation','observed_boot_pass','boot_failure_preserved','outputs'}\n require({k:v for k,v in row.items() if k not in allowed}=={k:v for k,v in prior.items() if k not in allowed},'Startup immutable receipt fields')\n b=row['cone_bindings'];log=files['boot.log'].decode();require(b==json.loads(files['cone-bindings.json']),'Binding')\n require(m.instrument(files['original-qualified-bench.v'].decode(),b)==files['tb_qualification_boot.v'].decode(),'Read-only instrumentation')\n with tempfile.TemporaryDirectory(prefix='nssoc-cone-final-',dir='/dev/shm') as temp:\n  d=Path(temp);(d/'npu-cone-events.log').write_bytes(files['npu-cone-events.log']);parsed=m.parse(log,d,width=len(b['signals']));require(parsed==row['cone_observation'],'Raw parse')\n require(m.q.passed_boot(row['boot_execution']['returncode'],log)==row['observed_boot_pass'],'Boot native verdict');require(row['boot_failure_preserved']==(not row['observed_boot_pass']),'Failure preservation')\n require(log.count('QUALIFICATION_MBIST PASS cycles=983043')==1,'MBIST')\n require(row['boot_execution']['command']==row['boot_command'],'Native argv')\n signals=b['signals'];decoded=[]\n for line in files['npu-cone-events.log'].decode().splitlines():\n  e=re.fullmatch(r'(INIT|EV|S) seq=(\\d+) cycle=(\\d+) realtime_ns=(\\d+\\.\\d{3})(?: signal=(\\d+) prior=([01xz]) value=([01xz]))? all=([01xz]+)',line)\n  if e[1]=='EV':decoded.append(dict(kind=e[1],sequence=int(e[2]),cycle=int(e[3]),time=e[4],signal=int(e[5]),prior=e[6],value=e[7],binding=signals[int(e[5])],all=e[8]))\n first=[e for e in decoded if e['value'] in 'xz']\n useful={name:raw for name,raw in files.items() if name in ('result.json','boot.log','npu-cone-events.log','cone-bindings.json')}\n for name,raw in useful.items():(O/(variant+'-'+name)).write_bytes(raw)\n summary[variant]=dict(artifact=a,zip=pin((O/(variant+'.zip')).read_bytes()),all_zip_crcs_checked=True,output_count=len(row['outputs']),git_methods=len(row['methods']),frozen_dependencies=len(m.PINS),startup_members_unchanged=len(prior['outputs']),startup_zip=pin((PRIOR/(variant+'.zip')).read_bytes()),native_status=row['status'],observed_boot_pass=row['observed_boot_pass'],boot_execution=row['boot_execution'],signals=len(signals),native_cells=len(b['cells']),observation=parsed,first_new_unknown_bound=first[0] if first else None,first_new_unknowns=first[:40],boot_tail=log.splitlines()[-14:],critical_files={n:pin(raw) for n,raw in useful.items()})\n allfiles[variant]=files;rawdecoded[variant]=decoded\nprint(json.dumps({v:{k:d[k] for k in ('observed_boot_pass','output_count','git_methods','signals','native_cells','first_new_unknown_bound','boot_tail')} for v,d in summary.items()},indent=2))\nreceipt=dict(schema=1,status='BOTH_COMPLETE_NATIVE_CONE_CAPTURES_INDEPENDENTLY_VERIFIED_NO_ACCEPTANCE',checked_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),run=RUN,source=SRC,variants=summary,prior_startup_review=pin((PRIOR/'independent-review.json').read_bytes()),scope='Complete compact ZIP SHA/CRC, all outputs and immutable Git methods, byte-identical startup source bindings and compile/model/firmware/runtime records, raw event parsing and native 3M boot verdicts. Full netlist and compiled VVP are not locally downloaded or re-executed. Callback order is not a lossless simulator delta trace.',candidate_adopted=False,full_chip_native_executed_locally=False,script=pin(Path(__file__).read_bytes()))\n(O/'independent-review.json').write_text(json.dumps(receipt,indent=2)+'\\n')\n"
+  },
+  "next_step": "Trace exact first-X frontier conductors_028688_/_028689_ at drivers_084115_/Y and_084116_/Y to semantic sequential boundaries. Static netlist followup is separate evidence; no RTL/model repair justified by this trace alone.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

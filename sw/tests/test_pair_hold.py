@@ -292,23 +292,32 @@ def test_missing_method_inventory_is_not_silently_skipped():
 
 
 
-def test_capture_includes_only_three_bound_tiny_physical_views(tmp_path,monkeypatch):
+def test_capture_preserves_all_four_native_views_and_exact_inventory(tmp_path):
+    # The real parent capture skips physical files; exercise the actual bridge,
+    # including before.def emitted by the frozen native fixture's write_def.
     output=tmp_path/'source';where=output/'run/01-openroad-resizertimingpostgrt/pair-control';where.mkdir(parents=True)
-    destination=tmp_path/'capture';destination.mkdir()
-    for name in ('before.odb','after.odb','after.def'):(where/name).write_bytes(name.encode())
-    monkeypatch.setattr(m.parent,'capture',lambda *args:dict(files={}))
-    got=m.capture(output,destination)
-    assert len(got['files'])==3
+    (output/'result.json').write_text(json.dumps(dict(status='COMPLETE_DIAGNOSTIC_ONLY')))
+    (where/'result.json').write_text('{}\n')
+    for name in ('before.odb','before.def','after.odb','after.def'):
+        (where/name).write_bytes(name.encode()+bytes(range(256)))
+    destination=tmp_path/'capture';got=m.capture(output,destination)
+    assert len(got['files'])==6
+    assert set(m.shared.file_inventory(destination))==set(got['files'])|{'capture.json'}
+    assert json.loads((destination/'capture.json').read_text())==got
     for rel,pin in got['files'].items():
         assert (destination/rel).read_bytes()==(output/rel).read_bytes()
         assert not pin['source_truncated_during_copy'] and pin['sha256']==m.common.sha(output/rel)
+    assert got['complete_diagnostic_evidence'] is True
+    assert got['candidate_adopted'] is False
 
 
-def test_capture_rejects_unexpected_tiny_physical_view(tmp_path,monkeypatch):
+@pytest.mark.parametrize('name',['unreviewed.odb','unreviewed.def'])
+def test_capture_rejects_unexpected_tiny_physical_view(tmp_path,name):
     output=tmp_path/'source';where=output/'run/01-openroad-resizertimingpostgrt/pair-control';where.mkdir(parents=True)
-    (where/'unreviewed.odb').write_bytes(b'bad');destination=tmp_path/'capture';destination.mkdir()
-    monkeypatch.setattr(m.parent,'capture',lambda *args:dict(files={}))
-    with pytest.raises(ValueError):m.capture(output,destination)
+    (output/'result.json').write_text(json.dumps(dict(status='COMPLETE_DIAGNOSTIC_ONLY')))
+    (where/name).write_bytes(b'bad')
+    with pytest.raises(ValueError,match='Unexpected tiny physical evidence'):
+        m.capture(output,tmp_path/'capture')
 
 
 def test_child_preserves_only_intended_view_bindings_across_actual_tcl_source_reset(tmp_path):

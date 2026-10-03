@@ -512,7 +512,7 @@ def capture(output,destination):
     row=parent.capture(output,destination)
     for path in sorted((output/'run').glob('*-openroad-resizertimingpostgrt/pair-control/*')):
         if path.suffix not in {'.odb','.def'}:continue
-        require(path.name in {'before.odb','after.odb','after.def'} and path.is_file() and not path.is_symlink(),
+        require(path.name in {'before.odb','before.def','after.odb','after.def'} and path.is_file() and not path.is_symlink(),
                 'Unexpected tiny physical evidence')
         target=destination/path.relative_to(output);target.parent.mkdir(parents=True,exist_ok=True)
         with path.open('rb') as source,target.open('xb') as sink:
