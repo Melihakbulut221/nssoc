@@ -2305,3 +2305,29 @@ establish the binary modeled correspondence under equal corresponding initial
 state and identical opaque SRAM behavior. Four-state initialization, simulator
 event timing, boot, physical timing and production acceptance remain separate.
 The earlier SAT partial results are retained and are not counted twice.
+
+The [explicit-hold startup capture](evidence/timing-explicit-hold-startup-native-20261003.json)
+from run 37107650542 is now independently checked: the complete 2,361,690-byte
+ZIP hash, every member CRC, all 135 capture file hashes and all 64 Git method
+identities match. The original rejected-parent contract and baseline native
+controls replay successfully. The snapshot remains in native controls and
+contains neither a completed chip trial nor final timing acceptance.
+
+The first grouped ABC run 37107650589 stopped before any native proof: the
+frozen ZIP restorer creates a destination directory without its parents, while
+the new caller had not created `prior/`. The [captured failure and narrow fix](evidence/alu-remaining-abc-startup-fix-20261003.json)
+preserve the complete failed 416,552-byte ZIP and its exact 32 source methods.
+One parent-directory creation fixes the caller; proof equations, historical
+methods, original graph, inputs and lock remain unchanged. A real tiny ZIP
+regression covers all six shuffled archive destinations and acquisition failure.
+The revised source passes 228 tests. Its workflow-only comment triggers one
+corrected preparation run without restarting the separate hold experiment.
+
+The [first four completed SAT workers](evidence/alu-remaining-first200-native-20261003.json)
+now provide 200 independently replayed original queries: 58 proofs, 142 actual
+timeouts and no counterexamples. Eight new compact batch archives contribute
+72 queries and 22 additional proofs. Root separately replays those native
+queries and checks all 240 preserved member hashes. The unique union with
+33,517 prior proofs and four hard ABC proofs is 33,579 of 34,321: 742 remain
+unproved or unvisited. The other twelve SAT workers and the new grouped method
+are not inferred from this partial snapshot.

@@ -239,6 +239,7 @@ def prepare(output, work):
         locked = load_lock(); row['methods'] = snapshot(output, locked)
         original = dict(run_id=locked['source_run'], source_commit=SOURCE, source_conclusion='success')
         row['original_run'] = remaining.run_identity(original); row['acquisition'] = {}
+        (output/'prior').mkdir()
         for name, entry in locked['archives'].items():
             archive = work/(name+'.zip'); row['acquisition'][name] = remaining.acquire(original, entry, archive, permanent=True)
             ref.restore(archive, output/'prior'/name)

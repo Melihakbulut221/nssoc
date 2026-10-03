@@ -218,3 +218,36 @@ def test_batch_rechecks_all_prepared_inputs_after_native_solve(tmp_path, monkeyp
     assert events==['complete-inputs','native-solve','complete-inputs']
     assert row['status']==('GROUPED_BATCH_FAILED_OR_INCOMPLETE' if mutation else 'GROUPED_BATCH_NATIVE_RESULT_CAPTURED')
     assert row.get('complete_inputs_rechecked',False) is not mutation
+
+
+@pytest.mark.parametrize('fail_acquisition', [False, True])
+def test_prepare_creates_parent_for_exact_frozen_zip_restore(tmp_path, monkeypatch, fail_acquisition):
+    """Real frozen ZIP extraction, no download or native graph execution."""
+    import zipfile
+    monkeypatch.setenv('GITHUB_ACTIONS','true')
+    locked = dict(source_run=37105127162, archives={n:dict(name=n) for n in ('bit3','bit1','bit0','common','bit2','verdict')})
+    monkeypatch.setattr(proof,'load_lock',lambda:locked)
+    monkeypatch.setattr(proof,'snapshot',lambda *args:{})
+    monkeypatch.setattr(proof.remaining,'run_identity',lambda value:dict(source=value))
+    reached=[]
+    def acquire(original, entry, archive, *, permanent):
+        assert permanent is True and original['source_commit']==proof.SOURCE
+        if fail_acquisition:raise ValueError('exact source acquisition failed')
+        with zipfile.ZipFile(archive,'w') as z:z.writestr('nested/source.json',json.dumps(entry))
+        return dict(verified_zip=proof.pin(archive))
+    def inspect(directory, contract):
+        assert directory==tmp_path/'output/prior' and contract==locked
+        for name,entry in locked['archives'].items():
+            assert json.loads((directory/name/'nested/source.json').read_text())==entry
+        reached.append('all six exact destinations extracted')
+        raise ValueError('fixture stops before original native proof replay')
+    monkeypatch.setattr(proof.remaining,'acquire',acquire)
+    monkeypatch.setattr(proof,'verify_prior',inspect)
+    with pytest.raises(ValueError,match='exact source acquisition failed' if fail_acquisition else 'fixture stops'):
+        proof.prepare(tmp_path/'output',tmp_path/'work')
+    assert (tmp_path/'output/prior').is_dir()
+    assert reached==([] if fail_acquisition else ['all six exact destinations extracted'])
+    row=json.loads((tmp_path/'output/result.json').read_text())
+    assert row['status']=='PREPARATION_FAILED_PRESERVED' and row['candidate_adopted'] is False
+    assert len(row['acquisition'])==(0 if fail_acquisition else 6)
+    assert 'native_identity' not in row

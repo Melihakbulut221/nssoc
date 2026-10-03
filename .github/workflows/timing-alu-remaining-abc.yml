@@ -34,6 +34,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2
+      # Prepare creates prior/ before the frozen safe ZIP restoration.
       - name: Replay original proofs and grouped positive and negative native controls
         env:
           GH_TOKEN: ${{ github.token }}
