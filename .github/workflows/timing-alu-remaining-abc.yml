@@ -1,0 +1,200 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-remaining-abc (800 exact equations in 64 OR batches; no adoption)
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-remaining-abc.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-alu-remaining-abc-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Validate exhaustive original identities and grouped native outcome guards
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_remaining_abc.py sw/tests/test_alu_hard_bits.py sw/tests/test_alu_remaining_bits.py
+      - name: Install pinned AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Replay original proofs and grouped positive and negative native controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py prepare --output "$GITHUB_WORKSPACE/alu-abc-common" --work "$RUNNER_TEMP/alu-abc-prepare"
+      - name: Preserve exact source and prerequisite outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-common-${{ github.run_attempt }}
+          path: alu-abc-common/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+  prove:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted ceiling, no elapsed native solver watchdog.
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-abc-common-${{ github.run_attempt }}
+          path: alu-abc-common
+      - name: Install pinned AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Export four exact grouped observations from the unchanged full original graph
+        id: prepare_shard
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py shard --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --shard '${{ matrix.shard }}' --output "$GITHUB_WORKSPACE/alu-abc-shard-${{ matrix.shard }}" \
+            --work "$RUNNER_TEMP/alu-abc-shard-work"
+      - name: Preserve four native exports and exact original identities
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-shard-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: alu-abc-shard-${{ matrix.shard }}/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+      - name: Solve batch0 OR of 16 original mismatch equations
+        if: always() && steps.prepare_shard.outcome == 'success'
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py batch --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --shard-directory "$GITHUB_WORKSPACE/alu-abc-shard-${{ matrix.shard }}" --batch 0 \
+            --output "$GITHUB_WORKSPACE/alu-abc-batch-${{ matrix.shard }}-0"
+      - name: Preserve immutable batch0 result even after a failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-batch-${{ matrix.shard }}-0-${{ github.run_attempt }}
+          path: alu-abc-batch-${{ matrix.shard }}-0/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+      - name: Solve batch1 OR of 16 original mismatch equations
+        if: always() && steps.prepare_shard.outcome == 'success'
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py batch --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --shard-directory "$GITHUB_WORKSPACE/alu-abc-shard-${{ matrix.shard }}" --batch 1 \
+            --output "$GITHUB_WORKSPACE/alu-abc-batch-${{ matrix.shard }}-1"
+      - name: Preserve immutable batch1 result even after a failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-batch-${{ matrix.shard }}-1-${{ github.run_attempt }}
+          path: alu-abc-batch-${{ matrix.shard }}-1/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+      - name: Solve batch2 OR of 14 original mismatch equations
+        if: always() && steps.prepare_shard.outcome == 'success'
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py batch --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --shard-directory "$GITHUB_WORKSPACE/alu-abc-shard-${{ matrix.shard }}" --batch 2 \
+            --output "$GITHUB_WORKSPACE/alu-abc-batch-${{ matrix.shard }}-2"
+      - name: Preserve immutable batch2 result even after a failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-batch-${{ matrix.shard }}-2-${{ github.run_attempt }}
+          path: alu-abc-batch-${{ matrix.shard }}-2/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+      - name: Solve batch3 OR of 4 original mismatch equations
+        if: always() && steps.prepare_shard.outcome == 'success'
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py batch --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --shard-directory "$GITHUB_WORKSPACE/alu-abc-shard-${{ matrix.shard }}" --batch 3 \
+            --output "$GITHUB_WORKSPACE/alu-abc-batch-${{ matrix.shard }}-3"
+      - name: Preserve immutable batch3 result even after a failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-batch-${{ matrix.shard }}-3-${{ github.run_attempt }}
+          path: alu-abc-batch-${{ matrix.shard }}-3/
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30
+  aggregate:
+    needs: [prepare, prove]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-abc-common-${{ github.run_attempt }}
+          path: alu-abc-common
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: alu-abc-shard-*-${{ github.run_attempt }}
+          path: captures
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: alu-abc-batch-*-${{ github.run_attempt }}
+          path: captures
+      - name: Reparse 64 native outcomes and the independent original four-hard proofs
+        if: always()
+        run: |
+          python3 scripts/prove_alu_remaining_abc.py aggregate --bundle "$GITHUB_WORKSPACE/alu-abc-common" \
+            --artifact-root captures --output alu-abc-verdict.json
+      - name: Preserve explicit complete or incomplete binary proof verdict
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-abc-verdict-${{ github.run_attempt }}
+          path: alu-abc-verdict.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 30

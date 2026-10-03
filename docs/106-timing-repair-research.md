@@ -2251,9 +2251,57 @@ ZIPs are fully hashed; the original 143 MB graph remains remote.
 
 These four IDs are disjoint from the eighteen new SAT successes. Their union
 with the prior 33,517 proofs is 33,539 of 34,321; 782 remain unproved or unvisited
-in this reviewed snapshot. No repeated proof is counted twice. Binary boundary
-equivalence still does not resolve the observed four-state boot failure or
-establish a state bijection, physical timing acceptance or manufacturing approval.
+in this reviewed snapshot. No repeated proof is counted twice. This partial
+coverage does not yet establish the complete modeled state correspondence.
+Even complete binary coverage would not resolve the observed four-state boot
+failure or establish physical timing acceptance or manufacturing approval.
 The [source-bound archive plan](evidence/closure-alu-hard-proved-archive-plan-20261003.json)
 preserves all six original hard-proof artifacts, including the common native
 exports, for subsequent original-ID coverage checks.
+
+The [next four SAT batches](evidence/alu-remaining-first128-native-20261003.json)
+add eighteen disjoint proofs and 46 further timeouts. The first 128 attempted
+SAT equations now contain 36 proofs, 92 timeouts and no counterexamples. Adding
+the four separately proved hard equations yields 33,557 verified original IDs
+of 34,321; 764 remain unproved or unvisited. All eight small batch ZIPs and
+raw native outcomes are independently replayed. The remaining SAT jobs continue;
+this count does not infer their results. The [six hard-proof archives](evidence/closure-alu-hard-proved-archive-native-20261003.json)
+are now permanently published with exact-byte cloud roundtrips and independent
+local hashing of the five small public result ZIPs.
+
+The [explicit single-cell hold method](evidence/timing-explicit-hold-method-20261003.json)
+is now independently reviewed. It inserts one `sg13g2_dlygate4sd3_1` into the
+isolated `_135214_/Q` to `_135215_/D` connection, within a fixed 10 µm vacancy
+search. All original instances must retain their placement, orientation,
+protection and contracted logical connectivity. Fresh routing, two independent
+reloads, both limited ECO proofs and every historical timing guard remain
+mandatory. The rejected corrected parent remains an experimental input; this
+method does not silently adopt it.
+
+The source passes 430 focused/adjacent tests and an independent 328-test review.
+Two actual tiny OpenROAD executions independently confirm nearest-site placement,
+three-corner path traversal and 39 rejected invalid conditions. The root replay
+takes 0.975 seconds with a 2 GiB address-space limit. Exact bracketed chip-net
+lookup was separately checked. Native insertion appends a number to requested
+instance/net prefixes; the method discovers and verifies the actual added pair.
+These controls validate the method, not chip timing. The push-triggered cloud
+trial must still produce and pass its full-chip results.
+
+The [grouped ABC method](evidence/alu-remaining-abc-method-20261003.json)
+checks the same 800 original equations in 64 disjoint OR batches, using sixteen
+jobs with at most four in parallel. A proved zero OR establishes every listed
+binary equation; timeout or failure proves none of that batch. All 10,828
+symbolic inputs and the original graph remain unchanged. Real counterexamples
+are replayed on both the original unlowered equation and its selected mismatch
+vector, identifying the actual original failing bit. Full prepared inputs are
+verified again after each solve.
+
+This method passes 226 focused tests, an independent 180-test review and thirteen
+tiny native executions. Root independently repeats those thirteen executions
+in 7.192 seconds, checks both fault identities and verifies a lossless archive
+of all 61 outputs. No full graph was downloaded or executed locally. If every
+batch succeeds, the existing bijective state mapping and all 34,321 equations
+establish the binary modeled correspondence under equal corresponding initial
+state and identical opaque SRAM behavior. Four-state initialization, simulator
+event timing, boot, physical timing and production acceptance remain separate.
+The earlier SAT partial results are retained and are not counted twice.
