@@ -2413,3 +2413,23 @@ metadata match. The cloud archive verifies whole-byte authenticated and
 anonymous download roundtrips; this independent local review does not download
 the large asset ZIPs again. Preserving the proofs, boot failures and timing
 results does not grant qualified LVS or manufacturing approval.
+
+The first pair-hold run 37129489431 stops during preparation, before any native
+control or chip operation: its new lock omitted the mandatory parent `kind`.
+The [exact failure and narrow schema fix](evidence/timing-pair-hold-startup-fix-20261003.json)
+preserve all 82 raw capture members in a [345,408-byte capsule](evidence/timing-pair-hold-startup-failure-20261003.tar.xz).
+The corrected contract supplies the captured `explicit_single_sd3_hold_trial`
+value and checks the complete ten-key producer schema early. Root replays the
+unchanged verifier against all 64 actual parent Git blobs; 446 tests pass.
+Every other runner function and all native helper/step/reload/fixture bytes
+remain unchanged. A single corrected cloud trial is required; the failure
+does not produce a timing result.
+
+Both [actual NPU cone startup captures](evidence/npu-cone-startup-native-20261003.json)
+from run 37129489438 are independently verified: all 93 captured outputs and
+24 exact Git methods per variant, native controls, original firmware/ROM and
+the unchanged three-million-cycle test. The original cone has 117 scalars and
+16 cells; the candidate has 114 scalars and 17 cells, including shared-control
+producer `_107538_/Y`. Both native boot jobs are running; no final waveform or
+boot result is inferred. Full chip netlist and compiled-simulation hashes are
+cloud-gated and were not independently re-read locally.

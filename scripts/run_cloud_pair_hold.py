@@ -44,6 +44,12 @@ def lock(root):
     row=json.loads((Path(root)/LOCK).read_text())
     require(row['schema']==1 and row['runtime_sha256']==targeted.RUNTIME_SHA
         and row['manifest_sha256']==eco.MANIFEST_SHA, 'Original runtime/manifest differs')
+    require(set(row['producer'])=={'run_id','source_commit','artifact_id','artifact_name','url',
+        'bytes','sha256','entrypoint','kind','candidate_prefix'}, 'Producer acquisition/source contract is incomplete')
+    require(row['producer']['kind']=='explicit_single_sd3_hold_trial'
+        and row['producer']['entrypoint']==single.ENTRY
+        and row['producer']['candidate_prefix']=='run/01-openroad-resizertimingpostgrt/candidate',
+        'Frozen parent diagnostic/validator/view identity differs')
     require(row['producer']['run_id']==37107650542
         and row['producer']['source_commit']=='0aeef622ccdb12d1c0feafa4d6cf34061880a8a0'
         and row['producer']['artifact_id']==11268859028

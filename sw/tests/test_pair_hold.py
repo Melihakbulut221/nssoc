@@ -396,3 +396,48 @@ def test_native_pair_receipt_is_fail_closed(tmp_path,fault):
     if fault=='adoption':row['candidate_adopted']=True
     (root/'result.json').write_text(json.dumps(row))
     with pytest.raises(ValueError):m.validate_native_control(root,log)
+
+
+@pytest.mark.parametrize('missing', sorted(locked()['producer']))
+def test_complete_parent_acquisition_and_frozen_verifier_schema_required(tmp_path,monkeypatch,missing):
+    row=locked();row['producer'].pop(missing)
+    path=tmp_path/m.LOCK;path.parent.mkdir(parents=True);path.write_text(json.dumps(row))
+    monkeypatch.setattr(m.common,'verify_file',lambda *a:None)
+    with pytest.raises(ValueError,match='incomplete'):m.lock(tmp_path)
+
+
+@pytest.mark.parametrize('field,value',[('kind','other_trial'),('entrypoint','scripts/other.py'),('candidate_prefix','wrong/views')])
+def test_exact_parent_diagnostic_validator_view_bound_early(tmp_path,monkeypatch,field,value):
+    row=locked();row['producer'][field]=value
+    path=tmp_path/m.LOCK;path.parent.mkdir(parents=True);path.write_text(json.dumps(row))
+    monkeypatch.setattr(m.common,'verify_file',lambda *a:None)
+    with pytest.raises(ValueError,match='identity differs'):m.lock(tmp_path)
+
+
+@pytest.mark.parametrize('fault',[None,'missing_kind','wrong_kind','wrong_entrypoint','wrong_git_blob','extra_method'])
+def test_real_frozen_zip_extraction_and_producer_source_verifier(tmp_path,monkeypatch,fault):
+    """Execute both immutable consumers; mock Git transport only, never guards."""
+    import zipfile
+    trial=locked()['producer'];entry=trial['entrypoint'];method=b'# exact original validator fixture\n'
+    methods={entry:dict(bytes=len(method),sha256=hashlib.sha256(method).hexdigest())}
+    record=dict(github_source_commit=trial['source_commit'],diagnostic_kind='explicit_single_sd3_hold_trial',
+                manifest_sha256=m.eco.MANIFEST_SHA,method_files=methods)
+    archive=tmp_path/'producer.zip'
+    with zipfile.ZipFile(archive,'w') as z:
+        z.writestr('result.json',json.dumps(record));z.writestr('methods/'+entry,method)
+        if fault=='extra_method':z.writestr('methods/scripts/unrecorded.py',b'bad')
+    capture=tmp_path/'capture';extracted=m.eco.extract_zip(archive,capture)
+    assert extracted['files']==(3 if fault=='extra_method' else 2)
+    calls=[]
+    def git_bytes(commit,path):
+        calls.append((commit,path));assert commit==trial['source_commit'] and path==entry
+        return method if fault!='wrong_git_blob' else b'wrong immutable source'
+    monkeypatch.setattr(m.eco,'git_bytes',git_bytes)
+    if fault=='missing_kind':trial.pop('kind')
+    if fault=='wrong_kind':trial['kind']='another_trial'
+    if fault=='wrong_entrypoint':trial['entrypoint']='scripts/unknown.py'
+    if fault:
+        with pytest.raises((KeyError,ValueError)):m.eco.verify_producer_sources(capture,trial)
+    else:
+        assert m.eco.verify_producer_sources(capture,trial)==methods
+        assert calls==[(trial['source_commit'],entry)]
