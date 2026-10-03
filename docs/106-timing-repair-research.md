@@ -2212,3 +2212,48 @@ The completed corrected physical producer is selected for exact permanent
 archival by the [new source-bound plan](evidence/closure-critical-corrected-final-archive-plan-20261003.json).
 The 526 MB original ZIP remains in the cloud; publication preserves its native
 engineering verdict, including any rejected candidate.
+
+The [final corrected critical experiment](evidence/timing-critical-retry-final-native-20261003.json)
+completes both independent reloads and both limited digital ECO checks. Final
+metrics reproduce exactly: 1,310 setup violations, 58 hold violations, zero
+slew/capacitance violations, setup WNS −4.198961179 ns and hold WNS
+−0.157984292 ns. Six complete three-corner hold tables contain 23,527 endpoints
+each and are unchanged. The setup improvement does not qualify this candidate:
+its hold WNS is 2.683853 ps worse than the retained combined-parent reference.
+That is the only failing historical aggregate guard; the candidate remains
+rejected and selected C10 remains unchanged.
+
+The final placement audit records the actual legalization changes: resized
+`fanout639` keeps its lower-left position but changes orientation from MY to R0;
+adjacent inverter `_075578_` shifts 2.4 µm in X. All other original placement
+rows, including all 32 SRAM instances, remain unchanged. This is consistent
+with the sizing experiment's ordinary-cell legalization contract. A separate
+explicit hold trial will use a stricter no-original-cell-movement contract.
+Independent review rechecks 361 compact files, 56 source methods, complete raw
+hold/placement/protection tables and the limited proof receipts; large chip
+physical views and proof frontend JSON remain remote.
+
+The [permanent corrected-final archive](evidence/closure-critical-corrected-final-archive-native-20261003.json)
+now preserves the exact 526,253,250-byte original artifact, including its rejected
+engineering verdict. The cloud verifies full initial, authenticated and
+anonymous download roundtrips. Local review verifies the complete small receipt
+ZIP, source methods, plan and matching Actions/release metadata; it does not
+claim a second local whole-file hash of the large archive.
+
+The [actual four-hard-equation cloud run](evidence/alu-four-hard-bits-native-20261003.json)
+now proves all four original equations: `ff_d[738]`, `ff_d[5732]`,
+`gate_enable[0]` and `gate_next[0]`. Native ABC takes 0.840–1.246 seconds per
+equation, 3.895 seconds total; exporting the four original equations takes
+152.263 seconds total. Independent review validates each complete derived AIG,
+its original 10,828-input bijection, native interface and raw proof log, plus
+28 Git method pins and the positive/negative controls. The five small result
+ZIPs are fully hashed; the original 143 MB graph remains remote.
+
+These four IDs are disjoint from the eighteen new SAT successes. Their union
+with the prior 33,517 proofs is 33,539 of 34,321; 782 remain unproved or unvisited
+in this reviewed snapshot. No repeated proof is counted twice. Binary boundary
+equivalence still does not resolve the observed four-state boot failure or
+establish a state bijection, physical timing acceptance or manufacturing approval.
+The [source-bound archive plan](evidence/closure-alu-hard-proved-archive-plan-20261003.json)
+preserves all six original hard-proof artifacts, including the common native
+exports, for subsequent original-ID coverage checks.
