@@ -4,8 +4,9 @@
 
 **Our mission is to build an open-source counterpart to GR801 for space applications.**
 NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces.
-We are working toward a complete chip, from RTL and software through physical implementation,
-silicon validation and qualification.
+We are committed to completing this open-source GR801 counterpart, from RTL and software through
+physical implementation, silicon validation and qualification. The product acceptance gates below
+define when that goal is achieved.
 
 The current IHP SG13G2 implementation combines an Ibex RISC-V core, a spiking-neural-network accelerator,
 ECC-protected storage, memory scrubbing and TMR control. It forms the foundation for the product we are building.
