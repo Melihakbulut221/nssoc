@@ -2081,3 +2081,43 @@ Their cloud-local, authenticated and anonymous roundtrips pass; root also
 rehashes all three small public downloads. The 257 MB failed physical archive
 stays in the cloud. Failed, diagnostic and incomplete engineering outcomes
 are preserved unchanged.
+
+The [completed corrected trace pair](evidence/alu-boot-trace-final-native-20261003.json)
+narrows the first observed candidate corruption to `u_npu.ev_state[3:0]` at
+cycle 1,569,431. The observed clock-enable corruption follows at 1,569,433;
+SRAM-control corruption follows at 1,569,501. This ordering does not exclude
+an earlier unrecorded data, reset or clock pulse. The original passes its
+finite boot at 1,596,123 cycles with 28 checks. The candidate fails this
+diagnostic at 1,600,096 cycles. This trace used a 1.6-million-cycle diagnostic
+limit; the original qualification has a 3-million-cycle limit, and its earlier
+candidate failures remain unchanged. The two saved detailed trace windows do
+not overlap, so they do not establish the earliest signal-level divergence.
+Root independently rehashes all 96 captured members per variant, including
+95 output pins and all sixteen Git-bound methods.
+
+The [new NPU observer](evidence/npu-state-observer-method-20261003.json)
+records the same fixed 161-cycle window in both designs, from 1,569,360 through
+1,569,520. It binds each of the four state bits to its exact native flip-flop
+and records eleven scalar data, clock, reset and internal-model signals per
+cell. Binary snapshots avoid losing the identity of an unknown bit in a hex
+digit. The observer restores the original 3-million-cycle qualification limit
+and leaves the original firmware, reset, cell models and bench statements
+intact. Its sequence numbers record observer order, not the simulator's internal
+delta index. Ninety adjacent tests pass in both author and independent reviews.
+Three real native controls distinguish known state, bit-zero X and bit-three X;
+their sampled output trajectories match the uninstrumented controls. A cloud
+pair is required before drawing any new conclusion about the actual failure.
+
+The [remaining-bit method](evidence/alu-remaining-bits-method-20261003.json)
+visits all 800 previously untested equations in sixteen cloud jobs, with at
+most four jobs running concurrently. Each job preserves four immutable batch
+captures. The source is the original 143,063,944-byte refined graph, retaining
+all 10,828 symbolic inputs. Exact original identities partition the coverage
+into 33,517 already proved, 800 untested and four measured hard equations;
+neither the sampled benchmark graph nor internal assumptions replace this
+source. All earlier group proofs and benchmark outcomes are rechecked before
+new proof. Missing batches, changed source or scripts, native failures and
+counterexamples cannot yield a complete result. The method passes 207 adjacent
+tests and eighteen tiny native executions with positive and negative controls.
+Even 800 successful new equations would leave the four hard equations and
+the independent four-state boot failure open. No ALU candidate is adopted.
