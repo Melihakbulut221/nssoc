@@ -26,6 +26,7 @@ OWN = (LOCK, ENTRY, HELPER, STEP, CHILD, FIXTURE, 'sw/tests/test_cloud_critical_
        '.github/workflows/timing-critical-followup.yml')
 SOURCES = tuple(dict.fromkeys(prior.SOURCES+OWN))
 STAGES = ('candidate_before', 'after_sizing', 'reload_first', 'reload_repeat')
+ROW_ORIENTATIONS = ('R0','MY','MX','R180')
 BASE_WORKER = prior.worker
 BASE_VALIDATE = prior.BASE_VALIDATE
 BASE_ENVIRONMENT = shared.clean_environment
@@ -224,9 +225,10 @@ def capture(output,destination):
         if path.suffix in {'.odb','.def'}:physical.append(path)
     # The original generic capture omits physical views outside native-controls.
     # These three four-cell fixtures are necessary for complete native evidence.
-    for path in sorted((output/'run').glob('*-openroad-resizertimingpostgrt/sizing-control/*')):
+    for path in sorted((output/'run').glob('*-openroad-resizertimingpostgrt/sizing-control*/*')):
         if path.suffix not in {'.odb','.def'}:continue
-        require(path.name in {'before.odb','after.odb','overlapping-after-swap.def'}
+        require(path.parent.name in {'sizing-control','sizing-control-MY','sizing-control-MX','sizing-control-R180'}
+            and path.name in {'before.odb','after.odb','overlapping-after-swap.def'}
             and path.is_file() and not path.is_symlink(),'Unexpected tiny physical view')
         physical.append(path)
     for path in physical:
@@ -355,7 +357,9 @@ def validate_only_size(before,after):
 SIZE_NEGATIVES = ('wrong_input','wrong_graph','wrong_place','clock_net','protected_net','protected_driver',
     'protected_load','protected_input','fixed_driver','unplaced_driver','missing_VDD','missing_VSS',
     'incompatible_width_guard','incompatible_height_guard','incompatible_site_guard',
-    'incompatible_site_width_guard','incompatible_site_height_guard','incompatible_pinmap_guard')
+    'incompatible_site_width_guard','incompatible_site_height_guard','incompatible_pinmap_guard') + tuple(
+    'unexpected_swap_'+key for key in ('x','y','origin_x','origin_y','bbox_x_min','bbox_y_min','bbox_x_max',
+    'bbox_y_max','width','height','site_width','orientation','status'))
 
 
 def validate_native_binding(call,binding):
@@ -369,7 +373,37 @@ def validate_native_binding(call,binding):
         and all(pins[k] and pins[k]!='NULL' for k in ('VDD','VSS')), 'Native sizing terminal/PG witness differs')
 
 
-def validate_native_sizing_control(root,log_path):
+def validate_sizing_geometry(call,expected_orientation):
+    before=call['geometry_before'];swapped=call['geometry_after_native_swap'];anchored=call['geometry_after_anchor_restore']
+    coordinates={'x','y','origin_x','origin_y','width','height','site_width','bbox_x_min','bbox_y_min','bbox_x_max','bbox_y_max'}
+    for row in (before,swapped,anchored):
+        require(set(row)==coordinates|{'orientation','status'} and all(type(row[k]) is int for k in coordinates)
+            and row['orientation'] in ROW_ORIENTATIONS and isinstance(row['status'],str)
+            and row['height']>0 and row['site_width']>0,'Native sizing geometry fields differ')
+    require(before['orientation']==expected_orientation and expected_orientation in ROW_ORIENTATIONS
+        and before['width']==8*before['site_width'] and swapped['width']==13*before['site_width'],
+        'Native sizing orientation or source/replacement dimensions differ')
+    def geometry(x,y,width):
+        value=dict(before,x=x,y=y,width=width,bbox_x_min=x,bbox_y_min=y,bbox_x_max=x+width,bbox_y_max=y+before['height'])
+        value['origin_x']=x+(width if expected_orientation in ('MY','R180') else 0)
+        value['origin_y']=y+(before['height'] if expected_orientation in ('MX','R180') else 0)
+        return value
+    dx=-5*before['site_width'] if expected_orientation in ('MY','R180') else 0
+    require(before==geometry(before['x'],before['y'],before['width'])
+        and swapped==geometry(before['x']+dx,before['y'],13*before['site_width'])
+        and anchored==geometry(before['x'],before['y'],13*before['site_width'])
+        and type(call['native_swap_delta_x_dbu']) is int and call['native_swap_delta_x_dbu']==dx
+        and type(call['anchor_restore_calls']) is int and call['anchor_restore_calls']==1
+        and call['source_lower_left_restored'] is True,'Native swap or explicit anchor restoration differs')
+    require(call['observed_placement']==[str(before['x']),str(before['y']),before['orientation'],before['status']]
+        and call['original_width']==before['width'] and call['replacement_width']==swapped['width']
+        and call['site_width']==before['site_width'],'Sizing geometry is not the observed source placement')
+    return dict(orientation=expected_orientation,raw_native_lower_left_delta_x_dbu=dx,
+        native_origin_preserved=True,explicit_source_lower_left_restored=True,
+        anchored_origin_delta_x_dbu=-dx,no_geometry_tolerance_applied=True)
+
+
+def validate_native_sizing_control(root,log_path,expected_orientation="R0"):
     root=Path(root);gate=json.loads((root/'result.json').read_text())
     require(gate['status']=='PASS_NATIVE_CRITICAL_SIZE_CONTROL','Native sizing gate failed')
     require(set(gate['negative_control_messages'])==set(SIZE_NEGATIVES)
@@ -382,6 +416,8 @@ def validate_native_sizing_control(root,log_path):
     require(all(gate[k] is False for k in ('candidate_adopted','timing_accepted','manufacturing_approval')),
         'Tiny control claims chip acceptance')
     call=gate['call']
+    require(gate['fixture_orientation']==expected_orientation,'Native fixture orientation differs')
+    validate_sizing_geometry(call,expected_orientation)
     require(call['instance']=='driver' and call['original_master']=='sg13g2_buf_4'
         and call['replacement_master']=='sg13g2_buf_8' and call['native_calls']==1 and call['instance_count']==4
         and call['original_width']==3840 and call['replacement_width']==6240 and call['site_width']==480
@@ -403,7 +439,11 @@ def validate_native_sizing_control(root,log_path):
 def validate_diagnostic(step,source_sdc_sha,expected_corners):
     step=Path(step);output=step.parent.parent;locked=lock(output/'methods')
     targeted.validate_targeted_controls(output)
-    gate=validate_native_sizing_control(step/'sizing-control',step/'sizing-control.log')
+    orientation_controls={}
+    for orientation in ROW_ORIENTATIONS:
+        name='sizing-control'+('' if orientation=='R0' else '-'+orientation)
+        orientation_controls[orientation]=validate_native_sizing_control(step/name,step/(name+'.log'),orientation)
+    gate=orientation_controls['R0']
     hold_gate=json.loads((step/'residual-control/result.json').read_text())
     require(hold_gate['status']=='PASS_NATIVE_RESIDUAL_CONTROL' and hold_gate['after_hold_seconds']>hold_gate['before_hold_seconds']
         and hold_gate['native_setup_guard_preserved'] is True and hold_gate['constraints_preserved'] is True,
@@ -436,6 +476,7 @@ def validate_diagnostic(step,source_sdc_sha,expected_corners):
         output/'producer-records/target-source-placement.tsv',locked)
     require(binding==json.loads((output/'target-binding.json').read_text()),'Captured source target binding differs')
     validate_native_binding(call,binding)
+    size_geometry=validate_sizing_geometry(call,binding['native_placement']['orientation'])
     logical=validate_only_size((step/'candidate_before'/shared.FINGERPRINT_FILES['netlist']).read_text(),(step/'after_sizing'/shared.FINGERPRINT_FILES['netlist']).read_text())
     protected=prior.verify_protected(prior.protected_status(step/'before-status.tsv'),prior.protected_status(step/'after-status.tsv'))
     require(set(row['candidate_files'])==set(shared.file_inventory(step/'candidate'))==parent.VIEW_NAMES,'Sizing view closure differs')
@@ -463,7 +504,8 @@ def validate_diagnostic(step,source_sdc_sha,expected_corners):
              'NSSOC_CRITICAL_INDEPENDENT_SIZING_BASELINE_EXACT','NSSOC_CRITICAL_FOLLOWUP_COMPLETE_NO_ADOPTION']
     require(all(log.count(m)==1 for m in markers) and [log.index(m) for m in markers]==sorted(log.index(m) for m in markers),'Native isolation order missing')
     for item in checked.values():del item['endpoint_names']
-    return dict(native=row,native_sizing_control=gate,native_hold_control=hold_gate,hold_debug=debug,
+    return dict(native=row,native_sizing_control=gate,native_row_orientation_controls=orientation_controls,
+        sizing_geometry=size_geometry,native_hold_control=hold_gate,hold_debug=debug,
         independently_checked_stages=checked,full_endpoint_comparisons=comparisons,logical_size_only=logical,
         protected_status=protected,aggregate_guard_assessment=guard(metrics,locked,repeatable,True),
         candidate_adopted=False,timing_accepted=False,manufacturing_approval=False,

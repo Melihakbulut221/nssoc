@@ -2048,3 +2048,36 @@ The failed final capture, the completed corrected ALU trace pair and the
 per-bit benchmark are selected for permanent archival with their original
 outcomes. A correction must reproduce the native placement behavior and retain
 the unchanged source, connectivity, timing and reload guards before retrying.
+
+The [native placement correction](evidence/timing-critical-swap-correction-20261003.json)
+reproduces the old guard failure with the exact runtime: OpenDB retains the
+transform origin when changing masters. Increasing this buffer from eight to
+thirteen sites moves the lower-left corner by −2,400 DBU for `MY` and `R180`;
+`R0` and `MX` keep that corner. The actual cloud target is `MY`. The new helper
+first checks this exact native origin/box relationship, explicitly restores the
+source lower-left corner, and then requires the original orientation, status,
+pin connections and cell count. Arbitrary movement is still rejected. Larger
+footprint legalization, fresh routing and both independent reloads remain
+required; no timing threshold was relaxed.
+
+The corrected workflow runs all four orientation controls before loading the
+chip. The change passes 457 focused and adjacent tests, with an independent
+245-test review. Root also repeats all four real native controls: each passes
+31 rejection cases, deliberately creates and repairs overlap, preserves the
+SDC and power connections, and times the replacement in all three corners.
+These sub-second small controls establish the correction method, not a new
+chip timing result.
+
+The completed hold child provides a narrower result: it selects
+`sg13g2_dlygate4sd3_1`, tentatively inserts one buffer, then restores its journal.
+Zero buffers remain, and the measured 1,311 setup / 58 hold counts are unchanged.
+The log does not reveal which transient slew/setup rollback predicate fired.
+The independent sizing baseline succeeds before the old placement guard
+stops the parent. A complete sizing result still requires the corrected run.
+
+All four selected original ZIP assets are now
+[permanently archived](evidence/closure-critical-trace-bit-archives-native-20261003.json).
+Their cloud-local, authenticated and anonymous roundtrips pass; root also
+rehashes all three small public downloads. The 257 MB failed physical archive
+stays in the cloud. Failed, diagnostic and incomplete engineering outcomes
+are preserved unchanged.

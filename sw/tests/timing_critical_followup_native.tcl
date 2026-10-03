@@ -6,6 +6,9 @@ foreach key {NSSOC_ELECTRICAL_ROOT NSSOC_CRITICAL_OUT NSSOC_TARGETED_PDK_ROOT} {
 }
 source [file join $::env(NSSOC_ELECTRICAL_ROOT) hw/soc/pnr/timing_hold_reproducibility.tcl]
 source [file join $::env(NSSOC_ELECTRICAL_ROOT) hw/soc/pnr/timing_critical_followup_helpers.tcl]
+set orientation R0
+if {[info exists ::env(NSSOC_CRITICAL_CONTROL_ORIENTATION)]} {set orientation $::env(NSSOC_CRITICAL_CONTROL_ORIENTATION)}
+if {$orientation ni {R0 MY MX R180}} {error "Invalid tiny sizing orientation"}
 set out $::env(NSSOC_CRITICAL_OUT)
 if {[file exists $out]} {error "Critical sizing fixture output already exists"}
 file mkdir $out
@@ -54,10 +57,12 @@ set_wire_rc -signal -layer Metal2
 set_wire_rc -clock -layer Metal2
 set driver [$block findInst driver]
 set blocker [$block findInst blocker]
+$driver setOrient $orientation
+$driver setLocation 20160 [expr {$orientation in {MX R180} ? 18900 : 15120}]
 set xy [$driver getLocation]
 # A legal eight-site gap intentionally becomes an overlap after the 13-site swap.
-$blocker setLocation [expr {[lindex $xy 0]+[[$driver getMaster] getWidth]}] [lindex $xy 1]
 $blocker setOrient [$driver getOrient]
+$blocker setLocation [expr {[lindex $xy 0]+[[$driver getMaster] getWidth]}] [lindex $xy 1]
 check_placement -verbose
 estimate_parasitics -placement
 sta::find_timing -full_update
@@ -128,7 +133,20 @@ if {[critical_all_connections] ne $all_connections || [llength [$block getInsts]
     error "Negative controls failed to preserve native fixture state"
 }
 {*}$call
+set real_before [nssoc_critical_geometry $driver]
 set sized [nssoc_critical_size driver d target $expected_terms $expected_place]
+# Real geometry above passes; deliberately corrupted native-property copies
+# must not be mistaken for the narrowly allowed origin-preserving swap.
+set real_after [nssoc_critical_geometry $driver]
+# Reconstruct the actual pre-anchor raw state from the current anchored cell.
+set dx [dict get $sized native_swap_delta_x_dbu]
+foreach key {x origin_x bbox_x_min bbox_x_max} {dict incr real_after $key $dx}
+nssoc_critical_swap_geometry $real_before $real_after
+foreach key {x y origin_x origin_y bbox_x_min bbox_y_min bbox_x_max bbox_y_max width height site_width orientation status} {
+    set corrupted $real_after
+    if {$key in {orientation status}} {dict set corrupted $key corrupted} else {dict incr corrupted $key 1}
+    critical_expect_rejection unexpected_swap_${key} [list nssoc_critical_swap_geometry $real_before $corrupted]
+}
 set overlap [catch {check_placement -verbose} overlap_message]
 if {!$overlap} {error "Native placement checker failed to detect deliberate post-swap overlap"}
 write_def [file join $out overlapping-after-swap.def]
@@ -170,7 +188,7 @@ nssoc_hold_write_json [file join $out result.json] [nssoc_hold_jobject [dict mer
     status [nssoc_hold_jstr PASS_NATIVE_CRITICAL_SIZE_CONTROL] \
     negative_control_messages [nssoc_hold_jobject $failures] \
     synthetic_shape_guard_scope [nssoc_hold_jstr {Mutated copies of native measured master properties; not alternate-layout validation.}] \
-    call [nssoc_hold_jobject $sized] native_overlap_detected true native_overlap_repaired true \
+    fixture_orientation [nssoc_hold_jstr $orientation] call [nssoc_hold_jobject $sized] native_overlap_detected true native_overlap_repaired true \
     native_overlap_error [nssoc_hold_jstr $overlap_message] \
     all_three_corners_loaded_and_timed true constraints_preserved true pg_bindings_preserved true \
     all_instance_connections_preserved true \

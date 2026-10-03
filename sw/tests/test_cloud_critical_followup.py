@@ -338,13 +338,70 @@ def test_native_binding_rejects_changed_load_place_or_open_supply(tmp_path, faul
     with pytest.raises(ValueError): repair.validate_native_binding(call, binding)
 
 
+
+def sizing_geometry_fixture(orientation):
+    # Exact observed coordinates from the four real OpenROAD controls. Keep
+    # the MY/R180 transform origin distinct from the lower-left anchor.
+    y,oy,ox,sx,ax,dx={
+        'R0':(15120,15120,20160,20160,20160,0),
+        'MY':(15120,15120,24000,17760,26400,-2400),
+        'MX':(18900,22680,20160,20160,20160,0),
+        'R180':(18900,22680,24000,17760,26400,-2400),
+    }[orientation]
+    before=dict(x=20160,y=y,origin_x=ox,origin_y=oy,width=3840,height=3780,site_width=480,
+        bbox_x_min=20160,bbox_y_min=y,bbox_x_max=24000,bbox_y_max=y+3780,
+        orientation=orientation,status='PLACED')
+    swapped=dict(before,x=sx,width=6240,bbox_x_min=sx,bbox_x_max=sx+6240)
+    anchored=dict(before,width=6240,origin_x=ax,bbox_x_max=26400)
+    return dict(geometry_before=before,geometry_after_native_swap=swapped,geometry_after_anchor_restore=anchored,
+        native_swap_delta_x_dbu=dx,anchor_restore_calls=1,source_lower_left_restored=True,
+        observed_placement=['20160',str(y),orientation,'PLACED'],original_width=3840,replacement_width=6240,site_width=480)
+
+
+@pytest.mark.parametrize('orientation', repair.ROW_ORIENTATIONS)
+def test_native_master_swap_preserves_origin_then_explicitly_restores_lower_left(orientation):
+    call=sizing_geometry_fixture(orientation)
+    result=repair.validate_sizing_geometry(call,orientation)
+    assert result['native_origin_preserved'] and result['explicit_source_lower_left_restored']
+    assert result['raw_native_lower_left_delta_x_dbu']==(-2400 if orientation in ('MY','R180') else 0)
+    assert result['no_geometry_tolerance_applied']
+
+
+@pytest.mark.parametrize('orientation', repair.ROW_ORIENTATIONS)
+@pytest.mark.parametrize('fault', ['moved_origin','extra_delta','vertical_shift','not_anchored','wrong_anchor_origin',
+    'orientation','status','width','height','bbox','coordinate_type','wrong_expected_orientation',
+    'restore_omitted','restore_count','restore_boolean','delta_boolean','source_witness','omitted_coordinate'])
+def test_native_swap_never_accepts_an_unexplained_move_or_missing_restore(orientation,fault):
+    call=sizing_geometry_fixture(orientation);expected=orientation
+    raw=call['geometry_after_native_swap'];after=call['geometry_after_anchor_restore']
+    if fault=='moved_origin':raw['origin_x']+=1
+    if fault=='extra_delta':raw['x']-=1
+    if fault=='vertical_shift':raw['y']+=1
+    if fault=='not_anchored':after['x']-=1
+    if fault=='wrong_anchor_origin':after['origin_x']+=1
+    if fault=='orientation':raw['orientation']='R90'
+    if fault=='status':after['status']='UNPLACED'
+    if fault=='width':raw['width']+=480
+    if fault=='height':raw['height']+=3780
+    if fault=='bbox':raw['bbox_x_max']+=1
+    if fault=='coordinate_type':raw['x']=str(raw['x'])
+    if fault=='wrong_expected_orientation':expected='R90'
+    if fault=='restore_omitted':call['source_lower_left_restored']=False
+    if fault=='restore_count':call['anchor_restore_calls']=0
+    if fault=='restore_boolean':call['anchor_restore_calls']=True
+    if fault=='delta_boolean':call['native_swap_delta_x_dbu']=False
+    if fault=='source_witness':call['observed_placement'][0]='20161'
+    if fault=='omitted_coordinate':del raw['bbox_x_max']
+    with pytest.raises(ValueError):repair.validate_sizing_geometry(call,expected)
+
+
 def sizing_control_fixture(tmp_path):
     root = tmp_path/'control'; root.mkdir()
     for name in ('before.sdc', 'after.sdc'):
         (root/name).write_text('create_clock -period 10 [get_ports clk]\n')
     for corner in ('fast', 'slow', 'typical'):
         (root/f'after-{corner}.rpt').write_text(f'Corner: {corner}\n driver/X (sg13g2_buf_8)\n')
-    gate = dict(status='PASS_NATIVE_CRITICAL_SIZE_CONTROL', native_overlap_error='DPL-0033',
+    gate = dict(status='PASS_NATIVE_CRITICAL_SIZE_CONTROL', fixture_orientation='R0', native_overlap_error='DPL-0033',
         negative_control_messages={k: 'observed rejection '+k for k in repair.SIZE_NEGATIVES},
         pre_sdc_sha256=repair.common.sha(root/'before.sdc'),
         post_sdc_sha256=repair.common.sha(root/'after.sdc'),
@@ -352,6 +409,7 @@ def sizing_control_fixture(tmp_path):
         call=dict(instance='driver', original_master='sg13g2_buf_4', replacement_master='sg13g2_buf_8',
             native_calls=1, instance_count=4, original_width=3840, replacement_width=6240,
             site_width=480, connectivity_preserved=True, immediate_placement_preserved=True))
+    gate['call'].update(sizing_geometry_fixture('R0'))
     gate.update({k+'_rejected': True for k in repair.SIZE_NEGATIVES})
     gate.update({k: True for k in ('native_overlap_detected', 'native_overlap_repaired',
         'all_three_corners_loaded_and_timed', 'constraints_preserved', 'pg_bindings_preserved',
@@ -414,16 +472,20 @@ def test_native_environment_drops_acquisition_credentials(monkeypatch):
     assert repair.clean_environment() == dict(PATH='/trusted/bin', OTHER='preserved')
 
 
-@pytest.mark.parametrize('fault', [None, 'extra_physical', 'symlink'])
+@pytest.mark.parametrize('fault', [None, 'extra_physical', 'symlink', 'extra_orientation'])
 def test_capture_explicitly_retains_only_known_tiny_and_child_physical_files(tmp_path, monkeypatch, fault):
     output = tmp_path/'output'; step = output/'run/42-openroad-resizertimingpostgrt'
     expected = ['sizing-control/before.odb', 'sizing-control/after.odb',
         'sizing-control/overlapping-after-swap.def', 'hold-debug/candidate/soc_top.odb',
         'hold-debug/candidate/soc_top.def']
+    for orientation in ('MY','MX','R180'):
+        expected += [f'sizing-control-{orientation}/'+name for name in ('before.odb','after.odb','overlapping-after-swap.def')]
     for index, name in enumerate(expected):
         path = step/name; path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(bytes([index, 0, 255, 10]))
     if fault == 'extra_physical': (step/'sizing-control/unexpected.odb').write_bytes(b'unexpected')
+    if fault == 'extra_orientation':
+        path=step/'sizing-control-R90/before.odb';path.parent.mkdir();path.write_bytes(b'unsupported')
     if fault == 'symlink':
         path = step/'sizing-control/before.odb'; path.unlink(); path.symlink_to(step/'sizing-control/after.odb')
     def base_capture(source, destination):

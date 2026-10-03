@@ -12,9 +12,14 @@ source $::env(SCRIPTS_DIR)/openroad/common/resizer.tcl
 nssoc_targeted_native_gate
 set root $::env(STEP_DIR)
 set ::env(NSSOC_ELECTRICAL_ROOT) $methods
-set ::env(NSSOC_CRITICAL_OUT) [file join $root sizing-control]
-exec [info nameofexecutable] -exit [file join $methods sw/tests/timing_critical_followup_native.tcl] \
-    > [file join $root sizing-control.log] 2>@1
+foreach orientation {R0 MY MX R180} {
+    set label [expr {$orientation eq "R0" ? "sizing-control" : "sizing-control-$orientation"}]
+    set ::env(NSSOC_CRITICAL_CONTROL_ORIENTATION) $orientation
+    set ::env(NSSOC_CRITICAL_OUT) [file join $root $label]
+    exec [info nameofexecutable] -exit [file join $methods sw/tests/timing_critical_followup_native.tcl] \
+        > [file join $root "$label.log"] 2>@1
+}
+unset ::env(NSSOC_CRITICAL_CONTROL_ORIENTATION)
 set ::env(NSSOC_RESIDUAL_OUT) [file join $root residual-control]
 exec [info nameofexecutable] -exit [file join $methods sw/tests/timing_residual_repair_native.tcl] \
     > [file join $root residual-control.log] 2>@1
