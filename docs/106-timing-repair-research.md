@@ -2503,3 +2503,30 @@ PASS results, with six historical exclusions retained; native whole-netlist
 boot remains an opt-in skipped job in that general workflow. IHP's inspected
 main/dev sources and issue 955 are unchanged from the preceding tap packet.
 There is no new qualified LVS correction or manufacturing acceptance.
+
+The [source-bound frontier follow-up](evidence/npu-frontier-method-20261003.json)
+now traces those two exact NPU inputs through capture-FIFO pointer comparison,
+output-valid and TMR configuration logic to 38 sequential boundaries. Both
+original source netlists were selectively restored to RAM and hash checked;
+52 semantic conductors have unique actual drivers in each variant. The fixed
+observation inventory contains 116 cells / 728 scalars in the original and
+156 cells / 884 scalars in the candidate, including immediate D/clock/reset
+drivers. Remaining observation frontiers are explicit. No RTL, reset, cell
+model or original three-million-cycle workload is changed.
+
+Author and root independently replay the exact source bindings and five real
+IHP gate/DFF observer controls; baseline D/Q trajectories stay identical.
+The [root native control capsule](evidence/npu-frontier-native-controls-20261003.tar.xz)
+retains those finite tests. Root's 107 focused/adjacent tests, Ruff and
+actionlint pass. The new paired whole-chip run is still pending; these checks
+validate the observation method, not a repair or qualification result.
+
+[Permanent retention now completes](evidence/closure-pair-npu-archives-20261003.json)
+for all eight pair-hold and NPU cone ZIPs, totaling 936,243,615 bytes. The first
+pair archive attempt hit HTTP 503 after two assets; its failed receipt is
+preserved. Only that failed archive job was retried. Exact-source plans,
+three compact receipt ZIPs and all eight live release identities were reviewed;
+the cloud checked complete bytes and both release download roundtrips.
+The successful NPU archive job and native experiments were not repeated.
+The incomplete historical pair capture and rejected timing/boot outcomes
+remain failures despite successful preservation.
