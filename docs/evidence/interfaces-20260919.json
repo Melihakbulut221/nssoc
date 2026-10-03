@@ -1,0 +1,1096 @@
+{
+  "date": "2026-09-19",
+  "repository": "https://github.com/Melihakbulut221/nssoc",
+  "branch": "codex/complete-open-work",
+  "verification_commit": "ed79766203c07eec16d6b6388d7f10815870bd60",
+  "scope": [
+    "SpaceWire PIO endpoint",
+    "CAN 2.0B",
+    "SPI master",
+    "I2C master"
+  ],
+  "not_implemented": [
+    "PCI/PCIe",
+    "Ethernet",
+    "SpaceWire DMA/router",
+    "pad ring and analog transceivers",
+    "scan/ATPG/MBIST/JTAG"
+  ],
+  "tests": {
+    "pin_protocols": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ibex_interfaces": {
+      "passed": 29,
+      "cycles": 663477,
+      "MEM_RDREG": 1,
+      "REQ_REG": 1,
+      "SYNPRE": 1
+    },
+    "registerfile_upstream_equivalence": {
+      "tasks": 4,
+      "result": "PASS by induction",
+      "scope": "fault-free; both syndrome placement settings; scrub on and off"
+    },
+    "full_rtl_final": {
+      "passed": 471,
+      "failed": 0,
+      "skipped": 15,
+      "host": "GitHub Actions",
+      "run": 35446249180,
+      "commit": "ed79766203c07eec16d6b6388d7f10815870bd60"
+    },
+    "github_general_checks": {
+      "passed_gates": 17,
+      "failed_gates": 0,
+      "skipped_gates": 1
+    },
+    "github_boot_regression": {
+      "normal": "28 checks PASS",
+      "odd_entry": "geometry rejected, secondary image selected, 28 checks PASS",
+      "oversize_image": "geometry rejected, secondary image selected, 28 checks PASS"
+    },
+    "concurrent_configuration_preparation": {
+      "result": "PASS",
+      "cases": [
+        {
+          "base": "config.json",
+          "generated": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config.resolved.I3APhzU2.json",
+          "sha256": "fb8f750ea40edd307b25624a04c609b22de0a2a5c90a6bc0e465b17460d989bd"
+        },
+        {
+          "base": "config-interfaces-synpre.json",
+          "generated": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config.resolved.ec9sfK4X.json",
+          "sha256": "94191445bdcf1a5b1321f887f6bc3c2d005497b6a3c8b86b8ec58766169502a3"
+        }
+      ],
+      "scope": "Two simultaneous wrapper preparations; each output equals its requested profile plus the source list. --help stops before P&R."
+    },
+    "native_flow_inventory": {
+      "steps": 80,
+      "result": "All native step identities and existing checker gates preserved; only optional top-LEF metadata warning follows its producer gate"
+    },
+    "klayout_classifier": {
+      "observed_markers": 11048,
+      "outside_vendor_cells": 0,
+      "metric_mismatch_control": "Rejected with exit 1; no result written"
+    },
+    "local_record_validation": {
+      "passed": 231,
+      "skipped": 5,
+      "failed": 0,
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_doc_links.py sw/tests/test_roadmap_is_current.py sw/tests/test_recorded_evidence.py sw/tests/test_flow_evidence.py sw/tests/test_soc_synthesis_guards.py sw/tests/test_documents_are_rendered.py"
+    },
+    "magic_report_reader": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_magic_report.py",
+      "passed": 10,
+      "failed": 0,
+      "scope": "Native count completion and consistency, signed coordinates, malformed/inverted boxes and trailing content; incomplete live report rejected",
+      "source_sha256": {
+        "scripts/classify_magic_drc.py": "d49675357a17a0505405611c8a6ad2cbaeb843c7f02ea0dd3e991ec583495cce",
+        "sw/tests/test_magic_report.py": "7ee4311a5260259011cd6206da998bacab733d56332ff32375b43b4396042433"
+      }
+    },
+    "final_deck_records": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_magic_report.py sw/tests/test_doc_links.py sw/tests/test_recorded_evidence.py sw/tests/test_roadmap_is_current.py",
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "local_log_sha256": {
+    "interfaces-protocol-expanded.log": "978f8cb3e046e62b828c6082f1d99e63ba334bb3b53bef5feb468a0ef5b9e084",
+    "interfaces-final-cpu.log": "7296b9c620e26e2fc156ad9a968ae1d62b089455f708a50505b5b6ca3c5bb5fc",
+    "interfaces-equivalence.log": "aee907b18f4189b6f16847c0a191fcbe76d83e164cf575b2827bb463d914a614",
+    "interfaces-equivalence-synpre.log": "1fb47956e6e514d5308a0c246a8714b96d49a55d979780eaacee689ce4a93ed5",
+    "interfaces-ci-f926dc1.log": "7ff0076fa53e12c8ba5875314d2c23811e2c2f71840215d72396d7dd80fb9146",
+    "interfaces-final-guards.log": "9c738b11e95a3207bb82513bff8777eb5a5fb5514a13a487be17c49d9b9f28ae",
+    "interfaces-final-docs.log": "fcd262358a907f9998045d7ea775804c229ed2935b6e0bc23708ee0604a10c7f",
+    "interfaces-prepare-order.log": "5912a7de2faf428058af0d2944b6b51cc9a49e82918eba2e62fb1b0599276e21",
+    "interfaces-rtl-regression.log": "ff32d904620b15db01118b5f6366250b478804fa1313a90615b70506ff47dccb",
+    "github-rtl-4ef4491.log": "0adb45cb664d1c0f865e2eef025e174c5e9981f5da36a6927fe39b17a3fb34fb",
+    "github-ci-4ef4491.json": "a4705fb51410f03a0cac8978255d3f682f309dba69baa5175efaf85f25cf8522",
+    "github-ci-4ef4491.log": "d5aa9ad49ab2143e2f9ac0c5e0906337782bbb4bc200444b67e423fa14df960f",
+    "github-ci-b09b13b.json": "2f5a505902f58f2f48074a87b6f07aac59d0cbcecfd48ed6aad5486255812e94",
+    "github-ci-b09b13b.log": "a0a57857be2113c4203ecc8f6824cc61508faeb287c7854ad8adf1f09fdcc861",
+    "hw/soc/out/interfaces-final-20260919/layout-antfinal.log": "be227c9e37ad288c73e5a6853f8ca909eae25b9a487517a556d4b982c8ca535f",
+    "hw/soc/out/interfaces-final-20260919/layout-export2.log": "60b9cada753ccd66337ea00dfa4193c1d4c4f92207364dbcf427b086fbfaa8f4",
+    "hw/soc/out/interfaces-final-20260919/layout-repair2-opt.log": "79fe46b211530ebcde029b4abf3d028d649fa3de404b318915580b88ecad1f8b",
+    "hw/soc/out/interfaces-final-20260919/final-flow-docs.log": "99da41e58edc87613dd67b7891cd4eb57eb23b7b459736a033353ebcb6ecb238",
+    "hw/soc/out/github-ci-ed79766.json": "a37b61966156122828c99385c0dcf7d933244d8527dd7b48e37f15341031ed71",
+    "hw/soc/out/github-ci-ed79766.log": "8784395d026d64134817b24b1a9ffad08253ee46eb43381cfcb22491cfacc4c2",
+    "hw/soc/out/interfaces-final-20260919/layout-kdrc.log": "ec6fb00065f1f883b24dccce53e71bb4e7d8bdb17c081cc32307672ef6df193a",
+    "hw/soc/out/interfaces-final-20260919/layout-lvs.log": "ceb1054c9adae1338b8d976f423731ba13193d30cebf454feef126ab8636a17f",
+    "hw/soc/out/interfaces-final-20260919/classifier-badcount.log": "dbbd7226720af17c8fddb7c39ac0c3f3b49db9fc30deca8260ae499a538ff5d6",
+    "hw/soc/out/interfaces-final-20260919/config-concurrency.json": "f65d7f84d45e23ba4bc874b190b08a6ebc279608699abbdaad63ae340575f9e4",
+    "hw/soc/out/interfaces-final-20260919/final-validation.log": "d00b4e4c67d8195c0bd872823fb97216abb6987d056022d8c096d42204e1a619",
+    "hw/soc/out/interfaces-final-20260919/layout-mdrc.log": "5cce5b36cd2e8eec8db832abd9dbe4828d5dbe9753dc6be289f0cbd239e8add0",
+    "hw/soc/out/interfaces-final-20260919/magic-classification-cli.log": "be541ad3f03dac0c2ea39427ee8b0a6b502d9fa5fc9b8de02405de0da12f6151",
+    "hw/soc/out/interfaces-final-20260919/resume-mdrc.json": "522138fdfa377c999de45fec492d66569b51683bb616dc9b9678a2274adcde90",
+    "hw/soc/out/interfaces-final-20260919/magic-classification.json": "da6b77cf17fb523ac43ff5e2894cc26a8689327467b46b77107a3f73b53033e0",
+    "hw/soc/out/interfaces-final-20260919/final-decks-validation.log": "1977cca2c3b84004300ae5ab6babeac8dacebd8faa17f59ebe6da5610e4b7093"
+  },
+  "synthesis": {
+    "cells_including_macros": 61991,
+    "resettable_flops": 8820,
+    "clock_gates": 3,
+    "sram_macros": 8,
+    "standard_cell_area_um2": 977098.6638,
+    "die_um": [
+      2306.4,
+      2475.9
+    ]
+  },
+  "synthesis_inputs": {
+    "configuration": {
+      "MEM_RDREG": 1,
+      "REQ_REG": 1,
+      "SYNPRE": 1,
+      "MEM_HARDEN": 1,
+      "ROM_HARDEN": 1,
+      "clock_ns": 20
+    },
+    "sources": {
+      "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+      "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+      "hw/rtl/npu_regbank.v": "c1844ee17a8cb44ad12f8c751fc7e1c957244c3d66d7423fce7e3a453d35c7a2",
+      "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+      "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+      "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+      "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+      "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+      "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+      "hw/rtl/tt_um_melihakbulut_nssoc.v": "292bcd44d146efb94e34f2a2f827d8f7950d94d48b4d628b35c5897735c79b4f",
+      "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+      "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+      "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+      "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+      "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+      "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+      "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+      "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+      "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+      "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+      "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+      "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+      "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+      "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+      "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+      "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+      "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+      "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+      "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+      "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+      "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+      "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+      "hw/soc/gen/ibex_register_file_ff.v": "1495f5ba4e0cd622ca78a53a5b3b20fd8bce6c2da67ba4c7f631b7c8c5dcf0dc",
+      "hw/soc/gen/ibex_top.v": "cad2a307d6f86918c220541d524f57fc0277ae0a4eeaf9710d9778fc1774aef5",
+      "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+      "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+      "hw/soc/gen/interfaces.bundle.vh": "33a61017f854e7c6479d2133550ced5cb772f9d995efcf4e9ca4034599f7e21a",
+      "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+      "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+      "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+      "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+      "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+      "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+      "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+      "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+      "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+      "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "hw/soc/rtl/prim_clock_gating.v": "3f0549c88bed25f45b6bbba10c15873c334f65c6a1a02f89226b02df5920143e",
+      "hw/soc/rtl/soc_apb_bridge.v": "779a72a4f16b82423911e912db9ebd2a02a8b62cff6c81b1990f81271d4d7069",
+      "hw/soc/rtl/soc_apb_pnp.v": "eedaa60ae788d53e17d9503a1b844c4922a03b3cce58abcb62a0f4b301d4b282",
+      "hw/soc/rtl/soc_apb_pnp_rom.vh": "5d592f73548ea0bc90fb06abf41560b52d4b8716ee87f5a4b1bf3dd1f441f67b",
+      "hw/soc/rtl/soc_apb_wb.v": "b7e4e0311d74af7c6313ef96eaafe05854046fc11ef9aed3c8b8545cb6705cdd",
+      "hw/soc/rtl/soc_boot.v": "135f377c81d90b413369e40e08773d586684dbfd82a80ae229d766cf9f7fcd34",
+      "hw/soc/rtl/soc_bus.v": "3c3bb6d48d1bf37c60a390c04e7ca12fdfe41fa49ba5aa029cc37cea9b134608",
+      "hw/soc/rtl/soc_busstat.v": "f5dd625a9590e18ad3423fc3ef5c8570b5aac97fe540a3d9ae5c9b2f727f22a8",
+      "hw/soc/rtl/soc_can.v": "f372d4bec9db100993815238e4721563d7fdb70b6bab2b749ee37c187d022261",
+      "hw/soc/rtl/soc_clint.v": "06168afffe079d8795eeb2f472a3f640f3d0f23b3e00cca9994aab176c105602",
+      "hw/soc/rtl/soc_gpio.v": "704ce72756256a3933788a6018ac67fd366f1ca125dd42d507b5b355ca986ee4",
+      "hw/soc/rtl/soc_gptimer.v": "2055608374d8c7117587d09d1b551193a2f7b494a4a97e9f4620912dd5adecfd",
+      "hw/soc/rtl/soc_i2c.v": "2382c623018fee4a5a7db3ab10b6e34bc279173dc409378a9f12ae9a136a3191",
+      "hw/soc/rtl/soc_mem.v": "65634797b11639c7ebad2cd438b68462b54aa87c99164babeeb3b9e7b16bb141",
+      "hw/soc/rtl/soc_mem_ecc.v": "55377c2e0727dd193e7c96071d22a77eac3ee1269f1d3f51f0da9c5ac3cbcde7",
+      "hw/soc/rtl/soc_mem_sram.v": "585e8a08da23b1aeed0a6a00ef1e5ccd78bc2b1ca18185e760b904a9e252e545",
+      "hw/soc/rtl/soc_memmap.vh": "1f2a3fcb06e5bd3138898125f3a639fe4b9021648445d9c1bf1778b8f46713ff",
+      "hw/soc/rtl/soc_npu.v": "4c37128a368494cbd7ae8077e86b0f60e3a4439975b54662ce6a234057ce7634",
+      "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+      "hw/soc/rtl/soc_npu_ser.v": "53ecfb54c7ececc529b53392c718b6b76820d5e08cd50ff1e4c0a1dc877c5e75",
+      "hw/soc/rtl/soc_pnp.v": "c75ebac8e74bfd38a002cbd2e565e853d21c75327e2f2fc12b121e84088d25d0",
+      "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+      "hw/soc/rtl/soc_qspi.v": "1c982c35435c2ac3c6d1ce7fcfd56a0b204a1e2bfac6cbd6c3e68c4a88f50d27",
+      "hw/soc/rtl/soc_scrub.v": "a624470484e15e78975f37fd15ae269db23870b9e73982f4b6bc3e197ebb1a37",
+      "hw/soc/rtl/soc_spi.v": "2c37a75b96ea37e474ac03170c0c310d01b88152fe6944d60666d7b09d93be38",
+      "hw/soc/rtl/soc_spw.v": "2fe2134a1e57bc857e22bae67b218307a1ce25192f1fe2f71585413fc62638d8",
+      "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+      "hw/soc/rtl/soc_top.v": "fecc6230a165e2d8efa8ddcf47ceec7afaedc667b3f10da12b3ec119f7c0b9a2",
+      "hw/soc/rtl/soc_uart.v": "a079e13c3c05c7e29ed8f0a107c58cd1f11e98a8f7432e56d05866fb671dd77c",
+      "hw/soc/rtl/soc_wdog.v": "7fd95e0a7746e08d57f12d1b1483c21be1bb1231b040dfb53d806cea45a124ce"
+    },
+    "netlist_sha256": "2bb8210ecc7cb31dd4b3afaa11340a5e7ec2bf512d9d91f6495534ac6ba534ae"
+  },
+  "github_ci": {
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35446249180",
+    "commit": "ed79766203c07eec16d6b6388d7f10815870bd60",
+    "conclusion": "success",
+    "jobs": {
+      "rtl": "success",
+      "checks": "success",
+      "formal-and-boot": "success"
+    },
+    "physical_scope": "Hosted CI does not run the PDK flow. Local physical checks are recorded separately and still fail."
+  },
+  "physical_resumes": [
+    {
+      "parent_run": "interfaces-final-20260919",
+      "resume_run": "interfaces-bounded-20260919",
+      "reason": "Setup repair repeatedly rolls back the same moves; bound optimization to 600 iterations while keeping timing constraints and all checker gates.",
+      "resume_from": "OpenROAD.ResizerTimingPostCTS",
+      "state_path": "hw/soc/pnr/runs/interfaces-final-20260919/28-openroad-stamidpnr-1/state_out.json",
+      "state_sha256": "8cdcd20c93a6188c8e8390b6ad7cfdbc0d51c05a4bde4fdc3f56666c8c0aeb63"
+    },
+    {
+      "parent_run": "interfaces-bounded-20260919",
+      "resume_run": "interfaces-route20-20260919",
+      "resume_from": "OpenROAD.GlobalRouting",
+      "state_path": "hw/soc/pnr/runs/interfaces-bounded-20260919/02-openroad-stamidpnr-2/state_out.json",
+      "state_sha256": "63fef9778c7bf9d94c4122bc922e98ed52bf35f99470ca119216dba91ea1b5cf",
+      "overrides": {
+        "GRT_ADJUSTMENT": 0.2
+      },
+      "reason": "Prior global route failed with 20 overflow at Metal5. Reduce planning capacity reserve from 30 to 20 percent. Congestion is still disallowed; detailed DRC and timing gates unchanged."
+    },
+    {
+      "parent_run": "interfaces-route20-20260919",
+      "resume_run": "interfaces-antfinal-20260919",
+      "resume_from": "OpenROAD.RepairAntennas",
+      "state_path": "hw/soc/pnr/runs/interfaces-route20-20260919/10-openroad-checkantennas-1/state_out.json",
+      "state_sha256": "c4242d6809f490035fcbe32f83430eb18d74b4e8f51b335e7ca2b5e37fa7dca9",
+      "reason": "One extracted antenna violation remains on net3121, _058330_/B1, Metal3, ratio 296.62 against limit 200. Apply the existing docs/67 late-antenna recipe; preserve all checker limits and the 20 ns clock.",
+      "overrides": {
+        "GRT_ANTENNA_REPAIR_ITERS": 8,
+        "GRT_ANTENNA_REPAIR_MARGIN": 25,
+        "DRT_ANTENNA_REPAIR_MARGIN": 25,
+        "RUN_POST_GRT_RESIZER_TIMING": false
+      },
+      "resizer_note": "Post-GRT timing repair already ran in parent stage 06; avoid repeating that optimization during this antenna-only continuation. All final timing checkers remain enabled."
+    },
+    {
+      "parent_run": "interfaces-antfinal-20260919",
+      "resume_run": "interfaces-export2-20260919",
+      "resume_from": "Odb.CheckDesignAntennaProperties",
+      "state_path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/18-klayout-render/state_out.json",
+      "state_sha256": "a6e4947f60e4d5992e69e209a28f8f0acbf5d086b37a05f31a54c870792b0456",
+      "reason": "Skip only optional abstract top LEF generation after both GDS streams and render complete; prior export exceeded 10 GB RSS. Preserve final timing checkers and all layout artifacts.",
+      "overrides": {
+        "RUN_MAGIC_WRITE_LEF": false
+      },
+      "first_attempt": {
+        "run": "interfaces-export-20260919",
+        "result": "failed before any physical change: missing optional top LEF input for the metadata warning step",
+        "fix": "Tie Odb.CheckDesignAntennaProperties to RUN_MAGIC_WRITE_LEF in the Interfaces flow"
+      },
+      "result": "final views saved; exit 2 for setup, hold, max slew and max cap violations"
+    }
+  ],
+  "source_freshness": "All recorded synthesis source and netlist hashes rechecked against this checkout",
+  "physical": {
+    "run": "interfaces-antfinal-20260919",
+    "status": "FAIL: extracted setup, hold and electrical constraints remain violated",
+    "clock_period_ns": 20,
+    "clock_uncertainty_ns": 0.25,
+    "timing_derate_percent": 5,
+    "corners": {
+      "nom_fast_1p32V_m40C": {
+        "timing__setup__ws": 8.591611221202063,
+        "timing__hold__ws": -0.25360025908165235,
+        "timing__setup_vio__count": 0,
+        "timing__hold_vio__count": 16,
+        "design__max_slew_violation__count": 19,
+        "design__max_cap_violation__count": 65
+      },
+      "nom_typ_1p20V_25C": {
+        "timing__setup__ws": 3.8097046595728594,
+        "timing__hold__ws": -0.043041571525176694,
+        "timing__setup_vio__count": 0,
+        "timing__hold_vio__count": 3,
+        "design__max_slew_violation__count": 37,
+        "design__max_cap_violation__count": 64
+      },
+      "nom_slow_1p08V_125C": {
+        "timing__setup__ws": -5.774159980255793,
+        "timing__hold__ws": 0.3205489298060363,
+        "timing__setup_vio__count": 2102,
+        "timing__hold_vio__count": 0,
+        "design__max_slew_violation__count": 336,
+        "design__max_cap_violation__count": 62
+      }
+    },
+    "router_drc_errors": 0,
+    "antenna_nets": 0,
+    "antenna_pins": 0,
+    "artifacts": {
+      "resolved.json": {
+        "path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/resolved.json",
+        "bytes": 34529,
+        "sha256": "1352830952feb8efa912fa4f2e0ff2fae162915c6e8d20d7bfd33b285fc118bb"
+      },
+      "14-openroad-stapostpnr/state_out.json": {
+        "path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/14-openroad-stapostpnr/state_out.json",
+        "bytes": 15346,
+        "sha256": "70c7c887627cc6031b181ceb9cf47bb6cd895a24a2c3c32565daa548533fe99d"
+      },
+      "05-openroad-checkantennas-1/state_out.json": {
+        "path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/05-openroad-checkantennas-1/state_out.json",
+        "bytes": 13668,
+        "sha256": "e068bce7c1ecd777efc8566dd55160d30f5bc9147cfc676d209d6355edc95c77"
+      },
+      "gds": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/gds/soc_top.gds",
+        "bytes": 152916354,
+        "sha256": "314ca8ec3f0f04dee821af776bf5fe94305857f96f8fa8bcc9103086c22743b3"
+      },
+      "mag_gds": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/mag_gds/soc_top.magic.gds",
+        "bytes": 152916354,
+        "sha256": "314ca8ec3f0f04dee821af776bf5fe94305857f96f8fa8bcc9103086c22743b3"
+      },
+      "klayout_gds": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/klayout_gds/soc_top.klayout.gds",
+        "bytes": 90183626,
+        "sha256": "b2252b247e1a1463da60ed906a3c60c54466d21bd04862e19a98cdefbcb1464e"
+      },
+      "odb": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/odb/soc_top.odb",
+        "bytes": 154500317,
+        "sha256": "64329615597319709c0bace06c3703ebf2361ef6a325ca87e6da915809275aba"
+      },
+      "def": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/def/soc_top.def",
+        "bytes": 105248732,
+        "sha256": "8efeb9685c4d48872380541e946fa200c3a25348ad293f5bf63c3b973215ea60"
+      },
+      "nl": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/nl/soc_top.nl.v",
+        "bytes": 15424520,
+        "sha256": "f6c080f5bb4a9a1f1badb91c3070012d4f2801ace844f21e045048f40ede0738"
+      },
+      "pnl": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/pnl/soc_top.pnl.v",
+        "bytes": 22301896,
+        "sha256": "9ac013b4612bcd608e3f58450e2aff6f8769e562bed77e18dfc4f3a6e54ae4b2"
+      },
+      "spice": {
+        "path": "hw/soc/pnr/runs/interfaces-export2-20260919/final/spice/soc_top.spice",
+        "bytes": 12829861,
+        "sha256": "22c9a7243c7bb28fd671077cd0e7dc7117b549fad9388897375b733291c19b59"
+      }
+    },
+    "design__instance__count": 244253,
+    "design__instance__count__stdcell": 87744,
+    "design__instance__count__macros": 8,
+    "design__instance__count__class:fill_cell": 156501,
+    "design__instance__count__class:antenna_cell": 1717,
+    "design__instance__area__stdcell": 1307880,
+    "design__instance__area__macros": 2337520,
+    "route__wirelength": 7084780,
+    "design__disconnected_pin__count": 0,
+    "late_repair_study": {
+      "scope": "Diagnostic repeated post-global-route design repair. Global-route RC only, fresh slow-corner metrics only. No detailed route or final extracted multi-corner STA for this variant.",
+      "changes": "Native repair_design inserted 116 buffers and resized 2 instances. No RTL, clock or checker changes.",
+      "result": {
+        "before": {
+          "design__max_slew_violation__count__corner:nom_slow_1p08V_125C": 234,
+          "design__max_fanout_violation__count__corner:nom_slow_1p08V_125C": 723,
+          "design__max_cap_violation__count__corner:nom_slow_1p08V_125C": 43,
+          "timing__hold__ws__corner:nom_slow_1p08V_125C": -0.370478,
+          "timing__setup__ws__corner:nom_slow_1p08V_125C": -8.54415,
+          "metrics_path": "hw/soc/pnr/runs/interfaces-route20-20260919/07-openroad-stamidpnr-3/or_metrics_out.json",
+          "metrics_sha256": "92ee857c9cce9cc634c14e6b2d9191567582d96f97d3228f5835149988564040"
+        },
+        "after": {
+          "design__max_slew_violation__count__corner:nom_slow_1p08V_125C": 54,
+          "design__max_fanout_violation__count__corner:nom_slow_1p08V_125C": 702,
+          "design__max_cap_violation__count__corner:nom_slow_1p08V_125C": 12,
+          "timing__hold__ws__corner:nom_slow_1p08V_125C": 0.377633,
+          "timing__setup__ws__corner:nom_slow_1p08V_125C": -4.41091,
+          "metrics_path": "hw/soc/pnr/runs/interfaces-repair2-sta-20260919/01-openroad-stamidpnr-3/or_metrics_out.json",
+          "metrics_sha256": "753bf18794897ad1e12cbdb78feb2210808b48fd745122454010bacbe9a3a74d"
+        }
+      },
+      "disposition": "Setup improves but 50 MHz still fails; 12 cap and 54 slew violations remain at the slow corner. Preserve as a measured candidate, not the delivered detailed-route result.",
+      "followup_setup_attempt": {
+        "run": "interfaces-repair2-opt-20260919",
+        "outcome": "stopped without adopting output",
+        "reason": "After more than 1000 internal optimizer iterations, global-route setup estimates still oscillated near -3.05 ns. No completed state, detailed route or extracted all-corner timing was produced.",
+        "log": "hw/soc/out/interfaces-final-20260919/layout-repair2-opt.log",
+        "limits_note": "The native -max_iterations 600 parameter is not a global wall-clock or total printed-iteration limit."
+      }
+    },
+    "export_run": "interfaces-export2-20260919",
+    "flow_exit_code": 2,
+    "optional_top_lef": "not generated; metadata warning follows disabled LEF export; routed antenna check retained",
+    "geometry_checks": {
+      "source_def": "hw/soc/pnr/runs/interfaces-export2-20260919/final/def/soc_top.def",
+      "die_um": [
+        0.0,
+        0.0,
+        2306.4,
+        2475.9
+      ],
+      "core_um": [
+        60,
+        45.36,
+        2246.4,
+        2430.54
+      ],
+      "macros": [
+        {
+          "instance": "u_ram.g_ram_2048x64_ecc.u_b0",
+          "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "x_um": 120.0,
+          "y_um": 60.48,
+          "w_um": 784.48,
+          "h_um": 626.7,
+          "area_um2": 491633.616
+        },
+        {
+          "instance": "u_ram.g_ram_2048x64_ecc.u_b1",
+          "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "x_um": 944.64,
+          "y_um": 60.48,
+          "w_um": 784.48,
+          "h_um": 626.7,
+          "area_um2": 491633.616
+        },
+        {
+          "instance": "u_ram.g_ram_2048x64_ecc.u_b2",
+          "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "x_um": 120.0,
+          "y_um": 1787.94,
+          "w_um": 784.48,
+          "h_um": 626.7,
+          "area_um2": 491633.616
+        },
+        {
+          "instance": "u_ram.g_ram_2048x64_ecc.u_b3",
+          "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "x_um": 944.64,
+          "y_um": 1787.94,
+          "w_um": 784.48,
+          "h_um": 626.7,
+          "area_um2": 491633.616
+        },
+        {
+          "instance": "u_rom.g_rom_1024x32_ecc.u_b0",
+          "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+          "x_um": 1769.28,
+          "y_um": 347.76,
+          "w_um": 416.64,
+          "h_um": 336.46,
+          "area_um2": 140182.6944
+        },
+        {
+          "instance": "u_rom.g_rom_1024x32_ecc.u_b1",
+          "master": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+          "x_um": 1769.28,
+          "y_um": 1787.94,
+          "w_um": 416.64,
+          "h_um": 336.46,
+          "area_um2": 140182.6944
+        },
+        {
+          "instance": "u_rom.g_rom_1024x32_ecc.u_c0",
+          "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+          "x_um": 1769.28,
+          "y_um": 60.48,
+          "w_um": 236.8,
+          "h_um": 191.34,
+          "area_um2": 45309.312
+        },
+        {
+          "instance": "u_rom.g_rom_1024x32_ecc.u_c1",
+          "master": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+          "x_um": 1769.28,
+          "y_um": 2222.64,
+          "w_um": 236.8,
+          "h_um": 191.34,
+          "area_um2": 45309.312
+        }
+      ],
+      "counts": {
+        "antenna": 1717,
+        "buffer": 25484,
+        "clockgate": 3,
+        "combinational": 51720,
+        "fill": 156501,
+        "macro": 8,
+        "sequential": 8820
+      },
+      "declared": {
+        "components": 244253,
+        "nets": 85853,
+        "pins": 114
+      },
+      "def_sha256": "8efeb9685c4d48872380541e946fa200c3a25348ad293f5bf63c3b973215ea60",
+      "checks": [
+        [
+          "every macro is inside the core box",
+          true,
+          ""
+        ],
+        [
+          "no macro overlaps another macro",
+          true,
+          "[]"
+        ],
+        [
+          "every standard cell is inside the die box",
+          true,
+          ""
+        ],
+        [
+          "no standard cell overlaps a macro",
+          true,
+          "0 overlap"
+        ],
+        [
+          "every standard cell sits on a DEF ROW y",
+          true,
+          "0 off-row"
+        ],
+        [
+          "the macro area union equals the sum of the macro rectangles",
+          true,
+          ""
+        ],
+        [
+          "the placeable row union is smaller than the core box",
+          true,
+          ""
+        ],
+        [
+          "core + margins reconstruct the die box",
+          true,
+          ""
+        ],
+        [
+          "macros",
+          true,
+          "DEF/LEF=8, tool=8"
+        ],
+        [
+          "fill cells",
+          true,
+          "DEF/LEF=156501, tool=156501"
+        ],
+        [
+          "antenna diodes",
+          true,
+          "DEF/LEF=1717, tool=1717"
+        ],
+        [
+          "sequential cells",
+          true,
+          "DEF/LEF=8820, tool=8820"
+        ],
+        [
+          "clock gates",
+          true,
+          "DEF/LEF=3, tool=3"
+        ],
+        [
+          "buffers+inverters",
+          true,
+          "DEF/LEF=25484, tool=25484"
+        ],
+        [
+          "standard cells, no fill",
+          true,
+          "DEF/LEF=87744, tool=87744"
+        ],
+        [
+          "standard-cell area um2",
+          true,
+          "DEF/LEF=1307885, tool=1307880"
+        ],
+        [
+          "macro area um2",
+          true,
+          "DEF/LEF=2337518, tool=2337520"
+        ],
+        [
+          "total instances",
+          true,
+          "DEF/LEF=244253, tool=244253"
+        ]
+      ]
+    },
+    "superseded_parent_stop": {
+      "run": "interfaces-route20-20260919",
+      "stopped_at": "Magic.WriteLEF",
+      "reason": "Superseded by antenna-clean interfaces-antfinal-20260919; optional top-level LEF generation exceeded 10 GB RSS. All completed stage artifacts retained.",
+      "signal": "SIGTERM to verified own process group 98147",
+      "not_a_completed_flow": true
+    },
+    "independent_decks": {
+      "klayout": {
+        "run": "interfaces-kdrc-20260919",
+        "from": "KLayout.DRC",
+        "to": "Checker.KLayoutDRC",
+        "input_state": {
+          "path": "hw/soc/pnr/runs/interfaces-export2-20260919/07-misc-reportmanufacturability/state_out.json",
+          "sha256": "f3b142025e585f8aeca52ae6ee4c25976995c5e9600ba4b84173be2d78085cf5",
+          "bytes": 17233
+        },
+        "metrics": {
+          "klayout__drc_error__count": 11048
+        },
+        "recorded_metrics": {
+          "path": "docs/evidence/interfaces-kdrc-20260919/metrics.json",
+          "sha256": "bc4d0acda08cb7227d307f7ace532fa19d4b3411fc539dbe84a9bf28d831e0cc",
+          "bytes": 13054
+        },
+        "recorded_config": {
+          "path": "docs/evidence/interfaces-kdrc-20260919/resolved.json",
+          "sha256": "c55b0c81d68a6e17e8be3f6f623de6ef30e6e0c6a0d1fd7451518fd625df11a1",
+          "bytes": 34179
+        },
+        "exit_code": 2,
+        "classification": {
+          "report": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-kdrc-20260919/01-klayout-drc/reports/drc.klayout.lyrdb",
+          "report_sha256": "63a536660d32bfdf8ea27321b20edcdf18d006ccf97313acfe10aa7414e5d067",
+          "drc_status": "FAIL",
+          "markers": 11048,
+          "distinct_cell_and_geometry": 6584,
+          "by_category": {
+            "Cnt.c.digibnd": 2120,
+            "Sdiod.d": 4464,
+            "Sdiod.e": 4464
+          },
+          "cells_with_markers": 204,
+          "nonvendor_cells": {},
+          "cells": [
+            "RM_IHPSG13_1P_BITKIT_16x2_EDGE_LR:m0",
+            "RM_IHPSG13_1P_BITKIT_16x2_EDGE_LR:m90",
+            "RM_IHPSG13_1P_BITKIT_16x2_EDGE_LR:r0",
+            "RM_IHPSG13_1P_BITKIT_16x2_EDGE_LR:r180",
+            "RM_IHPSG13_1P_BITKIT_16x2_SRAM:m0",
+            "RM_IHPSG13_1P_BITKIT_16x2_SRAM:m90",
+            "RM_IHPSG13_1P_BITKIT_16x2_SRAM:r0",
+            "RM_IHPSG13_1P_BITKIT_16x2_SRAM:r180",
+            "RM_IHPSG13_1P_BITKIT_CELL_2x1:m0",
+            "RM_IHPSG13_1P_BITKIT_CELL_2x1:m90",
+            "RM_IHPSG13_1P_BITKIT_CELL_2x1:r0",
+            "RM_IHPSG13_1P_BITKIT_CELL_2x1:r180",
+            "RM_IHPSG13_1P_BITKIT_CELL_SUB:m0",
+            "RM_IHPSG13_1P_BITKIT_CELL_SUB:m90",
+            "RM_IHPSG13_1P_BITKIT_CELL_SUB:r0",
+            "RM_IHPSG13_1P_BITKIT_CELL_SUB:r180",
+            "RM_IHPSG13_1P_BITKIT_EDGE_LR:m0",
+            "RM_IHPSG13_1P_BITKIT_EDGE_LR:m90",
+            "RM_IHPSG13_1P_BITKIT_EDGE_LR:r0",
+            "RM_IHPSG13_1P_BITKIT_EDGE_LR:r180",
+            "RM_IHPSG13_1P_BLDRV:m0",
+            "RM_IHPSG13_1P_BLDRV:m90",
+            "RM_IHPSG13_1P_BLDRV:r0",
+            "RM_IHPSG13_1P_BLDRV:r180",
+            "RM_IHPSG13_1P_COLCTRL2:m0",
+            "RM_IHPSG13_1P_COLCTRL2:m90",
+            "RM_IHPSG13_1P_COLCTRL2:r0",
+            "RM_IHPSG13_1P_COLCTRL2:r180",
+            "RM_IHPSG13_1P_COLDEC2:m0",
+            "RM_IHPSG13_1P_COLDEC2:r0",
+            "RM_IHPSG13_1P_COLDRV13X8:m0",
+            "RM_IHPSG13_1P_COLDRV13X8:m90",
+            "RM_IHPSG13_1P_COLDRV13X8:r0",
+            "RM_IHPSG13_1P_COLDRV13X8:r180",
+            "RM_IHPSG13_1P_COLDRV13_FILL4:m0",
+            "RM_IHPSG13_1P_COLDRV13_FILL4:m90",
+            "RM_IHPSG13_1P_COLDRV13_FILL4:r0",
+            "RM_IHPSG13_1P_COLDRV13_FILL4:r180",
+            "RM_IHPSG13_1P_COLDRV13_FILL4C2:m0",
+            "RM_IHPSG13_1P_COLDRV13_FILL4C2:m90",
+            "RM_IHPSG13_1P_COLDRV13_FILL4C2:r0",
+            "RM_IHPSG13_1P_COLDRV13_FILL4C2:r180",
+            "RM_IHPSG13_1P_COLUMN_128:m0",
+            "RM_IHPSG13_1P_COLUMN_128:m90",
+            "RM_IHPSG13_1P_COLUMN_128:r0",
+            "RM_IHPSG13_1P_COLUMN_128:r180",
+            "RM_IHPSG13_1P_COLUMN_256:m0",
+            "RM_IHPSG13_1P_COLUMN_256:m90",
+            "RM_IHPSG13_1P_COLUMN_256:r0",
+            "RM_IHPSG13_1P_COLUMN_256:r180",
+            "RM_IHPSG13_1P_COLUMN_512:m0",
+            "RM_IHPSG13_1P_COLUMN_512:m90",
+            "RM_IHPSG13_1P_COLUMN_512:r0",
+            "RM_IHPSG13_1P_COLUMN_512:r180",
+            "RM_IHPSG13_1P_CTRL:m0",
+            "RM_IHPSG13_1P_CTRL:r0",
+            "RM_IHPSG13_1P_DEC00:m0",
+            "RM_IHPSG13_1P_DEC00:r0",
+            "RM_IHPSG13_1P_DEC01:m0",
+            "RM_IHPSG13_1P_DEC01:r0",
+            "RM_IHPSG13_1P_DEC02:m0",
+            "RM_IHPSG13_1P_DEC02:r0",
+            "RM_IHPSG13_1P_DEC03:m0",
+            "RM_IHPSG13_1P_DEC03:r0",
+            "RM_IHPSG13_1P_DEC04:m0",
+            "RM_IHPSG13_1P_DEC04:r0",
+            "RM_IHPSG13_1P_DEC_LE_l1empty:m0",
+            "RM_IHPSG13_1P_DEC_LE_l1empty:r0",
+            "RM_IHPSG13_1P_DEC_LE_l2empty:m0",
+            "RM_IHPSG13_1P_DEC_LE_l2empty:r0",
+            "RM_IHPSG13_1P_DLY_MUX:m0",
+            "RM_IHPSG13_1P_DLY_MUX:r0",
+            "RM_IHPSG13_1P_MATRIX_128x32:m0",
+            "RM_IHPSG13_1P_MATRIX_128x32:m90",
+            "RM_IHPSG13_1P_MATRIX_128x32:r0",
+            "RM_IHPSG13_1P_MATRIX_128x32:r180",
+            "RM_IHPSG13_1P_MATRIX_256x64:m0",
+            "RM_IHPSG13_1P_MATRIX_256x64:m90",
+            "RM_IHPSG13_1P_MATRIX_256x64:r0",
+            "RM_IHPSG13_1P_MATRIX_256x64:r180",
+            "RM_IHPSG13_1P_MATRIX_512x128:m0",
+            "RM_IHPSG13_1P_MATRIX_512x128:m90",
+            "RM_IHPSG13_1P_MATRIX_512x128:r0",
+            "RM_IHPSG13_1P_MATRIX_512x128:r180",
+            "RM_IHPSG13_1P_ROWDEC7:m0",
+            "RM_IHPSG13_1P_ROWDEC7:r0",
+            "RM_IHPSG13_1P_ROWDEC8:m0",
+            "RM_IHPSG13_1P_ROWDEC8:r0",
+            "RM_IHPSG13_1P_ROWDEC9:m0",
+            "RM_IHPSG13_1P_ROWDEC9:r0",
+            "RM_IHPSG13_1P_ROWREG7:m0",
+            "RM_IHPSG13_1P_ROWREG7:r0",
+            "RM_IHPSG13_1P_ROWREG8:m0",
+            "RM_IHPSG13_1P_ROWREG8:r0",
+            "RM_IHPSG13_1P_ROWREG9:m0",
+            "RM_IHPSG13_1P_ROWREG9:r0",
+            "RM_IHPSG13_1P_WLDRV16X4:m0",
+            "RM_IHPSG13_1P_WLDRV16X4:m90",
+            "RM_IHPSG13_1P_WLDRV16X4:r0",
+            "RM_IHPSG13_1P_WLDRV16X4:r180",
+            "RM_IHPSG13_1P_WLDRV16X8:m0",
+            "RM_IHPSG13_1P_WLDRV16X8:m90",
+            "RM_IHPSG13_1P_WLDRV16X8:r0",
+            "RM_IHPSG13_1P_WLDRV16X8:r180",
+            "RSC_IHPSG13_AND2X2:m0",
+            "RSC_IHPSG13_AND2X2:m90",
+            "RSC_IHPSG13_AND2X2:r0",
+            "RSC_IHPSG13_AND2X2:r180",
+            "RSC_IHPSG13_CBUFX2:m0",
+            "RSC_IHPSG13_CBUFX2:m90",
+            "RSC_IHPSG13_CBUFX2:r0",
+            "RSC_IHPSG13_CBUFX2:r180",
+            "RSC_IHPSG13_CBUFX4:m0",
+            "RSC_IHPSG13_CBUFX4:m90",
+            "RSC_IHPSG13_CBUFX4:r0",
+            "RSC_IHPSG13_CBUFX4:r180",
+            "RSC_IHPSG13_CBUFX8:m0",
+            "RSC_IHPSG13_CBUFX8:m90",
+            "RSC_IHPSG13_CBUFX8:r0",
+            "RSC_IHPSG13_CBUFX8:r180",
+            "RSC_IHPSG13_CDLYX1:m0",
+            "RSC_IHPSG13_CDLYX1:m90",
+            "RSC_IHPSG13_CDLYX1:r0",
+            "RSC_IHPSG13_CDLYX1:r180",
+            "RSC_IHPSG13_CDLYX1_DUMMY:m0",
+            "RSC_IHPSG13_CDLYX1_DUMMY:r0",
+            "RSC_IHPSG13_CDLYX2:m90",
+            "RSC_IHPSG13_CDLYX2:r180",
+            "RSC_IHPSG13_CGATEPX4:m0",
+            "RSC_IHPSG13_CGATEPX4:m90",
+            "RSC_IHPSG13_CGATEPX4:r0",
+            "RSC_IHPSG13_CGATEPX4:r180",
+            "RSC_IHPSG13_CINVX2:m0",
+            "RSC_IHPSG13_CINVX2:m90",
+            "RSC_IHPSG13_CINVX2:r0",
+            "RSC_IHPSG13_CINVX2:r180",
+            "RSC_IHPSG13_CINVX4:m0",
+            "RSC_IHPSG13_CINVX4:m90",
+            "RSC_IHPSG13_CINVX4:r0",
+            "RSC_IHPSG13_CINVX4:r180",
+            "RSC_IHPSG13_CINVX4_WN:m0",
+            "RSC_IHPSG13_CINVX4_WN:m90",
+            "RSC_IHPSG13_CINVX4_WN:r0",
+            "RSC_IHPSG13_CINVX4_WN:r180",
+            "RSC_IHPSG13_CINVX8:m0",
+            "RSC_IHPSG13_CINVX8:m90",
+            "RSC_IHPSG13_CINVX8:r0",
+            "RSC_IHPSG13_CINVX8:r180",
+            "RSC_IHPSG13_CNAND2X2:m0",
+            "RSC_IHPSG13_CNAND2X2:r0",
+            "RSC_IHPSG13_DFNQX2:m0",
+            "RSC_IHPSG13_DFNQX2:m90",
+            "RSC_IHPSG13_DFNQX2:r0",
+            "RSC_IHPSG13_DFNQX2:r180",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N:m0",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N:m90",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N:r0",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N:r180",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N_half:m0",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N_half:m90",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N_half:r0",
+            "RSC_IHPSG13_DFPQD_MSAFFX2N_half:r180",
+            "RSC_IHPSG13_INVX4:m0",
+            "RSC_IHPSG13_INVX4:m90",
+            "RSC_IHPSG13_INVX4:r0",
+            "RSC_IHPSG13_INVX4:r180",
+            "RSC_IHPSG13_LHPQX2:m0",
+            "RSC_IHPSG13_LHPQX2:r0",
+            "RSC_IHPSG13_MX2IX1:m0",
+            "RSC_IHPSG13_MX2IX1:r0",
+            "RSC_IHPSG13_MX2X2:m0",
+            "RSC_IHPSG13_MX2X2:m90",
+            "RSC_IHPSG13_MX2X2:r0",
+            "RSC_IHPSG13_MX2X2:r180",
+            "RSC_IHPSG13_NAND2X2:m0",
+            "RSC_IHPSG13_NAND2X2:r0",
+            "RSC_IHPSG13_NAND3X2:m0",
+            "RSC_IHPSG13_NAND3X2:r0",
+            "RSC_IHPSG13_NOR2X2:m0",
+            "RSC_IHPSG13_NOR2X2:m90",
+            "RSC_IHPSG13_NOR2X2:r0",
+            "RSC_IHPSG13_NOR2X2:r180",
+            "RSC_IHPSG13_NOR3X2:m0",
+            "RSC_IHPSG13_NOR3X2:r0",
+            "RSC_IHPSG13_OA12X1:m90",
+            "RSC_IHPSG13_OA12X1:r180",
+            "RSC_IHPSG13_TIEH:m0",
+            "RSC_IHPSG13_TIEH:m90",
+            "RSC_IHPSG13_TIEH:r0",
+            "RSC_IHPSG13_TIEH:r180",
+            "RSC_IHPSG13_TIEL:m0",
+            "RSC_IHPSG13_TIEL:m90",
+            "RSC_IHPSG13_TIEL:r0",
+            "RSC_IHPSG13_TIEL:r180",
+            "RSC_IHPSG13_WLDRVX4:m0",
+            "RSC_IHPSG13_WLDRVX4:m90",
+            "RSC_IHPSG13_WLDRVX4:r0",
+            "RSC_IHPSG13_WLDRVX4:r180",
+            "RSC_IHPSG13_WLDRVX8:m0",
+            "RSC_IHPSG13_WLDRVX8:m90",
+            "RSC_IHPSG13_WLDRVX8:r0",
+            "RSC_IHPSG13_WLDRVX8:r180",
+            "RSC_IHPSG13_XOR2X2:m0",
+            "RSC_IHPSG13_XOR2X2:r0"
+          ],
+          "sdiod_d_equals_e": true,
+          "vendor_cell_count": 260,
+          "vendor_gds": [
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds",
+              "sha256": "ea72ed7528034e1daca6c3a779f76eed714e90f5dd11f815218ad264745c9ef9"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds",
+              "sha256": "48be5102bf97e56daee4cda1f63eaf6e7bb3450a68d48a2825060b1172011d00"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_512x16_c2_bm_bist.gds",
+              "sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e"
+            }
+          ],
+          "options": {
+            "no_recommended": true,
+            "run_mode": "deep"
+          },
+          "scope": "Cell attribution against declared macro GDS; no markers waived"
+        }
+      },
+      "lvs": {
+        "run": "interfaces-lvs-20260919",
+        "from": "Netgen.LVS",
+        "to": "Checker.LVS",
+        "input_state": {
+          "path": "hw/soc/pnr/runs/interfaces-export2-20260919/07-misc-reportmanufacturability/state_out.json",
+          "sha256": "f3b142025e585f8aeca52ae6ee4c25976995c5e9600ba4b84173be2d78085cf5",
+          "bytes": 17233
+        },
+        "metrics": {
+          "design__lvs_device_difference__count": 0,
+          "design__lvs_net_difference__count": 0,
+          "design__lvs_property_fail__count": 0,
+          "design__lvs_error__count": 0,
+          "design__lvs_unmatched_device__count": 0,
+          "design__lvs_unmatched_net__count": 0,
+          "design__lvs_unmatched_pin__count": 0
+        },
+        "recorded_metrics": {
+          "path": "docs/evidence/interfaces-lvs-20260919/metrics.json",
+          "sha256": "863b93082a291e7a5a9cb1304d2495026ee8711431cfa178378bf4aa972a2716",
+          "bytes": 13315
+        },
+        "recorded_config": {
+          "path": "docs/evidence/interfaces-lvs-20260919/resolved.json",
+          "sha256": "54cbc95ad5a07bfbd12c3fe1c48783a0b11bfef75bc431fc69e61de069852906",
+          "bytes": 34178
+        },
+        "exit_code": 0,
+        "scope": "DEF/LEF-derived SPICE versus routed powered netlist; standard-cell and macro-pin connectivity; SRAM interiors black-boxed",
+        "result": "Circuits match uniquely",
+        "devices_per_circuit": 87756,
+        "nets_per_circuit": 86414
+      },
+      "xor": {
+        "state": {
+          "path": "hw/soc/pnr/runs/interfaces-decks-20260919/01-klayout-xor/state_out.json",
+          "sha256": "76dc234c43983ea4b1c8bdeeb50ed12ea8f78a959c6842f901e617a8e1dc7a41",
+          "bytes": 17093
+        },
+        "differences": 0,
+        "scope": "Both complete GDS streams"
+      },
+      "magic": {
+        "run": "interfaces-mdrc-20260919",
+        "drc_run": "interfaces-decks-20260919",
+        "status": "FAIL",
+        "from": "Checker.MagicDRC",
+        "to": "Checker.MagicDRC",
+        "scope": "Native Magic DEF/LEF DRC followed by its unchanged native checker; not full-GDS DRC",
+        "input_state": {
+          "path": "hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json",
+          "sha256": "a06e7edaaf777c337f29a256272e0b29f029d361ba790b450fbc4e6fca23f997",
+          "bytes": 17133
+        },
+        "metrics": {
+          "magic__drc_error__count": 219
+        },
+        "exit_code": 2,
+        "classification": {
+          "report": {
+            "path": "hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/reports/drc.magic.rpt",
+            "sha256": "05006d0a4f6555bb84c5777c6b2e60f7a648859798d05ebd95c4d739adefeee8",
+            "bytes": 10682
+          },
+          "placement": {
+            "path": "hw/soc/pnr/runs/interfaces-antfinal-20260919/12-odb-cellfrequencytables/soc_top.def",
+            "sha256": "8efeb9685c4d48872380541e946fa200c3a25348ad293f5bf63c3b973215ea60",
+            "bytes": 105248732
+          },
+          "macro_lefs": [
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_1024x32_c2_bm_bist.lef",
+              "sha256": "b345b6c44defa630a7266fb1ee878b153e4b22b88461aa8216d3883592c18db2"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_2048x64_c2_bm_bist.lef",
+              "sha256": "630e1f2efcf0c4c512fa53760bb7451f4fcf7155e6265d887c936dcf65be4bea"
+            },
+            {
+              "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_512x16_c2_bm_bist.lef",
+              "sha256": "845c080938b5e9d1200774190430dad67eea7f1e209fb3094488614e70bb1c2c"
+            }
+          ],
+          "scope": "DEF/LEF view, actual LEF macro footprints without an assumed overhang; every marker remains an error",
+          "boxes": 219,
+          "classification": {
+            "inside": 20,
+            "straddle": 0,
+            "outside": 199
+          },
+          "by_rule": {
+            "Metal2 > 10.0um with runlength > 10.0um spacing to unrelated m2 < 120 (M2.f)": {
+              "outside": 24
+            },
+            "Metal3 > 10.0um with runlength > 10.0um spacing to unrelated m3 < 120 (M3.f)": {
+              "outside": 163
+            },
+            "Metal2 minimum area < 5760 (M2.d)": {
+              "inside": 4
+            },
+            "Metal4 > 10.0um with runlength > 10.0um spacing to unrelated m4 < 120 (M4.f)": {
+              "inside": 16
+            },
+            "Metal4 > 0.39um with runlength > 1.0um spacing to unrelated m4 < 48 (M4.e)": {
+              "outside": 8
+            },
+            "Metal3 > 0.39um with runlength > 1.0um spacing to unrelated m3 < 48 (M3.e)": {
+              "outside": 2
+            },
+            "Metal2 > 0.39um with runlength > 1.0um spacing to unrelated m2 < 48 (M2.e)": {
+              "outside": 2
+            }
+          },
+          "outside_box_minimum_distance_to_nearest_macro_um": {
+            "maximum": 0.5,
+            "farther_than_0p5_um": 0
+          },
+          "distance_definition": "L-infinity separation of marker rectangle and nearest LEF footprint"
+        },
+        "recorded_metrics": {
+          "path": "docs/evidence/interfaces-mdrc-20260919/metrics.json",
+          "sha256": "047194d2df459644b23b4f2916fe1e73288f7b719e4dd7d3f03540d0cb778146",
+          "bytes": 13050
+        },
+        "recorded_config": {
+          "path": "docs/evidence/interfaces-mdrc-20260919/resolved.json",
+          "sha256": "54cbc95ad5a07bfbd12c3fe1c48783a0b11bfef75bc431fc69e61de069852906",
+          "bytes": 34178
+        },
+        "continuation": {
+          "input_state": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json",
+          "input_state_sha256": "a06e7edaaf777c337f29a256272e0b29f029d361ba790b450fbc4e6fca23f997",
+          "native_magic_boxes": 219,
+          "scope": "Completed native Magic DRC state retained; stop original helper before repeating the already completed independent KLayout/LVS runs",
+          "original_process_group_stopped": 124430,
+          "checker_command": [
+            "bash",
+            "hw/soc/flow/pnr_soc_top.sh",
+            "interfaces-mdrc-20260919",
+            "-F",
+            "Checker.MagicDRC",
+            "-T",
+            "Checker.MagicDRC",
+            "-i",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-decks-20260919/03-magic-drc/state_out.json"
+          ],
+          "checker_exit_code": 2
+        },
+        "process_stats": {
+          "time": {
+            "cpu_time_user": "01:53:22.029",
+            "cpu_time_system": "00:00:00.820",
+            "runtime": "01:53:33.350",
+            "cpu_time_iowait": "00:00:00.000"
+          },
+          "peak_resources": {
+            "cpu_percent": 109.8,
+            "memory_rss": "982MiB",
+            "memory_vms": "1000MiB",
+            "threads": 1
+          },
+          "avg_resources": {
+            "cpu_percent": 99.84687044050193,
+            "memory_rss": "918MiB",
+            "memory_vms": "937MiB",
+            "threads": 0.9999852622581168
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "PCI/PCIe and Ethernet are not implemented",
+    "SpaceWire is PIO, without DMA or router",
+    "No pad-ring, analog PHY, DFT or radiation qualification",
+    "The layout fails timing and is not a tapeout release",
+    "Independent physical deck results are reported separately; vendor SRAM interiors are excluded from LVS",
+    "KLayout DRC fails with 11048 vendor-cell markers; optional recommended rules were not enabled",
+    "Magic DEF/LEF DRC fails with 219 boxes: 20 within the SRAM LEF footprints and 199 outside; none waived"
+  ],
+  "toolchain": {
+    "LibreLane": "3.0.5",
+    "OpenROAD": "26Q1-2938-g0e2d771c5e",
+    "PDK": "IHP SG13G2 c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "Magic": "8.3.678",
+    "KLayout": "0.30.9"
+  },
+  "synthesis_commit": "b09b13b9d4e1bd893f79eec03f5543367661f310",
+  "recorded_at_utc": "2026-09-19T15:16:49.487110+00:00"
+}

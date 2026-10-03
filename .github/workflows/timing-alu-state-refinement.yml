@@ -1,0 +1,130 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-state-refinement
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-state-refinement.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-alu-state-refinement-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check exhaustive group coverage and unconstrained proof construction
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_state_refinement.py sw/tests/test_alu_state_partitions.py sw/tests/test_alu_state_repair.py sw/tests/test_alu_state_counterexample.py sw/tests/test_alu_mapped_state.py
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Reuse exact original miter and refine only 19 timeout observations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/prove_alu_state_refinement.py prepare \
+            --output "$GITHUB_WORKSPACE/alu-refinement-common" \
+            --work "$RUNNER_TEMP/alu-refinement-prepare"
+      - name: Preserve common source-bound proof graph and preparation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-refinement-common-${{ github.run_attempt }}
+          path: alu-refinement-common/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+  prove:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-refinement-common-${{ github.run_attempt }}
+          path: alu-refinement-common
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Prove every assigned group with all original inputs symbolic
+        run: |
+          python3 scripts/prove_alu_state_refinement.py shard \
+            --bundle "$GITHUB_WORKSPACE/alu-refinement-common" --shard '${{ matrix.shard }}' \
+            --output "$GITHUB_WORKSPACE/alu-refinement-shard-${{ matrix.shard }}" \
+            --work "$RUNNER_TEMP/alu-refinement-shard-work"
+      - name: Preserve all native group proofs, timeouts and counterexamples
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-refinement-shard-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: alu-refinement-shard-${{ matrix.shard }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+  aggregate:
+    needs: [prepare, prove]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-refinement-common-${{ github.run_attempt }}
+          path: alu-refinement-common
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: alu-refinement-shard-*-${{ github.run_attempt }}
+          path: shards
+      - name: Reparse 250 original PASS groups and require every refined timeout bit to pass
+        run: |
+          python3 scripts/prove_alu_state_refinement.py aggregate \
+            --bundle alu-refinement-common --output alu-refinement-verdict.json \
+            --shard-dir 'shards/alu-refinement-shard-0-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-refinement-shard-1-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-refinement-shard-2-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-refinement-shard-3-${{ github.run_attempt }}'
+      - name: Preserve complete acceptance decision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-refinement-verdict-${{ github.run_attempt }}
+          path: alu-refinement-verdict.json
+          if-no-files-found: error
+          retention-days: 30

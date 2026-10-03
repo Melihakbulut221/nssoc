@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "tested_head": "2fe550327ca2bb98b5329334ed31b5d268baf4d4",
+  "tested_tree": "b48c4e4de9110eeeedf1da4d7263e6647f0935bf",
+  "head_during_working_tree_run": "e454bd53bcb22db43f389c97b8ce5ba6a7580a7f",
+  "scope": "Complete local Python regression on a prepared working tree. The 1072 tracked/staged file hashes were unchanged throughout and the tree was then committed byte-identically at tested_head. This is not a clean-clone run or an aggregate formal/native/physical verdict.",
+  "command": "PATH=\"$PWD/hw/soc/tools/oss-cad-suite/bin:$PATH\" .venv/bin/python -m pytest -q -rs sw/tests",
+  "python_version": "3.14.7",
+  "digital_yosys": "Yosys 0.67+146 (468ba27d9-dirty)",
+  "pytest_counts": {
+    "passed": 1293,
+    "skipped": 0,
+    "failures": 0
+  },
+  "elapsed_seconds": 464.54,
+  "log": {
+    "path": "hw/soc/out/external-review-20260919/final-can-hal-mapper-python.log",
+    "bytes": 1473,
+    "sha256": "1125f84afa395f02564fad95586c898daa190bb4a4af294e8d271357342776b4"
+  },
+  "input_manifest": {
+    "path": "hw/soc/out/external-review-20260919/final-can-hal-mapper-inputs.json",
+    "bytes": 116230,
+    "sha256": "11c46ef456d43f9117c3ebd745f546328de479e1371b982c74b6b78a29e7b849"
+  },
+  "input_count": 1072,
+  "inputs_unchanged": true,
+  "committed_tree_matches_tested_tree": true,
+  "prior_failed_attempt": {
+    "path": "hw/soc/out/external-review-20260919/can-offset-full-python.log",
+    "bytes": 7454,
+    "sha256": "b0c7bf3fde6d1dbec2f880d94b24ebd231cf506db96f65cc9bc4d9166f295e7f"
+  },
+  "generic_mapper_followup": {
+    "status": "PASS",
+    "liberty": null,
+    "measurements": {
+      "clint": {
+        "flops": 171,
+        "cells": 1700
+      },
+      "apb-before": {
+        "flops": 94,
+        "cells": 101
+      },
+      "apb-after": {
+        "flops": 94,
+        "cells": 101
+      },
+      "apb-enabled": {
+        "flops": 98,
+        "cells": 155
+      }
+    }
+  },
+  "generic_scope": "Same codec connectivity and paired APB checks also pass without any Liberty library. The first scratch launch used a relative output path and failed to write JSON; the corrected absolute-path run is the accepted result."
+}

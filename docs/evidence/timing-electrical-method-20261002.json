@@ -1,0 +1,552 @@
+{
+  "status": "FROZEN_REVIEW_READY",
+  "sources": {
+    "scripts/run_cloud_electrical_repair.py": {
+      "bytes": 25430,
+      "sha256": "e8beb26dd260f30188632a37b2aa5aec08406e1bcd3989da76af812b92e129bb"
+    },
+    "hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+      "bytes": 4291,
+      "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+    },
+    "hw/soc/pnr/timing_electrical_repair_step.tcl": {
+      "bytes": 6154,
+      "sha256": "3f8b98e1dff8f87f53366da9c829e4452918094562c8da1a221de13d122db184"
+    },
+    "sw/tests/timing_electrical_repair_native.tcl": {
+      "bytes": 5220,
+      "sha256": "1688217cc0c33e8b3168abd98eac12647ff3a3754e44fcf6ba33af0ad293c098"
+    },
+    "sw/tests/test_cloud_electrical_repair.py": {
+      "bytes": 10282,
+      "sha256": "3df4f077b27f0370c0eac3207ca3a91f045f8277d22d64e6437720fe7e801990"
+    },
+    ".github/workflows/timing-electrical-repair.yml": {
+      "bytes": 6184,
+      "sha256": "16d5e2bb5c45dfbd5ca9f3bcfbe168a6477b85ec8e55fdf4f5d547f868cdc724"
+    },
+    "hw/soc/pnr/timing-electrical-input.lock.json": {
+      "bytes": 4185,
+      "sha256": "22ab23bda7b148ab249fe87f600a3f6d022116502938b3e7784ff5bbcc5b18f2"
+    }
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_electrical_repair.py sw/tests/test_cloud_combined_repair.py sw/tests/test_cloud_eco_logic_proof.py",
+    "passed": 104
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "native_fixture_root": "hw/soc/out/closure-20261002-setup-hold-lvs/electrical-control-02",
+  "native_result": {
+    "status": "PASS_NATIVE_ELECTRICAL_CONTROL",
+    "missing_api_rejected": true,
+    "wrong_net_rejected": true,
+    "missing_driver_rejected": true,
+    "dont_touch_rejected": true,
+    "real_capacitance_before": 2,
+    "real_capacitance_after": 1,
+    "unrelated_driver_preserved": true,
+    "call": {
+      "driver": "driver/X",
+      "net": "target",
+      "original_master": "sg13g2_buf_1",
+      "initial_instance_count": 4,
+      "actual_instance_count": 5,
+      "native_calls": 1,
+      "max_length_m": 0,
+      "slew_margin_percent": 0,
+      "cap_margin_percent": 0
+    },
+    "constraints_preserved": true,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "native_result_pin": {
+    "bytes": 566,
+    "sha256": "8a0ad985bf37160b0340d31b1d048285b46cc19fe4210ce79cfff679eb3e4647"
+  },
+  "observed_target_netlist_summary": {
+    "bytes": 8740,
+    "sha256": "83297b3431f8ceaa84141d51542814ae957f0422b32cd9d5222733ea2f3d9373"
+  },
+  "original_member_pin": {
+    "bytes": 12122862,
+    "sha256": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86"
+  },
+  "whole_zip_verified_locally": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "target_connections": {
+    "status": "EXACT_ORIGINAL_CANDIDATE_NETLIST_MEMBER_CRC_AND_SHA_VERIFIED",
+    "producer": {
+      "run_id": 36990647336,
+      "source_commit": "945881e8bd9854419f1f3066039c380658693a81",
+      "artifact_id": 11223714813,
+      "artifact_name": "combined-repair-final-1",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-combined-repair-36990647336-20261002.zip",
+      "bytes": 329082361,
+      "sha256": "6117183fcc255f16a6d45c88c32c76935ba8e7c58d6a0aa8257c12a735f3ba96",
+      "entrypoint": "scripts/run_cloud_combined_repair.py",
+      "kind": "combined_setup_hold_repair",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+    },
+    "member": "run/01-openroad-resizertimingpostgrt/candidate/soc_top.v",
+    "member_pin": {
+      "bytes": 12122862,
+      "sha256": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86"
+    },
+    "targets": [
+      {
+        "driver": "fanout1387",
+        "pin": "X",
+        "net": "net1387",
+        "observed_master": "sg13g2_buf_1",
+        "observed_cell": "sg13g2_buf_1 fanout1387 (.A(\\u_ram.g_ram_2048x64_ecc.row_din [21]),\n    .X(net1387));",
+        "connected_cells": [
+          {
+            "master": "sg13g2_buf_1",
+            "instance": "fanout1387",
+            "source_fragment_sha256": "61ea4038ad2c3f652d0f34b350a6e4bd8e5cda5a53e1f071d4f980099760e0b0",
+            "pins": [
+              "X"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[0].mem",
+            "source_fragment_sha256": "fc93bbed35d96bae5f37cda51cab2d43f02db017b3bf50c33134fdb1de215794",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[1].mem",
+            "source_fragment_sha256": "931d59ebd23763cae777b481f58ccce614871e835b122f9210bedf31482fa085",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[2].mem",
+            "source_fragment_sha256": "a7bcdcc42f3108560538ff0a2b836a458e6420ebdf0940f5f9902f19eacb3e18",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[3].mem",
+            "source_fragment_sha256": "34b8a01fd9d5d13f3f825ea2759a73e5271dc044e9280955263e593863f348c6",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "source_fragment_sha256": "2d1f913c4a2b5bd960f26afce506a4940e7927a1fc8c76eca53b030b48103f80",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "source_fragment_sha256": "a411ef1ee911813df26a1d5d9c8ce0603c5200c117798dbcf835c73e261b6843",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "source_fragment_sha256": "a981a2252141915f06596a6c5fc1df0d12c1840a557737f640c4dc1fb5b67c97",
+            "pins": [
+              "d[21]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "source_fragment_sha256": "d9e896d1112deec656082f9addb32c9e1e8f42d0ba1ac3c2608de70defe87c96",
+            "pins": [
+              "d[21]"
+            ]
+          }
+        ]
+      },
+      {
+        "driver": "fanout1391",
+        "pin": "X",
+        "net": "net1391",
+        "observed_master": "sg13g2_buf_1",
+        "observed_cell": "sg13g2_buf_1 fanout1391 (.A(net11651),\n    .X(net1391));",
+        "connected_cells": [
+          {
+            "master": "sg13g2_buf_1",
+            "instance": "fanout1391",
+            "source_fragment_sha256": "70462e45bbc0520dc586ad2d20e369cb483557ac1acb1c76bd42924a4c234eae",
+            "pins": [
+              "X"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[0].mem",
+            "source_fragment_sha256": "fc93bbed35d96bae5f37cda51cab2d43f02db017b3bf50c33134fdb1de215794",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[1].mem",
+            "source_fragment_sha256": "931d59ebd23763cae777b481f58ccce614871e835b122f9210bedf31482fa085",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[2].mem",
+            "source_fragment_sha256": "a7bcdcc42f3108560538ff0a2b836a458e6420ebdf0940f5f9902f19eacb3e18",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank[3].mem",
+            "source_fragment_sha256": "34b8a01fd9d5d13f3f825ea2759a73e5271dc044e9280955263e593863f348c6",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "source_fragment_sha256": "2d1f913c4a2b5bd960f26afce506a4940e7927a1fc8c76eca53b030b48103f80",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "source_fragment_sha256": "a411ef1ee911813df26a1d5d9c8ce0603c5200c117798dbcf835c73e261b6843",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "source_fragment_sha256": "a981a2252141915f06596a6c5fc1df0d12c1840a557737f640c4dc1fb5b67c97",
+            "pins": [
+              "d[23]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "source_fragment_sha256": "d9e896d1112deec656082f9addb32c9e1e8f42d0ba1ac3c2608de70defe87c96",
+            "pins": [
+              "d[23]"
+            ]
+          }
+        ]
+      },
+      {
+        "driver": "fanout1228",
+        "pin": "X",
+        "net": "net1228",
+        "observed_master": "sg13g2_buf_1",
+        "observed_cell": "sg13g2_buf_1 fanout1228 (.A(\\u_ram.g_ram_2048x64_ecc.row_din [17]),\n    .X(net1228));",
+        "connected_cells": [
+          {
+            "master": "sg13g2_buf_1",
+            "instance": "fanout1228",
+            "source_fragment_sha256": "06a93c38b13dfd75aeb5039a201fb9f25f288f9ab3b2c5798a3b57935dfe67d6",
+            "pins": [
+              "X"
+            ]
+          },
+          {
+            "master": "sg13g2_buf_8",
+            "instance": "max_cap11608",
+            "source_fragment_sha256": "6e83a2557800fa53dcf7925d96b1d8ae080861414a5d33475429455453618fbc",
+            "pins": [
+              "A"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "source_fragment_sha256": "2d1f913c4a2b5bd960f26afce506a4940e7927a1fc8c76eca53b030b48103f80",
+            "pins": [
+              "d[17]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "source_fragment_sha256": "a411ef1ee911813df26a1d5d9c8ce0603c5200c117798dbcf835c73e261b6843",
+            "pins": [
+              "d[17]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "source_fragment_sha256": "a981a2252141915f06596a6c5fc1df0d12c1840a557737f640c4dc1fb5b67c97",
+            "pins": [
+              "d[17]"
+            ]
+          },
+          {
+            "master": "SP6TSRAM512x64",
+            "instance": "\\u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "source_fragment_sha256": "d9e896d1112deec656082f9addb32c9e1e8f42d0ba1ac3c2608de70defe87c96",
+            "pins": [
+              "d[17]"
+            ]
+          }
+        ]
+      }
+    ],
+    "range_bytes": 4023801,
+    "range_requests": 4,
+    "whole_zip_verified_locally": false,
+    "full_netlist_written_locally": false
+  },
+  "native_execution": {
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "openroad",
+      "-exit",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/electrical-control-02/methods/sw/tests/timing_electrical_repair_native.tcl"
+    ],
+    "returncode": 0,
+    "seconds": 0.9674464950003312,
+    "source_pins": {
+      "sw/tests/timing_electrical_repair_native.tcl": "1688217cc0c33e8b3168abd98eac12647ff3a3754e44fcf6ba33af0ad293c098",
+      "hw/soc/pnr/timing_electrical_repair_helpers.tcl": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac",
+      "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    }
+  },
+  "native_outputs": {
+    "native.log": {
+      "bytes": 1945,
+      "sha256": "a071ce2a98739dde147c5155dbdfdf8e95d8f041951c1ad183e0b962a16f1067"
+    },
+    "execution.json": {
+      "bytes": 755,
+      "sha256": "36c116a71bac9176912d892f5bd78d1dca51895808b2a7631ae1b081eb4fb5c7"
+    },
+    "native/before-status.tsv": {
+      "bytes": 316,
+      "sha256": "ee3df76755e7deca3b827691ffda9480a18f9a1308845369dfc8e8ce59759f74"
+    },
+    "native/after.v": {
+      "bytes": 522,
+      "sha256": "e6cc74ccc9180860ce67e7900a79b8b000713a8874bf56c54ee9b7cf03925dfa"
+    },
+    "native/result.json": {
+      "bytes": 566,
+      "sha256": "8a0ad985bf37160b0340d31b1d048285b46cc19fe4210ce79cfff679eb3e4647"
+    },
+    "native/after-driver-typical.rpt": {
+      "bytes": 324,
+      "sha256": "fde801dc6e634ce9d550a5381aee4d8eb990e69ceb21a9292ee8c03216511ad8"
+    },
+    "native/before.v": {
+      "bytes": 344,
+      "sha256": "ec1669612d113463ffcfdf06ed6c351693381385e74fda2e09a5e839347155f9"
+    },
+    "native/after-driver-fast.rpt": {
+      "bytes": 318,
+      "sha256": "9375241be0cf83e100502b3efeadaa0d96e089689d8c4bfe36d089b61e94492c"
+    },
+    "native/before-driver-slow.rpt": {
+      "bytes": 327,
+      "sha256": "ba679c2f23b4d88e409d271d46de420c95250c1a67da0c19eebc5ec9dbf654bd"
+    },
+    "native/before-driver-fast.rpt": {
+      "bytes": 327,
+      "sha256": "ab794c9948eb4d1fc08caeba098ac54840573e892bdcd9cd8828c986443c6665"
+    },
+    "native/after-driver-slow.rpt": {
+      "bytes": 318,
+      "sha256": "ae351742ee572f558f0538651734d0f55a981a857656b85b21304040924f3ccc"
+    },
+    "native/mapped-before.v": {
+      "bytes": 464,
+      "sha256": "385bdfb4abe9ffc3d8dddad87ab1734090bbe8f60ba11cff08775456f0ad6f2f"
+    },
+    "native/after.sdc": {
+      "bytes": 1464,
+      "sha256": "fba4083d05ffada779feb9317f378f5b7fb99859460395e5564065f2fae43eb1"
+    },
+    "native/before.sdc": {
+      "bytes": 1464,
+      "sha256": "fba4083d05ffada779feb9317f378f5b7fb99859460395e5564065f2fae43eb1"
+    },
+    "native/after-status.tsv": {
+      "bytes": 354,
+      "sha256": "1261584124ea9b5ea92cefe66e8c40e32c34a341612bd50d8b4a831effb6cc0c"
+    },
+    "native/before-driver-typical.rpt": {
+      "bytes": 333,
+      "sha256": "567d2c24ca1ab641958672c50f0596d325c1391e859cb90e68048aae2e72e93a"
+    },
+    "methods/hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+      "bytes": 4291,
+      "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+    },
+    "methods/hw/soc/pnr/timing_hold_reproducibility.tcl": {
+      "bytes": 16850,
+      "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "methods/sw/tests/timing_electrical_repair_native.tcl": {
+      "bytes": 5220,
+      "sha256": "1688217cc0c33e8b3168abd98eac12647ff3a3754e44fcf6ba33af0ad293c098"
+    }
+  },
+  "native_api_source": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "files": {
+      "src/rsz/src/Resizer.i": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/Resizer.i",
+        "bytes": 19925,
+        "sha256": "28732aeb65f49c204bf3d25adfb7984c8e53fc8e1a29f7b23ffbec7d23808da4"
+      },
+      "src/rsz/src/RepairDesign.cc": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairDesign.cc",
+        "bytes": 77985,
+        "sha256": "791000a64b13a72aed4d68551ae6ca0f8b693c23f206aaea6e6246211324d230"
+      },
+      "src/rsz/test/repair_wire9.tcl": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/test/repair_wire9.tcl",
+        "bytes": 307,
+        "sha256": "7df5aa391bd9e91a95b4d6adb79ee849341c530ac5ce24910d40d79bc77bcdc0"
+      }
+    }
+  },
+  "source_lock": {
+    "schema": 1,
+    "producer": {
+      "run_id": 36990647336,
+      "source_commit": "945881e8bd9854419f1f3066039c380658693a81",
+      "artifact_id": 11223714813,
+      "artifact_name": "combined-repair-final-1",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-combined-repair-36990647336-20261002.zip",
+      "bytes": 329082361,
+      "sha256": "6117183fcc255f16a6d45c88c32c76935ba8e7c58d6a0aa8257c12a735f3ba96",
+      "entrypoint": "scripts/run_cloud_combined_repair.py",
+      "kind": "combined_setup_hold_repair",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+    },
+    "candidate_files": {
+      "soc_top.odb": {
+        "bytes": 107886723,
+        "sha256": "c48940a8469224ec305d9f1516b5f7726b64097b093cfa147d96dd1354e8bf7b"
+      },
+      "soc_top.def": {
+        "bytes": 24448106,
+        "sha256": "a1e2b79816f86371bc9fc3ba4b6909fdeba19f87d7ebc182e755f69d7142434e"
+      },
+      "soc_top.sdc": {
+        "bytes": 56724,
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      "soc_top.v": {
+        "bytes": 12122862,
+        "sha256": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86"
+      }
+    },
+    "baseline_metrics": {
+      "setup_wns_seconds": -4.209004700328478e-09,
+      "hold_wns_seconds": -1.5530043917522107e-10,
+      "setup_tns_seconds": -3.5549244330468355e-06,
+      "hold_tns_seconds": -2.117501507470365e-09,
+      "setup_violating_endpoints": 1311,
+      "hold_violating_endpoints": 66,
+      "slew_violations": 2,
+      "capacitance_violations": 3,
+      "instance_count": 103889
+    },
+    "baseline_fingerprints": {
+      "constraints": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "netlist": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86",
+      "placement": "a5620d260e4f76509a66f8417bde5dccde902a6228c665e9301abd9590a06bf0",
+      "routing": "00928d4e4ee2fc3557090706790df888a30987866dc9b503e1c658f5c854e06d",
+      "parasitics": "7a3000b926ee75bd2b317485df336f1283a7b431adc4d9fe9a251d256f3f57ef"
+    },
+    "original_matched_metrics": {
+      "setup_wns_ns": -4.909516349016485,
+      "hold_wns_ns": -1.8409653801398917,
+      "setup_tns_ns": -4320.800144341774,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1384,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1
+    },
+    "original_selected_metrics": {
+      "setup_wns_ns": -4.710829,
+      "hold_wns_ns": -1.840329
+    },
+    "targets": [
+      {
+        "driver": "fanout1387",
+        "pin": "X",
+        "net": "net1387"
+      },
+      {
+        "driver": "fanout1391",
+        "pin": "X",
+        "net": "net1391"
+      },
+      {
+        "driver": "fanout1228",
+        "pin": "X",
+        "net": "net1228"
+      }
+    ],
+    "native_api_source": {
+      "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+      "files": {
+        "src/rsz/src/Resizer.i": {
+          "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/Resizer.i",
+          "bytes": 19925,
+          "sha256": "28732aeb65f49c204bf3d25adfb7984c8e53fc8e1a29f7b23ffbec7d23808da4"
+        },
+        "src/rsz/src/RepairDesign.cc": {
+          "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairDesign.cc",
+          "bytes": 77985,
+          "sha256": "791000a64b13a72aed4d68551ae6ca0f8b693c23f206aaea6e6246211324d230"
+        },
+        "src/rsz/test/repair_wire9.tcl": {
+          "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/test/repair_wire9.tcl",
+          "bytes": 307,
+          "sha256": "7df5aa391bd9e91a95b4d6adb79ee849341c530ac5ce24910d40d79bc77bcdc0"
+        }
+      }
+    },
+    "manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+    "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "scope": "Unadopted three-net electrical repair continuation; unchanged original C10 and candidate-baseline timing guards. Full native geometry/endpoint/control and limited logic proof required. No setup repair or threshold change."
+  },
+  "root_review": {
+    "status": "PASS_SOURCE_BASELINE_PINS_AND_REPEATED_TINY_NATIVE_CONTROL",
+    "root_focused_tests_with_ack": 95,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "current_profile_unchanged": true,
+    "actual_candidate_electrical_trial_executed": false,
+    "scope": "Exact three driver/net bindings are agent range-verified and will be independently preflighted natively before any actual candidate mutation."
+  }
+}

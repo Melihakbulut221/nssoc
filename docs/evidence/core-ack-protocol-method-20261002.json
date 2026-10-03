@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "status": "PREPARED_ACTUAL_CORE_EXPERIMENT_PENDING_CLOUD_EXECUTION",
+  "source_head": "621e0c1879ed070557585324f19c60cfcc2002e6",
+  "method_sources": {
+    "scripts/run_core_ack_protocol.py": {
+      "bytes": 19855,
+      "sha256": "cd3439a87f962a89dbec079ce088a5bdcf97e29757c664242b971967a53f5c4f"
+    },
+    "sw/tests/test_core_ack_protocol.py": {
+      "bytes": 5892,
+      "sha256": "b87eeded1be2146e867975351a31ebd70be4fe04e1dd84af75769d3a7d9140cf"
+    },
+    "hw/soc/tb/tb_core_ack_protocol.v.in": {
+      "bytes": 10580,
+      "sha256": "61223570d8e0d8a37519632e2a79acae39f3e6ce2de2b8cc2f7f2c239befe92c"
+    },
+    "hw/soc/tb/sw/core_ack_protocol.S": {
+      "bytes": 2762,
+      "sha256": "057320be889d012e99465058ba38bce4316d226a65ab7df48459d38afc8fa56d"
+    },
+    "scripts/prepare_core_ack_register.py": {
+      "bytes": 13503,
+      "sha256": "1a51290c5e173d73782834f2e3e50820e05e210824b92781063039e1ad9cdc7c"
+    },
+    ".github/workflows/timing-core-ack-protocol.yml": {
+      "bytes": 2132,
+      "sha256": "cf72fdde5c8b2ad76db6900d6155d908a3dafde41b7cad689181bcb3e59323d2"
+    },
+    "docs/evidence/critical-path-prefix-analysis-20261002.json": {
+      "bytes": 18325,
+      "sha256": "5005e6cd888cde913a7446bd287c4db5a1f2a7d6472d3f1cae65df58f41e8c70"
+    },
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    }
+  },
+  "exact_c10_source_count": 81,
+  "selected_compilation_sources": [
+    "hw/rtl/secded_dec.v",
+    "hw/rtl/secded_enc.v",
+    "hw/soc/gen/ibex_alu.v",
+    "hw/soc/gen/ibex_branch_predict.v",
+    "hw/soc/gen/ibex_cheriot_ex.v",
+    "hw/soc/gen/ibex_compressed_decoder.v",
+    "hw/soc/gen/ibex_controller.v",
+    "hw/soc/gen/ibex_core.v",
+    "hw/soc/gen/ibex_counter.v",
+    "hw/soc/gen/ibex_cs_registers.v",
+    "hw/soc/gen/ibex_csr.v",
+    "hw/soc/gen/ibex_decoder.v",
+    "hw/soc/gen/ibex_dummy_instr.v",
+    "hw/soc/gen/ibex_ex_block.v",
+    "hw/soc/gen/ibex_fetch_fifo.v",
+    "hw/soc/gen/ibex_icache.v",
+    "hw/soc/gen/ibex_id_stage.v",
+    "hw/soc/gen/ibex_if_stage.v",
+    "hw/soc/gen/ibex_load_store_unit.v",
+    "hw/soc/gen/ibex_lockstep.v",
+    "hw/soc/gen/ibex_multdiv_fast.v",
+    "hw/soc/gen/ibex_multdiv_slow.v",
+    "hw/soc/gen/ibex_pmp.v",
+    "hw/soc/gen/ibex_prefetch_buffer.v",
+    "hw/soc/gen/ibex_trvk.v",
+    "hw/soc/gen/ibex_wb_stage.v",
+    "hw/soc/gen/prim_and2.v",
+    "hw/soc/gen/prim_buf.v",
+    "hw/soc/gen/prim_clock_mux2.v",
+    "hw/soc/gen/prim_count.v",
+    "hw/soc/gen/prim_flop.v",
+    "hw/soc/gen/prim_lfsr.v",
+    "hw/soc/gen/prim_secded_inv_39_32_dec.v",
+    "hw/soc/gen/prim_secded_inv_39_32_enc.v",
+    "hw/soc/genp/ibex_top.v",
+    "hw/soc/rtl/ibex_regfile_secded.v",
+    "hw/soc/rtl/prim_clock_gating.v"
+  ],
+  "source_origin": "Exact pinned C10 archive; all tracked and any present generated checkout files cross-checked.",
+  "preparation": {
+    "path": "hw/soc/out/resume-20261002-0800/core-ack-protocol-review/prepared-final/preparation.json",
+    "bytes": 29417,
+    "sha256": "16001294dfef1616a2f3d355d1a83325e937e53dbacffac78e97edef35459849"
+  },
+  "planned_positive_cases": [
+    "original-reset0",
+    "candidate-reset0",
+    "candidate-reset1",
+    "candidate-reset2",
+    "candidate-reset3"
+  ],
+  "planned_negative_cases": [
+    "unsolicited_grant",
+    "early_downstream",
+    "corrupt_payload",
+    "stuck_open_clock"
+  ],
+  "peer_correction": "The clock-stop counter now counts six intervals with no actual internal clock edge; added an isolated stuck-open clock-gate negative control. A sleep Boolean alone is not accepted as clock-stop evidence.",
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "sw/tests/test_core_ack_protocol.py",
+        "sw/tests/test_core_ack_register.py",
+        "sw/tests/test_soc_req_pipe.py"
+      ],
+      "returncode": 0,
+      "log": "hw/soc/out/resume-20261002-0800/core-ack-protocol-review/final-check-0.log",
+      "bytes": 99,
+      "sha256": "a7c346c1542ad237866983087d7fd13b89fa557dbea59c16c541255b4cae2f4c"
+    },
+    {
+      "command": [
+        "hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "scripts/run_core_ack_protocol.py",
+        "sw/tests/test_core_ack_protocol.py"
+      ],
+      "returncode": 0,
+      "log": "hw/soc/out/resume-20261002-0800/core-ack-protocol-review/final-check-1.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "command": [
+        "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+        ".github/workflows/timing-core-ack-protocol.yml"
+      ],
+      "returncode": 0,
+      "log": "hw/soc/out/resume-20261002-0800/core-ack-protocol-review/final-check-2.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "pytest": {
+    "passed": 55,
+    "skipped": 0,
+    "actual_core_executed": false
+  },
+  "firmware_assembly_preflight": {
+    "path": "hw/soc/out/resume-20261002-0800/core-ack-protocol-review/firmware-compile-only/receipt.json",
+    "bytes": 3429,
+    "sha256": "e0f8a6b2787cfa2d93e547a0d0ba979cba804f2894e5a48418f52ef3aa9cc7a7",
+    "reused_because_firmware_and_linker_bytes_unchanged": true
+  },
+  "limitations": [
+    "Finite directed actual-core RTL simulation is not an exhaustive formal or sequential-equivalence proof.",
+    "The actual C10 core/SECDED/LSU/PMP/ID/WB and clock-enable logic are used; the SoC fabric, peripherals, SRAM/MBIST and reset distribution are not instantiated.",
+    "MEM_RDREG/REQ_REG/WAKE_GNT are preserved source-profile metadata, not parameters of the explicit external memory model.",
+    "The clock gate uses the existing explicit SG13G2_ICG_BEHAVIOURAL RTL simulation branch, not a PDK timing model.",
+    "Eight directed first/second split-beat faults, one software-interrupt WFI wakeup and three reset placements do not prove all IRQ/NMI/debug/CSR/PMP-update or exception-priority interleavings.",
+    "No whole-SoC boot/MBIST, timing improvement, synthesis/layout, candidate adoption or manufacturing approval is claimed."
+  ],
+  "actual_core_executed": false,
+  "actual_core_protocol_proved": false,
+  "sequential_equivalence_proved": false,
+  "whole_soc_verified": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "root_review": {
+    "source_and_preparation_pins": "PASS",
+    "focused_tests_with_electrical_gate": 95,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "actual_ibex_execution_performed": false,
+    "scope": "Actual positive/negative native Ibex cases still require the cloud run; existing default source profile unchanged."
+  }
+}

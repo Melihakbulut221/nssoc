@@ -1,0 +1,289 @@
+{
+  "date": "2026-09-22",
+  "status": "PASS: bounded transaction-layer implementation scope only",
+  "base_commit": "6a12632a244ccebb56cfc355962b2b0478f28d83",
+  "scope": "Standalone single-DWORD PCIe TLP/config subset to APB backend, not a full Endpoint, DLL, PHY or soc_top integration. No Gen3 x4 link or layout verdict.",
+  "source_sha256": {
+    "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+    "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+    "hw/soc/formal/soc_pcie_tlp_regs.sby": "ac195b80aaf8cb8de63b8345e0e5e2e3cb5905283e49e3ef650db84ebc387d08",
+    "hw/soc/formal/soc_pcie_tlp_regs_props.v": "3e286a2a6526f6d0c08bc0d54e50c9be57e5e6f307e637c5f9ece3ba27653270",
+    "hw/soc/formal/Makefile": "4d6e1311ae0b9f9ed08bb31770aa5dceed85b081bae43a6b65c1176601d1c8f8",
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "d9b0b9065c9b071f5fcbfbf76a445623ec5e9ee0292da19d29e711621b189000",
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gpio": "0009b1ea37c1363825b4bddef1e7011bb217db99e6798037be0d30324f873ec6",
+    "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+    "hw/soc/tb/cocotb/test_soc_pcie_gpio.py": "70b5b05ad87be81a75fd78826a07bcf926f3cfcb070ce724fae607709f040b1e",
+    "hw/soc/tb/cocotb/tb_soc_pcie_gpio.v": "a5803cbdcfbc34d4d7e6333b4673cfc62df34ef458a7d76ed8367a1826071548",
+    "scripts/check_pcie_tlp_controls.py": "c450b5787031f183e2c2140f284a6ba861205eeae6579e6314e31d7713593b56",
+    "scripts/check_pcie_tlp_native.py": "2e1833b52cb38c8cb5933b602d0ec7eac8b85e4630d160b1324249a1742e2f2a",
+    "scripts/run_cocotb.sh": "9c2dc0024ae453078cb267b551f82b08639676c2e03bbc4f9baab17e45dba4ec",
+    "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+    ".github/workflows/checks.yml": "facc61e1ae81b6bba631665fae8e2fdb01f5ca194a3a735b4dccc4ca86b18419",
+    ".github/workflows/pcie-transaction.yml": "6d80f06494dd5b172d02c1ea866ab778f59b206b00849d72e346afb23351b589"
+  },
+  "simulation": {
+    "rtl_descriptor_tests": 6,
+    "timeout_parameters": [
+      1,
+      8,
+      256
+    ],
+    "rtl_parameter_runs_passed": 18,
+    "real_gpio_integration_tests": 2,
+    "native_ihp_tests": 6,
+    "native_timeout": 256,
+    "native_vendor_device": "ffff:0000 (unassigned defaults)",
+    "discovery_log": {
+      "path": "hw/soc/out/external-review-20260919/pcie-discovered-delivery.log",
+      "bytes": 347,
+      "sha256": "81f8aab40f8527a7b6f26ab92f22ac0dbcd710b0f238718449a5db534363b412"
+    },
+    "discovery_unrelated_skip": "native RAM parity remains separately bound to its existing job"
+  },
+  "mutation_controls": {
+    "status": "PASS",
+    "scope": "Transaction-layer RTL controls, no link or PHY",
+    "inputs": {
+      "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+      "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "d9b0b9065c9b071f5fcbfbf76a445623ec5e9ee0292da19d29e711621b189000",
+      "scripts/check_pcie_tlp_controls.py": "c450b5787031f183e2c2140f284a6ba861205eeae6579e6314e31d7713593b56",
+      "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "runs": {
+      "baseline": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "9aecb4be6fb0f34203a09c54b32493512e9e776dd204153a4f952323a6c3cc82",
+        "xml_sha256": "bcdd20013537bd5f17fb7b37a1e1e657bb8cc7c5580b544b0190e5ffe9e84af4",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_1": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "a0e8c21ad12da713de71158f8ffbbb795ade4735cdd300a38e8209f87e15f74b",
+        "xml_sha256": "94471c4f742453b88cb4a514c4ebd2f86e6c91d52776625adb46737fea24373e",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_256": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "8297c70eefbc047854845ece2f7b7e3f912ad56a8805e4cf2043fa7d9247f5e2",
+        "xml_sha256": "d087e31bfa3302520f9de0a97ee31110066f7a020c7f1367c082a91eb1039a5e",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "zero_length_count": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "611447760aa5a167a622b4d702866dcc6382ea52c7d626edd9a2c4837f46597e",
+        "xml_sha256": "87d1c1de09ce14225a23ac854ba3b56a15bea456182721f17129b811eb2bb720",
+        "rtl_sha256": "dfb85e9e0f082707d1e19f13b23fc3fd7e951f18ae40c86d5f0a597273856119"
+      },
+      "bar_decode": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "32b42e18825c10a0fd8c2708ad427d2f128150d864b168089814e31786c2959f",
+        "xml_sha256": "bff40d4979ba0b0c1bf4a915edcd31cbc03c8e3eeebfbdbcaee012c370d816f3",
+        "rtl_sha256": "57d4a71321701dd568ae6babe4eb2cac69ea2d13d4904b2b6c484d54d888f6c8"
+      },
+      "byte_strobes": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "c5cd3f51e9f950b149a712c60dffe6d549c7ef6858f8471cd0f188f98a92af84",
+        "xml_sha256": "d9323e1f5c78eb489b593f27f3f12e1d3a6da0181e54281446584c56157272e2",
+        "rtl_sha256": "a5f109e2dee4e6a8cf972e0c586ff6fa663514d2bea8f64284594b5a9bddd7af"
+      },
+      "abort_status": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "dae63512a11c73362a6a211f90f5bcfecef87386a17c759c41419dd6b2b531eb",
+        "xml_sha256": "2ca3d84cd6550e4aee62b48383a83c563143c2272219984b41ae776ed9627058",
+        "rtl_sha256": "f5e00c1fbffb3b006dc81c9411f846e27424242d367414bee22a4cf8df8cd5ac"
+      },
+      "completion_tag": {
+        "counts": [
+          0,
+          6,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "272e58e6aeafc1baac44d603290037895196d0d126b23dccab43886443e08edd",
+        "xml_sha256": "03f93b122521db363a7629d2f5df6f195ec9a82751836063b670c2cb9ab3f33e",
+        "rtl_sha256": "bbc9a0374f814b2cd0e1e00b253e8d176d798d4464695206aa2df33cc5946270"
+      }
+    }
+  },
+  "formal": {
+    "bmc": {
+      "status": "PASS",
+      "config_sha256": "ac195b80aaf8cb8de63b8345e0e5e2e3cb5905283e49e3ef650db84ebc387d08",
+      "status_file": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-bmc/status",
+        "bytes": 10,
+        "sha256": "54fc1384741073d71a41e2e4d3b8749a11b3cdd5b5bb0e7131b5abd4db3d480e"
+      },
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-bmc/logfile.txt",
+        "bytes": 8991,
+        "sha256": "4ab0e333d03eb14d6f5d04a201073d65e58d59c55d667fd9a98b54dadf5d4a78"
+      }
+    },
+    "prove": {
+      "status": "PASS",
+      "config_sha256": "ac195b80aaf8cb8de63b8345e0e5e2e3cb5905283e49e3ef650db84ebc387d08",
+      "status_file": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-prove/status",
+        "bytes": 9,
+        "sha256": "82bc437cdb0ebaedde9abc25a1795f5b1cd22d37f1e4d1240fd300e529561df4"
+      },
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-prove/logfile.txt",
+        "bytes": 48608,
+        "sha256": "b6faec0941d1494b04c4ae647e85e5f039d38f96dc465b4ff611139419036e46"
+      }
+    },
+    "cover": {
+      "status": "PASS",
+      "config_sha256": "ac195b80aaf8cb8de63b8345e0e5e2e3cb5905283e49e3ef650db84ebc387d08",
+      "status_file": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-cover/status",
+        "bytes": 9,
+        "sha256": "4d489b9bfaac73d73a64a4023bf4d947ca1d4216d9f72864c97bfb6a2bc07d56"
+      },
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-cover/logfile.txt",
+        "bytes": 11674,
+        "sha256": "f6a68d27013f5cc31e3b5116040854af88e19ec04371c9083f49aa807989ae74"
+      }
+    }
+  },
+  "formal_scope": "Unconstrained packet/bus inputs, eight-cycle timeout instance; depth24 BMC, unbounded ABC PDR, all five covers reached at steps3/3/6/7/14. Not a protocol or default256-timeout proof.",
+  "synthesis": {
+    "generic_cells": 803,
+    "ihp_cells": 916,
+    "ihp_area_um2": 19426.743,
+    "native_record": {
+      "status": "PASS",
+      "scope": "IHP mapped block simulation; no SDF/layout/link/PHY",
+      "inputs": {
+        "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+        "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+        "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "d9b0b9065c9b071f5fcbfbf76a445623ec5e9ee0292da19d29e711621b189000",
+        "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+        "scripts/check_pcie_tlp_native.py": "2e1833b52cb38c8cb5933b602d0ec7eac8b85e4630d160b1324249a1742e2f2a"
+      },
+      "liberty_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "models_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+      "commands": [
+        {
+          "argv": [
+            "<repo>/hw/soc/tools/oss-cad-suite/bin/yosys",
+            "-Q",
+            "-T",
+            "-s",
+            "<repo>/hw/soc/out/external-review-20260919/pcie-native-delivery/map.ys"
+          ],
+          "returncode": 0,
+          "log_sha256": "41467ca94f578eb8353c66799dbe028f59db811c1ceab876be1846d3ca89a37e"
+        },
+        {
+          "argv": [
+            "make",
+            "-C",
+            "<repo>/hw/soc/tb/cocotb",
+            "-f",
+            "Makefile.soc_pcie_tlp_regs",
+            "VERILOG_SOURCES=<repo>/hw/soc/out/external-review-20260919/pcie-native-delivery/mapped.v <pinned-pdk-root>/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+            "COMPILE_ARGS=-g2012 -gspecify",
+            "PCIE_APB_TIMEOUT=256",
+            "SIM_BUILD=<repo>/hw/soc/out/external-review-20260919/pcie-native-delivery/sim",
+            "COCOTB_RESULTS_FILE=<repo>/hw/soc/out/external-review-20260919/pcie-native-delivery/results.xml"
+          ],
+          "returncode": 0,
+          "log_sha256": "724b009147641ca38a306816309472ee80e2c00b61cc14e9105c8e6d6d653cdf"
+        }
+      ],
+      "cells": 916,
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "outputs": {
+        "mapped.json": "c68b4fbfcb34acb8ef0dba31d5f241a9a49521304dc1ec6af53c904d0ad1d4fa",
+        "mapped.v": "a7c5c9ddda686788163782600e01673458476a2dd5c461c9e7ee59ab82ca7759",
+        "results.xml": "726fea722a2f43e75e6c8e4c834e5d17a9620c4ef90ab8b37a1cd5e58b2816f1",
+        "map.ys": "914c0f8f929c3e3de9b7b2c8b2d85cd3ef5f491a92f71b816a31e49d75bf763b"
+      }
+    },
+    "generic_log": {
+      "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-synth.log",
+      "bytes": 96865,
+      "sha256": "a730afb2ab160cceeb1aef148906a4873ec28f08bd7b83ce991307e780b381eb"
+    },
+    "lint_log": {
+      "path": "hw/soc/out/external-review-20260919/pcie-tlp-final-lint.log",
+      "bytes": 304,
+      "sha256": "4481cefa3bdb01693391c54565398e7909381262316256ec0463d1a6a13e06cb"
+    },
+    "scope": "Yosys mapping only; no placement, extraction, STA or GDS. Original IHP models untouched; no SDF applied."
+  },
+  "tools": {
+    "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "sby": "SBY v0.67-4-gfea6e46",
+    "native_icarus": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)"
+  },
+  "retained_corrections": [
+    "Initial zero-length-read implementation and oracle both used Byte Count4. AMD PG156 reference requires1; both corrected and a fifth mutation now detects recurrence. Initial passing tests are not protocol acceptance.",
+    "First formal command ran from the wrong directory; no proof produced. Correct-directory runs and final reruns PASS.",
+    "First256-timeout bench used40-cycle test wait; bench budget corrected before acceptance.",
+    "Icarus12 cannot drive the unmodified IHP delayed timing inputs and produced X failures. Pinned Icarus14 with specify enabled passes; reusable runner rejects versions below13.",
+    "The first distribution check rejected the new hardware fixture Apache tag; corrected to the repository hardware license and reran its simulation.",
+    "The first README edit exceeded the125-line guard by2; shortened the new paragraph without changing the guard."
+  ],
+  "open": [
+    "Full Endpoint configuration/capabilities and Root Port",
+    "Packet assembly/integrity, multi-DWORD TLPs, DLL credit/ACK/replay",
+    "LTSSM, Gen3 training/encoding/equalization/lane alignment",
+    "Four-lane8GT/s analog PHY and physical verification",
+    "SoC host-access policy/arbitration/CDC/protection/integration",
+    "PCIe pads/package/channel, hardware enumeration and conformance"
+  ],
+  "hosted": "CI obligations added; no hosted verdict claimed by this local record",
+  "distribution_checks": {
+    "passed": 186,
+    "failed": 0,
+    "log": "hw/soc/out/external-review-20260919/pcie-delivery-final-checks.log",
+    "sha256": "5cf90f2b82d01cc32a755fb4dbc1b3d924cfdc83c26e9a4cf6bf15a1eea34de5",
+    "scope": "Existing discovery, formal runner, documentation, artifact and project-status controls; final subsequent addition is a separate native-PCIe workflow."
+  }
+}

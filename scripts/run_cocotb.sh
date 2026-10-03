@@ -13,11 +13,10 @@
 # tests pass" is wider than what was measured. This script is the other
 # half.
 #
-# It parses each suite's results XML rather than trusting the make exit
-# code, because a cocotb suite can report TESTS=n PASS=n and then segfault
-# in Icarus teardown -- observed on Makefile.soc_clint and reproducible on
-# committed RTL. That is a tool defect, not a design one, and the XML is
-# the evidence that survives it.
+# Both a successful make exit and nonempty results XML are required.
+# Partial XML from an earlier parameter variant must never hide a later
+# compile failure, timeout, or simulator crash. Logs are retained under
+# hw/soc/out/cocotb/ so a tool failure can be diagnosed separately.
 #
 # Stale results_*.xml files from mutation experiments live in the same
 # directories and are gitignored. They are deliberately NOT scanned: this
@@ -28,6 +27,10 @@ set -u
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
 FILTER="${1:-}"
+PY="${PY:-$ROOT/.venv/bin/python}"
+[ -x "$PY" ] || PY=python3
+LOG_DIR="$ROOT/hw/soc/out/cocotb"
+mkdir -p "$LOG_DIR"
 
 # ONE RUN AT A TIME, and the reason is measured rather than hypothetical.
 #
@@ -59,6 +62,8 @@ fi
 fail_total=0
 pass_total=0
 suite_fail=0
+skip_total=0
+suite_total=0
 
 # Extra arguments appended to both make invocations in run_one, set by a
 # caller immediately before it and cleared immediately after. Only tt/test
@@ -68,6 +73,7 @@ EXTRA_MAKE_ARGS=""
 
 run_one() {
     local dir=$1 mk=$2 name=$3
+    suite_total=$((suite_total + 1))
     # The results-file glob. Every suite under hw/tb and hw/soc/tb/cocotb
     # writes results_<something>.xml, which is why that is the default.
     # tt/test does not: its Makefile is generated from the upstream Tiny
@@ -102,41 +108,32 @@ run_one() {
     local log
     log=$(cd "$dir" && timeout 900 make -f "$mk" $EXTRA_MAKE_ARGS 2>&1)
     local rc=$?
+    printf '%s\n' "$log" > "$LOG_DIR/$name.log"
     # ALL XMLs written during this run, not the newest one: a parameterised
     # suite (TAG=...) writes several, and taking one made the total drift
     # between runs -- soc_gptimer once read 10, then 3 -- while "0 failed"
     # stayed true. Sum them.
-    local xmls
-    xmls=$(find "$dir" -maxdepth 1 -name "$pattern" -newer "$marker" -print 2>/dev/null)
+    local xmls=()
+    mapfile -d '' -t xmls < <(find "$dir" -maxdepth 1 -name "$pattern" -newer "$marker" -print0)
     rm -f "$marker"
-    if [ -z "$xmls" ]; then
-        printf '  %-28s NO XML (make rc=%s)\n' "$name" "$rc"
+    local counts p f s
+    if ! counts=$("$PY" "$ROOT/scripts/cocotb_results.py" "${xmls[@]}" 2>>"$LOG_DIR/$name.log"); then
+        printf '  %-28s INVALID/MISSING XML (make rc=%s; %s)\n' "$name" "$rc" "$LOG_DIR/$name.log"
         suite_fail=$((suite_fail + 1))
-        printf '%s\n' "$log" | tail -3 | sed 's/^/      /'
+        tail -5 "$LOG_DIR/$name.log" | sed 's/^/      /'
         return
     fi
-    read -r t f < <(printf '%s\n' "$xmls" | python3 -c '
-import sys, xml.etree.ElementTree as ET
-t = f = 0
-for p in sys.stdin.read().split():
-    try:
-        r = ET.parse(p).getroot()
-        cases = [e for e in r.iter() if e.tag.endswith("testcase")]
-        t += len(cases)
-        f += sum(1 for c in cases if any(ch.tag.endswith(("failure", "error")) for ch in c))
-    except Exception:
-        t = f = -1; break
-print(t, f)')
-    pass_total=$((pass_total + t - f))
+    read -r p f s <<< "$counts"
+    pass_total=$((pass_total + p))
     fail_total=$((fail_total + f))
-    if [ "$f" != "0" ]; then
-        printf '  %-28s %s tests, %s FAILED\n' "$name" "$t" "$f"
+    skip_total=$((skip_total + s))
+    if [ "$f" != "0" ] || [ "$rc" != "0" ] || [ "$p" = "0" ]; then
+        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (make rc=%s)\n' "$name" "$p" "$f" "$s" "$rc"
         suite_fail=$((suite_fail + 1))
-    elif [ "$rc" != "0" ]; then
-        # XML clean but make returned non-zero: the teardown-crash case.
-        printf '  %-28s %s tests, all pass (make rc=%s, see header)\n' "$name" "$t" "$rc"
+        printf '      log: %s\n' "$LOG_DIR/$name.log"
+        tail -5 "$LOG_DIR/$name.log" | sed 's/^/      /'
     else
-        printf '  %-28s %s tests, all pass\n' "$name" "$t"
+        printf '  %-28s %s passed, %s skipped\n' "$name" "$p" "$s"
     fi
 }
 
@@ -246,6 +243,18 @@ for dir in hw/tb hw/soc/tb/cocotb; do
     for tf in "$ROOT/$dir"/test_*.py; do
         [ -f "$tf" ] || continue
         mod=$(basename "$tf" .py)
+        # Native SRAM parity runs in its mandatory, separately provisioned CI
+        # job. Pure RTL uses Icarus 12; the untouched PDK model needs >=13.
+        # Keep this binding checked: deleting its driver or workflow command
+        # makes the module unreachable again rather than silently exempting it.
+        if [ "$dir/$mod" = "hw/soc/tb/cocotb/test_soc_mem_parity" ] &&
+           [ -s "$ROOT/scripts/check_soc_memory_parity.sh" ] &&
+           grep -qE '^[[:space:]]+run: bash scripts/check_soc_memory_parity.sh[[:space:]]*$' \
+               "$ROOT/.github/workflows/checks.yml" 2>/dev/null; then
+            echo "SKIP $dir/$mod: separately run by check_soc_memory_parity.sh (native PDK, Icarus >=13); results belong to the memory-parity job"
+            skip_total=$((skip_total + 1))
+            continue
+        fi
         case " $SKIP_MODULES " in *" $mod "*) continue ;; esac
         # Reached if some Makefile in this directory names it as MODULE or
         # COCOTB_TEST_MODULES, or the table above lists it.
@@ -383,5 +392,9 @@ if [ -f "$TT_DIR/Makefile" ] && [ "$tt_wanted" = "1" ]; then
 fi
 
 echo
-echo "cocotb: $pass_total passed, $fail_total failed, $suite_fail suite(s) not clean"
+if [ "$suite_total" = "0" ]; then
+    echo "No runnable suites selected (filter: $FILTER)."
+    suite_fail=$((suite_fail + 1))
+fi
+echo "cocotb: $pass_total passed, $fail_total failed, $suite_fail suite(s) not clean, $skip_total skipped"
 [ "$fail_total" = "0" ] && [ "$suite_fail" = "0" ]

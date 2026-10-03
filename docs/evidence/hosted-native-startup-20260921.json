@@ -1,0 +1,332 @@
+{
+  "date": "2026-09-21",
+  "head": "091423c7acd807aba9ff1af27cda6aa6bd06ec52",
+  "status": "PASS",
+  "scope": "Independent GitHub rebuild and four-state native functional boot at the exact indicated revision, before UART RX and optional interface profiles. No SDF, final layout or fault qualification.",
+  "run": "https://github.com/Melihakbulut221/nssoc/actions/runs/35538794260",
+  "job_id": 106152551064,
+  "job_conclusion": "success",
+  "artifact_id": 10614642152,
+  "prior_failure": "docs/evidence/native-boot-hosted-npu-failure-20260920.json",
+  "acceptance": {
+    "checks": 28,
+    "cycles": 653726,
+    "fail_mask": 0,
+    "watchdog": [
+      1,
+      0,
+      0
+    ],
+    "flash_violations": 0,
+    "uart_framing_errors": 0,
+    "rtl_pass": true
+  },
+  "result": {
+    "native_cell_gate": {
+      "library": "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "<oss-cad-suite>/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "<repo>/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp",
+          "<repo>/hw/soc/out/native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+          "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.01554542900009892
+      },
+      "runs": [
+        {
+          "command": [
+            "<oss-cad-suite>/bin/vvp",
+            "-i",
+            "<repo>/hw/soc/out/native-boot/gates/native-cell-gate/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.015547275999892918,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "compile": {
+      "command": [
+        "<oss-cad-suite>/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "<repo>/hw/soc/out/native-boot/gates/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=1000000",
+        "-DEXIT_CODE_ADDR=32'h00001f94",
+        "-DEXIT_MAGIC_ADDR=32'h00001f98",
+        "-DCHECKS_ADDR=32'h00001fcc",
+        "-DFAILS_ADDR=32'h00001fd0",
+        "<repo>/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "<repo>/hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+        "<repo>/hw/soc/tb/flash_w25q128jv.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 3.120145824999895
+    },
+    "runs": [
+      {
+        "command": [
+          "<oss-cad-suite>/bin/vvp",
+          "-i",
+          "<repo>/hw/soc/out/native-boot/gates/sim.vvp",
+          "+flash0=<repo>/hw/soc/out/native-boot/rtl/flash0.hex"
+        ],
+        "returncode": 0,
+        "elapsed_s": 2306.644569717,
+        "pass_banner": true
+      }
+    ],
+    "sources_unchanged": true,
+    "passed": true
+  },
+  "inputs": {
+    "scope": "Functional boot only. No ROM/RAM preload, SDF or fault qualification. Verilator is a supplemental randomized two-state control.",
+    "simulator": "iverilog",
+    "version": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 2000-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Preprocessor version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 1999-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Parser/Elaborator version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 1998-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n FLAGS DLL vvp.tgt\nvvp.tgt: Icarus Verilog VVP Code Generator 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 2001-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n",
+    "loader_manifest": {
+      "format": 1,
+      "module": "soc_logic_boot_rom",
+      "image_bytes": 3084,
+      "image_sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+      "words": 2048,
+      "first_image_word": 32,
+      "codeword_bits": 39,
+      "template_sha256": "2ea27354ad115c58ba5782901d5913b4fbc253bd29f12197c912a5326d2c7b04",
+      "golden_codec_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+      "rtl_sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+      "scope": "Fixed standard-cell ROM contents. No SRAM preload or writable code storage. Physical and fault qualification remain separate."
+    },
+    "symbols": {
+      "checks": 8140,
+      "exit_code": 8084,
+      "exit_magic": 8088,
+      "fails": 8144
+    },
+    "sources": {
+      "<repo>/hw/soc/tb/tb_soc_logic_boot_gl.v": {
+        "sha256": "0464c3416b81042e9309fe01630bd4dbb5bf39b74ea6a4b680ddcbad6bc7f6aa",
+        "bytes": 12437
+      },
+      "<repo>/hw/soc/out/native-boot/synthesis/soc_top.netlist.v": {
+        "sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+        "bytes": 9451228
+      },
+      "<repo>/hw/soc/tb/flash_w25q128jv.v": {
+        "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+        "bytes": 20792
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+        "bytes": 53835
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+        "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+        "bytes": 6900
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+        "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+        "bytes": 3932
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+        "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+        "bytes": 12655
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+        "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+        "bytes": 6067
+      },
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+        "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+        "bytes": 4051
+      },
+      "<repo>/hw/soc/out/native-boot/rtl/app.elf": {
+        "sha256": "0c225306c4045e44b17a2d566e4626d803b05f6a5d4b30a91207c8d7bf8d0111",
+        "bytes": 58544
+      },
+      "<repo>/hw/soc/out/native-boot/rtl/flash0.hex": {
+        "sha256": "bc17b3facc07b2fc93a111739a8e276bf3c33a09606e2c8aed05382585614d78",
+        "bytes": 393216
+      },
+      "<repo>/hw/soc/out/native-boot/rtl/test_soc.bin": {
+        "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+        "bytes": 3084
+      },
+      "<repo>/hw/soc/out/native-boot/synthesis/boot-rom/manifest.json": {
+        "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+        "bytes": 633
+      },
+      "<repo>/hw/soc/out/native-boot/synthesis/boot-rom/soc_logic_boot_rom.v": {
+        "sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+        "bytes": 26618
+      },
+      "<repo>/hw/soc/out/native-boot/rtl/boot-rom/manifest.json": {
+        "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+        "bytes": 633
+      },
+      "<repo>/hw/soc/out/native-boot/rtl/boot-rom/soc_logic_boot_rom.v": {
+        "sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+        "bytes": 26618
+      }
+    },
+    "compile_command": [
+      "<oss-cad-suite>/bin/iverilog",
+      "-g2005-sv",
+      "-s",
+      "tb_logicrom_gl",
+      "-o",
+      "<repo>/hw/soc/out/native-boot/gates/sim.vvp",
+      "-DFUNCTIONAL",
+      "-DTIMEOUT_CYCLES=1000000",
+      "-DEXIT_CODE_ADDR=32'h00001f94",
+      "-DEXIT_MAGIC_ADDR=32'h00001f98",
+      "-DCHECKS_ADDR=32'h00001fcc",
+      "-DFAILS_ADDR=32'h00001fd0",
+      "<repo>/hw/soc/tb/tb_soc_logic_boot_gl.v",
+      "<repo>/hw/soc/out/native-boot/synthesis/soc_top.netlist.v",
+      "<repo>/hw/soc/tb/flash_w25q128jv.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+    ],
+    "run_commands": [
+      [
+        "<oss-cad-suite>/bin/vvp",
+        "-i",
+        "<repo>/hw/soc/out/native-boot/gates/sim.vvp",
+        "+flash0=<repo>/hw/soc/out/native-boot/rtl/flash0.hex"
+      ]
+    ],
+    "run_timeout_s": 14400,
+    "cycle_bound": 1000000
+  },
+  "artifact_files": {
+    "gates/compile.log": {
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "bytes": 1544
+    },
+    "gates/inputs.json": {
+      "sha256": "7a98c23bc4edeffc9d7f8df5d1e14de6da9b481eb1745ab1b2e1e58dbcd6ee50",
+      "bytes": 9859
+    },
+    "gates/native-cell-gate/compile.log": {
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "bytes": 1544
+    },
+    "gates/native-cell-gate/result.json": {
+      "sha256": "b61109786531e5e85961370b3e831257f4a7c8c2d97f85fb2303a23719e5f629",
+      "bytes": 1133
+    },
+    "gates/native-cell-gate/run-0.log": {
+      "sha256": "631c98f8921b366cc48dea137a394a40ebcdbb10908bc9b0c21abe0dfc0827a7",
+      "bytes": 154
+    },
+    "gates/result.json": {
+      "sha256": "0793fde7bdb4a711caa3caed562dc7bf2432596017a7eda5328e6eb5a365fad3",
+      "bytes": 3288
+    },
+    "gates/run-0.log": {
+      "sha256": "e8a644f261b5fd1c174e1259a96e02aebebfb755b63c7e189471d33558e914ad",
+      "bytes": 6919
+    },
+    "gates-driver.log": {
+      "sha256": "0793fde7bdb4a711caa3caed562dc7bf2432596017a7eda5328e6eb5a365fad3",
+      "bytes": 3288
+    },
+    "iverilog-version.log": {
+      "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f",
+      "bytes": 3410
+    },
+    "model-lock.json": {
+      "sha256": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e",
+      "bytes": 2221
+    },
+    "native-cell-preflight/compile.log": {
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241",
+      "bytes": 1544
+    },
+    "native-cell-preflight/result.json": {
+      "sha256": "43894a0783c1f4c6ea9dc4b1f9d0e5ade93d9f851bea4fe358651f1d50130fd5",
+      "bytes": 1130
+    },
+    "native-cell-preflight/run-0.log": {
+      "sha256": "081976156e0d48a7ea641ced6ffeaebeba1c7ae8290c78ccfee1f2614a134748",
+      "bytes": 153
+    },
+    "prepare-models.log": {
+      "sha256": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3",
+      "bytes": 152
+    },
+    "rtl/app.elf": {
+      "sha256": "0c225306c4045e44b17a2d566e4626d803b05f6a5d4b30a91207c8d7bf8d0111",
+      "bytes": 58544
+    },
+    "rtl/boot-rom/manifest.json": {
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+      "bytes": 633
+    },
+    "rtl/flash0.hex": {
+      "sha256": "bc17b3facc07b2fc93a111739a8e276bf3c33a09606e2c8aed05382585614d78",
+      "bytes": 393216
+    },
+    "rtl/iverilog.log": {
+      "sha256": "1a178288dadb7fe41d69118a2ce2686dceff1f87f17e627b017f6faf41e94c6d",
+      "bytes": 1441
+    },
+    "rtl/sim.log": {
+      "sha256": "1f0db1dd2d48aeb4a97b3564d61c28a4af79ee9a0288d5831cf78f40ad2d59b8",
+      "bytes": 1996
+    },
+    "rtl/test_soc.bin": {
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+      "bytes": 3084
+    },
+    "rtl-driver.log": {
+      "sha256": "02841e680ac6907d82fa8b525a844d365ca2affd908b88e46125fb57012bf76a",
+      "bytes": 4951
+    },
+    "synthesis/area.rpt": {
+      "sha256": "7e6af2907b678e988d038fb2d203c0b65093b4f2c25815dc2410ee68180cd49d",
+      "bytes": 2178
+    },
+    "synthesis/boot-rom/manifest.json": {
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+      "bytes": 633
+    },
+    "synthesis/soc_top.netlist.v": {
+      "sha256": "9d8f0e3185a8eedcc595c9cfa3c3765681453674d5065dde0d82f9a1963e74af",
+      "bytes": 9451228
+    },
+    "synthesis/syn.log": {
+      "sha256": "d81a101df73fb5523e052252f13bc8e9cdb9d42de691eec4620c9650403d4bf6",
+      "bytes": 6552957
+    },
+    "synthesis-driver.log": {
+      "sha256": "bc5f5ce173a3cfab42c93229c38a7c4194571460de3dc08befbef786875d92f3",
+      "bytes": 1367
+    },
+    "yosys-version.log": {
+      "sha256": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93",
+      "bytes": 82
+    }
+  }
+}

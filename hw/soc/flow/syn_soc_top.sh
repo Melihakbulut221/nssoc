@@ -132,6 +132,9 @@ set -euo pipefail
 
 PERIOD_NS=${1:-20}
 SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
 OUT=${2:-$SOC_DIR/out/soc-top}
 RTL=$SOC_DIR/rtl
 # hw/rtl/tmr_voter.v, secded_enc.v and secded_dec.v are READ from the
@@ -227,11 +230,24 @@ fi
 # the netlist docs/84 section 5 runs hw/soc/pnr/logic_depth.py on, and
 # it is the only knob in this script whose purpose is the DEPTH of the
 # netlist rather than its area or its power. Defaults to the design, 0.
+SOC_APB_TIMEOUT=${SOC_APB_TIMEOUT:-256}
+case "$SOC_APB_TIMEOUT" in ''|*[!0-9]*) echo 'SOC_APB_TIMEOUT must be a nonnegative integer' >&2; exit 2;; esac
+TOP_CHPARAM="$TOP_CHPARAM
+chparam -set APB_TIMEOUT $SOC_APB_TIMEOUT soc_top"
 SOC_REQ_REG=${SOC_REQ_REG:-0}
 if [ "$SOC_REQ_REG" != 0 ]; then
   TOP_CHPARAM="$TOP_CHPARAM
 chparam -set REQ_REG $SOC_REQ_REG soc_top"
 fi
+SOC_CORE_REQ_REG=${SOC_CORE_REQ_REG:-0}
+SOC_CORE_WB_STAGE=${SOC_CORE_WB_STAGE:-0}
+case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
+  0:0|0:1|1:0|1:1) ;;
+  *) echo 'Core pipeline parameters must be zero or one' >&2; exit 2;;
+esac
+TOP_CHPARAM="$TOP_CHPARAM
+chparam -set CORE_REQ_REG $SOC_CORE_REQ_REG soc_top
+chparam -set CORE_WB_STAGE $SOC_CORE_WB_STAGE soc_top"
 # shellcheck source=hw/soc/flow/ibex_sources.sh
 . "$SOC_DIR/flow/ibex_sources.sh"
 
@@ -248,8 +264,8 @@ rm -rf "$OUT"; mkdir -p "$OUT"
 
 IBEX_SRCS=$(ibex_sources "$SOC_DIR" | tr '\n' ' ')
 
-SOC_SRCS="$RTL/soc_bus.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
-$RTL/soc_gpio.v $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
+SOC_SRCS="$RTL/soc_bus.v $RTL/soc_req_pipe.v $RTL/soc_apb_bridge.v $RTL/soc_uart.v \
+$RTL/soc_gpio.v $RTL/soc_spw.v $RTL/soc_i2c.v $RTL/soc_spi.v $RTL/soc_can.v $RTL/soc_eth.v $RTL/soc_apb_wb.v $IF_BUNDLE $RTL/soc_qspi.v $RTL/soc_pnp.v $RTL/soc_apb_pnp.v $RTL/soc_clint.v \
 $RTL/soc_gptimer.v \
 $RTL/soc_wdog.v $RTL/soc_busstat.v $RTL/soc_scrub.v $RTL/soc_boot.v \
 $RTL/soc_tmr_bank.v \
@@ -561,15 +577,69 @@ set_driving_cell sg13g2_buf_4
 set_load 0.005
 EOF
 
+ETH_LIB_READ="# Ethernet FIFO maps to standard cells in the legacy profile"
+SYNTH_COMMAND="synth -flatten -top soc_top"
+if [ "${SOC_ETH_SRAM:-0}" = 1 ]; then
+  [ "${SOC_KEEP_HIER:-0}" = 0 ] || { echo 'SOC_ETH_SRAM requires SOC_KEEP_HIER=0' >&2; exit 2; }
+  ETH_LIB="$SG13G2_SRAM_DIR/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib"
+  [ -f "$ETH_LIB" ] || { echo "missing $ETH_LIB" >&2; exit 2; }
+  ETH_LIB_READ="read_liberty -lib $ETH_LIB"
+  SYNTH_COMMAND="synth -flatten -top soc_top -run begin:fine
+select -assert-count 2 soc_top/u_eth.u_mac.*.mem
+memory_libmap -lib $SOC_DIR/techmap/eth_ram.lib soc_top/u_eth.u_mac.*.mem
+techmap -map $SOC_DIR/techmap/eth_ram_map.v
+synth -top soc_top -run fine
+select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
+fi
+
+BOOT_ROM_READ=""
+BOOT_ROM_DEFINE=""
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    [ "$SOC_MEM" = sram ] && [ "$SOC_ROM_HARDEN" = 1 ] || {
+      echo 'Logic boot ROM requires SOC_MEM=sram and SOC_ROM_HARDEN=1' >&2; exit 2; }
+    : "${SOC_BOOT_ROM_IMAGE:?Set SOC_BOOT_ROM_IMAGE to the compiled loader binary}"
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$OUT/boot-rom"
+    BOOT_ROM_READ="read_verilog -defer $OUT/boot-rom/soc_logic_boot_rom.v"
+    BOOT_ROM_DEFINE="-DSOC_LOGIC_BOOT_ROM"
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
+
+# Opt-in physical integration; legacy netlists remain reproducible.
+MBIST_DEFINE=""
+MBIST_READ=""
+case "${SOC_SRAM_MBIST:-0}" in
+  0) ;;
+  1)
+    [ "$SOC_MEM" = sram ] && [ "${SOC_BOOT_ROM:-legacy}" = logic ] || {
+      echo 'SOC_SRAM_MBIST=1 requires SOC_MEM=sram and SOC_BOOT_ROM=logic' >&2; exit 2; }
+    MBIST_DEFINE="-DSOC_SRAM_MBIST"
+    MBIST_READ="read_verilog -sv -defer $RTL/dft/soc_sram_mbist.v $RTL/dft/soc_sram_test_port.v"
+    if [ "${SOC_ETH_SRAM:-0}" = 1 ]; then
+      MBIST_DEFINE="$MBIST_DEFINE -DSOC_ETH_MBIST"
+      MBIST_READ="$MBIST_READ $RTL/dft/soc_eth_fifo_sram.v $RTL/dft/soc_sram_zero_check.v"
+      SYNTH_COMMAND="synth -flatten -top soc_top
+select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
+    fi
+    MEM_READ="${MEM_READ//read_verilog -I/read_verilog $MBIST_DEFINE -I}"
+    ;;
+  *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
+esac
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
+$ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
 read_verilog -defer $IBEX_SRCS
-read_verilog -I$RTL -defer $SOC_SRCS
+read_verilog -sv $IF_DEFINE $MBIST_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
+$MBIST_READ
 $MEM_READ
-read_verilog -I$RTL -defer $RTL/soc_top.v
+$BOOT_ROM_READ
+read_verilog $IF_DEFINE -I$RTL $BOOT_ROM_DEFINE $MBIST_DEFINE -defer $RTL/soc_top.v
 
 $RF_CHPARAM
 $TOP_CHPARAM
@@ -589,7 +659,7 @@ setattr -mod -set keep_hierarchy 1 *prim_generic_flop*
 $MEM_ANCHOR
 $KEEP_HIER_SET
 
-synth -flatten -top soc_top
+$SYNTH_COMMAND
 opt -purge
 
 write_verilog $OUT/soc_top.pre_map.v
@@ -643,7 +713,9 @@ fi
 
 awk -v top=soc_top -v ge=7.2576 '
   $NF == "cells"                      { cells = $1 }
+  /Number of cells:/                  { cells = $NF }
   $NF ~ /^sg13g2_(s?df|dl[hl])/       { ff += $1 }
+  $1 ~ /^sg13g2_(s?df|dl[hl])/       { ff += $NF }
   /Chip area for module/              { gsub(/[^0-9.]/, "", $NF); area = $NF + 0 }
   END {
     printf "%-22s cells=%-6d flops=%-6d area_um2=%.4f  kGE=%.3f\n",

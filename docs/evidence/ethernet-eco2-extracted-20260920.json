@@ -1,0 +1,1126 @@
+{
+  "date": "2026-09-20",
+  "run": "eth256-eco2-route-20260920",
+  "scope": "Completed detailed routing, native parasitic extraction, separate native STA processes for three corners, both GDS streams and rendering. FAIL setup and electrical checks. No full independent DRC/XOR/LVS verdict for this new candidate.",
+  "commands": [
+    "SOC_INTERFACE_FLOW=1 PNR_CONFIG=\"$PWD/hw/soc/pnr/config-fpeth256-antfix-20260919.json\" SYN_NETLIST=\"$PWD/hw/soc/out/external-review-20260919/timing-eco2/soc_top.nl.v\" PNR_STATE=\"$PWD/hw/soc/pnr/state/eth256-eco2-route-20260920-seed.json\" bash hw/soc/flow/pnr_soc_top.sh eth256-eco2-route-20260920 -F OpenROAD.DetailedRouting -T KLayout.Render -i \"$PWD/hw/soc/pnr/state/eth256-eco2-route-20260920.json\"",
+    "python3 hw/soc/out/external-review-20260919/record_eco2_extracted.py"
+  ],
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "design__max_slew_violation__count": 4,
+      "design__max_fanout_violation__count": 892,
+      "design__max_cap_violation__count": 15,
+      "clock__skew__worst_hold": -0.5979001907252188,
+      "clock__skew__worst_setup": 0.9776677522057634,
+      "timing__hold__ws": 0.007985834441983574,
+      "timing__setup__ws": 3.266211171752728,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.007986,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 4.645154,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_typ_1p20V_25C": {
+      "design__max_slew_violation__count": 5,
+      "design__max_fanout_violation__count": 892,
+      "design__max_cap_violation__count": 15,
+      "clock__skew__worst_hold": -0.7067283625020386,
+      "clock__skew__worst_setup": 1.3426368175056418,
+      "timing__hold__ws": 0.12399392974441888,
+      "timing__setup__ws": 2.3253797323674097,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.123994,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 2.683549,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "design__max_slew_violation__count": 89,
+      "design__max_fanout_violation__count": 892,
+      "design__max_cap_violation__count": 15,
+      "clock__skew__worst_hold": 1.0840516569024399,
+      "clock__skew__worst_setup": 1.9811504109102063,
+      "timing__hold__ws": 0.2728835012971291,
+      "timing__setup__ws": -1.0634853299011158,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": -115.75546537830462,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": -1.0634853299011158,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.272884,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 328,
+      "timing__setup_r2r__ws": -1.063485,
+      "timing__setup_r2r_vio__count": 327,
+      "timing__unannotated_net__count": 1105,
+      "timing__unannotated_net_filtered__count": 0
+    }
+  },
+  "gmii_output_paths": {
+    "nom_fast_1p32V_m40C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 3.266211,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 3.266211
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 3.297303
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 3.301084
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 3.307101
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 3.355492
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 3.417505
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 3.425796
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 3.446712
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.456614
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.484468
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 0.710111,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 0.710111
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 0.739499
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.745467
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 0.76691
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.770086
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 0.826095
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 0.870974
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 0.874602
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 0.879843
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.907592
+          }
+        ]
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 2.32538,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 2.32538
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 2.371376
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 2.37672
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.384779
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 2.449414
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 2.54284
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.557976
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 2.590329
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.604939
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.648825
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 1.365888,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.365888
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.410782
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.427696
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 1.457597
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 1.470369
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 1.558623
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 1.626461
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 1.629751
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 1.640985
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 1.684493
+          }
+        ]
+      }
+    },
+    "nom_slow_1p08V_125C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 0.599363,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.599363
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 0.672931
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 0.681747
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 0.695267
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 0.793382
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.944346
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 0.969693
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.022452
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.045781
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.12022
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 2.574754,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.574754
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.648761
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 2.679111
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.72666
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 2.747403
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 2.890775
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.990188
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 2.996102
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 3.013426
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 3.082288
+          }
+        ]
+      }
+    }
+  },
+  "route": {
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "antenna_diodes_count": 523,
+    "design__disconnected_pin__count": 256,
+    "design__critical_disconnected_pin__count": 0,
+    "design__instance__count__class:macro": 24,
+    "design__instance__count__class:sequential_cell": 9352,
+    "design__instance__count__class:fill_cell": 255127
+  },
+  "artifacts": {
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/resolved.json": {
+      "bytes": 40645,
+      "sha256": "882df7e11de5383a990a0d8541edb6476c7a889e406736fce26928777a92a0a2"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/flow.log": {
+      "bytes": 12100,
+      "sha256": "7fa473e9095fce6259b1ef71eba91286c9089540a7e7da695111ca7ca367d7b6"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/01-openroad-detailedrouting/state_out.json": {
+      "bytes": 4324,
+      "sha256": "f7fecf9dc9d4fb9e7b1be049872913313525d4eaedb2cd1ebeee6f82e51e2f44"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/03-openroad-checkantennas-1/state_out.json": {
+      "bytes": 4369,
+      "sha256": "83be43fc13d3460846f6b2a075aba8d81f2ab44fb349dce8d628245fb90de0e8"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/03-openroad-checkantennas-1/reports/antenna.rpt": {
+      "bytes": 80,
+      "sha256": "88ceef0b63031420e468a911f7c57fd68d4c409b45a681c14667323216ceb4fb"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/12-openroad-stapostpnr/state_out.json": {
+      "bytes": 11228,
+      "sha256": "5c5c788e85c3b014a53d42953589db540a1d91d3371caf34d0b827d3ac1ed56a"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/12-openroad-stapostpnr/summary.rpt": {
+      "bytes": 2774,
+      "sha256": "9a665f406fe6612dfa08f5c2fcecc33b238fcbe03b612832b1c7977cf64bdeec"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/16-klayout-render/state_out.json": {
+      "bytes": 12916,
+      "sha256": "27402acde8c3d43be00e76b85bde86cc8eda943cd0c7d20a1de734acc34a2ba9"
+    },
+    "hw/soc/out/external-review-20260919/record_eco2_extracted.py": {
+      "bytes": 4010,
+      "sha256": "fbbb61f827e3b5bca9be708c05e3adc63b7d185a2ff7304db41a58e4ddcc876c"
+    },
+    "hw/soc/out/external-review-20260919/eco2-postroute-connectivity.json": {
+      "bytes": 341,
+      "sha256": "2914120021829d4838bdd0d165d98f5a577e394cdf129d924ec0bf330048d9c1"
+    },
+    "hw/soc/sta/soc_interfaces.sdc": {
+      "bytes": 2236,
+      "sha256": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco2/eco.tcl": {
+      "bytes": 37871,
+      "sha256": "814a95c5d89dda284047f0918a5f3d1e7eacde13ff9bb40ef057373187ade16e"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/10-odb-cellfrequencytables/soc_top.odb": {
+      "bytes": 183991338,
+      "sha256": "af7c086f81fcf1641ce0fb62aaab6513a5695da3b3a226434c97d08c8d7362e3"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/10-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 115423507,
+      "sha256": "bef31769cab3103db8fb4248c1ee88b561f997da33056dff7f5eb90e042e26de"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/09-openroad-fillinsertion/soc_top.nl.v": {
+      "bytes": 19870126,
+      "sha256": "ace91f8d87e09a00addd7c9f215e0982e88f4db3443fcac520a50f87f96c9e4f"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/09-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29545474,
+      "sha256": "bf68f1adaf0d20d73f2aa032b384b013622751fe650f5db5acad52d08964c459"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/14-magic-streamout/soc_top.gds": {
+      "bytes": 171995240,
+      "sha256": "3636742c253bb044e8a2bef91046580be66803542504476fe353dd2fb576ec6b"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/14-magic-streamout/soc_top.magic.gds": {
+      "bytes": 171995240,
+      "sha256": "3636742c253bb044e8a2bef91046580be66803542504476fe353dd2fb576ec6b"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/15-klayout-streamout/soc_top.klayout.gds": {
+      "bytes": 95080388,
+      "sha256": "25a412aff7c3eda4373210080d0a6750af0543ab8e021f6e16f555e2a05b3a52"
+    },
+    "hw/soc/pnr/runs/eth256-eco2-route-20260920/11-openroad-rcx/nom/soc_top.nom.spef": {
+      "bytes": 103337203,
+      "sha256": "6e4b1dd73beb2857790b8e2669e7a1a574174faf9c633dace0915c38ac059544"
+    }
+  },
+  "connectivity_comparison": {
+    "original_instances": 94517,
+    "final_instances": 350167,
+    "removed": [],
+    "modified_original_instances": 0,
+    "added_masters": {
+      "sg13g2_decap_8": 182082,
+      "sg13g2_fill_2": 25808,
+      "sg13g2_fill_1": 26372,
+      "sg13g2_decap_4": 20865,
+      "sg13g2_antennanp": 523
+    },
+    "ports_unchanged": true,
+    "assigns_unchanged": true
+  },
+  "connectivity_scope": "Exact original masters, pins, ports and assigns unchanged after routing versus the ECO2 seed; added cells are antenna and fill/decap only. This is a structural comparison, not independent LVS. Raw disconnected pins include unused SRAM outputs.",
+  "verdict": "FAIL: all three corners now pass hold, but slow setup and electrical violations remain. The original baseline DRC/LVS/XOR cannot be reused as verdicts for this modified geometry.",
+  "eco_source_inventory": {
+    "scope": "Physical ECO candidate only. Equivalent pin functions for every cell substitution; added non-inverting signal buffers. No RTL/SDC change. Placement/global-routing estimates require subsequent detailed routing, extraction and all independent checks.",
+    "source_state": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-antfix-20260919/02-odb-removeroutingobstructions/state_out.json",
+    "source_state_sha256": "04aeaf8d4187cad00f426afae563ebbdb69685faeaf3c9830fda9efd1a7713db",
+    "source_netlist_sha256": "e1c87b5672fcd019fb5e53a8f01018bc1991d6a44a282d0cb9a3c61449cb0917",
+    "substitutions": {
+      "_063635_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout4931": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_065180_": {
+        "old": "sg13g2_nand2b_1",
+        "new": "sg13g2_nand2b_2"
+      },
+      "_066892_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "fanout3423": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070305_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3109": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070306_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2834": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070307_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2532": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070324_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070433_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2177": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_070434_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_073247_": {
+        "old": "sg13g2_nor4_1",
+        "new": "sg13g2_nor4_2"
+      },
+      "_062575_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_4"
+      },
+      "fanout733": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_4"
+      },
+      "_059923_": {
+        "old": "sg13g2_nand2_1",
+        "new": "sg13g2_nand2_2"
+      },
+      "_059986_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3156": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2907": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2584": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_062550_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout463": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_068047_": {
+        "old": "sg13g2_nor4_1",
+        "new": "sg13g2_nor4_2"
+      },
+      "_056994_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout4241": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_057347_": {
+        "old": "sg13g2_nor3_1",
+        "new": "sg13g2_nor3_2"
+      },
+      "_057348_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3535": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_059790_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3190": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_059791_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2921": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_061289_": {
+        "old": "sg13g2_or2_1",
+        "new": "sg13g2_or2_2"
+      },
+      "_061300_": {
+        "old": "sg13g2_or3_1",
+        "new": "sg13g2_or3_2"
+      },
+      "_061303_": {
+        "old": "sg13g2_a21oi_1",
+        "new": "sg13g2_a21oi_2"
+      },
+      "_061304_": {
+        "old": "sg13g2_inv_1",
+        "new": "sg13g2_inv_2"
+      },
+      "_067125_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout331": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_067126_": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "fanout325": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_079484_": {
+        "old": "sg13g2_mux2_1",
+        "new": "sg13g2_mux2_2"
+      },
+      "_079485_": {
+        "old": "sg13g2_inv_1",
+        "new": "sg13g2_inv_2"
+      },
+      "_086625_": {
+        "old": "sg13g2_a21o_1",
+        "new": "sg13g2_a21o_2"
+      },
+      "fanout146": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_059960_": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_060241_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3157": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060242_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2908": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2585": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_062345_": {
+        "old": "sg13g2_or2_1",
+        "new": "sg13g2_or2_2"
+      },
+      "_062356_": {
+        "old": "sg13g2_nor3_1",
+        "new": "sg13g2_nor3_2"
+      },
+      "rebuffer13624": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_062360_": {
+        "old": "sg13g2_mux2_1",
+        "new": "sg13g2_mux2_2"
+      },
+      "fanout369": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_081969_": {
+        "old": "sg13g2_mux2_1",
+        "new": "sg13g2_mux2_2"
+      },
+      "rebuffer13661": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "rebuffer13583": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_8"
+      },
+      "_067294_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout385": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_057332_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3862": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060999_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3484": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_061740_": {
+        "old": "sg13g2_or2_1",
+        "new": "sg13g2_or2_2"
+      },
+      "_061751_": {
+        "old": "sg13g2_or3_1",
+        "new": "sg13g2_or3_2"
+      },
+      "fanout1133": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout4772": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_068068_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_068069_": {
+        "old": "sg13g2_and2_1",
+        "new": "sg13g2_and2_2"
+      },
+      "_068070_": {
+        "old": "sg13g2_and2_1",
+        "new": "sg13g2_and2_2"
+      },
+      "_068072_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_068073_": {
+        "old": "sg13g2_nand2_1",
+        "new": "sg13g2_nand2_2"
+      },
+      "_068074_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_068077_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_068079_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_068086_": {
+        "old": "sg13g2_nand2_1",
+        "new": "sg13g2_nand2_2"
+      },
+      "_068089_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "_056063_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "fanout3170": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060219_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2913": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060220_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2591": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2378": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_061580_": {
+        "old": "sg13g2_or2_1",
+        "new": "sg13g2_or2_2"
+      },
+      "fanout1043": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_056054_": {
+        "old": "sg13g2_nor2_1",
+        "new": "sg13g2_nor2_2"
+      },
+      "fanout4645": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_056072_": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_059967_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2918": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_060226_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2589": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_062062_": {
+        "old": "sg13g2_or2_1",
+        "new": "sg13g2_or2_2"
+      },
+      "_062073_": {
+        "old": "sg13g2_or3_1",
+        "new": "sg13g2_or3_2"
+      },
+      "rebuffer13573": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_067351_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout617": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_062120_": {
+        "old": "sg13g2_nor3_1",
+        "new": "sg13g2_nor3_2"
+      },
+      "rebuffer13567": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_078702_": {
+        "old": "sg13g2_mux2_1",
+        "new": "sg13g2_mux2_2"
+      },
+      "_067141_": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_068054_": {
+        "old": "sg13g2_nor4_1",
+        "new": "sg13g2_nor4_2"
+      },
+      "_062622_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout326": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "fanout3498": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_060234_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3159": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060235_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2910": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060236_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2587": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060364_": {
+        "old": "sg13g2_nand2_1",
+        "new": "sg13g2_nand2_2"
+      },
+      "_061535_": {
+        "old": "sg13g2_nor3_1",
+        "new": "sg13g2_nor3_2"
+      },
+      "_079001_": {
+        "old": "sg13g2_mux2_1",
+        "new": "sg13g2_mux2_2"
+      },
+      "fanout1251": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout4646": {
+        "old": "sg13g2_buf_4",
+        "new": "sg13g2_buf_8"
+      },
+      "_056050_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout4256": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_060253_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout3155": {
+        "old": "sg13g2_buf_2",
+        "new": "sg13g2_buf_4"
+      },
+      "_060254_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2905": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "_060255_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "fanout2582": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_2"
+      },
+      "hold17958": {
+        "old": "sg13g2_dlygate4sd3_1",
+        "new": "sg13g2_buf_1"
+      }
+    },
+    "new_buffer_drivers": {
+      "_108144_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.1785,
+        "delay_ns": 1.137182
+      },
+      "_108138_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.174301,
+        "delay_ns": 1.128937
+      },
+      "_108168_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.158006,
+        "delay_ns": 1.014342
+      },
+      "_108162_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.175407,
+        "delay_ns": 1.141047
+      },
+      "_108132_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.120471,
+        "delay_ns": 0.834298
+      },
+      "_108156_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.167744,
+        "delay_ns": 1.083356
+      },
+      "_108150_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.162767,
+        "delay_ns": 1.075016
+      },
+      "_108120_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.10746,
+        "delay_ns": 0.773591
+      },
+      "_108126_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.091945,
+        "delay_ns": 0.742768
+      },
+      "_108113_/X": {
+        "master": "sg13g2_mux4_1",
+        "cap_pf": 0.096327,
+        "delay_ns": 0.73982
+      },
+      "_056485_/Y": {
+        "master": "sg13g2_o21ai_1",
+        "cap_pf": 0.236313,
+        "delay_ns": 2.917938
+      },
+      "_056602_/Y": {
+        "master": "sg13g2_o21ai_1",
+        "cap_pf": 0.216046,
+        "delay_ns": 2.708271
+      },
+      "_062574_/Y": {
+        "master": "sg13g2_xnor2_1",
+        "cap_pf": 0.152544,
+        "delay_ns": 1.52359
+      },
+      "_061301_/X": {
+        "master": "sg13g2_xor2_1",
+        "cap_pf": 0.137518,
+        "delay_ns": 1.479547
+      },
+      "_062570_/X": {
+        "master": "sg13g2_xor2_1",
+        "cap_pf": 0.129758,
+        "delay_ns": 1.368139
+      },
+      "_068131_/Y": {
+        "master": "sg13g2_nand4_1",
+        "cap_pf": 0.062916,
+        "delay_ns": 1.148281
+      },
+      "_056648_/Y": {
+        "master": "sg13g2_xnor2_1",
+        "cap_pf": 0.095919,
+        "delay_ns": 1.043288
+      },
+      "_088237_/Y": {
+        "master": "sg13g2_a221oi_1",
+        "cap_pf": 0.066788,
+        "delay_ns": 1.018275
+      },
+      "_059005_/Y": {
+        "master": "sg13g2_xnor2_1",
+        "cap_pf": 0.090911,
+        "delay_ns": 0.987958
+      },
+      "_056509_/Y": {
+        "master": "sg13g2_xnor2_1",
+        "cap_pf": 0.090765,
+        "delay_ns": 0.973879
+      },
+      "_062627_/Y": {
+        "master": "sg13g2_nand4_1",
+        "cap_pf": 0.051573,
+        "delay_ns": 0.916295
+      },
+      "_084182_/Y": {
+        "master": "sg13g2_o21ai_1",
+        "cap_pf": 0.067957,
+        "delay_ns": 0.903423
+      },
+      "_087092_/Y": {
+        "master": "sg13g2_a221oi_1",
+        "cap_pf": 0.054687,
+        "delay_ns": 0.796822
+      },
+      "_087099_/Y": {
+        "master": "sg13g2_a221oi_1",
+        "cap_pf": 0.052126,
+        "delay_ns": 0.763709
+      },
+      "_086616_/Y": {
+        "master": "sg13g2_o21ai_1",
+        "cap_pf": 0.062514,
+        "delay_ns": 0.630839
+      }
+    },
+    "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+    "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "correction": "Previous timing-eco1 estimates rejected: only 25 added nets globally routed; existing detailed wires were not included in estimated parasitics. This run clears regular signal wires before complete global routing; power special wires retained."
+  }
+}

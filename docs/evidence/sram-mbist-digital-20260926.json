@@ -1,0 +1,140 @@
+{
+  "status": "PASS_STANDALONE_MBIST_DIGITAL_VERIFICATION",
+  "source_commit": "38cef6448d116b46e521e649cb7296fb17d9ca2b",
+  "targeted_pytest": 36,
+  "native_model_cases": 15,
+  "native": {
+    "status": "PASS_15_NATIVE_FUNCTIONAL_MODEL_PORT_CASES",
+    "physical_signoff": false,
+    "chip_integration": false,
+    "cases": [
+      {
+        "case": "512x16-mode0-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "512x16-mode1-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "512x16-mode2-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "512x16-mode3-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "512x16-mode0-fault1",
+        "passed": true,
+        "read_corruption_detected": true,
+        "returncode": 0
+      },
+      {
+        "case": "1024x32-mode0-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "1024x32-mode1-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "1024x32-mode2-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "1024x32-mode3-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "1024x32-mode0-fault1",
+        "passed": true,
+        "read_corruption_detected": true,
+        "returncode": 0
+      },
+      {
+        "case": "2048x64-mode0-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "2048x64-mode1-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "2048x64-mode2-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "2048x64-mode3-fault0",
+        "passed": true,
+        "read_corruption_detected": false,
+        "returncode": 0
+      },
+      {
+        "case": "2048x64-mode0-fault1",
+        "passed": true,
+        "read_corruption_detected": true,
+        "returncode": 0
+      }
+    ],
+    "inputs": {
+      "scripts/check_sram_mbist_native.py": "1a44af8d6a2206115b9f2ee5acaf01d36de3367de48ff6a8838569bc4e5fbd7e",
+      "hw/soc/rtl/dft/soc_sram_mbist.v": "4bdf54566b8244023ba167df01b539bd1c0b21c985987718329689b8c2f3bb81",
+      "hw/soc/rtl/dft/soc_sram_test_port.v": "bbf044e7a5a5d606cab60e6d7fef09dea7b596a5668586ffc0674d028481854c",
+      "hw/soc/tb/tb_soc_sram_test_port.v": "4929202ae9c713190cda13f47fc9ec78a8115cd7658f4719c0cba61e505094ce",
+      "PDK/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+      "PDK/verilog/RM_IHPSG13_1P_512x16_c2_bm_bist.v": "b0da3f6fede1779f25438e0ffada4b811ad303d938b995fe1ffa37f21c1ffe66",
+      "PDK/verilog/RM_IHPSG13_1P_1024x32_c2_bm_bist.v": "eb86690331565d646b661ede3012e049468885798fa20a3f146ece311ec57669",
+      "PDK/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+    },
+    "tool_sha256": {
+      "iverilog": "052eab3e5b71dbc395547dacefe2e13653e9a5e0ac8b1a1fab86c48817e39058",
+      "vvp": "0172528a53a8cb92a6997ffcb49e25c96def5d22c7537b76816cd1dc9f6d62e8"
+    }
+  },
+  "fault_model_enumeration": {
+    "array_words": 4,
+    "bits_per_word": 4,
+    "stuck_and_transition": 64,
+    "address_alias": 12,
+    "inversion_coupling": 240,
+    "state_coupling": 960,
+    "unknown_read": 1,
+    "total": 1277
+  },
+  "rtl_mutations_rejected": 6,
+  "gate_level_port_cases": 5,
+  "chip_integration": false,
+  "scan_atpg_coverage": false,
+  "physical_signoff": false,
+  "manufacturing_approval": false,
+  "scope": "Destructive raw-word March engine and exclusive single-clock memory port. Repeated bit-partition backgrounds, complete trace comparison and first-fault checks; enumerated digital faults are not silicon defect coverage.",
+  "archive": "hw/soc/out/sram-closure-20260926/mbist-publication-v2/sram-mbist-digital-20260926.tar.xz",
+  "archive_bytes": 161764,
+  "archive_sha256": "58819534d065445a2262961c836cee2e45b5ee20b1b866490e0812d3f26c15bb",
+  "archive_url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260926-mbist-formal/sram-mbist-digital-20260926.tar.xz",
+  "asset_manifest": "docs/evidence/mbist-formal-assets-20260926.json",
+  "archive_storage": "GitHub Release asset; untracked local cache"
+}

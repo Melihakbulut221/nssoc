@@ -1,0 +1,263 @@
+{
+  "date": "2026-09-21",
+  "scope": "Retain byte-replayed pinned dependency sources for offline structural tests.\n\nThe pristine Ibex sv2v output and interface bundle must match independent\nscratch replays. This is not a mapped netlist or a substitute for RTL tests.\n",
+  "ibex_commit": "34b0705760ef3dfa00e99637432473d2be8f22f3",
+  "sv2v_version": "sv2v v0.0.13",
+  "interface_source_record": {
+    "base": {
+      "profile": "base",
+      "pins": {
+        "verilog-ethernet": "77320a9471d19c7dd383914bc049e02d9f4f1ffb",
+        "verilog-i2c": "a65be4045e898a52e791c6ee71f8f79a7cd2e129"
+      },
+      "inputs": {
+        "ext/verilog-i2c/rtl/i2c_master.v": "9c4e05759f356e9ddd91af6981a1fcc10466cad0af6e5afb6553787fe9ea0328",
+        "ext/verilog-ethernet/rtl/eth_mac_1g_fifo.v": "a5cf2d9e28a4dc0193634c4530f33bf5c5e8536741c3a0e5b78e3f74219ad868",
+        "ext/verilog-ethernet/rtl/eth_mac_1g.v": "caacd61ad484d96ff14991100009aa67f16aa66a85d9bd245ed2869926da652c",
+        "ext/verilog-ethernet/rtl/axis_gmii_rx.v": "70d8e8c8ebfd22b8b1ffed7c077864c1944217a3e844f79cd3807cc41cf449d7",
+        "ext/verilog-ethernet/rtl/axis_gmii_tx.v": "6803d245a1482269f234f84d00739a23ecdeb4ca06340570454ad78f98550229",
+        "ext/verilog-ethernet/rtl/lfsr.v": "5502c8203b0dfc7246c1a2de93e60c199ded3c1d7840b106350d714f72a9a079",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo_adapter.v": "9dc661b88d459a318e40722df277720fe64ef4309230462e8538b1a44da1d57c",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_adapter.v": "4b9b6649f12e374c24d36f2d42680ecf1f38cca8ae4fda7fd68dbf722b6c8140"
+      },
+      "project_inputs": {},
+      "adaptations": [
+        "axis_gmii_tx: reset frame pointer, padding count and error for ASIC power-on",
+        "Per-source keyword scopes: Verilog-2005 for CAN/SpaceWire/I2C, SystemVerilog-2012 for Ethernet parameter guards"
+      ],
+      "bundle_sha256": "3fcc60382427cfa421bc2c24238b05a435cb13bbfe377c3d19829e3b8490defc"
+    },
+    "full": {
+      "profile": "full",
+      "pins": {
+        "verilog-ethernet": "77320a9471d19c7dd383914bc049e02d9f4f1ffb",
+        "verilog-i2c": "a65be4045e898a52e791c6ee71f8f79a7cd2e129",
+        "spacewire_reloaded": "450d2254bb980dc08825a575e205acbbefbc8a69",
+        "can": "470f0e7ab174dfef01a05f5d5ad01f28f6f4dc17"
+      },
+      "inputs": {
+        "ext/verilog-i2c/rtl/i2c_master.v": "9c4e05759f356e9ddd91af6981a1fcc10466cad0af6e5afb6553787fe9ea0328",
+        "ext/spacewire_reloaded/rtl/verilog/syncdff.v": "5045b1751f06ee0e34d1e9df6deddd15ddab4193c38fe7902bba0067151d2a50",
+        "ext/spacewire_reloaded/rtl/verilog/spwram.v": "55743bb0b2e73ffa7199f4cb49e22e2f7a53291349a36f1d9a45028170f8e3cc",
+        "ext/spacewire_reloaded/rtl/verilog/spwrecvfront_generic.v": "c294c2a4d0c8dc493e3a19fdb8157e575dc9c0757c3f536c3146741c286f6a43",
+        "ext/spacewire_reloaded/rtl/verilog/spwrecvfront_fast.v": "96a382163f40831b72ecd96340dc15ba0031712ae73d0a3d1edd30a1588dffed",
+        "ext/spacewire_reloaded/rtl/verilog/spwrecv.v": "fb59fc5f8d719e3c307c04cfab4e2719dfe260a20374ade2b654ce3232485e66",
+        "ext/spacewire_reloaded/rtl/verilog/spwxmit.v": "33749a76c4388ed969e44a9755bcc622f79540800e5a776953eecafd68393cdc",
+        "ext/spacewire_reloaded/rtl/verilog/spwxmit_fast.v": "1d301ead61c8e439ee917ac26cc9df706dd5e2dcf926de7bb13c7c2433b68499",
+        "ext/spacewire_reloaded/rtl/verilog/spwlink.v": "c8cb4ed2e1f50a8fd88223b1c26fbad28795965f71d386c6ce68e200310a3dc3",
+        "ext/spacewire_reloaded/rtl/verilog/spwstream.v": "d677eab64c8789b8bd8030e275b9ebd0e78f56634c0d758fc8656a9b07575a8e",
+        "ext/can/rtl/verilog/can_acf.v": "404e8581e035a45b6830bba6a1e87c7899e7f54d4e3940c33ba1a25d1f20b4d6",
+        "ext/can/bench/verilog/timescale.v": "6a61cf8db88af470f457dadffcf627cd8f325a00fa3d8b239093520cf7fa94d8",
+        "ext/can/rtl/verilog/can_defines.v": "10a47046d4140f130e9bb7d161e4995d67291d33fbdb8e77903956f46bb10665",
+        "ext/can/rtl/verilog/can_bsp.v": "2c3f6ed47e9f72a425c5b51980e2d0ac58640e540eb2b2a14ebe9dc2e5fc96e1",
+        "ext/can/rtl/verilog/can_btl.v": "7f6c42ea3d790b1643389581792ed293266d98eb0a3c1d01e6ddc777482e8335",
+        "ext/can/rtl/verilog/can_crc.v": "ae60397523f22b1ddcff600838949c6ded70d801d54d105ca0ad0a51013fdc07",
+        "ext/can/rtl/verilog/can_fifo.v": "54fcf4dbfa3f0b40d24d17b758256a0e5fabe3cd45531cf2fb1a702665ae4940",
+        "ext/can/rtl/verilog/can_ibo.v": "4afb496a2b8e3197a5f6accaf2cb493c4ff1d8b645748dfa1a1f8535acbcc7cf",
+        "ext/can/rtl/verilog/can_register.v": "691454933514031ddd0f3694e1ffe68b19822ec9113b30f88dc1f2c3ca8e4fd0",
+        "ext/can/rtl/verilog/can_register_asyn.v": "4b83cdf224c3560f740b44d9db9d7c78e7dff6139e98685796e16baea5605561",
+        "ext/can/rtl/verilog/can_register_asyn_syn.v": "308ee96d28a92179915ed0ce90a8345b7b4cc4e515e245d6f00eca2fcabb9e61",
+        "ext/can/rtl/verilog/can_register_syn.v": "2c8b90f432acf65ed23f6b88923648f02f5e45f5727608a7011f873c633437b7",
+        "ext/can/rtl/verilog/can_registers.v": "ddd9d7b22c73c23c1aa52dd8e348f71a912957f963ac6dbd257a5916e0f0cae3",
+        "ext/can/rtl/verilog/can_top.v": "ba9f813bdee1c2d65cfa55dbf5ab9e6e33c305e30ea02b71cb9e89854bf9f921",
+        "ext/verilog-ethernet/rtl/eth_mac_1g_fifo.v": "a5cf2d9e28a4dc0193634c4530f33bf5c5e8536741c3a0e5b78e3f74219ad868",
+        "ext/verilog-ethernet/rtl/eth_mac_1g.v": "caacd61ad484d96ff14991100009aa67f16aa66a85d9bd245ed2869926da652c",
+        "ext/verilog-ethernet/rtl/axis_gmii_rx.v": "70d8e8c8ebfd22b8b1ffed7c077864c1944217a3e844f79cd3807cc41cf449d7",
+        "ext/verilog-ethernet/rtl/axis_gmii_tx.v": "6803d245a1482269f234f84d00739a23ecdeb4ca06340570454ad78f98550229",
+        "ext/verilog-ethernet/rtl/lfsr.v": "5502c8203b0dfc7246c1a2de93e60c199ded3c1d7840b106350d714f72a9a079",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo_adapter.v": "9dc661b88d459a318e40722df277720fe64ef4309230462e8538b1a44da1d57c",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
+        "ext/verilog-ethernet/lib/axis/rtl/axis_adapter.v": "4b9b6649f12e374c24d36f2d42680ecf1f38cca8ae4fda7fd68dbf722b6c8140"
+      },
+      "project_inputs": {
+        "regmap/can.yaml": "366a79aac1c2219239384100dcedeb52c87466a321878b47739ff76a9c11af00",
+        "regmap/generate_can.py": "d61232a65ddd729d73629524bd3265f94013c1fa51702cf94909eeea358a21a2",
+        "regmap/generate_peripherals.py": "ba8f3fb3bb72c3591509c7da99ffa00f84e0ca50c3deef35be9cc40775981ca7",
+        "hw/soc/flow/prepare_interfaces.py": "f895137c8f16427631dcca00ccbcfa70e1c44e685762096516edbb6a799df1cd"
+      },
+      "adaptations": [
+        "axis_gmii_tx: reset frame pointer, padding count and error for ASIC power-on",
+        "Per-source keyword scopes: Verilog-2005 for CAN/SpaceWire/I2C, SystemVerilog-2012 for Ethernet parameter guards",
+        "CAN: generated banked byte offsets with pinned-literal and inverse-byte checks; upstream checkout unchanged"
+      ],
+      "bundle_sha256": "02e54b5ad631ee3e0c512e644f04659c298bdab2e95923d2b50965fa84d71242"
+    }
+  },
+  "replay_commands": [
+    "bash hw/soc/flow/sv2v_ibex.sh hw/soc/ext/ibex <fresh-output> hw/soc/tools/sv2v-Linux/sv2v",
+    "prepare_interfaces.prepare(base) and prepare(full) with SOC pointing to a fresh scratch root and read-only ext symlink"
+  ],
+  "replays_byte_identical": true,
+  "transform_sha256": {
+    "hw/soc/flow/sv2v_ibex.sh": "327b1265942f3c410bef54418a47045e35ae29b19f853bfd887c4bd1bdaf87f4",
+    "hw/soc/flow/prepare_interfaces.py": "f895137c8f16427631dcca00ccbcfa70e1c44e685762096516edbb6a799df1cd",
+    "regmap/can.yaml": "366a79aac1c2219239384100dcedeb52c87466a321878b47739ff76a9c11af00",
+    "regmap/generate_can.py": "d61232a65ddd729d73629524bd3265f94013c1fa51702cf94909eeea358a21a2",
+    "regmap/generate_peripherals.py": "ba8f3fb3bb72c3591509c7da99ffa00f84e0ca50c3deef35be9cc40775981ca7"
+  },
+  "directories": [],
+  "files": {
+    "hw/soc/gen/ibex_alu.v": {
+      "bytes": 35378,
+      "sha256": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063"
+    },
+    "hw/soc/gen/ibex_branch_predict.v": {
+      "bytes": 1877,
+      "sha256": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3"
+    },
+    "hw/soc/gen/ibex_cheriot_ex.v": {
+      "bytes": 54507,
+      "sha256": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325"
+    },
+    "hw/soc/gen/ibex_compressed_decoder.v": {
+      "bytes": 19909,
+      "sha256": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64"
+    },
+    "hw/soc/gen/ibex_controller.v": {
+      "bytes": 24980,
+      "sha256": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf"
+    },
+    "hw/soc/gen/ibex_core.v": {
+      "bytes": 45898,
+      "sha256": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989"
+    },
+    "hw/soc/gen/ibex_counter.v": {
+      "bytes": 2408,
+      "sha256": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01"
+    },
+    "hw/soc/gen/ibex_cs_registers.v": {
+      "bytes": 67997,
+      "sha256": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61"
+    },
+    "hw/soc/gen/ibex_csr.v": {
+      "bytes": 900,
+      "sha256": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2"
+    },
+    "hw/soc/gen/ibex_decoder.v": {
+      "bytes": 35027,
+      "sha256": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3"
+    },
+    "hw/soc/gen/ibex_dummy_instr.v": {
+      "bytes": 3414,
+      "sha256": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa"
+    },
+    "hw/soc/gen/ibex_ex_block.v": {
+      "bytes": 5497,
+      "sha256": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11"
+    },
+    "hw/soc/gen/ibex_fetch_fifo.v": {
+      "bytes": 5518,
+      "sha256": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0"
+    },
+    "hw/soc/gen/ibex_icache.v": {
+      "bytes": 50551,
+      "sha256": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d"
+    },
+    "hw/soc/gen/ibex_id_stage.v": {
+      "bytes": 29661,
+      "sha256": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4"
+    },
+    "hw/soc/gen/ibex_if_stage.v": {
+      "bytes": 23523,
+      "sha256": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc"
+    },
+    "hw/soc/gen/ibex_load_store_unit.v": {
+      "bytes": 22201,
+      "sha256": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9"
+    },
+    "hw/soc/gen/ibex_lockstep.v": {
+      "bytes": 55121,
+      "sha256": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea"
+    },
+    "hw/soc/gen/ibex_multdiv_fast.v": {
+      "bytes": 12299,
+      "sha256": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225"
+    },
+    "hw/soc/gen/ibex_multdiv_slow.v": {
+      "bytes": 8376,
+      "sha256": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605"
+    },
+    "hw/soc/gen/ibex_pmp.v": {
+      "bytes": 11375,
+      "sha256": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7"
+    },
+    "hw/soc/gen/ibex_prefetch_buffer.v": {
+      "bytes": 5154,
+      "sha256": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869"
+    },
+    "hw/soc/gen/ibex_register_file_ff.v": {
+      "bytes": 7328,
+      "sha256": "1495f5ba4e0cd622ca78a53a5b3b20fd8bce6c2da67ba4c7f631b7c8c5dcf0dc"
+    },
+    "hw/soc/gen/ibex_top.v": {
+      "bytes": 37663,
+      "sha256": "cad2a307d6f86918c220541d524f57fc0277ae0a4eeaf9710d9778fc1774aef5"
+    },
+    "hw/soc/gen/ibex_trvk.v": {
+      "bytes": 10974,
+      "sha256": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e"
+    },
+    "hw/soc/gen/ibex_wb_stage.v": {
+      "bytes": 9437,
+      "sha256": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707"
+    },
+    "hw/soc/gen/prim_and2.v": {
+      "bytes": 220,
+      "sha256": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88"
+    },
+    "hw/soc/gen/prim_buf.v": {
+      "bytes": 218,
+      "sha256": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1"
+    },
+    "hw/soc/gen/prim_clock_mux2.v": {
+      "bytes": 233,
+      "sha256": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922"
+    },
+    "hw/soc/gen/prim_count.v": {
+      "bytes": 2995,
+      "sha256": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f"
+    },
+    "hw/soc/gen/prim_flop.v": {
+      "bytes": 333,
+      "sha256": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a"
+    },
+    "hw/soc/gen/prim_lfsr.v": {
+      "bytes": 14062,
+      "sha256": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b"
+    },
+    "hw/soc/gen/prim_secded_inv_39_32_dec.v": {
+      "bytes": 2412,
+      "sha256": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1"
+    },
+    "hw/soc/gen/prim_secded_inv_39_32_enc.v": {
+      "bytes": 675,
+      "sha256": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192"
+    },
+    "hw/soc/gen/interfaces.bundle.vh": {
+      "bytes": 164335,
+      "sha256": "3fcc60382427cfa421bc2c24238b05a435cb13bbfe377c3d19829e3b8490defc"
+    },
+    "hw/soc/gen/interfaces.bundle.json": {
+      "bytes": 1588,
+      "sha256": "b461c69eaacf59b07787458ddab61c4f6b8177230d2dae595af14c4e34f7794f"
+    },
+    "hw/soc/gen/interfaces-full.bundle.vh": {
+      "bytes": 528903,
+      "sha256": "02e54b5ad631ee3e0c512e644f04659c298bdab2e95923d2b50965fa84d71242"
+    },
+    "hw/soc/gen/interfaces-full.bundle.json": {
+      "bytes": 4866,
+      "sha256": "3ebee08660c2d0a1c08669dd17c13b7ca883f89be887d8a394ec5b2dc33c2876"
+    }
+  },
+  "archive": {
+    "file": "prepared-sources-can-bank-20260921.tar.gz",
+    "bytes": 201833,
+    "sha256": "65798297514c125cfdbc9827d159b75d760fafd8d7c76cb1dc7082402965acee"
+  },
+  "component_notices": {
+    "file": "prepared-sources-can-bank-20260921-NOTICES.txt",
+    "sha256": "499fd3acd2532f2481fa5b8e3ff8286a910322bd46258cf9f5d96131104befed"
+  }
+}

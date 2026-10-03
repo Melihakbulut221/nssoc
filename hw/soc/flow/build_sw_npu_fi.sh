@@ -55,7 +55,7 @@ python3 "$SOC_DIR/flow/gen_npu_vectors.py" "$OUT"
   -I "$SW" -I "$OUT" -L "$SW" \
   -T "$SW/link_soc.ld" \
   "$@" \
-  "$SW/crt0.S" "$SW/fi_npu.c" \
+  "$SW/crt0.S" "$SW/fi_npu.c" "$SW/lib/soc_hal.c" \
   -o "$OUT/fi_npu.elf" -lgcc
 
 "$OBJDUMP" -d -S "$OUT/fi_npu.elf" > "$OUT/fi_npu.dis"

@@ -58,7 +58,7 @@ $(GOALS):
 
 else
 
-RTL = $(PWD)/../../rtl
+RTL := $(abspath $(dir $(THIS_MK))/../../rtl)
 
 # SOC_UART_SRC exists so a mutation run can point the same suite at a
 # modified copy of the RTL without editing the tree, which is how the
@@ -107,15 +107,13 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 # Default-flag Verilator lint. This block is four registers, a shifter
 # and a baud divider; any warning here is a real one.
-VERILATOR ?= $(firstword $(shell command -v verilator 2>/dev/null) \
-	$(wildcard $(HOME)/oss-cad-suite/bin/verilator \
-	           $(HOME)/Documents/gt2n-soc/tools/oss-cad-suite/bin/verilator \
-	           $(HOME)/Downloads/oss-cad-suite-linux-x64-20260804/oss-cad-suite/bin/verilator))
+OSS_CAD_SUITE ?= $(abspath $(RTL)/../tools/oss-cad-suite)
+VERILATOR ?= $(OSS_CAD_SUITE)/bin/verilator
 
 .PHONY: lint
 lint:
-	@test -n "$(VERILATOR)" || \
-		{ echo "verilator not found: install oss-cad-suite or put it on PATH"; exit 1; }
+	@test -x "$(VERILATOR)" || \
+		{ echo "verilator not found: install the project OSS CAD Suite or set VERILATOR"; exit 1; }
 	$(VERILATOR) --lint-only -I$(RTL) $(SOC_UART_SRC)
 
 endif

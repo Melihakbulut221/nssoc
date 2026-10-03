@@ -1,8 +1,10 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 #
-# Modules under hw/rtl/ that are deliberately reachable from no design
-# this repository builds. One per line: MODULE<tab>REASON.
+# Modules under hw/rtl/ and hw/soc/rtl/ that are not reachable from the
+# submitted pilot or product SoC roots. Standalone experiments are named
+# explicitly; this does not mean their separate build is absent.
+# One per line: MODULE<tab>REASON.
 #
 # It lives HERE and not in hw/rtl/ because that tree is frozen:
 # docs/34 pins it by hash and tt/MANIFEST.sha256 verifies it.
@@ -22,3 +24,11 @@
 
 npu_regbank	Written for the multi-node accelerator's shared register bank and orphaned when the pilot was scaled to one tile. pilot_top.v carries its own inline pilot_cfg_bank and pilot_chk_bank instead, and the SoC's peripheral registers are generated per block. Proved by formal/npu_regbank.sby, 5 tasks; docs/09 row 6 records that the proof's subject is in no netlist.
 scrub	The multi-node scrub controller, orphaned for the same reason. pilot_top.v walks its own scrub loop and the SoC instantiates hw/soc/rtl/soc_scrub.v, a different module in a different file. Proved by formal/scrub.sby, 9 tasks.
+
+probe_ahbl_top	Standalone AHB-Lite architecture/area experiment built by hw/soc/flow/syn_probe.sh; not instantiated in the product soc_top or submitted pilot. Retained to reproduce the comparison, not counted as product integration.
+ibex2ahbl	Ibex-to-AHB adapter used only beneath the standalone probe_ahbl_top experiment. The product SoC uses soc_bus and does not instantiate this alternative bus path.
+ahbl_arbiter	Arbiter used only beneath the standalone probe_ahbl_top experiment built by syn_probe.sh; not part of the submitted pilot or product SoC hierarchy.
+ahbl_interconnect	AHB address decoder used only beneath the standalone probe_ahbl_top experiment; retained for its architecture comparison, absent from the product SoC hierarchy.
+ahbl2apb	AHB-to-APB adapter used only beneath the standalone probe_ahbl_top experiment. Product soc_top uses soc_apb_bridge; soc_apb_wb remains instantiated separately by soc_can.
+soc_pcie_tlp_regs	Standalone PCIe transaction-layer register backend; block simulation and synthesis only. No soc_top instance, link/data-link layer or PHY; docs/98 records its exact scope.
+soc_pcie_tlp_stream	Standalone DWORD packet assembler/serializer wrapping the PCIe register backend. No soc_top instance, CRC/data-link or PHY; block verification does not establish host integration or a Gen3 x4 link.

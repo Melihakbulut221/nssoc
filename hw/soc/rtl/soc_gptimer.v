@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // General purpose timer unit, and the shell the watchdog lives in.
 //
 // Register map mirrored from GRLIB's GPTIMER (grip.pdf table 463, quoted
@@ -116,6 +118,12 @@ module soc_gptimer #(
 );
 
   localparam integer NT = NGEN + 1;    // including the watchdog
+  localparam [11:0] REG_TIMER_STRIDE = 12'h010; // regmap:gptimer:TIMER_STRIDE
+  localparam integer TIMER_SHIFT = $clog2(REG_TIMER_STRIDE);
+  localparam [1:0] SEL_CNT = 2'h0; // regmap:gptimer:TIMER_CNT
+  localparam [1:0] SEL_RLD = 2'h1; // regmap:gptimer:TIMER_RLD
+  localparam [1:0] SEL_CTRL = 2'h2; // regmap:gptimer:TIMER_CTRL
+  localparam [1:0] SEL_LATCH = 2'h3; // regmap:gptimer:TIMER_LATCH
   // Sized copies, so no expression below part-selects a parameter or an
   // integer. Both are accepted by some tools and not others, and three
   // of them read this file: Icarus, Yosys and Verilator.
@@ -123,13 +131,13 @@ module soc_gptimer #(
   localparam [7:0] NGEN_B = NGEN;
   localparam [7:0] NT_IDX = NGEN + 1;
   localparam [2:0] NT_CFG = NGEN + 1;
-  localparam [11:0] REG_WDOGSTAT = 12'h010 * (NGEN + 2);
+  localparam [11:0] REG_WDOGSTAT = REG_TIMER_STRIDE * (NGEN + 2);
   /* verilator lint_on WIDTHTRUNC */
 
-  localparam [11:0] REG_SCALER    = 12'h000;
-  localparam [11:0] REG_SCRELOAD  = 12'h004;
-  localparam [11:0] REG_CONFIG    = 12'h008;
-  localparam [11:0] REG_LATCHCFG  = 12'h00C;
+  localparam [11:0] REG_SCALER    = 12'h000; // regmap:gptimer:SCALER
+  localparam [11:0] REG_SCRELOAD  = 12'h004; // regmap:gptimer:SCRELOAD
+  localparam [11:0] REG_CONFIG    = 12'h008; // regmap:gptimer:CONFIG
+  localparam [11:0] REG_LATCHCFG  = 12'h00C; // regmap:gptimer:LATCHCFG
 
   // GRLIB timer control bit positions.
   localparam integer B_EN = 0, B_RS = 1, B_LD = 2, B_IE = 3,
@@ -143,8 +151,8 @@ module soc_gptimer #(
 
   // Which timer, if any, this offset names. Timer n occupies
   // 0x10*n .. 0x10*n+0xC, for n in 1..NT.
-  wire [7:0]  tsel_idx = paddr_i[11:4];              // == n
-  wire [1:0]  tsel_reg = paddr_i[3:2];               // 0 cnt 1 rld 2 ctrl 3 latch
+  wire [7:0]  tsel_idx = paddr_i[11:TIMER_SHIFT];              // == n
+  wire [TIMER_SHIFT-3:0] tsel_reg = paddr_i[TIMER_SHIFT-1:2];               // 0 cnt 1 rld 2 ctrl 3 latch
   wire        in_timer = (tsel_idx >= 8'd1) && (tsel_idx <= NT_IDX);
   wire        is_wdog  = in_timer && (tsel_idx == NT_IDX);
 
@@ -205,11 +213,11 @@ module soc_gptimer #(
   // all for the watchdog. Putting the cadence contract there rather
   // than at a new base costs no address space and keeps every watchdog
   // register inside the watchdog's own sixteen bytes.
-  wire [4:0] wd_sel = {access && is_wdog && (tsel_reg == 2'd3),
+  wire [4:0] wd_sel = {access && is_wdog && (tsel_reg == SEL_LATCH),
                        access && (paddr_i == REG_WDOGSTAT),
-                       access && is_wdog && (tsel_reg == 2'd2),
-                       access && is_wdog && (tsel_reg == 2'd1),
-                       access && is_wdog && (tsel_reg == 2'd0)};
+                       access && is_wdog && (tsel_reg == SEL_CTRL),
+                       access && is_wdog && (tsel_reg == SEL_RLD),
+                       access && is_wdog && (tsel_reg == SEL_CNT)};
   wire [31:0] wd_rdata;
 
   soc_wdog #(
@@ -268,20 +276,20 @@ module soc_gptimer #(
         // Counter. A write, then a load, then the countdown: a write to
         // the counter register and a LD in the same cycle cannot both
         // happen, because they are different addresses.
-        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == 2'd0))
+        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == SEL_CNT))
           cnt[n] <= pwdata_i[TWIDTH-1:0];
         else if (wr && in_timer && (tsel_idx == n) &&
-                 (tsel_reg == 2'd2) && pwdata_i[B_LD])
+                 (tsel_reg == SEL_CTRL) && pwdata_i[B_LD])
           cnt[n] <= rld[n];
         else if (t_en[n] && t_src[n])
           cnt[n] <= (cnt[n] == 0) ? rld[n] : cnt[n] - 1'b1;
 
-        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == 2'd1))
+        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == SEL_RLD))
           rld[n] <= pwdata_i[TWIDTH-1:0];
 
         // Control. EN is cleared by the timer itself on a wrap when RS
         // is not set, which is GRLIB's one-shot behaviour.
-        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == 2'd2)) begin
+        if (wr && in_timer && (tsel_idx == n) && (tsel_reg == SEL_CTRL)) begin
           t_en[n] <= pwdata_i[B_EN];
           t_rs[n] <= pwdata_i[B_RS];
           t_ie[n] <= pwdata_i[B_IE];
@@ -318,9 +326,9 @@ module soc_gptimer #(
     for (m = 1; m <= NGEN_B; m = m + 1) begin
       if (tsel_idx == m) begin
         case (tsel_reg)
-          2'd0: timer_rdata = {{(32 - TWIDTH){1'b0}}, cnt[m]};
-          2'd1: timer_rdata = {{(32 - TWIDTH){1'b0}}, rld[m]};
-          2'd2: timer_rdata = {26'h0, t_ch[m], t_ip[m], t_ie[m],
+          SEL_CNT: timer_rdata = {{(32 - TWIDTH){1'b0}}, cnt[m]};
+          SEL_RLD: timer_rdata = {{(32 - TWIDTH){1'b0}}, rld[m]};
+          SEL_CTRL: timer_rdata = {26'h0, t_ch[m], t_ip[m], t_ie[m],
                                1'b0, t_rs[m], t_en[m]};
           default: timer_rdata = 32'h0;      // latch, not implemented
         endcase
@@ -347,3 +355,5 @@ module soc_gptimer #(
   end
 
 endmodule
+
+`default_nettype wire

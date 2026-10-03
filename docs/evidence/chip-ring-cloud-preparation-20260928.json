@@ -1,0 +1,75 @@
+{
+  "status": "PORTABLE_RING_ROUTE_PREPARED_CLOUD_DISPATCH_PENDING",
+  "recorded": "2026-09-28T15:33:42.361445+03:00",
+  "input_publication": {
+    "status": "PASS_PUBLISHED_BYTES_ONLY",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "release_id": 397554124,
+    "asset": {
+      "name": "chip-ring-routing-inputs-v2-20260928.tar.xz",
+      "bytes": 39158972,
+      "sha256": "e5d93e15cba595fb4a580a0e8f76349de9dcdc300c5a9dbd9077882b6e0f7719",
+      "members": 768,
+      "source_commit": "13a1022dc16cefb26db2f857ba1a0640d4749ce0",
+      "local_roundtrip_verified": true,
+      "scope": "Unchanged verified5umPDN state and config, exact local PDK/stdcell/IO/streamout dependencies, JSON absolute paths templated for independent ring routing. No completed routing or physical acceptance.",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-ring-routing-inputs-v2-20260928.tar.xz",
+      "asset_id": 595364331,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "local_prepare": {
+    "status": "PREPARED",
+    "physical_acceptance": false,
+    "manufacturing_approval": false,
+    "input_bundle_sha256": "e5d93e15cba595fb4a580a0e8f76349de9dcdc300c5a9dbd9077882b6e0f7719",
+    "input_files": 767,
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "python",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/bundle/workspace/hw/soc/out/chip-integrated-20260927/flow_v4.py",
+      "--flow",
+      "ChipAssembly",
+      "--manual-pdk",
+      "--pdk-root",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/bundle/pdk",
+      "--pdk",
+      "ihp-sg13g2",
+      "--force-run-dir",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/run",
+      "--from",
+      "Odb.RemovePDNObstructions",
+      "--with-initial-state",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/state.json",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/config.json"
+    ],
+    "scope": "Repaired-ring routing candidate only; core0/0; all native physical and final timing gates remain required.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_chip_ring_route.py": "f5919ce3def73e38a980b3aa09170c7fbce00d6f6e80f4f8fe12fe70fcc428a9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_chip_native_shard.py": "fc315de1ac83f60dc7577fc2e82395d39e8545bdaa7a3744991df7937cfda5e2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/fetch_evidence_assets.py": "a64966f83fb041e8242486f391c5a381e8c558a086c459bf1f7c971d3a44b1bb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/bootstrap_flow.py": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/docs/evidence/chip-ring-routing-input-assets-20260928.json": "b5fee1b54fbfd7741ebf728af64ae4509e488e8fb55102652485e7edac366bf6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/config.json": "2c851daeb8921377a5189241020b7d54bca7160595b3ca1ab572b6e38b619998",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-ring-routing/state.json": "c6a44d456e0534a38375c4e8e58a0d9a8d4a250175b32aa264a7af6052d3ea73"
+    }
+  },
+  "local_config_preflight": "PASS_REAL_LIBRELANE_CONFIG_AND_STATE_PREFLIGHT",
+  "preflight_log_sha256": "72635a6bf8f76c848dc8418f4e439613b4c0fa09b5c506f47447f35b67dca18f",
+  "handoff": {
+    "recorded": "2026-09-28T15:33:41.858615+03:00",
+    "status": "IDLE_LOCAL_QUEUE_PAUSED_FOR_CLOUD_HANDOFF",
+    "pid": 2100148,
+    "birth": "53954717",
+    "native_children": 0,
+    "reason": "Available RAM persistently below6GiB; same immutable PDN candidate routed on independent GitHub worker. Do not resume or duplicate while cloud attempt is active.",
+    "physical_process_interrupted": false
+  },
+  "scope": "Moves only the separately verified5um-ring candidate to an independent worker because local routing cannot enter its memory admission gate. No physical geometry or constraints altered by path relocation; current core timing repair untouched. Native checks still required after routing.",
+  "physical_acceptance": false,
+  "manufacturing_approval": false
+}

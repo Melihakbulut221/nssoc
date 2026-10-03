@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-boot-trace
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-boot-trace.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: timing-alu-boot-trace-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  trace:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        variant: [original, candidate]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Test exact driven-bit bindings and bounded observer controls
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends iverilog
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_boot_trace.py sw/tests/test_alu_qualification.py
+      - name: Prepare unchanged vendor netlist and read-only source-bound probes
+        run: |
+          python3 scripts/run_cloud_alu_boot_trace.py prepare \
+            --variant '${{ matrix.variant }}' \
+            --output "$GITHUB_WORKSPACE/alu-boot-trace" \
+            --work "$RUNNER_TEMP/alu-boot-trace-work"
+      - name: Preserve exact startup and native observer controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-boot-trace-startup-${{ matrix.variant }}-${{ github.run_attempt }}
+          path: alu-boot-trace/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Replay up to 1.6M cycles and retain first unknown and native memory events
+        run: |
+          python3 scripts/run_cloud_alu_boot_trace.py run \
+            --output "$GITHUB_WORKSPACE/alu-boot-trace"
+      - name: Preserve complete native diagnostics including boot failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-boot-trace-final-${{ matrix.variant }}-${{ github.run_attempt }}
+          path: alu-boot-trace/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

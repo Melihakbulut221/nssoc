@@ -1,0 +1,17 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Experimental NRZ output cell, NOT a complete PCIe PHY.
+* PDK: npn13G2 VBIC; ideal load resistors pending resistor/PEX qualification.
+* IREF is an externally supplied 2 mA reference; no on-chip reference yet.
+* INP/INN: complementary 1.36 V common-mode, 200 mV differential magnitude.
+* OUTP follows INP (opposite collector). SUB is the substrate connection.
+* Tail monitor is a zero-volt source for characterization, not a physical part.
+.subckt nssoc_tx_cml inp inn outp outn avdd avss sub iref params: rload=50
+XREF iref iref avss sub npn13G2 Nx=1
+XTAIL tail iref tailmon sub npn13G2 Nx=8
+VTAIL tailmon avss 0
+XP outn inp tail sub npn13G2 Nx=8
+XN outp inn tail sub npn13G2 Nx=8
+RP avdd outp {rload}
+RN avdd outn {rload}
+.ends nssoc_tx_cml

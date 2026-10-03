@@ -125,7 +125,7 @@ def test_soc_top_gives_the_boot_block_both_resets_the_right_way_round():
 
     if por != "rst_ni":
         # A derived signal. Find what drives it and check its cone.
-        drv = re.search(r"wire\s+" + re.escape(por) + r"\s*=\s*([^;]+);", top)
+        drv = re.search(r"(?:wire|assign)\s+" + re.escape(por) + r"\s*=\s*([^;]+);", top)
         assert drv, (
             f"u_boot's rst_por_ni is {por!r}, which is neither rst_ni nor a "
             f"wire soc_top.v\nassigns. This guard cannot tell which domain "

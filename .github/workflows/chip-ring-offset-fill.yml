@@ -1,0 +1,115 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: chip-ring-offset-fill
+on:
+  push:
+    paths:
+      - .github/workflows/chip-ring-offset-fill.yml
+      - docs/evidence/chip-ring-offset-native-input-assets-20260929.json
+      - docs/evidence/chip-ring-offset-fill-input-assets-20260929.json
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chip-ring-offset-fill-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [antenna, supplemental_wide]
+    runs-on: ubuntu-22.04
+    # Hosted job maximum; there is no native process elapsed-time watchdog.
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical executable
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Verify exact chip bundle and run unchanged native rules
+        env:
+          CHIP_GROUP: ${{ matrix.group }}
+        run: >-
+          python3 scripts/run_chip_native_shard.py --group "$CHIP_GROUP"
+          --manifest docs/evidence/chip-ring-offset-native-input-assets-20260929.json
+          --output hw/soc/out/github-ring-offset-checks
+      - name: Preserve measurements, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-ring-offset-native-${{ matrix.group }}
+          path: |
+            hw/soc/out/github-ring-offset-checks/${{ matrix.group }}/*.json
+            hw/soc/out/github-ring-offset-checks/${{ matrix.group }}/*.log
+            hw/soc/out/github-ring-offset-checks/${{ matrix.group }}/*.lyrdb
+          retention-days: 30
+      - name: Require zero markers and complete category coverage
+        env:
+          CHIP_GROUP: ${{ matrix.group }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          result = json.loads((Path('hw/soc/out/github-ring-offset-checks') / os.environ['CHIP_GROUP'] / 'result.json').read_text())
+          assert result['status'] == 'PASS' and result.get('category_inventory'), result['status']
+          if os.environ["CHIP_GROUP"] == "density":
+              assert result["density_coverage"]["executed_rule_count"] == 37
+          PY
+
+  fill:
+    needs: native
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical executable
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Verify inputs, exercise corruption controls, generate fill candidate
+        run: >-
+          python3 scripts/run_chip_fill.py
+          --manifest docs/evidence/chip-ring-offset-fill-input-assets-20260929.json
+          --output hw/soc/out/cloud-ring-offset-fill
+      - name: Preserve candidate and completion records
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-ring-offset-fill-candidate
+          path: |
+            hw/soc/out/cloud-ring-offset-fill/*.json
+            hw/soc/out/cloud-ring-offset-fill/*.log
+            hw/soc/out/cloud-ring-offset-fill/probe/**/*.json
+            hw/soc/out/cloud-ring-offset-fill/probe/**/*.log
+            hw/soc/out/cloud-ring-offset-fill/fill/*.json
+            hw/soc/out/cloud-ring-offset-fill/fill/*.log
+            hw/soc/out/cloud-ring-offset-fill/fill/checkpoint.gds
+          retention-days: 30
+      - name: Preserve tile inputs, outputs, audits and compressed checkpoints
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: chip-ring-offset-fill-tiles
+          path: hw/soc/out/cloud-ring-offset-fill/fill/tile-*/
+          retention-days: 30
+      - name: Require complete generation and source geometry preservation
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path('hw/soc/out/cloud-ring-offset-fill/result.json').read_text())
+          assert result['status'] == 'CANDIDATE_REQUIRES_NATIVE_CHECKS'
+          assert result['completed_tiles'] == 56 and not result['geometry']['errors']
+          PY

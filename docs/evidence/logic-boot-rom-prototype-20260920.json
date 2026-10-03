@@ -1,0 +1,149 @@
+{
+  "date": "2026-09-20",
+  "status": "PROTOTYPE_FUNCTIONAL_PASS_NOT_IN_DELIVERED_TOP",
+  "scope": "Isolated copied top replaces only the boot-ROM instance with generated constant standard-cell logic plus existing SECDED row codec. No ROM readmemh or SRAM preload. Main source/physical profiles remain unchanged; product integration and physical closure pending.",
+  "input": {
+    "image": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/external-irq-bringup/test_soc.hex",
+    "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7",
+    "data_words": 2048,
+    "codewords_bits": 39,
+    "nonzero_words": 729,
+    "scope": "Isolated standard-cell ROM candidate; fixed image selected before synthesis, protected row output, existing memory-codec protocol. No claim of instantiated final layout, radiation qualification or preloaded SRAM."
+  },
+  "block_rtl_and_native_cell_gl": {
+    "status": "PASS",
+    "addresses": 2048,
+    "reads_per_run": 4113,
+    "rejected_writes_per_run": 17,
+    "scrub_enabled_and_disabled": true,
+    "codeword_oracle": "Frozen secded_enc RTL, compared for every read, independently of generator golden-model encoding",
+    "SDF": false
+  },
+  "full_cpu": {
+    "status": "PASS",
+    "checks": 28,
+    "failure_mask": 0,
+    "cycles": 642152,
+    "boot_handover_cycle": 322818,
+    "expected_watchdog_NMI": 1,
+    "same_boot_image_as_reference": true
+  },
+  "matched_standalone_synthesis": {
+    "logic": {
+      "cells": 4236,
+      "flops": 115,
+      "SRAM_macros": 0,
+      "memories": 0,
+      "standard_cell_area_um2": 44551.08
+    },
+    "sram": {
+      "cells": 649,
+      "flops": 78,
+      "SRAM_macros": 4,
+      "memories": 0,
+      "standard_cell_area_um2": 10870.0704
+    }
+  },
+  "synthesis_scope": "Same Yosys0.33, typical IHP library, ABC-D20000ps and protected RDREG1 ROM protocol. SRAM macro area excluded from standard-cell area. Gate ROM fixed before fabrication; update requires a new implementation. Address/control/codec transient and radiation qualification remain open.",
+  "commands": [
+    "python3 hw/soc/out/external-review-20260919/prepare_logic_boot_rom.py",
+    "python3 hw/soc/out/external-review-20260919/prepare_logic_rom_synthesis.py",
+    "yosys -s hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/synth.ys",
+    "yosys -s hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/synth.ys",
+    "SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SOC_WAKE_GNT=1 timeout 1800 bash hw/soc/out/external-review-20260919/logic-boot-rom-probe/sim_logic_rom.sh hw/soc/out/external-review-20260919/logic-boot-rom-probe/cpu"
+  ],
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/prepare_logic_boot_rom.py": {
+      "bytes": 3509,
+      "sha256": "61bda99e10f7a340ce5c22f8127a05801712fe9a02300586d16e9ecc63b1cbd9"
+    },
+    "hw/soc/out/external-review-20260919/prepare_logic_rom_synthesis.py": {
+      "bytes": 1122,
+      "sha256": "0d65dd146f784bfa36e9989fcab62d6d5c721da41695e2ca1a95ee356c39355d"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/soc_logic_boot_rom.v": {
+      "bytes": 27169,
+      "sha256": "6e8086f88ca21cfffc73f11d404a08753698746338fa2d954998e87ddd54ad5c"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/soc_top.v": {
+      "bytes": 57609,
+      "sha256": "75902a207d806ee8a29987248985a322ada1db61586ea2daaef74aca21af4e54"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/sim_logic_rom.sh": {
+      "bytes": 19445,
+      "sha256": "27ba89bf132d4842553a0f2537db69d2b97bd4a1bf7c62fd89a483c0766f5248"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/tb_logic_rom.v": {
+      "bytes": 1771,
+      "sha256": "b9d6fd2509daef3094cab07998d0c3e1e21a7df986a188f6b897e71f5442407c"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/expected.hex": {
+      "bytes": 18432,
+      "sha256": "7c56b4bb588b4f50de9ba0f70e471bcac2c369dadc3a51dfa7bfa87ab029d09c"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/block.log": {
+      "bytes": 208,
+      "sha256": "ba6840c67c004bc7b5ff38fe771190443d3c892cd91d4ebe89107778df634d71"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/block-gl.log": {
+      "bytes": 208,
+      "sha256": "ba6840c67c004bc7b5ff38fe771190443d3c892cd91d4ebe89107778df634d71"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/cpu/sim.log": {
+      "bytes": 2067,
+      "sha256": "db024c81bbe6e645b9d95670e41f76c8ccb91697c53305055ecad69cb09d222f"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/cpu/test_soc.bin": {
+      "bytes": 3120,
+      "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/cpu/test_soc.hex": {
+      "bytes": 18144,
+      "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/input.json": {
+      "bytes": 505,
+      "sha256": "e7c2aaf109d8d88de01d020b952c243c164cd84a95320783e83ca9654a3cc53f"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/synth.ys": {
+      "bytes": 1409,
+      "sha256": "c1bd949f7a77c6919a8099b0b4ae10027a23fd62c701996ab064461af28eaba0"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/area.rpt": {
+      "bytes": 1443,
+      "sha256": "3cb9e8dfffbc10935ea2fa3447916a646e9fbc23f551ecd613bb802287c105a8"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/syn.log": {
+      "bytes": 2226896,
+      "sha256": "f405fd1f9eff2f6b112e8b80d997726e7465b9e043a2c7ebd8450572c19eb4df"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/netlist.v": {
+      "bytes": 490688,
+      "sha256": "8655567ca91c967ff5b9f75bd964ff7fca65c529cd5ea2d9a747b33a913fac23"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-logic/netlist.json": {
+      "bytes": 2280175,
+      "sha256": "40f9a1f48bda6654fa413b6b957ffae99857df55fa889a432048c11babea9618"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/synth.ys": {
+      "bytes": 1847,
+      "sha256": "2d0da608144af919955335910480562a56af2c8a1116b0432eaf685006547f04"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/area.rpt": {
+      "bytes": 1529,
+      "sha256": "a1f1a9a469a1aa26b00111eb7b251e5b403306f69dec5462c25920159b1f6d9e"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/syn.log": {
+      "bytes": 81604,
+      "sha256": "49b90d29c6a55faeeab49dfdb811c435fb3ecc63e4c1291349d38e341e3e4470"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/netlist.v": {
+      "bytes": 129302,
+      "sha256": "70bfcd8314c2e03d1234779fbcc7c4caa19cd7c4d94d5cb7f2ef0e8940ec390c"
+    },
+    "hw/soc/out/external-review-20260919/logic-boot-rom-probe/syn-sram/netlist.json": {
+      "bytes": 533328,
+      "sha256": "7673d31e6352330df65e8aa8a12f319cf63c3e94d2f0bb115ce7be70a4d84221"
+    }
+  }
+}

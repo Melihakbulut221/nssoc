@@ -42,7 +42,7 @@ mkdir -p "$OUT"
   -I "$SW" -L "$SW" \
   -T "$SW/link_soc.ld" \
   "$@" \
-  "$SW/crt0.S" "$SW/fi_workload.c" \
+  "$SW/crt0.S" "$SW/fi_workload.c" "$SW/lib/soc_hal.c" \
   -o "$OUT/fi_workload.elf" -lgcc
 
 "$OBJDUMP" -d -S "$OUT/fi_workload.elf" > "$OUT/fi_workload.dis"

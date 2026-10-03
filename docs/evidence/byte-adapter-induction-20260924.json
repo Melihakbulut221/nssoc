@@ -1,0 +1,97 @@
+{
+  "date": "2026-09-24",
+  "status": "PASS_UNBOUNDED_ADAPTER_PROTOCOL_WITH_DECLARED_MEMORY_ABSTRACTION",
+  "scope": "Actual four-bank byte-mask adapter with observation-only ports, arbitrary synchronous bank values and byte-uniform input mask. After first valid read, prove read bank selection and output retention for arbitrary enable/address/data sequences; prove every byte write-enable equation.",
+  "proof": {
+    "status": "PASS_INDUCTIVE_PROTOCOL_WITH_THREE_MUTATIONS_REJECTED",
+    "scope": "Actual adapter source with observation-only ports; arbitrary synchronous bank values. Proves bank selection, byte enables and retention after first valid read. Does not prove SRAM data contents, timing, initial output or transistor/native-macro equivalence.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/prove_byte_adapter_protocol.py": "374172a359c82c48c50eac2c2537b6e55eac52925536e1da373bd68e997f6ed2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/yosys": "feb0030e6d6d42e0a013a7a023b532a0c5e3817a72b34d414a751bcfcb669224",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/symbolic_bank.v": "f658cacb7c51cf2458e6d5d5bc6adc0feb56b8b297097d6bfe5bc6effd038eed",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/properties.v": "3126dc57b33f99b23e8256df88b1fe8e0f88f1bbee829ad5df5a051bde5ecb37",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/original/adapter.v": "de93bf115ff14fbe9d5b8883afd4ebc35a0cf401fb054b55eab2e2fdc9033ac2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/original/proof.ys": "a961f5548778f1ca5d2448d1628e14ac89d2484ff255fd7a900b28149bcb24c9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/adapter.v": "fd193d57ceb47bb44f91f3ba1c91dcb5e1cf3583fe9ed4a08f3441df20e97b07",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/proof.ys": "8947452e141193a8ab7021c662299145ca877b1fe89a558a180bb9e2fa4152ff",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/adapter.v": "07080f8c03cddcfd3e1e85a5959dffb5a6aa58672756605ab6017ad8089108d9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/proof.ys": "1755f32846a88f7273e5d277eb9d6c92f8cc5e1393bf693fb98930fcb93c0a98",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/adapter.v": "bb70e2570ea96fcfea754e9f817ab1959706efb6d5c3dc5c879afefc12d3a2ee",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/proof.ys": "8a5dd00c6dd17733c4423301e9ff01a928ae5da7f2abe3541cf8c4dca19f4d2f"
+    },
+    "cases": [
+      {
+        "name": "original",
+        "returncode": 0,
+        "proven": true,
+        "rejected_with_counterexample": false,
+        "elapsed_seconds": 1.4271647040150128,
+        "log_sha256": "04386bec9bc900543fd6398c4a17a07c466e685cc4fb141716aa309e19e6d035"
+      },
+      {
+        "name": "wrong_bank",
+        "returncode": 1,
+        "proven": false,
+        "rejected_with_counterexample": true,
+        "elapsed_seconds": 0.7732898189860862,
+        "log_sha256": "c6a1fc99a7fe64b3351cbcbbdc2d738daf56e0c6dbc59af7dc450dc20bbbc99a"
+      },
+      {
+        "name": "wrong_hold",
+        "returncode": 1,
+        "proven": false,
+        "rejected_with_counterexample": true,
+        "elapsed_seconds": 1.2737868530093692,
+        "log_sha256": "3bf3a42ca5a3434879d503ddf65566b8a8aafe23a3c98df2303b5d696b9cd698"
+      },
+      {
+        "name": "wrong_byte",
+        "returncode": 1,
+        "proven": false,
+        "rejected_with_counterexample": true,
+        "elapsed_seconds": 0.7229746439843439,
+        "log_sha256": "c02482de1453ce57f19cf2353f413663f2987fde27d889e1b072ddd51e309045"
+      }
+    ]
+  },
+  "limitations": [
+    "The source is unchanged apart from extra observation wires/ports; stripping those additions reconstructs the exact original adapter byte for byte.",
+    "The SRAM abstraction chooses independent arbitrary64-bit outputs on every bank clock. It does not model memory contents or prove native-macro/transistor equivalence.",
+    "The initial output before any valid read remains unspecified. No assumption restricts subsequent read/write/enable sequence or bank values.",
+    "All-step induction succeeds; wrong-bank, incorrect hold-update and shifted-byte-enable variants each fail with a concrete retained counterexample. This is separate from the existing behavioral native-macro comparison.",
+    "No Liberty, new physical route, SRAM transistor qualification or whole-chip LVS/timing acceptance follows."
+  ],
+  "archive": {
+    "path": "docs/evidence/byte-adapter-induction-20260924.tar.xz",
+    "sha256": "a5f6e897e39b213342d6652b1c469e0ddae3c38cbe8681ca8bd8dae8e97d3c1c",
+    "bytes": 24756,
+    "members": {
+      "docs/evidence/byte-adapter-induction-20260924-NOTICES.txt": "741fb218bc3d531dad2ca4c9474a93a3f5810ff4992d1f4059ca085c9ab7d679",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/original/adapter.v": "de93bf115ff14fbe9d5b8883afd4ebc35a0cf401fb054b55eab2e2fdc9033ac2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/original/proof.ys": "a961f5548778f1ca5d2448d1628e14ac89d2484ff255fd7a900b28149bcb24c9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/original/run.log": "04386bec9bc900543fd6398c4a17a07c466e685cc4fb141716aa309e19e6d035",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/properties.v": "3126dc57b33f99b23e8256df88b1fe8e0f88f1bbee829ad5df5a051bde5ecb37",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/result.json": "2e0500c9dfa3747f280dc0249c90651a9e67434b68dd003ec1889f25ce793eec",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/symbolic_bank.v": "f658cacb7c51cf2458e6d5d5bc6adc0feb56b8b297097d6bfe5bc6effd038eed",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/adapter.v": "fd193d57ceb47bb44f91f3ba1c91dcb5e1cf3583fe9ed4a08f3441df20e97b07",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/counterexample.vcd": "6212667039434614968fddaba501a1a4d35ff94172b7e75386bd6089436628cb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/proof.ys": "8947452e141193a8ab7021c662299145ca877b1fe89a558a180bb9e2fa4152ff",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_bank/run.log": "c6a1fc99a7fe64b3351cbcbbdc2d738daf56e0c6dbc59af7dc450dc20bbbc99a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/adapter.v": "bb70e2570ea96fcfea754e9f817ab1959706efb6d5c3dc5c879afefc12d3a2ee",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/counterexample.vcd": "b6485dfacc044e68d2f27695a9ba5f23c3b4f560e62cebfb360b3eb7e5f1d1dc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/proof.ys": "8a5dd00c6dd17733c4423301e9ff01a928ae5da7f2abe3541cf8c4dca19f4d2f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_byte/run.log": "c02482de1453ce57f19cf2353f413663f2987fde27d889e1b072ddd51e309045",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/adapter.v": "07080f8c03cddcfd3e1e85a5959dffb5a6aa58672756605ab6017ad8089108d9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/counterexample.vcd": "1a4c52eb346d6c9856442403a119141dbc522f2c3496b38227fd573b85de6b69",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/proof.ys": "1755f32846a88f7273e5d277eb9d6c92f8cc5e1393bf693fb98930fcb93c0a98",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-adapter-protocol-proof/wrong_hold/run.log": "3bf3a42ca5a3434879d503ddf65566b8a8aafe23a3c98df2303b5d696b9cd698",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/prove_byte_adapter_protocol.py": "374172a359c82c48c50eac2c2537b6e55eac52925536e1da373bd68e997f6ed2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_byte_adapter_protocol.py": "269dc7b2ff6b65c0db297523df7004e1bafe07330bd65b650f7f3d15d4b0a9cb"
+    }
+  }
+}

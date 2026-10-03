@@ -12,6 +12,21 @@ flow.
 Revision 0.2, 14 September 2026 (0.1 issued 3 September 2026). Status: **preliminary, pre-silicon,
 pre-sign-off**.
 
+**21 September 2026 interface update:** UART0 now implements 8N1 reception
+through `uart_rx_i`, including data-ready/overrun/framing status and fast-line-0
+interrupts. [The current register and validation contract](97-uart-receive.md)
+supersedes the transmit-only UART descriptions below. Their 52-flop area and
+old port inventory describe earlier revisions. SpaceWire/CAN/SPI/I2C/Ethernet,
+logic-ROM boot and external interrupts also have later implementations tracked
+in [the current acceptance register](92-product-acceptance.md); the historical
+tables below must not be used as the current whole-device feature/pin list.
+
+**Revision 0.3, 21 September 2026 — current contract:** section 0.4 below
+supersedes the historical feature, memory, interface, port, software and proof
+summaries in revisions 0.1/0.2. Their text and measurement provenance remain
+visible. A historical layout or FI result is not automatically a result for
+the current RTL, compiled loader or optional-interface profile.
+
 ---
 
 ## 0. Read this page before any number in this document
@@ -138,6 +153,97 @@ disagreement**.
   `soc_top`.
 - **Software.** There is a bring-up program and a supervisor workload;
   there is no BSP, no driver library and no operating system port.
+
+
+### 0.4 Current implementation contract — 21 September 2026
+
+This is the current source/verification summary. Sections 1–17 retain earlier
+revision details and measurements with their original scopes. In particular,
+the old “no interfaces”, “no clock gating”, “no driver library”, “never simulated
+as a netlist” and “zero patches” descriptions must not be applied to this build.
+No frequency, package, operating-voltage range or qualified radiation rating
+is established here.
+
+#### Implemented logic and explicit build profiles
+
+| Block | Current implementation | Boundary / source |
+|---|---|---|
+| CPU | Ibex RV32IMC, four PMP regions, no instruction cache, `SecureIbex=0` | `soc_top.v` parameter block. No lockstep, implemented debug halt interface or end-to-end bus integrity. The pristine dependency checkout is preserved; the build substitutes the project register file and uses the documented translated-top fault-port adaptation. See docs/43 and docs/44. |
+| Register file | `(40,32)` shortened SECDED storage for the nonzero registers, two read ports and background scrub | `ibex_regfile_secded.v`; the older `(39,32)` feature bullet refers to the wrong codec width. This project reuses its `(72,64)` codec with unused data inputs constant. |
+| System memory | 32 KiB protected RAM; 8 KiB ROM address window | [Generated memory map](memmap-soc.md), derived from `regmap/memmap.yaml`. The old 64 KiB SRAM capacity is superseded. `SOC_BOOT_ROM=logic` selects generated immutable SECDED ROM; legacy SRAM ROM remains a separate configuration. Logic-ROM loader bytes and geometry are hashed together (docs/95). |
+| Bus and faults | Ibex request/grant fabric, APB bridge, unmapped-address errors, bounded peripheral wait and retained timeout/crash telemetry | `soc_bus.v`, `soc_apb_bridge.v`, `soc_busstat.v`, `soc_boot.v`; APB timeout defaults to 256 cycles. This is not AMBA AHB or a PLIC. |
+| Timing / watchdog | CLINT, two general-purpose timers, three-stage watchdog and retained reset evidence | `soc_clint.v`, `soc_gptimer.v`, `soc_wdog.v`; watchdog hardware disable bootstrap remains an explicit board input. The shipped timer map now comes from `regmap/peripherals/gptimer.yaml`. |
+| Clock enables | Ibex clock gate plus fabric and NPU clock gates | `CLKGATE=1`; no clock-source/PLL, physical POR or brownout circuit is implemented. The reserved CLKGATE software slot is not an implemented clock controller. |
+| UART / GPIO / QSPI | UART0 8N1 TX/RX, 16 GPIO signals with separate output enables, register-mode QSPI with two chip selects | docs/97, docs/65, docs/66. UART1 and QSPI execute-in-place regions remain reserved. UART has a one-byte receive holding register, not a packet FIFO. |
+| SPI / I2C | SPI master modes 0–3/two chip selects; I2C command master with timeout and open-drain output enables | docs/88. No pad cells, pull-ups or external electrical qualification are implied. |
+| SpaceWire / CAN | PIO SpaceWire codec and classical CAN 2.0B/SJA1000-shaped byte registers | Present only with explicit `SOC_INTERFACE_PROFILE=full` / `SOC_LGPL_INTERFACES`; LGPL source/notices retained. Default `base` omits the cores, disables their discovery entries and faults their slots. No CAN FD or GRLIB driver compatibility is claimed. |
+| Ethernet | Fixed Gigabit full-duplex GMII MAC, SRAM packet buffers, PIO packet access and software-controlled MDIO | docs/90. External PHY/reference clocks are required. No DMA, sustained line-rate software throughput, 10/100 mode, autonomous MDIO transaction engine or qualified asynchronous-clock integration is claimed. |
+| NPU | One unchanged frozen pilot node, serial host adapter, event queues and telemetry | `hw/rtl/pilot_top.v` is instantiated unchanged; `soc_npu.v` supplies integration. Other node windows remain faulting; no multi-node AER network is implemented. |
+| PCIe | Gen3 x4 remains a requested product requirement | **OPEN: no controller or PHY instantiated.** Candidate research in docs/91 does not constitute a link implementation. |
+
+The normative address/IRQ map is [docs/memmap-soc.md](memmap-soc.md), with
+profile-specific optional discovery checked by the profile tests. Do not use
+old prose counts of “sixteen slots” or “two spare IRQ lines” as the current
+inventory. Offsets for thirteen implemented block maps are generated from
+`regmap/peripherals/`; the upstream CAN byte/bank map and field definitions
+remain separate work. The [generation contract](../regmap/peripherals/README.md)
+states the supported scope and compatibility checks.
+
+#### Core ports, not package pins
+
+| Port group | Current RTL boundary |
+|---|---|
+| Clock/reset/boot | `clk_i`, active-low power-on reset `rst_ni`, `wdog_dis_i`, sampled `strap_i` |
+| External interrupt | Active-high synchronized `irq_external_i`, machine-external vector 11, ungated wake path (docs/94) |
+| UART / GPIO | `uart_rx_i`/`uart_tx_o`; `gpio_i`, `gpio_o`, `gpio_oe_o` |
+| QSPI / SPI | Separate input/output/enable wires for QSPI lanes; SPI MISO/MOSI/SCK and two active-low selects |
+| Ethernet | External RX/TX clocks, 8-bit GMII RX/TX with control/error signals, forwarded TX clock, MDC and separate MDIO input/output/enable |
+| SpaceWire / CAN / I2C | SpaceWire data/strobe RX/TX; CAN RX/TX/bus-off; I2C input and pull-low-enable signals. Optional cores retain idle top ports in the base profile. |
+| Observation | IRQ, watchdog, NPU serial/event and Ibex alert/sleep outputs remain observable RTL signals |
+
+The authoritative port declarations are `hw/soc/rtl/soc_top.v`. These are
+core-level wires, including observation signals, with no assigned package
+pins, pads/ESD, I/O voltages or final board timing budgets. Thus this table
+cannot be used as a bonding diagram.
+
+#### Software and proof limits
+
+The bootloader, bring-up program and FI workloads now share the
+[bare-metal HAL](../hw/soc/tb/sw/lib/README.md): byte/word MMIO, bounded waits,
+UART access and console formatting. CPU tests exercise real firmware; the
+library does not supply an operating system, DMA driver or runtime stack
+protection. Linker bounds remain distinct from stack-overflow detection.
+
+| Verification | Accepted scope | Still outside it |
+|---|---|---|
+| Whole-SoC CPU simulation | Both base/full HAL interface programs pass 29 checks with zero failure masks; [HAL evidence](evidence/soc-hal-20260921.json) | Hardware board/PHY validation, injected-fault qualification and final timing |
+| Native gate boot | The exact `9ffe83b` full-interface RTL revision passes 28 baseline boot checks with native IHP models; [hosted result](evidence/hosted-native-interfaces-20260921.json) | The later HAL image's independent native run remains separately pending; no extracted-SDF or current-layout pass is inferred |
+| Real-codec register-file contract/equivalence | Fault-free read/write contract and comparison with pinned upstream storage, including scrub variants; docs/87 | Whole-core `reg_ch0`, arbitrary faults or end-to-end instruction proof |
+| Abstract-codec scrub | Required unbounded PDR and independent 40-cycle BMC now pass with unchanged source copies; [two-task result](evidence/formal-scrub-invocation-20260921.json) | The real-codec storage/scrub jobs and `prove12` remain recorded non-closing obligations |
+| Whole-core RVFI | Historical bounded instruction results and assumptions remain those stated in docs/63 | No complete M-extension verdict or unbounded whole-core register proof. The historical `reg_ch0` result through check cycle 18 does not span the 31-register scrub walk; later timeouts remain non-verdicts |
+| Aggregate formal gate | 157 mandatory pilot/SoC tasks, plus six separately recorded historical non-closing tasks | A task inventory is not a completed sweep. Full current aggregate acceptance remains open |
+
+In particular, an induction depth in a `mode prove` configuration is not a
+claim that only that many cycles are proved once induction succeeds; conversely,
+a depth-40 `mode bmc` result is bounded to those frames. The abstract codec
+cannot be silently replaced by a claim about real encoder/decoder hardware.
+The exact task configurations and `hw/soc/formal/sweep-policy.json` remain the
+sources for those boundaries.
+
+#### Physical and product acceptance
+
+No historical physical table below establishes current-image signoff. The
+zero-derate timing passes were withdrawn; corrected-loader/IRQ runs with the
+required 5% derating still fail timing. An older routed design has zero markers
+with the updated upstream KLayout main deck, while native Magic still reports
+macro-interior errors and SRAM-interior LVS remains failing. The current
+UART/HAL/profile integration needs its own final layout and acceptance.
+
+The complete [product gates](92-product-acceptance.md) remain binding:
+PCIe IP/PHY, final timing/electrical/DRC/LVS, pads/ESD/package and external PHYs,
+clock/POR/power integrity, usable scan/MBIST/debug, broader FI/coverage and
+silicon/radiation qualification. This revision of the datasheet reconciles the
+current source contract; it closes none of those physical dependencies.
 
 ---
 
@@ -835,8 +941,11 @@ fault-injection records correctly.
 ### 5.8 Console UART (`hw/soc/rtl/soc_uart.v`)
 
 GRLIB APBUART register map at slot `0x000` (`0xFF900000`), source
-number 2, fast line 0. **Transmit only.** 241 cells, 52 flip-flops,
-4,359.7764 um2 **[measured, `docs/45` section 6.2]**.
+number 2, fast line 0. The historical transmit-only design measured 241 cells,
+52 flip-flops and 4,359.7764 um2 in `docs/45` section 6.2. The current
+[8N1 TX/RX contract](97-uart-receive.md) adds a receive holding register,
+start/stop validation, overrun/framing flags and a receive interrupt enable.
+That change is not included in the historical area or layout measurements.
 
 ### 5.9 Device tables (`hw/soc/rtl/soc_pnp.v`, `soc_apb_pnp.v`)
 
@@ -2538,6 +2647,7 @@ if that stops being true. **This document modifies nothing.**
 
 | Date | Revision | Changes |
 |---|---|---|
+| 2026-09-21 | **0.3** | Section 0.4 reconciles post-review RTL profiles, interfaces and core ports, actual RAM/register-codec geometry, shared firmware HAL and formal bounds. Current native/physical acceptance is separated from historical measurements; old revision text is preserved. |
 | 2026-09-14 | **0.2** | Retargeted from commit `7721719` to the current tree. Section 0 statement 1 corrected: all four sign-off deck families now have a result on the eight-macro layout (`docs/67` section 11). Sections 1 and 12.2 carry a dated note that the default build holds eight macros, not six, since the ROM's two `512x16` check macros were placed and routed (`s83romecc5`, `s83ant`). Owed by `docs/58` item 5, `docs/67` item 7, `docs/68` item 6, `docs/70` item 6, `docs/71` item 2. Every 0.1 number is left standing, `docs/64`'s rule; the layout figures in sections 5-11 still describe the six-macro `rom0` build and say so |
 | 2026-09-10 | **0.1d** | Section 9.10 added: the two SoC-wide denominators that bound the whole of section 9 — 1,003 to 1,051 of the placed design's 5,873 flip-flops are in a block no campaign has injected into (`soc_busstat` entire, and with it every counter the SoC's own upset telemetry reports through), and the flip-flop-only fault model leaves 96.68 % of the 176,663 placed instances and 90.35 % of the 60,868 standard cells outside the model. No campaign figure in section 9 changed; what changed is that the numerators now have a stated denominator. Section 9.9's *"`soc_top` has never been simulated as a netlist"* is corrected in place against `docs/74` and left standing. |
 | 2026-09-05 | **0.1a** | Section 14: the seven disagreements are resolved in the documents that own them, each correction left visible in place, and recorded in `docs/64-document-reconciliation.md`. No figure in this datasheet changed; section 9 already followed the committed campaign log. |
@@ -2579,7 +2689,6 @@ if that stops being true. **This document modifies nothing.**
 | `docs/54-klayout-deck-and-the-macro.md` | The 2,316 examined, and the second exit closed |
 | `hw/soc/rtl/`, `hw/rtl/` | Behaviour, single source of truth |
 | `sw/golden/` | The bit-exact executable specification |
-
 
 
 

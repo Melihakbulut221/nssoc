@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-targeted-hold-failure-archive
+on:
+  push:
+    paths:
+      - .github/workflows/timing-targeted-hold-failure-archive.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-targeted-hold-failure-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Preserve exact failed native bytes without rerunning native work
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python3 scripts/archive_targeted_hold_failure.py --output "$RUNNER_TEMP/targeted-hold-failure-archive"
+      - name: Preserve compact failure and publication receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: targeted-hold-failure-archive-receipt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/targeted-hold-failure-archive/review/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

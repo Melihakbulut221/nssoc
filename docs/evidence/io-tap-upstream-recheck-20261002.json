@@ -1,0 +1,216 @@
+{
+  "schema": 1,
+  "status": "NO_QUALIFIED_TAP_AP_REPAIR_CANDIDATE_FOUND_IN_BOUNDED_UPSTREAM_REVIEW",
+  "checked_at_utc": "2026-10-02T11:23:06.116084+00:00",
+  "scope": "Read-only public source/history review; no extraction, design edit, reference fitting, tap waiver or upstream message.",
+  "main_head": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "dev_head": "35912784906a01fd11c5af186a516a4c30d91e2c",
+  "previous_dev_head": "c702f87d2a6de6256ea38a0f281355e302981ba9",
+  "dev_io_cdl_lef_gds_git_blobs_unchanged": true,
+  "small_cdl_lef_bytes_git_blob_verified": true,
+  "gds_bytes_downloaded_or_verified": false,
+  "last_main_io_cdl_change": {
+    "commit": "1a29eb4980d520d9ce7273593dc1599310cb81a9",
+    "date": "2026-05-19T13:57:18Z"
+  },
+  "unchanged_tap_deck_files": [
+    {
+      "name": "tap_derivations.lvs",
+      "sha256": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+      "identical_to_pinned_failing_deck": true
+    },
+    {
+      "name": "tap_extraction.lvs",
+      "sha256": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+      "identical_to_pinned_failing_deck": true
+    },
+    {
+      "name": "custom_reader.lvs",
+      "sha256": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "identical_to_pinned_failing_deck": true
+    }
+  ],
+  "hierarchy_fix": {
+    "pr": 920,
+    "included_by_pr": 1032,
+    "included_in_pinned_deck": true,
+    "mechanism": "Re-hierarchisation plus cell-local cheat extraction in deep mode; already exercised by failed native result."
+  },
+  "alternative_disable_taps": {
+    "pr": 1032,
+    "merged_at": "2026-08-06T09:21:58Z",
+    "available_in_pinned_deck": true,
+    "selected": false,
+    "reason": "Disables required tap-device/AP checking; its direct body connections also require independent I/O rail handling."
+  },
+  "remaining_actual_tap_deltas": [
+    {
+      "rail": "VSS",
+      "layout_A_um2": 98.034,
+      "layout_P_um": 657.76,
+      "reference_A_um2": 97.107875,
+      "reference_P_um": 87.9
+    },
+    {
+      "rail": "IOVSS",
+      "layout_A_um2": 15455.02395,
+      "layout_P_um": 4526.95,
+      "reference_A_um2": 15352.823,
+      "reference_P_um": 1223.46
+    }
+  ],
+  "source_supported_reasons": [
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4352461493",
+      "finding": "I/O library author identifies arbitrary tap geometry and hierarchy overlap as unresolved area/perimeter representation problems; supports future tap handling redesign, not corrected values for these cells."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4348791501",
+      "finding": "Independent extractor author reports measured area/perimeter still not matching I/O netlist values."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1032",
+      "finding": "Merged optional tap-disable route includes PR920; default tap-enabled behavior is unchanged."
+    }
+  ],
+  "negative_scope": "Open PR searches are bounded by tap and sg13g2_io title/body queries; absence of a qualifying result is not a proof that no unpublished or differently described correction exists.",
+  "concrete_required_contract": "A vendor-supported corrected I/O GDS/CDL/LEF and tap-recognition contract with ordered TIE/WELL, explicit substrate scope and physically accurate A/P, or an independently qualified redesigned library. Then strict unchanged-device/port checks must pass both isolated masters and actual parent integration before full-chip acceptance.",
+  "autonomous_next_step": "Finish already authorized uppercase boundary verification. Preserve failing tap evidence and a reproducible qualification packet; do not rerun unchanged coherent-library LVS or derive replacement schematic A/P by copying measured extraction values.",
+  "source_files": [
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/cdl-history.json",
+      "bytes": 16807,
+      "sha256": "0da8dd9345e36537b9ad3d05557ccca1e1044bbef754a5311e71958322f81e96"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-custom_reader.lvs",
+      "bytes": 23322,
+      "sha256": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-custom_reader.lvs.api.json",
+      "bytes": 33454,
+      "sha256": "c5b68340da91ada623c35161ec565d3836f4bacc736eebd012ee3ade73e975cb"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-head.json",
+      "bytes": 6210,
+      "sha256": "6860d244fbe3de9ddca5f5e858526df81bf5df95e95e96d5fc847346fc9b7c61"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-sg13g2_io.cdl",
+      "bytes": 38750,
+      "sha256": "d0175a0b07234af9f2c9c30e7a725ed38d213c94eb03535de7af9b9936ba7d1e"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-sg13g2_io.cdl.api.json",
+      "bytes": 54594,
+      "sha256": "671131501b8658c97182279dd5f9cf9ce263f1249bef7a9b00f74e13d6274a58"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-sg13g2_io.gds.api.json",
+      "bytes": 1203,
+      "sha256": "cdfe16699c1a3d7c01a9a73b9704fd2673eb141e57002646438e3d7a34feae1e"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-sg13g2_io.lef",
+      "bytes": 96886,
+      "sha256": "1100f050cd477b0db6072e1b2b53ee1e13d7e5473e7b5d20f27534cc27806320"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-sg13g2_io.lef.api.json",
+      "bytes": 134694,
+      "sha256": "a85cb8fc2da5943ae47828e8a3bb1748e4c9a71c0aedae5e04cd31b7f5ca044c"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-source-views.json",
+      "bytes": 4122,
+      "sha256": "1ce2b3288539932c29bb3ff6f7bdb1f997f7715b8e97849ac8883453e519de83"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-tap_derivations.lvs",
+      "bytes": 2099,
+      "sha256": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-tap_derivations.lvs.api.json",
+      "bytes": 4227,
+      "sha256": "63ce7fae788dc906be10235b74a4b1b809a7433f9f49aba514dd560580f08d3f"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-tap_extraction.lvs",
+      "bytes": 2254,
+      "sha256": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/dev-tap_extraction.lvs.api.json",
+      "bytes": 4436,
+      "sha256": "4a8b586e9ef1d780dfc46be2a5e4b6c0cd660b6e3363c28e92d7bd227f94d55c"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/issue-714-comments.json",
+      "bytes": 25362,
+      "sha256": "5a56f52e89e5b4170e13966bbca324f8d7011a9307666a5d17a89d510369df6d"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/issue-714.json",
+      "bytes": 7061,
+      "sha256": "c1ceb16dbf3d68733ae867bfaed5d972ce7921f4666b089a2cc93bb17c72d041"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/issue-955-comments.json",
+      "bytes": 33438,
+      "sha256": "ad4f9bf4f9a90a5281b0d2c4d53f7483024b72acfa1ecb2018b8062a6da8c490"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/issue-955.json",
+      "bytes": 6706,
+      "sha256": "91e2a295449916dcf5fca56c3b7b879d05ab0c08995fd1d4a233a89c82a67011"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/main-head.json",
+      "bytes": 42826,
+      "sha256": "8b6117289864b895ca0c5e2d9c086d29159e51f3ad590838fffb5e67341fdb6f"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/open-io-prs.json",
+      "bytes": 13761,
+      "sha256": "dd828408ff6d662de1f7b7a6e6ab3e674c84ef90d2e980bdecf7cb6e276dd1f6"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/open-tap-prs.json",
+      "bytes": 12829,
+      "sha256": "15a37985ca506ac4d72a508415c541aefd96759f2f0007fb137abde987047211"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/pr-1032.json",
+      "bytes": 22304,
+      "sha256": "29550a6506023498d34b12ad3616aa830caecdad8602aed8f3e4bc065962568e"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/pr-920.json",
+      "bytes": 17853,
+      "sha256": "3e71a4d37377b295efc24a6b2cca92cf699b242a0a23f93cb425070679be6bc0"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/source-pins.json",
+      "bytes": 3075,
+      "sha256": "8767617d1ae86cb817db4b89db8f53b84daa546b03d44a067f4bc8553798fe62"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/tap-derivation-history.json",
+      "bytes": 27327,
+      "sha256": "3863d2708fa65f8d6ed3872b697a5f45a81b682d9fe67c553965012028d7e543"
+    }
+  ],
+  "native_failure_evidence": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/boundary-cloud/native-review.json",
+    "bytes": 63963,
+    "sha256": "66cf405ae5dd87e72e49950fbf4bc51ab729dc13c4e95dfd30dd92ffa4267f54"
+  },
+  "actual_reference_changed": false,
+  "physical_tap_geometry_changed": false,
+  "qualified_deck_acceptance": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false
+}

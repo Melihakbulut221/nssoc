@@ -1,0 +1,125 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-targeted-hold-complete-archive
+on:
+  push:
+    paths:
+      - .github/workflows/timing-targeted-hold-complete-archive.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-targeted-hold-complete-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Archive exact final diagnostic bytes without native execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          import subprocess
+          sys.path.insert(0, 'scripts')
+          import archive_chip_run_artifacts as archive
+          plan = Path('docs/evidence/timing-targeted-hold-complete-archive-plan-20261002.json')
+          output = Path(os.environ['RUNNER_TEMP']) / 'timing-targeted-hold-complete-archive'
+          review = Path(os.environ['RUNNER_TEMP']) / 'timing-targeted-hold-complete-archive-review'
+          review.mkdir(exist_ok=False)
+          expected = [dict(source_artifact_id=11211540042, artifact_name='targeted-hold-final-1',
+              name='timing-targeted-hold-complete-20261002.zip', bytes=270228757,
+              sha256='b57c433455e59f396ec91d40456c473c4a11fd78e413ff1c093e388d38460f4e')]
+          sources = ('scripts/archive_chip_run_artifacts.py', 'scripts/archive_chip_fill.py',
+              'scripts/verify_targeted_hold_archive.py', 'scripts/archive_hold_diagnostic.py',
+              '.github/workflows/timing-targeted-hold-complete-archive.yml', str(plan), 'LICENSES/Apache-2.0.txt')
+          pins = {}
+          for name in sources:
+              raw = Path(name).read_bytes()
+              target = review / 'source' / name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(raw)
+              pins[name] = dict(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+          (review / 'source-pins.json').write_text(json.dumps(pins, indent=2) + '\n')
+          (review / 'expected-artifact.json').write_text(json.dumps(expected, indent=2) + '\n')
+          original_ready = archive.producer_ready
+          original_resolve = archive.resolve_artifacts
+          resolutions = []
+          def ready(source, requested):
+              (review / 'producer-run.json').write_text(json.dumps(source, indent=2) + '\n')
+              if source.get('run_attempt') != 1:
+                  raise ValueError('Unexpected producer rerun')
+              return original_ready(source, requested)
+          def resolve(listing, requested):
+              rows = original_resolve(listing, requested)
+              resolutions.append(listing)
+              (review / 'artifact-resolutions.json').write_text(json.dumps(resolutions, indent=2) + '\n')
+              if rows != expected:
+                  raise ValueError('Source artifact differs from fixed completed-diagnostic bytes')
+              return rows
+          archive.producer_ready = ready
+          archive.resolve_artifacts = resolve
+          sys.argv = ['archive_chip_run_artifacts.py', '--plan', str(plan), '--output', str(output)]
+          original = Path(os.environ['RUNNER_TEMP']) / 'timing-targeted-hold-complete-input.zip'
+          extracted = review / 'full-verification' / 'capture'
+          try:
+              requested = archive.validate_plan(json.loads(plan.read_text()))
+              producer = archive.api(f'actions/runs/{requested["source_run"]}')
+              if not ready(producer, requested):
+                  raise ValueError('Pinned completed producer is not ready')
+              resolve(archive.api(f'actions/runs/{requested["source_run"]}/artifacts?per_page=100'), requested)
+              with original.open('xb') as stream:
+                  subprocess.run(['gh', 'api',
+                      'repos/Melihakbulut221/nssoc/actions/artifacts/11211540042/zip'],
+                      stdout=stream, check=True)
+              subprocess.run([sys.executable, '-B', 'scripts/verify_targeted_hold_archive.py',
+                  '--archive', str(original), '--output', str(review / 'full-verification')], check=True)
+              verification = json.loads((review / 'full-verification/result.json').read_text())
+              if (verification.get('status') != 'PASS_FULL_ARCHIVE_REPLAY_DIAGNOSTIC_ONLY'
+                      or any(verification.get(k) is not False for k in
+                          ('candidate_adopted', 'timing_accepted', 'manufacturing_approval'))):
+                  raise ValueError('Complete diagnostic replay did not pass before publication')
+              original.unlink()
+              archive.main()
+          except Exception as error:
+              (review / 'workflow-error.json').write_text(json.dumps(dict(
+                  status='FAILED_PRESERVED', error_type=type(error).__name__, error=str(error),
+                  physical_acceptance=False, manufacturing_approval=False), indent=2) + '\n')
+              raise
+          finally:
+              result = output / 'result.json'
+              if result.is_file():
+                  (review / 'result.json').write_bytes(result.read_bytes())
+              closure = {str(p.relative_to(review)): dict(bytes=p.stat().st_size,
+                  sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+                  for p in sorted(review.rglob('*')) if p.is_file() and not p.is_relative_to(extracted)}
+              (review / 'review-digests.json').write_text(json.dumps(closure, indent=2) + '\n')
+          PY
+      - name: Preserve compact receipts and exact archive methods
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: timing-targeted-hold-complete-archive-receipt-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/timing-targeted-hold-complete-archive-review/
+            !${{ runner.temp }}/timing-targeted-hold-complete-archive-review/full-verification/capture/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: coherent-io-lvs
+on:
+  push:
+    paths:
+      - .github/workflows/coherent-io-lvs.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: coherent-io-lvs-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  vss-coherent-main:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    env:
+      QT_QPA_PLATFORM: offscreen
+      OMP_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check coherent view and strict native contracts
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_coherent_io_lvs.py sw/tests/test_io_parent_lvs.py sw/tests/test_io_tap_topology_audit.py sw/tests/test_io_cdl_globals.py
+      - name: Bootstrap exact runtime and unchanged matching native deck
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          python3 hw/soc/flow/prepare_ihp_lvs.py
+      - name: Native physical parent and eight strict controls
+        run: |
+          mkdir -p hw/soc/out/github-coherent-io-lvs
+          set -o pipefail
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python sw/tests/io_parent_lvs_native.py hw/soc/out/github-coherent-io-lvs/controls 2>&1 | tee hw/soc/out/github-coherent-io-lvs/controls.log
+      - name: Coherent Vss deep and flat LVS without tap or port waivers
+        run: |
+          set -o pipefail
+          python3 scripts/run_coherent_io_lvs.py \
+            --controls hw/soc/out/github-coherent-io-lvs/controls/result.json \
+            --output hw/soc/out/github-coherent-io-lvs/comparison \
+            2>&1 | tee hw/soc/out/github-coherent-io-lvs/comparison.log
+      - name: Preserve original views and all passing or failing native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coherent-vss-lvs-attempt-${{ github.run_attempt }}
+          path: hw/soc/out/github-coherent-io-lvs/
+          if-no-files-found: error
+          retention-days: 30

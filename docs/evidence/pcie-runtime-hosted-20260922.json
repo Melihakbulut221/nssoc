@@ -1,0 +1,188 @@
+{
+  "date": "2026-09-22",
+  "status": "PASS: independent hosted transaction backend replay",
+  "scope": "Backend and real GPIO only at 7cdbc35; no packet adapter, link/PHY, layout or product signoff",
+  "run_id": 35685482620,
+  "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35685482620",
+  "head_commit": "7cdbc3569bccd010777a47dbe0834b82e97a34d9",
+  "tested_merge_commit": "79ecb9784b0e831b98dd683ce11bd0dbc05ab07a",
+  "identical_git_tree": "a1f88a304b5d721493b8f2c4559df31e013f6739",
+  "artifact_id": 10676865788,
+  "artifact": {
+    "path": "hw/soc/out/external-review-20260919/pcie-runtime-hosted.zip",
+    "bytes": 692548,
+    "sha256": "568aacd3d0e489fa70cb5de45ed1363b5f886c62122fd5be6f7d50344f55cbda"
+  },
+  "workflow_log": {
+    "path": "hw/soc/out/external-review-20260919/pcie-runtime-hosted.log",
+    "bytes": 164301,
+    "sha256": "4976b51cb9a90fb7cf7ec6b027e11464942fa6e7cfb0745d73134d18587328b5"
+  },
+  "verification": "Every recorded input matched git show at tested head; all command log/output hashes and all XML counts independently recomputed from downloaded ZIP; all three formal status files PASS. Archive SHA256 matches GitHub metadata. Merge tree equals branch head tree.",
+  "controls": {
+    "status": "PASS",
+    "scope": "Transaction-layer RTL controls, no link or PHY",
+    "inputs": {
+      "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+      "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "e7a9fce8a56cdca283f13341d25d768062c2e94f858892804a153256e75d2c5e",
+      "scripts/check_pcie_tlp_controls.py": "c450b5787031f183e2c2140f284a6ba861205eeae6579e6314e31d7713593b56",
+      "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "runs": {
+      "baseline": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "be60f9a9007b8c7a931e49b90fc7551c2eff775b7f45b9269c1158f1c2272237",
+        "xml_sha256": "abba7a8d2dab5ae9eb2167eea7d7416112341be19e68c218b8018def955aaabb",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_1": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "3c23b8734d9bdcc7e9d2a7231b9d9e5773834b9d180c02598971e251883f768e",
+        "xml_sha256": "9c7a53e3613d21d7c3e7a0486f951f9271b76832f02d63c751069d6417a595b4",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "timeout_256": {
+        "counts": [
+          6,
+          0,
+          0
+        ],
+        "returncode": 0,
+        "log_sha256": "df5ec8cd357506d8bd2782a8b7f8fd0ab40c44323237d650ad5a7eeb923e0ad3",
+        "xml_sha256": "0da3d506b897c85bec122bf078dbfa6e9f61eddd03fe679b06f8529b53228448",
+        "rtl_sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+      },
+      "zero_length_count": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "a69d80e75eb084b378b70e06b91c7daa5fdb56f6fa57197dce0557f14acd74cd",
+        "xml_sha256": "8884a115ba633166b65976525b1a17fbc3d4ae38061f5c9f8d2a6b37ad547023",
+        "rtl_sha256": "dfb85e9e0f082707d1e19f13b23fc3fd7e951f18ae40c86d5f0a597273856119"
+      },
+      "bar_decode": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "2d029dc5e7c826f8bac0f37e66c1f960800578fedb4a8d0ddf45c5d1338085bc",
+        "xml_sha256": "c9e807552e132b2325c6e3f527a3f096d36c0b9f590aba4952cd9e5e90c24466",
+        "rtl_sha256": "57d4a71321701dd568ae6babe4eb2cac69ea2d13d4904b2b6c484d54d888f6c8"
+      },
+      "byte_strobes": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "ce7a3356c2e1429e3bc0790fde80e9e191cd05f81607d5a65a5cc5e97c1bbd6e",
+        "xml_sha256": "8a273edeae7f36ba158e95fcd3a4ba1f1a3a2e7827b3cbe7ed476f0e45f99a22",
+        "rtl_sha256": "a5f109e2dee4e6a8cf972e0c586ff6fa663514d2bea8f64284594b5a9bddd7af"
+      },
+      "abort_status": {
+        "counts": [
+          5,
+          1,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "ffad3830aee2713a7fed3d6c619b3b0ad083fcc6352ef13591c013d291d77519",
+        "xml_sha256": "42e9d908dcb4b4932d326dfd6010e8cb36683456bf480b7381533e5f802095ff",
+        "rtl_sha256": "f5e00c1fbffb3b006dc81c9411f846e27424242d367414bee22a4cf8df8cd5ac"
+      },
+      "completion_tag": {
+        "counts": [
+          0,
+          6,
+          0
+        ],
+        "returncode": 2,
+        "log_sha256": "5bda49745ec2812b862fee7b25935626de1695dff29ca181e5f5024ee5892eb2",
+        "xml_sha256": "ac97abf873ceb079992dd953f952aa1e61c213b84521df7d46a0d8d663e9e7ab",
+        "rtl_sha256": "bbc9a0374f814b2cd0e1e00b253e8d176d798d4464695206aa2df33cc5946270"
+      }
+    }
+  },
+  "native": {
+    "status": "PASS",
+    "scope": "IHP mapped block simulation; no SDF/layout/link/PHY",
+    "inputs": {
+      "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+      "hw/soc/tb/cocotb/test_soc_pcie_tlp_regs.py": "7af7a85f145278cc853edf7399527b311669f3618f0af87731ac7eec9d4ee9f9",
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_regs": "e7a9fce8a56cdca283f13341d25d768062c2e94f858892804a153256e75d2c5e",
+      "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+      "scripts/check_pcie_tlp_native.py": "2e1833b52cb38c8cb5933b602d0ec7eac8b85e4630d160b1324249a1742e2f2a"
+    },
+    "liberty_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+    "models_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+    "commands": [
+      {
+        "argv": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-native/map.ys"
+        ],
+        "returncode": 0,
+        "log_sha256": "91a8f940b250c053400f11d6012ab56594298d19781e6226eeb239da7ec0dd86"
+      },
+      {
+        "argv": [
+          "make",
+          "-C",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb",
+          "-f",
+          "Makefile.soc_pcie_tlp_regs",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-native/mapped.v /home/runner/work/nssoc/nssoc/hw/soc/out/pcie-libraries/cells.v",
+          "COMPILE_ARGS=-g2012 -gspecify",
+          "PCIE_APB_TIMEOUT=256",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-native/sim",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-native/results.xml"
+        ],
+        "returncode": 0,
+        "log_sha256": "02b6dd763263d3156f7499e4413c1680a1f9a78e86b51e589bcf6812bc7262cf"
+      }
+    ],
+    "cells": 916,
+    "tests": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "outputs": {
+      "mapped.json": "e145415096fe30143102a36b215a7043b7945c9b5c30e8c2efdee03a4eb0fbfd",
+      "mapped.v": "a7c5c9ddda686788163782600e01673458476a2dd5c461c9e7ee59ab82ca7759",
+      "results.xml": "681130c5a89d0dfa53119569c69d70c4abcf563252f85a0317ef27cc8919d1c1",
+      "map.ys": "2c500c5abc716825b936778a242ccb18b2eb977d7dbf649d2a156aba4a216ee6"
+    }
+  },
+  "gpio_counts": [
+    2,
+    0,
+    0
+  ],
+  "formal_status": {
+    "bmc": "PASS 0 16",
+    "prove": "PASS 0 2",
+    "cover": "PASS 0 1"
+  }
+}

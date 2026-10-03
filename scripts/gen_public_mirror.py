@@ -240,6 +240,20 @@ def executable_paths():
             if line.startswith("100755") and "\t" in line}
 
 
+def redact_fragment(text, rel, pattern, replacement, marker, why):
+    """Apply one held fragment, retaining the same fail-closed rule on a mirror."""
+    redacted, n = re.subn(pattern, replacement, text, flags=re.S)
+    if n == 0 and marker in text:
+        return text
+    assert n == 1, (
+        "held fragment in {} matched {} times and the redaction "
+        "marker is not present either ({}). A fragment that has "
+        "been reworded upstream must fail the build, because the "
+        "alternative is that it travels."
+        .format(rel, n, why))
+    return redacted
+
+
 def build():
     """Return the mirror as {relative path: bytes}."""
     files = {}
@@ -267,21 +281,8 @@ def build():
 
     for rel, pattern, replacement, marker, why in HELD_FRAGMENTS:
         text = files[rel].decode("utf-8")
-        redacted, n = re.subn(pattern, replacement, text, flags=re.S)
-        if n == 0 and marker in text:
-            # Already redacted: this is the generator being run against
-            # a tree it produced. Idempotent, and the guarantee below is
-            # untouched, because the marker is only there if a previous
-            # run put it there.
-            files[rel] = text.encode()
-            continue
-        assert n == 1, (
-            "held fragment in {} matched {} times and the redaction "
-            "marker is not present either ({}). A fragment that has "
-            "been reworded upstream must fail the build, because the "
-            "alternative is that it travels."
-            .format(rel, n, why))
-        files[rel] = redacted.encode()
+        files[rel] = redact_fragment(
+            text, rel, pattern, replacement, marker, why).encode()
 
     # The docs workflow explains, at length, why it does not deploy to
     # Pages, and the first reason it gives is that the repository is

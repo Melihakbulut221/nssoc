@@ -4,15 +4,10 @@
 /* Register offsets for the blocks docs/40-interrupts-timers-watchdog.md
  * adds, and the machine-mode CSR bit positions the tests use.
  *
- * WHY THESE ARE LITERALS AND THE ADDRESSES ARE NOT. Every BASE address
- * in this file comes from soc_memmap.h, which regmap/generate_memmap.py
- * emits from regmap/memmap.yaml -- so no address is written down twice
- * and moving a block in the map moves it here. The OFFSETS WITHIN a
- * block are a different thing: they are that block's register map, they
- * live in its RTL header, and the map has never described them. This is
- * the same split hw/soc/tb/sw/test_ibex.c already uses for the UART
- * (SOC_UART0_BASE from the map, +0x00/+0x04/+0x08/+0x0C from
- * grip.pdf table 126).
+ * Slot bases come from generated soc_memmap.h. CLINT and BUSSTAT
+ * offsets come from generated soc_reg_offsets.h and their YAML files
+ * in regmap/peripherals. GPTIMER's generated stride and relative offsets
+ * retain the parameter-dependent timer/watchdog layout below.
  *
  * The CLINT offsets are the standard RISC-V ones; the GPTIMER offsets
  * are GRLIB's (grip.pdf table 463); WDOGSTAT and the key are this
@@ -22,13 +17,14 @@
 #define SOC_TIMERS_H
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
 
 /* ---- CLINT, hw/soc/rtl/soc_clint.v ---------------------------------- */
-#define CLINT_MSIP      (SOC_CLINT_BASE + 0x0000u)
-#define CLINT_MTIMECMPL (SOC_CLINT_BASE + 0x4000u)
-#define CLINT_MTIMECMPH (SOC_CLINT_BASE + 0x4004u)
-#define CLINT_MTIMEL    (SOC_CLINT_BASE + 0xBFF8u)
-#define CLINT_MTIMEH    (SOC_CLINT_BASE + 0xBFFCu)
+#define CLINT_MSIP      (SOC_CLINT_BASE + SOC_CLINT_MSIP_OFF)
+#define CLINT_MTIMECMPL (SOC_CLINT_BASE + SOC_CLINT_MTIMECMPL_OFF)
+#define CLINT_MTIMECMPH (SOC_CLINT_BASE + SOC_CLINT_MTIMECMPH_OFF)
+#define CLINT_MTIMEL    (SOC_CLINT_BASE + SOC_CLINT_MTIMEL_OFF)
+#define CLINT_MTIMEH    (SOC_CLINT_BASE + SOC_CLINT_MTIMEH_OFF)
 /* An offset the block does not implement. soc_clint.v faults it. */
 #define CLINT_UNMAPPED  (SOC_CLINT_BASE + 0x0100u)
 
@@ -88,17 +84,18 @@
  *               against the core's own mcycle, which advances at the
  *               same rate at TICK_DIV = 1.
  */
-#define BST_STATUS      (SOC_BUSSTAT_BASE + 0x000u)
-#define BST_IRQEN       (SOC_BUSSTAT_BASE + 0x004u)
-#define BST_RFSEC       (SOC_BUSSTAT_BASE + 0x008u)
-#define BST_RFRD        (SOC_BUSSTAT_BASE + 0x00Cu)
-#define BST_RFDED       (SOC_BUSSTAT_BASE + 0x010u)
-#define BST_TMRERR      (SOC_BUSSTAT_BASE + 0x014u)
-#define BST_CLR         (SOC_BUSSTAT_BASE + 0x018u)
-#define BST_NPUCOR      (SOC_BUSSTAT_BASE + 0x01Cu)
-#define BST_NPUDET      (SOC_BUSSTAT_BASE + 0x020u)
-#define BST_NPUTMR      (SOC_BUSSTAT_BASE + 0x024u)
-#define BST_MTECC       (SOC_BUSSTAT_BASE + 0x028u)
+#define BST_STATUS      (SOC_BUSSTAT_BASE + SOC_BUSSTAT_STATUS_OFF)
+#define BST_IRQEN       (SOC_BUSSTAT_BASE + SOC_BUSSTAT_IRQEN_OFF)
+#define BST_RFSEC       (SOC_BUSSTAT_BASE + SOC_BUSSTAT_RFSEC_OFF)
+#define BST_RFRD        (SOC_BUSSTAT_BASE + SOC_BUSSTAT_RFRD_OFF)
+#define BST_RFDED       (SOC_BUSSTAT_BASE + SOC_BUSSTAT_RFDED_OFF)
+#define BST_TMRERR      (SOC_BUSSTAT_BASE + SOC_BUSSTAT_TMRERR_OFF)
+#define BST_CLR         (SOC_BUSSTAT_BASE + SOC_BUSSTAT_CLR_OFF)
+#define BST_NPUCOR      (SOC_BUSSTAT_BASE + SOC_BUSSTAT_NPUCOR_OFF)
+#define BST_NPUDET      (SOC_BUSSTAT_BASE + SOC_BUSSTAT_NPUDET_OFF)
+#define BST_NPUTMR      (SOC_BUSSTAT_BASE + SOC_BUSSTAT_NPUTMR_OFF)
+#define BST_MTECC       (SOC_BUSSTAT_BASE + SOC_BUSSTAT_MTECC_OFF)
+#define BST_APBTO       (SOC_BUSSTAT_BASE + SOC_BUSSTAT_APBTO_OFF)
 
 /* One bit index per source, shared by STATUS, IRQEN and CLR. */
 #define BST_S_RFSEC     (1u << 0)
@@ -109,22 +106,24 @@
 #define BST_S_NPUDET    (1u << 5)
 #define BST_S_NPUTMR    (1u << 6)
 #define BST_S_MTECC     (1u << 7)
+#define BST_S_APBTO     (1u << 9)
 #define BST_S_ALL       (BST_S_RFSEC | BST_S_RFRD | BST_S_RFDED \
                          | BST_S_TMRERR | BST_S_NPUCOR | BST_S_NPUDET \
-                         | BST_S_NPUTMR | BST_S_MTECC)
+                         | BST_S_NPUTMR | BST_S_MTECC | BST_S_APBTO)
 /* STATUS bit 8: any enabled sticky is set, i.e. the line is asserted.
  * Bit 7 is now BST_S_MTECC and the sticky field is full: a ninth source
- * cannot be added below the interrupt bit. docs/58 section 9. */
+ * cannot be added below the interrupt bit. docs/58 section 9.
+ * 2026-09-19: APB timeout therefore uses bit 9, preserving bit 8. */
 #define BST_STATUS_IRQ  (1u << 8)
 
 /* ---- GPTIMER, hw/soc/rtl/soc_gptimer.v ------------------------------ */
-#define GPT_SCALER      (SOC_TIMER0_BASE + 0x000u)
-#define GPT_SCRELOAD    (SOC_TIMER0_BASE + 0x004u)
-#define GPT_CONFIG      (SOC_TIMER0_BASE + 0x008u)
-#define GPT_TIMER(n)    (SOC_TIMER0_BASE + 0x10u * (n))
-#define GPT_CNT(n)      (GPT_TIMER(n) + 0x0u)
-#define GPT_RLD(n)      (GPT_TIMER(n) + 0x4u)
-#define GPT_CTRL(n)     (GPT_TIMER(n) + 0x8u)
+#define GPT_SCALER      (SOC_TIMER0_BASE + SOC_GPTIMER_SCALER_OFF)
+#define GPT_SCRELOAD    (SOC_TIMER0_BASE + SOC_GPTIMER_SCRELOAD_OFF)
+#define GPT_CONFIG      (SOC_TIMER0_BASE + SOC_GPTIMER_CONFIG_OFF)
+#define GPT_TIMER(n)    (SOC_TIMER0_BASE + SOC_GPTIMER_TIMER_STRIDE * (n))
+#define GPT_CNT(n)      (GPT_TIMER(n) + SOC_GPTIMER_TIMER_CNT_OFF)
+#define GPT_RLD(n)      (GPT_TIMER(n) + SOC_GPTIMER_TIMER_RLD_OFF)
+#define GPT_CTRL(n)     (GPT_TIMER(n) + SOC_GPTIMER_TIMER_CTRL_OFF)
 
 /* GRLIB timer control bits, grip.pdf table 463. */
 #define GPT_EN  (1u << 0)
@@ -141,11 +140,11 @@
 #define WDOG_CNT      GPT_CNT(WDOG_TIMER)
 #define WDOG_RLD      GPT_RLD(WDOG_TIMER)
 #define WDOG_CTRL     GPT_CTRL(WDOG_TIMER)
-#define WDOG_STAT     (SOC_TIMER0_BASE + 0x10u * (WDOG_TIMER + 1))
+#define WDOG_STAT     (SOC_TIMER0_BASE + SOC_GPTIMER_TIMER_STRIDE * (WDOG_TIMER + 1))
 /* WDOGWIN, soc_wdog.v W7 and W8. It sits at the watchdog's own +0xC,
  * which is a general timer's LATCH register in GRLIB (grip.pdf table
  * 463) and which this block has never decoded for the watchdog. */
-#define WDOG_WIN      (GPT_TIMER(WDOG_TIMER) + 0xCu)
+#define WDOG_WIN      (GPT_TIMER(WDOG_TIMER) + SOC_GPTIMER_TIMER_LATCH_OFF)
 
 /* Every write to a watchdog register carries this in bits 31:16 or has
  * no effect at all (soc_wdog.v W5). */

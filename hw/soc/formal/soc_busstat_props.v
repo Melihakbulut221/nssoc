@@ -146,8 +146,37 @@
       if (paddr_i == REG_RFSEC)
         assert (prdata_o == {{(32-CNT_W){1'b0}}, cnt[S_RFSEC]});
       if (paddr_i == REG_STATUS)
-        assert (prdata_o[NSRC-1:0] == sticky);
+        assert (prdata_o[7:0] == sticky[7:0]);
     end
+
+  // B7: the optional timeout source uses public bit 9; the established
+  // interrupt indication stays at bit 8. It has exactly the same POR,
+  // saturation and event-wins-clear contract as the original sources.
+  generate if (APB_TIMEOUT_EN) begin : g_timeout_props
+    always @(*) begin
+      assert (ev[S_APBTO] == apb_timeout_i);
+      assert (clr[S_APBTO] == (wr && paddr_i == REG_CLR && pwdata_i[9]));
+      if (psel_i && penable_i && !pwrite_i) begin
+        if (paddr_i == REG_STATUS) begin
+          assert (prdata_o[9] == sticky[S_APBTO]);
+          assert (prdata_o[8] == irq_o);
+        end
+        if (paddr_i == REG_APBTO)
+          assert (prdata_o == cnt[S_APBTO]);
+        if (paddr_i == REG_IRQEN) begin
+          assert (prdata_o[9] == irqen[S_APBTO]);
+          assert (!prdata_o[8]);
+        end
+      end
+    end
+    always @(posedge clk_i) begin
+      cover (f_past_valid && rst_por_ni && !rst_ni && sticky[S_APBTO]);
+      cover (f_past_valid && rst_por_ni && cnt[S_APBTO] == CNT_MAX);
+      if (f_past_valid && rst_ni && $past(rst_ni) &&
+          $past(wr && paddr_i == REG_IRQEN))
+        assert (irqen[S_APBTO] == $past(pwdata_i[9]));
+    end
+  end endgenerate
 
   // ---- vacuity ----------------------------------------------------
   // docs/09 B.1. Every behaviour above has to be reachable, or the job

@@ -1,0 +1,20 @@
+gdsfill core-boundary and windowed-fill controls, 2026-09-23
+
+Upstream gdsfill: https://github.com/aesc-silicon/gdsfill
+Commit db268cbf366dd219d1e077d9b2c68782c48c00c5; copyright 2026 aesc silicon.
+The included Rust sources retain AGPL-3.0-or-later and its included licence text.
+Changes by Hasan Melih Akbulut on 2026-09-23: only SG13G2 fill/density boundary
+selectors change from sealring layers 39/0 and 39/4 to explicit core layer 189/0.
+The exact patch is included. This neither creates nor qualifies a seal ring.
+No compiled executable or Rust dependency implementation is redistributed.
+Build: cargo build --release --locked -j 2 in the included gdsfill-source tree.
+
+Independent Python measurement/orchestration scripts: copyright 2026
+Hasan Melih Akbulut, Apache-2.0. Generated receipts/documentation: CC-BY-4.0.
+IHP control-cell geometry and verification material retain their original
+IHP PDK Authors copyright and Apache-2.0; the upstream licence is included.
+No component licence is replaced by the aggregate archive annotation.
+
+Only the small controls pass. Full-core fill, density, DRC, parasitics, timing
+and LVS remain separate measurements. The direct full-core allocation failure
+is retained and is not a success. The complete windowed run is still pending.

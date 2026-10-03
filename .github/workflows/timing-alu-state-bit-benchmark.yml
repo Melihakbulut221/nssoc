@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-state-bit-benchmark
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-state-bit-benchmark.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-alu-state-bit-benchmark-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  benchmark:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 75
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check fixed observations, complete prior coverage and nonacceptance guards
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_state_bit_benchmark.py sw/tests/test_alu_state_refinement.py sw/tests/test_alu_state_partitions.py
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Measure at most sixteen exact remaining bits with every original input symbolic
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/benchmark_alu_state_bits.py \
+            --output "$GITHUB_WORKSPACE/alu-bit-benchmark" \
+            --work "$RUNNER_TEMP/alu-bit-benchmark-work"
+      - name: Preserve source, selection, native logs, costs and any counterexamples
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-state-bit-benchmark-${{ github.run_attempt }}
+          path: alu-bit-benchmark/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30

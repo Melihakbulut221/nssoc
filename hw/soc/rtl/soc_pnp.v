@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // System-bus device table.
 //
 // A read-only table of device records at the address the memory map
@@ -73,3 +75,5 @@ module soc_pnp (
   end
 
 endmodule
+
+`default_nettype wire

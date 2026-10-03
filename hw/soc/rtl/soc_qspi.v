@@ -284,13 +284,13 @@ module soc_qspi #(
     output wire             irq_o
 );
 
-  localparam [11:0] REG_CONF = 12'h000;
-  localparam [11:0] REG_CTRL = 12'h004;
-  localparam [11:0] REG_STAT = 12'h008;
-  localparam [11:0] REG_RX   = 12'h00C;
-  localparam [11:0] REG_TX   = 12'h010;
-  localparam [11:0] REG_CMD  = 12'h014;
-  localparam [11:0] REG_ADDR = 12'h018;
+  localparam [11:0] REG_CONF = 12'h000; // regmap:qspi:CONF
+  localparam [11:0] REG_CTRL = 12'h004; // regmap:qspi:CTRL
+  localparam [11:0] REG_STAT = 12'h008; // regmap:qspi:STAT
+  localparam [11:0] REG_RX   = 12'h00C; // regmap:qspi:RX
+  localparam [11:0] REG_TX   = 12'h010; // regmap:qspi:TX
+  localparam [11:0] REG_CMD  = 12'h014; // regmap:qspi:CMD
+  localparam [11:0] REG_ADDR = 12'h018; // regmap:qspi:ADDR
 
   localparam integer CS_W = (NCS > 1) ? $clog2(NCS) : 1;
 

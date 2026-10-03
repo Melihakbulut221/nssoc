@@ -30,6 +30,7 @@ prove: mode prove
 prove: depth 40
 bmc: mode bmc
 bmc: depth 40
+bmc: timeout 7200
 cover: mode cover
 cover: depth 40
 # Added 2026-09-15 after prove/bmc at depth 40 had reached step 18 in ten
@@ -41,9 +42,14 @@ prove_pdr: mode prove
 prove_pdr: timeout 14400
 multiclock off
 
+# 2026-09-21: the full-sweep inventory found prove/bmc were never
+# invoked by regfilescrub. Keep their properties, assumptions and depth;
+# select PDR for the unbounded proof and CaDiCaL for the independent BMC.
+# A 900-second BMC trial reached frame 23 but did not complete: not PASS.
+# The required depth remains 40; the bounded task now has a 7200 s budget.
 [engines]
-prove: smtbmc yices
-bmc: smtbmc yices
+prove: abc pdr
+bmc: abc bmc3 -c
 cover: smtbmc yices
 prove12: smtbmc yices
 prove_pdr: abc pdr

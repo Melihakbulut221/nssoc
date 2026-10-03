@@ -1,0 +1,152 @@
+{
+  "date": "2026-09-20",
+  "status": "Whole mapped immutable-ROM boot FAIL",
+  "scope": "Four-state Icarus 13, native untouched IHP cell and SRAM models, no ROM/RAM preload, same delivered fixed loader and flash application as passing RTL baseline. No SDF.",
+  "result": {
+    "compile_returncode": 0,
+    "compile_elapsed_s": 10.208081066999512,
+    "run_returncode": 1,
+    "run_elapsed_s": 5500.192790838001,
+    "inputs_unchanged": true
+  },
+  "inputs": {
+    "scope": "Whole mapped SoC functional boot using native standard-cell/SRAM models and its exact fixed loader. No ROM or RAM preload; only external flash image loaded. Normal application must execute all 28 checks and expected watchdog NMI. No SDF, physical timing, radiation or fault-injection claim.",
+    "compile_command": [
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+      "-g2005-sv",
+      "-DFUNCTIONAL",
+      "-s",
+      "tb_logicrom_gl",
+      "-o",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-whole-gl2/sim.vvp",
+      "-DEXIT_CODE_ADDR=32'h00001e64",
+      "-DEXIT_MAGIC_ADDR=32'h00001e68",
+      "-DCHECKS_ADDR=32'h00001e9c",
+      "-DFAILS_ADDR=32'h00001ea0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-whole-gl2/tb_logicrom_gl.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-soc-synthesis/soc_top.netlist.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+    ],
+    "run_command": [
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-whole-gl2/sim.vvp",
+      "+flash0=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/flash0.hex"
+    ],
+    "loader_manifest": {
+      "format": 1,
+      "module": "soc_logic_boot_rom",
+      "image_bytes": 3120,
+      "image_sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f",
+      "words": 2048,
+      "first_image_word": 32,
+      "codeword_bits": 39,
+      "template_sha256": "2ea27354ad115c58ba5782901d5913b4fbc253bd29f12197c912a5326d2c7b04",
+      "golden_codec_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+      "rtl_sha256": "0c9ce15ca19679d98b848dd1695586e0ba2ea17fadada1700601dfba790dc886",
+      "scope": "Fixed standard-cell ROM contents. No SRAM preload or writable code storage. Physical and fault qualification remain separate."
+    },
+    "symbols": {
+      "exit_code": "00001e64",
+      "exit_magic": "00001e68",
+      "checks": "00001e9c",
+      "fails": "00001ea0"
+    },
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-whole-gl2/tb_logicrom_gl.v": {
+        "sha256": "2e8cd46dcc784a7a5b55b5f38b95310ddf856c3aedafc495d661193a0f0fd6e2",
+        "bytes": 12075
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-soc-synthesis/soc_top.netlist.v": {
+        "sha256": "79eabe5f92eb1dde6856f65fbcf9611920d2e98b7effd4038074dda3622b43b1",
+        "bytes": 9621645
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v": {
+        "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+        "bytes": 20792
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+        "bytes": 53835
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+        "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+        "bytes": 6900
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+        "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+        "bytes": 3932
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+        "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+        "bytes": 12655
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+        "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+        "bytes": 6067
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+        "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+        "bytes": 4051
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/app.elf": {
+        "sha256": "2dfc38c7c4c94d7993d7ce74e5327333210812cbf7cc8faa551247bda77a64ac",
+        "bytes": 57192
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/flash0.hex": {
+        "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b",
+        "bytes": 393216
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logic-boot-rom-delivered/test_soc.bin": {
+        "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f",
+        "bytes": 3120
+      }
+    }
+  },
+  "observations": {
+    "cycle_bound": 1000000,
+    "final_cycles": 1000096,
+    "uart_characters": 113,
+    "uart_framing_errors": 1,
+    "application_checks": 0,
+    "exit_magic": "00000000",
+    "watchdog": [
+      0,
+      0,
+      0
+    ],
+    "flash_violations": 0
+  },
+  "interpretation": "RAM sweep completes and initial boot banner prints, but output becomes invalid at the end of the banner and the application never starts. This is separate from the Verilator model incompatibility. Cause is still under investigation; RTL and block-level ROM passes do not establish whole mapped boot.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/sim.vvp": {
+      "bytes": 64185623,
+      "sha256": "cbe9f0480c25eaf89e7cd0255fcc1af38092dcd5d10267670081f714de64af42"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/result.json": {
+      "bytes": 162,
+      "sha256": "6131f94f09594d92d2f733f668cd15dea8c099b8014c70e1d8837dd42be19460"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/tb_logicrom_gl.v": {
+      "bytes": 12075,
+      "sha256": "2e8cd46dcc784a7a5b55b5f38b95310ddf856c3aedafc495d661193a0f0fd6e2"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/run.log": {
+      "bytes": 1000,
+      "sha256": "3c015db5b35f4f79e054781f4f4f44c0e9e378aa76af808c55542ea09963c548"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/compile.log": {
+      "bytes": 1720,
+      "sha256": "a9ec9c1f144760dd32f0f8479727f7086e4749e7135fd50bbd8ce518b32644f9"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-gl2/inputs.json": {
+      "bytes": 6314,
+      "sha256": "061818e6a47e1b4aa1a28c414c552996632229feec98ffe716bc1018d577c603"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": "TIMEOUT_DIAGNOSED_REPAIR_AWAITS_HOSTED_RESULT",
+  "failed_run": 36403650342,
+  "checked_out_head": "5351fd511e4d16c2c5574490430034ef398ec0f2",
+  "stage_results": [
+    {
+      "command": [
+        "make",
+        "-k",
+        "-C",
+        "formal",
+        "everything"
+      ],
+      "returncode": 0,
+      "elapsed_s": 6628.711688652999
+    },
+    {
+      "command": [
+        "make",
+        "-k",
+        "-C",
+        "hw/soc/formal",
+        "all"
+      ],
+      "returncode": 124,
+      "elapsed_s": 9000.002053958999
+    }
+  ],
+  "passed_tasks": 125,
+  "missing_tasks": 45,
+  "sources_unchanged": true,
+  "failure_log_sha256": "abbd0697f534751586d827910663b40a8dcd9c92adf38ded8391987946a62e94",
+  "repair": "Pilot and SoC execute on independent matrix workers; zero stage timeout removes own elapsed watchdog. All declared tasks and fresh-source checks remain mandatory per stage; either failed worker fails workflow. Hosted6hour limit remains.",
+  "publication_retry": {
+    "run_id": 36423178933,
+    "status": "completed",
+    "conclusion": "success",
+    "cause": "PyPI click index read timeouts in original attempt"
+  },
+  "manufacturing_approval": false
+}

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // SoC top level: Ibex, the system fabric, the memories, the peripheral
 // bridge and the two device tables.
 //
@@ -41,16 +43,16 @@
 //   IS   interruptible, and the interrupts are real. soc_clint.v drives
 //        irq_timer_i and irq_software_i, soc_gptimer.v and soc_uart.v
 //        drive fast local interrupt lines the generated map assigns, and
-//        the watchdog drives irq_nm_i. There is still no PLIC and
-//        irq_external_i is tied low; docs/40 section 3 is the argument
-//        for why that is a decision and not an omission, and the PLIC
-//        region stays reserved and faulting.
+//        the watchdog drives irq_nm_i. Corrected 2026-09-20: the external
+//        line was tied low. One synchronized active-high level now reaches
+//        machine-external interrupt 11; this is not a PLIC. Its reserved
+//        address region still faults. See docs/94 for the input contract.
 //   IS   resettable BY ITSELF. rst_ni is now the POWER-ON reset. The
 //        system reset the rest of this file runs on is derived from it
 //        and from the watchdog's stage-2 request, so the SoC can reset
 //        its own core while the watchdog keeps the evidence. See the
 //        reset section below.
-//   IS NOT the whole map. Four regions and ten peripheral slots are
+//   IS NOT the whole map. Four regions and three peripheral slots are
 //        reserved and unimplemented. An access to any of them takes a
 //        bus error, on purpose: docs/39-soc-bus-and-memory-map.md
 //        section 8 lists them.
@@ -87,6 +89,10 @@
 //        parallel AER port for events, and answers the 256 MiB NPU
 //        window and the NPUCFG peripheral slot that the map has carried
 //        empty since docs/39.
+//
+//   HAS SpaceWire PIO, CAN 2.0B, SPI modes 0..3 and I2C as of docs/88.
+//       Their APB slots, IRQ lines and pins are wired below. Earlier
+//       interface descriptions above describe the respective historical steps.
 //
 // SecureIbex IS FIXED AT 0, which is the owner's decision rather than
 // this file's default: docs/38 section 10 item 4 records `small-pmp`
@@ -224,12 +230,43 @@ module soc_top #(
     // section 3. At 1 every load costs one more cycle, which is a
     // number the corpus quotes, so sw/tests pins the default for the
     // reason it pins WAKE_GNT.
-    parameter integer REQ_REG = 0
+    parameter integer REQ_REG = 0,
+    // Timing candidates; historical configurations remain at zero. The
+    // request register adds a cycle before fabric arbitration. Ibex's optional
+    // writeback stage separates ALU work from protected-register re-encoding.
+    // It also requires the dedicated branch-target ALU: the pinned core's
+    // shared-ALU branch path misdirects a taken branch stalled behind a store
+    // in writeback. tb_ibex_branch_stall retains that failing counterexample.
+    parameter integer CORE_REQ_REG = 0,
+    parameter integer CORE_WB_STAGE = 0,
+    // 256 ACCESS cycles = 5.12 us at 50 MHz. Normal register slaves,
+    // including the CAN Wishbone bridge, respond in a few cycles.
+    // Zero reproduces the historical unbounded bridge configuration.
+    parameter integer APB_TIMEOUT = 256
 ) (
     input  wire        clk_i,
     // POWER-ON reset. Asynchronously asserted, and the only reset the
     // watchdog obeys.
     input  wire        rst_ni,
+`ifdef SOC_ETH_MBIST
+    output wire [1:0] eth_mbist_done_o, eth_mbist_failed_o,
+`endif
+`ifdef SOC_SRAM_MBIST
+    // Power-on destructive system-RAM test. These are core test outputs,
+    // not implemented package pads. A new external reset reruns the test.
+    output wire        mbist_busy_o,
+    output wire        mbist_done_o,
+    output wire        mbist_failed_o,
+    output wire [12:0] mbist_fail_addr_o,
+    output wire [63:0] mbist_fail_expected_o,
+    output wire [63:0] mbist_fail_actual_o,
+    output wire [2:0]  mbist_fail_phase_o,
+    output wire [7:0]  mbist_fail_background_o,
+`endif
+
+    // Active-high external level; keep asserted until the device is serviced.
+    // Synchronization runs on the ungated SoC clock so WFI can wake.
+    input  wire        irq_external_i,
 
     // Watchdog bootstrap pin. Held low in this SoC; a board that ties it
     // high has no watchdog and WDOGSTAT.DISABLED says so.
@@ -240,6 +277,7 @@ module soc_top #(
     // tb_soc.v ties them to the board's configuration.
     input  wire [BOOT_NSTRAP-1:0] strap_i,
 
+    input  wire        uart_rx_i,
     output wire        uart_tx_o,
     output wire        uart_irq_o,
 
@@ -263,6 +301,26 @@ module soc_top #(
     output wire [3:0]  qspi_io_oe_o,
     input  wire [3:0]  qspi_io_i,
     output wire        qspi_irq_o,     // QSPI IEN AND (DONE OR DR), a level
+
+    // Gigabit GMII, external PHY/reference clocks; no on-chip PLL or pads.
+    input wire eth_rx_clk_i, eth_tx_clk_i,
+    input wire [7:0] eth_rxd_i,
+    input wire eth_rx_dv_i, eth_rx_er_i,
+    output wire [7:0] eth_txd_o,
+    output wire eth_tx_en_o, eth_tx_er_o, eth_gtx_clk_o,
+    input wire eth_mdio_i,
+    output wire eth_mdc_o, eth_mdio_o, eth_mdio_oe_o, eth_irq_o,
+
+    // Spacecraft interfaces, docs/88. External PHY/pad cells are board-specific.
+    input wire spw_di_i, spw_si_i,
+    output wire spw_do_o, spw_so_o, spw_irq_o,
+    input wire i2c_scl_i, i2c_sda_i,
+    output wire i2c_scl_oe_o, i2c_sda_oe_o, i2c_irq_o,
+    input wire can_rx_i,
+    output wire can_tx_o, can_irq_o, can_bus_off_o,
+    input wire spi_miso_i,
+    output wire spi_sck_o, spi_mosi_o, spi_irq_o,
+    output wire [1:0] spi_cs_no,
 
     // ---- observation, for the testbench and for pins later ----
     output wire        wdog_no,        // watchdog stage 3, active low
@@ -348,9 +406,31 @@ module soc_top #(
   // watchdog that counts clk_i edges already had, since it could not
   // count either way, but it is a change and a reader should see it
   // here rather than infer it.
+  wire rst_por_sync_n;
   wire wdog_rst_req;
   wire [159:0] crash_dump;
+`ifdef SOC_SRAM_MBIST
+`ifndef SOC_LOGIC_BOOT_ROM
+  SOC_SRAM_MBIST_requires_immutable_logic_boot_ROM invalid_mbist_rom();
+`endif
+  wire ram_mbist_done, ram_mbist_failed;
+`ifdef SOC_ETH_MBIST
+  assign mbist_done_o = ram_mbist_done && (&eth_mbist_done_o);
+  assign mbist_failed_o = ram_mbist_failed || (|eth_mbist_failed_o);
+`else
+  assign mbist_done_o = ram_mbist_done;
+  assign mbist_failed_o = ram_mbist_failed;
+`endif
+  wire mbist_pass = mbist_done_o && !mbist_failed_o;
+  assign mbist_busy_o = rst_por_sync_n && !mbist_done_o;
+  wire rst_raw_n = rst_ni && !wdog_rst_req && mbist_pass;
+  // Keep the watchdog in POR until MBIST completes. Watchdog resets must
+  // neither erase the result nor destructively rerun MBIST on live RAM.
+  wire timer_por_n = rst_por_sync_n && mbist_pass;
+`else
   wire rst_raw_n = rst_ni && !wdog_rst_req;
+  wire timer_por_n = rst_por_sync_n;
+`endif
 
   reg [1:0] rst_sync;
   always @(posedge clk_i or negedge rst_raw_n)
@@ -359,12 +439,19 @@ module soc_top #(
 
   wire rst_sys_n = rst_sync[1];
 
+  // Digital CDC synchronizer; this does not provide pulse capture or SEU
+  // protection. The external device must hold its request until serviced.
+  (* async_reg = "true" *) reg [1:0] external_irq_sync_q;
+  always @(posedge clk_i or negedge rst_sys_n)
+    if (!rst_sys_n) external_irq_sync_q <= 2'b00;
+    else external_irq_sync_q <= {external_irq_sync_q[0], irq_external_i};
+
   reg [1:0] por_sync;
   always @(posedge clk_i or negedge rst_ni)
     if (!rst_ni) por_sync <= 2'b00;
     else         por_sync <= {por_sync[0], 1'b1};
 
-  wire rst_por_sync_n = por_sync[1];
+  assign rst_por_sync_n = por_sync[1];
 
   assign wdog_rst_o = wdog_rst_req;
 
@@ -384,7 +471,7 @@ module soc_top #(
   // them and the blocks that drive them are instantiated further down.
   wire        clint_irq_timer, clint_irq_soft;
   wire        gptimer_irq, uart_irq, wdog_nmi, busstat_irq, npu_irq;
-  wire        gpio_irq, qspi_irq;
+  wire        gpio_irq, qspi_irq, spw_irq, i2c_irq, can_irq, spi_irq;
   // The fault lines soc_busstat counts. docs/44.
   wire [2:0]  rf_ecc_err;      // from the register file, via ibex_top
   wire        wdog_tmr_ev;     // from the watchdog's voter
@@ -419,13 +506,10 @@ module soc_top #(
   // level-sensitive, and a floating one would be an interrupt whose
   // source does not exist.
   //
-  // The UART's line is connected here for the first time. Note what its
-  // interrupt MEANS: soc_uart.v raises it whenever the transmit holding
-  // register is empty and CTRL.TI is set, which is GRLIB's
-  // transmitter-ready semantics -- a LEVEL that is high almost always.
-  // Software that sets TI without a handler that clears it gets an
-  // interrupt storm, and the bring-up program deliberately never sets
-  // it.
+  // UART is a level: TI with an empty TX holding register, or RI with
+  // unread RX data / sticky OV or FE. Consume data and clear errors before
+  // re-enabling the CPU interrupt. GRLIB holding-register event interrupts
+  // are not this project's level ABI; docs/97 states the compatibility limit.
   // -------------------------------------------------------------------
   reg [14:0] irq_fast;
   always @(*) begin
@@ -453,6 +537,11 @@ module soc_top #(
     // the same discipline BUSSTAT and NPUCFG follow, and the reason the
     // whole-SoC run of docs/56 is cycle-identical with this block
     // present and the program unchanged.
+    irq_fast[SOC_IRQLINE_ETH] = eth_irq_o;
+    irq_fast[SOC_IRQLINE_SPW] = spw_irq;
+    irq_fast[SOC_IRQLINE_I2C] = i2c_irq;
+    irq_fast[SOC_IRQLINE_CAN] = can_irq;
+    irq_fast[SOC_IRQLINE_SPI] = spi_irq;
     irq_fast[SOC_IRQLINE_GPIO]    = gpio_irq;
     // The QSPI controller's line, connected here for the first time
     // (docs/66). docs/40 assigned source 21 and line 9 before the block
@@ -494,8 +583,8 @@ module soc_top #(
       .RV32B           (0),
       .RV32ZC          (0),
       .RegFile         (0),
-      .BranchTargetALU (0),
-      .WritebackStage  (0),
+      .BranchTargetALU (CORE_WB_STAGE),
+      .WritebackStage  (CORE_WB_STAGE),
       .ICache          (0),
       .ICacheECC       (0),
       .BranchPredictor (0),
@@ -550,13 +639,12 @@ module soc_top #(
       .trvk_revbm_rdata_intg_i (7'h0),
       .trvk_revbm_err_i        (1'b0),
 
-      // Interrupts. irq_external_i is the one that is still tied low:
-      // it is the PLIC's input and there is no PLIC (docs/40 section 3).
-      // Leaving it unconnected rather than repurposing it is what makes
-      // adding one later a wiring change and not a rework.
+      // External interrupt 11 is one synchronized level, with no PLIC.
+      // Software masks it or services the external device to clear it.
+      // Existing fast peripheral interrupt assignments remain unchanged.
       .irq_software_i (clint_irq_soft),
       .irq_timer_i    (clint_irq_timer),
-      .irq_external_i (1'b0),
+      .irq_external_i (external_irq_sync_q[1]),
       .irq_fast_i     (irq_fast),
       .irq_nm_i       (wdog_nmi),
 
@@ -686,6 +774,30 @@ module soc_top #(
   end
   endgenerate
 
+  wire bus_data_req, bus_data_gnt, bus_data_we;
+  wire [3:0] bus_data_be;
+  wire [31:0] bus_data_addr, bus_data_wdata;
+  generate
+    if (CORE_REQ_REG != 0) begin : g_core_req_reg
+      soc_req_pipe u_data_request (
+          .clk_i (clk_i), .rst_ni (rst_sys_n),
+          .req_i (data_req), .gnt_o (data_gnt),
+          .addr_i (data_addr), .we_i (data_we),
+          .be_i (data_be), .wdata_i (data_wdata),
+          .req_o (bus_data_req), .gnt_i (bus_data_gnt),
+          .addr_o (bus_data_addr), .we_o (bus_data_we),
+          .be_o (bus_data_be), .wdata_o (bus_data_wdata)
+      );
+    end else begin : g_core_req_direct
+      assign bus_data_req = data_req;
+      assign data_gnt = bus_data_gnt;
+      assign bus_data_addr = data_addr;
+      assign bus_data_we = data_we;
+      assign bus_data_be = data_be;
+      assign bus_data_wdata = data_wdata;
+    end
+  endgenerate
+
   soc_bus #(
       .REQ_REG (REQ_REG)
   ) u_bus (
@@ -700,12 +812,12 @@ module soc_top #(
       .mi_rdata_o  (instr_rdata),
       .mi_err_o    (instr_err),
 
-      .md_req_i    (data_req),
-      .md_addr_i   (data_addr),
-      .md_we_i     (data_we),
-      .md_be_i     (data_be),
-      .md_wdata_i  (data_wdata),
-      .md_gnt_o    (data_gnt),
+      .md_req_i    (bus_data_req),
+      .md_addr_i   (bus_data_addr),
+      .md_we_i     (bus_data_we),
+      .md_be_i     (bus_data_be),
+      .md_wdata_i  (bus_data_wdata),
+      .md_gnt_o    (bus_data_gnt),
       .md_rvalid_o (data_rvalid),
       .md_rdata_o  (data_rdata),
       .md_err_o    (data_err),
@@ -736,6 +848,12 @@ module soc_top #(
   // soc_scrub.v's control and report into it.
   soc_mem #(.WORDS(RAM_WORDS), .RO(1'b0), .RDREG(MEM_RDREG),
             .HARDEN(MEM_HARDEN), .ECC_BYTE(1'b1)) u_ram (
+`ifdef SOC_SRAM_MBIST
+      .mbist_rst_ni(rst_por_sync_n), .mbist_done_o(ram_mbist_done),
+      .mbist_failed_o(ram_mbist_failed), .mbist_fail_addr_o(mbist_fail_addr_o),
+      .mbist_fail_expected_o(mbist_fail_expected_o), .mbist_fail_actual_o(mbist_fail_actual_o),
+      .mbist_fail_phase_o(mbist_fail_phase_o), .mbist_fail_background_o(mbist_fail_background_o),
+`endif
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[0]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),
@@ -746,9 +864,15 @@ module soc_top #(
       .evt_addr_o (ram_ded_addr)
   );
 
-  soc_mem #(.WORDS(ROM_WORDS), .RO(1'b1), .RDREG(MEM_RDREG),
+  // Explicit build profile: immutable standard-cell boot image. Earlier
+  // SRAM stand-in layouts retain their original profile and provenance.
+`ifdef SOC_LOGIC_BOOT_ROM
+  soc_logic_boot_rom #(.WORDS(ROM_WORDS), .RO(32'd1), .ECC_BYTE(32'd0), .RDREG(MEM_RDREG),
+`else
+  soc_mem #(.WORDS(ROM_WORDS), .RO(1'b1), .ECC_BYTE(1'b0), .RDREG(MEM_RDREG),
+`endif
             .INIT_FILE(ROM_INIT), .INIT_WORD(ROM_INIT_WORD),
-            .HARDEN(ROM_HARDEN), .ECC_BYTE(1'b0)) u_rom (
+            .HARDEN(ROM_HARDEN)) u_rom (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[1]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),
@@ -769,33 +893,24 @@ module soc_top #(
   wire [31:0] prdata;
   wire        pready, pslverr;
 
-  soc_apb_bridge u_apb (
+  wire apb_timeout;
+  soc_apb_bridge #(.APB_TIMEOUT(APB_TIMEOUT)) u_apb (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[2]), .addr_i (s_addr), .we_i (s_we),
       .be_i (s_be), .wdata_i (s_wdata),
       .gnt_o (s_gnt[2]), .rvalid_o (s_rvalid[2]),
       .rdata_o (s_rdata_apb), .err_o (s_err[2]),
-      // PARKED, and the parking is the measurement. soc_apb_bridge's
-      // APB_TIMEOUT defaults to 0, so this line cannot assert in the
-      // shipping configuration: every mapped slave drives PREADY
-      // constant 1 at today's parameters. Widening BUSSTAT from eight
-      // sources to nine for an event that cannot fire would add a
-      // counter of dead flip-flops to the netlist and move every
-      // BUSSTAT measurement docs/44 records, which is the opposite of
-      // what docs/41 section 6.5 asks. Turning APB_TIMEOUT on is what
-      // makes the ninth source worth its area, and that is the same
-      // commit's work, not this one's.
-      .timeout_o (),
+      // Corrected 2026-09-19: this was parked on the premise that
+      // every slave is always ready. CAN now instantiates soc_apb_wb.
+      // Count the one fabric response, not every cycle of sticky timeout.
+      .timeout_o (apb_timeout),
       .psel_o (psel), .penable_o (penable), .paddr_o (paddr),
       .pwrite_o (pwrite), .pwdata_o (pwdata), .pstrb_o (pstrb),
       .prdata_i (prdata), .pready_i (pready), .pslverr_i (pslverr)
   );
 
-  // pstrb is generated by the bridge and carried to the peripherals, but
-  // neither peripheral implements sub-word writes: both are register
-  // files whose registers are written whole. Named so the unused signal
-  // is a decision rather than an oversight.
-  wire _unused_pstrb = &{1'b0, pstrb, 1'b0};
+  // PSTRB reaches the interface wrappers, including CAN byte-lane decoding.
+
 
   // ---- slot decode ----
   //
@@ -815,9 +930,15 @@ module soc_top #(
   wire sel_bootreg = psel && (slot == SOC_APBSLOT_BOOTREG);
   wire sel_npucfg = psel && (slot == SOC_APBSLOT_NPUCFG);
   wire sel_apbpnp = psel && (slot == SOC_APBSLOT_APBPNP);
+  wire sel_spw = psel && (slot == SOC_APBSLOT_SPW);
+  wire sel_i2c = psel && (slot == SOC_APBSLOT_I2C);
+  wire sel_can = psel && (slot == SOC_APBSLOT_CAN);
+  wire sel_eth = psel && (slot == SOC_APBSLOT_ETH);
+  wire sel_spi = psel && (slot == SOC_APBSLOT_SPI);
   wire sel_none   = psel && !sel_uart0 && !sel_gpio && !sel_qspi
                          && !sel_timer0 && !sel_busstat && !sel_scrub
-                         && !sel_bootreg && !sel_npucfg && !sel_apbpnp;
+                         && !sel_bootreg && !sel_npucfg && !sel_apbpnp
+                         && !sel_spw && !sel_i2c && !sel_can && !sel_spi && !sel_eth;
 
   wire [31:0] prdata_uart0, prdata_timer0, prdata_apbpnp, prdata_busstat,
               prdata_npucfg, prdata_gpio, prdata_qspi, prdata_scrub,
@@ -829,13 +950,87 @@ module soc_top #(
               pslverr_npucfg, pslverr_gpio, pslverr_qspi, pslverr_scrub,
               pslverr_bootreg;
 
+  wire [31:0] prdata_spw;
+  wire pready_spw, pslverr_spw;
+`ifdef SOC_LGPL_INTERFACES
+  soc_spw u_spw (
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_spw), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_spw), .pready_o(pready_spw), .pslverr_o(pslverr_spw),
+      .di_i(spw_di_i), .si_i(spw_si_i), .do_o(spw_do_o), .so_o(spw_so_o), .irq_o(spw_irq));
+`else
+  // Default profile has no LGPL dependency. Absent slots terminate with
+  // an APB error; they do not impersonate successful peripheral accesses.
+  assign prdata_spw = 32'd0;
+  assign pready_spw = 1'b1;
+  assign pslverr_spw = 1'b1;
+  assign spw_do_o = 1'b0;
+  assign spw_so_o = 1'b0;
+  assign spw_irq = 1'b0;
+`endif
+  assign spw_irq_o = spw_irq;
+
+  wire [31:0] prdata_i2c;
+  wire pready_i2c, pslverr_i2c;
+  soc_i2c u_i2c (
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_i2c), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_i2c), .pready_o(pready_i2c), .pslverr_o(pslverr_i2c),
+      .scl_i(i2c_scl_i), .sda_i(i2c_sda_i), .scl_oe_o(i2c_scl_oe_o), .sda_oe_o(i2c_sda_oe_o), .irq_o(i2c_irq));
+  assign i2c_irq_o = i2c_irq;
+
+  wire [31:0] prdata_can;
+  wire [31:0] prdata_eth;
+  wire pready_eth, pslverr_eth;
+  assign eth_gtx_clk_o = eth_tx_clk_i;
+  soc_eth u_eth (
+`ifdef SOC_ETH_MBIST
+      .mbist_por_ni(rst_por_sync_n), .mbist_done_o(eth_mbist_done_o),
+      .mbist_failed_o(eth_mbist_failed_o),
+`endif
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_eth), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_eth), .pready_o(pready_eth), .pslverr_o(pslverr_eth),
+      .irq_o(eth_irq_o), .rx_clk_i(eth_rx_clk_i), .tx_clk_i(eth_tx_clk_i),
+      .rxd_i(eth_rxd_i), .rx_dv_i(eth_rx_dv_i), .rx_er_i(eth_rx_er_i),
+      .txd_o(eth_txd_o), .tx_en_o(eth_tx_en_o), .tx_er_o(eth_tx_er_o),
+      .mdc_o(eth_mdc_o), .mdio_o(eth_mdio_o), .mdio_oe_o(eth_mdio_oe_o),
+      .mdio_i(eth_mdio_i)
+  );
+
+  wire pready_can, pslverr_can;
+`ifdef SOC_LGPL_INTERFACES
+  soc_can u_can (
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_can), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_can), .pready_o(pready_can), .pslverr_o(pslverr_can),
+      .rx_i(can_rx_i), .tx_o(can_tx_o), .bus_off_o(can_bus_off_o), .irq_o(can_irq));
+`else
+  assign prdata_can = 32'd0;
+  assign pready_can = 1'b1;
+  assign pslverr_can = 1'b1;
+  assign can_tx_o = 1'b1; // Recessive when no CAN controller is selected.
+  assign can_bus_off_o = 1'b0;
+  assign can_irq = 1'b0;
+`endif
+  assign can_irq_o = can_irq;
+
+  wire [31:0] prdata_spi;
+  wire pready_spi, pslverr_spi;
+  soc_spi u_spi (
+      .clk_i(clk_i), .rst_ni(rst_sys_n), .psel_i(sel_spi), .penable_i(penable),
+      .paddr_i(paddr[11:0]), .pwrite_i(pwrite), .pwdata_i(pwdata), .pstrb_i(pstrb),
+      .prdata_o(prdata_spi), .pready_o(pready_spi), .pslverr_o(pslverr_spi),
+      .miso_i(spi_miso_i), .sck_o(spi_sck_o), .mosi_o(spi_mosi_o), .cs_no(spi_cs_no), .irq_o(spi_irq));
+  assign spi_irq_o = spi_irq;
+
   soc_uart u_uart0 (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .psel_i (sel_uart0), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
       .prdata_o (prdata_uart0), .pready_o (pready_uart0),
       .pslverr_o (pslverr_uart0),
-      .tx_o (uart_tx_o), .irq_o (uart_irq)
+      .rx_i (uart_rx_i), .tx_o (uart_tx_o), .irq_o (uart_irq)
   );
 
   // The GPIO port, docs/65. GRGPIO's register map (grip.pdf table 923)
@@ -887,7 +1082,7 @@ module soc_top #(
       .WDOG_RST_CYCLES (16),
       .WDOG_ESCALATE   (2)
   ) u_timer0 (
-      .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
+      .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (timer_por_n),
       .psel_i (sel_timer0), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
       .prdata_o (prdata_timer0), .pready_o (pready_timer0),
@@ -908,7 +1103,7 @@ module soc_top #(
   // system domain so the fresh boot after that reset is not immediately
   // interrupted by a sticky bit it has not read yet (docs/40 section
   // 7.2's brick, in a new place).
-  soc_busstat u_busstat (
+  soc_busstat #(.APB_TIMEOUT_EN(APB_TIMEOUT != 0 ? 32'd1 : 32'd0)) u_busstat (
       .clk_i (clk_i), .rst_ni (rst_sys_n), .rst_por_ni (rst_por_sync_n),
       .psel_i (sel_busstat), .penable_i (penable), .paddr_i (paddr[11:0]),
       .pwrite_i (pwrite), .pwdata_i (pwdata),
@@ -920,6 +1115,7 @@ module soc_top #(
       .npu_det_i (npu_det_ev),
       .npu_tmr_i (npu_tmr_ev),
       .mt_ecc_i (clint_mt_ecc_ev),
+      .apb_timeout_i (apb_timeout && s_rvalid[2]),
       .irq_o (busstat_irq)
   );
 
@@ -983,6 +1179,11 @@ module soc_top #(
   // reserved peripheral slot is a bus error at the core rather than a
   // read of zero that looks like a working register.
   assign prdata  = sel_uart0   ? prdata_uart0
+                 : sel_spw     ? prdata_spw
+                 : sel_i2c     ? prdata_i2c
+                 : sel_can     ? prdata_can
+                 : sel_eth     ? prdata_eth
+                 : sel_spi     ? prdata_spi
                  : sel_gpio    ? prdata_gpio
                  : sel_qspi    ? prdata_qspi
                  : sel_timer0  ? prdata_timer0
@@ -993,6 +1194,11 @@ module soc_top #(
                  : sel_apbpnp  ? prdata_apbpnp
                  : 32'h0;
   assign pready  = sel_uart0   ? pready_uart0
+                 : sel_spw     ? pready_spw
+                 : sel_i2c     ? pready_i2c
+                 : sel_can     ? pready_can
+                 : sel_eth     ? pready_eth
+                 : sel_spi     ? pready_spi
                  : sel_gpio    ? pready_gpio
                  : sel_qspi    ? pready_qspi
                  : sel_timer0  ? pready_timer0
@@ -1003,6 +1209,11 @@ module soc_top #(
                  : sel_apbpnp  ? pready_apbpnp
                  : 1'b1;
   assign pslverr = sel_uart0   ? pslverr_uart0
+                 : sel_spw     ? pslverr_spw
+                 : sel_i2c     ? pslverr_i2c
+                 : sel_can     ? pslverr_can
+                 : sel_eth     ? pslverr_eth
+                 : sel_spi     ? pslverr_spi
                  : sel_gpio    ? pslverr_gpio
                  : sel_qspi    ? pslverr_qspi
                  : sel_timer0  ? pslverr_timer0
@@ -1108,3 +1319,5 @@ module soc_top #(
   assign irq_soft_o     = clint_irq_soft;
 
 endmodule
+
+`default_nettype wire

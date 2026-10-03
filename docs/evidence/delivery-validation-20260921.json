@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-21",
+  "hosted_general": {
+    "head": "5cdcfe6e78a7d0aec1ec013f0ce27c223ee5b322",
+    "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35641142941",
+    "job_id": 106470811795,
+    "conclusion": "success",
+    "pytest": {
+      "passed": 1178,
+      "skipped": 115,
+      "failed": 0
+    },
+    "front_door": {
+      "passed": 19,
+      "skipped": 2,
+      "failed": 0
+    },
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/hosted-5cdcfe6-general.log",
+      "sha256": "b3e983380abc7d24c5d8ae944bc824a2332017691237bfff6344089494bc6931",
+      "bytes": 64959
+    },
+    "scope": "General checks job only; absent hardware/tool tests retain explicit skips. Long formal/hardware workflow jobs are not implied complete."
+  },
+  "direct_layout_python_followup": {
+    "status": "PASS",
+    "tests_passed": 35,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/flow-python-entrypoint-tests.log",
+      "sha256": "fa64b094d463ad9f54683a1a1451d42f1a6f8ba583217a6c9c3c72632bd8fe9f",
+      "bytes": 99
+    },
+    "source_sha256": {
+      "hw/soc/flow/implement_interfaces.sh": "854379c7b34d6cfee9f4bc5ccf3282cdb0157f48c0c829da64880293ba98a344",
+      "sw/tests/test_interface_flow.py": "ed5840d8257472d430ac507c89f7f3ad71fd42d91cc94242995ff56477ec6d56"
+    },
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_interface_flow.py sw/tests/test_interface_profiles.py",
+    "controls": [
+      "Project Python selected by default",
+      "Explicit interpreter override honored",
+      "Provisioned Python fallback without a project venv",
+      "Missing explicit override fails rather than silently falling back"
+    ],
+    "scope": "Four new isolated shell-entrypoint controls deliberately stop at preparation, before synthesis/layout. The other 31 existing flow/profile checks also pass. This is not a physical run or closure of the legacy profile limitations."
+  }
+}

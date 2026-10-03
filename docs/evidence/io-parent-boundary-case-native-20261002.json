@@ -1,0 +1,316 @@
+{
+  "schema": 1,
+  "status": "DIAGNOSTIC_BOUNDARY_STRICT_NAMES_FIXED_LVS_FAIL_TAP_AP",
+  "run_id": 37000437137,
+  "producer_source": "9e39269313d9683da35cf67a91bc4b15afed3970",
+  "workflow_conclusion": "success",
+  "artifact": {
+    "id": 11223024347,
+    "node_id": "MDg6QXJ0aWZhY3QxMTIyMzAyNDM0Nw==",
+    "name": "io-parent-boundary-1",
+    "size_in_bytes": 7468692,
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11223024347",
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11223024347/zip",
+    "expired": false,
+    "digest": "sha256:0b4d68caae47be157a40bb31e87fc66e22c05761e0aafcbeb7ea824e4604a564",
+    "created_at": "2026-10-02T11:21:52Z",
+    "updated_at": "2026-10-02T11:21:52Z",
+    "expires_at": "2026-11-01T11:21:50Z",
+    "workflow_run": {
+      "id": 37000437137,
+      "repository_id": 1364721142,
+      "head_repository_id": 1364721142,
+      "head_branch": "codex/complete-open-work",
+      "head_sha": "9e39269313d9683da35cf67a91bc4b15afed3970"
+    }
+  },
+  "verified": {
+    "source_method_count": 27,
+    "selected_member_count": 165,
+    "selected_member_crc_and_producer_sha256": true,
+    "range_bytes": 3274388,
+    "whole_zip_downloaded_or_verified": false,
+    "actual_gds_loaded_locally": false,
+    "original_deck_file_count": 53,
+    "original_deck_files_retained": true,
+    "diagnostic_overlay_changes": [
+      {
+        "path": "ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs",
+        "original_sha256": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "before": "connect(pwell_sub, pwell)\n",
+        "after": "connect(pwell_sub, pwell)\n# Diagnostic boundary: attach one witnessed body label, never join separate bodies.\nconnect(pwell_sub, substrate_text)\n"
+      }
+    ]
+  },
+  "physically_witnessed_root_annotations": [
+    {
+      "name": "IOVDD",
+      "layer": [
+        126,
+        25
+      ],
+      "point_nm": [
+        106250,
+        1117000
+      ]
+    },
+    {
+      "name": "IOVSS",
+      "layer": [
+        126,
+        25
+      ],
+      "point_nm": [
+        19750,
+        1117000
+      ]
+    },
+    {
+      "name": "VDD",
+      "layer": [
+        126,
+        25
+      ],
+      "point_nm": [
+        1500,
+        1117000
+      ]
+    },
+    {
+      "name": "VSS",
+      "layer": [
+        126,
+        25
+      ],
+      "point_nm": [
+        169000,
+        1117000
+      ]
+    },
+    {
+      "name": "SUB!",
+      "layer": [
+        40,
+        25
+      ],
+      "point_nm": [
+        1000,
+        834000
+      ]
+    }
+  ],
+  "wrapper_gds_sha256": "ae643bf0391b0d700bd3374b642f3afff4c94976d23014984e93005f3d334633",
+  "original_gds_sha256": "d846215231733f66265b2cbfe3eb4859c001723d8b2819bd4a236b0f255ac895",
+  "deleted_conductive_texts_count": 245,
+  "all_non_text_bytes_unchanged": true,
+  "recognition_texts_unchanged": true,
+  "native_overall_verdicts": {
+    "deep": {
+      "status": "FAIL",
+      "circuit_status_counts": {
+        "Skipped": 5,
+        "NoMatch": 5,
+        "Match": 1
+      }
+    },
+    "flat": {
+      "status": "FAIL",
+      "circuit_status_counts": {
+        "NoMatch": 1
+      }
+    }
+  },
+  "supplemental_strict_port_checks": {
+    "deep": {
+      "flag_missing_ports": true,
+      "exact_named_ports_match": true,
+      "layout_ports": [
+        "SUB!",
+        "IOVDD",
+        "IOVSS",
+        "VDD",
+        "VSS"
+      ],
+      "reference_ports": [
+        "IOVDD",
+        "IOVSS",
+        "VDD",
+        "VSS",
+        "SUB!"
+      ]
+    },
+    "flat": {
+      "flag_missing_ports": true,
+      "exact_named_ports_match": true,
+      "layout_ports": [
+        "SUB!",
+        "IOVDD",
+        "IOVSS",
+        "VSS",
+        "VDD"
+      ],
+      "reference_ports": [
+        "IOVDD",
+        "IOVSS",
+        "VDD",
+        "VSS",
+        "SUB!"
+      ]
+    }
+  },
+  "flat_device_matches": 16,
+  "flat_tap_parameter_warnings": [
+    {
+      "layout": {
+        "id": 18,
+        "name": "",
+        "model": "ptap1",
+        "parameters": {
+          "A": 98.034,
+          "P": 657.76
+        },
+        "terminals": {
+          "TIE": "VSS",
+          "WELL": "SUB!"
+        }
+      },
+      "reference": {
+        "id": 3,
+        "name": "U_SUPPLY_IOVSS.2",
+        "model": "PTAP1",
+        "parameters": {
+          "A": 97.10787499999999,
+          "P": 87.9
+        },
+        "terminals": {
+          "TIE": "VSS",
+          "WELL": "SUB!"
+        }
+      },
+      "status": "MatchWithWarning"
+    },
+    {
+      "layout": {
+        "id": 17,
+        "name": "",
+        "model": "ptap1",
+        "parameters": {
+          "A": 15455.02395,
+          "P": 4526.95
+        },
+        "terminals": {
+          "TIE": "IOVSS",
+          "WELL": "SUB!"
+        }
+      },
+      "reference": {
+        "id": 4,
+        "name": "U_SUPPLY_IOVSS.0",
+        "model": "PTAP1",
+        "parameters": {
+          "A": 15352.823,
+          "P": 1223.46
+        },
+        "terminals": {
+          "TIE": "IOVSS",
+          "WELL": "SUB!"
+        }
+      },
+      "status": "MatchWithWarning"
+    }
+  ],
+  "all_18_primitive_parameters_unchanged": true,
+  "native_controls": {
+    "status": "PASS_TINY_NATIVE_BOUNDARY_CONTROLS",
+    "cases": {
+      "connected": {
+        "compare": true,
+        "strict_ports": true,
+        "expected": true
+      },
+      "case_mismatch": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "parameter_mismatch": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "mislabeled": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "open_substrate": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "same_name_open": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "missing_substrate_label": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      }
+    },
+    "annotation_roundtrip": {
+      "status": "PASS_ALL_POLYGONS_INSTANCES_AND_NON_BOUNDARY_TEXTS_PRESERVED",
+      "cells": 2,
+      "layer_pairs": 5
+    },
+    "scope": "Generic resistor geometry; label attachment never joins disjoint bodies. Not IHP validation."
+  },
+  "inspection": {
+    "klayout_version": "0.30.7",
+    "memory_limit_bytes": 2147483648,
+    "maxrss_kib": 299596,
+    "runtime_sha256_reverified": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "scope": "Read-only completed small seven-instance deep/flat LVSdb inspection, not new extraction."
+  },
+  "receipts": [
+    {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-cloud/review.json",
+      "bytes": 155554,
+      "sha256": "4c68e49713c5f2dfc6b7cf4e5b7940e2d6d22c2eb0c39cc1f7be27df4ccdf31a"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-cloud/native-review.json",
+      "bytes": 64116,
+      "sha256": "1b40dd4e02e74944ca3a8adc7bcf9db86e6c729795df129f9b6b611fcb27c1fd"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-cloud/review.py",
+      "bytes": 5709,
+      "sha256": "91aae417d9fa7a0df368cb091bb84de29e27ab31ec6a2b242da055be6ec5f90e"
+    },
+    {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-cloud/native_review.py",
+      "bytes": 5719,
+      "sha256": "c015a333bc596b995ce7f9060aa6483c6062e477b058f13a22107c3709b0dbbe"
+    }
+  ],
+  "original_failed_run_retained": 36998483392,
+  "original_case_failure_review": {
+    "path": "hw/soc/out/resume-20261002-0800/boundary-cloud/native-review.json",
+    "bytes": 63963,
+    "sha256": "66cf405ae5dd87e72e49950fbf4bc51ab729dc13c4e95dfd30dd92ffa4267f54"
+  },
+  "remaining_research": {
+    "path": "hw/soc/out/resume-20261002-0800/tap-contract-research/research.json",
+    "bytes": 9560,
+    "sha256": "a4f6aa90adec0cd995730de2100aea84d4da3a10e580723f6e856184231cf1aa"
+  },
+  "diagnostic_only": true,
+  "qualified_deck_acceptance": false,
+  "lvs_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "root_independent_member_source_audit_replay": true,
+  "root_independent_read_only_native_cases_match": true
+}

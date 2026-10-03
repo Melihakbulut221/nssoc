@@ -1,0 +1,99 @@
+{
+  "status": "INVESTIGATION_PENDING_FULL_METAL_EXTRACTION",
+  "gds_sha256": "a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff",
+  "upper_only_result": {
+    "status": "FAIL_PHYSICAL_SUPPLY_CONNECTION",
+    "pad_count": 27,
+    "rails": {
+      "iovss": [
+        27,
+        39,
+        50
+      ],
+      "iovdd": [
+        49
+      ],
+      "vdd": [
+        51
+      ],
+      "vss": [
+        223
+      ]
+    },
+    "errors": [
+      "iovss has 3 disconnected physical clusters"
+    ],
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/fill-results/run36518494878/fill/checkpoint.gds": "a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-tap-contract-20260929/supply-port-contract.json": "94e78b69abccf0d102f4fb4e45cb66cb8fbe8dbb00b93895ef879b160474b2eb",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lef/sg13g2_io.lef": "8b3dc3960960c08e07a1cde3dd9cd0484f5b12df07c4628726fff551bb775c0c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/check_filled_upper_supplies.py": "32ff65e5143a63cd1fb2f0ad7c441c709ce84c7039a2d75072e98e1ae5bb25e5"
+    }
+  },
+  "upper_only_interpretation": "Three IOVSS clusters in the upper stack do not establish a full-chip open; lower-metal paths still require extraction.",
+  "flat_attempt": {
+    "status": "ERROR_NO_FULL_METAL_RESULT",
+    "recorded": "2026-09-29T09:43:03.452888+03:00",
+    "address_space_limit_bytes": 1610612736,
+    "error": "std::bad_alloc in Region.__add__ while constructing first flattened metal layer",
+    "log_sha256": "97032e893bfc5171996de8a1067419cb2f46dbde7bf87c589aae6e009ca972ee",
+    "method_sha256": "d953da46c328fe25f435771b0f4817c9eec23621ed6729f95a24532db95260c3",
+    "recovery": "Separate hierarchical extraction started with same memory cap; original failed method and log retained. No GDS or native rules changed.",
+    "physical_acceptance": false
+  },
+  "hierarchical_extraction": {
+    "status": "PENDING_FULL_METAL_EXTRACTION",
+    "scope": "Native conductor derivations and seven-metal hierarchical controls verified; full GDS extraction still running.",
+    "native_reference_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157"
+    },
+    "control_sha256": "1b354541aa6a696e1e977163b9108324b2f12b6f6af79cc7d93b622a86d844b9",
+    "recorded": "2026-09-29T09:47:41.435399+03:00",
+    "full_chip_lvs_accepted": false,
+    "manufacturing_approval": false
+  },
+  "controls": {
+    "status": "PASS_HIERARCHICAL_SEVEN_METAL_BRIDGE_AND_DISCONNECTED_INSTANCE_CONTROLS",
+    "rows": [
+      {
+        "parent_bridge": true,
+        "probe_nets": [
+          {
+            "circuit": "TOP",
+            "cluster": 1,
+            "expanded_name": "$1"
+          },
+          {
+            "circuit": "TOP",
+            "cluster": 1,
+            "expanded_name": "$1"
+          }
+        ]
+      },
+      {
+        "parent_bridge": false,
+        "probe_nets": [
+          {
+            "circuit": "COLUMN",
+            "cluster": 1,
+            "expanded_name": "$1"
+          },
+          {
+            "circuit": "COLUMN",
+            "cluster": 1,
+            "expanded_name": "$1"
+          }
+        ]
+      }
+    ],
+    "acceptance_contract": "Only top-circuit probes can establish cross-instance connectivity; unresolved child nets remain unproven regardless of matching local cluster IDs.",
+    "method_sha256": "bb0ddb210a9e563e13751a8ba89caf8819f06256139bef9de0bb65012bfdd26f"
+  },
+  "acceptance_guard": "All probe nets must resolve to the top circuit; matching child-local IDs cannot establish cross-instance joins.",
+  "raw_asset": "chip-offset-filled-native-supply-assets-20260929.json",
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false
+}

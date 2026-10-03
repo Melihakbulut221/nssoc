@@ -1720,3 +1720,33 @@ difference of netlist too.
    device, a slower `SCK`, or a second seed. Section 12's bullets on
    those three stand unchanged.
 6. **A v0.2 of `docs/60`**, now owed by `docs/58`, `docs/67` and this.
+
+## 2026-09-20 correction: clear startup telemetry before reading it
+
+The earlier transcripts above are historical RTL measurements. Their conditional
+RAM error count increment was optimistic for unknown event values: the same
+mapped logic can propagate uninitialized SRAM codewords into the RAM SEC/DED
+counters. A native-cell whole-SoC boot then prints 113 characters, reads that
+startup telemetry and loses known CPU state; the retained run fails. The detailed
+counter and independent-cell-model controls are linked from
+[docs/95](95-immutable-boot-rom.md#reproducible-whole-netlist-boot).
+
+The loader now clears only the RAM startup sources unconditionally when the
+power-on boot count is zero, after the assembly RAM sweep. It does not read,
+branch on or print the undefined startup counter values. It prints
+`boot: cleared RAM startup scrub record` instead. Nonzero boot counts and ROM
+records remain unchanged; the previously documented loss of startup-window
+radiation history is still a limitation. The first normal RTL replay passes
+28 checks; native mapped acceptance remains pending. No PDK model was edited.
+
+**Native boot acceptance, 2026-09-20:** the corrected loader now passes the
+[complete four-state mapped-SoC run](evidence/logicrom-startup-clear-native-pass-20260920.json):
+637,224 cycles, all 28 application checks, exit code zero, exit magic
+`600dc0de`, watchdog stages 1/0/0, zero flash protocol violations and zero
+UART framing errors. Native IHP cell and SRAM models remain unchanged, with
+no ROM/RAM preload and matching loader manifests. Input hashes stayed
+unchanged for the full 3,169.87-second simulation. This supersedes the pending
+local native-boot statements and closes the diagnosed power-on telemetry
+read defect; the original failure remains the negative baseline. It does
+not establish SDF timing, radiation qualification or final-image physical
+acceptance. The independent hosted rebuild remains a separate run.

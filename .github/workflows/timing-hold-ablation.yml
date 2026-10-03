@@ -1,0 +1,137 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-hold-ablation (separate eth and npu single-delay ablations)
+on:
+  push:
+    paths:
+      - .github/workflows/timing-hold-ablation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-hold-ablation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [eth, npu]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted platform ceiling; no native elapsed watchdog.
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      CLOUD_OUTPUT: ${{ github.workspace }}/hold-ablation-result
+      CLOUD_WORK: ${{ github.workspace }}/hold-ablation-input
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # Exact original producer methods must be verified against Git.
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Install only AppImage runtime prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      # The exact parent diagnostic kind is checked before acquisition/replay.
+      - name: Place the selected one identity delay and route independently twice
+        id: launch
+        env:
+          GH_TOKEN: ${{ github.token }} # Read-only run/artifact identity before native work.
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py start --variant "${{ matrix.variant }}" \
+            --manifest docs/evidence/timing-cloud-input-20260930.json \
+            --output "$CLOUD_OUTPUT" --work "$CLOUD_WORK"
+      - name: Observe startup without stopping the worker
+        if: always() && steps.launch.outcome == 'success'
+        run: python3 scripts/run_cloud_hold_ablation.py wait --output "$CLOUD_OUTPUT" --seconds 60
+      - name: Preserve startup evidence
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py capture --output "$CLOUD_OUTPUT" \
+            --destination hold-ablation-startup
+      - name: Upload startup evidence promptly
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hold-ablation-${{ matrix.variant }}-startup-${{ github.run_attempt }}
+          path: hold-ablation-startup/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe first interval without a native timeout
+        id: first
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 900 --github-output "$GITHUB_OUTPUT"
+      - name: Capture first immutable progress
+        if: always()
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py capture --output "$CLOUD_OUTPUT" \
+            --destination hold-ablation-first
+      - name: Upload first progress before the platform deadline
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hold-ablation-${{ matrix.variant }}-first-${{ github.run_attempt }}
+          path: hold-ablation-first/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Observe second interval without a native timeout
+        id: second
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py wait --output "$CLOUD_OUTPUT" \
+            --seconds 900 --github-output "$GITHUB_OUTPUT"
+      - name: Capture second immutable progress
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py capture --output "$CLOUD_OUTPUT" \
+            --destination hold-ablation-second
+      - name: Upload second progress before the platform deadline
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hold-ablation-${{ matrix.variant }}-second-${{ github.run_attempt }}
+          path: hold-ablation-second/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Wait for healthy native work to finish
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        run: python3 scripts/run_cloud_hold_ablation.py wait --output "$CLOUD_OUTPUT"
+      - name: Capture final diagnostic or explicit failure evidence
+        if: always()
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py capture --output "$CLOUD_OUTPUT" \
+            --destination hold-ablation-final
+      - name: Preserve outputs even when native controls or chip diagnosis fail
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hold-ablation-${{ matrix.variant }}-final-${{ github.run_attempt }}
+          path: hold-ablation-final/
+          if-no-files-found: error
+          compression-level: 1
+          include-hidden-files: true # Includes the hash-pinned methods/.github source.
+          retention-days: 30
+      - name: Validate exact insertion, unchanged original objects, logical proofs and all guards
+        if: always()
+        run: |
+          python3 scripts/run_cloud_hold_ablation.py validate \
+            --directory hold-ablation-final \
+            --manifest docs/evidence/timing-cloud-input-20260930.json

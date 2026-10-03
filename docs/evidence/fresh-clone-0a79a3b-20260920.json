@@ -1,0 +1,155 @@
+{
+  "date": "2026-09-20",
+  "tested_head": "0a79a3b09ad0374947829fff2100bb10711eac89",
+  "source": "Fresh remote clone; no generated dependencies, PDK inputs or run artifacts copied. Shared tool executables only. Includes the 43-test primary-input-aware ECO guard, 19-test CPU Ethernet probe checker, 11-test stale-guide cleaner 17-test macro-halo geometry checker, five automatic flow integration controls, 20 postroute connectivity controls, and 18 external IRQ probe controls; includes docs94, immutable logic-ROM generation/address tests, docs95 and its physical profile, plus the 17 strict LVS auditor controls and supplemental evidence. No generated dependencies or physical run artifacts copied.",
+  "command": "PY=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python PYTEST_ADDOPTS=\"-rs --junitxml=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b-pytest.xml\" bash scripts/ci_local.sh all --record",
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "26",
+      "tests": "842",
+      "time": "630.335",
+      "timestamp": "2026-09-20T11:24:47.045716+03:00",
+      "hostname": "pop-os"
+    }
+  ],
+  "pytest_counts": {
+    "tests": 842,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 26,
+    "passed": 816
+  },
+  "gate_counts": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 7
+  },
+  "ledger_row": "2026-09-20T08:35Z\t0a79a3b\tall\t16\t0\t7\ttree-dirty=0,pandoc=no,tex=tectonic",
+  "skipped_tests": [
+    {
+      "test": "sw.tests.test_flow_evidence::test_documented_run_tag_is_retained",
+      "reason": "sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file."
+    },
+    {
+      "test": "sw.tests.test_flow_evidence::test_signoff_step_directories_exist",
+      "reason": "sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file."
+    },
+    {
+      "test": "sw.tests.test_flow_evidence::test_numbered_step_directory_count_matches_the_document",
+      "reason": "sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file."
+    },
+    {
+      "test": "sw.tests.test_flow_evidence::test_raw_drc_reports_agree_with_the_metrics",
+      "reason": "sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file."
+    },
+    {
+      "test": "sw.tests.test_flow_evidence::test_flow_ran_to_completion_without_errors",
+      "reason": "sign-off run tree absent: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-0a79a3b/hw/openlane/aer_fifo/runs/g0gates2 does not exist. Run outputs are git-ignored (.gitignore, 'hw/openlane/*/runs/'), so a fresh clone has no artifacts to audit and the claims in 12-sg13g2-flow-bringup.md section 4 cannot be rechecked here. Regenerate with 'hw/openlane/run_trial.sh --run-tag g0gates2' from the repository root, then rerun this file."
+    },
+    {
+      "test": "sw.tests.test_gl_coverage::test_it_reproduces_every_published_figure",
+      "reason": "hw/soc/out/s70-rom0-syn/soc_top.netlist.v is a git-ignored build product and is not in this tree. hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v Historical artifact: hw/soc/out/s70-rom0-syn/soc_top.netlist.v; SHA-256 6294cdd8d2ded405d75813fd6143dac8b91dcefa0dacdec1075f9aead230369f; 5999961 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_gl_coverage::test_relabelling_eight_flip_flops_moves_the_number",
+      "reason": "hw/soc/out/s70-rom0-syn/soc_top.netlist.v is a git-ignored build product and is not in this tree. hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v Historical artifact: hw/soc/out/s70-rom0-syn/soc_top.netlist.v; SHA-256 6294cdd8d2ded405d75813fd6143dac8b91dcefa0dacdec1075f9aead230369f; 5999961 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_gl_coverage::test_the_unmutated_run_is_the_control_for_that",
+      "reason": "hw/soc/out/s70-rom0-syn/soc_top.netlist.v is a git-ignored build product and is not in this tree. hw/soc/flow/syn_soc.sh writes it; docs/60 section 9.10.1 names it as hw/soc/out/s70-rom0-syn/soc_top.netlist.v Historical artifact: hw/soc/out/s70-rom0-syn/soc_top.netlist.v; SHA-256 6294cdd8d2ded405d75813fd6143dac8b91dcefa0dacdec1075f9aead230369f; 5999961 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_recorded_evidence::test_the_record_matches_the_run_tree_where_both_exist",
+      "reason": "no run tree for any of the 21 cited runs is on this machine, so there is nothing to compare the records against. runs/ is gitignored build output; the records are what make the claims checkable here, and this comparison is what a machine holding the runs does. 42 files were looked for."
+    },
+    {
+      "test": "sw.tests.test_replica_placement::test_the_attribution_reproduces_the_synthesis_guard",
+      "reason": "the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/def/tt_um_melihakbulut_nssoc.def; SHA-256 8f99c979c513ab5d9dd2ebb5e72bbf77d28180ac2d7165772664dfe09586fcf4; 13960592 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement. Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_replica_placement::test_the_replicas_are_not_separated_on_the_die",
+      "reason": "the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/def/tt_um_melihakbulut_nssoc.def; SHA-256 8f99c979c513ab5d9dd2ebb5e72bbf77d28180ac2d7165772664dfe09586fcf4; 13960592 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement. Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_replica_placement::test_the_banks_are_not_segregated",
+      "reason": "the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/def/tt_um_melihakbulut_nssoc.def; SHA-256 8f99c979c513ab5d9dd2ebb5e72bbf77d28180ac2d7165772664dfe09586fcf4; 13960592 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement. Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_replica_placement::test_corresponding_bits_are_concentrated",
+      "reason": "the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/def/tt_um_melihakbulut_nssoc.def; SHA-256 8f99c979c513ab5d9dd2ebb5e72bbf77d28180ac2d7165772664dfe09586fcf4; 13960592 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement. Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_replica_placement::test_the_corresponding_bit_figures_are_declared_a_lower_bound",
+      "reason": "the sign-off run tree is gitignored build output; this measures a layout, and without the layout there is nothing to measure Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/def/tt_um_melihakbulut_nssoc.def; SHA-256 8f99c979c513ab5d9dd2ebb5e72bbf77d28180ac2d7165772664dfe09586fcf4; 13960592 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement. Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_soc_regfile_guards::test_upstreams_own_file_measures_the_data_flip_flops_only",
+      "reason": "hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh"
+    },
+    {
+      "test": "sw.tests.test_soc_regfile_guards::test_the_substitute_declares_upstreams_ports_in_upstreams_order",
+      "reason": "hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh"
+    },
+    {
+      "test": "sw.tests.test_soc_regfile_guards::test_the_substitute_accepts_every_parameter_ibex_top_overrides",
+      "reason": "hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh"
+    },
+    {
+      "test": "sw.tests.test_soc_synthesis_guards::test_the_ibex_top_patch_applies_to_the_pinned_output",
+      "reason": "hw/soc/gen is empty: run flow/sv2v_ibex.sh first"
+    },
+    {
+      "test": "sw.tests.test_soc_synthesis_guards::test_the_whole_soc_elaborates_as_one_design",
+      "reason": "hw/soc/gen is empty: run flow/sv2v_ibex.sh first"
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_the_shipped_netlist_holds_one_flip_flop_per_rail",
+      "reason": "sign-off netlist not present in this checkout Historical artifact: hw/openlane/pilot_ihp/runs/signoff-6x2/final/nl/tt_um_melihakbulut_nssoc.nl.v; SHA-256 52b2debf3b2097c1544b2a5ea625675add5ec71a3d3ac9b68dfb5b32d6120989; 2565946 bytes (docs/80-artefact-digests.tsv). Restore these bytes to recheck that historical result; a new build is a separate measurement."
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_config_tmr_survives_the_real_hardening_flow",
+      "reason": "no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_sky130/run_sky130.sh"
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_pointer_tmr_survives_the_real_hardening_flow",
+      "reason": "no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_sky130/run_sky130.sh"
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_entry_parity_survives_the_real_hardening_flow",
+      "reason": "no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent"
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_dispatcher_check_field_survives_the_real_hardening_flow",
+      "reason": "no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent"
+    },
+    {
+      "test": "sw.tests.test_synthesis_guards::test_valid_flag_rails_survive_the_real_hardening_flow",
+      "reason": "no deferred_flatten LibreLane run with a final netlist; produce one with hw/openlane/pilot_ihp/run_ihp.sh or the sky130 equivalent"
+    },
+    {
+      "test": "sw.tests.test_tt_submission::test_the_vendored_tooling_is_the_commit_the_documents_name",
+      "reason": "tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-0a79a3b-pytest.xml",
+      "bytes": 138031,
+      "sha256": "d45cd6b19330590f74e3cbf064945161b87ff310ac9b99fb1666fc65e029dd92"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-0a79a3b-ci.log",
+      "bytes": 1921,
+      "sha256": "84d524df0e05337135a0dd5ad66d0671516d85e76df9936b8ebf609d10378006"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-0a79a3b-clone.log",
+      "bytes": 115,
+      "sha256": "45475a71ec144b8e6ef127099173143430a82664b3b49ba1028dcdb3296ccfbd"
+    }
+  ],
+  "F6_status": "Numeric threshold met. Complete first clause remains open because historical artifacts, not only tools or PDK, are absent."
+}

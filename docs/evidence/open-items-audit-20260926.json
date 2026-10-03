@@ -1,0 +1,364 @@
+{
+  "status": "AUDIT_OPEN_PRODUCT_GATES_NOT_SIGNOFF",
+  "captured_at_utc": "2026-09-26T11:23:02.531142+00:00",
+  "source_head": "ec7a92fca6344875cbf35512a69da60c05cde8a0",
+  "source_tree": "e223cb2be4a44068fe18ef18bb0d940e967b1a5b",
+  "source_sha256": {
+    "README.md": "77797e9a766a38731defaaeb1c662adfb180ca8a387e581865248765ec0fc377",
+    "docs/92-product-acceptance.md": "1df008bae168d6dc79e451b39fc600bd38552323386d7b5e1bfcef01fc166564",
+    "docs/96-second-audit-closure.md": "7d02fd02eceaa578cccca818fd2c53ea215316ca83bea605a4f24b5f9a118f91",
+    "docs/101-sram-characterization.md": "1c32191904495b3c542d6794c4a7a5a0cc53de8e61c4391bfe7e32e4545c1bb6",
+    "docs/99-pcie-phy-development.md": "5947c12f31d7583ac4ddafcd8d12b8a80196daafa185a88e11e1603c31f87dd4",
+    "docs/90-gigabit-ethernet.md": "03b64ad0a0c41b760cb17ce731d4a1b68b7228f1aedffaa55f49d7b58f0f2794",
+    "docs/status-sources.json": "b9260706714e68242ecb9413126618c593d1251499e265a7da44a24f0eb61f39",
+    "docs/project-status.json": "9ce7c385dfcbb4113ffbc6c78368e306de1abaed109d0eae0ccebf79153b0ad4",
+    "hw/soc/rtl/soc_top.v": "bac971eeab25162608cd5a331c9268834992476cdef1c235b53dc00bd40b05e7",
+    "hw/soc/rtl/soc_eth.v": "a8767df605299c17c3184ca8cb2d51104854ae848aafd8dd48941b55caeeb39c",
+    "hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+    "hw/soc/formal/Makefile": "5a1ec9f2be43d5c749383e3feef418079d2ad7c0c03fc65a163ec714de1be7fd",
+    "hw/soc/formal/sweep-policy.json": "a89475e6f1fa7f1454f51ca33512d326e8b7427dab8b88b87395566a76a5ea91",
+    ".github/workflows/checks.yml": "6bc9357eead5604702d73b866c401a8d6e84f79e17511193b2ab4e8fea656cc4",
+    "scripts/check_formal_sweep.py": "ed6add5caad8b50b093b42c2a745c34aaa4331da9c9adf4d89237c93f4d83c5e"
+  },
+  "attachments": {
+    "nssoc-external-review.md": "e45bcb2e6c53e67e6bd78cc0e4b5d3f18a2ee9f22f5aabd93b3e57cde4528ee0",
+    "nssoc-audit-2026-09-20 (2).md": "65799fd3a98b76a8eaf043249ade20b8925feae7d82719eee48c7465bb5fced9"
+  },
+  "second_audit_register_rows": [
+    {
+      "id": "0.1",
+      "requirement": "Project-specific TT test guide; regenerate manifest; synchronize TT repository",
+      "recorded_disposition": "DONE. Generator updated; 18 TT checks pass / 1 absent-tool skip. Only guide and manifest changed; remote TT `main` is `aa870aba3b2c4d39460ae7a8da42918fa25df422`, verified with `git ls-remote`. Frozen RTL remains byte-identical.",
+      "category": "DONE"
+    },
+    {
+      "id": "1.1",
+      "requirement": "Keep host checkpoints out of publication",
+      "recorded_disposition": "DONE for current tree. Continuation notes preserved locally and removed from Git tracking; ignore rules added. Earlier public commits still contain their historical copies.",
+      "category": "DONE"
+    },
+    {
+      "id": "1.2",
+      "requirement": "Reconcile signed LGPL decision, optional SpaceWire/CAN build, notices and licence texts",
+      "recorded_disposition": "DONE for the technical optional-build route. Default base excludes the LGPL cores; explicit full retains both. CPU, pin, discovery, dependency and physical-profile guards pass; see the dated evidence below. Original signed decision and upstream/Bosch notices remain; no patent clearance or silicon permission is claimed. Both source bundles and Ethernet reset patch remain inventoried; docs/95 uses CC-BY-4.0.",
+      "category": "DONE"
+    },
+    {
+      "id": "1.3",
+      "requirement": "Missing Tcl shell must produce explicit tool skips",
+      "recorded_disposition": "DONE. `pytest sw/tests/test_corner_reports.py sw/tests/test_interface_flow.py`: 36 pass with Tcl; `PATH=/nonexistent` with an absolute Python path: 16 pass / 20 explicit skips.",
+      "category": "DONE"
+    },
+    {
+      "id": "1.4",
+      "requirement": "Correct local-CI/workflow equivalence claim",
+      "recorded_disposition": "DONE. Dated correction distinguishes Python/documentation gates from the workflow hardware jobs.",
+      "category": "DONE"
+    },
+    {
+      "id": "1.5",
+      "requirement": "Evidence publication policy; portable paths; external binary assets",
+      "recorded_disposition": "OPEN. Preserve exact hashes, licences and clean-clone recovery while migrating assets. Do not delete the only reproducible source before a verified replacement exists. The standalone site now carries linked tracked evidence and licence files; external binary migration remains open.",
+      "category": "OPEN"
+    },
+    {
+      "id": "1.6",
+      "requirement": "Topic-based history and public author identity",
+      "recorded_disposition": "OPEN. Preserve a local recovery ref before any history rewrite. Current native runs and external CI refer to existing SHAs.",
+      "category": "OPEN"
+    },
+    {
+      "id": "1.7",
+      "requirement": "Numbered index table/headings; physical and Ethernet claim scope",
+      "recorded_disposition": "PARTIAL. Local native pass and independent hosted failure are now distinguished. Docs/88\u201395 now occupy index table rows; headings are numbered and Ethernet shared-clock/MDIO limitations are explicit.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "1.8",
+      "requirement": "Close every existing product gate",
+      "recorded_disposition": "OPEN. Retain all rows of docs/92, including PCIe, final timing, packaging, DFT, debug, POR and qualification. Full transistor LVS now passes for the separate [32-SRAM core candidate](evidence/sram-chip-integration-20260925.json); its uncharacterized memories do not close overall product acceptance.",
+      "category": "OPEN"
+    },
+    {
+      "id": "2.1",
+      "requirement": "Hardware CI, visible pytest skips, current verification ledger, pinned/scheduled workflow",
+      "recorded_disposition": "PARTIAL. Hardware jobs now also include native-model RAM parity and its negative control. Every action is pinned to a verified commit, every job has a timeout, dependency caching and weekly dependency-update configuration are present. Nightly normal hardware jobs are configured; GitHub schedules become active only on the default branch. Full native boot remains explicit opt-in.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "2.2",
+      "requirement": "Full cocotb/formal rerun and source-bound ledger freshness",
+      "recorded_disposition": "OPEN. Do not replace failed or incomplete obligations with aggregate PASS counts.",
+      "category": "OPEN"
+    },
+    {
+      "id": "2.3",
+      "requirement": "Reproducible physical toolchain/bootstrap; portable tool paths; requirements; Ibex elaboration",
+      "recorded_disposition": "PARTIAL. Digital tools use project-local, pinned installations and explicit overrides. The checksum-pinned physical devshell, full IHP kit and upstream 420-cell SPM flow now pass on a clean hosted runner. PNR/checker defaults no longer select sibling projects. Current SoC reproduction with this different pinned tool package, translated/patched Ibex equivalence and workstation capacity remain open; preserve frozen pilot scripts.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "2.4",
+      "requirement": "Valid design SDC; all relevant corners; timing/electrical closure and hold erratum",
+      "recorded_disposition": "OPEN. Current native run preserves actual 5.0 percent derating. Old zero-derate ECO passes remain withdrawn. Reset exceptions need a justified timing contract, not blanket cuts.",
+      "category": "OPEN"
+    },
+    {
+      "id": "2.5",
+      "requirement": "Collect historical s83 evidence, complete digest coverage, publish physical artifacts",
+      "recorded_disposition": "PARTIAL. Existing digest/recovery mechanisms cover more than the audited main snapshot; verify every named s83 run individually and preserve missing-data failures.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "2.6",
+      "requirement": "Real-codec core/regfile and M-extension formal obligations, explicit bounds in datasheet",
+      "recorded_disposition": "PARTIAL. Real-codec storage/scrub R1\u2013R4 now pass unbounded induction and complete-walk covers at both SYNPRE settings, with six reachable mutation controls; docs/87. Whole-core reg_ch0 and M-extension remain open.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "3.1",
+      "requirement": "SoC orphan reachability and simulation/macro memory parity",
+      "recorded_disposition": "PARTIAL. Recursive inventory now covers both RTL trees and the generated-ROM template, preserves alternate module definitions, and follows per-module edges after stripping comments/strings. Five standalone AHB probe modules have reasoned ledger rows; CAN\u2019s soc_apb_wb remains reachable. All six supported RAM geometry/latency profiles pass native SRAM parity; a corrupted-macro negative control fails after elaboration. Legacy ROM parity remains open.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "3.2",
+      "requirement": "UART/timer/PnP properties; direct serial/TMR/top tests; RX; FI/coverage/X failures",
+      "recorded_disposition": "PARTIAL. Ten new UART/timer/PnP formal tasks pass, including unbounded proofs and the shipped 32/16-bit timer widths; five mutated designs produce reachable counterexamples. Direct serial-master tests pass at HALF=2/3/7; direct TMR test covers 339 single storage-bit upsets plus a two-replica negative control. RX now has pin-driven tests and real-CPU receive/IRQ/WFI validation; see docs/97. Its final layout, broader FI/coverage and other requested work remain open.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "3.3",
+      "requirement": "Whole-SoC lint and targeted warnings; nettype discipline",
+      "recorded_disposition": "DONE for the defined lint gate and nettype discipline. Both base/full array and SRAM/logic-ROM/SYNPRE profiles pass exact diagnostic inventories; 20 owned width warnings are removed. Generated ROM diagnostics are attributed to the authored template. Frozen/upstream warnings remain recorded technical debt, not signoff waivers; see the dated physical-source extension below.",
+      "category": "DONE"
+    },
+    {
+      "id": "3.4",
+      "requirement": "REUSE compliance, upstream IHP notices, generated licence inventory",
+      "recorded_disposition": "DONE for current distribution checks. REUSE 6.2.0 passes with zero missing licences or invalid expressions; IHP aggregate notices and generated component inventory are retained. Source-bound publication checks accompany the latest energy-tool record (965 covered files). Live counts are generated in LICENSES.md and required in CI; this is compliance checking, not patent clearance.",
+      "category": "DONE"
+    },
+    {
+      "id": "3.5",
+      "requirement": "Concise README, preserved errata, block diagram, measured status registry, datasheet/index",
+      "recorded_disposition": "PARTIAL. README now links a block diagram and a status table generated from explicitly selected evidence hashes. Every byte of its previous body is retained in HISTORY.md; the docs builder includes that archive and publishes referenced assets and API pages with checked local file targets. The current datasheet contract is reconciled in docs/60 section 0.4, with prior text preserved and a frozen-pilot scope note in docs/21. The errata index links the original corrections and reproduction paths. Broader index claim reconciliation remains open; no SoC operating frequency or manufacturability claim.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "3.6",
+      "requirement": "Correct PNR profile selection, config inventory and energy hierarchy",
+      "recorded_disposition": "DONE for the tooling correction. PNR and energy tools derive actual mapped macro inventories; overrides, optional interfaces and ROM modes are checked. Historical configs remain catalogued reproducibility inputs; no frozen config was moved or edited. Native 20/24-macro energy-tool calibrations cover all 36/40 ports; see the dated record. Final timing and actual workload-power acceptance remain separate open gates. Full transistor LVS now passes for the 32-SRAM connectivity candidate; see docs/100 for its exact scope.",
+      "category": "DONE"
+    },
+    {
+      "id": "3.7",
+      "requirement": "Transport-independent pilot driver, cocotb/host/RP2040 backends",
+      "recorded_disposition": "PARTIAL. Shared `sw/pilotlink` register/weight/frame API and cocotb, pySerial bridge and standalone MicroPython SPI backends implemented. 27 host checks and two pin-level RTL tests pass (golden comparison and partial-write cancellation). Hardware transport qualification and any deduplication of frozen legacy helpers remain open.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "3.8",
+      "requirement": "Single-source register offsets and bare-metal HAL",
+      "recorded_disposition": "DONE for the requested register-offset generators and shared HAL. Thirteen word-oriented maps (113 offsets) and eight CAN banks (70 semantic byte offsets) provide RTL/C/Python bindings with independent ABI controls. All eight boot/application/FI/probe programs use the shared HAL; the final three probe migrations pass real-CPU tests and 77 HAL/probe guards. Bit-field schema extensions and broader product firmware/fault qualification are not claimed. See the dated records below.",
+      "category": "DONE"
+    },
+    {
+      "id": "3.9",
+      "requirement": "Repository/community/citation/tooling hygiene, papers/thesis CI, reproducible release/DOI",
+      "recorded_disposition": "PARTIAL. Citation, contribution/security/conduct guidance, issue/PR templates, owner rules, unreleased changelog and editor settings are present. Pinned Ruff/mypy/pre-commit checks cover the stated Python scope. The other three papers and thesis now have recursive lint, fresh PDF/archive builds, selected measured-claim checks and a source-bound tracked-thesis gate; see the 22 September record below. Complete scientific-claim review, complete typing and release/DOI work remain open. The mirror and signed inbound-licensing contract still govern publication; no product release is published while its gates fail.",
+      "category": "PARTIAL"
+    },
+    {
+      "id": "4",
+      "requirement": "Pads/ESD/package, clocks/POR, scan/MBIST/debug, integrity/AER, SRAM LVS, radiation and silicon qualification",
+      "recorded_disposition": "OPEN overall. Full transistor SRAM/SoC LVS passes for the 32-SRAM core candidate; its timing, pads and remaining qualification dependencies still require separate engineering and acceptance evidence.",
+      "category": "OPEN"
+    }
+  ],
+  "second_audit_recorded_category_counts": {
+    "DONE": 9,
+    "OPEN": 6,
+    "PARTIAL": 10
+  },
+  "formal": {
+    "current_mandatory": 170,
+    "historical_exclusions": {
+      "hw/soc/formal/regfile_scrub_prove": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+      "hw/soc/formal/regfile_scrub_bmc": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+      "hw/soc/formal/regfile_scrub_cover": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+      "hw/soc/formal/regfile_scrub_prove_pdr": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+      "hw/soc/formal/regfile_scrub_bmc_btor": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+      "hw/soc/formal/regfile_scrub_abs_prove12": "docs/63 section 23: depth-12 k-induction returned UNKNOWN. The unbounded prove_pdr task remains mandatory."
+    },
+    "previous_mandatory": 161,
+    "added_task_ids": [
+      "hw/soc/formal/soc_pcie_tlp_regs_bmc",
+      "hw/soc/formal/soc_pcie_tlp_regs_cover",
+      "hw/soc/formal/soc_pcie_tlp_regs_prove",
+      "hw/soc/formal/soc_pcie_tlp_stream_bmc",
+      "hw/soc/formal/soc_pcie_tlp_stream_cover",
+      "hw/soc/formal/soc_pcie_tlp_stream_prove",
+      "hw/soc/formal/soc_req_pipe_bmc",
+      "hw/soc/formal/soc_req_pipe_cover",
+      "hw/soc/formal/soc_req_pipe_prove"
+    ],
+    "previous_recorded_source_count": 174,
+    "changed_source_paths": [
+      "hw/soc/formal/Makefile",
+      "hw/soc/rtl/soc_top.v",
+      "scripts/check_soc_native_boot.sh",
+      "scripts/spdx_check.py",
+      "scripts/tex_lint.py"
+    ],
+    "missing_source_paths": [],
+    "scope": "Inventory/source comparison only. Added blocks have separate proof records; this snapshot does not rerun formal or infer that nine obligations are unproved."
+  },
+  "local_job_snapshots": {
+    "repaired-dp-cap-transient-tt-step25-v2": {
+      "status": "PASS_CAPACITIVE_LAYOUT_PATTERN_ONLY",
+      "snapshot_sha256": "1d9e35178c384e16198a6c5a686eae77db202dfee6b9d252be988093af9b8716",
+      "scope": "Full DP 37076MOS/202674C exact rail-and-pin geometry at TT1.2V25C,pre_layout0,100ps ramps,5fF loads,25ps maxstep, four model-evaluation threads. All capacitors retained; no distributed R or process-model accuracy qualification. Diagnostic, not final timing.",
+      "manufacturing_approval": false
+    },
+    "repaired-dp-step-sensitivity-v2": {
+      "status": "COMPLETE_MEASURED_STEP_SENSITIVITY_NO_EXTRAPOLATED_SIGNOFF",
+      "snapshot_sha256": "16d6122d974a292b37f4d195ca9233671664e34de9598b5bdbed5adf4c8a67d4",
+      "scope": "Same exact circuit, device models and stimuli; only requested numerical timestep changes. Comparison of two steps is not proof of the zero-step limit, full characterization or process accuracy.",
+      "manufacturing_approval": false
+    },
+    "repaired-dp-read-setup": {
+      "status": "RUNNING",
+      "snapshot_sha256": "07f6a39b0afe8e3669d1e625607e1efddc1377394c2842f63bf9c9a021c98653",
+      "scope": "Only a2[0] rising read setup at TT1.2V25C,100ps ramps,5fF,25ps maxstep; exact new-layout 37076MOS/202674C, no distributed R. Measured capture plus 5% delay-degradation criterion. Other arcs, directions, loads, slews, PVT and hold remain unmeasured.",
+      "manufacturing_approval": false
+    },
+    "repaired-sp-cap-transient-tt": {
+      "status": "RUNNING",
+      "snapshot_sha256": "bb58d80036ed8dbd9a4e3d1cc350f422bc630ffa869f0b2f2b0649e708b3ca51",
+      "scope": "Exact repaired rail-and-pin SP 202800MOS/821222C at TT1.2V25C,pre_layout0,100ps ramps,20fF loads,50ps maxstep,4model-evaluation threads. All capacitors retained; no distributed R or process-model accuracy qualification. Diagnostic, not final timing.",
+      "manufacturing_approval": false
+    },
+    "repaired-sp-transient-final": {
+      "status": "WAITING_FOR_COMPLETE_NEW_GEOMETRY_TRANSIENT",
+      "snapshot_sha256": "5f8645b9014504c7e560d97859812f07323211c265c5054aea042bf409e7a5ea",
+      "scope": null,
+      "manufacturing_approval": false
+    },
+    "repaired-sp-cap-corners/ss": {
+      "status": "WAITING_FOR_AUDITED_TT",
+      "snapshot_sha256": "be88a6108c4419d6b3cd51828c5d6064150aeba61ad68e84de44c8c950155dd6",
+      "scope": "Exact repaired SP 202800MOS/821222C, nominal geometry C with transistor PVT; full150ns pattern100ps ramps20fF loads50ps maximumstep. No distributed RC or correlated RC corner qualification.",
+      "manufacturing_approval": false
+    },
+    "repaired-sp-cap-corners/ff": {
+      "status": "WAITING_FOR_AUDITED_TT",
+      "snapshot_sha256": "c8f75a6592d25609e22193e80187f07809eb639e79b4db65fbf3d9d18f36bd40",
+      "scope": "Exact repaired SP 202800MOS/821222C, nominal geometry C with transistor PVT; full150ns pattern100ps ramps20fF loads50ps maximumstep. No distributed RC or correlated RC corner qualification.",
+      "manufacturing_approval": false
+    }
+  },
+  "evidence_receipts": {
+    "prepared-pytest-edc4e2d-20260926": {
+      "path": "docs/evidence/prepared-pytest-edc4e2d-20260926.json",
+      "sha256": "b2e913aac1be2b0838df1a6e8bba881cafbfbfd43cb8b1ed3c40daa9894df098",
+      "status": "PASS_FULL_PYTEST_NO_SKIPS"
+    },
+    "sram-repaired-core-physical-20260926": {
+      "path": "docs/evidence/sram-repaired-core-physical-20260926.json",
+      "sha256": "80be22de683c624bb4998c0b5fc39ea08c9366b13a6728d08129ec181a5a6400",
+      "status": "PASS_PUBLISHED_EXACT_CORE_PHYSICAL_CHECKPOINT_ONLY"
+    },
+    "sram-repaired-dp-corners-20260926": {
+      "path": "docs/evidence/sram-repaired-dp-corners-20260926.json",
+      "sha256": "6da1d0f853a2bfe18b49b84d273562282e5e9e2d85588824e566f7c656597c9f",
+      "status": "PASS_LOSSLESS_TERMINAL_CORNER_PUBLICATION"
+    },
+    "sram-chip-integration-20260925": {
+      "path": "docs/evidence/sram-chip-integration-20260925.json",
+      "sha256": "be96318cd7ec7deb9ceaeab1bebdfdead811cadf67ab3208537be86053c46772",
+      "status": "PASS_BOUND_FULL_CHIP_SRAM_INTEGRATION_LVS"
+    },
+    "eco24-extracted-timing-20260923": {
+      "path": "docs/evidence/eco24-extracted-timing-20260923.json",
+      "sha256": "261b952668699887862d3c193609ad38ea5c97043f987a66e3bbc8854101666b",
+      "status": "FAIL_EXTRACTED_CLOSURE"
+    },
+    "pcie-tx-characterization-20260922": {
+      "path": "docs/evidence/pcie-tx-characterization-20260922.json",
+      "sha256": "ede07361f3bbec0f8dc1978b0d959a06af8ceb10e3a6569bb82bfdad86ada269",
+      "status": "REVIEW"
+    },
+    "sram-local-replay-e5da995-20260926": {
+      "path": "docs/evidence/sram-local-replay-e5da995-20260926.json",
+      "sha256": "b8147c5be15cc2bb70e96fa6b23e63b20e22827191d07b9bc915549d229495fe",
+      "status": "PASS_LOSSLESS_LOCAL_REPLAY_PUBLICATION_WITH_EXPLICIT_SKIPS"
+    }
+  },
+  "verified_archives": {
+    "prepared-pytest-edc4e2d-20260926": "EXACT_ARCHIVE_SHA256_MATCH",
+    "sram-repaired-core-physical-20260926": "EXACT_ARCHIVE_SHA256_MATCH"
+  },
+  "candidate_gds_sha256": "f218313c8a9e3ebe95e35cf0fc505852d88d342e9c2c6b4423f10a309f1a4cf1",
+  "remote_refs": "473b84f56cb26ab97aa2a5d409c779568c2507a3\tHEAD\nec7a92fca6344875cbf35512a69da60c05cde8a0\trefs/heads/codex/complete-open-work\n473b84f56cb26ab97aa2a5d409c779568c2507a3\trefs/heads/main",
+  "pull_requests": [
+    {
+      "baseRefName": "main",
+      "headRefName": "codex/complete-open-work",
+      "isDraft": true,
+      "mergeStateStatus": "UNSTABLE",
+      "number": 1,
+      "title": "Integrate SoC interfaces and close verification gaps",
+      "url": "https://github.com/Melihakbulut221/nssoc/pull/1"
+    }
+  ],
+  "hosted_jobs": {
+    "conclusion": "",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "memory-parity",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "formal-sweep",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "name": "checks",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "formal-and-boot",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "name": "python-quality",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "name": "rtl",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "native-boot",
+        "status": "completed"
+      }
+    ],
+    "status": "in_progress"
+  },
+  "external_sources_checked": [
+    "https://github.com/IHP-GmbH/IHP-Open-PDK",
+    "https://ihp-open-pdk-docs.readthedocs.io/en/main/contents/01_libraries.html",
+    "https://dk.ihp-microelectronics.com/OpenSourceRequest.php",
+    "https://github.com/IHP-GmbH/Open-Silicon-MPW/blob/main/Submission-process.md",
+    "https://www.gaisler.com/products/gr801"
+  ],
+  "manufacturing_approval": false
+}

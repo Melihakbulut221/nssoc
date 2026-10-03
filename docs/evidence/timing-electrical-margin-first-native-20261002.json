@@ -1,0 +1,167 @@
+{
+  "status": "FAILED_PRESERVED_BEFORE_ANY_MARGIN_REPAIR",
+  "run_id": 37013647485,
+  "source_commit": "3ac25d0d95d32ef2762412813b3f7a64fca1604f",
+  "artifact": {
+    "id": 11229747116,
+    "node_id": "MDg6QXJ0aWZhY3QxMTIyOTc0NzExNg==",
+    "name": "electrical-margin-final-1",
+    "size_in_bytes": 156399824,
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11229747116",
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11229747116/zip",
+    "expired": false,
+    "digest": "sha256:f14463428d42f5b4491ab3105ad7a76547fc83677331eb1c953d7cd7c69c6ffc",
+    "created_at": "2026-10-02T13:49:50Z",
+    "updated_at": "2026-10-02T13:49:50Z",
+    "expires_at": "2026-11-01T13:49:44Z",
+    "workflow_run": {
+      "id": 37013647485,
+      "repository_id": 1364721142,
+      "head_repository_id": 1364721142,
+      "head_branch": "codex/complete-open-work",
+      "head_sha": "3ac25d0d95d32ef2762412813b3f7a64fca1604f"
+    }
+  },
+  "observed_terminal_at": "2026-10-02T13:49:22.881051+00:00",
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+  "bundle_sha256": "1bebb586c3ad2891808f69a8cd813be496d626fcefc461a888768821845bb41f",
+  "original_capture_validation": "PASS",
+  "original_producer_extraction": {
+    "files": 300,
+    "expanded_bytes": 1244183924
+  },
+  "native_diagnostic": {
+    "command": [
+      "/home/runner/work/nssoc/nssoc/electrical-margin-input/runtime.AppImage",
+      "python",
+      "/home/runner/work/nssoc/nssoc/electrical-margin-result/methods/scripts/run_cloud_electrical_margin.py",
+      "_native_flow",
+      "--flow",
+      "HoldDiagnostics",
+      "--manual-pdk",
+      "--pdk-root",
+      "/home/runner/work/nssoc/nssoc/electrical-margin-input/bundle/pdk",
+      "--pdk",
+      "ihp-sg13g2",
+      "--force-run-dir",
+      "/home/runner/work/nssoc/nssoc/electrical-margin-result/run",
+      "--from",
+      "OpenROAD.ResizerTimingPostGRT",
+      "--to",
+      "OpenROAD.ResizerTimingPostGRT",
+      "--with-initial-state",
+      "/home/runner/work/nssoc/nssoc/electrical-margin-result/prepared/state.json",
+      "/home/runner/work/nssoc/nssoc/electrical-margin-result/prepared/config.json"
+    ],
+    "returncode": 1,
+    "elapsed_seconds": 915.1010664080001,
+    "completed": "2026-10-02T13:49:22.880010+00:00",
+    "resources_before": {
+      "available_memory_bytes": 15689285632,
+      "free_disk_bytes": 86712487936
+    }
+  },
+  "failure": {
+    "native_exit": 1,
+    "message": "Error: timing_electrical_margin_step.tcl, 68 Exact electrical target terminal graph differs: fanout1387 net1387",
+    "scope": "Exact graph guard rejected different Verilog/OpenDB instance spellings; all repair calls remained unstarted.",
+    "repair_calls_started": 0
+  },
+  "two_baselines": {
+    "metrics_equal_except_observation_time": true,
+    "metrics": {
+      "setup_wns_seconds": -4.255417351828328e-09,
+      "hold_wns_seconds": -1.589801623680387e-10,
+      "setup_tns_seconds": -3.598960802264628e-06,
+      "hold_tns_seconds": -2.1187052112736637e-09,
+      "setup_violating_endpoints": 1312,
+      "hold_violating_endpoints": 65,
+      "slew_violations": 0,
+      "capacitance_violations": 3,
+      "instance_count": 103892
+    },
+    "all_five_physical_fingerprints_exact": {
+      "constraints": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "netlist": "2875cdfd5578aa09370f74382c886344037445772f96c04cffe66634039bd6e7",
+      "placement": "7da1f99828fa46503a95b774cff5f5f4d0b422eea86a6088e226ea65e9a848ca",
+      "routing": "23bc535eac4817f9de965412d932c2d718a6f778737559d696d5bbf760c392b5",
+      "parasitics": "7c443456e0d64072e15817b8d240362eab8bfd9bea4af120ca222e1de647c921"
+    },
+    "child_process": {
+      "pid": 3041,
+      "parent_pid": 2853,
+      "executable_sha256": "25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b",
+      "odb_sha256": "bb695d8a27736c505723126fa35d959e7d89c60ccdf4eda1b72da902e2804ece",
+      "sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "repair_invocations": 0
+    }
+  },
+  "diagnosis": {
+    "captured_placement_witness": {
+      "status": "CAPTURE_CRC_AND_SHA_VERIFIED_SELECTED_PLACEMENT_IDENTITIES_ONLY",
+      "member": "run/01-openroad-resizertimingpostgrt/candidate_before/placement.tsv",
+      "pin": {
+        "bytes": 5286679,
+        "sha256": "7da1f99828fa46503a95b774cff5f5f4d0b422eea86a6088e226ea65e9a848ca"
+      },
+      "header": "instance\tmaster\tx_dbu\ty_dbu\torientation\tstatus",
+      "rows": [
+        "fanout1387\tsg13g2_buf_1\t1204320\t812700\tR180\tPLACED",
+        "max_cap22313\tsg13g2_buf_8\t925440\t616140\tR180\tPLACED",
+        "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem\tSP6TSRAM512x64\t944640\t60480\tR0\tFIRM",
+        "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem\tSP6TSRAM512x64\t944640\t250740\tR0\tFIRM",
+        "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem\tSP6TSRAM512x64\t944640\t441000\tR0\tFIRM",
+        "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem\tSP6TSRAM512x64\t944640\t631260\tR0\tFIRM"
+      ],
+      "range_bytes": 2259152,
+      "range_requests": 3
+    },
+    "original_verilog_and_exact_native_names": [
+      {
+        "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+        "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem",
+        "master": "SP6TSRAM512x64"
+      },
+      {
+        "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+        "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem",
+        "master": "SP6TSRAM512x64"
+      },
+      {
+        "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+        "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem",
+        "master": "SP6TSRAM512x64"
+      },
+      {
+        "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+        "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem",
+        "master": "SP6TSRAM512x64"
+      }
+    ],
+    "scope": "Each native name has one literal backslash before each bracket; pins d[21], d[23], d[15] remain unchanged. No case folding, slash stripping, terminal omission or graph relaxation is introduced."
+  },
+  "verification": {
+    "selected_members": 129,
+    "git_methods": 41,
+    "selected_members_crc_sha_verified": true,
+    "methods_exact_git_verified": true,
+    "range_bytes": 12906912,
+    "range_requests": 14,
+    "whole_archive_verified_locally": false,
+    "compact_receipt": {
+      "bytes": 30946,
+      "sha256": "49bea6c895e63c4dd2b47508438789179d2f18f2283dc7e09c50b7f1fb8d92f7"
+    },
+    "placement_witness": {
+      "bytes": 970,
+      "sha256": "c1828f135f9038327f6cdfc0093bb058532992c430d2ea4b5d1b7887e8be332a"
+    }
+  },
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "next_action": "Review and publish exact-native-name representation correction, then repeat the same experiment with both baselines, all exact terminal graphs, protected-object guards, two fresh reloads and both limited ECO proofs intact.",
+  "root_selected_pins_verified": 129,
+  "root_immutable_git_methods_verified": 41
+}

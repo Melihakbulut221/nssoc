@@ -74,6 +74,7 @@ The two corrections to `docs/03`:
 
 ## 2. What was pinned
 
+<!-- REUSE-IgnoreStart -->
 | Item | Value |
 |---|---|
 | Ibex upstream | https://github.com/lowRISC/ibex |
@@ -87,6 +88,7 @@ The two corrections to `docs/03`:
 | OpenSTA | 3.1.0, the LibreLane tool tree the pilot's sign-off used **[fact]** |
 | PDK | `ihp-sg13g2` at `c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c`, the commit `docs/12-sg13g2-flow-bringup.md` records **[fact]** |
 | riscv-none-elf-gcc | xPack v15.2.0-1, sha256 `aaaa8060c914851a3e5ee1ba82cc3d6f80972f90638a05c6e823a37557a33758` **[fact]** |
+<!-- REUSE-IgnoreEnd -->
 
 ### 2.1 Two tools were not in the pinned suite, and are now pinned the same way
 

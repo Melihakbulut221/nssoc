@@ -1,0 +1,626 @@
+{
+  "date": "2026-09-21",
+  "scope": "Three global-route ECO experiments on the corrected-loader/IRQ image; original SDC and verified 5 percent derating retained. Separate process per corner. No detailed-route extraction or final signoff.",
+  "status": "FAIL",
+  "candidates": [
+    {
+      "candidate": "startup-native-restart1-eco1-fanout",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "-metrics",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/metrics.json",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/eco.tcl"
+        ],
+        "status": "COMPLETED",
+        "script_sha256": "85c9c12d2b042709353c34ef5887fd08685a9ffcecd6d4d5cbb4ac048281300a",
+        "start_monotonic": 7074.856328977,
+        "timeout_s": 3600,
+        "disk_floor_bytes": 1073741824,
+        "returncode": 0,
+        "elapsed_s": 100.00241224000001,
+        "seed_unchanged": true
+      },
+      "corner_reports": {
+        "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+        "inputs": {
+          "<repo>/hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/environment.tcl": "d737d074d2d4544b6060a55bb4d6c8ac1945bf3b4096de12b6d3a642e5ea4dd6",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/soc_top.odb": "50abe0e3a2c5319e5c5a85de9d220cc7795bca732226ee0ceaca945d51fd9bd1",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/routes.segments": "1a0ed8b41f6997b274c2599d3a776194fc8b648c0225317e788aaed20ec2f77a",
+          "<repo>/hw/soc/flow/report_route_corners.py": "64936f9001f537a5bf857770e405513b574687a8d1488914114ac197c688d09b",
+          "<repo>/hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+        },
+        "results": {
+          "nom_fast_1p32V_m40C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_fast_1p32V_m40C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 23.370676996999464,
+            "setup_ns": 3.114171231256243,
+            "hold_ns": -0.028874237151860417,
+            "electrical": {
+              "slew": 65,
+              "capacitance": 7,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_typ_1p20V_25C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_typ_1p20V_25C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 21.418708990000596,
+            "setup_ns": 2.111537227055825,
+            "hold_ns": 0.08548895167076913,
+            "electrical": {
+              "slew": 42,
+              "capacitance": 7,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_slow_1p08V_125C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_slow_1p08V_125C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 19.865448553000533,
+            "setup_ns": -2.4432208059353413,
+            "hold_ns": -0.002582822917535185,
+            "electrical": {
+              "slew": 50,
+              "capacitance": 7,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          }
+        },
+        "source_unchanged": true,
+        "all_estimated_checks_pass": false
+      },
+      "connectivity": {
+        "original_instances": 96750,
+        "added_stateless_positive_cells": 2619,
+        "added_noninverting_buffers": 2619,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 0,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true,
+        "standard_cell_area_delta_um2": 61774.8768
+      },
+      "artifacts": [
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/inputs.json",
+          "sha256": "ae9e7c296075380efc8e82e7e6d0dcaae8607d5832a29564f9fae64048af6190",
+          "bytes": 34054
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/validation-inputs.json",
+          "sha256": "3e6ef1ed24c8aee45d9bf9009bb3c60808c72e6606981bacf561c6224ea40c31",
+          "bytes": 365661
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/connectivity-check.json",
+          "sha256": "9a1c721a51a279ec0dd6e68dda16a8771a763cf19d9d48cf3c7377805dbb1a25",
+          "bytes": 481
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/supervisor.json",
+          "sha256": "4e02d96fc2fb351fc61c100573d83fc5cb9b0cc40fe94398e652dce2ac1bbd84",
+          "bytes": 664
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/eco.tcl",
+          "sha256": "85c9c12d2b042709353c34ef5887fd08685a9ffcecd6d4d5cbb4ac048281300a",
+          "bytes": 30603
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/soc_top.odb",
+          "sha256": "50abe0e3a2c5319e5c5a85de9d220cc7795bca732226ee0ceaca945d51fd9bd1",
+          "bytes": 87187588
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/soc_top.nl.v",
+          "sha256": "ef93c8700bb67e07a74581c02bba4b7b8052194adc614922d98949a4d76e64f1",
+          "bytes": 11449526
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/routes.segments",
+          "sha256": "1a0ed8b41f6997b274c2599d3a776194fc8b648c0225317e788aaed20ec2f77a",
+          "bytes": 35401177
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_typ_1p20V_25C/max.rpt",
+          "sha256": "4df7417f0d4889282c6ec0d52aba9d69fe456493313cfa56911d1185bece4277",
+          "bytes": 11163578
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_typ_1p20V_25C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_typ_1p20V_25C/min.rpt",
+          "sha256": "c999953e8b30c27f176f848e8d1e36921c6b38cbcfda27385c2700b0952067e3",
+          "bytes": 7808123
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_typ_1p20V_25C/electrical.rpt",
+          "sha256": "d898355055a3b675f082907c060bcff96dcb3e139c75efa0a2ec5711a83ba4c5",
+          "bytes": 4237
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_fast_1p32V_m40C/max.rpt",
+          "sha256": "48f30ac6daf7f47d63e1d1146497c0f37b39a828e8b3961807462a15d257b73d",
+          "bytes": 11115328
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_fast_1p32V_m40C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_fast_1p32V_m40C/min.rpt",
+          "sha256": "d51214d4d1f3b6023616260dd354636342bbd9dc68d3c6a4e15545ac41073aed",
+          "bytes": 7807309
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_fast_1p32V_m40C/electrical.rpt",
+          "sha256": "99e7fcbe7f3966d82b294e7c0b52abbcb6a800a4aca86f407927ddeff007dd09",
+          "bytes": 6139
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_slow_1p08V_125C/max.rpt",
+          "sha256": "2d92c40e8450e704a390897c2a2970dc94dd76b7175e336da54e2c0ec3e080bd",
+          "bytes": 11143994
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_slow_1p08V_125C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_slow_1p08V_125C/min.rpt",
+          "sha256": "8610136ea9281186167d9689cca84ba4a901f3a38417bb067c057f20901b268d",
+          "bytes": 7789697
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco1-fanout/single-corner-reports/nom_slow_1p08V_125C/electrical.rpt",
+          "sha256": "5459f1e6370de32222d42eb3e0a90ed42ad125e8bf649fd516e33ba0a13da9fd",
+          "bytes": 4882
+        }
+      ]
+    },
+    {
+      "candidate": "startup-native-restart1-eco2-electrical",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "-metrics",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/metrics.json",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/eco.tcl"
+        ],
+        "status": "COMPLETED",
+        "script_sha256": "9a5b7b5c5dcc3f533b194fb40b1c7dc7ffdc8601c274549cc0aaa7ef8ad328d3",
+        "start_monotonic": 7673.915775211,
+        "timeout_s": 3600,
+        "disk_floor_bytes": 1073741824,
+        "returncode": 0,
+        "elapsed_s": 110.00285080599951,
+        "seed_unchanged": true
+      },
+      "corner_reports": {
+        "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+        "inputs": {
+          "<repo>/hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/environment.tcl": "d737d074d2d4544b6060a55bb4d6c8ac1945bf3b4096de12b6d3a642e5ea4dd6",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/soc_top.odb": "0a4157cbc5769d38440b0d60e930aabe2319b303967b93712fbf81de75bdb4b0",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/routes.segments": "9fe1db743ba77ec4fbfced0ae55138b27102e006c3d5b2571ad2a911353978dc",
+          "<repo>/hw/soc/flow/report_route_corners.py": "64936f9001f537a5bf857770e405513b574687a8d1488914114ac197c688d09b",
+          "<repo>/hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+        },
+        "results": {
+          "nom_fast_1p32V_m40C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_fast_1p32V_m40C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 26.481128151998746,
+            "setup_ns": 3.1286396581223532,
+            "hold_ns": -0.39217119550706053,
+            "electrical": {
+              "slew": 7,
+              "capacitance": 1,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_typ_1p20V_25C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_typ_1p20V_25C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 24.575288562000424,
+            "setup_ns": 2.086145537586102,
+            "hold_ns": -0.018165913731893787,
+            "electrical": {
+              "slew": 5,
+              "capacitance": 1,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_slow_1p08V_125C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_slow_1p08V_125C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 22.21876570099994,
+            "setup_ns": -2.4166980212161406,
+            "hold_ns": -0.0026245673044417027,
+            "electrical": {
+              "slew": 4,
+              "capacitance": 1,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          }
+        },
+        "source_unchanged": true,
+        "all_estimated_checks_pass": false
+      },
+      "connectivity": {
+        "original_instances": 99369,
+        "added_stateless_positive_cells": 96,
+        "added_noninverting_buffers": 96,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 0,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true,
+        "standard_cell_area_delta_um2": 2200.8672
+      },
+      "artifacts": [
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/inputs.json",
+          "sha256": "4b3858b63b6490c1db9827049c6df9b438d86e274f917182f83e0fa115b43cf2",
+          "bytes": 39190
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/validation-inputs.json",
+          "sha256": "0f6c4267c249de3b03aec178a0338fee7eb53d2eefca2238efe4dc7705bd7983",
+          "bytes": 49982
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/connectivity-check.json",
+          "sha256": "1c41500b0b8252b1f8557d9caede07a5b9de1fe565914e73f2326bd487a79925",
+          "bytes": 476
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/supervisor.json",
+          "sha256": "c95e3792dd25c469e87541e46bb3255575aa7f48d9973b978c5b67c43c004a73",
+          "bytes": 672
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/eco.tcl",
+          "sha256": "9a5b7b5c5dcc3f533b194fb40b1c7dc7ffdc8601c274549cc0aaa7ef8ad328d3",
+          "bytes": 10780
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/soc_top.odb",
+          "sha256": "0a4157cbc5769d38440b0d60e930aabe2319b303967b93712fbf81de75bdb4b0",
+          "bytes": 87251303
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/soc_top.nl.v",
+          "sha256": "e55ad5f76d59b27ae640146e61df5d84d58844cca1be9943617196cbb0e09515",
+          "bytes": 11464788
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/routes.segments",
+          "sha256": "9fe1db743ba77ec4fbfced0ae55138b27102e006c3d5b2571ad2a911353978dc",
+          "bytes": 35434372
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_typ_1p20V_25C/max.rpt",
+          "sha256": "73808dec0ef32c006f9ca32857c4f09eb13c2cd36864cce47f9420d9e2cec906",
+          "bytes": 11176850
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_typ_1p20V_25C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_typ_1p20V_25C/min.rpt",
+          "sha256": "ef3ce697c30e05fd5cfb7f9c46d331fbadbadf6190beb400b6e52d6012dc9620",
+          "bytes": 7824223
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_typ_1p20V_25C/electrical.rpt",
+          "sha256": "b5a70b3fdaac050ed203b2e3ec833a4529af548918b6e07d4a063d419f3bd39e",
+          "bytes": 758
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_fast_1p32V_m40C/max.rpt",
+          "sha256": "ba8c0cc5e45ff06e83adc3db568ec25d07a69ad5b3e668b4015f45d32388e383",
+          "bytes": 11134563
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_fast_1p32V_m40C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_fast_1p32V_m40C/min.rpt",
+          "sha256": "d6b5f6c8162d614dbd61df2b54ed6641de01cce0a10fb320d296b21b9a928f43",
+          "bytes": 7826603
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_fast_1p32V_m40C/electrical.rpt",
+          "sha256": "90906349c009e1636da6ae13d1f442ac50ae5d01482912c77fdeb843f080115f",
+          "bytes": 924
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_slow_1p08V_125C/max.rpt",
+          "sha256": "f9ab835b366ace5d8e5518c99792ec7b803ee6d83377e64b32efc29b6c48070b",
+          "bytes": 11162220
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_slow_1p08V_125C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_slow_1p08V_125C/min.rpt",
+          "sha256": "e806ecf50c6dbc633fad5539cd47972969efb47a5f33093c828577ffd52d2d5a",
+          "bytes": 7804587
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco2-electrical/single-corner-reports/nom_slow_1p08V_125C/electrical.rpt",
+          "sha256": "bb1f9b794fcd35bc128385d24d462998ad5711022f9031210d445eeb345dfba4",
+          "bytes": 675
+        }
+      ]
+    },
+    {
+      "candidate": "startup-native-restart1-eco3-setup",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "-metrics",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/metrics.json",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/eco.tcl"
+        ],
+        "status": "COMPLETED",
+        "script_sha256": "7fc64ad97db711fe4c7be813485e89211047faf1378c5fe0dab7f7e0ca3ae412",
+        "start_monotonic": 8712.144282634,
+        "timeout_s": 3600,
+        "disk_floor_bytes": 1073741824,
+        "returncode": 0,
+        "elapsed_s": 110.0026969899991,
+        "seed_unchanged": true
+      },
+      "corner_reports": {
+        "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+        "inputs": {
+          "<repo>/hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/environment.tcl": "d737d074d2d4544b6060a55bb4d6c8ac1945bf3b4096de12b6d3a642e5ea4dd6",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/soc_top.odb": "8cd8ba235573e6add66ff642ba6c16878086091935b143109901d01c9307eb0c",
+          "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/routes.segments": "b36f2e88896887440c338566a6fbf0dfe2916c7fa746d20812f459eea2473963",
+          "<repo>/hw/soc/flow/report_route_corners.py": "64936f9001f537a5bf857770e405513b574687a8d1488914114ac197c688d09b",
+          "<repo>/hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+          "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+        },
+        "results": {
+          "nom_fast_1p32V_m40C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_fast_1p32V_m40C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 30.84020854099981,
+            "setup_ns": 3.1286396581223532,
+            "hold_ns": -0.36395820720736827,
+            "electrical": {
+              "slew": 1,
+              "capacitance": 0,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_typ_1p20V_25C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_typ_1p20V_25C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 26.227348282000094,
+            "setup_ns": 2.086764153872919,
+            "hold_ns": -0.054943606774980766,
+            "electrical": {
+              "slew": 0,
+              "capacitance": 0,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          },
+          "nom_slow_1p08V_125C": {
+            "command": [
+              "/home/hasanmelih/.local/opt/llbin/openroad",
+              "-exit",
+              "-no_splash",
+              "<repo>/hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_slow_1p08V_125C/report.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_s": 24.12465935,
+            "setup_ns": -2.7509710843515283,
+            "hold_ns": -0.002640554516448454,
+            "electrical": {
+              "slew": 0,
+              "capacitance": 0,
+              "fanout": 0
+            },
+            "estimated_checks_pass": false
+          }
+        },
+        "source_unchanged": true,
+        "all_estimated_checks_pass": false
+      },
+      "connectivity": {
+        "original_instances": 99465,
+        "added_stateless_positive_cells": 8,
+        "added_noninverting_buffers": 8,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 57,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true,
+        "standard_cell_area_delta_um2": 651.3696
+      },
+      "artifacts": [
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/inputs.json",
+          "sha256": "170346fcc711722972fcbe3653d6e6c7396f105d0ebbcb4cac868d24e2c5c691",
+          "bytes": 39375
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/validation-inputs.json",
+          "sha256": "fa43d44c1c9d527a4a2b1e3a11de1183e3e7251e8a441564d41a2ed08a0dd727",
+          "bytes": 40346
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/connectivity-check.json",
+          "sha256": "747646df2161cf29bb4ec66291139045cffdd28f7254b59696f510f6f983c849",
+          "bytes": 474
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/supervisor.json",
+          "sha256": "69026b5cf44d6a1dfbaf59e1f9c827287d29b934e9df465a6e5cf4d0b5c57081",
+          "bytes": 661
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/eco.tcl",
+          "sha256": "7fc64ad97db711fe4c7be813485e89211047faf1378c5fe0dab7f7e0ca3ae412",
+          "bytes": 15564
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/soc_top.odb",
+          "sha256": "8cd8ba235573e6add66ff642ba6c16878086091935b143109901d01c9307eb0c",
+          "bytes": 87256418
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/soc_top.nl.v",
+          "sha256": "73f20468552e58331670c0731d20a824d238b7b446e62997093823b7cd3b6250",
+          "bytes": 11465986
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/routes.segments",
+          "sha256": "b36f2e88896887440c338566a6fbf0dfe2916c7fa746d20812f459eea2473963",
+          "bytes": 35438101
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_typ_1p20V_25C/max.rpt",
+          "sha256": "0e294807271bca77f8a3102c3023ad52babca2230c17652e4d1edc094abdeeab",
+          "bytes": 11057261
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_typ_1p20V_25C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_typ_1p20V_25C/min.rpt",
+          "sha256": "8ca09e39b9ebaf83978093e07c80d7d5ca4947f211d1469811ddc2e381109b75",
+          "bytes": 7822097
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_typ_1p20V_25C/electrical.rpt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_fast_1p32V_m40C/max.rpt",
+          "sha256": "b9d54b00966263c08b8d3d107b5bc6cb2316c91b1f5ea6a2f635707c06244ebf",
+          "bytes": 11016003
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_fast_1p32V_m40C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_fast_1p32V_m40C/min.rpt",
+          "sha256": "cbcb07ffd0c2dd8c2d44334c7a873ca93ee085d879eec95c3051866380e1b38c",
+          "bytes": 7824552
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_fast_1p32V_m40C/electrical.rpt",
+          "sha256": "af1041f80b347cae7a9a2c1308105b62d1458e6aad0dea0d845b0e5d0a3a249e",
+          "bytes": 216
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_slow_1p08V_125C/max.rpt",
+          "sha256": "a9ed3629aaa354073b6ea61ecd8b6122d9ac0ddf6756637d379219adc52e13cb",
+          "bytes": 11036074
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_slow_1p08V_125C/clocks.rpt",
+          "sha256": "20b7cbd99b8fb38a1645b97c63f0eaf55f590a04aa7d4fbb3f022cc720af9e29",
+          "bytes": 326
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_slow_1p08V_125C/min.rpt",
+          "sha256": "27db0d97ea8f60a546d536ae5e4a161f877f8b00235d3db7a4758c4261e58071",
+          "bytes": 7806591
+        },
+        {
+          "path": "hw/soc/out/external-review-20260919/startup-native-restart1-eco3-setup/single-corner-reports/nom_slow_1p08V_125C/electrical.rpt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      ]
+    }
+  ],
+  "interpretation": "ECO1 removes all 703 fanout violations; ECO2/3 reduce electrical violations, but ECO3 worsens slow setup to -2.750971 ns and retains fast hold -0.363958 ns and one fast slew violation. All three remain failed physical candidates. No removed timing check, reset cut or library-rule waiver."
+}

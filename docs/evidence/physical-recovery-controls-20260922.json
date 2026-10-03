@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-22",
+  "base_commit": "f279755",
+  "status": "PASS: checkpoint and bounded-flow unit/contract checks; new physical replay pending",
+  "scope": "Preserve/rebase source-bound physical restart files; bound optimization effort while retaining acceptance thresholds. Not layout acceptance.",
+  "source_sha256": {
+    "scripts/collect_physical_checkpoint.py": "941e67f0e0e1d927d7fa188e9071abec55c9744b694cd433d5385199ca33f20a",
+    "sw/tests/test_physical_checkpoint.py": "375d27649700f116fb3bdfacac4eda45fb50225073c39b56206e1aaa99c86eab",
+    "hw/soc/pnr/interface_flow.py": "6f1262244ab9b6a896826af7aa0faaedfbe5503a7a4b1c4c3d4878dd2d524cbb",
+    "hw/soc/flow/implement_interfaces.sh": "47de06b74cad3cea3c097ef4b57ecfa7b8588f0c7aef288a71fff5162e5468df",
+    "hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+    "hw/soc/flow/prune_orphan_guides.tcl": "6e1e97485a537d0db3a41ee34ad47906890c9ba9267b08768c5c41a7b6558c5e",
+    "sw/tests/test_interface_flow.py": "7dd87a5ac0ee6e2181175b4c4e002aee3769c080dc4bdcba40b4a6334fe15e0c",
+    ".github/workflows/soc-physical.yml": "9dc058d8c91988bf20502a5d246b98bf9a48b593d3567a96b59075dcc19dd3ab"
+  },
+  "verification": {
+    "pytest_passed": 83,
+    "checkpoint_cases_included": 9,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/physical-recovery-final-checks.log",
+      "bytes": 179,
+      "sha256": "39f850c020ae69cd1a492092970038353f6e764c0dc81e6ffc580a30362f6815"
+    },
+    "coverage": "Last state selection, real file copies and relocation, corrupt/missing/external views, metadata exclusion, mutation during copy, no overwrite/fallback. Actual generated resizer Tcl retains derate guard and emits CTS600/GRT100. Entry-point/profile/tool controls included."
+  },
+  "native_read_control": {
+    "status": "FAIL",
+    "scope": "Collector/relocator and native OpenROAD read of three real historical design views. Synthetic three-view control state; not recovery or signoff of current-full.",
+    "capture": {
+      "status": "CAPTURED",
+      "scope": "Restart files only; no timing/DRC/LVS acceptance",
+      "collector_sha256": "941e67f0e0e1d927d7fa188e9071abec55c9744b694cd433d5385199ca33f20a",
+      "source_state": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/checkpoint-native-read-20260922/01-native-control/state_out.json",
+      "source_state_sha256": "a47465199518e28f18e0a14c29b652d24478d603bb6b983fb3bb1642be00516b",
+      "relative_state_sha256": "6c5b4ef582a865a0f75a3ec21e2dd75ce1b2518474ad4ac7d2e62e18157b9d3b",
+      "files": {
+        "files/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/18-odb-cellfrequencytables/soc_top.odb": {
+          "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/18-odb-cellfrequencytables/soc_top.odb",
+          "sha256": "ea7715832f36a262949e8d2601cfe6f493bf175c76bbefd2c516b9cc8e59bde2",
+          "bytes": 183835121
+        },
+        "files/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.nl.v": {
+          "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.nl.v",
+          "sha256": "bb268c09fd388ce39d50d20e0f485b14916f3f8c1acd0e743ce36cff29bc61a3",
+          "bytes": 19846986
+        },
+        "files/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.sdc": {
+          "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-resume-20260919-184950/17-openroad-fillinsertion/soc_top.sdc",
+          "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa",
+          "bytes": 29892
+        }
+      }
+    },
+    "command": [
+      "openroad",
+      "-exit",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/checkpoint-native-read/read-checkpoint.tcl"
+    ],
+    "returncode": 1,
+    "log_sha256": "c3dec3cd2fbf0ea738c1a8bacba1dfc15b4790ed8b4e805cad5202dd7a24c7a1",
+    "retention": "Only duplicate native-read test views removed after comparison with still-retained original files; manifests, local state and failed reader log retained. This test bundle is not a shipping restart checkpoint."
+  },
+  "native_read_limitation": "Three real historical views were captured and hash-verified on restore, but the PATH OpenROAD v2.0-17598 reader rejected the old layout database schema 0.128 > supported0.98. No native-read PASS is claimed. Resume requires the matching pinned physical toolchain, as documented.",
+  "physical_change": {
+    "post_cts_setup_iteration_limit": 600,
+    "post_grt_setup_iteration_limit": 100,
+    "implementation_step_timeout_minutes": 300,
+    "job_timeout_minutes": 330,
+    "acceptance": "No change to derating, clocks, IO budgets, corner sets, timing/electrical/DRC/LVS thresholds or Classic checker steps."
+  },
+  "prior_full_python": "pcie-full-python-20260922.json records1329PASS at f279755 before these subsequent physical-recovery changes."
+}
