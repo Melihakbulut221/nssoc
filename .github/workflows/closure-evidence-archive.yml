@@ -23,7 +23,8 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        candidate: [hold-explicit-final, alu-abc-complete, npu-scalar-final, alu-sat-complete]
+        # Prior four plans are permanently verified by run 37127800143.
+        candidate: [pair-hold-failure, npu-cone-final]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:

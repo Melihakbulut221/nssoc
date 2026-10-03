@@ -2451,3 +2451,16 @@ The fresh official-source review finds no qualifying correction: main remains
 I/O CDL/LEF/GDS Git identities and the relevant tap rules remain unchanged.
 The bounded issue/PR search and its limitations are recorded in the packet;
 this establishes no new passing LVS result.
+
+### 3 October, 21:48 UTC continuation
+
+The completed pair-hold run 37130065441 and paired NPU cone run 37129489438
+are selected for permanent preservation. The [pair-hold plan](evidence/closure-pair-hold-failure-archive-plan-20261003.json)
+pins the actual failed workflow outcome and all four startup/progress/final
+captures; the [NPU cone plan](evidence/closure-npu-cone-final-archive-plan-20261003.json)
+pins both variants' startup and final captures. The eight original ZIPs total
+936,243,615 bytes. Their producer identities, artifact sizes and digests are
+checked against live GitHub metadata before dispatch. The existing archive
+method requires unchanged bytes and both release download roundtrips.
+Publication and independent review remain pending; these plans do not imply
+timing acceptance or a passing candidate boot.
