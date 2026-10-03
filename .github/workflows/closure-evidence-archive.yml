@@ -15,14 +15,15 @@ concurrency:
 jobs:
   archive:
     runs-on: ubuntu-22.04
-    timeout-minutes: 60
+    timeout-minutes: 360 # Hosted ceiling; preserve the complete multi-artifact captures.
     permissions:
       contents: write
       actions: read
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
-        candidate: [alu-hard-proved]
+        candidate: [hold-explicit-final, alu-abc-complete, npu-scalar-final, alu-sat-complete]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:

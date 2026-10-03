@@ -2356,3 +2356,14 @@ checkout lacks historical commits required by immutable Git-blob verification;
 full history. Other jobs and proof code remain unchanged. All twelve previously
 failing cases pass locally with history available, and actionlint passes; the
 corrected GitHub full suite remains to be rerun.
+
+Permanent archival now selects four completed, exact-source captures: the
+[explicit hold final](evidence/closure-hold-explicit-final-archive-plan-20261003.json),
+[complete grouped ABC run](evidence/closure-alu-abc-complete-archive-plan-20261003.json),
+[paired NPU scalar finals](evidence/closure-npu-scalar-final-archive-plan-20261003.json)
+and [individual SAT run](evidence/closure-alu-sat-complete-archive-plan-20261003.json).
+The four plans select 151 original artifacts, 602,157,553 bytes in total.
+Archive jobs retain exact artifact bytes and verify authenticated and anonymous
+release download roundtrips. The candidate's boot failure and SAT timeouts
+remain preserved failures; publication does not imply engineering acceptance.
+No large original chip view or graph is downloaded locally for this archival.
