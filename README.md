@@ -1,14 +1,35 @@
-# Neuromorphic Fault Tolerant SoC
+# NSSOC — Building an Open-Source GR801 Counterpart
 
 [![checks](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml/badge.svg?branch=codex%2Fcomplete-open-work)](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml)
 
-An experimental RISC-V and spiking-neural-network SoC for IHP SG13G2.
-The design combines an Ibex management core, ECC-protected storage, scrub,
-TMR control and spacecraft interfaces. Product acceptance remains open.
+**Our mission is to build an open-source counterpart to GR801 for space applications.**
+NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces.
+We are working toward a complete chip, from RTL and software through physical implementation,
+silicon validation and qualification.
+
+The current IHP SG13G2 implementation combines an Ibex RISC-V core, a spiking-neural-network accelerator,
+ECC-protected storage, memory scrubbing and TMR control. It forms the foundation for the product we are building.
+
+## Product goal
+
+GR801 is our product reference. NSSOC is an independent open-source design. Our development scope includes:
+
+- Fault-tolerant processing and neural acceleration, protected memories, recovery and radiation qualification.
+- SpaceWire, **PCIe Gen3 x4**, Gigabit Ethernet, CAN, I2C, SPI and UART, with controllers, PHY integration and software.
+- Complete chip layout, characterized memories, padframe, clock/reset networks, power distribution and test access.
+- Reproducible RTL, firmware, verification, physical flows and documentation under the [component licences](LICENSES.md).
+
+Completion means meeting the integrated design requirements and [product acceptance gates](docs/92-product-acceptance.md):
+functional verification, extracted setup/hold timing, full-chip DRC/LVS and antenna checks, manufacturing review,
+silicon testing and qualification. Each result below records progress toward that goal within its verified scope.
 
 ![SoC functional architecture](docs/img/soc-architecture.svg)
 
-## Current evidence
+## Recorded verification evidence
+
+Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
+These selected milestones retain their original revision and scope; they are not a combined signoff result.
+
 <!-- project-status:start -->
 | Area | Measured status | Evidence |
 |---|---|---|
@@ -22,34 +43,25 @@ TMR control and spacecraft interfaces. Product acceptance remains open.
 | 32-SRAM core geometry | Main DRC, density, antenna and transistor LVS PASS; timing/product open | [Exact GDS and supplemental checks](docs/evidence/ethernet-mbist-core-physical-20260927.json) |
 | Historical timing estimate | Setup -2.867 ns, hold -0.089 ns; not final-core STA | [Earlier route and electrical failures](docs/evidence/startup-native-corners-20260920.json) |
 <!-- project-status:end -->
-These rows name different measured revisions and scopes; they are not a
-combined signoff result. The [machine-readable status](docs/project-status.json)
-is generated from [selected evidence records](docs/status-sources.json).
-Check it with `python3 scripts/project_status.py`; update it with `--write`.
+The [machine-readable status](docs/project-status.json) derives from [selected records](docs/status-sources.json).
+Check with `python3 scripts/project_status.py`; update with `--write`.
 
-The [26 September SRAM continuation](docs/101-sram-characterization.md#current-rail-and-pin-candidate-and-process-reference)
-repairs route grids, fill and SRAM wide-line gaps. The exact 32-SRAM core passes
-560-category main DRC, density, antenna, supplemental spacing and transistor LVS.
-Fresh DP capacitance-only patterns pass at TT/SS/FF; fresh SP runs remain pending.
+The [SRAM characterization record](docs/101-sram-characterization.md) documents core repairs and measured patterns.
 Qualified coupled RC, complete SRAM timing/power libraries, final SoC timing,
 PCIe PHY/padframe integration and manufacturing approval remain open.
 
-SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and
-profile-specific layout evidence. **PCIe Gen3 x4 remains open:** the tested
-[transaction backend](docs/98-pcie-transaction-backend.md) is not connected to the SoC/PHY.
-UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated
-whole-SoC layout pending. Ethernet needs an external PHY and has no DMA.
+SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and profile-specific layout evidence.
+**PCIe Gen3 x4 remains open:** the tested [transaction backend](docs/98-pcie-transaction-backend.md) is not connected to the SoC/PHY.
+UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated whole-SoC layout pending.
+Ethernet needs an external PHY and has no DMA.
 The complete GR801 interface set is not implemented.
 
-The [product acceptance register](docs/92-product-acceptance.md) and
-[second audit register](docs/96-second-audit-closure.md) track all remaining gates.
-Earlier claims and corrections are preserved in [HISTORY.md](HISTORY.md), with a
-[migration digest](docs/evidence/readme-migration-20260920.json).
+The [product acceptance](docs/92-product-acceptance.md) and [second audit](docs/96-second-audit-closure.md) registers track remaining gates.
+Earlier claims and corrections remain in [HISTORY.md](HISTORY.md), with a [migration digest](docs/evidence/readme-migration-20260920.json).
 
 ## Reproduce
 
-Use Linux, Python 3.12 or 3.13, `make`, Git and a C compiler. Tcl guards also
-need `tclsh`. Start with `make help`.
+Use Linux, Python 3.12 or 3.13, `make`, Git, a C compiler and `tclsh`. Start with `make help`.
 
 ```sh
 make setup PYTHON=python3.12
@@ -61,12 +73,10 @@ make rtl-test
 make check
 ```
 
-The installer verifies the pinned 2026-08-04 archive, uses a project-local
-folder and refuses to replace an existing installation. Allow about 4 GB;
+The installer verifies the pinned 2026-08-04 archive and preserves existing installations. Allow about 4 GB;
 `OSS_CAD_SUITE=/absolute/path` selects another checkout. Physical tools/PDK are separate.
 
-The local `make check` command covers Python, licensing and documentation;
-hardware jobs are separate. Missing dependencies are reported as skips.
+Local `make check` covers Python, licensing and documentation; hardware jobs are separate. Missing dependencies produce skips.
 
 ```sh
 make soc-prepare
@@ -75,23 +85,16 @@ make soc-sim
 make soc-memory-parity
 ```
 
-The default `SOC_INTERFACE_PROFILE=base` includes I2C/Ethernet and SPI.
-Explicitly set `SOC_INTERFACE_PROFILE=full` for LGPL SpaceWire/CAN, including
-preparation and every subsequent build command. See [interface profiles](docs/88-interface-integration.md).
+The default `SOC_INTERFACE_PROFILE=base` includes I2C/Ethernet and SPI. Set `SOC_INTERFACE_PROFILE=full`
+for LGPL SpaceWire/CAN in preparation and every subsequent build command. See [interface profiles](docs/88-interface-integration.md).
 
-On a prepared checkout, `python3 scripts/check_formal_sweep.py` runs the declared
-pilot/SoC formal regression with source checks and explicit non-closing exceptions.
-RTL, RAM parity, formal and processor/boot jobs remain separate; whole-netlist
-native boot is an explicit long-running workflow option.
+On a prepared checkout, `python3 scripts/check_formal_sweep.py` runs formal checks with source guards and explicit exceptions.
+RTL, RAM parity, formal and processor/boot jobs remain separate; whole-netlist native boot is a long-running workflow option.
 
-The [pilot driver](sw/pilotlink/README.md) shares register, state, weight and
-frame operations across cocotb, a serial bridge and RP2040 SPI backends.
-Physical-board qualification remains open.
+The [pilot driver](sw/pilotlink/README.md) supports cocotb, serial and RP2040 SPI backends. Physical-board qualification remains open.
 
-The [current SoC datasheet](docs/60-soc-datasheet.md), section 0.4, describes
-the implemented interfaces, build profiles and verification limits. Older
-measurements remain explicitly tied to their original revisions; the
-[errata index](docs/ERRATA.md) links their corrections and reproduction paths.
+The [SoC datasheet](docs/60-soc-datasheet.md), section 0.4, describes implemented interfaces, profiles and verification limits.
+Older measurements retain their original revisions; the [errata index](docs/ERRATA.md) links corrections and reproduction paths.
 
 ## Repository map
 
@@ -106,8 +109,7 @@ measurements remain explicitly tied to their original revisions; the
 
 ## Licensing and citation
 
-This repository is a published subset of a private development tree.
-The [mirror contract](docs/78-the-public-mirror.md) defines its boundary; original provenance is in HISTORY.md.
+This repository is a published subset of a private development tree. See the [mirror contract](docs/78-the-public-mirror.md) and HISTORY.md for provenance.
 
 The licence decision was **signed 2026-09-09**; see [LICENSES.md](LICENSES.md) for components and exceptions.
 
@@ -117,9 +119,7 @@ The licence decision was **signed 2026-09-09**; see [LICENSES.md](LICENSES.md) f
 | Software, generators and flow drivers | Apache-2.0 |
 | Documents and measurement records | CC-BY-4.0 |
 
-Fetched IP retains its own licence, including LGPL/MIT/Apache components;
-this table does not relicense it. SPDX and REUSE checks cover the distribution.
+Fetched IP retains its own licences, including LGPL/MIT/Apache; SPDX and REUSE checks cover the distribution.
 
 Use [CITATION.cff](CITATION.cff) and the exact commit; there is no release DOI or qualified silicon release.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for reporting, boundaries and development checks,
-[SECURITY.md](SECURITY.md) for private vulnerability reports, and [CHANGELOG.md](CHANGELOG.md) for unreleased changes.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development, [SECURITY.md](SECURITY.md) for reports, and [CHANGELOG.md](CHANGELOG.md) for changes.
