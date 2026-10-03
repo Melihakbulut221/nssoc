@@ -2121,3 +2121,48 @@ counterexamples cannot yield a complete result. The method passes 207 adjacent
 tests and eighteen tiny native executions with positive and negative controls.
 Even 800 successful new equations would leave the four hard equations and
 the independent four-state boot failure open. No ALU candidate is adopted.
+
+The corrected critical run's [first immutable progress](evidence/timing-critical-retry-progress-native-20261003.json)
+confirms all four orientation controls and their 31 rejection cases pass in
+the actual cloud runtime. The isolated hold child again restores its tentative
+buffer; setup and hold counts remain 1,311 and 58. This snapshot does not yet
+contain the separate sizing result, so it establishes no new timing gain.
+Independent review verifies 300 selected compact members and all 56 Git methods;
+full chip physical views and the full 190 MB ZIP remain in the cloud.
+
+Both [NPU native startups](evidence/npu-state-observer-startup-native-20261003.json)
+compile the unchanged 3-million-cycle workload and pass the three native scalar
+controls. All 84 members per startup ZIP, 83 declared output pins and twenty Git
+methods are verified; the paired firmware is identical. Long chip replays are
+running. The [800-bit common preparation](evidence/alu-remaining-bits-startup-native-20261003.json)
+also completes, and four proof jobs are active. The compact review rechecks
+140 selected members, all 24 methods, exact batch coverage and raw tiny proof
+outcomes. Neither startup result implies a completed new chip proof or boot.
+
+An [independent upstream tap fixture](evidence/io-tap-upstream-contract-native-20261003.json)
+now exercises the pinned IHP deck with tap extraction enabled and top-port
+ignoring disabled. The unchanged small fixture passes with four MOS devices
+and two taps. Its literal, non-square reference parameters reproduce exactly:
+ptap area 21.276 µm² / perimeter 141.84 µm and ntap area 24.06 µm² / perimeter
+160.4 µm. Deliberately wrong perimeter and reversed tap terminals both fail.
+Moving seven marker shapes into the parent preserves all 21 flattened masks,
+all instances and all non-marker local geometry, but both taps disappear and
+LVS fails. That hierarchy change is an observed failure, not a repair.
+
+The fixture also exposes a verifier limitation: a renamed unused reference
+port is removed during simplification, and the native deck reports a match
+despite the strict option. The new wrapper independently requires the exact
+four top ports on both sides and rejects this case. This fixes the fixture's
+acceptance gate without editing the frozen shared deck or earlier results.
+All five native cases complete, 47 tests pass, and independent read-only replay
+checks the saved databases and geometry. Root rehashes all 104 native outputs.
+
+The non-square control establishes the extractor's interpretation of literal
+area and perimeter; it does not identify a defensible automatic correction to
+the project's I/O reference. Published I/O CDL and SPICE square parameters and
+resistance values are internally consistent, yet incompatible with the
+protected contact geometry. No unambiguous units, reader or formula defect has
+been found. The intended per-I/O geometry and electrical model remain missing
+from the available source provenance. Replacing reference parameters with
+observed extraction values would conceal this unresolved question; qualified
+I/O and full-chip LVS remain open.
