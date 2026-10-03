@@ -2530,3 +2530,35 @@ the cloud checked complete bytes and both release download roundtrips.
 The successful NPU archive job and native experiments were not repeated.
 The incomplete historical pair capture and rejected timing/boot outcomes
 remain failures despite successful preservation.
+
+### 4 October local-time method preparation
+
+The [independent one-target hold ablations](evidence/timing-hold-ablation-method-20261004.json)
+start separately from the unchanged single-delay parent: 1,310 setup and 57
+hold violations. Each variant adds one identity delay to one of the two
+verified sole-Q-to-D branches. The rejected pair is not used as an input.
+Original cells, placements, supplies, 32 SRAM macros and constraints must
+remain unchanged. Both future trials require fresh routing, two independent
+reloads, the complete three-corner endpoint census, all eight historical and
+fresh-parent guards, and both limited digital ECO proofs. Their whole-chip
+results are pending; no timing gain is assumed.
+
+Author and root independently execute both five-to-six-cell native controls;
+each rejects 63 injected faults and preserves the original delay and untouched
+branch. The final Python validator replays all raw min/max reports and 75
+output pins per variant. The [53,048-byte native capsule](evidence/timing-hold-ablation-native-controls-20261004.tar.xz)
+preserves both variants, exact receipts and raw logs. All 72 reused methods
+match immutable Git sources. Author validation passes 568 focused/adjacent
+tests; independent peer and root each pass the 323-test new/pair/single suite.
+These finite controls validate the method, not whole-chip timing, LVS or
+manufacturing acceptance.
+
+Both [NPU frontier startup captures](evidence/npu-frontier-startup-native-20261004.json)
+from run 37158099088 verify against source `b1c6928`: 98 captured outputs and
+29 Git methods per variant, unchanged qualification inputs and actual native
+observer controls. The original observes 116 cells / 728 scalars and the
+candidate 156 cells / 884 scalars, with 38 sequential boundaries and 52 named
+semantic conductors each. The recorded job snapshot shows both unchanged
+three-million-cycle boot steps started. It contains no advancing-cycle
+measurement, final event window or completed boot result. The historical
+candidate boot failure remains unresolved; observation is not a repair.
