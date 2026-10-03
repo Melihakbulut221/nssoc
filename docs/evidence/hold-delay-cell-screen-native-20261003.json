@@ -1,0 +1,755 @@
+{
+  "actual_source": {
+    "artifact_id": 11266609116,
+    "commit": "4882cfe2cf9c39123dcef4f0cef7edac4c1d80a1",
+    "run_id": 37102104480,
+    "scope": "Verified immutable first-progress capture only; final producer not assumed complete."
+  },
+  "chip_timing_accepted": false,
+  "cloud_dispatch": false,
+  "evidence": [
+    {
+      "bytes": 28698,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261003/new-cloud/critical-startup/critical-followup-startup-1/selected/producer-records/native-api/RepairHold.cc",
+      "sha256": "abf96edec08e7041573bef765f62fe3ccf44a80893a7fcdc6ae0576485ec04b0"
+    },
+    {
+      "bytes": 2173,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/hold-debug.json",
+      "sha256": "6de05d6fefadf1ab675b6244de1d899e4d2dacd1a62fcdf9f99cba606574feef"
+    },
+    {
+      "bytes": 12968,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/native.log",
+      "sha256": "1ce875d5b30db7a610f0b8cd458de0fd2d24cb0a198b9416010b50679a6b82e3"
+    },
+    {
+      "bytes": 6132,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/before-nom_fast_1p32V_m40C-min-rise.rpt",
+      "sha256": "23e756adac6115e5f2e1f1e36c78ba82c87c0bede7a5e3868a270a26ffb02cf2"
+    },
+    {
+      "bytes": 6132,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/before-nom_fast_1p32V_m40C-min-fall.rpt",
+      "sha256": "8b48930898b53779ed02e47090245dba1c7c18560b2fb1e53276b416b069c287"
+    },
+    {
+      "bytes": 6128,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/before-nom_slow_1p08V_125C-max-rise.rpt",
+      "sha256": "93ffada36f74c437d261a6b44d97f78f1a3df31bdd5650a6b0713878b8a66132"
+    },
+    {
+      "bytes": 6128,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/run/01-openroad-resizertimingpostgrt/hold-debug/before-nom_slow_1p08V_125C-max-fall.rpt",
+      "sha256": "6a3e88c672a685008aa041828407e0f1f1913b4b9fb0e0323ead92f7dd9f8f57"
+    },
+    {
+      "bytes": 1089565,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/critical-retry/first-selected/source-manifest.json",
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    }
+  ],
+  "experiment": {
+    "change": "Exactly one native sg13g2_dlygate4sd3_1 inserted as non-inverting identity on the sole source-bound Q-to-D edge.",
+    "invariants": [
+      "Original SDC/clock/uncertainty/derates and exact Liberty/PDK/runtime unchanged.",
+      "Exactly one inserted non-inverting A->X cell; contraction restores every original cell/master/pin/net equation. No original DFF, clock gate, SRAM or protected-object changes.",
+      "All32SRAM placements/models and top ports unchanged; explicit VDD/VSS supply connection and legal placement/route.",
+      "All six historical parent references plus fresh baseline guards retained; zero new absolute transition/capacitance violations and no endpoint/setup regression accepted.",
+      "No automatic candidate adoption, no claim of final timing/DRC/LVS/manufacturing closure."
+    ],
+    "measurements": [
+      "Original and immediately after-insertion driver rise/fall slew and capacitance at every PVT; global setup/hold WNS,TNS and full endpoint tables.",
+      "After fresh GRT/parasitics, repeat the same metrics and absolute slew/cap checks, then two independent ODB+SDC reload/route/STA repeats.",
+      "Record per-transition _135215_/D paths and any newly changed/worse endpoint; retain candidate and rejected outcome."
+    ],
+    "parent_choice": "Prefer the exact final source-bound sizing candidate only after its run completes and its full receipt is verified; otherwise explicitly retain the rejected residual parent context. This hold experiment must not conceal already-open setup regressions.",
+    "placement": "Select and record one deterministic nearest legal row/site location near the launch Q using exact baseline ODB occupancy. Existing cells/macros remain at identical coordinates/orientations. Stop if no legal vacancy exists within the declared small search radius; do not move unrelated cells or silently broaden placement.",
+    "reason": "A near-launch explicit placement avoids relying on the stock midpoint and permits measurement of actual Q load/slew. The cell screen supports sufficient delay without a larger-load ordinary buffer. This is a bounded physical candidate, not a bypass of absolute design constraints."
+  },
+  "fallback": "If one sd3 still fails unchanged absolute/allendpoint guards, retain measured failure first. Do not use allow_setup_violations, reduce hold uncertainty, relax the1.20 heuristic in source, patch Liberty, or replace the reference baseline to manufacture acceptance.",
+  "full_chip_native_run": false,
+  "library_screen": {
+    "comparison": {
+      "sg13g2_buf_1": {
+        "fast_hold_gain_ns": [
+          0.037154448,
+          0.037581674999999995
+        ],
+        "max_driver_slew_ratio": 1.1857838154918343,
+        "max_slow_setup_cost_ns": 0.08730888299999862,
+        "minimum_fast_hold_gain_ns": 0.037154448,
+        "slow_setup_cost_ns": [
+          0.08629226699999748,
+          0.08730888299999862
+        ]
+      },
+      "sg13g2_dlygate4sd1_1": {
+        "fast_hold_gain_ns": [
+          0.077985608,
+          0.088630229
+        ],
+        "max_driver_slew_ratio": 1.0196843298122822,
+        "max_slow_setup_cost_ns": 0.21548271099999994,
+        "minimum_fast_hold_gain_ns": 0.077985608,
+        "slow_setup_cost_ns": [
+          0.1881256099999966,
+          0.21548271099999994
+        ]
+      },
+      "sg13g2_dlygate4sd2_1": {
+        "fast_hold_gain_ns": [
+          0.115492177,
+          0.127987303
+        ],
+        "max_driver_slew_ratio": 1.0178640927113678,
+        "max_slow_setup_cost_ns": 0.3019313809999993,
+        "minimum_fast_hold_gain_ns": 0.115492177,
+        "slow_setup_cost_ns": [
+          0.26629257199999756,
+          0.3019313809999993
+        ]
+      },
+      "sg13g2_dlygate4sd3_1": {
+        "fast_hold_gain_ns": [
+          0.240774625,
+          0.244417377
+        ],
+        "max_driver_slew_ratio": 1.0185161295965088,
+        "max_slow_setup_cost_ns": 0.5876674649999991,
+        "minimum_fast_hold_gain_ns": 0.240774625,
+        "slow_setup_cost_ns": [
+          0.5544185639999988,
+          0.5876674649999991
+        ]
+      }
+    },
+    "fast_input_cap_ff": {
+      "sg13g2_buf_1": 2.44642,
+      "sg13g2_buf_2": 2.8222,
+      "sg13g2_dfrbpq_1": 1.5098,
+      "sg13g2_dlygate4sd1_1": 1.60142,
+      "sg13g2_dlygate4sd2_1": 1.59337,
+      "sg13g2_dlygate4sd3_1": 1.60478,
+      "sg13g2_inv_1": 3.05794
+    },
+    "finding": "One sd1 or sd2 provides insufficient screen delay for the source -157.984ps plus20ps hold margin. Standard buf1 and inv1 are higher input load, not lower-load alternatives. sd2 reduces input capacitance by only0.71% fast/1.71% slow versus sd3.",
+    "native_controls": {
+      "bytes": 11072,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/hold-next-step/tiny-native.tar.xz",
+      "sha256": "f8d97b814932358bc2f5353e5cb819332b4f6d510a67931d17eb111e5cf37fe7"
+    },
+    "review": {
+      "bytes": 18312,
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/hold-next-step/tiny-screen-review.json",
+      "sha256": "3b08ba18102b5102a66751616a2ebba5108134d8712f9d7f76969427a03653a0"
+    },
+    "scope": "Five two-FF native OpenROAD cases, all three exact C10 standard-cell Liberty corners, identical ideal20ns/50ps-clock-transition zero-wire harness. Read-only comparative screen, not original clock-tree/RC recreation; no causal inference about actual rollback.",
+    "sd3_fast_hold_gain_range_ns": [
+      0.240774625,
+      0.244417377
+    ],
+    "sd3_max_driver_slew_ratio": 1.0185161295965088,
+    "sd3_worst_slow_local_setup_cost_ns": 0.5876674649999991,
+    "source_pins": {
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib": {
+        "bytes": 1716550,
+        "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": {
+        "bytes": 1711183,
+        "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      }
+    }
+  },
+  "native_screen": {
+    "chip_hold_or_setup_closure": false,
+    "chip_rollback_cause_observed": false,
+    "comparisons": {
+      "sg13g2_buf_1": {
+        "fast_hold_gain_ns": [
+          0.037154448,
+          0.037581674999999995
+        ],
+        "max_driver_slew_ratio": 1.1857838154918343,
+        "max_slow_setup_cost_ns": 0.08730888299999862,
+        "minimum_fast_hold_gain_ns": 0.037154448,
+        "slow_setup_cost_ns": [
+          0.08629226699999748,
+          0.08730888299999862
+        ]
+      },
+      "sg13g2_dlygate4sd1_1": {
+        "fast_hold_gain_ns": [
+          0.077985608,
+          0.088630229
+        ],
+        "max_driver_slew_ratio": 1.0196843298122822,
+        "max_slow_setup_cost_ns": 0.21548271099999994,
+        "minimum_fast_hold_gain_ns": 0.077985608,
+        "slow_setup_cost_ns": [
+          0.1881256099999966,
+          0.21548271099999994
+        ]
+      },
+      "sg13g2_dlygate4sd2_1": {
+        "fast_hold_gain_ns": [
+          0.115492177,
+          0.127987303
+        ],
+        "max_driver_slew_ratio": 1.0178640927113678,
+        "max_slow_setup_cost_ns": 0.3019313809999993,
+        "minimum_fast_hold_gain_ns": 0.115492177,
+        "slow_setup_cost_ns": [
+          0.26629257199999756,
+          0.3019313809999993
+        ]
+      },
+      "sg13g2_dlygate4sd3_1": {
+        "fast_hold_gain_ns": [
+          0.240774625,
+          0.244417377
+        ],
+        "max_driver_slew_ratio": 1.0185161295965088,
+        "max_slow_setup_cost_ns": 0.5876674649999991,
+        "minimum_fast_hold_gain_ns": 0.240774625,
+        "slow_setup_cost_ns": [
+          0.5544185639999988,
+          0.5876674649999991
+        ]
+      }
+    },
+    "complete_raw_outputs": 90,
+    "measurements": {
+      "direct": {
+        "fast-max-fall": {
+          "driver_arrival_ns": 0.118522823,
+          "driver_load_pf": 0.00152335,
+          "driver_slew_ns": 0.011083616,
+          "endpoint_arrival_ns": 0.118522823,
+          "endpoint_slew_ns": 0.011083616,
+          "slack_ns": 19.570907593
+        },
+        "fast-max-rise": {
+          "driver_arrival_ns": 0.118586324,
+          "driver_load_pf": 0.00149625,
+          "driver_slew_ns": 0.012806024,
+          "endpoint_arrival_ns": 0.118586324,
+          "endpoint_slew_ns": 0.012806024,
+          "slack_ns": 19.560522079
+        },
+        "fast-min-fall": {
+          "driver_arrival_ns": 0.118522823,
+          "driver_load_pf": 0.00152335,
+          "driver_slew_ns": 0.011083616,
+          "endpoint_arrival_ns": 0.118522823,
+          "endpoint_slew_ns": 0.011083616,
+          "slack_ns": -0.116206698
+        },
+        "fast-min-rise": {
+          "driver_arrival_ns": 0.118586324,
+          "driver_load_pf": 0.00149625,
+          "driver_slew_ns": 0.012806024,
+          "endpoint_arrival_ns": 0.118586324,
+          "endpoint_slew_ns": 0.012806024,
+          "slack_ns": -0.09364944
+        },
+        "slow-max-fall": {
+          "driver_arrival_ns": 0.259961665,
+          "driver_load_pf": 0.00135509,
+          "driver_slew_ns": 0.025022481,
+          "endpoint_arrival_ns": 0.259961665,
+          "endpoint_slew_ns": 0.025022481,
+          "slack_ns": 19.319400787
+        },
+        "slow-max-rise": {
+          "driver_arrival_ns": 0.260911137,
+          "driver_load_pf": 0.00133529,
+          "driver_slew_ns": 0.028549783,
+          "endpoint_arrival_ns": 0.260911137,
+          "endpoint_slew_ns": 0.028549783,
+          "slack_ns": 19.300611496
+        },
+        "slow-min-fall": {
+          "driver_arrival_ns": 0.259961665,
+          "driver_load_pf": 0.00135509,
+          "driver_slew_ns": 0.025022481,
+          "endpoint_arrival_ns": 0.259961665,
+          "endpoint_slew_ns": 0.025022481,
+          "slack_ns": 0.052400239
+        },
+        "slow-min-rise": {
+          "driver_arrival_ns": 0.260911137,
+          "driver_load_pf": 0.00133529,
+          "driver_slew_ns": 0.028549783,
+          "endpoint_arrival_ns": 0.260911137,
+          "endpoint_slew_ns": 0.028549783,
+          "slack_ns": 0.107447594
+        },
+        "typical-max-fall": {
+          "driver_arrival_ns": 0.170477912,
+          "driver_load_pf": 0.00142972,
+          "driver_slew_ns": 0.015768792,
+          "endpoint_arrival_ns": 0.170477912,
+          "endpoint_slew_ns": 0.015768792,
+          "slack_ns": 19.476089478
+        },
+        "typical-max-rise": {
+          "driver_arrival_ns": 0.172633797,
+          "driver_load_pf": 0.00140953,
+          "driver_slew_ns": 0.018732658,
+          "endpoint_arrival_ns": 0.172633797,
+          "endpoint_slew_ns": 0.018732658,
+          "slack_ns": 19.469406128
+        },
+        "typical-min-fall": {
+          "driver_arrival_ns": 0.170477912,
+          "driver_load_pf": 0.00142972,
+          "driver_slew_ns": 0.015768792,
+          "endpoint_arrival_ns": 0.170477912,
+          "endpoint_slew_ns": 0.015768792,
+          "slack_ns": -0.052740924
+        },
+        "typical-min-rise": {
+          "driver_arrival_ns": 0.172633797,
+          "driver_load_pf": 0.00140953,
+          "driver_slew_ns": 0.018732658,
+          "endpoint_arrival_ns": 0.172633797,
+          "endpoint_slew_ns": 0.018732658,
+          "slack_ns": -0.022016972
+        }
+      },
+      "sg13g2_buf_1": {
+        "fast-max-fall": {
+          "driver_arrival_ns": 0.120013431,
+          "driver_load_pf": 0.00242494,
+          "driver_slew_ns": 0.012850985,
+          "endpoint_arrival_ns": 0.156238556,
+          "endpoint_slew_ns": 0.010505327,
+          "slack_ns": 19.533348083
+        },
+        "fast-max-rise": {
+          "driver_arrival_ns": 0.120422632,
+          "driver_load_pf": 0.00246791,
+          "driver_slew_ns": 0.015185176,
+          "endpoint_arrival_ns": 0.156044662,
+          "endpoint_slew_ns": 0.011335431,
+          "slack_ns": 19.523420334
+        },
+        "fast-min-fall": {
+          "driver_arrival_ns": 0.120013431,
+          "driver_load_pf": 0.00242494,
+          "driver_slew_ns": 0.012850985,
+          "endpoint_arrival_ns": 0.156238556,
+          "endpoint_slew_ns": 0.010505327,
+          "slack_ns": -0.078625023
+        },
+        "fast-min-rise": {
+          "driver_arrival_ns": 0.120422632,
+          "driver_load_pf": 0.00246791,
+          "driver_slew_ns": 0.015185176,
+          "endpoint_arrival_ns": 0.156044662,
+          "endpoint_slew_ns": 0.011335431,
+          "slack_ns": -0.056494992
+        },
+        "slow-max-fall": {
+          "driver_arrival_ns": 0.262878925,
+          "driver_load_pf": 0.00208074,
+          "driver_slew_ns": 0.02846789,
+          "endpoint_arrival_ns": 0.347392082,
+          "endpoint_slew_ns": 0.024757041,
+          "slack_ns": 19.232091904
+        },
+        "slow-max-rise": {
+          "driver_arrival_ns": 0.264627725,
+          "driver_load_pf": 0.00214982,
+          "driver_slew_ns": 0.033381078,
+          "endpoint_arrival_ns": 0.348338395,
+          "endpoint_slew_ns": 0.025795884,
+          "slack_ns": 19.214319229
+        },
+        "slow-min-fall": {
+          "driver_arrival_ns": 0.262878925,
+          "driver_load_pf": 0.00208074,
+          "driver_slew_ns": 0.02846789,
+          "endpoint_arrival_ns": 0.347392082,
+          "endpoint_slew_ns": 0.024757041,
+          "slack_ns": 0.139723703
+        },
+        "slow-min-rise": {
+          "driver_arrival_ns": 0.264627725,
+          "driver_load_pf": 0.00214982,
+          "driver_slew_ns": 0.033381078,
+          "endpoint_arrival_ns": 0.348338395,
+          "endpoint_slew_ns": 0.025795884,
+          "slack_ns": 0.193871886
+        },
+        "typical-max-fall": {
+          "driver_arrival_ns": 0.172448665,
+          "driver_load_pf": 0.00223405,
+          "driver_slew_ns": 0.018072823,
+          "endpoint_arrival_ns": 0.225984022,
+          "endpoint_slew_ns": 0.015499352,
+          "slack_ns": 19.420681
+        },
+        "typical-max-rise": {
+          "driver_arrival_ns": 0.175215408,
+          "driver_load_pf": 0.00229273,
+          "driver_slew_ns": 0.022122271,
+          "endpoint_arrival_ns": 0.227618963,
+          "endpoint_slew_ns": 0.016619556,
+          "slack_ns": 19.415103912
+        },
+        "typical-min-fall": {
+          "driver_arrival_ns": 0.172448665,
+          "driver_load_pf": 0.00223405,
+          "driver_slew_ns": 0.018072823,
+          "endpoint_arrival_ns": 0.225984022,
+          "endpoint_slew_ns": 0.015499352,
+          "slack_ns": 0.002679607
+        },
+        "typical-min-rise": {
+          "driver_arrival_ns": 0.175215408,
+          "driver_load_pf": 0.00229273,
+          "driver_slew_ns": 0.022122271,
+          "endpoint_arrival_ns": 0.227618963,
+          "endpoint_slew_ns": 0.016619556,
+          "slack_ns": 0.032392174
+        }
+      },
+      "sg13g2_dlygate4sd1_1": {
+        "fast-max-fall": {
+          "driver_arrival_ns": 0.118655577,
+          "driver_load_pf": 0.00160365,
+          "driver_slew_ns": 0.011241026,
+          "endpoint_arrival_ns": 0.207281113,
+          "endpoint_slew_ns": 0.010531145,
+          "slack_ns": 19.482297897
+        },
+        "fast-max-rise": {
+          "driver_arrival_ns": 0.118780874,
+          "driver_load_pf": 0.0015992,
+          "driver_slew_ns": 0.013058102,
+          "endpoint_arrival_ns": 0.196538597,
+          "endpoint_slew_ns": 0.012967397,
+          "slack_ns": 19.482532501
+        },
+        "fast-min-fall": {
+          "driver_arrival_ns": 0.118655577,
+          "driver_load_pf": 0.00160365,
+          "driver_slew_ns": 0.011241026,
+          "endpoint_arrival_ns": 0.207281113,
+          "endpoint_slew_ns": 0.010531145,
+          "slack_ns": -0.027576469
+        },
+        "fast-min-rise": {
+          "driver_arrival_ns": 0.118780874,
+          "driver_load_pf": 0.0015992,
+          "driver_slew_ns": 0.013058102,
+          "endpoint_arrival_ns": 0.196538597,
+          "endpoint_slew_ns": 0.012967397,
+          "slack_ns": -0.015663832
+        },
+        "slow-max-fall": {
+          "driver_arrival_ns": 0.260183483,
+          "driver_load_pf": 0.00141027,
+          "driver_slew_ns": 0.025284477,
+          "endpoint_arrival_ns": 0.475845218,
+          "endpoint_slew_ns": 0.024142964,
+          "slack_ns": 19.103918076
+        },
+        "slow-max-rise": {
+          "driver_arrival_ns": 0.261116326,
+          "driver_load_pf": 0.00138026,
+          "driver_slew_ns": 0.028816517,
+          "endpoint_arrival_ns": 0.448643208,
+          "endpoint_slew_ns": 0.029501464,
+          "slack_ns": 19.112485886
+        },
+        "slow-min-fall": {
+          "driver_arrival_ns": 0.260183483,
+          "driver_load_pf": 0.00141027,
+          "driver_slew_ns": 0.025284477,
+          "endpoint_arrival_ns": 0.475845218,
+          "endpoint_slew_ns": 0.024142964,
+          "slack_ns": 0.267929494
+        },
+        "slow-min-rise": {
+          "driver_arrival_ns": 0.261116326,
+          "driver_load_pf": 0.00138026,
+          "driver_slew_ns": 0.028816517,
+          "endpoint_arrival_ns": 0.448643208,
+          "endpoint_slew_ns": 0.029501464,
+          "slack_ns": 0.295526266
+        },
+        "typical-max-fall": {
+          "driver_arrival_ns": 0.170651898,
+          "driver_load_pf": 0.00150073,
+          "driver_slew_ns": 0.015972205,
+          "endpoint_arrival_ns": 0.305425256,
+          "endpoint_slew_ns": 0.015262243,
+          "slack_ns": 19.34132576
+        },
+        "typical-max-rise": {
+          "driver_arrival_ns": 0.172816828,
+          "driver_load_pf": 0.00147215,
+          "driver_slew_ns": 0.018972985,
+          "endpoint_arrival_ns": 0.289279014,
+          "endpoint_slew_ns": 0.018882236,
+          "slack_ns": 19.352712631
+        },
+        "typical-min-fall": {
+          "driver_arrival_ns": 0.170651898,
+          "driver_load_pf": 0.00150073,
+          "driver_slew_ns": 0.015972205,
+          "endpoint_arrival_ns": 0.305425256,
+          "endpoint_slew_ns": 0.015262243,
+          "slack_ns": 0.08204554
+        },
+        "typical-min-rise": {
+          "driver_arrival_ns": 0.172816828,
+          "driver_load_pf": 0.00147215,
+          "driver_slew_ns": 0.018972985,
+          "endpoint_arrival_ns": 0.289279014,
+          "endpoint_slew_ns": 0.018882236,
+          "slack_ns": 0.094669022
+        }
+      },
+      "sg13g2_dlygate4sd2_1": {
+        "fast-max-fall": {
+          "driver_arrival_ns": 0.118644677,
+          "driver_load_pf": 0.00159706,
+          "driver_slew_ns": 0.011228108,
+          "endpoint_arrival_ns": 0.245650694,
+          "endpoint_slew_ns": 0.014791168,
+          "slack_ns": 19.442783356
+        },
+        "fast-max-rise": {
+          "driver_arrival_ns": 0.118762895,
+          "driver_load_pf": 0.00158968,
+          "driver_slew_ns": 0.013034792,
+          "endpoint_arrival_ns": 0.233839512,
+          "endpoint_slew_ns": 0.013962551,
+          "slack_ns": 19.444988251
+        },
+        "fast-min-fall": {
+          "driver_arrival_ns": 0.118644677,
+          "driver_load_pf": 0.00159706,
+          "driver_slew_ns": 0.011228108,
+          "endpoint_arrival_ns": 0.245650694,
+          "endpoint_slew_ns": 0.014791168,
+          "slack_ns": 0.011780605
+        },
+        "fast-min-rise": {
+          "driver_arrival_ns": 0.118762895,
+          "driver_load_pf": 0.00158968,
+          "driver_slew_ns": 0.013034792,
+          "endpoint_arrival_ns": 0.233839512,
+          "endpoint_slew_ns": 0.013962551,
+          "slack_ns": 0.021842737
+        },
+        "slow-max-fall": {
+          "driver_arrival_ns": 0.260181755,
+          "driver_load_pf": 0.00140983,
+          "driver_slew_ns": 0.025282389,
+          "endpoint_arrival_ns": 0.558332384,
+          "endpoint_slew_ns": 0.032882236,
+          "slack_ns": 19.017469406
+        },
+        "slow-max-rise": {
+          "driver_arrival_ns": 0.261109024,
+          "driver_load_pf": 0.00137866,
+          "driver_slew_ns": 0.028807027,
+          "endpoint_arrival_ns": 0.525795043,
+          "endpoint_slew_ns": 0.031965047,
+          "slack_ns": 19.034318924
+        },
+        "slow-min-fall": {
+          "driver_arrival_ns": 0.260181755,
+          "driver_load_pf": 0.00140983,
+          "driver_slew_ns": 0.025282389,
+          "endpoint_arrival_ns": 0.558332384,
+          "endpoint_slew_ns": 0.032882236,
+          "slack_ns": 0.35393694
+        },
+        "slow-min-rise": {
+          "driver_arrival_ns": 0.261109024,
+          "driver_load_pf": 0.00137866,
+          "driver_slew_ns": 0.028807027,
+          "endpoint_arrival_ns": 0.525795043,
+          "endpoint_slew_ns": 0.031965047,
+          "slack_ns": 0.37357536
+        },
+        "typical-max-fall": {
+          "driver_arrival_ns": 0.170644373,
+          "driver_load_pf": 0.00149766,
+          "driver_slew_ns": 0.015963409,
+          "endpoint_arrival_ns": 0.359905452,
+          "endpoint_slew_ns": 0.021088593,
+          "slack_ns": 19.284742355
+        },
+        "typical-max-rise": {
+          "driver_arrival_ns": 0.1728037,
+          "driver_load_pf": 0.00146765,
+          "driver_slew_ns": 0.018955715,
+          "endpoint_arrival_ns": 0.341238201,
+          "endpoint_slew_ns": 0.020452362,
+          "slack_ns": 19.300247192
+        },
+        "typical-min-fall": {
+          "driver_arrival_ns": 0.170644373,
+          "driver_load_pf": 0.00149766,
+          "driver_slew_ns": 0.015963409,
+          "endpoint_arrival_ns": 0.359905452,
+          "endpoint_slew_ns": 0.021088593,
+          "slack_ns": 0.138376176
+        },
+        "typical-min-rise": {
+          "driver_arrival_ns": 0.1728037,
+          "driver_load_pf": 0.00146765,
+          "driver_slew_ns": 0.018955715,
+          "endpoint_arrival_ns": 0.341238201,
+          "endpoint_slew_ns": 0.020452362,
+          "slack_ns": 0.147056177
+        }
+      },
+      "sg13g2_dlygate4sd3_1": {
+        "fast-max-fall": {
+          "driver_arrival_ns": 0.118676797,
+          "driver_load_pf": 0.00161648,
+          "driver_slew_ns": 0.011266177,
+          "endpoint_arrival_ns": 0.360223174,
+          "endpoint_slew_ns": 0.022804823,
+          "slack_ns": 19.326063156
+        },
+        "fast-max-rise": {
+          "driver_arrival_ns": 0.118769333,
+          "driver_load_pf": 0.00159309,
+          "driver_slew_ns": 0.013043142,
+          "endpoint_arrival_ns": 0.357964009,
+          "endpoint_slew_ns": 0.019566204,
+          "slack_ns": 19.319507599
+        },
+        "fast-min-fall": {
+          "driver_arrival_ns": 0.118676797,
+          "driver_load_pf": 0.00161648,
+          "driver_slew_ns": 0.011266177,
+          "endpoint_arrival_ns": 0.360223174,
+          "endpoint_slew_ns": 0.022804823,
+          "slack_ns": 0.128210679
+        },
+        "fast-min-rise": {
+          "driver_arrival_ns": 0.118769333,
+          "driver_load_pf": 0.00159309,
+          "driver_slew_ns": 0.013043142,
+          "endpoint_arrival_ns": 0.357964009,
+          "endpoint_slew_ns": 0.019566204,
+          "slack_ns": 0.147125185
+        },
+        "slow-max-fall": {
+          "driver_arrival_ns": 0.260286123,
+          "driver_load_pf": 0.0014358,
+          "driver_slew_ns": 0.025405694,
+          "endpoint_arrival_ns": 0.835528314,
+          "endpoint_slew_ns": 0.051718507,
+          "slack_ns": 18.731733322
+        },
+        "slow-max-rise": {
+          "driver_arrival_ns": 0.26121214,
+          "driver_load_pf": 0.00140126,
+          "driver_slew_ns": 0.028941076,
+          "endpoint_arrival_ns": 0.807353735,
+          "endpoint_slew_ns": 0.047898546,
+          "slack_ns": 18.746192932
+        },
+        "slow-min-fall": {
+          "driver_arrival_ns": 0.260286123,
+          "driver_load_pf": 0.0014358,
+          "driver_slew_ns": 0.025405694,
+          "endpoint_arrival_ns": 0.835528314,
+          "endpoint_slew_ns": 0.051718507,
+          "slack_ns": 0.638720334
+        },
+        "slow-min-rise": {
+          "driver_arrival_ns": 0.26121214,
+          "driver_load_pf": 0.00140126,
+          "driver_slew_ns": 0.028941076,
+          "endpoint_arrival_ns": 0.807353735,
+          "endpoint_slew_ns": 0.047898546,
+          "slack_ns": 0.66093713
+        },
+        "typical-max-fall": {
+          "driver_arrival_ns": 0.170699969,
+          "driver_load_pf": 0.00152035,
+          "driver_slew_ns": 0.016028406,
+          "endpoint_arrival_ns": 0.52970618,
+          "endpoint_slew_ns": 0.032604616,
+          "slack_ns": 19.110790253
+        },
+        "typical-max-rise": {
+          "driver_arrival_ns": 0.172849014,
+          "driver_load_pf": 0.00148316,
+          "driver_slew_ns": 0.01901524,
+          "endpoint_arrival_ns": 0.519540548,
+          "endpoint_slew_ns": 0.029029038,
+          "slack_ns": 19.119174957
+        },
+        "typical-min-fall": {
+          "driver_arrival_ns": 0.170699969,
+          "driver_load_pf": 0.00152035,
+          "driver_slew_ns": 0.016028406,
+          "endpoint_arrival_ns": 0.52970618,
+          "endpoint_slew_ns": 0.032604616,
+          "slack_ns": 0.311834365
+        },
+        "typical-min-rise": {
+          "driver_arrival_ns": 0.172849014,
+          "driver_load_pf": 0.00148316,
+          "driver_slew_ns": 0.01901524,
+          "endpoint_arrival_ns": 0.519540548,
+          "endpoint_slew_ns": 0.029029038,
+          "slack_ns": 0.327696472
+        }
+      }
+    },
+    "raw_result": {
+      "bytes": 13860,
+      "sha256": "3bea9dc3f6ac6de2afa36a2740559c04253df6140019a9d1d64d57cdded544e9"
+    },
+    "same_constraints_sha256": "3f64c1e78caef37151e69634bb2eab52b0de3790269bf3afdb32c238aad694e2",
+    "status": "REPLAYED_TINY_COMPARATIVE_SCREEN_ONLY"
+  },
+  "observed": {
+    "endpoint": "_135215_/D",
+    "fanout": 1,
+    "global_setup_wns_ns": -4.230063410659568,
+    "hold_slack_ns": -0.15798429231494993,
+    "launch": "_135214_/Q",
+    "local_slow_rise_setup_headroom_ns": 19.225818634,
+    "native_insert_attempts": 1,
+    "native_journal_restores": 1,
+    "net": "u_npu.u_node0.mosi_s[0]",
+    "retained_new_cells": 0,
+    "rollback_subpredicate_unknown": true,
+    "selected_cell": "sg13g2_dlygate4sd3_1"
+  },
+  "root_review": {
+    "all_native_raw_output_pins_verified": 90,
+    "raw_members": 91,
+    "scope": "Root verifies exact source and bundle pins; native measurement replay was performed by independent investigation agent. No fullchip timing conclusion.",
+    "source_liberties_and_raw_bundle_rehashed": true,
+    "utc": "2026-10-03T06:55:51.027588+00:00"
+  },
+  "source_explanation": {
+    "prohibited_inference": "The native debug log records insertion and restore, but no transient before/after driver slew or WNS inside that OR. Neither cause is established.",
+    "rollback": "The exact code ORs driver slew ratio >1.20 with a worsening global setup WNS below setup margin. Either can roll back despite ~19.226ns local endpoint setup headroom.",
+    "selection": "Pinned RepairHold selects a delay footprint by delay/area, then uses one chosen cell. sd3 wins; local endpoint headroom alone is not its acceptance test."
+  },
+  "source_files_modified": false,
+  "status": "ONE_EXPLICIT_PLACED_SD3_EXPERIMENT_RECOMMENDED_NOT_EXECUTED",
+  "utc": "2026-10-03T06:49:52.124695+00:00"
+}

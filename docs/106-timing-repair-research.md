@@ -2166,3 +2166,49 @@ been found. The intended per-I/O geometry and electrical model remain missing
 from the available source provenance. Replacing reference parameters with
 observed extraction values would conceal this unresolved question; qualified
 I/O and full-chip LVS remain open.
+
+The corrected sizing experiment's [second interval](evidence/timing-critical-retry-second-native-20261003.json)
+passes the old immediate-placement failure and reaches fresh routed timing.
+Setup violations decrease from 1,311 to 1,310; WNS improves from −4.230063411 ns
+to −4.198961179 ns and setup TNS improves by 34.108780 ns. Hold remains at
+58 violations / −0.157984292 ns, with zero slew and capacitance violations.
+The first reload's intermediate route metrics agree, but both complete reloads,
+full endpoint comparisons and final ECO acceptance remain pending.
+
+A [tiny three-corner delay-cell screen](evidence/hold-delay-cell-screen-native-20261003.json)
+supports testing one explicitly placed `sg13g2_dlygate4sd3_1` on the isolated
+`_135214_/Q` to `_135215_/D` connection after a final producer is verified.
+In the ideal-wire two-flop harness, this cell adds 241–244 ps of fast hold delay;
+the smaller sd2 adds only 115–128 ps against the measured 158 ps chip deficit.
+Ordinary buffers have higher input capacitance and are not a lower-load remedy.
+These measurements do not reproduce the chip's RC or identify the hidden
+rollback predicate. Any chip trial must preserve all existing placements,
+constraints, protected objects and original logical connections after buffer
+contraction, then pass fresh routing, two reloads and all historical guards.
+No such new hold chip trial has been dispatched yet.
+
+The [first 64 new bit results](evidence/alu-remaining-first64-native-20261003.json)
+contain eighteen proofs, 46 genuine SAT timeouts and no counterexamples.
+Complete compact ZIP/member checks and raw native script/log replay confirm
+their disjoint original identities. Verified partial coverage is now 33,535 of
+34,321; 786 remain unproved or unvisited. Other batches continue. This partial
+count does not imply completion of the 800-bit job or acceptance of the ALU.
+
+The [four-hard-equation method](evidence/alu-four-hard-bits-method-20261003.json)
+uses the exact original graph and all 10,828 inputs with pinned native ABC.
+It validates the binary AIG's complete input map and replays any full input
+counterexample on the original, unlowered equation. Tiny nontrivial arithmetic
+controls exposed an ABC named-counterexample export crash; plain vector export
+with exact input mapping and original-equation replay resolves that path.
+Native writer corner cases are explicitly checked: undefined functional values
+remain rejected, while unused metadata aliases are counted separately. A missing
+output-map row is allowed only for a defined constant matching the AIG literal.
+The source passes 273 combined tests, an independent 233-test review and eleven
+tiny native executions. One cloud job will preserve each of the four results
+separately. Its 120-second ABC budget is approximate; timeout or native failure
+cannot become proof, and no candidate adoption follows from these bit results.
+
+The completed corrected physical producer is selected for exact permanent
+archival by the [new source-bound plan](evidence/closure-critical-corrected-final-archive-plan-20261003.json).
+The 526 MB original ZIP remains in the cloud; publication preserves its native
+engineering verdict, including any rejected candidate.
