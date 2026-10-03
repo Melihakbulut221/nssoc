@@ -2367,3 +2367,49 @@ Archive jobs retain exact artifact bytes and verify authenticated and anonymous
 release download roundtrips. The candidate's boot failure and SAT timeouts
 remain preserved failures; publication does not imply engineering acceptance.
 No large original chip view or graph is downloaded locally for this archival.
+
+The [completed raw audits](evidence/closure-raw-audits-20261003-1347.json)
+now close the independent replay gaps in the preceding status snapshot. Hold
+review covers all 23,527 endpoints at three corners in four stages, all 103,906
+original placements, protected objects, 32 SRAM instances and exact exported
+logical contraction. Both independent reloads and all historical guards pass.
+The result remains 57 hold and 1,310 setup violations, with no slew or
+capacitance violations. The physical ODB and full native ECO frontend remain
+cloud execution scope; this is not signoff or candidate adoption.
+
+All 64 grouped ABC native proofs and their 800 unique original identities,
+complete derived AIGs and 10,828 symbolic inputs have now been independently
+replayed. The disjoint union covers all 34,321 modeled binary equations. The
+original full graph was not downloaded or executed locally, and the unchanged
+prior 33,517 proofs were not all re-audited in this pass. The candidate's
+three-million-cycle four-state boot still fails; the original passes 28 checks.
+Both corrected CI `checks` jobs at `25f9321` pass 4,452 tests with 34 skips and
+one warning. This is the completed history-fix check, not a claim that every
+other formal job has finished.
+
+The [NPU upstream-cone method](evidence/npu-cone-method-20261003.json)
+follows a concrete observation: candidate state-bit D inputs become unknown
+at cycle 1,569,430, before Q at 1,569,431 and before clock uncertainty. Static
+unknown notifier values also occur in the passing original. The exact upstream
+cause remains unresolved; the two candidate driver gates share a source-bound
+input whose waveform was not captured. The separate read-only paired diagnostic
+preserves the original three-million-cycle test and observes a fixed 161-cycle
+window. Its source, 94 focused tests and five native control cases pass author,
+root and peer review; full-chip cone binding and execution are pending. Callback
+order is not a simulator delta index or a lossless glitch trace. No RTL or cell
+model repair is inferred from these observations.
+
+The [two-cell hold follow-up](evidence/timing-pair-hold-method-20261003.json)
+is separately prepared against the exact 57-hold parent. It requires exactly
+two delay cells, unchanged original objects and placements, three-corner
+endpoint checks, two independent reloads and every historical guard. Source
+and small native controls are validated; chip insertion and any further timing
+improvement remain pending.
+
+The [completed permanent archive review](evidence/closure-complete-archives-20261003.json)
+verifies all 151 selected assets, totaling 602,157,553 bytes. All four compact
+receipt ZIPs, source plans and methods, producer identities and live release
+metadata match. The cloud archive verifies whole-byte authenticated and
+anonymous download roundtrips; this independent local review does not download
+the large asset ZIPs again. Preserving the proofs, boot failures and timing
+results does not grant qualified LVS or manufacturing approval.
