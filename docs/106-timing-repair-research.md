@@ -2433,3 +2433,21 @@ the unchanged three-million-cycle test. The original cone has 117 scalars and
 producer `_107538_/Y`. Both native boot jobs are running; no final waveform or
 boot result is inferred. Full chip netlist and compiled-simulation hashes are
 cloud-gated and were not independently re-read locally.
+
+The renewed [I/O tap correction packet](evidence/io-tap-correction-packet-20261003.json)
+consolidates the exact seven-instance failure archive, paired-view/deck versions,
+the two remaining A/P mismatches and the independent non-square controls.
+The original 64 CDL rows and eight source files were rechecked locally; the
+permanent failure asset's current release size and digest match. The packet
+separates the diagnostic substrate-label overlay from the unchanged vendor
+deck and records the missing geometry-to-electrical-model specification.
+It defines the isolated-cell, actual-parent and full-chip checks required
+after a defensible correction. No reference, physical geometry or acceptance
+threshold was changed, no unchanged native job was repeated, and no external
+issue or message was sent. Qualified I/O/full-chip LVS remains open.
+
+The fresh official-source review finds no qualifying correction: main remains
+`5e6d592e`, while dev advances to `bf079026` through four HBT-only model commits.
+I/O CDL/LEF/GDS Git identities and the relevant tap rules remain unchanged.
+The bounded issue/PR search and its limitations are recorded in the packet;
+this establishes no new passing LVS result.
