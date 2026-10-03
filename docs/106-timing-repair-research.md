@@ -2331,3 +2331,28 @@ queries and checks all 240 preserved member hashes. The unique union with
 33,517 prior proofs and four hard ABC proofs is 33,579 of 34,321: 742 remain
 unproved or unvisited. The other twelve SAT workers and the new grouped method
 are not inferred from this partial snapshot.
+
+The [13:26 UTC completed-run status review](evidence/closure-status-20261003-1326.json)
+checks the final native hold metrics and independent reload records: hold
+violations decrease from 58 to 57, hold WNS improves from −0.157984292 ns to
+−0.122470423 ns, and setup remains at 1,310 violations / −4.198961179 ns.
+Slew and capacitance violations remain zero. Every historical aggregate guard
+now passes. This is a compact source-bound review of estimated global-route
+results; complete raw placement/graph/endpoint replay and signoff remain pending.
+
+The completed grouped ABC aggregate reports all 34,321 binary equations proved.
+Its exact 800 new original identities and 64 batch keys match the frozen catalog;
+all raw batch captures have not yet been independently replayed in this review.
+The candidate still fails the actual three-million-cycle four-state boot, while
+the original passes all 28 checks. Candidate scalar capture records 916 unknown
+value events, first observed at cycle 1,569,430. No causal diagnosis or candidate
+adoption follows from those observations. The older individual SAT run finishes
+with 245 proofs and 555 timeouts; these are not added again to ABC coverage.
+Qualified I/O/full-chip LVS remains open.
+
+Both general CI runs at `a2e5626` fail twelve tests because the default shallow
+checkout lacks historical commits required by immutable Git-blob verification;
+4,440 tests pass and 34 are skipped in each run. The `checks` job now fetches
+full history. Other jobs and proof code remain unchanged. All twelve previously
+failing cases pass locally with history available, and actionlint passes; the
+corrected GitHub full suite remains to be rerun.
