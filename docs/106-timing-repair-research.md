@@ -2029,3 +2029,22 @@ controls pass, and the captured worker is proceeding through logical controls.
 Independent review and root rehash 156 selected compact members; the full ZIP
 digest is API-provided, not locally recomputed. This early snapshot does not
 yet contain the new sizing preflight, hold child or a full-chip timing result.
+
+### 2026-10-03 scheduled continuation
+
+The [completed CI review](evidence/closure-ci-formal-native-20261003.json)
+checks the published `f3489c6` source. The pytest job reports 4,022 passes,
+34 skips and one warning. Independent native status/log replay confirms all
+54 selected pilot formal tasks and 116 selected SoC formal tasks pass. Six
+historical formal exclusions and the separate native-boot job skip are retained.
+All five bounded CI ZIPs pass complete digest/member checks; 273 formal source
+files match Git. The generated register-file Verilog hash is recorded by the
+producer but was not independently regenerated in this review. These scoped
+CI results do not establish mapped ALU boot, physical timing or LVS acceptance.
+
+The first critical followup ended at its immediate-placement guard after the
+hold child and independent baseline reload. No sizing candidate was exported.
+The failed final capture, the completed corrected ALU trace pair and the
+per-bit benchmark are selected for permanent archival with their original
+outcomes. A correction must reproduce the native placement behavior and retain
+the unchanged source, connectivity, timing and reload guards before retrying.
