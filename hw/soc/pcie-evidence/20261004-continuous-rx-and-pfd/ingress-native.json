@@ -1,0 +1,129 @@
+{
+  "status": "PASS_PORT_ONLY_PCIE_GEN3_FIXED_INGRESS",
+  "top": "soc_pcie_gen3_ingress",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_ingress.py": {
+      "bytes": 5225,
+      "sha256": "f0fc5b27db0c8841611699be6e35568e07addb79b7b5582ba23dc5267cb6fca4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_ingress": {
+      "bytes": 1281,
+      "sha256": "a71d51a573f5260512ab31d7266e2ff5b689fdb930e47d366959b5decace8a47"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_ingress.py": {
+      "bytes": 8852,
+      "sha256": "0c085a845b152228dc558d2cc819e3334e5cd8f8c4291953c7335425e3598e5a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    }
+  },
+  "expected_tests": 4,
+  "mode": "native",
+  "fifo_depth": 4,
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/dev/shm/nssoc-gen3-ingress-native-01/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log",
+      "log_pin": {
+        "bytes": 57624,
+        "sha256": "9964461b6b3b8a36b54142d8a8c4c8f94df84204cb13638d6a237d17a9315364"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_ingress",
+        "--no-print-directory",
+        "VERILOG_SOURCES=/dev/shm/nssoc-gen3-ingress-native-01/mapped.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "SIM_BUILD=/dev/shm/nssoc-gen3-ingress-native-01/sim",
+        "COCOTB_RESULTS_FILE=/dev/shm/nssoc-gen3-ingress-native-01/results.xml",
+        "PCIE_NATIVE=1"
+      ],
+      "returncode": 0,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 34652,
+        "sha256": "1a63b8939c0da56132e2b2664346a9ba42df08ba312310239566c830baa59e46"
+      }
+    }
+  ],
+  "runtime": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+      "bytes": 453,
+      "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+      "bytes": 485,
+      "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    }
+  },
+  "address_space_limit_bytes": 2147483648,
+  "yosys_max_threads": 1,
+  "scope": "Continuous32-bit words per lane on every enabled clock; fixed130-bit blocks with a four-block output FIFO. Source is never backpressured. Overflow halts the epoch until explicit restart. Already aligned/deskewed, same-clock development interface: no variable SKP, block search, CDC, analog PMA or physical frequency acceptance.",
+  "mapped_cells": 11756,
+  "tests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "outputs": {
+    "results.xml": {
+      "bytes": 1296,
+      "sha256": "fbf7bc11f7921fe0fbfe621cef756bc62f1f3d02e59123f8b40a248ac551428d"
+    },
+    "simulation.log": {
+      "bytes": 34652,
+      "sha256": "1a63b8939c0da56132e2b2664346a9ba42df08ba312310239566c830baa59e46"
+    },
+    "mapped.v": {
+      "bytes": 1384990,
+      "sha256": "2c43b8a32ec5eb50711a7fb7cd0ee95477d5ddf1660283da17a3912b6eb0e1f4"
+    },
+    "mapped.json": {
+      "bytes": 7520540,
+      "sha256": "e28d912507ce5d0239ef57aa44960edf4339ddb952aaa37492bde75ee4495481"
+    },
+    "map.log": {
+      "bytes": 57624,
+      "sha256": "9964461b6b3b8a36b54142d8a8c4c8f94df84204cb13638d6a237d17a9315364"
+    },
+    "map.ys": {
+      "bytes": 1143,
+      "sha256": "cb84f08931b18b494cca58320f3c6c715f51610705d9152e036586232d1636ac"
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "status": "SEALED_RX_SIGNAL_DRT_ACTUAL_NOMINAL_RC_FAILURE_AND_REPAIR_PROOF",
+  "utc": "2026-10-04T16:05:26.152663+00:00",
+  "capsule": {
+    "path": "/dev/shm/pcie-rx-v2-drt-rc-postrepair-proof-20261004.tar.xz",
+    "bytes": 27986544,
+    "sha256": "da56ae81f454c50a64d42cc0795c8ac3c6d80279b3d445a187d7d170ddcceb4a",
+    "members": 47,
+    "all_members_readback_verified": true
+  },
+  "before_rc_slack_ns": {
+    "slow": {
+      "setup": -1.139151,
+      "data_hold": -0.067221,
+      "recovery": 1.297444,
+      "removal": 0.471319
+    },
+    "typical": {
+      "setup": 0.853841,
+      "data_hold": 0.011693,
+      "recovery": 2.242073,
+      "removal": 0.346467
+    },
+    "fast": {
+      "setup": 1.951021,
+      "data_hold": 0.054835,
+      "recovery": 2.810318,
+      "removal": 0.278259
+    }
+  },
+  "original_router_drc_count": 0,
+  "upsized_cells": 1227,
+  "hold_buffers": 149,
+  "binary_proof": {
+    "states": 1796,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5419,
+    "canonical_nodes": 37928,
+    "mismatches": [],
+    "matched": 5419,
+    "elapsed_seconds": 1.8237777180038393,
+    "logic_cell_census": {
+      "gold": {
+        "$_NOT_": 12089,
+        "$_OR_": 10502,
+        "$_AND_": 14176,
+        "$_XOR_": 71,
+        "$_DFF_PP0_": 1796,
+        "$scopeinfo": 20279
+      },
+      "gate": {
+        "$_NOT_": 12089,
+        "$_OR_": 10502,
+        "$_AND_": 14176,
+        "$_XOR_": 71,
+        "$_DFF_PP0_": 1796,
+        "$scopeinfo": 20428
+      }
+    },
+    "status": "PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY",
+    "scope": "Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.",
+    "rules": [
+      "exact primitive semantics",
+      "commutative binary operand order",
+      "double Boolean inversion",
+      "literal 0/1 negation",
+      "associative Boolean operator grouping",
+      "AND/OR idempotence",
+      "collision-free tuple interning"
+    ]
+  },
+  "physical_port_tests": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "equivalence_fault_controls": 10,
+  "full_physical_acceptance": false,
+  "qualified_rc": false,
+  "limitations": [
+    "Postrepair estimate is not acceptance; fresh DRT03 and actual RC pending.",
+    "Exact signal wires without completed power grid/fullfoundryGDS verification.",
+    "NominalPDK RC reused for all3cellcorners; notRCprocesscorners.",
+    "76unannotateddriversactualODBNULLclockloadoutputs independentlyaudited inrepairnative;0partial.",
+    "BinaryproofnotSDF/fourstateelectrical/glitch acceptance."
+  ]
+}

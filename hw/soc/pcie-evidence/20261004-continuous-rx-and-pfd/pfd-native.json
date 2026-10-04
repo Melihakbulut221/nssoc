@@ -1,0 +1,72 @@
+{
+  "status": "PASS_BOUNDED_ORIGINAL_TRANSISTOR_PFD_CHARGE_PUMP",
+  "circuit": {
+    "source": "hw/soc/analog/pcie/pll_pfd_charge_pump_hv_v1.spice",
+    "bytes": 3740,
+    "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc",
+    "native_mos": 111,
+    "native_rppd": 1
+  },
+  "source_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_pfd_charge_pump_hv_v1.spice": {
+      "bytes": 3740,
+      "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_pfd_cp_v1.py": {
+      "bytes": 26220,
+      "sha256": "013c213cb2dc4dd3bef97124a107fbd06b6897340c4be9c517717c5ab8fef5b9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_pll_pfd_cp_v1.py": {
+      "bytes": 6854,
+      "sha256": "41fc236c900585bd110132a5aa20eb3cac9d53a0dcf0ca266259bada67d70bca"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-pfd-cp-20261004/run_campaign01.py": {
+      "bytes": 4044,
+      "sha256": "dd690e493d378983016c824296f14e2025369e61cb47f24568857ae3f89a5bbc"
+    }
+  },
+  "cases": {
+    "positive": 16,
+    "actual_transistor_faults": 5,
+    "total": 21
+  },
+  "audit": {
+    "bytes": 77123,
+    "sha256": "fe97d5aa3e10db0ba4ef122172805f3013bd2d6bbf2d11065f2f356fdc36e011"
+  },
+  "campaign": {
+    "bytes": 65677,
+    "sha256": "8b8ac458620e60fe2e122c3423365646b13f0ac0722c7647d11195f8e2884182"
+  },
+  "capsule": {
+    "path": "hw/soc/out/pcie-pll-pfd-cp-20261004/pfd-charge-pump-native.tar.xz",
+    "bytes": 120848,
+    "sha256": "b77598481ec8c166ac019ca177d14ba53170208b18055a50be391170a5dea8e2",
+    "members": 231,
+    "all_members_readback_verified": true
+  },
+  "primary_provenance": {
+    "bytes": 2101,
+    "sha256": "bdd864b9a06db0661ac9442b7d24ae3481784929daeb90fe0a3a46fc2c2a8597"
+  },
+  "focused_unit_tests": {
+    "passed": 29,
+    "log": {
+      "bytes": 99,
+      "sha256": "bd3e48b99d672adab31b2b1d696bf3b2aaf9b8c55b615a18440056a59b5e4930"
+    },
+    "scope": "Source, parser and metrology rejection controls; native controls are counted separately."
+  },
+  "original_failure": "Original W8 source mirror had approximately23 percent zero-phase integrated charge mismatch. Exact native wave/circuit retained in public pilot03; chosen W6.4 is the sole pump geometry change.",
+  "numerical_sensitivity_status": "PASS_FINITE_TIMESTEP_SENSITIVITY",
+  "limitations": [
+    "100MHz nominal 2.5V/27C/TT finite80ns standalone primitive; no PVT, mismatch, jitter, noise, layout, aging, foundry SOA or closed-loop qualification.",
+    "All terminal pairs3.3V and peak drain current2mA/um are project development screens, not foundry SOA acceptance.",
+    "Finite native RC load control acceptance is only the20..70ns window mean0.9..1.5V; it is not an all-time compliance clamp.",
+    "The20ps/10ps comparison is limited measurement sensitivity, not general solver convergence.",
+    "Zero-phase charge matching does not imply equal pump gain: nominal+2ns and-2ns produce approximately+7.540 and-9.268uA; the measured nonzero-error asymmetry is retained.",
+    "External full-swing clock/reset/supply and DC control clamps are measurement sources; no internal ideal DUT gate/current/delay/clock exists.",
+    "Pump sources for REF lead; the frozen VCO has negative tuning gain, requiring reversed loop polarity before any integration.",
+    "No8GHz divide80 feedback, loop filter, lock detection, reference receiver, power sequencing or main-chip connection implemented here."
+  ]
+}
