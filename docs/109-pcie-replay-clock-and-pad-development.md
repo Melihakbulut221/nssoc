@@ -477,7 +477,8 @@ are replaced by this experimental runtime.
 
 ```sh
 python3 scripts/patch_magic_coupled_cap_v2.py \
-  --source-dir /path/to/pinned/v1-magic/resis --out /dev/shm/coupled-v2-source
+  --source-dir /path/to/pinned/original-magic/resis --out /dev/shm/coupled-v2-source
+# Input is the five exact original sources; the script applies v1 and v2.
 # Use the capsule's isolated clean-rebuild recipe, including extract/ExtMain.
 python3 scripts/check_magic_coupled_cap_v2.py \
   --ext /path/to/fixed.ext --replacement /path/to/fixed.res.ext \

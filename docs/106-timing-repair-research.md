@@ -2630,10 +2630,15 @@ and their source identities remain unchanged.
 The new [hold archive plan](evidence/closure-hold-ablation-final-archive-plan-20261004.json)
 and [frontier archive plan](evidence/closure-npu-frontier-final-archive-plan-20261004.json)
 select eight exact startup/final artifacts for the existing authenticated and
-anonymous release roundtrip method. Archival is a separate operation and is
-not yet reported complete by this preparation record. It must preserve the
-failed ETH timing and candidate boot results along with their successful
-controls.
+anonymous release roundtrip method. The [completed archive review](evidence/closure-hold-frontier-archives-native-20261004.json)
+now verifies run **37187157185**, its exact source `3fead2e`, both whole compact
+receipt ZIPs and all eight original artifact/release identities. The pinned
+cloud method publishes **753,178,725 bytes** with complete original ZIP hashes
+and authenticated/anonymous download roundtrips. Root and peer independently
+check those receipts against producer and release metadata; they do not
+redownload the large payloads locally. The archived ETH timing and candidate
+boot failures remain failures. Byte preservation is separate from physical
+or manufacturing acceptance.
 
 ### 4 October, EVQ read-valid and head-parity observation
 
@@ -2655,8 +2660,12 @@ qualification inputs and the vendor cell models. The new observer gates its
 callbacks outside the fixed event window; callback coalescing, static-X
 distinction, finite window and event-limit bounds remain explicit.
 
-The paired original/candidate workflow will start on this observer workflow's
-push and preserve startup and final captures. These local controls are not a
-completed three-million-cycle boot or a repair: the candidate failure above
-remains open until the actual paired event windows establish its cause and a
-subsequent implementation passes qualification.
+The paired original/candidate workflow started in run **37187157260** at
+source `3fead2e`. The [native startup audit](evidence/npu-evq-startup-native-20261004.json)
+verifies both whole compact ZIPs and their CRCs, 111 output pins and 34 Git
+methods per variant. Five observer controls and both exact-head/mutated-head
+controls replay correctly. The unchanged three-million-cycle boot steps
+started at 07:54:55 UTC (candidate) and 07:55:24 UTC (original); no advancing
+cycle measurement or completed boot result is yet available. The candidate
+failure above remains open until the actual paired event windows establish
+its cause and a subsequent implementation passes qualification.
