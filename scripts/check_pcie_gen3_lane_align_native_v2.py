@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TOP = "soc_pcie_gen3_lane_align_v1"
 RTL = ROOT / "hw/soc/rtl/pcie" / (TOP + ".v")
 TEST = ROOT / "sw/tests/test_pcie_gen3_lane_align_v1.py"
-RTL_SHA = "5cf751d129fa3dc348a97898434ee8df01a6b349e90578f98c8430b0659c6435"
+RTL_SHA = "e59b8b6a42c900eca49020ea3b5008d55a993650cc44fc673a6e28fc6068fadd"
 TEST_SHA = "185078582ce8d56a31552302c4b336b302cc934e5526c6d4acc352a7570f5de6"
 FLOOR = 528 * 1024**2
 
@@ -60,7 +60,7 @@ def main():
     if shutil.disk_usage("/dev/shm").free < 1024**3:
         parser.error("1GiB entry floor required")
     assert pin(ROOT / "scripts/check_pcie_gen3_lane_align_native_v1.py")["sha256"] == (
-        "ade53646cc5400f8e1765b7f20c052e6368728982d1173c4db88b074416d70d0"
+        "039dc91b23d5c692f893d3620118cdb59491ffef06260ec516aa3b1948d221d6"
     )
     assert pin(RTL)["sha256"] == RTL_SHA and pin(TEST)["sha256"] == TEST_SHA
     assert (

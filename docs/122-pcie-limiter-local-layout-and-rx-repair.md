@@ -128,3 +128,5 @@ admission failures are preserved in the
 Subsequent buffering and hold repair are independent candidates requiring new
 equivalence, routing and extraction. None of these block results constitutes
 full-chip DRC/LVS, PCIe compliance or manufacturing approval.
+
+The subsequent [variable SKP and native receive record](123-pcie-variable-skp-and-native-receive.md) retains this snapshot while adding complete native consumer cases, variable SKP reception, later VCO wire measurements and verification entry-point repairs.

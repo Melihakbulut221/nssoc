@@ -20,7 +20,7 @@ NEW = ROOT / "scripts/check_pcie_gen3_lane_align_native_v2.py"
 def test_metrology_and_native_pipeline_unchanged():
     assert (
         hashlib.sha256(OLD.read_bytes()).hexdigest()
-        == "ade53646cc5400f8e1765b7f20c052e6368728982d1173c4db88b074416d70d0"
+        == "039dc91b23d5c692f893d3620118cdb59491ffef06260ec516aa3b1948d221d6"
     )
     old, new = ast.parse(OLD.read_text()), ast.parse(NEW.read_text())
     handler = next(
@@ -39,7 +39,7 @@ def test_metrology_and_native_pipeline_unchanged():
     parent_asserts = [
         n
         for n in main.body
-        if isinstance(n, ast.Assert) and "ade53646" in ast.unparse(n)
+        if isinstance(n, ast.Assert) and "039dc91b" in ast.unparse(n)
     ]
     assert len(parent_asserts) == 1
     main.body.remove(parent_asserts[0])

@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: CERN-OHL-W-2.0
 // One recovered-clock lane; raw_i[0] arrives first. No input backpressure.
 // Exact Gen3 EIEOS acquisition only. External MAC owns search/lock control.
 // Variable Gen3 SKP blocks: 4/8/12/16/20 AA symbols, E1, three opaque
