@@ -1,0 +1,39 @@
+{
+  "status": "NO_BLOCKER_IN_BOUNDED_SOURCE_AND_INTEGER_ARITHMETIC_REVIEW",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v": {
+      "bytes": 13191,
+      "sha256": "eb4f3146ed1b8c142cf5784f44dc773353973edff94a7256c82d2b235bb5d224"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v3.v": {
+      "bytes": 14107,
+      "sha256": "687fb805da42cc08a1b44ab373783cf26ec22d80be6c441489cd8d3a3573b7bd"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v2.v": {
+      "bytes": 3712,
+      "sha256": "dfd865feea72d0efaf71c954f76284926ec4710c1c5059e1779dbd86a2798c03"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v3.v": {
+      "bytes": 3712,
+      "sha256": "1a0c57ec3499843325d1903070a0c92e4dd409ab400c9f54f324975cbfc25580"
+    }
+  },
+  "method": {
+    "bytes": 2892,
+    "sha256": "43b579c13c9b551958bf3b2bbecd6969d4961302e1fcd0c8ea0978d286a7afce"
+  },
+  "integer_cases": 131072,
+  "comparison": "Every8192 initial count and16 keep mask; initial error false; compare final13-bit count, carry/error and first-four symbolic raw-byte writes",
+  "findings": [
+    "Three-bit popcount fits0..4 and14-bit sum covers8191+4. Sum bit13 is set exactly when at least one prior serial increment traverses8191.",
+    "Prefix0..3 is incremented only for kept bytes. Constant (destination-prefix) modulo8192 comparisons implement exact old raw write addresses, including malformed wrap.",
+    "Release then ordered descriptors/body DWORDs remain unchanged. Sticky entry error is only set by the new carry check, never cleared there.",
+    "Wrapper is exact v2 after explicit module/instance names are restored. Event gather, decoding, held-state and flush/epoch behavior unchanged in reviewed diff."
+  ],
+  "limitations": [
+    "Python integer arithmetic and manual source diff only",
+    "No native Icarus, SG13 mapping, formal equivalence or timing run by this reviewer",
+    "No all-parameter or upstream-protocol qualification",
+    "Author native arithmetic/miter tests are separate evidence, not rerun here"
+  ]
+}

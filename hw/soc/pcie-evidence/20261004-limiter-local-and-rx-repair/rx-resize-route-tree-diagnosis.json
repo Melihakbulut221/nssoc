@@ -1,0 +1,56 @@
+{
+  "utc": "2026-10-04T19:59:17.744406+00:00",
+  "status": "SOURCE_DIAGNOSIS_NATIVE_EXPERIMENTS_PENDING",
+  "official_source_commit": "08f67ee5ecd14db5a42be8c610bbfd1ccf079299",
+  "sources": {
+    "EstimateParasitics.cpp": {
+      "bytes": 45274,
+      "sha256": "96fa3e193e27eca4863e9efac1dc743f0fde482239df0e8783846e075da39dc7"
+    },
+    "Resizer.cc": {
+      "bytes": 231307,
+      "sha256": "985c4ccf98499dfd792e978807d1c9997de1153a6c8db66efad06efe17c08b1f"
+    },
+    "BufferedNet.cc": {
+      "bytes": 40320,
+      "sha256": "f09dcf5b961aff09bc1d920a190540e777b3723bab03c4d9e0003a7a4811d28a"
+    },
+    "GlobalRouter.cpp": {
+      "bytes": 205886,
+      "sha256": "b06e602982b23416468ea209948986bf08c264d5cea7a038c1c4a6310203abe4"
+    }
+  },
+  "findings": [
+    {
+      "source": "BufferedNet.cc:496",
+      "fact": "makeBufferedNet returns null for kNone; kPlacement builds Steiner tree; kGlobalRouting/kDetailedRouting build global-route tree."
+    },
+    {
+      "source": "BufferedNet.cc:1066",
+      "fact": "Native RSZ0074 rejects route trees that do not cover all actual load pins."
+    },
+    {
+      "source": "GlobalRouter.cpp:943",
+      "fact": "Dirty-net refresh destroys copied wires then attempts restored-guide pin coverage before rerouting."
+    }
+  ],
+  "experiments": [
+    {
+      "id": "newtool03",
+      "result": "RSZ0074 fatal, same pin-coverage class as oldtool02"
+    },
+    {
+      "id": "sizeonly04",
+      "result": "631 unique cells resized; all1804state/5443functions equal+10faultcontrols and6actualport testsPASS. GRTSS+.374651/+.076361 is estimate only; DRT02running."
+    },
+    {
+      "id": "clearwires05",
+      "result": "Exact logicalnetlist unchanged after copied signalwire/guide deletion;20percent setup trial completes but1000 makeBufferedNet warnings; method omitted estimate_parasitics context initializer."
+    },
+    {
+      "id": "clearwires06",
+      "result": "Adds explicit estimate_parasitics-global_routing BEFORE loading actual originalSPEF, preserving measured starting timing. Native running; no same1000warnings so far, coveragewarnings stillpresent; not finalsuccess."
+    }
+  ],
+  "scope": "Official source diagnosis and isolated candidate experiments. Original routed database/SPEF immutable, no acceptance clocks/pin omissions or limits altered."
+}

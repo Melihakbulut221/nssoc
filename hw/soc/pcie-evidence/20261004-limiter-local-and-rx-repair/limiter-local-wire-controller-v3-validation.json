@@ -1,0 +1,255 @@
+{
+  "status": "PASS_ACTUAL_FINAL_DRAIN_RESOURCE_CONTROLS_UNCHANGED_ANALOG",
+  "sources": {
+    "scripts/diagnose_pcie_local_vco_powered_v3.py": {
+      "bytes": 28825,
+      "sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    },
+    "sw/tests/test_pcie_local_vco_powered_v3.py": {
+      "bytes": 4750,
+      "sha256": "952248c517a47019c6c30188ec41ba626f111e5f23b65572d282466ca16816d2"
+    },
+    "scripts/diagnose_pcie_local_vco_powered_v2.py": {
+      "bytes": 25579,
+      "sha256": "c1a7f47d808bdf1819029ce70d79b6863368fd71550d837bc97fed0fc29d774d"
+    },
+    "scripts/build_pcie_local_vco_hybrid_v2.py": {
+      "bytes": 18968,
+      "sha256": "6cdbed633757a6c2474ce9016339b1766d3d1ae02c69e383b7b95eee7b0b7208"
+    }
+  },
+  "tests": 38,
+  "new_tests": 5,
+  "actual_native_fifo_processes": 3,
+  "direct_multichunk_failure_controls": 1,
+  "controls": [
+    {
+      "fault": null,
+      "actual_native_writer_completed": true,
+      "row": {
+        "stream": {
+          "raw_bytes": 200000,
+          "chunk_raw_limit": 1048576,
+          "receipt_reserve_bytes": 32768,
+          "peak_owned_bytes": 200083,
+          "min_shared_free_bytes": 1073741824,
+          "complete": true,
+          "raw_sha256": "2f6abf8cb57afa1cf14499b9506c0337fd80436468278485131a64195a68fc22",
+          "compressed": {
+            "bytes": 200083,
+            "sha256": "5efc9c042a3e8c0c5474efc6760ca4868a83e3ea15b34dfee2b086492dba8f6a"
+          }
+        },
+        "resources": [
+          {
+            "elapsed_s": 0.006795094988774508,
+            "shared_free": 1073741824,
+            "own_scratch": 0,
+            "stream_raw_bytes": 0
+          }
+        ],
+        "pid": 1135443,
+        "post_drain_resources": {
+          "owned_bytes": 200083,
+          "shared_free_bytes": 1073741824,
+          "receipt_reserve_bytes": 32768
+        },
+        "returncode": 0,
+        "elapsed_seconds": 2.0198075360094663,
+        "resource_stop": null
+      },
+      "method_sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    },
+    {
+      "fault": "owned_drain",
+      "actual_native_writer_completed": true,
+      "row": {
+        "stream": {
+          "raw_bytes": 0,
+          "chunk_raw_limit": 1048576,
+          "receipt_reserve_bytes": 32768,
+          "peak_owned_bytes": 0,
+          "min_shared_free_bytes": 1073741824,
+          "resource_stop": "OWN_80MIB_FINAL_DRAIN_RESERVE",
+          "error": "ValueError('OWN_80MIB_FINAL_DRAIN_RESERVE')"
+        },
+        "resources": [
+          {
+            "elapsed_s": 0.005614997004158795,
+            "shared_free": 1073741824,
+            "own_scratch": 0,
+            "stream_raw_bytes": 0
+          }
+        ],
+        "pid": 1135470,
+        "post_drain_resources": {
+          "owned_bytes": 0,
+          "shared_free_bytes": 1073741824,
+          "receipt_reserve_bytes": 32768
+        },
+        "returncode": 0,
+        "elapsed_seconds": 2.0181347070029005,
+        "resource_stop": "OWN_80MIB_FINAL_DRAIN_RESERVE"
+      },
+      "method_sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    },
+    {
+      "fault": "shared_drain",
+      "actual_native_writer_completed": true,
+      "row": {
+        "stream": {
+          "raw_bytes": 0,
+          "chunk_raw_limit": 1048576,
+          "receipt_reserve_bytes": 32768,
+          "peak_owned_bytes": 0,
+          "min_shared_free_bytes": 536890912,
+          "resource_stop": "SHARED_512MIB_FINAL_DRAIN_RESERVE",
+          "error": "ValueError('SHARED_512MIB_FINAL_DRAIN_RESERVE')"
+        },
+        "resources": [
+          {
+            "elapsed_s": 0.0066300379985477775,
+            "shared_free": 536890912,
+            "own_scratch": 0,
+            "stream_raw_bytes": 0
+          }
+        ],
+        "pid": 1135491,
+        "post_drain_resources": {
+          "owned_bytes": 0,
+          "shared_free_bytes": 536890912,
+          "receipt_reserve_bytes": 32768
+        },
+        "returncode": 0,
+        "elapsed_seconds": 2.0193932440015487,
+        "resource_stop": "SHARED_512MIB_FINAL_DRAIN_RESERVE"
+      },
+      "method_sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    },
+    {
+      "status": "EXPECTED_PREWRITE_RESOURCE_REJECTION",
+      "stream": {
+        "chunk_raw_limit": 1048576,
+        "receipt_reserve_bytes": 262144,
+        "peak_owned_bytes": 1033020,
+        "min_shared_free_bytes": 1073741824,
+        "raw_bytes": 1048576,
+        "resource_stop": "OWN_80MIB_FINAL_DRAIN_RESERVE",
+        "error": "ValueError('OWN_80MIB_FINAL_DRAIN_RESERVE')"
+      },
+      "raw_input_sha256": "aeeb063e68d599780e1828d2f911f68e1e17a76f394933b12e0197aea14d7381",
+      "method_sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    }
+  ],
+  "unchanged_function_sha256": {
+    "deck": "2fcd2d7e2063f625892899dc35c6e6f39c79930790612ae5f6c5ee814e847cd3",
+    "wave_measure": "624bca64f8ec2d03e222b1c347acad8db813fc8fe3bc1937b02cfafdd6e26cd3",
+    "audit_native": "cadcf0a9e065851e0a12be84b8ea0e8837b64175c458abaa9f74cb805e9a56fa",
+    "vector_contract": "c4f5022bbce45b28f3461f2f51e024fa4f5983325981d58eee8316811b8c2144",
+    "physical_to_ideal": "19fa033e9e65e1b4deaa921f8e646592fe6a4d3f27b226e5654300b0816d4652",
+    "circuit": "70a90c4d7f37fc8ca35fcbda6371bbce26a9fa69da2f01d9e7f81acfea7acf4d",
+    "node_expression": "1784729fb65e63f098f899ef20a468b651e07ac069cb29a0fcf5fb46b3fbcfdb"
+  },
+  "limits": {
+    "owned": 83886080,
+    "shared": 536870912,
+    "receipt": 2097152,
+    "launch_headroom": 25165824
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-v2-wire-20261004/limiter-local-vco-v4-controller-v3-controls.tar.xz",
+    "bytes": 4411544,
+    "sha256": "2a6ceec4e8e2d3e1a19bed4968925fa2503d46f2e8c4d4381a1ba9cf8669cd20"
+  },
+  "members": {
+    "controls/test_actual_multiple_chunk_out0/raw": {
+      "bytes": 3145728,
+      "sha256": "aeeb063e68d599780e1828d2f911f68e1e17a76f394933b12e0197aea14d7381"
+    },
+    "controls/test_actual_multiple_chunk_out0/out/control-result.json": {
+      "bytes": 533,
+      "sha256": "e6bbbdd8f55f9b89bcabab99e398176dfc282b7c4e2190b502c66790c4d20995"
+    },
+    "controls/test_actual_multiple_chunk_out0/out/wave.gz": {
+      "bytes": 1033020,
+      "sha256": "c4726630d27b5f32b980f633d33fc48d18fe791f76cc7c003459d30e96255f32"
+    },
+    "controls/test_actual_writer_exits_befor0/writer": {
+      "bytes": 133,
+      "sha256": "726bc340b5ce9bdf0e445547c709dfc5ecd5a636fa966df89f1c6d68cdaa34de"
+    },
+    "controls/test_actual_writer_exits_befor0/case/control-result.json": {
+      "bytes": 1044,
+      "sha256": "22bf66d440b4762e68fe03603827aba60f064e61659b79f5b034238389c4f5c9"
+    },
+    "controls/test_actual_writer_exits_befor0/case/native.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_writer_exits_befor0/case/wave.dat.gz": {
+      "bytes": 200083,
+      "sha256": "5efc9c042a3e8c0c5474efc6760ca4868a83e3ea15b34dfee2b086492dba8f6a"
+    },
+    "controls/test_actual_writer_exits_befor1/writer": {
+      "bytes": 133,
+      "sha256": "726bc340b5ce9bdf0e445547c709dfc5ecd5a636fa966df89f1c6d68cdaa34de"
+    },
+    "controls/test_actual_writer_exits_befor1/case/control-result.json": {
+      "bytes": 930,
+      "sha256": "6b97e4e29b69728e13cea9df0fddde2606c502ecb7538afd3b4e656bb8c27d16"
+    },
+    "controls/test_actual_writer_exits_befor1/case/wave.dat.gz": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_writer_exits_befor1/case/native.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_writer_exits_befor2/writer": {
+      "bytes": 133,
+      "sha256": "726bc340b5ce9bdf0e445547c709dfc5ecd5a636fa966df89f1c6d68cdaa34de"
+    },
+    "controls/test_actual_writer_exits_befor2/case/control-result.json": {
+      "bytes": 941,
+      "sha256": "f3016d99e060f9a7859494b51c12f1e1cc8a75abf9598780b5b5c8696c288255"
+    },
+    "controls/test_actual_writer_exits_befor2/case/wave.dat.gz": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_writer_exits_befor2/case/native.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "project/scripts/diagnose_pcie_local_vco_powered_v3.py": {
+      "bytes": 28825,
+      "sha256": "b37c04394c74287b1bdaf19a617877c9631c9e6eb3a548eb59e64b02940550ec"
+    },
+    "project/sw/tests/test_pcie_local_vco_powered_v3.py": {
+      "bytes": 4750,
+      "sha256": "952248c517a47019c6c30188ec41ba626f111e5f23b65572d282466ca16816d2"
+    },
+    "project/scripts/diagnose_pcie_local_vco_powered_v2.py": {
+      "bytes": 25579,
+      "sha256": "c1a7f47d808bdf1819029ce70d79b6863368fd71550d837bc97fed0fc29d774d"
+    },
+    "project/scripts/build_pcie_local_vco_hybrid_v2.py": {
+      "bytes": 18968,
+      "sha256": "6cdbed633757a6c2474ce9016339b1766d3d1ae02c69e383b7b95eee7b0b7208"
+    },
+    "review/controller-v3-tests-final.log": {
+      "bytes": 100,
+      "sha256": "196274f5dad6be0651fc4fb82a7cdfc6b9f08e0fff09a1ed315072988aa8c8a3"
+    },
+    "review/postcompletion-storage-observation.json": {
+      "bytes": 46092,
+      "sha256": "c49d82558d1c217ed7db1048842d120ba65418c805d0a77535fb08236edd3a6f"
+    },
+    "licenses/Apache-2.0.txt": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  },
+  "scope": "Controller correction only. No native SPICE rerun here; three real OS FIFO writers reproduce successful drain and resource rejection after writer exit. Prior .4V84,223,544 byte final overshoot remains separate failed resource contract; analog gates independent."
+}

@@ -1,0 +1,58 @@
+{
+  "status": "PASS_TEST_HARNESS_PORTABILITY_ONLY_PRODUCER_UNCHANGED",
+  "producer": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v1.py": {
+      "bytes": 22103,
+      "sha256": "ea34d89dc062a515727814b5549d28c4036ca030d39d966aacf605a8691ac649"
+    }
+  },
+  "current_test": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_pll_acquisition_v1.py": {
+      "bytes": 16723,
+      "sha256": "6851537ce15fa19d297f24ee59de085a87accf9b5ccb186e91d37be36e3f721f"
+    }
+  },
+  "prior_test": {
+    "/dev/shm/nssoc-pll-acquisition-v1-evidence/prior-tests/test_pcie_pll_acquisition_v1-original.py.txt": {
+      "bytes": 15981,
+      "sha256": "9b22fd0db82dd8d2a432f56bcfe56f2025372079fdae41cedcaa3bcf8458b6c2"
+    }
+  },
+  "original_method_capsule_validation": {
+    "bytes": 4706,
+    "sha256": "ca3d41b58c0d01079d8d08f9d2a1212e5748b0f9084a0bd9b1ad4effbdeff1d4"
+  },
+  "original_failure": {
+    "bytes": 9793,
+    "sha256": "41522f316f75693c65a3af2c6baf095e5c2cb325e4cb167bd5fbb518009caf93"
+  },
+  "cause": "Four mocked CLI-status tests reached actual runtime gate under default Python3.14 before the fake run. Actual native gate intentionally requires3.12; it is not changed.",
+  "change": "Only four isolated exit-status tests stub the runtime boundary and assert that it was called with actual runtime identities. An additional real main-path3.14 negative proves rejection before run. Frozen runtime unit tests still exercise unsupported Python/NumPy/API.",
+  "results": [
+    {
+      "runtime": "Default repository Python3.14",
+      "tests": 57,
+      "passed": 57,
+      "log": {
+        "bytes": 99,
+        "sha256": "c2c8837f70624d8b6b5b0e75f7c6617f64e0b31fd6b9c05c9329cac24adde930"
+      }
+    },
+    {
+      "runtime": "Native validated Python3.12",
+      "tests": 92,
+      "passed": 92,
+      "log": {
+        "bytes": 180,
+        "sha256": "8222f9532d3b60ffc7e179c0d750c8a64e933e317f59035d3eb0f831592559bc"
+      }
+    }
+  ],
+  "preflight": {
+    "bytes": 43762,
+    "sha256": "c4482e24e110aa130c30627593c4811818437c13acd1ed682ece235ff837c57a"
+  },
+  "native_execution": false,
+  "old_receipts_unchanged": true,
+  "archive_resolution": "Old test9b22 remains exact in original9-member capsule and prior-tests plaintext; original91 PASS3.12 and4FAIL3.14 remain scoped historical results."
+}

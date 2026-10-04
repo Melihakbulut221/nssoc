@@ -1,0 +1,77 @@
+{
+  "status": "PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS",
+  "positive": {
+    "states": 1804,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5443,
+    "canonical_nodes": 39001,
+    "mismatches": [],
+    "matched": 5443
+  },
+  "controls": [
+    {
+      "kind": "invert_D",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:D"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_clock",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:C"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_reset",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:R"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_output",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "output:data_o:0"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "missing_state",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError('Exact bijective native state instance map')"
+    },
+    {
+      "kind": "unknown_function",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError()"
+    },
+    {
+      "kind": "unknown_output",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError(('unknown or combinational cycle', 'x'))"
+    },
+    {
+      "kind": "undriven_reset",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "KeyError(39838)"
+    },
+    {
+      "kind": "duplicate_driver",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError(('multiple driver', 'peer_duplicate', 1706))"
+    },
+    {
+      "kind": "changed_port_census",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError()"
+    }
+  ],
+  "scope": "Four real Boolean boundary-inversion faults and six fail-closed graph/coverage faults, including the actual failed-physical undriven-reset class on exact native-expanded candidate. No altered source netlist written."
+}
