@@ -53,6 +53,11 @@ jobs:
           python3 scripts/check_pcie_apb_arbiter.py --out hw/soc/out/pcie-local-flow/arbiter-rtl
           python3 scripts/check_pcie_apb_arbiter.py --native --out hw/soc/out/pcie-local-flow/arbiter-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
           python3 -m pytest -q sw/tests/test_pcie_rx_flow.py sw/tests/test_pcie_apb_arbiter.py --basetemp=hw/soc/out/pcie-local-flow/mutations
+      - name: Four-lane fixed-block gearbox and actual corruption controls
+        run: |
+          python3 scripts/check_pcie_gen3_gearbox.py --out hw/soc/out/pcie-local-flow/gearbox-rtl
+          python3 scripts/check_pcie_gen3_gearbox.py --native --out hw/soc/out/pcie-local-flow/gearbox-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q sw/tests/test_pcie_gen3_gearbox.py --basetemp=hw/soc/out/pcie-local-flow/gearbox-mutations
       - name: Preserve all results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

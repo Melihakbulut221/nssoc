@@ -1,0 +1,47 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Original voltage-controlled three-stage differential CML ring.
+* Native IHP HBT, HV PMOS, self-heating resistors and MIM capacitors only.
+* Nominal AVDD=2.3 V; VCTRL controls PMOS reference current, not ideal delay.
+* One deliberate MIM size offset seeds oscillation during a supply ramp.
+* No PLL, recovered-clock, noise/jitter, layout or PCIe acceptance claim.
+* The limiter and emitter followers drive a differential clock load.
+
+.subckt nssoc_clock_vco_hbt_v2 clkp clkn vctrl avdd avss sub
+XCTRL ref vctrl avdd avdd sg13_hv_pmos w=32u l=0.45u ng=1 m=1
+XREF ref ref avss sub npn13G2 Nx=1
+XP0 p0 p2 t0 sub npn13G2 Nx=2
+XN0 n0 n2 t0 sub npn13G2 Nx=2
+XT0 t0 ref avss sub npn13G2 Nx=4
+XP1 p1 p0 t1 sub npn13G2 Nx=2
+XN1 n1 n0 t1 sub npn13G2 Nx=2
+XT1 t1 ref avss sub npn13G2 Nx=4
+XP2 p2 p1 t2 sub npn13G2 Nx=2
+XN2 n2 n1 t2 sub npn13G2 Nx=2
+XT2 t2 ref avss sub npn13G2 Nx=4
+XRP0 avdd p0 sub rppd w=8u l=4.4u b=0 sw_et=1
+XRN0 avdd n0 sub rppd w=8u l=4.4u b=0 sw_et=1
+XRP1 avdd p1 sub rppd w=8u l=4.4u b=0 sw_et=1
+XRN1 avdd n1 sub rppd w=8u l=4.4u b=0 sw_et=1
+XRP2 avdd p2 sub rppd w=8u l=4.4u b=0 sw_et=1
+XRN2 avdd n2 sub rppd w=8u l=4.4u b=0 sw_et=1
+XCP0 p0 avss cap_cmim w=12.2u l=12u
+XCN0 n0 avss cap_cmim w=12u l=12u
+XCP1 p1 avss cap_cmim w=12u l=12u
+XCN1 n1 avss cap_cmim w=12u l=12u
+XCP2 p2 avss cap_cmim w=12u l=12u
+XCN2 n2 avss cap_cmim w=12u l=12u
+* Independent resistor/HBT bias keeps the output limiter gain from tracking
+* the oscillator's tuning-current collapse near its oscillation threshold.
+XRB avdd bref sub rppd w=2u l=7.4u b=0 sw_et=1
+XBREF bref bref avss sub npn13G2 Nx=1
+XBP bo_n p0 bt sub npn13G2 Nx=2
+XBN bo_p n0 bt sub npn13G2 Nx=2
+XBT bt bref avss sub npn13G2 Nx=2
+XBRP avdd bo_p sub rppd w=8u l=4.0u b=0 sw_et=1
+XBRN avdd bo_n sub rppd w=8u l=4.0u b=0 sw_et=1
+XFP avdd bo_p clkp sub npn13G2 Nx=4
+XFN avdd bo_n clkn sub npn13G2 Nx=4
+XFTP clkp bref avss sub npn13G2 Nx=1
+XFTN clkn bref avss sub npn13G2 Nx=1
+.ends nssoc_clock_vco_hbt_v2
