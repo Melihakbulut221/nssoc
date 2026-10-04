@@ -34,3 +34,6 @@ soc_pcie_tlp_integrity	Standalone LCRC quarantine plus byte-to-DWORD transaction
 
 soc_pcie_gen3_gearbox	Standalone four-lane fixed130/32-bit synchronous PCS gearbox development; port-tested in RTL and native cells, not connected to the packet endpoint, variable SKP, block alignment, PMA or product SoC.
 soc_pcie_gen3_scrambler	Standalone four-logical-lane payload scrambler/descrambler with explicit per-byte advance/XOR and after-word reseed controls; no automatic ordered-set/DC-balance policy, framing, LTSSM, PMA or main-chip connection.
+
+soc_pcie_gen3_tx_path	Standalone four-lane fixed130/32 TX with actual128bit payload scrambling and explicit byte policies; port tests pass but 4ns cell timing fails, no full PCS/PMA or main-chip adoption.
+soc_pcie_gen3_variable_tx	Standalone four-lane66/98/130/162/194bit block-to32bit TX reservoir; actual port and native tests, caller-owned contents, no SKP policy, RX rate compensation, PMA or main-chip integration.

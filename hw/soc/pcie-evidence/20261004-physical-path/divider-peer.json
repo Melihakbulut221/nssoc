@@ -1,0 +1,1139 @@
+{
+  "status": "PASS_BOUNDED_READ_ONLY_SOURCE_DECK_LOG_OFF_OP_AND_RECORDED_OUTCOME_REVIEW",
+  "utc": "2026-10-04T10:50:15.196169+00:00",
+  "sources": {
+    "scripts/characterize_pcie_div4.py": {
+      "bytes": 23975,
+      "sha256": "d4aa14a731dd5219be816d654583a264becb30df78340c8df93e264f97f2db16"
+    },
+    "scripts/characterize_pcie_div4_v2.py": {
+      "bytes": 4011,
+      "sha256": "f7cd2bb64ff76f4c9ed1459133706d48b42cc138019ec7b6f95f601c23f10954"
+    },
+    "sw/tests/test_pcie_div4.py": {
+      "bytes": 8946,
+      "sha256": "15cda236ae256164cefe57130bed122273ffa9de215ab44890a0fb5b417d67fd"
+    },
+    "sw/tests/test_pcie_div4_v2.py": {
+      "bytes": 3460,
+      "sha256": "0513b4e66444ec125706a7b60a815cc0665ccb7f7832f5a0278aef7073e9f57b"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt.spice": {
+      "bytes": 773,
+      "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v2.spice": {
+      "bytes": 778,
+      "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+    }
+  },
+  "captures": [
+    {
+      "version": "v1",
+      "records": [
+        {
+          "path": "/dev/shm/nssoc-div4-native-final",
+          "result": {
+            "bytes": 550017,
+            "sha256": "d0f956e9eba47454f0c911b68ff0f8791545ae11818064aad2abb9ab07e86908"
+          },
+          "status": "ERROR_PRESERVED",
+          "error": "ValueError('Need220MiB free for bounded native wave')",
+          "cases": [
+            {
+              "name": "nominal",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24480,
+                  "sha256": "ee974257a20cb5f4308162bc3c5614e19f9db265122067491380bcd8ccf54976"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f97a9ee1d68e70f8141f8b765ac6e6e524ce570a5cc0ff3bbca9e61bfbf1bc04"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "half_step",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25440,
+                  "sha256": "b413abc5af6a221be791a5a914ac2734ea62c660c1655b33274ca20cc78bb234"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "6f7c57146d16737e5e746b38152d40c641c4fde29bf3402eeb0ca33dbb5a0bd3"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "cold_slow",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24482,
+                  "sha256": "8775ffde614bb81547e97553b5c4cb9cea2bd58721f7bf9d75da49054c24ccca"
+                },
+                "bench.cir": {
+                  "bytes": 25930,
+                  "sha256": "ac36e287b99d88c2a52b2442f738c22c9ffefa2e77f6dc6549d6402a756cc4e7"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "cold_fast",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24546,
+                  "sha256": "ef9a39001d0f0a675bc83973d739b61356f1f8b7e74194d2bff627a2bbae49f5"
+                },
+                "bench.cir": {
+                  "bytes": 25930,
+                  "sha256": "c3788a58f0ceb104add88c15884af7ab1e9549565e72202d5156127c49f2471f"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "hot_slow",
+              "fault": "",
+              "expected_outcome_observed": false,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24482,
+                  "sha256": "a0efbce196ee494c29a853489d82295e5aa54dcefe7272adba8162127ae4c5e0"
+                },
+                "bench.cir": {
+                  "bytes": 25930,
+                  "sha256": "eb14bba9c48d2ed2e38d8bcd575a34bd08e65b0f788e8b474a5c499df288d19e"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "hot_fast",
+              "fault": "",
+              "expected_outcome_observed": false,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio",
+                "settled_headroom"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24514,
+                  "sha256": "fed66ed531de2056b1590bce7623a747b4c4cabba09c086e80cb7b7ecacc0196"
+                },
+                "bench.cir": {
+                  "bytes": 25930,
+                  "sha256": "37faa6b104d32882fb748aadb2e4adaafa7ad182ca64667e43e161efd69af07b"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "slow_ramp",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24480,
+                  "sha256": "e3016ca4c4cb606a6a06325a9cd2ae5c75139a0ede6603b59b22d325688be264"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "97479f773c805e5271ededc0de8d9f39a1fb890fe3c7286943a047eed7c26558"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "load100fF",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24512,
+                  "sha256": "c7d889ba30c26e87ecf8dd891fa0b1de6e3ce4cb3bced7ecb2648f73d8097f17"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f6c6e391ea0395961790b13678c51bfe22b2320af6da0903e1763fb1143415ff"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "6cdeb6cea1177d4eec7db2a41f07a18d75c7145c58f5348fe05893bb4924ae8e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "path": "/dev/shm/nssoc-div4-native-negatives",
+          "result": {
+            "bytes": 334334,
+            "sha256": "fa3bf3929e23d437b2e24cecc135749eada8721e2aef9835ba396aaa8a2da797"
+          },
+          "status": "PASS_FINITE_DIV4_SCREEN",
+          "error": null,
+          "cases": [
+            {
+              "name": "second_no_toggle",
+              "fault": "second_no_toggle",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24992,
+                  "sha256": "91d259a745f821a1e677466b06c79ddc777d3ce720878715f18dbb53eec27eeb"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f97a9ee1d68e70f8141f8b765ac6e6e524ce570a5cc0ff3bbca9e61bfbf1bc04"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 779,
+                  "sha256": "109b5f1602aaca2f6d4aa1d11d2a612a24b849860d677344d0f5b874d547293e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "7c1855a7331e2fc9dd9f872ac530d77449f3bb7483a1599a13ada95b789612b1"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_same_phase",
+              "fault": "second_same_phase",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25024,
+                  "sha256": "805a4ecbefe9a5eaee6090618d4b95f7aae9eeaad2ba4b3d4dd5f33a2f27875a"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f97a9ee1d68e70f8141f8b765ac6e6e524ce570a5cc0ff3bbca9e61bfbf1bc04"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 779,
+                  "sha256": "109b5f1602aaca2f6d4aa1d11d2a612a24b849860d677344d0f5b874d547293e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "d489071a8e7cb36e9dc3bcc9de2584bc9a185723c66cbf0edd15b5fcc18433d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_no_bias",
+              "fault": "second_no_bias",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio",
+                "settled_headroom"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 24992,
+                  "sha256": "76f1392f40a418b375643389ab18ff59e5882e9a5fc97deb6c650503e6fb85cc"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f97a9ee1d68e70f8141f8b765ac6e6e524ce570a5cc0ff3bbca9e61bfbf1bc04"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 779,
+                  "sha256": "109b5f1602aaca2f6d4aa1d11d2a612a24b849860d677344d0f5b874d547293e"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "f5eb1ac44c060c6f8336c2b378ecbbf3175c4c58879f2ba1c717e648beb37bbd"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_same_clock",
+              "fault": "second_same_clock",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25024,
+                  "sha256": "a02805e2bf7a8335d304c7b953d547edb913d0a11d6f86e35c65cbbe7a3376d1"
+                },
+                "bench.cir": {
+                  "bytes": 25929,
+                  "sha256": "f97a9ee1d68e70f8141f8b765ac6e6e524ce570a5cc0ff3bbca9e61bfbf1bc04"
+                },
+                "clock_div4_hbt.spice": {
+                  "bytes": 773,
+                  "sha256": "fdd79a27f8735e4e8e8683629f10cafbce06b093e1f1e12303a559e29f831b20"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "disjoint_cases": 12
+    },
+    {
+      "version": "v2",
+      "records": [
+        {
+          "path": "/dev/shm/nssoc-div4-v2-native-final",
+          "result": {
+            "bytes": 855206,
+            "sha256": "cddc72de0e5bf5c37a0c1dc62dce1fd57f47b2fb818a0f41a37cad5ba819d712"
+          },
+          "status": "FAIL_PRESERVED",
+          "error": null,
+          "cases": [
+            {
+              "name": "nominal",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25600,
+                  "sha256": "d35a6de40a467b7ecb3d873dffb01ec8367f18fd26eb33325630f64427453e7a"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "d2a1c3fade14af33556d414411f1175699eb7f6656de8a0ae0c0667f6a1ec619"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "half_step",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 27712,
+                  "sha256": "91a1b63a2dba29c8b61e99986fea7ae153bd320bc7be0ed6da721f5908104741"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "8b48ccec3fdfee7b72ecb9b331d78b7ce4efed02fee6e1759cdba4a7854b9454"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "cold_slow",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25666,
+                  "sha256": "c28535927936b77bde3a98d68effa801186276ecb756fda9679c8678dab25c0e"
+                },
+                "bench.cir": {
+                  "bytes": 25936,
+                  "sha256": "95ed390a81f6ab880111a33d394a0c4a4d77720053ade73dc2cff939dc95ac1b"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "cold_fast",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25602,
+                  "sha256": "d37d2a7ad3b861f03c1d82f47b6c127033b732c5402018a5f4d965590e01580f"
+                },
+                "bench.cir": {
+                  "bytes": 25936,
+                  "sha256": "cec1623b9c19e9f509c8cc73d8d7b1030ce68c71163ef0165a1b279d799aea87"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "hot_slow",
+              "fault": "",
+              "expected_outcome_observed": false,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25474,
+                  "sha256": "9a701db5456c9ff7800595b35e1b7bfe18f47fa606e8c1e3114986085934c433"
+                },
+                "bench.cir": {
+                  "bytes": 25936,
+                  "sha256": "9f80a59ac304155559d3749a6c6c85a3e922fc5c1f31dddf67c2e223a8da847d"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "hot_fast",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25954,
+                  "sha256": "57e6b49e5f37e047354c4d6670b01bac9b65204835a0af09493c6f682ceb3a8c"
+                },
+                "bench.cir": {
+                  "bytes": 25936,
+                  "sha256": "4d7a376924c1eb4eead8a4ddc7e8183ad9386a50fc0a2941a3c2a84204c9ae66"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "slow_ramp",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25856,
+                  "sha256": "121e89775df930c41fa9a38c57fa8bce846a9f3e2cca9b91b6ffa2fa164f5c2e"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "1f03ed553d0452a5d1da1081fa372e75d44172c5ff1dc80d3e895cf2fc0757fa"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "load100fF",
+              "fault": "",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 26048,
+                  "sha256": "204f9205d7adaa8abc53a04cbf9102e37ca5d0d1d83dfbdd1c46ad8efddbfc20"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "271ce672f788bfe3eeb6acc9c3d69a6f5e93cf35a18253e0cf0083e05932077a"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "35cbe9704c05b152e9913c0494f94075d569f71bcbd1aef05acd7e2ea8374baa"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_no_toggle",
+              "fault": "second_no_toggle",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25824,
+                  "sha256": "23255880cb36deb7dd6cb8effad85f1eac7c31cc987b6d1628d1aa6e44cb3d2b"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "d2a1c3fade14af33556d414411f1175699eb7f6656de8a0ae0c0667f6a1ec619"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 784,
+                  "sha256": "1e94c22ff955babbb9cae99bf99f1b97534bec201a5d9bca5d0ab3059a8bf239"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "7c1855a7331e2fc9dd9f872ac530d77449f3bb7483a1599a13ada95b789612b1"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_same_phase",
+              "fault": "second_same_phase",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 25664,
+                  "sha256": "855607cd838eb526d69b9adfea8b07e75a6753b7f1e6938a15b36e211041184f"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "d2a1c3fade14af33556d414411f1175699eb7f6656de8a0ae0c0667f6a1ec619"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 784,
+                  "sha256": "1e94c22ff955babbb9cae99bf99f1b97534bec201a5d9bca5d0ab3059a8bf239"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "d489071a8e7cb36e9dc3bcc9de2584bc9a185723c66cbf0edd15b5fcc18433d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_no_bias",
+              "fault": "second_no_bias",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio",
+                "settled_headroom"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 26464,
+                  "sha256": "1baf7387401439b026f407bcf019018bc0e4b84eec251d2053af19c38d92ae42"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "d2a1c3fade14af33556d414411f1175699eb7f6656de8a0ae0c0667f6a1ec619"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 784,
+                  "sha256": "1e94c22ff955babbb9cae99bf99f1b97534bec201a5d9bca5d0ab3059a8bf239"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 1795,
+                  "sha256": "f5eb1ac44c060c6f8336c2b378ecbbf3175c4c58879f2ba1c717e648beb37bbd"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            },
+            {
+              "name": "second_same_clock",
+              "fault": "second_same_clock",
+              "expected_outcome_observed": true,
+              "numerical_clean": true,
+              "failed_checks": [
+                "second_divide",
+                "exactly_four_input_periods",
+                "period_ratio"
+              ],
+              "nonwave_files": {
+                "initial-op.dat": {
+                  "bytes": 9337,
+                  "sha256": "3f41e76781edf3d3eb14e2265dbe7f73fde215c336be4ebd97994e948f05a248"
+                },
+                "run.log": {
+                  "bytes": 26496,
+                  "sha256": "75d0bf8a5014d5b24b551fa6318c677bbe4d788d50e01c8215f87651c1ae54ef"
+                },
+                "bench.cir": {
+                  "bytes": 25935,
+                  "sha256": "d2a1c3fade14af33556d414411f1175699eb7f6656de8a0ae0c0667f6a1ec619"
+                },
+                "clock_div4_hbt_v2.spice": {
+                  "bytes": 778,
+                  "sha256": "61a6d908014c9e4a4ccff50dea373a3685417b09d0c5cf2fa3f65891f571f207"
+                },
+                "clock_div2_conditioned_hbt.spice": {
+                  "bytes": 507,
+                  "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+                },
+                "clock_div2_hbt.spice": {
+                  "bytes": 891,
+                  "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+                },
+                "rx_sampler_hbt_v2.spice": {
+                  "bytes": 1604,
+                  "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+                },
+                "clock_vco_hbt_v3.spice": {
+                  "bytes": 2514,
+                  "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "disjoint_cases": 12
+    }
+  ],
+  "tests": {
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+      "-m",
+      "pytest",
+      "sw/tests/test_pcie_div4.py",
+      "sw/tests/test_pcie_div4_v2.py",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "returncode": 0,
+    "seconds": 2.3794437169854064,
+    "memory_limit_bytes": 2147483648,
+    "elapsed_watchdog": null,
+    "log_sha256": "659a4298fa4858df3fc75f8d73602fe159b23b8772e6979b94c7880a3979c27e"
+  },
+  "findings": [
+    "No source soundness blocker found.60actual HBT pins/35rppd/12MIM/1PMOS are traversed from frozen definitions; actual stage pins are observed.",
+    "V2 uses a private inherited namespace and exact two-sided R/MIM geometry delta. Native commands, thresholds and measurement bytecode remain identical. Only the physical top/include and descriptive MIM-size label differ.",
+    "Both stage divide checks plus exact4input periods, full-capture upperVCE/current and post-settling minimumVCE stay mandatory.",
+    "Numerical/timeout/execution/OP/OFF failure cannot qualify as a functional-negative PASS. All4faults require firststage correct and secondstage incorrect.",
+    "V1 retains ERROR_PRESERVED storage stop after8positives, plus separate4negatives;6positive passes/2hot failures. V2 retains FAIL_PRESERVED with7positive passes/hot_slow failure."
+  ],
+  "limitations": [
+    "Read-only source and24actualcase nonwave replay only; no native simulator rerun or full-waveform remeasurement. Author raw-wave replay remains separate.",
+    "Recorded measurement predicates were replayed against recorded measurements; this review does not independently recompute frequencies/VCE/current from waveforms.",
+    "No adoption, fullPVT, RF/PEX/physical integration, PLL/CDR or PCIe compliance acceptance."
+  ],
+  "source_edits": false,
+  "native_rerun": false
+}

@@ -1,0 +1,321 @@
+{
+  "status": "FINITE_NATIVE_SWITCHED_MIM_EXPERIMENT",
+  "source_sha256": {
+    "scripts/characterize_pcie_clock_trim_v1.py": "508cb8aa7902b53d7680b93adf572ed3be3220e4687d7c96b4638588e4a9aa44",
+    "sw/tests/test_pcie_clock_trim_v1.py": "aa1fe43a7cc40192790447f8a6789edb64686d8fbdda12476b92634f4b0ac7ce"
+  },
+  "datasets": [
+    {
+      "dataset": "pilot00",
+      "cases": 1,
+      "numerically_clean": 1,
+      "result_sha256": "8932370ef54dda3754c45fe08f21035613e08d96be07e195a5a3e76303006068"
+    },
+    {
+      "dataset": "pilot01",
+      "cases": 2,
+      "numerically_clean": 2,
+      "result_sha256": "d8ee255345a0f6ca4ee9f182f797cf0da10badd7d9963deb095f1d122d299d9c"
+    },
+    {
+      "dataset": "pilot02",
+      "cases": 3,
+      "numerically_clean": 3,
+      "result_sha256": "6628baf3a5d6eee8cc1ab9b59605d455156621016dc64975172c27ba41274e44"
+    },
+    {
+      "dataset": "gaps",
+      "cases": 18,
+      "numerically_clean": 18,
+      "result_sha256": "d2ee311994c4320a96c533656e7777ae2bb68904b3a40e9630498c0a096542c2"
+    },
+    {
+      "dataset": "targeted",
+      "cases": 11,
+      "numerically_clean": 11,
+      "result_sha256": "f2138715f5385c325e3d430ea26550ded95326c247f59d2a38771a90cb1d0129"
+    },
+    {
+      "dataset": "final-points",
+      "cases": 7,
+      "numerically_clean": 7,
+      "result_sha256": "b1aa65da599fa814eb474a862fcfbd8f067d9ba5278fad906940e120ca13477c"
+    }
+  ],
+  "total_native_executions": 42,
+  "retained_full_waves_remeasured": 42,
+  "passing_positive_cases": 29,
+  "failed_positive_cases": [
+    {
+      "dataset": "pilot01",
+      "case": "nominal_code1",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "pilot01",
+      "case": "nominal_code2",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "gaps",
+      "case": "low_supply_res_wcs_cap_wcs_code2_v1.00",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "gaps",
+      "case": "high_supply_res_bcs_cap_bcs_code0_v0.60",
+      "checks": [
+        "current_density",
+        "full_capture_current_density"
+      ]
+    },
+    {
+      "dataset": "gaps",
+      "case": "high_supply_res_bcs_cap_bcs_code1_v0.60",
+      "checks": [
+        "current_density",
+        "full_capture_current_density"
+      ]
+    },
+    {
+      "dataset": "gaps",
+      "case": "high_supply_res_bcs_cap_bcs_code2_v0.60",
+      "checks": [
+        "current_density",
+        "full_capture_current_density"
+      ]
+    },
+    {
+      "dataset": "gaps",
+      "case": "high_supply_res_bcs_cap_bcs_code2_v1.00",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "targeted",
+      "case": "hot_bcs_ss_code1_v0.60_halfstep",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "targeted",
+      "case": "high_supply_res_bcs_cap_bcs_code2_v1.00_halfstep",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    },
+    {
+      "dataset": "final-points",
+      "case": "high_supply_res_bcs_cap_bcs_code2_v0.95_halfstep",
+      "checks": [
+        "deterministic_period_spread"
+      ]
+    }
+  ],
+  "seven_selected_corner_brackets": [
+    {
+      "corner": "nominal",
+      "measured_brackets": [
+        {
+          "code": 1,
+          "control_v": [
+            0.85,
+            1.0
+          ],
+          "frequency_hz": [
+            8163619720.295484,
+            7627318547.26719
+          ],
+          "step_s": [
+            1e-12,
+            5e-13
+          ],
+          "evidence": [
+            {
+              "dataset": "pilot02",
+              "case": "nominal_code1"
+            },
+            {
+              "dataset": "targeted",
+              "case": "nominal_code1_v1.00_halfstep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "hot_bcs_ss",
+      "measured_brackets": [
+        {
+          "code": 1,
+          "control_v": [
+            0.9,
+            1.0
+          ],
+          "frequency_hz": [
+            8242919085.323061,
+            7938113698.632695
+          ],
+          "step_s": [
+            5e-13,
+            5e-13
+          ],
+          "evidence": [
+            {
+              "dataset": "final-points",
+              "case": "hot_bcs_ss_code1_v0.90_halfstep"
+            },
+            {
+              "dataset": "targeted",
+              "case": "hot_bcs_ss_code1_v1.00_halfstep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "cold_wcs_ss",
+      "measured_brackets": [
+        {
+          "code": 1,
+          "control_v": [
+            0.6,
+            1.0
+          ],
+          "frequency_hz": [
+            8971353232.033316,
+            7659607321.439448
+          ],
+          "step_s": [
+            5e-13,
+            5e-13
+          ],
+          "evidence": [
+            {
+              "dataset": "targeted",
+              "case": "cold_wcs_ss_code1_v0.60_halfstep"
+            },
+            {
+              "dataset": "targeted",
+              "case": "cold_wcs_ss_code1_v1.00_halfstep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "cold_bcs_ff",
+      "measured_brackets": [
+        {
+          "code": 1,
+          "control_v": [
+            0.8,
+            1.2
+          ],
+          "frequency_hz": [
+            8797714704.062088,
+            7324492168.836603
+          ],
+          "step_s": [
+            5e-13,
+            5e-13
+          ],
+          "evidence": [
+            {
+              "dataset": "final-points",
+              "case": "cold_bcs_ff_code1_v0.80_halfstep"
+            },
+            {
+              "dataset": "final-points",
+              "case": "cold_bcs_ff_code1_v1.20_halfstep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "hot_wcs_ff",
+      "measured_brackets": [
+        {
+          "code": 0,
+          "control_v": [
+            1.0,
+            1.1
+          ],
+          "frequency_hz": [
+            8077705357.608215,
+            7851023954.304363
+          ],
+          "step_s": [
+            1e-12,
+            5e-13
+          ],
+          "evidence": [
+            {
+              "dataset": "gaps",
+              "case": "hot_wcs_ff_code0_v1.00"
+            },
+            {
+              "dataset": "targeted",
+              "case": "hot_wcs_ff_code0_v1.10_halfstep"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "low_supply_res_wcs_cap_wcs",
+      "measured_brackets": [
+        {
+          "code": 0,
+          "control_v": [
+            0.6,
+            1.0
+          ],
+          "frequency_hz": [
+            8308041498.472507,
+            7292086252.878666
+          ],
+          "step_s": [
+            1e-12,
+            1e-12
+          ],
+          "evidence": [
+            {
+              "dataset": "gaps",
+              "case": "low_supply_res_wcs_cap_wcs_code0_v0.60"
+            },
+            {
+              "dataset": "gaps",
+              "case": "low_supply_res_wcs_cap_wcs_code0_v1.00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "corner": "high_supply_res_bcs_cap_bcs",
+      "measured_brackets": []
+    }
+  ],
+  "selected_corners_bracketed": 6,
+  "physical_qualification": false,
+  "pll_implemented": false,
+  "gen3_compliance": false,
+  "limitations": [
+    "All native MOS switches and MIM/resistor geometries are real model instances. Static control rails are external0/AVDD; no trim-controller or voltage-level-shifter implementation.",
+    "Every endpoint retains original4\u201312ns clock/minimumVCE limits and0\u201312ns maximumVCE/current constraints. Numerical clean initialization and all30OFF/zeroOP are separate mandatory evidence.",
+    "Pointwise1ps or0.5ps transients are not thermal steady state, phase-noise, jitter/lock or safe continuous VCTRL coverage. Rejected points remain explicit.",
+    "Old-bank opposed-aggressor collapsed capacitance only; no newbank layout/R/L, full PEX, actual receive load or full factorial PVT acceptance.",
+    "The bias conductance1 prototype fails period spread; accepted explored conductance4 candidate changes realrppdwidths, no thresholds or windows.",
+    "Same-code passing endpoints bracketing8GHz do not proveexact8GHz lock or PCIeppmcompliance."
+  ]
+}

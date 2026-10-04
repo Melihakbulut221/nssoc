@@ -71,6 +71,47 @@ jobs:
           path: hw/soc/out/pcie-local-flow/
           retention-days: 30
           if-no-files-found: error
+  gen3-tx-components:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [tx_path, variable_tx]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare exact native libraries and simulator
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+          echo "$PWD/hw/.venv/bin" >> "$GITHUB_PATH"
+          mkdir -p hw/soc/out/pcie-local-flow/libraries
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib' -o hw/soc/out/pcie-local-flow/libraries/cells.lib
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v' -o hw/soc/out/pcie-local-flow/libraries/cells.v
+          echo '968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  hw/soc/out/pcie-local-flow/libraries/cells.lib' | sha256sum --check
+          echo '28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4  hw/soc/out/pcie-local-flow/libraries/cells.v' | sha256sum --check
+      - name: Real RTL, native cell and corruption controls
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: |
+          python3 "scripts/check_pcie_gen3_$COMPONENT.py" --out "hw/soc/out/pcie-local-flow/$COMPONENT-rtl"
+          python3 "scripts/check_pcie_gen3_$COMPONENT.py" --native --out "hw/soc/out/pcie-local-flow/$COMPONENT-native" --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q "sw/tests/test_pcie_gen3_$COMPONENT.py" --basetemp="hw/soc/out/pcie-local-flow/$COMPONENT-mutations"
+      - name: Preserve complete native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-gen3-${{ matrix.component }}
+          path: hw/soc/out/pcie-local-flow/
+          retention-days: 30
+          if-no-files-found: error
   cpu-integration:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
