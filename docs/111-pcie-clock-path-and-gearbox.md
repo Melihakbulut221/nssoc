@@ -148,3 +148,6 @@ qualified device/route parasitics and ESD, then main-chip clock/reset/CDC/pad
 integration with fresh whole-chip verification. Neither these component tests
 nor the optional packet connection in [document 110](110-pcie-local-flow-and-clock-layout.md)
 close those product requirements.
+
+The next measured output-stage, layout, extraction and scrambling results are in
+[document 112](112-pcie-driven-clock-and-scrambling.md).
