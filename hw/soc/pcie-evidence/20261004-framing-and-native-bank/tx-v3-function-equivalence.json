@@ -1,0 +1,505 @@
+{
+  "status": "PASS_EXACT_BINARY_STATE_AND_OUTPUT_FUNCTION_EQUIVALENCE_AND_RECORDED_NATIVE_REPLAY",
+  "proof": {
+    "states": 2158,
+    "input_bits": 651,
+    "output_bits": 130,
+    "targets": 6604,
+    "canonical_nodes": 66563,
+    "mismatches": [],
+    "matched": 6604
+  },
+  "method": "Exact native Yosys read_liberty functional expansion and collision-free canonical Boolean DAG comparison; common state inputs use a complete bijection of native FF instance identities. Proves all D/clock/reset functions and all port outputs, not just tested traces.",
+  "primitive_semantics": [
+    "$_AND_",
+    "$_OR_",
+    "$_XOR_",
+    "$_NOT_",
+    "$_DFF_PP0_"
+  ],
+  "rules": [
+    "commutativity and associativity of AND/OR/XOR",
+    "AND/OR idempotence",
+    "double inversion",
+    "literal inversion",
+    "exact tuple equality; no digest used to decide equivalence"
+  ],
+  "blackboxes": 0,
+  "missing_used_functions": 0,
+  "unknowns_allowed": false,
+  "assumptions_or_omitted_boundaries": 0,
+  "state_map": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/state-map.json",
+    "bytes": 160490,
+    "sha256": "52b560dc32be95affb3d127d410b00695054671f0aad8465e056e3db51269a4d"
+  },
+  "native_ff_strength_changes": 69,
+  "mutations": {
+    "status": "PASS_NINE_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS",
+    "positive": {
+      "states": 2158,
+      "input_bits": 651,
+      "output_bits": 130,
+      "targets": 6604,
+      "canonical_nodes": 66563,
+      "mismatches": [],
+      "matched": 6604
+    },
+    "controls": [
+      {
+        "kind": "invert_D",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_47124_:D"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_clock",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_47124_:C"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_reset",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_47124_:R"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_output",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "output:word_o:0"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "missing_state",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError('Exact bijective native state instance map')"
+      },
+      {
+        "kind": "unknown_function",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      },
+      {
+        "kind": "unknown_output",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('unknown or combinational cycle', 'x'))"
+      },
+      {
+        "kind": "duplicate_driver",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('multiple driver', 'peer_duplicate', 655))"
+      },
+      {
+        "kind": "changed_port_census",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      }
+    ],
+    "scope": "Four real Boolean boundary-inversion faults and five fail-closed graph/coverage faults on exact native-expanded candidate. No altered source netlist written."
+  },
+  "normalization": {
+    "inputs": {
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+        "bytes": 540,
+        "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/yosys": {
+        "bytes": 33850192,
+        "sha256": "feb0030e6d6d42e0a013a7a023b532a0c5e3817a72b34d414a751bcfcb669224"
+      },
+      "/dev/shm/nssoc-gen3-tx-path-v3-native-01/mapped.v": {
+        "bytes": 3112533,
+        "sha256": "e037645889c150ded5b48727fe0bd69e545ec579d0a7e18fbfa1990142f019ba"
+      },
+      "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.v": {
+        "bytes": 3474338,
+        "sha256": "a5ae6777909d9538d600d00ef6829ec46aef3d7c2220fcdaa12cd4cfc5bece85"
+      }
+    },
+    "scope": "Native Liberty functional expansion, no blackboxes or assumptions",
+    "runs": [
+      {
+        "name": "gold",
+        "returncode": 0,
+        "elapsed_seconds": 9.739142648002598,
+        "script_sha256": "8b2045d4842af441dd08fd4bbd869257a30289e3b4158f270bf75dc34d7f335c",
+        "log_sha256": "044ac80d580cb674ccb702ebc5f3009675d3c31be635e1a82713a7a293779626"
+      },
+      {
+        "name": "gate",
+        "returncode": 0,
+        "elapsed_seconds": 10.140433679014677,
+        "script_sha256": "4096c4febaea95d03e584f0de8a33d84d5a35a5cce3ee04304bb801a96bcdc12",
+        "log_sha256": "aa89d8afae16e5901559603b797c2fcdd0c7ca5f01c74f79d81b6c6bf7126f4e"
+      }
+    ]
+  },
+  "native_port_replay": {
+    "receipt": {
+      "path": "/dev/shm/nssoc-tx-path-v3-physical-replay-01/result.json",
+      "bytes": 3702,
+      "sha256": "fff061dc1e22070098ced8b5224ba998c0a28ab7138ac358b8ebb1c0819c1fc4"
+    },
+    "tests": [
+      {
+        "name": "masks_headers_and_backpressure",
+        "classname": "test_soc_pcie_gen3_tx_path_v3",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v3.py",
+        "lineno": "142",
+        "time": "38.22474026679993",
+        "sim_time_ns": "8164.0",
+        "ratio_time": "213.5789528723322"
+      },
+      {
+        "name": "sustained_word_rate",
+        "classname": "test_soc_pcie_gen3_tx_path_v3",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v3.py",
+        "lineno": "147",
+        "time": "53.9637246131897",
+        "sim_time_ns": "8164.0",
+        "ratio_time": "151.2868145873788"
+      },
+      {
+        "name": "flushes_clear_partial_blocks_and_lfsrs",
+        "classname": "test_soc_pcie_gen3_tx_path_v3",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v3.py",
+        "lineno": "152",
+        "time": "46.632736682891846",
+        "sim_time_ns": "8164.0",
+        "ratio_time": "175.07014558283745"
+      }
+    ],
+    "independent_xml_reparse": true,
+    "new_simulation_by_reviewer": false
+  },
+  "timing": {
+    "corners": {
+      "slow": {
+        "setup_ns": 0.018697,
+        "hold_ns": 0.066373
+      },
+      "typical": {
+        "setup_ns": 1.477523,
+        "hold_ns": 0.114728
+      },
+      "fast": {
+        "setup_ns": 2.243468,
+        "hold_ns": 0.148566
+      }
+    },
+    "all_reported_paths": [
+      {
+        "corner": "slow",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 0.726755
+      },
+      {
+        "corner": "slow",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 0.018697
+      },
+      {
+        "corner": "slow",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.066373
+      },
+      {
+        "corner": "slow",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.200076
+      },
+      {
+        "corner": "typical",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 1.859924
+      },
+      {
+        "corner": "typical",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 1.477523
+      },
+      {
+        "corner": "typical",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.114728
+      },
+      {
+        "corner": "typical",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.18337
+      },
+      {
+        "corner": "fast",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 2.548924
+      },
+      {
+        "corner": "fast",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 2.243468
+      },
+      {
+        "corner": "fast",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.148566
+      },
+      {
+        "corner": "fast",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.183711
+      }
+    ],
+    "sdc": {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.sdc",
+      "bytes": 124170,
+      "sha256": "aca9017f558d4746d16736e6bcfb0842c5b812911bf01b0fdcdb7844d415edc3"
+    },
+    "command_counts": {
+      "current_design": 1,
+      "create_clock": 1,
+      "set_propagated_clock": 1,
+      "set_input_delay": 650,
+      "set_output_delay": 130,
+      "set_load": 130,
+      "set_input_transition": 650
+    },
+    "raw_reload_prefix": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/three-corner-reload-prefix.log",
+      "bytes": 30201,
+      "sha256": "bbf842333995949428bc06b7a9e37981cefc390fcdc21b34d1896688e481c588"
+    },
+    "source_route_script": {
+      "path": "/dev/shm/nssoc-tx-path-v3-drt-01/route.tcl",
+      "bytes": 1812,
+      "sha256": "b32eb52f0d44f1c56c3e2dc4c0372fe5545a824e35f7d6cca43648a96f7447da"
+    },
+    "original_route_log": {
+      "path": "/dev/shm/nssoc-tx-path-v3-drt-01/route.log",
+      "bytes": 31485,
+      "sha256": "56da8eda576e82e13d41c8cf5c56a6b68cd23ab89d443e82c336329cf1520256"
+    },
+    "electrical_report_has_no_violators": true
+  },
+  "physical_source": [
+    {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.v",
+      "bytes": 3474338,
+      "sha256": "a5ae6777909d9538d600d00ef6829ec46aef3d7c2220fcdaa12cd4cfc5bece85"
+    },
+    {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.odb",
+      "bytes": 29531603,
+      "sha256": "bd3bf5c4280b0df7400c02b8f9384ecb57e7fc658073c61fa340567b51d885ce"
+    },
+    {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.sdc",
+      "bytes": 124170,
+      "sha256": "aca9017f558d4746d16736e6bcfb0842c5b812911bf01b0fdcdb7844d415edc3"
+    }
+  ],
+  "initial_attempts": [
+    "Native Liberty import first stopped on unused sg13g2_lgcp_1 missing int_GATE function. Retried with ignore_miss_func; hierarchy/check plus strict complete primitive census proves no used model was omitted.",
+    "First state-name comparison stopped on69 resized-cell internal model suffixes. State map now uses exact unique native instance path, while requiring identical native FF/reset semantics.",
+    "Commutative-only expression grouping left2158 residual targets. Standard Boolean associativity proved all6604 boundaries; this was structural incompleteness, not a circuit counterexample."
+  ],
+  "limits": [
+    "Binary functional equivalence under the explicit bijective state relation; not four-state X/glitch or analog delay equivalence.",
+    "Recorded3-case specify-model simulation independently hash/XML checked, not rerun by reviewer; no SDF.",
+    "Three-corner timing reloaded from exact repaired ODB/SDC uses global-route estimated RC and development4ns constraints, not signoff extracted RC.",
+    "No DRT completion, DRC/LVS, full PHY or main-chip qualification claimed."
+  ],
+  "review_sources": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/normalize.py",
+      "bytes": 1922,
+      "sha256": "b36f83f474b808bd430e3fc928d423f46e461bfbf1b386dbb6de29f1a52b5d25"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/compare.py",
+      "bytes": 5546,
+      "sha256": "207367bf08924f26f2a49d9b5ffd483ea9953000e9a79c6a17fc55c57cec0e83"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/mutations.py",
+      "bytes": 2683,
+      "sha256": "dbaeab4f5076d0c06912c9e9303adb0dee8b120a4482d2b202df39ff6312a403"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/seal.py",
+      "bytes": 8194,
+      "sha256": "f61021a273efb619ce7f0eb899ed6d731933c172d8b1ca5f2640ad24bce2d075"
+    }
+  ],
+  "capsule_members": {
+    "native-functions/mutation-controls.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/mutation-controls.json",
+      "bytes": 2341,
+      "sha256": "6849c4a57f5493f66498498dd92fcb5eabea3067cd7f8f1f3abd4d4ae05038a2"
+    },
+    "native-functions/mutation-controls.log": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/mutation-controls.log",
+      "bytes": 2341,
+      "sha256": "6849c4a57f5493f66498498dd92fcb5eabea3067cd7f8f1f3abd4d4ae05038a2"
+    },
+    "native-functions/structural-incomplete-before-associativity.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/structural-incomplete-before-associativity.json",
+      "bytes": 72215,
+      "sha256": "7d0d6685de25e5c3692ed1267d7d10e22ee5890c8c7763468df4f92c182f2474"
+    },
+    "native-functions/equivalence.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/equivalence.json",
+      "bytes": 1098,
+      "sha256": "c0b5882827e0965b4a1deee43fcdca80a0621076cc1ed9dc19f18c6d596da9a3"
+    },
+    "native-functions/gate.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gate.json",
+      "bytes": 84625202,
+      "sha256": "45f9f7058541ca121bbc5ea660aff1c488a7c450829b8a6b543854fdc98119ec"
+    },
+    "native-functions/gate.log": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gate.log",
+      "bytes": 10012,
+      "sha256": "aa89d8afae16e5901559603b797c2fcdd0c7ca5f01c74f79d81b6c6bf7126f4e"
+    },
+    "native-functions/gate.ys": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gate.ys",
+      "bytes": 417,
+      "sha256": "4096c4febaea95d03e584f0de8a33d84d5a35a5cce3ee04304bb801a96bcdc12"
+    },
+    "native-functions/normalization.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/normalization.json",
+      "bytes": 1714,
+      "sha256": "3c24a9c4892d919f714a643c44d3ddbc08a7979b6d08c384209b19f835c3631a"
+    },
+    "native-functions/gold.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gold.json",
+      "bytes": 75166296,
+      "sha256": "e1bf64eedc8e861299ad22fa878503205c5b2d27e1e4bb4d7b9d5df96cfeb1a7"
+    },
+    "native-functions/gold.log": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gold.log",
+      "bytes": 8566,
+      "sha256": "044ac80d580cb674ccb702ebc5f3009675d3c31be635e1a82713a7a293779626"
+    },
+    "native-functions/gold.ys": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer-02/gold.ys",
+      "bytes": 414,
+      "sha256": "8b2045d4842af441dd08fd4bbd869257a30289e3b4158f270bf75dc34d7f335c"
+    },
+    "review/normalize.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/normalize.py",
+      "bytes": 1922,
+      "sha256": "b36f83f474b808bd430e3fc928d423f46e461bfbf1b386dbb6de29f1a52b5d25"
+    },
+    "review/normalize-initial.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/normalize-initial.py",
+      "bytes": 1812,
+      "sha256": "2eb16698d734099aa95c05992e01491d2d085216473b7ad3bb23a5f054510406"
+    },
+    "review/compare.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/compare.py",
+      "bytes": 5546,
+      "sha256": "207367bf08924f26f2a49d9b5ffd483ea9953000e9a79c6a17fc55c57cec0e83"
+    },
+    "review/compare-initial.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/compare-initial.py",
+      "bytes": 4552,
+      "sha256": "67035b25ce099d49c774164f49ad98e3252cb62981cbd05def62f2cc71091f65"
+    },
+    "review/mutations.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/mutations.py",
+      "bytes": 2683,
+      "sha256": "dbaeab4f5076d0c06912c9e9303adb0dee8b120a4482d2b202df39ff6312a403"
+    },
+    "review/seal.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/seal.py",
+      "bytes": 8194,
+      "sha256": "f61021a273efb619ce7f0eb899ed6d731933c172d8b1ca5f2640ad24bce2d075"
+    },
+    "review/state-map.json": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/state-map.json",
+      "bytes": 160490,
+      "sha256": "52b560dc32be95affb3d127d410b00695054671f0aad8465e056e3db51269a4d"
+    },
+    "review/three-corner-reload-prefix.log": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/three-corner-reload-prefix.log",
+      "bytes": 30201,
+      "sha256": "bbf842333995949428bc06b7a9e37981cefc390fcdc21b34d1896688e481c588"
+    },
+    "physical-port-replay/result.json": {
+      "path": "/dev/shm/nssoc-tx-path-v3-physical-replay-01/result.json",
+      "bytes": 3702,
+      "sha256": "fff061dc1e22070098ced8b5224ba998c0a28ab7138ac358b8ebb1c0819c1fc4"
+    },
+    "physical-port-replay/simulation.log": {
+      "path": "/dev/shm/nssoc-tx-path-v3-physical-replay-01/simulation.log",
+      "bytes": 34420,
+      "sha256": "8909957a15174370d3f4cbf130884526935520cd5934cb592241399b30158532"
+    },
+    "physical-port-replay/results.xml": {
+      "path": "/dev/shm/nssoc-tx-path-v3-physical-replay-01/results.xml",
+      "bytes": 1003,
+      "sha256": "6e18cd280360c5462da578a2c2561c138b11204cbd073f97dff774ea8d052b5c"
+    },
+    "physical/repair.tcl": {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repair.tcl",
+      "bytes": 2023,
+      "sha256": "e295e99c222cfee112f61405b34dd827a2267e789387788df5433e386dfef77d"
+    },
+    "physical/repair.log": {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repair.log",
+      "bytes": 32525,
+      "sha256": "e5c16abfb70cccc2d5d29334a6c5fbe762b6de94bbee6b4a26b1adef5f32f580"
+    },
+    "physical/repaired.sdc": {
+      "path": "/dev/shm/nssoc-tx-path-v3-final-repair-01/repaired.sdc",
+      "bytes": 124170,
+      "sha256": "aca9017f558d4746d16736e6bcfb0842c5b812911bf01b0fdcdb7844d415edc3"
+    },
+    "history/liberty-import-failure.log": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer/gold.log",
+      "bytes": 828,
+      "sha256": "2f99b42dd280aa85c88d894b3bf3430fe50465750ec0fe841c8dc566a8b297de"
+    },
+    "history/liberty-import-failure.json": {
+      "path": "/dev/shm/nssoc-txv3-physical-equivalence-peer/normalization.json",
+      "bytes": 1435,
+      "sha256": "7860275ae6211442d0890405325572b332f761982160b9eb683750f3c89cbc63"
+    },
+    "LICENSES/Apache-2.0.txt": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/LICENSES/Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v3-20261004/physical-peer/physical-function-proof.tar.xz",
+    "bytes": 3558152,
+    "sha256": "c4c91888e744c7784581efab14a01de9f5a626bc502c2b53e485733ce54a1e01"
+  }
+}

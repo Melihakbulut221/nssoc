@@ -1,0 +1,6282 @@
+{
+  "status": "PASS_ISOLATED_NATIVE_ESD_GEOMETRY_AND_TERMINALS_ONLY",
+  "sources": {
+    "scripts/patch_magic_esd_v1.py": {
+      "bytes": 5641,
+      "sha256": "c8d6b59e8fad9015f7a846605468d760d0106ef071f6131e5bccc08bed4240e2"
+    },
+    "scripts/make_magic_esd_fixture_v1.py": {
+      "bytes": 5992,
+      "sha256": "d20ba0b955d2f377f743e369b344f063f3797b742ab497104f42c78f5a9af1d1"
+    },
+    "scripts/check_magic_esd_v1.py": {
+      "bytes": 14187,
+      "sha256": "60d3633b9ce0faf74b2c8dc77ccf589da3e6527e0863c09f11224a76e633494d"
+    },
+    "scripts/audit_magic_esd_geometry_v1.py": {
+      "bytes": 4249,
+      "sha256": "c36ed1f80c6a33805a9f6d5613956de8bcb8c3da0df71e938222d3f12cc9a30b"
+    },
+    "sw/tests/test_magic_esd_v1.py": {
+      "bytes": 6731,
+      "sha256": "3a36223860ce31c6d5199aeb4019ecd44e969381ff4f61dbca04aea8cb00f22b"
+    }
+  },
+  "native": {
+    "status": "PASS_ISOLATED_NATIVE_ESD_CONTROLS",
+    "cases": {
+      "nominal": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/nominal/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 2.2574418100120965,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "0f3700e6269e7c20a9a7580df50dfd7a9a22d48e4a43edb708def0098b18af45"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/fixture.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/nominal/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 6.366835246008122,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "PASS_ISOLATED_NATIVE_ESD_GEOMETRY_AND_TERMINALS",
+          "count": 32,
+          "ports": 65,
+          "native_grid_um": "0.005",
+          "devices": [
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD00",
+                "PAD00",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD01",
+                "PAD01",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD02",
+                "PAD02",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD03",
+                "PAD03",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD04",
+                "PAD04",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD05",
+                "PAD05",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD06",
+                "PAD06",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD07",
+                "PAD07",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD08",
+                "PAD08",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD09",
+                "PAD09",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD10",
+                "PAD10",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD11",
+                "PAD11",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD12",
+                "PAD12",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD13",
+                "PAD13",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD14",
+                "PAD14",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD15",
+                "PAD15",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD16",
+                "PAD16",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD17",
+                "PAD17",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD18",
+                "PAD18",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD19",
+                "PAD19",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD20",
+                "PAD20",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD21",
+                "PAD21",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD22",
+                "PAD22",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD23",
+                "PAD23",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD24",
+                "PAD24",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD25",
+                "PAD25",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD26",
+                "PAD26",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD27",
+                "PAD27",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD28",
+                "PAD28",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD29",
+                "PAD29",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD30",
+                "PAD30",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD31",
+                "PAD31",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            }
+          ],
+          "full_bank_qualified": false,
+          "qualified_pex": false,
+          "esd_stress_qualified": false,
+          "raw_geometry_annotations_are_not_compact_model_parameters": true,
+          "requested_preimport_grid_um": "0.005",
+          "import_refined_to_preserve_native_5nm_coordinates": false,
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30946,
+            "sha256": "e8e2a70f75960012e495de46c257ffb6f28970df9959286e90184e7005437c30"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2237,
+            "sha256": "22311664cb62a61f3a367bb9a9d9c3d6b4e751919ffa01642281dbdbd8b51868"
+          },
+          "esd_flat.ext": {
+            "bytes": 13610,
+            "sha256": "0886b92f6612fc33e88e93f8367bb7ff72cc35b4b274936c53dc4c8411c4edc1"
+          },
+          "esd_flat.mag": {
+            "bytes": 5365392,
+            "sha256": "65601035230e834bd00b0525596d971369c1bbffe715050e7239ce538b7b33ac"
+          },
+          "native.log": {
+            "bytes": 11268,
+            "sha256": "0f3700e6269e7c20a9a7580df50dfd7a9a22d48e4a43edb708def0098b18af45"
+          },
+          "native.tcl": {
+            "bytes": 11714,
+            "sha256": "a51017fea597841acc961d89868c9aa1ed6f0dc3e142d24c428291886d2a93e9"
+          }
+        }
+      },
+      "initial_10nm": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/initial_10nm/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.6369826649897732,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "ea6beca5234f55bb3891bdeefa5623cc8ad79049367508c4466aa71de26223c1"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/fixture.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/initial_10nm/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 4.949500881019048,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "PASS_ISOLATED_NATIVE_ESD_GEOMETRY_AND_TERMINALS",
+          "count": 32,
+          "ports": 65,
+          "native_grid_um": "0.005",
+          "devices": [
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD00",
+                "PAD00",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD01",
+                "PAD01",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD02",
+                "PAD02",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD03",
+                "PAD03",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD04",
+                "PAD04",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD05",
+                "PAD05",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD06",
+                "PAD06",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD07",
+                "PAD07",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD08",
+                "PAD08",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD09",
+                "PAD09",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD10",
+                "PAD10",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD11",
+                "PAD11",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD12",
+                "PAD12",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD13",
+                "PAD13",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD14",
+                "PAD14",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevdd_2kv",
+              "terminals": [
+                "VDD15",
+                "PAD15",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD16",
+                "PAD16",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD17",
+                "PAD17",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD18",
+                "PAD18",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD19",
+                "PAD19",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD20",
+                "PAD20",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD21",
+                "PAD21",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD22",
+                "PAD22",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD23",
+                "PAD23",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD24",
+                "PAD24",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD25",
+                "PAD25",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD26",
+                "PAD26",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD27",
+                "PAD27",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD28",
+                "PAD28",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD29",
+                "PAD29",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD30",
+                "PAD30",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            },
+            {
+              "model": "diodevss_2kv",
+              "terminals": [
+                "VDD31",
+                "PAD31",
+                "SUB"
+              ],
+              "area_um2": "35.0028",
+              "perimeter_um": "58.08"
+            }
+          ],
+          "full_bank_qualified": false,
+          "qualified_pex": false,
+          "esd_stress_qualified": false,
+          "raw_geometry_annotations_are_not_compact_model_parameters": true,
+          "requested_preimport_grid_um": "0.010",
+          "import_refined_to_preserve_native_5nm_coordinates": true,
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30946,
+            "sha256": "e8e2a70f75960012e495de46c257ffb6f28970df9959286e90184e7005437c30"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2237,
+            "sha256": "22311664cb62a61f3a367bb9a9d9c3d6b4e751919ffa01642281dbdbd8b51868"
+          },
+          "esd_flat.ext": {
+            "bytes": 13578,
+            "sha256": "2beb4a52f44108e8f3f0bd3bfc3adc871e8d18dabbccd0fe04bc48107475b7e1"
+          },
+          "esd_flat.mag": {
+            "bytes": 5371508,
+            "sha256": "8e740398f6c0aeaea62be68b9ec4b4342138e4bb65bc770f9e7b3e5eb2ffe8b1"
+          },
+          "native.log": {
+            "bytes": 11341,
+            "sha256": "ea6beca5234f55bb3891bdeefa5623cc8ad79049367508c4466aa71de26223c1"
+          },
+          "native.tcl": {
+            "bytes": 11719,
+            "sha256": "d3716d03fb087f2c95ca6b12b2b19b17c1d719531d582d7bd7a476e5b3e947f8"
+          }
+        }
+      },
+      "width_vdd": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/width_vdd/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.5421996030199807,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "f33370cb5821423120be63938b3bad9a13462b49e6a969f20549c8356fdfbcbc"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/width_vdd.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/width_vdd/geometry.json"
+          ],
+          "returncode": 1,
+          "seconds": 5.434590630989987,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Measured native 2-kV emitter geometry differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Measured native 2-kV emitter geometry differs"
+          },
+          "mask_status": "FAIL_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30804,
+            "sha256": "460324290ca2c6600bfde30b12e160092a8815fbe924c52a861070775e5732be"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2237,
+            "sha256": "f4116a86544cb8d0b413d55b3c651b46879b76f2de36d2d08cf31a1f0ad12103"
+          },
+          "esd_flat.ext": {
+            "bytes": 13610,
+            "sha256": "a89a9c19bd267e452ae9f6d70f0bf4ad120b6b48921d66a51761a2325df73c02"
+          },
+          "esd_flat.mag": {
+            "bytes": 5363207,
+            "sha256": "1441674ec4ba873844aeb12c94ed55db4d09837e1b5c8bbbe5e11a8e889f7b0f"
+          },
+          "native.log": {
+            "bytes": 11346,
+            "sha256": "f33370cb5821423120be63938b3bad9a13462b49e6a969f20549c8356fdfbcbc"
+          },
+          "native.tcl": {
+            "bytes": 11718,
+            "sha256": "a95f725f54ea90df5f4e2cd2b7978c0e262cecf08fbd646c98d9284afd34660f"
+          }
+        }
+      },
+      "width_vss": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/width_vss/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.5175046990043484,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "66f316de94a5d1d43629df022d81d64697b0f1c0ad8f87ec1d24bd28cefb842d"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/width_vss.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/width_vss/geometry.json"
+          ],
+          "returncode": 1,
+          "seconds": 5.858919830992818,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Measured native 2-kV emitter geometry differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Measured native 2-kV emitter geometry differs"
+          },
+          "mask_status": "FAIL_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30804,
+            "sha256": "8ffc0819c4256ccd5a595601348bdb10346f05ccd13421acff08c502ab18d96c"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2237,
+            "sha256": "c00ade2d846e3e29668f1e0528768d6b51c4369cfca781a418b5556521ea30ec"
+          },
+          "esd_flat.ext": {
+            "bytes": 13608,
+            "sha256": "12150bd5b40662298d1a8ed8aabc700e3d62852fe6fff59ced50b76a44e2d8b9"
+          },
+          "esd_flat.mag": {
+            "bytes": 5363170,
+            "sha256": "f0314e08046fe7a62fc06c205bf547a5fd6d768eb25b2806b80f2dcc5868886e"
+          },
+          "native.log": {
+            "bytes": 11328,
+            "sha256": "66f316de94a5d1d43629df022d81d64697b0f1c0ad8f87ec1d24bd28cefb842d"
+          },
+          "native.tcl": {
+            "bytes": 11718,
+            "sha256": "3734199e34997df2f2b572480d645272e0f59427fba8af46da7b1398baef5d70"
+          }
+        }
+      },
+      "removed_device": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/removed_device/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.8267446029931307,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "5e58082e3398f44134aeedffe44fa38089d1d00030bf3c4b500307d1fbf10b92"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/removed_device.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/removed_device/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.926392698020209,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Exact native ESD device inventory differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Exact native ESD device inventory differs"
+          },
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30671,
+            "sha256": "874d5227b577bad6710dc3f3ea505b5665d422f4b2dc4bea4e5d2c0d6c754aff"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2182,
+            "sha256": "9e0dbe17ea35cea5a638e0d7bd81c12e11c35b4396734789672dc758fcf28588"
+          },
+          "esd_flat.ext": {
+            "bytes": 13643,
+            "sha256": "6300c4291e69cf392b65a1b4519acca6419b69ead9cfa9492763f170d75ca47e"
+          },
+          "esd_flat.mag": {
+            "bytes": 5176731,
+            "sha256": "066cbd5a2622cd60c53f07f4cafad4135e0e49147a677ae63736f7920e40beb2"
+          },
+          "native.log": {
+            "bytes": 10990,
+            "sha256": "5e58082e3398f44134aeedffe44fa38089d1d00030bf3c4b500307d1fbf10b92"
+          },
+          "native.tcl": {
+            "bytes": 11728,
+            "sha256": "22c71fb5dd0530efc44f8da759f145856e61508dce426df37c093ba3d33a4cac"
+          }
+        }
+      },
+      "pad_open": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/pad_open/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.7283742949948646,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "d89851b9d3ed53aebce4b0b616d5f0925f3e672afbee67589a9dcbad4b0ea204"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/pad_open.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/pad_open/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 6.082841349008959,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Native emitter connection differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Native emitter connection differs"
+          },
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30947,
+            "sha256": "bc8dae93a345a510426c06c442a885ab77c6c139297e5e66aaa711ffbd1b8b57"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2246,
+            "sha256": "f8833ba2be0f47cfcc7342576839d71c2d22037616d6045aecb2cc27c8b81766"
+          },
+          "esd_flat.ext": {
+            "bytes": 13794,
+            "sha256": "aadf8fc267b145c6f6f3dbb599d11d6b254f91836ffdb79fbd5a671beea944cd"
+          },
+          "esd_flat.mag": {
+            "bytes": 5350733,
+            "sha256": "70954618c9ace078bdb334a9c069e2c58328c4edf8313a68d008b4c810c625c7"
+          },
+          "native.log": {
+            "bytes": 11340,
+            "sha256": "d89851b9d3ed53aebce4b0b616d5f0925f3e672afbee67589a9dcbad4b0ea204"
+          },
+          "native.tcl": {
+            "bytes": 11716,
+            "sha256": "9379d05088ef1744478a747c1079e6a11b57f55e6616b2fa4950dff27984fc96"
+          }
+        }
+      },
+      "pad_short": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/pad_short/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 2.032225922012003,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "7f12450d839817145c6e5a4e0e267d142a82278bee6256299ea43b504f920a67"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/pad_short.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/pad_short/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 6.0578541469876654,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Exact ESD port inventory differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Exact ESD port inventory differs"
+          },
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30948,
+            "sha256": "dcb759a37fb62e9ab301a15d28e5ac8f9774d6814d58917f400844a0176a8fe2"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2231,
+            "sha256": "b4fe07728fbecb8582d24ede311c80adb065391664ab3dd24b2733406c0842df"
+          },
+          "esd_flat.ext": {
+            "bytes": 13503,
+            "sha256": "352bcbcd48986f6596462a1b1869e47d0cdadbe11b1c37a872ac6a7322715a3e"
+          },
+          "esd_flat.mag": {
+            "bytes": 5365527,
+            "sha256": "3fcb25cae0ca71d4b3ee428b47fc447189d19f69095e04172e37c6d5aec55647"
+          },
+          "native.log": {
+            "bytes": 11470,
+            "sha256": "7f12450d839817145c6e5a4e0e267d142a82278bee6256299ea43b504f920a67"
+          },
+          "native.tcl": {
+            "bytes": 11718,
+            "sha256": "6f48f6c999397d2b3b9914a4d6b614b20d3b46289217fece523742b91545ba03"
+          }
+        }
+      },
+      "collector_open": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/collector_open/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.8007884570106398,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "42bf227e2fd6598c038bcc25eb8342f0dcbf677d6603bf40db5806fdaeb4171c"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/collector_open.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/collector_open/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.709601585986093,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Native ordered ESD terminal/model differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Native ordered ESD terminal/model differs"
+          },
+          "mask_status": "PASS_FIXED_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30953,
+            "sha256": "7ba43a94a8c8714e1c2cd7315ed81c3a964467141c8dc41a61644ef37dcdaf95"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2254,
+            "sha256": "f677155e38aee067259321b127f4ca1792cc18b396c8733fbc323be3d6668376"
+          },
+          "esd_flat.ext": {
+            "bytes": 13779,
+            "sha256": "bb870cbc0ad7507e981bcb37613b7f2db86bf0680d6fa3f18348871aa49a5fc2"
+          },
+          "esd_flat.mag": {
+            "bytes": 5321778,
+            "sha256": "d406d29c48d98942a1354f4bcdf0eb575b320ba58f31940a725a72055d63a939"
+          },
+          "native.log": {
+            "bytes": 11353,
+            "sha256": "42bf227e2fd6598c038bcc25eb8342f0dcbf677d6603bf40db5806fdaeb4171c"
+          },
+          "native.tcl": {
+            "bytes": 11728,
+            "sha256": "6eb40ecf78a77bbf80c379b106dfe190ccb25ab4b2e55a90f86cdbe30d566418"
+          }
+        }
+      },
+      "excluded_geometry": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/excluded_geometry/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.6455105300119612,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "071c7b8324d6f0ad136ab72a0314b21f595fc36649ae587dc5609a0ed9a74cc9"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/excluded_geometry.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/excluded_geometry/geometry.json"
+          ],
+          "returncode": 1,
+          "seconds": 5.649506933987141,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Exact native ESD device inventory differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Exact native ESD device inventory differs"
+          },
+          "mask_status": "FAIL_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30781,
+            "sha256": "f0b1adc6d4dfc52b0578942b3858ab6412fe050002f2964ba523fc25b93febf9"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2182,
+            "sha256": "9e0dbe17ea35cea5a638e0d7bd81c12e11c35b4396734789672dc758fcf28588"
+          },
+          "esd_flat.ext": {
+            "bytes": 13517,
+            "sha256": "6629f31cc17e7ac7d885815f5e9e85569527c3d4e1815de1a2bcfa73964eef2c"
+          },
+          "esd_flat.mag": {
+            "bytes": 5365443,
+            "sha256": "d8f9cc49fc36926fd1619f7d54aa91cc5998cb916c584ad5d9ba40935b451228"
+          },
+          "native.log": {
+            "bytes": 11330,
+            "sha256": "071c7b8324d6f0ad136ab72a0314b21f595fc36649ae587dc5609a0ed9a74cc9"
+          },
+          "native.tcl": {
+            "bytes": 11734,
+            "sha256": "023bf2dab94f715679f7c99257fa7c0c0cbe4f4eab8a0496d9e1e7f6d868485b"
+          }
+        }
+      },
+      "well_split": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-native-final05/well_split/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 1.5661940419813618,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "a06154e64afa02730342b58c97c972f38484b158490dd87741d7e203b785b3e6"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py",
+            "--pdk",
+            "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+            "--gds",
+            "/dev/shm/nssoc-magic-esd-fixture-final02/well_split.gds",
+            "--top",
+            "nssoc_esd_fixture",
+            "--out",
+            "/dev/shm/nssoc-magic-esd-native-final05/well_split/geometry.json"
+          ],
+          "returncode": 1,
+          "seconds": 4.810634445020696,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "outcome": {
+          "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+          "reason": "Native emitter connection differs",
+          "native": {
+            "status": "FAIL_NATIVE_GRAPH_OR_GEOMETRY",
+            "reason": "Native emitter connection differs"
+          },
+          "mask_status": "FAIL_NATIVE_ESD_MASKS"
+        },
+        "outputs": {
+          "geometry.json": {
+            "bytes": 30805,
+            "sha256": "e30305789483f9a04c22b1bbc693dbc3519fa3128547106a4e2decde7383791d"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "esd.spice": {
+            "bytes": 2256,
+            "sha256": "4f7e82cfd02ff519844d1d4565c56cf5c87686f2a1cece31daee4133680ef147"
+          },
+          "esd_flat.ext": {
+            "bytes": 13728,
+            "sha256": "6787c70d914fb76a1b0a258e4ed18ac5c9f383be47f4ea7a3a73c73dc4c10a36"
+          },
+          "esd_flat.mag": {
+            "bytes": 5365320,
+            "sha256": "03cf259183ea356e7a5c229e7cbcb87d0d7ce303313b2f87db75b16e6191a97a"
+          },
+          "native.log": {
+            "bytes": 11333,
+            "sha256": "a06154e64afa02730342b58c97c972f38484b158490dd87741d7e203b785b3e6"
+          },
+          "native.tcl": {
+            "bytes": 11720,
+            "sha256": "e28a1ac33a92c39e7093b943979c36e9307f4e88837b9f8c066d9a446ec00d90"
+          }
+        }
+      }
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_esd_v1.py": {
+        "bytes": 14187,
+        "sha256": "60d3633b9ce0faf74b2c8dc77ccf589da3e6527e0863c09f11224a76e633494d"
+      },
+      "/dev/shm/nssoc-magic-esd-fixture-final02/result.json": {
+        "bytes": 42403,
+        "sha256": "eb381dccd6fe64a91f54bd3debc5cc035a62e6fa3b3e09ccb69897ed1af554d8"
+      },
+      "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/tclmagic.so": {
+        "bytes": 7192200,
+        "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/generate_seal.py": {
+        "bytes": 8333,
+        "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/sealring_corner.tcl": {
+        "bytes": 10481,
+        "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_4.tcl": {
+        "bytes": 44814,
+        "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-dio.tcl": {
+        "bytes": 18704,
+        "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tech": {
+        "bytes": 22066,
+        "sha256": "43e70494deef0d5c2e4ca182171c5da36b817ead2a5ac677b3528a8d3ab7fffa"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/result.json": {
+        "bytes": 11789,
+        "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/sealring_side.tcl": {
+        "bytes": 2765,
+        "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/README.md": {
+        "bytes": 16038,
+        "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-via.tcl": {
+        "bytes": 18281,
+        "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-util.tcl": {
+        "bytes": 24078,
+        "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/RELEASE_NOTES.md": {
+        "bytes": 3046,
+        "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevss_4kv.tcl": {
+        "bytes": 13124,
+        "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cap.tcl": {
+        "bytes": 24173,
+        "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifin.tech": {
+        "bytes": 25647,
+        "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fix.tcl": {
+        "bytes": 18632,
+        "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/scr1.tcl": {
+        "bytes": 6125,
+        "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_4kv.tcl": {
+        "bytes": 12976,
+        "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/check_density.py": {
+        "bytes": 30920,
+        "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-var.tcl": {
+        "bytes": 12675,
+        "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-ind.tcl": {
+        "bytes": 11435,
+        "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fet.tcl": {
+        "bytes": 49145,
+        "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/generate_fill.py": {
+        "bytes": 21919,
+        "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tcl": {
+        "bytes": 12311,
+        "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_2.tcl": {
+        "bytes": 25005,
+        "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-misc.tcl": {
+        "bytes": 9486,
+        "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-res.tcl": {
+        "bytes": 43089,
+        "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/schottky_nbl1.tcl": {
+        "bytes": 4876,
+        "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-drc.tech": {
+        "bytes": 41275,
+        "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevss_2kv.tcl": {
+        "bytes": 11047,
+        "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-extract.tech": {
+        "bytes": 23655,
+        "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-pad.tcl": {
+        "bytes": 8297,
+        "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc": {
+        "bytes": 2578,
+        "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-bjt.tcl": {
+        "bytes": 22805,
+        "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifout.tech": {
+        "bytes": 45968,
+        "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-GDS.tech": {
+        "bytes": 32758,
+        "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_2kv.tcl": {
+        "bytes": 9247,
+        "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_hbt_multiplicity_v3.py": {
+        "bytes": 11123,
+        "sha256": "2b2c662c8df4dfc9932efa9ce4de784807a095665186f9e29a2f5f435ecc1474"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_rx_cell.py": {
+        "bytes": 12767,
+        "sha256": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_esd_geometry_v1.py": {
+        "bytes": 4249,
+        "sha256": "c36ed1f80c6a33805a9f6d5613956de8bcb8c3da0df71e938222d3f12cc9a30b"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": {
+        "bytes": 1398053408,
+        "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+      }
+    },
+    "qualification": false
+  },
+  "klayout": {
+    "status": "PASS within comparison scope",
+    "top": "nssoc_esd_fixture",
+    "reasons": [],
+    "extraction_diagnostics": [],
+    "circuit_status_counts": {
+      "Match": 1
+    },
+    "circuits": [
+      {
+        "layout": "nssoc_esd_fixture",
+        "schematic": "NSSOC_ESD_FIXTURE",
+        "status": "Match",
+        "layout_devices_recursive": 32,
+        "schematic_devices_recursive": 32
+      }
+    ],
+    "inputs": {
+      "/dev/shm/nssoc-magic-esd-klayout-final02/fixture/result.lvsdb": {
+        "bytes": 2218114,
+        "sha256": "618f9b053171fcf09df712f92be15551e9a7cc472642d8fa7a182a0c16be7687"
+      },
+      "/dev/shm/nssoc-magic-esd-klayout-final02/fixture/deck.log": {
+        "bytes": 36985,
+        "sha256": "4a7269810364556e160038e3c5a7b213ca5d5b33211fb4f2366e2b586a5cd212"
+      }
+    }
+  },
+  "prior_klayout_results": {
+    "fixture": 0,
+    "removed_device": 1,
+    "pad_open": 1,
+    "pad_short": 1,
+    "collector_open": 1,
+    "width_vdd": 0
+  },
+  "prior_geometry_bridge": {
+    "status": "PASS_ALL_PRIOR_GDS_MASKS_UNCHANGED",
+    "cases": {
+      "interact.gds": {
+        "before_sha256": "7b0c50481ad5c8c62b62f4e880a8de4187c2bae711d8779e4675987dfb148e8a",
+        "after_sha256": "5895e6a312e8408f32135cad06dc49ace71b0b7b1362a775648893dbea6852f5",
+        "layers_checked": [
+          [
+            200,
+            0
+          ],
+          [
+            201,
+            0
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "excluded_geometry.gds": {
+        "before_sha256": "09edae6775f9768a3d1ca3275d71714eba12b5f4deb19dc58f646b09c3bf0470",
+        "after_sha256": "18c692cb643a49c00a51eefc9efa746e2c041721805bbc47ce216ceef02b9630",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ],
+          [
+            111,
+            0
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "collector_open.gds": {
+        "before_sha256": "f6fdbb6e615f74e3b209d945e03ea8a08a7d1ea4f91f2599ae4a1d27f403c3be",
+        "after_sha256": "e154668b5bf8920845c44f56775b12fca6c588a472778094f29e813336dd47d6",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "pad_short.gds": {
+        "before_sha256": "33d59568d946ecc5a17eb3712247626cdad48516d8acf0484a1aa1daf7289562",
+        "after_sha256": "ed78a71219ac41e5a93ac50d89ab0541b1619558b53d6273b1b586808aa404cc",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "pad_open.gds": {
+        "before_sha256": "2fe4a65d77e0161ca1c40b830cd592856942cac7501aa62f8d28adf32d8a9635",
+        "after_sha256": "67b9209e74ebd391fb4db4d8ae28158be815c90a80c67a7ddb2f4244049c53e8",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "removed_device.gds": {
+        "before_sha256": "0327c8b5f714f8373399df882b5f3260b2ddf0f6459dfa081cf6a8a7b3942939",
+        "after_sha256": "cc3b394bc7b55292e7d3acc66575e3e3c8b95dbb5fb9f0d8b176c1097749ef74",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "width_vss.gds": {
+        "before_sha256": "7db66ccde6da2bafbe9415d47cca3a63ddf6d81e9ffb6141039256dc5865a78f",
+        "after_sha256": "f6bee76fbb5a0d61c3f639912ecf7f7ba05cc26d74b1c761b74f6790bc8bea3e",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "width_vdd.gds": {
+        "before_sha256": "e9d528ccec50fbac3362e84590ba05f7ae82a883bbad2bbd962b4ab414c4cf21",
+        "after_sha256": "a1fbeea403563ffabe7c2c2feb3ee2bb3b78cd8b055c026d4f7b730dae9f6d60",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      },
+      "fixture.gds": {
+        "before_sha256": "1adace1c03f0664ae87d2fde77c2ee612115fcbef9b6a1aac906c6b251a590f8",
+        "after_sha256": "c788f875ead2daa628b06629d923677e9cc8d5b9be9927641faceb2ac4b6e132",
+        "layers_checked": [
+          [
+            1,
+            0
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            8,
+            0
+          ],
+          [
+            8,
+            2
+          ],
+          [
+            8,
+            25
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            2
+          ],
+          [
+            10,
+            25
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            19,
+            0
+          ],
+          [
+            31,
+            0
+          ],
+          [
+            63,
+            0
+          ],
+          [
+            99,
+            30
+          ]
+        ],
+        "all_actual_geometry_xor_zero": true
+      }
+    },
+    "method_sha256": "fe26d91b61b73cd0f012c1c1f2189d23cc56d5007b92eca2a45bdad3ad1638b5"
+  },
+  "operator_controls": {
+    "status": "PASS_ACTUAL_NATIVE_OPERATOR_REGRESSION",
+    "method": {
+      "bytes": 2441,
+      "sha256": "c2a974fac10fcbb044e1fa68d07988c9ec4ff5c64e99d2d891f5661a91b4e457"
+    },
+    "reader": {
+      "bytes": 14187,
+      "sha256": "60d3633b9ce0faf74b2c8dc77ccf589da3e6527e0863c09f11224a76e633494d"
+    },
+    "cases": {
+      "unfixed": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-parser-build-01/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-parser-build-01/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-operator-final04/tech/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-operator-final04/unfixed/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.4230673910060432,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "924e12d911fc99931f2c9c570a41292557c90925c923767dca20005f1e2823a9"
+        },
+        "assessment": {
+          "status": "REJECTED_REAL_UPSTREAM_EMPTY_COPY",
+          "reason": "Native interaction copied an empty region"
+        },
+        "runtime": {
+          "bytes": 7192232,
+          "sha256": "6e3b55db1b4835dae163d514edcacc8dfbf5157ccd7a31d8520e9c1bbc8b21e5"
+        },
+        "outputs": {
+          "interact_probe.mag": {
+            "bytes": 97,
+            "sha256": "72f48fe8e38b4d266716f5f5e765b8e2aa5d597ebe065fd987884a79390d60c7"
+          },
+          "native.log": {
+            "bytes": 1317,
+            "sha256": "924e12d911fc99931f2c9c570a41292557c90925c923767dca20005f1e2823a9"
+          },
+          "native.tcl": {
+            "bytes": 263,
+            "sha256": "1efa60cec4d5162bd4de71aa2260777818cfdc9aa4f307c5e3f6a3833d27145b"
+          }
+        }
+      },
+      "fixed": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-operator-final04/tech/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-esd-operator-final04/fixed/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.3609361560083926,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "89d6e5254bac9562e0047d781c0835382a968e6db4aa557cf599e1e0533f979c"
+        },
+        "assessment": {
+          "status": "PASS_NATIVE_GEOMETRIC_REGION_OPERATORS",
+          "cases": [
+            "overlap",
+            "edge_touch",
+            "disjoint",
+            "entire_connected_nonrectangular_region"
+          ],
+          "reference_netlist_used": false
+        },
+        "runtime": {
+          "bytes": 7192200,
+          "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+        },
+        "outputs": {
+          "interact_probe.mag": {
+            "bytes": 250,
+            "sha256": "f0f9d062632d8335548f37329a5d8d149e0d8af3d8e1fa63d87bb7db30e16372"
+          },
+          "native.log": {
+            "bytes": 1314,
+            "sha256": "89d6e5254bac9562e0047d781c0835382a968e6db4aa557cf599e1e0533f979c"
+          },
+          "native.tcl": {
+            "bytes": 261,
+            "sha256": "b70d786cb1e161ecf142385c5451e45da143518635db26cc967fea0289667261"
+          }
+        }
+      }
+    },
+    "technology": {
+      "diodevdd_2kv.tcl": {
+        "bytes": 9247,
+        "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+      },
+      "ihp-sg13g2-GDS.tech": {
+        "bytes": 32758,
+        "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+      },
+      "ihp-sg13g2-cifout.tech": {
+        "bytes": 45968,
+        "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+      },
+      "ihp-sg13g2-bjt.tcl": {
+        "bytes": 22805,
+        "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+      },
+      "ihp-sg13g2.magicrc": {
+        "bytes": 2578,
+        "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+      },
+      "ihp-sg13g2-pad.tcl": {
+        "bytes": 8297,
+        "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+      },
+      "ihp-sg13g2-extract.tech": {
+        "bytes": 23655,
+        "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+      },
+      "diodevss_2kv.tcl": {
+        "bytes": 11047,
+        "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+      },
+      "ihp-sg13g2-drc.tech": {
+        "bytes": 41275,
+        "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+      },
+      "schottky_nbl1.tcl": {
+        "bytes": 4876,
+        "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+      },
+      "ihp-sg13g2-res.tcl": {
+        "bytes": 43089,
+        "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+      },
+      "ihp-sg13g2-misc.tcl": {
+        "bytes": 9486,
+        "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+      },
+      "nmoscl_2.tcl": {
+        "bytes": 25005,
+        "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+      },
+      "ihp-sg13g2.tcl": {
+        "bytes": 12311,
+        "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+      },
+      "generate_fill.py": {
+        "bytes": 21919,
+        "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+      },
+      "ihp-sg13g2-fet.tcl": {
+        "bytes": 49145,
+        "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+      },
+      "ihp-sg13g2-ind.tcl": {
+        "bytes": 11435,
+        "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+      },
+      "ihp-sg13g2-var.tcl": {
+        "bytes": 12675,
+        "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+      },
+      "check_density.py": {
+        "bytes": 30920,
+        "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+      },
+      "diodevdd_4kv.tcl": {
+        "bytes": 12976,
+        "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+      },
+      "scr1.tcl": {
+        "bytes": 6125,
+        "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+      },
+      "ihp-sg13g2-fix.tcl": {
+        "bytes": 18632,
+        "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+      },
+      "ihp-sg13g2-cifin.tech": {
+        "bytes": 25791,
+        "sha256": "56a822e24db0fac66dd7491f984df8ae7dda0fd625f5af22331a2c74f1cc551a"
+      },
+      "ihp-sg13g2-cap.tcl": {
+        "bytes": 24173,
+        "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+      },
+      "diodevss_4kv.tcl": {
+        "bytes": 13124,
+        "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+      },
+      "RELEASE_NOTES.md": {
+        "bytes": 3046,
+        "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+      },
+      "ihp-sg13g2-util.tcl": {
+        "bytes": 24078,
+        "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+      },
+      "ihp-sg13g2-via.tcl": {
+        "bytes": 18281,
+        "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+      },
+      "README.md": {
+        "bytes": 16038,
+        "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+      },
+      "sealring_side.tcl": {
+        "bytes": 2765,
+        "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+      },
+      "result.json": {
+        "bytes": 11789,
+        "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+      },
+      "ihp-sg13g2.tech": {
+        "bytes": 22118,
+        "sha256": "456c06c0b468924272da92c60243b7b57736947ec887f50f45a06fbaa379cde5"
+      },
+      "ihp-sg13g2-dio.tcl": {
+        "bytes": 18704,
+        "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+      },
+      "nmoscl_4.tcl": {
+        "bytes": 44814,
+        "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+      },
+      "sealring_corner.tcl": {
+        "bytes": 10481,
+        "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+      },
+      "generate_seal.py": {
+        "bytes": 8333,
+        "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+      }
+    }
+  },
+  "private_build_audit": {
+    "bytes": 163374,
+    "sha256": "9692138549d8b44e18dc250346dd30e7477fa2e1b565343d9eadd3a1fb46b7f4"
+  },
+  "runtime": {
+    "bytes": 7192200,
+    "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+  },
+  "regressions": {
+    "tap-regression": {
+      "status": "PASS_ISOLATED_NATIVE_TAP_CONTROLS",
+      "cases": {
+        "nominal": {
+          "execution": {
+            "command": [
+              "/usr/bin/env",
+              "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+              "/usr/bin/tclsh8.6",
+              "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+              "-dnull",
+              "-noconsole",
+              "-rcfile",
+              "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+              "/dev/shm/nssoc-magic-esd-tap-regression-final/nominal/native.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 0.467270624008961,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "19e60b2d084ce4bf2c62ba21c530625639b2f117028b9693e2ee60145fb59a1b"
+          },
+          "outcome": {
+            "status": "PASS_ISOLATED_NATIVE_FINITE_TAPS_NO_BANK_ACCEPTANCE",
+            "ptap_count": 108,
+            "ntap_count": 24,
+            "port_count": 156,
+            "native_grid_um": "0.005",
+            "substrate": "sub",
+            "devices": [
+              {
+                "tie": "T000",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T001",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T002",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T003",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T004",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T005",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T006",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T007",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T008",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T009",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T010",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T011",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T012",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T013",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T014",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T015",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T016",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T017",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T018",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T019",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T020",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T021",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T022",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T023",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T024",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T025",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T026",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T027",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T028",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T029",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T030",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T031",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T032",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T033",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T034",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T035",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T036",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T037",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T038",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T039",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T040",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T041",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T042",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T043",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T044",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T045",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T046",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T047",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T048",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T049",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T050",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T051",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T052",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T053",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T054",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T055",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T056",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T057",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T058",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T059",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T060",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T061",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T062",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T063",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T064",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T065",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T066",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T067",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T068",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T069",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T070",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T071",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T072",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T073",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T074",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T075",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T076",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T077",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T078",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T079",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T080",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T081",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T082",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T083",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T084",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T085",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T086",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T087",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T088",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T089",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T090",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T091",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T092",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T093",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T094",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T095",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T096",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T097",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T098",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T099",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T100",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T101",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T102",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T103",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T104",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T105",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T106",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T107",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T108",
+                "body": "W108",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T109",
+                "body": "W109",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T110",
+                "body": "W110",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T111",
+                "body": "W111",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T112",
+                "body": "W112",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T113",
+                "body": "W113",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T114",
+                "body": "W114",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T115",
+                "body": "W115",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T116",
+                "body": "W116",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T117",
+                "body": "W117",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T118",
+                "body": "W118",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T119",
+                "body": "W119",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T120",
+                "body": "W120",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T121",
+                "body": "W121",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T122",
+                "body": "W122",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T123",
+                "body": "W123",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T124",
+                "body": "W124",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T125",
+                "body": "W125",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T126",
+                "body": "W126",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T127",
+                "body": "W127",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T128",
+                "body": "W128",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T129",
+                "body": "W129",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T130",
+                "body": "W130",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T131",
+                "body": "W131",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              }
+            ],
+            "full_bank_qualified": false,
+            "qualified_pex": false
+          },
+          "outputs": {
+            "taps.spice": {
+              "bytes": 6195,
+              "sha256": "c3bcad3460ae595e835d851990bfe0e57849e6b296298741ef717fb71d51fc37"
+            },
+            "finite_taps_flat.ext": {
+              "bytes": 38680,
+              "sha256": "e611fc30005e731d9bfe969f7fd93c87e32f01dee2dd438ae3151b697fcbc125"
+            },
+            "finite_taps_flat.mag": {
+              "bytes": 346243,
+              "sha256": "5d3af2c2c29ffa51146baab60f3041847909bbbe225ea76862d5e79b6541f310"
+            },
+            "native.log": {
+              "bytes": 3927,
+              "sha256": "19e60b2d084ce4bf2c62ba21c530625639b2f117028b9693e2ee60145fb59a1b"
+            },
+            "native.tcl": {
+              "bytes": 20476,
+              "sha256": "d25f7ed426014f3fbf44b4c6c7a80194e03a2cc5c46d0ce8d9cdc95b9e3771b8"
+            }
+          }
+        },
+        "initial_10nm": {
+          "execution": {
+            "command": [
+              "/usr/bin/env",
+              "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+              "/usr/bin/tclsh8.6",
+              "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+              "-dnull",
+              "-noconsole",
+              "-rcfile",
+              "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+              "/dev/shm/nssoc-magic-esd-tap-regression-final/initial_10nm/native.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 0.4737793189997319,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "41fd2154a998a378e26caaea78391385fbd87dc18143f494007450142c0de6d3"
+          },
+          "outcome": {
+            "status": "PASS_ISOLATED_NATIVE_FINITE_TAPS_NO_BANK_ACCEPTANCE",
+            "ptap_count": 108,
+            "ntap_count": 24,
+            "port_count": 156,
+            "native_grid_um": "0.01",
+            "substrate": "sub",
+            "devices": [
+              {
+                "tie": "T000",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T001",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T002",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T003",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T004",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T005",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T006",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T007",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T008",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T009",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T010",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T011",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T012",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T013",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T014",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T015",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T016",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T017",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T018",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T019",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T020",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T021",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T022",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T023",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T024",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T025",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T026",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T027",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T028",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T029",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T030",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T031",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T032",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T033",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T034",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T035",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T036",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T037",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T038",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T039",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T040",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T041",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T042",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T043",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T044",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T045",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T046",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T047",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T048",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T049",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T050",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T051",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T052",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T053",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T054",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T055",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T056",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T057",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T058",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T059",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T060",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T061",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T062",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T063",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T064",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T065",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T066",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T067",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T068",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T069",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T070",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T071",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T072",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T073",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T074",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T075",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T076",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T077",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T078",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T079",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T080",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T081",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T082",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T083",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T084",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T085",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T086",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T087",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T088",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T089",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T090",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T091",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T092",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T093",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T094",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T095",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T096",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T097",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T098",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T099",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T100",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T101",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T102",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T103",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T104",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T105",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T106",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T107",
+                "body": "sub",
+                "model": "ptap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T108",
+                "body": "W108",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T109",
+                "body": "W109",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T110",
+                "body": "W110",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T111",
+                "body": "W111",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T112",
+                "body": "W112",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T113",
+                "body": "W113",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T114",
+                "body": "W114",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T115",
+                "body": "W115",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "0.78u",
+                  "w": "0.78u",
+                  "r": "262.84698"
+                }
+              },
+              {
+                "tie": "T116",
+                "body": "W116",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T117",
+                "body": "W117",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T118",
+                "body": "W118",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T119",
+                "body": "W119",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T120",
+                "body": "W120",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T121",
+                "body": "W121",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T122",
+                "body": "W122",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T123",
+                "body": "W123",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "2u",
+                  "r": "81.6667"
+                }
+              },
+              {
+                "tie": "T124",
+                "body": "W124",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T125",
+                "body": "W125",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T126",
+                "body": "W126",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T127",
+                "body": "W127",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T128",
+                "body": "W128",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T129",
+                "body": "W129",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T130",
+                "body": "W130",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "3u",
+                  "w": "2u",
+                  "r": "61.25"
+                }
+              },
+              {
+                "tie": "T131",
+                "body": "W131",
+                "model": "ntap1",
+                "parameters": {
+                  "l": "2u",
+                  "w": "3u",
+                  "r": "61.25"
+                }
+              }
+            ],
+            "full_bank_qualified": false,
+            "qualified_pex": false
+          },
+          "outputs": {
+            "taps.spice": {
+              "bytes": 6195,
+              "sha256": "06e295cc0a505e78b9c463b944fa0e911bbf8934b1e4fed5110c6c17e35f7d8d"
+            },
+            "finite_taps_flat.ext": {
+              "bytes": 37884,
+              "sha256": "fe48b180444b3eca4278f2bf3b9ef2c91f867995174884c9f9b5d18992d13fde"
+            },
+            "finite_taps_flat.mag": {
+              "bytes": 346243,
+              "sha256": "5d3af2c2c29ffa51146baab60f3041847909bbbe225ea76862d5e79b6541f310"
+            },
+            "native.log": {
+              "bytes": 3931,
+              "sha256": "41fd2154a998a378e26caaea78391385fbd87dc18143f494007450142c0de6d3"
+            },
+            "native.tcl": {
+              "bytes": 20481,
+              "sha256": "8a78812138b6ba31ac8f6624ad029862c571e3d990457a1d72323c6bc2116bbf"
+            }
+          }
+        },
+        "missing_contact": {
+          "execution": {
+            "command": [
+              "/usr/bin/env",
+              "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+              "/usr/bin/tclsh8.6",
+              "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+              "-dnull",
+              "-noconsole",
+              "-rcfile",
+              "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+              "/dev/shm/nssoc-magic-esd-tap-regression-final/missing_contact/native.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 0.4612667170003988,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "07474ce57e1389eb026ae3da13fd75ec997ac668cbda60dc94b03307cd6c2f8b"
+          },
+          "outcome": {
+            "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+            "reason": "Missing, shorted or repeated tap terminal"
+          },
+          "outputs": {
+            "taps.spice": {
+              "bytes": 6218,
+              "sha256": "3d219282f75a848d9e21fa42581a02491c137be0fbfee1a196954c95a91fbf10"
+            },
+            "finite_taps_flat.ext": {
+              "bytes": 38823,
+              "sha256": "0f2b347bbc55fe4fade23000a3cca37cf4c1c8c5b81f96fc95e6d8a38d4ef222"
+            },
+            "finite_taps_flat.mag": {
+              "bytes": 344144,
+              "sha256": "0e7522ec7849ab9d55866fb37ee3e05502c066dba05358ddcfafe9eb0ca37e4f"
+            },
+            "native.log": {
+              "bytes": 4042,
+              "sha256": "07474ce57e1389eb026ae3da13fd75ec997ac668cbda60dc94b03307cd6c2f8b"
+            },
+            "native.tcl": {
+              "bytes": 20492,
+              "sha256": "6ad6e633f36b46c4e248087797c2b2e96c9f8cd9be23188808143dd4d5e0a28b"
+            }
+          }
+        },
+        "width_change": {
+          "execution": {
+            "command": [
+              "/usr/bin/env",
+              "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+              "/usr/bin/tclsh8.6",
+              "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+              "-dnull",
+              "-noconsole",
+              "-rcfile",
+              "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+              "/dev/shm/nssoc-magic-esd-tap-regression-final/width_change/native.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 0.4606160680123139,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "8e139093cc9560ece255b3fa0d11ae095c8d452b962de0b28ef9b8b265692900"
+          },
+          "outcome": {
+            "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+            "reason": "Native geometry dimensions differ"
+          },
+          "outputs": {
+            "taps.spice": {
+              "bytes": 6194,
+              "sha256": "5c37a9f5edb2b9c930ea7f1a01b9fc882d514cee5137086d2ebc08af629572a5"
+            },
+            "finite_taps_flat.ext": {
+              "bytes": 38686,
+              "sha256": "7c17fdebc4603356498949937b18a1b4b057a98cc94972278f835be983fac99b"
+            },
+            "finite_taps_flat.mag": {
+              "bytes": 346138,
+              "sha256": "ab9ab00a1999099492bde75dd62f7337152a4a11a68050653a0a8c11ac482404"
+            },
+            "native.log": {
+              "bytes": 4033,
+              "sha256": "8e139093cc9560ece255b3fa0d11ae095c8d452b962de0b28ef9b8b265692900"
+            },
+            "native.tcl": {
+              "bytes": 20486,
+              "sha256": "8a505831882dc32b2d0d1beef1f60b29dbe423adeebf08f8b1732c01b87b2b78"
+            }
+          }
+        },
+        "tie_short": {
+          "execution": {
+            "command": [
+              "/usr/bin/env",
+              "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+              "/usr/bin/tclsh8.6",
+              "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+              "-dnull",
+              "-noconsole",
+              "-rcfile",
+              "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+              "/dev/shm/nssoc-magic-esd-tap-regression-final/tie_short/native.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 0.450001124991104,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "555b77b49fb982ce1099b1f3bd8cbd8ec026694934b4914b79ce33bd0d745380"
+          },
+          "outcome": {
+            "status": "REJECTED_ACTUAL_GEOMETRY_FAULT",
+            "reason": "Exact tap port inventory differs"
+          },
+          "outputs": {
+            "taps.spice": {
+              "bytes": 6190,
+              "sha256": "91e58df5e13ad288191da318c984936b344b1af705bef6563f17d3dfec4cb54f"
+            },
+            "finite_taps_flat.ext": {
+              "bytes": 38609,
+              "sha256": "ee17c24b0caa0a8c9cc67e74372a5b314463feb60a5260d496dfe78b0f5cea77"
+            },
+            "finite_taps_flat.mag": {
+              "bytes": 346293,
+              "sha256": "87ab7c4ebd89141559d3297099d2e7844f5be2bb6cae8b4b46d74e1c666c0701"
+            },
+            "native.log": {
+              "bytes": 4049,
+              "sha256": "555b77b49fb982ce1099b1f3bd8cbd8ec026694934b4914b79ce33bd0d745380"
+            },
+            "native.tcl": {
+              "bytes": 20480,
+              "sha256": "97605aeb979e56a5ea521ee683633b1f2aeab49209754e5ed94f4709c06fb3fe"
+            }
+          }
+        }
+      },
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_finite_tap_v1.py": {
+          "bytes": 12391,
+          "sha256": "1b722887d1ad5ae05226de5de14d55126aa42b57662e3ffeb330b096e528db97"
+        },
+        "/dev/shm/nssoc-finite-tap-fixture-04/result.json": {
+          "bytes": 65030,
+          "sha256": "b678f35576ea76a41f7fb3536e5bbfa58d1d254280ca866f1b9cde611a1a9609"
+        },
+        "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/tclmagic.so": {
+          "bytes": 7192200,
+          "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/generate_seal.py": {
+          "bytes": 8333,
+          "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/sealring_corner.tcl": {
+          "bytes": 10481,
+          "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_4.tcl": {
+          "bytes": 44814,
+          "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-dio.tcl": {
+          "bytes": 18704,
+          "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tech": {
+          "bytes": 22066,
+          "sha256": "43e70494deef0d5c2e4ca182171c5da36b817ead2a5ac677b3528a8d3ab7fffa"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/result.json": {
+          "bytes": 11789,
+          "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/sealring_side.tcl": {
+          "bytes": 2765,
+          "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/README.md": {
+          "bytes": 16038,
+          "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-via.tcl": {
+          "bytes": 18281,
+          "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-util.tcl": {
+          "bytes": 24078,
+          "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/RELEASE_NOTES.md": {
+          "bytes": 3046,
+          "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/diodevss_4kv.tcl": {
+          "bytes": 13124,
+          "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cap.tcl": {
+          "bytes": 24173,
+          "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifin.tech": {
+          "bytes": 25647,
+          "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fix.tcl": {
+          "bytes": 18632,
+          "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/scr1.tcl": {
+          "bytes": 6125,
+          "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_4kv.tcl": {
+          "bytes": 12976,
+          "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/check_density.py": {
+          "bytes": 30920,
+          "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-var.tcl": {
+          "bytes": 12675,
+          "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-ind.tcl": {
+          "bytes": 11435,
+          "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fet.tcl": {
+          "bytes": 49145,
+          "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/generate_fill.py": {
+          "bytes": 21919,
+          "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tcl": {
+          "bytes": 12311,
+          "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_2.tcl": {
+          "bytes": 25005,
+          "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-misc.tcl": {
+          "bytes": 9486,
+          "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-res.tcl": {
+          "bytes": 43089,
+          "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/schottky_nbl1.tcl": {
+          "bytes": 4876,
+          "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-drc.tech": {
+          "bytes": 41275,
+          "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/diodevss_2kv.tcl": {
+          "bytes": 11047,
+          "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-extract.tech": {
+          "bytes": 23655,
+          "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-pad.tcl": {
+          "bytes": 8297,
+          "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc": {
+          "bytes": 2578,
+          "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-bjt.tcl": {
+          "bytes": 22805,
+          "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifout.tech": {
+          "bytes": 45968,
+          "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-GDS.tech": {
+          "bytes": 32758,
+          "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_2kv.tcl": {
+          "bytes": 9247,
+          "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_hbt_multiplicity_v3.py": {
+          "bytes": 11123,
+          "sha256": "2b2c662c8df4dfc9932efa9ce4de784807a095665186f9e29a2f5f435ecc1474"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_rx_cell.py": {
+          "bytes": 12767,
+          "sha256": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+        }
+      },
+      "technology": {
+        "generate_seal.py": {
+          "bytes": 8333,
+          "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+        },
+        "sealring_corner.tcl": {
+          "bytes": 10481,
+          "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+        },
+        "nmoscl_4.tcl": {
+          "bytes": 44814,
+          "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+        },
+        "ihp-sg13g2-dio.tcl": {
+          "bytes": 18704,
+          "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+        },
+        "ihp-sg13g2.tech": {
+          "bytes": 22066,
+          "sha256": "43e70494deef0d5c2e4ca182171c5da36b817ead2a5ac677b3528a8d3ab7fffa"
+        },
+        "result.json": {
+          "bytes": 11789,
+          "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+        },
+        "sealring_side.tcl": {
+          "bytes": 2765,
+          "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+        },
+        "README.md": {
+          "bytes": 16038,
+          "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+        },
+        "ihp-sg13g2-via.tcl": {
+          "bytes": 18281,
+          "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+        },
+        "ihp-sg13g2-util.tcl": {
+          "bytes": 24078,
+          "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+        },
+        "RELEASE_NOTES.md": {
+          "bytes": 3046,
+          "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+        },
+        "diodevss_4kv.tcl": {
+          "bytes": 13124,
+          "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+        },
+        "ihp-sg13g2-cap.tcl": {
+          "bytes": 24173,
+          "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+        },
+        "ihp-sg13g2-cifin.tech": {
+          "bytes": 25647,
+          "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+        },
+        "ihp-sg13g2-fix.tcl": {
+          "bytes": 18632,
+          "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+        },
+        "scr1.tcl": {
+          "bytes": 6125,
+          "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+        },
+        "diodevdd_4kv.tcl": {
+          "bytes": 12976,
+          "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+        },
+        "check_density.py": {
+          "bytes": 30920,
+          "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+        },
+        "ihp-sg13g2-var.tcl": {
+          "bytes": 12675,
+          "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+        },
+        "ihp-sg13g2-ind.tcl": {
+          "bytes": 11435,
+          "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+        },
+        "ihp-sg13g2-fet.tcl": {
+          "bytes": 49145,
+          "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+        },
+        "generate_fill.py": {
+          "bytes": 21919,
+          "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+        },
+        "ihp-sg13g2.tcl": {
+          "bytes": 12311,
+          "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+        },
+        "nmoscl_2.tcl": {
+          "bytes": 25005,
+          "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+        },
+        "ihp-sg13g2-misc.tcl": {
+          "bytes": 9486,
+          "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+        },
+        "ihp-sg13g2-res.tcl": {
+          "bytes": 43089,
+          "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+        },
+        "schottky_nbl1.tcl": {
+          "bytes": 4876,
+          "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+        },
+        "ihp-sg13g2-drc.tech": {
+          "bytes": 41275,
+          "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+        },
+        "diodevss_2kv.tcl": {
+          "bytes": 11047,
+          "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+        },
+        "ihp-sg13g2-extract.tech": {
+          "bytes": 23655,
+          "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+        },
+        "ihp-sg13g2-pad.tcl": {
+          "bytes": 8297,
+          "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+        },
+        "ihp-sg13g2.magicrc": {
+          "bytes": 2578,
+          "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+        },
+        "ihp-sg13g2-bjt.tcl": {
+          "bytes": 22805,
+          "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+        },
+        "ihp-sg13g2-cifout.tech": {
+          "bytes": 45968,
+          "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+        },
+        "ihp-sg13g2-GDS.tech": {
+          "bytes": 32758,
+          "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+        },
+        "diodevdd_2kv.tcl": {
+          "bytes": 9247,
+          "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+        }
+      },
+      "qualification": false
+    },
+    "hbt-regression": {
+      "status": "PASS24_HBTS_BOUND_TO_FINITE_TAP_BODY_73PORTS",
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-magic-esd-hbt-regression-final/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.3630955520202406,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "09c6f613d122ae0930d59990a6fa30987d646f9bba943089356ce0f06ef706a7"
+      },
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-magic-esd-v1-20261004/run_hbt_regression.py": {
+          "bytes": 1805,
+          "sha256": "74cbdd540c3a9f082500eb40336dcd94467574dd4ba4f98c7ccf45601fa08bbb"
+        },
+        "/dev/shm/nssoc-magic-hbt-axis-01/fixture.gds": {
+          "bytes": 24142,
+          "sha256": "e5f18713d2c7ccb7d0390f38a237de2cc7b8dfc19ef123f508070fcb6d595934"
+        },
+        "/dev/shm/nssoc-magic-hbt-axis-01/result.json": {
+          "bytes": 33584,
+          "sha256": "1da7b6be96bb94632f9a7251e68e606f3d0d4a9ffc81b767f9e8e6034944dd70"
+        },
+        "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/tclmagic.so": {
+          "bytes": 7192200,
+          "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+        },
+        "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-extract.tech": {
+          "bytes": 23655,
+          "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+        }
+      },
+      "observed": [
+        [
+          [
+            "C_N1_T0",
+            "B_N1_T0",
+            "E_N1_T0",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T1",
+            "B_N1_T1",
+            "E_N1_T1",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T2",
+            "B_N1_T2",
+            "E_N1_T2",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T3",
+            "B_N1_T3",
+            "E_N1_T3",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T4",
+            "B_N1_T4",
+            "E_N1_T4",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T5",
+            "B_N1_T5",
+            "E_N1_T5",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T6",
+            "B_N1_T6",
+            "E_N1_T6",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N1_T7",
+            "B_N1_T7",
+            "E_N1_T7",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "1"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T0",
+            "B_N2_T0",
+            "E_N2_T0",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T1",
+            "B_N2_T1",
+            "E_N2_T1",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T2",
+            "B_N2_T2",
+            "E_N2_T2",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T3",
+            "B_N2_T3",
+            "E_N2_T3",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T4",
+            "B_N2_T4",
+            "E_N2_T4",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T5",
+            "B_N2_T5",
+            "E_N2_T5",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T6",
+            "B_N2_T6",
+            "E_N2_T6",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N2_T7",
+            "B_N2_T7",
+            "E_N2_T7",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "2"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T0",
+            "B_N4_T0",
+            "E_N4_T0",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T1",
+            "B_N4_T1",
+            "E_N4_T1",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T2",
+            "B_N4_T2",
+            "E_N4_T2",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T3",
+            "B_N4_T3",
+            "E_N4_T3",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T4",
+            "B_N4_T4",
+            "E_N4_T4",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T5",
+            "B_N4_T5",
+            "E_N4_T5",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T6",
+            "B_N4_T6",
+            "E_N4_T6",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ],
+        [
+          [
+            "C_N4_T7",
+            "B_N4_T7",
+            "E_N4_T7",
+            "a_3370_5374#"
+          ],
+          [
+            [
+              "Nx",
+              "4"
+            ],
+            [
+              "le",
+              "0.9u"
+            ],
+            [
+              "we",
+              "70n"
+            ]
+          ]
+        ]
+      ],
+      "tap": [
+        "X19",
+        "SUB",
+        "a_3370_5374#",
+        "ptap1",
+        "l=2u",
+        "w=2u",
+        "r=81.6667"
+      ],
+      "outputs": {
+        "hbt.spice": {
+          "bytes": 2892,
+          "sha256": "2632bf296d429833285d727e2e994519e09b17a13a3d29213c18bd9c607a09be"
+        },
+        "feedback.tcl": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "hbt_axis_flat.ext": {
+          "bytes": 16189,
+          "sha256": "2971be5fde5aa9d29e3a5c539ff8129aa762acc9446882504113a30299e6b887"
+        },
+        "hbt_axis_flat.mag": {
+          "bytes": 137162,
+          "sha256": "879aa11761d337f11f0ddcc599da0a824b51fa14166e422e29feeb5efcfcd18f"
+        },
+        "native.log": {
+          "bytes": 8659,
+          "sha256": "09c6f613d122ae0930d59990a6fa30987d646f9bba943089356ce0f06ef706a7"
+        },
+        "native.tcl": {
+          "bytes": 11044,
+          "sha256": "332629edb16634939f50d2b433788f0fba3741f5a634831e104ee98f9c6a64ec"
+        }
+      },
+      "qualified_pex": false
+    }
+  },
+  "capsule": {
+    "bytes": 1055272,
+    "sha256": "22a32bdef7af9d3e0ac9d5de65a81726e8ff0e50d9995fcac30fc0b7043febaa",
+    "members": 437,
+    "all_roundtrip_verified": true
+  },
+  "tests": {
+    "passed": 149,
+    "own": 56,
+    "ruff": "PASS",
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_magic_esd_v1.py sw/tests/test_magic_finite_tap_v1.py sw/tests/test_magic_hbt_multiplicity_v3.py -q -p no:cacheprovider"
+  },
+  "changes": [
+    "Enable existing native interacting/noninteracting geometry operators in CIF input parser.",
+    "Fix existing native region-copy walk: marked tiles must enqueue unconditionally; no changes to its geometry selection predicate.",
+    "Recognition uses real ESDID/emitter/well geometry and a separate marker plane. All physical well/diffusion masks and existing substrate/tap connectivity remain intact.",
+    "A conservative exact native semiconductor-mask gate rejects unsupported or split well/ring shapes. Device and CBE-like terminal identities still come only from native electrical extraction."
+  ],
+  "limitations": [
+    "Only ordinary diodevdd_2kv/diodevss_2kv:32 actual PCells,65ports,all8 orientations twice; no general ESD family or stress model qualification.",
+    "Raw ea/ep are retained geometry annotations and are not silently passed as supported foundry compact-model parameters.",
+    "Native KLayout width control passes due ESD area normalization; actual Magic emitter-area guard and raw-mask gate reject it. All other sampled physical node/open/short/removal/split-well faults fail both supported audits.",
+    "Both import runs finish on the actual5nm ESD grid:10nm starting grid is refined by native import. This is not two distinct final-grid coverage.",
+    "No full-bank graph, coupled RC conservation, RF fullPEX, package/ESD stress,8GHz clock/PHY qualification or mainchip adoption.",
+    "The prior fixture regeneration changed GDS bytes; all9 prior complete mask sets were independently checked zero XOR and their exact before/after hashes preserved; newest baseline and split-well ran exact new GDS through native LVS.",
+    "Original PDK and all frozen ancestors remain unchanged. All559 C/header inputs audited: only2C files differ, no ABI/header changes."
+  ],
+  "qualified_pex": false,
+  "full_bank_qualified": false,
+  "esd_stress_qualified": false
+}
