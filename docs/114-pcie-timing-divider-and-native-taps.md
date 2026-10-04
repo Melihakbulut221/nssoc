@@ -4,6 +4,10 @@
 
 ## Measured progress — 4 October 2026
 
+The later complete native-bank connectivity repair, packet framing and TX
+function proof are recorded in [document 115](115-pcie-framing-and-native-bank.md).
+The earlier failures and open states below remain the original checkpoint.
+
 The standalone four-lane TX path now passes its three-corner **global-route
 estimated** setup/hold screen at 4 ns. A transistor clock limiter fixes the
 selected divider failures. Native extraction now preserves finite substrate
