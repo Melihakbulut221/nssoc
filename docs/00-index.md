@@ -6,6 +6,7 @@ requirements are in [docs/92-product-acceptance.md](92-product-acceptance.md)
 and [docs/96-second-audit-closure.md](96-second-audit-closure.md).
 [PCIe RX development](107-pcie-rx-development.md) records the separate LCRC
 quarantine, native-HBT receiver preamplifier, simulations and physical checks.
+[PCIe replay, credit, receiver-clock and pad development](109-pcie-replay-clock-and-pad-development.md) records the next measured controller and analog boundaries.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
@@ -502,6 +503,7 @@ rather than from a beam.
 | [docs/106-timing-repair-research.md](106-timing-repair-research.md) | Checkpoint9 setup/hold bottlenecks, version-checked repair profiles and ranked physical experiments; speedup and timing closure remain unmeasured. |
 | [docs/107-pcie-rx-development.md](107-pcie-rx-development.md) | Bounded LCRC quarantine, native HBT receiver preamplifier and individual-cell layout; raw simulations, load failure, numerical warnings and DRC/LVS evidence. Full PHY and chip integration remain open. |
 | [docs/108-pcie-packet-and-bank-integration.md](108-pcie-packet-and-bank-integration.md) | Bidirectional sequence/LCRC and actual ACK/NAK packets, revised receiver and four-lane analog bank. Distinguishes block integration from the still-open complete PHY and main-chip integration. |
+| [docs/109-pcie-replay-clock-and-pad-development.md](109-pcie-replay-clock-and-pad-development.md) | Received DLLPs, bounded replay and VC0 credit integration; native clocked receiver and differential pad/ESD experiments with remaining clock, extraction and main-chip obligations. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 

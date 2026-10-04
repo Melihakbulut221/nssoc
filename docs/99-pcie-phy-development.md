@@ -239,3 +239,10 @@ numerical warnings and does not include interconnect RC. Wider power paths and
 via arrays have been rechecked geometrically. This closes the absent **single
 TX-cell geometry** sub-item; it does not supply a full Gen3 x4 PHY, controller,
 padframe, chip integration or PCIe qualification.
+
+## Clocked receiver and protected pad continuation, 4 October 2026
+
+[The next native development record](109-pcie-replay-clock-and-pad-development.md)
+tracks a clocked HBT receiver sampler, physical differential pad/ESD checks and
+their exact analog limitations. These experiments do not provide CDR/PLL or a
+complete main-chip PCIe PHY.

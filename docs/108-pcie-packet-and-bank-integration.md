@@ -4,6 +4,10 @@
 
 ## Integration boundary — 4 October 2026
 
+This capture precedes [the replay, credits, sampler and physically padded-bank
+continuation](109-pcie-replay-clock-and-pad-development.md). The later record
+adds those measured blocks while retaining the main-chip integration boundary.
+
 The PCIe work now has two concrete integration boundaries: a standalone
 bidirectional digital packet endpoint and a physical bank of four TX/RX analog
 lanes. **The bank is not instantiated in the main `nssoc_chip` layout and the

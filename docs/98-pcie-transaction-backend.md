@@ -201,9 +201,14 @@ adds expected/duplicate sequence handling, TX sequence/LCRC, real ACK/NAK
 DLLPs and whole-packet arbitration in `soc_pcie_link_packets`. It remains a
 standalone, single-clock boundary with port-level RTL/native verification.
 
+The [next development record](109-pcie-replay-clock-and-pad-development.md) adds
+CRC-checked incoming DLLPs, bounded encoded replay and real transmit-credit
+gating. Local receive-credit advertisements and line-rate timer calibration
+remain absent; these modules are still outside `soc_top`.
+
 The next digital boundaries are complete bidirectional data-link integrity, full
 Endpoint configuration/capabilities, multi-DWORD transfer/completion handling,
-interrupts, received ACK/NAK processing, replay/timers and credit flow control, and PHY-side
+interrupts, complete receive-credit scheduling and recovery, and PHY-side
 LTSSM/training/Gen3 encoding/equalization/lane alignment. Root Port behavior
 is also absent. Host access policy, arbitration, CDC/reset and protection must
 be implemented before connecting a host master to the SoC fabric.

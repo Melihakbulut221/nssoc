@@ -42,3 +42,8 @@ soc_pcie_crc16_byte	Standalone classic DLLP CRC byte recurrence; used by packet 
 soc_pcie_acknak_tx	Standalone six-byte classic ACK/NAK DLLP serializer with CRC16; no physical SDP/END coding, timers, replay or soc_top instance.
 soc_pcie_packet_tx	Standalone packet-level arbitration between generated ACK/NAK DLLPs and LCRC TLP bytes; no soc_top instance, credits, replay or line-rate closure.
 soc_pcie_link_packets	Standalone integration of the packet endpoint and real ACK/NAK DLLP serializer/mux. No soc_top instance or serial PHY; analog bank is a separate physical artifact. See docs/108-pcie-packet-and-bank-integration.md.
+soc_pcie_credit_tx	Standalone VC0 transmit credit pools; no local receive-credit advertisement, main-chip instance or PHY. Native port and counter-wrap tests in docs/109.
+soc_pcie_dllp_rx	Standalone CRC-checked ACK/NAK and unscaled VC0 FC decoder; no physical coding, local FC transmitter or SoC instance.
+soc_pcie_replay_tx	Standalone bounded encoded-TLP retry buffer with cumulative ACK, timeout and retrain request; local-cycle timer is not line-rate calibrated. No SoC instance.
+soc_pcie_reliable_packets	Standalone byte packet integration with real received DLLPs and encoded replay; requires external credit reservation, physical coding and SoC integration.
+soc_pcie_flow_packets	Standalone connection of parsed VC0 FC, transmit credit reservation and byte-identical replay; external local FC completion remains mandatory. No PHY or SoC instance.

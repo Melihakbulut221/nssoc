@@ -1,0 +1,998 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-04T07:01:05.466201+00:00",
+  "status": "SAMPLER_V2_PVT_MEASUREMENT_REPAIRED_NUMERICAL_AND_CROSS_VERSION_RESIDUALS",
+  "sources": {
+    "hw/soc/analog/pcie/rx_sampler_hbt.spice": {
+      "bytes": 1604,
+      "sha256": "dd6d1c175466467b1195549617c1f432e7145af3f185113a4feb92be5f375d77"
+    },
+    "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": {
+      "bytes": 1604,
+      "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+    },
+    "scripts/characterize_pcie_sampler.py": {
+      "bytes": 22032,
+      "sha256": "b498ce88ebb70a1cac98069627b670bec915005f57f0a3b0f9e847760a1a8e71"
+    },
+    "scripts/characterize_pcie_sampler_v2.py": {
+      "bytes": 22262,
+      "sha256": "4c5f52d68012d79f0c08809d269f79d357955571630297aa62dbcbb9f5da7f67"
+    },
+    "scripts/review_pcie_sampler.py": {
+      "bytes": 11649,
+      "sha256": "dff9766ba381314f0154309fc1ea4800e02e14830575c2b2240fd1bcb8682cfe"
+    },
+    "scripts/review_pcie_sampler_v2.py": {
+      "bytes": 11652,
+      "sha256": "6f6fb48d05d12079e7f6a080b8ba21e3e0683c4d08cd6d651999e6b906208245"
+    },
+    "scripts/crosscheck_pcie_sampler_v2.py": {
+      "bytes": 13428,
+      "sha256": "c83b29674a611282e8439b3df491dfa6b4f092ac7c9f82e5476dbc2a3171ff70"
+    },
+    "scripts/diagnose_pcie_sampler_startup.py": {
+      "bytes": 8583,
+      "sha256": "8b1fbbcc5bf477dfeef92fd5cfb7025b690ee389e41e56c1c1fa703c36cf4d8b"
+    },
+    "scripts/project_pcie_sampler_trace.py": {
+      "bytes": 3370,
+      "sha256": "14b8910623eaea52613537ac65668333e706d5a07798e8465bc40f7cf49308f0"
+    },
+    "sw/tests/test_pcie_sampler.py": {
+      "bytes": 10090,
+      "sha256": "9792f1f38027e4e93131d7ba968a8b01b25cbfd45ea2a198377d36d8c2b59e56"
+    },
+    "sw/tests/test_pcie_sampler_v2.py": {
+      "bytes": 7707,
+      "sha256": "aded3f59ed412de636ef06ee9602b0ca22b9fd3a526e056b497439b8dbe0a19b"
+    }
+  },
+  "tests": {
+    "passed": 64,
+    "ruff_pass": true,
+    "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/NEW-sampler-tests sw/tests/test_pcie_sampler.py sw/tests/test_pcie_sampler_v2.py"
+  },
+  "architecture": {
+    "native_sampler_hbt": 15,
+    "native_sampler_rppd": 12,
+    "connected_rx_hbt": 4,
+    "ports": [
+      "dp",
+      "dn",
+      "qp",
+      "qn",
+      "clkp",
+      "clkn",
+      "avdd",
+      "avss",
+      "sub",
+      "iref"
+    ],
+    "sampler_supply_nominal_v": 2.5,
+    "rx_supply_nominal_v": 1.8,
+    "external_sampler_reference_a": 0.0005,
+    "external_rx_reference_a": 0.00075,
+    "external_clock_hz": 8000000000.0,
+    "clock_source_ohm_each": 10,
+    "clock_common_mode_v": 1.29,
+    "clock_differential_amplitude_v": 0.3,
+    "load_f_each": 1.5e-13
+  },
+  "v1": {
+    "status": "FAIL_SAMPLER_REQUIRED_SCREEN",
+    "source_bytes_unchanged": true,
+    "native_cases": 121,
+    "pvt_cases": 81,
+    "pvt_screen_passed": 80,
+    "worst_case": "hbt_wcs_res_bcs_125_1.71",
+    "minimum_margin_v": 0.09985827388600033,
+    "pvt_min_vce_v": 0.4250440402272,
+    "pvt_max_vce_v": 1.432632040424,
+    "unexpected_required_outcomes": [
+      "hbt_wcs_res_bcs_125_1.71"
+    ],
+    "positive_numerical_residual_count": 28,
+    "all_case_numerical_residual_count": 29,
+    "native_negatives": {
+      "no_bias": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": false,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": false,
+        "clock_to_valid": false
+      },
+      "clock_stopped": {
+        "clock_census": false,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "clock_common_only": {
+        "clock_census": false,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "swapped_output": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "no_regeneration": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": false,
+        "vce_maximum": false,
+        "current_density": false,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "overload": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      }
+    },
+    "nominal": {
+      "min_signed_margin_v": 0.14145296922075062,
+      "maximum_clock_to_first_valid_s": 2.345267069943297e-11,
+      "minimum_observed_setup_s": 4.6886083276403616e-11,
+      "minimum_observed_hold_s": 7.757715570714088e-11,
+      "sampler_supply_power_w": 0.014519630085724471,
+      "rx_supply_power_w": 0.005083107705725878,
+      "peak_clock_source_current_a": 0.003277719319489
+    },
+    "timestep": {
+      "margin_difference_v": 7.04345415383778e-06,
+      "power_relative_difference": 6.2082562883869485e-06,
+      "screen_pass": true,
+      "scope": "Two native maximum timesteps, not extrapolated convergence."
+    },
+    "phase_observations": [
+      {
+        "phase_ui": -0.1,
+        "screen_pass": false,
+        "margin_v": -0.16803586111429278
+      },
+      {
+        "phase_ui": -0.05,
+        "screen_pass": false,
+        "margin_v": -0.16711410318961537
+      },
+      {
+        "phase_ui": 0.0,
+        "screen_pass": false,
+        "margin_v": -0.16670025090751706
+      },
+      {
+        "phase_ui": 0.05,
+        "screen_pass": false,
+        "margin_v": -0.1664582619053406
+      },
+      {
+        "phase_ui": 0.1,
+        "screen_pass": false,
+        "margin_v": -0.16508875816865123
+      },
+      {
+        "phase_ui": 0.15,
+        "screen_pass": true,
+        "margin_v": 0.12415508351621907
+      },
+      {
+        "phase_ui": 0.2,
+        "screen_pass": true,
+        "margin_v": 0.14303892361018308
+      },
+      {
+        "phase_ui": 0.25,
+        "screen_pass": true,
+        "margin_v": 0.1454046977231263
+      },
+      {
+        "phase_ui": 0.3,
+        "screen_pass": true,
+        "margin_v": 0.14617081543499286
+      },
+      {
+        "phase_ui": 0.35,
+        "screen_pass": true,
+        "margin_v": 0.14639511272021155
+      },
+      {
+        "phase_ui": 0.4,
+        "screen_pass": true,
+        "margin_v": 0.1465133933118009
+      },
+      {
+        "phase_ui": 0.45,
+        "screen_pass": true,
+        "margin_v": 0.1438522411444881
+      },
+      {
+        "phase_ui": 0.5,
+        "screen_pass": true,
+        "margin_v": 0.14145296922075062
+      },
+      {
+        "phase_ui": 0.55,
+        "screen_pass": true,
+        "margin_v": 0.13988937078753166
+      },
+      {
+        "phase_ui": 0.6,
+        "screen_pass": true,
+        "margin_v": 0.13924700230660605
+      },
+      {
+        "phase_ui": 0.65,
+        "screen_pass": true,
+        "margin_v": 0.13902631879562635
+      },
+      {
+        "phase_ui": 0.7,
+        "screen_pass": true,
+        "margin_v": 0.13892290593656886
+      },
+      {
+        "phase_ui": 0.75,
+        "screen_pass": true,
+        "margin_v": 0.1388888721636776
+      },
+      {
+        "phase_ui": 0.8,
+        "screen_pass": true,
+        "margin_v": 0.13887774312542284
+      },
+      {
+        "phase_ui": 0.85,
+        "screen_pass": true,
+        "margin_v": 0.13887182414985752
+      },
+      {
+        "phase_ui": 0.9,
+        "screen_pass": true,
+        "margin_v": 0.13886727974696705
+      },
+      {
+        "phase_ui": 0.95,
+        "screen_pass": true,
+        "margin_v": 0.1388637760216515
+      },
+      {
+        "phase_ui": 1.0,
+        "screen_pass": true,
+        "margin_v": 0.13886166262093286
+      },
+      {
+        "phase_ui": 1.05,
+        "screen_pass": true,
+        "margin_v": 0.13885850049780987
+      },
+      {
+        "phase_ui": 1.1,
+        "screen_pass": true,
+        "margin_v": 0.13808567391973736
+      }
+    ]
+  },
+  "v2": {
+    "status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+    "source_bytes_unchanged": true,
+    "native_cases": 121,
+    "pvt_cases": 81,
+    "pvt_screen_passed": 81,
+    "worst_case": "hbt_wcs_res_bcs_125_1.71",
+    "minimum_margin_v": 0.10925165142618196,
+    "pvt_min_vce_v": 0.42534430092240005,
+    "pvt_max_vce_v": 1.4329640711720002,
+    "unexpected_required_outcomes": [],
+    "positive_numerical_residual_count": 28,
+    "all_case_numerical_residual_count": 29,
+    "native_negatives": {
+      "no_bias": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": false,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": false,
+        "clock_to_valid": false
+      },
+      "clock_stopped": {
+        "clock_census": false,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "clock_common_only": {
+        "clock_census": false,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "swapped_output": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "no_regeneration": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": false,
+        "vce_maximum": false,
+        "current_density": false,
+        "active_tail": true,
+        "clock_to_valid": false
+      },
+      "overload": {
+        "clock_census": true,
+        "margin": false,
+        "headroom": true,
+        "vce_maximum": true,
+        "current_density": true,
+        "active_tail": true,
+        "clock_to_valid": false
+      }
+    },
+    "nominal": {
+      "min_signed_margin_v": 0.14750700779467724,
+      "maximum_clock_to_first_valid_s": 2.3452736073710462e-11,
+      "minimum_observed_setup_s": 4.685270980883233e-11,
+      "minimum_observed_hold_s": 7.761300672252892e-11,
+      "sampler_supply_power_w": 0.014519374065732822,
+      "rx_supply_power_w": 0.005083107287078168,
+      "peak_clock_source_current_a": 0.003277381130922
+    },
+    "timestep": {
+      "margin_difference_v": 6.9601489159631935e-06,
+      "power_relative_difference": 5.988216072561059e-06,
+      "screen_pass": true,
+      "scope": "Two native maximum timesteps, not extrapolated convergence."
+    },
+    "phase_observations": [
+      {
+        "phase_ui": -0.1,
+        "screen_pass": false,
+        "margin_v": -0.17460730070772998
+      },
+      {
+        "phase_ui": -0.05,
+        "screen_pass": false,
+        "margin_v": -0.17382407918938542
+      },
+      {
+        "phase_ui": 0.0,
+        "screen_pass": false,
+        "margin_v": -0.17352545629500638
+      },
+      {
+        "phase_ui": 0.05,
+        "screen_pass": false,
+        "margin_v": -0.1733680868130563
+      },
+      {
+        "phase_ui": 0.1,
+        "screen_pass": false,
+        "margin_v": -0.17211916690441748
+      },
+      {
+        "phase_ui": 0.15,
+        "screen_pass": true,
+        "margin_v": 0.12376159959031491
+      },
+      {
+        "phase_ui": 0.2,
+        "screen_pass": true,
+        "margin_v": 0.14610593904051392
+      },
+      {
+        "phase_ui": 0.25,
+        "screen_pass": true,
+        "margin_v": 0.14868168304084364
+      },
+      {
+        "phase_ui": 0.3,
+        "screen_pass": true,
+        "margin_v": 0.14951849332545866
+      },
+      {
+        "phase_ui": 0.35,
+        "screen_pass": true,
+        "margin_v": 0.14977209220854037
+      },
+      {
+        "phase_ui": 0.4,
+        "screen_pass": true,
+        "margin_v": 0.14990222376294518
+      },
+      {
+        "phase_ui": 0.45,
+        "screen_pass": true,
+        "margin_v": 0.14992064923000198
+      },
+      {
+        "phase_ui": 0.5,
+        "screen_pass": true,
+        "margin_v": 0.14750700779467724
+      },
+      {
+        "phase_ui": 0.55,
+        "screen_pass": true,
+        "margin_v": 0.14604430991749745
+      },
+      {
+        "phase_ui": 0.6,
+        "screen_pass": true,
+        "margin_v": 0.14545725131598602
+      },
+      {
+        "phase_ui": 0.65,
+        "screen_pass": true,
+        "margin_v": 0.1452499513600604
+      },
+      {
+        "phase_ui": 0.7,
+        "screen_pass": true,
+        "margin_v": 0.1451571591022681
+      },
+      {
+        "phase_ui": 0.75,
+        "screen_pass": true,
+        "margin_v": 0.14513390305442894
+      },
+      {
+        "phase_ui": 0.8,
+        "screen_pass": true,
+        "margin_v": 0.14512992868120783
+      },
+      {
+        "phase_ui": 0.85,
+        "screen_pass": true,
+        "margin_v": 0.14512751707556878
+      },
+      {
+        "phase_ui": 0.9,
+        "screen_pass": true,
+        "margin_v": 0.14512451618214964
+      },
+      {
+        "phase_ui": 0.95,
+        "screen_pass": true,
+        "margin_v": 0.14512173575344933
+      },
+      {
+        "phase_ui": 1.0,
+        "screen_pass": true,
+        "margin_v": 0.1451200410989659
+      },
+      {
+        "phase_ui": 1.05,
+        "screen_pass": true,
+        "margin_v": 0.14511724389226566
+      },
+      {
+        "phase_ui": 1.1,
+        "screen_pass": true,
+        "margin_v": 0.14262596450589657
+      }
+    ]
+  },
+  "limits": {
+    "min_margin_v": 0.1,
+    "min_vce_v": 0.4,
+    "max_vce_v": 1.6,
+    "max_collector_a_per_emitter": 0.003,
+    "min_tail_collector_a": 0.0005,
+    "max_clock_to_valid_s": 3.75e-11
+  },
+  "geometry_change": "Only four collector rppd lengths2.04\u21922.12um, widths8um unchanged; child latch instantiated twice. All devices, bias, source, load, windows and thresholds otherwise identical.",
+  "geometry_pilot": {
+    "pin": {
+      "path": "/dev/shm/nssoc-sampler-v2-pilot-20261004/result.json",
+      "bytes": 174400,
+      "sha256": "2bfcb76a4162e90c27b63813114aec8bd5ef1c07753080a4940cf8555480fb96"
+    },
+    "cases": 6,
+    "all_screen_passed": true
+  },
+  "cross_version": {
+    "status": "FAIL_CROSS_VERSION_SAMPLER_SCREEN",
+    "exit_code": 1,
+    "attempted_cases": 9,
+    "completed_measurements": 8,
+    "selected_names": [
+      "hbt_typ_res_typ_27_1.8",
+      "hbt_wcs_res_bcs_125_1.71",
+      "hbt_wcs_res_wcs_125_1.71",
+      "no_bias",
+      "clock_stopped",
+      "clock_common_only",
+      "swapped_output",
+      "no_regeneration",
+      "overload"
+    ],
+    "positive_results": {
+      "hbt_typ_res_typ_27_1.8": 0.15030785852929854,
+      "hbt_wcs_res_bcs_125_1.71": 0.11581128182467416,
+      "hbt_wcs_res_wcs_125_1.71": 0.14249523240087789
+    },
+    "measured_negative_controls": 5,
+    "native_failed_cases": [
+      "no_regeneration"
+    ],
+    "failure_reason": "ngspice42 no_regeneration transient aborts at10.2525ns: timestep too small in xsamp.xm.xcs. Partial wave preserved; it is not a completed functional-negative PASS.",
+    "first_failed_driver_source": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/cross-first-source/crosscheck_pcie_sampler_v2.py",
+      "bytes": 11809,
+      "sha256": "396b33375ab9a6970c00160801ce59a85b72bee95ffbee01c8c4dd4e9b9f6b25"
+    }
+  },
+  "startup": {
+    "status": "NUMERICAL_RESIDUAL_PRESERVED_AFTER_THREE_STRATEGIES",
+    "three_strategies": [
+      {
+        "strategy": "more_iterations",
+        "margin_delta_v": 0.0,
+        "min_vce_delta_v": 0.0,
+        "dc_finite": true
+      },
+      {
+        "strategy": "physical_nodeset",
+        "margin_delta_v": 0.0,
+        "min_vce_delta_v": 0.0,
+        "dc_finite": true
+      },
+      {
+        "strategy": "source_homotopy",
+        "native_failure": "Native process failed; inspect /dev/shm/nssoc-sampler-startup-final-20261004/source_homotopy/run.log"
+      },
+      {
+        "strategy": "half_timestep",
+        "margin_delta_v": 1.8755480276008707e-05,
+        "min_vce_delta_v": 0.00026020303970009095,
+        "dc_finite": true
+      }
+    ],
+    "clean_strategies": [],
+    "additional_thermal_nodeset_status": "NUMERICAL_RESIDUAL_NOT_CURED",
+    "thermal_hint_count": 16,
+    "full_matrix_clean_claim": false,
+    "original_driver_failure_source": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/startup-first-source/diagnose_pcie_sampler_startup.py",
+      "bytes": 7577,
+      "sha256": "7afa1b4f99dcf9c33cf2727c340b2c7685826c5cc0e4a27629265b0df79f5360"
+    },
+    "original_source_function_reference": "docs/evidence/pcie-rx-v2-20261004.json; DEVlimitlog checks isnan(deltemp)||isnan(deltemp_old), called by VBIC self-heating. This is not a proof of an upstream bug.",
+    "no_models_tolerances_clamps_or_uic_changed": true
+  },
+  "reviews": {
+    "full-v1-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/full-v1-review.json",
+        "bytes": 1949293,
+        "sha256": "7e5546733af3cb88b1b9017c361b29f464dfa2c7764cdc573f7b55600bc9f9d6"
+      },
+      "result": {
+        "status": "PASS_SAMPLER_CAPTURE_REVIEW_ONLY",
+        "producer_status": "FAIL_SAMPLER_REQUIRED_SCREEN",
+        "waveform_count": 121
+      }
+    },
+    "full-v2-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/full-v2-review.json",
+        "bytes": 1959762,
+        "sha256": "cd7424223a06aa8eeae6c2701f216fbfda3837108cce095fcb8a6d552f7dabe2"
+      },
+      "result": {
+        "status": "PASS_SAMPLER_CAPTURE_REVIEW_ONLY",
+        "producer_status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+        "waveform_count": 121
+      }
+    },
+    "cross-v2-final-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/cross-v2-final-review.json",
+        "bytes": 4665,
+        "sha256": "04d16ae5ed5f8fd98809531966896156520dc8aef39338bb21b17bafd422b9a7"
+      },
+      "result": {
+        "status": "PASS_NATIVE_CROSS_VERSION_CAPTURE_REVIEW_ONLY",
+        "producer_status": "FAIL_CROSS_VERSION_SAMPLER_SCREEN",
+        "waveform_count": 9,
+        "fully_remeasured_waveform_count": 8,
+        "native_failed_case_names": [
+          "no_regeneration"
+        ]
+      }
+    },
+    "startup-final-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/startup-final-review.json",
+        "bytes": 413,
+        "sha256": "b8fa75473da3161c39f2d8ab030c48b0e2f858a229931ac805266436407d5f36"
+      },
+      "result": {
+        "status": "PASS_CAPTURE_REVIEW_NUMERICAL_RESIDUAL_RETAINED",
+        "full_waveforms_reparsed": [
+          "more_iterations",
+          "physical_nodeset",
+          "half_timestep"
+        ],
+        "clean_strategy_found": false
+      }
+    },
+    "v1-publication-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/v1-publication-review.json",
+        "bytes": 1949416,
+        "sha256": "3818e13353c93eda85e06250fad951b928cc6278713967a025ead1a17df34de9"
+      },
+      "result": {
+        "status": "PASS_SAMPLER_CAPTURE_REVIEW_ONLY",
+        "producer_status": "FAIL_SAMPLER_REQUIRED_SCREEN",
+        "waveform_count": 0
+      }
+    },
+    "v2-publication-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/v2-publication-review.json",
+        "bytes": 1959885,
+        "sha256": "2f26cb60bc8809f2f64487cfd40cd81735ef02de187df2c8ac0fbd94447331ae"
+      },
+      "result": {
+        "status": "PASS_SAMPLER_CAPTURE_REVIEW_ONLY",
+        "producer_status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+        "waveform_count": 0
+      }
+    },
+    "v2-repository-wave-review.json": {
+      "pin": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/v2-repository-wave-review.json",
+        "bytes": 1959906,
+        "sha256": "d26639f86664affa55da291068bc45237c413194c595eab2174f689109a09023"
+      },
+      "result": {
+        "status": "PASS_SAMPLER_CAPTURE_REVIEW_ONLY",
+        "producer_status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+        "waveform_count": 1
+      }
+    }
+  },
+  "peer": {
+    "pin": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/peer-v2/independent-review.json",
+      "bytes": 6323,
+      "sha256": "cd280303a720781215ca11fd5ebd1e897348d8af9f173e27258e6831551c7a7f"
+    },
+    "receipt": {
+      "status": "CLEAN_INDEPENDENT_SOURCE_CAPTURE_AND_FAILURE_CLASSIFICATION_REVIEW",
+      "source_freeze": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/source-freeze.json",
+        "bytes": 1646,
+        "sha256": "5dbb2805bdaebbba6d7ae03f5ad1ccdd696841362c3d16468f6965317244c7e8"
+      },
+      "frozen_sources": {
+        "hw/soc/analog/pcie/rx_sampler_hbt.spice": {
+          "bytes": 1604,
+          "sha256": "dd6d1c175466467b1195549617c1f432e7145af3f185113a4feb92be5f375d77"
+        },
+        "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": {
+          "bytes": 1604,
+          "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+        },
+        "scripts/characterize_pcie_sampler.py": {
+          "bytes": 22032,
+          "sha256": "b498ce88ebb70a1cac98069627b670bec915005f57f0a3b0f9e847760a1a8e71"
+        },
+        "scripts/characterize_pcie_sampler_v2.py": {
+          "bytes": 22262,
+          "sha256": "4c5f52d68012d79f0c08809d269f79d357955571630297aa62dbcbb9f5da7f67"
+        },
+        "scripts/review_pcie_sampler.py": {
+          "bytes": 11649,
+          "sha256": "dff9766ba381314f0154309fc1ea4800e02e14830575c2b2240fd1bcb8682cfe"
+        },
+        "scripts/review_pcie_sampler_v2.py": {
+          "bytes": 11652,
+          "sha256": "6f6fb48d05d12079e7f6a080b8ba21e3e0683c4d08cd6d651999e6b906208245"
+        },
+        "scripts/crosscheck_pcie_sampler_v2.py": {
+          "bytes": 13428,
+          "sha256": "c83b29674a611282e8439b3df491dfa6b4f092ac7c9f82e5476dbc2a3171ff70"
+        },
+        "scripts/diagnose_pcie_sampler_startup.py": {
+          "bytes": 8583,
+          "sha256": "8b1fbbcc5bf477dfeef92fd5cfb7025b690ee389e41e56c1c1fa703c36cf4d8b"
+        },
+        "scripts/project_pcie_sampler_trace.py": {
+          "bytes": 3370,
+          "sha256": "14b8910623eaea52613537ac65668333e706d5a07798e8465bc40f7cf49308f0"
+        },
+        "sw/tests/test_pcie_sampler.py": {
+          "bytes": 10090,
+          "sha256": "9792f1f38027e4e93131d7ba968a8b01b25cbfd45ea2a198377d36d8c2b59e56"
+        },
+        "sw/tests/test_pcie_sampler_v2.py": {
+          "bytes": 7707,
+          "sha256": "aded3f59ed412de636ef06ee9602b0ca22b9fd3a526e056b497439b8dbe0a19b"
+        }
+      },
+      "main_result": {
+        "path": "/dev/shm/nssoc-sampler-v2-full-ng47-20261004/result.json",
+        "bytes": 1841353,
+        "sha256": "798087437c6d043a0fd905474aa13624dd86a7244e0bf3ba3768d3775cd6c0c8"
+      },
+      "cross_result": {
+        "path": "/dev/shm/nssoc-sampler-v2-cross-ng42-final-20261004/result.json",
+        "bytes": 294274,
+        "sha256": "fe380b12ba1a1ef74cf75d329abc5748fa24a0bf7b9f1ed71b0ca5e3abf02c32"
+      },
+      "startup_result": {
+        "path": "/dev/shm/nssoc-sampler-startup-final-20261004/result.json",
+        "bytes": 74657,
+        "sha256": "19693fdde7d24caa96f479160571b5f037270f17779c4f11e1b09139c49b3ac3"
+      },
+      "independent_scope": {
+        "source_pins": 19,
+        "main_native_case_output_pins": 605,
+        "exact_regenerated_decks_and_circuit_pairs": 121,
+        "all_native_numerical_logs_reparsed": 121,
+        "main_waves_remeasured": 1,
+        "main_remeasured_case": "hbt_wcs_res_bcs_125_1.71",
+        "cross_capture_reviewer": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/peer-v2/cross-capture-review.json",
+          "bytes": 4665,
+          "sha256": "04d16ae5ed5f8fd98809531966896156520dc8aef39338bb21b17bafd422b9a7"
+        },
+        "cross_waves_remeasured": 8,
+        "cross_failed_partial_wave_hash_only": 1,
+        "startup_waves_remeasured": 3,
+        "spice_executions": 0,
+        "source_edits": false,
+        "bounded_pure_tests": "64 passed in0.38s"
+      },
+      "facts": {
+        "PVT_pass": 81,
+        "PVT_total": 81,
+        "worst_margin_v": 0.10925165142618196,
+        "minimum_PVT_VCE_v": 0.42534430092240005,
+        "numerical_warning_case_count": 29,
+        "ng47_status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+        "ng42_positive_measured_pass": 3,
+        "ng42_functional_negative_measured_rejections": 5,
+        "ng42_native_failure": "no_regeneration timestep too small at10.2525ns; not a functional-negative pass",
+        "ng42_CLI_exit": 1,
+        "startup_measured_strategies": 3,
+        "startup_native_failure": "source_homotopy",
+        "startup_clean_strategies": [],
+        "startup_cli_exit_from_empty_clean_list": 2
+      },
+      "preserved_first_attempts": [
+        {
+          "result": {
+            "path": "/dev/shm/nssoc-sampler-v2-cross-ng42-20261004/result.json",
+            "bytes": 268422,
+            "sha256": "7237e28903fce3464cdeb80d3792809349483f1ed9635b6d7d1d90d462f2ed14"
+          },
+          "source": {
+            "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/cross-first-source/crosscheck_pcie_sampler_v2.py",
+            "bytes": 11809,
+            "sha256": "396b33375ab9a6970c00160801ce59a85b72bee95ffbee01c8c4dd4e9b9f6b25"
+          },
+          "error": "RuntimeError('Native process failed; inspect /dev/shm/nssoc-sampler-v2-cross-ng42-20261004/no_regeneration/run.log')"
+        },
+        {
+          "result": {
+            "path": "/dev/shm/nssoc-sampler-startup-20261004/result.json",
+            "bytes": 44101,
+            "sha256": "3fac2296e9683cb446eb5a8b5dd5df251c445f6de9ea38508ec06fd79de1af2f"
+          },
+          "source": {
+            "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/startup-first-source/diagnose_pcie_sampler_startup.py",
+            "bytes": 7577,
+            "sha256": "7afa1b4f99dcf9c33cf2727c340b2c7685826c5cc0e4a27629265b0df79f5360"
+          },
+          "error": "RuntimeError('Native process failed; inspect /dev/shm/nssoc-sampler-startup-20261004/source_homotopy/run.log')"
+        }
+      ],
+      "limits": {
+        "unchanged_from_failed_v1": true,
+        "exact_v2_change": "Only two collector resistor lengths2.04um->2.12um in childlatch source",
+        "external_clock": true,
+        "separate_2p5V_sampler_supply": true,
+        "hold_scope": "Actual clock+.3UI..+.9UI; not the entire edge-to-edge interval or exhaustive metastability/setup/hold qualification",
+        "partial_projection": "Seven columns at every original timepoint, not all64columns or a replacement for19-HBT voltage/current verification",
+        "full_121_wave_remeasurement_by_this_reviewer": false,
+        "full_ng42_campaign_repeated": false,
+        "numerical_clean": false,
+        "main_chip_or_full_PHY_qualification": false
+      },
+      "reviewer_script": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/peer-v2/audit.py",
+        "bytes": 8359,
+        "sha256": "1a777d76b68434492ee78d7c667dd42c8d71e2ad540807ec3afe7e85d3711924"
+      }
+    }
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/sampler-native-final.tar.xz",
+    "bytes": 2083940,
+    "sha256": "1a993303a14095bf2c2ce66c27236302115e2ec151b32a6f38bcd8c7840102a6",
+    "all_members_sha_verified": true,
+    "all_members_regular": true,
+    "member_count": 1325,
+    "no_vendor_implementation_or_binary": true
+  },
+  "retention": {
+    "full_wave": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/evidence/sampler-v2-worst-20261004.dat.xz",
+      "bytes": 5454708,
+      "sha256": "c358597bb0c4c2d8508485e41ce20db458956d633cf8c61d057327ead2b0e13a",
+      "uncompressed_bytes": 25891720,
+      "native_wave_sha256": "a382964cc0dd4994fda988a477db62a06abbdcb32fb7ae0029f95af9a724d9ba",
+      "case": {
+        "hbt": "hbt_wcs",
+        "resistor": "res_bcs",
+        "temp": 125,
+        "rx_supply": 1.71,
+        "supply": 2.375,
+        "reference_a": 0.0005,
+        "rx_reference_a": 0.00075,
+        "vcm": 1.36,
+        "amplitude_v": 0.08,
+        "cap_f": 1.5e-13,
+        "rx_cap_f": 5e-15,
+        "clock_vcm": 1.29,
+        "clock_amplitude_v": 0.15,
+        "clock_rise_s": 5e-12,
+        "clock_source_ohm": 10,
+        "phase_ui": 0.5,
+        "step_s": 1e-12,
+        "mode": "prbs",
+        "fault": null,
+        "role": "required",
+        "name": "hbt_wcs_res_bcs_125_1.71"
+      },
+      "columns": 64,
+      "all_timepoints": true,
+      "lossless_standard_xz": true,
+      "full_raw_wave_rechecked": true
+    },
+    "selected_column_traces": [
+      {
+        "status": "PASS_EXACT_NATIVE_COLUMN_PROJECTION",
+        "original_full_wave_sha256": "e17b39ca1bb793396ceaaf3b6a9b73f1a93a217ba56576702b1df2c5134db8b3",
+        "projected_gzip_sha256": "6145175f619fc7f42caf2260f8a4aeb9726b55bee883f562e78ebf72e2eee5a7",
+        "projected_bytes": 748908,
+        "original_columns": 64,
+        "retained_columns": [
+          "time",
+          "v(ip)",
+          "v(inn)",
+          "v(scp)",
+          "v(scn)",
+          "v(qp)",
+          "v(qn)"
+        ],
+        "original_column_indices": [
+          0,
+          2,
+          1,
+          9,
+          8,
+          6,
+          5
+        ],
+        "rows": 20211,
+        "time_downsampled": false,
+        "every_selected_token_rechecked": true,
+        "full_waveform_retained": false,
+        "scope": "Seven selected raw native columns at every original timepoint. This is not a complete native waveform or a replacement for full 19-HBT headroom/current remeasurement."
+      },
+      {
+        "status": "PASS_EXACT_NATIVE_COLUMN_PROJECTION",
+        "original_full_wave_sha256": "a382964cc0dd4994fda988a477db62a06abbdcb32fb7ae0029f95af9a724d9ba",
+        "projected_gzip_sha256": "de970838889ad2b4a76651db7e2c2873511e330ec1cdee4faea66a6a70b69f2a",
+        "projected_bytes": 748971,
+        "original_columns": 64,
+        "retained_columns": [
+          "time",
+          "v(ip)",
+          "v(inn)",
+          "v(scp)",
+          "v(scn)",
+          "v(qp)",
+          "v(qn)"
+        ],
+        "original_column_indices": [
+          0,
+          2,
+          1,
+          9,
+          8,
+          6,
+          5
+        ],
+        "rows": 20211,
+        "time_downsampled": false,
+        "every_selected_token_rechecked": true,
+        "full_waveform_retained": false,
+        "scope": "Seven selected raw native columns at every original timepoint. This is not a complete native waveform or a replacement for full 19-HBT headroom/current remeasurement."
+      }
+    ],
+    "site_capsule_full_waves": 0,
+    "repository_full_waves": 1,
+    "all_other_full_waves_regeneration_required": true,
+    "raw_ram_directories": [
+      "/dev/shm/nssoc-sampler-full-ng47-20261004",
+      "/dev/shm/nssoc-sampler-v2-full-ng47-20261004",
+      "/dev/shm/nssoc-sampler-v2-cross-ng42-final-20261004",
+      "/dev/shm/nssoc-sampler-startup-final-20261004",
+      "/dev/shm/nssoc-sampler-thermal-startup-20261004"
+    ]
+  },
+  "commands": {
+    "native_v1": "python scripts/characterize_pcie_sampler.py --pdk PDK --ngspice NGSPICE47 --openvaf OPENVAF --out /dev/shm/NEW-v1",
+    "native_v2": "python scripts/characterize_pcie_sampler_v2.py --pdk PDK --ngspice NGSPICE47 --openvaf OPENVAF --out /dev/shm/NEW-v2",
+    "cross": "python scripts/crosscheck_pcie_sampler_v2.py --directory FULL-V2 --ngspice NGSPICE42 --out /dev/shm/NEW-cross",
+    "startup": "python scripts/diagnose_pcie_sampler_startup.py --directory FULL-V2 --out /dev/shm/NEW-startup",
+    "full_replay": "python scripts/review_pcie_sampler_v2.py --directory FULL-V2 --output NEW.json",
+    "metadata_replay": "python scripts/review_pcie_sampler_v2.py --directory EXTRACT/capture/v2 --mode metadata --output NEW.json",
+    "one_wave_replay": "Copy repository sampler-v2-worst-20261004.dat.xz to EXTRACT/capture/v2/hbt_wcs_res_bcs_125_1.71/wave.dat.xz then invoke --mode retained.",
+    "tool_retrieval_receipt": {
+      "url": "https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb",
+      "package_bytes": 4310724,
+      "package_sha256": "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b",
+      "executable_sha256": "eaca52dad06845779fed4f50420a6a0cf4a32776e6a572432275f350002b87b8"
+    }
+  },
+  "primary_sources": [
+    "https://dissonance.com/archive/journals/WGao96.pdf",
+    "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/03_bjt_params.html",
+    "https://ngspice.sourceforge.io/docs/ngspice-manual.pdf"
+  ],
+  "limitations": [
+    "External ideal supplies, current references and differential clock are required. This circuit is not PLL/CDR, CMOS deserializer or a complete PCIe PHY.",
+    "VCE/current checks cover every native point after START+16UI=4ns; startup is only covered for finite data/time coverage and numerical diagnostics, not VCE-qualified.",
+    "Output margin is evaluated at all native points plus interpolated boundaries of +0.3..+0.9UI after each actual clock edge. It is not the entire edge-to-edge hold interval.",
+    "Finite127-bit PRBS7 and25 deterministic nominal phase observations are not exhaustive setup/hold, metastability, noise, mismatch, BER or jitter tolerance.",
+    "The81-corner grid couples sampler and RX supply ratios; independent rail extensions are separate limited observations.",
+    "Retained.4..1.6V bounds are engineering screens, not foundry reliability/breakdown signoff.",
+    "Reported rail powers omit implementation losses of external clock and bias generators.",
+    "No extracted parasitics, physical tap RC, sampler layout/DRC/LVS or manufactured-silicon acceptance is claimed.",
+    "Initialization thermal NaN/gmin/native resistor-limit warnings remain; more iterations/electrical+thermal guesses did not cure them and source homotopy failed.",
+    "ngspice42 cross-version no_regeneration is a native solver failure, not a passing negative-control measurement."
+  ],
+  "pcie_compliance": false,
+  "manufacturing_approval": false,
+  "physical_qualification": false
+}
