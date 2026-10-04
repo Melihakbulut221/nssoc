@@ -2,6 +2,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+The subsequent [receive, divider-layout and extraction record](116-pcie-receive-clock-layout-and-extraction.md) adds native RX/combined TX and complete-bank C accounting.
+
 ## Measured progress — 4 October 2026
 
 The unchanged padded analog bank now passes a complete intrinsic-device graph
