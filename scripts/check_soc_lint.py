@@ -73,9 +73,14 @@ def owned_policy(rows):
 
 
 def nettype_errors(root=ROOT):
+    frozen = frozen_nettype_sources(root)
     files = sorted((root/'hw/soc/rtl').rglob('*.v')) + [root/'hw/soc/rtl/soc_logic_boot_rom.v.in']
     errors = []
     for path in files:
+        if path.relative_to(root).as_posix() in frozen:
+            # Exact historical sources are compiled inside real guards by
+            # guarded_frozen_nettypes below, never merely waived from checking.
+            continue
         text = re.sub(r'/\*.*?\*/|//[^\n]*', '', path.read_text(), flags=re.S)
         # Timescale may precede the guard; no declarations may escape it.
         text = re.sub(r'^\s*`timescale[^\n]*', '', text)
@@ -84,6 +89,51 @@ def nettype_errors(root=ROOT):
             text.count('`default_nettype none') != 1 or text.count('`default_nettype wire') != 1):
             errors.append(str(path.relative_to(root)))
     return errors
+
+
+def frozen_nettype_sources(root=ROOT):
+    """Bind frozen native captures without changing their original source bytes."""
+    manifest = root/'hw/soc/frozen-pcie-nettypes.json'
+    if not manifest.exists(): return {}
+    data = json.loads(manifest.read_text())
+    sources = data['sources']
+    for name, expected in sources.items():
+        path = root/name
+        if (not name.startswith('hw/soc/rtl/pcie/') or '..' in Path(name).parts or
+            not path.is_file() or path.is_symlink() or sha(path) != expected):
+            raise ValueError('Frozen nettype source identity changed: '+name)
+        text = re.sub(r'/\*.*?\*/|//[^\n]*', '', path.read_text(), flags=re.S)
+        if '`default_nettype' in text:
+            raise ValueError('Frozen source can override external guard: '+name)
+    return sources
+
+
+def guarded_frozen_nettypes(root, out, yosys):
+    """Actually parse every frozen source with implicit nets forbidden."""
+    frozen = frozen_nettype_sources(root)
+    out.mkdir(parents=True, exist_ok=False)
+    wrapper = out/'guarded.v'
+    # Yosys resolves implicit nets when generating RTLIL after preprocessing.
+    # Keep this isolated invocation at none through the end of the wrapper.
+    wrapper.write_text('`default_nettype none\n' + ''.join(
+        '`include "'+str((root/name).resolve())+'"\n'
+        for name in frozen))
+    recipe = out/'read.ys'
+    recipe.write_text('read_verilog -sv -noautowire "'+str(wrapper.resolve())+'"\n')
+    command = [str(yosys), '-Q', '-T', '-s', str(recipe.resolve())]
+    with (out/'yosys.log').open('x') as log:
+        proc = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT)
+    unchanged = frozen == frozen_nettype_sources(root)
+    record = dict(status='PASS_FROZEN_SOURCES_PARSED_WITH_NO_IMPLICIT_NETS' if
+                  proc.returncode == 0 and unchanged else 'FAIL', sources=frozen,
+                  manifest_sha256=sha(root/'hw/soc/frozen-pcie-nettypes.json'),
+                  command=command, returncode=proc.returncode, sources_unchanged=unchanged,
+                  wrapper_sha256=sha(wrapper), recipe_sha256=sha(recipe),
+                  log_sha256=sha(out/'yosys.log'),
+                  scope='Mandatory real guarded frontend check for exact frozen PCIe source bytes; does not replace whole-SoC diagnostic ledger or prove functionality.')
+    (out/'result.json').write_text(json.dumps(record,indent=2)+'\n')
+    if record['status']=='FAIL': raise RuntimeError('Frozen guarded compilation failed: '+str(out/'yosys.log'))
+    return record
 
 
 def physical_regfile(text):
@@ -122,6 +172,7 @@ def main():
     parser.add_argument('--output', type=Path, default=ROOT/'hw/soc/out/lint')
     suite = Path(os.environ.get('OSS_CAD_SUITE',ROOT/'hw/soc/tools/oss-cad-suite'))
     parser.add_argument('--verilator', type=Path, default=suite/'bin/verilator')
+    parser.add_argument('--yosys', type=Path, default=suite/'bin/yosys')
     parser.add_argument("--eth-mbist", action="store_true", help="Include explicit Ethernet SRAM MBIST; requires --mbist")
     args = parser.parse_args()
     out = args.output.resolve()
@@ -139,6 +190,9 @@ def main():
     version = subprocess.check_output([str(args.verilator),'--version'],text=True).strip()
     if version != policy['verilator_version']: parser.error('Unreviewed Verilator version: '+version)
     out.mkdir(parents=True)
+    frozen_nettypes = guarded_frozen_nettypes(ROOT, out/'frozen-nettypes', args.yosys)
+    hashes.update(frozen_nettypes['sources'])
+    hashes['hw/soc/frozen-pcie-nettypes.json'] = frozen_nettypes['manifest_sha256']
     aliases = {}
     additional = []
     rom_manifest = None
@@ -194,6 +248,7 @@ def main():
     passed = (proc.returncode == 0 and '- Verilator: Built from ' in log and
               bool(actual) and not any(delta.values()) and not own_issues and unchanged and not immutable_drift)
     record = dict(status='PASS_WITH_RECORDED_WARNINGS' if passed else 'FAIL', profile=profile_key,
+                  frozen_nettypes=frozen_nettypes,
                   scope='soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff',
                   rom_manifest=rom_manifest, diagnostic_aliases=aliases,
                   command=command,returncode=proc.returncode,verilator_version=version,source_sha256=hashes,

@@ -4,7 +4,46 @@ SIM ?= icarus
 TOPLEVEL_LANG = verilog
 TOPLEVEL = tb_soc_pcie_packet
 COCOTB_TEST_MODULES = test_soc_pcie_soc
+
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+BENCH := $(abspath $(dir $(THIS_MK)))
+ROOT := $(abspath $(BENCH)/../../../..)
+
+# The specialized checker supplies an actual CPU ROM and the verified base
+# interface/Ibex source list. A bare make (including run_cocotb.sh) must use
+# that same preparation instead of including cocotb with an empty source list.
+ifeq ($(strip $(PCIE_ROOT)),)
+SOC_PCIE_PYTHON ?= $(firstword $(wildcard $(ROOT)/hw/.venv/bin/python $(ROOT)/hw/soc/tools/cocotb-venv/bin/python) $(shell command -v python3 2>/dev/null))
+SOC_PCIE_RUN_ROOT ?= $(ROOT)/hw/soc/out/cocotb/soc-pcie
+COCOTB_RESULTS_FILE ?= results_soc_pcie_soc.xml
+.PHONY: sim clean
+sim:
+	@test -x "$(SOC_PCIE_PYTHON)" || { echo 'Python with cocotb dependencies is required'; exit 1; }
+	@if test ! -s "$(ROOT)/hw/soc/gen/ibex_top.v" || test ! -s "$(ROOT)/hw/soc/gen/interfaces.bundle.vh"; then \
+	  $(MAKE) -C "$(ROOT)" soc-rtl-prepare PYTHON="$(SOC_PCIE_PYTHON)" INTERFACE_PYTHON="$(SOC_PCIE_PYTHON)"; \
+	fi
+	@set -eu; \
+	  compiler=$$(command -v iverilog); \
+	  mkdir -p "$(SOC_PCIE_RUN_ROOT)"; \
+	  capture=$$(mktemp -d "$(SOC_PCIE_RUN_ROOT)/run.XXXXXX"); \
+	  rmdir "$$capture"; \
+	  rm -f "$(COCOTB_RESULTS_FILE)"; \
+	  status=0; \
+	  "$(SOC_PCIE_PYTHON)" "$(ROOT)/scripts/check_pcie_soc.py" --out "$$capture" --iverilog-dir "$$(dirname "$$compiler")" || status=$$?; \
+	  if test -f "$$capture/results.xml"; then cp "$$capture/results.xml" "$(COCOTB_RESULTS_FILE)"; fi; \
+	  echo "Actual SoC PCIe capture: $$capture"; \
+	  exit "$$status"
+clean:
+	@rm -f "$(COCOTB_RESULTS_FILE)"
+else
+ifeq ($(strip $(PCIE_ROM)),)
+$(error Prepared invocation requires PCIE_ROM)
+endif
+ifeq ($(strip $(VERILOG_SOURCES)),)
+$(error Prepared invocation requires VERILOG_SOURCES)
+endif
 COMPILE_ARGS += -g2012 -DSG13G2_ICG_BEHAVIOURAL -DSOC_PCIE_PACKET -DROM_HEX=\"$(PCIE_ROM)\"
 COMPILE_ARGS += -I$(PCIE_ROOT)/hw/soc/rtl -I$(PCIE_ROOT)/hw/rtl
 export COCOTB_RESULTS_FILE
 include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

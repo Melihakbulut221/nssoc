@@ -1,0 +1,22 @@
+.....................F.....                                              [100%]
+=================================== FAILURES ===================================
+_____________ test_real_compiler_distinguishes_implicit_wire[True] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-pcie-frozen-nettype-controls01/test_real_compiler_distinguish1')
+implicit = True
+
+    @pytest.mark.parametrize("implicit", [False, True])
+    def test_real_compiler_distinguishes_implicit_wire(tmp_path, implicit):
+        text = "module legacy(input a, output q); "
+        text += "assign misspelled=a;assign q=misspelled;" if implicit else "assign q=a;"
+        p, _ = fixture(tmp_path, text + "endmodule\n")
+        assert M.frozen_nettype_sources(tmp_path)
+        if implicit:
+>           with pytest.raises(RuntimeError, match="guarded compilation failed"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE RuntimeError
+
+sw/tests/test_frozen_pcie_nettypes.py:52: Failed
+=========================== short test summary info ============================
+FAILED sw/tests/test_frozen_pcie_nettypes.py::test_real_compiler_distinguishes_implicit_wire[True]
+1 failed, 26 passed in 316.51s (0:05:16)
