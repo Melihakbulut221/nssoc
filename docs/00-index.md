@@ -18,6 +18,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/118-pcie-continuous-ingress-and-phase-detector.md](118-pcie-continuous-ingress-and-phase-detector.md) records continuous input, nominal transistor phase detection, strict wire export, actual timing failures and the inherited VCO model-width limitation.
 [docs/119-pcie-registered-paths-and-physical-power.md](119-pcie-registered-paths-and-physical-power.md) records registered timing paths, actual supply-metal repair, native area-overflow correction and the separate VCO geometry revision.
 [docs/120-pcie-feedback-loop-and-wide-receive.md](120-pcie-feedback-loop-and-wide-receive.md) records real transistor feedback, native wide receive, compact VCO geometry, timing repair and retained analog failures.
+[docs/121-pcie-owned-receive-and-wire-feedback.md](121-pcie-owned-receive-and-wire-feedback.md) records packet ownership, native lane alignment, full native CRC-path proof, detailed-route timing failures and local VCO wires.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

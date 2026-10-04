@@ -2,6 +2,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+Subsequent evidence: [Document 121](121-pcie-owned-receive-and-wire-feedback.md) records completed routing, its failed extracted timing, native integrity checks and packet ownership. This page retains its original snapshot.
+
 ## Measured development — 4 October 2026
 
 A real transistor feedback chain now connects the VCO, divide-by-four stage,
