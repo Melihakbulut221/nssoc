@@ -4,6 +4,11 @@
 
 ## Measured boundary — 4 October 2026
 
+The next separately frozen measurements are in
+[document 111](111-pcie-clock-path-and-gearbox.md): native clock-load failures,
+headroom/conditioned-divider revisions and a four-lane fixed-block gearbox.
+They do not retroactively qualify the original geometry described below.
+
 The GR801-class open-source product remains the objective. This record closes
 specific development gaps in local receive-buffer ownership, transmitted flow
 control, the SoC packet connection, clocked receiver geometry and a bounded
