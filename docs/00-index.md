@@ -14,6 +14,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/114-pcie-timing-divider-and-native-taps.md](114-pcie-timing-divider-and-native-taps.md) records standalone TX physical timing, bounded transistor division, finite contacts and the failed complete native bank graph.
 [docs/115-pcie-framing-and-native-bank.md](115-pcie-framing-and-native-bank.md) records TX packet framing, the complete native analog-bank connectivity repair, physical function proof and remaining RC/thermal gates.
 [docs/116-pcie-receive-clock-layout-and-extraction.md](116-pcie-receive-clock-layout-and-extraction.md) records native RX and combined TX tests, actual divider layout, portable CI repair and remaining extraction failures.
+[docs/117-pcie-routed-receive-duplex-and-thermal.md](117-pcie-routed-receive-duplex-and-thermal.md) records RX physical repair, native duplex, compact divider geometry, TX extracted timing failures and preserved thermal diagnostics.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

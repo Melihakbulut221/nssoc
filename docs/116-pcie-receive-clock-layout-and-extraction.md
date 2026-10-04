@@ -2,6 +2,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+The [next measured update](117-pcie-routed-receive-duplex-and-thermal.md) records subsequent RX, duplex, compact-clock and extraction work; this snapshot remains historical.
+
 ## Measured progress — 4 October 2026
 
 The new RX packet framer passes actual native-cell tests, the combined TX path
