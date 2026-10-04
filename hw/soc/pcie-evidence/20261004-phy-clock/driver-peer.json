@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "status": "CLEAN_BOUNDED_INDEPENDENT_DRIVER_REVIEW",
+  "frozen_sources": {
+    "scripts/characterize_pcie_clock_driver_v3.py": {
+      "bytes": 20433,
+      "sha256": "510b0c25dc66acc8108f83a9f06dcbb00e6eeb1c1bb782f6f364bac73f483148"
+    },
+    "sw/tests/test_pcie_clock_driver_v3.py": {
+      "bytes": 8063,
+      "sha256": "f61ab5535a9f0ebafa5f3037d7daea3c1f90a1c887d029c29e227e503d5948d8"
+    },
+    "hw/soc/analog/pcie/clock_vco_hbt_v3.spice": {
+      "bytes": 2514,
+      "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+    }
+  },
+  "review_outputs": {
+    "peer-full-union.json": {
+      "bytes": 29090,
+      "sha256": "2b063cd974ad2d1ad9ea2d644aab08001ffa101dfe804c6f557fe857116d3c5f"
+    },
+    "peer-native-negatives.json": {
+      "bytes": 5216,
+      "sha256": "1f93791bf7a9054a291df01c8ad6069d9f7739238e92b5c08f6510a7f7b9d0ae"
+    },
+    "peer-native-halfstep.json": {
+      "bytes": 2709,
+      "sha256": "68d9503475526a3ae123fd64e5d9a8d3926b4129c36b58fc0415f2b9eea5bf77"
+    },
+    "peer-source-decks.json": {
+      "bytes": 1234,
+      "sha256": "05124dce5dc3d405d91db61c43db8dd1e5056a401667db55da3020f388dc0393"
+    },
+    "peer-tests-final.log": {
+      "bytes": 99,
+      "sha256": "b411c023c70b8479e9c4dc98b4a317930ed647ad5f3b6f0ea8bcb3a01496dd08"
+    },
+    "peer-ruff-final.log": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "peer_full_union.py": {
+      "bytes": 6287,
+      "sha256": "08706d517a120c72ab5faccec92dfd522f622b8647b0cb5250eede14c6f612cb"
+    },
+    "peer_raw_negatives.py": {
+      "bytes": 2562,
+      "sha256": "283dd18a15a32aa373ba312d2447047494cbf3216f0ea60ceaa5483d5dc97470"
+    },
+    "peer_raw_halfstep.py": {
+      "bytes": 2524,
+      "sha256": "b1e634fab82f98cf24ff1b018601b4546f3ad50a8d3c90a57c02e18b60936004"
+    },
+    "peer_source_decks.py": {
+      "bytes": 1750,
+      "sha256": "491f8abf399bd2f3ba87692c80269ce18d11ba92366f5b2907bc415125938b27"
+    }
+  },
+  "completed_native_positive_scope": {
+    "source_bound_cases": 55,
+    "original_complete_prefix": 45,
+    "new_exact_missing_suffix": 10,
+    "all55_native_decks_flags_zero_op_output_hashes_rechecked": true,
+    "retained_positive_waves_fully_remeasured": 13,
+    "unretained_positive_waves": 42,
+    "full_independent55_waveform_review": false
+  },
+  "completed_negative_scope": {
+    "actual_clean_faults": 4,
+    "retained_waves_fully_remeasured": 4,
+    "rejection_uses_functional_clock_guards_only": true
+  },
+  "halfstep_scope": {
+    "actual_cases": 2,
+    "retained_waves_fully_remeasured": 2,
+    "frequency_relative_deltas": [
+      {
+        "case": "nominal__opposed_aggressor_equivalent",
+        "frequency_relative_delta": 0.00023505043469018716,
+        "limit": 0.001
+      },
+      {
+        "case": "res_wcs_cap_wcs_2.415__opposed_aggressor_equivalent",
+        "frequency_relative_delta": 0.0002045852593002273,
+        "limit": 0.001
+      }
+    ]
+  },
+  "total_retained_full_native_waves_independently_remeasured": 19,
+  "tests": {
+    "focused_pytest_passed": 22,
+    "ruff_pass": true,
+    "native_simulator_rerun": false
+  },
+  "actual_devices": {
+    "hbts": 30,
+    "per_output_parallel_followers": 4,
+    "follower_nx": 4,
+    "per_output_parallel_sinks": 4,
+    "sink_nx": 2,
+    "all_model_instances_nx_in_1_to_10": true,
+    "individual_native_thermal_and_ic_ib_vectors": true
+  },
+  "positive_observed_bounds": {
+    "minimum_settled_vce_v": 0.41280488460499987,
+    "maximum_full_capture_vce_v": 1.596854029865,
+    "maximum_ic_a_per_nx": 0.002387151173409,
+    "minimum_diff_peak_v": 0.41755395961209996
+  },
+  "historical_failure_preserved": {
+    "enospc_original_sha256": "a25305921536100f878257d8a5e07311c1d2c6819ef88b8435a510b0ea66b5e5",
+    "original_capture_not_relabelled_complete": true,
+    "partial_case46_rejected_and_new_suffix_disjoint": true,
+    "prior_count4_nx1_and_count6_nx1_physical_failures_unchanged": true
+  },
+  "scope": "Read-only source/raw capture review. Same native circuit/metrology functions before and after sole atomic-result-writer fix are AST identical. Verified complete55 case union by exact IDs, all85/86 native source input pins with explicit historical producer snapshot, native decks/circuits, output hashes,30 OFF flags and zero initial OP. Independently replayed all19 retained final positive/negative/half-step waves;42 unretained positive waveforms remain native recorded metrics, not repeated independent waveform measurements. No source edits or native simulation by reviewer. Final publication capsule not yet available and is outside this receipt.",
+  "limitations": [
+    "Largest observed full-capture VCE is within only about3.15mV of1.6V; this finite screen is not a robust physical/PVT signoff.",
+    "Collapsed capacitance is not distributed extracted RC/receiving-device loading; no layout, PDN, PLL, CDR or PCIe qualification.",
+    "The0.4V lower VCE gate applies to4\u201312ns settled operation; full0\u201312ns upper VCE/current observations are retained, not a claim of settled headroom at zero-power startup."
+  ],
+  "qualified_pex": false,
+  "physical_acceptance": false,
+  "pll_implemented": false
+}
