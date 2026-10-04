@@ -162,3 +162,5 @@ wide packet retirement, Ordered Sets and LTSSM, physically viable supply/clock
 routing, body/parasitic and ESD stress validation, main-chip integration and the
 earlier SRAM, full-chip LVS/timing and manufacturing requirements. None is marked
 closed by the primitive, RTL or standalone router results above.
+
+The next measured stage is [registered PCIe paths and physical supply repair](119-pcie-registered-paths-and-physical-power.md); earlier results and limits above retain their original scope.
