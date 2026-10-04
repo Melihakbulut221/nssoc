@@ -7,6 +7,7 @@ and [docs/96-second-audit-closure.md](96-second-audit-closure.md).
 [PCIe RX development](107-pcie-rx-development.md) records the separate LCRC
 quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [PCIe replay, credit, receiver-clock and pad development](109-pcie-replay-clock-and-pad-development.md) records the next measured controller and analog boundaries.
+[docs/110-pcie-local-flow-and-clock-layout.md](110-pcie-local-flow-and-clock-layout.md) records the optional SoC packet profile, clean startup protocol and separate analog geometry.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

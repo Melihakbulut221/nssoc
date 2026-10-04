@@ -2,6 +2,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+The later [local-flow, CPU and clock-layout record](110-pcie-local-flow-and-clock-layout.md) adds real local receive ownership/FC, optional `soc_top` integration, physical samplers/VCO and a separate clean startup protocol. Earlier failures and limitations below remain historical evidence.
+
 ## Starting boundary — 4 October 2026
 
 The user requested completion of the remaining controller and analog PHY
