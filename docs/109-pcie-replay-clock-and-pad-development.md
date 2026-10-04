@@ -440,6 +440,53 @@ controls do not validate substrate/RF coupling, extraction corners, package
 parasitics, a PCIe eye or whole-chip PEX. Those require a qualified extraction
 method and subsequent circuit/channel reruns.
 
+## Subsequent coupled-capacitance correction
+
+The separate v2 producer revision retains the original total capacitance for
+Magic's existing reduction/delay calculations, while tracking intrinsic ground
+capacitance separately. Only the explicitly unsimplified, non-lumped signal
+export distributes that intrinsic contribution into ground `rnode` entries.
+The original inter-conductor capacitors retain their original terminals and
+values. The v1 source, runtime and rejected coupled result remain unchanged.
+
+Four actual geometries now pass the v2 conservation audit: the original
+uncoupled sheet and pad, and symmetric/asymmetric two-strip coupling cases.
+The symmetric diagonal is **2,351.349976 aF**, with mutual entry
+**−1,168.760010 aF**; the asymmetric diagonals are **2,112.822937 and
+1,712.852966 aF**, with mutual entry **−701.252991 aF**. Both complete
+matrices agree with their independent original extraction records within
+native print precision. All original resistances, ports and mutual endpoints
+remain intact. The uncoupled exports remain byte-identical to v1.
+
+Sixteen native executions, 71 focused tests and 13 actual-output mutations
+support this scope. Paired simplified/lumped native runs remain byte-identical
+to v1 and are explicitly rejected by v2 acceptance; they cannot inherit its
+conservation result. The final copied build recompiles all affected `resis`
+and `extract` objects before relinking. Independent review checks all five
+patched source/header files, actual ABI offsets and 122 raw native files.
+
+The [v2 summary and independent review](evidence/pcie-rc-coupled-v2-20261004.json)
+bind the [301-member lossless native capsule](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/analog/pcie/evidence/magic-coupled-v2-20261004.tar.xz),
+retained in the repository as a separate download. The unchanged static-site
+size limit does not require omitting any native evidence. This closes the
+measured double-counting defect for flat canonical, `cscale=1`, unreduced
+signal networks. Spatially distributed coupling, AC/RF response, inductance,
+substrate, reduced networks, extraction corners and full-chip PEX still require
+their own validation. Neither old PDK files nor the main-chip extraction flow
+are replaced by this experimental runtime.
+
+```sh
+python3 scripts/patch_magic_coupled_cap_v2.py \
+  --source-dir /path/to/pinned/v1-magic/resis --out /dev/shm/coupled-v2-source
+# Use the capsule's isolated clean-rebuild recipe, including extract/ExtMain.
+python3 scripts/check_magic_coupled_cap_v2.py \
+  --ext /path/to/fixed.ext --replacement /path/to/fixed.res.ext \
+  --exported /path/to/fixed.spice --native-log /path/to/fixed.log \
+  --baseline-ext /path/to/original.ext --baseline-spice /path/to/original.spice \
+  --out /dev/shm/coupled-v2-review.json
+python3 -m pytest -q sw/tests/test_magic_coupled_cap_v2.py
+```
+
 ## Remaining boundaries before main-chip acceptance
 
 | Requested block | Current implemented boundary | Still required for closure |
@@ -449,7 +496,7 @@ method and subsequent circuit/channel reruns.
 | CDR/PLL | Native sampler experiments expose actual clock-level/loading requirements; one real external PLL candidate was audited | Original or properly licensed clock circuit, acquisition/lock, jitter/phase-noise and PVT/PEX validation |
 | PCS/LTSSM | Packet-side interfaces and external training/recovery obligations are explicit | Physical coding/ordered sets, speed transitions, link training/equalization and four-lane state/deskew tests |
 | Analog pads/ESD | All four TX/RX lanes physically joined to 16 bondpads/32 diodes; parent DRC/LVS and negatives pass | Full rail-clamp/discharge network, package path and assembled-system ESD/RF qualification |
-| Parasitic extraction | Isolated native producer repair restores uncoupled TopMetal2 ground-C conservation; the real coupling matrix remains rejected | Verified interconnect/coupling/substrate extraction and correlation, followed by channel/eye and PVT reruns |
+| Parasitic extraction | Separate v2 native producer preserves ground/mutual C matrices in flat unreduced TopMetal2 controls; v1 failure remains recorded | Qualified spatial coupling/substrate extraction, RC corners and correlation, followed by channel/eye and PVT reruns |
 | Main-chip connection | Digital packet boundary and analog geometry are separately verified development artifacts | Complete clock/PCS link, protected host-fabric arbitration, reset/CDC, power/pad/DFT integration and fresh whole-chip physical checks |
 
 The `soc_top` and generated `nssoc_chip` do not gain a fictitious serial link

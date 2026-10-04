@@ -2589,3 +2589,74 @@ passing tests and 34 skips. Replacing one line break with a space preserves
 every word and restores the original limit; all 63 project-status tests pass
 locally. Hardware sources, test thresholds and ongoing native jobs are
 unchanged. Complete CI results for the correction remain pending.
+
+### 4 October, complete raw NPU hold and failed boot review
+
+The [NPU-only hold audit](evidence/timing-hold-ablation-npu-native-20261004.json)
+now replays all four native stages: 23,527 endpoints at each of three corners,
+or **282,324 corner/endpoint rows**. Exactly `_135206_/D` improves, from
+−120.382371 ps to +131.391786 ps in its worst corner. Every other hold
+rise/fall/minimum tuple and constraint status remains unchanged. The three
+post-insertion exports agree. Hold violations reduce **57 to 56**; setup stays
+at **1,310**, with zero slew/capacitance violations. The target's slow-corner
+setup slack decreases from 19.284 to 18.613 ns and remains positive.
+
+The replay verifies all 80 exact Git methods, original 103,907 placements,
+32 SRAMs, the prior delay cell, and the one new delay cell/net. The actual
+before/after netlists reduce to identical original equations after contracting
+that single identity buffer. All 63 native tiny-control negatives and both
+limited ECO proof records/logs are checked. Large original graph/object and
+Yosys frontend files are streamed through ZIP CRC and source-bound SHA256
+checks; this is not a new proof execution or an independent parse of those
+large graphs. The review downloads selected members, not the whole large ZIP.
+No complete ODB reopening, detailed route, signoff RC, boot or product approval
+is claimed, and the candidate remains unadopted.
+
+The [completed frontier boot audit](evidence/npu-frontier-final-native-20261004.json)
+separately verifies both whole compact ZIPs, their CRCs, 100 output identities
+and 29 Git methods per variant. The original passes 28 checks at cycle
+1,596,123. The candidate **fails 24-check boot at cycle 3,000,096**, with
+simulator return code 1 and no success magic. A green diagnostic workflow
+does not change that result.
+
+The earliest observed candidate unknown moves upstream to cycle 1,569,429,
+two buffers after the EVQ_OUT read-valid rail combination. The mapped rail
+flops share `rd_pass`; its predecessors include eligibility and selected head
+parity. The existing trace does not observe those rail D inputs and the full
+selected-data/parity path. This narrows the next measurement; it does not yet
+establish the initiating fault or justify an RTL repair. Earlier failed traces
+and their source identities remain unchanged.
+
+The new [hold archive plan](evidence/closure-hold-ablation-final-archive-plan-20261004.json)
+and [frontier archive plan](evidence/closure-npu-frontier-final-archive-plan-20261004.json)
+select eight exact startup/final artifacts for the existing authenticated and
+anonymous release roundtrip method. Archival is a separate operation and is
+not yet reported complete by this preparation record. It must preserve the
+failed ETH timing and candidate boot results along with their successful
+controls.
+
+### 4 October, EVQ read-valid and head-parity observation
+
+The [new EVQ observer controls](evidence/npu-evq-observer-native-20261004.json)
+and [59-member native capsule](evidence/npu-evq-observer-native-20261004.tar.xz)
+extend the measured frontier to the two read-valid rail flops' D/Q/clock/reset,
+their immediate drivers, `rd_pass`, `rd_ok`, selected head data and parity.
+Both immutable mapped inputs bind exactly: 209 cells / 1,624 scalars in the
+original and 210 / 1,628 in the candidate, each with 89 sequential boundaries.
+The 17 parity leaves cover all 16 selected data bits and selected parity;
+each selected data bit is traced to its four actual storage Q outputs.
+
+The independent review passes 162 focused/adjacent tests and replays 28 native
+control processes. Both mapped head-selection controls pass all 1,296 patterns,
+including unknown selected data/parity; both actual wrong-memory-input
+mutations fail. Five observer controls preserve every baseline D/Q sample.
+All 29 ancestor source identities remain unchanged, as do functional RTL,
+qualification inputs and the vendor cell models. The new observer gates its
+callbacks outside the fixed event window; callback coalescing, static-X
+distinction, finite window and event-limit bounds remain explicit.
+
+The paired original/candidate workflow will start on this observer workflow's
+push and preserve startup and final captures. These local controls are not a
+completed three-million-cycle boot or a repair: the candidate failure above
+remains open until the actual paired event windows establish its cause and a
+subsequent implementation passes qualification.
