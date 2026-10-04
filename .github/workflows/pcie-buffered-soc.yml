@@ -104,13 +104,18 @@ jobs:
           python3 "scripts/check_pcie_gen3_$COMPONENT.py" --out "hw/soc/out/pcie-local-flow/$COMPONENT-rtl"
           python3 "scripts/check_pcie_gen3_$COMPONENT.py" --native --out "hw/soc/out/pcie-local-flow/$COMPONENT-native" --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
           python3 -m pytest -q "sw/tests/test_pcie_gen3_$COMPONENT.py" --basetemp="hw/soc/out/pcie-local-flow/$COMPONENT-mutations"
-      - name: Independent STP, maximum buffer and combined TX framing
+      - name: Independent STP, maximum buffers and native TX/RX framing
         if: matrix.component == 'framer'
         run: |
           python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_stp --out hw/soc/out/pcie-local-flow/stp-rtl
           python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_stp --native --out hw/soc/out/pcie-local-flow/stp-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
           python3 scripts/check_pcie_gen3_framer.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/framer-max-rtl
           python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_packet_tx_path --out hw/soc/out/pcie-local-flow/framer-transport-rtl
+          python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_packet_tx_path --native --out hw/soc/out/pcie-local-flow/framer-transport-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 scripts/check_pcie_gen3_receive.py --out hw/soc/out/pcie-local-flow/receive-rtl --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_gen3_receive.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-max-rtl --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_gen3_receive_native.py --out hw/soc/out/pcie-local-flow/receive-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q sw/tests/test_pcie_gen3_receive.py --basetemp=hw/soc/out/pcie-local-flow/receive-mutations
       - name: Preserve complete native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -1,0 +1,77 @@
+{
+  "status": "FROZEN_AUTHOR_VERIFIED_DIV4_V5_NATIVE_LAYOUT",
+  "utc": "2026-10-04T13:11:47.549985+00:00",
+  "sources": {
+    "hw/soc/flow/make_pcie_clock_div4_v5.py": "904287049ea99c4ed65ca383cfbc209094246cca2c06d9baf6d994caacda87d7",
+    "hw/soc/flow/check_pcie_clock_div4_v5.py": "1c20a0e9e3351000946d88b7faad5b0ff09edb453dba3c98c940c38d1832dc91",
+    "sw/tests/test_pcie_clock_div4_v5_layout.py": "67110346e562848f726c2e7fe501574183279c4546ee3381fff3bf8663c12436"
+  },
+  "layout": {
+    "path": "/dev/shm/nssoc-div4-v5-layout-02",
+    "result_sha256": "4ca578db71b91dad5eb1b8e2cc40f28a293f9e3ce048631a5900eb94b0be14e4",
+    "outputs": {
+      "nssoc_clock_div4_v5_layout.lef": "969ebfd4a54f20749c1970679b4c641f7de70167ae893545f9342a4c7f661e3a",
+      "nssoc_clock_div4_v5_layout.gds": "6a62c36378e6724b004f67022a04babd9a22279ec6a841b11bf8c69f1943a772",
+      "schematic.cir": "5356556fe949cf511f2a9f12ab15362d222947bdedb1bccc98f01611489ecb44"
+    },
+    "bbox_um": [
+      0,
+      0,
+      4800.0,
+      607.03
+    ],
+    "ports": [
+      "CLKP",
+      "CLKN",
+      "QP",
+      "QN",
+      "VCTRL",
+      "VCO_AVDD",
+      "DIV_AVDD",
+      "AVSS",
+      "SUB"
+    ],
+    "primitive_counts": {
+      "hbt": 64,
+      "pmos": 1,
+      "rppd": 42,
+      "cmim": 12,
+      "physical_ptap": 30,
+      "physical_ntap": 1
+    }
+  },
+  "native": {
+    "path": "/dev/shm/nssoc-div4-v5-checks-02",
+    "result_sha256": "50df7182022f5197bedfbf5c077c032a7bf61e374ef3be11b31776dba1e43795",
+    "input_count": 210,
+    "output_count": 123,
+    "drc_rule_categories": 560,
+    "drc_violations": 0,
+    "deep_and_flat_lvs": "PASS",
+    "compared_devices": 109,
+    "steps": 19,
+    "negative_controls": 15,
+    "all_inputs_rehashed": true,
+    "all_outputs_rehashed": true,
+    "complete_output_inventory": true
+  },
+  "geometry_audit": {
+    "path": "hw/soc/out/pcie-clock-div4-v5-layout-20261004/geometry-audit.json",
+    "sha256": "06eb9414773b511f7a78b74fbe08e4a8bdafcd890dafddb27afaa6b9790b010c",
+    "primitive_xor_instances": 150,
+    "real_ports": 9,
+    "complete_obstruction_layers": 7
+  },
+  "tests": {
+    "passed": 29,
+    "log_sha256": "d86fe8623d1666f6742155d6c71fd3426a8ef269f441b5ffcca4d040b7c7469c",
+    "ruff": "PASS"
+  },
+  "preserved_failure": {
+    "path": "/dev/shm/nssoc-div4-v5-checks-01",
+    "result_sha256": "3fbed1cef025bcae99457a4055123769390704cbb03f55c754562cb4792c7046",
+    "cause": "Four TM1.a violations: tiny MIM seed plate right-hand half remained narrower than1.64um after wide strap ended at center. New parent-level route covers full plate right edge; nativePCell and all MIM markers unchanged, verified by exactPCell XOR and strict nativeLVS."
+  },
+  "scope": "Physical topology/geometry/LEF only. Actual4800x607.03um footprint; no extracted performance, PLL/CDR, mainchip integration, fullPEX or manufacturing acceptance.",
+  "live1us_producers_unchanged": true
+}

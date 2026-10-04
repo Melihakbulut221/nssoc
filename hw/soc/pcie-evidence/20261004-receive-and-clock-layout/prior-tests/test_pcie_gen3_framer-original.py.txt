@@ -13,20 +13,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 RTL = ROOT / "hw/soc/rtl/pcie"
-def iverilog_directory():
-    """Prefer the installed CI toolchain; retain the optional local checkout."""
-    installed = shutil.which("iverilog")
-    directory = (
-        Path(installed).parent
-        if installed
-        else ROOT / "hw/soc/tools/oss-cad-suite/bin"
-    )
-    assert all(os.access(directory / name, os.X_OK) for name in ("iverilog", "vvp")), (
-        f"Actual Icarus and vvp executables required in {directory}"
-    )
-    return directory
-
-
+TOOLS = ROOT / "hw/soc/tools/oss-cad-suite/bin"
 SOURCES = (
     "soc_pcie_gen3_stp",
     "soc_pcie_gen3_framer_tx",
@@ -150,7 +137,7 @@ def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
         "--rtl-dir",
         str(directory),
         "--iverilog-dir",
-        str(iverilog_directory()),
+        str(TOOLS),
         "--command-timeout-seconds",
         "60",
     ]

@@ -1,0 +1,98 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Executed receive-framing HDL faults must fail the independent port oracle."""
+
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[2]
+RTL = ROOT / "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx.v"
+FAULTS = [
+    ("crc", "frame_crc==word[23:20]", "1'b1"),
+    ("parity", "(^{length_dw,word[23:20],word[15]})==1'b0", "1'b1"),
+    ("capacity", "encoded_bytes<=MAX_ENCODED_BYTES", "1'b1"),
+    ("header_shape", "packet_bytes!=header_bytes", "1'b0"),
+    ("format", "header_bad<=fmt[2]", "header_bad<=1'b0"),
+    ("first_symbol_edb", "edb_ok=word==32'hc0c0c0c0", "edb_ok=word[7:0]==8'hc0"),
+    ("lane0_idl_only", "idl_ok=word==32'b0", "idl_ok=word[7:0]==8'b0"),
+    ("eds_anywhere", "&& word_index==15", "&& 1'b1"),
+    ("mixed_header", "headers_i!=8'haa", "headers_i[1:0]!=2'b10"),
+    ("input_error", "headers_i!=8'haa || block_error_i", "headers_i!=8'haa || 1'b0"),
+    (
+        "premature_tlp",
+        "else state<=LOOK;",
+        "else begin state<=EMIT;packet_good_o<=1;end",
+    ),
+    (
+        "lost_successor",
+        "               packet_good_o<=1;state<=EMIT;read_pos<=0;",
+        "               packet_good_o<=1;state<=EMIT;read_pos<=0;consume_word();",
+    ),
+    ("stall_loss", "if(valid_o && ready_i)", "if(valid_o)"),
+    (
+        "sequence_reserved",
+        "packet[0]<={4'b0,word[19:16]}",
+        "packet[0]<={4'h1,word[19:16]}",
+    ),
+    ("dllp_lane", "packet[0]<=word[23:16]", "packet[0]<=word[31:24]"),
+]
+
+
+@pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+    text = RTL.read_text()
+    assert text.count(old) == 1
+    altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+    altered.write_text(text.replace(old, new))
+    out = tmp_path / "capture"
+    with (tmp_path / "launch.log").open("w") as log:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                "--out",
+                str(out),
+                "--rtl",
+                str(altered),
+                "--iverilog-dir",
+                str(ROOT / "hw/soc/tools/oss-cad-suite/bin"),
+                "--command-timeout-seconds",
+                "60",
+            ],
+            cwd=ROOT,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            stdout=log,
+            stderr=subprocess.STDOUT,
+            timeout=90,
+        )
+    assert result.returncode != 0
+    assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+    assert "AssertionError" in (out / "simulation.log").read_text()
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+    assert any(c.find("failure") is not None for c in cases)
+
+
+@pytest.mark.parametrize("capacity", [17, 4119])
+def test_receive_capacity_cli_rejects(tmp_path, capacity):
+    p = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+            "--out",
+            str(tmp_path / "unused"),
+            "--max-encoded-bytes",
+            str(capacity),
+            "--iverilog-dir",
+            str(ROOT / "hw/soc/tools/oss-cad-suite/bin"),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert p.returncode == 2 and "Capacity18..4118" in p.stderr
+    assert not (tmp_path / "unused").exists()
