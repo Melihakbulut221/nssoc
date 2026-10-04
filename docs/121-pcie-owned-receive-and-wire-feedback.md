@@ -126,3 +126,6 @@ verified public bundles, totaling **1,273,419,792 compressed source bytes**.
 This is preservation of existing measurements, not 121 new passing runs.
 Original warnings and model limitations remain in the
 [preservation ledger](https://github.com/Melihakbulut221/nssoc/blob/a26c53632d8e5abf93d5328943c00cf366103750/hw/soc/pcie-evidence/20261004-owned-receive-and-wire-feedback/sampler-all121-wave-preservation.json).
+
+
+The subsequent [limiter-local and receive repair record](122-pcie-limiter-local-layout-and-rx-repair.md) preserves this snapshot while adding actual-wire swing, paired 400 ns PLL failures, DLLP consumers and fresh RX extraction.

@@ -19,6 +19,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/119-pcie-registered-paths-and-physical-power.md](119-pcie-registered-paths-and-physical-power.md) records registered timing paths, actual supply-metal repair, native area-overflow correction and the separate VCO geometry revision.
 [docs/120-pcie-feedback-loop-and-wide-receive.md](120-pcie-feedback-loop-and-wide-receive.md) records real transistor feedback, native wide receive, compact VCO geometry, timing repair and retained analog failures.
 [docs/121-pcie-owned-receive-and-wire-feedback.md](121-pcie-owned-receive-and-wire-feedback.md) records packet ownership, native lane alignment, full native CRC-path proof, detailed-route timing failures and local VCO wires.
+[docs/122-pcie-limiter-local-layout-and-rx-repair.md](122-pcie-limiter-local-layout-and-rx-repair.md) records limiter-local VCO wire measurements, both 400 ns PLL failures, DLLP consumer attempts and actual routed RX repair.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
