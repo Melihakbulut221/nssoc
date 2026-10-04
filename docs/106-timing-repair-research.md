@@ -2562,3 +2562,30 @@ semantic conductors each. The recorded job snapshot shows both unchanged
 three-million-cycle boot steps started. It contains no advancing-cycle
 measurement, final event window or completed boot result. The historical
 candidate boot failure remains unresolved; observation is not a repair.
+
+### 4 October, 01:36 UTC status review
+
+The [completed separate hold experiments](evidence/hold-ablation-status-20261004.json)
+report different outcomes after fresh routing. The NPU-only insertion reduces
+hold violations from 57 to 56, with setup unchanged at 1,310 and slew/capacitance
+at zero. Both reloads agree and all nine historical/fresh comparison guards
+pass. The ETH-only insertion instead gives 1,311 setup and 60 hold violations
+and is rejected despite a green diagnostic workflow. This review checks
+selected final result/metric members; complete raw endpoint, object and
+physical-view audits remain pending. Neither candidate is adopted, and these
+estimated global-route results do not close final timing.
+
+The [original NPU frontier boot](evidence/npu-frontier-original-status-20261004.json)
+passes 28 checks at cycle 1,596,123. Its complete compact ZIP SHA/CRC, 100
+output hashes and 29 exact Git method identities were checked; the raw boot
+log agrees with the receipt. The candidate job remains in progress at this
+observation. This status review does not independently replay the event
+parser or establish a passing candidate boot.
+
+Both general CI suites at `dfb738b` fail the same
+[README line-budget check](evidence/readme-line-budget-fix-20261004.json):
+126 lines exceed the existing 125-line limit. Each otherwise reports 4,763
+passing tests and 34 skips. Replacing one line break with a space preserves
+every word and restores the original limit; all 63 project-status tests pass
+locally. Hardware sources, test thresholds and ongoing native jobs are
+unchanged. Complete CI results for the correction remain pending.

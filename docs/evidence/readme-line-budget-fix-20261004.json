@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "status": "README_LINE_BUDGET_FAILURE_REPRODUCED_AND_WORDING_PRESERVING_REFLOW_VERIFIED",
+  "recorded_at_utc": "2026-10-04T01:40:01.169385+00:00",
+  "failed_jobs": [
+    {
+      "run_id": 37158998080,
+      "job_id": 111320323990,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/37158998080/job/111320323990",
+      "source_commit": "dfb738b2842d5585c43df71ff718532c8eebb100",
+      "conclusion": "failure",
+      "started_at": "2026-10-03T23:50:57Z",
+      "completed_at": "2026-10-04T00:00:47Z",
+      "failed_step": "Every check, from the same script the developer runs",
+      "raw_job_log": {
+        "bytes": 64015,
+        "sha256": "6d4bfb90d5e71853385bfa9e45b6f0679137dca8b965be8cdc5e8b1193d0eb3c"
+      },
+      "retained_log": {
+        "path": "hw/soc/out/status-20261004-0136/ci/job-111320323990.log.gz",
+        "bytes": 14430,
+        "sha256": "7c67937be8cf2ae0e6b8327db87a8962ba2b23fd6da8fcd3c3fb0fc72549c9f0"
+      },
+      "job_metadata": {
+        "bytes": 2823,
+        "sha256": "c8e6944730e3516be3e3e66fbea0340e8a60d3f09f0aaff1ab99412da604ffe7"
+      },
+      "suite_summary": "1 failed, 4763 passed, 34 skipped, 1 warning in 428.61s (0:07:08)",
+      "failure_excerpt": [
+        "        record = json.loads((ROOT / \"docs/evidence/readme-migration-20260920.json\").read_text())",
+        "        assert len(original) == record[\"original_bytes\"]",
+        "        assert hashlib.sha256(original).hexdigest() == record[\"original_sha256\"]",
+        ">       assert len((ROOT / \"README.md\").read_text().splitlines()) <= 125",
+        "E       AssertionError: assert 126 <= 125",
+        "sw/tests/test_project_status.py:110: AssertionError"
+      ]
+    },
+    {
+      "run_id": 37159002104,
+      "job_id": 111319891726,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/37159002104/job/111319891726",
+      "source_commit": "dfb738b2842d5585c43df71ff718532c8eebb100",
+      "conclusion": "failure",
+      "started_at": "2026-10-03T23:48:45Z",
+      "completed_at": "2026-10-03T23:58:24Z",
+      "failed_step": "Every check, from the same script the developer runs",
+      "raw_job_log": {
+        "bytes": 64961,
+        "sha256": "9f907d3174799591968150cc4342d80312630936f2de00f83940042b9f15a46f"
+      },
+      "retained_log": {
+        "path": "hw/soc/out/status-20261004-0136/ci/job-111319891726.log.gz",
+        "bytes": 14806,
+        "sha256": "aa9ec99b8b69f464d8d5a7720f179a43841ff6ea7d5edf32e05d1a724a382065"
+      },
+      "job_metadata": {
+        "bytes": 2823,
+        "sha256": "2721f10f5975357923e9eeaed1034994ef17ebb7a3f6e85058843002ddc59f13"
+      },
+      "suite_summary": "1 failed, 4763 passed, 34 skipped, 1 warning in 419.98s (0:06:59)",
+      "failure_excerpt": [
+        "        record = json.loads((ROOT / \"docs/evidence/readme-migration-20260920.json\").read_text())",
+        "        assert len(original) == record[\"original_bytes\"]",
+        "        assert hashlib.sha256(original).hexdigest() == record[\"original_sha256\"]",
+        ">       assert len((ROOT / \"README.md\").read_text().splitlines()) <= 125",
+        "E       AssertionError: assert 126 <= 125",
+        "sw/tests/test_project_status.py:110: AssertionError"
+      ]
+    }
+  ],
+  "cause": {
+    "test": "sw/tests/test_project_status.py::test_readme_migration_preserves_every_original_byte",
+    "line": 110,
+    "assertion": "len(README.md.splitlines()) <= 125",
+    "actual_lines": 126,
+    "limit": 125,
+    "original_archive_byte_and_sha_assertions_preceding_failure_passed": true,
+    "failing_change_commit": "e7e3e71",
+    "classification": "README layout exceeded existing documentation line budget; no hardware or ablation source failure"
+  },
+  "correction": {
+    "path": "README.md",
+    "before": {
+      "bytes": 8084,
+      "sha256": "4e50a7c39eb9944da01595c1e79302b5e86f35d848cb699f397d2f0e08ede5f4"
+    },
+    "after": {
+      "bytes": 8084,
+      "sha256": "41015d7bc350ad974b340820bf7f0633c9096c3b112b19fa4958680e8b055700"
+    },
+    "lines_before": 126,
+    "lines_after": 125,
+    "exact_change": "Replace the newline after \"The product acceptance gates below\" with one space.",
+    "all_nonwhitespace_tokens_identical": true,
+    "all_other_bytes_identical": true,
+    "threshold_unchanged": true,
+    "tests_unchanged": true,
+    "unchanged_test_file": {
+      "bytes": 14538,
+      "sha256": "20251a06a7f63da08c14bbd51f9956928c35fee848d5ffbbe7cf5ee6ed408343"
+    }
+  },
+  "focused_validation": {
+    "command": [
+      "hw/soc/tools/cocotb-venv/bin/python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "sw/tests/test_project_status.py",
+      "-q"
+    ],
+    "returncode": 0,
+    "passed": 63,
+    "log": {
+      "path": "hw/soc/out/status-20261004-0136/ci/focused-tests.log",
+      "bytes": 99,
+      "sha256": "5f5d60e35aa55b0340c2514fb6cd14dccb8ba1b23b1bc0e904ed98c21ee260bf"
+    }
+  },
+  "limitations": [
+    "The complete cloud suites were not rerun by this local check. Both original jobs remain failed and their exact logs are retained.",
+    "Separate SoC formal jobs and active physical/NPU experiments are not inferred to pass or fail from this documentation fix."
+  ],
+  "ablation_sources_changed": false,
+  "rtl_changed": false,
+  "native_execution": false,
+  "candidate_adopted": false,
+  "commit_or_push_performed": false
+}
