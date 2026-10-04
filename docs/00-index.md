@@ -10,6 +10,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/110-pcie-local-flow-and-clock-layout.md](110-pcie-local-flow-and-clock-layout.md) records the optional SoC packet profile, clean startup protocol and separate analog geometry.
 [docs/111-pcie-clock-path-and-gearbox.md](111-pcie-clock-path-and-gearbox.md) records the measured load failures, conditioned divide-by-two and fixed-block RTL transport.
 [docs/112-pcie-driven-clock-and-scrambling.md](112-pcie-driven-clock-and-scrambling.md) records the stronger transistor output, actual macro layout, bounded extraction repair and scrambler tests.
+[docs/113-pcie-clocked-pads-and-transport.md](113-pcie-clocked-pads-and-transport.md) records actual clock/pad routing, native HBT multiplicity, divider/thermal failures and TX transport.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

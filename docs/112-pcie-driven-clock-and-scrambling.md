@@ -105,3 +105,6 @@ SERDES/PCS/LTSSM, qualified parasitics/ESD and main-chip clock/reset/CDC/pad
 integration remain open. Fresh whole-chip timing, LVS and manufacturing gates
 must follow their actual integration. Progress captures do not override those
 gates or the previous Ethernet/NPU timing failures.
+
+The next actual clock/pad integration and its still-open timing/analog gates
+are recorded in [document 113](113-pcie-clocked-pads-and-transport.md).
