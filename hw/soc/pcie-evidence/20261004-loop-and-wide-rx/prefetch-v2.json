@@ -1,0 +1,165 @@
+{
+  "status": "PASS_PREFETCH_V2_NATIVE_PORTS_AND_GRT_PHYSICAL_FUNCTION_NOT_FINAL_TIMING",
+  "utc": "2026-10-04T17:48:51.131185+00:00",
+  "source_pins": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_prefetch_v2.v": {
+      "bytes": 7995,
+      "sha256": "3d8a09da41bb5a6ae5a416a03eba310d3a911f5ecfe4fda465a4a174b67f9334"
+    },
+    "scripts/check_pcie_gen3_receive_prefetch_v2.py": {
+      "bytes": 10538,
+      "sha256": "3c41139323dc8d4662334cf136e40a8b8c9ea025cae265175956a1018d0e1f0c"
+    },
+    "sw/tests/test_pcie_gen3_receive_prefetch_v2.py": {
+      "bytes": 11491,
+      "sha256": "773c7665c61d3e2299b5e64f0880c5655d0145d6bbc6d8e8a4aff4ec2ed17689"
+    },
+    "sw/tests/test_pcie_gen3_prefetch_v2_equivalence.py": {
+      "bytes": 5266,
+      "sha256": "9f5dccdc000973a64795c9b145c07483534a2f12893ce0b5ba9dc36faa486169"
+    }
+  },
+  "archive": {
+    "path": "/dev/shm/pcie-rx-prefetch-v2-native-and-physical-proof-20261004.tar.xz",
+    "bytes": 25784456,
+    "sha256": "e12d7d2706165c2e8d8473b9c3d495abf5728dd7a65968449d4bfde561f13ff9"
+  },
+  "member_count": 334,
+  "native_cells": 14540,
+  "native_tests": 6,
+  "rtl_default_tests": 6,
+  "rtl_maximum4118_tests": 6,
+  "focused_pytest": {
+    "capacity_and_fault": 29,
+    "public_port_equivalence": 9
+  },
+  "all_function_binary_proof": {
+    "states": 1804,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5443,
+    "canonical_nodes": 39026,
+    "mismatches": [],
+    "matched": 5443,
+    "elapsed_seconds": 2.3400136479758658,
+    "logic_cell_census": {
+      "gold": {
+        "$_NOT_": 12395,
+        "$_OR_": 10578,
+        "$_AND_": 14458,
+        "$_XOR_": 72,
+        "$_DFF_PP0_": 1804,
+        "$scopeinfo": 14540
+      },
+      "gate": {
+        "$_NOT_": 12395,
+        "$_OR_": 10578,
+        "$_AND_": 14458,
+        "$_XOR_": 72,
+        "$_DFF_PP0_": 1804,
+        "$scopeinfo": 20285
+      }
+    },
+    "status": "PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY",
+    "scope": "Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.",
+    "rules": [
+      "exact primitive semantics",
+      "commutative binary operand order",
+      "double Boolean inversion",
+      "literal 0/1 negation",
+      "associative Boolean operator grouping",
+      "AND/OR idempotence",
+      "collision-free tuple interning"
+    ]
+  },
+  "proof_controls": [
+    {
+      "kind": "invert_D",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:D"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_clock",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:C"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_reset",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "state:$flatten\\_25462_:R"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "invert_output",
+      "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+      "mismatches": [
+        "output:data_o:0"
+      ],
+      "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+    },
+    {
+      "kind": "missing_state",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError('Exact bijective native state instance map')"
+    },
+    {
+      "kind": "unknown_function",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError()"
+    },
+    {
+      "kind": "unknown_output",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError(('unknown or combinational cycle', 'x'))"
+    },
+    {
+      "kind": "undriven_reset",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "KeyError(39838)"
+    },
+    {
+      "kind": "duplicate_driver",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError(('multiple driver', 'peer_duplicate', 1706))"
+    },
+    {
+      "kind": "changed_port_census",
+      "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+      "error": "AssertionError()"
+    }
+  ],
+  "physical_port_tests": 6,
+  "estimated_corner_slack_ns": {
+    "slow": {
+      "recovery": 1.015921,
+      "setup": 0.124792,
+      "removal": 0.652267,
+      "hold": 0.043483
+    },
+    "typical": {
+      "recovery": 2.052392,
+      "setup": 1.580431,
+      "removal": 0.463175,
+      "hold": 0.082205
+    },
+    "fast": {
+      "recovery": 2.681026,
+      "setup": 2.288765,
+      "removal": 0.353743,
+      "hold": 0.115465
+    }
+  },
+  "critical_wire_eco": "Actual sg13g2_buf_4 between _22323_/Y and _25850_/D plus native resizer/global rerouting, unchanged4ns/.2nsIO/.1ns slew/.01pF. No falsepath/multicycle exceptions.",
+  "preserved_prior_failures": "Prefetchv1GRT-.215294ns; v2beforeexplicitECO-.013431ns. Both remain failures, not deleted or relabelled.",
+  "scope": "Standalone byte receiver default150 physicalprofile;4118RTLonly. Actual detailedroute is separate running task; no detailedRC, fullPCS/PHY, mainchip or foundry qualification.",
+  "physical_acceptance": false,
+  "qualified_rc": false
+}
