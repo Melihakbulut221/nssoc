@@ -28,7 +28,7 @@ silicon testing and qualification. Each result below records progress toward tha
 ## Recorded verification evidence
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
-These selected milestones retain their original revision and scope; they are not a combined signoff result.
+These selected milestones retain their original revision and scope; they are not a combined signoff result. [Continuous PCIe ingress and transistor phase detection](docs/118-pcie-continuous-ingress-and-phase-detector.md) records the latest bounded implementation, native tests and open physical gates.
 
 <!-- project-status:start -->
 | Area | Measured status | Evidence |

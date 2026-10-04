@@ -156,3 +156,5 @@ approach is qualified for RF or full-chip signoff.
 Complete PLL/CDR, continuous SERDES ingress,
 Ordered Sets/LTSSM, qualified parasitics and ESD stress validation, main-chip
 connection, final chip timing and manufacturing approval remain distinct gates.
+
+The subsequent [continuous ingress, transistor phase detector and exact wire RC report](118-pcie-continuous-ingress-and-phase-detector.md) records the next source-bound results and newly identified model-range limits.
