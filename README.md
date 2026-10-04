@@ -28,7 +28,7 @@ silicon testing and qualification. Each result below records progress toward tha
 ## Recorded verification evidence
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
-These selected milestones retain their original revision and scope; they are not a combined signoff result. [PCIe variable SKP and native receive development](docs/123-pcie-variable-skp-and-native-receive.md) records the latest bounded implementation, native tests and open physical gates.
+These selected milestones retain their original revision and scope; they are not a combined signoff result. [PCIe PLL acquisition and recovered-lane development](docs/124-pcie-pll-acquisition-and-recovered-lanes.md) records the latest bounded implementation, native tests and open physical gates.
 
 <!-- project-status:start -->
 | Area | Measured status | Evidence |
@@ -51,7 +51,7 @@ Qualified coupled RC, complete SRAM timing/power libraries, final SoC timing,
 PCIe PHY/padframe integration and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and profile-specific layout evidence.
-**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest PCIe development record](docs/123-pcie-variable-skp-and-native-receive.md) records native variable-SKP reception, six passing cell-level consumer cases, measured VCO layout results and repaired verification entry points; extracted timing, complete PHY and main-chip physical integration remain open.
+**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest PCIe development record](docs/124-pcie-pll-acquisition-and-recovered-lanes.md) records independently replayed nominal PLL acquisition, native complete-block clock crossing, four-lane RTL composition, local SDS locking and measured receiver hold improvement; slow setup, qualified clocks/RC, complete PHY and main-chip physical integration remain open.
 UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated whole-SoC layout pending.
 Ethernet needs an external PHY and has no DMA.
 The complete GR801 interface set is not implemented.

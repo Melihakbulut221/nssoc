@@ -1,0 +1,78 @@
+{
+  "status": "IMPLEMENTED_BOUNDED_COMPLETE_BLOCK_CDC_CONTRACT",
+  "first_component": "soc_pcie_gen3_block_cdc_v1",
+  "placement": "One instance after each recovered-clock lane_align_v2. Complete block records cross into common clock; downstream four-lane deskew and rate compensation remain separate.",
+  "ports": {
+    "record_bits": 200,
+    "layout_lsb_to_msb": [
+      "block[193:0] (all bits preserved even beyond declared length)",
+      "length_code[2:0] (0..4 for66/98/130/162/194bits)",
+      "skp",
+      "eieos",
+      "realign"
+    ],
+    "input": "No backpressure. Every valid live block is accepted on a recovered-clock edge or produces sticky overflow/fault. wr_accept reports actual acceptance; it is not a request to pause the serial source. Startup/reset/fault invalidates the epoch and ignores input until coordinated restart.",
+    "output": "Held valid+all200bits in common domain until ready. Empty means valid0; this transaction interface does not classify an idle read-ready as physical serial underflow."
+  },
+  "resets": {
+    "assertion": "por_ni low OR either-domain clean level reset request asynchronously asserts BOTH local reset synchronizers and masks public traffic. Do not reset only one FIFO pointer. External reset requests must be glitch-free reset-quality levels.",
+    "release": "Three local reset-release flops, then four local boot clocks; each boot-ready is synchronized through two peer-clock flops. Traffic requires local boot and peer ready. The unchanged vendor core separately propagates source/sink reset. A stopped clock cannot finish the mutual startup barrier.",
+    "epoch": "No local epoch counter is advertised. Reset or synchronized fault invalidates pending records/partial packets; common-clock integration must abort downstream state and reacquire the lane. Already accepted output before fault becomes visible is a valid prefix, not a guarantee of complete packet integrity."
+  },
+  "faults": {
+    "local": "Alignment loss, length code>4, or valid&&!vendor_ready while running makes write fault sticky. Only genuine capacity rejection sets wr_overflow. No later writes after the failing write edge.",
+    "crossing": "One held fault bit crosses two common-clock flops. Reader may retire previously buffered valid prefix during synchronizer latency; then public valid/ready is masked until shared reset. No instantaneous cross-clock error indication or in-order fault-marker timing is claimed.",
+    "restart": "Only shared reset clears fault. Merely resuming downstream ready, seeing EIEOS or deasserting loss does not recover."
+  },
+  "capacity": {
+    "supported_depth": "Power of two >=4; actual tests at4,8,32",
+    "default_ram_records": 32,
+    "read_prefetch_records": 2,
+    "default_total_stall_capacity_records": 34,
+    "measured_test": "Read clock running, output stalled and source at4recovered cycles/record: firstDEPTH+2 records accepted; next live record faults. Pointer synchronization can conservatively refuse a write before a simultaneous remote read becomes visible.",
+    "budget": "DEPTH32 is a finite prototype budget, not a protocol worst-case sizing claim. For an initial occupancy Q, a pause of S common cycles and a conservative synchronization allowance L, require Q + ceil(32*ceil((S+L)*f_wr/f_rd)/66) +1 <=DEPTH for minimum66bit blocks, without relying on two prefetch entries. Actual clock tolerance/SSC, maximum pause/skew and legal compensation opportunities must be bound before full PCS sizing. An arbitrary downstream stall or long-term input excess cannot be solved by a finite FIFO."
+  },
+  "vendor_reuse": {
+    "selected": "Existing Ethernet copy avoids compiling a second same-named axis_async_fifo from verilog-axis. Vendor bytes unmodified; MIT notice retained.",
+    "configuration": "DATA_WIDTH200, KEEP/LAST/ID/DEST/USER/FRAME/DROP/MARK/PAUSE disabled, KEEP_WIDTH1, RAM_PIPELINE1, OUTPUT_FIFO0. Do not reuse synchronous aer_fifo for this seam.",
+    "hazard_closed": "Vendor normal-mode s_ready deassertion does not itself provide the required no-backpressure overrun event. Wrapper explicitly latches rejected live blocks."
+  },
+  "next_component": "Four common-clock per-lane queues and bounded deskew acquisition keyed to a declared training/alignment episode. Must disambiguate repeated identical EIEOS, enforce lane mapping and bound skew; do not match arbitrary first markers or equate CDC success with deskew. SKP scheduling, insertion/deletion and trailer LFSR policy are separate.",
+  "primary_reference": {
+    "url": "https://cdrdv2.intel.com/v1/dl/getContent/643108",
+    "local_pdf_pin": {
+      "bytes": 7837092,
+      "sha256": "cae63e2a3ddf221dacf8115520b2136e97ee20b6850736ff39f5535669ec145e"
+    },
+    "local_text_pin": {
+      "bytes": 636939,
+      "sha256": "d489fdb970bf9f45587b9f249d711373ee9116f30da917690b40afc90cc377ff"
+    },
+    "sections": [
+      "4.2 SerDes partition",
+      "6.1 RxValid",
+      "6.2.1 RxCLK",
+      "8.14 Clock Tolerance Compensation",
+      "8.15.3.1 EB reset",
+      "9.6 Block Alignment"
+    ],
+    "findings": "SerDes RxData arrives with recovered RxCLK; RxValid indicates clock stability. The original-PIPE elastic-buffer compensation/reset rules are a different interface contract. This new block is an internal MAC CDC seam, not an implementation claim for original-PIPE status/reset timing.",
+    "distribution": "Internal PDF/text are not included in any public capsule; only official link and exact file hashes."
+  },
+  "validation": {
+    "pytest": 17,
+    "positive_cases": 21,
+    "depths": [
+      4,
+      8,
+      32
+    ],
+    "functional_rtl_counterexamples": 10,
+    "invalid_depth_elaboration_cases": 2,
+    "real_parent_termination_controls": 1,
+    "clock_conditions": "Independent phases and4,000/4,001ps drift plus4,001/1,900ps ratio; multiple pointer wraps, complete upper bits/metadata, held pressure, either-domain reset, stopped-clock restart, loss and malformed length.",
+    "limitations": "Digital simulation cannot establish metastability MTBF, physical Gray-bus skew, clock-domain path constraints, synchronizer cell preservation or reset distribution. Native IHP mapping, structural CDC and post-layout checks remain pending.",
+    "additional_selected_positive": 1,
+    "selected_case_scope": "Ten single-case fault runs deliberately select one scenario (one actual failure plus six unselected entries); a separate successful selection regression checks exact name and count. All three full positive suites execute every case with zero skipped."
+  }
+}

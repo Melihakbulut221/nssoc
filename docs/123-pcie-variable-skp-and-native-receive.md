@@ -172,3 +172,5 @@ source commit above; historical cell runs are not relabeled as runs of new
 bytes. The [comment-only bridge](../hw/soc/pcie-evidence/20261005-pcs-clock-and-native-receive/license-comment-bridge.json)
 records all seven changed files and the 39+1 successful RTL/lifecycle test union,
 including the first stale-hash assertion failure.
+
+The [subsequent acquisition and recovered-lane record](124-pcie-pll-acquisition-and-recovered-lanes.md) preserves this snapshot and adds the first independently replayed 1 µs PLL result, native CDC, four-lane RTL, local SDS locking and fresh nominal extracted receiver timing.

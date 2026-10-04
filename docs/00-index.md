@@ -21,6 +21,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/121-pcie-owned-receive-and-wire-feedback.md](121-pcie-owned-receive-and-wire-feedback.md) records packet ownership, native lane alignment, full native CRC-path proof, detailed-route timing failures and local VCO wires.
 [docs/122-pcie-limiter-local-layout-and-rx-repair.md](122-pcie-limiter-local-layout-and-rx-repair.md) records limiter-local VCO wire measurements, both 400 ns PLL failures, DLLP consumer attempts and actual routed RX repair.
 [docs/123-pcie-variable-skp-and-native-receive.md](123-pcie-variable-skp-and-native-receive.md) records native variable-SKP reception, smaller mapped DLLP consumers, local clock-layout measurements and actual SoC verification repairs.
+[docs/124-pcie-pll-acquisition-and-recovered-lanes.md](124-pcie-pll-acquisition-and-recovered-lanes.md) records complete nominal PLL acquisition, native CDC, recovered-lane composition, SDS locking and actual routed hold improvement with remaining setup failure.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
