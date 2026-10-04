@@ -8,9 +8,12 @@ on:
       - hw/soc/rtl/pcie/**
       - hw/soc/rtl/soc_gpio.v
       - hw/soc/formal/soc_pcie_tlp_*
+      - hw/soc/formal/pcie_crc32_byte_formal.v
       - hw/soc/formal/Makefile
       - hw/soc/tb/cocotb/*soc_pcie*
       - scripts/check_pcie_tlp_*.py
+      - scripts/check_pcie_integrity*.py
+      - sw/tests/test_pcie_integrity.py
       - scripts/cocotb_results.py
       - tools.mk
       - hw/requirements.txt
@@ -53,10 +56,15 @@ jobs:
           make -C hw/soc/tb/cocotb -f Makefile.soc_pcie_gpio
       - name: Independent formal safety and reachability checks
         run: make -C hw/soc/formal pcietlp pciestream
+      - name: Receive CRC quarantine, independent CRC relation and functional faults
+        run: |
+          python3 scripts/check_pcie_integrity.py --out hw/soc/out/pcie-integrity-rtl
+          python3 -m pytest -q sw/tests/test_pcie_integrity.py --basetemp=hw/soc/out/pcie-integrity-controls
       - name: IHP mapping and unmodified native-cell simulation
         run: |
           python3 scripts/check_pcie_tlp_native.py --out hw/soc/out/pcie-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
           python3 scripts/check_pcie_tlp_native.py --top soc_pcie_tlp_stream --out hw/soc/out/pcie-stream-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
+          python3 scripts/check_pcie_integrity_native.py --out hw/soc/out/pcie-integrity-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-libraries/cells.lib --models hw/soc/out/pcie-libraries/cells.v
       - name: Preserve block evidence, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -67,6 +75,9 @@ jobs:
             hw/soc/out/pcie-native/
             hw/soc/out/pcie-stream-controls/
             hw/soc/out/pcie-stream-native/
+            hw/soc/out/pcie-integrity-rtl/
+            hw/soc/out/pcie-integrity-controls/
+            hw/soc/out/pcie-integrity-native/
             hw/soc/formal/soc_pcie_tlp_*/
             hw/soc/tb/cocotb/results_soc_pcie_gpio.xml
           retention-days: 30

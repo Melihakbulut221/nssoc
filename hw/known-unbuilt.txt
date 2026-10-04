@@ -32,3 +32,6 @@ ahbl_interconnect	AHB address decoder used only beneath the standalone probe_ahb
 ahbl2apb	AHB-to-APB adapter used only beneath the standalone probe_ahbl_top experiment. Product soc_top uses soc_apb_bridge; soc_apb_wb remains instantiated separately by soc_can.
 soc_pcie_tlp_regs	Standalone PCIe transaction-layer register backend; block simulation and synthesis only. No soc_top instance, link/data-link layer or PHY; docs/98 records its exact scope.
 soc_pcie_tlp_stream	Standalone DWORD packet assembler/serializer wrapping the PCIe register backend. No soc_top instance, CRC/data-link or PHY; block verification does not establish host integration or a Gen3 x4 link.
+soc_pcie_crc32_byte	Standalone classic PCIe LCRC byte recurrence; used by the bounded receive-integrity development block, absent from soc_top. A polynomial proof does not establish link compliance.
+soc_pcie_lcrc_rx	Standalone byte-packet quarantine and LCRC receiver; checks bounded length and physical-error sideband before exposing TLP bytes. No sequence acceptance, ACK, replay, credit control, or soc_top instance.
+soc_pcie_tlp_integrity	Standalone LCRC quarantine plus byte-to-DWORD transaction adapter; no soc_top, serial PHY, DLL/LTSSM, clock recovery or transmitter LCRC. See docs/107-pcie-rx-development.md.

@@ -4,6 +4,8 @@ Current entry point: [README.md](../README.md), with
 [source-bound measured status](project-status.json). Complete product and audit
 requirements are in [docs/92-product-acceptance.md](92-product-acceptance.md)
 and [docs/96-second-audit-closure.md](96-second-audit-closure.md).
+[PCIe RX development](107-pcie-rx-development.md) records the separate LCRC
+quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
@@ -498,6 +500,7 @@ rather than from a beam.
 | [docs/104-chip-io-and-test-access.md](104-chip-io-and-test-access.md) | Native IHP I/O shell, coherent read-only serial MBIST access, mapped-core linkage and separate IO-only pad-ring placement; no product signoff. |
 | [docs/105-core-io-physical-integration.md](105-core-io-physical-integration.md) | Core/ring/mailbox assembly, actual-GDS obstruction coverage, four supply checks and unresolved native I/O transistor LVS; no manufacturing acceptance. |
 | [docs/106-timing-repair-research.md](106-timing-repair-research.md) | Checkpoint9 setup/hold bottlenecks, version-checked repair profiles and ranked physical experiments; speedup and timing closure remain unmeasured. |
+| [docs/107-pcie-rx-development.md](107-pcie-rx-development.md) | Bounded LCRC quarantine, native HBT receiver preamplifier and individual-cell layout; raw simulations, load failure, numerical warnings and DRC/LVS evidence. Full PHY and chip integration remain open. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 

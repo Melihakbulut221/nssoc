@@ -1,6 +1,17 @@
 # 99 — Custom PCIe Gen3 x4 PHY development
 
-## Status and scope — 22 September 2026
+## Latest development — 4 October 2026
+
+[The RX development record](107-pcie-rx-development.md) adds a native-HBT
+differential receiver preamplifier with foundry resistor terminations and a
+bounded digital LCRC quarantine in front of the existing transaction backend.
+The new work is separate from the earlier TX experiments below. Analog
+waveform screens, individual-cell geometry checks and digital port tests have
+different acceptance scopes; none establishes a complete PCIe Gen3 x4 PHY,
+serial link, or full-chip integration. The dated sections below retain the
+historical results and limitations of each earlier revision.
+
+## Historical status and scope — 22 September 2026
 
 Custom analog development has started, following the feasibility research in
 [docs/91](91-pcie-gen3-feasibility.md). There are now executable SG13G2 HBT

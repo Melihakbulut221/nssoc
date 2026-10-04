@@ -186,7 +186,17 @@ make -C hw/soc/formal pciestream
 
 ## Remaining implementation
 
-The next digital boundaries are CRC/integrity validation, full
+**Update, 4 October 2026:** a separate
+[`soc_pcie_tlp_integrity`](../hw/soc/rtl/pcie/soc_pcie_tlp_integrity.v) wrapper
+now quarantines a complete bounded byte packet until its classic LCRC,
+physical-error sideband and length pass, then feeds this DWORD adapter.
+[docs/107](107-pcie-rx-development.md) records its precise prefix/byte-order
+contract, verification and limits. The original adapter's interface and its
+upstream-integrity obligation are unchanged. The new wrapper is standalone;
+it does not provide sequence acceptance, transmission LCRC, ACK/replay,
+credits, a PHY, or a `soc_top` instance.
+
+The next digital boundaries are complete bidirectional data-link integrity, full
 Endpoint configuration/capabilities, multi-DWORD transfer/completion handling,
 interrupts, DLL sequence/ACK/NAK/replay and credit flow control, and PHY-side
 LTSSM/training/Gen3 encoding/equalization/lane alignment. Root Port behavior
