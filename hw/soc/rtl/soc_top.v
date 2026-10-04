@@ -248,6 +248,22 @@ module soc_top #(
     // POWER-ON reset. Asynchronously asserted, and the only reset the
     // watchdog obeys.
     input  wire        rst_ni,
+`ifdef SOC_PCIE_PACKET
+    // Same-clock packet boundary for the implemented PCIe completer. This
+    // development profile has no serial PHY/PCS/LTSSM or package-pin claim.
+    // BAR0 exposes only the existing GPIO slot; all other CPU regions remain
+    // inaccessible through this interface. CPU and PCIe share real APB logic.
+    input wire pcie_link_up_i,pcie_training_i,pcie_retrain_done_i,
+    input wire [15:0] pcie_function_id_i,
+    input wire [7:0] pcie_rx_data_i,
+    input wire pcie_rx_sop_i,pcie_rx_eop_i,pcie_rx_error_i,
+    input wire pcie_rx_valid_i,pcie_rx_dllp_i,pcie_tx_ready_i,
+    output wire pcie_rx_ready_o,
+    output wire [7:0] pcie_tx_data_o,
+    output wire pcie_tx_sop_o,pcie_tx_eop_o,pcie_tx_valid_o,
+    output wire pcie_tx_dllp_o,pcie_tx_replay_o,
+    output wire pcie_initialized_o,pcie_error_o,pcie_retrain_request_o,
+`endif
 `ifdef SOC_ETH_MBIST
     output wire [1:0] eth_mbist_done_o, eth_mbist_failed_o,
 `endif
@@ -894,6 +910,12 @@ module soc_top #(
   wire        pready, pslverr;
 
   wire apb_timeout;
+`ifdef SOC_PCIE_PACKET
+  wire cpu_psel,cpu_penable,cpu_pwrite,cpu_pready,cpu_pslverr;
+  wire [19:0] cpu_paddr;
+  wire [31:0] cpu_pwdata,cpu_prdata;
+  wire [3:0] cpu_pstrb;
+`endif
   soc_apb_bridge #(.APB_TIMEOUT(APB_TIMEOUT)) u_apb (
       .clk_i (clk_i), .rst_ni (rst_sys_n),
       .req_i (s_req[2]), .addr_i (s_addr), .we_i (s_we),
@@ -904,10 +926,54 @@ module soc_top #(
       // every slave is always ready. CAN now instantiates soc_apb_wb.
       // Count the one fabric response, not every cycle of sticky timeout.
       .timeout_o (apb_timeout),
+`ifdef SOC_PCIE_PACKET
+      .psel_o (cpu_psel), .penable_o (cpu_penable), .paddr_o (cpu_paddr),
+      .pwrite_o (cpu_pwrite), .pwdata_o (cpu_pwdata), .pstrb_o (cpu_pstrb),
+      .prdata_i (cpu_prdata), .pready_i (cpu_pready), .pslverr_i (cpu_pslverr)
+`else
       .psel_o (psel), .penable_o (penable), .paddr_o (paddr),
       .pwrite_o (pwrite), .pwdata_o (pwdata), .pstrb_o (pstrb),
       .prdata_i (prdata), .pready_i (pready), .pslverr_i (pslverr)
+`endif
   );
+
+`ifdef SOC_PCIE_PACKET
+  wire ep_psel,ep_penable,ep_pwrite,ep_pready,ep_pslverr;
+  wire [11:0] ep_paddr;
+  wire [31:0] ep_pwdata,ep_prdata;
+  wire [3:0] ep_pstrb;
+  // GPIO is word-write-only. A partial PCIe write completes with an APB
+  // error and never selects the physical peripheral or arbitrates for it.
+  wire ep_bad_strobe=ep_pwrite && ep_pstrb!=4'hf;
+  soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie (
+      .clk_i(clk_i),.rst_ni(rst_sys_n),.link_up_i(pcie_link_up_i),
+      .training_i(pcie_training_i),.retrain_done_i(pcie_retrain_done_i),
+      .function_id_i(pcie_function_id_i),.rx_data_i(pcie_rx_data_i),
+      .rx_sop_i(pcie_rx_sop_i),.rx_eop_i(pcie_rx_eop_i),
+      .rx_error_i(pcie_rx_error_i),.rx_valid_i(pcie_rx_valid_i),
+      .rx_dllp_i(pcie_rx_dllp_i),.rx_ready_o(pcie_rx_ready_o),
+      .tx_data_o(pcie_tx_data_o),.tx_sop_o(pcie_tx_sop_o),
+      .tx_eop_o(pcie_tx_eop_o),.tx_valid_o(pcie_tx_valid_o),
+      .tx_dllp_o(pcie_tx_dllp_o),.tx_replay_o(pcie_tx_replay_o),
+      .tx_ready_i(pcie_tx_ready_i),.initialized_o(pcie_initialized_o),
+      .error_o(pcie_error_o),.retrain_request_o(pcie_retrain_request_o),
+      .psel_o(ep_psel),.penable_o(ep_penable),.paddr_o(ep_paddr),
+      .pwrite_o(ep_pwrite),.pstrb_o(ep_pstrb),.pwdata_o(ep_pwdata),
+      .pready_i(ep_bad_strobe || ep_pready),
+      .pslverr_i(ep_bad_strobe || ep_pslverr),.prdata_i(ep_prdata));
+  soc_pcie_apb_arbiter u_pcie_apb (
+      .clk_i(clk_i),.rst_ni(rst_sys_n),
+      .m0_psel_i(cpu_psel),.m0_penable_i(cpu_penable),.m0_pwrite_i(cpu_pwrite),
+      .m0_paddr_i(cpu_paddr),.m0_pwdata_i(cpu_pwdata),.m0_pstrb_i(cpu_pstrb),
+      .m0_pready_o(cpu_pready),.m0_pslverr_o(cpu_pslverr),.m0_prdata_o(cpu_prdata),
+      .m1_psel_i(ep_psel && !ep_bad_strobe),.m1_penable_i(ep_penable),
+      .m1_pwrite_i(ep_pwrite),.m1_paddr_i({SOC_APBSLOT_GPIO,ep_paddr}),
+      .m1_pwdata_i(ep_pwdata),.m1_pstrb_i(ep_pstrb),
+      .m1_pready_o(ep_pready),.m1_pslverr_o(ep_pslverr),.m1_prdata_o(ep_prdata),
+      .psel_o(psel),.penable_o(penable),.pwrite_o(pwrite),.paddr_o(paddr),
+      .pwdata_o(pwdata),.pstrb_o(pstrb),
+      .pready_i(pready),.pslverr_i(pslverr),.prdata_i(prdata));
+`endif
 
   // PSTRB reaches the interface wrappers, including CAN byte-lane decoding.
 

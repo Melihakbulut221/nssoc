@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+TOPLEVEL = tb_soc_pcie_packet
+COCOTB_TEST_MODULES = test_soc_pcie_soc
+COMPILE_ARGS += -g2012 -DSG13G2_ICG_BEHAVIOURAL -DSOC_PCIE_PACKET -DROM_HEX=\"$(PCIE_ROM)\"
+COMPILE_ARGS += -I$(PCIE_ROOT)/hw/soc/rtl -I$(PCIE_ROOT)/hw/rtl
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
