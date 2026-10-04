@@ -37,3 +37,5 @@ soc_pcie_gen3_scrambler	Standalone four-logical-lane payload scrambler/descrambl
 
 soc_pcie_gen3_tx_path	Standalone four-lane fixed130/32 TX with actual128bit payload scrambling and explicit byte policies; port tests pass but 4ns cell timing fails, no full PCS/PMA or main-chip adoption.
 soc_pcie_gen3_variable_tx	Standalone four-lane66/98/130/162/194bit block-to32bit TX reservoir; actual port and native tests, caller-owned contents, no SKP policy, RX rate compensation, PMA or main-chip integration.
+soc_pcie_gen3_tx_path_v2	Standalone parallel-prefix TX timing experiment preserving byte-control stream behavior; native ports pass but the unchanged slow-corner cell-only4ns screen fails. Not selected in the product hierarchy.
+soc_pcie_gen3_tx_path_v3	Standalone two-stage TX pipeline; RTL/native streams and three-corner cell-only development screens pass, while actual placement timing is still under repair. No PHY or main-chip physical integration.
