@@ -4,6 +4,10 @@
 
 ## Measured progress — 4 October 2026
 
+Subsequent TX timing, divider and native tap results are recorded in
+[document 114](114-pcie-timing-divider-and-native-taps.md); the measurements below
+retain their original source revision and scope.
+
 The stronger clock circuit from [document 112](112-pcie-driven-clock-and-scrambling.md)
 now has an actual routed connection to the four-lane analog bank and its sixteen
 serial pads. Separate TX transport modules pass native cell functional checks.

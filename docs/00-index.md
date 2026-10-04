@@ -11,6 +11,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/111-pcie-clock-path-and-gearbox.md](111-pcie-clock-path-and-gearbox.md) records the measured load failures, conditioned divide-by-two and fixed-block RTL transport.
 [docs/112-pcie-driven-clock-and-scrambling.md](112-pcie-driven-clock-and-scrambling.md) records the stronger transistor output, actual macro layout, bounded extraction repair and scrambler tests.
 [docs/113-pcie-clocked-pads-and-transport.md](113-pcie-clocked-pads-and-transport.md) records actual clock/pad routing, native HBT multiplicity, divider/thermal failures and TX transport.
+[docs/114-pcie-timing-divider-and-native-taps.md](114-pcie-timing-divider-and-native-taps.md) records standalone TX physical timing, bounded transistor division, finite contacts and the failed complete native bank graph.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
