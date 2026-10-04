@@ -501,6 +501,7 @@ rather than from a beam.
 | [docs/105-core-io-physical-integration.md](105-core-io-physical-integration.md) | Core/ring/mailbox assembly, actual-GDS obstruction coverage, four supply checks and unresolved native I/O transistor LVS; no manufacturing acceptance. |
 | [docs/106-timing-repair-research.md](106-timing-repair-research.md) | Checkpoint9 setup/hold bottlenecks, version-checked repair profiles and ranked physical experiments; speedup and timing closure remain unmeasured. |
 | [docs/107-pcie-rx-development.md](107-pcie-rx-development.md) | Bounded LCRC quarantine, native HBT receiver preamplifier and individual-cell layout; raw simulations, load failure, numerical warnings and DRC/LVS evidence. Full PHY and chip integration remain open. |
+| [docs/108-pcie-packet-and-bank-integration.md](108-pcie-packet-and-bank-integration.md) | Bidirectional sequence/LCRC and actual ACK/NAK packets, revised receiver and four-lane analog bank. Distinguishes block integration from the still-open complete PHY and main-chip integration. |
 | [docs/ERRATA.md](ERRATA.md) | Index of superseded claims, dated correction evidence and reproduction entry points. |
 | `ROADMAP.md` | Phased plan with gates and external clocks. |
 

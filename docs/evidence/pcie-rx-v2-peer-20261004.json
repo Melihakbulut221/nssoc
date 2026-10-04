@@ -1,0 +1,112 @@
+{
+  "status": "PASS_READ_ONLY_RX_V2_CAPTURE_REVIEW_WITH_NUMERICAL_RESIDUAL_PRESERVED",
+  "recorded_utc": "2026-10-04T03:12:57.272114+00:00",
+  "sources": {
+    "scripts/characterize_pcie_rx_v2.py": {
+      "bytes": 9568,
+      "sha256": "087ac0d41235f11fb64c532da0d4d9f13f85deea596652951d83d365e51ef1ef"
+    },
+    "scripts/review_pcie_rx_v2.py": {
+      "bytes": 13378,
+      "sha256": "0d3548490df7f908722106624002713528e2d578b2b994660ec836d9bb4237cf"
+    },
+    "scripts/characterize_pcie_rx.py": {
+      "bytes": 15965,
+      "sha256": "74d192ab7c95b8113cafbc0202f219c52f2ae9a1e07b410ba72b7512cceb4a99"
+    },
+    "scripts/review_pcie_rx.py": {
+      "bytes": 11089,
+      "sha256": "93485e70a1a2fd72e5cc76542f48b5fb27bf580edfbb463217348fac9fce8417"
+    },
+    "hw/soc/analog/pcie/rx_hbt_rsil_v2.spice": {
+      "bytes": 1046,
+      "sha256": "d02827087e0cb43f447fc46fda05dbd23dcee13ad68755fd31ba738404332a4e"
+    },
+    "sw/tests/test_pcie_rx_v2.py": {
+      "bytes": 7772,
+      "sha256": "97586083d4a1529858bbcf1b30e67e113174cebceb11eef8c9c90fa8f4eca83b"
+    }
+  },
+  "campaigns": [
+    {
+      "runtime": "ng42",
+      "producer_result": {
+        "bytes": 547428,
+        "sha256": "500ffac8e4a9cd754027fafc6ea5ac3bbfaf734a992b60ec46e20fbf50cbc34f"
+      },
+      "local_full_review": {
+        "path": "/dev/shm/nssoc-rx-v2-final-ng42-review.json",
+        "bytes": 383903,
+        "sha256": "61d81e8ff00806a528f7177462adf9b46b1ca074f99c08272ba766bf6e0b5fe0"
+      },
+      "verified_source_inventory_count": 14,
+      "all_106_decks_regenerated_exactly": true,
+      "all_copied_circuits_byte_identical": true,
+      "nonwave_output_pins_rechecked": 327,
+      "all_9_ac_tables_reparsed": true,
+      "ac_numerical_warnings": [],
+      "publication_review": {
+        "bytes": 384008,
+        "sha256": "ed26b6df2816f68cf2205ecd1942e64a79f6051af4029f4633d7f353d0299f0d"
+      },
+      "publication_raw_waveforms_independently_reparsed": 0,
+      "retained_worst": [],
+      "minimum_pvt_margin_v": 0.11900528778405255,
+      "status": "RX_V2_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+      "positive_numerical_residual_cases": 28,
+      "all_numerical_residual_cases": 29
+    },
+    {
+      "runtime": "ng47",
+      "producer_result": {
+        "bytes": 316847,
+        "sha256": "5f6ed5cd076120c5b413a5794045d0de85cfcb5c96dae90ef2f4b4bdb2c9b06f"
+      },
+      "local_full_review": {
+        "path": "/dev/shm/nssoc-rx-v2-final-ng47-review.json",
+        "bytes": 269780,
+        "sha256": "a39231a1d4a2429ebdaddf840584c5b122e6b1c874ea09ad0be38cec4dc6099c"
+      },
+      "verified_source_inventory_count": 14,
+      "all_106_decks_regenerated_exactly": true,
+      "all_copied_circuits_byte_identical": true,
+      "nonwave_output_pins_rechecked": 327,
+      "all_9_ac_tables_reparsed": true,
+      "ac_numerical_warnings": [],
+      "publication_review": {
+        "bytes": 269935,
+        "sha256": "fd00dbdfdd4880c82f9dc3aa7f7404098385d3e9e9c8689545f982b0840e1bba"
+      },
+      "publication_raw_waveforms_independently_reparsed": 1,
+      "retained_worst": [
+        "hbt_wcs_res_wcs_125_1.89"
+      ],
+      "minimum_pvt_margin_v": 0.11278404525600005,
+      "status": "RX_V2_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+      "positive_numerical_residual_cases": 28,
+      "all_numerical_residual_cases": 29
+    }
+  ],
+  "findings": [
+    {
+      "severity": "hardening_for_future_reusable_verifier",
+      "detail": "review() validates supplied source pins and saved output hashes but does not enforce exact required source inventory or reconstruct each bench/copied circuit. This independent receipt explicitly closes both checks for the two present immutable captures; no present capture mismatch found."
+    }
+  ],
+  "verified": [
+    "Measurement functions and thresholds remain exact v1 identities: min signed margin 0.1V, VCE 0.4..1.6V, same current and timestep limits.",
+    "Exactly 81 PVT corners, 97 transients and 9 AC process pairs per version; actual 150fF required load and 0.75mA reference, physical collector length 27.5um.",
+    "Original 3mA case retained as positive extension; 6mA overbias remains an actual negative with unchanged limits.",
+    "One ngspice47 worst-PVT waveform retained and independently reparsed; ngspice42 metadata-only has no retained transient wave. Both limited replay records expressly do not claim 97-wave replay.",
+    "Raw warning lists and positive numerical residual disposition survive finite final measurements and expected negative failures."
+  ],
+  "limits": [
+    "Full 97-wave local review records are source/hash/measurement-consistency checked, not independently repeated here.",
+    "No new SPICE simulation or transient measurement of the other 193 waves was performed in this peer review.",
+    "No PCIe compliance, physical substrate tap RC, PEX, noise, mismatch, jitter, BER, CDR, slicer, full PHY or fabrication acceptance."
+  ],
+  "review_script": {
+    "bytes": 7504,
+    "sha256": "b5f86ca144339126d948c20f0f3b588bb7c4bce807e56df5b19ed814861fade7"
+  }
+}

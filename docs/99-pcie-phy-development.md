@@ -2,6 +2,14 @@
 
 ## Latest development — 4 October 2026
 
+[The integrated packet and analog-bank record](108-pcie-packet-and-bank-integration.md)
+adds bidirectional sequence/LCRC handling, real ACK/NAK DLLPs, a revised
+150 fF RX preamplifier, and an actual four-lane TX/RX GDS/LEF bank with strict
+transistor LVS and main DRC checks. This is still a separate macro and digital
+boundary: neither is instantiated in the main chip. Receiver initialization
+warnings, the remaining PHY/control blocks and chip-context qualification
+remain explicit open gates.
+
 [The RX development record](107-pcie-rx-development.md) adds a native-HBT
 differential receiver preamplifier with foundry resistor terminations and a
 bounded digital LCRC quarantine in front of the existing transaction backend.

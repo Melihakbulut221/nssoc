@@ -1,5 +1,10 @@
 # 107 — PCIe receive integrity and native analog preamplifier
 
+Later work: [docs/108](108-pcie-packet-and-bank-integration.md) adds transmit
+CRC/sequence handling, actual ACK/NAK DLLPs, an RX load-margin revision and
+four-lane analog-bank integration. The original sources and results below
+remain historical evidence, including their failed load extension.
+
 ## Scope — 4 October 2026
 
 The open-source GR801 counterpart remains the product objective. This change

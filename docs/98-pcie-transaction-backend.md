@@ -193,12 +193,17 @@ physical-error sideband and length pass, then feeds this DWORD adapter.
 [docs/107](107-pcie-rx-development.md) records its precise prefix/byte-order
 contract, verification and limits. The original adapter's interface and its
 upstream-integrity obligation are unchanged. The new wrapper is standalone;
-it does not provide sequence acceptance, transmission LCRC, ACK/replay,
-credits, a PHY, or a `soc_top` instance.
+that original wrapper does not provide sequence acceptance, transmission
+LCRC, ACK/replay, credits, a PHY, or a `soc_top` instance.
+
+The subsequent [packet integration](108-pcie-packet-and-bank-integration.md)
+adds expected/duplicate sequence handling, TX sequence/LCRC, real ACK/NAK
+DLLPs and whole-packet arbitration in `soc_pcie_link_packets`. It remains a
+standalone, single-clock boundary with port-level RTL/native verification.
 
 The next digital boundaries are complete bidirectional data-link integrity, full
 Endpoint configuration/capabilities, multi-DWORD transfer/completion handling,
-interrupts, DLL sequence/ACK/NAK/replay and credit flow control, and PHY-side
+interrupts, received ACK/NAK processing, replay/timers and credit flow control, and PHY-side
 LTSSM/training/Gen3 encoding/equalization/lane alignment. Root Port behavior
 is also absent. Host access policy, arbitration, CDC/reset and protection must
 be implemented before connecting a host master to the SoC fabric.

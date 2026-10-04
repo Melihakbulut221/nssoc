@@ -35,3 +35,10 @@ soc_pcie_tlp_stream	Standalone DWORD packet assembler/serializer wrapping the PC
 soc_pcie_crc32_byte	Standalone classic PCIe LCRC byte recurrence; used by the bounded receive-integrity development block, absent from soc_top. A polynomial proof does not establish link compliance.
 soc_pcie_lcrc_rx	Standalone byte-packet quarantine and LCRC receiver; checks bounded length and physical-error sideband before exposing TLP bytes. No sequence acceptance, ACK, replay, credit control, or soc_top instance.
 soc_pcie_tlp_integrity	Standalone LCRC quarantine plus byte-to-DWORD transaction adapter; no soc_top, serial PHY, DLL/LTSSM, clock recovery or transmitter LCRC. See docs/107-pcie-rx-development.md.
+soc_pcie_sequence_rx	Standalone RX sequence acceptance after LCRC quarantine; blocks duplicates/future sequences and queues ACK/NAK requests. No soc_top, physical coding, credit management or complete data-link controller.
+soc_pcie_lcrc_tx	Standalone bounded DWORD packet buffer with sequence-prefix/LCRC serialization. No soc_top instance, retransmit queue, credit accounting or PHY.
+soc_pcie_packet_endpoint	Standalone bidirectional sequence/LCRC transaction boundary with APB and ACK/NAK request records. No soc_top instance, complete DLL or Gen3 x4 link.
+soc_pcie_crc16_byte	Standalone classic DLLP CRC byte recurrence; used by packet experiments only. No soc_top instance, physical coding or conformance claim.
+soc_pcie_acknak_tx	Standalone six-byte classic ACK/NAK DLLP serializer with CRC16; no physical SDP/END coding, timers, replay or soc_top instance.
+soc_pcie_packet_tx	Standalone packet-level arbitration between generated ACK/NAK DLLPs and LCRC TLP bytes; no soc_top instance, credits, replay or line-rate closure.
+soc_pcie_link_packets	Standalone integration of the packet endpoint and real ACK/NAK DLLP serializer/mux. No soc_top instance or serial PHY; analog bank is a separate physical artifact. See docs/108-pcie-packet-and-bank-integration.md.
