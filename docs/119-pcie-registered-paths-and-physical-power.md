@@ -142,3 +142,5 @@ the revised VCO in physical geometry, powered supply verification, qualified
 substrate/RC/ESD, and the full main-chip timing/LVS/DFT/production gates. The
 current byte consumer remains a bandwidth limit. Existing long-running jobs
 continue with explicit resource limits and no healthy-run elapsed-time cutoff.
+
+The subsequent [feedback-loop and wide-receive record](120-pcie-feedback-loop-and-wide-receive.md) adds source-bound results without changing this historical snapshot.
