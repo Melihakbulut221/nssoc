@@ -1,0 +1,19 @@
+{
+  "status": "CONFIRMED_MEAN_ONLY_STATIONARITY_LIMITATION",
+  "prior_review_sha256": "3deba5a64baf26a92f02da52a9e7248d03da35170380331ae7076dc45b0d4e8f",
+  "prior_review_modified": false,
+  "producer_sha256": "2655b9dc54e6cfc5554ee30fc1aa15966d3d9ae94933fb492a75607ac2e32224",
+  "counterexample": {
+    "time_start_s": 0,
+    "time_stop_s": 1.2e-08,
+    "samples": 24001,
+    "clock_hz": 8000000000.0,
+    "state52": "10 + (0.05 + 0.05*t_ns)*sin(2*pi*8GHz*t)",
+    "ripple_amplitude_growth_k_per_ns": 0.05,
+    "reported_converged": true,
+    "reported_cycle_mean_rate_k_per_ns": 2.8421709430404134e-14
+  },
+  "meaning": "Finite cycle-mean stationarity does not imply periodic waveform-envelope stationarity. A growing ripple with constant cycle mean passes the current mean-only screen. This does not invalidate source/provenance checks or historical raw reductions, but prevents treating that screen as complete thermal periodic-state convergence.",
+  "required_next": "Separate versioned envelope guard and positive/growing-ripple controls, followed by actual final-tail replay before any new acceptance.",
+  "scope": "Independent deterministic synthetic reducer execution only; no SPICE/native simulation, no original result or prior peer receipt changes."
+}

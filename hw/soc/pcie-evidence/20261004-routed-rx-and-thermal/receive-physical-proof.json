@@ -1,0 +1,521 @@
+{
+  "status": "PASS_COMPLETE_BINARY_STATE_FUNCTION_EQUIVALENCE_AND_RECORDED_PHYSICAL_PORT_REPLAY",
+  "proof": {
+    "states": 1796,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5419,
+    "canonical_nodes": 37962,
+    "mismatches": [],
+    "matched": 5419
+  },
+  "method": "Native Yosys Liberty functional expansion and collision-free canonical Boolean DAG comparison. Same native FF instances form a complete state bijection; all D/clock/reset and all external output functions are equal under every binary input/state valuation.",
+  "comparison_kernel": {
+    "prior": {
+      "bytes": 5546,
+      "sha256": "207367bf08924f26f2a49d9b5ffd483ea9953000e9a79c6a17fc55c57cec0e83"
+    },
+    "current": {
+      "bytes": 5545,
+      "sha256": "f9f7ee5fa5fc56203bbf653504bcbd6b8a6dedbc4200d5fd96ed0bbb44ccc4ba"
+    },
+    "only_top_and_capture_default_changed": true
+  },
+  "state_map": {
+    "bytes": 130995,
+    "sha256": "596d701b82314fa1f070b2aa74e9e23f2f37f5501240887d3c8d6870da5e0370"
+  },
+  "resized_ff_count": 22,
+  "actual_tiehi_instances": 1200,
+  "blackboxes": 0,
+  "unknown_used_functions": 0,
+  "unconstrained_omitted_boundaries": 0,
+  "initial_state_restrictions": 0,
+  "normalization": {
+    "inputs": {
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+        "bytes": 540,
+        "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/yosys": {
+        "bytes": 33850192,
+        "sha256": "feb0030e6d6d42e0a013a7a023b532a0c5e3817a72b34d414a751bcfcb669224"
+      },
+      "/dev/shm/nssoc-rx-v2-output-native-01/mapped.v": {
+        "bytes": 1778710,
+        "sha256": "19010abed7f4cd504e2029d4e77b231803555ea082be0f1a1622084d57de29a2"
+      },
+      "/dev/shm/nssoc-rx-v2-tied-grt-02/rx/repaired.v": {
+        "bytes": 2044558,
+        "sha256": "88b0b644e992011d655ee94d49c82da52522aa775265c7c6c0982976de694b16"
+      },
+      "/dev/shm/nssoc-rxv2-physical-equivalence-peer-01/gold.json": {
+        "bytes": 40780172,
+        "sha256": "b033841f510f132f35014c31912e08ebb6d243cf18df606a5a13716fbdf32df0"
+      },
+      "/dev/shm/nssoc-rxv2-physical-equivalence-peer-01/normalization.json": {
+        "bytes": 1706,
+        "sha256": "958bd7eeefab8aaf72a2a04a0b0d20998e8111826640d8d8561104c74054b17d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-v2-20261004/physical-peer/normalize-gate.py": {
+        "bytes": 2423,
+        "sha256": "c48e6ddf9c50864a7f6bdf9338c8cafb565991db65fb99666b82f0ec7337a952"
+      }
+    },
+    "reused_exact_gold": {
+      "bytes": 40780172,
+      "sha256": "b033841f510f132f35014c31912e08ebb6d243cf18df606a5a13716fbdf32df0"
+    },
+    "prior_failed_normalization": {
+      "bytes": 1706,
+      "sha256": "958bd7eeefab8aaf72a2a04a0b0d20998e8111826640d8d8561104c74054b17d"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 5.132016802992439,
+    "script": {
+      "bytes": 410,
+      "sha256": "c069e9656442e299692cac6f31e51fcde003ad6fdc2ad357f08a1181b02e666d"
+    },
+    "log": {
+      "bytes": 10120,
+      "sha256": "c188fcfd0304f2c8ff0524f6c93166bb0a07a58cb2f56943ca69b7fc7b449817"
+    },
+    "all_inputs_rechecked": true
+  },
+  "mutations": {
+    "status": "PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS",
+    "positive": {
+      "states": 1796,
+      "input_bits": 528,
+      "output_bits": 31,
+      "targets": 5419,
+      "canonical_nodes": 37962,
+      "mismatches": [],
+      "matched": 5419
+    },
+    "controls": [
+      {
+        "kind": "invert_D",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_25193_:D"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_clock",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_25193_:C"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_reset",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_25193_:R"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_output",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "output:data_o:0"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "missing_state",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError('Exact bijective native state instance map')"
+      },
+      {
+        "kind": "unknown_function",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      },
+      {
+        "kind": "unknown_output",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('unknown or combinational cycle', 'x'))"
+      },
+      {
+        "kind": "undriven_reset",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "KeyError(39165)"
+      },
+      {
+        "kind": "duplicate_driver",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('multiple driver', 'peer_duplicate', 1641))"
+      },
+      {
+        "kind": "changed_port_census",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      }
+    ],
+    "scope": "Four real Boolean boundary-inversion faults and six fail-closed graph/coverage faults, including the actual failed-physical undriven-reset class on exact native-expanded candidate. No altered source netlist written."
+  },
+  "physical_source": {
+    "repaired.v": {
+      "bytes": 2044558,
+      "sha256": "88b0b644e992011d655ee94d49c82da52522aa775265c7c6c0982976de694b16"
+    },
+    "repaired.odb": {
+      "bytes": 16412399,
+      "sha256": "c3af03ce8ded8bd2bd1d47e0c559e955423e2dc0c26ef6aafbd547d8ca09f4ed"
+    },
+    "repaired.sdc": {
+      "bytes": 89666,
+      "sha256": "9a3516efcd0c58348aaba1491fae76b68e2944372fc1f18d85efa784daf6e008"
+    }
+  },
+  "native_port_replay": {
+    "result": {
+      "bytes": 3915,
+      "sha256": "a17ba9bf69a75183c5901e4aa60ab0d98aecbffbb60801aac330ba159e3680b4"
+    },
+    "tests": [
+      {
+        "name": "packed_successors_every_legal_lane0_position",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "192",
+        "time": "8.37598466873169",
+        "sim_time_ns": "36544.0",
+        "ratio_time": "4362.94972415865"
+      },
+      {
+        "name": "nullification_full_token_and_next_packet",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "210",
+        "time": "1.3790993690490723",
+        "sim_time_ns": "8224.0",
+        "ratio_time": "5963.312132954335"
+      },
+      {
+        "name": "damaged_stp_crc_parity_lengths_and_header_shape",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "234",
+        "time": "6.320732116699219",
+        "sim_time_ns": "55439.99999999999",
+        "ratio_time": "8771.135839395705"
+      },
+      {
+        "name": "bad_tokens_edb_idl_headers_and_stream_end",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "270",
+        "time": "4.38945746421814",
+        "sim_time_ns": "45296.0",
+        "ratio_time": "10319.270745699829"
+      },
+      {
+        "name": "truncation_abort_reset_flush_and_held_packet",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "326",
+        "time": "1.6152360439300537",
+        "sim_time_ns": "7824.0",
+        "ratio_time": "4843.87407611541"
+      },
+      {
+        "name": "maximum_packet_and_immediate_dllp_at_boundary",
+        "classname": "test_soc_pcie_gen3_framer_rx",
+        "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py",
+        "lineno": "372",
+        "time": "1.1075284481048584",
+        "sim_time_ns": "4544.0",
+        "ratio_time": "4102.829148791115"
+      }
+    ],
+    "all_inputs_runtime_outputs_rehashed": true,
+    "new_simulation_by_reviewer": false
+  },
+  "timing": {
+    "corners": {
+      "slow": {
+        "max": 0.099031,
+        "min": 0.050644
+      },
+      "typical": {
+        "max": 1.44243,
+        "min": 0.081384
+      },
+      "fast": {
+        "max": 2.238742,
+        "min": 0.114237
+      }
+    },
+    "raw_paths": [
+      {
+        "corner": "slow",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 1.604079
+      },
+      {
+        "corner": "slow",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 0.099031
+      },
+      {
+        "corner": "slow",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.417996
+      },
+      {
+        "corner": "slow",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.050644
+      },
+      {
+        "corner": "typical",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 2.42131
+      },
+      {
+        "corner": "typical",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 1.44243
+      },
+      {
+        "corner": "typical",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.319498
+      },
+      {
+        "corner": "typical",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.081384
+      },
+      {
+        "corner": "fast",
+        "path_type": "max",
+        "group": "asynchronous",
+        "slack_ns": 2.91865
+      },
+      {
+        "corner": "fast",
+        "path_type": "max",
+        "group": "development_clock",
+        "slack_ns": 2.238742
+      },
+      {
+        "corner": "fast",
+        "path_type": "min",
+        "group": "asynchronous",
+        "slack_ns": 0.263904
+      },
+      {
+        "corner": "fast",
+        "path_type": "min",
+        "group": "development_clock",
+        "slack_ns": 0.114237
+      }
+    ],
+    "command_counts": {
+      "current_design": 1,
+      "create_clock": 1,
+      "set_propagated_clock": 1,
+      "set_input_delay": 527,
+      "set_output_delay": 31,
+      "set_load": 31,
+      "set_input_transition": 527
+    },
+    "source_report": {
+      "bytes": 61510,
+      "sha256": "5664918045d1131b918d5a8e7ae54474240dac57e56d384d84bab55d063d4195"
+    },
+    "scope": "Reparsed original final global-route estimated-RC development4ns reports, not a new timing run. Max/min path slack groups retained; no signoff timing acceptance."
+  },
+  "history": {
+    "failed01": {
+      "bytes": 2663,
+      "sha256": "baadb14107a70c4af85900028ae31b364286c2956f4ff2bd544bd067fcc30033"
+    },
+    "cause": "1200 lost constant-one RESET_B loads; no proof acceptance or artificial tie assumption. Corrected02 has real native tie cells and fresh full physical flow."
+  },
+  "limits": [
+    "Binary functional equivalence under explicit bijective state relation; not four-state X/glitch, metastability or analog delay equivalence.",
+    "No SDF, extracted-RC signoff, detailed-route/DRC/LVS, fullPHY/LTSSM or mainchip acceptance.",
+    "Native6-case physical replay was executed by root and independently rehashed/XML checked here.",
+    "All ten negative controls are graph-level mutations of exact native-expanded candidate: four Boolean complements and six coverage/connectivity rejections."
+  ],
+  "capsule": {
+    "path": "hw/soc/out/pcie-gen3-receive-v2-20261004/physical-peer/physical-function-proof.tar.xz",
+    "bytes": 2627384,
+    "sha256": "c6a710f35b3b70087a03659e0f6a158624bea6e63475e432ca743d8f26365d74",
+    "all_members_readback_verified": true,
+    "members": {
+      "native-functions/mutation-controls.json": {
+        "bytes": 2535,
+        "sha256": "1efd38f626b87b6cbbf29b511530bfc882a6cf24e16912123c68a9e23fbb4b2c"
+      },
+      "native-functions/equivalence.json": {
+        "bytes": 1095,
+        "sha256": "a208714820cecb70b09f014e1f756839bfe606a93378726d2b0a1a140bc434a3"
+      },
+      "native-functions/normalization.json": {
+        "bytes": 2252,
+        "sha256": "5de369dfb371a5849296ba0b717eb495dc7bee613dcc7cd362d1f58b074b9a5c"
+      },
+      "native-functions/gate.json": {
+        "bytes": 47429895,
+        "sha256": "96eff633deb586dc2fca50edb85ca30969c266c226e295a9add31a7426a68db7"
+      },
+      "native-functions/gate.log": {
+        "bytes": 10120,
+        "sha256": "c188fcfd0304f2c8ff0524f6c93166bb0a07a58cb2f56943ca69b7fc7b449817"
+      },
+      "native-functions/gate.ys": {
+        "bytes": 410,
+        "sha256": "c069e9656442e299692cac6f31e51fcde003ad6fdc2ad357f08a1181b02e666d"
+      },
+      "native-functions/gold.json": {
+        "bytes": 40780172,
+        "sha256": "b033841f510f132f35014c31912e08ebb6d243cf18df606a5a13716fbdf32df0"
+      },
+      "review/seal.py": {
+        "bytes": 8445,
+        "sha256": "b9a4c7fa6f3a58e4413fffff7b7e6c81122d57cfeca6731d62ecf756a44e2d37"
+      },
+      "review/normalize-gate.log": {
+        "bytes": 2252,
+        "sha256": "5de369dfb371a5849296ba0b717eb495dc7bee613dcc7cd362d1f58b074b9a5c"
+      },
+      "review/physical-01-connectivity-failure.json": {
+        "bytes": 2663,
+        "sha256": "baadb14107a70c4af85900028ae31b364286c2956f4ff2bd544bd067fcc30033"
+      },
+      "review/mutations-initial.py": {
+        "bytes": 2683,
+        "sha256": "4ae7a6e9799ffa023eac6bbfe972385637d3f254582d738a8fb0357643354031"
+      },
+      "review/final-three-corner.log": {
+        "bytes": 28901,
+        "sha256": "42dbb44c818bd74eda8efae23d70b86b8b7e2669923aa7a3498446fc757d0b29"
+      },
+      "review/compare.py": {
+        "bytes": 5545,
+        "sha256": "f9f7ee5fa5fc56203bbf653504bcbd6b8a6dedbc4200d5fd96ed0bbb44ccc4ba"
+      },
+      "review/compare-initial.py": {
+        "bytes": 5545,
+        "sha256": "f9f7ee5fa5fc56203bbf653504bcbd6b8a6dedbc4200d5fd96ed0bbb44ccc4ba"
+      },
+      "review/state-map.json": {
+        "bytes": 130995,
+        "sha256": "596d701b82314fa1f070b2aa74e9e23f2f37f5501240887d3c8d6870da5e0370"
+      },
+      "review/normalize.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "review/normalize-gate.py": {
+        "bytes": 2423,
+        "sha256": "c48e6ddf9c50864a7f6bdf9338c8cafb565991db65fb99666b82f0ec7337a952"
+      },
+      "review/mutations.py": {
+        "bytes": 2881,
+        "sha256": "38ac35bfe9cd841a4cc9df0f333071ff42c8ae9a706d83514586277ff1aaefc4"
+      },
+      "review/mutations.log": {
+        "bytes": 2535,
+        "sha256": "1efd38f626b87b6cbbf29b511530bfc882a6cf24e16912123c68a9e23fbb4b2c"
+      },
+      "review/compare.log": {
+        "bytes": 1095,
+        "sha256": "a208714820cecb70b09f014e1f756839bfe606a93378726d2b0a1a140bc434a3"
+      },
+      "review/normalize.py": {
+        "bytes": 1914,
+        "sha256": "217de228a1d7eec1dc89c4bce79b3a080058809fce65a558e41ad66851e6113c"
+      },
+      "prior-kernel/compare.py": {
+        "bytes": 5546,
+        "sha256": "207367bf08924f26f2a49d9b5ffd483ea9953000e9a79c6a17fc55c57cec0e83"
+      },
+      "history-failed01/gold.log": {
+        "bytes": 8552,
+        "sha256": "250557d4f75e2d2e9501811d3148aa113f7eeedab0f647279b347a4fe8374764"
+      },
+      "history-failed01/gold.ys": {
+        "bytes": 410,
+        "sha256": "f2e669465e1763da803eba9e9b1ebd1223f5996b703c9ef29e0d4abf38c9a17b"
+      },
+      "history-failed01/normalization.json": {
+        "bytes": 1706,
+        "sha256": "958bd7eeefab8aaf72a2a04a0b0d20998e8111826640d8d8561104c74054b17d"
+      },
+      "history-failed01/gate.log": {
+        "bytes": 9885,
+        "sha256": "1c1bf4a99c06093fd8bed3040634af8c593610fe0a30c7cff43d98f7776a1138"
+      },
+      "history-failed01/gate.ys": {
+        "bytes": 412,
+        "sha256": "0928b73960cb0027199bac734690026cb4e756ea6bb22b1036363c38baebb816"
+      },
+      "history-failed01/physical-01-connectivity-failure.tar.xz": {
+        "bytes": 338044,
+        "sha256": "54eed21188fe6312e92db6cc72017eab1e24728812961e3800271727a946c0fd"
+      },
+      "physical-port-replay/results.xml": {
+        "bytes": 1942,
+        "sha256": "b82f831406436769b1a63dcd4276d1ae3fa1de905638b3fda379fd1656088909"
+      },
+      "physical-port-replay/simulation.log": {
+        "bytes": 35711,
+        "sha256": "5e6263c715de740000b1b2835dad2e44d309d2f681fc6afed0faf301519edf78"
+      },
+      "physical-port-replay/result.json": {
+        "bytes": 3915,
+        "sha256": "a17ba9bf69a75183c5901e4aa60ab0d98aecbffbb60801aac330ba159e3680b4"
+      },
+      "physical/repaired.v": {
+        "bytes": 2044558,
+        "sha256": "88b0b644e992011d655ee94d49c82da52522aa775265c7c6c0982976de694b16"
+      },
+      "physical/repaired.sdc": {
+        "bytes": 89666,
+        "sha256": "9a3516efcd0c58348aaba1491fae76b68e2944372fc1f18d85efa784daf6e008"
+      },
+      "physical/place.tcl": {
+        "bytes": 3697,
+        "sha256": "403c7749ecee060cc42cbe0b7ec6079bebb4693f2f53c27cc35e8545081dd9ba"
+      },
+      "physical/native.log": {
+        "bytes": 61510,
+        "sha256": "5664918045d1131b918d5a8e7ae54474240dac57e56d384d84bab55d063d4195"
+      },
+      "physical/result.json": {
+        "bytes": 2626,
+        "sha256": "d161aa59c117fae442bd201d25fdab96e0e320abbb0e6a9dcd2fa1e3265c85f6"
+      },
+      "original-mapped.v": {
+        "bytes": 1778710,
+        "sha256": "19010abed7f4cd504e2029d4e77b231803555ea082be0f1a1622084d57de29a2"
+      },
+      "LICENSES/Apache-2.0.txt": {
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      }
+    }
+  }
+}

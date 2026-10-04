@@ -77,7 +77,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [tx_path, variable_tx, tx_path_v2, tx_path_v3, framer]
+        component: [tx_path, variable_tx, tx_path_v2, tx_path_v3, framer, receive_v2]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
@@ -116,6 +116,11 @@ jobs:
           python3 scripts/check_pcie_gen3_receive.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-max-rtl --iverilog-dir "$(dirname "$(command -v iverilog)")"
           python3 scripts/check_pcie_gen3_receive_native.py --out hw/soc/out/pcie-local-flow/receive-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
           python3 -m pytest -q sw/tests/test_pcie_gen3_receive.py --basetemp=hw/soc/out/pcie-local-flow/receive-mutations
+          python3 scripts/check_pcie_gen3_duplex.py --out hw/soc/out/pcie-local-flow/duplex-rtl
+          python3 -m pytest -q sw/tests/test_pcie_gen3_duplex.py --basetemp=hw/soc/out/pcie-local-flow/duplex-mutations
+      - name: Maximum receive v2 capacity with the frozen receive oracle
+        if: matrix.component == 'receive_v2'
+        run: python3 scripts/check_pcie_gen3_receive_v2.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-v2-max-rtl
       - name: Preserve complete native evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
