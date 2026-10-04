@@ -1,0 +1,110 @@
+{
+  "status": "CLEAN_BOUNDED_NATIVE_STREAM_CAPTURE_PEER",
+  "producer": {
+    "bytes": 16501,
+    "sha256": "13e370d57778999a1bbd97dfeeb6aaef8dbe65e6fcdd4fa0393d1b2fec985c07"
+  },
+  "native_result": {
+    "bytes": 235935,
+    "sha256": "5f3d83e9f2909a86a89a83e3d73fcc0503d0ec7dcc79acab79030f7fa190d2d5"
+  },
+  "all_source_model_runtime_output_pins_rehashed": true,
+  "actual_cases": [
+    {
+      "name": "normal_file",
+      "rows": 2011,
+      "columns": 167,
+      "complete_raw_and_chunk_replay": true,
+      "latefault": false,
+      "first_fault_s": null,
+      "native_peak_mb": 30.113,
+      "deck": {
+        "bytes": 12671,
+        "sha256": "1649730c58311b2f6678a0c16fec30ba9bae5e67a53889a7ea91565404031583"
+      },
+      "log": {
+        "bytes": 22719,
+        "sha256": "ffbf26f2a0f7c77d69c5e7589f2c3274493158fe8a4f9bca86988b30dd29ef2d"
+      },
+      "capture": {
+        "bytes": 33931,
+        "sha256": "dcb23a71cd7b58f8ec3f0599b60768d5d9468c42b72f15f727cf395b201f103c"
+      }
+    },
+    {
+      "name": "normal_fifo",
+      "rows": 2011,
+      "columns": 167,
+      "complete_raw_and_chunk_replay": true,
+      "latefault": false,
+      "first_fault_s": null,
+      "native_peak_mb": 30.109,
+      "deck": {
+        "bytes": 12669,
+        "sha256": "266f86f115546a8352034787c6ab99b820c22042db8cd05cc9d6f13e289cf780"
+      },
+      "log": {
+        "bytes": 22717,
+        "sha256": "adb798807f99a93cbf3116427e5c7b749f2306f3fa30945542594dbe63e9a51c"
+      },
+      "capture": {
+        "bytes": 33927,
+        "sha256": "144464dca07803915982fa904d646cfe11d6ad3f5647d6edbf2481d7a891a891"
+      }
+    },
+    {
+      "name": "latefault_file",
+      "rows": 2027,
+      "columns": 167,
+      "complete_raw_and_chunk_replay": true,
+      "latefault": true,
+      "first_fault_s": 7.500166051088529e-10,
+      "native_peak_mb": 30.105,
+      "deck": {
+        "bytes": 12696,
+        "sha256": "05c0886ce622de68e01b8d48da53f86aa2fd844420004188beba1d5c3732f34f"
+      },
+      "log": {
+        "bytes": 22719,
+        "sha256": "040bfb962b419850c2d9f79ff8073e1edfb528169f4915f7f88ca20091c9daf1"
+      },
+      "capture": {
+        "bytes": 34319,
+        "sha256": "61821aee32a7c86b1a0c7503c11cf9d0240a15d72bedb3d1a2854ef4f8830490"
+      }
+    },
+    {
+      "name": "latefault_fifo",
+      "rows": 2027,
+      "columns": 167,
+      "complete_raw_and_chunk_replay": true,
+      "latefault": true,
+      "first_fault_s": 7.500166051088529e-10,
+      "native_peak_mb": 30.109,
+      "deck": {
+        "bytes": 12694,
+        "sha256": "63289a7af43707c0526572b6f6c1bf6438f7de33a5ecc3276c0b59f501507805"
+      },
+      "log": {
+        "bytes": 22717,
+        "sha256": "3547103b1ab96b39ea02de0cb690f74b599a2edb8698ca2b0c351ea580ff2bd4"
+      },
+      "capture": {
+        "bytes": 34315,
+        "sha256": "e94591d19c26c56a7571cef8782ed4005cabad29b5cff5cba006585b0ddc8d07"
+      }
+    }
+  ],
+  "independent_byte_ranges_time_and_latefault_replay": true,
+  "findings": [
+    "Exact source166vectors plus time form167columns; complete variable bijection, finite values, time0, positive bounded timestep and final1ns are retained.",
+    "File/FIFO native payloads match byte-for-byte for normal and actual late rail fault. Header count0 plus exact EOF decimal count is explicitly specific to pinned little-endian ng47 FIFO writer.",
+    "Native return code is checked by inherited execute; clean log, exact30OFF/zeroOP and only1-point OP retained plot all reparse.",
+    "Four source-bound startup/one-nanosecond trajectory controls do not establish long-run memory/resource behavior, thermal convergence, oscillator safety or PLL acceptance."
+  ],
+  "limitations": [
+    "Read-only source/raw replay only; no new SPICE run or full1us campaign.",
+    "Tests are author-owned and were still freezing during review; no independent test rerun claimed.",
+    "Streaming validation retains all rows; future long-run physical metrology and archive/recovery policy still need a separately bound method."
+  ]
+}
