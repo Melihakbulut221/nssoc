@@ -1,0 +1,103 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_real_signal_at_child_completion_is_terminal_and_never_retries[1] _____
+
+tmp_path = PosixPath('/dev/shm/nssoc-native-publisher-v3-signal-counterexample06/test_real_signal_at_child_comp0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d0af0b3c8a0>
+returncode = 1
+
+    @pytest.mark.parametrize("returncode",[0,1])
+    def test_real_signal_at_child_completion_is_terminal_and_never_retries(tmp_path,monkeypatch,returncode):
+        p,e,a=payload(tmp_path);gh_fixture(tmp_path,monkeypatch,p,a,[dict(exit=returncode,stderr="TLS handshake timeout" if returncode else "")])
+        c=m.Client(tmp_path/'evidence',attempts=4,timeout=3,backoff=0)
+        original=m.lifecycle.ProcessOwner.complete
+        def signal_after_complete(owner,process):
+            result=original(owner,process)
+            os.kill(os.getpid(),signal.SIGTERM)
+            return result
+        monkeypatch.setattr(m.lifecycle.ProcessOwner,'complete',signal_after_complete)
+>       with pytest.raises(m.lifecycle.Cancelled):c.authenticated(a,p,e)
+                                                  ^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_native_publisher_v3.py:238: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/publish_pcie_native_capture_v3.py:252: in authenticated
+    return self.retry("authenticated", operation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts/publish_pcie_native_capture_v3.py:124: in retry
+    result = operation(directory, row)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts/publish_pcie_native_capture_v3.py:245: in operation
+    self.command(["gh", "api", f"repos/{REPO}/releases/assets/{asset['id']}",
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <publish_pcie_native_capture_v3.Client object at 0x7d0af0da7e00>
+command = ['gh', 'api', 'repos/Melihakbulut221/nssoc/releases/assets/123', '-H', 'Accept: application/octet-stream']
+directory = PosixPath('/dev/shm/nssoc-native-publisher-v3-signal-counterexample06/test_real_signal_at_child_comp0/evidence/0004-authenticated-attempt4')
+row = {'kind': 'authenticated', 'attempt': 4, 'directory': '/dev/shm/nssoc-native-publisher-v3-signal-counterexample06/test_real_signal_at_child_comp0/evidence/0004-authenticated-attempt4', 'status': 'TRANSPORT_FAILURE', ...}
+prefix = <publish_pcie_native_capture_v3.Prefix object at 0x7d0af0b3cb00>
+
+    def command(self, command, directory, row, prefix=None):
+        """Bounded streaming child; save all stderr and retained stdout evidence."""
+        stderr = directory / "stderr.bin"
+        stdout = directory / "stdout.bin"
+        owner_path = directory / "owned-processes.json"
+        row["command"] = list(map(str, command))
+        started = time.monotonic()
+        timeout = False
+        stderr_complete = False
+        stdout_complete = False
+        stderr_limited = False
+        process = None
+        selector = selectors.DefaultSelector()
+        prior_grace = lifecycle.FAILURE_GRACE_SECONDS
+        lifecycle.FAILURE_GRACE_SECONDS = TRANSPORT_CLEANUP_GRACE_SECONDS
+        try:
+            with stderr.open("xb") as err, stdout.open("xb") as out:
+                with lifecycle.ProcessOwner(owner_path) as owner:
+                    process = owner.launch("publisher", command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    selector.register(process.stdout, selectors.EVENT_READ, "stdout")
+                    selector.register(process.stderr, selectors.EVENT_READ, "stderr")
+                    while selector.get_map():
+                        self.check()
+                        owner.check()
+                        if time.monotonic() - started >= self.timeout:
+                            timeout = True
+                            raise TransportError("Bounded transport deadline exceeded")
+                        for key, _ in selector.select(0.05):
+                            chunk = os.read(key.fd, READ_CHUNK_BYTES)
+                            if not chunk:
+                                selector.unregister(key.fileobj)
+                                if key.data == "stderr": stderr_complete = True
+                                else: stdout_complete = True
+                            elif key.data == "stderr":
+                                err.write(chunk)
+                                if err.tell() > STDERR_CAPTURE_LIMIT:
+                                    stderr_limited = True
+                                    raise IntegrityError("Stderr resource limit: retained received prefix; child terminated")
+                            elif prefix is not None:
+                                prefix.consume(chunk)
+                            else:
+                                out.write(chunk)
+                                if out.tell() > 4 * 1024**2:
+                                    raise IntegrityError("Metadata response exceeds explicit4MiB bound")
+                    while process.poll() is None:
+                        self.check()
+                        owner.check()
+                        if time.monotonic() - started >= self.timeout:
+                            timeout = True
+                            raise TransportError("Bounded transport deadline exceeded")
+                        self.stop.wait(0.05)
+                    code = owner.complete(process)
+                    row["returncode"] = code
+                    if code:
+                        err.flush()
+                        text = stderr.read_text(errors="replace")
+                        if transient_text(text):
+>                           raise TransportError("Classified transient child transport failure; exact stderr retained")
+E                           publish_pcie_native_capture_v3.TransportError: Classified transient child transport failure; exact stderr retained
+
+scripts/publish_pcie_native_capture_v3.py:196: TransportError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_native_publisher_v3.py::test_real_signal_at_child_completion_is_terminal_and_never_retries[1]
+1 failed, 30 deselected in 0.43s

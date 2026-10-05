@@ -1,0 +1,78 @@
+{
+  "status": "ACTUAL_PUBLISHER_TRANSPORT_FAILURE_IDENTIFIED",
+  "original_immutable_evidence": {
+    "result.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/result.json",
+      "bytes": 282794,
+      "sha256": "e2e62bab9a0c670ef28fcb10fab6ed9f681dc584796a470a0e5fcbbf10bdc9e3"
+    },
+    "execution.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/execution.json",
+      "bytes": 1659,
+      "sha256": "55f52e69792c94ad8dbfa3ae6cac5686e879893a0c7648971992969c4b089079"
+    },
+    "owned-processes.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/owned-processes.json",
+      "bytes": 8074,
+      "sha256": "1702547212182b34cfb4a2c9e42ae969c21a474ba05bf70df99772e84c65b1ce"
+    },
+    "capture/failure.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/failure.json",
+      "bytes": 145,
+      "sha256": "0360155dca70086844a861fddefaa5c9366beadd316406c8fb73ee1a325a46b8"
+    },
+    "capture/parts/parts.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/parts/parts.json",
+      "bytes": 50023,
+      "sha256": "7a304a0bc64b2aa4ad8424512bb1544c9b0ec53a3fd5ec3de3d78b0dbc5c6be4"
+    },
+    "capture/parts/publication-00007.json": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/parts/publication-00007.json",
+      "bytes": 603,
+      "sha256": "a03cca12a8c3a62073a4f61e63396441bcc66eca04c528e05bf702820303123f"
+    },
+    "capture/parts/publication-00007.log": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/parts/publication-00007.log",
+      "bytes": 1063,
+      "sha256": "5d8d78ece93b3784ade2c26d83b8dbed552661b5ee77d3cd8cd63e7caf1d0502"
+    },
+    "capture/unpublished-tail.bin": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/unpublished-tail.bin",
+      "bytes": 16771104,
+      "sha256": "2f8063b331bb1339201456e80c83030bdc5373f42d94251b3ee764728c0dc156"
+    },
+    "capture/unparsed-tail.bin": {
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-step25-after-shutdown-01/capture/unparsed-tail.bin",
+      "bytes": 68720,
+      "sha256": "680a3ac2172fbf4c835165a1362258b359758e043e76cd87e2f2c9068723152a"
+    }
+  },
+  "error": "Authenticated GitHub release-asset redirect failed with net/http: TLS handshake timeout.",
+  "mechanism": "V2 uses one gh api download attempt. Nonzero exit becomes RuntimeError; part queue reports actual publication failure and exact native owner cancels/reaps the simulator. This is infrastructure failure, not PLL settling or safety acceptance.",
+  "original_result": "ERROR_NATIVE_OR_STREAM_CAPTURE",
+  "last_native_log_reference_s": 5.05816e-08,
+  "observed_rows": 20304,
+  "unchanged_physical_devices": 539,
+  "public_parts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "failed_retained_part": 7,
+  "resilient_candidate": "scripts/publish_pcie_native_capture_v3.py",
+  "candidate_scope": [
+    "Maximum4 attempts per read-only transport,120s per child plus1s cleanup; old outer native failure cleanup is5s.",
+    "All actual commands and stdout metadata/stderr observations retained through exact gzip readback. Stderr over256KiB is a terminal resource failure, final received chunk retained up to64KiB overshoot, incomplete prefix explicitly marked.",
+    "Matching received body prefixes are compared byte-by-byte against the pinned retained source. Their original pin+prefix length/hash represent the complete observed prefix without extra multi-megabyte copies. Differing chunks are retained and fail immediately.",
+    "TLS/timeouts/connection reset/HTTP429 and500/502/503/504 retry; metadata/complete byte mismatch and401/404 fail without retry. Upload is single-attempt with read-only state reconciliation on uncertain transport result; no clobber.",
+    "SIGTERM and SIGINT stop retries and owned groups under exactPID/start safeguards. Nested-owner cancellation is checked after context teardown, including the child-completion boundary.",
+    "No native producer bridge or physics change.50MiB own capture ceiling and512MiB free floor must remain inherited and measured before a new full1us run.",
+    "V3 does not delete source. Per-part durable handoff requires public metadata and both complete authenticated/anonymous readbacks before parent may remove the local duplicate. A failed-only part must remain local or be separately durably sealed."
+  ],
+  "original_failed_capture_mutated": false,
+  "new_pll_native_started": false
+}

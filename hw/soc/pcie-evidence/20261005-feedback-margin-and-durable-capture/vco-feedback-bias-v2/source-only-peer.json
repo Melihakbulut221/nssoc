@@ -1,0 +1,161 @@
+{
+  "status": "PASS_BIASV2_TWO_PHYSICAL_PULLUP_LENGTHS_SOURCE_ONLY_PEER",
+  "source_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-bias-v2-20261005/source-freeze.json",
+    "bytes": 811,
+    "sha256": "54bb7037018b4c7cd59c88e4777e309d8a3df41b1d77d8009974ba833c461798"
+  },
+  "files_rehashed": {
+    "hw/soc/analog/pcie/clock_div2_conditioned_hbt_v3.spice": {
+      "bytes": 528,
+      "sha256": "158720385252c1dde2d11d4920baeb4a062674894620aa0ffbefe979f101135c"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v7.spice": {
+      "bytes": 1391,
+      "sha256": "49226d5b3a40fc4f8faafbaee3adb5580d8346222a825b79daaddc0358b2c65c"
+    },
+    "hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v3.spice": {
+      "bytes": 665,
+      "sha256": "7af5c8d9bdff0441186207d5a2cce66f75bb507f63ae919868694356d81d2ae9"
+    },
+    "scripts/characterize_pcie_vco_v6_feedback_bias_v2.py": {
+      "bytes": 8024,
+      "sha256": "f084eae8150533acd8d2f788fb6007155f88431610702fad1b7f40e4bb33f30e"
+    },
+    "sw/tests/test_pcie_vco_v6_feedback_bias_v2.py": {
+      "bytes": 4178,
+      "sha256": "a4ae29bcf21ed28525ed983fab817ba4ff5e65d8642ba10f7451bfe521e3e304"
+    }
+  },
+  "inverse_bridges": [
+    {
+      "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_conditioned_hbt_v2.spice",
+      "source_pin": {
+        "bytes": 539,
+        "sha256": "4d66ab2d298dc80dfd588ff71dfe7da6457316fd9645fe24228ee4399e44a77b"
+      },
+      "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_conditioned_hbt_v3.spice",
+      "new_pin": {
+        "bytes": 528,
+        "sha256": "158720385252c1dde2d11d4920baeb4a062674894620aa0ffbefe979f101135c"
+      },
+      "inverse_byte_exact": true
+    },
+    {
+      "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v6.spice",
+      "source_pin": {
+        "bytes": 1393,
+        "sha256": "da930f276ceca44341476fd47e84c9fcc427fdfa6c0917693530e16f159e977f"
+      },
+      "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v7.spice",
+      "new_pin": {
+        "bytes": 1391,
+        "sha256": "49226d5b3a40fc4f8faafbaee3adb5580d8346222a825b79daaddc0358b2c65c"
+      },
+      "inverse_byte_exact": true
+    },
+    {
+      "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v2.spice",
+      "source_pin": {
+        "bytes": 667,
+        "sha256": "0efb2161450fedfd0475db6df1748a275d1a2587e0e02cc041c7dc916eab5aa8"
+      },
+      "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v3.spice",
+      "new_pin": {
+        "bytes": 665,
+        "sha256": "7af5c8d9bdff0441186207d5a2cce66f75bb507f63ae919868694356d81d2ae9"
+      },
+      "inverse_byte_exact": true
+    }
+  ],
+  "independent_expansion": "Separate recursive parser in source_peer_review.py traversed actual top SPICE port bindings plus all62 pinned physical VCO composition records, compared all437 identities and every terminal/model/parameter against generated graphs in4configs.",
+  "cases": [
+    {
+      "vctrl": 0.6,
+      "fault": "",
+      "identities": 437,
+      "independent_physical_deltas": [
+        "xchain.xdiv.xfirst.xup",
+        "xchain.xdiv.xfirst.xun"
+      ],
+      "observation_vectors": 785,
+      "native_OFF_alter_and_readback_flags": 64,
+      "physical_wire_counts": [
+        889,
+        765
+      ]
+    },
+    {
+      "vctrl": 0.85,
+      "fault": "",
+      "identities": 437,
+      "independent_physical_deltas": [
+        "xchain.xdiv.xfirst.xup",
+        "xchain.xdiv.xfirst.xun"
+      ],
+      "observation_vectors": 785,
+      "native_OFF_alter_and_readback_flags": 64,
+      "physical_wire_counts": [
+        889,
+        765
+      ]
+    },
+    {
+      "vctrl": 0.6,
+      "fault": "disconnect_divider_clock",
+      "identities": 437,
+      "independent_physical_deltas": [
+        "xchain.xdiv.xfirst.xup",
+        "xchain.xdiv.xfirst.xun"
+      ],
+      "observation_vectors": 785,
+      "native_OFF_alter_and_readback_flags": 64,
+      "physical_wire_counts": [
+        889,
+        765
+      ]
+    },
+    {
+      "vctrl": 0.6,
+      "fault": "wrong_feedback_modulus",
+      "identities": 437,
+      "independent_physical_deltas": [
+        "xchain.xdiv.xfirst.xup",
+        "xchain.xdiv.xfirst.xun"
+      ],
+      "observation_vectors": 785,
+      "native_OFF_alter_and_readback_flags": 64,
+      "physical_wire_counts": [
+        889,
+        765
+      ]
+    }
+  ],
+  "inherited_private_function_code_defaults_closures_identical": [
+    "topology",
+    "measurement",
+    "guard",
+    "capture",
+    "deck",
+    "native_limit",
+    "run_native",
+    "run",
+    "main"
+  ],
+  "private_globals_predecessor_unchanged": true,
+  "saved_controls": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-bias-v2-20261005/source-controls01.log",
+    "bytes": 99,
+    "sha256": "b035eaa8d1d62811bc021a54895037a35ff3eec915d3a06b42eef492a17da545",
+    "passed": 11,
+    "rerun": false
+  },
+  "peer_method": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-bias-v2-20261005/source_peer_review.py",
+    "bytes": 7374,
+    "sha256": "31cc1e924a018b68b72e3b35b199dc53a9c847facb4ec2e67022bd927daa6723"
+  },
+  "issues_found": [],
+  "native_executed": false,
+  "scope": "Only L6.4\u21924um on2 rppd records. Existing safety/lifecycle/measurement, 437device screens and64OFF observations unchanged; no simulation result, improvement, PVT, PLLlock, physicaldivider or mainchip acceptance inferred."
+}

@@ -1,0 +1,48 @@
+{
+  "status": "CHANGES_REQUIRED_PUBLISHER_V3_FROZEN02_SOURCE_PEER",
+  "utc": "2026-10-05T15:13:53.093187+00:00",
+  "reviewed_source_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-source-freeze02.json",
+    "bytes": 484,
+    "sha256": "9d08415651d2b2c811f65b7962cfaafd1a39d2d9df3759f5d67f25f12da77480"
+  },
+  "reviewed_sources": {
+    "scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 17612,
+      "sha256": "0d462fd1afbd3a0a871fe9e6fcc91fbb4ed9547ffb6ba725586e9ca68e6e21de"
+    },
+    "sw/tests/test_pcie_native_publisher_v3.py": {
+      "bytes": 10540,
+      "sha256": "1176ff97eeea2fd50f1a0330e5fb0f95f8ede2a5d32cd323d9810f696ae6d0d4"
+    }
+  },
+  "prior_controls_observed": {
+    "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-controls02.log",
+    "bytes": 99,
+    "sha256": "b1fdf4bfb84cadc8d453b82acd0eb8fc40b45905971c9e3fc2b16dcc69fd2887",
+    "result": "23 passed in7.49s",
+    "rerun_by_peer": false
+  },
+  "findings": [
+    {
+      "priority": "P2",
+      "function": "Client.command",
+      "problem": "stderr is directly passed as a file to the child and lacks any live byte ceiling; a noisy child can fill scarce SSD within the bounded120s transport window. Later gzip does not constrain peak usage.",
+      "required_change": "Read stderr through selector/pipe, enforce explicit byte cap with bounded finalchunk overshoot, preserve captured prefix and incomplete marker, terminate/reap exact group, fatal no retry; add real noisychild control."
+    },
+    {
+      "priority": "P2",
+      "function": "Client.command success exit after ProcessOwner.complete",
+      "problem": "SIGTERM received after the polling loop/complete and before owner context exit can set only owner.cancelled. ProcessOwner.__exit__ cleans but does not raise. With no post-context owner.check the command may return success and begin another transfer while client.stop is unset.",
+      "required_change": "After owner context exits and before success return, check owner cancellation and clientstop; exercise actual completion-boundary SIGTERM after original complete to prove terminal cancellation/no subsequent request."
+    }
+  ],
+  "other_reviewed_properties": [
+    "Prefix compares every observed received chunk against retained local file; matched prefix represented by source pin+length/hash, first differing chunk retained and IntegrityError has no retry. Reconstruction assumes original immutable capture remains available.",
+    "Successful zero-return truncated bodies fail exact full length/hash with no retry. Metadata asset size/digest/state mismatch is fatal. Invalid metadata JSON is fatal.",
+    "Retry loop finite1..4 and per-attemptdeadline<=120s; known transient failures only; upload itself once and subsequent immutable requery, never clobber.",
+    "Existing lifecycle tracks childPID/start and process groups; tests cover actual deadline/transfer SIGTERM/backoff and TERM-ignoring descendants, but not completion-boundary cancellation.",
+    "Worker anonymous HTTP uses owned separate process, emitted byte prefixes remain distinguishable from HTTP error bodies, and actual local HTTP tests cover429/503 retry versus401/404 failure."
+  ],
+  "scope": "Source-only review, no controls rerun, no publisher/producer execution. Existing23PASS result retained; findings require additive frozen revision and new targeted controls."
+}

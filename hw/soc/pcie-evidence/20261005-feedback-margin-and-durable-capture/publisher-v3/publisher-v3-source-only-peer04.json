@@ -1,0 +1,84 @@
+{
+  "status": "PASS_PUBLISHER_V3_FREEZE04_BOUNDED_SOURCE_AND_SAVED_CONTROL_PEER",
+  "reviewed_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-source-freeze04.json",
+    "bytes": 1328,
+    "sha256": "a05214018e8bdcdbd8b27bc8cb32fcd19618fcae699fac69927143266ccc5bc3"
+  },
+  "files_rehashed": {
+    "scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 20052,
+      "sha256": "b2ea742c31c20c19bf02b30b3b1954342d5aa73772732dc69c8f170f46e1fa0f"
+    },
+    "sw/tests/test_pcie_native_publisher_v3.py": {
+      "bytes": 14854,
+      "sha256": "787a3bc6f6ea7163ee20925c7d35d115a0e696d0d306c8185190bca464030663"
+    }
+  },
+  "owner_dependency_rehashed": {
+    "path": "scripts/characterize_pcie_clock_trim_stream_v2.py",
+    "bytes": 19742,
+    "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+  },
+  "previous_peer_findings_closed": [
+    {
+      "finding": "Live stderr capture unbounded",
+      "resolution": "Both streams selectorpipes. Stderr stops after256KiB+one<=64KiB receivedchunk; exact observedprefix preserved with incompleteflag; IntegrityError fatal/no retry and exact childgroup cleanup. Saved noisy8MiBsource control checked below."
+    },
+    {
+      "finding": "Actual SIGTERM could disappear at successful or transient-error child completion",
+      "resolution": "Owner request_cancel wrapped BEFORE owner.__enter__; frozen owner exact actual-signal reasons also set sharedclientstop. Ordinary timeout/errorcleanup does not set userstop. TransportError catch checks clientstop and raises terminalCancelled before another retry; successful path retains post-context owner/client checks. Saved real code0/code1 completion signals both stop in oneattempt."
+    }
+  ],
+  "saved_control_observations": {
+    "final_log": {
+      "path": "hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-final07.log",
+      "bytes": 99,
+      "sha256": "62ef5b356679e79a697864f95dc815d9cfb205e78697868f144af59f6a975290",
+      "passed": 31,
+      "raw": "/dev/shm/nssoc-native-publisher-v3-final07"
+    },
+    "controls_executions_passed": 31,
+    "completion_boundaries": [
+      {
+        "path": "/dev/shm/nssoc-native-publisher-v3-final07/test_real_signal_at_child_comp1/evidence/attempts.json",
+        "bytes": 2632,
+        "sha256": "3e49d014f8dcc42de35b6a7a124fc97f9d9f26b3f57f340281a1fc2be903995d",
+        "completed_child_returncode": 1,
+        "actual_attempts": 1
+      },
+      {
+        "path": "/dev/shm/nssoc-native-publisher-v3-final07/test_real_signal_at_child_comp0/evidence/attempts.json",
+        "bytes": 2573,
+        "sha256": "37af8df4edac8e7210de0ebaa3fd5d7a1bc502fdada9d1db063e718e9c9c9c80",
+        "completed_child_returncode": 0,
+        "actual_attempts": 1
+      }
+    ],
+    "bounded_stderr": {
+      "attempts": "/dev/shm/nssoc-native-publisher-v3-final07/test_actual_noisy_stderr_is_bo0/evidence/attempts.json",
+      "bytes": 2616,
+      "sha256": "98f1413255b3c8432647ef1b79c2c8d8c953da3950bf5fe9eeb409efee7822de",
+      "captured_bytes": 327680,
+      "prefix_complete": false,
+      "fatal_no_retry": true
+    },
+    "earlier_counterexample_retained": {
+      "path": "hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-signal-counterexample06.log",
+      "bytes": 6308,
+      "sha256": "1b33c456d45adea719cd0df06aedf600f8d0216c1a619b8fe58342abd37b5803",
+      "meaning": "Expected regression diagnostic: oldfreeze03 retried4times despite real SIGTERM at code1/TLS completion. Fixed by forwarding actual signal cancellation before owner entry."
+    }
+  },
+  "other_source_review": [
+    "Immutable upload no clobber; upload once with state reconciliation; wrong existing size/digest/state/duplicate fatal.",
+    "Authenticated and anonymous completed bodies require exactbytes+sha; mismatch/truncation/extra bytes fatal; sourceprefix metadata and mismatchingchunk permit lossless reconstruction while pinnedlocal capture retained.",
+    "Only transport failure gets finite1..4tries and<=120s per attempt; owned1s failurecleanup inside outer wrappers. No native solver deadline changed.",
+    "Actual fullCLI positive transport pair and4metadata/duplicate negative controls are part of final31; no acceptance flags promoted."
+  ],
+  "controls_rerun_by_peer": false,
+  "producer_native_launched_by_peer": false,
+  "issues_remaining_in_reviewed_scope": [],
+  "inspection_note": "Fixture names are pytest-truncated; exact observed fixture names used and current symlink aliases excluded from count. Initial read-only path-selection assertions corrected; no source/control/native run changed.",
+  "scope": "Final source review and bounded saved-control receipt checks only. No external network replay and no native physics/physical acceptance. Retain allprior drafts/failedcounterexample and finalfulltestcaptures."
+}

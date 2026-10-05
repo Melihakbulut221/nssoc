@@ -1,0 +1,64 @@
+{
+  "files": {
+    "scripts/characterize_pcie_pll_acquisition_v3.py": {
+      "bytes": 3473,
+      "sha256": "d3b6706d0b8feb1c6a5c66bb434df29fe792b621200eae8fc593ea5e4faa9b8d"
+    },
+    "sw/tests/test_pcie_pll_acquisition_v3.py": {
+      "bytes": 10654,
+      "sha256": "0e1f784136184852b8ddcfd94b69df9a1618be924aca3f4048d99e4d5a2add6f"
+    }
+  },
+  "frozen_dependencies": {
+    "scripts/characterize_pcie_pll_acquisition_v2.py": {
+      "bytes": 4294,
+      "sha256": "e902a71626fef5ad0727f52123a7ee5ce2e6fe6b91aaf223130f68e029ed9531"
+    },
+    "scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 20052,
+      "sha256": "b2ea742c31c20c19bf02b30b3b1954342d5aa73772732dc69c8f170f46e1fa0f"
+    },
+    "sw/tests/test_pcie_native_publisher_v3.py": {
+      "bytes": 14854,
+      "sha256": "787a3bc6f6ea7163ee20925c7d35d115a0e696d0d306c8185190bca464030663"
+    },
+    "scripts/characterize_pcie_clock_trim_stream_v2.py": {
+      "bytes": 19742,
+      "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+    }
+  },
+  "exact_source_bridges": {
+    "publisher": {
+      "original_sha256": "f13bb3e1d22a3062697b4e526c6baa39ed63a31e57fb5337d0a1c7fa6155bf39",
+      "modified_sha256": "8dfc032d8cfb1fcb8a2ba98e94132b7c55b38c638bc5b9b7011f4f0b59c29f0c",
+      "exact_replacements": [
+        [
+          "class OwnedPublisherV2:",
+          "class OwnedPublisherV3:"
+        ]
+      ]
+    },
+    "run": {
+      "original_sha256": "981f2bb4c3b5f2ba08717df9d96521a4fdfbed38b984b4d36f5569ba4b7f4e0d",
+      "modified_sha256": "abe03ca11ee6703e5b4c2c3b99d27563e2a19ff7febc677f0038f5cb0fe73e9c",
+      "exact_replacements": [
+        [
+          "OwnedPublisherV2(owner)",
+          "OwnedPublisherV3(owner)"
+        ],
+        [
+          "+ [__file__, str(reference)]",
+          "+ [__file__, str(publication.__file__), str(publication.lifecycle.__file__), str(reference)]"
+        ]
+      ]
+    }
+  },
+  "controls": {
+    "log": "hw/soc/out/pcie-pll-acquisition-v3-20261005/controls01.log",
+    "bytes": 99,
+    "sha256": "245de76d2f1e1f1f17692006d4f2b0dc344a957d3bddbc02fff3cfc9abb3b1dc",
+    "passed": 15,
+    "raw": "/dev/shm/nssoc-pll-acquisition-v3-controls01"
+  },
+  "scope": "Only owned publisher class routing and explicit publisher/owner input pins. No changed device, waveform, lossless queue, timing step, acceptance bounds or capture resource limit; no SPICE launch."
+}

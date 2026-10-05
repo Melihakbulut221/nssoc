@@ -1,0 +1,43 @@
+{
+  "status": "ONE_REMAINING_COMPLETION_ERROR_CANCELLATION_FINDING",
+  "reviewed_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-source-freeze03.json",
+    "bytes": 566,
+    "sha256": "5844eb3a4277b96645d0716f7ecede2cc8d7096c6f996c856c09613dbfbbe824"
+  },
+  "reviewed_files": {
+    "scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 18975,
+      "sha256": "a64ed0c9d9ccadc8dc21f560dbcccc33d9127c7ff3501d15b1110ac5f5362df3"
+    },
+    "sw/tests/test_pcie_native_publisher_v3.py": {
+      "bytes": 14717,
+      "sha256": "ce24487fe462a93ddc457bcab052a5d712f7d8f7029fdd0d9173221af271f431"
+    }
+  },
+  "verified_before_diff_read": true,
+  "closed_findings": [
+    "stderr now pipe+selector capped256KiB+atmost64KiBchunk; fatal no retry, exact capturedprefix/incompleteflags,1scleanup; actual8MiBnoise control passed.",
+    "Successful code0 completion-boundary SIGTERM now intercepted by post-context owner.check/self.check; actualsignalcontrol passed."
+  ],
+  "remaining_finding": {
+    "priority": "P2",
+    "scenario": "Same actual completion-boundary SIGTERM with code1 and classified transient stderr.",
+    "flow": "owner.complete\u2192owner.cancelled by signal\u2192if code raises TransportError\u2192post-context owner.check bypassed\u2192Client.retry sees transient and client.stop remains unset.",
+    "required": "Propagate actual nested-owner signal to client.stop for all return/exception paths, distinguishing explicit signal from ordinary error-cleanup cancellation; add actual nonzero/TLS completion-boundary control."
+  },
+  "controls_observed": [
+    {
+      "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-controls03.log",
+      "bytes": 99,
+      "sha256": "553c6b08a62eccae90a105a893f83f80aab064aedbc9e89cd48c1197fe0164d7"
+    },
+    {
+      "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-agent-resume-second-20261005/publisher-v3-main04.log",
+      "bytes": 113,
+      "sha256": "968b8b2116e3f5f01ae1e9e0191ce91b65178c16ff5fc63f9d9d3f2321619eb6"
+    }
+  ],
+  "controls_rerun_by_peer": false,
+  "scope": "Bounded source/diff review; no native/publisher execution. Prior fixes accepted but producer bridge must wait for remaining cancellation gap."
+}

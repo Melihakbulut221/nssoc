@@ -1,0 +1,115 @@
+# 130 — PCIe feedback margin and durable native capture
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
+## Continued after the actual power loss — 5 October 2026
+
+The disconnected-clock probe now passes all 437 electrical screens while
+correctly reporting the missing divided clock. Both nominal control endpoints
+also pass after changing two physical resistor dimensions in the schematic.
+The exact new divider still needs its own layout and parasitic verification.
+**This is a finite circuit improvement, not completed PCIe Gen3 x4 or
+main-chip qualification.**
+
+The [delivery inventory](../hw/soc/pcie-evidence/20261005-feedback-margin-and-durable-capture/delivery-inventory.json)
+binds the new sources, saved controls, independent reviews and immutable public
+captures. [Report 129](129-pcie-loaded-feedback-and-rx-timing.md) retains the
+preceding L6.4 results and their actual failures unchanged.
+
+## The two L4 resistors clear the disconnected-clock headroom screen
+
+Only the first conditioner's upward-bias `rppd` lengths change from 6.4 to
+4 µm; width remains 1 µm. Independent expanded-graph comparison preserves
+all 437 device identities and changes only those two length parameters.
+The 889-resistor/765-capacitor VCO wire model, 50 fF public pin loads,
+34 ns capture, 5 ps maximum timestep, 27 °C temperature and measurement
+functions remain unchanged. Eleven source controls precede the new captures.
+
+| Actual L4 capture | Minimum settled HBT VCE | VCO frequency | Feedback frequency | Electrical screens |
+| --- | ---: | ---: | ---: | --- |
+| Nominal control 0.85 V | 0.526905 V | 7.601783408 GHz | 95.006551916 MHz | 437 pass |
+| Nominal control 0.60 V | 0.525944 V | 8.103519853 GHz | 101.254401151 MHz | 437 pass |
+| Clock disconnected, control 0.60 V | 0.441864 V | 8.102618495 GHz | No feedback edges | 437 pass |
+
+The disconnected-clock minimum rises from 0.343411 V at L6.4 to
+0.441864 V at L4, crossing the same 0.4 V development headroom screen.
+Its eleven functional failures remain failures: disconnecting the clock
+must not produce a nominal PASS. It is now an electrically healthy detected
+fault under these finite conditions. This criterion is not a foundry
+safe-operating-area guarantee.
+
+At nominal 0.60 V, the limiting device moves from the divider into the
+unchanged VCO. The first divider's tail minimum is 0.544588 V, while
+the global minimum is 0.525944 V. Peak current is 2.772636 mA/Nx against
+the unchanged 3 mA/Nx development screen. These distinct minima must not
+be substituted for one another when comparing revisions.
+
+The nominal captures each contain 6,819 rows and 786 columns. Independent
+reductions rehash all archived members and every binary sample, recalculate
+all device screens, check 64 native OFF flags and recount actual /4 and /80
+periods without importing producer measurement functions. All 227 and 242
+complete nominal VCO cycles respectively cross both −300 mV and +300 mV.
+The disconnected-clock capture has 6,832 rows; its complete VCO cycles also
+pass that amplitude check while the divided feedback is absent.
+
+The actual wrong-modulus control preserves /4 but produces /64 instead of
+/80: measured feedback is 126.579232875 MHz. All 437 electrical screens
+pass, while four functional checks fail as intended. Independent reviews
+of all four captures cover **21,449,154 binary values** and retain both
+faults' native FAIL statuses. The paired wrong-modulus comparison uses the
+original L8 capture; no L6.4 wrong-modulus capture is invented.
+
+The physical VCO and schematic divider form a mixed model. The divider's
+new dimensions, its wires, the CMOS counter, clock-bank integration, PVT,
+thermal effects and jitter still require separate evidence. Fixed-control
+oscillation at these endpoints does not demonstrate PLL acquisition or lock.
+
+## Publication failures no longer immediately abort a healthy native producer
+
+The preceding long PLL attempt terminated on an actual GitHub TLS download
+failure. Its failed result, first seven public parts, retained eighth part
+and waveform tail remain recorded. V3 adds bounded retry for transient
+transport failures while retaining hard rejection for wrong bytes or
+permanent HTTP errors. Successful publication still requires exact
+authenticated and anonymous download checks before a queued part can be
+reclaimed. A partial transfer is never counted as a published full capture.
+
+Thirty-one transport controls cover retry classification, byte integrity,
+bounded stderr, interrupted publication and cleanup of owned descendants.
+The separate producer bridge has fifteen distinct controls; two affected
+tests were rerun after replacing their volatile input path with a tracked,
+hash-pinned fixture. Those reruns are not additional distinct tests.
+Integration controls use sleeper processes to exercise ownership and
+backpressure; they are not substitutes for a SPICE simulation.
+
+The producer bridge preserves the previous physical deck and measurement
+functions. Its fresh native run retains 539 device records, a 1 µs stop,
+2.5 ps maximum timestep, original 100 ppm/50 ps acceptance limits and
+800–900/900–1000 ns measurement windows. The run has started; no completed
+1 µs result or timestep-pair agreement is claimed in this delivery.
+
+A live L4 capture publication also exercised the retry path: its first
+authenticated download reached the 120-second transport deadline, the
+failure was retained, and the next attempt passed. This transport deadline
+does not impose an elapsed-time limit on a healthy native simulator.
+
+## Physical continuation and retained scope
+
+TX02 and RX12 detailed routing continue on their existing owned processes.
+Each has a durable continuation to fresh nominal RC extraction, saved-output
+review, complete capture packaging and verified publication. The reviewers
+retain measured setup, hold, recovery and removal values without assuming
+that a new candidate improves them. The RX12 pre-route preservation capsule
+contains the completed new candidate, binary proof and six physical-port
+tests; it is not a completed route or final timing result.
+
+The next analog layout is the standalone current divider: 34 HBT devices,
+33 resistors and six MIM capacitors, with explicit substrate contacts.
+The older physical divider generator embeds an older VCO, so merely changing
+its two resistor values would leave the wrong circuit. New geometry must
+preserve the current circuit and pass independent DRC/LVS and actual
+open/short/wrong-device controls before any new wire-model claim.
+
+Full-chip setup/hold and qualified RC, full SERDES/CDR/PLL, training and
+controller policies, analog pads/ESD, SRAM/DFT obligations, main-chip
+integration and manufacturing acceptance remain open.
