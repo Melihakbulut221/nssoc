@@ -1,0 +1,121 @@
+{
+  "status": "PASS_V17_CONTINUATION_AND_GUARDED_SUPERSESSION_SOURCE_PEER",
+  "findings": [],
+  "method": {
+    "bytes": 7118,
+    "sha256": "01f7ff7c83d15366d30ff031be907ef4346e2ceeb4a1a437b927455d4b4cda3a"
+  },
+  "reviewed_freeze": {
+    "bytes": 442,
+    "sha256": "89a6d724bdfc78b2d4d105919d53a6a5e462ba1fd888e3f7e6b62884ca747712"
+  },
+  "reviewed_files": {
+    "supersession-identity-guards02.json": {
+      "bytes": 3945,
+      "sha256": "76ae360dc7ee7860a7ff87b302c7adc9de4645c6c3c61bd5bb2c7d9e532f44a6"
+    },
+    "supersede_v16_after_validation_v2.py": {
+      "bytes": 5072,
+      "sha256": "595f0020b40604edde248e27fce89a97d7f4725239adad04ae8aab94bbbf9801"
+    },
+    "continue_after_controls_v2.py": {
+      "bytes": 5944,
+      "sha256": "e39be5112e07e91ab6cdf50e90075510faa2363d5151e9a75c40cd8b11244359"
+    }
+  },
+  "source_peer": {
+    "bytes": 4942,
+    "sha256": "ad0a991a3f4a8d2d26b3e69d604cb0e70c66dc9b0326ea5dea0dc1f9cc9e2d35"
+  },
+  "completed_controls": {
+    "bytes": 125,
+    "sha256": "980b1efd27fcf93c2b8ecbc5a0d8716d7a8224363b051b2231e87a3d8cd632eb"
+  },
+  "inherited_owner_stage_functions_identical": [
+    "pin",
+    "stage",
+    "verify_sources",
+    "explicit_stop"
+  ],
+  "guard_controls": {
+    "bytes": 2986,
+    "sha256": "49dc78a98a0191f95267433c368e586cb587c597b0af6382f069c3b6c3e32cc6"
+  },
+  "additional_real_owned_child_checks": [
+    {
+      "case": "wrong_start",
+      "result": "REFUSED_WITH_REAL_CHILD_STILL_ALIVE"
+    },
+    {
+      "case": "wrong_group",
+      "result": "REFUSED_WITH_REAL_CHILD_STILL_ALIVE"
+    },
+    {
+      "case": "wrong_command_size",
+      "result": "REFUSED_WITH_REAL_CHILD_STILL_ALIVE"
+    },
+    {
+      "case": "wrong_command_hash",
+      "result": "REFUSED_WITH_REAL_CHILD_STILL_ALIVE"
+    },
+    {
+      "case": "wrong_boot",
+      "result": "REFUSED_WITH_REAL_CHILD_STILL_ALIVE"
+    },
+    {
+      "case": "exact_owned_group",
+      "result": "ACTUAL_SIGTERM_AND_CLOSED"
+    }
+  ],
+  "owned_stop_receipt": {
+    "bytes": 1183,
+    "sha256": "66276b98ae36109d0ad1dd7139ceb71069cb23af095a873e3767f00d12a3d951"
+  },
+  "production_identities_read_only_and_still_matching": {
+    "idle_continuation": {
+      "pid": 48772,
+      "state": "S",
+      "process_group": 48770,
+      "start_ticks": "564758",
+      "commandline_bytes": 77,
+      "commandline_sha256": "59e750679857bbce0015beafe6e77abd20dddf3f1a4dfc2b831b0d12da8cddcf",
+      "argv": [
+        "python3",
+        "hw/soc/out/pcie-integrity-v16-20261005/continue_after_controls_v2.py"
+      ]
+    },
+    "incomplete_V16_controls": {
+      "pid": 42780,
+      "state": "S",
+      "process_group": 42780,
+      "start_ticks": "453528",
+      "commandline_bytes": 1390,
+      "commandline_sha256": "dc613b0881dd8f44ad98e8996c90a0f1c5727b4a5fc98c3d7afcc9a2e1e4c370",
+      "argv": [
+        "/bin/bash",
+        "-c",
+        "python3 scripts/generate_pcie_integrity_read_v16.py\nhw/soc/tools/dev-env/bin/ruff check scripts/generate_pcie_integrity_read_v16.py sw/tests/test_pcie_gen3_integrity_v16_read.py\npython3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,datetime\nR=Path.cwd();B=R/'hw/soc/out/pcie-integrity-v16-20261005';B.mkdir(exist_ok=False)\nold=json.loads((B.parent/'pcie-integrity-v15-20261005/source-freeze.json').read_text())\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\nold['files']={n.replace('_v15','_v16'):pin(R/n.replace('_v15','_v16')) for n in old['files']};old['utc']=datetime.datetime.now(datetime.UTC).isoformat();old['scope']='V11-based static genvar known-eligibility balanced payload mux tree; avoids rejectedV15 dynamic procedural tree-array frontend expansion under unchanged2GiB memory bound. Exact V11 read-block inverse; all writers/control unchanged. Measured native depth/timing required.'\n(B/'source-freeze.json').write_text(json.dumps(old,indent=2)+'\\n');print(pin(B/'source-freeze.json'))\nPY\ntaskset -c 6 .venv/bin/python -m pytest -q sw/tests/test_pcie_gen3_integrity_v16_read.py sw/tests/test_pcie_gen3_integrity_v16_miter.py sw/tests/test_pcie_gen3_continuous_rx_integrity_v16.py -k 'not 4118' --basetemp=/dev/shm/nssoc-integrity-v16-controls01 > hw/soc/out/pcie-integrity-v16-20261005/controls01.log 2>&1"
+      ]
+    },
+    "incomplete_Icarus14_probe": {
+      "pid": 45372,
+      "state": "S",
+      "process_group": 45372,
+      "start_ticks": "501497",
+      "commandline_bytes": 1209,
+      "commandline_sha256": "02c415b8b87ff8c80e9644a6e7f58de856be3e9f3def77201c34b0aaa020f1a8",
+      "argv": [
+        "/bin/bash",
+        "-c",
+        "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,json,datetime,os\nR=Path.cwd();B=R/'hw/soc/out/pcie-integrity-v16-20261005';D=Path('/dev/shm/nssoc-integrity-v16-icarus14-probe01');D.mkdir();p=Path('/dev/shm/nssoc-integrity-v16-controls01/test_literal_balanced_read_all2/tb.v');(D/'tb.v').write_bytes(p.read_bytes())\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\ninputs=[p,D/'tb.v']+[R/'hw/soc/tools/oss-cad-suite'/n for n in ['bin/iverilog','bin/vvp','lib/ivl/ivl','lib/ivl/ivlpp','lib/ivl/vvp.tgt']];r=dict(utc=datetime.datetime.now(datetime.UTC).isoformat(),inputs={str(p):pin(p) for p in inputs},scope='Exact already-generated frozen V16 ring128 literal bench, same4096cases. Compare installed Icarus14 elaboration performance; no DUT/source or coverage edits. Old Icarus12 capture remains untouched.',expected_cpu=[6])\n(D/'method.json').write_text(json.dumps(r,indent=2)+'\\n');print(str(D))\nPY\ntaskset -c 6 hw/soc/tools/oss-cad-suite/bin/iverilog -g2012 -s tb -o /dev/shm/nssoc-integrity-v16-icarus14-probe01/sim.vvp /dev/shm/nssoc-integrity-v16-icarus14-probe01/tb.v > /dev/shm/nssoc-integrity-v16-icarus14-probe01/compile.log 2>&1"
+      ]
+    }
+  },
+  "review": [
+    "Every production signal gated by completed39selected controls, exact source/lifecycle peers, unchanged boot and PID/start/group/command bytes.",
+    "Old idle V16 continuation stopped before its incomplete controls/probe. Incomplete V16 remains incomplete; this is author supersession of a validated compiler fix.",
+    "Controller preserves tested ProcessOwner failure/cancellation handling and final cancellation check. No PLL identity appears among signal targets.",
+    "Final policy02 may derive from frozen policy01 only by V2 method/status paths and this exact lifecycle peer binding. Native mapping/STA still use original limits."
+  ],
+  "scope": "Source review and six actual owned-child lifecycle checks only; no V16 production job stopped by reviewer and no native timing acceptance."
+}
