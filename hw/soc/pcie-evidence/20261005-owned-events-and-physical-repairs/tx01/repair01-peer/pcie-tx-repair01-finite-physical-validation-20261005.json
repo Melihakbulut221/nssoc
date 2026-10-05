@@ -1,0 +1,110 @@
+{
+  "status": "REVIEWED_ROUTER_DRC_AND_FUNCTION__SS_SETUP_HOLD_RECOVERY_STILL_FAIL",
+  "router_drc_violations": 0,
+  "same_logical_netlist_after_detailed_route": true,
+  "nominal_rc_cell_corner_slack_ns": {
+    "slow": {
+      "recovery": -0.170263,
+      "setup": -0.463298,
+      "removal": 0.183373,
+      "hold": -0.015427
+    },
+    "typical": {
+      "recovery": 1.29739,
+      "setup": 1.203908,
+      "removal": 0.15734,
+      "hold": 0.031497
+    },
+    "fast": {
+      "recovery": 2.182591,
+      "setup": 2.099793,
+      "removal": 0.147128,
+      "hold": 0.069737
+    }
+  },
+  "nominal_prior_and_improvement": {
+    "prior": {
+      "slow": {
+        "recovery": -0.474642,
+        "setup": -1.092813,
+        "removal": 0.149723,
+        "hold": -0.039604
+      },
+      "typical": {
+        "recovery": 1.103711,
+        "setup": 0.818086,
+        "removal": 0.142764,
+        "hold": 0.02496
+      },
+      "fast": {
+        "recovery": 2.049868,
+        "setup": 1.931556,
+        "removal": 0.143883,
+        "hold": 0.067828
+      }
+    },
+    "delta_ns": {
+      "slow": {
+        "recovery": 0.304379,
+        "setup": 0.629515,
+        "removal": 0.03365,
+        "hold": 0.024177
+      },
+      "typical": {
+        "recovery": 0.193679,
+        "setup": 0.385822,
+        "removal": 0.014576,
+        "hold": 0.006537
+      },
+      "fast": {
+        "recovery": 0.132723,
+        "setup": 0.168237,
+        "removal": 0.003245,
+        "hold": 0.001909
+      }
+    }
+  },
+  "unannotated_drivers": 150,
+  "unannotated_classification": "All150 unconnected outputs of input-only CTS dummy load cells; all150 clock-input pins independently located on correct extracted SPEF nets. Zero partially unannotated drivers.",
+  "canonical_binary_kernel_replay": {
+    "states": 3850,
+    "input_bits": 651,
+    "output_bits": 130,
+    "targets": 11680,
+    "canonical_nodes": 73632,
+    "mismatches": [],
+    "matched": 11680
+  },
+  "saved_native_port_XML_cases_recounted": 3,
+  "saved_actual_kernel_fault_controls": 10,
+  "full_compiled_program_gzip_readback": {
+    "raw_path": "/dev/shm/nssoc-tx-path-v4-repair01-physical-replay-01/sim/sim.vvp",
+    "raw": {
+      "bytes": 106646099,
+      "sha256": "69fb27ad18720637afc7af0d06535cbc4dcd6f2d8220ef2ef040882d084f1dac"
+    },
+    "compressed_path": "/dev/shm/nssoc-tx-path-v4-repair01-physical-replay-01/sim/sim.vvp.gz",
+    "compressed": {
+      "bytes": 12499141,
+      "sha256": "dd197a83d2e0cdb5b26b43ebee22c5d642941cb0904c7c3b7fd2b9fa24cee7d3"
+    },
+    "full_decompressed_readback": {
+      "bytes": 106646099,
+      "sha256": "69fb27ad18720637afc7af0d06535cbc4dcd6f2d8220ef2ef040882d084f1dac"
+    },
+    "observed_closed_after_native_exit": true,
+    "raw_unlinked": true
+  },
+  "peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair01-peer/review.json",
+    "bytes": 45785,
+    "sha256": "457133c3ffc5f8e0928417e173ae8e9c9f8cc4f53752e33a0130ca7e1c652e38"
+  },
+  "setup_closed": false,
+  "hold_closed": false,
+  "recovery_closed": false,
+  "qualified_rc": false,
+  "physical_acceptance": false,
+  "constraints": "Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagatedclock, no false/multicycle exceptions. Nominal extractedRC reused across three cell corners; not distinctRC process corners.",
+  "scope": "Standalone TXv4 four-lane scrambling/fixed130 gearbox path; not integrated full PHY. Complete raw repair01/GRT/proof/port/DRT/RC captures retained. Existing proof kernel independently replayed on saved expanded native graphs; proof fault controls inspected but not rerun. No new OpenROAD/Icarus execution, no fullchip/foundry/PDN/PHY signoff. Earlier failures and original sources remain unchanged."
+}

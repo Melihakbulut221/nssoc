@@ -24,6 +24,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/124-pcie-pll-acquisition-and-recovered-lanes.md](124-pcie-pll-acquisition-and-recovered-lanes.md) records complete nominal PLL acquisition, native CDC, recovered-lane composition, SDS locking and actual routed hold improvement with remaining setup failure.
 [docs/125-pcie-sds-cohorts-and-native-validation.md](125-pcie-sds-cohorts-and-native-validation.md) records native SDS locking and bounded deskew, ordered-set-aware x4 RTL, complete earlier state-function proof, local VCO bias failures and retained timing/publication limits.
 [docs/126-pcie-strict-pcs-and-serial-packets.md](126-pcie-strict-pcs-and-serial-packets.md) records strict parser-owned EDS/SKP cohorts, raw-lane-to-packet RTL, native strict-leaf tests, separate predecode controls and the completed V7 maximum direct profile.
+[docs/127-pcie-owned-events-and-physical-repairs.md](127-pcie-owned-events-and-physical-repairs.md) records raw-lane owned TLP/DLLP events, finite VCOv5 wire measurements, V9/V10 preplacement failures and independently reviewed RX10/TX01 routed RC.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
