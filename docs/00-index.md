@@ -33,6 +33,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 
 [docs/131-pcie-divider-layout-and-tx-repair.md](131-pcie-divider-layout-and-tx-repair.md) records the standalone divider's native DRC/LVS and fault checks, and completed TX02 routing with positive nominal hold/recovery but a remaining setup miss.
 [docs/132-pcie-integrity-read-timing.md](132-pcie-integrity-read-timing.md) records V17's measured read-depth and preplacement gains, residual setup failures, and the preserved V15/V16 frontend attempts.
+[docs/133-pcie-balanced-commit-screen.md](133-pcie-balanced-commit-screen.md) records V18's corrected parser controls, measured setup regression and unchanged acceptance limits.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
