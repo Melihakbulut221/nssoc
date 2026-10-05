@@ -142,3 +142,40 @@ records the exact source hashes, native case counts and limits. The
 retains the original cancelled log, both regression runs, complete native log
 and XML, and authenticated/anonymous publication readbacks. The compiled
 native capture is preserved in its immutable public capsule.
+
+## Follow-up: RX12 completes routing, with a smaller remaining setup miss
+
+RX12 has now completed detailed signal routing and fresh nominal RC extraction.
+Eight targeted buffer isolations and two buffer upsizes preserve the candidate's
+proved logical behavior. The final routed netlist is byte-identical to that
+candidate. The router reports zero DRC violations; this is a standalone receiver
+result, not full-chip foundry DRC or LVS acceptance.
+
+| Cell-library corner, shared nominal RC | Setup slack, ns | Hold slack, ns | Recovery, ns | Removal, ns |
+| --- | ---: | ---: | ---: | ---: |
+| Slow | **−0.521801** | +0.035180 | +0.362229 | +0.872480 |
+| Typical | +1.192867 | +0.062631 | +1.672244 | +0.583272 |
+| Fast | +2.156512 | +0.077598 | +2.465179 | +0.411854 |
+
+Slow setup improves by **88.680 ps** relative to the published RX11 result
+of −0.610481 ns. It still fails. Hold, recovery and removal remain positive
+in all three measured cell corners, and no slew/capacitance violations are
+reported. The 78 unannotated outputs are individually checked as unused
+clock-load outputs; their actual input pins are present on the correct
+extracted clock nets. No partially unannotated pins are accepted.
+
+The saved proof covers 1,804 state bits and 5,443 functions, with ten actual
+mutation controls and six native physical-port checks. Publication packaging
+does not rerun those completed native checks or invent a new reference run.
+The [finite handoff](../hw/soc/pcie-evidence/20261005-rx12-routed-timing/ready-finite.json)
+and [independent timing review](../hw/soc/pcie-evidence/20261005-rx12-routed-timing/repair12-peer/review.json)
+retain the exact constraints, sources, results and limitations. A separate
+[root readback](../hw/soc/pcie-evidence/20261005-rx12-routed-timing/root-inventory.json)
+rehashes all 115 capsule members and 109 compact evidence files. All three
+immutable public assets pass authenticated and anonymous download verification.
+
+These measurements use the existing default-150 byte receiver and one nominal
+RC extraction across three cell libraries. They do not qualify separate RC
+process corners, the final wide PCS receiver, or main-chip timing. The next
+repair targets the actual remaining slow-corner paths; this delivery retains
+their failing values as the baseline.
