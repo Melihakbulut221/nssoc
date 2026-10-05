@@ -1,0 +1,64 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_ONLY_COMPANION_ASSOCIATION_REVIEW",
+  "freeze": {
+    "bytes": 1660,
+    "sha256": "ad8345b7c4139cbc4767d28875c2c2ee676e2f250e1a117ea4c656c81261a635"
+  },
+  "inputs": {
+    "scripts/generate_pcie_integrity_predecode_v9.py": {
+      "bytes": 7291,
+      "sha256": "81db3ca1ca5321a13d333ee2daa16b8c0a3f29e9463980526b0648d6c49a0953"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 11259,
+      "sha256": "f8f7a45368c12b7dc7e49aa0c154155867dab9fa327359ac1f65bf2ca3c0c930"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v9.v": {
+      "bytes": 189772,
+      "sha256": "002f79700409de44ced29dc56aa5a1bac423e621c4bce039cd7cfdc956bac219"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v9.v": {
+      "bytes": 3308,
+      "sha256": "12e7120e22c0cbe2c724403c5f3728d6ea2cfb1710718be873f57fb647e9ea69"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v9": {
+      "bytes": 1508,
+      "sha256": "5b6e9a255253a89442602db0d5c6fb7537ec64394d6820f16753f44f839885c7"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v9_predecode.py": {
+      "bytes": 8460,
+      "sha256": "3860507017771313575c230fecf1da6eebc56d7d71c8393921dc819c1895a222"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v9_miter.py": {
+      "bytes": 6991,
+      "sha256": "58b2b8425abfcfa77ec963549af921c9ddaad84efa170fa3210e68a521eaf064"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 4787,
+      "sha256": "937b6f3865f3d9afc28fedc6e4b56ca2aea13c47ecc35db1fd7ca222f75b58f9"
+    }
+  },
+  "old_source": {
+    "path": "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v7.v",
+    "bytes": 188160,
+    "sha256": "0ce36fcd2eb6beb8a4e70b223e949c39b7e2cf566f491728ec1945668956dce1"
+  },
+  "exact_generator_and_inverse_bridge": true,
+  "explicit_replacements": 15,
+  "wrapper_inverse_name_bridge": true,
+  "review": [
+    "Each input_predecode DWORD gathers the same four striped lane bytes as the original current_block parser: lane3 as MSB through lane0 as LSB. All16 indices are covered.",
+    "Literal STP length/CRC/parity, encoded length and TLP expected-byte expressions conserve their original widths and MAX_ENCODED_BYTES predicate. New32-bit packing is13 encoded+1 header fault+13 expected+5 token bits.",
+    "Each four-DWORD step shifts128 metadata bits, corresponding exactly to32 bits removed separately from each128-bit lane bank. The new high four metadata DWORDs use predecode_word(0), preserving encoded underflow and IDL facts rather than incorrectly zeroing decode.",
+    "At last slice with a resident next block, both current banks receive the old next banks. Simultaneous incoming replacement writes both next banks later viaNBA; it cannot overwrite the old-next association transferred to current.",
+    "At last slice without resident next or with current invalid, ingress overrides both current data and decode assignments together. Otherwise both next banks receive ingress. Held/invalid banks remain paired.",
+    "Reset initializes companion banks by decoding the actual zero block. Flush/abort/end clear validity with matching data/companion hold; no parse of stale invalid bank is newly enabled.",
+    "EDS stored bit is only literal equality; original slice==3 and j/control_word==3 qualification remains at use. Header_first and same-slice new STP use corresponding decoded word indices; no location or parser-mode predicate moved into the cache.",
+    "Whole inverse bridge leaves sequential priority, CRC functions, commit/verdict/retirement and public latency behavior byte-identical outside the15 explicit substitutions and added companion declarations."
+  ],
+  "scope": "Independent current source hashes, literal inverse reconstruction and manual dataflow/priority review only. No author HDL/control execution rerun, native mapping, SAT/formal proof or timing acceptance. Companion equivalence assumes/reset-establishes data-decode association; not arbitrary independent corruption or arbitrary-X equivalence of added state."
+}

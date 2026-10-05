@@ -1,0 +1,86 @@
+{
+  "status": "PASS_LITERAL_PREDECODE_BUFFER_AND_ACTUAL_FUNCTIONAL_FAULT_CONTROLS",
+  "source_freeze": {
+    "bytes": 1660,
+    "sha256": "ad8345b7c4139cbc4767d28875c2c2ee676e2f250e1a117ea4c656c81261a635"
+  },
+  "sources": {
+    "scripts/generate_pcie_integrity_predecode_v9.py": {
+      "bytes": 7291,
+      "sha256": "81db3ca1ca5321a13d333ee2daa16b8c0a3f29e9463980526b0648d6c49a0953"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 11259,
+      "sha256": "f8f7a45368c12b7dc7e49aa0c154155867dab9fa327359ac1f65bf2ca3c0c930"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v9.v": {
+      "bytes": 189772,
+      "sha256": "002f79700409de44ced29dc56aa5a1bac423e621c4bce039cd7cfdc956bac219"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v9.v": {
+      "bytes": 3308,
+      "sha256": "12e7120e22c0cbe2c724403c5f3728d6ea2cfb1710718be873f57fb647e9ea69"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v9": {
+      "bytes": 1508,
+      "sha256": "5b6e9a255253a89442602db0d5c6fb7537ec64394d6820f16753f44f839885c7"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v9_predecode.py": {
+      "bytes": 8460,
+      "sha256": "3860507017771313575c230fecf1da6eebc56d7d71c8393921dc819c1895a222"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v9_miter.py": {
+      "bytes": 6991,
+      "sha256": "58b2b8425abfcfa77ec963549af921c9ddaad84efa170fa3210e68a521eaf064"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v9.py": {
+      "bytes": 4787,
+      "sha256": "937b6f3865f3d9afc28fedc6e4b56ca2aea13c47ecc35db1fd7ca222f75b58f9"
+    }
+  },
+  "pytest_executions_passed": 32,
+  "distinct_pytest_predicates": 31,
+  "duplicate": "Exact inverse source bridge called directly and by miter helper",
+  "literal_word_cases": 294924,
+  "literal_word_limits": [
+    18,
+    150,
+    4118
+  ],
+  "companion_transition_cycles": 4096,
+  "positive_public_cases": 26,
+  "public_profiles": [
+    "13 default150 serial-oracle cases",
+    "13 default150 cycle-exact V7/V9 cases plus associated-companion invariant every sampled edge"
+  ],
+  "actual_RTL_mutants": {
+    "decoder": 9,
+    "buffer_companion": 5,
+    "public_behavior": 8,
+    "cycle_miter": 2
+  },
+  "native_SAT_result": {
+    "bytes": 6224,
+    "sha256": "ab0b1c36901a133c804aca30f1f3eae507259cb379a012dde203ea316072e01e"
+  },
+  "binary_SAT_scope": "All32 binary DWORD inputs at MAX18/150/4118, three exact word-decode proofs plus three real counterexamples; not full sequential equivalence.",
+  "source_only_peer": {
+    "bytes": 4265,
+    "sha256": "64211e5852e5681ab2920ad40b2535413e16ab2b9704a2a57f77da0d593c7104"
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v9-20261005/pcie-integrity-v9-default-controls-20261005.tar.xz",
+    "bytes": 1986808,
+    "sha256": "64c0b443cb4694f3e5ae203b2824ef4a93e717cdf849e6d1f42cea9e345d6a81"
+  },
+  "manifest": {
+    "bytes": 75016,
+    "sha256": "74165c43f980fa5bdf4d72b20da0e9d61ac8bc9c44b2c673b135ba74c16c9915"
+  },
+  "members": 237,
+  "scope": "Associated decoded-bank invariant initialized at reset and maintained by literal block load/shift/replacement. Original13 public bench AST/body unchanged. No arbitrary independent companion-state equivalence, full-DUT all-state proof, V9MAX4118 public profile, mapped port replay, physical timing or fullPCIe/PHY qualification. V7/V8 unchanged; all prior failure histories retained separately."
+}
