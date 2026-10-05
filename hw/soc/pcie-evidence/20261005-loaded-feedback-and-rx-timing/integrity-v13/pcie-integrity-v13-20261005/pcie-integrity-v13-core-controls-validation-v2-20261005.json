@@ -1,0 +1,45 @@
+{
+  "status": "PASS_QUARANTINED_SLOTS_AND_ACTUAL_PUBLIC_FAULT_CONTROLS",
+  "source_freeze": {
+    "bytes": 2484,
+    "sha256": "5fc9176560e9656a77c74374235ae28a24dad0bd91a9e546b2fc1e593d4e67eb"
+  },
+  "pytest_executions_total": 34,
+  "resolved_selected_test_ids": 28,
+  "distinct_predicates": 27,
+  "historical_failed_executions": 1,
+  "passing_executions_total": 33,
+  "duplicate_predicate": "Literal inverse/source bridge executed standalone and through miter module.",
+  "positive_public_cases": 26,
+  "actual_RTL_mutation_controls": 22,
+  "distinct_RTL_mutation_edits": 21,
+  "exhaustive_capacity_predicate_cases": 128,
+  "actual_overflow_content_edges": 1,
+  "actual_pending_drain_edges": 41,
+  "literal_transition_cases": 8192,
+  "slot_cache_relations": 524288,
+  "profile": {
+    "MAX_ENCODED_BYTES": 150,
+    "RING_DWORDS": 64
+  },
+  "excluded_maximum_tests": 2,
+  "archive": {
+    "path": "/dev/shm/pcie-integrity-v13-default-controls-20261005.tar.xz",
+    "bytes": 4344524,
+    "sha256": "a81a84aa694b27d75f6c4212205f34d20b3f4b233cba33fee6b03839b3bbb506",
+    "members": 263
+  },
+  "full_readback": true,
+  "scope": "Actual content_step=step OR ring_overflow predicate across128Boolean combinations plus threeactualpredicate faults. Literal8192slot/cache transitions andsevenmutants; originalserialoracle direct13 andcompleteV11/V13 allpublic/occupiedmetadata/committedverdict cyclemiter13 withoneactualextraoverflow edge and41pendingdrain edges; fouractualmiter faults(includingtwooverflowmutants), eightinheritedCRC/parserfaults. Sameoverflow-not-fault sourceedit is exercised locally andatwholeDUT, so22mutationcontrols represent21distinctedits. Original1FAIL27PASS observerfixture capture is preserved: next-cycle start maskedoverflow atnegedge withgate/gold identical. Onlyextraobserver moves toposedge+1ps; originalpublicmiter andallRTL unchanged. Sixaffectedmiter predicates rerunPASS. 34historicalexecutions(33PASS/1FAIL) resolve28selectedIDs/27semanticpredicates. TwoMAX4118profiles excluded; no arbitraryhiddenstate/fourstate/formal, mappednative or physicalacceptance.",
+  "metadata_correction": {
+    "original": {
+      "path": "hw/soc/out/pcie-integrity-v13-20261005/pcie-integrity-v13-core-controls-validation-20261005.json",
+      "bytes": 1674,
+      "sha256": "28fbc032376cf054bb0cbbe00ff57f7847ba739a71aa5414556a1a7a3b3be793"
+    },
+    "changed_fields": [
+      "scope"
+    ],
+    "reason": "The first sealmethod inherited a V12 narrative despite correct V13 source pins, captures, counts and witnesses. Original receipt is immutable and native-map input-bound; this additive receipt corrects only its descriptive scope. No evidence, source, threshold or numerical result changes."
+  }
+}

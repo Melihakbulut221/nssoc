@@ -1,0 +1,46 @@
+{
+  "status": "MEASURED_PATH_MOTIVATES_QUARANTINED_SLOT_WRITER",
+  "prior_path": {
+    "path": "hw/soc/out/pcie-integrity-v11-20261005/critical-path-attribution.json",
+    "bytes": 42756,
+    "sha256": "e0756530988df9c4154aafbc750145cda034aacc508c7a915f70449ec3c4f193"
+  },
+  "prior_endpoint_q_wire": "framer.verdict_cache[21].resident_verdict",
+  "prior_arrival_ns": 7.353052,
+  "prior_cell_families": {
+    "launch_ff": {
+      "count": 1,
+      "delay_ns": 0.236463
+    },
+    "buffer": {
+      "count": 19,
+      "delay_ns": 3.0632089999999996
+    },
+    "xor_xnor": {
+      "count": 1,
+      "delay_ns": 0.182556
+    },
+    "other_boolean": {
+      "count": 19,
+      "delay_ns": 2.5493150000000004
+    },
+    "mux": {
+      "count": 7,
+      "delay_ns": 1.32151
+    }
+  },
+  "source_freeze": {
+    "bytes": 1939,
+    "sha256": "8d6b34668903941f766510f09690736dbaa26bc52320fa084cdf4d399efe10df"
+  },
+  "change": "All slot data/metadata/tag, tag verdict and resident verdict cache updates use original step, while original public fault/abort/reset/flush priorities, pointers, active/output validity, commit, packet events and retirement are byte-preserved by literal inverse.",
+  "quarantine_argument": [
+    "Before a fault sampling edge no stored state differs, so current public combinational masking and retirement inputs match.",
+    "A fault edge may write new slot contents in V12; the unchanged control aborts and clears occupied/committed pointers and public output validity at that same edge.",
+    "Following a new epoch, every occupied slot is overwritten with candidate/reference-identical data and metadata before possible commit.",
+    "Stale per-tag verdict or cache bits can differ for uncommitted/invalid slots; every packet completion assigns its current tag verdict and broadcasts to initialized matching slots before public retirement. The full miter checks only committed cache verdict and all occupied data/metadata.",
+    "Tag generation, extended ring-span reuse rules, last-writer ordering and CRC/nullification/event policy are unchanged."
+  ],
+  "evidence_limits": "Finite initialized binary literal algebra plus default-profile full top-level cycle miter and fault controls. This is not exhaustive arbitrary hidden-state/four-state proof or full4118 profile; native timing must be measured independently.",
+  "acceptance": false
+}

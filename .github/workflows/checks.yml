@@ -162,7 +162,12 @@ jobs:
           # imports yaml, and its absence is why the licence job failed
           # eight times on 09-08 and 09-09 with ModuleNotFoundError. Not
           # a billing failure -- a real one, in this file.
-          python3 -m pip install --disable-pip-version-check -r sw/requirements.txt
+          # The whole pytest suite also executes cocotb benches. Without its
+          # pinned runtime, their fallback Makefile cannot find cocotb-config
+          # and repeatedly re-enters make instead of reaching a simulator.
+          python3 -m pip install --disable-pip-version-check -r sw/requirements.txt -r hw/requirements.txt
+          python3 -c 'import cocotb; assert cocotb.__version__ == "2.0.1"'
+          command -v cocotb-config
           sudo apt-get update -qq
           # texlive-science carries siunitx; texlive-latex-extra does not.
           # lmodern.sty is in `lmodern`, which texlive-base only Recommends

@@ -1,0 +1,45 @@
+{
+  "files": {
+    "scripts/generate_pcie_integrity_read_v14.py": {
+      "bytes": 2153,
+      "sha256": "122858e3c7e1870b3d47eb2322e2c1f2f1d1c5b9c0f8ca5037305595a815338d"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v14.py": {
+      "bytes": 11276,
+      "sha256": "6477465e15d1928d3a120aeb5b32703e921e6eb652376d524a3168525ed1f67a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v14.v": {
+      "bytes": 191363,
+      "sha256": "deaab5503ebbecc3c3caa9c8e007dffadbe7867dc121fbca46b34f8c89db1614"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v14.v": {
+      "bytes": 3324,
+      "sha256": "14ee83813166f6104b4805d8f33072130d192ca55acafb1494f97bf97c02ced3"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v14": {
+      "bytes": 1528,
+      "sha256": "0e26f4a363696e11c66cd0d807684b7fee16ebab8d13b9a648e5e99d4a8164ac"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v14.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v14_read.py": {
+      "bytes": 6278,
+      "sha256": "76bbd348fb6c80db4c19a02b07856dc266879588deadf9a34fbba17b2dbd1ead"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v14_miter.py": {
+      "bytes": 9758,
+      "sha256": "738ccd423a3dc66fa63ac352131a4216553a9ae6d59503ab0bc7c808dde48485"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v14.py": {
+      "bytes": 4805,
+      "sha256": "77b42dc3c0711cdcdf56573683c3c880ef857db933bc6d780dc84d41bbd71243"
+    }
+  },
+  "baseline": {
+    "bytes": 190744,
+    "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+  },
+  "scope": "Only literal dynamic ringread replaced by parallel constant-slot ifmask+ORselection directlyfromV11. All V11writes,clockenables,control,retirement,capacity,fault,commit,arraysandresetpreserved byte-for-bytebyinverse. Proceduralif retains unknown-conditionnot-true masking; fourstate localread experiment explicit, no fullfourstate sequentialproof."
+}

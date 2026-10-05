@@ -1,0 +1,50 @@
+{
+  "files": {
+    "scripts/generate_pcie_integrity_slots_v13.py": {
+      "bytes": 1778,
+      "sha256": "00d1c28096e6622eee0c2b8a45d1175b19e84b7c7e33e72d57509514f509a7c2"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v13.py": {
+      "bytes": 11276,
+      "sha256": "b46d6f08271da6e7a4140efee00b96ff68296e2f2c7d92589291aac2aa10232f"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v13.v": {
+      "bytes": 191775,
+      "sha256": "2455768dd947a45f033f061c4bf5216663cca438b9a877e332e700cae55a9b88"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v13.v": {
+      "bytes": 3324,
+      "sha256": "8448c018f6f069fe5ff48abd7e274366a26f9975a94cecd6ff5c6fb4c5c75a57"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v13": {
+      "bytes": 1528,
+      "sha256": "e483da3a518001fb405ed0e5767313f808c447e967fcb6b4cc7c9c79c25e74ac"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v13.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v13_slots.py": {
+      "bytes": 8202,
+      "sha256": "d0c92c653135425bd52c9108e07a72147df873ce744edfea34b23664b5dd8906"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v13_miter.py": {
+      "bytes": 11961,
+      "sha256": "cc6279f53930fdda5ad5a57226c1d7c187552934b053069a6f5454c6e84be925"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v13.py": {
+      "bytes": 4805,
+      "sha256": "7e7b1196f92d6a7efbd794636e2b992e6b984321dcdd1a2a758ce6e941367302"
+    }
+  },
+  "frozen_parent": {
+    "bytes": 191605,
+    "sha256": "eb9eeb7123be347808239a6614ea9efe59ed342fe18fd96b5984a073aa76db09"
+  },
+  "baseline": {
+    "bytes": 190744,
+    "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+  },
+  "scope": "Only slot-content/cache enable bypasses capacity-aborting oldstep; exact predicate content_step=oldstep OR ring_overflow_now. All original overflow/fault/validity/commit/public controls unchanged. Full V11baseline cycle miter with realoverflow and pendingdrain witnesses.",
+  "observer_correction": "The onlysourcechange sincecontrols01 is extra overflowwitness sampling on posedge+1ps ratherthan nextnegedge aftertheexternaldriver asserts start; gate/reference publicstates were byteequal in diagnostic, start=1maskedoverflow_o. Original1FAIL27PASS retained. No RTLchange, original publicnegedge miter unchanged."
+}

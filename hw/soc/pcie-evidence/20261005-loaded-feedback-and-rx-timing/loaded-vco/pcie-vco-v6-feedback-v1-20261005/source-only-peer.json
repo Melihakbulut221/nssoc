@@ -1,0 +1,90 @@
+{
+  "status": "PASS_SOURCE_ONLY_ACTUAL_LOADED_VCO_V6_FEEDBACK_COMPOSITION",
+  "utc": "2026-10-05T12:44:40.663070+00:00",
+  "reviewer": "rx_route_resume",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_v1.py": {
+      "bytes": 20439,
+      "sha256": "0658aa499361c2eba01b3af7671cdb1b2e97da7f64e41d7afe72b4fd659a841a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v1.spice": {
+      "bytes": 651,
+      "sha256": "31543ff47012caaa280ae91f3187aa59ce79a9cccd21a238659ff505ded31c8a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_vco_v6_feedback_v1.py": {
+      "bytes": 3998,
+      "sha256": "8fb2c82b6a891674328914d8c904cccf1df265775a63addac83abf2f59bcf92f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-v1-20261005/source-freeze-with-tests.json": {
+      "bytes": 481,
+      "sha256": "adde0ca5efbfa3ed5120195c0b7073b3de7d7e1aebde1d694f463be8151a6d72"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-v1-20261005/controls01.log": {
+      "bytes": 99,
+      "sha256": "15cf8dc66094a6b6dd021e65c23c24364e564496aa11875d75158a547a4abe52"
+    },
+    "/dev/shm/nssoc-vco-v4-mim-v6-local-v1-hybrid-01/hybrid-open.spice": {
+      "bytes": 71443,
+      "sha256": "37673a8cba095790d53b477db96cda8c782e94166a52b3998c92203d7649805b"
+    },
+    "/dev/shm/nssoc-vco-v4-mim-v6-local-v1-hybrid-01/composition.json": {
+      "bytes": 77538,
+      "sha256": "619ac16d7bb31a5a25b594c768bb551b232439d736745697b79923beb8811ff1"
+    },
+    "/dev/shm/nssoc-vco-v6-feedback-v1-06-01/result.json": {
+      "bytes": 390003,
+      "sha256": "f9123eec02cda1bc638e91c2fffe08e9d78bb79945e2b0c6c4abc550e72d0edc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_v1.py": {
+      "bytes": 9578,
+      "sha256": "f2e8fe57309ee15bb73dffc4954720b635842db333f8df81799ddb29e45f0737"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_stream_v2.py": {
+      "bytes": 6213,
+      "sha256": "79de51fcd210e1141b187a3fc83546e9933b5d5c6c36a9d0bc85aa6a69d2da9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_vco_v6_powered_v1.py": {
+      "bytes": 28822,
+      "sha256": "bddafbf3a3ae9beaa9bbb4e212675bf4496e2b73220b2c08b00c88299622c87b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/pcie_pll_native_fixture_v1.py": {
+      "bytes": 14757,
+      "sha256": "ba483cc0a740db3c774225ef2c42cb0a41cf56311050512217ec588ab2172223"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_stream_v1.py": {
+      "bytes": 30105,
+      "sha256": "b0a92554452c3334ba14f44f7c743cd29aee02d5f5fd3f8625cd6386b5afec6d"
+    }
+  },
+  "counts": {
+    "physical_VCO_records": 62,
+    "unchanged_HBT_div4_records": 73,
+    "unchanged_CMOS_feedback_records": 302,
+    "total_records": 437,
+    "HBT_OFF_records": 64,
+    "noncontact_device_screens": 424,
+    "contact_voltage_screens": 13,
+    "wire_resistors": 889,
+    "wire_capacitors": 765,
+    "declared_vectors_excluding_time": 785
+  },
+  "checks": {
+    "physical_records_parameters_terminals_exact_composition": true,
+    "unchanged375_divider_receiver_native_graph": true,
+    "complete_VCO_wire_text_byte_identity": true,
+    "no_behavioral_or_ideal_clock_source_in_any_included_circuit": true,
+    "public_pair_load_50fF_each_plus_real_divider_input": true,
+    "all437_distinct_device_screens_preserved": true,
+    "native64_OFF_zero_OP_and_clean_diagnostics_required": true,
+    "actual_model_inventory_ng47_OSDI_and_method_pins_required": true,
+    "all_native_samples_losslessly_preserved_and_full_gzip_readback_required": true,
+    "same34ns5ps_and4ns_settled_window": true,
+    "no_PVT_jitter_PLL_lock_or_qualified_divider_RC_claim": true
+  },
+  "findings": [],
+  "prior_controls_observed": "12 passed; not rerun by reviewer",
+  "positive_native_result_status_observed": "PASS_NATIVE_LOADED_FEEDBACK_SCREEN",
+  "native_waveform_independently_replayed_by_this_peer": false,
+  "new_native_jobs_by_this_peer": false,
+  "scope": "Source-only structural expansion and exact composition comparison, not native electrical validation. Reviewed frozen424 screens plus13 finite contact-voltage screens; contact current is descriptive/unqualified. Body/substrate and wire reference remain explicit ideal external boundaries. Full raw electrical replay and actual fault campaigns are separate evidence."
+}
