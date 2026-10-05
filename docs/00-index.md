@@ -30,6 +30,8 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/129-pcie-loaded-feedback-and-rx-timing.md](129-pcie-loaded-feedback-and-rx-timing.md) records real VCO divider loading, measured resistor headroom improvements, retained fault failures, completed RX11 routing and rejected parser timing candidates.
 
 [docs/130-pcie-feedback-margin-and-durable-capture.md](130-pcie-feedback-margin-and-durable-capture.md) records the corrected finite divider headroom screen, independent loaded-waveform checks and durable publication of resumed native work.
+
+[docs/131-pcie-divider-layout-and-tx-repair.md](131-pcie-divider-layout-and-tx-repair.md) records the standalone divider's native DRC/LVS and fault checks, and completed TX02 routing with positive nominal hold/recovery but a remaining setup miss.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

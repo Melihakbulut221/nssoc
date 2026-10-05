@@ -1,0 +1,128 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7",
+  "reviewer": "/root/rx_route_resume",
+  "utc": "2026-10-05T16:37:09.043968+00:00",
+  "findings": [],
+  "source_pins": {
+    "hw/soc/flow/make_pcie_clock_div4_v7.py": {
+      "bytes": 23622,
+      "sha256": "4d50f15cc7b0420eaca27e0ef1206dc12063dbf83284a554db96106583fc250c"
+    },
+    "hw/soc/flow/check_pcie_clock_div4_v7.py": {
+      "bytes": 28382,
+      "sha256": "de77ff10b62bcac6e6760ec5b69838d48fc00fc9da0796b55fd3cfd3c1e87e3d"
+    },
+    "sw/tests/test_pcie_clock_div4_v7_layout.py": {
+      "bytes": 14196,
+      "sha256": "ee36e284a1e6a4a157edf23732f8e7950303b77604dbaace8c1e08e47608a887"
+    }
+  },
+  "launcher": {
+    "bytes": 3666,
+    "sha256": "73ff0e03095722bf5281424d8bae3f6dc0d2d61ada1e6b97d5277fa18e069b87"
+  },
+  "source_freeze": {
+    "bytes": 464,
+    "sha256": "189b38be2483c7a4c8aca9977a35ecc51774d7c08f2e2b8c63827f4cdd03862c"
+  },
+  "source_bridge": {
+    "bytes": 141476,
+    "sha256": "c606478bcdf566a42a5cfa88fe37f2cde8a550f74cf59c4e5012491da5e3bbf3"
+  },
+  "predeclared_contract": {
+    "bytes": 32112,
+    "sha256": "3845823326b7d2d5f9ef1f49cc67a0ce50ebebfa74642f32c50386325b7f061f"
+  },
+  "previous_circuit_peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-layout-20261005/source-only-peer01-circuit-and-findings.json",
+    "bytes": 3956,
+    "sha256": "17a501b5daf50ab99be46e13ae7ead8f83422ef9005b591b601e26a78c0a7d54"
+  },
+  "method": {
+    "bytes": 7370,
+    "sha256": "e58b889f7daec5244dcc8347bb941256bad2e5ef3309f2fa7a35f4a3f8d4ed22"
+  },
+  "saved_control_evidence": {
+    "log": {
+      "bytes": 99,
+      "sha256": "a46d7111b6b192f796784e6e4bd8dfbc2040411c2f79c0ef2da2b6bc931b8fc0"
+    },
+    "pytest_controls": 42,
+    "raw_manifest": {
+      "bytes": 5606,
+      "sha256": "5812067e6b3fcfbc469bc76f7faba7e8addbed1a4a228c48ce1f854a5de80840"
+    },
+    "files": 29,
+    "bytes": 2120479,
+    "all_copied_members_rehashed": true,
+    "owner_records": {
+      "test_actual_completion_boundar0/complete.owned.json": {
+        "status": "CANCELLED",
+        "reason": "Parent received SIGTERM",
+        "child_statuses": [
+          "REAPED_NO_LIVE_MEMBERS"
+        ]
+      },
+      "test_actual_completion_boundar1/teardown.owned.json": {
+        "status": "HEALTHY",
+        "reason": null,
+        "child_statuses": [
+          "REAPED_NO_LIVE_MEMBERS"
+        ]
+      },
+      "test_actual_fast_exiting_file_0/fast-producer.owned.json": {
+        "status": "CANCELLED",
+        "reason": "80MiB own scratch ceiling",
+        "child_statuses": [
+          "REAPED_NO_LIVE_MEMBERS"
+        ]
+      },
+      "test_owned_execute_has_no_heal0/healthy.owned.json": {
+        "status": "HEALTHY",
+        "reason": null,
+        "child_statuses": [
+          "REAPED_NO_LIVE_MEMBERS"
+        ]
+      },
+      "test_real_explicit_cancellatio0/cancel.owned.json": {
+        "status": "CANCELLED",
+        "reason": "Parent received SIGTERM",
+        "child_statuses": [
+          "FAILURE_REAPED"
+        ]
+      },
+      "test_real_resource_failure_rea0/resource.owned.json": {
+        "status": "CANCELLED",
+        "reason": "80MiB own scratch ceiling",
+        "child_statuses": [
+          "FAILURE_REAPED"
+        ]
+      }
+    }
+  },
+  "resolved_findings": [
+    {
+      "id": "terminal_signal_loss",
+      "resolution": "Owner checked immediately after complete and again after restored context; real complete-boundary and teardown-boundary SIGTERM tests now expect raised cancellation. Old failing source/receipt preserved.",
+      "raw_limitation": "Teardown control injects SIGTERM after final healthy owner save, so the inner JSON correctly remains the preceding HEALTHY snapshot. The actual enclosing pytest exception assertion is the terminal outcome; source and full42-pass log bind it."
+    },
+    {
+      "id": "terminal_resource_guard",
+      "resolution": "Same shared and own resource guards run both after native complete and after owner context. Actual child writes2MiB then exits against1MiB harness cap and is rejected; production80MiB ceiling and512MiB floor unchanged."
+    }
+  ],
+  "checks": [
+    "Rehashed all final03 product sources. Reconstructed full v6/v7 before/after bytes from source bridge and checked current file hashes and valid syntax.",
+    "Entire prior reviewed graph/placement/ports/reference/census/native sequence/lifecycle contract unchanged. Exact73-device independent schematic expansion and18realptaps evidence remains valid because maker and all4schematic files are unchanged. Native74-device normalized census is a future fail-closed check, not an accepted physical result.",
+    "Whole checker AST apart from execute/guard and restored check_pcie_rx_cell.py input pin equals originally reviewed checker. Entire old test prefix preserved; only3 actual boundary controls appended. All29 saved control files freshly hashed.",
+    "CPU10,2GiB nativeAS,1GiB entry,512MiB live floor,80MiB scratch+24MiB launch reserve unchanged; no healthy elapsed timeout; lifecycle uses exact4 definitions from frozenProcessOwner. All native stages including generation receive owned groups.",
+    "Full launcher read: immutable input manifest rehash, exact peer status/no findings/productpin/selfpin gate, fresh direct /dev/shm roots, CPU10+1GiB, exclusive fsynced SSD PID/start/group checkpoint, samePID exec into checker, token/Python injection environment removed. No separate unmanaged supervisor.",
+    "Strict560main-rule DRC, independent deep/flat transistor LVS and8reference+6physical faults plus offgrid and LEF negatives remain required; all graph and geometry preconditions preserved. Restored indirect-import pin protects check_pcie_rx_cell source bytes."
+  ],
+  "launcher_manifest_scope": "Final launch manifest is intentionally constructed after this receipt to bind its exact bytes; launcher rehashes every declared input before exec. This source review neither constructs nor executes that manifest. Actual identity and runtime/input census must be retained at launch.",
+  "native_eda_executed": false,
+  "tests_rerun": false,
+  "physical_acceptance": false,
+  "qualified_pex": false,
+  "scope": "Independent source and saved control evidence review only. No native generation/DRC/LVS/LEF claim, no extracted division, qualified PEX, PLL/chip integration or manufacturing approval. Earlier rejected candidate and failed evidence remain unchanged."
+}
