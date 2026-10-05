@@ -1,0 +1,149 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-continuation01/run.py",
+    "bytes": 10975,
+    "sha256": "dd538b3d88e5e82695848e85479a4f70650abf25af7798d60747326e2a6aba06"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-continuation01/run.py",
+    "bytes": 11535,
+    "sha256": "86943cdab7f5be4e3731150b87c865d13ca16b532474ad1db6bbf0f74b1a2cc0"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Observe an existing owned route; run exact dependent stages once, no timeout.\"\"\"\nimport ast\nimport datetime\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport threading\nimport time\n\nROOT = Path('/home/hasanmelih/Documents/ChatGPT/nnsoc')\nB = ROOT / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nHERE = Path(__file__).resolve().parent\nMANIFEST = HERE / 'manifest.json'\n",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Observe an existing owned route; run exact dependent stages once, no timeout.\"\"\"\nimport ast\nimport datetime\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport threading\nimport time\n\nROOT = Path('/home/hasanmelih/Documents/ChatGPT/nnsoc')\nB = ROOT / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nHERE = Path(__file__).resolve().parent\nMANIFEST = HERE / 'manifest.json'\n"
+    },
+    {
+      "tag": "replace",
+      "before": "DRT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair12-drt-01')\nRC = Path('/dev/shm/nssoc-rx-prefetch-v2-repair12-detailed-rc-01')\nPEER = B / 'repair12-peer'\n",
+      "after": "DRT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair13-drt-01')\nRC = Path('/dev/shm/nssoc-rx-prefetch-v2-repair13-detailed-rc-01')\nPEER = B / 'repair13-peer'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "FLOOR = 528 * 1024**2\n\n\ndef pin(path):\n    path = Path(path)\n    with path.open('rb') as stream:\n        return {'bytes': path.stat().st_size,\n                'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef require(value, reason):\n    if not value:\n        raise ValueError(reason)\n\n\ndef atomic(path, record):\n    path = Path(path)\n    temporary = path.with_name(path.name + '.tmp')\n    with temporary.open('w') as out:\n        json.dump(record, out, indent=2)\n        out.write('\\n')\n        out.flush()\n        os.fsync(out.fileno())\n    os.replace(temporary, path)\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    os.sched_setaffinity(0, {8})\n\n\ndef read_live_result():\n    # Original DRT producer writes this receipt directly. A concurrent partial\n    # JSON write is retried while its exact owner identity still exists.\n    try:\n        return json.loads((DRT / 'result.json').read_text())\n    except json.JSONDecodeError:\n        return None\n\n\ndef main():\n    require(not (HERE / 'result.json').exists(), 'Fresh controller receipt')\n    manifest = json.loads(MANIFEST.read_text())\n    require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n            'Exact frozen continuation inputs')\n    require(sorted(os.sched_getaffinity(0)) == [8], 'Controller CPU8')\n",
+      "after": "FLOOR = 528 * 1024**2\n\n\ndef pin(path):\n    path = Path(path)\n    with path.open('rb') as stream:\n        return {'bytes': path.stat().st_size,\n                'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef require(value, reason):\n    if not value:\n        raise ValueError(reason)\n\n\ndef atomic(path, record):\n    path = Path(path)\n    temporary = path.with_name(path.name + '.tmp')\n    with temporary.open('w') as out:\n        json.dump(record, out, indent=2)\n        out.write('\\n')\n        out.flush()\n        os.fsync(out.fileno())\n    os.replace(temporary, path)\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    os.sched_setaffinity(0, {8})\n\n\ndef read_live_result():\n    # Original DRT producer writes this receipt directly. A concurrent partial\n    # JSON write is retried while its exact owner identity still exists.\n    try:\n        return json.loads((DRT / 'result.json').read_text())\n    except json.JSONDecodeError:\n        return None\n\n\ndef main():\n    require(not (HERE / 'result.json').exists(), 'Fresh controller receipt')\n    manifest = json.loads(MANIFEST.read_text())\n    require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n            'Exact frozen continuation inputs')\n    require(sorted(os.sched_getaffinity(0)) == [8], 'Controller CPU8')\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "    require(Path('/proc/sys/kernel/random/boot_id').read_text().strip() == manifest['boot_id'], 'Same recorded boot identity')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "    # Reuse only the exact previously tested lifecycle class/helpers. The outer\n    # failure grace is 15s so the RC wrapper can finish its own 5s group cleanup.\n    life_path = Path(manifest['lifecycle_source'])\n    tree = ast.parse(life_path.read_text())\n    names = {'Cancelled', 'process_identity', 'group_members', 'ProcessOwner'}\n    selected = [node for node in tree.body\n                if isinstance(node, (ast.FunctionDef, ast.ClassDef))\n                and node.name in names]\n    require(len(selected) == 4, 'Exact lifecycle definitions')\n    namespace = dict(os=os, Path=Path, threading=threading, signal=signal,\n                     subprocess=subprocess, time=time, atomic=atomic,\n                     require=require, FAILURE_GRACE_SECONDS=15.0)\n    exec(compile(ast.Module(body=selected, type_ignores=[]), str(life_path), 'exec'),\n         namespace)\n    identity = namespace['process_identity']\n",
+      "after": "    # Reuse only the exact previously tested lifecycle class/helpers. The outer\n    # failure grace is 15s so the RC wrapper can finish its own 5s group cleanup.\n    life_path = Path(manifest['lifecycle_source'])\n    tree = ast.parse(life_path.read_text())\n    names = {'Cancelled', 'process_identity', 'group_members', 'ProcessOwner'}\n    selected = [node for node in tree.body\n                if isinstance(node, (ast.FunctionDef, ast.ClassDef))\n                and node.name in names]\n    require(len(selected) == 4, 'Exact lifecycle definitions')\n    namespace = dict(os=os, Path=Path, threading=threading, signal=signal,\n                     subprocess=subprocess, time=time, atomic=atomic,\n                     require=require, FAILURE_GRACE_SECONDS=15.0)\n    exec(compile(ast.Module(body=selected, type_ignores=[]), str(life_path), 'exec'),\n         namespace)\n    identity = namespace['process_identity']\n"
+    },
+    {
+      "tag": "replace",
+      "before": "    record = dict(status='WAITING_EXISTING_EXACT_RX12_DRT02',\n",
+      "after": "    record = dict(status='WAITING_EXISTING_EXACT_RX13_DRT01',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                  utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),\n                  controller_identity=identity(os.getpid()),\n                  manifest=pin(MANIFEST), inputs=manifest['inputs'], stages=[],\n                  original_DRT_owned_by_this_controller=False,\n                  elapsed_watchdog_seconds=None, qualified_rc=False,\n                  physical_acceptance=False)\n\n    def save():\n        atomic(HERE / 'result.json', record)\n\n    def sources_unchanged():\n        require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n                'Continuation source or runtime drift')\n\n    save()\n    with namespace['ProcessOwner'](HERE / 'owned-processes.json') as owner:\n        try:\n            missing_since = None\n            while True:\n                owner.check()\n                current = read_live_result()\n                if current:\n                    require(current['pid'] == manifest['route_native']['pid'],\n                            'Same native route PID in receipt')\n                observed = identity(manifest['route_owner']['pid'])\n                exact_owner = (observed is not None\n                               and str(observed['start_ticks'])\n                               == str(manifest['route_owner']['start_ticks'])\n                               and observed['state'] != 'Z')\n                if current and current['status'] != 'RUNNING':\n                    break\n                native = identity(manifest['route_native']['pid'])\n                if native is not None:\n                    require(str(native['start_ticks']) ==\n                            str(manifest['route_native']['start_ticks']),\n                            'Native route PID has not been reused')\n                if not exact_owner:\n                    if missing_since is None:\n                        missing_since = time.monotonic()\n                    # A dead/reused owner is failure; this is never an elapsed\n                    # limit on a healthy route and sends no signal to old PIDs.\n                    require(time.monotonic() - missing_since < 10,\n                            'Route owner gone without terminal result')\n                else:\n                    missing_since = None\n                owner.cancelled.wait(2)\n            require(current['status'] ==\n",
+      "after": "                  utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),\n                  controller_identity=identity(os.getpid()),\n                  manifest=pin(MANIFEST), inputs=manifest['inputs'], stages=[],\n                  original_DRT_owned_by_this_controller=False,\n                  elapsed_watchdog_seconds=None, qualified_rc=False,\n                  physical_acceptance=False)\n\n    def save():\n        atomic(HERE / 'result.json', record)\n\n    def sources_unchanged():\n        require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n                'Continuation source or runtime drift')\n\n    save()\n    with namespace['ProcessOwner'](HERE / 'owned-processes.json') as owner:\n        try:\n            missing_since = None\n            while True:\n                owner.check()\n                current = read_live_result()\n                if current:\n                    require(current['pid'] == manifest['route_native']['pid'],\n                            'Same native route PID in receipt')\n                observed = identity(manifest['route_owner']['pid'])\n                exact_owner = (observed is not None\n                               and str(observed['start_ticks'])\n                               == str(manifest['route_owner']['start_ticks'])\n                               and observed['state'] != 'Z')\n                if current and current['status'] != 'RUNNING':\n                    break\n                native = identity(manifest['route_native']['pid'])\n                if native is not None:\n                    require(str(native['start_ticks']) ==\n                            str(manifest['route_native']['start_ticks']),\n                            'Native route PID has not been reused')\n                if not exact_owner:\n                    if missing_since is None:\n                        missing_since = time.monotonic()\n                    # A dead/reused owner is failure; this is never an elapsed\n                    # limit on a healthy route and sends no signal to old PIDs.\n                    require(time.monotonic() - missing_since < 10,\n                            'Route owner gone without terminal result')\n                else:\n                    missing_since = None\n                owner.cancelled.wait(2)\n            require(current['status'] ==\n"
+    },
+    {
+      "tag": "replace",
+      "before": "                    'COMPLETE_RX12_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n",
+      "after": "                    'COMPLETE_RX13_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                    and current['returncode'] == 0, 'Successful exact DRT required')\n            require(current['inputs'] == manifest['route_inputs'], 'Same route inputs')\n            require(current['inputs'] == {p: pin(p) for p in current['inputs']},\n                    'All route inputs unchanged')\n            require(current['outputs'] == {n: pin(DRT / n) for n in current['outputs']},\n                    'All route outputs unchanged')\n            require((DRT / 'router-drc.rpt').stat().st_size == 0, 'Zero router DRC')\n            require((DRT / 'routed.v').read_bytes() ==\n                    Path(manifest['candidate_netlist']).read_bytes(), 'Same proved netlist')\n            record['route_terminal'] = pin(DRT / 'result.json')\n            save()\n\n            def run_stage(name, command, log, kind='native'):\n                sources_unchanged()\n                require(shutil.disk_usage('/dev/shm').free >= 1024**3,\n                        '1GiB entry scratch floor')\n                record['status'] = 'RUNNING_' + name\n                stage = dict(name=name, command=command, log=str(log),\n                             source_pins_before=manifest['inputs'])\n                record['stages'].append(stage)\n                save()\n                with log.open('x') as output:\n                    process = owner.launch(kind, command, cwd=ROOT,\n                                           stdout=output, stderr=subprocess.STDOUT,\n                                           preexec_fn=limits)\n                    stage['identity'] = identity(process.pid)\n                    save()\n                    while process.poll() is None:\n                        owner.check()\n                        require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                                '528MiB continuous scratch floor')\n                        owner.cancelled.wait(.5)\n                    stage['returncode'] = owner.complete(process)\n",
+      "after": "                    and current['returncode'] == 0, 'Successful exact DRT required')\n            require(current['inputs'] == manifest['route_inputs'], 'Same route inputs')\n            require(current['inputs'] == {p: pin(p) for p in current['inputs']},\n                    'All route inputs unchanged')\n            require(current['outputs'] == {n: pin(DRT / n) for n in current['outputs']},\n                    'All route outputs unchanged')\n            require((DRT / 'router-drc.rpt').stat().st_size == 0, 'Zero router DRC')\n            require((DRT / 'routed.v').read_bytes() ==\n                    Path(manifest['candidate_netlist']).read_bytes(), 'Same proved netlist')\n            record['route_terminal'] = pin(DRT / 'result.json')\n            save()\n\n            def run_stage(name, command, log, kind='native'):\n                sources_unchanged()\n                require(shutil.disk_usage('/dev/shm').free >= 1024**3,\n                        '1GiB entry scratch floor')\n                record['status'] = 'RUNNING_' + name\n                stage = dict(name=name, command=command, log=str(log),\n                             source_pins_before=manifest['inputs'])\n                record['stages'].append(stage)\n                save()\n                with log.open('x') as output:\n                    process = owner.launch(kind, command, cwd=ROOT,\n                                           stdout=output, stderr=subprocess.STDOUT,\n                                           preexec_fn=limits)\n                    stage['identity'] = identity(process.pid)\n                    save()\n                    while process.poll() is None:\n                        owner.check()\n                        require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                                '528MiB continuous scratch floor')\n                        owner.cancelled.wait(.5)\n                    stage['returncode'] = owner.complete(process)\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "                    owner.check()\n                    require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                            '528MiB terminal scratch floor')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                stage['log_pin'] = pin(log)\n                sources_unchanged()\n                stage['source_pins_after'] = manifest['inputs']\n                save()\n                require(stage['returncode'] == 0, name + ' nonzero exit')\n\n            python = manifest['python']\n            require(not RC.exists(), 'Fresh exact RC output')\n",
+      "after": "                stage['log_pin'] = pin(log)\n                sources_unchanged()\n                stage['source_pins_after'] = manifest['inputs']\n                save()\n                require(stage['returncode'] == 0, name + ' nonzero exit')\n\n            python = manifest['python']\n            require(not RC.exists(), 'Fresh exact RC output')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            run_stage('RX12_NOMINAL_RC',\n                      [python, str(B / 'detailed_rc_repair12.py')],\n                      B / 'repair12-source/detailed-rc.log')\n",
+      "after": "            run_stage('RX13_NOMINAL_RC',\n                      [python, str(B / 'detailed_rc_repair13.py')],\n                      B / 'repair13-source/detailed-rc.log')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "            result = json.loads((RC / 'result.json').read_text())\n            require(result['status'] == 'COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED',\n                    'Actual complete RC required')\n            require(not (PEER / 'review.json').exists(), 'Fresh saved-output review')\n",
+      "after": "            result = json.loads((RC / 'result.json').read_text())\n            require(result['status'] == 'COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED',\n                    'Actual complete RC required')\n            require(not (PEER / 'review.json').exists(), 'Fresh saved-output review')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            run_stage('RX12_SAVED_OUTPUT_REVIEW', [python, str(PEER / 'review.py')],\n",
+      "after": "            run_stage('RX13_SAVED_OUTPUT_REVIEW', [python, str(PEER / 'review.py')],\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                      PEER / 'review.log')\n            require(not (PEER / 'package.json').exists(), 'Fresh full capsule')\n",
+      "after": "                      PEER / 'review.log')\n            require(not (PEER / 'package.json').exists(), 'Fresh full capsule')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            run_stage('RX12_COMPLETE_CAPTURE_SEAL', [python, str(PEER / 'seal.py')],\n",
+      "after": "            run_stage('RX13_COMPLETE_CAPTURE_SEAL', [python, str(PEER / 'seal.py')],\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                      PEER / 'seal.log')\n            package = json.loads((PEER / 'package.json').read_text())\n            require(package['status'] == 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK',\n                    'Complete archive/member readback')\n            archive = Path(package['archive']['path'])\n            require(pin(archive) == {k: package['archive'][k] for k in ('bytes', 'sha256')},\n                    'Sealed archive unchanged')\n",
+      "after": "                      PEER / 'seal.log')\n            package = json.loads((PEER / 'package.json').read_text())\n            require(package['status'] == 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK',\n                    'Complete archive/member readback')\n            archive = Path(package['archive']['path'])\n            require(pin(archive) == {k: package['archive'][k] for k in ('bytes', 'sha256')},\n                    'Sealed archive unchanged')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            binding = PEER / 'pcie-rx-repair12-continuation-binding-20261005.json'\n",
+      "after": "            binding = PEER / 'pcie-rx-repair13-continuation-binding-20261005.json'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "            require(not binding.exists(), 'Fresh immutable execution binding')\n            atomic(binding, dict(status='PASS_EXACT_DEPENDENT_STAGES_BEFORE_PUBLICATION',\n                                 controller=pin(Path(__file__)), manifest=manifest,\n                                 stages=record['stages'],\n                                 route_terminal=record['route_terminal'],\n                                 extraction=pin(RC / 'result.json'),\n                                 review=pin(PEER / 'review.json'),\n                                 package=pin(PEER / 'package.json'),\n                                 full_package_manifest=package,\n                                 physical_acceptance=False, qualified_rc=False))\n",
+      "after": "            require(not binding.exists(), 'Fresh immutable execution binding')\n            atomic(binding, dict(status='PASS_EXACT_DEPENDENT_STAGES_BEFORE_PUBLICATION',\n                                 controller=pin(Path(__file__)), manifest=manifest,\n                                 stages=record['stages'],\n                                 route_terminal=record['route_terminal'],\n                                 extraction=pin(RC / 'result.json'),\n                                 review=pin(PEER / 'review.json'),\n                                 package=pin(PEER / 'package.json'),\n                                 full_package_manifest=package,\n                                 physical_acceptance=False, qualified_rc=False))\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            validation = PEER / 'pcie-rx-repair12-finite-physical-validation-20261005.json'\n",
+      "after": "            validation = PEER / 'pcie-rx-repair13-finite-physical-validation-20261005.json'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "            release = PEER / 'release.json'\n",
+      "after": "            release = PEER / 'release.json'\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            run_stage('RX12_PUBLIC_IMMUTABLE_PRESERVATION',\n",
+      "after": "            run_stage('RX13_PUBLIC_IMMUTABLE_PRESERVATION',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                      [python, str(ROOT / 'scripts/publish_pcie_native_capture_v3.py'),\n                       '--out', str(release), str(archive), str(validation), str(binding)],\n                      PEER / 'publication.log', kind='publisher')\n            public = json.loads(release.read_text())\n            require(public['status'] == 'PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n                    and len(public['assets']) == 3, 'All three public assets verified')\n",
+      "after": "                      [python, str(ROOT / 'scripts/publish_pcie_native_capture_v3.py'),\n                       '--out', str(release), str(archive), str(validation), str(binding)],\n                      PEER / 'publication.log', kind='publisher')\n            public = json.loads(release.read_text())\n            require(public['status'] == 'PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n                    and len(public['assets']) == 3, 'All three public assets verified')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "            record.update(status='COMPLETE_RX12_FINITE_ROUTE_RC_REVIEW_PUBLICATION',\n",
+      "after": "            record.update(status='COMPLETE_RX13_FINITE_ROUTE_RC_REVIEW_PUBLICATION',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "                          native_timing=json.loads((PEER / 'review.json').read_text())\n                          ['nominal_rc_cell_corner_slack_ns'], release=pin(release))\n            save()\n        except BaseException as error:\n            record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n            save()\n            raise\n",
+      "after": "                          native_timing=json.loads((PEER / 'review.json').read_text())\n                          ['nominal_rc_cell_corner_slack_ns'], release=pin(release))\n            save()\n        except BaseException as error:\n            record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n            save()\n            raise\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "    # A stop delivered during final complete/save/context teardown must propagate.\n    try:\n        owner.check()\n    except BaseException as error:\n        record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n        save()\n        raise\n"
+    },
+    {
+      "tag": "equal",
+      "before": "    return 0\n\n\nif __name__ == '__main__':\n    raise SystemExit(main())\n",
+      "after": "    return 0\n\n\nif __name__ == '__main__':\n    raise SystemExit(main())\n"
+    }
+  ]
+}

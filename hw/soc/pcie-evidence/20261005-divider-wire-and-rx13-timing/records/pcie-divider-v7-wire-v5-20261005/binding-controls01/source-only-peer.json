@@ -1,0 +1,32 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7_BINDING_CONTROLS",
+  "findings": [],
+  "freeze": {
+    "bytes": 29472,
+    "sha256": "721a005163fa62676bca2a10cb3b8a87f563cbfbb577114ef03d676b4fe336d5"
+  },
+  "method": {
+    "bytes": 4017,
+    "sha256": "cf1fd575daffede273891eaec06eab40a9e3783371befa425190e1036eef04be"
+  },
+  "producer": {
+    "bytes": 8581,
+    "sha256": "3bd36f5a98fa36f9f9dd15e471d87082bb7da29f3de816731b7498c32c725625"
+  },
+  "inputs_rehashed": 122,
+  "geometry_execution": {
+    "bytes": 33980,
+    "sha256": "9abe7d5115bfaa6505c7dcaeddb017496f61abdbd504e664165dce3413deb3b3"
+  },
+  "geometry_output_count": 12,
+  "review": [
+    "Five copied-input runs only: exact positive, single CLKP reference reassignment, one physical resistor reference length, exactly one finite tap removal, and one native MIM area corruption.",
+    "No real design mutation or new extraction; test name reference_clock_swap is a one-terminal reference reassignment, not a simulated differential clock interchange.",
+    "Each binder copy changes only fixture G root and asserts byte-exact inverse. All source/device/net/parameter/location predicates remain exact production bytes.",
+    "Positive compares complete semantic output excluding provenance paths. Each negative requires returncode1, no output, actual traceback and its specific production assertion, preventing compiler/runtime errors from masquerading as rejection.",
+    "Exact already-reviewed seven lifecycle function ASTs privately cloned; unchanged CPU10,2GiB and scratch floors, completion/teardown guards.",
+    "All saved source pins and completed positive geometry outputs checked; actual five run results still pending."
+  ],
+  "reviewed_method_or_native_executed": false,
+  "scope": "Source-only harness peer; four faults exercise binding/reference checks, not actual electrical faults. No RC/timing/qualifiedPEX acceptance."
+}
