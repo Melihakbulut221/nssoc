@@ -6,8 +6,10 @@ import importlib.util
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
+import time
 
 import pytest
 
@@ -31,6 +33,45 @@ def test_invalid_results_are_rejected(tmp_path, xml):
     path.write_text(xml)
     with pytest.raises((ValueError, results.ET.ParseError)):
         results.count_results([path])
+
+
+def test_running_suite_diagnostic_survives_interruption(tmp_path):
+    scripts = tmp_path / 'scripts'
+    scripts.mkdir()
+    for name in ('run_cocotb.sh', 'cocotb_results.py'):
+        shutil.copy(ROOT / 'scripts' / name, scripts / name)
+    bench = tmp_path / 'hw/tb'
+    bench.mkdir(parents=True)
+    (bench / 'Makefile').write_text(
+        'all:\n\t@echo live-native-diagnostic\n\t@sleep 60\n'
+        'clean:\n\t@true\n')
+    process = subprocess.Popen(
+        ['bash', str(scripts / 'run_cocotb.sh')],
+        env={**os.environ, 'PY': sys.executable},
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True,
+    )
+    log = tmp_path / 'hw/soc/out/cocotb/tb.log'
+    try:
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            if log.exists() and 'live-native-diagnostic' in log.read_text():
+                break
+            time.sleep(.02)
+        assert process.poll() is None
+        assert log.exists() and 'live-native-diagnostic' in log.read_text()
+    finally:
+        os.killpg(process.pid, signal.SIGTERM)
+        try:
+            process.communicate(timeout=3)
+        finally:
+            # The isolated test owns this entire process group, including
+            # make's sleeper, even if the shell has already terminated.
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            process.wait(timeout=3)
+    assert 'live-native-diagnostic' in log.read_text()
 
 
 @pytest.mark.parametrize("mode,passed,failed,skipped,clean", [

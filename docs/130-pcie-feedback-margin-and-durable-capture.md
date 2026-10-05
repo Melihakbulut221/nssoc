@@ -113,3 +113,32 @@ open/short/wrong-device controls before any new wire-model claim.
 Full-chip setup/hold and qualified RC, full SERDES/CDR/PLL, training and
 controller policies, analog pads/ESD, SRAM/DFT obligations, main-chip
 integration and manufacturing acceptance remain open.
+
+## Follow-up: recover the complete CI run and retain interrupted diagnostics
+
+The actual hosted RTL job for commit `380cfc7` reached its 30-minute job
+deadline before completing the suite. Its retained log also exposed a separate
+default source-binding failure: the DLLP consumer V2 comparison Makefile names
+a nonexistent RTL observer. The observer is in the testbench directory and
+requires both compared consumer implementations.
+
+The shared runner now passes those three existing sources explicitly, matching
+the earlier native checker. The hash-pinned historical Makefile, observer and
+DUTs remain byte-identical. A fresh real Icarus/cocotb invocation through that
+runner passes **all nine comparison cases, with zero skipped cases**. The
+runner's separate memory-parity accounting entry is not a skipped DLLP case;
+the hosted memory-parity job passed independently.
+
+The runner also writes each active suite's output directly to its artifact
+log. A real subprocess interruption test proves that diagnostics already
+emitted survive cancellation. All **16 runner regression controls pass**.
+The two complete hosted jobs now allow 360 minutes; individual suite failure
+and timeout handling still rejects unsuccessful execution. This delivery does
+not claim that the next full hosted run has completed.
+
+The [validation receipt](../hw/soc/pcie-evidence/20261005-cocotb-runner-recovery/validation.json)
+records the exact source hashes, native case counts and limits. The
+[capture inventory](../hw/soc/pcie-evidence/20261005-cocotb-runner-recovery/inventory.json)
+retains the original cancelled log, both regression runs, complete native log
+and XML, and authenticated/anonymous publication readbacks. The compiled
+native capture is preserved in its immutable public capsule.

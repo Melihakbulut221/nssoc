@@ -82,12 +82,21 @@ run_one() {
     # it with COCOTB_RESULTS_FILE would leave an untracked file inside a
     # frozen directory, so the collector is told the name instead.
     local pattern="${4:-results_*.xml}"
+    local source_args=()
+    if [ "$name" = "soc_pcie_gen3_dllp_consumer_compare_v2" ]; then
+        # This historical Makefile is hash-pinned by the native V2 checker.
+        # Its default points at a nonexistent RTL file; the existing native
+        # driver supplies this same real observer and both compared sources.
+        # Keep the frozen Makefile and DUTs intact, and bind the ordinary
+        # suite invocation to all three actual sources as one make argument.
+        source_args=("VERILOG_SOURCES=$ROOT/hw/soc/tb/soc_pcie_gen3_dllp_consumer_compare_v2.v $ROOT/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v $ROOT/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v")
+    fi
     # Clean first. A .vvp left by the pinned oss-cad-suite Icarus (14.0) is
     # refused by a system iverilog (12.0) with "VVP input file 14.0 can not
     # be run with run time version 12.0", which presents as a build failure
     # of the current source rather than as stale output. Observed on
     # Makefile.soc_busstat.
-    (cd "$dir" && timeout 300 make -f "$mk" $EXTRA_MAKE_ARGS clean >/dev/null 2>&1)
+    (cd "$dir" && timeout 300 make -f "$mk" $EXTRA_MAKE_ARGS "${source_args[@]}" clean >/dev/null 2>&1)
     # The results file is NOT always results_<makefile-suffix>.xml: the
     # hw/tb suites set COCOTB_RESULTS_FILE to results_<module>_<TAG>.xml, so
     # guessing the name reports a passing suite as missing. Collect every
@@ -105,10 +114,10 @@ run_one() {
     marker=$(mktemp "$dir/.run_cocotb.XXXXXX")
     sleep 1
     touch "$marker"
-    local log
-    log=$(cd "$dir" && timeout 900 make -f "$mk" $EXTRA_MAKE_ARGS 2>&1)
+    # Stream directly to the artifact path: an interrupted job must retain
+    # the currently running suite's output, not only completed suites.
+    (cd "$dir" && timeout 900 make -f "$mk" $EXTRA_MAKE_ARGS "${source_args[@]}") > "$LOG_DIR/$name.log" 2>&1
     local rc=$?
-    printf '%s\n' "$log" > "$LOG_DIR/$name.log"
     # ALL XMLs written during this run, not the newest one: a parameterised
     # suite (TAG=...) writes several, and taking one made the total drift
     # between runs -- soc_gptimer once read 10, then 3 -- while "0 failed"
