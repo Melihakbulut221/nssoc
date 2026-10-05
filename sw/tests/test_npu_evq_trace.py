@@ -191,6 +191,54 @@ endmodule
         assert row['first_new_unknown']['signal']==width-1 and row['events']==2
 
 
+def test_reconvergent_native_callback_and_live_snapshot_are_distinct(tmp_path):
+    """A real buffer/XOR pulse reproduces the failed full-chip parser contract."""
+    compiler=shutil.which('iverilog');runtime=shutil.which('vvp')
+    assert compiler and runtime
+    monitor="""nssoc_npu_evq_event_trace #(.WIDTH(4),.START(2),.LAST(4)) obs(
+ .clk_i(clk),.cycle_i({32'b0,cycles}),.signals_i({y,b,a}));
+"""
+    source="""`timescale 1ns/1ps
+module tiny;
+reg clk=0;integer cycles=0;reg a=0;wire [1:0] b;wire y;
+assign b[0]=a;buf(b[1],b[0]);xor(y,a,b[1]);
+always #5 clk=~clk;always @(posedge clk)cycles=cycles+1;
+always @(negedge clk) #0.002 $display("SIGNATURE cycle=%0d y=%b b=%b a=%b",cycles,y,b,a);
+"""+monitor+"""initial begin #15.002;a=1;#10;a=0;#30;$finish;end
+endmodule
+"""
+    outputs={}
+    for name,text in [('observed',source),('baseline',source.replace(monitor,''))]:
+        path=tmp_path/(name+'.v');path.write_text(text)
+        cc=subprocess.run([compiler,'-g2005-sv','-s','tiny','-o',str(tmp_path/(name+'.vvp')),
+            str(path),str(ROOT/evq.MONITOR)],capture_output=True,text=True)
+        assert cc.returncode==0,cc.stderr
+        rr=subprocess.run([runtime,'-i',str(tmp_path/(name+'.vvp')),
+            '+npu_evq_dir='+str(tmp_path)],capture_output=True,text=True)
+        assert rr.returncode==0,rr.stdout+rr.stderr
+        outputs[name]=rr.stdout
+    assert re.findall(r'^SIGNATURE.*$',outputs['observed'],re.M)==re.findall(
+        r'^SIGNATURE.*$',outputs['baseline'],re.M)
+    row=evq.parse(outputs['observed'],tmp_path,2,4,4)
+    assert row['events']==10 and row['samples']==3
+    assert len(row['live_snapshot_disagreements'])==2
+    assert all(x['signal']==3 and x['callback_value']=='1' and x['live_value']=='0'
+        for x in row['live_snapshot_disagreements'])
+    assert not row['new_unknown_transitions']
+    # A delayed live vector must not license a broken scalar chain or a lost
+    # pulse. Corrupt actual native records, not a second implementation oracle.
+    path=tmp_path/'npu-evq-events.log';raw=path.read_text()
+    for original,replacement in [
+        ('signal=3 prior=0 value=1','signal=3 prior=1 value=1'),
+        ('signal=3 prior=1 value=0','signal=3 prior=0 value=1'),
+        ('cycle=2 realtime_ns=20.001 all=0111','cycle=2 realtime_ns=20.001 all=1111'),
+    ]:
+        assert original in raw
+        path.write_text(raw.replace(original,replacement,1))
+        with pytest.raises(ValueError):evq.parse(outputs['observed'],tmp_path,2,4,4)
+    path.write_text(raw)
+
+
 def test_workflow_preserves_history_hidden_source_and_original_boot_scope():
     text=(ROOT/'.github/workflows/timing-npu-evq-trace.yml').read_text()
     assert 'fetch-depth: 0' in text and text.count('include-hidden-files: true')==2

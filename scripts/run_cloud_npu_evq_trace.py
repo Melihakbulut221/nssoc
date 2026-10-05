@@ -206,7 +206,7 @@ def parse(log,directory,start=START,last=LAST,width=None,max_events=MAX_EVENTS):
     q.require((a,b,w)==(start,last,width) and 0<w<=MAX_SIGNALS and final>last and samples==last-start+1
               and 0<events<=max_events and total==events+samples+1,'Incomplete cone window')
     lines=(Path(directory)/'npu-evq-events.log').read_text().splitlines();q.require(len(lines)==total,'Incomplete cone records')
-    previous=None;event_count=0;sample_cycles=[];previous_time=-1;unknown=[];initial=None
+    previous=None;event_count=0;sample_cycles=[];previous_time=-1;unknown=[];initial=None;live_disagreements=[]
     for seq,line in enumerate(lines,1):
         m=re.fullmatch(r'(INIT|EV|S) seq=(\d+) cycle=(\d+) realtime_ns=(\d+\.\d{3})(?: signal=(\d+) prior=([01xz]) value=([01xz]))? all=([01xz]+)',line)
         q.require(m is not None and int(m[2])==seq and len(m[8])==width,'Invalid cone record')
@@ -221,12 +221,22 @@ def parse(log,directory,start=START,last=LAST,width=None,max_events=MAX_EVENTS):
         else:
             q.require(m[5] is not None and 0<=int(m[5])<width,'Invalid scalar index')
             index=int(m[5]);prior=m[6];value=m[7]
-            q.require(previous[index]==prior and prior!=value and m[8][-1-index]==value,'Invalid prior/new scalar transition')
+            q.require(previous[index]==prior and prior!=value,'Invalid prior/new scalar transition')
+            # The callback records watched[index], whereas `all` reads signals_i.
+            # The continuously assigned watched vector can lag a reconvergent
+            # live transition within the same simulator time. Preserve both
+            # observations; only the scalar chain reconstructs callback history.
+            # Every settled S snapshot must still match that complete history.
+            if m[8][-1-index]!=value:
+                live_disagreements.append(dict(sequence=seq,cycle=cycle,realtime_ns=m[4],
+                    signal=index,callback_value=value,live_value=m[8][-1-index]))
             previous[index]=value;event_count+=1
             if value in 'xz':unknown.append(dict(sequence=seq,cycle=cycle,realtime_ns=m[4],signal=index,prior=prior,value=value))
     q.require(event_count==events and sample_cycles==list(range(start,last+1)),'Missing event or sample coverage')
     return dict(start=start,last=last,width=width,events=events,samples=samples,sequence=total,final_cycle=final,
         initialization_cycle=start-1,event_cycle_bounds=[start-1,last],initial_static_unknowns=initial,new_unknown_transitions=unknown,first_new_unknown=unknown[0] if unknown else None,
+        live_snapshot_disagreements=live_disagreements,
+        scope='Complete recorded callback chain reconciled at every settled sample; live EV vectors are separate scheduler observations, not atomic callback snapshots or a simulator delta trace.',
         raw_event_file=q.pin(Path(directory)/'npu-evq-events.log'))
 
 def tiny_execute(command,root,label):

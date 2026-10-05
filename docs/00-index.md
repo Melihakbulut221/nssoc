@@ -35,6 +35,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/132-pcie-integrity-read-timing.md](132-pcie-integrity-read-timing.md) records V17's measured read-depth and preplacement gains, residual setup failures, and the preserved V15/V16 frontend attempts.
 [docs/133-pcie-balanced-commit-screen.md](133-pcie-balanced-commit-screen.md) records V18's corrected parser controls, measured setup regression and unchanged acceptance limits.
 [docs/134-pcie-divider-wire-and-rx13-timing.md](134-pcie-divider-wire-and-rx13-timing.md) records the divider's actual wire RC checks and RX13's improved but still failing routed setup timing.
+[docs/135-npu-write-frontier-trace.md](135-npu-write-frontier-trace.md) corrects the native EVQ callback parser and records the source-bound expanded NPU write-path diagnostic.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
