@@ -1,0 +1,48 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_AND_INTEGER_ORIGIN_REVIEW",
+  "reviewer": "tap_mask_next_step",
+  "sources": {
+    "scripts/generate_pcie_integrity_metadata_v6.py": {
+      "bytes": 4210,
+      "sha256": "f2ae6c7b024adedfb5d474d9a431b20266899acb26b4cf77d64ff75677475ddf"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v5.v": {
+      "bytes": 184627,
+      "sha256": "6e2f4c1afacc3cae31e1efb44fa9a98da711bd86acc4e51c61d73eea3eb9afe5"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v6.v": {
+      "bytes": 187384,
+      "sha256": "66d899c6ab3791342770396893d14b97466fefab52ab7def4c5363ec9b2ab794"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v5.v": {
+      "bytes": 3308,
+      "sha256": "82f348179d0ef5d13441c03196df782192ce3e8f60aa2fabe8d9e4b795c183ba"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v6.v": {
+      "bytes": 3308,
+      "sha256": "0b5c5520fac6a74a24bacdc03e12ea021a78e4b9d1c84b574e8ed2a64f25e59d"
+    }
+  },
+  "review_script": {
+    "bytes": 3688,
+    "sha256": "449cd4414b5c9b4ebb442e72e3c1f85d2017eaa5d301bf30ab48576d3ba99b9d"
+  },
+  "exact_bridges": [
+    "generated candidate equals actual V6",
+    "remove exactly metadata/shared-read additions and inverse two substitutions equals entire V5 bytes",
+    "wrapper inverse version-name replacement equals V5 bytes"
+  ],
+  "integer_cases": 270336,
+  "integer_scope": "All16 accepted-start masks, all4 word positions and every7/12-bit write pointer; one-hot latest strictly preceding selection and pointer wrap. Python arithmetic only, not HDL/formal proof.",
+  "source_reasoning": [
+    "Only active TOKEN/LOOK words can establish an origin. Payload starts, inactive stopped modes and initial ending cannot replace it. Later inactive words preserve the latest accepted origin by selecting the same prefix winner.",
+    "LOOK consumes strictly preceding origin for verdict/sequence. Same-word accepted STP/SDP subsequently overrides tag_n/sequence_n exactly as the original body.",
+    "STP, SDP, EDB, IDL and EDS overlap is excluded by their literal word decoders and validated STP length; reasoning does not assume independently arbitrary decoder flags.",
+    "PW-bit assignment truncates write_ptr+word identically to original position. Highest prior source2 suffices for current word3; current word starts remain body overrides.",
+    "Four shared old-verdict wires are the same registered array reads as V5; slot cache updates, ordering, fault gating and registered read semantics are unchanged."
+  ],
+  "limits": [
+    "Source/manual and integer-mask scope only. No simulator, native map, timing or all-state formal result.",
+    "Author candidate was stable during this review; author final freeze and public controls remain separate."
+  ]
+}

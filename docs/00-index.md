@@ -22,6 +22,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/122-pcie-limiter-local-layout-and-rx-repair.md](122-pcie-limiter-local-layout-and-rx-repair.md) records limiter-local VCO wire measurements, both 400 ns PLL failures, DLLP consumer attempts and actual routed RX repair.
 [docs/123-pcie-variable-skp-and-native-receive.md](123-pcie-variable-skp-and-native-receive.md) records native variable-SKP reception, smaller mapped DLLP consumers, local clock-layout measurements and actual SoC verification repairs.
 [docs/124-pcie-pll-acquisition-and-recovered-lanes.md](124-pcie-pll-acquisition-and-recovered-lanes.md) records complete nominal PLL acquisition, native CDC, recovered-lane composition, SDS locking and actual routed hold improvement with remaining setup failure.
+[docs/125-pcie-sds-cohorts-and-native-validation.md](125-pcie-sds-cohorts-and-native-validation.md) records native SDS locking and bounded deskew, ordered-set-aware x4 RTL, complete earlier state-function proof, local VCO bias failures and retained timing/publication limits.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

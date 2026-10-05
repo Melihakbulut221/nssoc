@@ -1,0 +1,41 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_ONLY_REVIEW",
+  "inputs": {
+    "scripts/generate_pcie_integrity_retirement_v5.py": {
+      "sha256": "7aacaee7a8254df1935c505cc822672f67e0b4e66823b51994606abb2c468641",
+      "bytes": 2795
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v4.v": {
+      "sha256": "c7805937b44c03707c1f9c4c3d5a8fc7ee90b78b8fc9a48ae47dde8eb132bded",
+      "bytes": 183139
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v5.v": {
+      "sha256": "6e2f4c1afacc3cae31e1efb44fa9a98da711bd86acc4e51c61d73eea3eb9afe5",
+      "bytes": 184627
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v4.v": {
+      "sha256": "25b44000074d504adf78f24b0fae4e504bc7cf60347e202363671af4c5d042c6",
+      "bytes": 3308
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v5.v": {
+      "sha256": "82f348179d0ef5d13441c03196df782192ce3e8f60aa2fabe8d9e4b795c183ba",
+      "bytes": 3308
+    }
+  },
+  "exact_checks": {
+    "generated_candidate_matches": true,
+    "inverse_cache_and_read_replacement_equals_v4_bytes": true,
+    "wrapper_inverse_rename_equals_v4_bytes": true
+  },
+  "reasoning": [
+    "For each initialized slot cache equals verdict[slot_tag] after accepted steps. A written slot first selects the new tag and its registered verdict; all four enabled verdict writes then apply in ascending order, matching the original nonblocking last writer. Nonwritten matching tags receive the same updates.",
+    "step includes enabled, active, current and capacity predicates. enabled excludes reset, flush, stream_start and stream_abort. Additional !fault_now matches the original array commit branch after bad-block/token fault handling.",
+    "Simultaneous retirement reads old registered values in both versions. Four slot writes are distinct for supported ring capacity.",
+    "Original slot/verdict arrays have no reset; V5 cache intentionally has none. Reset/flush zero pointers and valid flags, preventing retirement of unwritten slots. Every new slot write initializes tag and cache before its later eligible retirement. Old live slots stay quarantined after restart."
+  ],
+  "limits": [
+    "Source/manual invariant reasoning plus exact byte bridges only; no simulator, formal proof, timing or native-cell acceptance.",
+    "Cache correspondence is a reachable-state invariant for initialized slots, not an assertion about independently arbitrary stale cache bits."
+  ],
+  "reviewer": "tap_mask_next_step"
+}
