@@ -28,7 +28,7 @@ silicon testing and qualification. Each result below records progress toward tha
 ## Recorded verification evidence
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
-These selected milestones retain their original revision and scope; they are not a combined signoff result. [Divider wire extraction and RX13 timing](docs/134-pcie-divider-wire-and-rx13-timing.md) records the latest delivered physical evidence and remaining RX setup failure. [NPU write-frontier capture](docs/135-npu-write-frontier-trace.md) records the current whole-chip boot diagnosis.
+These selected milestones retain their original revision and scope; they are not a combined signoff result. [Loaded-divider and timing repair evidence](docs/136-pcie-loaded-divider-and-write-frontier.md) records the latest delivered physical failures and repair prerequisites. [NPU write-frontier capture](docs/135-npu-write-frontier-trace.md) records the current whole-chip boot diagnosis.
 
 <!-- project-status:start -->
 | Area | Measured status | Evidence |
@@ -51,7 +51,7 @@ Qualified coupled RC, complete SRAM timing/power libraries, final SoC timing,
 PCIe PHY/padframe integration and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and profile-specific layout evidence.
-**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest delivered PCIe physical record](docs/134-pcie-divider-wire-and-rx13-timing.md) records actual divider wire RC and remaining RX setup failure; qualified clocks/RC, complete PHY and main-chip physical integration remain open.
+**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest delivered PCIe physical record](docs/136-pcie-loaded-divider-and-write-frontier.md) records the loaded-divider failure, remaining setup failures and next physical repair; qualified clocks/RC, complete PHY and main-chip physical integration remain open.
 UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated whole-SoC layout pending.
 Ethernet needs an external PHY and has no DMA.
 The complete GR801 interface set is not implemented.

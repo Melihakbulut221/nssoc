@@ -1,0 +1,19 @@
+{
+  "status": "SOURCE_RELATION_PENDING_REAL_CONTROLS_AND_INDEPENDENT_PEER",
+  "domain": "Reset-initialized public-clock operation; binary control lifecycle. Not arbitrary invalid storage equivalence or exhaustive formal proof.",
+  "relation": [
+    "All public outputs, parser/CRC/state/current-valid controls, pointers and verdict array remain identical; occupied ring contents and committed nonzero-keep verdict caches must match. Invalid ring contents may differ.",
+    "Exact step requires enabled=rst_ni&&!flush&&!start&&!abort, active, !ending, current_valid and no ring overflow. Thus separate content writer remains disabled on reset/flush/start/abort/ending/overflow.",
+    "On a nonfaulting step, same seven NBA writes use identical old write_ptr and lane/index/data, at the same edge. Original verdict/cache updates, pointer advance and output priority are untouched.",
+    "Only added content writes are step&&fault_now from parser tokenfailure or accepted badblock. Same original fault branch empties read/write/commit pointers, clears both inputvalid and outputvalid/ending, deactivates and halts at that edge. Cache/verdict writers remain suppressed, so their invalid-slot relation may temporarily differ.",
+    "A faulted epoch cannot retire stale entries: active=0, pointers empty and outputvalid=0. A new start/flush/reset retains or empties invalid content, but starts pointers atzero; every increment ofwrite_ptr writes the exactfour slotcontents and recomputes eachwritten slotcache fromnewtag/unchangedverdicts atthatedge.",
+    "When a previously fault-written physical slot is reused after wrap, capacityguard prevents overwrite of an occupiedslot, and newslot/tag/cache writes precedeits firstoccupied/committed visibility. An invalidslot cache may receive unrelated broadcasts before reuse; effective_tag is replaced on actualwrite and next_value reinitialized fromcache_write_old_verdict, then identical samecycle broadcasts apply.",
+    "Pending EDS disablesstep viaending and is never relaxed. Retire/output hold and faultpriority stayexact; fullmiter checks all public outputs eachcycle, alloccupiedfields and committed meaningfulcachebits aftereach edge."
+  ],
+  "coverage_plan": [
+    "Unchanged13publicoracle cases plus16fault epochs: four actualmalformations \u00d7 directrestart/flush+start/reset+start/abort+start. Held priorpacket, halted drain requests, fresh mixedTLP/DLLP streams acrossatleast4ringturns/twotaggenerations, boundedstalls andEDSdrain.",
+    "Actualmiter observes addedfault-stepwrites, atomic sameedgeempty/halt and realinvalidcontent differences; no hidden divergence inoccupied orcommittedverdict relation is allowed.",
+    "Realmutants removeallstepgating, rotatelanedata, retainfaultedringowner; inheritedpublicinversion/speculativefault and8parser/CRC faults remain. Literalwriter4096cases include1024updates,2048X/Zstep holds,48wrapwrites, seven lostfields plusrotate/ignorestep faults."
+  ],
+  "unresolved": "Controls and sourcepeer pending; candidate must be rejected if any visibility invariant fails. No latency/constraint change and no native timing claim."
+}

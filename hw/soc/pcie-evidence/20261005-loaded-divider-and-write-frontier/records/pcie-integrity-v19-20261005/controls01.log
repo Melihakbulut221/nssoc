@@ -1,0 +1,26 @@
+...........F...............                                              [100%]
+=================================== FAILURES ===================================
+_______________ test_v17_v19_cycle_exact_all_public_outputs[150] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v19-public-controls01/test_v17_v19_cycle_exact_all_p0')
+maximum = 150
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_v17_v19_cycle_exact_all_public_outputs(tmp_path, maximum):
+        helper = runpy.run_path(
+            str(ROOT / "sw/tests/test_pcie_gen3_continuous_rx_integrity_v19.py")
+        )
+        rtl = miter(tmp_path / "miter-rtl")
+        result, record, cases, out = helper["run"](tmp_path, maximum=maximum, rtl=rtl)
+>       assert result.returncode == 0 and record["tests"] == {
+            "passed": 14,
+            "failed": 0,
+            "skipped": 0,
+        }
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v19-public-controls01/test_v17_v19_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode
+
+sw/tests/test_pcie_gen3_integrity_v19_miter.py:240: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_integrity_v19_miter.py::test_v17_v19_cycle_exact_all_public_outputs[150]
+1 failed, 26 passed, 2 deselected in 179.15s (0:02:59)

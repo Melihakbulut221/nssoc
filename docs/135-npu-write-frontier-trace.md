@@ -64,3 +64,6 @@ preflight results do not claim a completed new full-chip run.
 
 PCIe physical work continues separately in [report 134](134-pcie-divider-wire-and-rx13-timing.md).
 The complete PHY, qualified RC and final whole-chip timing remain open.
+
+The complete frozen failed captures and this startup are now included in the
+[public delivery in report 136](136-pcie-loaded-divider-and-write-frontier.md).

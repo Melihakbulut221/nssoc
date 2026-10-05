@@ -59,4 +59,22 @@ def test_wrong_license_or_conflicting_inline_still_fails(tmp_path, monkeypatch, 
     monkeypatch.setattr(M, 'tracked', lambda: ['capture.v'])
     monkeypatch.setattr(sys, 'argv', ['spdx_check.py'])
     assert M.main() == 1
+
+@pytest.mark.parametrize('licence,expected', [
+    ('Apache-2.0', 0), ('CERN-OHL-W-2.0', 1), ('', 1),
+])
+def test_makefile_metadata_does_not_need_its_own_sidecar(
+        tmp_path, monkeypatch, licence, expected):
+    source = tmp_path / 'Makefile.captured'
+    original = b'all:\n\ttrue\n'
+    source.write_bytes(original)
+    sidecar = Path(str(source) + '.license')
+    sidecar.write_text(
+        f'SPDX-FileCopyrightText: Owner\nSPDX-License-Identifier: {licence}\n'
+    )
+    monkeypatch.setattr(M, 'ROOT', tmp_path)
+    monkeypatch.setattr(M, 'tracked', lambda: [source.name, sidecar.name])
+    monkeypatch.setattr(sys, 'argv', ['spdx_check.py'])
+    assert M.main() == expected
+    assert source.read_bytes() == original
 # REUSE-IgnoreEnd

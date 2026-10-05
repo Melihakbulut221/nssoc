@@ -136,6 +136,10 @@ def classify(rel):
     if rel in THIRD_PARTY:
         return THIRD_PARTY[rel], SYNTAX.get(strip_template(Path(rel).name))
     name = Path(rel).name
+    # REUSE metadata is not an executable Makefile, even when its companion is.
+    # The companion source still goes through the inline/sidecar licence check.
+    if name.endswith(".license"):
+        return None, None
     if rel.startswith(UNTAGGED_PREFIXES):
         return None, None
     if name in UNTAGGED_NAMES or (rel.endswith(UNTAGGED_SUFFIXES)

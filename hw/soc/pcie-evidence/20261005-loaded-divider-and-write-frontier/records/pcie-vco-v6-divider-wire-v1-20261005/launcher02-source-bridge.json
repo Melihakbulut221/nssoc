@@ -1,0 +1,44 @@
+{
+  "status": "ADDITIVE_HANDOFF_FIX_SOURCE",
+  "parent": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-wire-v1-20261005/launch_probe01.py": {
+      "bytes": 3802,
+      "sha256": "5809a8b90ff54cf1e13253fc05507de24ffb9dadf612aaa90815e15ca25ee3c0"
+    }
+  },
+  "new": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-wire-v1-20261005/launch_probe02.py": {
+      "bytes": 4402,
+      "sha256": "4f3d13acbacb3f47f21639292feab2d29d9cbef936217a4c94718ca00ece1101"
+    }
+  },
+  "operations": [
+    [
+      "import os\n",
+      "import os\nimport signal\n",
+      1
+    ],
+    [
+      "source-freeze.json",
+      "source-freeze02.json",
+      3
+    ],
+    [
+      "source-only-peer-rx.json",
+      "source-only-peer02-rx.json",
+      2
+    ],
+    [
+      "        with m.life.ProcessOwner(B/'controller-owned.json') as owner:\n            owner.check()\n            native=m.run(OUT,.6,'')\n            owner.check()\n            m._scope['guard'](OUT)\n        owner.check()",
+      "        native=run_with_boundary_signals()\n        m._scope['guard'](OUT)",
+      1
+    ],
+    [
+      "def controller():",
+      "def run_with_boundary_signals():\n    # Outside the native owner there are no owned children. Fail immediately\n    # so cancellation cannot remain trapped in an inactive outer owner's flag.\n    # The inner ProcessOwner temporarily installs its graceful native handler\n    # and restores this one, covering both entry and exit handoff boundaries.\n    def stop(signum, frame):\n        raise RuntimeError(\"Controller received \" + signal.Signals(signum).name)\n    previous={sig:signal.getsignal(sig) for sig in (signal.SIGINT,signal.SIGTERM)}\n    try:\n        for sig in previous:signal.signal(sig,stop)\n        return m.run(OUT,.6,'')\n    finally:\n        for sig,handler in previous.items():signal.signal(sig,handler)\n\n\ndef controller():",
+      1
+    ]
+  ],
+  "whole_byte_inverse": true,
+  "diff": "--- \n+++ \n@@ -6,6 +6,7 @@\n import hashlib\n import json\n import os\n+import signal\n from pathlib import Path\n import subprocess\n import sys\n@@ -23,19 +24,34 @@\n \n \n def verify():\n-    freeze=json.loads((B/'source-freeze.json').read_text())\n+    freeze=json.loads((B/'source-freeze02.json').read_text())\n     for path,p in freeze['pins'].items():\n         assert pin(path)==p,path\n-    peer=json.loads((B/'source-only-peer-rx.json').read_text())\n+    peer=json.loads((B/'source-only-peer02-rx.json').read_text())\n     assert peer['status']=='PASS_SOURCE_ONLY_LOADED455_WIRE_MODEL' and peer['findings']==[]\n-    assert peer['freeze']==pin(B/'source-freeze.json')\n+    assert peer['freeze']==pin(B/'source-freeze02.json')\n     assert os.sched_getaffinity(0)=={10}\n     assert not OUT.exists()\n     c,rows,_=m.config(.6,'')\n     assert len(rows)==455 and len(m.n.vectors(rows,c['extra_vectors']))==956\n     free,used=m._scope['guard'](OUT)\n     assert free>=1024**3 and used+24*1024**2<m.OWN_LIMIT\n-    return {'freeze':pin(B/'source-freeze.json'),'peer':pin(B/'source-only-peer-rx.json'),'free':free,'own':used,'utc':datetime.datetime.now(datetime.UTC).isoformat()}\n+    return {'freeze':pin(B/'source-freeze02.json'),'peer':pin(B/'source-only-peer02-rx.json'),'free':free,'own':used,'utc':datetime.datetime.now(datetime.UTC).isoformat()}\n+\n+\n+def run_with_boundary_signals():\n+    # Outside the native owner there are no owned children. Fail immediately\n+    # so cancellation cannot remain trapped in an inactive outer owner's flag.\n+    # The inner ProcessOwner temporarily installs its graceful native handler\n+    # and restores this one, covering both entry and exit handoff boundaries.\n+    def stop(signum, frame):\n+        raise RuntimeError(\"Controller received \" + signal.Signals(signum).name)\n+    previous={sig:signal.getsignal(sig) for sig in (signal.SIGINT,signal.SIGTERM)}\n+    try:\n+        for sig in previous:signal.signal(sig,stop)\n+        return m.run(OUT,.6,'')\n+    finally:\n+        for sig,handler in previous.items():signal.signal(sig,handler)\n \n \n def controller():\n@@ -43,12 +59,8 @@\n     result={'status':'RUNNING','preflight':preflight,'out':str(OUT),'controller_pid':os.getpid(),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}\n     m.n.common.atomic(B/'native06-controller.json',result)\n     try:\n-        with m.life.ProcessOwner(B/'controller-owned.json') as owner:\n-            owner.check()\n-            native=m.run(OUT,.6,'')\n-            owner.check()\n-            m._scope['guard'](OUT)\n-        owner.check()\n+        native=run_with_boundary_signals()\n+        m._scope['guard'](OUT)\n         result.update(status='CLOSED_FINITE_NATIVE_RESULT',native_status=native['status'],outputs={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file()})\n         m.n.common.atomic(B/'native06-controller.json',result)\n         return 0 if native['status']=='PASS_NATIVE_LOADED_FEEDBACK_SCREEN' else 1\n"
+}

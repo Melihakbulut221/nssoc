@@ -1,0 +1,48 @@
+.F.............F.........                                                [100%]
+=================================== FAILURES ===================================
+_ test_actual_native_input_damage_is_rejected[missing_contact-Native device ID census] _
+
+fault = 'missing_contact', diagnostic = 'Native device ID census'
+
+    @pytest.mark.parametrize('fault,diagnostic',[
+        ('missing_contact','Native device ID census'),
+        ('wrong_hbt_terminal','Native terminal identity/order'),
+        ('wrong_hbt_geometry','Native geometry/value'),
+        ('lost_wire','Wire element census'),
+        ('body_on_metal','Body equivalence changed'),
+        ('wrong_anchor','Physical reference point changed'),
+    ])
+    def test_actual_native_input_damage_is_rejected(fault,diagnostic):
+        x=fixture_inputs()
+        if fault=='missing_contact':
+            x['native']='\n'.join(line for line in x['native'].splitlines() if not line.startswith('X$91 '))+'\n'
+        elif fault=='wrong_hbt_terminal':
+            lines=x['native'].splitlines();i=next(i for i,line in enumerate(lines) if line.startswith('Q$1 '));w=lines[i].split();w[1],w[2]=w[2],w[1];lines[i]=' '.join(w);x['native']='\n'.join(lines)+'\n'
+        elif fault=='wrong_hbt_geometry':
+            lines=x['native'].splitlines();i=next(i for i,line in enumerate(lines) if line.startswith('Q$1 '));assert 'Nx=4' in lines[i];lines[i]=lines[i].replace('Nx=4','Nx=5');x['native']='\n'.join(lines)+'\n'
+        elif fault=='lost_wire':
+            lines=x['wires'].splitlines();i=next(i for i,line in enumerate(lines) if line.startswith('R'));del lines[i];x['wires']='\n'.join(lines)+'\n'
+        elif fault=='body_on_metal':
+            x['anchors']['unmodeled_body_well_terminals'][0]['native_cluster']=8
+        else:
+            a=next(a for a in x['anchors']['anchors'] if a['kind']=='INTRINSIC_DEVICE_TERMINAL_REFERENCE');a['point_dbu'][0]+=1
+>       with pytest.raises(ValueError,match=diagnostic):compose(x)
+E       Failed: DID NOT RAISE ValueError
+
+sw/tests/test_pcie_vco_v6_divider_wire_v1.py:74: Failed
+______ test_real_faults_are_single_connections_with_both_models_retained _______
+
+    def test_real_faults_are_single_connections_with_both_models_retained():
+        _,gold,good=m.config()
+        for fault in ('disconnect_divider_clock','wrong_feedback_modulus'):
+            c,rows,texts=m.config(fault=fault)
+            changed=[name for name in texts if texts[name]!=good[name]]
+>           assert len(changed)==1 and rows!=gold
+E           AssertionError: assert (1 == 1 and [{'path': 'xchain.xfb.xrx.xrp', 'model': 'rppd', 'nets': ['qp', 'xchain.xfb.xrx.ip', '0'], 'params': {'w': '1u', 'l': ...ain.xfb.xrx.bias', 'xchain.xfb.xrx.bias', '0', '0'], 'params': {'w': '0.74u', 'l': '0.13u', 'ng': '1', 'm': '1'}}, ...] != [{'path': 'xchain.xfb.xrx.xrp', 'model': 'rppd', 'nets': ['qp', 'xchain.xfb.xrx.ip', '0'], 'params': {'w': '1u', 'l': ...ain.xfb.xrx.bias', 'xchain.xfb.xrx.bias', '0', '0'], 'params': {'w': '0.74u', 'l': '0.13u', 'ng': '1', 'm': '1'}}, ...])
+E            +  where 1 = len(['pll_feedback_vco_v6_divider_wire_v1.spice'])
+
+sw/tests/test_pcie_vco_v6_divider_wire_v1.py:122: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_vco_v6_divider_wire_v1.py::test_actual_native_input_damage_is_rejected[missing_contact-Native device ID census]
+FAILED sw/tests/test_pcie_vco_v6_divider_wire_v1.py::test_real_faults_are_single_connections_with_both_models_retained
+2 failed, 23 passed in 1.35s
