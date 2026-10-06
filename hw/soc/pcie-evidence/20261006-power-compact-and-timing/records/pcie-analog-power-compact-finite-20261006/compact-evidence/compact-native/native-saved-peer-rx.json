@@ -1,0 +1,756 @@
+{
+  "status": "PASS_INDEPENDENT_SAVED_COMPACT_V2_NATIVE_RESULT",
+  "findings": [],
+  "checks": {
+    "bytes": 143141,
+    "sha256": "0686b35efeb254112ff5da38771ccd57c09c74bec478bd2f719537bbe633cfe6"
+  },
+  "geometry": {
+    "bytes": 2643,
+    "sha256": "334e33045b308895906067987da8980fdaf68f467403535488ad8e8ca333688e"
+  },
+  "GDS": {
+    "bytes": 118284,
+    "sha256": "db400e586cadbedbea9ec8aec5466c0eba4789e262c90ebd0d321a1c2cbcf579"
+  },
+  "ready": {
+    "bytes": 37287,
+    "sha256": "9365087b8dd5423085eb0ba7933835d7fd9d08120cca549ed293acacd0d6bb25"
+  },
+  "utc": "2026-10-06T02:30:06.639652+00:00",
+  "method": {
+    "bytes": 10436,
+    "sha256": "7359a8dfcaa8c2e7c41cf3216ccb20da5243079cf1764c2e4738ca82be43132c"
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-20261006/pcie-divider-v7-compact-v2-native01.tar.xz",
+    "bytes": 399072,
+    "sha256": "2ed6417d71c8052ff9bd941c910eb826777c29e62ac3491333a51a7cec40df54"
+  },
+  "full_member_readback": 343,
+  "native_inputs_rehashed": 218,
+  "native_outputs_rehashed": 190,
+  "immutable_generated_gds": {
+    "bytes": 118284,
+    "sha256": "db400e586cadbedbea9ec8aec5466c0eba4789e262c90ebd0d321a1c2cbcf579"
+  },
+  "launch_layout_files_equal": true,
+  "source_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/make_pcie_clock_div4_v7_compact_v2.py": {
+      "bytes": 29063,
+      "sha256": "29853aa35ef831771eb1cf7bfd8c8d35a78a12820aaf419be162d58ab33a8326"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7_compact_v2.py": {
+      "bytes": 31448,
+      "sha256": "5998b7367a3b7fb208eb27b134a3ffab5f03fddfc8d49ee8b7fdf1c3c0bb9822"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/audit_pcie_clock_div4_v7_compact_v2.py": {
+      "bytes": 9522,
+      "sha256": "5a91334c5562f8e15c750b57103621ab232a1659255aa666a476f6e8dcb6ee92"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_clock_div4_v7_compact_v2_layout.py": {
+      "bytes": 16954,
+      "sha256": "4dbbe45d8e45747c090f7b6d685ffe099a58ea507b40b865d295a81f2c876346"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_clock_div4_v7_compact_v2_native.py": {
+      "bytes": 1906,
+      "sha256": "0d0c2e90673ec5999ac0acb8486bcb7e9c1b6ce2dd8e02e8c8baef3f0170e04d"
+    }
+  },
+  "source_peer": {
+    "bytes": 5325,
+    "sha256": "e06297a1edab23e8a33cd3abfd0d61b7f7e23b38cbf294675e6e0d7d4cda68fc"
+  },
+  "raw_database_read": {
+    "bytes": 9368,
+    "sha256": "8eff9be1caf35401a0bb5589625905e4a4e83ba4cd4b2dd1fe3e2ab8e7b962f8"
+  },
+  "raw_reader_execution": {
+    "bytes": 661,
+    "sha256": "7e149ce04e26dd7e4615cddfab0b8f1db5bb05c3717a52de18b8cc902a751187"
+  },
+  "positive_stages": [
+    "drc",
+    "lvs",
+    "lvs_flat",
+    "lef"
+  ],
+  "expected_negative_stages": [
+    "offgrid",
+    "limiter_load",
+    "feedback",
+    "limiter_nx",
+    "feedforward_mim",
+    "seed_asymmetry",
+    "missing_tap",
+    "supply_swap",
+    "conditioner_pullup",
+    "clock_open",
+    "output_short",
+    "rails_short",
+    "feedback_open",
+    "row_trunk_open",
+    "row_trunk_short",
+    "lef_missing_pin",
+    "lef_blocked_pin"
+  ],
+  "stage_details": [
+    {
+      "name": "drc",
+      "categories": 560,
+      "markers": 0,
+      "marker_categories": {}
+    },
+    {
+      "name": "offgrid",
+      "categories": 560,
+      "markers": 6,
+      "marker_categories": {
+        "'M1.a'": 2,
+        "metal1_drw_Offgrid": 4
+      }
+    },
+    {
+      "name": "lvs",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "Match",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "MATCH",
+      "audit_reasons": []
+    },
+    {
+      "name": "lvs_flat",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "Match",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "SUB",
+        "CLKN",
+        "CLKP",
+        "DIV_AVDD",
+        "AVSS",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "MATCH",
+      "audit_reasons": []
+    },
+    {
+      "name": "limiter_load",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "feedback",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "limiter_nx",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "feedforward_mim",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "seed_asymmetry",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "missing_tap",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "supply_swap",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "conditioner_pullup",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "clock_open",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "Match",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "output_short",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 72,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN|QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "rails_short",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "AVSS|DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "feedback_open",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "row_trunk_open",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 74,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "row_trunk_short",
+      "pair": {
+        "layout": "nssoc_clock_div4_v7_compact_v2_layout",
+        "schematic": "NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT",
+        "status": "NoMatch",
+        "layout_devices": 72,
+        "schematic_devices": 74
+      },
+      "extracted_ports": [
+        "DIV_AVDD",
+        "CLKP",
+        "CLKN",
+        "AVSS",
+        "SUB",
+        "QN",
+        "QP"
+      ],
+      "deck_verdict": "NO_MATCH",
+      "audit_reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ]
+    },
+    {
+      "name": "lef",
+      "native_returncode": 0,
+      "native_seven_pin_tcl_checked": true
+    },
+    {
+      "name": "lef_missing_pin",
+      "native_returncode": 1,
+      "native_seven_pin_tcl_checked": true
+    },
+    {
+      "name": "lef_blocked_pin",
+      "native_returncode": 1,
+      "native_seven_pin_tcl_checked": true
+    }
+  ],
+  "closed_native_owner_receipts": [
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/power-geometry.owned.json",
+      "bytes": 1084,
+      "sha256": "6bbb85fcdbaea000c9959bbbe66542ffd72a3a4e10ddda9a55ea58ad98fa6ac1"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/generation.owned.json",
+      "bytes": 913,
+      "sha256": "798ed835e221e2eca0cfb050c31aa53a3d6b787bedb93ed92fb64040433a0e80"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lef_blocked_pin/native.owned.json",
+      "bytes": 713,
+      "sha256": "45e47e554ea75efd85149c937fafc298417ede78e8298af463a4fabde648c23d"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lef_missing_pin/native.owned.json",
+      "bytes": 713,
+      "sha256": "45df22915c3d9334c69180925794d7d9049f8e7b90e536e681ec65a9ef18e50e"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lef/native.owned.json",
+      "bytes": 701,
+      "sha256": "f5d5884181f685e47cac76b3897f8f9d90217264490f567f31e3fb20ddc5c680"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_short/audit.owned.json",
+      "bytes": 1050,
+      "sha256": "2769fd4ad31e4c067b9895aa6f70b9b8d85ae1339a5503f701a2d44e30a865ff"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_short/run.owned.json",
+      "bytes": 1445,
+      "sha256": "25b959dab2b76c310029acabf017c3f941456fd87bac825856257b308cd8f4ff"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_short/mutation.owned.json",
+      "bytes": 692,
+      "sha256": "54292b0a2fc2bbbd86b4bea1a12b777349e4dfa3254c1403844a88dc1d649771"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_open/audit.owned.json",
+      "bytes": 1047,
+      "sha256": "32f6111b80be052b78dfa9011605297a72e75a32ca7c277c7e378bd8ca30ef9b"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_open/run.owned.json",
+      "bytes": 1441,
+      "sha256": "9323b2bcaa256c6e2efe04d71d6b94adb61ae1bacdcd57d1921736fd4319e102"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/row_trunk_open/mutation.owned.json",
+      "bytes": 691,
+      "sha256": "7fc4f806df873780c58aaf9a40bf8ffa330dbfb05906b58f04878e2709a3d549"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedback_open/audit.owned.json",
+      "bytes": 1044,
+      "sha256": "de07d580946e0f728b954f6b42ac1717d24c8a44ea30651a084bfa3b6afb35fd"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedback_open/run.owned.json",
+      "bytes": 1437,
+      "sha256": "c3a232a8862b72e481c5b5fbfff13bfa3dda04889e25c9420eb9ca88af1e2174"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedback_open/mutation.owned.json",
+      "bytes": 690,
+      "sha256": "4f12a9a03ddf9e1ee296c6f3b3afe2c4ad3966f5b60cfe2a50d67949a1dd4a99"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/rails_short/audit.owned.json",
+      "bytes": 1038,
+      "sha256": "a0467b5f25ddd69b18ab05329a924df106fabc59d5d12cb3c3ef61fb3fe2f8aa"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/rails_short/run.owned.json",
+      "bytes": 1429,
+      "sha256": "69d07c4cc3870896ab147b31607ecfbc6075a70991d62633b9bb6d32314ed5c1"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/rails_short/mutation.owned.json",
+      "bytes": 688,
+      "sha256": "0db93265106e125c81f4fe2c2d3c91312ebb3d4fabe0b834afae5579beed4a5f"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/output_short/audit.owned.json",
+      "bytes": 1041,
+      "sha256": "dcb6987b159c4198b67b487f7ba7e41b293272a23bc4aea029df3021548de682"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/output_short/run.owned.json",
+      "bytes": 1433,
+      "sha256": "5c712430c3d715f21f6c61d88612693f820730c283546d9f8318634c515dd6a3"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/output_short/mutation.owned.json",
+      "bytes": 689,
+      "sha256": "8f7bd10418f34c8a12db77b332d801e8b7f0631c463cd0fa9bbdf0984e8eec5f"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/clock_open/audit.owned.json",
+      "bytes": 1035,
+      "sha256": "017a6e83fd4f1bb8b4e92617fe333a110f71b0fffd148d7d1ce45100e7f8a158"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/clock_open/run.owned.json",
+      "bytes": 1425,
+      "sha256": "89786af2502a9319fc3101db680cc7029facd4fdf7ed29f52d6b8ce4ccbe1433"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/clock_open/mutation.owned.json",
+      "bytes": 687,
+      "sha256": "9b4887fdc5c112de6040f5be28fd5764ad55a5948715315565457179acf4edb5"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/conditioner_pullup/audit.owned.json",
+      "bytes": 1059,
+      "sha256": "f55da792ac687807989ba51d15229010e65c9b183ad09683fe2eee81002272f5"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/conditioner_pullup/run.owned.json",
+      "bytes": 1485,
+      "sha256": "2110bb976979c833d064e41d0caee06d6e6e3f8cfcc12656aa140d8e192be45d"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/supply_swap/audit.owned.json",
+      "bytes": 1038,
+      "sha256": "e969c40af28929454dab42003572780b3cd8e04e7b9741d18e9e7e45b651916f"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/supply_swap/run.owned.json",
+      "bytes": 1457,
+      "sha256": "c0546407dd5ea06f44592d0516a36570c0a9105ec90016d8aaa8b791ef507a7d"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/missing_tap/audit.owned.json",
+      "bytes": 1038,
+      "sha256": "13e54d69d8766963879949459b3f8ed4919d6c4cfd6af223d312ae8630cbf260"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/missing_tap/run.owned.json",
+      "bytes": 1457,
+      "sha256": "ceef6688da02ec9a7d819e04a53dfd845943635730f56a366442177784243e47"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/seed_asymmetry/audit.owned.json",
+      "bytes": 1047,
+      "sha256": "c417a9789227131e5674d473599ac71417bee0b1fa89acae6f3a7a8d951bf09d"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/seed_asymmetry/run.owned.json",
+      "bytes": 1469,
+      "sha256": "e04c168d82cd91a1ee53d6f61029a960330a09b05df489a5e46b1980ecb30966"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedforward_mim/audit.owned.json",
+      "bytes": 1050,
+      "sha256": "8956576d3552ccc3c0e38b42a08e6a999a4a7146dd5a45409af2b0f184957bca"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedforward_mim/run.owned.json",
+      "bytes": 1473,
+      "sha256": "89f42342c838a35d965cfe22175cf953609392ab3424cbe8d149f5e45ffceddf"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/limiter_nx/audit.owned.json",
+      "bytes": 1035,
+      "sha256": "e505ffee904a1ec4cd4158bf2f927375cf3869b5206006d42c8c0c37ccfc2656"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/limiter_nx/run.owned.json",
+      "bytes": 1453,
+      "sha256": "09c649f542c70f73e4e93d030489530a7a8f9bce9c4a2c448ddca794fc98d2ec"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedback/audit.owned.json",
+      "bytes": 1029,
+      "sha256": "3a4875542c991b6b8a2f83b82a0df087390c216c5b5e2761480fe7c13d39a1c6"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/feedback/run.owned.json",
+      "bytes": 1445,
+      "sha256": "92f2004ad38352eb392eebb4a7495ac3c203faa0aaf66f24baf45e4216804983"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/limiter_load/audit.owned.json",
+      "bytes": 1041,
+      "sha256": "050799042712e9fa2428d63f127c7bb2996e46c86f33ec7e924c14dd4be64d10"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/limiter_load/run.owned.json",
+      "bytes": 1461,
+      "sha256": "f0236e3fc778faf8251fa95f8c16df2d560d456e22354b8654a5a6ed7ff36fbe"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lvs_flat/audit.owned.json",
+      "bytes": 1029,
+      "sha256": "b9da72be64bec22f3d5ec8c526e56ef8b15f47709df080d324fa266a5a45e2a4"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lvs_flat/run.owned.json",
+      "bytes": 1440,
+      "sha256": "edaee79c39134d3a6c4e77355c30fa8e4ad25342aade6affa9d2d27d0b4508c0"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lvs/audit.owned.json",
+      "bytes": 1014,
+      "sha256": "3e3dd46cc76dc6e56ef4c07d801e1a29f5a1e8b5f8f94f05c34a011df3bdd78a"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/lvs/run.owned.json",
+      "bytes": 1425,
+      "sha256": "14bc3c48f59b3ccc8d9e95a814a0fccea33be6c78fe0276bf89ea16f50b3450b"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/offgrid/run.owned.json",
+      "bytes": 1309,
+      "sha256": "994c4ff82fe217f83b0d7827ab2d4bd7e9ac46179e75b62a325d72f83e0854a4"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/offgrid/mutation.owned.json",
+      "bytes": 684,
+      "sha256": "7b21e12ecbce204f197f568664092384d268359df0c5c51cd2a9eeb31b348eef"
+    },
+    {
+      "path": "/dev/shm/nssoc-div4-v7-compact-v2-checks-01/drc/run.owned.json",
+      "bytes": 1325,
+      "sha256": "3b15b3127ab453064604c42b383ecbed5ff3df5460d92fbbac695ded884abee6"
+    }
+  ],
+  "scope": "All21 saved standalone compactV2 divider native stages checked with343 archive members and195 closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. Original compact candidate tap/escape collision and source-test corrections remain preserved. Hash-bound actualGDS audit verifies91unchanged primitive local geometries at725declared placements,634nativevias,47powerarrays,8powerstraps,47localbuses and4actualgeometryfaults. Route identity is explicitly not claimed after changed placement. Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.",
+  "manufacturing_approval": false,
+  "qualified_pex": false,
+  "extracted_division": false,
+  "clockbank_integration": false,
+  "phy_complete": false,
+  "physical_acceptance": false
+}

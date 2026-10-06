@@ -1,0 +1,1288 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/native03-peer-rx/review_saved_native.py",
+    "bytes": 10191,
+    "sha256": "5eccab64f1a6d9819ed89b96c25a784064fc301e17037c7b734ea835c10347e5"
+  },
+  "after": {
+    "bytes": 10436,
+    "sha256": "7359a8dfcaa8c2e7c41cf3216ccb20da5243079cf1764c2e4738ca82be43132c"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Independent saved ",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Independent saved "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "V2 evidence readback; never rerun physical checks.\"\"\"\nfrom pathlib import Path\nimport collections,datetime,hashlib,json,re,tarfile,xml.etree.ElementTree as ET\nB=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v7-",
+      "after": "V2 evidence readback; never rerun physical checks.\"\"\"\nfrom pathlib import Path\nimport collections,datetime,hashlib,json,re,tarfile,xml.etree.ElementTree as ET\nB=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v7-"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "-v2-checks-0",
+      "after": "-v2-checks-0"
+    },
+    {
+      "tag": "replace",
+      "before": "2",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": "');L=Path('/dev/shm/nssoc-div4-v7-",
+      "after": "');L=Path('/dev/shm/nssoc-div4-v7-"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "-v2-layout-01');R=D.parents[3]\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef j(p):return json.loads(Path(p).read_text())\ndef stream_pin(f):\n h=hashlib.sha256();n=0\n while b:=f.read(1024**2):n+=len(b);h.update(b)\n return dict(bytes=n,sha256=h.hexdigest())\nbackup=j(D/'native-",
+      "after": "-v2-layout-01');R=D.parents[3]\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef j(p):return json.loads(Path(p).read_text())\ndef stream_pin(f):\n h=hashlib.sha256();n=0\n while b:=f.read(1024**2):n+=len(b);h.update(b)\n return dict(bytes=n,sha256=h.hexdigest())\nbackup=j(D/'native-"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ar"
+    },
+    {
+      "tag": "equal",
+      "before": "c",
+      "after": "c"
+    },
+    {
+      "tag": "replace",
+      "before": "los",
+      "after": "hiv"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "delete",
+      "before": "d-backup",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "2",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": ".json');manifest=backup['members'];archive=Path(backup['archive']['path']);assert pin(archive)=={k:backup['archive'][k]for k in ['bytes','sha256']}\nwith tarfile.open(archive,'r:xz') as t:\n assert len(t.getmembers())==len(manifest)==3",
+      "after": ".json');manifest=backup['members'];archive=Path(backup['archive']['path']);assert pin(archive)=={k:backup['archive'][k]for k in ['bytes','sha256']}\nwith tarfile.open(archive,'r:xz') as t:\n assert len(t.getmembers())==len(manifest)==3"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "3",
+      "after": "3"
+    },
+    {
+      "tag": "delete",
+      "before": "6",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " and set(t.getnames())==set(manifest)\n for m in t.getmembers():\n  assert m.isfile() and m.size==manifest[m.name]['bytes']\n  with t.extractfile(m) as f:assert stream_pin(f)=={k:manifest[m.name][k]for k in ['bytes','sha256']}\nready=j(D/'native",
+      "after": " and set(t.getnames())==set(manifest)\n for m in t.getmembers():\n  assert m.isfile() and m.size==manifest[m.name]['bytes']\n  with t.extractfile(m) as f:assert stream_pin(f)=={k:manifest[m.name][k]for k in ['bytes','sha256']}\nready=j(D/'native"
+    },
+    {
+      "tag": "delete",
+      "before": "03",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "-finite-review-ready",
+      "after": "-finite-review-ready"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "01"
+    },
+    {
+      "tag": "equal",
+      "before": ".json');assert len(ready['closed_native_files'])==19",
+      "after": ".json');assert len(ready['closed_native_files'])==19"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "5"
+    },
+    {
+      "tag": "equal",
+      "before": "\nfor name,value in ready['closed_native_files'].items():assert pin(name)==value\nrecord=j(N/'result.json');assert record['status']=='PASS_DIV4_V7_",
+      "after": "\nfor name,value in ready['closed_native_files'].items():assert pin(name)==value\nrecord=j(N/'result.json');assert record['status']=='PASS_DIV4_V7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "COM"
+    },
+    {
+      "tag": "equal",
+      "before": "P",
+      "after": "P"
+    },
+    {
+      "tag": "replace",
+      "before": "OWER",
+      "after": "ACT"
+    },
+    {
+      "tag": "equal",
+      "before": "_V2_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\nfor name,digest in record['inputs'].items():assert pin(name)['sha256']==digest\nfor name,digest in record['outputs'].items():assert pin(N/name)['sha256']==digest\nlayout=j(L/'result.json')\nfor name,digest in layout['input_sha256'].items():assert pin(name)['sha256']==digest\nfor name,digest in layout['output_sha256'].items():assert pin(L/name)['sha256']==digest\nlaunch=j(D/'launch-manifest0",
+      "after": "_V2_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\nfor name,digest in record['inputs'].items():assert pin(name)['sha256']==digest\nfor name,digest in record['outputs'].items():assert pin(N/name)['sha256']==digest\nlayout=j(L/'result.json')\nfor name,digest in layout['input_sha256'].items():assert pin(name)['sha256']==digest\nfor name,digest in layout['output_sha256'].items():assert pin(L/name)['sha256']==digest\nlaunch=j(D/'launch-manifest0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": ".json');assert {str(p.relative_to(L)):pin(p) for p in L.rglob('*') if p.is_file()}==",
+      "after": ".json');assert {str(p.relative_to(L)):pin(p) for p in L.rglob('*') if p.is_file()}=="
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "{str(Path(p).re"
+    },
+    {
+      "tag": "equal",
+      "before": "la",
+      "after": "la"
+    },
+    {
+      "tag": "replace",
+      "before": "u",
+      "after": "tive_to(L)):v for p,v i"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": "ch",
+      "after": " ready"
+    },
+    {
+      "tag": "equal",
+      "before": "['",
+      "after": "['"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "c"
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "osed_n"
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "delete",
+      "before": "you",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ive"
+    },
+    {
+      "tag": "equal",
+      "before": "_files']",
+      "after": "_files']"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ".items() if Path(p).is_relative_to(L)}"
+    },
+    {
+      "tag": "equal",
+      "before": "\nfreeze=j(D/'source-freeze0",
+      "after": "\nfreeze=j(D/'source-freeze0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": ".json');source=freeze['product_sources']\nfor n,v in freeze['inputs'].items():assert pin(n)==v\nfor n,v in source.items():assert pin(n)==v\npeer=j(D/'source-only-peer0",
+      "after": ".json');source=freeze['product_sources']\nfor n,v in freeze['inputs'].items():assert pin(n)==v\nfor n,v in source.items():assert pin(n)==v\npeer=j(D/'source-only-peer0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": "-",
+      "after": "-"
+    },
+    {
+      "tag": "replace",
+      "before": "rx",
+      "after": "pll"
+    },
+    {
+      "tag": "equal",
+      "before": ".json');assert peer['findings']==[] and peer['source_pins']==source\ngeometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_",
+      "after": ".json');assert peer['findings']==[] and peer['source_pins']==source\ngeometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_"
+    },
+    {
+      "tag": "replace",
+      "before": "GD",
+      "after": "COMPACT_INTRINSIC"
+    },
+    {
+      "tag": "equal",
+      "before": "S_POWER",
+      "after": "S_POWER"
+    },
+    {
+      "tag": "delete",
+      "before": "_ONLY_ADDITION",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "_AND_FOUR_GEOMETRY_CONTROLS'\nfor name,value in geometry['inputs'].items():assert pin(name)==value\nassert geometry['",
+      "after": "_AND_FOUR_GEOMETRY_CONTROLS'\nfor name,value in geometry['inputs'].items():assert pin(name)==value\nassert geometry['"
+    },
+    {
+      "tag": "replace",
+      "before": "original_native_instances']==678 and geometry['native_via_arra",
+      "after": "ph"
+    },
+    {
+      "tag": "equal",
+      "before": "ys",
+      "after": "ys"
+    },
+    {
+      "tag": "delete",
+      "before": "']==geometry['",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "delete",
+      "before": "ndependent_raw_gds_boundary_instan",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "c",
+      "after": "c"
+    },
+    {
+      "tag": "delete",
+      "before": "es_verified']==47\nassert geometry['origin",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "al_primitives']==91 and geometry['",
+      "after": "al_primitives']==91 and geometry['"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "n"
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "tive_instan"
+    },
+    {
+      "tag": "equal",
+      "before": "c",
+      "after": "c"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "es']==725 and geome"
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "replace",
+      "before": "u",
+      "after": "ry['n"
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "replace",
+      "before": "l",
+      "after": "tive"
+    },
+    {
+      "tag": "equal",
+      "before": "_",
+      "after": "_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "vias']==634\nassert geometry['"
+    },
+    {
+      "tag": "equal",
+      "before": "power_",
+      "after": "power_"
+    },
+    {
+      "tag": "replace",
+      "before": "te",
+      "after": "a"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "replace",
+      "before": "min",
+      "after": "r"
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "replace",
+      "before": "l",
+      "after": "y"
+    },
+    {
+      "tag": "equal",
+      "before": "s']==",
+      "after": "s']=="
+    },
+    {
+      "tag": "replace",
+      "before": "39",
+      "after": "47"
+    },
+    {
+      "tag": "equal",
+      "before": " and geometry['power_straps']==8",
+      "after": " and geometry['power_straps']==8"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " and geometry['local_buses']==47"
+    },
+    {
+      "tag": "equal",
+      "before": "\nassert len(geometry['controls'])==4 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\nassert ",
+      "after": "\nassert len(geometry['controls'])==4 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\nassert "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "[x['fault'] for x in geometry['controls']]==['remove_actual_hbt','remove_hbt_metal1','remove_power_via4','remove_power_straps']\nassert "
+    },
+    {
+      "tag": "equal",
+      "before": "geometry['retained_layout_owners",
+      "after": "geometry['retained_layout_owners"
+    },
+    {
+      "tag": "delete",
+      "before": "_through_audit",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "'] and",
+      "after": "'] and"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " not"
+    },
+    {
+      "tag": "equal",
+      "before": " geometry['",
+      "after": " geometry['"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "full_rout"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "delete",
+      "before": "xact",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "_",
+      "after": "_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ide"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "delete",
+      "before": "a",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "ti",
+      "after": "ti"
+    },
+    {
+      "tag": "replace",
+      "before": "ve",
+      "after": "ty"
+    },
+    {
+      "tag": "equal",
+      "before": "_c",
+      "after": "_c"
+    },
+    {
+      "tag": "replace",
+      "before": "ut_",
+      "after": "laim'] "
+    },
+    {
+      "tag": "equal",
+      "before": "and",
+      "after": "and"
+    },
+    {
+      "tag": "replace",
+      "before": "_e",
+      "after": " "
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "delete",
+      "before": "cl",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "sure_",
+      "after": "t "
+    },
+    {
+      "tag": "equal",
+      "before": "geometry",
+      "after": "geometry"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "['qualified_pex"
+    },
+    {
+      "tag": "equal",
+      "before": "']\nraw=j(B/'raw-database-read.json');assert len(raw['databases'])==16;database={x['name']:x for x in raw['databases']};outcomes=[]\npositive=[];negative=[]\nfor step in record['steps']:\n name=step['name'];nd=N/name\n if name in ['drc','offgrid']:\n  xml=ET.parse(nd/'drc.lyrdb').getroot();categories=xml.findall('./categories//category');items=xml.findall('./items/item');assert len(categories)==560\n  counts=dict(collections.Counter(x.findtext('category') for x in items));assert len(items)==step['measurement']['markers'] and counts==step['measurement']['categories']\n  assert 'KLayout DRC run for tables \\'main\\' completed' in (nd/'run.log').read_text()\n  if name=='drc':assert not items;positive.append(name)\n  else:assert len(items)==6 and counts['metal1_drw_Offgrid']==4;negative.append(name)\n  outcomes.append(dict(name=name,categories=560,markers=len(items),marker_categories=counts));continue\n if 'audit' in step:\n  d=database[name];assert pin(d['input']['path'])=={k:d['input'][k] for k in ['bytes','sha256']};assert len(d['pairs'])==1 and not d['extraction_diagnostics']\n  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v7_",
+      "after": "']\nraw=j(B/'raw-database-read.json');assert len(raw['databases'])==16;database={x['name']:x for x in raw['databases']};outcomes=[]\npositive=[];negative=[]\nfor step in record['steps']:\n name=step['name'];nd=N/name\n if name in ['drc','offgrid']:\n  xml=ET.parse(nd/'drc.lyrdb').getroot();categories=xml.findall('./categories//category');items=xml.findall('./items/item');assert len(categories)==560\n  counts=dict(collections.Counter(x.findtext('category') for x in items));assert len(items)==step['measurement']['markers'] and counts==step['measurement']['categories']\n  assert 'KLayout DRC run for tables \\'main\\' completed' in (nd/'run.log').read_text()\n  if name=='drc':assert not items;positive.append(name)\n  else:assert len(items)==6 and counts['metal1_drw_Offgrid']==4;negative.append(name)\n  outcomes.append(dict(name=name,categories=560,markers=len(items),marker_categories=counts));continue\n if 'audit' in step:\n  d=database[name];assert pin(d['input']['path'])=={k:d['input'][k] for k in ['bytes','sha256']};assert len(d['pairs'])==1 and not d['extraction_diagnostics']\n  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V7_",
+      "after": "_v2_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "COM"
+    },
+    {
+      "tag": "equal",
+      "before": "P",
+      "after": "P"
+    },
+    {
+      "tag": "replace",
+      "before": "OWER",
+      "after": "ACT"
+    },
+    {
+      "tag": "equal",
+      "before": "_V2_LAYOUT'\n  audit=j(nd/'audit.json');assert audit==step['audit']\n  for n,v in audit['inputs'].items():assert pin(n)==v\n  assert audit['circuits'][0]['status']==pair['status'] and audit['circuits'][0]['layout_devices_recursive']==pair['layout_devices'] and audit['circuits'][0]['schematic_devices_recursive']==pair['schematic_devices']\n  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v7_",
+      "after": "_V2_LAYOUT'\n  audit=j(nd/'audit.json');assert audit==step['audit']\n  for n,v in audit['inputs'].items():assert pin(n)==v\n  assert audit['circuits'][0]['status']==pair['status'] and audit['circuits'][0]['layout_devices_recursive']==pair['layout_devices'] and audit['circuits'][0]['schematic_devices_recursive']==pair['schematic_devices']\n  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n  assert 'strict port mode' in log and 'flag_missing_ports enabled' in log\n  if name in ['lvs','lvs_flat']:\n   assert pair['status']=='Match' and pair['layout_devices']==pair['schematic_devices']==74 and set(ports)==set(layout['ports']);assert 'INFO : Congratulations! Netlists match.' in log and \"ERROR : Netlists don't match\" not in log\n   assert audit['reasons']==[];positive.append(name)\n   lines=(nd/'extracted.cir').read_text().splitlines();rows=[]\n   for line in lines:\n    if line.startswith('+'):rows[-1]+=' '+line[1:]\n    elif line and not line.startswith(('*','.')):rows.append(line)\n   census=collections.Counter('hbt' if x.startswith('Q') else 'ptap' if ' ptap1 ' in x else 'resistor' if ' rppd ' in x else 'capacitor' if ' cap_cmim ' in x else 'UNKNOWN' for x in rows)\n   assert census==dict(hbt=34,resistor=33,capacitor=6,ptap=1)\n   assert sum('ptap1 A=72p P=144u' in x for x in rows)==1\n  else:\n   assert audit['status']=='FAIL' and \"ERROR : Netlists don't match\" in log and 'INFO : Congratulations! Netlists match.' not in log;negative.append(name)\n   if name=='clock_open':assert pair['status']=='Match' and len(ports)==6 and set(ports)==set(layout['ports'])-{'CLKP'}\n   else:assert pair['status']=='NoMatch'\n   physical=nd/'wrong.gds';reference=nd/'wrong.cir'\n   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v7_",
+      "after": "_v2_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n  assert 'strict port mode' in log and 'flag_missing_ports enabled' in log\n  if name in ['lvs','lvs_flat']:\n   assert pair['status']=='Match' and pair['layout_devices']==pair['schematic_devices']==74 and set(ports)==set(layout['ports']);assert 'INFO : Congratulations! Netlists match.' in log and \"ERROR : Netlists don't match\" not in log\n   assert audit['reasons']==[];positive.append(name)\n   lines=(nd/'extracted.cir').read_text().splitlines();rows=[]\n   for line in lines:\n    if line.startswith('+'):rows[-1]+=' '+line[1:]\n    elif line and not line.startswith(('*','.')):rows.append(line)\n   census=collections.Counter('hbt' if x.startswith('Q') else 'ptap' if ' ptap1 ' in x else 'resistor' if ' rppd ' in x else 'capacitor' if ' cap_cmim ' in x else 'UNKNOWN' for x in rows)\n   assert census==dict(hbt=34,resistor=33,capacitor=6,ptap=1)\n   assert sum('ptap1 A=72p P=144u' in x for x in rows)==1\n  else:\n   assert audit['status']=='FAIL' and \"ERROR : Netlists don't match\" in log and 'INFO : Congratulations! Netlists match.' not in log;negative.append(name)\n   if name=='clock_open':assert pair['status']=='Match' and len(ports)==6 and set(ports)==set(layout['ports'])-{'CLKP'}\n   else:assert pair['status']=='NoMatch'\n   physical=nd/'wrong.gds';reference=nd/'wrong.cir'\n   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout.gds') and step['mutation_execution']['returncode']==0\n   else:assert reference.exists() and pin(reference)!=pin(L/'schematic.cir')\n  outcomes.append(dict(name=name,pair=pair,extracted_ports=ports,deck_verdict='MATCH' if name in ['lvs','lvs_flat'] else 'NO_MATCH',audit_reasons=audit['reasons']));continue\n log=(nd/'native.log').read_text();tcl=(nd/'inspect.tcl').read_text();assert tcl.count('findMTerm ')==7\n if name=='lef':\n  assert step['execution']['returncode']==0 and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' in log;positive.append(name)\n elif name=='lef_missing_pin':\n  assert step['execution']['returncode']==1 and 'Analog terminal census changed' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n elif name=='lef_blocked_pin':\n  assert step['execution']['returncode']==1 and 'Divider pin obstruction overlap' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n else:raise AssertionError(name)\n outcomes.append(dict(name=name,native_returncode=step['execution']['returncode'],native_seven_pin_tcl_checked=True))\nassert len(positive)==4 and len(negative)==17 and len(record['steps'])==21\nlef=(L/'nssoc_clock_div4_v7_",
+      "after": "_v2_layout.gds') and step['mutation_execution']['returncode']==0\n   else:assert reference.exists() and pin(reference)!=pin(L/'schematic.cir')\n  outcomes.append(dict(name=name,pair=pair,extracted_ports=ports,deck_verdict='MATCH' if name in ['lvs','lvs_flat'] else 'NO_MATCH',audit_reasons=audit['reasons']));continue\n log=(nd/'native.log').read_text();tcl=(nd/'inspect.tcl').read_text();assert tcl.count('findMTerm ')==7\n if name=='lef':\n  assert step['execution']['returncode']==0 and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' in log;positive.append(name)\n elif name=='lef_missing_pin':\n  assert step['execution']['returncode']==1 and 'Analog terminal census changed' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n elif name=='lef_blocked_pin':\n  assert step['execution']['returncode']==1 and 'Divider pin obstruction overlap' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n else:raise AssertionError(name)\n outcomes.append(dict(name=name,native_returncode=step['execution']['returncode'],native_seven_pin_tcl_checked=True))\nassert len(positive)==4 and len(negative)==17 and len(record['steps'])==21\nlef=(L/'nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout.lef').read_text()\nfor name,value in layout['ports'].items():\n p=re.search(r'  PIN '+name+r'\\n(.*?)  END '+name,lef,re.S).group(1)\n direction='INPUT' if name in ['CLKP','CLKN'] else 'OUTPUT' if name in ['QP','QN'] else 'INOUT';use='POWER' if name=='DIV_AVDD' else 'GROUND' if name in ['AVSS','SUB'] else 'SIGNAL'\n assert 'DIRECTION '+direction+' ;' in p and 'USE '+use+' ;' in p\nassert len(re.findall(r'^  PIN ',lef,re.M))==7\nowners=[]\nfor path in N.rglob('*.owned.json'):\n owner=j(path);assert owner['status']=='HEALTHY' and owner['cleanup'] is None\n for entry in owner['processes']:assert entry['status']=='REAPED_NO_LIVE_MEMBERS' and entry['members_at_leader_exit']==[]\n owners.append(dict(path=str(path),**pin(path)))\nread_owner=j(B/'saved-database-reader.owned.json');assert read_owner['cleanup'] is None and all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] for x in read_owner['processes'])\nresult=dict(status='PASS_",
+      "after": "_v2_layout.lef').read_text()\nfor name,value in layout['ports'].items():\n p=re.search(r'  PIN '+name+r'\\n(.*?)  END '+name,lef,re.S).group(1)\n direction='INPUT' if name in ['CLKP','CLKN'] else 'OUTPUT' if name in ['QP','QN'] else 'INOUT';use='POWER' if name=='DIV_AVDD' else 'GROUND' if name in ['AVSS','SUB'] else 'SIGNAL'\n assert 'DIRECTION '+direction+' ;' in p and 'USE '+use+' ;' in p\nassert len(re.findall(r'^  PIN ',lef,re.M))==7\nowners=[]\nfor path in N.rglob('*.owned.json'):\n owner=j(path);assert owner['status']=='HEALTHY' and owner['cleanup'] is None\n for entry in owner['processes']:assert entry['status']=='REAPED_NO_LIVE_MEMBERS' and entry['members_at_leader_exit']==[]\n owners.append(dict(path=str(path),**pin(path)))\nread_owner=j(B/'saved-database-reader.owned.json');assert read_owner['cleanup'] is None and all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] for x in read_owner['processes'])\nresult=dict(status='PASS_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "INDE"
+    },
+    {
+      "tag": "equal",
+      "before": "P",
+      "after": "P"
+    },
+    {
+      "tag": "delete",
+      "before": "OW",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "replace",
+      "before": "R_V2",
+      "after": "NDENT"
+    },
+    {
+      "tag": "equal",
+      "before": "_SAVED_",
+      "after": "_SAVED_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "COMPACT_V2_"
+    },
+    {
+      "tag": "equal",
+      "before": "NATIVE",
+      "after": "NATIVE"
+    },
+    {
+      "tag": "delete",
+      "before": "21",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "_",
+      "after": "_"
+    },
+    {
+      "tag": "replace",
+      "before": "AND_G",
+      "after": "R"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "replace",
+      "before": "OME",
+      "after": "SUL"
+    },
+    {
+      "tag": "equal",
+      "before": "T",
+      "after": "T"
+    },
+    {
+      "tag": "delete",
+      "before": "RY4",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v7_",
+      "after": "',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout.gds'),ready=pin(D/'native",
+      "after": "_v2_layout.gds'),ready=pin(D/'native"
+    },
+    {
+      "tag": "delete",
+      "before": "03",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "-finite-review-ready",
+      "after": "-finite-review-ready"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "01"
+    },
+    {
+      "tag": "equal",
+      "before": ".json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=3",
+      "after": ".json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=3"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "3",
+      "after": "3"
+    },
+    {
+      "tag": "delete",
+      "before": "6",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": ",native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v7_",
+      "after": ",native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v2_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer0",
+      "after": "_v2_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": "-",
+      "after": "-"
+    },
+    {
+      "tag": "replace",
+      "before": "rx",
+      "after": "pll"
+    },
+    {
+      "tag": "equal",
+      "before": ".json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone ",
+      "after": ".json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "V2 divider native stages checked with3",
+      "after": "V2 divider native stages checked with3"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "3",
+      "after": "3"
+    },
+    {
+      "tag": "delete",
+      "before": "6",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " archive members and19",
+      "after": " archive members and19"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "5"
+    },
+    {
+      "tag": "equal",
+      "before": " closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. ",
+      "after": " closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. "
+    },
+    {
+      "tag": "replace",
+      "before": "F",
+      "after": "Or"
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ginal compact candidate tap/escape collision and sou"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ce-te"
+    },
+    {
+      "tag": "equal",
+      "before": "st ",
+      "after": "st "
+    },
+    {
+      "tag": "replace",
+      "before": "power-audit",
+      "after": "c"
+    },
+    {
+      "tag": "equal",
+      "before": "or",
+      "after": "or"
+    },
+    {
+      "tag": "delete",
+      "before": " ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "re",
+      "after": "re"
+    },
+    {
+      "tag": "replace",
+      "before": "ader-life",
+      "after": "c"
+    },
+    {
+      "tag": "equal",
+      "before": "ti",
+      "after": "ti"
+    },
+    {
+      "tag": "replace",
+      "before": "me failure",
+      "after": "ons"
+    },
+    {
+      "tag": "equal",
+      "before": " remain",
+      "after": " remain"
+    },
+    {
+      "tag": "delete",
+      "before": "s",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " preserved",
+      "after": " preserved"
+    },
+    {
+      "tag": "delete",
+      "before": " separately",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": ". ",
+      "after": ". "
+    },
+    {
+      "tag": "replace",
+      "before": "Origi",
+      "after": "Hash-bou"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": "al678 leaves,47",
+      "after": "d"
+    },
+    {
+      "tag": "equal",
+      "before": " actual",
+      "after": " actual"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "GDS"
+    },
+    {
+      "tag": "equal",
+      "before": " a",
+      "after": " a"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "u"
+    },
+    {
+      "tag": "equal",
+      "before": "d",
+      "after": "d"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "it verifies91unchanged primitive local geometries at725"
+    },
+    {
+      "tag": "equal",
+      "before": "de",
+      "after": "de"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "clare"
+    },
+    {
+      "tag": "equal",
+      "before": "d",
+      "after": "d"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " placements,634native"
+    },
+    {
+      "tag": "equal",
+      "before": "via",
+      "after": "via"
+    },
+    {
+      "tag": "replace",
+      "before": " ",
+      "after": "s,47powe"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "arrays,8pow"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "replace",
+      "before": "gi",
+      "after": "rstraps,47l"
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "n",
+      "after": "calbuse"
+    },
+    {
+      "tag": "equal",
+      "before": "s and4",
+      "after": "s and4"
+    },
+    {
+      "tag": "delete",
+      "before": " ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "actualgeometry",
+      "after": "actualgeometry"
+    },
+    {
+      "tag": "delete",
+      "before": " ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "faults",
+      "after": "faults"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "."
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "verified in the hash-bound native audit; the corrected reader retains its Lay",
+      "after": "R"
+    },
+    {
+      "tag": "equal",
+      "before": "out",
+      "after": "out"
+    },
+    {
+      "tag": "delete",
+      "before": " own",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "delete",
+      "before": "rs and all47 added regions equal",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " i",
+      "after": " i"
+    },
+    {
+      "tag": "delete",
+      "before": "ndepen",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "dent",
+      "after": "dent"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ity"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "is explicitly not claimed afte"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " ch"
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "replace",
+      "before": "wGDS",
+      "after": "nged"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "bou",
+      "after": "placeme"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": "daries",
+      "after": "t"
+    },
+    {
+      "tag": "equal",
+      "before": ". Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\np=D/'native",
+      "after": ". Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\np=D/'native"
+    },
+    {
+      "tag": "delete",
+      "before": "03",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "-saved-peer-rx.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(dict(path=str(p),**pin(p))))\n",
+      "after": "-saved-peer-rx.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(dict(path=str(p),**pin(p))))\n"
+    }
+  ]
+}

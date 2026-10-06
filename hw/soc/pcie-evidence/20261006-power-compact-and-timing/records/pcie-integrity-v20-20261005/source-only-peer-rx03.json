@@ -1,0 +1,79 @@
+{
+  "status": "PASS_SOURCE_ONLY_V20_ELIGIBLE_RETIRE",
+  "freeze": {
+    "bytes": 2024,
+    "sha256": "2fef19abf2b24e27a9f5a632717f2aad43a575238ef887f450403e304e5f2661"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 4957,
+    "sha256": "aa4018c982a080b78b65b8181db35c4cf21d112708070cb5ca1fe624ea6e0835"
+  },
+  "source_pins": {
+    "scripts/generate_pcie_integrity_retire_v20.py": {
+      "bytes": 2224,
+      "sha256": "f610595628e585477e24e6643cf60e40acd083c2307d5ecf16edebc59652734c"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v20.py": {
+      "bytes": 11276,
+      "sha256": "65a07fa3ff3011120a607cc86c269de3ae74d7e691ce77361b4762a7a157763b"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v20.v": {
+      "bytes": 194030,
+      "sha256": "6ba21c1ef47d6d67a50aea8cd04567e1d0520af816be3b645edd057d0eaea13d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v20.v": {
+      "bytes": 3324,
+      "sha256": "c0e539323749f769de5868d14ec240a8a98ef2cc943706bca78fe86854354cee"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v20.py": {
+      "bytes": 26183,
+      "sha256": "61e5293365115b6f750de53410043832def16ef777c53a78bec3fddc40fc01e4"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v20": {
+      "bytes": 1528,
+      "sha256": "1425689ed359f0a3de9a46da48b897342a481bb5ab74c115b5da00b2100920c3"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v20_miter.py": {
+      "bytes": 13474,
+      "sha256": "5eb0522b0170619bb5a82aea842af2089bfa7fce2dc29b984d7751753e15743f"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py": {
+      "bytes": 4805,
+      "sha256": "027df76d4645851e193e6eed674a1fc8f0cc1db491b1c62f6f1bac728048d984"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v20_retire.py": {
+      "bytes": 17816,
+      "sha256": "02bcea0e862e1690cef69a780751967c75eb57062bbf08fe2de903ecc256e91a"
+    }
+  },
+  "unchanged_product_source_count": 5,
+  "changed_test_paths": [
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v20.py",
+    "sw/tests/test_pcie_gen3_integrity_v20_miter.py",
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py",
+    "sw/tests/test_pcie_gen3_integrity_v20_retire.py"
+  ],
+  "all_nine_old_source_snapshots_verified": true,
+  "previous_full_source_peer": {
+    "bytes": 6698,
+    "sha256": "ad8a43a71256713be9668fc9a09c11e54f8ed95b45fa431a90c7d345f2cbc04e"
+  },
+  "supporting_methods": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/launch_controls03.py": {
+      "bytes": 3520,
+      "sha256": "44b793371b141a6f77e5190a69ede7ef76710bf9735c9b763b7a1fd480baced7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/detach_controls03.py": {
+      "bytes": 1833,
+      "sha256": "4e7ca23ffbe911a46fde021105324d78db1a9fd9530e881b76f622662f5929ab"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/targeted_controls03.py": {
+      "bytes": 632,
+      "sha256": "b9612300108a497808188983012990bfa35001f9282478d5261e0a83e46b8155"
+    }
+  },
+  "review": "Full four-file diff read. Original14 public cases remain a byte-exact prefix; new15th sends a single six-byte DLLP that fits first beat, keeps that valid beat stalled while committed IDL zero-keep words continue, then releases and checks exact scoreboard, one good/completed packet, one EDS and inactive state. No overflow/halt accepted; minimum held duration and actual reference zero-keep retirement count are mandatory. Reference counter samples real positive-edge retire with committed!=0, read_keep===0, output_valid===1 and ready===0; it does not drive DUT. Only previously undetected retire_never_empty mutant uses new case; other negative stimuli unchanged. Predicate/component proofs and actual passing controls stay retained. Four targeted tests: inverse, failed mutant, full15-case V17 miter, appended direct case. Fresh CPU6/2GiB and original lifecycle retained.",
+  "earlier_result": "Actual initial campaign34PASS/1FAIL is retained. The formerly undetected mutant must now truly fail its selected native test with expected miter diagnostic; source peer does not convert it to PASS. No mapped/timing claim or simulation rerun here.",
+  "limitations": "Source-only approval for targeted tests. Actual held/retirement witnesses, positive scoreboards and fault detection remain unverified until new native controls finish. Two MAX4118 profiles remain outside this campaign."
+}

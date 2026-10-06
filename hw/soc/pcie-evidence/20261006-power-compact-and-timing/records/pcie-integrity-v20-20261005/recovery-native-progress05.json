@@ -1,0 +1,179 @@
+{
+  "status": "DETACHED_RECOVERY_ACTUAL_POST_TOOL_NATIVE_PROGRESS",
+  "utc": "2026-10-05T19:58:03.594469+00:00",
+  "observed": {
+    "status": "RUNNING_preplacement",
+    "controller": {
+      "pid": 137326,
+      "state": "R",
+      "process_group": 137326,
+      "start_ticks": "1827845"
+    },
+    "affinity": [
+      6
+    ],
+    "policy": {
+      "bytes": 8291,
+      "sha256": "8aa3ab3065ff88d308b14f0d0f254342d9bc6257bc5da990b68d3ce7b0d1f1b6"
+    },
+    "stages": [
+      {
+        "name": "read_depth05",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/measure_native_read_depth05.py",
+          "--candidate",
+          "/dev/shm/nssoc-integrity-v20-balanced-map-01/mapped.json",
+          "--rejected",
+          "/dev/shm/nssoc-integrity-v14-balanced-map-01/mapped.json",
+          "--out",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/native-read-depth-comparison.json"
+        ],
+        "started_utc": "2026-10-05T19:57:30.601166+00:00",
+        "status": "COMPLETE",
+        "identity": {
+          "pid": 137327,
+          "state": "R",
+          "process_group": 137327,
+          "start_ticks": "1827856"
+        },
+        "returncode": 0,
+        "finished_utc": "2026-10-05T19:57:32.312783+00:00",
+        "log": {
+          "bytes": 905,
+          "sha256": "846369a5f07bede4ceabf89808070f5df768680165108b45acff32022407cd69"
+        }
+      },
+      {
+        "name": "import",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/balanced_import.py"
+        ],
+        "started_utc": "2026-10-05T19:57:32.744909+00:00",
+        "status": "COMPLETE",
+        "identity": {
+          "pid": 137521,
+          "state": "R",
+          "process_group": 137521,
+          "start_ticks": "1828070"
+        },
+        "returncode": 0,
+        "finished_utc": "2026-10-05T19:57:37.509301+00:00",
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "name": "import_graph_proof",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/prove_balanced_import.py"
+        ],
+        "started_utc": "2026-10-05T19:57:37.510597+00:00",
+        "status": "COMPLETE",
+        "identity": {
+          "pid": 137638,
+          "state": "R",
+          "process_group": 137638,
+          "start_ticks": "1828547"
+        },
+        "returncode": 0,
+        "finished_utc": "2026-10-05T19:57:41.423009+00:00",
+        "log": {
+          "bytes": 61,
+          "sha256": "38def8a7edb6e7e8c763d0e246836035d206a4fe594d6bf0f8e8e92e0b9fa25f"
+        }
+      },
+      {
+        "name": "preplacement",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/balanced_preplacement.py"
+        ],
+        "started_utc": "2026-10-05T19:57:41.424319+00:00",
+        "status": "RUNNING",
+        "identity": {
+          "pid": 137761,
+          "state": "R",
+          "process_group": 137761,
+          "start_ticks": "1828938"
+        }
+      }
+    ],
+    "elapsed_watchdog_seconds": null,
+    "physical_acceptance": false,
+    "utc": "2026-10-05T19:57:41.426485+00:00",
+    "reused_completed_map": {
+      "path": "/dev/shm/nssoc-integrity-v20-balanced-map-01/result.json",
+      "bytes": 5685,
+      "sha256": "b502e05f0e46caa5d5455d32a6d3736930c0fa61ca628c2649e4af39cd119397"
+    },
+    "preserved_failed_continuation": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/continuation-status04.json",
+      "bytes": 2241,
+      "sha256": "678db2c933ec6308c7136294ab1b8af27d6ccb3721617f3599ef8306ff65c943"
+    }
+  },
+  "identities": [
+    {
+      "expected": {
+        "pid": 137326,
+        "state": "R",
+        "process_group": 137326,
+        "start_ticks": "1827845"
+      },
+      "alive": true,
+      "actual": {
+        "start_ticks": "1827845",
+        "ppid": 1,
+        "group": 137326,
+        "CPU_ticks": 57
+      }
+    },
+    {
+      "expected": {
+        "pid": 137327,
+        "state": "R",
+        "process_group": 137327,
+        "start_ticks": "1827856"
+      },
+      "alive": false
+    },
+    {
+      "expected": {
+        "pid": 137521,
+        "state": "R",
+        "process_group": 137521,
+        "start_ticks": "1828070"
+      },
+      "alive": false
+    },
+    {
+      "expected": {
+        "pid": 137638,
+        "state": "R",
+        "process_group": 137638,
+        "start_ticks": "1828547"
+      },
+      "alive": false
+    },
+    {
+      "expected": {
+        "pid": 137761,
+        "state": "R",
+        "process_group": 137761,
+        "start_ticks": "1828938"
+      },
+      "alive": true,
+      "actual": {
+        "start_ticks": "1828938",
+        "ppid": 137326,
+        "group": 137761,
+        "CPU_ticks": 120
+      }
+    }
+  ],
+  "physical_acceptance": false
+}

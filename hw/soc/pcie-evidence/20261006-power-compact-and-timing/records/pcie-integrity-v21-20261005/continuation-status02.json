@@ -1,0 +1,66 @@
+{
+  "status": "FAILED_RETAINED",
+  "controller": {
+    "pid": 205718,
+    "state": "R",
+    "process_group": 205718,
+    "start_ticks": "4020598"
+  },
+  "affinity": [
+    6
+  ],
+  "policy": {
+    "bytes": 7537,
+    "sha256": "688adf4334d92975f11255ea8a0219456ba970e8304e89bb660b8a3ff2234faa"
+  },
+  "stages": [
+    {
+      "name": "map",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v21-20261005/run_balanced_map.py"
+      ],
+      "started_utc": "2026-10-06T02:02:58.096346+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 205733,
+        "state": "R",
+        "process_group": 205733,
+        "start_ticks": "4020605"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-06T02:03:35.744209+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "registered_boundary",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v21-20261005/measure_registered_boundary02.py"
+      ],
+      "started_utc": "2026-10-06T02:03:35.745798+00:00",
+      "status": "FAILED_RETAINED",
+      "identity": {
+        "pid": 205899,
+        "state": "R",
+        "process_group": 205899,
+        "start_ticks": "4024370"
+      },
+      "returncode": 1,
+      "finished_utc": "2026-10-06T02:03:36.855968+00:00",
+      "log": {
+        "bytes": 288,
+        "sha256": "bb466f5453719f01970c7c0cdcba461b36befdcd61d214fbd80c05c81f275afa"
+      }
+    }
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "utc": "2026-10-06T02:03:36.856853+00:00",
+  "error": "AssertionError(('registered_boundary', 1))",
+  "explicit_stop": false,
+  "stop_reason": "('registered_boundary', 1)"
+}

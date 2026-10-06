@@ -1,0 +1,27 @@
+..........................................F..................            [100%]
+=================================== FAILURES ===================================
+_ test_all18_finite_tap_branches_are_clear_of_every_actual_device_escape_lane __
+
+    def test_all18_finite_tap_branches_are_clear_of_every_actual_device_escape_lane():
+        rows = m.devices(ROOT)
+        plan, starts, _ = m.placement_plan(rows)
+        lanes = {i: [] for i in range(3)}
+        for row in rows:
+            rid, x, _ = plan[row["name"]]
+            offsets = {"hbt": [-9, -6, -3], "resistor": [-6, -3], "capacitor": [-9, -5]}[row["kind"]]
+            lanes[rid].extend(x + value for value in offsets)
+        positions = [m.substrate_tap_position(i, starts) for i in range(18)]
+        assert len(set(positions)) == 18
+        for i, (x, y) in enumerate(positions):
+            assert x == 170 + (i % 6) * 120 and y == starts[i // 6] + 4
+            center = x + 1  # Exact native2x2 ptap pin center, independent of escape helpers.
+            assert min(abs(center - lane) for lane in lanes[i // 6]) >= 4
+        # Original compactV1 tap creates a real coincident M4 lane; do not lose
+        # the triggering example merely because the new positions are clear.
+>       assert 181 in lanes[0] and 181 in lanes[2]
+E       assert (181 in [850.0, 853.0, 826.0, 829.0, 802.0, 805.0, ...])
+
+sw/tests/test_pcie_clock_div4_v7_compact_v2_layout.py:436: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_clock_div4_v7_compact_v2_layout.py::test_all18_finite_tap_branches_are_clear_of_every_actual_device_escape_lane
+1 failed, 60 passed in 2.22s

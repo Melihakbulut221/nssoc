@@ -1,0 +1,94 @@
+{
+  "status": "REVIEWED_RX14A_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_FAIL",
+  "router_drc_violations": 0,
+  "same_logical_netlist_after_detailed_route": true,
+  "nominal_rc_cell_corner_slack_ns": {
+    "slow": {
+      "recovery": 0.358675,
+      "setup": -0.402478,
+      "removal": 0.908593,
+      "hold": 0.049182
+    },
+    "typical": {
+      "recovery": 1.66134,
+      "setup": 1.257879,
+      "removal": 0.610976,
+      "hold": 0.077344
+    },
+    "fast": {
+      "recovery": 2.452655,
+      "setup": 2.157137,
+      "removal": 0.436682,
+      "hold": 0.09783
+    }
+  },
+  "SS_setup_improvement_vs_published13_ns": 0.039125,
+  "unannotated_drivers": 78,
+  "unannotated_classification": "All78 unconnected outputs of input-only CTS dummy load cells; all78 clock-input pins independently located on correct extracted SPEF nets. Zero partially unannotated drivers.",
+  "saved_canonical_binary_kernel_receipt_revalidated": {
+    "states": 1804,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5443,
+    "canonical_nodes": 39119,
+    "mismatches": [],
+    "matched": 5443,
+    "elapsed_seconds": 1.1227790560005815,
+    "logic_cell_census": {
+      "gold": {
+        "$_NOT_": 12395,
+        "$_OR_": 10578,
+        "$_AND_": 14458,
+        "$_XOR_": 72,
+        "$_DFF_PP0_": 1804,
+        "$scopeinfo": 20285
+      },
+      "gate": {
+        "$_NOT_": 12395,
+        "$_OR_": 10578,
+        "$_AND_": 14458,
+        "$_XOR_": 72,
+        "$_DFF_PP0_": 1804,
+        "$scopeinfo": 20813
+      }
+    },
+    "status": "PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY",
+    "scope": "Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.",
+    "rules": [
+      "exact primitive semantics",
+      "commutative binary operand order",
+      "double Boolean inversion",
+      "literal 0/1 negation",
+      "associative Boolean operator grouping",
+      "AND/OR idempotence",
+      "collision-free tuple interning"
+    ]
+  },
+  "saved_native_port_XML_cases_recounted": 6,
+  "saved_actual_kernel_fault_controls": 10,
+  "full_compiled_program_gzip_readback": {
+    "raw": {
+      "bytes": 60673605,
+      "sha256": "8b2711c8a1212f7c0879b41902540405d5b864f00d6bb5516c791f4efa271f9d"
+    },
+    "gzip": {
+      "bytes": 9389978,
+      "sha256": "92147e11d92a734e9ecd1f641c00161cb53786cabe72aedbd016b4964d79365b"
+    },
+    "full_decompressed_readback": {
+      "bytes": 60673605,
+      "sha256": "8b2711c8a1212f7c0879b41902540405d5b864f00d6bb5516c791f4efa271f9d"
+    }
+  },
+  "peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/review.json",
+    "bytes": 36982,
+    "sha256": "6df13b2de96a2ae5c7b2eff90c13564c286601fe65855546f68c41eff0eee625"
+  },
+  "all_nominal_cell_corner_timing_nonnegative": false,
+  "max_slew_cap_violations_reported": 0,
+  "qualified_rc": false,
+  "physical_acceptance": false,
+  "constraints": "Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagatedclock, no false/multicycle exceptions. Nominal extractedRC reused across three cell corners; not distinctRC process corners.",
+  "scope": "Default150 standalone byte receiver, not strictwidePCS/currentwidepacket receiver. Complete raw repair14a/GRT/proof/port/DRT/RC captures retained. Existing actual proof execution binding revalidated on saved expanded native graphs; proof fault controls inspected but not rerun. New DRT01 and RC01 native executions completed; originalgold expansion reused exactly from completedRX11; this packaging does not rerun tools, no fullchip/foundry/PDN/PHY signoff. Earlier failures and original sources remain unchanged."
+}

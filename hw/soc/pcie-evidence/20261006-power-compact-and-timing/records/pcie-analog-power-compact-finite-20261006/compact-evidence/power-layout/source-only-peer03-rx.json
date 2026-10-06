@@ -1,0 +1,99 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7_POWER_V2_AUDIT_V3",
+  "freeze": {
+    "bytes": 93629,
+    "sha256": "9357282c68898e1a54017c4c6284c4238b003b85bb127b5ed1ee7fef289d9ace"
+  },
+  "source_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/make_pcie_clock_div4_v7_power_v2.py": {
+      "bytes": 26993,
+      "sha256": "303a79555db00ddcd5b100ed073b43ea72a398333d458776d9d01713c5e97d34"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7_power_v2.py": {
+      "bytes": 31279,
+      "sha256": "1d83e2f2e6eaf2c3b177b922feff040f1221424b8ff9fdfad1bef8786b8fa8ac"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/audit_pcie_clock_div4_v7_power_v2.py": {
+      "bytes": 14985,
+      "sha256": "c4c22f16f89d3302fc7b8ef9facfa3c5d9acaf350db99b229c339e4ab5670364"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_clock_div4_v7_power_v2_layout.py": {
+      "bytes": 14170,
+      "sha256": "8944394ebcd54e3bc67ac7a638a00a311c9f1d8cfbf5fcbc13b4127be3cc3801"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_clock_div4_v7_power_v2_native.py": {
+      "bytes": 1904,
+      "sha256": "3ba1d87438e245b00bb49abd55586e35af90120ff2b96141bef6f7821c820817"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/audit_pcie_clock_div4_v7_power_v3.py": {
+      "bytes": 18178,
+      "sha256": "a1a1e4deaf92e48baa55a6e7d6393e6eef2c0627b68ab4b4daf464746a7def2b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7_power_v2_audit_v3.py": {
+      "bytes": 31336,
+      "sha256": "6ddec61517ac7c0cfd3333a888e4c790e62f1036dd315a7d48caf84834a4c463"
+    }
+  },
+  "launcher": {
+    "bytes": 3950,
+    "sha256": "06ecf9bfdaa0568624999aed040fb6c44f57205025ad30f991e35972b3744ff2"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 4834,
+    "sha256": "7c226c732e692103a62227278521c8bdfcd1ecc794da0f9974b6d763cd516013"
+  },
+  "prepare_launch": {
+    "bytes": 2484,
+    "sha256": "e2010a08ce069b1fd9748a5c11a5e62ca800ae6720ebe9ec6e7ed1473a0293eb"
+  },
+  "prior_source_peer": {
+    "bytes": 4989,
+    "sha256": "f5056bd4bedc9718da024d13a06718203f4fffaa67026d7b4124973d640e1406"
+  },
+  "source_input_count": 341,
+  "complete_three_source_inverse": true,
+  "unchanged_auditor_functions": [
+    "pin",
+    "require",
+    "compare_regions",
+    "via_template",
+    "compare_instances"
+  ],
+  "unchanged_checker_functions": [
+    "require",
+    "atomic",
+    "lifecycle",
+    "limits",
+    "scratch_bytes",
+    "guard_resources",
+    "execute",
+    "fault_reference",
+    "mutation_source",
+    "validate_expanded_devices",
+    "validate_lvs",
+    "lef_script"
+  ],
+  "saved_layout_files": {
+    "result.json": {
+      "bytes": 238637,
+      "sha256": "bf34cad3dbdee3f443c275f50fb7008d612f1f970b6c3c63abd51df2582513be"
+    },
+    "nssoc_clock_div4_v7_power_v2_layout.lef": {
+      "bytes": 2245,
+      "sha256": "890dde5d1f88f6ef7ab86ed3f434a7c67847b77789ccb4a365f8b8b7bf550a98"
+    },
+    "nssoc_clock_div4_v7_power_v2_layout.gds": {
+      "bytes": 118282,
+      "sha256": "663b60fc14cc9c8e2b4d9a5a758aee6bcd61bdf307c6b3a69a28e63bc470340c"
+    },
+    "schematic.cir": {
+      "bytes": 7384,
+      "sha256": "4df724e5c13ed571a2eaa7864dede5960d86cc1a3589777e183fd6909a6fe81a"
+    }
+  },
+  "review": "Read complete three-file delta and new raw-GDS boundary parser. Both recursive drawing and instance readers now return their Layout owners, retained as four live variables for the full audit. No geometry/template/instance-bijection predicate is removed. New independent big-endian GDS record reader accepts only rectangular BOUNDARY elements in the selected native via cells, checks complete records, expected field set, closed five-point rectangle and exact class set; it rejects PATH/SREF/AREF/TEXT/BOX forms. All47 added instance local layer Regions must equal those actual raw GDS boundaries. Four geometry faults and every previous strict quantity remain unchanged. New checker changes only auditor/self-method binding; all other helper ASTs exact. Same-PID launch uses full four-file saved-layout hash inventory and fresh checks02, omits generation. Runtime addendum and90-file selected PDK prefix remain pinned.",
+  "actual_prior_result": "Native physical generation exit0, then first auditor failed before any DRC/LVS stage; old failure, diagnostics and source bytes remain immutable. GDS118282bytes SHA663b60fc14cc9c8e2b4d9a5a758aee6bcd61bdf307c6b3a69a28e63bc470340c is reused exactly.",
+  "native_executed": false,
+  "limitations": "Source-only reader correction approval. The lifetime explanation is supported by saved raw-boundary evidence but successful corrected native audit/DRC/LVS remains to be measured. No geometry or simulation rerun by reviewer; no RC, loaded455, fullPHY or manufacturing acceptance."
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair02_resume03.py",
+      "bytes": 6177,
+      "sha256": "af3852dd03f6adf3a6333b8de87e32aeb2e94fa31dba8fb3e017a5af621e6955"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair03.py",
+      "bytes": 6225,
+      "sha256": "8e57f2263544f8feb8b0d9db7732364ceca8be9e674c3a35e1fb5c599a69e2a7"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact detailed wires and nominal unqualified OpenRCX model; no signoff claim.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,resource,subprocess,time,os,signal,shutil,ast,importlib.util\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact detailed wires and nominal unqualified OpenRCX model; no signoff claim.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,resource,subprocess,time,os,signal,shutil,ast,importlib.util\n"
+      },
+      {
+        "tag": "replace",
+        "before": "ROOT=Path('/home/hasanmelih/Documents/ChatGPT/nnsoc');B=Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-02');OUT=Path('/dev/shm/nssoc-tx-path-v4-repair02-drt-03')\n",
+        "after": "ROOT=Path('/home/hasanmelih/Documents/ChatGPT/nnsoc');B=Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03');OUT=Path('/dev/shm/nssoc-tx-path-v4-repair03-drt-01')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "APP=ROOT/'hw/soc/tools/openroad-26Q2-1164/run-openroad'\ndef on_signal(n,f):raise InterruptedError(f'Parent signal{n}')\nfor sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,on_signal)\nwhile shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\n",
+        "after": "APP=ROOT/'hw/soc/tools/openroad-26Q2-1164/run-openroad'\ndef on_signal(n,f):raise InterruptedError(f'Parent signal{n}')\nfor sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,on_signal)\nwhile shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "PORT=Path('/dev/shm/nssoc-tx-path-v4-repair02-physical-replay-01/result.json')\nassert json.loads(PORT.read_text())['status']=='PASS_EXACT_BOUND_TX02_PHYSICAL_NETLIST_PORT_REPLAY'\ne=json.loads(Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence/equivalence.json').read_text()); assert e['states']==3850 and e['matched']==e['targets']==11680 and not e['mismatches']\nf=json.loads(Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence/mutation-controls.json').read_text()); assert len(f['controls'])==10\n",
+        "after": "PORT=Path('/dev/shm/nssoc-tx-path-v4-repair03-physical-replay-01/result.json')\nassert json.loads(PORT.read_text())['status']=='PASS_EXACT_BOUND_TX03_PHYSICAL_NETLIST_PORT_REPLAY'\ne=json.loads(Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence/equivalence.json').read_text()); assert e['states']==3850 and e['matched']==e['targets']==11680 and not e['mismatches']\nf=json.loads(Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence/mutation-controls.json').read_text()); assert len(f['controls'])==10\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert json.loads(PORT.read_text())['tests']=={'passed':3,'failed':0,'skipped':0}\ndef pin(p):\n with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\n",
+        "after": "assert json.loads(PORT.read_text())['tests']=={'passed':3,'failed':0,'skipped':0}\ndef pin(p):\n with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "gate_path=Path(__file__).resolve().parent/'proof_gate_repair02.py'\ngate_spec=importlib.util.spec_from_file_location('tx02_drt_proof_gate',gate_path)\n",
+        "after": "gate_path=Path(__file__).resolve().parent/'proof_gate_repair03.py'\ngate_spec=importlib.util.spec_from_file_location('tx03_drt_proof_gate',gate_path)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "gate=importlib.util.module_from_spec(gate_spec);gate_spec.loader.exec_module(gate)\nbinding=gate.verify_binding()\nassert json.loads(PORT.read_text())['inputs']=={p:pin(Path(p)) for p in json.loads(PORT.read_text())['inputs']}\nOUT.mkdir()\ndef limit():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(int(2.5*1024**3),int(2.5*1024**3)))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\nlibs=[x for x in (B/'repair.tcl').read_text().splitlines() if x.startswith('read_liberty ')]\nlines=['set_thread_count 1','define_corners slow typical fast',*libs,f'read_db {{{B/\"repaired.odb\"}}}',f'read_sdc {{{B/\"repaired.sdc\"}}}', 'set_propagated_clock [all_clocks]','set_wire_rc -signal -layer Metal2','set_wire_rc -clock -layer Metal4','set_routing_layers -signal Metal2-Metal5 -clock Metal2-Metal5','set_global_routing_layer_adjustment Metal2-Metal5 0.30', 'set b [ord::get_db_block]', 'foreach name {zero_ one_} { set n [$b findNet $name]; if {$n != \"NULL\"} { if {[llength [$n getITerms]] || [llength [$n getBTerms]]} { error \"Unexpected used supply constant alias $name\" }; puts \"PRUNE_VERIFIED_EMPTY_ALIAS $name\"; odb::dbNet_destroy $n } }',f'detailed_route -output_drc {{{OUT/\"router-drc.rpt\"}}} -output_guide_coverage {{{OUT/\"coverage.csv\"}}} -verbose 1',f'write_db {{{OUT/\"routed.odb\"}}}',f'write_def {{{OUT/\"routed.def\"}}}',f'write_verilog {{{OUT/\"routed.v\"}}}',f'write_sdc {{{OUT/\"routed.sdc\"}}}','puts NATIVE_DETAILED_ROUTING_COMPLETE']\n(OUT/'route.tcl').write_text('\\n'.join(lines)+'\\n')\n",
+        "after": "gate=importlib.util.module_from_spec(gate_spec);gate_spec.loader.exec_module(gate)\nbinding=gate.verify_binding()\nassert json.loads(PORT.read_text())['inputs']=={p:pin(Path(p)) for p in json.loads(PORT.read_text())['inputs']}\nOUT.mkdir()\ndef limit():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(int(2.5*1024**3),int(2.5*1024**3)))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\nlibs=[x for x in (B/'repair.tcl').read_text().splitlines() if x.startswith('read_liberty ')]\nlines=['set_thread_count 1','define_corners slow typical fast',*libs,f'read_db {{{B/\"repaired.odb\"}}}',f'read_sdc {{{B/\"repaired.sdc\"}}}', 'set_propagated_clock [all_clocks]','set_wire_rc -signal -layer Metal2','set_wire_rc -clock -layer Metal4','set_routing_layers -signal Metal2-Metal5 -clock Metal2-Metal5','set_global_routing_layer_adjustment Metal2-Metal5 0.30', 'set b [ord::get_db_block]', 'foreach name {zero_ one_} { set n [$b findNet $name]; if {$n != \"NULL\"} { if {[llength [$n getITerms]] || [llength [$n getBTerms]]} { error \"Unexpected used supply constant alias $name\" }; puts \"PRUNE_VERIFIED_EMPTY_ALIAS $name\"; odb::dbNet_destroy $n } }',f'detailed_route -output_drc {{{OUT/\"router-drc.rpt\"}}} -output_guide_coverage {{{OUT/\"coverage.csv\"}}} -verbose 1',f'write_db {{{OUT/\"routed.odb\"}}}',f'write_def {{{OUT/\"routed.def\"}}}',f'write_verilog {{{OUT/\"routed.v\"}}}',f'write_sdc {{{OUT/\"routed.sdc\"}}}','puts NATIVE_DETAILED_ROUTING_COMPLETE']\n(OUT/'route.tcl').write_text('\\n'.join(lines)+'\\n')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "files=[Path(__file__),PORT,gate_path,gate.E/'proof-execution-binding.json',*gate.input_paths(),APP,ROOT/'hw/soc/tools/openroad-26Q2-1164/root/usr/bin/openroad',Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence/equivalence.json'),Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence/mutation-controls.json'),OUT/'route.tcl',B/'repaired.odb',B/'repaired.v',B/'repaired.sdc']+[Path(x.split('{')[1].split('}')[0]) for x in libs]\nr={'status':'RUNNING','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'inputs':{str(p):pin(p) for p in files},'command':[str(APP),'-exit',str(OUT/'route.tcl')],'full_physical_acceptance':False,'qualified_rc':False,'scope':'TX candidate02: six measured driver-load isolations, nine buf1->buf4, one hold buffer following actualTX01 nominalRC. Fullnative3850state/11680function binaryproof+10kernel+10bindingcontrols+3physicalportsPASS. Fresh26Q2DRT;actualnominalRCstillrequired;GRTsetup+.684261 recovery+.149536 hold+.065914. InheritedGPIinterpreterpathwarningpreserved;nocleanlogclaim;noqualifiedRC/PDN/fullchip.','elapsed_watchdog_seconds':None,'address_space_limit_bytes':int(2.5*1024**3),'allowed_cpu_affinity':sorted(os.sched_getaffinity(0))}\n",
+        "after": "files=[Path(__file__),PORT,gate_path,gate.E/'proof-execution-binding.json',*gate.input_paths(),APP,ROOT/'hw/soc/tools/openroad-26Q2-1164/root/usr/bin/openroad',Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence/equivalence.json'),Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence/mutation-controls.json'),OUT/'route.tcl',B/'repaired.odb',B/'repaired.v',B/'repaired.sdc']+[Path(x.split('{')[1].split('}')[0]) for x in libs]\nr={'status':'RUNNING','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'inputs':{str(p):pin(p) for p in files},'command':[str(APP),'-exit',str(OUT/'route.tcl')],'full_physical_acceptance':False,'qualified_rc':False,'scope':'TX candidate03: seven measured complex/XOR driver-load isolations and three buffer upsizes following actualTX02 nominalRC. Existing hold repair preserved. Fullnative3850state/11680function binaryproof+10kernel+10bindingcontrols+3physicalportsPASS. Fresh26Q2DRT;actualnominalRCstillrequired;FreshGRT estimates retained separately; not routed timing. InheritedGPIinterpreterpathwarningpreserved;nocleanlogclaim;noqualifiedRC/PDN/fullchip.','elapsed_watchdog_seconds':None,'address_space_limit_bytes':int(2.5*1024**3),'allowed_cpu_affinity':sorted(os.sched_getaffinity(0))}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n",
+        "after": "def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "# Exact failure-only helper already exercised by the TX02 preflight.\ntree=ast.parse((Path(__file__).resolve().parent/'postroute_repair02.py').read_text())\n",
+        "after": "# Exact failure-only helper already exercised by the TX03 preflight.\ntree=ast.parse((Path(__file__).resolve().parent/'postroute_repair03.py').read_text())\n"
+      },
+      {
+        "tag": "equal",
+        "before": "fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group')\n",
+        "after": "fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[fn],type_ignores=[]),str(Path(__file__).resolve().parent/'postroute_repair02.py'),'exec'),ns)\n",
+        "after": "ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[fn],type_ignores=[]),str(Path(__file__).resolve().parent/'postroute_repair03.py'),'exec'),ns)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "save();t=time.monotonic();p=None;complete=False\ntry:\n with (OUT/'native.log').open('x') as log:\n  try:\n   old_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,old_mask)\n   r['pid']=p.pid;save()\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.25)\n   r['returncode']=p.wait()\n   if r['returncode']!=0:raise RuntimeError(f\"Native DRT exit {r['returncode']}\")\n   complete=True\n  finally:\n   if p is not None and not complete:ns['stop_failed_group'](p)\n r['elapsed_seconds']=time.monotonic()-t\n assert r['inputs']=={str(p):pin(p) for p in files}\n assert gate.verify_binding()==binding\n assert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (OUT/'native.log').read_text()\n assert (OUT/'router-drc.rpt').stat().st_size==0\n assert (OUT/'routed.v').read_bytes()==(B/'repaired.v').read_bytes()\n",
+        "after": "save();t=time.monotonic();p=None;complete=False\ntry:\n with (OUT/'native.log').open('x') as log:\n  try:\n   old_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,old_mask)\n   r['pid']=p.pid;save()\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.25)\n   r['returncode']=p.wait()\n   if r['returncode']!=0:raise RuntimeError(f\"Native DRT exit {r['returncode']}\")\n   complete=True\n  finally:\n   if p is not None and not complete:ns['stop_failed_group'](p)\n r['elapsed_seconds']=time.monotonic()-t\n assert r['inputs']=={str(p):pin(p) for p in files}\n assert gate.verify_binding()==binding\n assert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (OUT/'native.log').read_text()\n assert (OUT/'router-drc.rpt').stat().st_size==0\n assert (OUT/'routed.v').read_bytes()==(B/'repaired.v').read_bytes()\n"
+      },
+      {
+        "tag": "replace",
+        "before": " r['status']='COMPLETE_TX02_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n",
+        "after": " r['status']='COMPLETE_TX03_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "except BaseException as e:r.update(status='FAILED_RETAINED',error=repr(e));raise\nfinally:\n r['outputs']={p.name:pin(p) for p in OUT.iterdir() if p.is_file() and p.name!='result.json'};save()\n",
+        "after": "except BaseException as e:r.update(status='FAILED_RETAINED',error=repr(e));raise\nfinally:\n r['outputs']={p.name:pin(p) for p in OUT.iterdir() if p.is_file() and p.name!='result.json'};save()\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02_resume03.py",
+      "bytes": 5228,
+      "sha256": "b24d086741f136cd202814f4f5e586cd438932db9d2935e0fedf590023fffc31"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair03.py",
+      "bytes": 5228,
+      "sha256": "245f40a02171461f6d3a712378427c25db6c1ae452efb84516027354c72708f4"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact detailed wires and nominal unqualified OpenRCX model; no signoff claim.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,resource,subprocess,time,os,signal,shutil,ast\ndef interrupted(signum,frame):raise InterruptedError(f'Signal{signum}')\nfor sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,interrupted)\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact detailed wires and nominal unqualified OpenRCX model; no signoff claim.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,resource,subprocess,time,os,signal,shutil,ast\ndef interrupted(signum,frame):raise InterruptedError(f'Signal{signum}')\nfor sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,interrupted)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "ROOT=Path('/home/hasanmelih/Documents/ChatGPT/nnsoc');B=Path('/dev/shm/nssoc-tx-path-v4-repair02-drt-03');OUT=Path('/dev/shm/nssoc-tx-path-v4-repair02-detailed-rc-02');assert shutil.disk_usage('/dev/shm').free>=1024**3;OUT.mkdir()\n",
+        "after": "ROOT=Path('/home/hasanmelih/Documents/ChatGPT/nnsoc');B=Path('/dev/shm/nssoc-tx-path-v4-repair03-drt-01');OUT=Path('/dev/shm/nssoc-tx-path-v4-repair03-detailed-rc-01');assert shutil.disk_usage('/dev/shm').free>=1024**3;OUT.mkdir()\n"
+      },
+      {
+        "tag": "equal",
+        "before": "PDK=Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2')\nAPP=ROOT/'hw/soc/tools/openroad-26Q2-1164/run-openroad';RULES=PDK/'libs.tech/librelane/IHP_rcx_patterns.rules'\ndef pin(p):\n with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\ndef limit():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(int(2.5*1024**3),int(2.5*1024**3)))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\nassert (B/'router-drc.rpt').stat().st_size==0\n",
+        "after": "PDK=Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2')\nAPP=ROOT/'hw/soc/tools/openroad-26Q2-1164/run-openroad';RULES=PDK/'libs.tech/librelane/IHP_rcx_patterns.rules'\ndef pin(p):\n with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\ndef limit():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(int(2.5*1024**3),int(2.5*1024**3)))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\nassert (B/'router-drc.rpt').stat().st_size==0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert (B/'routed.v').read_bytes()==Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-02/repaired.v').read_bytes()\n",
+        "after": "assert (B/'routed.v').read_bytes()==Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03/repaired.v').read_bytes()\n"
+      },
+      {
+        "tag": "equal",
+        "before": "old=json.loads((B/'result.json').read_text())\nassert old['inputs']=={p:pin(Path(p)) for p in old['inputs']}\n",
+        "after": "old=json.loads((B/'result.json').read_text())\nassert old['inputs']=={p:pin(Path(p)) for p in old['inputs']}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert old['status']=='COMPLETE_TX02_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n",
+        "after": "assert old['status']=='COMPLETE_TX03_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert old['outputs']=={p:pin(B/p) for p in old['outputs']}\nlibs=[x for x in (B/'route.tcl').read_text().splitlines() if x.startswith('read_liberty ')]\nlines=['set_thread_count 1','define_corners slow typical fast',*libs,f'read_db {{{B/\"routed.odb\"}}}',f'read_sdc {{{B/\"routed.sdc\"}}}', 'set_propagated_clock [all_clocks]','define_process_corner -ext_model_index 0 typical',f'extract_parasitics -ext_model_file {{{RULES}}} -coupling_threshold 0 -cc_model 10 -context_depth 5 -no_merge_via_res',f'write_spef {{{OUT/\"routed.spef\"}}}']\nfor corner in ('slow','typical','fast'):lines += [f'read_spef -corner {corner} {{{OUT/\"routed.spef\"}}}']\nlines += ['report_parasitic_annotation -report_unannotated','report_worst_slack -max','report_worst_slack -min','report_tns','report_check_types -max_slew -max_capacitance -violators']\nfor corner in ('slow','typical','fast'):\n for direction in ('max','min'):lines += [f'puts EXTRACTED_NOMINAL_RC_{corner}_{direction}',f'report_checks -corner {corner} -path_delay {direction} -group_path_count 3 -fields {{slew cap fanout}} -digits 6']\nlines+=['puts NATIVE_NOMINAL_RC_SCREEN_COMPLETE']\n(OUT/'extract.tcl').write_text('\\n'.join(lines)+'\\n')\n",
+        "after": "assert old['outputs']=={p:pin(B/p) for p in old['outputs']}\nlibs=[x for x in (B/'route.tcl').read_text().splitlines() if x.startswith('read_liberty ')]\nlines=['set_thread_count 1','define_corners slow typical fast',*libs,f'read_db {{{B/\"routed.odb\"}}}',f'read_sdc {{{B/\"routed.sdc\"}}}', 'set_propagated_clock [all_clocks]','define_process_corner -ext_model_index 0 typical',f'extract_parasitics -ext_model_file {{{RULES}}} -coupling_threshold 0 -cc_model 10 -context_depth 5 -no_merge_via_res',f'write_spef {{{OUT/\"routed.spef\"}}}']\nfor corner in ('slow','typical','fast'):lines += [f'read_spef -corner {corner} {{{OUT/\"routed.spef\"}}}']\nlines += ['report_parasitic_annotation -report_unannotated','report_worst_slack -max','report_worst_slack -min','report_tns','report_check_types -max_slew -max_capacitance -violators']\nfor corner in ('slow','typical','fast'):\n for direction in ('max','min'):lines += [f'puts EXTRACTED_NOMINAL_RC_{corner}_{direction}',f'report_checks -corner {corner} -path_delay {direction} -group_path_count 3 -fields {{slew cap fanout}} -digits 6']\nlines+=['puts NATIVE_NOMINAL_RC_SCREEN_COMPLETE']\n(OUT/'extract.tcl').write_text('\\n'.join(lines)+'\\n')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "files=[Path(__file__),Path(__file__).parent/'postroute_repair02.py',APP,APP.parent/'root/usr/bin/openroad',RULES,OUT/'extract.tcl',B/'routed.odb',B/'routed.v',B/'routed.sdc',B/'native.log',B/'router-drc.rpt',B/'result.json']+[Path(x.split('{')[1].split('}')[0]) for x in libs]\n",
+        "after": "files=[Path(__file__),Path(__file__).parent/'postroute_repair03.py',APP,APP.parent/'root/usr/bin/openroad',RULES,OUT/'extract.tcl',B/'routed.odb',B/'routed.v',B/'routed.sdc',B/'native.log',B/'router-drc.rpt',B/'result.json']+[Path(x.split('{')[1].split('}')[0]) for x in libs]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "r={'status':'RUNNING','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'inputs':{str(p):pin(p) for p in files},'command':[str(APP),'-exit',str(OUT/'extract.tcl')],'full_physical_acceptance':False,'qualified_rc':False,'scope':'Detailed signal wires, nominal PDK RC reused across three cell corners, no RC process corners/PDN or signoff','source_netlist_byte_identical_to_previously_port_replayed_and_binary_proved':True,'elapsed_watchdog_seconds':None,'address_space_limit_bytes':int(2.5*1024**3)}\ndef save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n",
+        "after": "r={'status':'RUNNING','utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'inputs':{str(p):pin(p) for p in files},'command':[str(APP),'-exit',str(OUT/'extract.tcl')],'full_physical_acceptance':False,'qualified_rc':False,'scope':'Detailed signal wires, nominal PDK RC reused across three cell corners, no RC process corners/PDN or signoff','source_netlist_byte_identical_to_previously_port_replayed_and_binary_proved':True,'elapsed_watchdog_seconds':None,'address_space_limit_bytes':int(2.5*1024**3)}\ndef save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "tree=ast.parse((Path(__file__).parent/'postroute_repair02.py').read_text())\n",
+        "after": "tree=ast.parse((Path(__file__).parent/'postroute_repair03.py').read_text())\n"
+      },
+      {
+        "tag": "equal",
+        "before": "fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group')\n",
+        "after": "fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[fn],type_ignores=[]),str(Path(__file__).parent/'postroute_repair02.py'),'exec'),ns)\n",
+        "after": "ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[fn],type_ignores=[]),str(Path(__file__).parent/'postroute_repair03.py'),'exec'),ns)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "r['allowed_cpu_affinity']=sorted(os.sched_getaffinity(0))\nsave();t=time.monotonic();p=None;complete=False\ntry:\n with (OUT/'native.log').open('x') as log:\n  try:\n   old_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,old_mask)\n   r['pid']=p.pid;save()\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   r['returncode']=p.wait()\n   if r['returncode']!=0:raise RuntimeError(f\"Native RC exit {r['returncode']}\")\n   complete=True\n  finally:\n   if p is not None and not complete:ns['stop_failed_group'](p)\n r['elapsed_seconds']=time.monotonic()-t\n assert r['returncode']==0\n assert r['inputs']=={str(p):pin(p) for p in files}\n assert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in (OUT/'native.log').read_text()\n r['status']='COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED'\nexcept BaseException as e:r.update(status='FAILED_RETAINED',error=repr(e));raise\nfinally:\n r['outputs']={p.name:pin(p) for p in OUT.iterdir() if p.is_file() and p.name!='result.json'};save()\n",
+        "after": "r['allowed_cpu_affinity']=sorted(os.sched_getaffinity(0))\nsave();t=time.monotonic();p=None;complete=False\ntry:\n with (OUT/'native.log').open('x') as log:\n  try:\n   old_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,old_mask)\n   r['pid']=p.pid;save()\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   r['returncode']=p.wait()\n   if r['returncode']!=0:raise RuntimeError(f\"Native RC exit {r['returncode']}\")\n   complete=True\n  finally:\n   if p is not None and not complete:ns['stop_failed_group'](p)\n r['elapsed_seconds']=time.monotonic()-t\n assert r['returncode']==0\n assert r['inputs']=={str(p):pin(p) for p in files}\n assert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in (OUT/'native.log').read_text()\n r['status']='COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED'\nexcept BaseException as e:r.update(status='FAILED_RETAINED',error=repr(e));raise\nfinally:\n r['outputs']={p.name:pin(p) for p in OUT.iterdir() if p.is_file() and p.name!='result.json'};save()\n"
+      }
+    ]
+  }
+]
