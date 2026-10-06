@@ -37,6 +37,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/134-pcie-divider-wire-and-rx13-timing.md](134-pcie-divider-wire-and-rx13-timing.md) records the divider's actual wire RC checks and RX13's improved but still failing routed setup timing.
 [docs/135-npu-write-frontier-trace.md](135-npu-write-frontier-trace.md) corrects the native EVQ callback parser and records the source-bound expanded NPU write-path diagnostic.
 [docs/136-pcie-loaded-divider-and-write-frontier.md](136-pcie-loaded-divider-and-write-frontier.md) preserves the measured loaded-divider and V19 timing failures, RX14a prerequisites and interrupted PLL recovery.
+[docs/137-npu-initialization-reconvergence.md](137-npu-initialization-reconvergence.md) identifies the native NPU clear-cone failure and records the Boolean-equivalent mapped repair, local controls and required full-chip boot.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

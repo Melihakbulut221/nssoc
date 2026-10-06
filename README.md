@@ -28,7 +28,7 @@ silicon testing and qualification. Each result below records progress toward tha
 ## Recorded verification evidence
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
-These selected milestones retain their original revision and scope; they are not a combined signoff result. [Loaded-divider and timing repair evidence](docs/136-pcie-loaded-divider-and-write-frontier.md) records the latest delivered physical failures and repair prerequisites. [NPU write-frontier capture](docs/135-npu-write-frontier-trace.md) records the current whole-chip boot diagnosis.
+These selected milestones retain their original revision and scope; they are not a combined signoff result. [Loaded-divider and timing repair evidence](docs/136-pcie-loaded-divider-and-write-frontier.md) records the latest delivered physical failures and repair prerequisites. [NPU initialization repair](docs/137-npu-initialization-reconvergence.md) records the reproduced clear-cone failure, locally tested mapped repair and required full-chip boot.
 
 <!-- project-status:start -->
 | Area | Measured status | Evidence |
