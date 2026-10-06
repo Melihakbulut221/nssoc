@@ -1,0 +1,40 @@
+{
+  "status": "SOURCE_ONLY_V22_NATIVE_LIFECYCLE_FINDINGS",
+  "policy": {
+    "bytes": 6271,
+    "sha256": "0481d2e69e3ff0cdd1b0fddcb4ba1771512cdde3e87fb1ec425d7e50d68fb1c6"
+  },
+  "detacher": {
+    "bytes": 2099,
+    "sha256": "211ebb280cbacdecdd46fde30014e90a52f794c6eafa00a3b80a658716f87cee"
+  },
+  "full_byte_bridges": 8,
+  "method_pins_rehashed": 15,
+  "source_pins_rehashed": 9,
+  "findings": [
+    {
+      "id": "TERMINAL_RESOURCE_FLOOR",
+      "files": [
+        "run_balanced_map.py",
+        "balanced_import.py",
+        "balanced_preplacement.py"
+      ],
+      "detail": "Each launcher checks free shared scratch only while child.poll() is None. A short child can cross the floor and exit between polls, then be accepted without a terminal resource check."
+    },
+    {
+      "id": "REAPED_GROUP_SIGNAL",
+      "files": [
+        "run_balanced_map.py",
+        "balanced_import.py",
+        "balanced_preplacement.py"
+      ],
+      "detail": "Exception handlers call killpg(pid) without checking the child is still live and has the exact captured birth/group identity. An exception after poll/wait reaps the child can signal an unowned or recycled process group. Capture identity with launch signals blocked and check live birth/group before cleanup."
+    }
+  ],
+  "functional_review": "All eight complete bridges reconstructed both ways; exact V22 composite 38/35/3 gate and 17-case/8 cache-witness gate. Actual corrected V21 descriptor Q/D boundary, complete pin graph proof, fixed 4ns three-corner constraints and all timing reductions preserved. No product acceptance relaxation.",
+  "scope": "Source-only review; no reviewed producer, map, STA, controls or native execution.",
+  "method": {
+    "bytes": 2733,
+    "sha256": "67847f1b54fcc646d9c6b2d25b5ba944e12ea7401e7affe8f9befd54d38e562a"
+  }
+}

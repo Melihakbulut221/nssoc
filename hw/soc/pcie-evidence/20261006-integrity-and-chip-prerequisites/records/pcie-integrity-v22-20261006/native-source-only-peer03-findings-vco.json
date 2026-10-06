@@ -1,0 +1,22 @@
+{
+  "status": "SOURCE_ONLY_V22_RECOVERY_OUTPUT_COLLISION",
+  "policy": {
+    "bytes": 9755,
+    "sha256": "863200cfdb8e822950c1532bda3024442b3bf2784aa1e860a6fb51acf59adb56"
+  },
+  "findings": [
+    {
+      "id": "EXISTING_FAILED_PROOF_LOG_COLLISION",
+      "method": {
+        "bytes": 4889,
+        "sha256": "c8d40e8db845315876c59896e32b39fb6496ed6bd81935d6ada37258539900a1"
+      },
+      "existing_log": {
+        "bytes": 221,
+        "sha256": "52a5b3851b7866ecca4bc04aaacab232ddebadd103fd107350e069dca6d38408"
+      },
+      "detail": "Recovery retains stage name import_graph_proof and opens B/(name+'.controller.log') with exclusive mode x. That original failed-dispatch log exists and is pinned by the recovery basis; the new proof would fail FileExistsError before execution. Use a fresh recovery namespace without editing old logs."
+    }
+  ],
+  "scope": "Source-only finding before recovery launch. Existing map/import output hashes can remain exact; no reruns required."
+}

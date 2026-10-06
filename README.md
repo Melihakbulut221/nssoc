@@ -28,7 +28,7 @@ silicon testing and qualification. Each result below records progress toward tha
 ## Recorded verification evidence
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
-These selected milestones retain their original revision and scope; they are not a combined signoff result. [Power layout and timing convergence](docs/138-pcie-power-layout-and-timing-convergence.md) records the supply-headroom repair, compact divider DRC/LVS, routed setup failures and failed PLL time-step comparison. [NPU initialization repair](docs/137-npu-initialization-reconvergence.md) records the reproduced clear-cone failure, locally tested mapped repair and required full-chip boot.
+These selected milestones retain their original revision and scope; they are not a combined signoff result. [Power layout and timing convergence](docs/138-pcie-power-layout-and-timing-convergence.md) records the supply-headroom repair, compact divider DRC/LVS, routed setup failures and failed PLL time-step comparison. [NPU initialization repair](docs/137-npu-initialization-reconvergence.md) records the reproduced clear-cone failure, locally tested mapped repair and required full-chip boot. The [receiver and chip prerequisite record](docs/140-pcie-integrity-and-chip-prerequisites.md) retains the V22 setup failure and adds a local matched physical runner gated by complete proof, exact SRAM mapping and successful repaired boot.
 
 <!-- project-status:start -->
 | Area | Measured status | Evidence |
