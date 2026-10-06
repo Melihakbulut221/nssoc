@@ -45,6 +45,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/142-chip-placement-and-routed-receiver.md](142-chip-placement-and-routed-receiver.md) records the SRAM template-import fix, matched fresh chip placement and the routed receiver improvement with remaining setup violations.
 [docs/143-pcie-divider-and-routed-transmitter.md](143-pcie-divider-and-routed-transmitter.md) records the loaded-divider margin failure, V23 timing screen, completed V18 MAX4118 regression and routed transmitter setup improvement.
 [docs/144-pcie-publication-recovery-and-incomplete-pll.md](144-pcie-publication-recovery-and-incomplete-pll.md) records the tested publisher retry correction, recovered raw part and preserved incomplete PLL run.
+[docs/145-pcie-divider-time-step-and-prefix-timing.md](145-pcie-divider-time-step-and-prefix-timing.md) records the finer-step loaded-divider point pass, unresolved numerical convergence and rejected V24 timing regression.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

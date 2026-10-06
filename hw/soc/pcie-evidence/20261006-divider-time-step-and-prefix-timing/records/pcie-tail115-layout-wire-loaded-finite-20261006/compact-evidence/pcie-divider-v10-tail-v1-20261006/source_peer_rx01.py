@@ -1,0 +1,284 @@
+"""Independent source, frozen raw GDS arithmetic and saved-control review only."""
+import ast
+from collections import Counter, defaultdict
+import datetime
+from decimal import Decimal
+import hashlib
+import json
+from pathlib import Path
+import re
+import struct
+import xml.etree.ElementTree as ET
+
+R = Path.cwd()
+B = Path(__file__).resolve().parent
+
+
+def pin(path):
+    path = Path(path)
+    with path.open('rb') as stream:
+        return dict(bytes=path.stat().st_size, sha256=hashlib.file_digest(stream, 'sha256').hexdigest())
+
+
+def funcs(path):
+    return {n.name: ast.dump(n, include_attributes=False) for n in ast.parse(Path(path).read_text()).body if isinstance(n, (ast.FunctionDef, ast.ClassDef))}
+
+
+def bridge(row):
+    before, after = row['before'], row['after']
+    for item in (before, after):
+        assert pin(item['path']) == {k: item[k] for k in ('bytes', 'sha256')}
+    old = ''.join(x['before'] for x in row['opcodes'])
+    new = ''.join(x['after'] for x in row['opcodes'])
+    assert old.encode() == Path(before['path']).read_bytes()
+    assert new.encode() == Path(after['path']).read_bytes()
+    for item in row['opcodes']:
+        if item['tag'] == 'equal':
+            assert item['before'] == item['after']
+    return dict(before=before, after=after, changed_blocks=sum(x['tag'] != 'equal' for x in row['opcodes']))
+
+
+freeze_path = B / 'source-freeze02.json'
+assert pin(freeze_path) == dict(bytes=206632, sha256='0baa41cb27a4175dcedc1bc794cb4679d62a0373f3e5ac61f13f61285b590d4c')
+f = json.loads(freeze_path.read_text())
+assert len(f['inputs']) == 771 and len(f['product_sources']) == 6
+for path, value in f['inputs'].items():
+    assert pin(path) == value, path
+for path, value in f['product_sources'].items():
+    assert pin(path) == value and f['inputs'][path] == value
+assert pin(B / 'launch01.py') == f['launcher']
+oldfreeze=json.loads((B/'source-freeze01.json').read_text())
+changed=[p for p,v in oldfreeze['inputs'].items() if f['inputs'].get(p)!=v]
+assert changed==[str(B/'freeze01.log')]
+assert oldfreeze['product_sources']==f['product_sources'] and oldfreeze['launcher']==f['launcher']
+preparer=(B/'prepare_launch02.py').read_text()
+assert preparer.replace('source-freeze02.json','source-freeze01.json').replace('assert peer[\'freeze\']==pin(fpath)\n','')==(B/'prepare_launch01.py').read_text()
+bridges = [bridge(x) for x in json.loads((B / 'source-bridge01.json').read_text())]
+assert len(bridges) == 8
+old_check = R / 'hw/soc/flow/check_pcie_clock_div4_v9_bias_v1.py'
+new_check = R / 'hw/soc/flow/check_pcie_clock_div4_v10_tail_v1.py'
+old_functions, new_functions = funcs(old_check), funcs(new_check)
+same_functions = sorted(n for n in old_functions if old_functions[n] == new_functions.get(n))
+assert same_functions == sorted(f['inherited_exact_checker_functions'])
+assert set(old_functions) == set(new_functions) == set(same_functions) | {'main'}
+old_make = R / 'hw/soc/flow/make_pcie_clock_div4_v9_bias_v1.py'
+new_make = R / 'hw/soc/flow/make_pcie_clock_div4_v10_tail_v1.py'
+make_inverse = new_make.read_text().replace('v10_tail_v1', 'v9_bias_v1').replace('V10', 'V9').replace('v10', 'v9')
+# Whole bytes are already reconstructed above. Independently check all pure
+# generation helpers, including coordinate/escape planner and device routing.
+make_same = sorted(n for n,v in funcs(old_make).items() if funcs(new_make).get(n) == v)
+assert set(make_same) == set(funcs(old_make)) - {'flatten', 'main'}
+
+# Independent SPICE expansion, without importing or executing the maker.
+source_constants = {}
+for node in ast.parse(new_make.read_text()).body:
+    if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == 'SOURCES':
+        source_constants = ast.literal_eval(node.value)
+assert len(source_constants) == 4
+defs = {}
+current = None
+for path, expected in source_constants.items():
+    assert pin(R / path)['sha256'] == expected
+    for line in (R / path).read_text().splitlines():
+        if not line.strip() or line.lstrip().startswith('*'):
+            continue
+        tokens = line.upper().split()
+        if tokens[0] == '.SUBCKT':
+            assert current is None and tokens[1] not in defs
+            current = tokens[1]
+            defs[current] = (tokens[2:], [])
+        elif tokens[0] == '.ENDS':
+            assert tokens == ['.ENDS', current]
+            current = None
+        else:
+            assert current is not None
+            defs[current][1].append(tokens)
+    assert current is None
+
+
+def expand(module, identity, ports, ancestors=()):
+    assert module not in ancestors
+    formal, lines = defs[module]
+    assert len(formal) == len(ports)
+    nodes = dict(zip(formal, ports))
+    result = {}
+    for tokens in lines:
+        name = identity + '__' + tokens[0]
+        first_parameter = next((i for i,t in enumerate(tokens) if '=' in t), len(tokens))
+        model = tokens[first_parameter-1]
+        nets = [nodes.get(n, identity+'__'+n) for n in tokens[1:first_parameter-1]]
+        if model in defs:
+            result.update(expand(model, name, nets, ancestors+(module,)))
+        else:
+            params = dict(t.split('=') for t in tokens[first_parameter:])
+            assert name not in result
+            result[name] = dict(model=model, nets=nets, params=params)
+    return result
+
+
+graph = expand('NSSOC_CLOCK_DIV4_HBT_V10', 'DIV', ['CLKP','CLKN','QP','QN','DIV_AVDD','AVSS','SUB'])
+assert len(graph) == 73 and Counter(x['model'] for x in graph.values()) == {'NPN13G2':34,'RPPD':33,'CAP_CMIM':6}
+base = Path('/dev/shm/nssoc-div4-v9-bias-v1-layout-01')
+base_metadata_path = base / 'result.json'
+metadata = json.loads(base_metadata_path.read_text())
+rows = {x['name']:x for x in metadata['instances']}
+assert len(rows) == 91 and len(graph) == 73
+changes = []
+for name, record in graph.items():
+    old = rows[name]
+    assert record['nets'] == old['nets']
+    if old['kind'] == 'hbt':
+        assert record['model'] == 'NPN13G2' and record['params'] == {'NX':str(old['nx'])}
+    else:
+        params = {'W':f"{old['width_um']:g}U",'L':f"{old['length_um']:g}U"}
+        if old['kind'] == 'resistor':
+            params.update(B='0',SW_ET='1')
+        if name == 'DIV__XSECOND__XBIAS':
+            assert params == {'W':'1U','L':'12.7U','B':'0','SW_ET':'1'}
+            params['L'] = '11.5U'
+            changes.append(name)
+        assert record['params'] == params, name
+assert sorted(changes) == ['DIV__XSECOND__XBIAS']
+assert all(graph[n]['params'] == {'W':'24U','L':'24U'} for n in ('DIV__XCP','DIV__XCN'))
+assert sum(r['kind']=='substrate_tap' for r in rows.values()) == 18
+
+core=(R/'hw/soc/analog/pcie/clock_div2_hbt.spice').read_text()
+actual=(R/'hw/soc/analog/pcie/clock_div4_hbt_v10.spice').read_text()
+parent=(R/'hw/soc/analog/pcie/clock_div4_hbt_v9.spice').read_text()
+old_body=core[core.index('.subckt '):]
+clone=old_body.replace('nssoc_clock_div2_hbt','nssoc_clock_div2_tail_v10')
+assert clone.count('XBIAS avdd ref sub rppd w=1u l=12.7u b=0 sw_et=1')==1
+clone=clone.replace('XBIAS avdd ref sub rppd w=1u l=12.7u b=0 sw_et=1','XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1')
+expected=parent.replace('nssoc_clock_div4_hbt_v9','nssoc_clock_div4_hbt_v10').replace('XSECOND ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt','XSECOND ckp ckn qp qn avdd avss sub nssoc_clock_div2_tail_v10').replace('.subckt nssoc_clock_div4_hbt_v10',clone+'\n.subckt nssoc_clock_div4_hbt_v10')
+meaningful=lambda text:[line for line in text.splitlines() if line and not line.startswith('*')]
+assert meaningful(actual)==meaningful(expected)
+assert graph['DIV__XFIRST__XCORE__XBIAS']['params']['L']=='12.7U'
+assert all(graph[n]['params']['L']=='8U' for n in ('DIV__XDP','DIV__XDN'))
+oldaudit=funcs(R/'hw/soc/flow/audit_pcie_clock_div4_v9_bias_v1.py')
+newaudit=funcs(R/'hw/soc/flow/audit_pcie_clock_div4_v10_tail_v1.py')
+assert set(oldaudit)==set(newaudit)
+assert {name for name in oldaudit if oldaudit[name]!=newaudit[name]}=={'rppd_template','compare_intrinsics','main'}
+
+# Minimal stdlib GDS BOUNDARY/SREF decoder. No KLayout/EDA invocation.
+gds = base / 'nssoc_clock_div4_v9_bias_v1_layout.gds'
+raw = gds.read_bytes()
+cells, cell, element = {}, None, None
+at = 0
+while at < len(raw):
+    length, kind, datatype = struct.unpack('>HBB', raw[at:at+4])
+    assert length >= 4 and at+length <= len(raw)
+    data = raw[at+4:at+length]
+    if kind == 6:
+        cell = data.rstrip(b'\0').decode(); assert cell not in cells
+        cells[cell] = []
+    elif kind in (8,9,10,11,12,45):
+        element = dict(kind=kind)
+    elif element is not None:
+        if kind in (13,14,22):
+            element[{13:'layer',14:'datatype',22:'texttype'}[kind]] = struct.unpack('>h',data)[0]
+        elif kind == 18:
+            element['name'] = data.rstrip(b'\0').decode()
+        elif kind == 16:
+            values = struct.unpack('>'+'i'*(len(data)//4),data)
+            element['xy'] = list(zip(values[::2],values[1::2]))
+        elif kind in (26,27,28):
+            element[kind] = data.hex()
+        elif kind == 17:
+            cells[cell].append(element);element=None
+    at += length
+assert at == len(raw)
+top = cells['nssoc_clock_div4_v9_bias_v1_layout']
+assert sum(r['kind']==10 for r in top) == 725
+
+
+def rectangle(x0,y0,x1,y1):
+    return [(x0,y0),(x0,y1),(x1,y1),(x1,y0),(x0,y0)]
+
+
+def expected_rppd(length):
+    # Exact nanometer coordinates independently derived from the frozen PDK:
+    # 0.86um bar (not a contact array), 0.16um cut, 0.07um poly/metal overlap,
+    # 0.20um sal gap, 0.18um implant and 0.05um metal endcap.
+    r = {(128,0):[rectangle(0,0,1000,length)], (52,0):[rectangle(0,0,1000,length)],
+         (28,0):[rectangle(-200,0,1200,length)],
+         (14,0):[rectangle(-180,-610,1180,length+610)],
+         (111,0):[rectangle(-200,0,1200,length),rectangle(-180,-610,1180,0),rectangle(-180,length,1180,length+610)],
+         (5,0):[rectangle(0,-430,1000,0),rectangle(0,length,1000,length+430)],
+         (6,0):[rectangle(70,-360,930,-200),rectangle(70,length+200,930,length+360)],
+         (8,0):[rectangle(20,-430,980,-130),rectangle(20,length+130,980,length+430)]}
+    r[(8,2)] = r[(8,0)]
+    return r
+
+
+def inside(point, polygon):
+    x,y = point; hit = False
+    for a,b in zip(polygon, polygon[1:]+polygon[:1]):
+        assert a[0]==b[0] or a[1]==b[1], 'Only actual orthogonal resistor polygons'
+        if a[0] == b[0] and min(a[1],b[1]) < y < max(a[1],b[1]) and x < a[0]:
+            hit = not hit
+    return hit
+
+
+def equal_regions(a,b):
+    assert set(a) == set(b)
+    for layer in a:
+        xs=sorted({v[0] for p in a[layer]+b[layer] for v in p})
+        ys=sorted({v[1] for p in a[layer]+b[layer] for v in p})
+        for left,right in zip(xs,xs[1:]):
+            for low,high in zip(ys,ys[1:]):
+                point=((left+right)/2,(low+high)/2)
+                assert any(inside(point,p) for p in a[layer]) == any(inside(point,p) for p in b[layer]), (layer,point)
+
+
+raw_shapes = {}
+for name in sorted(changes):
+    row = rows[name]
+    location = tuple(round((p+d)*1000) for p,d in zip(row['placement_um'], metadata['origin_translation_um']))
+    matches = [r for r in top if r['kind']==10 and r['xy']==[location] and r['name'].split('$')[0]=='rppd']
+    assert len(matches)==1
+    ref=matches[0]
+    assert not any(k in ref for k in (26,27,28)), 'Native actual resistor uses translation only'
+    polygons=defaultdict(list)
+    for el in cells[ref['name']]:
+        assert el['kind'] in (8,12), 'Only native leaf polygons and text'
+        if el['kind']==8:
+            polygons[(el['layer'],el['datatype'])].append(el['xy'])
+    assert len(polygons)==9
+    equal_regions(polygons,expected_rppd(12700))
+    raw_shapes[name]=dict(cell=ref['name'],placement_dbu=location,layers=len(polygons),polygons=sum(map(len,polygons.values())))
+
+saved = json.loads((B/'saved-rppd01/read.log').read_text().splitlines()[-1])
+assert saved['status']=='PASS_SAVED_NATIVE_L127_REFERENCE_EXACT_INDEPENDENT_RECTANGLES'
+for p,v in saved['inputs'].items():assert pin(p)==v
+for name, layers in saved['geometry'].items():
+    assert name in raw_shapes and len(layers)==9
+    assert all(r['actual']==r['expected'] and not r['difference'] for r in layers.values())
+owner=json.loads((B/'saved-rppd01/read.owned.json').read_text())
+assert owner['status']=='HEALTHY' and owner['cleanup'] is None
+assert all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] and x['returncode']==0 for x in owner['processes'])
+xml=ET.parse(B/'source-controls01.xml').getroot()
+cases=list(xml.iter('testcase'))
+assert len(cases)==64 and all(not any(c.find(n) is not None for n in ('failure','error','skipped')) for c in cases)
+owned_controls=[]
+for path in sorted((B/'source-controls01').rglob('*.owned.json')):
+    row=json.loads(path.read_text())
+    assert row['elapsed_watchdog_seconds'] is None
+    assert all(p['status'] in ('REAPED_NO_LIVE_MEMBERS','FAILURE_REAPED') for p in row['processes'])
+    owned_controls.append(dict(path=str(path),pin=pin(path),status=row['status']))
+assert len(owned_controls)==6
+assert not Path(f['layout']).exists() and not Path(f['checks']).exists()
+
+report=dict(status='PASS_SOURCE_ONLY_DIVIDER_V10_TAIL_V1',findings=[],utc=datetime.datetime.now(datetime.UTC).isoformat(),
+    freeze=pin(freeze_path),source_pins=f['product_sources'],launcher=pin(B/'launch01.py'),preparer=pin(B/'prepare_launch02.py'),method=pin(Path(__file__)),
+    frozen_inputs_verified=len(f['inputs']),full_byte_bridges=bridges,checker_identical_functions=same_functions,maker_identical_helpers=make_same,
+    graph=dict(independently_expanded=73,hbts=34,rppd=33,cmim=6,finite_contacts_retained=18,changed_only=sorted(changes),old_length_um=12.7,new_length_um=11.5,width_um=1,cap24_retained=['DIV__XCP','DIV__XCN'],other_intrinsics_unchanged=90),
+    geometry=dict(independent_raw_gds_baseline=pin(gds),baseline_metadata=pin(base_metadata_path),native_translations=raw_shapes,proof='Stdlib GDS SREF+BOUNDARY decode, the targeted actual L12.7 cell selected by declared physical translation; independent nanometer polygon-union equality across all nine layers. PDK straight/bar-contact branch read directly. No PCell or native tool was invoked.',
+       reviewed_new_audit='Only the changed RPPD native L11.5 geometry must equal independent Decimal templates. Both Cap24 independent MIM templates still required; all other primitive geometry exact, all634 via geometry multiset exact,47 raw-GDS-bound upper arrays,8 straps,47 buses,91 identities/725 leaves. Ten actual geometry mutations remain mandatory at new native runtime.',
+       placement='Length-aware existing planner moves only resistor origin with length while retaining top envelope; all route changes require fresh DRC/LVS/RC. No full-route identity or electrical improvement inferred.'),
+    saved_controls=dict(actual_cases=64,failed=0,skipped=0,xml=pin(B/'source-controls01.xml'),log=pin(B/'source-controls01.log'),owned=owned_controls,rerun=False),
+    lifecycle='Whole checker/controller/preparer read. Twelve checker functions, including complete/teardown resource and stop guards, byte-AST identical to frozen Bias8. Same CPU10/2GiB/1GiB entry/512MiB floor/80MiB own scratch/24MiB reserve/5s cleanup/no healthy timeout. Same-PID exec checkpoint, exact peer/products/runtime pins and fresh roots. Author confirmed detached entry sanitizes all3 Python override names plus token names; existing frozen child environment cannot reintroduce removed variables.',
+    retained_freeze_finding=pin(B/'source-peer-findings01-rx.json'),freeze_correction=pin(B/'source-supplement02.json'),
+    native_gate='Original21 actual native main DRC560 categories, strict deep+flat74-device/7-port LVS,8 reference faults,6 physical faults,offgrid and3 LEF gates unchanged. New extraction must demonstrate actual L11.5 reference and both retained L8 passive census with m1/b0/ps0u and preserved exact MIM A/P and18 contact class.',
+    scope='Source-only plus saved baseline/raw-control readback. No generator, KLayout, OpenROAD, DRC, LVS, source/control test, simulator or reviewed method executed. Parent Bias8 division failure retained. Fresh V10 native/RC/loaded455 outcomes remain unknown.')
+out=B/'source-only-peer01-rx.json';assert not out.exists();out.write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(dict(status=report['status'],peer=pin(out),raw_baseline_shapes=raw_shapes,frozen_input_count=771,saved_cases=64),indent=2))

@@ -1,0 +1,70 @@
+{
+  "status": "PRE_NATIVE_SOURCE_FREEZE_ADDITIVE_BINDING_REQUIRED",
+  "freeze": {
+    "bytes": 16885,
+    "sha256": "9e0f9271fdc43e8301293521bee04edfdc75d23fd668f81a437703b16d38ad9d"
+  },
+  "findings": [
+    {
+      "issue": "Actual unchanged reference RTL/helper and selected Python anchors are absent from69-source freeze.",
+      "affected_actual_paths": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v": {
+          "bytes": 3324,
+          "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+          "bytes": 3009,
+          "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress_integrity_v11.v": {
+          "bytes": 3605,
+          "sha256": "258db2e080cae28b0bbfc9180bfb0238c17c16307d3bcad0cb4376955b331cde"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+          "bytes": 2147,
+          "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+          "bytes": 4628,
+          "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+          "bytes": 6139,
+          "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+          "bytes": 1383,
+          "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_integrity_ingress_v11.py": {
+          "bytes": 2671,
+          "sha256": "b3ee05c26b9f0a6107c093cf99cdaf020e337110bb5c32d7961ed4fcca5857ab"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v23": {
+          "bytes": 1528,
+          "sha256": "6aae070d15d47010f1cd62437d8d222dc27f01a06a6367f6707905f206ff8b87"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx_integrity_v23.py": {
+          "bytes": 11276,
+          "sha256": "d078650a4316f8483edb66b5ace141881af809c946028a39e9cba5808d005565"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v23.py": {
+          "bytes": 31920,
+          "sha256": "78f063e64ef1264d7bf46dc7bcc088e47e1af8168e3226b71624a180bd6d5a50"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python": {
+          "bytes": 36334720,
+          "sha256": "69cd0ecc9c42bf57f58db7457e218256e4c6342eee9d8e60cefedb0f2fc4db99"
+        },
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/pyvenv.cfg": {
+          "bytes": 254,
+          "sha256": "9d3df262664913419f00576d64891c0359a74844a45543aa24aa9022e23b6621"
+        }
+      },
+      "impact": "A drift between peer and launch would not be rejected by frozen-launch input checks; per-stage records pin observed bytes only after launch.",
+      "requested": "Preserve original freeze; additive freeze and launch hash selection only. Bind these unchanged actual dependencies and source bridge metadata; no product/control rerun."
+    }
+  ],
+  "product_scope": "Read full new generator/context observer/matrix packing/burst and actual targeted mutants, no product issue found so far; full peer not issued.",
+  "reviewed_execution": "No reviewed producer/tests/HDL/native executed."
+}

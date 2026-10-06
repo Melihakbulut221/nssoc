@@ -1,0 +1,80 @@
+{
+  "status": "PASS_SOURCE_GRAPH_ONLY_EXACT_ONE_SECOND_STAGE_REFERENCE_DELTA",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-wire-v1-20261006/reference_rows-fragment.py": {
+      "bytes": 4909,
+      "sha256": "b50b608cc221960e1a9db51bad2e99e2000c648f12cb91b715d69ef66c490329"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_divider_bias8_v1_wire_v1.py": {
+      "bytes": 23863,
+      "sha256": "40c2fa9998e55cce789816231840c1c09ff50266958a9e13dd191130b6e587a3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v10.spice": {
+      "bytes": 1799,
+      "sha256": "b3fcfce801776215938cd7130153e5bc43ccf378706b50fcd1138e2af6dfd6b0"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v9.spice": {
+      "bytes": 1409,
+      "sha256": "5fc944cb5683dda328e6b3aedd21b2e206f03575a232394e8cb528d280e69c9a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v8.spice": {
+      "bytes": 1388,
+      "sha256": "87a9c9af0df878208e644987b3318f715d1c54e4b60bbce6944a6af21c2c86dc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_hbt.spice": {
+      "bytes": 891,
+      "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+    }
+  },
+  "changed": [
+    "xchain.xdiv.xsecond.xbias"
+  ],
+  "before": {
+    "path": "xchain.xdiv.xsecond.xbias",
+    "model": "rppd",
+    "nets": [
+      "dvdd",
+      "xchain.xdiv.xsecond.ref",
+      "0"
+    ],
+    "params": {
+      "w": "1u",
+      "l": "12.7u",
+      "b": "0",
+      "sw_et": "1"
+    }
+  },
+  "after": {
+    "path": "xchain.xdiv.xsecond.xbias",
+    "model": "rppd",
+    "nets": [
+      "dvdd",
+      "xchain.xdiv.xsecond.ref",
+      "0"
+    ],
+    "params": {
+      "w": "1u",
+      "l": "11.5u",
+      "b": "0",
+      "sw_et": "1"
+    }
+  },
+  "source_devices": 73,
+  "unchanged_records": 72,
+  "first_stage_reference": {
+    "path": "xchain.xdiv.xfirst.xcore.xbias",
+    "model": "rppd",
+    "nets": [
+      "dvdd",
+      "xchain.xdiv.xfirst.xcore.ref",
+      "0"
+    ],
+    "params": {
+      "w": "1u",
+      "l": "12.7u",
+      "b": "0",
+      "sw_et": "1"
+    }
+  },
+  "scope": "Pure frozen source expansion only; no native wire model generation, simulation, physical acceptance or control replay."
+}

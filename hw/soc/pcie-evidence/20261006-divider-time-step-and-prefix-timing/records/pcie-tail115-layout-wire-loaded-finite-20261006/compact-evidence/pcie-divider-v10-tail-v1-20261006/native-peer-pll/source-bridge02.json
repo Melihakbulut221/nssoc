@@ -1,0 +1,12 @@
+{
+  "parent": {
+    "bytes": 13474,
+    "sha256": "a6352670447751dddb30492454cf800d3c7141562fc2ba1a33e630a95c2fab21"
+  },
+  "candidate": {
+    "bytes": 13922,
+    "sha256": "4e8062474a43973f85aee9fbebd92dd5a29d7f7035218933afaf6832e2f23188"
+  },
+  "full_diff": "--- \n+++ \n@@ -28,10 +28,17 @@\n for name,digest in layout['input_sha256'].items():assert pin(name)['sha256']==digest\n for name,digest in layout['output_sha256'].items():assert pin(L/name)['sha256']==digest\n launch=j(D/'launch-manifest01.json');assert {str(p.relative_to(L)):pin(p) for p in L.rglob('*') if p.is_file()}=={str(Path(p).relative_to(L)):v for p,v in ready['closed_native_files'].items() if Path(p).is_relative_to(L)}\n-freeze=j(D/'source-freeze01.json');source=freeze['product_sources']\n+freeze=j(D/'source-freeze02.json');source=freeze['product_sources']\n+assert pin(D/'source-freeze02.json')==ready['source_freeze']\n+oldfreeze=j(D/'source-freeze01.json')\n+assert oldfreeze['product_sources']==source\n+assert [n for n,v in oldfreeze['inputs'].items()if freeze['inputs'].get(n)!=v]==[str(D/'freeze01.log')]\n for n,v in freeze['inputs'].items():assert pin(n)==v\n for n,v in source.items():assert pin(n)==v\n peer=j(D/'source-only-peer01-rx.json');assert peer['findings']==[] and peer['source_pins']==source\n+assert peer['freeze']==pin(D/'source-freeze02.json')\n+assert pin(D/'source-peer-findings01-rx.json')==peer['retained_freeze_finding']\n+assert pin(D/'source-supplement02.json')==peer['freeze_correction']\n geometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_TAIL115_ONE_RPPD_DELTA_BIAS8_CAP24_AND_TEN_GEOMETRY_CONTROLS'\n for name,value in geometry['inputs'].items():assert pin(name)==value\n assert geometry['physical_primitives']==91 and geometry['native_instances']==725 and geometry['native_vias']==634\n",
+  "reason": "Reviewer initially selected historical freeze01. Actual native authoritative freeze02 already closes its captured-open-log metadata finding before launch. All strict rehashes retained; no product/native changes or rerun."
+}

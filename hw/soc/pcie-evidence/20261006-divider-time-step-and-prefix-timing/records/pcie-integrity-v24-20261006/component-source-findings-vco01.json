@@ -1,0 +1,26 @@
+{
+  "status": "SOURCE_REVIEW_FINDINGS_BEFORE_V24_COMPONENT_NATIVE",
+  "freeze": {
+    "bytes": 9800,
+    "sha256": "df7f2750ada7b0d97011f46316f3d113a1632e67812369a4c4dca51c6b54a43b"
+  },
+  "launcher": {
+    "bytes": 3367,
+    "sha256": "e055b82fb787c87348e918970264d8cd2753a0ccd6807562bea17461a5f9dcd7"
+  },
+  "detacher": {
+    "bytes": 2042,
+    "sha256": "1e448a286bd1d55484259a6198e318f3f30dcca7d59b3f80eeb7570a1e0dcf54"
+  },
+  "findings": [
+    {
+      "id": "selected_runtime_binding",
+      "detail": "simulate() selects iverilog/vvp via shutil.which, but current launcher hashes a frozen tool collection without binding the selected resolved executable paths to those exact binaries."
+    },
+    {
+      "id": "shared_scratch_floor",
+      "detail": "New component launcher contains no entry, continuous or terminal shared-memory free-space check. ProcessOwner.check checks cancellation only; inherited owner.wait does not impose a resource floor."
+    }
+  ],
+  "scope": "Read-only full component/HDL/test/source review; no reviewed producer, HDL, or controls executed. Product relation appears consistent with the declared matrix derivation; actual exhaustive proof remains pending."
+}

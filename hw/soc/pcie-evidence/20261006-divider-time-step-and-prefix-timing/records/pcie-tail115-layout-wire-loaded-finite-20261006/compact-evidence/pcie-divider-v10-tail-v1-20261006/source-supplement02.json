@@ -1,0 +1,29 @@
+{
+  "status": "PRESERVE_ORIGINAL_FREEZE_AND_COMPLETE_STDOUT_PIN",
+  "old": {
+    "bytes": 205207,
+    "sha256": "3f5e2bd9a620bdb76fee6c52426c295f2a329ff0df20b5cc1a90af3e21e2c90f"
+  },
+  "only_changed_prior_pin": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/freeze01.log",
+    "before": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "after": {
+      "bytes": 100,
+      "sha256": "f1fbbdd8bdb35bc7055fc5d279a7c33c647f21a0994690c533824356d303bb6b"
+    }
+  },
+  "preparer_before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/prepare_launch01.py",
+    "bytes": 1731,
+    "sha256": "bb69c85bcacfd5677dfb907f37fc327a9f2683f58d10953067875b59953a2c54"
+  },
+  "preparer_after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/prepare_launch02.py",
+    "bytes": 1765,
+    "sha256": "be5dbff38b4381950f94a2e118f658f8d4bd5c57284fd8046ba95418738ae5b2"
+  },
+  "complete_diff": "--- \n+++ \n@@ -7,9 +7,10 @@\n  p=Path(p)\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n \n-fpath=B/'source-freeze01.json';peerpath=B/'source-only-peer01-rx.json'\n+fpath=B/'source-freeze02.json';peerpath=B/'source-only-peer01-rx.json'\n f=json.loads(fpath.read_text());peer=json.loads(peerpath.read_text())\n assert peer['status']=='PASS_SOURCE_ONLY_DIVIDER_V10_TAIL_V1' and peer['findings']==[]\n+assert peer['freeze']==pin(fpath)\n assert peer['source_pins']==f['product_sources'] and peer['launcher']==pin(B/'launch01.py')\n assert f['inputs']=={p:pin(p) for p in f['inputs']}\n assert f['python'] in f['inputs'] and f['pdk'].endswith('/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2')\n"
+}
