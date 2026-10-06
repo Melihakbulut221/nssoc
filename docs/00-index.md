@@ -47,6 +47,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/144-pcie-publication-recovery-and-incomplete-pll.md](144-pcie-publication-recovery-and-incomplete-pll.md) records the tested publisher retry correction, recovered raw part and preserved incomplete PLL run.
 [docs/145-pcie-divider-time-step-and-prefix-timing.md](145-pcie-divider-time-step-and-prefix-timing.md) records the finer-step loaded-divider point pass, unresolved numerical convergence and rejected V24 timing regression.
 [docs/146-pcie-local-pll-capture.md](146-pcie-local-pll-capture.md) records durable local waveform capture, independent network publication and 69 passing current controls; PLL acquisition remains open.
+[docs/147-pcie-loaded-divider-numerical-agreement.md](147-pcie-loaded-divider-numerical-agreement.md) records passing fixed adjacent-step limits for the loaded divider, complete raw replay and public multipart evidence; PLL lock and PHY qualification remain open.
 [docs/148-pcie-local-publisher-log-race.md](148-pcie-local-publisher-log-race.md) records the independently tested publisher log-race repair, 31 passing current controls and retained original failure; the native simulation continued.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 

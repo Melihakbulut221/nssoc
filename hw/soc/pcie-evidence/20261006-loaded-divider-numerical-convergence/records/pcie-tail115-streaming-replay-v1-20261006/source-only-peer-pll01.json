@@ -1,0 +1,127 @@
+{
+  "status": "PASS_SOURCE_ONLY_BOUNDED_SAVED_RAW_MEMMAP_READER",
+  "reviewer": "PLL agent",
+  "freeze": {
+    "bytes": 178087,
+    "sha256": "a131b301cffe20cbd94643e09c7d05d1e87fc151fc27f3f7815436ec0a5dabf7"
+  },
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-streaming-replay-v1-20261006/raw_table01.py": {
+      "bytes": 4080,
+      "sha256": "1c134ae1a0b65a669aa312c2393e3d25b5933c09ed2fd90d6207c90b76f97fa1"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-streaming-replay-v1-20261006/test_reader01.py": {
+      "bytes": 6725,
+      "sha256": "1a9c4cc2f6f97ef8eff669532930f45d281a249a547d75c329829795f659ec5c"
+    }
+  },
+  "controls": {
+    "bytes": 10645,
+    "sha256": "44737b986dde40148b2c5fecced5d9bb442663d5234d23ae273cbbd1e02f2aa7"
+  },
+  "pins_rechecked": 726,
+  "actual_saved_controls": 20,
+  "control_names": [
+    "complete_wire_saved_equivalence",
+    "complete_halfstep_saved_equivalence",
+    "complete_quarterstep_saved_equivalence",
+    "small_positive",
+    "wrong_compressed_pin",
+    "wrong_raw_digest",
+    "wrong_payload_digest",
+    "wrong_raw_count",
+    "wrong_column_labels",
+    "wrong_column_index",
+    "wrong_trailer",
+    "extra_trailer",
+    "short_payload",
+    "nonfinite_payload",
+    "scratch_cap",
+    "SSD_entry_floor",
+    "SSD_continuous_floor",
+    "SSD_terminal_floor",
+    "SSD_post_context_floor",
+    "consumer_exception_cleanup"
+  ],
+  "native_saved_bytes": [
+    {
+      "label": "wire",
+      "result": {
+        "bytes": 426335,
+        "sha256": "04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7"
+      },
+      "compressed": {
+        "bytes": 48558969,
+        "sha256": "d9e004391d25273a08b8f86db7bcd5e7cf73a54c615e83c614fbae481520fe3c"
+      },
+      "status": "FAIL_NATIVE_LOADED_FEEDBACK_SCREEN",
+      "rows": 6817,
+      "columns": 957,
+      "raw_bytes": 52235634,
+      "raw_sha256": "41f5a24e9c1bfb7fa8b02af8d3580ffc39cbaeb6a8caca7c7785072120f2d0f0",
+      "payload_bytes": 52190952,
+      "payload_sha256": "dc662fa1292f95954471e3248dd19ef3035e049c91744c6861cc3b9aa7f81726",
+      "device_bounds": 455,
+      "contacts": 31
+    },
+    {
+      "label": "halfstep",
+      "result": {
+        "bytes": 426324,
+        "sha256": "cd144211f9316debabcdd621847310ee7d49919726d6af341c6b1b9b7433ddc5"
+      },
+      "compressed": {
+        "bytes": 96929940,
+        "sha256": "5097bb7bec8a4ab541644419df27573e9d9622be9f687fccbf58d20345d9929b"
+      },
+      "status": "FAIL_NATIVE_LOADED_FEEDBACK_SCREEN",
+      "rows": 13617,
+      "columns": 957,
+      "raw_bytes": 104296435,
+      "raw_sha256": "4d3d998c45b81de99fe3c17c927ee5a6fc120f5ad7f901025ea002424f9c0aab",
+      "payload_bytes": 104251752,
+      "payload_sha256": "bd46919c90e4fb046489785bcc544afc9557778568fb592ee5ecb197766884b8",
+      "device_bounds": 455,
+      "contacts": 31
+    },
+    {
+      "label": "quarterstep",
+      "result": {
+        "bytes": 426389,
+        "sha256": "765615872aa97b2cbd9849139d5870ae9fe69bc341a0478c84e79135e2d05a76"
+      },
+      "compressed": {
+        "bytes": 193621526,
+        "sha256": "3e6061927055fae88f3e12e621d7fd8250bad41e094e44877ee4c09392eecd2e"
+      },
+      "status": "PASS_NATIVE_LOADED_FEEDBACK_SCREEN",
+      "rows": 27217,
+      "columns": 957,
+      "raw_bytes": 208418035,
+      "raw_sha256": "b53e43e172f961da8ff6ecc5197e27a0107fc6cec1d4c071083892be9a8c4a28",
+      "payload_bytes": 208373352,
+      "payload_sha256": "57049f1178ab4c96b4878d7e0699a6b7393a8cd2d08d3f22252d41e522f3f42c",
+      "device_bounds": 455,
+      "contacts": 31
+    }
+  ],
+  "method": {
+    "bytes": 8060,
+    "sha256": "04772b6d68e7018529009e80b5aeb5f4fff48c40c1f3afd5db318180899a0586"
+  },
+  "findings": [],
+  "reviewed_properties": [
+    "Whole reader and test bodies read; bounded gzip header/payload/trailer consumption, three exact digests/counts, finite data scan and all four SSD floors.",
+    "Anonymous SSD TemporaryFile owns backing lifetime; read-only memmap is closed in finally before backing closes, including consumer exceptions. No named payload copy survives.",
+    "Chunk size is multiple of8; every expected float is checked finite before yield. Full raw/payload digests and exact copied backing bytes provide bit identity beyond np.array_equal numerical equality.",
+    "Three saved positive controls use original455 bounds/measurement/time-grid functions; independent review confirms complete424+31 census,20 saved control names and exact diagnostic equality.",
+    "All three saved gzip/raw/payload hashes and full row/column/trailer counts independently streamed without importing producer/reader or running controls."
+  ],
+  "scope": "Standalone bounded reader only. Existing failed numerical/native statuses retained. No reviewed controls, simulator, network or extraction rerun. Not authorization for a future native run or adoption into sealer/comparator without separate derivative peer.",
+  "integration_obligations": [
+    "Caller must supply externally pinned immutable result/header/column declarations; raw hashes alone do not establish provenance.",
+    "Future consumers must preserve complete original safety/startup/measurement/numerical predicates and release all mapped views within context.",
+    "Future caller must include input rehash before/after its complete comparison, signal ownership and original2GiB resource bound; this reader creates no child process.",
+    "Saved controls materialize old arrays only as the finite reference; new reader removes full raw/payload copies, but future consumer temporary allocations still require resource verification."
+  ]
+}

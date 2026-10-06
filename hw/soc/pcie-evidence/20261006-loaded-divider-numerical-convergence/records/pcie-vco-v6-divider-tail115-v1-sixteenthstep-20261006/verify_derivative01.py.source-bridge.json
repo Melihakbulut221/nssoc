@@ -1,0 +1,780 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/verify_derivative01.py",
+    "bytes": 4295,
+    "sha256": "c344e4055da8a7da9a3a786aaa08faa706e6c717c1c4455c75342ca75333ed78"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/verify_derivative01.py",
+    "bytes": 4312,
+    "sha256": "928ca066713ff79222c70eb8fda651c26953efe2e7b4a2d00de8a88486759e16"
+  },
+  "full_diff": "--- \n+++ \n@@ -5,9 +5,9 @@\n import ast,hashlib,json,os,resource,sys,tempfile\n os.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\n R=Path.cwd();B=Path(__file__).resolve().parent\n-sys.path[:0]=[str(B),str(R/'scripts'),str(B.parent/'pcie-vco-v6-divider-tail115-v1-quarterstep-20261006')]\n-import characterize_eighthstep01 as new\n-import characterize_quarterstep01 as old\n+sys.path[:0]=[str(B),str(R/'scripts'),str(B.parent/'pcie-vco-v6-divider-tail115-v1-eighthstep-20261006')]\n+import characterize_sixteenthstep01 as new\n+import characterize_eighthstep01 as old\n \n def pin(p):\n  p=Path(p)\n@@ -16,11 +16,11 @@\n for bias,fault in [(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')]:\n  a,ar,at=old.config(bias,fault);z,zr,zt=new.config(bias,fault)\n  assert ar==zr and at==zt and len(ar)==455\n- expected=dict(a,step_s=6.25e-13,sources=[str(B/'characterize_eighthstep01.py')if p==old.__file__ else p for p in a['sources']])\n+ expected=dict(a,step_s=3.125e-13,sources=[str(B/'characterize_sixteenthstep01.py')if p==old.__file__ else p for p in a['sources']])\n  assert z==expected\n  da=old.deck(a,ar,at);dz=new.deck(z,zr,zt)\n- assert da.count('.tran 1.25e-12 3.4e-08 0 1.25e-12')==1\n- assert dz==da.replace('.tran 1.25e-12 3.4e-08 0 1.25e-12','.tran 6.25e-13 3.4e-08 0 6.25e-13')\n+ assert da.count('.tran 6.25e-13 3.4e-08 0 6.25e-13')==1\n+ assert dz==da.replace('.tran 6.25e-13 3.4e-08 0 6.25e-13','.tran 3.125e-13 3.4e-08 0 3.125e-13')\n  assert a['window_s']==z['window_s']==[4e-9,34e-9] and len(new.n.vectors(zr,z['extra_vectors']))==956\n  recipes.append(dict(bias=bias,fault=fault,config=z,devices=zr,included_texts={k:dict(bytes=len(v.encode()),sha256=hashlib.sha256(v.encode()).hexdigest())for k,v in zt.items()},deck_sha256=hashlib.sha256(dz.encode()).hexdigest()))\n  checks.append('exact455_recipe_and_only_tran_step_'+str(bias)+'_'+fault)\n@@ -30,7 +30,7 @@\n assert set(oldfn)-set(exact)=={'config','guard'}\n for k in ['capture','measurement','native_limit']:\n  a=old._scope[k];z=new._scope[k];assert a.__code__==z.__code__ and a.__defaults__==z.__defaults__ and a.__closure__==z.__closure__\n-assert new._scope['OWN_LIMIT']==new.OWN_LIMIT==512*1024**2 and old._scope['OWN_LIMIT']==256*1024**2\n+assert new._scope['OWN_LIMIT']==new.OWN_LIMIT==1024*1024**2 and old._scope['OWN_LIMIT']==512*1024**2\n assert new._scope['guard'].__code__==new.guard.__code__ and new._scope['run_native'].__code__==new.run_native.__code__\n assert new.FLOOR==old.FLOOR==512*1024**2 and new.RECEIPT_RESERVE==old.RECEIPT_RESERVE==2*1024**2\n checks.append('exact_physics_screens_capture_lifecycle_and_scoped_budget')\n@@ -38,17 +38,17 @@\n # production guards, without allocating unnecessary shared-memory pages.\n with tempfile.TemporaryDirectory(prefix='nssoc-halfstep-resource-control-',dir='/dev/shm')as raw:\n  p=Path(raw);f=p/'owned-sparse.raw';inherited_bytes=new.guard(p)[1]\n- with f.open('wb')as out:out.truncate(400*1024**2)\n- assert new.guard(p)[1]==inherited_bytes+400*1024**2\n+ with f.open('wb')as out:out.truncate(800*1024**2)\n+ assert new.guard(p)[1]==inherited_bytes+800*1024**2\n  try:old.guard(p)\n- except ValueError as e:assert 'Own256MiB' in str(e)\n- else:raise AssertionError('Original cap unexpectedly accepted400MiB')\n- checks.append('actual400MiB_sparse_owned_file_new_cap_pass_old_cap_reject')\n- with f.open('r+b')as out:out.truncate(511*1024**2)\n+ except ValueError as e:assert 'Own512MiB' in str(e)\n+ else:raise AssertionError('Original cap unexpectedly accepted800MiB')\n+ checks.append('actual800MiB_sparse_owned_file_new_cap_pass_old_cap_reject')\n+ with f.open('r+b')as out:out.truncate(1023*1024**2)\n  try:new.guard(p)\n- except ValueError as e:assert 'Own512MiB' in str(e)\n+ except ValueError as e:assert 'Own1024MiB' in str(e)\n  else:raise AssertionError('New cap ignored receipt reserve')\n- checks.append('actual511MiB_sparse_owned_file_plus2MiB_reserve_rejected')\n+ checks.append('actual1023MiB_sparse_owned_file_plus2MiB_reserve_rejected')\n (B/'recipes01.json').write_text(json.dumps(recipes,indent=2)+'\\n')\n-r=dict(status='PASS_EIGHTHSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS',checks=checks,exact_function_classes=exact,source_pins={str(p):pin(p)for p in [Path(old.__file__),Path(new.__file__),Path(__file__)]},recipes=pin(B/'recipes01.json'),scope='No native/EDA launched. All455 rows and physical text bytes exactly unchanged for four recipes. Only output/maxstep1.25ps\u21920.625ps, fresh source/namespace, correct raw estimate and bounded512MiB cap differ. Original32+4 source/lifecycle controls are retained separately; no acceptance predicate change.')\n+r=dict(status='PASS_SIXTEENTHSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS',checks=checks,exact_function_classes=exact,source_pins={str(p):pin(p)for p in [Path(old.__file__),Path(new.__file__),Path(__file__)]},recipes=pin(B/'recipes01.json'),scope='No native/EDA launched. All455 rows and physical text bytes exactly unchanged for four recipes. Only output/maxstep0.625ps\u21920.3125ps, fresh source/namespace, correct raw estimate and bounded1024MiB cap differ. Original32+4 source/lifecycle controls are retained separately; no acceptance predicate change.')\n (B/'derivative-controls01.json').write_text(json.dumps(r,indent=2)+'\\n');print(json.dumps(r,indent=2))\n",
+  "opcodes": [
+    {
+      "tag": "equal",
+      "a0": 0,
+      "a1": 444,
+      "b0": 0,
+      "b1": 444,
+      "old": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual recipe/deck and bounded sparse scratch checks; no EDA.\"\"\"\nfrom pathlib import Path\nimport ast,hashlib,json,os,resource,sys,tempfile\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path[:0]=[str(B),str(R/'scripts'),str(B.parent/'pcie-vco-v6-divider-tail115-v1-",
+      "new": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual recipe/deck and bounded sparse scratch checks; no EDA.\"\"\"\nfrom pathlib import Path\nimport ast,hashlib,json,os,resource,sys,tempfile\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path[:0]=[str(B),str(R/'scripts'),str(B.parent/'pcie-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 444,
+      "a1": 448,
+      "b0": 444,
+      "b1": 448,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 448,
+      "a1": 449,
+      "b0": 448,
+      "b1": 449,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 449,
+      "a1": 451,
+      "b0": 449,
+      "b1": 450,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 451,
+      "a1": 488,
+      "b0": 450,
+      "b1": 487,
+      "old": "step-20261006')]\nimport characterize_",
+      "new": "step-20261006')]\nimport characterize_"
+    },
+    {
+      "tag": "insert",
+      "a0": 488,
+      "a1": 488,
+      "b0": 487,
+      "b1": 491,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 488,
+      "a1": 489,
+      "b0": 491,
+      "b1": 492,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 489,
+      "a1": 492,
+      "b0": 492,
+      "b1": 494,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 492,
+      "a1": 528,
+      "b0": 494,
+      "b1": 530,
+      "old": "thstep01 as new\nimport characterize_",
+      "new": "thstep01 as new\nimport characterize_"
+    },
+    {
+      "tag": "replace",
+      "a0": 528,
+      "a1": 532,
+      "b0": 530,
+      "b1": 534,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 532,
+      "a1": 533,
+      "b0": 534,
+      "b1": 535,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 533,
+      "a1": 535,
+      "b0": 535,
+      "b1": 536,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 535,
+      "a1": 935,
+      "b0": 536,
+      "b1": 936,
+      "old": "step01 as old\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nchecks=[];recipes=[]\nfor bias,fault in [(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')]:\n a,ar,at=old.config(bias,fault);z,zr,zt=new.config(bias,fault)\n assert ar==zr and at==zt and len(ar)==455\n expected=dict(a,step_s=",
+      "new": "step01 as old\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nchecks=[];recipes=[]\nfor bias,fault in [(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')]:\n a,ar,at=old.config(bias,fault);z,zr,zt=new.config(bias,fault)\n assert ar==zr and at==zt and len(ar)==455\n expected=dict(a,step_s="
+    },
+    {
+      "tag": "replace",
+      "a0": 935,
+      "a1": 936,
+      "b0": 936,
+      "b1": 937,
+      "old": "6",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 936,
+      "a1": 937,
+      "b0": 937,
+      "b1": 938,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 937,
+      "a1": 937,
+      "b0": 938,
+      "b1": 939,
+      "old": "",
+      "new": "1"
+    },
+    {
+      "tag": "equal",
+      "a0": 937,
+      "a1": 973,
+      "b0": 939,
+      "b1": 975,
+      "old": "25e-13,sources=[str(B/'characterize_",
+      "new": "25e-13,sources=[str(B/'characterize_"
+    },
+    {
+      "tag": "insert",
+      "a0": 973,
+      "a1": 973,
+      "b0": 975,
+      "b1": 979,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 973,
+      "a1": 974,
+      "b0": 979,
+      "b1": 980,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 974,
+      "a1": 977,
+      "b0": 980,
+      "b1": 982,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 977,
+      "a1": 1127,
+      "b0": 982,
+      "b1": 1132,
+      "old": "thstep01.py')if p==old.__file__ else p for p in a['sources']])\n assert z==expected\n da=old.deck(a,ar,at);dz=new.deck(z,zr,zt)\n assert da.count('.tran ",
+      "new": "thstep01.py')if p==old.__file__ else p for p in a['sources']])\n assert z==expected\n da=old.deck(a,ar,at);dz=new.deck(z,zr,zt)\n assert da.count('.tran "
+    },
+    {
+      "tag": "replace",
+      "a0": 1127,
+      "a1": 1128,
+      "b0": 1132,
+      "b1": 1133,
+      "old": "1",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 1128,
+      "a1": 1134,
+      "b0": 1133,
+      "b1": 1139,
+      "old": ".25e-1",
+      "new": ".25e-1"
+    },
+    {
+      "tag": "replace",
+      "a0": 1134,
+      "a1": 1135,
+      "b0": 1139,
+      "b1": 1140,
+      "old": "2",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 1135,
+      "a1": 1146,
+      "b0": 1140,
+      "b1": 1151,
+      "old": " 3.4e-08 0 ",
+      "new": " 3.4e-08 0 "
+    },
+    {
+      "tag": "replace",
+      "a0": 1146,
+      "a1": 1147,
+      "b0": 1151,
+      "b1": 1152,
+      "old": "1",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 1147,
+      "a1": 1153,
+      "b0": 1152,
+      "b1": 1158,
+      "old": ".25e-1",
+      "new": ".25e-1"
+    },
+    {
+      "tag": "replace",
+      "a0": 1153,
+      "a1": 1154,
+      "b0": 1158,
+      "b1": 1159,
+      "old": "2",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 1154,
+      "a1": 1190,
+      "b0": 1159,
+      "b1": 1195,
+      "old": "')==1\n assert dz==da.replace('.tran ",
+      "new": "')==1\n assert dz==da.replace('.tran "
+    },
+    {
+      "tag": "delete",
+      "a0": 1190,
+      "a1": 1226,
+      "b0": 1195,
+      "b1": 1195,
+      "old": "1.25e-12 3.4e-08 0 1.25e-12','.tran ",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 1226,
+      "a1": 1247,
+      "b0": 1195,
+      "b1": 1216,
+      "old": "6.25e-13 3.4e-08 0 6.",
+      "new": "6.25e-13 3.4e-08 0 6."
+    },
+    {
+      "tag": "insert",
+      "a0": 1247,
+      "a1": 1247,
+      "b0": 1216,
+      "b1": 1254,
+      "old": "",
+      "new": "25e-13','.tran 3.125e-13 3.4e-08 0 3.1"
+    },
+    {
+      "tag": "equal",
+      "a0": 1247,
+      "a1": 2330,
+      "b0": 1254,
+      "b1": 2337,
+      "old": "25e-13')\n assert a['window_s']==z['window_s']==[4e-9,34e-9] and len(new.n.vectors(zr,z['extra_vectors']))==956\n recipes.append(dict(bias=bias,fault=fault,config=z,devices=zr,included_texts={k:dict(bytes=len(v.encode()),sha256=hashlib.sha256(v.encode()).hexdigest())for k,v in zt.items()},deck_sha256=hashlib.sha256(dz.encode()).hexdigest()))\n checks.append('exact455_recipe_and_only_tran_step_'+str(bias)+'_'+fault)\noldtree=ast.parse(Path(old.__file__).read_text());newtree=ast.parse(Path(new.__file__).read_text())\noldfn={x.name:ast.dump(x,include_attributes=False)for x in oldtree.body if isinstance(x,(ast.FunctionDef,ast.ClassDef))};newfn={x.name:ast.dump(x,include_attributes=False)for x in newtree.body if isinstance(x,(ast.FunctionDef,ast.ClassDef))}\nexact=[k for k in oldfn if oldfn[k]==newfn[k]]\nassert set(oldfn)-set(exact)=={'config','guard'}\nfor k in ['capture','measurement','native_limit']:\n a=old._scope[k];z=new._scope[k];assert a.__code__==z.__code__ and a.__defaults__==z.__defaults__ and a.__closure__==z.__closure__\nassert new._scope['OWN_LIMIT']==new.OWN_LIMIT==",
+      "new": "25e-13')\n assert a['window_s']==z['window_s']==[4e-9,34e-9] and len(new.n.vectors(zr,z['extra_vectors']))==956\n recipes.append(dict(bias=bias,fault=fault,config=z,devices=zr,included_texts={k:dict(bytes=len(v.encode()),sha256=hashlib.sha256(v.encode()).hexdigest())for k,v in zt.items()},deck_sha256=hashlib.sha256(dz.encode()).hexdigest()))\n checks.append('exact455_recipe_and_only_tran_step_'+str(bias)+'_'+fault)\noldtree=ast.parse(Path(old.__file__).read_text());newtree=ast.parse(Path(new.__file__).read_text())\noldfn={x.name:ast.dump(x,include_attributes=False)for x in oldtree.body if isinstance(x,(ast.FunctionDef,ast.ClassDef))};newfn={x.name:ast.dump(x,include_attributes=False)for x in newtree.body if isinstance(x,(ast.FunctionDef,ast.ClassDef))}\nexact=[k for k in oldfn if oldfn[k]==newfn[k]]\nassert set(oldfn)-set(exact)=={'config','guard'}\nfor k in ['capture','measurement','native_limit']:\n a=old._scope[k];z=new._scope[k];assert a.__code__==z.__code__ and a.__defaults__==z.__defaults__ and a.__closure__==z.__closure__\nassert new._scope['OWN_LIMIT']==new.OWN_LIMIT=="
+    },
+    {
+      "tag": "delete",
+      "a0": 2330,
+      "a1": 2331,
+      "b0": 2337,
+      "b1": 2337,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2331,
+      "a1": 2332,
+      "b0": 2337,
+      "b1": 2338,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "insert",
+      "a0": 2332,
+      "a1": 2332,
+      "b0": 2338,
+      "b1": 2339,
+      "old": "",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 2332,
+      "a1": 2333,
+      "b0": 2339,
+      "b1": 2340,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "insert",
+      "a0": 2333,
+      "a1": 2333,
+      "b0": 2340,
+      "b1": 2341,
+      "old": "",
+      "new": "4"
+    },
+    {
+      "tag": "equal",
+      "a0": 2333,
+      "a1": 2371,
+      "b0": 2341,
+      "b1": 2379,
+      "old": "*1024**2 and old._scope['OWN_LIMIT']==",
+      "new": "*1024**2 and old._scope['OWN_LIMIT']=="
+    },
+    {
+      "tag": "insert",
+      "a0": 2371,
+      "a1": 2371,
+      "b0": 2379,
+      "b1": 2381,
+      "old": "",
+      "new": "51"
+    },
+    {
+      "tag": "equal",
+      "a0": 2371,
+      "a1": 2372,
+      "b0": 2381,
+      "b1": 2382,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "delete",
+      "a0": 2372,
+      "a1": 2374,
+      "b0": 2382,
+      "b1": 2382,
+      "old": "56",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2374,
+      "a1": 3029,
+      "b0": 2382,
+      "b1": 3037,
+      "old": "*1024**2\nassert new._scope['guard'].__code__==new.guard.__code__ and new._scope['run_native'].__code__==new.run_native.__code__\nassert new.FLOOR==old.FLOOR==512*1024**2 and new.RECEIPT_RESERVE==old.RECEIPT_RESERVE==2*1024**2\nchecks.append('exact_physics_screens_capture_lifecycle_and_scoped_budget')\n# These real sparse files exercise the actual logical-byte accounting used by\n# production guards, without allocating unnecessary shared-memory pages.\nwith tempfile.TemporaryDirectory(prefix='nssoc-halfstep-resource-control-',dir='/dev/shm')as raw:\n p=Path(raw);f=p/'owned-sparse.raw';inherited_bytes=new.guard(p)[1]\n with f.open('wb')as out:out.truncate(",
+      "new": "*1024**2\nassert new._scope['guard'].__code__==new.guard.__code__ and new._scope['run_native'].__code__==new.run_native.__code__\nassert new.FLOOR==old.FLOOR==512*1024**2 and new.RECEIPT_RESERVE==old.RECEIPT_RESERVE==2*1024**2\nchecks.append('exact_physics_screens_capture_lifecycle_and_scoped_budget')\n# These real sparse files exercise the actual logical-byte accounting used by\n# production guards, without allocating unnecessary shared-memory pages.\nwith tempfile.TemporaryDirectory(prefix='nssoc-halfstep-resource-control-',dir='/dev/shm')as raw:\n p=Path(raw);f=p/'owned-sparse.raw';inherited_bytes=new.guard(p)[1]\n with f.open('wb')as out:out.truncate("
+    },
+    {
+      "tag": "replace",
+      "a0": 3029,
+      "a1": 3030,
+      "b0": 3037,
+      "b1": 3038,
+      "old": "4",
+      "new": "8"
+    },
+    {
+      "tag": "equal",
+      "a0": 3030,
+      "a1": 3083,
+      "b0": 3038,
+      "b1": 3091,
+      "old": "00*1024**2)\n assert new.guard(p)[1]==inherited_bytes+",
+      "new": "00*1024**2)\n assert new.guard(p)[1]==inherited_bytes+"
+    },
+    {
+      "tag": "replace",
+      "a0": 3083,
+      "a1": 3084,
+      "b0": 3091,
+      "b1": 3092,
+      "old": "4",
+      "new": "8"
+    },
+    {
+      "tag": "equal",
+      "a0": 3084,
+      "a1": 3148,
+      "b0": 3092,
+      "b1": 3156,
+      "old": "00*1024**2\n try:old.guard(p)\n except ValueError as e:assert 'Own",
+      "new": "00*1024**2\n try:old.guard(p)\n except ValueError as e:assert 'Own"
+    },
+    {
+      "tag": "insert",
+      "a0": 3148,
+      "a1": 3148,
+      "b0": 3156,
+      "b1": 3158,
+      "old": "",
+      "new": "51"
+    },
+    {
+      "tag": "equal",
+      "a0": 3148,
+      "a1": 3149,
+      "b0": 3158,
+      "b1": 3159,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "delete",
+      "a0": 3149,
+      "a1": 3151,
+      "b0": 3159,
+      "b1": 3159,
+      "old": "56",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3151,
+      "a1": 3228,
+      "b0": 3159,
+      "b1": 3236,
+      "old": "MiB' in str(e)\n else:raise AssertionError('Original cap unexpectedly accepted",
+      "new": "MiB' in str(e)\n else:raise AssertionError('Original cap unexpectedly accepted"
+    },
+    {
+      "tag": "replace",
+      "a0": 3228,
+      "a1": 3229,
+      "b0": 3236,
+      "b1": 3237,
+      "old": "4",
+      "new": "8"
+    },
+    {
+      "tag": "equal",
+      "a0": 3229,
+      "a1": 3259,
+      "b0": 3237,
+      "b1": 3267,
+      "old": "00MiB')\n checks.append('actual",
+      "new": "00MiB')\n checks.append('actual"
+    },
+    {
+      "tag": "replace",
+      "a0": 3259,
+      "a1": 3260,
+      "b0": 3267,
+      "b1": 3268,
+      "old": "4",
+      "new": "8"
+    },
+    {
+      "tag": "equal",
+      "a0": 3260,
+      "a1": 3353,
+      "b0": 3268,
+      "b1": 3361,
+      "old": "00MiB_sparse_owned_file_new_cap_pass_old_cap_reject')\n with f.open('r+b')as out:out.truncate(",
+      "new": "00MiB_sparse_owned_file_new_cap_pass_old_cap_reject')\n with f.open('r+b')as out:out.truncate("
+    },
+    {
+      "tag": "delete",
+      "a0": 3353,
+      "a1": 3354,
+      "b0": 3361,
+      "b1": 3361,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3354,
+      "a1": 3355,
+      "b0": 3361,
+      "b1": 3362,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "replace",
+      "a0": 3355,
+      "a1": 3356,
+      "b0": 3362,
+      "b1": 3365,
+      "old": "1",
+      "new": "023"
+    },
+    {
+      "tag": "equal",
+      "a0": 3356,
+      "a1": 3419,
+      "b0": 3365,
+      "b1": 3428,
+      "old": "*1024**2)\n try:new.guard(p)\n except ValueError as e:assert 'Own",
+      "new": "*1024**2)\n try:new.guard(p)\n except ValueError as e:assert 'Own"
+    },
+    {
+      "tag": "delete",
+      "a0": 3419,
+      "a1": 3420,
+      "b0": 3428,
+      "b1": 3428,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3420,
+      "a1": 3421,
+      "b0": 3428,
+      "b1": 3429,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "insert",
+      "a0": 3421,
+      "a1": 3421,
+      "b0": 3429,
+      "b1": 3430,
+      "old": "",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 3421,
+      "a1": 3422,
+      "b0": 3430,
+      "b1": 3431,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "insert",
+      "a0": 3422,
+      "a1": 3422,
+      "b0": 3431,
+      "b1": 3432,
+      "old": "",
+      "new": "4"
+    },
+    {
+      "tag": "equal",
+      "a0": 3422,
+      "a1": 3521,
+      "b0": 3432,
+      "b1": 3531,
+      "old": "MiB' in str(e)\n else:raise AssertionError('New cap ignored receipt reserve')\n checks.append('actual",
+      "new": "MiB' in str(e)\n else:raise AssertionError('New cap ignored receipt reserve')\n checks.append('actual"
+    },
+    {
+      "tag": "delete",
+      "a0": 3521,
+      "a1": 3522,
+      "b0": 3531,
+      "b1": 3531,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3522,
+      "a1": 3523,
+      "b0": 3531,
+      "b1": 3532,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "replace",
+      "a0": 3523,
+      "a1": 3524,
+      "b0": 3532,
+      "b1": 3535,
+      "old": "1",
+      "new": "023"
+    },
+    {
+      "tag": "equal",
+      "a0": 3524,
+      "a1": 3661,
+      "b0": 3535,
+      "b1": 3672,
+      "old": "MiB_sparse_owned_file_plus2MiB_reserve_rejected')\n(B/'recipes01.json').write_text(json.dumps(recipes,indent=2)+'\\n')\nr=dict(status='PASS_",
+      "new": "MiB_sparse_owned_file_plus2MiB_reserve_rejected')\n(B/'recipes01.json').write_text(json.dumps(recipes,indent=2)+'\\n')\nr=dict(status='PASS_"
+    },
+    {
+      "tag": "insert",
+      "a0": 3661,
+      "a1": 3661,
+      "b0": 3672,
+      "b1": 3676,
+      "old": "",
+      "new": "SIXT"
+    },
+    {
+      "tag": "equal",
+      "a0": 3661,
+      "a1": 3662,
+      "b0": 3676,
+      "b1": 3677,
+      "old": "E",
+      "new": "E"
+    },
+    {
+      "tag": "replace",
+      "a0": 3662,
+      "a1": 3665,
+      "b0": 3677,
+      "b1": 3679,
+      "old": "IGH",
+      "new": "EN"
+    },
+    {
+      "tag": "equal",
+      "a0": 3665,
+      "a1": 4001,
+      "b0": 3679,
+      "b1": 4015,
+      "old": "THSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS',checks=checks,exact_function_classes=exact,source_pins={str(p):pin(p)for p in [Path(old.__file__),Path(new.__file__),Path(__file__)]},recipes=pin(B/'recipes01.json'),scope='No native/EDA launched. All455 rows and physical text bytes exactly unchanged for four recipes. Only output/maxstep",
+      "new": "THSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS',checks=checks,exact_function_classes=exact,source_pins={str(p):pin(p)for p in [Path(old.__file__),Path(new.__file__),Path(__file__)]},recipes=pin(B/'recipes01.json'),scope='No native/EDA launched. All455 rows and physical text bytes exactly unchanged for four recipes. Only output/maxstep"
+    },
+    {
+      "tag": "replace",
+      "a0": 4001,
+      "a1": 4002,
+      "b0": 4015,
+      "b1": 4016,
+      "old": "1",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 4002,
+      "a1": 4003,
+      "b0": 4016,
+      "b1": 4017,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 4003,
+      "a1": 4003,
+      "b0": 4017,
+      "b1": 4018,
+      "old": "",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 4003,
+      "a1": 4010,
+      "b0": 4018,
+      "b1": 4025,
+      "old": "25ps\u21920.",
+      "new": "25ps\u21920."
+    },
+    {
+      "tag": "replace",
+      "a0": 4010,
+      "a1": 4011,
+      "b0": 4025,
+      "b1": 4027,
+      "old": "6",
+      "new": "31"
+    },
+    {
+      "tag": "equal",
+      "a0": 4011,
+      "a1": 4073,
+      "b0": 4027,
+      "b1": 4089,
+      "old": "25ps, fresh source/namespace, correct raw estimate and bounded",
+      "new": "25ps, fresh source/namespace, correct raw estimate and bounded"
+    },
+    {
+      "tag": "delete",
+      "a0": 4073,
+      "a1": 4074,
+      "b0": 4089,
+      "b1": 4089,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 4074,
+      "a1": 4075,
+      "b0": 4089,
+      "b1": 4090,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "insert",
+      "a0": 4075,
+      "a1": 4075,
+      "b0": 4090,
+      "b1": 4091,
+      "old": "",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 4075,
+      "a1": 4076,
+      "b0": 4091,
+      "b1": 4092,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "insert",
+      "a0": 4076,
+      "a1": 4076,
+      "b0": 4092,
+      "b1": 4093,
+      "old": "",
+      "new": "4"
+    },
+    {
+      "tag": "equal",
+      "a0": 4076,
+      "a1": 4293,
+      "b0": 4093,
+      "b1": 4310,
+      "old": "MiB cap differ. Original32+4 source/lifecycle controls are retained separately; no acceptance predicate change.')\n(B/'derivative-controls01.json').write_text(json.dumps(r,indent=2)+'\\n');print(json.dumps(r,indent=2))\n",
+      "new": "MiB cap differ. Original32+4 source/lifecycle controls are retained separately; no acceptance predicate change.')\n(B/'derivative-controls01.json').write_text(json.dumps(r,indent=2)+'\\n');print(json.dumps(r,indent=2))\n"
+    }
+  ]
+}
