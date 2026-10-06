@@ -1,0 +1,241 @@
+{
+  "status": "FINDING_SOURCE_AND_SAVED_570_RESOURCE_REVIEW",
+  "freeze": {
+    "bytes": 406636,
+    "sha256": "ccc53ba2c1a247d5d0b7d8a1f72d27d6fa74d054a6a2ec9c8e41c3cf9654413c"
+  },
+  "reviewer": "PLL independent, stdlib only",
+  "findings": [
+    {
+      "id": "HEADER_POST_PARSE_RETENTION_GAP",
+      "severity": "prelaunch",
+      "scope": "capture_custom01.py and generated capture body",
+      "evidence": "A valid header with No. Points: 4 passes inherited parse_header, then NativeFIFO format raises after seen is deleted and before gzip/failure receipt creation.",
+      "required": "Preserve01; put all header/init checks under retained-prefix failure handling; actual rejected nonzero-count fixture must retain exact consumed bytes and original diagnostic."
+    }
+  ],
+  "files_rehashed": 1670,
+  "whole_inherited_run_native_exact": true,
+  "full_four_function_bridge_verified": true,
+  "current_control_cases": {
+    "finite": [
+      "actual_saved13_predicates_with_declared_synthetic_idle_clamp_columns",
+      "reject_pfd_up_idle",
+      "reject_pfd_down_idle",
+      "reject_external_reset_asserted",
+      "reject_actual_clamp_level",
+      "all570_safety_rules_on_four_static_saved_operating_rows",
+      "actual_added_pfd_device_terminal_overvoltage",
+      "retained_finite_contact_voltage_rejection",
+      "finite_capture_positive",
+      "finite_capture_nonfinite",
+      "finite_capture_row_budget"
+    ],
+    "storage": [
+      "actual_empty_ssd_point_and_aggregate",
+      "actual_sparse_point_exact_reserved_cap",
+      "actual_sparse_point_one_byte_over",
+      "actual_sparse_aggregate_exact_cap_including_failed_other_point",
+      "actual_sparse_aggregate_one_byte_over",
+      "actual_dangling_file_link",
+      "actual_directory_link",
+      "exact_owned_stream_fifo",
+      "wrong_special_fifo",
+      "one_ENOENT_restarts_complete_tree",
+      "four_complete_ENOENT_attempts_stop",
+      "non_ENOENT_is_fatal",
+      "injected_shared_floor_one_byte_low",
+      "injected_ssd_floor_reserved_tail_one_byte_low",
+      "injected_both_normal_floors_exact_boundary",
+      "failed_only_finalization_uses_pre_reserved_tail_despite_floor_trigger",
+      "failed_tail_cannot_exceed_reservation",
+      "actual_partial_FileIO_write_loop",
+      "actual_capture_preserves_received_prefix_on_shared_floor_failure",
+      "actual_bad_native_trailer_rejected_full_gzip_retained",
+      "actual_bad_header_received_prefix_retained",
+      "actual_empty_header_received_prefix_retained"
+    ],
+    "lifecycle": [
+      "real_SIGTERM_before_inner_owner",
+      "real_SIGTERM_after_inner_owner",
+      "real_SIGINT_before_inner_owner",
+      "real_SIGINT_after_inner_owner",
+      "actual_full_run_native_finite_FIFO_clean",
+      "actual_full_run_native_finite_FIFO_term",
+      "actual_full_run_native_finite_FIFO_interrupt"
+    ]
+  },
+  "actual_owners": [
+    {
+      "label": "clean",
+      "owner": {
+        "bytes": 678,
+        "sha256": "11469d9d1419001fd3ebf0a026c0b4b2d4e3bdc348097a146106e8630e12d99a"
+      },
+      "execution": {
+        "bytes": 242,
+        "sha256": "2448d4172118facefa638fe80b6b71a9776ac0beccde1f36b8507d35791aef60"
+      },
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "d7869ce0db603f1ba65401d56b8e1cd98d5c3ed8a42450ed9c760f84d8beb26c"
+      },
+      "identity": {
+        "pid": 408075,
+        "state": "R",
+        "process_group": 408075,
+        "start_ticks": "6440935"
+      },
+      "returncode": 0
+    },
+    {
+      "label": "term",
+      "owner": {
+        "bytes": 1270,
+        "sha256": "18bff7ca7dc1e3a9fa750211e15004d2440d5ad8ca3d531fc1ea7957e2262a31"
+      },
+      "execution": {
+        "bytes": 245,
+        "sha256": "65df3a5f418945f4d9f173d94266dfa138e6fd671c4d94b646a70aacd90f31dd"
+      },
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "d7869ce0db603f1ba65401d56b8e1cd98d5c3ed8a42450ed9c760f84d8beb26c"
+      },
+      "identity": {
+        "pid": 408077,
+        "state": "R",
+        "process_group": 408077,
+        "start_ticks": "6440960"
+      },
+      "returncode": -15
+    },
+    {
+      "label": "interrupt",
+      "owner": {
+        "bytes": 1272,
+        "sha256": "c89f735d0169da0e806b298b876ce12448504dcfc7bee0013d954e0962761b40"
+      },
+      "execution": {
+        "bytes": 245,
+        "sha256": "99a35c20e4819ace4827416dafeb23957180f57d28b0d28de39dc77fbf681b7f"
+      },
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "d7869ce0db603f1ba65401d56b8e1cd98d5c3ed8a42450ed9c760f84d8beb26c"
+      },
+      "identity": {
+        "pid": 408079,
+        "state": "R",
+        "process_group": 408079,
+        "start_ticks": "6440972"
+      },
+      "returncode": -15
+    }
+  ],
+  "actual_failed_and_complete_prefixes": [
+    {
+      "label": "short_writes",
+      "bytes": 95273,
+      "sha256": "911347fb296a1295716877720b49d34c19ec1b4e966042a7b5a4f98784cfcdad",
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "d7869ce0db603f1ba65401d56b8e1cd98d5c3ed8a42450ed9c760f84d8beb26c"
+      }
+    },
+    {
+      "label": "bad_trailer",
+      "bytes": 95273,
+      "sha256": "4f64cd1cbb2b993001692872c707103181f1bd3897b9311ceffb268802f7ffe2",
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "eedcfbef5fd3d3dd8a8b68b9d8711f61fb2ef7e4fe0f252ad5423a7a2c00851d"
+      }
+    },
+    {
+      "label": "shared_floor_after_received_block",
+      "bytes": 95273,
+      "sha256": "911347fb296a1295716877720b49d34c19ec1b4e966042a7b5a4f98784cfcdad",
+      "gzip": {
+        "bytes": 16034,
+        "sha256": "d7869ce0db603f1ba65401d56b8e1cd98d5c3ed8a42450ed9c760f84d8beb26c"
+      }
+    },
+    {
+      "label": "bad_header",
+      "bytes": 58984,
+      "sha256": "d182e64ec6dc7a44299e774563819bd649ded0e31eddb6a4cfc256d149b04911",
+      "gzip": {
+        "bytes": 6585,
+        "sha256": "4f085022e7f5d73a4433e2818424a5db76f6683f5ff7517e61d41cc45137d024"
+      }
+    },
+    {
+      "label": "empty_header",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip": {
+        "bytes": 20,
+        "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec"
+      }
+    }
+  ],
+  "resource_arithmetic": {
+    "status": "PREDECLARED_FINITE570_THREE_POINT_SSD_RESOURCE_ENVELOPE",
+    "points_v": [
+      0.5,
+      0.6,
+      0.7
+    ],
+    "native_root": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/native01",
+    "raw_columns": 1134,
+    "saved_vectors": 1133,
+    "maximum_accepted_rows": 120000,
+    "row_bytes": 9072,
+    "grid_rows_without_extra": 108801,
+    "raw_payload_cap": 1088640000,
+    "header_cap": 4194304,
+    "actual_inherited_header_bound": 69633,
+    "raw_total_limit": 1092834368,
+    "conservative_gzip_bound": 1093167970,
+    "point_cap": 1342177280,
+    "three_point_caps": 4026531840,
+    "aggregate_cap": 4294967296,
+    "remaining_per_point_for_all_spice_op_logs_metadata": 246912158,
+    "receipt_reserve": 2097152,
+    "failed_tail_reserve": 1048576,
+    "CPU": 10,
+    "address_space_limit": 2147483648,
+    "native_file_size_limit": 47185920,
+    "shared_entry_floor": 1073741824,
+    "shared_continuous_terminal_floor": 536870912,
+    "ssd_entry_free": "4GiB minus already retained aggregate bytes plus1GiB floor",
+    "ssd_continuous_terminal_floor": 1073741824,
+    "all_regular_files_counted": true,
+    "only_nonregular": "exact direct-point stream.fifo",
+    "elapsed_watchdog": null,
+    "observations_retained_bound": {
+      "vectors": 18,
+      "float64_bytes": 17280000,
+      "notes": "Only bounded observation rows retained; raw full-width payload is processed in65536-byte chunks. finish concatenation and per-device block temporary arrays still count against actual2GiBAS. ngspice memory is independently limited by child2GiBAS; no inferred PASS."
+    },
+    "failure_scope": "Normal data writes reserve2MiB; only an already-failing capture may consume at most1MiB to fsync the exact prefix already received. It always re-raises. This can cross a triggering shared/SSD operational floor during failed-only closure but cannot produce PASS; at least1MiB actual SSD space and both byte caps remain required. Hardware/I/O failure or external complete disk exhaustion can still prevent preservation; no power-loss or resume guarantee.",
+    "durability": "Finite gzip fsync at close only. Live compressed tail is not crash durable and is not a solver checkpoint. Original failed gzip/source/log/OP and received prefix retained; unread FIFO data is not claimed captured.",
+    "numerical_scope": "Each point uses one0.3125ps full34ns run. No570 adjacent-step convergence, pump reachability, signed tuning range or closed-loop acceptance is inherited from455 N16."
+  },
+  "selected_runtime": {
+    "bytes": 1309,
+    "sha256": "8939196c09b77d1596bd9477eee48dc9a1156b5ddf1fee3e4bcb75985440f66c"
+  },
+  "scope": [
+    "No producer imports, reviewed controls, native EDA/SPICE or network executed.",
+    "Seven actual owner controls use finite FIFO stand-ins, not ngspice.",
+    "Sampled cap/floor guards and bounded reserved failed-only finalization; no atomic disk reservation or live power-loss durability.",
+    "2GiB process AS limits and bounded observation arrays are enforced; no real570 peak-memory result exists before native.",
+    "Physics/deck/Meter acceptance remains separate root review; this finding blocks the combined gate."
+  ],
+  "method": {
+    "bytes": 7794,
+    "sha256": "ef84db1785400d977b9fcf50bf85eea255c61b6bffaf35d36f470cb0aa72fe30"
+  }
+}

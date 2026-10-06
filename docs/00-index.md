@@ -50,6 +50,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/147-pcie-loaded-divider-numerical-agreement.md](147-pcie-loaded-divider-numerical-agreement.md) records passing fixed adjacent-step limits for the loaded divider, complete raw replay and public multipart evidence; PLL lock and PHY qualification remain open.
 [docs/148-pcie-local-publisher-log-race.md](148-pcie-local-publisher-log-race.md) records the independently tested publisher log-race repair, 31 passing current controls and retained original failure; the native simulation continued.
 [docs/149-pcie-command-pipeline-timing-rejection.md](149-pcie-command-pipeline-timing-rejection.md) records the registered-command candidate, 43 passing current functional tests, the retained original failures and rejected setup regression.
+[docs/150-pcie-loaded-pll-observation-controls.md](150-pcie-loaded-pll-observation-controls.md) records the corrected 570-instance observation capture, 49 current controls and twelve separate source checks; the 2 ps startup control does not close 34 ns behavior or PLL/PHY qualification.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 
