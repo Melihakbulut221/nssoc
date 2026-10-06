@@ -1,0 +1,69 @@
+{
+  "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-wire-rc-v1-20261006/freeze_source.py",
+  "parent_pin": {
+    "bytes": 2667,
+    "sha256": "2e8f0884059f38fe5d4ee42194c3a20605d0fb55e291972e2f55c01384dd4bf8"
+  },
+  "child": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-wire-rc-v1-20261006/freeze_source.py",
+  "child_pin": {
+    "bytes": 2695,
+    "sha256": "267b2cc41a7a5ac7a52f5c268cbff0204167a208dbda0679ac056fb48ff4c291"
+  },
+  "full_opcodes": [
+    {
+      "tag": "equal",
+      "before": "from pathlib import Path\nimport hashlib\nimport json\n\nB = Path(__file__).resolve().parent\n",
+      "after": "from pathlib import Path\nimport hashlib\nimport json\n\nB = Path(__file__).resolve().parent\n"
+    },
+    {
+      "tag": "replace",
+      "before": "G = B.parent / 'pcie-divider-v8-cap-v1-wire-v1-20261006'\nOLD = B.parent / 'pcie-divider-v7-compact-v2-wire-rc-v1-20261006'\n",
+      "after": "G = B.parent / 'pcie-divider-v9-bias-v1-wire-v1-20261006'\nOLD = B.parent / 'pcie-divider-v8-cap-v1-wire-rc-v1-20261006'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\nassert not (B / 'source-freeze.json').exists()\ng = json.loads((G / 'geometry-execution.json').read_text())\n",
+      "after": "\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\nassert not (B / 'source-freeze.json').exists()\ng = json.loads((G / 'geometry-execution.json').read_text())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "assert g['status'] == 'PASS_DIVIDER_V8_CAP24_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n",
+      "after": "assert g['status'] == 'PASS_DIVIDER_V9_BIAS8_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "assert g['outputs'] == {p: pin(p) for p in g['outputs']}\nc = json.loads((G / 'binding-controls01/result.json').read_text())\nassert c['status'] == 'PASS_BASELINE_AND_FOUR_ACTUAL_COPIED_INPUT_BINDING_CONTROLS'\np = json.loads((G / 'saved-geometry-peer.json').read_text())\n",
+      "after": "assert g['outputs'] == {p: pin(p) for p in g['outputs']}\nc = json.loads((G / 'binding-controls01/result.json').read_text())\nassert c['status'] == 'PASS_BASELINE_AND_FOUR_ACTUAL_COPIED_INPUT_BINDING_CONTROLS'\np = json.loads((G / 'saved-geometry-peer.json').read_text())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "assert p['status'] == 'PASS_DIVIDER_V8_CAP24_SAVED_GEOMETRY_AND_BINDING_CONTROLS' and p['findings'] == []\n",
+      "after": "assert p['status'] == 'PASS_DIVIDER_V9_BIAS8_SAVED_GEOMETRY_AND_BINDING_CONTROLS' and p['findings'] == []\n"
+    },
+    {
+      "tag": "equal",
+      "before": "assert p['geometry_execution'] == pin(G / 'geometry-execution.json')\nassert p['binding_controls'] == pin(G / 'binding-controls01/result.json')\nprevious = json.loads((OLD / 'source-freeze.json').read_text())\nassert previous['inputs'] == {p: pin(p) for p in previous['inputs']}\ninputs = {**previous['inputs'], **g['inputs'], **g['outputs'], **c['fixture_outputs']}\nfiles = [*B.glob('*.py'), B / 'draft-source-bridge.json',\n         OLD / 'source-freeze.json', OLD / 'source-only-peer.json',\n         OLD / 'check_native_mutations_v2.py', OLD / 'saved-rc-peer-pll.json',\n         G / 'geometry-source-freeze.json', G / 'geometry-source-only-peer.json',\n         G / 'geometry-execution.json', G / 'saved-geometry-peer.json',\n         *[q for q in (G / 'binding-controls01').rglob('*') if q.is_file()]]\nfor f in files:\n    inputs[str(f)] = pin(f)\nassert inputs == {p: pin(p) for p in inputs}\n",
+      "after": "assert p['geometry_execution'] == pin(G / 'geometry-execution.json')\nassert p['binding_controls'] == pin(G / 'binding-controls01/result.json')\nprevious = json.loads((OLD / 'source-freeze.json').read_text())\nassert previous['inputs'] == {p: pin(p) for p in previous['inputs']}\ninputs = {**previous['inputs'], **g['inputs'], **g['outputs'], **c['fixture_outputs']}\nfiles = [*B.glob('*.py'), B / 'draft-source-bridge.json',\n         OLD / 'source-freeze.json', OLD / 'source-only-peer.json',\n         OLD / 'check_native_mutations_v2.py', OLD / 'saved-rc-peer-pll.json',\n         G / 'geometry-source-freeze.json', G / 'geometry-source-only-peer.json',\n         G / 'geometry-execution.json', G / 'saved-geometry-peer.json',\n         *[q for q in (G / 'binding-controls01').rglob('*') if q.is_file()]]\nfor f in files:\n    inputs[str(f)] = pin(f)\nassert inputs == {p: pin(p) for p in inputs}\n"
+    },
+    {
+      "tag": "replace",
+      "before": "result = dict(status='FROZEN_DIVIDER_V8_CAP24_WIRE_RC_SOURCE_PENDING_INDEPENDENT_PEER',\n",
+      "after": "result = dict(status='FROZEN_DIVIDER_V9_BIAS8_WIRE_RC_SOURCE_PENDING_INDEPENDENT_PEER',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "              inputs=inputs, producer_sources={p.name: pin(p) for p in B.glob('*.py')},\n              full_previous_native_runtime_and_networkx_import_closure_rehashed=True,\n              expected=dict(devices=91, metal_terminals=198, body_terminals=85,\n                            public_ports=7, anchors=205, wire_components=37),\n              actual_wire_rc_executed=False, qualified_pex=False,\n",
+      "after": "              inputs=inputs, producer_sources={p.name: pin(p) for p in B.glob('*.py')},\n              full_previous_native_runtime_and_networkx_import_closure_rehashed=True,\n              expected=dict(devices=91, metal_terminals=198, body_terminals=85,\n                            public_ports=7, anchors=205, wire_components=37),\n              actual_wire_rc_executed=False, qualified_pex=False,\n"
+    },
+    {
+      "tag": "replace",
+      "before": "              scope='Fresh cap24-divider wire RC; exact cap24 intrinsic models/body boundary retained. Same native extraction settings and strict distributed graph/capacitance audit. No qualified RF or substrate PEX claim.')\n",
+      "after": "              scope='Fresh bias8-divider wire RC; exact two L8 pull-downs and retained cap24 intrinsic models/body boundary retained. Same native extraction settings and strict distributed graph/capacitance audit. No qualified RF or substrate PEX claim.')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "(B / 'source-freeze.json').write_text(json.dumps(result, indent=2) + '\\n')\nprint(len(inputs), pin(B / 'source-freeze.json'))\n",
+      "after": "(B / 'source-freeze.json').write_text(json.dumps(result, indent=2) + '\\n')\nprint(len(inputs), pin(B / 'source-freeze.json'))\n"
+    }
+  ]
+}

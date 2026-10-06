@@ -43,6 +43,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/140-pcie-integrity-and-chip-prerequisites.md](140-pcie-integrity-and-chip-prerequisites.md) records V22's remaining setup failure and the exact proof, SRAM mapping and boot prerequisites for a matched local chip experiment.
 [docs/141-pcie-capacitor-layout-and-repaired-boot.md](141-pcie-capacitor-layout-and-repaired-boot.md) records the successful repaired NPU strict boot and the capacitor-layout experiment's remaining loaded-divider failure.
 [docs/142-chip-placement-and-routed-receiver.md](142-chip-placement-and-routed-receiver.md) records the SRAM template-import fix, matched fresh chip placement and the routed receiver improvement with remaining setup violations.
+[docs/143-pcie-divider-and-routed-transmitter.md](143-pcie-divider-and-routed-transmitter.md) records the loaded-divider margin failure, V23 timing screen, completed V18 MAX4118 regression and routed transmitter setup improvement.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

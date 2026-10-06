@@ -1,0 +1,20 @@
+{
+  "previous_freeze": {
+    "bytes": 4137,
+    "sha256": "dd3132d1b9ba5d585bb66fcdabbd07450d86f7e217736cccb88cebc6f6a9c934"
+  },
+  "current_freeze": {
+    "bytes": 2179,
+    "sha256": "81b39160001de5717fa414371ec18b62772e367e7625e7aaab3af3b0f3af0540"
+  },
+  "changed_existing": [
+    "sw/tests/test_pcie_gen3_integrity_v23_miter.py"
+  ],
+  "new_source": "sw/tests/test_pcie_gen3_integrity_v23_block_burst.py",
+  "whole_miter_diff": "--- \n+++ \n@@ -307,6 +307,12 @@\n     ],\n )\n def test_actual_miter_fault_is_observed(tmp_path, fault):\n+    if fault == \"header_promote_stale\":\n+        # Wrapper line cadence does not fill next-bank; exercise the real\n+        # framer ready/valid block input using the exact same RTL mutation.\n+        burst = runpy.run_path(str(ROOT / \"sw/tests/test_pcie_gen3_integrity_v23_block_burst.py\"))\n+        burst[\"run_burst\"](tmp_path / \"burst\", fault)\n+        return\n     rtl = miter(tmp_path / \"fault-rtl\", fault)\n     out = tmp_path / \"capture\"\n     tool = Path(shutil.which(\"iverilog\") or \"/usr/bin/iverilog\")\n",
+  "saved_second_campaign": {
+    "bytes": 5993,
+    "sha256": "9b4f87ee80ee43e316c45dd60b3ef5ae7fd2714caa64ba1f8143870e662b399e"
+  },
+  "scope": "The unchanged promotion mutation moves only its actual test dispatch to direct framer ready/valid bursts; no weakened assertions or dropped negative. Full original wrapper campaign already passed all18 cases, but does not reach next-bank promotion."
+}

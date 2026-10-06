@@ -1,0 +1,57 @@
+{
+  "status": "PASS_SOURCE_ONLY_V23_ADJACENT_HEADER_ARCHITECTURE_CONTRACT",
+  "utc": "2026-10-06T03:38:51.858581+00:00",
+  "contract": {
+    "bytes": 11640,
+    "sha256": "519f4a54ed675fcdf51af1653ed66a6d66220d3386b8d46adc358c2cff556cbe"
+  },
+  "observer_supplement": {
+    "bytes": 2053,
+    "sha256": "cb8a50c42857b19b84306fc810fbbd48c3e5c413ea612750b3f04ba932fa881a"
+  },
+  "method": {
+    "bytes": 5252,
+    "sha256": "da44b456b1ffb0aa61bfb700797f31891676c2fc973a7d5adaad743fc0d74894"
+  },
+  "baseline": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v",
+    "bytes": 194845,
+    "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+  },
+  "measured_diagnosis": {
+    "bytes": 79256,
+    "sha256": "2c5c3a95ac596f139ddb31132eb9ae2b6b18ab96a0872ad3ba4f747adf031159"
+  },
+  "diagnosis_inputs_rehashed": 14,
+  "findings": [],
+  "full_contract_read": true,
+  "baseline_source_scope": "Independently read complete predecode functions, carried-header transition network, header/remaining parser branches, V10 bank writer and final state/fault/start/accept priorities. CRC arithmetic unmodified and not re-proved.",
+  "resolved_review_point": {
+    "issue": "Global accepted_tail_valid sampled after acceptance is insufficient to prove the first DWORD relation had a valid predecessor.",
+    "resolution": "Supplement02 records OLD tail-valid and accepted block/word identity in independent companion observer metadata; shifts/promotions/overwrites match actual bank ordering, with a separately classified observer-negative.",
+    "product_changed": false
+  },
+  "reasoning": [
+    "Within an accepted block, predecode indexing is interleaved exactly as the baseline; predecessor j-1 encoded field and header j expected/format fields form the same operands that become packet_bytes/expected/header_bad.",
+    "Across blocks, previous accepted block tail is the required predecessor even when parser banks lag acceptance. Same-edge nonblocking semantics must use old tail, while updating to incoming DWORD15 only after that relation has been formed.",
+    "At carried first header in parser lane0, current relation0 can feed the original shared carry-bad control through the same beat, including minimum packet end at lane3. Subsequent beats use the captured packet mismatch. A new STP in lanes0..2 captures its header relation in that beat; lane3 captures next beat. Original minimum length prevents a new STP from completing its entire TLP within the remaining lanes of the same beat.",
+    "Ordinary payload values resembling STP do not create ownership. Only the unchanged control_header_first branch captures mismatch; valid packet relation remains stable until the next real owned header.",
+    "Current/next companion shifts and simultaneous promotion plus new acceptance must preserve the two original if-block priorities, including the incoming-current overwrite case. Fault-edge data copies may be invalid, but no next epoch owner may use stale tail or incomplete companion contents.",
+    "Original !=, logical|| and conditional mux preserve the selected four-state result; source peer and actual literal X/Z tests are still required. There is no claim for arbitrary corrupt internal state.",
+    "The measured203-load control network and four verdict priority muxes remain; input-to-relation-register path can become critical. This plan supports a measured experiment, not a promised timing gain."
+  ],
+  "mandatory_followup": [
+    "Full generated-source inverse and independent implementation peer before controls/native.",
+    "Exact public V22 cycle miter with all17 existing cases plus every DWORD-position/bank/stall/reset/fault boundary; counted predecessor and mismatch witnesses.",
+    "All declared meaningful product mutants and separately classified observer negative must fail named semantic assertions.",
+    "Unchanged CPU6/2GiB profile, original4ns all-corner timing and optimized graph attribution before any acceptance."
+  ],
+  "not_claimed": [
+    "RTL implemented",
+    "actual controls passed",
+    "new native graph analyzed",
+    "timing improvement",
+    "production adoption",
+    "full PHY or final-chip closure"
+  ]
+}

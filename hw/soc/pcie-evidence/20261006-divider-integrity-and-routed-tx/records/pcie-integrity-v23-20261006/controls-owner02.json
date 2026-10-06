@@ -1,0 +1,40 @@
+{
+  "status": "HEALTHY",
+  "reason": null,
+  "elapsed_watchdog_seconds": null,
+  "failure_grace_seconds": 5.0,
+  "processes": [
+    {
+      "kind": "native",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_wrong_predecessor]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_current_input_tail]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_shift_wrong]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_promote_stale]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_carried_invert]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_carried_always_bad]",
+        "sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_old_predecessor_observer_negative",
+        "--basetemp=/dev/shm/nssoc-integrity-v23-public-controls02",
+        "--junitxml=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/controls02.xml"
+      ],
+      "identity": {
+        "pid": 274032,
+        "state": "R",
+        "process_group": 274032,
+        "start_ticks": "4811125"
+      },
+      "process_group": 274032,
+      "status": "REAPED_NO_LIVE_MEMBERS",
+      "returncode": 1,
+      "members_at_leader_exit": []
+    }
+  ],
+  "cleanup": null
+}

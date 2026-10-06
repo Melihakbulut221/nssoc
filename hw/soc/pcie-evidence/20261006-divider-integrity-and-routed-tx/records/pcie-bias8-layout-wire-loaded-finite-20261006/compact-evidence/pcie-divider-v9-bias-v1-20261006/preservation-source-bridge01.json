@@ -1,0 +1,80 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-20261006/preserve_native01.py",
+    "bytes": 3458,
+    "sha256": "2da6a5b3899cefe3873cda6e3788811126be5d67da5e7aaa08882ac9f297ed59"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-20261006/preserve_native01.py",
+    "bytes": 3390,
+    "sha256": "27daabf086a173ee2313828e38120bc640f46c0b2733bf5e9e80184643b5b50f"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "from pathlib import Path\nimport hashlib,json,os,tarfile\nB=Path(__file__).resolve().parent;R=B.parents[3]\n",
+      "after": "from pathlib import Path\nimport hashlib,json,os,tarfile\nB=Path(__file__).resolve().parent;R=B.parents[3]\n"
+    },
+    {
+      "tag": "replace",
+      "before": "roots=[Path('/dev/shm/nssoc-div4-v8-cap-v1-layout-01'),Path('/dev/shm/nssoc-div4-v8-cap-v1-checks-01')]\n",
+      "after": "roots=[Path('/dev/shm/nssoc-div4-v9-bias-v1-layout-01'),Path('/dev/shm/nssoc-div4-v9-bias-v1-checks-01')]\n"
+    },
+    {
+      "tag": "equal",
+      "before": "def pin(p):\n with Path(p).open('rb') as f:return dict(bytes=Path(p).stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n",
+      "after": "def pin(p):\n with Path(p).open('rb') as f:return dict(bytes=Path(p).stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "native=json.loads((roots[1]/'result.json').read_text());assert native['status']=='PASS_DIV4_V8_CAP_V1_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY' and len(native['steps'])==21\n",
+      "after": "native=json.loads((roots[1]/'result.json').read_text());assert native['status']=='PASS_DIV4_V9_BIAS_V1_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY' and len(native['steps'])==21\n"
+    },
+    {
+      "tag": "equal",
+      "before": "for p in roots[1].rglob('*.owned.json'):\n d=json.loads(p.read_text());assert d['status']=='HEALTHY' and d['cleanup'] is None\n for process in d['processes']:\n  assert process['status']=='REAPED_NO_LIVE_MEMBERS' and process['members_at_leader_exit']==[]\n  pstat=Path('/proc')/str(process['identity']['pid'])/'stat'\n  if pstat.exists():\n   f=pstat.read_text().rsplit(')',1)[1].split();assert f[19]!=process['identity']['start_ticks'] or f[0]=='Z'\nclosed={str(p):pin(p) for root in roots for p in root.rglob('*') if p.is_file()}\nf=json.loads((B/'source-freeze01.json').read_text());assert f['inputs']=={p:pin(p) for p in f['inputs']}\n",
+      "after": "for p in roots[1].rglob('*.owned.json'):\n d=json.loads(p.read_text());assert d['status']=='HEALTHY' and d['cleanup'] is None\n for process in d['processes']:\n  assert process['status']=='REAPED_NO_LIVE_MEMBERS' and process['members_at_leader_exit']==[]\n  pstat=Path('/proc')/str(process['identity']['pid'])/'stat'\n  if pstat.exists():\n   f=pstat.read_text().rsplit(')',1)[1].split();assert f[19]!=process['identity']['start_ticks'] or f[0]=='Z'\nclosed={str(p):pin(p) for root in roots for p in root.rglob('*') if p.is_file()}\nf=json.loads((B/'source-freeze01.json').read_text());assert f['inputs']=={p:pin(p) for p in f['inputs']}\n"
+    },
+    {
+      "tag": "replace",
+      "before": "ready=dict(status='COMPLETE_CAP24_V1_21_NATIVE_CHECKS_REQUIRES_INDEPENDENT_SAVED_REVIEW',closed_native_files=closed,source_freeze=pin(B/'source-freeze01.json'),source_peer=pin(B/'source-only-peer01-rx.json'),source_metadata_addendum=pin(B/'source-freeze01-metadata-addendum.json'),layout=str(roots[0]),checks=str(roots[1]),fresh_wire_RC_pending=True,loaded455_pending=True,qualified_pex=False)\n",
+      "after": "ready=dict(status='COMPLETE_BIAS8_V1_21_NATIVE_CHECKS_REQUIRES_INDEPENDENT_SAVED_REVIEW',closed_native_files=closed,source_freeze=pin(B/'source-freeze01.json'),source_peer=pin(B/'source-only-peer01-rx.json'),layout=str(roots[0]),checks=str(roots[1]),fresh_wire_RC_pending=True,loaded455_pending=True,qualified_pex=False)\n"
+    },
+    {
+      "tag": "equal",
+      "before": "p=B/'native-finite-review-ready01.json';assert not p.exists();p.write_text(json.dumps(ready,indent=2)+'\\n')\nfiles={}\n",
+      "after": "p=B/'native-finite-review-ready01.json';assert not p.exists();p.write_text(json.dumps(ready,indent=2)+'\\n')\nfiles={}\n"
+    },
+    {
+      "tag": "replace",
+      "before": "for root in roots+[Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')]:\n",
+      "after": "for root in roots+[Path('/dev/shm/nssoc-div4-v8-cap-v1-layout-01')]:\n"
+    },
+    {
+      "tag": "equal",
+      "before": " for p in root.rglob('*'):\n  if p.is_file():assert not p.is_symlink();files['native/'+root.name+'/'+str(p.relative_to(root))]=p\nfor root in [B]:\n for p in root.rglob('*'):\n  if p.is_file() and not p.is_symlink() and '__pycache__' not in p.parts and p.suffix in ['.json','.py','.txt','.log','.xml','.spice','.cir','.bin'] and 'preservation-active' not in p.name:files['method/'+root.name+'/'+str(p.relative_to(root))]=p\nfor name in f['inputs']:\n p=Path(name)\n if p.is_relative_to(R):\n  rel=p.relative_to(R)\n  if str(rel).startswith(('scripts/','sw/tests/','hw/soc/flow/','hw/soc/analog/')):files['project/'+str(rel)]=p\nfor p in (R/'LICENSES').glob('*.txt'):files['project/'+str(p.relative_to(R))]=p\n",
+      "after": " for p in root.rglob('*'):\n  if p.is_file():assert not p.is_symlink();files['native/'+root.name+'/'+str(p.relative_to(root))]=p\nfor root in [B]:\n for p in root.rglob('*'):\n  if p.is_file() and not p.is_symlink() and '__pycache__' not in p.parts and p.suffix in ['.json','.py','.txt','.log','.xml','.spice','.cir','.bin'] and 'preservation-active' not in p.name:files['method/'+root.name+'/'+str(p.relative_to(root))]=p\nfor name in f['inputs']:\n p=Path(name)\n if p.is_relative_to(R):\n  rel=p.relative_to(R)\n  if str(rel).startswith(('scripts/','sw/tests/','hw/soc/flow/','hw/soc/analog/')):files['project/'+str(rel)]=p\nfor p in (R/'LICENSES').glob('*.txt'):files['project/'+str(p.relative_to(R))]=p\n"
+    },
+    {
+      "tag": "replace",
+      "before": "members={n:dict(restore_path=str(p),**pin(p)) for n,p in files.items()};a=B/'pcie-divider-v8-cap-v1-native01.tar.xz';assert not a.exists()\n",
+      "after": "members={n:dict(restore_path=str(p),**pin(p)) for n,p in files.items()};a=B/'pcie-divider-v9-bias-v1-native01.tar.xz';assert not a.exists()\n"
+    },
+    {
+      "tag": "equal",
+      "before": "with tarfile.open(a,'x:xz',preset=3) as tf:\n for n,p in files.items():tf.add(p,arcname=n,recursive=False)\nassert members=={n:dict(restore_path=str(p),**pin(p)) for n,p in files.items()}\nseen=set()\nwith tarfile.open(a,'r|xz') as tf:\n for item in tf:\n  assert item.isfile() and item.name not in seen;seen.add(item.name);x=members[item.name];assert item.size==x['bytes'] and hashlib.file_digest(tf.extractfile(item),'sha256').hexdigest()==x['sha256']\nassert seen==set(members)\n",
+      "after": "with tarfile.open(a,'x:xz',preset=3) as tf:\n for n,p in files.items():tf.add(p,arcname=n,recursive=False)\nassert members=={n:dict(restore_path=str(p),**pin(p)) for n,p in files.items()}\nseen=set()\nwith tarfile.open(a,'r|xz') as tf:\n for item in tf:\n  assert item.isfile() and item.name not in seen;seen.add(item.name);x=members[item.name];assert item.size==x['bytes'] and hashlib.file_digest(tf.extractfile(item),'sha256').hexdigest()==x['sha256']\nassert seen==set(members)\n"
+    },
+    {
+      "tag": "replace",
+      "before": "r=dict(status='PASS_CLOSED_COMPACT_NATIVE_SOURCE_AND_FAILURE_HISTORY_FULL_READBACK',archive=dict(path=str(a),**pin(a)),members=members,member_count=len(members),native_ready=pin(B/'native-finite-review-ready01.json'),independent_saved_peer_pending=True,qualified_pex=False)\n",
+      "after": "r=dict(status='PASS_CLOSED_BIAS8_NATIVE_SOURCE_AND_PARENT_FAILURE_HISTORY_FULL_READBACK',archive=dict(path=str(a),**pin(a)),members=members,member_count=len(members),native_ready=pin(B/'native-finite-review-ready01.json'),independent_saved_peer_pending=True,qualified_pex=False)\n"
+    },
+    {
+      "tag": "equal",
+      "before": "p=B/'native-archive01.json';p.write_text(json.dumps(r,indent=2)+'\\n');print(r['archive'],len(members),len(closed))\n",
+      "after": "p=B/'native-archive01.json';p.write_text(json.dumps(r,indent=2)+'\\n');print(r['archive'],len(members),len(closed))\n"
+    }
+  ],
+  "scope": "Closed-byte archive only; requires all21actual stages and closed child groups. Omitted parent metadata addendum because V9 source freeze accurate natively; exact V9 freeze and native source peer still required."
+}

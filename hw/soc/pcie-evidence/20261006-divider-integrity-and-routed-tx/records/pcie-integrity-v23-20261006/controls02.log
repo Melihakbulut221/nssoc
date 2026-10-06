@@ -1,0 +1,115 @@
+FF...F...                                                                [100%]
+=================================== FAILURES ===================================
+___________ test_selected_adjacent_case_after_initialization[False] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls02/test_selected_adjacent_case_af0')
+miter = False
+
+    @pytest.mark.parametrize('miter',[False,True])
+    def test_selected_adjacent_case_after_initialization(tmp_path,miter):
+        tool=Path(shutil.which('iverilog')or'/usr/bin/iverilog');out=tmp_path/'capture'
+        command=[sys.executable,str(R/'scripts/check_pcie_gen3_continuous_rx_integrity_v23.py'),'--out',str(out),'--iverilog-dir',str(tool.parent),'--test','adjacent_header_all_positions_and_bank_boundaries']
+        if miter:
+            m=runpy.run_path(str(R/'sw/tests/test_pcie_gen3_integrity_v23_miter.py'));rtl=m['miter'](tmp_path/'miter-rtl');command+=['--rtl-dir',str(rtl)]
+        with(tmp_path/'launch.log').open('w')as log:
+            result=subprocess.run(command,cwd=R,stdout=log,stderr=subprocess.STDOUT,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+        record=json.loads((out/'result.json').read_text());cases=list(ET.parse(out/'results.xml').getroot().iter('testcase'))
+>       assert result.returncode==0 and record['status']=='PASS' and record['tests']==dict(passed=1,failed=0,skipped=0)
+E       AssertionError: assert (0 == 0 and 'PASS_PORT_ON...QUARANTINE_RX' == 'PASS'
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=0).returncode
+E         
+E         - PASS
+E         + PASS_PORT_ONLY_PCIE_GEN3_WIDE_CRC_QUARANTINE_RX)
+
+hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py:15: AssertionError
+____________ test_selected_adjacent_case_after_initialization[True] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls02/test_selected_adjacent_case_af1')
+miter = True
+
+    @pytest.mark.parametrize('miter',[False,True])
+    def test_selected_adjacent_case_after_initialization(tmp_path,miter):
+        tool=Path(shutil.which('iverilog')or'/usr/bin/iverilog');out=tmp_path/'capture'
+        command=[sys.executable,str(R/'scripts/check_pcie_gen3_continuous_rx_integrity_v23.py'),'--out',str(out),'--iverilog-dir',str(tool.parent),'--test','adjacent_header_all_positions_and_bank_boundaries']
+        if miter:
+            m=runpy.run_path(str(R/'sw/tests/test_pcie_gen3_integrity_v23_miter.py'));rtl=m['miter'](tmp_path/'miter-rtl');command+=['--rtl-dir',str(rtl)]
+        with(tmp_path/'launch.log').open('w')as log:
+            result=subprocess.run(command,cwd=R,stdout=log,stderr=subprocess.STDOUT,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+        record=json.loads((out/'result.json').read_text());cases=list(ET.parse(out/'results.xml').getroot().iter('testcase'))
+>       assert result.returncode==0 and record['status']=='PASS' and record['tests']==dict(passed=1,failed=0,skipped=0)
+E       AssertionError: assert (0 == 0 and 'PASS_PORT_ON...QUARANTINE_RX' == 'PASS'
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v23-public-controls02/test_selected_adjacent_case_af1/miter-rtl'], returncode=0).returncode
+E         
+E         - PASS
+E         + PASS_PORT_ONLY_PCIE_GEN3_WIDE_CRC_QUARANTINE_RX)
+
+hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py:15: AssertionError
+__________ test_actual_miter_fault_is_observed[header_promote_stale] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls02/test_actual_miter_fault_is_obs3')
+fault = 'header_promote_stale'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+>       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (0 != 0)
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError
+=========================== short test summary info ============================
+FAILED hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py::test_selected_adjacent_case_after_initialization[False]
+FAILED hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py::test_selected_adjacent_case_after_initialization[True]
+FAILED sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_promote_stale]
+3 failed, 6 passed in 52.19s
