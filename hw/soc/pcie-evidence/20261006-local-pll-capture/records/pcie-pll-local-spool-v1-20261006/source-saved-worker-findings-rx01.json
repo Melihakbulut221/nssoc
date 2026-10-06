@@ -1,0 +1,16 @@
+{
+  "status": "SOURCE_FINDING_BEFORE_WORKER_APPROVAL",
+  "freeze": {
+    "bytes": 463044,
+    "sha256": "69953a8e826c277a3d6c71611a1b791e249eb832fdce8811d6f29586681d72c0"
+  },
+  "findings": [
+    {
+      "id": "WORKER_OUTER_INNER_CANCEL_HANDOFF",
+      "source": "scripts/publish_pcie_local_spool_v1.py",
+      "detail": "run signal handler sets outer stop only. A signal after loop check and before command installs ProcessOwner leaves stop pending while command may launch fresh V4 without observing it. Post-publish check occurs after transport completes.",
+      "required": "Preserve current source; share and check cancellation at ownership entry or raise immediately outside inner owner, plus actual signal controls around entry and restored-handler exit.",
+      "scope": "No native signal/execution; existing17 controls do not exercise this exact boundary."
+    }
+  ]
+}

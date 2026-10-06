@@ -46,6 +46,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/143-pcie-divider-and-routed-transmitter.md](143-pcie-divider-and-routed-transmitter.md) records the loaded-divider margin failure, V23 timing screen, completed V18 MAX4118 regression and routed transmitter setup improvement.
 [docs/144-pcie-publication-recovery-and-incomplete-pll.md](144-pcie-publication-recovery-and-incomplete-pll.md) records the tested publisher retry correction, recovered raw part and preserved incomplete PLL run.
 [docs/145-pcie-divider-time-step-and-prefix-timing.md](145-pcie-divider-time-step-and-prefix-timing.md) records the finer-step loaded-divider point pass, unresolved numerical convergence and rejected V24 timing regression.
+[docs/146-pcie-local-pll-capture.md](146-pcie-local-pll-capture.md) records durable local waveform capture, independent network publication and 69 passing current controls; PLL acquisition remains open.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

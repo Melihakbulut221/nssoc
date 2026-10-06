@@ -1,0 +1,94 @@
+{
+  "status": "DECLARED_LOCAL_LOSSLESS_SPOOL_AND_INDEPENDENT_PUBLICATION_ARCHITECTURE",
+  "baseline": {
+    "path": "scripts/characterize_pcie_pll_acquisition_v4.py",
+    "bytes": 7340,
+    "sha256": "5e64b71eeb9f792b1a909ec354b3c69010b6f0983ec4f36323b2e0992c2b5503"
+  },
+  "publisher": {
+    "path": "scripts/publish_pcie_native_capture_v4.py",
+    "bytes": 6585,
+    "sha256": "1b73bd49b86090a6eeff1cf16af36a2a17a4885bb748ecc301435ee796b3b585"
+  },
+  "publisher_peer": {
+    "path": "hw/soc/out/publisher-reconciliation-20261006/source-saved-peer-pll01.json",
+    "bytes": 8509,
+    "sha256": "a2bf526230f444bc391acafdae4267e97c27c01e29ee7226b5f80d165f3efae3"
+  },
+  "physics": {
+    "unchanged_devices": 539,
+    "TSTEP_s": 2.5e-12,
+    "TMAX_s": 1.25e-12,
+    "stop_s": 1e-06,
+    "windows_s": [
+      [
+        8e-07,
+        9e-07
+      ],
+      [
+        9e-07,
+        1e-06
+      ]
+    ],
+    "frequency_difference_limit_ppm": 100,
+    "matched_phase_limit_s": 5e-11,
+    "phase_offset_removal": false,
+    "all_original_op_startup_safety_criteria_unchanged": true
+  },
+  "native_contract": {
+    "fresh_time_zero_run_only": true,
+    "previous383ns_run_remains_error": true,
+    "CPU": 12,
+    "AS_bytes": 1073741824,
+    "raw_part_bytes_max": 16777216,
+    "RAM_capture_cap_bytes": 52428800,
+    "RAM_shared_floor_bytes": 536870912,
+    "native_healthy_elapsed_timeout": null,
+    "network_called_from_native_or_capture": false,
+    "local_io_backpressure_only": true
+  },
+  "disk_contract": {
+    "SSD_spool_outside_RAM": true,
+    "exclusive_new_directory_and_advisory_writer_lock": true,
+    "physically_allocated_reservation_bytes": 10737418240,
+    "bounded_payload_and_metadata_bytes": 8589934592,
+    "entry_free_bytes": 20401094656,
+    "continuous_free_floor_bytes": 1073741824,
+    "part_count_cap": 512,
+    "reservation_excluded_from_publish_and_archive": true,
+    "reservation_released_only_after_native_terminal_and_durable_manifest_readback": true,
+    "full_spool_parts_retained_until_complete_publication_and_independent_replay": true,
+    "notes": "Physical reserve file is separate from bounded8GiB payload budget. Entry requires10GiB reserve+8GiB payload+1GiB freefloor. No claim that this is a filesystem quota or that unrelated writers cannot exhaust the unreserved freefloor."
+  },
+  "commit_protocol": [
+    "Keep existing append order, raw byte SHA, row framing, compression preset1 and no decimation. Each complete part receives exact index/first_row/row_count/raw+compressed size/hash.",
+    "Write compressed data and immutable per-part record into a unique staging directory on SSD; fsync both regular files and staging directory.",
+    "Rename complete staging directory into fresh committed part namespace under exclusive producer lock; fsync parent directory. Never replace an existing committed part.",
+    "Append exact row descriptor to canonical SSD ledger by fsync temporary JSON, atomic replace and parent-directory fsync. Only then mirror ledger in RAM and clear pending raw bytes.",
+    "At native EOF require exact native trailer and ordered complete row/hash coverage, then set LOCAL_DURABLE_COMPLETE. Local status never sets authenticated/anonymous/public_verified fields.",
+    "On failure retain staging/committed files and unparsed/unpublished tails. Post-crash orphan completed directory is retained and reported; never silently count it as committed or resume solver from partial stream."
+  ],
+  "publication_contract": {
+    "CPU_proposal": 14,
+    "separate_detached_owner": true,
+    "explicit_tag": "evidence-20261006-pcie-closure",
+    "publisher_revision": 4,
+    "read_only_committed_data": true,
+    "separate_mutable_publication_ledger": true,
+    "fresh_receipt_per_attempt": true,
+    "transport_exhaustion_behavior": "Record pending/failure and continue polling with bounded backoff; never signal or fail native producer. An immutable integrity mismatch is terminal for publication, not silent replacement; source remains retained.",
+    "explicit_stop": "Stop and reap only own publication child tree. Native has its own explicit exact-birth stop path.",
+    "native_completion_independent_of_publication": true,
+    "public_acceptance": "Separate final manifest requires every exact committed part uploaded and both authenticated/anonymous full byte readbacks. Local native PASS alone is never called public delivery."
+  },
+  "required_controls": [
+    "Whole generated deck,539device config, Meter, startup_proof and acquisition thresholds exact baseline inverse; only capture queue/local-result metadata bridge changes.",
+    "Actual byte stream with multiple parts and irregular read boundaries reconstructs same header+payload+trailer/hash/rows and unchanged reducer outputs.",
+    "Offline/timeout publisher does not impede native capture completion; late publication recovers retained parts without overwrite or solver restart.",
+    "Duplicate index/name, modified source/part, short write, diskfloor/cap, fsync/rename/ledger failures, truncated rows/trailer all fail with bytes retained.",
+    "Power-loss boundary fixtures distinguish uncommitted staging, committed orphan and canonical ledger; no partial row or orphan silently accepted.",
+    "Actual owner SIGTERM during native write and separate publisher wait/backoff closes exact children and retains source evidence; native healthy run has no elapsed timeout.",
+    "Independent source peer and saved actual controls before fresh native launch; native/public/replay results separate."
+  ],
+  "scope": "Architecture contract only. No new solver or publisher launched. Exact source implementation, source peer and actual lossless/lifecycle/fault tests remain gates."
+}
