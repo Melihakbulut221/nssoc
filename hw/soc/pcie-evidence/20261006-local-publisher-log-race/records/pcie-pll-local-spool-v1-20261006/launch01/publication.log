@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 242, in <module>
+    main()
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 237, in main
+    result = run(args.spool, args.out, args.configuration_sha)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 182, in run
+    result = publish(path, receipt, directory)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 119, in publish
+    return command(path, receipt, directory, stop=stop)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 76, in command
+    guard(directory)
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 51, in guard
+    used = sum(p.stat().st_size for p in Path(directory).rglob('*') if p.is_file())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 51, in <genexpr>
+    used = sum(p.stat().st_size for p in Path(directory).rglob('*') if p.is_file())
+               ^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-spool-v1-20261006/publication01/attempt-00061-part00061.transport/0003-metadata-attempt1/stdout.bin'
