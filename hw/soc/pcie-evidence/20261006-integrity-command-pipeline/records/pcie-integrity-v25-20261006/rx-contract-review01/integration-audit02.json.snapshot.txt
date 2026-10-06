@@ -1,0 +1,70 @@
+{
+  "status": "SOURCE_LIMITED_V25_LATENCY_INTEGRATION_AUDIT_NOT_ADOPTION",
+  "contract01": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/architecture-contract01.json",
+    "bytes": 11823,
+    "sha256": "bfaab7d626eaa86214dc7ef0bd55e817a25baa469135fc83c65cb32d1e6d0963"
+  },
+  "contract02": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/architecture-contract02.json",
+    "bytes": 11823,
+    "sha256": "d9a2be36142de3aab93737344376421944d5689e51cd9c2847d01433c8c02257"
+  },
+  "exact_text_replacement": [
+    "Stable production baseline V11 unchanged.",
+    "Stable comparison baseline V11 unchanged."
+  ],
+  "inputs": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v11.v",
+      "bytes": 3324,
+      "sha256": "e7771bd2832bab07b7dad8576a27b7d6edc7eddf0084b2b00afb32771cd67203"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v",
+      "bytes": 3324,
+      "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v5.v",
+      "bytes": 3712,
+      "sha256": "776d3748a2e18bf43d164688e042da3c8088c1aa0dc3b9fcfaa79133c5a47970"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v",
+      "bytes": 6729,
+      "sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v2.v",
+      "bytes": 4195,
+      "sha256": "697bb3f119cb0b7b0f005de62be937054750eda7aaca330582678bd1f32559b7"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v",
+      "bytes": 17774,
+      "sha256": "263d91fb910ab27e5ac3e2efe49b4e93366aff2d47a498afc483dfd587c679dc"
+    }
+  ],
+  "rtl_exact_name_mentions": [
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v11.v",
+      "line": 7,
+      "text": "module soc_pcie_gen3_continuous_rx_integrity_v11 #(",
+      "module_definition": true
+    },
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v",
+      "line": 7,
+      "text": "module soc_pcie_gen3_continuous_rx_integrity_v23 #(",
+      "module_definition": true
+    }
+  ],
+  "nondefinition_mentions": 0,
+  "findings": [
+    "V11/V23 integrity wrappers are comparison experiments; calling V11 a production baseline overstated current adoption. Corrected wording only; original01 retained.",
+    "Visible ready/valid data gets nominal+1 latency while packet verdict event pulses remain parser-edge; any consumer relying on fixed phase must be checked before top-level adoption.",
+    "Current owned/recovered event paths instantiate separate owned-framer and descriptor consumer modules; passing V25 alone cannot validate those paths or their owner/body/descriptor rendezvous."
+  ],
+  "scope": "Exact current .v source name inventory and full listed wrapper/consumer reads only. Does not inspect every possible generated build, aliases, external top or routed snapshot. No claim of integrated-chip closure, no RTL/native change."
+}

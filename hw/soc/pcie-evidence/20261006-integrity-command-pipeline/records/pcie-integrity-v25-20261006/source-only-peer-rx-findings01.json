@@ -1,0 +1,174 @@
+{
+  "status": "FINDINGS_V25_SOURCE01_LAUNCH_HELD",
+  "findings": [
+    {
+      "id": "V25_CACHE_FAULT_WITNESS_OPTIONAL_SKIP",
+      "severity": "blocking_source_control_coverage",
+      "file": "sw/tests/test_pcie_gen3_integrity_v25_architecture.py",
+      "detail": "The architecture wrapper does not emit either inherited v22 fault/cache-change counter. The public cache-fault test conditionally skips all actual fault-edge cache-change checks, so its eight epochs alone do not prove a V25 pending-command cache write was invalidated. The writer now applies an OLD command; the old same-parser-step stimulus is not that witness.",
+      "required": "Add a V25-specific pre/post-NBA observer of real pending OLD command and cache changes at the fault edge; shift the stimulus so that command contains an actual good verdict, require eight actual changing epochs, and retain the independent fresh-owner byte scoreboard. Preserve source01 and publish an additive freeze before launch."
+    }
+  ],
+  "freeze": {
+    "bytes": 51856,
+    "sha256": "dc462d082834957ffe9e8e97691f4dfa9a7c5ceef6a83ed6b7fee5056a27b49d"
+  },
+  "source_readback": {
+    "bytes": 59063,
+    "sha256": "3a5f850bc973a30cb3c0dadecf654a1149ded1496dbb124c8d45665e5c8d504b"
+  },
+  "full_body_bridges": [
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v25.v",
+      "before": {
+        "bytes": 3324,
+        "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+      },
+      "after": {
+        "bytes": 3324,
+        "sha256": "bf0c370059beed9fa0d90de1cf5c453030360ce3314dd85bf7a93446d056557a"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx_integrity_v23.py",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx_integrity_v25.py",
+      "before": {
+        "bytes": 11276,
+        "sha256": "d078650a4316f8483edb66b5ace141881af809c946028a39e9cba5808d005565"
+      },
+      "after": {
+        "bytes": 11276,
+        "sha256": "064887607688afedade8667acc570c83f9a67c8fa54847e64c1a38d09cc8b133"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v23",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v25",
+      "before": {
+        "bytes": 1528,
+        "sha256": "6aae070d15d47010f1cd62437d8d222dc27f01a06a6367f6707905f206ff8b87"
+      },
+      "after": {
+        "bytes": 1528,
+        "sha256": "093f678ae61234aefb5fd73f1ce77879b1d68bbb93fe6ee5dc0a2f5de84befea"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v23.py",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v25.py",
+      "before": {
+        "bytes": 31920,
+        "sha256": "78f063e64ef1264d7bf46dc7bcc088e47e1af8168e3226b71624a180bd6d5a50"
+      },
+      "after": {
+        "bytes": 33742,
+        "sha256": "f349ddf97a9a0616ba203ea43ad8e0655883d84c090fff443d7d99cb866398e5"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_continuous_rx_integrity_v23.py",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_continuous_rx_integrity_v25.py",
+      "before": {
+        "bytes": 6540,
+        "sha256": "e099d8e2402ffe661616b689a57e62ece59cf0ab9feb4d15c029a800cc7f4492"
+      },
+      "after": {
+        "bytes": 6584,
+        "sha256": "824d90d467001c0cd6189db93f81ec0708afe37381617507958c833494e6ca33"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/launch_controls02.py",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/launch_controls01.py",
+      "before": {
+        "bytes": 4167,
+        "sha256": "24b59b29e1a073ad5caa8fcb164b6fd9b4c28b6abffa51db4e164fad3468a430"
+      },
+      "after": {
+        "bytes": 4296,
+        "sha256": "08098745aef74017e86bf905cf9a1976aa4d3227682ae070c867c02dd815b000"
+      },
+      "full_body_and_diff_equal": true
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/detach_controls02.py",
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/detach_controls01.py",
+      "before": {
+        "bytes": 1987,
+        "sha256": "3af7a26d5d5c6c37050604836d0999c9e6d826eaf074be491570b913e6090eee"
+      },
+      "after": {
+        "bytes": 1990,
+        "sha256": "e8b6d87d65971bfa180d37a9b5c4a025f81c1342c008175aae581a4535c99cd9"
+      },
+      "full_body_and_diff_equal": true
+    }
+  ],
+  "complete_framer_inverse_edits": 14,
+  "public_cases": [
+    "sustained_minimum_packets_exceed_every_buffer",
+    "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+    "all65_partial_raw_abort_phases_restart_exactly",
+    "edb_quarantine_and_eds_release_drain",
+    "actual_full_ring_replacement_and_late_stall_overflow",
+    "malformed_tokens_and_headers_never_release_quarantine",
+    "bounded_stalls_preserve_all_wide_metadata",
+    "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+    "start_without_abort_reseeds_and_discards_prior_epoch",
+    "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+    "tlp_crc_coverage_residue_nullification_and_successor",
+    "incomplete_maximum_packet_cannot_release_any_byte",
+    "crc_candidates_cover_every_dword_start_and_cross_slice_seed",
+    "descriptor_empty_drain_under_held_output_and_eds",
+    "descriptor_epoch_controls_discard_owned_payload",
+    "descriptor_parser_fault_cancels_queue_after_sampling_edge",
+    "cache_fault_write_and_new_epoch_reuse",
+    "adjacent_header_all_positions_and_bank_boundaries",
+    "command_pending_epoch_controls_and_fresh_reuse"
+  ],
+  "unchanged_scalar_oracle_and_ports_class": true,
+  "retained_first18_cases_after_label_change": true,
+  "collection_only": {
+    "selected": 42,
+    "excluded_MAX4118": 1,
+    "log": {
+      "bytes": 4807,
+      "sha256": "942d38cae6b3adf7c4c05de400bf7198f115ae465cceb4b9f4052348547caabf"
+    }
+  },
+  "static_hdl_construction_only": {
+    "files": 12,
+    "record": {
+      "bytes": 3967,
+      "sha256": "8cb73fef6220ea26dbb547893a969b67c917cb6e27902d7d6280b19c6c2db201"
+    }
+  },
+  "source_scope": [
+    "Complete writer command fields and all seven slot writers plus verdict/cache input relocation reviewed.",
+    "Reserved occupancy, parser math/default frontier, bank writers, descriptor transfer and fault/public handshake priority remain V23 except exact declared one-stage visibility.",
+    "External X/Z enabled/active ownership holds are now explicitly preserved; component source contains ten hold/resume and two unknown-fault fallthrough checks, not an arbitrary-state full-framer equivalence claim.",
+    "Nominal comparison restricts ready1/no fault/both active to +1 output while preserving parser/event cadence; independent byte transactions handle stalls and fault discard.",
+    "Ending application and command emptiness are separate from parser ending. Pending reset/start/flush/abort/bad-block/overflow tests and named new command mutants are source-reviewed but unexecuted.",
+    "The 12 inherited public, eight command-wrapper, two block and eleven component mutants are current planned controls; additional old V23 header/miter negatives remain historical unless separately run.",
+    "Selected tools, source pins, lexical venv and Python env sanitation bind the detached CPU6/2GiB campaign; same inherited owner try/post-wait/post-context code and floors are preserved."
+  ],
+  "launcher": {
+    "bytes": 4296,
+    "sha256": "08098745aef74017e86bf905cf9a1976aa4d3227682ae070c867c02dd815b000"
+  },
+  "detacher": {
+    "bytes": 1990,
+    "sha256": "e8b6d87d65971bfa180d37a9b5c4a025f81c1342c008175aae581a4535c99cd9"
+  },
+  "method": {
+    "bytes": 9853,
+    "sha256": "2fe67ef94d0c086d904fbda27e6c126036082e74b6c3336fe383a2feca05114e"
+  },
+  "scope": "Independent source/hash/full-text/AST review only. No producer/test function imported or executed; no compiler, HDL, EDA or native launched. This is not a passing launch gate or functional/timing/adoption evidence."
+}
