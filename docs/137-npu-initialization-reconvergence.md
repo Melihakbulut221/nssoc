@@ -6,9 +6,11 @@
 
 A native-cell unit test reproduces an initialization defect in the rejected
 whole-chip timing candidate. A one-gate Boolean factoring experiment corrects
-that isolated failure. **The repaired full-chip boot and physical timing are
-not yet accepted.** No firmware, memory model, reset sequence or timing
-constraint is relaxed.
+that isolated failure. **The repaired full-chip boot now passes MBIST and all
+28 firmware checks; physical timing remains open.** The
+[complete boot record](141-pcie-capacitor-layout-and-repaired-boot.md) retains
+the exact inputs and raw result. No firmware, memory model, reset sequence or
+timing constraint is relaxed.
 
 The completed [paired write trace](https://github.com/Melihakbulut221/nssoc/actions/runs/37364220044)
 is a successful diagnostic job, not a successful candidate qualification.
@@ -75,8 +77,9 @@ the original preparation and both compiled simulations. It changes only
 the selected netlist and compilation output path, checks that every other
 input remains identical, and calls the existing strict MBIST/28-check boot
 runner. The original three-million-cycle bound and vendor SRAM models remain
-unchanged. A failed repaired boot makes the job fail. Passing this boot would
-still require physical implementation and fresh final timing before adoption.
+unchanged. A failed repaired boot makes the job fail. The completed repaired
+boot passes at cycle 1,596,123 with native return code zero. Physical
+implementation and fresh final timing remain required before adoption.
 
 ## Reproducibility and open work
 
@@ -112,9 +115,10 @@ snapshot; all Yosys logs and results were already complete. The later sealer
 stdout is retained separately in the compact delivery.
 
 This closes the mapping and structural-preservation check for the proposed
-repair. It does **not** close the running repaired-netlist boot, establish SRAM
-electrical characterization, or measure placement/routing/timing. Historical
-failed boots and physical acceptance gates remain unchanged.
+repair. The subsequent strict repaired-netlist boot also passes, as recorded
+in report 141. Neither result establishes SRAM electrical characterization
+or placement/routing/timing. Historical failed boots and physical acceptance
+gates remain unchanged.
 
 The [delivery record](evidence/npu-init-reconvergence-20261006.json) binds
 the local results, method freeze, independent review and public readback.

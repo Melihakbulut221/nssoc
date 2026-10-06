@@ -1,0 +1,30 @@
+...........................................F..................           [100%]
+=================================== FAILURES ===================================
+______ test_only_two_capacitor_source_dimensions_change_and_pitch_is_36um ______
+
+    def test_only_two_capacitor_source_dimensions_change_and_pitch_is_36um():
+        before=(ROOT/"hw/soc/analog/pcie/clock_div4_hbt_v7.spice").read_text()
+        after=(ROOT/"hw/soc/analog/pcie/clock_div4_hbt_v8.spice").read_text()
+        original=[line for line in before.splitlines() if not line.startswith("*")]
+        current=[line for line in after.splitlines() if not line.startswith("*")]
+        expected=[]
+        for line in original:
+            line=line.replace("nssoc_clock_div4_hbt_v7", "nssoc_clock_div4_hbt_v8")
+            if line.startswith(("XCP ", "XCN ")):
+                assert "w=20u l=20u" in line
+                line=line.replace("w=20u l=20u", "w=24u l=24u")
+            expected.append(line)
+        assert current==expected
+        rows=m.devices(ROOT);plan,_,_=m.placement_plan(rows)
+        for name in ["DIV__XCP", "DIV__XCN"]:
+            row=next(r for r in rows if r["name"]==name)
+            assert row["width_um"]==row["length_um"]==24
+            rid,x,y=plan[name]
+>           right=min(p[1] for p in plan.values() if p[0]==rid and p[1]>x)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: min() iterable argument is empty
+
+sw/tests/test_pcie_clock_div4_v8_cap_v1_layout.py:459: ValueError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_clock_div4_v8_cap_v1_layout.py::test_only_two_capacitor_source_dimensions_change_and_pitch_is_36um
+1 failed, 61 passed in 2.23s

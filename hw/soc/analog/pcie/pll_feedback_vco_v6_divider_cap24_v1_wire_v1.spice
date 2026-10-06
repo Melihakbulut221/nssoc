@@ -1,0 +1,10 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Native VCOv6 and dividerV7 metal RC; CMOS /20 remains schematic.
+* Independent ideal body/wire-reference boundaries are explicit bench assumptions.
+* No closed-loop PLL, full substrate PEX or main-chip integration claim.
+.subckt nssoc_pll_feedback_vco_v6_divider_cap24_v1_wire_v1 vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref
+XOSC vco_avdd avss clkn clkp sub vctrl body_substrate wire_cref nssoc_vco_local_hybrid_open_v2
+XDIV avss clkn clkp div_avdd qn qp sub div_body_substrate div_wire_cref nssoc_clock_div4_v8_cap24_v1_hybrid_open_v1
+XFB qp qn clearb fb fbbar div_avdd core_vdd avss sub nssoc_pll_feedback_div20_v2
+.ends nssoc_pll_feedback_vco_v6_divider_cap24_v1_wire_v1

@@ -1,0 +1,14 @@
+{
+  "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/binding-controls01/run.py",
+  "parent_pin": {
+    "bytes": 8614,
+    "sha256": "6a82905859bcff8d9b3ad10748d8bfe9fedfa41e8de954f31d9d800b13fccd92"
+  },
+  "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-wire-v1-20261006/binding-controls01/run.py",
+  "new_pin": {
+    "bytes": 8608,
+    "sha256": "bc65443e8530b7286a0bd908f0143cd37e0701afa476eb4a0afef4e34b4a2410"
+  },
+  "full_unified_diff": "--- \n+++ \n@@ -17,8 +17,8 @@\n B = Path(__file__).resolve().parent\n W = B.parent\n ROOT = W.parents[3]\n-G = Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\n-T = Path('/dev/shm/nssoc-div4-v7-compact-v2-binding-controls-01')\n+G = Path('/dev/shm/nssoc-div4-v8-cap-v1-layout-01')\n+T = Path('/dev/shm/nssoc-div4-v8-cap-v1-binding-controls-01')\n A = ROOT / 'hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage'\n CHECKER = ROOT / 'hw/soc/flow/check_pcie_clock_div4_v7_v2.py'\n CASES = ['positive', 'reference_clock_swap', 'reference_pullup_length',\n@@ -50,7 +50,7 @@\n     freeze = json.loads((B / 'source-freeze.json').read_text())\n     assert freeze['inputs'] == {p: pin(p) for p in freeze['inputs']}\n     positive_geometry = json.loads((W / 'geometry-execution.json').read_text())\n-    assert positive_geometry['status'] == 'PASS_DIVIDER_V7_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n+    assert positive_geometry['status'] == 'PASS_DIVIDER_V8_CAP24_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n     assert positive_geometry['outputs'] == {p: pin(p) for p in positive_geometry['outputs']}\n     assert pin(CHECKER)['sha256'] == '24c89628c6d61226344214e077b5fa535c5570e4a7853fbd109e8cb1b1fcd163'\n     names = {'require', 'atomic', 'lifecycle', 'limits', 'scratch_bytes',\n@@ -72,7 +72,7 @@\n     ns['guard_resources']()\n     T.mkdir()\n     source = (W / 'bind_source_ids.py').read_text()\n-    old_root = \"G=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\"\n+    old_root = \"G=Path('/dev/shm/nssoc-div4-v8-cap-v1-layout-01')\"\n     assert source.count(old_root) == 1\n     original_g = json.loads((G / 'result.json').read_text())\n     original_n = json.loads((W / 'device-location-geometry.json').read_text())\n",
+  "inverse_byte_exact": true
+}

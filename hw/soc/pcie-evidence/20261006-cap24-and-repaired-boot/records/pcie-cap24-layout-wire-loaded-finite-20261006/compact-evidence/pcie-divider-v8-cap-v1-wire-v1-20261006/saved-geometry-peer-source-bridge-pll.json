@@ -1,0 +1,25 @@
+{
+  "status": "EXACT_COMPLETE_ANCESTRY_PLUS_ADDITIVE_RAW_CAP24_CHECK",
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/review_saved_geometry_rx.py",
+    "bytes": 9489,
+    "sha256": "c5409d543f1909f68ef5ab1b75e28e656d4939933eb45fb71b99636ad5417f8b"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-wire-v1-20261006/review_saved_geometry_pll.py",
+    "bytes": 10663,
+    "sha256": "fa5be6ad1a7d33822d65879247c63151207decc59135f44c1d32a705e6adbf5a"
+  },
+  "replacements": [
+    [
+      "div4-v7-compact-v2",
+      "div4-v8-cap-v1"
+    ],
+    [
+      "DIVIDER_V7_",
+      "DIVIDER_V8_CAP24_"
+    ]
+  ],
+  "added_check": "# Additive independent Cap24 check against the raw native database and geometric\n# terminal shape metadata, not only the producer's source-native binding claim.\nraw_params={int(ident):{k:float(v) for k,v in re.findall(r'^  E\\((\\S+) ([^)]+)\\)$',body,re.M)} for ident,cls,body in re.findall(r'^ D\\((\\d+) D\\$([^\\s]+)\\n(.*?)^ \\)\\n',raw,re.M|re.S)}\ncap24=[]\nfor d in s['devices']:\n if d['source_name'] not in ('DIV__XCP','DIV__XCN'):continue\n assert d['source_device']['width_um']==d['source_device']['length_um']==24.0\n ident=d['native_id'];assert raw_params[ident]==dict(w=24.0,l=24.0,A=576.0,P=96.0,m=1.0)\n gd=next(x for x in read(B/'device-location-geometry.json')['devices'] if x['native_id']==ident)\n assert gd['parameters']==raw_params[ident]\n for term in gd['terminals']:\n  assert len(term['native_layers'])==1\n  layer=term['native_layers'][0];assert layer['polygons']==1 and layer['area_dbu2']==576000000\n  points=list(map(int,re.findall(r'-?\\d+',layer['bbox_dbu'])));assert points[2]-points[0]==points[3]-points[1]==24000\n cap24.append(dict(source_name=d['source_name'],native_id=ident,parameters=raw_params[ident]))\nassert len(cap24)==2\n",
+  "full_body_inverse_equal": true
+}
