@@ -80,6 +80,42 @@ still require physical implementation and fresh final timing before adoption.
 
 ## Reproducibility and open work
 
+### Local physical-memory mapping completed
+
+The [local mapping record](evidence/npu-eco-sram-mapping-20261006.json)
+adds three actual native Yosys executions using the frozen SRAM replacement
+recipe. The original design and previous parallel-adder candidate reproduce
+their historical mapped netlists byte-for-byte (`13dd615d…` and `ef20a6b3…`).
+Only then is the factored candidate mapped; its complete mapped netlist has
+10,840,297 bytes and SHA-256
+`dcf832474aaa639ee48b3cbcbec6e6daf70569f856d15dffae6c34b483119060`.
+
+Each execution preserves the exact 32 physical SRAM identities: sixteen
+`SP6TSRAM512x64` and sixteen `DP8TSRAMDP256x16`. The existing memory-mapping
+contract checks every retained nonmemory cell equation and every top port,
+including the original mask and BIST assumptions.
+
+An additional [complete graph checker](../scripts/check_npu_physical_eco_mapping.py)
+then compares the previous and repaired mapped designs. All **76,714 other
+cells**, **65,434 shared named signals** and **79 ports** retain their equations.
+Exactly one O21AI becomes the specified mux, with one new inverter, one new
+AND2 and two distinct internal nets. Every new gate input/output and internal
+load is checked. All SRAM connections are unchanged. Seventeen graph tests
+pass; independent replay also rejects three corruptions applied to the actual
+saved graph: wrong mux select, inverter input and SRAM connection.
+
+The [complete native mapping capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/nssoc-npu-eco-sram-mapping-20261006.tar.xz)
+preserves 187 fully rehashed members, including all six complete native
+before/after graphs. Authenticated and anonymous release readbacks pass.
+The capture explicitly identifies the sealer's own empty pre-print stdout
+snapshot; all Yosys logs and results were already complete. The later sealer
+stdout is retained separately in the compact delivery.
+
+This closes the mapping and structural-preservation check for the proposed
+repair. It does **not** close the running repaired-netlist boot, establish SRAM
+electrical characterization, or measure placement/routing/timing. Historical
+failed boots and physical acceptance gates remain unchanged.
+
 The [delivery record](evidence/npu-init-reconvergence-20261006.json) binds
 the local results, method freeze, independent review and public readback.
 The [complete capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/nssoc-npu-init-reconvergence-20261006.tar.xz)
