@@ -70,6 +70,12 @@ DOC = "CC-BY-4.0"       # documents and measurement data
 THIRD_PARTY = {
     "hw/soc/rvformal/insns/insn_div.v": "ISC",
     "hw/soc/rvformal/insns/insn_rem.v": "ISC",
+    # Exact upstream ngspice 47 captures; immutable bytes retain UC copyright.
+    # The adjacent COPYING, source-NOTICE and receipt establish Modified BSD.
+    "hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/"
+    "pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/dctran.c": "BSD-3-Clause",
+    "hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/"
+    "pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/traninit.c": "BSD-3-Clause",
 }
 
 # Path prefixes covered by REUSE.toml instead of an inline tag.

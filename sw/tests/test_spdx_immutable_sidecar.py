@@ -77,4 +77,23 @@ def test_makefile_metadata_does_not_need_its_own_sidecar(
     monkeypatch.setattr(sys, 'argv', ['spdx_check.py'])
     assert M.main() == expected
     assert source.read_bytes() == original
+@pytest.mark.parametrize('name', ['dctran.c', 'traninit.c'])
+@pytest.mark.parametrize('licence,expected', [('BSD-3-Clause', 0), ('Apache-2.0', 1)])
+def test_exact_upstream_capture_keeps_its_own_license(tmp_path, monkeypatch, name, licence, expected):
+    rel = ('hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/'
+           'pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/' + name)
+    source = tmp_path / rel
+    source.parent.mkdir(parents=True)
+    original = b'/* Copyright 1990 Regents of the University of California. */\nint x;\n'
+    source.write_bytes(original)
+    Path(str(source) + '.license').write_text(
+        'SPDX-FileCopyrightText: 1990 Regents of the University of California\n'
+        f'SPDX-License-Identifier: {licence}\n')
+    monkeypatch.setattr(M, 'ROOT', tmp_path)
+    monkeypatch.setattr(M, 'tracked', lambda: [rel])
+    monkeypatch.setattr(sys, 'argv', ['spdx_check.py'])
+    assert M.main() == expected
+    assert source.read_bytes() == original
+    assert M.classify('scripts/' + name)[0] == 'Apache-2.0'
+
 # REUSE-IgnoreEnd

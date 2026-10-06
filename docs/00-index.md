@@ -39,6 +39,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/136-pcie-loaded-divider-and-write-frontier.md](136-pcie-loaded-divider-and-write-frontier.md) preserves the measured loaded-divider and V19 timing failures, RX14a prerequisites and interrupted PLL recovery.
 [docs/137-npu-initialization-reconvergence.md](137-npu-initialization-reconvergence.md) identifies the native NPU clear-cone failure and records the Boolean-equivalent mapped repair, local controls and required full-chip boot.
 [docs/138-pcie-power-layout-and-timing-convergence.md](138-pcie-power-layout-and-timing-convergence.md) records the divider supply and compact-layout repairs, completed RX/TX timing, parser regressions and failed PLL time-step comparison.
+[docs/139-pcie-compact-rc-and-repair.md](139-pcie-compact-rc-and-repair.md) records actual compact wire RC and the loaded-divider failure, TX05 proof/port prerequisites and the fixed-output-step PLL experiment.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

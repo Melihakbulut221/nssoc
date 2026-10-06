@@ -51,7 +51,7 @@ Qualified coupled RC, complete SRAM timing/power libraries, final SoC timing,
 PCIe PHY/padframe integration and manufacturing approval remain open.
 
 SpaceWire, classic CAN, SPI, I2C and the Gigabit GMII PIO MAC have RTL and profile-specific layout evidence.
-**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest delivered PCIe physical record](docs/138-pcie-power-layout-and-timing-convergence.md) records the repaired supply headroom, compact divider geometry, remaining division/setup failures and PLL convergence limit; qualified clocks/RC, complete PHY and main-chip physical integration remain open.
+**PCIe Gen3 x4 remains open:** an optional [packet profile now shares GPIO/APB with the real CPU](docs/110-pcie-local-flow-and-clock-layout.md). The VCO and four-lane clocked sampler bank have separate DRC/LVS evidence; PLL/CDR, full SERDES/PCS/LTSSM and serial PHY/main-chip physical integration remain open. The [latest delivered PCIe physical record](docs/139-pcie-compact-rc-and-repair.md) records compact wire RC, the remaining loaded-divider failure, TX repair proofs and the controlled PLL numerical experiment; qualified clocks/RC, complete PHY and main-chip physical integration remain open.
 UART has [8N1 RX/TX and CPU tests](docs/97-uart-receive.md), with its updated whole-SoC layout pending.
 Ethernet needs an external PHY and has no DMA.
 The complete GR801 interface set is not implemented.
