@@ -1,0 +1,309 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair16_debug03.py",
+    "bytes": 14996,
+    "sha256": "5e413ad1ea8bdae55dcf00ec258abb9e9b8d0f8111ac1fb9540b8288f18c8721"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair16_one04.py",
+    "bytes": 15679,
+    "sha256": "ca6d32f29745da7e0f3d71c04f154fd6b3255206fc416c54e11d3c1f472a18cb"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual-SPEF-first RX16 mixed-RC experiment from exact closed RX14A.\"\"\"\nfrom pathlib import Path\nimport hashlib\nimport json\nimport os\nimport resource\nimport signal\nimport shutil\nimport subprocess\nimport time\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nD = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-drt-01')\nX = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-detailed-rc-01')\nO = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual-SPEF-first RX16 mixed-RC experiment from exact closed RX14A.\"\"\"\nfrom pathlib import Path\nimport hashlib\nimport json\nimport os\nimport resource\nimport signal\nimport shutil\nimport subprocess\nimport time\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nD = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-drt-01')\nX = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-detailed-rc-01')\nO = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-"
+    },
+    {
+      "tag": "replace",
+      "before": "d",
+      "after": "on"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "replace",
+      "before": "bug",
+      "after": "-repair"
+    },
+    {
+      "tag": "equal",
+      "before": "-0",
+      "after": "-0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "')\nA = R / 'hw/soc/tools/openroad-26Q2-1164/run-openroad'\n\n\ndef pin(path):\n    p = Path(path)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\n\ndef interrupted(number, _frame):\n    raise InterruptedError(f'Signal {number}')\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    os.sched_setaffinity(0, {8})\n    signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n\ndef identity(pid):\n    try:\n        fields = Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()\n    except FileNotFoundError:\n        return None\n    return dict(pid=pid, process_group=int(fields[2]), start_ticks=fields[19])\n\n\nassert shutil.disk_usage('/dev/shm').free >= 1024**3\n\n\ninputs = {}\nfor directory in (D, X):\n    result = json.loads((directory / 'result.json').read_text())\n    assert result['status'].startswith('COMPLETE_') and result['returncode'] == 0\n    for path, expected in result['inputs'].items():\n        assert pin(path) == expected, path\n        inputs[path] = expected\n    for name, expected in result['outputs'].items():\n        path = directory / name\n        assert pin(path) == expected, path\n        inputs[str(path)] = expected\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert pin(D / 'routed.v')['sha256'] == 'cc489bb50c225189126b36d173cf786a7837f1e9a0cebc8a200c2d7b7a191f91'\nold_review = B / 'repair13-peer/review.json'\nold = json.loads(old_review.read_text())\nassert old['nominal_rc_cell_corner_slack_ns']['slow']['setup'] == -.441603\nendpoints = [p['endpoint'] + '/D' for p in old['SS_three_worst_setup_paths']]\nassert len(endpoints) == len(set(endpoints)) == 3\nlibs = [line for line in (D / 'route.tcl').read_text().splitlines() if line.startswith('read_liberty ')]\nassert len(libs) == 3\n\nEXACT_WIDE_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/wide-paths-review.json': {'bytes': 4619803, 'sha256': 'a3d63898c13743a90234762ddbc13f7252d93ff4aaf8c391b3dd0684c69b3bb5'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/actual-paths01/result.json': {'bytes': 9763, 'sha256': 'ee0ea87614f4afa83e56707b9563baaeaae7607c7c6e02b4d2b108b593a9942e'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/actual-paths01/native.log': {'bytes': 1931560, 'sha256': '01060c5961ca34f5f4cd5629c158409596e5b97079394043bb6cc64b26fab8ad'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/publication-review.json': {'bytes': 4526, 'sha256': '72b7786c7df7453a0394f5539e097f8dc79faba0a2d0040917388846a03a7080'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/current-tool-help.log': {'bytes': 1778, 'sha256': '1ef7b473dc6d4ed63779517d0fafd417a98a29fccc0a2fdde24118f723aaef5a'}}\nassert EXACT_WIDE_BASIS == {p: pin(p) for p in EXACT_WIDE_BASIS}\ninputs.update(EXACT_WIDE_BASIS)\nMARGIN_BASIS = {'/dev/shm/nssoc-rx-prefetch-v2-repair15-full-grt-rescreen-01/result.json': {'bytes': 14080, 'sha256': 'f256c88a2d9213f98791ca75ced7307b758d1ef664fa19bd8a359c0805ce09ef'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/active-checkpoint01.json': {'bytes': 1322, 'sha256': '1047c571e880300c0f4e200a15814ef6ed40c127c7f46e5e4771e022ed124736'}}\nassert MARGIN_BASIS == {p: pin(p) for p in MARGIN_BASIS}\ninputs.update(MARGIN_BASIS)\nMIXED_RC_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair05.py': {'bytes': 14023, 'sha256': '53e84f2d5214f20df9829ff7402d687ecb57355181b99375dffa5483c0ab32b1'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-source/source-only-peer-rx.json': {'bytes': 1354, 'sha256': '9824c5085c459112a863c3f54bd1c567b96d236efa03c20461b854b9fe867e9a'}, '/dev/shm/nssoc-tx-path-v4-postroute-repair-05/result.json': {'bytes': 13785, 'sha256': 'b8864544bb5abee24a3713d9fb67e3bc0a6ce470b5bbff853afa34f2b4cb0503'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/explicit-rejection-review.json': {'bytes': 5602, 'sha256': '849397a24a2fe8d5bfdcdc0a04f9b49200142359c0606b0222230d1c2763bb7f'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/broad-v3-rejection-review.json': {'bytes': 5517, 'sha256': '1320d223c634c50a741181869318f3dd53fd3ddcbaf9ee88022bb7bc46a5b5d9'}}\nassert MIXED_RC_BASIS == {p: pin(p) for p in MIXED_RC_BASIS}\ninputs.update(MIXED_RC_BASIS)\nDEBUG_FAILURE_BASIS = {'/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-mixed-01/result.json': {'bytes': 13524, 'sha256': '915d8179f301080bcac714aff45e2e3596091c611185c407084da9d8f5807a5a'}, '/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-mixed-01/native.log': {'bytes': 5761257, 'sha256': 'b6173ea852ab824ae94382d644f3beba4c528c58b09845ce0d1bbc3cf62966d0'}}\nassert DEBUG_FAILURE_BASIS == {p: pin(p) for p in DEBUG_FAILURE_BASIS}\ninputs.update(DEBUG_FAILURE_BASIS)\n",
+      "after": "')\nA = R / 'hw/soc/tools/openroad-26Q2-1164/run-openroad'\n\n\ndef pin(path):\n    p = Path(path)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\n\ndef interrupted(number, _frame):\n    raise InterruptedError(f'Signal {number}')\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    os.sched_setaffinity(0, {8})\n    signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n\ndef identity(pid):\n    try:\n        fields = Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()\n    except FileNotFoundError:\n        return None\n    return dict(pid=pid, process_group=int(fields[2]), start_ticks=fields[19])\n\n\nassert shutil.disk_usage('/dev/shm').free >= 1024**3\n\n\ninputs = {}\nfor directory in (D, X):\n    result = json.loads((directory / 'result.json').read_text())\n    assert result['status'].startswith('COMPLETE_') and result['returncode'] == 0\n    for path, expected in result['inputs'].items():\n        assert pin(path) == expected, path\n        inputs[path] = expected\n    for name, expected in result['outputs'].items():\n        path = directory / name\n        assert pin(path) == expected, path\n        inputs[str(path)] = expected\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert pin(D / 'routed.v')['sha256'] == 'cc489bb50c225189126b36d173cf786a7837f1e9a0cebc8a200c2d7b7a191f91'\nold_review = B / 'repair13-peer/review.json'\nold = json.loads(old_review.read_text())\nassert old['nominal_rc_cell_corner_slack_ns']['slow']['setup'] == -.441603\nendpoints = [p['endpoint'] + '/D' for p in old['SS_three_worst_setup_paths']]\nassert len(endpoints) == len(set(endpoints)) == 3\nlibs = [line for line in (D / 'route.tcl').read_text().splitlines() if line.startswith('read_liberty ')]\nassert len(libs) == 3\n\nEXACT_WIDE_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/wide-paths-review.json': {'bytes': 4619803, 'sha256': 'a3d63898c13743a90234762ddbc13f7252d93ff4aaf8c391b3dd0684c69b3bb5'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/actual-paths01/result.json': {'bytes': 9763, 'sha256': 'ee0ea87614f4afa83e56707b9563baaeaae7607c7c6e02b4d2b108b593a9942e'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/actual-paths01/native.log': {'bytes': 1931560, 'sha256': '01060c5961ca34f5f4cd5629c158409596e5b97079394043bb6cc64b26fab8ad'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/publication-review.json': {'bytes': 4526, 'sha256': '72b7786c7df7453a0394f5539e097f8dc79faba0a2d0040917388846a03a7080'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/current-tool-help.log': {'bytes': 1778, 'sha256': '1ef7b473dc6d4ed63779517d0fafd417a98a29fccc0a2fdde24118f723aaef5a'}}\nassert EXACT_WIDE_BASIS == {p: pin(p) for p in EXACT_WIDE_BASIS}\ninputs.update(EXACT_WIDE_BASIS)\nMARGIN_BASIS = {'/dev/shm/nssoc-rx-prefetch-v2-repair15-full-grt-rescreen-01/result.json': {'bytes': 14080, 'sha256': 'f256c88a2d9213f98791ca75ced7307b758d1ef664fa19bd8a359c0805ce09ef'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/active-checkpoint01.json': {'bytes': 1322, 'sha256': '1047c571e880300c0f4e200a15814ef6ed40c127c7f46e5e4771e022ed124736'}}\nassert MARGIN_BASIS == {p: pin(p) for p in MARGIN_BASIS}\ninputs.update(MARGIN_BASIS)\nMIXED_RC_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair05.py': {'bytes': 14023, 'sha256': '53e84f2d5214f20df9829ff7402d687ecb57355181b99375dffa5483c0ab32b1'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-source/source-only-peer-rx.json': {'bytes': 1354, 'sha256': '9824c5085c459112a863c3f54bd1c567b96d236efa03c20461b854b9fe867e9a'}, '/dev/shm/nssoc-tx-path-v4-postroute-repair-05/result.json': {'bytes': 13785, 'sha256': 'b8864544bb5abee24a3713d9fb67e3bc0a6ce470b5bbff853afa34f2b4cb0503'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/explicit-rejection-review.json': {'bytes': 5602, 'sha256': '849397a24a2fe8d5bfdcdc0a04f9b49200142359c0606b0222230d1c2763bb7f'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/broad-v3-rejection-review.json': {'bytes': 5517, 'sha256': '1320d223c634c50a741181869318f3dd53fd3ddcbaf9ee88022bb7bc46a5b5d9'}}\nassert MIXED_RC_BASIS == {p: pin(p) for p in MIXED_RC_BASIS}\ninputs.update(MIXED_RC_BASIS)\nDEBUG_FAILURE_BASIS = {'/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-mixed-01/result.json': {'bytes': 13524, 'sha256': '915d8179f301080bcac714aff45e2e3596091c611185c407084da9d8f5807a5a'}, '/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-mixed-01/native.log': {'bytes': 5761257, 'sha256': 'b6173ea852ab824ae94382d644f3beba4c528c58b09845ce0d1bbc3cf62966d0'}}\nassert DEBUG_FAILURE_BASIS == {p: pin(p) for p in DEBUG_FAILURE_BASIS}\ninputs.update(DEBUG_FAILURE_BASIS)\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ONE_REPAIR_BASIS = {'/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-debug-03/result.json': {'bytes': 14738, 'sha256': '8a31acd25d11a5480cfc3060c641923c49b8b10c615968f56bed3078aecbe9ef'}, '/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-debug-03/native.log': {'bytes': 17981633, 'sha256': 'c55c953397ca449eff966da8af4fb25a691278c1e2f134d49eda4b2c81db711f'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair16-source/debug03-rejection-review.json': {'bytes': 7276, 'sha256': '49956b358d8708af059873e65c9a1bf2db3b7f0429d5558407432e5f3491a5fa'}}\nassert ONE_REPAIR_BASIS == {p: pin(p) for p in ONE_REPAIR_BASIS}\ninputs.update(ONE_REPAIR_BASIS)\n"
+    },
+    {
+      "tag": "equal",
+      "before": "lines = ['set_thread_count 1', 'define_corners slow typical fast', *libs,\n         f'read_db {{{D / \"routed.odb\"}}}', f'read_sdc {{{D / \"routed.sdc\"}}}',\n         'set_propagated_clock [all_clocks]',\n         'set_wire_rc -signal -layer Metal2', 'set_wire_rc -clock -layer Metal4',\n         'set_routing_layers -signal Metal2-Metal5 -clock Metal2-Metal5',\n         'set_global_routing_layer_adjustment Metal2-Metal5 0.30']\nlines += [f'read_spef -corner {corner} {{{X / \"routed.spef\"}}}' for corner in ('slow', 'typical', 'fast')]\n\ndef report(tag):\n    result = [f'puts {tag}', 'report_worst_slack -max', 'report_worst_slack -min',\n              'report_tns', 'report_check_types -max_slew -max_capacitance -violators']\n    for corner in ('slow', 'typical', 'fast'):\n        for direction, count in [('max', 100), ('min', 10)]:\n            result += [f'puts {tag}_{corner}_{direction}',\n                       f'report_checks -corner {corner} -path_delay {direction} -group_path_count {count} -fields {{slew cap fanout}} -digits 6']\n    return result\n\nlines += report('UNCHANGED_RX14A_ACTUAL_RC')\n# Remove only copied signal geometry, never any existing cell/net or constraints.\nlines += [f'write_verilog {{{O / \"before_clear.v\"}}}', 'set cleared_wire_count 0',\n          'foreach net [[ord::get_db_block] getNets] {',\n          '  if {[$net getSigType] in {POWER GROUND}} {continue}',\n          '  set wire [$net getWire]',\n          '  if {$wire != \"NULL\"} {odb::dbWire_destroy $wire; incr cleared_wire_count}',\n          '  $net clearGuides', '}',\n          'puts \"REMOVED_CANDIDATE_SIGNAL_WIRES $cleared_wire_count\"',\n          f'write_verilog {{{O / \"after_clear.v\"}}}',\n          f'set before_file [open {{{O / \"before_clear.v\"}}} r]',\n          'set before_netlist [read $before_file]', 'close $before_file',\n          f'set after_file [open {{{O / \"after_clear.v\"}}} r]',\n          'set after_netlist [read $after_file]', 'close $after_file',\n          'if {$before_netlist ne $after_netlist} {error \"Signal-wire removal changed logical netlist\"}',\n          'puts EXACT_LOGICAL_NETLIST_UNCHANGED_AFTER_CLEAR',\n          'detailed_placement', 'check_placement -verbose',\n          f'global_route -congestion_iterations 100 -guide_file {{{O / \"initial.guide\"}}}',\n          'estimate_parasitics -global_routing',\n          'global_route -start_incremental']\nlines += report('RX16",
+      "after": "lines = ['set_thread_count 1', 'define_corners slow typical fast', *libs,\n         f'read_db {{{D / \"routed.odb\"}}}', f'read_sdc {{{D / \"routed.sdc\"}}}',\n         'set_propagated_clock [all_clocks]',\n         'set_wire_rc -signal -layer Metal2', 'set_wire_rc -clock -layer Metal4',\n         'set_routing_layers -signal Metal2-Metal5 -clock Metal2-Metal5',\n         'set_global_routing_layer_adjustment Metal2-Metal5 0.30']\nlines += [f'read_spef -corner {corner} {{{X / \"routed.spef\"}}}' for corner in ('slow', 'typical', 'fast')]\n\ndef report(tag):\n    result = [f'puts {tag}', 'report_worst_slack -max', 'report_worst_slack -min',\n              'report_tns', 'report_check_types -max_slew -max_capacitance -violators']\n    for corner in ('slow', 'typical', 'fast'):\n        for direction, count in [('max', 100), ('min', 10)]:\n            result += [f'puts {tag}_{corner}_{direction}',\n                       f'report_checks -corner {corner} -path_delay {direction} -group_path_count {count} -fields {{slew cap fanout}} -digits 6']\n    return result\n\nlines += report('UNCHANGED_RX14A_ACTUAL_RC')\n# Remove only copied signal geometry, never any existing cell/net or constraints.\nlines += [f'write_verilog {{{O / \"before_clear.v\"}}}', 'set cleared_wire_count 0',\n          'foreach net [[ord::get_db_block] getNets] {',\n          '  if {[$net getSigType] in {POWER GROUND}} {continue}',\n          '  set wire [$net getWire]',\n          '  if {$wire != \"NULL\"} {odb::dbWire_destroy $wire; incr cleared_wire_count}',\n          '  $net clearGuides', '}',\n          'puts \"REMOVED_CANDIDATE_SIGNAL_WIRES $cleared_wire_count\"',\n          f'write_verilog {{{O / \"after_clear.v\"}}}',\n          f'set before_file [open {{{O / \"before_clear.v\"}}} r]',\n          'set before_netlist [read $before_file]', 'close $before_file',\n          f'set after_file [open {{{O / \"after_clear.v\"}}} r]',\n          'set after_netlist [read $after_file]', 'close $after_file',\n          'if {$before_netlist ne $after_netlist} {error \"Signal-wire removal changed logical netlist\"}',\n          'puts EXACT_LOGICAL_NETLIST_UNCHANGED_AFTER_CLEAR',\n          'detailed_placement', 'check_placement -verbose',\n          f'global_route -congestion_iterations 100 -guide_file {{{O / \"initial.guide\"}}}',\n          'estimate_parasitics -global_routing',\n          'global_route -start_incremental']\nlines += report('RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_GRT_BEFORE_BROAD_REPAIR')\n# Keep the initialized global-route topology for incremental edits, but start\n# optimization from the actual unchanged baseline SPEF instead of optimistic\n# fresh GRT estimates. Modified nets may receive GRT estimates during repair:\n# this is explicitly a mixed-RC optimization experiment, never signoff timing.\nlines += [f'read_spef -corner {corner} {{{X / \"routed.spef\"}}}' for corner in ('slow', 'typical', 'fast')]\nlines += [f'report_worst_slack -max -digits 6 > {{{O / \"reloaded-actual-worst.rpt\"}}}',\n          f'set worst_file [open {{{O / \"reloaded-actual-worst.rpt\"}}} r]',\n          'set actual_worst [read $worst_file]', 'close $worst_file',\n          'if {[string first \"worst slack max -0.402478\" $actual_worst] < 0} {error \"Reloaded baseline actual RC differs\"}',\n          'puts EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR']\nlines += report('RX16",
+      "after": "_GRT_BEFORE_BROAD_REPAIR')\n# Keep the initialized global-route topology for incremental edits, but start\n# optimization from the actual unchanged baseline SPEF instead of optimistic\n# fresh GRT estimates. Modified nets may receive GRT estimates during repair:\n# this is explicitly a mixed-RC optimization experiment, never signoff timing.\nlines += [f'read_spef -corner {corner} {{{X / \"routed.spef\"}}}' for corner in ('slow', 'typical', 'fast')]\nlines += [f'report_worst_slack -max -digits 6 > {{{O / \"reloaded-actual-worst.rpt\"}}}',\n          f'set worst_file [open {{{O / \"reloaded-actual-worst.rpt\"}}} r]',\n          'set actual_worst [read $worst_file]', 'close $worst_file',\n          'if {[string first \"worst slack max -0.402478\" $actual_worst] < 0} {error \"Reloaded baseline actual RC differs\"}',\n          'puts EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR']\nlines += report('RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_RELOADED_ACTUAL_RC_BEFORE_REPAIR')\n# Optimization margins are stricter than zero slack; same original4ns timing model.\n# Do not remove existing hold buffers or use a late unconstrained last-gasp pass.\nlines += ['set_debug_level RSZ repair_setup 3', 'repair_timing -setup -sequence {clone sizeup buffer split} -repair_tns 100 -setup_margin 0.25 -max_repairs_per_pass ",
+      "after": "_RELOADED_ACTUAL_RC_BEFORE_REPAIR')\n# Optimization margins are stricter than zero slack; same original4ns timing model.\n# Do not remove existing hold buffers or use a late unconstrained last-gasp pass.\nlines += ['set_debug_level RSZ repair_setup 3', 'repair_timing -setup -sequence {clone sizeup buffer split} -repair_tns 100 -setup_margin 0.25 -max_repairs_per_pass "
+    },
+    {
+      "tag": "replace",
+      "before": "4",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": " -skip_buffer_removal -skip_last_gasp',\n          'repair_timing -hold -hold_margin 0.05',\n          'detailed_placement', 'check_placement -verbose',\n          f'global_route -end_incremental -congestion_iterations 100 -guide_file {{{O / \"incremental.guide\"}}}',\n          f'write_verilog {{{O / \"before_final_grt.v\"}}}',\n          'puts RX16",
+      "after": " -skip_buffer_removal -skip_last_gasp',\n          'repair_timing -hold -hold_margin 0.05',\n          'detailed_placement', 'check_placement -verbose',\n          f'global_route -end_incremental -congestion_iterations 100 -guide_file {{{O / \"incremental.guide\"}}}',\n          f'write_verilog {{{O / \"before_final_grt.v\"}}}',\n          'puts RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_FRESH_FULL_GRT_FINAL',\n          'foreach net [[ord::get_db_block] getNets] {',\n          '  if {[$net getSigType] in {POWER GROUND}} {continue}',\n          '  set wire [$net getWire]',\n          '  if {$wire != \"NULL\"} {odb::dbWire_destroy $wire}',\n          '  $net clearGuides', '}',\n          f'global_route -congestion_iterations 100 -guide_file {{{O / \"repaired.guide\"}}}',\n          'estimate_parasitics -global_routing']\nlines += report('RX16",
+      "after": "_FRESH_FULL_GRT_FINAL',\n          'foreach net [[ord::get_db_block] getNets] {',\n          '  if {[$net getSigType] in {POWER GROUND}} {continue}',\n          '  set wire [$net getWire]',\n          '  if {$wire != \"NULL\"} {odb::dbWire_destroy $wire}',\n          '  $net clearGuides', '}',\n          f'global_route -congestion_iterations 100 -guide_file {{{O / \"repaired.guide\"}}}',\n          'estimate_parasitics -global_routing']\nlines += report('RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_GRT_AFTER_BROAD_REPAIR_ESTIMATES_ONLY')\nlines += [f'write_db {{{O / \"repaired.odb\"}}}', f'write_verilog {{{O / \"repaired.v\"}}}',\n          f'write_sdc {{{O / \"repaired.sdc\"}}}', 'puts NATIVE_RX16",
+      "after": "_GRT_AFTER_BROAD_REPAIR_ESTIMATES_ONLY')\nlines += [f'write_db {{{O / \"repaired.odb\"}}}', f'write_verilog {{{O / \"repaired.v\"}}}',\n          f'write_sdc {{{O / \"repaired.sdc\"}}}', 'puts NATIVE_RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_BROAD_CANDIDATE_COMPLETE']\nO.mkdir()\ntcl = O / 'repair.tcl'\ntcl.write_text('\\n'.join(lines) + '\\n')\nfor path in [Path(__file__), old_review, tcl, A, R / 'hw/soc/tools/openroad-26Q2-1164/root/usr/bin/openroad']:\n    inputs[str(path)] = pin(path)\nrecord = dict(status='RUNNING_BROAD_RX16",
+      "after": "_BROAD_CANDIDATE_COMPLETE']\nO.mkdir()\ntcl = O / 'repair.tcl'\ntcl.write_text('\\n'.join(lines) + '\\n')\nfor path in [Path(__file__), old_review, tcl, A, R / 'hw/soc/tools/openroad-26Q2-1164/root/usr/bin/openroad']:\n    inputs[str(path)] = pin(path)\nrecord = dict(status='RUNNING_BROAD_RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_CANDIDATE', inputs=inputs, cpu=8,\n              elapsed_watchdog_seconds=None, qualified_rc=False,\n              boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),\n              minimum_shared_free_bytes=shutil.disk_usage('/dev/shm').free,\n              physical_acceptance=False, scope='Copied closed RX14A baseline actual RC reported before edits. Exact netlist equality on signal wire/guide clear; fresh GRT topology then reload exact baseline SPEF/assert actual WNS before setup sequence clone,sizeup,buffer,split allTNS/0.25ns and guarded hold0.05ns; modified nets may use estimates; final fresh fullGRT. No original4ns IO/clock constraint edits, no allow_setup_violations, no healthy elapsed timeout. Mixed-RC optimization and final GRT estimates only; new graph proof,10faults,6ports,DRT and actual nominalRC mandatory before acceptance.')\n\ndef save():\n    (O / 'result.json').write_text(json.dumps(record, indent=2) + '\\n')\n\n\nfor s in (signal.SIGINT, signal.SIGTERM):\n    signal.signal(s, interrupted)\nprocess = None\nowned_identity = None\ndone = False\nsave()\ntry:\n    with (O / 'native.log').open('x') as log:\n        mask = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n        try:\n            process = subprocess.Popen([str(A), '-exit', str(tcl)], stdin=subprocess.DEVNULL,\n                                       stdout=log, stderr=subprocess.STDOUT,\n                                       start_new_session=True, preexec_fn=limits)\n            owned_identity = identity(process.pid)\n            assert owned_identity is not None and owned_identity['process_group'] == process.pid\n        finally:\n            signal.pthread_sigmask(signal.SIG_SETMASK, mask)\n        record['pid'] = process.pid\n        record['owned_identity'] = owned_identity\n        save()\n        while process.poll() is None:\n            assert identity(process.pid) == owned_identity\n            free = shutil.disk_usage('/dev/shm').free\n            record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], free)\n            if free < 528 * 1024**2:\n                raise RuntimeError('Shared scratch floor')\n            time.sleep(.25)\n        record['returncode'] = process.wait()\n        assert record['returncode'] == 0\n        terminal_free = shutil.disk_usage('/dev/shm').free\n        record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], terminal_free)\n        assert terminal_free >= 528 * 1024**2, 'Terminal shared scratch floor'\n        done = True\n    log = (O / 'native.log').read_text()\n    assert 'NATIVE_RX16",
+      "after": "_CANDIDATE', inputs=inputs, cpu=8,\n              elapsed_watchdog_seconds=None, qualified_rc=False,\n              boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),\n              minimum_shared_free_bytes=shutil.disk_usage('/dev/shm').free,\n              physical_acceptance=False, scope='Copied closed RX14A baseline actual RC reported before edits. Exact netlist equality on signal wire/guide clear; fresh GRT topology then reload exact baseline SPEF/assert actual WNS before setup sequence clone,sizeup,buffer,split allTNS/0.25ns and guarded hold0.05ns; modified nets may use estimates; final fresh fullGRT. No original4ns IO/clock constraint edits, no allow_setup_violations, no healthy elapsed timeout. Mixed-RC optimization and final GRT estimates only; new graph proof,10faults,6ports,DRT and actual nominalRC mandatory before acceptance.')\n\ndef save():\n    (O / 'result.json').write_text(json.dumps(record, indent=2) + '\\n')\n\n\nfor s in (signal.SIGINT, signal.SIGTERM):\n    signal.signal(s, interrupted)\nprocess = None\nowned_identity = None\ndone = False\nsave()\ntry:\n    with (O / 'native.log').open('x') as log:\n        mask = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n        try:\n            process = subprocess.Popen([str(A), '-exit', str(tcl)], stdin=subprocess.DEVNULL,\n                                       stdout=log, stderr=subprocess.STDOUT,\n                                       start_new_session=True, preexec_fn=limits)\n            owned_identity = identity(process.pid)\n            assert owned_identity is not None and owned_identity['process_group'] == process.pid\n        finally:\n            signal.pthread_sigmask(signal.SIG_SETMASK, mask)\n        record['pid'] = process.pid\n        record['owned_identity'] = owned_identity\n        save()\n        while process.poll() is None:\n            assert identity(process.pid) == owned_identity\n            free = shutil.disk_usage('/dev/shm').free\n            record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], free)\n            if free < 528 * 1024**2:\n                raise RuntimeError('Shared scratch floor')\n            time.sleep(.25)\n        record['returncode'] = process.wait()\n        assert record['returncode'] == 0\n        terminal_free = shutil.disk_usage('/dev/shm').free\n        record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], terminal_free)\n        assert terminal_free >= 528 * 1024**2, 'Terminal shared scratch floor'\n        done = True\n    log = (O / 'native.log').read_text()\n    assert 'NATIVE_RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_BROAD_CANDIDATE_COMPLETE' in log\n    assert 'EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR' in log\n    final_log = log.split('RX16",
+      "after": "_BROAD_CANDIDATE_COMPLETE' in log\n    assert 'EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR' in log\n    final_log = log.split('RX16"
+    },
+    {
+      "tag": "replace",
+      "before": "D",
+      "after": "ON"
+    },
+    {
+      "tag": "equal",
+      "before": "E",
+      "after": "E"
+    },
+    {
+      "tag": "delete",
+      "before": "BUG",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": "4"
+    },
+    {
+      "tag": "equal",
+      "before": "_FRESH_FULL_GRT_FINAL\\n',1)[1]\n    assert not any(x in final_log for x in ('Missing route to pin', 'Fail to restore routing segments')), 'Incomplete final route context'\n    assert pin(O / 'before_final_grt.v') == pin(O / 'repaired.v'), 'Final GRT changed logical netlist'\n    assert inputs == {name: pin(name) for name in inputs}\n    record['status'] = 'COMPLETE_CANDIDATE_REQUIRES_EQUIVALENCE_ROUTE_RC'\nexcept BaseException as error:\n    record.update(status='FAILED_RETAINED', error=repr(error))\n    raise\nfinally:\n    if process is not None and not done and process.poll() is None:\n        if owned_identity is not None and identity(process.pid) == owned_identity:\n            try:\n                os.killpg(process.pid, signal.SIGTERM)\n            except ProcessLookupError:\n                pass\n            deadline = time.monotonic() + 2\n            while process.poll() is None and time.monotonic() < deadline:\n                time.sleep(.05)\n            if process.poll() is None and identity(process.pid) == owned_identity:\n                try:\n                    os.killpg(process.pid, signal.SIGKILL)\n                except ProcessLookupError:\n                    pass\n        process.wait()\n    record['outputs'] = {p.name: pin(p) for p in O.iterdir() if p.is_file() and p.name != 'result.json'}\n    save()\n",
+      "after": "_FRESH_FULL_GRT_FINAL\\n',1)[1]\n    assert not any(x in final_log for x in ('Missing route to pin', 'Fail to restore routing segments')), 'Incomplete final route context'\n    assert pin(O / 'before_final_grt.v') == pin(O / 'repaired.v'), 'Final GRT changed logical netlist'\n    assert inputs == {name: pin(name) for name in inputs}\n    record['status'] = 'COMPLETE_CANDIDATE_REQUIRES_EQUIVALENCE_ROUTE_RC'\nexcept BaseException as error:\n    record.update(status='FAILED_RETAINED', error=repr(error))\n    raise\nfinally:\n    if process is not None and not done and process.poll() is None:\n        if owned_identity is not None and identity(process.pid) == owned_identity:\n            try:\n                os.killpg(process.pid, signal.SIGTERM)\n            except ProcessLookupError:\n                pass\n            deadline = time.monotonic() + 2\n            while process.poll() is None and time.monotonic() < deadline:\n                time.sleep(.05)\n            if process.poll() is None and identity(process.pid) == owned_identity:\n                try:\n                    os.killpg(process.pid, signal.SIGKILL)\n                except ProcessLookupError:\n                    pass\n        process.wait()\n    record['outputs'] = {p.name: pin(p) for p in O.iterdir() if p.is_file() and p.name != 'result.json'}\n    save()\n"
+    }
+  ]
+}

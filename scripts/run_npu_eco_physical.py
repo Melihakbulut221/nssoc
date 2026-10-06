@@ -34,9 +34,12 @@ ADDITIONAL_PINS = {
     'hw/soc/pnr/alu_physical_audit.tcl': '4f36340558ee7bb4a6c9f26bfdc50752561a137dc9c380b78d9bad3b34c46885',
     'scripts/check_npu_eco_physical_readiness.py': '3c082f1df3d3e8403de8e41d9a4b60d59e7244ba820926074a53fc450ce4dec4',
     'scripts/npu_physical_process.py': '39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526',
+    'hw/soc/pnr/npu_eco_template_lefs.py': 'a8c65bae71d53c0bd8f4e38406228abe9d11738792cd56f9c7758dce1d2adfbe',
+    'hw/soc/pnr/npu_eco_physical_flow.py': '559f0a61c01b20280c5e5d2a0ab325b5cca61cde8fb4198dc4a62752d7838f67',
 }
 METHODS = {*physical.PINS, *physical.OWN, *ADDITIONAL_PINS,
-           'scripts/run_npu_eco_physical.py', 'sw/tests/test_npu_eco_physical.py'}
+           'scripts/run_npu_eco_physical.py', 'sw/tests/test_npu_eco_physical.py',
+           'sw/tests/test_npu_eco_template_lefs.py'}
 NETLISTS = {'original': physical.NETLISTS['original'], 'factored': readiness.PHYSICAL_INPUT}
 
 
@@ -217,8 +220,8 @@ def run(variant, output, work, bundle, runtime, *, boot_archive, boot_run, boot_
         row.update(immutable_inputs=inputs, original_selected_metrics=manifest['selected_source_metrics'])
         run_dir = work / 'run'
         run_dir.mkdir()
-        command = [str(runtime), 'python', str(output / 'methods/hw/soc/pnr/alu_physical_flow.py'),
-                   '--flow', 'ALUFreshPhysical', '--manual-pdk', '--pdk-root', str(bundle / manifest['pdk_root']),
+        command = [str(runtime), 'python', str(output / 'methods/hw/soc/pnr/npu_eco_physical_flow.py'),
+                   '--flow', 'NPUECOFreshPhysical', '--manual-pdk', '--pdk-root', str(bundle / manifest['pdk_root']),
                    '--pdk', manifest['pdk'], '--force-run-dir', str(run_dir),
                    '--with-initial-state', str(output / 'initial-state.json'), str(output / 'config.json')]
         row['execution'] = execute(command, output, row)
@@ -261,7 +264,7 @@ def compare(original, factored):
                                         'full_soc_functional_accepted', 'final_route_or_signoff')), 'Unexpected acceptance')
         require_gate(row['readiness'], variant)
         for entry in row['boot_inputs'].values():
-            require(pin(entry['path']) == {k: entry[k] for k in ('bytes', 'sha256')}, 'Boot input changed')
+            require(pin(Path(entry['path'])) == {k: entry[k] for k in ('bytes', 'sha256')}, 'Boot input changed')
         require(readiness.check(**{key: Path(entry['path']) for key, entry in row['boot_inputs'].items()})
                 == row['readiness'], 'Stored readiness does not match complete saved evidence')
         require(set(row['methods']) == METHODS and row['immutable_inputs']['mapped'] == NETLISTS[variant],

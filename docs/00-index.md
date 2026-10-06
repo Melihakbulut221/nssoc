@@ -42,6 +42,7 @@ quarantine, native-HBT receiver preamplifier, simulations and physical checks.
 [docs/139-pcie-compact-rc-and-repair.md](139-pcie-compact-rc-and-repair.md) records actual compact wire RC and the loaded-divider failure, TX05 proof/port prerequisites and the fixed-output-step PLL experiment.
 [docs/140-pcie-integrity-and-chip-prerequisites.md](140-pcie-integrity-and-chip-prerequisites.md) records V22's remaining setup failure and the exact proof, SRAM mapping and boot prerequisites for a matched local chip experiment.
 [docs/141-pcie-capacitor-layout-and-repaired-boot.md](141-pcie-capacitor-layout-and-repaired-boot.md) records the successful repaired NPU strict boot and the capacitor-layout experiment's remaining loaded-divider failure.
+[docs/142-chip-placement-and-routed-receiver.md](142-chip-placement-and-routed-receiver.md) records the SRAM template-import fix, matched fresh chip placement and the routed receiver improvement with remaining setup violations.
 [HISTORY.md](../HISTORY.md) preserves the earlier README and its corrections.
 
 

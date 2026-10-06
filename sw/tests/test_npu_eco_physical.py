@@ -191,3 +191,38 @@ def test_saved_template_is_independent_of_final_geometry(tmp_path, monkeypatch, 
             flow.verify_saved_geometry(tmp_path, cfg, expected)
     else:
         assert flow.verify_saved_geometry(tmp_path, cfg, expected) == expected
+
+
+@pytest.mark.parametrize('changed', [False, True])
+def test_comparison_reopens_serialized_boot_path_before_replaying_readiness(tmp_path, monkeypatch, changed):
+    # Exercise the real file hasher at the JSON boundary that failed after both
+    # native arms completed. Stop at the next gate; no synthetic timing verdict.
+    boot = tmp_path / 'boot.zip'
+    boot.write_bytes(b'synthetic saved boot input')
+    entry = dict(path=str(boot), **flow.pin(boot))
+    if changed:
+        boot.write_bytes(b'changed after saved input pin')
+    original = tmp_path / 'original'
+    original.mkdir()
+    row = dict(variant='original', status='FRESH_NPU_PHYSICAL_COMPLETE_ESTIMATE_ONLY',
+               all_inputs_rechecked=True, execution={'returncode': 0}, readiness={},
+               boot_inputs={'archive': entry}, candidate_adopted=False,
+               timing_accepted=False, manufacturing_approval=False,
+               full_soc_functional_accepted=False, final_route_or_signoff=False)
+    (original / 'result.json').write_text(json.dumps(row))
+    monkeypatch.setattr(flow, 'require_gate', lambda *args: None)
+
+    class ReplayReached(Exception):
+        pass
+
+    def replay(**kwargs):
+        assert kwargs == {'archive': boot}
+        raise ReplayReached
+
+    monkeypatch.setattr(flow.readiness, 'check', replay)
+    if changed:
+        with pytest.raises(ValueError, match='Boot input changed'):
+            flow.compare(original, tmp_path / 'factored')
+    else:
+        with pytest.raises(ReplayReached):
+            flow.compare(original, tmp_path / 'factored')
