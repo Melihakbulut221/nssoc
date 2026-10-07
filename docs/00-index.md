@@ -754,3 +754,5 @@ requires 116 tasks, retaining the six historical exclusions; with the unchanged
 re-label earlier completed sweeps or certify the new whole-processor timing
 candidate. Its block results and acceptance boundary are recorded in
 [docs/100](100-routed-closure.md).
+
+[docs/151-pcie-ci-resume-and-timing-results.md](151-pcie-ci-resume-and-timing-results.md) records eleven repaired RTL suites, 32 focused regression predicates and completed physical attempts with remaining setup/hold failures.

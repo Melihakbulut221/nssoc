@@ -3,12 +3,10 @@
 [![checks](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml/badge.svg?branch=codex%2Fcomplete-open-work)](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml)
 
 **Our mission is to build an open-source counterpart to GR801 for space applications.**
-NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces.
-We are committed to completing this open-source GR801 counterpart, from RTL and software through
+NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces. We are committed to completing this open-source GR801 counterpart, from RTL and software through
 physical implementation, silicon validation and qualification. The product acceptance gates below define when that goal is achieved.
 
-The current IHP SG13G2 implementation combines an Ibex RISC-V core, a spiking-neural-network accelerator,
-ECC-protected storage, memory scrubbing and TMR control. It forms the foundation for the product we are building.
+The current IHP SG13G2 implementation combines an Ibex RISC-V core, a spiking-neural-network accelerator, ECC-protected storage, memory scrubbing and TMR control. It forms the foundation for the product we are building.
 
 ## Product goal
 
@@ -26,6 +24,8 @@ silicon testing and qualification. Each result below records progress toward tha
 ![SoC functional architecture](docs/img/soc-architecture.svg)
 
 ## Recorded verification evidence
+
+The [7 October recovery](docs/151-pcie-ci-resume-and-timing-results.md) fixes eleven failing PCIe RTL suites: 63 local port scenarios pass. The completed main-chip repair leaves 952 setup and 15 hold endpoints in a global-route estimate; final timing and full-chip LVS remain open.
 
 Setup/hold and full-chip LVS, including the I/O tap mismatch, remain open; see the [closure log](docs/106-timing-repair-research.md).
 These selected milestones retain their original revision and scope; they are not a combined signoff result. [Power layout and timing convergence](docs/138-pcie-power-layout-and-timing-convergence.md) records the supply-headroom repair, compact divider DRC/LVS, routed setup failures and failed PLL time-step comparison. [NPU initialization repair](docs/137-npu-initialization-reconvergence.md) records the reproduced clear-cone failure and mapped repair. The [complete repaired boot](docs/141-pcie-capacitor-layout-and-repaired-boot.md) passes MBIST and all 28 firmware checks; physical timing remains open. The [matched chip placement and routed receiver record](docs/142-chip-placement-and-routed-receiver.md) reports completed fresh chip routing with remaining timing failures and a 101 ps receiver setup improvement after detailed routing. The [receiver and chip prerequisite record](docs/140-pcie-integrity-and-chip-prerequisites.md) retains the V22 setup failure and adds a local matched physical runner gated by complete proof, exact SRAM mapping and successful repaired boot.
