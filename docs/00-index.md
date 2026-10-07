@@ -756,3 +756,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/100](100-routed-closure.md).
 
 [docs/151-pcie-ci-resume-and-timing-results.md](151-pcie-ci-resume-and-timing-results.md) records eleven repaired RTL suites, 32 focused regression predicates and completed physical attempts with remaining setup/hold failures.
+
+[docs/152-pcie-pump-current-characterization.md](152-pcie-pump-current-characterization.md) records twelve finite pump/filter points, 78 prerequisite controls and complete saved-waveform current replay; loaded PLL reachability and lock remain open.
