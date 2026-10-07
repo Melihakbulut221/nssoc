@@ -1,0 +1,52 @@
+.............F...............................                            [100%]
+=================================== FAILURES ===================================
+___ test_actual_wide_rx_fault_rejected[fresh_owner_verdict_override_removed] ___
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v26-full-controls01/test_actual_wide_rx_fault_reje12')
+name = 'fresh_owner_verdict_override_removed'
+module = 'soc_pcie_gen3_framer_rx_integrity_v26'
+before = 'if(command_verdict_enable[verdict_lane] && command_verdict_tags[verdict_lane*PW+:PW]==effective_tag)'
+after = "if(1'b0 && command_verdict_enable[verdict_lane] && command_verdict_tags[verdict_lane*PW+:PW]==effective_tag)"
+count = 1, case = 'cache_fault_write_and_new_epoch_reuse'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+        result, record, cases, out = run(tmp_path, rtl=rtl, case=case)
+        assert result.returncode != 0 and record["status"] == "FAIL"
+        assert len(cases) == 1 and cases[0].find("failure") is not None
+        assert "AssertionError" in (out / "simulation.log").read_text(), (
+            "Compile/runtime errors cannot pass functional controls"
+        )
+    
+        expected_semantic_failure = {
+            "fault_descriptor_survives": "AssertionError: V25_OLD_DESCRIPTOR_OWNERSHIP",
+            "restart_descriptor_survives": "AssertionError: V25_OLD_DESCRIPTOR_OWNERSHIP",
+            "empty_descriptor_blocks": "AssertionError: V25_EMPTY_DRAIN_FAULT",
+            "full_descriptor_overwrite": "AssertionError: real finite ring overflow required",
+            "fresh_owner_verdict_override_removed": "AssertionError: unexpected/nullified packet escaped",
+        }
+        if name in expected_semantic_failure:
+>           assert expected_semantic_failure[name] in (out / "simulation.log").read_text(), (
+                "A failed stage witness is not a valid semantic negative control"
+            )
+E           AssertionError: A failed stage witness is not a valid semantic negative control
+E           assert 'AssertionError: unexpected/nullified packet escaped' in 'rm -f /dev/shm/nssoc-integrity-v26-full-controls01/test_actual_wide_rx_fault_reje12/capture/results.xml\n"make" -f /h...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n'
+E            +  where 'rm -f /dev/shm/nssoc-integrity-v26-full-controls01/test_actual_wide_rx_fault_reje12/capture/results.xml\n"make" -f /h...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n' = read_text()
+E            +    where read_text = (PosixPath('/dev/shm/nssoc-integrity-v26-full-controls01/test_actual_wide_rx_fault_reje12/capture') / 'simulation.log').read_text
+
+sw/tests/test_pcie_gen3_continuous_rx_integrity_v26.py:188: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_continuous_rx_integrity_v26.py::test_actual_wide_rx_fault_rejected[fresh_owner_verdict_override_removed]
+1 failed, 44 passed, 1 deselected in 728.75s (0:12:08)

@@ -1,0 +1,14 @@
+{
+  "status": "ADDITIVE_V26_CONTRACT_WORDING_SUPPLEMENT",
+  "contract": {
+    "bytes": 9114,
+    "sha256": "d54af82fa03c03322f6761cd2c7de2d01c77070713f77f3eff34375e6db32b5a"
+  },
+  "corrections": {
+    "tag_ownership": "Occupied capacity is at most one ring (RING_DWORDS), including the exactly-full boundary; extended SOP tags span two ring lengths. A new four-word parser step requires sufficient capacity after any same-edge retirement. No valid concurrently resident span exceeds one ring. Numeric tag reuse after global invalidation does not preserve prior ownership.",
+    "closure_order": "Fresh closure cache override and visible_commit update occur in the same nonblocking-assignment edge. Retirement samples the old frontier and old cache on that edge, so the new committed frontier is observable only together with the fresh cache result at a later sampling edge. The original phrase before visible_commit advances describes this observation relation, not procedural execution order."
+  },
+  "rtl_changes": false,
+  "controls_unchanged": true,
+  "scope": "Wording-only correction; no functional, HDL, native timing or adoption claim."
+}
