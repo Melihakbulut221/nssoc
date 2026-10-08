@@ -381,3 +381,50 @@ only sequence lookahead and the explicit frontier; credit and quarantine
 RTL remain at the earlier class/reset baseline. The final selected-source
 replay/formal controls pass 16 cases, with seven unrelated parameter cases
 deselected from this focused rerun.
+
+### Packet-chip physical bringup, 9 October 2026
+
+The selected replay-frontier map has now entered the real LibreLane/OpenROAD
+physical flow. A guarded preparation helper binds all four mapped clocks and
+reuses the existing die, bank coordinates, SRAM masters and timing budgets.
+The sixteen MBIST FIFO bank names differ from the older inferred-memory
+floorplan. Placement uses their Verilog names; native PDN regular expressions
+must also match OpenROAD's escaped bracket representation. The first two
+failed name-binding attempts are retained, followed by the corrected run.
+
+Actual database checks confirm all 20 macro masters, locations, orientations
+and fixed placement status. All 60 SRAM supply-pin bindings are correct, and
+both VPWR and VGND pass native power-grid connectivity checks. PDN via
+warnings remain in the raw logs; connectivity does not establish IR drop,
+electrical reliability or full-chip LVS/DRC. Four mutations of the actual map
+and netlist reject a clock alias, missing bank, wrong master and mismatched
+Verilog macro. No broad bank-name wildcard is used to bypass binding.
+
+The synthesis SDC always used ideal clocks. The physical SDC preserves every
+timing command and selects clock propagation by stage. A native tool probe
+checks all four input clocks plus the generated Ethernet clock in both modes.
+LibreLane's first mid-PnR STA did not supply its ideal-clock flag, despite
+running before CTS; that report was interrupted and preserved. The packet
+flow now explicitly sets the flag only for that pre-CTS STA. The other 79
+flow steps, full timing report coverage and checker thresholds are unchanged.
+Completed placement is reused for the corrected STA and CTS continuation.
+
+The [physical bringup review](../hw/soc/pcie-evidence/20261009-packet-physical-bringup/review.json)
+and [complete completed-stage archive](../hw/soc/pcie-evidence/20261009-packet-physical-bringup/delivery.json)
+cover the native macro/PDN checks, initial placement, exact source/config
+chain and preserved failures. The corrected CTS continuation is separate
+work, excluded from that frozen archive. Post-CTS timing repair,
+routing, extracted timing and full-chip physical acceptance remain open.
+This is the byte-packet PCIe integration profile; it does not contain the full
+8 GT/s x4 serial PHY or qualify the SRAM timing/RC views or package padframe.
+
+The corrected continuation subsequently completed its pre-CTS STA,
+post-placement electrical repair, detailed placement and CTS. The native CTS
+log includes 4,845 PCIe clock sinks; the saved SDC marks all five clocks as
+propagated. One unloaded net (`net86`) is skipped with a retained CTS warning.
+These are stage-completion facts, not fresh post-CTS timing results: timing
+metrics inherited in a state file must not be mistaken for a new analysis.
+The separate [CTS checkpoint](../hw/soc/pcie-evidence/20261009-packet-physical-bringup/cts-review.json)
+and [raw CTS archive](../hw/soc/pcie-evidence/20261009-packet-physical-bringup/cts-delivery.json)
+preserve the actual ODB, DEF, netlists and SDC. The next local continuation
+starts at post-CTS STA and includes timing repair and detailed routing.
