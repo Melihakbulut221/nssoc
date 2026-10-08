@@ -762,3 +762,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/153-pcie-verdict-writer-functional-validation.md](153-pcie-verdict-writer-functional-validation.md) records all 45 current V26 functional predicates and retained negative controls; MAX4118 and physical timing remain separate.
 
 [docs/154-pcie-frontier-epoch-quarantine.md](154-pcie-frontier-epoch-quarantine.md) records V27 frontier isolation, nineteen public port cases, five rejected faults and the remaining 4 ns setup failure; full PHY and main-chip integration stay open.
+
+[docs/155-pcie-payload-epoch-quarantine.md](155-pcie-payload-epoch-quarantine.md) records V28 ring-payload isolation, actual fault-edge writes and a 112.250 ps slow setup improvement; the 4 ns target and main-chip integration remain open.
