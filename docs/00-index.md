@@ -760,3 +760,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/152-pcie-pump-current-characterization.md](152-pcie-pump-current-characterization.md) records twelve finite pump/filter points, 78 prerequisite controls and complete saved-waveform current replay; loaded PLL reachability and lock remain open.
 
 [docs/153-pcie-verdict-writer-functional-validation.md](153-pcie-verdict-writer-functional-validation.md) records all 45 current V26 functional predicates and retained negative controls; MAX4118 and physical timing remain separate.
+
+[docs/154-pcie-frontier-epoch-quarantine.md](154-pcie-frontier-epoch-quarantine.md) records V27 frontier isolation, nineteen public port cases, five rejected faults and the remaining 4 ns setup failure; full PHY and main-chip integration stay open.

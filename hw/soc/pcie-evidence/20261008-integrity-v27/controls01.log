@@ -1,0 +1,22 @@
+.....F.                                                                  [100%]
+=================================== FAILURES ===================================
+____ test_actual_public_frontier_cycles_and_fault_quarantine[restart_leak] _____
+
+tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v27-20261008/controls01/test_actual_public_frontier_cy4')
+fault = 'restart_leak'
+
+    @pytest.mark.parametrize('fault', [None, *FAULTS], ids=['positive', *FAULTS])
+    def test_actual_public_frontier_cycles_and_fault_quarantine(tmp_path, fault):
+        helper = runpy.run_path(str(ROOT/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v26.py'))
+        result, record, cases, out = helper['run'](tmp_path, rtl=prepare(tmp_path/'rtl',fault),
+                                                case=FAULTS[fault][2] if fault else None)
+        log = (out/'simulation.log').read_text()
+        if fault:
+>           assert result.returncode != 0 and record['status'] == 'FAIL'
+E           AssertionError: assert (0 != 0)
+E            +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python', '/home/hasanmel...rols01/test_actual_public_frontier_cy4/rtl', '--test', 'command_pending_epoch_controls_and_fresh_reuse'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_integrity_v27_frontier.py:113: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_integrity_v27_frontier.py::test_actual_public_frontier_cycles_and_fault_quarantine[restart_leak]
+1 failed, 6 passed in 124.49s (0:02:04)
