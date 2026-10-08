@@ -41,15 +41,6 @@ module soc_pcie_replay_tx #(
     reg [BW-1:0] write_pos,read_pos;
     reg capturing,sending,sending_replay,replay_active,replay_pending,replay_first,halt;
     reg [11:0] next_store_sequence;
-    // Look ahead continuously. An accepted EOP ends capture, so the next
-    // packet cannot commit on the immediately following clock. The cached
-    // increment settles before the next commit without delaying any transfer.
-    reg [11:0] next_store_sequence_plus_one;
-    always @(posedge clk_i or negedge rst_ni) begin
-        if(!rst_ni) next_store_sequence_plus_one<=12'd1;
-        else if(!link_up_i) next_store_sequence_plus_one<=12'd1;
-        else next_store_sequence_plus_one<=next_store_sequence+12'd1;
-    end
     reg [31:0] input_crc;
     reg [TW-1:0] timer;
     reg timer_running;
@@ -64,10 +55,7 @@ module soc_pcie_replay_tx #(
         reg [CW+1:0] sum;
         begin sum=pointer+amount;advance=(sum>=DEPTH) ? sum-DEPTH : sum;end
     endfunction
-    // ACK retirement moves head forward and sent_count backward equally.
-    // Only an original transmitted EOP advances their modulo sum. Keep that
-    // frontier directly, removing the adder from credit reservation metadata.
-    reg [PW-1:0] new_slot;
+    wire [PW-1:0] new_slot=advance(head,{1'b0,sent_count});
     wire [11:0] ack_delta=ack_sequence_i-acknowledged_sequence_o;
     // Classify at the first validated ACK presentation, even if frame atomicity
     // delays consumption. Backpressure cannot turn an early future ACK valid.
@@ -102,7 +90,7 @@ module soc_pcie_replay_tx #(
     end
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            head<=0;tail<=0;new_slot<=0;send_slot<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
+            head<=0;tail<=0;send_slot<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
             write_pos<=0;read_pos<=0;capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
@@ -110,7 +98,7 @@ module soc_pcie_replay_tx #(
             acknowledged_sequence_o<=12'hfff;replay_started_o<=0;timeout_o<=0;
             protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else if(!link_up_i) begin
-            head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;
+            head<=0;tail<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;
             replay_active<=0;replay_pending<=0;halt<=0;next_store_sequence<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
             timer<=0;timer_running<=0;retries<=0;acknowledged_sequence_o<=12'hfff;
@@ -146,7 +134,7 @@ module soc_pcie_replay_tx #(
                             source_error_o<=1;halt<=1;
                         end else begin
                             lengths[tail]<=write_pos+1'b1;count<=count+1'b1;
-                            tail<=advance(tail,1);next_store_sequence<=next_store_sequence_plus_one;
+                            tail<=advance(tail,1);next_store_sequence<=next_store_sequence+1'b1;
                         end
                     end
                 end
@@ -188,7 +176,7 @@ module soc_pcie_replay_tx #(
                         if(replay_left==1) replay_active<=0;
                         else begin replay_left<=replay_left-1'b1;replay_slot<=advance(replay_slot,1);end
                     end else begin
-                        sent_count<=sent_count+1'b1;new_slot<=advance(new_slot,1);
+                        sent_count<=sent_count+1'b1;
                         if(!timer_running) begin timer<=0;timer_running<=1;end
                     end
                 end else read_pos<=read_pos+1'b1;

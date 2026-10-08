@@ -22,6 +22,24 @@ from cocotb_results import count_results  # noqa: E402
     "module,old,new,case",
     [
         (
+            "soc_pcie_replay_tx",
+            "new_slot<=advance(new_slot,1);",
+            "new_slot<=advance(new_slot,2);",
+            "full_queue",
+        ),
+        (
+            "soc_pcie_replay_tx",
+            "else next_store_sequence_plus_one<=next_store_sequence+12'd1;",
+            "else next_store_sequence_plus_one<=next_store_sequence+12'd2;",
+            "full_queue",
+        ),
+        (
+            "soc_pcie_replay_tx",
+            "else next_store_sequence_plus_one<=next_store_sequence+12'd1;",
+            "else next_store_sequence_plus_one<={4'b0,next_store_sequence[7:0]+8'd1};",
+            "modulo_wrap_4097",
+        ),
+        (
             "soc_pcie_dllp_rx",
             "trailer!=~crc[7:0] || rx_data_i!=~crc[15:8]",
             "1'b0",

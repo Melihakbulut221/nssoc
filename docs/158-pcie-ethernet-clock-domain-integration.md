@@ -314,3 +314,70 @@ See the [bank/MBIST review](../hw/soc/pcie-evidence/20261008-rx-bank-mbist-repai
 and its [complete raw archive](../hw/soc/pcie-evidence/20261008-rx-bank-mbist-repair/delivery.json),
 plus the [class/reset review](../hw/soc/pcie-evidence/20261008-class-cdc-chip-repair/review.json)
 and [raw archive](../hw/soc/pcie-evidence/20261008-class-cdc-chip-repair/delivery.json).
+
+### Replay control path experiments, 8 October 2026
+
+The replay sequence increment is now computed ahead of the CRC verdict.
+The cache refreshes every clock; an accepted packet ends capture, so the
+next packet cannot commit before the updated sequence cache is available.
+A separate explicit transmit frontier advances only when an original packet
+finishes transmission. ACK processing moves the queue head forward and the
+outstanding count backward equally, leaving this frontier unchanged. Replay
+transmissions do not advance it. Neither change adds port latency.
+
+Against the frozen pre-change RTL, both experiments prove 1,566 equivalence
+points at the default parameters and 855 with a three-slot queue, smaller
+packet capacity and short timeout. Seven RTL and seven native-cell cases
+pass for each, including 4,097 real packets across sequence-number wrap.
+Actual wrong-cache-increment, truncated carry and skipped-slot mutations are
+rejected. Each candidate also passes two joint CPU/Ethernet/asynchronous
+PCIe tests and five packet-composition cases. These joint cases use RTL
+FIFO models; the earlier vendor-SRAM MBIST campaign is separate evidence.
+
+| Same unplaced method, ns | Class/reset baseline | Sequence cache | Explicit frontier | Carry/CRC trial |
+| --- | ---: | ---: | ---: | ---: |
+| Slow setup | -3.431339 | -3.132355 | -2.435288 | -3.815347 |
+| Typical setup | -0.975340 | -0.602120 | -0.179899 | -1.023483 |
+| Fast setup | +0.356756 | +0.784566 | +0.850311 | +0.598505 |
+| Slow hold | -0.469247 | -0.465004 | -0.530313 | -0.469247 |
+| Typical hold | -0.539480 | -0.539480 | -0.539480 | -0.539480 |
+| Fast hold | -0.601382 | -0.601382 | -0.601382 | -0.601382 |
+
+The explicit-frontier map has 78,637 cells, 101 ports and 20 SRAM macros.
+All 280,991 repaired non-buffer pin bits compare equal; seven injected graph
+faults reject. The same native models, clock budgets and role-normalized CDC
+constraints are checked for every timing comparison. Slow CPU setup is
++1.574598 ns; Ethernet RX/TX setup remains -0.375802/-0.474566 ns. Slow hold
+regresses despite the setup gain. This is development progress, not timing
+closure or acceptance of a routed chip.
+
+A subsequent carry-save credit calculation combined with removal of a
+redundant CRC-quarantine index clear passes functional, native and graph
+checks but **regresses** setup. Its credit change is reverted; the complete
+failed experiment is retained. CRC-only attribution is measured separately below.
+The original fast hold path remains Ethernet transmit-enable clock-to-output
+against the unchanged external hold budget. It still needs physical repair.
+
+The [trial review](../hw/soc/pcie-evidence/20261008-replay-timing-trials/review.json)
+and [complete raw archive](../hw/soc/pcie-evidence/20261008-replay-timing-trials/delivery.json)
+retain the successful and rejected sources, logs, native maps and proofs.
+There is still no full serial Gen3 x4 PHY instance, current routed-mainchip
+verification or final setup/hold acceptance.
+
+
+The CRC-only screen reaches slow/typical/fast setup
+-2.430666/-0.438231/+0.734238 ns: its 4.622 ps slow gain does not offset the
+258.332 ps typical regression. It is reverted. A separate class-cache
+candidate decodes the packet class on the exact write of header byte two,
+including partial/corrupt writes and invalid-cycle sidebands. Its 1,558/847
+formal points, seven native cases, two joint cases and five composition
+cases pass, with no additional lint warning after the first prototype is
+corrected. Nevertheless its setup is -2.595271/-0.446848/+0.641717 ns, worse
+than the explicit frontier at all three corners. It too is reverted.
+The complete [isolation review](../hw/soc/pcie-evidence/20261008-replay-isolation-trials/review.json)
+and [raw trial archive](../hw/soc/pcie-evidence/20261008-replay-isolation-trials/delivery.json)
+retain both results and the discarded sources. Shipping replay RTL keeps
+only sequence lookahead and the explicit frontier; credit and quarantine
+RTL remain at the earlier class/reset baseline. The final selected-source
+replay/formal controls pass 16 cases, with seven unrelated parameter cases
+deselected from this focused rerun.

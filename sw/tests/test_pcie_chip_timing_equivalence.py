@@ -14,6 +14,8 @@ from check_pcie_chip_timing_equivalence import run
 
 
 @pytest.mark.parametrize("kind,parameters", [
+    ("replay", {}),
+    ("replay", {"DEPTH": 3, "MAX_BYTES": 22, "TIMEOUT_CYCLES": 2}),
     ("cdc", {}),
     ("rx", {"COMPLETER_ONLY": 1}),
     ("rx", {"MAX_TLP_DWORDS": 3, "SLOTS_PER_CLASS": 1}),
