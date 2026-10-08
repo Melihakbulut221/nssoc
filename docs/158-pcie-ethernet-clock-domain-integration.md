@@ -428,3 +428,65 @@ The separate [CTS checkpoint](../hw/soc/pcie-evidence/20261009-packet-physical-b
 and [raw CTS archive](../hw/soc/pcie-evidence/20261009-packet-physical-bringup/cts-delivery.json)
 preserve the actual ODB, DEF, netlists and SDC. The next local continuation
 starts at post-CTS STA and includes timing repair and detailed routing.
+
+
+### Packet reset data-path isolation, 9 October 2026
+
+Fresh post-CTS reports expose a CPU-reset-to-packet-data path. The packet
+reset already has an asynchronously cleared, two-stage local release;
+ANDing its output with raw CPU reset reintroduces that asynchronous signal
+into packet combinational logic. Using the existing local release removes
+this bypass. The APB bridge's source response now also uses its local release,
+matching the destination-side isolation. Reset pins retain asynchronous
+assertion, including when the packet clock is stopped. No clock budget,
+false path, pipeline latency or port is added.
+
+A conservative traversal of the actual native whole-chip maps counts
+**4,414** packet flip-flop data/output endpoints reachable from raw CPU reset
+in the replay baseline, **104** with the top-level change alone, and **zero**
+with both changes. Traversal stops at flip-flops and SRAMs; it does not
+silently traverse sequential elements as combinational cells. The checker
+also verifies the actual release-flop clock/reset bindings. Four mutations
+of the real mapped graph reject an output bypass, data bypass, wrong release
+clock and disconnected asynchronous reset. This is structural evidence,
+not proof of analog reset recovery or metastability safety.
+
+The exact extracted reset cone, observing both release bits and its output,
+passes temporal induction **after an explicit initial power-on reset**.
+Subsequent reset and clock transitions, including stopped-clock intervals,
+are unconstrained. Four RTL faults produce counterexamples. Unconstrained
+startup previously failed because independent uninitialized states differ;
+that result is retained rather than reported as a passing startup proof.
+The bridge proves all 217 sequential equivalence points against its frozen
+reference. Two actual IHP reset flip-flops pass 897 state/output comparisons;
+the 416-cell native bridge passes 97 transfers at each of three clock ratios.
+Twelve focused host tests and two joint CPU/Ethernet/asynchronous-PCIe cases
+pass. The native simulator's unsupported timing/`ifnone` warnings remain;
+these are functional tests, without SDF or analog qualification.
+
+| Same unplaced method, ns | Replay baseline | Top reset only | Both local releases |
+| --- | ---: | ---: | ---: |
+| Slow setup | -2.435288 | -2.764045 | -2.564759 |
+| Typical setup | -0.179899 | -0.392776 | -0.267680 |
+| Fast setup | +0.850311 | +0.707402 | +0.703496 |
+| Slow hold | -0.530313 | -0.465004 | -0.465004 |
+| Typical hold | -0.539480 | -0.539480 | -0.539480 |
+| Fast hold | -0.601382 | -0.601382 | -0.601382 |
+
+Both source edits are retained to remove the raw-reset data-domain bypass;
+**unplaced setup regresses and timing remains open**. The combined map has
+78,843 cells, 101 ports and 20 SRAMs. All 281,479 non-buffer pin bits compare
+across native preplacement repair, and seven graph faults reject. A separate
+physical candidate measures placement/CTS/routing effects using the original
+mapped netlist. Its initial launch inadvertently repeated synthesis; that
+attempt was stopped and retained, and the original-netlist JSON-header
+checkpoint is reused. Neither that extra synthesis nor an unfinished physical
+stage is accepted as evidence of timing closure.
+
+The [reset repair review](../hw/soc/pcie-evidence/20261009-packet-reset-repair/review.json)
+and [complete reset-study archive](../hw/soc/pcie-evidence/20261009-packet-reset-repair/delivery.json)
+include both candidates, mapped outputs, raw proofs/simulations and preserved
+failed startup/wrapper attempts. The active physical run is explicitly
+excluded. The earlier replay physical run continues separately with its
+frozen source. Full serial Gen3 x4 PHY, final routed timing, qualified SRAM/RC
+and main-chip physical acceptance remain open.

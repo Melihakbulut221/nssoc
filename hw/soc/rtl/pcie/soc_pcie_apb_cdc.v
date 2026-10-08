@@ -45,7 +45,9 @@ module soc_pcie_apb_cdc (
  localparam [1:0] D_IDLE=0,D_SETUP=1,D_ACCESS=2,D_DRAIN=3;
  reg [1:0] source_state, destination_state;
  reg served;
- assign s_pready_o=source_reset_n && source_state==S_RESPONSE && s_psel_i && s_penable_i;
+ // Source output isolation uses the local asynchronously cleared release.
+ // Keep raw system/link reset on reset pins, outside packet data cones.
+ assign s_pready_o=source_release[1] && source_state==S_RESPONSE && s_psel_i && s_penable_i;
  assign s_pslverr_o=s_pready_o && response[32];
  assign s_prdata_o=s_pready_o ? response[31:0] : 32'b0;
  // The release flop asserts reset asynchronously, including with a stopped

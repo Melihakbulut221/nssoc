@@ -960,7 +960,9 @@ module soc_top #(
   always @(posedge pcie_clk_i or negedge rst_sys_n)
     if(!rst_sys_n) packet_reset_release<=0;
     else packet_reset_release<={packet_reset_release[0],1'b1};
-  wire packet_rst_n=rst_sys_n && packet_reset_release[1];
+  // The local release flop also clears with a stopped packet clock.
+  // Avoid feeding the raw CPU reset into packet-domain data/output cones.
+  wire packet_rst_n=packet_reset_release[1];
   // Link reset must invalidate both mailbox halves. CPU and Ethernet reset
   // are deliberately unaffected. A write already accepted by APB remains.
   soc_pcie_apb_cdc u_pcie_cdc (
