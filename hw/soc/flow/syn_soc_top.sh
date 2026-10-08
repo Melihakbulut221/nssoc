@@ -148,6 +148,36 @@ case "$SOC_MEM" in
      exit 2 ;;
 esac
 
+# Explicit packet-controller integration profile. This is not a serial PHY.
+# Do not silently compile the default top without PCIe when it was requested.
+SOC_PCIE_PROFILE=${SOC_PCIE_PROFILE:-off}
+PCIE_DEFINE=""
+PCIE_READ=""
+PCIE_EXPORT=""
+PCIE_NAMES=""
+case "$SOC_PCIE_PROFILE" in
+  off) ;;
+  packet|packet-async)
+    PCIE_DEFINE="-DSOC_PCIE_PACKET"
+    PCIE_NAMES="-norename"
+    if [ "$SOC_PCIE_PROFILE" = packet-async ]; then
+      PCIE_DEFINE="$PCIE_DEFINE -DSOC_PCIE_ASYNC"
+    fi
+    PCIE_READ="read_verilog -sv -defer"
+    for block in crc16_byte acknak_tx packet_tx crc32_byte lcrc_rx sequence_rx \
+      lcrc_tx packet_endpoint tlp_stream tlp_regs link_packets dllp_rx replay_tx \
+      reliable_packets credit_tx flow_packets rx_credit fc_tx buffered_flow_packets \
+      apb_arbiter apb_cdc; do
+      PCIE_READ="$PCIE_READ $RTL/pcie/soc_pcie_$block.v"
+    done
+    # Preserve actual drivers when this netlist enters OpenROAD, including
+    # logical constants; JSON binds later clock/CDC review to mapped cells.
+    PCIE_EXPORT="hilomap -singleton -hicell sg13g2_tiehi L_HI -locell sg13g2_tielo L_LO
+write_json $OUT/soc_top.mapped.json"
+    ;;
+  *) echo 'SOC_PCIE_PROFILE must be off, packet or packet-async' >&2; exit 2 ;;
+esac
+
 IBEX_REGFILE=${IBEX_REGFILE:-secded}
 IBEX_FAULT_PORT=${IBEX_FAULT_PORT:-1}
 export IBEX_REGFILE IBEX_FAULT_PORT
@@ -637,9 +667,10 @@ read_verilog -defer $IBEX_SRCS
 read_verilog -sv $IF_DEFINE $MBIST_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MBIST_READ
+$PCIE_READ
 $MEM_READ
 $BOOT_ROM_READ
-read_verilog $IF_DEFINE -I$RTL $BOOT_ROM_DEFINE $MBIST_DEFINE -defer $RTL/soc_top.v
+read_verilog $IF_DEFINE $PCIE_DEFINE -I$RTL $BOOT_ROM_DEFINE $MBIST_DEFINE -defer $RTL/soc_top.v
 
 $RF_CHPARAM
 $TOP_CHPARAM
@@ -681,11 +712,12 @@ $KEEP_HIER_FLATTEN
 setundef -zero
 opt_clean -purge
 
-write_verilog -noattr $OUT/soc_top.netlist.v
+$PCIE_EXPORT
+write_verilog $PCIE_NAMES -noattr $OUT/soc_top.netlist.v
 
 splitnets $SPLIT_PORTS
 clean
-write_verilog -noattr -noexpr -nohex -nodec $OUT/soc_top.sta.v
+write_verilog $PCIE_NAMES -noattr -noexpr -nohex -nodec $OUT/soc_top.sta.v
 
 check
 tee -o $OUT/area.rpt stat -liberty $SG13G2_TYP

@@ -143,3 +143,61 @@ Full PLL/CDR acquisition and safe tuning, full SERDES/PCS/LTSSM, rated controlle
 receive integration, differential pads/ESD, qualified extraction and a newly
 verified serial-PHY main-chip layout remain required. None is marked complete
 by this digital integration campaign.
+
+## Whole-chip mapped continuation
+
+The [whole-chip synthesis flow](../hw/soc/flow/syn_soc_top.sh) now explicitly
+selects `SOC_PCIE_PROFILE=packet-async` (or `packet` for the existing CPU-clock
+mode). The default remains `off`. Previously that flow did not read the PCIe
+controller sources or enable the packet ports. Invalid selections fail before
+the output directory is touched. The selected profile exports the actual mapped
+JSON and tie cells, preserving identifiers for physical constraint binding.
+
+The first complete asynchronous run includes the actual Ibex, NPU, Ethernet,
+packet controller, APB mailbox and power-on MBIST: **77,787 cells, 101 ports,
+four native 2048×64 system SRAMs and sixteen native two-port Ethernet SRAMs**.
+It uses the same Ethernet exercise firmware in an immutable logic ROM. The
+4 ns ABC mapping target is explicitly 4,000 ps. CPU constraints remain 20 ns;
+the packet clock is 4 ns and both GMII clocks are 8 ns. Core pipeline and
+SYNPRE options are at their default zero settings. This is the base interface
+profile, not the full CAN/SpaceWire profile or the earlier alternate 32-SRAM
+physical implementation. It has not had a whole-netlist native boot replay.
+
+The [mapped clock binder](../scripts/pcie_soc_constraints.py) identifies the
+actual 49-bit request, 33-bit response and both two-stage control synchronizers
+in this flattened chip, checking every selected register's clock. Packet IO
+gets its own clock; Ethernet retains the existing development GMII budgets.
+The 16/3.2 ns mailbox data budgets and narrow control exceptions remain intact.
+Legacy single-clock `sta_soc_top.sh` now rejects packet netlists. The constraint
+projection tests reject five actual mapped pin/clock corruptions; together with
+the flow guards and existing source-list checks, **11 tests pass**.
+
+Native OpenROAD preplacement repair inserts **10,400 buffers** and changes
+**2,133 drive strengths**. Saved-graph replay checks all **101 ports and 278,235
+non-buffer pin bits**, retaining all SRAM connections. Seven deliberate graph
+corruptions fail. The import initially lacked the SRAM declarations, then the
+comparison rejected OpenROAD's doubled internal backslash spelling. Both
+failures are retained; only a bijective exact serialization of each original
+identifier is accepted in the successful replay.
+
+| Corner | Repaired, unplaced worst reported setup (ns) | Hold (ns) |
+| --- | ---: | ---: |
+| Slow | −5.646589 | −0.493968 |
+| Typical | −2.206412 | −0.539480 |
+| Fast | −0.194620 | −0.601382 |
+
+**Timing remains failed.** The measured packet critical path is
+`retry.head[1]` to `credit_data_limit_o[0]`. Ethernet SRAM read paths and SRAM/
+GMII hold paths also remain open. The earlier unbuffered OpenSTA screen and its
+large reset-fanout failures are retained, but the different tool builds are not
+used to claim a numerical before/after improvement. Its initial slack collector
+missed the `max/min` token; explicit saved-log replay recovers both values for
+all three corners without changing a native run. The explicit external-IRQ
+exception leaves its first-stage D listed as one unconstrained endpoint.
+
+These are ideal-clock wire-load estimates with vendor SRAM views. No placed
+macros, CTS, routed RC, new GDS, DRC/LVS acceptance or Gen3 x4 serial integration
+is implied. The result is a mapped integration prerequisite, not a completed
+physical chip. Exact summaries and raw delivery are in the
+[main-chip evidence](../hw/soc/pcie-evidence/20261008-mainchip-packet-mapping/review.json)
+and [archive record](../hw/soc/pcie-evidence/20261008-mainchip-packet-mapping/delivery.json).
