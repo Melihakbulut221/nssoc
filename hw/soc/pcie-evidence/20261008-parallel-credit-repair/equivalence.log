@@ -1,0 +1,3261 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)
+
+-- Executing script file `proof.ys' --
+
+1. Executing Verilog-2005 frontend: gold.v
+Parsing SystemVerilog input from `gold.v' to AST representation.
+Generating RTLIL representation for module `\gold'.
+Warning: Replacing memory \dc with list of registers. See gold.v:58
+Warning: Replacing memory \dl with list of registers. See gold.v:58
+Warning: Replacing memory \hc with list of registers. See gold.v:58
+Warning: Replacing memory \hl with list of registers. See gold.v:58
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: gate.v
+Parsing SystemVerilog input from `gate.v' to AST representation.
+Generating RTLIL representation for module `\gate'.
+Warning: Replacing memory \dc with list of registers. See gate.v:64
+Warning: Replacing memory \dl with list of registers. See gate.v:64
+Warning: Replacing memory \hc with list of registers. See gate.v:64
+Warning: Replacing memory \hl with list of registers. See gate.v:64
+Successfully finished Verilog frontend.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$gate.v:54$596 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:53$593 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:52$590 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:51$587 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:41$584 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:41$581 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:40$578 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:40$575 in module gate.
+Marked 15 switch rules as full_case in process $proc$gate.v:61$380 in module gate.
+Marked 1 switch rules as full_case in process $proc$gold.v:50$301 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:49$298 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:48$295 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:47$292 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:41$289 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:41$286 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:40$283 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:40$280 in module gold.
+Marked 15 switch rules as full_case in process $proc$gold.v:55$85 in module gold.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 2 redundant assignments.
+Promoted 68 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_ni in `\gate.$proc$gate.v:61$380'.
+Found async reset \rst_ni in `\gold.$proc$gold.v:55$85'.
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~60 debug messages>
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\gate.$proc$gate.v:54$596'.
+     1/1: $1$mem2reg_rd$\dc$gate.v:54$316_DATA[11:0]$598
+Creating decoders for process `\gate.$proc$gate.v:53$593'.
+     1/1: $1$mem2reg_rd$\hc$gate.v:53$315_DATA[7:0]$595
+Creating decoders for process `\gate.$proc$gate.v:52$590'.
+     1/1: $1$mem2reg_rd$\dl$gate.v:52$314_DATA[11:0]$592
+Creating decoders for process `\gate.$proc$gate.v:51$587'.
+     1/1: $1$mem2reg_rd$\hl$gate.v:51$313_DATA[7:0]$589
+Creating decoders for process `\gate.$proc$gate.v:41$584'.
+     1/1: $1$mem2reg_rd$\dc$gate.v:41$312_DATA[11:0]$586
+Creating decoders for process `\gate.$proc$gate.v:41$581'.
+     1/1: $1$mem2reg_rd$\dl$gate.v:41$311_DATA[11:0]$583
+Creating decoders for process `\gate.$proc$gate.v:40$578'.
+     1/1: $1$mem2reg_rd$\hc$gate.v:40$310_DATA[7:0]$580
+Creating decoders for process `\gate.$proc$gate.v:40$575'.
+     1/1: $1$mem2reg_rd$\hl$gate.v:40$309_DATA[7:0]$577
+Creating decoders for process `\gate.$proc$gate.v:61$380'.
+     1/142: $8$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$573
+     2/142: $8$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$574
+     3/142: $8$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$569
+     4/142: $8$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$570
+     5/142: $7$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$566
+     6/142: $7$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$565
+     7/142: $7$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$564
+     8/142: $7$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$563
+     9/142: $6$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$561
+    10/142: $6$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$560
+    11/142: $6$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$559
+    12/142: $6$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$558
+    13/142: $6$lookahead\seen$379[2:0]$532
+    14/142: $6$lookahead\di$378[2:0]$531
+    15/142: $6$lookahead\hi$377[2:0]$530
+    16/142: $6$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$529
+    17/142: $6$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$528
+    18/142: $6$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$527
+    19/142: $6$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$526
+    20/142: $6$bitselwrite$pos$gate.v:82$308[1:0]$525
+    21/142: $6$bitselwrite$pos$gate.v:81$307[1:0]$524
+    22/142: $6$bitselwrite$pos$gate.v:81$306[1:0]$523
+    23/142: $5$lookahead\seen$379[2:0]$519
+    24/142: $5$lookahead\di$378[2:0]$518
+    25/142: $5$lookahead\hi$377[2:0]$517
+    26/142: $5$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$512
+    27/142: $5$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$511
+    28/142: $5$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$510
+    29/142: $5$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$509
+    30/142: $5$bitselwrite$pos$gate.v:82$308[1:0]$508
+    31/142: $5$bitselwrite$pos$gate.v:81$307[1:0]$507
+    32/142: $5$bitselwrite$pos$gate.v:81$306[1:0]$506
+    33/142: $5$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$516
+    34/142: $5$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$515
+    35/142: $5$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$514
+    36/142: $5$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$513
+    37/142: $4$lookahead\seen$379[2:0]$504
+    38/142: $4$lookahead\di$378[2:0]$503
+    39/142: $4$lookahead\hi$377[2:0]$502
+    40/142: $4$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$501
+    41/142: $4$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$500
+    42/142: $4$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$499
+    43/142: $4$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$498
+    44/142: $4$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$497
+    45/142: $4$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$496
+    46/142: $4$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$495
+    47/142: $4$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$494
+    48/142: $4$bitselwrite$pos$gate.v:82$308[1:0]$493
+    49/142: $4$bitselwrite$pos$gate.v:81$307[1:0]$492
+    50/142: $4$bitselwrite$pos$gate.v:81$306[1:0]$491
+    51/142: $3$lookahead\seen$379[2:0]$487
+    52/142: $3$lookahead\di$378[2:0]$486
+    53/142: $3$lookahead\hi$377[2:0]$485
+    54/142: $3$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$484
+    55/142: $3$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$483
+    56/142: $3$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$482
+    57/142: $3$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$481
+    58/142: $3$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$480
+    59/142: $3$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$479
+    60/142: $3$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$478
+    61/142: $3$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$477
+    62/142: $3$bitselwrite$pos$gate.v:82$308[1:0]$476
+    63/142: $3$bitselwrite$pos$gate.v:81$307[1:0]$475
+    64/142: $3$bitselwrite$pos$gate.v:81$306[1:0]$474
+    65/142: $5$mem2reg_rd$\dc$gate.v:72$320_DATA[11:0]$471
+    66/142: $4$mem2reg_wr$\dc$gate.v:72$319_ADDR[1:0]$467
+    67/142: $4$mem2reg_wr$\dc$gate.v:72$319_DATA[11:0]$468
+    68/142: $4$mem2reg_rd$\dc$gate.v:72$320_DATA[11:0]$470
+    69/142: $4$mem2reg_rd$\dc$gate.v:72$320_ADDR[1:0]$469
+    70/142: $5$mem2reg_rd$\hc$gate.v:71$318_DATA[7:0]$463
+    71/142: $4$mem2reg_wr$\hc$gate.v:71$317_ADDR[1:0]$459
+    72/142: $4$mem2reg_wr$\hc$gate.v:71$317_DATA[7:0]$460
+    73/142: $4$mem2reg_rd$\hc$gate.v:71$318_DATA[7:0]$462
+    74/142: $4$mem2reg_rd$\hc$gate.v:71$318_ADDR[1:0]$461
+    75/142: $3$mem2reg_rd$\dc$gate.v:72$320_DATA[11:0]$456
+    76/142: $3$mem2reg_rd$\dc$gate.v:72$320_ADDR[1:0]$455
+    77/142: $3$mem2reg_wr$\dc$gate.v:72$319_DATA[11:0]$454
+    78/142: $3$mem2reg_wr$\dc$gate.v:72$319_ADDR[1:0]$453
+    79/142: $3$mem2reg_rd$\hc$gate.v:71$318_DATA[7:0]$452
+    80/142: $3$mem2reg_rd$\hc$gate.v:71$318_ADDR[1:0]$451
+    81/142: $3$mem2reg_wr$\hc$gate.v:71$317_DATA[7:0]$450
+    82/142: $3$mem2reg_wr$\hc$gate.v:71$317_ADDR[1:0]$449
+    83/142: $2\i[31:0]
+    84/142: $0\protocol_error_o[0:0]
+    85/142: $2$lookahead\di$378[2:0]$447
+    86/142: $2$lookahead\hi$377[2:0]$446
+    87/142: $2$lookahead\seen$379[2:0]$448
+    88/142: $2$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$445
+    89/142: $2$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$444
+    90/142: $2$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$443
+    91/142: $2$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$442
+    92/142: $2$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$441
+    93/142: $2$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$440
+    94/142: $2$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$439
+    95/142: $2$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$438
+    96/142: $2$mem2reg_rd$\dc$gate.v:72$320_DATA[11:0]$437
+    97/142: $2$mem2reg_rd$\dc$gate.v:72$320_ADDR[1:0]$436
+    98/142: $2$mem2reg_wr$\dc$gate.v:72$319_DATA[11:0]$435
+    99/142: $2$mem2reg_wr$\dc$gate.v:72$319_ADDR[1:0]$434
+   100/142: $2$mem2reg_rd$\hc$gate.v:71$318_DATA[7:0]$433
+   101/142: $2$mem2reg_rd$\hc$gate.v:71$318_ADDR[1:0]$432
+   102/142: $2$mem2reg_wr$\hc$gate.v:71$317_DATA[7:0]$431
+   103/142: $2$mem2reg_wr$\hc$gate.v:71$317_ADDR[1:0]$430
+   104/142: $2$bitselwrite$pos$gate.v:82$308[1:0]$429
+   105/142: $2$bitselwrite$pos$gate.v:81$307[1:0]$428
+   106/142: $2$bitselwrite$pos$gate.v:81$306[1:0]$427
+   107/142: $1$lookahead\seen$379[2:0]$425
+   108/142: $1$lookahead\di$378[2:0]$424
+   109/142: $1$lookahead\hi$377[2:0]$423
+   110/142: $1$mem2reg_wr$\dl$gate.v:89$324_DATA[11:0]$422
+   111/142: $1$mem2reg_wr$\dl$gate.v:89$324_ADDR[1:0]$421
+   112/142: $1$mem2reg_wr$\hl$gate.v:88$323_DATA[7:0]$420
+   113/142: $1$mem2reg_wr$\hl$gate.v:88$323_ADDR[1:0]$419
+   114/142: $1$mem2reg_wr$\dl$gate.v:80$322_DATA[11:0]$418
+   115/142: $1$mem2reg_wr$\dl$gate.v:80$322_ADDR[1:0]$417
+   116/142: $1$mem2reg_wr$\hl$gate.v:80$321_DATA[7:0]$416
+   117/142: $1$mem2reg_wr$\hl$gate.v:80$321_ADDR[1:0]$415
+   118/142: $1$mem2reg_rd$\dc$gate.v:72$320_DATA[11:0]$414
+   119/142: $1$mem2reg_rd$\dc$gate.v:72$320_ADDR[1:0]$413
+   120/142: $1$mem2reg_wr$\dc$gate.v:72$319_DATA[11:0]$412
+   121/142: $1$mem2reg_wr$\dc$gate.v:72$319_ADDR[1:0]$411
+   122/142: $1$mem2reg_rd$\hc$gate.v:71$318_DATA[7:0]$410
+   123/142: $1$mem2reg_rd$\hc$gate.v:71$318_ADDR[1:0]$409
+   124/142: $1$mem2reg_wr$\hc$gate.v:71$317_DATA[7:0]$408
+   125/142: $1$mem2reg_wr$\hc$gate.v:71$317_ADDR[1:0]$407
+   126/142: $1$bitselwrite$pos$gate.v:82$308[1:0]$406
+   127/142: $1$bitselwrite$pos$gate.v:81$307[1:0]$405
+   128/142: $1$bitselwrite$pos$gate.v:81$306[1:0]$404
+   129/142: $1\i[31:0]
+   130/142: $0\dc[2][11:0]
+   131/142: $0\dc[1][11:0]
+   132/142: $0\dc[0][11:0]
+   133/142: $0\dl[2][11:0]
+   134/142: $0\dl[1][11:0]
+   135/142: $0\dl[0][11:0]
+   136/142: $0\hc[2][7:0]
+   137/142: $0\hc[1][7:0]
+   138/142: $0\hc[0][7:0]
+   139/142: $0\hl[2][7:0]
+   140/142: $0\hl[1][7:0]
+   141/142: $0\hl[0][7:0]
+   142/142: $0\confirmed[0:0]
+Creating decoders for process `\gold.$proc$gold.v:50$301'.
+     1/1: $1$mem2reg_rd$\dl$gold.v:50$13_DATA[11:0]$303
+Creating decoders for process `\gold.$proc$gold.v:49$298'.
+     1/1: $1$mem2reg_rd$\hl$gold.v:49$12_DATA[7:0]$300
+Creating decoders for process `\gold.$proc$gold.v:48$295'.
+     1/1: $1$mem2reg_rd$\dc$gold.v:48$11_DATA[11:0]$297
+Creating decoders for process `\gold.$proc$gold.v:47$292'.
+     1/1: $1$mem2reg_rd$\hc$gold.v:47$10_DATA[7:0]$294
+Creating decoders for process `\gold.$proc$gold.v:41$289'.
+     1/1: $1$mem2reg_rd$\dc$gold.v:41$9_DATA[11:0]$291
+Creating decoders for process `\gold.$proc$gold.v:41$286'.
+     1/1: $1$mem2reg_rd$\dl$gold.v:41$8_DATA[11:0]$288
+Creating decoders for process `\gold.$proc$gold.v:40$283'.
+     1/1: $1$mem2reg_rd$\hc$gold.v:40$7_DATA[7:0]$285
+Creating decoders for process `\gold.$proc$gold.v:40$280'.
+     1/1: $1$mem2reg_rd$\hl$gold.v:40$6_DATA[7:0]$282
+Creating decoders for process `\gold.$proc$gold.v:55$85'.
+     1/142: $8$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$278
+     2/142: $8$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$279
+     3/142: $8$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$274
+     4/142: $8$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$275
+     5/142: $7$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$271
+     6/142: $7$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$270
+     7/142: $7$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$269
+     8/142: $7$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$268
+     9/142: $6$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$266
+    10/142: $6$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$265
+    11/142: $6$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$264
+    12/142: $6$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$263
+    13/142: $6$lookahead\seen$84[2:0]$237
+    14/142: $6$lookahead\di$83[2:0]$236
+    15/142: $6$lookahead\hi$82[2:0]$235
+    16/142: $6$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$234
+    17/142: $6$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$233
+    18/142: $6$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$232
+    19/142: $6$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$231
+    20/142: $6$bitselwrite$pos$gold.v:76$5[1:0]$230
+    21/142: $6$bitselwrite$pos$gold.v:75$4[1:0]$229
+    22/142: $6$bitselwrite$pos$gold.v:75$3[1:0]$228
+    23/142: $5$lookahead\seen$84[2:0]$224
+    24/142: $5$lookahead\di$83[2:0]$223
+    25/142: $5$lookahead\hi$82[2:0]$222
+    26/142: $5$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$217
+    27/142: $5$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$216
+    28/142: $5$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$215
+    29/142: $5$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$214
+    30/142: $5$bitselwrite$pos$gold.v:76$5[1:0]$213
+    31/142: $5$bitselwrite$pos$gold.v:75$4[1:0]$212
+    32/142: $5$bitselwrite$pos$gold.v:75$3[1:0]$211
+    33/142: $5$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$221
+    34/142: $5$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$220
+    35/142: $5$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$219
+    36/142: $5$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$218
+    37/142: $4$lookahead\seen$84[2:0]$209
+    38/142: $4$lookahead\di$83[2:0]$208
+    39/142: $4$lookahead\hi$82[2:0]$207
+    40/142: $4$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$206
+    41/142: $4$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$205
+    42/142: $4$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$204
+    43/142: $4$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$203
+    44/142: $4$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$202
+    45/142: $4$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$201
+    46/142: $4$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$200
+    47/142: $4$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$199
+    48/142: $4$bitselwrite$pos$gold.v:76$5[1:0]$198
+    49/142: $4$bitselwrite$pos$gold.v:75$4[1:0]$197
+    50/142: $4$bitselwrite$pos$gold.v:75$3[1:0]$196
+    51/142: $3$lookahead\seen$84[2:0]$192
+    52/142: $3$lookahead\di$83[2:0]$191
+    53/142: $3$lookahead\hi$82[2:0]$190
+    54/142: $3$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$189
+    55/142: $3$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$188
+    56/142: $3$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$187
+    57/142: $3$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$186
+    58/142: $3$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$185
+    59/142: $3$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$184
+    60/142: $3$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$183
+    61/142: $3$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$182
+    62/142: $3$bitselwrite$pos$gold.v:76$5[1:0]$181
+    63/142: $3$bitselwrite$pos$gold.v:75$4[1:0]$180
+    64/142: $3$bitselwrite$pos$gold.v:75$3[1:0]$179
+    65/142: $5$mem2reg_rd$\dc$gold.v:66$17_DATA[11:0]$176
+    66/142: $4$mem2reg_wr$\dc$gold.v:66$16_ADDR[1:0]$172
+    67/142: $4$mem2reg_wr$\dc$gold.v:66$16_DATA[11:0]$173
+    68/142: $4$mem2reg_rd$\dc$gold.v:66$17_DATA[11:0]$175
+    69/142: $4$mem2reg_rd$\dc$gold.v:66$17_ADDR[1:0]$174
+    70/142: $5$mem2reg_rd$\hc$gold.v:65$15_DATA[7:0]$168
+    71/142: $4$mem2reg_wr$\hc$gold.v:65$14_ADDR[1:0]$164
+    72/142: $4$mem2reg_wr$\hc$gold.v:65$14_DATA[7:0]$165
+    73/142: $4$mem2reg_rd$\hc$gold.v:65$15_DATA[7:0]$167
+    74/142: $4$mem2reg_rd$\hc$gold.v:65$15_ADDR[1:0]$166
+    75/142: $3$mem2reg_rd$\dc$gold.v:66$17_DATA[11:0]$161
+    76/142: $3$mem2reg_rd$\dc$gold.v:66$17_ADDR[1:0]$160
+    77/142: $3$mem2reg_wr$\dc$gold.v:66$16_DATA[11:0]$159
+    78/142: $3$mem2reg_wr$\dc$gold.v:66$16_ADDR[1:0]$158
+    79/142: $3$mem2reg_rd$\hc$gold.v:65$15_DATA[7:0]$157
+    80/142: $3$mem2reg_rd$\hc$gold.v:65$15_ADDR[1:0]$156
+    81/142: $3$mem2reg_wr$\hc$gold.v:65$14_DATA[7:0]$155
+    82/142: $3$mem2reg_wr$\hc$gold.v:65$14_ADDR[1:0]$154
+    83/142: $2\i[31:0]
+    84/142: $0\protocol_error_o[0:0]
+    85/142: $2$lookahead\di$83[2:0]$152
+    86/142: $2$lookahead\hi$82[2:0]$151
+    87/142: $2$lookahead\seen$84[2:0]$153
+    88/142: $2$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$150
+    89/142: $2$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$149
+    90/142: $2$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$148
+    91/142: $2$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$147
+    92/142: $2$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$146
+    93/142: $2$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$145
+    94/142: $2$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$144
+    95/142: $2$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$143
+    96/142: $2$mem2reg_rd$\dc$gold.v:66$17_DATA[11:0]$142
+    97/142: $2$mem2reg_rd$\dc$gold.v:66$17_ADDR[1:0]$141
+    98/142: $2$mem2reg_wr$\dc$gold.v:66$16_DATA[11:0]$140
+    99/142: $2$mem2reg_wr$\dc$gold.v:66$16_ADDR[1:0]$139
+   100/142: $2$mem2reg_rd$\hc$gold.v:65$15_DATA[7:0]$138
+   101/142: $2$mem2reg_rd$\hc$gold.v:65$15_ADDR[1:0]$137
+   102/142: $2$mem2reg_wr$\hc$gold.v:65$14_DATA[7:0]$136
+   103/142: $2$mem2reg_wr$\hc$gold.v:65$14_ADDR[1:0]$135
+   104/142: $2$bitselwrite$pos$gold.v:76$5[1:0]$134
+   105/142: $2$bitselwrite$pos$gold.v:75$4[1:0]$133
+   106/142: $2$bitselwrite$pos$gold.v:75$3[1:0]$132
+   107/142: $1$lookahead\seen$84[2:0]$130
+   108/142: $1$lookahead\di$83[2:0]$129
+   109/142: $1$lookahead\hi$82[2:0]$128
+   110/142: $1$mem2reg_wr$\dl$gold.v:83$21_DATA[11:0]$127
+   111/142: $1$mem2reg_wr$\dl$gold.v:83$21_ADDR[1:0]$126
+   112/142: $1$mem2reg_wr$\hl$gold.v:82$20_DATA[7:0]$125
+   113/142: $1$mem2reg_wr$\hl$gold.v:82$20_ADDR[1:0]$124
+   114/142: $1$mem2reg_wr$\dl$gold.v:74$19_DATA[11:0]$123
+   115/142: $1$mem2reg_wr$\dl$gold.v:74$19_ADDR[1:0]$122
+   116/142: $1$mem2reg_wr$\hl$gold.v:74$18_DATA[7:0]$121
+   117/142: $1$mem2reg_wr$\hl$gold.v:74$18_ADDR[1:0]$120
+   118/142: $1$mem2reg_rd$\dc$gold.v:66$17_DATA[11:0]$119
+   119/142: $1$mem2reg_rd$\dc$gold.v:66$17_ADDR[1:0]$118
+   120/142: $1$mem2reg_wr$\dc$gold.v:66$16_DATA[11:0]$117
+   121/142: $1$mem2reg_wr$\dc$gold.v:66$16_ADDR[1:0]$116
+   122/142: $1$mem2reg_rd$\hc$gold.v:65$15_DATA[7:0]$115
+   123/142: $1$mem2reg_rd$\hc$gold.v:65$15_ADDR[1:0]$114
+   124/142: $1$mem2reg_wr$\hc$gold.v:65$14_DATA[7:0]$113
+   125/142: $1$mem2reg_wr$\hc$gold.v:65$14_ADDR[1:0]$112
+   126/142: $1$bitselwrite$pos$gold.v:76$5[1:0]$111
+   127/142: $1$bitselwrite$pos$gold.v:75$4[1:0]$110
+   128/142: $1$bitselwrite$pos$gold.v:75$3[1:0]$109
+   129/142: $1\i[31:0]
+   130/142: $0\dc[2][11:0]
+   131/142: $0\dc[1][11:0]
+   132/142: $0\dc[0][11:0]
+   133/142: $0\dl[2][11:0]
+   134/142: $0\dl[1][11:0]
+   135/142: $0\dl[0][11:0]
+   136/142: $0\hc[2][7:0]
+   137/142: $0\hc[1][7:0]
+   138/142: $0\hc[0][7:0]
+   139/142: $0\hl[2][7:0]
+   140/142: $0\hl[1][7:0]
+   141/142: $0\hl[0][7:0]
+   142/142: $0\confirmed[0:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\gate.$mem2reg_rd$\dc$gate.v:54$316_DATA' from process `\gate.$proc$gate.v:54$596'.
+No latch inferred for signal `\gate.$mem2reg_rd$\hc$gate.v:53$315_DATA' from process `\gate.$proc$gate.v:53$593'.
+No latch inferred for signal `\gate.$mem2reg_rd$\dl$gate.v:52$314_DATA' from process `\gate.$proc$gate.v:52$590'.
+No latch inferred for signal `\gate.$mem2reg_rd$\hl$gate.v:51$313_DATA' from process `\gate.$proc$gate.v:51$587'.
+No latch inferred for signal `\gate.$mem2reg_rd$\dc$gate.v:41$312_DATA' from process `\gate.$proc$gate.v:41$584'.
+No latch inferred for signal `\gate.$mem2reg_rd$\dl$gate.v:41$311_DATA' from process `\gate.$proc$gate.v:41$581'.
+No latch inferred for signal `\gate.$mem2reg_rd$\hc$gate.v:40$310_DATA' from process `\gate.$proc$gate.v:40$578'.
+No latch inferred for signal `\gate.$mem2reg_rd$\hl$gate.v:40$309_DATA' from process `\gate.$proc$gate.v:40$575'.
+No latch inferred for signal `\gold.$mem2reg_rd$\dl$gold.v:50$13_DATA' from process `\gold.$proc$gold.v:50$301'.
+No latch inferred for signal `\gold.$mem2reg_rd$\hl$gold.v:49$12_DATA' from process `\gold.$proc$gold.v:49$298'.
+No latch inferred for signal `\gold.$mem2reg_rd$\dc$gold.v:48$11_DATA' from process `\gold.$proc$gold.v:48$295'.
+No latch inferred for signal `\gold.$mem2reg_rd$\hc$gold.v:47$10_DATA' from process `\gold.$proc$gold.v:47$292'.
+No latch inferred for signal `\gold.$mem2reg_rd$\dc$gold.v:41$9_DATA' from process `\gold.$proc$gold.v:41$289'.
+No latch inferred for signal `\gold.$mem2reg_rd$\dl$gold.v:41$8_DATA' from process `\gold.$proc$gold.v:41$286'.
+No latch inferred for signal `\gold.$mem2reg_rd$\hc$gold.v:40$7_DATA' from process `\gold.$proc$gold.v:40$283'.
+No latch inferred for signal `\gold.$mem2reg_rd$\hl$gold.v:40$6_DATA' from process `\gold.$proc$gold.v:40$280'.
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\gate.\i' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3195' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\protocol_error_o' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3200' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\seen' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3205' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hi' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3210' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\di' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3215' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\confirmed' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3220' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hl[0]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3225' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hl[1]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3230' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hl[2]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3235' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hc[0]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3240' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hc[1]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3245' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\hc[2]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3250' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dl[0]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3255' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dl[1]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3260' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dl[2]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3265' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dc[0]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3270' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dc[1]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3275' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\dc[2]' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3280' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$bitselwrite$pos$gate.v:81$306' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3285' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$bitselwrite$pos$gate.v:81$307' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3290' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$bitselwrite$pos$gate.v:82$308' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3295' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hc$gate.v:71$317_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3300' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hc$gate.v:71$317_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3305' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_rd$\hc$gate.v:71$318_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3310' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_rd$\hc$gate.v:71$318_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3315' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dc$gate.v:72$319_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3320' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dc$gate.v:72$319_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3325' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_rd$\dc$gate.v:72$320_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3330' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_rd$\dc$gate.v:72$320_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3335' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hl$gate.v:80$321_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3340' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hl$gate.v:80$321_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3345' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dl$gate.v:80$322_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3350' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dl$gate.v:80$322_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3355' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hl$gate.v:88$323_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3360' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\hl$gate.v:88$323_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3365' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dl$gate.v:89$324_ADDR' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3370' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$mem2reg_wr$\dl$gate.v:89$324_DATA' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3375' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$lookahead\hi$377' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3380' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$lookahead\di$378' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3385' with positive edge clock and positive level reset.
+Creating register for signal `\gate.$lookahead\seen$379' using process `\gate.$proc$gate.v:61$380'.
+  created $adff cell `$procdff$3390' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\i' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3395' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\protocol_error_o' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3400' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\seen' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3405' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hi' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3410' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\di' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3415' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\confirmed' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3420' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$bitselwrite$pos$gold.v:75$3' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3425' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$bitselwrite$pos$gold.v:75$4' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3430' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$bitselwrite$pos$gold.v:76$5' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3435' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hl[0]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3440' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hl[1]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3445' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hl[2]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3450' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hc[0]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3455' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hc[1]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3460' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\hc[2]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3465' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dl[0]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3470' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dl[1]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3475' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dl[2]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3480' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dc[0]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3485' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dc[1]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3490' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\dc[2]' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3495' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hc$gold.v:65$14_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3500' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hc$gold.v:65$14_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3505' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_rd$\hc$gold.v:65$15_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3510' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_rd$\hc$gold.v:65$15_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3515' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dc$gold.v:66$16_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3520' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dc$gold.v:66$16_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3525' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_rd$\dc$gold.v:66$17_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3530' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_rd$\dc$gold.v:66$17_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3535' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hl$gold.v:74$18_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3540' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hl$gold.v:74$18_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3545' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dl$gold.v:74$19_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3550' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dl$gold.v:74$19_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3555' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hl$gold.v:82$20_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3560' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\hl$gold.v:82$20_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3565' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dl$gold.v:83$21_ADDR' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3570' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$mem2reg_wr$\dl$gold.v:83$21_DATA' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3575' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$lookahead\hi$82' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3580' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$lookahead\di$83' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3585' with positive edge clock and positive level reset.
+Creating register for signal `\gold.$lookahead\seen$84' using process `\gold.$proc$gold.v:55$85'.
+  created $adff cell `$procdff$3590' with positive edge clock and positive level reset.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:54$596'.
+Removing empty process `gate.$proc$gate.v:54$596'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:53$593'.
+Removing empty process `gate.$proc$gate.v:53$593'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:52$590'.
+Removing empty process `gate.$proc$gate.v:52$590'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:51$587'.
+Removing empty process `gate.$proc$gate.v:51$587'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:41$584'.
+Removing empty process `gate.$proc$gate.v:41$584'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:41$581'.
+Removing empty process `gate.$proc$gate.v:41$581'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:40$578'.
+Removing empty process `gate.$proc$gate.v:40$578'.
+Found and cleaned up 1 empty switch in `\gate.$proc$gate.v:40$575'.
+Removing empty process `gate.$proc$gate.v:40$575'.
+Found and cleaned up 22 empty switches in `\gate.$proc$gate.v:61$380'.
+Removing empty process `gate.$proc$gate.v:61$380'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:50$301'.
+Removing empty process `gold.$proc$gold.v:50$301'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:49$298'.
+Removing empty process `gold.$proc$gold.v:49$298'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:48$295'.
+Removing empty process `gold.$proc$gold.v:48$295'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:47$292'.
+Removing empty process `gold.$proc$gold.v:47$292'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:41$289'.
+Removing empty process `gold.$proc$gold.v:41$289'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:41$286'.
+Removing empty process `gold.$proc$gold.v:41$286'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:40$283'.
+Removing empty process `gold.$proc$gold.v:40$283'.
+Found and cleaned up 1 empty switch in `\gold.$proc$gold.v:40$280'.
+Removing empty process `gold.$proc$gold.v:40$280'.
+Found and cleaned up 22 empty switches in `\gold.$proc$gold.v:55$85'.
+Removing empty process `gold.$proc$gold.v:55$85'.
+Cleaned up 60 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+<suppressed ~290 debug messages>
+Optimizing module gold.
+<suppressed ~290 debug messages>
+
+4. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+5. Executing OPT pass (performing simple optimizations).
+
+5.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 652 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 540 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 538 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 537 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~345 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 660 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 545 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 540 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 539 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~363 debug messages>
+Removed a total of 236 cells.
+
+5.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$1619.
+    dead port 2/2 on $mux $procmux$1619.
+    dead port 1/2 on $mux $procmux$1616.
+    dead port 2/2 on $mux $procmux$1616.
+    dead port 1/2 on $mux $procmux$1613.
+    dead port 2/2 on $mux $procmux$1613.
+    dead port 1/2 on $mux $procmux$1610.
+    dead port 2/2 on $mux $procmux$1610.
+    dead port 1/2 on $mux $procmux$1607.
+    dead port 2/2 on $mux $procmux$1607.
+    dead port 1/2 on $mux $procmux$1604.
+    dead port 2/2 on $mux $procmux$1604.
+    dead port 1/2 on $mux $procmux$1601.
+    dead port 2/2 on $mux $procmux$1601.
+    dead port 1/2 on $mux $procmux$1598.
+    dead port 2/2 on $mux $procmux$1598.
+    dead port 1/2 on $mux $procmux$1595.
+    dead port 2/2 on $mux $procmux$1595.
+    dead port 1/2 on $mux $procmux$1592.
+    dead port 2/2 on $mux $procmux$1592.
+    dead port 1/2 on $mux $procmux$1589.
+    dead port 2/2 on $mux $procmux$1589.
+    dead port 1/2 on $mux $procmux$1586.
+    dead port 2/2 on $mux $procmux$1586.
+    dead port 1/2 on $mux $procmux$1583.
+    dead port 2/2 on $mux $procmux$1583.
+    dead port 1/2 on $mux $procmux$1580.
+    dead port 2/2 on $mux $procmux$1580.
+    dead port 1/2 on $mux $procmux$1577.
+    dead port 2/2 on $mux $procmux$1577.
+    dead port 1/2 on $mux $procmux$1574.
+    dead port 2/2 on $mux $procmux$1574.
+    dead port 1/2 on $mux $procmux$1571.
+    dead port 2/2 on $mux $procmux$1571.
+    dead port 1/2 on $mux $procmux$1568.
+    dead port 2/2 on $mux $procmux$1568.
+    dead port 1/2 on $mux $procmux$1565.
+    dead port 2/2 on $mux $procmux$1565.
+    dead port 1/2 on $mux $procmux$1529.
+    dead port 2/2 on $mux $procmux$1529.
+    dead port 1/2 on $mux $procmux$1526.
+    dead port 2/2 on $mux $procmux$1526.
+    dead port 1/2 on $mux $procmux$1523.
+    dead port 2/2 on $mux $procmux$1523.
+    dead port 1/2 on $mux $procmux$1520.
+    dead port 2/2 on $mux $procmux$1520.
+    dead port 1/2 on $mux $procmux$1517.
+    dead port 2/2 on $mux $procmux$1517.
+    dead port 1/2 on $mux $procmux$1514.
+    dead port 2/2 on $mux $procmux$1514.
+    dead port 1/2 on $mux $procmux$1511.
+    dead port 2/2 on $mux $procmux$1511.
+    dead port 1/2 on $mux $procmux$1508.
+    dead port 2/2 on $mux $procmux$1508.
+    dead port 1/2 on $mux $procmux$1505.
+    dead port 2/2 on $mux $procmux$1505.
+    dead port 1/2 on $mux $procmux$1502.
+    dead port 2/2 on $mux $procmux$1502.
+    dead port 1/2 on $mux $procmux$1499.
+    dead port 2/2 on $mux $procmux$1499.
+    dead port 1/2 on $mux $procmux$1496.
+    dead port 2/2 on $mux $procmux$1496.
+    dead port 1/2 on $mux $procmux$1493.
+    dead port 2/2 on $mux $procmux$1493.
+    dead port 1/2 on $mux $procmux$1490.
+    dead port 2/2 on $mux $procmux$1490.
+    dead port 1/2 on $mux $procmux$1487.
+    dead port 2/2 on $mux $procmux$1487.
+    dead port 1/2 on $mux $procmux$1484.
+    dead port 2/2 on $mux $procmux$1484.
+    dead port 1/2 on $mux $procmux$1481.
+    dead port 2/2 on $mux $procmux$1481.
+    dead port 1/2 on $mux $procmux$1478.
+    dead port 2/2 on $mux $procmux$1478.
+    dead port 1/2 on $mux $procmux$1476.
+    dead port 2/2 on $mux $procmux$1476.
+    dead port 1/2 on $mux $procmux$1472.
+    dead port 2/2 on $mux $procmux$1472.
+    dead port 1/2 on $mux $procmux$1469.
+    dead port 2/2 on $mux $procmux$1469.
+    dead port 1/2 on $mux $procmux$1467.
+    dead port 2/2 on $mux $procmux$1467.
+    dead port 1/2 on $mux $procmux$1463.
+    dead port 2/2 on $mux $procmux$1463.
+    dead port 1/2 on $mux $procmux$1460.
+    dead port 2/2 on $mux $procmux$1460.
+    dead port 1/2 on $mux $procmux$1458.
+    dead port 2/2 on $mux $procmux$1458.
+    dead port 1/2 on $mux $procmux$1454.
+    dead port 2/2 on $mux $procmux$1454.
+    dead port 1/2 on $mux $procmux$1451.
+    dead port 2/2 on $mux $procmux$1451.
+    dead port 1/2 on $mux $procmux$1449.
+    dead port 2/2 on $mux $procmux$1449.
+    dead port 1/2 on $mux $procmux$1431.
+    dead port 2/2 on $mux $procmux$1431.
+    dead port 1/2 on $mux $procmux$1428.
+    dead port 2/2 on $mux $procmux$1428.
+    dead port 1/2 on $mux $procmux$1426.
+    dead port 2/2 on $mux $procmux$1426.
+    dead port 1/2 on $mux $procmux$1422.
+    dead port 2/2 on $mux $procmux$1422.
+    dead port 1/2 on $mux $procmux$1419.
+    dead port 2/2 on $mux $procmux$1419.
+    dead port 1/2 on $mux $procmux$1417.
+    dead port 2/2 on $mux $procmux$1417.
+    dead port 1/2 on $mux $procmux$1413.
+    dead port 2/2 on $mux $procmux$1413.
+    dead port 1/2 on $mux $procmux$1410.
+    dead port 2/2 on $mux $procmux$1410.
+    dead port 1/2 on $mux $procmux$1408.
+    dead port 2/2 on $mux $procmux$1408.
+    dead port 1/2 on $mux $procmux$1404.
+    dead port 2/2 on $mux $procmux$1404.
+    dead port 1/2 on $mux $procmux$1401.
+    dead port 2/2 on $mux $procmux$1401.
+    dead port 1/2 on $mux $procmux$1399.
+    dead port 2/2 on $mux $procmux$1399.
+    dead port 1/2 on $mux $procmux$1381.
+    dead port 2/2 on $mux $procmux$1381.
+    dead port 1/2 on $mux $procmux$1378.
+    dead port 2/2 on $mux $procmux$1378.
+    dead port 1/2 on $mux $procmux$1375.
+    dead port 2/2 on $mux $procmux$1375.
+    dead port 1/2 on $mux $procmux$1372.
+    dead port 2/2 on $mux $procmux$1372.
+    dead port 1/2 on $mux $procmux$1369.
+    dead port 2/2 on $mux $procmux$1369.
+    dead port 1/2 on $mux $procmux$1366.
+    dead port 2/2 on $mux $procmux$1366.
+    dead port 1/2 on $mux $procmux$1363.
+    dead port 2/2 on $mux $procmux$1363.
+    dead port 1/2 on $mux $procmux$1360.
+    dead port 2/2 on $mux $procmux$1360.
+    dead port 1/2 on $mux $procmux$1357.
+    dead port 2/2 on $mux $procmux$1357.
+    dead port 1/2 on $mux $procmux$1354.
+    dead port 2/2 on $mux $procmux$1354.
+    dead port 1/2 on $mux $procmux$1351.
+    dead port 2/2 on $mux $procmux$1351.
+    dead port 1/2 on $mux $procmux$1348.
+    dead port 2/2 on $mux $procmux$1348.
+    dead port 1/2 on $mux $procmux$1345.
+    dead port 2/2 on $mux $procmux$1345.
+    dead port 1/2 on $mux $procmux$1342.
+    dead port 2/2 on $mux $procmux$1342.
+    dead port 1/2 on $mux $procmux$1339.
+    dead port 2/2 on $mux $procmux$1339.
+    dead port 1/2 on $mux $procmux$1336.
+    dead port 2/2 on $mux $procmux$1336.
+    dead port 1/2 on $mux $procmux$1333.
+    dead port 2/2 on $mux $procmux$1333.
+    dead port 1/2 on $mux $procmux$1330.
+    dead port 2/2 on $mux $procmux$1330.
+    dead port 1/2 on $mux $procmux$1327.
+    dead port 2/2 on $mux $procmux$1327.
+    dead port 1/2 on $mux $procmux$1324.
+    dead port 2/2 on $mux $procmux$1324.
+    dead port 1/2 on $mux $procmux$1321.
+    dead port 2/2 on $mux $procmux$1321.
+    dead port 1/2 on $mux $procmux$1318.
+    dead port 2/2 on $mux $procmux$1318.
+    dead port 2/2 on $mux $procmux$1315.
+    dead port 2/2 on $mux $procmux$1309.
+    dead port 2/2 on $mux $procmux$1303.
+    dead port 1/2 on $mux $procmux$1297.
+    dead port 2/2 on $mux $procmux$1297.
+    dead port 1/2 on $mux $procmux$1294.
+    dead port 2/2 on $mux $procmux$1294.
+    dead port 1/2 on $mux $procmux$1292.
+    dead port 2/2 on $mux $procmux$1292.
+    dead port 1/2 on $mux $procmux$1288.
+    dead port 2/2 on $mux $procmux$1288.
+    dead port 1/2 on $mux $procmux$1285.
+    dead port 2/2 on $mux $procmux$1285.
+    dead port 1/2 on $mux $procmux$1283.
+    dead port 2/2 on $mux $procmux$1283.
+    dead port 1/2 on $mux $procmux$1279.
+    dead port 2/2 on $mux $procmux$1279.
+    dead port 1/2 on $mux $procmux$1276.
+    dead port 2/2 on $mux $procmux$1276.
+    dead port 1/2 on $mux $procmux$1274.
+    dead port 2/2 on $mux $procmux$1274.
+    dead port 1/2 on $mux $procmux$1270.
+    dead port 2/2 on $mux $procmux$1270.
+    dead port 1/2 on $mux $procmux$1267.
+    dead port 2/2 on $mux $procmux$1267.
+    dead port 1/2 on $mux $procmux$1265.
+    dead port 2/2 on $mux $procmux$1265.
+    dead port 1/2 on $mux $procmux$1261.
+    dead port 2/2 on $mux $procmux$1261.
+    dead port 1/2 on $mux $procmux$1258.
+    dead port 2/2 on $mux $procmux$1258.
+    dead port 1/2 on $mux $procmux$1256.
+    dead port 2/2 on $mux $procmux$1256.
+    dead port 1/2 on $mux $procmux$1252.
+    dead port 2/2 on $mux $procmux$1252.
+    dead port 1/2 on $mux $procmux$1249.
+    dead port 2/2 on $mux $procmux$1249.
+    dead port 1/2 on $mux $procmux$1247.
+    dead port 2/2 on $mux $procmux$1247.
+    dead port 1/2 on $mux $procmux$1243.
+    dead port 2/2 on $mux $procmux$1243.
+    dead port 1/2 on $mux $procmux$1240.
+    dead port 2/2 on $mux $procmux$1240.
+    dead port 1/2 on $mux $procmux$1238.
+    dead port 2/2 on $mux $procmux$1238.
+    dead port 1/2 on $mux $procmux$1234.
+    dead port 2/2 on $mux $procmux$1234.
+    dead port 1/2 on $mux $procmux$1231.
+    dead port 2/2 on $mux $procmux$1231.
+    dead port 1/2 on $mux $procmux$1229.
+    dead port 2/2 on $mux $procmux$1229.
+    dead port 1/2 on $mux $procmux$1225.
+    dead port 2/2 on $mux $procmux$1225.
+    dead port 1/2 on $mux $procmux$1222.
+    dead port 2/2 on $mux $procmux$1222.
+    dead port 1/2 on $mux $procmux$1220.
+    dead port 2/2 on $mux $procmux$1220.
+    dead port 1/2 on $mux $procmux$1216.
+    dead port 2/2 on $mux $procmux$1216.
+    dead port 1/2 on $mux $procmux$1213.
+    dead port 2/2 on $mux $procmux$1213.
+    dead port 1/2 on $mux $procmux$1211.
+    dead port 2/2 on $mux $procmux$1211.
+    dead port 1/2 on $mux $procmux$1207.
+    dead port 2/2 on $mux $procmux$1207.
+    dead port 1/2 on $mux $procmux$1204.
+    dead port 2/2 on $mux $procmux$1204.
+    dead port 1/2 on $mux $procmux$1202.
+    dead port 2/2 on $mux $procmux$1202.
+    dead port 2/2 on $mux $procmux$1198.
+    dead port 2/2 on $mux $procmux$1195.
+    dead port 2/2 on $mux $procmux$1189.
+    dead port 2/2 on $mux $procmux$1186.
+    dead port 2/2 on $mux $procmux$1180.
+    dead port 2/2 on $mux $procmux$1177.
+    dead port 1/2 on $mux $procmux$1171.
+    dead port 2/2 on $mux $procmux$1171.
+    dead port 1/2 on $mux $procmux$1168.
+    dead port 2/2 on $mux $procmux$1168.
+    dead port 1/2 on $mux $procmux$1166.
+    dead port 2/2 on $mux $procmux$1166.
+    dead port 1/2 on $mux $procmux$1163.
+    dead port 2/2 on $mux $procmux$1163.
+    dead port 1/2 on $mux $procmux$1159.
+    dead port 2/2 on $mux $procmux$1159.
+    dead port 1/2 on $mux $procmux$1156.
+    dead port 2/2 on $mux $procmux$1156.
+    dead port 1/2 on $mux $procmux$1154.
+    dead port 2/2 on $mux $procmux$1154.
+    dead port 1/2 on $mux $procmux$1151.
+    dead port 2/2 on $mux $procmux$1151.
+    dead port 1/2 on $mux $procmux$1147.
+    dead port 2/2 on $mux $procmux$1147.
+    dead port 1/2 on $mux $procmux$1144.
+    dead port 2/2 on $mux $procmux$1144.
+    dead port 1/2 on $mux $procmux$1142.
+    dead port 2/2 on $mux $procmux$1142.
+    dead port 1/2 on $mux $procmux$1139.
+    dead port 2/2 on $mux $procmux$1139.
+    dead port 1/2 on $mux $procmux$1135.
+    dead port 2/2 on $mux $procmux$1135.
+    dead port 1/2 on $mux $procmux$1132.
+    dead port 2/2 on $mux $procmux$1132.
+    dead port 1/2 on $mux $procmux$1130.
+    dead port 2/2 on $mux $procmux$1130.
+    dead port 1/2 on $mux $procmux$1127.
+    dead port 2/2 on $mux $procmux$1127.
+    dead port 1/2 on $mux $procmux$1123.
+    dead port 2/2 on $mux $procmux$1123.
+    dead port 1/2 on $mux $procmux$1120.
+    dead port 2/2 on $mux $procmux$1120.
+    dead port 1/2 on $mux $procmux$1118.
+    dead port 2/2 on $mux $procmux$1118.
+    dead port 1/2 on $mux $procmux$1115.
+    dead port 2/2 on $mux $procmux$1115.
+    dead port 1/2 on $mux $procmux$1111.
+    dead port 2/2 on $mux $procmux$1111.
+    dead port 1/2 on $mux $procmux$1108.
+    dead port 2/2 on $mux $procmux$1108.
+    dead port 1/2 on $mux $procmux$1106.
+    dead port 2/2 on $mux $procmux$1106.
+    dead port 1/2 on $mux $procmux$1103.
+    dead port 2/2 on $mux $procmux$1103.
+    dead port 1/2 on $mux $procmux$1099.
+    dead port 2/2 on $mux $procmux$1099.
+    dead port 1/2 on $mux $procmux$1096.
+    dead port 2/2 on $mux $procmux$1096.
+    dead port 1/2 on $mux $procmux$1094.
+    dead port 2/2 on $mux $procmux$1094.
+    dead port 1/2 on $mux $procmux$1091.
+    dead port 2/2 on $mux $procmux$1091.
+    dead port 1/2 on $mux $procmux$1087.
+    dead port 2/2 on $mux $procmux$1087.
+    dead port 1/2 on $mux $procmux$1084.
+    dead port 2/2 on $mux $procmux$1084.
+    dead port 1/2 on $mux $procmux$1082.
+    dead port 2/2 on $mux $procmux$1082.
+    dead port 1/2 on $mux $procmux$1079.
+    dead port 2/2 on $mux $procmux$1079.
+    dead port 1/2 on $mux $procmux$1075.
+    dead port 2/2 on $mux $procmux$1075.
+    dead port 1/2 on $mux $procmux$1072.
+    dead port 2/2 on $mux $procmux$1072.
+    dead port 1/2 on $mux $procmux$1070.
+    dead port 2/2 on $mux $procmux$1070.
+    dead port 1/2 on $mux $procmux$1067.
+    dead port 2/2 on $mux $procmux$1067.
+    dead port 1/2 on $mux $procmux$1063.
+    dead port 2/2 on $mux $procmux$1063.
+    dead port 1/2 on $mux $procmux$1060.
+    dead port 2/2 on $mux $procmux$1060.
+    dead port 1/2 on $mux $procmux$1058.
+    dead port 2/2 on $mux $procmux$1058.
+    dead port 1/2 on $mux $procmux$1055.
+    dead port 2/2 on $mux $procmux$1055.
+    dead port 1/2 on $mux $procmux$1051.
+    dead port 2/2 on $mux $procmux$1051.
+    dead port 1/2 on $mux $procmux$1048.
+    dead port 2/2 on $mux $procmux$1048.
+    dead port 1/2 on $mux $procmux$1046.
+    dead port 2/2 on $mux $procmux$1046.
+    dead port 1/2 on $mux $procmux$1043.
+    dead port 2/2 on $mux $procmux$1043.
+    dead port 2/2 on $mux $procmux$1039.
+    dead port 2/2 on $mux $procmux$1036.
+    dead port 1/2 on $mux $procmux$1034.
+    dead port 2/2 on $mux $procmux$1027.
+    dead port 2/2 on $mux $procmux$1024.
+    dead port 1/2 on $mux $procmux$1022.
+    dead port 2/2 on $mux $procmux$1015.
+    dead port 2/2 on $mux $procmux$1012.
+    dead port 1/2 on $mux $procmux$1010.
+    dead port 1/2 on $mux $procmux$1003.
+    dead port 2/2 on $mux $procmux$1003.
+    dead port 1/2 on $mux $procmux$1000.
+    dead port 2/2 on $mux $procmux$1000.
+    dead port 1/2 on $mux $procmux$998.
+    dead port 2/2 on $mux $procmux$998.
+    dead port 1/2 on $mux $procmux$995.
+    dead port 2/2 on $mux $procmux$995.
+    dead port 1/2 on $mux $procmux$993.
+    dead port 2/2 on $mux $procmux$993.
+    dead port 1/2 on $mux $procmux$988.
+    dead port 2/2 on $mux $procmux$988.
+    dead port 1/2 on $mux $procmux$985.
+    dead port 2/2 on $mux $procmux$985.
+    dead port 1/2 on $mux $procmux$983.
+    dead port 2/2 on $mux $procmux$983.
+    dead port 1/2 on $mux $procmux$980.
+    dead port 2/2 on $mux $procmux$980.
+    dead port 1/2 on $mux $procmux$978.
+    dead port 2/2 on $mux $procmux$978.
+    dead port 1/2 on $mux $procmux$973.
+    dead port 2/2 on $mux $procmux$973.
+    dead port 1/2 on $mux $procmux$970.
+    dead port 2/2 on $mux $procmux$970.
+    dead port 1/2 on $mux $procmux$968.
+    dead port 2/2 on $mux $procmux$968.
+    dead port 1/2 on $mux $procmux$965.
+    dead port 2/2 on $mux $procmux$965.
+    dead port 1/2 on $mux $procmux$963.
+    dead port 2/2 on $mux $procmux$963.
+    dead port 1/2 on $mux $procmux$958.
+    dead port 2/2 on $mux $procmux$958.
+    dead port 1/2 on $mux $procmux$955.
+    dead port 2/2 on $mux $procmux$955.
+    dead port 1/2 on $mux $procmux$953.
+    dead port 2/2 on $mux $procmux$953.
+    dead port 1/2 on $mux $procmux$950.
+    dead port 2/2 on $mux $procmux$950.
+    dead port 1/2 on $mux $procmux$948.
+    dead port 2/2 on $mux $procmux$948.
+    dead port 1/2 on $mux $procmux$943.
+    dead port 2/2 on $mux $procmux$943.
+    dead port 1/2 on $mux $procmux$940.
+    dead port 2/2 on $mux $procmux$940.
+    dead port 1/2 on $mux $procmux$938.
+    dead port 2/2 on $mux $procmux$938.
+    dead port 1/2 on $mux $procmux$935.
+    dead port 2/2 on $mux $procmux$935.
+    dead port 1/2 on $mux $procmux$933.
+    dead port 2/2 on $mux $procmux$933.
+    dead port 1/2 on $mux $procmux$928.
+    dead port 2/2 on $mux $procmux$928.
+    dead port 1/2 on $mux $procmux$925.
+    dead port 2/2 on $mux $procmux$925.
+    dead port 1/2 on $mux $procmux$923.
+    dead port 2/2 on $mux $procmux$923.
+    dead port 1/2 on $mux $procmux$920.
+    dead port 2/2 on $mux $procmux$920.
+    dead port 1/2 on $mux $procmux$918.
+    dead port 2/2 on $mux $procmux$918.
+    dead port 1/2 on $mux $procmux$913.
+    dead port 2/2 on $mux $procmux$913.
+    dead port 1/2 on $mux $procmux$910.
+    dead port 2/2 on $mux $procmux$910.
+    dead port 1/2 on $mux $procmux$908.
+    dead port 2/2 on $mux $procmux$908.
+    dead port 1/2 on $mux $procmux$905.
+    dead port 2/2 on $mux $procmux$905.
+    dead port 1/2 on $mux $procmux$903.
+    dead port 2/2 on $mux $procmux$903.
+    dead port 2/2 on $mux $procmux$898.
+    dead port 2/2 on $mux $procmux$895.
+    dead port 1/2 on $mux $procmux$893.
+    dead port 1/2 on $mux $procmux$890.
+    dead port 2/2 on $mux $procmux$883.
+    dead port 2/2 on $mux $procmux$880.
+    dead port 1/2 on $mux $procmux$878.
+    dead port 1/2 on $mux $procmux$875.
+    dead port 2/2 on $mux $procmux$868.
+    dead port 2/2 on $mux $procmux$865.
+    dead port 1/2 on $mux $procmux$863.
+    dead port 1/2 on $mux $procmux$860.
+    dead port 1/2 on $mux $procmux$853.
+    dead port 2/2 on $mux $procmux$853.
+    dead port 1/2 on $mux $procmux$850.
+    dead port 2/2 on $mux $procmux$850.
+    dead port 1/2 on $mux $procmux$848.
+    dead port 2/2 on $mux $procmux$848.
+    dead port 1/2 on $mux $procmux$845.
+    dead port 2/2 on $mux $procmux$845.
+    dead port 1/2 on $mux $procmux$842.
+    dead port 2/2 on $mux $procmux$842.
+    dead port 1/2 on $mux $procmux$838.
+    dead port 2/2 on $mux $procmux$838.
+    dead port 1/2 on $mux $procmux$835.
+    dead port 2/2 on $mux $procmux$835.
+    dead port 1/2 on $mux $procmux$833.
+    dead port 2/2 on $mux $procmux$833.
+    dead port 1/2 on $mux $procmux$830.
+    dead port 2/2 on $mux $procmux$830.
+    dead port 1/2 on $mux $procmux$827.
+    dead port 2/2 on $mux $procmux$827.
+    dead port 1/2 on $mux $procmux$823.
+    dead port 2/2 on $mux $procmux$823.
+    dead port 1/2 on $mux $procmux$820.
+    dead port 2/2 on $mux $procmux$820.
+    dead port 1/2 on $mux $procmux$818.
+    dead port 2/2 on $mux $procmux$818.
+    dead port 1/2 on $mux $procmux$815.
+    dead port 2/2 on $mux $procmux$815.
+    dead port 1/2 on $mux $procmux$812.
+    dead port 2/2 on $mux $procmux$812.
+    dead port 1/2 on $mux $procmux$808.
+    dead port 2/2 on $mux $procmux$808.
+    dead port 1/2 on $mux $procmux$805.
+    dead port 2/2 on $mux $procmux$805.
+    dead port 1/2 on $mux $procmux$803.
+    dead port 2/2 on $mux $procmux$803.
+    dead port 1/2 on $mux $procmux$800.
+    dead port 2/2 on $mux $procmux$800.
+    dead port 1/2 on $mux $procmux$797.
+    dead port 2/2 on $mux $procmux$797.
+    dead port 1/2 on $mux $procmux$793.
+    dead port 2/2 on $mux $procmux$793.
+    dead port 1/2 on $mux $procmux$790.
+    dead port 2/2 on $mux $procmux$790.
+    dead port 1/2 on $mux $procmux$788.
+    dead port 2/2 on $mux $procmux$788.
+    dead port 1/2 on $mux $procmux$785.
+    dead port 2/2 on $mux $procmux$785.
+    dead port 1/2 on $mux $procmux$782.
+    dead port 2/2 on $mux $procmux$782.
+    dead port 1/2 on $mux $procmux$780.
+    dead port 2/2 on $mux $procmux$780.
+    dead port 1/2 on $mux $procmux$775.
+    dead port 2/2 on $mux $procmux$775.
+    dead port 1/2 on $mux $procmux$772.
+    dead port 2/2 on $mux $procmux$772.
+    dead port 1/2 on $mux $procmux$770.
+    dead port 2/2 on $mux $procmux$770.
+    dead port 1/2 on $mux $procmux$767.
+    dead port 2/2 on $mux $procmux$767.
+    dead port 1/2 on $mux $procmux$764.
+    dead port 2/2 on $mux $procmux$764.
+    dead port 1/2 on $mux $procmux$762.
+    dead port 2/2 on $mux $procmux$762.
+    dead port 1/2 on $mux $procmux$757.
+    dead port 2/2 on $mux $procmux$757.
+    dead port 1/2 on $mux $procmux$754.
+    dead port 2/2 on $mux $procmux$754.
+    dead port 1/2 on $mux $procmux$752.
+    dead port 2/2 on $mux $procmux$752.
+    dead port 1/2 on $mux $procmux$749.
+    dead port 2/2 on $mux $procmux$749.
+    dead port 1/2 on $mux $procmux$746.
+    dead port 2/2 on $mux $procmux$746.
+    dead port 1/2 on $mux $procmux$744.
+    dead port 2/2 on $mux $procmux$744.
+    dead port 1/2 on $mux $procmux$739.
+    dead port 2/2 on $mux $procmux$739.
+    dead port 1/2 on $mux $procmux$736.
+    dead port 2/2 on $mux $procmux$736.
+    dead port 1/2 on $mux $procmux$734.
+    dead port 2/2 on $mux $procmux$734.
+    dead port 1/2 on $mux $procmux$731.
+    dead port 2/2 on $mux $procmux$731.
+    dead port 1/2 on $mux $procmux$728.
+    dead port 2/2 on $mux $procmux$728.
+    dead port 1/2 on $mux $procmux$726.
+    dead port 2/2 on $mux $procmux$726.
+    dead port 1/2 on $mux $procmux$721.
+    dead port 2/2 on $mux $procmux$721.
+    dead port 1/2 on $mux $procmux$718.
+    dead port 2/2 on $mux $procmux$718.
+    dead port 1/2 on $mux $procmux$716.
+    dead port 2/2 on $mux $procmux$716.
+    dead port 1/2 on $mux $procmux$713.
+    dead port 2/2 on $mux $procmux$713.
+    dead port 1/2 on $mux $procmux$710.
+    dead port 2/2 on $mux $procmux$710.
+    dead port 1/2 on $mux $procmux$708.
+    dead port 2/2 on $mux $procmux$708.
+    dead port 1/2 on $mux $procmux$706.
+    dead port 2/2 on $mux $procmux$706.
+    dead port 1/2 on $mux $procmux$700.
+    dead port 2/2 on $mux $procmux$700.
+    dead port 1/2 on $mux $procmux$697.
+    dead port 2/2 on $mux $procmux$697.
+    dead port 1/2 on $mux $procmux$695.
+    dead port 2/2 on $mux $procmux$695.
+    dead port 1/2 on $mux $procmux$692.
+    dead port 2/2 on $mux $procmux$692.
+    dead port 1/2 on $mux $procmux$689.
+    dead port 2/2 on $mux $procmux$689.
+    dead port 1/2 on $mux $procmux$687.
+    dead port 2/2 on $mux $procmux$687.
+    dead port 1/2 on $mux $procmux$685.
+    dead port 2/2 on $mux $procmux$685.
+    dead port 1/2 on $mux $procmux$679.
+    dead port 2/2 on $mux $procmux$679.
+    dead port 1/2 on $mux $procmux$676.
+    dead port 2/2 on $mux $procmux$676.
+    dead port 1/2 on $mux $procmux$674.
+    dead port 2/2 on $mux $procmux$674.
+    dead port 1/2 on $mux $procmux$671.
+    dead port 2/2 on $mux $procmux$671.
+    dead port 1/2 on $mux $procmux$668.
+    dead port 2/2 on $mux $procmux$668.
+    dead port 1/2 on $mux $procmux$666.
+    dead port 2/2 on $mux $procmux$666.
+    dead port 1/2 on $mux $procmux$664.
+    dead port 2/2 on $mux $procmux$664.
+    dead port 1/2 on $mux $procmux$658.
+    dead port 2/2 on $mux $procmux$658.
+    dead port 1/2 on $mux $procmux$655.
+    dead port 2/2 on $mux $procmux$655.
+    dead port 1/2 on $mux $procmux$653.
+    dead port 2/2 on $mux $procmux$653.
+    dead port 1/2 on $mux $procmux$650.
+    dead port 2/2 on $mux $procmux$650.
+    dead port 1/2 on $mux $procmux$647.
+    dead port 2/2 on $mux $procmux$647.
+    dead port 1/2 on $mux $procmux$645.
+    dead port 2/2 on $mux $procmux$645.
+    dead port 1/2 on $mux $procmux$643.
+    dead port 2/2 on $mux $procmux$643.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$2915.
+    dead port 2/2 on $mux $procmux$2915.
+    dead port 1/2 on $mux $procmux$2912.
+    dead port 2/2 on $mux $procmux$2912.
+    dead port 1/2 on $mux $procmux$2909.
+    dead port 2/2 on $mux $procmux$2909.
+    dead port 1/2 on $mux $procmux$2906.
+    dead port 2/2 on $mux $procmux$2906.
+    dead port 1/2 on $mux $procmux$2903.
+    dead port 2/2 on $mux $procmux$2903.
+    dead port 1/2 on $mux $procmux$2900.
+    dead port 2/2 on $mux $procmux$2900.
+    dead port 1/2 on $mux $procmux$2897.
+    dead port 2/2 on $mux $procmux$2897.
+    dead port 1/2 on $mux $procmux$2894.
+    dead port 2/2 on $mux $procmux$2894.
+    dead port 1/2 on $mux $procmux$2891.
+    dead port 2/2 on $mux $procmux$2891.
+    dead port 1/2 on $mux $procmux$2888.
+    dead port 2/2 on $mux $procmux$2888.
+    dead port 1/2 on $mux $procmux$2885.
+    dead port 2/2 on $mux $procmux$2885.
+    dead port 1/2 on $mux $procmux$2882.
+    dead port 2/2 on $mux $procmux$2882.
+    dead port 1/2 on $mux $procmux$2879.
+    dead port 2/2 on $mux $procmux$2879.
+    dead port 1/2 on $mux $procmux$2876.
+    dead port 2/2 on $mux $procmux$2876.
+    dead port 1/2 on $mux $procmux$2873.
+    dead port 2/2 on $mux $procmux$2873.
+    dead port 1/2 on $mux $procmux$2870.
+    dead port 2/2 on $mux $procmux$2870.
+    dead port 1/2 on $mux $procmux$2867.
+    dead port 2/2 on $mux $procmux$2867.
+    dead port 1/2 on $mux $procmux$2864.
+    dead port 2/2 on $mux $procmux$2864.
+    dead port 1/2 on $mux $procmux$2861.
+    dead port 2/2 on $mux $procmux$2861.
+    dead port 1/2 on $mux $procmux$2825.
+    dead port 2/2 on $mux $procmux$2825.
+    dead port 1/2 on $mux $procmux$2822.
+    dead port 2/2 on $mux $procmux$2822.
+    dead port 1/2 on $mux $procmux$2819.
+    dead port 2/2 on $mux $procmux$2819.
+    dead port 1/2 on $mux $procmux$2816.
+    dead port 2/2 on $mux $procmux$2816.
+    dead port 1/2 on $mux $procmux$2813.
+    dead port 2/2 on $mux $procmux$2813.
+    dead port 1/2 on $mux $procmux$2810.
+    dead port 2/2 on $mux $procmux$2810.
+    dead port 1/2 on $mux $procmux$2807.
+    dead port 2/2 on $mux $procmux$2807.
+    dead port 1/2 on $mux $procmux$2804.
+    dead port 2/2 on $mux $procmux$2804.
+    dead port 1/2 on $mux $procmux$2801.
+    dead port 2/2 on $mux $procmux$2801.
+    dead port 1/2 on $mux $procmux$2798.
+    dead port 2/2 on $mux $procmux$2798.
+    dead port 1/2 on $mux $procmux$2795.
+    dead port 2/2 on $mux $procmux$2795.
+    dead port 1/2 on $mux $procmux$2792.
+    dead port 2/2 on $mux $procmux$2792.
+    dead port 1/2 on $mux $procmux$2789.
+    dead port 2/2 on $mux $procmux$2789.
+    dead port 1/2 on $mux $procmux$2786.
+    dead port 2/2 on $mux $procmux$2786.
+    dead port 1/2 on $mux $procmux$2783.
+    dead port 2/2 on $mux $procmux$2783.
+    dead port 1/2 on $mux $procmux$2780.
+    dead port 2/2 on $mux $procmux$2780.
+    dead port 1/2 on $mux $procmux$2777.
+    dead port 2/2 on $mux $procmux$2777.
+    dead port 1/2 on $mux $procmux$2774.
+    dead port 2/2 on $mux $procmux$2774.
+    dead port 1/2 on $mux $procmux$2772.
+    dead port 2/2 on $mux $procmux$2772.
+    dead port 1/2 on $mux $procmux$2768.
+    dead port 2/2 on $mux $procmux$2768.
+    dead port 1/2 on $mux $procmux$2765.
+    dead port 2/2 on $mux $procmux$2765.
+    dead port 1/2 on $mux $procmux$2763.
+    dead port 2/2 on $mux $procmux$2763.
+    dead port 1/2 on $mux $procmux$2759.
+    dead port 2/2 on $mux $procmux$2759.
+    dead port 1/2 on $mux $procmux$2756.
+    dead port 2/2 on $mux $procmux$2756.
+    dead port 1/2 on $mux $procmux$2754.
+    dead port 2/2 on $mux $procmux$2754.
+    dead port 1/2 on $mux $procmux$2750.
+    dead port 2/2 on $mux $procmux$2750.
+    dead port 1/2 on $mux $procmux$2747.
+    dead port 2/2 on $mux $procmux$2747.
+    dead port 1/2 on $mux $procmux$2745.
+    dead port 2/2 on $mux $procmux$2745.
+    dead port 1/2 on $mux $procmux$2727.
+    dead port 2/2 on $mux $procmux$2727.
+    dead port 1/2 on $mux $procmux$2724.
+    dead port 2/2 on $mux $procmux$2724.
+    dead port 1/2 on $mux $procmux$2722.
+    dead port 2/2 on $mux $procmux$2722.
+    dead port 1/2 on $mux $procmux$2718.
+    dead port 2/2 on $mux $procmux$2718.
+    dead port 1/2 on $mux $procmux$2715.
+    dead port 2/2 on $mux $procmux$2715.
+    dead port 1/2 on $mux $procmux$2713.
+    dead port 2/2 on $mux $procmux$2713.
+    dead port 1/2 on $mux $procmux$2709.
+    dead port 2/2 on $mux $procmux$2709.
+    dead port 1/2 on $mux $procmux$2706.
+    dead port 2/2 on $mux $procmux$2706.
+    dead port 1/2 on $mux $procmux$2704.
+    dead port 2/2 on $mux $procmux$2704.
+    dead port 1/2 on $mux $procmux$2700.
+    dead port 2/2 on $mux $procmux$2700.
+    dead port 1/2 on $mux $procmux$2697.
+    dead port 2/2 on $mux $procmux$2697.
+    dead port 1/2 on $mux $procmux$2695.
+    dead port 2/2 on $mux $procmux$2695.
+    dead port 1/2 on $mux $procmux$2677.
+    dead port 2/2 on $mux $procmux$2677.
+    dead port 1/2 on $mux $procmux$2674.
+    dead port 2/2 on $mux $procmux$2674.
+    dead port 1/2 on $mux $procmux$2671.
+    dead port 2/2 on $mux $procmux$2671.
+    dead port 1/2 on $mux $procmux$2668.
+    dead port 2/2 on $mux $procmux$2668.
+    dead port 1/2 on $mux $procmux$2665.
+    dead port 2/2 on $mux $procmux$2665.
+    dead port 1/2 on $mux $procmux$2662.
+    dead port 2/2 on $mux $procmux$2662.
+    dead port 1/2 on $mux $procmux$2659.
+    dead port 2/2 on $mux $procmux$2659.
+    dead port 1/2 on $mux $procmux$2656.
+    dead port 2/2 on $mux $procmux$2656.
+    dead port 1/2 on $mux $procmux$2653.
+    dead port 2/2 on $mux $procmux$2653.
+    dead port 1/2 on $mux $procmux$2650.
+    dead port 2/2 on $mux $procmux$2650.
+    dead port 1/2 on $mux $procmux$2647.
+    dead port 2/2 on $mux $procmux$2647.
+    dead port 1/2 on $mux $procmux$2644.
+    dead port 2/2 on $mux $procmux$2644.
+    dead port 1/2 on $mux $procmux$2641.
+    dead port 2/2 on $mux $procmux$2641.
+    dead port 1/2 on $mux $procmux$2638.
+    dead port 2/2 on $mux $procmux$2638.
+    dead port 1/2 on $mux $procmux$2635.
+    dead port 2/2 on $mux $procmux$2635.
+    dead port 1/2 on $mux $procmux$2632.
+    dead port 2/2 on $mux $procmux$2632.
+    dead port 1/2 on $mux $procmux$2629.
+    dead port 2/2 on $mux $procmux$2629.
+    dead port 1/2 on $mux $procmux$2626.
+    dead port 2/2 on $mux $procmux$2626.
+    dead port 1/2 on $mux $procmux$2623.
+    dead port 2/2 on $mux $procmux$2623.
+    dead port 1/2 on $mux $procmux$2620.
+    dead port 2/2 on $mux $procmux$2620.
+    dead port 1/2 on $mux $procmux$2617.
+    dead port 2/2 on $mux $procmux$2617.
+    dead port 1/2 on $mux $procmux$2614.
+    dead port 2/2 on $mux $procmux$2614.
+    dead port 2/2 on $mux $procmux$2611.
+    dead port 2/2 on $mux $procmux$2605.
+    dead port 2/2 on $mux $procmux$2599.
+    dead port 1/2 on $mux $procmux$2593.
+    dead port 2/2 on $mux $procmux$2593.
+    dead port 1/2 on $mux $procmux$2590.
+    dead port 2/2 on $mux $procmux$2590.
+    dead port 1/2 on $mux $procmux$2588.
+    dead port 2/2 on $mux $procmux$2588.
+    dead port 1/2 on $mux $procmux$2584.
+    dead port 2/2 on $mux $procmux$2584.
+    dead port 1/2 on $mux $procmux$2581.
+    dead port 2/2 on $mux $procmux$2581.
+    dead port 1/2 on $mux $procmux$2579.
+    dead port 2/2 on $mux $procmux$2579.
+    dead port 1/2 on $mux $procmux$2575.
+    dead port 2/2 on $mux $procmux$2575.
+    dead port 1/2 on $mux $procmux$2572.
+    dead port 2/2 on $mux $procmux$2572.
+    dead port 1/2 on $mux $procmux$2570.
+    dead port 2/2 on $mux $procmux$2570.
+    dead port 1/2 on $mux $procmux$2566.
+    dead port 2/2 on $mux $procmux$2566.
+    dead port 1/2 on $mux $procmux$2563.
+    dead port 2/2 on $mux $procmux$2563.
+    dead port 1/2 on $mux $procmux$2561.
+    dead port 2/2 on $mux $procmux$2561.
+    dead port 1/2 on $mux $procmux$2557.
+    dead port 2/2 on $mux $procmux$2557.
+    dead port 1/2 on $mux $procmux$2554.
+    dead port 2/2 on $mux $procmux$2554.
+    dead port 1/2 on $mux $procmux$2552.
+    dead port 2/2 on $mux $procmux$2552.
+    dead port 1/2 on $mux $procmux$2548.
+    dead port 2/2 on $mux $procmux$2548.
+    dead port 1/2 on $mux $procmux$2545.
+    dead port 2/2 on $mux $procmux$2545.
+    dead port 1/2 on $mux $procmux$2543.
+    dead port 2/2 on $mux $procmux$2543.
+    dead port 1/2 on $mux $procmux$2539.
+    dead port 2/2 on $mux $procmux$2539.
+    dead port 1/2 on $mux $procmux$2536.
+    dead port 2/2 on $mux $procmux$2536.
+    dead port 1/2 on $mux $procmux$2534.
+    dead port 2/2 on $mux $procmux$2534.
+    dead port 1/2 on $mux $procmux$2530.
+    dead port 2/2 on $mux $procmux$2530.
+    dead port 1/2 on $mux $procmux$2527.
+    dead port 2/2 on $mux $procmux$2527.
+    dead port 1/2 on $mux $procmux$2525.
+    dead port 2/2 on $mux $procmux$2525.
+    dead port 1/2 on $mux $procmux$2521.
+    dead port 2/2 on $mux $procmux$2521.
+    dead port 1/2 on $mux $procmux$2518.
+    dead port 2/2 on $mux $procmux$2518.
+    dead port 1/2 on $mux $procmux$2516.
+    dead port 2/2 on $mux $procmux$2516.
+    dead port 1/2 on $mux $procmux$2512.
+    dead port 2/2 on $mux $procmux$2512.
+    dead port 1/2 on $mux $procmux$2509.
+    dead port 2/2 on $mux $procmux$2509.
+    dead port 1/2 on $mux $procmux$2507.
+    dead port 2/2 on $mux $procmux$2507.
+    dead port 1/2 on $mux $procmux$2503.
+    dead port 2/2 on $mux $procmux$2503.
+    dead port 1/2 on $mux $procmux$2500.
+    dead port 2/2 on $mux $procmux$2500.
+    dead port 1/2 on $mux $procmux$2498.
+    dead port 2/2 on $mux $procmux$2498.
+    dead port 2/2 on $mux $procmux$2494.
+    dead port 2/2 on $mux $procmux$2491.
+    dead port 2/2 on $mux $procmux$2485.
+    dead port 2/2 on $mux $procmux$2482.
+    dead port 2/2 on $mux $procmux$2476.
+    dead port 2/2 on $mux $procmux$2473.
+    dead port 1/2 on $mux $procmux$2467.
+    dead port 2/2 on $mux $procmux$2467.
+    dead port 1/2 on $mux $procmux$2464.
+    dead port 2/2 on $mux $procmux$2464.
+    dead port 1/2 on $mux $procmux$2462.
+    dead port 2/2 on $mux $procmux$2462.
+    dead port 1/2 on $mux $procmux$2459.
+    dead port 2/2 on $mux $procmux$2459.
+    dead port 1/2 on $mux $procmux$2455.
+    dead port 2/2 on $mux $procmux$2455.
+    dead port 1/2 on $mux $procmux$2452.
+    dead port 2/2 on $mux $procmux$2452.
+    dead port 1/2 on $mux $procmux$2450.
+    dead port 2/2 on $mux $procmux$2450.
+    dead port 1/2 on $mux $procmux$2447.
+    dead port 2/2 on $mux $procmux$2447.
+    dead port 1/2 on $mux $procmux$2443.
+    dead port 2/2 on $mux $procmux$2443.
+    dead port 1/2 on $mux $procmux$2440.
+    dead port 2/2 on $mux $procmux$2440.
+    dead port 1/2 on $mux $procmux$2438.
+    dead port 2/2 on $mux $procmux$2438.
+    dead port 1/2 on $mux $procmux$2435.
+    dead port 2/2 on $mux $procmux$2435.
+    dead port 1/2 on $mux $procmux$2431.
+    dead port 2/2 on $mux $procmux$2431.
+    dead port 1/2 on $mux $procmux$2428.
+    dead port 2/2 on $mux $procmux$2428.
+    dead port 1/2 on $mux $procmux$2426.
+    dead port 2/2 on $mux $procmux$2426.
+    dead port 1/2 on $mux $procmux$2423.
+    dead port 2/2 on $mux $procmux$2423.
+    dead port 1/2 on $mux $procmux$2419.
+    dead port 2/2 on $mux $procmux$2419.
+    dead port 1/2 on $mux $procmux$2416.
+    dead port 2/2 on $mux $procmux$2416.
+    dead port 1/2 on $mux $procmux$2414.
+    dead port 2/2 on $mux $procmux$2414.
+    dead port 1/2 on $mux $procmux$2411.
+    dead port 2/2 on $mux $procmux$2411.
+    dead port 1/2 on $mux $procmux$2407.
+    dead port 2/2 on $mux $procmux$2407.
+    dead port 1/2 on $mux $procmux$2404.
+    dead port 2/2 on $mux $procmux$2404.
+    dead port 1/2 on $mux $procmux$2402.
+    dead port 2/2 on $mux $procmux$2402.
+    dead port 1/2 on $mux $procmux$2399.
+    dead port 2/2 on $mux $procmux$2399.
+    dead port 1/2 on $mux $procmux$2395.
+    dead port 2/2 on $mux $procmux$2395.
+    dead port 1/2 on $mux $procmux$2392.
+    dead port 2/2 on $mux $procmux$2392.
+    dead port 1/2 on $mux $procmux$2390.
+    dead port 2/2 on $mux $procmux$2390.
+    dead port 1/2 on $mux $procmux$2387.
+    dead port 2/2 on $mux $procmux$2387.
+    dead port 1/2 on $mux $procmux$2383.
+    dead port 2/2 on $mux $procmux$2383.
+    dead port 1/2 on $mux $procmux$2380.
+    dead port 2/2 on $mux $procmux$2380.
+    dead port 1/2 on $mux $procmux$2378.
+    dead port 2/2 on $mux $procmux$2378.
+    dead port 1/2 on $mux $procmux$2375.
+    dead port 2/2 on $mux $procmux$2375.
+    dead port 1/2 on $mux $procmux$2371.
+    dead port 2/2 on $mux $procmux$2371.
+    dead port 1/2 on $mux $procmux$2368.
+    dead port 2/2 on $mux $procmux$2368.
+    dead port 1/2 on $mux $procmux$2366.
+    dead port 2/2 on $mux $procmux$2366.
+    dead port 1/2 on $mux $procmux$2363.
+    dead port 2/2 on $mux $procmux$2363.
+    dead port 1/2 on $mux $procmux$2359.
+    dead port 2/2 on $mux $procmux$2359.
+    dead port 1/2 on $mux $procmux$2356.
+    dead port 2/2 on $mux $procmux$2356.
+    dead port 1/2 on $mux $procmux$2354.
+    dead port 2/2 on $mux $procmux$2354.
+    dead port 1/2 on $mux $procmux$2351.
+    dead port 2/2 on $mux $procmux$2351.
+    dead port 1/2 on $mux $procmux$2347.
+    dead port 2/2 on $mux $procmux$2347.
+    dead port 1/2 on $mux $procmux$2344.
+    dead port 2/2 on $mux $procmux$2344.
+    dead port 1/2 on $mux $procmux$2342.
+    dead port 2/2 on $mux $procmux$2342.
+    dead port 1/2 on $mux $procmux$2339.
+    dead port 2/2 on $mux $procmux$2339.
+    dead port 2/2 on $mux $procmux$2335.
+    dead port 2/2 on $mux $procmux$2332.
+    dead port 1/2 on $mux $procmux$2330.
+    dead port 2/2 on $mux $procmux$2323.
+    dead port 2/2 on $mux $procmux$2320.
+    dead port 1/2 on $mux $procmux$2318.
+    dead port 2/2 on $mux $procmux$2311.
+    dead port 2/2 on $mux $procmux$2308.
+    dead port 1/2 on $mux $procmux$2306.
+    dead port 1/2 on $mux $procmux$2299.
+    dead port 2/2 on $mux $procmux$2299.
+    dead port 1/2 on $mux $procmux$2296.
+    dead port 2/2 on $mux $procmux$2296.
+    dead port 1/2 on $mux $procmux$2294.
+    dead port 2/2 on $mux $procmux$2294.
+    dead port 1/2 on $mux $procmux$2291.
+    dead port 2/2 on $mux $procmux$2291.
+    dead port 1/2 on $mux $procmux$2289.
+    dead port 2/2 on $mux $procmux$2289.
+    dead port 1/2 on $mux $procmux$2284.
+    dead port 2/2 on $mux $procmux$2284.
+    dead port 1/2 on $mux $procmux$2281.
+    dead port 2/2 on $mux $procmux$2281.
+    dead port 1/2 on $mux $procmux$2279.
+    dead port 2/2 on $mux $procmux$2279.
+    dead port 1/2 on $mux $procmux$2276.
+    dead port 2/2 on $mux $procmux$2276.
+    dead port 1/2 on $mux $procmux$2274.
+    dead port 2/2 on $mux $procmux$2274.
+    dead port 1/2 on $mux $procmux$2269.
+    dead port 2/2 on $mux $procmux$2269.
+    dead port 1/2 on $mux $procmux$2266.
+    dead port 2/2 on $mux $procmux$2266.
+    dead port 1/2 on $mux $procmux$2264.
+    dead port 2/2 on $mux $procmux$2264.
+    dead port 1/2 on $mux $procmux$2261.
+    dead port 2/2 on $mux $procmux$2261.
+    dead port 1/2 on $mux $procmux$2259.
+    dead port 2/2 on $mux $procmux$2259.
+    dead port 1/2 on $mux $procmux$2254.
+    dead port 2/2 on $mux $procmux$2254.
+    dead port 1/2 on $mux $procmux$2251.
+    dead port 2/2 on $mux $procmux$2251.
+    dead port 1/2 on $mux $procmux$2249.
+    dead port 2/2 on $mux $procmux$2249.
+    dead port 1/2 on $mux $procmux$2246.
+    dead port 2/2 on $mux $procmux$2246.
+    dead port 1/2 on $mux $procmux$2244.
+    dead port 2/2 on $mux $procmux$2244.
+    dead port 1/2 on $mux $procmux$2239.
+    dead port 2/2 on $mux $procmux$2239.
+    dead port 1/2 on $mux $procmux$2236.
+    dead port 2/2 on $mux $procmux$2236.
+    dead port 1/2 on $mux $procmux$2234.
+    dead port 2/2 on $mux $procmux$2234.
+    dead port 1/2 on $mux $procmux$2231.
+    dead port 2/2 on $mux $procmux$2231.
+    dead port 1/2 on $mux $procmux$2229.
+    dead port 2/2 on $mux $procmux$2229.
+    dead port 1/2 on $mux $procmux$2224.
+    dead port 2/2 on $mux $procmux$2224.
+    dead port 1/2 on $mux $procmux$2221.
+    dead port 2/2 on $mux $procmux$2221.
+    dead port 1/2 on $mux $procmux$2219.
+    dead port 2/2 on $mux $procmux$2219.
+    dead port 1/2 on $mux $procmux$2216.
+    dead port 2/2 on $mux $procmux$2216.
+    dead port 1/2 on $mux $procmux$2214.
+    dead port 2/2 on $mux $procmux$2214.
+    dead port 1/2 on $mux $procmux$2209.
+    dead port 2/2 on $mux $procmux$2209.
+    dead port 1/2 on $mux $procmux$2206.
+    dead port 2/2 on $mux $procmux$2206.
+    dead port 1/2 on $mux $procmux$2204.
+    dead port 2/2 on $mux $procmux$2204.
+    dead port 1/2 on $mux $procmux$2201.
+    dead port 2/2 on $mux $procmux$2201.
+    dead port 1/2 on $mux $procmux$2199.
+    dead port 2/2 on $mux $procmux$2199.
+    dead port 2/2 on $mux $procmux$2194.
+    dead port 2/2 on $mux $procmux$2191.
+    dead port 1/2 on $mux $procmux$2189.
+    dead port 1/2 on $mux $procmux$2186.
+    dead port 2/2 on $mux $procmux$2179.
+    dead port 2/2 on $mux $procmux$2176.
+    dead port 1/2 on $mux $procmux$2174.
+    dead port 1/2 on $mux $procmux$2171.
+    dead port 2/2 on $mux $procmux$2164.
+    dead port 2/2 on $mux $procmux$2161.
+    dead port 1/2 on $mux $procmux$2159.
+    dead port 1/2 on $mux $procmux$2156.
+    dead port 1/2 on $mux $procmux$2149.
+    dead port 2/2 on $mux $procmux$2149.
+    dead port 1/2 on $mux $procmux$2146.
+    dead port 2/2 on $mux $procmux$2146.
+    dead port 1/2 on $mux $procmux$2144.
+    dead port 2/2 on $mux $procmux$2144.
+    dead port 1/2 on $mux $procmux$2141.
+    dead port 2/2 on $mux $procmux$2141.
+    dead port 1/2 on $mux $procmux$2138.
+    dead port 2/2 on $mux $procmux$2138.
+    dead port 1/2 on $mux $procmux$2134.
+    dead port 2/2 on $mux $procmux$2134.
+    dead port 1/2 on $mux $procmux$2131.
+    dead port 2/2 on $mux $procmux$2131.
+    dead port 1/2 on $mux $procmux$2129.
+    dead port 2/2 on $mux $procmux$2129.
+    dead port 1/2 on $mux $procmux$2126.
+    dead port 2/2 on $mux $procmux$2126.
+    dead port 1/2 on $mux $procmux$2123.
+    dead port 2/2 on $mux $procmux$2123.
+    dead port 1/2 on $mux $procmux$2119.
+    dead port 2/2 on $mux $procmux$2119.
+    dead port 1/2 on $mux $procmux$2116.
+    dead port 2/2 on $mux $procmux$2116.
+    dead port 1/2 on $mux $procmux$2114.
+    dead port 2/2 on $mux $procmux$2114.
+    dead port 1/2 on $mux $procmux$2111.
+    dead port 2/2 on $mux $procmux$2111.
+    dead port 1/2 on $mux $procmux$2108.
+    dead port 2/2 on $mux $procmux$2108.
+    dead port 1/2 on $mux $procmux$2104.
+    dead port 2/2 on $mux $procmux$2104.
+    dead port 1/2 on $mux $procmux$2101.
+    dead port 2/2 on $mux $procmux$2101.
+    dead port 1/2 on $mux $procmux$2099.
+    dead port 2/2 on $mux $procmux$2099.
+    dead port 1/2 on $mux $procmux$2096.
+    dead port 2/2 on $mux $procmux$2096.
+    dead port 1/2 on $mux $procmux$2093.
+    dead port 2/2 on $mux $procmux$2093.
+    dead port 1/2 on $mux $procmux$2089.
+    dead port 2/2 on $mux $procmux$2089.
+    dead port 1/2 on $mux $procmux$2086.
+    dead port 2/2 on $mux $procmux$2086.
+    dead port 1/2 on $mux $procmux$2084.
+    dead port 2/2 on $mux $procmux$2084.
+    dead port 1/2 on $mux $procmux$2081.
+    dead port 2/2 on $mux $procmux$2081.
+    dead port 1/2 on $mux $procmux$2078.
+    dead port 2/2 on $mux $procmux$2078.
+    dead port 1/2 on $mux $procmux$2076.
+    dead port 2/2 on $mux $procmux$2076.
+    dead port 1/2 on $mux $procmux$2071.
+    dead port 2/2 on $mux $procmux$2071.
+    dead port 1/2 on $mux $procmux$2068.
+    dead port 2/2 on $mux $procmux$2068.
+    dead port 1/2 on $mux $procmux$2066.
+    dead port 2/2 on $mux $procmux$2066.
+    dead port 1/2 on $mux $procmux$2063.
+    dead port 2/2 on $mux $procmux$2063.
+    dead port 1/2 on $mux $procmux$2060.
+    dead port 2/2 on $mux $procmux$2060.
+    dead port 1/2 on $mux $procmux$2058.
+    dead port 2/2 on $mux $procmux$2058.
+    dead port 1/2 on $mux $procmux$2053.
+    dead port 2/2 on $mux $procmux$2053.
+    dead port 1/2 on $mux $procmux$2050.
+    dead port 2/2 on $mux $procmux$2050.
+    dead port 1/2 on $mux $procmux$2048.
+    dead port 2/2 on $mux $procmux$2048.
+    dead port 1/2 on $mux $procmux$2045.
+    dead port 2/2 on $mux $procmux$2045.
+    dead port 1/2 on $mux $procmux$2042.
+    dead port 2/2 on $mux $procmux$2042.
+    dead port 1/2 on $mux $procmux$2040.
+    dead port 2/2 on $mux $procmux$2040.
+    dead port 1/2 on $mux $procmux$2035.
+    dead port 2/2 on $mux $procmux$2035.
+    dead port 1/2 on $mux $procmux$2032.
+    dead port 2/2 on $mux $procmux$2032.
+    dead port 1/2 on $mux $procmux$2030.
+    dead port 2/2 on $mux $procmux$2030.
+    dead port 1/2 on $mux $procmux$2027.
+    dead port 2/2 on $mux $procmux$2027.
+    dead port 1/2 on $mux $procmux$2024.
+    dead port 2/2 on $mux $procmux$2024.
+    dead port 1/2 on $mux $procmux$2022.
+    dead port 2/2 on $mux $procmux$2022.
+    dead port 1/2 on $mux $procmux$2017.
+    dead port 2/2 on $mux $procmux$2017.
+    dead port 1/2 on $mux $procmux$2014.
+    dead port 2/2 on $mux $procmux$2014.
+    dead port 1/2 on $mux $procmux$2012.
+    dead port 2/2 on $mux $procmux$2012.
+    dead port 1/2 on $mux $procmux$2009.
+    dead port 2/2 on $mux $procmux$2009.
+    dead port 1/2 on $mux $procmux$2006.
+    dead port 2/2 on $mux $procmux$2006.
+    dead port 1/2 on $mux $procmux$2004.
+    dead port 2/2 on $mux $procmux$2004.
+    dead port 1/2 on $mux $procmux$2002.
+    dead port 2/2 on $mux $procmux$2002.
+    dead port 1/2 on $mux $procmux$1996.
+    dead port 2/2 on $mux $procmux$1996.
+    dead port 1/2 on $mux $procmux$1993.
+    dead port 2/2 on $mux $procmux$1993.
+    dead port 1/2 on $mux $procmux$1991.
+    dead port 2/2 on $mux $procmux$1991.
+    dead port 1/2 on $mux $procmux$1988.
+    dead port 2/2 on $mux $procmux$1988.
+    dead port 1/2 on $mux $procmux$1985.
+    dead port 2/2 on $mux $procmux$1985.
+    dead port 1/2 on $mux $procmux$1983.
+    dead port 2/2 on $mux $procmux$1983.
+    dead port 1/2 on $mux $procmux$1981.
+    dead port 2/2 on $mux $procmux$1981.
+    dead port 1/2 on $mux $procmux$1975.
+    dead port 2/2 on $mux $procmux$1975.
+    dead port 1/2 on $mux $procmux$1972.
+    dead port 2/2 on $mux $procmux$1972.
+    dead port 1/2 on $mux $procmux$1970.
+    dead port 2/2 on $mux $procmux$1970.
+    dead port 1/2 on $mux $procmux$1967.
+    dead port 2/2 on $mux $procmux$1967.
+    dead port 1/2 on $mux $procmux$1964.
+    dead port 2/2 on $mux $procmux$1964.
+    dead port 1/2 on $mux $procmux$1962.
+    dead port 2/2 on $mux $procmux$1962.
+    dead port 1/2 on $mux $procmux$1960.
+    dead port 2/2 on $mux $procmux$1960.
+    dead port 1/2 on $mux $procmux$1954.
+    dead port 2/2 on $mux $procmux$1954.
+    dead port 1/2 on $mux $procmux$1951.
+    dead port 2/2 on $mux $procmux$1951.
+    dead port 1/2 on $mux $procmux$1949.
+    dead port 2/2 on $mux $procmux$1949.
+    dead port 1/2 on $mux $procmux$1946.
+    dead port 2/2 on $mux $procmux$1946.
+    dead port 1/2 on $mux $procmux$1943.
+    dead port 2/2 on $mux $procmux$1943.
+    dead port 1/2 on $mux $procmux$1941.
+    dead port 2/2 on $mux $procmux$1941.
+    dead port 1/2 on $mux $procmux$1939.
+    dead port 2/2 on $mux $procmux$1939.
+Removed 1120 multiplexer ports.
+<suppressed ~414 debug messages>
+
+5.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 242 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 234 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~24 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 244 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 236 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~24 debug messages>
+Removed a total of 16 cells.
+
+5.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $procdff$3255 ($adff) from module gate (D = $procmux$1745_Y, Q = \dl[0]).
+Adding EN signal on $procdff$3230 ($adff) from module gate (D = $procmux$1839_Y, Q = \hl[1]).
+Adding EN signal on $procdff$3195 ($adff) from module gate (D = 3, Q = \i).
+Adding EN signal on $procdff$3275 ($adff) from module gate (D = $procmux$1642_Y, Q = \dc[1]).
+Adding EN signal on $procdff$3235 ($adff) from module gate (D = $procmux$1809_Y, Q = \hl[2]).
+Adding EN signal on $procdff$3225 ($adff) from module gate (D = $procmux$1871_Y, Q = \hl[0]).
+Adding EN signal on $procdff$3210 ($adff) from module gate (D = $procmux$1559_Y, Q = \hi).
+Adding EN signal on $procdff$3265 ($adff) from module gate (D = $procmux$1683_Y, Q = \dl[2]).
+Adding EN signal on $procdff$3245 ($adff) from module gate (D = $procmux$1768_Y, Q = \hc[1]).
+Adding EN signal on $procdff$3215 ($adff) from module gate (D = $procmux$1556_Y, Q = \di).
+Adding EN signal on $procdff$3260 ($adff) from module gate (D = $procmux$1713_Y, Q = \dl[1]).
+Adding EN signal on $procdff$3280 ($adff) from module gate (D = $procmux$1630_Y, Q = \dc[2]).
+Adding EN signal on $procdff$3205 ($adff) from module gate (D = $procmux$1562_Y, Q = \seen).
+Adding EN signal on $procdff$3240 ($adff) from module gate (D = $procmux$1781_Y, Q = \hc[0]).
+Adding EN signal on $procdff$3250 ($adff) from module gate (D = $procmux$1756_Y, Q = \hc[2]).
+Adding EN signal on $procdff$3270 ($adff) from module gate (D = $procmux$1655_Y, Q = \dc[0]).
+Setting constant 1-bit at position 0 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 1 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 2 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 3 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 4 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 5 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 6 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 7 on $procdff$3315 ($adff) from module gate.
+Setting constant 1-bit at position 0 on $procdff$3320 ($adff) from module gate.
+Setting constant 1-bit at position 1 on $procdff$3320 ($adff) from module gate.
+Setting constant 1-bit at position 0 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 1-bit at position 1 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 2 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 3 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 4 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 5 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 6 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 7 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 8 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 9 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 10 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 11 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 12 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 13 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 14 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 15 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 16 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 17 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 18 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 19 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 20 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 21 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 22 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 23 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 24 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 25 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 26 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 27 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 28 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 29 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 30 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 0-bit at position 31 on $auto$ff.cc:337:slice$3621 ($adffe) from module gate.
+Setting constant 1-bit at position 0 on $procdff$3390 ($adff) from module gate.
+Setting constant 1-bit at position 1 on $procdff$3390 ($adff) from module gate.
+Setting constant 1-bit at position 2 on $procdff$3390 ($adff) from module gate.
+Setting constant 1-bit at position 0 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 1 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 2 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 3 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 4 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 5 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 6 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 7 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 8 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 9 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 10 on $procdff$3355 ($adff) from module gate.
+Setting constant 1-bit at position 11 on $procdff$3355 ($adff) from module gate.
+Adding EN signal on $procdff$3455 ($adff) from module gold (D = $procmux$3077_Y, Q = \hc[0]).
+Adding EN signal on $procdff$3480 ($adff) from module gold (D = $procmux$2979_Y, Q = \dl[2]).
+Adding EN signal on $procdff$3460 ($adff) from module gold (D = $procmux$3064_Y, Q = \hc[1]).
+Adding EN signal on $procdff$3395 ($adff) from module gold (D = 3, Q = \i).
+Adding EN signal on $procdff$3495 ($adff) from module gold (D = $procmux$2926_Y, Q = \dc[2]).
+Adding EN signal on $procdff$3410 ($adff) from module gold (D = $procmux$2855_Y, Q = \hi).
+Adding EN signal on $procdff$3470 ($adff) from module gold (D = $procmux$3041_Y, Q = \dl[0]).
+Adding EN signal on $procdff$3465 ($adff) from module gold (D = $procmux$3052_Y, Q = \hc[2]).
+Adding EN signal on $procdff$3485 ($adff) from module gold (D = $procmux$2951_Y, Q = \dc[0]).
+Adding EN signal on $procdff$3445 ($adff) from module gold (D = $procmux$3135_Y, Q = \hl[1]).
+Adding EN signal on $procdff$3415 ($adff) from module gold (D = $procmux$2852_Y, Q = \di).
+Adding EN signal on $procdff$3405 ($adff) from module gold (D = $procmux$2858_Y, Q = \seen).
+Adding EN signal on $procdff$3440 ($adff) from module gold (D = $procmux$3167_Y, Q = \hl[0]).
+Adding EN signal on $procdff$3490 ($adff) from module gold (D = $procmux$2938_Y, Q = \dc[1]).
+Adding EN signal on $procdff$3450 ($adff) from module gold (D = $procmux$3105_Y, Q = \hl[2]).
+Adding EN signal on $procdff$3475 ($adff) from module gold (D = $procmux$3009_Y, Q = \dl[1]).
+Setting constant 1-bit at position 0 on $procdff$3590 ($adff) from module gold.
+Setting constant 1-bit at position 1 on $procdff$3590 ($adff) from module gold.
+Setting constant 1-bit at position 2 on $procdff$3590 ($adff) from module gold.
+Setting constant 1-bit at position 0 on $procdff$3520 ($adff) from module gold.
+Setting constant 1-bit at position 1 on $procdff$3520 ($adff) from module gold.
+Setting constant 1-bit at position 0 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 1 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 2 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 3 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 4 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 5 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 6 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 7 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 8 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 9 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 10 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 11 on $procdff$3555 ($adff) from module gold.
+Setting constant 1-bit at position 0 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 1-bit at position 1 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 2 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 3 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 4 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 5 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 6 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 7 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 8 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 9 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 10 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 11 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 12 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 13 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 14 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 15 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 16 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 17 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 18 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 19 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 20 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 21 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 22 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 23 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 24 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 25 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 26 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 27 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 28 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 29 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 30 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 0-bit at position 31 on $auto$ff.cc:337:slice$3802 ($adffe) from module gold.
+Setting constant 1-bit at position 0 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 1 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 2 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 3 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 4 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 5 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 6 on $procdff$3515 ($adff) from module gold.
+Setting constant 1-bit at position 7 on $procdff$3515 ($adff) from module gold.
+
+5.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 16 unused cells and 2183 unused wires.
+<suppressed ~18 debug messages>
+
+5.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~370 debug messages>
+
+5.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 301 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 250 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 244 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~171 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 305 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 254 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 248 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~171 debug messages>
+Removed a total of 114 cells.
+
+5.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 0 unused cells and 114 unused wires.
+<suppressed ~2 debug messages>
+
+5.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~370 debug messages>
+
+5.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 244 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 248 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+5.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+
+5.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.23. Finished fast OPT passes. (There is nothing left to do.)
+
+6. Executing CLK2FFLOGIC pass (convert clocked FFs to generic $ff cells).
+
+6.1. Executing PEEPOPT pass (run peephole optimizers).
+Replacing gate.$auto$ff.cc:337:slice$3760 ($adffe): CLK=\clk_i, D=$0\dc[0][11:0], Q=\dc[0]
+Replacing gate.$auto$ff.cc:337:slice$3751 ($adffe): CLK=\clk_i, D=$0\hc[2][7:0], Q=\hc[2]
+Replacing gate.$procdff$3220 ($adff): CLK=\clk_i, D=$0\confirmed[0:0], Q=\confirmed
+Replacing gate.$auto$ff.cc:337:slice$3742 ($adffe): CLK=\clk_i, D=$0\hc[0][7:0], Q=\hc[0]
+Replacing gate.$auto$ff.cc:337:slice$3731 ($adffe): CLK=\clk_i, D=$0$lookahead\seen$379[2:0]$402, Q=\seen
+Replacing gate.$auto$ff.cc:337:slice$3722 ($adffe): CLK=\clk_i, D=$0\dc[2][11:0], Q=\dc[2]
+Replacing gate.$auto$ff.cc:337:slice$3707 ($adffe): CLK=\clk_i, D=$0\dl[1][11:0], Q=\dl[1]
+Replacing gate.$procdff$3200 ($adff): CLK=\clk_i, D=$0\protocol_error_o[0:0], Q=\protocol_error_o
+Replacing gate.$auto$ff.cc:337:slice$3696 ($adffe): CLK=\clk_i, D=$0$lookahead\di$378[2:0]$401, Q=\di
+Replacing gate.$auto$ff.cc:337:slice$3687 ($adffe): CLK=\clk_i, D=$0\hc[1][7:0], Q=\hc[1]
+Replacing gate.$auto$ff.cc:337:slice$3672 ($adffe): CLK=\clk_i, D=$0\dl[2][11:0], Q=\dl[2]
+Replacing gate.$auto$ff.cc:337:slice$3661 ($adffe): CLK=\clk_i, D=$0$lookahead\hi$377[2:0]$400, Q=\hi
+Replacing gate.$auto$ff.cc:337:slice$3646 ($adffe): CLK=\clk_i, D=$0\hl[0][7:0], Q=\hl[0]
+Replacing gate.$auto$ff.cc:337:slice$3631 ($adffe): CLK=\clk_i, D=$0\hl[2][7:0], Q=\hl[2]
+Replacing gate.$auto$ff.cc:337:slice$3622 ($adffe): CLK=\clk_i, D=$0\dc[1][11:0], Q=\dc[1]
+Replacing gate.$auto$ff.cc:337:slice$3606 ($adffe): CLK=\clk_i, D=$0\hl[1][7:0], Q=\hl[1]
+Replacing gate.$auto$ff.cc:337:slice$3591 ($adffe): CLK=\clk_i, D=$0\dl[0][11:0], Q=\dl[0]
+Replacing gold.$auto$ff.cc:337:slice$3932 ($adffe): CLK=\clk_i, D=$0\dl[1][11:0], Q=\dl[1]
+Replacing gold.$auto$ff.cc:337:slice$3917 ($adffe): CLK=\clk_i, D=$0\hl[2][7:0], Q=\hl[2]
+Replacing gold.$procdff$3420 ($adff): CLK=\clk_i, D=$0\confirmed[0:0], Q=\confirmed
+Replacing gold.$auto$ff.cc:337:slice$3908 ($adffe): CLK=\clk_i, D=$0\dc[1][11:0], Q=\dc[1]
+Replacing gold.$auto$ff.cc:337:slice$3893 ($adffe): CLK=\clk_i, D=$0\hl[0][7:0], Q=\hl[0]
+Replacing gold.$auto$ff.cc:337:slice$3882 ($adffe): CLK=\clk_i, D=$0$lookahead\seen$84[2:0]$107, Q=\seen
+Replacing gold.$auto$ff.cc:337:slice$3871 ($adffe): CLK=\clk_i, D=$0$lookahead\di$83[2:0]$106, Q=\di
+Replacing gold.$auto$ff.cc:337:slice$3856 ($adffe): CLK=\clk_i, D=$0\hl[1][7:0], Q=\hl[1]
+Replacing gold.$auto$ff.cc:337:slice$3847 ($adffe): CLK=\clk_i, D=$0\dc[0][11:0], Q=\dc[0]
+Replacing gold.$auto$ff.cc:337:slice$3838 ($adffe): CLK=\clk_i, D=$0\hc[2][7:0], Q=\hc[2]
+Replacing gold.$procdff$3400 ($adff): CLK=\clk_i, D=$0\protocol_error_o[0:0], Q=\protocol_error_o
+Replacing gold.$auto$ff.cc:337:slice$3823 ($adffe): CLK=\clk_i, D=$0\dl[0][11:0], Q=\dl[0]
+Replacing gold.$auto$ff.cc:337:slice$3812 ($adffe): CLK=\clk_i, D=$0$lookahead\hi$82[2:0]$105, Q=\hi
+Replacing gold.$auto$ff.cc:337:slice$3803 ($adffe): CLK=\clk_i, D=$0\dc[2][11:0], Q=\dc[2]
+Replacing gold.$auto$ff.cc:337:slice$3793 ($adffe): CLK=\clk_i, D=$0\hc[1][7:0], Q=\hc[1]
+Replacing gold.$auto$ff.cc:337:slice$3778 ($adffe): CLK=\clk_i, D=$0\dl[2][11:0], Q=\dl[2]
+Replacing gold.$auto$ff.cc:337:slice$3769 ($adffe): CLK=\clk_i, D=$0\hc[0][7:0], Q=\hc[0]
+
+7. Executing OPT pass (performing simple optimizations).
+
+7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+<suppressed ~17 debug messages>
+Optimizing module gold.
+<suppressed ~17 debug messages>
+
+7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 395 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 363 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 331 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~192 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 399 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 367 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 335 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~192 debug messages>
+Removed a total of 128 cells.
+
+7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~536 debug messages>
+
+7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 331 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 335 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+7.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 0 unused cells and 162 unused wires.
+<suppressed ~2 debug messages>
+
+7.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+7.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~536 debug messages>
+
+7.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+7.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 331 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 335 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+7.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+
+7.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+7.16. Finished fast OPT passes. (There is nothing left to do.)
+
+8. Executing EQUIV_MAKE pass (creating equiv checking module).
+Presumably equivalent wires: dc[2]_gold (\dc[2]_gold), dc[2]_gate (\dc[2]_gate) -> dc[2]
+Presumably equivalent wires: dc[1]_gold (\dc[1]_gold), dc[1]_gate (\dc[1]_gate) -> dc[1]
+Presumably equivalent wires: dc[0]_gold (\dc[0]_gold), dc[0]_gate (\dc[0]_gate) -> dc[0]
+Presumably equivalent wires: dl[2]_gold (\dl[2]_gold), dl[2]_gate (\dl[2]_gate) -> dl[2]
+Presumably equivalent wires: dl[1]_gold (\dl[1]_gold), dl[1]_gate (\dl[1]_gate) -> dl[1]
+Presumably equivalent wires: dl[0]_gold (\dl[0]_gold), dl[0]_gate (\dl[0]_gate) -> dl[0]
+Presumably equivalent wires: hc[2]_gold (\hc[2]_gold), hc[2]_gate (\hc[2]_gate) -> hc[2]
+Presumably equivalent wires: hc[1]_gold (\hc[1]_gold), hc[1]_gate (\hc[1]_gate) -> hc[1]
+Presumably equivalent wires: hc[0]_gold (\hc[0]_gold), hc[0]_gate (\hc[0]_gate) -> hc[0]
+Presumably equivalent wires: hl[2]_gold (\hl[2]_gold), hl[2]_gate (\hl[2]_gate) -> hl[2]
+Presumably equivalent wires: hl[1]_gold (\hl[1]_gold), hl[1]_gate (\hl[1]_gate) -> hl[1]
+Presumably equivalent wires: hl[0]_gold (\hl[0]_gold), hl[0]_gate (\hl[0]_gate) -> hl[0]
+Presumably equivalent wires: d_update_ok_gold (\d_update_ok_gold), d_update_ok_gate (\d_update_ok_gate) -> d_update_ok
+Presumably equivalent wires: h_update_ok_gold (\h_update_ok_gold), h_update_ok_gate (\h_update_ok_gate) -> h_update_ok
+Presumably equivalent wires: d_step_gold (\d_step_gold), d_step_gate (\d_step_gate) -> d_step
+Presumably equivalent wires: h_step_gold (\h_step_gold), h_step_gate (\h_step_gate) -> h_step
+Presumably equivalent wires: consume_gold (\consume_gold), consume_gate (\consume_gate) -> consume
+Presumably equivalent wires: data_ok_gold (\data_ok_gold), data_ok_gate (\data_ok_gate) -> data_ok
+Presumably equivalent wires: header_ok_gold (\header_ok_gold), header_ok_gate (\header_ok_gate) -> header_ok
+Presumably equivalent wires: available_d_gold (\available_d_gold), available_d_gate (\available_d_gate) -> available_d
+Presumably equivalent wires: available_h_gold (\available_h_gold), available_h_gate (\available_h_gate) -> available_h
+Presumably equivalent wires: required_data_gold (\rounded_dw_gold [11:2]), required_data_gate (\rounded_dw_gate [11:2]) -> required_data
+Presumably equivalent wires: rounded_dw_gold (\rounded_dw_gold), rounded_dw_gate (\rounded_dw_gate) -> rounded_dw
+Presumably equivalent wires: request_legal_gold (\request_legal_gold), request_legal_gate (\request_legal_gate) -> request_legal
+Presumably equivalent wires: all_seen_gold (\all_seen_gold), all_seen_gate (\all_seen_gate) -> all_seen
+Presumably equivalent wires: i_gold (3), i_gate (3) -> i
+Presumably equivalent wires: confirmed_gold (\confirmed_gold), confirmed_gate (\confirmed_gate) -> confirmed
+Presumably equivalent wires: di_gold (\di_gold), di_gate (\di_gate) -> di
+Presumably equivalent wires: hi_gold (\hi_gold), hi_gate (\hi_gate) -> hi
+Presumably equivalent wires: seen_gold (\seen_gold), seen_gate (\seen_gate) -> seen
+Presumably equivalent wires: infinite_o_gold ({ \di_gold [2] \hi_gold [2] \di_gold [1] \hi_gold [1] \di_gold [0] \hi_gold [0] }), infinite_o_gate ({ \di_gate [2] \hi_gate [2] \di_gate [1] \hi_gate [1] \di_gate [0] \hi_gate [0] }) -> infinite_o
+Presumably equivalent wires: data_consumed_o_gold ({ \dc[2]_gold \dc[1]_gold \dc[0]_gold }), data_consumed_o_gate ({ \dc[2]_gate \dc[1]_gate \dc[0]_gate }) -> data_consumed_o
+Presumably equivalent wires: data_limit_o_gold ({ \dl[2]_gold \dl[1]_gold \dl[0]_gold }), data_limit_o_gate ({ \dl[2]_gate \dl[1]_gate \dl[0]_gate }) -> data_limit_o
+Presumably equivalent wires: header_consumed_o_gold ({ \hc[2]_gold \hc[1]_gold \hc[0]_gold }), header_consumed_o_gate ({ \hc[2]_gate \hc[1]_gate \hc[0]_gate }) -> header_consumed_o
+Presumably equivalent wires: header_limit_o_gold ({ \hl[2]_gold \hl[1]_gold \hl[0]_gold }), header_limit_o_gate ({ \hl[2]_gate \hl[1]_gate \hl[0]_gate }) -> header_limit_o
+Presumably equivalent wires: protocol_error_o_gold (\protocol_error_o_gold), protocol_error_o_gate (\protocol_error_o_gate) -> protocol_error_o
+Presumably equivalent wires: peer_init2_seen_o_gold (\peer_init2_seen_o_gold), peer_init2_seen_o_gate (\peer_init2_seen_o_gate) -> peer_init2_seen_o
+Presumably equivalent wires: peer_init1_done_o_gold (\peer_init1_done_o_gold), peer_init1_done_o_gate (\peer_init1_done_o_gate) -> peer_init1_done_o
+Presumably equivalent wires: initialized_o_gold (\initialized_o_gold), initialized_o_gate (\initialized_o_gate) -> initialized_o
+Presumably equivalent wires: reserve_ready_o_gold (\reserve_ready_o_gold), reserve_ready_o_gate (\reserve_ready_o_gate) -> reserve_ready_o
+Presumably equivalent wires: reserve_payload_dw_i_gold (\reserve_payload_dw_i_gold), reserve_payload_dw_i_gate (\reserve_payload_dw_i_gate) -> reserve_payload_dw_i
+Presumably equivalent wires: reserve_class_i_gold (\reserve_class_i_gold), reserve_class_i_gate (\reserve_class_i_gate) -> reserve_class_i
+Presumably equivalent wires: reserve_replay_i_gold (\reserve_replay_i_gold), reserve_replay_i_gate (\reserve_replay_i_gate) -> reserve_replay_i
+Presumably equivalent wires: reserve_valid_i_gold (\reserve_valid_i_gold), reserve_valid_i_gate (\reserve_valid_i_gate) -> reserve_valid_i
+Presumably equivalent wires: fc_data_i_gold (\fc_data_i_gold), fc_data_i_gate (\fc_data_i_gate) -> fc_data_i
+Presumably equivalent wires: fc_header_i_gold (\fc_header_i_gold), fc_header_i_gate (\fc_header_i_gate) -> fc_header_i
+Presumably equivalent wires: fc_class_i_gold (\fc_class_i_gold), fc_class_i_gate (\fc_class_i_gate) -> fc_class_i
+Presumably equivalent wires: fc_phase_i_gold (\fc_phase_i_gold), fc_phase_i_gate (\fc_phase_i_gate) -> fc_phase_i
+Presumably equivalent wires: fc_valid_i_gold (\fc_valid_i_gold), fc_valid_i_gate (\fc_valid_i_gate) -> fc_valid_i
+Presumably equivalent wires: rx_tlp_seen_i_gold (\rx_tlp_seen_i_gold), rx_tlp_seen_i_gate (\rx_tlp_seen_i_gate) -> rx_tlp_seen_i
+Presumably equivalent wires: local_init_done_i_gold (\local_init_done_i_gold), local_init_done_i_gate (\local_init_done_i_gate) -> local_init_done_i
+Presumably equivalent wires: link_up_i_gold (\link_up_i_gold), link_up_i_gate (\link_up_i_gate) -> link_up_i
+Presumably equivalent wires: rst_ni_gold (\rst_ni_gold), rst_ni_gate (\rst_ni_gate) -> rst_ni
+Presumably equivalent wires: clk_i_gold (\clk_i_gold), clk_i_gate (\clk_i_gate) -> clk_i
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4126_gate ($ff): \hc[1]_gate -> \header_consumed_o [15:8]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4123_gate ($mux): \hc[1]_gate -> \header_consumed_o [15:8]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4106_gate ($ff): \di_gate -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4103_gate ($mux): \di_gate -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4186_gate ($ff): \hl[0]_gate -> \header_limit_o [7:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4183_gate ($mux): \hl[0]_gate -> \header_limit_o [7:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4246_gate ($ff): \hl[1]_gate -> \header_limit_o [15:8]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4086_gate ($ff): \protocol_error_o_gate -> \protocol_error_o
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4243_gate ($mux): \hl[1]_gate -> \header_limit_o [15:8]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4068_gate ($ff): \dl[1]_gate -> \data_limit_o [23:12]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4065_gate ($mux): \dl[1]_gate -> \data_limit_o [23:12]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4266_gate ($ff): \dl[0]_gate -> \data_limit_o [11:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4206_gate ($ff): \hl[2]_gate -> \header_limit_o [23:16]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4263_gate ($mux): \dl[0]_gate -> \data_limit_o [11:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4048_gate ($ff): \dc[2]_gate -> \data_consumed_o [35:24]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4045_gate ($mux): \dc[2]_gate -> \data_consumed_o [35:24]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4166_gate ($ff): \hi_gate -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4163_gate ($mux): \hi_gate -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4028_gate ($ff): \seen_gate -> \seen
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4025_gate ($mux): \seen_gate -> \seen
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4203_gate ($mux): \hl[2]_gate -> \header_limit_o [23:16]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4008_gate ($ff): \hc[0]_gate -> \header_consumed_o [7:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4005_gate ($mux): \hc[0]_gate -> \header_consumed_o [7:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4226_gate ($ff): \dc[1]_gate -> \data_consumed_o [23:12]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4223_gate ($mux): \dc[1]_gate -> \data_consumed_o [23:12]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$3988_gate ($ff): \confirmed_gate -> \confirmed
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$3970_gate ($ff): \hc[2]_gate -> \header_consumed_o [23:16]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$3967_gate ($mux): \hc[2]_gate -> \header_consumed_o [23:16]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4146_gate ($ff): \dl[2]_gate -> \data_limit_o [35:24]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4143_gate ($mux): \dl[2]_gate -> \data_limit_o [35:24]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$3950_gate ($ff): \dc[0]_gate -> \data_consumed_o [11:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$3947_gate ($mux): \dc[0]_gate -> \data_consumed_o [11:0]
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3713_gate ($ne): { $eq$gate.v:78$520_Y_gate \all_seen_gate \link_up_i_gate } -> { $eq$gate.v:78$520_Y_gate \all_seen \link_up_i_gate }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3656_gate ($ne): { $shiftx$gate.v:57$363_Y_gate \all_seen_gate \link_up_i_gate } -> { $shiftx$gate.v:57$363_Y_gate \all_seen \link_up_i_gate }
+Changing input S of cell $procmux$1545_gate ($mux): \all_seen_gate -> \all_seen
+Changing input S of cell $procmux$1753_gate ($mux): \consume_gate -> \consume
+Changing input S of cell $procmux$1737_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $procmux$1732_gate ($mux): \dl[0]_gate -> \data_limit_o [11:0]
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3715_gate ($ne): { $logic_and$gate.v:87$562_Y_gate \all_seen_gate \link_up_i_gate } -> { $logic_and$gate.v:87$562_Y_gate \all_seen \link_up_i_gate }
+Changing input S of cell $procmux$1705_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $procmux$1700_gate ($mux): \dl[1]_gate -> \data_limit_o [23:12]
+Changing input S of cell $procmux$1442_gate ($mux): \consume_gate -> \consume
+Changing input B of cell $procmux$1436_gate ($pmux): { \hc[0]_gate \hc[1]_gate \hc[2]_gate } -> { \header_consumed_o [7:0] \header_consumed_o [15:8] \header_consumed_o [23:16] }
+Changing input S of cell $procmux$1675_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $procmux$1670_gate ($mux): \dl[2]_gate -> \data_limit_o [35:24]
+Changing input S of cell $procmux$1778_gate ($mux): \consume_gate -> \consume
+Changing input S of cell $procmux$1392_gate ($mux): \consume_gate -> \consume
+Changing input B of cell $procmux$1386_gate ($pmux): { \dc[0]_gate \dc[1]_gate \dc[2]_gate } -> { \data_consumed_o [11:0] \data_consumed_o [23:12] \data_consumed_o [35:24] }
+Changing input S of cell $procmux$1652_gate ($mux): \consume_gate -> \consume
+Changing input S of cell $procmux$1639_gate ($mux): \consume_gate -> \consume
+Changing input S of cell $procmux$1031_gate ($mux): \all_seen_gate -> \all_seen
+Changing input S of cell $procmux$1627_gate ($mux): \consume_gate -> \consume
+Changing input S of cell $procmux$1019_gate ($mux): \all_seen_gate -> \all_seen
+Changing input S of cell $procmux$1801_gate ($mux): \all_seen_gate -> \all_seen
+Changing input S of cell $procmux$1007_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $procmux$1796_gate ($mux): \hl[2]_gate -> \header_limit_o [23:16]
+Changing input B of cell $procmux$635_gate ($pmux): { \hl[0]_gate \hl[1]_gate \hl[2]_gate } -> { \header_limit_o [7:0] \header_limit_o [15:8] \header_limit_o [23:16] }
+Changing input B of cell $procmux$625_gate ($pmux): { \dl[0]_gate \dl[1]_gate \dl[2]_gate } -> { \data_limit_o [11:0] \data_limit_o [23:12] \data_limit_o [35:24] }
+Changing input S of cell $procmux$1885_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $procmux$1873_gate ($mux): \confirmed_gate -> \confirmed
+Changing input B of cell $procmux$615_gate ($pmux): { \hl[0]_gate \hl[1]_gate \hl[2]_gate } -> { \header_limit_o [7:0] \header_limit_o [15:8] \header_limit_o [23:16] }
+Changing input S of cell $procmux$1863_gate ($mux): \all_seen_gate -> \all_seen
+Changing input B of cell $procmux$610_gate ($pmux): { \dl[0]_gate \dl[1]_gate \dl[2]_gate } -> { \data_limit_o [11:0] \data_limit_o [23:12] \data_limit_o [35:24] }
+Changing input A of cell $procmux$1858_gate ($mux): \hl[0]_gate -> \header_limit_o [7:0]
+Changing input B of cell $procmux$605_gate ($pmux): { \hc[0]_gate \hc[1]_gate \hc[2]_gate } -> { \header_consumed_o [7:0] \header_consumed_o [15:8] \header_consumed_o [23:16] }
+Changing input B of cell $procmux$600_gate ($pmux): { \dc[0]_gate \dc[1]_gate \dc[2]_gate } -> { \data_consumed_o [11:0] \data_consumed_o [23:12] \data_consumed_o [35:24] }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3711_gate ($ne): { $logic_or$gate.v:78$522_Y_gate \all_seen_gate \link_up_i_gate } -> { $logic_or$gate.v:78$522_Y_gate \all_seen \link_up_i_gate }
+Changing input A of cell $shiftx$gate.v:89$571_gate ($shiftx): \di_gate -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3724_gate ($ne): { \consume_gate \link_up_i_gate } -> { \consume \link_up_i_gate }
+Changing input A of cell $shiftx$gate.v:88$567_gate ($shiftx): \hi_gate -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input B of cell $logic_and$gate.v:87$562_gate ($logic_and): \d_update_ok_gate -> \d_update_ok
+Changing input A of cell $logic_and$gate.v:87$562_gate ($logic_and): \h_update_ok_gate -> \h_update_ok
+Changing input A of cell $and$gate.v:82$552_gate ($and): \seen_gate -> \seen
+Changing input A of cell $and$gate.v:81$544_gate ($and): \di_gate -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $and$gate.v:81$536_gate ($and): \hi_gate -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input S of cell $procmux$1831_gate ($mux): \all_seen_gate -> \all_seen
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3735_gate ($ne): { \all_seen_gate \link_up_i_gate } -> { \all_seen \link_up_i_gate }
+Changing input A of cell $logic_and$gate.v:74$473_gate ($logic_and): \all_seen_gate -> \all_seen
+Changing input B of cell $add$gate.v:72$472_gate ($add): { 2'00 \rounded_dw_gate [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input A of cell $shiftx$gate.v:72$465_gate ($shiftx): \di_gate -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $shiftx$gate.v:71$457_gate ($shiftx): \hi_gate -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3717_gate ($ne): { $shiftx$gate.v:59$370_Y_gate \all_seen_gate \link_up_i_gate } -> { $shiftx$gate.v:59$370_Y_gate \all_seen \link_up_i_gate }
+Changing input A of cell $logic_not$gate.v:60$372_gate ($logic_not): \d_step_gate [11] -> \d_step [11]
+Changing input A of cell $procmux$1826_gate ($mux): \hl[1]_gate -> \header_limit_o [15:8]
+Changing input A of cell $logic_not$gate.v:58$365_gate ($logic_not): \h_step_gate [7] -> \h_step [7]
+Changing input B of cell $sub$gate.v:56$362_gate ($sub): { 2'00 \rounded_dw_gate [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input A of cell $logic_and$gate.v:50$356_gate ($logic_and): \consume_gate -> \consume
+Changing input B of cell $logic_and$gate.v:46$352_gate ($logic_and): \reserve_ready_o_gate -> \reserve_ready_o
+Changing input B of cell $logic_and$gate.v:45$349_gate ($logic_and): \data_ok_gate -> \data_ok
+Changing input A of cell $logic_and$gate.v:45$349_gate ($logic_and): \header_ok_gate -> \header_ok
+Changing input B of cell $logic_and$gate.v:44$348_gate ($logic_and): \request_legal_gate -> \request_legal
+Changing input A of cell $logic_and$gate.v:44$348_gate ($logic_and): \initialized_o_gate -> \initialized_o
+Changing input B of cell $ge$gate.v:43$345_gate ($ge): { 2'00 \rounded_dw_gate [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input A of cell $ge$gate.v:43$345_gate ($ge): \available_d_gate -> \available_d
+Changing input A of cell $logic_not$gate.v:43$344_gate ($logic_not): \available_d_gate [11] -> \available_d [11]
+Changing input A of cell $logic_not$gate.v:42$340_gate ($logic_not): \available_h_gate [7] -> \available_h [7]
+Changing input A of cell $ne$gate.v:42$339_gate ($reduce_bool): \available_h_gate -> \available_h
+Changing input S of cell $procmux$1765_gate ($mux): \consume_gate -> \consume
+Changing input B of cell $logic_and$gate.v:31$330_gate ($logic_and): \confirmed_gate -> \confirmed
+Changing input A of cell $logic_and$gate.v:31$330_gate ($logic_and): \peer_init1_done_o_gate -> \peer_init1_done_o
+Changing input B of cell $logic_and$gate.v:30$329_gate ($logic_and): \confirmed_gate -> \confirmed
+Changing input B of cell $logic_and$gate.v:29$327_gate ($logic_and): \all_seen_gate -> \all_seen
+Changing input A of cell $reduce_and$gate.v:28$325_gate ($reduce_and): \seen_gate -> \seen
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4464_gold ($ff): \hc[2]_gold -> \header_consumed_o [23:16]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4461_gold ($mux): \hc[2]_gold -> \header_consumed_o [23:16]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4444_gold ($ff): \dc[0]_gold -> \data_consumed_o [11:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4441_gold ($mux): \dc[0]_gold -> \data_consumed_o [11:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4522_gold ($ff): \hi_gold -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4519_gold ($mux): \hi_gold -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4582_gold ($ff): \dl[2]_gold -> \data_limit_o [35:24]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4424_gold ($ff): \hl[1]_gold -> \header_limit_o [15:8]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4421_gold ($mux): \hl[1]_gold -> \header_limit_o [15:8]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4579_gold ($mux): \dl[2]_gold -> \data_limit_o [35:24]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4404_gold ($ff): \di_gold -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4401_gold ($mux): \di_gold -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4602_gold ($ff): \hc[0]_gold -> \header_consumed_o [7:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4542_gold ($ff): \dc[2]_gold -> \data_consumed_o [35:24]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4599_gold ($mux): \hc[0]_gold -> \header_consumed_o [7:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4384_gold ($ff): \seen_gold -> \seen
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4381_gold ($mux): \seen_gold -> \seen
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4502_gold ($ff): \dl[0]_gold -> \data_limit_o [11:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4499_gold ($mux): \dl[0]_gold -> \data_limit_o [11:0]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4364_gold ($ff): \hl[0]_gold -> \header_limit_o [7:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4361_gold ($mux): \hl[0]_gold -> \header_limit_o [7:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4539_gold ($mux): \dc[2]_gold -> \data_consumed_o [35:24]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4344_gold ($ff): \dc[1]_gold -> \data_consumed_o [23:12]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4341_gold ($mux): \dc[1]_gold -> \data_consumed_o [23:12]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4562_gold ($ff): \hc[1]_gold -> \header_consumed_o [15:8]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4559_gold ($mux): \hc[1]_gold -> \header_consumed_o [15:8]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4324_gold ($ff): \confirmed_gold -> \confirmed
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4306_gold ($ff): \hl[2]_gold -> \header_limit_o [23:16]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4303_gold ($mux): \hl[2]_gold -> \header_limit_o [23:16]
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4482_gold ($ff): \protocol_error_o_gold -> \protocol_error_o
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$4286_gold ($ff): \dl[1]_gold -> \data_limit_o [23:12]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$4283_gold ($mux): \dl[1]_gold -> \data_limit_o [23:12]
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3886_gold ($ne): { \all_seen_gold \link_up_i_gold } -> { \all_seen \link_up_i_gold }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3899_gold ($ne): { $eq$gold.v:72$225_Y_gold \all_seen_gold \link_up_i_gold } -> { $eq$gold.v:72$225_Y_gold \all_seen \link_up_i_gold }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3833_gold ($ne): { $shiftx$gold.v:48$61_Y_gold \all_seen_gold \link_up_i_gold } -> { $shiftx$gold.v:48$61_Y_gold \all_seen \link_up_i_gold }
+Changing input A of cell $procmux$3028_gold ($mux): \dl[0]_gold -> \data_limit_o [11:0]
+Changing input S of cell $procmux$3001_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $procmux$2996_gold ($mux): \dl[1]_gold -> \data_limit_o [23:12]
+Changing input S of cell $procmux$2971_gold ($mux): \all_seen_gold -> \all_seen
+Changing input S of cell $procmux$2738_gold ($mux): \consume_gold -> \consume
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3921_gold ($ne): { $logic_or$gold.v:72$227_Y_gold \all_seen_gold \link_up_i_gold } -> { $logic_or$gold.v:72$227_Y_gold \all_seen \link_up_i_gold }
+Changing input B of cell $procmux$2732_gold ($pmux): { \hc[0]_gold \hc[1]_gold \hc[2]_gold } -> { \header_consumed_o [7:0] \header_consumed_o [15:8] \header_consumed_o [23:16] }
+Changing input A of cell $procmux$2966_gold ($mux): \dl[2]_gold -> \data_limit_o [35:24]
+Changing input S of cell $procmux$2948_gold ($mux): \consume_gold -> \consume
+Changing input S of cell $procmux$2688_gold ($mux): \consume_gold -> \consume
+Changing input B of cell $procmux$2682_gold ($pmux): { \dc[0]_gold \dc[1]_gold \dc[2]_gold } -> { \data_consumed_o [11:0] \data_consumed_o [23:12] \data_consumed_o [35:24] }
+Changing input S of cell $procmux$2935_gold ($mux): \consume_gold -> \consume
+Changing input S of cell $procmux$2923_gold ($mux): \consume_gold -> \consume
+Changing input A of cell $procmux$3083_gold ($mux): \hl[2]_gold -> \header_limit_o [23:16]
+Changing input S of cell $procmux$3074_gold ($mux): \consume_gold -> \consume
+Changing input S of cell $procmux$2327_gold ($mux): \all_seen_gold -> \all_seen
+Changing input S of cell $procmux$3061_gold ($mux): \consume_gold -> \consume
+Changing input S of cell $procmux$2315_gold ($mux): \all_seen_gold -> \all_seen
+Changing input S of cell $procmux$2303_gold ($mux): \all_seen_gold -> \all_seen
+Changing input S of cell $procmux$3049_gold ($mux): \consume_gold -> \consume
+Changing input S of cell $procmux$2841_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3910_gold ($ne): { \consume_gold \link_up_i_gold } -> { \consume \link_up_i_gold }
+Changing input B of cell $procmux$1931_gold ($pmux): { \hl[0]_gold \hl[1]_gold \hl[2]_gold } -> { \header_limit_o [7:0] \header_limit_o [15:8] \header_limit_o [23:16] }
+Changing input B of cell $procmux$1921_gold ($pmux): { \dl[0]_gold \dl[1]_gold \dl[2]_gold } -> { \data_limit_o [11:0] \data_limit_o [23:12] \data_limit_o [35:24] }
+Changing input S of cell $procmux$3181_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $procmux$3169_gold ($mux): \confirmed_gold -> \confirmed
+Changing input B of cell $procmux$1911_gold ($pmux): { \hc[0]_gold \hc[1]_gold \hc[2]_gold } -> { \header_consumed_o [7:0] \header_consumed_o [15:8] \header_consumed_o [23:16] }
+Changing input S of cell $procmux$3159_gold ($mux): \all_seen_gold -> \all_seen
+Changing input B of cell $procmux$1906_gold ($pmux): { \dc[0]_gold \dc[1]_gold \dc[2]_gold } -> { \data_consumed_o [11:0] \data_consumed_o [23:12] \data_consumed_o [35:24] }
+Changing input A of cell $procmux$3154_gold ($mux): \hl[0]_gold -> \header_limit_o [7:0]
+Changing input B of cell $procmux$1901_gold ($pmux): { \hl[0]_gold \hl[1]_gold \hl[2]_gold } -> { \header_limit_o [7:0] \header_limit_o [15:8] \header_limit_o [23:16] }
+Changing input B of cell $procmux$1896_gold ($pmux): { \dl[0]_gold \dl[1]_gold \dl[2]_gold } -> { \data_limit_o [11:0] \data_limit_o [23:12] \data_limit_o [35:24] }
+Changing input A of cell $shiftx$gold.v:83$276_gold ($shiftx): \di_gold -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $shiftx$gold.v:82$272_gold ($shiftx): \hi_gold -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input B of cell $logic_and$gold.v:81$267_gold ($logic_and): \d_update_ok_gold -> \d_update_ok
+Changing input A of cell $logic_and$gold.v:81$267_gold ($logic_and): \h_update_ok_gold -> \h_update_ok
+Changing input A of cell $and$gold.v:76$257_gold ($and): \seen_gold -> \seen
+Changing input S of cell $procmux$3097_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $and$gold.v:75$249_gold ($and): \di_gold -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $and$gold.v:75$241_gold ($and): \hi_gold -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input S of cell $procmux$3127_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $logic_and$gold.v:68$178_gold ($logic_and): \all_seen_gold -> \all_seen
+Changing input B of cell $add$gold.v:66$177_gold ($add): { 2'00 \rounded_dw_gold [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3903_gold ($ne): { $shiftx$gold.v:47$54_Y_gold \all_seen_gold \link_up_i_gold } -> { $shiftx$gold.v:47$54_Y_gold \all_seen \link_up_i_gold }
+Changing input A of cell $shiftx$gold.v:66$170_gold ($shiftx): \di_gold -> { \infinite_o [5] \infinite_o [3] \infinite_o [1] }
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$3901_gold ($ne): { $logic_and$gold.v:81$267_Y_gold \all_seen_gold \link_up_i_gold } -> { $logic_and$gold.v:81$267_Y_gold \all_seen \link_up_i_gold }
+Changing input A of cell $shiftx$gold.v:65$162_gold ($shiftx): \hi_gold -> { \infinite_o [4] \infinite_o [2] \infinite_o [0] }
+Changing input A of cell $logic_not$gold.v:54$78_gold ($logic_not): \d_step_gold [11] -> \d_step [11]
+Changing input A of cell $procmux$3122_gold ($mux): \hl[1]_gold -> \header_limit_o [15:8]
+Changing input A of cell $logic_not$gold.v:53$72_gold ($logic_not): \h_step_gold [7] -> \h_step [7]
+Changing input B of cell $ternary$gold.v:48$64_gold ($mux): { 2'00 \rounded_dw_gold [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input S of cell $procmux$3033_gold ($mux): \all_seen_gold -> \all_seen
+Changing input A of cell $logic_and$gold.v:48$60_gold ($logic_and): \consume_gold -> \consume
+Changing input B of cell $logic_and$gold.v:46$49_gold ($logic_and): \reserve_ready_o_gold -> \reserve_ready_o
+Changing input B of cell $logic_and$gold.v:45$46_gold ($logic_and): \data_ok_gold -> \data_ok
+Changing input A of cell $logic_and$gold.v:45$46_gold ($logic_and): \header_ok_gold -> \header_ok
+Changing input B of cell $logic_and$gold.v:44$45_gold ($logic_and): \request_legal_gold -> \request_legal
+Changing input A of cell $logic_and$gold.v:44$45_gold ($logic_and): \initialized_o_gold -> \initialized_o
+Changing input B of cell $ge$gold.v:43$42_gold ($ge): { 2'00 \rounded_dw_gold [11:2] } -> { 2'00 \rounded_dw [11:2] }
+Changing input A of cell $ge$gold.v:43$42_gold ($ge): \available_d_gold -> \available_d
+Changing input A of cell $logic_not$gold.v:43$41_gold ($logic_not): \available_d_gold [11] -> \available_d [11]
+Changing input A of cell $logic_not$gold.v:42$37_gold ($logic_not): \available_h_gold [7] -> \available_h [7]
+Changing input A of cell $ne$gold.v:42$36_gold ($reduce_bool): \available_h_gold -> \available_h
+Changing input B of cell $logic_and$gold.v:31$27_gold ($logic_and): \confirmed_gold -> \confirmed
+Changing input A of cell $logic_and$gold.v:31$27_gold ($logic_and): \peer_init1_done_o_gold -> \peer_init1_done_o
+Changing input B of cell $logic_and$gold.v:30$26_gold ($logic_and): \confirmed_gold -> \confirmed
+Changing input B of cell $logic_and$gold.v:29$24_gold ($logic_and): \all_seen_gold -> \all_seen
+Changing input A of cell $reduce_and$gold.v:28$22_gold ($reduce_and): \seen_gold -> \seen
+
+9. Executing HIERARCHY pass (managing design hierarchy).
+
+9.1. Analyzing design hierarchy..
+Top module:  \equiv
+
+9.2. Analyzing design hierarchy..
+Top module:  \equiv
+Removing unused module `\gate'.
+Removing unused module `\gold'.
+Removed 2 unused modules.
+
+10. Executing EQUIV_SIMPLE pass.
+Found 362 unproven $equiv cells (40 groups) in equiv:
+ Grouping SAT models for \i:
+  Trying to prove $equiv for \i [0]:ezsat
+ success!
+  Trying to prove $equiv for \i [1]:ezsat
+ success!
+  Trying to prove $equiv for \i [2]:ezsat
+ success!
+  Trying to prove $equiv for \i [3]:ezsat
+ success!
+  Trying to prove $equiv for \i [4]:ezsat
+ success!
+  Trying to prove $equiv for \i [5]:ezsat
+ success!
+  Trying to prove $equiv for \i [6]:ezsat
+ success!
+  Trying to prove $equiv for \i [7]:ezsat
+ success!
+  Trying to prove $equiv for \i [8]:ezsat
+ success!
+  Trying to prove $equiv for \i [9]:ezsat
+ success!
+  Trying to prove $equiv for \i [10]:ezsat
+ success!
+  Trying to prove $equiv for \i [11]:ezsat
+ success!
+  Trying to prove $equiv for \i [12]:ezsat
+ success!
+  Trying to prove $equiv for \i [13]:ezsat
+ success!
+  Trying to prove $equiv for \i [14]:ezsat
+ success!
+  Trying to prove $equiv for \i [15]:ezsat
+ success!
+  Trying to prove $equiv for \i [16]:ezsat
+ success!
+  Trying to prove $equiv for \i [17]:ezsat
+ success!
+  Trying to prove $equiv for \i [18]:ezsat
+ success!
+  Trying to prove $equiv for \i [19]:ezsat
+ success!
+  Trying to prove $equiv for \i [20]:ezsat
+ success!
+  Trying to prove $equiv for \i [21]:ezsat
+ success!
+  Trying to prove $equiv for \i [22]:ezsat
+ success!
+  Trying to prove $equiv for \i [23]:ezsat
+ success!
+  Trying to prove $equiv for \i [24]:ezsat
+ success!
+  Trying to prove $equiv for \i [25]:ezsat
+ success!
+  Trying to prove $equiv for \i [26]:ezsat
+ success!
+  Trying to prove $equiv for \i [27]:ezsat
+ success!
+  Trying to prove $equiv for \i [28]:ezsat
+ success!
+  Trying to prove $equiv for \i [29]:ezsat
+ success!
+  Trying to prove $equiv for \i [30]:ezsat
+ success!
+  Trying to prove $equiv for \i [31]:ezsat
+ success!
+  Trying to prove $equiv for \reserve_ready_o:ezsat
+ success!
+  Trying to prove $equiv for \initialized_o:ezsat
+ success!
+  Trying to prove $equiv for \peer_init1_done_o:ezsat
+ success!
+  Trying to prove $equiv for \peer_init2_seen_o:ezsat
+ success!
+  Trying to prove $equiv for \protocol_error_o:ezsat
+ezsat
+ success!
+ Grouping SAT models for \header_limit_o:
+  Trying to prove $equiv for \header_limit_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [8]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [12]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [16]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \header_limit_o [23]:ezsat
+ success!
+ Grouping SAT models for \header_consumed_o:
+  Trying to prove $equiv for \header_consumed_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [8]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [12]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [16]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \header_consumed_o [23]:ezsat
+ success!
+ Grouping SAT models for \data_limit_o:
+  Trying to prove $equiv for \data_limit_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [8]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [12]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [16]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [23]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [24]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [25]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [26]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [27]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [28]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [29]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [30]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [31]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [32]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [33]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [34]:ezsat
+ success!
+  Trying to prove $equiv for \data_limit_o [35]:ezsat
+ success!
+ Grouping SAT models for \data_consumed_o:
+  Trying to prove $equiv for \data_consumed_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [8]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [12]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [16]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [23]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [24]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [25]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [26]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [27]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [28]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [29]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [30]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [31]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [32]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [33]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [34]:ezsat
+ success!
+  Trying to prove $equiv for \data_consumed_o [35]:ezsat
+ success!
+ Grouping SAT models for \infinite_o:
+  Trying to prove $equiv for \infinite_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \infinite_o [1]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \infinite_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \infinite_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \infinite_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \infinite_o [5]:ezsat
+ success!
+ Grouping SAT models for \seen:
+  Trying to prove $equiv for \seen [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \seen [1]:ezsat
+ success!
+  Trying to prove $equiv for \seen [2]:ezsat
+ success!
+ Grouping SAT models for \hi:
+  Trying to prove $equiv for \hi [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hi [1]:ezsat
+ success!
+  Trying to prove $equiv for \hi [2]:ezsat
+ success!
+ Grouping SAT models for \di:
+  Trying to prove $equiv for \di [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \di [1]:ezsat
+ success!
+  Trying to prove $equiv for \di [2]:ezsat
+ success!
+  Trying to prove $equiv for \confirmed:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \all_seen:ezsat
+ success!
+  Trying to prove $equiv for \request_legal:ezsat
+ success!
+ Grouping SAT models for \rounded_dw:
+  Trying to prove $equiv for \rounded_dw [0]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [1]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [2]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [3]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [4]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [5]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [6]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [7]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [8]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [9]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [10]:ezsat
+ success!
+  Trying to prove $equiv for \rounded_dw [11]:ezsat
+ success!
+ Grouping SAT models for \required_data:
+  Trying to prove $equiv for \required_data [0]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [1]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [2]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [3]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [4]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [5]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [6]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [7]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [8]:ezsat
+ success!
+  Trying to prove $equiv for \required_data [9]:ezsat
+ success!
+ Grouping SAT models for \available_h:
+  Trying to prove $equiv for \available_h [0]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [1]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [2]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [3]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [4]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [5]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [6]:ezsat
+ success!
+  Trying to prove $equiv for \available_h [7]:ezsat
+ success!
+ Grouping SAT models for \available_d:
+  Trying to prove $equiv for \available_d [0]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [1]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [2]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [3]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [4]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [5]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [6]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [7]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [8]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [9]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [10]:ezsat
+ success!
+  Trying to prove $equiv for \available_d [11]:ezsat
+ success!
+  Trying to prove $equiv for \header_ok:ezsat
+ success!
+  Trying to prove $equiv for \data_ok:ezsat
+ success!
+  Trying to prove $equiv for \consume:ezsat
+ success!
+ Grouping SAT models for \h_step:
+  Trying to prove $equiv for \h_step [0]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [1]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [2]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [3]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [4]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [5]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [6]:ezsat
+ success!
+  Trying to prove $equiv for \h_step [7]:ezsat
+ success!
+ Grouping SAT models for \d_step:
+  Trying to prove $equiv for \d_step [0]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [1]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [2]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [3]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [4]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [5]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [6]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [7]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [8]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [9]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [10]:ezsat
+ success!
+  Trying to prove $equiv for \d_step [11]:ezsat
+ success!
+  Trying to prove $equiv for \h_update_ok:ezsat
+ success!
+  Trying to prove $equiv for \d_update_ok:ezsat
+ success!
+ Grouping SAT models for \hl[0]:
+  Trying to prove $equiv for \hl[0] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hl[0] [7]:ezsat
+ success!
+ Grouping SAT models for \hl[1]:
+  Trying to prove $equiv for \hl[1] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hl[1] [7]:ezsat
+ success!
+ Grouping SAT models for \hl[2]:
+  Trying to prove $equiv for \hl[2] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hl[2] [7]:ezsat
+ success!
+ Grouping SAT models for \hc[0]:
+  Trying to prove $equiv for \hc[0] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hc[0] [7]:ezsat
+ success!
+ Grouping SAT models for \hc[1]:
+  Trying to prove $equiv for \hc[1] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hc[1] [7]:ezsat
+ success!
+ Grouping SAT models for \hc[2]:
+  Trying to prove $equiv for \hc[2] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [1]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [2]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [3]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [4]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [5]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [6]:ezsat
+ success!
+  Trying to prove $equiv for \hc[2] [7]:ezsat
+ success!
+ Grouping SAT models for \dl[0]:
+  Trying to prove $equiv for \dl[0] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dl[0] [11]:ezsat
+ success!
+ Grouping SAT models for \dl[1]:
+  Trying to prove $equiv for \dl[1] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dl[1] [11]:ezsat
+ success!
+ Grouping SAT models for \dl[2]:
+  Trying to prove $equiv for \dl[2] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dl[2] [11]:ezsat
+ success!
+ Grouping SAT models for \dc[0]:
+  Trying to prove $equiv for \dc[0] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dc[0] [11]:ezsat
+ success!
+ Grouping SAT models for \dc[1]:
+  Trying to prove $equiv for \dc[1] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dc[1] [11]:ezsat
+ success!
+ Grouping SAT models for \dc[2]:
+  Trying to prove $equiv for \dc[2] [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [1]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [2]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [3]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [4]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [5]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [6]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [7]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [8]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [9]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [10]:ezsat
+ success!
+  Trying to prove $equiv for \dc[2] [11]:ezsat
+ success!
+Proved 362 previously unproven $equiv cells.
+
+11. Executing EQUIV_INDUCT pass.
+No selected unproven $equiv cells found in equiv.
+Proved 0 previously unproven $equiv cells.
+
+12. Executing EQUIV_STATUS pass.
+Found 362 $equiv cells in equiv:
+  Of those cells 362 are proven and 0 are unproven.
+  Equivalence successfully proven!
+
+Warnings: 8 unique messages, 8 total
+End of script. Logfile hash: 1a1d1a3dc8, time: 0.64s, user: 0.63s, system: 0.01s, MEM: 36.01 MB peak
+Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)
+Time spent: 83% 1x equiv_simple (0 sec), 2% 8x opt_expr (0 sec), ...

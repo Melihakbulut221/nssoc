@@ -44,20 +44,14 @@ module soc_pcie_credit_tx (
     assign reserve_ready_o=initialized_o && request_legal &&
         (reserve_replay_i || (header_ok && data_ok));
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
-    // Precompute both same-cycle FC outcomes. The late reservation verdict
-    // selects one sign bit instead of entering two serial carry chains.
-    // Subtractions retain the original 8/12-bit modulo credit arithmetic.
-    wire credit_debit=consume && reserve_class_i==fc_class_i;
+    wire [7:0] next_hc=hc[fc_class_i]+((consume && reserve_class_i==fc_class_i && !hi[fc_class_i]) ? 8'd1 : 8'd0);
+    wire [11:0] next_dc=dc[fc_class_i]+((consume && reserve_class_i==fc_class_i && !di[fc_class_i]) ? {2'b0,required_data} : 12'd0);
     wire [7:0] h_step=fc_header_i-hl[fc_class_i];
     wire [11:0] d_step=fc_data_i-dl[fc_class_i];
-    wire [7:0] h_idle_remaining=fc_header_i-hc[fc_class_i];
-    wire [11:0] d_idle_remaining=fc_data_i-dc[fc_class_i];
-    wire [7:0] h_debit_remaining=h_idle_remaining-8'd1;
-    wire [11:0] d_debit_remaining=d_idle_remaining-{2'b0,required_data};
-    wire h_update_ok=hi[fc_class_i] ? fc_header_i==0 :
-        (!h_step[7] && !(credit_debit ? h_debit_remaining[7] : h_idle_remaining[7]));
-    wire d_update_ok=di[fc_class_i] ? fc_data_i==0 :
-        (!d_step[11] && !(credit_debit ? d_debit_remaining[11] : d_idle_remaining[11]));
+    wire [7:0] h_remaining=fc_header_i-next_hc;
+    wire [11:0] d_remaining=fc_data_i-next_dc;
+    wire h_update_ok=hi[fc_class_i] ? fc_header_i==0 : (!h_step[7] && !h_remaining[7]);
+    wire d_update_ok=di[fc_class_i] ? fc_data_i==0 : (!d_step[11] && !d_remaining[11]);
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;

@@ -201,3 +201,42 @@ is implied. The result is a mapped integration prerequisite, not a completed
 physical chip. Exact summaries and raw delivery are in the
 [main-chip evidence](../hw/soc/pcie-evidence/20261008-mainchip-packet-mapping/review.json)
 and [archive record](../hw/soc/pcie-evidence/20261008-mainchip-packet-mapping/delivery.json).
+
+## Credit-path repair after the joint mapping
+
+The measured replay-to-credit path led to a same-cycle arithmetic change in
+[transmit credits](../hw/soc/rtl/pcie/soc_pcie_credit_tx.v). Debit and no-debit
+remaining-credit values are computed in parallel. The late reservation verdict
+selects the result instead of entering two serial carry chains. Modulo widths,
+state, clocks and protocol latency are unchanged.
+
+The [reference proof](../scripts/check_pcie_credit_equivalence.py) compares with
+the frozen source from `f533e9c`: **362 equivalence points pass**. Explicit
+`clk2fflogic` clock/reset-event modeling is used; the initial direct async-FF
+SAT attempt failed and is retained. Three real arithmetic mutations are rejected.
+Four RTL credit cases, four actual IHP-cell credit cases and both asynchronous
+CPU/Ethernet/PCIe scenarios pass. Eleven formal/mutation host controls pass.
+The credit block maps to 988 native cells; the full chip maps to 77,697 cells.
+
+The same OpenROAD binary, libraries, LEFs, repair command and role-normalized
+4/20/8 ns constraints are independently checked against the prior screen.
+The repaired graph again passes all ports and **278,091 pin bits**, with seven
+actual corruptions rejected. Slow global setup improves **261.408 ps**;
+typical improves 175.912 ps and fast improves 130.519 ps. No clock is relaxed.
+
+| Corner | New global setup (ns) | New global hold (ns) |
+| --- | ---: | ---: |
+| Slow | −5.385181 | −0.469310 |
+| Typical | −2.030500 | −0.539480 |
+| Fast | −0.064101 | −0.601382 |
+
+**This is not physical acceptance.** The slow Ethernet TX group regresses from
+−1.238929 to −1.866908 ns in the resynthesized/repaired candidate, although
+global setup improves. The new packet critical path is
+`receive_ownership.qread[2]` to `quarantine.index[4]`. These paths, hold repair,
+qualified SRAM/RC and the actual serial PHY remain open. The functionally
+equivalent RTL factoring is retained; the failed physical candidate is not
+adopted as a chip layout. The default non-packet layout profile is unaffected.
+The [complete comparison](../hw/soc/pcie-evidence/20261008-parallel-credit-repair/review.json)
+and [raw archive](../hw/soc/pcie-evidence/20261008-parallel-credit-repair/delivery.json)
+retain both gains and regressions.
