@@ -1,0 +1,174 @@
+{
+  "status": "RETAINED_FINITE_FUNCTIONAL_PASS_WITH_SETUP_FAILURE",
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v29-20261008/pcie-integrity-v29-output-20261008.tar.gz",
+    "bytes": 30914684,
+    "sha256": "93ebeb59a0163b4bfb9956757ad386dca20f14355954e0b47845fa6c65b3d283",
+    "members": 128
+  },
+  "manifest": {
+    "bytes": 40124,
+    "sha256": "68015c863b8f705be09fbb9c02e633594ff615853e7c7550ebbd8d8233ccda75"
+  },
+  "method": {
+    "bytes": 4208,
+    "sha256": "493fb998c32b799e73f688d408cd16477e102f134a1ca6b23ea4dbc5dfa636c7"
+  },
+  "product_sources": {
+    "scripts/generate_pcie_integrity_output_v29.py": {
+      "bytes": 2863,
+      "sha256": "08e3dbe1450f2adc02fbf4c207fd95e90e5d3f02b270da8ffcdedbfe1564141c"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v29_output.py": {
+      "bytes": 6088,
+      "sha256": "7fe83308d2e1d86310a324727f2de984ddc387d7b001dfc3d7f5ed92582b3e2a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v29.v": {
+      "bytes": 202630,
+      "sha256": "061effe74c9628d0441b33f720ea78f863dbacf8d5596795466a3710bfb3205a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v29.v": {
+      "bytes": 3324,
+      "sha256": "40cc0079740947093f26493ec9492d6762e2a8569bc66c35980f1b3a0d059596"
+    }
+  },
+  "finite": {
+    "unique_host_predicates": 7,
+    "positive_port_cases": 19,
+    "negative_controls": 5,
+    "initial_passed": 6,
+    "initial_failed": 1,
+    "targeted_retry_passed": 1,
+    "witness": {
+      "copies": 7993,
+      "fault_copies": 1,
+      "fault_changes": 1,
+      "stalls": 267,
+      "public_cycles": 34248
+    }
+  },
+  "timing": [
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "slow",
+      "direction": "max",
+      "all_group_slacks_ns": [
+        3.561266,
+        -3.204153
+      ],
+      "worst_slack_ns": -3.204153
+    },
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "slow",
+      "direction": "min",
+      "all_group_slacks_ns": [
+        0.401006,
+        0.412042
+      ],
+      "worst_slack_ns": 0.401006
+    },
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "typical",
+      "direction": "max",
+      "all_group_slacks_ns": [
+        3.652583,
+        -0.553742
+      ],
+      "worst_slack_ns": -0.553742
+    },
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "typical",
+      "direction": "min",
+      "all_group_slacks_ns": [
+        0.3266,
+        0.260411
+      ],
+      "worst_slack_ns": 0.260411
+    },
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "fast",
+      "direction": "max",
+      "all_group_slacks_ns": [
+        3.698173,
+        0.99193
+      ],
+      "worst_slack_ns": 0.99193
+    },
+    {
+      "stage": "PREPLACEMENT_REPAIRED",
+      "corner": "fast",
+      "direction": "min",
+      "all_group_slacks_ns": [
+        0.286336,
+        0.176086
+      ],
+      "worst_slack_ns": 0.176086
+    }
+  ],
+  "delta_vs_v28": {
+    "slow_max": -0.10553799999999969,
+    "slow_min": 0.0,
+    "typical_max": -0.07390299999999994,
+    "typical_min": 9.799999999998699e-05,
+    "fast_max": -0.0473380000000001,
+    "fast_min": 0.0
+  },
+  "mapped_cells": 96841,
+  "graph": {
+    "status": "PASS_COMPLETE_NATIVE_CELL_PIN_AND_PORT_DRIVER_GRAPH",
+    "source": {
+      "path": "/dev/shm/nssoc-integrity-v29-balanced-map-01/mapped.json",
+      "bytes": 62698195,
+      "sha256": "0c53108f4028becd2808e4abb5607710fe55585068cde60b78c98b9951175ccb"
+    },
+    "physical_import": {
+      "path": "/dev/shm/nssoc-integrity-v29-balanced-import-01/mapped.json",
+      "bytes": 62708825,
+      "sha256": "f4f3120c12b014ab5d77833e355fadc5316496ee2bc39a7b075176aaca435bed"
+    },
+    "method": {
+      "bytes": 3541,
+      "sha256": "2e23ef2a126b7bbe1558b51bcb4a23d1d70b745c24a82892582caeaf2c732e91"
+    },
+    "original_cells": 96841,
+    "new_literal_ties": 2,
+    "checked_cell_pin_bits": 352419,
+    "top_ports": 24,
+    "actual_graph_fault_controls": [
+      {
+        "fault": "data_input_inversion",
+        "rejected": true
+      },
+      {
+        "fault": "clock_disconnection",
+        "rejected": true
+      },
+      {
+        "fault": "cell_model_change",
+        "rejected": true
+      },
+      {
+        "fault": "public_output_inversion",
+        "rejected": true
+      },
+      {
+        "fault": "port_width_change",
+        "rejected": true
+      },
+      {
+        "fault": "extra_parameter",
+        "rejected": true
+      }
+    ],
+    "scope": "Every original native cell type/parameters/pin-driver and publicport; only literal0/1 replaced byactualtiecells. No arithmetic/sequential or functional change."
+  },
+  "timing_accepted": false,
+  "main_chip_integrated": false,
+  "full_phy_accepted": false,
+  "external_independent_review": false,
+  "reviewer": "root"
+}

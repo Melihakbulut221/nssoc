@@ -764,3 +764,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/154-pcie-frontier-epoch-quarantine.md](154-pcie-frontier-epoch-quarantine.md) records V27 frontier isolation, nineteen public port cases, five rejected faults and the remaining 4 ns setup failure; full PHY and main-chip integration stay open.
 
 [docs/155-pcie-payload-epoch-quarantine.md](155-pcie-payload-epoch-quarantine.md) records V28 ring-payload isolation, actual fault-edge writes and a 112.250 ps slow setup improvement; the 4 ns target and main-chip integration remain open.
+
+[docs/156-pcie-output-transfer-timing-rejection.md](156-pcie-output-transfer-timing-rejection.md) records V29 output isolation, actual fault and stall controls, and a rejected 105.538 ps setup regression; full PHY and main-chip integration remain open.
