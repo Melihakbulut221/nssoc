@@ -766,3 +766,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/155-pcie-payload-epoch-quarantine.md](155-pcie-payload-epoch-quarantine.md) records V28 ring-payload isolation, actual fault-edge writes and a 112.250 ps slow setup improvement; the 4 ns target and main-chip integration remain open.
 
 [docs/156-pcie-output-transfer-timing-rejection.md](156-pcie-output-transfer-timing-rejection.md) records V29 output isolation, actual fault and stall controls, and a rejected 105.538 ps setup regression; full PHY and main-chip integration remain open.
+
+[docs/157-pcie-balanced-fault-and-native-recovery.md](157-pcie-balanced-fault-and-native-recovery.md) records a 481.175 ps receiver setup improvement and twelve passing native packet cases after a recovered GitHub mapping timeout; full PHY/main-chip integration remains open.

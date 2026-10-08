@@ -107,6 +107,9 @@ jobs:
             native_checker=scripts/check_pcie_gen3_continuous_rx_wide_native_v3.py
             fault_controls=sw/tests/test_pcie_gen3_wide_portable_controls_v3.py
           fi
+          if [ "$COMPONENT" = continuous_rx_integrity_v1 ]; then
+            native_checker=scripts/check_pcie_gen3_continuous_rx_integrity_native_v2.py
+          fi
           python3 "$native_checker" --out "hw/soc/out/pcie-local-flow/$COMPONENT-rtl"
           python3 "$native_checker" --native --out "hw/soc/out/pcie-local-flow/$COMPONENT-native" --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
           python3 -m pytest -q "$fault_controls" --basetemp="hw/soc/out/pcie-local-flow/$COMPONENT-mutations"
