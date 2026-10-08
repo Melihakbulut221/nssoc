@@ -37,8 +37,16 @@ module soc_pcie_credit_tx (
     wire request_legal=reserve_class_i<3 && reserve_payload_dw_i<=1024;
     wire [11:0] rounded_dw={1'b0,reserve_payload_dw_i}+12'd3;
     wire [9:0] required_data=rounded_dw[11:2];
-    wire [7:0] available_h=hl[reserve_class_i]-hc[reserve_class_i];
-    wire [11:0] available_d=dl[reserve_class_i]-dc[reserve_class_i];
+    // Compute per-class differences before the late replay class selects one.
+    wire [7:0] class_h [0:2];
+    wire [11:0] class_d [0:2];
+    genvar credit_class;
+    generate for(credit_class=0;credit_class<3;credit_class=credit_class+1) begin: class_available
+        assign class_h[credit_class]=hl[credit_class]-hc[credit_class];
+        assign class_d[credit_class]=dl[credit_class]-dc[credit_class];
+    end endgenerate
+    wire [7:0] available_h=class_h[reserve_class_i];
+    wire [11:0] available_d=class_d[reserve_class_i];
     wire header_ok=hi[reserve_class_i] || (available_h!=0 && !available_h[7]);
     wire data_ok=di[reserve_class_i] || (!available_d[11] && available_d>={2'b0,required_data});
     assign reserve_ready_o=initialized_o && request_legal &&

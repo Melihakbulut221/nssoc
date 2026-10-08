@@ -87,16 +87,7 @@ module soc_pcie_rx_credit #(
     assign out_dllp_o=select_dllp;
     assign out_valid_o=rst_ni && link_up_i &&
         (output_active || (!training_i && (select_dllp ? dllp_pending : tlp_available && out_ready_i)));
-    // Read each constant-base bank in parallel. The queue-head decode selects
-    // an already-read byte instead of driving a multiply/add and a flat mux.
-    // Keep the flat array bounds (including reads across a bank boundary) so
-    // this is cycle-exact even outside the valid output-index range.
-    wire [7:0] bank_byte [0:SLOTS-1];
-    genvar bank;
-    generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
-        assign bank_byte[bank]=packets[bank*CAP+output_index];
-    end endgenerate
-    assign out_data_o=select_dllp ? dllp[output_index] : bank_byte[head_slot];
+    assign out_data_o=select_dllp ? dllp[output_index] : packets[head_slot*CAP+output_index];
     assign out_sop_o=output_index==0;
     assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length :
                                   output_index+1'b1==lengths[head_slot];

@@ -7,6 +7,7 @@ on:
       - .github/workflows/pcie-buffered-soc.yml
       - hw/soc/rtl/pcie/**
       - hw/soc/rtl/soc_top.v
+      - hw/soc/rtl/dft/soc_sram_mbist.v
       - hw/soc/flow/syn_soc_top.sh
       - hw/soc/flow/sta_soc_top.sh
       - hw/soc/rtl/soc_gpio.v
@@ -18,6 +19,7 @@ on:
       - sw/tests/test_pcie*.py
       - sw/tests/fixtures/pcie_apb_cdc/**
       - sw/tests/fixtures/pcie_credit_tx/**
+      - sw/tests/fixtures/pcie_chip_timing/**
   pull_request:
     paths: *paths
   workflow_dispatch:
@@ -192,7 +194,7 @@ jobs:
         run: |
           python3 scripts/check_pcie_ethernet_soc.py --out hw/soc/out/pcie-cpu-integration/ethernet-same-clock --iverilog-dir "$(dirname "$(command -v iverilog)")"
           python3 scripts/check_pcie_ethernet_soc.py --async-pcie --out hw/soc/out/pcie-cpu-integration/ethernet-async-pcie --iverilog-dir "$(dirname "$(command -v iverilog)")"
-          python3 -m pytest -q sw/tests/test_pcie_ethernet_soc.py sw/tests/test_pcie_apb_cdc.py sw/tests/test_pcie_apb_cdc_constraints.py sw/tests/test_pcie_soc_constraints.py sw/tests/test_pcie_credit_equivalence.py --basetemp=hw/soc/out/pcie-cpu-integration/joint-mutations
+          python3 -m pytest -q sw/tests/test_pcie_ethernet_soc.py sw/tests/test_pcie_apb_cdc.py sw/tests/test_pcie_apb_cdc_constraints.py sw/tests/test_pcie_soc_constraints.py sw/tests/test_pcie_credit_equivalence.py sw/tests/test_pcie_chip_timing_equivalence.py sw/tests/test_soc_sram_mbist.py --basetemp=hw/soc/out/pcie-cpu-integration/joint-mutations
       - name: Preserve full integration logs and source pins
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -19,6 +19,16 @@ from cocotb_results import count_results  # noqa: E402
 MUTANTS = [
     (
         "soc_pcie_rx_credit",
+        "packets[bank*CAP+output_index]",
+        "packets[bank*CAP+output_index+1]",
+    ),
+    (
+        "soc_pcie_rx_credit",
+        "bank_byte[head_slot]",
+        "bank_byte[0]",
+    ),
+    (
+        "soc_pcie_rx_credit",
         "if(packet_accepted_i) begin",
         "if(packet_accepted_i || packet_duplicate_i) begin",
     ),

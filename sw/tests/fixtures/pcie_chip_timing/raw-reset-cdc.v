@@ -48,11 +48,8 @@ module soc_pcie_apb_cdc (
  assign s_pready_o=source_reset_n && source_state==S_RESPONSE && s_psel_i && s_penable_i;
  assign s_pslverr_o=s_pready_o && response[32];
  assign s_prdata_o=s_pready_o ? response[31:0] : 32'b0;
- // The release flop asserts reset asynchronously, including with a stopped
- // destination clock. Use that local signal on APB outputs; do not route the
- // raw link-reset input through the CPU's combinational peripheral decode.
- assign m_psel_o=destination_release[1] && (destination_state==D_SETUP || destination_state==D_ACCESS);
- assign m_penable_o=destination_release[1] && destination_state==D_ACCESS;
+ assign m_psel_o=destination_reset_n && (destination_state==D_SETUP || destination_state==D_ACCESS);
+ assign m_penable_o=destination_reset_n && destination_state==D_ACCESS;
  always @(posedge source_clk_i or negedge source_reset_n) begin
    if(!source_reset_n) begin
      request<=0;request_payload<=0;response<=0;source_state<=S_IDLE;served<=0;

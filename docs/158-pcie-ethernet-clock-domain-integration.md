@@ -240,3 +240,77 @@ adopted as a chip layout. The default non-packet layout profile is unaffected.
 The [complete comparison](../hw/soc/pcie-evidence/20261008-parallel-credit-repair/review.json)
 and [raw archive](../hw/soc/pcie-evidence/20261008-parallel-credit-repair/delivery.json)
 retain both gains and regressions.
+
+## 2026-10-08 receive banks, MBIST and local reset repair
+
+The next measured receive path was queue-head selection through the flat
+packet array and the CRC quarantine. The receiver now reads constant-base
+banks in parallel before selecting the head byte. This preserves cross-bank
+index behavior, packet ownership, reset and every external cycle. The frozen
+reference proves **2,679 equivalence points** with explicit clock events and
+undefined memory modeling. The initial proof without undefined modeling left
+eight data bits unproved; that failed run is retained. No valid-only output
+mask or input assumption was added to the successful proof.
+
+The Ethernet critical path was SRAM readback into the MBIST background
+counter. Its internal width now covers exactly `0..PARTITIONS+1`; the public
+failure diagnostic remains eight bits. Explicit zero extension removes the
+three width warnings found during review. The existing 36 MBIST transaction,
+fault and abort tests pass. Formal comparisons also pass for the actual
+16-bit/2048-word FIFO and 64-bit/8192-word system controllers, plus one-bit
+and non-power-of-two/multi-cycle-read boundary configurations. This shared
+MBIST source also affects non-packet profiles when MBIST is enabled; old GDS
+and signoff results have not been regenerated for it.
+
+The bank/MBIST candidate passes five RTL receive cases, five actual IHP-cell
+receive cases and five complete packet-composition cases. The simultaneous
+CPU/Ethernet/PCIe campaign with all 16 vendor FIFO SRAM models passes both
+normal traffic and link-loss cases: **10.863244 ms simulated**, 604.29 seconds
+wall time, no skipped case. Twenty-one host controls include two actual
+bank-read corruptions rejected by the port scoreboards. The 77,097-cell
+whole-chip map retains 101 ports and 20 vendor SRAMs. Its repaired graph
+preserves all 276,116 non-buffer pin bits and rejects seven graph faults.
+
+The subsequent candidate computes each transmit-credit class difference
+before selecting it, rather than selecting two operands before subtraction.
+All 362 frozen credit equivalence points and four native credit cases pass.
+The APB destination outputs now use the local asynchronously cleared reset
+release flop. Raw PCIe link reset still asserts both mailbox resets, but no
+longer directly drives combinational CPU peripheral selection. All 217 CDC
+equivalence points pass; the 416-cell native bridge passes 97 transfers at
+each of three clock ratios, including reset during an ACCESS with the
+destination clock stopped. The updated joint asynchronous CPU/Ethernet/PCIe
+tests pass both cases; these last two cases use RTL FIFOs, not a second vendor
+SRAM MBIST campaign. Four MBIST parameter proofs cover the explicit casts.
+
+Both whole-chip screens use the same native libraries, LEFs, repair command,
+4/20/8 ns clocks, derates and IO budgets. Pin identities are rebound to the
+actual mapped registers; role-normalized constraints are equal. Final
+explicit-cast mapping has 77,697 cells, 101 ports and 20 SRAMs. Its timing
+matches the preserved pre-cast experiment exactly:
+
+| Unplaced result | Previous credit repair | Bank/MBIST | Class credit/local reset |
+| --- | ---: | ---: | ---: |
+| Slow worst setup, ns | -5.385181 | -4.076292 | -3.431339 |
+| Typical worst setup, ns | -2.030500 | -1.221225 | -0.975340 |
+| Fast worst setup, ns | -0.064101 | +0.434292 | +0.356756 |
+| Slow CPU setup, ns | -3.069961 | -2.637548 | +0.247116 |
+| Slow Ethernet RX setup, ns | -1.050938 | -0.383086 | -0.704213 |
+| Slow Ethernet TX setup, ns | -1.866908 | -0.621666 | -0.987873 |
+| Slow worst hold, ns | -0.469310 | -0.488175 | -0.469247 |
+| Typical worst hold, ns | -0.539480 | -0.539480 | -0.539480 |
+| Fast worst hold, ns | -0.601382 | -0.601382 | -0.601382 |
+
+The CPU setup improvement does **not** establish full-chip closure. Ethernet
+and fast setup regress against the intermediate bank/MBIST candidate even
+though they improve against the starting point. Hold remains negative.
+The current packet critical path is transmit-packet index to replay
+`next_store_sequence[11]`. Native SRAM timing/RC qualification, CTS/routing,
+full-chip boot/DRC/LVS and the actual full serial Gen3 x4 PHY are still open.
+The base SRAM/MBIST/Ethernet lint profile passes its unchanged 1,065-warning
+ledger; this does not close the earlier packet-profile lint debt.
+
+See the [bank/MBIST review](../hw/soc/pcie-evidence/20261008-rx-bank-mbist-repair/review.json)
+and its [complete raw archive](../hw/soc/pcie-evidence/20261008-rx-bank-mbist-repair/delivery.json),
+plus the [class/reset review](../hw/soc/pcie-evidence/20261008-class-cdc-chip-repair/review.json)
+and [raw archive](../hw/soc/pcie-evidence/20261008-class-cdc-chip-repair/delivery.json).

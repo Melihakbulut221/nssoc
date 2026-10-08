@@ -18,8 +18,8 @@ MUTATIONS = {
     "descending": ("address_q <= address_q - 1'b1", "address_q <= address_q + 1'b1"),
     "background": ("background[bit_index] =", "background[0] ="),
     "clear_pass": (
-        "background_q == 8'(PARTITIONS + 1)",
-        "background_q == 8'(PARTITIONS)",
+        "8'(background_q) == 8'(PARTITIONS + 1)",
+        "8'(background_q) == 8'(PARTITIONS)",
     ),
     "abort": (
         "rst_ni && !abort_i && (state_q == ISSUE)",

@@ -3,7 +3,7 @@
 `default_nettype none
 
 // Destructive, raw-word SRAM March engine. The owner must isolate every other
-// memory port and bypass ECC throughout the test. SoC SRAM wrappers own it.
+// memory port and bypass ECC throughout the test. This is not wired to soc_top.
 // Each background runs {up(wB), up(rB,w~B), up(r~B,wB),
 // down(rB,w~B), down(r~B,wB), down(rB)}. Bit-partition backgrounds
 // exercise unequal bits within a word; the last all-zero pass clears the array.
@@ -35,14 +35,11 @@ module soc_sram_mbist #(
     output reg [7:0] fail_background_o
 );
     localparam integer PARTITIONS = $clog2(WIDTH);
-    // Only backgrounds 0..PARTITIONS+1 are reachable. Keep the diagnostic
-    // port eight bits wide without an eight-bit carry chain on SRAM readback.
-    localparam integer BACKGROUND_WIDTH = $clog2(PARTITIONS+2);
     localparam integer WAIT_WIDTH = (READ_LATENCY > 1) ? $clog2(READ_LATENCY) : 1;
     localparam [1:0] IDLE = 0, ISSUE = 1, READ = 2;
     reg [1:0] state_q;
     reg [2:0] phase_q;
-    reg [BACKGROUND_WIDTH-1:0] background_q;
+    reg [7:0] background_q;
     reg [ADDR_WIDTH-1:0] address_q;
     reg [WAIT_WIDTH-1:0] wait_q;
     reg write_q, start_q;
@@ -51,7 +48,7 @@ module soc_sram_mbist #(
 
     always @* begin
         background = {WIDTH{1'b0}};
-        if (background_q > 0 && 8'(background_q) <= 8'(PARTITIONS))
+        if (background_q > 0 && background_q <= 8'(PARTITIONS))
             for (bit_index = 0; bit_index < WIDTH; bit_index = bit_index + 1)
                 background[bit_index] = ((bit_index >> (background_q - 1)) & 1) != 0;
     end
@@ -70,7 +67,7 @@ module soc_sram_mbist #(
             if ((phase_q < 3 && address_q == ADDR_WIDTH'(DEPTH-1)) ||
                 (phase_q >= 3 && address_q == 0)) begin
                 if (phase_q == 5) begin
-                    if (8'(background_q) == 8'(PARTITIONS + 1)) begin
+                    if (background_q == 8'(PARTITIONS + 1)) begin
                         state_q <= IDLE;
                         done_o <= 1'b1;
                     end else begin
@@ -144,7 +141,7 @@ module soc_sram_mbist #(
                           fail_expected_o <= expected;
                           fail_actual_o <= rdata_i;
                           fail_phase_o <= phase_q;
-                          fail_background_o <= 8'(background_q);
+                          fail_background_o <= background_q;
                       end else if (phase_q == 5) advance_word();
                       else begin
                           write_q <= 1;

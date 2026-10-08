@@ -90,7 +90,10 @@ module tb_pcie_apb_cdc;
    if(seen!=baseline)$fatal(1,"stale request crossed reset");
    // Reset during a genuine destination ACCESS wait, then retry fresh.
    block_slave=1;request(112);
-   wait(ms && me);#0.3;reset();block_slave=0;
+   wait(ms && me);
+   // Also isolate an already offered ACCESS while its clock is stopped.
+   @(negedge dc);destination_run=0;
+   #0.3;reset();destination_run=1;block_slave=0;
    repeat(20)@(negedge dc);
    if(seen!=baseline)$fatal(1,"cancelled wait committed");
    request(113);response();@(negedge sc);ss=0;se=0;
