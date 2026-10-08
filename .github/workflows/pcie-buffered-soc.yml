@@ -9,10 +9,12 @@ on:
       - hw/soc/rtl/soc_top.v
       - hw/soc/rtl/soc_gpio.v
       - hw/soc/rtl/soc_apb_bridge.v
-      - hw/soc/tb/tb_soc_pcie_packet.v
+      - hw/soc/tb/*pcie*.v
       - hw/soc/tb/cocotb/*pcie*
       - scripts/check_pcie*.py
+      - scripts/pcie_*.py
       - sw/tests/test_pcie*.py
+      - sw/tests/fixtures/pcie_apb_cdc/**
   pull_request:
     paths: *paths
   workflow_dispatch:
@@ -52,6 +54,10 @@ jobs:
           done
           python3 scripts/check_pcie_apb_arbiter.py --out hw/soc/out/pcie-local-flow/arbiter-rtl
           python3 scripts/check_pcie_apb_arbiter.py --native --out hw/soc/out/pcie-local-flow/arbiter-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          mkdir -p hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/{lib,verilog}
+          cp hw/soc/out/pcie-local-flow/libraries/cells.lib hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+          cp hw/soc/out/pcie-local-flow/libraries/cells.v hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v
+          python3 scripts/check_pcie_apb_cdc_native.py --out hw/soc/out/pcie-local-flow/cdc-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --pdk hw/soc/out/pcie-local-flow/cdc-pdk
           python3 -m pytest -q sw/tests/test_pcie_rx_flow.py sw/tests/test_pcie_apb_arbiter.py --basetemp=hw/soc/out/pcie-local-flow/mutations
       - name: Four-lane fixed-block gearbox and actual corruption controls
         run: |
@@ -179,6 +185,11 @@ jobs:
         run: |
           python3 scripts/check_pcie_soc.py --out hw/soc/out/pcie-cpu-integration/positive --iverilog-dir "$(dirname "$(command -v iverilog)")"
           python3 -m pytest -q sw/tests/test_pcie_soc.py --basetemp=hw/soc/out/pcie-cpu-integration/mutations
+      - name: Concurrent CPU, Ethernet and independently clocked PCIe
+        run: |
+          python3 scripts/check_pcie_ethernet_soc.py --out hw/soc/out/pcie-cpu-integration/ethernet-same-clock --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_ethernet_soc.py --async-pcie --out hw/soc/out/pcie-cpu-integration/ethernet-async-pcie --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 -m pytest -q sw/tests/test_pcie_ethernet_soc.py sw/tests/test_pcie_apb_cdc.py sw/tests/test_pcie_apb_cdc_constraints.py --basetemp=hw/soc/out/pcie-cpu-integration/joint-mutations
       - name: Preserve full integration logs and source pins
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

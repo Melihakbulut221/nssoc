@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# Prepared by scripts/check_pcie_ethernet_soc.py; never an empty source list.
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+TOPLEVEL = tb_soc_pcie_ethernet
+COCOTB_TEST_MODULES = test_soc_pcie_ethernet
+ifeq ($(strip $(PCIE_ROM)),)
+$(error Use scripts/check_pcie_ethernet_soc.py with a fresh output directory)
+endif
+ifeq ($(strip $(VERILOG_SOURCES)),)
+$(error Missing actual SoC sources)
+endif
+COMPILE_ARGS += -g2012 -DSG13G2_ICG_BEHAVIOURAL -DSOC_PCIE_PACKET -DROM_HEX=\"$(PCIE_ROM)\"
+COMPILE_ARGS += -I$(PCIE_ROOT)/hw/soc/rtl -I$(PCIE_ROOT)/hw/rtl
+ifeq ($(JOINT_ETH_MBIST),1)
+COMPILE_ARGS += -DSOC_ETH_MBIST -DFUNCTIONAL
+endif
+ifeq ($(JOINT_PCIE_ASYNC),1)
+COMPILE_ARGS += -DSOC_PCIE_ASYNC
+endif
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim

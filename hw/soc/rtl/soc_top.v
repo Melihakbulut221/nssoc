@@ -249,7 +249,13 @@ module soc_top #(
     // watchdog obeys.
     input  wire        rst_ni,
 `ifdef SOC_PCIE_PACKET
-    // Same-clock packet boundary for the implemented PCIe completer. This
+`ifdef SOC_PCIE_ASYNC
+    // Optional independent packet/controller clock. This is an internal
+    // digital interface, not a recovered serial PHY or package clock claim.
+    input wire pcie_clk_i,
+`endif
+    // Packet boundary for the implemented PCIe completer (same CPU clock by
+    // default; SOC_PCIE_ASYNC selects the explicit APB clock crossing). This
     // development profile has no serial PHY/PCS/LTSSM or package-pin claim.
     // BAR0 exposes only the existing GPIO slot; all other CPU regions remain
     // inaccessible through this interface. CPU and PCIe share real APB logic.
@@ -942,11 +948,42 @@ module soc_top #(
   wire [11:0] ep_paddr;
   wire [31:0] ep_pwdata,ep_prdata;
   wire [3:0] ep_pstrb;
-  // GPIO is word-write-only. A partial PCIe write completes with an APB
-  // error and never selects the physical peripheral or arbitrates for it.
+  // GPIO is word-write-only; invalid byte enables never select a peripheral.
   wire ep_bad_strobe=ep_pwrite && ep_pstrb!=4'hf;
+  wire packet_psel,packet_penable,packet_pwrite,packet_pready,packet_pslverr;
+  wire [11:0] packet_paddr;
+  wire [31:0] packet_pwdata,packet_prdata;
+  wire [3:0] packet_pstrb;
+`ifdef SOC_PCIE_ASYNC
+  wire packet_clk=pcie_clk_i;
+  (* ASYNC_REG="TRUE" *) reg [1:0] packet_reset_release;
+  always @(posedge pcie_clk_i or negedge rst_sys_n)
+    if(!rst_sys_n) packet_reset_release<=0;
+    else packet_reset_release<={packet_reset_release[0],1'b1};
+  wire packet_rst_n=rst_sys_n && packet_reset_release[1];
+  // Link reset must invalidate both mailbox halves. CPU and Ethernet reset
+  // are deliberately unaffected. A write already accepted by APB remains.
+  soc_pcie_apb_cdc u_pcie_cdc (
+    .source_clk_i(pcie_clk_i),.destination_clk_i(clk_i),
+    .reset_ni(rst_sys_n && pcie_link_up_i && !pcie_retrain_done_i),
+    .s_psel_i(packet_psel),.s_penable_i(packet_penable),.s_pwrite_i(packet_pwrite),
+    .s_paddr_i(packet_paddr),.s_pwdata_i(packet_pwdata),.s_pstrb_i(packet_pstrb),
+    .s_pready_o(packet_pready),.s_pslverr_o(packet_pslverr),.s_prdata_o(packet_prdata),
+    .m_psel_o(ep_psel),.m_penable_o(ep_penable),.m_pwrite_o(ep_pwrite),
+    .m_paddr_o(ep_paddr),.m_pwdata_o(ep_pwdata),.m_pstrb_o(ep_pstrb),
+    .m_pready_i(ep_bad_strobe || ep_pready),
+    .m_pslverr_i(ep_bad_strobe || ep_pslverr),.m_prdata_i(ep_prdata));
+`else
+  wire packet_clk=clk_i;
+  wire packet_rst_n=rst_sys_n;
+  assign ep_psel=packet_psel,ep_penable=packet_penable,ep_pwrite=packet_pwrite;
+  assign ep_paddr=packet_paddr,ep_pwdata=packet_pwdata,ep_pstrb=packet_pstrb;
+  assign packet_pready=ep_bad_strobe || ep_pready;
+  assign packet_pslverr=ep_bad_strobe || ep_pslverr;
+  assign packet_prdata=ep_prdata;
+`endif
   soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie (
-      .clk_i(clk_i),.rst_ni(rst_sys_n),.link_up_i(pcie_link_up_i),
+      .clk_i(packet_clk),.rst_ni(packet_rst_n),.link_up_i(pcie_link_up_i),
       .training_i(pcie_training_i),.retrain_done_i(pcie_retrain_done_i),
       .function_id_i(pcie_function_id_i),.rx_data_i(pcie_rx_data_i),
       .rx_sop_i(pcie_rx_sop_i),.rx_eop_i(pcie_rx_eop_i),
@@ -957,10 +994,9 @@ module soc_top #(
       .tx_dllp_o(pcie_tx_dllp_o),.tx_replay_o(pcie_tx_replay_o),
       .tx_ready_i(pcie_tx_ready_i),.initialized_o(pcie_initialized_o),
       .error_o(pcie_error_o),.retrain_request_o(pcie_retrain_request_o),
-      .psel_o(ep_psel),.penable_o(ep_penable),.paddr_o(ep_paddr),
-      .pwrite_o(ep_pwrite),.pstrb_o(ep_pstrb),.pwdata_o(ep_pwdata),
-      .pready_i(ep_bad_strobe || ep_pready),
-      .pslverr_i(ep_bad_strobe || ep_pslverr),.prdata_i(ep_prdata));
+      .psel_o(packet_psel),.penable_o(packet_penable),.paddr_o(packet_paddr),
+      .pwrite_o(packet_pwrite),.pstrb_o(packet_pstrb),.pwdata_o(packet_pwdata),
+      .pready_i(packet_pready),.pslverr_i(packet_pslverr),.prdata_i(packet_prdata));
   soc_pcie_apb_arbiter u_pcie_apb (
       .clk_i(clk_i),.rst_ni(rst_sys_n),
       .m0_psel_i(cpu_psel),.m0_penable_i(cpu_penable),.m0_pwrite_i(cpu_pwrite),

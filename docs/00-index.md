@@ -768,3 +768,5 @@ candidate. Its block results and acceptance boundary are recorded in
 [docs/156-pcie-output-transfer-timing-rejection.md](156-pcie-output-transfer-timing-rejection.md) records V29 output isolation, actual fault and stall controls, and a rejected 105.538 ps setup regression; full PHY and main-chip integration remain open.
 
 [docs/157-pcie-balanced-fault-and-native-recovery.md](157-pcie-balanced-fault-and-native-recovery.md) records a 481.175 ps receiver setup improvement and twelve passing native packet cases after a recovered GitHub mapping timeout; full PHY/main-chip integration remains open.
+
+[docs/158-pcie-ethernet-clock-domain-integration.md](158-pcie-ethernet-clock-domain-integration.md) records concurrent CPU/Ethernet/PCIe traffic, the native SRAM/MBIST configuration, a real APB clock crossing and bounded physical preparation; full serial-PHY chip integration remains open.
