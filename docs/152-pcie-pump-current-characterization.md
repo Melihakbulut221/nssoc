@@ -836,4 +836,89 @@ and [complete wire-loaded capture](../hw/soc/pcie-evidence/20261009-feedback749/
 are published with anonymous whole-file SHA256 verification. A separate candidate
 changes only the count output's two series NMOS widths from 1.12 to 2.24 µm;
 all other 747 devices, 5,074 wire records and acceptance limits remain unchanged.
-That candidate is still running and is not accepted.
+The completed finite result of that candidate is recorded below.
+
+
+### Receiver loading isolated with an identical saved input — 9 October 2026
+
+The [773-device connected physical-receiver run](../hw/soc/pcie-evidence/20261009-receiver-loading/connected773-review.json)
+fails its functional checks despite passing all electrical screens. In its final
+24–34 ns window, the receiver clock spans only 0.897–1.031 V. The
+[device-node diagnostic](../hw/soc/pcie-evidence/20261009-receiver-loading/connected773-node-diagnostic.json)
+finds severe attenuation between the CML inputs, differential-pair gates and
+AC-coupled inverter input. The source/zero-source-OP postflight passes; it does
+not override the failed transient. Its [complete failed capture](../hw/soc/pcie-evidence/20261009-receiver-loading/connected773-delivery.json)
+contains 72 members / 1,378,636,774 bytes, with anonymous full readback matching
+SHA256 `be5db132b90912baf6b94079c338de41784711ef6f40b64110a1650cfbf3d022`.
+
+A separate comparison replays the exact saved 749-device CML, supply and reset
+waveforms through 12 ns, without downsampling. Each case contains the actual
+43-device receiver and the same 48-device schematic toggle load. Only the
+receiver geometry/interconnect representation changes. Functional checks require
+one receiver edge per input period, divide-by-two operation and full logic swing;
+all 91 device screens remain enabled.
+
+| Receiver representation | Clock range at 4–12 ns | Functional result |
+| --- | ---: | --- |
+| [Original wire layout](../hw/soc/pcie-evidence/20261009-receiver-loading/original-review.json) | 1.176–1.199 V | Fail: no clock edges |
+| [Shorter buses and relocated pins](../hw/soc/pcie-evidence/20261009-receiver-loading/short-review.json) | 1.080–1.197 V | Fail: no clock edges |
+| [Clustered devices, 24 µm pitch](../hw/soc/pcie-evidence/20261009-receiver-loading/cluster-review.json) | 1.131–1.199 V | Fail: no clock edges |
+| [Same native compact devices, no wire RC](../hw/soc/pcie-evidence/20261009-receiver-loading/compact-review.json) | −0.00028–1.191 V | Pass: all four checks |
+
+All four cases pass their electrical screens. This isolates an interconnect-loading
+problem in this fixture; the ideal voltage replay does not reproduce source
+impedance or qualify the coupled PLL. The compact positive control is not a
+physical-layout acceptance result.
+
+The [corrected clustered layout](../hw/soc/pcie-evidence/20261009-receiver-loading/cluster-layout.json)
+passes 560 DRC categories, deep/flat LVS and five actual faults; its
+[LEF controls](../hw/soc/pcie-evidence/20261009-receiver-loading/cluster-lef.json) also pass.
+An earlier compressed-lane prototype accidentally shared gate/substrate routes;
+LVS rejected it and its files remain in the evidence. The corrected
+[123 R / 199 C extraction](../hw/soc/pcie-evidence/20261009-receiver-loading/cluster-wire-audit.json)
+and [six composition faults](../hw/soc/pcie-evidence/20261009-receiver-loading/cluster-composition-controls.json)
+pass. Smaller ground capacitance does not ensure bandwidth: the
+[role-bound capacitance comparison](../hw/soc/pcie-evidence/20261009-receiver-loading/wire-capacitance-diagnostic.json)
+also records increased coupling at several internal nodes. RF/substrate and
+signoff extraction remain unqualified.
+
+The [complete replay/layout comparison capsule](../hw/soc/pcie-evidence/20261009-receiver-loading/comparison-delivery.json)
+contains 416 members / 887,885,528 bytes. Anonymous full readback matches
+SHA256 `23bae7c78ddaf434339c24f2794589d1beecbd46fa8125e61b54b7babad348fa`.
+It retains full waveforms, the failed 50,000-row attempt and its fresh 200,000-row
+retry; no electrical or functional threshold was relaxed. Further spacing and
+receiver-drive candidates are separate experiments, not accepted PHY integration.
+
+
+### Count output repair passes the original 749-device finite screen
+
+The [completed 34 ns result](../hw/soc/pcie-evidence/20261009-feedback749-count/finite-review.json)
+passes all **749 electrical screens and thirteen divider predicates**. The only
+device change from the preceding wire-loaded candidate is the two series NMOS
+widths in the modulo-five output NAND: 1.12 → 2.24 µm. The
+[change controls](../hw/soc/pcie-evidence/20261009-feedback749-count/change-controls.json)
+retain every other device, all 5,074 wire records, the source/reset waveforms and
+the original acceptance criteria.
+
+The three state-zero count samples improve from approximately 0.416–0.422 V to
+**0.02828, 0.02796 and 0.02873 V**, below the unchanged 0.20 V limit. Native /4
+intervals are consistently four, whole /80 intervals are **80, 80**, and feedback
+duties are 21.6468% and 21.6049%. Final-window VCTRL spans 0.85343–0.87756 V.
+These finite observations establish neither lock nor acquisition.
+
+The [native source/zero-source-OP postflight](../hw/soc/pcie-evidence/20261009-feedback749-count/postflight.json)
+and actual [PFD](../hw/soc/pcie-evidence/20261009-feedback749-count/pfd-boundary.json)
+and [pump](../hw/soc/pcie-evidence/20261009-feedback749-count/pump-boundary.json)
+instance-boundary checks pass. The [complete passed capture](../hw/soc/pcie-evidence/20261009-feedback749-count/delivery.json)
+contains 67 members / 1,355,127,810 bytes, with anonymous full readback matching
+SHA256 `accaee9c1b6a99b8e2f2593cef5d699a63e8f686a6d862140ceb9ec85879c136`.
+
+A separate 200 ns continuation is running. Its
+[preflight comparison](../hw/soc/pcie-evidence/20261009-feedback749-count/continuation-controls.json)
+requires byte-identical native model files and a deck differing only in the
+transient stop time. All device/wire records, sources, 0.3125 ps maximum timestep
+and electrical/functional thresholds remain unchanged. Storage bounds are
+700,000 rows, 12 GiB per point and 14 GiB aggregate, with no elapsed-time timeout.
+The longer result remains pending. This 749-device chain still uses a schematic
+receiver/counter alongside physical subblocks; it is not a completed physical
+PLL parent, serial Gen3 x4 PHY or final main-chip timing result.
