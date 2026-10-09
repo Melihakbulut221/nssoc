@@ -1213,3 +1213,28 @@ for every input combination and rejects a concrete wrong-input fault. The
 whole-chip graph comparison incorporating exactly those proved mappings passes
 for 101 ports, 81,603 non-buffer cells and 287,593 pin bits. Seven deliberately
 corrupted graphs are rejected. This snapshot is not routed timing closure.
+
+### Routed priority experiment and remaining hold conflicts — 10 October
+
+The 30% critical-net-priority routing experiment completed detailed routing,
+nominal RC extraction and final three-library-corner STA. An independent fresh
+process reproduces all six native worst slacks from the saved ODB, SDC and SPEF:
+
+| Routed slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Setup | −10.367488 | −5.218929 | −2.240985 |
+| Hold | +0.196235 | −0.011055 | −0.261058 |
+
+This experiment does **not** close timing. The same nominal wire RC is used
+in each library corner; qualified multicorner RC remains a separate gate.
+The critical PCIe path includes packet-byte selection, weak long-net drivers
+and downstream packet logic. Existing alternative routing and registered-data
+experiments continue independently.
+
+In the separate Ethernet forty-cell / unpruned-repair placement snapshot,
+a complete fast-corner census finds 119 violating hold endpoints. Slow setup
+is already negative at 117 of those endpoints. Blindly adding delay would
+therefore worsen existing setup failures. Replacing those 119 DFFs with the
+native drive-two variant legalizes successfully but leaves worst setup
+unchanged and slightly worsens fast hold from −0.062786 to −0.062831 ns.
+That candidate is rejected; it is not routed or adopted.

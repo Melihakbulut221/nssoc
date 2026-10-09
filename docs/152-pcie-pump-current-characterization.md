@@ -1322,3 +1322,38 @@ launch. Both failed attempts are retained. The corrected `710c` campaign saves
 all 1,979 columns and passes counter/toggle boundary controls before its
 50 ns native run. Full parent layout, loaded timing, PVT and acquired-loop
 acceptance remain open.
+
+### Modulo-five physical abstract and MOS-corner screens — 10 October
+
+The reusable [142-MOS layout generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_mod5_142_v1.py)
+now produces a 61.920 × 18.670 µm macro with six explicit LEF ports. Independent
+all-layer XOR verifies that normalization only translates the previously
+extracted layout by +240 / +220 nm; schematic and finger records are byte
+identical. Fresh native DRC, deep/flat transistor LVS and five fault controls
+pass. Native LEF import passes and rejects missing-pin, blocked-pin and wrong-
+outline mutations. Complete nominal and held-reset waveform readback reproduces
+the original measurements and retains the held-reset functional failure.
+
+The [complete component layout, extraction and nominal-waveform archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-mod5-142-native-layout-20261010.tar.gz)
+contains 296 members / 355,858,430 bytes, SHA256
+`021c8e5bd4d99fc0671203114b509ee6aa362e06e3926093912e037b06796761`.
+Every public byte was checked against the locally verified archive using
+complete HTTP206 ranges after the first readback timed out. This immutable
+archive predates the two additional MOS-corner runs described below.
+
+The unchanged 80 ns / 500 MHz component stimulus was also evaluated at slow
+MOS / 1.08 V / 125 °C and fast MOS / 1.32 V / −40 °C. Rail windows remain
+1.0–1.8 ns after each clock; their tolerance is 10% of the declared supply.
+The absolute low-voltage device terminal-difference limit remains 1.5 V.
+
+| MOS corner, nominal metal RC | 39 state/complement windows and divide-by-five | All 142 electrical screens |
+| --- | --- | --- |
+| Typical, 1.20 V, 27 °C | Pass | Pass |
+| Slow, 1.08 V, 125 °C | Pass | Pass |
+| Fast, 1.32 V, −40 °C | Pass | **Fail: 18 devices, maximum 1.617755 V** |
+
+Both new held-reset controls fail the functional check. The slow control
+passes the electrical screen; the fast control also has electrical failures.
+These are unloaded MOS-corner experiments with fixed nominal interconnect,
+not full PVT qualification. The fast-corner failure remains open and prevents
+accepting this component across the stated supply range.
