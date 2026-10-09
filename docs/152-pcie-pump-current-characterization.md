@@ -275,8 +275,8 @@ by the corrected seven passing controls.
 This is an initial physical component, with area and wire loading still to be
 optimized and characterized. Its 153 added physical contacts and wire parasitics
 are not exercised by either the older 570-device run or the new 587-device
-pump-integration run. Native model translation, extracted feedback simulation
-and a connected physical PLL parent remain required. It does not establish a
+pump-integration run. The native model translation and finite feedback test are reported below.
+Wire-extracted feedback simulation and a connected physical PLL parent remain required. It does not establish a
 complete serial Gen3 x4 PHY or main-chip timing closure.
 
 The [public physical PFD capsule](../hw/soc/pcie-evidence/20261009-pfd102-layout/delivery.json)
@@ -307,5 +307,40 @@ contains 77 members and **920,924,995 bytes**, including complete raw observatio
 source and failed preparation attempts. Complete anonymous readback matches
 SHA256 `52dd87b7d34058e36dd53cbc301922e83936337ff5977b28d653bddd60e6c701`.
 This finite nominal result does not establish PLL acquisition, phase noise,
-PVT, pump wire parasitics or full serial PHY operation. The new PFD physical
-model is being tested in a separate 740-device composition; its result is pending.
+PVT, pump wire parasitics or full serial PHY operation. The PFD physical model is tested in the separate 740-device composition below.
+
+
+## Physical PFD and pump in the feedback loop — 9 October 2026
+
+The new **740-device** composition passes its finite native transient. It replaces
+102 schematic PFD devices with the layout's **255 devices**, including all 153
+finite body contacts. The other 485 devices and 2,685 previously extracted chain
+wire elements remain unchanged. PFD REF/FB feedback polarity is explicitly
+preserved. This does not add PFD or pump wire parasitics.
+
+The [independent model binding](../hw/soc/pcie-evidence/20261009-feedback740/pfd-binding-controls.json)
+checks every extracted device identity, named terminal, geometry and finite
+contact resistance against the native LVS database. Eight actual mutations are
+rejected: exchanged drain/source, incorrect width, default contact resistance,
+bypassed body contact, wrong supply rail, missing contact, exchanged external
+ports and duplicate parameter.
+
+All **740 finite electrical screens and thirteen divider predicates pass** in
+[native simulation](../hw/soc/pcie-evidence/20261009-feedback740/native-result.json),
+with 108,847 samples over 34 ns, maximum step 0.3125 ps. The
+[postflight](../hw/soc/pcie-evidence/20261009-feedback740/postflight.json) verifies
+1,189 saved observations, 1,190 transient columns, all 64 native HBT startup
+flags and the zero-source operating point. It rejects four actual deck faults.
+The original reset/reference stimuli remain; there is no VCTRL clamp.
+
+VCTRL spans 0.796496–1.028935 V during 4–14 ns, 0.855080–1.046317 V during
+14–24 ns, and 0.852679–1.025942 V during 24–34 ns. Native execution took
+993.18 seconds with a 2 GiB address-space bound and no healthy-run elapsed
+timeout. These are finite nominal electrical checks, not PLL lock, phase noise,
+PVT, extracted full-loop timing, serial PHY or main-chip timing acceptance.
+
+The [complete public capsule](../hw/soc/pcie-evidence/20261009-feedback740/delivery.json)
+contains the finite run, full raw observations, native-device translation,
+eight model faults, postflight and exact campaign sources: **67 members,
+956,046,595 bytes**. Complete anonymous readback matches SHA256
+`5a22455866482f27ff21c07780528090caf2ba0d81150bc7423f19a6238296cf`.
