@@ -933,5 +933,22 @@ receive quarantine decision in one 4 ns cycle. An isolated one-cycle registered
 receive-boundary candidate passes five buffered-endpoint tests and induction
 against accepted-byte accounting; five real RTL corruptions are rejected. It
 retains downstream-qualified first-packet admission, inserts an EOP boundary
-bubble, and clears on the same link/reset epoch. Its mapped timing and physical
-integration remain pending; it is not adopted on functional tests alone.
+bubble, and clears on the same link/reset epoch. The second candidate registers
+all twelve payload/control bits plus occupancy; no invalid-cycle flag bypass
+remains. Native mapped-graph checks find all thirteen DFFs on the same clock and
+reset and reject four connectivity faults. The external 101-port interface is
+unchanged. Its unplaced slow/typical/fast setup is
+−2.563230/−0.253689/+0.772642 ns; hold is
+−0.469247/−0.539480/−0.601382 ns. These are screening results, not routed closure.
+
+The [registered receive-boundary capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-registered-rx-candidate-20261009.tar.gz)
+contains 297 members / 20,496,576 bytes; full anonymous readback matches SHA256
+`5927d7dc430b4e141e52b82d6ffa00f2468b06cb605d16b5aef5ac022a60f0bf`.
+It preserves the rejected wrong-source mapping and the successful mapping whose
+first checker expected aliases removed by Yosys. The corrected checker binds
+surviving consumer signals directly to actual DFF outputs; no remapping was
+needed. Physical run `registered-rx03` then stopped because its initial state
+omitted the generated `json_h` header. `registered-rx04` resumes the completed
+floorplan with that existing header added; netlist, geometry and constraints are
+unchanged. Placement is running; route, extracted RC and final setup/hold remain
+pending. Neither the RTL candidate nor timing closure is accepted yet.
