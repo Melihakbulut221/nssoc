@@ -978,3 +978,30 @@ change **−0.001387 cycles**. VCTRL still spans **0.55852–0.79228 V**. Neithe
 nominal measurements nor the observed convergence override the failed checks.
 Complete large-waveform publication is in progress as ordered byte parts; the
 newer 749-device, wire-loaded 200 ns run remains a separate pending experiment.
+
+### Ordered receiver in the actual closed loop — 9 October 2026
+
+The ordered receiver's successful 91-device saved-voltage replay did **not**
+carry over to a passing 773-device closed-loop startup. The actual 34 ns capture
+has clean native diagnostics and all 773 electrical screens pass, but two of
+thirteen divider checks fail. The first measured CML-to-receiver interval
+contains two input cycles. Only two feedback rising edges occur within the
+window, below the existing minimum of three; the single measurable interval
+contains exactly 80 VCO cycles. This is insufficient evidence for division
+acceptance, rather than a measured non-80 interval.
+
+An independent whole-wave byte/payload review finds receiver output minima of
+0.613 V at 4–4.5 ns and 0.515 V at 4.5–5 ns, followed by fuller swing later.
+Actual deck, zero-source operating point, all saved vectors, startup flags and
+named pump/PFD boundaries pass their separate checks. The failed functional
+verdict is unchanged. The [complete failed 773-device capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback773-ordered-failed-20261009.tar.gz)
+contains 83 members / 1,414,076,786 bytes, with complete anonymous readback SHA256
+`c07eb430e9b03e3f6a4b4d65b80f2e5ed3ef0c289ce65abbaad47b475e62ba8d`.
+
+Reducing the ordered receiver's self-bias resistance fails the loaded replay
+(0.343 V minimum clock level); reducing the second inverter NMOS width by 25%
+also fails (0.550 V maximum clock level). Both retain passing electrical screens.
+A smaller, 3.125% width reduction, 5.92 to 5.735 µm, passes native component
+DRC/LVS, binding/wire checks and all four loaded-replay predicates, with clock
+swing 0.042075–1.197579 V. Its actual 773-device closed-loop run is now started;
+the replay does not establish its result, PLL lock or full serial PHY acceptance.
