@@ -77,3 +77,27 @@ def test_missing_required_observation_rejected(tmp_path):
     fixture(tmp_path)
     with pytest.raises(ValueError, match="missing observation"):
         reader.read_trace(tmp_path, ["time", "v(down)"])
+
+
+def test_explicit_campaign_row_limit(tmp_path):
+    original = fixture(tmp_path)
+    with pytest.raises(ValueError, match="trace size"):
+        reader.read_trace(tmp_path, ["time"], max_rows=1025)
+    selected, _ = reader.read_trace(tmp_path, ["time"], max_rows=1026)
+    np.testing.assert_array_equal(selected[:, 0], original[:, 0])
+
+
+@pytest.mark.parametrize("limit", [0, -1, True, 1.5, 10_000_001])
+def test_invalid_row_limit_rejected(tmp_path, limit):
+    with pytest.raises(ValueError, match="row limit"):
+        reader.read_trace(tmp_path, ["time"], max_rows=limit)
+
+
+def test_selected_allocation_limit_rejected(tmp_path):
+    fixture(tmp_path)
+    path = tmp_path / "result.json"
+    result = json.loads(path.read_text())
+    result["rows"] = 10_000_000
+    path.write_text(json.dumps(result))
+    with pytest.raises(ValueError, match="selected trace size"):
+        reader.read_trace(tmp_path, ["time"] * 7, max_rows=10_000_000)

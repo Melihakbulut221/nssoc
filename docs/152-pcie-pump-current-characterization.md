@@ -94,8 +94,53 @@ precisely. Every consecutive CML edge advances by four nearest VCO edges,
 including the intervals whose half-open bucket counts are five and three.
 Those changes coincide with relative edge phase crossing zero by only tens
 of femtoseconds. This is evidence for a boundary-counting sensitivity, not a
-replacement passing verdict. An unchanged-circuit half-step experiment is
-running to test numerical stability. A separate finite full570 simulation
-also restores the original reset release and removes the external control
-clamp to exercise the actual feedback circuit. Neither pending run establishes
-PLL lock or a complete serial PHY.
+replacement passing verdict.
+
+## Half-step and actual closed-feedback response
+
+The unchanged 0.7 V circuit now completes **217,641 samples** at 0.15625 ps,
+half the original maximum step. All twelve predeclared numerical comparisons
+pass: complete edge census, window membership, absolute same-ordinal edge
+differences and frequency differences for the oscillator, CML output and
+feedback. The largest edge difference is **0.512 ps** and frequency differences
+are **15.51 ppm or less**. No time alignment, phase subtraction or cropping
+was used. The original strict divide-by-four predicate still fails; this is
+numerical agreement between two retained failing functional verdicts, not a
+passing divider replacement. See the [comparison](../hw/soc/pcie-evidence/20261009-feedback-response/halfstep-comparison.json).
+Its [complete half-step capsule](../hw/soc/pcie-evidence/20261009-feedback-response/halfstep-delivery.json)
+contains 29 members and 1,818,129,507 bytes. Complete anonymous readback matches
+SHA256 `068f5c0b605cea33b5673a774d70c8b3d801c937463252e2b16291b93ad2b4a5`.
+
+The actual **570-device feedback circuit**, with reset released at 8.1 ns,
+reference starting at 14 ns and **no external VCTRL clamp**, completes 34 ns.
+All 570 finite electrical screens and thirteen divider predicates pass.
+VCTRL spans 0.796497–1.028892 V during 4–14 ns,
+0.855121–1.046270 V during 14–24 ns, and 0.852718–1.025888 V during 24–34 ns.
+This short record has too few reference periods to establish acquisition
+or stationary phase. The [native result](../hw/soc/pcie-evidence/20261009-feedback-response/startup-native.json)
+and [source/observation preflight](../hw/soc/pcie-evidence/20261009-feedback-response/startup-preflight.json)
+bind the circuit, complete observations, zero-source operating point and
+actual HBT startup flags.
+
+Initial deck-preflight failures and a post-run receipt destination error are
+retained. The solver completed the intended `closed-02` circuit; its wrapper
+wrote completion metadata under the earlier failed attempt's directory.
+The [receipt repair](../hw/soc/pcie-evidence/20261009-feedback-response/receipt-finalization.json)
+verified all input/output hashes, raw capture and screen records before
+moving that metadata. No waveform, circuit or predicate was altered.
+The [complete startup capsule](../hw/soc/pcie-evidence/20261009-feedback-response/startup-delivery.json)
+contains 54 members and 917,339,671 bytes, including failed attempts and the
+receipt repair. Its anonymous public readback matches SHA256
+`5dfd04929b31ead6ea35404a6ea2542e3bd92b127964a1cfce729bb96f0744df`.
+
+A separate 1 µs run retains the same circuit and 0.3125 ps maximum step, with
+explicit 3.3-million-row and 40 GiB point limits. Its result is pending.
+The [response reviewer](../scripts/review_pcie_feedback_response.py) measures
+frequency and continuous feedback edge count at reference edges. It never
+wraps phase modulo a cycle, which would hide cycle slips, and reports a static
+phase offset without treating zero offset as a lock requirement. Independent
+fixtures detect positive and negative multi-cycle drift, missing feedback,
+incomplete time coverage and unordered samples. The bounded saved-waveform
+reader and reviewer have **25 passing controls**. Period spread in a finite
+nominal simulation is not qualified jitter, phase noise, BER, PVT, extracted
+layout or full serial PHY acceptance.

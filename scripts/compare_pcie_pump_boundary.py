@@ -30,14 +30,17 @@ def canonical(name):
     return name[2:-1] if name.startswith("i(@") and name.endswith(")") else name
 
 
-def read_trace(directory, columns):
+def read_trace(directory, columns, *, max_rows=2_000_000):
+    # Longer campaigns must opt in explicitly; retain hard allocation bounds.
+    require(type(max_rows) is int and 0 < max_rows <= 10_000_000, "row limit")
     directory = Path(directory)
     result_path = directory / "result.json"
     result_pin = pin(result_path)
     result = json.loads(result_path.read_text())
     names = result["columns"]
     rows, width = result["rows"], len(names)
-    require(0 < rows <= 2_000_000 and 0 < width <= 4096, "trace size")
+    require(0 < rows <= max_rows and 0 < width <= 4096, "trace size")
+    require(rows * len(columns) * 8 <= 512 * 1024**2, "selected trace size")
     require(len(set(names)) == width and names[0] == "time", "column identity")
     require(all(name in names for name in columns), "missing observation")
     for name, expected in result["outputs"].items():
