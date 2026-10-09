@@ -898,3 +898,40 @@ replaces the failed extracted-RC baseline.
 The [complete proof, fault, test and synthesis capsule](../hw/soc/pcie-evidence/20261009-quarantine-index/delivery.json)
 contains 69 members / 18,605,662 bytes, anonymously verified against SHA256
 `62a70c4069fdead55f6d6acf265294952ff98c37c959068871fdb4887f9b8000`.
+
+### CRC candidate: completed routed extraction — 9 October 2026
+
+The CRC-residue candidate `crc-residue01` now has a completed detailed route,
+nominal SPEF and fresh three-corner STA. Router DRC and antenna nets/pins are
+zero, but the flow **fails its final timing gates**:
+
+| Extracted nominal RC | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Worst setup, ns | −6.569639 | −2.864526 | −1.146807 |
+| Worst hold, ns | +0.194697 | +0.030029 | −0.105225 |
+| Setup violating endpoints | 9,765 | 5,252 | 246 |
+| Hold violating endpoints | 0 | 0 | 16 |
+| Max slew violations | 432 | 263 | 137 |
+| Max capacitance violations | 17 | 19 | 19 |
+
+Worst setup and hold improve against `postgrt13-01`; the slow setup endpoint
+count increases, so this is not uniform closure. An independent OpenROAD process
+loads the actual ODB/SDC/SPEF and reproduces all six worst slacks. Its first
+reviewer incorrectly selected the first reported clock group; the preserved
+`readback-review03.json` corrects aggregation across every group without changing
+the native run, parasitics or constraints.
+
+The [complete routed CRC capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-crc-routed-20261009.tar.gz)
+contains 360 members / 210,670,338 bytes. Complete anonymous readback matches
+SHA256 `71fe71fb3b8724f682fa1841a19cbea13c27ac13804f8e310dc60d58d07d930e`.
+The same nominal wire RC is used in all three library corners. This evidence
+establishes neither qualified interconnect corners nor full-chip foundry DRC/LVS,
+serial Gen3 x4 PHY integration or timing signoff.
+
+The remaining slow critical path spans ownership-memory byte selection and the
+receive quarantine decision in one 4 ns cycle. An isolated one-cycle registered
+receive-boundary candidate passes five buffered-endpoint tests and induction
+against accepted-byte accounting; five real RTL corruptions are rejected. It
+retains downstream-qualified first-packet admission, inserts an EOP boundary
+bubble, and clears on the same link/reset epoch. Its mapped timing and physical
+integration remain pending; it is not adopted on functional tests alone.
