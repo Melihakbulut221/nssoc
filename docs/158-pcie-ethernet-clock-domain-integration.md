@@ -1003,3 +1003,52 @@ contains 863 members / 26,881,841 bytes. Full anonymous readback matches SHA256
 `0ab6c30eff493f78113c0a22255e9439242b93e6e3d3debd245219fc00c7c4cb`.
 The active physical run is excluded from this immutable capsule. Neither the
 candidate's final routed setup/hold nor full serial PHY integration is accepted.
+
+
+Combining the previously proved per-class credit verdict with this RX/TX
+candidate is rejected. Fresh 340-point sequential credit equivalence and five
+buffered-endpoint tests pass, but the same unplaced screen gives setup
+−2.574000/−0.264625/+0.797585 ns and hold
+−0.496485/−0.539480/−0.601382 ns. Slow/typical setup regress by
+0.301300/0.131325 ns against TX prefetch alone, so no additional physical run
+is dispatched for that combination. The [complete rejected combination](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-prefetch-credit-rejected-20261009.tar.gz)
+contains 174 members / 20,079,086 bytes, with complete anonymous readback SHA256
+`a5d57b5c7184102abaf3d80dfe6700179994c59a4140377bed8d1eeed1b310f2`.
+
+### Targeted Ethernet output hold repair on registered RX — 9 October 2026
+
+On a separate copy of the actual `registered-rx04` post-CTS database, four
+transparent `sg13g2_dlygate4sd3_1` cells per Ethernet output repair all ten
+outputs in three library corners. The 99,128 existing placed instances retain
+coordinates and orientations. Clock definitions, I/O budgets and derates remain
+unchanged; native detailed placement and placement legality checks pass.
+
+| Ten Ethernet outputs, placement RC | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Before hold, ns | −0.575080 | −0.648059 | −0.683173 |
+| After two cells per output hold, ns | +0.499435 | +0.033043 | −0.216955 |
+| After four cells per output hold, ns | +1.576265 | +0.712551 | +0.249443 |
+| After four cells per output setup, ns | +2.320071 | +3.424503 | +4.024300 |
+
+The all-port and non-buffer connectivity comparison passes for 101 ports,
+81,603 non-buffer cells and 287,593 pin bits. Exactly forty transparent buffers
+are added; seven graph corruptions are rejected. The reusable
+[forty-cell output repair helper](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/pnr/eth_output_hold_40_eco.tcl)
+has the identical Tcl procedure body to the measured implementation, verified
+by native OpenROAD. Its distinct procedure name avoids replacing the earlier
+twenty-cell helper.
+
+This closes these Ethernet output checks only in this placement snapshot.
+Whole-chip setup and hold remain negative, and routing/extraction must be repeated.
+The original RX repair continues separately. Another isolated continuation
+protects these forty cells, runs the existing bounded setup repair, then enables
+`set_opt_config -disable_buffer_pruning true` for hold repair. The installed
+OpenROAD supports that option; the [official resizer documentation](https://openroad.readthedocs.io/en/latest/main/src/rsz/README.html#setting-optimization-configuration)
+describes it as retaining delay cells and slower buffers during hold optimization.
+The continuation's result is pending; no speedup or final timing acceptance is
+claimed yet.
+
+The [completed twenty/forty-cell trials, graph faults and canonical helper](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-registered-rx-eth40-20261009.tar.gz)
+are public as 35 members / 43,650,236 bytes; complete anonymous readback matches
+SHA256 `85bcfe8ce378b8218cff2955a220b09b20c67a4103c6cefb9a34601c4084e61d`.
+The active unpruned repair is excluded from this immutable capsule.

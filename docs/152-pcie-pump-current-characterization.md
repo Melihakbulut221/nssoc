@@ -1077,6 +1077,10 @@ finite nominal loaded-chain result; the second fast toggle and modulo-five
 counter are still schematic, and the separate MOS-corner failures below remain
 open. There is no full physical PLL parent or serial PHY acceptance.
 
+The [complete connected physical-toggle capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback761-physical-fast0-passed-20261009.tar.gz)
+contains 98 members / 2,124,562,697 bytes. Complete anonymous readback matches
+SHA256 `2a18cbc6df436ee0c0dd70c921a02760477f68f794ff9ed1f46db0d08831e92d`.
+
 The reusable [toggle layout generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_toggle36_v1.py)
 now emits a 15.360 × 6.370 µm GDS, a six-pin LEF and the explicit-finger LVS
 reference from pinned PDK sources. Translation to a zero-origin outline
