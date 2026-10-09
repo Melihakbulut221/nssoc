@@ -1089,3 +1089,47 @@ SHA256 `2d5d99881eb809285ad9fe30da32798decab6372736673148a7893207e1c4f05`.
 An additional optional finite reset-base SAT run is excluded because it was
 still running when the immutable capsule was assembled. Final setup/hold
 closure remains open.
+
+### Credit-path follow-up screens — 9 October
+
+The cached-credit per-class preaddition successor completes its composed
+proof, five credit tests, three actual RTL fault controls, five integration
+tests, mapped-register controls and whole-chip unplaced screen. It improves
+on the first cache trial but still worsens setup against TX prefetch alone:
+
+| Candidate | Slow setup (ns) | Typical setup (ns) | Fast setup (ns) |
+| --- | ---: | ---: | ---: |
+| TX prefetch | −2.272700 | −0.133300 | +0.772858 |
+| Cache with per-class preaddition | −3.856812 | −1.077387 | +0.546890 |
+| TX and reservation metadata prefetch | −2.231947 | −0.179834 | +0.876603 |
+
+The preaddition cache is rejected; its [complete 225-member capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-credit-preadd-rejected-20261009.tar.gz)
+is 20,410,602 bytes, with full public readback SHA256
+`227ff2a7f7c81d28ab9a8db0340c135ca41600e98d7ddb780b9481737915d1db`.
+
+The separate reservation-prefetch candidate stores two class bits and eleven
+payload bits, looking ahead to the next original packet on a successful EOP.
+It adds no transaction stall. All 1,488 replay equivalence points pass under
+the separately proved ownership and ACK contracts; actual credit consumers
+are additionally proved insensitive to arbitrary metadata while reservation
+valid is low. Actual parent wiring, seven replay tests, five integration
+tests and three metadata RTL faults pass. The mapped credit-consumer inputs
+bind to thirteen distinct native DFF Q pins with the correct clock/reset;
+four graph faults are rejected. The source output aliases were optimized
+away, so the binding checks the surviving consumer nets explicitly.
+
+Its hold screen is −0.471567 / −0.539480 / −0.601382 ns. All six setup/hold
+values are minima across all reported path groups. The small slow/fast setup
+gains accompany a typical-corner regression, so no separate route or
+canonical RTL adoption is accepted. The [complete candidate and screen capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reservation-prefetch-screen-20261009.tar.gz)
+contains 631 members / 24,752,035 bytes, with full anonymous readback SHA256
+`486c657e6cfd6e307448d4ab8d8e6fa61203b1c209b386a2674e3188e9ade3e4`.
+
+The new slow-corner critical path runs from consumed data-credit bit 13 to
+limit bit 7. A further isolated candidate replaces its serial three-operand
+subtraction with carry-save compression and four-bit carry-lookahead groups.
+All 362 sequential credit-equivalence points and the independent arithmetic
+proof over all 36 operand bits pass; three arithmetic mutations produce
+concrete counterexamples. Five credit and five integration tests pass.
+Whole-chip mapping and timing evaluation are running. Neither this candidate
+nor any unplaced screen establishes final setup/hold closure.

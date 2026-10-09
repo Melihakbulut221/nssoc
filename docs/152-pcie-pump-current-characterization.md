@@ -1196,3 +1196,50 @@ records and 1,824 saved columns. Each toggle's named boundary rejects all
 The 50 ns native run is pending. The modulo-five counter is still schematic,
 the known MOS-corner failures remain open, and no full PLL parent, acquired
 loop or serial Gen3 x4 PHY acceptance is claimed.
+
+### High-input HBT /2 and 1 GHz slow-corner continuation — 9 October
+
+The added high-common-mode /2 stage now has a separate physical implementation:
+[schematic](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/analog/pcie/clock_div2_high_input_v1.spice),
+[layout generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_clock_div2_high_input_v1.py) and
+[native checker](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_clock_div2_high_input_v1.py).
+It preserves exactly the high-input network and second toggle of the v10
+HBT /4: 19 HBTs, 20 rppd resistors and four MIM capacitors. Twelve explicit
+substrate contacts are additional physical devices. The 960.000 × 297.030 µm
+macro passes all 560 main DRC categories with zero violations, strict deep
+LVS (44 devices after parallel contact merging), seven-pin LEF checks and
+12 negative controls. An independent unsimplified extraction is being used
+for terminal and metal-RC binding; it retains the twelve contacts separately.
+
+The canonical generator reproduces the experimental layout's intrinsic
+instances, routes, power straps, ports, schematic and LEF exactly, with zero
+XOR on every geometry layer. The [complete physical component capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-highinput43-layout-20261009.tar.gz)
+contains 219 members / 1,362,767 bytes; full anonymous readback matches
+SHA256 `25d2e4005d0642f7fa54c661577d94959e893391415efd7a9816652f3b76b195`.
+This is component connectivity and main-rule validation, not loaded division,
+qualified extraction, PLL lock or full-chip integration acceptance.
+
+A separate 756-device /80 feedback candidate keeps the passed physical HBT
+/4, inserts this high-input /2 **schematically**, then uses the physical
+36-MOS /2 at nominal 1 GHz and the existing schematic modulo-five counter.
+The original 5,627 wire records are retained with explicit receiver-input
+and counter-clock changes. Seven source/deck faults, 24 physical-toggle
+boundary faults, six startup-helper faults and six measurement faults are
+rejected before its 50 ns native run. The run remains pending; its early
+4–8 ns prefix includes incorrect division intervals and is not accepted.
+The new HBT layout and its eventual RC are not yet in this running candidate.
+
+The existing 36-MOS / 70R / 167C physical toggle was also exercised separately
+at 1 GHz, MOS SS / 1.08 V / 125 °C, with nominal metal RC. With only 180 ps
+between reset release and the first clock, steady /2 passes but the required
+initial phase fails. A distinct 23 ns run with 1.18 ns reset-release lead
+passes all 36 electrical screens, nine consecutive two-clock division
+intervals and all twenty rail windows sampled 850–950 ps after each edge.
+Complete waveform readback reproduces the measurement; stopped-Q,
+wrong-complement and missing-clock-pulse controls are rejected.
+
+The [complete failed and passed 1 GHz reset-lead captures](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-toggle-ss1ghz-reset-lead-20261009.tar.gz)
+retain both results. Their measured reset requirement must still be checked
+in the actual feedback chain. The earlier 2 GHz SS division failure and FF
+terminal-voltage failures are unchanged; this does not close full PVT, PLL,
+SERDES or serial Gen3 x4 PHY qualification.
