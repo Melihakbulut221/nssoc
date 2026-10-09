@@ -242,3 +242,45 @@ contains the new captures, paired schematic baselines, sign controls, sources,
 translation faults and rejected comparison: **164 members, 90,338,951 bytes**.
 Complete anonymous readback matches SHA256
 `cbdb6d4eb20725b27cac3a8621f4cac437aae3a3fc6974aa40d9f25e70559b53`.
+
+## Phase-detector component layout — 9 October 2026
+
+The [phase-detector generator](../hw/soc/flow/make_pcie_pfd102_v1.py)
+now implements the frozen PFD's 51 HV PMOS and 51 HV NMOS devices using native
+PCell geometry. Each PMOS has its own physical well contact, and each placement
+has a substrate contact: **255 physical devices**, including 153 finite contacts.
+The initial linear layout is **4,104 × 476.63 µm**. Its eight ports are REF, FB,
+RESET, UP, DOWN, VDD, VSS and SUB, using lowercase identifiers. VSS and SUB
+remain distinct; the component preserves the PFD's REF/FB port convention.
+The full feedback candidate still connects those ports with its explicitly
+recorded feedback polarity.
+
+The unchanged upstream DRC deck reports **zero violations in 560 rule
+categories**. Both deep and flat native LVS match all 255 devices and all eight
+ports. The [strict native checks](../hw/soc/flow/check_pcie_pfd102_v1.py)
+reject five actual faults: changed NMOS width, removed well contact, removed
+UP route, a physical ground/substrate short and off-grid Metal1 geometry.
+The [comparison records](../hw/soc/pcie-evidence/20261009-pfd102-layout/native-controls.json)
+retain the exact sources, GDS and commands.
+
+The [LEF macro](../hw/soc/pcie-evidence/20261009-pfd102-layout/nssoc_pfd102_layout_v1.lef)
+also passes native OpenROAD outline, direction/use, pin geometry and obstruction
+checks. Missing and obstructed pin faults are rejected by the
+[LEF checker](../hw/soc/flow/check_pcie_pfd102_lef.py).
+Seven source controls preserve reference/feedback/reset wiring, transistor
+widths and body connections and reject changed or missing source definitions.
+Initial test-fixture naming mistakes are retained in the raw campaign, followed
+by the corrected seven passing controls.
+
+This is an initial physical component, with area and wire loading still to be
+optimized and characterized. Its 153 added physical contacts and wire parasitics
+are not exercised by either the older 570-device run or the new 587-device
+pump-integration run. Native model translation, extracted feedback simulation
+and a connected physical PLL parent remain required. It does not establish a
+complete serial Gen3 x4 PHY or main-chip timing closure.
+
+The [public physical PFD capsule](../hw/soc/pcie-evidence/20261009-pfd102-layout/delivery.json)
+contains both generated versions, full GDS/LEF, source, native DRC/LVS and
+fault records: **161 members, 1,172,516 bytes**. Complete anonymous readback
+matches SHA256
+`26f73f50fef30a74a33f0c9e3c582c32586cfcf8056759e161b98f9fb018be8d`.
