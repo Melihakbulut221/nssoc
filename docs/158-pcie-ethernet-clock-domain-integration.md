@@ -791,3 +791,23 @@ and fast +0.849711 → +0.838629 ns. This preliminary screen is sufficient to
 reject the experiment; it is not a placement, routed timing or graph-acceptance
 claim. The next arithmetic candidate targets the two serial subtractors on the
 actual consumed-credit to credit-limit path, without changing packet latency.
+
+
+### Placement hold repair with complete endpoint census — 9 October 2026
+
+The CRC candidate's [repair review](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/hold-review.json)
+records zero negative hold endpoints in all three placement-estimated corners.
+Worst hold is +0.195945 / +0.073940 / +0.001016 ns (slow / typical / fast).
+Targeted SOP/DLLP, self-feedback and setup-headroom-qualified branch buffering
+preserves the post-native-repair worst setup: −4.120471 / −1.268695 / −0.107212 ns.
+The final sibling branch uses a buffer with sufficient input capacitance to avoid
+accelerating the other path from the same register. All 101 ports and 288,294
+non-buffer pin bits are graph-equivalent; seven corruptions are rejected.
+
+This is **not overall setup-neutral**: the earlier native hold stage worsened
+typical setup by 106.551 ps and fast setup by 263.645 ps relative to its input.
+The candidate is not adopted and has no routed hold acceptance. Its narrowest
+hold margin is only 1.016 ps. Setup remains negative.
+The [complete source/repair capsule](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/hold-delivery.json)
+has 177 members / 213,918,222 bytes and verified anonymous whole-file SHA256
+`9080c50068d02cfe3f7aab99b70be30efeff114ac736ac71f73024d81ee9af57`.

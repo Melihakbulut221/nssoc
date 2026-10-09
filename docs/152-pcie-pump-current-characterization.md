@@ -601,4 +601,43 @@ The [invalid local run](../hw/soc/pcie-evidence/20261009-pfd-boundary/invalid-lo
 was stopped using the recorded parent PID and birth identity; its owner reaped
 the native child. Fresh row/local 740-device simulations retain the original
 stimuli, electrical/divider acceptance criteria and sample/storage limits.
-Their electrical results are pending.
+Their completed electrical results are recorded below.
+
+
+## Corrected feedback failures and four-times-area filter — 9 October 2026
+
+The corrected [row](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/row-failure.json)
+and [local](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/local-failure.json)
+740-device, 34 ns simulations both finish with clean diagnostics, full compressed
+capture readback and passing device electrical screens. **Both transient verdicts
+fail.** The row case fails feedback duty and the native /4 and /80 predicates;
+the local case additionally fails received-to-feedback counting. The local
+feedback duty is 17.5523% and 16.5324%; the second interval is outside the unchanged
+17–23% screen. The prepared 200 ns continuation stopped at its failed prerequisite.
+
+Complete failed captures are public with anonymous whole-file SHA256 readback:
+[row delivery](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/row-delivery.json)
+and [local delivery](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/local-delivery.json).
+No threshold was relaxed and publication does not change either verdict.
+
+A separate [physical filter candidate](../hw/soc/flow/make_pcie_pump_filter13_c4_v2.py)
+increases the MIM capacitor from 10 × 10 to 20 × 20 µm. Its
+[native DRC/LVS](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-native.json)
+passes with zero errors across 560 DRC categories and 30-device hierarchical
+and flat LVS; five actual faults are rejected. The
+[LEF check](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-lef.json)
+passes with two faults. Extraction is regenerated from the new geometry,
+including changed internal node identities. The
+[binding controls](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-binding.json)
+reject nine corruptions, including reverting the capacitor area. The
+[wire audit](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-wire.json)
+and [composition](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-composition.json)
+retain all 84 resistors and 155 capacitors. RC remains unqualified.
+
+The [component capsule](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-delivery.json)
+contains 142 members / 431,798 bytes, SHA256
+`2b47ae162480c21367096566b09b76e488607071a33843e20685799e871d1feb`.
+A new connected 740-device finite simulation is running with independently
+checked PFD and pump boundaries. It is excluded from this completed component
+capsule. Filter improvement, PLL lock, physical PLL parent integration and a
+complete serial Gen3 x4 PHY are **not yet established**.
