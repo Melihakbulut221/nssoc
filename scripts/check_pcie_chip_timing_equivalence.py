@@ -80,10 +80,17 @@ def run(kind, candidate, out, yosys, parameters=None):
     passed = (process.returncode == 0 and len(counts) == 1 and int(counts[0][0]) > 0
               and int(counts[0][1]) == 0 and unchanged
               and "Equivalence successfully proven!" in text)
+    read_cut = None
+    if kind == "rx":
+        from check_pcie_rx_read_cut import run as check_read_cut
+        read_cut = check_read_cut(candidate, out / "read-cut", yosys, parameters)
+        passed = passed and read_cut["status"] == "PASS"
     result = dict(status="PASS" if passed else "FAIL", kind=kind,
                   parameters=parameters, returncode=process.returncode, counts=counts,
                   inputs=inputs, inputs_unchanged=unchanged,
                   scope="RTL sequential equivalence at the listed parameters; not native timing or serial PHY acceptance")
+    if read_cut is not None:
+        result["arbitrary_memory_read_cut"] = read_cut
     (out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     return result
 

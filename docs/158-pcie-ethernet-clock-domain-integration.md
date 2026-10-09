@@ -593,3 +593,39 @@ failed 106-overflow route and successful strict global route: **138 members,
 149,910,657 bytes**. Complete anonymous readback matches SHA256
 `5fab7688de2c1a9ffee2458fbc724a12789f8b7c1558f9b60424cd9177d7f70f`.
 Active later repair/routing stages are excluded.
+
+
+### RX read proof strengthened; one-hot trial rejected, 9 October 2026
+
+A parallel index-decode trial for receive ownership passed the existing
+undefined-state sequential proof but worsened the independent unplaced timing
+screen. It has **not** been adopted. With the same replay-bank candidate,
+slow/typical/fast setup changes from −2.538696 / −0.236299 / +0.723702 ns to
+−2.733356 / −0.375394 / +0.562434 ns; mapped cells increase from 78,018 to
+78,078, preserving 101 ports. These are mapping screens, not routed timing.
+The [comparison](../hw/soc/pcie-evidence/20261009-rx-read-proof/preplacement-comparison.json)
+retains exact start/end points.
+
+An actual wrong-byte-index mutation also passed the old sequential proof:
+1,173 points reported proved. This exposed a verification gap around initially
+undefined memory reads. That result is not accepted as evidence of correctness.
+The [new independent cut](../scripts/check_pcie_rx_read_cut.py) supplies every
+stored bit and address as an arbitrary defined input, comparing the actual
+candidate read expression against the frozen flat reference. It covers every
+language-defined address, including cross-bank reads; it does not mask outputs
+using `out_valid` or assume reachable state. Out-of-array reads have undefined
+Verilog semantics and are explicitly outside this cut's assertion domain.
+
+RX [combined equivalence](../scripts/check_pcie_chip_timing_equivalence.py) now
+requires both checks. The same wrong-index candidate is
+[rejected](../hw/soc/pcie-evidence/20261009-rx-read-proof/wrong-index-joint.json)
+by the new cut despite the old sequential stage reporting 1,173 proved points.
+Two positive dimensions, actual packet/DLLP wrong-byte controls and a changed
+state-shape control pass five tests; the two existing RX sequential cases also
+pass with the additional cut. No production RTL or timing constraint changed.
+
+The [public experiment capsule](../hw/soc/pcie-evidence/20261009-rx-read-proof/delivery.json)
+contains the candidates, rejected setup results and preparation attempts, exact
+proof sources, failed mutation detection, corrected cuts and native logs:
+**123 members, 21,318,338 bytes**. Complete anonymous readback matches SHA256
+`6201795773c66861e33c4ec9a19658ac10a1c4a1e5131b7d5ed3e8b36cfd0436`.
