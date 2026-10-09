@@ -922,3 +922,59 @@ and electrical/functional thresholds remain unchanged. Storage bounds are
 The longer result remains pending. This 749-device chain still uses a schematic
 receiver/counter alongside physical subblocks; it is not a completed physical
 PLL parent, serial Gen3 x4 PHY or final main-chip timing result.
+
+### Physical receiver route correction passes loaded replay — 9 October 2026
+
+The `ordered` receiver retains the paired layout's nineteen core devices,
+twenty-four finite contacts and all device sizes. It routes `pre`, `mid`, `gate`,
+`gain`, `ip` and `inn` on the nearest available bus rows, shortening the sensitive
+amplifier connections. Native component DRC, deep/flat transistor LVS, five
+actual geometry/reference faults, six-port LEF and its two fault controls pass.
+Native binding and wire-graph/composition controls also pass. The extracted
+model retains **123 resistors and 193 capacitors**; this is not qualified RF PEX.
+
+With the same saved input excitation and actual 48-device flip-flop load, all
+four replay criteria and all **91 electrical screens** pass: one receiver edge
+per input period, correct divide-by-two operation and full logic swing. Clock
+voltage spans **0.08325–1.19990 V** over the unchanged 4–12 ns window. The prior
+paired candidate failed early edges and low-level swing; reducing only the
+self-bias resistor also failed, so neither is adopted.
+
+The [complete passed physical-receiver capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-receiver-ordered-passed-20261009.tar.gz)
+contains 170 members / 239,487,059 bytes, with complete anonymous readback matching
+SHA256 `a642d986c72d09aafa28b8f547540e8d4762a8aad91a8deb43bb04e7402be3c2`.
+It includes generator/source, GDS/LEF, native comparisons, fault controls, wire
+models, complete waveform and device screens. The
+[five preceding failed physical candidates](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-receiver-sized-comparison-20261009.tar.gz)
+are preserved separately: 919 members / 1,166,489,004 bytes, complete anonymous
+readback SHA256 `7975acf871e78d568e3b4bb3b78b63411db867c8005a463fd693507915b3d9bd`.
+The uniformly scaled candidate additionally fails the unchanged 10 µm MOS model
+width bound; its 11.84 µm tail device is not accepted.
+
+A new 773-device connected-loop run combines this receiver with the passing
+749-device count-drive parent. All other 730 devices and all 5,074 parent wire
+records are preserved; total wire records become 5,390. Named instance-boundary
+and native-deck fault controls pass before launch. The 34 ns transient is
+running with real source loading, original supplies/reset/reference and no
+control-voltage clamp. Saved-voltage replay success does **not** establish this
+connected result, a physical PLL parent, lock/PVT qualification or a Gen3 x4 PHY.
+
+### Completed older 570-device one-microsecond response — 9 October 2026
+
+The earlier 570-device chain reaches the exact 1 µs endpoint with 3,201,211 raw
+rows and verified compression readback. All device electrical screens pass,
+but the original strict /4 and /80 edge-count checks fail. Of 1,974 /4 intervals,
+1,757 contain four VCO periods, 109 contain five and 108 contain three; 97 /80
+intervals contain eighty periods and one contains eighty-one. These failures
+are retained, not converted into lock acceptance.
+
+The native clean-diagnostic gate also rejects ngspice's memory-estimate warning:
+its estimated full in-memory waveform exceeds then-available DRAM. The complete
+streamed capture remains available; its original status is
+`ERROR_NATIVE_OR_CAPTURE`. A separate, byte-verified diagnostic review of the
+unchanged record measures 800–1,000 ns: feedback **99.993005 MHz**, VCO
+**7.999302 GHz**, feedback frequency error **−69.95 ppm**, and unwrapped phase
+change **−0.001387 cycles**. VCTRL still spans **0.55852–0.79228 V**. Neither these
+nominal measurements nor the observed convergence override the failed checks.
+Complete large-waveform publication is in progress as ordered byte parts; the
+newer 749-device, wire-loaded 200 ns run remains a separate pending experiment.
