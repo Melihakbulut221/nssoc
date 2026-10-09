@@ -186,5 +186,59 @@ attempts: 151 members, 483,285 bytes. Complete anonymous readback matches SHA256
 This is a verified **component layout**, not a complete PLL or main-chip
 instance. The full570 transient above used the earlier schematic pump/filter;
 it does not validate the seventeen added physical contacts, extracted wire
-parasitics or closed-loop behavior of this layout. Physical-model binding,
-parasitic extraction and subsequent feedback simulations remain required.
+parasitics or closed-loop behavior of this layout. The native physical-model binding below addresses the seventeen contacts.
+Parasitic extraction and subsequent feedback simulations remain required.
+
+## Native thirty-device pump model — 9 October 2026
+
+The [compact circuit](../hw/soc/pcie-evidence/20261009-pump30-model/pump30-compact.spice)
+now follows all thirty devices and named terminals from the actual passing LVS
+extraction. The translator explicitly converts the extractor's MOS source/gate/
+drain/body order to the compact model's drain/gate/source/body order. It preserves
+native junction areas, perimeters and transistor dimensions. Each of the seventeen
+2 × 2 µm contacts uses the pinned PDK area/perimeter conductance equation, giving
+81.666667 Ω per contact. This is a finite contact model; it does not add spatial
+substrate or wire parasitics.
+
+The [independent translation checker](../scripts/check_pcie_pump30_binding.py)
+derives connectivity and parameters from native device identities rather than
+accepting the generated manifest as its reference. Its
+[eight actual fault controls](../hw/soc/pcie-evidence/20261009-pump30-model/binding-controls.json)
+reject drain/source exchange, changed width, default contact resistance, bypassed
+body contact, wrong supply, missing contact, exchanged external ports and a
+duplicate parameter.
+
+Three new 34 ns native simulations hold VCTRL at 0.6 V and command idle, source
+or sink. All thirty finite electrical screens, zero-source operating-point checks
+and strict simulator diagnostics pass, with **108,811 samples per case**.
+The [native summary](../hw/soc/pcie-evidence/20261009-pump30-model/native-review.json)
+and [paired comparison](../hw/soc/pcie-evidence/20261009-pump30-model/current-comparison.json)
+retain input/output hashes and compare against the earlier schematic thirteen-device
+model over the same 4–34 ns window:
+
+| Command | Schematic current into VCTRL | Physical-device current into VCTRL | Difference |
+| --- | ---: | ---: | ---: |
+| Idle | +33.017214352 µA | +33.017213349 µA | −1.003 pA |
+| Source | +69.013234581 µA | +69.012809898 µA | −424.684 pA |
+| Sink | −9.713785610 µA | −9.713784878 µA | +0.731 pA |
+
+Positive clamp current represents current delivered by the circuit into VCTRL,
+as established by independent native injection/withdrawal controls. The first
+postprocessing attempt incorrectly negated this value. Its
+[rejection record](../hw/soc/pcie-evidence/20261009-pump30-model/rejected-sign-comparison.json)
+is preserved; the corrected comparison revalidates saved raw bytes and sign-control
+outputs. No solver waveform was changed.
+
+The seventeen contacts are therefore exercised in this component simulation.
+This does not establish the layout's wire RC, extracted PLL dynamics, PVT,
+phase noise, jitter, serial link operation or main-chip timing. A separate
+587-device feedback candidate replaces the old thirteen-device pump/filter with
+this native thirty-device model. Its 557 other device records and 2,685 existing
+wire elements match the previous composition exactly. Its native transient is
+pending; the physical parent PLL and pump wire extraction remain open.
+
+The [complete public capsule](../hw/soc/pcie-evidence/20261009-pump30-model/delivery.json)
+contains the new captures, paired schematic baselines, sign controls, sources,
+translation faults and rejected comparison: **164 members, 90,338,951 bytes**.
+Complete anonymous readback matches SHA256
+`cbdb6d4eb20725b27cac3a8621f4cac437aae3a3fc6974aa40d9f25e70559b53`.
