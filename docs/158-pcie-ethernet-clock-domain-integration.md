@@ -629,3 +629,45 @@ contains the candidates, rejected setup results and preparation attempts, exact
 proof sources, failed mutation detection, corrected cuts and native logs:
 **123 members, 21,318,338 bytes**. Complete anonymous readback matches SHA256
 `6201795773c66861e33c4ec9a19658ac10a1c4a1e5131b7d5ed3e8b36cfd0436`.
+
+
+### Shorter LCRC end-of-packet verdict, 9 October 2026
+
+The [receive quarantine](../hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v) now tests the
+inverse CRC residue on the late byte path. Reversing eight reflected polynomial
+steps maps `DEBB20E3` to `00BE26ED`; the new predicate compares the CRC seed XOR
+the incoming byte against this value. It preserves the original CRC update,
+packet state, storage, handshakes and cycle latency. This removes the full byte
+CRC update from the EOP acceptance dependency without adding an output buffer.
+
+The [independent checker](../scripts/check_pcie_crc_residue.py) binds the frozen
+pre-change controller and unchanged CRC primitive. It requires the entire
+controller to match apart from this one predicate, then proves equality for all
+**41 CRC-state/data-byte/SOP input bits** using native SAT. Three actual wrong
+predicates fail; changed length, handshake and CRC update definitions are also
+rejected. Seven source controls pass. The initial test expected the newer
+Yosys counterexample banner; older Yosys aborts at `-verify` with a different
+explicit proof-failure diagnostic. That failed test expectation and its corrected
+portable assertion are retained in the capsule. Six integrity tests and five
+buffered packet/credit tests pass with zero failures or skips.
+
+The [whole-chip mapping screen](../hw/soc/pcie-evidence/20261009-crc-residue/preplacement-comparison.json),
+combined with the earlier replay-bank candidate, improves worst setup:
+
+| Unplaced setup slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Replay-bank baseline | −2.538696 | −0.236299 | +0.723702 |
+| Inverse-residue verdict | −2.475437 | −0.184042 | +0.793174 |
+
+The candidate maps to 78,184 cells and 101 ports. Its pre-placement electrical
+repair preserves [279,794 non-buffer pin bits](../hw/soc/pcie-evidence/20261009-crc-residue/pin-graph.json)
+and rejects seven actual graph faults. This functional RTL correction is adopted;
+its physical implementation is a separate active run with the same clock periods,
+I/O budgets, macro placement, die, 36% placement density and 20% global-routing
+reservation. These unplaced results do **not** establish setup/hold closure,
+routed layout, qualified extraction or serial PHY acceptance.
+
+The [completed proof/mapping capsule](../hw/soc/pcie-evidence/20261009-crc-residue/delivery.json)
+contains exact sources, tests, native mapping and corner reports, excluding the
+active physical run: **208 members, 24,310,218 bytes**. Complete anonymous readback
+matches SHA256 `9c4b300cbc4eac1038ac35e0363e696fc6b255d7d40caf1162e0c44e06e0a9d5`.

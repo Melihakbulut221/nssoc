@@ -37,11 +37,6 @@ module soc_pcie_lcrc_rx #(
     wire [31:0] crc_next;
     soc_pcie_crc32_byte update_crc(.state_i(rx_sop_i ? 32'hffffffff : crc),
                                   .data_i(rx_data_i),.state_o(crc_next));
-    // Eight reflected CRC steps are invertible. Reversing DEBB20E3 yields
-    // 00BE26ED before the byte XOR. This tests the identical residue without
-    // placing the entire byte-update XOR network on the late EOP verdict path.
-    wire crc_residue_ok=((rx_sop_i ? 32'hffffffff : crc) ^
-                         {24'b0,rx_data_i})==32'h00be26ed;
     assign rx_ready_o=rst_ni && state!=EMIT;
     assign tlp_valid_o=rst_ni && state==EMIT;
     assign tlp_data_o=bytes[index];
@@ -80,7 +75,7 @@ module soc_pcie_lcrc_rx #(
                     if (received==1) sequence_o[7:0]<=rx_data_i;
                     if (received>=2 && received<CAP+2) bytes[received-2]<=rx_data_i;
                     if (rx_eop_i) begin
-                        if (received>=17 && received[1:0]==1 && crc_residue_ok) begin
+                        if (received>=17 && received[1:0]==1 && crc_next==32'hdebb20e3) begin
                             length<=received-5;state<=EMIT;index<=0;packet_good_o<=1;
                         end else begin state<=IDLE;packet_bad_o<=1;end
                     end
