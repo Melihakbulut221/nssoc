@@ -490,3 +490,53 @@ failed startup/wrapper attempts. The active physical run is explicitly
 excluded. The earlier replay physical run continues separately with its
 frozen source. Full serial Gen3 x4 PHY, final routed timing, qualified SRAM/RC
 and main-chip physical acceptance remain open.
+
+### Complete pre-CTS clock policy and congestion recovery, 9 October 2026
+
+Both prior physical continuations stopped in global routing. The combined
+reset candidate finished with **1,250 overflow**; no detailed-routed database
+or extracted timing was produced. Its independently repeated post-CTS screen
+uses placement-estimated signal/clock RC and the three native library corners:
+
+| Post-CTS placement screen, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Worst reported setup | -7.370515 | -3.565318 | -1.546666 |
+| Worst reported hold | -0.549185 | -0.399611 | -0.302936 |
+
+These are not signoff results. The typical/fast setup paths now start at
+`pcie_retrain_done_i`; the worst hold path starts at `pcie_rx_valid_i`.
+The [path records](../hw/soc/pcie-evidence/20261009-packet-routing-recovery/previous-postcts-worst-paths.json)
+retain the actual start/end points and method scope.
+
+One-iteration native routing diagnostics show clock nets concentrated in the
+congested regions. Moving clocks to TopMetal1–TopMetal2 worsened overflow from
+10,049 to 19,417 under the same one-iteration method, so that trial was rejected.
+The congestion-report row sums include intermediate routing reports and must
+not be confused with the router's final overflow table. Congestion rejection
+remains enabled throughout.
+
+The earlier clock-policy correction covered only the first mid-PnR STA.
+The new flow applies ideal clocks to **all fourteen OpenROAD stages through
+CTS entry**, including placement and electrical repair. Native CTS explicitly
+propagates the clock trees after constructing them; every subsequent flow
+class remains unchanged. The 80 stage identities/order, missing/duplicate-CTS
+rejection and actual native placement environments are checked. Completed
+placement SDCs retain ideal clocks, and the new completed CTS SDC propagates
+all five clocks, including generated `eth_gtx`.
+
+A new candidate enables timing-driven placement and reduces target density
+from 40% to 36%. Die, macro placement, original mapped design, timing budgets,
+20% routing capacity adjustment and acceptance checks stay unchanged. Placement
+and CTS have completed; post-CTS repair and routing still determine whether
+this candidate improves timing and congestion. No pending stage is counted as
+passing. The [recovery review](../hw/soc/pcie-evidence/20261009-packet-routing-recovery/review.json)
+and [frozen diagnostic archive](../hw/soc/pcie-evidence/20261009-packet-routing-recovery/delivery.json)
+preserve prior failures and completed placement stages. The later candidate
+CTS and active repair stages are excluded from that first archive.
+
+The bundled mid-PnR STA script handles only one corner per process. Its state
+file can retain older metrics for other corners, and some unqualified helper
+queries span corners. Those inherited or mixed values are not fresh
+three-corner evidence. The independent screen explicitly names each corner
+for every setup/hold path report; a new screen is queued after candidate
+post-CTS repair. Final acceptance still requires extracted timing.
