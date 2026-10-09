@@ -741,3 +741,30 @@ screens and 13 divider checks. The first dispatch was stopped because its copied
 final screen census still expected 749 devices; the failed attempt and sources
 are preserved. A fresh corrected attempt is running. Physical receiver success
 is not full PLL layout, acquisition, CDR or serial Gen3 x4 acceptance.
+
+
+### Stronger feedback level shifter: duty fixed, divider acceptance still fails
+
+The [34 ns connected-feedback result](../hw/soc/pcie-evidence/20261009-feedback-leveldrive/review.json)
+keeps the original 740-device electrical screens and thirteen divider predicates.
+Increasing only the two level-shifter NMOS widths from 4 to 8 µm restores the
+measured feedback duties to **21.4371% and 20.8014%**. All 740 electrical screens
+and eleven divider predicates pass, but the native /4 and whole /80 checks fail.
+The /4 interval census includes one five-cycle and one three-cycle interval;
+the /80 census is **81, 80**. No acquisition continuation is accepted from this run.
+
+The [saved-waveform phase diagnostic](../hw/soc/pcie-evidence/20261009-feedback-leveldrive/phase-diagnostic.json)
+finds four-cycle nearest-edge ordinal steps for /4, with phase from −4.951 to
++1.159 ps. This helps locate the interval-boundary sensitivity but does not
+replace the failed original predicate or establish correct division under all
+conditions. The /80 nearest-edge steps are 81 and 79; its remaining error cannot
+be dismissed as successful PLL lock. VCTRL spans 0.66984–0.83850 V in the final
+24–34 ns window. Physical level-shifter and receiver variants are being measured
+separately with their native contacts and wire parasitics.
+
+The [complete failed-candidate capsule](../hw/soc/pcie-evidence/20261009-feedback-leveldrive/delivery.json)
+contains 64 members / 1,330,181,228 bytes. Anonymous full readback verifies SHA256
+`f69d9b1b31eb5ecf4bd48d628a22e8cd3d07880de91f53a2d61178ca6c1eb409`.
+The [source/zero-source-OP postflight](../hw/soc/pcie-evidence/20261009-feedback-leveldrive/postflight.json)
+passes without overriding the transient failure. Full PLL acquisition, PVT,
+physical-parent integration and serial Gen3 x4 remain open.
