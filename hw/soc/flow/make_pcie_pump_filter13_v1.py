@@ -213,11 +213,13 @@ def build(pdk, out):
     records = []
     terminals = {}
     routes = []
+    # REUSE-IgnoreStart
     reference = [
         "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut",
         "* SPDX-License-Identifier: CERN-OHL-W-2.0",
         ".subckt " + TOP + " " + " ".join(PORTS),
     ]
+    # REUSE-IgnoreEnd
 
     def pc(name, params):
         cell = layout.create_cell(name, "SG13_dev", params)
