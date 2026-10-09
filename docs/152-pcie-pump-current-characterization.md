@@ -768,3 +768,47 @@ contains 64 members / 1,330,181,228 bytes. Anonymous full readback verifies SHA2
 The [source/zero-source-OP postflight](../hw/soc/pcie-evidence/20261009-feedback-leveldrive/postflight.json)
 passes without overriding the transient failure. Full PLL acquisition, PVT,
 physical-parent integration and serial Gen3 x4 remain open.
+
+
+### Feedback DFF physical prerequisite — geometry passes, speed screen fails
+
+The [new DFF generator](../hw/soc/flow/make_pcie_feedback_dff48_v1.py)
+preserves the existing 48-device LV flip-flop and adds 48 substrate and 22 well
+contacts: **118 native devices**. Its initial layout failed four TopMetal1 width
+checks at the small MIM top electrodes. Extending routing metal over the entire
+electrode fixes the narrow connection without changing the MIM dielectric area.
+The [corrected layout](../hw/soc/pcie-evidence/20261009-feedback-dff/native-layout.json)
+passes all 560 DRC categories, deep/flat LVS and five actual fault controls.
+The [eight-port LEF](../hw/soc/pcie-evidence/20261009-feedback-dff/lef-controls.json)
+passes native loading and missing/blocked-pin controls.
+
+The [118-device compact-model binding](../hw/soc/pcie-evidence/20261009-feedback-dff/binding-controls.json)
+rejects eleven terminal/parameter faults. The [wire audit](../hw/soc/pcie-evidence/20261009-feedback-dff/wire-audit.json)
+retains 357 resistors and 597 capacitors across 28 conductors, with 210 metal
+terminal references, 114 intrinsic body/well references and eight public ports.
+Thirteen raw corruptions and six composition faults are rejected. This remains
+unqualified interconnect extraction, with no spatial substrate model.
+
+**The physical DFF is not accepted for the feedback chain.** Its
+[12 ns, 2 GHz component screen](../hw/soc/pcie-evidence/20261009-feedback-dff/finite-review.json)
+passes all 118 electrical screens but fails to transmit alternating data. The
+output never reaches 0.6 V; its maximum is about 0.327 V. A held-reset fault also
+fails the functional checks. Layout/LVS success therefore does not establish
+clock-rate functionality.
+
+The [same native devices without wire RC](../hw/soc/pcie-evidence/20261009-feedback-dff/schematic-review.json)
+do toggle, but fail the original 150–200 ps post-edge settling aperture and one
+all-sample voltage screen (about 1.510 V against the existing 1.5 V limit).
+A [vendor DFF plus inverter comparison](../hw/soc/pcie-evidence/20261009-feedback-dff/standard-cell-review.json)
+passes its electrical screens but also misses that settling aperture. Its first
+attempt failed because the safety parser required micrometre spelling whereas
+the vendor uses nanometres; the corrected attempt preserves exact SI values and
+the vendor schematic. Neither comparison changes the original failed verdict
+or qualifies a replacement counter.
+
+The [complete source, layout, wire and finite-failure capsule](../hw/soc/pcie-evidence/20261009-feedback-dff/delivery.json)
+contains 232 members / 217,968,926 bytes. Anonymous complete readback verifies
+SHA256 `4682a69ad17041260ff9446d8fc0f0f1729675b62bd83c42dbb6cc92e7027f38`.
+The failed geometries, failed parser prefix, full waveforms and IHP source notice
+are retained. Compact physical placement and full-chain clock-rate validation
+remain necessary before integrating a counter macro into the PLL.
