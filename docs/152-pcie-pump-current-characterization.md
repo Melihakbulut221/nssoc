@@ -1068,8 +1068,14 @@ by these 36 extracted devices and 237 wire elements. The resulting chain has
 unchanged. Named pin and capacitor-reference boundary checks reject swaps
 before simulation. Initial harness failures (CPU-affinity guard and a missing
 wire-only clock observation) are preserved. The fresh run records that actual
-clock conductor explicitly and uses 1,787 columns. Its 50 ns result is pending;
-the standalone macro pass does not establish the loaded-chain result.
+clock conductor explicitly and uses 1,787 columns. The completed 50 ns run
+now passes all 761 electrical screens and all thirteen divider checks, with
+clean diagnostics and complete compressed readback. Three feedback intervals
+each contain exactly 80 VCO cycles. Actual-deck postflight and independently
+checked PFD, pump and physical-toggle boundaries pass. This establishes the
+finite nominal loaded-chain result; the second fast toggle and modulo-five
+counter are still schematic, and the separate MOS-corner failures below remain
+open. There is no full physical PLL parent or serial PHY acceptance.
 
 The reusable [toggle layout generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_toggle36_v1.py)
 now emits a 15.360 × 6.370 µm GDS, a six-pin LEF and the explicit-finger LVS
