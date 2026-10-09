@@ -811,3 +811,39 @@ hold margin is only 1.016 ps. Setup remains negative.
 The [complete source/repair capsule](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/hold-delivery.json)
 has 177 members / 213,918,222 bytes and verified anonymous whole-file SHA256
 `9080c50068d02cfe3f7aab99b70be30efeff114ac736ac71f73024d81ee9af57`.
+
+
+### Routed baseline: zero router DRC and antenna violations, timing fails
+
+The original packet-interface chip candidate `postgrt13-01` completed detailed
+routing with **zero router DRC errors**, followed by **zero antenna nets/pins**
+and completed nominal RC extraction. These checks do not establish full foundry
+DRC/LVS or integrate the missing serial PHY. The
+[three-corner extracted-RC review](../hw/soc/pcie-evidence/20261009-routed-rc-baseline/review.json)
+records the actual post-route failures:
+
+| Extracted nominal RC | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Worst setup, ns | −13.556860 | −7.122849 | −3.342535 |
+| Worst hold, ns | −0.125114 | −0.420728 | −0.577340 |
+| Setup violating endpoints | 9,599 | 5,683 | 1,522 |
+| Hold violating endpoints | 2 | 33 | 123 |
+| Max slew violations | 451 | 218 | 135 |
+| Max capacitance violations | 44 | 44 | 45 |
+
+An [independent OpenROAD readback](../hw/soc/pcie-evidence/20261009-routed-rc-baseline/independent-slack.json)
+of the same ODB, SDC, libraries and SPEF reproduces all six worst slacks. Reports
+must take the minimum across **all clock groups**, not the first reported group.
+The critical PCIe path includes a NOR2_1 output driving 0.625582 pF; its cell
+arc contributes 5.627487 ns and its output transition is 7.976495 ns. Load and
+buffering repairs are under evaluation on a separate copy. Any modified candidate
+requires new routing, extraction and functional checking.
+
+The [routed evidence capsule](../hw/soc/pcie-evidence/20261009-routed-rc-baseline/delivery.json)
+contains the routed ODB/DEF/netlists/SDC/SPEF, native reports and independent
+readback: **198 members / 196,812,649 bytes**, anonymously downloaded and verified
+against SHA256 `c306c89ac31fd37018740deb988c011ee15553d38d4d47608ece10bff8f8266f`.
+It preserves this failed baseline; it is not timing acceptance. The separate CRC
+placement hold experiment above is a different candidate and cannot replace these
+routed results. The three library corners share nominal wire RC, so this also
+is not qualified multi-corner interconnect signoff.
