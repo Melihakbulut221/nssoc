@@ -671,3 +671,48 @@ The [completed proof/mapping capsule](../hw/soc/pcie-evidence/20261009-crc-resid
 contains exact sources, tests, native mapping and corner reports, excluding the
 active physical run: **208 members, 24,310,218 bytes**. Complete anonymous readback
 matches SHA256 `9c4b300cbc4eac1038ac35e0363e696fc6b255d7d40caf1162e0c44e06e0a9d5`.
+
+### Three-corner hold repair on the placed packet chip, 9 October 2026
+
+The replay-bank candidate now has a separate, verified post-CTS repair state.
+It uses the pre-residue RTL candidate; it must not be confused with the active
+CRC-residue placement. Native hold repair inserts 190 buffers, followed by
+short-branch delays and link/retrain input-tree resizing. Existing placements
+are frozen during legalization of the added delay cells. The final state has
+219 more transparent buffers than its original post-CTS baseline.
+
+The [fresh three-corner screen](../hw/soc/pcie-evidence/20261009-replay-hold-eco/corner-review.json)
+uses propagated clocks and placement-estimated signal/clock RC:
+
+| Worst slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Setup before repair | −3.721334 | −1.451861 | −0.193468 |
+| Setup after repair | −3.721334 | −1.192443 | +0.079398 |
+| Hold before repair | −0.018985 | −0.070460 | −0.208139 |
+| Hold after repair | +0.136141 | +0.047381 | +0.005748 |
+
+An additional native census of **all negative hold endpoints** returns zero in
+each corner. This is broader than merely reading the first path in a report.
+SDC commands are unchanged. The [whole-chip graph check](../hw/soc/pcie-evidence/20261009-replay-hold-eco/pin-graph.json)
+preserves all 101 ports and 288,121 non-buffer pin bits and rejects seven actual
+corruptions, including data, clock, reset, tie, missing buffer, port and wrong
+function. The reports include all path groups when selecting the worst slack.
+
+Rejected experiments remain available: unfrozen legalization worsened slow
+setup, isolated input strengthening introduced short-path violations, and one
+attempt failed on stale parasitic estimates after resizing. The corrected
+sequence refreshes parasitics before buffer insertion and explicitly measures
+all three corners again. The final candidate has started a separate strict
+routing run with 13% track reservation and 200 overflow iterations, retaining
+clock periods, I/O budgets and zero-overflow requirements. That run is pending.
+
+**This closes hold only in the placement estimate.** Slow and typical setup
+still fail; the 5.748 ps fast hold margin must survive actual routing/extraction.
+The result does not establish final timing, full serial PHY integration or
+manufacturing readiness.
+
+The [completed evidence capsule](../hw/soc/pcie-evidence/20261009-replay-hold-eco/delivery.json)
+contains 323 members and **324,803,276 bytes**, including the frozen baseline,
+repair states, native logs, failed experiments and graph controls. Active
+routing directories and logs are excluded. Complete anonymous readback matches
+SHA256 `1b7b1ac679a07bba8d09f834ed636a49b5fb7b6ecec9de9c21ae5439b903d65b`.
