@@ -79,10 +79,15 @@ and was stopped with the failed capture retained. The second declares
 voltage/current screens, stimuli and solver settings. It completes the same
 34 ns experiment. The [replay review](../hw/soc/pcie-evidence/20261009-pump-loaded-boundary/replay-review.json)
 and [delivery record](../hw/soc/pcie-evidence/20261009-pump-loaded-boundary/delivery.json)
-separate completed local/native checks from pending public delivery checks.
-The new capsule includes failed and successful replay captures; the original
-570-instance captures are being published separately rather than claimed to
-be included in this smaller capsule.
+record completed local/native checks and the complete anonymous public
+readback of the 312,231,678-byte replay capsule. Its SHA256 is
+`20b5b060380f4443edbd83d6b90c067832ec1e956e12fb55ba3f637163af32bc`.
+Failed and successful replay captures are included. The three original
+570-instance captures are separate: their [delivery receipts](../hw/soc/pcie-evidence/20261009-pump-loaded-boundary/loaded570-delivery.json)
+bind 2,721,803,628 bytes, with complete public readback for each archive.
+Two readbacks use contiguous, non-overlapping HTTP ranges, exact response
+bounds and the SHA256 of all bytes concatenated in order; no partial download
+is presented as a complete verification.
 
 A separate fixed-ordinal diagnostic explains the 0.7 V count anomaly more
 precisely. Every consecutive CML edge advances by four nearest VCO edges,
