@@ -913,13 +913,14 @@ instance-boundary checks pass. The [complete passed capture](../hw/soc/pcie-evid
 contains 67 members / 1,355,127,810 bytes, with anonymous full readback matching
 SHA256 `accaee9c1b6a99b8e2f2593cef5d699a63e8f686a6d862140ceb9ec85879c136`.
 
-A separate 200 ns continuation is running. Its
+The separate 200 ns continuation has completed with failures. Its
 [preflight comparison](../hw/soc/pcie-evidence/20261009-feedback749-count/continuation-controls.json)
 requires byte-identical native model files and a deck differing only in the
 transient stop time. All device/wire records, sources, 0.3125 ps maximum timestep
 and electrical/functional thresholds remain unchanged. Storage bounds are
 700,000 rows, 12 GiB per point and 14 GiB aggregate, with no elapsed-time timeout.
-The longer result remains pending. This 749-device chain still uses a schematic
+The longer result fails /4 and /80 counting and the strict clean-diagnostic gate;
+see the long-response result below. This 749-device chain still uses a schematic
 receiver/counter alongside physical subblocks; it is not a completed physical
 PLL parent, serial Gen3 x4 PHY or final main-chip timing result.
 
@@ -977,7 +978,8 @@ unchanged record measures 800–1,000 ns: feedback **99.993005 MHz**, VCO
 change **−0.001387 cycles**. VCTRL still spans **0.55852–0.79228 V**. Neither these
 nominal measurements nor the observed convergence override the failed checks.
 Complete large-waveform publication is in progress as ordered byte parts; the
-newer 749-device, wire-loaded 200 ns run remains a separate pending experiment.
+newer 749-device, wire-loaded 200 ns run is a separate failed experiment,
+reported below.
 
 ### Ordered receiver in the actual closed loop — 9 October 2026
 
@@ -1130,9 +1132,44 @@ assumptions. The resulting census is 98 HBTs, 768 native devices and 6,421 wire
 records; all 1,921 observation vectors are retained.
 
 Eight source/deck faults and five waveform-checker faults are rejected. The
-50 ns / 0.3125 ps actual native transient is running with complete capture and
-unchanged electrical limits. Division checks measure both /4 stages, /16,
-receiver transfer, modulo-five state sequence, /80, rail levels and 17–23%
-feedback duty. Its result is pending. Reusing two component layouts does not
-place or route their parent, qualify PVT, establish PLL acquisition or complete
-the serial Gen3 x4 PHY.
+50 ns / 0.3125 ps actual native transient has completed and **fails**. The second
+macro receives about 2.36 V common mode; four of its HBTs have settled VCE below
+0.08 V. The first divider's output swing collapses below 0.05 V, and no feedback
+edges reach the PFD. All divider and feedback predicates remain failed.
+The inherited startup checker also rejects the actual 98-HBT census because
+it was fixed to 64; independent postflight verifies all 98 native OFF flags,
+zero-source OP, and exact 768-device / 6,421-wire connectivity. That harness
+limitation does not explain away the electrical and functional failures.
+
+The [complete failed-run records and loading diagnosis](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback768-div16-records-20261009.tar.gz)
+are public: 542,134 bytes, complete anonymous SHA256 readback
+`2161c2a88f10e4a57c0af4f0b88299965427555b34b2294438630cc2a8f850ec`.
+The separate 2,234,985,696-byte waveform is being published in byte-exact parts;
+complete public-waveform delivery is pending.
+
+A new 772-device experiment inserts two real Nx=2 NPN emitter followers and
+two 1 × 3.6 µm PDK resistor sinks between the physical divider macros. The
+original device and wire records are preserved except for the intentional
+second-macro input connections. The added buffer is initially schematic;
+its independent GDS/LEF and DRC/LVS checks are in progress. Eight source/deck
+faults, six startup-checker unit faults and five waveform-checker faults are
+rejected. The corrected isolated startup checker requires all 100 actual HBT
+flags and retains strict diagnostics and zero-source OP. The new 50 ns native
+run is pending. Reusing component layouts does not place or route their parent,
+qualify PVT, establish PLL acquisition or complete the serial Gen3 x4 PHY.
+
+### Count-drive chain: failed 200 ns response — 9 October 2026
+
+The 749-device continuation reaches 200 ns with complete compressed readback.
+All 749 electrical screens pass, but late /4 intervals contain 5 and 3 VCO
+edges, and late /80 intervals contain 81, 79 and 81. The thirteen original
+functional checks remain unchanged and two fail. The strict clean-diagnostic
+gate also rejects ngspice's memory-estimate warning. Actual-deck postflight,
+all 64 startup flags and zero-source OP pass independently. Neither the earlier
+34 ns result nor this longer capture establishes PLL acquisition.
+
+The [failed long-response records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback749-long200-records-20261009.tar.gz)
+are public: 630,762 bytes, complete anonymous readback SHA256
+`b095927a60e03bc0b6859610c7bb17eb9d97b18d0587136349699a0e02f0790d`.
+The 7,983,371,881-byte complete waveform is being published separately in
+byte-exact parts. Full public-waveform delivery and PLL acceptance are pending.

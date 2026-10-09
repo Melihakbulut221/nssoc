@@ -174,3 +174,21 @@ async def corrupt_credit_events_never_grant_or_reset_limits(dut):
     await driver.tick(request=(0, 1, False))
     await driver.tick(reset=True, fc=(2, 0, 3, 3), request=(0, 1, False))
     await driver.tick(request=(0, 1, False))
+
+
+@cocotb.test()
+async def same_cycle_update_debit_exhausts_exactly_once(dut):
+    """A simultaneous UpdateFC must not restore the packet's consumed credit."""
+    driver = Driver(dut)
+    for cls in range(3):
+        await driver.init(((4, 1), (4, 1), (4, 1)))
+        # Returning one data credit while consuming one leaves precisely one.
+        assert await driver.tick(fc=(2, cls, 5, 2), request=(cls, 4, False))
+        assert await driver.tick(request=(cls, 4, False))
+        assert not await driver.tick(request=(cls, 4, False))
+        # Updates to another class must not overwrite this class's debit.
+        other = (cls + 1) % 3
+        assert await driver.tick(fc=(2, cls, 6, 3), request=(other, 4, False))
+        assert not await driver.tick(request=(other, 4, False))
+        assert await driver.tick(request=(cls, 4, False))
+        assert not await driver.tick(request=(cls, 4, False))

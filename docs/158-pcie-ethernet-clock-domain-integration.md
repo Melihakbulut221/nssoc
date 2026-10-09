@@ -1052,3 +1052,40 @@ The [completed twenty/forty-cell trials, graph faults and canonical helper](http
 are public as 35 members / 43,650,236 bytes; complete anonymous readback matches
 SHA256 `85bcfe8ce378b8218cff2955a220b09b20c67a4103c6cefb9a34601c4084e61d`.
 The active unpruned repair is excluded from this immutable capsule.
+
+
+### Cached available-credit trial rejected — 9 October 2026
+
+An isolated candidate adds sixty cached header/data availability bits to the
+registered-RX and TX-prefetch candidate. The cache invariants are proved on the
+actual RTL from reset with explicit clock/asynchronous-reset modeling; no
+traffic assumptions are used. Composing those proved invariants with the
+frozen serial-credit reference proves all 362 equivalence points. Three
+corrupted cache updates produce formal base-case counterexamples.
+
+A new port-only regression exhausts a data pool immediately after simultaneous
+UpdateFC and packet consumption, including updates to a different class. All
+five credit tests pass on both canonical RTL and the candidate. The new test
+rejects two faults that the previous four tests missed: failing to debit a
+same-cycle update, and initializing one extra data credit. The wrong-header
+debit fault also fails. Five buffered-packet integration tests pass. Mapping
+preserves sixty distinct cache DFFs and nine TX-prefetch DFFs; five cache-graph
+and four TX-graph faults are rejected.
+
+| Whole-chip unplaced setup, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| TX prefetch | −2.272700 | −0.133300 | +0.772858 |
+| Added credit cache | −4.830043 | −1.702857 | +0.155953 |
+
+The new cache-update arithmetic becomes a worse critical path. This candidate
+is rejected for physical adoption; no route is launched for it. A separate
+candidate precomputes per-class consumed-plus-debit values before the incoming
+FC payload subtraction. Its proof, mapping and timing evaluation are separate
+work, with no accepted result yet.
+
+The [complete rejected-cache sources, proofs, tests, mapping and timing screen](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-credit-cache-rejected-20261009.tar.gz)
+contain 250 members / 20,384,758 bytes. Complete anonymous readback matches
+SHA256 `2d5d99881eb809285ad9fe30da32798decab6372736673148a7893207e1c4f05`.
+An additional optional finite reset-base SAT run is excluded because it was
+still running when the immutable capsule was assembled. Final setup/hold
+closure remains open.
