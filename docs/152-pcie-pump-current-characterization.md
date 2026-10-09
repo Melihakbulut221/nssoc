@@ -471,10 +471,12 @@ checks: **54 members, 996,004,517 bytes**. Full anonymous readback matches SHA25
 
 ## Compact row PFD repair — 9 October 2026
 
-The first combined pump/PFD wire capture completed 108,847 samples but failed
+The [first combined pump/PFD wire capture](../hw/soc/pcie-evidence/20261009-feedback740-allwire-failed/native-review.json)
+completed 108,847 samples but failed
 `feedback_twenty_percent_duty`, `native_hbt_div4` and `whole_native_div80`.
 HBT `xloop.xchain.xosc.xd0056` reached 3.004934 mA per emitter against the
-unchanged 3 mA screen. In the 24–34 ns window the saved PFD device supplies
+unchanged 3 mA screen. In the 24–34 ns window the
+[saved PFD device supplies](../hw/soc/pcie-evidence/20261009-feedback740-allwire-failed/rail-measurements.json)
 reached 2.372721 V minimum and grounds 0.198583 V maximum with an ideal 2.5 V
 external supply. UP reached only 0.967615 V, while DOWN stayed between
 2.220125 and 2.727041 V. These measurements motivate shorter wiring and wider
@@ -519,3 +521,53 @@ The [complete component capsule](../hw/soc/pcie-evidence/20261009-pfd-row/delive
 contains 148 members / 1,591,809 bytes. Full anonymous readback matches SHA256
 `b26bd4bef1edfa97dd8d78dbf2a4e5c84d58968f3755be5889aa92c5746dd2d5`.
 The active full-loop run is excluded from this frozen component archive.
+
+
+## Short local PFD buses — 9 October 2026
+
+A [second layout generator](../hw/soc/flow/make_pcie_pfd102_local_v2.py)
+removes the global-bus extension from internal signals used in only one row.
+Only 29 of the 57 conductors need global trunks. Device pitch and all finite
+contacts remain unchanged; the row pitch drops from 260 to 160 µm and the
+left routing corridor shrinks. The resulting macro measures **654 × 1,384.03 µm**.
+It uses the same top-cell name as the alternative PFD layouts and must be
+selected as one alternative, not loaded alongside them into the same library.
+
+The [native physical checks](../hw/soc/pcie-evidence/20261009-pfd-local/native-layout.json)
+again pass all 560 DRC categories with zero markers and both hierarchical and
+flattened 255-device LVS. All five physical/reference faults are rejected.
+[LEF checks](../hw/soc/pcie-evidence/20261009-pfd-local/lef-controls.json)
+verify eight public pins and reject two faults; the
+[source reproduction](../hw/soc/pcie-evidence/20261009-pfd-local/source-equivalence.json)
+matches every geometry layer and recursive label, LEF, schematic and placements.
+
+[New native device binding](../hw/soc/pcie-evidence/20261009-pfd-local/binding-controls.json)
+rejects eight corruptions. The [wire audit](../hw/soc/pcie-evidence/20261009-pfd-local/wire-audit.json)
+retains **771 resistors and 1,256 capacitors**, with all 467 terminal/port probes
+connected to their actual physical conductors. Thirteen
+[raw extraction faults](../hw/soc/pcie-evidence/20261009-pfd-local/wire-faults.json)
+and six [composition faults](../hw/soc/pcie-evidence/20261009-pfd-local/composition-controls.json)
+are rejected. The sum of ground and mutual capacitances, counting each edge
+once, falls from 9.269185 to 7.353597 pF in this unqualified extraction model.
+This aggregate decrease is not a timing or signal-integrity acceptance result.
+
+The new 740-device loop includes 4,951 wire elements and all 1,647 observations.
+Its first launch stopped at the CPU-affinity guard because the guard still
+expected CPU14 after the launcher selected free CPU10; ownership cleanup reaped
+that process. A fresh run corrects only that guard, retaining the failed record
+and all electrical, divider, sample and storage limits. It is running separately
+from the preceding row-PFD experiment; neither is claimed to pass yet.
+
+The [local-bus component capsule](../hw/soc/pcie-evidence/20261009-pfd-local/delivery.json)
+contains the geometry, generator, native extraction and controls, with complete
+anonymous SHA256 readback. Active loop simulations are excluded from this archive.
+The [failed all-wire capture](../hw/soc/pcie-evidence/20261009-feedback740-allwire-failed/delivery.json)
+is separately preserved in full: 94 members / 1,334,985,869 bytes, SHA256
+`5cb49361abd75209e909d5f26d99535881a2a8dd6dea6221eb9e7d1a13824151`.
+An HTTP500 interrupted its first readback; missing ranges were retried and the
+entire ordered digest verified. Its publication success does not change its
+failed electrical verdict. Full serial PHY and final chip timing remain open.
+
+The documentation links a compact failed-capture review to stay within the
+existing site asset budget. Its full native-result digest and capsule member
+are recorded; complete device records and waveforms remain in the public archive.
