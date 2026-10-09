@@ -679,3 +679,25 @@ running. The latter retains all 734 other devices and 4,951 existing wire
 records; this first native-cell run excludes the new level shifter's own wire RC.
 New wire extraction is being audited separately. Neither experiment establishes
 PLL lock, PVT/RF qualification, full physical PLL integration or a serial Gen3 x4 PHY.
+
+
+The level-shifter's separate [wire audit](../hw/soc/pcie-evidence/20261009-feedback-levelshift/wire-audit.json)
+now preserves all **44 resistors and 79 capacitors** across eight physical metal
+conductors. All 42 native terminals are accounted for: 27 have geometrically
+verified metal reference points, and 15 retain their intrinsic body/well
+identities without a substrate-spreading model. Seven public ports bring the
+reference-point count to 34. Every native resistor, point capacitance and mutual
+attachment is checked; no intrinsic alias is used to conceal a wire open.
+[Thirteen raw corruptions](../hw/soc/pcie-evidence/20261009-feedback-levelshift/wire-faults.json)
+and [six device/wire composition faults](../hw/soc/pcie-evidence/20261009-feedback-levelshift/wire-composition.json)
+are rejected. This extraction remains **unqualified for RF/signoff**.
+
+The [complete wire/component capsule](../hw/soc/pcie-evidence/20261009-feedback-levelshift/wire-delivery.json)
+has 141 members / 326,796 bytes, anonymously verified against SHA256
+`917126d1a1a609388922564dff64bd899e4a03c23b9c478129f116baf3b5e4bd`.
+A separate connected 749-device experiment includes these wire records and all
+4,951 preceding wire records, with 1,677 saved observations. The new capacitance
+reference has its own explicit external 0 V source and is passed through each
+hierarchy boundary; 28 pin swaps and four reference-hop corruptions are rejected.
+The full 34 ns transient, all-device screens and original divider checks are
+still running. No PLL or full-PHY acceptance follows from source composition.
