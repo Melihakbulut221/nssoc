@@ -400,3 +400,39 @@ contains 98 members and **140,292,447 bytes**, including geometry, restored/pinn
 extractor provenance, raw extraction, controls, failed attempts and complete
 finite captures. Complete anonymous readback matches SHA256
 `e30ef936125b9f8d13267a9563713ba4f2b8e9cbbad6470f5b06fd444b09066d`.
+
+## PFD metal RC composition — 9 October 2026
+
+The same geometry-binding and native wire-audit method now covers the PFD layout.
+All 255 unsimplified native devices have unique PCell location witnesses. Its
+714 intrinsic terminals comprise 459 metal references and 255 retained body/well
+references. Eight public pins bring the metal probe count to 467. The unchanged
+GDS metal/via unions form 57 physical conductors, each uniquely bound to an actual
+native LVS net without joining conductors by names.
+
+The [distributed extraction](../hw/soc/pcie-evidence/20261009-pfd-wire/wire-audit.json)
+contains **770 resistors and 1,354 capacitors**. Exact native/export resistor
+edges and values, individual ground and mutual-cap attachments, and the entire
+58-by-58 collapsed capacitance matrix pass. Thirteen raw-data corruptions fail.
+The [composition check](../hw/soc/pcie-evidence/20261009-pfd-wire/composition-controls.json)
+retains every native device parameter, separately binds each named terminal,
+and requires all 2,124 wire records. Six additional actual corruptions fail.
+The ninth PFD macro port exposes `wire_cref` independently of its original eight
+ports; substrate spreading and RF reference-plane placement remain unqualified.
+
+These are **geometry, extraction-consistency and composition results**, not a
+PFD transient or full PHY pass. A separate feedback experiment combines both
+pump and PFD wire models with the 740-device chain: 5,048 wire elements and 1,647
+saved observations. Both new capacitance references are exposed independently
+and explicitly held at zero in the fixture. The first launch exceeded the old
+64 KiB capture-header bound; its failure and partial capture are retained. A
+fresh run uses a 128 KiB bounded header reader with the same exact column,
+vector, alias and format checks. The full 1,648-column synthetic header and
+eight corrupt-header controls pass. Electrical acceptance limits are unchanged;
+the transient and its actual-header postflight remain pending.
+
+The [public component capsule](../hw/soc/pcie-evidence/20261009-pfd-wire/delivery.json)
+contains the candidate model, actual geometry, raw RC and controls: **45 members,
+592,028 bytes**, with complete anonymous readback matching SHA256
+`f6ab91257969c9195138655de53bade5148133371fda54b1c61dd45d2d4e4261`.
+The separately running feedback experiment is excluded from this frozen capsule.
