@@ -812,3 +812,28 @@ SHA256 `4682a69ad17041260ff9446d8fc0f0f1729675b62bd83c42dbb6cc92e7027f38`.
 The failed geometries, failed parser prefix, full waveforms and IHP source notice
 are retained. Compact physical placement and full-chain clock-rate validation
 remain necessary before integrating a counter macro into the PLL.
+
+
+### Connected native level shifter: loading moves the remaining failure
+
+Both 749-device, 34 ns connected-feedback runs have completed and retain their
+failed overall verdicts. Without the new cell's wire RC, all electrical screens
+pass and duties are 21.4369%/20.8011%, but the /4 and /80 checks still fail. See the
+[physical-cell review](../hw/soc/pcie-evidence/20261009-feedback749/physical-review.json).
+
+With all 44 R / 79 C records included, the [wire-loaded review](../hw/soc/pcie-evidence/20261009-feedback749/wire-review.json)
+passes every electrical screen and twelve of thirteen divider predicates. The
+/4 census is consistently four and the /80 census is **80, 80**. Feedback duties
+are 22.3981%/22.3657%. The remaining failure is `state_logic_rails`: the modulo-five
+count output is still about **0.416–0.422 V** at three state-zero sample points,
+above the unchanged 0.20 V low-level bound. Correct interval counts cannot waive
+that logic-level failure. The final 24–34 ns VCTRL range is 0.85343–0.87758 V;
+this finite observation does not establish lock or acquisition.
+
+Actual native PFD/pump boundaries and source/zero-source-OP postflights pass.
+The [complete physical-cell capture](../hw/soc/pcie-evidence/20261009-feedback749/physical-delivery.json)
+and [complete wire-loaded capture](../hw/soc/pcie-evidence/20261009-feedback749/wire-delivery.json)
+are published with anonymous whole-file SHA256 verification. A separate candidate
+changes only the count output's two series NMOS widths from 1.12 to 2.24 µm;
+all other 747 devices, 5,074 wire records and acceptance limits remain unchanged.
+That candidate is still running and is not accepted.

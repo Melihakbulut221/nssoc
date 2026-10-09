@@ -874,3 +874,27 @@ retains the clocks and strict congestion checks. It must finish routing, RC
 extraction and all-corner STA before any improvement can be accepted. Direct
 repairs that fell back to wireload estimation or mixed placement estimates with
 SPEF were rejected and are not used as extracted-RC timing evidence.
+
+
+### Rejected quarantine-index reset experiment — 9 October 2026
+
+The routed critical path ends at the receive quarantine's output index. An
+isolated candidate removes the late CRC verdict from that index's reset cone by
+keeping it zero outside EMIT. A full relational induction proves equality of all
+registers, unreset RAM and public outputs at the deployed eight-DWORD capacity,
+starting from reset and arbitrary equal RAM contents. Explicit clock/reset event
+modeling is retained. The supporting index invariant passes; three actual RTL
+corruptions produce counterexamples, and six port-level tests pass without skips.
+Earlier incomplete partitioned proofs are retained as incomplete.
+
+Despite those proofs, the [whole-SoC preplacement comparison](../hw/soc/pcie-evidence/20261009-quarantine-index/review.json)
+worsens slow/typical setup from **−2.475437/−0.184042 ns** to
+**−2.793582/−0.396140 ns**. Fast setup changes from +0.793174 to +0.821509 ns;
+hold is −0.465004/−0.539480/−0.601382 ns. The candidate is **not adopted**.
+The worst preplacement path remains replay `new_slot` to credit-data-limit
+updates. This unplaced wireload screen neither measures final routed timing nor
+replaces the failed extracted-RC baseline.
+
+The [complete proof, fault, test and synthesis capsule](../hw/soc/pcie-evidence/20261009-quarantine-index/delivery.json)
+contains 69 members / 18,605,662 bytes, anonymously verified against SHA256
+`62a70c4069fdead55f6d6acf265294952ff98c37c959068871fdb4887f9b8000`.
