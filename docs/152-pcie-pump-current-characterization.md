@@ -430,13 +430,15 @@ and explicitly held at zero in the fixture. The first launch exceeded the old
 fresh run uses a 128 KiB bounded header reader with the same exact column,
 vector, alias and format checks. The full 1,648-column synthetic header and
 eight corrupt-header controls pass. Electrical acceptance limits are unchanged;
-the transient and its actual-header postflight remain pending.
+the completed transient fails three divider checks and one HBT current screen.
+Its actual-header and operating-point postflight passes only that narrower scope.
+The failed electrical verdict is retained; details and the layout repair follow below.
 
 The [public component capsule](../hw/soc/pcie-evidence/20261009-pfd-wire/delivery.json)
 contains the candidate model, actual geometry, raw RC and controls: **45 members,
 592,028 bytes**, with complete anonymous readback matching SHA256
 `f6ab91257969c9195138655de53bade5148133371fda54b1c61dd45d2d4e4261`.
-The separately running feedback experiment is excluded from this frozen capsule.
+The separate feedback experiment is excluded from this frozen component capsule.
 
 ## Closed feedback with pump metal RC — 9 October 2026
 
@@ -457,14 +459,63 @@ and rejects clamp, held-reset, missing-vector and wrong-timestep faults.
 | 24–34 | 0.855486 | 1.018107 |
 
 These are finite nominal startup measurements. PFD wire RC is absent from this
-particular capture; the separate combined-wire run remains in progress. PLL
-lock, PVT, phase noise, BER, ESD and full serial PHY/main-chip integration are
-not accepted. A subsequent 200 ns combined-wire run is prepared behind strict
-successful finite-run and postflight prerequisites. It retains the same device,
-divider, timestep, supply, reference and reset checks, with larger explicit
-storage/sample bounds and no elapsed-time timeout.
+particular capture. The separate combined-wire run failed its finite prerequisites,
+so its queued 200 ns continuation stopped without launching. PLL lock, PVT,
+phase noise, BER, ESD and full serial PHY/main-chip integration are not accepted.
 
 The [complete public capsule](../hw/soc/pcie-evidence/20261009-feedback740-pump-wire/delivery.json)
 contains the exact campaign sources, complete raw observations, composition and
 checks: **54 members, 996,004,517 bytes**. Full anonymous readback matches SHA256
 `02302f7401db2536b8ae4051149839dae8eea7c8cb1c9e6f381ee51885fd25c7`.
+
+
+## Compact row PFD repair — 9 October 2026
+
+The first combined pump/PFD wire capture completed 108,847 samples but failed
+`feedback_twenty_percent_duty`, `native_hbt_div4` and `whole_native_div80`.
+HBT `xloop.xchain.xosc.xd0056` reached 3.004934 mA per emitter against the
+unchanged 3 mA screen. In the 24–34 ns window the saved PFD device supplies
+reached 2.372721 V minimum and grounds 0.198583 V maximum with an ideal 2.5 V
+external supply. UP reached only 0.967615 V, while DOWN stayed between
+2.220125 and 2.727041 V. These measurements motivate shorter wiring and wider
+supply metal; they do not establish rail bounce as the sole cause.
+
+The new [row-layout generator](../hw/soc/flow/make_pcie_pfd102_row_v1.py)
+places twelve devices per row, uses 8 µm supply buses and separate metal layers
+for local buses and vertical trunks. The resulting macro is **824 × 2,184.03 µm**.
+It preserves the 102 MOS devices and all 153 finite substrate/well contacts.
+[Native checks](../hw/soc/pcie-evidence/20261009-pfd-row/native-layout.json)
+report zero DRC markers across 560 categories, both hierarchical and flattened
+255-device LVS matches, and rejection of five physical/reference faults.
+[LEF checks](../hw/soc/pcie-evidence/20261009-pfd-row/lef-controls.json)
+verify eight pins and two corrupted physical views. The generator uses the
+alternative macro's existing top-cell name; both versions must not be loaded
+into one library under the same name.
+
+[Source reproduction](../hw/soc/pcie-evidence/20261009-pfd-row/source-equivalence.json)
+compares every layer union and transformed text label, LEF, schematic and
+placement records with the checked prototype. GDS timestamps differ, so this
+is geometry equality, not byte equality. New native LVS device identities
+are rebound to the new geometry; old instance numbering is not reused.
+The [binding controls](../hw/soc/pcie-evidence/20261009-pfd-row/binding-controls.json)
+reject eight actual changes.
+
+The [new extraction](../hw/soc/pcie-evidence/20261009-pfd-row/wire-audit.json)
+contains **776 resistors and 1,296 capacitors**. Exact resistor topology/values,
+capacitor attachments and the collapsed matrix pass, with
+[thirteen raw faults rejected](../hw/soc/pcie-evidence/20261009-pfd-row/wire-faults.json).
+Dropping a resistor in this new topology opens its graph before value comparison;
+the mutation fixture now expects that specific failure, with the checker unchanged.
+[Composition controls](../hw/soc/pcie-evidence/20261009-pfd-row/composition-controls.json)
+retain all 255 device and 2,072 wire records and reject six corruptions.
+
+A fresh 740-device feedback simulation now contains this row PFD, the physical
+pump wire model and 4,996 total wire elements. Its finite result is pending.
+The unchanged electrical/divider criteria must pass before longer acquisition
+runs or any electrical adoption. The geometry results do not qualify RC accuracy,
+PLL lock, CDR, serial Gen3 operation or a complete PHY layout.
+
+The [complete component capsule](../hw/soc/pcie-evidence/20261009-pfd-row/delivery.json)
+contains 148 members / 1,591,809 bytes. Full anonymous readback matches SHA256
+`b26bd4bef1edfa97dd8d78dbf2a4e5c84d58968f3755be5889aa92c5746dd2d5`.
+The active full-loop run is excluded from this frozen component archive.
