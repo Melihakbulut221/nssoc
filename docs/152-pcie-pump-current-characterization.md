@@ -1366,3 +1366,53 @@ Every public byte was verified after resuming the interrupted readback.
 Independent full-capture remeasurement reproduces the electrical and functional
 results of both corners and both held-reset controls; the fast-corner failure
 is preserved.
+
+
+### Physical /2–/2–/5 parent and remaining output delay — 10 October
+
+The [214-MOS parent generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_div20_214_v1.py)
+connects two physical /2 macros and the 142-MOS modulo-five macro with actual
+parent metal. Its normalized outline is 129.920 × 32.150 µm with eight LEF pins.
+The [native DRC/LVS checker](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_div20_214_v1.py)
+passes all 560 DRC categories, unsimplified deep/flat 214-device LVS and five
+injected faults. The [LEF checker](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_div20_214_lef.py)
+passes native import and rejects missing-pin, obstruction and outline faults.
+Twenty-layer XOR and exact SPICE/LEF comparison bind the reusable generator to
+the independently generated, extracted candidate.
+
+These physical checks do **not** close the electrical acceptance gate. Three
+successive parent layouts were tested with the same 80 ns / 2 GHz stimulus,
+0.3–0.8 ns Q1 rail window, ±0.12 V rail tolerance and 1.5 V device limit:
+
+| Parent geometry | Q1 incident metal capacitance | First high-window minimum | Nominal result |
+| --- | ---: | ---: | --- |
+| Original full-width output stubs | 16.842 fF | 1.019275 V | Q1 rail failure |
+| Short output stubs | 13.226 fF | 1.048824 V | Q1 rail failure |
+| Short stubs and low Q1 track; reusable generator | 11.366 fF | 1.062726 V | Q1 rail failure |
+
+All 214 electrical screens, divide-by-two/four/twenty counts, Q0 windows and
+counter state/complement windows pass in each nominal trial, but 39 of 77 Q1
+windows fail. Both earlier geometries and all failures are retained. The
+short-stub change removes only Metal4; the low-track change affects only
+Metal4/Metal5/Via4. An explicit native-net bijection and three corrupted-netlist
+controls validate unchanged 214-device connectivity. Independent complete
+waveform readback reproduces every electrical and functional predicate, including
+held-reset failures. These are fixed nominal metal-RC experiments, not qualified
+substrate/RF extraction, PVT or a complete PHY.
+
+The two earlier complete physical trials are publicly archived, with every byte
+verified by resumed range readback:
+
+- [div20-parent-original-failed](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-div20-parent-original-failed-20261010.tar.gz): 229 members / 376,772,429 bytes; SHA256 `4dd4a31d13071779094aec3e62a89c69520f93604b3f43f99e530406d68d0239`.
+- [div20-parent-shortpins-failed](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-div20-parent-shortpins-failed-20261010.tar.gz): 231 members / 376,591,539 bytes; SHA256 `e2ea5c11ebf88798bb85bf8e75e63c5c9e71eb924e34fb13dd706a485ba1beca`.
+
+A separate 710-device connected-feedback run incorporates both physical toggles
+and the physical 142-MOS counter without the new parent interconnect. Its 50 ns
+capture passes all 710 electrical screens and twelve of thirteen functional
+predicates, including three exact eighty-VCO-cycle intervals. It fails the
+unchanged feedback-duty check: measured duties are 26.4146%, 26.2244% and
+26.6980%. Complete waveform remeasurement and actual PFD, level-shifter,
+receiver, toggle and counter boundary checks retain that failure. No PLL-lock
+or PHY acceptance is inferred. An isolated 236-MOS parent adds two PDK drive-four
+buffers; its DRC/LVS and wire checks pass, but nominal Q1 rail and interval-count
+checks fail. Buffer insertion is therefore not an accepted fix.
