@@ -234,8 +234,8 @@ This does not establish the layout's wire RC, extracted PLL dynamics, PVT,
 phase noise, jitter, serial link operation or main-chip timing. A separate
 587-device feedback candidate replaces the old thirteen-device pump/filter with
 this native thirty-device model. Its 557 other device records and 2,685 existing
-wire elements match the previous composition exactly. Its native transient is
-pending; the physical parent PLL and pump wire extraction remain open.
+wire elements match the previous composition exactly. Its completed finite transient is
+reported below; the physical parent PLL and pump wire extraction remain open.
 
 The [complete public capsule](../hw/soc/pcie-evidence/20261009-pump30-model/delivery.json)
 contains the new captures, paired schematic baselines, sign controls, sources,
@@ -284,3 +284,28 @@ contains both generated versions, full GDS/LEF, source, native DRC/LVS and
 fault records: **161 members, 1,172,516 bytes**. Complete anonymous readback
 matches SHA256
 `26f73f50fef30a74a33f0c9e3c582c32586cfcf8056759e161b98f9fb018be8d`.
+
+## Physical pump in the actual feedback loop — 9 October 2026
+
+The separate **587-device** feedback simulation has now completed. It retains
+the original reset/reference stimulus, uses the actual thirty-device pump model,
+and has no external VCTRL clamp. All **587 finite electrical screens and thirteen
+divider predicates pass**, with 108,847 saved samples over 34 ns at a maximum
+0.3125 ps timestep. The [native result](../hw/soc/pcie-evidence/20261009-feedback587/native-result.json)
+and [postflight](../hw/soc/pcie-evidence/20261009-feedback587/postflight.json)
+verify all 1,137 saved observations, 1,138 transient columns, 64 actual HBT startup
+flags and a zero-source operating point. Four deck faults are rejected.
+
+VCTRL spans 0.796496–1.028935 V during 4–14 ns, 0.855080–1.046317 V during
+14–24 ns, and 0.852679–1.025944 V during 24–34 ns. Native execution took
+1,516.99 seconds with a 2 GiB address-space bound and no healthy-run elapsed
+timeout. A first launch rejected a stale CPU-affinity assertion before capture;
+that failed attempt is retained separately.
+
+The [full feedback capsule](../hw/soc/pcie-evidence/20261009-feedback587/delivery.json)
+contains 77 members and **920,924,995 bytes**, including complete raw observations,
+source and failed preparation attempts. Complete anonymous readback matches
+SHA256 `52dd87b7d34058e36dd53cbc301922e83936337ff5977b28d653bddd60e6c701`.
+This finite nominal result does not establish PLL acquisition, phase noise,
+PVT, pump wire parasitics or full serial PHY operation. The new PFD physical
+model is being tested in a separate 740-device composition; its result is pending.

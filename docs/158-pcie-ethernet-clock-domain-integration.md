@@ -540,3 +540,56 @@ queries span corners. Those inherited or mixed values are not fresh
 three-corner evidence. The independent screen explicitly names each corner
 for every setup/hold path report; a new screen is queued after candidate
 post-CTS repair. Final acceptance still requires extracted timing.
+
+### Strict routing progress and Ethernet output hold repair, 9 October 2026
+
+The timing-driven 36% placement finished post-CTS repair but initially stopped
+with **106 global-route overflow**, improved from the previous 1,250.
+Reusing that exact pre-routing state with `GRT_OVERFLOW_ITERS=200` reaches
+**zero final overflow**, with congestion rejection still enabled. The
+[native routing log](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/strict-grt.log)
+records a router-selected NDR fallback on `clknet_0_eth_rx_clk_i`. This clock
+routing change requires subsequent timing/physical verification. Post-routing
+repair remains active; global-route success is not detailed-route or timing
+acceptance.
+
+An independent copy of the completed post-CTS database identifies ten Ethernet
+output hold paths with enough setup margin for native delay cells. The
+[repair helper](../hw/soc/pnr/eth_output_hold_eco.tcl) inserts two transparent
+`sg13g2_dlygate4sd3_1` cells on each TX data/enable/error output. Existing cell
+locations and orientations are held during legalization, then their original
+placement statuses are restored. Every serialized SDC command remains identical.
+The helper rejects duplicate application on an actual saved database.
+
+The [three-corner Ethernet measurements](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/ethernet-slacks.json)
+use placement-estimated RC, the same libraries and unchanged I/O budgets:
+
+| Worst of ten Ethernet outputs, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Setup before | +3.461991 | +4.142604 | +4.511979 |
+| Setup after | +2.199269 | +3.354426 | +3.982798 |
+| Hold before | +0.528468 | +0.049899 | -0.208535 |
+| Hold after | +1.609908 | +0.731951 | +0.259062 |
+
+All ten output endpoints are required in each of the six reports; missing
+corner/endpoint controls reject. The [pin-graph comparison](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/pin-graph.json)
+preserves 101 ports and 290,001 non-buffer pin bits and rejects seven actual
+connection/function faults. Disconnected CTS load buffers remain explicit graph
+objects. The portable helper produces a byte-identical ODB and Verilog to the
+measured trial, as recorded in its
+[native controls](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/helper-controls.json).
+Earlier trials that allowed existing cells to move remain in the archive.
+
+**Whole-chip timing is still open.** The
+[complete corner comparison](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/whole-chip-comparison.json)
+retains worst setup of −5.108523 / −2.334330 / −0.791834 ns. Fast-corner worst
+hold is now a CPU-domain path at −0.067636 ns. This isolated correction has not
+been accepted as a routed main-chip change. The separate replay-bank RTL
+candidate continues its physical flow and must be assessed independently.
+
+The [public capsule](../hw/soc/pcie-evidence/20261009-ethernet-output-hold/delivery.json)
+contains the completed output trials and graph proofs, original post-CTS state,
+failed 106-overflow route and successful strict global route: **138 members,
+149,910,657 bytes**. Complete anonymous readback matches SHA256
+`5fab7688de2c1a9ffee2458fbc724a12789f8b7c1558f9b60424cd9177d7f70f`.
+Active later repair/routing stages are excluded.
