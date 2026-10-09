@@ -1151,7 +1151,11 @@ A new 772-device experiment inserts two real Nx=2 NPN emitter followers and
 two 1 × 3.6 µm PDK resistor sinks between the physical divider macros. The
 original device and wire records are preserved except for the intentional
 second-macro input connections. The added buffer is initially schematic;
-its independent GDS/LEF and DRC/LVS checks are in progress. Eight source/deck
+its independent 160.000 × 137.030 µm GDS/LEF now passes all 560 main DRC
+categories, strict deep LVS, seven-pin native LEF checks and nine negative
+controls. Two explicit substrate contacts are present; their parallel
+combination is included in LVS. These checks do not validate loaded timing.
+Eight source/deck
 faults, six startup-checker unit faults and five waveform-checker faults are
 rejected. The corrected isolated startup checker requires all 100 actual HBT
 flags and retains strict diagnostics and zero-source OP. The new 50 ns native
@@ -1173,3 +1177,22 @@ are public: 630,762 bytes, complete anonymous readback SHA256
 `b095927a60e03bc0b6859610c7bb17eb9d97b18d0587136349699a0e02f0790d`.
 The 7,983,371,881-byte complete waveform is being published separately in
 byte-exact parts. Full public-waveform delivery and PLL acceptance are pending.
+
+
+The [independent four-device buffer layout and native checks](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-hbt-levelshift4-layout-20261009.tar.gz)
+are public as 93 members / 239,723 bytes. Complete anonymous readback matches
+SHA256 `0afd462bbcc1f73f4d2108acbcd2a9dd3f7809ab26bfa1cc5340f6b9b28973fd`.
+A diagnostic read of the running capture's first 10 ns shows the first HBT
+macro dividing by four again, while the second macro still fails division.
+That prefix is not a complete electrical or functional acceptance.
+
+A separate 749-device experiment extends the passed 761-device physical-toggle
+chain by replacing its second 48-device schematic toggle with the same
+36-device / 70R / 167C physical macro. Both fast /2 stages then use their actual
+extracted layouts, with independent explicit wire-reference ports. Every
+other device and wire record remains identical; the total is 5,864 wire
+records and 1,824 saved columns. Each toggle's named boundary rejects all
+21 pin swaps and three reference-hop faults; four deck faults are rejected.
+The 50 ns native run is pending. The modulo-five counter is still schematic,
+the known MOS-corner failures remain open, and no full PLL parent, acquired
+loop or serial Gen3 x4 PHY acceptance is claimed.
