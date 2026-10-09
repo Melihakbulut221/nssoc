@@ -1131,5 +1131,85 @@ subtraction with carry-save compression and four-bit carry-lookahead groups.
 All 362 sequential credit-equivalence points and the independent arithmetic
 proof over all 36 operand bits pass; three arithmetic mutations produce
 concrete counterexamples. Five credit and five integration tests pass.
-Whole-chip mapping and timing evaluation are running. Neither this candidate
-nor any unplaced screen establishes final setup/hold closure.
+The first whole-chip recipe accidentally retained the canonical credit source
+instead of this candidate's credit file. Its unchanged six-slack result is
+therefore **invalid as a candidate comparison**: it repeats the reservation-
+prefetch baseline. No conclusion about this arithmetic rewrite's timing is
+supported by that mapping. The formal and simulation evidence remains
+separately valid. No candidate is adopted or routed from this invalid screen.
+
+A new isolated candidate computes available-data-minus-request in parallel
+with available-data, then checks their borrow bits. The request is ten bits;
+the available-credit subtraction is twelve bits. All 349 sequential comparison
+points pass with explicit clocks/asynchronous reset and no assumptions. An
+independent 36-input-bit arithmetic proof, three concrete arithmetic fault
+counterexamples, five credit tests and five buffered integration tests pass.
+Earlier versions left a named internal combinational helper unproven despite
+proving all state/output points; those results are retained. The first mapping of this successor inherited the same source-selection
+mistake. A corrected fresh mapping now binds every available candidate PCIe
+source and asserts that the unique credit input is the candidate file before
+launch. The invalid results and explicit correction records are retained. Neither formal equivalence nor an unplaced
+screen establishes final setup/hold closure.
+
+### Fresh three-corner post-CTS screen — 9 October
+
+The native intermediate STA reports cover only the fast corner despite loading
+three library corners. An independent run therefore reads each completed
+post-CTS database and SDC, propagates clocks and measures all path groups in
+all three corners. It uses Metal2 signal / Metal4 clock placement-estimated
+RC; it is not a reproduction of the native RC method or routed signoff.
+
+| Candidate / slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Registered RX setup | −3.531553 | −1.397194 | −0.163709 |
+| Registered RX hold | +0.194189 | +0.030262 | −0.216740 |
+| TX prefetch setup | −3.639625 | −1.427382 | −0.220992 |
+| TX prefetch hold | −0.004833 | −0.043286 | −0.206046 |
+
+These are minima across every reported path group. Exact database, SDC,
+libraries and executable inputs are pinned. Both physical continuations
+remain active; neither snapshot closes timing.
+
+
+The [original carry-lookahead records, including the invalid candidate screen](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-credit-carrylookahead-unchanged-20261009.tar.gz)
+contains 201 members / 20,027,819 bytes, full anonymous readback SHA256
+`89f08f7e366122463e9f41b087999942c93093b8d2e0178ac170d2aa17145249`.
+This immutable archive predates the source-selection correction above; its
+screen must not be used to assess carry-lookahead timing.
+The [fresh post-CTS screen with both source databases and SDCs](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-prefetch-postcts-screens-20261009.tar.gz)
+contains 16 members / 27,258,827 bytes, full anonymous readback SHA256
+`0bc7a8d39e1634ff5f8cf630641ad74cc8d716f5f7e110a6652229a04baee1f8`.
+
+The [explicit source-selection correction](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/pcie-credit-screen-source-correction-20261009.json) records both invalid screens and the corrected prelaunch source guard.
+
+The reusable [candidate-source guard](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/scripts/check_pcie_synthesis_sources.py)
+now rejects both actual wrong-source recipes, verifies the corrected recipe
+against the pinned credit proof, and has five regression tests covering the
+original failure, duplicate input, changed proved RTL and another shadowed
+candidate. It checks source provenance only, not equivalence or timing.
+
+
+### Corrected credit-candidate screens — 10 October
+
+Both corrected recipes now read the intended credit source. The reusable
+source guard checks the proof-pinned RTL, and surviving credit net/cell source
+attributes independently identify the intended file in the mapped design.
+
+| Actual candidate, unplaced slack (ns) | Slow setup | Typical setup | Fast setup | Slow hold | Typical hold | Fast hold |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Carry-lookahead subtraction | −2.531035 | −0.316948 | +0.794388 | −0.469247 | −0.539480 | −0.601382 |
+| Parallel availability/borrow | −2.538345 | −0.218614 | +0.941938 | −0.469247 | −0.539480 | −0.601382 |
+
+All values are minima across every reported path group. Both regress slow
+and typical setup against reservation prefetch. Neither is routed or adopted;
+these valid screens supersede the two incorrectly attributed earlier screens.
+
+The Ethernet forty-cell continuation also completed its bounded repair. Fresh
+three-corner placement-RC readback gives setup −3.427227 / −1.310273 /
+−0.092520 ns and hold +0.135124 / +0.030137 / −0.062786 ns. A strict graph
+comparison identified thirty changed combinational input mappings; an
+independent SAT proof validates their actual before/after native cell functions
+for every input combination and rejects a concrete wrong-input fault. The
+whole-chip graph comparison incorporating exactly those proved mappings passes
+for 101 ports, 81,603 non-buffer cells and 287,593 pin bits. Seven deliberately
+corrupted graphs are rejected. This snapshot is not routed timing closure.

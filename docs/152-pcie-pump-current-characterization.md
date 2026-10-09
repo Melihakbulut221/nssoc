@@ -1144,8 +1144,8 @@ limitation does not explain away the electrical and functional failures.
 The [complete failed-run records and loading diagnosis](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback768-div16-records-20261009.tar.gz)
 are public: 542,134 bytes, complete anonymous SHA256 readback
 `2161c2a88f10e4a57c0af4f0b88299965427555b34b2294438630cc2a8f850ec`.
-The separate 2,234,985,696-byte waveform is being published in byte-exact parts;
-complete public-waveform delivery is pending.
+The separate 2,234,985,696-byte waveform has completed byte-exact multipart
+publication and full anonymous readback; the failed functional verdict remains.
 
 A new 772-device experiment inserts two real Nx=2 NPN emitter followers and
 two 1 × 3.6 µm PDK resistor sinks between the physical divider macros. The
@@ -1158,8 +1158,17 @@ combination is included in LVS. These checks do not validate loaded timing.
 Eight source/deck
 faults, six startup-checker unit faults and five waveform-checker faults are
 rejected. The corrected isolated startup checker requires all 100 actual HBT
-flags and retains strict diagnostics and zero-source OP. The new 50 ns native
-run is pending. Reusing component layouts does not place or route their parent,
+flags and retains strict diagnostics and zero-source OP. The complete 50 ns native
+run fails: all 772 electrical screens pass, but division and feedback fail.
+Independent full-waveform review of 10–50 ns finds 79 first-divider intervals
+with four VCO edges and one with five; the second divider mostly has zero or
+one upstream edges per interval and no usable feedback. The strict native gate
+also retains its 2.3019 GB memory-estimate warning as a failure. Postflight
+independently verifies all 100 actual startup flags and zero-source OP.
+The [complete failed-run records and review](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback772-buffered-div16-records-20261009.tar.gz)
+have full anonymous readback: 556,144 bytes, SHA256
+`8234da7f525d635f45881e363dda6a40094c8399063387df6bd6910b06a46604`.
+The 2,248,285,957-byte waveform is being published separately in exact parts. Reusing component layouts does not place or route their parent,
 qualify PVT, establish PLL acquisition or complete the serial Gen3 x4 PHY.
 
 ### Count-drive chain: failed 200 ns response — 9 October 2026
@@ -1193,9 +1202,14 @@ extracted layouts, with independent explicit wire-reference ports. Every
 other device and wire record remains identical; the total is 5,864 wire
 records and 1,824 saved columns. Each toggle's named boundary rejects all
 21 pin swaps and three reference-hop faults; four deck faults are rejected.
-The 50 ns native run is pending. The modulo-five counter is still schematic,
-the known MOS-corner failures remain open, and no full PLL parent, acquired
-loop or serial Gen3 x4 PHY acceptance is claimed.
+The 50 ns native run passes all 749 electrical screens and thirteen division
+predicates. Independent complete waveform readback reproduces the measurement;
+actual saved PFD, pump, receiver, level-shifter and both toggle boundaries
+pass, together with zero-source OP and all 64 HBT startup flags. This is a
+nominal finite response. The modulo-five counter is still schematic, the known
+MOS-corner failures remain open, and no full PLL parent, acquired loop or
+serial Gen3 x4 PHY acceptance is claimed. Full multipart waveform publication
+is in progress.
 
 ### High-input HBT /2 and 1 GHz slow-corner continuation — 9 October
 
@@ -1225,8 +1239,9 @@ A separate 756-device /80 feedback candidate keeps the passed physical HBT
 The original 5,627 wire records are retained with explicit receiver-input
 and counter-clock changes. Seven source/deck faults, 24 physical-toggle
 boundary faults, six startup-helper faults and six measurement faults are
-rejected before its 50 ns native run. The run remains pending; its early
-4–8 ns prefix includes incorrect division intervals and is not accepted.
+rejected before its 50 ns native run. The complete run fails the division checks and strict native diagnostic gate;
+all 756 electrical screens pass. Independent full-waveform review retains
+that failure and validates the actual saved circuit boundaries.
 The new HBT layout and its eventual RC are not yet in this running candidate.
 
 The existing 36-MOS / 70R / 167C physical toggle was also exercised separately
@@ -1243,3 +1258,67 @@ retain both results. Their measured reset requirement must still be checked
 in the actual feedback chain. The earlier 2 GHz SS division failure and FF
 terminal-voltage failures are unchanged; this does not close full PVT, PLL,
 SERDES or serial Gen3 x4 PHY qualification.
+
+
+### Physical high-input stage: wire model and connected run — 9 October
+
+The unsimplified high-input extraction retains 55 native devices, including
+all twelve finite substrate contacts. Geometry/source binding checks 168
+terminals, 124 metal anchors, 24 conductors and all device identities and
+parameters. The native wire export contains 224 resistors and 402 capacitors.
+All resistance components connect their anchors; the exact native/export
+resistance multiset and every point-ground and mutual-capacitance attachment
+and value are preserved. Thirteen raw-extraction corruptions and four model
+composition faults are rejected.
+
+The nine-port model exposes BODY_SUBSTRATE and WIRE_CREF independently of its
+seven physical pins. It retains 51 intrinsic body/well terminals without
+claiming substrate-spreading extraction or qualified RF parasitics. The
+[complete wire extraction, binding and model capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-highinput55-wire-model-20261009.tar.gz)
+contains 67 members / 320,210 bytes; full public readback matches SHA256
+`12d9d19478e877f740e108e4fe6b8512210b0fa3b009bcc6bd9c6b72ee0f2774`.
+
+A separate 768-device connected feedback run now replaces the schematic
+high-input stage with this actual physical model. It has 83 HBTs, 6,253 wire
+records and 1,901 saved columns. Both new reference ports use independent
+explicit external fixtures. Thirty-eight high-input boundary faults, 24
+physical-toggle faults, seven deck faults, six startup-helper faults and six
+measurement faults pass before native launch. Its 10–50 ns measurement window
+was declared before the run; it does not reinterpret the earlier 4–50 ns
+candidate's failures. The completed native run passes all 768 electrical screens and twelve of
+thirteen functional checks; the first /4 edge-count check fails. The /8 and
+/80 checks pass, but the unchanged aggregate acceptance gate remains failed.
+Full waveform readback reproduces the result and validates the actual PFD,
+pump, high-input stage, receiver, toggle and level-shifter boundaries. This
+is not PLL acquisition or serial PHY acceptance.
+
+
+### Physical modulo-five counter development — 10 October
+
+A separate fifteen-cell implementation uses native IHP DFF, inverter and NAND
+cells. Exhaustive evaluation of the actual cell connection graph checks all
+eight states, including invalid-state recovery, and rejects four wiring faults.
+After two metal-spacing fixes, its layout passes all 560 main DRC categories,
+strict deep and flat LVS for 142 MOS fingers, and five physical/reference
+fault controls. Metal extraction retains 323 resistors and 741 capacitors.
+All 568 native terminals are classified explicitly: 380 metal references,
+142 body references and 46 shared-diffusion references. Thirteen raw RC faults
+and six model-conversion faults are rejected.
+
+An unloaded 80 ns / 500 MHz native run without wire RC passes the state sequence
+but fails a 1.5 V MOS terminal-difference screen at 1.520163 V. That failure is
+retained. With the actual metal RC, all 142 electrical screens, all 39 declared
+state/complement windows and seven five-clock intervals pass; the largest
+terminal difference is 1.491070 V. Holding reset low rejects the functional
+check. This finite nominal result does not establish PVT or loaded behavior.
+
+The counter is now in a separate 710-device connected-feedback candidate,
+replacing the old 181-device schematic counter while preserving every other
+device and wire. The circuit has 6,928 wire records. Two state observation
+nodes are renamed bijectively; no ideal internal source is introduced. The
+first launch failed because a wire-only boundary observation was omitted;
+a stronger preflight caught a second missing boundary before another native
+launch. Both failed attempts are retained. The corrected `710c` campaign saves
+all 1,979 columns and passes counter/toggle boundary controls before its
+50 ns native run. Full parent layout, loaded timing, PVT and acquired-loop
+acceptance remain open.
