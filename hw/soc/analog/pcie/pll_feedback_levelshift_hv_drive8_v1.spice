@@ -1,0 +1,12 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Six-device feedback level-shifter candidate; closed-loop and physical validation required.
+.subckt nssoc_pll_feedback_levelshift_hv_drive8_v1 d db q qb avdd avss sub
+* Real cross-coupled HV PMOS with LV-driven HV NMOS; no voltage gain source.
+XPL qb right avdd avdd sg13_hv_pmos w=2u l=0.45u ng=1 m=1
+XPR right qb avdd avdd sg13_hv_pmos w=2u l=0.45u ng=1 m=1
+XNL qb d avss sub sg13_hv_nmos w=8u l=0.45u ng=1 m=1
+XNR right db avss sub sg13_hv_nmos w=8u l=0.45u ng=1 m=1
+XPBUF q qb avdd avdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XNBUF q qb avss sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+.ends nssoc_pll_feedback_levelshift_hv_drive8_v1

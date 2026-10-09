@@ -847,3 +847,30 @@ It preserves this failed baseline; it is not timing acceptance. The separate CRC
 placement hold experiment above is a different candidate and cannot replace these
 routed results. The three library corners share nominal wire RC, so this also
 is not qualified multi-corner interconnect signoff.
+
+
+### Rejected setup experiments and timing-priority routing — 9 October 2026
+
+The [completed experiment review](../hw/soc/pcie-evidence/20261009-setup-screen/review.json)
+retains carry-save credit arithmetic, class-specific arithmetic, per-class
+updates, combined pre-add updates and a CLINT parallel-prefix incrementer.
+None is adopted: carry-save, per-class and CLINT candidates worsen setup;
+combined pre-add is mixed against the CRC candidate and inferior to the earlier
+class-verdict candidate. CLINT equivalence passes for all 64-bit values and both
+tick states; three actual corruptions are rejected and 20 functional/fault tests
+pass without skips. Nevertheless its slow/typical/fast preplacement setup is
+−2.695571 / −0.321985 / +0.768866 ns, worse than the CRC baseline
+−2.475437 / −0.184042 / +0.793174 ns.
+
+The [complete experiment capsule](../hw/soc/pcie-evidence/20261009-setup-screen/delivery.json)
+contains 980 members / 99,774,288 bytes, with anonymous whole-file SHA256
+`167e3339eb4164ec88411065b8dd087682f0684b1b3836e864b79026bf683d16`.
+Formal and RTL success are not timing acceptance.
+
+A separate routing experiment uses native critical-net priority at 30% from the
+same pre-detail-route baseline. Geometry inspection found a 220.548 µm HPWL net
+with 2,901.91 µm of actual wire, motivating the routing change. The experiment
+retains the clocks and strict congestion checks. It must finish routing, RC
+extraction and all-corner STA before any improvement can be accepted. Direct
+repairs that fell back to wireload estimation or mixed placement estimates with
+SPEF were rejected and are not used as extracted-RC timing evidence.

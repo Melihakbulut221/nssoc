@@ -637,7 +637,45 @@ retain all 84 resistors and 155 capacitors. RC remains unqualified.
 The [component capsule](../hw/soc/pcie-evidence/20261009-bindfix-c4-hold/pump-delivery.json)
 contains 142 members / 431,798 bytes, SHA256
 `2b47ae162480c21367096566b09b76e488607071a33843e20685799e871d1feb`.
-A new connected 740-device finite simulation is running with independently
-checked PFD and pump boundaries. It is excluded from this completed component
-capsule. Filter improvement, PLL lock, physical PLL parent integration and a
-complete serial Gen3 x4 PHY are **not yet established**.
+The connected 740-device test has now **failed**. Its
+[finite review](../hw/soc/pcie-evidence/20261009-feedback-levelshift/c4-failure-review.json)
+retains all electrical and divider predicates. Six VCO HBTs exceed the original
+3 mA/finger screen: measured peaks are 3.800–3.878 mA/finger, mainly around
+1.04–1.13 ns. The [current diagnosis](../hw/soc/pcie-evidence/20261009-feedback-levelshift/c4-current-diagnosis.json)
+locates these events while the control voltage is still about 0.36 V. Feedback
+duties are 16.943% and 16.820%, below the unchanged 17% lower bound. The native
+/4 and /80 checks also fail. The capacitor candidate is **not adopted**, and
+its failed prerequisite does not authorize a longer acquisition run.
+
+The [complete failed capture](../hw/soc/pcie-evidence/20261009-feedback-levelshift/c4-failure-delivery.json)
+contains 68 members / 1,329,822,510 bytes, with verified anonymous readback SHA256
+`83c3e5fd550b9bbdb88a270431b4b923c4ba59ef6c365a8701db63e506344d70`.
+Component DRC/LVS success does not override this connected electrical failure.
+
+### Physical feedback level shifter — 9 October 2026
+
+A [measurement of the original feedback waveform](../hw/soc/pcie-evidence/20261009-feedback-levelshift/duty-diagnosis.json)
+shows the rising count-to-feedback edge delayed about 1.53 ns, versus about
+1.10–1.14 ns for the falling edge. A separate candidate doubles the two
+LV-driven HV NMOS widths from 4 to 8 µm, retaining the other devices and the
+original 10 × 10 µm pump capacitor. This is an experiment, not an accepted PLL.
+
+The [physical cell](../hw/soc/flow/make_pcie_feedback_levelshift6_v1.py)
+contains six MOS devices and nine finite contacts. Its
+[native checks](../hw/soc/pcie-evidence/20261009-feedback-levelshift/native-layout.json)
+pass 560 DRC categories with zero errors and both hierarchical and flat
+15-device LVS. Five actual geometry/reference faults are rejected.
+The [LEF check](../hw/soc/pcie-evidence/20261009-feedback-levelshift/lef-controls.json)
+rejects missing and blocked pins; the initial wrong fault-target attempt is
+preserved separately in the capsule. An
+[independent model binding](../hw/soc/pcie-evidence/20261009-feedback-levelshift/binding-controls.json)
+checks actual native terminals and parameters and rejects eight corruptions.
+
+The [component capsule](../hw/soc/pcie-evidence/20261009-feedback-levelshift/component-delivery.json)
+contains 104 members / 250,037 bytes, anonymously verified against SHA256
+`e3334905c3e544c78c562f4efcbbe14033ef391038d440e60d3a9ec3bf40175b`.
+Separate 740-device schematic and 749-device native-cell finite simulations are
+running. The latter retains all 734 other devices and 4,951 existing wire
+records; this first native-cell run excludes the new level shifter's own wire RC.
+New wire extraction is being audited separately. Neither experiment establishes
+PLL lock, PVT/RF qualification, full physical PLL integration or a serial Gen3 x4 PHY.
