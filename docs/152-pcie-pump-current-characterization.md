@@ -1459,3 +1459,5 @@ and 24 counter-boundary fault controls pass. A first positional-binding attempt
 was rejected before simulation and is retained. The corrected 50 ns experiment
 is still running at this publication; the feedback-duty criterion stays at
 17–23%. Neither full serial Gen3 x4 PHY nor final chip setup/hold is closed.
+
+The [complete 148-MOS physical and corner capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-mod5-strong148-native-and-corners-20261010.tar.gz) contains 295 members / 725,687,873 bytes, SHA256 `3317e5dc0597c6899393516c492774cb6855e860289e87d9f2b492fbe1f4860d`. Every public HTTP range was read and compared byte-for-byte with the complete hashed archive. The capsule retains all six full native waveforms, fast-corner failures, geometry and fault controls; it excludes the still-running connected-feedback experiment.
