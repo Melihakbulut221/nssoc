@@ -716,3 +716,43 @@ contains 323 members and **324,803,276 bytes**, including the frozen baseline,
 repair states, native logs, failed experiments and graph controls. Active
 routing directories and logs are excluded. Complete anonymous readback matches
 SHA256 `1b7b1ac679a07bba8d09f834ed636a49b5fb7b6ecec9de9c21ae5439b903d65b`.
+
+### Credit class verdict and replay metadata trial, 9 October 2026
+
+The CRC candidate's actual pre-repair post-CTS slow critical path runs from
+replay `new_slot[1]` to `credit_data_limit_o[22]`, with −4.121705 ns slack.
+A separate candidate decodes the fixed replay-bank metadata before selecting
+the bank and computes all three Boolean credit-availability decisions before
+the late class selection. There is no added state, packet latency or modified
+credit arithmetic in these two changes.
+
+The [credit reference proof](../hw/soc/pcie-evidence/20261009-credit-verdict/credit-proof.json)
+passes 340 sequential equivalence points, including explicit clock/reset events.
+Four actual faults are rejected: wrong selected class, inverted data-credit
+sign, ignored data availability and ignored same-cycle debit. The replay change
+also passes [743 points at depth three](../hw/soc/pcie-evidence/20261009-credit-verdict/replay-depth3-proof.json),
+in addition to the previously recorded default-depth proof. Three integrated
+credit/replay and five buffered-packet RTL tests pass without skips.
+
+The [unplaced comparison](../hw/soc/pcie-evidence/20261009-credit-verdict/comparison.json)
+uses the same native libraries and constraints; only mapped flip-flop identities
+change in the generated CDC bindings. All 101 ports and twenty SRAM macros remain.
+
+| Worst slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Prior CRC setup | −2.475437 | −0.184042 | +0.793174 |
+| Candidate setup | −2.286632 | −0.075190 | +0.849711 |
+| Prior CRC hold | −0.473121 | −0.539480 | −0.601382 |
+| Candidate hold | −0.488082 | −0.539480 | −0.601382 |
+
+Slow setup improves by 188.805 ps, but slow hold worsens by 14.961 ps. The design
+maps to 78,170 cells. The [repair graph check](../hw/soc/pcie-evidence/20261009-credit-verdict/pin-graph.json)
+preserves 280,009 pin bits and rejects seven actual corruptions. A separate
+physical run stops after native CTS, then automatically reports all three
+corners before selecting further repairs. The candidate is **not adopted as
+production RTL**; setup/hold, routed extraction and full serial PHY remain open.
+
+The [completed source/proof/mapping capsule](../hw/soc/pcie-evidence/20261009-credit-verdict/delivery.json)
+contains **225 members and 24,570,734 bytes**, excluding the active
+physical run. Complete anonymous readback matches SHA256
+`351e9b3a87f12a60a46c0f4acfff3d9f87e63ccf5bdf84409606908eef3cf03a`.
