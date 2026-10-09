@@ -1357,3 +1357,12 @@ passes the electrical screen; the fast control also has electrical failures.
 These are unloaded MOS-corner experiments with fixed nominal interconnect,
 not full PVT qualification. The fast-corner failure remains open and prevents
 accepting this component across the stated supply range.
+
+
+The [complete additional MOS-corner captures and independent remeasurement](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-mod5-142-mos-corners-20261010.tar.gz)
+contain 59 members / 470,652,197 bytes, SHA256
+`6739e402e8a5b3762ae4e25453b0ddf06e40054465ea1f89ef93234a19b38d1a`.
+Every public byte was verified after resuming the interrupted readback.
+Independent full-capture remeasurement reproduces the electrical and functional
+results of both corners and both held-reset controls; the fast-corner failure
+is preserved.

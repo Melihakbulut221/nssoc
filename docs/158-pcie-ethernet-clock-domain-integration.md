@@ -1238,3 +1238,42 @@ therefore worsen existing setup failures. Replacing those 119 DFFs with the
 native drive-two variant legalizes successfully but leaves worst setup
 unchanged and slightly worsens fast hold from −0.062786 to −0.062831 ns.
 That candidate is rejected; it is not routed or adopted.
+
+
+### Exact-cycle LCRC transmit-byte prefetch — 10 October
+
+An isolated candidate adds eight physical prefetch registers ahead of the LCRC
+serializer. It preserves the interface cycle count, header byte order and stall
+behavior. Two serializer tests, five buffered integration tests and three actual
+RTL mutations pass. For capacities four and eight, a two-valued hardware
+induction proof establishes the stored-octet invariant with arbitrary initial
+storage and reset only at the base. A composed sequential-equivalence proof then
+checks every output, including bytes when invalid, using exactly that invariant.
+No environment assumptions or zero-filled packet storage are used. Earlier
+direct/four-state proofs remain unproven; their unknown induction-state traces
+are not reachable counterexamples or additional passing proofs.
+
+The source guard binds the whole-chip synthesis recipe to the proved candidate.
+Mapped source and clock/reset checks locate all eight actual registers; four
+corrupted mapped graphs are rejected. The fresh unplaced screen gives:
+
+| Slack, ns | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Setup | −2.563858 | −0.252614 | +0.840644 |
+| Hold | −0.474391 | −0.539480 | −0.601382 |
+
+Slow and typical setup regress against the prior TX-prefetch candidate, whose
+setup values are −2.272700 / −0.133300 / +0.772858 ns. The new octet cut is
+therefore **rejected for adoption** and is not routed. Its limiting whole-chip
+path is now in replay-slot/credit logic; passing the local prefetch proof does
+not imply an improvement in global timing.
+
+The [candidate, proofs, fault controls, mapped netlist and rejected screen](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-lcrc-tx-prefetch-rejected-20261010.tar.gz)
+contain 209 members / 20,027,356 bytes, full public readback SHA256
+`e640c508ee5169ea06fbf77fb0adfa9823687c9ef75856885660719d2ab448d7`.
+
+The earlier TX-prefetch physical trial stopped at global routing with 390 total
+overflows after 50 extra iterations. A separate continuation starts from its
+unchanged post-CTS database with 200 routing iterations. Die, clocks, netlist,
+layer capacity and the zero-overflow requirement remain unchanged. It stops
+after global routing for review; this is not a routed timing result.
