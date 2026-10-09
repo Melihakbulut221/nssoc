@@ -392,8 +392,9 @@ uses the previously verified clamp-current sign convention and the complete
 closed-loop lock, PVT, EM/ESD, qualified extraction or full PCIe PHY operation.
 A separate 740-device feedback run now includes this pump wire network, retains
 the other 710 devices and all previous 2,685 wire elements, exposes the new
-reference explicitly, and saves all 1,236 observations. Its transient result is
-pending; the PFD wire network is not included in that particular run.
+reference explicitly, and saves all 1,236 observations. Its finite transient
+result now passes, as recorded below; the PFD wire network is not included in
+that particular run.
 
 The [complete component capsule](../hw/soc/pcie-evidence/20261009-pump-wire/delivery.json)
 contains 98 members and **140,292,447 bytes**, including geometry, restored/pinned
@@ -436,3 +437,34 @@ contains the candidate model, actual geometry, raw RC and controls: **45 members
 592,028 bytes**, with complete anonymous readback matching SHA256
 `f6ab91257969c9195138655de53bade5148133371fda54b1c61dd45d2d4e4261`.
 The separately running feedback experiment is excluded from this frozen capsule.
+
+## Closed feedback with pump metal RC — 9 October 2026
+
+The [actual native result](../hw/soc/pcie-evidence/20261009-feedback740-pump-wire/native-result.json)
+passes the unchanged **740 device electrical screens and thirteen divider
+predicates** over 34 ns with 108,847 samples at maximum 0.3125 ps spacing.
+The loop contains 2,924 wire elements, including the pump's 84 resistors and
+155 capacitors, and has no external VCTRL clamp. The zero-source operating point,
+all 64 native HBT startup flags, clean diagnostics and full compressed raw-data
+readback pass. The [postflight](../hw/soc/pcie-evidence/20261009-feedback740-pump-wire/postflight.json)
+checks the actual deck and exact 1,236 observations / 1,237 transient columns,
+and rejects clamp, held-reset, missing-vector and wrong-timestep faults.
+
+| Window, ns | VCTRL minimum, V | VCTRL maximum, V |
+| --- | ---: | ---: |
+| 4–14 | 0.766871 | 1.008689 |
+| 14–24 | 0.858230 | 1.035557 |
+| 24–34 | 0.855486 | 1.018107 |
+
+These are finite nominal startup measurements. PFD wire RC is absent from this
+particular capture; the separate combined-wire run remains in progress. PLL
+lock, PVT, phase noise, BER, ESD and full serial PHY/main-chip integration are
+not accepted. A subsequent 200 ns combined-wire run is prepared behind strict
+successful finite-run and postflight prerequisites. It retains the same device,
+divider, timestep, supply, reference and reset checks, with larger explicit
+storage/sample bounds and no elapsed-time timeout.
+
+The [complete public capsule](../hw/soc/pcie-evidence/20261009-feedback740-pump-wire/delivery.json)
+contains the exact campaign sources, complete raw observations, composition and
+checks: **54 members, 996,004,517 bytes**. Full anonymous readback matches SHA256
+`02302f7401db2536b8ae4051149839dae8eea7c8cb1c9e6f381ee51885fd25c7`.
