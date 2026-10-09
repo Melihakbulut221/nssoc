@@ -1008,10 +1008,22 @@ all electrical screens and twelve of thirteen divider predicates with clean
 native diagnostics. CML-to-receiver edge counting now passes. The sole failed
 predicate requires at least three feedback rising edges: two were captured,
 and the measured interval contains exactly 80 VCO cycles. The failed verdict
-is retained. A fresh 50 ns run keeps the complete circuit, sources, timestep,
-minimum edge count and acceptance thresholds; five continuation faults and
-four actual-deck faults are rejected before launch. Neither run establishes
-PLL lock or full serial PHY acceptance.
+is retained. The same circuit's 50 ns continuation now passes all 773
+electrical screens and all thirteen divider predicates, with clean native
+diagnostics and complete compressed capture readback. Three measured feedback
+intervals each contain exactly 80 VCO cycles. Sources, timestep, minimum edge
+count and acceptance thresholds are unchanged; five continuation faults and
+four actual-deck faults are rejected. Actual named PFD/pump boundaries and
+postflight checks pass. This finite nominal result does not establish PLL lock,
+PVT or full serial PHY acceptance; the two fast CMOS toggles remain schematic.
+
+The [short failed capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback773-trim-short-failed-20261009.tar.gz)
+is retained as an 83-member / 1,414,347,338-byte capsule with full anonymous
+readback SHA256
+`f0c3194003517bd85195f243775b0458d8cbc2537b900493b1f51d9ba96b4d47`.
+The [complete passing 50 ns capture](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback773-trim-long50-passed-20261009.tar.gz)
+is also fully read back anonymously: 77 members / 2,082,934,478 bytes, SHA256
+`213ddd83fe811d90eb415561ea853b9e788fc7bf821bd2aea894e68559015097`.
 
 ### Physical standard-cell toggle with metal RC — 9 October 2026
 
@@ -1070,3 +1082,47 @@ retains the five physical/reference faults. The
 checks pin rectangles, directions, power uses and obstruction clearance, and
 rejects missing pins, obstructed pins and changed outlines. These are component
 checks; the macro has not yet been placed and routed into the full PLL parent.
+The [canonical geometry and native abstract checks](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-std-toggle36-abstract-20261009.tar.gz)
+are public as a separate 171-member / 524,033-byte capsule. Complete anonymous
+readback matches SHA256
+`2a6bb03d96fc38d3a566c5fa488daa998069c0896f4c16013ef735040671793c`.
+
+Subsequent MOS-corner screens **fail** with the same nominal metal RC and
+2 GHz stimulus. At SS / 1.08 V / 125 °C, all 36 electrical screens pass, but
+output intervals contain 5, 4, 5 and 5 input clocks instead of two, and the
+300–450 ps output windows fail. At FF / 1.32 V / −40 °C, division and output
+windows pass, but three transistor terminal differences reach 1.552698,
+1.582365 and 1.587677 V, exceeding the unchanged 1.5 V screen. Held-reset
+controls fail functionally as expected. The nominal macro therefore does
+not qualify across these corners.
+
+A separate schematic experiment uses the PDK `sg13g2_dfrbp_2` cell's native
+complementary output directly for feedback. Its 34 device instances pass the
+nominal test. At SS / 1.08 V / 125 °C, all electrical screens and division by
+two pass, but the original output-window requirement still fails. This is
+not an accepted physical replacement or a reason to relax the prior criteria.
+
+The [complete MOS-corner and complementary-output experiments](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-toggle-mos-corners-20261009.tar.gz)
+are public as 121 members / 179,440,385 bytes. Complete anonymous readback matches
+SHA256 `f1de5133e26b63b87db5bfdfb3f9d71e66b84abcd3fb23b5de8b968e39324062`;
+all failed corner verdicts remain unchanged.
+
+### Second physical HBT prescaler experiment — 9 October 2026
+
+An isolated 768-device experiment replaces the two schematic 48-device CMOS
+fast toggles with a second instance of the existing physical 91-device HBT /4
+macro. The chain is now /4 × /4 × /5 = /80. This moves the nominal CMOS counter
+input from approximately 2 GHz to 500 MHz without an ideal internal clock.
+Both HBT instances retain identical extracted devices and metal RC under an
+independently checked node renaming; the first divider still drives the actual
+second divider load. New body and wire reference ports are explicit fixture
+assumptions. The resulting census is 98 HBTs, 768 native devices and 6,421 wire
+records; all 1,921 observation vectors are retained.
+
+Eight source/deck faults and five waveform-checker faults are rejected. The
+50 ns / 0.3125 ps actual native transient is running with complete capture and
+unchanged electrical limits. Division checks measure both /4 stages, /16,
+receiver transfer, modulo-five state sequence, /80, rail levels and 17–23%
+feedback duty. Its result is pending. Reusing two component layouts does not
+place or route their parent, qualify PVT, establish PLL acquisition or complete
+the serial Gen3 x4 PHY.

@@ -956,3 +956,50 @@ to transmit-data setup path and an Ethernet transmit-data to forwarded-clock
 hold path. These reports use placement parasitics. Route, extracted RC and final
 setup/hold remain pending. Neither the RTL candidate nor timing closure is
 accepted yet.
+
+
+### Registered replay transmit data — 9 October 2026
+
+The isolated `tx-prefetch candidate02` adds eight data flops and one EOP flop
+on the existing PCIe clock/reset. It preloads byte zero when original or replay
+transmission starts, then advances only on an accepted non-EOP beat. Retirement,
+ACK processing and timers remain tied to the original external EOP handshake.
+Seven replay tests and five buffered-endpoint tests pass; real wrong-byte,
+early-EOP and advance-on-stall RTL faults are rejected.
+
+The initial unconstrained equivalence attempt leaves nine outputs unproven.
+A composed check now proves all 1,506 equivalence points after separately proving
+queue ownership and length/read-position invariants by reset-base induction.
+Those invariants assume ACK stability under backpressure. The actual unabstracted
+DLLP receiver independently proves that contract and rejects a stalled-ACK
+corruption; elaborated parent nets verify the ACK/ready connections and matching
+reset/link domain, with three wiring faults rejected. CRC/content acceptance is
+an arbitrary Boolean only in the ownership lemma; full equivalence retains the
+actual CRC, payload memory and RTL. Invalid-cycle data/EOP are masked equally;
+valid output bytes remain compared. These proofs use the integrated defaults
+DEPTH=4 and MAX_BYTES=38, not every supported parameterization.
+
+An independent three-cycle reset-base check with no invariant assumptions passes.
+The optional 24-cycle monolithic base check exceeded its explicit 3 GiB address
+space budget and remains unproven; that failure is retained. Mapped-graph checks
+find nine distinct real DFF outputs and reject four connectivity faults. The
+101 external ports are unchanged. The unplaced three-corner screen reports:
+
+| Placement wire estimate | Slow | Typical | Fast |
+| --- | ---: | ---: | ---: |
+| Worst setup, ns | −2.272700 | −0.133300 | +0.772858 |
+| Worst hold, ns | −0.492038 | −0.539480 | −0.601382 |
+
+Compared with the RX-only screen, slow/typical setup improve and slow hold
+regresses. These results are not routed closure. The new slow setup path is in
+the consumed-credit to credit-limit update cone. The actual physical candidate
+is running with the same clocks, die, SRAMs, libraries and strict congestion
+gates, using one detailed-routing thread to bound concurrent memory demand.
+A header-state lookup error was corrected by reusing the actual completed
+Yosys stage header; no source, constraints or generated header were changed.
+
+The [full candidate, proofs, failures, tests, mapping and screening capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-prefetch-candidate-20261009.tar.gz)
+contains 863 members / 26,881,841 bytes. Full anonymous readback matches SHA256
+`0ab6c30eff493f78113c0a22255e9439242b93e6e3d3debd245219fc00c7c4cb`.
+The active physical run is excluded from this immutable capsule. Neither the
+candidate's final routed setup/hold nor full serial PHY integration is accepted.
