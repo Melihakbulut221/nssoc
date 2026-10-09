@@ -701,3 +701,43 @@ reference has its own explicit external 0 V source and is passed through each
 hierarchy boundary; 28 pin swaps and four reference-hop corruptions are rejected.
 The full 34 ns transient, all-device screens and original divider checks are
 still running. No PLL or full-PHY acceptance follows from source composition.
+
+
+### Physical CML-to-LV receiver — 9 October 2026
+
+The [receiver generator](../hw/soc/flow/make_pcie_feedback_receiver19_v1.py)
+implements the unchanged 19-device receiver schematic with 19 substrate and
+five well contacts: **43 actual native devices**. The schematic's unused AVDD
+argument is omitted from the six-port macro; CVDD powers the receiver. The
+source expansion explicitly checks that no device uses the omitted argument.
+The first layout passed DRC but failed LVS because its short LV transistor
+source/drain escapes overlapped. Extending Metal1 outward before escaping to
+Metal3 fixes this physical short; failed geometry and reports are retained.
+
+The [final native controls](../hw/soc/pcie-evidence/20261009-feedback-receiver/native-layout.json)
+pass 560 DRC categories, hierarchical and flat 43-device LVS, and reject five
+actual reference/geometry faults. [Native OpenROAD LEF checks](../hw/soc/pcie-evidence/20261009-feedback-receiver/lef-controls.json)
+pass all six ports and reject missing/blocked pins.
+The [model binding](../hw/soc/pcie-evidence/20261009-feedback-receiver/binding-controls.json)
+rejects eleven corruptions, including a 1 nm width change, changed MIM geometry
+and off-grid native geometry. Binary floating-point serialization noise is
+rounded to the pinned 1 nm geometry grid only within two binary ULPs; other
+changes are rejected. Finite contacts and native terminal identities are retained.
+
+The [wire audit](../hw/soc/pcie-evidence/20261009-feedback-receiver/wire-audit.json)
+accounts for all 116 native terminals: 74 metal references and 42 intrinsic
+body/well references. Six public ports give 80 geometrical probes on 15 physical
+conductors. All **121 resistors and 201 capacitors** survive export and device
+composition. [Thirteen raw corruptions](../hw/soc/pcie-evidence/20261009-feedback-receiver/wire-faults.json)
+and [six composition corruptions](../hw/soc/pcie-evidence/20261009-feedback-receiver/wire-composition.json)
+are rejected. Substrate spreading and RF distribution remain unqualified.
+
+The [complete source/layout/binding/wire capsule](../hw/soc/pcie-evidence/20261009-feedback-receiver/delivery.json)
+contains 239 members / 855,218 bytes. Anonymous complete readback verifies SHA256
+`85a04584c40a2fb95a50be79a5c9bd3c50c91e081589b57ed377f3156db68ceb`.
+A new connected 773-device experiment incorporates this receiver and all
+5,396 wire records. It retains 1,749 saved observations and the original device
+screens and 13 divider checks. The first dispatch was stopped because its copied
+final screen census still expected 749 devices; the failed attempt and sources
+are preserved. A fresh corrected attempt is running. Physical receiver success
+is not full PLL layout, acquisition, CDR or serial Gen3 x4 acceptance.
