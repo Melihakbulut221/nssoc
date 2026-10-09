@@ -1416,3 +1416,46 @@ receiver, toggle and counter boundary checks retain that failure. No PLL-lock
 or PHY acceptance is inferred. An isolated 236-MOS parent adds two PDK drive-four
 buffers; its DRC/LVS and wire checks pass, but nominal Q1 rail and interval-count
 checks fail. Buffer insertion is therefore not an accepted fix.
+
+
+### Drive-four complement counter (10 October 2026)
+
+The 710-device capture isolates a loaded level-conversion asymmetry: the actual
+counter output remains near 20% duty, while feedback rises roughly 1.76 ns after
+it and falls roughly 2.42 ns after it. A new physical counter replaces only the
+Q2B inverter with the PDK's `sg13g2_inv_4`, preserving its single inversion. This
+adds six real MOS fingers, for 148 total; it does not insert another output
+buffer stage or change the modulo-five state machine.
+
+The reusable generator and native DRC/LVS and LEF checkers are
+[make_pcie_feedback_mod5_148_v1.py](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_mod5_148_v1.py),
+[check_pcie_feedback_mod5_148_v1.py](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_mod5_148_v1.py) and
+[check_pcie_feedback_mod5_148_lef.py](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_mod5_148_lef.py).
+The 63.360 x 18.670 um macro has zero markers across 560 DRC categories,
+strict deep and flat transistor LVS with 148 fingers, five rejected circuit or
+geometry faults, and native OpenROAD verification of six LEF pins and three
+rejected LEF faults. Canonical regeneration reproduces all geometric layers,
+SPICE, finger reference and LEF exactly.
+
+Its actual 336-resistor/753-capacitor metal model passes terminal binding,
+thirteen RC fault controls and six composition fault controls. The standalone
+80 ns, 500 MHz tests retain the same 39 state/complement windows and divide-five
+checks. All complete waveforms were reread to independently reproduce every
+148-device electrical check and functional predicate:
+
+| MOS point; fixed nominal wire RC | Functional result | Electrical result |
+| --- | --- | --- |
+| Nominal, 1.20 V, 27 C | PASS | PASS |
+| Slow, 1.08 V, 125 C | PASS | PASS; maximum terminal difference 1.340528 V |
+| Fast, 1.32 V, -40 C | PASS | FAIL; 20 devices, maximum terminal difference 1.618954 V |
+
+The 1.5 V terminal-difference bound remains unchanged. Held-reset controls reject
+functionally at all three points; the fast held-reset case also fails four
+electrical screens. These results do not establish PVT or a safe loaded parent.
+
+A separate 716-device connected-feedback experiment uses this physical counter,
+both physical divide-two toggles, and 6,953 wire records. Its named-port binding
+and 24 counter-boundary fault controls pass. A first positional-binding attempt
+was rejected before simulation and is retained. The corrected 50 ns experiment
+is still running at this publication; the feedback-duty criterion stays at
+17–23%. Neither full serial Gen3 x4 PHY nor final chip setup/hold is closed.
