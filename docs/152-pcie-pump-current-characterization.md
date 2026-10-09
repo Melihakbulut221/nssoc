@@ -33,3 +33,64 @@ There are **72 passing source/storage/startup/resource controls**, including tha
 A separate saved-data reader checks every result input/output hash, all raw bytes, all sample-count trailers and all thirteen device-screen records. Across **1,305,732 samples**, it independently sums **672 current integrals** using scalar trapezoids and `math.fsum`; the maximum mean-current arithmetic difference is 2.710505431213761e−20 A. This is a separate computation by the same root reviewer, not an external review. The initial reader failed to normalize internal-device current names; that attempt remains in the capsule, and the corrected reader changes only the name mapping and integral census.
 
 Next work is exact loaded-boundary replay, diagnosis of the retained divide-by-four failure, and then source-bound closed-loop acquisition and convergence checks. Full CDR/PHY operation, physical integration, final chip timing and manufacturing acceptance remain open.
+
+## Loaded-boundary replay — 9 October 2026
+
+The complete saved bytes of the full 570-instance and isolated pump traces
+are now verified before comparing their waveforms at all three control voltages. Supplies and clamp
+voltages agree, but the loaded PFD's nominally idle outputs contain roughly
+**18 mV UP and 29 mV DOWN excursions**. Ideal zero-valued commands therefore
+do not reproduce the instantaneous loaded pump boundary.
+
+Three new native thirteen-device simulations replay **every saved sample of
+all five boundary voltages**, including startup. Each finishes 34 ns with
+**544,198 samples**, clean startup diagnostics and all thirteen finite device
+screens passing. On the union of the two time grids over the original 4–34 ns
+window, the maximum boundary residual is below 2.18e-14 V. Across the nine MOS
+current observations, the largest instantaneous residual is 8.09 nA and the
+largest mean residual is 42.74 pA. These are measured numerical residuals,
+not newly chosen physical acceptance thresholds.
+
+| Clamp | Ideal-idle pump current (µA) | Loaded-boundary pump replay (µA) | Loaded570 minus replay clamp current (nA) |
+| --- | ---: | ---: | ---: |
+| 0.5 V | 46.088506101 | 46.088504406 | +26.671971 |
+| 0.6 V | 33.017214352 | 33.017212688 | +0.292124 |
+| 0.7 V | 19.945936517 | 19.945934867 | +2.243614 |
+
+The full570 clamp includes oscillator/control-node loads absent from the
+thirteen-device slice. Its current is **not assumed equal** to the slice's
+current. The last column is their measured difference under matching imposed
+voltages. The sub-2 pA correction to the ideal-idle pump mean supports this
+particular nominal idle comparison; it does not establish dynamic source/sink
+transfer, PVT reachability, feedback polarity or PLL lock. The original 0.5 V
+HBT screen failure and 0.7 V strict divide-by-four count failure remain recorded.
+
+The [streaming comparison tool](../scripts/compare_pcie_pump_boundary.py)
+checks compressed/output hashes, every raw byte and payload hash, header/table
+identity, sample-count trailer, finite values in **all** columns and strictly
+increasing time. It retains only requested observations in memory. Twelve
+reader controls pass, including corruption of an unselected column and a time
+failure across a block boundary. It compares internal pump quantities and
+keeps global supply/clamp currents out of the equality comparison.
+
+The first native replay reached its predeclared 300,000-row resource bound
+and was stopped with the failed capture retained. The second declares
+1,000,000 rows and 256 MiB per point before launch, while preserving all
+voltage/current screens, stimuli and solver settings. It completes the same
+34 ns experiment. The [replay review](../hw/soc/pcie-evidence/20261009-pump-loaded-boundary/replay-review.json)
+and [delivery record](../hw/soc/pcie-evidence/20261009-pump-loaded-boundary/delivery.json)
+separate completed local/native checks from pending public delivery checks.
+The new capsule includes failed and successful replay captures; the original
+570-instance captures are being published separately rather than claimed to
+be included in this smaller capsule.
+
+A separate fixed-ordinal diagnostic explains the 0.7 V count anomaly more
+precisely. Every consecutive CML edge advances by four nearest VCO edges,
+including the intervals whose half-open bucket counts are five and three.
+Those changes coincide with relative edge phase crossing zero by only tens
+of femtoseconds. This is evidence for a boundary-counting sensitivity, not a
+replacement passing verdict. An unchanged-circuit half-step experiment is
+running to test numerical stability. A separate finite full570 simulation
+also restores the original reset release and removes the external control
+clamp to exercise the actual feedback circuit. Neither pending run establishes
+PLL lock or a complete serial PHY.
