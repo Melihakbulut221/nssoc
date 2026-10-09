@@ -144,3 +144,47 @@ incomplete time coverage and unordered samples. The bounded saved-waveform
 reader and reviewer have **25 passing controls**. Period spread in a finite
 nominal simulation is not qualified jitter, phase noise, BER, PVT, extracted
 layout or full serial PHY acceptance.
+
+## Native pump/filter layout — 9 October 2026
+
+The [layout generator](../hw/soc/flow/make_pcie_pump_filter13_v1.py)
+now creates the exact thirteen-device pump/filter core with SG13G2 PCells:
+five HV NMOS, four HV PMOS, three RPPD resistors and one MIM capacitor.
+Thirteen real substrate contacts and four individual well contacts bring the
+physical reference to **30 devices**. The **544 × 206.63 µm** macro exposes
+seven ports: UP, DOWN, VCTRL, separate oscillator and pump supplies, AVSS and
+SUB. Its generated identifiers are lowercase. SUB and AVSS remain separate;
+each PMOS body connects through its actual well contact.
+
+The unchanged upstream main DRC deck reports **zero violations across 560
+rule categories**. Strict native LVS matches all thirty devices in both deep
+and flat extraction, with seven extracted ports. The
+[verification tool](../hw/soc/flow/check_pcie_pump_filter13_v1.py) rejects five
+actual faults: wrong transistor width, missing well contact, a removed VCTRL
+route, a physical rail short and an off-grid metal shape. The
+[native records](../hw/soc/pcie-evidence/20261009-pump-filter-layout/native-controls.json)
+retain every command, verdict and pinned input.
+
+The first geometry had three latch-up spacing markers and four Metal3
+spacing markers. Moving NMOS substrate contacts closer and separating PMOS
+well-contact escape tracks removed them without changing core dimensions
+or connectivity. The [failed first check](../hw/soc/pcie-evidence/20261009-pump-filter-layout/first-drc-failure.json)
+remains available.
+
+OpenROAD reads the [LEF macro](../hw/soc/pcie-evidence/20261009-pump-filter-layout/nssoc_pump_filter13_layout_v1.lef)
+with the expected outline, all seven pin geometries and direction/use values,
+and obstructions on all seven routing layers. No obstruction covers a pin.
+Removing one LEF port or adding an obstruction over it is rejected by the
+[native LEF checks](../hw/soc/pcie-evidence/20261009-pump-filter-layout/lef-controls.json).
+Six source controls also preserve distinct supplies, ground and substrate,
+and reject changed pump/filter definitions.
+The [public raw capsule](../hw/soc/pcie-evidence/20261009-pump-filter-layout/delivery.json)
+includes GDS, LEF, schematic, generators, native reports, faults and the failed
+attempts: 151 members, 483,285 bytes. Complete anonymous readback matches SHA256
+`e9f3cf9f2bae6d0d37332d083e4da638db426742834f72f0da5cc1a9a57a3c39`.
+
+This is a verified **component layout**, not a complete PLL or main-chip
+instance. The full570 transient above used the earlier schematic pump/filter;
+it does not validate the seventeen added physical contacts, extracted wire
+parasitics or closed-loop behavior of this layout. Physical-model binding,
+parasitic extraction and subsequent feedback simulations remain required.
