@@ -512,9 +512,9 @@ the mutation fixture now expects that specific failure, with the checker unchang
 retain all 255 device and 2,072 wire records and reject six corruptions.
 
 A fresh 740-device feedback simulation now contains this row PFD, the physical
-pump wire model and 4,996 total wire elements. Its finite result is pending.
-The unchanged electrical/divider criteria must pass before longer acquisition
-runs or any electrical adoption. The geometry results do not qualify RC accuracy,
+pump wire model and 4,996 total wire elements. Its first finite capture was miswired by an extracted-port-order change; see
+the boundary correction below. The unchanged electrical/divider criteria must
+pass on the corrected instance before longer acquisition or electrical adoption. The geometry results do not qualify RC accuracy,
 PLL lock, CDR, serial Gen3 operation or a complete PHY layout.
 
 The [complete component capsule](../hw/soc/pcie-evidence/20261009-pfd-row/delivery.json)
@@ -554,9 +554,9 @@ This aggregate decrease is not a timing or signal-integrity acceptance result.
 The new 740-device loop includes 4,951 wire elements and all 1,647 observations.
 Its first launch stopped at the CPU-affinity guard because the guard still
 expected CPU14 after the launcher selected free CPU10; ownership cleanup reaped
-that process. A fresh run corrects only that guard, retaining the failed record
-and all electrical, divider, sample and storage limits. It is running separately
-from the preceding row-PFD experiment; neither is claimed to pass yet.
+that process. Its second run corrected that guard, but was subsequently stopped
+after the PFD instance pin-order defect below was found. Both failures and their
+partial captures are retained. Neither run validates the new layout electrically.
 
 The [local-bus component capsule](../hw/soc/pcie-evidence/20261009-pfd-local/delivery.json)
 contains the geometry, generator, native extraction and controls, with complete
@@ -571,3 +571,34 @@ failed electrical verdict. Full serial PHY and final chip timing remain open.
 The documentation links a compact failed-capture review to stay within the
 existing site asset budget. Its full native-result digest and capsule member
 are recorded; complete device records and waveforms remain in the public archive.
+
+
+## PFD macro boundary correction — 9 October 2026
+
+Native extraction reordered the compact row/local PFD ports from
+`sub vdd ref fb reset vss up down` to `sub vdd ref vss up fb down reset`.
+The first two new-layout loop compositions had copied the old positional
+instance. This connected the new PFD's VSS to the reference pulse and exchanged
+reset/output/feedback connections. The completed row capture and cancelled
+local capture are **invalid layout comparisons**, not evidence against either
+new geometry. The earlier linear-PFD all-wire failure used its correct pin
+order and remains a separate valid failed experiment.
+
+The new [independent boundary checker](../scripts/check_pcie_pfd_instance.py)
+compares the actual extracted declaration and loop instance by pin name.
+It requires the established negative-VCO-slope polarity (`PFD.ref → loop.fb`,
+`PFD.fb → loop.ref`), correct supplies, reset, UP/DOWN and separate capacitance
+reference. Corrected composition now derives its argument order from that
+declaration rather than inheriting another layout's order.
+
+Ten [regression tests](../sw/tests/test_pcie_pfd_instance.py) include the exact
+miswired call, missing/duplicate interfaces, power/reset/polarity/output swaps,
+and a consistently permuted declaration and call. Both corrected native inputs
+pass the [row](../hw/soc/pcie-evidence/20261009-pfd-boundary/row-controls.json)
+and [local](../hw/soc/pcie-evidence/20261009-pfd-boundary/local-controls.json)
+controls: five real incorrect bindings fail and the matched permutation passes.
+The [invalid local run](../hw/soc/pcie-evidence/20261009-pfd-boundary/invalid-local-cancellation.json)
+was stopped using the recorded parent PID and birth identity; its owner reaped
+the native child. Fresh row/local 740-device simulations retain the original
+stimuli, electrical/divider acceptance criteria and sample/storage limits.
+Their electrical results are pending.
