@@ -118,7 +118,7 @@ def test_actual_crc_primitive_all_byte_values_and_state_basis(tmp_path):
 @pytest.mark.parametrize(
     "fault,filename,before,after",
     [
-        ("crc_bypass", "soc_pcie_lcrc_rx.v", "crc_next==32'hdebb20e3", "1'b1"),
+        ("crc_bypass", "soc_pcie_lcrc_rx.v", "&& crc_residue_ok", "&& 1'b1"),
         (
             "payload_lane_swap",
             "soc_pcie_tlp_integrity.v",
