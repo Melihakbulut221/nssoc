@@ -1,0 +1,157 @@
+{
+  "status": "PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS",
+  "positive_status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+  "cases": [
+    {
+      "control": "dropped_actual_port",
+      "rejected_by": "Export port loss/duplication",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "4513f16236d47dbf90a7dc1bf76b4662d7016aa84f5478191d5b41857ea6805a",
+          "diff": "--- \n+++ \n@@ -1,6 +1,6 @@\n * NGSPICE file created from pump_wires.ext - technology: ihp-sg13g2\n \n-.subckt pump_wires T001_rppd_1 T001_rppd_2 T002_S T002_G T002_D T003_S T003_G T003_D\n+.subckt pump_wires T001_rppd_2 T002_S T002_G T002_D T003_S T003_G T003_D\n + T004_mim_top T004_mim_btm T005_S T005_G T005_D T006_S T006_G T006_D T007_S T007_G\n + T007_D T008_S T008_G T008_D T009_S T009_G T009_D T010_rppd_1 T010_rppd_2 T011_rppd_1\n + T011_rppd_2 T012_S T012_G T012_D T013_TIE T014_TIE T015_TIE T016_TIE T017_TIE T018_TIE\n"
+        }
+      }
+    },
+    {
+      "control": "dropped_resistor",
+      "rejected_by": "Native/export resistor topology/value differs",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "bc6b00c90285610366c98e31c6ad94b0d4d645c2de72ad17f6e65ac431ce8900",
+          "diff": "--- \n+++ \n@@ -7,7 +7,6 @@\n + T019_TIE T020_TIE T021_TIE T022_TIE T023_TIE T024_TIE T025_TIE T026_TIE T027_TIE\n + T028_TIE T029_TIE T030_S T030_G T030_D P_avss P_div_avdd P_down P_sub P_up P_vco_avdd\n + P_vctrl\n-R0 P_sub P_sub.n0 4.54667\n R1 P_sub.n1 P_sub.n0 2.93333\n R2 P_sub.n2 P_sub.n1 2.93333\n R3 P_sub.n3 P_sub.n2 2.93333\n"
+        }
+      }
+    },
+    {
+      "control": "wrong_resistor",
+      "rejected_by": "Native/export resistor topology/value differs",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "8d2c5554f41027d78516951f59b7d9ceafbd5fd4756c2818a39148e5072a5257",
+          "diff": "--- \n+++ \n@@ -7,7 +7,7 @@\n + T019_TIE T020_TIE T021_TIE T022_TIE T023_TIE T024_TIE T025_TIE T026_TIE T027_TIE\n + T028_TIE T029_TIE T030_S T030_G T030_D P_avss P_div_avdd P_down P_sub P_up P_vco_avdd\n + P_vctrl\n-R0 P_sub P_sub.n0 4.54667\n+R0 P_sub P_sub.n0 12345\n R1 P_sub.n1 P_sub.n0 2.93333\n R2 P_sub.n2 P_sub.n1 2.93333\n R3 P_sub.n3 P_sub.n2 2.93333\n"
+        }
+      }
+    },
+    {
+      "control": "cross_conductor_short",
+      "rejected_by": "R network has unanchored component or cross-conductor short",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "ee97824666b0ef6541dce65738469bed6cde2904c36bc44373f9eb3fc6057ab5",
+          "diff": "--- \n+++ \n@@ -246,5 +246,6 @@\n C152 P_sub.n9 sub 8.4395458984374996e-15\n C153 P_sub.n10 sub 8.8904257812500017e-15\n C154 P_sub.n11 sub 1.6132228515624999e-14\n+R_EXTRA P_up P_down 1\n .ends\n \n"
+        }
+      }
+    },
+    {
+      "control": "ground_redistribution_same_matrix",
+      "rejected_by": "Per-point ground C export changed",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "6cae319fb219d27941e0d6bc565a9b2a2850d5f51a39104ba1b2363b5f7b2f84",
+          "diff": "--- \n+++ \n@@ -150,8 +150,8 @@\n C56 P_sub T007_D 1.3488900146484375e-15\n C57 P_vctrl P_up 5.8146801757812506e-16\n C58 P_div_avdd P_vctrl 5.8772900390625014e-16\n-C59 P_sub sub 1.9513822021484376e-15\n-C60 T025_TIE sub 3.744982421875e-15\n+C59 P_sub sub 2.4392277526855470E-15\n+C60 T025_TIE sub 3.2571368713378906E-15\n C61 T024_TIE sub 3.4640942382812502e-15\n C62 T023_TIE sub 3.4640942382812502e-15\n C63 T022_TIE sub 3.744982421875e-15\n"
+        }
+      }
+    },
+    {
+      "control": "mutual_anchor_shift_same_matrix",
+      "rejected_by": "Mutual C native attachment changed",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "60c4f96920728de641b79f395ad41138c4bfba9081ff9970ea70e2c1af654d6a",
+          "diff": "--- \n+++ \n@@ -91,7 +91,7 @@\n R81 T007_G T011_rppd_2.n3 43.852\n R82 T009_G T011_rppd_2.n2 43.852\n R83 T009_D T011_rppd_2.n1 52.1939\n-C0 T030_G P_vctrl 4.3202499999999999e-15\n+C0 T002_D P_vctrl 4.3202499999999999e-15\n C1 T011_rppd_2 P_down 1.1779499511718751e-15\n C2 P_sub T012_S 6.329299926757813e-16\n C3 P_vctrl P_down 3.5756899414062506e-15\n"
+        }
+      }
+    },
+    {
+      "control": "dropped_cap",
+      "rejected_by": "Mutual C native attachment changed",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "4d825e8fd3522b28619348da6948a65e5bdcff6805408929a63151025e5b06f3",
+          "diff": "--- \n+++ \n@@ -91,7 +91,6 @@\n R81 T007_G T011_rppd_2.n3 43.852\n R82 T009_G T011_rppd_2.n2 43.852\n R83 T009_D T011_rppd_2.n1 52.1939\n-C0 T030_G P_vctrl 4.3202499999999999e-15\n C1 T011_rppd_2 P_down 1.1779499511718751e-15\n C2 P_sub T012_S 6.329299926757813e-16\n C3 P_vctrl P_down 3.5756899414062506e-15\n"
+        }
+      }
+    },
+    {
+      "control": "changed_cap",
+      "rejected_by": "Mutual C native value changed",
+      "mutated_outputs": {
+        "wires.spice": {
+          "sha256": "f5358c3ab30b7659a4942fb7223c8c81c699736ccb4247a4b2c853c3ec21e0cc",
+          "diff": "--- \n+++ \n@@ -91,7 +91,7 @@\n R81 T007_G T011_rppd_2.n3 43.852\n R82 T009_G T011_rppd_2.n2 43.852\n R83 T009_D T011_rppd_2.n1 52.1939\n-C0 T030_G P_vctrl 4.3202499999999999e-15\n+C0 T030_G P_vctrl 1e-12\n C1 T011_rppd_2 P_down 1.1779499511718751e-15\n C2 P_sub T012_S 6.329299926757813e-16\n C3 P_vctrl P_down 3.5756899414062506e-15\n"
+        }
+      }
+    },
+    {
+      "control": "cap_scale",
+      "rejected_by": "Source capacitance scale changed",
+      "mutated_outputs": {
+        "pump_wires.ext": {
+          "sha256": "f994c66438d4e09bd3adedeb2b454b8f8ee854f0612c91782bfb68ff6e8008ac",
+          "diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n version 8.3\n tech ihp-sg13g2\n style ngspice()\n-scale 1000 1 0.5\n+scale 1000 2 0.5\n resistclasses 3000000 67000 110 88 88 88 88 18 11 7000 260000 1360000\n port \"P_sub\" 56 200 31606 200 31606 m5\n port \"T025_TIE\" 45 88200 206 88200 206 v\n"
+        }
+      }
+    },
+    {
+      "control": "missing_native_completion",
+      "rejected_by": "Missing/duplicate native completion",
+      "mutated_outputs": {
+        "native.log": {
+          "sha256": "97bcc3aa4a188330a89f8a45f2cecb68af6b2ffb0d703bdd8d5155556205ef0c",
+          "diff": "--- \n+++ \n@@ -219,4 +219,4 @@\n Nets extracted: 12 (0.923077)\n Nets output: 12 (0.923077)\n exttospice finished.\n-NSSOC_WIRE_RC_COMPLETE\n+REMOVED\n"
+        }
+      }
+    },
+    {
+      "control": "changed_body",
+      "rejected_by": "Original body/well identities changed"
+    },
+    {
+      "control": "missing_body",
+      "rejected_by": "Body/metal disposition changed"
+    },
+    {
+      "control": "wrong_actual_metal_point",
+      "rejected_by": "Actual metal terminal witness changed"
+    }
+  ],
+  "seconds": 0.2538195389788598,
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/mutations01.py": {
+      "bytes": 5055,
+      "sha256": "ac0589d27fcef0884c613b9b2734724e4b08a26539345855549b86e94774c617"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/audit-rc02.py": {
+      "bytes": 12272,
+      "sha256": "41051fb749e4842fe39a63541afef9f3e489f2cf0f9b7d79ae03c755c4586627"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+      "bytes": 8291,
+      "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/anchors03.json": {
+      "bytes": 52044,
+      "sha256": "59cc34181625741cf1b73b60976da38bbbbdf2283b59d9af130c9353563698db"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/rc01/pump_wires.ext": {
+      "bytes": 7465,
+      "sha256": "3628989ac47e4bc59bbdea15492151c8561a181b68e9ba4b7a05725a80b178da"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/rc01/pump_wires.res.ext": {
+      "bytes": 8344,
+      "sha256": "3b7a76cf2703b24e2565c43e2a3808c8251c02b9b0f47e58815b0ecf91a4900e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/rc01/native.log": {
+      "bytes": 14276,
+      "sha256": "0fcdebe22d9b211b453247877260d35337d6b2fd8fa0281e1bff225e1867c10e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/rc01/wires.spice": {
+      "bytes": 9650,
+      "sha256": "49089f2e0dfe32bd47a385c23e4c45a8d2800f34ce7aa1cda99cb6c4de0515cf"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-wire-geometry-20261009/rc01/baseline.spice": {
+      "bytes": 3038,
+      "sha256": "ccb89e531e243a29f8b4f4b828024a027e100a288195fcd859008072dc4cbc04"
+    }
+  }
+}

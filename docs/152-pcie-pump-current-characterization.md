@@ -344,3 +344,59 @@ contains the finite run, full raw observations, native-device translation,
 eight model faults, postflight and exact campaign sources: **67 members,
 956,046,595 bytes**. Complete anonymous readback matches SHA256
 `5a22455866482f27ff21c07780528090caf2ba0d81150bc7423f19a6238296cf`.
+
+## Pump layout metal RC and finite device tests — 9 October 2026
+
+The [pump wire model](../hw/soc/analog/pcie/pll_pump30_wire_v1.spice) now combines
+all thirty native devices and finite body contacts with **84 distributed metal
+resistors and 155 capacitors**. Every metal/via polygon is copied from the same
+LVS-checked pump GDS. Exact geometric probing binds twelve conductor components
+to the unsimplified native LVS nets, without merging components by net names.
+All thirty devices have unique physical PCell enclosures. The reference-point
+census covers 52 metal device terminals, 29 retained intrinsic body/well terminals
+and seven public pins. MOS source/drain points use their own native terminal
+geometry; gate points use the connected gate-poly/contact geometry.
+
+The [wire audit](../hw/soc/pcie-evidence/20261009-pump-wire/wire-audit.json)
+checks exact exported resistor edges and values, each distributed ground-cap
+attachment, every mutual-cap attachment, and the entire 13-by-13 collapsed
+capacitance matrix. Thirteen actual raw-data corruptions are rejected, including
+redistributing ground capacitance while keeping the same matrix and shifting a
+mutual-cap attachment within one conductor. The [composition controls](../hw/soc/pcie-evidence/20261009-pump-wire/composition-controls.json)
+independently require all thirty device records and all 239 native wire records;
+six more mutations reject changed device pins, missing contact, changed body,
+missing resistor, changed capacitor and shorted capacitance reference.
+
+The eighth macro port, `wire_cref`, is the extractor's capacitance reference.
+It remains distinct from the seven original ports, including `sub`. The finite
+testbench explicitly holds it at zero volts. Intrinsic body regions and finite
+contacts remain present; this does not model substrate spreading resistance or
+qualify RF reference-plane placement.
+
+Three [native 34 ns tests](../hw/soc/pcie-evidence/20261009-pump-wire/native-review.json)
+at ideal 0.6 V VCTRL pass all thirty electrical screens, zero-source operating
+point and diagnostic checks: idle, source and sink, each with 108,811 samples and
+80 columns at 0.3125 ps maximum step. The first launch rejected a CPU-affinity
+mismatch and cleaned up its owned process. The corrected fresh run uses CPU12;
+the failed attempt is retained. No electrical acceptance threshold was relaxed.
+
+| Current delivered to VCTRL, µA | Compact physical model | With pump metal RC |
+| --- | ---: | ---: |
+| Idle | +33.017213 | +33.111677 |
+| Source | +69.012810 | +67.276185 |
+| Sink | −9.713785 | −8.723883 |
+
+The [paired measurement](../hw/soc/pcie-evidence/20261009-pump-wire/current-comparison.json)
+uses the previously verified clamp-current sign convention and the complete
+4–34 ns window. These are ideal-command component tests. They do not establish
+closed-loop lock, PVT, EM/ESD, qualified extraction or full PCIe PHY operation.
+A separate 740-device feedback run now includes this pump wire network, retains
+the other 710 devices and all previous 2,685 wire elements, exposes the new
+reference explicitly, and saves all 1,236 observations. Its transient result is
+pending; the PFD wire network is not included in that particular run.
+
+The [complete component capsule](../hw/soc/pcie-evidence/20261009-pump-wire/delivery.json)
+contains 98 members and **140,292,447 bytes**, including geometry, restored/pinned
+extractor provenance, raw extraction, controls, failed attempts and complete
+finite captures. Complete anonymous readback matches SHA256
+`e30ef936125b9f8d13267a9563713ba4f2b8e9cbbad6470f5b06fd444b09066d`.
