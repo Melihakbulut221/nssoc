@@ -1003,5 +1003,70 @@ Reducing the ordered receiver's self-bias resistance fails the loaded replay
 also fails (0.550 V maximum clock level). Both retain passing electrical screens.
 A smaller, 3.125% width reduction, 5.92 to 5.735 µm, passes native component
 DRC/LVS, binding/wire checks and all four loaded-replay predicates, with clock
-swing 0.042075–1.197579 V. Its actual 773-device closed-loop run is now started;
-the replay does not establish its result, PLL lock or full serial PHY acceptance.
+swing 0.042075–1.197579 V. Its subsequent actual 773-device, 34 ns run passes
+all electrical screens and twelve of thirteen divider predicates with clean
+native diagnostics. CML-to-receiver edge counting now passes. The sole failed
+predicate requires at least three feedback rising edges: two were captured,
+and the measured interval contains exactly 80 VCO cycles. The failed verdict
+is retained. A fresh 50 ns run keeps the complete circuit, sources, timestep,
+minimum edge count and acceptance thresholds; five continuation faults and
+four actual-deck faults are rejected before launch. Neither run establishes
+PLL lock or full serial PHY acceptance.
+
+### Physical standard-cell toggle with metal RC — 9 October 2026
+
+A separate feedback-connected divide-by-two macro combines the frozen IHP
+`sg13g2_dfrbpq_2` and `sg13g2_inv_1` cells. Native extraction produces 36 MOS
+fingers, including both physical fingers of the two double-finger output
+devices. The reference preserves total widths; native simulation retains
+extracted junction areas and perimeters. Body terminals retain the actual
+VSS/VDD connections. A metal reset strap joins two reset metal islands that
+were previously connected only through polysilicon. The final `layout05`
+passes all 560 enabled DRC categories with zero violations, deep and flat
+36-device LVS, and five deliberate faults: wrong width, missing finger,
+open output connection, shorted outputs and a one-nanometre off-grid shift.
+
+The wire model contains all **70 resistors and 167 capacitors**. Its terminal
+mapping preserves 104 logical references at 66 distinct physical contact
+points; only geometrically identical points share an extraction port.
+Shared diffusion terminals and native salicide-abutted source/tap connections
+are identified from actual geometry. Thirteen raw extraction corruptions and
+six composed-SPICE faults are rejected. This is metal RC from the experimental
+Magic technology; intrinsic electrode/body spreading resistance and qualified
+foundry PEX remain outside its scope.
+
+The 12 ns transistor transient of this physical macro, including all metal RC,
+passes all 36 electrical screens and actual division by two at a 2 GHz input.
+Twenty output windows, 300–450 ps after each input edge, pass, and each of ten
+measured output intervals contains two input clocks. Holding reset active
+correctly fails both functional predicates while passing electrical screens.
+This **does not repair or replace** the earlier general-DFF 150–200 ps aperture
+failure. The test uses internal feedback D=QB and an external clock; it is not
+a PLL, PVT, jitter, full serial PHY or main-chip timing acceptance.
+
+The [complete standard-cell toggle development capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-std-toggle36-metal-rc-20261009.tar.gz)
+preserves failed prefixes, original aperture failures, physical sources,
+IHP source notice, raw extraction and full finite waveforms: 444 members /
+181,765,679 bytes, complete anonymous readback SHA256
+`4296e0155e8dc0b73df3c596435fe54108840c05cb37e599d14daad550ddfe24`.
+
+A new connected experiment replaces only the first 48-device schematic toggle
+by these 36 extracted devices and 237 wire elements. The resulting chain has
+761 devices and 5,627 wire elements; all other device and wire records are
+unchanged. Named pin and capacitor-reference boundary checks reject swaps
+before simulation. Initial harness failures (CPU-affinity guard and a missing
+wire-only clock observation) are preserved. The fresh run records that actual
+clock conductor explicitly and uses 1,787 columns. Its 50 ns result is pending;
+the standalone macro pass does not establish the loaded-chain result.
+
+The reusable [toggle layout generator](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/make_pcie_feedback_toggle36_v1.py)
+now emits a 15.360 × 6.370 µm GDS, a six-pin LEF and the explicit-finger LVS
+reference from pinned PDK sources. Translation to a zero-origin outline
+preserves every layer by XOR and preserves labels; the canonical output also
+matches the independently generated abstract and reference. The
+[native DRC/LVS checker](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_toggle36_v1.py)
+retains the five physical/reference faults. The
+[OpenROAD LEF checker](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/hw/soc/flow/check_pcie_feedback_toggle36_lef.py)
+checks pin rectangles, directions, power uses and obstruction clearance, and
+rejects missing pins, obstructed pins and changed outlines. These are component
+checks; the macro has not yet been placed and routed into the full PLL parent.

@@ -950,5 +950,9 @@ surviving consumer signals directly to actual DFF outputs; no remapping was
 needed. Physical run `registered-rx03` then stopped because its initial state
 omitted the generated `json_h` header. `registered-rx04` resumes the completed
 floorplan with that existing header added; netlist, geometry and constraints are
-unchanged. Placement is running; route, extracted RC and final setup/hold remain
-pending. Neither the RTL candidate nor timing closure is accepted yet.
+unchanged. Placement and clock-tree synthesis have completed; post-CTS timing
+repair is running. The intermediate reports identify a PCIe replay read-position
+to transmit-data setup path and an Ethernet transmit-data to forwarded-clock
+hold path. These reports use placement parasitics. Route, extracted RC and final
+setup/hold remain pending. Neither the RTL candidate nor timing closure is
+accepted yet.
