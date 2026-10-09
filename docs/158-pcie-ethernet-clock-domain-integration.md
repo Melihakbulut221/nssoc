@@ -756,3 +756,38 @@ The [completed source/proof/mapping capsule](../hw/soc/pcie-evidence/20261009-cr
 contains **225 members and 24,570,734 bytes**, excluding the active
 physical run. Complete anonymous readback matches SHA256
 `351e9b3a87f12a60a46c0f4acfff3d9f87e63ccf5bdf84409606908eef3cf03a`.
+
+
+### Metadata invariant resolved; timing candidate rejected, 9 October 2026
+
+A further replay candidate registers the class and payload count before the
+reservation handshake. Its original optimistic undefined-state equivalence
+result was insufficient: the strict two-state induction left thirteen points
+unproven. Those failures remain in the evidence.
+
+The [new reset-based proof review](../hw/soc/pcie-evidence/20261009-metadata-invariant/proof-review.json)
+uses unbounded PDR on the actual RTL, including its CRC logic, at the production
+defaults of four slots and 38 bytes per slot. Whenever `reserve_valid_o` is true,
+both registered metadata values equal the unchanged slot decode. All remaining
+functional RTL is text-identical. Idle metadata is deliberately outside that
+contract. Fifteen RTL tests pass, and two actual corruptions of class and
+payload are rejected by packet reservation assertions. The proof does not
+establish arbitrary parameter values or physical timing.
+
+The [published proof capsule](../hw/soc/pcie-evidence/20261009-metadata-invariant/delivery.json)
+contains 258 members and **2,753,417 bytes**, with complete anonymous readback
+matching SHA256
+`6714ebfbf7021c995c344d8b11a6b549d7c33f7c3e665d95b5f955411b900003`.
+It includes the failed proof attempts and the exact successful native model.
+A copied runner's description incorrectly mentions abstracted CRC acceptance;
+the reviewed native model contains no such abstraction, as the review records.
+Later timing runs are outside this proof capsule.
+
+Despite passing this functional proof, the candidate is **not adopted**.
+The [preplacement screen](../hw/soc/pcie-evidence/20261009-metadata-invariant/timing-rejection.json)
+worsens setup in all three corners relative to the preceding credit-verdict
+candidate: slow −2.286632 → −2.463721 ns, typical −0.075190 → −0.262949 ns,
+and fast +0.849711 → +0.838629 ns. This preliminary screen is sufficient to
+reject the experiment; it is not a placement, routed timing or graph-acceptance
+claim. The next arithmetic candidate targets the two serial subtractors on the
+actual consumed-credit to credit-limit path, without changing packet latency.
