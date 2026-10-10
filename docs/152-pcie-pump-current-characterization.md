@@ -3037,3 +3037,30 @@ The queued banked-only CTS controller was deferred before starting any native ph
 The [updated evidence record](evidence/pcie-metadata-late-select-20261010.json) links the **31-file mapped evidence capsule**, including actual mapped netlist/JSON, synthesis logs, constraints, STA outputs, comparison reader and physical launch method. All members and the complete anonymous public download were verified: **18,643,735 bytes**, SHA-256 `45d43a29dee1c5228bb370d1179f083d1a61153dfddd31dc079183c6f1218e04`.
 
 A separate carry-propagation experiment changes only the credit block's carry propagate terms from XOR to OR, retaining XOR sum parity and cycle behavior. Its full actual-module equivalence and eight integration tests passed; whole-chip mapping is running. No delay improvement is claimed for this second experiment. The repaired 753-device PLL transient and the seed-42 route trial remain active. Full serial Gen3 x4 PHY, main-chip routed integration and final setup/hold closure remain open.
+
+
+### Supply loss reproduced; physical repair verified and native follow-up queued (10 October)
+
+The unchanged first28 physical divider passed three independently reread 20 ns points: 1.08 V input common mode with 150 fF output load; 1.10 V with 50 fF; and 1.10 V with 150 fF. All retained the ideal 8 GHz stimulus, 0.25 ps step, divide-by-four and differential swing criteria, all 91 device bounds and strict startup checks.
+
+A fourth diagnostic reduced the external supply to 2.42 V and raised the local ground to 0.08 V, while keeping the original 1.08 V input common mode and using 150 fF load. It **failed** division and swing, and two HBTs reached settled VCE minima of **0.396570 V / 0.392381 V**, below the unchanged 0.4 V limit. The independent readers reproduced the failure. This controlled test reproduces the symptoms under shifted supplies; it does not prove the complete parent circuit's failure has a single cause.
+
+Read-only prefixes of the still-running parent capture motivated this experiment. The prefix through 18.36 ns showed first-divider supply terminal voltages around 2.37–2.40 V and some local ground terminals up to 0.121 V. The completed standalone 150 fF point had supply terminals around 2.45–2.48 V and ground terminals up to 0.044 V. The live prefixes have **no complete gzip/footer or 50 ns verdict**, and cannot replace the full capture's acceptance checks.
+
+The physical repair widens the narrow local power escapes and branches. Its first attempt, `supply03`, retained an LVS match but produced three `TM1.b` spacing markers. `supply04` accounts for the width of both adjacent branches and passes **0/560 DRC**, hierarchical and flat **753-device LVS**, all **61 reference planes**, fresh RC checks and six model-binding fault controls. `supply05` additionally doubles shared power buses from 40 to 80 µm and passes those same checks. All 753 devices and child RC remain unchanged.
+
+| First-divider path | Original parent (Ω) | Local branches, supply04 (Ω) | Wider buses, supply05 (Ω) |
+| --- | ---: | ---: | ---: |
+| Supply | 4.376237 | 3.067447 | 2.921152 |
+| Ground | 4.031467 | 2.914437 | 2.724142 |
+| Substrate contact | 4.625297 | 3.124747 | 2.956452 |
+
+These are path sums in the extracted parent resistor trees, **not a current-dependent IR/EM qualification**. The supply05 extent is 2983 × 2040 µm; bounding fit does not establish an available main-chip site. Its full 753-device simulation is prepared with the unchanged eight functional criteria, all-device bounds and 5 measurement / 6 boundary / 4 diagnostic fault controls. It waits for the ongoing first28 full capture and the already queued 25 °C component point, then applies the original disk/RAM gates.
+
+The [physical and boundary evidence](evidence/pcie-widepower-boundary-20261010.json) links the **302-file capsule**, including the failed and corrected layouts, fresh DRC/LVS/RC records, terminal readers, four boundary results and prepared native continuation: **4,036,110 bytes**, SHA-256 `9d1526e596632dbd587e476c8de2e80631176d42437bfbc596b075443a0de4a7`. All members and the complete anonymous download were verified. The four new full boundary waveforms remain local and are explicitly excluded from this capsule; the previous six divider waveforms have separately completed public delivery.
+
+The same evidence records the seed-42 routing failure: **78 overflow**, comprising Metal3 13, Metal4 9 and Metal5 56. The next native route reserves an additional 15% of Metal5 capacity to steer paths toward other legal layers, with unchanged clocks, netlist, physical rules and a zero-overflow requirement. It is still running.
+
+The [carry-OR candidate](evidence/pcie-carry-or-rejected-20261010.json) passed full-module equivalence and eight integration tests, but was **rejected**: SS setup regressed from -1.361943 to -1.427598 ns and SS hold from -0.469247 to -0.471067 ns. All six measured minima and the actual mapped sources/logs are published, including the 29-file result capsule (18,425,387 bytes; SHA-256 `4b4133e16db16e801f3a3366deb68e0f9c9e77f7348f875486042986a6087074`). The stronger metadata candidate's physical placement/CTS run is now active. Removing 4,090,592,586 bytes of verified, restorable old HTTP download-cache copies cleared its disk gate; original native captures and reports were preserved.
+
+Full serial Gen3 x4 PHY, its routed main-chip integration and final setup/hold closure remain open. None of these finite component or physical model checks is a production approval.
