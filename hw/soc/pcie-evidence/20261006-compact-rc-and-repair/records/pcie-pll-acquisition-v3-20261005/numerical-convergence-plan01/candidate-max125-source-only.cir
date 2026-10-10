@@ -1,0 +1,296 @@
+Bounded native feedback prerequisite probe
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib" hbt_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib" res_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib" cap_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib" mos_tt
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib" mos_tt
+.include "rx_sampler_hbt_v2.spice"
+.include "clock_div2_hbt.spice"
+.include "clock_div2_conditioned_hbt.spice"
+.include "clock_div4_hbt_v5.spice"
+.include "clock_vco_hbt_v4.spice"
+.include "pll_feedback_div20_lv_v2.spice"
+.include "pll_feedback_chain_v1.spice"
+.include "pll_pfd_charge_pump_hv_v1.spice"
+.include "pll_loop_hbt_v1.spice"
+.temp 27
+.options reltol=1e-4 abstol=1e-12
+VDD avdd 0 PWL(0 0 500p 2.3)
+VDDIV dvdd 0 PWL(0 0 500p 2.5)
+VCORE cvdd 0 PWL(0 0 500p 1.2)
+VRST clearb 0 PWL(0 0 3n 0 3.1n 1.2)
+VRESET reset 0 PWL(0 0 500p 2.5 8n 2.5 8.1n 0)
+VREFERENCE reference 0 PULSE(0 2.5 14n 25p 25p 4.95n 10n)
+xloop reference reset clearb clkp clkn qp qn fb fbbar up down vctrl avdd dvdd cvdd 0 0 nssoc_pll_loop_hbt_v1
+.tran 2.5e-12 1e-06 0 1.25e-12
+.control
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi
+set filetype=binary
+save v(avdd) v(clearb) v(clkn) v(clkp) v(cvdd) v(down) v(dvdd) v(fb) v(fbbar) v(qn) v(qp) v(reference) v(reset) v(up) v(vctrl) v(xloop.xchain.xdiv.bin) v(xloop.xchain.xdiv.bip) v(xloop.xchain.xdiv.ckn) v(xloop.xchain.xdiv.ckp) v(xloop.xchain.xdiv.ln) v(xloop.xchain.xdiv.lp) v(xloop.xchain.xdiv.lref) v(xloop.xchain.xdiv.lt) v(xloop.xchain.xdiv.s1n) v(xloop.xchain.xdiv.s1p) v(xloop.xchain.xdiv.xfirst.ckn) v(xloop.xchain.xdiv.xfirst.ckp) v(xloop.xchain.xdiv.xfirst.xcore.mn) v(xloop.xchain.xdiv.xfirst.xcore.mp) v(xloop.xchain.xdiv.xfirst.xcore.ref) v(xloop.xchain.xdiv.xfirst.xcore.xm.he) v(xloop.xchain.xdiv.xfirst.xcore.xm.se) v(xloop.xchain.xdiv.xfirst.xcore.xm.te) v(xloop.xchain.xdiv.xfirst.xcore.xs.he) v(xloop.xchain.xdiv.xfirst.xcore.xs.se) v(xloop.xchain.xdiv.xfirst.xcore.xs.te) v(xloop.xchain.xdiv.xsecond.mn) v(xloop.xchain.xdiv.xsecond.mp) v(xloop.xchain.xdiv.xsecond.ref) v(xloop.xchain.xdiv.xsecond.xm.he) v(xloop.xchain.xdiv.xsecond.xm.se) v(xloop.xchain.xdiv.xsecond.xm.te) v(xloop.xchain.xdiv.xsecond.xs.he) v(xloop.xchain.xdiv.xsecond.xs.se) v(xloop.xchain.xdiv.xsecond.xs.te) v(xloop.xchain.xfb.clk) v(xloop.xchain.xfb.count) v(xloop.xchain.xfb.countb) v(xloop.xchain.xfb.f0) v(xloop.xchain.xfb.f0b) v(xloop.xchain.xfb.f1) v(xloop.xchain.xfb.f1b) v(xloop.xchain.xfb.xcount.d0) v(xloop.xchain.xfb.xcount.d0b) v(xloop.xchain.xfb.xcount.d1) v(xloop.xchain.xfb.xcount.d1b) v(xloop.xchain.xfb.xcount.d2) v(xloop.xchain.xfb.xcount.d2b) v(xloop.xchain.xfb.xcount.q0) v(xloop.xchain.xfb.xcount.q0b) v(xloop.xchain.xfb.xcount.q1) v(xloop.xchain.xfb.xcount.q1b) v(xloop.xchain.xfb.xcount.xd0n.n) v(xloop.xchain.xfb.xcount.xd1n.n) v(xloop.xchain.xfb.xcount.xd2n.n1) v(xloop.xchain.xfb.xcount.xd2n.n2) v(xloop.xchain.xfb.xcount.xff0.clkb) v(xloop.xchain.xfb.xcount.xff0.db) v(xloop.xchain.xfb.xcount.xff0.mnr) v(xloop.xchain.xfb.xcount.xff0.mns) v(xloop.xchain.xfb.xcount.xff0.mq) v(xloop.xchain.xfb.xcount.xff0.mqb) v(xloop.xchain.xfb.xcount.xff0.snr) v(xloop.xchain.xfb.xcount.xff0.sns) v(xloop.xchain.xfb.xcount.xff0.xmnr.n) v(xloop.xchain.xfb.xcount.xff0.xmns.n1) v(xloop.xchain.xfb.xcount.xff0.xmns.n2) v(xloop.xchain.xfb.xcount.xff0.xmq.n) v(xloop.xchain.xfb.xcount.xff0.xmqb.n1) v(xloop.xchain.xfb.xcount.xff0.xmqb.n2) v(xloop.xchain.xfb.xcount.xff0.xsnr.n) v(xloop.xchain.xfb.xcount.xff0.xsns.n1) v(xloop.xchain.xfb.xcount.xff0.xsns.n2) v(xloop.xchain.xfb.xcount.xff0.xsq.n) v(xloop.xchain.xfb.xcount.xff0.xsqb.n1) v(xloop.xchain.xfb.xcount.xff0.xsqb.n2) v(xloop.xchain.xfb.xcount.xff1.clkb) v(xloop.xchain.xfb.xcount.xff1.db) v(xloop.xchain.xfb.xcount.xff1.mnr) v(xloop.xchain.xfb.xcount.xff1.mns) v(xloop.xchain.xfb.xcount.xff1.mq) v(xloop.xchain.xfb.xcount.xff1.mqb) v(xloop.xchain.xfb.xcount.xff1.snr) v(xloop.xchain.xfb.xcount.xff1.sns) v(xloop.xchain.xfb.xcount.xff1.xmnr.n) v(xloop.xchain.xfb.xcount.xff1.xmns.n1) v(xloop.xchain.xfb.xcount.xff1.xmns.n2) v(xloop.xchain.xfb.xcount.xff1.xmq.n) v(xloop.xchain.xfb.xcount.xff1.xmqb.n1) v(xloop.xchain.xfb.xcount.xff1.xmqb.n2) v(xloop.xchain.xfb.xcount.xff1.xsnr.n) v(xloop.xchain.xfb.xcount.xff1.xsns.n1) v(xloop.xchain.xfb.xcount.xff1.xsns.n2) v(xloop.xchain.xfb.xcount.xff1.xsq.n) v(xloop.xchain.xfb.xcount.xff1.xsqb.n1) v(xloop.xchain.xfb.xcount.xff1.xsqb.n2) v(xloop.xchain.xfb.xcount.xff2.clkb) v(xloop.xchain.xfb.xcount.xff2.db) v(xloop.xchain.xfb.xcount.xff2.mnr) v(xloop.xchain.xfb.xcount.xff2.mns) v(xloop.xchain.xfb.xcount.xff2.mq) v(xloop.xchain.xfb.xcount.xff2.mqb) v(xloop.xchain.xfb.xcount.xff2.snr) v(xloop.xchain.xfb.xcount.xff2.sns) v(xloop.xchain.xfb.xcount.xff2.xmnr.n) v(xloop.xchain.xfb.xcount.xff2.xmns.n1) v(xloop.xchain.xfb.xcount.xff2.xmns.n2) v(xloop.xchain.xfb.xcount.xff2.xmq.n) v(xloop.xchain.xfb.xcount.xff2.xmqb.n1) v(xloop.xchain.xfb.xcount.xff2.xmqb.n2) v(xloop.xchain.xfb.xcount.xff2.xsnr.n) v(xloop.xchain.xfb.xcount.xff2.xsns.n1) v(xloop.xchain.xfb.xcount.xff2.xsns.n2) v(xloop.xchain.xfb.xcount.xff2.xsq.n) v(xloop.xchain.xfb.xcount.xff2.xsqb.n1) v(xloop.xchain.xfb.xcount.xff2.xsqb.n2) v(xloop.xchain.xfb.xcount.xn0) v(xloop.xchain.xfb.xcount.xn1) v(xloop.xchain.xfb.xcount.xn2) v(xloop.xchain.xfb.xcount.xq) v(xloop.xchain.xfb.xcount.xx0.n) v(xloop.xchain.xfb.xcount.xx1.n) v(xloop.xchain.xfb.xcount.xx2.n) v(xloop.xchain.xfb.xcount.xx3.n) v(xloop.xchain.xfb.xfast0.clkb) v(xloop.xchain.xfb.xfast0.db) v(xloop.xchain.xfb.xfast0.mnr) v(xloop.xchain.xfb.xfast0.mns) v(xloop.xchain.xfb.xfast0.mq) v(xloop.xchain.xfb.xfast0.mqb) v(xloop.xchain.xfb.xfast0.snr) v(xloop.xchain.xfb.xfast0.sns) v(xloop.xchain.xfb.xfast0.xmnr.n) v(xloop.xchain.xfb.xfast0.xmns.n1) v(xloop.xchain.xfb.xfast0.xmns.n2) v(xloop.xchain.xfb.xfast0.xmq.n) v(xloop.xchain.xfb.xfast0.xmqb.n1) v(xloop.xchain.xfb.xfast0.xmqb.n2) v(xloop.xchain.xfb.xfast0.xsnr.n) v(xloop.xchain.xfb.xfast0.xsns.n1) v(xloop.xchain.xfb.xfast0.xsns.n2) v(xloop.xchain.xfb.xfast0.xsq.n) v(xloop.xchain.xfb.xfast0.xsqb.n1) v(xloop.xchain.xfb.xfast0.xsqb.n2) v(xloop.xchain.xfb.xfast1.clkb) v(xloop.xchain.xfb.xfast1.db) v(xloop.xchain.xfb.xfast1.mnr) v(xloop.xchain.xfb.xfast1.mns) v(xloop.xchain.xfb.xfast1.mq) v(xloop.xchain.xfb.xfast1.mqb) v(xloop.xchain.xfb.xfast1.snr) v(xloop.xchain.xfb.xfast1.sns) v(xloop.xchain.xfb.xfast1.xmnr.n) v(xloop.xchain.xfb.xfast1.xmns.n1) v(xloop.xchain.xfb.xfast1.xmns.n2) v(xloop.xchain.xfb.xfast1.xmq.n) v(xloop.xchain.xfb.xfast1.xmqb.n1) v(xloop.xchain.xfb.xfast1.xmqb.n2) v(xloop.xchain.xfb.xfast1.xsnr.n) v(xloop.xchain.xfb.xfast1.xsns.n1) v(xloop.xchain.xfb.xfast1.xsns.n2) v(xloop.xchain.xfb.xfast1.xsq.n) v(xloop.xchain.xfb.xfast1.xsqb.n1) v(xloop.xchain.xfb.xfast1.xsqb.n2) v(xloop.xchain.xfb.xlevel.right) v(xloop.xchain.xfb.xrx.bias) v(xloop.xchain.xfb.xrx.diode) v(xloop.xchain.xfb.xrx.gain) v(xloop.xchain.xfb.xrx.gate) v(xloop.xchain.xfb.xrx.inn) v(xloop.xchain.xfb.xrx.ip) v(xloop.xchain.xfb.xrx.mid) v(xloop.xchain.xfb.xrx.pre) v(xloop.xchain.xfb.xrx.tail) v(xloop.xchain.xosc.bo_n) v(xloop.xchain.xosc.bo_p) v(xloop.xchain.xosc.bref) v(xloop.xchain.xosc.bt) v(xloop.xchain.xosc.n0) v(xloop.xchain.xosc.n1) v(xloop.xchain.xosc.n2) v(xloop.xchain.xosc.p0) v(xloop.xchain.xosc.p1) v(xloop.xchain.xosc.p2) v(xloop.xchain.xosc.ref) v(xloop.xchain.xosc.t0) v(xloop.xchain.xosc.t1) v(xloop.xchain.xosc.t2) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) v(xloop.xdet.xpfd.both) v(xloop.xdet.xpfd.bothb) v(xloop.xdet.xpfd.clearb) v(xloop.xdet.xpfd.delay0) v(xloop.xdet.xpfd.delay1) v(xloop.xdet.xpfd.xboth.n) v(xloop.xdet.xpfd.xclr.n) v(xloop.xdet.xpfd.xdn.clkb) v(xloop.xdet.xpfd.xdn.db) v(xloop.xdet.xpfd.xdn.mnr) v(xloop.xdet.xpfd.xdn.mns) v(xloop.xdet.xpfd.xdn.mq) v(xloop.xdet.xpfd.xdn.mqb) v(xloop.xdet.xpfd.xdn.qb) v(xloop.xdet.xpfd.xdn.snr) v(xloop.xdet.xpfd.xdn.sns) v(xloop.xdet.xpfd.xdn.xmnr.n) v(xloop.xdet.xpfd.xdn.xmns.n1) v(xloop.xdet.xpfd.xdn.xmns.n2) v(xloop.xdet.xpfd.xdn.xmq.n) v(xloop.xdet.xpfd.xdn.xmqb.n1) v(xloop.xdet.xpfd.xdn.xmqb.n2) v(xloop.xdet.xpfd.xdn.xsnr.n) v(xloop.xdet.xpfd.xdn.xsns.n1) v(xloop.xdet.xpfd.xdn.xsns.n2) v(xloop.xdet.xpfd.xdn.xsq.n) v(xloop.xdet.xpfd.xdn.xsqb.n1) v(xloop.xdet.xpfd.xdn.xsqb.n2) v(xloop.xdet.xpfd.xup.clkb) v(xloop.xdet.xpfd.xup.db) v(xloop.xdet.xpfd.xup.mnr) v(xloop.xdet.xpfd.xup.mns) v(xloop.xdet.xpfd.xup.mq) v(xloop.xdet.xpfd.xup.mqb) v(xloop.xdet.xpfd.xup.qb) v(xloop.xdet.xpfd.xup.snr) v(xloop.xdet.xpfd.xup.sns) v(xloop.xdet.xpfd.xup.xmnr.n) v(xloop.xdet.xpfd.xup.xmns.n1) v(xloop.xdet.xpfd.xup.xmns.n2) v(xloop.xdet.xpfd.xup.xmq.n) v(xloop.xdet.xpfd.xup.xmqb.n1) v(xloop.xdet.xpfd.xup.xmqb.n2) v(xloop.xdet.xpfd.xup.xsnr.n) v(xloop.xdet.xpfd.xup.xsns.n1) v(xloop.xdet.xpfd.xup.xsns.n2) v(xloop.xdet.xpfd.xup.xsq.n) v(xloop.xdet.xpfd.xup.xsqb.n1) v(xloop.xdet.xpfd.xup.xsqb.n2) i(vdd) i(vddiv) i(vcore) i(vreference) i(vreset) @n.xloop.xchain.xosc.xctrl0.nsg13_hv_pmos[ids] @n.xloop.xchain.xosc.xctrl1.nsg13_hv_pmos[ids] @n.xloop.xchain.xosc.xctrl2.nsg13_hv_pmos[ids] @n.xloop.xchain.xosc.xctrl3.nsg13_hv_pmos[ids] @q.xloop.xchain.xosc.xref.qnpn13g2[ic] v(xloop.xchain.xosc.xref.t) @q.xloop.xchain.xosc.xp0.qnpn13g2[ic] v(xloop.xchain.xosc.xp0.t) @q.xloop.xchain.xosc.xn0.qnpn13g2[ic] v(xloop.xchain.xosc.xn0.t) @q.xloop.xchain.xosc.xt0.qnpn13g2[ic] v(xloop.xchain.xosc.xt0.t) @q.xloop.xchain.xosc.xp1.qnpn13g2[ic] v(xloop.xchain.xosc.xp1.t) @q.xloop.xchain.xosc.xn1.qnpn13g2[ic] v(xloop.xchain.xosc.xn1.t) @q.xloop.xchain.xosc.xt1.qnpn13g2[ic] v(xloop.xchain.xosc.xt1.t) @q.xloop.xchain.xosc.xp2.qnpn13g2[ic] v(xloop.xchain.xosc.xp2.t) @q.xloop.xchain.xosc.xn2.qnpn13g2[ic] v(xloop.xchain.xosc.xn2.t) @q.xloop.xchain.xosc.xt2.qnpn13g2[ic] v(xloop.xchain.xosc.xt2.t) v(xloop.xchain.xosc.xrp0.dt) v(xloop.xchain.xosc.xrn0.dt) v(xloop.xchain.xosc.xrp1.dt) v(xloop.xchain.xosc.xrn1.dt) v(xloop.xchain.xosc.xrp2.dt) v(xloop.xchain.xosc.xrn2.dt) v(xloop.xchain.xosc.xrb.dt) @q.xloop.xchain.xosc.xbref.qnpn13g2[ic] v(xloop.xchain.xosc.xbref.t) @q.xloop.xchain.xosc.xbp.qnpn13g2[ic] v(xloop.xchain.xosc.xbp.t) @q.xloop.xchain.xosc.xbn.qnpn13g2[ic] v(xloop.xchain.xosc.xbn.t) @q.xloop.xchain.xosc.xbt.qnpn13g2[ic] v(xloop.xchain.xosc.xbt.t) v(xloop.xchain.xosc.xbrp.dt) v(xloop.xchain.xosc.xbrn.dt) @q.xloop.xchain.xosc.xfp.qnpn13g2[ic] v(xloop.xchain.xosc.xfp.t) @q.xloop.xchain.xosc.xfn.qnpn13g2[ic] v(xloop.xchain.xosc.xfn.t) @q.xloop.xchain.xosc.xftp.qnpn13g2[ic] v(xloop.xchain.xosc.xftp.t) @q.xloop.xchain.xosc.xftn.qnpn13g2[ic] v(xloop.xchain.xosc.xftn.t) @q.xloop.xchain.xosc.xfpd1.qnpn13g2[ic] v(xloop.xchain.xosc.xfpd1.t) @q.xloop.xchain.xosc.xfpd2.qnpn13g2[ic] v(xloop.xchain.xosc.xfpd2.t) @q.xloop.xchain.xosc.xfpd3.qnpn13g2[ic] v(xloop.xchain.xosc.xfpd3.t) @q.xloop.xchain.xosc.xfnd1.qnpn13g2[ic] v(xloop.xchain.xosc.xfnd1.t) @q.xloop.xchain.xosc.xfnd2.qnpn13g2[ic] v(xloop.xchain.xosc.xfnd2.t) @q.xloop.xchain.xosc.xfnd3.qnpn13g2[ic] v(xloop.xchain.xosc.xfnd3.t) @q.xloop.xchain.xosc.xftpd1.qnpn13g2[ic] v(xloop.xchain.xosc.xftpd1.t) @q.xloop.xchain.xosc.xftpd2.qnpn13g2[ic] v(xloop.xchain.xosc.xftpd2.t) @q.xloop.xchain.xosc.xftpd3.qnpn13g2[ic] v(xloop.xchain.xosc.xftpd3.t) @q.xloop.xchain.xosc.xftnd1.qnpn13g2[ic] v(xloop.xchain.xosc.xftnd1.t) @q.xloop.xchain.xosc.xftnd2.qnpn13g2[ic] v(xloop.xchain.xosc.xftnd2.t) @q.xloop.xchain.xosc.xftnd3.qnpn13g2[ic] v(xloop.xchain.xosc.xftnd3.t) v(xloop.xchain.xdiv.xfirst.xsp.dt) v(xloop.xchain.xdiv.xfirst.xsn.dt) v(xloop.xchain.xdiv.xfirst.xup.dt) v(xloop.xchain.xdiv.xfirst.xun.dt) v(xloop.xchain.xdiv.xfirst.xcore.xbias.dt) @q.xloop.xchain.xdiv.xfirst.xcore.xref.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xref.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xdp.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xdp.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xdn.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xdn.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xlp.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xlp.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xln.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xln.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xcs.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xcs.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xch.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xch.t) @q.xloop.xchain.xdiv.xfirst.xcore.xm.xt.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xm.xt.t) v(xloop.xchain.xdiv.xfirst.xcore.xm.xrp.dt) v(xloop.xchain.xdiv.xfirst.xcore.xm.xrn.dt) v(xloop.xchain.xdiv.xfirst.xcore.xm.xbs.dt) v(xloop.xchain.xdiv.xfirst.xcore.xm.xbh.dt) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xdp.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xdp.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xdn.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xdn.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xlp.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xlp.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xln.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xln.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xcs.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xcs.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xch.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xch.t) @q.xloop.xchain.xdiv.xfirst.xcore.xs.xt.qnpn13g2[ic] v(xloop.xchain.xdiv.xfirst.xcore.xs.xt.t) v(xloop.xchain.xdiv.xfirst.xcore.xs.xrp.dt) v(xloop.xchain.xdiv.xfirst.xcore.xs.xrn.dt) v(xloop.xchain.xdiv.xfirst.xcore.xs.xbs.dt) v(xloop.xchain.xdiv.xfirst.xcore.xs.xbh.dt) v(xloop.xchain.xdiv.xlsp.dt) v(xloop.xchain.xdiv.xlsn.dt) v(xloop.xchain.xdiv.xldp.dt) v(xloop.xchain.xdiv.xldn.dt) v(xloop.xchain.xdiv.xlb.dt) @q.xloop.xchain.xdiv.xlref.qnpn13g2[ic] v(xloop.xchain.xdiv.xlref.t) @q.xloop.xchain.xdiv.xlp.qnpn13g2[ic] v(xloop.xchain.xdiv.xlp.t) @q.xloop.xchain.xdiv.xln.qnpn13g2[ic] v(xloop.xchain.xdiv.xln.t) @q.xloop.xchain.xdiv.xlt.qnpn13g2[ic] v(xloop.xchain.xdiv.xlt.t) v(xloop.xchain.xdiv.xlrp.dt) v(xloop.xchain.xdiv.xlrn.dt) v(xloop.xchain.xdiv.xsp.dt) v(xloop.xchain.xdiv.xsn.dt) v(xloop.xchain.xdiv.xdp.dt) v(xloop.xchain.xdiv.xdn.dt) v(xloop.xchain.xdiv.xsecond.xbias.dt) @q.xloop.xchain.xdiv.xsecond.xref.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xref.t) @q.xloop.xchain.xdiv.xsecond.xm.xdp.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xdp.t) @q.xloop.xchain.xdiv.xsecond.xm.xdn.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xdn.t) @q.xloop.xchain.xdiv.xsecond.xm.xlp.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xlp.t) @q.xloop.xchain.xdiv.xsecond.xm.xln.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xln.t) @q.xloop.xchain.xdiv.xsecond.xm.xcs.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xcs.t) @q.xloop.xchain.xdiv.xsecond.xm.xch.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xch.t) @q.xloop.xchain.xdiv.xsecond.xm.xt.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xm.xt.t) v(xloop.xchain.xdiv.xsecond.xm.xrp.dt) v(xloop.xchain.xdiv.xsecond.xm.xrn.dt) v(xloop.xchain.xdiv.xsecond.xm.xbs.dt) v(xloop.xchain.xdiv.xsecond.xm.xbh.dt) @q.xloop.xchain.xdiv.xsecond.xs.xdp.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xdp.t) @q.xloop.xchain.xdiv.xsecond.xs.xdn.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xdn.t) @q.xloop.xchain.xdiv.xsecond.xs.xlp.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xlp.t) @q.xloop.xchain.xdiv.xsecond.xs.xln.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xln.t) @q.xloop.xchain.xdiv.xsecond.xs.xcs.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xcs.t) @q.xloop.xchain.xdiv.xsecond.xs.xch.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xch.t) @q.xloop.xchain.xdiv.xsecond.xs.xt.qnpn13g2[ic] v(xloop.xchain.xdiv.xsecond.xs.xt.t) v(xloop.xchain.xdiv.xsecond.xs.xrp.dt) v(xloop.xchain.xdiv.xsecond.xs.xrn.dt) v(xloop.xchain.xdiv.xsecond.xs.xbs.dt) v(xloop.xchain.xdiv.xsecond.xs.xbh.dt) v(xloop.xchain.xfb.xrx.xrp.dt) v(xloop.xchain.xfb.xrx.xrn.dt) v(xloop.xchain.xfb.xrx.xdp.dt) v(xloop.xchain.xfb.xrx.xdn.dt) v(xloop.xchain.xfb.xrx.xrb.dt) @n.xloop.xchain.xfb.xrx.xref.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xt.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xnp.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xnn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xpp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xrx.xpn.nsg13_lv_pmos[ids] v(xloop.xchain.xfb.xrx.xrfb.dt) @n.xloop.xchain.xfb.xrx.xcore.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xrx.xcore.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xbuf.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xrx.xbuf.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xrx.xout.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xrx.xout.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xdc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xdc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xcc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xcc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xmqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast0.xsqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xdc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xdc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xcc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xcc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xmqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xfast1.xsqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xdc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xdc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xcc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xcc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xmqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff0.xsqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xdc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xdc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xcc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xcc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xmqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff1.xsqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xdc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xdc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xcc.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xcc.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xmqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsns.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsnr.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsnr.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsnr.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsnr.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsq.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsq.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsq.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsq.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xff2.xsqb.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd0n.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd0n.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd0n.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd0n.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd0i.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd0i.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx0.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx0.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx0.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx0.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx1.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx1.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx1.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx1.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx2.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx2.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx2.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx2.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx3.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx3.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xx3.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xx3.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd1n.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd1n.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd1n.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd1n.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd1i.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd1i.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xpa.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xpb.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xpc.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xna.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xnb.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd2n.xnc.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xcount.xd2i.xp.nsg13_lv_pmos[ids] @n.xloop.xchain.xfb.xcount.xd2i.xn.nsg13_lv_nmos[ids] @n.xloop.xchain.xfb.xlevel.xpl.nsg13_hv_pmos[ids] @n.xloop.xchain.xfb.xlevel.xpr.nsg13_hv_pmos[ids] @n.xloop.xchain.xfb.xlevel.xnl.nsg13_hv_nmos[ids] @n.xloop.xchain.xfb.xlevel.xnr.nsg13_hv_nmos[ids] @n.xloop.xchain.xfb.xlevel.xpbuf.nsg13_hv_pmos[ids] @n.xloop.xchain.xfb.xlevel.xnbuf.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xdc.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xdc.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xcc.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xcc.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmns.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmnr.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmnr.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmnr.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmnr.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmq.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmq.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmq.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmq.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xmqb.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsns.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsnr.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsnr.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsnr.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsnr.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsq.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsq.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsq.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsq.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xup.xsqb.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xdc.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xdc.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xcc.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xcc.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmns.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmnr.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmnr.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmnr.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmnr.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmq.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmq.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmq.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmq.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xmqb.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsns.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsnr.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsnr.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsnr.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsnr.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsq.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsq.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsq.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsq.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xpc.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xdn.xsqb.xnc.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xboth.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xboth.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xboth.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xboth.xnb.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xd0.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xd0.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xd1.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xd1.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xd2.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xd2.xn.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xclr.xpa.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xclr.xpb.nsg13_hv_pmos[ids] @n.xloop.xdet.xpfd.xclr.xna.nsg13_hv_nmos[ids] @n.xloop.xdet.xpfd.xclr.xnb.nsg13_hv_nmos[ids] v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)
+alter @q.xloop.xchain.xosc.xref.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xref.qnpn13g2
+show q.xloop.xchain.xosc.xref.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xp0.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xp0.qnpn13g2
+show q.xloop.xchain.xosc.xp0.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xn0.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xn0.qnpn13g2
+show q.xloop.xchain.xosc.xn0.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xt0.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xt0.qnpn13g2
+show q.xloop.xchain.xosc.xt0.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xp1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xp1.qnpn13g2
+show q.xloop.xchain.xosc.xp1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xn1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xn1.qnpn13g2
+show q.xloop.xchain.xosc.xn1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xt1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xt1.qnpn13g2
+show q.xloop.xchain.xosc.xt1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xp2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xp2.qnpn13g2
+show q.xloop.xchain.xosc.xp2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xn2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xn2.qnpn13g2
+show q.xloop.xchain.xosc.xn2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xt2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xt2.qnpn13g2
+show q.xloop.xchain.xosc.xt2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xbref.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xbref.qnpn13g2
+show q.xloop.xchain.xosc.xbref.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xbp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xbp.qnpn13g2
+show q.xloop.xchain.xosc.xbp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xbn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xbn.qnpn13g2
+show q.xloop.xchain.xosc.xbn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xbt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xbt.qnpn13g2
+show q.xloop.xchain.xosc.xbt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfp.qnpn13g2
+show q.xloop.xchain.xosc.xfp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfn.qnpn13g2
+show q.xloop.xchain.xosc.xfn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftp.qnpn13g2
+show q.xloop.xchain.xosc.xftp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftn.qnpn13g2
+show q.xloop.xchain.xosc.xftn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfpd1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfpd1.qnpn13g2
+show q.xloop.xchain.xosc.xfpd1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfpd2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfpd2.qnpn13g2
+show q.xloop.xchain.xosc.xfpd2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfpd3.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfpd3.qnpn13g2
+show q.xloop.xchain.xosc.xfpd3.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfnd1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfnd1.qnpn13g2
+show q.xloop.xchain.xosc.xfnd1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfnd2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfnd2.qnpn13g2
+show q.xloop.xchain.xosc.xfnd2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xfnd3.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xfnd3.qnpn13g2
+show q.xloop.xchain.xosc.xfnd3.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftpd1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftpd1.qnpn13g2
+show q.xloop.xchain.xosc.xftpd1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftpd2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftpd2.qnpn13g2
+show q.xloop.xchain.xosc.xftpd2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftpd3.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftpd3.qnpn13g2
+show q.xloop.xchain.xosc.xftpd3.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftnd1.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftnd1.qnpn13g2
+show q.xloop.xchain.xosc.xftnd1.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftnd2.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftnd2.qnpn13g2
+show q.xloop.xchain.xosc.xftnd2.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xosc.xftnd3.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xosc.xftnd3.qnpn13g2
+show q.xloop.xchain.xosc.xftnd3.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xref.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xref.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xref.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xdp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xdp.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xdp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xdn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xdn.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xdn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xlp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xlp.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xlp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xln.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xln.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xln.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xcs.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xcs.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xcs.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xch.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xch.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xch.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xm.xt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xm.xt.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xm.xt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xdp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xdp.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xdp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xdn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xdn.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xdn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xlp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xlp.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xlp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xln.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xln.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xln.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xcs.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xcs.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xcs.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xch.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xch.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xch.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xfirst.xcore.xs.xt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xfirst.xcore.xs.xt.qnpn13g2
+show q.xloop.xchain.xdiv.xfirst.xcore.xs.xt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xlref.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xlref.qnpn13g2
+show q.xloop.xchain.xdiv.xlref.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xlp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xlp.qnpn13g2
+show q.xloop.xchain.xdiv.xlp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xln.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xln.qnpn13g2
+show q.xloop.xchain.xdiv.xln.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xlt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xlt.qnpn13g2
+show q.xloop.xchain.xdiv.xlt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xref.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xref.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xref.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xdp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xdp.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xdp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xdn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xdn.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xdn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xlp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xlp.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xlp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xln.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xln.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xln.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xcs.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xcs.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xcs.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xch.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xch.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xch.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xm.xt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xm.xt.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xm.xt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xdp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xdp.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xdp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xdn.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xdn.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xdn.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xlp.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xlp.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xlp.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xln.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xln.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xln.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xcs.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xcs.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xcs.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xch.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xch.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xch.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+alter @q.xloop.xchain.xdiv.xsecond.xs.xt.qnpn13g2[off] = 1
+echo NSSOC_NATIVE_FLAG_BEGIN q.xloop.xchain.xdiv.xsecond.xs.xt.qnpn13g2
+show q.xloop.xchain.xdiv.xsecond.xs.xt.qnpn13g2 : off
+echo NSSOC_NATIVE_FLAG_END
+op
+write op.raw all
+run stream.fifo
+setplot
+display
+rusage space
+quit
+.endc
+.end

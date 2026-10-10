@@ -1,0 +1,253 @@
+{
+  "status": "PASS_METHOD_AND_TINY_CONTROLS_NOT_ACTUAL_PARENT_VALIDATION",
+  "source_sha256": {
+    "scripts/run_io_parent_marker_repair.py": "c8023b72668144e8e4747b80b611b84ace1c0507800032274dc512ccb0612b26",
+    "hw/soc/flow/repair_parent_resistor_markers.py": "4853c76f95a59a759513c465635e17cd20bc555fa7827a63cc2c8fcd69967301",
+    "sw/tests/test_io_parent_marker_repair.py": "77d033b243d540e4d5f884c1b8c63c63c13dfa0b375c33197fe370aaef85b4cb",
+    ".github/workflows/io-parent-marker-repair.yml": "805b3c6b3ccb8bef193e94552761887398956b1e5b8247697db8f812c88b5668"
+  },
+  "tests": {
+    "passed": 80,
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_io_parent_marker_repair.py sw/tests/test_io_strict_parent_lvs.py sw/tests/test_io_resistor_markers.py sw/tests/test_extract_gds_hierarchy.py"
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "diff_check": "PASS",
+  "runtime_sha256_verified": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "tiny_native": {
+    "status": "PASS_TINY_NATIVE_MARKER_CONTROLS",
+    "repaired": {
+      "status": "REPAIRED_RECOGNITION_REQUIRES_LVS_AND_DRC",
+      "preconditions": {
+        "cell": "sg13g2_RCClampResistor",
+        "marker_layer": [
+          128,
+          0
+        ],
+        "original_marker_empty": true,
+        "intersection_layers": [
+          [
+            5,
+            0
+          ],
+          [
+            28,
+            0
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            111,
+            0
+          ]
+        ],
+        "exact_intersection_boxes": [
+          [
+            0,
+            430,
+            1000,
+            20430
+          ],
+          [
+            1650,
+            430,
+            2650,
+            20430
+          ],
+          [
+            3300,
+            430,
+            4300,
+            20430
+          ],
+          [
+            4950,
+            430,
+            5950,
+            20430
+          ],
+          [
+            6600,
+            430,
+            7600,
+            20430
+          ],
+          [
+            8250,
+            430,
+            9250,
+            20430
+          ],
+          [
+            9900,
+            430,
+            10900,
+            20430
+          ],
+          [
+            11550,
+            430,
+            12550,
+            20430
+          ],
+          [
+            13200,
+            430,
+            14200,
+            20430
+          ],
+          [
+            14850,
+            430,
+            15850,
+            20430
+          ],
+          [
+            16500,
+            430,
+            17500,
+            20430
+          ],
+          [
+            18150,
+            430,
+            19150,
+            20430
+          ],
+          [
+            19800,
+            430,
+            20800,
+            20430
+          ],
+          [
+            21450,
+            430,
+            22450,
+            20430
+          ],
+          [
+            23100,
+            430,
+            24100,
+            20430
+          ],
+          [
+            24750,
+            430,
+            25750,
+            20430
+          ],
+          [
+            26400,
+            430,
+            27400,
+            20430
+          ],
+          [
+            28050,
+            430,
+            29050,
+            20430
+          ],
+          [
+            29700,
+            430,
+            30700,
+            20430
+          ],
+          [
+            31350,
+            430,
+            32350,
+            20430
+          ],
+          [
+            33000,
+            430,
+            34000,
+            20430
+          ],
+          [
+            34650,
+            430,
+            35650,
+            20430
+          ],
+          [
+            36300,
+            430,
+            37300,
+            20430
+          ],
+          [
+            37950,
+            430,
+            38950,
+            20430
+          ],
+          [
+            39600,
+            430,
+            40600,
+            20430
+          ],
+          [
+            41250,
+            430,
+            42250,
+            20430
+          ]
+        ],
+        "no_active_overlap": true
+      },
+      "byte_preservation": {
+        "insertion_offset": 6772,
+        "added_bytes": 1664,
+        "added_boundaries": 26,
+        "addition_sha256": "5ef00f0ecaaeb219fa4ccf8775dd0fbaf048b11825f8b99a06d7ca84fa525889",
+        "every_original_byte_preserved": true,
+        "original_cell_sha256": "b66b216783688b26cc989769d1eda91a0b020b156d6372231cbee2251e2c8b33"
+      },
+      "native_roundtrip": {
+        "status": "PASS_ALL_GEOMETRY_TEXT_AND_INSTANCE_TRANSFORMS_EXCEPT_26_MARKERS",
+        "cells": 2,
+        "layer_pairs": 6
+      },
+      "klayout_version": "0.30.7",
+      "source_sha256": "01542a17205ca04b144b94fb879785d26e261d48e2d489a617bb39f6fb2eaa95",
+      "output_sha256": "2c1b4eff4832ec0a97b7b664f93e06e9dc078163a43584e1a4a24f2119e5230b",
+      "lvs_accepted": false,
+      "manufacturing_approval": false
+    },
+    "rejected": {
+      "existing_marker": "PolyRes marker already present",
+      "wrong_body": "Resistor mask intersection differs",
+      "active_overlap": "Resistor overlaps active silicon",
+      "hierarchical_cell": "Expected flat clamp cell",
+      "changed_text": "Text changed: CONTROL",
+      "unrelated_polygon": "Unexpected geometry change: ('CONTROL', (8, 0))",
+      "instance_transform": "Instance transform changed: CONTROL"
+    }
+  },
+  "baseline_run": 36992719056,
+  "baseline_source": "103528bc68cfc4bb8b36509ef3037787c73201af",
+  "baseline_result_sha256": "c01f367b60f3ab254c3c1cacc5889d8010503e57d9333d214681528c62b84d55",
+  "original_schematic_sha256": "1a1a545e3d279e234f99939baddd915118a63e83aea94c684d78459fe600a663",
+  "separate_spacing_sha256": "2ee13d1a337c709ab5f46265f74b4b925da6bf710153a50ca2a10fa073cc287e",
+  "spacing_changes": 26,
+  "actual_parent_gds_loaded_locally": false,
+  "actual_parent_repair_completed": false,
+  "native_parent_lvs_completed": false,
+  "source_changes": "Four new isolated files only; original repair and strict baseline runner remain unchanged.",
+  "source_capture_note": "All source inputs captured before native execution, including hidden workflow via upload-artifact include-hidden-files.",
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "schema": 1,
+  "root_source_tests_passed": 80,
+  "root_ruff": "PASS",
+  "root_actionlint": "PASS",
+  "method_validation_receipt_sha256": "33a68c5cd0db276e6893d886c18f0fa534c808def05159a88ad8190f8292486b"
+}

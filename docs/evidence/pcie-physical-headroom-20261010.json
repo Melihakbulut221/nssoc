@@ -1,0 +1,167 @@
+{
+  "status": "OPEN_PHY_AND_ROUTED_TIMING",
+  "as_of": "2026-10-10T14:18:19.771519+03:00",
+  "full_serial_gen3_x4_phy_complete": false,
+  "final_setup_hold_closed": false,
+  "original_physical300": {
+    "status": "FAIL_NATIVE_PHYSICAL300_FINITE_POINT",
+    "functional_passed": 7,
+    "functional_total": 7,
+    "electrical_passed": 299,
+    "electrical_total": 300,
+    "failed_device": "xtest.xif.xd0006",
+    "min_vce_v": 0.39804074249891674,
+    "required_min_vce_v": 0.4,
+    "repeated_intervals": 144,
+    "independent_complete_review": true
+  },
+  "variant_source_comparison": {
+    "status": "PASS_VARIANTS_INDEPENDENT_INPUT_COMPARISON",
+    "variants": [
+      {
+        "candidate": "pcie-gain-v2-physical300-20261010",
+        "changed_devices": [
+          {
+            "before": {
+              "path": "xtest.xif.xd0001",
+              "model": "rppd",
+              "nets": [
+                "xtest.xif.t001_rppd_1",
+                "xtest.xif.t001_rppd_2",
+                "xtest.xif.n_8"
+              ],
+              "params": {
+                "w": "2.0u",
+                "l": "2.0u",
+                "ps": "0.0u",
+                "b": "0",
+                "m": "1",
+                "sw_et": "1"
+              }
+            },
+            "after": {
+              "path": "xtest.xif.xd0001",
+              "model": "rppd",
+              "nets": [
+                "xtest.xif.t001_rppd_1",
+                "xtest.xif.t001_rppd_2",
+                "xtest.xif.n_8"
+              ],
+              "params": {
+                "w": "2.0u",
+                "l": "1.5u",
+                "ps": "0.0u",
+                "b": "0",
+                "m": "1",
+                "sw_et": "1"
+              }
+            }
+          },
+          {
+            "before": {
+              "path": "xtest.xif.xd0002",
+              "model": "rppd",
+              "nets": [
+                "xtest.xif.t002_rppd_1",
+                "xtest.xif.t002_rppd_2",
+                "xtest.xif.n_8"
+              ],
+              "params": {
+                "w": "2.0u",
+                "l": "2.0u",
+                "ps": "0.0u",
+                "b": "0",
+                "m": "1",
+                "sw_et": "1"
+              }
+            },
+            "after": {
+              "path": "xtest.xif.xd0002",
+              "model": "rppd",
+              "nets": [
+                "xtest.xif.t002_rppd_1",
+                "xtest.xif.t002_rppd_2",
+                "xtest.xif.n_8"
+              ],
+              "params": {
+                "w": "2.0u",
+                "l": "1.5u",
+                "ps": "0.0u",
+                "b": "0",
+                "m": "1",
+                "sw_et": "1"
+              }
+            }
+          }
+        ],
+        "wire_records": 2580,
+        "same_external_fixture": true,
+        "unchanged_downstream_wire_records": 2436
+      },
+      {
+        "candidate": "pcie-gain-trim-physical300-20261010",
+        "changed_devices": [],
+        "wire_records": 2579,
+        "same_external_fixture": true,
+        "unchanged_downstream_wire_records": 2436
+      }
+    ],
+    "scope": "No transient acceptance.Originalfailedcomponent remainsrejected."
+  },
+  "variant_simulations": {
+    "shorter_load": "RUNNING_80NS_SAME_CRITERIA",
+    "internal_metal_trim": "RUNNING_80NS_SAME_CRITERIA"
+  },
+  "connected744": "RUNNING_50NS",
+  "original_connected753": "NOT_STARTED_UPSTREAM_PHYSICAL300_FAILED",
+  "failed_global_routes": {
+    "status": "COMPLETE_NATIVE_ROUTER_FAILURE_REVIEW",
+    "results": [
+      {
+        "candidate": "RX+metadata",
+        "status": "FAILED_GLOBAL_ROUTING_CONGESTION_NO_FINAL_STA",
+        "overflow": 1151,
+        "summary": "Total          5891301       1225196           20.80%            94 / 28 / 1151",
+        "inputs": {
+          "hw/soc/out/pcie-rx-metadata-combined-20261010/physical-config01/runs/rx-metadata01/27-openroad-globalrouting/openroad-globalrouting.log": "14bf35cf3115113380feb19473e62df31e2ee4d33528e9307320c96237910149"
+        },
+        "elapsed_timeout": false
+      },
+      {
+        "candidate": "replay-input",
+        "status": "FAILED_GLOBAL_ROUTING_CONGESTION_NO_FINAL_STA",
+        "overflow": 535,
+        "summary": "Total          5891301       1145430           19.44%            30 / 12 / 535",
+        "inputs": {
+          "hw/soc/out/pcie-replay-input-stage-20261010/physical-config01/runs/input-stage01/27-openroad-globalrouting/openroad-globalrouting.log": "92f5f6499045e542d4ff8ab46a937b39324a894e5302cc91698a3f4df665a83d"
+        },
+        "elapsed_timeout": false
+      }
+    ],
+    "timing_accepted": false,
+    "scope": "Both native routers exhausted congestion repair and exited2 withGRT0116; no detailed route or finalRC/STA outputs. Fullchipclosure remainsOPEN."
+  },
+  "ongoing_routes": [
+    "extended_setup_hold_repair_reserve20",
+    "same_repaired_database_reserve10"
+  ],
+  "physical_gate": "ZeroGRT overflow, actual detailedDRC, fresh extractedRC/STA; nofailurewaivers",
+  "archive": {
+    "status": "PASS_ALL_RECORD_ARCHIVE_MEMBERS_VERIFIED",
+    "members": 594,
+    "asset": {
+      "name": "nssoc-physical300-headroom-and-variants-20261010.tar.gz",
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-physical300-headroom-delivery-20261010/nssoc-physical300-headroom-and-variants-20261010.tar.gz",
+      "bytes": 3569323,
+      "sha256": "fc2767b1378285c52c1b4c273454a60956aa0a415cb33d1f18199dd47730f526"
+    }
+  },
+  "public_receipt": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-physical300-headroom-and-variants-20261010.tar.gz",
+    "name": "nssoc-physical300-headroom-and-variants-20261010.tar.gz",
+    "bytes": 3569323,
+    "sha256": "fc2767b1378285c52c1b4c273454a60956aa0a415cb33d1f18199dd47730f526"
+  },
+  "original_failed300_full_waveform_public": false
+}

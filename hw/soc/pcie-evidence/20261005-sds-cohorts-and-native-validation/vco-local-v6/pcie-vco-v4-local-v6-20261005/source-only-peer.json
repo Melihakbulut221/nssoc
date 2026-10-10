@@ -1,0 +1,54 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_ONLY_TOPOLOGY_AND_BODY_OWNERSHIP_REVIEW",
+  "inputs": {
+    "hw/soc/flow/make_pcie_clock_vco_v4_local_v6.py": {
+      "bytes": 30812,
+      "sha256": "02579a53482835490dc7308d22a0da2ba8324129be0f24216bd167d9138c2a35"
+    },
+    "hw/soc/flow/check_pcie_clock_vco_v4_local_v6.py": {
+      "bytes": 30831,
+      "sha256": "d95d1bd6c63293e1a9b1a99cc8cb6da3298b82505725e891656bfb7b1cd673f6"
+    },
+    "sw/tests/test_pcie_clock_vco_v4_local_v6.py": {
+      "bytes": 18939,
+      "sha256": "cc3eddce5856c7aec836cbe7f5d4a0ed7e19fa0f3bff80e3a39430eeae71088d"
+    },
+    "hw/soc/flow/make_pcie_clock_vco_v4_local_v5.py": {
+      "bytes": 30390,
+      "sha256": "a63eb296c51367653c0057ea2ca19415d12262ef895a7cac5b7d5fa7015f2756"
+    },
+    "hw/soc/analog/pcie/clock_vco_hbt_v4.spice": {
+      "bytes": 2838,
+      "sha256": "0f6eaecc4b5ff7eddf992fecfa7d6015ab6a93807ffc56f2c99d4fbb84a0a8e7"
+    }
+  },
+  "checks": {
+    "exact49_primitive_models_parameters_pin_order": true,
+    "physical_reference_exact_except_top_name": true,
+    "ast_identical_functions": [
+      "devices",
+      "physical_reference",
+      "use_direction",
+      "lef"
+    ],
+    "unchanged_control_bias_placements": [
+      "CTRL0",
+      "CTRL1",
+      "CTRL2",
+      "CTRL3",
+      "REF",
+      "RB",
+      "BREF"
+    ],
+    "explicit_finite_contacts": "Twelve SUB\u2194BULK ptap and one AVDD\u2194NWELL ntap remain literal; no source-level AVSS/SUB or AVDD/well ideal union introduced."
+  },
+  "reviewed_geometry_delta": [
+    "Three ring-cluster pitch120\u219290um and individual unchanged load placements/escape lanes, limiter and output lanes move.",
+    "T0/T1/T2 AVSS return_x changes and ring-tail power-landing rise5\u219220um; native primitives and reference remain exact.",
+    "Checker now binds62 placed identities and all13 finite contact ownership/geometry, and handles either emitter-route ordering in actual short control."
+  ],
+  "limitations": [
+    "Source-only review: no native rerun, raw-wave replay, independent GDS XOR, DRC/LVS result acceptance, RC traversal or powered oscillation claim.",
+    "Changed physical routing can still create extraction/electrical issues; source identity alone does not establish physical isolation or circuit performance."
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "utc": "2026-10-05T19:27:43.167782+00:00",
+  "reviewer": "independent VCO agent",
+  "method": {
+    "bytes": 4776,
+    "sha256": "6ea52e5174ccb0402ce141f2214366e5b1a60681c7c16ea7c347ace52df2ff46"
+  },
+  "findings": [],
+  "scope": "Source-only whole-byte review and saved lifecycle evidence; no reviewed method, router, extraction, kernel, port test, sealer or publisher executed.",
+  "status": "PASS_SOURCE_ONLY_RX14A_DEPENDENT_CHAIN",
+  "manifest": {
+    "bytes": 15889,
+    "sha256": "64178cb9dc1703f41d02217853abff22afc6c1f05d4871a972de7e1f3135515b"
+  },
+  "input_pins_checked": 36,
+  "route_input_pins_checked": 26,
+  "four_method_whole_byte_bridges": [
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-peer/review.py",
+        "bytes": 10645,
+        "sha256": "39af1782832965eb51cca5bc2795b4b03dc677055cfba7239959dae075be6eba"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/review.py",
+        "bytes": 10655,
+        "sha256": "054b0baad7b29dea5fca1ca37a81ced5f960f557696cdb802c47252e218320e4"
+      },
+      "non_equal_blocks": 7
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-peer/seal.py",
+        "bytes": 7750,
+        "sha256": "d31e8f0b2e95162ac57425561ee048daa4dc9a578673d5bdc1cf88e28470f060"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/seal.py",
+        "bytes": 7771,
+        "sha256": "69dcc785befcd3a3fc6c182fe49674245cc78361ab0eab543b2eebd614800b3d"
+      },
+      "non_equal_blocks": 14
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-continuation01/run.py",
+        "bytes": 11535,
+        "sha256": "86943cdab7f5be4e3731150b87c865d13ca16b532474ad1db6bbf0f74b1a2cc0"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-continuation01/run.py",
+        "bytes": 11548,
+        "sha256": "930f0af141b8e1c6bae9caaafb45df6b204338b4a867f723144483ec89d324ee"
+      },
+      "non_equal_blocks": 10
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-preroute-preservation/seal.py",
+        "bytes": 4916,
+        "sha256": "b1fcd7d0ce201b01bfc1b1b9f76657062ca0d3d72f091bfb09f59fe11b3bd68b"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-preroute-preservation/seal.py",
+        "bytes": 5631,
+        "sha256": "94beaa7e5d0d5aa51f4aa6044f9f8092b42ab43a590305fc7b16ab2c66adadca"
+      },
+      "non_equal_blocks": 9
+    }
+  ],
+  "lifecycle_reused": {
+    "exact_run_stage_and_post_context_AST": true,
+    "saved_actual_controls": 3,
+    "no_controls_rerun": true
+  },
+  "observed_route": {
+    "route_owner": {
+      "pid": 117717,
+      "start_ticks": 1587086,
+      "state": "S",
+      "affinity": [
+        8
+      ]
+    },
+    "route_native": {
+      "pid": 117719,
+      "start_ticks": 1587111,
+      "state": "R",
+      "affinity": [
+        8
+      ]
+    }
+  },
+  "reviewed_gates": [
+    "same boot and exact existing owner/native births; observer does not own or signal the route",
+    "actual completed zero-DRC exact route, unchanged 26 inputs and complete outputs and proved netlist before fresh RC14a",
+    "saved-output review requires exact proof/compiled gzip/ports/SPEF/timing, preserves nominal timing PASS or FAIL and compares prior RX13",
+    "mandatory five complete native roots, all-member readback and immutable three-asset V3 publication",
+    "CPU8, 2.5GiB AS, 1GiB entry and 528MiB continuous/terminal floors, no healthy elapsed watchdog; 15s outer failure grace exceeds 5s inner RC",
+    "completion/teardown cancellation propagation and nonzero child failure bodies match the three saved actual RX13 controls"
+  ],
+  "limitations": [
+    "Stand-alone default150 receiver, unqualified nominal RC; no fullchip or full PHY acceptance.",
+    "Fresh final route/RC and actual controller execution are still required."
+  ]
+}

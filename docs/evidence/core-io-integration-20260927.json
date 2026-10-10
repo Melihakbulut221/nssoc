@@ -1,0 +1,3443 @@
+{
+  "status": "ROUTED_CORE_IO_ASSEMBLY_WITH_OPEN_SIGNOFF",
+  "source_commit": "452ff7310585e88f3577572bc3bc72d6ab50172b",
+  "scope": "Selected old-core0/0 + native314cellring +192bitMBISTmailbox. RouterDRC/antenna0,217sourcecells exactrecursivegeometry,315fixedplacements,final4railOpenDBPGpass. Native transistorLVSfailsall7IOmasters; nofullchipDRC/LVS/timing/production acceptance.",
+  "publication": {
+    "status": "PASS_PUBLISHED_BYTES_ONLY",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "release_id": 397554124,
+    "asset": {
+      "name": "core-io-assembly-and-lvs-blockers-20260927.tar.xz",
+      "bytes": 134860300,
+      "sha256": "aedd72e7d017b2fd56601e94d8b9d36aff1d7a830df62678342878bd49c83071",
+      "members": 1891,
+      "source_commit": "452ff7310585e88f3577572bc3bc72d6ab50172b",
+      "local_roundtrip_verified": true,
+      "scope": "Physical assembly and geometry preservation only. All7nativeIOcellLVSfail; no fullchipmanufacturing or timing acceptance.",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/core-io-assembly-and-lvs-blockers-20260927.tar.xz",
+      "asset_id": 592711209,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "selected_results": {
+    "result-v9.json": {
+      "status": "COMPLETE_REQUIRES_NEW_AUDITS",
+      "command": [
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "python",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/flow_v4.py",
+        "--flow",
+        "ChipAssembly",
+        "--manual-pdk",
+        "--pdk-root",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root",
+        "--pdk",
+        "ihp-sg13g2",
+        "--force-run-dir",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v9",
+        "--from",
+        "KLayout.StreamOut",
+        "--with-initial-state",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/state-v9.json",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/config-v9.json"
+      ],
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run_v9.py": "0d1acd79b9cb32b6eab4b05e55fba1a07beb505ba74770d6b7ff93ea3d702678",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/flow_v4.py": "d00d241365bcc0614046c8894a30b6e07cfb7199cc1cb72e6414cfd4d7eff65b",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/place-v4.tcl": "3eee616eab8898718b6ad7fea63e900c7fdc394c977389f0f6a8039dd2fe25c7",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/chip.sdc": "38fbc363f0b3c2fa0b053bb9a41e7a725d6b4f94ae62dded3f536d7d39dfdec4",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/pdn-v4.tcl": "7c7ee42b14c7a48cd624d72e7579bc4a6e8478a959c3e46ddf25ca5c232c969e",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/config-v9.json": "d512af0ecf6b8fcff88294c58810190457227ecf2a47d5178c97bcce06fc8603",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/state-v9.json": "fdc96484f469c8670e00b736b6fe07b2ea8934ac089a129079ac9646aee888e9",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/nssoc_chip.nl.v": "a945f2f5cad47c800e4b02514f5fd36b85a255a221b37bef7c36ced3af85d78a",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/soc_top-prefill-access.lef": "b4c9db893d0ebad2ed3a89b8f6f79e2762992d8fc13d9f609ac7d8fef9f7e2ff",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/prefill-abstract-coverage.json": "5244482001dbbe30a5597a516babdd9a572326a201484ca383c0ef874bd90420",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/cover_prefill_gds_v2.py": "e773fdcf9cb2405f68fcb88775abeb239641369b5c0099a3e2273dee99af9b0d",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-compaction.json": "735b333e74f865be76cb94aa0e8c9b4004bc8ab61aebdecbd0a46fcd0afc6d9b",
+        "${REPOSITORY}/hw/soc/flow/compact_core_abstract.py": "ca4ad17e413161d12a926c6a7c3046ffe0505204ebcc3ae406491ba9e26cca68",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/layout-lvs14/core-boundary/soc_top.gds": "421c1f5b190bc0ecf2cac640785f3951a662a2d0ba275951fa00b9e29b2508d9",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/density-fill/geometry.json": "197aa15b28e9f4d48ac1087f03bebe5ad890a00da80ce13543e2ed63413debdf",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/result-v8.json": "f1d96dd8e085b6019f8b5d1a3819086b5d5c9b2258fbb71afa51645a892cf712",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/streamout-recovery-binding.json": "34a27578793e4fe14c9cb2081332e1e275dcf6478294a56663e5e3ef151d948d",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/37-openroad-fillinsertion/nssoc_chip.nl.v": "439f2423764252c26de6025856a96596154dc8af5e149a3eb15beb2b61d354ce",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/01-yosys-jsonheader/nssoc_chip.h.json": "5dff1cb54e21e0f2432e0db9e151ee08748f91321b95365a5dd5f6e3e89a8b61",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/38-odb-cellfrequencytables/nssoc_chip.odb": "375a2256d5ee6d0ca7ae3675d2927279391da2badfa9569bd835b21e25d5c4cc",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/38-odb-cellfrequencytables/nssoc_chip.def": "b9a6a4e3eebb6c7f92ac402939cddc2c7dfe5afc54c31f8bee6e6e1d2d6735ce",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/37-openroad-fillinsertion/nssoc_chip.sdc": "03ebc8ab07aa281a12781caaf4740952fb986dc3cd9c11525b01e4d24893511d",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/37-openroad-fillinsertion/nssoc_chip.pnl.v": "51c637d25727e4908ae1c73060b56cf088e09edf112b32e1c25d8f426cbccc05",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/16-odb-writeverilogheader/nssoc_chip.vh": "0827393aefb241394c453f06d9d63756b11da9c3e16243b68452fd48163a645d",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/39-openroad-rcx/nom/nssoc_chip.nom.spef": "327cafa1196ce3fb41ff1109e6f164b26eefd4a3119f6546ad2b5529c6812c50",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_fast_1p32V_m40C/nssoc_chip__nom_fast_1p32V_m40C.sdf": "56da95684b0fd43e0fe454322a5d9cda642ee35236462ad242237eea34256c91",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_typ_1p20V_25C/nssoc_chip__nom_typ_1p20V_25C.sdf": "8cecacc27c7281b410a5bc194b647e26734375422fc377f2bd8f341c0e7262d9",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_slow_1p08V_125C/nssoc_chip__nom_slow_1p08V_125C.sdf": "f36da56f514af8865778f850273412a8fe9ba3e25a5db99f58ee9fa88f7da8f8",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_fast_1p32V_m40C/nssoc_chip__nom_fast_1p32V_m40C.lib": "5035c985d9043cc2454aa7d95e708360e8cafbf6d79de27c3e481b4283c62c82",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_typ_1p20V_25C/nssoc_chip__nom_typ_1p20V_25C.lib": "f51ede2cc258f60978d3e1edcb1c3ee255392632e53f79415fd62e0d72efa4b9",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/40-openroad-stapostpnr/nom_slow_1p08V_125C/nssoc_chip__nom_slow_1p08V_125C.lib": "bcebafcdd4c13594abd2771405eb5d311d4d50be24d61ec5014e8bab80d5243f",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/prepare.py": "54bf58a4acd6d16b1e5a50bf0af278d64dbd5b622c4d37a82a95b21608f32647",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/core-ports.tsv": "17c3fc18d046fd5a0899b200b488509e7062ffff3cc0ce031283f9cee10d4428",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/soc_top.lef": "e8f1b728e12bbff23bb3ba781e7a98a8f3344db33d473337070c739ea9d513f8",
+        "${REPOSITORY}/hw/soc/chip-io-contract.json": "c14461e30ce73cedff6a55baeaf05831c51796e4dc56aa2213ddcce484d729e0",
+        "${REPOSITORY}/scripts/generate_chip_io.py": "eecf4d939327bd7ef0ba31e6a6ff542b110c78b663cb8672ec8474903517321c",
+        "${REPOSITORY}/hw/soc/rtl/chip/soc_status_serial.v": "ff281403d1e0962026b194a81268ae736e165193f8ff92addaab45798f923e62",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/density-fill/windows/tile-034/checkpoint.gds": "baa6145e133c58eca36a4c6b7a08adf1c406abd5e9e5b7914c9f5acf4b049c05",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical11/run/10-odb-cellfrequencytables/soc_top.odb": "ed864a28d5c943b43aaaa1dec6a818e1d466edbb82672bbb40ba84b833c601a5",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+        "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/verilog/sg13g2_io.v": "0195945188ec15560ad2cc9c000e3ff70255d65da717099b87b6b726a6e53429"
+      },
+      "scope": "Preserved pre-dummy-fill CORE_REQ_REG0/WB0 geometry; new whole-chip fill and density/DRC/LVS/RC required after assembly plus new serial logic and native ring. Active pipeline1 layout is separate. No timing or manufacturing acceptance.",
+      "timing_accepted": false,
+      "manufacturing_approval": false,
+      "returncode": 0
+    },
+    "streamout-recovery-binding.json": {
+      "status": "IDENTICAL_REDUNDANT_IO_VIEWS_REMOVED_ONLY",
+      "changes": [
+        {
+          "field": "EXTRA_LEFS",
+          "removed": "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lef/sg13g2_io.lef",
+          "retained": "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root/ihp-sg13g2/libs.ref/sg13g2_io/lef/sg13g2_io.lef",
+          "sha256": "8b3dc3960960c08e07a1cde3dd9cd0484f5b12df07c4628726fff551bb775c0c"
+        },
+        {
+          "field": "EXTRA_GDS_FILES",
+          "removed": "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+          "retained": "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+          "sha256": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5"
+        }
+      ],
+      "source_producer_status": "ERROR",
+      "scope": "Restart only KLayout streamout from exact final v8 route/RCX/diagnosticSTA state. No geometry, netlist, LEF definition or nativePDK content changed."
+    },
+    "abstract-compaction.json": {
+      "status": "PASS_CONSERVATIVE_LEF_OBSTRUCTION_COMPACTION_ONLY",
+      "source_sha256": "25c294da6acd89b010812bd11fa0768b07f88b21ba65cb75a301a874af1419dd",
+      "output_sha256": "a1b816a9366681afc89ba9b2f4f2fc2f89ddbfc8c5ba453bda6d632faab41798",
+      "source": {
+        "bounds": {
+          "Metal1": [
+            60.0,
+            45.14,
+            3266.4,
+            2430.76
+          ],
+          "Metal2": [
+            59.9,
+            0.1,
+            3326.02,
+            2475.8
+          ],
+          "Metal3": [
+            0.2,
+            0.32,
+            3326.3,
+            2475.58
+          ],
+          "Metal4": [
+            60.38,
+            13.34,
+            3265.06,
+            2430.685
+          ],
+          "Metal5": [
+            58.54,
+            34.76,
+            3265.06,
+            2430.85
+          ],
+          "TopMetal1": [
+            57.82,
+            44.73,
+            3256.1,
+            2431.17
+          ],
+          "TopMetal2": [
+            57.64,
+            44.9,
+            3266.4,
+            2409.86
+          ]
+        },
+        "counts": {
+          "Metal1": 5622161,
+          "Metal2": 565747,
+          "Metal3": 322901,
+          "Metal4": 82331,
+          "Metal5": 37784,
+          "TopMetal1": 1806,
+          "TopMetal2": 129
+        },
+        "outside_sha256": "1b0d944d480e432b13fea8b095d22d61dd305c2cc651a599394a36fc0cc38cc0",
+        "layer_sha256": {
+          "Metal1": "4ee6c2c7cc27887431fe13b58d2aba1356597d62729da6ebade575b378f7f79b",
+          "Metal2": "a4ba9f97fb22f754f03d890d557190d3c22baf3f76f81bddfd3fb23cf65387e2",
+          "Metal3": "a0a3cee7361b731b34f77c06ff30f50ab9c508cc23edaac13dd524440478b176",
+          "Metal4": "ba577efa44aed3e6e6d3566fef78d826a2ffc7bd7c965a2ba74e3d5637a6c219",
+          "Metal5": "8e652ce491877891f703508769fd7efbac82f0973b05b95f78be1f6613bd3d64",
+          "TopMetal1": "f17a20f6f8f2f6b39d10ab0c2a16e0fd6cbaefc1fddd84cf7ac07e1b111ec3c5",
+          "TopMetal2": "7ee29aac1a7216fd0d9bc1e67f2c652508226a3e8ef475417d82fcb759f45397"
+        }
+      },
+      "output": {
+        "bounds": {
+          "Metal1": [
+            60.0,
+            45.14,
+            3266.4,
+            2430.76
+          ],
+          "Metal2": [
+            59.9,
+            0.1,
+            3326.02,
+            2475.8
+          ],
+          "Metal3": [
+            0.2,
+            0.32,
+            3326.3,
+            2475.58
+          ],
+          "Metal4": [
+            60.38,
+            13.34,
+            3265.06,
+            2430.685
+          ],
+          "Metal5": [
+            58.54,
+            34.76,
+            3265.06,
+            2430.85
+          ],
+          "TopMetal1": [
+            57.82,
+            44.73,
+            3256.1,
+            2431.17
+          ],
+          "TopMetal2": [
+            57.64,
+            44.9,
+            3266.4,
+            2409.86
+          ]
+        },
+        "counts": {
+          "Metal1": 1,
+          "Metal2": 1,
+          "Metal3": 1,
+          "Metal4": 1,
+          "Metal5": 1,
+          "TopMetal1": 1806,
+          "TopMetal2": 129
+        },
+        "outside_sha256": "1b0d944d480e432b13fea8b095d22d61dd305c2cc651a599394a36fc0cc38cc0",
+        "layer_sha256": {
+          "Metal1": "f16aee1f3c76e1e4111ade8f0bcc3c330b56478f913bb0f8b3091e076cfce8c6",
+          "Metal2": "93883dd65dccefdd01d73466f730a9b997c9de904bec3cbc235d0444a0a61f46",
+          "Metal3": "6d441e4caac8f409ea64f94fdf23f2b0e6bcb397a52b13d11dea8c197e8d9bee",
+          "Metal4": "c7ea247bdda5f9374c7186378f10be8987a8c605df6bddc7bf8ed75e31d60ba6",
+          "Metal5": "12fb84fd8c0450f009f24ba914f99bb142f25e52e9cedad84961558002d4080d",
+          "TopMetal1": "f17a20f6f8f2f6b39d10ab0c2a16e0fd6cbaefc1fddd84cf7ac07e1b111ec3c5",
+          "TopMetal2": "7ee29aac1a7216fd0d9bc1e67f2c652508226a3e8ef475417d82fcb759f45397"
+        }
+      },
+      "physical_connectivity_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "prefill-replay.json": {
+      "status": "PASS_SELECTED_GDS_CONDUCTOR_COVERAGE_ONLY",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/soc_top-upper-access.lef": "a1b816a9366681afc89ba9b2f4f2fc2f89ddbfc8c5ba453bda6d632faab41798",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/layout-lvs14/core-boundary/soc_top.gds": "421c1f5b190bc0ecf2cac640785f3951a662a2d0ba275951fa00b9e29b2508d9",
+        "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/tech/sg13g2.lyp": "5d2a8f297dc951d97e1a0a1a4a2604eb756604b8ac443f5a69f31fc623d03974"
+      },
+      "output_sha256": "b4c9db893d0ebad2ed3a89b8f6f79e2762992d8fc13d9f609ac7d8fef9f7e2ff",
+      "layers": {
+        "TopMetal1": {
+          "drawing_polygons": 22485,
+          "filler_polygons": 0,
+          "missing_before_um2": 67.4695,
+          "added_rectangles": 84,
+          "missing_after_um2": 0.0
+        },
+        "TopMetal2": {
+          "drawing_polygons": 2079,
+          "filler_polygons": 0,
+          "missing_before_um2": 0.0,
+          "added_rectangles": 0,
+          "missing_after_um2": 0.0
+        }
+      },
+      "lower_metal_full_die_envelope_verified": true,
+      "layer_map": {
+        "Metal1.drawing": [
+          8,
+          0
+        ],
+        "Metal1.filler": [
+          8,
+          22
+        ],
+        "Metal2.drawing": [
+          10,
+          0
+        ],
+        "Metal2.filler": [
+          10,
+          22
+        ],
+        "Metal3.drawing": [
+          30,
+          0
+        ],
+        "Metal3.filler": [
+          30,
+          22
+        ],
+        "Metal4.drawing": [
+          50,
+          0
+        ],
+        "Metal4.filler": [
+          50,
+          22
+        ],
+        "Metal5.drawing": [
+          67,
+          0
+        ],
+        "Metal5.filler": [
+          67,
+          22
+        ],
+        "TopMetal1.drawing": [
+          126,
+          0
+        ],
+        "TopMetal1.filler": [
+          126,
+          22
+        ],
+        "TopMetal2.drawing": [
+          134,
+          0
+        ],
+        "TopMetal2.filler": [
+          134,
+          22
+        ]
+      },
+      "physical_connectivity_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "abstract-controls/result.json": {
+      "status": "PASS_TWO_HIERARCHICAL_GDS_AND_SIX_FAULT_CONTROLS",
+      "results": [
+        {
+          "case": "prefill",
+          "status": "PASS",
+          "receipt": {
+            "status": "PASS_SELECTED_GDS_CONDUCTOR_COVERAGE_ONLY",
+            "input_sha256": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/prefill/source.lef": "42a77fc22c6a62e0d0342b53b4e7455b313a69c26bdeb7f9868c59d139bc944f",
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/prefill/core.gds": "b626d0b273e296384335d36b66373f913ccffc571f44215ee5aa07eda34cbd94",
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/prefill/layers.lyp": "8e905b0e2696379dd6ee8fe9f5adcb5253c58c3127257beca507590ff4c6f1e0"
+            },
+            "output_sha256": "00d2d8e03e52c18b6ba681f435fd04fb7a3fe6a84477ef0c6e73b6a4f59330ff",
+            "layers": {
+              "TopMetal1": {
+                "drawing_polygons": 2,
+                "filler_polygons": 0,
+                "missing_before_um2": 1.0,
+                "added_rectangles": 1,
+                "missing_after_um2": 0.0
+              },
+              "TopMetal2": {
+                "drawing_polygons": 2,
+                "filler_polygons": 0,
+                "missing_before_um2": 1.0,
+                "added_rectangles": 1,
+                "missing_after_um2": 0.0
+              }
+            },
+            "lower_metal_full_die_envelope_verified": true,
+            "layer_map": {
+              "Metal1.drawing": [
+                1,
+                0
+              ],
+              "Metal1.filler": [
+                1,
+                22
+              ],
+              "Metal2.drawing": [
+                2,
+                0
+              ],
+              "Metal2.filler": [
+                2,
+                22
+              ],
+              "Metal3.drawing": [
+                3,
+                0
+              ],
+              "Metal3.filler": [
+                3,
+                22
+              ],
+              "Metal4.drawing": [
+                4,
+                0
+              ],
+              "Metal4.filler": [
+                4,
+                22
+              ],
+              "Metal5.drawing": [
+                5,
+                0
+              ],
+              "Metal5.filler": [
+                5,
+                22
+              ],
+              "TopMetal1.drawing": [
+                6,
+                0
+              ],
+              "TopMetal1.filler": [
+                6,
+                22
+              ],
+              "TopMetal2.drawing": [
+                7,
+                0
+              ],
+              "TopMetal2.filler": [
+                7,
+                22
+              ]
+            },
+            "physical_connectivity_accepted": false,
+            "timing_accepted": false,
+            "manufacturing_approval": false
+          }
+        },
+        {
+          "case": "filled",
+          "status": "PASS",
+          "receipt": {
+            "status": "PASS_SELECTED_GDS_CONDUCTOR_COVERAGE_ONLY",
+            "input_sha256": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/filled/source.lef": "42a77fc22c6a62e0d0342b53b4e7455b313a69c26bdeb7f9868c59d139bc944f",
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/filled/core.gds": "c5c22ecd618ff7262f03d5897396dedcf72ff3b215c1892ff4322a66ac4625a2",
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/filled/layers.lyp": "8e905b0e2696379dd6ee8fe9f5adcb5253c58c3127257beca507590ff4c6f1e0"
+            },
+            "output_sha256": "c97ab952d9e06e684458f6034311f68c71a622728f965d4cc48a119860299bb9",
+            "layers": {
+              "TopMetal1": {
+                "drawing_polygons": 2,
+                "filler_polygons": 1,
+                "missing_before_um2": 2.0,
+                "added_rectangles": 2,
+                "missing_after_um2": 0.0
+              },
+              "TopMetal2": {
+                "drawing_polygons": 2,
+                "filler_polygons": 1,
+                "missing_before_um2": 2.0,
+                "added_rectangles": 2,
+                "missing_after_um2": 0.0
+              }
+            },
+            "lower_metal_full_die_envelope_verified": true,
+            "layer_map": {
+              "Metal1.drawing": [
+                1,
+                0
+              ],
+              "Metal1.filler": [
+                1,
+                22
+              ],
+              "Metal2.drawing": [
+                2,
+                0
+              ],
+              "Metal2.filler": [
+                2,
+                22
+              ],
+              "Metal3.drawing": [
+                3,
+                0
+              ],
+              "Metal3.filler": [
+                3,
+                22
+              ],
+              "Metal4.drawing": [
+                4,
+                0
+              ],
+              "Metal4.filler": [
+                4,
+                22
+              ],
+              "Metal5.drawing": [
+                5,
+                0
+              ],
+              "Metal5.filler": [
+                5,
+                22
+              ],
+              "TopMetal1.drawing": [
+                6,
+                0
+              ],
+              "TopMetal1.filler": [
+                6,
+                22
+              ],
+              "TopMetal2.drawing": [
+                7,
+                0
+              ],
+              "TopMetal2.filler": [
+                7,
+                22
+              ]
+            },
+            "physical_connectivity_accepted": false,
+            "timing_accepted": false,
+            "manufacturing_approval": false
+          }
+        },
+        {
+          "case": "wrong_top",
+          "status": "EXPECTED_REJECTION",
+          "error": "GDS/LEF macro identities disagree"
+        },
+        {
+          "case": "unsupported_map",
+          "status": "EXPECTED_REJECTION",
+          "error": "invalid literal for int() with base 10: 'invalid'"
+        },
+        {
+          "case": "missing_map",
+          "status": "EXPECTED_REJECTION",
+          "error": "Incomplete drawing/filler layer map"
+        },
+        {
+          "case": "missing_pin_metal",
+          "status": "EXPECTED_REJECTION",
+          "error": "TopMetal1 pin has no backing in selected GDS"
+        },
+        {
+          "case": "lower_outside",
+          "status": "EXPECTED_REJECTION",
+          "error": "Metal1.filler extends outside macro die"
+        },
+        {
+          "case": "off_grid",
+          "status": "EXPECTED_REJECTION",
+          "error": "LEF coordinate is off the selected GDS grid"
+        }
+      ],
+      "manufacturing_approval": false,
+      "source_sha256": {
+        "scripts/check_core_abstract_controls.py": "dfecd21e73a1298aeb31bd2c1a47b2312007e106de1539a4906d887f1598d8fb",
+        "hw/soc/flow/cover_core_abstract.py": "b3659cd743132c1757053b076a769b09a313c9cebab05fed0596fad7d22be7f6",
+        "hw/soc/flow/compact_core_abstract.py": "ca4ad17e413161d12a926c6a7c3046ffe0505204ebcc3ae406491ba9e26cca68"
+      }
+    },
+    "geometry-method-controls.json": {
+      "status": "PASS_CELL_RENAME_EQUIVALENCE_AND_FIVE_GEOMETRY_FAULTS",
+      "source_sha256": "153276733bd9050ea27e6ea2b063b0e908b4ad3358051d2052d820bb04bf9cd6",
+      "method_source": "audit_assembly_geometry_v10.py",
+      "negative_controls": [
+        "extra_shape",
+        "missing_text",
+        "wrong_layer",
+        "moved_instance",
+        "missing_instance"
+      ],
+      "scope": "Recursive content fingerprint method only; independent selected-GDS result in assembly-geometry.json."
+    },
+    "assembly-geometry.json": {
+      "status": "PASS_CORE_IO_GEOMETRY_AND_315_FIXED_PLACEMENTS_ONLY",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/audit_assembly_geometry_v10.py": "153276733bd9050ea27e6ea2b063b0e908b4ad3358051d2052d820bb04bf9cd6",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/result-v9.json": "05ea06acf7cffe5a48025ee601bdcbb88ec88aff8657cbfe5d8bcdfb1c42f8a4",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v9/final/state.json": "0996ee829ebe0d8429e396b3f6bcc6956221f10b25e39939c2e612d75485da61",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v9/01-klayout-streamout/nssoc_chip.klayout.gds": "40b683aefbedccfde313fb8323ef4591794fae4557a8722d8af86158fff91e6b",
+        "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/layout-lvs14/core-boundary/soc_top.gds": "421c1f5b190bc0ecf2cac640785f3951a662a2d0ba275951fa00b9e29b2508d9",
+        "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/placements.json": "62c65d4d23a400373a7db1ab2779f13b77332e47c8567e63b7e8c5e51b219893"
+      },
+      "verified_cells": {
+        "DP8TArray_16X16": {
+          "shape_definitions": 720,
+          "instances": 2,
+          "content_sha256": "2c2defbae0503ea266aeb9f597c80ba741c8a1dc1480451ebf33f2ebadc66aa0",
+          "matching_output_cells": [
+            "DP8TArray_16X16"
+          ]
+        },
+        "DP8TArray_16X32": {
+          "shape_definitions": 1344,
+          "instances": 2,
+          "content_sha256": "5a2670049a7612c672136a2a7f6b483fb5ffacb876fee09ee3c8104ea8f35172",
+          "matching_output_cells": [
+            "DP8TArray_16X32"
+          ]
+        },
+        "DP8TArray_16X8": {
+          "shape_definitions": 408,
+          "instances": 2,
+          "content_sha256": "da05aaf87116fb84bd9f15df8bd23165b6e09b60f6725cf3d79dcab987e1e763",
+          "matching_output_cells": [
+            "DP8TArray_16X8"
+          ]
+        },
+        "DP8TArray_2X1": {
+          "shape_definitions": 37,
+          "instances": 2,
+          "content_sha256": "244c59e64651702240cfee31d065a8bde78ac04b182b5a12199ba7ec8bb2f3fe",
+          "matching_output_cells": [
+            "DP8TArray_2X1"
+          ]
+        },
+        "DP8TArray_2X2": {
+          "shape_definitions": 62,
+          "instances": 2,
+          "content_sha256": "8756fabb96b1810c3488b589f3e7dc565d4b29655dca757c887c33509ac279c4",
+          "matching_output_cells": [
+            "DP8TArray_2X2"
+          ]
+        },
+        "DP8TArray_32X32": {
+          "shape_definitions": 582,
+          "instances": 3,
+          "content_sha256": "6fd18d14445798f81450372b3fc5760c3c90f40704806d83ed8091768ecc5bb9",
+          "matching_output_cells": [
+            "DP8TArray_32X32"
+          ]
+        },
+        "DP8TArray_4X2": {
+          "shape_definitions": 78,
+          "instances": 2,
+          "content_sha256": "1388636c71e1d6641577e650f103f96d869adf596500b771622a4516d8efc717",
+          "matching_output_cells": [
+            "DP8TArray_4X2"
+          ]
+        },
+        "DP8TArray_4X4": {
+          "shape_definitions": 132,
+          "instances": 2,
+          "content_sha256": "99b28d74591bd213d69f004b3c124e71faf977516090e2e9ebe5f95a2e01dddd",
+          "matching_output_cells": [
+            "DP8TArray_4X4"
+          ]
+        },
+        "DP8TArray_64X32BC": {
+          "shape_definitions": 798,
+          "instances": 5,
+          "content_sha256": "ddad77ce7a11f234492ccb4f888ea3fa3ef46b8b53b685c8151fd9adb075b754",
+          "matching_output_cells": [
+            "DP8TArray_64X32BC"
+          ]
+        },
+        "DP8TArray_8X4": {
+          "shape_definitions": 172,
+          "instances": 2,
+          "content_sha256": "1a0f9238d2590a081090752d3f51c1221a9b6d4ff89591d31230285d011f93ac",
+          "matching_output_cells": [
+            "DP8TArray_8X4"
+          ]
+        },
+        "DP8TArray_8X8": {
+          "shape_definitions": 296,
+          "instances": 2,
+          "content_sha256": "6884cede1bab71a24f0927b1520e2c6cb57a4dd13e818bcb6066fa62c0a63970",
+          "matching_output_cells": [
+            "DP8TArray_8X8"
+          ]
+        },
+        "DP8TBulkConn": {
+          "shape_definitions": 49,
+          "instances": 0,
+          "content_sha256": "9905f1acdc89d22c2fc78d4dcc37d1398479f8ab72b355145d7d74f7c11d0945",
+          "matching_output_cells": [
+            "DP8TBulkConn"
+          ]
+        },
+        "DP8TBulkConnRow_16C": {
+          "shape_definitions": 198,
+          "instances": 2,
+          "content_sha256": "50c67cf512ebf56be154a520c48bcbf873554094070e2fc1026f0c16a3534e83",
+          "matching_output_cells": [
+            "DP8TBulkConnRow_16C"
+          ]
+        },
+        "DP8TBulkConnRow_2C": {
+          "shape_definitions": 30,
+          "instances": 2,
+          "content_sha256": "08739cb3ace5efea04bd87235abe4173046c15c9d4a68533699c5a8cc20e944d",
+          "matching_output_cells": [
+            "DP8TBulkConnRow_2C"
+          ]
+        },
+        "DP8TBulkConnRow_32C": {
+          "shape_definitions": 390,
+          "instances": 2,
+          "content_sha256": "8e4fa326f58e31b92f7d7efd0f9d19951b3f7d8a4b0e79be5ef74ce38acbd941",
+          "matching_output_cells": [
+            "DP8TBulkConnRow_32C"
+          ]
+        },
+        "DP8TBulkConnRow_4C": {
+          "shape_definitions": 54,
+          "instances": 2,
+          "content_sha256": "50a1718370317f0122c98446209a806b5df06c44c41ac2c75048cbb29e11c895",
+          "matching_output_cells": [
+            "DP8TBulkConnRow_4C"
+          ]
+        },
+        "DP8TBulkConnRow_8C": {
+          "shape_definitions": 102,
+          "instances": 2,
+          "content_sha256": "b79b8dd5df8dfaa2d7bf1eeca90f1ddac5a7247dd46c14abe670efd962c11a25",
+          "matching_output_cells": [
+            "DP8TBulkConnRow_8C"
+          ]
+        },
+        "DP8TCell": {
+          "shape_definitions": 94,
+          "instances": 0,
+          "content_sha256": "c2c9b069b9c00c47e2fffcb0518b1971adafddcfa64cc094f59989b32a943323",
+          "matching_output_cells": [
+            "DP8TCell"
+          ]
+        },
+        "DP8TClockGen_4S11341D1R": {
+          "shape_definitions": 50,
+          "instances": 6,
+          "content_sha256": "51e2d506227d32d1c804b4c740c00f3abda3180cb08b49d9f556bb3b2406baaa",
+          "matching_output_cells": [
+            "DP8TClockGen_4S11341D1R",
+            "SP6TClockGen_4S11341D1R"
+          ]
+        },
+        "DP8TClockWE_T": {
+          "shape_definitions": 26,
+          "instances": 3,
+          "content_sha256": "d4bec23d569b1f8d78977866a8695fb322915c8d941e37ecbfe59e7b1d8e4fa6",
+          "matching_output_cells": [
+            "DP8TClockWE_T",
+            "SP6TClockWE_T"
+          ]
+        },
+        "DP8TColMux_4MN26L580W1RR_bl2": {
+          "shape_definitions": 239,
+          "instances": 0,
+          "content_sha256": "3bfd4a55beb88f3573d18ee1e9c330d56dc7840c1a6df08c4bad36c8c8e45bb6",
+          "matching_output_cells": [
+            "DP8TColMux_4MN26L580W1RR_bl2"
+          ]
+        },
+        "DP8TColMux_4MN26L580W1R_bl1": {
+          "shape_definitions": 239,
+          "instances": 0,
+          "content_sha256": "86e0a19a89b03e2cfd2b4c3d32537ad401d0bfafda18f7d09ba6704e8b567343",
+          "matching_output_cells": [
+            "DP8TColMux_4MN26L580W1R_bl1"
+          ]
+        },
+        "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl1": {
+          "shape_definitions": 484,
+          "instances": 50,
+          "content_sha256": "786e7c7fe59d7c472d399a4e9cab6a5038948ee55c32df17e794b0e7de5cdf64",
+          "matching_output_cells": [
+            "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl1"
+          ]
+        },
+        "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl2": {
+          "shape_definitions": 484,
+          "instances": 50,
+          "content_sha256": "ec75ced3906d16684f4aaee842ea2fd240e705150158d06c8f1d0fc2d17364f7",
+          "matching_output_cells": [
+            "DP8TColPeriph8B_PC26L100W_CM4MN26L580W1R_bl2"
+          ]
+        },
+        "DP8TColumnBlock_COL64R_CP8B_CM4MN26L580W1R_PC26L100W_2WE": {
+          "shape_definitions": 840,
+          "instances": 2,
+          "content_sha256": "ccb2aec55cb8d3c93a8020fa933d43be3cae364974fb91577a98e572f73d2bfd",
+          "matching_output_cells": [
+            "DP8TColumnBlock_COL64R_CP8B_CM4MN26L580W1R_PC26L100W_2WE"
+          ]
+        },
+        "DP8TColumn_64R_CP8B_CM4MN26L580W1R_PC26L100W": {
+          "shape_definitions": 710,
+          "instances": 3,
+          "content_sha256": "af72edd794f909b582fe872f8fa409f3a9ed8e2cb7237d40d6c3be3056071ea9",
+          "matching_output_cells": [
+            "DP8TColumn_64R_CP8B_CM4MN26L580W1R_PC26L100W"
+          ]
+        },
+        "DP8TDec_and3_x1": {
+          "shape_definitions": 76,
+          "instances": 0,
+          "content_sha256": "96932bc71db6724b79d72efdfa115dba4276de6b4e58c72731f65c6f4410d0ad",
+          "matching_output_cells": [
+            "DP8TDec_and3_x1",
+            "SP6TDec_and3_x1"
+          ]
+        },
+        "DP8TDec_dff_x1": {
+          "shape_definitions": 161,
+          "instances": 0,
+          "content_sha256": "f5376481e45baa7c6791ca490af14e673c8c767a7590209c9f4de5cd0a3e4986",
+          "matching_output_cells": [
+            "DP8TDec_dff_x1",
+            "SP6TDec_dff_x1"
+          ]
+        },
+        "DP8TDec_inv_x1": {
+          "shape_definitions": 49,
+          "instances": 0,
+          "content_sha256": "7e7972b805124dd540647a451bd28685b30a8d567135875c9025c746cbdc7667",
+          "matching_output_cells": [
+            "DP8TDec_inv_x1",
+            "SP6TDec_inv_x1"
+          ]
+        },
+        "DP8TDec_inv_x2": {
+          "shape_definitions": 51,
+          "instances": 0,
+          "content_sha256": "f785155eed0b95df0b5131b7ee2b111cd9a5ef21a65a1d62601d8f59c5626bf0",
+          "matching_output_cells": [
+            "DP8TDec_inv_x2",
+            "SP6TDec_inv_x2"
+          ]
+        },
+        "DP8TDec_nand2_x0": {
+          "shape_definitions": 40,
+          "instances": 0,
+          "content_sha256": "9d88d04c654fedb3a4d1144f7427acd01b002b7ce1452b52b83b5d52d5f950fd",
+          "matching_output_cells": [
+            "DP8TDec_nand2_x0",
+            "SP6TDec_nand2_x0"
+          ]
+        },
+        "DP8TDec_tie_diff_w2": {
+          "shape_definitions": 18,
+          "instances": 0,
+          "content_sha256": "83cff016aa17f262c9c70ffd1d03d7ea9d74f586d29c106818f58bcbe40d94d3",
+          "matching_output_cells": [
+            "DP8TDec_tie_diff_w2",
+            "SP6TDec_tie_diff_w2"
+          ]
+        },
+        "DP8TDirectColDec_A2B2R": {
+          "shape_definitions": 76,
+          "instances": 12,
+          "content_sha256": "bd8eb5538d2b155cb354f96dc035da67c7cea2c64e2e12d4213766e218f1b1b9",
+          "matching_output_cells": [
+            "DP8TDirectColDec_A2B2R",
+            "SP6TDirectColDec_A2B2R"
+          ]
+        },
+        "DP8TNonOvlClock_4S1R": {
+          "shape_definitions": 50,
+          "instances": 11,
+          "content_sha256": "7b92d53d6a31d1cafaa561fda9ecdf4b3f686d05ac8593583e1c64f9ba99b02c",
+          "matching_output_cells": [
+            "DP8TNonOvlClock_4S1R",
+            "SP6TNonOvlClock_4S1R"
+          ]
+        },
+        "DP8TPrecharge_26L100W_bl1": {
+          "shape_definitions": 41,
+          "instances": 0,
+          "content_sha256": "36a436d3afb733254861630fd0596c7276257ececea550e7a880ca301de41496",
+          "matching_output_cells": [
+            "DP8TPrecharge_26L100W_bl1"
+          ]
+        },
+        "DP8TPrecharge_26L100W_bl2": {
+          "shape_definitions": 41,
+          "instances": 0,
+          "content_sha256": "6d8d107fe13e2514a18005a77599dcc01611fce1fd3f79bd23181b78fdaf9bd3",
+          "matching_output_cells": [
+            "DP8TPrecharge_26L100W_bl2"
+          ]
+        },
+        "DP8TReadWrite_CM4MN26L580W1R_RW26L380WS": {
+          "shape_definitions": 84,
+          "instances": 5,
+          "content_sha256": "ef86eedd50708b3e8d3502ac57d044362161e1823eda59ab222a6bc797e9fcab",
+          "matching_output_cells": [
+            "DP8TReadWrite_CM4MN26L580W1R_RW26L380WS"
+          ]
+        },
+        "DP8TRowDecLastStageBC_N3DH": {
+          "shape_definitions": 5,
+          "instances": 0,
+          "content_sha256": "cb31b7725be1542dd908ec4b33a6c92809d5536616843456749b5cfdf3c77318",
+          "matching_output_cells": [
+            "DP8TRowDecLastStageBC_N3DH",
+            "SP6TRowDecLastStageBC_N3DH"
+          ]
+        },
+        "DP8TRowDecPage_PD3B3BDH": {
+          "shape_definitions": 136,
+          "instances": 4,
+          "content_sha256": "5fecb4b32fad743ca94b67e0bb75a52c194b5d3f82db41b3bcd6b80170a4b26a",
+          "matching_output_cells": [
+            "DP8TRowDecPage_PD3B3BDH"
+          ]
+        },
+        "DP8TRowDec_PD3B3B_PAG3B3B0_wl1": {
+          "shape_definitions": 731,
+          "instances": 14,
+          "content_sha256": "e61fd2d125af344b5b4f565391277202e01b59a34727a07123c2dcc8d672aa09",
+          "matching_output_cells": [
+            "DP8TRowDec_PD3B3B_PAG3B3B0_wl1"
+          ]
+        },
+        "DP8TRowDec_PD3B3B_PAG3B3B0_wl2": {
+          "shape_definitions": 732,
+          "instances": 14,
+          "content_sha256": "71d6f07df0eeb884bc4434ca732717f88fea59e0729f039e5c7115f9c6064d09",
+          "matching_output_cells": [
+            "DP8TRowDec_PD3B3B_PAG3B3B0_wl2"
+          ]
+        },
+        "DP8TRowDecoderNand3X2": {
+          "shape_definitions": 68,
+          "instances": 0,
+          "content_sha256": "ded4209ff3808de4cc8ffcaa8496c39f739f7b2f09a9f3bfd5c95b77add6e4b7",
+          "matching_output_cells": [
+            "DP8TRowDecoderNand3X2"
+          ]
+        },
+        "DP8TRowPeriph_PD3B3BR_LD2B2R_wl2": {
+          "shape_definitions": 367,
+          "instances": 2,
+          "content_sha256": "3374339afc7ee4dfc67542485981b70b6adcd37cb8542fafb8a910738a588f21",
+          "matching_output_cells": [
+            "DP8TRowPeriph_PD3B3BR_LD2B2R_wl2"
+          ]
+        },
+        "DP8TRowPeriph_PD3B3B_LD2B2R_wl1": {
+          "shape_definitions": 366,
+          "instances": 2,
+          "content_sha256": "0f8996f0e8bd1f3c688d04455ff8b05f9671e68d49be777947918a15d5b208a4",
+          "matching_output_cells": [
+            "DP8TRowPeriph_PD3B3B_LD2B2R_wl1"
+          ]
+        },
+        "DP8TRowPredecoders_A3B3B_wl1": {
+          "shape_definitions": 451,
+          "instances": 52,
+          "content_sha256": "c4a3a1d6e6d64e02893e67894e3e46a88a223ce2b3d214a6bbb815131cbbb141",
+          "matching_output_cells": [
+            "DP8TRowPredecoders_A3B3B_wl1"
+          ]
+        },
+        "DP8TRowPredecoders_A3B3B_wl2": {
+          "shape_definitions": 451,
+          "instances": 52,
+          "content_sha256": "d1ebced715d6f2a71531c9059441362b10f2b9efe476675946d4f8b4eeffbbb9",
+          "matching_output_cells": [
+            "DP8TRowPredecoders_A3B3B_wl2"
+          ]
+        },
+        "DP8TSRAMDP256x16": {
+          "shape_definitions": 2862,
+          "instances": 7,
+          "content_sha256": "624fa40b21150a7ad96448cc81c5684d2e84f31efa135aa8665008f15ba446ec",
+          "matching_output_cells": [
+            "DP8TSRAMDP256x16"
+          ]
+        },
+        "DP8TWLDriverBC_N26L400WP26L800W": {
+          "shape_definitions": 57,
+          "instances": 0,
+          "content_sha256": "60f27d6585adb2a78649aba963011c0e7e5a84abba40250201866578d4bf1c43",
+          "matching_output_cells": [
+            "DP8TWLDriverBC_N26L400WP26L800W"
+          ]
+        },
+        "DP8TWLDriverCol_64RN26L400WP26L800W_wl1": {
+          "shape_definitions": 556,
+          "instances": 69,
+          "content_sha256": "c79bbc9e3999242b578648126207a3fb360e8282aad0a3959eedc968d9122e4a",
+          "matching_output_cells": [
+            "DP8TWLDriverCol_64RN26L400WP26L800W_wl1"
+          ]
+        },
+        "DP8TWLDriverCol_64RN26L400WP26L800W_wl2": {
+          "shape_definitions": 556,
+          "instances": 69,
+          "content_sha256": "3bafa21aa62c8a48bc7d0611d4277c57df0ce3410729698800a877b7e8892fa8",
+          "matching_output_cells": [
+            "DP8TWLDriverCol_64RN26L400WP26L800W_wl2"
+          ]
+        },
+        "DP8TWLDriver_N26L400WP26L800W_wl1": {
+          "shape_definitions": 110,
+          "instances": 0,
+          "content_sha256": "bb82a8ba2c6a00a2cfca05cd56d73e52b7fc639251216e7f18527cc67a58099c",
+          "matching_output_cells": [
+            "DP8TWLDriver_N26L400WP26L800W_wl1"
+          ]
+        },
+        "DP8TWLDriver_N26L400WP26L800W_wl2": {
+          "shape_definitions": 110,
+          "instances": 0,
+          "content_sha256": "1d02d54705ea43f0925ed75d1519c40fd4cd90577cdb04e8657b306215ec6f9f",
+          "matching_output_cells": [
+            "DP8TWLDriver_N26L400WP26L800W_wl2"
+          ]
+        },
+        "SP6TArray_128X32BC": {
+          "shape_definitions": 630,
+          "instances": 5,
+          "content_sha256": "b64664c7d4c30ca6683d4c62ae6c47620a2cfd74edc7237eddaa7f2cb2f837d4",
+          "matching_output_cells": [
+            "SP6TArray_128X32BC"
+          ]
+        },
+        "SP6TArray_16X16": {
+          "shape_definitions": 576,
+          "instances": 2,
+          "content_sha256": "210dc5078042ad85f33ad651961582dd554f27500e5e015757dbfb4f1c03810d",
+          "matching_output_cells": [
+            "SP6TArray_16X16"
+          ]
+        },
+        "SP6TArray_16X32": {
+          "shape_definitions": 1104,
+          "instances": 2,
+          "content_sha256": "667b4e09f6a3ef9f0eb798fe915f8026d76fd2eabcacbd1e83793f57719e5b97",
+          "matching_output_cells": [
+            "SP6TArray_16X32"
+          ]
+        },
+        "SP6TArray_16X8": {
+          "shape_definitions": 312,
+          "instances": 2,
+          "content_sha256": "3908e4da065c5b9689e55f9d1b4831c1e8ad740c305f02590f3458d6c25e0fec",
+          "matching_output_cells": [
+            "SP6TArray_16X8"
+          ]
+        },
+        "SP6TArray_2X1": {
+          "shape_definitions": 25,
+          "instances": 2,
+          "content_sha256": "f29a113d2eaec57dd240c56468cebd4fd7d5111a6c40088046b82d79ac760af3",
+          "matching_output_cells": [
+            "SP6TArray_2X1"
+          ]
+        },
+        "SP6TArray_2X2": {
+          "shape_definitions": 44,
+          "instances": 2,
+          "content_sha256": "10f1984b6bf4ae1c99e9e10d3f14b9218e14c4865572ca27400ea75a47f3d425",
+          "matching_output_cells": [
+            "SP6TArray_2X2"
+          ]
+        },
+        "SP6TArray_32X32": {
+          "shape_definitions": 294,
+          "instances": 3,
+          "content_sha256": "9e62e006f6795a21cdc2cba9ab751f02f85051dd859bf128824eb029a1eb58fa",
+          "matching_output_cells": [
+            "SP6TArray_32X32"
+          ]
+        },
+        "SP6TArray_4X2": {
+          "shape_definitions": 54,
+          "instances": 2,
+          "content_sha256": "5491ba1b5dab61b61cc02807a0b73edab119e0f485e1332decbb8e0a0a4da89c",
+          "matching_output_cells": [
+            "SP6TArray_4X2"
+          ]
+        },
+        "SP6TArray_4X4": {
+          "shape_definitions": 96,
+          "instances": 2,
+          "content_sha256": "f1c97a8f2155dbb5cfc4f44ce5c051ed837ea84a4cf4c6fdb12a15543f0cd340",
+          "matching_output_cells": [
+            "SP6TArray_4X4"
+          ]
+        },
+        "SP6TArray_64X32": {
+          "shape_definitions": 402,
+          "instances": 3,
+          "content_sha256": "8b5a3a43b9a03fc17f7ea1d5690c25ae139cf0a5d2b7007b4028dd001f9b0601",
+          "matching_output_cells": [
+            "SP6TArray_64X32"
+          ]
+        },
+        "SP6TArray_8X4": {
+          "shape_definitions": 124,
+          "instances": 2,
+          "content_sha256": "a6b852aa36f2e4a374d7a4459d35deccb053e2277e27e74c4a886c2ee1f8cf11",
+          "matching_output_cells": [
+            "SP6TArray_8X4"
+          ]
+        },
+        "SP6TArray_8X8": {
+          "shape_definitions": 224,
+          "instances": 2,
+          "content_sha256": "e39d1bc666e20747a9fec9d47f5d07c8afbfa56fea7b13a3a7073474daee4a29",
+          "matching_output_cells": [
+            "SP6TArray_8X8"
+          ]
+        },
+        "SP6TBulkConn": {
+          "shape_definitions": 41,
+          "instances": 0,
+          "content_sha256": "3e300c305f1297074d65cd450575bf08bf55f69dc72930d1dcada96aba85946e",
+          "matching_output_cells": [
+            "SP6TBulkConn"
+          ]
+        },
+        "SP6TBulkConnRow_16C": {
+          "shape_definitions": 102,
+          "instances": 2,
+          "content_sha256": "7770797c0466c267d744e6a39fa5caf65b32b8fe86a4e9d49ff09f9794549eb3",
+          "matching_output_cells": [
+            "SP6TBulkConnRow_16C"
+          ]
+        },
+        "SP6TBulkConnRow_2C": {
+          "shape_definitions": 18,
+          "instances": 2,
+          "content_sha256": "cd838cfb6762ba4087e664869b13e349f494bdde7aaee58f1cb64a0068c24582",
+          "matching_output_cells": [
+            "SP6TBulkConnRow_2C"
+          ]
+        },
+        "SP6TBulkConnRow_32C": {
+          "shape_definitions": 198,
+          "instances": 2,
+          "content_sha256": "e9139a6b1ad2b51e9fbb4240ff64cb7b541eb4750927fbaafa9d72a59312d23d",
+          "matching_output_cells": [
+            "SP6TBulkConnRow_32C"
+          ]
+        },
+        "SP6TBulkConnRow_4C": {
+          "shape_definitions": 30,
+          "instances": 2,
+          "content_sha256": "696ea1b578dced750e2138cf8ee439aafc91784b359dc3d421d2e14579ed93d2",
+          "matching_output_cells": [
+            "SP6TBulkConnRow_4C"
+          ]
+        },
+        "SP6TBulkConnRow_8C": {
+          "shape_definitions": 54,
+          "instances": 2,
+          "content_sha256": "adf1fb56cfd4ce31de56923d1f6090461655cee3a087c71690f8db79a3d123b0",
+          "matching_output_cells": [
+            "SP6TBulkConnRow_8C"
+          ]
+        },
+        "SP6TCell": {
+          "shape_definitions": 67,
+          "instances": 0,
+          "content_sha256": "bad5ec74f8dcfd5a327d9eaf2c16e86d65f5460a5fa281b59390e0a0466b3402",
+          "matching_output_cells": [
+            "SP6TCell"
+          ]
+        },
+        "SP6TClockGen_4S11341D1R": {
+          "shape_definitions": 50,
+          "instances": 6,
+          "content_sha256": "51e2d506227d32d1c804b4c740c00f3abda3180cb08b49d9f556bb3b2406baaa",
+          "matching_output_cells": [
+            "DP8TClockGen_4S11341D1R",
+            "SP6TClockGen_4S11341D1R"
+          ]
+        },
+        "SP6TClockWE_T": {
+          "shape_definitions": 26,
+          "instances": 3,
+          "content_sha256": "d4bec23d569b1f8d78977866a8695fb322915c8d941e37ecbfe59e7b1d8e4fa6",
+          "matching_output_cells": [
+            "DP8TClockWE_T",
+            "SP6TClockWE_T"
+          ]
+        },
+        "SP6TColMux_4MN26L580W1R": {
+          "shape_definitions": 239,
+          "instances": 0,
+          "content_sha256": "fc71bb25cf12daf59d59d4f9718cbe5044dadae0683f567489a0631e5ca95d10",
+          "matching_output_cells": [
+            "SP6TColMux_4MN26L580W1R"
+          ]
+        },
+        "SP6TColPeriph8B_PC26L100W_CM4MN26L580W1R": {
+          "shape_definitions": 484,
+          "instances": 50,
+          "content_sha256": "8063a3cadfaf874526e559ea08bfe4fe3768702d959d845be7aef0df830da398",
+          "matching_output_cells": [
+            "SP6TColPeriph8B_PC26L100W_CM4MN26L580W1R"
+          ]
+        },
+        "SP6TColumnBlock_COL128R_CP8B_CM4MN26L580W1R_PC26L100W_8WE": {
+          "shape_definitions": 1964,
+          "instances": 8,
+          "content_sha256": "95d4b4207ebff40b58907742d41700231b0d024378f86eb097abfa724e89ba6d",
+          "matching_output_cells": [
+            "SP6TColumnBlock_COL128R_CP8B_CM4MN26L580W1R_PC26L100W_8WE"
+          ]
+        },
+        "SP6TColumn_128R_CP8B_CM4MN26L580W1R_PC26L100W": {
+          "shape_definitions": 586,
+          "instances": 2,
+          "content_sha256": "3a3a6bba7a4bf7d78202a8004ab19d8529b2fe8039e5dae16c87a3bd5d665b2d",
+          "matching_output_cells": [
+            "SP6TColumn_128R_CP8B_CM4MN26L580W1R_PC26L100W"
+          ]
+        },
+        "SP6TDec_and3_x1": {
+          "shape_definitions": 76,
+          "instances": 0,
+          "content_sha256": "96932bc71db6724b79d72efdfa115dba4276de6b4e58c72731f65c6f4410d0ad",
+          "matching_output_cells": [
+            "DP8TDec_and3_x1",
+            "SP6TDec_and3_x1"
+          ]
+        },
+        "SP6TDec_and4_x1": {
+          "shape_definitions": 82,
+          "instances": 0,
+          "content_sha256": "da9e4dabb3e4feb5d2e661b615ecc270e02ab2804588b2a445c6f6bf428dc1ac",
+          "matching_output_cells": [
+            "SP6TDec_and4_x1"
+          ]
+        },
+        "SP6TDec_dff_x1": {
+          "shape_definitions": 161,
+          "instances": 0,
+          "content_sha256": "f5376481e45baa7c6791ca490af14e673c8c767a7590209c9f4de5cd0a3e4986",
+          "matching_output_cells": [
+            "DP8TDec_dff_x1",
+            "SP6TDec_dff_x1"
+          ]
+        },
+        "SP6TDec_inv_x1": {
+          "shape_definitions": 49,
+          "instances": 0,
+          "content_sha256": "7e7972b805124dd540647a451bd28685b30a8d567135875c9025c746cbdc7667",
+          "matching_output_cells": [
+            "DP8TDec_inv_x1",
+            "SP6TDec_inv_x1"
+          ]
+        },
+        "SP6TDec_inv_x2": {
+          "shape_definitions": 51,
+          "instances": 0,
+          "content_sha256": "f785155eed0b95df0b5131b7ee2b111cd9a5ef21a65a1d62601d8f59c5626bf0",
+          "matching_output_cells": [
+            "DP8TDec_inv_x2",
+            "SP6TDec_inv_x2"
+          ]
+        },
+        "SP6TDec_nand2_x0": {
+          "shape_definitions": 40,
+          "instances": 0,
+          "content_sha256": "9d88d04c654fedb3a4d1144f7427acd01b002b7ce1452b52b83b5d52d5f950fd",
+          "matching_output_cells": [
+            "DP8TDec_nand2_x0",
+            "SP6TDec_nand2_x0"
+          ]
+        },
+        "SP6TDec_tie_diff_w2": {
+          "shape_definitions": 18,
+          "instances": 0,
+          "content_sha256": "83cff016aa17f262c9c70ffd1d03d7ea9d74f586d29c106818f58bcbe40d94d3",
+          "matching_output_cells": [
+            "DP8TDec_tie_diff_w2",
+            "SP6TDec_tie_diff_w2"
+          ]
+        },
+        "SP6TDirectColDec_A2B2R": {
+          "shape_definitions": 76,
+          "instances": 12,
+          "content_sha256": "bd8eb5538d2b155cb354f96dc035da67c7cea2c64e2e12d4213766e218f1b1b9",
+          "matching_output_cells": [
+            "DP8TDirectColDec_A2B2R",
+            "SP6TDirectColDec_A2B2R"
+          ]
+        },
+        "SP6TNonOvlClock_4S1R": {
+          "shape_definitions": 50,
+          "instances": 11,
+          "content_sha256": "7b92d53d6a31d1cafaa561fda9ecdf4b3f686d05ac8593583e1c64f9ba99b02c",
+          "matching_output_cells": [
+            "DP8TNonOvlClock_4S1R",
+            "SP6TNonOvlClock_4S1R"
+          ]
+        },
+        "SP6TPrecharge_26L100W": {
+          "shape_definitions": 41,
+          "instances": 0,
+          "content_sha256": "ce7428d4bcf6023ce2761490f6a25baa83d9ba629120ef8c9276572830126ce1",
+          "matching_output_cells": [
+            "SP6TPrecharge_26L100W"
+          ]
+        },
+        "SP6TReadWrite_CM4MN26L580W1R_RW26L380WS": {
+          "shape_definitions": 84,
+          "instances": 5,
+          "content_sha256": "4798ba3261573091f4fde488d52245cb979bc9ce994e9d13b1abb3f54ae1b16e",
+          "matching_output_cells": [
+            "SP6TReadWrite_CM4MN26L580W1R_RW26L380WS"
+          ]
+        },
+        "SP6TRowDecLastStageBC_N3DH": {
+          "shape_definitions": 5,
+          "instances": 0,
+          "content_sha256": "cb31b7725be1542dd908ec4b33a6c92809d5536616843456749b5cfdf3c77318",
+          "matching_output_cells": [
+            "DP8TRowDecLastStageBC_N3DH",
+            "SP6TRowDecLastStageBC_N3DH"
+          ]
+        },
+        "SP6TRowDecPage_PD3B4BDH": {
+          "shape_definitions": 136,
+          "instances": 4,
+          "content_sha256": "498e546d11f30509db3a45c64c506dc09c21bce77148c28164a484016a9f9a9c",
+          "matching_output_cells": [
+            "SP6TRowDecPage_PD3B4BDH"
+          ]
+        },
+        "SP6TRowDec_PD3B4B_PAG3B4B0": {
+          "shape_definitions": 1552,
+          "instances": 26,
+          "content_sha256": "052618e99e3be96571ef6ac6d050535d63d30ec18b6dbee4717815fc52543090",
+          "matching_output_cells": [
+            "SP6TRowDec_PD3B4B_PAG3B4B0"
+          ]
+        },
+        "SP6TRowDecoderNand3X2": {
+          "shape_definitions": 68,
+          "instances": 0,
+          "content_sha256": "c7d57ada3f3e2a2ee657d374a0566eb46dd5f34866cfe54b17f539049c6c7ff3",
+          "matching_output_cells": [
+            "SP6TRowDecoderNand3X2"
+          ]
+        },
+        "SP6TRowPeriph_PD3B4B_LD2B2R": {
+          "shape_definitions": 673,
+          "instances": 2,
+          "content_sha256": "47b7c648b6d202429c4cabd44f8aac822a606195f2be53bad71fccb43e9fcbc0",
+          "matching_output_cells": [
+            "SP6TRowPeriph_PD3B4B_LD2B2R"
+          ]
+        },
+        "SP6TRowPredecoders_A3B4B": {
+          "shape_definitions": 732,
+          "instances": 130,
+          "content_sha256": "6b14178635f4066384e7a813e89d49a19e641a558864bc8369b7407aa912b63e",
+          "matching_output_cells": [
+            "SP6TRowPredecoders_A3B4B"
+          ]
+        },
+        "SP6TSRAM512x64": {
+          "shape_definitions": 11073,
+          "instances": 4,
+          "content_sha256": "88ba51c133eada8ad7ad634ff6e82bee96fb7f975f11f41b9dee48b5158a79dd",
+          "matching_output_cells": [
+            "SP6TSRAM512x64"
+          ]
+        },
+        "SP6TWLDriverBC_N26L400WP26L800W": {
+          "shape_definitions": 57,
+          "instances": 0,
+          "content_sha256": "025732a6c5d42d0fe1bb25076a97219b3b8252d9a3a03ec21cbdcbb22dffc5bd",
+          "matching_output_cells": [
+            "SP6TWLDriverBC_N26L400WP26L800W"
+          ]
+        },
+        "SP6TWLDriverCol_128RN26L400WP26L800W": {
+          "shape_definitions": 1100,
+          "instances": 137,
+          "content_sha256": "c774644b9e0ad61adf390b0fb0620a47dc12a997b4b4cc9b764687ade60bd711",
+          "matching_output_cells": [
+            "SP6TWLDriverCol_128RN26L400WP26L800W"
+          ]
+        },
+        "SP6TWLDriver_N26L400WP26L800W": {
+          "shape_definitions": 110,
+          "instances": 0,
+          "content_sha256": "a3d9f02d4b3af61cee549ea9d944642b7b5fa930c4fd2b348c5a8b2f521bdf9b",
+          "matching_output_cells": [
+            "SP6TWLDriver_N26L400WP26L800W"
+          ]
+        },
+        "VIA_TopVia1EWNS": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "1d061cd299b33a18a3f8a2073daa104f50a3283feaeff7a8d02afb5ac53d6be5",
+          "matching_output_cells": [
+            "VIA_TopVia1EWNS",
+            "VIA_TopVia1EWNS$1"
+          ]
+        },
+        "VIA_TopVia2EWNS": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "088cffad057e596882935db5ab72f21841fc66645c3920486e8738d773984f2b",
+          "matching_output_cells": [
+            "VIA_TopVia2EWNS"
+          ]
+        },
+        "VIA_Via1_XY": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "9187e3e24211e0e36138b31054bd1b22539165d7302d3dd30a0bd5e27e84ec92",
+          "matching_output_cells": [
+            "VIA_Via1_XY",
+            "VIA_Via1_XY$1"
+          ]
+        },
+        "VIA_Via1_YY": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "59afe8274914f47fb38bf20c7000cd398b13937dcb4a8674f2967bb01df57980",
+          "matching_output_cells": [
+            "VIA_Via1_YY",
+            "VIA_Via1_YY$1"
+          ]
+        },
+        "VIA_Via2_YX": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "35adbd9fe6b7d9b3db633c1f11c08a2c33641977a6fb8c5feaab3e5bbd591ca9",
+          "matching_output_cells": [
+            "VIA_Via2_YX",
+            "VIA_Via2_YX$1"
+          ]
+        },
+        "VIA_Via3_XY": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "2a7c2cc9a36c13e1839687eacc79a36dcbb503808947792a6bfc4d16b7f23233",
+          "matching_output_cells": [
+            "VIA_Via3_XY",
+            "VIA_Via3_XY$1"
+          ]
+        },
+        "VIA_Via3_YY": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "0914ae747aa9c4ff32850e5488eaf412c14a70aeea80f15dc0c48bb91b285b2e",
+          "matching_output_cells": [
+            "VIA_Via3_YY"
+          ]
+        },
+        "VIA_Via4_YX": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "c6379621af011788b9a7cee4791e4c43d282c925deb6efee2b8a3e692a121e52",
+          "matching_output_cells": [
+            "VIA_Via4_YX",
+            "VIA_Via4_YX$1"
+          ]
+        },
+        "VIA_via1_2_2200_440_1_5_410_410": {
+          "shape_definitions": 7,
+          "instances": 0,
+          "content_sha256": "344d82463ff9de1953a8c661847ee33063b41b267da5bdfd350653238f0bc778",
+          "matching_output_cells": [
+            "VIA_via1_2_2200_440_1_5_410_410",
+            "VIA_via1_2_2200_440_1_5_410_410$1"
+          ]
+        },
+        "VIA_via2_3_2200_440_1_5_410_410": {
+          "shape_definitions": 7,
+          "instances": 0,
+          "content_sha256": "4cb462ae6a320bf440acd7969806a4ab91263cf1b47cc3135540699150fd24fc",
+          "matching_output_cells": [
+            "VIA_via2_3_2200_440_1_5_410_410",
+            "VIA_via2_3_2200_440_1_5_410_410$1"
+          ]
+        },
+        "VIA_via3_4_2200_440_1_5_410_410": {
+          "shape_definitions": 7,
+          "instances": 0,
+          "content_sha256": "eae07446906a09c3fc92901212e3372ebafbb0f65f5d52fa15d48e2ca4ca7643",
+          "matching_output_cells": [
+            "VIA_via3_4_2200_440_1_5_410_410",
+            "VIA_via3_4_2200_440_1_5_410_410$1"
+          ]
+        },
+        "VIA_via4_5_2200_440_1_5_410_410": {
+          "shape_definitions": 7,
+          "instances": 0,
+          "content_sha256": "7533a185a92353c09b014e65a939e6048a972a1270b73701bbba6051e8678dc4",
+          "matching_output_cells": [
+            "VIA_via4_5_2200_440_1_5_410_410",
+            "VIA_via4_5_2200_440_1_5_410_410$1"
+          ]
+        },
+        "VIA_via4_5_480_2200_5_1_410_410": {
+          "shape_definitions": 7,
+          "instances": 0,
+          "content_sha256": "db650c12c9bddd26beecd4c1a961ad495053acb051b6486a266d1305eeb7b863",
+          "matching_output_cells": [
+            "VIA_via4_5_480_2200_5_1_410_410"
+          ]
+        },
+        "VIA_via5_6_1420_2200_2_1_840_840": {
+          "shape_definitions": 4,
+          "instances": 0,
+          "content_sha256": "66f611ce04bc2cf8d47968f46d33cbda95837b89669258026f5536a454c9411a",
+          "matching_output_cells": [
+            "VIA_via5_6_1420_2200_2_1_840_840"
+          ]
+        },
+        "VIA_via5_6_2200_440_1_2_840_840": {
+          "shape_definitions": 4,
+          "instances": 0,
+          "content_sha256": "f0e43219bb44540a86dd53d32ab22ad8e391595f986707fb382d854b95736f88",
+          "matching_output_cells": [
+            "VIA_via5_6_2200_440_1_2_840_840",
+            "VIA_via5_6_2200_440_1_2_840_840$1"
+          ]
+        },
+        "VIA_via6_7_2200_2200_1_1_1960_1960": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "68bfac631f04ab347103fd7df06e66a64af8951076ed4724e7ced4bacf999792",
+          "matching_output_cells": [
+            "VIA_via6_7_2200_2200_1_1_1960_1960",
+            "VIA_via6_7_2200_2200_1_1_1960_1960$1"
+          ]
+        },
+        "VIA_via6_7_2860_2200_1_1_1960_1960": {
+          "shape_definitions": 3,
+          "instances": 0,
+          "content_sha256": "9a0b960fcdfe8abeedb91038e60343412ab8f2ef84dfd36bb3498a4b3d1e4da2",
+          "matching_output_cells": [
+            "VIA_via6_7_2860_2200_1_1_1960_1960"
+          ]
+        },
+        "buf_x1": {
+          "shape_definitions": 40,
+          "instances": 0,
+          "content_sha256": "30825f48c88ebd497bc52c5bc01537180caa841e37453a255cbcac0c5475bbc1",
+          "matching_output_cells": [
+            "buf_x1",
+            "buf_x1$1"
+          ]
+        },
+        "buf_x1$1": {
+          "shape_definitions": 40,
+          "instances": 0,
+          "content_sha256": "30825f48c88ebd497bc52c5bc01537180caa841e37453a255cbcac0c5475bbc1",
+          "matching_output_cells": [
+            "buf_x1",
+            "buf_x1$1"
+          ]
+        },
+        "buf_x2": {
+          "shape_definitions": 46,
+          "instances": 0,
+          "content_sha256": "58ee79c660e005fc787bbb8c22c6f8518c216d16ac92cf6e74dd608125858e2a",
+          "matching_output_cells": [
+            "buf_x2",
+            "buf_x2$1"
+          ]
+        },
+        "buf_x2$1": {
+          "shape_definitions": 46,
+          "instances": 0,
+          "content_sha256": "58ee79c660e005fc787bbb8c22c6f8518c216d16ac92cf6e74dd608125858e2a",
+          "matching_output_cells": [
+            "buf_x2",
+            "buf_x2$1"
+          ]
+        },
+        "buf_x4": {
+          "shape_definitions": 54,
+          "instances": 0,
+          "content_sha256": "ba0ac86a4df3e4b9943fc5f82a9cc3866347d5bb05c576e01619c3e04e70e8db",
+          "matching_output_cells": [
+            "buf_x4",
+            "buf_x4$1"
+          ]
+        },
+        "buf_x4$1": {
+          "shape_definitions": 54,
+          "instances": 0,
+          "content_sha256": "ba0ac86a4df3e4b9943fc5f82a9cc3866347d5bb05c576e01619c3e04e70e8db",
+          "matching_output_cells": [
+            "buf_x4",
+            "buf_x4$1"
+          ]
+        },
+        "dff_x1": {
+          "shape_definitions": 144,
+          "instances": 0,
+          "content_sha256": "90fcb543d00e7205e8d327d1d53690345caf9050aaffe8d7ad25492df39bd989",
+          "matching_output_cells": [
+            "dff_x1",
+            "dff_x1$1"
+          ]
+        },
+        "dff_x1$1": {
+          "shape_definitions": 144,
+          "instances": 0,
+          "content_sha256": "90fcb543d00e7205e8d327d1d53690345caf9050aaffe8d7ad25492df39bd989",
+          "matching_output_cells": [
+            "dff_x1",
+            "dff_x1$1"
+          ]
+        },
+        "fill": {
+          "shape_definitions": 8,
+          "instances": 0,
+          "content_sha256": "50be0289efccb57a09dd9f99bfb10c03dfc03d63c688427ce5153d679e9f6e5e",
+          "matching_output_cells": [
+            "fill",
+            "fill$1"
+          ]
+        },
+        "fill$1": {
+          "shape_definitions": 8,
+          "instances": 0,
+          "content_sha256": "50be0289efccb57a09dd9f99bfb10c03dfc03d63c688427ce5153d679e9f6e5e",
+          "matching_output_cells": [
+            "fill",
+            "fill$1"
+          ]
+        },
+        "inv_x0": {
+          "shape_definitions": 33,
+          "instances": 0,
+          "content_sha256": "05edf764fe0e5070557d40e8df0744ff0954b5ff9271c8cebf763467bde11444",
+          "matching_output_cells": [
+            "inv_x0",
+            "inv_x0$1"
+          ]
+        },
+        "inv_x0$1": {
+          "shape_definitions": 33,
+          "instances": 0,
+          "content_sha256": "05edf764fe0e5070557d40e8df0744ff0954b5ff9271c8cebf763467bde11444",
+          "matching_output_cells": [
+            "inv_x0",
+            "inv_x0$1"
+          ]
+        },
+        "inv_x3": {
+          "shape_definitions": 49,
+          "instances": 0,
+          "content_sha256": "96d4a029f1dc2f52ccc13790b6191feb9df02316426b95f1e15467c5b985ea8e",
+          "matching_output_cells": [
+            "inv_x3",
+            "inv_x3$1"
+          ]
+        },
+        "inv_x3$1": {
+          "shape_definitions": 49,
+          "instances": 0,
+          "content_sha256": "96d4a029f1dc2f52ccc13790b6191feb9df02316426b95f1e15467c5b985ea8e",
+          "matching_output_cells": [
+            "inv_x3",
+            "inv_x3$1"
+          ]
+        },
+        "nand2_x0": {
+          "shape_definitions": 39,
+          "instances": 0,
+          "content_sha256": "36f45032b8e9dfa4e6aed35e723cd7162b28e3e86986768536141c65dc1c6971",
+          "matching_output_cells": [
+            "nand2_x0",
+            "nand2_x0$1"
+          ]
+        },
+        "nand2_x0$1": {
+          "shape_definitions": 39,
+          "instances": 0,
+          "content_sha256": "36f45032b8e9dfa4e6aed35e723cd7162b28e3e86986768536141c65dc1c6971",
+          "matching_output_cells": [
+            "nand2_x0",
+            "nand2_x0$1"
+          ]
+        },
+        "nor2_x0": {
+          "shape_definitions": 39,
+          "instances": 0,
+          "content_sha256": "00cbd8066ece7ed31394cd86e3379d205391bcc5f6383a5ff441ad6f5ad0885d",
+          "matching_output_cells": [
+            "nor2_x0",
+            "nor2_x0$1"
+          ]
+        },
+        "nor2_x0$1": {
+          "shape_definitions": 39,
+          "instances": 0,
+          "content_sha256": "00cbd8066ece7ed31394cd86e3379d205391bcc5f6383a5ff441ad6f5ad0885d",
+          "matching_output_cells": [
+            "nor2_x0",
+            "nor2_x0$1"
+          ]
+        },
+        "nsnrlatch_x1": {
+          "shape_definitions": 61,
+          "instances": 0,
+          "content_sha256": "248259e64c20b9e1e89fca1be441e0c76dc210009ace336ba6205c1131f11edf",
+          "matching_output_cells": [
+            "nsnrlatch_x1",
+            "nsnrlatch_x1$1"
+          ]
+        },
+        "nsnrlatch_x1$1": {
+          "shape_definitions": 61,
+          "instances": 0,
+          "content_sha256": "248259e64c20b9e1e89fca1be441e0c76dc210009ace336ba6205c1131f11edf",
+          "matching_output_cells": [
+            "nsnrlatch_x1",
+            "nsnrlatch_x1$1"
+          ]
+        },
+        "sg13g2_a21o_1": {
+          "shape_definitions": 72,
+          "instances": 0,
+          "content_sha256": "77b1ef9bee544f2edbf2afad22f90d8b53d5c3081e054e2f03f24574ec9e1a6d",
+          "matching_output_cells": [
+            "sg13g2_a21o_1",
+            "sg13g2_a21o_1$1"
+          ]
+        },
+        "sg13g2_a21o_2": {
+          "shape_definitions": 86,
+          "instances": 0,
+          "content_sha256": "ed39ff33b40bf82c1d4aafcd4bc2fab4d4fcb0aa3fbbc1e5cb3b28a968cf7741",
+          "matching_output_cells": [
+            "sg13g2_a21o_2$1"
+          ]
+        },
+        "sg13g2_a21oi_1": {
+          "shape_definitions": 53,
+          "instances": 0,
+          "content_sha256": "7ab9e02a2a78e45679e62e6de8cebf0f77602f4fef6e16d8c2c493074737e35d",
+          "matching_output_cells": [
+            "sg13g2_a21oi_1",
+            "sg13g2_a21oi_1$1"
+          ]
+        },
+        "sg13g2_a21oi_2": {
+          "shape_definitions": 77,
+          "instances": 0,
+          "content_sha256": "4e168f7fc3e1c17ecbe93d0c8898ff43bcc6a91e2b56bd1204449ac9c5ccde1c",
+          "matching_output_cells": [
+            "sg13g2_a21oi_2$1"
+          ]
+        },
+        "sg13g2_a221oi_1": {
+          "shape_definitions": 80,
+          "instances": 0,
+          "content_sha256": "5be0d279d9080b1bc549ed2cb9e3bbf947182864495413079ce1eca84e77e45c",
+          "matching_output_cells": [
+            "sg13g2_a221oi_1$1"
+          ]
+        },
+        "sg13g2_a22oi_1": {
+          "shape_definitions": 70,
+          "instances": 0,
+          "content_sha256": "230a9fee2b8ed4768891eedce61071b9b8b4bcbc1751335d276780cbfc6a222f",
+          "matching_output_cells": [
+            "sg13g2_a22oi_1$1"
+          ]
+        },
+        "sg13g2_and2_1": {
+          "shape_definitions": 61,
+          "instances": 0,
+          "content_sha256": "2f80742d63d3d811ec48158b10b049a6b68128e2be2c93610b3c47f914a8244a",
+          "matching_output_cells": [
+            "sg13g2_and2_1",
+            "sg13g2_and2_1$1"
+          ]
+        },
+        "sg13g2_and3_1": {
+          "shape_definitions": 81,
+          "instances": 0,
+          "content_sha256": "f9a06b1d93c72dac49d9c82257e1712de587429f6f61556e793dc9c7fa9ee02a",
+          "matching_output_cells": [
+            "sg13g2_and3_1$1"
+          ]
+        },
+        "sg13g2_and3_2": {
+          "shape_definitions": 80,
+          "instances": 0,
+          "content_sha256": "3318331ca8b7af12479e0a46de6b940cd69414846f0a9af46f484f573d424523",
+          "matching_output_cells": [
+            "sg13g2_and3_2$1"
+          ]
+        },
+        "sg13g2_and4_1": {
+          "shape_definitions": 75,
+          "instances": 0,
+          "content_sha256": "ae173ba102d164ed113e34beaf7f4d59f124e8c8046dc6e1c5d64cfbae3f9345",
+          "matching_output_cells": [
+            "sg13g2_and4_1$1"
+          ]
+        },
+        "sg13g2_antennanp": {
+          "shape_definitions": 38,
+          "instances": 0,
+          "content_sha256": "6234583f7b4b4f1c70359720a32b17437d3b7b47d24b5ea161c12a41faf9adfd",
+          "matching_output_cells": [
+            "sg13g2_antennanp",
+            "sg13g2_antennanp$1"
+          ]
+        },
+        "sg13g2_buf_1": {
+          "shape_definitions": 44,
+          "instances": 0,
+          "content_sha256": "b315d09071af8f5817c9abca52cf5ae36688d1f20740002215c8ba90bfbb2673",
+          "matching_output_cells": [
+            "sg13g2_buf_1",
+            "sg13g2_buf_1$1"
+          ]
+        },
+        "sg13g2_buf_16": {
+          "shape_definitions": 233,
+          "instances": 0,
+          "content_sha256": "6526fd13226886fb2e37876114c685efe6ebd9d569a07f9de9f0ddb1651989cf",
+          "matching_output_cells": [
+            "sg13g2_buf_16",
+            "sg13g2_buf_16$1"
+          ]
+        },
+        "sg13g2_buf_2": {
+          "shape_definitions": 58,
+          "instances": 0,
+          "content_sha256": "959fc99d59d6c523d10e82db67c1029c6510beeb3400385f9ebc8885545d9dcc",
+          "matching_output_cells": [
+            "sg13g2_buf_2$1"
+          ]
+        },
+        "sg13g2_buf_4": {
+          "shape_definitions": 85,
+          "instances": 0,
+          "content_sha256": "721d41d3f99661f6cb45eaf9c2c786872a1002fd7637455783b77e265658bd58",
+          "matching_output_cells": [
+            "sg13g2_buf_4$1"
+          ]
+        },
+        "sg13g2_buf_8": {
+          "shape_definitions": 137,
+          "instances": 0,
+          "content_sha256": "da5d11cea78c10f243bda93b42d50557a135b414f6644e234b3365db25efeaca",
+          "matching_output_cells": [
+            "sg13g2_buf_8",
+            "sg13g2_buf_8$1"
+          ]
+        },
+        "sg13g2_decap_4": {
+          "shape_definitions": 34,
+          "instances": 0,
+          "content_sha256": "45f5ce5ba2d52df8f7dee66d7515c7d16d963c468d853a37add8cd6979377f99",
+          "matching_output_cells": [
+            "sg13g2_decap_4",
+            "sg13g2_decap_4$1"
+          ]
+        },
+        "sg13g2_decap_8": {
+          "shape_definitions": 47,
+          "instances": 0,
+          "content_sha256": "a5c4271262881f6e74fab092e1b2f2ec09badc5a5b51b8a12ddcce80470feede",
+          "matching_output_cells": [
+            "sg13g2_decap_8",
+            "sg13g2_decap_8$1"
+          ]
+        },
+        "sg13g2_dfrbpq_1": {
+          "shape_definitions": 176,
+          "instances": 0,
+          "content_sha256": "335e3af252474943d7877dddcb0e462abfe989b6604751919d8a60094630edc9",
+          "matching_output_cells": [
+            "sg13g2_dfrbpq_1",
+            "sg13g2_dfrbpq_1$1"
+          ]
+        },
+        "sg13g2_fill_1": {
+          "shape_definitions": 18,
+          "instances": 0,
+          "content_sha256": "26bd01c9c3cca35b2ad82d352fb6596220600d1bfd68e622274a9b344e46c459",
+          "matching_output_cells": [
+            "sg13g2_fill_1",
+            "sg13g2_fill_1$1"
+          ]
+        },
+        "sg13g2_fill_2": {
+          "shape_definitions": 22,
+          "instances": 0,
+          "content_sha256": "3d1404290084282d6f90aa13aa904d3e0487d0f9b2150607e5446b28b7cb8663",
+          "matching_output_cells": [
+            "sg13g2_fill_2",
+            "sg13g2_fill_2$1"
+          ]
+        },
+        "sg13g2_inv_1": {
+          "shape_definitions": 44,
+          "instances": 0,
+          "content_sha256": "eeee6e3762f4573be7c5dce3ce4e0e2d19dac1d5e3806063826fe0d8b256cd80",
+          "matching_output_cells": [
+            "sg13g2_inv_1",
+            "sg13g2_inv_1$1"
+          ]
+        },
+        "sg13g2_inv_16": {
+          "shape_definitions": 177,
+          "instances": 0,
+          "content_sha256": "24f430687b5d0bcb868c080d024cf13b35142edaad31470a4ebb032f1167e6da",
+          "matching_output_cells": [
+            "sg13g2_inv_16$1"
+          ]
+        },
+        "sg13g2_inv_2": {
+          "shape_definitions": 53,
+          "instances": 0,
+          "content_sha256": "d1ebd6c70b852a0f98e5e0da4174cec4467deead71162c13e587db56d704cbec",
+          "matching_output_cells": [
+            "sg13g2_inv_2$1"
+          ]
+        },
+        "sg13g2_inv_4": {
+          "shape_definitions": 70,
+          "instances": 0,
+          "content_sha256": "12e9b34fbf9091d4a5cf0b3c51061dec61e81229c5718fe0da7b8c2fc9812e27",
+          "matching_output_cells": [
+            "sg13g2_inv_4$1"
+          ]
+        },
+        "sg13g2_inv_8": {
+          "shape_definitions": 107,
+          "instances": 0,
+          "content_sha256": "c980f2f096eea2ccee25e3292d511b0f52225c6360f96816ffe9a0ecc2f7eeee",
+          "matching_output_cells": [
+            "sg13g2_inv_8$1"
+          ]
+        },
+        "sg13g2_lgcp_1": {
+          "shape_definitions": 112,
+          "instances": 0,
+          "content_sha256": "d87427523215d094d4ae758b48d285263dacf43330342434cdad79c34a308bb4",
+          "matching_output_cells": [
+            "sg13g2_lgcp_1$1"
+          ]
+        },
+        "sg13g2_mux2_1": {
+          "shape_definitions": 98,
+          "instances": 0,
+          "content_sha256": "e5dd56138af280500529a764665a4b128b0773fc22b806bf9ed21775cc80b66d",
+          "matching_output_cells": [
+            "sg13g2_mux2_1",
+            "sg13g2_mux2_1$1"
+          ]
+        },
+        "sg13g2_mux4_1": {
+          "shape_definitions": 155,
+          "instances": 0,
+          "content_sha256": "1337e938935dfc7acfa5e9d5422bbcade947c9a1753d43a5cb4c4d272aa0de0f",
+          "matching_output_cells": [
+            "sg13g2_mux4_1$1"
+          ]
+        },
+        "sg13g2_nand2_1": {
+          "shape_definitions": 56,
+          "instances": 0,
+          "content_sha256": "52eaf064b1b13baa43227c2cd7a3a962257a9e7e8990bd2610ab780ffbaa152a",
+          "matching_output_cells": [
+            "sg13g2_nand2_1",
+            "sg13g2_nand2_1$1"
+          ]
+        },
+        "sg13g2_nand2_2": {
+          "shape_definitions": 67,
+          "instances": 0,
+          "content_sha256": "e2f40af38c5887d04132c20470841a94b387c64e347e562a2c3c341b71fbd383",
+          "matching_output_cells": [
+            "sg13g2_nand2_2$1"
+          ]
+        },
+        "sg13g2_nand2b_1": {
+          "shape_definitions": 61,
+          "instances": 0,
+          "content_sha256": "0eb0e56f3d4ebc558275efbfbb5c4ae46ed54ec001450efd0ec3d187b159b87f",
+          "matching_output_cells": [
+            "sg13g2_nand2b_1",
+            "sg13g2_nand2b_1$1"
+          ]
+        },
+        "sg13g2_nand3_1": {
+          "shape_definitions": 67,
+          "instances": 0,
+          "content_sha256": "dee4b36eba8872924b4f5065758bb4ba8304ce309388066cd2d38309ec0487aa",
+          "matching_output_cells": [
+            "sg13g2_nand3_1$1"
+          ]
+        },
+        "sg13g2_nand3b_1": {
+          "shape_definitions": 82,
+          "instances": 0,
+          "content_sha256": "f28eb7d88a908e16c835aa1119429d125128cd44e288511d07b8fb0405c2c341",
+          "matching_output_cells": [
+            "sg13g2_nand3b_1$1"
+          ]
+        },
+        "sg13g2_nand4_1": {
+          "shape_definitions": 66,
+          "instances": 0,
+          "content_sha256": "3a6d89d154b123002640a6489db763b81ba2cbb473325ca2208bfdf49f902fca",
+          "matching_output_cells": [
+            "sg13g2_nand4_1$1"
+          ]
+        },
+        "sg13g2_nor2_1": {
+          "shape_definitions": 55,
+          "instances": 0,
+          "content_sha256": "982168b516c80eda822d09bbf1b75b560be87d78c3d661005804aa4c7d856f7e",
+          "matching_output_cells": [
+            "sg13g2_nor2_1",
+            "sg13g2_nor2_1$1"
+          ]
+        },
+        "sg13g2_nor2_2": {
+          "shape_definitions": 115,
+          "instances": 0,
+          "content_sha256": "73d49cae59d4bfca7bfecdfb5a806cd47225afcccaa0bb62368d9229195d0c78",
+          "matching_output_cells": [
+            "sg13g2_nor2_2$1"
+          ]
+        },
+        "sg13g2_nor2b_1": {
+          "shape_definitions": 53,
+          "instances": 0,
+          "content_sha256": "f165c0fca47c0ab819518c0e744fca0cb87bee691cf7d9919e83d9f92f6703b1",
+          "matching_output_cells": [
+            "sg13g2_nor2b_1$1"
+          ]
+        },
+        "sg13g2_nor2b_2": {
+          "shape_definitions": 71,
+          "instances": 0,
+          "content_sha256": "3a7ab1883ebe47288a23b66d4f6bb6af6523a4bde483345f87ad2ce17c21bd38",
+          "matching_output_cells": [
+            "sg13g2_nor2b_2$1"
+          ]
+        },
+        "sg13g2_nor3_1": {
+          "shape_definitions": 65,
+          "instances": 0,
+          "content_sha256": "7579d19fa7f66d37d5f6f57984288cce240fbdb1f84d9ca10f3828823f02178a",
+          "matching_output_cells": [
+            "sg13g2_nor3_1$1"
+          ]
+        },
+        "sg13g2_nor3_2": {
+          "shape_definitions": 86,
+          "instances": 0,
+          "content_sha256": "08ee5bffa2433c99edfa8224456665cb7b7f39cb09d87484f38ec98af59000e9",
+          "matching_output_cells": [
+            "sg13g2_nor3_2$1"
+          ]
+        },
+        "sg13g2_nor4_1": {
+          "shape_definitions": 79,
+          "instances": 0,
+          "content_sha256": "2840db9419d8eeafa22296a02b14ce05c9ee9fe0cbabb40930399b0ede710430",
+          "matching_output_cells": [
+            "sg13g2_nor4_1$1"
+          ]
+        },
+        "sg13g2_nor4_2": {
+          "shape_definitions": 116,
+          "instances": 0,
+          "content_sha256": "a6f4b8fc9c5913670806045207cf1769b63b75bfad90dd47a2c53b01002115c0",
+          "matching_output_cells": [
+            "sg13g2_nor4_2$1"
+          ]
+        },
+        "sg13g2_o21ai_1": {
+          "shape_definitions": 60,
+          "instances": 0,
+          "content_sha256": "cb49477e6c841501e476482389463d89f7fb5e260cc1d8961bf8a2eae088d80d",
+          "matching_output_cells": [
+            "sg13g2_o21ai_1",
+            "sg13g2_o21ai_1$1"
+          ]
+        },
+        "sg13g2_or2_1": {
+          "shape_definitions": 58,
+          "instances": 0,
+          "content_sha256": "5b3fb7dd9006cb56db94ba31961ff807cb57d97c96aeb95ddb585ccd71ba8bdd",
+          "matching_output_cells": [
+            "sg13g2_or2_1",
+            "sg13g2_or2_1$1"
+          ]
+        },
+        "sg13g2_or3_1": {
+          "shape_definitions": 80,
+          "instances": 0,
+          "content_sha256": "e093f6202adc9de953da13d72701ad7b761b77402e52214e051635a9570d6be3",
+          "matching_output_cells": [
+            "sg13g2_or3_1$1"
+          ]
+        },
+        "sg13g2_or4_1": {
+          "shape_definitions": 87,
+          "instances": 0,
+          "content_sha256": "c45c88df031401cca8d29194a691b61236e626759672b24eb4904de61f267ddf",
+          "matching_output_cells": [
+            "sg13g2_or4_1$1"
+          ]
+        },
+        "sg13g2_tiehi": {
+          "shape_definitions": 47,
+          "instances": 0,
+          "content_sha256": "3c2e9d1d37c33cf29a6376842a4eff6e9775c032e05aab45c11553bbcee3028d",
+          "matching_output_cells": [
+            "sg13g2_tiehi",
+            "sg13g2_tiehi$1"
+          ]
+        },
+        "sg13g2_tielo": {
+          "shape_definitions": 48,
+          "instances": 0,
+          "content_sha256": "0dd57fe06b462cd4b0bd67d11f66b71c91c6e28c4c85fad6b4f19635562dbb7f",
+          "matching_output_cells": [
+            "sg13g2_tielo",
+            "sg13g2_tielo$1"
+          ]
+        },
+        "sg13g2_xnor2_1": {
+          "shape_definitions": 85,
+          "instances": 0,
+          "content_sha256": "6619ec2d780bdfb263dedb3c1002577d11731b667dc31544d4752be92f76425f",
+          "matching_output_cells": [
+            "sg13g2_xnor2_1",
+            "sg13g2_xnor2_1$1"
+          ]
+        },
+        "sg13g2_xor2_1": {
+          "shape_definitions": 72,
+          "instances": 0,
+          "content_sha256": "e3b491818e6ac0b1cbee738f5cd0e2ef0b8dea6355602672b0e6e71c7d8b2c7c",
+          "matching_output_cells": [
+            "sg13g2_xor2_1",
+            "sg13g2_xor2_1$1"
+          ]
+        },
+        "soc_top": {
+          "shape_definitions": 1044701,
+          "instances": 1284311,
+          "content_sha256": "27649a312900dd0f868bc33ea189b0c7b59ce7d4e1422efe17bf9110835b99f6",
+          "matching_output_cells": [
+            "soc_top"
+          ]
+        },
+        "sg13g2_Clamp_N2N2D": {
+          "shape_definitions": 1183,
+          "instances": 0,
+          "content_sha256": "ed087ade63d08b817dedc8b59e1fa00aba9ae39ca7bc1545a316b09b27e590c9",
+          "matching_output_cells": [
+            "sg13g2_Clamp_N2N2D"
+          ]
+        },
+        "sg13g2_Clamp_N43N43D4R": {
+          "shape_definitions": 8320,
+          "instances": 0,
+          "content_sha256": "b7a1c35f76e1e6911f0c50efea7925455176cfb547b0181c88ead339fd6d3727",
+          "matching_output_cells": [
+            "sg13g2_Clamp_N43N43D4R"
+          ]
+        },
+        "sg13g2_Clamp_P2N2D": {
+          "shape_definitions": 1499,
+          "instances": 0,
+          "content_sha256": "ed636c2df5d38445b708edc19a6046685a013eb0891689f4c311737af6e1d5ad",
+          "matching_output_cells": [
+            "sg13g2_Clamp_P2N2D"
+          ]
+        },
+        "sg13g2_Corner": {
+          "shape_definitions": 172612,
+          "instances": 0,
+          "content_sha256": "182c8aadd35d073cb8d237fda76f42a6c203c1f0122f2a39efcbf952f644e322",
+          "matching_output_cells": [
+            "sg13g2_Corner"
+          ]
+        },
+        "sg13g2_DCNDiode": {
+          "shape_definitions": 1787,
+          "instances": 0,
+          "content_sha256": "b3f5644c5a4c0eab3b145ae1a748a455d12e395a63af685a9acb50c8861f6639",
+          "matching_output_cells": [
+            "sg13g2_DCNDiode"
+          ]
+        },
+        "sg13g2_DCPDiode": {
+          "shape_definitions": 1789,
+          "instances": 0,
+          "content_sha256": "a5f4f789d424da2a6da4cf8e2f0c286fd3c0f03e1ec36cfeac20a9faf25fb372",
+          "matching_output_cells": [
+            "sg13g2_DCPDiode"
+          ]
+        },
+        "sg13g2_Filler10000": {
+          "shape_definitions": 53134,
+          "instances": 0,
+          "content_sha256": "7ab1608d3da54107a69516c511c7f269206d801b7e4db912f610e37d9864ac93",
+          "matching_output_cells": [
+            "sg13g2_Filler10000"
+          ]
+        },
+        "sg13g2_Filler200": {
+          "shape_definitions": 366,
+          "instances": 0,
+          "content_sha256": "6a515e04ee5680ef8660d187a0ad5222f544a6dbaa496795ed674ed57d8511a2",
+          "matching_output_cells": [
+            "sg13g2_Filler200"
+          ]
+        },
+        "sg13g2_Filler2000": {
+          "shape_definitions": 9197,
+          "instances": 0,
+          "content_sha256": "4d60ac9db9808d7214a990a8d7798839b7a438943e88e20b516b45d743a11c2a",
+          "matching_output_cells": [
+            "sg13g2_Filler2000"
+          ]
+        },
+        "sg13g2_Filler400": {
+          "shape_definitions": 1502,
+          "instances": 0,
+          "content_sha256": "8f2c5cd769becb0aa24d92c6928e1f42471488c5dadb55cb1a87a3821e9dbc59",
+          "matching_output_cells": [
+            "sg13g2_Filler400"
+          ]
+        },
+        "sg13g2_Filler4000": {
+          "shape_definitions": 19042,
+          "instances": 0,
+          "content_sha256": "494d336bb94d7aae1519d7935b694224d3bc87b052de97b30ba1c39616a7586f",
+          "matching_output_cells": [
+            "sg13g2_Filler4000"
+          ]
+        },
+        "sg13g2_GateDecode": {
+          "shape_definitions": 48,
+          "instances": 6,
+          "content_sha256": "2e643984832e45bc5d263020bfe6e8c7afc436796390c7f11f8200adba5b90d4",
+          "matching_output_cells": [
+            "sg13g2_GateDecode"
+          ]
+        },
+        "sg13g2_GateLevelUpInv": {
+          "shape_definitions": 18,
+          "instances": 2,
+          "content_sha256": "63b13d555ad838f7cccc39c6629c885cf42ec98f855e94c7c01ac1f60ba6987b",
+          "matching_output_cells": [
+            "sg13g2_GateLevelUpInv"
+          ]
+        },
+        "sg13g2_IOPadIOVdd": {
+          "shape_definitions": 25812,
+          "instances": 3,
+          "content_sha256": "393d9faff9420a1d534f0c6cee5928e2ceb079758de5b41b97d18ec8bc40ca45",
+          "matching_output_cells": [
+            "sg13g2_IOPadIOVdd"
+          ]
+        },
+        "sg13g2_IOPadIOVss": {
+          "shape_definitions": 97080,
+          "instances": 2,
+          "content_sha256": "10c18ee8d185279f59ce14f733e4515cb3c5bf76d47fa9f3c540b985cb082c0d",
+          "matching_output_cells": [
+            "sg13g2_IOPadIOVss"
+          ]
+        },
+        "sg13g2_IOPadIn": {
+          "shape_definitions": 83015,
+          "instances": 3,
+          "content_sha256": "905307a5f5fba006d34e1f354a733e373ff43c2cbae2fbddba46fbf4ff6af84b",
+          "matching_output_cells": [
+            "sg13g2_IOPadIn"
+          ]
+        },
+        "sg13g2_IOPadInOut4mA": {
+          "shape_definitions": 50557,
+          "instances": 6,
+          "content_sha256": "383dcdaffe90e1b2a64bf3cd87abe5d2f4fb0555953ddd7947e92e38d9605904",
+          "matching_output_cells": [
+            "sg13g2_IOPadInOut4mA"
+          ]
+        },
+        "sg13g2_IOPadOut4mA": {
+          "shape_definitions": 50586,
+          "instances": 5,
+          "content_sha256": "d0ad631f46e978901d4ae7f58e16a1a33510c1eeb80dbc2a99814ff82caadb3d",
+          "matching_output_cells": [
+            "sg13g2_IOPadOut4mA"
+          ]
+        },
+        "sg13g2_IOPadVdd": {
+          "shape_definitions": 25420,
+          "instances": 3,
+          "content_sha256": "7fc0c63c24964e93dc37329a2ea03baa32d9f9bb0537e5a63d8d6f55bc7471b3",
+          "matching_output_cells": [
+            "sg13g2_IOPadVdd"
+          ]
+        },
+        "sg13g2_IOPadVss": {
+          "shape_definitions": 87276,
+          "instances": 2,
+          "content_sha256": "cc92a66b48a903356cec369f65192550f731197b0ea905258152b1cff993aeab",
+          "matching_output_cells": [
+            "sg13g2_IOPadVss"
+          ]
+        },
+        "sg13g2_LevelDown": {
+          "shape_definitions": 164,
+          "instances": 1,
+          "content_sha256": "881e2215bcfcac08968db80b41f73945e2373c59cc973872b3a49b8f535a0d6d",
+          "matching_output_cells": [
+            "sg13g2_LevelDown"
+          ]
+        },
+        "sg13g2_LevelUp": {
+          "shape_definitions": 266,
+          "instances": 0,
+          "content_sha256": "e3a7adbcd9b516766a27591bc4b6feb9359e752e2b01c50f0ffe7feb2a168763",
+          "matching_output_cells": [
+            "sg13g2_LevelUp"
+          ]
+        },
+        "sg13g2_LevelUpInv": {
+          "shape_definitions": 272,
+          "instances": 0,
+          "content_sha256": "56e25355df018d81d25b097bd456c1f89b136ea0179eed2ddd9a52660a6c24ba",
+          "matching_output_cells": [
+            "sg13g2_LevelUpInv"
+          ]
+        },
+        "sg13g2_RCClampInverter": {
+          "shape_definitions": 3989,
+          "instances": 0,
+          "content_sha256": "617b0b790b99f1a2c67cddd9cf08dc388ab22b930bb75d0a55b255a5b3f0fc8b",
+          "matching_output_cells": [
+            "sg13g2_RCClampInverter"
+          ]
+        },
+        "sg13g2_RCClampResistor": {
+          "shape_definitions": 242,
+          "instances": 0,
+          "content_sha256": "758f59dd686c57ef41210626029b297945f310b7a19ed795c43f38db2db3b608",
+          "matching_output_cells": [
+            "sg13g2_RCClampResistor"
+          ]
+        },
+        "sg13g2_SecondaryProtection": {
+          "shape_definitions": 242,
+          "instances": 0,
+          "content_sha256": "f5602273768920836c860d9980777caa72c353e569586a8edc928a78ab8520c4",
+          "matching_output_cells": [
+            "sg13g2_SecondaryProtection"
+          ]
+        },
+        "sg13g2_io_inv_x1": {
+          "shape_definitions": 52,
+          "instances": 0,
+          "content_sha256": "c3a779db430b1621bae389c282cb989cf02647c1f5ff1861409b639420adb829",
+          "matching_output_cells": [
+            "sg13g2_io_inv_x1"
+          ]
+        },
+        "sg13g2_io_nand2_x1": {
+          "shape_definitions": 64,
+          "instances": 0,
+          "content_sha256": "3f2be836a9f54952e64a956e1509ee76ae04772f297094214c33de9c928f753e",
+          "matching_output_cells": [
+            "sg13g2_io_nand2_x1"
+          ]
+        },
+        "sg13g2_io_nor2_x1": {
+          "shape_definitions": 64,
+          "instances": 0,
+          "content_sha256": "d190e67bca9076f2194f3c535aad4e9e4b4dd580e035d366575ab85c1be10944",
+          "matching_output_cells": [
+            "sg13g2_io_nor2_x1"
+          ]
+        },
+        "sg13g2_io_tie": {
+          "shape_definitions": 20,
+          "instances": 0,
+          "content_sha256": "102eab5eb30b49cd16d6c77e84b84ff0150ce2d1067a398bbe5cd8cbc12d6249",
+          "matching_output_cells": [
+            "sg13g2_io_tie"
+          ]
+        }
+      },
+      "core_instances": 1,
+      "io_instances": 314,
+      "core_parameters": {
+        "CORE_REQ_REG": 0,
+        "CORE_WB_STAGE": 0
+      },
+      "scope": "Every reachable selected prefill-core and native IO cell retains exact shapes/text and child instances modulo consistent cell renaming. Parent contains exact core origin and314native ring placements. New parent interconnect not accepted by this check. Requires full-chip fill/density/DRC/LVS, full timing and product qualification.",
+      "physical_drc_lvs_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "final-power.json": {
+      "status": "PASS_FINAL_ODB_CORE_RING_BINDINGS_AND_FOUR_PG_NETS",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v9/final/state.json": "0996ee829ebe0d8429e396b3f6bcc6956221f10b25e39939c2e612d75485da61",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/run-v8/38-odb-cellfrequencytables/nssoc_chip.odb": "375a2256d5ee6d0ca7ae3675d2927279391da2badfa9569bd835b21e25d5c4cc",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/final-power-v3.log": "ab7663cf055f14add9491a6ef3534f32cd7390a0aba512e15bb6088942d35896",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/audit-final-power-v3.tcl": "8ae80d13c7aac4a037d47817e18adea8188f1df66ac24ccfd27a290e7ff4d3de",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/placements.json": "62c65d4d23a400373a7db1ab2779f13b77332e47c8567e63b7e8c5e51b219893"
+      },
+      "io_instances": 314,
+      "core_pg_ports": 2,
+      "ring_pg_ports": 1256,
+      "rails": [
+        "VDD",
+        "VSS",
+        "IOVDD",
+        "IOVSS"
+      ],
+      "scope": "Required final OpenDB terminal bindings and native grid connectivity. Not extracted full-chip GDS connectivity, current/ESD/IR/EM or LVS.",
+      "lvs_accepted": false,
+      "manufacturing_approval": false
+    },
+    "router-and-parent-sta.json": {
+      "status": "COMPLETED_ROUTER_AND_OPAQUE_CORE_PARENT_STA_ONLY",
+      "state_sha256": "0996ee829ebe0d8429e396b3f6bcc6956221f10b25e39939c2e612d75485da61",
+      "metrics": {
+        "antenna__violating__nets": 0,
+        "antenna__violating__pins": 0,
+        "route__antenna_violation__count": 0,
+        "antenna_diodes_count": 16,
+        "design__instance__count__class:antenna_cell": 166,
+        "design__instance__area__class:antenna_cell": 903.571,
+        "route__drc_errors__iter:0": 0,
+        "route__drc_errors__iter:1": 4,
+        "route__drc_errors__iter:2": 0,
+        "route__drc_errors__iter:3": 1,
+        "route__drc_errors__iter:4": 1,
+        "route__drc_errors__iter:5": 0,
+        "route__drc_errors": 0,
+        "timing__hold__ws__corner:nom_fast_1p32V_m40C": 0.11537249260286134,
+        "timing__setup__ws__corner:nom_fast_1p32V_m40C": 17.45127824976444,
+        "timing__hold__ws__corner:nom_typ_1p20V_25C": 0.2974459651663075,
+        "timing__setup__ws__corner:nom_typ_1p20V_25C": 16.20000357491824,
+        "timing__hold__ws__corner:nom_slow_1p08V_125C": 0.6234991588395016,
+        "timing__setup__ws__corner:nom_slow_1p08V_125C": 14.148362881734933,
+        "timing__hold__ws": 0.11537249260286134,
+        "timing__setup__ws": 14.148362881734933
+      },
+      "timing_accepted": false,
+      "manufacturing_approval": false,
+      "scope": "No core Liberty, full-chip SRAM arcs, IO delay contract or CDC qualification. Numerical parent slack is not final-chip acceptance."
+    },
+    "io-native-reader-audit.json": {
+      "status": "PASS_ALL64_TAPS_29_RESISTORS_VALUES_NODES_AND_FIVE_FAULTS",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/audit_io_reader.py": "e3874a65483bb04a6772b9d90b2b937b31a4c811b0e2354fc2a852a5411ea785",
+        "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/io-native-reader-v8.json": "a13f0c7dc759745068a1e4db65f0ac16482e83ead6e7a880b323cc1fe80845e8",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/read_io_cdl_v8.rb": "5fa08904e4d203c2e50ade887475c4bc10e49c032d70cedbdf821575b7236153",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/sg13g2_io-reader.cdl": "225f23dd9bc82b8c7b509ebd53cee3b71c011a6db49cae1f19ad78e39ec14002",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/io-cdl-reader-conversion.json": "3d2d2aea30bfd045f7e794f84c6270498da356998f480a3106eef4c6373313c1",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba"
+      },
+      "taps": 64,
+      "resistors": 29,
+      "negative_controls": [
+        [
+          "taps",
+          "terms"
+        ],
+        [
+          "taps",
+          "a"
+        ],
+        [
+          "taps",
+          "p"
+        ],
+        [
+          "resistors",
+          "terms"
+        ],
+        [
+          "resistors",
+          "w"
+        ]
+      ],
+      "scope": "Original vendor model annotations and node identities preserved through the native reader. Independent native GDS LVS still FAILS; this is only conversion verification.",
+      "lvs_accepted": false,
+      "manufacturing_approval": false
+    },
+    "native-io-lvs-all/result.json": {
+      "status": "FAIL_SEVEN_CELL_CAMPAIGN_COMPLETED",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/check_native_io_all.py": "d358637ec54c54fdb121b59c4dfe18ec701c2a614c7d57b29690d44c92123936",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/sg13g2_io-reader.cdl": "225f23dd9bc82b8c7b509ebd53cee3b71c011a6db49cae1f19ad78e39ec14002",
+        "${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIn",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadIn",
+                "schematic": "SG13G2_IOPADIN",
+                "status": "Skipped",
+                "layout_devices_recursive": 16,
+                "schematic_devices_recursive": 15
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 8,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/lvs.lvsdb.gz": {
+                "bytes": 77697,
+                "sha256": "d17fe74f6ffb6b80a3c2f1bc3444f266e501eb55d7f65490a41fb35971c13134"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIn/deck.log": {
+                "bytes": 37258,
+                "sha256": "61213f7886cb28309163087c171f12cc860736266dd25bc9254b04ff67e5915e"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadOut4mA",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadOut4mA",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadOut4mA",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 5,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N2N2D",
+                "schematic": "SG13G2_CLAMP_N2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_Clamp_P2N2D",
+                "schematic": "SG13G2_CLAMP_P2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_GateLevelUpInv",
+                "schematic": "SG13G2_GATELEVELUPINV",
+                "status": "Skipped",
+                "layout_devices_recursive": 18,
+                "schematic_devices_recursive": 18
+              },
+              {
+                "layout": "sg13g2_IOPadOut4mA",
+                "schematic": "SG13G2_IOPADOUT4MA",
+                "status": "Skipped",
+                "layout_devices_recursive": 32,
+                "schematic_devices_recursive": 30
+              },
+              {
+                "layout": "sg13g2_LevelUpInv",
+                "schematic": "SG13G2_LEVELUPINV",
+                "status": "NoMatch",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/lvs.lvsdb.gz": {
+                "bytes": 64210,
+                "sha256": "f6d3452812a1c6c999232f3688f4f6a2f41cc73f06c5615795523a14f1d98590"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadOut4mA/deck.log": {
+                "bytes": 37276,
+                "sha256": "6a12826a622917d69c5c09604782aae7c2a52837b97d266213631c18ee543e4e"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadInOut4mA",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadInOut4mA",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadInOut4mA",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 10,
+              "Skipped": 3
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N2N2D",
+                "schematic": "SG13G2_CLAMP_N2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_Clamp_P2N2D",
+                "schematic": "SG13G2_CLAMP_P2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_GateDecode",
+                "schematic": "SG13G2_GATEDECODE",
+                "status": "Skipped",
+                "layout_devices_recursive": 32,
+                "schematic_devices_recursive": 32
+              },
+              {
+                "layout": "sg13g2_IOPadInOut4mA",
+                "schematic": "SG13G2_IOPADINOUT4MA",
+                "status": "Skipped",
+                "layout_devices_recursive": 54,
+                "schematic_devices_recursive": 53
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 8,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_LevelUp",
+                "schematic": "SG13G2_LEVELUP",
+                "status": "NoMatch",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 4
+              },
+              {
+                "layout": "sg13g2_io_inv_x1",
+                "schematic": "SG13G2_IO_INV_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_io_nand2_x1",
+                "schematic": "SG13G2_IO_NAND2_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 5,
+                "schematic_devices_recursive": 5
+              },
+              {
+                "layout": "sg13g2_io_nor2_x1",
+                "schematic": "SG13G2_IO_NOR2_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 5,
+                "schematic_devices_recursive": 5
+              },
+              {
+                "layout": "sg13g2_io_tie",
+                "schematic": "SG13G2_IO_TIE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/lvs.lvsdb.gz": {
+                "bytes": 69748,
+                "sha256": "16da5bd2fa4fc162211a180fba640a333cae8a02e07a296dc928521bf52fe518"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadInOut4mA/deck.log": {
+                "bytes": 37286,
+                "sha256": "cccd0d4df3d7a54213fa9b4121bebb9a15edde8c34d376ff60b00f8871be3b39"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadVdd",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadVdd",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadVdd",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Mismatch": 1,
+              "NoMatch": 2,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": null,
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "Mismatch",
+                "layout_devices_recursive": 0,
+                "schematic_devices_recursive": 1
+              },
+              {
+                "layout": "sg13g2_Clamp_N43N43D4R",
+                "schematic": "SG13G2_CLAMP_N43N43D4R",
+                "status": "NoMatch",
+                "layout_devices_recursive": 24,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_IOPadVdd",
+                "schematic": "SG13G2_IOPADVDD",
+                "status": "Skipped",
+                "layout_devices_recursive": 30,
+                "schematic_devices_recursive": 10
+              },
+              {
+                "layout": "sg13g2_RCClampInverter",
+                "schematic": "SG13G2_RCCLAMPINVERTER",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/lvs.lvsdb.gz": {
+                "bytes": 48374,
+                "sha256": "0b3aa1c547cccd17b71d41ce7d10b68098b70cdb26e72ee25525fb066b9946ab"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVdd/deck.log": {
+                "bytes": 37270,
+                "sha256": "3bef1c840877becb58e431ddaaedc8b3cab2573619cc1333f0f28d6c49ea0d1b"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadVss",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadVss",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadVss",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 2,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadVss",
+                "schematic": "SG13G2_IOPADVSS",
+                "status": "Skipped",
+                "layout_devices_recursive": 8,
+                "schematic_devices_recursive": 6
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/lvs.lvsdb.gz": {
+                "bytes": 79697,
+                "sha256": "31bffbe4900afe6881fa3b5b51daff64fa629ac328b5ee15ca139ad14d3f609b"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadVss/deck.log": {
+                "bytes": 37258,
+                "sha256": "7cc25e0e18009bad0eb6f787bff38278068028a4a51766a13fcc4d161b830049"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadIOVdd",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIOVdd",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIOVdd",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Mismatch": 1,
+              "NoMatch": 2,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": null,
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "Mismatch",
+                "layout_devices_recursive": 0,
+                "schematic_devices_recursive": 1
+              },
+              {
+                "layout": "sg13g2_Clamp_N43N43D4R",
+                "schematic": "SG13G2_CLAMP_N43N43D4R",
+                "status": "NoMatch",
+                "layout_devices_recursive": 24,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_IOPadIOVdd",
+                "schematic": "SG13G2_IOPADIOVDD",
+                "status": "Skipped",
+                "layout_devices_recursive": 30,
+                "schematic_devices_recursive": 10
+              },
+              {
+                "layout": "sg13g2_RCClampInverter",
+                "schematic": "SG13G2_RCCLAMPINVERTER",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/lvs.lvsdb.gz": {
+                "bytes": 52438,
+                "sha256": "f7ba0ff75d0113cbec3dc99ecfb2446dd559d26b9aa924b9cc5c5de8d210d777"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVdd/deck.log": {
+                "bytes": 37274,
+                "sha256": "7578562c3f32c2a574797bfe1595eb52d4d7b9c156ffdf417b90fed4183dba99"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadIOVss",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${HOME}/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIOVss",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIOVss",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_IOPadIOVss",
+                "schematic": "SG13G2_IOPADIOVSS",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/lvs.lvsdb.gz": {
+                "bytes": 93118,
+                "sha256": "ff12af5ec2dcefddda6891e0eaafa4c1a9bde701750db890a9f5c8b377e76be4"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/sg13g2_IOPadIOVss/deck.log": {
+                "bytes": 37266,
+                "sha256": "542e43f82ff69ead3ff2d4f56bb32c0d1c057a5f1cee3953222c768c8f736c59"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Unmodified native IO masters against independently normalized vendor CDL; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false
+    },
+    "upstream-input-lvs/result.json": {
+      "status": "ERROR_OR_NATIVE_IO_LVS_MISMATCH",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/check_upstream_input.py": "c856f813c40e0d4c1da714e803f45fec3c41b4b2c5c9ff2c1e5907e6aac4cf3c",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-reader.cdl": "a0650d9870c62a41266eb99e85a3092ca49663dff88fa38c815143089250eb3e",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-io-1a29eb4-verified.gds": "4281a855377b6a1ca46356e9391258dc14e8efc3b8051a65befc0fe9db3c7825",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-io-1a29eb4-verified.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIn",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadIn",
+                "schematic": "SG13G2_IOPADIN",
+                "status": "Skipped",
+                "layout_devices_recursive": 22,
+                "schematic_devices_recursive": 21
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 14,
+                "schematic_devices_recursive": 15
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz": {
+                "bytes": 79117,
+                "sha256": "6d320720fd94e02b7d871c82c9beeab3dd39c79f8c680c41a042c4000e045aec"
+              },
+              "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/sg13g2_IOPadIn/deck.log": {
+                "bytes": 37234,
+                "sha256": "22c69aa7fbd3337a7c45c057129a0b823b273d0a0f6818cd81f64e2e9f7bf4f0"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Unmodified native IO masters against independently normalized vendor CDL; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false,
+      "error": "AssertionError('sg13g2_IOPadIn')"
+    },
+    "upstream-io-download.json": {
+      "status": "PASS_GITHUB_BLOB_SIZE_AND_ID",
+      "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/1a29eb4980d520d9ce7273593dc1599310cb81a9/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds",
+      "ref": "1a29eb4980d520d9ce7273593dc1599310cb81a9",
+      "bytes": 71424000,
+      "blob_sha1": "6cbc6d5fd5a90932e8a96ea6493085767e844b55",
+      "sha256": "4281a855377b6a1ca46356e9391258dc14e8efc3b8051a65befc0fe9db3c7825",
+      "previous_attempt": "upstream-io-1a29eb4.gds: gh binary transform reported short source buffer; not trusted"
+    },
+    "upstream-head.json": {
+      "date": "2026-09-01T13:31:34Z",
+      "sha": "5e6d592e4002946a4616f798c357f0f3c06cf3b6"
+    }
+  },
+  "input_sha256": {
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/result-v9.json": "05ea06acf7cffe5a48025ee601bdcbb88ec88aff8657cbfe5d8bcdfb1c42f8a4",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/streamout-recovery-binding.json": "34a27578793e4fe14c9cb2081332e1e275dcf6478294a56663e5e3ef151d948d",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-compaction.json": "735b333e74f865be76cb94aa0e8c9b4004bc8ab61aebdecbd0a46fcd0afc6d9b",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/prefill-replay.json": "c34b97085e3a0d3cec765857ab3278232f91f6fd8ebfcd3fc24e5e0b91d06771",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/abstract-controls/result.json": "9f708083b50c9510c755fd338f67830cb012ebcb2f7f1f455d0ec899232199a0",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/geometry-method-controls.json": "16def754b800da84d0e7ae7d3f7a8bc7545763af0f7f3db3136586e2a2188cd2",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/assembly-geometry.json": "c266c77177a827bcfb76f70f375278caa3f52931a56984ba12e173e9c208ae52",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/final-power.json": "1ebffa0cd85cd539d7183ef176f7014b785744f3ea51e1484fedce1504625f69",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/router-and-parent-sta.json": "b11721f3a7240a1fca0d0f57f7988da333679df25536b85abb4f3808b1d6522d",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/io-native-reader-audit.json": "0a72725130a5684cbd4d3344e62695b68228fbe295627a39bf1a20e94628b772",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/native-io-lvs-all/result.json": "cbe4fc9975aaf39f73ec9367fc2fa1cd0fc266742b50fdf278453fd08e1e3e59",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-input-lvs/result.json": "3d2e7be29e8e2b90eb887e568bae2e05f0400441bf80ba79f47e54022ed296e6",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-io-download.json": "ce515ae009ce64955d598fbffa7dba017e6f70c705d38f3e589a947eb5e0cfed",
+    "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/upstream-head.json": "bd9ee3f77ee38aaf5078b4b3c080408aa2a661ba908795cd2f3eec2bbde5c141"
+  },
+  "source_tests": {
+    "passed": 48,
+    "skipped": 0,
+    "log_sha256": "7e98eeb6ab9f942d0bdb2845c24cd3eebb1c6b2a1f218f13617dd58903a29810",
+    "reuse_files": 1471
+  },
+  "full_chip_lvs_accepted": false,
+  "full_chip_drc_accepted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "followup_method_publication": {
+    "status": "PASS_PUBLISHED_BYTES_ONLY",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "release_id": 397554124,
+    "asset": {
+      "name": "core-io-followup-methods-and-checks-20260927.tar.xz",
+      "bytes": 78696,
+      "sha256": "971d30cf3e7b2fe80b7bf6f89dd5829d6e6f445f0fa7e01797fb239667b3ae66",
+      "members": 28,
+      "source_commit": "35ca4bf17af684016240b31175a7b42f0972ddaf",
+      "recorded_utc": "2026-09-27T10:50:42.036807+00:00",
+      "local_roundtrip_verified": true,
+      "scope": "Completed delivery checks and active BEOL/pipeline method snapshots only; no new physical/timing acceptance.",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/core-io-followup-methods-and-checks-20260927.tar.xz",
+      "asset_id": 592723606,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  }
+}

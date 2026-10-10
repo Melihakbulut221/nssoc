@@ -1,0 +1,472 @@
+{
+  "date": "2026-09-24",
+  "status": "MASK_AND_BEHAVIORAL_COMPATIBILITY_PASS_PHYSICAL_INTEGRATION_OPEN",
+  "scope": "The actual SoC RAM uses uniform8-bit write masks. This allows a byte-masked independent SRAM adapter under the BIST-disabled native profile; arbitrary per-bit vendor requests are not supported. This is not macro transistor timing or full-chip LVS acceptance.",
+  "mask_contract": {
+    "status": "PASS_WITHIN_BEHAVIORAL_AND_MASK_SCOPE",
+    "scope": "Byte-uniform SoC mask proof and native behavioral adapter contract only. BIST disabled. Generated model corrected to write current address; transistor equivalence, Liberty characterization and SoC physical integration not established.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/run.py": "90d6c06b3c9e9aa2fa2ccf8d69916e9865d59d9c3e7134c09b5bb97d57d0e861",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x64-strapped/candidate.v": "c42e3be088b907d6cd3f44db80be674ee0e4d5784544b2f053709d7ec1c54316",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_props.v": "7c988862a7ea6921ab36d0c5e902e13b35ba1d54ab1b247db07703c26b18e70a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v": "6017008cc967a42b6eba79ce143447c9f3d15e936ebb8ea454c7ef6e8432228f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_mask_codec.v": "aeb060d0d970df423ad9d7bb9a078096e7a71e7881c86b70527ad69d065323c8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.v": "d6a475cae8e5df857d39db6a724ed2ba68e6d4625517ea9a1a96858dd1232cca",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.v": "b3474bfea9560ae738725033ee6fdfc617e27c79809062bcab4aefa3947e5001",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.v": "bb5c96b651610b9e86cadef4ce571a0d0a983b9c5b82cb15ada0ad43660d5bb5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+    },
+    "tool_paths": {
+      "iverilog": "/home/hasanmelih/.local/bin/iverilog",
+      "vvp": "/home/hasanmelih/.local/bin/vvp",
+      "yosys": "/home/hasanmelih/.local/bin/yosys"
+    },
+    "cases": [
+      {
+        "name": "mask_harden0",
+        "command": [
+          "yosys",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden0.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.11552589602069929,
+        "log_sha256": "20f990291b0d752a2695f65104538df100fc0b666cdb599d10f40feab36b1aaa",
+        "expected_proof_success": true
+      },
+      {
+        "name": "mask_harden1",
+        "command": [
+          "yosys",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden1.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.4655224080197513,
+        "log_sha256": "dd448b2852ff4c0ed38703c1f3d9096fe2047a6b0c458ae06869fee79c7f892a",
+        "expected_proof_success": true
+      },
+      {
+        "name": "mask_wrong_byte",
+        "command": [
+          "yosys",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_wrong_byte.ys"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 0.46535946597578004,
+        "log_sha256": "e8b560acf9777f1d7fb36ac80654b63e7f9269251972f23322208e6593734e63",
+        "expected_proof_success": false
+      },
+      {
+        "name": "adapter-compile",
+        "command": [
+          "iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.016486873995745555,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "adapter",
+        "command": [
+          "vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.vvp"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.6681423069967423,
+        "log_sha256": "11dcdbe5224615fc7f1743f4b3537039b148aa1a7d5596067d27d4ccb036ee41",
+        "expected_contract_success": true,
+        "log": "NATIVE_BYTE_ADAPTER_PASS checks=146498\n/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v:42: $finish called at 732490000 (1ps)\n"
+      },
+      {
+        "name": "original_address_model-compile",
+        "command": [
+          "iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/original_address_model.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x64-strapped/candidate.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.01614974602125585,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "original_address_model",
+        "command": [
+          "vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/original_address_model.vvp"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 0.016016349021811038,
+        "log_sha256": "3ad1a184424c037e51da82adea22d5c5876f842fb2f90ce78b2751b305706a6c",
+        "expected_contract_success": false,
+        "log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v:16: NATIVE_CONTRACT_FAIL check=4 addr=  73 MEN/WEN/REN=111 got=xxxxxxxxxxxxxxxx ref=ece185f54010dcb5\n       Time: 25000  Scope: tb.compare\n"
+      },
+      {
+        "name": "wrong_bank-compile",
+        "command": [
+          "iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.016452634998131543,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "wrong_bank",
+        "command": [
+          "vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.vvp"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 0.016142292006406933,
+        "log_sha256": "ce651dce0481769698838999fe839b3ee3b3b1d29f2ec5f357f6642ede00bbec",
+        "expected_contract_success": false,
+        "log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v:16: NATIVE_CONTRACT_FAIL check=2 addr=   0 MEN/WEN/REN=111 got=xxxxxxxxxxxxxxxx ref=a53c87d29e614bf0\n       Time: 15000  Scope: tb.compare\n"
+      },
+      {
+        "name": "no_hold-compile",
+        "command": [
+          "iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.016310437000356615,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "no_hold",
+        "command": [
+          "vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.vvp"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 0.1147139790118672,
+        "log_sha256": "75acfea70dcb98b3b2526f9fe2ae9e830daf8979091c1d0e5abd1198a4584cfc",
+        "expected_contract_success": false,
+        "log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v:16: NATIVE_CONTRACT_FAIL check=8194 addr=   0 MEN/WEN/REN=110 got=b716c5b4ecebe5f0 ref=57f4d43dbe97db3f\n       Time: 40975000  Scope: tb.compare\n"
+      },
+      {
+        "name": "wrong_byte-compile",
+        "command": [
+          "iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.01628742497996427,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "wrong_byte",
+        "command": [
+          "vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.vvp"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 0.11478722997708246,
+        "log_sha256": "b0580edc837475281cf29c34b2995128e351f7d2c220ff8a741454a71d5a3116",
+        "expected_contract_success": false,
+        "log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v:16: NATIVE_CONTRACT_FAIL check=8198 addr=   0 MEN/WEN/REN=101 got=d33c87d29e614bf0 ref=a53c87d29e614b61\n       Time: 40995000  Scope: tb.compare\n"
+      }
+    ],
+    "inputs_unchanged": true
+  },
+  "soc_bus_parity": [
+    {
+      "name": "h0-w8192-r0",
+      "configuration": {
+        "harden": 0,
+        "words": 8192,
+        "rdreg": 0
+      },
+      "cycles": 103012,
+      "reads": 26429,
+      "writes": 9966,
+      "result_sha256": "80fd88df01c849203fb003df5ddf90e238023165bb143ad3cbe9b66eac0c363a",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    },
+    {
+      "name": "h0-w8192-r1",
+      "configuration": {
+        "harden": 0,
+        "words": 8192,
+        "rdreg": 1
+      },
+      "cycles": 103012,
+      "reads": 26429,
+      "writes": 9966,
+      "result_sha256": "851713a0a67b03d4d6b0b201e20d33978c121bc3e8bd6b89bffa22b2cc1280ec",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    },
+    {
+      "name": "h0-w16384-r0",
+      "configuration": {
+        "harden": 0,
+        "words": 16384,
+        "rdreg": 0
+      },
+      "cycles": 201316,
+      "reads": 51005,
+      "writes": 18158,
+      "result_sha256": "291b8a588b63f3e4efd53b13b87e5fb0d3219c61e97d544f370c3f8d1490fb43",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    },
+    {
+      "name": "h0-w16384-r1",
+      "configuration": {
+        "harden": 0,
+        "words": 16384,
+        "rdreg": 1
+      },
+      "cycles": 201316,
+      "reads": 51005,
+      "writes": 18158,
+      "result_sha256": "d0419afcfb5e05aa66e1003cdfbbb6c958eb15d64f239adfe42332e58f12c8b4",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    },
+    {
+      "name": "h1-w8192-r0",
+      "configuration": {
+        "harden": 1,
+        "words": 8192,
+        "rdreg": 0
+      },
+      "cycles": 103012,
+      "reads": 26429,
+      "writes": 9966,
+      "result_sha256": "dddd0cea6708373d47e19dda240eb994d999368b5572c59d1a22861013730b39",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    },
+    {
+      "name": "h1-w8192-r1",
+      "configuration": {
+        "harden": 1,
+        "words": 8192,
+        "rdreg": 1
+      },
+      "cycles": 103012,
+      "reads": 26429,
+      "writes": 9966,
+      "result_sha256": "4b3a971791665b915b2a8769d1c7871819791bb7e27189f023d6947696a16c00",
+      "source_sha256": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622"
+      }
+    }
+  ],
+  "raw_result_sha256": "37ae171da92ecc1f221f98ac4becb04d32a551d26a828ad81a466477ccbd28ce",
+  "limitations": [
+    "All adapter SRAM clocks currently run continuously; no low-power clock-gating claim.",
+    "The generated behavior model is explicitly corrected from old-address writes to current-address writes. No transistor equivalence is inferred from changing a model.",
+    "The adapter preserves held read output and vendor simultaneous read/write behavior without adding bus latency in the tested profiles.",
+    "The six real SoC codec/bus tests include all addresses, bank boundaries, byte enables, foreground/background scrub contention and reset retention, but are fault-free. SEU campaigns and full formal sequential equivalence remain separate.",
+    "BIST remains tied off, A_DLY high, and runtime guards reject nonuniform masks or unsupported controls.",
+    "Independent macro PVT/PEX timing, Liberty, density, power, full layout integration and complete-chip LVS remain open.",
+    "The first SoC parity launch used host Icarus12 and was rejected before elaboration by the existing version guard. The successful retry uses the existing OSS CAD Suite Icarus14; the guard was not weakened."
+  ],
+  "archive": {
+    "path": "docs/evidence/byte-mask-native-adapter-20260924.tar.xz",
+    "sha256": "8b7bef3d0d149233ba72f03f3e6bd6e5c27998ba6c136b725357fae70c755f73",
+    "bytes": 51624,
+    "members": {
+      "docs/evidence/byte-mask-native-adapter-20260924-NOTICES.txt": "77817b20aa66ea33949d42dfae88d12d1ddd5e2bc3bce4d85570f26f6a5b75d7",
+      "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+      "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+      "hw/soc/flow/sim_mem_parity.py": "da5c79a45355a201d8eedf6fb6b81c6351adfa8cb08dade57d17e314ce27db64",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.log": "11dcdbe5224615fc7f1743f4b3537039b148aa1a7d5596067d27d4ccb036ee41",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/adapter.v": "39d46c3bf9dd0c786b1bbffbc9ef9f74e875136a7b49a935c4e603b16972afeb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/current_address_model.v": "e50d8336b449a541a02fb3a61b375fbb73e6678cf8273e9745af00ba1ffd2061",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden0.log": "20f990291b0d752a2695f65104538df100fc0b666cdb599d10f40feab36b1aaa",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden0.ys": "9a06cbe431cdc7098badf55c5662865c046b4dec7c5796f4d75c9b486302d8c3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden1.log": "dd448b2852ff4c0ed38703c1f3d9096fe2047a6b0c458ae06869fee79c7f892a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_harden1.ys": "22415a8cb294602ca503d52558b5f1b003e3ec51663c8888b0e4999390597972",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_props.v": "7c988862a7ea6921ab36d0c5e902e13b35ba1d54ab1b247db07703c26b18e70a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_wrong_byte.log": "e8b560acf9777f1d7fb36ac80654b63e7f9269251972f23322208e6593734e63",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/mask_wrong_byte.ys": "edc0219e914c9abafe0afc9898d7a5cee1208aa585ac96b29a9b8ab13b1c774f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/native_profile.v": "15620bf8430bfcee72457cb433be640c4399d56d0b4ce29c0876ba31b8eb0622",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.log": "75acfea70dcb98b3b2526f9fe2ae9e830daf8979091c1d0e5abd1198a4584cfc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/no_hold.v": "b3474bfea9560ae738725033ee6fdfc617e27c79809062bcab4aefa3947e5001",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/original_address_model-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/original_address_model.log": "3ad1a184424c037e51da82adea22d5c5876f842fb2f90ce78b2751b305706a6c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/result.json": "8afb996be84c7e45ac0c6295e42d80d884f2bbd45735755374c43e9766da17c8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/run.py": "90d6c06b3c9e9aa2fa2ccf8d69916e9865d59d9c3e7134c09b5bb97d57d0e861",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/run_soc_parity.py": "55830ac4dfdaeb16723fe25ccefb2932090656b67cff9768e53295f3e7db1ddf",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/run_soc_parity_v2.py": "5f71fbcbf1a6057075e5c8b710512e93a088134c20335db7bb3df86346375875",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/sim_research_parity.py": "dac1f84785a242433396b708f181e196ba6599a2ce8547e20cb7382ae42aa838",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity/h0-w8192-r0.log": "f3ce9e93d943fc39b3fa9d2b20661bbcb4242f48ad33b83f998bdd2f9e9959ae",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity/result.json": "b9020ecbb23803d8a12e5eb42718751d30c76e8420cdcd66e7733cefd62ef3a3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/result.json": "291b8a588b63f3e4efd53b13b87e5fb0d3219c61e97d544f370c3f8d1490fb43",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/results.xml": "c915188429e1fbe476e1790744e5a13401e5f5b939c9a42af21d29bcb023caa1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r0.log": "e9c0d99bce9aab7441e54e36766bc0d236bf7632474efe2a36216730839449d7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/result.json": "d0419afcfb5e05aa66e1003cdfbbb6c958eb15d64f239adfe42332e58f12c8b4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/results.xml": "85131873241cf90dc06feae7ad361166c79a20f45cfa5418172a282092632a9d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w16384-r1.log": "b1ffe27a46f2e010ede9b81ecec9b8fbdb70fab17eac78244f2a4a1994203978",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/result.json": "80fd88df01c849203fb003df5ddf90e238023165bb143ad3cbe9b66eac0c363a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/results.xml": "ff09592f1394cc01ba31a6f6f9b5e343c6da936d17c2ede605c25050566f03b1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r0.log": "79c9072aab0b7eda7dcba843b6eea7b92f1210cc3be6bb386a862a2a73e7551c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/result.json": "851713a0a67b03d4d6b0b201e20d33978c121bc3e8bd6b89bffa22b2cc1280ec",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/results.xml": "5dce06eed8733aa17a5776c1511d45e0ae9c77d6d9447064b6f17bb7016f5b7e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h0-w8192-r1.log": "fd3741bff260a66303e665315d788fd167cccfe4168e7a7832ccd469326ea1d9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/result.json": "dddd0cea6708373d47e19dda240eb994d999368b5572c59d1a22861013730b39",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/results.xml": "cdf4c32da844d9f9a30ba587d0489f5d36b0f8e82aecca165ee5310c125ff0d0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r0.log": "53248e114a13f5cff16c96e63795054f5c952145959e43fd023a8a56a01d333f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/inputs.json": "1867935fbd7592de7f19d2db991eb40d0948435fcf91e2a752be3fb187456ca5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/result.json": "4b3a971791665b915b2a8769d1c7871819791bb7e27189f023d6947696a16c00",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/results.xml": "e938b4446ce702311c508ab21d6f35cf8aaeff310426879915f8d01494d16dae",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/soc_mem_array.v": "b2bd37162e861680793bd6d6d34a5986052a476864a372e8726fa4712f0ff6dd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/soc_mem_macro.v": "7ab3fbc347359df6664408e3e4324b00c1ad4dbc01f97ba393354dee45783be0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/h1-w8192-r1.log": "d6cdf17cab4ab205dbfe149e949f84b906a636a80d006b6dd78670b42672f0c6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/soc-parity-v2/result.json": "37ae171da92ecc1f221f98ac4becb04d32a551d26a828ad81a466477ccbd28ce",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/tb.v": "6017008cc967a42b6eba79ce143447c9f3d15e936ebb8ea454c7ef6e8432228f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/vendor_reference.v": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.log": "ce651dce0481769698838999fe839b3ee3b3b1d29f2ec5f357f6642ede00bbec",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_bank.v": "d6a475cae8e5df857d39db6a724ed2ba68e6d4625517ea9a1a96858dd1232cca",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.log": "b0580edc837475281cf29c34b2995128e351f7d2c220ff8a741454a71d5a3116",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_byte.v": "bb5c96b651610b9e86cadef4ce571a0d0a983b9c5b82cb15ada0ad43660d5bb5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/byte-mask-native-contract/wrong_mask_codec.v": "aeb060d0d970df423ad9d7bb9a078096e7a71e7881c86b70527ad69d065323c8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_byte_mask_contract.py": "4cd3857e36d54a74406ecccd40a6997cee0ea4979f286cf4748dcfd1f7fbe193",
+      "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+      "hw/soc/tb/cocotb/tb_soc_mem_parity.v": "5681b85d4ce5069ecfb4d035ce39dbc0b9cd308dfef1f396bf880209b4eb1117",
+      "hw/soc/tb/cocotb/test_soc_mem_parity.py": "6ab75c53693e9116aaf3d5bba2a06462cb94d725fddedf81d70006b1d1b3978e"
+    }
+  }
+}

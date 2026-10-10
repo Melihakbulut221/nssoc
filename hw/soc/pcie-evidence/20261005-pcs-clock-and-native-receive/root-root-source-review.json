@@ -1,0 +1,34 @@
+{
+  "status": "PASS_BOUNDED_INDEPENDENT_SOURCE_REVIEW",
+  "sources": {
+    "scripts/generate_pcie_crc_candidates_v3.py": {
+      "bytes": 4639,
+      "sha256": "ad19629a09a9fbd54060abf59a5ad3cb76d813ea706b6d1295341b975c763b4e"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v3.v": {
+      "bytes": 175748,
+      "sha256": "ea9c978b14ce0b5d764cb87cdf82ce1e76aa2a83d1ed19eaf97f74aa800b2abb"
+    },
+    "scripts/replay_pcie_gen3_dllp_consumer_v4_4g_v1.py": {
+      "bytes": 10890,
+      "sha256": "63a7cdd72d4d0e4fb5a3b070b8e4a8af7485ba0cc2d22f303067a431c5e04075"
+    }
+  },
+  "findings": [
+    "CRC direct transform matrix uses independent input symbols and balanced XOR-only expressions; old parser word transposition unchanged.",
+    "Carry-prefix and accepted-STP-suffix selection preserves LOOK verdict before same-word new seed; arbitrary saved DLLP CRC used for word0, later DLLP ends require previous-word SDP.",
+    "Separate4GiB replay command normalizes back exactly to preserved original map command; source/PDK/runtime/bench pins checked before and after. All six case identities/counts checked; no synthesis, SDF, clock or DUT gate changed."
+  ],
+  "root_resource_controls": {
+    "log": {
+      "bytes": 100,
+      "sha256": "6b111628704cd64732adc0cc44c6f2a08ddd2a17e465fb329c0cd7f44fa96c59"
+    },
+    "passed": 15,
+    "failed": 0
+  },
+  "limitations": [
+    "Source review is not complete native functional equivalence or protocol/timing acceptance.",
+    "Integrity-v3 tests are still being improved to eliminate unobservable mutation cases; freeze/capture completion is pending."
+  ]
+}

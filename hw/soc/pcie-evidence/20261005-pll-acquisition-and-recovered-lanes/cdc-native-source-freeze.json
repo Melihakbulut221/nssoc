@@ -1,0 +1,75 @@
+{
+  "status": "FROZEN_AFTER_12_NATIVE_METHOD_CONTROLS_PASS",
+  "sources": {
+    "scripts/check_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 12590,
+      "sha256": "637ba1a61ea77cd069ccc91bee25aa4dd5b1eb74b6800f1901e9443c89a593bd"
+    },
+    "sw/tests/test_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 7639,
+      "sha256": "6f5f389f677bf876799d20321fb2f762078330cf020e54f8536fc016c0f2bd95"
+    }
+  },
+  "frozen_component_inputs": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": {
+      "bytes": 5777,
+      "sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735"
+    },
+    "hw/soc/ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v": {
+      "bytes": 34468,
+      "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+    },
+    "scripts/check_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 7770,
+      "sha256": "f8201a9fdfc9da0135c79c79e85a01b2ef5c2560f59c9a1eaf8fc6d08a9aca43"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 10919,
+      "sha256": "232ddf45d651b7299f57afae0710ee1c81aad1b4ec5d37e03edffd2e60225c44"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_block_cdc_v1": {
+      "bytes": 1286,
+      "sha256": "8f561225f6224c3ebad1a7b020d749772ddf29aea02599715a032004c42ae036"
+    },
+    "sw/tests/test_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 5052,
+      "sha256": "e6771923820e544cb7d5ec20f57485051ee0b0376261aa8bd069d20a8e693f3f"
+    },
+    "sw/tests/test_pcie_gen3_block_cdc_v1_lifecycle.py": {
+      "bytes": 3874,
+      "sha256": "578f1067917b04ad12c9fc9a6b96d327ff983015020b0500461dfbd7b81d2bff"
+    }
+  },
+  "controls": {
+    "capture": "/dev/shm/nssoc-block-cdc-native-v1-controls01",
+    "pytest_count": 12,
+    "log": {
+      "bytes": 100,
+      "sha256": "ea8306c65a6734db6bd9113b5546f2f7ef85eb7f018c489a7234a60b473b1876"
+    },
+    "scope": "Guard and actual process-lifetime controls. No native CDC map or gate simulation yet."
+  },
+  "pending_native": {
+    "ram_entries": 32,
+    "prefetch_entries": 2,
+    "exact_cases": [
+      "asynchronous_metadata_and_drift",
+      "fast_reader_full_rate_and_many_wraps",
+      "held_output_and_bounded_pressure",
+      "exact_ram_prefetch_capacity_overflow_and_restart",
+      "either_domain_reset_with_held_output",
+      "stopped_clock_reset_and_restart",
+      "alignment_loss_and_illegal_length_fail_closed"
+    ],
+    "ABC": "strash; balance -x; &get -n; &nf; &put",
+    "entry_free_bytes": 1073741824,
+    "continuous_floor": 553648128,
+    "AS": 2147483648,
+    "one_cpu": true,
+    "elapsed_watchdog": false
+  },
+  "limitations": [
+    "Native functional replay will not qualify metastability, Gray-bus physical constraints, reset recovery/removal or physical CDC timing.",
+    "No change to frozen RTL, FIFO, seven-case oracle or acceptance gates."
+  ]
+}

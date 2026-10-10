@@ -1,0 +1,138 @@
+{
+  "status": "FIXED_SHALLOW_CHECKOUT_HISTORY_FOR_EXACT_PRODUCER_VERIFICATION",
+  "failed_run_preserved": 37028744145,
+  "failed_source_commit": "81cdcb2d65dfb37de651734644bd2999b1bb596c",
+  "root_verified_native_failure": "q.verify_outputs -> artifact.git_bytes -> git show b4387d7dc2436f0b223be17f93310b883c7344c1:scripts/run_cloud_alu_prefix.py exited128 because Actions checkout was shallow",
+  "root_verified_cloud_tests_passed": 53,
+  "change": ".github/workflows/timing-alu-boot-trace.yml checkout fetch-depth:0",
+  "hardware_and_runner_and_tests_unchanged": true,
+  "prior_validation": {
+    "bytes": 16720,
+    "sha256": "e86103a797017eef0f0a7cd67f68d35efec4e89c5b2cf24eb8d02b9dff38523d"
+  },
+  "methods": {
+    "scripts/run_cloud_alu_boot_trace.py": {
+      "bytes": 20123,
+      "sha256": "21279939742cf28fd95855767f89bb784f4b1e36532e12959bc588291a3bf2c5"
+    },
+    "hw/soc/tb/alu_boot_trace.v": {
+      "bytes": 5176,
+      "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+    },
+    "sw/tests/test_alu_boot_trace.py": {
+      "bytes": 11516,
+      "sha256": "b200832516b91e32bc732005cecc867dc45d48cd847f2cc910e05c92bae0a3a0"
+    },
+    ".github/workflows/timing-alu-boot-trace.yml": {
+      "bytes": 2566,
+      "sha256": "858be750d2debc859142b5838a8abb5745ee36e4a64ac7d3c63d2618355dcf70"
+    }
+  },
+  "historical_producer_commit": "b4387d7dc2436f0b223be17f93310b883c7344c1",
+  "historical_git_method_blobs_reproduced": {
+    "scripts/run_cloud_alu_prefix.py": {
+      "bytes": 14684,
+      "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+    },
+    "scripts/prepare_alu_prefix.py": {
+      "bytes": 3824,
+      "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+    },
+    "scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "scripts/bootstrap_oss.py": {
+      "bytes": 4879,
+      "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+    },
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    },
+    "docs/evidence/timing-cloud-input-20260930.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    ".github/workflows/timing-alu-prefix.yml": {
+      "bytes": 2101,
+      "sha256": "cba2429906174d105e4b44f79a948f692af5e594d782c96da30b5a30b7ca552f"
+    }
+  },
+  "actionlint": "PASS",
+  "full_native_replay_run_locally": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "root_failed_preparation_review": {
+    "status": "BOTH_NATIVE_PREPARATIONS_FAILED_BEFORE_SIMULATION_VERIFIED",
+    "run_id": 37028744145,
+    "source": "81cdcb2d65dfb37de651734644bd2999b1bb596c",
+    "failed_log": {
+      "bytes": 17762,
+      "sha256": "40b0023f17919f7382fafc4155578acf02493d23a16176e09a034f6895e3dea5"
+    },
+    "cases": [
+      {
+        "artifact": {
+          "id": 11236881257,
+          "node_id": "MDg6QXJ0aWZhY3QxMTIzNjg4MTI1Nw==",
+          "name": "alu-boot-trace-final-original-1",
+          "size_in_bytes": 291226,
+          "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11236881257",
+          "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11236881257/zip",
+          "expired": false,
+          "digest": "sha256:b10b9cb3b76b1d8a192baa91e390e926abae27b4bfc33674a78d2ecc0cbd39e8",
+          "created_at": "2026-10-02T15:42:05Z",
+          "updated_at": "2026-10-02T15:42:05Z",
+          "expires_at": "2026-11-01T15:42:04Z",
+          "workflow_run": {
+            "id": 37028744145,
+            "repository_id": 1364721142,
+            "head_repository_id": 1364721142,
+            "head_branch": "codex/complete-open-work",
+            "head_sha": "81cdcb2d65dfb37de651734644bd2999b1bb596c"
+          }
+        },
+        "result": {
+          "bytes": 4531,
+          "sha256": "fd605d616f62dcc9166d66e0bdb821a149e182327d5a0531e31016a4d3498a82"
+        },
+        "verified_outputs": 12,
+        "methods": 10,
+        "error": "CalledProcessError: Command '['git', '-C', '/home/runner/work/nssoc/nssoc', 'show', 'b4387d7dc2436f0b223be17f93310b883c7344c1:scripts/run_cloud_alu_prefix.py']' returned non-zero exit status 128.",
+        "no_full_chip_execution": true
+      },
+      {
+        "artifact": {
+          "id": 11235973780,
+          "node_id": "MDg6QXJ0aWZhY3QxMTIzNTk3Mzc4MA==",
+          "name": "alu-boot-trace-final-candidate-1",
+          "size_in_bytes": 291226,
+          "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11235973780",
+          "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11235973780/zip",
+          "expired": false,
+          "digest": "sha256:dd71e3e9e20630cd2a27c8ab3ac1bd2a78de0bed19c934df66e5d83502b3acf1",
+          "created_at": "2026-10-02T15:42:08Z",
+          "updated_at": "2026-10-02T15:42:08Z",
+          "expires_at": "2026-11-01T15:42:07Z",
+          "workflow_run": {
+            "id": 37028744145,
+            "repository_id": 1364721142,
+            "head_repository_id": 1364721142,
+            "head_branch": "codex/complete-open-work",
+            "head_sha": "81cdcb2d65dfb37de651734644bd2999b1bb596c"
+          }
+        },
+        "result": {
+          "bytes": 4531,
+          "sha256": "fd605d616f62dcc9166d66e0bdb821a149e182327d5a0531e31016a4d3498a82"
+        },
+        "verified_outputs": 12,
+        "methods": 10,
+        "error": "CalledProcessError: Command '['git', '-C', '/home/runner/work/nssoc/nssoc', 'show', 'b4387d7dc2436f0b223be17f93310b883c7344c1:scripts/run_cloud_alu_prefix.py']' returned non-zero exit status 128.",
+        "no_full_chip_execution": true
+      }
+    ]
+  }
+}

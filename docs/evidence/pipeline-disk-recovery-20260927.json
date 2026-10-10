@@ -1,0 +1,110 @@
+{
+  "status": "PIPELINE_ROUTED_RECOVERY_QUEUED_AFTER_DISK_FULL",
+  "scope": "Pipeline1/1 geometry distinct from BEOL-tested core0/0 assembly. Router/antenna/connectivity are intermediate checks, not foundry DRC, transistor LVS or final STA.",
+  "producer_failure": {
+    "status": "ERROR",
+    "scope": "Resource-serialized fresh pipeline layout after source-bound functional tests.",
+    "command": [
+      "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "python",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/flow.py",
+      "--flow",
+      "PipelinedCorePhysical",
+      "--manual-pdk",
+      "--pdk-root",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root",
+      "--pdk",
+      "ihp-sg13g2",
+      "--force-run-dir",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/run",
+      "--with-initial-state",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/state.json",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/config.json"
+    ],
+    "input_sha256": {
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/run.py": "80465de264608084d22f0b6a6dabe0518f5582bd2ad7d50f9a15183f02b96611",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/flow.py": "0f4b0142c2d109f1c76ae0cbffc3dbe6f2c3a80b0016dad970dd143c64179c14",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/repair.tcl": "84879f842c47176f228c4cb7127cf89f07798508df24289b14c8235aa2700381",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/config.json": "b760dffbe680ecadf5480a4d6a2415450a0d69fe884edb4ab449ad24c8dc5b3b",
+      "${REPOSITORY}/hw/soc/out/timing-pipeline-20260927/state.json": "18a554d1486cc03f3a628918ea2241d53cb3cd07de6e07c7f082762302f24398",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/pipeline-mbist-audit.json": "22c89c3839c8db64308316d65610c998fc6fc309d7edc3303f858c8e1029ac00",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/replacement-map-pipeline/result.json": "aa4b7d51326f0b06109a1a71867fca216ab9f739d32798aec6247c3e3e11236f",
+      "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "${REPOSITORY}/hw/soc/out/sram-closure-20260926/wide-spacing-repair-v2/SP6TSRAM512x64.gds": "54906e0f9ff1c368faa773a151e9bc335fad8b558c07978d28ee86589e88a045",
+      "${REPOSITORY}/hw/soc/out/sram-closure-20260926/repaired-macro-abstracts-v3/SP6TSRAM512x64-valid/SP6TSRAM512x64.lef": "a691b8e195e320d12649aabc47a956f083d0f9180bdf3f6ef3997d301d1ed1d6",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/independent_bb.v": "d113e5d672bf584a08338a77bf8a0c1c238ed600949180455bc9a551c9709a64",
+      "${REPOSITORY}/hw/soc/out/sram-closure-20260926/wide-spacing-repair-v2/DP8TSRAMDP256x16.gds": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45",
+      "${REPOSITORY}/hw/soc/out/sram-closure-20260926/repaired-macro-abstracts-v3/DP8TSRAMDP256x16-valid/DP8TSRAMDP256x16.lef": "3863d5723b3ace8a3589a9af56fac15db8b94265ea6f1d650744e3d9d5abade7",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/pdn_metal4_top2.tcl": "6fbe2a69e13f0dd52fd40f7e8839dc5e5a8f142500595835bc7d1a7cfad1d151",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x64-filled/reference.spice": "3543bd2a3f810c3db984c20d612b5d31b46e4581496b20b56194646acd47cebf",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+      "${REPOSITORY}/hw/soc/sta/soc_interfaces_external_irq.sdc": "78ce832a94cc18fd7956ddabb136d00827047903f83d420ac52658f222869ca8",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/replacement-map-pipeline/soc_top.netlist.v": "13dd615dabe769c4c2809dfb1e4b2e182f55c265256aea0f279e4d31c8005e48",
+      "${REPOSITORY}/hw/soc/sta/ibex_tieoffs.sdc": "38373a76c8f66baed4dfda4a763e9bc72a2eed568ce685c2531a53657d063772",
+      "${REPOSITORY}/hw/soc/sta/soc_top_qspi_io.sdc": "985772749a6cbd356205dace27dc1686d244c85f56aec64e552cc8d772e95894",
+      "${REPOSITORY}/hw/soc/sta/soc_top_reset_cut.sdc": "8af883b51fd238a44cc86bbd859dc3a787e756a624f0d217556be458ee55a9e7",
+      "${REPOSITORY}/hw/soc/sta/soc_interfaces.sdc": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec"
+    },
+    "source_parameters": {
+      "CORE_REQ_REG": 1,
+      "CORE_WB_STAGE": 1,
+      "BranchTargetALU": 1,
+      "SYNPRE": 1
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "prior_candidate_status": "ROUTE_OR_STA_ERROR",
+    "returncode": 120,
+    "elapsed_seconds": 34344.484244961
+  },
+  "completed_fill_state_sha256": "1d29c751152598d5c2a25e5d3606754bc925be0d968f1f9022802d62391f1938",
+  "completed_route_metrics": {
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "design__disconnected_pin__count": 0
+  },
+  "continuation_snapshot": {
+    "status": "WAITING_FOR_VERIFIED_PUBLIC_ARCHIVE",
+    "publisher_pid": 1925625,
+    "publisher_birth": "48190839",
+    "scope": "Do not reclaim until archive and both public download channels are byte verified. Then resume unchanged pipeline from completed stage40, followed by source-bound equation check.",
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "recorded": "2026-09-27T20:28:28.307258+03:00"
+  },
+  "method_archive": {
+    "status": "PASS_PUBLISHED_BYTES_ONLY",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "release_id": 397554124,
+    "asset": {
+      "name": "chip-beol-completed-native-reports-20260927.tar.xz",
+      "bytes": 137976,
+      "sha256": "1d89b46f34d3dd0114646ea16c85ced3caabcd00511976b6e8e80f1a68950b66",
+      "members": 41,
+      "source_commit": "058d4489c5e56c6d7fca2cf6516770d58febed19",
+      "recorded_utc": "2026-09-27T17:29:06.778189+00:00",
+      "local_roundtrip_verified": true,
+      "scope": "Completed117-category pre-fill chip BEOL PASS; separate pipeline disk failure and queued recovery, not fullchip/finaltiming acceptance.",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-beol-completed-native-reports-20260927.tar.xz",
+      "asset_id": 593407764,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "large_archive_local_identity": {
+    "name": "chip-beol-complete-and-routing-recovery-20260927.tar.xz",
+    "bytes": 274553944,
+    "sha256": "627c9fdf5d9d4c4efd2ba0f628e2db11f420e22b42e761ee2d6835035353ad8a",
+    "members": 352,
+    "source_commit": "058d4489c5e56c6d7fca2cf6516770d58febed19",
+    "recorded_utc": "2026-09-27T17:21:30.034213+00:00",
+    "local_roundtrip_verified": true,
+    "scope": "117-category pre-fill chip BEOL pass; separate routed pipeline recovery checkpoint, no final timing/full chip signoff."
+  },
+  "large_archive_public_roundtrips_complete": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

@@ -59,15 +59,16 @@ from cocotb.triggers import RisingEdge, Timer
 _REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(_REPO / "sw"))
 from golden.memmap_gen import CORE_IRQS, REGIONS  # noqa: E402
+from peripheral_registers import CLINT as _REG_OFFSETS
 
 BASE, SIZE = REGIONS["CLINT"][0], REGIONS["CLINT"][1]
 
 # The standard CLINT layout. Offsets within the region.
-MSIP = 0x0000
-MTIMECMPL = 0x4000
-MTIMECMPH = 0x4004
-MTIMEL = 0xBFF8
-MTIMEH = 0xBFFC
+MSIP = _REG_OFFSETS['MSIP']
+MTIMECMPL = _REG_OFFSETS['MTIMECMPL']
+MTIMECMPH = _REG_OFFSETS['MTIMECMPH']
+MTIMEL = _REG_OFFSETS['MTIMEL']
+MTIMEH = _REG_OFFSETS['MTIMEH']
 IMPLEMENTED = (MSIP, MTIMECMPL, MTIMECMPH, MTIMEL, MTIMEH)
 
 CLK_NS = 10

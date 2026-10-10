@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+VENV_BIN := $(abspath $(dir $(THIS_MK))/../../../.venv/bin)
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+else
+PILOT_RTL := $(abspath ../../../rtl)
+ROOT := $(abspath ../../../..)
+export PYTHONPATH := $(ROOT)/sw:$(PYTHONPATH)
+VERILOG_SOURCES = $(addprefix $(PILOT_RTL)/,tt_um_melihakbulut_nssoc.v pilot_top.v lif_core.v aer_fifo.v tmr_voter.v secded_enc.v secded_dec.v)
+TOPLEVEL = tt_um_melihakbulut_nssoc
+COCOTB_TEST_MODULES = test_pilotlink
+COMPILE_ARGS += -I$(PILOT_RTL) -DPILOT_N_NEURONS=8 -DPILOT_N_AXONS=8
+COMPILE_ARGS += -DPILOT_EVQ_IN_DEPTH=4 -DPILOT_EVQ_OUT_DEPTH=4
+SIM_BUILD ?= sim_build_pilotlink
+COCOTB_RESULTS_FILE ?= results_pilotlink.xml
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

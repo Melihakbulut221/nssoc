@@ -1,0 +1,179 @@
+{
+  "date": "2026-09-23",
+  "status": "PARTIAL: true segment-based global-route estimates have zero electrical/negative-hold violations; slow setup still fails, extracted verification pending",
+  "scope": "Original CPU routed baseline with electrical/hold ECOs. Nominal interconnect estimates at three Liberty corners, unchanged clocks and derates. No final RCX, foundry or product acceptance.",
+  "method": "Replay the exact ECO19 producer, save actual global-route segments without SPEF export, load its byte-identical ODB and those segments into a fresh three-corner OpenROAD process, then estimate and report timing in memory. This avoids the rejected pin-node-capacitance exporter.",
+  "identity_to_eco19": {
+    "netlist": {
+      "eco20_sha256": "0c0795f5e0092bff2a041a1c627114e2eaff2c491622f65b376fdd606a9f9842",
+      "eco19_sha256": "0c0795f5e0092bff2a041a1c627114e2eaff2c491622f65b376fdd606a9f9842",
+      "equal": true
+    },
+    "guides": {
+      "eco20_sha256": "dd5875a0daff2965c830019aa0724afa7ec9cef88ce581e4f2bb3e4271e8582c",
+      "eco19_sha256": "dd5875a0daff2965c830019aa0724afa7ec9cef88ce581e4f2bb3e4271e8582c",
+      "equal": true
+    },
+    "database": {
+      "eco20_sha256": "8f84a68440d8d8b7107a9075ebfb27a97b849082b8fd8c89e024298295066996",
+      "eco19_sha256": "8f84a68440d8d8b7107a9075ebfb27a97b849082b8fd8c89e024298295066996",
+      "equal": true
+    },
+    "placement": {
+      "eco20_sha256": "440dd20856d9cc72f69d10090c4f0ee867209023c467953409cc29ac53b79dfb",
+      "eco19_sha256": "440dd20856d9cc72f69d10090c4f0ee867209023c467953409cc29ac53b79dfb",
+      "equal": true
+    },
+    "constraints": {
+      "eco20_sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "eco19_sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "equal": true
+    }
+  },
+  "inputs": {
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-segments20/1-openroad-resizertimingpostgrt/soc_top.odb": {
+      "sha256": "8f84a68440d8d8b7107a9075ebfb27a97b849082b8fd8c89e024298295066996",
+      "bytes": 102676861
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-segments20/1-openroad-resizertimingpostgrt/soc_top.grt.segments": {
+      "sha256": "41133b1fe4e52b00496ce8a1b32533748965766aad0dec5f29afe189036efe30",
+      "bytes": 35432942
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-segments20/1-openroad-resizertimingpostgrt/soc_top.sdc": {
+      "sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "bytes": 30395
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-segments20/1-openroad-resizertimingpostgrt/soc_top.nl.v": {
+      "sha256": "0c0795f5e0092bff2a041a1c627114e2eaff2c491622f65b376fdd606a9f9842",
+      "bytes": 11052369
+    }
+  },
+  "liberties": {
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib": "0dbc28e762ac820f9db193a2736f408cf1cbf521547fef850083a585c70f212f",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib": "a23776c264fc0d177b4a5612eb3e1595c0eddc98d5b28b5ef7925e40b743b6ae",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib": "e9af7d440c807799de55d16a126467e27d3235e7f53a928e014cdabee98369c9",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib": "d9102b5ca8be02e7d4837fde022f1a229f30d899d51a0e67ef09354c95a09adb",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib": "4eba4f904ad61e1c0dbb78a6b636e486335be19803370048276438e41a0c26d3",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib": "32ad633416cb9f107b57136ea4305290510400fa065eb136e912f9616400f7f9",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib": "9aefb0cb245b15ced86b10401e71bf2002da31c4e1356b23bf6f4c789bee254f",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib": "4cb993f5108050e09de3bd01a5bf0ad433d25380f5dd873e9903f415e1d4c1e2",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib": "44c6ff102ab0a3fc8766b92cbb40a9723bac5aa084a00a111a5a70a772d30a1e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib": "66fe1b1783f2578c8f5c4a65eaa102b8cc888c8456170503789b9e84c9b0aa01",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib": "491d34328c5b4225277ccb72f1c254ba34e1f18eb1664ace80c890376cf83c23",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+  },
+  "fresh_in_memory_corners": {
+    "nom_fast_1p32V_m40C": {
+      "setup_wns_ns": 3.64367652,
+      "hold_wns_ns": 0.01180955,
+      "slew_violations": 0,
+      "capacitance_violations": 0
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_wns_ns": 2.57970762,
+      "hold_wns_ns": 0.15931413,
+      "slew_violations": 0,
+      "capacitance_violations": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "setup_wns_ns": -3.65732169,
+      "hold_wns_ns": 0.4354479,
+      "slew_violations": 0,
+      "capacitance_violations": 0
+    }
+  },
+  "slow_reproduction": {
+    "original_setup_ns": -3.657321660152063,
+    "original_hold_ns": 0.43544791227550317,
+    "max_allowed_absolute_difference_ns": 1e-06,
+    "passed": true
+  },
+  "logic_check": {
+    "retained_cells": 72992,
+    "positive_buffers_before": 24054,
+    "positive_buffers_after": 24567,
+    "equivalent_sizes": 266,
+    "equivalent_input_permutations": 102,
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/nl/soc_top.nl.v": "bf1af80096206981a1f162ddc3f1040a5ace7159e1c8c3c883a4d0b05b8e6f71",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental19/final/nl/soc_top.nl.v": "0c0795f5e0092bff2a041a1c627114e2eaff2c491622f65b376fdd606a9f9842",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic.py": "da9eeb156f61502c881a099eedfcc9ea29505bbd126c8586c04cd39d17db6601",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "48174c6b90ed532266d2dddf39e6722c482e15bd4a53473a0f785e1d93b831b2"
+    },
+    "scope": "Retained cell input equations and state definitions; verified positive buffer contraction and Boolean pin permutations. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity.",
+    "generated": {
+      "after.ys": "f2251b517a30eda98f86d8e3071708dc8acb884c6990ae27b6e0ee44cc332540",
+      "before.json": "4140991987b5a416e275f92c50f6749cb7b7bd8389b2ddcc9b607ef3eec23865",
+      "before-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "after.json": "86cb27ccd062eb17422cab23cb03f080d60c3b4842f53e23c8ceaa90f699c825",
+      "after.log": "e57067915722fd9618cd4e2d4a25380f628d2eea96464419fe400c862c1e5472",
+      "after-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "before.log": "c9f46ab22b1ff602211468c75f4e74bc99a0765f1383ca50ba5a93974065b624",
+      "before.ys": "5d1ad0108efdf6e7b5aaf9514855b8e494c0a0a5a27269775ae21fb6c96fcd4f"
+    }
+  },
+  "annotation_check": "Exactly the same 1048 unloaded-driver report as the source-bound ECO19 audit. 585 disconnected declared outputs and 463 sink-free nets.",
+  "rejected_control": "read_guides emits GRT-0008 and cannot restore the real segment graph; those earlier reports are invalid. read_global_route_segments is used for this measurement.",
+  "remaining": [
+    "Slow setup -3.657322 ns remains a failure.",
+    "Minimum fast hold margin is only 0.011810 ns; final extracted acceptance remains open.",
+    "The detailed-route/RCX flow is active on the byte-identical ECO19 geometry; no result is claimed here.",
+    "Full foundry DRC is pending and full transistor LVS fails on SRAM subcells."
+  ],
+  "archive": {
+    "path": "docs/evidence/global-route-segment-replay-20260923.tar.xz",
+    "sha256": "f0738cf765b8c1e3399004927e60593703ff596ac339f2eb37ddf9831b835742",
+    "bytes": 2316256,
+    "members": {
+      "electrical_segments20.py": "618a074c25b8f68f753c3a8d97eb50debef96d1e6b3a4f2dd6919bac5e8beba0",
+      "replay_segments20.py": "b703d6605574700b5d205704f1640154f1873009ac6595bde6ac9ff2b24db330",
+      "measure_segments20.py": "f583b44e1affd3bca6bd4711055d13120e569af2706857ad22cff56ca5cc773f",
+      "electrical-segments20-driver.log": "5d43edb28f3834adaa58564a46955552fdc96a39af2e8f4dae6951988a440464",
+      "segment-replay20-driver.log": "702fd3b79200841e3504e68a6a3d73eaa7044564857f7c73169ed142b6cd4907",
+      "measure-segments20-driver.log": "d8467f45ad07b36af35646290a145faa97b771396ef364c79a985cfbe4173cbd",
+      "segment-replay-identity.json": "5784e95a7eeba58af30be62d3210bc6a74f87b83143c41dec1f28a7b0b2dfd31",
+      "config-optimize.json": "3c4a5d52e213d74035068c950218288b1a8347e40fab930399936affe41c52fa",
+      "config-route19.json": "89f0b2da60287b4653a6d19f13e3173e803942a560cffbd90c8bfaa68fe0c956",
+      "state-electrical-eco13.json": "8753f183170d09999edc22c318963d45fc079a2c751a6417d9e02b288e7990bd",
+      "electrical19-proof/result.json": "5edc3b51b8f5794137ff9dee7cea441cedd35df8ee82d33e53e247e91de25540",
+      "recheck_guides19.py": "17be2eee34e368cea0a35f30ba3f9327b37dbbba95f9fc2ce5bae7efec5cb61d",
+      "recheck-guides19-driver.log": "b861b8e090726e806ec7620544ecba72ae9ad57b7d8b74f2ee1250e6295ceb2d",
+      "runs/recheck-guides19/INVALID-GUIDES-NOT-SEGMENTS.txt": "42f50ea07085fe404be61addaec2b7d26025ef6d1f605c352fed397ce20ce986",
+      "electrical19-sta/annotation-audit.json": "8858037390a255907601bed917bae7efca8686ac7e56b1190e63bcd9bcc62f7b",
+      "runs/electrical-segments20/1-openroad-resizertimingpostgrt/incremental.tcl": "b68607f4deb562266dbc531e4455f577671c5c10ae8c5a2560fe79b1a61f77b3",
+      "runs/electrical-segments20/1-openroad-resizertimingpostgrt/max.rpt": "8c273a5126dfafb45cefd1699fec8da1217bf502ca92457c3c0b7abf0f70e139",
+      "runs/electrical-segments20/1-openroad-resizertimingpostgrt/electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/electrical-segments20/1-openroad-resizertimingpostgrt/soc_top.grt.segments": "41133b1fe4e52b00496ce8a1b32533748965766aad0dec5f29afe189036efe30",
+      "runs/electrical-segments20/1-openroad-resizertimingpostgrt/config.json": "511da94dc4d27092938aff22faaeeb7c2b3f5caf5127bfb4129c3b7dc1664da7",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/recheck.tcl": "24bb47026e163535df16b0c4c2dff65dde6e91c40e8435e1742b98e5c11e60d8",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_fast_1p32V_m40C-max.rpt": "db58491bbab6306a01216f87ac128beccb175ae95a95f66f364423492cbf4be8",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_slow_1p08V_125C-min.rpt": "8988c16745f8d8eb373b82eebeb9fa786fda6b721b3fd0ef036f2e56f03ba134",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/annotation.rpt": "eac10af8b784e0ca63d598e7f8b02be736dbe50cb006fe0e18fab573f64e68cd",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_typ_1p20V_25C-electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_typ_1p20V_25C-max.rpt": "94226d357dd6e815661ece4f06db3c0151482af615cad482a651bd64f8a66cfb",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/config.json": "05dc9b6df15beda3f40d84ccef469052ec616349a6233b94d905d9b87d105e8a",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_slow_1p08V_125C-max.rpt": "0ab173aba32422b8a0d7da0e7904e17bb8793bb7aaf367ca680147613f8a6f9c",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_fast_1p32V_m40C-electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_typ_1p20V_25C-min.rpt": "878d82ed429f0c8bafa0049006a735e3d579651e3e3f0b3d3602b332079fa6e1",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_fast_1p32V_m40C-min.rpt": "6c073438a4d7b6a5b7f3d7cec839f7fc0aefaf8e5bcfd3c19b0dfe56e249e660",
+      "runs/segment-replay20/1-openroad-resizertimingpostgrt/nom_slow_1p08V_125C-electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "recompression": {
+      "original_path": "docs/evidence/global-route-segment-replay-20260923.tar.gz",
+      "original_sha256": "a65c9290139caafdb7299d87f51f657b21060dfc0914c00e2de81399de037f6e",
+      "original_bytes": 3714844,
+      "decompressed_tar_sha256": "4f8d46152036ce20dad8f22ccd23ef5b8156dbe8d6ed2ed27f9770ce0bfb79d9"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-20",
+  "status": "PASS",
+  "scope": "RTL primary geometry rejection and secondary-image boot using the corrected immutable loader; not whole-netlist acceptance.",
+  "loader_manifest": {
+    "format": 1,
+    "module": "soc_logic_boot_rom",
+    "image_bytes": 3084,
+    "image_sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+    "words": 2048,
+    "first_image_word": 32,
+    "codeword_bits": 39,
+    "template_sha256": "2ea27354ad115c58ba5782901d5913b4fbc253bd29f12197c912a5326d2c7b04",
+    "golden_codec_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+    "rtl_sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+    "scope": "Fixed standard-cell ROM contents. No SRAM preload or writable code storage. Physical and fault qualification remain separate."
+  },
+  "cases": {
+    "entry0": {
+      "command": [
+        "bash",
+        "hw/soc/flow/sim_soc.sh",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0"
+      ],
+      "environment": {
+        "SOC_BOOT_ROM": "logic",
+        "BOOT_CORRUPT": "entry0"
+      },
+      "checks": 28,
+      "failed": 0,
+      "fallback_image": 1,
+      "cause": 4
+    },
+    "length0": {
+      "command": [
+        "bash",
+        "hw/soc/flow/sim_soc.sh",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-length0"
+      ],
+      "environment": {
+        "SOC_BOOT_ROM": "logic",
+        "BOOT_CORRUPT": "length0"
+      },
+      "checks": 28,
+      "failed": 0,
+      "fallback_image": 1,
+      "cause": 4
+    }
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0/sim.log": {
+      "bytes": 2168,
+      "sha256": "91fdc34f32d8ac9ce86ed39ce7a16ef09ed50d4537dc7ede326d883711c008b5"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0/test_soc.bin": {
+      "bytes": 3084,
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "311a9f75b3c9e3eb820902fe489bd6e6df1fbdabdb7a8c42e7e34ea0059eb201"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0/soc_param_override.v": {
+      "bytes": 415,
+      "sha256": "922e3dff7f35c6ca49b210b18499d9bddcc8354f48a75e59c648be4e4aa20b02"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-entry0-driver.log": {
+      "bytes": 5228,
+      "sha256": "d0f79f2b6f82e6b14105dc19d87891b56a3ebb145518b49b9b82166586d03163"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0/sim.log": {
+      "bytes": 2169,
+      "sha256": "1ce2b32a01ccbb1f3350465aabb294f7d483db89f9e578ba9160f8657e0df4aa"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0/test_soc.bin": {
+      "bytes": 3084,
+      "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "2ab7b654fe921125650b6756e26328c6a99d2043b09834d2b723cf2db27724bf"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0/soc_param_override.v": {
+      "bytes": 415,
+      "sha256": "922e3dff7f35c6ca49b210b18499d9bddcc8354f48a75e59c648be4e4aa20b02"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-length0-driver.log": {
+      "bytes": 5234,
+      "sha256": "93207cc9780439af910f8bd7d94cd1043f1956d0c9c31a44b02d2051cdfc2aa1"
+    }
+  }
+}

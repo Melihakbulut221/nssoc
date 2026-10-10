@@ -1,0 +1,77 @@
+{
+  "status": "PASS_THREECORNER_PLACEMENT_HOLD_CENSUS_ONLY",
+  "final": {
+    "slow_max": -4.120471,
+    "slow_min": 0.195945,
+    "typical_max": -1.268695,
+    "typical_min": 0.07394,
+    "fast_max": -0.107212,
+    "fast_min": 0.001016
+  },
+  "before_targeted_branches": {
+    "slow_max": -4.120471,
+    "slow_min": -0.033565,
+    "typical_max": -1.268695,
+    "typical_min": -0.08089,
+    "fast_max": -0.107212,
+    "fast_min": -0.086275
+  },
+  "before_native_hold": {
+    "slow_max": -4.121705,
+    "slow_min": -0.753341,
+    "typical_max": -1.162144,
+    "typical_min": -0.521646,
+    "fast_max": 0.156433,
+    "fast_min": -0.42721
+  },
+  "hold_census": {
+    "slow": 0,
+    "typical": 0,
+    "fast": 0
+  },
+  "graph": {
+    "resized": 0,
+    "ports": 101,
+    "non_buffer_cells": 81855,
+    "original_buffers": 17916,
+    "repaired_buffers": 29400,
+    "pin_bits": 288294,
+    "status": "PASS",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/load-aware01/soc_top.v": "ef2aad7ab9281cdb9315d13637ed1f92a0ab434b69a1837a09a7246e43de0487",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/load-aware-baseline01.json": "2742d9f6667a3a7e1f74e7d3f708f45c1b8086324041a0de5bab264508f6a55f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/load-aware-graph01/import.ys": "0d693371ad01ece0dab4f65eaed9f310cd6fbbb068fce50e6ce74c87fdb3e329",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/load-aware-graph01/baseline.ys": "4bf7d28065bd8f925ee43683f0ca0657f2e6c68cd125af817e3061c652deddfb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/eth01/before.v": "a6edcdcfd0ca33b0fb7bc7a7f1fa69e782308fbc08cefc4555ffb9a49e133b55",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-crc-hold-eco-20261009/check-load-aware-graph01.py": "121bc5cfea96549f51ee26338518d49e2884fe43d55fa120b25f9d9b768c647f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/RM_IHPSG13_2P_256x16_c2_bm_bist_bb.v": "630430edfda4715b54209bbde622141d7ef7cc0b5f301432b3177be2f379e8c5"
+    },
+    "inputs_unchanged": true,
+    "rejected_graph_faults": [
+      "data",
+      "clock",
+      "reset",
+      "tie",
+      "missing_buffer",
+      "port",
+      "wrong_function"
+    ],
+    "scope": "Exact all-port and non-buffer cell pin graph equality modulo bijective OpenROAD leading escape plus doubled internal backslash serialization, transparent native buffer models and byte-equivalent sized functional model bodies; no RC/SDF/analog claim."
+  },
+  "setup_closed": false,
+  "routed": false,
+  "qualified_rc": false,
+  "adopted": false,
+  "notes": "Targeted branches retain same global worst setup as native-hold02. Native hold stage had already worsened typical and fast setup versus pre-repair eth01; do not label entire campaign setup-neutral.",
+  "inputs": {
+    "hw/soc/out/pcie-crc-hold-eco-20261009/eth01/trial.log": "b5cca7b130ae1823e63baef8760b749228529d44944b5a7a61ad0add33f9ca65",
+    "hw/soc/out/pcie-crc-hold-eco-20261009/load-aware01/trial.log": "6dc0066f170ded2b404c81b655be0fffe2ba64ff3c5da7f349948c8762a52260",
+    "hw/soc/out/pcie-crc-hold-eco-20261009/native-hold02/trial.log": "c079602055753cb6a4f2b81306880bd76d020844dd446a2e14b80b5d617aef93",
+    "hw/soc/out/pcie-crc-hold-eco-20261009/hold-census04/census.log": "f314b78c058a377ed6f9bde2c5dfe03baa06e50658a91b1bc42a1ee186eb6b3b",
+    "hw/soc/out/pcie-crc-hold-eco-20261009/hold-census04/census.tcl": "723ff4777c9b1f8e325ae31f345990b6af753520f8b9598dfe53fdf7b03ab924"
+  }
+}

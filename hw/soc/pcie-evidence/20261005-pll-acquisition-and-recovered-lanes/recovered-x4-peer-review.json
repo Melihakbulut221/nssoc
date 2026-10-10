@@ -1,0 +1,76 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_INTEGRATION_REVIEW",
+  "reviewer": "/root/tap_mask_next_step",
+  "source_freeze": {
+    "bytes": 1782,
+    "sha256": "79b5007c70ed5ec8cbc348b2d5f91f0f4f9d5e8d66260119df0f8b319f41e30a"
+  },
+  "files": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v1.v": {
+      "bytes": 3302,
+      "sha256": "b095c2de3f14b106e0dab6ef9e0d3e6e2f2c6522141d840857796cf4a4b04ac5"
+    },
+    "scripts/check_pcie_gen3_recovered_x4_v1.py": {
+      "bytes": 7907,
+      "sha256": "25715d639b083f005f8fd985f4623f7162a54ed3c53b09e5745bef88941cf334"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_x4_v1": {
+      "bytes": 1381,
+      "sha256": "3ac9214b420ce8caf5ffcdf0a17cdc734d332f8bbd33226ee8d19ba5588a16e0"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v1.py": {
+      "bytes": 11104,
+      "sha256": "dde0aefa73b8febe389aeada2c14ff5e62eea5c64aa78973cff89401142a13f6"
+    },
+    "sw/tests/test_pcie_gen3_recovered_x4_v1.py": {
+      "bytes": 4186,
+      "sha256": "6503e160f61e3ccb49d0469385cc2d03f21e5c7007b76fa1452f25efb69f5656"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v2.v": {
+      "bytes": 6602,
+      "sha256": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": {
+      "bytes": 5777,
+      "sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735"
+    },
+    "hw/soc/ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v": {
+      "bytes": 34468,
+      "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+    }
+  },
+  "scope": "Read-only wrapper, lane-aligner and previously reviewed CDC integration reasoning, plus inspection of current port oracle and fault definitions. All eight frozen inputs rehashed; no execution of the recovered-x4 tests/native/formal campaign. Runtime-controller code not independently audited here.",
+  "findings": [
+    {
+      "subject": "Lane wiring and complete records",
+      "reason": "Generate lane0..3 uses exactly that recovered clock, raw_i[lane*32+:32], control and force-realign bit. The same lane feeds its own FIFO writer and common-clock reader. Each complete output occupies disjoint194-bit block and3-bit length slices plus independent SKP/EIEOS/realign bits; all776 block and12 length bits are covered. No lane swap, truncation or metadata collapse found."
+    },
+    {
+      "subject": "Registered aligner-to-FIFO interface",
+      "reason": "The aligner produces registered block_valid/data/metadata. FIFO write logic on the same recovered edge consumes the previous registered bundle, preserving atomicity with one-edge latency. The FIFO accepts unthrottleable valid input or latches overflow; wr_accept_o is intentionally not used as upstream backpressure."
+    },
+    {
+      "subject": "Reset and stopped clocks",
+      "reason": "Clean por/reset level resets both domains of each FIFO. Release uses the existing three-stage local synchronization, boot and peer-ready handshake. lane_running holds the aligner synchronous reset while its clock is stopped or the FIFO is not ready. A stale aligner valid cannot be accepted while wr_running is false, and resumed edges clear it before the running barrier releases. Global active also requires all four common-domain running flags, so one stopped lane prevents common output startup."
+    },
+    {
+      "subject": "Fault propagation and epoch abort",
+      "reason": "Only each FIFO synchronized common-domain rd_fault contributes to fault_o; no raw recovered-domain loss/fault drives the common data barrier. A local sticky write fault stops that lane and remains until coordinated reset. fault_o masks all lane valid and all FIFO read-ready, preserving all-or-nothing output epoch invalidation after synchronization. Other lanes may keep receiving and eventually fault too while reset is pending; there is no automatic partial-lane restart."
+    },
+    {
+      "subject": "Held output and buffering",
+      "reason": "Each lane valid is active AND common_valid, and the matching FIFO ready is active AND that lane ready_i. Thus stalled records stay owned by their FIFO while other lanes may retire independently. Reset or synchronized global fault intentionally invalidates held outputs; downstream must discard the epoch. Before the fault crosses, a previously valid buffered prefix may retire as the source comments already state."
+    },
+    {
+      "subject": "Port oracle scope",
+      "reason": "Current oracle serializes independent lane-specific payloads, all five SKP lengths and EIEOS; compares each valid lane slice rather than converting unrelated invalid X bits. Eight phase iterations distribute offsets0..31 across four lanes; this is not all32 offsets independently repeated on every lane. Source includes stall, one-lane loss/overflow, explicit force-realign, stopped-clock startup and held-reset cases, plus nine actual wiring-mutation definitions and two invalid depths. This peer did not execute them."
+    }
+  ],
+  "scope_notes": [
+    "active_o denotes all CDC readers running, not all lanes aligned or deskewed. Valid records remain four independent ordered streams.",
+    "lane_running_o, lane_aligned_o and lane_fault_o remain recovered-domain diagnostics; common-domain logic should use active_o/fault_o or synchronize diagnostics separately.",
+    "Search-triggered EIEOS realignment is preserved realign metadata and does not itself assert a global fault. Explicit force_realign on an aligned lane produces loss through the frozen aligner. Downstream MAC/deskew must interpret metadata/control epochs; no silent assumption of a deskewed packet stream is valid.",
+    "No full PCS/PHY, rate-compensation, physical Gray-pointer constraints, reset recovery/removal, metastability/MTBF, skew-tolerance or end-to-end sustained controller qualification."
+  ],
+  "blocking_findings": []
+}

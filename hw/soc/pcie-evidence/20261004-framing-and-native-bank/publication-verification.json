@@ -1,0 +1,56 @@
+{
+  "utc": "2026-10-04T13:05:50.891056+00:00",
+  "status": "PASS_PUBLICATION_AFTER_STAGING_NEW_DOCUMENT",
+  "source_commit": "a04825b89e007849fc57d376522b11ba28239a70",
+  "sources": {
+    "README.md": {
+      "bytes": 8471,
+      "sha256": "8931625af25f32800c6e16de9e6b101a4c400ea95134806aa2b5e1ba5c3fc42b"
+    },
+    "docs/00-index.md": {
+      "bytes": 223996,
+      "sha256": "13f3d4872c90c735e92fc4fc996b46c4047b2dca348ce23bfe7dbb07d2bd998b"
+    },
+    "docs/114-pcie-timing-divider-and-native-taps.md": {
+      "bytes": 9943,
+      "sha256": "1f9bbe9ebde39bf560bc83838605e7a008d0631acb2161eaa7e45ac93c43ca94"
+    },
+    "docs/115-pcie-framing-and-native-bank.md": {
+      "bytes": 10113,
+      "sha256": "80e4e53a851d1be961dcac88f940b5212cd5ba439fca269eccbb049e7bd71b52"
+    }
+  },
+  "checks": {
+    "first_passed": 207,
+    "first_failed": 2,
+    "reason": "New document was initially untracked; existing guard correctly rejected link. Staged exact document, no guard changes.",
+    "rerun_failed_tests_passed": 2,
+    "unique_tests_passed": 209,
+    "strict_site": {
+      "documents": 134,
+      "pages": 135,
+      "links": 10454,
+      "broken": 0,
+      "assets": 816,
+      "asset_bytes": 100648215
+    }
+  },
+  "logs": {
+    "nssoc-doc115-tests.log": {
+      "bytes": 2351,
+      "sha256": "672cd44de25abedde4b85db1e8fb7dc10fc29ba78365949fdcd55f92dfdbcfb9",
+      "text": "........................................................................ [ 34%]\n...........................................................F............ [ 68%]\n.F...............................................................        [100%]\n=================================== FAILURES ===================================\n______________ test_generator_resolves_every_resolvable_reference ______________\n\ntmp_path = PosixPath('/dev/shm/pytest-of-hasanmelih/pytest-71/test_generator_resolves_every_0')\n\n    def test_generator_resolves_every_resolvable_reference(tmp_path):\n        \"\"\"Build the site and require that nothing resolvable is left bare.\n    \n        This is the end-to-end check: the two properties above are about the\n        source text, this one is about what the reader actually gets.\n        \"\"\"\n        out = tmp_path / \"_site\"\n        rc = build_docs.build(out, renderer=\"builtin\", strict=False, quiet=True)\n>       assert rc == 0\nE       assert 2 == 0\n\nsw/tests/test_doc_links.py:259: AssertionError\n----------------------------- Captured stderr call -----------------------------\nerror: Missing or untracked publication target: docs/00-index.md: 115-pcie-framing-and-native-bank.md\n____________ test_current_repository_site_has_no_missing_local_file ____________\n\ntmp_path = PosixPath('/dev/shm/pytest-of-hasanmelih/pytest-71/test_current_repository_site_h0')\n\n    def test_current_repository_site_has_no_missing_local_file(tmp_path):\n        out = tmp_path / 'site'\n>       assert site.build(out, 'builtin', True, True) == 0\nE       AssertionError: assert 2 == 0\nE        +  where 2 = <function build at 0x7a778b40dfe0>(PosixPath('/dev/shm/pytest-of-hasanmelih/pytest-71/test_current_repository_site_h0/site'), 'builtin', True, True)\nE        +    where <function build at 0x7a778b40dfe0> = site.build\n\nsw/tests/test_doc_publication.py:138: AssertionError\n----------------------------- Captured stderr call -----------------------------\nerror: Missing or untracked publication target: docs/00-index.md: 115-pcie-framing-and-native-bank.md\n=========================== short test summary info ============================\nFAILED sw/tests/test_doc_links.py::test_generator_resolves_every_resolvable_reference\nFAILED sw/tests/test_doc_publication.py::test_current_repository_site_has_no_missing_local_file\n2 failed, 207 passed in 2.81s\n"
+    },
+    "nssoc-doc115-tests-fixed.log": {
+      "bytes": 99,
+      "sha256": "3f2ca67782669893527da917b6769219826d8be6a2dbf2eb4f098b16d90164be",
+      "text": "..                                                                       [100%]\n2 passed in 28.09s\n"
+    },
+    "nssoc-doc115-site-final.log": {
+      "bytes": 278,
+      "sha256": "bcd0b4047f68c30d4dcc02f34578a520f24f46eb12b1602cde1b328557f0ae4a",
+      "text": "backend:               builtin\nsource documents:      134\npages written:         135\ncross-references:      8351 resolved\nunresolved references: 0\nlocal link targets:    10454 checked / 0 broken\npublished assets:      816\noutput:                /dev/shm/nssoc-doc115-site-final\n"
+    }
+  },
+  "physical_acceptance": false
+}

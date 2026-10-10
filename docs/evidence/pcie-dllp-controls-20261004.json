@@ -1,0 +1,458 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-10-04T03:03:54.418861+00:00",
+  "status": "PASS_CLASSIC_DLLP_AND_PACKET_ARBITRATION_CONTROLS_ONLY",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+      "bytes": 663,
+      "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+      "bytes": 1909,
+      "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+      "bytes": 2202,
+      "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+    },
+    "hw/soc/formal/pcie_crc16_byte_formal.v": {
+      "bytes": 788,
+      "sha256": "de477f63d6d71a2bec825336c597252b96f4ed3333389929c21b2d329400a54e"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+      "bytes": 6497,
+      "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx": {
+      "bytes": 1214,
+      "sha256": "28df3b7527a7c8f19f60b6693d83e5942afdbf45c4b1e2648641c7a08ebf95bf"
+    },
+    "scripts/check_pcie_packets.py": {
+      "bytes": 6611,
+      "sha256": "b246d464a30d2314eaa55c72dc069f328d4cb438fc68dce438f63e3241b41fc9"
+    },
+    "sw/tests/test_pcie_dllp.py": {
+      "bytes": 5789,
+      "sha256": "d0ce4bc8b1ed54cca370b33a2c6a97d8bb3a3b4d4b5b5f5d38557765c07406d1"
+    }
+  },
+  "rtl": {
+    "status": "PASS_PORT_ONLY_PCIE_PACKETS",
+    "top": "soc_pcie_packet_tx",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+        "bytes": 2202,
+        "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+        "bytes": 6497,
+        "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx": {
+        "bytes": 1214,
+        "sha256": "28df3b7527a7c8f19f60b6693d83e5942afdbf45c4b1e2648641c7a08ebf95bf"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_packets.py": {
+        "bytes": 6611,
+        "sha256": "b246d464a30d2314eaa55c72dc069f328d4cb438fc68dce438f63e3241b41fc9"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+        "bytes": 4628,
+        "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+        "bytes": 6139,
+        "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+        "bytes": 1383,
+        "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+      }
+    },
+    "expected_tests": 4,
+    "mode": "rtl",
+    "commands": [
+      {
+        "argv": [
+          "make",
+          "-f",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx",
+          "--no-print-directory",
+          "VERILOG_SOURCES=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_crc16_byte.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_acknak_tx.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_packet_tx.v",
+          "SIM_BUILD=/dev/shm/nssoc-pcie-dllp-rtl-01/sim",
+          "COCOTB_RESULTS_FILE=/dev/shm/nssoc-pcie-dllp-rtl-01/results.xml",
+          "PCIE_NATIVE=0"
+        ],
+        "returncode": 0,
+        "log": "simulation.log",
+        "log_pin": {
+          "bytes": 5277,
+          "sha256": "961dc2e07bf4b9af0452dd83feada5e5a3f23c20b499d57fcd355baaf9d56d7d"
+        }
+      }
+    ],
+    "scope": "Classic six-byte ACK/NAK DLLPs and bounded single-clock packet boundary. No PHY coding, replay, credits, AckNak timing, SDF, layout or SoC integration.",
+    "tests": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "outputs": {
+      "results.xml": {
+        "bytes": 1307,
+        "sha256": "2eb492e5ec2b77de8944dc3f6e30482c222b2470384ba24eb401e95a1e7f8157"
+      },
+      "simulation.log": {
+        "bytes": 5277,
+        "sha256": "961dc2e07bf4b9af0452dd83feada5e5a3f23c20b499d57fcd355baaf9d56d7d"
+      }
+    }
+  },
+  "native": {
+    "status": "PASS_PORT_ONLY_PCIE_PACKETS",
+    "top": "soc_pcie_packet_tx",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+        "bytes": 2202,
+        "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+        "bytes": 6497,
+        "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx": {
+        "bytes": 1214,
+        "sha256": "28df3b7527a7c8f19f60b6693d83e5942afdbf45c4b1e2648641c7a08ebf95bf"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_packets.py": {
+        "bytes": 6611,
+        "sha256": "b246d464a30d2314eaa55c72dc069f328d4cb438fc68dce438f63e3241b41fc9"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+        "bytes": 4628,
+        "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+        "bytes": 6139,
+        "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+        "bytes": 1383,
+        "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "bytes": 53835,
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+      }
+    },
+    "expected_tests": 4,
+    "mode": "native",
+    "commands": [
+      {
+        "argv": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-pcie-dllp-native-01/map.ys"
+        ],
+        "returncode": 0,
+        "log": "map.log",
+        "log_pin": {
+          "bytes": 43059,
+          "sha256": "3fb0068372e397b1befea359c09e8bcccd536b43df7063e42909ad2b1eaa99f3"
+        }
+      },
+      {
+        "argv": [
+          "make",
+          "-f",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx",
+          "--no-print-directory",
+          "VERILOG_SOURCES=/dev/shm/nssoc-pcie-dllp-native-01/mapped.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "SIM_BUILD=/dev/shm/nssoc-pcie-dllp-native-01/sim",
+          "COCOTB_RESULTS_FILE=/dev/shm/nssoc-pcie-dllp-native-01/results.xml",
+          "PCIE_NATIVE=1"
+        ],
+        "returncode": 0,
+        "log": "simulation.log",
+        "log_pin": {
+          "bytes": 34632,
+          "sha256": "dbf2a0140802b4d40a01bbba4ca16cddf1cc2cc44fbae942dcb554eb34228a7b"
+        }
+      }
+    ],
+    "scope": "Classic six-byte ACK/NAK DLLPs and bounded single-clock packet boundary. No PHY coding, replay, credits, AckNak timing, SDF, layout or SoC integration.",
+    "mapped_cells": 227,
+    "tests": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "outputs": {
+      "results.xml": {
+        "bytes": 1311,
+        "sha256": "d055cf8905a9adf47c0bf118d0d73b0f144e753615ded9e7a777f51e670e5776"
+      },
+      "simulation.log": {
+        "bytes": 34632,
+        "sha256": "dbf2a0140802b4d40a01bbba4ca16cddf1cc2cc44fbae942dcb554eb34228a7b"
+      },
+      "mapped.v": {
+        "bytes": 26148,
+        "sha256": "c17c9292f0d410617f43ccaf333a71895624d92209467fba54207be57f759fee"
+      },
+      "mapped.json": {
+        "bytes": 240922,
+        "sha256": "aec048106cb838dced11820a7cc7658149f73b3c32094577a1f6ba8d8d1d05fc"
+      },
+      "map.log": {
+        "bytes": 43059,
+        "sha256": "3fb0068372e397b1befea359c09e8bcccd536b43df7063e42909ad2b1eaa99f3"
+      },
+      "map.ys": {
+        "bytes": 1240,
+        "sha256": "86af761060f664852d3a93f38a53d93620dd8163e80fa44ec29c217273b824b1"
+      }
+    }
+  },
+  "pytest": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Four literal CRC vectors,8192normal/reciprocal headercrosschecks,24inputbitSAT+wrongpolynomial CEX,1680actualprimitivevectors,4realRTLmutants"
+  },
+  "archive": {
+    "path": "docs/evidence/pcie-dllp-controls-20261004.tar.xz",
+    "bytes": 43572,
+    "sha256": "2144a819878a1de30d8f919ef33a916c59246fc9368fe2aba0b246fcd3df662d",
+    "members": {
+      "controls/test_actual_primitive_state_ba0/tb.v": {
+        "bytes": 103181,
+        "sha256": "0f5a7c9554ca4976dace2c80690e252414fcf68df26ba046cb544c2700d28ebc"
+      },
+      "controls/test_crc_relation_all_24_input0/capability.log": {
+        "bytes": 1741,
+        "sha256": "413d127f26cb883fc668101f648eec854f708b17843ee6ec51beb851f696c454"
+      },
+      "controls/test_crc_relation_all_24_input0/crc.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "controls/test_crc_relation_all_24_input0/proof.log": {
+        "bytes": 13845,
+        "sha256": "3ef05e838636827ddd08f5a80f08089a63922a3d4f04339cd33bdf1cefe53067"
+      },
+      "controls/test_crc_relation_all_24_input1/capability.log": {
+        "bytes": 1741,
+        "sha256": "413d127f26cb883fc668101f648eec854f708b17843ee6ec51beb851f696c454"
+      },
+      "controls/test_crc_relation_all_24_input1/cex.json": {
+        "bytes": 198,
+        "sha256": "11a4a1ed458ec99ea70a9563461da905362078b8848586008a99348b0dd2d0aa"
+      },
+      "controls/test_crc_relation_all_24_input1/crc.v": {
+        "bytes": 663,
+        "sha256": "98c726df27f4ddb34dbfcba87c9e17b5e0a9146d842b91656aaa185c23664557"
+      },
+      "controls/test_crc_relation_all_24_input1/proof.log": {
+        "bytes": 14069,
+        "sha256": "e58be8c0b1e825247a03643e7896966bb49f716139ab4a4c2b848c411b2f126a"
+      },
+      "controls/test_real_packet_controls_reje0/rtl/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "controls/test_real_packet_controls_reje0/rtl/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "98c726df27f4ddb34dbfcba87c9e17b5e0a9146d842b91656aaa185c23664557"
+      },
+      "controls/test_real_packet_controls_reje0/rtl/soc_pcie_packet_tx.v": {
+        "bytes": 2202,
+        "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+      },
+      "controls/test_real_packet_controls_reje0/run/result.json": {
+        "bytes": 3433,
+        "sha256": "86302950493a31b9383e7a3beb7a63e49907b3a37e272e54cd1b8cd8bae2015a"
+      },
+      "controls/test_real_packet_controls_reje0/run/results.xml": {
+        "bytes": 2314,
+        "sha256": "5f3cb7b20c9b84845751d30e3bd83349e29e76de2225dd89cf866deec40398bf"
+      },
+      "controls/test_real_packet_controls_reje0/run/simulation.log": {
+        "bytes": 10258,
+        "sha256": "9938dbdf15bd753e6efee792e3b9a9e8c3f34e5814da8d1c17920dd2baa80730"
+      },
+      "controls/test_real_packet_controls_reje1/rtl/soc_pcie_acknak_tx.v": {
+        "bytes": 1908,
+        "sha256": "df3ca1cd12f122c6981b3b9f4f835bab720a4950fa76e60bb879dc1dc163c109"
+      },
+      "controls/test_real_packet_controls_reje1/rtl/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "controls/test_real_packet_controls_reje1/rtl/soc_pcie_packet_tx.v": {
+        "bytes": 2202,
+        "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+      },
+      "controls/test_real_packet_controls_reje1/run/result.json": {
+        "bytes": 3433,
+        "sha256": "6d95cf7a500cfc2555d08920e3bed88b00c51759a740221107da5cb4e7611bf5"
+      },
+      "controls/test_real_packet_controls_reje1/run/results.xml": {
+        "bytes": 2311,
+        "sha256": "efd7265c576ca9962ac038f3d9410d4d21e4787e312760cae86dcd317ca683bc"
+      },
+      "controls/test_real_packet_controls_reje1/run/simulation.log": {
+        "bytes": 10248,
+        "sha256": "e1edb5106dd20c92293c1c873288ff342ca7566fe106f52c1aa7f9c816424cdf"
+      },
+      "controls/test_real_packet_controls_reje2/rtl/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "controls/test_real_packet_controls_reje2/rtl/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "controls/test_real_packet_controls_reje2/rtl/soc_pcie_packet_tx.v": {
+        "bytes": 2200,
+        "sha256": "b67aaeb0d8762f6f5159ef84ed6542d0efab87ff52731c7e347d2f3be9b23642"
+      },
+      "controls/test_real_packet_controls_reje2/run/result.json": {
+        "bytes": 3431,
+        "sha256": "2cc5bed471e2ad895c1daa3ad1e77e68e1e2c7b2b56872f616f597f006ab8795"
+      },
+      "controls/test_real_packet_controls_reje2/run/results.xml": {
+        "bytes": 1848,
+        "sha256": "4382c26abeda2ddaee7abebfdaebe54e124b8f022673059b85bdd975bd692574"
+      },
+      "controls/test_real_packet_controls_reje2/run/simulation.log": {
+        "bytes": 9094,
+        "sha256": "6087e3848e02e9cd1910e36faf6ad021923e7320e508e58df05fc37732a87496"
+      },
+      "controls/test_real_packet_controls_reje3/rtl/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "controls/test_real_packet_controls_reje3/rtl/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "controls/test_real_packet_controls_reje3/rtl/soc_pcie_packet_tx.v": {
+        "bytes": 2190,
+        "sha256": "bfd6228c75a030589e1438db487c3d60ebb77daa1e5e06ad95c6efff623b105c"
+      },
+      "controls/test_real_packet_controls_reje3/run/result.json": {
+        "bytes": 3431,
+        "sha256": "8058899c079a3f31271167afb7cc180218b87b8916e1c4098bc32239bee70757"
+      },
+      "controls/test_real_packet_controls_reje3/run/results.xml": {
+        "bytes": 1837,
+        "sha256": "47231ccfbcb45d7a658fb915cd9bd5bc0df9715397e986acf6ea7cfef780ccf5"
+      },
+      "controls/test_real_packet_controls_reje3/run/simulation.log": {
+        "bytes": 9280,
+        "sha256": "556adfcaa81455cd27752dfd541cfe7274e6026b9fea83455ea00135e4de0592"
+      },
+      "hw/soc/formal/pcie_crc16_byte_formal.v": {
+        "bytes": 788,
+        "sha256": "de477f63d6d71a2bec825336c597252b96f4ed3333389929c21b2d329400a54e"
+      },
+      "hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+        "bytes": 1909,
+        "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+      },
+      "hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+        "bytes": 663,
+        "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+      },
+      "hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+        "bytes": 2202,
+        "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+      },
+      "hw/soc/tb/cocotb/Makefile.soc_pcie_packet_tx": {
+        "bytes": 1214,
+        "sha256": "28df3b7527a7c8f19f60b6693d83e5942afdbf45c4b1e2648641c7a08ebf95bf"
+      },
+      "hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+        "bytes": 6497,
+        "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+      },
+      "native/map.log": {
+        "bytes": 43059,
+        "sha256": "3fb0068372e397b1befea359c09e8bcccd536b43df7063e42909ad2b1eaa99f3"
+      },
+      "native/map.ys": {
+        "bytes": 1240,
+        "sha256": "86af761060f664852d3a93f38a53d93620dd8163e80fa44ec29c217273b824b1"
+      },
+      "native/mapped.json": {
+        "bytes": 240922,
+        "sha256": "aec048106cb838dced11820a7cc7658149f73b3c32094577a1f6ba8d8d1d05fc"
+      },
+      "native/mapped.v": {
+        "bytes": 26148,
+        "sha256": "c17c9292f0d410617f43ccaf333a71895624d92209467fba54207be57f759fee"
+      },
+      "native/result.json": {
+        "bytes": 4726,
+        "sha256": "30a434c59d74e70f920e02b5b20d72d19cdd326208cd8f70db9f8e6f2938f716"
+      },
+      "native/results.xml": {
+        "bytes": 1311,
+        "sha256": "d055cf8905a9adf47c0bf118d0d73b0f144e753615ded9e7a777f51e670e5776"
+      },
+      "native/simulation.log": {
+        "bytes": 34632,
+        "sha256": "dbf2a0140802b4d40a01bbba4ca16cddf1cc2cc44fbae942dcb554eb34228a7b"
+      },
+      "rtl/result.json": {
+        "bytes": 3256,
+        "sha256": "477f1b873b8f228e5f35797ecd650398f1c1e2d9f90105fd50305a0e1abfffbe"
+      },
+      "rtl/results.xml": {
+        "bytes": 1307,
+        "sha256": "2eb492e5ec2b77de8944dc3f6e30482c222b2470384ba24eb401e95a1e7f8157"
+      },
+      "rtl/simulation.log": {
+        "bytes": 5277,
+        "sha256": "961dc2e07bf4b9af0452dd83feada5e5a3f23c20b499d57fcd355baaf9d56d7d"
+      },
+      "scripts/check_pcie_packets.py": {
+        "bytes": 6611,
+        "sha256": "b246d464a30d2314eaa55c72dc069f328d4cb438fc68dce438f63e3241b41fc9"
+      },
+      "sw/tests/test_pcie_dllp.py": {
+        "bytes": 5789,
+        "sha256": "d0ce4bc8b1ed54cca370b33a2c6a97d8bb3a3b4d4b5b5f5d38557765c07406d1"
+      }
+    },
+    "roundtrip_checked": true
+  },
+  "primary_source": "https://www.intel.com/content/dam/support/us/en/programmable/support-resources/fpga-wiki/asset03/pci-express-base-r2.1.pdf",
+  "normative_scope": "Indexed primary Figure3-5/Table3-2; directwholePDFunavailable. NoGen3normativecompliancereview.",
+  "soc_top_integrated": false,
+  "full_phy_complete": false,
+  "manufacturing_approval": false
+}

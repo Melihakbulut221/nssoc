@@ -1,0 +1,95 @@
+{
+  "status": "PASS_SOURCE_ONLY_RX13_DRT_RC_AND_ACTUAL_PREREQUISITES",
+  "findings": [],
+  "method": {
+    "bytes": 4210,
+    "sha256": "229f3d11c5c16b567809e9a81589744f244c1d93681ea12dd5378f837bb84cac"
+  },
+  "source_freeze": {
+    "bytes": 1315,
+    "sha256": "060cdc5091dd6ab05dbb5f8bb356accae5d90e67b74c5f0a4cb05c9a6541358c"
+  },
+  "files": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/drt_repair13.py": {
+      "bytes": 6329,
+      "sha256": "5fe62c60062e2798660f29669c7bc889739cf370c4bf345701338c0dd9a34425"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/detailed_rc_repair13.py": {
+      "bytes": 5210,
+      "sha256": "6ea28e8ee7d46eaaaad4130479fc4d97125156ca3845de83228e356a5c09eeb6"
+    }
+  },
+  "bridge": {
+    "bytes": 27196,
+    "sha256": "288024d7ab9980066800580aef58ab1a29a038c26c0a15c0b661fa19dbc731f9"
+  },
+  "whole_source_forward_inverse": true,
+  "allowed_substitutions": [
+    [
+      "repair12",
+      "repair13"
+    ],
+    [
+      "repair-12",
+      "repair-13"
+    ],
+    [
+      "RX12",
+      "RX13"
+    ],
+    [
+      "rx12",
+      "rx13"
+    ],
+    [
+      "candidate12",
+      "candidate13"
+    ],
+    [
+      "eight measured critical-wire buf4 insertions and two buf1->buf4 following actual routed11 nominalRC",
+      "six measured critical-wire buffer isolations and four cell upsizes following actual routed12 nominalRC"
+    ],
+    [
+      "GRTsetup+.031432 hold+.104912",
+      "GRTsetup+.030562 hold+.105448"
+    ]
+  ],
+  "full_native_graph_byte_readback": {
+    "gold": {
+      "compressed": {
+        "bytes": 2343503,
+        "sha256": "50e46606a9f4d2443d23df5624384f519b3f6a3abd99a09654379ad5b33f87f8"
+      },
+      "expanded": {
+        "bytes": 47869573,
+        "sha256": "6b4dbac35edd6b07695f8658191e5e8af996bd2aa00f2b22e532e6a8e38ebe9b"
+      }
+    },
+    "gate": {
+      "compressed": {
+        "bytes": 2371682,
+        "sha256": "312c59a1194c523729876b5b7c7f66407726fbc8e56a2db51d581207840a31d2"
+      },
+      "expanded": {
+        "bytes": 48889463,
+        "sha256": "e2da9e58e05f98076551f993661b08bf46b72bf87ba52746c5ffd5e45ee48af2"
+      }
+    }
+  },
+  "actual_port_cases": [
+    "packed_successors_every_legal_lane0_position",
+    "nullification_full_token_and_next_packet",
+    "damaged_stp_crc_parity_lengths_and_header_shape",
+    "bad_tokens_edb_idl_headers_and_stream_end",
+    "truncation_abort_reset_flush_and_held_packet",
+    "maximum_packet_and_immediate_dllp_at_boundary"
+  ],
+  "limits": {
+    "cpu": 8,
+    "address_space": 2684354560,
+    "entry_free": 1073741824,
+    "shared_floor": 553648128,
+    "healthy_elapsed_watchdog": null
+  },
+  "scope": "New route/RC source bodies unchanged except exact paths/version/accurate candidate metadata. Saved completed proof graphs/bindings and six native ports rehashed. Fresh CPU8 native DRT then RC permitted with existing resource and proof gates; no routed timing claim."
+}

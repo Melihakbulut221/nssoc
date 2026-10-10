@@ -1,0 +1,69 @@
+{
+  "status": "PASS_ACTUAL_DEFAULT_RUNNER_SOURCE_BINDING_AND_INTERRUPTED_LOG_REGRESSION",
+  "utc": "2026-10-05T16:33:47.809106+00:00",
+  "sources": {
+    "scripts/run_cocotb.sh": {
+      "bytes": 20847,
+      "sha256": "a4546509b673cb08ea5f41216de2da0ddb36a458b1d42bebf87195038a937bd4"
+    },
+    ".github/workflows/checks.yml": {
+      "bytes": 19425,
+      "sha256": "102f5964551b08e496c9126b0137d43385540b3b9168aa0525a00fda3b2116a3"
+    },
+    "sw/tests/test_cocotb_runner.py": {
+      "bytes": 6363,
+      "sha256": "124f6522ab677ae4c2d8b86ebc6201a1272873eb7bc6f4bb8d19694d3ee3a76c"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_compare_v2": {
+      "bytes": 1194,
+      "sha256": "33a88c957008fb810eee2d9e1da8c8539e4d2c50425728f2d41fbb72f77677e0"
+    },
+    "hw/soc/tb/soc_pcie_gen3_dllp_consumer_compare_v2.v": {
+      "bytes": 7104,
+      "sha256": "06162edf77741fe4ffd3e5ff5cebc35d64528c4f350d0cc22d848ca1307daefb"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_compare_v2.py": {
+      "bytes": 16256,
+      "sha256": "3722da8b7eb15b1f6d442d9a34b613588650aa6cba0d739263cbbc49f10924c4"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v": {
+      "bytes": 10814,
+      "sha256": "e1a19382c2f446f0754b43818bdf497821ac3c34c7087caa1e9bcfb83e247483"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v": {
+      "bytes": 13191,
+      "sha256": "eb4f3146ed1b8c142cf5784f44dc773353973edff94a7256c82d2b235bb5d224"
+    },
+    "scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    }
+  },
+  "unchanged_frozen_makefile_and_DUT": true,
+  "runtime": {
+    "/home/hasanmelih/.local/bin/vvp": {
+      "bytes": 146,
+      "sha256": "0172528a53a8cb92a6997ffcb49e25c96def5d22c7537b76816cd1dc9f6d62e8"
+    },
+    "/home/hasanmelih/.local/bin/iverilog": {
+      "bytes": 151,
+      "sha256": "052eab3e5b71dbc395547dacefe2e13653e9a5e0ac8b1a1fab86c48817e39058"
+    },
+    "/usr/bin/python3.12": {
+      "bytes": 8025024,
+      "sha256": "a92f0f95e883390c7256b2e441484aac06b1002dbe1d924141a77c8d82f96223"
+    }
+  },
+  "command": "taskset -c 2 env -u PYTHONPATH -u PYTHONHOME -u PYTHONEXECUTABLE PATH=<pinned-cocotb-bin>:<existing-PATH> PY=<pinned-cocotb-python> SIM_BUILD=/dev/shm/nssoc-ci-compare-v2-01 COCOTB_RESULTS_FILE=results_ci_compare_v2_20261005.xml bash scripts/run_cocotb.sh soc_pcie_gen3_dllp_consumer_compare_v2",
+  "actual_native_cases": 9,
+  "actual_native_failed": 0,
+  "actual_native_skipped": 0,
+  "runner_regressions": 16,
+  "runner_separate_native_memory_parity_binding": "one separately executed memory-parity module is reported skipped by historical runner completeness accounting; not a skipped DLLP case. The actual GitHub memory-parity job passed.",
+  "hosted_job_limits_minutes": {
+    "checks": 360,
+    "rtl": 360
+  },
+  "per_suite_failure_and_timeout_policy": "unchanged; nonzero make, invalid XML, failed cases still fail",
+  "scope": "Correct suite source selection and persist logs while running. No DUT edit, blanket skip, timing or full-chip acceptance. Full new hosted workflow remains to run."
+}

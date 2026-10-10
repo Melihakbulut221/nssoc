@@ -1,0 +1,92 @@
+{
+  "status": "FAIL_4NS_PREPLACEMENT_TIMING_WITH_MEASURED_CRC_CANDIDATE_GAIN",
+  "source_freeze": {
+    "bytes": 1743,
+    "sha256": "9c9d39ced70ec943fa5f3d28dabb5a2893c1a6b62feefd5586ff7919b105c28e"
+  },
+  "inputs": {
+    "/dev/shm/nssoc-integrity-v2-balanced-sta-01/result.json": {
+      "bytes": 3917,
+      "sha256": "7524e4b584254f536b38128b605fa5b02345b41351ec2219d8cf210f2437bc35"
+    },
+    "/dev/shm/nssoc-integrity-v2-balanced-sta-01/rx/screen.tcl": {
+      "bytes": 3694,
+      "sha256": "94fe87275ae4b1a4966303feb0d0624f684e6898a35d87be72ab8848867ca0ed"
+    },
+    "/dev/shm/nssoc-integrity-v2-balanced-sta-01/rx/native.log": {
+      "bytes": 3495514,
+      "sha256": "0eb909d39022d980f9f41eeb57b88c8d557110ef293f80c5f1966a3a3a262d0a"
+    },
+    "/dev/shm/nssoc-integrity-v2-balanced-map-01/mapped.json": {
+      "bytes": 46818346,
+      "sha256": "c5af968c48d7d47a55af970079cb698221f0d9cf2f1811499738096033ee3bdf"
+    },
+    "/dev/shm/nssoc-integrity-v3-balanced-sta-01/result.json": {
+      "bytes": 4049,
+      "sha256": "66b82ad7d628edf23a7ce136946930575b2425d5061e7a200f966c24eee72ae4"
+    },
+    "/dev/shm/nssoc-integrity-v3-balanced-sta-01/rx/screen.tcl": {
+      "bytes": 3694,
+      "sha256": "2c3fafc5663e4d285fde70ca212cbb01bfe4fe996c2ed80c7ba3572e35a08e89"
+    },
+    "/dev/shm/nssoc-integrity-v3-balanced-sta-01/rx/native.log": {
+      "bytes": 3476711,
+      "sha256": "3596885b31463d484739f5b846aa856b78daa12c793f88260b874cb1bd85909e"
+    },
+    "/dev/shm/nssoc-integrity-v3-balanced-map-01/mapped.json": {
+      "bytes": 49180758,
+      "sha256": "ecf254aa6b4dfde96557cb80ebbc84256c702a80ddcc49a13b0980c2e9dc646d"
+    }
+  },
+  "comparison": {
+    "v2": {
+      "corners_ns": {
+        "slow": {
+          "max": -7.136116,
+          "min": 0.35579
+        },
+        "typical": {
+          "max": -3.078468,
+          "min": 0.260213
+        },
+        "fast": {
+          "max": -0.629122,
+          "min": 0.176
+        }
+      },
+      "mapped_cells": 70495,
+      "native_ff": 8426
+    },
+    "v3": {
+      "corners_ns": {
+        "slow": {
+          "max": -6.858448,
+          "min": 0.37067,
+          "setup_gain_ns": 0.27766800000000025
+        },
+        "typical": {
+          "max": -2.868497,
+          "min": 0.260213,
+          "setup_gain_ns": 0.2099709999999999
+        },
+        "fast": {
+          "max": -0.51643,
+          "min": 0.176,
+          "setup_gain_ns": 0.11269200000000001
+        }
+      },
+      "mapped_cells": 74394,
+      "native_ff": 8426
+    }
+  },
+  "exact_timing_tcl_after_only_path_top_renaming": true,
+  "v3_critical_path": {
+    "startpoint_cell": "_133554_",
+    "startpoint_source": "framer.current_block[7]",
+    "endpoint_cell": "_133286_",
+    "endpoint_source": "framer.commit_ptr[1]",
+    "slow_arrival_ns": 10.659365
+  },
+  "physical_scope": "Same4ns ideal-clock cell/wire-load preplacement screen afterrepair_design -pre_placement. EST-0027 retained. No placement/CTS/route/extractedRC/physicalclosure or fullnativefunctionalproof claim. Mapped port replay remains pending.",
+  "resource_change_only": "V3 STA admission1GiB instead of historicv2 1.3GiB, with continuous528MiB floor and unchanged2GiB nativeAS; all actual timing Tcl identical."
+}

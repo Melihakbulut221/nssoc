@@ -1,0 +1,108 @@
+{
+  "status": "EXACT_COMMENT_ONLY_HARDWARE_LICENSE_CORRECTION",
+  "prior_source_commit": "e3b7d6de61bdd2a4310e32443769ed1adad351c6",
+  "files": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v1.v": {
+      "before": {
+        "bytes": 4362,
+        "sha256": "5cf751d129fa3dc348a97898434ee8df01a6b349e90578f98c8430b0659c6435"
+      },
+      "after": {
+        "bytes": 4366,
+        "sha256": "e59b8b6a42c900eca49020ea3b5008d55a993650cc44fc673a6e28fc6068fadd"
+      },
+      "edit": "One line-comment license identifier; all executable RTL bytes unchanged"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v2.v": {
+      "before": {
+        "bytes": 6598,
+        "sha256": "aa6b6bfa6289860bf38377abf1bd97eacb347570c087949844dc8cb3f3085c28"
+      },
+      "after": {
+        "bytes": 6602,
+        "sha256": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4"
+      },
+      "edit": "One line-comment license identifier; all executable RTL bytes unchanged"
+    },
+    "scripts/check_pcie_gen3_lane_align_native_v1.py": {
+      "before": {
+        "bytes": 10393,
+        "sha256": "ade53646cc5400f8e1765b7f20c052e6368728982d1173c4db88b074416d70d0"
+      },
+      "after": {
+        "bytes": 10393,
+        "sha256": "039dc91b23d5c692f893d3620118cdb59491ffef06260ec516aa3b1948d221d6"
+      },
+      "edit": "Only exact SHA256 constants for license-only RTL and earlier producer chain"
+    },
+    "scripts/check_pcie_gen3_lane_align_native_v2.py": {
+      "before": {
+        "bytes": 10860,
+        "sha256": "7ccc767be126b6c227d580e8dba6243ee23ed088ba10cc82d73dd4b6c78b1625"
+      },
+      "after": {
+        "bytes": 10860,
+        "sha256": "3ea9bacb7a44651204e2cc02281b22d1714143dae8da35ad774cbffe8bc67a63"
+      },
+      "edit": "Only exact SHA256 constants for license-only RTL and earlier producer chain"
+    },
+    "scripts/check_pcie_gen3_lane_align_native_v3.py": {
+      "before": {
+        "bytes": 11493,
+        "sha256": "c6e01de53f6a2ef747faf1fa3ace8082c82254f81e1803903ed02fc5f3db0b7c"
+      },
+      "after": {
+        "bytes": 11493,
+        "sha256": "7408525457dc7c22456d5860701d4f83d1f976dc775e21d66d9b9053476c4fd7"
+      },
+      "edit": "Only exact SHA256 constants for license-only RTL and earlier producer chain"
+    },
+    "hw/soc/frozen-pcie-nettypes.json": {
+      "before": {
+        "bytes": 4425,
+        "sha256": "dfdf38901e3c2f941f469d91e9e530b4749836effe319635b2274da353819149"
+      },
+      "after": {
+        "bytes": 4425,
+        "sha256": "d0ab6168a2d3de5c06afa8199b228d7d2f8a9481b48cb8e52b4f32df582b75c9"
+      },
+      "edit": "Only the two corrected RTL SHA256 identities"
+    },
+    "sw/tests/test_pcie_gen3_lane_align_native_v2.py": {
+      "before": {
+        "bytes": 6627,
+        "sha256": "6b951a9d643e55289f4bacdb0e961a1d034e5fc077fafddcd356ce207b12d9e5"
+      },
+      "after": {
+        "bytes": 6627,
+        "sha256": "7cd5ba53ea0c8f7232fc4c0680c0daa946d21995eb5c556c0c36189e60160629"
+      },
+      "edit": "Only the exact parent producer SHA256 and its prefix selector in the existing AST-conservation assertion"
+    }
+  },
+  "substitutions": {
+    "5cf751d129fa3dc348a97898434ee8df01a6b349e90578f98c8430b0659c6435": "e59b8b6a42c900eca49020ea3b5008d55a993650cc44fc673a6e28fc6068fadd",
+    "aa6b6bfa6289860bf38377abf1bd97eacb347570c087949844dc8cb3f3085c28": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4",
+    "ade53646cc5400f8e1765b7f20c052e6368728982d1173c4db88b074416d70d0": "039dc91b23d5c692f893d3620118cdb59491ffef06260ec516aa3b1948d221d6",
+    "7ccc767be126b6c227d580e8dba6243ee23ed088ba10cc82d73dd4b6c78b1625": "3ea9bacb7a44651204e2cc02281b22d1714143dae8da35ad774cbffe8bc67a63",
+    "c6e01de53f6a2ef747faf1fa3ace8082c82254f81e1803903ed02fc5f3db0b7c": "7408525457dc7c22456d5860701d4f83d1f976dc775e21d66d9b9053476c4fd7"
+  },
+  "scope": "Follow established docs14 hardware licensing policy. Original Apache-tagged source and original native evidence remain at the prior immutable commit/public capsules; only current source headers corrected. Historical native passes are not relabeled as runs of new bytes. Executable RTL is exactly conserved; native producer behavior is exactly conserved except new source identity constants.",
+  "preserved_first_test_failure": "39 passed and one stale-parent-SHA assertion failure; original controls.log retained",
+  "inverse_bridge_checked": [
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v1.v",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v2.v",
+    "scripts/check_pcie_gen3_lane_align_native_v1.py",
+    "scripts/check_pcie_gen3_lane_align_native_v2.py",
+    "scripts/check_pcie_gen3_lane_align_native_v3.py",
+    "hw/soc/frozen-pcie-nettypes.json",
+    "sw/tests/test_pcie_gen3_lane_align_native_v2.py"
+  ],
+  "manifest_all34_rechecked": true,
+  "controls": {
+    "first": "39passed1stalepinfailed",
+    "fixed_failure": "1passed",
+    "distinct_completed_union": 40,
+    "scope": "Exact RTL/lifecycle cases; no new native-cell run claimed for license-comment revision"
+  }
+}

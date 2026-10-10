@@ -1,0 +1,1416 @@
+{
+  "date": "2026-09-23",
+  "status": "OPEN: original SRAM reference/layout resistor-width mismatch; no macro LVS acceptance",
+  "scope": "Research using separate copied decks. Original GDS/CDL and production/locked decks remain unchanged. A passing isolated Metal1 control cannot be extrapolated to the macro.",
+  "bitcell_witness": {
+    "status": "CONFIRMED dimension mismatch in the original bit-cell views",
+    "scope": "Geometry and CDL witness, not an LVS verdict. The library uses a generic GDS bit-cell name and a size-qualified CDL bit-cell name; both are preserved. No source dimensions, device classes or tolerances changed.",
+    "layout_cell": "RM_IHPSG13_2P_BITKIT_CELL",
+    "reference_cell": "RM_IHPSG13_256x16_c2_2P_BITKIT_CELL",
+    "dbu": 0.001,
+    "layout_markers": [
+      {
+        "metal": "Metal2",
+        "marker_bbox_dbu": "(-1820,-300;-1620,300)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox_dbu": "(-1165,-300;-965,300)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox_dbu": "(965,-300;1165,300)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      },
+      {
+        "metal": "Metal2",
+        "marker_bbox_dbu": "(1620,-300;1820,300)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      },
+      {
+        "metal": "Metal3",
+        "marker_bbox_dbu": "(-300,-510;300,-310)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      },
+      {
+        "metal": "Metal3",
+        "marker_bbox_dbu": "(-300,310;300,510)",
+        "sides_um": [
+          0.2,
+          0.6
+        ],
+        "marker_fully_covered_by_metal": true
+      }
+    ],
+    "verbatim_reference_resistors": [
+      "R5 B_RWL B_LWL lvsres w=2.6e-07 l=6e-07",
+      "R4 B_BLC_BOT B_BLC_TOP lvsres w=2.6e-07 l=6e-07",
+      "R3 B_BLT_BOT B_BLT_TOP lvsres w=2.6e-07 l=6e-07",
+      "R1 A_BLC_BOT A_BLC_TOP lvsres w=2.6e-07 l=6e-07",
+      "R0 A_BLT_BOT A_BLT_TOP lvsres w=2.6e-07 l=6e-07",
+      "R2 A_RWL A_LWL lvsres w=2.6e-07 l=6e-07"
+    ],
+    "widths_um": {
+      "layout": 0.2,
+      "reference": 0.26
+    },
+    "source": {
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds": "420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl": "1b307d5bd84ba57087717c1d1e631959352c6d20a27167b3ed08f637e3d312a8"
+    },
+    "subset": {
+      "bitcell.cdl": "b19996838910e43b54458b225b0ba39bf75ed4d841d865b03d6497efa9855ba3",
+      "bitcell.gds": "0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918"
+    }
+  },
+  "resistor_inventory": {
+    "layout": {
+      "source": "hw/soc/out/external-review-20260919/route-closure-20260923/sram256-port-seeded/extracted.cir.before-compare.cir",
+      "sha256": "813b40af0ee668243ba1cb2fbae7e1c6b1115cbcc4293456eb8f612e40aa613e",
+      "scope": "Written primitive resistor definitions in the already context-flattened graph, not recursively expanded instances",
+      "models": {
+        "res_metal3": 8384,
+        "res_metal2": 8336,
+        "res_metal1": 1
+      },
+      "dimensions": [
+        {
+          "model": "res_metal1",
+          "L": "0.6U",
+          "W": "0.26U",
+          "count": 1
+        },
+        {
+          "model": "res_metal2",
+          "L": "0.6U",
+          "W": "0.26U",
+          "count": 16
+        },
+        {
+          "model": "res_metal2",
+          "L": "0.6U",
+          "W": "0.2U",
+          "count": 256
+        },
+        {
+          "model": "res_metal2",
+          "L": "1.2U",
+          "W": "0.2U",
+          "count": 8064
+        },
+        {
+          "model": "res_metal3",
+          "L": "0.6U",
+          "W": "0.24U",
+          "count": 192
+        },
+        {
+          "model": "res_metal3",
+          "L": "0.6U",
+          "W": "0.2U",
+          "count": 8192
+        }
+      ]
+    },
+    "reference": {
+      "source": "hw/soc/out/external-review-20260919/route-closure-20260923/sram256-port-seeded/extracted.cir.reference.cir",
+      "sha256": "3acd988ecf5bd641ff006939ffecddd9e032ba4d10990dc7bd543b2db9a69ecb",
+      "scope": "Written primitive resistor definitions in the already context-flattened graph, not recursively expanded instances",
+      "models": {
+        "res_metal1": 16721
+      },
+      "dimensions": [
+        {
+          "model": "res_metal1",
+          "L": "0.6U",
+          "W": "0.26U",
+          "count": 8657
+        },
+        {
+          "model": "res_metal1",
+          "L": "1.2U",
+          "W": "0.26U",
+          "count": 8064
+        }
+      ]
+    },
+    "status": "REJECT global Metal1 mapping: original macro extraction also has Metal2 and Metal3 resistors"
+  },
+  "direct_geometry": {
+    "scope": "Original macro marker polygons versus their intersection with drawing metal; geometry measurement, not extraction acceptance. No source edits.",
+    "gds": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds",
+    "sha256": "420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b",
+    "dbu": 0.001,
+    "layers": {
+      "Metal1": {
+        "layer": 8,
+        "markers": {
+          "polygons": 38,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.26,
+                0.6
+              ],
+              "count": 38
+            }
+          ]
+        },
+        "metal_intersection": {
+          "polygons": 38,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.26,
+                0.6
+              ],
+              "count": 38
+            }
+          ]
+        }
+      },
+      "Metal2": {
+        "layer": 10,
+        "markers": {
+          "polygons": 16400,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.2,
+                0.6
+              ],
+              "count": 16384
+            },
+            {
+              "sides_um": [
+                0.26,
+                0.6
+              ],
+              "count": 16
+            }
+          ]
+        },
+        "metal_intersection": {
+          "polygons": 16400,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.2,
+                0.6
+              ],
+              "count": 16384
+            },
+            {
+              "sides_um": [
+                0.26,
+                0.6
+              ],
+              "count": 16
+            }
+          ]
+        }
+      },
+      "Metal3": {
+        "layer": 30,
+        "markers": {
+          "polygons": 8384,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.2,
+                0.6
+              ],
+              "count": 8192
+            },
+            {
+              "sides_um": [
+                0.24,
+                0.6
+              ],
+              "count": 192
+            }
+          ]
+        },
+        "metal_intersection": {
+          "polygons": 8384,
+          "nonrectangular": 0,
+          "bbox_dimensions_um": [
+            {
+              "sides_um": [
+                0.2,
+                0.6
+              ],
+              "count": 8192
+            },
+            {
+              "sides_um": [
+                0.24,
+                0.6
+              ],
+              "count": 192
+            }
+          ]
+        }
+      }
+    }
+  },
+  "isolated_Metal1_controls": [
+    {
+      "case": "positive",
+      "returncode": 0,
+      "elapsed_s": 8.195692331006285,
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "DUMMY_TOP",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 2
+        },
+        "circuits": [
+          {
+            "layout": "DUMMY_TOP",
+            "schematic": "DUMMY_TOP",
+            "status": "Match",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "Match",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/positive/report.lvsdb": {
+            "bytes": 13931,
+            "sha256": "a782039cb282d0c6f482a8d6be4981340ab33270f35d6d4a4227f7badb744132"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/positive/deck.log": {
+            "bytes": 37318,
+            "sha256": "c230e6e2c09a68fa5621e9818c7819f88277ca67c628a9ca7b518f0b8c78f716"
+          }
+        }
+      }
+    },
+    {
+      "case": "wrong-width",
+      "returncode": 0,
+      "elapsed_s": 6.3378838670032565,
+      "audit": {
+        "status": "FAIL",
+        "top": "DUMMY_TOP",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Skipped": 1,
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "DUMMY_TOP",
+            "schematic": "DUMMY_TOP",
+            "status": "Skipped",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/wrong-width/report.lvsdb": {
+            "bytes": 15246,
+            "sha256": "a41c11a99691587be78f0c695f8ec1fb3d388fe3c8d624eec0b3afbd33e6e1c3"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/wrong-width/deck.log": {
+            "bytes": 37316,
+            "sha256": "edce3be4d6ae5454acbb0a444299c40709bb16ab89572b338f658f7813509de2"
+          }
+        }
+      }
+    },
+    {
+      "case": "wrong-length",
+      "returncode": 0,
+      "elapsed_s": 5.585740479989909,
+      "audit": {
+        "status": "FAIL",
+        "top": "DUMMY_TOP",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Skipped": 1,
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "DUMMY_TOP",
+            "schematic": "DUMMY_TOP",
+            "status": "Skipped",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/wrong-length/report.lvsdb": {
+            "bytes": 15248,
+            "sha256": "41efed7a7b74739ff70cc7f0804f3497b12a6b0468e85b2c3ae1d1d5fdbca3b9"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/wrong-length/deck.log": {
+            "bytes": 37319,
+            "sha256": "ee52ec50686bd22efe6244c7edda0d8fabb07c477add133df519d77fc1790de9"
+          }
+        }
+      }
+    },
+    {
+      "case": "missing-resistor",
+      "returncode": 0,
+      "elapsed_s": 6.136370084001101,
+      "audit": {
+        "status": "FAIL",
+        "top": "DUMMY_TOP",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Skipped": 1,
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "DUMMY_TOP",
+            "schematic": "DUMMY_TOP",
+            "status": "Skipped",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/missing-resistor/report.lvsdb": {
+            "bytes": 14597,
+            "sha256": "950c989c9a3f653c84f3a60a815bf41ed9b622f806036e43255f979c45cde407"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/lvsres-dimension-controls2/missing-resistor/deck.log": {
+            "bytes": 37331,
+            "sha256": "93fa84731d9dca172263dc9cf283d415c5ee6ff5a656920f3b594256df245d70"
+          }
+        }
+      }
+    }
+  ],
+  "macro_diagnostics": {
+    "sram256-strict-hierarchy": {
+      "returncode": 0,
+      "elapsed_s": 22.6642712969915,
+      "audit": {
+        "status": "FAIL",
+        "top": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Mismatch": 4,
+          "Skipped": 1,
+          "Match": 25,
+          "NoMatch": 2
+        },
+        "circuits": [
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX2",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP4",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "schematic": "RM_IHPSG13_2P_256X16_C2_BM_BIST",
+            "status": "Skipped",
+            "layout_devices_recursive": 62046,
+            "schematic_devices_recursive": 62046
+          },
+          {
+            "layout": "RSC_IHPSG13_AND2X2",
+            "schematic": "RSC_IHPSG13_AND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX2",
+            "schematic": "RSC_IHPSG13_CBUFX2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX8",
+            "schematic": "RSC_IHPSG13_CBUFX8",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1",
+            "schematic": "RSC_IHPSG13_CDLYX1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX2",
+            "schematic": "RSC_IHPSG13_CDLYX2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CGATEPX4",
+            "schematic": "RSC_IHPSG13_CGATEPX4",
+            "status": "Match",
+            "layout_devices_recursive": 18,
+            "schematic_devices_recursive": 18
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4",
+            "schematic": "RSC_IHPSG13_CINVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4_WN",
+            "schematic": "RSC_IHPSG13_CINVX4_WN",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CNAND2X2",
+            "schematic": "RSC_IHPSG13_CNAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQMX2IX1",
+            "schematic": "RSC_IHPSG13_DFNQMX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 32,
+            "schematic_devices_recursive": 32
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQX2",
+            "schematic": "RSC_IHPSG13_DFNQX2",
+            "status": "Match",
+            "layout_devices_recursive": 24,
+            "schematic_devices_recursive": 24
+          },
+          {
+            "layout": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+            "schematic": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+            "status": "Match",
+            "layout_devices_recursive": 19,
+            "schematic_devices_recursive": 19
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX2",
+            "schematic": "RSC_IHPSG13_INVX2",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX4",
+            "schematic": "RSC_IHPSG13_INVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_LHPQX2",
+            "schematic": "RSC_IHPSG13_LHPQX2",
+            "status": "Match",
+            "layout_devices_recursive": 14,
+            "schematic_devices_recursive": 14
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2IX1",
+            "schematic": "RSC_IHPSG13_MX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 10,
+            "schematic_devices_recursive": 10
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2X2",
+            "schematic": "RSC_IHPSG13_MX2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND2X2",
+            "schematic": "RSC_IHPSG13_NAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND3X2",
+            "schematic": "RSC_IHPSG13_NAND3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR2X2",
+            "schematic": "RSC_IHPSG13_NOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR3X2",
+            "schematic": "RSC_IHPSG13_NOR3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_OA12X1",
+            "schematic": "RSC_IHPSG13_OA12X1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEH",
+            "schematic": "RSC_IHPSG13_TIEH",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEL",
+            "schematic": "RSC_IHPSG13_TIEL",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_WLDRVX8",
+            "schematic": "RSC_IHPSG13_WLDRVX8",
+            "status": "NoMatch",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_XOR2X2",
+            "schematic": "RSC_IHPSG13_XOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-strict-hierarchy/RM_IHPSG13_2P_256x16_c2_bm_bist.lvsdb": {
+            "bytes": 57134568,
+            "sha256": "659529e0258b6ce46d1938af57cf313a971beef96acb5faf77e0c4728ce611f6"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-strict-hierarchy/deck.log": {
+            "bytes": 37462,
+            "sha256": "8a915979a7eae69e1bb5eea406085a7eecc408b1a11888b10fddb6a1a06ebd70"
+          }
+        }
+      },
+      "scope": "Diagnostic only: original vendor SRAM GDS/CDL, separate copied deck reads datatype-2 Metal1 labels and requires physical closure of DFPQD VDD! at strict top level. No resistor aliases, tolerances, blackboxes or source edits. Does not establish foundry acceptance."
+    },
+    "sram256-wldrv-flatten": {
+      "returncode": 0,
+      "elapsed_s": 22.873187177989166,
+      "audit": {
+        "status": "FAIL",
+        "top": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Mismatch": 4,
+          "Skipped": 1,
+          "Match": 25,
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX2",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP4",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "schematic": "RM_IHPSG13_2P_256X16_C2_BM_BIST",
+            "status": "Skipped",
+            "layout_devices_recursive": 62046,
+            "schematic_devices_recursive": 62046
+          },
+          {
+            "layout": "RSC_IHPSG13_AND2X2",
+            "schematic": "RSC_IHPSG13_AND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX2",
+            "schematic": "RSC_IHPSG13_CBUFX2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX8",
+            "schematic": "RSC_IHPSG13_CBUFX8",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1",
+            "schematic": "RSC_IHPSG13_CDLYX1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX2",
+            "schematic": "RSC_IHPSG13_CDLYX2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CGATEPX4",
+            "schematic": "RSC_IHPSG13_CGATEPX4",
+            "status": "Match",
+            "layout_devices_recursive": 18,
+            "schematic_devices_recursive": 18
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4",
+            "schematic": "RSC_IHPSG13_CINVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4_WN",
+            "schematic": "RSC_IHPSG13_CINVX4_WN",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CNAND2X2",
+            "schematic": "RSC_IHPSG13_CNAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQMX2IX1",
+            "schematic": "RSC_IHPSG13_DFNQMX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 32,
+            "schematic_devices_recursive": 32
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQX2",
+            "schematic": "RSC_IHPSG13_DFNQX2",
+            "status": "Match",
+            "layout_devices_recursive": 24,
+            "schematic_devices_recursive": 24
+          },
+          {
+            "layout": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+            "schematic": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+            "status": "Match",
+            "layout_devices_recursive": 19,
+            "schematic_devices_recursive": 19
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX2",
+            "schematic": "RSC_IHPSG13_INVX2",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX4",
+            "schematic": "RSC_IHPSG13_INVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_LHPQX2",
+            "schematic": "RSC_IHPSG13_LHPQX2",
+            "status": "Match",
+            "layout_devices_recursive": 14,
+            "schematic_devices_recursive": 14
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2IX1",
+            "schematic": "RSC_IHPSG13_MX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 10,
+            "schematic_devices_recursive": 10
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2X2",
+            "schematic": "RSC_IHPSG13_MX2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND2X2",
+            "schematic": "RSC_IHPSG13_NAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND3X2",
+            "schematic": "RSC_IHPSG13_NAND3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR2X2",
+            "schematic": "RSC_IHPSG13_NOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR3X2",
+            "schematic": "RSC_IHPSG13_NOR3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_OA12X1",
+            "schematic": "RSC_IHPSG13_OA12X1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEH",
+            "schematic": "RSC_IHPSG13_TIEH",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEL",
+            "schematic": "RSC_IHPSG13_TIEL",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_XOR2X2",
+            "schematic": "RSC_IHPSG13_XOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-wldrv-flatten/RM_IHPSG13_2P_256x16_c2_bm_bist.lvsdb": {
+            "bytes": 58156823,
+            "sha256": "23fcfef3d765ff36508c64945513582bd7ecdf1811bf937a70f188e9f9a66d8e"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-wldrv-flatten/deck.log": {
+            "bytes": 37456,
+            "sha256": "5638b57cda1c86befbe015b38adb6dc8c17e938c0cafe77c6c4bad92ee891242"
+          }
+        }
+      },
+      "scope": "Diagnostic only: original vendor SRAM GDS/CDL, separate copied deck reads datatype-2 Metal1 labels and requires physical closure of DFPQD VDD! at strict top level. WLDRV is flattened on both netlists to test device externalization; all devices retained. No resistor aliases, tolerances, blackboxes or source edits. Does not establish foundry acceptance."
+    },
+    "sram256-documented-reader": {
+      "returncode": 0,
+      "elapsed_s": 58.33533545599494,
+      "audit": {
+        "status": "FAIL",
+        "top": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Mismatch": 4,
+          "Skipped": 1,
+          "Match": 25
+        },
+        "circuits": [
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX2",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_CINVX8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP4",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": null,
+            "schematic": "RSC_IHPSG13_FILLCAP8",
+            "status": "Mismatch",
+            "layout_devices_recursive": 0,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+            "schematic": "RM_IHPSG13_2P_256X16_C2_BM_BIST",
+            "status": "Skipped",
+            "layout_devices_recursive": 62046,
+            "schematic_devices_recursive": 62046
+          },
+          {
+            "layout": "RSC_IHPSG13_AND2X2",
+            "schematic": "RSC_IHPSG13_AND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX2",
+            "schematic": "RSC_IHPSG13_CBUFX2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CBUFX8",
+            "schematic": "RSC_IHPSG13_CBUFX8",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1",
+            "schematic": "RSC_IHPSG13_CDLYX1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+            "status": "Match",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "RSC_IHPSG13_CDLYX2",
+            "schematic": "RSC_IHPSG13_CDLYX2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_CGATEPX4",
+            "schematic": "RSC_IHPSG13_CGATEPX4",
+            "status": "Match",
+            "layout_devices_recursive": 18,
+            "schematic_devices_recursive": 18
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4",
+            "schematic": "RSC_IHPSG13_CINVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CINVX4_WN",
+            "schematic": "RSC_IHPSG13_CINVX4_WN",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_CNAND2X2",
+            "schematic": "RSC_IHPSG13_CNAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQMX2IX1",
+            "schematic": "RSC_IHPSG13_DFNQMX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 32,
+            "schematic_devices_recursive": 32
+          },
+          {
+            "layout": "RSC_IHPSG13_DFNQX2",
+            "schematic": "RSC_IHPSG13_DFNQX2",
+            "status": "Match",
+            "layout_devices_recursive": 24,
+            "schematic_devices_recursive": 24
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX2",
+            "schematic": "RSC_IHPSG13_INVX2",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_INVX4",
+            "schematic": "RSC_IHPSG13_INVX4",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_LHPQX2",
+            "schematic": "RSC_IHPSG13_LHPQX2",
+            "status": "Match",
+            "layout_devices_recursive": 14,
+            "schematic_devices_recursive": 14
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2IX1",
+            "schematic": "RSC_IHPSG13_MX2IX1",
+            "status": "Match",
+            "layout_devices_recursive": 10,
+            "schematic_devices_recursive": 10
+          },
+          {
+            "layout": "RSC_IHPSG13_MX2X2",
+            "schematic": "RSC_IHPSG13_MX2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND2X2",
+            "schematic": "RSC_IHPSG13_NAND2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NAND3X2",
+            "schematic": "RSC_IHPSG13_NAND3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR2X2",
+            "schematic": "RSC_IHPSG13_NOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "RSC_IHPSG13_NOR3X2",
+            "schematic": "RSC_IHPSG13_NOR3X2",
+            "status": "Match",
+            "layout_devices_recursive": 6,
+            "schematic_devices_recursive": 6
+          },
+          {
+            "layout": "RSC_IHPSG13_OA12X1",
+            "schematic": "RSC_IHPSG13_OA12X1",
+            "status": "Match",
+            "layout_devices_recursive": 8,
+            "schematic_devices_recursive": 8
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEH",
+            "schematic": "RSC_IHPSG13_TIEH",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_TIEL",
+            "schematic": "RSC_IHPSG13_TIEL",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          },
+          {
+            "layout": "RSC_IHPSG13_XOR2X2",
+            "schematic": "RSC_IHPSG13_XOR2X2",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-documented-reader/RM_IHPSG13_2P_256x16_c2_bm_bist.lvsdb": {
+            "bytes": 58713319,
+            "sha256": "7f8ad18832eadef364275ab253d41656d7f0978565358e09c2ce536b12866594"
+          },
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram256-documented-reader/deck.log": {
+            "bytes": 37453,
+            "sha256": "8be228b05fe87b01e2c8e6667a470ffc039533a3e10296a46cb3d668f44e2fb9"
+          }
+        }
+      },
+      "scope": "Diagnostic only: original vendor SRAM GDS/CDL, separate copied deck reads datatype-2 Metal1 labels and requires physical closure of DFPQD VDD! at strict top level. Additionally normalize the documented legacy lvsres Metal1 class with active W/L comparison, flatten WLDRV on both sides retaining every primitive, and retain only reachable verbatim schematic definitions. No tolerances or blackboxes. Original GDS/CDL files untouched; this experimental deck is not foundry acceptance. Does not establish foundry acceptance."
+    },
+    "sram256-context-flatten": {
+      "returncode": 124,
+      "elapsed_s": 600.1178550850018,
+      "audit": null,
+      "scope": "Diagnostic only: original vendor SRAM GDS/CDL, separate copied deck reads datatype-2 Metal1 labels and requires physical closure of DFPQD VDD! at strict top level. Additionally normalize the documented legacy lvsres Metal1 class with active W/L comparison, flatten WLDRV and the four unmatched context-externalized inverter/fill-cap boundaries on both sides retaining every primitive, and retain only reachable verbatim schematic definitions. No tolerances or blackboxes. Original GDS/CDL files untouched; this experimental deck is not foundry acceptance. Does not establish foundry acceptance."
+    },
+    "sram256-port-seeded": {
+      "returncode": -9,
+      "elapsed_s": 445.6036994400056,
+      "audit": null,
+      "scope": "Diagnostic only: original vendor SRAM GDS/CDL, separate copied deck reads datatype-2 Metal1 labels and requires physical closure of DFPQD VDD! at strict top level. Additionally normalize the documented legacy lvsres Metal1 class with active W/L comparison, flatten WLDRV and the four unmatched context-externalized inverter/fill-cap boundaries on both sides retaining every primitive, and retain only reachable verbatim schematic definitions. Strict same_nets! assertions on top interface pins and no_lvs_hints reduce ambiguity and diagnostic cost without altering connectivity or device checks. No tolerances or blackboxes. Original GDS/CDL files untouched; this experimental deck is not foundry acceptance. Does not establish foundry acceptance."
+    },
+    "sram256-netgen-control": {
+      "returncode": -15,
+      "elapsed_s": 115.37778747999982,
+      "audit": null,
+      "scope": "Independent comparison-engine diagnostic of KLayout experimental extracted and reference graphs; original Netgen PDK setup unchanged. No blackbox flag. Not independent extraction or foundry acceptance."
+    }
+  },
+  "rejected_generalization": "The documented legacy Metal1 normalization passes the original dummy cell and rejects altered W, L and deleted-resistor references. Whole-macro application is invalid: the macro contains Metal2 and Metal3 resistors and widths 0.20/0.24um, while the vendor CDL uses 0.26um. Neither aliasing every model to Metal1 nor disabling width comparison is accepted. The seeded KLayout attempt was stopped (-9 after SIGTERM did not stop comparison); Netgen stopped (-15). The earlier unseeded comparison hit its 600-second bound. No interrupted process is a pass.",
+  "hierarchy_findings": "Cell-scoped DFPQD must-connect with strict top-level handling yields no unresolved extraction diagnostics in the bounded macro experiment. Flattening WLDRV and context-externalized cells preserves devices but does not establish top equivalence. Intermediate audit Match rows are not acceptance of the full macro.",
+  "upstream_history": [
+    {
+      "date": "2025-09-03T13:54:50Z",
+      "message": "add 13 new SRAM modules\n\nSigned-off-by: Alexey Balashov <balashov@ihp-microelectronics.com>",
+      "sha": "6d9d0a9971cfbefe83e579915e8efeec82a8feee"
+    }
+  ],
+  "references": [
+    "https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/lvs/04_05_res.html",
+    "https://www.klayout.de/doc/manual/lvs_tweaks.html",
+    "https://www.klayout.org/downloads/master/doc-qt5/about/lvs_ref_netter.html",
+    "https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121"
+  ],
+  "archive": {
+    "path": "docs/evidence/sram-width-diagnosis-20260923.tar.xz",
+    "sha256": "614a5263024b59f40964b3677861ed9cb55d2bb63cec8a39ec1db56fd5c0ca7b",
+    "bytes": 4173692,
+    "members": {
+      "record_sram_width_diagnosis.py": "03733a469ef4e0e877455e0b98183207a53a60526fc6fe77f921ed9947218970",
+      "run_sram256_strict.py": "0750ba855dbe6479b86605a82806953ba8de816601ab6447b6ae519f85de81e5",
+      "run_sram256_flatten.py": "df091d91dd8fd6b6f9b29a79763dc7e59dfc85b71a0832e8b1cdae1dc477e27e",
+      "run_sram256_documented.py": "de7bb0cc307ce22ab3710a3b6ae4c1bfd85fbe770743d857394b78b01a0ba442",
+      "run_sram256_context.py": "9e65e8bcca02d8d1c07b9caf81333916b87820ad7e49767b667f8d3477de5c33",
+      "run_sram256_seeded.py": "54557c102858526b99d1d8aa229ddd7d6fb964e20e3affdd74113de14442aa08",
+      "run_netgen_sram.py": "78d003f2004f509cca30f09de0c8bb9bc46b16e783b2c2d782e4363e21f2fb56",
+      "run_lvsres_controls.py": "b7b8c1154cd2d9ef51a31e33af9602b0594f3a2da73c8bc292aa1060834f2cc5",
+      "run_lvsres_controls2.py": "e6e447b3fefe7c6b35a05ac9540e4b2ee6aba6394068ad7033b670cebbb4d7bf",
+      "audit_sram_resistor_layers.py": "ea75845ea30fce71f7f3aa0e26e8c58a05bb6b0a7d81e4200f6e1e7c5660dde1",
+      "measure_resistor_markers.py": "18154c31162f59062e8d0ff00e0a870001940afa342d8630d727b0f8eed8a035",
+      "inspect_resistor_cells.py": "376f437d9c1fda4a9e188a617cd1ba5ef1a653020ec25502d4e2c0c8ed2cfc1d",
+      "inspect_resistor_parents.py": "b1a914455dece71ef455633464500c7395db8ec4e05e3e6f5d73369f87765b2d",
+      "prepare_bitcell_width_witness.py": "e3ca223c18e486ded139181b0cc51014e9606c945f3a45a5f211b1a5b1dacd91",
+      "sram-resistor-layer-audit.json": "8ce0f3d786272d8ea9a1761ea0d516f08c158814f60265457dfee55aae2db90d",
+      "sram-resistor-markers.json": "1460056ea127605a8289703f58a90cca82e8969db63a69f8ba59b3b75f6f718a",
+      "resistor-cell-inventory.json": "ed3484a9993731b33b4dd8a663f1c883e2cc67b81e9d24a26600a3aab7197c00",
+      "sram-cdl-upstream-history.json": "440aa4365d5d3ee43da9ef2e91e3c2a09ea8b45f699becc4b012215820a020a3",
+      "sram256-strict-hierarchy/result.json": "b30b57ebc1cb37c2aae6a93e8043af6f925892a6e13aa6a50dd4a7f845d7966a",
+      "sram256-strict-hierarchy/run.log": "e3ed56b86d318755ff1386ca33fbb30bc41ec403c4bda29351be5b2cfebd3a3e",
+      "sram256-strict-hierarchy/deck.log": "8a915979a7eae69e1bb5eea406085a7eecc408b1a11888b10fddb6a1a06ebd70",
+      "sram256-strict-hierarchy/audit.json": "e782c456ae68f72414dc4e28b759c3f853b793fef359b882d7bc1b17fc9cae1e",
+      "sram256-strict-hierarchy/extracted.cir": "2e494dd45cc539fe5a409668b278e0e8ae0fa52015bd95423b11230d165cff2a",
+      "sram256-strict-hierarchy/inputs.json": "853cdd0b7a8dc5dbfeaf4cc45587aa45972220aca0b9f626a8429a7b49e09550",
+      "sram256-strict-hierarchy/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "sram256-strict-hierarchy/deck/sg13g2.lvs": "39fb7d30110d54664385fdbe303dd87445155174b605ac41fe3e0f848b9cde2c",
+      "sram256-strict-hierarchy/deck/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "sram256-strict-hierarchy/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram256-wldrv-flatten/result.json": "a9ea90a3a59c4df46d0c026d24d64619de694e3667335cc200a376ea6a390580",
+      "sram256-wldrv-flatten/run.log": "d1d529356df0e1aa8d4e06dd9da5e6197b3427b1ec9dd720df06aaa259d79af0",
+      "sram256-wldrv-flatten/deck.log": "5638b57cda1c86befbe015b38adb6dc8c17e938c0cafe77c6c4bad92ee891242",
+      "sram256-wldrv-flatten/audit.json": "3327c027beacaf917360c73fda6b9ddef51f0b701008b7b254b8e740e67028ec",
+      "sram256-wldrv-flatten/extracted.cir": "c5bc3d6f4a5542271f1e1eb7e464a6a39034c877bc7579a88007b310ff7d0322",
+      "sram256-wldrv-flatten/inputs.json": "e3c34cf20c51ac02dd9ce1bd6e1b34cfdf50deb5ccd8facaf393b574e405d505",
+      "sram256-wldrv-flatten/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "sram256-wldrv-flatten/deck/sg13g2.lvs": "d35cd994bc5c13ef68356b5bbb0d38da8c89ff4975cdbdeac421c116d0882ee9",
+      "sram256-wldrv-flatten/deck/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "sram256-wldrv-flatten/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram256-documented-reader/REJECTED-MACRO-METAL1-MAPPING.txt": "bd4ab284984f19829403798f6a450e3093e1270bfa0427e8bb236b208f41dad4",
+      "sram256-documented-reader/reachable-reference.cdl": "890659bea2eb00a6844ecf3b50547bb04392b47bbf323916c7f481418eb8c565",
+      "sram256-documented-reader/result.json": "150defdd03524fdfe1f148fa639647f0b5dedcab6419e56c1613274f45410f0d",
+      "sram256-documented-reader/run.log": "cd17a193644918244033762dd5a2e3e98d432b34ff7331a652ef2a4f798dfe92",
+      "sram256-documented-reader/deck.log": "8be228b05fe87b01e2c8e6667a470ffc039533a3e10296a46cb3d668f44e2fb9",
+      "sram256-documented-reader/RM_IHPSG13_2P_256x16_c2_bm_bist.lvsdb": "7f8ad18832eadef364275ab253d41656d7f0978565358e09c2ce536b12866594",
+      "sram256-documented-reader/audit.json": "fb125899ddc6a48eb15b73c8e52c1c7bf72d3eb6af8e8ed5447a46e77db4f721",
+      "sram256-documented-reader/extracted.cir": "805a3931545aff3d89921ca948523eaed45401f5de9ad51c09f147a295f3caac",
+      "sram256-documented-reader/inputs.json": "bc4b356c0850ef0afa1a16f4b98c20929b651366b42066331086b0cbe64eadd7",
+      "sram256-documented-reader/reachability.json": "0ac425366fecafdde8368c0b8036de096b468db24044ac222289621a416cf7a5",
+      "sram256-documented-reader/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "sram256-documented-reader/deck/sg13g2.lvs": "d35cd994bc5c13ef68356b5bbb0d38da8c89ff4975cdbdeac421c116d0882ee9",
+      "sram256-documented-reader/deck/rule_decks/custom_reader.lvs": "8a34fff0af7363863e3476b59348afb11a6754bc85aa8052afe8a53aff81e787",
+      "sram256-documented-reader/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram256-context-flatten/REJECTED-MACRO-METAL1-MAPPING.txt": "bd4ab284984f19829403798f6a450e3093e1270bfa0427e8bb236b208f41dad4",
+      "sram256-context-flatten/reachable-reference.cdl": "890659bea2eb00a6844ecf3b50547bb04392b47bbf323916c7f481418eb8c565",
+      "sram256-context-flatten/result.json": "e7ac37652ef06a33137158cc95340e603ee8e4f70dbf9966a96a6841bf9f9488",
+      "sram256-context-flatten/run.log": "7cb972f6cd4c4baf6a602c7dc103c72b16da7dbf46e5b5b008785380be7abbcd",
+      "sram256-context-flatten/deck.log": "401f11f19f5f740f8bcafefae7f2a65289ad520ac51f242ecb559ed889d1644e",
+      "sram256-context-flatten/inputs.json": "dde579a6ae0af76aa43321d8fff41e19178d8109a45bf8d00b2f72e8ceb8bf9f",
+      "sram256-context-flatten/reachability.json": "0ac425366fecafdde8368c0b8036de096b468db24044ac222289621a416cf7a5",
+      "sram256-context-flatten/deck/sg13g2.lvs": "677dee808ab57af8346ce8594cc31c6aac68512ea97cc113345c00eecd7a63de",
+      "sram256-context-flatten/deck/rule_decks/custom_reader.lvs": "8a34fff0af7363863e3476b59348afb11a6754bc85aa8052afe8a53aff81e787",
+      "sram256-context-flatten/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram256-port-seeded/REJECTED-MACRO-METAL1-MAPPING.txt": "bd4ab284984f19829403798f6a450e3093e1270bfa0427e8bb236b208f41dad4",
+      "sram256-port-seeded/reachable-reference.cdl": "890659bea2eb00a6844ecf3b50547bb04392b47bbf323916c7f481418eb8c565",
+      "sram256-port-seeded/result.json": "93337770bc056f207c43098a566d25698d940e0f751b0e7c045b0c0553d2bbcc",
+      "sram256-port-seeded/run.log": "59cb1898be81315a6a70141ef965ed7e1dd11c04cc2786f60d22ab6ea80f4ede",
+      "sram256-port-seeded/deck.log": "8a62e91f2fcfcbc659eee0b90cfb9641bb059639491d138daaa514082610a67e",
+      "sram256-port-seeded/inputs.json": "5650da94d154fd77768ff7678f29d0a8dac8643cd6f12ab2f2c4fc7428412353",
+      "sram256-port-seeded/reachability.json": "0ac425366fecafdde8368c0b8036de096b468db24044ac222289621a416cf7a5",
+      "sram256-port-seeded/extracted.cir.reference.cir": "3acd988ecf5bd641ff006939ffecddd9e032ba4d10990dc7bd543b2db9a69ecb",
+      "sram256-port-seeded/extracted.cir.before-compare.cir": "813b40af0ee668243ba1cb2fbae7e1c6b1115cbcc4293456eb8f612e40aa613e",
+      "sram256-port-seeded/deck/sg13g2.lvs": "b853c4e269e1eb6c46d6a4847f14060675e49c8302523746ffb8cb761691c07f",
+      "sram256-port-seeded/deck/rule_decks/custom_reader.lvs": "8a34fff0af7363863e3476b59348afb11a6754bc85aa8052afe8a53aff81e787",
+      "sram256-port-seeded/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram256-netgen-control/REJECTED-MACRO-METAL1-MAPPING.txt": "bd4ab284984f19829403798f6a450e3093e1270bfa0427e8bb236b208f41dad4",
+      "sram256-netgen-control/result.json": "e01b9a718629fc2ea296d91e2a6727f3f3709a989d902888914ee962f067890f",
+      "sram256-netgen-control/run.log": "7544661ca203ee61e3cdf8238b679db996bbb5eaad948b39ff7b72fc5a0a7502",
+      "sram256-netgen-control/compare.log": "ced896ba0f924cb56eed0ccb3f8b2b5e3b811b7677c492cfdb9c4740adeadc9c",
+      "lvsres-dimension-controls/results.json": "f23be6746508f659ffb960c3a444ff5aaba8a78f19422239fa2dd4a09b17ffce",
+      "lvsres-dimension-controls/dummy-parent.gds": "0542302e833b6afb1578c8362d68b98057fc64493f91b5b302c6a4ac09c43357",
+      "lvsres-dimension-controls/deck/sg13g2.lvs": "d35cd994bc5c13ef68356b5bbb0d38da8c89ff4975cdbdeac421c116d0882ee9",
+      "lvsres-dimension-controls/wrong-length/result.json": "8ed686a4259158c32bf0378505578f8347e3d04177fb0f659a83294a591d5644",
+      "lvsres-dimension-controls/wrong-length/run.log": "5ee90ed7a7b0a4f944c4a09123b7919b987d2d896c3209fe00a93dfe033b5918",
+      "lvsres-dimension-controls/wrong-length/report.lvsdb": "21b59ae7e0dc8954048819bdfe87c2d9cfb1345d5090ce75a581068a137890ac",
+      "lvsres-dimension-controls/wrong-length/deck.log": "dc9ddde0ecba41e736a8302dd166bdbf2159c58b6cb7d902d1b2f316f0b8ea5a",
+      "lvsres-dimension-controls/wrong-length/audit.json": "07e3c39b776ded4d35676131c97ed18c35fe53965a2dbaade2c8eaf0c2fe6174",
+      "lvsres-dimension-controls/wrong-length/extracted.cir": "5fc7008890e3fb02442b0fe9c433d6c36c5b085ca965d9ace3dd0d1706e4c3d5",
+      "lvsres-dimension-controls/wrong-length/reference.cdl": "9ee8178687b2f0688d882d7907f9f2890aa5bf540936f60d19c6940976ad10d2",
+      "lvsres-dimension-controls/wrong-length/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls/positive/result.json": "6961fcac08ca399877827a3be87224b13af8e7c9b968eacfed9e0eb307ef5baa",
+      "lvsres-dimension-controls/positive/run.log": "f249460273946e2324f442a79c78aadd833f67f782ca6df52307d243d95589b4",
+      "lvsres-dimension-controls/positive/report.lvsdb": "4ad8c12d9a4c933b30ebf98ca2250de303f12e5cb10cdaec68622399d9187c8b",
+      "lvsres-dimension-controls/positive/deck.log": "d3df1982619014fdaca4e17d4cf8cb2581ec58633806371ba1aaffe12a03d066",
+      "lvsres-dimension-controls/positive/audit.json": "f8261971e88e43cc8c46ba643628fbf53debd3c77abb071203eafaf9a9d66581",
+      "lvsres-dimension-controls/positive/extracted.cir": "5fc7008890e3fb02442b0fe9c433d6c36c5b085ca965d9ace3dd0d1706e4c3d5",
+      "lvsres-dimension-controls/positive/reference.cdl": "9406489c4b2d21844fd58b874d9050acc5fe60f810e058b39d46133f5ece8211",
+      "lvsres-dimension-controls/positive/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls/wrong-width/result.json": "a5bb51b1c75fb08247766228346e6d3e9df148aae4b8163a7448f42090a5a73c",
+      "lvsres-dimension-controls/wrong-width/run.log": "8300f51f7ed1a4102c422d7a52dd36c3072321feaab80bf769ceaf5f25ed840c",
+      "lvsres-dimension-controls/wrong-width/report.lvsdb": "d9957c88bdc4542f146034a39cd0979e2e4c9209fdcf4ad92ba057cb5c932f8b",
+      "lvsres-dimension-controls/wrong-width/deck.log": "3f235cbd776ddf6894c0d871737a35447dbfb623ed9d61a9e093812b6a60e08e",
+      "lvsres-dimension-controls/wrong-width/audit.json": "07694cb8b92bcc2878cb06dc2426994bf671721f3bf8f28d7b19b768844646ea",
+      "lvsres-dimension-controls/wrong-width/extracted.cir": "5fc7008890e3fb02442b0fe9c433d6c36c5b085ca965d9ace3dd0d1706e4c3d5",
+      "lvsres-dimension-controls/wrong-width/reference.cdl": "ff498964a307a22956f0e927be12f1b5ca67cc619ce1b44b8fedb893106e2614",
+      "lvsres-dimension-controls/wrong-width/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls/missing-resistor/result.json": "52768388d5626d4960ecf582b3aa843c4acf38f4fa25c8b0793d553ffd6e8fe5",
+      "lvsres-dimension-controls/missing-resistor/run.log": "b0952238f06bea1717e85c8284f7ea38e2c03d3f3d4d332d30a0432ebccf1b3f",
+      "lvsres-dimension-controls/missing-resistor/report.lvsdb": "bb2eee5148313df2c68ffd73ad64a337b16a973fd6d712533aa89b1e653a67dd",
+      "lvsres-dimension-controls/missing-resistor/deck.log": "d750883644e4b5eb3a71d5b00b87a7172eab22d3a659bb999d13737257a1bc33",
+      "lvsres-dimension-controls/missing-resistor/audit.json": "49a7ba6ce847baa219672e00599ea09f1e10c63138d1c01aaea586e3375652c5",
+      "lvsres-dimension-controls/missing-resistor/extracted.cir": "8daa709c5e03e77b17c33df7638cd30202f0d731d7f808e2f28f27434ff7ff13",
+      "lvsres-dimension-controls/missing-resistor/reference.cdl": "5d13eb20c95cb6af8d2858de654e7b07b899e66f1191c5320d8de7b2e1fe382d",
+      "lvsres-dimension-controls/missing-resistor/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls/deck/rule_decks/custom_reader.lvs": "8a34fff0af7363863e3476b59348afb11a6754bc85aa8052afe8a53aff81e787",
+      "lvsres-dimension-controls/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "lvsres-dimension-controls2/results.json": "5bb7ae02284e27321344110562adf84bc2171a655ca3a122e59f8489c7bae5ed",
+      "lvsres-dimension-controls2/dummy-parent.gds": "27ce9d2357d5dcc693799a830d68dd369cb6a0d431d547bf97001bf6e417c7be",
+      "lvsres-dimension-controls2/deck/sg13g2.lvs": "d35cd994bc5c13ef68356b5bbb0d38da8c89ff4975cdbdeac421c116d0882ee9",
+      "lvsres-dimension-controls2/wrong-length/result.json": "8147414a6b8a99d44225a5fa307c08d09e99e8d81bc2cb32fa3b3f3cdf4a5340",
+      "lvsres-dimension-controls2/wrong-length/run.log": "d756cc14c3e6a59e76cf542aece6e09c00ac43b8ba27c27e262fede325d4d7e8",
+      "lvsres-dimension-controls2/wrong-length/report.lvsdb": "41efed7a7b74739ff70cc7f0804f3497b12a6b0468e85b2c3ae1d1d5fdbca3b9",
+      "lvsres-dimension-controls2/wrong-length/deck.log": "ee52ec50686bd22efe6244c7edda0d8fabb07c477add133df519d77fc1790de9",
+      "lvsres-dimension-controls2/wrong-length/audit.json": "9d40dc846f201bfabf9da14c563c3a76aa4e7da400989cb284b502b083cb98d6",
+      "lvsres-dimension-controls2/wrong-length/extracted.cir": "83f84c7ce8abd326bab08b374822fad580117646e0f0be802437b527fd277e14",
+      "lvsres-dimension-controls2/wrong-length/reference.cdl": "9ee8178687b2f0688d882d7907f9f2890aa5bf540936f60d19c6940976ad10d2",
+      "lvsres-dimension-controls2/wrong-length/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls2/positive/result.json": "6507ee9952225145371f62b6c91820f1da04955c472751c8e595f890086bb3ce",
+      "lvsres-dimension-controls2/positive/run.log": "6ad9b8d89da2fbd836b982bc2bd8e496eb3702e1456f33c7c36a40087a0914f8",
+      "lvsres-dimension-controls2/positive/report.lvsdb": "a782039cb282d0c6f482a8d6be4981340ab33270f35d6d4a4227f7badb744132",
+      "lvsres-dimension-controls2/positive/deck.log": "c230e6e2c09a68fa5621e9818c7819f88277ca67c628a9ca7b518f0b8c78f716",
+      "lvsres-dimension-controls2/positive/audit.json": "1374628ffa421c45b89ce4b06de60e830a3f45fd224627c3ce35065bf2e88aa8",
+      "lvsres-dimension-controls2/positive/extracted.cir": "be0d6d30c8ed4511c39f51386f64f1e8cc6152926e89488009ef30e5aa76a382",
+      "lvsres-dimension-controls2/positive/reference.cdl": "9406489c4b2d21844fd58b874d9050acc5fe60f810e058b39d46133f5ece8211",
+      "lvsres-dimension-controls2/positive/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "lvsres-dimension-controls2/wrong-width/result.json": "bffd7b41a8f0ce5be6bba50c43c175f4d252c7d8622f75b8b744ce29f7df9edc",
+      "lvsres-dimension-controls2/wrong-width/run.log": "59490cd33abf054ab2844a7f48fe194f14cfdcdd10ca604ba83b247b8eba90ca",
+      "lvsres-dimension-controls2/wrong-width/report.lvsdb": "a41c11a99691587be78f0c695f8ec1fb3d388fe3c8d624eec0b3afbd33e6e1c3",
+      "lvsres-dimension-controls2/wrong-width/deck.log": "edce3be4d6ae5454acbb0a444299c40709bb16ab89572b338f658f7813509de2",
+      "lvsres-dimension-controls2/wrong-width/audit.json": "7e143a175ba53eae7b77e3dcdde585e80f54187ce8fa64edba26ed75ca19d429",
+      "lvsres-dimension-controls2/wrong-width/extracted.cir": "be0d6d30c8ed4511c39f51386f64f1e8cc6152926e89488009ef30e5aa76a382",
+      "lvsres-dimension-controls2/wrong-width/reference.cdl": "ff498964a307a22956f0e927be12f1b5ca67cc619ce1b44b8fedb893106e2614",
+      "lvsres-dimension-controls2/wrong-width/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls2/missing-resistor/result.json": "248d58dd03a8e25c3cc421a211747298744a4fd9d9c90f96bc39b8ee06ce1a94",
+      "lvsres-dimension-controls2/missing-resistor/run.log": "4c551898da18f10f7fa19299587af4465115d28bca1c921502ffe127ae82efed",
+      "lvsres-dimension-controls2/missing-resistor/report.lvsdb": "950c989c9a3f653c84f3a60a815bf41ed9b622f806036e43255f979c45cde407",
+      "lvsres-dimension-controls2/missing-resistor/deck.log": "93fa84731d9dca172263dc9cf283d415c5ee6ff5a656920f3b594256df245d70",
+      "lvsres-dimension-controls2/missing-resistor/audit.json": "7e2b6f494ad51d0a0f6063534c550aca71a2a0cf9bc760ebd002e52f1ee3aa13",
+      "lvsres-dimension-controls2/missing-resistor/extracted.cir": "83f84c7ce8abd326bab08b374822fad580117646e0f0be802437b527fd277e14",
+      "lvsres-dimension-controls2/missing-resistor/reference.cdl": "5d13eb20c95cb6af8d2858de654e7b07b899e66f1191c5320d8de7b2e1fe382d",
+      "lvsres-dimension-controls2/missing-resistor/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "lvsres-dimension-controls2/deck/rule_decks/custom_reader.lvs": "8a34fff0af7363863e3476b59348afb11a6754bc85aa8052afe8a53aff81e787",
+      "lvsres-dimension-controls2/deck/rule_decks/layers_definitions.lvs": "b58a2f6532192f22bfedd03212053d20c72c9e2f5ec4b9faf87f5883374170e1",
+      "sram-bitcell-width-witness/result.json": "1466c7935a8cb2a676d70c19ae05ad13eeaece177a4df3a13ab9763295fe5621",
+      "sram-bitcell-width-witness/bitcell.cdl": "b19996838910e43b54458b225b0ba39bf75ed4d841d865b03d6497efa9855ba3",
+      "sram-bitcell-width-witness/bitcell.gds": "0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918",
+      "full-schematic-reachable/result.json": "8c6c67657dab352c945681ea71f467e93d91fd88d7cf5defdfbd25d320108060",
+      "full-schematic-reachable/schematic.cir": "62efad29bb87b18b33bb1557f6d6fe60cf32c62c1f5171ecad6094b019804ca6",
+      "upstream-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "recompression": {
+      "original_path": "docs/evidence/sram-width-diagnosis-20260923.tar.gz",
+      "original_sha256": "866908cb1ef1a61c2bf27c41d1f4bfb5bdc75515f16c8b23ec56fd94f6dc82d8",
+      "original_bytes": 9527060,
+      "decompressed_tar_sha256": "96b659f65db1e70173a899cb6189c0923eff90cd1287734f6083a1ed728bd8d1"
+    }
+  }
+}

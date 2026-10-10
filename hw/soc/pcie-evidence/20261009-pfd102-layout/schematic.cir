@@ -1,0 +1,259 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+.subckt nssoc_pfd102_layout_v1 ref fb reset up down vdd vss sub
+RNTAP0 vdd NWELL0 ntap1 A=4p P=8u
+MD0 xloop.xup.db vdd vdd NWELL0 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP0 sub BULK ptap1 A=4p P=8u
+MD1 xloop.xup.db vdd vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP1 sub BULK ptap1 A=4p P=8u
+RNTAP2 vdd NWELL2 ntap1 A=4p P=8u
+MD2 xloop.xup.clkb ref vdd NWELL2 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP2 sub BULK ptap1 A=4p P=8u
+MD3 xloop.xup.clkb ref vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP3 sub BULK ptap1 A=4p P=8u
+RNTAP4 vdd NWELL4 ntap1 A=4p P=8u
+MD4 xloop.xup.mns vdd vdd NWELL4 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP4 sub BULK ptap1 A=4p P=8u
+RNTAP5 vdd NWELL5 ntap1 A=4p P=8u
+MD5 xloop.xup.mns xloop.xup.clkb vdd NWELL5 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP5 sub BULK ptap1 A=4p P=8u
+RNTAP6 vdd NWELL6 ntap1 A=4p P=8u
+MD6 xloop.xup.mns xloop.clearb vdd NWELL6 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP6 sub BULK ptap1 A=4p P=8u
+MD7 xloop.xup.mns vdd xloop.xup.xmns.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP7 sub BULK ptap1 A=4p P=8u
+MD8 xloop.xup.xmns.n1 xloop.xup.clkb xloop.xup.xmns.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP8 sub BULK ptap1 A=4p P=8u
+MD9 xloop.xup.xmns.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP9 sub BULK ptap1 A=4p P=8u
+RNTAP10 vdd NWELL10 ntap1 A=4p P=8u
+MD10 xloop.xup.mnr xloop.xup.db vdd NWELL10 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP10 sub BULK ptap1 A=4p P=8u
+RNTAP11 vdd NWELL11 ntap1 A=4p P=8u
+MD11 xloop.xup.mnr xloop.xup.clkb vdd NWELL11 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP11 sub BULK ptap1 A=4p P=8u
+MD12 xloop.xup.mnr xloop.xup.db xloop.xup.xmnr.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP12 sub BULK ptap1 A=4p P=8u
+MD13 xloop.xup.xmnr.n xloop.xup.clkb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP13 sub BULK ptap1 A=4p P=8u
+RNTAP14 vdd NWELL14 ntap1 A=4p P=8u
+MD14 xloop.xup.mq xloop.xup.mns vdd NWELL14 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP14 sub BULK ptap1 A=4p P=8u
+RNTAP15 vdd NWELL15 ntap1 A=4p P=8u
+MD15 xloop.xup.mq xloop.xup.mqb vdd NWELL15 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP15 sub BULK ptap1 A=4p P=8u
+MD16 xloop.xup.mq xloop.xup.mns xloop.xup.xmq.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP16 sub BULK ptap1 A=4p P=8u
+MD17 xloop.xup.xmq.n xloop.xup.mqb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP17 sub BULK ptap1 A=4p P=8u
+RNTAP18 vdd NWELL18 ntap1 A=4p P=8u
+MD18 xloop.xup.mqb xloop.xup.mnr vdd NWELL18 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP18 sub BULK ptap1 A=4p P=8u
+RNTAP19 vdd NWELL19 ntap1 A=4p P=8u
+MD19 xloop.xup.mqb xloop.xup.mq vdd NWELL19 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP19 sub BULK ptap1 A=4p P=8u
+RNTAP20 vdd NWELL20 ntap1 A=4p P=8u
+MD20 xloop.xup.mqb xloop.clearb vdd NWELL20 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP20 sub BULK ptap1 A=4p P=8u
+MD21 xloop.xup.mqb xloop.xup.mnr xloop.xup.xmqb.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP21 sub BULK ptap1 A=4p P=8u
+MD22 xloop.xup.xmqb.n1 xloop.xup.mq xloop.xup.xmqb.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP22 sub BULK ptap1 A=4p P=8u
+MD23 xloop.xup.xmqb.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP23 sub BULK ptap1 A=4p P=8u
+RNTAP24 vdd NWELL24 ntap1 A=4p P=8u
+MD24 xloop.xup.sns xloop.xup.mq vdd NWELL24 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP24 sub BULK ptap1 A=4p P=8u
+RNTAP25 vdd NWELL25 ntap1 A=4p P=8u
+MD25 xloop.xup.sns ref vdd NWELL25 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP25 sub BULK ptap1 A=4p P=8u
+RNTAP26 vdd NWELL26 ntap1 A=4p P=8u
+MD26 xloop.xup.sns xloop.clearb vdd NWELL26 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP26 sub BULK ptap1 A=4p P=8u
+MD27 xloop.xup.sns xloop.xup.mq xloop.xup.xsns.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP27 sub BULK ptap1 A=4p P=8u
+MD28 xloop.xup.xsns.n1 ref xloop.xup.xsns.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP28 sub BULK ptap1 A=4p P=8u
+MD29 xloop.xup.xsns.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP29 sub BULK ptap1 A=4p P=8u
+RNTAP30 vdd NWELL30 ntap1 A=4p P=8u
+MD30 xloop.xup.snr xloop.xup.mqb vdd NWELL30 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP30 sub BULK ptap1 A=4p P=8u
+RNTAP31 vdd NWELL31 ntap1 A=4p P=8u
+MD31 xloop.xup.snr ref vdd NWELL31 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP31 sub BULK ptap1 A=4p P=8u
+MD32 xloop.xup.snr xloop.xup.mqb xloop.xup.xsnr.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP32 sub BULK ptap1 A=4p P=8u
+MD33 xloop.xup.xsnr.n ref vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP33 sub BULK ptap1 A=4p P=8u
+RNTAP34 vdd NWELL34 ntap1 A=4p P=8u
+MD34 up xloop.xup.sns vdd NWELL34 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP34 sub BULK ptap1 A=4p P=8u
+RNTAP35 vdd NWELL35 ntap1 A=4p P=8u
+MD35 up xloop.xup.qb vdd NWELL35 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP35 sub BULK ptap1 A=4p P=8u
+MD36 up xloop.xup.sns xloop.xup.xsq.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP36 sub BULK ptap1 A=4p P=8u
+MD37 xloop.xup.xsq.n xloop.xup.qb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP37 sub BULK ptap1 A=4p P=8u
+RNTAP38 vdd NWELL38 ntap1 A=4p P=8u
+MD38 xloop.xup.qb xloop.xup.snr vdd NWELL38 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP38 sub BULK ptap1 A=4p P=8u
+RNTAP39 vdd NWELL39 ntap1 A=4p P=8u
+MD39 xloop.xup.qb up vdd NWELL39 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP39 sub BULK ptap1 A=4p P=8u
+RNTAP40 vdd NWELL40 ntap1 A=4p P=8u
+MD40 xloop.xup.qb xloop.clearb vdd NWELL40 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP40 sub BULK ptap1 A=4p P=8u
+MD41 xloop.xup.qb xloop.xup.snr xloop.xup.xsqb.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP41 sub BULK ptap1 A=4p P=8u
+MD42 xloop.xup.xsqb.n1 up xloop.xup.xsqb.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP42 sub BULK ptap1 A=4p P=8u
+MD43 xloop.xup.xsqb.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP43 sub BULK ptap1 A=4p P=8u
+RNTAP44 vdd NWELL44 ntap1 A=4p P=8u
+MD44 xloop.xdn.db vdd vdd NWELL44 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP44 sub BULK ptap1 A=4p P=8u
+MD45 xloop.xdn.db vdd vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP45 sub BULK ptap1 A=4p P=8u
+RNTAP46 vdd NWELL46 ntap1 A=4p P=8u
+MD46 xloop.xdn.clkb fb vdd NWELL46 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP46 sub BULK ptap1 A=4p P=8u
+MD47 xloop.xdn.clkb fb vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP47 sub BULK ptap1 A=4p P=8u
+RNTAP48 vdd NWELL48 ntap1 A=4p P=8u
+MD48 xloop.xdn.mns vdd vdd NWELL48 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP48 sub BULK ptap1 A=4p P=8u
+RNTAP49 vdd NWELL49 ntap1 A=4p P=8u
+MD49 xloop.xdn.mns xloop.xdn.clkb vdd NWELL49 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP49 sub BULK ptap1 A=4p P=8u
+RNTAP50 vdd NWELL50 ntap1 A=4p P=8u
+MD50 xloop.xdn.mns xloop.clearb vdd NWELL50 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP50 sub BULK ptap1 A=4p P=8u
+MD51 xloop.xdn.mns vdd xloop.xdn.xmns.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP51 sub BULK ptap1 A=4p P=8u
+MD52 xloop.xdn.xmns.n1 xloop.xdn.clkb xloop.xdn.xmns.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP52 sub BULK ptap1 A=4p P=8u
+MD53 xloop.xdn.xmns.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP53 sub BULK ptap1 A=4p P=8u
+RNTAP54 vdd NWELL54 ntap1 A=4p P=8u
+MD54 xloop.xdn.mnr xloop.xdn.db vdd NWELL54 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP54 sub BULK ptap1 A=4p P=8u
+RNTAP55 vdd NWELL55 ntap1 A=4p P=8u
+MD55 xloop.xdn.mnr xloop.xdn.clkb vdd NWELL55 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP55 sub BULK ptap1 A=4p P=8u
+MD56 xloop.xdn.mnr xloop.xdn.db xloop.xdn.xmnr.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP56 sub BULK ptap1 A=4p P=8u
+MD57 xloop.xdn.xmnr.n xloop.xdn.clkb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP57 sub BULK ptap1 A=4p P=8u
+RNTAP58 vdd NWELL58 ntap1 A=4p P=8u
+MD58 xloop.xdn.mq xloop.xdn.mns vdd NWELL58 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP58 sub BULK ptap1 A=4p P=8u
+RNTAP59 vdd NWELL59 ntap1 A=4p P=8u
+MD59 xloop.xdn.mq xloop.xdn.mqb vdd NWELL59 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP59 sub BULK ptap1 A=4p P=8u
+MD60 xloop.xdn.mq xloop.xdn.mns xloop.xdn.xmq.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP60 sub BULK ptap1 A=4p P=8u
+MD61 xloop.xdn.xmq.n xloop.xdn.mqb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP61 sub BULK ptap1 A=4p P=8u
+RNTAP62 vdd NWELL62 ntap1 A=4p P=8u
+MD62 xloop.xdn.mqb xloop.xdn.mnr vdd NWELL62 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP62 sub BULK ptap1 A=4p P=8u
+RNTAP63 vdd NWELL63 ntap1 A=4p P=8u
+MD63 xloop.xdn.mqb xloop.xdn.mq vdd NWELL63 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP63 sub BULK ptap1 A=4p P=8u
+RNTAP64 vdd NWELL64 ntap1 A=4p P=8u
+MD64 xloop.xdn.mqb xloop.clearb vdd NWELL64 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP64 sub BULK ptap1 A=4p P=8u
+MD65 xloop.xdn.mqb xloop.xdn.mnr xloop.xdn.xmqb.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP65 sub BULK ptap1 A=4p P=8u
+MD66 xloop.xdn.xmqb.n1 xloop.xdn.mq xloop.xdn.xmqb.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP66 sub BULK ptap1 A=4p P=8u
+MD67 xloop.xdn.xmqb.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP67 sub BULK ptap1 A=4p P=8u
+RNTAP68 vdd NWELL68 ntap1 A=4p P=8u
+MD68 xloop.xdn.sns xloop.xdn.mq vdd NWELL68 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP68 sub BULK ptap1 A=4p P=8u
+RNTAP69 vdd NWELL69 ntap1 A=4p P=8u
+MD69 xloop.xdn.sns fb vdd NWELL69 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP69 sub BULK ptap1 A=4p P=8u
+RNTAP70 vdd NWELL70 ntap1 A=4p P=8u
+MD70 xloop.xdn.sns xloop.clearb vdd NWELL70 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP70 sub BULK ptap1 A=4p P=8u
+MD71 xloop.xdn.sns xloop.xdn.mq xloop.xdn.xsns.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP71 sub BULK ptap1 A=4p P=8u
+MD72 xloop.xdn.xsns.n1 fb xloop.xdn.xsns.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP72 sub BULK ptap1 A=4p P=8u
+MD73 xloop.xdn.xsns.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP73 sub BULK ptap1 A=4p P=8u
+RNTAP74 vdd NWELL74 ntap1 A=4p P=8u
+MD74 xloop.xdn.snr xloop.xdn.mqb vdd NWELL74 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP74 sub BULK ptap1 A=4p P=8u
+RNTAP75 vdd NWELL75 ntap1 A=4p P=8u
+MD75 xloop.xdn.snr fb vdd NWELL75 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP75 sub BULK ptap1 A=4p P=8u
+MD76 xloop.xdn.snr xloop.xdn.mqb xloop.xdn.xsnr.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP76 sub BULK ptap1 A=4p P=8u
+MD77 xloop.xdn.xsnr.n fb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP77 sub BULK ptap1 A=4p P=8u
+RNTAP78 vdd NWELL78 ntap1 A=4p P=8u
+MD78 down xloop.xdn.sns vdd NWELL78 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP78 sub BULK ptap1 A=4p P=8u
+RNTAP79 vdd NWELL79 ntap1 A=4p P=8u
+MD79 down xloop.xdn.qb vdd NWELL79 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP79 sub BULK ptap1 A=4p P=8u
+MD80 down xloop.xdn.sns xloop.xdn.xsq.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP80 sub BULK ptap1 A=4p P=8u
+MD81 xloop.xdn.xsq.n xloop.xdn.qb vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP81 sub BULK ptap1 A=4p P=8u
+RNTAP82 vdd NWELL82 ntap1 A=4p P=8u
+MD82 xloop.xdn.qb xloop.xdn.snr vdd NWELL82 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP82 sub BULK ptap1 A=4p P=8u
+RNTAP83 vdd NWELL83 ntap1 A=4p P=8u
+MD83 xloop.xdn.qb down vdd NWELL83 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP83 sub BULK ptap1 A=4p P=8u
+RNTAP84 vdd NWELL84 ntap1 A=4p P=8u
+MD84 xloop.xdn.qb xloop.clearb vdd NWELL84 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP84 sub BULK ptap1 A=4p P=8u
+MD85 xloop.xdn.qb xloop.xdn.snr xloop.xdn.xsqb.n1 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP85 sub BULK ptap1 A=4p P=8u
+MD86 xloop.xdn.xsqb.n1 down xloop.xdn.xsqb.n2 BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP86 sub BULK ptap1 A=4p P=8u
+MD87 xloop.xdn.xsqb.n2 xloop.clearb vss BULK sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+RPTAP87 sub BULK ptap1 A=4p P=8u
+RNTAP88 vdd NWELL88 ntap1 A=4p P=8u
+MD88 xloop.bothb up vdd NWELL88 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP88 sub BULK ptap1 A=4p P=8u
+RNTAP89 vdd NWELL89 ntap1 A=4p P=8u
+MD89 xloop.bothb down vdd NWELL89 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP89 sub BULK ptap1 A=4p P=8u
+MD90 xloop.bothb up xloop.xboth.n BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP90 sub BULK ptap1 A=4p P=8u
+MD91 xloop.xboth.n down vss BULK sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+RPTAP91 sub BULK ptap1 A=4p P=8u
+RNTAP92 vdd NWELL92 ntap1 A=4p P=8u
+MD92 xloop.delay0 xloop.bothb vdd NWELL92 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP92 sub BULK ptap1 A=4p P=8u
+MD93 xloop.delay0 xloop.bothb vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP93 sub BULK ptap1 A=4p P=8u
+RNTAP94 vdd NWELL94 ntap1 A=4p P=8u
+MD94 xloop.delay1 xloop.delay0 vdd NWELL94 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP94 sub BULK ptap1 A=4p P=8u
+MD95 xloop.delay1 xloop.delay0 vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP95 sub BULK ptap1 A=4p P=8u
+RNTAP96 vdd NWELL96 ntap1 A=4p P=8u
+MD96 xloop.both xloop.delay1 vdd NWELL96 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP96 sub BULK ptap1 A=4p P=8u
+MD97 xloop.both xloop.delay1 vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP97 sub BULK ptap1 A=4p P=8u
+RNTAP98 vdd NWELL98 ntap1 A=4p P=8u
+MD98 xloop.xclr.n xloop.both vdd NWELL98 sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+RPTAP98 sub BULK ptap1 A=4p P=8u
+RNTAP99 vdd NWELL99 ntap1 A=4p P=8u
+MD99 xloop.clearb reset xloop.xclr.n NWELL99 sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+RPTAP99 sub BULK ptap1 A=4p P=8u
+MD100 xloop.clearb xloop.both vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP100 sub BULK ptap1 A=4p P=8u
+MD101 xloop.clearb reset vss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP101 sub BULK ptap1 A=4p P=8u
+.ends nssoc_pfd102_layout_v1

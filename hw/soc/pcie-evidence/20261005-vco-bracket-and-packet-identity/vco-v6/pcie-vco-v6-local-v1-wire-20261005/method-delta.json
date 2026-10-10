@@ -1,0 +1,68 @@
+{
+  "status": "PASS_EXACT_FUNCTION_AST_DELTA_AND_UNCHANGED_LIMITS",
+  "rows": [
+    {
+      "old": "scripts/build_pcie_vco_v5_hybrid_v1.py",
+      "old_pin": {
+        "bytes": 18968,
+        "sha256": "335c0517af5f56782dad332e4abf8c78246cd2862743b1a92714db9e3d60f4de"
+      },
+      "new": "scripts/build_pcie_vco_v6_hybrid_v1.py",
+      "new_pin": {
+        "bytes": 18968,
+        "sha256": "dc075745c8481eb081415a12410c9ad2301e719d55cfa2a953ff559b8acfde61"
+      },
+      "functions": 12,
+      "exactly_unchanged": [
+        "bindings",
+        "compose",
+        "main",
+        "model_params",
+        "number",
+        "pin",
+        "raw_native",
+        "require",
+        "statements",
+        "verify_output"
+      ],
+      "sole_changed_functions": [
+        "geometry_decimal",
+        "wire_records"
+      ]
+    },
+    {
+      "old": "scripts/diagnose_pcie_vco_v5_powered_v1.py",
+      "old_pin": {
+        "bytes": 28822,
+        "sha256": "feba40e94fa011d20d930d68be8a71b96d0b002df7d9556622aed9a53b3a2185"
+      },
+      "new": "scripts/diagnose_pcie_vco_v6_powered_v1.py",
+      "new_pin": {
+        "bytes": 28822,
+        "sha256": "bddafbf3a3ae9beaa9bbb4e212675bf4496e2b73220b2c08b00c88299622c87b"
+      },
+      "functions": 16,
+      "exactly_unchanged": [
+        "audit_native",
+        "circuit",
+        "limits",
+        "node_expression",
+        "owned_size",
+        "physical_to_ideal",
+        "regular_size",
+        "run_native",
+        "sha",
+        "shared_free",
+        "stop_owned",
+        "stream_wave",
+        "vector_contract",
+        "wave_measure"
+      ],
+      "sole_changed_functions": [
+        "deck",
+        "main"
+      ]
+    }
+  ],
+  "scope": "Input source SHA constants/import update separately source-reviewed. Only six actual MIM geometries changed; exact native float serialization and actual 765-vs767 C census reflected. No model/runtime/threshold/resource timing changes; finite external ideal BODY_SUBSTRATE/WIRE_CREF diagnostic references remain explicit. Full coupled actual C preserved by native RC audit, not a no-C approximation."
+}

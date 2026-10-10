@@ -1,0 +1,1968 @@
+{
+  "scope": "Read-only exact-source raw-result replay, not native reexecution or candidate adoption. Local full ZIP verification scope is stated per reviewed capture.",
+  "reviews": [
+    {
+      "path": "hw/soc/out/heartbeat-20261004-0722/npu/independent-review.json",
+      "bytes": 19316,
+      "sha256": "0df1eddd8e7c09bb6ff8486c2851cc09de7379fab4bc3cb5a1ea6dd6f2e906a6",
+      "record": {
+        "schema": 1,
+        "status": "BOTH_COMPLETE_NATIVE_FRONTIER_CAPTURES_INDEPENDENTLY_VERIFIED_NO_ACCEPTANCE",
+        "checked_at": "2026-10-04T07:30:05.580722+00:00",
+        "run": 37158099088,
+        "source": "b1c69282fb0ac1525fb9d2d36d325d8aa6377cd7",
+        "variants": {
+          "original": {
+            "artifact": {
+              "id": 11288665134,
+              "node_id": "MDg6QXJ0aWZhY3QxMTI4ODY2NTEzNA==",
+              "name": "npu-frontier-trace-final-original-1",
+              "size_in_bytes": 862134,
+              "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11288665134",
+              "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11288665134/zip",
+              "expired": false,
+              "digest": "sha256:ac515c74fba70241a071448fe2cee0d426927ef1236a70949a5258412286c090",
+              "created_at": "2026-10-03T23:42:17Z",
+              "updated_at": "2026-10-03T23:42:17Z",
+              "expires_at": "2026-11-02T23:42:16Z",
+              "workflow_run": {
+                "id": 37158099088,
+                "repository_id": 1364721142,
+                "head_repository_id": 1364721142,
+                "head_branch": "codex/complete-open-work",
+                "head_sha": "b1c69282fb0ac1525fb9d2d36d325d8aa6377cd7"
+              }
+            },
+            "zip": {
+              "bytes": 862134,
+              "sha256": "ac515c74fba70241a071448fe2cee0d426927ef1236a70949a5258412286c090"
+            },
+            "all_zip_crcs_checked": true,
+            "output_count": 100,
+            "git_methods": 29,
+            "frozen_dependencies": 24,
+            "startup_members_unchanged": 98,
+            "startup_zip": {
+              "bytes": 607588,
+              "sha256": "e31636659ffff738b7a6ee4dcc33ffaa02537e852994ec25f4b452642b5ad761"
+            },
+            "native_status": "NPU_FRONTIER_CAPTURE_COMPLETE_NOT_ACCEPTANCE",
+            "observed_boot_pass": true,
+            "boot_execution": {
+              "command": [
+                "/home/runner/work/_temp/npu-frontier-trace-work/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/_temp/npu-frontier-trace-work/sim.vvp",
+                "+flash0=/home/runner/work/nssoc/nssoc/npu-frontier-trace/firmware/flash0.hex",
+                "+npu_frontier_dir=/home/runner/work/nssoc/nssoc/npu-frontier-trace"
+              ],
+              "returncode": 0,
+              "elapsed_s": 4820.97598241
+            },
+            "signals": 728,
+            "native_cells": 116,
+            "observation": {
+              "start": 1569360,
+              "last": 1569520,
+              "width": 728,
+              "events": 20742,
+              "samples": 161,
+              "sequence": 20904,
+              "final_cycle": 1596123,
+              "initialization_cycle": 1569359,
+              "event_cycle_bounds": [
+                1569359,
+                1569520
+              ],
+              "first_new_unknown": null,
+              "raw_event_file": {
+                "bytes": 16955345,
+                "sha256": "499ddf85ebabccaa1a2f6d5a0531707d400d57531336e0ccf6c0c86a6938ddce"
+              },
+              "initial_static_unknown_count": 81,
+              "new_unknown_transition_count": 0
+            },
+            "first_new_unknown_bound": null,
+            "first_new_unknowns": [],
+            "boot_tail": [
+              "LOGICROM_GL progress cycles=1570000 uart=848 flash_frames=6 ram_sec=0000 ram_ded=0000",
+              "npu: 0x0000000c events, cnt=0x000cLOGICROM_GL progress cycles=1580000 uart=882 flash_frames=6 ram_sec=0000 ram_ded=0000",
+              "0016 status=0x0000002a",
+              "  ok   test 0x0000001a",
+              "  ok   test 0x0000001b",
+              "  ok   test 0x0000001c",
+              "  ok   test LOGICROM_GL progress cycles=1590000 uart=986 flash_frames=6 ram_sec=0000 ram_ded=0000",
+              "0x0000000b",
+              "checks run: 0x0000001c  fail mask: 0x00000000",
+              "RESULT PASS",
+              "LOGICROM_GL cycles=1596123 checks=28 fails=00000000 code=00000000 magic=600dc0de watchdog=1/0/0 flash_violations=0 uart_pass=1 framing=0",
+              "LOGICROM_GL PASS checks=28",
+              "/home/runner/work/nssoc/nssoc/npu-frontier-trace/tb_qualification_boot.v:331: $finish called at 31922860000 (1ps)",
+              "NPU_FRONTIER_SUMMARY start=1569360 last=1569520 width=728 events=20742 samples=161 sequence=20904 final_cycle=1596123 armed=1"
+            ],
+            "critical_files": {
+              "boot.log": {
+                "bytes": 14909,
+                "sha256": "70dc943c2df803aa860de13cf89232fd4bd2a6546ab4de0e2e45275a1cb2842f"
+              },
+              "frontier-bindings.json": {
+                "bytes": 388484,
+                "sha256": "2873b71a431c741c773f27ae0947b2f47e49b9bf8933e7b65decf8d3d8ad0cd4"
+              },
+              "npu-frontier-events.log": {
+                "bytes": 16955345,
+                "sha256": "499ddf85ebabccaa1a2f6d5a0531707d400d57531336e0ccf6c0c86a6938ddce"
+              },
+              "result.json": {
+                "bytes": 471343,
+                "sha256": "05adc12ab5b266c216ec714c6fc196d0ee3c46d9762929831b1f5a974c3ae214"
+              }
+            }
+          },
+          "candidate": {
+            "artifact": {
+              "id": 11290413846,
+              "node_id": "MDg6QXJ0aWZhY3QxMTI5MDQxMzg0Ng==",
+              "name": "npu-frontier-trace-final-candidate-1",
+              "size_in_bytes": 1090853,
+              "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11290413846",
+              "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11290413846/zip",
+              "expired": false,
+              "digest": "sha256:c1c35082bb401ea5ee4f4c4ae9d5529edb2876aac3467b60cb1196888b6f53aa",
+              "created_at": "2026-10-04T01:44:26Z",
+              "updated_at": "2026-10-04T01:44:26Z",
+              "expires_at": "2026-11-03T01:44:25Z",
+              "workflow_run": {
+                "id": 37158099088,
+                "repository_id": 1364721142,
+                "head_repository_id": 1364721142,
+                "head_branch": "codex/complete-open-work",
+                "head_sha": "b1c69282fb0ac1525fb9d2d36d325d8aa6377cd7"
+              }
+            },
+            "zip": {
+              "bytes": 1090853,
+              "sha256": "c1c35082bb401ea5ee4f4c4ae9d5529edb2876aac3467b60cb1196888b6f53aa"
+            },
+            "all_zip_crcs_checked": true,
+            "output_count": 100,
+            "git_methods": 29,
+            "frozen_dependencies": 24,
+            "startup_members_unchanged": 98,
+            "startup_zip": {
+              "bytes": 614813,
+              "sha256": "1c7ac3ec3a5531a5f5abeca6c6450d0b6db30ff2842b985ce637eaadb8566bc5"
+            },
+            "native_status": "NPU_FRONTIER_CAPTURE_COMPLETE_NOT_ACCEPTANCE",
+            "observed_boot_pass": false,
+            "boot_execution": {
+              "command": [
+                "/home/runner/work/_temp/npu-frontier-trace-work/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/_temp/npu-frontier-trace-work/sim.vvp",
+                "+flash0=/home/runner/work/nssoc/nssoc/npu-frontier-trace/firmware/flash0.hex",
+                "+npu_frontier_dir=/home/runner/work/nssoc/nssoc/npu-frontier-trace"
+              ],
+              "returncode": 1,
+              "elapsed_s": 12156.998181613999
+            },
+            "signals": 884,
+            "native_cells": 156,
+            "observation": {
+              "start": 1569360,
+              "last": 1569520,
+              "width": 884,
+              "events": 25552,
+              "samples": 161,
+              "sequence": 25714,
+              "final_cycle": 3000096,
+              "initialization_cycle": 1569359,
+              "event_cycle_bounds": [
+                1569359,
+                1569520
+              ],
+              "first_new_unknown": {
+                "sequence": 4874,
+                "cycle": 1569429,
+                "realtime_ns": "31388970.000",
+                "signal": 344,
+                "prior": "0",
+                "value": "x"
+              },
+              "raw_event_file": {
+                "bytes": 24872372,
+                "sha256": "d7a0f15bdaf1cb46dedf70e5021adb613bd63e6f8c0e37c5ff2d5c01caa384b1"
+              },
+              "initial_static_unknown_count": 81,
+              "new_unknown_transition_count": 9288
+            },
+            "first_new_unknown_bound": {
+              "kind": "EV",
+              "sequence": 4874,
+              "cycle": 1569429,
+              "time": "31388970.000",
+              "signal": 344,
+              "prior": "0",
+              "value": "x",
+              "binding": {
+                "index": 344,
+                "instance": "_082634_",
+                "field": "A",
+                "expression": "dut._082634_.A",
+                "role": "frontier"
+              }
+            },
+            "first_new_unknowns": [
+              {
+                "kind": "EV",
+                "sequence": 4874,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 344,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 344,
+                  "instance": "_082634_",
+                  "field": "A",
+                  "expression": "dut._082634_.A",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 4875,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 870,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 870,
+                  "instance": "_137387_",
+                  "field": "delayed_D",
+                  "expression": "dut._137387_.delayed_D",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 4876,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 866,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 866,
+                  "instance": "_137387_",
+                  "field": "D",
+                  "expression": "dut._137387_.D",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 4877,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 859,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 859,
+                  "instance": "_137385_",
+                  "field": "delayed_D",
+                  "expression": "dut._137385_.delayed_D",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 4878,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 855,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 855,
+                  "instance": "_137385_",
+                  "field": "D",
+                  "expression": "dut._137385_.D",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 4879,
+                "cycle": 1569429,
+                "time": "31388970.000",
+                "signal": 346,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 346,
+                  "instance": "_082634_",
+                  "field": "X",
+                  "expression": "dut._082634_.X",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5049,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 872,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 872,
+                  "instance": "_137387_",
+                  "field": "int_fwire_IQ",
+                  "expression": "dut._137387_.int_fwire_IQ",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5050,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 861,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 861,
+                  "instance": "_137385_",
+                  "field": "int_fwire_IQ",
+                  "expression": "dut._137385_.int_fwire_IQ",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5051,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 867,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 867,
+                  "instance": "_137387_",
+                  "field": "Q",
+                  "expression": "dut._137387_.Q",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5052,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 856,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 856,
+                  "instance": "_137385_",
+                  "field": "Q",
+                  "expression": "dut._137385_.Q",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5053,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 278,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 278,
+                  "instance": "_063665_",
+                  "field": "B",
+                  "expression": "dut._063665_.B",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5054,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 277,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 277,
+                  "instance": "_063665_",
+                  "field": "A",
+                  "expression": "dut._063665_.A",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5055,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 280,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 280,
+                  "instance": "_063665_",
+                  "field": "int_fwire_0",
+                  "expression": "dut._063665_.int_fwire_0",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5056,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 356,
+                "prior": "1",
+                "value": "x",
+                "binding": {
+                  "index": 356,
+                  "instance": "_084114_",
+                  "field": "A",
+                  "expression": "dut._084114_.A",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5057,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 279,
+                "prior": "1",
+                "value": "x",
+                "binding": {
+                  "index": 279,
+                  "instance": "_063665_",
+                  "field": "Y",
+                  "expression": "dut._063665_.Y",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5058,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 359,
+                "prior": "1",
+                "value": "x",
+                "binding": {
+                  "index": 359,
+                  "instance": "_084114_",
+                  "field": "int_fwire_0",
+                  "expression": "dut._084114_.int_fwire_0",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5059,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 361,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 361,
+                  "instance": "_084115_",
+                  "field": "B",
+                  "expression": "dut._084115_.B",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5060,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 358,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 358,
+                  "instance": "_084114_",
+                  "field": "Y",
+                  "expression": "dut._084114_.Y",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5061,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 345,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 345,
+                  "instance": "_082634_",
+                  "field": "B",
+                  "expression": "dut._082634_.B",
+                  "role": "frontier"
+                }
+              },
+              {
+                "kind": "EV",
+                "sequence": 5062,
+                "cycle": 1569430,
+                "time": "31388990.000",
+                "signal": 363,
+                "prior": "0",
+                "value": "x",
+                "binding": {
+                  "index": 363,
+                  "instance": "_084115_",
+                  "field": "int_fwire_0",
+                  "expression": "dut._084115_.int_fwire_0",
+                  "role": "frontier"
+                }
+              }
+            ],
+            "boot_tail": [
+              "LOGICROM_GL progress cycles=2910000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2920000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2930000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2940000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2950000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2960000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2970000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2980000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=2990000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL progress cycles=3000000 uart=849 flash_frames=7 ram_sec=xxxx ram_ded=xxxx",
+              "LOGICROM_GL cycles=3000096 checks=24 fails=00000000 code=00000000 magic=00000000 watchdog=1/0/0 flash_violations=0 uart_pass=0 framing=1",
+              "FATAL: /home/runner/work/nssoc/nssoc/npu-frontier-trace/tb_qualification_boot.v:325: Whole mapped SoC logic-ROM boot failed",
+              "       Time: 60002320000  Scope: tb_logicrom_gl",
+              "NPU_FRONTIER_SUMMARY start=1569360 last=1569520 width=884 events=25552 samples=161 sequence=25714 final_cycle=3000096 armed=1"
+            ],
+            "critical_files": {
+              "boot.log": {
+                "bytes": 26900,
+                "sha256": "cc1fc91138d9b13e5bcbd672d3e004f8a4b2fb05eb88c5b0ff140aa8590399e8"
+              },
+              "frontier-bindings.json": {
+                "bytes": 446344,
+                "sha256": "9f33b608c8b4d1a7bc5d53f88b8f1267fe61ca6fdd9d4d1a23930f5dc5153bbd"
+              },
+              "npu-frontier-events.log": {
+                "bytes": 24872372,
+                "sha256": "d7a0f15bdaf1cb46dedf70e5021adb613bd63e6f8c0e37c5ff2d5c01caa384b1"
+              },
+              "result.json": {
+                "bytes": 2155670,
+                "sha256": "a24636abb16b2d4223cc0ab0f7c663a383950cdab5dd7f54876cc8bfb20cef9b"
+              }
+            }
+          }
+        },
+        "prior_startup_review": {
+          "bytes": 16627,
+          "sha256": "1f01883983b31b1394000118eef6c82e2752464fe1a2bbd5cab6c506924701ec"
+        },
+        "scope": "Complete compact ZIP SHA/CRC, all outputs and immutable Git methods, byte-identical startup source bindings and compile/model/firmware/runtime records, raw event parsing and native 3M boot verdicts. Full netlist and compiled VVP are not locally downloaded or re-executed. Callback order is not a lossless simulator delta trace.",
+        "candidate_adopted": false,
+        "full_chip_native_executed_locally": false,
+        "script": {
+          "bytes": 7684,
+          "sha256": "be1d3fe1078d3d0c588b4958979cf979d3acfe186a2efde90fbcb2cb3444408d"
+        },
+        "causal_analysis": {
+          "path": "hw/soc/out/heartbeat-20261004-0722/npu/causal-analysis.json",
+          "sha256": "c6619c4f2ff37e24aa5b2c7721586b3c11fdc8e575a27eb74a0671fff8fdf279"
+        },
+        "next_step": "Separate additive EVQ_OUT read-valid/parity observer; no functional RTL correction justified by current missing upstream history."
+      }
+    },
+    {
+      "path": "hw/soc/out/heartbeat-20261004-0722/npu/causal-analysis.json",
+      "bytes": 38206,
+      "sha256": "c6619c4f2ff37e24aa5b2c7721586b3c11fdc8e575a27eb74a0671fff8fdf279",
+      "record": {
+        "run": 37158099088,
+        "source_commit": "b1c69282fb0ac1525fb9d2d36d325d8aa6377cd7",
+        "first_new_unknowns": [
+          {
+            "sequence": 4874,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 344,
+              "instance": "_082634_",
+              "field": "A",
+              "expression": "dut._082634_.A",
+              "role": "frontier"
+            },
+            "conductor": "_027398_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 4875,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 870,
+              "instance": "_137387_",
+              "field": "delayed_D",
+              "expression": "dut._137387_.delayed_D",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 4876,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 866,
+              "instance": "_137387_",
+              "field": "D",
+              "expression": "dut._137387_.D",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.oh_valid_d ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 4877,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 859,
+              "instance": "_137385_",
+              "field": "delayed_D",
+              "expression": "dut._137385_.delayed_D",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 4878,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 855,
+              "instance": "_137385_",
+              "field": "D",
+              "expression": "dut._137385_.D",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.oh_valid_d ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 4879,
+            "cycle": 1569429,
+            "time_ns": "31388970.000",
+            "signal": {
+              "index": 346,
+              "instance": "_082634_",
+              "field": "X",
+              "expression": "dut._082634_.X",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.oh_valid_d ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5049,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 872,
+              "instance": "_137387_",
+              "field": "int_fwire_IQ",
+              "expression": "dut._137387_.int_fwire_IQ",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5050,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 861,
+              "instance": "_137385_",
+              "field": "int_fwire_IQ",
+              "expression": "dut._137385_.int_fwire_IQ",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5051,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 867,
+              "instance": "_137387_",
+              "field": "Q",
+              "expression": "dut._137387_.Q",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.oh_valid_b ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5052,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 856,
+              "instance": "_137385_",
+              "field": "Q",
+              "expression": "dut._137385_.Q",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.u_ohv_a.bits ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5053,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 278,
+              "instance": "_063665_",
+              "field": "B",
+              "expression": "dut._063665_.B",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.oh_valid_b ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5054,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 277,
+              "instance": "_063665_",
+              "field": "A",
+              "expression": "dut._063665_.A",
+              "role": "frontier"
+            },
+            "conductor": "\\u_npu.u_node0.u_ohv_a.bits ",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5055,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 280,
+              "instance": "_063665_",
+              "field": "int_fwire_0",
+              "expression": "dut._063665_.int_fwire_0",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5056,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 356,
+              "instance": "_084114_",
+              "field": "A",
+              "expression": "dut._084114_.A",
+              "role": "frontier"
+            },
+            "conductor": "_009736_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5057,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 279,
+              "instance": "_063665_",
+              "field": "Y",
+              "expression": "dut._063665_.Y",
+              "role": "frontier"
+            },
+            "conductor": "_009736_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5058,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 359,
+              "instance": "_084114_",
+              "field": "int_fwire_0",
+              "expression": "dut._084114_.int_fwire_0",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5059,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 361,
+              "instance": "_084115_",
+              "field": "B",
+              "expression": "dut._084115_.B",
+              "role": "frontier"
+            },
+            "conductor": "_028687_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5060,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 358,
+              "instance": "_084114_",
+              "field": "Y",
+              "expression": "dut._084114_.Y",
+              "role": "frontier"
+            },
+            "conductor": "_028687_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5061,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 345,
+              "instance": "_082634_",
+              "field": "B",
+              "expression": "dut._082634_.B",
+              "role": "frontier"
+            },
+            "conductor": "_027403_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5062,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 363,
+              "instance": "_084115_",
+              "field": "int_fwire_0",
+              "expression": "dut._084115_.int_fwire_0",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5063,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 366,
+              "instance": "_084116_",
+              "field": "C",
+              "expression": "dut._084116_.C",
+              "role": "frontier"
+            },
+            "conductor": "_028688_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5064,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 362,
+              "instance": "_084115_",
+              "field": "Y",
+              "expression": "dut._084115_.Y",
+              "role": "frontier"
+            },
+            "conductor": "_028688_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5065,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 108,
+              "instance": "_107554_",
+              "field": "A1",
+              "expression": "dut._107554_.A1",
+              "role": "cone"
+            },
+            "conductor": "_028688_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5066,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 368,
+              "instance": "_084116_",
+              "field": "int_fwire_0",
+              "expression": "dut._084116_.int_fwire_0",
+              "role": "frontier"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5067,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 112,
+              "instance": "_107554_",
+              "field": "int_fwire_0",
+              "expression": "dut._107554_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5068,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 367,
+              "instance": "_084116_",
+              "field": "Y",
+              "expression": "dut._084116_.Y",
+              "role": "frontier"
+            },
+            "conductor": "_028689_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5069,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 113,
+              "instance": "_107554_",
+              "field": "int_fwire_1",
+              "expression": "dut._107554_.int_fwire_1",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5070,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 111,
+              "instance": "_107554_",
+              "field": "Y",
+              "expression": "dut._107554_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047315_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5071,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 102,
+              "instance": "_107540_",
+              "field": "A",
+              "expression": "dut._107540_.A",
+              "role": "cone"
+            },
+            "conductor": "_028689_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5072,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 77,
+              "instance": "_107532_",
+              "field": "A",
+              "expression": "dut._107532_.A",
+              "role": "cone"
+            },
+            "conductor": "_028689_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5073,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 74,
+              "instance": "_107555_",
+              "field": "C",
+              "expression": "dut._107555_.C",
+              "role": "cone"
+            },
+            "conductor": "_047315_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5074,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 105,
+              "instance": "_107540_",
+              "field": "int_fwire_0",
+              "expression": "dut._107540_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5075,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 81,
+              "instance": "_107532_",
+              "field": "int_fwire_0",
+              "expression": "dut._107532_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5076,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 104,
+              "instance": "_107540_",
+              "field": "Y",
+              "expression": "dut._107540_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047304_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5077,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 80,
+              "instance": "_107532_",
+              "field": "Y",
+              "expression": "dut._107532_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047296_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5078,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 65,
+              "instance": "_107541_",
+              "field": "A2",
+              "expression": "dut._107541_.A2",
+              "role": "cone"
+            },
+            "conductor": "_047304_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5079,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 58,
+              "instance": "_107538_",
+              "field": "A",
+              "expression": "dut._107538_.A",
+              "role": "cone"
+            },
+            "conductor": "_047296_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5080,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 68,
+              "instance": "_107541_",
+              "field": "int_fwire_0",
+              "expression": "dut._107541_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5081,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 63,
+              "instance": "_107538_",
+              "field": "int_fwire_0",
+              "expression": "dut._107538_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5082,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 387,
+              "instance": "_107552_",
+              "field": "S",
+              "expression": "dut._107552_.S",
+              "role": "frontier"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5083,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 380,
+              "instance": "_107547_",
+              "field": "A2",
+              "expression": "dut._107547_.A2",
+              "role": "frontier"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5084,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 73,
+              "instance": "_107555_",
+              "field": "B",
+              "expression": "dut._107555_.B",
+              "role": "cone"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5085,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 66,
+              "instance": "_107541_",
+              "field": "B1",
+              "expression": "dut._107541_.B1",
+              "role": "cone"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5086,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 62,
+              "instance": "_107538_",
+              "field": "Y",
+              "expression": "dut._107538_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5087,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 51,
+              "instance": "_107556_",
+              "field": "A2",
+              "expression": "dut._107556_.A2",
+              "role": "cone"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5088,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 45,
+              "instance": "_107542_",
+              "field": "A2",
+              "expression": "dut._107542_.A2",
+              "role": "cone"
+            },
+            "conductor": "_047302_",
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5089,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 76,
+              "instance": "_107555_",
+              "field": "int_fwire_0",
+              "expression": "dut._107555_.int_fwire_0",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5090,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 69,
+              "instance": "_107541_",
+              "field": "int_fwire_1",
+              "expression": "dut._107541_.int_fwire_1",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "0",
+            "value": "x"
+          },
+          {
+            "sequence": 5091,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 75,
+              "instance": "_107555_",
+              "field": "Y",
+              "expression": "dut._107555_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047316_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5092,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 67,
+              "instance": "_107541_",
+              "field": "Y",
+              "expression": "dut._107541_.Y",
+              "role": "cone"
+            },
+            "conductor": "_047305_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5093,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 52,
+              "instance": "_107556_",
+              "field": "B1",
+              "expression": "dut._107556_.B1",
+              "role": "cone"
+            },
+            "conductor": "_047316_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5094,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 46,
+              "instance": "_107542_",
+              "field": "B1",
+              "expression": "dut._107542_.B1",
+              "role": "cone"
+            },
+            "conductor": "_047305_",
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5095,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 55,
+              "instance": "_107556_",
+              "field": "int_fwire_1",
+              "expression": "dut._107556_.int_fwire_1",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5096,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 49,
+              "instance": "_107542_",
+              "field": "int_fwire_1",
+              "expression": "dut._107542_.int_fwire_1",
+              "role": "cone"
+            },
+            "conductor": null,
+            "prior": "1",
+            "value": "x"
+          },
+          {
+            "sequence": 5097,
+            "cycle": 1569430,
+            "time_ns": "31388990.000",
+            "signal": {
+              "index": 53,
+              "instance": "_107556_",
+              "field": "Y",
+              "expression": "dut._107556_.Y",
+              "role": "cone"
+            },
+            "conductor": "_005307_",
+            "prior": "0",
+            "value": "x"
+          }
+        ],
+        "paired_stable_samples": [
+          {
+            "cycle": 1569428,
+            "semantic_differences": [],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            }
+          },
+          {
+            "cycle": 1569429,
+            "semantic_differences": [],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            }
+          },
+          {
+            "cycle": 1569430,
+            "semantic_differences": [
+              {
+                "name": "\\u_npu.u_node0.oh_valid_b",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.u_ohv_a.bits",
+                "original": "0",
+                "candidate": "x"
+              }
+            ],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            }
+          },
+          {
+            "cycle": 1569431,
+            "semantic_differences": [
+              {
+                "name": "\\u_npu.ev_state [0]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.ev_state [3]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.oh_valid_b",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.u_ohv_a.bits",
+                "original": "0",
+                "candidate": "x"
+              }
+            ],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            }
+          },
+          {
+            "cycle": 1569432,
+            "semantic_differences": [
+              {
+                "name": "\\u_npu.ev_state [0]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.ev_state [3]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.oh_valid_b",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.u_ohv_a.bits",
+                "original": "0",
+                "candidate": "x"
+              }
+            ],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            }
+          },
+          {
+            "cycle": 1569433,
+            "semantic_differences": [
+              {
+                "name": "\\u_npu.ev_state [0]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.ev_state [1]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.ev_state [3]",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.oh_valid_b",
+                "original": "0",
+                "candidate": "x"
+              },
+              {
+                "name": "\\u_npu.u_node0.u_ohv_a.bits",
+                "original": "0",
+                "candidate": "x"
+              }
+            ],
+            "original": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "1"
+            },
+            "candidate": {
+              "g_clkgate.u_npu_cg.u_icg.CLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GCLK": "0",
+              "g_clkgate.u_npu_cg.u_icg.GATE": "x"
+            }
+          }
+        ],
+        "source_excerpts": {
+          "original": {
+            "netlist_sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8",
+            "source": "Previously restored exact RAM netlist; rehashed, no download or simulation",
+            "cells": {
+              "_136739_": {
+                "type": "sg13g2_dfrbpq_1",
+                "ports": {
+                  "CLK": "clk_npu",
+                  "D": "\\u_npu.u_node0.u_evq_out.rd_pass ",
+                  "Q": "\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ",
+                  "RESET_B": "\\u_npu.u_node0.blk_rst_n "
+                },
+                "source": "  sg13g2_dfrbpq_1 _136739_ (\n    .CLK(clk_npu),\n    .D(\\u_npu.u_node0.u_evq_out.rd_pass ),\n    .Q(\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ),\n    .RESET_B(\\u_npu.u_node0.blk_rst_n )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_136741_": {
+                "type": "sg13g2_dfrbpq_1",
+                "ports": {
+                  "CLK": "clk_npu",
+                  "D": "\\u_npu.u_node0.u_evq_out.rd_pass ",
+                  "Q": "\\u_npu.u_node0.u_evq_out.rdv_b ",
+                  "RESET_B": "\\u_npu.u_node0.blk_rst_n "
+                },
+                "source": "  sg13g2_dfrbpq_1 _136741_ (\n    .CLK(clk_npu),\n    .D(\\u_npu.u_node0.u_evq_out.rd_pass ),\n    .Q(\\u_npu.u_node0.u_evq_out.rdv_b ),\n    .RESET_B(\\u_npu.u_node0.blk_rst_n )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_083147_": {
+                "type": "sg13g2_nor2_1",
+                "ports": {
+                  "A": "_025270_",
+                  "B": "_023203_",
+                  "Y": "\\u_npu.u_node0.u_evq_out.rd_pass "
+                },
+                "source": "  sg13g2_nor2_1 _083147_ (\n    .A(_025270_),\n    .B(_023203_),\n    .Y(\\u_npu.u_node0.u_evq_out.rd_pass )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_079838_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_023129_",
+                  "X": "_025270_"
+                },
+                "source": "  sg13g2_buf_1 _079838_ (\n    .A(_023129_),\n    .X(_025270_)\n  );",
+                "depth": 1,
+                "observed_in_current_window": false
+              },
+              "_077340_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023170_",
+                  "B": "_023202_",
+                  "Y": "_023203_"
+                },
+                "source": "  sg13g2_xnor2_1 _077340_ (\n    .A(_023170_),\n    .B(_023202_),\n    .Y(_023203_)\n  );",
+                "depth": 1,
+                "observed_in_current_window": false
+              },
+              "_077266_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_023128_",
+                  "X": "_023129_"
+                },
+                "source": "  sg13g2_buf_1 _077266_ (\n    .A(_023128_),\n    .X(_023129_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_077307_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023154_",
+                  "B": "_023169_",
+                  "Y": "_023170_"
+                },
+                "source": "  sg13g2_xnor2_1 _077307_ (\n    .A(_023154_),\n    .B(_023169_),\n    .Y(_023170_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_077339_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023189_",
+                  "B": "_023201_",
+                  "Y": "_023202_"
+                },
+                "source": "  sg13g2_xnor2_1 _077339_ (\n    .A(_023189_),\n    .B(_023201_),\n    .Y(_023202_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_077265_": {
+                "type": "sg13g2_nand2_1",
+                "ports": {
+                  "A": "\\u_npu.u_node0.fo_rd_en ",
+                  "B": "_013106_",
+                  "Y": "_023128_"
+                },
+                "source": "  sg13g2_nand2_1 _077265_ (\n    .A(\\u_npu.u_node0.fo_rd_en ),\n    .B(_013106_),\n    .Y(_023128_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_077291_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023145_",
+                  "B": "_023153_",
+                  "Y": "_023154_"
+                },
+                "source": "  sg13g2_xnor2_1 _077291_ (\n    .A(_023145_),\n    .B(_023153_),\n    .Y(_023154_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_077306_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023161_",
+                  "B": "_023168_",
+                  "Y": "_023169_"
+                },
+                "source": "  sg13g2_xnor2_1 _077306_ (\n    .A(_023161_),\n    .B(_023168_),\n    .Y(_023169_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_077326_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023185_",
+                  "B": "_023188_",
+                  "Y": "_023189_"
+                },
+                "source": "  sg13g2_xnor2_1 _077326_ (\n    .A(_023185_),\n    .B(_023188_),\n    .Y(_023189_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_077338_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_023193_",
+                  "B": "_023200_",
+                  "Y": "_023201_"
+                },
+                "source": "  sg13g2_xnor2_1 _077338_ (\n    .A(_023193_),\n    .B(_023200_),\n    .Y(_023201_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              }
+            }
+          },
+          "candidate": {
+            "netlist_sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c",
+            "source": "Previously restored exact RAM netlist; rehashed, no download or simulation",
+            "cells": {
+              "_082628_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_024639_",
+                  "X": "_027398_"
+                },
+                "source": "  sg13g2_buf_1 _082628_ (\n    .A(_024639_),\n    .X(_027398_)\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_137337_": {
+                "type": "sg13g2_dfrbpq_1",
+                "ports": {
+                  "CLK": "clk_npu",
+                  "D": "\\u_npu.u_node0.u_evq_out.rd_pass ",
+                  "Q": "\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ",
+                  "RESET_B": "\\u_npu.u_node0.blk_rst_n "
+                },
+                "source": "  sg13g2_dfrbpq_1 _137337_ (\n    .CLK(clk_npu),\n    .D(\\u_npu.u_node0.u_evq_out.rd_pass ),\n    .Q(\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ),\n    .RESET_B(\\u_npu.u_node0.blk_rst_n )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_137339_": {
+                "type": "sg13g2_dfrbpq_1",
+                "ports": {
+                  "CLK": "clk_npu",
+                  "D": "\\u_npu.u_node0.u_evq_out.rd_pass ",
+                  "Q": "\\u_npu.u_node0.u_evq_out.rdv_b ",
+                  "RESET_B": "\\u_npu.u_node0.blk_rst_n "
+                },
+                "source": "  sg13g2_dfrbpq_1 _137339_ (\n    .CLK(clk_npu),\n    .D(\\u_npu.u_node0.u_evq_out.rd_pass ),\n    .Q(\\u_npu.u_node0.u_evq_out.rdv_b ),\n    .RESET_B(\\u_npu.u_node0.blk_rst_n )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_083806_": {
+                "type": "sg13g2_nor2_1",
+                "ports": {
+                  "A": "_024108_",
+                  "B": "_024281_",
+                  "Y": "\\u_npu.u_node0.u_evq_out.rd_pass "
+                },
+                "source": "  sg13g2_nor2_1 _083806_ (\n    .A(_024108_),\n    .B(_024281_),\n    .Y(\\u_npu.u_node0.u_evq_out.rd_pass )\n  );",
+                "depth": 0,
+                "observed_in_current_window": false
+              },
+              "_079697_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_024638_",
+                  "X": "_024639_"
+                },
+                "source": "  sg13g2_buf_1 _079697_ (\n    .A(_024638_),\n    .X(_024639_)\n  );",
+                "depth": 1,
+                "observed_in_current_window": false
+              },
+              "_079056_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_024107_",
+                  "X": "_024108_"
+                },
+                "source": "  sg13g2_buf_1 _079056_ (\n    .A(_024107_),\n    .X(_024108_)\n  );",
+                "depth": 1,
+                "observed_in_current_window": false
+              },
+              "_079245_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024240_",
+                  "B": "_024280_",
+                  "Y": "_024281_"
+                },
+                "source": "  sg13g2_xnor2_1 _079245_ (\n    .A(_024240_),\n    .B(_024280_),\n    .Y(_024281_)\n  );",
+                "depth": 1,
+                "observed_in_current_window": false
+              },
+              "_079696_": {
+                "type": "sg13g2_and2_1",
+                "ports": {
+                  "A": "\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ",
+                  "B": "\\u_npu.u_node0.u_evq_out.rdv_b ",
+                  "X": "_024638_"
+                },
+                "source": "  sg13g2_and2_1 _079696_ (\n    .A(\\u_npu.u_node0.u_evq_out.u_rdv_a.bits ),\n    .B(\\u_npu.u_node0.u_evq_out.rdv_b ),\n    .X(_024638_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_079055_": {
+                "type": "sg13g2_buf_1",
+                "ports": {
+                  "A": "_024106_",
+                  "X": "_024107_"
+                },
+                "source": "  sg13g2_buf_1 _079055_ (\n    .A(_024106_),\n    .X(_024107_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_079204_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024232_",
+                  "B": "_024239_",
+                  "Y": "_024240_"
+                },
+                "source": "  sg13g2_xnor2_1 _079204_ (\n    .A(_024232_),\n    .B(_024239_),\n    .Y(_024240_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_079244_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024255_",
+                  "B": "_024279_",
+                  "Y": "_024280_"
+                },
+                "source": "  sg13g2_xnor2_1 _079244_ (\n    .A(_024255_),\n    .B(_024279_),\n    .Y(_024280_)\n  );",
+                "depth": 2,
+                "observed_in_current_window": false
+              },
+              "_079054_": {
+                "type": "sg13g2_nand2_1",
+                "ports": {
+                  "A": "\\u_npu.u_node0.fo_rd_en ",
+                  "B": "_024105_",
+                  "Y": "_024106_"
+                },
+                "source": "  sg13g2_nand2_1 _079054_ (\n    .A(\\u_npu.u_node0.fo_rd_en ),\n    .B(_024105_),\n    .Y(_024106_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_079196_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024224_",
+                  "B": "_024231_",
+                  "Y": "_024232_"
+                },
+                "source": "  sg13g2_xnor2_1 _079196_ (\n    .A(_024224_),\n    .B(_024231_),\n    .Y(_024232_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_079203_": {
+                "type": "sg13g2_xor2_1",
+                "ports": {
+                  "A": "_024235_",
+                  "B": "_024238_",
+                  "X": "_024239_"
+                },
+                "source": "  sg13g2_xor2_1 _079203_ (\n    .A(_024235_),\n    .B(_024238_),\n    .X(_024239_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_079219_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024247_",
+                  "B": "_024254_",
+                  "Y": "_024255_"
+                },
+                "source": "  sg13g2_xnor2_1 _079219_ (\n    .A(_024247_),\n    .B(_024254_),\n    .Y(_024255_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              },
+              "_079243_": {
+                "type": "sg13g2_xnor2_1",
+                "ports": {
+                  "A": "_024270_",
+                  "B": "_024278_",
+                  "Y": "_024279_"
+                },
+                "source": "  sg13g2_xnor2_1 _079243_ (\n    .A(_024270_),\n    .B(_024278_),\n    .Y(_024279_)\n  );",
+                "depth": 3,
+                "observed_in_current_window": false
+              }
+            }
+          }
+        },
+        "frozen_rtl_context": {
+          "hw/rtl/pilot_top.v": {
+            "pin": {
+              "bytes": 152344,
+              "sha256": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af"
+            },
+            "excerpts": [
+              {
+                "line": 1729,
+                "text": "    // what the enable form cost that module's bounded proof; the shape\n    // here is the same for the same reason, and all three rail modules\n    // in this repository take a next value rather than an enable.\n    wire oh_valid_set = fo_rd_valid;\n    wire oh_valid_d   = oh_valid_set || (oh_valid && !oh_pop);\n\n    pilot_flag_rail #(.POL(1'b0)) u_ohv_a ("
+              }
+            ]
+          },
+          "hw/rtl/aer_fifo.v": {
+            "pin": {
+              "bytes": 55548,
+              "sha256": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d"
+            },
+            "excerpts": [
+              {
+                "line": 585,
+                "text": "    // whatever head_bad is. rd_ok high implies the head slot is occupied,\n    // and P7 proves the voted read pointer equals the count of accepted\n    // reads, so an occupied head is a slot this module wrote itself.\n    wire rd_pass = rd_ok && !head_bad;\n\n    assign par_err = rd_ok && head_bad;\n"
+              },
+              {
+                "line": 621,
+                "text": "    wire rdv_a, rdv_b;\n    wire rdv_mm = (rdv_a != rdv_b);\n\n    assign rd_valid    = rdv_a && rdv_b;\n    assign rv_mismatch = rdv_mm;\n\n    // rd_pass, not rd_ok: an accepted read whose stored word failed its"
+              }
+            ]
+          }
+        },
+        "interpretation": [
+          "The earliest observed new X is at candidate _082634_/A (_027398_) at cycle1569429,31,388,970ns. It propagates through the OR to oh_valid_d in the same recorded timestamp.",
+          "Exact source traces that input through two identity buffers and an AND of EVQ_OUT read-valid rail Q outputs. Those two rail flops and their rd_pass input were outside this observer, so their earlier history is not known.",
+          "The exact rd_pass producer combines read enable/queue eligibility with stored head-word parity. Static structure narrows the next observation; it does not establish whether parity, read eligibility, storage initialization, or a zero-delay event causes the failure.",
+          "Candidate oh_valid rail Q becomes unknown at the next recorded clock edge; downstream old cone/state failure is later. Callback order is not a lossless simulator delta trace."
+        ],
+        "next_bounded_experiment": [
+          "Add exact source-bound D/Q/CLK/RESET_B/internal UDP signals of both EVQ_OUT rd-valid rail flops, plus rd_pass, rd_ok, head_bad and actual head data/parity read-selection sources in both frozen variants.",
+          "Use the same workload/models/reset and paired fixed window; if an upstream signal is already unknown at initialization, expand only its recorded first-X time rather than declaring this observation causal.",
+          "Before any RTL fix, distinguish unknown stored FIFO contents/address versus all-known-input cell transition behavior using sampled pre/post-edge inputs and exact model logic. Preserve originals and binary proof/boot failure scope."
+        ],
+        "new_native_execution": false,
+        "rtl_modified": false,
+        "candidate_adopted": false
+      }
+    }
+  ]
+}

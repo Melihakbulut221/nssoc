@@ -1,0 +1,265 @@
+{
+  "date": "2026-09-20",
+  "status": "PASS",
+  "scope": "Full functional four-state native IHP mapped-SoC boot after power-on startup scrub-clear fix. The compiled immutable standard-cell ROM loads an application from modeled external flash into initially undefined native SRAM. No ROM/RAM preload, PDK model patch, SDF, fault injection or physical timing acceptance.",
+  "negative_baseline": "docs/evidence/logicrom-whole-gl-failure-20260920.json",
+  "diagnosis": "docs/evidence/logicrom-startup-counter-diagnostic-20260920.json",
+  "command": [
+    "python3",
+    "hw/soc/flow/sim_logic_boot_gl.py",
+    "--synthesis",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn",
+    "--firmware",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl",
+    "--pdk",
+    "/home/hasanmelih/.ciel/ihp-sg13g2",
+    "--tool",
+    "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+    "--output",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl"
+  ],
+  "measurement": {
+    "cycles": 637224,
+    "checks": 28,
+    "failed_checks": 0,
+    "exit_code": 0,
+    "exit_magic": "600dc0de",
+    "watchdog_stages": [
+      1,
+      0,
+      0
+    ],
+    "flash_protocol_violations": 0,
+    "uart_result_pass": true,
+    "uart_framing_errors": 0,
+    "run_elapsed_s": 3169.868151176999
+  },
+  "inputs": {
+    "scope": "Functional boot only. No ROM/RAM preload, SDF or fault qualification. Verilator is a supplemental randomized two-state control.",
+    "simulator": "iverilog",
+    "version": "Icarus Verilog version 13.0 (stable) (v13_0-dirty)\n\nCopyright (c) 2000-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Preprocessor version 13.0 (stable) (v13_0-dirty)\n\nCopyright (c) 1999-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Parser/Elaborator version 13.0 (stable) (v13_0-dirty)\n\nCopyright (c) 1998-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n FLAGS DLL vvp.tgt\nvvp.tgt: Icarus Verilog VVP Code Generator 13.0 (stable) (v13_0-dirty)\n\nCopyright (c) 2001-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n",
+    "loader_manifest": {
+      "format": 1,
+      "module": "soc_logic_boot_rom",
+      "image_bytes": 3084,
+      "image_sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+      "words": 2048,
+      "first_image_word": 32,
+      "codeword_bits": 39,
+      "template_sha256": "2ea27354ad115c58ba5782901d5913b4fbc253bd29f12197c912a5326d2c7b04",
+      "golden_codec_sha256": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+      "rtl_sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+      "scope": "Fixed standard-cell ROM contents. No SRAM preload or writable code storage. Physical and fault qualification remain separate."
+    },
+    "symbols": {
+      "checks": 7836,
+      "exit_code": 7780,
+      "exit_magic": 7784,
+      "fails": 7840
+    },
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v": {
+        "sha256": "63b2abceb1d21ee2d5d29c869bc9eb8519ccdf0a7303cb9c7720e6014f889bcf",
+        "bytes": 12475
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v": {
+        "sha256": "c76766629773761beae4ddf069d9d6ab5f6696f8efd3c618e490f599093fb773",
+        "bytes": 9565137
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v": {
+        "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8",
+        "bytes": 20792
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+        "bytes": 53835
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+        "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+        "bytes": 6900
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+        "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787",
+        "bytes": 3932
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+        "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+        "bytes": 12655
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+        "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08",
+        "bytes": 6067
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+        "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6",
+        "bytes": 4051
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/app.elf": {
+        "sha256": "7fe618c4ad743d1a4d4d425a69f5f2f63128bf8a958705083289812fc705ac3f",
+        "bytes": 57192
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/flash0.hex": {
+        "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b",
+        "bytes": 393216
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/test_soc.bin": {
+        "sha256": "97d4eb18f79fa3af4da553a8b0c7ffcaa5a56c2cd01bbcacf950e879e0d7ce02",
+        "bytes": 3084
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/boot-rom/manifest.json": {
+        "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+        "bytes": 633
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/boot-rom/soc_logic_boot_rom.v": {
+        "sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+        "bytes": 26618
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/boot-rom/manifest.json": {
+        "sha256": "e56cb199b2cc83dcce9d2bf83252c03394a68b8ebf4b7f1a6a326aceb7511bf2",
+        "bytes": 633
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/boot-rom/soc_logic_boot_rom.v": {
+        "sha256": "8d3519e671945db8985625c249d2e2dbaef8726a62142ea8f857b8a9a62ec96e",
+        "bytes": 26618
+      }
+    },
+    "compile_command": [
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+      "-g2005-sv",
+      "-s",
+      "tb_logicrom_gl",
+      "-o",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/sim.vvp",
+      "-DFUNCTIONAL",
+      "-DTIMEOUT_CYCLES=1000000",
+      "-DEXIT_CODE_ADDR=32'h00001e64",
+      "-DEXIT_MAGIC_ADDR=32'h00001e68",
+      "-DCHECKS_ADDR=32'h00001e9c",
+      "-DFAILS_ADDR=32'h00001ea0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+    ],
+    "run_commands": [
+      [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+        "-i",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/sim.vvp",
+        "+flash0=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/flash0.hex"
+      ]
+    ],
+    "run_timeout_s": 14400,
+    "cycle_bound": 1000000
+  },
+  "result": {
+    "native_cell_gate": {
+      "library": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/native-cell-gate/sim.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/native-cell-gate/tb_native_cell_gate.v",
+          "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.015977410999767017
+      },
+      "runs": [
+        {
+          "command": [
+            "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+            "-i",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/native-cell-gate/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.007908683999630739,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "compile": {
+      "command": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=1000000",
+        "-DEXIT_CODE_ADDR=32'h00001e64",
+        "-DEXIT_MAGIC_ADDR=32'h00001e68",
+        "-DCHECKS_ADDR=32'h00001e9c",
+        "-DFAILS_ADDR=32'h00001ea0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/soc_top.netlist.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 2.719662729999982
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "-i",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/sim.vvp",
+          "+flash0=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/logicrom-startup-clear-rtl/flash0.hex"
+        ],
+        "returncode": 0,
+        "elapsed_s": 3169.868151176999,
+        "pass_banner": true
+      }
+    ],
+    "sources_unchanged": true,
+    "passed": true
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/inputs.json": {
+      "bytes": 10639,
+      "sha256": "965b34e8aa89bbc12a862b197ba4d06eeacabe69a68f695f37432df05ecc3e90"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/result.json": {
+      "bytes": 3818,
+      "sha256": "e24214f6c12abd1dc49b99d59560b7cf8d18e6795fe3bbe82d409af2686dd235"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/compile.log": {
+      "bytes": 1720,
+      "sha256": "a9ec9c1f144760dd32f0f8479727f7086e4749e7135fd50bbd8ce518b32644f9"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-gl/run-0.log": {
+      "bytes": 9721,
+      "sha256": "5b47a5160627b495a281db0fee5bb6ce2d583a98dba5d97f25bf25f0f3f9dea9"
+    },
+    "hw/soc/tb/sw/boot.c": {
+      "bytes": 25839,
+      "sha256": "3908d85dc86f479cf3bd98b78ed7c5968efeb7e1a75d7df5fbb0a509a989619d"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/syn.log": {
+      "bytes": 7778726,
+      "sha256": "c9077a0fc81c2b63fd61a5c6148f5dd009ca99049ec3df47c7bded0d0d117ea7"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-startup-clear-syn/area.rpt": {
+      "bytes": 2234,
+      "sha256": "8b124d1e29e21512edc3d06cf37ec659f835e090fc66f87d3435e74193dde38e"
+    }
+  }
+}

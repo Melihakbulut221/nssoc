@@ -1,0 +1,87 @@
+{
+  "status": "RECORDED_FINITE_PROGRESS_NOT_FULL_PHY_OR_TIMING_CLOSURE",
+  "at": "2026-10-10T19:20:53.835238+03:00",
+  "artifact": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-scene-hot28-egress-records-20261010.tar.gz",
+    "name": "nssoc-scene-hot28-egress-records-20261010.tar.gz",
+    "bytes": 33293111,
+    "sha256": "6340d768e5b7eb65e00b10705151767ca5645c641cca058eee2476f9aba5a9e7"
+  },
+  "members": 462,
+  "scene_bug": {
+    "status": "CONFIRMED_SEPTEMBER_MULTISCENE_GENERATED_CLOCK_LATENCY_MISMATCH",
+    "old_fast_generated_clock_delay_ns": 0.385097,
+    "new_multiscene_fast_delay_ns": 0.866688,
+    "single_fast_hold_reports_exact": true,
+    "single_fast_setup_difference_ns": 1e-06,
+    "upstream_fix_claimed": false
+  },
+  "separate_corner_repair": {
+    "status": "COMPLETE_FRESH_SEPARATE_CORNER_READBACK_TIMING_NOT_CLOSED",
+    "slacks_ns": {
+      "slow_max": -2.935336,
+      "slow_min": 0.126703,
+      "typical_max": -1.006362,
+      "typical_min": 0.044966,
+      "fast_max": 0.083997,
+      "fast_min": -0.210999
+    },
+    "parasitics": "placement only",
+    "adopted": false
+  },
+  "nominal302": {
+    "native_status": "PASS_NATIVE_PHYSICAL302_FINITE_POINT",
+    "independent_status": "COMPLETE302_NATIVE_INDEPENDENTLY_REVIEWED",
+    "temperature_c": 25,
+    "functional_checks": 7,
+    "electrical_devices": 302,
+    "temperature_deck_fix_retained": true
+  },
+  "hot28": {
+    "native_status": "PASS_NATIVE_SCREEN300_FINITE_POINT",
+    "independent_status": "COMPLETE300_NATIVE_INDEPENDENTLY_REVIEWED",
+    "temperature_c": 125,
+    "functional_checks": 7,
+    "electrical_devices": 300,
+    "parameter_only": true,
+    "old_wire_rc_retained": true,
+    "new_geometry_transient_validated": false
+  },
+  "gain_v3": {
+    "status": "COMPLETE_NATIVE_PHYSICAL18_VARIANT_AND_WIRE_CONTROLS_NOT_TRANSIENT_ACCEPTED",
+    "physical_devices": 18,
+    "drc_violations": 0,
+    "drc_categories": 560,
+    "hierarchical_and_flat_lvs": true,
+    "negative_controls": 5,
+    "lef_ports": 7,
+    "lef_controls": 3,
+    "fresh_wire_rc": true,
+    "qualified_pex": false
+  },
+  "egress": {
+    "candidate": "candidate02",
+    "queue_bits": 13,
+    "latency_change_cycles": 1,
+    "packet_tests": 5,
+    "packet_failures": 0,
+    "packet_skips": 0,
+    "clean_simulator": "Icarus 12 with cocotb venv",
+    "stage_induction": "PASS_EXTRACTED_TX_STAGE_QUEUE_INDUCTION_AND_SIX_FAULT_CONTROLS",
+    "negative_controls": 6,
+    "first_attempt_equivalent_reset_mutation_preserved": true,
+    "whole_chip_mapping": "running at record time",
+    "cycle_equivalent": false,
+    "adopted": false
+  },
+  "open": [
+    "Full serial Gen3 x4 PHY and parent/main-chip integration",
+    "Routed chip with extracted setup/hold closure",
+    "New hot28 divider/gain wire composition and physical thermal reruns",
+    "Qualified substrate/RF parasitics and PVT",
+    "Manufacturing approval"
+  ],
+  "serial_phy_complete": false,
+  "timing_accepted": false
+}

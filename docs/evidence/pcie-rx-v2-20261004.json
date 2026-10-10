@@ -1,0 +1,220 @@
+{
+  "schema": 1,
+  "status": "LOAD150FF_REPAIR_MEASURED_NUMERICAL_INITIALIZATION_UNRESOLVED",
+  "recorded_utc": "2026-10-04T03:15:03.944377+00:00",
+  "sources": {
+    "hw/soc/analog/pcie/rx_hbt_rsil_v2.spice": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/rx_hbt_rsil_v2.spice",
+      "bytes": 1046,
+      "sha256": "d02827087e0cb43f447fc46fda05dbd23dcee13ad68755fd31ba738404332a4e"
+    },
+    "scripts/characterize_pcie_rx_v2.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_rx_v2.py",
+      "bytes": 9568,
+      "sha256": "087ac0d41235f11fb64c532da0d4d9f13f85deea596652951d83d365e51ef1ef"
+    },
+    "scripts/review_pcie_rx_v2.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/review_pcie_rx_v2.py",
+      "bytes": 13378,
+      "sha256": "0d3548490df7f908722106624002713528e2d578b2b994660ec836d9bb4237cf"
+    },
+    "sw/tests/test_pcie_rx_v2.py": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_rx_v2.py",
+      "bytes": 7772,
+      "sha256": "97586083d4a1529858bbcf1b30e67e113174cebceb11eef8c9c90fa8f4eca83b"
+    }
+  },
+  "tests": {
+    "passed": 69,
+    "ruff_pass": true
+  },
+  "commands": {
+    "native_ng42": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/characterize_pcie_rx_v2.py --pdk /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2 --ngspice hw/soc/tools/ngspice-42/usr/bin/ngspice --openvaf hw/soc/tools/openvaf-23.5.0/openvaf --out /dev/shm/NEW-rx-v2-ng42",
+    "native_ng47": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/characterize_pcie_rx_v2.py --pdk /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2 --ngspice /dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice --openvaf hw/soc/tools/openvaf-23.5.0/openvaf --out /dev/shm/NEW-rx-v2-ng47",
+    "full_review": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/review_pcie_rx_v2.py --directory FULL_NATIVE_DIRECTORY --output NEW.json",
+    "publication_ng42": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/review_pcie_rx_v2.py --directory EXTRACTED/capture/ng42 --metadata-only --output NEW-42.json",
+    "publication_ng47": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/review_pcie_rx_v2.py --directory EXTRACTED/capture/ng47 --retained-waves --output NEW-47.json",
+    "pytest": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/NEW-rx-v2-tests sw/tests/test_pcie_rx_v2.py sw/tests/test_pcie_rx_characterization.py sw/tests/test_pcie_tx_characterization.py sw/tests/test_pcie_tx_rsil.py",
+    "ruff": "hw/soc/tools/dev-env/bin/ruff check scripts/characterize_pcie_rx_v2.py scripts/review_pcie_rx_v2.py sw/tests/test_pcie_rx_v2.py"
+  },
+  "native": [
+    {
+      "version": 42,
+      "producer_status": "RX_V2_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+      "producer_exit_code": 2,
+      "source_bytes_unchanged": true,
+      "native_transient_case_count": 97,
+      "native_ac_case_count": 9,
+      "every_native_process_rc_zero": true,
+      "pvt_screen_passed": 81,
+      "pvt_count": 81,
+      "required_cap_each_f": 1.5e-13,
+      "minimum_pvt_margin_v": 0.11900528778405255,
+      "min_pvt_vce_v": 0.4609021434374,
+      "max_pvt_vce_v": 1.40149521042,
+      "nominal_margin_v": 0.1510623578840295,
+      "nominal_analog_power_w": 0.0066514254450296805,
+      "negative_controls": 6,
+      "negative_controls_rejected": 6,
+      "unexpected_measurement_cases": [],
+      "numerical_clean": false,
+      "positive_numerical_residual_count": 28,
+      "all_case_numerical_residual_count": 29,
+      "numerical_counts": {
+        "thermal_nan_reported": 28,
+        "singular_matrix_reported": 10,
+        "gmin_recovery_attempted": 29,
+        "native_resistor_limit_warning": 25
+      },
+      "half_timestep": {
+        "margin_difference_v": 2.4133948499094338e-05,
+        "power_relative_difference": 8.913242177666092e-08,
+        "screen_pass": true,
+        "scope": "Two numerical steps, not extrapolated convergence."
+      },
+      "full_transient_waves_reparsed": 97,
+      "publication_transient_waves_reparsed": 0,
+      "publication_retained_wave_names": [],
+      "full_review": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng42-full-waveform-review.json",
+        "bytes": 383903,
+        "sha256": "61d81e8ff00806a528f7177462adf9b46b1ca074f99c08272ba766bf6e0b5fe0"
+      },
+      "publication_review": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng42-publication-review.json",
+        "bytes": 384008,
+        "sha256": "ed26b6df2816f68cf2205ecd1942e64a79f6051af4029f4633d7f353d0299f0d"
+      },
+      "raw_result": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng42-native-result.json",
+        "bytes": 547428,
+        "sha256": "500ffac8e4a9cd754027fafc6ea5ac3bbfaf734a992b60ec46e20fbf50cbc34f"
+      }
+    },
+    {
+      "version": 47,
+      "producer_status": "RX_V2_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+      "producer_exit_code": 2,
+      "source_bytes_unchanged": true,
+      "native_transient_case_count": 97,
+      "native_ac_case_count": 9,
+      "every_native_process_rc_zero": true,
+      "pvt_screen_passed": 81,
+      "pvt_count": 81,
+      "required_cap_each_f": 1.5e-13,
+      "minimum_pvt_margin_v": 0.11278404525600005,
+      "min_pvt_vce_v": 0.4650274466936,
+      "max_pvt_vce_v": 1.4016263568054002,
+      "nominal_margin_v": 0.14406741678800006,
+      "nominal_analog_power_w": 0.006527547697218531,
+      "negative_controls": 6,
+      "negative_controls_rejected": 6,
+      "unexpected_measurement_cases": [],
+      "numerical_clean": false,
+      "positive_numerical_residual_count": 28,
+      "all_case_numerical_residual_count": 29,
+      "numerical_counts": {
+        "thermal_nan_reported": 29,
+        "singular_matrix_reported": 1,
+        "gmin_recovery_attempted": 29,
+        "native_resistor_limit_warning": 13
+      },
+      "half_timestep": {
+        "margin_difference_v": 2.6128620498111488e-05,
+        "power_relative_difference": 1.8347561270282142e-07,
+        "screen_pass": true,
+        "scope": "Two numerical steps, not extrapolated convergence."
+      },
+      "full_transient_waves_reparsed": 97,
+      "publication_transient_waves_reparsed": 1,
+      "publication_retained_wave_names": [
+        "hbt_wcs_res_wcs_125_1.89"
+      ],
+      "full_review": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng47-full-waveform-review.json",
+        "bytes": 269780,
+        "sha256": "a39231a1d4a2429ebdaddf840584c5b122e6b1c874ea09ad0be38cec4dc6099c"
+      },
+      "publication_review": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng47-publication-review.json",
+        "bytes": 269935,
+        "sha256": "fd00dbdfdd4880c82f9dc3aa7f7404098385d3e9e9c8689545f982b0840e1bba"
+      },
+      "raw_result": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ng47-native-result.json",
+        "bytes": 316847,
+        "sha256": "5f6ed5cd076120c5b413a5794045d0de85cfcb5c96dae90ef2f4b4bdb2c9b06f"
+      }
+    }
+  ],
+  "circuit_change": "Only two native collector rsil lengths41.785um\u219227.5um; all4HBT, split50ohm input termination and9port contract unchanged. Required external IREF rises0.5mA\u21920.75mA. VCM1.36V unchanged.",
+  "unchanged_limits": {
+    "min_margin_v": 0.1,
+    "min_vce_v": 0.4,
+    "max_vce_v": 1.6,
+    "min_tail_collector_a": 0.0005,
+    "max_collector_a_per_emitter": 0.003
+  },
+  "first_campaign": {
+    "preserved": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/first-campaign/result.json",
+      "bytes": 524737,
+      "sha256": "6c91697595c53786c74866cb943b4e483d8bc28e6f8e2c9f932aa358b2988aa2"
+    },
+    "source_snapshot_directory": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/first-campaign",
+    "expected_3mA_negative_in_v1_became_a_real_passing_extension_with_v2_loads": true,
+    "all96_old_measurements_and_raw_wave_hashes_reproduced": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/first-to-final-native-bridge.json",
+      "bytes": 23334,
+      "sha256": "bc12ac0c4649c288b7cc784405b785a5227b0042b619cc5675f9a9a32485ac09"
+    },
+    "new6mA_fault_rejected_by_native_headroom_and_current_density": true
+  },
+  "startup_diagnosis": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/startup-diagnosis.json",
+    "bytes": 31510,
+    "sha256": "46dc1fb08aecff2486a3c9f42edf34534082ccb05245b20b61afd4f601e9c082"
+  },
+  "ngspice47_package": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/ngspice47-provenance.json",
+    "bytes": 306,
+    "sha256": "65a9a6a08f39933dab79289b27941c21e37d75a32dc3ee79c1551ec79c362969"
+  },
+  "independent_peer_review": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-peer-20261004/independent-review.json",
+    "bytes": 5032,
+    "sha256": "2d5c153c6115f77a3f0bd22a674175704fc17906362439d92408968a863c82f4"
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/rx-v2-native-publication.tar.xz",
+    "bytes": 2683440,
+    "sha256": "550e6fa812f3abfb4b6e2fd2331d010e8d457141173d7e9a80a9594da6d5b86a"
+  },
+  "capsule_inventory": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-20261004/capsule-inventory.json",
+    "bytes": 124659,
+    "sha256": "17ac8d4954ace952e26b4647300a6782a99b341f1d26803362ee6b800b60d757"
+  },
+  "retention": {
+    "total_native_transient_waves_independently_replayed": 194,
+    "raw_ac_tables_independently_reparsed": 18,
+    "published_full_transient_waveforms": 1,
+    "published_wave": "capture/ng47/hbt_wcs_res_wcs_125_1.89/wave.dat.xz",
+    "wave_is_complete_lossless_xz_and_original_uncompressed_hash_verified": true,
+    "all194_logs_decks_metrics_and18ac_tables_published": true,
+    "full_wave_capture_directories": [
+      "/dev/shm/nssoc-rx-v2-final-ng42-20261004",
+      "/dev/shm/nssoc-rx-v2-final-ng47-20261004"
+    ],
+    "remaining193waves_require_volatile_capture_or_regeneration": true,
+    "no_custom_codec_or_downsampling": true
+  },
+  "limitations": [
+    "Initialization NaN/gmin/model-limit events remain in both simulators. The selected phase-controlled reproductions localize them before finite initial transient solutions; this is not a false-positive waiver or proof of an upstream defect.",
+    "Same foundry device/model bytes and unchanged tolerances; different simulator VBIC versions change finite margins and power.",
+    "Ideal external reference/common-mode and pre-layout loading; no PEX/tap RC/noise/mismatch/jitter/BER/clock/slicer/CDR/equalization/channel/ESD/PHY compliance."
+  ],
+  "pcie_compliance": false,
+  "physical_qualification": false,
+  "manufacturing_approval": false
+}

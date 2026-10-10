@@ -1,0 +1,32 @@
+Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib" hbt_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib" res_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib" cap_typ
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib" mos_tt
+.lib "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib" mos_tt
+.include "pll_pfd_charge_pump_hv_v1.spice"
+.include "pump-filter13.spice"
+.temp 27
+.options reltol=1e-4 abstol=1e-12
+VDD avdd 0 PWL(0 0 500p 2.3)
+VDDIV dvdd 0 PWL(0 0 500p 2.5)
+VUP up 0 PWL(0 0 500p 2.5)
+VDOWN down 0 PWL(0 0 500p 2.5)
+VCTRL vctrl 0 PWL(0 0 500p 0.7)
+xloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1
+.tran 3.125e-13 3.4e-08 0 3.125e-13
+.control
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi
+pre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi
+set filetype=binary
+save v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)
+op
+write op.raw all
+run stream.fifo
+setplot
+display
+rusage space
+quit
+.endc
+.end

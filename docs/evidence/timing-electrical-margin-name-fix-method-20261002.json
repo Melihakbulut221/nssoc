@@ -1,0 +1,182 @@
+{
+  "status": "FROZEN_REPRESENTATION_CORRECTION_LOCALLY_VALIDATED_NOT_CLOUD_ADOPTED",
+  "recorded_utc": "2026-10-02T14:08:57.922038+00:00",
+  "failed_run_receipt": {
+    "bytes": 7354,
+    "sha256": "3e6abfc7e8c536a62835eda52cbccc7db2ac56d91f49c01ee84e6cfa31208a06"
+  },
+  "source_pins": {
+    "scripts/run_cloud_electrical_margin.py": {
+      "bytes": 32592,
+      "sha256": "9f392227b6a4d157731c1ae957dffed5fca50912d0c4d4e5f2197d863b1eea5c"
+    },
+    "hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+      "bytes": 1654,
+      "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+    },
+    "sw/tests/timing_electrical_margin_native.tcl": {
+      "bytes": 6322,
+      "sha256": "7310847f5d3920839fd756d68ec985ddfafd513710dfdb8d6acf5fe6fd55c2a3"
+    },
+    "sw/tests/test_cloud_electrical_margin.py": {
+      "bytes": 17688,
+      "sha256": "21971fec6515d305679b0ae1d0c233b78b4b4ff3fc0a914c68997332645c6931"
+    },
+    "hw/soc/pnr/timing-electrical-margin-input.lock.json": {
+      "bytes": 11245,
+      "sha256": "0d39af0181fe2f4820415325d05e56dbde67cb880eaf2a41f6f962f067ce5867"
+    },
+    ".github/workflows/timing-electrical-margin.yml": {
+      "bytes": 6199,
+      "sha256": "554b994864999b397b321e5182a2fbef0c70732c962f1fc4a93392529de63867"
+    }
+  },
+  "change_scope": "Retain original Verilog names and exact placement-witness OpenDB names separately. Strict native terminal graph equality unchanged. New tiny controls reject unescaped spelling, wrong terminal and omitted terminal before mutation. Only workflow title changes to trigger the reviewed correction.",
+  "pure_tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_electrical_margin.py sw/tests/test_cloud_electrical_repair.py sw/tests/test_cloud_combined_repair.py",
+    "passed": 155
+  },
+  "static_checks": {
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "native_tiny_control": {
+    "execution": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/electrical-margin-control-02/methods/sw/tests/timing_electrical_margin_native.tcl"
+      ],
+      "returncode": 0,
+      "seconds": 0.9314400000002934,
+      "source_pins": {
+        "sw/tests/timing_electrical_margin_native.tcl": {
+          "bytes": 6322,
+          "sha256": "7310847f5d3920839fd756d68ec985ddfafd513710dfdb8d6acf5fe6fd55c2a3"
+        },
+        "hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+          "bytes": 1654,
+          "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+        },
+        "hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+          "bytes": 4291,
+          "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+        },
+        "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+          "bytes": 16850,
+          "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+        }
+      },
+      "scope": "Tiny four-cell escaped-identifier fixture only; no chip input or chip timing result; address space at most 2 GiB"
+    },
+    "execution_pin": {
+      "bytes": 1193,
+      "sha256": "82e5da1512af2ca21ed22d83cbcf0252020d0ca050122ec54a5077af7373463b"
+    },
+    "result": {
+      "status": "PASS_NATIVE_ELECTRICAL_CONTROL",
+      "missing_api_rejected": true,
+      "wrong_net_rejected": true,
+      "missing_driver_rejected": true,
+      "dont_touch_rejected": true,
+      "wrong_graph_rejected": true,
+      "unescaped_name_rejected": true,
+      "omitted_terminal_rejected": true,
+      "native_escaped_name_verified": true,
+      "real_capacitance_before": 2,
+      "real_capacitance_after": 1,
+      "unrelated_driver_preserved": true,
+      "call": {
+        "driver": "driver/X",
+        "net": "target",
+        "original_master": "sg13g2_buf_1",
+        "initial_instance_count": 4,
+        "actual_instance_count": 6,
+        "native_calls": 1,
+        "max_length_m": 0,
+        "slew_margin_percent": 20,
+        "cap_margin_percent": 20
+      },
+      "constraints_preserved": true,
+      "candidate_adopted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "result_pin": {
+      "bytes": 696,
+      "sha256": "1fa0fdc60461b26541a11e7e380a4dd4e5d8f5c33b06a4665937dc2d4a822d25"
+    },
+    "native_log_pin": {
+      "bytes": 1945,
+      "sha256": "95c09a9ba3940ed383b60019fabac940187215d64d554db9c7390f1d7fdde02e"
+    },
+    "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "reported_openroad_revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "scope": "Four-cell fixture only, no chip input; 2 GiB address-space ceiling. Real capacitance violations2 to1 overall; selected net1 slew+1 cap violation repaired, driver resized plus2 inserted buffers."
+  },
+  "preserved_invariants": [
+    "original C10 source and physical/runtime pins",
+    "both exact fresh pre-repair baseline reloads",
+    "all19 terminal rows including antenna",
+    "32 SRAM placement/master/orientation",
+    "dont-touch and clock connection/status",
+    "three targeted API calls with experimental20% headroom",
+    "original four rejection guards",
+    "both final independent native reloads",
+    "both actual limited ECO proofs"
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "native_chip_retry_executed": false,
+  "root_source_pins_verified": true,
+  "root_actual_native_control_pins_verified": true,
+  "root_focused_tests_passed": 155,
+  "exact_macro_mterm_query": {
+    "returncode": 0,
+    "seconds": 0.7456454519997351,
+    "macro_lef": {
+      "path": "hw/soc/out/sram-closure-20260926/repaired-macro-abstracts-v3/SP6TSRAM512x64-valid/SP6TSRAM512x64.lef",
+      "bytes": 350184,
+      "sha256": "a691b8e195e320d12649aabc47a956f083d0f9180bdf3f6ef3997d301d1ed1d6"
+    },
+    "manifest": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    "tech_lef": {
+      "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef",
+      "bytes": 28396,
+      "sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+    },
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "openroad",
+      "-exit",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/electrical-margin-mterm-control-02/query.tcl"
+    ],
+    "script": {
+      "bytes": 1154,
+      "sha256": "961ad80978eb3c4638a17df2cc39e29834e5a551c78e6aa2de497581b2c9df79"
+    },
+    "log": {
+      "bytes": 711,
+      "sha256": "c592d99c32b94f3a6b9fde2df59b1f4f0cb42b39906f1db7260edf20ff0deb22"
+    },
+    "scope": "LEF master query only; no chip or candidate ODB read",
+    "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "mterms": {
+      "bytes": 136,
+      "sha256": "ed5bc4aea6bb965d517f9a637e361178d3c6df3f58cc373c82d8cb69115cfa14"
+    },
+    "rows": [
+      "master\tname\tdirection\tsignal_type",
+      "SP6TSRAM512x64\td[21]\tINPUT\tSIGNAL",
+      "SP6TSRAM512x64\td[23]\tINPUT\tSIGNAL",
+      "SP6TSRAM512x64\td[15]\tINPUT\tSIGNAL"
+    ],
+    "prior_query_note": "Initial ad-hoc query had a Tcl list quoting error in the negative control; preserved separately. This query uses exact literal escaped names. No frozen production sources changed."
+  }
+}

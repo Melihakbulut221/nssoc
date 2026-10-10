@@ -1,0 +1,108 @@
+{
+  "status": "PASS_SOURCE_ONLY_TX03_FRESH_DRT_RC_METHODS",
+  "findings": [],
+  "method": {
+    "bytes": 8055,
+    "sha256": "efb3f6372412bc0456a7dc9170bf62412d2c0c3ead5318a998fdb813aa9fb544"
+  },
+  "freeze": {
+    "bytes": 1216,
+    "sha256": "9c5d91551743fd95a16e6c83e3540e0235890d1c20a0881582a0bff6fa5ed4bc"
+  },
+  "files": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair03.py": {
+      "bytes": 6225,
+      "sha256": "8e57f2263544f8feb8b0d9db7732364ceca8be9e674c3a35e1fb5c599a69e2a7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair03.py": {
+      "bytes": 5228,
+      "sha256": "245f40a02171461f6d3a712378427c25db6c1ae452efb84516027354c72708f4"
+    }
+  },
+  "bridges": [
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair02_resume03.py",
+        "bytes": 6177,
+        "sha256": "af3852dd03f6adf3a6333b8de87e32aeb2e94fa31dba8fb3e017a5af621e6955"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair03.py",
+        "bytes": 6225,
+        "sha256": "8e57f2263544f8feb8b0d9db7732364ceca8be9e674c3a35e1fb5c599a69e2a7"
+      },
+      "entire_forward_inverse_exact": true
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02_resume03.py",
+        "bytes": 5228,
+        "sha256": "b24d086741f136cd202814f4f5e586cd438932db9d2935e0fedf590023fffc31"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair03.py",
+        "bytes": 5228,
+        "sha256": "245f40a02171461f6d3a712378427c25db6c1ae452efb84516027354c72708f4"
+      },
+      "entire_forward_inverse_exact": true
+    }
+  ],
+  "completed_proof_port_review": {
+    "bytes": 2101,
+    "sha256": "5589dfbdafb3ef9cdbba37fd36386ceffc8b3b6ab192311aa1932df18a9f3f3a"
+  },
+  "saved_binding": {
+    "bytes": 7998,
+    "sha256": "af1fe09b355e5699d9d878dd03b533bb43aeb566af9d6b70305a7fb9ad77ed54"
+  },
+  "graphs_full_readback": {
+    "gold": {
+      "compressed": {
+        "bytes": 4552611,
+        "sha256": "f71f85c257cde9b6615b8b43962d85ba47a56100a22df05ed8ff479a7b8e02fa"
+      },
+      "expanded": {
+        "bytes": 94919312,
+        "sha256": "89bb9b4004184059ef938974a665e1d9c904fec706f124bf74aa281454602bfd"
+      }
+    },
+    "gate": {
+      "compressed": {
+        "bytes": 4579079,
+        "sha256": "4484dc14ae03592ee3978723168a6fb185ab1a0e486522fd795b17cc30be5c46"
+      },
+      "expanded": {
+        "bytes": 95961229,
+        "sha256": "bf1aa2d09b25feeae4ecb115b0d173fc549eb4b5d35a39cf5eedda15f4b7cc77"
+      }
+    }
+  },
+  "saved_kernel_controls": {
+    "bytes": 2537,
+    "sha256": "965a7d40db66355cfe3106dfb87900b9fd16e275799b6024490a0f7db9b89f6d"
+  },
+  "saved_binding_controls_log": {
+    "bytes": 99,
+    "sha256": "ac7c25693dfc563ad7109629a2bd23f552f2780ef9f81a003f17af0541800754"
+  },
+  "saved_port_result": {
+    "bytes": 7034,
+    "sha256": "873802583557b192ae27480df625cc6ca7f5fd66ee97d4e19a17614b9a2142f8"
+  },
+  "saved_port_xml": {
+    "bytes": 1005,
+    "sha256": "2733244dce19b51104ca745d168ea2b3177be529a743858c4ec292ad58778e41"
+  },
+  "reviewed": [
+    "Both complete sources independently reconstruct forward and inverse from frozen TX02 DRT03/RC02. Only fresh TX03-01 input/output paths, version/status strings and accurate candidate metadata differ; routing, extraction, constraints and failure lifecycle bodies are identical.",
+    "DRT requires exact completed proof binding, 3850 states/11680 functions, ten actual kernel faults, three passing native ports and all port inputs unchanged. Rechecks proof binding after routing, asserts native completion, router DRC zero and byte-identical routed/proved netlist.",
+    "Candidate repaired ODB/SDC and all tool/Liberty/native graph sources are pinned. Route uses unchanged propagated clock and signal/clock Metal2-Metal5 policy. Only verified empty zero_/one_ aliases may be removed.",
+    "Fresh RC requires exact completed DRT inputs/outputs, zero DRC and same candidate bytes. Preserves coupling_threshold0, cc_model10, context_depth5 and no_merge_via_res; same nominal SPEF across slow/typical/fast cell libraries is explicitly unqualified RC.",
+    "Inherited one-CPU process affinity, 2.5 GiB AS, shared 1 GiB entry/528 MiB floor, masked spawn registration and new session group with explicit 5-second failure cleanup retained. No healthy elapsed timeout; intended launch affinity CPU4 must be enforced by caller.",
+    "Saved proof inputs/outputs/runtime and both complete expanded graphs independently rehashed without invoking the gate/kernel. Saved ten binding controls observed and three raw XML cases recounted; no proof/control/native rerun by reviewer."
+  ],
+  "limitations": [
+    "Prelaunch source/saved-output review only. Fresh detailed route and actual nominal RC remain unexecuted at this review.",
+    "No reviewed method, tool, test, simulation, route, extraction or publication was executed. No final timing, qualified RC, full-chip/foundry/PDN or PCIe PHY acceptance."
+  ]
+}

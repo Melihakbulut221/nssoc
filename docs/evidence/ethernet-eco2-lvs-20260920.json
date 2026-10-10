@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-20",
+  "run": "eth256-eco2-lvs-20260920",
+  "input_layout_run": "eth256-eco2-route-20260920",
+  "scope": "DEF/LEF-derived SPICE versus this ECO2 routed powered netlist. Standard cells and all macro pins; SRAM transistor interiors black-boxed. Not a verdict for ECO4/5/6 or full physical signoff.",
+  "command": "SOC_INTERFACE_FLOW=1 PNR_CONFIG=\"$PWD/hw/soc/pnr/config-fpeth256-decks-20260919-decks.json\" SYN_NETLIST=\"$PWD/hw/soc/pnr/runs/eth256-eco2-route-20260920/final/nl/soc_top.nl.v\" PNR_STATE=\"$PWD/hw/soc/pnr/state/eth256-eco2-lvs-20260920-seed.json\" bash hw/soc/flow/pnr_soc_top.sh eth256-eco2-lvs-20260920 -F Magic.SpiceExtraction -T Checker.LVS -i \"$PWD/hw/soc/pnr/runs/eth256-eco2-route-20260920/16-klayout-render/state_out.json\"",
+  "verdict": "Circuits match uniquely.",
+  "devices_each_side": 95044,
+  "nets_each_side": 94244,
+  "lvs_counters": {
+    "design__lvs_device_difference__count": 0,
+    "design__lvs_net_difference__count": 0,
+    "design__lvs_property_fail__count": 0,
+    "design__lvs_error__count": 0,
+    "design__lvs_unmatched_device__count": 0,
+    "design__lvs_unmatched_net__count": 0,
+    "design__lvs_unmatched_pin__count": 0
+  },
+  "magic_illegal_overlap_count": 0,
+  "artifacts": [
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-route-20260920/16-klayout-render/state_out.json",
+      "bytes": 12916,
+      "sha256": "27402acde8c3d43be00e76b85bde86cc8eda943cd0c7d20a1de734acc34a2ba9"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-route-20260920/10-odb-cellfrequencytables/soc_top.def",
+      "bytes": 115423507,
+      "sha256": "bef31769cab3103db8fb4248c1ee88b561f997da33056dff7f5eb90e042e26de"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-route-20260920/09-openroad-fillinsertion/soc_top.pnl.v",
+      "bytes": 29545474,
+      "sha256": "bf68f1adaf0d20d73f2aa032b384b013622751fe650f5db5acad52d08964c459"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-lvs-20260920/resolved.json",
+      "bytes": 40122,
+      "sha256": "2b664a2b1fcaf07aff964112ccd9662fa1f8f525b0930bb8eb6948008e90314b"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-lvs-20260920/03-netgen-lvs/reports/lvs.netgen.rpt",
+      "bytes": 223700,
+      "sha256": "c3e6c547f0cfd5f20479d4688e87023dd144c5d228505b382a2ac488412ffec3"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-lvs-20260920/03-netgen-lvs/lvs_script.lvs",
+      "bytes": 1514,
+      "sha256": "ae3e1bca91d90dede264fe75cea77560e1f8d4cdd7426134bfc8cf76a6650537"
+    },
+    {
+      "path": "hw/soc/pnr/runs/eth256-eco2-lvs-20260920/final/metrics.json",
+      "bytes": 9566,
+      "sha256": "ea65062bd069e964ff45465feb99e6fe38d26c9aab4db82289b73ac8b8e03f09"
+    }
+  ]
+}

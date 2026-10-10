@@ -88,6 +88,8 @@
 #include <stdint.h>
 
 #include "soc_memmap.h"
+#include "soc_reg_offsets.h"
+#include "lib/soc_hal.h"
 #include "soc_timers.h"
 #include "soc_npucfg.h"
 
@@ -96,13 +98,14 @@
    npu_vectors.h is the stimulus together with the answer
    sw/golden/lif_core.py computes for it. */
 #include "npu_regs.h"
+#include "lib/soc_npu_state_init.h"
 #include "npu_vectors.h"
 
 // GRLIB APBUART, grip.pdf table 126, the same offsets fi_workload.c uses.
-#define UART_DATA   (SOC_UART0_BASE + 0x00u)
-#define UART_STATUS (SOC_UART0_BASE + 0x04u)
-#define UART_CTRL   (SOC_UART0_BASE + 0x08u)
-#define UART_SCALER (SOC_UART0_BASE + 0x0Cu)
+#define UART_DATA   (SOC_UART0_BASE + SOC_UART_DATA_OFF)
+#define UART_STATUS (SOC_UART0_BASE + SOC_UART_STATUS_OFF)
+#define UART_CTRL   (SOC_UART0_BASE + SOC_UART_CTRL_OFF)
+#define UART_SCALER (SOC_UART0_BASE + SOC_UART_SCALER_OFF)
 #define UART_STATUS_TE (1u << 2)
 #define UART_CTRL_TE   (1u << 1)
 
@@ -208,22 +211,13 @@ volatile uint32_t fi_bst_tmr;  /* BST_NPUTMR: cause-bank votes masked */
 static uint16_t got[GOT_N];
 
 // -------------------------------------------------------------------
-static void uart_init(void) {
-  *(volatile uint32_t *)UART_SCALER = UART_SCALER_VAL;
-  *(volatile uint32_t *)UART_CTRL   = UART_CTRL_TE;
-}
+static void uart_init(void) { soc_uart_init(UART_SCALER_VAL, UART_CTRL_TE); }
 
-static void putc_(char c) {
-  while (!(*(volatile uint32_t *)UART_STATUS & UART_STATUS_TE)) { }
-  *(volatile uint32_t *)UART_DATA = (uint32_t)c;
-}
+#define putc_ soc_uart_putc
 
-static void puts_(const char *s) { while (*s) putc_(*s++); }
+#define puts_ soc_uart_puts
 
-static void puthex(uint32_t v) {
-  const char *d = "0123456789abcdef";
-  for (int i = 28; i >= 0; i -= 4) putc_(d[(v >> i) & 0xfu]);
-}
+static void puthex(uint32_t v) { soc_uart_hex32(v, 0); }
 
 // The kick. Keyed, because soc_wdog.v W5 ignores every write that is
 // not -- a runaway core cannot pet this watchdog by accident.
@@ -259,8 +253,8 @@ static uint32_t npu_rd(uint32_t off) {
   wdog_kick();
   return v;
 }
-static uint32_t cfg_rd(uint32_t a) { return *(volatile uint32_t *)a; }
-static void cfg_wr(uint32_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
+#define cfg_rd soc_read32
+#define cfg_wr soc_write32
 
 // Bit numbers in fi_mask. One per self-check, so a failure says which,
 // and so the campaign can separate the classes docs/16 section 1.6
@@ -285,7 +279,8 @@ static uint32_t npu_bring_up(void) {
   npu_wr(NPU_CTRL, 1u << NPU_BIT_CTRL_STATE_CLR);
   for (i = 0; i < FI_IDLE_MAX; i++)
     if ((npu_rd(NPU_STATUS) & (1u << NPU_BIT_STATUS_BUSY)) == 0u) break;
-  if (i == FI_IDLE_MAX) bad = F_BRINGUP;
+  if (i == FI_IDLE_MAX) return F_BRINGUP;
+  if (!soc_npu_state_init(NPUV_N_NEURONS, npu_wr, npu_rd)) return F_BRINGUP;
 
   for (i = 0; i < NPUV_N_CFG; i++)
     npu_wr(npuv_cfg_off[i], npuv_cfg_val[i]);

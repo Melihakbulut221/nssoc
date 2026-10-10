@@ -1,0 +1,105 @@
+{
+  "status": "PASS_SAVED_V24_COMPONENT_5_CONTROLS_AND_FULL_MEMBER_READBACK",
+  "utc": "2026-10-06T05:20:40.248467+00:00",
+  "source_freeze": {
+    "bytes": 10721,
+    "sha256": "5bac8dc9531a542919b05ebd76cd397a33a64a31d69c03e9754d92626f6f84c9"
+  },
+  "controller_status": {
+    "bytes": 1792,
+    "sha256": "de3678a84fd24d353cfb3daa1a4d0f1449d04c9ed20dd1e235adb371f8b8f808"
+  },
+  "pytest_xml": {
+    "bytes": 1027,
+    "sha256": "305a95bf3aa22be333fc93c6b2be4040e8af90499312cdba650ef8378572e5d8"
+  },
+  "pytest_cases": [
+    {
+      "classname": "hw.soc.out.pcie-integrity-v24-20261006.test_matrix_relation01",
+      "name": "test_actual_finite_matrix_alphabet[None]",
+      "time": "125.378"
+    },
+    {
+      "classname": "hw.soc.out.pcie-integrity-v24-20261006.test_matrix_relation01",
+      "name": "test_actual_finite_matrix_alphabet[wrong_initial_column]",
+      "time": "0.604"
+    },
+    {
+      "classname": "hw.soc.out.pcie-integrity-v24-20261006.test_matrix_relation01",
+      "name": "test_actual_finite_matrix_alphabet[drop_bad_carry]",
+      "time": "0.651"
+    },
+    {
+      "classname": "hw.soc.out.pcie-integrity-v24-20261006.test_matrix_relation01",
+      "name": "test_actual_finite_matrix_alphabet[drop_middle_exit]",
+      "time": "0.605"
+    },
+    {
+      "classname": "hw.soc.out.pcie-integrity-v24-20261006.test_matrix_relation01",
+      "name": "test_actual_finite_matrix_alphabet[wrong_suffix]",
+      "time": "2.845"
+    }
+  ],
+  "raw_cases": [
+    {
+      "path": "/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph0/run.log",
+      "bytes": 274,
+      "sha256": "fc2914418d3254c3377cce0734ff7622191d1efd27e9c0c1bb6f34b21e1a1af9",
+      "positive": true,
+      "diagnostic": "V24_ALPHABET vectors=16384 token_matrices=13 carry_columns=4 initial_modes=9 complete_matrices=52\nV24_PREFIX_RELATION_PASS matrices=140608 comparisons=3796416\n/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph0/tb.v:182: $finish called at 0 (1ps)\n"
+    },
+    {
+      "path": "/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph1/run.log",
+      "bytes": 325,
+      "sha256": "37f50d418bdb8f5f3b23143fc9db5da77c61e95db020a12e01715ce54a4be1a2",
+      "positive": false,
+      "diagnostic": "V24_ALPHABET vectors=16384 token_matrices=13 carry_columns=4 initial_modes=9 complete_matrices=52\nFATAL: /dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph1/tb.v:176: V24_PREFIX_RELATION word=1 tokens=0/0/0 carries=0/0/0 initial=00001000 expected=00000001 actual=01000000\n       Time: 0  Scope: tb\n"
+    },
+    {
+      "path": "/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph2/run.log",
+      "bytes": 325,
+      "sha256": "11b70004c459abbd184bf4f9f24469d714a8efdb9900202c4549459389180d9f",
+      "positive": false,
+      "diagnostic": "V24_ALPHABET vectors=16384 token_matrices=13 carry_columns=4 initial_modes=9 complete_matrices=52\nFATAL: /dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph2/tb.v:176: V24_PREFIX_RELATION word=2 tokens=0/0/0 carries=3/0/0 initial=00000010 expected=10000000 actual=00000000\n       Time: 0  Scope: tb\n"
+    },
+    {
+      "path": "/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph3/run.log",
+      "bytes": 325,
+      "sha256": "59d00ac6e8df0455c5bf932b823bf9039f887a6105dcb0f2e7566d8be312ac93",
+      "positive": false,
+      "diagnostic": "V24_ALPHABET vectors=16384 token_matrices=13 carry_columns=4 initial_modes=9 complete_matrices=52\nFATAL: /dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph3/tb.v:176: V24_PREFIX_RELATION word=3 tokens=0/0/0 carries=0/1/0 initial=00000010 expected=01000000 actual=00000000\n       Time: 0  Scope: tb\n"
+    },
+    {
+      "path": "/dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph4/run.log",
+      "bytes": 325,
+      "sha256": "22c237fab4fddac175852c9ad6e3fafc77d9210fc6d9ef98de8d0951d1e4c8a6",
+      "positive": false,
+      "diagnostic": "V24_ALPHABET vectors=16384 token_matrices=13 carry_columns=4 initial_modes=9 complete_matrices=52\nFATAL: /dev/shm/nssoc-integrity-v24-matrix-controls01/test_actual_finite_matrix_alph4/tb.v:176: V24_PREFIX_RELATION word=3 tokens=0/3/0 carries=1/0/0 initial=00000010 expected=00000001 actual=00001000\n       Time: 0  Scope: tb\n"
+    }
+  ],
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/pcie-integrity-v24-component-controls-20261006.tar.xz",
+    "members": 52,
+    "bytes": 64156,
+    "sha256": "6e6650fdd7723a03fcff86d7e520a56c18a948abf922ea64e3a7ce10db71a1b1"
+  },
+  "member_manifest": {
+    "bytes": 13824,
+    "sha256": "1a12c81292cef3cab2bdbb5d671d4a717a2fa2502f02aa679729b36dca155357"
+  },
+  "method": {
+    "bytes": 4048,
+    "sha256": "4e2387e92f1469f3698fae5fe019e254aa9ade52e44871a455a86fdda315bb6c"
+  },
+  "predicate": {
+    "literal_input_classifications": 16384,
+    "token_matrices": 13,
+    "carry_columns": 4,
+    "initial_modes": 9,
+    "ordered_matrix_triples": 140608,
+    "mode_comparisons": 3796416,
+    "actual_mutants": 4
+  },
+  "full_product_acceptance": false,
+  "scope": "Standalone actual HDL finite relation plus4 meaningful negatives only; frozen original01 launcher findings retained. Product V24 bank implementation and physical timing are separate pending gates. Native capture archived losslessly without rerun; runtime external pins retained in freeze."
+}

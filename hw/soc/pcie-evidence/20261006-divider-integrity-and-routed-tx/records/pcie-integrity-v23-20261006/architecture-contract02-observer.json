@@ -1,0 +1,16 @@
+{
+  "status": "V23_ADDITIVE_PREDECESSOR_OBSERVER_BINDING_REQUIREMENT",
+  "contract": {
+    "bytes": 11640,
+    "sha256": "519f4a54ed675fcdf51af1653ed66a6d66220d3386b8d46adc358c2cff556cbe"
+  },
+  "requirement": "The proof witness refers to OLD accepted_tail_valid when the corresponding block was accepted, not its later global value. On each actual acceptance, an independent observer records predecessor mask[0]=oldtailvalid and mask[15:1]=all1, plus monotonically ordered accepted block/word identities. These companion observer records follow the literal current/next bank load, shift and promotion including same-edge overwrite priorities. At each actual owned first-header use, assert the exact current word predecessor mask is1 and its predecessor identity is the active STP. No missing marker may force a good mismatch result or suppress the original comparator/fault. A later global accepted_tail_valid==1 is not sufficient proof.",
+  "implementation_scope": "The mask can be test-only independent observer metadata; it is not a public or functional gating input. If a product companionvalid is added for assertions, it must never bypass mismatch/fault and must be explicitly source-inversed. Exact same-edge acceptance observes oldtail before replacement.",
+  "mandatory_counted_boundaries": [
+    "STP at accepted-block DWORD15, header at next accepted-block DWORD0, including input bubbles and fullbanks.",
+    "STP at parser beat lane3, firstheader at nextbeat lane0 and minimum-length carry-end at lane3 in that same beat.",
+    "First accepted block after each fault/start/flush/reset/abort has predecessor mask0 at its DWORD0 even though the global tailvalid becomes1 on that acceptance.",
+    "Deliberate observer negative using updated/current tailvalid instead of captured old mask must fail the first-block boundary witness; classify this as observer sensitivity, not an electrical or transaction-level DUT failure."
+  ],
+  "scope": "Additive clarification to immutable source-only contract01; no RTL, controls or native launched."
+}

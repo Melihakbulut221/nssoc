@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="14" time="5.258" timestamp="2026-10-06T09:20:00.400459+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_worker_transient_then_success_retains_every_byte" time="0.008" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_nontransport_or_ambiguous_error_no_retry[IntegrityError('bad byte')]" time="0.006" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_nontransport_or_ambiguous_error_no_retry[RuntimeError('HTTP 401')]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_nontransport_or_ambiguous_error_no_retry[ValueError('duplicate')]" time="0.004" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_nontransport_or_ambiguous_error_no_retry[TransportError(__import__('os'))]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_nontransport_or_ambiguous_error_no_retry[Some.TransportError('offline')]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_real_modified_part_or_success_receipt_rejected[source]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_real_modified_part_or_success_receipt_rejected[roundtrip]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_real_modified_part_or_success_receipt_rejected[declaredfile]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_real_modified_part_or_success_receipt_rejected[metadata]" time="0.005" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_finite_offline_budget_does_not_mutate_native_capture" time="0.009" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_configuration_pin_refuses_any_publication" time="0.003" /><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[upload]" time="2.515"><failure message="Failed: Traceback (most recent call last):&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 219, in &lt;module&gt;&#10;    main()&#10;    ~~~~^^&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 214, in main&#10;    result = run(args.spool, args.out, args.configuration_sha)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 163, in run&#10;    result = publish(path, receipt, directory)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 60, in command&#10;    process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),&#10;                           '--tag', TAG, '--out', str(receipt), str(path)],&#10;                           env=env, stdin=subprocess.DEVNULL, stdout=log,&#10;                           stderr=subprocess.STDOUT)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py&quot;, line 105, in launch&#10;    require(kind in (&quot;native&quot;, &quot;publisher&quot;), &quot;Explicit owned process kind&quot;)&#10;    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py&quot;, line 31, in require&#10;    raise ValueError(message)&#10;ValueError: Explicit owned process kind">tmp_path = PosixPath('/dev/shm/nssoc-spool-publisher-controls01/test_actual_offline_worker_sto0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x737df6e75350&gt;
+phase = 'upload'
+
+    @pytest.mark.parametrize('phase', ['upload', 'backoff'])
+    def test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery(tmp_path, monkeypatch, phase):
+        spool, queue = fixture(tmp_path, complete=False)
+        # Freeze the expected compression before producer writes it, solely for the
+        # fake local gh server; the actual worker still consumes committed bytes.
+        import lzma
+        payload = b''.join(struct.pack('&lt;dd', i * 1.25e-12, .5) for i in range(3))
+        source = tmp_path / 'fixture-source.xz'; source.write_bytes(lzma.compress(payload, preset=1))
+        asset = dict(id=1717, name=spool.prefix + '-part00000.bin.xz', size=source.stat().st_size,
+                     digest='sha256:' + local.pin(source)['sha256'], state='uploaded', browser_download_url='unused')
+        with http_fixture(source.read_bytes(), [{}]) as (url, http_calls):
+            asset['browser_download_url'] = url
+            state = upload_fixture(tmp_path, monkeypatch, source, asset,
+                                   ['timeout_absent' if phase == 'upload' else 'transient_absent'])
+            out = tmp_path / 'publication'
+            command = [sys.executable, str(ROOT / 'scripts/publish_pcie_local_spool_v1.py'),
+                       '--spool', str(spool.root), '--out', str(out), '--configuration-sha',
+                       local.pin(spool.root / 'configuration.json')['sha256']]
+            logfile = tmp_path / 'worker.log'
+            with logfile.open('wb') as log:
+                worker = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+                                          start_new_session=True, close_fds=True)
+                wait_until(lambda: (out / 'publication.json').exists(), worker, logfile)
+                finish(spool, queue)
+                native_pin = local.pin(spool.root / 'native-terminal.json')
+                if phase == 'upload':
+&gt;                   wait_until(lambda: json.loads(state.read_text())['uploads'] == 1, worker, logfile)
+
+sw/tests/test_pcie_local_spool_publisher_v1.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+predicate = &lt;function test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery.&lt;locals&gt;.&lt;lambda&gt; at 0x737df6f06c40&gt;
+process = &lt;Popen: returncode: 1 args: ['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv...&gt;
+log = PosixPath('/dev/shm/nssoc-spool-publisher-controls01/test_actual_offline_worker_sto0/worker.log')
+seconds = 12
+
+    def wait_until(predicate, process, log, seconds=12):
+        deadline = time.monotonic() + seconds
+        while time.monotonic() &lt; deadline:
+            if predicate():
+                return
+            if process.poll() is not None:
+&gt;               pytest.fail(Path(log).read_text())
+E               Failed: Traceback (most recent call last):
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 219, in &lt;module&gt;
+E                   main()
+E                   ~~~~^^
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 214, in main
+E                   result = run(args.spool, args.out, args.configuration_sha)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 163, in run
+E                   result = publish(path, receipt, directory)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 60, in command
+E                   process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),
+E                                          '--tag', TAG, '--out', str(receipt), str(path)],
+E                                          env=env, stdin=subprocess.DEVNULL, stdout=log,
+E                                          stderr=subprocess.STDOUT)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py", line 105, in launch
+E                   require(kind in ("native", "publisher"), "Explicit owned process kind")
+E                   ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py", line 31, in require
+E                   raise ValueError(message)
+E               ValueError: Explicit owned process kind
+
+sw/tests/test_pcie_local_spool_publisher_v1.py:130: Failed</failure></testcase><testcase classname="sw.tests.test_pcie_local_spool_publisher_v1" name="test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[backoff]" time="2.514"><failure message="Failed: Traceback (most recent call last):&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 219, in &lt;module&gt;&#10;    main()&#10;    ~~~~^^&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 214, in main&#10;    result = run(args.spool, args.out, args.configuration_sha)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 163, in run&#10;    result = publish(path, receipt, directory)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py&quot;, line 60, in command&#10;    process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),&#10;                           '--tag', TAG, '--out', str(receipt), str(path)],&#10;                           env=env, stdin=subprocess.DEVNULL, stdout=log,&#10;                           stderr=subprocess.STDOUT)&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py&quot;, line 105, in launch&#10;    require(kind in (&quot;native&quot;, &quot;publisher&quot;), &quot;Explicit owned process kind&quot;)&#10;    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#10;  File &quot;/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py&quot;, line 31, in require&#10;    raise ValueError(message)&#10;ValueError: Explicit owned process kind">tmp_path = PosixPath('/dev/shm/nssoc-spool-publisher-controls01/test_actual_offline_worker_sto1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x737df6e74e90&gt;
+phase = 'backoff'
+
+    @pytest.mark.parametrize('phase', ['upload', 'backoff'])
+    def test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery(tmp_path, monkeypatch, phase):
+        spool, queue = fixture(tmp_path, complete=False)
+        # Freeze the expected compression before producer writes it, solely for the
+        # fake local gh server; the actual worker still consumes committed bytes.
+        import lzma
+        payload = b''.join(struct.pack('&lt;dd', i * 1.25e-12, .5) for i in range(3))
+        source = tmp_path / 'fixture-source.xz'; source.write_bytes(lzma.compress(payload, preset=1))
+        asset = dict(id=1717, name=spool.prefix + '-part00000.bin.xz', size=source.stat().st_size,
+                     digest='sha256:' + local.pin(source)['sha256'], state='uploaded', browser_download_url='unused')
+        with http_fixture(source.read_bytes(), [{}]) as (url, http_calls):
+            asset['browser_download_url'] = url
+            state = upload_fixture(tmp_path, monkeypatch, source, asset,
+                                   ['timeout_absent' if phase == 'upload' else 'transient_absent'])
+            out = tmp_path / 'publication'
+            command = [sys.executable, str(ROOT / 'scripts/publish_pcie_local_spool_v1.py'),
+                       '--spool', str(spool.root), '--out', str(out), '--configuration-sha',
+                       local.pin(spool.root / 'configuration.json')['sha256']]
+            logfile = tmp_path / 'worker.log'
+            with logfile.open('wb') as log:
+                worker = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
+                                          start_new_session=True, close_fds=True)
+                wait_until(lambda: (out / 'publication.json').exists(), worker, logfile)
+                finish(spool, queue)
+                native_pin = local.pin(spool.root / 'native-terminal.json')
+                if phase == 'upload':
+                    wait_until(lambda: json.loads(state.read_text())['uploads'] == 1, worker, logfile)
+                else:
+                    def pending():
+                        record = json.loads((out / 'publication.json').read_text())
+                        return record['attempts'] and record['attempts'][0]['status'] == 'TRANSPORT_PENDING_LOCAL_BYTES_RETAINED'
+&gt;                   wait_until(pending, worker, logfile, 15)
+
+sw/tests/test_pcie_local_spool_publisher_v1.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+predicate = &lt;function test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery.&lt;locals&gt;.pending at 0x737df6ea5d20&gt;
+process = &lt;Popen: returncode: 1 args: ['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv...&gt;
+log = PosixPath('/dev/shm/nssoc-spool-publisher-controls01/test_actual_offline_worker_sto1/worker.log')
+seconds = 15
+
+    def wait_until(predicate, process, log, seconds=12):
+        deadline = time.monotonic() + seconds
+        while time.monotonic() &lt; deadline:
+            if predicate():
+                return
+            if process.poll() is not None:
+&gt;               pytest.fail(Path(log).read_text())
+E               Failed: Traceback (most recent call last):
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 219, in &lt;module&gt;
+E                   main()
+E                   ~~~~^^
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 214, in main
+E                   result = run(args.spool, args.out, args.configuration_sha)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 163, in run
+E                   result = publish(path, receipt, directory)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py", line 60, in command
+E                   process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),
+E                                          '--tag', TAG, '--out', str(receipt), str(path)],
+E                                          env=env, stdin=subprocess.DEVNULL, stdout=log,
+E                                          stderr=subprocess.STDOUT)
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py", line 105, in launch
+E                   require(kind in ("native", "publisher"), "Explicit owned process kind")
+E                   ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                 File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py", line 31, in require
+E                   raise ValueError(message)
+E               ValueError: Explicit owned process kind
+
+sw/tests/test_pcie_local_spool_publisher_v1.py:130: Failed</failure></testcase></testsuite></testsuites>

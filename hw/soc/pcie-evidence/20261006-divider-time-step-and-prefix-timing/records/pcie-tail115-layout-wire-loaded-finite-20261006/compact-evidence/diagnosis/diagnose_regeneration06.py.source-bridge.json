@@ -1,0 +1,151 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-bias8-v1-wire-v1-20261006/diagnose_regeneration06.py",
+    "bytes": 5518,
+    "sha256": "4526c3b5000b10b354449e5f723344917c4365bb195b00aa15716ea2b59bb923"
+  },
+  "candidate": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-layout-wire-loaded-finite-20261006/diagnose_regeneration06.py",
+    "bytes": 5572,
+    "sha256": "ab231665565e140be8d8fbbf36ec5cc5e85e596af4efc2d456fa5edf1ef5e7e5"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Saved terminal feedback and physical wire loading; no native simulation.\"\"\"\nfrom pathlib import Path\nimport collections,gzip,hashlib,heapq,json,os,resource\nimport numpy as np\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent;F=R/'sw/tests/fixtures/pcie_clock_div4_v",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Saved terminal feedback and physical wire loading; no native simulation.\"\"\"\nfrom pathlib import Path\nimport collections,gzip,hashlib,heapq,json,os,resource\nimport numpy as np\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent;F=R/'sw/tests/fixtures/pcie_clock_div4_v"
+    },
+    {
+      "tag": "replace",
+      "before": "9",
+      "after": "10"
+    },
+    {
+      "tag": "equal",
+      "before": "_",
+      "after": "_"
+    },
+    {
+      "tag": "replace",
+      "before": "b",
+      "after": "ta"
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "replace",
+      "before": "as8",
+      "after": "l115"
+    },
+    {
+      "tag": "equal",
+      "before": "_v1_hybrid_v1';N=Path('/dev/shm/nssoc-vco-v6-divider-",
+      "after": "_v1_hybrid_v1';N=Path('/dev/shm/nssoc-vco-v6-divider-"
+    },
+    {
+      "tag": "replace",
+      "before": "b",
+      "after": "ta"
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "replace",
+      "before": "as8",
+      "after": "l115"
+    },
+    {
+      "tag": "equal",
+      "before": "-v1-wire-06-01')\ndef pin(p):\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nr=json.loads((N/'result.json').read_text());assert r['status']",
+      "after": "-v1-wire-06-01')\ndef pin(p):\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nr=json.loads((N/'result.json').read_text());assert r['status']"
+    },
+    {
+      "tag": "replace",
+      "before": "==",
+      "after": " in ("
+    },
+    {
+      "tag": "equal",
+      "before": "'FAIL_NATIVE_LOADED_FEEDBACK_SCREEN'",
+      "after": "'FAIL_NATIVE_LOADED_FEEDBACK_SCREEN'"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ",'PASS_NATIVE_LOADED_FEEDBACK_SCREEN')"
+    },
+    {
+      "tag": "equal",
+      "before": "\nraw=gzip.decompress((N/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256'];header,payload=raw.split(b'Binary:\\n',1);names=[l.decode().split()[1]for l in header.split(b'Variables:\\n')[1].splitlines()];assert len(names)==957\nsize=r['rows']*957*8;assert payload[size:]==str(r['rows']).encode();a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all();d=dict(zip(names,a.T));t=d['time']\nc=json.loads((F/'composition.json').read_text());b=json.loads((F/'source-native-bijection.json').read_text());records={v['native_id']:v for v in c['records']};dev={v['source_name']:v for v in b['devices']}\nfor p in [F/'composition.json',F/'source-native-bijection.json',F/'hybrid-open.spice']:assert pin(p)==r['inputs'][str(p)]\ndef node(name,term):\n z=dev[name];i=z['terminal_order'].index(term);return records[z['native_id']]['terminals'][i]['node']\ndef volt(n):return d['v(xchain.xdiv.'+n.lower()+')']\ndef ic(name):return d[f'i(@q.xchain.xdiv.xd{dev[name][\"native_id\"]:04d}.qnpn13g2[ic])']\nres=[];caps=[];adj=collections.defaultdict(list)\nfor line in (F/'hybrid-open.spice').read_text().splitlines():\n f=line.split()\n if not f:continue\n if f[0].startswith('R'):\n  assert len(f)==4;val=float(f[3]);res.append((f[0],f[1],f[2],val));adj[f[1]].append((f[2],val));adj[f[2]].append((f[1],val))\n elif f[0].startswith('C'):\n  assert len(f)==4;caps.append((f[0],f[1],f[2],float(f[3])))\nassert len(res)==382 and len(caps)==649\ncomponents=[];index={}\nfor n in adj:\n if n in index:continue\n i=len(components);pending=[n];nodes=set()\n while pending:\n  x=pending.pop()\n  if x in nodes:continue\n  nodes.add(x);index[x]=i;pending.extend(y for y,_ in adj[x]if y not in nodes)\n components.append(nodes)\nassert len(components)==37\n\ndef wire_pair(p,n):\n assert index[p]==index[n]\n dist={p:0.};queue=[(0.,p)]\n while queue:\n  cost,x=heapq.heappop(queue)\n  if cost!=dist[x]:continue\n  for y,v in adj[x]:\n   if cost+v<dist.get(y,float('inf')):dist[y]=cost+v;heapq.heappush(queue,(cost+v,y))\n comp=components[index[p]];edges=[v for _,a,b,v in res if a in comp and b in comp]\n assert len(edges)==len(comp)-1,'Shortest sum is actual path resistance only for tree'\n ground=sum(v for _,a,b,v in caps if (a in comp and b=='WIRE_CREF')or(b in comp and a=='WIRE_CREF'))\n mutual=sum(v for _,a,b,v in caps if (a in comp)!=(b in comp) and 'WIRE_CREF'not in (a,b))\n return {'nodes':[p,n],'path_ohm':dist[n],'component':index[p],'ground_C_F':ground,'incident_mutual_C_F':mutual,'wire_tree_nodes':len(comp)}\nloops=[];witnesses={}\nfor stage,prefix in [('FIRST','DIV__XFIRST__XCORE'),('SECOND','DIV__XSECOND')]:\n for side in ('XM','XS'):\n  z=prefix+'__'+side\n  # QP collector node drives positive regenerative base, QN the other base.\n  pairs=[(node(z+'__XDN','C'),node(z+'__XLP','B')),(node(z+'__XDP','C'),node(z+'__XLN','B'))]\n  source=volt(pairs[0][0])-volt(pairs[1][0]);feedback=volt(pairs[0][1])-volt(pairs[1][1])\n  clock=volt(node(z+'__XCH','B'))-volt(node(z+'__XCS','B'))\n  currenthold=ic(z+'__XCH');sample=ic(z+'__XCS');currentreg=ic(z+'__XLP')-ic(z+'__XLN')\n  rows=[]\n  for lo,hi in [(4,8),(12,16),(20,22),(22,23.5),(24,26),(30,34)]:\n   mask=(t>=lo*1e-9)&(t<hi*1e-9);hold=mask&(currenthold>sample*4)\n   rms=lambda x:float(np.sqrt(np.mean(x[mask]**2)))\n   # B voltages are real distributed endpoint voltages, not ideal net aliases.\n   rows.append({'window_ns':[lo,hi],'collector_rms_v':rms(source),'feedback_base_rms_v':rms(feedback),'feedback_attenuation':rms(feedback)/rms(source),\n    'collector_feedback_zero_lag_correlation':float(np.corrcoef(source[mask],feedback[mask])[0,1]),'hold_fraction':float(hold.sum()/mask.sum()),\n    'hold_tail_a':float((currenthold+sample)[hold].mean()),'hold_regen_differential_current_rms_a':float(np.sqrt(np.mean(currentreg[hold]**2))),\n    'clock_diff_rms_v':rms(clock)})\n  loops.append({'stage':stage,'latch':side,'source_names':[z+'__XDN.C',z+'__XDP.C',z+'__XLP.B',z+'__XLN.B'], 'wire_paths':[wire_pair(*p)for p in pairs],'windows':rows})\nout={'status':'SAVED_",
+      "after": "\nraw=gzip.decompress((N/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256'];header,payload=raw.split(b'Binary:\\n',1);names=[l.decode().split()[1]for l in header.split(b'Variables:\\n')[1].splitlines()];assert len(names)==957\nsize=r['rows']*957*8;assert payload[size:]==str(r['rows']).encode();a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all();d=dict(zip(names,a.T));t=d['time']\nc=json.loads((F/'composition.json').read_text());b=json.loads((F/'source-native-bijection.json').read_text());records={v['native_id']:v for v in c['records']};dev={v['source_name']:v for v in b['devices']}\nfor p in [F/'composition.json',F/'source-native-bijection.json',F/'hybrid-open.spice']:assert pin(p)==r['inputs'][str(p)]\ndef node(name,term):\n z=dev[name];i=z['terminal_order'].index(term);return records[z['native_id']]['terminals'][i]['node']\ndef volt(n):return d['v(xchain.xdiv.'+n.lower()+')']\ndef ic(name):return d[f'i(@q.xchain.xdiv.xd{dev[name][\"native_id\"]:04d}.qnpn13g2[ic])']\nres=[];caps=[];adj=collections.defaultdict(list)\nfor line in (F/'hybrid-open.spice').read_text().splitlines():\n f=line.split()\n if not f:continue\n if f[0].startswith('R'):\n  assert len(f)==4;val=float(f[3]);res.append((f[0],f[1],f[2],val));adj[f[1]].append((f[2],val));adj[f[2]].append((f[1],val))\n elif f[0].startswith('C'):\n  assert len(f)==4;caps.append((f[0],f[1],f[2],float(f[3])))\nassert len(res)==382 and len(caps)==649\ncomponents=[];index={}\nfor n in adj:\n if n in index:continue\n i=len(components);pending=[n];nodes=set()\n while pending:\n  x=pending.pop()\n  if x in nodes:continue\n  nodes.add(x);index[x]=i;pending.extend(y for y,_ in adj[x]if y not in nodes)\n components.append(nodes)\nassert len(components)==37\n\ndef wire_pair(p,n):\n assert index[p]==index[n]\n dist={p:0.};queue=[(0.,p)]\n while queue:\n  cost,x=heapq.heappop(queue)\n  if cost!=dist[x]:continue\n  for y,v in adj[x]:\n   if cost+v<dist.get(y,float('inf')):dist[y]=cost+v;heapq.heappush(queue,(cost+v,y))\n comp=components[index[p]];edges=[v for _,a,b,v in res if a in comp and b in comp]\n assert len(edges)==len(comp)-1,'Shortest sum is actual path resistance only for tree'\n ground=sum(v for _,a,b,v in caps if (a in comp and b=='WIRE_CREF')or(b in comp and a=='WIRE_CREF'))\n mutual=sum(v for _,a,b,v in caps if (a in comp)!=(b in comp) and 'WIRE_CREF'not in (a,b))\n return {'nodes':[p,n],'path_ohm':dist[n],'component':index[p],'ground_C_F':ground,'incident_mutual_C_F':mutual,'wire_tree_nodes':len(comp)}\nloops=[];witnesses={}\nfor stage,prefix in [('FIRST','DIV__XFIRST__XCORE'),('SECOND','DIV__XSECOND')]:\n for side in ('XM','XS'):\n  z=prefix+'__'+side\n  # QP collector node drives positive regenerative base, QN the other base.\n  pairs=[(node(z+'__XDN','C'),node(z+'__XLP','B')),(node(z+'__XDP','C'),node(z+'__XLN','B'))]\n  source=volt(pairs[0][0])-volt(pairs[1][0]);feedback=volt(pairs[0][1])-volt(pairs[1][1])\n  clock=volt(node(z+'__XCH','B'))-volt(node(z+'__XCS','B'))\n  currenthold=ic(z+'__XCH');sample=ic(z+'__XCS');currentreg=ic(z+'__XLP')-ic(z+'__XLN')\n  rows=[]\n  for lo,hi in [(4,8),(12,16),(20,22),(22,23.5),(24,26),(30,34)]:\n   mask=(t>=lo*1e-9)&(t<hi*1e-9);hold=mask&(currenthold>sample*4)\n   rms=lambda x:float(np.sqrt(np.mean(x[mask]**2)))\n   # B voltages are real distributed endpoint voltages, not ideal net aliases.\n   rows.append({'window_ns':[lo,hi],'collector_rms_v':rms(source),'feedback_base_rms_v':rms(feedback),'feedback_attenuation':rms(feedback)/rms(source),\n    'collector_feedback_zero_lag_correlation':float(np.corrcoef(source[mask],feedback[mask])[0,1]),'hold_fraction':float(hold.sum()/mask.sum()),\n    'hold_tail_a':float((currenthold+sample)[hold].mean()),'hold_regen_differential_current_rms_a':float(np.sqrt(np.mean(currentreg[hold]**2))),\n    'clock_diff_rms_v':rms(clock)})\n  loops.append({'stage':stage,'latch':side,'source_names':[z+'__XDN.C',z+'__XDP.C',z+'__XLP.B',z+'__XLN.B'], 'wire_paths':[wire_pair(*p)for p in pairs],'windows':rows})\nout={'status':'SAVED_"
+    },
+    {
+      "tag": "replace",
+      "before": "B",
+      "after": "TA"
+    },
+    {
+      "tag": "equal",
+      "before": "I",
+      "after": "I"
+    },
+    {
+      "tag": "replace",
+      "before": "AS8",
+      "after": "L115"
+    },
+    {
+      "tag": "equal",
+      "before": "_REGENERATION_AND_WIRE_TREE_DIAGNOSIS','method':pin(Path(__file__)),'inputs':{str(p):pin(p)for p in [N/'result.json',N/'wave.raw.gz',F/'composition.json',F/'source-native-bijection.json',F/'hybrid-open.spice']},'loops':loops,'scope':'Actual distributed collector-to-regenerative-base voltage/current measurements, native wire tree path resistance and incident wire capacitances. Capacitance excludes intrinsic devices and is not effective driven AC capacitance; no small-signal stability proof. ",
+      "after": "_REGENERATION_AND_WIRE_TREE_DIAGNOSIS','method':pin(Path(__file__)),'inputs':{str(p):pin(p)for p in [N/'result.json',N/'wave.raw.gz',F/'composition.json',F/'source-native-bijection.json',F/'hybrid-open.spice']},'loops':loops,'scope':'Actual distributed collector-to-regenerative-base voltage/current measurements, native wire tree path resistance and incident wire capacitances. Capacitance excludes intrinsic devices and is not effective driven AC capacitance; no small-signal stability proof. "
+    },
+    {
+      "tag": "replace",
+      "before": "F",
+      "after": "Original f"
+    },
+    {
+      "tag": "equal",
+      "before": "ull34ns ",
+      "after": "ull34ns "
+    },
+    {
+      "tag": "replace",
+      "before": "failed ac",
+      "after": "sour"
+    },
+    {
+      "tag": "equal",
+      "before": "ce",
+      "after": "ce"
+    },
+    {
+      "tag": "replace",
+      "before": "p",
+      "after": " verdic"
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "delete",
+      "before": "ance",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " retained; no simulation rerun.'}\n(B/'regeneration-diagnosis06.json').write_text(json.dumps(out,indent=2)+'\\n')\nfor loop in loops:\n print(loop['stage'],loop['latch'],'wire',loop['wire_paths'])\n for row in loop['windows']:print(row)\n",
+      "after": " retained; no simulation rerun.'}\n(B/'regeneration-diagnosis06.json').write_text(json.dumps(out,indent=2)+'\\n')\nfor loop in loops:\n print(loop['stage'],loop['latch'],'wire',loop['wire_paths'])\n for row in loop['windows']:print(row)\n"
+    }
+  ],
+  "executed": false,
+  "scope": "Saved-data diagnostic preparation only; actual native still running and no window results assumed"
+}

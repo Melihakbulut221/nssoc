@@ -1,0 +1,74 @@
+{
+  "status": "PASS_TX02_COMPLETE_CAPTURE_SEALER_SOURCE_ONLY",
+  "utc": "2026-10-05T15:54:27.903517+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/seal.py": {
+      "bytes": 6343,
+      "sha256": "b27c8ad2887c6a614db8c147723b57ebc843bc3bb6be75a3a77477b47b2b0fb9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/review.py": {
+      "bytes": 11693,
+      "sha256": "ea2e2562db390abc8254c705c865063f2f6ef655a906c9ed6440322063ae868a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/source-only-peer-rx.json": {
+      "bytes": 3701,
+      "sha256": "d66ed264c9136a5a078f82f9d351205e218ed555290d2685d2a553644e26888a"
+    },
+    "/dev/shm/nssoc-tx-path-v4-repair02-physical-replay-01/result.json": {
+      "bytes": 7036,
+      "sha256": "a157b2bc2ca66f82704afe10545054d4346d5151608a9e4b5a68898ef4fa46f7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/sealer_chain_review_rx.py": {
+      "bytes": 5958,
+      "sha256": "6e9826fc9f28051875b4c8ce250ea47a3bb7f2acfcaec972564992dc615e978d"
+    }
+  },
+  "mandatory_capture_roots": {
+    "nssoc-tx-path-v4-postroute-repair-02": [
+      "repaired.v",
+      "repaired.odb",
+      "repaired.sdc",
+      "result.json"
+    ],
+    "nssoc-tx-path-v4-repair02-equivalence": [
+      "gold.json.gz",
+      "gate.json.gz",
+      "normalization.json",
+      "proof-execution-binding.json",
+      "equivalence.json",
+      "mutation-controls.json"
+    ],
+    "nssoc-tx-path-v4-repair02-physical-replay-01": [
+      "results.xml",
+      "simulation.log",
+      "sim/sim.vvp.gz",
+      "result.json"
+    ],
+    "nssoc-tx-path-v4-repair02-drt-03": [
+      "routed.v",
+      "routed.odb",
+      "routed.sdc",
+      "native.log",
+      "router-drc.rpt",
+      "result.json"
+    ],
+    "nssoc-tx-path-v4-repair02-detailed-rc-02": [
+      "routed.spef",
+      "native.log",
+      "extract.tcl",
+      "result.json"
+    ]
+  },
+  "findings": [
+    "Full source inspected. Mandatory five TX02 candidate/proof/ports/DRT03/RC02 roots and essential files are asserted before recursive regular-file capture; symlink files rejected. Interrupted old native outputs are not relabeled.",
+    "Review status plus all hashed review inputs are required. Native compiled VVP gzip pin is compared to port receipt and full decompression is matched to actual raw bytes/SHA schema, independently confirmed in current saved port receipt.",
+    "Timing/slack deltas and per-class corner booleans copied from reviewed measurements without hardcoded passing values or gains. Explicit same-nominal-RC limitation and physical_acceptance=false retained.",
+    "Every archived member is pinned before/after, exclusive archive creation, streaming full member readback, duplicate names/unknown rows rejected. 1GiB entry, 528MiB free floor and 200MiB archive ceiling retained. Originals are never unlinked.",
+    "Methods, independent source peers, proof kernels, old TX01 comparison reports, validation, applicable source/licenses are included. Package binds all member hashes and archive; publication must independently bind package/validation/archive."
+  ],
+  "issues_found": [],
+  "sealer_executed": false,
+  "native_executed": false,
+  "physical_acceptance": false
+}

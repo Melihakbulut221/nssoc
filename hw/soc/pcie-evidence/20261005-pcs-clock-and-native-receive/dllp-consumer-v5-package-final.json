@@ -1,0 +1,188 @@
+{
+  "status": "PASS_GATHER_FORWARD_SCATTER_RTL_AND_FIVE_WAY_PUBLIC_COMPARISON",
+  "inherited_pytest": 18,
+  "standalone_cases": 6,
+  "raw_x4_composed_cases": 3,
+  "hdl_faults_rejected": 15,
+  "parent_term_control": true,
+  "public_comparison_cases": 9,
+  "actual_non_equivalent_comparison_mutations": 3,
+  "comparison_pytest": 4,
+  "forwarding_public_cases": 3,
+  "actual_non_equivalent_forwarding_mutations": 5,
+  "forwarding_pytest": 6,
+  "arithmetic_vectors": 262144,
+  "actual_non_equivalent_arithmetic_mutations": 3,
+  "arithmetic_pytest": 4,
+  "native_recipe_preflight_tests": 3,
+  "finite_prestate_vectors": 2560,
+  "finite_prestate_entry_fields": 12,
+  "finite_prestate_entries": 64,
+  "finite_prestate_modes": 10,
+  "finite_prestate_next_control_scalars": 19,
+  "finite_prestate_mutants": 4,
+  "finite_prestate_pytest": 5,
+  "total_final_pytest": 40,
+  "native_mapping": "Not yet launched in this RTL capsule. V4 mapped198647 cells but compiler std::bad_alloc occurred under both original2GiB and explicitly separate4GiB AS profiles, before any simulation.",
+  "architecture": "64 static release/ordered-descriptor base contexts; four79bit body context gathers; each lane forwards every earlier accepted same-ID result in ascending order; four shared byte compaction/count circuits and four body arithmetic paths;64 constant-entry scatters select the last matching active lane. Full6bitIDs/13bitmodulo, sticky prior errors, malformed ordering and ordered event gather preserved.",
+  "source_manifest_correction": "First535-member capsule retained; its inherited source glob erroneously selected V4 helper/test files instead of currentV5 helper/test files. Final capsule includes exact currentV5 source closure and native import helper; no RTL/test result changed.",
+  "history": "V1-V4 frozen source/failures unchanged. InitialV5 copied pytest suffix expected3 instead of6 standalone cases and failed once despite actual6/6 simulation; original test snapshot/log retained. Final test-only correction changes that suffix; RTL/bench unchanged. The first added prestate-miter draft wrongly asserted51 rather than44 actual top ports and stopped before simulator launch; original5FAIL/source retained before correction. Original native-preflight producer snapshot retains the old test digest; final producer binds corrected test digest.",
+  "limitations": [
+    "Finite five-way public-port and exhaustive local arithmetic comparisons, not whole-module formal equivalence.",
+    "Trusted CRC-qualified upstream; no duplicateCRC engine or ACK/replay/credit-policy action.",
+    "No physical timing/placement/native-cell/fullPCIe/CDC/PHY acceptance in this capsule.",
+    "Finite64 owner entries can backpressure;16bit epoch is observational, not infinite freshness."
+  ],
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v": {
+      "bytes": 17438,
+      "sha256": "734cce5b4b37b5d1f8ec4751deecdd3fda8934e32dbc1b7570b2ee2492cd72b4"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_v5.py": {
+      "bytes": 12969,
+      "sha256": "8c742770e115570767a78e5d1709c32705c6973558d90ec3ee834997cc57b401"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_v5": {
+      "bytes": 1154,
+      "sha256": "60bb2ce5ccf550564c0d7efa603a6330a2fceb335bc5869fb52586d054dab0eb"
+    },
+    "scripts/check_pcie_gen3_dllp_consumer_v5.py": {
+      "bytes": 8015,
+      "sha256": "9dae27c52b84cf7dda925c015cdb5eca9f602f61458ee78d03f672d3d062b5c7"
+    },
+    "scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v2.v": {
+      "bytes": 44956,
+      "sha256": "a0e3dfe6f87d2ac538b44af34793e48813fb0c59692454b31ccff7bdf7ed288c"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v2.v": {
+      "bytes": 4195,
+      "sha256": "697bb3f119cb0b7b0f005de62be937054750eda7aaca330582678bd1f32559b7"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v5.v": {
+      "bytes": 3712,
+      "sha256": "776d3748a2e18bf43d164688e042da3c8088c1aa0dc3b9fcfaa79133c5a47970"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_rx_events_v5.py": {
+      "bytes": 5769,
+      "sha256": "626bcf059b7dfe6623be26e10f159057835bb28a74de93ef5dd6da4f300f0684"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_rx_events_v5": {
+      "bytes": 1134,
+      "sha256": "e1ce1467b6e5c1b3aa492bc44b07873be6117436c2d8c331689dac432ad6c963"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_owned_v2.py": {
+      "bytes": 28434,
+      "sha256": "f6ff16859c9f55572849989327663e0aaccc8ba4f702717edf2fccb58d611bcd"
+    },
+    "hw/soc/tb/soc_pcie_gen3_dllp_consumer_compare_v5.v": {
+      "bytes": 21008,
+      "sha256": "a993dba62f7a9eeaa6750d0b2ab7ace84d22d6d18a8e0547fee36ce0b7171097"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v": {
+      "bytes": 10814,
+      "sha256": "e1a19382c2f446f0754b43818bdf497821ac3c34c7087caa1e9bcfb83e247483"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v": {
+      "bytes": 13191,
+      "sha256": "eb4f3146ed1b8c142cf5784f44dc773353973edff94a7256c82d2b235bb5d224"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v3.v": {
+      "bytes": 14107,
+      "sha256": "687fb805da42cc08a1b44ab373783cf26ec22d80be6c441489cd8d3a3573b7bd"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v4.v": {
+      "bytes": 15956,
+      "sha256": "84603647dd6b8023faccbdb8aba04996d4129147bdf3ad3e3aff94536ceafbd0"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_compare_v5.py": {
+      "bytes": 16256,
+      "sha256": "3722da8b7eb15b1f6d442d9a34b613588650aa6cba0d739263cbbc49f10924c4"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_compare_v5": {
+      "bytes": 1405,
+      "sha256": "400124d8d9e515ebe1eeb86d2622ec4f7e1559c10981e53cb8454982a4b1304e"
+    },
+    "scripts/check_pcie_gen3_dllp_consumer_compare_v5.py": {
+      "bytes": 8366,
+      "sha256": "686f3e53f23b7f0201d97d594c1988a57181ec58b2c3d008bb49034c9ebd58d5"
+    },
+    "hw/soc/tb/soc_pcie_gen3_dllp_consumer_forwarding_v5.v": {
+      "bytes": 21011,
+      "sha256": "ed7a74a3da674ca47ec74b0588386acbc94207839bcb2ec2d3c5cd10c24dd7b5"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_forwarding_v5.py": {
+      "bytes": 2038,
+      "sha256": "8bdf84c9a856764aee8f0786c823bd2236be90d1e26c560f0f4c21080c29b093"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_forwarding_v5": {
+      "bytes": 1420,
+      "sha256": "04ee7b5ac92f70f7babd6b124fc28eb872dabbaa516e965b2c1c4ada238700ba"
+    },
+    "scripts/check_pcie_gen3_dllp_consumer_forwarding_v5.py": {
+      "bytes": 8454,
+      "sha256": "eab7e4ba92f3b17faf044b3c01e3b3aa8b301d77134d84968a516be5894d1809"
+    },
+    "scripts/check_pcie_gen3_dllp_consumer_native_v5.py": {
+      "bytes": 16235,
+      "sha256": "7da7e1f1c0621ef46fc07eede9dbee56edcac5dc443edd2f58ddfef2c95b5286"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_state_miter_v5.py": {
+      "bytes": 8927,
+      "sha256": "2b24d237b4b85b97a1654421c666f5b5e1eec459d576fac63a4ba6c5647079fb"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_arithmetic_v5.py": {
+      "bytes": 4349,
+      "sha256": "632c3db5074b3a492525594b18b33a99de541c2633804863f79d335d9f1b53b5"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_compare_v5.py": {
+      "bytes": 2004,
+      "sha256": "d405832698544a01c12d9e11332a2249790e558289eeffeaf22cc9ee32945c06"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py": {
+      "bytes": 2592,
+      "sha256": "d134d3371dd337919255fc05f1db812adac0f7c65e248669b4f396b6751c8f41"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_native_v5.py": {
+      "bytes": 4962,
+      "sha256": "67ebd369711e9277458dacd69988aa28b5eab35b1fd190661bb01e64bd33e4d3"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_lifecycle_v5.py": {
+      "bytes": 3878,
+      "sha256": "90058e3a55b8265ba79983815c72b8e0dfe9ddf98bc2aeb8a119290c542a52ba"
+    },
+    "sw/tests/test_pcie_gen3_dllp_consumer_v5.py": {
+      "bytes": 5657,
+      "sha256": "54c595cf319fa15f256776cefaeee0698078bd694e45c32f179fc8feb058bfb5"
+    },
+    "scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    }
+  },
+  "validation": {
+    "bytes": 149196,
+    "sha256": "536b1db35095402989df206b34e81cd2fd512cfccbf5021a31c84c293c45b884"
+  },
+  "archive": "/dev/shm/pcie-dllp-consumer-v5-rtl-controls-final-20261005.tar.xz",
+  "archive_pin": {
+    "bytes": 8553892,
+    "sha256": "21235950f9e49e18357872a8d6305ad442ad6a40a4c141985bad937ca20b4e3b"
+  },
+  "members": 541
+}

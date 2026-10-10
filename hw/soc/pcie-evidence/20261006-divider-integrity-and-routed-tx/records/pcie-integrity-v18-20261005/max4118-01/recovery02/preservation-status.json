@@ -1,0 +1,90 @@
+{
+  "status": "COMPLETE_PUBLIC_CAPTURE_FINITE_DELIVERY_REVIEW_REQUIRED",
+  "observer": {
+    "pid": 108156,
+    "state": "R",
+    "process_group": 108156,
+    "start_ticks": "1429254"
+  },
+  "observed": {
+    "pid": 105584,
+    "state": "R",
+    "process_group": 105584,
+    "start_ticks": "1386708"
+  },
+  "policy": {
+    "bytes": 4756,
+    "sha256": "a5cf827a511cd6361fe1cb1d97363d1c77db123a0a8e24166e5fe96500caa056"
+  },
+  "peer": {
+    "bytes": 40436,
+    "sha256": "7764f48ecc8407bdafee79e7aad576017dbfa3adbf142a9a2e3faa916c9e54fd"
+  },
+  "stages": [
+    {
+      "name": "seal",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/recovery02/seal.py"
+      ],
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 295296,
+        "state": "R",
+        "process_group": 295296,
+        "start_ticks": "5049989"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 197,
+        "sha256": "dfabc35cb7ca96136364a722dcac9be16e66e13873339e974ba9b5874f9f70fc"
+      }
+    },
+    {
+      "name": "publish",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture_v3.py",
+        "--out",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/release.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/pcie-integrity-v18-max4118-complete-20261005.tar.xz",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/pcie-integrity-v18-max4118-validation-20261005.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/pcie-integrity-v18-max4118-package-20261005.json"
+      ],
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 295333,
+        "state": "R",
+        "process_group": 295333,
+        "start_ticks": "5050191"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 180,
+        "sha256": "0b8525ad94d1b8a5ce010e5571d90e3585cd117dd2508ba5f7822dc6dfb35442"
+      }
+    }
+  ],
+  "healthy_elapsed_watchdog": null,
+  "utc": "2026-10-06T04:54:52.391098+00:00",
+  "sealed_capture": {
+    "pcie-integrity-v18-max4118-complete-20261005.tar.xz": {
+      "bytes": 4551672,
+      "sha256": "7b87849f550da76c1a3983f5b88077bdef58d81463f297dd768ea6de549fce80"
+    },
+    "pcie-integrity-v18-max4118-validation-20261005.json": {
+      "bytes": 4673,
+      "sha256": "05e599b1be85bd528c644542a4b810681274e8ac8080ef70fe0601295da207cd"
+    },
+    "pcie-integrity-v18-max4118-package-20261005.json": {
+      "bytes": 21312,
+      "sha256": "bd2cc6224e3bb61ddc2239f0df675348b4fa9456dc7454820cbcd2eb2a1faa19"
+    }
+  },
+  "release": {
+    "bytes": 3490,
+    "sha256": "1f15eaff95d1dd7858aa1969598fd51ed8cb7881a072d1faea88a0a9da9752a6"
+  },
+  "functional_status": "PASS_BOTH_MAX4118_FUNCTIONAL_PROFILES",
+  "stop_reason": null
+}

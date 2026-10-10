@@ -1,0 +1,78 @@
+{
+  "status": "PASS_DEFAULT150_CACHE_RTL_AND_PUBLIC_MITER_CONTROLS",
+  "sources": {
+    "scripts/generate_pcie_integrity_retirement_v5.py": {
+      "bytes": 2795,
+      "sha256": "7aacaee7a8254df1935c505cc822672f67e0b4e66823b51994606abb2c468641"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v5.v": {
+      "bytes": 184627,
+      "sha256": "6e2f4c1afacc3cae31e1efb44fa9a98da711bd86acc4e51c61d73eea3eb9afe5"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v5.v": {
+      "bytes": 3308,
+      "sha256": "82f348179d0ef5d13441c03196df782192ce3e8f60aa2fabe8d9e4b795c183ba"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v5.py": {
+      "bytes": 11193,
+      "sha256": "c3ff46220f092b065f34d91b9a7fbba3281459aa8ac7e50095fefbb45300798a"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v5.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v5": {
+      "bytes": 1508,
+      "sha256": "bdedf028831ba313238d4b0340928f8198dbbbabbe8bebbe0a36092bd1230f0e"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v5_retirement.py": {
+      "bytes": 5321,
+      "sha256": "5ab6631289b40bb683211fa23d8dc8e0e92174bcf080e686ad6a037dc565c9e0"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v5_miter.py": {
+      "bytes": 6598,
+      "sha256": "df49adef8d2e5b919bbc1839ccbbb541e3c903efde214544a4a13dfe0b128428"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v5.py": {
+      "bytes": 4787,
+      "sha256": "f5e2612e742baeef366e691f8608666c6c4218448ea8c53879d1d64d05b988be"
+    }
+  },
+  "pytest_executions_passed": 20,
+  "distinct_predicates_passed": 19,
+  "duplicate_predicate": "Inverse-source bridge is also called by miter test.",
+  "logs": {
+    "/dev/shm/nssoc-integrity-v5-cache-controls01.log": {
+      "bytes": 110,
+      "sha256": "2d10c7a1f1f10eaf43ae99e546a6f27d167338268ecb33edb369253c8bc9a1a5"
+    },
+    "/dev/shm/nssoc-integrity-v5-public150-01.log": {
+      "bytes": 110,
+      "sha256": "a9b7f76f7151c6f27194d4331a2f207935ef527a10be8fb2277e450bc2a247c5"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v5-20261005/miter150-01.log": {
+      "bytes": 110,
+      "sha256": "7a7f7c31ccb4e3a83ea9b8b12bf0a8cd6c650712a8c50efd8104771515993a53"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v5-20261005/faults01.log": {
+      "bytes": 124,
+      "sha256": "f62ef81d49dc6c86aee2768474e8a5603ce78a58088c43712798cf02156b031a"
+    }
+  },
+  "default_actual_public_cases": 26,
+  "modes": [
+    "13 serial-oracle V5 cases",
+    "13 cycle-exact V4/V5 public cases"
+  ],
+  "actual_mutants": {
+    "literal_cache_transition": 5,
+    "public_function": 8,
+    "cycle_miter": 2
+  },
+  "compiled_preservation_release": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v6-20261005/completed-cache-preservation/release.json",
+    "bytes": 1836,
+    "sha256": "fc845ca9884ae96e204a6148964306953caf68db914304cf8d23d23d104abed0"
+  },
+  "scope": "Finite RTL cache-network and public tests. Separate PW7/PW12 universal binary cache invariant is in cache-formal validation. Ongoing MAX4118 public profiles excluded; no complete max-profile or mapped functional qualification. Native slow/typical timing failures are separate and preserved."
+}

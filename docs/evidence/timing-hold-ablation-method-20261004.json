@@ -1,0 +1,1426 @@
+{
+  "schema": 1,
+  "status": "FROZEN_ONE_TARGET_ABLATION_METHOD_AND_ACTUAL_TINY_NATIVE_CONTROLS_PASS_CHIP_TRIALS_PENDING",
+  "recorded_at_utc": "2026-10-03T22:33:43.061702+00:00",
+  "files": {
+    "hw/soc/pnr/timing-hold-ablation-input.lock.json": {
+      "bytes": 42794,
+      "sha256": "49396ba4faaa3d39370eb320eaaa211c261ccec63249a2bdb9e5630d4eab1d94"
+    },
+    "scripts/run_cloud_hold_ablation.py": {
+      "bytes": 36976,
+      "sha256": "ede0611c44f6ff36580ec125b0070138c02858f865015e29b1fd831064370ff9"
+    },
+    "hw/soc/pnr/timing_hold_ablation_helpers.tcl": {
+      "bytes": 3076,
+      "sha256": "caef7132cae106d8464bfe9d1cfed431b1b8924831397f549167b74768231a6b"
+    },
+    "hw/soc/pnr/timing_hold_ablation_step.tcl": {
+      "bytes": 7768,
+      "sha256": "db15b1181f67cd6bdd2d92a58e2c3dfcbf28cd28017a78748d789b4935795a10"
+    },
+    "hw/soc/pnr/timing_hold_ablation_reload.tcl": {
+      "bytes": 2659,
+      "sha256": "9ef4e107ecd746f019aaf2a0c5f78172c3529c3e16a7e89e024f8f7bc4b0cbe7"
+    },
+    "sw/tests/timing_hold_ablation_native.tcl": {
+      "bytes": 19511,
+      "sha256": "e6ec6b0490399edf5c7e4d7e16f102bdeed7f4b07ab3b4e50c5a3eb8c4d7c155"
+    },
+    "sw/tests/test_hold_ablation.py": {
+      "bytes": 22441,
+      "sha256": "9c5d24bfdec499470f4690bf2a15a516df23c0669fa1949d09f0437a00be8610"
+    },
+    ".github/workflows/timing-hold-ablation.yml": {
+      "bytes": 6463,
+      "sha256": "72a1b4c1e0ed51cca55a004b6d3690f23dddce89dbb6e162e1617c92497f4c95"
+    }
+  },
+  "parent": {
+    "run_id": 37107650542,
+    "artifact_id": 11268859028,
+    "artifact_name": "explicit-hold-final-1",
+    "bytes": 360788223,
+    "sha256": "a0b89c24e222ab32ac07429730399843d4e7cb5a8d05e2adc204274061d1a18c",
+    "source_commit": "0aeef622ccdb12d1c0feafa4d6cf34061880a8a0",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-explicit-hold-final-37107650542-20261003.zip",
+    "entrypoint": "scripts/run_cloud_explicit_hold.py",
+    "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate",
+    "kind": "explicit_single_sd3_hold_trial"
+  },
+  "baseline": {
+    "setup_wns_seconds": -4.198961178758509e-09,
+    "hold_wns_seconds": -1.2247042269208919e-10,
+    "setup_tns_seconds": -3.530324192979606e-06,
+    "hold_tns_seconds": -1.9293469044612266e-09,
+    "setup_violating_endpoints": 1310,
+    "hold_violating_endpoints": 57,
+    "slew_violations": 0,
+    "capacitance_violations": 0,
+    "instance_count": 103907
+  },
+  "variants": {
+    "eth": {
+      "driver": "_134732_",
+      "driver_pin": "Q",
+      "sink": "_134733_",
+      "sink_pin": "D",
+      "endpoint_master": "sg13g2_dfrbpq_1",
+      "native_net": "_062302_",
+      "verilog_net": "_062302_",
+      "buffer": "nssoc_ablation_eth_sd3",
+      "new_net": "nssoc_ablation_eth_net",
+      "master": "sg13g2_dlygate4sd3_1",
+      "radius_um": 10
+    },
+    "npu": {
+      "driver": "_135205_",
+      "driver_pin": "Q",
+      "sink": "_135206_",
+      "sink_pin": "D",
+      "endpoint_master": "sg13g2_dfrbpq_1",
+      "native_net": "u_npu.u_node0.sck_s[0]",
+      "verilog_net": "\\u_npu.u_node0.sck_s [0]",
+      "buffer": "nssoc_ablation_npu_sd3",
+      "new_net": "nssoc_ablation_npu_net",
+      "master": "sg13g2_dlygate4sd3_1",
+      "radius_um": 10
+    }
+  },
+  "purpose": "Independently test each sole-Q-to-D identity-delay insertion from the unchanged single-delay parent. The rejected two-insertion candidate is not reused. Fresh routing had erased the pair gains; these separate trials isolate each target without assuming a cause.",
+  "method_contract": {
+    "source_count": 80,
+    "immutable_reuse_source_count": 72,
+    "immutable_reuse_commit": "25f2486d473c7e6ca6dda116336040d8787f38df",
+    "original_parent_method_count": 64,
+    "one_new_noninverting_sd3_and_one_net": true,
+    "namespace_prefix_only_reuse": true,
+    "imported_producer_globals_unchanged": true,
+    "maximum_vacancy_radius_um": 10,
+    "original_objects_placements_supplies_constraints_unchanged": true,
+    "sram_macro_count": 32,
+    "complete_hold_endpoint_census": 23527,
+    "corner_count": 3,
+    "stage_count": 4,
+    "independent_fresh_reload_count": 2,
+    "historical_guard_names": [
+      "selected_c10",
+      "matched_c10",
+      "combined_parent",
+      "electrical_first",
+      "electrical_margin_parent",
+      "residual_parent",
+      "critical_parent",
+      "single_parent"
+    ],
+    "fresh_parent_guard": true,
+    "limited_eco_proof_count": 2,
+    "no_detailed_placement_or_repair_timing": true,
+    "full_chip_native_cloud_only": true
+  },
+  "author_validation": {
+    "status": "FROZEN_SOURCE_TESTS_AND_TWO_INDEPENDENT_NATIVE_CONTROLS_PASS",
+    "captured_at_utc": "2026-10-03T22:27:17.494505+00:00",
+    "source_files": {
+      "hw/soc/pnr/timing-hold-ablation-input.lock.json": {
+        "bytes": 42794,
+        "sha256": "49396ba4faaa3d39370eb320eaaa211c261ccec63249a2bdb9e5630d4eab1d94"
+      },
+      "scripts/run_cloud_hold_ablation.py": {
+        "bytes": 36976,
+        "sha256": "ede0611c44f6ff36580ec125b0070138c02858f865015e29b1fd831064370ff9"
+      },
+      "hw/soc/pnr/timing_hold_ablation_helpers.tcl": {
+        "bytes": 3076,
+        "sha256": "caef7132cae106d8464bfe9d1cfed431b1b8924831397f549167b74768231a6b"
+      },
+      "hw/soc/pnr/timing_hold_ablation_step.tcl": {
+        "bytes": 7768,
+        "sha256": "db15b1181f67cd6bdd2d92a58e2c3dfcbf28cd28017a78748d789b4935795a10"
+      },
+      "hw/soc/pnr/timing_hold_ablation_reload.tcl": {
+        "bytes": 2659,
+        "sha256": "9ef4e107ecd746f019aaf2a0c5f78172c3529c3e16a7e89e024f8f7bc4b0cbe7"
+      },
+      "sw/tests/timing_hold_ablation_native.tcl": {
+        "bytes": 19511,
+        "sha256": "e6ec6b0490399edf5c7e4d7e16f102bdeed7f4b07ab3b4e50c5a3eb8c4d7c155"
+      },
+      "sw/tests/test_hold_ablation.py": {
+        "bytes": 22441,
+        "sha256": "9c5d24bfdec499470f4690bf2a15a516df23c0669fa1949d09f0437a00be8610"
+      },
+      ".github/workflows/timing-hold-ablation.yml": {
+        "bytes": 6463,
+        "sha256": "72a1b4c1e0ed51cca55a004b6d3690f23dddce89dbb6e162e1617c92497f4c95"
+      }
+    },
+    "inherited_methods": {
+      "commit": "25f2486",
+      "count": 72,
+      "pins": {
+        ".github/workflows/timing-hold-diagnostic.yml": {
+          "bytes": 5961,
+          "sha256": "6812068c3abe067d3c2cb00beca5f7c73c34116bd8f9de079b43306251e05359"
+        },
+        "scripts/run_cloud_hold_diagnostic.py": {
+          "bytes": 37240,
+          "sha256": "61644cc59ae15f7a9166d0e5f8558c5c755581d69ae516725e7e3b768b69abe7"
+        },
+        "scripts/run_cloud_timing_experiment.py": {
+          "bytes": 32423,
+          "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+        },
+        "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+          "bytes": 16850,
+          "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+        },
+        "hw/soc/pnr/timing_hold_diagnostic_step.tcl": {
+          "bytes": 5244,
+          "sha256": "691e0b2106ec5796fd9032bb2c2c6d1b4e2b70039efc8d005c6e0c88fc77079e"
+        },
+        "sw/tests/hold_reproducibility_native.py": {
+          "bytes": 4906,
+          "sha256": "5a3b79315d5eb0e291ac9cae1caf6d6d5d5a35c372f53c3f982d1af2b8852225"
+        },
+        "sw/tests/timing_hold_reproducibility_native.tcl": {
+          "bytes": 5861,
+          "sha256": "1d35aaba397502bcd0e1a20f03982b33347219b3a2f13dce04061a347b7cd6f5"
+        },
+        ".github/workflows/timing-targeted-hold.yml": {
+          "bytes": 5909,
+          "sha256": "e9ca7b3be6bb0637b00f1f92347815233612864b1f056e70ec8e8b514418b0fa"
+        },
+        "scripts/run_cloud_targeted_hold.py": {
+          "bytes": 21082,
+          "sha256": "e765ad5d402be75b06580009e9846b74d947da8d1c3500529fcca910084174d0"
+        },
+        "scripts/compare_full_hold_endpoints.py": {
+          "bytes": 11551,
+          "sha256": "b51ca5a52d53b166623935bbfebe1275c24d1e43f967ec4bf3fbb829fa1144cb"
+        },
+        "scripts/run_timing_experiments.py": {
+          "bytes": 29034,
+          "sha256": "e81f2fe7cca268c4dc54c806b9ab6a91f1da37482555d413fae1c07329b306cf"
+        },
+        "scripts/timing_process_guard.py": {
+          "bytes": 8266,
+          "sha256": "efe0e0216774714de5112f739b21fade56b2819f5f0b8f6a4b6bf0ea4cd72f08"
+        },
+        "hw/soc/pnr/timing_targeted_hold_probe_step.tcl": {
+          "bytes": 9030,
+          "sha256": "72dadcd5a73a308ad95a6179344c71e3ccbbe5de1ef4f3a2f23468d4bf870ff1"
+        },
+        "hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl": {
+          "bytes": 8771,
+          "sha256": "fe96c79ee4c56e816edc39c0269244ae41daa837f563427324bc37cfa29c3ab0"
+        },
+        "hw/soc/pnr/timing_repair_experiment.tcl": {
+          "bytes": 9382,
+          "sha256": "77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb"
+        },
+        "sw/tests/timing_hold_targeted_native.tcl": {
+          "bytes": 10436,
+          "sha256": "066982c820626c0690ae8bcb3e0893189054e264dc1845f27982fa8a532fa3ac"
+        },
+        ".github/workflows/timing-combined-repair.yml": {
+          "bytes": 6010,
+          "sha256": "c85e78d295d153f192f4bf71d0cd38896bca2cd44a1690f39e2132c0b9aaeb55"
+        },
+        "scripts/run_cloud_combined_repair.py": {
+          "bytes": 18431,
+          "sha256": "62ee91f3004e125ead601dc3a48228468c32c9d27362a4b53f82fd3f72458fb3"
+        },
+        "hw/soc/pnr/timing_combined_repair_step.tcl": {
+          "bytes": 8587,
+          "sha256": "cd8349712c2dd902ee79d231310fb042cc7a417d0b03cba729ab115785097327"
+        },
+        "hw/soc/pnr/timing_combined_repair_helpers.tcl": {
+          "bytes": 5064,
+          "sha256": "48649fa90fc6f8fa9eb46341027491b94e11bba8b4ef59fb8683af004b8761f1"
+        },
+        "hw/soc/pnr/timing_combined_reload.tcl": {
+          "bytes": 3279,
+          "sha256": "459416d74427c4a934ad8723b09a73a43c9b62d2e0139acabb43a68f7d92ddae"
+        },
+        "scripts/run_cloud_eco_logic_proof.py": {
+          "bytes": 13139,
+          "sha256": "093cd8bfedce21561b57c049d935f1a80d3b6a09fd06b673b1ea0c58659f1c6e"
+        },
+        "hw/soc/flow/check_eco_logic_clones.py": {
+          "bytes": 4874,
+          "sha256": "98e3a62b740b213abf6d3bd34513da31b863fdd831884a1fa30366838b0c044c"
+        },
+        "hw/soc/flow/eco_logic.py": {
+          "bytes": 12656,
+          "sha256": "2175067cb6c07b0c40be88eb7de2e5737ad85560ab466e3d7bfbf7be6f417266"
+        },
+        "hw/soc/flow/eco_logic_clones.py": {
+          "bytes": 5110,
+          "sha256": "375e5d676e7a37c36af5d932b104e5ea81be184d53cab708d486688f4ed39de7"
+        },
+        "sw/tests/eco_logic_native.py": {
+          "bytes": 3742,
+          "sha256": "3dce4feb4ec8dca696f08d7eaf7ca890cd6054eef88b70f289d698b7318dc3b0"
+        },
+        ".github/workflows/timing-eco-logic-proof.yml": {
+          "bytes": 2365,
+          "sha256": "fe691c612c9eb7bd22fc772efaa4343b1a2eb5f407b883d1120b0255eaa03fb3"
+        },
+        "docs/evidence/timing-cloud-input-20260930.json": {
+          "bytes": 1089565,
+          "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+        },
+        "hw/soc/pnr/timing-electrical-input.lock.json": {
+          "bytes": 4185,
+          "sha256": "22ab23bda7b148ab249fe87f600a3f6d022116502938b3e7784ff5bbcc5b18f2"
+        },
+        "hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+          "bytes": 4291,
+          "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+        },
+        "sw/tests/timing_electrical_repair_native.tcl": {
+          "bytes": 5220,
+          "sha256": "1688217cc0c33e8b3168abd98eac12647ff3a3754e44fcf6ba33af0ad293c098"
+        },
+        "scripts/run_cloud_electrical_repair.py": {
+          "bytes": 25430,
+          "sha256": "e8beb26dd260f30188632a37b2aa5aec08406e1bcd3989da76af812b92e129bb"
+        },
+        "hw/soc/pnr/timing_electrical_repair_step.tcl": {
+          "bytes": 6154,
+          "sha256": "3f8b98e1dff8f87f53366da9c829e4452918094562c8da1a221de13d122db184"
+        },
+        ".github/workflows/timing-electrical-repair.yml": {
+          "bytes": 6184,
+          "sha256": "16d5e2bb5c45dfbd5ca9f3bcfbe168a6477b85ec8e55fdf4f5d547f868cdc724"
+        },
+        "hw/soc/pnr/timing-electrical-margin-input.lock.json": {
+          "bytes": 11245,
+          "sha256": "0d39af0181fe2f4820415325d05e56dbde67cb880eaf2a41f6f962f067ce5867"
+        },
+        "hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+          "bytes": 1654,
+          "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+        },
+        "sw/tests/timing_electrical_margin_native.tcl": {
+          "bytes": 6322,
+          "sha256": "7310847f5d3920839fd756d68ec985ddfafd513710dfdb8d6acf5fe6fd55c2a3"
+        },
+        "scripts/run_cloud_electrical_margin.py": {
+          "bytes": 32592,
+          "sha256": "9f392227b6a4d157731c1ae957dffed5fca50912d0c4d4e5f2197d863b1eea5c"
+        },
+        "hw/soc/pnr/timing_electrical_margin_step.tcl": {
+          "bytes": 7658,
+          "sha256": "732396fd1f90287d80bbdbbb134b14d961a66828d39413034865ea51bf44c1d3"
+        },
+        "hw/soc/pnr/timing_electrical_margin_baseline.tcl": {
+          "bytes": 799,
+          "sha256": "9948e82cce0a49c29395977dda00fc40e6fb1b2ede73005967c3b2f6238f915b"
+        },
+        ".github/workflows/timing-electrical-margin.yml": {
+          "bytes": 6199,
+          "sha256": "554b994864999b397b321e5182a2fbef0c70732c962f1fc4a93392529de63867"
+        },
+        "hw/soc/pnr/timing-residual-repair-input.lock.json": {
+          "bytes": 19034,
+          "sha256": "2d64cf8b4d70494b94489921d800c242f440399c9a7c3bbcd36085992443a6da"
+        },
+        "hw/soc/pnr/timing_residual_repair_helpers.tcl": {
+          "bytes": 3920,
+          "sha256": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040"
+        },
+        "sw/tests/timing_residual_repair_native.tcl": {
+          "bytes": 6488,
+          "sha256": "907ad813259ca5238c2b1bbfd65ec49f091bd7d767e265fe0f3bafe7248c067d"
+        },
+        "scripts/run_cloud_residual_repair.py": {
+          "bytes": 39082,
+          "sha256": "0b68152caed477e868e4c149cb79db75c92e7eaf6f1b0e7d92f4c703df4ed184"
+        },
+        "hw/soc/pnr/timing_residual_repair_step.tcl": {
+          "bytes": 9430,
+          "sha256": "19525f0a14df8cbe6fe0445f8dc954c02f9b291e33edc5609f77a5fec5662d15"
+        },
+        "hw/soc/pnr/timing_residual_reload.tcl": {
+          "bytes": 705,
+          "sha256": "96bbe55573276063b064b7a25fee7e0cf83bc0625c6f99f871f731d550b790cb"
+        },
+        ".github/workflows/timing-residual-repair.yml": {
+          "bytes": 6133,
+          "sha256": "7821fef5d66b908d647e53efe24f1bb3c6fc0a963bc5761ab137fb6a59bb1b40"
+        },
+        "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+          "bytes": 15730,
+          "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+        },
+        "scripts/run_cloud_critical_followup.py": {
+          "bytes": 40276,
+          "sha256": "8f2a7d972adf8c8c38fd950efca234c9fd3037fc0a1797fd28b706acceeca898"
+        },
+        "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+          "bytes": 12581,
+          "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+        },
+        "hw/soc/pnr/timing_critical_followup_step.tcl": {
+          "bytes": 7164,
+          "sha256": "c19e4784f30c78ba718de32ede7fb97523f599ec7ebb210e157b411f40e02d88"
+        },
+        "hw/soc/pnr/timing_critical_hold_child.tcl": {
+          "bytes": 2895,
+          "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+        },
+        "sw/tests/timing_critical_followup_native.tcl": {
+          "bytes": 10303,
+          "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+        },
+        "sw/tests/test_cloud_critical_followup.py": {
+          "bytes": 32381,
+          "sha256": "4e73d226af0c3b0b73c148f425409c2ce52e34cd8c6a6ed915125c9f78d797df"
+        },
+        ".github/workflows/timing-critical-followup.yml": {
+          "bytes": 6319,
+          "sha256": "7a304569814e8c8aa1b154c7fd866f3f2ff44d402084b134c357ec80da867c80"
+        },
+        "hw/soc/pnr/timing-explicit-hold-input.lock.json": {
+          "bytes": 20307,
+          "sha256": "19e77e307a80e8123ea3da516408e1423a4a601115a68f544aa64156be36e298"
+        },
+        "scripts/run_cloud_explicit_hold.py": {
+          "bytes": 32755,
+          "sha256": "6a266e14da26fc09d69777c4974febdd8008c3e45ac928409514e1dec192e0fd"
+        },
+        "hw/soc/pnr/timing_explicit_hold_helpers.tcl": {
+          "bytes": 14197,
+          "sha256": "6d12da88eaf4e6f93c945ae125c4395690225abc5fa6d1f8d5d05267707149fc"
+        },
+        "hw/soc/pnr/timing_explicit_hold_step.tcl": {
+          "bytes": 6620,
+          "sha256": "95cf09e92239db84a16618dcbd8c764d41290c57b44deb9a569277c4855c56ce"
+        },
+        "hw/soc/pnr/timing_explicit_hold_reload.tcl": {
+          "bytes": 2603,
+          "sha256": "d7c70fc01fa59065c084dc2541e43cfd0efba7164b75258541819812c2b1507a"
+        },
+        "sw/tests/timing_explicit_hold_native.tcl": {
+          "bytes": 13678,
+          "sha256": "76fce42db5438266627b0d1c072bc38cdf466702219bd50ab4f8868cf154f3ed"
+        },
+        "sw/tests/test_explicit_hold.py": {
+          "bytes": 20900,
+          "sha256": "3112b29ca73df4183d1888e2c5e4bb0272d909febf4310cc5c8687c6ca876fb7"
+        },
+        ".github/workflows/timing-explicit-hold.yml": {
+          "bytes": 6200,
+          "sha256": "1c6fa517ffb025626cf2918d19724e4ac5759eaf91071c07ee9deb60e58ee71f"
+        },
+        "hw/soc/pnr/timing-pair-hold-input.lock.json": {
+          "bytes": 30295,
+          "sha256": "99e700ff443cb3b2bc406adc99e4cfecc600ff65171a88093eb09c3969914505"
+        },
+        "scripts/run_cloud_pair_hold.py": {
+          "bytes": 36558,
+          "sha256": "77c1edf3fd38cd110f087d0c60f37d084be3a3c58a2031716b2810cae69a2ef5"
+        },
+        "hw/soc/pnr/timing_pair_hold_helpers.tcl": {
+          "bytes": 7086,
+          "sha256": "c418ce13e41efcf0f487fb95ce52d90833f62180a59e86ce0e25bf3bfb6b261f"
+        },
+        "hw/soc/pnr/timing_pair_hold_step.tcl": {
+          "bytes": 7447,
+          "sha256": "8648c77d7e656df4698ea2a81a169969a5619a59e12bc018ab607d7bcf67f110"
+        },
+        "hw/soc/pnr/timing_pair_hold_reload.tcl": {
+          "bytes": 2617,
+          "sha256": "e557cfe577fa9842e8f342cd8c7b5248ea74e39ca3e0747e7da387b3fbd148df"
+        },
+        "sw/tests/timing_pair_hold_native.tcl": {
+          "bytes": 17771,
+          "sha256": "4e600f5af06457422247649a99bfc4fe6e015225d389f5a24139218d0426b731"
+        },
+        "sw/tests/test_pair_hold.py": {
+          "bytes": 26904,
+          "sha256": "25c094abff43c88706428af7e61c6067a62c6fcdbf38eb5aea093a22a6e8c2e4"
+        },
+        ".github/workflows/timing-pair-hold.yml": {
+          "bytes": 6168,
+          "sha256": "97267096bf1a867c319d8e6a9d7c909981eafb54b630528865c2c35e9c360205"
+        }
+      },
+      "immutable_git_blobs_checked": true
+    },
+    "exact_parent": {
+      "run_id": 37107650542,
+      "artifact_id": 11268859028,
+      "artifact_name": "explicit-hold-final-1",
+      "bytes": 360788223,
+      "sha256": "a0b89c24e222ab32ac07429730399843d4e7cb5a8d05e2adc204274061d1a18c",
+      "source_commit": "0aeef622ccdb12d1c0feafa4d6cf34061880a8a0",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-explicit-hold-final-37107650542-20261003.zip",
+      "entrypoint": "scripts/run_cloud_explicit_hold.py",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate",
+      "kind": "explicit_single_sd3_hold_trial"
+    },
+    "baseline": {
+      "setup_wns_seconds": -4.198961178758509e-09,
+      "hold_wns_seconds": -1.2247042269208919e-10,
+      "setup_tns_seconds": -3.530324192979606e-06,
+      "hold_tns_seconds": -1.9293469044612266e-09,
+      "setup_violating_endpoints": 1310,
+      "hold_violating_endpoints": 57,
+      "slew_violations": 0,
+      "capacitance_violations": 0,
+      "instance_count": 103907
+    },
+    "variants": {
+      "eth": {
+        "driver": "_134732_",
+        "driver_pin": "Q",
+        "sink": "_134733_",
+        "sink_pin": "D",
+        "endpoint_master": "sg13g2_dfrbpq_1",
+        "native_net": "_062302_",
+        "verilog_net": "_062302_",
+        "buffer": "nssoc_ablation_eth_sd3",
+        "new_net": "nssoc_ablation_eth_net",
+        "master": "sg13g2_dlygate4sd3_1",
+        "radius_um": 10
+      },
+      "npu": {
+        "driver": "_135205_",
+        "driver_pin": "Q",
+        "sink": "_135206_",
+        "sink_pin": "D",
+        "endpoint_master": "sg13g2_dfrbpq_1",
+        "native_net": "u_npu.u_node0.sck_s[0]",
+        "verilog_net": "\\u_npu.u_node0.sck_s [0]",
+        "buffer": "nssoc_ablation_npu_sd3",
+        "new_net": "nssoc_ablation_npu_net",
+        "master": "sg13g2_dlygate4sd3_1",
+        "radius_um": 10
+      }
+    },
+    "validation": [
+      {
+        "command": [
+          "hw/soc/tools/cocotb-venv/bin/python",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "sw/tests/test_hold_ablation.py",
+          "sw/tests/test_pair_hold.py",
+          "sw/tests/test_explicit_hold.py",
+          "sw/tests/test_cloud_critical_followup.py",
+          "-q"
+        ],
+        "returncode": 0,
+        "log": "tests.log",
+        "pin": {
+          "bytes": 660,
+          "sha256": "051d9295f07264626e8c18f3c0fe107f56aa284bb6e1e0d1002ad73c99cab11e"
+        }
+      },
+      {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/run_cloud_hold_ablation.py",
+          "sw/tests/test_hold_ablation.py"
+        ],
+        "returncode": 0,
+        "log": "ruff.log",
+        "pin": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        }
+      },
+      {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-hold-ablation.yml"
+        ],
+        "returncode": 0,
+        "log": "actionlint.log",
+        "pin": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "focused_tests_passed": 568,
+    "own_tests_passed": 121,
+    "native_replay": {
+      "native-01": {
+        "receipt": {
+          "bytes": 45248,
+          "sha256": "f1fde391f60a434b35b3e8103bae05baedda3fca363964d000d1a53061f849af"
+        },
+        "archive": {
+          "bytes": 48472,
+          "sha256": "20a8d1a826aaa0aa51032b0fab528f936d3423e4b97f73b813ab3b78b7b7e482"
+        },
+        "variants": {
+          "eth": {
+            "raw_control_reparsed": true,
+            "negative_controls": 63,
+            "native_files_verified": 75,
+            "native_result": {
+              "bytes": 6599,
+              "sha256": "12f01490edc4208fc82552d0f83a4a77b2e8c2c80d5d7e915fcaed0159bd8f25"
+            },
+            "native_log": {
+              "bytes": 10035,
+              "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+            },
+            "execution": {
+              "command": [
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+                "openroad",
+                "-exit",
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+              ],
+              "returncode": 0,
+              "seconds": 2.244781407993287,
+              "address_space_limit_bytes": 2147483648,
+              "elapsed_timeout": null,
+              "environment": {
+                "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-native-01/eth",
+                "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+                "NSSOC_HOLD_ABLATION_VARIANT": "eth"
+              },
+              "log": {
+                "bytes": 10035,
+                "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+              }
+            },
+            "selected_branch": 0,
+            "untouched_branch": 1
+          },
+          "npu": {
+            "raw_control_reparsed": true,
+            "negative_controls": 63,
+            "native_files_verified": 75,
+            "native_result": {
+              "bytes": 6591,
+              "sha256": "30af026673a1950875462f1b0682c77f7d6c7a920f525c524910bcba4604571a"
+            },
+            "native_log": {
+              "bytes": 10035,
+              "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+            },
+            "execution": {
+              "command": [
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+                "openroad",
+                "-exit",
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+              ],
+              "returncode": 0,
+              "seconds": 2.179422479995992,
+              "address_space_limit_bytes": 2147483648,
+              "elapsed_timeout": null,
+              "environment": {
+                "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-native-01/npu",
+                "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+                "NSSOC_HOLD_ABLATION_VARIANT": "npu"
+              },
+              "log": {
+                "bytes": 10035,
+                "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+              }
+            },
+            "selected_branch": 1,
+            "untouched_branch": 0
+          }
+        }
+      },
+      "root-native": {
+        "receipt": {
+          "bytes": 45256,
+          "sha256": "ec280981ed966b812c5ec43b20f4dc0cfe12081c961ff5b3ceebce1816099381"
+        },
+        "archive": {
+          "bytes": 48472,
+          "sha256": "20a8d1a826aaa0aa51032b0fab528f936d3423e4b97f73b813ab3b78b7b7e482"
+        },
+        "variants": {
+          "eth": {
+            "raw_control_reparsed": true,
+            "negative_controls": 63,
+            "native_files_verified": 75,
+            "native_result": {
+              "bytes": 6599,
+              "sha256": "12f01490edc4208fc82552d0f83a4a77b2e8c2c80d5d7e915fcaed0159bd8f25"
+            },
+            "native_log": {
+              "bytes": 10035,
+              "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+            },
+            "execution": {
+              "command": [
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+                "openroad",
+                "-exit",
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+              ],
+              "returncode": 0,
+              "seconds": 2.1304917029920034,
+              "address_space_limit_bytes": 2147483648,
+              "elapsed_timeout": null,
+              "environment": {
+                "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-root-native/eth",
+                "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+                "NSSOC_HOLD_ABLATION_VARIANT": "eth"
+              },
+              "log": {
+                "bytes": 10035,
+                "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+              }
+            },
+            "selected_branch": 0,
+            "untouched_branch": 1
+          },
+          "npu": {
+            "raw_control_reparsed": true,
+            "negative_controls": 63,
+            "native_files_verified": 75,
+            "native_result": {
+              "bytes": 6591,
+              "sha256": "30af026673a1950875462f1b0682c77f7d6c7a920f525c524910bcba4604571a"
+            },
+            "native_log": {
+              "bytes": 10035,
+              "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+            },
+            "execution": {
+              "command": [
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+                "openroad",
+                "-exit",
+                "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+              ],
+              "returncode": 0,
+              "seconds": 2.2167185569996946,
+              "address_space_limit_bytes": 2147483648,
+              "elapsed_timeout": null,
+              "environment": {
+                "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+                "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-root-native/npu",
+                "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+                "NSSOC_HOLD_ABLATION_VARIANT": "npu"
+              },
+              "log": {
+                "bytes": 10035,
+                "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+              }
+            },
+            "selected_branch": 1,
+            "untouched_branch": 0
+          }
+        }
+      }
+    },
+    "limited_scope": {
+      "actual_tiny_native_controls": true,
+      "full_chip_native_local": false,
+      "cloud_trial_started": false,
+      "one_selected_identity_delay_per_independent_variant": true,
+      "original_objects_placements_pg_and_constraints_preserved": true,
+      "all_eight_historical_and_fresh_guards_retained": true,
+      "two_independent_reloads_and_two_limited_digital_proofs_required": true,
+      "candidate_adopted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    }
+  },
+  "independent_review": {
+    "schema": 1,
+    "status": "PASS_INDEPENDENT_SOURCE_AND_SAVED_TINY_NATIVE_REVIEW_NO_CHIP_ACCEPTANCE",
+    "recorded_utc": "2026-10-03T22:28:05.471057+00:00",
+    "reviewer": "targeted_failure",
+    "source_files": {
+      "hw/soc/pnr/timing-hold-ablation-input.lock.json": {
+        "bytes": 42794,
+        "sha256": "49396ba4faaa3d39370eb320eaaa211c261ccec63249a2bdb9e5630d4eab1d94"
+      },
+      "scripts/run_cloud_hold_ablation.py": {
+        "bytes": 36976,
+        "sha256": "ede0611c44f6ff36580ec125b0070138c02858f865015e29b1fd831064370ff9"
+      },
+      "hw/soc/pnr/timing_hold_ablation_helpers.tcl": {
+        "bytes": 3076,
+        "sha256": "caef7132cae106d8464bfe9d1cfed431b1b8924831397f549167b74768231a6b"
+      },
+      "hw/soc/pnr/timing_hold_ablation_step.tcl": {
+        "bytes": 7768,
+        "sha256": "db15b1181f67cd6bdd2d92a58e2c3dfcbf28cd28017a78748d789b4935795a10"
+      },
+      "hw/soc/pnr/timing_hold_ablation_reload.tcl": {
+        "bytes": 2659,
+        "sha256": "9ef4e107ecd746f019aaf2a0c5f78172c3529c3e16a7e89e024f8f7bc4b0cbe7"
+      },
+      "sw/tests/timing_hold_ablation_native.tcl": {
+        "bytes": 19511,
+        "sha256": "e6ec6b0490399edf5c7e4d7e16f102bdeed7f4b07ab3b4e50c5a3eb8c4d7c155"
+      },
+      "sw/tests/test_hold_ablation.py": {
+        "bytes": 22441,
+        "sha256": "9c5d24bfdec499470f4690bf2a15a516df23c0669fa1949d09f0437a00be8610"
+      },
+      ".github/workflows/timing-hold-ablation.yml": {
+        "bytes": 6463,
+        "sha256": "72a1b4c1e0ed51cca55a004b6d3690f23dddce89dbb6e162e1617c92497f4c95"
+      }
+    },
+    "immutable_reuse_git_commit": "25f2486d473c7e6ca6dda116336040d8787f38df",
+    "immutable_reuse_method_count": 72,
+    "frozen_parent_method_count": 64,
+    "producer": {
+      "run_id": 37107650542,
+      "artifact_id": 11268859028,
+      "artifact_name": "explicit-hold-final-1",
+      "bytes": 360788223,
+      "sha256": "a0b89c24e222ab32ac07429730399843d4e7cb5a8d05e2adc204274061d1a18c",
+      "source_commit": "0aeef622ccdb12d1c0feafa4d6cf34061880a8a0",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-explicit-hold-final-37107650542-20261003.zip",
+      "entrypoint": "scripts/run_cloud_explicit_hold.py",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate",
+      "kind": "explicit_single_sd3_hold_trial"
+    },
+    "native_evidence": {
+      "path": "hw/soc/out/heartbeat-20261003-2148/ablation-source/native-01",
+      "receipt": {
+        "bytes": 45248,
+        "sha256": "f1fde391f60a434b35b3e8103bae05baedda3fca363964d000d1a53061f849af"
+      },
+      "capsule": {
+        "bytes": 48472,
+        "sha256": "20a8d1a826aaa0aa51032b0fab528f936d3423e4b97f73b813ab3b78b7b7e482"
+      },
+      "variants": {
+        "eth": {
+          "status": "PASS_NATIVE_HOLD_ABLATION_CONTROL",
+          "raw_output_count": 75,
+          "negative_control_count": 63,
+          "result": {
+            "bytes": 6599,
+            "sha256": "12f01490edc4208fc82552d0f83a4a77b2e8c2c80d5d7e915fcaed0159bd8f25"
+          },
+          "log": {
+            "bytes": 10035,
+            "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+          },
+          "insertion": {
+            "buffer": "nssoc_ablation_eth_sd31",
+            "new_net": "nssoc_ablation_eth_net1",
+            "original_net": "target0",
+            "driver": "driver0",
+            "sink": "sink0",
+            "master": "sg13g2_dlygate4sd3_1",
+            "initial_instances": 5,
+            "initial_nets": 12,
+            "location_dbu": [
+              50400,
+              34020
+            ],
+            "orientation": "MX",
+            "row_name": "ROW_7",
+            "distance_dbu": 3780,
+            "dbu_per_micron": 1000,
+            "radius_um": 10
+          },
+          "selected_min_slack_gain_ns": {
+            "fast": 0.254448,
+            "typical": 0.379643,
+            "slow": 0.610878
+          },
+          "untouched_branch_exact_timing_equal": true,
+          "constraints_byte_equal": true,
+          "original_graph_and_objects_equal": true,
+          "raw_min_max_reports_reparsed": 12,
+          "candidate_adopted": false,
+          "timing_accepted": false
+        },
+        "npu": {
+          "status": "PASS_NATIVE_HOLD_ABLATION_CONTROL",
+          "raw_output_count": 75,
+          "negative_control_count": 63,
+          "result": {
+            "bytes": 6591,
+            "sha256": "30af026673a1950875462f1b0682c77f7d6c7a920f525c524910bcba4604571a"
+          },
+          "log": {
+            "bytes": 10035,
+            "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+          },
+          "insertion": {
+            "buffer": "nssoc_ablation_npu_sd31",
+            "new_net": "nssoc_ablation_npu_net1",
+            "original_net": "target1",
+            "driver": "driver1",
+            "sink": "sink1",
+            "master": "sg13g2_dlygate4sd3_1",
+            "initial_instances": 5,
+            "initial_nets": 12,
+            "location_dbu": [
+              50400,
+              34020
+            ],
+            "orientation": "MX",
+            "row_name": "ROW_7",
+            "distance_dbu": 3780,
+            "dbu_per_micron": 1000,
+            "radius_um": 10
+          },
+          "selected_min_slack_gain_ns": {
+            "fast": 0.254628,
+            "typical": 0.379819,
+            "slow": 0.611259
+          },
+          "untouched_branch_exact_timing_equal": true,
+          "constraints_byte_equal": true,
+          "original_graph_and_objects_equal": true,
+          "raw_min_max_reports_reparsed": 12,
+          "candidate_adopted": false,
+          "timing_accepted": false
+        }
+      },
+      "runtime_rehash_performed_by_this_review": false,
+      "runtime_provenance": "Captured native fixture receipt records exact runtime SHA and before/after rehash; this independent read-only review reparsed saved raw native outputs and did not launch EDA."
+    },
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/nssoc-ablation-peer-final sw/tests/test_hold_ablation.py sw/tests/test_pair_hold.py sw/tests/test_explicit_hold.py",
+      "passed": 323,
+      "seconds": 0.79,
+      "returncode": 0
+    },
+    "lint": {
+      "ruff": "hw/soc/tools/dev-env/bin/ruff check scripts/run_cloud_hold_ablation.py sw/tests/test_hold_ablation.py",
+      "ruff_returncode": 0,
+      "actionlint": "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint .github/workflows/timing-hold-ablation.yml",
+      "actionlint_returncode": 0
+    },
+    "checks": {
+      "variant_selected_from_captured_worker_record_and_reasserted_before_native": true,
+      "one_selected_branch_only_after_exact_full_two_branch_parent_binding": true,
+      "all_original_graph_placements_orientations_status_and_protection_preserved": true,
+      "exactly_one_noninverting_sd3_and_one_net_complete_contraction": true,
+      "eight_historical_references_plus_fresh_candidate_before_unchanged": true,
+      "historical_reference_names": [
+        "selected_c10",
+        "matched_c10",
+        "combined_parent",
+        "electrical_first",
+        "electrical_margin_parent",
+        "residual_parent",
+        "critical_parent",
+        "single_parent"
+      ],
+      "fresh_global_route_three_corner_full_endpoint_census_and_two_independent_no_dpl_reloads": true,
+      "native_process_identity_and_candidate_view_pins_checked": true,
+      "both_limited_eco_proofs_required_and_token_scrubbed": true,
+      "source_read_token_available_only_acquisition_and_stripped_from_native_and_proof_environment": true,
+      "two_independent_fail_fast_false_matrix_jobs_and_hidden_source_capture": true,
+      "no_ancestor_method_or_default_rtl_mutation": true
+    },
+    "limitations": [
+      "Read-only peer review; no full-chip ODB/DEF/graph acquisition or local full-chip native run.",
+      "Saved native controls establish the actual tiny API, routing, three-corner response and rejection behavior only; whole-chip ablations are pending.",
+      "All timing remains estimated global-route RC. Passing later estimated guards cannot establish detailed route, signoff RC, DRC/LVS, boot or manufacturing acceptance.",
+      "Reviewer did not author the new ablation runner, fixture or tests; original shared ancestor contributions were previously authored and are byte-pinned here."
+    ],
+    "blockers": [],
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "native_runtime_and_libraries": {
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "pdk_version": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "library_inputs": {
+      "lef/sg13g2_tech.lef": {
+        "bytes": 28396,
+        "sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+      },
+      "lef/sg13g2_stdcell.lef": {
+        "bytes": 188966,
+        "sha256": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589"
+      },
+      "lib/sg13g2_stdcell_fast_1p32V_m40C.lib": {
+        "bytes": 1716550,
+        "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+      },
+      "lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "lib/sg13g2_stdcell_slow_1p08V_125C.lib": {
+        "bytes": 1711183,
+        "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+      }
+    },
+    "source_runtime_libraries_rehashed_before_and_after": true
+  },
+  "root_native_replay": {
+    "receipt": {
+      "bytes": 45256,
+      "sha256": "ec280981ed966b812c5ec43b20f4dc0cfe12081c961ff5b3ceebce1816099381"
+    },
+    "executions": {
+      "eth": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 2.1304917029920034,
+        "address_space_limit_bytes": 2147483648,
+        "elapsed_timeout": null,
+        "environment": {
+          "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+          "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+          "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-root-native/eth",
+          "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+          "NSSOC_HOLD_ABLATION_VARIANT": "eth"
+        },
+        "log": {
+          "bytes": 10035,
+          "sha256": "08e41dd33271ff061aa6656f7cfae44d1efbe6bf6d5ef43a99a29613e9ef471b"
+        }
+      },
+      "npu": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_hold_ablation_native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 2.2167185569996946,
+        "address_space_limit_bytes": 2147483648,
+        "elapsed_timeout": null,
+        "environment": {
+          "NSSOC_ELECTRICAL_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+          "NSSOC_TARGETED_METHOD_ROOT": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+          "NSSOC_ABLATION_OUT": "/dev/shm/nssoc-ablation-root-native/npu",
+          "NSSOC_TARGETED_PDK_ROOT": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+          "NSSOC_HOLD_ABLATION_VARIANT": "npu"
+        },
+        "log": {
+          "bytes": 10035,
+          "sha256": "0d1425893de257cbf4457519f8489aed297b643ad9da35b2fa60c60b0638fd0d"
+        }
+      }
+    },
+    "native_results": {
+      "eth": {
+        "status": "PASS_NATIVE_HOLD_ABLATION_CONTROL",
+        "variant": "eth",
+        "selected_branch": 0,
+        "untouched_branch": 1,
+        "insertion": {
+          "buffer": "nssoc_ablation_eth_sd31",
+          "new_net": "nssoc_ablation_eth_net1",
+          "original_net": "target0",
+          "driver": "driver0",
+          "sink": "sink0",
+          "master": "sg13g2_dlygate4sd3_1",
+          "initial_instances": 5,
+          "initial_nets": 12,
+          "location_dbu": [
+            50400,
+            34020
+          ],
+          "orientation": "MX",
+          "row_name": "ROW_7",
+          "distance_dbu": 3780,
+          "dbu_per_micron": 1000,
+          "radius_um": 10
+        },
+        "negative_control_messages": {
+          "missing_driver": "Explicit endpoint identity/status differs",
+          "wrong_target": "Explicit target must be an unprotected sole Q to D signal",
+          "changed_radius": "Explicit vacancy radius must remain 10 microns",
+          "wrong_source_placement": "Explicit endpoint source placement differs",
+          "protected_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "clock_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "missing_endpoint": "Explicit target must be an unprotected sole Q to D signal",
+          "protected_driver": "Explicit endpoint identity/status differs",
+          "fixed_driver": "Explicit endpoint identity/status differs",
+          "driver_missing_VDD": "Explicit endpoint supply is unbound",
+          "driver_missing_VSS": "Explicit endpoint supply is unbound",
+          "protected_sink": "Explicit endpoint identity/status differs",
+          "fixed_sink": "Explicit endpoint identity/status differs",
+          "sink_missing_VDD": "Explicit endpoint supply is unbound",
+          "sink_missing_VSS": "Explicit endpoint supply is unbound",
+          "wrong_variant": "Hold ablation variant changed",
+          "unapproved_operation": "Unapproved ablation operation",
+          "cross_branch_endpoint": "Explicit endpoint connection differs",
+          "unplaced_old_sd3": "Unplaced original instance prevents a legal vacancy proof",
+          "physically_shared_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "reserved_cell_prefix": "Explicit insertion instance prefix already exists",
+          "reserved_net_prefix": "Explicit insertion net prefix already exists",
+          "adapter_omitted_row": "Exactly one ablation insertion is required",
+          "adapter_duplicate_row": "Exactly one ablation insertion is required",
+          "adapter_wrong_buffer": "Ablation row prefix/master differs",
+          "adapter_wrong_new_net": "Ablation row prefix/master differs",
+          "adapter_wrong_master": "Ablation row prefix/master differs",
+          "record_buffer": "Source-bound one-branch insertion record differs",
+          "record_new_net": "Source-bound one-branch insertion record differs",
+          "record_master": "Source-bound one-branch insertion record differs",
+          "record_driver": "Source-bound one-branch insertion record differs",
+          "record_sink": "Source-bound one-branch insertion record differs",
+          "record_original_net": "Source-bound one-branch insertion record differs",
+          "record_initial_instances": "Source-bound one-branch insertion record differs",
+          "record_initial_nets": "Source-bound one-branch insertion record differs",
+          "record_radius_um": "Source-bound one-branch insertion record differs",
+          "moved_original_driver0": "Single ablation contraction changed original objects",
+          "protected_original_driver0": "Single ablation contraction changed original objects",
+          "moved_original_sink0": "Single ablation contraction changed original objects",
+          "protected_original_sink0": "Single ablation contraction changed original objects",
+          "moved_original_driver1": "Single ablation contraction changed original objects",
+          "protected_original_driver1": "Single ablation contraction changed original objects",
+          "moved_original_sink1": "Single ablation contraction changed original objects",
+          "protected_original_sink1": "Single ablation contraction changed original objects",
+          "moved_original_nssoc_explicit_sd31": "Single ablation contraction changed original objects",
+          "protected_original_nssoc_explicit_sd31": "Single ablation contraction changed original objects",
+          "old_sd3_orientation": "Single ablation contraction changed original objects",
+          "old_sd3_status": "Single ablation contraction changed original objects",
+          "old_sd3_graph": "Single ablation contraction changed original graph",
+          "old_sd3_missing_VDD": "Single ablation contraction changed original graph",
+          "old_sd3_missing_VSS": "Single ablation contraction changed original graph",
+          "untouched_branch_graph": "Single ablation contraction changed original graph",
+          "extra_net": "Explicit cell/net census differs",
+          "extra_cell": "Explicit cell/net census differs",
+          "new_missing_VDD": "Explicit delay supply is floating/different",
+          "new_wrong_VDD": "Explicit delay supply is floating/different",
+          "new_missing_VSS": "Explicit delay supply is floating/different",
+          "new_wrong_VSS": "Explicit delay supply is floating/different",
+          "reversed_new_branch": "Explicit sole-branch topology changed",
+          "native_overlap": "DPL-0033",
+          "fixed_new": "Explicit chosen vacancy changed",
+          "missing_actual_cell": "Explicit cell/net census differs",
+          "missing_actual_net": "Explicit cell/net census differs"
+        },
+        "initial_instances": 5,
+        "final_instances": 6,
+        "initial_nets": 12,
+        "final_nets": 13,
+        "selected_vacancy": "3780 50400 34020 ROW_7 MX",
+        "before_metrics": {
+          "target0": {
+            "fast": {
+              "min_slack_ns": 0.128606,
+              "max_slack_ns": 19.817373
+            },
+            "typical": {
+              "min_slack_ns": 0.192083,
+              "max_slack_ns": 19.725712
+            },
+            "slow": {
+              "min_slack_ns": 0.303325,
+              "max_slack_ns": 19.551115
+            }
+          },
+          "target1": {
+            "fast": {
+              "min_slack_ns": 0.128465,
+              "max_slack_ns": 19.817539
+            },
+            "typical": {
+              "min_slack_ns": 0.191861,
+              "max_slack_ns": 19.725986
+            },
+            "slow": {
+              "min_slack_ns": 0.302936,
+              "max_slack_ns": 19.551575
+            }
+          }
+        },
+        "after_metrics": {
+          "target0": {
+            "fast": {
+              "min_slack_ns": 0.383054,
+              "max_slack_ns": 19.566704
+            },
+            "typical": {
+              "min_slack_ns": 0.571726,
+              "max_slack_ns": 19.34816
+            },
+            "slow": {
+              "min_slack_ns": 0.914203,
+              "max_slack_ns": 18.952768
+            }
+          },
+          "target1": {
+            "fast": {
+              "min_slack_ns": 0.128465,
+              "max_slack_ns": 19.817539
+            },
+            "typical": {
+              "min_slack_ns": 0.191861,
+              "max_slack_ns": 19.725986
+            },
+            "slow": {
+              "min_slack_ns": 0.302936,
+              "max_slack_ns": 19.551575
+            }
+          }
+        },
+        "independently_predicted_nearest_vacancy": true,
+        "untouched_branch_preserved": true,
+        "single_row_adapters_verified": true,
+        "all_original_objects_preserved": true,
+        "all_original_placements_preserved": true,
+        "preserved_original_delay": true,
+        "full_graph_contraction_preserved": true,
+        "exactly_one_new_cell_and_net": true,
+        "pg_bindings_preserved": true,
+        "actual_global_route_before_and_after": true,
+        "all_three_corners_loaded_and_timed": true,
+        "no_detailed_placement_called": true,
+        "constraints_preserved": true,
+        "pre_sdc_sha256": "8de8d4bc7605cc31da8d7d8e13c2e28ea06dc8427ee7a6feaf4cb7e7e923156b",
+        "post_sdc_sha256": "8de8d4bc7605cc31da8d7d8e13c2e28ea06dc8427ee7a6feaf4cb7e7e923156b",
+        "estimated_global_route_tiny_control_only": true,
+        "tiny_native_control_only": true,
+        "candidate_adopted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      },
+      "npu": {
+        "status": "PASS_NATIVE_HOLD_ABLATION_CONTROL",
+        "variant": "npu",
+        "selected_branch": 1,
+        "untouched_branch": 0,
+        "insertion": {
+          "buffer": "nssoc_ablation_npu_sd31",
+          "new_net": "nssoc_ablation_npu_net1",
+          "original_net": "target1",
+          "driver": "driver1",
+          "sink": "sink1",
+          "master": "sg13g2_dlygate4sd3_1",
+          "initial_instances": 5,
+          "initial_nets": 12,
+          "location_dbu": [
+            50400,
+            34020
+          ],
+          "orientation": "MX",
+          "row_name": "ROW_7",
+          "distance_dbu": 3780,
+          "dbu_per_micron": 1000,
+          "radius_um": 10
+        },
+        "negative_control_messages": {
+          "missing_driver": "Explicit endpoint identity/status differs",
+          "wrong_target": "Explicit target must be an unprotected sole Q to D signal",
+          "changed_radius": "Explicit vacancy radius must remain 10 microns",
+          "wrong_source_placement": "Explicit endpoint source placement differs",
+          "protected_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "clock_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "missing_endpoint": "Explicit target must be an unprotected sole Q to D signal",
+          "protected_driver": "Explicit endpoint identity/status differs",
+          "fixed_driver": "Explicit endpoint identity/status differs",
+          "driver_missing_VDD": "Explicit endpoint supply is unbound",
+          "driver_missing_VSS": "Explicit endpoint supply is unbound",
+          "protected_sink": "Explicit endpoint identity/status differs",
+          "fixed_sink": "Explicit endpoint identity/status differs",
+          "sink_missing_VDD": "Explicit endpoint supply is unbound",
+          "sink_missing_VSS": "Explicit endpoint supply is unbound",
+          "wrong_variant": "Hold ablation variant changed",
+          "unapproved_operation": "Unapproved ablation operation",
+          "cross_branch_endpoint": "Explicit endpoint connection differs",
+          "unplaced_old_sd3": "Unplaced original instance prevents a legal vacancy proof",
+          "physically_shared_branch": "Explicit target must be an unprotected sole Q to D signal",
+          "reserved_cell_prefix": "Explicit insertion instance prefix already exists",
+          "reserved_net_prefix": "Explicit insertion net prefix already exists",
+          "adapter_omitted_row": "Exactly one ablation insertion is required",
+          "adapter_duplicate_row": "Exactly one ablation insertion is required",
+          "adapter_wrong_buffer": "Ablation row prefix/master differs",
+          "adapter_wrong_new_net": "Ablation row prefix/master differs",
+          "adapter_wrong_master": "Ablation row prefix/master differs",
+          "record_buffer": "Source-bound one-branch insertion record differs",
+          "record_new_net": "Source-bound one-branch insertion record differs",
+          "record_master": "Source-bound one-branch insertion record differs",
+          "record_driver": "Source-bound one-branch insertion record differs",
+          "record_sink": "Source-bound one-branch insertion record differs",
+          "record_original_net": "Source-bound one-branch insertion record differs",
+          "record_initial_instances": "Source-bound one-branch insertion record differs",
+          "record_initial_nets": "Source-bound one-branch insertion record differs",
+          "record_radius_um": "Source-bound one-branch insertion record differs",
+          "moved_original_driver0": "Single ablation contraction changed original objects",
+          "protected_original_driver0": "Single ablation contraction changed original objects",
+          "moved_original_sink0": "Single ablation contraction changed original objects",
+          "protected_original_sink0": "Single ablation contraction changed original objects",
+          "moved_original_driver1": "Single ablation contraction changed original objects",
+          "protected_original_driver1": "Single ablation contraction changed original objects",
+          "moved_original_sink1": "Single ablation contraction changed original objects",
+          "protected_original_sink1": "Single ablation contraction changed original objects",
+          "moved_original_nssoc_explicit_sd31": "Single ablation contraction changed original objects",
+          "protected_original_nssoc_explicit_sd31": "Single ablation contraction changed original objects",
+          "old_sd3_orientation": "Single ablation contraction changed original objects",
+          "old_sd3_status": "Single ablation contraction changed original objects",
+          "old_sd3_graph": "Single ablation contraction changed original graph",
+          "old_sd3_missing_VDD": "Single ablation contraction changed original graph",
+          "old_sd3_missing_VSS": "Single ablation contraction changed original graph",
+          "untouched_branch_graph": "Single ablation contraction changed original graph",
+          "extra_net": "Explicit cell/net census differs",
+          "extra_cell": "Explicit cell/net census differs",
+          "new_missing_VDD": "Explicit delay supply is floating/different",
+          "new_wrong_VDD": "Explicit delay supply is floating/different",
+          "new_missing_VSS": "Explicit delay supply is floating/different",
+          "new_wrong_VSS": "Explicit delay supply is floating/different",
+          "reversed_new_branch": "Explicit sole-branch topology changed",
+          "native_overlap": "DPL-0033",
+          "fixed_new": "Explicit chosen vacancy changed",
+          "missing_actual_cell": "Explicit cell/net census differs",
+          "missing_actual_net": "Explicit cell/net census differs"
+        },
+        "initial_instances": 5,
+        "final_instances": 6,
+        "initial_nets": 12,
+        "final_nets": 13,
+        "selected_vacancy": "3780 50400 34020 ROW_7 MX",
+        "before_metrics": {
+          "target0": {
+            "fast": {
+              "min_slack_ns": 0.128606,
+              "max_slack_ns": 19.817373
+            },
+            "typical": {
+              "min_slack_ns": 0.192083,
+              "max_slack_ns": 19.725712
+            },
+            "slow": {
+              "min_slack_ns": 0.303325,
+              "max_slack_ns": 19.551115
+            }
+          },
+          "target1": {
+            "fast": {
+              "min_slack_ns": 0.128465,
+              "max_slack_ns": 19.817539
+            },
+            "typical": {
+              "min_slack_ns": 0.191861,
+              "max_slack_ns": 19.725986
+            },
+            "slow": {
+              "min_slack_ns": 0.302936,
+              "max_slack_ns": 19.551575
+            }
+          }
+        },
+        "after_metrics": {
+          "target0": {
+            "fast": {
+              "min_slack_ns": 0.128606,
+              "max_slack_ns": 19.817373
+            },
+            "typical": {
+              "min_slack_ns": 0.192083,
+              "max_slack_ns": 19.725712
+            },
+            "slow": {
+              "min_slack_ns": 0.303325,
+              "max_slack_ns": 19.551115
+            }
+          },
+          "target1": {
+            "fast": {
+              "min_slack_ns": 0.383093,
+              "max_slack_ns": 19.566872
+            },
+            "typical": {
+              "min_slack_ns": 0.57168,
+              "max_slack_ns": 19.348139
+            },
+            "slow": {
+              "min_slack_ns": 0.914195,
+              "max_slack_ns": 18.952658
+            }
+          }
+        },
+        "independently_predicted_nearest_vacancy": true,
+        "untouched_branch_preserved": true,
+        "single_row_adapters_verified": true,
+        "all_original_objects_preserved": true,
+        "all_original_placements_preserved": true,
+        "preserved_original_delay": true,
+        "full_graph_contraction_preserved": true,
+        "exactly_one_new_cell_and_net": true,
+        "pg_bindings_preserved": true,
+        "actual_global_route_before_and_after": true,
+        "all_three_corners_loaded_and_timed": true,
+        "no_detailed_placement_called": true,
+        "constraints_preserved": true,
+        "pre_sdc_sha256": "8de8d4bc7605cc31da8d7d8e13c2e28ea06dc8427ee7a6feaf4cb7e7e923156b",
+        "post_sdc_sha256": "8de8d4bc7605cc31da8d7d8e13c2e28ea06dc8427ee7a6feaf4cb7e7e923156b",
+        "estimated_global_route_tiny_control_only": true,
+        "tiny_native_control_only": true,
+        "candidate_adopted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      }
+    },
+    "final_python_validator_replayed_both_variants": true,
+    "all_saved_native_outputs_rehashed": true,
+    "outputs_per_variant": 75,
+    "negative_controls_per_variant": 63
+  },
+  "evidence_capsule": {
+    "path": "docs/evidence/timing-hold-ablation-native-controls-20261004.tar.xz",
+    "bytes": 53048,
+    "sha256": "2927c4779ec5eb51786737870a5960085c61caaec8d88f42dadb8580230ea4ea",
+    "members": 161,
+    "content": "150 exact raw tiny-native files; four exact author/peer/root receipts; four raw native logs; test and lint logs. No chip geometry or full-chip netlist."
+  },
+  "replay": {
+    "extract_to": "fresh temporary directory",
+    "calls": [
+      "validate_native_control(extracted/native/eth, extracted/logs/root-native-eth.log, 'eth')",
+      "validate_native_control(extracted/native/npu, extracted/logs/root-native-npu.log, 'npu')"
+    ],
+    "module": "scripts/run_cloud_hold_ablation.py",
+    "source_sha256": "ede0611c44f6ff36580ec125b0070138c02858f865015e29b1fd831064370ff9"
+  },
+  "source_review_complete": true,
+  "full_chip_trial_result_available": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "scope": "Prepared measurement method and actual tiny five-to-six-cell native controls only. Whole-chip ablation outcomes are pending. All future comparisons retain historical setup/hold/electrical guards; estimated global-route RC does not establish detailed-route, signoff, DRC/LVS, boot or manufacturing acceptance.",
+  "root_final_validation": {
+    "status": "PASS_FINAL_FROZEN_SOURCE_TEST_AND_SAVED_NATIVE_REPLAY",
+    "reported_by": "root",
+    "focused_tests_passed": 323,
+    "suites": [
+      "sw/tests/test_hold_ablation.py",
+      "sw/tests/test_pair_hold.py",
+      "sw/tests/test_explicit_hold.py"
+    ],
+    "ruff_pass": true,
+    "actionlint_pass": true,
+    "project_status_pass": true,
+    "all_eight_source_pins_match_author_and_peer": true,
+    "final_validate_native_control_replayed_both_root_native_outputs": true,
+    "negative_controls_per_variant": 63,
+    "additional_full_chip_execution": false,
+    "provenance": "Root confirmed final frozen-source tests and validator replay after the independent root tiny native execution recorded in root_native_replay. This field records that review confirmation; no separate raw test log is asserted."
+  }
+}

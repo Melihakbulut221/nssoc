@@ -1,0 +1,412 @@
+{
+  "status": "PASS_COMPLETE_AB_IDENTITY_METRICS_POLICY_AND_CLOUD_COMPARISON_REPLAY",
+  "completed": "2026-09-30T23:12:32.853457+03:00",
+  "baseline_artifact": {
+    "id": 11122868151,
+    "bytes": 42715006,
+    "sha256": "1d81a98b5f84097c2dc56bfd68cbac44bba2f53334d95d42b5c93b0fce4a5b5b"
+  },
+  "batch4_artifact": {
+    "id": 11120723272,
+    "bytes": 42719470,
+    "sha256": "1ae937d140e559e0807694d3ef67f45544bf34ab0fe781c76e7fe927d1a03425"
+  },
+  "comparison_artifact": {
+    "id": 11122498580,
+    "bytes": 423,
+    "sha256": "d030dd3aa0c04e34273cde694b16f85e29960ae21e44a8ec647f9d6332b62b51"
+  },
+  "reused_batch4_review_sha256": "110b7c376b5f8c3bdc61f98036cafd30d088847bb82d41a729f748c4decf834e",
+  "comparison_predicates_replayed_from": "run_cloud_timing_experiment.compare with previously verified batch capture; no monkeypatch or criteria changes",
+  "policy_sha256": "e81f2fe7cca268c4dc54c806b9ab6a91f1da37482555d413fae1c07329b306cf",
+  "comparator_sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
+  "identity_keys_equal": [
+    "manifest_sha256",
+    "bundle_sha256",
+    "initial_state_template_sha256",
+    "config_template_sha256",
+    "method_sha256",
+    "runner_sha256",
+    "runtime_sha256",
+    "source_log_sha256",
+    "selected_source_metrics",
+    "sdc_sha256"
+  ],
+  "same_initial_measurements": true,
+  "cloud_comparison": {
+    "status": "COMPLETE_ESTIMATE_COMPARISON_ONLY",
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "selected_checkpoint_preserved": true,
+    "compared_profile": null,
+    "recorded": "2026-09-30T19:59:53.335827+00:00",
+    "same_initial_measurements": true,
+    "comparison_recommendation_requires_routing_rcx_sta_equivalence": true,
+    "eligible_profiles": []
+  },
+  "recomputed_comparison": {
+    "status": "COMPLETE_ESTIMATE_COMPARISON_ONLY",
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "selected_checkpoint_preserved": true,
+    "compared_profile": null,
+    "same_initial_measurements": true,
+    "comparison_recommendation_requires_routing_rcx_sta_equivalence": true,
+    "eligible_profiles": []
+  },
+  "failed_guards": {
+    "setup_baseline": [
+      {
+        "reference": "fresh_before",
+        "metric": "hold_tns_ns",
+        "before": -26.461044910774945,
+        "after": -26.46105912162966,
+        "delta_ns": -1.4210854715202004e-05,
+        "allowed_degradation_ns": 1e-06
+      },
+      {
+        "reference": "selected_C10",
+        "metric": "hold_wns_ns",
+        "before": -1.840329,
+        "after": -1.8409653801398917,
+        "delta_ns": -0.0006363801398916458,
+        "allowed_degradation_ns": 1e-06
+      }
+    ],
+    "setup_batch4": [
+      {
+        "reference": "fresh_before",
+        "metric": "hold_tns_ns",
+        "before": -26.461044910774945,
+        "after": -26.46105912162966,
+        "delta_ns": -1.4210854715202004e-05,
+        "allowed_degradation_ns": 1e-06
+      },
+      {
+        "reference": "selected_C10",
+        "metric": "hold_wns_ns",
+        "before": -1.840329,
+        "after": -1.8409653801398917,
+        "delta_ns": -0.0006363801398916458,
+        "allowed_degradation_ns": 1e-06
+      }
+    ]
+  },
+  "native_elapsed_seconds": {
+    "setup_baseline": 5760.62175354,
+    "setup_batch4": 4470.623450153
+  },
+  "observed_setup_gain_per_hour": {
+    "setup_baseline": {
+      "wns": 0.3614185178574803,
+      "tns": 430.08630448941517
+    },
+    "setup_batch4": {
+      "wns": 0.5263872472751386,
+      "tns": 584.0976012853389
+    }
+  },
+  "speed_claim_scope": "One matched-input estimate-only experiment per profile on separate hosted workers. Observed elapsed time and gain rates are descriptive, not a general speed guarantee. Neither profile passed eligibility; no checkpoint was selected or adopted.",
+  "scope": "Fresh before measurements, frozen source/method/runtime/SDC identities and replayed strict guards match. Raw captures and historical source closure verified; no new native extraction, routed RCX, equivalence or final signoff.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "sources_edited": false,
+  "process_signals_sent": false,
+  "preoptimization_drift": {
+    "setup_wns_ns": {
+      "selected_C10": -4.710829,
+      "fresh_before": -4.909516349016485,
+      "delta_ns": -0.19868734901648466
+    },
+    "hold_wns_ns": {
+      "selected_C10": -1.840329,
+      "fresh_before": -1.8409653801398917,
+      "delta_ns": -0.0006363801398916458
+    }
+  },
+  "drift_scope": "The identical fresh-before setup/hold WNS differ from historical selected-C10 values before either optimizer runs. This pre-existing baseline drift is not attributed to setup repair; the separate hold-TNS after-before regression remains. No guard tolerance was changed.",
+  "observed_single_trial_comparison": {
+    "baseline_elapsed_seconds": 5760.62175354,
+    "batch4_elapsed_seconds": 4470.623450153,
+    "elapsed_reduction_seconds": 1289.9983033870003,
+    "elapsed_reduction_percent": 22.393386661678917,
+    "baseline_to_batch4_elapsed_ratio": 1.2885499791629402,
+    "setup_gain_rate_ratio": {
+      "wns": 1.456447916381283,
+      "tns": 1.3580939341436622
+    },
+    "general_speedup_guaranteed": false
+  },
+  "verification_script_sha256": "d9126f4f0071e6e90211edddfa08c8d642ef1dea87c2d13c96b1b9b2e79b5d44",
+  "recorded": "2026-09-30T23:14:25.741080+03:00",
+  "run_id": 36757448901,
+  "source_commit": "3daaabbd4747d4205e3924d6977ff49b57311af3",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36757448901",
+  "raw_evidence_manifest": "docs/evidence/timing-cloud-baseline-and-comparison-assets-20260930.json",
+  "batch4_evidence_manifest": "docs/evidence/timing-cloud-batch4-complete-assets-20260930.json",
+  "review_sha256": "5275dc21876260b941bc9c4829f0a29ce812620b21ee8768d8945b9a69944e28",
+  "profiles": {
+    "setup_baseline": {
+      "before": {
+        "profile": "setup_baseline",
+        "phase": "before",
+        "parasitics": "global_route_estimates",
+        "signoff": false,
+        "setup_wns_ns": -4.909516349016485,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -4320.800144341774,
+        "hold_tns_ns": -26.461044910774945,
+        "setup_violating_endpoints": 1384,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1,
+        "instance_count": 103697,
+        "area_um2": 4092933.0680228304,
+        "utilization_fraction": 0.5351749703292155
+      },
+      "after": {
+        "profile": "setup_baseline",
+        "phase": "after",
+        "parasitics": "global_route_estimates",
+        "signoff": false,
+        "setup_wns_ns": -4.331184300099267,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -3632.587777246954,
+        "hold_tns_ns": -26.46105912162966,
+        "setup_violating_endpoints": 1340,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1,
+        "instance_count": 103718,
+        "area_um2": 4093297.7753982414,
+        "utilization_fraction": 0.5352226562568865
+      },
+      "selected_source_metrics": {
+        "setup_wns_ns": -4.710829,
+        "hold_wns_ns": -1.840329
+      },
+      "capture_closure_verified": true,
+      "all_capture_bytes_verified": true,
+      "retained_sram_macros": 32,
+      "sram_master_location_orientation_exact": true,
+      "before_after_output_source_sdc_byte_identical": true,
+      "eligibility_recomputed": false,
+      "review_sha256": "9b166b3e3ee4dc11d0054b8585be43f88838ca3435aa709aa5d8f6c28dfb0458"
+    },
+    "setup_batch4": {
+      "before": {
+        "profile": "setup_batch4",
+        "phase": "before",
+        "parasitics": "global_route_estimates",
+        "signoff": false,
+        "setup_wns_ns": -4.909516349016485,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -4320.800144341774,
+        "hold_tns_ns": -26.461044910774945,
+        "setup_violating_endpoints": 1384,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1,
+        "instance_count": 103697,
+        "area_um2": 4092933.0680228304,
+        "utilization_fraction": 0.5351749703292155
+      },
+      "after": {
+        "profile": "setup_batch4",
+        "phase": "after",
+        "parasitics": "global_route_estimates",
+        "signoff": false,
+        "setup_wns_ns": -4.255827690258229,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -3595.4444683738984,
+        "hold_tns_ns": -26.46105912162966,
+        "setup_violating_endpoints": 1313,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1,
+        "instance_count": 103726,
+        "area_um2": 4093401.4577942435,
+        "utilization_fraction": 0.5352361791318975
+      },
+      "selected_source_metrics": {
+        "setup_wns_ns": -4.710829,
+        "hold_wns_ns": -1.840329
+      },
+      "capture_closure_verified": true,
+      "all_capture_bytes_verified": true,
+      "retained_sram_macros": 32,
+      "sram_master_location_orientation_exact": true,
+      "before_after_output_source_sdc_byte_identical": true,
+      "eligibility_recomputed": false,
+      "review_sha256": "110b7c376b5f8c3bdc61f98036cafd30d088847bb82d41a729f748c4decf834e"
+    }
+  },
+  "hold_diagnosis": {
+    "status": "CAPTURED_HOLD_DIFFERENCES_DIAGNOSED_CAUSAL_NOOP_TEST_STILL_REQUIRED",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-ab-hold-diagnose.py": "8da69f25cb3fc64d4cec585556158ebcb28bbbd1245cff76fe60addb04e74cd6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260929/methods/timing_experiment_step.tcl": "9c8610bc685d7f52d612e7b47544d5f30f99dbcec0981dd518d7de3f0a078f55",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/repair.tcl": "5f3638f017cb87aed5af100432880ef1c4a69be03e35e4c261a0c16727a7eda2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-010/01-openroad-resizertimingpostgrt/estimated-after-hold.rpt": "e46816ca08391f50cb2891aeeb028129f4fe17f8488f3035a6bf2f57fc0a30f4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-010/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log": "d30f6f5c619cedc7fa1c0ce9aa7e53763f0fe4713122961189758dc2feb9c0b0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-baseline-final.zip": "1d81a98b5f84097c2dc56bfd68cbac44bba2f53334d95d42b5c93b0fce4a5b5b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-batch4-final.zip": "1ae937d140e559e0807694d3ef67f45544bf34ab0fe781c76e7fe927d1a03425"
+    },
+    "report_members": {
+      "setup_baseline/before": {
+        "archive": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-baseline-final.zip",
+        "member": "run/01-openroad-resizertimingpostgrt/experiment-before-hold.rpt",
+        "bytes": 102796,
+        "sha256": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226"
+      },
+      "setup_baseline/after": {
+        "archive": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-baseline-final.zip",
+        "member": "run/01-openroad-resizertimingpostgrt/experiment-after-hold.rpt",
+        "bytes": 102796,
+        "sha256": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226"
+      },
+      "setup_batch4/before": {
+        "archive": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-batch4-final.zip",
+        "member": "run/01-openroad-resizertimingpostgrt/experiment-before-hold.rpt",
+        "bytes": 102796,
+        "sha256": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226"
+      },
+      "setup_batch4/after": {
+        "archive": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/timing-batch4-final.zip",
+        "member": "run/01-openroad-resizertimingpostgrt/experiment-after-hold.rpt",
+        "bytes": 102796,
+        "sha256": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226"
+      }
+    },
+    "four_hold_reports_byte_identical": true,
+    "report_coverage": {
+      "reported_paths": 50,
+      "reported_violated_paths": 34,
+      "global_hold_violating_endpoints": 113,
+      "complete_endpoint_coverage": false,
+      "limitation": "Reports use group_path_count10 and digits6. Identical reports do not prove all113 endpoint slacks unchanged at full precision."
+    },
+    "measurements": {
+      "setup_baseline": {
+        "before": {
+          "profile": "setup_baseline",
+          "phase": "before",
+          "parasitics": "global_route_estimates",
+          "signoff": false,
+          "setup_wns_ns": -4.909516349016485,
+          "hold_wns_ns": -1.8409653801398917,
+          "setup_tns_ns": -4320.800144341774,
+          "hold_tns_ns": -26.461044910774945,
+          "setup_violating_endpoints": 1384,
+          "hold_violating_endpoints": 113,
+          "slew_violations": 0,
+          "capacitance_violations": 1,
+          "instance_count": 103697,
+          "area_um2": 4092933.0680228304,
+          "utilization_fraction": 0.5351749703292155
+        },
+        "after": {
+          "profile": "setup_baseline",
+          "phase": "after",
+          "parasitics": "global_route_estimates",
+          "signoff": false,
+          "setup_wns_ns": -4.331184300099267,
+          "hold_wns_ns": -1.8409653801398917,
+          "setup_tns_ns": -3632.587777246954,
+          "hold_tns_ns": -26.46105912162966,
+          "setup_violating_endpoints": 1340,
+          "hold_violating_endpoints": 113,
+          "slew_violations": 0,
+          "capacitance_violations": 1,
+          "instance_count": 103718,
+          "area_um2": 4093297.7753982414,
+          "utilization_fraction": 0.5352226562568865
+        }
+      },
+      "setup_batch4": {
+        "before": {
+          "profile": "setup_batch4",
+          "phase": "before",
+          "parasitics": "global_route_estimates",
+          "signoff": false,
+          "setup_wns_ns": -4.909516349016485,
+          "hold_wns_ns": -1.8409653801398917,
+          "setup_tns_ns": -4320.800144341774,
+          "hold_tns_ns": -26.461044910774945,
+          "setup_violating_endpoints": 1384,
+          "hold_violating_endpoints": 113,
+          "slew_violations": 0,
+          "capacitance_violations": 1,
+          "instance_count": 103697,
+          "area_um2": 4092933.0680228304,
+          "utilization_fraction": 0.5351749703292155
+        },
+        "after": {
+          "profile": "setup_batch4",
+          "phase": "after",
+          "parasitics": "global_route_estimates",
+          "signoff": false,
+          "setup_wns_ns": -4.255827690258229,
+          "hold_wns_ns": -1.8409653801398917,
+          "setup_tns_ns": -3595.4444683738984,
+          "hold_tns_ns": -26.46105912162966,
+          "setup_violating_endpoints": 1313,
+          "hold_violating_endpoints": 113,
+          "slew_violations": 0,
+          "capacitance_violations": 1,
+          "instance_count": 103726,
+          "area_um2": 4093401.4577942435,
+          "utilization_fraction": 0.5352361791318975
+        }
+      }
+    },
+    "shared_hold_tns_delta_ns": -1.4210854715202004e-05,
+    "float_representation_observation": {
+      "unit_for_binary32_test": "seconds",
+      "both_values_exactly_binary32_representable": true,
+      "representable_binary32_steps": 8,
+      "interpretation": "Consistent with accumulation/order/cache/representation effects, but does not establish numerical noise or exclude physical changes in unreported paths."
+    },
+    "c10_to_fresh": {
+      "selected_setup_wns_ns": -4.710829,
+      "fresh_setup_wns_ns": -4.909516349016485,
+      "old_worst_report": {
+        "slack_ns": -1.840329,
+        "startpoint": "_134918_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[3] (output port clocked by clk_i)",
+        "corner": "nom_fast_1p32V_m40C"
+      },
+      "fresh_worst_report": {
+        "slack_ns": -1.840965,
+        "startpoint": "_134918_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[3] (output port clocked by clk_i)",
+        "corner": "nom_fast_1p32V_m40C"
+      },
+      "source_evidence": "Frozen experiment step destroys dbWire objects, rebuilds global routing, estimates parasitics, performs detailed placement/mirroring, ends incremental routing and reestimates before measuring before. OldC10 was measured after incremental setup repair in its producer process.",
+      "log_evidence": "Fresh preparation reports0.0um position displacement and49586 mirrored instances. Initial global-route graph is rebuilt before either setup profile runs. Same SDC and macro placement are already separately verified.",
+      "interpretation": "Fresh-before is not a preserved in-memory C10 route/parasitics measurement. Route reconstruction and preparation provide concrete mechanisms for timing changes; their individual causal contributions are not yet isolated."
+    },
+    "hypotheses": [
+      "C10 restart/rebuilt routing and estimated parasitics differ from the producer incremental state; same inputODB does not alone prove same estimatedRC.",
+      "Common pre/post measurement, incremental timing update or negative-slack accumulation could explain equal TNSdelta across different setup repairs.",
+      "Unreported hold paths or shared physical changes remain possible despite identical selected reports."
+    ],
+    "next_diagnostic": [
+      "On a frozen same route/parasitics/database state, repeatedly query and dump all113 violating hold endpoints per corner at full precision without any repair/legalization/routing mutation.",
+      "Run a no-op before/after path on that identical state and independently sum negative endpoint slacks in fixed endpoint order; compare against native TNS before/after query or cache updates.",
+      "Separately instrument C10 reload, route rebuild, placement/mirroring and parasitic reestimate boundaries with route/placement and all-endpoint fingerprints to isolate the restart delta."
+    ],
+    "acceptance": {
+      "tolerance_ns": 1e-06,
+      "tolerance_changed": false,
+      "neither_candidate_adopted": true,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "native_jobs_started": false,
+    "source_edits": false,
+    "process_signals_sent": false
+  },
+  "hold_diagnosis_sha256": "e85aded4f3617a6d423e73fcdb144b64cb4ccefa8d07985cc0bccf242993fce1"
+}

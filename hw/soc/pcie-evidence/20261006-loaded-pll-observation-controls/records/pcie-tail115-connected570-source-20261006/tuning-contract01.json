@@ -1,0 +1,287 @@
+{
+  "status": "PREDECLARED_SOURCE_ONLY_LOADED_TUNING_AND_REACHABILITY_NO_NATIVE_AUTHORIZATION",
+  "purpose": "Choose neither connected detector polarity nor filter acceptance from the old schematic negative Kvco. Measure the actual physical-clock tuning and the finite pump/filter force before selecting a candidate.",
+  "basis": {
+    "hw/soc/out/pcie-tail115-connected570-source-20261006/composition01.json": {
+      "bytes": 4097945,
+      "sha256": "99f8809500d8ab339abfb07eeeb51a701e474878a73e12330a318bad88e61219"
+    },
+    "hw/soc/out/pcie-tail115-connected570-source-20261006/source-bridges01.json": {
+      "bytes": 9590,
+      "sha256": "ed5e2330b9e1fa1a4e0085127661452f48b2acd3a53df3a7759f96a6507cc858"
+    },
+    "hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/numerical-convergence01.json": {
+      "bytes": 9837,
+      "sha256": "f239033476fb46b72a073f050b2c6d4c19a93c34cff331d25a5cfdee282ddc3f"
+    },
+    "hw/soc/analog/pcie/pll_loop_hbt_v1.spice": {
+      "bytes": 1099,
+      "sha256": "2c1d0268da591654679e1c64bc2d811df660de1ca9b8ba0eda271060454233ec"
+    },
+    "hw/soc/analog/pcie/pll_pfd_charge_pump_hv_v1.spice": {
+      "bytes": 3740,
+      "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+    }
+  },
+  "preserved_design": {
+    "physical_vco_records": 62,
+    "physical_divider_records": 91,
+    "schematic_feedback": 302,
+    "schematic_pfd": 102,
+    "schematic_pump": 10,
+    "schematic_filter": 3,
+    "total_per_candidate": 570,
+    "wire_r": 1271,
+    "wire_c": 1414,
+    "hbt": 64,
+    "contacts": 31,
+    "clock_load_f": {
+      "clkp": 5e-14,
+      "clkn": 5e-14
+    },
+    "independent_body_reference_ports": [
+      "body_substrate",
+      "wire_cref",
+      "div_body_substrate",
+      "div_wire_cref"
+    ],
+    "supplies_v": {
+      "vco": 2.3,
+      "divider_pfd_pump": 2.5,
+      "core": 1.2
+    },
+    "temperature_c": 27,
+    "filter": {
+      "rhi_w_l_um": [
+        1,
+        80
+      ],
+      "rlo_w_l_um": [
+        1,
+        47
+      ],
+      "cmim_w_l_um": [
+        10,
+        10
+      ]
+    },
+    "retuning_permitted": false
+  },
+  "voltage_domain": {
+    "supply_rail_envelope_v": [
+      0.0,
+      2.5
+    ],
+    "meaning": "Static supply-bounded search envelope, not proof that pump compliance reaches both rails or that transient overshoot cannot leave it. The filter upper source is 2.3V, pump rail 2.5V. Any actual control excursion outside this domain invalidates coverage and requires a new predeclared extension.",
+    "grid_v": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      2.0,
+      2.1,
+      2.2,
+      2.3,
+      2.4,
+      2.5
+    ],
+    "initial_diagnostic_order_v": [
+      0.5,
+      0.6,
+      0.7
+    ],
+    "remaining_order_v": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      2.0,
+      2.1,
+      2.2,
+      2.3,
+      2.4,
+      2.5
+    ],
+    "coverage_claim_before_all_points": false,
+    "unsafe_or_nonoscillating_points": "Retain complete failed safety/function evidence; never interpolate across an unmeasured or failed point. Endpoints failing is permitted as a range-discovery outcome, not as operating acceptance."
+  },
+  "loaded_tuning_fixture": {
+    "instances": 570,
+    "phase": "Characterization only; no acquisition or connected-loop acceptance",
+    "source_candidate": "loop-negative01.spice is a literal wiring carrier while PFD reset remains asserted; its label is not a selected gain sign. The opposite wiring must later be measured if positive Kvco is selected.",
+    "changes_from_connected_fixture": [
+      "Add an external ideal VCTRL clamp with the same 500ps supply ramp to each declared grid voltage.",
+      "Hold external VRESET asserted at2.5V from500ps through34ns so measured UP/DOWN stay inactive. Other reference/supply/clear stimuli and all source devices remain exact."
+    ],
+    "retained_load": "The actual102-device PFD remains attached to feedback and reference, and its idle pump/filter remain on VCTRL; source-terminal loading is therefore present.",
+    "up_down_inactive_required": true,
+    "stop_s": 3.4e-08,
+    "window_s": [
+      4e-09,
+      3.4e-08
+    ],
+    "subwindows_s": [
+      [
+        4e-09,
+        1.4e-08
+      ],
+      [
+        1.4e-08,
+        2.4e-08
+      ],
+      [
+        2.4e-08,
+        3.4e-08
+      ]
+    ],
+    "output_and_maxstep_s": 3.125e-13,
+    "all_570_safety_required_for_operating_point": true,
+    "same_13_divide_predicates_required": true,
+    "startup": "Actual all64 HBT OFF=1 observation and zero-energy ramp prerequisites remain. No internal forcing or initial oscillator kick.",
+    "record": [
+      "Every native terminal voltage and model current needed by all570 inherited bounds.",
+      "All original13 divide checks, all edge timestamps and amplitudes, whole and subwindow VCO/CML/feedback frequencies.",
+      "Full VCTRL source current and integrated charge in each subwindow; actual PFD UP/DOWN and all supply/body currents.",
+      "Any stall, missing or extra event, pulse/amplitude collapse and out-of-range device remain explicit FAIL."
+    ]
+  },
+  "pump_force_characterization": {
+    "instances": 13,
+    "scope": "Separate10-device native charge-pump plus unchanged3-device finite filter fixture, not an alternative loop or a physical570 PASS. Uses exact pump subcircuit; external UP/DOWN ports are the only commands.",
+    "grid_v": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5,
+      1.6,
+      1.7,
+      1.8,
+      1.9,
+      2.0,
+      2.1,
+      2.2,
+      2.3,
+      2.4,
+      2.5
+    ],
+    "states": {
+      "idle": [
+        0,
+        0
+      ],
+      "source": [
+        2.5,
+        0
+      ],
+      "sink": [
+        0,
+        2.5
+      ],
+      "both": [
+        2.5,
+        2.5
+      ]
+    },
+    "external_vctrl_clamp": true,
+    "same_rail_ramps_and_27c": true,
+    "all_13_safety_required": true,
+    "measurement": "Record actual clamp current, source/sink terminal currents and compliance throughout complete finite capture after settled bounds. Both-on state reports overlap behavior; never use it to infer ideal matched cancellation.",
+    "sign_definition": "For a voltage source VCTRL from control node toground, positive i(VCTRL) is current sunk by the clamp, hence net circuit charging current into the control node. Verify this sign with a small deterministic current/voltage-source control before interpreting native results.",
+    "effective_force": "At each safe full570 idle point, Jsource=mean_i(VCTRL)_570_idle + mean_i(VCTRL)_13_source - mean_i(VCTRL)_13_idle; Jsink analogously. Filter and idle-pump contributions cancel in the difference, leaving the measured loaded physical clock/filter plus the commanded pump force. Report independent subwindow ranges as well as whole means.",
+    "reachability": "Find connected grid intervals where Jsource>0 and Jsink<0 with the sign unchanged in all three subwindows. Bracket force zeroes and refine each sign-change interval by deterministic midpoint subdivision up to four levels (6.25mV grid resolution); unresolved or unsafe intervals remain unqualified. This is a necessary quasistatic bidirectional-control condition, not an absolute transient reachable-set proof."
+  },
+  "target_and_polarity": {
+    "reference_hz": 100000000.0,
+    "divider": 80,
+    "target_vco_hz": 8000000000.0,
+    "target_feedback_hz": 100000000.0,
+    "requirements": [
+      "Two neighboring safe570 tuning points must bracket8GHz with all13 division checks and complete all570 safety PASS. If no such pair exists, preserve failure and do not modify R/C/bias/limits.",
+      "Both bracket voltages and every refined intervening point must lie within measured bidirectional pump-force coverage, including finite filter and loaded-clock control current.",
+      "Refine the8GHz sign-change interval by deterministic midpoint bisection up to four levels; report actual frequencies, never claim a fitted crossing was simulated.",
+      "Measured local slope must have the same nonzero sign at each adjacent safe bracket point and across each subwindow. Any turnover/flat/ambiguous sign blocks polarity selection.",
+      "Independently repeat the final target bracket endpoints at0.625ps and0.3125ps under this570 characterization topology. Require100ppm adjacent VCO and feedback agreement plus50ps unaligned fixed-ordinal VCO/CML/feedback edge differences, with a predeclared mapping fixed before the finer run. This is an empirical finite pair criterion, not a rigorous discretization error bound.",
+      "Require target bracketing and slope sign at both numerical steps; do not remove constant phase offsets or optimize ordinal alignment."
+    ],
+    "negative_slope_selection": "PFD first/positive input FB, second input reference: feedback leading gives positive pump current, higher VCTRL reduces oscillator frequency.",
+    "positive_slope_selection": "PFD first/positive input reference, second input FB: reference leading gives positive pump current, higher VCTRL increases oscillator frequency.",
+    "dynamic_sign_control_required": "After selection, bounded actual lead/lag perturbations must show the expected native pump-current sign and restoring frequency response. Quasistatic slope alone does not approve closed-loop stability."
+  },
+  "connected_next_gate": {
+    "external_vctrl_source_forbidden": true,
+    "candidate_unselected_until_tuning_pass": true,
+    "first_new_native_requires_source_lifecycle_resource_peer": true,
+    "start_with_full34ns": true,
+    "then_longer_observation_required": true,
+    "feedback_reference_phase": "Derive fixed absolute correspondence and explicit missing/extra/ref/feedback edge guards; old nearest-edge or one-sided lead checks are not automatically accepted as lock.",
+    "negative_controls": [
+      "Actual disconnected pump-output wire",
+      "Actual pump-output short",
+      "Wrong detector polarity under known lead/lag stimulus",
+      "Broken feedback input",
+      "Missing or duplicated reference/feedback event"
+    ],
+    "all570_safety": true,
+    "new_closedloop_numerical_pair_required": true,
+    "old539_maxstep_not_inherited": true,
+    "lock_cdr_phy_acceptance": false
+  },
+  "resources_and_execution": {
+    "no_native_runner_created": true,
+    "cpu": 10,
+    "address_space_bytes": 2147483648,
+    "shared_entry_floor_bytes": 1073741824,
+    "shared_continuous_and_terminal_floor_bytes": 536870912,
+    "no_healthy_elapsed_timeout": true,
+    "sequential_points_only": true,
+    "requirements": [
+      "Compute exact raw width from every declared vector before freezing a native runner;570 has more vectors than455.",
+      "Use reviewed local SSD stream/spool and bounded streaming readers; account for full34ns data, startup/OP, logs and retained failures.",
+      "Bound every point independently and reserve accumulated SSD capacity before launch. Existing1GiB455 owncap must not be assumed sufficient for570.",
+      "Rehash every immutable source/model/runtime input, exact boot/birth/CPU ownership, full startup and terminal resource gates.",
+      "Current packet authorizes no acquisition, native control or tuning point; root source review and an actual frozen executable/control packet precede dispatch."
+    ]
+  },
+  "scope": "Source-only proposal, not measured pump range or measured loaded Kvco. Existing455 finite N16 PASS remains separate, active539 loop unchanged, both570 variants are unselected/unexecuted."
+}

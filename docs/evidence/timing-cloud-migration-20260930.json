@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "recorded": "2026-09-30T21:27:04.821361+03:00",
+  "status": "BOTH_CLOUD_PROFILES_NATIVE_RUNNING",
+  "source_head": "05aa57f665dddd872ea3270bd2c6e5d3a33b3c44",
+  "portability": {
+    "recorded": "2026-09-30T20:56:41.018403+03:00",
+    "portable_config_inverse_equals_original": true,
+    "portable_state_inverse_equals_original": true,
+    "original_log_slacks_verified": {
+      "setup_wns_ns": -4.710829,
+      "hold_wns_ns": -1.840329
+    },
+    "relocated_paths": 30,
+    "pdk_files": 5080,
+    "state_sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "scope": "Byte-identical underlying files; invertible JSON path-only relocation. No native chip result."
+  },
+  "input_assets_manifest": "docs/evidence/timing-cloud-input-assets-20260930.json",
+  "input_manifest": "docs/evidence/timing-cloud-input-20260930.json",
+  "source_manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+  "platform": {
+    "repository_public": true,
+    "runner": "ubuntu-22.04",
+    "documented_ram_gb": 16,
+    "maximum_job_hours": 6,
+    "native_elapsed_watchdog": false,
+    "source_urls": [
+      "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+      "https://docs.github.com/en/actions/reference/limits"
+    ]
+  },
+  "profiles": [
+    "setup_baseline",
+    "setup_batch4"
+  ],
+  "scope": "Both same-input profiles verified in native GRT on independent GitHub workers. No completed A/B result, measured speedup, final timing or manufacturing acceptance.",
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "local_validation": {
+    "new_cloud_tests_passed": 38,
+    "regression_scope": "Pinned input restore and translation, observer lifecycle, incomplete captures, source regressions, and existing timing/process guard regression.",
+    "initial_selected_tests_passed": 97,
+    "final_selected_timing_tests_passed": 101,
+    "final_combined_timing_and_supply_tests_passed": 152,
+    "final_evidence_tests_passed": 141,
+    "fixture_race_correction": "Initial combined run148PASS/1FAIL during live-to-zombie fixture observation. Only the test observer retries that exact transient error within its existing5second deadline; production guard unchanged. Three new fixture controls included in final152PASS."
+  },
+  "method_sha256": {
+    "scripts/run_cloud_timing_experiment.py": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
+    "sw/tests/test_cloud_timing_experiment.py": "bd84049437d8d9dd0751daefb6f04eae20cfc427056a819aa99785275c7a77a7",
+    ".github/workflows/timing-cloud-experiments.yml": "07faec0e6b07be08112522ba23a6fdfb922053fb089d52355a6bb6a80430318e"
+  },
+  "workflow_schema_repair": {
+    "failed_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/36756710604",
+    "failed_commit": "a747b3347800860ada52da0b9c34e706349d6743",
+    "docs": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+    "actionlint_release_url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz",
+    "archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+    "binary_sha256": "c872d6db8c6bf83a8eaa704fc93999f027d55dffbc63b8a6abdccb47df5f4cd4",
+    "workflow_sha256": "07faec0e6b07be08112522ba23a6fdfb922053fb089d52355a6bb6a80430318e",
+    "original_workflow_sha256": "86ee5d6f2765bbfe1f494d8759313b5f39728c127481b7b89b8ad3876217e5f1",
+    "fixed_exit_code": 0,
+    "original_exit_code": 1,
+    "tests": "38 passed; ruff and git diff --check passed",
+    "server_error": "(Line: 28, Col: 19): Unrecognized named-value: 'runner'. Located at position 1 within expression: runner.temp",
+    "native_jobs_started": 0
+  },
+  "cloud_run": {
+    "run_id": 36757448901,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36757448901",
+    "source_commit": "3daaabbd4747d4205e3924d6977ff49b57311af3"
+  },
+  "verified_startup": {
+    "setup_batch4": {
+      "run_id": 36757448901,
+      "artifact_id": 11116714737,
+      "profile": "setup_batch4",
+      "archive_bytes": 281636,
+      "archive_sha256": "07d24076388cb66328a85c12c803d7a98c5ac6def389cd78cf3b5857c9108bf2",
+      "files_verified": 16,
+      "manifest_pins_verified": true,
+      "partial_not_accepted": true,
+      "native_evidence": [
+        "32 macros",
+        "1313 clock nets",
+        "55952 blockages",
+        "GRT extra iteration 3/50"
+      ],
+      "resources_before": {
+        "available_memory_bytes": 15775653888,
+        "free_disk_bytes": 91496677376
+      },
+      "native_address_space_limit_bytes": 8589934592,
+      "status": "RUNNING",
+      "timing_comparison_available": false,
+      "notes": [
+        "Resources are prelaunch host values, not actual process peak RSS.",
+        "Inherited missing SRAM timing library warnings remain; no closure or signoff claim.",
+        "Before snapshot SDC sha256 f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3."
+      ]
+    },
+    "setup_baseline": {
+      "run_id": 36757448901,
+      "artifact_id": 11116943222,
+      "profile": "setup_baseline",
+      "archive_bytes": 281628,
+      "archive_sha256": "01abd9e5239c9dba174452851c4f72f3ae3f3877560e5c9c0737d1cb82759b42",
+      "files_verified": 16,
+      "manifest_pins_verified": true,
+      "same_inputs_as_batch4": [
+        "manifest_sha256",
+        "bundle_sha256",
+        "initial_state_template_sha256",
+        "config_template_sha256",
+        "selected_source_metrics",
+        "method_sha256",
+        "runtime_sha256",
+        "runner_sha256",
+        "prepared_sha256",
+        "source_log_sha256"
+      ],
+      "partial_not_accepted": true,
+      "native_evidence": [
+        "32 macros",
+        "1313 clock nets",
+        "55952 blockages",
+        "GRT extra iteration 3/50"
+      ],
+      "resources_before": {
+        "available_memory_bytes": 15529164800,
+        "free_disk_bytes": 91497893888
+      },
+      "native_address_space_limit_bytes": 8589934592,
+      "status": "RUNNING",
+      "timing_comparison_available": false,
+      "notes": [
+        "Resources are prelaunch host values, not actual process peak RSS.",
+        "Inherited missing SRAM timing library warnings remain; no closure or signoff claim.",
+        "Both profiles use byte-identical before snapshot SDC."
+      ]
+    }
+  },
+  "local_duplicate_queue": "Idle timing controller intentionally paused with verified PID/birth/argv and zero descendants; all 19 immutable input pins unchanged. Cloud continuation replaces local resource waiting; no active native process stopped.",
+  "migration_validation_and_startup_assets": "docs/evidence/cloud-migration-validation-assets-20260930.json"
+}

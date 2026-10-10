@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="35" time="457.420" timestamp="2026-10-05T22:20:22.470248+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_exact_generated_inverse_and_wrapper_bridge" time="0.005" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_literal_balanced_read_all_metadata_and_unknown_masking[16]" time="4.513" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_literal_balanced_read_all_metadata_and_unknown_masking[64]" time="41.259" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_literal_balanced_read_all_metadata_and_unknown_masking[128]" time="139.100" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[ignore_lane_0]" time="0.215" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[ignore_lane_1]" time="0.220" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[ignore_lane_2]" time="0.288" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[ignore_lane_3]" time="0.264" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[rotate_root_lane]" time="0.246" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[ignore_control_count]" time="0.208" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[unknown_verdict_passes]" time="0.220" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[latch_read_any]" time="0.207" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_select_and_mask_faults_are_detected[lose_selected_eligibility]" time="0.214" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_literal_selected_x_z_fields_and_unknown_conditions" time="0.040" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_actual_payload_or_z_conversion_fault_is_detected" time="0.034" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_isolated_leaf_events_and_inactive_to_active_transitions" time="0.035" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_exhaustive_local_fourstate_retire_predicate_and_masks" time="0.842" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_v17_v20_cycle_exact_all_public_outputs[150]" time="141.958" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[public_data_inversion]" time="1.362" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[unqualified_speculative_fault]" time="3.542" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[slot_writer_skips_step]" time="1.397" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[slot_data_lane_rotates]" time="1.408" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[fault_keeps_ring_owner]" time="1.519" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[retire_always_empty]" time="1.411" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[retire_never_empty]" time="35.505"><failure message="AssertionError: assert (0 != 0)&#10; +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...verilog-dir', '/home/hasanmelih/.local/bin', '--test', 'fault_quarantine_restart_wrap_and_backpressure'], returncode=0).returncode">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v20-public-controls01/test_actual_miter_fault_is_obs6')
+fault = 'retire_never_empty'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "slot_writer_skips_step",
+            "slot_data_lane_rotates",
+            "fault_keeps_ring_owner",
+            "retire_always_empty",
+            "retire_never_empty",
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v20.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "fault_quarantine_restart_wrap_and_backpressure"
+            if fault.startswith(("slot_", "fault_", "retire_"))
+            else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V19_FAULT_QUARANTINE_NOT_ATOMIC",
+            )
+        )
+E       AssertionError: assert (0 != 0)
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...verilog-dir', '/home/hasanmelih/.local/bin', '--test', 'fault_quarantine_restart_wrap_and_backpressure'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_integrity_v20_miter.py:316: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_only_retire_control_edits_to_frozen_sources" time="0.006" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_full_positive_profiles[150]" time="70.106" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[selector_loses_stp]" time="1.458" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[sequence_byte_order]" time="1.390" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[carry_word_order]" time="1.324" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[stp_suffix_word_order]" time="1.390" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[initial_dllp_loses_carry]" time="1.643" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[dllp_preceding_seed_order]" time="1.165" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[look_drops_successor]" time="1.400" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v20" name="test_actual_wide_rx_fault_rejected[edb_releases_bad]" time="1.151" /></testsuite></testsuites>

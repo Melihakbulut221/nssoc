@@ -1,0 +1,86 @@
+{
+  "status": "MEASURED_READ_RETIRE_CONTROL_CONE_HYPOTHESIS_FROM_V19",
+  "inputs": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v19-20261005/critical-path-attribution.json",
+      "bytes": 26153,
+      "sha256": "c55d262f8036b1820648f351d7d4021860bd20fb867e27b4becbd7bec9491530"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v19-20261005/slow-critical-path.txt",
+      "bytes": 5369,
+      "sha256": "a284d7beba9f6e012a9edd3461a905e1d3c64f27c8f316cfeee21b420e7f2714"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v19.v",
+      "bytes": 193788,
+      "sha256": "f9025c41e9c2aa5f6208f852e30286384bbc9462b164923485d0498600f9daea"
+    }
+  ],
+  "start": "framer.read_ptr[3]",
+  "endpoint": "framer.current_valid",
+  "first_reported_path_node_with_keep_and_verdict_ancestry": {
+    "cell": "_096047_",
+    "type": "sg13g2_nor3_1",
+    "output": "_023764_",
+    "fanout": 3,
+    "delay_ns": 0.10398,
+    "arrival_ns": 1.647883,
+    "structural_current_word_support": [],
+    "current_block_bits": [],
+    "other_leaf_bases": [
+      "framer.read_ptr",
+      "framer.slot_keep",
+      "framer.verdict_cache"
+    ]
+  },
+  "delay_by_cell_family": {
+    "launch_ff": {
+      "count": 1,
+      "delay_ns": 0.243207
+    },
+    "buffer": {
+      "count": 19,
+      "delay_ns": 3.1667099999999997
+    },
+    "other_boolean": {
+      "count": 22,
+      "delay_ns": 3.538067
+    },
+    "xor_xnor": {
+      "count": 1,
+      "delay_ns": 0.279631
+    }
+  },
+  "read_keep_source_uses": [
+    {
+      "line": 473,
+      "text": "reg [15:0] read_keep,read_sop,read_eop,read_dllp;"
+    },
+    {
+      "line": 515,
+      "text": "read_data=0;read_keep=0;read_sop=0;read_eop=0;read_dllp=0;read_sequence=0;"
+    },
+    {
+      "line": 518,
+      "text": "{read_data[r*32+:32],read_keep[r*4+:4],read_sop[r*4+:4],read_eop[r*4+:4],read_dllp[r*4+:4],read_sequence[r*12+:12]}=read_payload_root[r];"
+    },
+    {
+      "line": 524,
+      "text": "((!output_valid || ready_i) || read_keep==0);"
+    },
+    {
+      "line": 983,
+      "text": "if(read_keep!=0) begin"
+    },
+    {
+      "line": 984,
+      "text": "output_valid<=1;output_data<=read_data;output_keep<=read_keep;"
+    }
+  ],
+  "structural_findings": "Exactreportedchain includesread_ptr, thenstoredkeep+verdictcache leaves andendscurrent_valid; no currentblockdata supportsanyreportednode. Analyzer verifiedeachreportedoutput isdirectinputofnextcell andregistered leavesboundcombinationalcone.",
+  "RTL_cut_reason": "read_keep is assigned only byunchangedreadpayload mux/countgate. Currentcycle combinationalconsumer isretire(read_keep==0); otherif(read_keep!=0) isclockedoutputvalid/payloadwrite anddoesnotfeedcurrent_validbeforeanotheredge. retire selectscapacity_overflow, thenring_overflow/step/input_ready/fault controlcurrent_valid. Thisestablishesspecificcontrolchannel, not a unique gate-to-source-statement attribution.",
+  "candidate": "Expose existingknowneligibilityroot perlane and count-mask procedurally; read_any isknown0/1. Replaceonly read_keep==0 inretire with !read_any. Allpayload/controlwriters unchangedfromV19. Selectedleaf musthavekeep!=0 withknown1, so read_keep==0 iffno count-eligibleleaf, evenpartialX/Z. Must verifyactualfourstatecomponent/miter/mutants before native.",
+  "baseline": "V19 isolatednextconeexperiment; compareactualnative toV19,V17best,V11stable. V19 remainsrejected; neither sourceproof nor expectedpathshortening is timingacceptance.",
+  "physical_acceptance": false
+}

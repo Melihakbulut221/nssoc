@@ -131,10 +131,9 @@ def test_the_response_register_defaults_to_off_everywhere():
 
 def test_nothing_in_the_design_turns_the_response_register_on():
     """The knob exists in three flows and all three default it off.
-    Nothing else
-    in the repository may set it, and in particular no configuration file
-    and no committed script may hard-code it on: the netlist that is
-    hardened has to be the netlist whose cycle count is published."""
+    The explicit docs/88 interface experiment selects it together with
+    REQ_REG and SYNPRE. Ordinary flows still default it off; the experiment
+    has its own CPU cycle measurement and is never the implicit default."""
     # The three flows that OFFER the knob. Each defaults it to 0 and the
     # test above checks the defaults; what is forbidden is a fourth place
     # that sets it, or any of these three hard-coding it on.
@@ -142,12 +141,17 @@ def test_nothing_in_the_design_turns_the_response_register_on():
         SOC_FLOW / "syn_soc_top.sh",
         SOC_FLOW / "sim_soc.sh",
         SOC_FLOW / "fi_core.sh",
+        # docs/88's explicit P&R profile, paired with its CPU regression.
+        SOC_FLOW / "implement_interfaces.sh",
     }
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    assert "SOC_MEM_RDREG=1 SOC_REQ_REG=1 IBEX_RF_SYNPRE=1" in profile
     pattern = re.compile(r"SOC_MEM_RDREG\s*=\s*1|MEM_RDREG\s*\(\s*1'b1")
     offenders = []
     for path in list(ROOT.glob("hw/**/*.sh")) + list(ROOT.glob("hw/**/*.v")) \
             + list(ROOT.glob("hw/**/*.json")) + list(ROOT.glob("sw/**/*.py")):
-        if path in allowed or "/runs/" in str(path) or "/out/" in str(path):
+        if (not path.is_file() or path in allowed or
+                any(part in path.relative_to(ROOT).parts for part in ("runs", "out", "tools", "ext"))):
             continue
         if path == Path(__file__):
             continue
@@ -307,7 +311,12 @@ def test_the_memory_protection_defaults_on_and_nothing_turns_it_off():
     assert re.search(r"parameter\s+integer\s+MEM_HARDEN\s*=\s*1\b", top)
     assert re.search(r"parameter\s+integer\s+ROM_HARDEN\s*=\s*MEM_HARDEN\b", top)
     assert ".HARDEN(MEM_HARDEN), .ECC_BYTE(1'b1)) u_ram" in top
-    assert ".HARDEN(ROM_HARDEN), .ECC_BYTE(1'b0)) u_rom" in top
+    rom = re.search(r"`ifdef SOC_LOGIC_BOOT_ROM\s+soc_logic_boot_rom #\((.*?)"
+                    r"`else\s+soc_mem #\((.*?)`endif(.*?)\) u_rom", top, re.S)
+    assert rom, "Both ROM profiles must instantiate the same protected port contract"
+    assert ".RO(32'd1)" in rom.group(1) and ".ECC_BYTE(32'd0)" in rom.group(1)
+    assert ".RO(1'b1)" in rom.group(2) and ".ECC_BYTE(1'b0)" in rom.group(2)
+    assert ".HARDEN(ROM_HARDEN)" in rom.group(3)
     for name in ("soc_mem.v", "soc_mem_sram.v", "soc_mem_ecc.v"):
         text = (SOC_RTL / name).read_text()
         assert re.search(r"parameter\s+integer\s+HARDEN\s*=\s*1\b", text), (
@@ -486,19 +495,25 @@ def test_the_scrubbers_ship_enabled():
     assert "soc_scrub" in (SOC_FLOW / "syn_soc.sh").read_text()
 
 
-def test_the_software_header_matches_the_block():
+def test_the_software_header_matches_the_block(tmp_path):
     """hw/soc/tb/sw/soc_scrub.h carries the offsets and bit numbers of
     soc_scrub.v; the two are compared here so a driver cannot read the
     wrong register."""
     scrub = (SOC_RTL / "soc_scrub.v").read_text()
     hdr = (SOC_TB / "sw" / "soc_scrub.h").read_text()
     regs = dict(re.findall(r"localparam \[11:0\] REG_(\w+)\s*=\s*12'h([0-9A-Fa-f]+);", scrub))
-    for name, off in regs.items():
-        m = re.search(r"#define SCR_%s\s+\(SOC_SCRUB_BASE \+ 0x([0-9A-Fa-f]+)u\)" % name, hdr)
-        assert m, "soc_scrub.h has no SCR_{}".format(name)
-        assert int(m.group(1), 16) == int(off, 16), (
-            "SCR_{} is at 0x{} in the header and 0x{} in the RTL".format(
-                name, m.group(1), off))
+    assert len(regs) == 12, "The complete scrub register bank must be compared"
+    source = '#include <stdint.h>\n#include "soc_scrub.h"\n'
+    source += '\n'.join(
+        f'_Static_assert(SCR_{name} - SOC_SCRUB_BASE == 0x{off}u, "SCR_{name} offset");'
+        for name, off in regs.items())
+    # Resolve generated aliases with the actual C preprocessor, while taking
+    # the comparison values independently from the RTL decoder declarations.
+    result = subprocess.run(
+        ['cc', '-std=c11', '-Werror', '-x', 'c', '-c', '-',
+         '-I', str(SOC_TB / 'sw'), '-o', str(tmp_path / 'scrub.o')],
+        input=source, text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
     bits = dict(re.findall(r"localparam integer S_(\w+)\s*=\s*(\d+);", scrub))
     for name, idx in bits.items():
         m = re.search(r"#define SCR_S_%s\s+\(1u << (\d+)\)" % name, hdr)
@@ -534,6 +549,15 @@ def test_the_pnr_floorplans_name_the_arms_the_rtl_has():
         seen += 1
         c = json.loads(cfg.read_text())
         for macro, spec in c["MACROS"].items():
+            if macro == "RM_IHPSG13_2P_256x16_c2_bm_bist":
+                # These SRAMs are inferred from the two Ethernet FIFOs by
+                # techmap; they do not belong to soc_mem_sram's generate arms.
+                expected = {f"u_eth.u_mac.{direction}_fifo.fifo_inst.mem.0.{bank}"
+                            for direction in ("rx", "tx") for bank in range(8)}
+                assert set(spec["instances"]) == expected, cfg.name
+                mapping = ROOT / "hw/soc/techmap/eth_ram_map.v"
+                assert macro + " _TECHMAP_REPLACE_" in mapping.read_text()
+                continue
             for inst in spec["instances"]:
                 outer, block, leaf = inst.split(".")
                 assert block in labels, (

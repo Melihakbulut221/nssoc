@@ -1,0 +1,117 @@
+{
+  "status": "PASS_PRIMARY_CONTROLLER_AND_PCI_SIG_TRACE_CROSSCHECK",
+  "source": {
+    "bytes": 4767,
+    "sha256": "a198cc378f88d0410bff357a261c5cffd0cfdd6512617b8450dcd1e783e8eac6"
+  },
+  "original_controller": {
+    "commit": "c511d2eafa794a78b819e38dd90314d3b2a883fa",
+    "files": {
+      "ECP5-PCIe-c511d2ea-crc.py": {
+        "bytes": 7532,
+        "sha256": "81345e6ec427f8892a3b88eb9fdc5d54d00ccd700704fbc5ac74dbcb3660a65f"
+      },
+      "ECP5-PCIe-c511d2ea-dllp.py": {
+        "bytes": 4735,
+        "sha256": "d5f7bc199355995067d5d882aad9402ccc520a90901adffbaa3b5d7bc8be9f03"
+      },
+      "ECP5-PCIe-c511d2ea-test_crc.py": {
+        "bytes": 3556,
+        "sha256": "6a91f6c5c6ccadd3a10f2e236379300c700ba8336a35b4054ad0aeea95e55ccb"
+      }
+    },
+    "url": "https://github.com/ECP5-PCIe/ECP5-PCIe/tree/c511d2eafa794a78b819e38dd90314d3b2a883fa",
+    "scope": "Original controller equations and independent scalar reference; no claim upstream controller passes PCI-SIG compliance."
+  },
+  "lcrc_comparisons": [
+    {
+      "name": "minimum",
+      "lcrc_wire_hex": "2688c5fd",
+      "ordinary_normal_residue": "c704dd7b",
+      "inverted_normal_residue": "00000000"
+    },
+    {
+      "name": "sequence_fff",
+      "lcrc_wire_hex": "76b0bf96",
+      "ordinary_normal_residue": "c704dd7b",
+      "inverted_normal_residue": "00000000"
+    },
+    {
+      "name": "maximum150_zero",
+      "lcrc_wire_hex": "2473a33f",
+      "ordinary_normal_residue": "c704dd7b",
+      "inverted_normal_residue": "00000000"
+    },
+    {
+      "name": "maximum4118",
+      "lcrc_wire_hex": "d441001f",
+      "ordinary_normal_residue": "c704dd7b",
+      "inverted_normal_residue": "00000000"
+    }
+  ],
+  "official_dllp_trace_vectors": [
+    {
+      "kind": "ACK",
+      "sequence": 3,
+      "body_hex": "00000003",
+      "wire_crc_hex": "504e",
+      "official_display": "504e"
+    },
+    {
+      "kind": "ACK",
+      "sequence": 4,
+      "body_hex": "00000004",
+      "wire_crc_hex": "370c",
+      "official_display": "370c"
+    },
+    {
+      "kind": "NAK",
+      "sequence": 2,
+      "body_hex": "10000002",
+      "wire_crc_hex": "1a32",
+      "official_display": "1a32"
+    }
+  ],
+  "primary_urls": [
+    {
+      "url": "https://pcisig.com/sites/default/files/files/PCI-SIG%20PCIe%205.0%20Compliance%20Webinar_1.25.23_FINAL.pdf",
+      "page": 15,
+      "acquisition": "Web tool indexed visual transcription; direct anonymous urllib download returned403. No complete PDF/raw screenshot redistributed.",
+      "supports": "Three actual ACK/NAK trace CRC16 values, ordinary bad-LCRC distinguished from DLLP/nullification tests."
+    },
+    {
+      "url": "https://docs.amd.com/r/en-US/pg054-7series-pcie/Error-Detection",
+      "supports": "EDB nullification must carry inverse of calculated ordinary LCRC; incorrect inverse is corruption. DLLP/TLP CRC errors discard packets."
+    },
+    {
+      "url": "https://www.intel.com/content/dam/support/us/en/programmable/support-resources/fpga-wiki/asset03/pci-express-base-r2.1.pdf",
+      "section": "3.5.2.2/Table3-3",
+      "acquisition": "Official Intel URL indexed text available but direct page redirects404. Treated as indexed corroboration, not fresh byte-complete acquisition.",
+      "supports": "Initial FFFFFFFF, polynomial04C11DB7, first sequence bit8, all TLP bytes including reserved bits, complement and byte mapping."
+    }
+  ],
+  "contract": {
+    "tlp_prefix_wire_bytes": "0000+seq[11:8], seq[7:0]; physical STP framing bits excluded",
+    "tlp_coverage": "Both sequence bytes and all TLP bytes including optional ECRC; received LCRC validated separately; ECRC semantics remain separate",
+    "crc32": "Normal04C11DB7/reflectedEDB88320; seedFFFFFFFF; complement; each input byte LSBfirst; reflected complemented remainder lowbytefirst on wire",
+    "crc16": "Normal100B/reflectedD008; seedFFFF; all four DLLP body bytes LSBfirst; complement and reverse normal remainder to lowbytefirst reflected wire value",
+    "nullification": "EDB plus valid inverted ordinary LCRC => nullified; EDB plus incorrect inverse => CRC error; all drop without retirement",
+    "ordinary_crc_failure": "Drop whole packet and report per-slot CRC error; preserve successor and epoch when framing is legal"
+  },
+  "local_base4": {
+    "path": "/dev/shm/nssoc-pcie-base4-reference.pdf",
+    "pin": {
+      "bytes": 20802626,
+      "sha256": "e5cb45c3a25066d362d7ad95e0e4be59b1afd90ee774bab5ee90268bf081e770"
+    },
+    "provenance": "UNVERIFIED original acquisition URL; only cross-checked reference, not sole authoritative source",
+    "pages_examined": [
+      203,
+      204,
+      207,
+      240
+    ],
+    "redistribute": false
+  },
+  "scope": "CRC/quarantine implementation contract only; no protocol conformance, ACK/NAK policy, LTSSM or RTL/native result."
+}

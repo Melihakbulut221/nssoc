@@ -1,0 +1,289 @@
+{
+  "schema": 1,
+  "producer": {
+    "run_id": 37007664485,
+    "source_commit": "eb219d277090cf77827a5b0d7f3a773e924c73b5",
+    "artifact_id": 11227910660,
+    "artifact_name": "electrical-repair-final-1",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-electrical-first-37007664485-20261002.zip",
+    "bytes": 353772316,
+    "sha256": "8c29dd792dee74b2d7f2020ec9fd427c433fbcbd5ab6a11dfbecb314ffb5e234",
+    "entrypoint": "scripts/run_cloud_electrical_repair.py",
+    "kind": "candidate_electrical_repair",
+    "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+  },
+  "candidate_files": {
+    "soc_top.odb": {
+      "bytes": 107910159,
+      "sha256": "bb695d8a27736c505723126fa35d959e7d89c60ccdf4eda1b72da902e2804ece"
+    },
+    "soc_top.def": {
+      "bytes": 24448527,
+      "sha256": "1c0472d53a565751975f5f54a62e661f5dfbc738297c95e39010088f4fbbbf0c"
+    },
+    "soc_top.sdc": {
+      "bytes": 56724,
+      "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+    },
+    "soc_top.v": {
+      "bytes": 12123100,
+      "sha256": "2875cdfd5578aa09370f74382c886344037445772f96c04cffe66634039bd6e7"
+    }
+  },
+  "baseline_metrics": {
+    "setup_wns_seconds": -4.255417351828328e-09,
+    "hold_wns_seconds": -1.589801623680387e-10,
+    "setup_tns_seconds": -3.598960802264628e-06,
+    "hold_tns_seconds": -2.1187052112736637e-09,
+    "setup_violating_endpoints": 1312,
+    "hold_violating_endpoints": 65,
+    "slew_violations": 0,
+    "capacitance_violations": 3,
+    "instance_count": 103892
+  },
+  "baseline_fingerprints": {
+    "constraints": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "netlist": "2875cdfd5578aa09370f74382c886344037445772f96c04cffe66634039bd6e7",
+    "placement": "7da1f99828fa46503a95b774cff5f5f4d0b422eea86a6088e226ea65e9a848ca",
+    "routing": "23bc535eac4817f9de965412d932c2d718a6f778737559d696d5bbf760c392b5",
+    "parasitics": "7c443456e0d64072e15817b8d240362eab8bfd9bea4af120ca222e1de647c921"
+  },
+  "original_matched_metrics": {
+    "setup_wns_ns": -4.909516349016485,
+    "hold_wns_ns": -1.8409653801398917,
+    "setup_tns_ns": -4320.800144341774,
+    "hold_tns_ns": -26.461044910774945,
+    "setup_violating_endpoints": 1384,
+    "hold_violating_endpoints": 113,
+    "slew_violations": 0,
+    "capacitance_violations": 1
+  },
+  "original_selected_metrics": {
+    "setup_wns_ns": -4.710829,
+    "hold_wns_ns": -1.840329
+  },
+  "targets": [
+    {
+      "driver": "fanout1387",
+      "pin": "X",
+      "net": "net1387"
+    },
+    {
+      "driver": "fanout1391",
+      "pin": "X",
+      "net": "net1391"
+    },
+    {
+      "driver": "fanout1593",
+      "pin": "X",
+      "net": "net1593"
+    }
+  ],
+  "native_api_source": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "files": {
+      "src/rsz/src/Resizer.i": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/Resizer.i",
+        "bytes": 19925,
+        "sha256": "28732aeb65f49c204bf3d25adfb7984c8e53fc8e1a29f7b23ffbec7d23808da4"
+      },
+      "src/rsz/src/RepairDesign.cc": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairDesign.cc",
+        "bytes": 77985,
+        "sha256": "791000a64b13a72aed4d68551ae6ca0f8b693c23f206aaea6e6246211324d230"
+      },
+      "src/rsz/test/repair_wire9.tcl": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/test/repair_wire9.tcl",
+        "bytes": 307,
+        "sha256": "7df5aa391bd9e91a95b4d6adb79ee849341c530ac5ce24910d40d79bc77bcdc0"
+      }
+    }
+  },
+  "manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "scope": "Unadopted three-net electrical repair continuation; unchanged original C10 and candidate-baseline timing guards. Full native geometry/endpoint/control and limited logic proof required. No setup repair or threshold change.",
+  "combined_parent_metrics": {
+    "setup_wns_ns": -4.209004700328478,
+    "hold_wns_ns": -0.15530043917522107,
+    "setup_tns_ns": -3554.9244330468355,
+    "hold_tns_ns": -2.117501507470365,
+    "setup_violating_endpoints": 1311,
+    "hold_violating_endpoints": 66,
+    "slew_violations": 2,
+    "capacitance_violations": 3
+  },
+  "repair_margins_percent": {
+    "slew": 20,
+    "cap": 20
+  },
+  "headroom_scope": "Experimental target tightening only; not a bound on the observed incremental0.145421281pF to fresh0.329943329pF extraction discrepancy. Fresh independent verification and every earlier timing/electrical guard remain mandatory.",
+  "graph_evidence": {
+    "netlist_sha256": "2875cdfd5578aa09370f74382c886344037445772f96c04cffe66634039bd6e7",
+    "targets": {
+      "fanout1387": {
+        "net": "net1387",
+        "master": "sg13g2_buf_1",
+        "terminals": [
+          {
+            "instance": "fanout1387",
+            "master": "sg13g2_buf_1",
+            "port": "X",
+            "odb_instance": "fanout1387"
+          },
+          {
+            "instance": "max_cap22313",
+            "master": "sg13g2_buf_8",
+            "port": "A",
+            "odb_instance": "max_cap22313"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[21]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[21]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[21]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[21]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem"
+          }
+        ]
+      },
+      "fanout1391": {
+        "net": "net1391",
+        "master": "sg13g2_buf_1",
+        "terminals": [
+          {
+            "instance": "fanout1391",
+            "master": "sg13g2_buf_1",
+            "port": "X",
+            "odb_instance": "fanout1391"
+          },
+          {
+            "instance": "max_cap22314",
+            "master": "sg13g2_buf_8",
+            "port": "A",
+            "odb_instance": "max_cap22314"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[23]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[23]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[23]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[23]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem"
+          }
+        ]
+      },
+      "fanout1593": {
+        "net": "net1593",
+        "master": "sg13g2_buf_1",
+        "terminals": [
+          {
+            "instance": "ANTENNA_2087",
+            "master": "sg13g2_antennanp",
+            "port": "A",
+            "odb_instance": "ANTENNA_2087"
+          },
+          {
+            "instance": "fanout1593",
+            "master": "sg13g2_buf_1",
+            "port": "X",
+            "odb_instance": "fanout1593"
+          },
+          {
+            "instance": "max_cap11633",
+            "master": "sg13g2_buf_8",
+            "port": "A",
+            "odb_instance": "max_cap11633"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[15]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[15]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[15]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem"
+          },
+          {
+            "instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+            "master": "SP6TSRAM512x64",
+            "port": "d[15]",
+            "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem"
+          }
+        ]
+      }
+    },
+    "native_instance_witness": {
+      "source_run": 37013647485,
+      "source_commit": "3ac25d0d95d32ef2762412813b3f7a64fca1604f",
+      "member": "run/01-openroad-resizertimingpostgrt/candidate_before/placement.tsv",
+      "member_pin": {
+        "bytes": 5286679,
+        "sha256": "7da1f99828fa46503a95b774cff5f5f4d0b422eea86a6088e226ea65e9a848ca"
+      },
+      "instances": [
+        {
+          "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[0].mem",
+          "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem",
+          "master": "SP6TSRAM512x64"
+        },
+        {
+          "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[1].mem",
+          "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem",
+          "master": "SP6TSRAM512x64"
+        },
+        {
+          "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[2].mem",
+          "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem",
+          "master": "SP6TSRAM512x64"
+        },
+        {
+          "verilog_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank[3].mem",
+          "odb_instance": "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem",
+          "master": "SP6TSRAM512x64"
+        }
+      ],
+      "scope": "Exact source-native names from the independently reproduced candidate placement. Verilog escaped identifiers and OpenDB names are retained separately; comparison does not strip or relax native terminal identities."
+    }
+  }
+}

@@ -1,0 +1,28 @@
+F..............................                                          [100%]
+=================================== FAILURES ===================================
+____ test_complete_frozen_v1_bridge_changes_only_size_guard_and_description ____
+
+    def test_complete_frozen_v1_bridge_changes_only_size_guard_and_description():
+        old = Path(original_worker.__file__).read_text()
+        assert local.pin(original_worker.__file__)['sha256'] == '081e53f08b33b4a841754d4021272fd3c4f7bacd2e2b444c8b6e2d479c44acb9'
+        expected = old.replace('import shutil\n', 'import shutil\nimport stat\n', 1)
+        expected = expected.replace('Independent bounded publisher of immutable locally committed PLL parts.',
+                                    'Independent publisher V2 with bounded full-tree retries for moving logs.', 1)
+        expected = expected.replace(inspect.getsource(original_worker.guard),
+                                    inspect.getsource(m.evidence_bytes) + '\n\n' + inspect.getsource(m.guard), 1)
+>       assert Path(m.__file__).read_text() == expected
+E       assert "#!/usr/bin/e...n    main()\n" == "#!/usr/bin/e...n    main()\n"
+E         
+E         Skipping 3307 identical leading characters in diff, use -v to show
+E           urn used
+E         - 
+E           
+E           def command(path, receipt, directory, *, stop=None):
+E               def check_stop():...
+E         
+E         ...Full output truncated (184 lines hidden), use '-vv' to show
+
+sw/tests/test_pcie_local_spool_publisher_v2.py:34: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_local_spool_publisher_v2.py::test_complete_frozen_v1_bridge_changes_only_size_guard_and_description
+1 failed, 30 passed in 17.23s

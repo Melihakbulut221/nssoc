@@ -1,0 +1,14 @@
+rm -f /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/results.xml
+"make" -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v18 /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/results.xml
+mkdir -p /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/sim
+/home/hasanmelih/.local/bin/iverilog -o /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/sim/sim.vvp -s soc_pcie_gen3_continuous_rx_integrity_v18 -g2012 -g2012 -Psoc_pcie_gen3_continuous_rx_integrity_v18.MAX_ENCODED_BYTES=4118 -f /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/sim/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress_integrity_v11.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v18.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v18.v
+rm -f /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/results.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_continuous_rx_integrity_v18 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_continuous_rx_integrity_v18 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/sim/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791224491
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_continuous_rx_integrity_v18.sustained_minimum_packets_exceed_every_buffer (1/13)

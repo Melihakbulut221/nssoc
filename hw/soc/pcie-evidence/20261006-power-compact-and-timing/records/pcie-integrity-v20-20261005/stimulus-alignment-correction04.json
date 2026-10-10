@@ -1,0 +1,28 @@
+{
+  "status": "PRESERVED_EDS_ALIGNMENT_ONLY_CORRECTION_SOURCE_REVIEW_REQUIRED",
+  "old_freeze": {
+    "bytes": 2024,
+    "sha256": "2fef19abf2b24e27a9f5a632717f2aad43a575238ef887f450403e304e5f2661"
+  },
+  "new_freeze": {
+    "bytes": 2024,
+    "sha256": "d90ec259ca0a524005dafc838feec3ef93598e056372b88bc9199e1c13e029db"
+  },
+  "old": "    raw = wire_dllp(packet) + bytes(16 * RING) + bytes.fromhex(\"1f809000\")\n",
+  "new": "    raw = wire_dllp(packet) + bytes(16 * RING)\n    raw += bytes((60 - len(raw)) % 64) + bytes.fromhex(\"1f809000\")\n",
+  "old_failure": {
+    "bytes": 1104,
+    "sha256": "615d163653cf42b4e2f95b8338b87e8cd0ab3bae5b74db69cadc2b3a9615073b"
+  },
+  "actual_contract": "EDS legal only slice3 word3 = final DWORD offset60 in64-byteblock, as source control_eds shows; no assertion removed or reduced.",
+  "targets": [
+    "inverse",
+    "retire_never_empty",
+    "appended_direct",
+    "appended_miter"
+  ],
+  "source_changes": [
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v20.py"
+  ],
+  "remaining_gate": "Old14miter cases trulyPASS in controls03 despite15thfailure; re-run onlychanged15th direct/miter plusmutant andinverse, then exact merged receipt."
+}

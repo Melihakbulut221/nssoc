@@ -1,0 +1,75 @@
+{
+  "utc": "2026-10-04T10:26:33.382625+00:00",
+  "status": "PASS_SOURCE_AND_CAPSULE_IDENTITY",
+  "sources": {
+    "scripts/characterize_pcie_clock_driver_v3.py": {
+      "bytes": 20433,
+      "sha256": "510b0c25dc66acc8108f83a9f06dcbb00e6eeb1c1bb782f6f364bac73f483148"
+    },
+    "sw/tests/test_pcie_clock_driver_v3.py": {
+      "bytes": 8063,
+      "sha256": "f61ab5535a9f0ebafa5f3037d7daea3c1f90a1c887d029c29e227e503d5948d8"
+    },
+    "hw/soc/analog/pcie/clock_vco_hbt_v3.spice": {
+      "bytes": 2514,
+      "sha256": "0d578a1392a13a9d61013eb5f0592515fccb112eddcee24f643f816b020f10f4"
+    },
+    "scripts/patch_magic_hbt_contract_v2.py": {
+      "bytes": 2571,
+      "sha256": "fd60624109cfed9eb3060f5f07b5e461048adc1b65bd053fb681bd9600479ae3"
+    },
+    "scripts/check_magic_hbt_hybrid_v2.py": {
+      "bytes": 18620,
+      "sha256": "842730408679458f7af2a39e0729e33674fa5ba5a6bc41604613f8d949d3f3a0"
+    },
+    "sw/tests/test_magic_hbt_contract_v2.py": {
+      "bytes": 4098,
+      "sha256": "a0cfa0f526724c3bd4308ec9de7df4ef39f713ac13fc83fc7bac87a0ada477e5"
+    },
+    "hw/soc/flow/make_pcie_clock_vco_v3.py": {
+      "bytes": 17631,
+      "sha256": "0e409aba009d7bdfe13c889ff3327f6239b4c59c64257525ea553787f0b9212f"
+    },
+    "hw/soc/flow/check_pcie_clock_vco_v3.py": {
+      "bytes": 19151,
+      "sha256": "4c01451a2980dfc1a18a22e31aa3afe3d2664d2b6f66706a034cfb7c82c9b109"
+    },
+    "sw/tests/test_pcie_clock_vco_v3_layout.py": {
+      "bytes": 8068,
+      "sha256": "8cfa5866b2b69df5da634fcfdcb05cd77975d173664ae9ab46584a3215ed7588"
+    }
+  },
+  "capsules": {
+    "driver": {
+      "file": "driver.tar.xz",
+      "bytes": 624104,
+      "sha256": "ce08552d5a2dc78494e1fb3237e18f8935c6a882e7039911615aaa38e741463c",
+      "members_rehashed": 1036
+    },
+    "hbt-hybrid": {
+      "file": "hbt-hybrid.tar.xz",
+      "bytes": 156488,
+      "sha256": "5a85d909ddf00f0b1ac74d177b3f8bf6282d2f322b77b3fcb05972c12a5d6987",
+      "members_rehashed": 182
+    },
+    "vco-layout": {
+      "file": "vco-layout.tar.xz",
+      "bytes": 201932,
+      "sha256": "58ac5c3583ad9cb4a5c5139951702cff4be31207dc4b32f4bae2307557559e07",
+      "members_rehashed": 327
+    },
+    "scrambler": {
+      "file": "scrambler.tar.xz",
+      "bytes": 97812,
+      "sha256": "26de8d15d7db6b83701e48072b38cba7300ec683df43b086eac4c990dc94499d",
+      "members_rehashed": 55
+    }
+  },
+  "root_tests": {
+    "passed": 98,
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest -q sw/tests/test_pcie_clock_driver_v3.py sw/tests/test_magic_hbt_contract_v2.py sw/tests/test_pcie_clock_vco_v3_layout.py --basetemp=/dev/shm/nssoc-phy-clock-root-pytest-final"
+  },
+  "scrambler": "3RTL+3native TT port cases,2627cells;7real mutations. Inputs/runtime/rawoutputs rehashed separately by scrambler receipt.",
+  "scope": "Source and capsule integrity review plus focused tests. Driver peer separately reparsed19waves and exact55caseunion; physical peer reviewed source. Root did not independently rerun full analog/physical campaigns. No complete PHY/PEX/main-chip/production acceptance.",
+  "full_phy_acceptance": false
+}

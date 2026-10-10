@@ -1,0 +1,28 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Separate v4: real four-HBT interstage limiter and measured clock bias.
+* The first core retains its upward common-mode network. The second network
+* lowers the first core's high output common mode; no ideal level shift.
+.subckt nssoc_clock_div4_hbt_v4 clkp clkn qp qn avdd avss sub
+XFIRST clkp clkn s1p s1n avdd avss sub nssoc_clock_div2_conditioned_hbt
+* Real input bias, limiter reference and differential pair; no ideal gain.
+XLSP s1p bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XLSN s1n bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XLDP bip avss sub rppd w=1u l=16u b=0 sw_et=1
+XLDN bin avss sub rppd w=1u l=16u b=0 sw_et=1
+XLB avdd lref sub rppd w=1u l=9u b=0 sw_et=1
+XLREF lref lref avss sub npn13G2 Nx=1
+XLP ln bip lt sub npn13G2 Nx=2
+XLN lp bin lt sub npn13G2 Nx=2
+XLT lt lref avss sub npn13G2 Nx=4
+XLRP avdd lp sub rppd w=8u l=4u b=0 sw_et=1
+XLRN avdd ln sub rppd w=8u l=4u b=0 sw_et=1
+* The unchanged real MIM feed-forward topology preserves clock swing.
+XSP lp ckp sub rppd w=2u l=8u b=0 sw_et=1
+XSN ln ckn sub rppd w=2u l=8u b=0 sw_et=1
+XDP ckp avss sub rppd w=1u l=7u b=0 sw_et=1
+XDN ckn avss sub rppd w=1u l=7u b=0 sw_et=1
+XCP lp ckp cap_cmim w=20u l=20u
+XCN ln ckn cap_cmim w=20u l=20u
+XSECOND ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt
+.ends nssoc_clock_div4_hbt_v4

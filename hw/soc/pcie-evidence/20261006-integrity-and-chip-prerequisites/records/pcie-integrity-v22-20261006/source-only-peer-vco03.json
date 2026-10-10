@@ -1,0 +1,82 @@
+{
+  "status": "PASS_SOURCE_ONLY_V22_QUARANTINED_CACHE",
+  "freeze": {
+    "bytes": 2636,
+    "sha256": "46d599c89a5a19fee6e87dd9fbfa006a7d29f81922530256ab348685ea50e21c"
+  },
+  "targeted_helper": {
+    "bytes": 619,
+    "sha256": "5d871c34df389a7932b4ff476c771b805289b4c3f8cd0c3d8b89a79241f1f1f1"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 5733,
+    "sha256": "85e133c587acf4c059ae3da1b49e3b6709a5dc295cd5c1623df74c37455ee075"
+  },
+  "previous_peer": {
+    "bytes": 7339,
+    "sha256": "8fb5a82071f1015c334d8b3a51a4785e369e6ecae62d154fb8a2ef22fb249604"
+  },
+  "support_freeze": {
+    "bytes": 910,
+    "sha256": "e9704c4e87d7f2c58deb8f2e53e8a11590be7f2a0ecd6c2ddd7b513f297432ee"
+  },
+  "source_pins": {
+    "scripts/generate_pcie_integrity_cache_v22.py": {
+      "bytes": 1577,
+      "sha256": "dfb7d4d2700c772dbe68ddb0b865dd071a4f541617b9f8837eca96753e49c06a"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 11276,
+      "sha256": "c830431e7b194927d5a4956da0a2b459ebe93278475b17bd221f86e1cb513d2f"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v": {
+      "bytes": 194845,
+      "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v22.v": {
+      "bytes": 3324,
+      "sha256": "29495da25ca84bfff6c7dca6cb541c498debb64ac64e4cfdc863905abe854a01"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v22": {
+      "bytes": 1528,
+      "sha256": "606f14de8fc0f440bce0ad965032e361c41e9e55408cf9ca18c0c34625e510f8"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 29641,
+      "sha256": "7ac5d2f384c15396f2e536b26783770c79f7a41020d020240a7ca01b3e918088"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 6470,
+      "sha256": "69528fd9f87e698377f2eb62b96723ad008d19c943cd84609d2e2a77e402f538"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_cache.py": {
+      "bytes": 5535,
+      "sha256": "c8e98a352bea96aec33dfac4f7571a99381f09b9a57ca4ec452d6ac2521fefe6"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_miter.py": {
+      "bytes": 13672,
+      "sha256": "842ecf1202253835e6c4639f7b7d8e2c4a7d2eb27bbee9b968da865ad5981cf7"
+    }
+  },
+  "preserved_actual_campaign": {
+    "passed": 26,
+    "failed": 3
+  },
+  "old_actual_xml": {
+    "bytes": 12041,
+    "sha256": "5505d8dfad525ad9d30843bb09fec6f095891972fbeff0dc0c2e40f310a3a223"
+  },
+  "changed_sources": [
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v22.py",
+    "sw/tests/test_pcie_gen3_integrity_v22_miter.py"
+  ],
+  "review": [
+    "Observer captures step/fault before currentposedge NBA, waits2ps inside same always block and samples after NBA. Ports.cycle reads at+2ns with clockstillhigh; formerly nextnegedge never occurred before that assertion. Fixed event alignment does not alter DUT or loosen any screen.",
+    "Additional16IDL bytes form one parser four-DWORD slice, advancing owned ring pointers before nextslice goodDLLP+malformedtoken. Thus retain-owner mutant has nonzero pointers and must trigger strict control/quarantine mismatch. Original all8 fault-cache-divergence epochs and fresh owner byte scoreboard unchanged.",
+    "All seven other product/test sources byteidentical; original16publiccase prefix exact. Full miterpositive17cases, all6actualmiter mutants, inverse and changed17thdirectcase willrerun. Compile or coverage errors cannot substitute semantic failures.",
+    "Entire launcher/detacher byte inverses preserve CPU6/2GiB ownership/cancellation/nohealthytimeout; only fresh03 outputs, exactfreeze/helper binding and9test selection change."
+  ],
+  "metadata_qualification": "Inherited sourcefreeze scope says nohardwarecontrols; interpret only newrevision03, as prior26PASS/3FAIL are actual andpreserved. No native mapping or03tests runyet.",
+  "native_or_control_execution_by_peer": false
+}

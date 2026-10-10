@@ -1,0 +1,478 @@
+{
+  "chronology": {
+    "clock_observations_known_at_first_state_unknown": true,
+    "first_monitored_unknown": {
+      "candidate_q_bindings": {
+        "0": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_131361_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "1": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_131362_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "2": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_131363_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "3": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_131364_",
+          "kind": "native_output",
+          "port": "Q"
+        }
+      },
+      "cycle": 1569431,
+      "group": "npu_control",
+      "individual_bad_bit_unknown": true,
+      "mask": "00000040",
+      "original_q_bindings": {
+        "0": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_130766_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "1": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_130767_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "2": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_130768_",
+          "kind": "native_output",
+          "port": "Q"
+        },
+        "3": {
+          "cell_type": "sg13g2_dfrbpq_1",
+          "instance": "_130769_",
+          "kind": "native_output",
+          "port": "Q"
+        }
+      },
+      "packed_bit_range": [
+        43,
+        40
+      ],
+      "raw_nibble": "X",
+      "specific_packed_field": "u_npu.ev_state[3:0]"
+    },
+    "implication": "The observed NPU state X precedes observed gate-enable and memory corruption. This does not exclude an earlier unrecorded delta-cycle D/reset/clock pulse hazard or an unmonitored signal.",
+    "next_observed_clock_unknown": "CLOCK cycle=1569433 time=31389050000 clk=111 enable=1x1 latch=111 delayed=111 notifier=xxx",
+    "next_observed_memory_control_unknown": "MEM cycle=1569501 time=31390410000 bank=3 men=0 wen=0 ren=x addr=xxx bm=0000000000000000 din=00XxXxXx00XXXXXX dout=0000150000002000"
+  },
+  "comparison": {
+    "all_candidate_milestones_exact_original_prefix": true,
+    "candidate_checks_milestones": 76,
+    "candidate_saved_cycle_range": [
+      1568408,
+      1570455
+    ],
+    "first_original_next_check_write": "CHECKS_MEMORY cycle=1581892 time=31638230000 wen=1 ren=0 bm=ffffffffffffffff din=0000001a00000019 dout=0d0a0a1f91050513",
+    "last_shared_check_write": "CHECKS_MEMORY cycle=1561483 time=31230050000 wen=1 ren=0 bm=ffffffffffffffff din=0000001d00000018 dout=0d0a0a1f91050513",
+    "original_checks_milestones": 94,
+    "original_saved_cycle_range": [
+      1595099,
+      1596122
+    ],
+    "paired_detailed_windows_overlap": false,
+    "shared_checks_milestones": 76
+  },
+  "full_chip_local_execution": false,
+  "limits": [
+    "No individual state D/reset/internal UDP traces were captured. Uppercase hexadecimal X loses the identity of individual unknown bits.",
+    "The clean original retained its final ring, so its fine-grained window does not overlap the candidate failure. Earliest whole-design divergence is not established.",
+    "No new RTL mutation, native execution, mapped-equivalence acceptance, timing closure, physical signoff or candidate adoption."
+  ],
+  "reviewer_script": {
+    "bytes": 9878,
+    "sha256": "e79c308082e29e622ca4baebbd7cf26762647b08201fa9485b638ed5a83ad4fc"
+  },
+  "root_review": {
+    "bound_distinction": "This completed diagnostic used1.6Mcycles; original qualification limit is3M. Earlier original candidate qualifications remain failed. New NPU observer restores the3Mlimit.",
+    "review": {
+      "bytes": 16559,
+      "sha256": "126df8546e755737827ec536329d10a70737eab907d5cd1e2d2d9dc279677a15"
+    },
+    "scope": "Rehashed every saved raw member against native result and every method against producer Git. Independent review supplies chronology and source witnesses; no full external netlist locally loaded.",
+    "status": "ROOT_REHASHED_CAPTURE_AND_GIT_METHODS_FAILURE_PRESERVED",
+    "utc": "2026-10-03T06:22:10.719890+00:00",
+    "variants": {
+      "candidate": {
+        "bundle": {
+          "bytes": 524742,
+          "sha256": "3b1e6f0954f63cc45cc8edcfff14197b85be79e0daeac7def8858cc2cd082f0b"
+        },
+        "diagnostic_cycle_bound": 1600000,
+        "git_methods_verified": 16,
+        "native_final": {
+          "checks": 24,
+          "code": "00000000",
+          "cycles": 1600096,
+          "fails": "00000000",
+          "framing": 1,
+          "magic": "00000000"
+        },
+        "native_returncode": 1,
+        "original_qualification_cycle_bound": 3000000,
+        "outputs_rehashed": 95,
+        "raw_member_count": 96
+      },
+      "original": {
+        "bundle": {
+          "bytes": 511835,
+          "sha256": "777aed6626959f27538733aeab7817327f7fb9b460a42f7786d18113bb2c2296"
+        },
+        "diagnostic_cycle_bound": 1600000,
+        "git_methods_verified": 16,
+        "native_final": {
+          "checks": 28,
+          "code": "00000000",
+          "cycles": 1596123,
+          "fails": "00000000",
+          "framing": 0,
+          "magic": "600dc0de"
+        },
+        "native_returncode": 0,
+        "original_qualification_cycle_bound": 3000000,
+        "outputs_rehashed": 95,
+        "raw_member_count": 96
+      }
+    },
+    "whole_chip_local_execution": false
+  },
+  "run_id": 37071773733,
+  "schema": 1,
+  "source_commit": "c7ffba6373529530bf208e58dc9d1bf66eb1182b",
+  "source_equivalence_scope": "Same firmware, models, runtime and observer benchmark; only exact original versus candidate synthesized netlist differs. External full netlists were not downloaded or rehashed locally; their captured source pins were matched against the independently verified startup and immutable producer.",
+  "status": "PASS_INDEPENDENT_CAPTURE_REVIEW_ORIGINAL_BOOT_PASS_CANDIDATE_BOOT_FAILURE_PRESERVED",
+  "utc": "2026-10-03T05:55:14.633756+00:00",
+  "variants": {
+    "candidate": {
+      "artifact": {
+        "digest": "sha256:e57b983f089b5ba640335d8ae6201aff8260548059534c69c01bd7f851469429",
+        "id": 11256582973,
+        "name": "alu-boot-trace-final-candidate-1",
+        "size_in_bytes": 555176
+      },
+      "elapsed_seconds": 3248.459560597,
+      "git_methods_verified": 16,
+      "lossless_verified_member_bundle": {
+        "bytes": 524742,
+        "path": "hw/soc/out/heartbeat-20261003-0547/trace/candidate-verified-members.tar.gz",
+        "sha256": "3b1e6f0954f63cc45cc8edcfff14197b85be79e0daeac7def8858cc2cd082f0b"
+      },
+      "members_verified": 96,
+      "native_controls_reparsed": {
+        "active_unknown": [
+          "8",
+          "81000",
+          "active_sram_bank_0"
+        ],
+        "clock_unknown": [
+          "8",
+          "81000",
+          "clock_gate_unknown"
+        ],
+        "known": null,
+        "masked_unknown": null,
+        "sample_high_bit": [
+          "9",
+          "90000",
+          "sample_mask_80000000"
+        ]
+      },
+      "native_final": {
+        "checks": 24,
+        "code": "00000000",
+        "cycles": 1600096,
+        "fails": "00000000",
+        "framing": 1,
+        "magic": "00000000"
+      },
+      "native_result": {
+        "bytes": 147225,
+        "sha256": "85b344d81e45d623b71dc4081cca55864776bfc0423c69d74cb45cfb1e8993d6"
+      },
+      "native_returncode": 1,
+      "nonacceptance_flags": {
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "manufacturing_approval": false,
+        "mapped_core_equivalence_accepted": false,
+        "timing_accepted": false
+      },
+      "observed_boot_pass": false,
+      "outputs_rehashed": 95,
+      "runtime": {
+        "archive_bytes": 737555999,
+        "archive_sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd",
+        "tools": {
+          "iverilog": {
+            "bytes": 453,
+            "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+          },
+          "vvp": {
+            "bytes": 485,
+            "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+          },
+          "yosys": {
+            "bytes": 540,
+            "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+          }
+        }
+      },
+      "sampled_bits": {
+        "constants": 9,
+        "native_outputs": 424,
+        "total": 441,
+        "unconsumed_aliases": 8
+      },
+      "source_pins": {
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+          "bytes": 6900,
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+          "bytes": 3932,
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+          "bytes": 12655,
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+          "bytes": 6067,
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+          "bytes": 4051,
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/sg13g2_stdcell.v": {
+          "bytes": 53835,
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v": {
+          "bytes": 20792,
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/producer/synthesis-candidate/soc_top.netlist.v": {
+          "bytes": 10370597,
+          "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/alu_boot_trace.v": {
+          "bytes": 5176,
+          "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/app.elf": {
+          "bytes": 57192,
+          "sha256": "2dfc38c7c4c94d7993d7ce74e5327333210812cbf7cc8faa551247bda77a64ac"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/flash0.hex": {
+          "bytes": 393216,
+          "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/test_soc.bin": {
+          "bytes": 3120,
+          "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/tb_qualification_boot.v": {
+          "bytes": 20205,
+          "sha256": "08f9b60eb09083a005300432a8e31ecca0fbee42ec49cc403ebf31afb85a6ebb"
+        }
+      },
+      "startup_source_witness_unchanged": true,
+      "trace_observation": {
+        "events_observed": 3955152,
+        "events_saved": 4096,
+        "first_unknown": [
+          "1569431",
+          "31389020000",
+          "sample_mask_00000040"
+        ],
+        "milestones_saved": 76,
+        "samples_observed": 617052,
+        "samples_saved": 2048,
+        "trace_events": {
+          "bytes": 481878,
+          "sha256": "01571fb8191e3ee706eead066273ce2a5bc60b87e2b0bb3f39e3e79deed556e4"
+        },
+        "trace_milestones": {
+          "bytes": 9728,
+          "sha256": "c8c58f0e2b70f41fc71c6a566c70760541ca0d82b51af84782559c8917f94652"
+        },
+        "trace_samples": {
+          "bytes": 342016,
+          "sha256": "e405644d763d166bcae0822db205ec74c7f87ff5f694cdcfdd9b5cbfd13cf6ac"
+        }
+      },
+      "whole_zip_hash_and_member_crc_verified_in_ram": true
+    },
+    "original": {
+      "artifact": {
+        "digest": "sha256:5da902302d60188bb60d63c78b06bfb07ab1d4fd656d1eb78507171d60e79380",
+        "id": 11257963568,
+        "name": "alu-boot-trace-final-original-1",
+        "size_in_bytes": 543453
+      },
+      "elapsed_seconds": 5694.655306524,
+      "git_methods_verified": 16,
+      "lossless_verified_member_bundle": {
+        "bytes": 511835,
+        "path": "hw/soc/out/heartbeat-20261003-0547/trace/original-verified-members.tar.gz",
+        "sha256": "777aed6626959f27538733aeab7817327f7fb9b460a42f7786d18113bb2c2296"
+      },
+      "members_verified": 96,
+      "native_controls_reparsed": {
+        "active_unknown": [
+          "8",
+          "81000",
+          "active_sram_bank_0"
+        ],
+        "clock_unknown": [
+          "8",
+          "81000",
+          "clock_gate_unknown"
+        ],
+        "known": null,
+        "masked_unknown": null,
+        "sample_high_bit": [
+          "9",
+          "90000",
+          "sample_mask_80000000"
+        ]
+      },
+      "native_final": {
+        "checks": 28,
+        "code": "00000000",
+        "cycles": 1596123,
+        "fails": "00000000",
+        "framing": 0,
+        "magic": "600dc0de"
+      },
+      "native_result": {
+        "bytes": 147152,
+        "sha256": "b74040a9cbcd76b93e0177630f91a7c18820fdd5810e2a1186055f0db9897b2a"
+      },
+      "native_returncode": 0,
+      "nonacceptance_flags": {
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "manufacturing_approval": false,
+        "mapped_core_equivalence_accepted": false,
+        "timing_accepted": false
+      },
+      "observed_boot_pass": true,
+      "outputs_rehashed": 95,
+      "runtime": {
+        "archive_bytes": 737555999,
+        "archive_sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd",
+        "tools": {
+          "iverilog": {
+            "bytes": 453,
+            "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+          },
+          "vvp": {
+            "bytes": 485,
+            "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+          },
+          "yosys": {
+            "bytes": 540,
+            "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+          }
+        }
+      },
+      "sampled_bits": {
+        "constants": 9,
+        "native_outputs": 424,
+        "total": 441,
+        "unconsumed_aliases": 8
+      },
+      "source_pins": {
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+          "bytes": 6900,
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+          "bytes": 3932,
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+          "bytes": 12655,
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+          "bytes": 6067,
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+          "bytes": 4051,
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/models/sg13g2_stdcell.v": {
+          "bytes": 53835,
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v": {
+          "bytes": 20792,
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8"
+        },
+        "/home/runner/work/_temp/alu-boot-trace-work/producer/synthesis-original/soc_top.netlist.v": {
+          "bytes": 10274923,
+          "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/alu_boot_trace.v": {
+          "bytes": 5176,
+          "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/app.elf": {
+          "bytes": 57192,
+          "sha256": "2dfc38c7c4c94d7993d7ce74e5327333210812cbf7cc8faa551247bda77a64ac"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/flash0.hex": {
+          "bytes": 393216,
+          "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/firmware/test_soc.bin": {
+          "bytes": 3120,
+          "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+        },
+        "/home/runner/work/nssoc/nssoc/alu-boot-trace/tb_qualification_boot.v": {
+          "bytes": 20205,
+          "sha256": "08f9b60eb09083a005300432a8e31ecca0fbee42ec49cc403ebf31afb85a6ebb"
+        }
+      },
+      "startup_source_witness_unchanged": true,
+      "trace_observation": {
+        "events_observed": 3924068,
+        "events_saved": 2048,
+        "first_unknown": null,
+        "milestones_saved": 94,
+        "samples_observed": 613079,
+        "samples_saved": 1024,
+        "trace_events": {
+          "bytes": 238889,
+          "sha256": "a99caa264b740b947d2bc9acb0b7fb087ec957bcfc2353b127dc178df3e12c44"
+        },
+        "trace_milestones": {
+          "bytes": 12032,
+          "sha256": "6dd0911ad76c877fb2e8fe7a5307b16b30555f3ebbca956eef6c0a281d27bdaf"
+        },
+        "trace_samples": {
+          "bytes": 171008,
+          "sha256": "6e45c5239fe344d69b235d1affa8e56cbdc81c987c84e2385a6afebc759f3589"
+        }
+      },
+      "whole_zip_hash_and_member_crc_verified_in_ram": true
+    }
+  }
+}

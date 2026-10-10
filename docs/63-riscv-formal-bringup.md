@@ -1978,6 +1978,13 @@ rather than in the core's size.
 
 ## 24. What section 23's proof is not: `reg_ch0`, and the difference (added 2026-09-18)
 
+**Follow-up, 2026-09-19.** `docs/87-engineering-closure.md` adds real-codec
+architectural proofs and direct upstream register-file equivalence, with
+scrub enabled and disabled. Both use asserted codeword/storage invariants
+and Bitwuzla, and close by unbounded induction. This strengthens the
+block-level substitution evidence; the distinction from core `reg_ch0`
+made in this section still applies. The earlier engine results are retained.
+
 An external review read sections 17.2 and 23 together and asked for the
 one sentence they do not contain: that the proof which closed is **not**
 the proof that did not, and what separates them. It is a fair ask --
@@ -2059,4 +2066,3 @@ section 23 says. And `regfile_scrub.sby`, the same wrapper with the
 REAL codec, does not close: section 23 locates the reason in the parity
 trees rather than in the property, which is why the abstracted job is
 the result and not a convenience.
-

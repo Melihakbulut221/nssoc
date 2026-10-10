@@ -1,0 +1,33 @@
+{
+  "status": "FROZEN_BOUNDED_BIAS_V2_WITH_REAL_REMAINING_FAILURE",
+  "source_sha256": {
+    "scripts/characterize_pcie_clock_trim_bias_v2.py": "6f916be572ad45d7f5f854243196d8f95a2cc9694a6850bb39c1ab06f9be4a99",
+    "sw/tests/test_pcie_clock_trim_bias_v2.py": "d874d8300bb64e167214bd52dbd258dea0e2e82aa6a03734df85d43b55b09fa4"
+  },
+  "result_sha256": "1f02280154a0a97a90c9fbcdb04ac7a94b555d12ca8d660f918b7c85cd9f84bb",
+  "native_cases": 2,
+  "all_raw_waves_remeasured": 2,
+  "focused_combined_tests": 54,
+  "ruff": "PASS",
+  "results": [
+    {
+      "case": "high_supply_res_bcs_cap_bcs_code2_v0.85_halfstep",
+      "native_clean": true,
+      "screen_pass": true,
+      "frequency_hz": 8103033391.0317745,
+      "period_spread": 0.004863689243361437,
+      "failed_checks": []
+    },
+    {
+      "case": "high_supply_res_bcs_cap_bcs_code2_v1.00_halfstep",
+      "native_clean": true,
+      "screen_pass": false,
+      "frequency_hz": 7638863456.894829,
+      "period_spread": 0.005367104869575014,
+      "failed_checks": [
+        "deterministic_period_spread"
+      ]
+    }
+  ],
+  "conclusion": "Doubling14 realbiasresistorwidths doesnot close the remaining fastcorner full4\u201312ns stability failure. Native thermal and bias trajectories are retained for diagnosis; no limits/window/model modifications. No7/7 orPLL/PEX acceptance."
+}

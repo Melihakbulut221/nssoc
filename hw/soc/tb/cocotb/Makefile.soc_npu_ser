@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+VENV_BIN := $(abspath $(dir $(THIS_MK))/../../../.venv/bin)
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+else
+VERILOG_SOURCES = $(abspath ../../rtl/soc_npu_ser.v)
+TOPLEVEL = soc_npu_ser
+COCOTB_TEST_MODULES = test_soc_npu_ser
+HALF ?= 2
+export TEST_SER_HALF = $(HALF)
+COMPILE_ARGS += -Psoc_npu_ser.HALF=$(HALF)
+SIM_BUILD ?= sim_build_soc_npu_ser_h$(HALF)
+COCOTB_RESULTS_FILE ?= results_soc_npu_ser_h$(HALF).xml
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

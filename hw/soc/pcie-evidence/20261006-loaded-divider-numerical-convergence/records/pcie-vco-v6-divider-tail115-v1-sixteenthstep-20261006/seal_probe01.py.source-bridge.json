@@ -1,0 +1,1050 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/seal_probe01.py",
+    "bytes": 6446,
+    "sha256": "1a3b84a9d1f14a17ab1609a6aee7d9e889268b5b1c5c7971f5a314a1e9d6ddfd"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/seal_probe01.py",
+    "bytes": 6753,
+    "sha256": "c27f7ff5a84a98c586459e9645b686933346627144e7da65b52aea983a077ceb"
+  },
+  "full_diff": "--- \n+++ \n@@ -8,9 +8,11 @@\n R=Path.cwd();B=Path(__file__).resolve().parent\n sys.path.insert(0,str(R/'scripts'))\n sys.path.insert(0,str(B))\n-import characterize_eighthstep01 as candidate\n+sys.path.insert(0,str(R/'hw/soc/out/pcie-tail115-streaming-replay-v1-20261006'))\n+from raw_table01 import open_table\n+import characterize_sixteenthstep01 as candidate\n m=candidate.core\n-P=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01')\n+P=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-sixteenthstep-06-01')\n \n def pin(p):\n     p=Path(p)\n@@ -29,38 +31,35 @@\n r=json.loads((P/'result.json').read_text())\n assert r['status'] in ('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\n assert len(r['devices'])==455\n+assert r['config']['step_s']==3.125e-13 and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n frozen=json.loads((B/'source-freeze01.json').read_text())\n assert all(pin(path)==value for path,value in frozen['pins'].items())\n assert all(pin(path)==value for path,value in r['inputs'].items())\n assert all(pin(P/path)==value for path,value in r['outputs'].items())\n assert all(pin(P/path)==value for path,value in controller['outputs'].items())\n-with gzip.open(P/'wave.raw.gz','rb') as f:\n-    header,meta=m.life.tiny.parse_header(f,m.n.vectors(r['devices'],r['config']['extra_vectors']))\n-    body=f.read()\n-width=len(meta['columns'])*8\n-assert body[r['rows']*width:]==str(r['rows']).encode()\n-payload=body[:r['rows']*width]\n-assert hashlib.sha256(header+body).hexdigest()==r['raw_sha256']\n-assert hashlib.sha256(payload).hexdigest()==r['payload_sha256']\n-assert len(header)+len(body)==r['raw_bytes']\n-data=dict(zip(m.stream.previous.data_names(meta['columns']),np.frombuffer(payload,'<f8').reshape(r['rows'],-1).T))\n-assert all(np.isfinite(x).all() for x in data.values())\n-contacts=[row for row in r['devices'] if row['model'] in ('ptap1','ntap1')]\n-other=[row for row in r['devices'] if row not in contacts]\n-assert len(contacts)==31 and len(other)==424\n-safety=m.n.safety(data,other,r['config']['window_s'])\n-assert safety['all_device_bounds']==r['safety']['all_device_bounds'][:424]\n-assert safety['model_geometry_range_issues']==r['safety']['model_geometry_range_issues']\n-for row,reported in zip(contacts,r['safety']['all_device_bounds'][424:]):\n-    values=[data[f'v({x})'] if x!='0' else np.zeros(r['rows']) for x in row['nets']]\n-    actual=float(abs(values[0]-values[1]).max())\n-    assert reported['path']==row['path']\n-    assert reported['max_capture_terminal_difference']==actual\n-    assert reported['inferred_ohmic_peak_a']==actual/float(row['params']['r'])\n-assert m.n.validate_time_grid(data['time'],34e-9,6.25e-13)==r['time_grid']\n-assert m.measurement(data,r['config'])==r['measurement']\n-native=m.stream.previous.startup_proof(P,r)\n-assert all(r[k]==v for k,v in native.items())\n+with gzip.open(P/'wave.raw.gz','rb') as stream:\n+    header,meta=m.life.tiny.parse_header(stream,m.n.vectors(r['devices'],r['config']['extra_vectors']))\n+with open_table(P/'wave.raw.gz',rows=r['rows'],columns=m.stream.previous.data_names(meta['columns']),compressed_pin=r['outputs']['wave.raw.gz'],raw_sha256=r['raw_sha256'],payload_sha256=r['payload_sha256'],raw_bytes=r['raw_bytes'],scratch_directory=B,scratch_limit=1024**3) as table:\n+    assert table['header']==header\n+    data=dict(zip(table['columns'],table['matrix'].T))\n+    assert all(np.isfinite(x).all() for x in data.values())\n+    contacts=[row for row in r['devices'] if row['model'] in ('ptap1','ntap1')]\n+    other=[row for row in r['devices'] if row not in contacts]\n+    assert len(contacts)==31 and len(other)==424\n+    safety=m.n.safety(data,other,r['config']['window_s'])\n+    assert safety['all_device_bounds']==r['safety']['all_device_bounds'][:424]\n+    assert safety['model_geometry_range_issues']==r['safety']['model_geometry_range_issues']\n+    for row,reported in zip(contacts,r['safety']['all_device_bounds'][424:]):\n+        values=[data[f'v({x})'] if x!='0' else np.zeros(r['rows']) for x in row['nets']]\n+        actual=float(abs(values[0]-values[1]).max())\n+        assert reported['path']==row['path']\n+        assert reported['max_capture_terminal_difference']==actual\n+        assert reported['inferred_ohmic_peak_a']==actual/float(row['params']['r'])\n+    assert m.n.validate_time_grid(data['time'],34e-9,r['config']['step_s'])==r['time_grid']\n+    assert m.measurement(data,r['config'])==r['measurement']\n+    native=m.stream.previous.startup_proof(P,r)\n+    assert all(r[k]==v for k,v in native.items())\n+    del data,values\n review={'status':'PASS_COMPLETE_RAW_REPLAY_SOURCE_STATUS_UNCHANGED','native_status':r['status'],'native_result':pin(P/'result.json'),'columns':len(meta['columns']),'rows':r['rows'],'values':r['values'],'all455_device_screens_reproduced':True,'all_counts_measurements_reproduced':True,'all64_native_OFF_reproduced':True,'full_raw_sha256':r['raw_sha256'],'no_native_rerun':True}\n (B/'review-06-01.json').write_text(json.dumps(review,indent=2)+'\\n')\n files={}\n@@ -73,14 +72,14 @@\n     path=Path(name)\n     if path.is_relative_to(R) and not path.is_relative_to(B) and '/tools/' not in str(path):files['project/'+str(path.relative_to(R))]=path\n for path in B.rglob('*'):\n-    if not path.is_file() or path.suffix=='.pyc' or '__pycache__' in path.parts or path.name.startswith(('pcie-vco-v6-divider-tail115-v1-eighthstep-06-01','members-06-01','validation-06-01')):continue\n+    if not path.is_file() or path.suffix=='.pyc' or '__pycache__' in path.parts or path.name.startswith(('pcie-vco-v6-divider-tail115-v1-sixteenthstep-06-01','members-06-01','validation-06-01')):continue\n     files['review/'+str(path.relative_to(B))]=path\n for name in ('Apache-2.0','CERN-OHL-W-2.0','CC-BY-4.0'):files['licenses/'+name+'.txt']=R/'LICENSES'/(name+'.txt')\n notices=B/'NOTICES.txt'\n if not notices.exists():notices.write_text('Project methods Apache-2.0; circuit CERN-OHL-W-2.0; native evidence CC-BY-4.0. Copyright 2026 Hasan Melih Akbulut. PDK models and native binaries are not redistributed. Actual62 VCO +91 divider +302 CMOS feedback devices;1271R/1414C. Body-substrate and wire-capacitance reference ports remain separately exposed with explicit ideal grounded bench assumptions. No qualified PEX, RF/PVT/ESD, PLL, full PHY or chip qualification. All source and electrical failures remain visible.\\n')\n files['review/NOTICES.txt']=notices\n members={name:pin(path) for name,path in files.items()}\n-cap=B/'pcie-vco-v6-divider-tail115-v1-eighthstep-06-01.tar.xz'\n+cap=B/'pcie-vco-v6-divider-tail115-v1-sixteenthstep-06-01.tar.xz'\n assert not cap.exists()\n with tarfile.open(cap,'w:xz',preset=1,dereference=True) as arc:\n     for name,path in files.items():arc.add(path,arcname=name,recursive=False)\n",
+  "opcodes": [
+    {
+      "tag": "equal",
+      "a0": 0,
+      "a1": 384,
+      "b0": 0,
+      "b1": 384,
+      "old": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Seal only a closed full native table, preserving failed electrical results.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,sys,tarfile\nimport numpy as np\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'scripts'))\nsys.path.insert(0,str(B))\n",
+      "new": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Seal only a closed full native table, preserving failed electrical results.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,sys,tarfile\nimport numpy as np\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'scripts'))\nsys.path.insert(0,str(B))\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 384,
+      "a1": 384,
+      "b0": 384,
+      "b1": 500,
+      "old": "",
+      "new": "sys.path.insert(0,str(R/'hw/soc/out/pcie-tail115-streaming-replay-v1-20261006'))\nfrom raw_table01 import open_table\n"
+    },
+    {
+      "tag": "equal",
+      "a0": 384,
+      "a1": 404,
+      "b0": 500,
+      "b1": 520,
+      "old": "import characterize_",
+      "new": "import characterize_"
+    },
+    {
+      "tag": "insert",
+      "a0": 404,
+      "a1": 404,
+      "b0": 520,
+      "b1": 524,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 404,
+      "a1": 405,
+      "b0": 524,
+      "b1": 525,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 405,
+      "a1": 408,
+      "b0": 525,
+      "b1": 527,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 408,
+      "a1": 496,
+      "b0": 527,
+      "b1": 615,
+      "old": "thstep01 as candidate\nm=candidate.core\nP=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-",
+      "new": "thstep01 as candidate\nm=candidate.core\nP=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "insert",
+      "a0": 496,
+      "a1": 496,
+      "b0": 615,
+      "b1": 619,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 496,
+      "a1": 497,
+      "b0": 619,
+      "b1": 620,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 497,
+      "a1": 500,
+      "b0": 620,
+      "b1": 622,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 500,
+      "a1": 1399,
+      "b0": 622,
+      "b1": 1521,
+      "old": "thstep-06-01')\n\ndef pin(p):\n    p=Path(p)\n    with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n\ncontroller=json.loads((B/'native06-controller.json').read_text())\nassert controller['status']=='CLOSED_FINITE_NATIVE_RESULT'\nlaunch=json.loads((B/'detached-launch.json').read_text())\nidentity=launch['controller']\nstat=Path('/proc')/str(identity['pid'])/'stat'\nif stat.exists():\n    fields=stat.read_text().rsplit(') ',1)[1].split()\n    assert fields[19]!=str(identity['start_ticks']) or fields[0]=='Z', 'Controller still live'\nowner=json.loads((P/'owned-processes.json').read_text())\nassert all(entry['status']=='REAPED_NO_LIVE_MEMBERS' for entry in owner['processes'])\nr=json.loads((P/'result.json').read_text())\nassert r['status'] in ('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\nassert len(r['devices'])==455\n",
+      "new": "thstep-06-01')\n\ndef pin(p):\n    p=Path(p)\n    with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n\ncontroller=json.loads((B/'native06-controller.json').read_text())\nassert controller['status']=='CLOSED_FINITE_NATIVE_RESULT'\nlaunch=json.loads((B/'detached-launch.json').read_text())\nidentity=launch['controller']\nstat=Path('/proc')/str(identity['pid'])/'stat'\nif stat.exists():\n    fields=stat.read_text().rsplit(') ',1)[1].split()\n    assert fields[19]!=str(identity['start_ticks']) or fields[0]=='Z', 'Controller still live'\nowner=json.loads((P/'owned-processes.json').read_text())\nassert all(entry['status']=='REAPED_NO_LIVE_MEMBERS' for entry in owner['processes'])\nr=json.loads((P/'result.json').read_text())\nassert r['status'] in ('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\nassert len(r['devices'])==455\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 1399,
+      "a1": 1399,
+      "b0": 1521,
+      "b1": 1636,
+      "old": "",
+      "new": "assert r['config']['step_s']==3.125e-13 and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n"
+    },
+    {
+      "tag": "equal",
+      "a0": 1399,
+      "a1": 1783,
+      "b0": 1636,
+      "b1": 2020,
+      "old": "frozen=json.loads((B/'source-freeze01.json').read_text())\nassert all(pin(path)==value for path,value in frozen['pins'].items())\nassert all(pin(path)==value for path,value in r['inputs'].items())\nassert all(pin(P/path)==value for path,value in r['outputs'].items())\nassert all(pin(P/path)==value for path,value in controller['outputs'].items())\nwith gzip.open(P/'wave.raw.gz','rb') as ",
+      "new": "frozen=json.loads((B/'source-freeze01.json').read_text())\nassert all(pin(path)==value for path,value in frozen['pins'].items())\nassert all(pin(path)==value for path,value in r['inputs'].items())\nassert all(pin(P/path)==value for path,value in r['outputs'].items())\nassert all(pin(P/path)==value for path,value in controller['outputs'].items())\nwith gzip.open(P/'wave.raw.gz','rb') as "
+    },
+    {
+      "tag": "replace",
+      "a0": 1783,
+      "a1": 1784,
+      "b0": 2020,
+      "b1": 2026,
+      "old": "f",
+      "new": "stream"
+    },
+    {
+      "tag": "equal",
+      "a0": 1784,
+      "a1": 1827,
+      "b0": 2026,
+      "b1": 2069,
+      "old": ":\n    header,meta=m.life.tiny.parse_header(",
+      "new": ":\n    header,meta=m.life.tiny.parse_header("
+    },
+    {
+      "tag": "replace",
+      "a0": 1827,
+      "a1": 1828,
+      "b0": 2069,
+      "b1": 2075,
+      "old": "f",
+      "new": "stream"
+    },
+    {
+      "tag": "equal",
+      "a0": 1828,
+      "a1": 1885,
+      "b0": 2075,
+      "b1": 2132,
+      "old": ",m.n.vectors(r['devices'],r['config']['extra_vectors']))\n",
+      "new": ",m.n.vectors(r['devices'],r['config']['extra_vectors']))\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 1885,
+      "a1": 1885,
+      "b0": 2132,
+      "b1": 2136,
+      "old": "",
+      "new": "with"
+    },
+    {
+      "tag": "equal",
+      "a0": 1885,
+      "a1": 1886,
+      "b0": 2136,
+      "b1": 2137,
+      "old": " ",
+      "new": " "
+    },
+    {
+      "tag": "replace",
+      "a0": 1886,
+      "a1": 1889,
+      "b0": 2137,
+      "b1": 2144,
+      "old": "   ",
+      "new": "open_ta"
+    },
+    {
+      "tag": "equal",
+      "a0": 1889,
+      "a1": 1890,
+      "b0": 2144,
+      "b1": 2145,
+      "old": "b",
+      "new": "b"
+    },
+    {
+      "tag": "replace",
+      "a0": 1890,
+      "a1": 1895,
+      "b0": 2145,
+      "b1": 2155,
+      "old": "ody=f",
+      "new": "le(P/'wave"
+    },
+    {
+      "tag": "equal",
+      "a0": 1895,
+      "a1": 1897,
+      "b0": 2155,
+      "b1": 2157,
+      "old": ".r",
+      "new": ".r"
+    },
+    {
+      "tag": "delete",
+      "a0": 1897,
+      "a1": 1898,
+      "b0": 2157,
+      "b1": 2157,
+      "old": "e",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 1898,
+      "a1": 1899,
+      "b0": 2157,
+      "b1": 2158,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "delete",
+      "a0": 1899,
+      "a1": 1903,
+      "b0": 2158,
+      "b1": 2158,
+      "old": "d()\n",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 1903,
+      "a1": 1904,
+      "b0": 2158,
+      "b1": 2159,
+      "old": "w",
+      "new": "w"
+    },
+    {
+      "tag": "replace",
+      "a0": 1904,
+      "a1": 1908,
+      "b0": 2159,
+      "b1": 2168,
+      "old": "idth",
+      "new": ".gz',rows"
+    },
+    {
+      "tag": "equal",
+      "a0": 1908,
+      "a1": 1909,
+      "b0": 2168,
+      "b1": 2169,
+      "old": "=",
+      "new": "="
+    },
+    {
+      "tag": "delete",
+      "a0": 1909,
+      "a1": 1944,
+      "b0": 2169,
+      "b1": 2169,
+      "old": "len(meta['columns'])*8\nassert body[",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 1944,
+      "a1": 1953,
+      "b0": 2169,
+      "b1": 2178,
+      "old": "r['rows']",
+      "new": "r['rows']"
+    },
+    {
+      "tag": "replace",
+      "a0": 1953,
+      "a1": 1980,
+      "b0": 2178,
+      "b1": 2179,
+      "old": "*width:]==str(r['rows']).en",
+      "new": ","
+    },
+    {
+      "tag": "equal",
+      "a0": 1980,
+      "a1": 1982,
+      "b0": 2179,
+      "b1": 2181,
+      "old": "co",
+      "new": "co"
+    },
+    {
+      "tag": "delete",
+      "a0": 1982,
+      "a1": 1990,
+      "b0": 2181,
+      "b1": 2181,
+      "old": "de()\npay",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 1990,
+      "a1": 1991,
+      "b0": 2181,
+      "b1": 2182,
+      "old": "l",
+      "new": "l"
+    },
+    {
+      "tag": "replace",
+      "a0": 1991,
+      "a1": 1994,
+      "b0": 2182,
+      "b1": 2186,
+      "old": "oad",
+      "new": "umns"
+    },
+    {
+      "tag": "equal",
+      "a0": 1994,
+      "a1": 1995,
+      "b0": 2186,
+      "b1": 2187,
+      "old": "=",
+      "new": "="
+    },
+    {
+      "tag": "delete",
+      "a0": 1995,
+      "a1": 2205,
+      "b0": 2187,
+      "b1": 2187,
+      "old": "body[:r['rows']*width]\nassert hashlib.sha256(header+body).hexdigest()==r['raw_sha256']\nassert hashlib.sha256(payload).hexdigest()==r['payload_sha256']\nassert len(header)+len(body)==r['raw_bytes']\ndata=dict(zip(",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2205,
+      "a1": 2251,
+      "b0": 2187,
+      "b1": 2233,
+      "old": "m.stream.previous.data_names(meta['columns']),",
+      "new": "m.stream.previous.data_names(meta['columns']),"
+    },
+    {
+      "tag": "replace",
+      "a0": 2251,
+      "a1": 2256,
+      "b0": 2233,
+      "b1": 2234,
+      "old": "np.fr",
+      "new": "c"
+    },
+    {
+      "tag": "equal",
+      "a0": 2256,
+      "a1": 2258,
+      "b0": 2234,
+      "b1": 2236,
+      "old": "om",
+      "new": "om"
+    },
+    {
+      "tag": "replace",
+      "a0": 2258,
+      "a1": 2259,
+      "b0": 2236,
+      "b1": 2252,
+      "old": "b",
+      "new": "pressed_pin=r['o"
+    },
+    {
+      "tag": "equal",
+      "a0": 2259,
+      "a1": 2260,
+      "b0": 2252,
+      "b1": 2253,
+      "old": "u",
+      "new": "u"
+    },
+    {
+      "tag": "replace",
+      "a0": 2260,
+      "a1": 2262,
+      "b0": 2253,
+      "b1": 2265,
+      "old": "ff",
+      "new": "tputs']['wav"
+    },
+    {
+      "tag": "equal",
+      "a0": 2262,
+      "a1": 2263,
+      "b0": 2265,
+      "b1": 2266,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "insert",
+      "a0": 2263,
+      "a1": 2263,
+      "b0": 2266,
+      "b1": 2267,
+      "old": "",
+      "new": "."
+    },
+    {
+      "tag": "equal",
+      "a0": 2263,
+      "a1": 2264,
+      "b0": 2267,
+      "b1": 2268,
+      "old": "r",
+      "new": "r"
+    },
+    {
+      "tag": "replace",
+      "a0": 2264,
+      "a1": 2265,
+      "b0": 2268,
+      "b1": 2303,
+      "old": "(",
+      "new": "aw.gz'],raw_sha256=r['raw_sha256'],"
+    },
+    {
+      "tag": "equal",
+      "a0": 2265,
+      "a1": 2272,
+      "b0": 2303,
+      "b1": 2310,
+      "old": "payload",
+      "new": "payload"
+    },
+    {
+      "tag": "replace",
+      "a0": 2272,
+      "a1": 2282,
+      "b0": 2310,
+      "b1": 2311,
+      "old": ",'<f8').re",
+      "new": "_"
+    },
+    {
+      "tag": "equal",
+      "a0": 2282,
+      "a1": 2285,
+      "b0": 2311,
+      "b1": 2314,
+      "old": "sha",
+      "new": "sha"
+    },
+    {
+      "tag": "insert",
+      "a0": 2285,
+      "a1": 2285,
+      "b0": 2314,
+      "b1": 2321,
+      "old": "",
+      "new": "256=r['"
+    },
+    {
+      "tag": "equal",
+      "a0": 2285,
+      "a1": 2286,
+      "b0": 2321,
+      "b1": 2322,
+      "old": "p",
+      "new": "p"
+    },
+    {
+      "tag": "insert",
+      "a0": 2286,
+      "a1": 2286,
+      "b0": 2322,
+      "b1": 2345,
+      "old": "",
+      "new": "ayload_sha256'],raw_byt"
+    },
+    {
+      "tag": "equal",
+      "a0": 2286,
+      "a1": 2287,
+      "b0": 2345,
+      "b1": 2346,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 2287,
+      "a1": 2288,
+      "b0": 2346,
+      "b1": 2348,
+      "old": "(",
+      "new": "s="
+    },
+    {
+      "tag": "equal",
+      "a0": 2288,
+      "a1": 2292,
+      "b0": 2348,
+      "b1": 2352,
+      "old": "r['r",
+      "new": "r['r"
+    },
+    {
+      "tag": "replace",
+      "a0": 2292,
+      "a1": 2293,
+      "b0": 2352,
+      "b1": 2353,
+      "old": "o",
+      "new": "a"
+    },
+    {
+      "tag": "equal",
+      "a0": 2293,
+      "a1": 2294,
+      "b0": 2353,
+      "b1": 2354,
+      "old": "w",
+      "new": "w"
+    },
+    {
+      "tag": "insert",
+      "a0": 2294,
+      "a1": 2294,
+      "b0": 2354,
+      "b1": 2359,
+      "old": "",
+      "new": "_byte"
+    },
+    {
+      "tag": "equal",
+      "a0": 2294,
+      "a1": 2298,
+      "b0": 2359,
+      "b1": 2363,
+      "old": "s'],",
+      "new": "s'],"
+    },
+    {
+      "tag": "replace",
+      "a0": 2298,
+      "a1": 2299,
+      "b0": 2363,
+      "b1": 2397,
+      "old": "-",
+      "new": "scratch_directory=B,scratch_limit="
+    },
+    {
+      "tag": "equal",
+      "a0": 2299,
+      "a1": 2300,
+      "b0": 2397,
+      "b1": 2398,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "insert",
+      "a0": 2300,
+      "a1": 2300,
+      "b0": 2398,
+      "b1": 2404,
+      "old": "",
+      "new": "024**3"
+    },
+    {
+      "tag": "equal",
+      "a0": 2300,
+      "a1": 2301,
+      "b0": 2404,
+      "b1": 2405,
+      "old": ")",
+      "new": ")"
+    },
+    {
+      "tag": "insert",
+      "a0": 2301,
+      "a1": 2301,
+      "b0": 2405,
+      "b1": 2501,
+      "old": "",
+      "new": " as table:\n    assert table['header']==header\n    data=dict(zip(table['columns'],table['matrix']"
+    },
+    {
+      "tag": "equal",
+      "a0": 2301,
+      "a1": 2306,
+      "b0": 2501,
+      "b1": 2506,
+      "old": ".T))\n",
+      "new": ".T))\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2306,
+      "a1": 2306,
+      "b0": 2506,
+      "b1": 2510,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2306,
+      "a1": 2362,
+      "b0": 2510,
+      "b1": 2566,
+      "old": "assert all(np.isfinite(x).all() for x in data.values())\n",
+      "new": "assert all(np.isfinite(x).all() for x in data.values())\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2362,
+      "a1": 2362,
+      "b0": 2566,
+      "b1": 2570,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2362,
+      "a1": 2438,
+      "b0": 2570,
+      "b1": 2646,
+      "old": "contacts=[row for row in r['devices'] if row['model'] in ('ptap1','ntap1')]\n",
+      "new": "contacts=[row for row in r['devices'] if row['model'] in ('ptap1','ntap1')]\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2438,
+      "a1": 2438,
+      "b0": 2646,
+      "b1": 2650,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2438,
+      "a1": 2497,
+      "b0": 2650,
+      "b1": 2709,
+      "old": "other=[row for row in r['devices'] if row not in contacts]\n",
+      "new": "other=[row for row in r['devices'] if row not in contacts]\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2497,
+      "a1": 2497,
+      "b0": 2709,
+      "b1": 2713,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2497,
+      "a1": 2542,
+      "b0": 2713,
+      "b1": 2758,
+      "old": "assert len(contacts)==31 and len(other)==424\n",
+      "new": "assert len(contacts)==31 and len(other)==424\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2542,
+      "a1": 2542,
+      "b0": 2758,
+      "b1": 2762,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2542,
+      "a1": 2596,
+      "b0": 2762,
+      "b1": 2816,
+      "old": "safety=m.n.safety(data,other,r['config']['window_s'])\n",
+      "new": "safety=m.n.safety(data,other,r['config']['window_s'])\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2596,
+      "a1": 2596,
+      "b0": 2816,
+      "b1": 2820,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2596,
+      "a1": 2671,
+      "b0": 2820,
+      "b1": 2895,
+      "old": "assert safety['all_device_bounds']==r['safety']['all_device_bounds'][:424]\n",
+      "new": "assert safety['all_device_bounds']==r['safety']['all_device_bounds'][:424]\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2671,
+      "a1": 2671,
+      "b0": 2895,
+      "b1": 2899,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2671,
+      "a1": 2760,
+      "b0": 2899,
+      "b1": 2988,
+      "old": "assert safety['model_geometry_range_issues']==r['safety']['model_geometry_range_issues']\n",
+      "new": "assert safety['model_geometry_range_issues']==r['safety']['model_geometry_range_issues']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2760,
+      "a1": 2760,
+      "b0": 2988,
+      "b1": 2992,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2760,
+      "a1": 2834,
+      "b0": 2992,
+      "b1": 3066,
+      "old": "for row,reported in zip(contacts,r['safety']['all_device_bounds'][424:]):\n",
+      "new": "for row,reported in zip(contacts,r['safety']['all_device_bounds'][424:]):\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2834,
+      "a1": 2834,
+      "b0": 3066,
+      "b1": 3070,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2834,
+      "a1": 2923,
+      "b0": 3070,
+      "b1": 3159,
+      "old": "    values=[data[f'v({x})'] if x!='0' else np.zeros(r['rows']) for x in row['nets']]\n    ",
+      "new": "    values=[data[f'v({x})'] if x!='0' else np.zeros(r['rows']) for x in row['nets']]\n    "
+    },
+    {
+      "tag": "insert",
+      "a0": 2923,
+      "a1": 2923,
+      "b0": 3159,
+      "b1": 3163,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2923,
+      "a1": 2972,
+      "b0": 3163,
+      "b1": 3212,
+      "old": "actual=float(abs(values[0]-values[1]).max())\n    ",
+      "new": "actual=float(abs(values[0]-values[1]).max())\n    "
+    },
+    {
+      "tag": "insert",
+      "a0": 2972,
+      "a1": 2972,
+      "b0": 3212,
+      "b1": 3216,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 2972,
+      "a1": 3009,
+      "b0": 3216,
+      "b1": 3253,
+      "old": "assert reported['path']==row['path']\n",
+      "new": "assert reported['path']==row['path']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3009,
+      "a1": 3009,
+      "b0": 3253,
+      "b1": 3257,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3009,
+      "a1": 3072,
+      "b0": 3257,
+      "b1": 3320,
+      "old": "    assert reported['max_capture_terminal_difference']==actual\n",
+      "new": "    assert reported['max_capture_terminal_difference']==actual\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3072,
+      "a1": 3072,
+      "b0": 3320,
+      "b1": 3324,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3072,
+      "a1": 3151,
+      "b0": 3324,
+      "b1": 3403,
+      "old": "    assert reported['inferred_ohmic_peak_a']==actual/float(row['params']['r'])\n",
+      "new": "    assert reported['inferred_ohmic_peak_a']==actual/float(row['params']['r'])\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3151,
+      "a1": 3151,
+      "b0": 3403,
+      "b1": 3407,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3151,
+      "a1": 3200,
+      "b0": 3407,
+      "b1": 3456,
+      "old": "assert m.n.validate_time_grid(data['time'],34e-9,",
+      "new": "assert m.n.validate_time_grid(data['time'],34e-9,"
+    },
+    {
+      "tag": "replace",
+      "a0": 3200,
+      "a1": 3204,
+      "b0": 3456,
+      "b1": 3471,
+      "old": "6.25",
+      "new": "r['config']['st"
+    },
+    {
+      "tag": "equal",
+      "a0": 3204,
+      "a1": 3205,
+      "b0": 3471,
+      "b1": 3472,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 3205,
+      "a1": 3208,
+      "b0": 3472,
+      "b1": 3477,
+      "old": "-13",
+      "new": "p_s']"
+    },
+    {
+      "tag": "equal",
+      "a0": 3208,
+      "a1": 3226,
+      "b0": 3477,
+      "b1": 3495,
+      "old": ")==r['time_grid']\n",
+      "new": ")==r['time_grid']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3226,
+      "a1": 3226,
+      "b0": 3495,
+      "b1": 3499,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3226,
+      "a1": 3283,
+      "b0": 3499,
+      "b1": 3556,
+      "old": "assert m.measurement(data,r['config'])==r['measurement']\n",
+      "new": "assert m.measurement(data,r['config'])==r['measurement']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3283,
+      "a1": 3283,
+      "b0": 3556,
+      "b1": 3560,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3283,
+      "a1": 3327,
+      "b0": 3560,
+      "b1": 3604,
+      "old": "native=m.stream.previous.startup_proof(P,r)\n",
+      "new": "native=m.stream.previous.startup_proof(P,r)\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3327,
+      "a1": 3327,
+      "b0": 3604,
+      "b1": 3608,
+      "old": "",
+      "new": "    "
+    },
+    {
+      "tag": "equal",
+      "a0": 3327,
+      "a1": 3372,
+      "b0": 3608,
+      "b1": 3653,
+      "old": "assert all(r[k]==v for k,v in native.items())",
+      "new": "assert all(r[k]==v for k,v in native.items())"
+    },
+    {
+      "tag": "insert",
+      "a0": 3372,
+      "a1": 3372,
+      "b0": 3653,
+      "b1": 3673,
+      "old": "",
+      "new": "\n    del data,values"
+    },
+    {
+      "tag": "equal",
+      "a0": 3372,
+      "a1": 4592,
+      "b0": 3673,
+      "b1": 4893,
+      "old": "\nreview={'status':'PASS_COMPLETE_RAW_REPLAY_SOURCE_STATUS_UNCHANGED','native_status':r['status'],'native_result':pin(P/'result.json'),'columns':len(meta['columns']),'rows':r['rows'],'values':r['values'],'all455_device_screens_reproduced':True,'all_counts_measurements_reproduced':True,'all64_native_OFF_reproduced':True,'full_raw_sha256':r['raw_sha256'],'no_native_rerun':True}\n(B/'review-06-01.json').write_text(json.dumps(review,indent=2)+'\\n')\nfiles={}\nfor root in [P,m.HYBRID,Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-native-01'),Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-rc-01')]:\n    for path in root.rglob('*'):\n        if path.is_file():files['native/'+root.name+'/'+str(path.relative_to(root))]=path\n# Project methods and exact source fixtures only; never redistribute compiled\n# runtime or upstream PDK model implementations. Their hashes stay in receipts.\nfor name in frozen['pins']:\n    path=Path(name)\n    if path.is_relative_to(R) and not path.is_relative_to(B) and '/tools/' not in str(path):files['project/'+str(path.relative_to(R))]=path\nfor path in B.rglob('*'):\n    if not path.is_file() or path.suffix=='.pyc' or '__pycache__' in path.parts or path.name.startswith(('pcie-vco-v6-divider-tail115-v1-",
+      "new": "\nreview={'status':'PASS_COMPLETE_RAW_REPLAY_SOURCE_STATUS_UNCHANGED','native_status':r['status'],'native_result':pin(P/'result.json'),'columns':len(meta['columns']),'rows':r['rows'],'values':r['values'],'all455_device_screens_reproduced':True,'all_counts_measurements_reproduced':True,'all64_native_OFF_reproduced':True,'full_raw_sha256':r['raw_sha256'],'no_native_rerun':True}\n(B/'review-06-01.json').write_text(json.dumps(review,indent=2)+'\\n')\nfiles={}\nfor root in [P,m.HYBRID,Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-native-01'),Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-rc-01')]:\n    for path in root.rglob('*'):\n        if path.is_file():files['native/'+root.name+'/'+str(path.relative_to(root))]=path\n# Project methods and exact source fixtures only; never redistribute compiled\n# runtime or upstream PDK model implementations. Their hashes stay in receipts.\nfor name in frozen['pins']:\n    path=Path(name)\n    if path.is_relative_to(R) and not path.is_relative_to(B) and '/tools/' not in str(path):files['project/'+str(path.relative_to(R))]=path\nfor path in B.rglob('*'):\n    if not path.is_file() or path.suffix=='.pyc' or '__pycache__' in path.parts or path.name.startswith(('pcie-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "insert",
+      "a0": 4592,
+      "a1": 4592,
+      "b0": 4893,
+      "b1": 4897,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 4592,
+      "a1": 4593,
+      "b0": 4897,
+      "b1": 4898,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 4593,
+      "a1": 4596,
+      "b0": 4898,
+      "b1": 4900,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 4596,
+      "a1": 5501,
+      "b0": 4900,
+      "b1": 5805,
+      "old": "thstep-06-01','members-06-01','validation-06-01')):continue\n    files['review/'+str(path.relative_to(B))]=path\nfor name in ('Apache-2.0','CERN-OHL-W-2.0','CC-BY-4.0'):files['licenses/'+name+'.txt']=R/'LICENSES'/(name+'.txt')\nnotices=B/'NOTICES.txt'\nif not notices.exists():notices.write_text('Project methods Apache-2.0; circuit CERN-OHL-W-2.0; native evidence CC-BY-4.0. Copyright 2026 Hasan Melih Akbulut. PDK models and native binaries are not redistributed. Actual62 VCO +91 divider +302 CMOS feedback devices;1271R/1414C. Body-substrate and wire-capacitance reference ports remain separately exposed with explicit ideal grounded bench assumptions. No qualified PEX, RF/PVT/ESD, PLL, full PHY or chip qualification. All source and electrical failures remain visible.\\n')\nfiles['review/NOTICES.txt']=notices\nmembers={name:pin(path) for name,path in files.items()}\ncap=B/'pcie-vco-v6-divider-tail115-v1-",
+      "new": "thstep-06-01','members-06-01','validation-06-01')):continue\n    files['review/'+str(path.relative_to(B))]=path\nfor name in ('Apache-2.0','CERN-OHL-W-2.0','CC-BY-4.0'):files['licenses/'+name+'.txt']=R/'LICENSES'/(name+'.txt')\nnotices=B/'NOTICES.txt'\nif not notices.exists():notices.write_text('Project methods Apache-2.0; circuit CERN-OHL-W-2.0; native evidence CC-BY-4.0. Copyright 2026 Hasan Melih Akbulut. PDK models and native binaries are not redistributed. Actual62 VCO +91 divider +302 CMOS feedback devices;1271R/1414C. Body-substrate and wire-capacitance reference ports remain separately exposed with explicit ideal grounded bench assumptions. No qualified PEX, RF/PVT/ESD, PLL, full PHY or chip qualification. All source and electrical failures remain visible.\\n')\nfiles['review/NOTICES.txt']=notices\nmembers={name:pin(path) for name,path in files.items()}\ncap=B/'pcie-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "insert",
+      "a0": 5501,
+      "a1": 5501,
+      "b0": 5805,
+      "b1": 5809,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 5501,
+      "a1": 5502,
+      "b0": 5809,
+      "b1": 5810,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 5502,
+      "a1": 5505,
+      "b0": 5810,
+      "b1": 5812,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 5505,
+      "a1": 6446,
+      "b0": 5812,
+      "b1": 6753,
+      "old": "thstep-06-01.tar.xz'\nassert not cap.exists()\nwith tarfile.open(cap,'w:xz',preset=1,dereference=True) as arc:\n    for name,path in files.items():arc.add(path,arcname=name,recursive=False)\nseen={}\nwith tarfile.open(cap,'r|xz') as arc:\n    for entry in arc:\n        assert entry.isfile()\n        seen[entry.name]={'bytes':entry.size,'sha256':hashlib.file_digest(arc.extractfile(entry),'sha256').hexdigest()}\nassert seen==members\nassert all(pin(path)==value for path,value in frozen['pins'].items())\n(B/'members-06-01.json').write_text(json.dumps(members,indent=2)+'\\n')\nreceipt={'status':'SEALED_ALL455_NATIVE_VALUES_FINITE_SCREEN','archive':{'path':str(cap),**pin(cap)},'members':len(members),'member_inventory':pin(B/'members-06-01.json'),'native_result':pin(P/'result.json'),'native_status':r['status'],'replay':pin(B/'review-06-01.json')}\n(B/'validation-06-01.json').write_text(json.dumps(receipt,indent=2)+'\\n')\nprint(json.dumps(receipt))\n",
+      "new": "thstep-06-01.tar.xz'\nassert not cap.exists()\nwith tarfile.open(cap,'w:xz',preset=1,dereference=True) as arc:\n    for name,path in files.items():arc.add(path,arcname=name,recursive=False)\nseen={}\nwith tarfile.open(cap,'r|xz') as arc:\n    for entry in arc:\n        assert entry.isfile()\n        seen[entry.name]={'bytes':entry.size,'sha256':hashlib.file_digest(arc.extractfile(entry),'sha256').hexdigest()}\nassert seen==members\nassert all(pin(path)==value for path,value in frozen['pins'].items())\n(B/'members-06-01.json').write_text(json.dumps(members,indent=2)+'\\n')\nreceipt={'status':'SEALED_ALL455_NATIVE_VALUES_FINITE_SCREEN','archive':{'path':str(cap),**pin(cap)},'members':len(members),'member_inventory':pin(B/'members-06-01.json'),'native_result':pin(P/'result.json'),'native_status':r['status'],'replay':pin(B/'review-06-01.json')}\n(B/'validation-06-01.json').write_text(json.dumps(receipt,indent=2)+'\\n')\nprint(json.dumps(receipt))\n"
+    }
+  ]
+}

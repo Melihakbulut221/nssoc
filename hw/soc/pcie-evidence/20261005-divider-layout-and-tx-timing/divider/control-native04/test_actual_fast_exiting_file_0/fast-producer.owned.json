@@ -1,0 +1,36 @@
+{
+  "status": "CANCELLED",
+  "reason": "80MiB own scratch ceiling",
+  "elapsed_watchdog_seconds": null,
+  "failure_grace_seconds": 5.0,
+  "processes": [
+    {
+      "kind": "native",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-c",
+        "from pathlib import Path; import sys; Path(sys.argv[1]).write_bytes(b'X' * (2 * 1024**2))",
+        "/tmp/pytest-of-hasanmelih/pytest-6/test_actual_fast_exiting_file_0/actual-fast-native-output.bin"
+      ],
+      "identity": {
+        "pid": 50049,
+        "state": "R",
+        "process_group": 50049,
+        "start_ticks": "585314"
+      },
+      "process_group": 50049,
+      "status": "REAPED_NO_LIVE_MEMBERS",
+      "returncode": 0,
+      "members_at_leader_exit": []
+    }
+  ],
+  "cleanup": {
+    "reason": "80MiB own scratch ceiling",
+    "started_monotonic": 5853.408496943,
+    "global_deadline_monotonic": 5858.408496943,
+    "groups": [],
+    "recording_errors": [],
+    "observation_errors": [],
+    "finished_monotonic": 5853.409205998
+  }
+}

@@ -1,0 +1,589 @@
+{
+  "date": "2026-09-20",
+  "status": "Generated-clock multi/single-corner discrepancy reproduced; product timing remains FAIL",
+  "scope": "Same placed ECO26 ODB, one exported global-route segment file replayed in fresh single-corner processes; no reroute in single-corner arms, no library-value/clock/load/derate/threshold change. Report-order control repeats slow after other corners with identical results. A separate seven-cell IHP OpenSTA 3.1.0 control reproduces differences only for the generated-clock output path, while ordinary flip-flop path slack is identical.",
+  "source": {
+    "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.odb",
+    "source_sha256": "06b4dbbe34378a19e93e13cced7cd19a53df096fc06ffb98cb7a93158555c5b6",
+    "segments_sha256": "f16f1ec177c97e2d8c00efcb2bd613fc60fcf2a64a50d7f0d1d83eedd067f8b3",
+    "scope": "Same immutable placed ODB and same exported global-route segments, fresh single-corner processes compared with multi-corner reports in two orders. No route rerun in single-corner arms, no constraints/library value changes."
+  },
+  "minimal_control": {
+    "scope": "Measure generated-clock corner isolation with seven actual IHP cells.\n\nThis diagnostic compares identical constraints/netlist under multiple loaded\nLiberty corners and under one corner per process. It neither changes a timing\nlimit nor treats its small example as product timing acceptance.\n",
+    "libraries": {
+      "fast": {
+        "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib",
+        "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+      },
+      "slow": {
+        "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+        "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+      },
+      "typ": {
+        "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      }
+    },
+    "version": "3.1.0",
+    "runs": {
+      "multi": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/sta",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/generated-clock-canonical/multi.tcl"
+        ],
+        "returncode": 0
+      },
+      "fast": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/sta",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/generated-clock-canonical/fast.tcl"
+        ],
+        "returncode": 0
+      },
+      "slow": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/sta",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/generated-clock-canonical/slow.tcl"
+        ],
+        "returncode": 0
+      },
+      "typ": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/sta",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/generated-clock-canonical/typ.tcl"
+        ],
+        "returncode": 0
+      }
+    },
+    "comparison": {
+      "fast": {
+        "max": {
+          "multi": {
+            "ff": 4.738010883,
+            "q": 4.902596951
+          },
+          "single": {
+            "ff": 4.738010883,
+            "q": 4.902596951
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": 0.0
+          }
+        },
+        "min": {
+          "multi": {
+            "ff": 0.201136246,
+            "q": -0.690208912
+          },
+          "single": {
+            "ff": 0.201136246,
+            "q": -0.470415622
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": -0.21979329000000003
+          }
+        }
+      },
+      "slow": {
+        "max": {
+          "multi": {
+            "ff": 4.703368664,
+            "q": 4.234260082
+          },
+          "single": {
+            "ff": 4.703368664,
+            "q": 4.433120728
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": -0.19886064599999997
+          }
+        },
+        "min": {
+          "multi": {
+            "ff": 0.136128724,
+            "q": -0.087000854
+          },
+          "single": {
+            "ff": 0.136128724,
+            "q": -0.087000854
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": 0.0
+          }
+        }
+      },
+      "typ": {
+        "max": {
+          "multi": {
+            "ff": 4.730928898,
+            "q": 4.667566299
+          },
+          "single": {
+            "ff": 4.730928898,
+            "q": 4.737298012
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": -0.06973171300000036
+          }
+        },
+        "min": {
+          "multi": {
+            "ff": 0.179855749,
+            "q": -0.473591387
+          },
+          "single": {
+            "ff": 0.179855749,
+            "q": -0.330870003
+          },
+          "delta_ns": {
+            "ff": 0.0,
+            "q": -0.14272138399999995
+          }
+        }
+      }
+    },
+    "generated_clock_difference_observed": true,
+    "ordinary_path_unchanged": true
+  },
+  "gmii_paths": {
+    "nom_fast_1p32V_m40C": {
+      "multi": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": 2.878295
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": 2.893341
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": 3.01527
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 0.123039
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 0.133792
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 0.160536
+          }
+        ]
+      },
+      "single": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": 2.878295
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": 2.893341
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": 3.01527
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 0.900542
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 0.911295
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 0.938039
+          }
+        ]
+      }
+    },
+    "nom_slow_1p08V_125C": {
+      "multi": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": -1.239417
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": -1.182318
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": -0.921906
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 3.376579
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 3.382351
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 3.485277
+          }
+        ]
+      },
+      "single": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": -0.535962
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": -0.478864
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": -0.218452
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 3.376579
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 3.382351
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 3.485277
+          }
+        ]
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "multi": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": 1.411478
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": 1.439035
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": 1.609528
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 1.28362
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 1.294837
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 1.351938
+          }
+        ]
+      },
+      "single": {
+        "max": [
+          {
+            "endpoint": "eth_txd_o[7]",
+            "slack_ns": 1.675944
+          },
+          {
+            "endpoint": "eth_tx_er_o",
+            "slack_ns": 1.703501
+          },
+          {
+            "endpoint": "eth_txd_o[1]",
+            "slack_ns": 1.873994
+          }
+        ],
+        "min": [
+          {
+            "endpoint": "eth_txd_o[2]",
+            "slack_ns": 1.768818
+          },
+          {
+            "endpoint": "eth_tx_en_o",
+            "slack_ns": 1.780036
+          },
+          {
+            "endpoint": "eth_txd_o[6]",
+            "slack_ns": 1.837136
+          }
+        ]
+      }
+    }
+  },
+  "interpretation": "Do not optimize solely against the mixed-corner generated-clock estimate. Use independent single-corner reports over matched geometry, then actual native extraction and the unchanged signoff checks. This measurement does not establish the upstream root cause and is not a timing waiver.",
+  "limits": [
+    "Actual single-corner slow setup remains negative (-0.535962 ns) and fast SRAM hold remains negative (-0.346552 ns).",
+    "All earlier estimated numbers remain historical measurements; native ECO22 per-corner STA is a different, independently measured result.",
+    "The new IRQ/logic-ROM candidate is separate and still needs its own reports."
+  ],
+  "commands": [
+    [
+      "python3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/probe_fixed_routes.py"
+    ],
+    [
+      "python3",
+      "hw/soc/flow/probe_generated_clock_corners.py",
+      "--pdk",
+      "/home/hasanmelih/.ciel/ihp-sg13g2",
+      "--sta",
+      "/home/hasanmelih/.local/opt/llbin/sta",
+      "--output",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/generated-clock-canonical"
+    ]
+  ],
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/source.json": {
+      "bytes": 547,
+      "sha256": "26ad7a1ec9b213ed89e3a5a55f8ac94c62ead19ec049e7d19fbb70b44b62b62f"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/routes.segments": {
+      "bytes": 33987830,
+      "sha256": "f16f1ec177c97e2d8c00efcb2bd613fc60fcf2a64a50d7f0d1d83eedd067f8b3"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/1-nom_fast_1p32V_m40C-max.rpt": {
+      "bytes": 42070,
+      "sha256": "30579f8119b107a63d7dd21b6cb6918a3e24670192da0b4fd7520ce7a4bc038d"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/3-nom_slow_1p08V_125C-min.rpt": {
+      "bytes": 36769,
+      "sha256": "f6d380de111d8a1539db2d6126a8acfcf5fde6baad723e63a505a5a65261db2c"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/result.json": {
+      "bytes": 282,
+      "sha256": "fee2a70b62f01232297ced1803222108bccc488ba99e4b30452b2cea8238bfcc"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/0-nom_slow_1p08V_125C-min.rpt": {
+      "bytes": 36769,
+      "sha256": "f6d380de111d8a1539db2d6126a8acfcf5fde6baad723e63a505a5a65261db2c"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/run.log": {
+      "bytes": 9176,
+      "sha256": "7ea6f1ca64008d727fb3627257ffe37ce30c75a1ff918a56b1d56c9de0be7441"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/probe.tcl": {
+      "bytes": 30395,
+      "sha256": "a91f279f7d969d6b560ee7eb83a65c88ef7cc3fe344682438aedba66c290d186"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/after_grt.guide": {
+      "bytes": 29444605,
+      "sha256": "5668331fdcf118883d11c84d14f7062e68fa72de28b81423f2efa6dd272ea602"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/1-nom_fast_1p32V_m40C-min.rpt": {
+      "bytes": 42554,
+      "sha256": "e8d2319159ada3affd7d6474affcc526658942e01037c6c6a16b66a7135d33ae"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/2-nom_typ_1p20V_25C-max.rpt": {
+      "bytes": 46979,
+      "sha256": "b86c930cf89725bd383a564502bb916aecc57754c8bfbda36eef750eea973f61"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/2-nom_typ_1p20V_25C-min.rpt": {
+      "bytes": 41147,
+      "sha256": "c7faf271bd5835bb6020114a4f119c7e5b84a7f9b08b3d456eeeb28bcb0c986a"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/3-nom_slow_1p08V_125C-max.rpt": {
+      "bytes": 55370,
+      "sha256": "248bb8252df78665c67516a5a98bd970e55fb885be273163548e0f010d1eca40"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/multi/0-nom_slow_1p08V_125C-max.rpt": {
+      "bytes": 55370,
+      "sha256": "248bb8252df78665c67516a5a98bd970e55fb885be273163548e0f010d1eca40"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_typ_1p20V_25C/result.json": {
+      "bytes": 295,
+      "sha256": "21a819aae67cc367af7140926d94ea501f06d2aa11e36ba0cee8e67a6cccdde7"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_typ_1p20V_25C/run.log": {
+      "bytes": 2213,
+      "sha256": "0842286483abc523bbb43709f55ffe4be76ec6f56eeb1bc255b728c6754e1df1"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_typ_1p20V_25C/probe.tcl": {
+      "bytes": 30678,
+      "sha256": "e6d775fcce39b049c3716a22ddf3abea65b29c8ead9451f0e14d120a246d6070"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_typ_1p20V_25C/0-nom_typ_1p20V_25C-max.rpt": {
+      "bytes": 46511,
+      "sha256": "bc2dc47ea90c70438571e2a736c8a8a4ac89ef09dab76a967fe66336014c97fc"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_typ_1p20V_25C/0-nom_typ_1p20V_25C-min.rpt": {
+      "bytes": 40757,
+      "sha256": "ea0955e25aacd24393e99052ea0a8e5b695f3251417733bfb47c5f3b73bf9b42"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_fast_1p32V_m40C/0-nom_fast_1p32V_m40C-max.rpt": {
+      "bytes": 41566,
+      "sha256": "91099b38286b3373c734e6cb8d9402b0563e70a69874d0d7a248f9c645fe28fc"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_fast_1p32V_m40C/result.json": {
+      "bytes": 297,
+      "sha256": "a6be29fa6c4564f8c1ab3c56e48e835cece4e6112e8b15147ee91364fcc6495b"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_fast_1p32V_m40C/run.log": {
+      "bytes": 2241,
+      "sha256": "a23ab1ee145bdce78489b3763ba0da74b48c5ecafdf2ac6a3e80475cc1cf45cc"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_fast_1p32V_m40C/probe.tcl": {
+      "bytes": 30684,
+      "sha256": "5c7c9ea2c5ff75aa48b448472e0147629a169143bec21b264e1f985071db4154"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_fast_1p32V_m40C/0-nom_fast_1p32V_m40C-min.rpt": {
+      "bytes": 42134,
+      "sha256": "a1e7fdf34dd206ead4b2ba059f6f85a93e1236dc1dc27c5bcf79a54e2b62b09e"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_slow_1p08V_125C/result.json": {
+      "bytes": 297,
+      "sha256": "a6ee6491dbefc99fb8729f2e7c6d42073464df0abe7fc273c254cec36c9d8d81"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_slow_1p08V_125C/0-nom_slow_1p08V_125C-min.rpt": {
+      "bytes": 36349,
+      "sha256": "2b90bea35aba13cd42f019e8231831b72063356267730aaa134024ca707758b5"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_slow_1p08V_125C/run.log": {
+      "bytes": 2243,
+      "sha256": "295aa3d2ff44c35b941ba668813627ed4eed92c3db61302ab76038f4ebea7aec"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_slow_1p08V_125C/probe.tcl": {
+      "bytes": 30684,
+      "sha256": "96b91e2c2c00011f48f7b8aaf83d74775075b36f91a6540eafd36b15eb204360"
+    },
+    "hw/soc/out/external-review-20260919/eco26-fixed-route-corners/nom_slow_1p08V_125C/0-nom_slow_1p08V_125C-max.rpt": {
+      "bytes": 54866,
+      "sha256": "0b42e2dc8be715f6b817e940c253286bba0caa50e55cdb32a59b89fad1f6add8"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/constraints.sdc": {
+      "bytes": 685,
+      "sha256": "4206c133c945547219d572e94048aa54a65a2bd845c75ef8f90a3d4fc5a08296"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi.tcl": {
+      "bytes": 3634,
+      "sha256": "7b48565f534cef43f2a163edcdf31953b58eea4bafd7c75b0a23af80ed868045"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/clock_probe.v": {
+      "bytes": 497,
+      "sha256": "95fbf4f29ac470d4a88a00b03b89f1f225286facc64111e41869eced16f98fb7"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/typ.log": {
+      "bytes": 371,
+      "sha256": "64c27138e571aaf2b67130494e401ad5b752456f20a5b9badac8f68eca004eee"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/result.json": {
+      "bytes": 4109,
+      "sha256": "f0fcaeb33573dbfd9a0247cc752ec3c76a04fc3917b5646af96bbf77541dad09"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-slow-max.rpt": {
+      "bytes": 3085,
+      "sha256": "ca878ceda23bbe7a2c755f9be0d1245cf28ec3d0f4179839772dbe69e7f5a442"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/typ-typ-min.rpt": {
+      "bytes": 3063,
+      "sha256": "b0ee5223956527a3c4822219a81e1b51b6ef7791156c818d94dd88ecca48828d"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/slow.tcl": {
+      "bytes": 1838,
+      "sha256": "199cd753e7afa7f67d24eeee3aaf1734c6d2cb1f2ed7f3980ab22d3f804e3646"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/slow-slow-max.rpt": {
+      "bytes": 3059,
+      "sha256": "a897b83aacc7900b8cab985e0bbd2926d194ece956ff4c8a7dc39be91707a3b5"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-typ-max.rpt": {
+      "bytes": 3083,
+      "sha256": "00e5cf2fce2193bb131c096717ff8f62e3d5ca4240461b7da32ba3e61c1582ac"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/slow.log": {
+      "bytes": 371,
+      "sha256": "64c27138e571aaf2b67130494e401ad5b752456f20a5b9badac8f68eca004eee"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/fast-fast-max.rpt": {
+      "bytes": 3059,
+      "sha256": "c1dc7326fff3aa1b29d385513110722a160f935b4717fa3ff807df327762426d"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/slow-slow-min.rpt": {
+      "bytes": 3063,
+      "sha256": "9e39ee65ed952ed8d82b6aefa6ca603490015a976e252f46379e88d4aee0740d"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/fast.tcl": {
+      "bytes": 1838,
+      "sha256": "35dca7cedf4d549697abf553d8c01994b9283d0105324ddc318a48baebae65d4"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/fast.log": {
+      "bytes": 371,
+      "sha256": "64c27138e571aaf2b67130494e401ad5b752456f20a5b9badac8f68eca004eee"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/typ-typ-max.rpt": {
+      "bytes": 3059,
+      "sha256": "ba9889b105354dc0cb5074a1855e99a97793b5be3c02098dfc68a2277d19a2d5"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-slow-min.rpt": {
+      "bytes": 3089,
+      "sha256": "8f22cfb161854c76a4f4ea651911c1c4bc6c0e3afe8103365469fd8b872de0b5"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-fast-min.rpt": {
+      "bytes": 3089,
+      "sha256": "4284f53a0205086acfb3dd429c5a69a63a5b1a2689803751e26bb4d0c93847c8"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-fast-max.rpt": {
+      "bytes": 3085,
+      "sha256": "31d586d903840cd12c7b21af69a4c242ece79d195cb2232a182d157a8e3e9ffe"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi.log": {
+      "bytes": 371,
+      "sha256": "64c27138e571aaf2b67130494e401ad5b752456f20a5b9badac8f68eca004eee"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/fast-fast-min.rpt": {
+      "bytes": 3063,
+      "sha256": "72e79502cc1b3a342418554d9e097fa7702fb5ae19cdc7e01d21bba8f01e2e37"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/typ.tcl": {
+      "bytes": 1834,
+      "sha256": "18ace1a9b8252912d89e7a3c2c7355e729ac60ab97fdd5b75c67e9f93c9096d0"
+    },
+    "hw/soc/out/external-review-20260919/generated-clock-canonical/multi-typ-min.rpt": {
+      "bytes": 3087,
+      "sha256": "a8dadfb41e7568ca9f4c066ac4a120049fce237ba8b589b55d9a07d4d3988d9b"
+    },
+    "hw/soc/out/external-review-20260919/probe_fixed_routes.py": {
+      "bytes": 3096,
+      "sha256": "c307e45a86d26d3abb7848c2a50d6193ac5190e9656cc10b579df6ff75f9e735"
+    },
+    "hw/soc/flow/probe_generated_clock_corners.py": {
+      "bytes": 5771,
+      "sha256": "ffaa99f42b2ebb71ccab89cc80350fd663e73672f21d9ae40cd4cd4941f91b40"
+    },
+    "hw/soc/out/external-review-20260919/record_corner_isolation.py": {
+      "bytes": 3163,
+      "sha256": "9193b7e134fe1321a433d697fc7664ad91c1a15858bfb9c2454b3cdce23372d1"
+    }
+  }
+}

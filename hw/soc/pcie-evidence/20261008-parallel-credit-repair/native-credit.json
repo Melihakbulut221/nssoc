@@ -1,0 +1,112 @@
+{
+  "status": "PASS_PORT_ONLY_PCIE_CREDITS",
+  "top": "soc_pcie_credit_tx",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v": {
+      "bytes": 5159,
+      "sha256": "8867818f6fc6cc9b46fe11ef3702296a08fe6bdbe1b9588a493c4aaddb57ea5f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_credit_tx.py": {
+      "bytes": 7476,
+      "sha256": "47fbe755bfbb06dae961e5b54cfda6bef11712e98595c216bc48052a930e7321"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_credit_tx": {
+      "bytes": 1157,
+      "sha256": "3ca9700292b35f7c3f82ceb0fcc94ca3cdfd1f57013bff599ae4ede06079973e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_flow.py": {
+      "bytes": 6019,
+      "sha256": "88e4fc6857694e20c20774269502f69f4699043207b1baedfc4f63cda9289f6c"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    }
+  },
+  "expected_tests": 4,
+  "mode": "native",
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-20261008/native01/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log",
+      "log_pin": {
+        "bytes": 86929,
+        "sha256": "19ae5228e78c8fd095bd4fa28da16005dbb000aa92e95c646540641cd71d47e1"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_credit_tx",
+        "--no-print-directory",
+        "VERILOG_SOURCES=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-20261008/native01/mapped.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "SIM_BUILD=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-20261008/native01/sim",
+        "COCOTB_RESULTS_FILE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-20261008/native01/results.xml",
+        "PCIE_NATIVE=1"
+      ],
+      "returncode": 0,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 33396,
+        "sha256": "0d64566bb9c35cf3c069df9ee518fbb0129a2f5e61d698ef9837ee6e4ba16013"
+      }
+    }
+  ],
+  "scope": "VC0 unscaled transmit credit accounting. Parsed trusted FC input; no FC advertisements, receive buffers, timers, PHY, SDF or SoC integration.",
+  "mapped_cells": 988,
+  "tests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "outputs": {
+    "results.xml": {
+      "bytes": 1310,
+      "sha256": "efc1a45119a2774032a78ee0be1418c5bf666769d594d87a1de34cdb4d89c626"
+    },
+    "mapped.v": {
+      "bytes": 110061,
+      "sha256": "26dda1131e18d9ac81a63604a84717eac908421fda3f01bef9a5b53893d6a923"
+    },
+    "simulation.log": {
+      "bytes": 33396,
+      "sha256": "0d64566bb9c35cf3c069df9ee518fbb0129a2f5e61d698ef9837ee6e4ba16013"
+    },
+    "mapped.json": {
+      "bytes": 715976,
+      "sha256": "bc4ac8f83da1466136116e89668113dd273d367a94b7077343b04c174c00c7b6"
+    },
+    "map.ys": {
+      "bytes": 1147,
+      "sha256": "e3fc5764cb8d8a598ad70cbeb88f54b424f313e2d8f809fecb474f7cd83a836c"
+    },
+    "map.log": {
+      "bytes": 86929,
+      "sha256": "19ae5228e78c8fd095bd4fa28da16005dbb000aa92e95c646540641cd71d47e1"
+    }
+  }
+}

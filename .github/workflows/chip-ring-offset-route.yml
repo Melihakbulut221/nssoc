@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: chip-ring-offset-route
+on:
+  push:
+    paths:
+      - .github/workflows/chip-ring-offset-route.yml
+      - docs/evidence/chip-ring-offset-input-assets-20260929.json
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: chip-ring-offset-route-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  route:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical executable
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Route horizontal ring offset repair candidate
+        run: >-
+          python3 scripts/run_chip_ring_route.py --from-start
+          --manifest docs/evidence/chip-ring-offset-input-assets-20260929.json
+          --output hw/soc/out/cloud-ring-offset-routing
+      - name: Preserve routing outputs and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: chip-ring-offset-routing
+          path: |
+            hw/soc/out/cloud-ring-offset-routing/result.json
+            hw/soc/out/cloud-ring-offset-routing/config.json
+            hw/soc/out/cloud-ring-offset-routing/state.json
+            hw/soc/out/cloud-ring-offset-routing/run.log
+            hw/soc/out/cloud-ring-offset-routing/run/
+          retention-days: 30

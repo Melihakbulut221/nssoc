@@ -1,0 +1,1003 @@
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: CERN-OHL-W-2.0
+// Fixed aligned/deskewed, already descrambled x4 Data Blocks only.
+// Four ordered DWORD steps per clock, no per-block load bubble. Packet data
+// stays quarantined until CRC and immediate successor/EDB verdict resolve. Retirement
+// preserves token slots and supplies per-byte masks, including multiple packet
+// boundaries per beat. This is not SKP/OS search, CDC, a PMA or a complete PCS.
+`default_nettype none
+module soc_pcie_gen3_framer_rx_integrity_v17 #(
+ parameter integer MAX_ENCODED_BYTES=150,
+ parameter integer RING_DWORDS=(1 << $clog2((MAX_ENCODED_BYTES+2)/4+16))
+)(
+ input wire clk_i,rst_ni,flush_i,stream_start_i,stream_abort_i,
+ input wire block_valid_i,output wire block_ready_o,
+ input wire [7:0] headers_i,input wire [511:0] payload_i,
+ input wire block_error_i,
+ output wire valid_o,input wire ready_i,output wire [127:0] data_o,
+ output wire [15:0] keep_o,sop_o,eop_o,dllp_o,
+ output wire [47:0] sequence_o,
+ output reg [3:0] packet_good_o,packet_nullified_o,packet_crc_bad_o,packet_dllp_o,
+ output reg [47:0] packet_sequence_o,
+ output wire framing_error_o,overflow_o,
+ output reg stream_end_o,active_o,halted_o,
+ output wire accepting_o
+);
+ // BEGIN GENERATED CRC CANDIDATES -- generate_pcie_crc_candidates_v3.py
+ function automatic [31:0] crc32_16;
+   input [31:0] state;
+   input [15:0] data;
+   begin
+     crc32_16[0]=(((state[0]^state[4])^(state[6]^(state[7]^state[10])))^((state[16]^(data[0]^data[4]))^(data[6]^(data[7]^data[10]))));
+     crc32_16[1]=(((state[1]^state[5])^(state[7]^(state[8]^state[11])))^((state[17]^(data[1]^data[5]))^(data[7]^(data[8]^data[11]))));
+     crc32_16[2]=(((state[2]^state[6])^(state[8]^(state[9]^state[12])))^((state[18]^(data[2]^data[6]))^(data[8]^(data[9]^data[12]))));
+     crc32_16[3]=(((state[3]^state[7])^(state[9]^(state[10]^state[13])))^((state[19]^(data[3]^data[7]))^(data[9]^(data[10]^data[13]))));
+     crc32_16[4]=(((state[4]^state[8])^(state[10]^(state[11]^state[14])))^((state[20]^(data[4]^data[8]))^(data[10]^(data[11]^data[14]))));
+     crc32_16[5]=(((state[5]^state[9])^(state[11]^(state[12]^state[15])))^((state[21]^(data[5]^data[9]))^(data[11]^(data[12]^data[15]))));
+     crc32_16[6]=(((state[0]^state[4])^(state[7]^(state[12]^state[13])))^((state[22]^(data[0]^data[4]))^(data[7]^(data[12]^data[13]))));
+     crc32_16[7]=(((state[1]^state[5])^(state[8]^(state[13]^state[14])))^((state[23]^(data[1]^data[5]))^(data[8]^(data[13]^data[14]))));
+     crc32_16[8]=(((state[0]^(state[2]^state[6]))^(state[9]^(state[14]^state[15])))^((state[24]^(data[0]^data[2]))^((data[6]^data[9])^(data[14]^data[15]))));
+     crc32_16[9]=(((state[1]^state[3])^(state[4]^(state[6]^state[15])))^((state[25]^(data[1]^data[3]))^(data[4]^(data[6]^data[15]))));
+     crc32_16[10]=(((state[2]^state[5])^(state[6]^state[10]))^((state[26]^data[2])^(data[5]^(data[6]^data[10]))));
+     crc32_16[11]=(((state[3]^state[6])^(state[7]^state[11]))^((state[27]^data[3])^(data[6]^(data[7]^data[11]))));
+     crc32_16[12]=(((state[0]^state[4])^(state[7]^(state[8]^state[12])))^((state[28]^(data[0]^data[4]))^(data[7]^(data[8]^data[12]))));
+     crc32_16[13]=(((state[0]^(state[1]^state[5]))^(state[8]^(state[9]^state[13])))^((state[29]^(data[0]^data[1]))^((data[5]^data[8])^(data[9]^data[13]))));
+     crc32_16[14]=(((state[1]^(state[2]^state[6]))^(state[9]^(state[10]^state[14])))^((state[30]^(data[1]^data[2]))^((data[6]^data[9])^(data[10]^data[14]))));
+     crc32_16[15]=(((state[2]^(state[3]^state[7]))^(state[10]^(state[11]^state[15])))^((state[31]^(data[2]^data[3]))^((data[7]^data[10])^(data[11]^data[15]))));
+     crc32_16[16]=((((state[0]^state[3])^(state[6]^state[7]))^((state[8]^state[10])^(state[11]^state[12])))^(((data[0]^data[3])^(data[6]^data[7]))^((data[8]^data[10])^(data[11]^data[12]))));
+     crc32_16[17]=((((state[0]^state[1])^(state[4]^state[7]))^((state[8]^state[9])^(state[11]^(state[12]^state[13]))))^(((data[0]^data[1])^(data[4]^data[7]))^((data[8]^data[9])^(data[11]^(data[12]^data[13])))));
+     crc32_16[18]=((((state[1]^state[2])^(state[5]^state[8]))^((state[9]^state[10])^(state[12]^(state[13]^state[14]))))^(((data[1]^data[2])^(data[5]^data[8]))^((data[9]^data[10])^(data[12]^(data[13]^data[14])))));
+     crc32_16[19]=((((state[0]^state[2])^(state[3]^(state[6]^state[9])))^((state[10]^state[11])^(state[13]^(state[14]^state[15]))))^(((data[0]^data[2])^(data[3]^(data[6]^data[9])))^((data[10]^data[11])^(data[13]^(data[14]^data[15])))));
+     crc32_16[20]=((((state[0]^state[1])^(state[3]^state[6]))^((state[11]^state[12])^(state[14]^state[15])))^(((data[0]^data[1])^(data[3]^data[6]))^((data[11]^data[12])^(data[14]^data[15]))));
+     crc32_16[21]=(((state[1]^(state[2]^state[6]))^((state[10]^state[12])^(state[13]^state[15])))^((data[1]^(data[2]^data[6]))^((data[10]^data[12])^(data[13]^data[15]))));
+     crc32_16[22]=((((state[2]^state[3])^(state[4]^state[6]))^((state[10]^state[11])^(state[13]^state[14])))^(((data[2]^data[3])^(data[4]^data[6]))^((data[10]^data[11])^(data[13]^data[14]))));
+     crc32_16[23]=((((state[3]^state[4])^(state[5]^state[7]))^((state[11]^state[12])^(state[14]^state[15])))^(((data[3]^data[4])^(data[5]^data[7]))^((data[11]^data[12])^(data[14]^data[15]))));
+     crc32_16[24]=((((state[0]^state[5])^(state[7]^state[8]))^((state[10]^state[12])^(state[13]^state[15])))^(((data[0]^data[5])^(data[7]^data[8]))^((data[10]^data[12])^(data[13]^data[15]))));
+     crc32_16[25]=((((state[1]^state[4])^(state[7]^state[8]))^((state[9]^state[10])^(state[11]^(state[13]^state[14]))))^(((data[1]^data[4])^(data[7]^data[8]))^((data[9]^data[10])^(data[11]^(data[13]^data[14])))));
+     crc32_16[26]=((((state[2]^state[5])^(state[8]^state[9]))^((state[10]^state[11])^(state[12]^(state[14]^state[15]))))^(((data[2]^data[5])^(data[8]^data[9]))^((data[10]^data[11])^(data[12]^(data[14]^data[15])))));
+     crc32_16[27]=((((state[0]^state[3])^(state[4]^state[7]))^((state[9]^state[11])^(state[12]^(state[13]^state[15]))))^(((data[0]^data[3])^(data[4]^data[7]))^((data[9]^data[11])^(data[12]^(data[13]^data[15])))));
+     crc32_16[28]=((((state[0]^state[1])^(state[5]^state[6]))^((state[7]^state[8])^(state[12]^(state[13]^state[14]))))^(((data[0]^data[1])^(data[5]^data[6]))^((data[7]^data[8])^(data[12]^(data[13]^data[14])))));
+     crc32_16[29]=((((state[1]^state[2])^(state[6]^state[7]))^((state[8]^state[9])^(state[13]^(state[14]^state[15]))))^(((data[1]^data[2])^(data[6]^data[7]))^((data[8]^data[9])^(data[13]^(data[14]^data[15])))));
+     crc32_16[30]=((((state[2]^state[3])^(state[4]^state[6]))^((state[8]^state[9])^(state[14]^state[15])))^(((data[2]^data[3])^(data[4]^data[6]))^((data[8]^data[9])^(data[14]^data[15]))));
+     crc32_16[31]=(((state[3]^state[5])^(state[6]^(state[9]^state[15])))^((data[3]^data[5])^(data[6]^(data[9]^data[15]))));
+   end
+ endfunction
+ function automatic [31:0] crc32_32;
+   input [31:0] state;
+   input [31:0] data;
+   begin
+     crc32_32[0]=((((state[0]^(state[1]^state[2]))^(state[3]^(state[4]^state[6])))^((state[7]^(state[8]^state[16]))^((state[20]^state[22])^(state[23]^state[26]))))^(((data[0]^(data[1]^data[2]))^(data[3]^(data[4]^data[6])))^((data[7]^(data[8]^data[16]))^((data[20]^data[22])^(data[23]^data[26])))));
+     crc32_32[1]=((((state[1]^(state[2]^state[3]))^(state[4]^(state[5]^state[7])))^((state[8]^(state[9]^state[17]))^((state[21]^state[23])^(state[24]^state[27]))))^(((data[1]^(data[2]^data[3]))^(data[4]^(data[5]^data[7])))^((data[8]^(data[9]^data[17]))^((data[21]^data[23])^(data[24]^data[27])))));
+     crc32_32[2]=((((state[0]^(state[2]^state[3]))^((state[4]^state[5])^(state[6]^state[8])))^((state[9]^(state[10]^state[18]))^((state[22]^state[24])^(state[25]^state[28]))))^(((data[0]^(data[2]^data[3]))^((data[4]^data[5])^(data[6]^data[8])))^((data[9]^(data[10]^data[18]))^((data[22]^data[24])^(data[25]^data[28])))));
+     crc32_32[3]=((((state[1]^(state[3]^state[4]))^((state[5]^state[6])^(state[7]^state[9])))^((state[10]^(state[11]^state[19]))^((state[23]^state[25])^(state[26]^state[29]))))^(((data[1]^(data[3]^data[4]))^((data[5]^data[6])^(data[7]^data[9])))^((data[10]^(data[11]^data[19]))^((data[23]^data[25])^(data[26]^data[29])))));
+     crc32_32[4]=((((state[2]^(state[4]^state[5]))^((state[6]^state[7])^(state[8]^state[10])))^((state[11]^(state[12]^state[20]))^((state[24]^state[26])^(state[27]^state[30]))))^(((data[2]^(data[4]^data[5]))^((data[6]^data[7])^(data[8]^data[10])))^((data[11]^(data[12]^data[20]))^((data[24]^data[26])^(data[27]^data[30])))));
+     crc32_32[5]=((((state[0]^(state[3]^state[5]))^((state[6]^state[7])^(state[8]^state[9])))^(((state[11]^state[12])^(state[13]^state[21]))^((state[25]^state[27])^(state[28]^state[31]))))^(((data[0]^(data[3]^data[5]))^((data[6]^data[7])^(data[8]^data[9])))^(((data[11]^data[12])^(data[13]^data[21]))^((data[25]^data[27])^(data[28]^data[31])))));
+     crc32_32[6]=((((state[0]^(state[2]^state[3]))^(state[9]^(state[10]^state[12])))^((state[13]^(state[14]^state[16]))^((state[20]^state[23])^(state[28]^state[29]))))^(((data[0]^(data[2]^data[3]))^(data[9]^(data[10]^data[12])))^((data[13]^(data[14]^data[16]))^((data[20]^data[23])^(data[28]^data[29])))));
+     crc32_32[7]=((((state[1]^(state[3]^state[4]))^(state[10]^(state[11]^state[13])))^((state[14]^(state[15]^state[17]))^((state[21]^state[24])^(state[29]^state[30]))))^(((data[1]^(data[3]^data[4]))^(data[10]^(data[11]^data[13])))^((data[14]^(data[15]^data[17]))^((data[21]^data[24])^(data[29]^data[30])))));
+     crc32_32[8]=((((state[0]^(state[2]^state[4]))^((state[5]^state[11])^(state[12]^state[14])))^((state[15]^(state[16]^state[18]))^((state[22]^state[25])^(state[30]^state[31]))))^(((data[0]^(data[2]^data[4]))^((data[5]^data[11])^(data[12]^data[14])))^((data[15]^(data[16]^data[18]))^((data[22]^data[25])^(data[30]^data[31])))));
+     crc32_32[9]=((((state[0]^(state[2]^state[4]))^((state[5]^state[7])^(state[8]^state[12])))^((state[13]^(state[15]^state[17]))^((state[19]^state[20])^(state[22]^state[31]))))^(((data[0]^(data[2]^data[4]))^((data[5]^data[7])^(data[8]^data[12])))^((data[13]^(data[15]^data[17]))^((data[19]^data[20])^(data[22]^data[31])))));
+     crc32_32[10]=((((state[0]^(state[2]^state[4]))^(state[5]^(state[7]^state[9])))^((state[13]^(state[14]^state[18]))^(state[21]^(state[22]^state[26]))))^(((data[0]^(data[2]^data[4]))^(data[5]^(data[7]^data[9])))^((data[13]^(data[14]^data[18]))^(data[21]^(data[22]^data[26])))));
+     crc32_32[11]=((((state[1]^(state[3]^state[5]))^(state[6]^(state[8]^state[10])))^((state[14]^(state[15]^state[19]))^(state[22]^(state[23]^state[27]))))^(((data[1]^(data[3]^data[5]))^(data[6]^(data[8]^data[10])))^((data[14]^(data[15]^data[19]))^(data[22]^(data[23]^data[27])))));
+     crc32_32[12]=((((state[2]^(state[4]^state[6]))^(state[7]^(state[9]^state[11])))^((state[15]^(state[16]^state[20]))^(state[23]^(state[24]^state[28]))))^(((data[2]^(data[4]^data[6]))^(data[7]^(data[9]^data[11])))^((data[15]^(data[16]^data[20]))^(data[23]^(data[24]^data[28])))));
+     crc32_32[13]=((((state[0]^(state[3]^state[5]))^(state[7]^(state[8]^state[10])))^((state[12]^(state[16]^state[17]))^((state[21]^state[24])^(state[25]^state[29]))))^(((data[0]^(data[3]^data[5]))^(data[7]^(data[8]^data[10])))^((data[12]^(data[16]^data[17]))^((data[21]^data[24])^(data[25]^data[29])))));
+     crc32_32[14]=((((state[0]^(state[1]^state[4]))^((state[6]^state[8])^(state[9]^state[11])))^((state[13]^(state[17]^state[18]))^((state[22]^state[25])^(state[26]^state[30]))))^(((data[0]^(data[1]^data[4]))^((data[6]^data[8])^(data[9]^data[11])))^((data[13]^(data[17]^data[18]))^((data[22]^data[25])^(data[26]^data[30])))));
+     crc32_32[15]=((((state[1]^(state[2]^state[5]))^((state[7]^state[9])^(state[10]^state[12])))^((state[14]^(state[18]^state[19]))^((state[23]^state[26])^(state[27]^state[31]))))^(((data[1]^(data[2]^data[5]))^((data[7]^data[9])^(data[10]^data[12])))^((data[14]^(data[18]^data[19]))^((data[23]^data[26])^(data[27]^data[31])))));
+     crc32_32[16]=((((state[1]^(state[4]^state[7]))^((state[10]^state[11])^(state[13]^state[15])))^(((state[16]^state[19])^(state[22]^state[23]))^((state[24]^state[26])^(state[27]^state[28]))))^(((data[1]^(data[4]^data[7]))^((data[10]^data[11])^(data[13]^data[15])))^(((data[16]^data[19])^(data[22]^data[23]))^((data[24]^data[26])^(data[27]^data[28])))));
+     crc32_32[17]=((((state[2]^(state[5]^state[8]))^((state[11]^state[12])^(state[14]^state[16])))^(((state[17]^state[20])^(state[23]^state[24]))^((state[25]^state[27])^(state[28]^state[29]))))^(((data[2]^(data[5]^data[8]))^((data[11]^data[12])^(data[14]^data[16])))^(((data[17]^data[20])^(data[23]^data[24]))^((data[25]^data[27])^(data[28]^data[29])))));
+     crc32_32[18]=(((((state[0]^state[3])^(state[6]^state[9]))^((state[12]^state[13])^(state[15]^state[17])))^(((state[18]^state[21])^(state[24]^state[25]))^((state[26]^state[28])^(state[29]^state[30]))))^((((data[0]^data[3])^(data[6]^data[9]))^((data[12]^data[13])^(data[15]^data[17])))^(((data[18]^data[21])^(data[24]^data[25]))^((data[26]^data[28])^(data[29]^data[30])))));
+     crc32_32[19]=(((((state[0]^state[1])^(state[4]^state[7]))^((state[10]^state[13])^(state[14]^state[16])))^(((state[18]^state[19])^(state[22]^state[25]))^((state[26]^state[27])^(state[29]^(state[30]^state[31])))))^((((data[0]^data[1])^(data[4]^data[7]))^((data[10]^data[13])^(data[14]^data[16])))^(((data[18]^data[19])^(data[22]^data[25]))^((data[26]^data[27])^(data[29]^(data[30]^data[31]))))));
+     crc32_32[20]=(((((state[0]^state[3])^(state[4]^state[5]))^((state[6]^state[7])^(state[11]^state[14])))^(((state[15]^state[16])^(state[17]^state[19]))^((state[22]^state[27])^(state[28]^(state[30]^state[31])))))^((((data[0]^data[3])^(data[4]^data[5]))^((data[6]^data[7])^(data[11]^data[14])))^(((data[15]^data[16])^(data[17]^data[19]))^((data[22]^data[27])^(data[28]^(data[30]^data[31]))))));
+     crc32_32[21]=((((state[0]^(state[2]^state[3]))^(state[5]^(state[12]^state[15])))^((state[17]^(state[18]^state[22]))^((state[26]^state[28])^(state[29]^state[31]))))^(((data[0]^(data[2]^data[3]))^(data[5]^(data[12]^data[15])))^((data[17]^(data[18]^data[22]))^((data[26]^data[28])^(data[29]^data[31])))));
+     crc32_32[22]=((((state[2]^(state[7]^state[8]))^(state[13]^(state[18]^state[19])))^((state[20]^(state[22]^state[26]))^(state[27]^(state[29]^state[30]))))^(((data[2]^(data[7]^data[8]))^(data[13]^(data[18]^data[19])))^((data[20]^(data[22]^data[26]))^(data[27]^(data[29]^data[30])))));
+     crc32_32[23]=((((state[0]^(state[3]^state[8]))^(state[9]^(state[14]^state[19])))^((state[20]^(state[21]^state[23]))^((state[27]^state[28])^(state[30]^state[31]))))^(((data[0]^(data[3]^data[8]))^(data[9]^(data[14]^data[19])))^((data[20]^(data[21]^data[23]))^((data[27]^data[28])^(data[30]^data[31])))));
+     crc32_32[24]=(((((state[2]^state[3])^(state[6]^state[7]))^((state[8]^state[9])^(state[10]^state[15])))^(((state[16]^state[21])^(state[23]^state[24]))^((state[26]^state[28])^(state[29]^state[31]))))^((((data[2]^data[3])^(data[6]^data[7]))^((data[8]^data[9])^(data[10]^data[15])))^(((data[16]^data[21])^(data[23]^data[24]))^((data[26]^data[28])^(data[29]^data[31])))));
+     crc32_32[25]=((((state[1]^(state[2]^state[6]))^((state[9]^state[10])^(state[11]^state[17])))^(((state[20]^state[23])^(state[24]^state[25]))^((state[26]^state[27])^(state[29]^state[30]))))^(((data[1]^(data[2]^data[6]))^((data[9]^data[10])^(data[11]^data[17])))^(((data[20]^data[23])^(data[24]^data[25]))^((data[26]^data[27])^(data[29]^data[30])))));
+     crc32_32[26]=((((state[2]^(state[3]^state[7]))^((state[10]^state[11])^(state[12]^state[18])))^(((state[21]^state[24])^(state[25]^state[26]))^((state[27]^state[28])^(state[30]^state[31]))))^(((data[2]^(data[3]^data[7]))^((data[10]^data[11])^(data[12]^data[18])))^(((data[21]^data[24])^(data[25]^data[26]))^((data[27]^data[28])^(data[30]^data[31])))));
+     crc32_32[27]=(((((state[0]^state[1])^(state[2]^state[6]))^((state[7]^state[11])^(state[12]^state[13])))^(((state[16]^state[19])^(state[20]^state[23]))^((state[25]^state[27])^(state[28]^(state[29]^state[31])))))^((((data[0]^data[1])^(data[2]^data[6]))^((data[7]^data[11])^(data[12]^data[13])))^(((data[16]^data[19])^(data[20]^data[23]))^((data[25]^data[27])^(data[28]^(data[29]^data[31]))))));
+     crc32_32[28]=((((state[0]^(state[4]^state[6]))^((state[12]^state[13])^(state[14]^state[16])))^(((state[17]^state[21])^(state[22]^state[23]))^((state[24]^state[28])^(state[29]^state[30]))))^(((data[0]^(data[4]^data[6]))^((data[12]^data[13])^(data[14]^data[16])))^(((data[17]^data[21])^(data[22]^data[23]))^((data[24]^data[28])^(data[29]^data[30])))));
+     crc32_32[29]=(((((state[0]^state[1])^(state[5]^state[7]))^((state[13]^state[14])^(state[15]^state[17])))^(((state[18]^state[22])^(state[23]^state[24]))^((state[25]^state[29])^(state[30]^state[31]))))^((((data[0]^data[1])^(data[5]^data[7]))^((data[13]^data[14])^(data[15]^data[17])))^(((data[18]^data[22])^(data[23]^data[24]))^((data[25]^data[29])^(data[30]^data[31])))));
+     crc32_32[30]=((((state[3]^(state[4]^state[7]))^(state[14]^(state[15]^state[18])))^((state[19]^(state[20]^state[22]))^((state[24]^state[25])^(state[30]^state[31]))))^(((data[3]^(data[4]^data[7]))^(data[14]^(data[15]^data[18])))^((data[19]^(data[20]^data[22]))^((data[24]^data[25])^(data[30]^data[31])))));
+     crc32_32[31]=((((state[0]^(state[1]^state[2]))^(state[3]^(state[5]^state[6])))^((state[7]^(state[15]^state[19]))^((state[21]^state[22])^(state[25]^state[31]))))^(((data[0]^(data[1]^data[2]))^(data[3]^(data[5]^data[6])))^((data[7]^(data[15]^data[19]))^((data[21]^data[22])^(data[25]^data[31])))));
+   end
+ endfunction
+ function automatic [31:0] crc32_48;
+   input [31:0] state;
+   input [47:0] data;
+   begin
+     crc32_48[0]=(((((state[0]^state[1])^(state[3]^state[4]))^((state[11]^state[14])^(state[16]^state[17])))^(((state[18]^state[19])^(state[20]^state[22]))^((state[23]^state[24])^(data[0]^data[1]))))^((((data[3]^data[4])^(data[11]^data[14]))^((data[16]^data[17])^(data[18]^data[19])))^(((data[20]^data[22])^(data[23]^data[24]))^((data[32]^data[36])^(data[38]^(data[39]^data[42]))))));
+     crc32_48[1]=(((((state[1]^state[2])^(state[4]^state[5]))^((state[12]^state[15])^(state[17]^state[18])))^(((state[19]^state[20])^(state[21]^state[23]))^((state[24]^state[25])^(data[1]^data[2]))))^((((data[4]^data[5])^(data[12]^data[15]))^((data[17]^data[18])^(data[19]^data[20])))^(((data[21]^data[23])^(data[24]^data[25]))^((data[33]^data[37])^(data[39]^(data[40]^data[43]))))));
+     crc32_48[2]=(((((state[0]^state[2])^(state[3]^state[5]))^((state[6]^state[13])^(state[16]^state[18])))^(((state[19]^state[20])^(state[21]^state[22]))^((state[24]^state[25])^(state[26]^(data[0]^data[2])))))^((((data[3]^data[5])^(data[6]^data[13]))^((data[16]^data[18])^(data[19]^(data[20]^data[21]))))^(((data[22]^data[24])^(data[25]^data[26]))^((data[34]^data[38])^(data[40]^(data[41]^data[44]))))));
+     crc32_48[3]=(((((state[1]^state[3])^(state[4]^state[6]))^((state[7]^state[14])^(state[17]^state[19])))^(((state[20]^state[21])^(state[22]^state[23]))^((state[25]^state[26])^(state[27]^(data[1]^data[3])))))^((((data[4]^data[6])^(data[7]^data[14]))^((data[17]^data[19])^(data[20]^(data[21]^data[22]))))^(((data[23]^data[25])^(data[26]^data[27]))^((data[35]^data[39])^(data[41]^(data[42]^data[45]))))));
+     crc32_48[4]=(((((state[2]^state[4])^(state[5]^state[7]))^((state[8]^state[15])^(state[18]^state[20])))^(((state[21]^state[22])^(state[23]^state[24]))^((state[26]^state[27])^(state[28]^(data[2]^data[4])))))^((((data[5]^data[7])^(data[8]^data[15]))^((data[18]^data[20])^(data[21]^(data[22]^data[23]))))^(((data[24]^data[26])^(data[27]^data[28]))^((data[36]^data[40])^(data[42]^(data[43]^data[46]))))));
+     crc32_48[5]=(((((state[0]^state[3])^(state[5]^state[6]))^((state[8]^state[9])^(state[16]^(state[19]^state[21]))))^(((state[22]^state[23])^(state[24]^state[25]))^((state[27]^state[28])^(state[29]^(data[0]^data[3])))))^((((data[5]^data[6])^(data[8]^data[9]))^((data[16]^data[19])^(data[21]^(data[22]^data[23]))))^(((data[24]^data[25])^(data[27]^(data[28]^data[29])))^((data[37]^data[41])^(data[43]^(data[44]^data[47]))))));
+     crc32_48[6]=(((((state[3]^state[6])^(state[7]^state[9]))^((state[10]^state[11])^(state[14]^state[16])))^(((state[18]^state[19])^(state[25]^state[26]))^((state[28]^state[29])^(state[30]^(data[3]^data[6])))))^((((data[7]^data[9])^(data[10]^data[11]))^((data[14]^data[16])^(data[18]^(data[19]^data[25]))))^(((data[26]^data[28])^(data[29]^data[30]))^((data[32]^data[36])^(data[39]^(data[44]^data[45]))))));
+     crc32_48[7]=(((((state[0]^state[4])^(state[7]^state[8]))^((state[10]^state[11])^(state[12]^(state[15]^state[17]))))^(((state[19]^state[20])^(state[26]^state[27]))^((state[29]^state[30])^(state[31]^(data[0]^data[4])))))^((((data[7]^data[8])^(data[10]^data[11]))^((data[12]^data[15])^(data[17]^(data[19]^data[20]))))^(((data[26]^data[27])^(data[29]^(data[30]^data[31])))^((data[33]^data[37])^(data[40]^(data[45]^data[46]))))));
+     crc32_48[8]=(((((state[0]^state[1])^(state[5]^state[8]))^((state[9]^state[11])^(state[12]^(state[13]^state[16]))))^(((state[18]^state[20])^(state[21]^(state[27]^state[28])))^((state[30]^state[31])^(data[0]^(data[1]^data[5])))))^((((data[8]^data[9])^(data[11]^data[12]))^((data[13]^data[16])^(data[18]^(data[20]^data[21]))))^(((data[27]^data[28])^(data[30]^(data[31]^data[32])))^((data[34]^data[38])^(data[41]^(data[46]^data[47]))))));
+     crc32_48[9]=(((((state[0]^state[2])^(state[3]^(state[4]^state[6])))^((state[9]^state[10])^(state[11]^(state[12]^state[13]))))^(((state[16]^state[18])^(state[20]^(state[21]^state[23])))^((state[24]^(state[28]^state[29]))^(state[31]^(data[0]^data[2])))))^((((data[3]^data[4])^(data[6]^(data[9]^data[10])))^((data[11]^(data[12]^data[13]))^(data[16]^(data[18]^data[20]))))^(((data[21]^data[23])^(data[24]^(data[28]^data[29])))^((data[31]^(data[33]^data[35]))^(data[36]^(data[38]^data[47]))))));
+     crc32_48[10]=((((state[5]^(state[7]^state[10]))^((state[12]^state[13])^(state[16]^state[18])))^(((state[20]^state[21])^(state[23]^state[25]))^((state[29]^state[30])^(data[5]^data[7]))))^(((data[10]^(data[12]^data[13]))^((data[16]^data[18])^(data[20]^data[21])))^(((data[23]^data[25])^(data[29]^data[30]))^((data[34]^data[37])^(data[38]^data[42])))));
+     crc32_48[11]=((((state[6]^(state[8]^state[11]))^((state[13]^state[14])^(state[17]^state[19])))^(((state[21]^state[22])^(state[24]^state[26]))^((state[30]^state[31])^(data[6]^data[8]))))^(((data[11]^(data[13]^data[14]))^((data[17]^data[19])^(data[21]^data[22])))^(((data[24]^data[26])^(data[30]^data[31]))^((data[35]^data[38])^(data[39]^data[43])))));
+     crc32_48[12]=((((state[0]^(state[7]^state[9]))^((state[12]^state[14])^(state[15]^state[18])))^(((state[20]^state[22])^(state[23]^state[25]))^((state[27]^state[31])^(data[0]^data[7]))))^((((data[9]^data[12])^(data[14]^data[15]))^((data[18]^data[20])^(data[22]^data[23])))^(((data[25]^data[27])^(data[31]^data[32]))^((data[36]^data[39])^(data[40]^data[44])))));
+     crc32_48[13]=((((state[1]^(state[8]^state[10]))^((state[13]^state[15])^(state[16]^state[19])))^(((state[21]^state[23])^(state[24]^state[26]))^((state[28]^data[1])^(data[8]^data[10]))))^(((data[13]^(data[15]^data[16]))^((data[19]^data[21])^(data[23]^data[24])))^(((data[26]^data[28])^(data[32]^data[33]))^((data[37]^data[40])^(data[41]^data[45])))));
+     crc32_48[14]=(((((state[0]^state[2])^(state[9]^state[11]))^((state[14]^state[16])^(state[17]^state[20])))^(((state[22]^state[24])^(state[25]^state[27]))^((state[29]^data[0])^(data[2]^data[9]))))^((((data[11]^data[14])^(data[16]^data[17]))^((data[20]^data[22])^(data[24]^data[25])))^(((data[27]^data[29])^(data[33]^data[34]))^((data[38]^data[41])^(data[42]^data[46])))));
+     crc32_48[15]=(((((state[0]^state[1])^(state[3]^state[10]))^((state[12]^state[15])^(state[17]^state[18])))^(((state[21]^state[23])^(state[25]^state[26]))^((state[28]^state[30])^(data[0]^(data[1]^data[3])))))^((((data[10]^data[12])^(data[15]^data[17]))^((data[18]^data[21])^(data[23]^data[25])))^(((data[26]^data[28])^(data[30]^data[34]))^((data[35]^data[39])^(data[42]^(data[43]^data[47]))))));
+     crc32_48[16]=((((state[2]^(state[3]^state[13]))^((state[14]^state[17])^(state[20]^state[23])))^(((state[26]^state[27])^(state[29]^state[31]))^((data[2]^data[3])^(data[13]^data[14]))))^(((data[17]^(data[20]^data[23]))^((data[26]^data[27])^(data[29]^data[31])))^(((data[32]^data[35])^(data[38]^data[39]))^((data[40]^data[42])^(data[43]^data[44])))));
+     crc32_48[17]=((((state[3]^(state[4]^state[14]))^((state[15]^state[18])^(state[21]^state[24])))^((state[27]^(state[28]^state[30]))^((data[3]^data[4])^(data[14]^data[15]))))^(((data[18]^(data[21]^data[24]))^((data[27]^data[28])^(data[30]^data[32])))^(((data[33]^data[36])^(data[39]^data[40]))^((data[41]^data[43])^(data[44]^data[45])))));
+     crc32_48[18]=((((state[0]^(state[4]^state[5]))^((state[15]^state[16])^(state[19]^state[22])))^(((state[25]^state[28])^(state[29]^state[31]))^((data[0]^data[4])^(data[5]^data[15]))))^((((data[16]^data[19])^(data[22]^data[25]))^((data[28]^data[29])^(data[31]^data[33])))^(((data[34]^data[37])^(data[40]^data[41]))^((data[42]^data[44])^(data[45]^data[46])))));
+     crc32_48[19]=(((((state[0]^state[1])^(state[5]^state[6]))^((state[16]^state[17])^(state[20]^state[23])))^(((state[26]^state[29])^(state[30]^data[0]))^((data[1]^data[5])^(data[6]^data[16]))))^((((data[17]^data[20])^(data[23]^data[26]))^((data[29]^data[30])^(data[32]^data[34])))^(((data[35]^data[38])^(data[41]^data[42]))^((data[43]^data[45])^(data[46]^data[47])))));
+     crc32_48[20]=(((((state[0]^state[2])^(state[3]^(state[4]^state[6])))^((state[7]^state[11])^(state[14]^(state[16]^state[19]))))^(((state[20]^state[21])^(state[22]^(state[23]^state[27])))^((state[30]^(state[31]^data[0]))^(data[2]^(data[3]^data[4])))))^((((data[6]^data[7])^(data[11]^(data[14]^data[16])))^((data[19]^data[20])^(data[21]^(data[22]^data[23]))))^(((data[27]^data[30])^(data[31]^(data[32]^data[33])))^((data[35]^(data[38]^data[43]))^(data[44]^(data[46]^data[47]))))));
+     crc32_48[21]=(((((state[5]^state[7])^(state[8]^state[11]))^((state[12]^state[14])^(state[15]^state[16])))^(((state[18]^state[19])^(state[21]^state[28]))^((state[31]^data[5])^(data[7]^data[8]))))^((((data[11]^data[12])^(data[14]^data[15]))^((data[16]^data[18])^(data[19]^data[21])))^(((data[28]^data[31])^(data[33]^data[34]))^((data[38]^data[42])^(data[44]^(data[45]^data[47]))))));
+     crc32_48[22]=(((((state[0]^state[1])^(state[3]^(state[4]^state[6])))^((state[8]^state[9])^(state[11]^(state[12]^state[13]))))^(((state[14]^state[15])^(state[18]^(state[23]^state[24])))^((state[29]^data[0])^(data[1]^(data[3]^data[4])))))^((((data[6]^data[8])^(data[9]^(data[11]^data[12])))^((data[13]^data[14])^(data[15]^(data[18]^data[23]))))^(((data[24]^data[29])^(data[34]^(data[35]^data[36])))^((data[38]^data[42])^(data[43]^(data[45]^data[46]))))));
+     crc32_48[23]=(((((state[1]^state[2])^(state[4]^(state[5]^state[7])))^((state[9]^state[10])^(state[12]^(state[13]^state[14]))))^(((state[15]^state[16])^(state[19]^(state[24]^state[25])))^((state[30]^data[1])^(data[2]^(data[4]^data[5])))))^((((data[7]^data[9])^(data[10]^(data[12]^data[13])))^((data[14]^data[15])^(data[16]^(data[19]^data[24]))))^(((data[25]^data[30])^(data[35]^(data[36]^data[37])))^((data[39]^data[43])^(data[44]^(data[46]^data[47]))))));
+     crc32_48[24]=(((((state[0]^state[1])^(state[2]^(state[4]^state[5])))^((state[6]^(state[8]^state[10]))^(state[13]^(state[15]^state[18]))))^(((state[19]^state[22])^(state[23]^(state[24]^state[25])))^((state[26]^(state[31]^data[0]))^(data[1]^(data[2]^data[4])))))^((((data[5]^data[6])^(data[8]^(data[10]^data[13])))^((data[15]^(data[18]^data[19]))^(data[22]^(data[23]^data[24]))))^(((data[25]^data[26])^(data[31]^(data[32]^data[37])))^((data[39]^(data[40]^data[42]))^(data[44]^(data[45]^data[47]))))));
+     crc32_48[25]=(((((state[0]^state[2])^(state[4]^state[5]))^((state[6]^state[7])^(state[9]^state[17])))^(((state[18]^state[22])^(state[25]^state[26]))^((state[27]^data[0])^(data[2]^(data[4]^data[5])))))^((((data[6]^data[7])^(data[9]^data[17]))^((data[18]^data[22])^(data[25]^(data[26]^data[27]))))^(((data[33]^data[36])^(data[39]^data[40]))^((data[41]^data[42])^(data[43]^(data[45]^data[46]))))));
+     crc32_48[26]=(((((state[1]^state[3])^(state[5]^state[6]))^((state[7]^state[8])^(state[10]^state[18])))^(((state[19]^state[23])^(state[26]^state[27]))^((state[28]^data[1])^(data[3]^(data[5]^data[6])))))^((((data[7]^data[8])^(data[10]^data[18]))^((data[19]^data[23])^(data[26]^(data[27]^data[28]))))^(((data[34]^data[37])^(data[40]^data[41]))^((data[42]^data[43])^(data[44]^(data[46]^data[47]))))));
+     crc32_48[27]=(((((state[0]^state[1])^(state[2]^(state[3]^state[6])))^((state[7]^state[8])^(state[9]^(state[14]^state[16]))))^(((state[17]^state[18])^(state[22]^(state[23]^state[27])))^((state[28]^(state[29]^data[0]))^(data[1]^(data[2]^data[3])))))^((((data[6]^data[7])^(data[8]^(data[9]^data[14])))^((data[16]^(data[17]^data[18]))^(data[22]^(data[23]^data[27]))))^(((data[28]^data[29])^(data[32]^(data[35]^data[36])))^((data[39]^(data[41]^data[43]))^(data[44]^(data[45]^data[47]))))));
+     crc32_48[28]=(((((state[2]^state[7])^(state[8]^state[9]))^((state[10]^state[11])^(state[14]^(state[15]^state[16]))))^(((state[20]^state[22])^(state[28]^state[29]))^((state[30]^data[2])^(data[7]^(data[8]^data[9])))))^((((data[10]^data[11])^(data[14]^data[15]))^((data[16]^data[20])^(data[22]^(data[28]^data[29]))))^(((data[30]^data[32])^(data[33]^(data[37]^data[38])))^((data[39]^data[40])^(data[44]^(data[45]^data[46]))))));
+     crc32_48[29]=(((((state[3]^state[8])^(state[9]^state[10]))^((state[11]^state[12])^(state[15]^(state[16]^state[17]))))^(((state[21]^state[23])^(state[29]^state[30]))^((state[31]^data[3])^(data[8]^(data[9]^data[10])))))^((((data[11]^data[12])^(data[15]^data[16]))^((data[17]^data[21])^(data[23]^(data[29]^data[30]))))^(((data[31]^data[33])^(data[34]^(data[38]^data[39])))^((data[40]^data[41])^(data[45]^(data[46]^data[47]))))));
+     crc32_48[30]=(((((state[0]^state[1])^(state[3]^state[9]))^((state[10]^state[12])^(state[13]^state[14])))^(((state[19]^state[20])^(state[23]^state[30]))^((state[31]^data[0])^(data[1]^(data[3]^data[9])))))^((((data[10]^data[12])^(data[13]^data[14]))^((data[19]^data[20])^(data[23]^data[30])))^(((data[31]^data[34])^(data[35]^data[36]))^((data[38]^data[40])^(data[41]^(data[46]^data[47]))))));
+     crc32_48[31]=(((((state[0]^state[2])^(state[3]^state[10]))^((state[13]^state[15])^(state[16]^state[17])))^(((state[18]^state[19])^(state[21]^state[22]))^((state[23]^state[31])^(data[0]^data[2]))))^((((data[3]^data[10])^(data[13]^data[15]))^((data[16]^data[17])^(data[18]^data[19])))^(((data[21]^data[22])^(data[23]^data[31]))^((data[35]^data[37])^(data[38]^(data[41]^data[47]))))));
+   end
+ endfunction
+ function automatic [31:0] crc32_64;
+   input [31:0] state;
+   input [63:0] data;
+   begin
+     crc32_64[0]=(((((state[1]^state[3])^(state[4]^(state[6]^state[9])))^((state[10]^state[11])^(state[14]^(state[16]^state[17]))))^(((state[19]^state[20])^(state[27]^(state[30]^data[1])))^((data[3]^data[4])^(data[6]^(data[9]^data[10])))))^((((data[11]^data[14])^(data[16]^(data[17]^data[19])))^((data[20]^data[27])^(data[30]^(data[32]^data[33]))))^(((data[34]^data[35])^(data[36]^(data[38]^data[39])))^((data[40]^(data[48]^data[52]))^(data[54]^(data[55]^data[58]))))));
+     crc32_64[1]=(((((state[0]^state[2])^(state[4]^(state[5]^state[7])))^((state[10]^state[11])^(state[12]^(state[15]^state[17]))))^(((state[18]^state[20])^(state[21]^(state[28]^state[31])))^((data[0]^(data[2]^data[4]))^(data[5]^(data[7]^data[10])))))^((((data[11]^data[12])^(data[15]^(data[17]^data[18])))^((data[20]^(data[21]^data[28]))^(data[31]^(data[33]^data[34]))))^(((data[35]^data[36])^(data[37]^(data[39]^data[40])))^((data[41]^(data[49]^data[53]))^(data[55]^(data[56]^data[59]))))));
+     crc32_64[2]=(((((state[0]^state[1])^(state[3]^(state[5]^state[6])))^((state[8]^(state[11]^state[12]))^(state[13]^(state[16]^state[18]))))^(((state[19]^state[21])^(state[22]^(state[29]^data[0])))^((data[1]^(data[3]^data[5]))^(data[6]^(data[8]^data[11])))))^((((data[12]^data[13])^(data[16]^(data[18]^data[19])))^((data[21]^(data[22]^data[29]))^(data[32]^(data[34]^data[35]))))^(((data[36]^data[37])^(data[38]^(data[40]^data[41])))^((data[42]^(data[50]^data[54]))^(data[56]^(data[57]^data[60]))))));
+     crc32_64[3]=(((((state[0]^state[1])^(state[2]^(state[4]^state[6])))^((state[7]^(state[9]^state[12]))^(state[13]^(state[14]^state[17]))))^(((state[19]^(state[20]^state[22]))^(state[23]^(state[30]^data[0])))^((data[1]^(data[2]^data[4]))^(data[6]^(data[7]^data[9])))))^((((data[12]^data[13])^(data[14]^(data[17]^data[19])))^((data[20]^(data[22]^data[23]))^(data[30]^(data[33]^data[35]))))^(((data[36]^(data[37]^data[38]))^(data[39]^(data[41]^data[42])))^((data[43]^(data[51]^data[55]))^(data[57]^(data[58]^data[61]))))));
+     crc32_64[4]=(((((state[0]^(state[1]^state[2]))^(state[3]^(state[5]^state[7])))^((state[8]^(state[10]^state[13]))^(state[14]^(state[15]^state[18]))))^(((state[20]^(state[21]^state[23]))^(state[24]^(state[31]^data[0])))^((data[1]^(data[2]^data[3]))^(data[5]^(data[7]^data[8])))))^((((data[10]^(data[13]^data[14]))^(data[15]^(data[18]^data[20])))^((data[21]^(data[23]^data[24]))^(data[31]^(data[34]^data[36]))))^(((data[37]^(data[38]^data[39]))^(data[40]^(data[42]^data[43])))^((data[44]^(data[52]^data[56]))^(data[58]^(data[59]^data[62]))))));
+     crc32_64[5]=(((((state[1]^state[2])^(state[3]^(state[4]^state[6])))^((state[8]^(state[9]^state[11]))^(state[14]^(state[15]^state[16]))))^(((state[19]^(state[21]^state[22]))^(state[24]^(state[25]^data[1])))^((data[2]^(data[3]^data[4]))^(data[6]^(data[8]^data[9])))))^((((data[11]^(data[14]^data[15]))^(data[16]^(data[19]^data[21])))^((data[22]^(data[24]^data[25]))^(data[32]^(data[35]^data[37]))))^(((data[38]^(data[39]^data[40]))^(data[41]^(data[43]^data[44])))^((data[45]^(data[53]^data[57]))^(data[59]^(data[60]^data[63]))))));
+     crc32_64[6]=(((((state[1]^state[2])^(state[5]^(state[6]^state[7])))^((state[11]^(state[12]^state[14]))^(state[15]^(state[19]^state[22]))))^(((state[23]^state[25])^(state[26]^(state[27]^state[30])))^((data[1]^(data[2]^data[5]))^(data[6]^(data[7]^data[11])))))^((((data[12]^data[14])^(data[15]^(data[19]^data[22])))^((data[23]^(data[25]^data[26]))^(data[27]^(data[30]^data[32]))))^(((data[34]^(data[35]^data[41]))^(data[42]^(data[44]^data[45])))^((data[46]^(data[48]^data[52]))^(data[55]^(data[60]^data[61]))))));
+     crc32_64[7]=(((((state[0]^state[2])^(state[3]^(state[6]^state[7])))^((state[8]^(state[12]^state[13]))^(state[15]^(state[16]^state[20]))))^(((state[23]^(state[24]^state[26]))^(state[27]^(state[28]^state[31])))^((data[0]^(data[2]^data[3]))^(data[6]^(data[7]^data[8])))))^((((data[12]^(data[13]^data[15]))^(data[16]^(data[20]^data[23])))^((data[24]^(data[26]^data[27]))^(data[28]^(data[31]^data[33]))))^(((data[35]^(data[36]^data[42]))^(data[43]^(data[45]^data[46])))^((data[47]^(data[49]^data[53]))^(data[56]^(data[61]^data[62]))))));
+     crc32_64[8]=(((((state[1]^state[3])^(state[4]^(state[7]^state[8])))^((state[9]^(state[13]^state[14]))^(state[16]^(state[17]^state[21]))))^(((state[24]^(state[25]^state[27]))^(state[28]^(state[29]^data[1])))^((data[3]^(data[4]^data[7]))^(data[8]^(data[9]^data[13])))))^((((data[14]^data[16])^(data[17]^(data[21]^data[24])))^((data[25]^(data[27]^data[28]))^(data[29]^(data[32]^data[34]))))^(((data[36]^(data[37]^data[43]))^(data[44]^(data[46]^data[47])))^((data[48]^(data[50]^data[54]))^(data[57]^(data[62]^data[63]))))));
+     crc32_64[9]=(((((state[1]^(state[2]^state[3]))^(state[5]^(state[6]^state[8])))^((state[11]^(state[15]^state[16]))^(state[18]^(state[19]^state[20]))))^(((state[22]^(state[25]^state[26]))^(state[27]^(state[28]^state[29])))^((data[1]^(data[2]^data[3]))^((data[5]^data[6])^(data[8]^data[11])))))^((((data[15]^(data[16]^data[18]))^(data[19]^(data[20]^data[22])))^((data[25]^(data[26]^data[27]))^(data[28]^(data[29]^data[32]))))^(((data[34]^(data[36]^data[37]))^(data[39]^(data[40]^data[44])))^((data[45]^(data[47]^data[49]))^((data[51]^data[52])^(data[54]^data[63]))))));
+     crc32_64[10]=(((((state[1]^state[2])^(state[7]^state[10]))^((state[11]^state[12])^(state[14]^(state[21]^state[23]))))^(((state[26]^state[28])^(state[29]^data[1]))^((data[2]^data[7])^(data[10]^(data[11]^data[12])))))^((((data[14]^data[21])^(data[23]^data[26]))^((data[28]^data[29])^(data[32]^(data[34]^data[36]))))^(((data[37]^data[39])^(data[41]^data[45]))^((data[46]^data[50])^(data[53]^(data[54]^data[58]))))));
+     crc32_64[11]=(((((state[2]^state[3])^(state[8]^state[11]))^((state[12]^state[13])^(state[15]^(state[22]^state[24]))))^(((state[27]^state[29])^(state[30]^data[2]))^((data[3]^data[8])^(data[11]^(data[12]^data[13])))))^((((data[15]^data[22])^(data[24]^data[27]))^((data[29]^data[30])^(data[33]^(data[35]^data[37]))))^(((data[38]^data[40])^(data[42]^data[46]))^((data[47]^data[51])^(data[54]^(data[55]^data[59]))))));
+     crc32_64[12]=(((((state[3]^state[4])^(state[9]^state[12]))^((state[13]^state[14])^(state[16]^(state[23]^state[25]))))^(((state[28]^state[30])^(state[31]^data[3]))^((data[4]^data[9])^(data[12]^(data[13]^data[14])))))^((((data[16]^data[23])^(data[25]^data[28]))^((data[30]^data[31])^(data[34]^(data[36]^data[38]))))^(((data[39]^data[41])^(data[43]^data[47]))^((data[48]^data[52])^(data[55]^(data[56]^data[60]))))));
+     crc32_64[13]=(((((state[4]^state[5])^(state[10]^state[13]))^((state[14]^state[15])^(state[17]^state[24])))^(((state[26]^state[29])^(state[31]^data[4]))^((data[5]^data[10])^(data[13]^(data[14]^data[15])))))^((((data[17]^data[24])^(data[26]^data[29]))^((data[31]^data[32])^(data[35]^(data[37]^data[39]))))^(((data[40]^data[42])^(data[44]^data[48]))^((data[49]^data[53])^(data[56]^(data[57]^data[61]))))));
+     crc32_64[14]=(((((state[5]^state[6])^(state[11]^state[14]))^((state[15]^state[16])^(state[18]^state[25])))^(((state[27]^state[30])^(data[5]^data[6]))^((data[11]^data[14])^(data[15]^(data[16]^data[18])))))^((((data[25]^data[27])^(data[30]^data[32]))^((data[33]^data[36])^(data[38]^data[40])))^(((data[41]^data[43])^(data[45]^data[49]))^((data[50]^data[54])^(data[57]^(data[58]^data[62]))))));
+     crc32_64[15]=(((((state[6]^state[7])^(state[12]^state[15]))^((state[16]^state[17])^(state[19]^state[26])))^(((state[28]^state[31])^(data[6]^data[7]))^((data[12]^data[15])^(data[16]^(data[17]^data[19])))))^((((data[26]^data[28])^(data[31]^data[33]))^((data[34]^data[37])^(data[39]^data[41])))^(((data[42]^data[44])^(data[46]^data[50]))^((data[51]^data[55])^(data[58]^(data[59]^data[63]))))));
+     crc32_64[16]=(((((state[1]^state[3])^(state[4]^(state[6]^state[7])))^((state[8]^(state[9]^state[10]))^(state[11]^(state[13]^state[14]))))^(((state[18]^state[19])^(state[29]^(state[30]^data[1])))^((data[3]^(data[4]^data[6]))^(data[7]^(data[8]^data[9])))))^((((data[10]^data[11])^(data[13]^(data[14]^data[18])))^((data[19]^(data[29]^data[30]))^(data[33]^(data[36]^data[39]))))^(((data[42]^(data[43]^data[45]))^(data[47]^(data[48]^data[51])))^((data[54]^(data[55]^data[56]))^(data[58]^(data[59]^data[60]))))));
+     crc32_64[17]=(((((state[0]^state[2])^(state[4]^(state[5]^state[7])))^((state[8]^(state[9]^state[10]))^(state[11]^(state[12]^state[14]))))^(((state[15]^(state[19]^state[20]))^(state[30]^(state[31]^data[0])))^((data[2]^(data[4]^data[5]))^(data[7]^(data[8]^data[9])))))^((((data[10]^(data[11]^data[12]))^(data[14]^(data[15]^data[19])))^((data[20]^(data[30]^data[31]))^(data[34]^(data[37]^data[40]))))^(((data[43]^(data[44]^data[46]))^(data[48]^(data[49]^data[52])))^((data[55]^(data[56]^data[57]))^(data[59]^(data[60]^data[61]))))));
+     crc32_64[18]=(((((state[1]^state[3])^(state[5]^(state[6]^state[8])))^((state[9]^(state[10]^state[11]))^(state[12]^(state[13]^state[15]))))^(((state[16]^(state[20]^state[21]))^(state[31]^(data[1]^data[3])))^((data[5]^(data[6]^data[8]))^(data[9]^(data[10]^data[11])))))^((((data[12]^data[13])^(data[15]^(data[16]^data[20])))^((data[21]^(data[31]^data[32]))^(data[35]^(data[38]^data[41]))))^(((data[44]^(data[45]^data[47]))^(data[49]^(data[50]^data[53])))^((data[56]^(data[57]^data[58]))^(data[60]^(data[61]^data[62]))))));
+     crc32_64[19]=(((((state[0]^state[2])^(state[4]^(state[6]^state[7])))^((state[9]^(state[10]^state[11]))^(state[12]^(state[13]^state[14]))))^(((state[16]^(state[17]^state[21]))^(state[22]^(data[0]^data[2])))^((data[4]^(data[6]^data[7]))^(data[9]^(data[10]^data[11])))))^((((data[12]^(data[13]^data[14]))^(data[16]^(data[17]^data[21])))^((data[22]^(data[32]^data[33]))^(data[36]^(data[39]^data[42]))))^(((data[45]^(data[46]^data[48]))^(data[50]^(data[51]^data[54])))^((data[57]^(data[58]^data[59]))^(data[61]^(data[62]^data[63]))))));
+     crc32_64[20]=(((((state[4]^(state[5]^state[6]))^(state[7]^(state[8]^state[9])))^((state[12]^(state[13]^state[15]))^(state[16]^(state[18]^state[19]))))^(((state[20]^(state[22]^state[23]))^(state[27]^(state[30]^data[4])))^((data[5]^(data[6]^data[7]))^((data[8]^data[9])^(data[12]^data[13])))))^((((data[15]^(data[16]^data[18]))^(data[19]^(data[20]^data[22])))^((data[23]^(data[27]^data[30]))^((data[32]^data[35])^(data[36]^data[37]))))^(((data[38]^(data[39]^data[43]))^(data[46]^(data[47]^data[48])))^((data[49]^(data[51]^data[54]))^((data[59]^data[60])^(data[62]^data[63]))))));
+     crc32_64[21]=(((((state[0]^state[1])^(state[3]^(state[4]^state[5])))^((state[7]^(state[8]^state[11]))^(state[13]^(state[21]^state[23]))))^(((state[24]^state[27])^(state[28]^(state[30]^state[31])))^((data[0]^(data[1]^data[3]))^(data[4]^(data[5]^data[7])))))^((((data[8]^data[11])^(data[13]^(data[21]^data[23])))^((data[24]^(data[27]^data[28]))^(data[30]^(data[31]^data[32]))))^(((data[34]^(data[35]^data[37]))^(data[44]^(data[47]^data[49])))^((data[50]^(data[54]^data[58]))^(data[60]^(data[61]^data[63]))))));
+     crc32_64[22]=(((((state[2]^(state[3]^state[5]))^(state[8]^(state[10]^state[11])))^((state[12]^(state[16]^state[17]))^(state[19]^(state[20]^state[22]))))^(((state[24]^(state[25]^state[27]))^(state[28]^(state[29]^state[30])))^((state[31]^(data[2]^data[3]))^((data[5]^data[8])^(data[10]^data[11])))))^((((data[12]^(data[16]^data[17]))^(data[19]^(data[20]^data[22])))^((data[24]^(data[25]^data[27]))^(data[28]^(data[29]^data[30]))))^(((data[31]^(data[34]^data[39]))^(data[40]^(data[45]^data[50])))^((data[51]^(data[52]^data[54]))^((data[58]^data[59])^(data[61]^data[62]))))));
+     crc32_64[23]=(((((state[0]^(state[3]^state[4]))^(state[6]^(state[9]^state[11])))^((state[12]^(state[13]^state[17]))^(state[18]^(state[20]^state[21]))))^(((state[23]^(state[25]^state[26]))^(state[28]^(state[29]^state[30])))^((state[31]^(data[0]^data[3]))^((data[4]^data[6])^(data[9]^data[11])))))^((((data[12]^(data[13]^data[17]))^(data[18]^(data[20]^data[21])))^((data[23]^(data[25]^data[26]))^((data[28]^data[29])^(data[30]^data[31]))))^(((data[32]^(data[35]^data[40]))^(data[41]^(data[46]^data[51])))^((data[52]^(data[53]^data[55]))^((data[59]^data[60])^(data[62]^data[63]))))));
+     crc32_64[24]=(((((state[3]^(state[5]^state[6]))^(state[7]^(state[9]^state[11])))^((state[12]^(state[13]^state[16]))^((state[17]^state[18])^(state[20]^state[21]))))^(((state[22]^(state[24]^state[26]))^(state[29]^(state[31]^data[3])))^((data[5]^(data[6]^data[7]))^((data[9]^data[11])^(data[12]^data[13])))))^((((data[16]^(data[17]^data[18]))^(data[20]^(data[21]^data[22])))^((data[24]^(data[26]^data[29]))^((data[31]^data[34])^(data[35]^data[38]))))^(((data[39]^(data[40]^data[41]))^(data[42]^(data[47]^data[48])))^((data[53]^(data[55]^data[56]))^((data[58]^data[60])^(data[61]^data[63]))))));
+     crc32_64[25]=(((((state[1]^state[3])^(state[7]^(state[8]^state[9])))^((state[11]^(state[12]^state[13]))^(state[16]^(state[18]^state[20]))))^(((state[21]^state[22])^(state[23]^(state[25]^data[1])))^((data[3]^(data[7]^data[8]))^(data[9]^(data[11]^data[12])))))^((((data[13]^data[16])^(data[18]^(data[20]^data[21])))^((data[22]^(data[23]^data[25]))^(data[33]^(data[34]^data[38]))))^(((data[41]^(data[42]^data[43]))^(data[49]^(data[52]^data[55])))^((data[56]^(data[57]^data[58]))^(data[59]^(data[61]^data[62]))))));
+     crc32_64[26]=(((((state[0]^state[2])^(state[4]^(state[8]^state[9])))^((state[10]^(state[12]^state[13]))^(state[14]^(state[17]^state[19]))))^(((state[21]^(state[22]^state[23]))^(state[24]^(state[26]^data[0])))^((data[2]^(data[4]^data[8]))^(data[9]^(data[10]^data[12])))))^((((data[13]^(data[14]^data[17]))^(data[19]^(data[21]^data[22])))^((data[23]^(data[24]^data[26]))^(data[34]^(data[35]^data[39]))))^(((data[42]^(data[43]^data[44]))^(data[50]^(data[53]^data[56])))^((data[57]^(data[58]^data[59]))^(data[60]^(data[62]^data[63]))))));
+     crc32_64[27]=(((((state[0]^state[4])^(state[5]^(state[6]^state[13])))^((state[15]^(state[16]^state[17]))^(state[18]^(state[19]^state[22]))))^(((state[23]^(state[24]^state[25]))^(state[30]^(data[0]^data[4])))^((data[5]^(data[6]^data[13]))^(data[15]^(data[16]^data[17])))))^((((data[18]^(data[19]^data[22]))^(data[23]^(data[24]^data[25])))^((data[30]^(data[32]^data[33]))^(data[34]^(data[38]^data[39]))))^(((data[43]^(data[44]^data[45]))^(data[48]^(data[51]^data[52])))^((data[55]^(data[57]^data[59]))^(data[60]^(data[61]^data[63]))))));
+     crc32_64[28]=(((((state[3]^state[4])^(state[5]^(state[7]^state[9])))^((state[10]^(state[11]^state[18]))^(state[23]^(state[24]^state[25]))))^(((state[26]^state[27])^(state[30]^(state[31]^data[3])))^((data[4]^(data[5]^data[7]))^(data[9]^(data[10]^data[11])))))^((((data[18]^data[23])^(data[24]^(data[25]^data[26])))^((data[27]^(data[30]^data[31]))^(data[32]^(data[36]^data[38]))))^(((data[44]^(data[45]^data[46]))^(data[48]^(data[49]^data[53])))^((data[54]^(data[55]^data[56]))^(data[60]^(data[61]^data[62]))))));
+     crc32_64[29]=(((((state[4]^state[5])^(state[6]^(state[8]^state[10])))^((state[11]^(state[12]^state[19]))^(state[24]^(state[25]^state[26]))))^(((state[27]^state[28])^(state[31]^(data[4]^data[5])))^((data[6]^(data[8]^data[10]))^(data[11]^(data[12]^data[19])))))^((((data[24]^data[25])^(data[26]^(data[27]^data[28])))^((data[31]^(data[32]^data[33]))^(data[37]^(data[39]^data[45]))))^(((data[46]^data[47])^(data[49]^(data[50]^data[54])))^((data[55]^(data[56]^data[57]))^(data[61]^(data[62]^data[63]))))));
+     crc32_64[30]=(((((state[0]^(state[1]^state[3]))^(state[4]^(state[5]^state[7])))^((state[10]^(state[12]^state[13]))^(state[14]^(state[16]^state[17]))))^(((state[19]^(state[25]^state[26]))^(state[28]^(state[29]^state[30])))^((data[0]^(data[1]^data[3]))^(data[4]^(data[5]^data[7])))))^((((data[10]^(data[12]^data[13]))^(data[14]^(data[16]^data[17])))^((data[19]^(data[25]^data[26]))^(data[28]^(data[29]^data[30]))))^(((data[35]^(data[36]^data[39]))^(data[46]^(data[47]^data[50])))^((data[51]^(data[52]^data[54]))^((data[56]^data[57])^(data[62]^data[63]))))));
+     crc32_64[31]=(((((state[0]^state[2])^(state[3]^(state[5]^state[8])))^((state[9]^state[10])^(state[13]^(state[15]^state[16]))))^(((state[18]^state[19])^(state[26]^(state[29]^state[31])))^((data[0]^(data[2]^data[3]))^(data[5]^(data[8]^data[9])))))^((((data[10]^data[13])^(data[15]^(data[16]^data[18])))^((data[19]^(data[26]^data[29]))^(data[31]^(data[32]^data[33]))))^(((data[34]^data[35])^(data[37]^(data[38]^data[39])))^((data[47]^(data[51]^data[53]))^(data[54]^(data[57]^data[63]))))));
+   end
+ endfunction
+ function automatic [31:0] crc32_80;
+   input [31:0] state;
+   input [79:0] data;
+   begin
+     crc32_80[0]=(((((state[1]^(state[7]^state[8]))^(state[12]^(state[13]^state[14])))^((state[15]^(state[17]^state[19]))^(state[20]^(state[22]^state[25]))))^(((state[26]^(state[27]^state[30]))^(data[1]^(data[7]^data[8])))^((data[12]^(data[13]^data[14]))^(data[15]^(data[17]^data[19])))))^((((data[20]^(data[22]^data[25]))^(data[26]^(data[27]^data[30])))^((data[32]^(data[33]^data[35]))^(data[36]^(data[43]^data[46]))))^(((data[48]^(data[49]^data[50]))^(data[51]^(data[52]^data[54])))^((data[55]^(data[56]^data[64]))^((data[68]^data[70])^(data[71]^data[74]))))));
+     crc32_80[1]=(((((state[0]^(state[2]^state[8]))^(state[9]^(state[13]^state[14])))^((state[15]^(state[16]^state[18]))^(state[20]^(state[21]^state[23]))))^(((state[26]^(state[27]^state[28]))^(state[31]^(data[0]^data[2])))^((data[8]^(data[9]^data[13]))^((data[14]^data[15])^(data[16]^data[18])))))^((((data[20]^(data[21]^data[23]))^(data[26]^(data[27]^data[28])))^((data[31]^(data[33]^data[34]))^((data[36]^data[37])^(data[44]^data[47]))))^(((data[49]^(data[50]^data[51]))^(data[52]^(data[53]^data[55])))^((data[56]^(data[57]^data[65]))^((data[69]^data[71])^(data[72]^data[75]))))));
+     crc32_80[2]=(((((state[0]^(state[1]^state[3]))^(state[9]^(state[10]^state[14])))^((state[15]^(state[16]^state[17]))^((state[19]^state[21])^(state[22]^state[24]))))^(((state[27]^(state[28]^state[29]))^(data[0]^(data[1]^data[3])))^((data[9]^(data[10]^data[14]))^((data[15]^data[16])^(data[17]^data[19])))))^((((data[21]^(data[22]^data[24]))^(data[27]^(data[28]^data[29])))^((data[32]^(data[34]^data[35]))^((data[37]^data[38])^(data[45]^data[48]))))^(((data[50]^(data[51]^data[52]))^(data[53]^(data[54]^data[56])))^((data[57]^(data[58]^data[66]))^((data[70]^data[72])^(data[73]^data[76]))))));
+     crc32_80[3]=(((((state[0]^(state[1]^state[2]))^(state[4]^(state[10]^state[11])))^((state[15]^(state[16]^state[17]))^((state[18]^state[20])^(state[22]^state[23]))))^(((state[25]^(state[28]^state[29]))^((state[30]^data[0])^(data[1]^data[2])))^((data[4]^(data[10]^data[11]))^((data[15]^data[16])^(data[17]^data[18])))))^((((data[20]^(data[22]^data[23]))^(data[25]^(data[28]^data[29])))^((data[30]^(data[33]^data[35]))^((data[36]^data[38])^(data[39]^data[46]))))^(((data[49]^(data[51]^data[52]))^((data[53]^data[54])^(data[55]^data[57])))^((data[58]^(data[59]^data[67]))^((data[71]^data[73])^(data[74]^data[77]))))));
+     crc32_80[4]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[5])^(state[11]^state[12])))^((state[16]^(state[17]^state[18]))^((state[19]^state[21])^(state[23]^state[24]))))^(((state[26]^(state[29]^state[30]))^((state[31]^data[0])^(data[1]^data[2])))^((data[3]^(data[5]^data[11]))^((data[12]^data[16])^(data[17]^data[18])))))^((((data[19]^(data[21]^data[23]))^((data[24]^data[26])^(data[29]^data[30])))^((data[31]^(data[34]^data[36]))^((data[37]^data[39])^(data[40]^data[47]))))^(((data[50]^(data[52]^data[53]))^((data[54]^data[55])^(data[56]^data[58])))^((data[59]^(data[60]^data[68]))^((data[72]^data[74])^(data[75]^data[78]))))));
+     crc32_80[5]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[4])^(state[6]^state[12])))^((state[13]^(state[17]^state[18]))^((state[19]^state[20])^(state[22]^state[24]))))^(((state[25]^(state[27]^state[30]))^((state[31]^data[0])^(data[1]^data[2])))^((data[3]^(data[4]^data[6]))^((data[12]^data[13])^(data[17]^data[18])))))^((((data[19]^(data[20]^data[22]))^((data[24]^data[25])^(data[27]^data[30])))^((data[31]^(data[32]^data[35]))^((data[37]^data[38])^(data[40]^data[41]))))^(((data[48]^(data[51]^data[53]))^((data[54]^data[55])^(data[56]^data[57])))^(((data[59]^data[60])^(data[61]^data[69]))^((data[73]^data[75])^(data[76]^data[79]))))));
+     crc32_80[6]=(((((state[2]^(state[3]^state[4]))^(state[5]^(state[8]^state[12])))^((state[15]^(state[17]^state[18]))^((state[21]^state[22])^(state[23]^state[27]))))^(((state[28]^(state[30]^state[31]))^(data[2]^(data[3]^data[4])))^((data[5]^(data[8]^data[12]))^((data[15]^data[17])^(data[18]^data[21])))))^((((data[22]^(data[23]^data[27]))^(data[28]^(data[30]^data[31])))^((data[35]^(data[38]^data[39]))^((data[41]^data[42])^(data[43]^data[46]))))^(((data[48]^(data[50]^data[51]))^(data[57]^(data[58]^data[60])))^((data[61]^(data[62]^data[64]))^((data[68]^data[71])^(data[76]^data[77]))))));
+     crc32_80[7]=(((((state[3]^(state[4]^state[5]))^(state[6]^(state[9]^state[13])))^((state[16]^(state[18]^state[19]))^(state[22]^(state[23]^state[24]))))^(((state[28]^(state[29]^state[31]))^(data[3]^(data[4]^data[5])))^((data[6]^(data[9]^data[13]))^((data[16]^data[18])^(data[19]^data[22])))))^((((data[23]^(data[24]^data[28]))^(data[29]^(data[31]^data[32])))^((data[36]^(data[39]^data[40]))^((data[42]^data[43])^(data[44]^data[47]))))^(((data[49]^(data[51]^data[52]))^(data[58]^(data[59]^data[61])))^((data[62]^(data[63]^data[65]))^((data[69]^data[72])^(data[77]^data[78]))))));
+     crc32_80[8]=(((((state[0]^(state[4]^state[5]))^(state[6]^(state[7]^state[10])))^((state[14]^(state[17]^state[19]))^((state[20]^state[23])^(state[24]^state[25]))))^(((state[29]^(state[30]^data[0]))^(data[4]^(data[5]^data[6])))^((data[7]^(data[10]^data[14]))^((data[17]^data[19])^(data[20]^data[23])))))^((((data[24]^(data[25]^data[29]))^(data[30]^(data[32]^data[33])))^((data[37]^(data[40]^data[41]))^((data[43]^data[44])^(data[45]^data[48]))))^(((data[50]^(data[52]^data[53]))^(data[59]^(data[60]^data[62])))^((data[63]^(data[64]^data[66]))^((data[70]^data[73])^(data[78]^data[79]))))));
+     crc32_80[9]=(((((state[0]^(state[5]^state[6]))^(state[11]^(state[12]^state[13])))^((state[14]^(state[17]^state[18]))^((state[19]^state[21])^(state[22]^state[24]))))^(((state[27]^(state[31]^data[0]))^((data[5]^data[6])^(data[11]^data[12])))^((data[13]^(data[14]^data[17]))^((data[18]^data[19])^(data[21]^data[22])))))^((((data[24]^(data[27]^data[31]))^(data[32]^(data[34]^data[35])))^((data[36]^(data[38]^data[41]))^((data[42]^data[43])^(data[44]^data[45]))))^(((data[48]^(data[50]^data[52]))^((data[53]^data[55])^(data[56]^data[60])))^((data[61]^(data[63]^data[65]))^((data[67]^data[68])^(data[70]^data[79]))))));
+     crc32_80[10]=(((((state[6]^state[8])^(state[17]^state[18]))^((state[23]^state[26])^(state[27]^state[28])))^(((state[30]^data[6])^(data[8]^data[17]))^((data[18]^data[23])^(data[26]^(data[27]^data[28])))))^((((data[30]^data[37])^(data[39]^data[42]))^((data[44]^data[45])^(data[48]^(data[50]^data[52]))))^(((data[53]^data[55])^(data[57]^data[61]))^((data[62]^data[66])^(data[69]^(data[70]^data[74]))))));
+     crc32_80[11]=(((((state[0]^state[7])^(state[9]^state[18]))^((state[19]^state[24])^(state[27]^(state[28]^state[29]))))^(((state[31]^data[0])^(data[7]^data[9]))^((data[18]^data[19])^(data[24]^(data[27]^data[28])))))^((((data[29]^data[31])^(data[38]^data[40]))^((data[43]^data[45])^(data[46]^(data[49]^data[51]))))^(((data[53]^data[54])^(data[56]^(data[58]^data[62])))^((data[63]^data[67])^(data[70]^(data[71]^data[75]))))));
+     crc32_80[12]=(((((state[1]^state[8])^(state[10]^state[19]))^((state[20]^state[25])^(state[28]^(state[29]^state[30]))))^(((data[1]^data[8])^(data[10]^data[19]))^((data[20]^data[25])^(data[28]^(data[29]^data[30])))))^((((data[32]^data[39])^(data[41]^data[44]))^((data[46]^data[47])^(data[50]^(data[52]^data[54]))))^(((data[55]^data[57])^(data[59]^data[63]))^((data[64]^data[68])^(data[71]^(data[72]^data[76]))))));
+     crc32_80[13]=(((((state[0]^state[2])^(state[9]^state[11]))^((state[20]^state[21])^(state[26]^(state[29]^state[30]))))^(((state[31]^data[0])^(data[2]^(data[9]^data[11])))^((data[20]^data[21])^(data[26]^(data[29]^data[30])))))^((((data[31]^data[33])^(data[40]^data[42]))^((data[45]^data[47])^(data[48]^(data[51]^data[53]))))^(((data[55]^data[56])^(data[58]^(data[60]^data[64])))^((data[65]^data[69])^(data[72]^(data[73]^data[77]))))));
+     crc32_80[14]=(((((state[0]^state[1])^(state[3]^state[10]))^((state[12]^state[21])^(state[22]^(state[27]^state[30]))))^(((state[31]^data[0])^(data[1]^(data[3]^data[10])))^((data[12]^data[21])^(data[22]^(data[27]^data[30])))))^((((data[31]^data[32])^(data[34]^(data[41]^data[43])))^((data[46]^data[48])^(data[49]^(data[52]^data[54]))))^(((data[56]^data[57])^(data[59]^(data[61]^data[65])))^((data[66]^data[70])^(data[73]^(data[74]^data[78]))))));
+     crc32_80[15]=(((((state[1]^state[2])^(state[4]^state[11]))^((state[13]^state[22])^(state[23]^(state[28]^state[31]))))^(((data[1]^data[2])^(data[4]^(data[11]^data[13])))^((data[22]^data[23])^(data[28]^(data[31]^data[32])))))^((((data[33]^data[35])^(data[42]^data[44]))^((data[47]^data[49])^(data[50]^(data[53]^data[55]))))^(((data[57]^data[58])^(data[60]^(data[62]^data[66])))^((data[67]^data[71])^(data[74]^(data[75]^data[79]))))));
+     crc32_80[16]=(((((state[1]^(state[2]^state[3]))^((state[5]^state[7])^(state[8]^state[13])))^((state[15]^(state[17]^state[19]))^((state[20]^state[22])^(state[23]^state[24]))))^(((state[25]^(state[26]^state[27]))^((state[29]^state[30])^(data[1]^data[2])))^((data[3]^(data[5]^data[7]))^((data[8]^data[13])^(data[15]^data[17])))))^((((data[19]^(data[20]^data[22]))^((data[23]^data[24])^(data[25]^data[26])))^((data[27]^(data[29]^data[30]))^((data[34]^data[35])^(data[45]^data[46]))))^(((data[49]^(data[52]^data[55]))^((data[58]^data[59])^(data[61]^data[63])))^(((data[64]^data[67])^(data[70]^data[71]))^((data[72]^data[74])^(data[75]^data[76]))))));
+     crc32_80[17]=(((((state[0]^(state[2]^state[3]))^((state[4]^state[6])^(state[8]^state[9])))^((state[14]^(state[16]^state[18]))^((state[20]^state[21])^(state[23]^state[24]))))^(((state[25]^(state[26]^state[27]))^((state[28]^state[30])^(state[31]^data[0])))^(((data[2]^data[3])^(data[4]^data[6]))^((data[8]^data[9])^(data[14]^data[16])))))^((((data[18]^(data[20]^data[21]))^((data[23]^data[24])^(data[25]^data[26])))^(((data[27]^data[28])^(data[30]^data[31]))^((data[35]^data[36])^(data[46]^data[47]))))^(((data[50]^(data[53]^data[56]))^((data[59]^data[60])^(data[62]^data[64])))^(((data[65]^data[68])^(data[71]^data[72]))^((data[73]^data[75])^(data[76]^data[77]))))));
+     crc32_80[18]=(((((state[1]^(state[3]^state[4]))^((state[5]^state[7])^(state[9]^state[10])))^((state[15]^(state[17]^state[19]))^((state[21]^state[22])^(state[24]^state[25]))))^(((state[26]^(state[27]^state[28]))^((state[29]^state[31])^(data[1]^data[3])))^(((data[4]^data[5])^(data[7]^data[9]))^((data[10]^data[15])^(data[17]^data[19])))))^((((data[21]^(data[22]^data[24]))^((data[25]^data[26])^(data[27]^data[28])))^((data[29]^(data[31]^data[32]))^((data[36]^data[37])^(data[47]^data[48]))))^(((data[51]^(data[54]^data[57]))^((data[60]^data[61])^(data[63]^data[65])))^(((data[66]^data[69])^(data[72]^data[73]))^((data[74]^data[76])^(data[77]^data[78]))))));
+     crc32_80[19]=(((((state[2]^(state[4]^state[5]))^((state[6]^state[8])^(state[10]^state[11])))^((state[16]^(state[18]^state[20]))^((state[22]^state[23])^(state[25]^state[26]))))^(((state[27]^(state[28]^state[29]))^((state[30]^data[2])^(data[4]^data[5])))^((data[6]^(data[8]^data[10]))^((data[11]^data[16])^(data[18]^data[20])))))^((((data[22]^(data[23]^data[25]))^((data[26]^data[27])^(data[28]^data[29])))^((data[30]^(data[32]^data[33]))^((data[37]^data[38])^(data[48]^data[49]))))^(((data[52]^(data[55]^data[58]))^((data[61]^data[62])^(data[64]^data[66])))^(((data[67]^data[70])^(data[73]^data[74]))^((data[75]^data[77])^(data[78]^data[79]))))));
+     crc32_80[20]=(((((state[1]^(state[3]^state[5]))^((state[6]^state[8])^(state[9]^state[11])))^(((state[13]^state[14])^(state[15]^state[20]))^((state[21]^state[22])^(state[23]^state[24]))))^((((state[25]^state[28])^(state[29]^state[31]))^((data[1]^data[3])^(data[5]^data[6])))^(((data[8]^data[9])^(data[11]^data[13]))^((data[14]^data[15])^(data[20]^data[21])))))^(((((data[22]^data[23])^(data[24]^data[25]))^((data[28]^data[29])^(data[31]^data[32])))^(((data[34]^data[35])^(data[36]^data[38]))^((data[39]^data[43])^(data[46]^data[48]))))^((((data[51]^data[52])^(data[53]^data[54]))^((data[55]^data[59])^(data[62]^data[63])))^(((data[64]^data[65])^(data[67]^data[70]))^((data[75]^data[76])^(data[78]^data[79]))))));
+     crc32_80[21]=(((((state[1]^(state[2]^state[4]))^(state[6]^(state[8]^state[9])))^((state[10]^(state[13]^state[16]))^((state[17]^state[19])^(state[20]^state[21]))))^(((state[23]^(state[24]^state[27]))^((state[29]^data[1])^(data[2]^data[4])))^((data[6]^(data[8]^data[9]))^((data[10]^data[13])^(data[16]^data[17])))))^((((data[19]^(data[20]^data[21]))^(data[23]^(data[24]^data[27])))^((data[29]^(data[37]^data[39]))^((data[40]^data[43])^(data[44]^data[46]))))^(((data[47]^(data[48]^data[50]))^((data[51]^data[53])^(data[60]^data[63])))^((data[65]^(data[66]^data[70]))^((data[74]^data[76])^(data[77]^data[79]))))));
+     crc32_80[22]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[5])^(state[8]^state[9])))^(((state[10]^state[11])^(state[12]^state[13]))^((state[15]^state[18])^(state[19]^state[21]))))^((((state[24]^state[26])^(state[27]^state[28]))^((data[0]^data[1])^(data[2]^data[3])))^(((data[5]^data[8])^(data[9]^data[10]))^((data[11]^data[12])^(data[13]^data[15])))))^((((data[18]^(data[19]^data[21]))^((data[24]^data[26])^(data[27]^data[28])))^(((data[32]^data[33])^(data[35]^data[36]))^((data[38]^data[40])^(data[41]^data[43]))))^((((data[44]^data[45])^(data[46]^data[47]))^((data[50]^data[55])^(data[56]^data[61])))^(((data[66]^data[67])^(data[68]^data[70]))^((data[74]^data[75])^(data[77]^data[78]))))));
+     crc32_80[23]=((((((state[0]^state[1])^(state[2]^state[3]))^((state[4]^state[6])^(state[9]^state[10])))^(((state[11]^state[12])^(state[13]^state[14]))^((state[16]^state[19])^(state[20]^state[22]))))^((((state[25]^state[27])^(state[28]^state[29]))^((data[0]^data[1])^(data[2]^data[3])))^(((data[4]^data[6])^(data[9]^data[10]))^((data[11]^data[12])^(data[13]^data[14])))))^(((((data[16]^data[19])^(data[20]^data[22]))^((data[25]^data[27])^(data[28]^data[29])))^(((data[33]^data[34])^(data[36]^data[37]))^((data[39]^data[41])^(data[42]^data[44]))))^((((data[45]^data[46])^(data[47]^data[48]))^((data[51]^data[56])^(data[57]^data[62])))^(((data[67]^data[68])^(data[69]^data[71]))^((data[75]^data[76])^(data[78]^data[79]))))));
+     crc32_80[24]=(((((state[0]^(state[2]^state[3]))^((state[4]^state[5])^(state[8]^state[10])))^((state[11]^(state[19]^state[21]))^((state[22]^state[23])^(state[25]^state[27]))))^(((state[28]^(state[29]^data[0]))^((data[2]^data[3])^(data[4]^data[5])))^(((data[8]^data[10])^(data[11]^data[19]))^((data[21]^data[22])^(data[23]^data[25])))))^((((data[27]^(data[28]^data[29]))^((data[32]^data[33])^(data[34]^data[36])))^((data[37]^(data[38]^data[40]))^((data[42]^data[45])^(data[47]^data[50]))))^(((data[51]^(data[54]^data[55]))^((data[56]^data[57])^(data[58]^data[63])))^(((data[64]^data[69])^(data[71]^data[72]))^((data[74]^data[76])^(data[77]^data[79]))))));
+     crc32_80[25]=(((((state[0]^(state[3]^state[4]))^((state[5]^state[6])^(state[7]^state[8])))^(((state[9]^state[11])^(state[13]^state[14]))^((state[15]^state[17])^(state[19]^state[23]))))^((((state[24]^state[25])^(state[27]^state[28]))^((state[29]^data[0])^(data[3]^data[4])))^(((data[5]^data[6])^(data[7]^data[8]))^((data[9]^data[11])^(data[13]^data[14])))))^((((data[15]^(data[17]^data[19]))^((data[23]^data[24])^(data[25]^data[27])))^(((data[28]^data[29])^(data[32]^data[34]))^((data[36]^data[37])^(data[38]^data[39]))))^((((data[41]^data[49])^(data[50]^data[54]))^((data[57]^data[58])^(data[59]^data[65])))^(((data[68]^data[71])^(data[72]^data[73]))^((data[74]^data[75])^(data[77]^data[78]))))));
+     crc32_80[26]=((((((state[0]^state[1])^(state[4]^state[5]))^((state[6]^state[7])^(state[8]^state[9])))^(((state[10]^state[12])^(state[14]^state[15]))^((state[16]^state[18])^(state[20]^state[24]))))^((((state[25]^state[26])^(state[28]^state[29]))^((state[30]^data[0])^(data[1]^data[4])))^(((data[5]^data[6])^(data[7]^data[8]))^((data[9]^data[10])^(data[12]^data[14])))))^(((((data[15]^data[16])^(data[18]^data[20]))^((data[24]^data[25])^(data[26]^data[28])))^(((data[29]^data[30])^(data[33]^data[35]))^((data[37]^data[38])^(data[39]^data[40]))))^((((data[42]^data[50])^(data[51]^data[55]))^((data[58]^data[59])^(data[60]^data[66])))^(((data[69]^data[72])^(data[73]^data[74]))^((data[75]^data[76])^(data[78]^data[79]))))));
+     crc32_80[27]=(((((state[0]^(state[2]^state[5]))^((state[6]^state[9])^(state[10]^state[11])))^((state[12]^(state[14]^state[16]))^((state[20]^state[21])^(state[22]^state[29]))))^(((state[31]^(data[0]^data[2]))^((data[5]^data[6])^(data[9]^data[10])))^((data[11]^(data[12]^data[14]))^((data[16]^data[20])^(data[21]^data[22])))))^((((data[29]^(data[31]^data[32]))^((data[33]^data[34])^(data[35]^data[38])))^((data[39]^(data[40]^data[41]))^((data[46]^data[48])^(data[49]^data[50]))))^(((data[54]^(data[55]^data[59]))^((data[60]^data[61])^(data[64]^data[67])))^((data[68]^(data[71]^data[73]))^((data[75]^data[76])^(data[77]^data[79]))))));
+     crc32_80[28]=(((((state[3]^(state[6]^state[8]))^(state[10]^(state[11]^state[14])))^((state[19]^(state[20]^state[21]))^(state[23]^(state[25]^state[26]))))^(((state[27]^(data[3]^data[6]))^(data[8]^(data[10]^data[11])))^((data[14]^(data[19]^data[20]))^(data[21]^(data[23]^data[25])))))^((((data[26]^(data[27]^data[34]))^(data[39]^(data[40]^data[41])))^((data[42]^(data[43]^data[46]))^(data[47]^(data[48]^data[52]))))^(((data[54]^(data[60]^data[61]))^(data[62]^(data[64]^data[65])))^((data[69]^(data[70]^data[71]))^((data[72]^data[76])^(data[77]^data[78]))))));
+     crc32_80[29]=(((((state[0]^(state[4]^state[7]))^(state[9]^(state[11]^state[12])))^((state[15]^(state[20]^state[21]))^(state[22]^(state[24]^state[26]))))^(((state[27]^(state[28]^data[0]))^(data[4]^(data[7]^data[9])))^((data[11]^(data[12]^data[15]))^((data[20]^data[21])^(data[22]^data[24])))))^((((data[26]^(data[27]^data[28]))^(data[35]^(data[40]^data[41])))^((data[42]^(data[43]^data[44]))^((data[47]^data[48])^(data[49]^data[53]))))^(((data[55]^(data[61]^data[62]))^(data[63]^(data[65]^data[66])))^((data[70]^(data[71]^data[72]))^((data[73]^data[77])^(data[78]^data[79]))))));
+     crc32_80[30]=(((((state[0]^(state[5]^state[7]))^(state[10]^(state[14]^state[15])))^((state[16]^(state[17]^state[19]))^((state[20]^state[21])^(state[23]^state[26]))))^(((state[28]^(state[29]^state[30]))^(data[0]^(data[5]^data[7])))^((data[10]^(data[14]^data[15]))^((data[16]^data[17])^(data[19]^data[20])))))^((((data[21]^(data[23]^data[26]))^(data[28]^(data[29]^data[30])))^((data[32]^(data[33]^data[35]))^((data[41]^data[42])^(data[44]^data[45]))))^(((data[46]^(data[51]^data[52]))^((data[55]^data[62])^(data[63]^data[66])))^((data[67]^(data[68]^data[70]))^((data[72]^data[73])^(data[78]^data[79]))))));
+     crc32_80[31]=(((((state[0]^(state[6]^state[7]))^(state[11]^(state[12]^state[13])))^((state[14]^(state[16]^state[18]))^(state[19]^(state[21]^state[24]))))^(((state[25]^(state[26]^state[29]))^(state[31]^(data[0]^data[6])))^((data[7]^(data[11]^data[12]))^((data[13]^data[14])^(data[16]^data[18])))))^((((data[19]^(data[21]^data[24]))^(data[25]^(data[26]^data[29])))^((data[31]^(data[32]^data[34]))^((data[35]^data[42])^(data[45]^data[47]))))^(((data[48]^(data[49]^data[50]))^(data[51]^(data[53]^data[54])))^((data[55]^(data[63]^data[67]))^((data[69]^data[70])^(data[73]^data[79]))))));
+   end
+ endfunction
+ function automatic [31:0] crc32_96;
+   input [31:0] state;
+   input [95:0] data;
+   begin
+     crc32_96[0]=(((((state[0]^(state[1]^state[2]))^((state[9]^state[11])^(state[12]^state[13])))^((state[14]^(state[15]^state[17]))^((state[23]^state[24])^(state[28]^state[29]))))^(((state[30]^(state[31]^data[0]))^((data[1]^data[2])^(data[9]^data[11])))^(((data[12]^data[13])^(data[14]^data[15]))^((data[17]^data[23])^(data[24]^data[28])))))^((((data[29]^(data[30]^data[31]))^((data[33]^data[35])^(data[36]^data[38])))^(((data[41]^data[42])^(data[43]^data[46]))^((data[48]^data[49])^(data[51]^data[52]))))^(((data[59]^(data[62]^data[64]))^((data[65]^data[66])^(data[67]^data[68])))^(((data[70]^data[71])^(data[72]^data[80]))^((data[84]^data[86])^(data[87]^data[90]))))));
+     crc32_96[1]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[10])^(state[12]^state[13])))^(((state[14]^state[15])^(state[16]^state[18]))^((state[24]^state[25])^(state[29]^state[30]))))^(((state[31]^(data[0]^data[1]))^((data[2]^data[3])^(data[10]^data[12])))^(((data[13]^data[14])^(data[15]^data[16]))^((data[18]^data[24])^(data[25]^data[29])))))^((((data[30]^(data[31]^data[32]))^((data[34]^data[36])^(data[37]^data[39])))^(((data[42]^data[43])^(data[44]^data[47]))^((data[49]^data[50])^(data[52]^data[53]))))^(((data[60]^(data[63]^data[65]))^((data[66]^data[67])^(data[68]^data[69])))^(((data[71]^data[72])^(data[73]^data[81]))^((data[85]^data[87])^(data[88]^data[91]))))));
+     crc32_96[2]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[4])^(state[11]^state[13])))^(((state[14]^state[15])^(state[16]^state[17]))^((state[19]^state[25])^(state[26]^state[30]))))^(((state[31]^(data[0]^data[1]))^((data[2]^data[3])^(data[4]^data[11])))^(((data[13]^data[14])^(data[15]^data[16]))^((data[17]^data[19])^(data[25]^data[26])))))^((((data[30]^(data[31]^data[32]))^((data[33]^data[35])^(data[37]^data[38])))^(((data[40]^data[43])^(data[44]^data[45]))^((data[48]^data[50])^(data[51]^data[53]))))^((((data[54]^data[61])^(data[64]^data[66]))^((data[67]^data[68])^(data[69]^data[70])))^(((data[72]^data[73])^(data[74]^data[82]))^((data[86]^data[88])^(data[89]^data[92]))))));
+     crc32_96[3]=(((((state[0]^(state[1]^state[2]))^((state[3]^state[4])^(state[5]^state[12])))^(((state[14]^state[15])^(state[16]^state[17]))^((state[18]^state[20])^(state[26]^state[27]))))^((((state[31]^data[0])^(data[1]^data[2]))^((data[3]^data[4])^(data[5]^data[12])))^(((data[14]^data[15])^(data[16]^data[17]))^((data[18]^data[20])^(data[26]^data[27])))))^((((data[31]^(data[32]^data[33]))^((data[34]^data[36])^(data[38]^data[39])))^(((data[41]^data[44])^(data[45]^data[46]))^((data[49]^data[51])^(data[52]^data[54]))))^((((data[55]^data[62])^(data[65]^data[67]))^((data[68]^data[69])^(data[70]^data[71])))^(((data[73]^data[74])^(data[75]^data[83]))^((data[87]^data[89])^(data[90]^data[93]))))));
+     crc32_96[4]=(((((state[1]^(state[2]^state[3]))^((state[4]^state[5])^(state[6]^state[13])))^(((state[15]^state[16])^(state[17]^state[18]))^((state[19]^state[21])^(state[27]^state[28]))))^(((data[1]^(data[2]^data[3]))^((data[4]^data[5])^(data[6]^data[13])))^(((data[15]^data[16])^(data[17]^data[18]))^((data[19]^data[21])^(data[27]^data[28])))))^((((data[32]^(data[33]^data[34]))^((data[35]^data[37])^(data[39]^data[40])))^(((data[42]^data[45])^(data[46]^data[47]))^((data[50]^data[52])^(data[53]^data[55]))))^((((data[56]^data[63])^(data[66]^data[68]))^((data[69]^data[70])^(data[71]^data[72])))^(((data[74]^data[75])^(data[76]^data[84]))^((data[88]^data[90])^(data[91]^data[94]))))));
+     crc32_96[5]=(((((state[0]^(state[2]^state[3]))^((state[4]^state[5])^(state[6]^state[7])))^(((state[14]^state[16])^(state[17]^state[18]))^((state[19]^state[20])^(state[22]^state[28]))))^((((state[29]^data[0])^(data[2]^data[3]))^((data[4]^data[5])^(data[6]^data[7])))^(((data[14]^data[16])^(data[17]^data[18]))^((data[19]^data[20])^(data[22]^data[28])))))^(((((data[29]^data[33])^(data[34]^data[35]))^((data[36]^data[38])^(data[40]^data[41])))^(((data[43]^data[46])^(data[47]^data[48]))^((data[51]^data[53])^(data[54]^data[56]))))^((((data[57]^data[64])^(data[67]^data[69]))^((data[70]^data[71])^(data[72]^data[73])))^(((data[75]^data[76])^(data[77]^data[85]))^((data[89]^data[91])^(data[92]^data[95]))))));
+     crc32_96[6]=((((((state[0]^state[2])^(state[3]^state[4]))^((state[5]^state[6])^(state[7]^state[8])))^(((state[9]^state[11])^(state[12]^state[13]))^((state[14]^state[18])^(state[19]^(state[20]^state[21])))))^((((state[24]^state[28])^(state[31]^data[0]))^((data[2]^data[3])^(data[4]^data[5])))^(((data[6]^data[7])^(data[8]^data[9]))^((data[11]^data[12])^(data[13]^(data[14]^data[18]))))))^(((((data[19]^data[20])^(data[21]^data[24]))^((data[28]^data[31])^(data[33]^data[34])))^(((data[37]^data[38])^(data[39]^data[43]))^((data[44]^data[46])^(data[47]^(data[51]^data[54])))))^((((data[55]^data[57])^(data[58]^data[59]))^((data[62]^data[64])^(data[66]^(data[67]^data[73]))))^(((data[74]^data[76])^(data[77]^data[78]))^((data[80]^data[84])^(data[87]^(data[92]^data[93])))))));
+     crc32_96[7]=((((((state[1]^state[3])^(state[4]^state[5]))^((state[6]^state[7])^(state[8]^state[9])))^(((state[10]^state[12])^(state[13]^state[14]))^((state[15]^state[19])^(state[20]^(state[21]^state[22])))))^((((state[25]^state[29])^(data[1]^data[3]))^((data[4]^data[5])^(data[6]^data[7])))^(((data[8]^data[9])^(data[10]^data[12]))^((data[13]^data[14])^(data[15]^(data[19]^data[20]))))))^(((((data[21]^data[22])^(data[25]^data[29]))^((data[32]^data[34])^(data[35]^data[38])))^(((data[39]^data[40])^(data[44]^data[45]))^((data[47]^data[48])^(data[52]^(data[55]^data[56])))))^((((data[58]^data[59])^(data[60]^data[63]))^((data[65]^data[67])^(data[68]^data[74])))^(((data[75]^data[77])^(data[78]^data[79]))^((data[81]^data[85])^(data[88]^(data[93]^data[94])))))));
+     crc32_96[8]=((((((state[2]^state[4])^(state[5]^state[6]))^((state[7]^state[8])^(state[9]^state[10])))^(((state[11]^state[13])^(state[14]^state[15]))^((state[16]^state[20])^(state[21]^(state[22]^state[23])))))^((((state[26]^state[30])^(data[2]^data[4]))^((data[5]^data[6])^(data[7]^data[8])))^(((data[9]^data[10])^(data[11]^data[13]))^((data[14]^data[15])^(data[16]^(data[20]^data[21]))))))^(((((data[22]^data[23])^(data[26]^data[30]))^((data[33]^data[35])^(data[36]^data[39])))^(((data[40]^data[41])^(data[45]^data[46]))^((data[48]^data[49])^(data[53]^(data[56]^data[57])))))^((((data[59]^data[60])^(data[61]^data[64]))^((data[66]^data[68])^(data[69]^data[75])))^(((data[76]^data[78])^(data[79]^data[80]))^((data[82]^data[86])^(data[89]^(data[94]^data[95])))))));
+     crc32_96[9]=((((((state[1]^state[2])^(state[3]^state[5]))^((state[6]^state[7])^(state[8]^state[10])))^(((state[13]^state[16])^(state[21]^state[22]))^((state[27]^state[28])^(state[29]^state[30]))))^((((data[1]^data[2])^(data[3]^data[5]))^((data[6]^data[7])^(data[8]^data[10])))^(((data[13]^data[16])^(data[21]^data[22]))^((data[27]^data[28])^(data[29]^data[30])))))^(((((data[33]^data[34])^(data[35]^data[37]))^((data[38]^data[40])^(data[43]^data[47])))^(((data[48]^data[50])^(data[51]^data[52]))^((data[54]^data[57])^(data[58]^data[59]))))^((((data[60]^data[61])^(data[64]^data[66]))^((data[68]^data[69])^(data[71]^data[72])))^(((data[76]^data[77])^(data[79]^data[81]))^((data[83]^data[84])^(data[86]^data[95]))))));
+     crc32_96[10]=(((((state[0]^(state[1]^state[3]))^(state[4]^(state[6]^state[7])))^((state[8]^(state[12]^state[13]))^(state[15]^(state[22]^state[24]))))^(((data[0]^(data[1]^data[3]))^(data[4]^(data[6]^data[7])))^((data[8]^(data[12]^data[13]))^(data[15]^(data[22]^data[24])))))^((((data[33]^(data[34]^data[39]))^(data[42]^(data[43]^data[44])))^((data[46]^(data[53]^data[55]))^(data[58]^(data[60]^data[61]))))^(((data[64]^(data[66]^data[68]))^(data[69]^(data[71]^data[73])))^((data[77]^(data[78]^data[82]))^(data[85]^(data[86]^data[90]))))));
+     crc32_96[11]=(((((state[0]^(state[1]^state[2]))^(state[4]^(state[5]^state[7])))^((state[8]^(state[9]^state[13]))^(state[14]^(state[16]^state[23]))))^(((state[25]^(data[0]^data[1]))^(data[2]^(data[4]^data[5])))^((data[7]^(data[8]^data[9]))^((data[13]^data[14])^(data[16]^data[23])))))^((((data[25]^(data[34]^data[35]))^(data[40]^(data[43]^data[44])))^((data[45]^(data[47]^data[54]))^(data[56]^(data[59]^data[61]))))^(((data[62]^(data[65]^data[67]))^(data[69]^(data[70]^data[72])))^((data[74]^(data[78]^data[79]))^((data[83]^data[86])^(data[87]^data[91]))))));
+     crc32_96[12]=(((((state[1]^(state[2]^state[3]))^(state[5]^(state[6]^state[8])))^((state[9]^(state[10]^state[14]))^(state[15]^(state[17]^state[24]))))^(((state[26]^(data[1]^data[2]))^(data[3]^(data[5]^data[6])))^((data[8]^(data[9]^data[10]))^((data[14]^data[15])^(data[17]^data[24])))))^((((data[26]^(data[35]^data[36]))^(data[41]^(data[44]^data[45])))^((data[46]^(data[48]^data[55]))^(data[57]^(data[60]^data[62]))))^(((data[63]^(data[66]^data[68]))^(data[70]^(data[71]^data[73])))^((data[75]^(data[79]^data[80]))^((data[84]^data[87])^(data[88]^data[92]))))));
+     crc32_96[13]=(((((state[2]^(state[3]^state[4]))^(state[6]^(state[7]^state[9])))^((state[10]^(state[11]^state[15]))^(state[16]^(state[18]^state[25]))))^(((state[27]^(data[2]^data[3]))^(data[4]^(data[6]^data[7])))^((data[9]^(data[10]^data[11]))^((data[15]^data[16])^(data[18]^data[25])))))^((((data[27]^(data[36]^data[37]))^(data[42]^(data[45]^data[46])))^((data[47]^(data[49]^data[56]))^(data[58]^(data[61]^data[63]))))^(((data[64]^(data[67]^data[69]))^(data[71]^(data[72]^data[74])))^((data[76]^(data[80]^data[81]))^((data[85]^data[88])^(data[89]^data[93]))))));
+     crc32_96[14]=(((((state[0]^(state[3]^state[4]))^(state[5]^(state[7]^state[8])))^((state[10]^(state[11]^state[12]))^((state[16]^state[17])^(state[19]^state[26]))))^(((state[28]^(data[0]^data[3]))^(data[4]^(data[5]^data[7])))^((data[8]^(data[10]^data[11]))^((data[12]^data[16])^(data[17]^data[19])))))^((((data[26]^(data[28]^data[37]))^(data[38]^(data[43]^data[46])))^((data[47]^(data[48]^data[50]))^((data[57]^data[59])^(data[62]^data[64]))))^(((data[65]^(data[68]^data[70]))^(data[72]^(data[73]^data[75])))^((data[77]^(data[81]^data[82]))^((data[86]^data[89])^(data[90]^data[94]))))));
+     crc32_96[15]=(((((state[1]^(state[4]^state[5]))^(state[6]^(state[8]^state[9])))^((state[11]^(state[12]^state[13]))^((state[17]^state[18])^(state[20]^state[27]))))^(((state[29]^(data[1]^data[4]))^(data[5]^(data[6]^data[8])))^((data[9]^(data[11]^data[12]))^((data[13]^data[17])^(data[18]^data[20])))))^((((data[27]^(data[29]^data[38]))^(data[39]^(data[44]^data[47])))^((data[48]^(data[49]^data[51]))^((data[58]^data[60])^(data[63]^data[65]))))^(((data[66]^(data[69]^data[71]))^(data[73]^(data[74]^data[76])))^((data[78]^(data[82]^data[83]))^((data[87]^data[90])^(data[91]^data[95]))))));
+     crc32_96[16]=(((((state[0]^(state[1]^state[5]))^((state[6]^state[7])^(state[10]^state[11])))^(((state[15]^state[17])^(state[18]^state[19]))^((state[21]^state[23])^(state[24]^state[29]))))^((((state[31]^data[0])^(data[1]^data[5]))^((data[6]^data[7])^(data[10]^data[11])))^(((data[15]^data[17])^(data[18]^data[19]))^((data[21]^data[23])^(data[24]^data[29])))))^((((data[31]^(data[33]^data[35]))^((data[36]^data[38])^(data[39]^data[40])))^(((data[41]^data[42])^(data[43]^data[45]))^((data[46]^data[50])^(data[51]^data[61]))))^((((data[62]^data[65])^(data[68]^data[71]))^((data[74]^data[75])^(data[77]^data[79])))^(((data[80]^data[83])^(data[86]^data[87]))^((data[88]^data[90])^(data[91]^data[92]))))));
+     crc32_96[17]=(((((state[1]^(state[2]^state[6]))^((state[7]^state[8])^(state[11]^state[12])))^(((state[16]^state[18])^(state[19]^state[20]))^((state[22]^state[24])^(state[25]^state[30]))))^(((data[1]^(data[2]^data[6]))^((data[7]^data[8])^(data[11]^data[12])))^(((data[16]^data[18])^(data[19]^data[20]))^((data[22]^data[24])^(data[25]^data[30])))))^((((data[32]^(data[34]^data[36]))^((data[37]^data[39])^(data[40]^data[41])))^(((data[42]^data[43])^(data[44]^data[46]))^((data[47]^data[51])^(data[52]^data[62]))))^((((data[63]^data[66])^(data[69]^data[72]))^((data[75]^data[76])^(data[78]^data[80])))^(((data[81]^data[84])^(data[87]^data[88]))^((data[89]^data[91])^(data[92]^data[93]))))));
+     crc32_96[18]=(((((state[0]^(state[2]^state[3]))^((state[7]^state[8])^(state[9]^state[12])))^(((state[13]^state[17])^(state[19]^state[20]))^((state[21]^state[23])^(state[25]^state[26]))))^((((state[31]^data[0])^(data[2]^data[3]))^((data[7]^data[8])^(data[9]^data[12])))^(((data[13]^data[17])^(data[19]^data[20]))^((data[21]^data[23])^(data[25]^data[26])))))^(((((data[31]^data[33])^(data[35]^data[37]))^((data[38]^data[40])^(data[41]^data[42])))^(((data[43]^data[44])^(data[45]^data[47]))^((data[48]^data[52])^(data[53]^data[63]))))^((((data[64]^data[67])^(data[70]^data[73]))^((data[76]^data[77])^(data[79]^data[81])))^(((data[82]^data[85])^(data[88]^data[89]))^((data[90]^data[92])^(data[93]^data[94]))))));
+     crc32_96[19]=(((((state[1]^(state[3]^state[4]))^((state[8]^state[9])^(state[10]^state[13])))^(((state[14]^state[18])^(state[20]^state[21]))^((state[22]^state[24])^(state[26]^state[27]))))^((((data[1]^data[3])^(data[4]^data[8]))^((data[9]^data[10])^(data[13]^data[14])))^(((data[18]^data[20])^(data[21]^data[22]))^((data[24]^data[26])^(data[27]^data[32])))))^((((data[34]^(data[36]^data[38]))^((data[39]^data[41])^(data[42]^data[43])))^(((data[44]^data[45])^(data[46]^data[48]))^((data[49]^data[53])^(data[54]^data[64]))))^((((data[65]^data[68])^(data[71]^data[74]))^((data[77]^data[78])^(data[80]^data[82])))^(((data[83]^data[86])^(data[89]^data[90]))^((data[91]^data[93])^(data[94]^data[95]))))));
+     crc32_96[20]=((((((state[1]^state[4])^(state[5]^state[10]))^((state[12]^state[13])^(state[17]^state[19])))^(((state[21]^state[22])^(state[24]^state[25]))^((state[27]^state[29])^(state[30]^state[31]))))^((((data[1]^data[4])^(data[5]^data[10]))^((data[12]^data[13])^(data[17]^data[19])))^(((data[21]^data[22])^(data[24]^data[25]))^((data[27]^data[29])^(data[30]^(data[31]^data[36]))))))^(((((data[37]^data[38])^(data[39]^data[40]))^((data[41]^data[44])^(data[45]^data[47])))^(((data[48]^data[50])^(data[51]^data[52]))^((data[54]^data[55])^(data[59]^data[62]))))^((((data[64]^data[67])^(data[68]^data[69]))^((data[70]^data[71])^(data[75]^data[78])))^(((data[79]^data[80])^(data[81]^data[83]))^((data[86]^data[91])^(data[92]^(data[94]^data[95])))))));
+     crc32_96[21]=(((((state[0]^(state[1]^state[5]))^((state[6]^state[9])^(state[12]^state[15])))^((state[17]^(state[18]^state[20]))^((state[22]^state[24])^(state[25]^state[26]))))^(((state[29]^(data[0]^data[1]))^((data[5]^data[6])^(data[9]^data[12])))^(((data[15]^data[17])^(data[18]^data[20]))^((data[22]^data[24])^(data[25]^data[26])))))^((((data[29]^(data[32]^data[33]))^((data[35]^data[36])^(data[37]^data[39])))^(((data[40]^data[43])^(data[45]^data[53]))^((data[55]^data[56])^(data[59]^data[60]))))^(((data[62]^(data[63]^data[64]))^((data[66]^data[67])^(data[69]^data[76])))^(((data[79]^data[81])^(data[82]^data[86]))^((data[90]^data[92])^(data[93]^data[95]))))));
+     crc32_96[22]=((((((state[6]^state[7])^(state[9]^state[10]))^((state[11]^state[12])^(state[14]^state[15])))^(((state[16]^state[17])^(state[18]^state[19]))^((state[21]^state[24])^(state[25]^(state[26]^state[27])))))^((((state[28]^state[29])^(state[31]^data[6]))^((data[7]^data[9])^(data[10]^(data[11]^data[12]))))^(((data[14]^data[15])^(data[16]^data[17]))^((data[18]^data[19])^(data[21]^(data[24]^data[25]))))))^(((((data[26]^data[27])^(data[28]^data[29]))^((data[31]^data[34])^(data[35]^(data[37]^data[40]))))^(((data[42]^data[43])^(data[44]^data[48]))^((data[49]^data[51])^(data[52]^(data[54]^data[56])))))^((((data[57]^data[59])^(data[60]^data[61]))^((data[62]^data[63])^(data[66]^(data[71]^data[72]))))^(((data[77]^data[82])^(data[83]^data[84]))^((data[86]^data[90])^(data[91]^(data[93]^data[94])))))));
+     crc32_96[23]=((((((state[0]^state[7])^(state[8]^state[10]))^((state[11]^state[12])^(state[13]^(state[15]^state[16]))))^(((state[17]^state[18])^(state[19]^state[20]))^((state[22]^state[25])^(state[26]^(state[27]^state[28])))))^((((state[29]^state[30])^(data[0]^data[7]))^((data[8]^data[10])^(data[11]^(data[12]^data[13]))))^(((data[15]^data[16])^(data[17]^data[18]))^((data[19]^data[20])^(data[22]^(data[25]^data[26]))))))^(((((data[27]^data[28])^(data[29]^data[30]))^((data[32]^data[35])^(data[36]^(data[38]^data[41]))))^(((data[43]^data[44])^(data[45]^data[49]))^((data[50]^data[52])^(data[53]^(data[55]^data[57])))))^((((data[58]^data[60])^(data[61]^data[62]))^((data[63]^data[64])^(data[67]^(data[72]^data[73]))))^(((data[78]^data[83])^(data[84]^data[85]))^((data[87]^data[91])^(data[92]^(data[94]^data[95])))))));
+     crc32_96[24]=(((((state[0]^(state[2]^state[8]))^((state[15]^state[16])^(state[18]^state[19])))^((state[20]^(state[21]^state[24]))^((state[26]^state[27])^(data[0]^data[2]))))^(((data[8]^(data[15]^data[16]))^((data[18]^data[19])^(data[20]^data[21])))^(((data[24]^data[26])^(data[27]^data[35]))^((data[37]^data[38])^(data[39]^data[41])))))^((((data[43]^(data[44]^data[45]))^((data[48]^data[49])^(data[50]^data[52])))^((data[53]^(data[54]^data[56]))^((data[58]^data[61])^(data[63]^data[66]))))^(((data[67]^(data[70]^data[71]))^((data[72]^data[73])^(data[74]^data[79])))^(((data[80]^data[85])^(data[87]^data[88]))^((data[90]^data[92])^(data[93]^data[95]))))));
+     crc32_96[25]=((((((state[0]^state[2])^(state[3]^state[11]))^((state[12]^state[13])^(state[14]^state[15])))^(((state[16]^state[19])^(state[20]^state[21]))^((state[22]^state[23])^(state[24]^(state[25]^state[27])))))^((((state[29]^state[30])^(state[31]^data[0]))^((data[2]^data[3])^(data[11]^(data[12]^data[13]))))^(((data[14]^data[15])^(data[16]^data[19]))^((data[20]^data[21])^(data[22]^(data[23]^data[24]))))))^(((((data[25]^data[27])^(data[29]^data[30]))^((data[31]^data[33])^(data[35]^data[39])))^(((data[40]^data[41])^(data[43]^data[44]))^((data[45]^data[48])^(data[50]^(data[52]^data[53])))))^((((data[54]^data[55])^(data[57]^data[65]))^((data[66]^data[70])^(data[73]^(data[74]^data[75]))))^(((data[81]^data[84])^(data[87]^data[88]))^((data[89]^data[90])^(data[91]^(data[93]^data[94])))))));
+     crc32_96[26]=((((((state[1]^state[3])^(state[4]^state[12]))^((state[13]^state[14])^(state[15]^state[16])))^(((state[17]^state[20])^(state[21]^state[22]))^((state[23]^state[24])^(state[25]^(state[26]^state[28])))))^((((state[30]^state[31])^(data[1]^data[3]))^((data[4]^data[12])^(data[13]^data[14])))^(((data[15]^data[16])^(data[17]^data[20]))^((data[21]^data[22])^(data[23]^(data[24]^data[25]))))))^(((((data[26]^data[28])^(data[30]^data[31]))^((data[32]^data[34])^(data[36]^data[40])))^(((data[41]^data[42])^(data[44]^data[45]))^((data[46]^data[49])^(data[51]^(data[53]^data[54])))))^((((data[55]^data[56])^(data[58]^data[66]))^((data[67]^data[71])^(data[74]^(data[75]^data[76]))))^(((data[82]^data[85])^(data[88]^data[89]))^((data[90]^data[91])^(data[92]^(data[94]^data[95])))))));
+     crc32_96[27]=((((((state[0]^state[1])^(state[4]^state[5]))^((state[9]^state[11])^(state[12]^state[16])))^(((state[18]^state[21])^(state[22]^state[25]))^((state[26]^state[27])^(state[28]^state[30]))))^((((data[0]^data[1])^(data[4]^data[5]))^((data[9]^data[11])^(data[12]^data[16])))^(((data[18]^data[21])^(data[22]^data[25]))^((data[26]^data[27])^(data[28]^data[30])))))^(((((data[32]^data[36])^(data[37]^data[38]))^((data[45]^data[47])^(data[48]^data[49])))^(((data[50]^data[51])^(data[54]^data[55]))^((data[56]^data[57])^(data[62]^data[64]))))^((((data[65]^data[66])^(data[70]^data[71]))^((data[75]^data[76])^(data[77]^data[80])))^(((data[83]^data[84])^(data[87]^data[89]))^((data[91]^data[92])^(data[93]^data[95]))))));
+     crc32_96[28]=(((((state[0]^(state[5]^state[6]))^((state[9]^state[10])^(state[11]^state[14])))^((state[15]^(state[19]^state[22]))^((state[24]^state[26])^(state[27]^state[30]))))^(((data[0]^(data[5]^data[6]))^((data[9]^data[10])^(data[11]^data[14])))^(((data[15]^data[19])^(data[22]^data[24]))^((data[26]^data[27])^(data[30]^data[35])))))^((((data[36]^(data[37]^data[39]))^((data[41]^data[42])^(data[43]^data[50])))^((data[55]^(data[56]^data[57]))^((data[58]^data[59])^(data[62]^data[63]))))^(((data[64]^(data[68]^data[70]))^((data[76]^data[77])^(data[78]^data[80])))^(((data[81]^data[85])^(data[86]^data[87]))^((data[88]^data[92])^(data[93]^data[94]))))));
+     crc32_96[29]=(((((state[1]^(state[6]^state[7]))^((state[10]^state[11])^(state[12]^state[15])))^((state[16]^(state[20]^state[23]))^((state[25]^state[27])^(state[28]^state[31]))))^(((data[1]^(data[6]^data[7]))^((data[10]^data[11])^(data[12]^data[15])))^(((data[16]^data[20])^(data[23]^data[25]))^((data[27]^data[28])^(data[31]^data[36])))))^((((data[37]^(data[38]^data[40]))^((data[42]^data[43])^(data[44]^data[51])))^((data[56]^(data[57]^data[58]))^((data[59]^data[60])^(data[63]^data[64]))))^(((data[65]^(data[69]^data[71]))^((data[77]^data[78])^(data[79]^data[81])))^(((data[82]^data[86])^(data[87]^data[88]))^((data[89]^data[93])^(data[94]^data[95]))))));
+     crc32_96[30]=(((((state[1]^(state[7]^state[8]))^(state[9]^(state[14]^state[15])))^((state[16]^(state[21]^state[23]))^((state[26]^state[30])^(state[31]^data[1]))))^(((data[7]^(data[8]^data[9]))^((data[14]^data[15])^(data[16]^data[21])))^((data[23]^(data[26]^data[30]))^((data[31]^data[32])^(data[33]^data[35])))))^((((data[36]^(data[37]^data[39]))^((data[42]^data[44])^(data[45]^data[46])))^((data[48]^(data[49]^data[51]))^((data[57]^data[58])^(data[60]^data[61]))))^(((data[62]^(data[67]^data[68]))^((data[71]^data[78])^(data[79]^data[82])))^((data[83]^(data[84]^data[86]))^((data[88]^data[89])^(data[94]^data[95]))))));
+     crc32_96[31]=(((((state[0]^(state[1]^state[8]))^((state[10]^state[11])^(state[12]^state[13])))^((state[14]^(state[16]^state[22]))^((state[23]^state[27])^(state[28]^state[29]))))^(((state[30]^(data[0]^data[1]))^((data[8]^data[10])^(data[11]^data[12])))^(((data[13]^data[14])^(data[16]^data[22]))^((data[23]^data[27])^(data[28]^data[29])))))^((((data[30]^(data[32]^data[34]))^((data[35]^data[37])^(data[40]^data[41])))^((data[42]^(data[45]^data[47]))^((data[48]^data[50])^(data[51]^data[58]))))^(((data[61]^(data[63]^data[64]))^((data[65]^data[66])^(data[67]^data[69])))^(((data[70]^data[71])^(data[79]^data[83]))^((data[85]^data[86])^(data[89]^data[95]))))));
+   end
+ endfunction
+ function automatic [31:0] crc32_112;
+   input [31:0] state;
+   input [111:0] data;
+   begin
+     crc32_112[0]=((((((state[1]^state[2])^(state[6]^state[8]))^((state[9]^state[11])^(state[13]^state[14])))^(((state[15]^state[16])^(state[17]^state[18]))^((state[25]^state[27])^(state[28]^(state[29]^state[30])))))^((((state[31]^data[1])^(data[2]^data[6]))^((data[8]^data[9])^(data[11]^(data[13]^data[14]))))^(((data[15]^data[16])^(data[17]^data[18]))^((data[25]^data[27])^(data[28]^(data[29]^data[30]))))))^(((((data[31]^data[33])^(data[39]^data[40]))^((data[44]^data[45])^(data[46]^data[47])))^(((data[49]^data[51])^(data[52]^data[54]))^((data[57]^data[58])^(data[59]^(data[62]^data[64])))))^((((data[65]^data[67])^(data[68]^data[75]))^((data[78]^data[80])^(data[81]^(data[82]^data[83]))))^(((data[84]^data[86])^(data[87]^data[88]))^((data[96]^data[100])^(data[102]^(data[103]^data[106])))))));
+     crc32_112[1]=((((((state[0]^state[2])^(state[3]^state[7]))^((state[9]^state[10])^(state[12]^state[14])))^(((state[15]^state[16])^(state[17]^state[18]))^((state[19]^state[26])^(state[28]^(state[29]^state[30])))))^((((state[31]^data[0])^(data[2]^data[3]))^((data[7]^data[9])^(data[10]^(data[12]^data[14]))))^(((data[15]^data[16])^(data[17]^data[18]))^((data[19]^data[26])^(data[28]^(data[29]^data[30]))))))^(((((data[31]^data[32])^(data[34]^data[40]))^((data[41]^data[45])^(data[46]^(data[47]^data[48]))))^(((data[50]^data[52])^(data[53]^data[55]))^((data[58]^data[59])^(data[60]^(data[63]^data[65])))))^((((data[66]^data[68])^(data[69]^data[76]))^((data[79]^data[81])^(data[82]^(data[83]^data[84]))))^(((data[85]^data[87])^(data[88]^data[89]))^((data[97]^data[101])^(data[103]^(data[104]^data[107])))))));
+     crc32_112[2]=((((((state[0]^state[1])^(state[3]^state[4]))^((state[8]^state[10])^(state[11]^(state[13]^state[15]))))^(((state[16]^state[17])^(state[18]^state[19]))^((state[20]^state[27])^(state[29]^(state[30]^state[31])))))^((((data[0]^data[1])^(data[3]^data[4]))^((data[8]^data[10])^(data[11]^(data[13]^data[15]))))^(((data[16]^data[17])^(data[18]^data[19]))^((data[20]^data[27])^(data[29]^(data[30]^data[31]))))))^(((((data[32]^data[33])^(data[35]^data[41]))^((data[42]^data[46])^(data[47]^(data[48]^data[49]))))^(((data[51]^data[53])^(data[54]^data[56]))^((data[59]^data[60])^(data[61]^(data[64]^data[66])))))^((((data[67]^data[69])^(data[70]^data[77]))^((data[80]^data[82])^(data[83]^(data[84]^data[85]))))^(((data[86]^data[88])^(data[89]^data[90]))^((data[98]^data[102])^(data[104]^(data[105]^data[108])))))));
+     crc32_112[3]=((((((state[1]^state[2])^(state[4]^state[5]))^((state[9]^state[11])^(state[12]^state[14])))^(((state[16]^state[17])^(state[18]^state[19]))^((state[20]^state[21])^(state[28]^(state[30]^state[31])))))^((((data[1]^data[2])^(data[4]^data[5]))^((data[9]^data[11])^(data[12]^(data[14]^data[16]))))^(((data[17]^data[18])^(data[19]^data[20]))^((data[21]^data[28])^(data[30]^(data[31]^data[32]))))))^(((((data[33]^data[34])^(data[36]^data[42]))^((data[43]^data[47])^(data[48]^(data[49]^data[50]))))^(((data[52]^data[54])^(data[55]^data[57]))^((data[60]^data[61])^(data[62]^(data[65]^data[67])))))^((((data[68]^data[70])^(data[71]^data[78]))^((data[81]^data[83])^(data[84]^(data[85]^data[86]))))^(((data[87]^data[89])^(data[90]^data[91]))^((data[99]^data[103])^(data[105]^(data[106]^data[109])))))));
+     crc32_112[4]=((((((state[0]^state[2])^(state[3]^state[5]))^((state[6]^state[10])^(state[12]^(state[13]^state[15]))))^(((state[17]^state[18])^(state[19]^state[20]))^((state[21]^state[22])^(state[29]^(state[31]^data[0])))))^((((data[2]^data[3])^(data[5]^data[6]))^((data[10]^data[12])^(data[13]^(data[15]^data[17]))))^(((data[18]^data[19])^(data[20]^data[21]))^((data[22]^data[29])^(data[31]^(data[32]^data[33]))))))^(((((data[34]^data[35])^(data[37]^data[43]))^((data[44]^data[48])^(data[49]^(data[50]^data[51]))))^(((data[53]^data[55])^(data[56]^data[58]))^((data[61]^data[62])^(data[63]^(data[66]^data[68])))))^((((data[69]^data[71])^(data[72]^data[79]))^((data[82]^data[84])^(data[85]^(data[86]^data[87]))))^(((data[88]^data[90])^(data[91]^data[92]))^((data[100]^data[104])^(data[106]^(data[107]^data[110])))))));
+     crc32_112[5]=((((((state[0]^state[1])^(state[3]^state[4]))^((state[6]^state[7])^(state[11]^(state[13]^state[14]))))^(((state[16]^state[18])^(state[19]^state[20]))^((state[21]^state[22])^(state[23]^(state[30]^data[0])))))^((((data[1]^data[3])^(data[4]^data[6]))^((data[7]^data[11])^(data[13]^(data[14]^data[16]))))^(((data[18]^data[19])^(data[20]^data[21]))^((data[22]^data[23])^(data[30]^(data[32]^data[33]))))))^(((((data[34]^data[35])^(data[36]^data[38]))^((data[44]^data[45])^(data[49]^(data[50]^data[51]))))^(((data[52]^data[54])^(data[56]^data[57]))^((data[59]^data[62])^(data[63]^(data[64]^data[67])))))^((((data[69]^data[70])^(data[72]^data[73]))^((data[80]^data[83])^(data[85]^(data[86]^data[87]))))^(((data[88]^data[89])^(data[91]^(data[92]^data[93])))^((data[101]^data[105])^(data[107]^(data[108]^data[111])))))));
+     crc32_112[6]=((((((state[0]^state[4])^(state[5]^(state[6]^state[7])))^((state[9]^state[11])^(state[12]^(state[13]^state[16]))))^(((state[18]^state[19])^(state[20]^(state[21]^state[22])))^((state[23]^state[24])^(state[25]^(state[27]^state[28])))))^((((state[29]^state[30])^(data[0]^(data[4]^data[5])))^((data[6]^data[7])^(data[9]^(data[11]^data[12]))))^(((data[13]^data[16])^(data[18]^(data[19]^data[20])))^((data[21]^data[22])^(data[23]^(data[24]^data[25]))))))^(((((data[27]^data[28])^(data[29]^(data[30]^data[34])))^((data[35]^data[36])^(data[37]^(data[40]^data[44]))))^(((data[47]^data[49])^(data[50]^(data[53]^data[54])))^((data[55]^data[59])^(data[60]^(data[62]^data[63])))))^((((data[67]^data[70])^(data[71]^(data[73]^data[74])))^((data[75]^data[78])^(data[80]^(data[82]^data[83]))))^(((data[89]^data[90])^(data[92]^(data[93]^data[94])))^((data[96]^data[100])^(data[103]^(data[108]^data[109])))))));
+     crc32_112[7]=((((((state[1]^state[5])^(state[6]^(state[7]^state[8])))^((state[10]^state[12])^(state[13]^(state[14]^state[17]))))^(((state[19]^state[20])^(state[21]^(state[22]^state[23])))^((state[24]^state[25])^(state[26]^(state[28]^state[29])))))^((((state[30]^state[31])^(data[1]^(data[5]^data[6])))^((data[7]^data[8])^(data[10]^(data[12]^data[13]))))^(((data[14]^data[17])^(data[19]^(data[20]^data[21])))^((data[22]^data[23])^(data[24]^(data[25]^data[26]))))))^(((((data[28]^data[29])^(data[30]^(data[31]^data[35])))^((data[36]^data[37])^(data[38]^(data[41]^data[45]))))^(((data[48]^data[50])^(data[51]^(data[54]^data[55])))^((data[56]^data[60])^(data[61]^(data[63]^data[64])))))^((((data[68]^data[71])^(data[72]^(data[74]^data[75])))^((data[76]^data[79])^(data[81]^(data[83]^data[84]))))^(((data[90]^data[91])^(data[93]^(data[94]^data[95])))^((data[97]^data[101])^(data[104]^(data[109]^data[110])))))));
+     crc32_112[8]=((((((state[0]^state[2])^(state[6]^(state[7]^state[8])))^((state[9]^state[11])^(state[13]^(state[14]^state[15]))))^(((state[18]^state[20])^(state[21]^(state[22]^state[23])))^((state[24]^state[25])^(state[26]^(state[27]^state[29])))))^((((state[30]^state[31])^(data[0]^(data[2]^data[6])))^((data[7]^data[8])^(data[9]^(data[11]^data[13]))))^(((data[14]^data[15])^(data[18]^(data[20]^data[21])))^((data[22]^data[23])^(data[24]^(data[25]^data[26]))))))^(((((data[27]^data[29])^(data[30]^(data[31]^data[32])))^((data[36]^data[37])^(data[38]^(data[39]^data[42]))))^(((data[46]^data[49])^(data[51]^(data[52]^data[55])))^((data[56]^data[57])^(data[61]^(data[62]^data[64])))))^((((data[65]^data[69])^(data[72]^(data[73]^data[75])))^((data[76]^data[77])^(data[80]^(data[82]^data[84]))))^(((data[85]^data[91])^(data[92]^(data[94]^data[95])))^((data[96]^(data[98]^data[102]))^(data[105]^(data[110]^data[111])))))));
+     crc32_112[9]=((((((state[2]^state[3])^(state[6]^state[7]))^((state[10]^state[11])^(state[12]^(state[13]^state[17]))))^(((state[18]^state[19])^(state[21]^state[22]))^((state[23]^state[24])^(state[26]^(state[29]^data[2])))))^((((data[3]^data[6])^(data[7]^data[10]))^((data[11]^data[12])^(data[13]^(data[17]^data[18]))))^(((data[19]^data[21])^(data[22]^data[23]))^((data[24]^data[26])^(data[29]^(data[32]^data[37]))))))^(((((data[38]^data[43])^(data[44]^data[45]))^((data[46]^data[49])^(data[50]^(data[51]^data[53]))))^(((data[54]^data[56])^(data[59]^data[63]))^((data[64]^data[66])^(data[67]^(data[68]^data[70])))))^((((data[73]^data[74])^(data[75]^data[76]))^((data[77]^data[80])^(data[82]^(data[84]^data[85]))))^(((data[87]^data[88])^(data[92]^(data[93]^data[95])))^((data[97]^data[99])^(data[100]^(data[102]^data[111])))))));
+     crc32_112[10]=((((((state[1]^state[2])^(state[3]^state[4]))^((state[6]^state[7])^(state[9]^state[12])))^(((state[15]^state[16])^(state[17]^state[19]))^((state[20]^state[22])^(state[23]^state[24]))))^((((state[28]^state[29])^(state[31]^data[1]))^((data[2]^data[3])^(data[4]^data[6])))^(((data[7]^data[9])^(data[12]^data[15]))^((data[16]^data[17])^(data[19]^data[20])))))^(((((data[22]^data[23])^(data[24]^data[28]))^((data[29]^data[31])^(data[38]^data[40])))^(((data[49]^data[50])^(data[55]^data[58]))^((data[59]^data[60])^(data[62]^data[69]))))^((((data[71]^data[74])^(data[76]^data[77]))^((data[80]^data[82])^(data[84]^data[85])))^(((data[87]^data[89])^(data[93]^data[94]))^((data[98]^data[101])^(data[102]^data[106]))))));
+     crc32_112[11]=(((((state[2]^(state[3]^state[4]))^((state[5]^state[7])^(state[8]^state[10])))^(((state[13]^state[16])^(state[17]^state[18]))^((state[20]^state[21])^(state[23]^state[24]))))^((((state[25]^state[29])^(state[30]^data[2]))^((data[3]^data[4])^(data[5]^data[7])))^(((data[8]^data[10])^(data[13]^data[16]))^((data[17]^data[18])^(data[20]^data[21])))))^(((((data[23]^data[24])^(data[25]^data[29]))^((data[30]^data[32])^(data[39]^data[41])))^(((data[50]^data[51])^(data[56]^data[59]))^((data[60]^data[61])^(data[63]^data[70]))))^((((data[72]^data[75])^(data[77]^data[78]))^((data[81]^data[83])^(data[85]^data[86])))^(((data[88]^data[90])^(data[94]^data[95]))^((data[99]^data[102])^(data[103]^data[107]))))));
+     crc32_112[12]=(((((state[3]^(state[4]^state[5]))^((state[6]^state[8])^(state[9]^state[11])))^(((state[14]^state[17])^(state[18]^state[19]))^((state[21]^state[22])^(state[24]^state[25]))))^((((state[26]^state[30])^(state[31]^data[3]))^((data[4]^data[5])^(data[6]^data[8])))^(((data[9]^data[11])^(data[14]^data[17]))^((data[18]^data[19])^(data[21]^data[22])))))^(((((data[24]^data[25])^(data[26]^data[30]))^((data[31]^data[33])^(data[40]^data[42])))^(((data[51]^data[52])^(data[57]^data[60]))^((data[61]^data[62])^(data[64]^data[71]))))^((((data[73]^data[76])^(data[78]^data[79]))^((data[82]^data[84])^(data[86]^data[87])))^(((data[89]^data[91])^(data[95]^data[96]))^((data[100]^data[103])^(data[104]^data[108]))))));
+     crc32_112[13]=((((((state[0]^state[4])^(state[5]^state[6]))^((state[7]^state[9])^(state[10]^state[12])))^(((state[15]^state[18])^(state[19]^state[20]))^((state[22]^state[23])^(state[25]^state[26]))))^((((state[27]^state[31])^(data[0]^data[4]))^((data[5]^data[6])^(data[7]^data[9])))^(((data[10]^data[12])^(data[15]^data[18]))^((data[19]^data[20])^(data[22]^data[23])))))^(((((data[25]^data[26])^(data[27]^data[31]))^((data[32]^data[34])^(data[41]^data[43])))^(((data[52]^data[53])^(data[58]^data[61]))^((data[62]^data[63])^(data[65]^data[72]))))^((((data[74]^data[77])^(data[79]^data[80]))^((data[83]^data[85])^(data[87]^data[88])))^(((data[90]^data[92])^(data[96]^data[97]))^((data[101]^data[104])^(data[105]^data[109]))))));
+     crc32_112[14]=((((((state[0]^state[1])^(state[5]^state[6]))^((state[7]^state[8])^(state[10]^state[11])))^(((state[13]^state[16])^(state[19]^state[20]))^((state[21]^state[23])^(state[24]^state[26]))))^((((state[27]^state[28])^(data[0]^data[1]))^((data[5]^data[6])^(data[7]^data[8])))^(((data[10]^data[11])^(data[13]^data[16]))^((data[19]^data[20])^(data[21]^data[23])))))^(((((data[24]^data[26])^(data[27]^data[28]))^((data[32]^data[33])^(data[35]^data[42])))^(((data[44]^data[53])^(data[54]^data[59]))^((data[62]^data[63])^(data[64]^data[66]))))^((((data[73]^data[75])^(data[78]^data[80]))^((data[81]^data[84])^(data[86]^data[88])))^(((data[89]^data[91])^(data[93]^data[97]))^((data[98]^data[102])^(data[105]^(data[106]^data[110])))))));
+     crc32_112[15]=((((((state[0]^state[1])^(state[2]^state[6]))^((state[7]^state[8])^(state[9]^state[11])))^(((state[12]^state[14])^(state[17]^state[20]))^((state[21]^state[22])^(state[24]^state[25]))))^((((state[27]^state[28])^(state[29]^data[0]))^((data[1]^data[2])^(data[6]^data[7])))^(((data[8]^data[9])^(data[11]^data[12]))^((data[14]^data[17])^(data[20]^(data[21]^data[22]))))))^(((((data[24]^data[25])^(data[27]^data[28]))^((data[29]^data[33])^(data[34]^data[36])))^(((data[43]^data[45])^(data[54]^data[55]))^((data[60]^data[63])^(data[64]^(data[65]^data[67])))))^((((data[74]^data[76])^(data[79]^data[81]))^((data[82]^data[85])^(data[87]^data[89])))^(((data[90]^data[92])^(data[94]^data[98]))^((data[99]^data[103])^(data[106]^(data[107]^data[111])))))));
+     crc32_112[16]=((((((state[0]^state[3])^(state[6]^state[7]))^((state[10]^state[11])^(state[12]^state[14])))^(((state[16]^state[17])^(state[21]^state[22]))^((state[23]^state[26])^(state[27]^(state[31]^data[0])))))^((((data[3]^data[6])^(data[7]^data[10]))^((data[11]^data[12])^(data[14]^(data[16]^data[17]))))^(((data[21]^data[22])^(data[23]^data[26]))^((data[27]^data[31])^(data[33]^(data[34]^data[35]))))))^(((((data[37]^data[39])^(data[40]^data[45]))^((data[47]^data[49])^(data[51]^data[52])))^(((data[54]^data[55])^(data[56]^data[57]))^((data[58]^data[59])^(data[61]^(data[62]^data[66])))))^((((data[67]^data[77])^(data[78]^data[81]))^((data[84]^data[87])^(data[90]^(data[91]^data[93]))))^(((data[95]^data[96])^(data[99]^data[102]))^((data[103]^data[104])^(data[106]^(data[107]^data[108])))))));
+     crc32_112[17]=((((((state[0]^state[1])^(state[4]^state[7]))^((state[8]^state[11])^(state[12]^state[13])))^(((state[15]^state[17])^(state[18]^state[22]))^((state[23]^state[24])^(state[27]^(state[28]^data[0])))))^((((data[1]^data[4])^(data[7]^data[8]))^((data[11]^data[12])^(data[13]^(data[15]^data[17]))))^(((data[18]^data[22])^(data[23]^data[24]))^((data[27]^data[28])^(data[32]^(data[34]^data[35]))))))^(((((data[36]^data[38])^(data[40]^data[41]))^((data[46]^data[48])^(data[50]^(data[52]^data[53]))))^(((data[55]^data[56])^(data[57]^data[58]))^((data[59]^data[60])^(data[62]^(data[63]^data[67])))))^((((data[68]^data[78])^(data[79]^data[82]))^((data[85]^data[88])^(data[91]^(data[92]^data[94]))))^(((data[96]^data[97])^(data[100]^data[103]))^((data[104]^data[105])^(data[107]^(data[108]^data[109])))))));
+     crc32_112[18]=((((((state[0]^state[1])^(state[2]^state[5]))^((state[8]^state[9])^(state[12]^(state[13]^state[14]))))^(((state[16]^state[18])^(state[19]^state[23]))^((state[24]^state[25])^(state[28]^(state[29]^data[0])))))^((((data[1]^data[2])^(data[5]^data[8]))^((data[9]^data[12])^(data[13]^(data[14]^data[16]))))^(((data[18]^data[19])^(data[23]^data[24]))^((data[25]^data[28])^(data[29]^(data[33]^data[35]))))))^(((((data[36]^data[37])^(data[39]^data[41]))^((data[42]^data[47])^(data[49]^(data[51]^data[53]))))^(((data[54]^data[56])^(data[57]^data[58]))^((data[59]^data[60])^(data[61]^(data[63]^data[64])))))^((((data[68]^data[69])^(data[79]^data[80]))^((data[83]^data[86])^(data[89]^(data[92]^data[93]))))^(((data[95]^data[97])^(data[98]^(data[101]^data[104])))^((data[105]^data[106])^(data[108]^(data[109]^data[110])))))));
+     crc32_112[19]=((((((state[0]^state[1])^(state[2]^state[3]))^((state[6]^state[9])^(state[10]^(state[13]^state[14]))))^(((state[15]^state[17])^(state[19]^state[20]))^((state[24]^state[25])^(state[26]^(state[29]^state[30])))))^((((data[0]^data[1])^(data[2]^data[3]))^((data[6]^data[9])^(data[10]^(data[13]^data[14]))))^(((data[15]^data[17])^(data[19]^(data[20]^data[24])))^((data[25]^data[26])^(data[29]^(data[30]^data[34]))))))^(((((data[36]^data[37])^(data[38]^data[40]))^((data[42]^data[43])^(data[48]^(data[50]^data[52]))))^(((data[54]^data[55])^(data[57]^(data[58]^data[59])))^((data[60]^data[61])^(data[62]^(data[64]^data[65])))))^((((data[69]^data[70])^(data[80]^data[81]))^((data[84]^data[87])^(data[90]^(data[93]^data[94]))))^(((data[96]^data[98])^(data[99]^(data[102]^data[105])))^((data[106]^data[107])^(data[109]^(data[110]^data[111])))))));
+     crc32_112[20]=((((((state[3]^state[4])^(state[6]^state[7]))^((state[8]^state[9])^(state[10]^(state[13]^state[17]))))^(((state[20]^state[21])^(state[26]^state[28]))^((state[29]^data[3])^(data[4]^(data[6]^data[7])))))^((((data[8]^data[9])^(data[10]^data[13]))^((data[17]^data[20])^(data[21]^(data[26]^data[28]))))^(((data[29]^data[33])^(data[35]^data[37]))^((data[38]^data[40])^(data[41]^(data[43]^data[45]))))))^(((((data[46]^data[47])^(data[52]^data[53]))^((data[54]^data[55])^(data[56]^(data[57]^data[60]))))^(((data[61]^data[63])^(data[64]^data[66]))^((data[67]^data[68])^(data[70]^(data[71]^data[75])))))^((((data[78]^data[80])^(data[83]^data[84]))^((data[85]^data[86])^(data[87]^(data[91]^data[94]))))^(((data[95]^data[96])^(data[97]^data[99]))^((data[102]^data[107])^(data[108]^(data[110]^data[111])))))));
+     crc32_112[21]=((((((state[1]^state[2])^(state[4]^state[5]))^((state[6]^state[7])^(state[10]^state[13])))^(((state[15]^state[16])^(state[17]^state[21]))^((state[22]^state[25])^(state[28]^(state[31]^data[1])))))^((((data[2]^data[4])^(data[5]^data[6]))^((data[7]^data[10])^(data[13]^data[15])))^(((data[16]^data[17])^(data[21]^data[22]))^((data[25]^data[28])^(data[31]^(data[33]^data[34]))))))^(((((data[36]^data[38])^(data[40]^data[41]))^((data[42]^data[45])^(data[48]^data[49])))^(((data[51]^data[52])^(data[53]^data[55]))^((data[56]^data[59])^(data[61]^(data[69]^data[71])))))^((((data[72]^data[75])^(data[76]^data[78]))^((data[79]^data[80])^(data[82]^(data[83]^data[85]))))^(((data[92]^data[95])^(data[97]^data[98]))^((data[102]^data[106])^(data[108]^(data[109]^data[111])))))));
+     crc32_112[22]=((((((state[1]^state[3])^(state[5]^state[7]))^((state[9]^state[13])^(state[15]^(state[22]^state[23]))))^(((state[25]^state[26])^(state[27]^state[28]))^((state[30]^state[31])^(data[1]^(data[3]^data[5])))))^((((data[7]^data[9])^(data[13]^data[15]))^((data[22]^data[23])^(data[25]^(data[26]^data[27]))))^(((data[28]^data[30])^(data[31]^data[32]))^((data[33]^data[34])^(data[35]^(data[37]^data[40]))))))^(((((data[41]^data[42])^(data[43]^data[44]))^((data[45]^data[47])^(data[50]^(data[51]^data[53]))))^(((data[56]^data[58])^(data[59]^data[60]))^((data[64]^data[65])^(data[67]^(data[68]^data[70])))))^((((data[72]^data[73])^(data[75]^data[76]))^((data[77]^data[78])^(data[79]^(data[82]^data[87]))))^(((data[88]^data[93])^(data[98]^(data[99]^data[100])))^((data[102]^data[106])^(data[107]^(data[109]^data[110])))))));
+     crc32_112[23]=((((((state[2]^state[4])^(state[6]^state[8]))^((state[10]^state[14])^(state[16]^(state[23]^state[24]))))^(((state[26]^state[27])^(state[28]^state[29]))^((state[31]^data[2])^(data[4]^(data[6]^data[8])))))^((((data[10]^data[14])^(data[16]^data[23]))^((data[24]^data[26])^(data[27]^(data[28]^data[29]))))^(((data[31]^data[32])^(data[33]^data[34]))^((data[35]^data[36])^(data[38]^(data[41]^data[42]))))))^(((((data[43]^data[44])^(data[45]^data[46]))^((data[48]^data[51])^(data[52]^(data[54]^data[57]))))^(((data[59]^data[60])^(data[61]^data[65]))^((data[66]^data[68])^(data[69]^(data[71]^data[73])))))^((((data[74]^data[76])^(data[77]^data[78]))^((data[79]^data[80])^(data[83]^(data[88]^data[89]))))^(((data[94]^data[99])^(data[100]^data[101]))^((data[103]^data[107])^(data[108]^(data[110]^data[111])))))));
+     crc32_112[24]=((((((state[0]^state[1])^(state[2]^state[3]))^((state[5]^state[6])^(state[7]^state[8])))^(((state[13]^state[14])^(state[16]^state[18]))^((state[24]^state[31])^(data[0]^(data[1]^data[2])))))^((((data[3]^data[5])^(data[6]^data[7]))^((data[8]^data[13])^(data[14]^(data[16]^data[18]))))^(((data[24]^data[31])^(data[32]^data[34]))^((data[35]^data[36])^(data[37]^(data[40]^data[42]))))))^(((((data[43]^data[51])^(data[53]^data[54]))^((data[55]^data[57])^(data[59]^data[60])))^(((data[61]^data[64])^(data[65]^data[66]))^((data[68]^data[69])^(data[70]^(data[72]^data[74])))))^((((data[77]^data[79])^(data[82]^data[83]))^((data[86]^data[87])^(data[88]^(data[89]^data[90]))))^(((data[95]^data[96])^(data[101]^data[103]))^((data[104]^data[106])^(data[108]^(data[109]^data[111])))))));
+     crc32_112[25]=((((((state[3]^state[4])^(state[7]^state[11]))^((state[13]^state[16])^(state[18]^state[19])))^(((state[27]^state[28])^(state[29]^state[30]))^((state[31]^data[3])^(data[4]^(data[7]^data[11])))))^((((data[13]^data[16])^(data[18]^data[19]))^((data[27]^data[28])^(data[29]^data[30])))^(((data[31]^data[32])^(data[35]^data[36]))^((data[37]^data[38])^(data[39]^(data[40]^data[41]))))))^(((((data[43]^data[45])^(data[46]^data[47]))^((data[49]^data[51])^(data[55]^data[56])))^(((data[57]^data[59])^(data[60]^data[61]))^((data[64]^data[66])^(data[68]^(data[69]^data[70])))))^((((data[71]^data[73])^(data[81]^data[82]))^((data[86]^data[89])^(data[90]^data[91])))^(((data[97]^data[100])^(data[103]^data[104]))^((data[105]^data[106])^(data[107]^(data[109]^data[110])))))));
+     crc32_112[26]=((((((state[0]^state[4])^(state[5]^state[8]))^((state[12]^state[14])^(state[17]^state[19])))^(((state[20]^state[28])^(state[29]^state[30]))^((state[31]^data[0])^(data[4]^(data[5]^data[8])))))^((((data[12]^data[14])^(data[17]^data[19]))^((data[20]^data[28])^(data[29]^data[30])))^(((data[31]^data[32])^(data[33]^data[36]))^((data[37]^data[38])^(data[39]^(data[40]^data[41]))))))^(((((data[42]^data[44])^(data[46]^data[47]))^((data[48]^data[50])^(data[52]^data[56])))^(((data[57]^data[58])^(data[60]^data[61]))^((data[62]^data[65])^(data[67]^(data[69]^data[70])))))^((((data[71]^data[72])^(data[74]^data[82]))^((data[83]^data[87])^(data[90]^(data[91]^data[92]))))^(((data[98]^data[101])^(data[104]^data[105]))^((data[106]^data[107])^(data[108]^(data[110]^data[111])))))));
+     crc32_112[27]=((((((state[0]^state[2])^(state[5]^state[8]))^((state[11]^state[14])^(state[16]^state[17])))^(((state[20]^state[21])^(state[25]^state[27]))^((state[28]^data[0])^(data[2]^data[5]))))^((((data[8]^data[11])^(data[14]^data[16]))^((data[17]^data[20])^(data[21]^data[25])))^(((data[27]^data[28])^(data[32]^data[34]))^((data[37]^data[38])^(data[41]^(data[42]^data[43]))))))^(((((data[44]^data[46])^(data[48]^data[52]))^((data[53]^data[54])^(data[61]^data[63])))^(((data[64]^data[65])^(data[66]^data[67]))^((data[70]^data[71])^(data[72]^(data[73]^data[78])))))^((((data[80]^data[81])^(data[82]^data[86]))^((data[87]^data[91])^(data[92]^data[93])))^(((data[96]^data[99])^(data[100]^data[103]))^((data[105]^data[107])^(data[108]^(data[109]^data[111])))))));
+     crc32_112[28]=((((((state[0]^state[2])^(state[3]^state[8]))^((state[11]^state[12])^(state[13]^state[14])))^(((state[16]^state[21])^(state[22]^state[25]))^((state[26]^state[27])^(state[30]^(state[31]^data[0])))))^((((data[2]^data[3])^(data[8]^data[11]))^((data[12]^data[13])^(data[14]^data[16])))^(((data[21]^data[22])^(data[25]^data[26]))^((data[27]^data[30])^(data[31]^(data[35]^data[38]))))))^(((((data[40]^data[42])^(data[43]^data[46]))^((data[51]^data[52])^(data[53]^data[55])))^(((data[57]^data[58])^(data[59]^data[66]))^((data[71]^data[72])^(data[73]^(data[74]^data[75])))))^((((data[78]^data[79])^(data[80]^data[84]))^((data[86]^data[92])^(data[93]^data[94])))^(((data[96]^data[97])^(data[101]^data[102]))^((data[103]^data[104])^(data[108]^(data[109]^data[110])))))));
+     crc32_112[29]=((((((state[1]^state[3])^(state[4]^state[9]))^((state[12]^state[13])^(state[14]^state[15])))^(((state[17]^state[22])^(state[23]^state[26]))^((state[27]^state[28])^(state[31]^data[1]))))^((((data[3]^data[4])^(data[9]^data[12]))^((data[13]^data[14])^(data[15]^data[17])))^(((data[22]^data[23])^(data[26]^data[27]))^((data[28]^data[31])^(data[32]^(data[36]^data[39]))))))^(((((data[41]^data[43])^(data[44]^data[47]))^((data[52]^data[53])^(data[54]^data[56])))^(((data[58]^data[59])^(data[60]^data[67]))^((data[72]^data[73])^(data[74]^(data[75]^data[76])))))^((((data[79]^data[80])^(data[81]^data[85]))^((data[87]^data[93])^(data[94]^data[95])))^(((data[97]^data[98])^(data[102]^data[103]))^((data[104]^data[105])^(data[109]^(data[110]^data[111])))))));
+     crc32_112[30]=((((((state[1]^state[4])^(state[5]^state[6]))^((state[8]^state[9])^(state[10]^state[11])))^(((state[17]^state[23])^(state[24]^state[25]))^((state[30]^state[31])^(data[1]^data[4]))))^((((data[5]^data[6])^(data[8]^data[9]))^((data[10]^data[11])^(data[17]^data[23])))^(((data[24]^data[25])^(data[30]^data[31]))^((data[32]^data[37])^(data[39]^data[42])))))^(((((data[46]^data[47])^(data[48]^data[49]))^((data[51]^data[52])^(data[53]^data[55])))^(((data[58]^data[60])^(data[61]^data[62]))^((data[64]^data[65])^(data[67]^data[73]))))^((((data[74]^data[76])^(data[77]^data[78]))^((data[83]^data[84])^(data[87]^data[94])))^(((data[95]^data[98])^(data[99]^data[100]))^((data[102]^data[104])^(data[105]^(data[110]^data[111])))))));
+     crc32_112[31]=((((((state[0]^state[1])^(state[5]^state[7]))^((state[8]^state[10])^(state[12]^state[13])))^(((state[14]^state[15])^(state[16]^state[17]))^((state[24]^state[26])^(state[27]^(state[28]^state[29])))))^((((state[30]^data[0])^(data[1]^data[5]))^((data[7]^data[8])^(data[10]^(data[12]^data[13]))))^(((data[14]^data[15])^(data[16]^data[17]))^((data[24]^data[26])^(data[27]^(data[28]^data[29]))))))^(((((data[30]^data[32])^(data[38]^data[39]))^((data[43]^data[44])^(data[45]^(data[46]^data[48]))))^(((data[50]^data[51])^(data[53]^data[56]))^((data[57]^data[58])^(data[61]^(data[63]^data[64])))))^((((data[66]^data[67])^(data[74]^data[77]))^((data[79]^data[80])^(data[81]^(data[82]^data[83]))))^(((data[85]^data[86])^(data[87]^data[95]))^((data[99]^data[101])^(data[102]^(data[105]^data[111])))))));
+   end
+ endfunction
+ function automatic [31:0] crc32_128;
+   input [31:0] state;
+   input [127:0] data;
+   begin
+     crc32_128[0]=((((((state[0]^state[1])^(state[2]^(state[3]^state[5])))^((state[9]^state[10])^(state[11]^(state[12]^state[14]))))^(((state[15]^state[17])^(state[18]^(state[22]^state[24])))^((state[25]^state[27])^(state[29]^(state[30]^state[31])))))^((((data[0]^data[1])^(data[2]^(data[3]^data[5])))^((data[9]^data[10])^(data[11]^(data[12]^data[14]))))^(((data[15]^data[17])^(data[18]^(data[22]^data[24])))^((data[25]^(data[27]^data[29]))^(data[30]^(data[31]^data[32]))))))^(((((data[33]^data[34])^(data[41]^(data[43]^data[44])))^((data[45]^data[46])^(data[47]^(data[49]^data[55]))))^(((data[56]^data[60])^(data[61]^(data[62]^data[63])))^((data[65]^(data[67]^data[68]))^(data[70]^(data[73]^data[74])))))^((((data[75]^data[78])^(data[80]^(data[81]^data[83])))^((data[84]^data[91])^(data[94]^(data[96]^data[97]))))^(((data[98]^data[99])^(data[100]^(data[102]^data[103])))^((data[104]^(data[112]^data[116]))^(data[118]^(data[119]^data[122])))))));
+     crc32_128[1]=((((((state[1]^state[2])^(state[3]^(state[4]^state[6])))^((state[10]^state[11])^(state[12]^(state[13]^state[15]))))^(((state[16]^state[18])^(state[19]^(state[23]^state[25])))^((state[26]^state[28])^(state[30]^(state[31]^data[1])))))^((((data[2]^data[3])^(data[4]^(data[6]^data[10])))^((data[11]^data[12])^(data[13]^(data[15]^data[16]))))^(((data[18]^data[19])^(data[23]^(data[25]^data[26])))^((data[28]^(data[30]^data[31]))^(data[32]^(data[33]^data[34]))))))^(((((data[35]^data[42])^(data[44]^(data[45]^data[46])))^((data[47]^data[48])^(data[50]^(data[56]^data[57]))))^(((data[61]^data[62])^(data[63]^(data[64]^data[66])))^((data[68]^data[69])^(data[71]^(data[74]^data[75])))))^((((data[76]^data[79])^(data[81]^(data[82]^data[84])))^((data[85]^data[92])^(data[95]^(data[97]^data[98]))))^(((data[99]^data[100])^(data[101]^(data[103]^data[104])))^((data[105]^(data[113]^data[117]))^(data[119]^(data[120]^data[123])))))));
+     crc32_128[2]=((((((state[2]^state[3])^(state[4]^(state[5]^state[7])))^((state[11]^state[12])^(state[13]^(state[14]^state[16]))))^(((state[17]^state[19])^(state[20]^(state[24]^state[26])))^((state[27]^state[29])^(state[31]^(data[2]^data[3])))))^((((data[4]^data[5])^(data[7]^(data[11]^data[12])))^((data[13]^data[14])^(data[16]^(data[17]^data[19]))))^(((data[20]^data[24])^(data[26]^(data[27]^data[29])))^((data[31]^data[32])^(data[33]^(data[34]^data[35]))))))^(((((data[36]^data[43])^(data[45]^(data[46]^data[47])))^((data[48]^data[49])^(data[51]^(data[57]^data[58]))))^(((data[62]^data[63])^(data[64]^(data[65]^data[67])))^((data[69]^data[70])^(data[72]^(data[75]^data[76])))))^((((data[77]^data[80])^(data[82]^(data[83]^data[85])))^((data[86]^data[93])^(data[96]^(data[98]^data[99]))))^(((data[100]^data[101])^(data[102]^(data[104]^data[105])))^((data[106]^(data[114]^data[118]))^(data[120]^(data[121]^data[124])))))));
+     crc32_128[3]=((((((state[3]^state[4])^(state[5]^(state[6]^state[8])))^((state[12]^state[13])^(state[14]^(state[15]^state[17]))))^(((state[18]^state[20])^(state[21]^(state[25]^state[27])))^((state[28]^state[30])^(data[3]^(data[4]^data[5])))))^((((data[6]^data[8])^(data[12]^(data[13]^data[14])))^((data[15]^data[17])^(data[18]^(data[20]^data[21]))))^(((data[25]^data[27])^(data[28]^(data[30]^data[32])))^((data[33]^data[34])^(data[35]^(data[36]^data[37]))))))^(((((data[44]^data[46])^(data[47]^(data[48]^data[49])))^((data[50]^data[52])^(data[58]^(data[59]^data[63]))))^(((data[64]^data[65])^(data[66]^(data[68]^data[70])))^((data[71]^data[73])^(data[76]^(data[77]^data[78])))))^((((data[81]^data[83])^(data[84]^(data[86]^data[87])))^((data[94]^data[97])^(data[99]^(data[100]^data[101]))))^(((data[102]^data[103])^(data[105]^(data[106]^data[107])))^((data[115]^data[119])^(data[121]^(data[122]^data[125])))))));
+     crc32_128[4]=((((((state[0]^state[4])^(state[5]^(state[6]^state[7])))^((state[9]^state[13])^(state[14]^(state[15]^state[16]))))^(((state[18]^state[19])^(state[21]^(state[22]^state[26])))^((state[28]^state[29])^(state[31]^(data[0]^data[4])))))^((((data[5]^data[6])^(data[7]^(data[9]^data[13])))^((data[14]^data[15])^(data[16]^(data[18]^data[19]))))^(((data[21]^data[22])^(data[26]^(data[28]^data[29])))^((data[31]^(data[33]^data[34]))^(data[35]^(data[36]^data[37]))))))^(((((data[38]^data[45])^(data[47]^(data[48]^data[49])))^((data[50]^data[51])^(data[53]^(data[59]^data[60]))))^(((data[64]^data[65])^(data[66]^(data[67]^data[69])))^((data[71]^data[72])^(data[74]^(data[77]^data[78])))))^((((data[79]^data[82])^(data[84]^(data[85]^data[87])))^((data[88]^data[95])^(data[98]^(data[100]^data[101]))))^(((data[102]^data[103])^(data[104]^(data[106]^data[107])))^((data[108]^(data[116]^data[120]))^(data[122]^(data[123]^data[126])))))));
+     crc32_128[5]=((((((state[1]^state[5])^(state[6]^(state[7]^state[8])))^((state[10]^state[14])^(state[15]^(state[16]^state[17]))))^(((state[19]^state[20])^(state[22]^(state[23]^state[27])))^((state[29]^state[30])^(data[1]^(data[5]^data[6])))))^((((data[7]^data[8])^(data[10]^(data[14]^data[15])))^((data[16]^data[17])^(data[19]^(data[20]^data[22]))))^(((data[23]^data[27])^(data[29]^(data[30]^data[32])))^((data[34]^data[35])^(data[36]^(data[37]^data[38]))))))^(((((data[39]^data[46])^(data[48]^(data[49]^data[50])))^((data[51]^data[52])^(data[54]^(data[60]^data[61]))))^(((data[65]^data[66])^(data[67]^(data[68]^data[70])))^((data[72]^data[73])^(data[75]^(data[78]^data[79])))))^((((data[80]^data[83])^(data[85]^(data[86]^data[88])))^((data[89]^data[96])^(data[99]^(data[101]^data[102]))))^(((data[103]^data[104])^(data[105]^(data[107]^data[108])))^((data[109]^(data[117]^data[121]))^(data[123]^(data[124]^data[127])))))));
+     crc32_128[6]=((((((state[1]^state[3])^(state[5]^(state[6]^state[7])))^((state[8]^state[10])^(state[12]^(state[14]^state[16]))))^(((state[20]^state[21])^(state[22]^(state[23]^state[25])))^((state[27]^(state[28]^state[29]))^(data[1]^(data[3]^data[5])))))^((((data[6]^data[7])^(data[8]^(data[10]^data[12])))^((data[14]^data[16])^(data[20]^(data[21]^data[22]))))^(((data[23]^data[25])^(data[27]^(data[28]^data[29])))^((data[32]^(data[34]^data[35]))^(data[36]^(data[37]^data[38]))))))^(((((data[39]^data[40])^(data[41]^(data[43]^data[44])))^((data[45]^data[46])^(data[50]^(data[51]^data[52]))))^(((data[53]^data[56])^(data[60]^(data[63]^data[65])))^((data[66]^(data[69]^data[70]))^(data[71]^(data[75]^data[76])))))^((((data[78]^data[79])^(data[83]^(data[86]^data[87])))^((data[89]^(data[90]^data[91]))^(data[94]^(data[96]^data[98]))))^(((data[99]^data[105])^(data[106]^(data[108]^data[109])))^((data[110]^(data[112]^data[116]))^(data[119]^(data[124]^data[125])))))));
+     crc32_128[7]=((((((state[0]^state[2])^(state[4]^(state[6]^state[7])))^((state[8]^state[9])^(state[11]^(state[13]^state[15]))))^(((state[17]^state[21])^(state[22]^(state[23]^state[24])))^((state[26]^(state[28]^state[29]))^(state[30]^(data[0]^data[2])))))^((((data[4]^data[6])^(data[7]^(data[8]^data[9])))^((data[11]^(data[13]^data[15]))^(data[17]^(data[21]^data[22]))))^(((data[23]^data[24])^(data[26]^(data[28]^data[29])))^((data[30]^(data[33]^data[35]))^(data[36]^(data[37]^data[38]))))))^(((((data[39]^data[40])^(data[41]^(data[42]^data[44])))^((data[45]^(data[46]^data[47]))^(data[51]^(data[52]^data[53]))))^(((data[54]^data[57])^(data[61]^(data[64]^data[66])))^((data[67]^(data[70]^data[71]))^(data[72]^(data[76]^data[77])))))^((((data[79]^data[80])^(data[84]^(data[87]^data[88])))^((data[90]^(data[91]^data[92]))^(data[95]^(data[97]^data[99]))))^(((data[100]^data[106])^(data[107]^(data[109]^data[110])))^((data[111]^(data[113]^data[117]))^(data[120]^(data[125]^data[126])))))));
+     crc32_128[8]=((((((state[0]^state[1])^(state[3]^(state[5]^state[7])))^((state[8]^(state[9]^state[10]))^(state[12]^(state[14]^state[16]))))^(((state[18]^state[22])^(state[23]^(state[24]^state[25])))^((state[27]^(state[29]^state[30]))^(state[31]^(data[0]^data[1])))))^((((data[3]^data[5])^(data[7]^(data[8]^data[9])))^((data[10]^(data[12]^data[14]))^(data[16]^(data[18]^data[22]))))^(((data[23]^data[24])^(data[25]^(data[27]^data[29])))^((data[30]^(data[31]^data[34]))^(data[36]^(data[37]^data[38]))))))^(((((data[39]^data[40])^(data[41]^(data[42]^data[43])))^((data[45]^(data[46]^data[47]))^(data[48]^(data[52]^data[53]))))^(((data[54]^data[55])^(data[58]^(data[62]^data[65])))^((data[67]^(data[68]^data[71]))^(data[72]^(data[73]^data[77])))))^((((data[78]^data[80])^(data[81]^(data[85]^data[88])))^((data[89]^(data[91]^data[92]))^(data[93]^(data[96]^data[98]))))^(((data[100]^(data[101]^data[107]))^(data[108]^(data[110]^data[111])))^((data[112]^(data[114]^data[118]))^(data[121]^(data[126]^data[127])))))));
+     crc32_128[9]=((((((state[3]^state[4])^(state[5]^(state[6]^state[8])))^((state[12]^state[13])^(state[14]^(state[18]^state[19]))))^(((state[22]^state[23])^(state[26]^(state[27]^state[28])))^((state[29]^data[3])^(data[4]^(data[5]^data[6])))))^((((data[8]^data[12])^(data[13]^(data[14]^data[18])))^((data[19]^data[22])^(data[23]^(data[26]^data[27]))))^(((data[28]^data[29])^(data[33]^(data[34]^data[35])))^((data[37]^data[38])^(data[39]^(data[40]^data[42]))))))^(((((data[45]^data[48])^(data[53]^(data[54]^data[59])))^((data[60]^data[61])^(data[62]^(data[65]^data[66]))))^(((data[67]^data[69])^(data[70]^(data[72]^data[75])))^((data[79]^data[80])^(data[82]^(data[83]^data[84])))))^((((data[86]^data[89])^(data[90]^(data[91]^data[92])))^((data[93]^data[96])^(data[98]^(data[100]^data[101]))))^(((data[103]^data[104])^(data[108]^(data[109]^data[111])))^((data[113]^data[115])^(data[116]^(data[118]^data[127])))))));
+     crc32_128[10]=((((((state[1]^state[2])^(state[3]^state[4]))^((state[6]^state[7])^(state[10]^(state[11]^state[12]))))^(((state[13]^state[17])^(state[18]^state[19]))^((state[20]^state[22])^(state[23]^(state[25]^state[28])))))^((((state[31]^data[1])^(data[2]^data[3]))^((data[4]^data[6])^(data[7]^(data[10]^data[11]))))^(((data[12]^data[13])^(data[17]^(data[18]^data[19])))^((data[20]^data[22])^(data[23]^(data[25]^data[28]))))))^(((((data[31]^data[32])^(data[33]^data[35]))^((data[36]^data[38])^(data[39]^(data[40]^data[44]))))^(((data[45]^data[47])^(data[54]^data[56]))^((data[65]^data[66])^(data[71]^(data[74]^data[75])))))^((((data[76]^data[78])^(data[85]^data[87]))^((data[90]^data[92])^(data[93]^(data[96]^data[98]))))^(((data[100]^data[101])^(data[103]^(data[105]^data[109])))^((data[110]^data[114])^(data[117]^(data[118]^data[122])))))));
+     crc32_128[11]=((((((state[2]^state[3])^(state[4]^state[5]))^((state[7]^state[8])^(state[11]^(state[12]^state[13]))))^(((state[14]^state[18])^(state[19]^state[20]))^((state[21]^state[23])^(state[24]^(state[26]^state[29])))))^((((data[2]^data[3])^(data[4]^data[5]))^((data[7]^data[8])^(data[11]^(data[12]^data[13]))))^(((data[14]^data[18])^(data[19]^data[20]))^((data[21]^data[23])^(data[24]^(data[26]^data[29]))))))^(((((data[32]^data[33])^(data[34]^data[36]))^((data[37]^data[39])^(data[40]^(data[41]^data[45]))))^(((data[46]^data[48])^(data[55]^data[57]))^((data[66]^data[67])^(data[72]^(data[75]^data[76])))))^((((data[77]^data[79])^(data[86]^data[88]))^((data[91]^data[93])^(data[94]^(data[97]^data[99]))))^(((data[101]^data[102])^(data[104]^(data[106]^data[110])))^((data[111]^data[115])^(data[118]^(data[119]^data[123])))))));
+     crc32_128[12]=((((((state[0]^state[3])^(state[4]^state[5]))^((state[6]^state[8])^(state[9]^(state[12]^state[13]))))^(((state[14]^state[15])^(state[19]^state[20]))^((state[21]^state[22])^(state[24]^(state[25]^state[27])))))^((((state[30]^data[0])^(data[3]^data[4]))^((data[5]^data[6])^(data[8]^(data[9]^data[12]))))^(((data[13]^data[14])^(data[15]^(data[19]^data[20])))^((data[21]^data[22])^(data[24]^(data[25]^data[27]))))))^(((((data[30]^data[33])^(data[34]^data[35]))^((data[37]^data[38])^(data[40]^(data[41]^data[42]))))^(((data[46]^data[47])^(data[49]^(data[56]^data[58])))^((data[67]^data[68])^(data[73]^(data[76]^data[77])))))^((((data[78]^data[80])^(data[87]^data[89]))^((data[92]^data[94])^(data[95]^(data[98]^data[100]))))^(((data[102]^data[103])^(data[105]^(data[107]^data[111])))^((data[112]^data[116])^(data[119]^(data[120]^data[124])))))));
+     crc32_128[13]=((((((state[1]^state[4])^(state[5]^state[6]))^((state[7]^state[9])^(state[10]^(state[13]^state[14]))))^(((state[15]^state[16])^(state[20]^state[21]))^((state[22]^state[23])^(state[25]^(state[26]^state[28])))))^((((state[31]^data[1])^(data[4]^data[5]))^((data[6]^data[7])^(data[9]^(data[10]^data[13]))))^(((data[14]^data[15])^(data[16]^(data[20]^data[21])))^((data[22]^data[23])^(data[25]^(data[26]^data[28]))))))^(((((data[31]^data[34])^(data[35]^data[36]))^((data[38]^data[39])^(data[41]^(data[42]^data[43]))))^(((data[47]^data[48])^(data[50]^(data[57]^data[59])))^((data[68]^data[69])^(data[74]^(data[77]^data[78])))))^((((data[79]^data[81])^(data[88]^data[90]))^((data[93]^data[95])^(data[96]^(data[99]^data[101]))))^(((data[103]^data[104])^(data[106]^(data[108]^data[112])))^((data[113]^data[117])^(data[120]^(data[121]^data[125])))))));
+     crc32_128[14]=((((((state[2]^state[5])^(state[6]^state[7]))^((state[8]^state[10])^(state[11]^(state[14]^state[15]))))^(((state[16]^state[17])^(state[21]^state[22]))^((state[23]^state[24])^(state[26]^(state[27]^state[29])))))^((((data[2]^data[5])^(data[6]^data[7]))^((data[8]^data[10])^(data[11]^(data[14]^data[15]))))^(((data[16]^data[17])^(data[21]^(data[22]^data[23])))^((data[24]^data[26])^(data[27]^(data[29]^data[32]))))))^(((((data[35]^data[36])^(data[37]^data[39]))^((data[40]^data[42])^(data[43]^(data[44]^data[48]))))^(((data[49]^data[51])^(data[58]^data[60]))^((data[69]^data[70])^(data[75]^(data[78]^data[79])))))^((((data[80]^data[82])^(data[89]^data[91]))^((data[94]^data[96])^(data[97]^(data[100]^data[102]))))^(((data[104]^data[105])^(data[107]^(data[109]^data[113])))^((data[114]^data[118])^(data[121]^(data[122]^data[126])))))));
+     crc32_128[15]=((((((state[0]^state[3])^(state[6]^state[7]))^((state[8]^state[9])^(state[11]^(state[12]^state[15]))))^(((state[16]^state[17])^(state[18]^(state[22]^state[23])))^((state[24]^state[25])^(state[27]^(state[28]^state[30])))))^((((data[0]^data[3])^(data[6]^data[7]))^((data[8]^data[9])^(data[11]^(data[12]^data[15]))))^(((data[16]^data[17])^(data[18]^(data[22]^data[23])))^((data[24]^data[25])^(data[27]^(data[28]^data[30]))))))^(((((data[33]^data[36])^(data[37]^data[38]))^((data[40]^data[41])^(data[43]^(data[44]^data[45]))))^(((data[49]^data[50])^(data[52]^(data[59]^data[61])))^((data[70]^data[71])^(data[76]^(data[79]^data[80])))))^((((data[81]^data[83])^(data[90]^data[92]))^((data[95]^data[97])^(data[98]^(data[101]^data[103]))))^(((data[105]^data[106])^(data[108]^(data[110]^data[114])))^((data[115]^data[119])^(data[122]^(data[123]^data[127])))))));
+     crc32_128[16]=((((((state[2]^state[3])^(state[4]^(state[5]^state[7])))^((state[8]^state[11])^(state[13]^(state[14]^state[15]))))^(((state[16]^state[19])^(state[22]^(state[23]^state[26])))^((state[27]^state[28])^(state[30]^(data[2]^data[3])))))^((((data[4]^data[5])^(data[7]^(data[8]^data[11])))^((data[13]^data[14])^(data[15]^(data[16]^data[19]))))^(((data[22]^data[23])^(data[26]^(data[27]^data[28])))^((data[30]^(data[32]^data[33]))^(data[37]^(data[38]^data[39]))))))^(((((data[42]^data[43])^(data[47]^(data[49]^data[50])))^((data[51]^data[53])^(data[55]^(data[56]^data[61]))))^(((data[63]^data[65])^(data[67]^(data[68]^data[70])))^((data[71]^data[72])^(data[73]^(data[74]^data[75])))))^((((data[77]^data[78])^(data[82]^(data[83]^data[93])))^((data[94]^data[97])^(data[100]^(data[103]^data[106]))))^(((data[107]^data[109])^(data[111]^(data[112]^data[115])))^((data[118]^(data[119]^data[120]))^(data[122]^(data[123]^data[124])))))));
+     crc32_128[17]=((((((state[3]^state[4])^(state[5]^(state[6]^state[8])))^((state[9]^state[12])^(state[14]^(state[15]^state[16]))))^(((state[17]^state[20])^(state[23]^(state[24]^state[27])))^((state[28]^state[29])^(state[31]^(data[3]^data[4])))))^((((data[5]^data[6])^(data[8]^(data[9]^data[12])))^((data[14]^data[15])^(data[16]^(data[17]^data[20]))))^(((data[23]^data[24])^(data[27]^(data[28]^data[29])))^((data[31]^(data[33]^data[34]))^(data[38]^(data[39]^data[40]))))))^(((((data[43]^data[44])^(data[48]^(data[50]^data[51])))^((data[52]^data[54])^(data[56]^(data[57]^data[62]))))^(((data[64]^data[66])^(data[68]^(data[69]^data[71])))^((data[72]^data[73])^(data[74]^(data[75]^data[76])))))^((((data[78]^data[79])^(data[83]^(data[84]^data[94])))^((data[95]^data[98])^(data[101]^(data[104]^data[107]))))^(((data[108]^data[110])^(data[112]^(data[113]^data[116])))^((data[119]^(data[120]^data[121]))^(data[123]^(data[124]^data[125])))))));
+     crc32_128[18]=((((((state[4]^state[5])^(state[6]^(state[7]^state[9])))^((state[10]^state[13])^(state[15]^(state[16]^state[17]))))^(((state[18]^state[21])^(state[24]^(state[25]^state[28])))^((state[29]^state[30])^(data[4]^(data[5]^data[6])))))^((((data[7]^data[9])^(data[10]^(data[13]^data[15])))^((data[16]^data[17])^(data[18]^(data[21]^data[24]))))^(((data[25]^data[28])^(data[29]^(data[30]^data[32])))^((data[34]^data[35])^(data[39]^(data[40]^data[41]))))))^(((((data[44]^data[45])^(data[49]^(data[51]^data[52])))^((data[53]^data[55])^(data[57]^(data[58]^data[63]))))^(((data[65]^data[67])^(data[69]^(data[70]^data[72])))^((data[73]^data[74])^(data[75]^(data[76]^data[77])))))^((((data[79]^data[80])^(data[84]^(data[85]^data[95])))^((data[96]^data[99])^(data[102]^(data[105]^data[108]))))^(((data[109]^data[111])^(data[113]^(data[114]^data[117])))^((data[120]^(data[121]^data[122]))^(data[124]^(data[125]^data[126])))))));
+     crc32_128[19]=((((((state[0]^state[5])^(state[6]^(state[7]^state[8])))^((state[10]^state[11])^(state[14]^(state[16]^state[17]))))^(((state[18]^state[19])^(state[22]^(state[25]^state[26])))^((state[29]^state[30])^(state[31]^(data[0]^data[5])))))^((((data[6]^data[7])^(data[8]^(data[10]^data[11])))^((data[14]^data[16])^(data[17]^(data[18]^data[19]))))^(((data[22]^data[25])^(data[26]^(data[29]^data[30])))^((data[31]^(data[33]^data[35]))^(data[36]^(data[40]^data[41]))))))^(((((data[42]^data[45])^(data[46]^(data[50]^data[52])))^((data[53]^data[54])^(data[56]^(data[58]^data[59]))))^(((data[64]^data[66])^(data[68]^(data[70]^data[71])))^((data[73]^(data[74]^data[75]))^(data[76]^(data[77]^data[78])))))^((((data[80]^data[81])^(data[85]^(data[86]^data[96])))^((data[97]^data[100])^(data[103]^(data[106]^data[109]))))^(((data[110]^data[112])^(data[114]^(data[115]^data[118])))^((data[121]^(data[122]^data[123]))^(data[125]^(data[126]^data[127])))))));
+     crc32_128[20]=((((((state[2]^state[3])^(state[5]^(state[6]^state[7])))^((state[8]^state[10])^(state[14]^(state[19]^state[20]))))^(((state[22]^state[23])^(state[24]^(state[25]^state[26])))^((state[29]^data[2])^(data[3]^(data[5]^data[6])))))^((((data[7]^data[8])^(data[10]^(data[14]^data[19])))^((data[20]^data[22])^(data[23]^(data[24]^data[25]))))^(((data[26]^data[29])^(data[33]^(data[36]^data[37])))^((data[42]^(data[44]^data[45]))^(data[49]^(data[51]^data[53]))))))^(((((data[54]^data[56])^(data[57]^(data[59]^data[61])))^((data[62]^data[63])^(data[68]^(data[69]^data[70]))))^(((data[71]^data[72])^(data[73]^(data[76]^data[77])))^((data[79]^data[80])^(data[82]^(data[83]^data[84])))))^((((data[86]^data[87])^(data[91]^(data[94]^data[96])))^((data[99]^data[100])^(data[101]^(data[102]^data[103]))))^(((data[107]^data[110])^(data[111]^(data[112]^data[113])))^((data[115]^(data[118]^data[123]))^(data[124]^(data[126]^data[127])))))));
+     crc32_128[21]=((((((state[0]^state[1])^(state[2]^(state[4]^state[5])))^((state[6]^state[7])^(state[8]^(state[10]^state[12]))))^(((state[14]^state[17])^(state[18]^(state[20]^state[21])))^((state[22]^(state[23]^state[26]))^(state[29]^(state[31]^data[0])))))^((((data[1]^data[2])^(data[4]^(data[5]^data[6])))^((data[7]^data[8])^(data[10]^(data[12]^data[14]))))^(((data[17]^data[18])^(data[20]^(data[21]^data[22])))^((data[23]^(data[26]^data[29]))^(data[31]^(data[32]^data[33]))))))^(((((data[37]^data[38])^(data[41]^(data[44]^data[47])))^((data[49]^data[50])^(data[52]^(data[54]^data[56]))))^(((data[57]^data[58])^(data[61]^(data[64]^data[65])))^((data[67]^(data[68]^data[69]))^(data[71]^(data[72]^data[75])))))^((((data[77]^data[85])^(data[87]^(data[88]^data[91])))^((data[92]^data[94])^(data[95]^(data[96]^data[98]))))^(((data[99]^data[101])^(data[108]^(data[111]^data[113])))^((data[114]^(data[118]^data[122]))^(data[124]^(data[125]^data[127])))))));
+     crc32_128[22]=((((((state[0]^state[6])^(state[7]^(state[8]^state[10])))^((state[12]^state[13])^(state[14]^(state[17]^state[19]))))^(((state[21]^state[23])^(state[25]^(state[29]^state[31])))^((data[0]^data[6])^(data[7]^(data[8]^data[10])))))^((((data[12]^data[13])^(data[14]^(data[17]^data[19])))^((data[21]^data[23])^(data[25]^(data[29]^data[31]))))^(((data[38]^data[39])^(data[41]^(data[42]^data[43])))^((data[44]^data[46])^(data[47]^(data[48]^data[49]))))))^(((((data[50]^data[51])^(data[53]^(data[56]^data[57])))^((data[58]^data[59])^(data[60]^(data[61]^data[63]))))^(((data[66]^data[67])^(data[69]^(data[72]^data[74])))^((data[75]^data[76])^(data[80]^(data[81]^data[83])))))^((((data[84]^data[86])^(data[88]^(data[89]^data[91])))^((data[92]^data[93])^(data[94]^(data[95]^data[98]))))^(((data[103]^data[104])^(data[109]^(data[114]^data[115])))^((data[116]^(data[118]^data[122]))^(data[123]^(data[125]^data[126])))))));
+     crc32_128[23]=((((((state[1]^state[7])^(state[8]^(state[9]^state[11])))^((state[13]^state[14])^(state[15]^(state[18]^state[20]))))^(((state[22]^state[24])^(state[26]^(state[30]^data[1])))^((data[7]^data[8])^(data[9]^(data[11]^data[13])))))^((((data[14]^data[15])^(data[18]^(data[20]^data[22])))^((data[24]^data[26])^(data[30]^(data[32]^data[39]))))^(((data[40]^data[42])^(data[43]^(data[44]^data[45])))^((data[47]^data[48])^(data[49]^(data[50]^data[51]))))))^(((((data[52]^data[54])^(data[57]^(data[58]^data[59])))^((data[60]^data[61])^(data[62]^(data[64]^data[67]))))^(((data[68]^data[70])^(data[73]^(data[75]^data[76])))^((data[77]^data[81])^(data[82]^(data[84]^data[85])))))^((((data[87]^data[89])^(data[90]^(data[92]^data[93])))^((data[94]^data[95])^(data[96]^(data[99]^data[104]))))^(((data[105]^data[110])^(data[115]^(data[116]^data[117])))^((data[119]^data[123])^(data[124]^(data[126]^data[127])))))));
+     crc32_128[24]=((((((state[1]^state[3])^(state[5]^state[8]))^((state[11]^state[16])^(state[17]^(state[18]^state[19]))))^(((state[21]^state[22])^(state[23]^(state[24]^state[29])))^((state[30]^data[1])^(data[3]^(data[5]^data[8])))))^((((data[11]^data[16])^(data[17]^data[18]))^((data[19]^data[21])^(data[22]^(data[23]^data[24]))))^(((data[29]^data[30])^(data[32]^(data[34]^data[40])))^((data[47]^data[48])^(data[50]^(data[51]^data[52]))))))^(((((data[53]^data[56])^(data[58]^data[59]))^((data[67]^data[69])^(data[70]^(data[71]^data[73]))))^(((data[75]^data[76])^(data[77]^(data[80]^data[81])))^((data[82]^data[84])^(data[85]^(data[86]^data[88])))))^((((data[90]^data[93])^(data[95]^data[98]))^((data[99]^data[102])^(data[103]^(data[104]^data[105]))))^(((data[106]^data[111])^(data[112]^(data[117]^data[119])))^((data[120]^data[122])^(data[124]^(data[125]^data[127])))))));
+     crc32_128[25]=((((((state[0]^state[1])^(state[3]^(state[4]^state[5])))^((state[6]^state[10])^(state[11]^(state[14]^state[15]))))^(((state[19]^state[20])^(state[23]^(state[27]^state[29])))^((data[0]^data[1])^(data[3]^(data[4]^data[5])))))^((((data[6]^data[10])^(data[11]^(data[14]^data[15])))^((data[19]^data[20])^(data[23]^(data[27]^data[29]))))^(((data[32]^data[34])^(data[35]^(data[43]^data[44])))^((data[45]^data[46])^(data[47]^(data[48]^data[51]))))))^(((((data[52]^data[53])^(data[54]^(data[55]^data[56])))^((data[57]^data[59])^(data[61]^(data[62]^data[63]))))^(((data[65]^data[67])^(data[71]^(data[72]^data[73])))^((data[75]^data[76])^(data[77]^(data[80]^data[82])))))^((((data[84]^data[85])^(data[86]^(data[87]^data[89])))^((data[97]^data[98])^(data[102]^(data[105]^data[106]))))^(((data[107]^data[113])^(data[116]^(data[119]^data[120])))^((data[121]^data[122])^(data[123]^(data[125]^data[126])))))));
+     crc32_128[26]=((((((state[0]^state[1])^(state[2]^(state[4]^state[5])))^((state[6]^state[7])^(state[11]^(state[12]^state[15]))))^(((state[16]^state[20])^(state[21]^(state[24]^state[28])))^((state[30]^data[0])^(data[1]^(data[2]^data[4])))))^((((data[5]^data[6])^(data[7]^(data[11]^data[12])))^((data[15]^data[16])^(data[20]^(data[21]^data[24]))))^(((data[28]^data[30])^(data[33]^(data[35]^data[36])))^((data[44]^(data[45]^data[46]))^(data[47]^(data[48]^data[49]))))))^(((((data[52]^data[53])^(data[54]^(data[55]^data[56])))^((data[57]^data[58])^(data[60]^(data[62]^data[63]))))^(((data[64]^data[66])^(data[68]^(data[72]^data[73])))^((data[74]^data[76])^(data[77]^(data[78]^data[81])))))^((((data[83]^data[85])^(data[86]^(data[87]^data[88])))^((data[90]^data[98])^(data[99]^(data[103]^data[106]))))^(((data[107]^data[108])^(data[114]^(data[117]^data[120])))^((data[121]^(data[122]^data[123]))^(data[124]^(data[126]^data[127])))))));
+     crc32_128[27]=((((((state[0]^state[6])^(state[7]^(state[8]^state[9])))^((state[10]^state[11])^(state[13]^(state[14]^state[15]))))^(((state[16]^state[18])^(state[21]^(state[24]^state[27])))^((state[30]^data[0])^(data[6]^(data[7]^data[8])))))^((((data[9]^data[10])^(data[11]^(data[13]^data[14])))^((data[15]^data[16])^(data[18]^(data[21]^data[24]))))^(((data[27]^data[30])^(data[32]^(data[33]^data[36])))^((data[37]^data[41])^(data[43]^(data[44]^data[48]))))))^(((((data[50]^data[53])^(data[54]^(data[57]^data[58])))^((data[59]^data[60])^(data[62]^(data[64]^data[68]))))^(((data[69]^data[70])^(data[77]^(data[79]^data[80])))^((data[81]^data[82])^(data[83]^(data[86]^data[87])))))^((((data[88]^data[89])^(data[94]^(data[96]^data[97])))^((data[98]^data[102])^(data[103]^(data[107]^data[108]))))^(((data[109]^data[112])^(data[115]^(data[116]^data[119])))^((data[121]^data[123])^(data[124]^(data[125]^data[127])))))));
+     crc32_128[28]=((((((state[2]^state[3])^(state[5]^state[7]))^((state[8]^state[16])^(state[18]^state[19])))^(((state[24]^state[27])^(state[28]^state[29]))^((state[30]^data[2])^(data[3]^(data[5]^data[7])))))^((((data[8]^data[16])^(data[18]^data[19]))^((data[24]^data[27])^(data[28]^(data[29]^data[30]))))^(((data[32]^data[37])^(data[38]^data[41]))^((data[42]^data[43])^(data[46]^(data[47]^data[51]))))))^(((((data[54]^data[56])^(data[58]^data[59]))^((data[62]^data[67])^(data[68]^data[69])))^(((data[71]^data[73])^(data[74]^data[75]))^((data[82]^data[87])^(data[88]^(data[89]^data[90])))))^((((data[91]^data[94])^(data[95]^data[96]))^((data[100]^data[102])^(data[108]^(data[109]^data[110]))))^(((data[112]^data[113])^(data[117]^data[118]))^((data[119]^data[120])^(data[124]^(data[125]^data[126])))))));
+     crc32_128[29]=((((((state[0]^state[3])^(state[4]^state[6]))^((state[8]^state[9])^(state[17]^(state[19]^state[20]))))^(((state[25]^state[28])^(state[29]^state[30]))^((state[31]^data[0])^(data[3]^(data[4]^data[6])))))^((((data[8]^data[9])^(data[17]^data[19]))^((data[20]^data[25])^(data[28]^(data[29]^data[30]))))^(((data[31]^data[33])^(data[38]^data[39]))^((data[42]^data[43])^(data[44]^(data[47]^data[48]))))))^(((((data[52]^data[55])^(data[57]^data[59]))^((data[60]^data[63])^(data[68]^(data[69]^data[70]))))^(((data[72]^data[74])^(data[75]^data[76]))^((data[83]^data[88])^(data[89]^(data[90]^data[91])))))^((((data[92]^data[95])^(data[96]^data[97]))^((data[101]^data[103])^(data[109]^(data[110]^data[111]))))^(((data[113]^data[114])^(data[118]^data[119]))^((data[120]^data[121])^(data[125]^(data[126]^data[127])))))));
+     crc32_128[30]=((((((state[2]^state[3])^(state[4]^state[7]))^((state[11]^state[12])^(state[14]^(state[15]^state[17]))))^(((state[20]^state[21])^(state[22]^state[24]))^((state[25]^state[26])^(state[27]^(data[2]^data[3])))))^((((data[4]^data[7])^(data[11]^data[12]))^((data[14]^data[15])^(data[17]^(data[20]^data[21]))))^(((data[22]^data[24])^(data[25]^(data[26]^data[27])))^((data[33]^data[39])^(data[40]^(data[41]^data[46]))))))^(((((data[47]^data[48])^(data[53]^data[55]))^((data[58]^data[62])^(data[63]^(data[64]^data[65]))))^(((data[67]^data[68])^(data[69]^(data[71]^data[74])))^((data[76]^data[77])^(data[78]^(data[80]^data[81])))))^((((data[83]^data[89])^(data[90]^data[92]))^((data[93]^data[94])^(data[99]^(data[100]^data[103]))))^(((data[110]^data[111])^(data[114]^(data[115]^data[116])))^((data[118]^data[120])^(data[121]^(data[126]^data[127])))))));
+     crc32_128[31]=((((((state[0]^state[1])^(state[2]^(state[4]^state[8])))^((state[9]^state[10])^(state[11]^(state[13]^state[14]))))^(((state[16]^state[17])^(state[21]^(state[23]^state[24])))^((state[26]^state[28])^(state[29]^(state[30]^state[31])))))^((((data[0]^data[1])^(data[2]^(data[4]^data[8])))^((data[9]^data[10])^(data[11]^(data[13]^data[14]))))^(((data[16]^data[17])^(data[21]^(data[23]^data[24])))^((data[26]^(data[28]^data[29]))^(data[30]^(data[31]^data[32]))))))^(((((data[33]^data[40])^(data[42]^(data[43]^data[44])))^((data[45]^data[46])^(data[48]^(data[54]^data[55]))))^(((data[59]^data[60])^(data[61]^(data[62]^data[64])))^((data[66]^(data[67]^data[69]))^(data[72]^(data[73]^data[74])))))^((((data[77]^data[79])^(data[80]^(data[82]^data[83])))^((data[90]^data[93])^(data[95]^(data[96]^data[97]))))^(((data[98]^data[99])^(data[101]^(data[102]^data[103])))^((data[111]^(data[115]^data[117]))^(data[118]^(data[121]^data[127])))))));
+   end
+ endfunction
+ function automatic [15:0] crc16_16;
+   input [15:0] state;
+   input [15:0] data;
+   begin
+     crc16_16[0]=(((state[1]^state[3])^(state[4]^(state[8]^state[12])))^((data[1]^data[3])^(data[4]^(data[8]^data[12]))));
+     crc16_16[1]=(((state[2]^state[4])^(state[5]^(state[9]^state[13])))^((data[2]^data[4])^(data[5]^(data[9]^data[13]))));
+     crc16_16[2]=(((state[3]^state[5])^(state[6]^(state[10]^state[14])))^((data[3]^data[5])^(data[6]^(data[10]^data[14]))));
+     crc16_16[3]=(((state[4]^state[6])^(state[7]^(state[11]^state[15])))^((data[4]^data[6])^(data[7]^(data[11]^data[15]))));
+     crc16_16[4]=(((state[0]^(state[1]^state[3]))^(state[4]^(state[5]^state[7])))^((data[0]^(data[1]^data[3]))^(data[4]^(data[5]^data[7]))));
+     crc16_16[5]=(((state[0]^(state[1]^state[2]))^((state[4]^state[5])^(state[6]^state[8])))^((data[0]^(data[1]^data[2]))^((data[4]^data[5])^(data[6]^data[8]))));
+     crc16_16[6]=(((state[1]^(state[2]^state[3]))^((state[5]^state[6])^(state[7]^state[9])))^((data[1]^(data[2]^data[3]))^((data[5]^data[6])^(data[7]^data[9]))));
+     crc16_16[7]=((((state[0]^state[2])^(state[3]^state[4]))^((state[6]^state[7])^(state[8]^state[10])))^(((data[0]^data[2])^(data[3]^data[4]))^((data[6]^data[7])^(data[8]^data[10]))));
+     crc16_16[8]=((((state[0]^state[1])^(state[3]^state[4]))^((state[5]^state[7])^(state[8]^(state[9]^state[11]))))^(((data[0]^data[1])^(data[3]^data[4]))^((data[5]^data[7])^(data[8]^(data[9]^data[11])))));
+     crc16_16[9]=((((state[0]^state[1])^(state[2]^(state[4]^state[5])))^((state[6]^state[8])^(state[9]^(state[10]^state[12]))))^(((data[0]^data[1])^(data[2]^(data[4]^data[5])))^((data[6]^data[8])^(data[9]^(data[10]^data[12])))));
+     crc16_16[10]=((((state[0]^state[1])^(state[2]^(state[3]^state[5])))^((state[6]^(state[7]^state[9]))^(state[10]^(state[11]^state[13]))))^(((data[0]^data[1])^(data[2]^(data[3]^data[5])))^((data[6]^(data[7]^data[9]))^(data[10]^(data[11]^data[13])))));
+     crc16_16[11]=((((state[0]^(state[1]^state[2]))^(state[3]^(state[4]^state[6])))^((state[7]^(state[8]^state[10]))^(state[11]^(state[12]^state[14]))))^(((data[0]^(data[1]^data[2]))^(data[3]^(data[4]^data[6])))^((data[7]^(data[8]^data[10]))^(data[11]^(data[12]^data[14])))));
+     crc16_16[12]=((((state[0]^(state[1]^state[2]))^(state[3]^(state[4]^state[5])))^((state[7]^(state[8]^state[9]))^((state[11]^state[12])^(state[13]^state[15]))))^(((data[0]^(data[1]^data[2]))^(data[3]^(data[4]^data[5])))^((data[7]^(data[8]^data[9]))^((data[11]^data[12])^(data[13]^data[15])))));
+     crc16_16[13]=((((state[0]^state[2])^(state[5]^state[6]))^((state[9]^state[10])^(state[13]^state[14])))^(((data[0]^data[2])^(data[5]^data[6]))^((data[9]^data[10])^(data[13]^data[14]))));
+     crc16_16[14]=((((state[0]^state[1])^(state[3]^state[6]))^((state[7]^state[10])^(state[11]^(state[14]^state[15]))))^(((data[0]^data[1])^(data[3]^data[6]))^((data[7]^data[10])^(data[11]^(data[14]^data[15])))));
+     crc16_16[15]=(((state[0]^(state[2]^state[3]))^(state[7]^(state[11]^state[15])))^((data[0]^(data[2]^data[3]))^(data[7]^(data[11]^data[15]))));
+   end
+ endfunction
+ function automatic [15:0] crc16_32;
+   input [15:0] state;
+   input [31:0] data;
+   begin
+     crc16_32[0]=((((state[0]^state[1])^(state[3]^(state[4]^state[6])))^((state[9]^state[11])^(state[12]^(data[0]^data[1]))))^(((data[3]^data[4])^(data[6]^(data[9]^data[11])))^((data[12]^(data[17]^data[19]))^(data[20]^(data[24]^data[28])))));
+     crc16_32[1]=((((state[1]^state[2])^(state[4]^(state[5]^state[7])))^((state[10]^state[12])^(state[13]^(data[1]^data[2]))))^(((data[4]^data[5])^(data[7]^(data[10]^data[12])))^((data[13]^(data[18]^data[20]))^(data[21]^(data[25]^data[29])))));
+     crc16_32[2]=((((state[0]^state[2])^(state[3]^(state[5]^state[6])))^((state[8]^(state[11]^state[13]))^(state[14]^(data[0]^data[2]))))^(((data[3]^(data[5]^data[6]))^(data[8]^(data[11]^data[13])))^((data[14]^(data[19]^data[21]))^(data[22]^(data[26]^data[30])))));
+     crc16_32[3]=((((state[1]^state[3])^(state[4]^(state[6]^state[7])))^((state[9]^(state[12]^state[14]))^(state[15]^(data[1]^data[3]))))^(((data[4]^(data[6]^data[7]))^(data[9]^(data[12]^data[14])))^((data[15]^(data[20]^data[22]))^(data[23]^(data[27]^data[31])))));
+     crc16_32[4]=(((((state[0]^state[1])^(state[2]^state[3]))^((state[5]^state[6])^(state[7]^state[8])))^(((state[9]^state[10])^(state[11]^state[12]))^((state[13]^state[15])^(data[0]^(data[1]^data[2])))))^((((data[3]^data[5])^(data[6]^data[7]))^((data[8]^data[9])^(data[10]^data[11])))^(((data[12]^data[13])^(data[15]^data[16]))^((data[17]^data[19])^(data[20]^(data[21]^data[23]))))));
+     crc16_32[5]=(((((state[0]^state[1])^(state[2]^state[3]))^((state[4]^state[6])^(state[7]^state[8])))^(((state[9]^state[10])^(state[11]^state[12]))^((state[13]^state[14])^(data[0]^(data[1]^data[2])))))^((((data[3]^data[4])^(data[6]^data[7]))^((data[8]^data[9])^(data[10]^(data[11]^data[12]))))^(((data[13]^data[14])^(data[16]^data[17]))^((data[18]^data[20])^(data[21]^(data[22]^data[24]))))));
+     crc16_32[6]=(((((state[0]^state[1])^(state[2]^state[3]))^((state[4]^state[5])^(state[7]^(state[8]^state[9]))))^(((state[10]^state[11])^(state[12]^state[13]))^((state[14]^state[15])^(data[0]^(data[1]^data[2])))))^((((data[3]^data[4])^(data[5]^data[7]))^((data[8]^data[9])^(data[10]^(data[11]^data[12]))))^(((data[13]^data[14])^(data[15]^(data[17]^data[18])))^((data[19]^data[21])^(data[22]^(data[23]^data[25]))))));
+     crc16_32[7]=(((((state[1]^state[2])^(state[3]^state[4]))^((state[5]^state[6])^(state[8]^(state[9]^state[10]))))^(((state[11]^state[12])^(state[13]^state[14]))^((state[15]^data[1])^(data[2]^(data[3]^data[4])))))^((((data[5]^data[6])^(data[8]^data[9]))^((data[10]^data[11])^(data[12]^(data[13]^data[14]))))^(((data[15]^data[16])^(data[18]^data[19]))^((data[20]^data[22])^(data[23]^(data[24]^data[26]))))));
+     crc16_32[8]=(((((state[2]^state[3])^(state[4]^state[5]))^((state[6]^state[7])^(state[9]^state[10])))^(((state[11]^state[12])^(state[13]^state[14]))^((state[15]^data[2])^(data[3]^(data[4]^data[5])))))^((((data[6]^data[7])^(data[9]^data[10]))^((data[11]^data[12])^(data[13]^(data[14]^data[15]))))^(((data[16]^data[17])^(data[19]^data[20]))^((data[21]^data[23])^(data[24]^(data[25]^data[27]))))));
+     crc16_32[9]=(((((state[3]^state[4])^(state[5]^state[6]))^((state[7]^state[8])^(state[10]^state[11])))^(((state[12]^state[13])^(state[14]^state[15]))^((data[3]^data[4])^(data[5]^(data[6]^data[7])))))^((((data[8]^data[10])^(data[11]^data[12]))^((data[13]^data[14])^(data[15]^data[16])))^(((data[17]^data[18])^(data[20]^data[21]))^((data[22]^data[24])^(data[25]^(data[26]^data[28]))))));
+     crc16_32[10]=(((((state[4]^state[5])^(state[6]^state[7]))^((state[8]^state[9])^(state[11]^state[12])))^(((state[13]^state[14])^(state[15]^data[4]))^((data[5]^data[6])^(data[7]^data[8]))))^((((data[9]^data[11])^(data[12]^data[13]))^((data[14]^data[15])^(data[16]^data[17])))^(((data[18]^data[19])^(data[21]^data[22]))^((data[23]^data[25])^(data[26]^(data[27]^data[29]))))));
+     crc16_32[11]=(((((state[0]^state[5])^(state[6]^state[7]))^((state[8]^state[9])^(state[10]^state[12])))^(((state[13]^state[14])^(state[15]^data[0]))^((data[5]^data[6])^(data[7]^(data[8]^data[9])))))^((((data[10]^data[12])^(data[13]^data[14]))^((data[15]^data[16])^(data[17]^data[18])))^(((data[19]^data[20])^(data[22]^data[23]))^((data[24]^data[26])^(data[27]^(data[28]^data[30]))))));
+     crc16_32[12]=(((((state[0]^state[1])^(state[6]^state[7]))^((state[8]^state[9])^(state[10]^state[11])))^(((state[13]^state[14])^(state[15]^data[0]))^((data[1]^data[6])^(data[7]^(data[8]^data[9])))))^((((data[10]^data[11])^(data[13]^data[14]))^((data[15]^data[16])^(data[17]^(data[18]^data[19]))))^(((data[20]^data[21])^(data[23]^data[24]))^((data[25]^data[27])^(data[28]^(data[29]^data[31]))))));
+     crc16_32[13]=((((state[0]^(state[2]^state[3]))^((state[4]^state[6])^(state[7]^state[8])))^((state[10]^(state[14]^state[15]))^((data[0]^data[2])^(data[3]^data[4]))))^(((data[6]^(data[7]^data[8]))^((data[10]^data[14])^(data[15]^data[16])))^((data[18]^(data[21]^data[22]))^((data[25]^data[26])^(data[29]^data[30])))));
+     crc16_32[14]=((((state[0]^(state[1]^state[3]))^((state[4]^state[5])^(state[7]^state[8])))^((state[9]^(state[11]^state[15]))^((data[0]^data[1])^(data[3]^data[4]))))^(((data[5]^(data[7]^data[8]))^((data[9]^data[11])^(data[15]^data[16])))^(((data[17]^data[19])^(data[22]^data[23]))^((data[26]^data[27])^(data[30]^data[31])))));
+     crc16_32[15]=((((state[0]^state[2])^(state[3]^(state[5]^state[8])))^((state[10]^state[11])^(data[0]^(data[2]^data[3]))))^(((data[5]^data[8])^(data[10]^(data[11]^data[16])))^((data[18]^data[19])^(data[23]^(data[27]^data[31])))));
+   end
+ endfunction
+ function automatic [15:0] crc16_48;
+   input [15:0] state;
+   input [47:0] data;
+   begin
+     crc16_48[0]=((((state[2]^(state[3]^state[4]))^(state[5]^(state[7]^state[11])))^((state[14]^(data[2]^data[3]))^((data[4]^data[5])^(data[7]^data[11]))))^(((data[14]^(data[16]^data[17]))^((data[19]^data[20])^(data[22]^data[25])))^((data[27]^(data[28]^data[33]))^((data[35]^data[36])^(data[40]^data[44])))));
+     crc16_48[1]=((((state[3]^(state[4]^state[5]))^(state[6]^(state[8]^state[12])))^((state[15]^(data[3]^data[4]))^((data[5]^data[6])^(data[8]^data[12]))))^(((data[15]^(data[17]^data[18]))^((data[20]^data[21])^(data[23]^data[26])))^((data[28]^(data[29]^data[34]))^((data[36]^data[37])^(data[41]^data[45])))));
+     crc16_48[2]=((((state[0]^(state[4]^state[5]))^((state[6]^state[7])^(state[9]^state[13])))^((data[0]^(data[4]^data[5]))^((data[6]^data[7])^(data[9]^data[13]))))^(((data[16]^(data[18]^data[19]))^((data[21]^data[22])^(data[24]^data[27])))^((data[29]^(data[30]^data[35]))^((data[37]^data[38])^(data[42]^data[46])))));
+     crc16_48[3]=((((state[1]^(state[5]^state[6]))^((state[7]^state[8])^(state[10]^state[14])))^((data[1]^(data[5]^data[6]))^((data[7]^data[8])^(data[10]^data[14]))))^(((data[17]^(data[19]^data[20]))^((data[22]^data[23])^(data[25]^data[28])))^((data[30]^(data[31]^data[36]))^((data[38]^data[39])^(data[43]^data[47])))));
+     crc16_48[4]=(((((state[0]^state[3])^(state[4]^state[5]))^((state[6]^state[8])^(state[9]^(state[14]^state[15]))))^(((data[0]^data[3])^(data[4]^(data[5]^data[6])))^((data[8]^data[9])^(data[14]^(data[15]^data[16])))))^((((data[17]^data[18])^(data[19]^data[21]))^((data[22]^data[23])^(data[24]^(data[25]^data[26]))))^(((data[27]^data[28])^(data[29]^(data[31]^data[32])))^((data[33]^data[35])^(data[36]^(data[37]^data[39]))))));
+     crc16_48[5]=(((((state[0]^state[1])^(state[4]^state[5]))^((state[6]^state[7])^(state[9]^(state[10]^state[15]))))^(((data[0]^data[1])^(data[4]^(data[5]^data[6])))^((data[7]^data[9])^(data[10]^(data[15]^data[16])))))^((((data[17]^data[18])^(data[19]^(data[20]^data[22])))^((data[23]^data[24])^(data[25]^(data[26]^data[27]))))^(((data[28]^data[29])^(data[30]^(data[32]^data[33])))^((data[34]^data[36])^(data[37]^(data[38]^data[40]))))));
+     crc16_48[6]=(((((state[0]^state[1])^(state[2]^(state[5]^state[6])))^((state[7]^state[8])^(state[10]^(state[11]^data[0]))))^(((data[1]^data[2])^(data[5]^(data[6]^data[7])))^((data[8]^data[10])^(data[11]^(data[16]^data[17])))))^((((data[18]^data[19])^(data[20]^(data[21]^data[23])))^((data[24]^data[25])^(data[26]^(data[27]^data[28]))))^(((data[29]^data[30])^(data[31]^(data[33]^data[34])))^((data[35]^data[37])^(data[38]^(data[39]^data[41]))))));
+     crc16_48[7]=(((((state[1]^state[2])^(state[3]^(state[6]^state[7])))^((state[8]^state[9])^(state[11]^(state[12]^data[1]))))^(((data[2]^data[3])^(data[6]^(data[7]^data[8])))^((data[9]^data[11])^(data[12]^(data[17]^data[18])))))^((((data[19]^data[20])^(data[21]^(data[22]^data[24])))^((data[25]^data[26])^(data[27]^(data[28]^data[29]))))^(((data[30]^data[31])^(data[32]^(data[34]^data[35])))^((data[36]^data[38])^(data[39]^(data[40]^data[42]))))));
+     crc16_48[8]=(((((state[2]^state[3])^(state[4]^(state[7]^state[8])))^((state[9]^state[10])^(state[12]^(state[13]^data[2]))))^(((data[3]^data[4])^(data[7]^(data[8]^data[9])))^((data[10]^data[12])^(data[13]^(data[18]^data[19])))))^((((data[20]^data[21])^(data[22]^(data[23]^data[25])))^((data[26]^data[27])^(data[28]^(data[29]^data[30]))))^(((data[31]^data[32])^(data[33]^(data[35]^data[36])))^((data[37]^data[39])^(data[40]^(data[41]^data[43]))))));
+     crc16_48[9]=(((((state[3]^state[4])^(state[5]^(state[8]^state[9])))^((state[10]^state[11])^(state[13]^(state[14]^data[3]))))^(((data[4]^data[5])^(data[8]^(data[9]^data[10])))^((data[11]^data[13])^(data[14]^(data[19]^data[20])))))^((((data[21]^data[22])^(data[23]^(data[24]^data[26])))^((data[27]^data[28])^(data[29]^(data[30]^data[31]))))^(((data[32]^data[33])^(data[34]^(data[36]^data[37])))^((data[38]^data[40])^(data[41]^(data[42]^data[44]))))));
+     crc16_48[10]=(((((state[4]^state[5])^(state[6]^(state[9]^state[10])))^((state[11]^state[12])^(state[14]^(state[15]^data[4]))))^(((data[5]^data[6])^(data[9]^(data[10]^data[11])))^((data[12]^data[14])^(data[15]^(data[20]^data[21])))))^((((data[22]^data[23])^(data[24]^(data[25]^data[27])))^((data[28]^data[29])^(data[30]^(data[31]^data[32]))))^(((data[33]^data[34])^(data[35]^(data[37]^data[38])))^((data[39]^data[41])^(data[42]^(data[43]^data[45]))))));
+     crc16_48[11]=(((((state[0]^state[5])^(state[6]^(state[7]^state[10])))^((state[11]^state[12])^(state[13]^(state[15]^data[0]))))^(((data[5]^data[6])^(data[7]^(data[10]^data[11])))^((data[12]^data[13])^(data[15]^(data[16]^data[21])))))^((((data[22]^data[23])^(data[24]^(data[25]^data[26])))^((data[28]^data[29])^(data[30]^(data[31]^data[32]))))^(((data[33]^data[34])^(data[35]^(data[36]^data[38])))^((data[39]^(data[40]^data[42]))^(data[43]^(data[44]^data[46]))))));
+     crc16_48[12]=(((((state[1]^state[6])^(state[7]^(state[8]^state[11])))^((state[12]^state[13])^(state[14]^(data[1]^data[6]))))^(((data[7]^data[8])^(data[11]^(data[12]^data[13])))^((data[14]^data[16])^(data[17]^(data[22]^data[23])))))^((((data[24]^data[25])^(data[26]^(data[27]^data[29])))^((data[30]^data[31])^(data[32]^(data[33]^data[34]))))^(((data[35]^data[36])^(data[37]^(data[39]^data[40])))^((data[41]^data[43])^(data[44]^(data[45]^data[47]))))));
+     crc16_48[13]=(((((state[3]^state[4])^(state[5]^state[8]))^((state[9]^state[11])^(state[12]^(state[13]^state[15]))))^(((data[3]^data[4])^(data[5]^data[8]))^((data[9]^data[11])^(data[12]^(data[13]^data[15])))))^((((data[16]^data[18])^(data[19]^data[20]))^((data[22]^data[23])^(data[24]^(data[26]^data[30]))))^(((data[31]^data[32])^(data[34]^data[37]))^((data[38]^data[41])^(data[42]^(data[45]^data[46]))))));
+     crc16_48[14]=(((((state[0]^state[4])^(state[5]^state[6]))^((state[9]^state[10])^(state[12]^(state[13]^state[14]))))^(((data[0]^data[4])^(data[5]^data[6]))^((data[9]^data[10])^(data[12]^(data[13]^data[14])))))^((((data[16]^data[17])^(data[19]^data[20]))^((data[21]^data[23])^(data[24]^(data[25]^data[27]))))^(((data[31]^data[32])^(data[33]^(data[35]^data[38])))^((data[39]^data[42])^(data[43]^(data[46]^data[47]))))));
+     crc16_48[15]=((((state[1]^(state[2]^state[3]))^((state[4]^state[6])^(state[10]^state[13])))^((state[15]^(data[1]^data[2]))^((data[3]^data[4])^(data[6]^data[10]))))^(((data[13]^(data[15]^data[16]))^((data[18]^data[19])^(data[21]^data[24])))^(((data[26]^data[27])^(data[32]^data[34]))^((data[35]^data[39])^(data[43]^data[47])))));
+   end
+ endfunction
+ // END GENERATED CRC CANDIDATES
+ localparam integer AW=$clog2(RING_DWORDS);
+ localparam integer PW=AW+1;
+ localparam [1:0] TOKEN=0,TLP=1,LOOK=2,DLLP=3;
+ reg [1:0] state,state_n;
+ reg [31:0] lcrc,lcrc_n;
+ reg [15:0] dllp_crc,dllp_crc_n;
+ reg [511:0] current_block,next_block;
+ // BEGIN V9 REGISTERED WORD DECODE
+ // Companion banks follow every literal current/next block load and shift.
+ // Bits0..4 are STP/SDP/IDL/rawEDS/EDB,17:5 expected TLP bytes,
+ // bit18 header format fault,31:19 encoded STP bytes. EDS position remains
+ // qualified by the original slice/word test after these registers.
+ function automatic [31:0] predecode_word;
+   input [31:0] value;
+   reg [10:0] length;
+   reg [12:0] encoded,payload,expected;
+   reg [3:0] check_crc;
+   reg stp;
+   begin
+     length={value[14:8],value[7:4]};
+     encoded={length,2'b00}-13'd2;
+     check_crc[0]=length[10]^length[7]^length[6]^length[4]^length[2]^length[1]^length[0];
+     check_crc[1]=length[10]^length[9]^length[7]^length[5]^length[4]^length[3]^length[2];
+     check_crc[2]=length[9]^length[8]^length[6]^length[4]^length[3]^length[2]^length[1];
+     check_crc[3]=length[8]^length[7]^length[5]^length[3]^length[2]^length[1]^length[0];
+     stp=value[3:0]==4'hf && length>=5 && length<1152 &&
+       encoded<=MAX_ENCODED_BYTES && check_crc==value[23:20] &&
+       (^{length,value[23:20],value[15]})==1'b0;
+     payload=({value[17:16],value[31:24]}==0)?13'd4096:{1'b0,value[17:16],value[31:24],2'b00};
+     expected=13'd18+(value[5]?13'd4:13'd0)+(value[6]?payload:13'd0)+(value[23]?13'd4:13'd0);
+     predecode_word={encoded,value[7],expected,value==32'hc0c0c0c0,
+                     value==32'h0090801f,value==0,value[15:0]==16'hacf0,stp};
+   end
+ endfunction
+ function automatic [511:0] predecode_block;
+   input [511:0] value;
+   integer index;
+   begin
+     for(index=0;index<16;index=index+1)
+       predecode_block[index*32+:32]=predecode_word(
+         {value[384+index*8+:8],value[256+index*8+:8],
+          value[128+index*8+:8],value[index*8+:8]});
+   end
+ endfunction
+ reg [511:0] current_predecode,next_predecode;
+ wire [511:0] input_predecode=predecode_block(payload_i);
+ // END V9 REGISTERED WORD DECODE
+ reg current_valid,next_valid;
+ reg [1:0] slice;
+ reg [PW-1:0] write_ptr,read_ptr,commit_ptr,commit_n,packet_tag,tag_n;
+ reg [12:0] packet_bytes,bytes_n,expected_bytes,expected_n;
+ reg [10:0] remaining,remaining_n;
+ reg [11:0] packet_sequence,sequence_n;
+ reg header_first,header_first_n,header_bad,header_bad_n,ending,ending_n;
+ reg [31:0] slot_data [0:RING_DWORDS-1];
+ reg [3:0] slot_keep [0:RING_DWORDS-1];
+ reg [3:0] slot_sop [0:RING_DWORDS-1];
+ reg [3:0] slot_eop [0:RING_DWORDS-1];
+ reg [3:0] slot_dllp [0:RING_DWORDS-1];
+ reg [11:0] slot_sequence [0:RING_DWORDS-1];
+ reg [PW-1:0] slot_tag [0:RING_DWORDS-1];
+ // Tags use the SOP's extended write pointer. Two ring spans prevent reuse
+ // while an earlier packet's tail can remain after its SOP slot has retired.
+ reg verdict [0:2*RING_DWORDS-1];
+ reg slot_verdict [0:RING_DWORDS-1];
+ reg output_valid;
+ reg [127:0] output_data;
+ reg [15:0] output_keep,output_sop,output_eop,output_dllp;
+ reg [47:0] output_sequence;
+ reg error_pulse,overflow_sticky;
+ wire enabled=rst_ni && !flush_i && !stream_start_i && !stream_abort_i;
+ wire [PW-1:0] occupied=write_ptr-read_ptr;
+ wire [PW-1:0] committed=commit_ptr-read_ptr;
+ reg [2:0] read_count;
+ reg [127:0] read_data;
+ reg [15:0] read_keep,read_sop,read_eop,read_dllp;
+ reg [47:0] read_sequence;
+ // BEGIN V17 STATIC BALANCED KNOWN-ELIGIBILITY PAYLOAD TREE
+ // Procedural leaf flags are always known0/1, including unknown address,
+ // keep or verdict. At most one physical slot matches each lane address.
+ // Payload muxes preserve literal X/Z; a payload OR would convert Z to X.
+ // A complete binary tree has log2(RING_DWORDS) selection levels in RTL;
+ // emitted native depth must be measured separately, not inferred from RTL.
+ // Static generate connections avoid dynamic procedural tree-array expansion.
+ wire [59:0] read_payload_root[0:3];
+ genvar read_lane,read_slot,read_node;
+ generate for(read_lane=0;read_lane<4;read_lane=read_lane+1) begin: read_lane_tree
+   wire [31:0] read_address=(read_ptr+read_lane)&(RING_DWORDS-1);
+   wire [2*RING_DWORDS-1:0] read_eligible_tree;
+   wire [59:0] read_payload_tree[0:2*RING_DWORDS-1];
+   assign read_eligible_tree[0]=0;
+   assign read_payload_tree[0]=0;
+   for(read_slot=0;read_slot<RING_DWORDS;read_slot=read_slot+1) begin: leaf
+     reg eligible;
+     reg [59:0] payload;
+     // Every leaf reads only this constant word. Explicit event terms avoid
+     // implicit whole-array sensitivity expansion; all read fields are listed.
+     always @(read_address or slot_data[read_slot] or slot_keep[read_slot] or slot_sop[read_slot] or slot_eop[read_slot] or slot_dllp[read_slot] or slot_sequence[read_slot] or slot_verdict[read_slot]) begin
+       eligible=0;payload=0;
+       if(read_address==read_slot && slot_keep[read_slot]!=0 && slot_verdict[read_slot]) begin
+         eligible=1;
+         payload={slot_data[read_slot],slot_keep[read_slot],slot_sop[read_slot],slot_eop[read_slot],slot_dllp[read_slot],slot_sequence[read_slot]};
+       end
+     end
+     assign read_eligible_tree[RING_DWORDS+read_slot]=eligible;
+     assign read_payload_tree[RING_DWORDS+read_slot]=payload;
+   end
+   for(read_node=1;read_node<RING_DWORDS;read_node=read_node+1) begin: branch
+     assign read_eligible_tree[read_node]=read_eligible_tree[2*read_node]|read_eligible_tree[2*read_node+1];
+     assign read_payload_tree[read_node]=read_eligible_tree[2*read_node]?
+       read_payload_tree[2*read_node]:read_payload_tree[2*read_node+1];
+   end
+   assign read_payload_root[read_lane]=read_payload_tree[1];
+ end endgenerate
+ integer r;
+ always @* begin
+   read_count=(committed>=4)?3'd4:committed;
+   read_data=0;read_keep=0;read_sop=0;read_eop=0;read_dllp=0;read_sequence=0;
+   for(r=0;r<4;r=r+1) begin
+     if(r<read_count) begin
+       {read_data[r*32+:32],read_keep[r*4+:4],read_sop[r*4+:4],read_eop[r*4+:4],read_dllp[r*4+:4],read_sequence[r*12+:12]}=read_payload_root[r];
+     end
+   end
+ end
+ // END V17 STATIC BALANCED KNOWN-ELIGIBILITY PAYLOAD TREE
+ wire retire=enabled && active_o && committed!=0 &&
+             ((!output_valid || ready_i) || read_keep==0);
+ wire [PW:0] space_after_retire=RING_DWORDS-{1'b0,occupied}+(retire?read_count:0);
+ // BEGIN V7 PARALLEL CAPACITY ARITHMETIC
+ // Preserve both PW+1-bit modular arithmetic branches, including unreachable
+ // overfull pointer values. Retire selects only the already computed result.
+ wire [PW:0] capacity_without_retire=RING_DWORDS-{1'b0,occupied};
+ wire [PW:0] capacity_with_retire=capacity_without_retire+read_count;
+ wire capacity_overflow=retire ? (capacity_with_retire<4) :
+                                  (capacity_without_retire<4);
+ // END V7 PARALLEL CAPACITY ARITHMETIC
+ wire ring_overflow_now=enabled && active_o && !ending && current_valid && capacity_overflow;
+ wire step=enabled && active_o && !ending && current_valid && !ring_overflow_now;
+ wire last_slice=step && slice==3;
+ wire input_ready=enabled && active_o && !ending && !ring_overflow_now &&
+                  (!next_valid || last_slice);
+ wire bad_block_now=block_valid_i && input_ready && (headers_i!=8'haa || block_error_i);
+ reg token_failure;
+ wire fault_now=ring_overflow_now || bad_block_now || (step && token_failure);
+ assign block_ready_o=input_ready;
+ // Transport flush must not feed back through the current block's validity.
+ // Only registered epoch/end state controls this separate capture boundary.
+ assign accepting_o=enabled && active_o && !ending;
+ // Faults take effect at the sampling edge. Do not expose a prospective
+ // full-ring fault one cycle before the same-edge ready/pop can resolve it.
+ assign valid_o=enabled && active_o && output_valid;
+ assign data_o=valid_o?output_data:128'b0;
+ assign keep_o=valid_o?output_keep:16'b0;
+ assign sop_o=valid_o?output_sop:16'b0;
+ assign eop_o=valid_o?output_eop:16'b0;
+ assign dllp_o=valid_o?output_dllp:16'b0;
+ assign sequence_o=valid_o?output_sequence:48'b0;
+ assign framing_error_o=error_pulse && rst_ni && !flush_i && !stream_start_i;
+ assign overflow_o=overflow_sticky && rst_ni && !flush_i && !stream_start_i;
+ // Parse candidates depend on packet state and data. Ring occupancy qualifies
+ // their commit/fault once after all four DWORDs; candidates never change state
+ // unless step is accepted. The ending drain also retains its registered case.
+ reg [127:0] write_data;
+ reg [15:0] write_keep,write_sop,write_eop,write_dllp;
+ reg [47:0] write_sequence,event_sequence;
+ reg [4*PW-1:0] write_tags,verdict_tags;
+ reg [3:0] verdict_enable,verdict_value,event_good,event_nullified,event_crc_bad,event_dllp;
+ reg [31:0] word;
+ reg [10:0] length_dw;
+ reg [12:0] encoded_bytes,tlp_payload;
+ reg [3:0] crc;
+ reg stp_ok,sdp_ok,idl_ok,eds_ok,edb_ok,handled;
+ reg [PW-1:0] position;
+ // BEGIN FIXED CRC CANDIDATES
+ // Every transform is unconditional and contains no parser-state mux.
+ wire [31:0] crc_word[0:3];
+ wire [31:0] crc_carry[0:3],crc_seed[0:3];
+ wire [31:0] crc_stp0[0:3],crc_stp1[0:3],crc_stp2[0:3],crc_stp3[0:3];
+ wire [15:0] dllp_seed[0:3],dllp_finish[0:3];
+ assign crc_word[0]={current_block[384+:8],current_block[256+:8],current_block[128+:8],current_block[0+:8]};
+ assign crc_seed[0]=crc32_16(32'hffffffff,{crc_word[0][31:24],4'b0,crc_word[0][19:16]});
+ assign crc_carry[0]=crc32_32(lcrc,{crc_word[0]});
+ assign dllp_seed[0]=crc16_16(16'hffff,crc_word[0][31:16]);
+ assign dllp_finish[0]=crc16_32(dllp_crc,crc_word[0]);
+ assign crc_stp0[0]=crc_seed[0];
+ assign crc_stp1[0]=crc_seed[1];
+ assign crc_stp2[0]=crc_seed[2];
+ assign crc_stp3[0]=crc_seed[3];
+ assign crc_word[1]={current_block[392+:8],current_block[264+:8],current_block[136+:8],current_block[8+:8]};
+ assign crc_seed[1]=crc32_16(32'hffffffff,{crc_word[1][31:24],4'b0,crc_word[1][19:16]});
+ assign crc_carry[1]=crc32_64(lcrc,{crc_word[1],crc_word[0]});
+ assign dllp_seed[1]=crc16_16(16'hffff,crc_word[1][31:16]);
+ assign dllp_finish[1]=crc16_48(16'hffff,{crc_word[1],crc_word[0][31:16]});
+ assign crc_stp0[1]=crc32_48(32'hffffffff,{crc_word[1],crc_word[0][31:24],4'b0,crc_word[0][19:16]});
+ assign crc_stp1[1]=crc_seed[1];
+ assign crc_stp2[1]=crc_seed[2];
+ assign crc_stp3[1]=crc_seed[3];
+ assign crc_word[2]={current_block[400+:8],current_block[272+:8],current_block[144+:8],current_block[16+:8]};
+ assign crc_seed[2]=crc32_16(32'hffffffff,{crc_word[2][31:24],4'b0,crc_word[2][19:16]});
+ assign crc_carry[2]=crc32_96(lcrc,{crc_word[2],crc_word[1],crc_word[0]});
+ assign dllp_seed[2]=crc16_16(16'hffff,crc_word[2][31:16]);
+ assign dllp_finish[2]=crc16_48(16'hffff,{crc_word[2],crc_word[1][31:16]});
+ assign crc_stp0[2]=crc32_80(32'hffffffff,{crc_word[2],crc_word[1],crc_word[0][31:24],4'b0,crc_word[0][19:16]});
+ assign crc_stp1[2]=crc32_48(32'hffffffff,{crc_word[2],crc_word[1][31:24],4'b0,crc_word[1][19:16]});
+ assign crc_stp2[2]=crc_seed[2];
+ assign crc_stp3[2]=crc_seed[3];
+ assign crc_word[3]={current_block[408+:8],current_block[280+:8],current_block[152+:8],current_block[24+:8]};
+ assign crc_seed[3]=crc32_16(32'hffffffff,{crc_word[3][31:24],4'b0,crc_word[3][19:16]});
+ assign crc_carry[3]=crc32_128(lcrc,{crc_word[3],crc_word[2],crc_word[1],crc_word[0]});
+ assign dllp_seed[3]=crc16_16(16'hffff,crc_word[3][31:16]);
+ assign dllp_finish[3]=crc16_48(16'hffff,{crc_word[3],crc_word[2][31:16]});
+ assign crc_stp0[3]=crc32_112(32'hffffffff,{crc_word[3],crc_word[2],crc_word[1],crc_word[0][31:24],4'b0,crc_word[0][19:16]});
+ assign crc_stp1[3]=crc32_80(32'hffffffff,{crc_word[3],crc_word[2],crc_word[1][31:24],4'b0,crc_word[1][19:16]});
+ assign crc_stp2[3]=crc32_48(32'hffffffff,{crc_word[3],crc_word[2][31:24],4'b0,crc_word[2][19:16]});
+ assign crc_stp3[3]=crc_seed[3];
+ // 0 denotes the arbitrary registered carry-in; 1..4 denote a STP
+ // in this slice. A TLP run is contiguous until LOOK; only STP can
+ // enter TLP again. DLLP lasts exactly one DWORD after SDP, so for
+ // j>0 its seed is necessarily the preceding word (even from any
+ // arbitrary initial parser state). CRC values never choose state.
+ reg [2:0] crc_origin;
+ // END FIXED CRC CANDIDATES
+ // BEGIN V4 PARALLEL CONTROL
+ // Mode0 TOKEN,1 carried TLP,2 LOOK,3 DLLP,4 newly started TLP.
+ // Modes5/6/7 stop while retaining TOKEN/LOOK/TLP respectively. Error and
+ // EDS side effects remain in the original parser body. Initial ending
+ // masks every word and holds all registered metadata, including state.
+ // A newly accepted STP has at least5DWORDs and cannot finish in this slice.
+ wire [3:0] control_stp,control_sdp,control_idl,control_eds,control_edb;
+ wire [10:0] control_length[0:3];
+ wire [12:0] control_encoded[0:3];
+ wire [3:0] control_crc[0:3];
+ wire [63:0] control_table[0:3];
+ wire [63:0] control_prefix2,control_prefix3;
+ wire [7:0] control_modes[0:3];
+ wire [1:0] control_state[0:3];
+ wire [3:0] control_active,control_bad_look,control_carry_end,control_header_first;
+ wire [12:0] control_payload0=({crc_word[0][17:16],crc_word[0][31:24]}==0)?
+   13'd4096:{1'b0,crc_word[0][17:16],crc_word[0][31:24],2'b00};
+ wire [12:0] control_expected0=current_predecode[5+:13];
+ wire control_carried_header_bad=header_first ?
+   (current_predecode[18] || packet_bytes!=control_expected0) :
+   (header_bad || packet_bytes!=expected_bytes);
+ function automatic [63:0] control_transition;
+   input stp,sdp,idl,eds,edb,carry_end,carry_bad;
+   reg [2:0] token_next,destination;
+   integer source;
+   begin
+     token_next=idl?3'd0:eds?3'd5:stp?3'd4:sdp?3'd3:3'd5;
+     control_transition=64'b0;
+     for(source=0;source<8;source=source+1) begin
+       case(source)
+         0:destination=token_next;
+         1:destination=carry_end?(carry_bad?3'd7:3'd2):3'd1;
+         2:destination=edb?3'd0:(stp||sdp||idl||eds)?token_next:3'd6;
+         3:destination=3'd0;
+         4:destination=3'd4;
+         5:destination=3'd5;
+         6:destination=3'd6;
+         default:destination=3'd7;
+       endcase
+       control_transition[destination*8+source]=1'b1;
+     end
+   end
+ endfunction
+ // Matrix bit[destination*8+source] represents one deterministic transition.
+ // Independent composition removes the serial state-selected CRC/header path.
+ function automatic [63:0] control_compose;
+   input [63:0] later,earlier;
+   integer destination,source;
+   begin
+     for(destination=0;destination<8;destination=destination+1)
+       for(source=0;source<8;source=source+1)
+         control_compose[destination*8+source]=
+           (((later[destination*8+0]&earlier[0*8+source])|(later[destination*8+1]&earlier[1*8+source]))|
+            ((later[destination*8+2]&earlier[2*8+source])|(later[destination*8+3]&earlier[3*8+source])))|
+           (((later[destination*8+4]&earlier[4*8+source])|(later[destination*8+5]&earlier[5*8+source]))|
+            ((later[destination*8+6]&earlier[6*8+source])|(later[destination*8+7]&earlier[7*8+source])));
+   end
+ endfunction
+ function automatic [7:0] control_apply;
+   input [63:0] matrix;
+   input [7:0] initial_mode;
+   integer destination;
+   begin
+     for(destination=0;destination<8;destination=destination+1)
+       control_apply[destination]=
+         (((matrix[destination*8+0]&initial_mode[0])|(matrix[destination*8+1]&initial_mode[1]))|
+          ((matrix[destination*8+2]&initial_mode[2])|(matrix[destination*8+3]&initial_mode[3])))|
+         (((matrix[destination*8+4]&initial_mode[4])|(matrix[destination*8+5]&initial_mode[5]))|
+          ((matrix[destination*8+6]&initial_mode[6])|(matrix[destination*8+7]&initial_mode[7])));
+   end
+ endfunction
+ assign control_modes[0]={4'b0,state==DLLP,state==LOOK,state==TLP,state==TOKEN};
+ assign control_modes[1]=control_apply(control_table[0],control_modes[0]);
+ assign control_prefix2=control_compose(control_table[1],control_table[0]);
+ assign control_prefix3=control_compose(control_table[2],control_prefix2);
+ assign control_modes[2]=control_apply(control_prefix2,control_modes[0]);
+ assign control_modes[3]=control_apply(control_prefix3,control_modes[0]);
+ genvar control_word;
+ generate for(control_word=0;control_word<4;control_word=control_word+1) begin:control_decode
+   assign control_length[control_word]={crc_word[control_word][14:8],crc_word[control_word][7:4]};
+   assign control_encoded[control_word]=current_predecode[control_word*32+19+:13];
+   assign control_crc[control_word][0]=control_length[control_word][10]^control_length[control_word][7]^control_length[control_word][6]^control_length[control_word][4]^control_length[control_word][2]^control_length[control_word][1]^control_length[control_word][0];
+   assign control_crc[control_word][1]=control_length[control_word][10]^control_length[control_word][9]^control_length[control_word][7]^control_length[control_word][5]^control_length[control_word][4]^control_length[control_word][3]^control_length[control_word][2];
+   assign control_crc[control_word][2]=control_length[control_word][9]^control_length[control_word][8]^control_length[control_word][6]^control_length[control_word][4]^control_length[control_word][3]^control_length[control_word][2]^control_length[control_word][1];
+   assign control_crc[control_word][3]=control_length[control_word][8]^control_length[control_word][7]^control_length[control_word][5]^control_length[control_word][3]^control_length[control_word][2]^control_length[control_word][1]^control_length[control_word][0];
+   assign control_stp[control_word]=current_predecode[control_word*32];
+   assign control_sdp[control_word]=current_predecode[control_word*32+1];
+   assign control_idl[control_word]=current_predecode[control_word*32+2];
+   assign control_eds[control_word]=current_predecode[control_word*32+3] && slice==3 && control_word==3;
+   assign control_edb[control_word]=current_predecode[control_word*32+4];
+   assign control_table[control_word]=control_transition(control_stp[control_word],control_sdp[control_word],
+     control_idl[control_word],control_eds[control_word],control_edb[control_word],
+     remaining==(control_word+1),control_carried_header_bad);
+   assign control_active[control_word]=!ending && (|control_modes[control_word][4:0]);
+   assign control_state[control_word]=ending?state:
+     (control_modes[control_word][1]||control_modes[control_word][4]||control_modes[control_word][7])?TLP:
+     (control_modes[control_word][2]||control_modes[control_word][6])?LOOK:
+     control_modes[control_word][3]?DLLP:TOKEN;
+   assign control_bad_look[control_word]=control_modes[control_word][2] &&
+     !(control_edb[control_word]||control_stp[control_word]||control_sdp[control_word]||control_idl[control_word]||control_eds[control_word]);
+   assign control_carry_end[control_word]=control_modes[control_word][1] && remaining==(control_word+1);
+   if(control_word==0) begin:first
+     assign control_header_first[control_word]=control_modes[control_word][1] && header_first;
+   end else begin:following
+     assign control_header_first[control_word]=control_modes[control_word][4] &&
+       (control_modes[control_word-1][0]||control_modes[control_word-1][2]) && control_stp[control_word-1];
+   end
+ end endgenerate
+ // END V4 PARALLEL CONTROL
+ // BEGIN V6 PARALLEL PACKET ORIGIN
+ // A start is accepted only in an active TOKEN or LOOK word. Payload bit
+ // patterns never replace origin. LOOK consumes its previous origin before
+ // the current word can start another packet. Latest preceding start wins.
+ wire [3:0] metadata_start;
+ wire [PW-1:0] metadata_position[0:3],metadata_tag_before[0:3];
+ wire [11:0] metadata_sequence[0:3],metadata_sequence_before[0:3];
+ wire [3:0] metadata_origin[0:3];
+ genvar metadata_word,metadata_prior;
+ generate for(metadata_word=0;metadata_word<4;metadata_word=metadata_word+1) begin:metadata_decode
+   assign metadata_start[metadata_word]=control_active[metadata_word] &&
+     (control_modes[metadata_word][0] || control_modes[metadata_word][2]) &&
+     (control_stp[metadata_word] || control_sdp[metadata_word]);
+   assign metadata_position[metadata_word]=write_ptr+metadata_word;
+   assign metadata_sequence[metadata_word]=control_stp[metadata_word]?
+     {crc_word[metadata_word][19:16],crc_word[metadata_word][31:24]}:12'b0;
+   assign metadata_origin[metadata_word][0]=
+     !(|(metadata_start & ((4'b0001<<metadata_word)-1'b1)));
+   for(metadata_prior=0;metadata_prior<3;metadata_prior=metadata_prior+1) begin:prior
+     assign metadata_origin[metadata_word][metadata_prior+1]=(metadata_prior<metadata_word) &&
+       metadata_start[metadata_prior] &&
+       !(|(metadata_start & (((4'b0001<<metadata_word)-1'b1) &
+                            ~((4'b0001<<(metadata_prior+1))-1'b1))));
+   end
+   assign metadata_tag_before[metadata_word]=
+     (({PW{metadata_origin[metadata_word][0]}}&packet_tag)|
+      ({PW{metadata_origin[metadata_word][1]}}&metadata_position[0]))|
+     (({PW{metadata_origin[metadata_word][2]}}&metadata_position[1])|
+      ({PW{metadata_origin[metadata_word][3]}}&metadata_position[2]));
+   assign metadata_sequence_before[metadata_word]=
+     (({12{metadata_origin[metadata_word][0]}}&packet_sequence)|
+      ({12{metadata_origin[metadata_word][1]}}&metadata_sequence[0]))|
+     (({12{metadata_origin[metadata_word][2]}}&metadata_sequence[1])|
+      ({12{metadata_origin[metadata_word][3]}}&metadata_sequence[2]));
+ end endgenerate
+ // END V6 PARALLEL PACKET ORIGIN
+ integer j;
+ always @* begin
+   lcrc_n=lcrc;dllp_crc_n=dllp_crc;crc_origin=0;
+   state_n=state;commit_n=commit_ptr;tag_n=packet_tag;bytes_n=packet_bytes;
+   expected_n=expected_bytes;remaining_n=remaining;sequence_n=packet_sequence;
+   header_first_n=header_first;header_bad_n=header_bad;ending_n=ending;
+   write_data=0;write_keep=0;write_sop=0;write_eop=0;write_dllp=0;
+   write_sequence=0;write_tags=0;verdict_tags=0;verdict_enable=0;verdict_value=0;
+   event_crc_bad=0;event_dllp=0;event_good=0;event_nullified=0;event_sequence=0;token_failure=0;
+   word=0;length_dw=0;encoded_bytes=0;tlp_payload=0;crc=0;
+   stp_ok=0;sdp_ok=0;idl_ok=0;eds_ok=0;edb_ok=0;handled=0;position=0;
+   for(j=0;j<4;j=j+1) begin
+     word={current_block[384+j*8+:8],current_block[256+j*8+:8],
+           current_block[128+j*8+:8],current_block[j*8+:8]};
+     position=write_ptr+j;state_n=control_state[j];
+     tag_n=metadata_tag_before[j];sequence_n=metadata_sequence_before[j];
+     length_dw={word[14:8],word[7:4]};encoded_bytes=control_encoded[j];
+     crc[0]=length_dw[10]^length_dw[7]^length_dw[6]^length_dw[4]^length_dw[2]^length_dw[1]^length_dw[0];
+     crc[1]=length_dw[10]^length_dw[9]^length_dw[7]^length_dw[5]^length_dw[4]^length_dw[3]^length_dw[2];
+     crc[2]=length_dw[9]^length_dw[8]^length_dw[6]^length_dw[4]^length_dw[3]^length_dw[2]^length_dw[1];
+     crc[3]=length_dw[8]^length_dw[7]^length_dw[5]^length_dw[3]^length_dw[2]^length_dw[1]^length_dw[0];
+     stp_ok=control_stp[j];sdp_ok=control_sdp[j];idl_ok=control_idl[j];
+     eds_ok=control_eds[j];edb_ok=control_edb[j];handled=0;
+     if(control_active[j]) begin
+       if(state_n==LOOK) begin
+         verdict_enable[j]=1;verdict_tags[j*PW+:PW]=tag_n;
+         event_sequence[j*12+:12]=sequence_n;
+         if(edb_ok) begin
+           verdict_value[j]=0;event_nullified[j]=(lcrc_n==32'b0);
+           event_crc_bad[j]=(lcrc_n!=32'b0);commit_n=position+1'b1;
+           state_n=TOKEN;handled=1;
+         end else if(stp_ok || sdp_ok || idl_ok || eds_ok) begin
+           verdict_value[j]=(lcrc_n==32'hdebb20e3);event_good[j]=(lcrc_n==32'hdebb20e3);
+           event_crc_bad[j]=(lcrc_n!=32'hdebb20e3);commit_n=position;state_n=TOKEN;
+         end else token_failure=1;
+       end
+       if(!handled && !control_bad_look[j]) begin
+         case(state_n)
+           TOKEN:begin
+             if(idl_ok) commit_n=position+1'b1;
+             else if(eds_ok) begin commit_n=position+1'b1;ending_n=1;end
+             else if(stp_ok) begin
+               tag_n=position;sequence_n={word[19:16],word[31:24]};
+               lcrc_n=crc_seed[j];crc_origin=j+1;
+               write_data[j*32+:32]={16'b0,word[31:24],4'b0,word[19:16]};
+               write_keep[j*4+:4]=4'b0011;write_sop[j*4]=1;
+               write_tags[j*PW+:PW]=tag_n;write_sequence[j*12+:12]=sequence_n;
+               bytes_n=encoded_bytes;remaining_n=length_dw-1'b1;
+               header_first_n=1;header_bad_n=0;expected_n=0;state_n=TLP;
+             end else if(sdp_ok) begin
+               tag_n=position;sequence_n=0;
+               dllp_crc_n=dllp_seed[j];
+               write_data[j*32+:32]={16'b0,word[31:16]};
+               write_keep[j*4+:4]=4'b0011;write_sop[j*4]=1;write_dllp[j*4+:4]=4'b0011;
+               write_tags[j*PW+:PW]=tag_n;state_n=DLLP;
+             end else token_failure=1;
+           end
+           TLP:begin
+             case(crc_origin)
+               0:lcrc_n=crc_carry[j];
+               1:lcrc_n=crc_stp0[j];
+               2:lcrc_n=crc_stp1[j];
+               3:lcrc_n=crc_stp2[j];
+               default:lcrc_n=crc_stp3[j];
+             endcase
+             write_data[j*32+:32]=word;write_keep[j*4+:4]=4'b1111;
+             write_tags[j*PW+:PW]=tag_n;write_sequence[j*12+:12]=sequence_n;
+             if(control_header_first[j]) begin
+               tlp_payload=({word[17:16],word[31:24]}==0)?13'd4096:{1'b0,word[17:16],word[31:24],2'b00};
+               expected_n=current_predecode[j*32+5+:13];
+               header_bad_n=current_predecode[j*32+18];header_first_n=0;
+             end
+             remaining_n=remaining_n-1'b1;
+             if(control_carry_end[j]) begin
+               write_eop[j*4+3]=1;
+               if(control_carried_header_bad) token_failure=1;
+               else state_n=LOOK;
+             end
+           end
+           DLLP:begin
+             dllp_crc_n=dllp_finish[j];
+             write_data[j*32+:32]=word;write_keep[j*4+:4]=4'b1111;
+             write_eop[j*4+3]=1;write_dllp[j*4+:4]=4'b1111;write_tags[j*PW+:PW]=tag_n;
+             verdict_enable[j]=1;verdict_tags[j*PW+:PW]=tag_n;verdict_value[j]=(dllp_crc_n==16'h556f);
+             event_good[j]=(dllp_crc_n==16'h556f);event_crc_bad[j]=(dllp_crc_n!=16'h556f);
+             event_dllp[j]=1;event_sequence[j*12+:12]=0;
+             commit_n=position+1'b1;state_n=TOKEN;
+           end
+           default:token_failure=1;
+         endcase
+       end
+     end
+   end
+ end
+ // BEGIN V6 SHARED OLD VERDICT READS
+ // Four physical read values are common to every slot update. Explicit
+ // wires avoid a whole verdict-array sensitivity expansion in every slot.
+ wire [3:0] cache_write_old_verdict;
+ genvar cache_read_lane;
+ generate for(cache_read_lane=0;cache_read_lane<4;cache_read_lane=cache_read_lane+1) begin:cache_reads
+   assign cache_write_old_verdict[cache_read_lane]=verdict[write_tags[cache_read_lane*PW+:PW]];
+ end endgenerate
+ // END V6 SHARED OLD VERDICT READS
+ // BEGIN V5 SLOT VERDICT CACHE
+ // The stored bit equals verdict[slot_tag] after every initialized slot write.
+ // Simultaneous writes select the NEW slot tag, then apply the four verdict
+ // writes in exactly the original last-writer order. Nonwritten slots follow
+ // matching verdict updates. Faulted/aborted steps cannot update either array.
+ genvar cache_slot;
+ generate for(cache_slot=0;cache_slot<RING_DWORDS;cache_slot=cache_slot+1) begin:verdict_cache
+   // BEGIN V7 SCALAR SLOT READS
+   // Constant array elements are the same values. Explicit wires keep
+   // simulator @* sensitivity local to these two elements.
+   wire [PW-1:0] resident_tag=slot_tag[cache_slot];
+   wire resident_verdict=slot_verdict[cache_slot];
+   // END V7 SCALAR SLOT READS
+   reg [PW-1:0] effective_tag;
+   reg next_value;
+   integer write_lane,verdict_lane;
+   always @* begin
+     effective_tag=resident_tag;next_value=resident_verdict;
+     for(write_lane=0;write_lane<4;write_lane=write_lane+1) begin
+       if(((write_ptr+write_lane)&(RING_DWORDS-1))==cache_slot) begin
+         effective_tag=write_tags[write_lane*PW+:PW];
+         next_value=cache_write_old_verdict[write_lane];
+       end
+     end
+     for(verdict_lane=0;verdict_lane<4;verdict_lane=verdict_lane+1) begin
+       if(verdict_enable[verdict_lane] && verdict_tags[verdict_lane*PW+:PW]==effective_tag)
+         next_value=verdict_value[verdict_lane];
+     end
+   end
+   // The original ring metadata and verdict arrays have no reset; pointer and
+   // valid resets quarantine unwritten entries. Keep the same reset boundary.
+   always @(posedge clk_i) begin
+     if(step && !fault_now) slot_verdict[cache_slot]<=next_value;
+   end
+ end endgenerate
+ // END V5 SLOT VERDICT CACHE
+ // BEGIN V10 QUARANTINED BANK WRITER
+ // Only contents bypass parser-fault qualification. All validity, slice,
+ // packet/CRC state, commits and public fault/abort priority remain unchanged.
+ // A fault edge can change inaccessible contents; both valid bits clear on
+ // that edge, and a new epoch must load a bank before it can become visible.
+ // Payload and its literal predecode companion always move together.
+ always @(posedge clk_i or negedge rst_ni) begin
+   if(!rst_ni) begin
+     current_block<=0;next_block<=0;
+     current_predecode<=predecode_block(512'b0);next_predecode<=predecode_block(512'b0);
+   end else if(enabled && active_o) begin
+     if(step) begin
+       if(slice==3) begin
+         if(next_valid) begin current_block<=next_block;current_predecode<=next_predecode;end
+       end else begin
+         current_block<={32'b0,current_block[511:416],32'b0,current_block[383:288],
+                         32'b0,current_block[255:160],32'b0,current_block[127:32]};
+         current_predecode<={{4{predecode_word(32'b0)}},current_predecode[511:128]};
+       end
+     end
+     if(block_valid_i && block_ready_o) begin
+       if(!current_valid || (last_slice && !next_valid)) begin
+         current_block<=payload_i;current_predecode<=input_predecode;
+       end else begin next_block<=payload_i;next_predecode<=input_predecode;end
+     end
+   end
+ end
+ // END V10 QUARANTINED BANK WRITER
+ integer w;
+ initial begin
+   if(MAX_ENCODED_BYTES<18 || MAX_ENCODED_BYTES>4118)
+     $error("MAX_ENCODED_BYTES must be18..4118");
+   if(RING_DWORDS<((MAX_ENCODED_BYTES+2)/4+8) || (RING_DWORDS&(RING_DWORDS-1))!=0)
+     $error("Power-of-two ring must exceed one maximum packet plus8slots");
+ end
+ always @(posedge clk_i or negedge rst_ni) begin
+   if(!rst_ni) begin
+     lcrc<=32'hffffffff;dllp_crc<=16'hffff;
+     state<=TOKEN;current_valid<=0;next_valid<=0;slice<=0; // V10 reset control only
+     write_ptr<=0;read_ptr<=0;commit_ptr<=0;packet_tag<=0;packet_bytes<=0;expected_bytes<=0;
+     remaining<=0;packet_sequence<=0;header_first<=0;header_bad<=0;ending<=0;
+     output_valid<=0;output_data<=0;output_keep<=0;output_sop<=0;output_eop<=0;output_dllp<=0;output_sequence<=0;
+     error_pulse<=0;overflow_sticky<=0;stream_end_o<=0;active_o<=0;halted_o<=0;
+     packet_good_o<=0;packet_nullified_o<=0;packet_crc_bad_o<=0;packet_dllp_o<=0;packet_sequence_o<=0;
+   end else begin
+     error_pulse<=0;stream_end_o<=0;packet_good_o<=0;packet_nullified_o<=0;packet_crc_bad_o<=0;packet_dllp_o<=0;packet_sequence_o<=0;
+     if(flush_i || stream_start_i) begin
+       state<=TOKEN;current_valid<=0;next_valid<=0;slice<=0;write_ptr<=0;read_ptr<=0;commit_ptr<=0;
+       output_valid<=0;ending<=0;overflow_sticky<=0;active_o<=stream_start_i && !flush_i;halted_o<=0;
+     end else if((stream_abort_i && active_o) || fault_now) begin
+       state<=TOKEN;current_valid<=0;next_valid<=0;output_valid<=0;ending<=0;
+       write_ptr<=0;read_ptr<=0;commit_ptr<=0;error_pulse<=1;active_o<=0;halted_o<=1;
+       if(ring_overflow_now) overflow_sticky<=1;
+     end else if(active_o) begin
+       if(!output_valid || ready_i) output_valid<=0;
+       if(retire) begin
+         read_ptr<=read_ptr+read_count;
+         if(read_keep!=0) begin
+           output_valid<=1;output_data<=read_data;output_keep<=read_keep;
+           output_sop<=read_sop;output_eop<=read_eop;output_dllp<=read_dllp;output_sequence<=read_sequence;
+         end
+       end
+       if(step) begin
+         lcrc<=lcrc_n;dllp_crc<=dllp_crc_n;
+         state<=state_n;commit_ptr<=commit_n;packet_tag<=tag_n;packet_bytes<=bytes_n;
+         expected_bytes<=expected_n;remaining<=remaining_n;packet_sequence<=sequence_n;
+         header_first<=header_first_n;header_bad<=header_bad_n;ending<=ending_n;
+         write_ptr<=write_ptr+4;packet_good_o<=event_good;packet_nullified_o<=event_nullified;packet_crc_bad_o<=event_crc_bad;packet_dllp_o<=event_dllp;packet_sequence_o<=event_sequence;
+         for(w=0;w<4;w=w+1) begin
+           slot_data[(write_ptr+w)&(RING_DWORDS-1)]<=write_data[w*32+:32];
+           slot_keep[(write_ptr+w)&(RING_DWORDS-1)]<=write_keep[w*4+:4];
+           slot_sop[(write_ptr+w)&(RING_DWORDS-1)]<=write_sop[w*4+:4];
+           slot_eop[(write_ptr+w)&(RING_DWORDS-1)]<=write_eop[w*4+:4];
+           slot_dllp[(write_ptr+w)&(RING_DWORDS-1)]<=write_dllp[w*4+:4];
+           slot_sequence[(write_ptr+w)&(RING_DWORDS-1)]<=write_sequence[w*12+:12];
+           slot_tag[(write_ptr+w)&(RING_DWORDS-1)]<=write_tags[w*PW+:PW];
+           if(verdict_enable[w]) verdict[verdict_tags[w*PW+:PW]]<=verdict_value[w];
+         end
+         if(slice==3) begin
+           slice<=0;current_valid<=next_valid;
+           // Bank contents are updated in the separate V10 writer.
+           next_valid<=0;
+         end else begin
+           slice<=slice+1'b1;
+           // The original slice/valid control remains fault-qualified.
+         end
+       end
+       if(block_valid_i && block_ready_o) begin
+         if(!current_valid || (last_slice && !next_valid)) begin current_valid<=1;slice<=0;end
+         else begin next_valid<=1;end
+       end
+       if(ending || (step && ending_n)) begin current_valid<=0;next_valid<=0;end
+       if(ending && read_ptr==write_ptr && (!output_valid || ready_i)) begin
+         stream_end_o<=1;active_o<=0;ending<=0;output_valid<=0;
+       end
+     end
+   end
+ end
+endmodule
+`default_nettype wire

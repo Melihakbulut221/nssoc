@@ -1,0 +1,90 @@
+{
+  "status": "FROZEN_V26_CANONICAL_VERDICT_QUARANTINE_CONTRACT_PENDING_INDEPENDENT_REVIEW",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v25.v": {
+      "bytes": 200180,
+      "sha256": "fc1acf939c737364e189fc941ade7ef5eea5ed674290d91600836cc5a5740b0f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_integrity_command_v25.py": {
+      "bytes": 8583,
+      "sha256": "f8e7cfe621e869ca7b28d3ec480e85a9c38cb205f794a3d99897cede84c561b6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/source-freeze04.json": {
+      "bytes": 75168,
+      "sha256": "a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/ready-finite.json": {
+      "bytes": 79004,
+      "sha256": "5d9d68875faabf629851b36f0a191c71fcbd4f052a41340a828da9c2bfb2d3eb"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/native-saved-peer-vco.json": {
+      "bytes": 6044,
+      "sha256": "5d0d7996b992bc22735c91dff234c4b26b5a5b4dd510be732d66aacccfb3986b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/pcie-integrity-v25-current-controls02-validation-20261006.json": {
+      "bytes": 17194,
+      "sha256": "65d9561e729e00dc14e9c2c3b33047745db0fcab9ea5eb42274667310dfc0b35"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/candidate-decision.json": {
+      "bytes": 1694,
+      "sha256": "0312786b7d4b92ae83bc6ed2f901f6290aeeea7326ee414b4207f7012c3aca06"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v26-20261006/v25-enable-diagnosis01.json": {
+      "bytes": 16708,
+      "sha256": "93acd09832d92fa533cc871805a6041e6bd6a00fff530ce89209b815207b46fe"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v26-20261006/diagnose_v25_enable01.py": {
+      "bytes": 5420,
+      "sha256": "7b194609d2792fd81d9437f91b56913ff252a88ef0620fb2421dc8f0766871b3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v26-20261006/control-relation01.json": {
+      "bytes": 752,
+      "sha256": "ba37c8632eae6b5f929725873e8168206df5fcba087b539d7eef393c2d758387"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v26-20261006/prepare_contract01.py": {
+      "bytes": 8712,
+      "sha256": "03c82fc032010c08c4d68b951378555cd9f3ee3040a42b75cd2815502862cac1"
+    }
+  },
+  "baseline": "Exact corrected V25 experimental source with all43 current functional predicates; V25 timing rejected. V23 remains the faster experimental reference; stableV11 unchanged.",
+  "measured_basis": {
+    "source": "Actual V25 repaired.v and SS worst path",
+    "path": "remaining[4] to verdict[112][0]",
+    "slack_ns": -3.421986,
+    "critical_cut": "_105895_/Y=_032930_",
+    "buffer_tree": 100,
+    "nonbuffer_input_loads": 696,
+    "canonical_verdict_Ds": 128,
+    "critical_tail_buffers": 9,
+    "critical_tail_buffer_delay_ns": 1.293244,
+    "inference": "Canonical verdict writes are still inside current-fault-qualified main APPLY. A structural cut of this late enable removes remaining[4] and77other leaves from endpointD. It does not uniquely identify Boolean source logic or predict new worst timing."
+  },
+  "proposed_exact_delta": [
+    "Delete only the canonical verdict[...] nonblocking assignment from the four-lane main old-command APPLY loop.",
+    "Insert one separate always @(posedge clk_i) writer with a distinct loop integer and exact if(rst_ni && enabled && active_o && command_valid). Preserve lane0..3 order, each if(command_verdict_enable[lane]), exact packed tag index and exact command_verdict_value bit. No reset initializer is added.",
+    "Leave all seven slot content writes, visible_commit, parser commit, write/read pointers, command capture/ownership, slot_verdict cache writer, read/retire/output logic and all parser/CRC/header math byte-exact apart from version/module names."
+  ],
+  "latency_and_capacity": "No additional register or public latency relative to V25. Same accepted-input cadence, occupancy, overflow, ready/valid, packet event timing, ending and stream_end. V25 existing nominal+1 versusV23 remains; no drop-in equivalence toV11 is claimed.",
+  "temporal_invariant": {
+    "ordinary_edge": "If no procedural reset/flush/start/abort/fault suppresses main APPLY, canonical table updates remain exactly old-command updates with the same indexed-write semantics and last-lane priority. Capture still replaces the complete command only after old-value reads.",
+    "sole_settled_control_difference": "The16384-case scalar table has exactly one extra-write combination: reset1, flush/start/abort0, active1, command_valid1, fault_now1. Both versions clear command validity, current/next/retire/output ownership and all ring/frontier pointers on that fault edge. Invalid table contents may differ; no stored-state equivalence claim.",
+    "same_edge_output": "Public valid/ready samples the old output register beforeNBA. Canonical table cannot change that already copied payload or acceptance. The unchanged fault-priority main process then clears output/descriptor validity; no pending command becomes visible.",
+    "new_epoch": "Reset/start/flush do not clear canonical table or slot cache in either baseline. New physical slots are written with fresh data/tag before their frontier can expose them. A fresh packet can temporarily read a stale canonical bit into its cache while uncommitted; the command containing that packets actual CRC/verdict overrides every matching cache entry before its visible_commit advances. Thus stale table values alone cannot authorize retirement.",
+    "tag_ownership": "Tags are extended SOP write pointers over two ring spans, with occupied capacity unchanged and below one ring. Need explicitly count valid old committed tails, pending closure, new SOP/tag reuse and repeated ring/tag wrap. Do not equate numeric reused tag with old ownership after global invalidation.",
+    "bad_packet": "Fresh CRC-bad or nullified packet closure must set the fresh owner cache false before commit; a fault-written stale true canonical tag must not leak its bytes. EDS and IDL cannot manufacture packet validity.",
+    "four_state": "Retain literal X/Z data/tag/verdict values and procedural lane conditions. Unknown indexed write behavior is unchanged. Keep all direct-reset guards and prior10 actual X/Z hold/resume transitions, including reset1toX/Z scheduling. The independent scalar truth table is only a source relation; actual HDL is required."
+  },
+  "required_controls": [
+    "Independent contract source review before implementation, then complete whole-framer inverse and single-writer inventory before functional launch.",
+    "Rerun every current43 V25 predicate in its versioned V26 counterpart:19 direct+19 instrumented public transactions,2 nominal+1 cases,4102 temporal relations,12 actual component mutations,12 public/8 architecture/2 burst mutations, pending badblock/overflow/restart and actual line-rate/wrap coverage. Do not claim inherited historical header mutants reran.",
+    "Retain8 cache-fault epochs and add mandatory canonical-table preNBA/postNBA observer on both V25 reference and V26 candidate. Use real CRC-bad DLLP initialization through both extended tag generations, then good pending old command and current parser fault. Require actual candidate0to1 canonical write, unchanged reference canonical0, command-valid-at-edge and same discarded ownership. No force/deposit or optional hasattr-only gate.",
+    "After each of start/flush/reset/abort recovery, send same-tag fresh good and CRC-bad/nullified traffic under held output/backpressure, release and scoreboard every byte. Count wraps and false-cache update before visible commit; include same-edge old valid/ready fault acceptance and no-handshake fault cases.",
+    "Restore current fault qualification as a real HDL negative: it must fail the required internal canonical-write witness. This is a witness negative, not a public protocol counterexample. Keep public leak/early-visible/stale-command mutations separately meaningful.",
+    "Add fresh-owner verdict/cache override removal as a real public negative with stale-true fault prefill; require explicit unexpected-byte/packet diagnostic. A mutant that never affects public behavior must not be accepted as covered.",
+    "Isolated literal command test models the deliberate unowned-table difference explicitly; all owned slot/frontier/output comparisons remain strict. No generic ignored mismatch or broad exception acceptance.",
+    "Only after current positives, meaningful negatives, exact saved-control peer and native source peer: sameCPU6/2GiB mapping/import graph/4ns three-corner STA. Check actual verdictD data/enable ancestry and compareV25/V23; reject on failed setup/hold or protocol."
+  ],
+  "implementation_started": false,
+  "native_started": false,
+  "adopted": false
+}

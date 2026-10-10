@@ -1,0 +1,75 @@
+{
+  "status": "PASS_SOURCE_ONLY_V19_QUARANTINED_SLOTS",
+  "findings": [],
+  "freeze": {
+    "bytes": 2241,
+    "sha256": "59652fa3023ac56765644368d95e602470a48dc900419480fd6d2649d49443e6"
+  },
+  "method": {
+    "bytes": 9072,
+    "sha256": "bc2ba8c595982eed873dd92524f7d3cfb80db31f8b409cc3eda6b75f06b63eaa"
+  },
+  "source_pins": {
+    "scripts/generate_pcie_integrity_slots_v19.py": {
+      "bytes": 2489,
+      "sha256": "ce64083b5fb5ed16ea7a1c91ffd01c430f623ffcb59cced95b941fb487586062"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 11276,
+      "sha256": "bec86d0cce08256a913535da10bdfd1c8c8723203b1f3bc8f860cb1186331ad9"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v19.v": {
+      "bytes": 193788,
+      "sha256": "f9025c41e9c2aa5f6208f852e30286384bbc9462b164923485d0498600f9daea"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v19.v": {
+      "bytes": 3324,
+      "sha256": "e70b440f3518f85ca241d0356fe431960c2d4e62cd66db2ee933a5637d6aef4e"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 23943,
+      "sha256": "bdbc9d94731f1910b33e182e8da252c4559322c4aeb12ce7f6dd2b74ff70972e"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v19": {
+      "bytes": 1528,
+      "sha256": "7396a57309fb7034f1028db143984f27b5d6a2d2759a95caba96994c0167ecfc"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v19_miter.py": {
+      "bytes": 12565,
+      "sha256": "b84d84866ff5e4892bf2978489b5df05f991e806e00bb3e2ea4d9e365fa47056"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 4805,
+      "sha256": "4bfd7bd24bc416abe678f948999e72861809f5e204eb3f939e8221aac6b6a34c"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v19_slots.py": {
+      "bytes": 5103,
+      "sha256": "c815cffb88c52d582232a24f4272651610c330206ab00415cab3291b807ae710"
+    }
+  },
+  "baseline": {
+    "bytes": 192776,
+    "sha256": "7aeb0b29e6b56978bed7f83a48b14e8e11a005bf16342cfd8b616225ba9d8160"
+  },
+  "whole_framer_inverse_byte_exact": true,
+  "seven_field_writer_exact_rhs_and_indices": true,
+  "unchanged_complete_wrapper_checker_makefile": true,
+  "unchanged_first13_public_cases": true,
+  "finite_boolean_gate_relations": 1024,
+  "extra_fault_gate_assignments": 3,
+  "planned_public_cases": 14,
+  "planned_fault_restart_epochs": 16,
+  "planned_literal_cases": 4096,
+  "planned_literal_mutants": 9,
+  "actual_new_functional_execution": false,
+  "review": [
+    "Exact full-byte inverse restores V17 after removing only the seven-field step writer and restoring its original statements. Verdict/cache, parser, capacity/ending, pointers, reset/fault/abort/public priority and read tree are untouched.",
+    "For reset-initialized binary lifecycle operation, extra writes require step and fault; exact step still suppresses reset/start/flush/abort/ending/overflow. Same-edge original fault clears owner pointers, current/next valid, output valid and ending, deactivating and halting the epoch.",
+    "Invalid data/tag contents may differ. Capacity and pointer rules prevent overwriting live slots, and each later write-pointer advance writes all four contents before visibility. On reuse, unchanged cache effective_tag and cache_write_old_verdict initialization use the new write tag before applying same-cycle verdict broadcasts; stale invalid tags do not establish visible ownership.",
+    "Fourteen-case oracle and V17/V19 miter retain all prior13 cases. New four malformations times four recovery routes exercise faulted steps, actual invalid-content divergence, atomic empty/halt, held prior output, halted drain requests, mixed TLP/DLLP ring wrap, stalls and EDS drain. Witnesses are assertions to be measured, not presumed PASS.",
+    "Literal actual-HDL design covers seven complete arrays at4096 trials, all128 extended pointers,1024known writes,2048X/Zstep holds and48wrap writes; seven missing fields plus rotated payload and ignored step are nine meaningful component faults.",
+    "Before any HDL, public if1 mutant was replaced by definite if0 missing-slot writes; separate literal if1 control remains meaningful. Added64idle bytes places later fault below64-slot capacity while permitting prior output to be held. Earlier source snapshots and notes are retained.",
+    "The old quarantine-relation01 coverage-plan line describing public all-step broadening is superseded by negative-stimulus-correction02 and stimulus-strengthening03; current executable tests use if0. No prior failed/incomplete run is converted to success."
+  ],
+  "required_next": "Actual immutable functional controls under CPU6 and2GiB inherited limit, including14direct+14miter cases and16fault/restart witnesses. Native mapping/timing requires all controls and final source hashes PASS first; keep originalMAX150/4ns constraints. This review does not authorize classifying invalid storage as equivalent or claiming exhaustive reachability/formal/physical closure."
+}

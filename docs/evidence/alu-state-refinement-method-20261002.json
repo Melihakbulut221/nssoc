@@ -1,0 +1,831 @@
+{
+  "status": "SOURCE_FROZEN_AND_TINY_NATIVE_VALIDATED_NOT_FULL_PROOF",
+  "methods": {
+    "scripts/prove_alu_state_refinement.py": {
+      "bytes": 26265,
+      "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+    },
+    "sw/tests/test_alu_state_refinement.py": {
+      "bytes": 18337,
+      "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+    },
+    ".github/workflows/timing-alu-state-refinement.yml": {
+      "bytes": 5494,
+      "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+    },
+    "hw/soc/pnr/alu-state-refinement-input.lock.json": {
+      "bytes": 3135,
+      "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+    }
+  },
+  "frozen_dependencies": {
+    "scripts/run_cloud_alu_prefix.py": {
+      "bytes": 14684,
+      "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+    },
+    "scripts/prepare_alu_prefix.py": {
+      "bytes": 3824,
+      "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+    },
+    "scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "scripts/bootstrap_oss.py": {
+      "bytes": 4879,
+      "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+    },
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    },
+    "docs/evidence/timing-cloud-input-20260930.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    "scripts/prove_alu_mapped_state.py": {
+      "bytes": 25957,
+      "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+    },
+    "scripts/replay_alu_state_counterexample.py": {
+      "bytes": 13385,
+      "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+    },
+    "scripts/prove_alu_state_repair.py": {
+      "bytes": 15236,
+      "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+    },
+    "scripts/prove_alu_state_partitions.py": {
+      "bytes": 29376,
+      "sha256": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8"
+    },
+    "sw/tests/test_alu_state_partitions.py": {
+      "bytes": 12506,
+      "sha256": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4"
+    },
+    ".github/workflows/timing-alu-state-partitions.yml": {
+      "bytes": 5354,
+      "sha256": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542"
+    }
+  },
+  "tests": {
+    "pytest": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/dev/shm/nssoc-refinement-final-pytest",
+        "sw/tests/test_alu_state_refinement.py",
+        "sw/tests/test_alu_state_partitions.py",
+        "sw/tests/test_alu_state_repair.py",
+        "sw/tests/test_alu_state_counterexample.py",
+        "sw/tests/test_alu_mapped_state.py"
+      ],
+      "returncode": 0,
+      "seconds": 3.457678990002023,
+      "log": {
+        "bytes": 260,
+        "sha256": "838c2f2fd875b32b897331f666ded94d8d38a90d3611d7e1aabc0c2fa04f412e"
+      }
+    },
+    "ruff": {
+      "command": [
+        "hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "--no-cache",
+        "scripts/prove_alu_state_refinement.py",
+        "sw/tests/test_alu_state_refinement.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.010504402001970448,
+      "log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      }
+    },
+    "actionlint": {
+      "command": [
+        "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+        ".github/workflows/timing-alu-state-refinement.yml"
+      ],
+      "returncode": 0,
+      "seconds": 0.0036799660010728985,
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "native_controls": {
+    "bytes": 4780,
+    "sha256": "81b3827c9321550275ac5820cf89b146affb1260bff823cdac0d0b520bb7c58e"
+  },
+  "tiny_controls": {
+    "equal": {
+      "status": "PROVED_ALL_PARTITIONED_BINARY_BOUNDARY_EQUATIONS",
+      "state_bijection_proved": true,
+      "complete_groups": 8,
+      "proved_groups": 8,
+      "complete_output_obligation_bits": 8,
+      "symbolic_input_bits": 6,
+      "no_internal_assumptions": true,
+      "original_failed_proof_preserved": true,
+      "monolithic_timeout_preserved": true,
+      "candidate_adopted": false,
+      "full_soc_functional_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false,
+      "omitted_native_receipt_rejected": true,
+      "duplicate_native_receipt_rejected": true
+    },
+    "wrong_clock": {
+      "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+      "state_bijection_proved": false,
+      "complete_groups": 8,
+      "proved_groups": 7,
+      "complete_output_obligation_bits": 8,
+      "symbolic_input_bits": 6,
+      "no_internal_assumptions": true,
+      "original_failed_proof_preserved": true,
+      "monolithic_timeout_preserved": true,
+      "candidate_adopted": false,
+      "full_soc_functional_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "wrong_output": {
+      "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+      "state_bijection_proved": false,
+      "complete_groups": 8,
+      "proved_groups": 7,
+      "complete_output_obligation_bits": 8,
+      "symbolic_input_bits": 6,
+      "no_internal_assumptions": true,
+      "original_failed_proof_preserved": true,
+      "monolithic_timeout_preserved": true,
+      "candidate_adopted": false,
+      "full_soc_functional_accepted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    }
+  },
+  "full_soc_native_run": false,
+  "full_soc_binary_equivalence_proved": false,
+  "unresolved_boot_failure": true,
+  "cloud_dispatch_performed": false,
+  "scope": "Refine only 19 original timed-out groups into 152 output-only slices. Preserve 250 original proofs and every original symbolic input; acceptance awaits actual cloud proof.",
+  "outputs": {
+    "actionlint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "methods/.github/workflows/timing-alu-state-partitions.yml": {
+      "bytes": 5354,
+      "sha256": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542"
+    },
+    "methods/.github/workflows/timing-alu-state-refinement.yml": {
+      "bytes": 5494,
+      "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+    },
+    "methods/docs/evidence/timing-cloud-input-20260930.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    "methods/hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+      "bytes": 43759,
+      "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+    },
+    "methods/hw/soc/pnr/alu-state-refinement-input.lock.json": {
+      "bytes": 3135,
+      "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+    },
+    "methods/scripts/bootstrap_oss.py": {
+      "bytes": 4879,
+      "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+    },
+    "methods/scripts/prepare_alu_prefix.py": {
+      "bytes": 3824,
+      "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+    },
+    "methods/scripts/prove_alu_mapped_state.py": {
+      "bytes": 25957,
+      "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+    },
+    "methods/scripts/prove_alu_state_partitions.py": {
+      "bytes": 29376,
+      "sha256": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8"
+    },
+    "methods/scripts/prove_alu_state_refinement.py": {
+      "bytes": 26265,
+      "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+    },
+    "methods/scripts/prove_alu_state_repair.py": {
+      "bytes": 15236,
+      "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+    },
+    "methods/scripts/replay_alu_state_counterexample.py": {
+      "bytes": 13385,
+      "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+    },
+    "methods/scripts/run_cloud_alu_prefix.py": {
+      "bytes": 14684,
+      "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+    },
+    "methods/scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "methods/sw/tests/test_alu_state_partitions.py": {
+      "bytes": 12506,
+      "sha256": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4"
+    },
+    "methods/sw/tests/test_alu_state_refinement.py": {
+      "bytes": 18337,
+      "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+    },
+    "pytest.log": {
+      "bytes": 260,
+      "sha256": "838c2f2fd875b32b897331f666ded94d8d38a90d3611d7e1aabc0c2fa04f412e"
+    },
+    "ruff.log": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "tiny-native/equal/0.tcl": {
+      "bytes": 2426,
+      "sha256": "48fda5ea9aab37ba7657f81494ed163f6a1ef9e952c58ae61acf0d43a5bc6d81"
+    },
+    "tiny-native/equal/1.tcl": {
+      "bytes": 2426,
+      "sha256": "63d94689d3042ad014e87142b8a91ece659e3d9c0d15bc1c4a3b07371452c2b5"
+    },
+    "tiny-native/equal/2.tcl": {
+      "bytes": 2426,
+      "sha256": "b1a89ae06df3b452265a4483c8ee51a9e3c49d9ec44dbad196b751097adf0e03"
+    },
+    "tiny-native/equal/3.tcl": {
+      "bytes": 2426,
+      "sha256": "d63e88b62002e408ec708710208c8303f36d47db05c7cfc6535421d4838c7279"
+    },
+    "tiny-native/equal/__nssoc_obligation_0000.log": {
+      "bytes": 1747,
+      "sha256": "2d5bb810719174bfbc237b9b1967e57e830466629a3e7052e13278d0c9ea4161"
+    },
+    "tiny-native/equal/__nssoc_obligation_0001.log": {
+      "bytes": 1747,
+      "sha256": "2ffc4f1f89a3bc55e424c517145b08320950b24efcb81367b309f1cfd4869ae3"
+    },
+    "tiny-native/equal/__nssoc_obligation_0002.log": {
+      "bytes": 1747,
+      "sha256": "3de2ee3532fe2df698612d52418843949fcd8769e472b9b6f45f67d5d3515e3a"
+    },
+    "tiny-native/equal/__nssoc_obligation_0003.log": {
+      "bytes": 1747,
+      "sha256": "ee29748cab101ee47523c7a8c8f1ef3b43778a6ca882fedb463c933b5aaf7eca"
+    },
+    "tiny-native/equal/__nssoc_obligation_0004.log": {
+      "bytes": 1747,
+      "sha256": "b0b8afb40aaaba3ccd7a4c5dd2cb11ece558ed00f8781fd52e4601bde12ef69f"
+    },
+    "tiny-native/equal/__nssoc_obligation_0005.log": {
+      "bytes": 1747,
+      "sha256": "b42b9387e2bd318dce46eba09134d753913adb3f9d7073a669fe820993f50457"
+    },
+    "tiny-native/equal/__nssoc_obligation_0006.log": {
+      "bytes": 1747,
+      "sha256": "61bb316ce3c41e9caf7bfd2caa858b215cee9aa2a06c35755e951cc5ff587d1d"
+    },
+    "tiny-native/equal/__nssoc_obligation_0007.log": {
+      "bytes": 1747,
+      "sha256": "ba78f3ffe524d282b5bf1506986b4ea2b7b784bcb4b23b3aa1992232bae4fece"
+    },
+    "tiny-native/equal/groups.json": {
+      "bytes": 2803,
+      "sha256": "23f860890713ae55350718b359981e5acf200e5bbef4ac9e7037a61d2ac161a0"
+    },
+    "tiny-native/equal/interface.json": {
+      "bytes": 29665,
+      "sha256": "18203d48c41e53d0b2743ec08c23ab0d2215485a615851ef5eca20458607098d"
+    },
+    "tiny-native/equal/left.json": {
+      "bytes": 3178,
+      "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+    },
+    "tiny-native/equal/observations.v": {
+      "bytes": 4484,
+      "sha256": "c36f46f386b60fe997df99f2254c82a2091b49d32b565083d2e86957d6b32b65"
+    },
+    "tiny-native/equal/original-execution.json": {
+      "bytes": 525,
+      "sha256": "2af77d40926dec36d088cb95d8046c5556a45658595f7d78c1bbac9ba2c128ea"
+    },
+    "tiny-native/equal/original.il": {
+      "bytes": 9742,
+      "sha256": "d59de3ba696089d387f3aa703ae8c6afd70f51edc6e4b8def4ba8bfcc1ffbbf2"
+    },
+    "tiny-native/equal/original.json": {
+      "bytes": 18302,
+      "sha256": "526697a9379a49c50b765d919028947b99491c7a58dd7fe328337db103f745ff"
+    },
+    "tiny-native/equal/original.log": {
+      "bytes": 21172,
+      "sha256": "b228ca42029db0a7ac9cd2f7f47a39ed2fbade974e4daeca3f0ff12013e5599c"
+    },
+    "tiny-native/equal/original.ys": {
+      "bytes": 1139,
+      "sha256": "992815c5d45e00e0b8af37f16943e540812fee98abaedd3d0627c06a9cc2e13f"
+    },
+    "tiny-native/equal/plan.json": {
+      "bytes": 1762,
+      "sha256": "206d51b94b53ec715c888b1c015b38ec614621a9c61e9e06d9aed1f473ef4c7d"
+    },
+    "tiny-native/equal/refined.il": {
+      "bytes": 19994,
+      "sha256": "61b44b3651457b3a81ef8346e6d3f5b89de14aaa56be1454da424b2a4b42e32a"
+    },
+    "tiny-native/equal/refinement-execution.json": {
+      "bytes": 524,
+      "sha256": "21ac451be87a22e355e7ccbe9fd6c6b77dc3344a42ec3bee61f5bb0d0c1cb5b1"
+    },
+    "tiny-native/equal/refinement.log": {
+      "bytes": 6741,
+      "sha256": "df2d386b197076775036ba82db32bbc48d3d33d789f2b9a29332e9a4d19dbde7"
+    },
+    "tiny-native/equal/refinement.ys": {
+      "bytes": 441,
+      "sha256": "78429fb7a9b8669aa7c08d97a0da084d64770d5af69d4711c633c5d301db0189"
+    },
+    "tiny-native/equal/right.json": {
+      "bytes": 3178,
+      "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+    },
+    "tiny-native/equal/shard0-execution.json": {
+      "bytes": 517,
+      "sha256": "2f58d51702118cb5dae14159435a5b1150e04fdc1a97d69991b66bd4aba77d46"
+    },
+    "tiny-native/equal/shard0.log": {
+      "bytes": 3804,
+      "sha256": "39a353f93b610acefef5c5d81a75f62de39c81919d81f6da2c1daf1921b7678e"
+    },
+    "tiny-native/equal/shard1-execution.json": {
+      "bytes": 517,
+      "sha256": "178cd9abada1dbbec936776700e9edd978422027238bbfb8d32ceac979df6383"
+    },
+    "tiny-native/equal/shard1.log": {
+      "bytes": 3804,
+      "sha256": "ce6bf2f7fd1619805d0409e7a9fa623bade3aba1ffb19dc6148b05da981cf766"
+    },
+    "tiny-native/equal/shard2-execution.json": {
+      "bytes": 517,
+      "sha256": "181fb9fe6e7400e8865bb35d20988db65877a99a985122c363d77ac56f765c8b"
+    },
+    "tiny-native/equal/shard2.log": {
+      "bytes": 3804,
+      "sha256": "05cff31fe91471d6821a845b3edb53fc874036c0535e113ef3f7a727c0dd834b"
+    },
+    "tiny-native/equal/shard3-execution.json": {
+      "bytes": 517,
+      "sha256": "f8ee5e7d65a0d96ab637cbd0550c4f99d287407a2b511f31a5c9bd98e4194eb6"
+    },
+    "tiny-native/equal/shard3.log": {
+      "bytes": 3804,
+      "sha256": "1166f82c92fb6c513a44658e39af1658f57c632dd1e0a70c8abc59ff3274d5c0"
+    },
+    "tiny-native/result.json": {
+      "bytes": 4780,
+      "sha256": "81b3827c9321550275ac5820cf89b146affb1260bff823cdac0d0b520bb7c58e"
+    },
+    "tiny-native/wrong_clock/0.tcl": {
+      "bytes": 2456,
+      "sha256": "21b74b03fb15c8c85dfc275fa52f13ed513bbad0df589b293276e565454ba476"
+    },
+    "tiny-native/wrong_clock/1.tcl": {
+      "bytes": 2456,
+      "sha256": "d8d0c94169c3220afbec1489103bf12f3fdd11358951af78ac73e80e4ba2c198"
+    },
+    "tiny-native/wrong_clock/2.tcl": {
+      "bytes": 2456,
+      "sha256": "bc9392549e5655fc6a0c391684eaba6f0ff1cfa2e547512fb18050b260bae295"
+    },
+    "tiny-native/wrong_clock/3.tcl": {
+      "bytes": 2456,
+      "sha256": "ed8d12fb8ae865ea2a7d0e5a24203e1895000a03344a75a1a9c3efb97f0c9311"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0000.json": {
+      "bytes": 475,
+      "sha256": "0aa11d5916b2649b572dd9f52c71b212fc712ad6dcff36ceb0791f6ed1f7a45f"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0000.log": {
+      "bytes": 2592,
+      "sha256": "4e8fc465b5bd2a993ad0433780555a6b43ac012ac5319d3073aedffc95add7e3"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0000.vcd": {
+      "bytes": 723,
+      "sha256": "77542a656e15d3690df99ad578d0ae5fd8bed629e20329e2d835be5e998d8f85"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0001.log": {
+      "bytes": 1747,
+      "sha256": "040e30e80d0a5b9dfbf08c2c71ec11a18c3d61e13fdecfafb24517c418e14e5b"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0002.log": {
+      "bytes": 1747,
+      "sha256": "7fb1ff3d3a5434d3d8ee0fbdfaf57a6876286cdda12a2fe150c87dfdd3dcf594"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0003.log": {
+      "bytes": 1747,
+      "sha256": "8e8fd1a24dd23093a5b1ad8f95530fab854fc4c7ea758bb3dda71e9796507d80"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0004.log": {
+      "bytes": 1747,
+      "sha256": "55666c9969044e83688c59609abd86a4d4d23c188ee591b3f722fba8379dcb9c"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0005.log": {
+      "bytes": 1747,
+      "sha256": "5adfdfce6be6f73b485b0253983b1cfaab352211e71e152a474d19d5abcc37e6"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0006.log": {
+      "bytes": 1747,
+      "sha256": "fc7e3b65b0b63f5f7af6720ee42c1984f4ab7f1071598cd2111997d2df463b55"
+    },
+    "tiny-native/wrong_clock/__nssoc_obligation_0007.log": {
+      "bytes": 1747,
+      "sha256": "285b1f54f15e619ab4c192744d5dcca0df09181f8f0ef98d29d1225e7cd68aec"
+    },
+    "tiny-native/wrong_clock/groups.json": {
+      "bytes": 2791,
+      "sha256": "92e6ccbc84f0b08426ce75ac93ecc6163542cc3ce2ac64703b8b02c21352f126"
+    },
+    "tiny-native/wrong_clock/interface.json": {
+      "bytes": 29986,
+      "sha256": "665cd9d54b1d01dd3d9dd942e5f9a4ce5cce9ee196c44944defa454b38d9cb3b"
+    },
+    "tiny-native/wrong_clock/left.json": {
+      "bytes": 3178,
+      "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+    },
+    "tiny-native/wrong_clock/observations.v": {
+      "bytes": 4484,
+      "sha256": "c36f46f386b60fe997df99f2254c82a2091b49d32b565083d2e86957d6b32b65"
+    },
+    "tiny-native/wrong_clock/original-execution.json": {
+      "bytes": 530,
+      "sha256": "802615a34d284d0d165baf44368e490fa1b3e6f85d5011ec43f1f0f00451ee02"
+    },
+    "tiny-native/wrong_clock/original.il": {
+      "bytes": 10156,
+      "sha256": "239e15f836f6d47240c1befb97199a6b5ad3027830787af8512bf2c5ef4be8ab"
+    },
+    "tiny-native/wrong_clock/original.json": {
+      "bytes": 19589,
+      "sha256": "12071eb96ffc001b173469ee611a684a53d359b2f249f36a7d3870a3250284dd"
+    },
+    "tiny-native/wrong_clock/original.log": {
+      "bytes": 21251,
+      "sha256": "f5efc8ad60c590c8045889b58b07758a13040eada04038b861bf46e07d520c6f"
+    },
+    "tiny-native/wrong_clock/original.ys": {
+      "bytes": 1163,
+      "sha256": "27f0720bf06f7524b88774e89b9e366b54280d8a8aeaff1819fd44f7d16713ec"
+    },
+    "tiny-native/wrong_clock/plan.json": {
+      "bytes": 1762,
+      "sha256": "206d51b94b53ec715c888b1c015b38ec614621a9c61e9e06d9aed1f473ef4c7d"
+    },
+    "tiny-native/wrong_clock/refined.il": {
+      "bytes": 20058,
+      "sha256": "bdaaa9e6607f1b8e142c17faa3b3da8d929b597f3c554684fc3218e7cd972d47"
+    },
+    "tiny-native/wrong_clock/refinement-execution.json": {
+      "bytes": 531,
+      "sha256": "a1c3254150b5d1c4eae30e2f7aa8e59786c0c27cf9052f2e517ce374434d1e88"
+    },
+    "tiny-native/wrong_clock/refinement.log": {
+      "bytes": 6836,
+      "sha256": "b25226753f8a94953fd9ef8ae8d2a2c4818d2da10bd8bf28c87bd1f496d8ec48"
+    },
+    "tiny-native/wrong_clock/refinement.ys": {
+      "bytes": 465,
+      "sha256": "9d53d163bfbe5a6832a7a0eea4f898cdd21681928e1d4d6d70333ea1fa066934"
+    },
+    "tiny-native/wrong_clock/right.json": {
+      "bytes": 3182,
+      "sha256": "7ab3533b6594f01f2e7f2c5a6167b5c172fed13e624d5b1a5e74bbddec43f7b1"
+    },
+    "tiny-native/wrong_clock/shard0-execution.json": {
+      "bytes": 524,
+      "sha256": "590ceba58a119f85c9c26abe9d10b3d44cd880dd0dbc1343b1d651f43a33d796"
+    },
+    "tiny-native/wrong_clock/shard0.log": {
+      "bytes": 4655,
+      "sha256": "7a34031c576a22d9501750761431570b86e127ca79d06208a729fd9730749f45"
+    },
+    "tiny-native/wrong_clock/shard1-execution.json": {
+      "bytes": 523,
+      "sha256": "8d6418c3194c95728a2505adaed3579acc9efd611b0eb6ff4eb595bc4d351f23"
+    },
+    "tiny-native/wrong_clock/shard1.log": {
+      "bytes": 3810,
+      "sha256": "7d31a9f893e53c1334add389cf85b782f879758d2bedcb3c84a02c0ab7973cd8"
+    },
+    "tiny-native/wrong_clock/shard2-execution.json": {
+      "bytes": 523,
+      "sha256": "94041ae11b20cbe777a13b2f0eb72db43221317a5112c2974fb24fe3d2cfea18"
+    },
+    "tiny-native/wrong_clock/shard2.log": {
+      "bytes": 3810,
+      "sha256": "cd88b809cd2c890c06fb1f1c44e7d91c7e91efa956245a835822818523a8a403"
+    },
+    "tiny-native/wrong_clock/shard3-execution.json": {
+      "bytes": 524,
+      "sha256": "764f2d0663b68b6b0072848b275ca2f31bd37586b908ee67968db68c90b60630"
+    },
+    "tiny-native/wrong_clock/shard3.log": {
+      "bytes": 3810,
+      "sha256": "7f3116609da27065fbc509a603c01b75d5864a7fa0f4acc6ba8527fa14927fdd"
+    },
+    "tiny-native/wrong_output/0.tcl": {
+      "bytes": 2461,
+      "sha256": "6d29261f90755204e1a8e39613645d67ee3012cbe95a340370243c8584570823"
+    },
+    "tiny-native/wrong_output/1.tcl": {
+      "bytes": 2461,
+      "sha256": "6a94802a17a4df59293a9f95e6368f8107da131eead96213bfb50c6f6272d418"
+    },
+    "tiny-native/wrong_output/2.tcl": {
+      "bytes": 2461,
+      "sha256": "8f15d29b35cd1cb8b30916f4bffa241bed1093d68521f58c1ff9005d97c19833"
+    },
+    "tiny-native/wrong_output/3.tcl": {
+      "bytes": 2461,
+      "sha256": "1a84700a92786e4b0d20a63995d21c38c65a4dc174b5317991e14ffecfc870ff"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0000.log": {
+      "bytes": 1747,
+      "sha256": "7a36cfcce7f1485dac5d9d207cc0dd94039ba21e64db836d94a32278da22ad8e"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0001.log": {
+      "bytes": 1747,
+      "sha256": "040e30e80d0a5b9dfbf08c2c71ec11a18c3d61e13fdecfafb24517c418e14e5b"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0002.log": {
+      "bytes": 1747,
+      "sha256": "7fb1ff3d3a5434d3d8ee0fbdfaf57a6876286cdda12a2fe150c87dfdd3dcf594"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0003.log": {
+      "bytes": 1747,
+      "sha256": "8e8fd1a24dd23093a5b1ad8f95530fab854fc4c7ea758bb3dda71e9796507d80"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0004.log": {
+      "bytes": 1747,
+      "sha256": "55666c9969044e83688c59609abd86a4d4d23c188ee591b3f722fba8379dcb9c"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0005.log": {
+      "bytes": 1747,
+      "sha256": "5adfdfce6be6f73b485b0253983b1cfaab352211e71e152a474d19d5abcc37e6"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0006.json": {
+      "bytes": 475,
+      "sha256": "45f6df795304e3eb28d7b701c0d56968de6d10530fa3c394e24c484c6a9a660a"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0006.log": {
+      "bytes": 2594,
+      "sha256": "196981cf9737a74d9aee5bf8a3939b17e19f576299e258ae1c0f10384284014a"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0006.vcd": {
+      "bytes": 724,
+      "sha256": "68b37b136163b1e786242a7d96bc6f70e04f5cf7f9d4fd2c4d9f7c48b51cef76"
+    },
+    "tiny-native/wrong_output/__nssoc_obligation_0007.log": {
+      "bytes": 1747,
+      "sha256": "285b1f54f15e619ab4c192744d5dcca0df09181f8f0ef98d29d1225e7cd68aec"
+    },
+    "tiny-native/wrong_output/groups.json": {
+      "bytes": 2791,
+      "sha256": "65b8c301d4dec46064aea6e8e5e8bca295eb9af628f3f220373e7fe08b0baa9f"
+    },
+    "tiny-native/wrong_output/interface.json": {
+      "bytes": 30064,
+      "sha256": "31af5b44bf6e80e17f33db60e57749b44f454ddd06f9e8686baba28d7c0633e5"
+    },
+    "tiny-native/wrong_output/left.json": {
+      "bytes": 3178,
+      "sha256": "03fb3f9570f3c56eca117631e35314ed892d38fd900a24f560456bddab7f9afd"
+    },
+    "tiny-native/wrong_output/observations.v": {
+      "bytes": 4484,
+      "sha256": "c36f46f386b60fe997df99f2254c82a2091b49d32b565083d2e86957d6b32b65"
+    },
+    "tiny-native/wrong_output/original-execution.json": {
+      "bytes": 531,
+      "sha256": "d1c7c0d7ca8ca6b21cc39385727bc2a1c0dc46326139b2860b16917d8c09ba3d"
+    },
+    "tiny-native/wrong_output/original.il": {
+      "bytes": 10248,
+      "sha256": "949f7886aad5fde0843f013ab15183099cc57d6654ba5eeca6d2cb023d570b7f"
+    },
+    "tiny-native/wrong_output/original.json": {
+      "bytes": 19613,
+      "sha256": "356d553f604d70ef8bc55825324041c16a962e2c730e94c89fa935c4d289fdf2"
+    },
+    "tiny-native/wrong_output/original.log": {
+      "bytes": 22136,
+      "sha256": "24cee99ecdb6d8d58628525864713f60bc341b06c4d11b4d131d6611b3ba3e56"
+    },
+    "tiny-native/wrong_output/original.ys": {
+      "bytes": 1167,
+      "sha256": "524b282301d4380cb3baa79a6859eceb88f8915447e89da99cd6478f30484557"
+    },
+    "tiny-native/wrong_output/plan.json": {
+      "bytes": 1762,
+      "sha256": "206d51b94b53ec715c888b1c015b38ec614621a9c61e9e06d9aed1f473ef4c7d"
+    },
+    "tiny-native/wrong_output/refined.il": {
+      "bytes": 20237,
+      "sha256": "69f0d828e015c096a68c2aa7e6d15ed02f001caae1ee4a90087cd638ff848884"
+    },
+    "tiny-native/wrong_output/refinement-execution.json": {
+      "bytes": 531,
+      "sha256": "4a00d36864e2f985fce18a5cacc1ec906e408f986e21b5c6dadaed63d010a710"
+    },
+    "tiny-native/wrong_output/refinement.log": {
+      "bytes": 6841,
+      "sha256": "ed5f7d96f1fe042586751b6c93740e2a101372bc53af8a86b0ade284e3e98296"
+    },
+    "tiny-native/wrong_output/refinement.ys": {
+      "bytes": 469,
+      "sha256": "035058f7cf9e3a99ad943af04eee03d4c8cc8c3c5eec76d0f22c051f80f63434"
+    },
+    "tiny-native/wrong_output/right.json": {
+      "bytes": 3180,
+      "sha256": "5834860664f68a2400a4cff60ad7dcf23bb2d72cf0d4df30f0e3b8fbbaae990a"
+    },
+    "tiny-native/wrong_output/shard0-execution.json": {
+      "bytes": 524,
+      "sha256": "cef873d9daa90a22c3cf2c69cc021c9871726f3e9cf7fd1f17750ddc4fcea68a"
+    },
+    "tiny-native/wrong_output/shard0.log": {
+      "bytes": 3811,
+      "sha256": "af62e641661cd96d97df22f960a0ae0a1e19338bc63d105dc8644d1e9aed0ac4"
+    },
+    "tiny-native/wrong_output/shard1-execution.json": {
+      "bytes": 524,
+      "sha256": "dab3ae622afbe3e59623f8f3ba0d9d650c50233ac212bafeb9f43ed7bb64d4d5"
+    },
+    "tiny-native/wrong_output/shard1.log": {
+      "bytes": 3811,
+      "sha256": "4ff00b3450eb09800a62cf2df420506bf8a679afb299d16358edbb730543a091"
+    },
+    "tiny-native/wrong_output/shard2-execution.json": {
+      "bytes": 524,
+      "sha256": "9fc3621f51d69867d41a416448256e105a1b4dac23b2f9ab43d4738c5631d61a"
+    },
+    "tiny-native/wrong_output/shard2.log": {
+      "bytes": 4658,
+      "sha256": "e2a5682103f2f388ae15422910f210059a5d129ac79f9c0523f99c6cde1e11dc"
+    },
+    "tiny-native/wrong_output/shard3-execution.json": {
+      "bytes": 525,
+      "sha256": "d83aa6dc9264f43e9a0a75970525096fc5ece920096b4fc63212596d6ab922e3"
+    },
+    "tiny-native/wrong_output/shard3.log": {
+      "bytes": 3811,
+      "sha256": "99d36db03656bfd7142ff84fc73d4423377e6530b04eb6df1f7b01a97b4e3dbd"
+    }
+  },
+  "root_review": {
+    "status": "ROOT_ALL_TINY_OUTPUT_PINS_AND_RAW_VERDICTS_REPARSED",
+    "verified_outputs": 129,
+    "native": {
+      "equal": {
+        "status": "PROVED_ALL_PARTITIONED_BINARY_BOUNDARY_EQUATIONS",
+        "state_bijection_proved": true,
+        "complete_groups": 8,
+        "proved_groups": 8,
+        "complete_output_obligation_bits": 8,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      },
+      "wrong_clock": {
+        "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+        "state_bijection_proved": false,
+        "complete_groups": 8,
+        "proved_groups": 7,
+        "complete_output_obligation_bits": 8,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      },
+      "wrong_output": {
+        "status": "INCOMPLETE_OR_COUNTEREXAMPLE_PRESERVED",
+        "state_bijection_proved": false,
+        "complete_groups": 8,
+        "proved_groups": 7,
+        "complete_output_obligation_bits": 8,
+        "symbolic_input_bits": 6,
+        "no_internal_assumptions": true,
+        "original_failed_proof_preserved": true,
+        "monolithic_timeout_preserved": true,
+        "candidate_adopted": false,
+        "full_soc_functional_accepted": false,
+        "timing_accepted": false,
+        "manufacturing_approval": false
+      }
+    },
+    "full_soc_native_run": false
+  },
+  "root_repeated_selected_tests": 213,
+  "peer_review": {
+    "status": "INDEPENDENT_PEER_REVIEW_CLEAN_NO_LAUNCH_BLOCKER",
+    "source_methods": {
+      "scripts/prove_alu_state_refinement.py": {
+        "bytes": 26265,
+        "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+      },
+      "sw/tests/test_alu_state_refinement.py": {
+        "bytes": 18337,
+        "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+      },
+      ".github/workflows/timing-alu-state-refinement.yml": {
+        "bytes": 5494,
+        "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+      },
+      "hw/soc/pnr/alu-state-refinement-input.lock.json": {
+        "bytes": 3135,
+        "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+      }
+    },
+    "owner_validation": {
+      "bytes": 27059,
+      "sha256": "a5ae87d9316e74670062e4acba8c6f624654543dc423ce863ef257ffcbcf3f82"
+    },
+    "all_129_captured_output_pins_rehashed": true,
+    "output_pin_count": 129,
+    "all_three_native_raw_controls_reparsed": {
+      "equal": {
+        "proved": 8,
+        "total": 8,
+        "counterexamples": 0
+      },
+      "wrong_clock": {
+        "proved": 7,
+        "total": 8,
+        "counterexamples": 1
+      },
+      "wrong_output": {
+        "proved": 7,
+        "total": 8,
+        "counterexamples": 1
+      }
+    },
+    "tiny_wrapper_and_interfaces_match_frozen_source": true,
+    "omitted_and_duplicate_native_receipts_rejected": true,
+    "original_native_lock_pins_match_independently_verified_cloud_evidence": true,
+    "original_symbolic_inputs": 10828,
+    "old_proved_groups": 250,
+    "old_timeout_groups": 19,
+    "new_groups": 152,
+    "refined_bits": 2432,
+    "old_original_output_bits": 34321,
+    "coverage_union_exact_disjoint": true,
+    "final_source_rechecks_complete_prepared_bundle_after_native": true,
+    "independent_prior_unit_runs": [
+      {
+        "scope": "Original refinement and existing four companion suites before supplemental guards",
+        "passed": 160
+      },
+      {
+        "scope": "Added prepared bundle positive/mutation guards",
+        "passed": 9
+      },
+      {
+        "scope": "Added exact artifact metadata mutation guards",
+        "passed": 7
+      }
+    ],
+    "owner_final_frozen_suite_passed": 179,
+    "no_native_solver_or_full_chip_execution_by_peer": true,
+    "notes": [
+      "All original symbolic inputs are forwarded into the immutable common miter; only old gold/gate output observations are sliced.",
+      "The complete prior250 proofs and all newly refined bits are reparsed for final acceptance.",
+      "Original archive fetching currently requires live Actions availability; no permanent fallback in this experiment.",
+      "Full binary proof is not yet run and cannot resolve the preserved four-state boot failures or physical gates."
+    ],
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  }
+}

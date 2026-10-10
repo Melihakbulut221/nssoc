@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-phase34-delivery-20261006/review_v24_root01.py", line 31, in <module>
+    for p,h in j['releases'].items():exact(R/p,h);assert json.loads((R/p).read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'
+                                     ~~~~~^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-phase34-delivery-20261006/review_v24_root01.py", line 10, in exact
+    def exact(p,h):assert pin(p)=={k:h[k] for k in ('bytes','sha256')},str(p)
+                          ~~~^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-phase34-delivery-20261006/review_v24_root01.py", line 9, in pin
+    with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())
+         ~~~~~~^^^^^^
+  File "/home/hasanmelih/miniconda3/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hasanmelih/Documents/ChatGPT/nnsoc/publication-release01.json'

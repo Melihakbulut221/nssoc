@@ -1,0 +1,80 @@
+{
+  "status": "SOURCE_ONLY_TARGETED_REPORT_ADDITION_TO_FROZEN_RX14_SCREENS",
+  "method": {
+    "bytes": 2603,
+    "sha256": "2ffe71c43d4111266dff950c21e30d90da562d72f5138c068182f9e63190092b"
+  },
+  "base_freeze": {
+    "bytes": 4234,
+    "sha256": "bef6d29c271f5bd1ef84335db3c93743b67972aacacb9c74b1a57acc3d146774"
+  },
+  "base_peer": {
+    "bytes": 4928,
+    "sha256": "5f057eb0e5ab31998972c81f57c03caacf7d952b0611f53ae206a9c59dcb13de"
+  },
+  "variants": {
+    "14a": {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14a.py",
+        "bytes": 12421,
+        "sha256": "46901784c0edfa77c94d1ba290c98d960834810addd0426ce30f1f9f850eb90e"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14a_targeted01.py",
+        "bytes": 12735,
+        "sha256": "41086ae3e16bb9d4258a9fb8d3965fbaf686b0ca7d644bfc2b8afa6ccafc658b"
+      },
+      "whole_source_substitutions": [
+        {
+          "before": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a",
+          "after": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a-targeted-01"
+        },
+        {
+          "before": " return z\n",
+          "after": " for endpoint in ('_26191_','_26187_','_26189_'):\n  for c in ('slow','typical','fast'):\n   for d in ('max','min'):\n    z.extend([f'puts {tag}_TARGET_{endpoint}_{c}_{d}',f'report_checks -corner {c} -to [get_pins {endpoint}/D] -path_delay {d} -group_path_count 1 -fields {{slew cap fanout}} -digits 6'])\n return z\n"
+        }
+      ],
+      "unchanged_functions": [
+        "pin",
+        "sig",
+        "limits",
+        "save",
+        "stop_failed_group"
+      ],
+      "new_output": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a-targeted-01"
+    },
+    "14b": {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14b.py",
+        "bytes": 12421,
+        "sha256": "085d5a950150ff56e895d46fd96d9cdf2dfc596931dd766bb927de1e0cdee211"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14b_targeted01.py",
+        "bytes": 12735,
+        "sha256": "75f5f8b151c815358d7ed3d1e85e6cac54a9bd1934cf0a9dd36898e7c4e5f28a"
+      },
+      "whole_source_substitutions": [
+        {
+          "before": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14b",
+          "after": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14b-targeted-01"
+        },
+        {
+          "before": " return z\n",
+          "after": " for endpoint in ('_26191_','_26187_','_26189_'):\n  for c in ('slow','typical','fast'):\n   for d in ('max','min'):\n    z.extend([f'puts {tag}_TARGET_{endpoint}_{c}_{d}',f'report_checks -corner {c} -to [get_pins {endpoint}/D] -path_delay {d} -group_path_count 1 -fields {{slew cap fanout}} -digits 6'])\n return z\n"
+        }
+      ],
+      "unchanged_functions": [
+        "pin",
+        "sig",
+        "limits",
+        "save",
+        "stop_failed_group"
+      ],
+      "new_output": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14b-targeted-01"
+    }
+  },
+  "reason": "Closed original GRT global worst path is unchanged endpoint25721, which hides changed actual-RC critical endpoints26191/26187/26189. Add18 endpoint checks to each before/after report; otherwise same exact native candidate recipe. This bounded fresh GRT run resolves the unmeasured alternative ranking; no proof/DRT/nativegold rerun.",
+  "constraints_unchanged": true,
+  "physical_acceptance": false
+}

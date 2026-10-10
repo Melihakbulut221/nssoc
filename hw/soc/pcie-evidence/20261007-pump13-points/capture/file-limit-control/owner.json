@@ -1,0 +1,27 @@
+{
+  "status": "HEALTHY",
+  "reason": null,
+  "elapsed_watchdog_seconds": null,
+  "failure_grace_seconds": 5.0,
+  "processes": [
+    {
+      "kind": "native",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-c",
+        "import os,errno;f=open('bounded.bin','wb',buffering=0)\ntry:\n f.write(b'x'*(9*1024**2))\n f.write(b'x')\nexcept OSError as e:\n assert e.errno==errno.EFBIG\n assert os.stat('bounded.bin').st_size==8*1024**2\n print('EXPECTED_EFBIG_AT_8MIB',flush=True)\nelse:raise AssertionError('No native file cap')"
+      ],
+      "identity": {
+        "pid": 34495,
+        "state": "R",
+        "process_group": 34495,
+        "start_ticks": "406956"
+      },
+      "process_group": 34495,
+      "status": "REAPED_NO_LIVE_MEMBERS",
+      "returncode": 0,
+      "members_at_leader_exit": []
+    }
+  ],
+  "cleanup": null
+}

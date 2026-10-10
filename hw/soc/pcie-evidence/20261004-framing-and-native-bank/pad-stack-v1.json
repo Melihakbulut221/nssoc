@@ -1,0 +1,3993 @@
+{
+  "status": "PASS_ISOLATED_NATIVE_PAD_STACK_IMPORT_REPAIR",
+  "sources": {
+    "scripts/patch_magic_pad_stack_v1.py": {
+      "bytes": 1240,
+      "sha256": "f494706baa260efc76b4be09147f4106cc5c1123c1bc7d95ace0b3a1262f0d68"
+    },
+    "scripts/make_magic_pad_stack_fixture_v1.py": {
+      "bytes": 4250,
+      "sha256": "7b289539e3cff23b05704b99d329b1e2766c01c8e549f518df19cd0af4d45616"
+    },
+    "scripts/audit_magic_pad_stack_geometry_v1.py": {
+      "bytes": 3239,
+      "sha256": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20"
+    },
+    "scripts/check_magic_pad_stack_v1.py": {
+      "bytes": 7345,
+      "sha256": "7ca7872e6a4117f76d21b056b548063296a7f2729e1f3a65f433ddff2c8043c3"
+    },
+    "scripts/compare_magic_device_graph_v1.py": {
+      "bytes": 2350,
+      "sha256": "66e08d5f628f7f86bd3d6165c4e47f61779f8c89b2f2e4493ca6cb36f585d03c"
+    },
+    "sw/tests/test_magic_pad_stack_v1.py": {
+      "bytes": 4364,
+      "sha256": "c79fdb42e703606ac1a1c612b76f71d7b8a6993bdac0fcb8e6c0e927f70cb1fe"
+    },
+    "sw/tests/test_magic_device_graph_v1.py": {
+      "bytes": 2761,
+      "sha256": "d3b5fc3574504e11386b499bb47fdff80b2bf0c3a8d82304af7f04d0fda744aa"
+    }
+  },
+  "native": {
+    "status": "PASS_NATIVE_PAD_STACK_IMPORT_REPAIR",
+    "cases": {
+      "unfixed": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/unfixed/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.5852075020084158,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "700057900f85a2ed1dd7b30c28b742632fca0626f298cb3f62f02a4bb9d773f2"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/fixture.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/unfixed/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 4.871896536002168,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01"
+            ],
+            [
+              "CORE02"
+            ],
+            [
+              "CORE03"
+            ],
+            [
+              "CORE04"
+            ],
+            [
+              "CORE05"
+            ],
+            [
+              "CORE06"
+            ],
+            [
+              "CORE07"
+            ],
+            [
+              "CORE08"
+            ],
+            [
+              "CORE09"
+            ],
+            [
+              "CORE10"
+            ],
+            [
+              "CORE11"
+            ],
+            [
+              "CORE12"
+            ],
+            [
+              "CORE13"
+            ],
+            [
+              "CORE14"
+            ],
+            [
+              "CORE15"
+            ],
+            [
+              "PAD00"
+            ],
+            [
+              "PAD01"
+            ],
+            [
+              "PAD02"
+            ],
+            [
+              "PAD03"
+            ],
+            [
+              "PAD04"
+            ],
+            [
+              "PAD05"
+            ],
+            [
+              "PAD06"
+            ],
+            [
+              "PAD07"
+            ],
+            [
+              "PAD08"
+            ],
+            [
+              "PAD09"
+            ],
+            [
+              "PAD10"
+            ],
+            [
+              "PAD11"
+            ],
+            [
+              "PAD12"
+            ],
+            [
+              "PAD13"
+            ],
+            [
+              "PAD14"
+            ],
+            [
+              "PAD15"
+            ]
+          ],
+          "node_count": 32,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 7,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 8,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 8,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 10,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 14,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 16,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 16,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 12,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00",
+              "PAD00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ]
+          ],
+          "node_count": 16,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/fixture.gds": "35c7a633ecd42c710e58687a17e672fe3097ef94d8018eb1f88e7d4b97ab071c",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PRESERVED_NATIVE_IMPORT_FAILURE",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10461,
+            "sha256": "dbe671f970b8dae9da0f348b85ea2d48b7ae7ba00b5153b0078f38842d68eef1"
+          },
+          "geometry.l2n": {
+            "bytes": 5325,
+            "sha256": "f41171a9fdc22f5c031334d88f0835d6b46aafb407d798a435dbe083bd39c5fa"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 4909,
+            "sha256": "689b3cced5b596a2a9b8e71f8146211aa9661a0db03e08ee967e8b8d499bb136"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 59044,
+            "sha256": "95e3533f7aad42bd19099309af2d05c099a8075eb05a26e7e459f681d14c8796"
+          },
+          "native.log": {
+            "bytes": 2025,
+            "sha256": "700057900f85a2ed1dd7b30c28b742632fca0626f298cb3f62f02a4bb9d773f2"
+          },
+          "native.tcl": {
+            "bytes": 4705,
+            "sha256": "3640227438bd1ef109314880a06b87988f2118a74ff640a8942290bb9c99598a"
+          }
+        }
+      },
+      "nominal": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/nominal/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.6033866239886265,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "916c2c0a85a5f1fe28df4b6a9c0a47eb55f9b26c5c4bc072ea11abcd1cfb3db7"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/fixture.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/nominal/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.352666415012209,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00",
+              "PAD00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ]
+          ],
+          "node_count": 16,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 7,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 8,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 8,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 10,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 14,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 16,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 16,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 12,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00",
+              "PAD00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ]
+          ],
+          "node_count": 16,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/fixture.gds": "35c7a633ecd42c710e58687a17e672fe3097ef94d8018eb1f88e7d4b97ab071c",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10461,
+            "sha256": "dbe671f970b8dae9da0f348b85ea2d48b7ae7ba00b5153b0078f38842d68eef1"
+          },
+          "geometry.l2n": {
+            "bytes": 5325,
+            "sha256": "f41171a9fdc22f5c031334d88f0835d6b46aafb407d798a435dbe083bd39c5fa"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 3817,
+            "sha256": "92e7d4b34554ee055a17ad0c31b948c1ce4780e5c269c2c2509cd58ab64a8648"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61240,
+            "sha256": "48f6584af48f7250bc9883c78e5d6dacbe15674fa2f6143244b94b5cd085131b"
+          },
+          "native.log": {
+            "bytes": 3033,
+            "sha256": "916c2c0a85a5f1fe28df4b6a9c0a47eb55f9b26c5c4bc072ea11abcd1cfb3db7"
+          },
+          "native.tcl": {
+            "bytes": 4705,
+            "sha256": "e68a6f92b84561248f29bf7565c1e6a357f159b758386707b7ba3377d4f4c226"
+          }
+        }
+      },
+      "missing_via_m7": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/missing_via_m7/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.5612609520030674,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "35770b914f2dc1af59ff0b6366f2627a4fbb418361977eb320e3010bfde954eb"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/missing_via_m7.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/missing_via_m7/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.691011109011015,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 17,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 17,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 16,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 7,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 14,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 12,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 8,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 8,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 10,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 17,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/missing_via_m7.gds": "fe63bf6c1901766e3a559f1063436e709711f992d3de6a472ecd806b3aa710e7",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10480,
+            "sha256": "26b1a5e1a9c534b2ac1f86ff3df5f14356103239b8f199df66015fcc9e7bab55"
+          },
+          "geometry.l2n": {
+            "bytes": 5303,
+            "sha256": "1ba6646f76e96f6e22b423ac98d514e5eb6a8286fe5ed0a218a49545366e3032"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 3909,
+            "sha256": "e7665de13e5b664cc018b96bb370c2970b7fa229d2551b7f99fe6e12b3b6d96a"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61037,
+            "sha256": "95a3fb4ff4ce998ce2df1ad88244f17f24cec2839d432d10be92265bc6b18537"
+          },
+          "native.log": {
+            "bytes": 2977,
+            "sha256": "35770b914f2dc1af59ff0b6366f2627a4fbb418361977eb320e3010bfde954eb"
+          },
+          "native.tcl": {
+            "bytes": 4719,
+            "sha256": "1b46d9a53de10170092029a12a232b10a28f27eac9a7af374681217e4d89b0a0"
+          }
+        }
+      },
+      "missing_via_m6": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/missing_via_m6/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.6478938210057095,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "71103a7467c6ce67fbc18434704557c7499ce9feb208199830b42dd5f5e03eb1"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/missing_via_m6.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/missing_via_m6/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.243297920998884,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00",
+              "PAD00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD08"
+            ]
+          ],
+          "node_count": 17,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 7,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 8,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 8,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 17,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 10,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 14,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 16,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 16,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 12,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00",
+              "PAD00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD08"
+            ]
+          ],
+          "node_count": 17,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/missing_via_m6.gds": "5281b366136ccddc2fce672cd97f2ad93fb014cac2e65de91d6f408911097e8a",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10424,
+            "sha256": "0698cbd650360549a9a65d71e9cd5e3e21a2de6b41da249a9ec290da6805df92"
+          },
+          "geometry.l2n": {
+            "bytes": 5243,
+            "sha256": "c641bdc23383060d01568b4d447fdb0f0d6e39aad62281233ed2b4c9baa2377f"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 3909,
+            "sha256": "02e12635f038e2dcdb6f162a360cf126ecabdc28a839218b2f7a28d87dfccf27"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61008,
+            "sha256": "ad54cf048871933c24936d02ab7dc61c226f59ac630ed066623647c65b4daab3"
+          },
+          "native.log": {
+            "bytes": 2977,
+            "sha256": "71103a7467c6ce67fbc18434704557c7499ce9feb208199830b42dd5f5e03eb1"
+          },
+          "native.tcl": {
+            "bytes": 4719,
+            "sha256": "3872b9e07f6fe491e61ca0f1ae24ff9e7c3aa4d028f7011a97bc7e5b5dbf8751"
+          }
+        }
+      },
+      "wire_open": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/wire_open/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.5598894169961568,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "715f4f3d26b4aa4d1657a9143a19040b29ce0a9bf6719c3448646cd1886f7deb"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/wire_open.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/wire_open/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 4.6527251539810095,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 17,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 17,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,170000;122000,170000;122000,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 8,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 8,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 10,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 14,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 16,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 16,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 12,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 17,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/wire_open.gds": "d4154d50976b122a2872a81fdbc907ba5de04a564956c23783a309ea6b920330",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10476,
+            "sha256": "73265ee0f6d5ca1d53e6fd6dd55e7f038a720aae4858d2b3c8e67f9109a1de9c"
+          },
+          "geometry.l2n": {
+            "bytes": 5388,
+            "sha256": "0934dce09992523b509c245622378a1ba7706d9943f77a3bc1ab8f50ee4dcad6"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 3919,
+            "sha256": "e3e5054cfc4f00fb68f0290c0fd8f4b9bcdd0f05a7f36ef21f6077e247c061c3"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61269,
+            "sha256": "a8f13c06f4255048d3a8138806dece6db768ad7d1a13753871467d58397c7d30"
+          },
+          "native.log": {
+            "bytes": 2972,
+            "sha256": "715f4f3d26b4aa4d1657a9143a19040b29ce0a9bf6719c3448646cd1886f7deb"
+          },
+          "native.tcl": {
+            "bytes": 4709,
+            "sha256": "1e3ebd646e277917b9dd3f61883ddfe813348deeb013ac26c02c2aa46563f500"
+          }
+        }
+      },
+      "wrong_layer": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/wrong_layer/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.5780107729951851,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "128b722e59fb5023e0b1435eff4a08834d43e1d411bd2c8c701a5646b635a5a3"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/wrong_layer.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/wrong_layer/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 5.028688013000647,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 18,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 17,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;134500,155005;155000,134505;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(345495,85000;324995,105500;324995,118000;278000,118000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 8,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 8,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 10,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 14,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 16,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 16,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 12,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00"
+            ],
+            [
+              "CORE01",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ],
+            [
+              "PAD00"
+            ]
+          ],
+          "node_count": 17,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/wrong_layer.gds": "4363daa1969bafbfeed2d696d6b2334260afa04717e1f6638b2352af57ced205",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10422,
+            "sha256": "3abffc383d18462b225b21ffd6d2e9935821744ebc7c74c9145883cf53189761"
+          },
+          "geometry.l2n": {
+            "bytes": 5346,
+            "sha256": "7120302f3fd808c89cad013bf0604e667c1828064ebb5253adc89dd5e02db360"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 4072,
+            "sha256": "0a5457c076dea217b8b2cb3dffe0c6aa1b9f788bcb33f2ecd8f1fe7b210b834d"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61340,
+            "sha256": "ab60a15671be00eb9e3946d67f9fe428a2d30b087ca0ef39a34a90c3c976b102"
+          },
+          "native.log": {
+            "bytes": 2974,
+            "sha256": "128b722e59fb5023e0b1435eff4a08834d43e1d411bd2c8c701a5646b635a5a3"
+          },
+          "native.tcl": {
+            "bytes": 4713,
+            "sha256": "55085d40291f20e8102d3ea06188839efeb569adad79c7dd782b56a4632f3895"
+          }
+        }
+      },
+      "pair_short": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/pair_short/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.5480205570056569,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "f7e29245334dd003cf88ae6773d613d6b8b7b0cb41de68eb7770276b564dfc61"
+        },
+        "geometry_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py",
+            "--gds",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/pair_short.gds",
+            "--fixture",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json",
+            "--out",
+            "/dev/shm/nssoc-magic-pad-stack-native-v1-01/pair_short/geometry.json"
+          ],
+          "returncode": 0,
+          "seconds": 6.023127337015467,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "native": {
+          "partition": [
+            [
+              "CORE00",
+              "CORE01",
+              "PAD00",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ]
+          ],
+          "node_count": 15,
+          "source": "Only explicit native EXT node/equiv records; no reference-driven union"
+        },
+        "reference": {
+          "status": "NATIVE_KLAYOUT_CONDUCTOR_PARTITION",
+          "mapping": {
+            "PAD00": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,121000;278000,121000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000;345495,85000;324995,105500;324995,118000;278000,118000;278000,119000;155000,119000;155000,105495;134500,84995) props={}"
+            },
+            "CORE00": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                200000
+              ],
+              "cluster": 5,
+              "polygon": "(118000,198000;118000,202000;162000,202000;162000,198000) props={}"
+            },
+            "PAD01": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                120000
+              ],
+              "cluster": 5,
+              "polygon": "(105500,84995;85000,105495;85000,134505;105500,155005;118000,155005;118000,202000;122000,202000;122000,155005;134500,155005;155000,134505;155000,121000;278000,121000;278000,122000;324995,122000;324995,134500;345495,155000;374505,155000;395005,134500;395005,105500;374505,85000;345495,85000;324995,105500;324995,118000;278000,118000;278000,119000;155000,119000;155000,105495;134500,84995) props={}"
+            },
+            "CORE01": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                159000
+              ],
+              "cluster": 5,
+              "polygon": "(278000,118000;278000,162000;282000,162000;282000,118000) props={}"
+            },
+            "PAD02": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                120000
+              ],
+              "cluster": 1,
+              "polygon": "(598000,38000;598000,84995;585500,84995;565000,105495;565000,134505;585500,155005;614500,155005;635000,134505;635000,105495;614500,84995;602000,84995;602000,38000) props={}"
+            },
+            "CORE02": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                40000
+              ],
+              "cluster": 1,
+              "polygon": "(558000,38000;558000,42000;602000,42000;602000,38000) props={}"
+            },
+            "PAD03": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                120000
+              ],
+              "cluster": 3,
+              "polygon": "(825495,85000;804995,105500;804995,134500;825495,155000;854505,155000;875005,134500;875005,122000;922000,122000;922000,118000;875005,118000;875005,105500;854505,85000) props={}"
+            },
+            "CORE03": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                81000
+              ],
+              "cluster": 3,
+              "polygon": "(918000,78000;918000,122000;922000,122000;922000,78000) props={}"
+            },
+            "PAD04": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                120000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,84995;1065500,84995;1045000,105495;1045000,134505;1065500,155005;1094500,155005;1115000,134505;1115000,105495;1094500,84995;1082000,84995;1082000,38000) props={}"
+            },
+            "CORE04": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                40000
+              ],
+              "cluster": 2,
+              "polygon": "(1078000,38000;1078000,42000;1122000,42000;1122000,38000) props={}"
+            },
+            "PAD05": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                120000
+              ],
+              "cluster": 6,
+              "polygon": "(1305495,85000;1284995,105500;1284995,134500;1305495,155000;1334505,155000;1355005,134500;1355005,122000;1402000,122000;1402000,118000;1355005,118000;1355005,105500;1334505,85000) props={}"
+            },
+            "CORE05": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                159000
+              ],
+              "cluster": 6,
+              "polygon": "(1398000,118000;1398000,162000;1402000,162000;1402000,118000) props={}"
+            },
+            "PAD06": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                120000
+              ],
+              "cluster": 7,
+              "polygon": "(1545500,84995;1525000,105495;1525000,134505;1545500,155005;1558000,155005;1558000,202000;1562000,202000;1562000,155005;1574500,155005;1595000,134505;1595000,105495;1574500,84995) props={}"
+            },
+            "CORE06": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                200000
+              ],
+              "cluster": 7,
+              "polygon": "(1518000,198000;1518000,202000;1562000,202000;1562000,198000) props={}"
+            },
+            "PAD07": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                120000
+              ],
+              "cluster": 4,
+              "polygon": "(1785495,85000;1764995,105500;1764995,118000;1718000,118000;1718000,122000;1764995,122000;1764995,134500;1785495,155000;1814505,155000;1835005,134500;1835005,105500;1814505,85000) props={}"
+            },
+            "CORE07": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                81000
+              ],
+              "cluster": 4,
+              "polygon": "(1718000,78000;1718000,122000;1722000,122000;1722000,78000) props={}"
+            },
+            "PAD08": {
+              "layer": 134,
+              "point_dbu": [
+                120000,
+                360000
+              ],
+              "cluster": 14,
+              "polygon": "(105500,324995;85000,345495;85000,374505;105500,395005;134500,395005;155000,374505;155000,345495;134500,324995) props={}"
+            },
+            "CORE08": {
+              "layer": 126,
+              "point_dbu": [
+                159000,
+                440000
+              ],
+              "cluster": 14,
+              "polygon": "(119050,359050;119050,360000;118000,360000;118000,442000;162000,442000;162000,438000;122000,438000;122000,360000;120950,360000;120950,359050) props={}"
+            },
+            "PAD09": {
+              "layer": 134,
+              "point_dbu": [
+                360000,
+                360000
+              ],
+              "cluster": 12,
+              "polygon": "(345495,325000;324995,345500;324995,374500;345495,395000;374505,395000;395005,374500;395005,345500;374505,325000) props={}"
+            },
+            "CORE09": {
+              "layer": 126,
+              "point_dbu": [
+                280000,
+                399000
+              ],
+              "cluster": 12,
+              "polygon": "(278000,358000;278000,402000;282000,402000;282000,362000;360000,362000;360000,360950;360950,360950;360950,359050;360000,359050;360000,358000) props={}"
+            },
+            "PAD10": {
+              "layer": 134,
+              "point_dbu": [
+                600000,
+                360000
+              ],
+              "cluster": 8,
+              "polygon": "(585500,324995;565000,345495;565000,374505;585500,395005;614500,395005;635000,374505;635000,345495;614500,324995) props={}"
+            },
+            "CORE10": {
+              "layer": 126,
+              "point_dbu": [
+                561000,
+                280000
+              ],
+              "cluster": 8,
+              "polygon": "(558000,278000;558000,282000;598000,282000;598000,360000;599050,360000;599050,360950;600950,360950;600950,360000;602000,360000;602000,278000) props={}"
+            },
+            "PAD11": {
+              "layer": 134,
+              "point_dbu": [
+                840000,
+                360000
+              ],
+              "cluster": 10,
+              "polygon": "(825495,325000;804995,345500;804995,374500;825495,395000;854505,395000;875005,374500;875005,345500;854505,325000) props={}"
+            },
+            "CORE11": {
+              "layer": 126,
+              "point_dbu": [
+                920000,
+                321000
+              ],
+              "cluster": 10,
+              "polygon": "(918000,318000;918000,358000;840000,358000;840000,359050;839050,359050;839050,360950;840000,360950;840000,362000;922000,362000;922000,318000) props={}"
+            },
+            "PAD12": {
+              "layer": 134,
+              "point_dbu": [
+                1080000,
+                360000
+              ],
+              "cluster": 9,
+              "polygon": "(1065500,324995;1045000,345495;1045000,374505;1065500,395005;1094500,395005;1115000,374505;1115000,345495;1094500,324995) props={}"
+            },
+            "CORE12": {
+              "layer": 126,
+              "point_dbu": [
+                1119000,
+                280000
+              ],
+              "cluster": 9,
+              "polygon": "(1078000,278000;1078000,360000;1079050,360000;1079050,360950;1080950,360950;1080950,360000;1082000,360000;1082000,282000;1122000,282000;1122000,278000) props={}"
+            },
+            "PAD13": {
+              "layer": 134,
+              "point_dbu": [
+                1320000,
+                360000
+              ],
+              "cluster": 13,
+              "polygon": "(1305495,325000;1284995,345500;1284995,374500;1305495,395000;1334505,395000;1355005,374500;1355005,345500;1334505,325000) props={}"
+            },
+            "CORE13": {
+              "layer": 126,
+              "point_dbu": [
+                1400000,
+                399000
+              ],
+              "cluster": 13,
+              "polygon": "(1320000,358000;1320000,359050;1319050,359050;1319050,360950;1320000,360950;1320000,362000;1398000,362000;1398000,402000;1402000,402000;1402000,358000) props={}"
+            },
+            "PAD14": {
+              "layer": 134,
+              "point_dbu": [
+                1560000,
+                360000
+              ],
+              "cluster": 15,
+              "polygon": "(1545500,324995;1525000,345495;1525000,374505;1545500,395005;1574500,395005;1595000,374505;1595000,345495;1574500,324995) props={}"
+            },
+            "CORE14": {
+              "layer": 126,
+              "point_dbu": [
+                1521000,
+                440000
+              ],
+              "cluster": 15,
+              "polygon": "(1559050,359050;1559050,360000;1558000,360000;1558000,438000;1518000,438000;1518000,442000;1562000,442000;1562000,360000;1560950,360000;1560950,359050) props={}"
+            },
+            "PAD15": {
+              "layer": 134,
+              "point_dbu": [
+                1800000,
+                360000
+              ],
+              "cluster": 11,
+              "polygon": "(1785495,325000;1764995,345500;1764995,374500;1785495,395000;1814505,395000;1835005,374500;1835005,345500;1814505,325000) props={}"
+            },
+            "CORE15": {
+              "layer": 126,
+              "point_dbu": [
+                1720000,
+                321000
+              ],
+              "cluster": 11,
+              "polygon": "(1718000,318000;1718000,362000;1800000,362000;1800000,360950;1800950,360950;1800950,359050;1800000,359050;1800000,358000;1722000,358000;1722000,318000) props={}"
+            }
+          },
+          "partition": [
+            [
+              "CORE00",
+              "CORE01",
+              "PAD00",
+              "PAD01"
+            ],
+            [
+              "CORE02",
+              "PAD02"
+            ],
+            [
+              "CORE03",
+              "PAD03"
+            ],
+            [
+              "CORE04",
+              "PAD04"
+            ],
+            [
+              "CORE05",
+              "PAD05"
+            ],
+            [
+              "CORE06",
+              "PAD06"
+            ],
+            [
+              "CORE07",
+              "PAD07"
+            ],
+            [
+              "CORE08",
+              "PAD08"
+            ],
+            [
+              "CORE09",
+              "PAD09"
+            ],
+            [
+              "CORE10",
+              "PAD10"
+            ],
+            [
+              "CORE11",
+              "PAD11"
+            ],
+            [
+              "CORE12",
+              "PAD12"
+            ],
+            [
+              "CORE13",
+              "PAD13"
+            ],
+            [
+              "CORE14",
+              "PAD14"
+            ],
+            [
+              "CORE15",
+              "PAD15"
+            ]
+          ],
+          "node_count": 15,
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/pair_short.gds": "9a0769df3506ee2dbd39707caf849c43f834cbfa729b76c6ce0ac7342c067bc5",
+            "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97"
+          },
+          "no_virtual_connections": true,
+          "no_devices_removed": true,
+          "scope": "Only actualTopMetal1/TopVia2/TopMetal2 conductor fixture; not full-device LVS or PEX"
+        },
+        "status": "PASS_EXACT_PHYSICAL_CONTROL",
+        "outputs": {
+          "geometry.json": {
+            "bytes": 10892,
+            "sha256": "0a11cb3139688876d74068c39436e458f6f6d817819b6a585f023d1011e3393b"
+          },
+          "geometry.l2n": {
+            "bytes": 5354,
+            "sha256": "65f68e9fca7dd5d5902c787a8b0db129124b36679370f295376585cde696c2d8"
+          },
+          "geometry.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "pad_stack_flat.ext": {
+            "bytes": 3734,
+            "sha256": "00628de3ed72822f16b96fdc91f188ea509dbf4898ba20ff590a715f488ecb10"
+          },
+          "pad_stack_flat.mag": {
+            "bytes": 61356,
+            "sha256": "0633ea0bff577aedd71917d603e25e9a4c66ec82fcec026294ba26e935861ead"
+          },
+          "native.log": {
+            "bytes": 3100,
+            "sha256": "f7e29245334dd003cf88ae6773d613d6b8b7b0cb41de68eb7770276b564dfc61"
+          },
+          "native.tcl": {
+            "bytes": 4711,
+            "sha256": "48768590b00f26140fae10a9462cb0ec1d5e653805ff5cdde09f5ff422c4f77a"
+          }
+        }
+      }
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_pad_stack_v1.py": {
+        "bytes": 7345,
+        "sha256": "7ca7872e6a4117f76d21b056b548063296a7f2729e1f3a65f433ddff2c8043c3"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_magic_pad_stack_geometry_v1.py": {
+        "bytes": 3239,
+        "sha256": "50a2c67afcbad637275a08e923e0f1066d9d4142496be661cab2a9b984259e20"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_magic_hbt_multiplicity_v3.py": {
+        "bytes": 11123,
+        "sha256": "2b2c662c8df4dfc9932efa9ce4de784807a095665186f9e29a2f5f435ecc1474"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_rx_cell.py": {
+        "bytes": 12767,
+        "sha256": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+      },
+      "/dev/shm/nssoc-magic-esd-v1-build-final/runtime/lib/magic/tcl/tclmagic.so": {
+        "bytes": 7192200,
+        "sha256": "1f04a1664c4e2aaf2abcaffc5312f4ea9af3481b544ead909eb84604f14c3add"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-fixture-v1/result.json": {
+        "bytes": 28390,
+        "sha256": "7f2e893a87e8b559d19b8a8e5920c950024bff1932d8655051d972ba666fd16a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": {
+        "bytes": 1398053408,
+        "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/generate_seal.py": {
+        "bytes": 8333,
+        "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/sealring_corner.tcl": {
+        "bytes": 10481,
+        "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_4.tcl": {
+        "bytes": 44814,
+        "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-dio.tcl": {
+        "bytes": 18704,
+        "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tech": {
+        "bytes": 22066,
+        "sha256": "43e70494deef0d5c2e4ca182171c5da36b817ead2a5ac677b3528a8d3ab7fffa"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/result.json": {
+        "bytes": 11789,
+        "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/sealring_side.tcl": {
+        "bytes": 2765,
+        "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/README.md": {
+        "bytes": 16038,
+        "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-via.tcl": {
+        "bytes": 18281,
+        "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-util.tcl": {
+        "bytes": 24078,
+        "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/RELEASE_NOTES.md": {
+        "bytes": 3046,
+        "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevss_4kv.tcl": {
+        "bytes": 13124,
+        "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cap.tcl": {
+        "bytes": 24173,
+        "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifin.tech": {
+        "bytes": 25647,
+        "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fix.tcl": {
+        "bytes": 18632,
+        "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/scr1.tcl": {
+        "bytes": 6125,
+        "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_4kv.tcl": {
+        "bytes": 12976,
+        "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/check_density.py": {
+        "bytes": 30920,
+        "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-var.tcl": {
+        "bytes": 12675,
+        "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-ind.tcl": {
+        "bytes": 11435,
+        "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-fet.tcl": {
+        "bytes": 49145,
+        "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/generate_fill.py": {
+        "bytes": 21919,
+        "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.tcl": {
+        "bytes": 12311,
+        "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/nmoscl_2.tcl": {
+        "bytes": 25005,
+        "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-misc.tcl": {
+        "bytes": 9486,
+        "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-res.tcl": {
+        "bytes": 43089,
+        "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/schottky_nbl1.tcl": {
+        "bytes": 4876,
+        "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-drc.tech": {
+        "bytes": 41275,
+        "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevss_2kv.tcl": {
+        "bytes": 11047,
+        "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-extract.tech": {
+        "bytes": 23655,
+        "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-pad.tcl": {
+        "bytes": 8297,
+        "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2.magicrc": {
+        "bytes": 2578,
+        "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-bjt.tcl": {
+        "bytes": 22805,
+        "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-cifout.tech": {
+        "bytes": 45968,
+        "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/ihp-sg13g2-GDS.tech": {
+        "bytes": 32758,
+        "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+      },
+      "/dev/shm/nssoc-magic-esd-tech-final/diodevdd_2kv.tcl": {
+        "bytes": 9247,
+        "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/diodevdd_2kv.tcl": {
+        "bytes": 9247,
+        "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-GDS.tech": {
+        "bytes": 32758,
+        "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-cifout.tech": {
+        "bytes": 45968,
+        "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-bjt.tcl": {
+        "bytes": 22805,
+        "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.magicrc": {
+        "bytes": 2578,
+        "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-pad.tcl": {
+        "bytes": 8297,
+        "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-extract.tech": {
+        "bytes": 23655,
+        "sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/diodevss_2kv.tcl": {
+        "bytes": 11047,
+        "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-drc.tech": {
+        "bytes": 41275,
+        "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/schottky_nbl1.tcl": {
+        "bytes": 4876,
+        "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-res.tcl": {
+        "bytes": 43089,
+        "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-misc.tcl": {
+        "bytes": 9486,
+        "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/nmoscl_2.tcl": {
+        "bytes": 25005,
+        "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.tcl": {
+        "bytes": 12311,
+        "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/generate_fill.py": {
+        "bytes": 21919,
+        "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-fet.tcl": {
+        "bytes": 49145,
+        "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-ind.tcl": {
+        "bytes": 11435,
+        "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-var.tcl": {
+        "bytes": 12675,
+        "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/check_density.py": {
+        "bytes": 30920,
+        "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/diodevdd_4kv.tcl": {
+        "bytes": 12976,
+        "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/scr1.tcl": {
+        "bytes": 6125,
+        "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-fix.tcl": {
+        "bytes": 18632,
+        "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-cifin.tech": {
+        "bytes": 25647,
+        "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-cap.tcl": {
+        "bytes": 24173,
+        "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/diodevss_4kv.tcl": {
+        "bytes": 13124,
+        "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/RELEASE_NOTES.md": {
+        "bytes": 3046,
+        "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-util.tcl": {
+        "bytes": 24078,
+        "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-via.tcl": {
+        "bytes": 18281,
+        "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/README.md": {
+        "bytes": 16038,
+        "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/sealring_side.tcl": {
+        "bytes": 2765,
+        "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/result.json": {
+        "bytes": 11789,
+        "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.tech": {
+        "bytes": 22066,
+        "sha256": "8f9b678e4f25c732c4092f2844f6be51999e33805efd5356ac2c40f6f9bb613f"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-dio.tcl": {
+        "bytes": 18704,
+        "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/nmoscl_4.tcl": {
+        "bytes": 44814,
+        "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/sealring_corner.tcl": {
+        "bytes": 10481,
+        "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+      },
+      "/dev/shm/nssoc-magic-pad-stack-tech-v1/generate_seal.py": {
+        "bytes": 8333,
+        "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+      }
+    },
+    "qualified_pex": false,
+    "full_bank_qualified": false,
+    "esd_stress_qualified": false
+  },
+  "technology_audit": {
+    "bytes": 10079,
+    "sha256": "76851526bd2d0935b2363d6644bda5850d2d7d7912e92037a552c5457297c2f4"
+  },
+  "ancestor_esd_receipt": {
+    "bytes": 186333,
+    "sha256": "c5a6ca55a945950ad1cbd736520827ebe7dbf7cadb8e62baede90b8129a7b065"
+  },
+  "capsule": {
+    "bytes": 130952,
+    "sha256": "e47cf9a36bb9d8e33aa15b4eb3ec1d1386836475132e72d99da8af0779b7c29b",
+    "members": 106,
+    "all_roundtrip_verified": true
+  },
+  "tests": {
+    "passed": 143,
+    "own": 38,
+    "ruff": "PASS",
+    "command": "PYTHONPATH=/dev/shm/nssoc-graph-audit-pythonpath PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_magic_pad_stack_v1.py sw/tests/test_magic_device_graph_v1.py sw/tests/test_magic_esd_v1.py sw/tests/test_magic_finite_tap_v1.py -q -p no:cacheprovider",
+    "networkx_version": "3.6.1",
+    "optional_graph_dependency": "NetworkX tests require the exact native graph dependency; all9 ran locally using the existing installed package, no skipped tests."
+  },
+  "changes": [
+    "Only paint m6 obsm5 m6 -> paint m6 obsm6 m6, and equivalent m7 same-plane rule.",
+    "Real native pad/TopVia2 fixtures exercise both metal route directions across all8 rigid orientations.",
+    "Independent native KLayout connectivity matches all32 physical terminal partitions for nominal and all5 real GDS faults; original native Magic failure is preserved."
+  ],
+  "limitations": [
+    "Isolated16-chain32-port wire fixture, not ESD stress, RF performance or qualified PEX.",
+    "No GDS geometry, devices, return paths, extraction coefficients or runtime changed.",
+    "Full bank graph and import-grid fidelity are separately audited; isolated result does not imply those gates."
+  ],
+  "qualified_pex": false,
+  "esd_stress_qualified": false
+}

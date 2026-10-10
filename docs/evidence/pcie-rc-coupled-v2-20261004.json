@@ -1,0 +1,1883 @@
+{
+  "summary": {
+    "path": "hw/soc/out/magic-coupled-v2-20261004/summary.json",
+    "bytes": 19034,
+    "sha256": "62251de98bfcd9bb80f15546ce4eab08ae82e707db26b4c51652e76e87cbc119",
+    "record": {
+      "status": "PASS_V2_INTRINSIC_COUPLING_SEPARATION_UNREDUCED_FLAT_CSCALE1_ONLY",
+      "qualified_pex": false,
+      "sources": {
+        "scripts/patch_magic_coupled_cap_v2.py": "b3babcd4f16d5d27b3565505afbf6d7e8284a4a1373c6e174668281114973241",
+        "scripts/check_magic_coupled_cap_v2.py": "ab7aa8e59fe601772b4235fca7b63f708cab381245061dcb26f98d1f85209782",
+        "sw/tests/test_magic_coupled_cap_v2.py": "69a22823acf600d5ce23de0a70dce2260eeccf1c4bc470b84d57c0ad5d126ad0"
+      },
+      "frozen_dependencies": {
+        "scripts/patch_magic_intrinsic_cap_retirement.py": "724ef105e825797b0d2d6229e7891954ef09d6aca4c3fa6233bb16dd20b871f6",
+        "scripts/check_magic_intrinsic_cap_retirement.py": "3c1ff80133b3dc419a8e01536a2da0fc0d1d389f0fadb0842962214297053042",
+        "scripts/run_magic_intrinsic_cap_controls.py": "7dbf9b1f5aa7bb0bf5af96f97b842c33054381a97fa646c88341ffc58df88ebc",
+        "hw/soc/flow/check_pcie_rx_cell.py": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+      },
+      "cases": {
+        "sheet": {
+          "result": {
+            "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+            "expected_matrix_af": {
+              "B": {
+                "B": 1755.04
+              }
+            },
+            "actual_matrix_af": {
+              "B": {
+                "B": 1755.0400390625002
+              }
+            },
+            "native_ground_points_af": {
+              "B": 877.52,
+              "A": 877.52
+            },
+            "exported_ground_points_af": {
+              "B": 877.5200195312501,
+              "A": 877.5200195312501
+            },
+            "retained_mutual_edges_af": [],
+            "ports": [
+              "A",
+              "B"
+            ],
+            "resistors_ohm": [
+              [
+                "A",
+                "B",
+                0.0495
+              ]
+            ],
+            "native_component_witnesses": [
+              [
+                "B",
+                "1755.04",
+                "1755.04"
+              ]
+            ],
+            "qualified_pex": false,
+            "dynamic_rf_or_reduction_accuracy_validated": false
+          },
+          "inputs": {
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.ext": "7f308cef468a1c24b430106a5c42244ad794cf1cc262c17b2322dafb06facd9a",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.res.ext": "caed7ae733befc5b48ecc8a75d1258126fc49af31e88d9e476c18cc7aaf3ced9",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.spice": "271bd7a5d75c81b26a58f9b2de88f9ec66ce4aa1ade4ccceb50f75c6b109f841",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/native.log": "974e6fc126ec32a124488b01adaeecf38b2d92069dfe045b892d1208295501d0",
+            "/dev/shm/nssoc-pad-tm2-rc-fixed-01/sheet_tm2.ext": "26014c3e6ac0db588d065c3298e6bd9f4783ad26dcfa2ed2576ef4ec53acef5c",
+            "/dev/shm/nssoc-pad-tm2-rc-fixed-01/sheet_tm2.spice": "271bd7a5d75c81b26a58f9b2de88f9ec66ce4aa1ade4ccceb50f75c6b109f841"
+          },
+          "prior_matrix_af": {
+            "B": {
+              "B": 1755.0400390625002
+            }
+          }
+        },
+        "actual_pad_tm2": {
+          "result": {
+            "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+            "expected_matrix_af": {
+              "CORE_N": {
+                "CORE_N": 29768.5,
+                "CORE_P": 0.0
+              },
+              "CORE_P": {
+                "CORE_N": 0.0,
+                "CORE_P": 29768.5
+              }
+            },
+            "actual_matrix_af": {
+              "CORE_N": {
+                "CORE_N": 29768.539550781254,
+                "CORE_P": 0.0
+              },
+              "CORE_P": {
+                "CORE_N": 0.0,
+                "CORE_P": 29768.539550781254
+              }
+            },
+            "native_ground_points_af": {
+              "CORE_N": 1811.44,
+              "CORE_P": 1811.44,
+              "BOND_N": 27957.1,
+              "BOND_P": 27957.1
+            },
+            "exported_ground_points_af": {
+              "CORE_N": 1811.4399414062505,
+              "CORE_P": 1811.4399414062505,
+              "BOND_N": 27957.099609375004,
+              "BOND_P": 27957.099609375004
+            },
+            "retained_mutual_edges_af": [],
+            "ports": [
+              "BOND_P",
+              "CORE_P",
+              "BOND_N",
+              "CORE_N"
+            ],
+            "resistors_ohm": [
+              [
+                "CORE_N",
+                "BOND_N",
+                0.338237
+              ],
+              [
+                "CORE_P",
+                "BOND_P",
+                0.338237
+              ]
+            ],
+            "native_component_witnesses": [
+              [
+                "CORE_P",
+                "29768.5",
+                "29768.5"
+              ],
+              [
+                "CORE_N",
+                "29768.5",
+                "29768.5"
+              ]
+            ],
+            "qualified_pex": false,
+            "dynamic_rf_or_reduction_accuracy_validated": false
+          },
+          "inputs": {
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.ext": "a6909179408f79574d1dff916b2ec54fcbe22d946a09b2e144d0585a847bc97f",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.res.ext": "6e8297e2fce27218c11e5f102ee77e6a9a9a285adb98749886f07112bf0351e1",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.spice": "7cfb8efd32f3403f6c0ee3366cefbb4ed2500e218e6f7160a469a78379bca6dd",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/native.log": "974e6fc126ec32a124488b01adaeecf38b2d92069dfe045b892d1208295501d0",
+            "/dev/shm/nssoc-pad-tm2-rc-fixed-01/pad_tm2.ext": "86a8d96b895f8de13c1527ba3aabe95df5ca0b51d65193f1ad3c63435a9e891b",
+            "/dev/shm/nssoc-pad-tm2-rc-fixed-01/pad_tm2.spice": "7cfb8efd32f3403f6c0ee3366cefbb4ed2500e218e6f7160a469a78379bca6dd"
+          },
+          "prior_matrix_af": {
+            "CORE_N": {
+              "CORE_N": 29768.539550781254,
+              "CORE_P": 0.0
+            },
+            "CORE_P": {
+              "CORE_N": 0.0,
+              "CORE_P": 29768.539550781254
+            }
+          }
+        },
+        "symmetric_coupled": {
+          "result": {
+            "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+            "expected_matrix_af": {
+              "B": {
+                "B": 2351.35,
+                "D": -1168.76
+              },
+              "D": {
+                "B": -1168.76,
+                "D": 2351.35
+              }
+            },
+            "actual_matrix_af": {
+              "B": {
+                "B": 2351.3499755859375,
+                "D": -1168.7600097656252
+              },
+              "D": {
+                "B": -1168.7600097656252,
+                "D": 2351.3499755859375
+              }
+            },
+            "native_ground_points_af": {
+              "B": 591.295,
+              "D": 591.295,
+              "A": 591.295,
+              "C": 591.295
+            },
+            "exported_ground_points_af": {
+              "B": 591.2949829101562,
+              "D": 591.2949829101562,
+              "A": 591.2949829101562,
+              "C": 591.2949829101562
+            },
+            "retained_mutual_edges_af": [
+              {
+                "a": "B",
+                "b": "D",
+                "capacitance": 1168.7600097656252
+              }
+            ],
+            "ports": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "resistors_ohm": [
+              [
+                "A",
+                "B",
+                0.0495
+              ],
+              [
+                "C",
+                "D",
+                0.0495
+              ]
+            ],
+            "native_component_witnesses": [
+              [
+                "D",
+                "2351.35",
+                "1182.59"
+              ],
+              [
+                "B",
+                "2351.35",
+                "1182.59"
+              ]
+            ],
+            "qualified_pex": false,
+            "dynamic_rf_or_reduction_accuracy_validated": false
+          },
+          "inputs": {
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.ext": "4e1c17aff184090ffc7b965d9761ac13185faf4ac9eb0c4a7fce9eb4ccabf694",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.res.ext": "cc4fce1de747179e056dc2aba731b8bd53e6a5335423b3758dcbebd1f0be3c77",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.spice": "fd58af8488bede512fd2b817a34e7d2709dbef35f24e3de7b73993e4d7459936",
+            "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/native.log": "d63227fe8827b3b4f7aa73f34dbe667f2cedac85ba91935260bf2c26ac4c43e3",
+            "/dev/shm/nssoc-coupled-rc-01/fixed/coupled.ext": "2cb75f72250be13c0c216d82db9a18349df28180e0d37d884bf9013ac96795f6",
+            "/dev/shm/nssoc-coupled-rc-01/fixed/coupled.spice": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c"
+          },
+          "prior_matrix_af": {
+            "B": {
+              "B": 3520.1201171875,
+              "D": -1168.7600097656252
+            },
+            "D": {
+              "B": -1168.7600097656252,
+              "D": 3520.1201171875
+            }
+          }
+        },
+        "asymmetric_coupled": {
+          "result": {
+            "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+            "expected_matrix_af": {
+              "B": {
+                "B": 2112.823,
+                "D": -701.253
+              },
+              "D": {
+                "B": -701.253,
+                "D": 1712.853
+              }
+            },
+            "actual_matrix_af": {
+              "B": {
+                "B": 2112.8229370117188,
+                "D": -701.2529907226562
+              },
+              "D": {
+                "B": -701.2529907226562,
+                "D": 1712.8529663085938
+              }
+            },
+            "native_ground_points_af": {
+              "B": 705.785,
+              "D": 505.8,
+              "A": 705.785,
+              "C": 505.8
+            },
+            "exported_ground_points_af": {
+              "B": 705.7849731445312,
+              "D": 505.7999877929688,
+              "A": 705.7849731445312,
+              "C": 505.7999877929688
+            },
+            "retained_mutual_edges_af": [
+              {
+                "a": "B",
+                "b": "D",
+                "capacitance": 701.2529907226562
+              }
+            ],
+            "ports": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "resistors_ohm": [
+              [
+                "A",
+                "B",
+                0.0495
+              ],
+              [
+                "C",
+                "D",
+                0.0183333
+              ]
+            ],
+            "native_component_witnesses": [
+              [
+                "D",
+                "1712.85",
+                "1011.6"
+              ],
+              [
+                "B",
+                "2112.82",
+                "1411.57"
+              ]
+            ],
+            "qualified_pex": false,
+            "dynamic_rf_or_reduction_accuracy_validated": false
+          },
+          "inputs": {
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.ext": "1ec506af26a8dd9b2b854014d2a0d5937eeeb469fdf491e6536ce2cef93af0cb",
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.res.ext": "950334a68eb71fa89e51876c3a88ef8c921b8216ce67ca1ad6bf9fdc8cf9e6c9",
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.spice": "7e13298ca9d77c5fdc74c3152c72850b8fc1823e78204632207ca1cd47339bf0",
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/native.log": "0f345542487c95b29527acb0dfd350ac7231e85ed2b78f3ffcfa6bf80cbef167",
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.ext": "1ec506af26a8dd9b2b854014d2a0d5937eeeb469fdf491e6536ce2cef93af0cb",
+            "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.spice": "13eb3f70484881dd0c571374f0686357167e1a9c73c103bf1321cd949343cb8c"
+          },
+          "prior_matrix_af": {
+            "B": {
+              "B": 2814.0730590820317,
+              "D": -701.2529907226562
+            },
+            "D": {
+              "B": -701.2529907226562,
+              "D": 2414.1069946289062
+            }
+          }
+        }
+      },
+      "native_modes": {
+        "simplify": {
+          "v1_v2_spice_byte_identical": true,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c",
+          "unreduced_branch_not_entered": true,
+          "rejected_by_auditor": "Distributed intrinsic ground C is not conserved"
+        },
+        "lumped": {
+          "v1_v2_spice_byte_identical": true,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c",
+          "unreduced_branch_not_entered": true,
+          "rejected_by_auditor": "Distributed intrinsic ground C is not conserved"
+        }
+      },
+      "limits": [
+        "Full collapsed capacitance matrix and original mutual anchor/value only; spatial mutual-cap distribution and frequency/transient accuracy not validated.",
+        "Only unsimplified, non-lumped signal export, canonical flat conductors, exact ngspice() cscale=1 supported.",
+        "Legacy total load remains unchanged for reduction/Tdi. Simplify-on/lumped-on native comparisons are unchanged-mode controls, not acceptance of their known wrong coupled matrix.",
+        "No RC corner/process calibration, vias, substrate extraction, full analog device PEX or main-chip signoff.",
+        "Original runtime/PDK/prior methods untouched; isolated source build retains not-a-git-repository version-metadata warnings."
+      ],
+      "prior_v1_rejected": "Distributed intrinsic ground C is not conserved",
+      "validation": "71 focused tests and Ruff passed; 4 actual geometry matrices, 2 paired unsupported-mode comparisons, 5 native reader positives/3 actual negative exports,13 actual-output mutation rejections.",
+      "runtime_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+      "reproduction": [
+        "Use exact original tree pinned by isolated-build.json and frozen v1 patch dependency. build_v2_final.py makes a fresh copy, regenerates five source files, cleans/builds both resis and extract, then relinks magic/tcl-main and copies only that new shared library into an isolated runtime.",
+        "native_v2_final.py replays prior exact geometry with relocated output paths; native_asymmetric_v2_final.py adds the explicitly captured unequal-width/length two-strip native geometry. All commands/logs/2GiB limits are captured.",
+        "Run scripts/check_magic_coupled_cap_v2.py with exact ext/replacement/exported/native-log/baseline-ext/baseline-spice paths and a fresh out receipt. Native branch witness and all original source/mutual/ground/port/R identities are mandatory."
+      ],
+      "capsule": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/magic-coupled-v2-20261004/magic-coupled-v2-native.tar.xz",
+        "sha256": "086ef89b43b6a599188faa587e24f8332691cfc8b01bb98db68be90f6d47d615",
+        "size_bytes": 256540,
+        "members": 301,
+        "all_members_roundtrip": true
+      },
+      "capsule_validation_sha256": "985873ef69ade4302a38dd3722241e579e11ce1047be47044238b2ab9a285abf",
+      "full_receipt_sha256": "7aeffef0e8257dd5e1802056b4ac17a21cb2d1cd1b9bcd88b338563393a760ef",
+      "negative_controls": [
+        {
+          "name": "missing_mutual",
+          "rejected": "Original mutual capacitor anchor/value changed"
+        },
+        {
+          "name": "wrong_mutual",
+          "rejected": "Original mutual capacitor anchor/value changed"
+        },
+        {
+          "name": "moved_mutual_anchor",
+          "rejected": "Original mutual capacitor anchor/value changed"
+        },
+        {
+          "name": "extra_ground",
+          "rejected": "Per-node native ground C export mismatch"
+        },
+        {
+          "name": "duplicate_ID",
+          "rejected": "Duplicate native SPICE element ID"
+        },
+        {
+          "name": "missing_ends",
+          "rejected": "Missing subcircuit/.ends"
+        },
+        {
+          "name": "changed_R",
+          "rejected": "Baseline resistance/topology changed"
+        },
+        {
+          "name": "missing_branch_witness",
+          "rejected": "Missing/duplicate native unreduced branch witness"
+        },
+        {
+          "name": "wrong_retirement",
+          "rejected": "Wrong intrinsic retirement"
+        },
+        {
+          "name": "wrong_point_distribution",
+          "rejected": "Per-node native ground C export mismatch"
+        },
+        {
+          "name": "changed_original_coupling",
+          "rejected": "Original intrinsic/coupling/geometry extraction changed"
+        },
+        {
+          "name": "nonunit_scale",
+          "rejected": "Only exact source cscale=1 and flat native units supported"
+        },
+        {
+          "name": "negative_native_ground",
+          "rejected": "Invalid native rnode ground C"
+        }
+      ],
+      "reader_control_cases": [
+        {
+          "name": "retained_name",
+          "expected_af": 100.0,
+          "actual_af": 100.0,
+          "conservation_pass": true,
+          "deliberate_negative": false
+        },
+        {
+          "name": "renamed_killnode",
+          "expected_af": 100.0,
+          "actual_af": 100.0,
+          "conservation_pass": true,
+          "deliberate_negative": false
+        },
+        {
+          "name": "repeated_rnode",
+          "expected_af": 100.0,
+          "actual_af": 100.0,
+          "conservation_pass": true,
+          "deliberate_negative": false
+        },
+        {
+          "name": "no_replacement",
+          "expected_af": 100.0,
+          "actual_af": 100.00000000000001,
+          "conservation_pass": true,
+          "deliberate_negative": false
+        },
+        {
+          "name": "reader_scale2",
+          "expected_af": 200.0,
+          "actual_af": 200.0,
+          "conservation_pass": true,
+          "deliberate_negative": false
+        },
+        {
+          "name": "omitted_retirement",
+          "expected_af": 100.0,
+          "actual_af": 200.00000000000003,
+          "conservation_pass": false,
+          "deliberate_negative": true
+        },
+        {
+          "name": "wrong_retirement",
+          "expected_af": 100.0,
+          "actual_af": 150.0,
+          "conservation_pass": false,
+          "deliberate_negative": true
+        },
+        {
+          "name": "duplicate_retirement",
+          "expected_af": 100.0,
+          "actual_af": 0.0,
+          "conservation_pass": false,
+          "deliberate_negative": true
+        }
+      ],
+      "captured_member_count": 301,
+      "build_commands": [
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-magic-coupled-v2-build-final/source/resis",
+            "clean"
+          ],
+          "returncode": 0,
+          "seconds": 0.01821359299356118,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "a7687ac8bb7207d618d8ec406190c786ae151f19c2129eb7607723cd60c232d2"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-magic-coupled-v2-build-final/source/resis",
+            "module"
+          ],
+          "returncode": 0,
+          "seconds": 1.4705198770097923,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "9c65c7048f301a3d2c5128f8e01b52bfe58ba4a6f752c981d8edfcaf7a82ed86"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-magic-coupled-v2-build-final/source/extract",
+            "clean"
+          ],
+          "returncode": 0,
+          "seconds": 0.022395139996660873,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "8ce0b07b49d8d67d5c91af9b5f1ccae0dda76c05e964328e1e7cc0ba23749d6c"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-magic-coupled-v2-build-final/source/extract",
+            "module"
+          ],
+          "returncode": 0,
+          "seconds": 2.2294366210117005,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "595149e198b917e8347f6d99552cc2a9dd4aa09e0de11c83df916dacf61dc110"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-magic-coupled-v2-build-final/source/magic",
+            "tcl-main"
+          ],
+          "returncode": 0,
+          "seconds": 0.11702489398885518,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "10cb4d276ae54bed54960e6208ece24e90c1ad6d58e0d380da32e395882abc34"
+        }
+      ]
+    }
+  },
+  "peer": {
+    "path": "hw/soc/out/heartbeat-20261004-0722/rc-peer/independent-review.json",
+    "bytes": 44431,
+    "sha256": "03e7f2a24e0d36e7a64feeb54b5a0bd8e23e8727784020bc4d3f5f47cb5e16db",
+    "record": {
+      "status": "PASS_INDEPENDENT_COUPLED_RC_V2_SOURCE_BUILD_AND_RAW_CONTROL_REVIEW",
+      "observed_utc": "2026-10-04T07:39:15.311830+00:00",
+      "sources": {
+        "scripts/patch_magic_coupled_cap_v2.py": {
+          "bytes": 4204,
+          "sha256": "b3babcd4f16d5d27b3565505afbf6d7e8284a4a1373c6e174668281114973241"
+        },
+        "scripts/check_magic_coupled_cap_v2.py": {
+          "bytes": 7646,
+          "sha256": "ab7aa8e59fe601772b4235fca7b63f708cab381245061dcb26f98d1f85209782"
+        },
+        "sw/tests/test_magic_coupled_cap_v2.py": {
+          "bytes": 5622,
+          "sha256": "69a22823acf600d5ce23de0a70dce2260eeccf1c4bc470b84d57c0ad5d126ad0"
+        }
+      },
+      "tests": {
+        "count": 71,
+        "result": "PASS",
+        "log": {
+          "bytes": 99,
+          "sha256": "d7cc95caf36f1c3ba305073ea5c3616a80d74d51274c09e6ac0d9f21efddd987"
+        }
+      },
+      "build_receipt": {
+        "path": "/dev/shm/nssoc-magic-coupled-v2-build-final/result.json",
+        "bytes": 423694,
+        "sha256": "f7c3e9e971136a49dc1023f7a7c65c2af16f121e265b9b121ce6030f1eb66cee"
+      },
+      "patched_sources": {
+        "resis.h": "f70ea5aac67a40a5cfcb73bb9485ab114a26655fe3f7c8abd10456810b6a7df6",
+        "ResReadExt.c": "93ee2fb99b9631bc850fee42cf5a5696083422f7a0528810a155e87af963000e",
+        "ResPrint.c": "1d26d2db3c5e23899a573c62129a802fcf3c1670364e16c3e43816aed5465067",
+        "ResRex.c": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1",
+        "ResSimple.c": "9a5d9b3a3eaad9d6a84b989d52a8b540419cd85fef4331bc53726bd965939855"
+      },
+      "native_library": {
+        "path": "/dev/shm/nssoc-magic-coupled-v2-build-final/runtime/lib/magic/tcl/tclmagic.so",
+        "bytes": 7185960,
+        "sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9"
+      },
+      "runtime_support_files_rehashed": 362,
+      "build_module_closure": {
+        "clean_recompiled": [
+          "resis",
+          "extract"
+        ],
+        "resis_c_objects": [
+          "ResMain",
+          "ResJunct",
+          "ResMakeRes",
+          "ResSimple",
+          "ResPrint",
+          "ResReadExt",
+          "ResRex",
+          "ResBasic",
+          "ResMerge",
+          "ResChecks",
+          "ResFract",
+          "ResUtils",
+          "ResDebug"
+        ],
+        "external_resisdata_client": "extract/ExtMain.c",
+        "unused_unlinked_header_consumer": "resis/ResWrite.c",
+        "relinked_magic_with_both_modules": true
+      },
+      "abi": {
+        "original": {
+          "command": [
+            "gcc",
+            "-m64",
+            "-I/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/magic-groundcap-combined-8.3.623",
+            "-I/usr/include/tcl8.6",
+            "-DMAGIC_WRAPPER=1",
+            "hw/soc/out/heartbeat-20261004-0722/rc-peer/abi_probe.c",
+            "-o",
+            "/dev/shm/nssoc-rc-v2-abi-original"
+          ],
+          "returncode": 0,
+          "compile_stdout": "",
+          "compile_stderr": "",
+          "layout": {
+            "sizeof": 80,
+            "tdiTolerance": 0,
+            "frequency": 4,
+            "rthresh": 8,
+            "savePlanes": 16,
+            "mainDef": 24,
+            "rg_ttype": 32,
+            "rg_maxres": 36,
+            "rg_nodecap": 40,
+            "rg_Tdi": 44,
+            "rg_bigdevres": 48,
+            "rg_tilecount": 52,
+            "rg_status": 56,
+            "rg_devloc": 64,
+            "rg_name": 72
+          }
+        },
+        "v2": {
+          "command": [
+            "gcc",
+            "-m64",
+            "-I/dev/shm/nssoc-magic-coupled-v2-build-01/source",
+            "-I/usr/include/tcl8.6",
+            "-DMAGIC_WRAPPER=1",
+            "hw/soc/out/heartbeat-20261004-0722/rc-peer/abi_probe.c",
+            "-o",
+            "/dev/shm/nssoc-rc-v2-abi-v2",
+            "-DV2"
+          ],
+          "returncode": 0,
+          "compile_stdout": "",
+          "compile_stderr": "",
+          "layout": {
+            "sizeof": 80,
+            "tdiTolerance": 0,
+            "frequency": 4,
+            "rthresh": 8,
+            "savePlanes": 16,
+            "mainDef": 24,
+            "rg_ttype": 32,
+            "rg_maxres": 36,
+            "rg_nodecap": 40,
+            "rg_intrinsiccap": 44,
+            "rg_Tdi": 48,
+            "rg_bigdevres": 52,
+            "rg_tilecount": 56,
+            "rg_status": 60,
+            "rg_devloc": 64,
+            "rg_name": 72
+          }
+        }
+      },
+      "abi_source_review": {
+        "path": "hw/soc/out/heartbeat-20261004-0722/rc-peer/abi-source-review.json",
+        "bytes": 3659,
+        "sha256": "d4131707965d7920d472fb9e9e50992f6c3d511baf17eb290314801d744fc790"
+      },
+      "native_executions": [
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/regression",
+          "seconds": 0.1926939100085292,
+          "log": {
+            "bytes": 2762,
+            "sha256": "974e6fc126ec32a124488b01adaeecf38b2d92069dfe045b892d1208295501d0"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled",
+          "seconds": 0.18186283399700187,
+          "log": {
+            "bytes": 1990,
+            "sha256": "d63227fe8827b3b4f7aa73f34dbe667f2cedac85ba91935260bf2c26ac4c43e3"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify",
+          "seconds": 0.18499554300797172,
+          "log": {
+            "bytes": 1939,
+            "sha256": "d71e0d390b6633fd1ca71deac8db74a7079a012fcb6fbdb7fa41ae7f56474ef1"
+          },
+          "runtime_so_sha256": "140703edac887d48bff70a56f69af137bb4d62599f79f3a5eab2982dda44e5df",
+          "patched_v2": false
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify",
+          "seconds": 0.18322333198739216,
+          "log": {
+            "bytes": 1942,
+            "sha256": "617fb321b7c65b2a1383e38724ea78acb8fe1b594fc76f981d7416a6a17d74ae"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped",
+          "seconds": 0.19051572200260125,
+          "log": {
+            "bytes": 1857,
+            "sha256": "16c5f469c87b8be3856594e017e7c5e7115c9361840d67f586898cf994aa8369"
+          },
+          "runtime_so_sha256": "140703edac887d48bff70a56f69af137bb4d62599f79f3a5eab2982dda44e5df",
+          "patched_v2": false
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped",
+          "seconds": 0.1969302440120373,
+          "log": {
+            "bytes": 1860,
+            "sha256": "bbfb1f869840f350363fb1e63f6f2de34db5cc5c4fd2a81d214c01a55099f556"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1",
+          "seconds": 0.16383464899263345,
+          "log": {
+            "bytes": 1854,
+            "sha256": "bcb45b78d094024e0e860420f3693d10e7617b42687f4a4c1a3f8a01a7e9103a"
+          },
+          "runtime_so_sha256": "140703edac887d48bff70a56f69af137bb4d62599f79f3a5eab2982dda44e5df",
+          "patched_v2": false
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2",
+          "seconds": 0.17426872099167667,
+          "log": {
+            "bytes": 1988,
+            "sha256": "0f345542487c95b29527acb0dfd350ac7231e85ed2b78f3ffcfa6bf80cbef167"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name",
+          "seconds": 0.1689478940097615,
+          "log": {
+            "bytes": 1137,
+            "sha256": "cb4659a3cf9a1ae918fa531904f9bfa74544561476666eb5493cbe8c3b23a416"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode",
+          "seconds": 0.18532606898224913,
+          "log": {
+            "bytes": 1140,
+            "sha256": "8b94cffd7c052c6da2401c1d249c63765f3fc93d203ac277c13072311533d993"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode",
+          "seconds": 0.1923749490233604,
+          "log": {
+            "bytes": 1138,
+            "sha256": "24f2d3356fe078d2b16489f514bacf46a89e6b5eb676fcb667f4dcdfca876e47"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/no_replacement",
+          "seconds": 0.18924176500877365,
+          "log": {
+            "bytes": 1138,
+            "sha256": "0fcfd8aa46154b84c6eba1e4bc7ec6176be0d84747d645642a6b694604d77609"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2",
+          "seconds": 0.18562341801589355,
+          "log": {
+            "bytes": 1137,
+            "sha256": "0a60a4af4053b56bf0720e0970a6a12d529ba1e2aaa9d8827d269cd737b5a08f"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement",
+          "seconds": 0.18074529600562528,
+          "log": {
+            "bytes": 1142,
+            "sha256": "a233de932fc61bfbb341015eda3cb4b3d5cd756ce300167a04d17002349b6ca3"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement",
+          "seconds": 0.17761133899330162,
+          "log": {
+            "bytes": 1140,
+            "sha256": "bd6fbdbfeaf54144cac3da577594dc1313b8424aa6edf707f27f8594fc57f000"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        },
+        {
+          "directory": "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement",
+          "seconds": 0.17949804398813285,
+          "log": {
+            "bytes": 1144,
+            "sha256": "74245bee8395a73d71c55fb5ccec03f4f4b535ea4515749130a9343f9e7526f0"
+          },
+          "runtime_so_sha256": "47cec16ee2466f36c7ab277b006a7c50ed073ad79d5f9b805bd6643b02b976b9",
+          "patched_v2": true
+        }
+      ],
+      "full_matrix_and_R_port_results": {
+        "symmetric": {
+          "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+          "expected_matrix_af": {
+            "B": {
+              "B": 2351.35,
+              "D": -1168.76
+            },
+            "D": {
+              "B": -1168.76,
+              "D": 2351.35
+            }
+          },
+          "actual_matrix_af": {
+            "B": {
+              "B": 2351.3499755859375,
+              "D": -1168.7600097656252
+            },
+            "D": {
+              "B": -1168.7600097656252,
+              "D": 2351.3499755859375
+            }
+          },
+          "native_ground_points_af": {
+            "B": 591.295,
+            "D": 591.295,
+            "A": 591.295,
+            "C": 591.295
+          },
+          "exported_ground_points_af": {
+            "B": 591.2949829101562,
+            "D": 591.2949829101562,
+            "A": 591.2949829101562,
+            "C": 591.2949829101562
+          },
+          "retained_mutual_edges_af": [
+            {
+              "a": "B",
+              "b": "D",
+              "capacitance": 1168.7600097656252
+            }
+          ],
+          "ports": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "resistors_ohm": [
+            [
+              "A",
+              "B",
+              0.0495
+            ],
+            [
+              "C",
+              "D",
+              0.0495
+            ]
+          ],
+          "native_component_witnesses": [
+            [
+              "D",
+              "2351.35",
+              "1182.59"
+            ],
+            [
+              "B",
+              "2351.35",
+              "1182.59"
+            ]
+          ],
+          "qualified_pex": false,
+          "dynamic_rf_or_reduction_accuracy_validated": false
+        },
+        "asymmetric": {
+          "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+          "expected_matrix_af": {
+            "B": {
+              "B": 2112.823,
+              "D": -701.253
+            },
+            "D": {
+              "B": -701.253,
+              "D": 1712.853
+            }
+          },
+          "actual_matrix_af": {
+            "B": {
+              "B": 2112.8229370117188,
+              "D": -701.2529907226562
+            },
+            "D": {
+              "B": -701.2529907226562,
+              "D": 1712.8529663085938
+            }
+          },
+          "native_ground_points_af": {
+            "B": 705.785,
+            "D": 505.8,
+            "A": 705.785,
+            "C": 505.8
+          },
+          "exported_ground_points_af": {
+            "B": 705.7849731445312,
+            "D": 505.7999877929688,
+            "A": 705.7849731445312,
+            "C": 505.7999877929688
+          },
+          "retained_mutual_edges_af": [
+            {
+              "a": "B",
+              "b": "D",
+              "capacitance": 701.2529907226562
+            }
+          ],
+          "ports": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "resistors_ohm": [
+            [
+              "A",
+              "B",
+              0.0495
+            ],
+            [
+              "C",
+              "D",
+              0.0183333
+            ]
+          ],
+          "native_component_witnesses": [
+            [
+              "D",
+              "1712.85",
+              "1011.6"
+            ],
+            [
+              "B",
+              "2112.82",
+              "1411.57"
+            ]
+          ],
+          "qualified_pex": false,
+          "dynamic_rf_or_reduction_accuracy_validated": false
+        },
+        "uncoupled_sheet": {
+          "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+          "expected_matrix_af": {
+            "B": {
+              "B": 1755.04
+            }
+          },
+          "actual_matrix_af": {
+            "B": {
+              "B": 1755.0400390625002
+            }
+          },
+          "native_ground_points_af": {
+            "B": 877.52,
+            "A": 877.52
+          },
+          "exported_ground_points_af": {
+            "B": 877.5200195312501,
+            "A": 877.5200195312501
+          },
+          "retained_mutual_edges_af": [],
+          "ports": [
+            "A",
+            "B"
+          ],
+          "resistors_ohm": [
+            [
+              "A",
+              "B",
+              0.0495
+            ]
+          ],
+          "native_component_witnesses": [
+            [
+              "B",
+              "1755.04",
+              "1755.04"
+            ]
+          ],
+          "qualified_pex": false,
+          "dynamic_rf_or_reduction_accuracy_validated": false
+        },
+        "uncoupled_pad": {
+          "status": "PASS_CANONICAL_FLAT_CSCALE1_UNREDUCED_COUPLED_MATRIX_ONLY",
+          "expected_matrix_af": {
+            "CORE_N": {
+              "CORE_N": 29768.5,
+              "CORE_P": 0.0
+            },
+            "CORE_P": {
+              "CORE_N": 0.0,
+              "CORE_P": 29768.5
+            }
+          },
+          "actual_matrix_af": {
+            "CORE_N": {
+              "CORE_N": 29768.539550781254,
+              "CORE_P": 0.0
+            },
+            "CORE_P": {
+              "CORE_N": 0.0,
+              "CORE_P": 29768.539550781254
+            }
+          },
+          "native_ground_points_af": {
+            "CORE_N": 1811.44,
+            "CORE_P": 1811.44,
+            "BOND_N": 27957.1,
+            "BOND_P": 27957.1
+          },
+          "exported_ground_points_af": {
+            "CORE_N": 1811.4399414062505,
+            "CORE_P": 1811.4399414062505,
+            "BOND_N": 27957.099609375004,
+            "BOND_P": 27957.099609375004
+          },
+          "retained_mutual_edges_af": [],
+          "ports": [
+            "BOND_P",
+            "CORE_P",
+            "BOND_N",
+            "CORE_N"
+          ],
+          "resistors_ohm": [
+            [
+              "CORE_N",
+              "BOND_N",
+              0.338237
+            ],
+            [
+              "CORE_P",
+              "BOND_P",
+              0.338237
+            ]
+          ],
+          "native_component_witnesses": [
+            [
+              "CORE_P",
+              "29768.5",
+              "29768.5"
+            ],
+            [
+              "CORE_N",
+              "29768.5",
+              "29768.5"
+            ]
+          ],
+          "qualified_pex": false,
+          "dynamic_rf_or_reduction_accuracy_validated": false
+        }
+      },
+      "independent_matrix_reconstruction": {
+        "symmetric": {
+          "owners": [
+            "B",
+            "D"
+          ],
+          "matrix_af": {
+            "B": {
+              "B": 2351.3499755859375,
+              "D": -1168.7600097656252
+            },
+            "D": {
+              "B": -1168.7600097656252,
+              "D": 2351.3499755859375
+            }
+          },
+          "error_af": {
+            "B": {
+              "B": -2.441406240905053e-05,
+              "D": -9.765625236468622e-06
+            },
+            "D": {
+              "B": -9.765625236468622e-06,
+              "D": -2.441406240905053e-05
+            }
+          },
+          "ports": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "resistors": [
+            [
+              "A",
+              "B",
+              0.0495
+            ],
+            [
+              "C",
+              "D",
+              0.0495
+            ]
+          ]
+        },
+        "asymmetric": {
+          "owners": [
+            "B",
+            "D"
+          ],
+          "matrix_af": {
+            "B": {
+              "B": 2112.8229370117188,
+              "D": -701.2529907226562
+            },
+            "D": {
+              "B": -701.2529907226562,
+              "D": 1712.8529663085938
+            }
+          },
+          "error_af": {
+            "B": {
+              "B": -6.298828111539478e-05,
+              "D": 9.277343792746251e-06
+            },
+            "D": {
+              "B": 9.277343792746251e-06,
+              "D": -3.369140631548362e-05
+            }
+          },
+          "ports": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "resistors": [
+            [
+              "A",
+              "B",
+              0.0495
+            ],
+            [
+              "C",
+              "D",
+              0.0183333
+            ]
+          ]
+        },
+        "uncoupled_sheet": {
+          "owners": [
+            "B"
+          ],
+          "matrix_af": {
+            "B": {
+              "B": 1755.0400390625002
+            }
+          },
+          "error_af": {
+            "B": {
+              "B": 3.9062500263753464e-05
+            }
+          },
+          "ports": [
+            "A",
+            "B"
+          ],
+          "resistors": [
+            [
+              "A",
+              "B",
+              0.0495
+            ]
+          ]
+        },
+        "uncoupled_pad": {
+          "owners": [
+            "CORE_N",
+            "CORE_P"
+          ],
+          "matrix_af": {
+            "CORE_N": {
+              "CORE_N": 29768.539550781254,
+              "CORE_P": 0.0
+            },
+            "CORE_P": {
+              "CORE_N": 0.0,
+              "CORE_P": 29768.539550781254
+            }
+          },
+          "error_af": {
+            "CORE_N": {
+              "CORE_N": 0.03955078125363798,
+              "CORE_P": 0.0
+            },
+            "CORE_P": {
+              "CORE_N": 0.0,
+              "CORE_P": 0.03955078125363798
+            }
+          },
+          "ports": [
+            "BOND_P",
+            "CORE_P",
+            "BOND_N",
+            "CORE_N"
+          ],
+          "resistors": [
+            [
+              "CORE_N",
+              "BOND_N",
+              0.338237
+            ],
+            [
+              "CORE_P",
+              "BOND_P",
+              0.338237
+            ]
+          ]
+        }
+      },
+      "unsupported_mode_controls": {
+        "simplify": {
+          "v1_v2_replacement_and_spice_equal": true,
+          "new_branch_marker_absent": true,
+          "strict_audit_rejected": "Distributed intrinsic ground C is not conserved",
+          "qualified": false
+        },
+        "lumped": {
+          "v1_v2_replacement_and_spice_equal": true,
+          "new_branch_marker_absent": true,
+          "strict_audit_rejected": "Distributed intrinsic ground C is not conserved",
+          "qualified": false
+        }
+      },
+      "reader_controls": [
+        {
+          "name": "retained_name",
+          "actual_af": 100.0,
+          "expected_af": 100.0,
+          "conservation_pass": true,
+          "negative": false
+        },
+        {
+          "name": "renamed_killnode",
+          "actual_af": 100.0,
+          "expected_af": 100.0,
+          "conservation_pass": true,
+          "negative": false
+        },
+        {
+          "name": "repeated_rnode",
+          "actual_af": 100.0,
+          "expected_af": 100.0,
+          "conservation_pass": true,
+          "negative": false
+        },
+        {
+          "name": "no_replacement",
+          "actual_af": 100.00000000000001,
+          "expected_af": 100.0,
+          "conservation_pass": true,
+          "negative": false
+        },
+        {
+          "name": "reader_scale2",
+          "actual_af": 200.0,
+          "expected_af": 200.0,
+          "conservation_pass": true,
+          "negative": false
+        },
+        {
+          "name": "omitted_retirement",
+          "actual_af": 200.00000000000006,
+          "expected_af": 100.0,
+          "conservation_pass": false,
+          "negative": true
+        },
+        {
+          "name": "wrong_retirement",
+          "actual_af": 150.00000000000003,
+          "expected_af": 100.0,
+          "conservation_pass": false,
+          "negative": true
+        },
+        {
+          "name": "duplicate_retirement",
+          "actual_af": 0.0,
+          "expected_af": 100.0,
+          "conservation_pass": false,
+          "negative": true
+        }
+      ],
+      "raw_files": {
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/result.json": {
+          "bytes": 5173,
+          "sha256": "41f921c8e37b6d1a02e526361241f833173cc881dfb5230209a9ef45f86e2635"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/execution.json": {
+          "bytes": 663,
+          "sha256": "589ef90e70ec45d1c3d7c5c363a4cb8513f85e9014c62048c4b5dd1dab94641e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.spice": {
+          "bytes": 283,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.res.lump": {
+          "bytes": 12,
+          "sha256": "6482ef38fe19d9d8fbfa58a5c82b36314ca1e0eb9cdfe1b27c917b76af42896e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.res.ext": {
+          "bytes": 243,
+          "sha256": "7a8212e964e457779cc7e9db14e1b754906b725156a43eaaf98882ef2c1a8769"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "92cb8f61ab7e32491e2de9395326c31a92c5060f59a0e73557e02cdb20e55d6a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.ext": {
+          "bytes": 598,
+          "sha256": "1eddb339182c93132af1cc5fe81e61d737a6b2fe2ccbd1eb0946ec232e1b16b8"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/coupled.mag": {
+          "bytes": 388,
+          "sha256": "f50ad7e1c0b401c3d10996e5cbda136b3d82a67c57aa1f6cd0f7f0858456fd34"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/native.log": {
+          "bytes": 1860,
+          "sha256": "bbfb1f869840f350363fb1e63f6f2de34db5cc5c4fd2a81d214c01a55099f556"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_lumped/native.tcl": {
+          "bytes": 939,
+          "sha256": "f2ebaeb5b20654090f180961df3e67994542d8a74102e88982b6d1fff9c329bd"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/execution.json": {
+          "bytes": 658,
+          "sha256": "7baaf6e5b9b858ed144016cdcd849215cab33daea06dc6b4b941fc519789aa24"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.spice": {
+          "bytes": 283,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.res.lump": {
+          "bytes": 12,
+          "sha256": "6482ef38fe19d9d8fbfa58a5c82b36314ca1e0eb9cdfe1b27c917b76af42896e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.res.ext": {
+          "bytes": 243,
+          "sha256": "7a8212e964e457779cc7e9db14e1b754906b725156a43eaaf98882ef2c1a8769"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "92cb8f61ab7e32491e2de9395326c31a92c5060f59a0e73557e02cdb20e55d6a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.ext": {
+          "bytes": 598,
+          "sha256": "1eddb339182c93132af1cc5fe81e61d737a6b2fe2ccbd1eb0946ec232e1b16b8"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/coupled.mag": {
+          "bytes": 388,
+          "sha256": "f50ad7e1c0b401c3d10996e5cbda136b3d82a67c57aa1f6cd0f7f0858456fd34"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/native.log": {
+          "bytes": 1857,
+          "sha256": "16c5f469c87b8be3856594e017e7c5e7115c9361840d67f586898cf994aa8369"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_lumped/native.tcl": {
+          "bytes": 939,
+          "sha256": "9afb31f1ae3e61c4ca6da07d281b29ef6c2ae2dbd797551ef7a8328f14d97de7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/execution.json": {
+          "bytes": 666,
+          "sha256": "5af867ce653364930025f73742361fbf42f45f4c5bea855dbd48a854d8080e22"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.spice": {
+          "bytes": 283,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.res.ext": {
+          "bytes": 243,
+          "sha256": "7a8212e964e457779cc7e9db14e1b754906b725156a43eaaf98882ef2c1a8769"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "92cb8f61ab7e32491e2de9395326c31a92c5060f59a0e73557e02cdb20e55d6a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.ext": {
+          "bytes": 598,
+          "sha256": "1eddb339182c93132af1cc5fe81e61d737a6b2fe2ccbd1eb0946ec232e1b16b8"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/coupled.mag": {
+          "bytes": 388,
+          "sha256": "f50ad7e1c0b401c3d10996e5cbda136b3d82a67c57aa1f6cd0f7f0858456fd34"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/native.log": {
+          "bytes": 1942,
+          "sha256": "617fb321b7c65b2a1383e38724ea78acb8fe1b594fc76f981d7416a6a17d74ae"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v2_simplify/native.tcl": {
+          "bytes": 920,
+          "sha256": "f021be9d5b895ed1e97fed1b4963aa110a27b6cef57b4553b3e377f1ce36a38f"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/execution.json": {
+          "bytes": 660,
+          "sha256": "167d92ec623811589652993f79dd1e899dcdccf270fd62560e9a14b0d64876ba"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.spice": {
+          "bytes": 283,
+          "sha256": "1a73448c09d9d470ffda986508ed7193b7983707db9a0df09576cb766bb96f2c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.res.ext": {
+          "bytes": 243,
+          "sha256": "7a8212e964e457779cc7e9db14e1b754906b725156a43eaaf98882ef2c1a8769"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "92cb8f61ab7e32491e2de9395326c31a92c5060f59a0e73557e02cdb20e55d6a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.ext": {
+          "bytes": 598,
+          "sha256": "4e1c17aff184090ffc7b965d9761ac13185faf4ac9eb0c4a7fce9eb4ccabf694"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/coupled.mag": {
+          "bytes": 388,
+          "sha256": "5f01246126eb1efa542799bfb7b7ed137572f15d670a0fb0d18669d9486f8551"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/native.log": {
+          "bytes": 1939,
+          "sha256": "d71e0d390b6633fd1ca71deac8db74a7079a012fcb6fbdb7fa41ae7f56474ef1"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/v1_simplify/native.tcl": {
+          "bytes": 920,
+          "sha256": "4f10e97b48a368093c4fc505b45a3e000bdb29bda899a904117acda4b4637144"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/execution.json": {
+          "bytes": 662,
+          "sha256": "f091bc596de5dbbb8526c59232be169536817b63b0cd7ce845806dec9560a949"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.spice": {
+          "bytes": 283,
+          "sha256": "fd58af8488bede512fd2b817a34e7d2709dbef35f24e3de7b73993e4d7459936"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.res.ext": {
+          "bytes": 243,
+          "sha256": "cc4fce1de747179e056dc2aba731b8bd53e6a5335423b3758dcbebd1f0be3c77"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "92cb8f61ab7e32491e2de9395326c31a92c5060f59a0e73557e02cdb20e55d6a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.ext": {
+          "bytes": 598,
+          "sha256": "4e1c17aff184090ffc7b965d9761ac13185faf4ac9eb0c4a7fce9eb4ccabf694"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/coupled.mag": {
+          "bytes": 388,
+          "sha256": "5f01246126eb1efa542799bfb7b7ed137572f15d670a0fb0d18669d9486f8551"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/native.log": {
+          "bytes": 1990,
+          "sha256": "d63227fe8827b3b4f7aa73f34dbe667f2cedac85ba91935260bf2c26ac4c43e3"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/coupled/native.tcl": {
+          "bytes": 917,
+          "sha256": "264576cd51425dd9501507cd44a54b321f7fb00c50badae970cf108d32832988"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/execution.json": {
+          "bytes": 664,
+          "sha256": "9362623c7cc25f6bd3d5ddf2d8bfeaefc63b8dc456a08c28b9a1d5013ff40445"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.spice": {
+          "bytes": 317,
+          "sha256": "7cfb8efd32f3403f6c0ee3366cefbb4ed2500e218e6f7160a469a78379bca6dd"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.res.ext": {
+          "bytes": 287,
+          "sha256": "6e8297e2fce27218c11e5f102ee77e6a9a9a285adb98749886f07112bf0351e1"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.nodes": {
+          "bytes": 77,
+          "sha256": "68001e2f44936c3f914595da6a71fd6f6ae86e3a15a61c72c6c76511f4401ac0"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.sim": {
+          "bytes": 104,
+          "sha256": "1d02c68a42c5ddbbac6e4dece1f8cf0e91d4f675cc672d7cea2c5abd8d67c246"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.ext": {
+          "bytes": 664,
+          "sha256": "a6909179408f79574d1dff916b2ec54fcbe22d946a09b2e144d0585a847bc97f"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/pad_tm2.mag": {
+          "bytes": 1050,
+          "sha256": "4ffa9392caeae479d65abcae9dfefafe1b455101cb003bae78822bd02742f9d4"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.spice": {
+          "bytes": 175,
+          "sha256": "271bd7a5d75c81b26a58f9b2de88f9ec66ce4aa1ade4ccceb50f75c6b109f841"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.res.ext": {
+          "bytes": 122,
+          "sha256": "caed7ae733befc5b48ecc8a75d1258126fc49af31e88d9e476c18cc7aaf3ced9"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.nodes": {
+          "bytes": 47,
+          "sha256": "4615ab4b23bbbec6ebe9dfa43618c1cdad35d5824a737b09b95df8d3906c3a0e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.sim": {
+          "bytes": 48,
+          "sha256": "24657fafef95efe9e488e684a6e1312aeb64fcafafb3a3c3bee357028c1ccd69"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.ext": {
+          "bytes": 409,
+          "sha256": "7f308cef468a1c24b430106a5c42244ad794cf1cc262c17b2322dafb06facd9a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/sheet_tm2.mag": {
+          "bytes": 413,
+          "sha256": "f39da1dd6d9cbabde0fb87d3f813b22dcad8709487548fb92a3ffaa8606aa3af"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/native.log": {
+          "bytes": 2762,
+          "sha256": "974e6fc126ec32a124488b01adaeecf38b2d92069dfe045b892d1208295501d0"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/native.tcl": {
+          "bytes": 1635,
+          "sha256": "dc3882aff65b8fa680ee654f2bb56ea2235380595d0a3332297778ae2e602f1a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-native-final/regression/subset.gds": {
+          "bytes": 476,
+          "sha256": "e1fb13bc38970c03b1cbdbaad54e99cfa0af60bee9442cbb6d73e1812d5e7db3"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/execution.json": {
+          "bytes": 661,
+          "sha256": "64c008ce02825e9553cebceb8c6a627ccd84ae786fa17275a55ce5b423314b24"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.spice": {
+          "bytes": 282,
+          "sha256": "7e13298ca9d77c5fdc74c3152c72850b8fc1823e78204632207ca1cd47339bf0"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.res.ext": {
+          "bytes": 242,
+          "sha256": "950334a68eb71fa89e51876c3a88ef8c921b8216ce67ca1ad6bf9fdc8cf9e6c9"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "26119f6543bda9e6d34a37fbd1c21e80f6d4f4bf3bbc0cbde69e28cdf17c98c4"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.ext": {
+          "bytes": 597,
+          "sha256": "1ec506af26a8dd9b2b854014d2a0d5937eeeb469fdf491e6536ce2cef93af0cb"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/coupled.mag": {
+          "bytes": 390,
+          "sha256": "aab2650ab196e1b6145c238925d81122fffa51ae0de779ea2fa321db5168df11"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/native.log": {
+          "bytes": 1988,
+          "sha256": "0f345542487c95b29527acb0dfd350ac7231e85ed2b78f3ffcfa6bf80cbef167"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v2/native.tcl": {
+          "bytes": 916,
+          "sha256": "6ba2999ca3bf6834642180e81921d9bb5dff1465b46f5377f19a3bc637bef6bb"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/execution.json": {
+          "bytes": 655,
+          "sha256": "b576175ca056129a36ba0d51bf2d5909c9b5c371d0f05ec7d74cc1f059225a54"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.spice": {
+          "bytes": 286,
+          "sha256": "13eb3f70484881dd0c571374f0686357167e1a9c73c103bf1321cd949343cb8c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.res.ext": {
+          "bytes": 246,
+          "sha256": "ce4fff331f96940481088e28ba4e19cfed4fc8449203340079f5a6534f01052d"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.nodes": {
+          "bytes": 62,
+          "sha256": "26119f6543bda9e6d34a37fbd1c21e80f6d4f4bf3bbc0cbde69e28cdf17c98c4"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.sim": {
+          "bytes": 54,
+          "sha256": "b4655e5f527c6b87fff4d8d6038391c34efcb0dd34c8a5c765ae17f2d36e9f72"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.ext": {
+          "bytes": 597,
+          "sha256": "1ec506af26a8dd9b2b854014d2a0d5937eeeb469fdf491e6536ce2cef93af0cb"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/coupled.mag": {
+          "bytes": 390,
+          "sha256": "aab2650ab196e1b6145c238925d81122fffa51ae0de779ea2fa321db5168df11"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/native.log": {
+          "bytes": 1854,
+          "sha256": "bcb45b78d094024e0e860420f3693d10e7617b42687f4a4c1a3f8a01a7e9103a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-asymmetric-final/v1/native.tcl": {
+          "bytes": 916,
+          "sha256": "dc23cfe895a30ef7b9fbb8d4c2069f3c8890b5e9cc8c763784bfe715954377d7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/result.json": {
+          "bytes": 79633,
+          "sha256": "7902ad94f4ce81049d8d6f958cf041b6cb811110dc2beca841d2b52118a64128"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement/tiny.spice": {
+          "bytes": 164,
+          "sha256": "bfb0175e39c704fe87318a5027ce726cac11a7bf88c1f8e1637651b9238b3221"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement/native.log": {
+          "bytes": 1144,
+          "sha256": "74245bee8395a73d71c55fb5ccec03f4f4b535ea4515749130a9343f9e7526f0"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement/run.tcl": {
+          "bytes": 268,
+          "sha256": "12f98f5dfd6e5c09a303876a01e322198f9cdd9798b4f27039a89f2a357e9e20"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement/tiny.res.ext": {
+          "bytes": 112,
+          "sha256": "e815cc19e987ca19b3a8c5650445982fda510ad6be778030cf54070642cf3a1e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/duplicate_retirement/tiny.ext": {
+          "bytes": 189,
+          "sha256": "d8518140e086d3bed4708594c84e02d29961521fcce5ae59d3fd7f89c7ea66e7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement/tiny.spice": {
+          "bytes": 163,
+          "sha256": "fb2bc15ec9d33be6d980f8f705c352964f0481e035a984d947d917a37e104f37"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement/native.log": {
+          "bytes": 1140,
+          "sha256": "bd6fbdbfeaf54144cac3da577594dc1313b8424aa6edf707f27f8594fc57f000"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement/run.tcl": {
+          "bytes": 264,
+          "sha256": "7ec63ed93f6308578903c021247284e91b4b63f59b4d3d98d2daf0bad9c1001c"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement/tiny.res.ext": {
+          "bytes": 95,
+          "sha256": "637956869b7650bfd5a565e4991204c3532954e27658e980b0a10745067700cd"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/wrong_retirement/tiny.ext": {
+          "bytes": 189,
+          "sha256": "d8518140e086d3bed4708594c84e02d29961521fcce5ae59d3fd7f89c7ea66e7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement/tiny.spice": {
+          "bytes": 163,
+          "sha256": "cf83f58500ac51987535312cac5d1ed5cdefb15e20825dce0c62ad312b825092"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement/native.log": {
+          "bytes": 1142,
+          "sha256": "a233de932fc61bfbb341015eda3cb4b3d5cd756ce300167a04d17002349b6ca3"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement/run.tcl": {
+          "bytes": 266,
+          "sha256": "8e8712ee060882f5b903204a09fa0b8b6b600c45a58a93a222a6e24b2a91744b"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement/tiny.res.ext": {
+          "bytes": 80,
+          "sha256": "0e91876bb6b9f99a81f1097e2021a35b20dd97e90eda3d454a2a047ebb062e6b"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/omitted_retirement/tiny.ext": {
+          "bytes": 189,
+          "sha256": "d8518140e086d3bed4708594c84e02d29961521fcce5ae59d3fd7f89c7ea66e7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2/tiny.spice": {
+          "bytes": 148,
+          "sha256": "567f57874f34e90fbfa05682b4e82b4d3bff9ea473f6550ed05bb5bbf4522408"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2/native.log": {
+          "bytes": 1137,
+          "sha256": "0a60a4af4053b56bf0720e0970a6a12d529ba1e2aaa9d8827d269cd737b5a08f"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2/run.tcl": {
+          "bytes": 261,
+          "sha256": "43618c07060f3dbbc2fbff22e20a6fda372b87d74d54d4818fc7f0b96403ba35"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2/tiny.res.ext": {
+          "bytes": 96,
+          "sha256": "77a6cf83e2926ed37db65657683bb986cce74d5758559685db7c5fb2b593cbfb"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/reader_scale2/tiny.ext": {
+          "bytes": 189,
+          "sha256": "dbf1db79d303b02d67ba2d56afe9aac436d29b2e55886a2c8f2ab1fb8971559a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/no_replacement/tiny.spice": {
+          "bytes": 117,
+          "sha256": "2fd190d450b951d3f28c03cdc9d6d2ba5c54374d64bce13b4754c0f0c8ee3f94"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/no_replacement/native.log": {
+          "bytes": 1138,
+          "sha256": "0fcfd8aa46154b84c6eba1e4bc7ec6176be0d84747d645642a6b694604d77609"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/no_replacement/run.tcl": {
+          "bytes": 263,
+          "sha256": "b72d77d5710a402df0c66ceeb9a1b92da60ad4e93f2a94b9dd311afc408b2ccd"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/no_replacement/tiny.ext": {
+          "bytes": 150,
+          "sha256": "b4ddc57d1f5d23187fb58685da903675cfc3e9ddfd28ad9450625f9d0c87b4db"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode/tiny.spice": {
+          "bytes": 163,
+          "sha256": "73c3490f59707a514fc83f9685e9523f3156f21fa704158bc464db6a75ec6aa1"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode/native.log": {
+          "bytes": 1138,
+          "sha256": "24f2d3356fe078d2b16489f514bacf46a89e6b5eb676fcb667f4dcdfca876e47"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode/run.tcl": {
+          "bytes": 262,
+          "sha256": "192c8df1ec8acca4e8e141070feebeacc629790b4ed20e0cf73cd5366384964e"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode/tiny.res.ext": {
+          "bytes": 117,
+          "sha256": "7b6e4dab9e5d5c902f02f0b526d9381bb0b1ab923c2886afe765fc1a7eebbb1a"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/repeated_rnode/tiny.ext": {
+          "bytes": 189,
+          "sha256": "d8518140e086d3bed4708594c84e02d29961521fcce5ae59d3fd7f89c7ea66e7"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode/tiny.spice": {
+          "bytes": 163,
+          "sha256": "73c3490f59707a514fc83f9685e9523f3156f21fa704158bc464db6a75ec6aa1"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode/native.log": {
+          "bytes": 1140,
+          "sha256": "8b94cffd7c052c6da2401c1d249c63765f3fc93d203ac277c13072311533d993"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode/run.tcl": {
+          "bytes": 264,
+          "sha256": "ab08412a205d27a8d41bf0a6105dab4a09cf3f4d807e2be6ecfec2ded0b65ed2"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode/tiny.res.ext": {
+          "bytes": 95,
+          "sha256": "3e8600c91c2c7e9ec6d492e7a117ee29ff1f3144a350e06c20336f007f61ca4d"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/renamed_killnode/tiny.ext": {
+          "bytes": 225,
+          "sha256": "a77221ef3f563e46244e15a6665abfd84fbad557ff7f513c5c75908fd7c5174d"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name/tiny.spice": {
+          "bytes": 163,
+          "sha256": "73c3490f59707a514fc83f9685e9523f3156f21fa704158bc464db6a75ec6aa1"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name/native.log": {
+          "bytes": 1137,
+          "sha256": "cb4659a3cf9a1ae918fa531904f9bfa74544561476666eb5493cbe8c3b23a416"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name/run.tcl": {
+          "bytes": 261,
+          "sha256": "0ccba277d5be34dcb0df19ccb15bc25b8c2a828cbac9cfea46656fa2b6abaf13"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name/tiny.res.ext": {
+          "bytes": 96,
+          "sha256": "3c18e612b53c1fa5b12f294143b0c3486faee6706c5efcad697b1ccf285ae2bb"
+        },
+        "/dev/shm/nssoc-magic-coupled-v2-reader-final/retained_name/tiny.ext": {
+          "bytes": 189,
+          "sha256": "d8518140e086d3bed4708594c84e02d29961521fcce5ae59d3fd7f89c7ea66e7"
+        }
+      },
+      "scope": {
+        "native_magic_reexecuted_by_peer": false,
+        "native_GCC_sizeof_offset_probe_executed_by_peer": true,
+        "unreduced_flat_cscale1_signal_only": true,
+        "coupling_anchor_retained": true,
+        "full_collapsed_C_matrix_validated": true,
+        "spatial_coupling_distribution_validated": false,
+        "general_simplification_or_lumped_accuracy": false,
+        "qualified_PDK_extraction": false,
+        "full_chip_PEX": false,
+        "boot_or_timing_acceptance": false
+      },
+      "notes": [
+        "rg_nodecap remains original total load including incident coupling; only the unreduced/nonlumped signal export branch distributes rg_intrinsiccap.",
+        "V1 retirement logic and immutable methods retained. V2 paired unsupported-mode outputs remain identical to v1; this does not qualify those modes.",
+        "Native controls retain real mutual-capacitance anchors and compare all diagonal/offdiagonal entries, resistor topology/values and port order.",
+        "Native output text precision/float storage uses the frozen 3e-6 relative and 1e-4 aF absolute conservation tolerance; no thresholds changed."
+      ]
+    }
+  }
+}

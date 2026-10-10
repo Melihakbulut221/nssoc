@@ -1,0 +1,3714 @@
+{
+  "status": "PASS_NATIVE_24_HBT_NX_FIVE_GEOMETRY_FAULTS_WITH_FINITE_TAP_MODEL_BLOCKER",
+  "utc": "2026-10-04T11:17:22.058378+00:00",
+  "sources": {
+    "scripts/patch_magic_hbt_multiplicity_v3.py": {
+      "bytes": 7956,
+      "sha256": "52c586b8cfe51258162af17557bed899b89d4fd4b9d0547151e865f22cfd253a"
+    },
+    "scripts/check_magic_hbt_multiplicity_v3.py": {
+      "bytes": 11123,
+      "sha256": "2b2c662c8df4dfc9932efa9ce4de784807a095665186f9e29a2f5f435ecc1474"
+    },
+    "sw/tests/test_magic_hbt_multiplicity_v3.py": {
+      "bytes": 5815,
+      "sha256": "2af2078bcc391f4fa2b8c5fe21a5fdfda001ebf82af1bb71a28499b00de42909"
+    }
+  },
+  "tests": {
+    "passed": 124,
+    "own": 44,
+    "log": {
+      "bytes": 180,
+      "sha256": "206739d7936f2aaa171f6860fc6d5c0f7ed19c11880969e9d93caa45ca3c7df3"
+    },
+    "ruff": "PASS"
+  },
+  "native_result": {
+    "bytes": 64064,
+    "sha256": "51d74e7f90b3b191dd730584ae758c86373ee4bc1b9b3a590eb1a79089d0cd25"
+  },
+  "build": {
+    "parent_result_sha": "3c880f8cbce2e0a5f89f8caca0435fac83b777889c660fc1971b695fb726b7fb",
+    "source_before_sha": "b09c5b536fcf5cc320a04fe0b9f23382edc05bbaa86cdd546fcb9a453a93e0be",
+    "source_after_sha": "c72a67e5575d7f28680777e640666654d076eda277775916420753f43dc62428",
+    "method_sha": "52c586b8cfe51258162af17557bed899b89d4fd4b9d0547151e865f22cfd253a",
+    "execution": [
+      {
+        "command": [
+          "make",
+          "-C",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/source/extract",
+          "clean"
+        ],
+        "returncode": 0,
+        "seconds": 0.019645938009489328,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "657cefeaf95fddfb9a70321a5d657b5ad3af191b39898d789939300e1d23a8c9"
+      },
+      {
+        "command": [
+          "make",
+          "-C",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/source/extract",
+          "module"
+        ],
+        "returncode": 0,
+        "seconds": 2.451927091984544,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "d1550d18023f52fd8d3ccf0b30b2fbc66c030445bb56ec0b3ac2686d536d7330"
+      },
+      {
+        "command": [
+          "make",
+          "-C",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/source/magic",
+          "tcl-main"
+        ],
+        "returncode": 0,
+        "seconds": 0.13019505399279296,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "c1439502655a0534a17e69c577b1c61fc5a0d06de382f051a97fa0d8bd62bda9"
+      }
+    ],
+    "runtime_sha": "502c3e53966e9f0ea95bcea74dc9fb4a712bcdcea927c252630a276ba789a838",
+    "qualification": false
+  },
+  "build_audit": {
+    "bytes": 172088,
+    "sha256": "447fef5a9ed434c6995917613827446973521f0a25174e5650c43db7b765946c"
+  },
+  "native_runtime_distributed": false,
+  "fixture_geometry_unchanged": {
+    "fixture.gds": "e5f18713d2c7ccb7d0390f38a237de2cc7b8dfc19ef123f508070fcb6d595934",
+    "result.json": "1da7b6be96bb94632f9a7251e68e606f3d0d4a9ffc81b767f9e8e6034944dd70",
+    "schematic.cir": "e50ff7ceb1e5e4119fcf2709c1e966e98461f2218ed9c45d6438cf2a544cb30e"
+  },
+  "native_cases": {
+    "original": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/original/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.2809429919871036,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "2d7fab5daf5fb37ccea23d8cdb451d15145500616ed4d5e099bdff0231940f1e"
+      },
+      "measurement": {
+        "status": "PASS_24_NATIVE_HBT_MULTIPLICITIES_ONLY",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "unchanged_clone_N4_T7": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/unchanged_clone_N4_T7/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.281829627987463,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "93b24078467f69719056e3f2135a47927d19ea8a3f66dbecc5b18f437386489d"
+      },
+      "measurement": {
+        "status": "PASS_24_NATIVE_HBT_MULTIPLICITIES_ONLY",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "missing_tap_contact": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/missing_tap_contact/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.315385713998694,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "2fe219f60efbf98e73e4e8abfd18c65366022d79b083cb32dce54336c61ca8fc"
+      },
+      "measurement": {
+        "status": "GEOMETRY_MISMATCH_PRESERVED",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "fault_local_missing_tap_contact_0.sub"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "emitter_width_N1_T1": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/emitter_width_N1_T1/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.29725051898276433,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "d304991473f6e009d8d24137f3d0cb7ed0b37fd3baef271c01a8ff80f132ab94"
+      },
+      "measurement": {
+        "status": "GEOMETRY_MISMATCH_PRESERVED",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "3.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "missing_finger_N4_T7": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/missing_finger_N4_T7/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.303378001000965,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "2d4b109d6c61d835f1b020f77b84714818797c254699247d53859ffc1ae7d8d3"
+      },
+      "measurement": {
+        "status": "GEOMETRY_MISMATCH_PRESERVED",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "3"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "base_collector_short_N4_T6": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/base_collector_short_N4_T6/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.28956256998935714,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "bdd52cf3ebc2f62689a007d84b5fd14cfe8ecd7d04cb983591759720310b7245"
+      },
+      "measurement": {
+        "status": "GEOMETRY_MISMATCH_PRESERVED",
+        "hbts": 24,
+        "ports": 72,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "E_N2_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "C_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "B_N4_T6",
+            "C_N4_T6"
+          ],
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 0,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    },
+    "emitter_via_open_N2_T1": {
+      "execution": {
+        "command": [
+          "/usr/bin/env",
+          "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+          "/usr/bin/tclsh8.6",
+          "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+          "-dnull",
+          "-noconsole",
+          "-rcfile",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/tech/ihp-sg13g2.magicrc",
+          "/dev/shm/nssoc-hbt-nx-v3-native-final/emitter_via_open_N2_T1/native.tcl"
+        ],
+        "returncode": 0,
+        "seconds": 0.29998257200350054,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "75b87e799f8e600ed80a9590ab07982523a2a94443f565980cfb9f4f92a00834"
+      },
+      "measurement": {
+        "status": "GEOMETRY_MISMATCH_PRESERVED",
+        "hbts": 24,
+        "ports": 73,
+        "observed": [
+          {
+            "nodes": [
+              "C_N4_T3",
+              "B_N4_T3",
+              "E_N4_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N1_T0",
+              "B_N1_T0",
+              "E_N1_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T6",
+              "B_N1_T6",
+              "E_N1_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T2",
+              "B_N1_T2",
+              "E_N1_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T3",
+              "B_N2_T3",
+              "E_N2_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N2_T6",
+              "B_N2_T6",
+              "E_N2_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T5",
+              "B_N1_T5",
+              "E_N1_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T0",
+              "B_N2_T0",
+              "E_N2_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T1",
+              "B_N1_T1",
+              "E_N1_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T1",
+              "B_N2_T1",
+              "a_11910_13993#",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "-1"
+          },
+          {
+            "nodes": [
+              "C_N4_T2",
+              "B_N4_T2",
+              "E_N4_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T7",
+              "B_N4_T7",
+              "E_N4_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T5",
+              "B_N2_T5",
+              "E_N2_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T4",
+              "B_N1_T4",
+              "E_N1_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N1_T7",
+              "B_N1_T7",
+              "E_N1_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          },
+          {
+            "nodes": [
+              "C_N2_T4",
+              "B_N2_T4",
+              "E_N2_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T0",
+              "B_N4_T0",
+              "E_N4_T0",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T1",
+              "B_N4_T1",
+              "E_N4_T1",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T7",
+              "B_N2_T7",
+              "E_N2_T7",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N4_T5",
+              "B_N4_T5",
+              "E_N4_T5",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T6",
+              "B_N4_T6",
+              "E_N4_T6",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N4_T4",
+              "B_N4_T4",
+              "E_N4_T4",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "4"
+          },
+          {
+            "nodes": [
+              "C_N2_T2",
+              "B_N2_T2",
+              "E_N2_T2",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "2"
+          },
+          {
+            "nodes": [
+              "C_N1_T3",
+              "B_N1_T3",
+              "E_N1_T3",
+              "SUB"
+            ],
+            "we": "7.0E-8",
+            "le": "9E-7",
+            "Nx": "1"
+          }
+        ],
+        "native_equivalences": [
+          [
+            "equiv",
+            "SUB",
+            "ptap1_0.sub!"
+          ]
+        ],
+        "component_errors": 1,
+        "finite_tap_retained": false,
+        "substrate_model": "Native Magic still identifies SUB with the bulk and omits the finite tap; separate known defect, never whole-device-network acceptance.",
+        "qualified_pex": false
+      }
+    }
+  },
+  "regression": {
+    "status": "PASS_NO_OPT_IN_NATIVE_EXT_AND_SPICE_UNCHANGED",
+    "cases": {
+      "v2": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-hbt-terminal-build-02/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-hbt-terminal-build-02/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-hbt-contact-probe-06/tech/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-hbt-nx-v3-regression-final/v2/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.26786110998364165,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "09e89f6718f3f753eca5c125858adc79b6b1f591dafbdf7b228ee3df5bdef64b"
+        },
+        "runtime": {
+          "bytes": 7186032,
+          "sha256": "86f185bddae3b2384a173086cb204e13774d4185f32ddd097403ffd23c0d6ab4"
+        },
+        "outputs": {
+          "hbt.spice": {
+            "bytes": 2509,
+            "sha256": "5f3e7b5cb198ea5d0bc7fb25ec378c5f19235f463d041301957149c0bca7a52f"
+          },
+          "feedback.tcl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "hbt_axis_flat.ext": {
+            "bytes": 15630,
+            "sha256": "4ec6e3dbb9392ba06928e0714950387aca28c825419ced9b9067aa0de8c7260b"
+          },
+          "hbt_axis_flat.mag": {
+            "bytes": 137162,
+            "sha256": "71b14fd0cdfadc05801d89ffa893be943d85a3827685d042ffec933d869f896c"
+          },
+          "native.log": {
+            "bytes": 8655,
+            "sha256": "09e89f6718f3f753eca5c125858adc79b6b1f591dafbdf7b228ee3df5bdef64b"
+          },
+          "native.tcl": {
+            "bytes": 11043,
+            "sha256": "de0718773d3eacf8a1d62e1a1508849d4d421676adb15ca890ea157acdc7865e"
+          }
+        }
+      },
+      "v3": {
+        "execution": {
+          "command": [
+            "/usr/bin/env",
+            "CAD_ROOT=/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib",
+            "/usr/bin/tclsh8.6",
+            "/dev/shm/nssoc-hbt-nx-v3-build-final/runtime/lib/magic/tcl/magic.tcl",
+            "-dnull",
+            "-noconsole",
+            "-rcfile",
+            "/dev/shm/nssoc-hbt-contact-probe-06/tech/ihp-sg13g2.magicrc",
+            "/dev/shm/nssoc-hbt-nx-v3-regression-final/v3/native.tcl"
+          ],
+          "returncode": 0,
+          "seconds": 0.27259252601652406,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "f8e9cd6fb34c66a93bde068d5bb90e278fd3f1a6c0657d6c757c7bc680394d06"
+        },
+        "runtime": {
+          "bytes": 7191840,
+          "sha256": "502c3e53966e9f0ea95bcea74dc9fb4a712bcdcea927c252630a276ba789a838"
+        },
+        "outputs": {
+          "hbt.spice": {
+            "bytes": 2509,
+            "sha256": "5f3e7b5cb198ea5d0bc7fb25ec378c5f19235f463d041301957149c0bca7a52f"
+          },
+          "feedback.tcl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "hbt_axis_flat.ext": {
+            "bytes": 15630,
+            "sha256": "4b65f412e7204f58adafbb021912124feedfb83e09e117a13931575cc158e139"
+          },
+          "hbt_axis_flat.mag": {
+            "bytes": 137162,
+            "sha256": "cb03c201caebb7e3ba5a000547b4a185958bafe16090d0cd69344485bfe53f24"
+          },
+          "native.log": {
+            "bytes": 8655,
+            "sha256": "f8e9cd6fb34c66a93bde068d5bb90e278fd3f1a6c0657d6c757c7bc680394d06"
+          },
+          "native.tcl": {
+            "bytes": 11043,
+            "sha256": "e6ff34bb558a52c0fbcb4cfbe4dd2a8ad819ccd61db9d9c0e8f9dd70fda459bb"
+          }
+        }
+      }
+    },
+    "normalization": "Exclude one generation timestamp and sort complete EXT lines, retaining every token and duplicate. SPICE only joins continuation lines and skips comments, all records/order unchanged.",
+    "inputs": {
+      "/dev/shm/nssoc-magic-hbt-axis-01/fixture.gds": {
+        "bytes": 24142,
+        "sha256": "e5f18713d2c7ccb7d0390f38a237de2cc7b8dfc19ef123f508070fcb6d595934"
+      },
+      "/dev/shm/nssoc-magic-hbt-axis-01/result.json": {
+        "bytes": 33584,
+        "sha256": "1da7b6be96bb94632f9a7251e68e606f3d0d4a9ffc81b767f9e8e6034944dd70"
+      },
+      "/dev/shm/nssoc-magic-hbt-axis-01/schematic.cir": {
+        "bytes": 2334,
+        "sha256": "e50ff7ceb1e5e4119fcf2709c1e966e98461f2218ed9c45d6438cf2a544cb30e"
+      }
+    },
+    "technology": {
+      "diodevdd_2kv.tcl": {
+        "bytes": 9247,
+        "sha256": "89c8067224ba706840d9d07ed501a126c64e6c61ba9530426dc3c7d2267773f2"
+      },
+      "ihp-sg13g2-GDS.tech": {
+        "bytes": 32758,
+        "sha256": "70195c53100f25f9e8f8b427352b4e4e4acfc99690e19759729e45d7d5cc4ae4"
+      },
+      "ihp-sg13g2-cifout.tech": {
+        "bytes": 45968,
+        "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+      },
+      "ihp-sg13g2-bjt.tcl": {
+        "bytes": 22805,
+        "sha256": "14a4f3479ae82798465bb0edc12043c58c8def46f01bfead954da1a4a8a809df"
+      },
+      "ihp-sg13g2.magicrc": {
+        "bytes": 2578,
+        "sha256": "df2d6561fcb8bd176e5e0c9f73af68665d75b4e96d294b744dee7745e492d140"
+      },
+      "ihp-sg13g2-pad.tcl": {
+        "bytes": 8297,
+        "sha256": "01b7af6e0cf7c41395982efe99099ff28df7f323a6615f64204ced6703868b3c"
+      },
+      "ihp-sg13g2-extract.tech": {
+        "bytes": 22753,
+        "sha256": "72f596aac2826188e42d1e1147ac1749acf47289acd52c66fbe9a6ac036cc638"
+      },
+      "diodevss_2kv.tcl": {
+        "bytes": 11047,
+        "sha256": "b3fc386ca75faaeb6ba2c80cabbfd859c06052145d49a877ae6c51da8cdafa02"
+      },
+      "ihp-sg13g2-drc.tech": {
+        "bytes": 41275,
+        "sha256": "a0480153530ca796f91fb027b179ac20f393a2b19c008e3c92954ffdcc0f42db"
+      },
+      "schottky_nbl1.tcl": {
+        "bytes": 4876,
+        "sha256": "9295e889e35e256379ea47f3fb40bb724cbdbf103d650e7045412582ab92f54d"
+      },
+      "ihp-sg13g2-res.tcl": {
+        "bytes": 43089,
+        "sha256": "2a89b7aae71dd910d7a603d8aa2d6215bb11303705625e7c6cfe90501bfbcccd"
+      },
+      "ihp-sg13g2-misc.tcl": {
+        "bytes": 9486,
+        "sha256": "231c4a4115262e77e143a6abf5aec43b98f388b619473f7e49cdbd7d9ac5573d"
+      },
+      "nmoscl_2.tcl": {
+        "bytes": 25005,
+        "sha256": "91225f10cc15d04a115ac87a7a3e411915e97232210e4207b23bc557ef9346c5"
+      },
+      "ihp-sg13g2.tcl": {
+        "bytes": 12311,
+        "sha256": "a6022890b9495d046344a4e59f590407d2b7077f40d6556da02eb0dd62d006a0"
+      },
+      "generate_fill.py": {
+        "bytes": 21919,
+        "sha256": "da783f3c74901d55e63801f93688b1b4be2e5c3abed6baf8fdd63c482a61ce11"
+      },
+      "ihp-sg13g2-fet.tcl": {
+        "bytes": 49145,
+        "sha256": "e5fbc20115cf0c1055d3f3c6c5cb9ce4f7e0a9252ba81124602c10baf8f40df4"
+      },
+      "ihp-sg13g2-ind.tcl": {
+        "bytes": 11435,
+        "sha256": "0e67f7ac2231f84e69cef9d888e00c868ca82a274bceb25d3b6bb5066e40fe1c"
+      },
+      "ihp-sg13g2-var.tcl": {
+        "bytes": 12675,
+        "sha256": "e01fbab8883dae160373f65c490302bff829d6a57c8aec96eb14b70bf08c5fa7"
+      },
+      "check_density.py": {
+        "bytes": 30920,
+        "sha256": "9eca07079440ceac93824d6a89a57994b37f47e095f95964bb031510ef6cd9ae"
+      },
+      "diodevdd_4kv.tcl": {
+        "bytes": 12976,
+        "sha256": "604f225390e8490eeb9b20dec991442358bc6731d821b359cfba1826101983a5"
+      },
+      "scr1.tcl": {
+        "bytes": 6125,
+        "sha256": "0948fd294ee8058256201a2ca024958a231c7e3fcafadf8ce04cbaaaf965b127"
+      },
+      "ihp-sg13g2-fix.tcl": {
+        "bytes": 18632,
+        "sha256": "b9d8d2d7bad015e743b45d1da727facf2b966e4126104350ebe962537afda804"
+      },
+      "ihp-sg13g2-cifin.tech": {
+        "bytes": 25000,
+        "sha256": "b30270cf760f4372264528c10d764072c8b968852825735cec104156c74c4310"
+      },
+      "ihp-sg13g2-cap.tcl": {
+        "bytes": 24173,
+        "sha256": "634a21a1dd199ecce624975f64397f41dadfd306c8001670a9e04f135b315fbb"
+      },
+      "diodevss_4kv.tcl": {
+        "bytes": 13124,
+        "sha256": "c192ca9cb240349f18499f034c2cf512d5c86554798c6f307dc7af8d7528c6ed"
+      },
+      "RELEASE_NOTES.md": {
+        "bytes": 3046,
+        "sha256": "175c7893d72bdfbb3d261759cfa5a74dea16223557a41a3e543ff43a2a8ae6dd"
+      },
+      "ihp-sg13g2-util.tcl": {
+        "bytes": 24078,
+        "sha256": "8bfa9fcb33a035d7ba3253517f423dea245a4756a5a94f31160b254bcd7a454e"
+      },
+      "ihp-sg13g2-via.tcl": {
+        "bytes": 18281,
+        "sha256": "0dc8ec12108729c6a57c0ac97bed367fdc0ebb905c1a7a86d234598023ac0507"
+      },
+      "README.md": {
+        "bytes": 16038,
+        "sha256": "096a03d8b799cfc245fde67e98e6e0e6942a25cdc3943f1e3f76f38aaa7272c7"
+      },
+      "sealring_side.tcl": {
+        "bytes": 2765,
+        "sha256": "cee784702c7cb403cbee3cb44cf00811c89afec31dcdd9ba33ae72410ce7524d"
+      },
+      "result.json": {
+        "bytes": 11789,
+        "sha256": "aed316ac4525e54944c45f6dc4c434715fe21586b708bd62a02856c71eab8717"
+      },
+      "ihp-sg13g2.tech": {
+        "bytes": 21993,
+        "sha256": "b0dab0f98430668168b8060256bf9ede2a68332735616751db08c53272de8b56"
+      },
+      "ihp-sg13g2-dio.tcl": {
+        "bytes": 18704,
+        "sha256": "c5062505be41eb9f9951c3ff86cd7c1fb08420a149b7fa13752498d0f046f34c"
+      },
+      "nmoscl_4.tcl": {
+        "bytes": 44814,
+        "sha256": "55632f89448344f09d0fc8b9797ceffeb29b252068f8d206890733ecba7b0fe5"
+      },
+      "sealring_corner.tcl": {
+        "bytes": 10481,
+        "sha256": "a65cde5620fa39c73da9ba079aef0ae103875ba6575d93a6d90ad837ad6730b8"
+      },
+      "generate_seal.py": {
+        "bytes": 8333,
+        "sha256": "1dcca51d445ea83948a8e558d2cd02aea47068a1e501043008b40bad46358166"
+      }
+    }
+  },
+  "physical_control_source": "Reused exact hierarchy-preserving native PCell geometry faults whose independent KLayout LVS mismatches and zero-XOR clone positive are frozen in pcie-magic-hbt-contract-v2-20261004; each input GDS hash is bound by final native result. No replacement geometry or instance-name-derived Nx.",
+  "failures_preserved": [
+    "Initial draft counted contact residues across multiple planes; all24 invalid, corrected to native terminal geometry plane.",
+    "First metadata checker incorrectly expected missing tap to leave the same substrate label; actual native substrate name changes and correctly rejects it. Finite impedance remains omitted.",
+    "Raw EXT/SPICE bridge first failed on global-off exclamation marker and native equivalent port naming. Now only source-recorded equivalences/standard global marker removal are used for bridge equality; golden graph is never collapsed."
+  ],
+  "scope": [
+    "Native 24 HBTs across eight orientations and Nx1/2/4, exact C/B/E, measured 70nm/900nm and counts. Missing-finger control measures3, narrowed width30nm, C/B short72ports, emitter-via open explicit incompatible-node error.",
+    "No PCell parameter/property/name is used by C measurement; technology n1=Nx opts into same-plane equal rectangular connected component enumeration.",
+    "The output retains native Magic substrate behavior: intact ptap is shorted, not a finite device. This remains a separate blocker; no complete25-device-network, hybrid waiver, fullbank PEX, RF or manufacturing approval.",
+    "No generic all-Magic-device qualification. Opt-out extraction equality tested on the same24-HBT fixture under exactv2/v3 runtimes.",
+    "No GDS mask changes in positive fixture; native commands add explicit labels/ports only.",
+    "Every native child has2GiB address-space cap; no fullchip/nativeboot/large extraction."
+  ],
+  "external_sources": {
+    "magic": "Copied source C retains UC Regents1985/1990 permissive notice; exact before/after and private build logs included.",
+    "technology": "Only modified extraction tech file included, Apache2.0 with original IHP notice; all other dependency files referenced/pinned.",
+    "notices": {
+      "bytes": 876,
+      "sha256": "4834a1561fcc4793cd70486db6326ec08bbe64022c7032680eaad3b38517698c"
+    }
+  },
+  "archive": {
+    "path": "hw/soc/out/pcie-magic-hbt-multiplicity-v3-20261004/hbt-multiplicity-v3-native.tar.xz",
+    "bytes": 153536,
+    "sha256": "16ec396547bb0b5cfaeee4150fd04e46e9a8fd2ab8c6096ea366971af9751f12",
+    "members": 301,
+    "inventory": {
+      "native/base_collector_short_N4_T6/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/base_collector_short_N4_T6/hbt.spice": {
+        "bytes": 2621,
+        "sha256": "0e028a201bdd4708ca97e593724252a9257cb10b287f30b8f4f17339c63d716b"
+      },
+      "native/base_collector_short_N4_T6/hbt_axis_flat.ext": {
+        "bytes": 15624,
+        "sha256": "c64ef90d8a7d4216fc33a1675e5e1c92218c9683a4026eed95ba415ae261e6ab"
+      },
+      "native/base_collector_short_N4_T6/hbt_axis_flat.mag": {
+        "bytes": 137336,
+        "sha256": "e73de838554082281e82dcfd5a648f0757c70596d69c932805eb1d7e576a8a6c"
+      },
+      "native/base_collector_short_N4_T6/native.log": {
+        "bytes": 8944,
+        "sha256": "bdd52cf3ebc2f62689a007d84b5fd14cfe8ecd7d04cb983591759720310b7245"
+      },
+      "native/base_collector_short_N4_T6/native.tcl": {
+        "bytes": 11095,
+        "sha256": "5eae3e63d1667adc478622837d09a108a6ac20e72f9412a97e820683f1ea6e9d"
+      },
+      "native/emitter_via_open_N2_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/emitter_via_open_N2_T1/hbt.spice": {
+        "bytes": 2637,
+        "sha256": "c0563eab2770db76fa2f9bba0aa5587831bc3a3b013ef8b83fdc0cb8a8f42a89"
+      },
+      "native/emitter_via_open_N2_T1/hbt_axis_flat.ext": {
+        "bytes": 16241,
+        "sha256": "4036ccd3ec0d3f8848b81f94984d5f598b11a7d2539b80b659c9b5bb6163dca5"
+      },
+      "native/emitter_via_open_N2_T1/hbt_axis_flat.mag": {
+        "bytes": 135431,
+        "sha256": "a94cab9ba851f3e4d97b35c6383ae67a545caad443e262d6a4f2cf4ec58dbd04"
+      },
+      "native/emitter_via_open_N2_T1/native.log": {
+        "bytes": 8864,
+        "sha256": "75b87e799f8e600ed80a9590ab07982523a2a94443f565980cfb9f4f92a00834"
+      },
+      "native/emitter_via_open_N2_T1/native.tcl": {
+        "bytes": 11087,
+        "sha256": "9f3f63017f4eb55e08a17444cfb5d895649f9b6ac40bba23fdd719b49b4e575e"
+      },
+      "native/emitter_width_N1_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/emitter_width_N1_T1/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "98a1b7477b4ff83cb150215981a9a16ef206fd62d88fd21a162bfbb837e18b9e"
+      },
+      "native/emitter_width_N1_T1/hbt_axis_flat.ext": {
+        "bytes": 15754,
+        "sha256": "1898716395482b697160d6e28b062d3c097a0adf18fa1f8f53a987c9a18fa4c1"
+      },
+      "native/emitter_width_N1_T1/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "74e2e1be54f0aa92dbd1b8f74c063f0373d7ed77ae12274c2f66e2fdf9410e8c"
+      },
+      "native/emitter_width_N1_T1/native.log": {
+        "bytes": 8783,
+        "sha256": "d304991473f6e009d8d24137f3d0cb7ed0b37fd3baef271c01a8ff80f132ab94"
+      },
+      "native/emitter_width_N1_T1/native.tcl": {
+        "bytes": 11081,
+        "sha256": "14abe800738a4633583c026f4ff0fc57066cc4cfbee7816edd29dcdaf803a7d8"
+      },
+      "native/missing_finger_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/missing_finger_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "f3bcd882a1b9e8a717593edfc2ce8171cf3ed70eaa81dccb8a120646e1565779"
+      },
+      "native/missing_finger_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "8f424eee96ca459d9d8a6075c8b264c2154d73a20445e2a492aa1e8639e437cf"
+      },
+      "native/missing_finger_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137134,
+        "sha256": "bf670450e93248119de2ba4c7a2cae021b309097ddd3eebb1c5c5fa8ec21e5ea"
+      },
+      "native/missing_finger_N4_T7/native.log": {
+        "bytes": 8782,
+        "sha256": "2d4b109d6c61d835f1b020f77b84714818797c254699247d53859ffc1ae7d8d3"
+      },
+      "native/missing_finger_N4_T7/native.tcl": {
+        "bytes": 11083,
+        "sha256": "b89a6628f8ca1cfd83b721566a5c4f6c67cabafb3639eaa19a7fe9d1b8cc7499"
+      },
+      "native/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "native/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "390bc4a2666be685b4d8e9d24a5b55487b9a60df1f7cb9ee370cc23d01c3d692"
+      },
+      "native/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "e7a68ac8e05c85f86711a420c3ec27c5eecdb5f966b4b6721dee6961b417471a"
+      },
+      "native/missing_tap_contact/native.log": {
+        "bytes": 8720,
+        "sha256": "2fe219f60efbf98e73e4e8abfd18c65366022d79b083cb32dce54336c61ca8fc"
+      },
+      "native/missing_tap_contact/native.tcl": {
+        "bytes": 11081,
+        "sha256": "ccc9aa2ff17cc1c78339bfabc17ca5002bd68c3a67780e8d39888eb8cf0356c7"
+      },
+      "native/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "native/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "cb3c70beef016f7a8cc34afe0ac9a4be561b20ead0ecda82203829f81698e5ac"
+      },
+      "native/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "7ff59bbbbafcb4d14885a38c1db5ce93da4c32edc22cfab653fe23b595870feb"
+      },
+      "native/original/native.log": {
+        "bytes": 8657,
+        "sha256": "2d7fab5daf5fb37ccea23d8cdb451d15145500616ed4d5e099bdff0231940f1e"
+      },
+      "native/original/native.tcl": {
+        "bytes": 11045,
+        "sha256": "4f3701befdf533c6b73bc6f5634d6a38115a7b6f3a526e43cad07855e986e033"
+      },
+      "native/result.json": {
+        "bytes": 64064,
+        "sha256": "51d74e7f90b3b191dd730584ae758c86373ee4bc1b9b3a590eb1a79089d0cd25"
+      },
+      "native/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "native/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "bb953e2f3e9b12e5e01891516b5c424cbaf50dbace477a3fa06b425a57d5eca6"
+      },
+      "native/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "09fd958307070f511f0176dba4a52518c461f41fb0064d4337321693eec0dbaf"
+      },
+      "native/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8787,
+        "sha256": "93b24078467f69719056e3f2135a47927d19ea8a3f66dbecc5b18f437386489d"
+      },
+      "native/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11085,
+        "sha256": "7e874fb115a46285c5654d50dd63ade5c266cb86be5c6a2088bdf8af08199369"
+      },
+      "regression/result.json": {
+        "bytes": 9391,
+        "sha256": "862bd63079eb2777647e30db526f1bde140421cfd0db5ff1e6cbfbe83639a851"
+      },
+      "regression/v2/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "regression/v2/hbt.spice": {
+        "bytes": 2509,
+        "sha256": "5f3e7b5cb198ea5d0bc7fb25ec378c5f19235f463d041301957149c0bca7a52f"
+      },
+      "regression/v2/hbt_axis_flat.ext": {
+        "bytes": 15630,
+        "sha256": "4ec6e3dbb9392ba06928e0714950387aca28c825419ced9b9067aa0de8c7260b"
+      },
+      "regression/v2/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "71b14fd0cdfadc05801d89ffa893be943d85a3827685d042ffec933d869f896c"
+      },
+      "regression/v2/native.log": {
+        "bytes": 8655,
+        "sha256": "09e89f6718f3f753eca5c125858adc79b6b1f591dafbdf7b228ee3df5bdef64b"
+      },
+      "regression/v2/native.tcl": {
+        "bytes": 11043,
+        "sha256": "de0718773d3eacf8a1d62e1a1508849d4d421676adb15ca890ea157acdc7865e"
+      },
+      "regression/v3/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "regression/v3/hbt.spice": {
+        "bytes": 2509,
+        "sha256": "5f3e7b5cb198ea5d0bc7fb25ec378c5f19235f463d041301957149c0bca7a52f"
+      },
+      "regression/v3/hbt_axis_flat.ext": {
+        "bytes": 15630,
+        "sha256": "4b65f412e7204f58adafbb021912124feedfb83e09e117a13931575cc158e139"
+      },
+      "regression/v3/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "cb03c201caebb7e3ba5a000547b4a185958bafe16090d0cd69344485bfe53f24"
+      },
+      "regression/v3/native.log": {
+        "bytes": 8655,
+        "sha256": "f8e9cd6fb34c66a93bde068d5bb90e278fd3f1a6c0657d6c757c7bc680394d06"
+      },
+      "regression/v3/native.tcl": {
+        "bytes": 11043,
+        "sha256": "e6ff34bb558a52c0fbcb4cfbe4dd2a8ad819ccd61db9d9c0e8f9dd70fda459bb"
+      },
+      "fixture/fixture.gds": {
+        "bytes": 24142,
+        "sha256": "e5f18713d2c7ccb7d0390f38a237de2cc7b8dfc19ef123f508070fcb6d595934"
+      },
+      "fixture/result.json": {
+        "bytes": 33584,
+        "sha256": "1da7b6be96bb94632f9a7251e68e606f3d0d4a9ffc81b767f9e8e6034944dd70"
+      },
+      "fixture/schematic.cir": {
+        "bytes": 2334,
+        "sha256": "e50ff7ceb1e5e4119fcf2709c1e966e98461f2218ed9c45d6438cf2a544cb30e"
+      },
+      "native-klayout-golden/audit.json": {
+        "bytes": 757,
+        "sha256": "094270eab078bf013e6968fdc60c79c8865d02ad23c3a170e62ea0b3bd041add"
+      },
+      "native-klayout-golden/audit.log": {
+        "bytes": 29,
+        "sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "native-klayout-golden/deck.log": {
+        "bytes": 36964,
+        "sha256": "7114135c744981327aeadff19b04ef3a904fbdb9b654946087e1cc1b4d704366"
+      },
+      "native-klayout-golden/extracted.cir": {
+        "bytes": 2289,
+        "sha256": "7d03e6a60183e9eec6a26ffd41bf4dc3d9bde36674eedee30a963b73830248df"
+      },
+      "native-klayout-golden/native.log": {
+        "bytes": 36897,
+        "sha256": "f2440660b7a2ecf0684eb2fbc057532e07f5ca240ab8e8d9eb0297ca014ee8a4"
+      },
+      "native-klayout-golden/result.lvsdb": {
+        "bytes": 71955,
+        "sha256": "a42b0bb65e945fb57098342797ee904b554b1ffcdc691ec0865af7243f7779ff"
+      },
+      "technology/ihp-sg13g2-extract.tech": {
+        "bytes": 22765,
+        "sha256": "d17966b1e432388c34ef978faa5a416a850abde2cdc47f2320ff0c94ae9458ad"
+      },
+      "build/ExtBasic.c.before": {
+        "bytes": 166756,
+        "sha256": "b09c5b536fcf5cc320a04fe0b9f23382edc05bbaa86cdd546fcb9a453a93e0be"
+      },
+      "build/ExtBasic.c.after": {
+        "bytes": 172034,
+        "sha256": "c72a67e5575d7f28680777e640666654d076eda277775916420753f43dc62428"
+      },
+      "build/control-execution.json": {
+        "bytes": 689,
+        "sha256": "548f53a024302dd3eeebcb4b04d94d08c4863ce26b10f549f6f63749a9a01ede"
+      },
+      "build/control-suite.log": {
+        "bytes": 360,
+        "sha256": "cbbc3fa784caa93c388e5a36b1d0d63f03f8c08af06dbdb4f7d05defa5b9aed4"
+      },
+      "build/result.json": {
+        "bytes": 1602,
+        "sha256": "bb5afaa590198b6cb22b074fcd3edf639ee39b80e65103175a3681c9aaf8f6ef"
+      },
+      "build/build-2.log": {
+        "bytes": 1418,
+        "sha256": "c1439502655a0534a17e69c577b1c61fc5a0d06de382f051a97fa0d8bd62bda9"
+      },
+      "build/build-1.log": {
+        "bytes": 38594,
+        "sha256": "d1550d18023f52fd8d3ccf0b30b2fbc66c030445bb56ec0b3ac2686d536d7330"
+      },
+      "build/build-0.log": {
+        "bytes": 547,
+        "sha256": "657cefeaf95fddfb9a70321a5d657b5ad3af191b39898d789939300e1d23a8c9"
+      },
+      "draft-capture-01/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-01/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "draft-capture-01/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "a62876eef1a09ec1c7b092de5ff2d8563321c602082c4802fa89eae9bd4f6130"
+      },
+      "draft-capture-01/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "7f248ef5a9c8ac17fddb69183dce052b51f8bdab7f4e2174d910f68bc373fff3"
+      },
+      "draft-capture-01/missing_tap_contact/native.log": {
+        "bytes": 8713,
+        "sha256": "93e5095575cf16e6cebd100db5834d5c0634993411e474abaabcd71a457dd31f"
+      },
+      "draft-capture-01/missing_tap_contact/native.tcl": {
+        "bytes": 11077,
+        "sha256": "1b754d5837292804729b69c33c3e7635ecfa9630ab371b24a655e33d06fb8ddd"
+      },
+      "draft-capture-01/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-01/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-01/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "f383fa91e59e1b209a29d40ad1b5d93d3f36fdf692b27190493523bf04f69ff7"
+      },
+      "draft-capture-01/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "d85960222b6026b7039ea6087974998b5ec5b75da740d3cd6b424cdb2facf80f"
+      },
+      "draft-capture-01/original/native.log": {
+        "bytes": 8650,
+        "sha256": "36ecd562aa04b397434a2e7d8ecf3e3dab5190f6add6e5b8ea292dd65ac521e7"
+      },
+      "draft-capture-01/original/native.tcl": {
+        "bytes": 11041,
+        "sha256": "27e4eb1525dfbed1b05a5b3b8f3afe4977ec927f18f38f912931138abede0c07"
+      },
+      "draft-capture-01/result.json": {
+        "bytes": 23376,
+        "sha256": "fd37c0102fa70270c401dbe6b3b6f3e1eedd16a9c05c480b10f9d418ce35cc24"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "788d542734880a17d06473e1f62ad4d23888f1ec55a456f2af8aa24b4741d477"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "8092d082cbe976dd4e6c148dfc5c0eea2d26e829933c4ecc6d666743ee77705d"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8780,
+        "sha256": "f950aeb763bc687dbfa8eb355155af6508d72788dc462430f9134b602f297d41"
+      },
+      "draft-capture-01/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11081,
+        "sha256": "445ab5a59142a9ec3e77e820cc14f895bb0cad5ab7f35df508a46041aa660ddf"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/hbt.spice": {
+        "bytes": 2621,
+        "sha256": "0e028a201bdd4708ca97e593724252a9257cb10b287f30b8f4f17339c63d716b"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/hbt_axis_flat.ext": {
+        "bytes": 15624,
+        "sha256": "4998c9ccaa3bb4aa59578445fcbaddf23787b4da8ab4a274d123b7b5462a3ecd"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/hbt_axis_flat.mag": {
+        "bytes": 137336,
+        "sha256": "33fc639d56d2436208e6afd33e0aa852fdab15761f39fe70c3c052caf3483733"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/native.log": {
+        "bytes": 8937,
+        "sha256": "f70a9e164d0b6d27e56f085490fa3845dd70a2a121e2ca5b158f5cb6438302c3"
+      },
+      "draft-capture-02/base_collector_short_N4_T6/native.tcl": {
+        "bytes": 11091,
+        "sha256": "3d36fd2fd96e626a7db97fe15d375f33c154cb671acbdedb6bcfcedb588031bc"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/hbt.spice": {
+        "bytes": 2637,
+        "sha256": "c0563eab2770db76fa2f9bba0aa5587831bc3a3b013ef8b83fdc0cb8a8f42a89"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/hbt_axis_flat.ext": {
+        "bytes": 16241,
+        "sha256": "630e1bf316b091e25b04fe5e3608a043848dbc452a5d5d3a0ad7a60890f7206c"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/hbt_axis_flat.mag": {
+        "bytes": 135431,
+        "sha256": "29b10d5f2035287d2510f062962b47f5cb25f007f0092783d725a1f76339b00f"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/native.log": {
+        "bytes": 8857,
+        "sha256": "033bfbbac8b13bd9595d56f059ac7fea6cc0b1514b7b5f725a744d59ba32cb9a"
+      },
+      "draft-capture-02/emitter_via_open_N2_T1/native.tcl": {
+        "bytes": 11083,
+        "sha256": "4203b8ca052060e3d219156729bb1a82b20d2d7b45b53f03d8f0905032faad6a"
+      },
+      "draft-capture-02/emitter_width_N1_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/emitter_width_N1_T1/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "98a1b7477b4ff83cb150215981a9a16ef206fd62d88fd21a162bfbb837e18b9e"
+      },
+      "draft-capture-02/emitter_width_N1_T1/hbt_axis_flat.ext": {
+        "bytes": 15754,
+        "sha256": "7a01ebc637264a8859fb05db8daa71a1590a91808658c45e933bb37bf201d241"
+      },
+      "draft-capture-02/emitter_width_N1_T1/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "933ffe44a7312a1d1506376dda0f4cd777ca103f7459b38984032a78cc6d3ce1"
+      },
+      "draft-capture-02/emitter_width_N1_T1/native.log": {
+        "bytes": 8776,
+        "sha256": "46fab55a83731094a76738e7d4130936de02288eb308a385f308c119cd482f05"
+      },
+      "draft-capture-02/emitter_width_N1_T1/native.tcl": {
+        "bytes": 11077,
+        "sha256": "e18b3dc3c1227ada16ce71c8b45ce15d42179ef311f1901e3ce5b9dd7849d22a"
+      },
+      "draft-capture-02/missing_finger_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/missing_finger_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "f3bcd882a1b9e8a717593edfc2ce8171cf3ed70eaa81dccb8a120646e1565779"
+      },
+      "draft-capture-02/missing_finger_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "443c6cb9c58d349392d0ca78b74b8c4b66dec60507d05d942b678ccf02833516"
+      },
+      "draft-capture-02/missing_finger_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137134,
+        "sha256": "664c6b7295480b6219906b8e717aeb138fdafddf8dd764bb9eb55efa6ddb707f"
+      },
+      "draft-capture-02/missing_finger_N4_T7/native.log": {
+        "bytes": 8775,
+        "sha256": "f66896bbee1bdf184e9fc54777f2043041e202c4097617b13c8e06b22fe09507"
+      },
+      "draft-capture-02/missing_finger_N4_T7/native.tcl": {
+        "bytes": 11079,
+        "sha256": "816aeb6aea03e728aee1467fc0705e2d17ad2d340fa420ac9199d34980808bf8"
+      },
+      "draft-capture-02/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "draft-capture-02/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "1cefeca0c0b410e79fef9eb0f7f26c340c4da42634cf2ceb92dd4ef1ab85a4ef"
+      },
+      "draft-capture-02/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "9bfdf7970d65f9f833cff55a651d3013df4f07807b5d094e882489f981b77cab"
+      },
+      "draft-capture-02/missing_tap_contact/native.log": {
+        "bytes": 8713,
+        "sha256": "7f7d373a2d9c993d299d848642c8292ccdac9afdf2f12c82a2cdce6aa38a2ee6"
+      },
+      "draft-capture-02/missing_tap_contact/native.tcl": {
+        "bytes": 11077,
+        "sha256": "f0fbd7d8a349dc0a8e7395ac1705603d313d86410a1f91c8e5edb529c74bc3c1"
+      },
+      "draft-capture-02/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-02/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "9b4d81734c25c8174a0679fad50e6e4afa9bac6629b5756617dc523157017a02"
+      },
+      "draft-capture-02/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "fb0ee9bdceadfbdfa419214145b41392865d1e8dd1c4a129c3fa10e2d765c201"
+      },
+      "draft-capture-02/original/native.log": {
+        "bytes": 8650,
+        "sha256": "14666168e23f5dd14ae5cc3d5e8a9d40bf718c503b4f1942f75ee0b75be0276b"
+      },
+      "draft-capture-02/original/native.tcl": {
+        "bytes": 11041,
+        "sha256": "ecff25320facb87bec4cac58492af57c3e35d764f478baf45ffd074732053543"
+      },
+      "draft-capture-02/result.json": {
+        "bytes": 63026,
+        "sha256": "01eb1a786e0d9fbb6572291271c26f0d9d465f023eb526cfea97a6a2a1400bc6"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "52bb88d56b006d7b322adbfecd910862228a375b4a78451d78db9ee6897af958"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "45a5c432f63bfd2ef796219b8d919a23f6ed5bd5ba59d0b4cbe3511e97958a0b"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8780,
+        "sha256": "ae2fc17fb4111f662335d5cfd235b56030060691912381e238b1ef2e7c5c70af"
+      },
+      "draft-capture-02/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11081,
+        "sha256": "c911f9c1c08c5837af524d14ab269e61adae0ac30834046eda435c867d22469c"
+      },
+      "draft-capture-03/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-03/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "draft-capture-03/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "53b4a7f01a94e45f15f8ee637abe60f9a7764e5ed598cfbf1f7f3c3dc78375df"
+      },
+      "draft-capture-03/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "ee4f1a3d4473f5d7f076c29f6b39b3a294fb78ae85207e6fbb8e2904369de958"
+      },
+      "draft-capture-03/missing_tap_contact/native.log": {
+        "bytes": 8713,
+        "sha256": "c5b1ffea5a9a6f2fe5062affcda0e0007f17a37201802be86e061cfd7e8f2bbe"
+      },
+      "draft-capture-03/missing_tap_contact/native.tcl": {
+        "bytes": 11077,
+        "sha256": "722641637128035af2769a84cdf782b6af519b17fc2caafcdc080d61ede2726a"
+      },
+      "draft-capture-03/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-03/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-03/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "ca978e9de43505b1a7d8df0c443b05b20443c8ff39b4d98eb988755c28387ce2"
+      },
+      "draft-capture-03/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "43a2c1c6d6d7a2311ea14ab8260427f09921d1adfdad2cb7a4c5a7fb79c91985"
+      },
+      "draft-capture-03/original/native.log": {
+        "bytes": 8650,
+        "sha256": "ba4f2a4c2ecb411a77a4f19ac01e55ec10c36e4fe66c9b6a6db4e2b549d3e440"
+      },
+      "draft-capture-03/original/native.tcl": {
+        "bytes": 11041,
+        "sha256": "5869989e3fff8bcc6556ba666655056e5c1bf32ee7a1ceb62d6427159bdcf490"
+      },
+      "draft-capture-03/result.json": {
+        "bytes": 23380,
+        "sha256": "6adf14c2ba46b56436f74265237e0caf978630f620694f1bbdce04a9f8db06c0"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "6c889ee40b3705fd88320c593cfc6a106fa1424bb4df918b6c1e4dae9e45922e"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "3f58a81298445a882bdc3b54bebaad46ea69302c0e654040eb33527bcc014931"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8780,
+        "sha256": "a3487eb508e31c8f9072cce1030b7822a7de04edc8085b69fe910c91a5d5ac27"
+      },
+      "draft-capture-03/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11081,
+        "sha256": "a42d048ceb537e48d27977dab1ebffd497f428e2887017a141e69f68940c13df"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/hbt.spice": {
+        "bytes": 2621,
+        "sha256": "0e028a201bdd4708ca97e593724252a9257cb10b287f30b8f4f17339c63d716b"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/hbt_axis_flat.ext": {
+        "bytes": 15624,
+        "sha256": "870f63475f9abc0dd27c37c0bd4bb7bb97993f0d04b71dfb6ea30a95a3fc3a10"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/hbt_axis_flat.mag": {
+        "bytes": 137336,
+        "sha256": "2e8105ce565a9d8467a85ee4f7006b535f89a83d9c86b9d4fb094568382a4d97"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/native.log": {
+        "bytes": 8937,
+        "sha256": "f26433c4efd806c0131ec3ab273c683739706dd2ad39f13c30b2a018fd647d55"
+      },
+      "draft-capture-04/base_collector_short_N4_T6/native.tcl": {
+        "bytes": 11091,
+        "sha256": "633b07a0d59dcf52302a08d103c93e2066c52a0346588b29fd0908af952396b7"
+      },
+      "draft-capture-04/emitter_width_N1_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/emitter_width_N1_T1/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "98a1b7477b4ff83cb150215981a9a16ef206fd62d88fd21a162bfbb837e18b9e"
+      },
+      "draft-capture-04/emitter_width_N1_T1/hbt_axis_flat.ext": {
+        "bytes": 15754,
+        "sha256": "f40fc66eab7e30fe68694293d567f91ce692b097eb01fe54600df253f78cb747"
+      },
+      "draft-capture-04/emitter_width_N1_T1/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "533a8cf5ff49991740ed0122cc39b5bbd166c1091a80e78e8b29ede1d54bf5db"
+      },
+      "draft-capture-04/emitter_width_N1_T1/native.log": {
+        "bytes": 8776,
+        "sha256": "c0789b1cc130317ec3546c4168e497e3a13e963106330f35630985f92dc19b27"
+      },
+      "draft-capture-04/emitter_width_N1_T1/native.tcl": {
+        "bytes": 11077,
+        "sha256": "07d45f1c387b18edc19531ff848085ceb2a73e41346824d7757716c335054a75"
+      },
+      "draft-capture-04/missing_finger_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/missing_finger_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "f3bcd882a1b9e8a717593edfc2ce8171cf3ed70eaa81dccb8a120646e1565779"
+      },
+      "draft-capture-04/missing_finger_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "d80ad0e4bc2804c7b603810b425a32f041617b315d300ce290e25712bdba2d4a"
+      },
+      "draft-capture-04/missing_finger_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137134,
+        "sha256": "7cecfdd54f6c51adc921c07189863ba4bd4c09d5dc8797c6cdb1c61c38c15f48"
+      },
+      "draft-capture-04/missing_finger_N4_T7/native.log": {
+        "bytes": 8775,
+        "sha256": "d2b77b3218a46cc627700c2de6b4512d0f3426f37e0f3a50c6c60418098fc9f7"
+      },
+      "draft-capture-04/missing_finger_N4_T7/native.tcl": {
+        "bytes": 11079,
+        "sha256": "e8d3dc07c7e986f00db5783987596b9f8299226a3ab20c78e2c13f25b71fdb51"
+      },
+      "draft-capture-04/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "draft-capture-04/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "fd781a3f870fcb9f8f2b4f8394c3f7ccab5510e8916c1bebbdf9921b03438964"
+      },
+      "draft-capture-04/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "2cb3c0e8fff69145bbf782ba974c807e3f802c749dd7dcc962d3fc9050853a7d"
+      },
+      "draft-capture-04/missing_tap_contact/native.log": {
+        "bytes": 8713,
+        "sha256": "8c8fcd92cd6b7e44fd7aba528b5ea38b8d701f7c2d76088c400ac1c9e31581f6"
+      },
+      "draft-capture-04/missing_tap_contact/native.tcl": {
+        "bytes": 11077,
+        "sha256": "9073d9365006e0e3c506d52f13edf76d68bdf6e10e1486313eeac3668ebf3ec5"
+      },
+      "draft-capture-04/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-04/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "5ad2f5a35276cb15cbe8cfeeace5e59c02e0429fe42a40f791e1f3b2f0431507"
+      },
+      "draft-capture-04/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "81d7bf0d9a914662f2c9cef5989a76f7901c5a3381e5993decd1af489baa26b4"
+      },
+      "draft-capture-04/original/native.log": {
+        "bytes": 8650,
+        "sha256": "12804608a19bd9412ab03d38ac6bd5f02654e13043c40886fbc7d71975a81a4a"
+      },
+      "draft-capture-04/original/native.tcl": {
+        "bytes": 11041,
+        "sha256": "215e722267503e4b29fd6bc5943742709249d6dc9c60a494736aa119c285bb37"
+      },
+      "draft-capture-04/result.json": {
+        "bytes": 47440,
+        "sha256": "51ff9434042e54367aef04e31e3e4c1a4ace1b0f4ccd54ae00f3c2baff20412f"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "395515d7436555354acd62abecc41c0e5e9b9fed60573c6b6edc8165a9cf6dec"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "0af529a130fabac10432fb170995a8f6442471bb96dd191500972f3104d9492b"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8780,
+        "sha256": "56c8abc9ee8166126ec2a1e123fc7a1826843c174d01feca76c77aa07764e189"
+      },
+      "draft-capture-04/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11081,
+        "sha256": "6508b59d16831f8072675d42b05eda353af164126464f5b695bfddd7d4f46c50"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/hbt.spice": {
+        "bytes": 2621,
+        "sha256": "0e028a201bdd4708ca97e593724252a9257cb10b287f30b8f4f17339c63d716b"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/hbt_axis_flat.ext": {
+        "bytes": 15624,
+        "sha256": "c229efb6d5a038cbff2a4fa116b1f8309cba769ee47cba5ec774e372737ba68a"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/hbt_axis_flat.mag": {
+        "bytes": 137336,
+        "sha256": "dad4d4c3e13b2f9f48c02cf3dd937b4949ef2a75c0d8166695c19237593a4b6f"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/native.log": {
+        "bytes": 8937,
+        "sha256": "0ff29f217b22aaa593177735f1a759abafc15dc620d1b467adb182b4d216caf2"
+      },
+      "draft-capture-05/base_collector_short_N4_T6/native.tcl": {
+        "bytes": 11091,
+        "sha256": "060f131eb6e39925ecce8d6a11beb1f1d50957e9bb11989f9eca728affab7677"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/hbt.spice": {
+        "bytes": 2637,
+        "sha256": "c0563eab2770db76fa2f9bba0aa5587831bc3a3b013ef8b83fdc0cb8a8f42a89"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/hbt_axis_flat.ext": {
+        "bytes": 16241,
+        "sha256": "1ec359319480f30daf51030b8ba64ee264f860d6448aab1ce41cdad7ebcc7600"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/hbt_axis_flat.mag": {
+        "bytes": 135431,
+        "sha256": "e4c88a68c5ae51a4b29163f44f7cbe8ec16be584c8adc1c9f6ed6c7590e77808"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/native.log": {
+        "bytes": 8857,
+        "sha256": "f13f5145c7ac617d6179e44d6370b88fcc6c3d972ce008947dce0db6fe2623ae"
+      },
+      "draft-capture-05/emitter_via_open_N2_T1/native.tcl": {
+        "bytes": 11083,
+        "sha256": "0f49398242679c108e427adbd2ae60158f4f9f6fe44e88d52d3781f5ccebaa10"
+      },
+      "draft-capture-05/emitter_width_N1_T1/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/emitter_width_N1_T1/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "98a1b7477b4ff83cb150215981a9a16ef206fd62d88fd21a162bfbb837e18b9e"
+      },
+      "draft-capture-05/emitter_width_N1_T1/hbt_axis_flat.ext": {
+        "bytes": 15754,
+        "sha256": "525cc7e40f9f6c669a022c5a191ba33a9ff22f1201116c307508447ded6276d4"
+      },
+      "draft-capture-05/emitter_width_N1_T1/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "c0d9819164c958e4e6e9ce5fd884309ba821cb91991de3f8fe4b8630c594d6f9"
+      },
+      "draft-capture-05/emitter_width_N1_T1/native.log": {
+        "bytes": 8776,
+        "sha256": "bd79f48e5088e6dd6fa83c5a67c1761bec5e324f1a49bb0fd5389bd3f29fb87a"
+      },
+      "draft-capture-05/emitter_width_N1_T1/native.tcl": {
+        "bytes": 11077,
+        "sha256": "9cfbf092ebb95c5307b5f81226d8f17223f8896fc2f28a8d0a1a42672165935b"
+      },
+      "draft-capture-05/missing_finger_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/missing_finger_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "f3bcd882a1b9e8a717593edfc2ce8171cf3ed70eaa81dccb8a120646e1565779"
+      },
+      "draft-capture-05/missing_finger_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "5b0cbd6f599beed6604d251be5bfa2b91f2532a3473c466ce5e55bded64bf6e5"
+      },
+      "draft-capture-05/missing_finger_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137134,
+        "sha256": "022e90c31220c51978cc74f8d016f6917529e1276ddbf3e8e32f9fa07c2974a0"
+      },
+      "draft-capture-05/missing_finger_N4_T7/native.log": {
+        "bytes": 8775,
+        "sha256": "19072f053bb9c3e40f5e86d4f4d98f98bfff77a4a6c3957ddee8baadc6f1ecc9"
+      },
+      "draft-capture-05/missing_finger_N4_T7/native.tcl": {
+        "bytes": 11079,
+        "sha256": "2ae482acf5924871c71935f676a44609471dd77ef2a91e053ddfbeb1dc7a7a19"
+      },
+      "draft-capture-05/missing_tap_contact/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/missing_tap_contact/hbt.spice": {
+        "bytes": 3445,
+        "sha256": "ec720cb311a051890540170e5abc37bf5ead8f28a1d84e458dd4f67b1e06d7cd"
+      },
+      "draft-capture-05/missing_tap_contact/hbt_axis_flat.ext": {
+        "bytes": 16685,
+        "sha256": "dcfa55cc806dc2d0d8aeafd85ca588abe1de943dc5a148f3244898e52d4401b9"
+      },
+      "draft-capture-05/missing_tap_contact/hbt_axis_flat.mag": {
+        "bytes": 135334,
+        "sha256": "732ed108ebdbad856b860adfaaab2266c047a382cd0dee35fe8656bb22c7220b"
+      },
+      "draft-capture-05/missing_tap_contact/native.log": {
+        "bytes": 8713,
+        "sha256": "44f7f794dcbc14f7adc424ca5bd4095088cde7e4f8ab7fe79262e864de915335"
+      },
+      "draft-capture-05/missing_tap_contact/native.tcl": {
+        "bytes": 11077,
+        "sha256": "bbd47cd3898417a6fe1b5ce1153b484aac22d9d26ecfdacc452e3d7f3629c92b"
+      },
+      "draft-capture-05/original/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/original/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-05/original/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "c0c4de390a402138d64fa2bb986704b0d10ce958aaf9cf9af9b0e2cf6d6e76dc"
+      },
+      "draft-capture-05/original/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "e15696b9506b5144e56773809653ba9d6915ed16c02fead8ac4c3dfbf5f5a90c"
+      },
+      "draft-capture-05/original/native.log": {
+        "bytes": 8650,
+        "sha256": "be693b989d41e9c261558b393d6239745448b5977f7bcb6f69d15ccceb70089a"
+      },
+      "draft-capture-05/original/native.tcl": {
+        "bytes": 11041,
+        "sha256": "fb12dc3bdcb12141aa3020b6b002f4c18744c9af98122abd430227f90e88fdc0"
+      },
+      "draft-capture-05/result.json": {
+        "bytes": 63959,
+        "sha256": "4d4ef74c1799bc54457cb1f5105fd3eb79d727e498427bbce0b2760776949d3c"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "29fd24f63ca2b5f45bbf9f15be52d0f74d3f6c46dbf89326dd3e8a2b70a90f07"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/hbt_axis_flat.mag": {
+        "bytes": 137282,
+        "sha256": "8b9ba7b3ccdb4668a55ea624ea74c5f29f88f765577b603a679f93444cfa8e94"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/native.log": {
+        "bytes": 8780,
+        "sha256": "f183a02261171aeb563f26ab4d977eb4403586dfc0fcf86ba1381a7b52a043e4"
+      },
+      "draft-capture-05/unchanged_clone_N4_T7/native.tcl": {
+        "bytes": 11081,
+        "sha256": "f3f5f91ecd994c3250522ba58b1713a1e83b70a33da0b8c72dc522b1af410fae"
+      },
+      "probe-01/native/extract.tcl": {
+        "bytes": 11090,
+        "sha256": "25a9919cfb234e5f2a5920c50dd4b8019f34e17e0e7cef856eaf4eb29ee7d047"
+      },
+      "probe-01/native/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe-01/native/hbt.spice": {
+        "bytes": 2653,
+        "sha256": "98ac0377b92bb233479744fc6f06c6dc5173df3e5eaac789fe432e5e5201d174"
+      },
+      "probe-01/native/hbt_axis_flat.ext": {
+        "bytes": 15780,
+        "sha256": "251b32772347394a2df8d597d847dad127ddf13e8eedac0da03219a07496a068"
+      },
+      "probe-01/native/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "41c7f64e07fcfe96bdac7a7e842ac48ce4b9a245e42020bb86d2d08d4dee6ce7"
+      },
+      "probe-01/native/native.log": {
+        "bytes": 10475,
+        "sha256": "dd47b4e5e168162a75302f98907fc163c479e651b3168871f67ccb66b88627e3"
+      },
+      "probe-01/result.json": {
+        "bytes": 5017,
+        "sha256": "a5cf25fa39090bf48bd70d2adc7e49bbb42e7dd1ccb869dc92e06b9fbc2e3aad"
+      },
+      "probe-02/native/extract.tcl": {
+        "bytes": 11090,
+        "sha256": "7642a1fbd419562a17930a6cf1ddfddab2a9e28ae990f0b6cc9dceb45a625a0a"
+      },
+      "probe-02/native/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe-02/native/hbt.spice": {
+        "bytes": 2629,
+        "sha256": "9d8afc8697503364a0c7249f37769765b37dccf93fd635cab00aa31200ace6c3"
+      },
+      "probe-02/native/hbt_axis_flat.ext": {
+        "bytes": 15756,
+        "sha256": "5ef0b626ffa75715e885a6dd96244bd0794dec7d2c134c9a9daeb1deb9ffee6d"
+      },
+      "probe-02/native/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "21b8aff13da07ae4a7f8b4c8f07628277dbf5715707284f6e3e36d64e7f90597"
+      },
+      "probe-02/native/native.log": {
+        "bytes": 8758,
+        "sha256": "7860b95f146e2764b5c4dab4312c64bd32f2ddc0d8c27d313e94e279436840ef"
+      },
+      "probe-02/result.json": {
+        "bytes": 5018,
+        "sha256": "f24116e7528681c186de59a7a8ba90af3e062639177afd1701a957a1e29d9af7"
+      },
+      "probe-debug/native/extract.tcl": {
+        "bytes": 11093,
+        "sha256": "1cf85ae4b4e3285eb6b7097b4fc2c2a44bf608a86382096023eea7f10aa83ba1"
+      },
+      "probe-debug/native/feedback.tcl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe-debug/native/hbt.spice": {
+        "bytes": 2653,
+        "sha256": "98ac0377b92bb233479744fc6f06c6dc5173df3e5eaac789fe432e5e5201d174"
+      },
+      "probe-debug/native/hbt_axis_flat.ext": {
+        "bytes": 15780,
+        "sha256": "3a587362af5448de2f0b51d94cee658138387986680e4fa7bc6563d01a1eb67a"
+      },
+      "probe-debug/native/hbt_axis_flat.mag": {
+        "bytes": 137162,
+        "sha256": "7d4d934eec350b519200ab5747a8d984548cd5af730e90a6cc42092d6d9fc3f5"
+      },
+      "probe-debug/native/native.log": {
+        "bytes": 17558,
+        "sha256": "f180d33532b0dea4767950f7e6a51e5ea75eb07e2af3b87594c5063941f89381"
+      },
+      "probe-debug/result.json": {
+        "bytes": 5029,
+        "sha256": "2bc64f623c5a41417b53d2f1335ed42ab2e77bf3d77e239c9ace5460d5a49253"
+      },
+      "draft-build-01/debug-link.log": {
+        "bytes": 1412,
+        "sha256": "eaf40b9056402157a56b00f0af622dcefeba2ec9ce34d5727fb284a5b482f1f2"
+      },
+      "draft-build-01/debug-extract.log": {
+        "bytes": 2681,
+        "sha256": "e0b2b375497522d4db8c62f72022ae6b65a46ddbb972957806bd69e8ecda6ad9"
+      },
+      "draft-build-01/ExtBasic.before-debug.c": {
+        "bytes": 171476,
+        "sha256": "c03f252e17ca457736a3cd23312df63e77e287fc9e573ca63b519a50d8b93a09"
+      },
+      "draft-build-01/result.json": {
+        "bytes": 1225,
+        "sha256": "656a38f2f326b0bef976b0a2849304cfd0b1861a6e0a078296f9bd241177aa1e"
+      },
+      "draft-build-01/build1.log": {
+        "bytes": 1412,
+        "sha256": "eaf40b9056402157a56b00f0af622dcefeba2ec9ce34d5727fb284a5b482f1f2"
+      },
+      "draft-build-01/build0.log": {
+        "bytes": 2681,
+        "sha256": "f66aed360ec4bb709f3576bddfa511933186926fe663199c99907ea7250c2363"
+      },
+      "draft-build-02/result.json": {
+        "bytes": 1227,
+        "sha256": "55c5b1a7ef60bf864b08b5a751eeff9df5b137a53a52013ddb48e56748bb24f6"
+      },
+      "draft-build-02/build1.log": {
+        "bytes": 1412,
+        "sha256": "cea37c5c5851d87c39cc3e841640f436be727685c67afefe1b486bff8fb130df"
+      },
+      "draft-build-02/build0.log": {
+        "bytes": 2681,
+        "sha256": "bcf90a37b57d7b1d37635bfae106e277fde24ed4bb6c97dbab562a4816005407"
+      },
+      "draft-build-03/result.json": {
+        "bytes": 1226,
+        "sha256": "53db374b2a05cf9f4be8ba9111bd6c3807af6f15205b200902d0f4e9ff0d2c24"
+      },
+      "draft-build-03/build1.log": {
+        "bytes": 1412,
+        "sha256": "5c58f1d38027b9dd690111b3526c4dee4b1d52011ea199236538216520820e10"
+      },
+      "draft-build-03/build0.log": {
+        "bytes": 2681,
+        "sha256": "d5d46df7c359e125e1112500b4a8cbf2fb7b781917de550aa95cf7b85b82b873"
+      },
+      "actual-geometry-faults/native-results.json": {
+        "bytes": 26660,
+        "sha256": "276dd4a3db83f57ee6e64e9ddd63f15b4b6fe4f5ad4d71642da4620864b23b6f"
+      },
+      "actual-geometry-faults/result.json": {
+        "bytes": 1241,
+        "sha256": "5d870e5ae1c8a8fa64a3b462edb7088820c64dc41226e851b901279d96121f46"
+      },
+      "actual-geometry-faults/unchanged_clone_N4_T7.gds": {
+        "bytes": 29410,
+        "sha256": "cd481857ef1adcda423de3f059385005dc670312ae9c6bf6a0d8c7ab74c6403a"
+      },
+      "actual-geometry-faults/missing_tap_contact.gds": {
+        "bytes": 22192,
+        "sha256": "5c401d91cbbf046ddfb4e99ff7e6d6e49c5271cdb999e625c847d8f976240447"
+      },
+      "actual-geometry-faults/emitter_width_N1_T1.gds": {
+        "bytes": 26288,
+        "sha256": "39c3b60fe5fec8c8fec4057268fd14a1d9a26600ee2ca871026dc7d7040ec958"
+      },
+      "actual-geometry-faults/missing_finger_N4_T7.gds": {
+        "bytes": 29342,
+        "sha256": "6b76e0c7c3200b5179904efabdeff3d78f23c3f5d4e3673d40b4c1ee2d53bab5"
+      },
+      "actual-geometry-faults/base_collector_short_N4_T6.gds": {
+        "bytes": 29482,
+        "sha256": "f6f56d970ecb7a54620a88ab5fbfff3dc90b316745528d7600681ced09dcd5c7"
+      },
+      "actual-geometry-faults/emitter_via_open_N2_T1.gds": {
+        "bytes": 26306,
+        "sha256": "b53aca047370e607a6cd3ac2f23be7e592875ad6effcfe9f9ebfeed27fca526e"
+      },
+      "methods/scripts/patch_magic_hbt_multiplicity_v3.py": {
+        "bytes": 7956,
+        "sha256": "52c586b8cfe51258162af17557bed899b89d4fd4b9d0547151e865f22cfd253a"
+      },
+      "methods/scripts/check_magic_hbt_multiplicity_v3.py": {
+        "bytes": 11123,
+        "sha256": "2b2c662c8df4dfc9932efa9ce4de784807a095665186f9e29a2f5f435ecc1474"
+      },
+      "methods/sw/tests/test_magic_hbt_multiplicity_v3.py": {
+        "bytes": 5815,
+        "sha256": "2af2078bcc391f4fa2b8c5fe21a5fdfda001ebf82af1bb71a28499b00de42909"
+      },
+      "reproduction/LICENSE-Apache-2.0.txt": {
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      "reproduction/UPSTREAM-NOTICES.txt": {
+        "bytes": 876,
+        "sha256": "4834a1561fcc4793cd70486db6326ec08bbe64022c7032680eaad3b38517698c"
+      },
+      "reproduction/build_final.py": {
+        "bytes": 1333,
+        "sha256": "20c3ea1d3bb4686d4ae7c21581c99c30809d55f98f007a7c5b30ef0a259a3e2b"
+      },
+      "reproduction/build_probe.py": {
+        "bytes": 1333,
+        "sha256": "a0ea501b28c3e1ba28989920a860dd00db7613a61690e44c20ec52c099c9f6dd"
+      },
+      "reproduction/build_probe2.py": {
+        "bytes": 1333,
+        "sha256": "e1874483d395446f8c590b4a88183c7ec5e4299135d606525a4e20655a7ea872"
+      },
+      "reproduction/checker-first-global-marker-failure.py": {
+        "bytes": 9916,
+        "sha256": "87ebcad0cdd5eba9d00b0da0353662acc01903e708e66ba2e4c37e010f9709ce"
+      },
+      "reproduction/checker-first-port-alias-failure.py": {
+        "bytes": 9947,
+        "sha256": "2ee4444096fe892d592a1f9c980ffef308110befe531383e17a3f51ef4bc7b8c"
+      },
+      "reproduction/checker-first-tap-assumption-failure.py": {
+        "bytes": 9129,
+        "sha256": "0a8576a752de0d0942472bd014d5468c3ce717a89dea5f1ce78cc66a9130c8b9"
+      },
+      "reproduction/debug_probe.py": {
+        "bytes": 1204,
+        "sha256": "447fbcc704a37074bf114242fa3bdbd762a347aa711f9032b1f62762962021aa"
+      },
+      "reproduction/native-extractor.diff": {
+        "bytes": 6649,
+        "sha256": "c68442f0239939a749bbdf3626f6b2d9daa6f697e38ec2ee4183aafa97b38caf"
+      },
+      "reproduction/patch-before-bbox-guard.py": {
+        "bytes": 6909,
+        "sha256": "f58d3f0be17e8ca59f734bcb9d4a82ca419f5d0ad1ac51285f19a714fa870f95"
+      },
+      "reproduction/patch-build03.py": {
+        "bytes": 7465,
+        "sha256": "d1fc04d021ef6265f897e52391b613eb46bcd18ecc915665b0cfe46c35c91228"
+      },
+      "reproduction/patch-first-multiplane-failure.py": {
+        "bytes": 6907,
+        "sha256": "a8c1a7d741c45ebca4b33ada7e6dd697a5af66a6f8d2883c2e992dc984522a65"
+      },
+      "reproduction/private-source-build-audit.json": {
+        "bytes": 172088,
+        "sha256": "447fef5a9ed434c6995917613827446973521f0a25174e5650c43db7b765946c"
+      },
+      "reproduction/probe.py": {
+        "bytes": 1393,
+        "sha256": "fc32112770261fd7ea1f0be81b2442e08fdadbd8d35e5aaf446ac04e33f65a0a"
+      },
+      "reproduction/probe2.py": {
+        "bytes": 1393,
+        "sha256": "84f19cc138463ec3f0c9f005dff818e88a9d0b83f5f92658c218ba197f576e72"
+      },
+      "reproduction/ruff-execution.json": {
+        "bytes": 465,
+        "sha256": "c5c2ca7dfad2370fb4fbc12ce70923bea2b3de5759b67a4ca42f28ed10ea959f"
+      },
+      "reproduction/ruff.log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      "reproduction/run_final.py": {
+        "bytes": 3650,
+        "sha256": "790f56ceff90ea1b201ac257c8c1014b9a0ae1a70a1e109d05fc05d051bcfbf2"
+      },
+      "reproduction/seal.py": {
+        "bytes": 9546,
+        "sha256": "7c2db5c1fa77c1c6ab3efb6446ed3a2355b229a4faecaf4c259d4536b08a83c2"
+      },
+      "reproduction/tests-execution.json": {
+        "bytes": 538,
+        "sha256": "55aba596cfdb3715f232645e8b0bf4caeb1774c2c3ae5a05c33d300995c997a9"
+      },
+      "reproduction/tests.log": {
+        "bytes": 180,
+        "sha256": "206739d7936f2aaa171f6860fc6d5c0f7ed19c11880969e9d93caa45ca3c7df3"
+      }
+    }
+  },
+  "reproduction": {
+    "driver": "reproduction/run_final.py reconstructs private clean/relink from exact frozenv2build; explicit final command is in build/control-execution.json.",
+    "native": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/check_magic_hbt_multiplicity_v3.py --fixture EXACT_FIXTURE --technology EXACT_V2_CONTACT_TECH --build NEW_PRIVATE_BUILD --faults EXACT_GEOMETRY_FAULTS --out FRESH_OUTPUT",
+    "review": "assess(raw SPICE, raw EXT, raw log) independently checks all parameters and terminals; every case/output/native library pinned before/after."
+  },
+  "finite_tap_model_correct": false,
+  "qualified_pex": false,
+  "physical_adoption": false,
+  "original_runtime_modified": false
+}

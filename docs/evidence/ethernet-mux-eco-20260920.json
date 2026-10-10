@@ -1,0 +1,961 @@
+{
+  "date": "2026-09-20",
+  "tag": "timing-eco10-mux-factor",
+  "status": "Restricted Boolean check PASS; timing estimates FAIL",
+  "scope": "Isolated physical-netlist combinational rewrite. No RTL, state register, clock constraint or I/O budget changed. Global-route estimates only; not extracted timing, SDF simulation, SRAM-interior proof or physical signoff. The sizing-only ECO guard is not used to accept a different logic topology.",
+  "inputs": {
+    "scope": "Isolated unadopted combinational rewrite experiment. Selected TX bank-select NOR/AOI cones become mux2 + inverter, preserving all state. Exhaustive 8-row Boolean check uses actual pinned Liberty expressions and verifies selector roots through positive buffers; full output-netlist delta check and final physical timing still required. Existing restricted sizing checker deliberately does not accept these removed/reconnected cells.",
+    "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco9-buffer-repair",
+    "seed_odb_sha256": "6eec52699ef9dedbb382409f00598a35a04f0fa7240a9f1ce4334009770064d9",
+    "seed_netlist_sha256": "a609c54feea2be4946d4f4374efde92d115a0370191441a8e107058698e1d58e",
+    "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+    "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "functions": {
+      "sg13g2_buf_1": "A",
+      "sg13g2_nor2b_1": "!(A+!B_N)",
+      "sg13g2_a21oi_2": "!((A1*A2)+B1)",
+      "sg13g2_mux2_2": "(!S*A0)+(S*A1)",
+      "sg13g2_inv_4": "!(A)",
+      "sg13g2_nor2b_2": "!(A+!B_N)",
+      "sg13g2_dlygate4sd3_1": "A"
+    },
+    "rewrites": [
+      {
+        "endpoint": "_113483_",
+        "old_nor": "_108114_",
+        "old_aoi": "_108115_",
+        "new_mux": "_108114__eco_mux",
+        "new_inv": "_108115__eco_inv",
+        "mux_pins": {
+          "A0": "_052847_",
+          "A1": "_052843_",
+          "S": "net4837",
+          "X": "_052848_"
+        },
+        "inv_pins": {
+          "A": "_052848_",
+          "Y": "_052849_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113484_",
+        "old_nor": "_108121_",
+        "old_aoi": "_108122_",
+        "new_mux": "_108121__eco_mux",
+        "new_inv": "_108122__eco_inv",
+        "mux_pins": {
+          "A0": "_052853_",
+          "A1": "_052852_",
+          "S": "net4837",
+          "X": "_052854_"
+        },
+        "inv_pins": {
+          "A": "_052854_",
+          "Y": "_052855_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113485_",
+        "old_nor": "_108127_",
+        "old_aoi": "_108128_",
+        "new_mux": "_108127__eco_mux",
+        "new_inv": "_108128__eco_inv",
+        "mux_pins": {
+          "A0": "_052858_",
+          "A1": "_052857_",
+          "S": "net4837",
+          "X": "_052859_"
+        },
+        "inv_pins": {
+          "A": "_052859_",
+          "Y": "_052860_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113486_",
+        "old_nor": "_108133_",
+        "old_aoi": "_108134_",
+        "new_mux": "_108133__eco_mux",
+        "new_inv": "_108134__eco_inv",
+        "mux_pins": {
+          "A0": "_052863_",
+          "A1": "_052862_",
+          "S": "net4837",
+          "X": "_052864_"
+        },
+        "inv_pins": {
+          "A": "_052864_",
+          "Y": "_052865_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113487_",
+        "old_nor": "_108139_",
+        "old_aoi": "_108140_",
+        "new_mux": "_108139__eco_mux",
+        "new_inv": "_108140__eco_inv",
+        "mux_pins": {
+          "A0": "_052868_",
+          "A1": "_052867_",
+          "S": "net4837",
+          "X": "_052869_"
+        },
+        "inv_pins": {
+          "A": "_052869_",
+          "Y": "_052870_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113488_",
+        "old_nor": "_108145_",
+        "old_aoi": "_108146_",
+        "new_mux": "_108145__eco_mux",
+        "new_inv": "_108146__eco_inv",
+        "mux_pins": {
+          "A0": "_052873_",
+          "A1": "_052872_",
+          "S": "net4837",
+          "X": "_052874_"
+        },
+        "inv_pins": {
+          "A": "_052874_",
+          "Y": "_052875_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113489_",
+        "old_nor": "_108151_",
+        "old_aoi": "_108152_",
+        "new_mux": "_108151__eco_mux",
+        "new_inv": "_108152__eco_inv",
+        "mux_pins": {
+          "A0": "_052878_",
+          "A1": "_052877_",
+          "S": "net4837",
+          "X": "_052879_"
+        },
+        "inv_pins": {
+          "A": "_052879_",
+          "Y": "_052880_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113491_",
+        "old_nor": "_108163_",
+        "old_aoi": "_108164_",
+        "new_mux": "_108163__eco_mux",
+        "new_inv": "_108164__eco_inv",
+        "mux_pins": {
+          "A0": "_052888_",
+          "A1": "_052887_",
+          "S": "_042481_",
+          "X": "_052889_"
+        },
+        "inv_pins": {
+          "A": "_052889_",
+          "Y": "_052890_"
+        },
+        "select_root": "_000017_"
+      },
+      {
+        "endpoint": "_113492_",
+        "old_nor": "_108169_",
+        "old_aoi": "_108170_",
+        "new_mux": "_108169__eco_mux",
+        "new_inv": "_108170__eco_inv",
+        "mux_pins": {
+          "A0": "_052893_",
+          "A1": "_052892_",
+          "S": "_052844_",
+          "X": "_052894_"
+        },
+        "inv_pins": {
+          "A": "_052894_",
+          "Y": "_052895_"
+        },
+        "select_root": "_000017_"
+      }
+    ]
+  },
+  "validation": {
+    "status": "PASS within restricted Boolean scope",
+    "scope": "Exact unchanged instances and wires outside nine explicitly bounded stateless cones; exhaustive real-Liberty Boolean equality at all cone inputs and negative polarity controls. Does not prove analog hazards, timing, power-up X semantics, SRAM interiors or final physical signoff.",
+    "unchanged_instances": 94611,
+    "removed_instances": 18,
+    "added_instances": 18,
+    "unchanged_ports_aliases_wire_declarations": true,
+    "truth_table_rows": 72,
+    "negative_control_rejections": 72,
+    "seed_sha256": "a609c54feea2be4946d4f4374efde92d115a0370191441a8e107058698e1d58e",
+    "result_sha256": "436fb3d3db9b3fe708fb828e288316a3ea9c4c1190daf57dbbc0e0c37f619774",
+    "rows": [
+      {
+        "cone": "_108115_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108115_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108122_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108128_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108134_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108140_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108146_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108152_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108164_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 0,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 0,
+        "low": 0,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 0,
+        "low": 1,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 0,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 1,
+        "low": 0,
+        "high": 0,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 1,
+        "low": 0,
+        "high": 1,
+        "before": 1,
+        "after": 1,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 1,
+        "low": 1,
+        "high": 0,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      },
+      {
+        "cone": "_108170_",
+        "select": 1,
+        "low": 1,
+        "high": 1,
+        "before": 0,
+        "after": 0,
+        "wrong_polarity_negative_control_rejected": true
+      }
+    ]
+  },
+  "estimated_corners": {
+    "nom_fast_1p32V_m40C": {
+      "setup_wns_ns": 3.2600949529370897,
+      "hold_wns_ns": -0.38908721790203593
+    },
+    "nom_slow_1p08V_125C": {
+      "setup_wns_ns": -0.5022222779800912,
+      "hold_wns_ns": 0.06156897388411203
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_wns_ns": 2.0422357716311144,
+      "hold_wns_ns": -0.13143975169195218
+    }
+  },
+  "estimated_slow_tx_internal_worst_slack_ns": -0.097586,
+  "commands": [
+    ".venv/bin/python hw/soc/out/external-review-20260919/prepare_eco10.py",
+    "timeout 1800 ~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco10-mux-factor/metrics.json hw/soc/out/external-review-20260919/timing-eco10-mux-factor/eco.tcl",
+    ".venv/bin/python hw/soc/out/external-review-20260919/validate_eco10.py"
+  ],
+  "prototype_scripts": {
+    "prepare_eco10.py": "from pathlib import Path\nimport importlib.util,json,hashlib,re,itertools\nroot=Path.cwd();base=root/'hw/soc/out/external-review-20260919';seed=base/'timing-eco9-buffer-repair';out=base/'timing-eco10-mux-factor';out.mkdir(exist_ok=True)\nspec=importlib.util.spec_from_file_location('eco',root/'hw/soc/flow/check_physical_eco.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);cells,_,_=m.parse(seed/'soc_top.nl.v')\nr=json.loads((seed/'validation-inputs.json').read_text());lib=Path(r['liberty']);assert hashlib.sha256(lib.read_bytes()).hexdigest()==r['liberty_sha256'];lt=lib.read_text();functions={}\ndef function(master):\n if master in functions:return functions[master]\n block=lt.split('cell ('+master+') {',1)[1].split('\\n  cell (',1)[0]\n assert not re.search(r'\\b(ff|latch|three_state|statetable)\\s*[:(]',block)\n f=re.findall(r'function\\s*:\\s*\"([^\"]+)\"',block);assert len(f)==1\n functions[master]=f[0];return f[0]\ndef logic(master,values):\n f=function(master);assert re.fullmatch(r'[\\w\\s!&|()+*]+',f),f\n for token in re.findall(r'\\b[A-Za-z_]\\w*\\b',f):assert token in values,token\n f=re.sub(r'\\b[A-Za-z_]\\w*\\b',lambda x:str(bool(values[x[0]])),f)\n return bool(eval(f.replace('+',' or ').replace('*',' and ').replace('!',' not ').replace('&',' and ').replace('|',' or '),{'__builtins__':{}},{}))\ndrivers={p[k]:(n,master,p) for n,(master,p) in cells.items() for k in ('X','Y','Q') if k in p}\nloads={}\nfor n,(master,p) in cells.items():\n for pin,net in p.items():\n  if pin not in ('X','Y','Q'):loads.setdefault(net,[]).append((n,pin))\ndef rootnet(net):\n seen=set()\n while net in drivers:\n  assert net not in seen;seen.add(net);_,master,p=drivers[net]\n  if not master.startswith(('sg13g2_buf_','sg13g2_dlygate')):break\n  assert function(master).replace(' ','')=='A';net=p['A']\n return net\nchanges=[]\nfor ff,(fm,fp) in cells.items():\n if not re.search(r'u_eth\\.u_mac\\.tx_fifo\\.fifo_inst\\.m_axis_pipe_reg\\[1\\].*\\[\\d+\\]',fp.get('Q','')):continue\n o,om,op=drivers[fp['D']]\n if om!='sg13g2_o21ai_1':\n  print('unchanged endpoint',ff,om);continue\n a,am,ap=drivers[op['A2']]\n if not am.startswith('sg13g2_a21oi_'):\n  print('unchanged endpoint',ff,'buffered AOI',am);continue\n n,nm,np=drivers[ap['B1']];assert nm.startswith('sg13g2_nor2b_')\n assert loads[np['Y']]==[(a,'B1')]\n assert rootnet(np['A'])==rootnet(ap['A1'])\n for sel,lo,hi in itertools.product((False,True),repeat=3):\n  old=logic(am,{'A1':sel,'A2':lo,'B1':logic(nm,{'A':sel,'B_N':hi})})\n  new=logic('sg13g2_inv_4',{'A':logic('sg13g2_mux2_2',{'A0':hi,'A1':lo,'S':sel})})\n  assert old==new\n changes.append({'endpoint':ff,'old_nor':n,'old_aoi':a,'new_mux':n+'_eco_mux','new_inv':a+'_eco_inv','mux_pins':{'A0':np['B_N'],'A1':ap['A2'],'S':ap['A1'],'X':np['Y']},'inv_pins':{'A':np['Y'],'Y':ap['Y']},'select_root':rootnet(np['A'])})\nassert len(changes)>=3,len(changes)\ns=(seed/'eco.tcl').read_text();header=s.split('read_current_odb\\n',1)[0];header+='set ::env(CURRENT_ODB) {'+str(seed/'soc_top.odb')+'}\\nset ::env(STEP_DIR) {'+str(out)+'}\\nforeach key [array names ::env SAVE_*] {unset ::env($key)}\\n'\nfor key,ext in [('ODB','odb'),('DEF','def'),('NL','nl.v'),('PNL','pnl.v'),('SDC','sdc')]:header+='set ::env(SAVE_'+key+') {'+str(out/('soc_top.'+ext))+'}\\n'\nheader+='read_current_odb\\nset_thread_count 4\\nset block [ord::get_db_block]\\n'\nfor c in changes:\n for old,new,master,pins in [(c['old_nor'],c['new_mux'],'sg13g2_mux2_2',c['mux_pins']),(c['old_aoi'],c['new_inv'],'sg13g2_inv_4',c['inv_pins'])]:\n  header+='set old [$block findInst {'+old+'}]\\nset loc [$old getLocation]\\nset orient [$old getOrient]\\nodb::dbInst_destroy $old\\nset new [odb::dbInst_create $block [[ord::get_db] findMaster '+master+'] {'+new+'}]\\n$new setLocation [lindex $loc 0] [lindex $loc 1]\\n$new setOrient $orient\\n$new setPlacementStatus PLACED\\n'\n  for pin,net in pins.items():header+='[$new findITerm '+pin+'] connect [$block findNet {'+net+'}]\\n'\ntail=s[s.index('source $::env(SCRIPTS_DIR)/openroad/common/dpl.tcl'):s.index('puts \"PRE_REPAIR_WNS')]+s[s.index('foreach {corner object}'):]\n(out/'eco.tcl').write_text(header+tail)\nr={'scope':'Isolated unadopted combinational rewrite experiment. Selected TX bank-select NOR/AOI cones become mux2 + inverter, preserving all state. Exhaustive 8-row Boolean check uses actual pinned Liberty expressions and verifies selector roots through positive buffers; full output-netlist delta check and final physical timing still required. Existing restricted sizing checker deliberately does not accept these removed/reconnected cells.','seed':str(seed),'seed_odb_sha256':hashlib.sha256((seed/'soc_top.odb').read_bytes()).hexdigest(),'seed_netlist_sha256':hashlib.sha256((seed/'soc_top.nl.v').read_bytes()).hexdigest(),'liberty':str(lib),'liberty_sha256':hashlib.sha256(lib.read_bytes()).hexdigest(),'functions':functions,'rewrites':changes}\n(out/'inputs.json').write_text(json.dumps(r,indent=2)+'\\n');print('Prepared',len(changes),'rewrites with exhaustive truth-table checks')\n",
+    "validate_eco10.py": "from pathlib import Path\nimport importlib.util,json,hashlib,re,itertools\nroot=Path.cwd();d=root/'hw/soc/out/external-review-20260919/timing-eco10-mux-factor';r=json.loads((d/'inputs.json').read_text());seed=Path(r['seed']);sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\nassert sha(seed/'soc_top.nl.v')==r['seed_netlist_sha256'];assert sha(r['liberty'])==r['liberty_sha256'];assert sha(seed/'soc_top.odb')==r['seed_odb_sha256']\nspec=importlib.util.spec_from_file_location('eco',root/'hw/soc/flow/check_physical_eco.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);a,ad,aa=m.parse(seed/'soc_top.nl.v');b,bd,ba=m.parse(d/'soc_top.nl.v');assert ad==bd and aa==ba\nremoved={c[k] for c in r['rewrites'] for k in ('old_nor','old_aoi')};added={c[k] for c in r['rewrites'] for k in ('new_mux','new_inv')};assert a.keys()-b.keys()==removed;assert b.keys()-a.keys()==added\nfor n in a.keys()&b.keys():assert a[n]==b[n],n\nfor c in r['rewrites']:\n assert b[c['new_mux']]==('sg13g2_mux2_2',c['mux_pins']);assert b[c['new_inv']]==('sg13g2_inv_4',c['inv_pins'])\noldw={re.sub(r'\\s+',' ',raw.strip()) for raw in (seed/'soc_top.nl.v').read_text().split(';') if re.match(r'^\\s*wire\\b',raw)};neww={re.sub(r'\\s+',' ',raw.strip()) for raw in (d/'soc_top.nl.v').read_text().split(';') if re.match(r'^\\s*wire\\b',raw)};assert oldw==neww\n# Independently extract the pinned library's actual function/direction table.\nlib=Path(r['liberty']).read_text();tables={}\nfor master,expected in r['functions'].items():\n block=lib.split('cell ('+master+') {',1)[1].split('\\n  cell (',1)[0];assert not re.search(r'\\b(ff|latch|three_state|statetable)\\s*[:(]',block)\n f=re.findall(r'function\\s*:\\s*\"([^\"]+)\"',block);assert f==[expected]\n tables[master]=f[0]\ndef value(master,pins):\n f=tables[master];assert re.fullmatch(r'[\\w\\s!&|()+*]+',f)\n f=re.sub(r'\\b[A-Za-z_]\\w*\\b',lambda x:str(bool(pins[x[0]])),f)\n return bool(eval(f.replace('+',' or ').replace('*',' and ').replace('!',' not ').replace('&',' and ').replace('|',' or '),{'__builtins__':{}},{}))\n# Roots and exclusive cone boundaries are re-derived from the input netlist.\ndrivers={p[k]:(n,master,p) for n,(master,p) in a.items() for k in ('X','Y','Q') if k in p};loads={}\nfor n,(_,p) in a.items():\n for k,v in p.items():\n  if k not in ('X','Y','Q'):loads.setdefault(v,[]).append((n,k))\ndef rootnet(net):\n seen=set()\n while net in drivers:\n  assert net not in seen;seen.add(net);_,master,p=drivers[net]\n  if not master.startswith(('sg13g2_buf_','sg13g2_dlygate')):break\n  assert tables[master].replace(' ','')=='A';net=p['A']\n return net\nrows=[]\nfor c in r['rewrites']:\n nm,np=a[c['old_nor']];am,ap=a[c['old_aoi']];assert rootnet(np['A'])==rootnet(ap['A1'])==c['select_root'];assert loads[np['Y']]==[(c['old_aoi'],'B1')]\n assert c['mux_pins']=={'A0':np['B_N'],'A1':ap['A2'],'S':ap['A1'],'X':np['Y']};assert c['inv_pins']=={'A':np['Y'],'Y':ap['Y']}\n for s,l,h in itertools.product((0,1),repeat=3):\n  old=value(am,{'A1':s,'A2':l,'B1':value(nm,{'A':s,'B_N':h})});mux=value('sg13g2_mux2_2',{'S':s,'A1':l,'A0':h});new=value('sg13g2_inv_4',{'A':mux});assert old==new\n  rows.append({'cone':c['old_aoi'],'select':s,'low':l,'high':h,'before':int(old),'after':int(new),'wrong_polarity_negative_control_rejected':old!=mux});assert old!=mux\nresult={'status':'PASS within restricted Boolean scope','scope':'Exact unchanged instances and wires outside nine explicitly bounded stateless cones; exhaustive real-Liberty Boolean equality at all cone inputs and negative polarity controls. Does not prove analog hazards, timing, power-up X semantics, SRAM interiors or final physical signoff.','unchanged_instances':len(a.keys()&b.keys()),'removed_instances':len(removed),'added_instances':len(added),'unchanged_ports_aliases_wire_declarations':True,'truth_table_rows':len(rows),'negative_control_rejections':len(rows),'seed_sha256':sha(seed/'soc_top.nl.v'),'result_sha256':sha(d/'soc_top.nl.v'),'rows':rows}\n(d/'connectivity-logic-check.json').write_text(json.dumps(result,indent=2)+'\\n');print({k:v for k,v in result.items() if k!='rows'})\n"
+  },
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/inputs.json",
+      "bytes": 4951,
+      "sha256": "a695b38610f6f5c1fdd47d71a10f88f5c753aa30b69860d1a7a4cd9fb39240f3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/eco.tcl",
+      "bytes": 24589,
+      "sha256": "1dbd8cc9bfc5806e98c49c13c7cf8a596dc4359dabc023dca48a46ce1cb9e093"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/eco.log",
+      "bytes": 16369,
+      "sha256": "5b255f663063193a455ccf8540f866901b5a039ba2d1e71e694ed8ffd561530d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/metrics.json",
+      "bytes": 2300,
+      "sha256": "736c4703581fedb441eb2dea692cd5bb086534fd85d0fd110c647a4accfbe39a"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/connectivity-logic-check.json",
+      "bytes": 13913,
+      "sha256": "e0bd52345d52e993c6dc037d6decb1e0c376730c3c6a9db213881b8cdd6d0da3"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/validation.log",
+      "bytes": 699,
+      "sha256": "996d2b8f5d5f0688fd38d69f09ae229dab9b75c8821d9de9700101d44ececab5"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/soc_top.nl.v",
+      "bytes": 10800573,
+      "sha256": "436fb3d3db9b3fe708fb828e288316a3ea9c4c1190daf57dbbc0e0c37f619774"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/soc_top.odb",
+      "bytes": 89050098,
+      "sha256": "50267a54f09d9e5668e1122048fb7be1dec00553553708e5813a7b64422be999"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/soc_top.def",
+      "bytes": 22925305,
+      "sha256": "41ee47e311b792d9f0c9a84c4e0b7f0ba89b888a0833aab48f76874a1795b656"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/soc_top.sdc",
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/nom_slow_1p08V_125C-max.rpt",
+      "bytes": 46628,
+      "sha256": "4202a9dd22b7c1eab9e6ebe381c8c12e43ce6de12d3e1eec148937c47b897543"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco10-mux-factor/nom_fast_1p32V_m40C-min.rpt",
+      "bytes": 40738,
+      "sha256": "ab4293a48c3f766490e0135534720819d16922c15ae81154da1e98af78292b92"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/prepare_eco10.py",
+      "bytes": 4961,
+      "sha256": "5f66d774877c46476a0dadb57328b2e1662fc30a8ece2c69368a0adfa6ad1a34"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/validate_eco10.py",
+      "bytes": 4074,
+      "sha256": "7631f4c4adf35653c235112c546c2d38b62751e9afd2097a7b008119704eb879"
+    }
+  ],
+  "cost": {
+    "before": {
+      "design__instance__count": 94629,
+      "design__instance__area": 4665050.0,
+      "design__instance__area__stdcell": 1407210.0,
+      "design__instance__area__macros": 3257850.0
+    },
+    "after": {
+      "design__instance__count": 94629,
+      "design__instance__area": 4665120.0,
+      "design__instance__area__stdcell": 1407270.0,
+      "design__instance__area__macros": 3257850.0
+    },
+    "scope": "OpenROAD rounded JSON metrics; area in um2. Exact source-cell area delta is recorded separately below.",
+    "exact_liberty_cell_area_delta_um2": 61.68960000000001
+  }
+}

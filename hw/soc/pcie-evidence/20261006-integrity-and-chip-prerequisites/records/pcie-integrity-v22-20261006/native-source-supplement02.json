@@ -1,0 +1,158 @@
+[
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map.py",
+    "parent_pin": {
+      "bytes": 5648,
+      "sha256": "a781cc6f399e5f245aabb91a01ddd4f2c88cd805a97dc327aef58fadc0517772"
+    },
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map02.py",
+    "pin": {
+      "bytes": 5952,
+      "sha256": "68582e10f3e05f788b5ec67841652ff9a53211cd661bd6d220d3aad0b109b924"
+    },
+    "replacements": [
+      {
+        "before": "from pathlib import Path",
+        "after": "from pathlib import Path\nfrom native_lifecycle02 import OwnedNative,free_floor"
+      },
+      {
+        "before": "  p=None",
+        "after": "  p=None;native_owner=None"
+      },
+      {
+        "before": "   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,env={**os.environ,'TMPDIR':'/dev/shm','YOSYS_MAX_THREADS':'1','OMP_NUM_THREADS':'1'},preexec_fn=limit,start_new_session=True)",
+        "after": "   try:\n    p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,env={**os.environ,'TMPDIR':'/dev/shm','YOSYS_MAX_THREADS':'1','OMP_NUM_THREADS':'1'},preexec_fn=limit,start_new_session=True)\n    native_owner=OwnedNative(p);r['native_birth']=native_owner.birth"
+      },
+      {
+        "before": "   r['returncode']=p.wait()",
+        "after": "   r['returncode']=p.wait()\n   r['terminal_shared_free']=shutil.disk_usage('/dev/shm').free;free_floor(r['terminal_shared_free'])"
+      },
+      {
+        "before": "   if p is not None:\n    try:os.killpg(p.pid,signal.SIGKILL)\n    except ProcessLookupError:pass\n    p.wait()",
+        "after": "   if native_owner is not None:\n    try:native_owner.kill_and_reap()\n    finally:r['cleanup']=native_owner.cleanup"
+      },
+      {
+        "before": "Path(__file__),",
+        "after": "Path(__file__),Path(__file__).with_name('native_lifecycle02.py'),"
+      }
+    ]
+  },
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/balanced_import.py",
+    "parent_pin": {
+      "bytes": 4830,
+      "sha256": "8dca396ba74fa928a1b676c6e511cb39396428f77c162d3f23e79c9a70dbfaa0"
+    },
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/balanced_import02.py",
+    "pin": {
+      "bytes": 5134,
+      "sha256": "5f70dda21dbda28c6e92b1682d69f3c58c67cdb9a4acaff8d9b730f8a5580f3d"
+    },
+    "replacements": [
+      {
+        "before": "from pathlib import Path",
+        "after": "from pathlib import Path\nfrom native_lifecycle02 import OwnedNative,free_floor"
+      },
+      {
+        "before": "  p=None",
+        "after": "  p=None;native_owner=None"
+      },
+      {
+        "before": "   try:p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=limit,env={**os.environ,'YOSYS_MAX_THREADS':'1'})",
+        "after": "   try:\n    p=subprocess.Popen(r['command'],stdout=log,stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=limit,env={**os.environ,'YOSYS_MAX_THREADS':'1'})\n    native_owner=OwnedNative(p);r['native_birth']=native_owner.birth"
+      },
+      {
+        "before": "   r['returncode']=p.wait()",
+        "after": "   r['returncode']=p.wait()\n   r['terminal_shared_free']=shutil.disk_usage('/dev/shm').free;free_floor(r['terminal_shared_free'])"
+      },
+      {
+        "before": "   if p is not None:\n    try:os.killpg(p.pid,signal.SIGKILL)\n    except ProcessLookupError:pass\n    p.wait()",
+        "after": "   if native_owner is not None:\n    try:native_owner.kill_and_reap()\n    finally:r['cleanup']=native_owner.cleanup"
+      },
+      {
+        "before": "Path(__file__),",
+        "after": "Path(__file__),Path(__file__).with_name('native_lifecycle02.py'),"
+      }
+    ]
+  },
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement.py",
+    "parent_pin": {
+      "bytes": 5986,
+      "sha256": "c91f17d28768bcf6347daac3e8616c36b9d94702fc51aa4051aca8dc4104322d"
+    },
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement02.py",
+    "pin": {
+      "bytes": 6366,
+      "sha256": "5e3381eb38db81238e0562f77503f44becd3d6357e606c45f49ba70b37c23585"
+    },
+    "replacements": [
+      {
+        "before": "from pathlib import Path",
+        "after": "from pathlib import Path\nfrom native_lifecycle02 import OwnedNative,free_floor"
+      },
+      {
+        "before": "            process=None",
+        "after": "            process=None;native_owner=None"
+      },
+      {
+        "before": "                try:process=subprocess.Popen(row['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)",
+        "after": "                try:\n                    process=subprocess.Popen(row['command'],stdout=log,stderr=subprocess.STDOUT,preexec_fn=limit,start_new_session=True)\n                    native_owner=OwnedNative(process);row['native_birth']=native_owner.birth"
+      },
+      {
+        "before": "                row['returncode']=process.wait()",
+        "after": "                row['returncode']=process.wait()\n                free=shutil.disk_usage('/dev/shm').free;row['minimum_shared_free']=min(free,row['minimum_shared_free']);row['terminal_shared_free']=free;free_floor(free)"
+      },
+      {
+        "before": "                if process is not None:\n                    try:os.killpg(process.pid,signal.SIGKILL)\n                    except ProcessLookupError:pass\n                    process.wait()",
+        "after": "                if native_owner is not None:\n                    try:native_owner.kill_and_reap()\n                    finally:row['cleanup']=native_owner.cleanup"
+      },
+      {
+        "before": "files=[Path(__file__),",
+        "after": "files=[Path(__file__),Path(__file__).with_name('native_lifecycle02.py'),"
+      }
+    ]
+  },
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/continue_native01.py",
+    "parent_pin": {
+      "bytes": 5543,
+      "sha256": "27866a42c751647789142e6956cf7ebaf3e1190effeb4724078c97be23625333"
+    },
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/continue_native02.py",
+    "pin": {
+      "bytes": 5551,
+      "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+    },
+    "replacements": [
+      {
+        "before": "continuation-status01.json",
+        "after": "continuation-status02.json"
+      },
+      {
+        "before": "continuation-policy01.json",
+        "after": "continuation-policy02.json"
+      },
+      {
+        "before": "continuation-owner01.json",
+        "after": "continuation-owner02.json"
+      },
+      {
+        "before": "native-source-only-peer01.json",
+        "after": "native-source-only-peer02.json"
+      },
+      {
+        "before": "run_balanced_map.py",
+        "after": "run_balanced_map02.py"
+      },
+      {
+        "before": "balanced_import.py",
+        "after": "balanced_import02.py"
+      },
+      {
+        "before": "balanced_preplacement.py",
+        "after": "balanced_preplacement02.py"
+      }
+    ]
+  }
+]

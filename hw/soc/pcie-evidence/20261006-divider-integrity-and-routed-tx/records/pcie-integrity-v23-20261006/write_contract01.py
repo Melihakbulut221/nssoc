@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+from pathlib import Path
+import json,hashlib
+R=Path.cwd();B=Path(__file__).resolve().parent;BASE=R/'hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v'
+def pin(p):
+ with p.open('rb') as f:return {'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}
+d={
+'status':'PROPOSED_V23_REGISTERED_ADJACENT_HEADER_RELATION_SOURCE_PEER_REQUIRED',
+'baseline':pin(BASE),
+'baseline_decision':'V22 is a failed timing experiment, not adopted. Use its complete17-case temporal contract, registered retirement and tested invalid-cache quarantine as the explicit candidate baseline. V11 remains production baseline.',
+'evidence':{n:pin(B/n) for n in ['diagnose_measured_cone04.py','diagnose-measured-cone04.log','measured-cone-diagnosis04.json']},
+'measured_findings':[
+'V22 reported arrival7.345567ns and slow setup-3.544282ns. Full19buffers contribute3.057525ns;7muxes contribute1.249895ns. All original map cells and live semantic aliases are correlated to emitted Verilog without treating optimized unused JSON netnames as real driven wires.',
+'V22 _020636_ has203 original sink pins; repair_design adds29buffers withmaximum tree depth14. Its selected critical branch crosses11buffers from2.246713ns to4.082359ns. V17 _022260_ andV21 _020710_ each also have203sinks; moving cache-write qualification did not remove this shared control network.',
+'The startpoint is an optimized bank-writer flop. The path crosses expected-byte/packet-byte comparison and header_first mux at1.197057ns, then parser-control fanout. Anonymous Q_000282_ has only optimized flip_bits alias; do not falsely identify it as a live current_predecode[9] net.',
+'At the end, word support grows0,1,2,3 through four priority muxes. Every measured V22 mux arc is a data inputA0/A1, including final resident-verdict D muxA1. Thus removing another enable guard cannot directly remove the measured data chain.',
+'This proposal removes the early combinational header comparison and carries its one-bit relation before parser control. It does not promise all remaining203-load distribution/CRC/verdict mux delay disappears. The original4ns measurement remains the adoption gate.'
+],
+'architecture_delta':'Move only the adjacent accepted STP encoded-length versus first-header expected-length relation into companion input/current/next metadata registers, and carry the resolved relation as one bit with the active packet. No new parser stage, verdict command delay, commit delay, ring capacity change or public-cycle latency is planned.',
+'new_state':{
+'accepted_tail_encoded':'13bits: encoded length field from DWORD15 of the most recently accepted512bit block in the current input epoch; updated only on the exact original block_valid_i&&block_ready_o edge, never merely on valid.',
+'accepted_tail_valid':'Known0/1 epoch marker. Cleared on reset, original flush/start/abort/fault priorities; set only on accepted block in the active nonfault branch. Used to establish the cross-block relation invariant, never to skip header validation or hide a mismatch.',
+'current_header_relation,next_header_relation':'16bits each. Bitj equals format_bad(header_j) || encoded(predecessor_j) != expected(header_j), with interleaved DWORD ordering identical to predecode_block. Complete bank value overwritten on every load, shifted four bits with every nonlast parser step, exact current/next load priority as V10.',
+'packet_header_mismatch':'Onebit corresponding to the currently owned packet after its first header was consumed. New next-state default holds oldvalue, STP sets a deterministic initial value, first-header branch captures current_header_relation[j], original reset/flush/start/fault/active priorities retained.'
+},
+'planned_equations':[
+'input_header_relation[j] = input_predecode[j*32+18] || (predecessor_encoded[j] != input_predecode[j*32+5+:13]);',
+'For1<=j<16 predecessor_encoded[j] is input_predecode[(j-1)*32+19+:13]. Forj==0 it is OLD accepted_tail_encoded, preceding the same-edge update from input_predecode[15*32+19+:13].',
+'control_carried_header_bad = header_first ? current_header_relation[0] : packet_header_mismatch;',
+'Inside the existing if(control_header_first[j]) branch, set packet_header_mismatch_n=current_header_relation[j]. All original expected/header_bad/bytes assignments remain source-identical initially, so exact inverse and observer relation can be checked.',
+'No modification to control_transition/control_compose, control_state/active, CRC candidates, last-writer verdict priority, cache writers, commit/read/write pointers, retire descriptor, public ports or constraints.'
+],
+'cycle_and_ownership_contract':[
+'The input bank accepts one512bit block on exactly the original handshake. Adjacent within-block comparisons depend on payload_i fields only. The first DWORD comparison uses the old accepted previous-block tail, even if parser has not yet consumed that previous block; accepted block order is the required relation, not parser-current bank order.',
+'Current/next metadata follows every original bank load, current<-next promotion and four-DWORD shift under the same gates and last-writer priority. At each active parser wordj, relation[j] refers to that exact word and its immediate stream predecessor, including slice0/1/2/3 and block boundaries.',
+'Only a valid accepted STP can establish packet_bytes. Its first TLP header is the immediately next stream DWORD. Therefore whenever stateTLP&&header_first is owned, relation[0] compares the same previous STP encoded value to the same current header fields as the old packet_bytes comparator. Header tokens masquerading in payload do not update packet ownership.',
+'For a STP atj0/1/2, first header appears later in the same four-DWORD parser beat; capture relation[j+1] into packet_header_mismatch. For a STP atj3, first header appears next beatj0; use the precomputed relation[0]. A minimum-length packet can consume that first header and reach its carry-end later in the SAME beat; no unreachable exception is allowed.',
+'After the first header, packet_bytes/expected_bytes/header_bad stay stable for the same packet until the nextSTP. packet_header_mismatch must equal header_bad||(packet_bytes!=expected_bytes) whenever this carried-header branch can affect an owned packet. Stale flag values while TOKEN/LOOK/DLLP are not claimed equal to arbitrary unused old registers.',
+'Unknown relational value is retained as X through the original logical|| and != operators, conditional mux and sequential copy. Never use case equality to convert unknowns to PASS, never force a valid relation when predecessor marker is missing. Literal equality tests must coverX/Z and selected/unselected unknown inputs; arbitrary corrupted internal state equivalence is not claimed.',
+'On reset/flush/start/abort/fault, all new valid ownership clears with the original priorities. A same-edge accepted bad block may write invalid data metadata as V10 does, but the epoch marker/owner clears; the first accepted block after restart sets a fresh tail before any cross-block header can be owned. No stale previous epoch tail may authorize a header.',
+'An absent predecessor at the first block of an epoch is harmless only because no carriedTLP first-header can be owned without a priorSTP in that epoch. This must be asserted in the miter when the relation is actually used; absence must not be encoded as automatic acceptance.',
+'Input acceptance, step, fault/overflow and output timing are intended identical toV22 after initialized-state relational correspondence. A cycle-exact public miter is appropriate for this delta; no relaxed transaction-only comparison or extra latency is claimed.'
+],
+'validation_gates':[
+'Exact whole V22 source inverse for only new declarations/companion writer, two use sites and new flag reset/next/commit updates. Wrapper/helper/Makefile exact version-only bridges; first17 public tests unchanged before additive directed coverage.',
+'Independent source peer reviews all bank/epoch write priorities and the preceding accepted-block tail relation before actual controls. Retain source proposal separately from later implementation acceptance.',
+'Actual four-state literal component test independently compares original predecode/header arithmetic against adjacent relation for all acceptedSTP lengths5..1151 allowed by parameter, all headerformat/data/TD fields and explicitX/Z placements. Distinguish boundMAX150 and separately symbolic/literal upper lengths; no false exhaustive32bitpayload claim.',
+'Full public cycle miter under actual encoded streams: STP at every DWORD index0..15; first header at every resulting slice/block position; minimumTLP first-header/end same-beat; malformed header length andformat must fault identically; payload words that resemble STP must not change relation.',
+'Observe exact accepted tail/current/next metadata index matching under valid-held-ready-low, inputbubbles, simultaneous next promotion/newaccept, fullbanks, parserfault and reset/flush/start/abort. Strict active-use predecessor-valid assertion plus mismatch equality at every relevant parser word; count boundary witnesses, do not silently skip missingcases.',
+'Keep all17 existing public predicates, 4096cacheliteral relation and sixfault controls, full17miter,8actualfault/cachechange epochs and12publicmutants. Add meaningful negative mutants for predecessoroffbyone, updatingtailonvalidwithoutready, usingnewtailonaccept, wrongbankshift, lostpromotion, staleepochtail, omitted mismatch capture and forced-good carriedflag. Each must fail a named semantic witness/scoreboard assertion.',
+'After sourcepeer and allactualfunctional predicates pass, same CPU6/2GiB map/import/fullgraph/registeredboundary/original4ns SS/TT/FF screen. Confirm header relation registers are emitted and old dynamic13bitcompare no longer lies between current bank Q and carried-header control in the real optimized graph; keep full failedresult if criticalpath simply shifts.'
+],
+'risks_and_limits':[
+'Input predecode arithmetic feeding the new metadata register may become a new long input-to-register path under original0.2ns inputdelay; measure it without changing constraints.',
+'203-load late-control fanout and fourword cache priority may remain dominant after the header compare is moved. This is a bounded measured experiment, not an asserted timing closure.',
+'Old packet_bytes/expected/header_bad registers can become synthesis-unused; preserve source behavior and internal debug correspondence carefully rather than assuming undriven optimized debug aliases are live nets.',
+'FullMAX4118, routedRC and finalchip/PHY closure remain separate gates. V22failure and every earlier failure remain immutable.'
+],
+'not_claimed':['RTLimplemented','controlsPASS','timingimprovement','fullPHYorfinalchipclosure']}
+p=B/'architecture-contract01.json';assert not p.exists();p.write_text(json.dumps(d,indent=2)+'\n');print(pin(p))

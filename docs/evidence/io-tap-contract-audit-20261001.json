@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "status": "BOUNDARY_AND_TAP_PARAMETER_BLOCKERS_SEPARATELY_IDENTIFIED",
+  "evidence_date_utc": "2026-10-01",
+  "scope": "Pure Python arithmetic, captured netlists and read-only primary upstream sources. No native run, geometry/reference edit, deck modification, or LVS acceptance.",
+  "method": "scripts/io_tap_contract_audit.py recursively maps ordered subcircuit ports, preserves globals and local net scopes, and exactly sums explicit tap A/P with Decimal.",
+  "verification": {
+    "pure_tests_passed": 31,
+    "ruff": "PASS",
+    "pinned_deck_files_unchanged": 53
+  },
+  "parameter_policy": "Explicit A and exactly P/Perim are required. Only validated legacy R plus paired W/L metadata are additionally accepted, following pinned custom_reader explicit A/P precedence. Unknown parameters, tap multipliers and parameterized/multiplied child instances are rejected. Prior source and receipts are preserved in history-v1.",
+  "reference_versions": {
+    "local": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "main": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+    "dev": "c702f87d2a6de6256ea38a0f281355e302981ba9"
+  },
+  "new_finding_latest_references": "Superseded on 2026-10-02: the earlier helper incorrectly treated every name ending in ! as global. The local Vdd reference explicitly declares .GLOBAL sub!, and its original A/P deltas replay unchanged. Pinned main and dev references do not declare that global; their child well nodes remain distinct and the one-combined-tap-per-tie comparison now correctly rejects them. Their topology or combined A/P equivalence to the local reference is not established. No library update has demonstrated strict Vdd LVS closure.",
+  "connection_only_counterfactual": {
+    "assumptions": [
+      "Only external metal connectivity changes; tap-recognition masks and extracted tap parameters remain fixed.",
+      "TIE and WELL ordering remains unchanged; the pinned parallel combiner sums A and P.",
+      "The iovss$1-to-iovss alias is hypothetical; this audit proves no physical join or well-net equivalence."
+    ],
+    "combined_layout_iovss": {
+      "area_um2": "2117.58205",
+      "perimeter_um": "1113.69"
+    },
+    "reference_iovss": {
+      "area_um2": "2104.583",
+      "perimeter_um": "243.16"
+    },
+    "parameter_deltas": [
+      {
+        "tie": "iovss",
+        "area_delta_um2": "12.99905",
+        "perimeter_delta_um": "870.53",
+        "parameters_equal": false
+      },
+      {
+        "tie": "vss",
+        "area_delta_um2": "-0.01",
+        "perimeter_delta_um": "141.0",
+        "parameters_equal": false
+      }
+    ],
+    "conclusion": "If only external metal connectivity changes and extracted tap masks/parameters remain fixed, joining the two IOVSS components cannot close strict A/P comparison. The independent VSS mismatch also remains. This does not predict an actual parent extraction with changed overlapping recognition regions."
+  },
+  "deep_flat_partition": {
+    "flat_minus_sum_deep_iovss_dollar1": {
+      "area_um2": "-14.84945",
+      "perimeter_um": "-90.65"
+    },
+    "interpretation": "Deep child-plus-parent A/P is not equal to flat geometry extraction. Upstream documents cell-local tap extraction and overlapping tap concerns. Exact overlap/region attribution for these numbers is not proven by this pure audit; substituting one sum for the other is invalid."
+  },
+  "upstream_primary_evidence": [
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/714#issuecomment-3388578658",
+      "author": "b10346",
+      "github_association": "CONTRIBUTOR",
+      "finding": "IO library developer explains that some isolated guard connections are completed only in a ring with an abutting IOPadIOVdd. A suggested virtual-connect standalone flow is not adopted here; a real parent context is required."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/714#issuecomment-3396005804",
+      "author": "b10346",
+      "finding": "Author confirms missing label/CDL guard issue and intended correction. Current main/dev Vss CDL binds DCN guard to iovdd; local older CDL binds it to iovss."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4352461493",
+      "author": "b10346",
+      "finding": "IO library designer explains arbitrary tap geometry, ambiguous schematic parameters and tap overlap across hierarchy. This supports a contract gap, not permission to discard A/P."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4348791501",
+      "author": "RTimothyEdwards",
+      "finding": "Independent extractor author reports that equivalent W/L reconstructed from measured A/P did not match IO netlist values."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/1074",
+      "author": "Mauricio-xx",
+      "state": "open",
+      "comments": 0,
+      "finding": "Contributor reproducer describes deep cell-local extraction under cheat(*) and hierarchy-dependent missing taps. Not a maintainer-approved correction."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/1130",
+      "author": "World-Zhan",
+      "state": "open",
+      "comments": 0,
+      "finding": "Separate user reports strict IO diode leaf failures. This is corroboration only; it neither diagnoses NSSOC nor establishes a fix."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/pull/946",
+      "merged": false,
+      "finding": "Proposed A/P switch was closed without merge and is not used. The pinned CustomTap still compares A and P."
+    }
+  ],
+  "separate_authoritative_reference_delta": {
+    "cell": "sg13g2_IOPadVss",
+    "instance": "XI1",
+    "child": "sg13g2_DCNDiode",
+    "formal": "guard",
+    "old_net": "iovss",
+    "main_and_dev_net": "iovdd",
+    "status": "SOURCE_SUPPORTED_REFERENCE_CORRECTION_FOUND_NOT_APPLIED",
+    "next_validation": "Pin the corresponding upstream GDS/CDL/LEF version together and compare this explicit guard mapping in a real parent context. Do not replace the entire CDL blindly: formal port order differs, and Vdd tap A/P still fails."
+  },
+  "required_independent_inputs": [
+    "A version-coherent vendor IO layout/reference bundle with an authoritative strict tap A/P definition for arbitrary perforated/overlapping tap shapes, plus a passing positive and failing A/P/polarity regression.",
+    "The actual physical parent geometry that connects the exposed IOVSS pieces, using explicit ordered pin maps and preserving distinct VSS/IOVSS domains; four of six Vdd LEF ports were mapped previously, two middle ports remain unmapped in the simplified native database.",
+    "If the authoritative IO contract instead requires abstract or virtual connectivity, an explicit separately named acceptance boundary is necessary; it cannot be reported as strict transistor-level full-chip LVS."
+  ],
+  "next_safe_action": "Perform a source-pinned coherent-version topology audit for the documented Vss guard correction and a representative ring-parent proof when resource budget permits; do not rerun unchanged isolated Vdd expecting A/P closure.",
+  "all_seven_io_lvs_open": true,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "raw_diagnosis_sha256": "941e707cb7c5a6304fc9f6d3dde1a3eab23855477e5018ac72f8b87559937064",
+  "evidence_asset_manifest": "cloud-hold-methods-ci-and-io-audit-assets-20261001.json",
+  "superseded_claims": [
+    {
+      "corrected_on_utc": "2026-10-02",
+      "key": "new_finding_latest_references",
+      "historical_value": "Current main and dev retain exactly the same Vdd tap topology/combined A/P as the local reference despite CDL syntax and formal port ordering changes. A whole-library update alone does not provide a corrected Vdd tap contract.",
+      "historical_document_sha256": "11274bd60b0bdd24a875f315b22edde5b02588f714834d84a6e90854b7c2019c",
+      "reason": "The previous arithmetic helper inferred global scope from a ! suffix without an explicit .GLOBAL declaration.",
+      "replacement_evidence": "io-vss-native-diagnosis-20261002.json",
+      "historical_raw_records_preserved": true,
+      "affected_historical_records": [
+        "hw/soc/out/io-tap-contract-20261001/main-contract-final.json",
+        "hw/soc/out/io-tap-contract-20261001/dev-contract-final.json"
+      ],
+      "unchanged_scope": "The local explicit-.GLOBAL Vdd reference parameter comparisons and all original native FAIL verdicts are unchanged."
+    }
+  ]
+}

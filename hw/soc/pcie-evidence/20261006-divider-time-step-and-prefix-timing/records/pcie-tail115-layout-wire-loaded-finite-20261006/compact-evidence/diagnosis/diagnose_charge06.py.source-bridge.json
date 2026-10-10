@@ -1,0 +1,221 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-bias8-v1-wire-v1-20261006/diagnose_charge06.py",
+    "bytes": 6958,
+    "sha256": "6a4479495e648324f79bf62d08c359c50b88ad16fdbcf7ca3e090445829aa022"
+  },
+  "candidate": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-layout-wire-loaded-finite-20261006/diagnose_charge06.py",
+    "bytes": 7023,
+    "sha256": "4942193475defbf9aab7377f993d9d2baa0af640423e1e6431e683951bbef47e"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Saved full waveform diagnostic; actual source/native terminals, no native run.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,re,os,resource\nimport numpy as np\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef stats(x,mask):\n v=x[mask];return dict(min=float(v.min()),max=float(v.max()),mean=float(v.mean()),rms=float(np.sqrt(np.mean(v*v))))\ndef edges(t,v,h):\n # Require a full negative-to-positive excursion for every diagnostic edge.\n armed=False;out=[]\n for i in range(1,len(t)):\n  if v[i-1]<=-h:armed=True\n  if armed and v[i-1]<=h<v[i]:\n   out.append(float(t[i-1]+(h-v[i-1])*(t[i]-t[i-1])/(v[i]-v[i-1])));armed=False\n return np.array(out)\nresults=[];series={};maps={}\nfor label,stem,fixture in [('",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Saved full waveform diagnostic; actual source/native terminals, no native run.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,re,os,resource\nimport numpy as np\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef stats(x,mask):\n v=x[mask];return dict(min=float(v.min()),max=float(v.max()),mean=float(v.mean()),rms=float(np.sqrt(np.mean(v*v))))\ndef edges(t,v,h):\n # Require a full negative-to-positive excursion for every diagnostic edge.\n armed=False;out=[]\n for i in range(1,len(t)):\n  if v[i-1]<=-h:armed=True\n  if armed and v[i-1]<=h<v[i]:\n   out.append(float(t[i-1]+(h-v[i-1])*(t[i]-t[i-1])/(v[i]-v[i-1])));armed=False\n return np.array(out)\nresults=[];series={};maps={}\nfor label,stem,fixture in [('"
+    },
+    {
+      "tag": "delete",
+      "before": "Cap24','cap24','pcie_clock_div4_v8_cap24_v1_hybrid_v1'),('",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "Bias8','bias8','pcie_clock_div4_v9_bias8",
+      "after": "Bias8','bias8','pcie_clock_div4_v9_bias8"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "_v1_hybrid_v1'),('Tail115','tail115','pcie_clock_div4_v10_tail115"
+    },
+    {
+      "tag": "equal",
+      "before": "_v1_hybrid_v1')]:\n N=Path('/dev/shm/nssoc-vco-v6-divider-'+stem+'-v1-wire-06-01');F=R/'sw/tests/fixtures'/fixture\n r=json.loads((N/'result.json').read_text());assert r['status']",
+      "after": "_v1_hybrid_v1')]:\n N=Path('/dev/shm/nssoc-vco-v6-divider-'+stem+'-v1-wire-06-01');F=R/'sw/tests/fixtures'/fixture\n r=json.loads((N/'result.json').read_text());assert r['status']"
+    },
+    {
+      "tag": "replace",
+      "before": "==",
+      "after": " in ("
+    },
+    {
+      "tag": "equal",
+      "before": "'FAIL_NATIVE_LOADED_FEEDBACK_SCREEN'",
+      "after": "'FAIL_NATIVE_LOADED_FEEDBACK_SCREEN'"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ",'PASS_NATIVE_LOADED_FEEDBACK_SCREEN')"
+    },
+    {
+      "tag": "equal",
+      "before": "\n raw=gzip.decompress((N/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']\n header,payload=raw.split(b'Binary:\\n',1);names=[x.decode().split()[1] for x in header.split(b'Variables:\\n')[1].splitlines()]\n assert len(names)==957 and len(set(names))==957;size=r['rows']*957*8\n assert payload[size:]==str(r['rows']).encode()\n a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all();d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0) and abs(t[-1]-34e-9)<1e-18\n for p in [F/'composition.json',F/'source-native-bijection.json']:assert r['inputs'][str(p)]==pin(p)\n comp=json.loads((F/'composition.json').read_text());binding=json.loads((F/'source-native-bijection.json').read_text())\n records={x['native_id']:x for x in comp['records']};devices={x['source_name']:x for x in binding['devices']};witness={}\n def node(name,term):\n  dev=devices[name];i=dev['terminal_order'].index(term);record=records[dev['native_id']];endpoint=record['terminals'][i];assert endpoint['terminal']==term\n  k='v(xchain.xdiv.'+endpoint['node'].lower()+')';assert k in d\n  witness[name+'.'+term]=dict(native_id=dev['native_id'],logical=dev['source_nets'][i],column=k);return d[k]\n def current(name):\n  id=devices[name]['native_id'];k=f'i(@q.xchain.xdiv.xd{int(id):04d}.qnpn13g2[ic])';assert k in d\n  witness[name+'.IC']=dict(native_id=id,column=k);return d[k]\n sig={};\n for stage,prefix in [('FIRST','DIV__XFIRST__XCORE'),('SECOND','DIV__XSECOND')]:\n  for latch in ('XM','XS'):\n   p=prefix+'__'+latch\n   ch=node(p+'__XCH','B');cs=node(p+'__XCS','B');qp=node(p+'__XDN','C');qn=node(p+'__XDP','C')\n   sig[stage+'_'+latch+'_clock_cm']=(ch+cs)/2;sig[stage+'_'+latch+'_clock_diff']=ch-cs\n   sig[stage+'_'+latch+'_collector_cm']=(qp+qn)/2;sig[stage+'_'+latch+'_collector_diff']=qp-qn\n   sig[stage+'_'+latch+'_tail_IC']=current(p+'__XT')\n   ih=current(p+'__XCH');is_=current(p+'__XCS');sig[stage+'_'+latch+'_switch_current_balance']=(ih-is_)/(ih+is_)\n   sig[stage+'_'+latch+'_tail_VBE']=node(p+'__XT','B')-node(p+'__XT','E')\n   sig[stage+'_'+latch+'_clock_emitter_cm']=(node(p+'__XCH','E')+node(p+'__XCS','E'))/2\n for cap in ('XCP','XCN'):\n  sig[cap+'_voltage']=node('DIV__'+cap,'mim_top')-node('DIV__'+cap,'mim_btm')\n for n in ('XLP','XLN','XLT','XLREF'):\n  sig[n+'_B']=node('DIV__'+n,'B');sig[n+'_C']=node('DIV__'+n,'C');sig[n+'_IC']=current('DIV__'+n)\n sig['VCO_diff']=d['v(clkp)']-d['v(clkn)'];sig['PUBLIC_diff']=d['v(qp)']-d['v(qn)']\n wins=[]\n for lo,hi in [(4,8),(12,16),(18,20),(20,22),(22,23.5),(24,26),(30,34)]:\n  mask=(t>=lo*1e-9)&(t<hi*1e-9);row={'window_ns':[lo,hi],'stats':{k:stats(v,mask) for k,v in sig.items()},'crossings':{}}\n  for k in ['FIRST_XS_collector_diff','SECOND_XM_collector_diff','SECOND_XS_collector_diff','PUBLIC_diff']:\n   hh={}\n   for h in (0,.05,.1,.15):\n    e=edges(t,sig[k],h);e=e[(e>=lo*1e-9)&(e<hi*1e-9)];hh[str(h)]=dict(count=len(e),frequency_hz=float((len(e)-1)/(e[-1]-e[0])) if len(e)>1 else None)\n   row['crossings'][k]=hh\n  mask_delta=sig['SECOND_XM_collector_diff'][mask];slave=sig['SECOND_XS_collector_diff'][mask];row['second_master_slave_correlation']=float(np.corrcoef(mask_delta,slave)[0,1])\n  wins.append(row)\n results.append({'name':label,'native_status':r['status'],'values':int(a.size),'inputs':{str(p):pin(p) for p in [N/'result.json',N/'wave.raw.gz',F/'composition.json',F/'source-native-bijection.json']},'source_terminal_witnesses':witness,'windows':wins})\n # Small plotting vectors copied before releasing full raw.\n keys=['SECOND_XS_clock_cm','XCP_voltage','XCN_voltage','SECOND_XS_tail_IC','SECOND_XS_switch_current_balance','SECOND_XS_collector_diff']\n series[label]=(t.copy(),{k:sig[k].copy() for k in keys})\n del raw,payload,a,d,sig\nout={'status':'SAVED_",
+      "after": "\n raw=gzip.decompress((N/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']\n header,payload=raw.split(b'Binary:\\n',1);names=[x.decode().split()[1] for x in header.split(b'Variables:\\n')[1].splitlines()]\n assert len(names)==957 and len(set(names))==957;size=r['rows']*957*8\n assert payload[size:]==str(r['rows']).encode()\n a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all();d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0) and abs(t[-1]-34e-9)<1e-18\n for p in [F/'composition.json',F/'source-native-bijection.json']:assert r['inputs'][str(p)]==pin(p)\n comp=json.loads((F/'composition.json').read_text());binding=json.loads((F/'source-native-bijection.json').read_text())\n records={x['native_id']:x for x in comp['records']};devices={x['source_name']:x for x in binding['devices']};witness={}\n def node(name,term):\n  dev=devices[name];i=dev['terminal_order'].index(term);record=records[dev['native_id']];endpoint=record['terminals'][i];assert endpoint['terminal']==term\n  k='v(xchain.xdiv.'+endpoint['node'].lower()+')';assert k in d\n  witness[name+'.'+term]=dict(native_id=dev['native_id'],logical=dev['source_nets'][i],column=k);return d[k]\n def current(name):\n  id=devices[name]['native_id'];k=f'i(@q.xchain.xdiv.xd{int(id):04d}.qnpn13g2[ic])';assert k in d\n  witness[name+'.IC']=dict(native_id=id,column=k);return d[k]\n sig={};\n for stage,prefix in [('FIRST','DIV__XFIRST__XCORE'),('SECOND','DIV__XSECOND')]:\n  for latch in ('XM','XS'):\n   p=prefix+'__'+latch\n   ch=node(p+'__XCH','B');cs=node(p+'__XCS','B');qp=node(p+'__XDN','C');qn=node(p+'__XDP','C')\n   sig[stage+'_'+latch+'_clock_cm']=(ch+cs)/2;sig[stage+'_'+latch+'_clock_diff']=ch-cs\n   sig[stage+'_'+latch+'_collector_cm']=(qp+qn)/2;sig[stage+'_'+latch+'_collector_diff']=qp-qn\n   sig[stage+'_'+latch+'_tail_IC']=current(p+'__XT')\n   ih=current(p+'__XCH');is_=current(p+'__XCS');sig[stage+'_'+latch+'_switch_current_balance']=(ih-is_)/(ih+is_)\n   sig[stage+'_'+latch+'_tail_VBE']=node(p+'__XT','B')-node(p+'__XT','E')\n   sig[stage+'_'+latch+'_clock_emitter_cm']=(node(p+'__XCH','E')+node(p+'__XCS','E'))/2\n for cap in ('XCP','XCN'):\n  sig[cap+'_voltage']=node('DIV__'+cap,'mim_top')-node('DIV__'+cap,'mim_btm')\n for n in ('XLP','XLN','XLT','XLREF'):\n  sig[n+'_B']=node('DIV__'+n,'B');sig[n+'_C']=node('DIV__'+n,'C');sig[n+'_IC']=current('DIV__'+n)\n sig['VCO_diff']=d['v(clkp)']-d['v(clkn)'];sig['PUBLIC_diff']=d['v(qp)']-d['v(qn)']\n wins=[]\n for lo,hi in [(4,8),(12,16),(18,20),(20,22),(22,23.5),(24,26),(30,34)]:\n  mask=(t>=lo*1e-9)&(t<hi*1e-9);row={'window_ns':[lo,hi],'stats':{k:stats(v,mask) for k,v in sig.items()},'crossings':{}}\n  for k in ['FIRST_XS_collector_diff','SECOND_XM_collector_diff','SECOND_XS_collector_diff','PUBLIC_diff']:\n   hh={}\n   for h in (0,.05,.1,.15):\n    e=edges(t,sig[k],h);e=e[(e>=lo*1e-9)&(e<hi*1e-9)];hh[str(h)]=dict(count=len(e),frequency_hz=float((len(e)-1)/(e[-1]-e[0])) if len(e)>1 else None)\n   row['crossings'][k]=hh\n  mask_delta=sig['SECOND_XM_collector_diff'][mask];slave=sig['SECOND_XS_collector_diff'][mask];row['second_master_slave_correlation']=float(np.corrcoef(mask_delta,slave)[0,1])\n  wins.append(row)\n results.append({'name':label,'native_status':r['status'],'values':int(a.size),'inputs':{str(p):pin(p) for p in [N/'result.json',N/'wave.raw.gz',F/'composition.json',F/'source-native-bijection.json']},'source_terminal_witnesses':witness,'windows':wins})\n # Small plotting vectors copied before releasing full raw.\n keys=['SECOND_XS_clock_cm','XCP_voltage','XCN_voltage','SECOND_XS_tail_IC','SECOND_XS_switch_current_balance','SECOND_XS_collector_diff']\n series[label]=(t.copy(),{k:sig[k].copy() for k in keys})\n del raw,payload,a,d,sig\nout={'status':'SAVED_"
+    },
+    {
+      "tag": "replace",
+      "before": "B",
+      "after": "TA"
+    },
+    {
+      "tag": "equal",
+      "before": "I",
+      "after": "I"
+    },
+    {
+      "tag": "replace",
+      "before": "AS8",
+      "after": "L115"
+    },
+    {
+      "tag": "equal",
+      "before": "_CHARGE_AND_FULL_EXCURSION_DIAGNOSIS','method':pin(__file__),'captures':results,'scope':'Descriptive post-hoc windows only; ",
+      "after": "_CHARGE_AND_FULL_EXCURSION_DIAGNOSIS','method':pin(__file__),'captures':results,'scope':'Descriptive post-hoc windows only; "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "each "
+    },
+    {
+      "tag": "equal",
+      "before": "original full34ns ",
+      "after": "original full34ns "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "source ver"
+    },
+    {
+      "tag": "equal",
+      "before": "di",
+      "after": "di"
+    },
+    {
+      "tag": "replace",
+      "before": "v",
+      "after": "ct reta"
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "delete",
+      "before": "sio",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": " FAIL",
+      "after": "ed"
+    },
+    {
+      "tag": "equal",
+      "before": " unchanged. Actual capacitor terminal voltage is reported, not inferred foundry charge. Native collector currents use exact source/native device mapping. Hysteresis checks require complete +/-h excursions and distinguish voltage oscillations from tiny threshold chatter. No native rerun or relaxed screen.'}\n(B/'charge-diagnosis06.json').write_text(json.dumps(out,indent=2)+'\\n')\nfor capture in results:\n print(capture['name'])\n for w in capture['windows']:\n  st=w['stats'];print(w['window_ns'], 'CM',st['SECOND_XS_clock_cm']['mean'],'cap',st['XCP_voltage']['mean'],st['XCN_voltage']['mean'],'tail',st['SECOND_XS_tail_IC']['mean'],'balance',st['SECOND_XS_switch_current_balance']['min'],st['SECOND_XS_switch_current_balance']['max'],'freq',w['crossings']['SECOND_XS_collector_diff'],'corr',w['second_master_slave_correlation'])\n# Diagnostic plot; scientific artifact, no generated image editing.\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig,axes=plt.subplots(3,2,figsize=(12,10),layout='constrained')\nfor label,(t,sig) in series.items():\n for ax,key in zip(axes.flat,sig):\n  if key=='SECOND_XS_collector_diff':\n   mask=(t>=23e-9)&(t<25e-9);ax.plot(t[mask]*1e9,sig[key][mask],lw=.6,label=label)\n  else:\n   # 0.5ns bins, integrated sample means for readable bias envelope.\n   bins=np.arange(4,34,.5);mean=[]\n   for lo in bins:\n    mask=(t>=lo*1e-9)&(t<(lo+.5)*1e-9);mean.append(float(np.mean(sig[key][mask])))\n   ax.plot(bins+.25,mean,label=label)\n  ax.set_title(key,fontsize=9);ax.set_xlabel('Time (ns)');ax.grid(alpha=.2);ax.legend()\nfig.suptitle('Saved ",
+      "after": " unchanged. Actual capacitor terminal voltage is reported, not inferred foundry charge. Native collector currents use exact source/native device mapping. Hysteresis checks require complete +/-h excursions and distinguish voltage oscillations from tiny threshold chatter. No native rerun or relaxed screen.'}\n(B/'charge-diagnosis06.json').write_text(json.dumps(out,indent=2)+'\\n')\nfor capture in results:\n print(capture['name'])\n for w in capture['windows']:\n  st=w['stats'];print(w['window_ns'], 'CM',st['SECOND_XS_clock_cm']['mean'],'cap',st['XCP_voltage']['mean'],st['XCN_voltage']['mean'],'tail',st['SECOND_XS_tail_IC']['mean'],'balance',st['SECOND_XS_switch_current_balance']['min'],st['SECOND_XS_switch_current_balance']['max'],'freq',w['crossings']['SECOND_XS_collector_diff'],'corr',w['second_master_slave_correlation'])\n# Diagnostic plot; scientific artifact, no generated image editing.\nimport matplotlib\nmatplotlib.use('Agg')\nimport matplotlib.pyplot as plt\nfig,axes=plt.subplots(3,2,figsize=(12,10),layout='constrained')\nfor label,(t,sig) in series.items():\n for ax,key in zip(axes.flat,sig):\n  if key=='SECOND_XS_collector_diff':\n   mask=(t>=23e-9)&(t<25e-9);ax.plot(t[mask]*1e9,sig[key][mask],lw=.6,label=label)\n  else:\n   # 0.5ns bins, integrated sample means for readable bias envelope.\n   bins=np.arange(4,34,.5);mean=[]\n   for lo in bins:\n    mask=(t>=lo*1e-9)&(t<(lo+.5)*1e-9);mean.append(float(np.mean(sig[key][mask])))\n   ax.plot(bins+.25,mean,label=label)\n  ax.set_title(key,fontsize=9);ax.set_xlabel('Time (ns)');ax.grid(alpha=.2);ax.legend()\nfig.suptitle('Saved "
+    },
+    {
+      "tag": "delete",
+      "before": "Cap24 vs ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "Bias8",
+      "after": "Bias8"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " vs Tail115"
+    },
+    {
+      "tag": "equal",
+      "before": ":",
+      "after": ":"
+    },
+    {
+      "tag": "delete",
+      "before": " unchanged",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " full34ns ",
+      "after": " full34ns "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "source ver"
+    },
+    {
+      "tag": "equal",
+      "before": "di",
+      "after": "di"
+    },
+    {
+      "tag": "replace",
+      "before": "vi",
+      "after": "ct"
+    },
+    {
+      "tag": "equal",
+      "before": "s",
+      "after": "s"
+    },
+    {
+      "tag": "delete",
+      "before": "ion",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "f",
+      "after": "ret"
+    },
+    {
+      "tag": "equal",
+      "before": "ai",
+      "after": "ai"
+    },
+    {
+      "tag": "replace",
+      "before": "lur",
+      "after": "n"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "d"
+    },
+    {
+      "tag": "equal",
+      "before": "')\nfig.savefig(B/'charge-and-clock-diagnosis06.png',dpi=130);plt.close(fig)\n",
+      "after": "')\nfig.savefig(B/'charge-and-clock-diagnosis06.png',dpi=130);plt.close(fig)\n"
+    }
+  ],
+  "executed": false,
+  "scope": "Saved-data diagnostic preparation only; actual native still running and no window results assumed"
+}

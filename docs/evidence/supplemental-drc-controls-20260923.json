@@ -1,0 +1,165 @@
+{
+  "date": "2026-09-23",
+  "status": "PASS within bounded supplemental-runner and core-fill control scope",
+  "scope": "Small physical controls only. Does not qualify full routed-core density, antenna, timing, LVS or manufacture.",
+  "measurements": {
+    "recommended-control-pass": {
+      "result": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac"
+      },
+      "deck": "main",
+      "mode": "tiling",
+      "recommended": true,
+      "scope": "Complete input GDS; unmodified upstream main deck, tiling mode; recommended checks on; no acceptance inherited for other decks or layouts"
+    },
+    "recommended-control-fail": {
+      "result": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 1,
+        "categories": {
+          "'M1.a'": 1
+        },
+        "category_count": 560,
+        "report_sha256": "80aa50ccc4c5e9206495fbdcd1567c9c4a891a510ec476685f90a5ac5d14c3bb"
+      },
+      "deck": "main",
+      "mode": "tiling",
+      "recommended": true,
+      "scope": "Complete input GDS; unmodified upstream main deck, tiling mode; recommended checks on; no acceptance inherited for other decks or layouts"
+    },
+    "corefill-control-main": {
+      "result": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac"
+      },
+      "deck": "main",
+      "mode": "tiling",
+      "recommended": true,
+      "scope": "Complete input GDS; unmodified upstream main deck, tiling mode; recommended checks on; no acceptance inherited for other decks or layouts"
+    },
+    "corefill-control-density": {
+      "result": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 7,
+        "report_sha256": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e"
+      },
+      "deck": "density",
+      "mode": "deep",
+      "recommended": false,
+      "scope": "Complete input GDS; unmodified upstream density deck, deep mode; recommended checks off; no acceptance inherited for other decks or layouts"
+    },
+    "corefill-control-density-unfilled": {
+      "result": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 9,
+        "categories": {
+          "'AFil.g'": 1,
+          "'GFil.g'": 1,
+          "'M1.j'": 1,
+          "'M2.j'": 1,
+          "'M3.j'": 1,
+          "'M4.j'": 1,
+          "'M5.j'": 1,
+          "'TM1.c'": 1,
+          "'TM2.c'": 1
+        },
+        "category_count": 16,
+        "report_sha256": "40f971297882b0ff32906b8fcc3aad2ebcc444ba46839703b10c2cb3141adab5"
+      },
+      "deck": "density",
+      "mode": "deep",
+      "recommended": false,
+      "scope": "Complete input GDS; unmodified upstream density deck, deep mode; recommended checks off; no acceptance inherited for other decks or layouts"
+    }
+  },
+  "geometry_positive": {
+    "status": "PASS within geometry-preservation scope",
+    "errors": [],
+    "input_sha256": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-filled.gds": "4f7e21328e2d1581f83a1518e02df5362f40dd23130af5cfd4b232f3536affd7"
+    },
+    "source_cells": 1,
+    "new_cells": 13,
+    "added_fill_shape_definitions": 13,
+    "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+  },
+  "geometry_negative": {
+    "status": "FAIL",
+    "errors": [
+      "Non-fill geometry changed in sg13g2_inv_1 (8, 0)"
+    ],
+    "input_sha256": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-removed-original-metal.gds": "463b45f91ee693db92aa1555ca2bfee0a62fbe1ce6b63564b96da83997727c01"
+    },
+    "source_cells": 1,
+    "new_cells": 13,
+    "added_fill_shape_definitions": 13,
+    "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+  },
+  "fill_scope": "Vendor macros copied without altering spacing/shape rules; only EdgeSeal.holes region selection replaced by explicit prBoundary. Core preparation derives this marker from actual DEF DIEAREA; the small control uses a declared 100x100um test boundary. No fabricated seal ring is asserted.",
+  "source_integrity": "Each DRC input, immutable deck and report hash independently reverified at publication.",
+  "pending": "Complete baseline density is still running. Full core-fill diagnostic and new ECO routing also pending; none is accepted by these controls.",
+  "archive": {
+    "path": "docs/evidence/supplemental-drc-controls-20260923.tar.gz",
+    "sha256": "09224be635d7c679a0fc1e64d11ec892a1b6a26f04983922d7d4cb9ccc9a1e42",
+    "bytes": 85259,
+    "members": {
+      "hw/soc/out/route-closure-recommended-control-pass-20260923/result.json": "6943135c5ec5a7cd002ba9b5cc6ac708edc6b71f86ece59084733152f2814dad",
+      "hw/soc/out/route-closure-recommended-control-pass-20260923/inputs.json": "15354d86bc39ea5f0d246d564bdc1b4038f2b71c75d696454bc0f609999be055",
+      "hw/soc/out/route-closure-recommended-control-pass-20260923/run.log": "ba480415891acf65384a19b41a06ad3264d882336d2b4b54eccac1e41d182bc1",
+      "hw/soc/out/route-closure-recommended-control-pass-20260923/drc.lyrdb": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac",
+      "hw/soc/out/route-closure-recommended-control-fail-20260923/result.json": "f5a0ece04887c0952b030141193867d675033c6fbe61008c2369926c4b880930",
+      "hw/soc/out/route-closure-recommended-control-fail-20260923/inputs.json": "b482b6b0f1b6fe695ff2985b6d38cc971d98ca49d5064d6d0d0e7378065a3c98",
+      "hw/soc/out/route-closure-recommended-control-fail-20260923/run.log": "f68286e40604f210a9652cb9b397aa0f924ca1ab7faa8852f98eaa5eea7e58ae",
+      "hw/soc/out/route-closure-recommended-control-fail-20260923/drc.lyrdb": "80aa50ccc4c5e9206495fbdcd1567c9c4a891a510ec476685f90a5ac5d14c3bb",
+      "hw/soc/out/route-closure-corefill-control-main-20260923/result.json": "6943135c5ec5a7cd002ba9b5cc6ac708edc6b71f86ece59084733152f2814dad",
+      "hw/soc/out/route-closure-corefill-control-main-20260923/inputs.json": "03d2098bfb3a74394e3ee4d2806c0aaac32e7f8c2ed777ee149a7724ebc66fb5",
+      "hw/soc/out/route-closure-corefill-control-main-20260923/run.log": "4bccc4e3af9cab64359214f47430af80ed8149e2b53566d035c50ce026887897",
+      "hw/soc/out/route-closure-corefill-control-main-20260923/drc.lyrdb": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac",
+      "hw/soc/out/route-closure-corefill-control-density-20260923/result.json": "55331d1a18fc689bad1812faa3d45aff0544a0febb224c826c854f96c422a438",
+      "hw/soc/out/route-closure-corefill-control-density-20260923/inputs.json": "6d98ce468e5966500a1db1ffa63d2ed861a49c1fd312a1bdabf8645a6d8b8acb",
+      "hw/soc/out/route-closure-corefill-control-density-20260923/run.log": "64bb6047adb3df283eb76e6ab965f777d90ac91413459c4d3b1954adb9ccc534",
+      "hw/soc/out/route-closure-corefill-control-density-20260923/drc.lyrdb": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e",
+      "hw/soc/out/route-closure-corefill-control-density-unfilled-20260923/result.json": "cdedd22c65cbe8db9732e274cdfd4def529ef5397e0d0fa99b2655b5f775e683",
+      "hw/soc/out/route-closure-corefill-control-density-unfilled-20260923/inputs.json": "ab9aa7026e1cd475db4ad9e5e2c3c034bfabfcd6361203f4284a31916365b87a",
+      "hw/soc/out/route-closure-corefill-control-density-unfilled-20260923/run.log": "d8fa7a2d4b338987471dc5dfd1166038a2d526fcd58da8bcbcef2e05d072e2f3",
+      "hw/soc/out/route-closure-corefill-control-density-unfilled-20260923/drc.lyrdb": "40f971297882b0ff32906b8fcc3aad2ebcc444ba46839703b10c2cb3141adab5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/fill.py": "e9fedb02558882ca2c8414364530a3bf26e0139721d8cfebcdc9c826633820fa",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-filled.gds": "4f7e21328e2d1581f83a1518e02df5362f40dd23130af5cfd4b232f3536affd7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-removed-original-metal-audit.json": "3893079ae2d6ce49c3d0ed668b54024ea5f4381758a63e4b7efe3acc1c7e337f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/sg13g2_filler_Metal.lym": "db7ffaed38d653669dad183976431eabf4bbd5a84e65e8bbc9ad6d33e3070019",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-geometry.json": "94efb21ce20a1071f8f7701f67e64a345024fcee112ca994da61c6d9d258187a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/sg13g2_filler_TopMetal.lym": "526bf3494c652e9d1dbabb16179e15ae073acb563f5fe3228b6e0d9c5e17c76a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/inputs.json": "51b04c5a64b1669b29c8d0801a634ab1539609ea80dc3a164d11e409dd7a5f41",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/sg13g2_filler_ActGatP.lym": "a4768b7fc73e009838b33d24ea1043bdda387fe4201e2d66cf41577dcaa3126f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control-removed-original-metal.gds": "463b45f91ee693db92aa1555ca2bfee0a62fbe1ce6b63564b96da83997727c01",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/prepare_core_fill.py": "aeab632da9e29e962e403848134f14b4e33542a58c7b3ecb196a90c96652a516",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/audit_fill_preservation.py": "33511e01ea6732fb15b6d2b961ee3264a3b3e14a08cce545db672219e302b035",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_supplemental_controls.py": "9260f3676994a12b836de414623dd739e2b1dc9a5c7442e61ad72af2196da8bd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/main-drc-negative/negative.gds": "697c37209cd0c20cb813ca2f90e950df13fe2f6281205258ab645558bd4dab55",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/main-drc-negative/inputs.json": "febb1ecd2c89c77e5fcfffb61cec95573826914bfdccc4dbf7e246eea1199859",
+      "hw/soc/flow/check_ihp_drc.py": "41fae50f1b387b60c3c5893743f7f7a45247b3a47dfa29bdd819de7c8c418e93",
+      "hw/soc/flow/prepare_ihp_drc.py": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47",
+      "hw/soc/pnr/ihp-drc.lock.json": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a",
+      "sw/tests/test_ihp_drc_result.py": "3ff11ee102e0ee84bc02f852d1a7b6f83168b93fe6488b849bdace9af02631e4",
+      "hw/soc/tools/ihp-drc-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  }
+}

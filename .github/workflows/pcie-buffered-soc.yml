@@ -1,0 +1,205 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: pcie-buffered-soc
+on:
+  push:
+    paths: &paths
+      - .github/workflows/pcie-buffered-soc.yml
+      - hw/soc/rtl/pcie/**
+      - hw/soc/rtl/soc_top.v
+      - hw/soc/rtl/dft/soc_sram_mbist.v
+      - hw/soc/flow/syn_soc_top.sh
+      - hw/soc/flow/sta_soc_top.sh
+      - hw/soc/rtl/soc_gpio.v
+      - hw/soc/rtl/soc_apb_bridge.v
+      - hw/soc/tb/*pcie*.v
+      - hw/soc/tb/cocotb/*pcie*
+      - scripts/check_pcie*.py
+      - scripts/pcie_*.py
+      - sw/tests/test_pcie*.py
+      - sw/tests/fixtures/pcie_apb_cdc/**
+      - sw/tests/fixtures/pcie_credit_tx/**
+      - sw/tests/fixtures/pcie_chip_timing/**
+  pull_request:
+    paths: *paths
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pcie-buffered-soc-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-components:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare exact native libraries and simulator
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+          echo "$PWD/hw/.venv/bin" >> "$GITHUB_PATH"
+          mkdir -p hw/soc/out/pcie-local-flow/libraries
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib' -o hw/soc/out/pcie-local-flow/libraries/cells.lib
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v' -o hw/soc/out/pcie-local-flow/libraries/cells.v
+          echo '968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  hw/soc/out/pcie-local-flow/libraries/cells.lib' | sha256sum --check
+          echo '28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4  hw/soc/out/pcie-local-flow/libraries/cells.v' | sha256sum --check
+      - name: Actual local credits and native cells
+        run: |
+          for top in soc_pcie_fc_tx soc_pcie_rx_credit soc_pcie_buffered_flow_packets; do
+            python3 scripts/check_pcie_rx_flow.py --top "$top" --out "hw/soc/out/pcie-local-flow/rtl-$top"
+            python3 scripts/check_pcie_rx_flow.py --native --top "$top" --out "hw/soc/out/pcie-local-flow/native-$top" --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          done
+          python3 scripts/check_pcie_apb_arbiter.py --out hw/soc/out/pcie-local-flow/arbiter-rtl
+          python3 scripts/check_pcie_apb_arbiter.py --native --out hw/soc/out/pcie-local-flow/arbiter-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          mkdir -p hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/{lib,verilog}
+          cp hw/soc/out/pcie-local-flow/libraries/cells.lib hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+          cp hw/soc/out/pcie-local-flow/libraries/cells.v hw/soc/out/pcie-local-flow/cdc-pdk/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v
+          python3 scripts/check_pcie_apb_cdc_native.py --out hw/soc/out/pcie-local-flow/cdc-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --pdk hw/soc/out/pcie-local-flow/cdc-pdk
+          python3 -m pytest -q sw/tests/test_pcie_rx_flow.py sw/tests/test_pcie_apb_arbiter.py --basetemp=hw/soc/out/pcie-local-flow/mutations
+      - name: Four-lane fixed-block gearbox and actual corruption controls
+        run: |
+          python3 scripts/check_pcie_gen3_gearbox.py --out hw/soc/out/pcie-local-flow/gearbox-rtl
+          python3 scripts/check_pcie_gen3_gearbox.py --native --out hw/soc/out/pcie-local-flow/gearbox-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q sw/tests/test_pcie_gen3_gearbox.py --basetemp=hw/soc/out/pcie-local-flow/gearbox-mutations
+      - name: Four-lane scrambler byte controls and actual corruption controls
+        run: |
+          python3 scripts/check_pcie_gen3_scrambler.py --out hw/soc/out/pcie-local-flow/scrambler-rtl
+          python3 scripts/check_pcie_gen3_scrambler.py --native --out hw/soc/out/pcie-local-flow/scrambler-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q sw/tests/test_pcie_gen3_scrambler.py --basetemp=hw/soc/out/pcie-local-flow/scrambler-mutations
+      - name: Preserve all results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-local-flow-native
+          path: hw/soc/out/pcie-local-flow/
+          retention-days: 30
+          if-no-files-found: error
+  gen3-tx-components:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [tx_path, variable_tx, tx_path_v2, tx_path_v3, tx_path_v4, framer, receive_v2, receive_prefetch, receive_prefetch_v2, ingress, continuous_rx, continuous_rx_wide, continuous_rx_integrity_v1]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare exact native libraries and simulator
+        run: |
+          python3 -m venv hw/soc/tools/cocotb-venv
+          hw/soc/tools/cocotb-venv/bin/pip install -r hw/requirements.txt
+          echo "$PWD/hw/soc/tools/cocotb-venv/bin" >> "$GITHUB_PATH"
+          mkdir -p hw/soc/out/pcie-local-flow/libraries
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib' -o hw/soc/out/pcie-local-flow/libraries/cells.lib
+          curl --fail --location --retry 3 'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v' -o hw/soc/out/pcie-local-flow/libraries/cells.v
+          echo '968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  hw/soc/out/pcie-local-flow/libraries/cells.lib' | sha256sum --check
+          echo '28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4  hw/soc/out/pcie-local-flow/libraries/cells.v' | sha256sum --check
+      - name: Real RTL, native cell and corruption controls
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: |
+          native_checker="scripts/check_pcie_gen3_$COMPONENT.py"
+          fault_controls="sw/tests/test_pcie_gen3_$COMPONENT.py"
+          if [ "$COMPONENT" = continuous_rx_wide ]; then
+            native_checker=scripts/check_pcie_gen3_continuous_rx_wide_native_v3.py
+            fault_controls=sw/tests/test_pcie_gen3_wide_portable_controls_v3.py
+          fi
+          if [ "$COMPONENT" = continuous_rx_integrity_v1 ]; then
+            native_checker=scripts/check_pcie_gen3_continuous_rx_integrity_native_v2.py
+          fi
+          python3 "$native_checker" --out "hw/soc/out/pcie-local-flow/$COMPONENT-rtl"
+          python3 "$native_checker" --native --out "hw/soc/out/pcie-local-flow/$COMPONENT-native" --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q "$fault_controls" --basetemp="hw/soc/out/pcie-local-flow/$COMPONENT-mutations"
+      - name: Independent STP, maximum buffers and native TX/RX framing
+        if: matrix.component == 'framer'
+        run: |
+          python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_stp --out hw/soc/out/pcie-local-flow/stp-rtl
+          python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_stp --native --out hw/soc/out/pcie-local-flow/stp-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 scripts/check_pcie_gen3_framer.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/framer-max-rtl
+          python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_packet_tx_path --out hw/soc/out/pcie-local-flow/framer-transport-rtl
+          python3 scripts/check_pcie_gen3_framer.py --top soc_pcie_gen3_packet_tx_path --native --out hw/soc/out/pcie-local-flow/framer-transport-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 scripts/check_pcie_gen3_receive.py --out hw/soc/out/pcie-local-flow/receive-rtl --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_gen3_receive.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-max-rtl --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_gen3_receive_native.py --out hw/soc/out/pcie-local-flow/receive-native --yosys "$(command -v yosys)" --iverilog-dir "$(dirname "$(command -v iverilog)")" --liberty hw/soc/out/pcie-local-flow/libraries/cells.lib --models hw/soc/out/pcie-local-flow/libraries/cells.v
+          python3 -m pytest -q sw/tests/test_pcie_gen3_receive.py --basetemp=hw/soc/out/pcie-local-flow/receive-mutations
+          python3 scripts/check_pcie_gen3_duplex.py --out hw/soc/out/pcie-local-flow/duplex-rtl
+          python3 -m pytest -q sw/tests/test_pcie_gen3_duplex.py --basetemp=hw/soc/out/pcie-local-flow/duplex-mutations
+      - name: Maximum receive v2 capacity with the frozen receive oracle
+        if: matrix.component == 'receive_v2'
+        run: python3 scripts/check_pcie_gen3_receive_v2.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-v2-max-rtl
+      - name: Maximum prefetch receive capacity with the frozen receive oracle
+        if: matrix.component == 'receive_prefetch'
+        run: python3 scripts/check_pcie_gen3_receive_prefetch.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-prefetch-max-rtl
+      - name: Maximum prefetch v2 capacity and complete public-port comparison
+        if: matrix.component == 'receive_prefetch_v2'
+        run: |
+          python3 scripts/check_pcie_gen3_receive_prefetch_v2.py --max-encoded-bytes 4118 --out hw/soc/out/pcie-local-flow/receive-prefetch-v2-max-rtl
+          python3 -m pytest -q sw/tests/test_pcie_gen3_prefetch_v2_equivalence.py --basetemp=hw/soc/out/pcie-local-flow/prefetch-v2-equivalence
+      - name: Maximum wide receive capacity and runtime method controls
+        if: matrix.component == 'continuous_rx_wide'
+        run: |
+          python3 scripts/check_pcie_gen3_continuous_rx_wide_native_v3.py --max-bytes 4118 --out hw/soc/out/pcie-local-flow/wide-rx-max-rtl
+          python3 -m pytest -q sw/tests/test_pcie_gen3_wide_native_runtime_v3.py --basetemp=hw/soc/out/pcie-local-flow/wide-rx-runtime
+      - name: Maximum integrity capacity and independent polynomial controls
+        if: matrix.component == 'continuous_rx_integrity_v1'
+        run: |
+          python3 scripts/check_pcie_gen3_continuous_rx_integrity_v1.py --max-bytes 4118 --out hw/soc/out/pcie-local-flow/integrity-rx-max-rtl
+          python3 -m pytest -q sw/tests/test_pcie_crc_parallel_v1.py --basetemp=hw/soc/out/pcie-local-flow/integrity-polynomial
+      - name: Preserve complete native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-gen3-${{ matrix.component }}
+          path: hw/soc/out/pcie-local-flow/
+          retention-days: 30
+          if-no-files-found: error
+  cpu-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate pinned processor and interface sources
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt -r sw/requirements.txt
+          echo "$PWD/hw/.venv/bin" >> "$GITHUB_PATH"
+          make soc-rtl-prepare PYTHON="$PWD/hw/.venv/bin/python" INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Real CPU and PCIe packet traffic with actual decode faults
+        run: |
+          python3 scripts/check_pcie_soc.py --out hw/soc/out/pcie-cpu-integration/positive --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 -m pytest -q sw/tests/test_pcie_soc.py --basetemp=hw/soc/out/pcie-cpu-integration/mutations
+      - name: Concurrent CPU, Ethernet and independently clocked PCIe
+        run: |
+          python3 scripts/check_pcie_ethernet_soc.py --out hw/soc/out/pcie-cpu-integration/ethernet-same-clock --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 scripts/check_pcie_ethernet_soc.py --async-pcie --out hw/soc/out/pcie-cpu-integration/ethernet-async-pcie --iverilog-dir "$(dirname "$(command -v iverilog)")"
+          python3 -m pytest -q sw/tests/test_pcie_ethernet_soc.py sw/tests/test_pcie_apb_cdc.py sw/tests/test_pcie_apb_cdc_constraints.py sw/tests/test_pcie_soc_constraints.py sw/tests/test_pcie_credit_equivalence.py sw/tests/test_pcie_chip_timing_equivalence.py sw/tests/test_soc_sram_mbist.py --basetemp=hw/soc/out/pcie-cpu-integration/joint-mutations
+      - name: Preserve full integration logs and source pins
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-cpu-integration
+          path: hw/soc/out/pcie-cpu-integration/
+          retention-days: 30
+          if-no-files-found: error

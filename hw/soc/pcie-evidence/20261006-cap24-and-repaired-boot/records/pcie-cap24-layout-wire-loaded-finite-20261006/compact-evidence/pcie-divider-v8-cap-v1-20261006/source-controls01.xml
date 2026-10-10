@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="61" time="2.733" timestamp="2026-10-06T06:06:39.706580+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_all73_devices_match_independent_actual_analog_graph" time="0.131" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_compact_planner_preserves_graph_and_orders_with_separated_tracks" time="0.005"><failure message="assert ((556.0 - 9) - (520.0 + 24.6)) &gt;= 2.4">def test_compact_planner_preserves_graph_and_orders_with_separated_tracks():
+        import make_pcie_clock_div4_v7_power_v2 as old
+        rows = m.devices(ROOT)
+        assert len(rows) == len(old.devices(ROOT)) == 73
+        plan, starts, nets = m.placement_plan(rows)
+        original, _, _ = old.placement_plan(rows)
+        assert set(plan) == set(original)
+        assert Counter(p[0] for p in plan.values()) == {0: 30, 1: 17, 2: 26}
+        assert len({(p[1], p[2]) for p in plan.values()}) == 73
+        assert max(p[1] for p in plan.values()) == 856
+        assert starts == {0: 0.0, 1: 176.0, 2: 328.0}
+        for rid in range(3):
+            names = [n for n in plan if plan[n][0] == rid]
+            assert sorted(names,key=lambda n:plan[n][1]) == sorted(names,key=lambda n:original[n][1])
+            tracks = [m.bus_offset(nets[rid],n) for n in nets[rid]]
+            assert tracks[0] == 72
+            for i in range(1,len(tracks)):
+                wide = bool(set(nets[rid][i-1:i+1]) &amp; {"DIV_AVDD", "AVSS"})
+                assert tracks[i]-tracks[i-1] == (8 if wide else 4)
+            if rid &lt; 2:
+                assert starts[rid+1] == starts[rid]+tracks[-1]+24
+        assert nets[0][5:7] == ["DIV__XFIRST__XCORE__XS__SE", "DIV__XFIRST__XCORE__XS__TE"]
+        assert nets[1][3] == "DIV__LP"
+        assert nets[2][5:7] == ["DIV__XSECOND__XS__TE", "DIV__XSECOND__XM__TE"]
+        assert [rid for rid in nets if "CLKP" in nets[rid]] == [0]
+        assert [rid for rid in nets if "DIV__S1P" in nets[rid]] == [0, 1]
+        # Conservative intrinsic + left escape envelopes, independent of the
+        # generated GDS. Actual DRC will verify native polygons and all routes.
+        by = {r["name"]:r for r in rows}
+        for rid in range(3):
+            ordered = sorted((n for n in plan if plan[n][0]==rid), key=lambda n:plan[n][1])
+            for before,after in zip(ordered,ordered[1:]):
+                a = by[before]
+                right = 8.9 if a["kind"]=="hbt" else a["width_um"]+0.6
+&gt;               assert plan[after][1]-9-(plan[before][1]+right) &gt;= (2.4 if before in {"DIV__XCP", "DIV__XCN"} else 5)
+E               assert ((556.0 - 9) - (520.0 + 24.6)) &gt;= 2.4
+
+sw/tests/test_pcie_clock_div4_v8_cap_v1_layout.py:103: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_placement_rejects_missing_extra_or_unknown_actual_cell[omit]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_placement_rejects_missing_extra_or_unknown_actual_cell[duplicate]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_placement_rejects_missing_extra_or_unknown_actual_cell[unknown]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_any_source_byte_mutation_is_rejected[hw/soc/analog/pcie/rx_sampler_hbt_v2.spice]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_any_source_byte_mutation_is_rejected[hw/soc/analog/pcie/clock_div2_hbt.spice]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_any_source_byte_mutation_is_rejected[hw/soc/analog/pcie/clock_div2_conditioned_hbt_v3.spice]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_any_source_byte_mutation_is_rejected[hw/soc/analog/pcie/clock_div4_hbt_v8.spice]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[duplicate]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[unclosed]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[outside]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[ideal]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[nx]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[selfheat]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[foreign_mos]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[recursion]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_source_parser_rejects_unsupported_topology_or_geometry[arity]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_real_body_contacts_and_seven_ports_contain_no_oscillator_leftovers" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[limiter_load]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[feedback]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[limiter_nx]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[feedforward_mim]" time="0.002"><failure message="ValueError: Fault must bind exactly once: feedforward_mim">fault = 'feedforward_mim'
+
+    @pytest.mark.parametrize("fault", c.REFERENCE_FAULTS)
+    def test_each_real_reference_fault_binds_once(fault):
+        text = m.physical_reference(ROOT)
+&gt;       changed = c.fault_reference(text, fault)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_clock_div4_v8_cap_v1_layout.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+text = '* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n* SPDX-License-Identifier: CERN-OHL-W-2.0\n.subckt nssoc_clock_di...A=4p P=8u\nRTAP16 SUB BULK ptap1 A=4p P=8u\nRTAP17 SUB BULK ptap1 A=4p P=8u\n.ends nssoc_clock_div4_v8_cap_v1_layout\n'
+fault = 'feedforward_mim'
+
+    def fault_reference(text, fault):
+        changes = {
+            "limiter_load": (
+                "RDIV__XLRP DIV_AVDD DIV__LP BULK rppd w=8u l=4.4u",
+                "RDIV__XLRP DIV_AVDD DIV__LP BULK rppd w=8u l=4u",
+            ),
+            "feedback": (
+                "QDIV__XSECOND__XM__XDP DIV__XSECOND__MN QN",
+                "QDIV__XSECOND__XM__XDP DIV__XSECOND__MN QP",
+            ),
+            "limiter_nx": (
+                "QDIV__XLP DIV__LN DIV__BIP DIV__LT BULK npn13G2 Nx=2",
+                "QDIV__XLP DIV__LN DIV__BIP DIV__LT BULK npn13G2 Nx=1",
+            ),
+            "feedforward_mim": (
+                "CDIV__XCP DIV__LP DIV__CKP cap_cmim w=20u",
+                "CDIV__XCP DIV__LP DIV__CKP cap_cmim w=18u",
+            ),
+            "seed_asymmetry": (
+                "CDIV__XSECOND__XSEEDP DIV__XSECOND__MP AVSS cap_cmim w=2.2u",
+                "CDIV__XSECOND__XSEEDP DIV__XSECOND__MP AVSS cap_cmim w=2u",
+            ),
+            "missing_tap": ("RTAP0 SUB BULK ptap1 A=4p P=8u\n", ""),
+            "supply_swap": (
+                "RDIV__XSECOND__XBIAS DIV_AVDD",
+                "RDIV__XSECOND__XBIAS AVSS",
+            ),
+            "conditioner_pullup": (
+                "RDIV__XFIRST__XUP DIV_AVDD DIV__XFIRST__CKP BULK rppd w=1u l=4u",
+                "RDIV__XFIRST__XUP DIV_AVDD DIV__XFIRST__CKP BULK rppd w=1u l=6.4u",
+            ),
+        }
+        if fault not in changes:
+            raise ValueError("Unknown exact reference fault")
+        a, b = changes[fault]
+        if text.count(a) != 1:
+&gt;           raise ValueError("Fault must bind exactly once: " + fault)
+E           ValueError: Fault must bind exactly once: feedforward_mim
+
+hw/soc/flow/check_pcie_clock_div4_v8_cap_v1.py:225: ValueError</failure></testcase><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[seed_asymmetry]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[missing_tap]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[supply_swap]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_each_real_reference_fault_binds_once[conditioner_pullup]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[A=72p-A=68p]" time="0.011" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[P=144u-P=136u]" time="0.010" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[ptap1-ntap1]" time="0.010" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[Nx=2-Nx=1]" time="0.007" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[we=70n-we=71n]" time="0.006" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_strict_extracted_body_or_device_changes_are_rejected[m=1-m=4]" time="0.007" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_actual_physical_mutations_use_new_clock_and_interstage_geometry" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_status_alone_and_unrelated_negative_never_pass" time="0.000" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_physical_resource_defaults_remain_strict" time="0.000" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_owned_execute_has_no_healthy_deadline_and_reaps_actual_process" time="0.540" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_real_explicit_cancellation_closes_owned_group" time="0.504" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_real_resource_failure_reaps_owned_native" time="0.101" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_actual_completion_boundary_sigterm_is_never_lost[complete]" time="0.286" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_actual_completion_boundary_sigterm_is_never_lost[teardown]" time="0.290" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_actual_fast_exiting_file_producer_checks_terminal_resource_limit" time="0.295" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_layout" name="test_all18_finite_tap_branches_are_clear_of_every_actual_device_escape_lane" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_saved_native_74device_result_passes_exact_fields_old_failure_retained" time="0.003" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[ps=0u-ps=1u]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[ps=0u - ]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[m=1-m=4]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[b=0-b=1]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[w=1u l=4u-w=2u l=4u]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[w=1u l=4u-w=1u l=6.4u]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[A=576p-A=399p]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[P=96u-P=79u]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[A=576p-A=0p]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[P=96u-P=80n]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[w=24u l=24u A=576p P=96u-w=10u l=20u A=200p P=60u]" time="0.003" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[A=576p-A=576p A=576p]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[A=576p-A=NaNp]" time="0.002" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[ptap1 A=72p-ptap1 A=68p]" time="0.003" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[P=144u-P=136u]" time="0.003" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[Nx=2-Nx=1]" time="0.001" /><testcase classname="sw.tests.test_pcie_clock_div4_v8_cap_v1_native" name="test_real_saved_netlist_tampering_rejected[we=70n-we=71n]" time="0.000" /></testsuite></testsuites>

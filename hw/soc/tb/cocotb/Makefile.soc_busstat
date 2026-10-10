@@ -57,7 +57,7 @@ export COCOTB_RESULTS_FILE
 
 # This block includes nothing, but -I$(RTL) keeps the invocation identical
 # to the sibling fabric suites and to the flow scripts.
-COMPILE_ARGS += -I$(RTL)
+COMPILE_ARGS += -I$(RTL) -Psoc_busstat.APB_TIMEOUT_EN=1
 COMPILE_ARGS += $(EXTRA_COMPILE_ARGS)
 
 include $(shell cocotb-config --makefiles)/Makefile.sim

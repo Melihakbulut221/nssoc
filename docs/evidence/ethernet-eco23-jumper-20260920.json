@@ -1,0 +1,407 @@
+{
+  "date": "2026-09-20",
+  "run": "eth256-eco23-jumper-20260920",
+  "status": "ANTENNA_AND_SETUP_FAIL",
+  "scope": "Native one-factor jumper-only antenna repair using the unchanged ECO22 pre-route seed and original eight-iteration limit. This is an old-RTL candidate without external IRQ or immutable logic ROM. Completion of the selected route/extraction stages is not a signoff verdict.",
+  "supervisor": {
+    "command": [
+      "bash",
+      "hw/soc/flow/pnr_soc_top.sh",
+      "eth256-eco23-jumper-20260920",
+      "-F",
+      "OpenROAD.DetailedRouting",
+      "-T",
+      "OpenROAD.STAPostPNR",
+      "-i",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/eth256-eco23-jumper-20260920.json"
+    ],
+    "environment": {
+      "SOC_INTERFACE_FLOW": "1",
+      "PNR_CONFIG": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config-fpeth256-eco23-jumper-20260920.json",
+      "SYN_NETLIST": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco22-antenna-headroom/soc_top.nl.v",
+      "PNR_STATE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/eth256-eco23-jumper-20260920-seed.json"
+    },
+    "initial_free_bytes": 4170862592,
+    "minimum_free_bytes": 906645504,
+    "disk_stop_threshold_bytes": 805306368,
+    "start_monotonic": 2330.646732321,
+    "status": "COMPLETED",
+    "pid": 26157,
+    "returncode": 0,
+    "elapsed_s": 5415.290494525
+  },
+  "inputs": {
+    "scope": "One-factor antenna-repair experiment, no threshold changes. Same ECO22 seed, no old SPEF/timing. Native routing through extracted STA only; no GDS/LVS/DRC result inherited.",
+    "parent_seed_sha256": "556776d93fcad9f2c035865ee302104093aeb26ae0448d081c0399089155cd06",
+    "seed_sha256": "556776d93fcad9f2c035865ee302104093aeb26ae0448d081c0399089155cd06",
+    "config_sha256": "2b4b35da8021966922e878fa69a7460cdff23e78d949f22477ca5b4555b8593a",
+    "driver_sha256": "70f150d2595e8bd211c54721086ba0f8afeb79553081f2215a48180116a0acfd"
+  },
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "design__max_slew_violation__count": 8,
+      "design__max_fanout_violation__count": 0,
+      "design__max_cap_violation__count": 11,
+      "clock__skew__worst_hold": -0.624490143939309,
+      "clock__skew__worst_setup": 0.9865437634940674,
+      "timing__hold__ws": 0.042942872695496126,
+      "timing__setup__ws": 3.3912069667829035,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.042943,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 4.628819,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_typ_1p20V_25C": {
+      "design__max_slew_violation__count": 1,
+      "design__max_fanout_violation__count": 0,
+      "design__max_cap_violation__count": 9,
+      "clock__skew__worst_hold": -0.745475591246513,
+      "clock__skew__worst_setup": 1.363742934956805,
+      "timing__hold__ws": 0.11851520100754963,
+      "timing__setup__ws": 2.4916209800627254,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.118515,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 3.050907,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "design__max_slew_violation__count": 25,
+      "design__max_fanout_violation__count": 0,
+      "design__max_cap_violation__count": 9,
+      "clock__skew__worst_hold": 1.1342509474921116,
+      "clock__skew__worst_setup": 2.0349962291273904,
+      "timing__hold__ws": 0.21188940091142652,
+      "timing__setup__ws": -0.00229150038763438,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": -0.00229150038763438,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": -0.00229150038763438,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.211889,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 1,
+      "timing__setup_r2r__ws": -0.002292,
+      "timing__setup_r2r_vio__count": 1,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    }
+  },
+  "route": {
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 245,
+    "antenna__violating__pins": 270,
+    "route__antenna_violation__count": 245,
+    "antenna_diodes_count": 0,
+    "design__critical_disconnected_pin__count": 0,
+    "design__instance__count__class:macro": 24,
+    "design__instance__count__class:sequential_cell": 9352
+  },
+  "limits": [
+    "Antenna checker reports 245 violating nets after the native iteration limit.",
+    "Slow setup remains negative; no rounding to PASS.",
+    "No independent streamed GDS, DRC, XOR or LVS for this candidate.",
+    "Nominal RC extraction with three Liberty corners is not complete RC corner signoff."
+  ],
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/record_eco23.py": {
+      "bytes": 2478,
+      "sha256": "790447fdb59727cae39bc06878d9bfe9bd6b8ad91f12fb2e772674d585a5fcaf"
+    },
+    "hw/soc/out/external-review-20260919/run_eco23_jumper.py": {
+      "bytes": 2282,
+      "sha256": "70f150d2595e8bd211c54721086ba0f8afeb79553081f2215a48180116a0acfd"
+    },
+    "hw/soc/out/external-review-20260919/eco23-jumper-inputs.json": {
+      "bytes": 541,
+      "sha256": "5fc9c4ca06a8681636d5f283c0a30c98cbae1793548fd259b52430e1e8a6fda2"
+    },
+    "hw/soc/out/external-review-20260919/eth256-eco23-jumper-20260920-supervisor.json": {
+      "bytes": 962,
+      "sha256": "f8b529caff011156941cd1ea4fe00c445702ed5ce6153133aca4a3d237dc6dae"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/resolved.json": {
+      "bytes": 40642,
+      "sha256": "4d6903fb71c4060dbf6631861f9e614b8c18f85eb9c59d1e77d7a8385642d82b"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/flow.log": {
+      "bytes": 9862,
+      "sha256": "125cf65afa0f1df815b075587faa69b6935b9291a3e86828c9322b31fecb3481"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/final/metrics.json": {
+      "bytes": 8239,
+      "sha256": "5d8014e78a01065b9348fce7762cdbf73fe59f7a6f462df8bccaf2bdfe21dde1"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/03-openroad-checkantennas-1/reports/antenna.rpt": {
+      "bytes": 1529437,
+      "sha256": "182693820dfc81eceaefad3227b6e45f5c3b093e5080dd7bb2f06b1e3ac0a4d0"
+    },
+    "hw/soc/pnr/state/eth256-eco23-jumper-20260920.json": {
+      "bytes": 943,
+      "sha256": "556776d93fcad9f2c035865ee302104093aeb26ae0448d081c0399089155cd06"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/04-checker-trdrc/state_out.json": {
+      "bytes": 4356,
+      "sha256": "a8afee9268876c34844bcb138bb9f3d104b1712de117fde5585a36b5799bed41"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/09-openroad-fillinsertion/state_out.json": {
+      "bytes": 4658,
+      "sha256": "eead8c9064a8323091546a37d11f09d34b5497e4e4606c7cb608e1a4e476c7c5"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/06-checker-disconnectedpins/state_out.json": {
+      "bytes": 4508,
+      "sha256": "b873caa8bed24a7b8f2a442603e3c61910aced2a3347d974184ede8587466813"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/10-odb-cellfrequencytables/state_out.json": {
+      "bytes": 4660,
+      "sha256": "6021a249294f9ec8be4ff301014fd7e150fc883173d062aec74ab483d90e76e8"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/02-odb-removeroutingobstructions/state_out.json": {
+      "bytes": 4309,
+      "sha256": "248d167e0e81a01260d6d8c483a3862b2701e1c7996a85f52b678a7616ed89e9"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/07-odb-reportwirelength/state_out.json": {
+      "bytes": 4551,
+      "sha256": "940eefc541de64e8175671434e082754a2b804e382fc2425843c328fc4763c85"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/05-odb-reportdisconnectedpins/state_out.json": {
+      "bytes": 4508,
+      "sha256": "b873caa8bed24a7b8f2a442603e3c61910aced2a3347d974184ede8587466813"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/state_out.json": {
+      "bytes": 11215,
+      "sha256": "48e0e980354317511a17d5037c8bc60af1a78cda6fa172b8ec33556d6ef5ca4f"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/03-openroad-checkantennas-1/state_out.json": {
+      "bytes": 4356,
+      "sha256": "a8afee9268876c34844bcb138bb9f3d104b1712de117fde5585a36b5799bed41"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/11-openroad-rcx/state_out.json": {
+      "bytes": 4823,
+      "sha256": "bf7261731845882b0b8f4640de18fde60d54ec427e0d37ab60c2a25aefee26a8"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/01-openroad-detailedrouting/state_out.json": {
+      "bytes": 4309,
+      "sha256": "248d167e0e81a01260d6d8c483a3862b2701e1c7996a85f52b678a7616ed89e9"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/08-checker-wirelength/state_out.json": {
+      "bytes": 4551,
+      "sha256": "940eefc541de64e8175671434e082754a2b804e382fc2425843c328fc4763c85"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/summary.rpt": {
+      "bytes": 2770,
+      "sha256": "9f1f2218c714a372fb52931586cf413cc1ae4aef5979473556958d483ef6b1aa"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/violator_list.rpt": {
+      "bytes": 168,
+      "sha256": "ad509148993d884e4fbf3729f30640d97ff8d99713fef0ad5813096f1f83b9d7"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/skew.min.rpt": {
+      "bytes": 858,
+      "sha256": "1c015e9632b05f0fe4f86df518c6f2dcead4b4d805bd47e2d623137ec33c63f5"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/clock.rpt": {
+      "bytes": 5162,
+      "sha256": "9075b527a28b11f05be5b79fce00609c8ecd8debef1fdb74ce9378d028786610"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/max.rpt": {
+      "bytes": 38139764,
+      "sha256": "ba3a4bb440044fb62e8b7723f58445a51d224cba1e7ae7d0d8df6176e077504f"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/power.rpt": {
+      "bytes": 1095,
+      "sha256": "4987edc46b4c569e59f72fd48642aa8f24edb12f5e4746615b81102788017b20"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/tns.max.rpt": {
+      "bytes": 206,
+      "sha256": "32a2dba6973bb9efb8782220996c2a6fe9d1804ae57aeff4854474c4e0acc032"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/ws.max.rpt": {
+      "bytes": 212,
+      "sha256": "b3bf45d226c58bde1ec87f33577d3bee9cf438d9c21198d8915b67021b737bb2"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/tns.min.rpt": {
+      "bytes": 205,
+      "sha256": "5589e786bd8336380434f23b9d1bd04a0db8275692c7416278782fa5b4d9fe51"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/skew.max.rpt": {
+      "bytes": 847,
+      "sha256": "729ff66bfd48824039c62c1ca8881259730eae0a78a28e3c8c468b6fd96c2149"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/wns.min.rpt": {
+      "bytes": 203,
+      "sha256": "22f976f87e5735f4c3f6eed9daf443e69514a656c82ba88cfdda80894b0e3d3f"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/min.rpt": {
+      "bytes": 24566964,
+      "sha256": "e124c911cbd692616f3270cee5426b9e6d6203a4344b5853dac64ba9b57e35cd"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/wns.max.rpt": {
+      "bytes": 206,
+      "sha256": "91904e5490ecf3b353ddc3d11aef8f788438717768fd06c68c20f6e439899090"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/ws.min.rpt": {
+      "bytes": 212,
+      "sha256": "9ff24d47c1a217c6cd59a2512aafb725979ada1bca15bed49c9157057b544db4"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/checks.rpt": {
+      "bytes": 74807,
+      "sha256": "8cdc0170a2047c42677810f3d5dac5d18763085a1f46ba31c4a8d4af95e0d423"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/violator_list.rpt": {
+      "bytes": 168,
+      "sha256": "ad509148993d884e4fbf3729f30640d97ff8d99713fef0ad5813096f1f83b9d7"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/skew.min.rpt": {
+      "bytes": 860,
+      "sha256": "ec999b61334e68a6cab6d4f779ac98c56c91a67fbb98e7958bd7c4f493053833"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/clock.rpt": {
+      "bytes": 5162,
+      "sha256": "98c8157bcd75b1cd8b5fda4c2813076e6ae8d6a80d6846831c5db2645efea13b"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/max.rpt": {
+      "bytes": 39511994,
+      "sha256": "09771a8ba02d96bb05ba995891a9834e604d14730577c8806effac7030969c96"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/power.rpt": {
+      "bytes": 1097,
+      "sha256": "6a84f133ff4a60c75aa9713764fb49538b169f9dd8a8d920d49b094f6f813960"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/tns.max.rpt": {
+      "bytes": 208,
+      "sha256": "37bdc0909494acda2c807ba42abf7b15de60738b88c250577dc3a47bf696ffe2"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/ws.max.rpt": {
+      "bytes": 214,
+      "sha256": "4e6847c4b3ec95c1a5324a0f2c0eba6dfc888174faea8d67c979490d79fc003d"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/tns.min.rpt": {
+      "bytes": 207,
+      "sha256": "e5656e1f43125ef6ff54e853735a1c06c0ba8f6dee85e92b13b9e6334096ece4"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/skew.max.rpt": {
+      "bytes": 879,
+      "sha256": "991db964f7bd4362132d38166a1728dbb4356ffe734c49d02f7424350e486f2e"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/wns.min.rpt": {
+      "bytes": 205,
+      "sha256": "3440103d68e23237bfbcd6f33796011b014f6986efd9b38891a5b2da82f78bd6"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/min.rpt": {
+      "bytes": 24482296,
+      "sha256": "0e49e67a894c5b29f700a83e904e557839a2f66ea33420c36144abac8522899c"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/wns.max.rpt": {
+      "bytes": 208,
+      "sha256": "37e951be5261239870df97551a4786abe41efeac6719ad6f99e91d0591d4df69"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/ws.min.rpt": {
+      "bytes": 215,
+      "sha256": "5a9ef0112c902a303356e41ef5b48669080a93f3a285e77f0f77e9b6ad0af15d"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/checks.rpt": {
+      "bytes": 69925,
+      "sha256": "e173d8362f8714c95e20061b00a7fee8e523ad14727498dd627ccd9c4a2425f3"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/violator_list.rpt": {
+      "bytes": 221,
+      "sha256": "ba24aab6b22be2e693e6d3833e04a6dc1f33fa85894af28958a5cb2898bd95f5"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/skew.min.rpt": {
+      "bytes": 880,
+      "sha256": "80299d2405c546254040daa6cb2ec034899fc2ff75aa88057bc8ff6323c54c00"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/clock.rpt": {
+      "bytes": 5131,
+      "sha256": "f1ba9059e6298aff729082a94845cac228d0465342eedf11b2d8488b58aec993"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt": {
+      "bytes": 36383028,
+      "sha256": "24f87413ac493ebc7db7ff7a5008510e765638d2fee18a6479220f3afc1d4f63"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/power.rpt": {
+      "bytes": 1097,
+      "sha256": "7116094681a430e3f6d5e15ebe5e90bdd64d8e706d5825ec06003fea2630ab90"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/tns.max.rpt": {
+      "bytes": 225,
+      "sha256": "924da12a8110afd168349cefdc42a3d996c05d7902aa2910381fd9d7f3efb872"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/ws.max.rpt": {
+      "bytes": 216,
+      "sha256": "66fc7558ade6cbf2dd7e1fe1a968328e615df9256a999a0b04a0f0d00ddf3e74"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/tns.min.rpt": {
+      "bytes": 207,
+      "sha256": "69f1377a158760b68030e7daa27495bdfd21cac95ddb63942d3bb7baa085118d"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/skew.max.rpt": {
+      "bytes": 849,
+      "sha256": "186ac7b9f9fbef1f9cab29abf0d68cb2f80dccd2e6bad593f228b0af4569caad"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/wns.min.rpt": {
+      "bytes": 205,
+      "sha256": "7fc691e74801f4e2e8d44f71368230d31da5c20de6fd4218dfe92b84f875a993"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/min.rpt": {
+      "bytes": 24567015,
+      "sha256": "77da2777ba26bbea5db9eccbf787413d3bfed95f609ab366bc45b19902e91663"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/wns.max.rpt": {
+      "bytes": 225,
+      "sha256": "8cd97e9b136c558ec4bb914709b91b1b6abaee3e79a4ba97292cdf76c165620b"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/ws.min.rpt": {
+      "bytes": 214,
+      "sha256": "58d8996eb67de318d906c9f8612f4d90b14786a9d30d569cb7c9a2239ac5b13d"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/checks.rpt": {
+      "bytes": 80072,
+      "sha256": "a88bfd6e5cd5d189ba279415d2c07a6fedcfaad402724ed74ef07d60c6974a4d"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/10-odb-cellfrequencytables/soc_top.odb": {
+      "bytes": 188105581,
+      "sha256": "8427eb03eb366f014bb147b2c070ea784940b89a550b1e1c9566c105b32d80b4"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/10-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 116643628,
+      "sha256": "6049e00ed1548334222f1d545583ef8a81d977780f02765b79d298cdeb3e9ae5"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/09-openroad-fillinsertion/soc_top.nl.v": {
+      "bytes": 19979401,
+      "sha256": "2436fd026b39fd8a49bad48a3682437dd6fd420f3ce3015f83d9725ab5596fea"
+    },
+    "hw/soc/pnr/runs/eth256-eco23-jumper-20260920/09-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29617531,
+      "sha256": "77dc022373da6e7dfa67f8cb19249de424ef8af2b8f04d09f08c37b159d88608"
+    }
+  }
+}

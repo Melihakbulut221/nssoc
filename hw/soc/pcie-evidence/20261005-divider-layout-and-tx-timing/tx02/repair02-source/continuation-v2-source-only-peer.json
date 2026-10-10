@@ -1,0 +1,65 @@
+{
+  "status": "PASS_SOURCE_ONLY_TX02_CONTINUATION_V2_NESTED_LIFECYCLE",
+  "utc": "2026-10-05T13:38:56.778968+00:00",
+  "reviewer": "rx_route_resume",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/continue_tx02.py": {
+      "bytes": 3191,
+      "sha256": "9ea1989209878120c5a3cc98e950880eebc023c45fc482f03271753f0539b9e2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/continue_tx02_v2.py": {
+      "bytes": 3305,
+      "sha256": "626ab62499684fe873dbe43aa08967c02dd97f464a627ce1ec438bfaf3c3c309"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02.py": {
+      "bytes": 5228,
+      "sha256": "ff95f29a60cbc548dbc1013766809e1d4ced8a9e06265301c14904f74a3dc9c9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py": {
+      "bytes": 19742,
+      "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-source/rc-source-only-peer.json": {
+      "bytes": 2591,
+      "sha256": "7cf54dc60f171ba1cf70884f47a10314a4252ab91db9d01966740017cb11bef6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/tx02-continuation-01/owned-processes.json": {
+      "bytes": 420,
+      "sha256": "7aad6db32b4b849e7be5f99b5bf60628ffbb1b9cbab34338da2fd94e0c9ba5ca"
+    }
+  },
+  "checks": {
+    "only_new_output_and_explicit_outer15s_grace_delta": true,
+    "old_waiter_cancelled_with_zero_owned_children_and_groups": true,
+    "existing_route_parent_PID_start_ticks_checked": true,
+    "existing_native_parent_link_CPU4_observed": true,
+    "terminal_success_status_and_zero_exit_before_RC_launch": true,
+    "frozen_RC_method_SHA_rechecked_immediately_before_launch": true,
+    "RC_producer_rehashes_all_DRT_inputs_outputs_zeroDRC_and_exactnetlist": true,
+    "outer15s_allows_inner5s_RC_group_cleanup": true,
+    "failure_only_owned_process_group_cleanup_no_healthy_elapsed_timeout": true,
+    "watched_route_not_owned_or_signalled": true
+  },
+  "live_observation": {
+    "watched_controller": {
+      "pid": 13964,
+      "state": "S",
+      "process_group": 13963,
+      "start_ticks": "29372"
+    },
+    "watched_native": {
+      "pid": 13967,
+      "start_ticks": "29415",
+      "parent_pid": 13964,
+      "cpu_affinity": [
+        4
+      ]
+    },
+    "new_waiter_status": "WAITING_EXISTING_TX02_ROUTE",
+    "new_waiter_owned_children": 0,
+    "new_waiter_grace_seconds": 15
+  },
+  "findings": [],
+  "new_native_or_control_process_executed_by_peer": false,
+  "scope": "Bounded source-only review plus live process identity observation. Native start identity observed here; watcher itself pins route parent start identity and never signals watched PIDs. Actual RC is still conditional on original route completion; no timing/signoff claim."
+}

@@ -1,0 +1,99 @@
+{
+  "status": "CLEAN_BOUNDED_INDEPENDENT_DIV4_V6_NATIVE_GEOMETRY_TOPOLOGY_REVIEW",
+  "sources": {
+    "hw/soc/flow/make_pcie_clock_div4_v6.py": {
+      "bytes": 28729,
+      "sha256": "c6ee777f3400325faba54fe6094fcdca137cd56bc33d32d8653d86355a1d2a84"
+    },
+    "hw/soc/flow/check_pcie_clock_div4_v6.py": {
+      "bytes": 22503,
+      "sha256": "19879877f2e2a95ad04b90f097190c357a158d12e7770f80a004fcb7fe5bb718"
+    },
+    "sw/tests/test_pcie_clock_div4_v6_layout.py": {
+      "bytes": 7321,
+      "sha256": "11e94552d62178d47dce6ee16c81df0c1ed9fa42dcc49c22239870775c603029"
+    }
+  },
+  "layout_result": {
+    "bytes": 342966,
+    "sha256": "aad368b1387407789dc31f970ef0fdbc4703f092f607fd49ab22571e0218a95d"
+  },
+  "native_result": {
+    "bytes": 119771,
+    "sha256": "b21a65b2f9b976134958a880e92884204f1b895aa530fcb80248efbc783261f1"
+  },
+  "independent_literal_primitive_count": 119,
+  "all_primitive_parameters_and_nets_match": true,
+  "analog_HBT_CBE_Nx_exact": true,
+  "analog_resistor_identities_exact": true,
+  "unchanged_frozen_v5_analog_and_reference": true,
+  "separate_VCO_DIV_rails": true,
+  "finite_substrate_and_nwell_contacts": true,
+  "native_input_count": 210,
+  "native_output_count": 141,
+  "saved_native_deep_flat_lvs": true,
+  "comparison_devices": 109,
+  "expanded_HBTs": 64,
+  "saved_main_DRC_rule_categories": 560,
+  "reference_faults": 8,
+  "physical_faults": 6,
+  "additional_offgrid_and_lef_negatives": 3,
+  "geometry_audit": {
+    "bytes": 22677,
+    "sha256": "0e22c42f65a0aedaf940d5d87a3dd2f0f4b244b3e6b6aae86bd926663050b7f5"
+  },
+  "peripheral_trunk_faults": {
+    "row_trunk_open": {
+      "only_changed_layer": [
+        50,
+        0
+      ],
+      "exact_intended_geometric_difference": true,
+      "changed_area_um2": 0.24,
+      "gds_sha256": "d0b75c5363e2eddcd98f2db8c31ea4c62f305c636b0d146b12955f2ef4645e22"
+    },
+    "row_trunk_short": {
+      "only_changed_layer": [
+        50,
+        0
+      ],
+      "exact_intended_geometric_difference": true,
+      "changed_area_um2": 1.68,
+      "gds_sha256": "eafb0112e59bf80a4a986ac84946670ba8a8d04414fe4d935befdb24bf061caf"
+    }
+  },
+  "bbox_um": [
+    0,
+    0,
+    1520.0,
+    1317.03
+  ],
+  "blockers": [],
+  "reviewer_history": {
+    "first_attempt_source": {
+      "bytes": 9386,
+      "sha256": "6a603ac1a79bb90939b3496eab009e9578428fcde943695e06ddd32dfd10d5ac"
+    },
+    "first_attempt_log": {
+      "bytes": 356,
+      "sha256": "3e1e5a77aa6cc06ab6bd51293bee06033c681482b114ea424b03aa161ad803b8"
+    },
+    "cause": "Reviewer expected109 devices for short as well as open; actual native short correctly merges two m4 sinks into one m8,108 comparisonrecords. Raw failure retained; production method unchanged."
+  },
+  "review_scope": [
+    "Independent recursive parse of all119 native primitives and every formal/actual net/geometry; exact original v5 circuit/reference comparison",
+    "Rehashed all210 native inputs and141 complete native outputs; reparsed bothpositive and14LVSnegatives plusDRC/LEF results",
+    "Actually reran150 nativePCell all-layer zero-XOR readback,9 conductor/pin/label checks and exact7-layerLEF obstruction union",
+    "Independently measured actual cross-row clock-trunk open/short GDS differences, only Metal4 changed and exact intended geometric regions; open has109 comparisondevices, short108 after exact two Nx2 m4 sink groups merge to m8; expanded64HBT census remains unchanged"
+  ],
+  "limitations": [
+    "No native DRC/LVS or functional simulation rerun by this reviewer",
+    "Reviewer authored earlier analog divider source, not newphysical v6 generator/checker",
+    "1520x1317.03um route footprint remains unqualified for extracted clock/load/performance/current",
+    "No PLL/CDR/mainchip/fullPHY/PEX/manufacturing acceptance"
+  ],
+  "review_script": {
+    "bytes": 10404,
+    "sha256": "93c20bf0566be82349279cf9f6c1b7b91ba85b8938974a9eed0d091e72fa4275"
+  }
+}

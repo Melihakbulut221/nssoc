@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/launch_three02.py", line 79, in <module>
+    if sys.argv[1:]==['--controller']:raise SystemExit(controller())
+                                                       ^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/launch_three02.py", line 50, in controller
+    native=boundary_run(out,value)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/launch_three02.py", line 37, in boundary_run
+    return m.run(out,value,'')
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/characterize_clamped570_02.py", line 357, in run
+    record.update(run_native(out, rows, c))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/characterize_clamped570_02.py", line 265, in run_native
+    result = future.result()
+             ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/characterize_clamped570_02.py", line 257, in consume
+    return capture(reader, out, rows, c)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-tuning-20261006/characterize_clamped570_02.py", line 396, in capture
+    header,meta=life.tiny.parse_header(HeaderPrefix(),expected)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_pcie_clock_stream_capture_v1.py", line 32, in parse_header
+    require(
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py", line 31, in require
+    raise ValueError(message)
+ValueError: Bounded complete native raw header

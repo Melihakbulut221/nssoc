@@ -1,0 +1,88 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_TWO_RX14_CONSTRAINED_GRT_ALTERNATIVES",
+  "method": {
+    "bytes": 5892,
+    "sha256": "bb27d23772e0eda028b8b2b7581dc73ad7a79915a3f365aad527b31c5ab8308d"
+  },
+  "selection": {
+    "bytes": 11850,
+    "sha256": "1d6d02521f8d3773510b02060283b5faae37a95c3e64dde672caae56ec54ef8e"
+  },
+  "alternatives": {
+    "14a": {
+      "candidate": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14a.py",
+        "bytes": 12421,
+        "sha256": "46901784c0edfa77c94d1ba290c98d960834810addd0426ce30f1f9f850eb90e"
+      },
+      "derivation": {
+        "bytes": 11733,
+        "sha256": "744b90376f6926aa3a3f3623a97c69be5a0431d6d434e0f610ccac67868f6446"
+      },
+      "output": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a"
+    },
+    "14b": {
+      "candidate": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair14b.py",
+        "bytes": 12421,
+        "sha256": "085d5a950150ff56e895d46fd96d9cdf2dfc596931dd766bb927de1e0cdee211"
+      },
+      "derivation": {
+        "bytes": 11733,
+        "sha256": "18412963e3c9cff069587e9bca12a65024da7a740f80652c1ad9f76144168841"
+      },
+      "output": "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14b"
+    }
+  },
+  "baseline": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair13.py": {
+      "bytes": 12102,
+      "sha256": "49d5abded5c93f0c30f95c1f724942e039a4777863a8fce5659815be454bbea2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-peer/review.json": {
+      "bytes": 37002,
+      "sha256": "8ea58558d70a9de902165c5d6d3470f462b137d35287d635d2376f55ebbcea30"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-peer/release.json": {
+      "bytes": 3530,
+      "sha256": "f17b1c0c5be7260a7be4eed09badc6f727fca83dd34e355f158e972317d669e7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-peer/publication-review.json": {
+      "bytes": 4518,
+      "sha256": "0d2879e719c524d371cfc316e69a4fbf6eda5209d39cb0def9eeaafef9b32081"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14-source/selected-targets.json": {
+      "bytes": 11850,
+      "sha256": "1d6d02521f8d3773510b02060283b5faae37a95c3e64dde672caae56ec54ef8e"
+    },
+    "/dev/shm/nssoc-rx-prefetch-v2-repair13-drt-01/routed.odb": {
+      "bytes": 28072177,
+      "sha256": "916d85fce520e5e1582b60dda20f3379f9305fed1d4caccd84912c93dba75c13"
+    },
+    "/dev/shm/nssoc-rx-prefetch-v2-repair13-drt-01/routed.v": {
+      "bytes": 2093617,
+      "sha256": "533ecba38bc02e0f08cf96e9aef1e71682141de26dd772bc965abe9619c6ab34"
+    },
+    "/dev/shm/nssoc-rx-prefetch-v2-repair13-drt-01/routed.sdc": {
+      "bytes": 89666,
+      "sha256": "1a897a5cd2a15590102e216904e62e86b9e22fbf96ea182628706b092520179c"
+    },
+    "/dev/shm/nssoc-rx-prefetch-v2-repair13-detailed-rc-01/routed.spef": {
+      "bytes": 29103110,
+      "sha256": "a134582935e403354915162410a0ce560210264ba7290abe1767c8246df081dc"
+    },
+    "/dev/shm/nssoc-rx-prefetch-v2-repair13-detailed-rc-01/result.json": {
+      "bytes": 4443,
+      "sha256": "19d926ff53c96145b2af9ca10ba52fb493afa65063d20bf37c4a58d73c0a1b34"
+    }
+  },
+  "limits": {
+    "cpu": 8,
+    "address_space": 2684354560,
+    "entry_free": 1073741824,
+    "shared_floor": 553648128,
+    "healthy_elapsed_watchdog": null
+  },
+  "selection_policy": "Run sequentially from immutable RX13, compare fresh three-corner GRT setup and hold with each identical before context. Select only measured functional netlist candidate; GRT is not acceptance. New exact proof/tenfaults/sixports and fresh detailed route/nominal RC remain mandatory. No 4ns/IO/clock/hold constraint relaxation.",
+  "scope": "No native run yet; source peer required. Drive strengths of a22oi/nand4/nor4 actual critical source cells cannot be further upsized in this PDK. Two real buffer alternatives explicitly compared instead of assumed gain."
+}

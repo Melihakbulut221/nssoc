@@ -1,0 +1,234 @@
+{
+  "status": "PASS_BOUNDED_READ_ONLY_STARTUP_SOURCE_AND_RETAINED_RAW_REVIEW",
+  "utc": "2026-10-04T09:03:45.012327+00:00",
+  "sources": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py",
+      "bytes": 12622,
+      "sha256": "7a11136d653663fe0094199510294d6c36f178dc9dba38f5630f47e04875953a"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_startup_kcl_v3.py",
+      "bytes": 12677,
+      "sha256": "b08632bbde832824f49bb3c913f26a2899af7c2b5b0bc890cd3ef7c79ba0b14d"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/review_pcie_zero_start_v3.py",
+      "bytes": 10002,
+      "sha256": "da8b8632b991ee68fc077a3e55b45e18d095cb2d8ad125ece0116b4c5b6ef3f9"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_zero_start_v3.py",
+      "bytes": 7415,
+      "sha256": "1f82ab481006eca91c6c4162efc07a3807a47917fa3682b0c94222218f6d21a6"
+    }
+  ],
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_pcie_zero_start_v3.py -q -p no:cacheprovider",
+    "passed": 34
+  },
+  "raw_replays": [
+    {
+      "path": "/dev/shm/nssoc-zero-v3-kcl-final47-02",
+      "review": {
+        "status": "PASS_RETAINED_RAW_REPLAY",
+        "original_status": "PASS_NATIVE_SETTLED_KCL",
+        "result_sha256": "e1d04fb3da5568074b8f90c19e03cec9923593eb8f95abd4ac4e3ff8285f22d0",
+        "independently_replayed_waves": [
+          "actual_settled_KCL_waveform"
+        ],
+        "raw_native_failures_preserved": [],
+        "unretained_measurements_not_independently_replayed": true,
+        "producer_inputs_rehashed": 21,
+        "scope": "All retained raw logs/OP/flags and complete case identity checked; only explicitly listed retained waves were remeasured. No native simulation repeated."
+      }
+    },
+    {
+      "path": "/dev/shm/nssoc-zero-v3-kcl-final42-02",
+      "review": {
+        "status": "PASS_RETAINED_RAW_REPLAY",
+        "original_status": "PASS_NATIVE_SETTLED_KCL",
+        "result_sha256": "73a7cea32cc3ab875da66377643842e5876dff1fcb45e4e99d53f0a993641932",
+        "independently_replayed_waves": [
+          "actual_settled_KCL_waveform"
+        ],
+        "raw_native_failures_preserved": [],
+        "unretained_measurements_not_independently_replayed": true,
+        "producer_inputs_rehashed": 21,
+        "scope": "All retained raw logs/OP/flags and complete case identity checked; only explicitly listed retained waves were remeasured. No native simulation repeated."
+      }
+    },
+    {
+      "path": "/dev/shm/nssoc-zero-v3-default-negative",
+      "review": {
+        "status": "PASS_RETAINED_RAW_REPLAY",
+        "original_status": "FAIL_PRESERVED",
+        "result_sha256": "3f74db9fd2e2144c12b00d6b3da78574ffb4fb1f9b208b5478c1334faed35463",
+        "independently_replayed_waves": [
+          "hbt_typ_res_typ_27_1.8",
+          "hbt_wcs_res_bcs_125_1.71"
+        ],
+        "raw_native_failures_preserved": [],
+        "unretained_measurements_not_independently_replayed": true,
+        "producer_inputs_rehashed": 20,
+        "scope": "All retained raw logs/OP/flags and complete case identity checked; only explicitly listed retained waves were remeasured. No native simulation repeated."
+      }
+    },
+    {
+      "path": "/dev/shm/nssoc-zero-v3-powered-negative",
+      "review": {
+        "status": "PASS_RETAINED_RAW_REPLAY",
+        "original_status": "FAIL_PRESERVED",
+        "result_sha256": "f366c8f099300c59acb1d4218ead60de03ef2bda7022f37b3bf699275b7cb949",
+        "independently_replayed_waves": [],
+        "raw_native_failures_preserved": [
+          "hbt_typ_res_typ_27_1.8",
+          "hbt_wcs_res_bcs_125_1.71",
+          "hbt_wcs_res_wcs_-40_1.71"
+        ],
+        "unretained_measurements_not_independently_replayed": true,
+        "producer_inputs_rehashed": 20,
+        "scope": "All retained raw logs/OP/flags and complete case identity checked; only explicitly listed retained waves were remeasured. No native simulation repeated."
+      }
+    },
+    {
+      "path": "/dev/shm/nssoc-zero-v3-ng47-controls",
+      "review": {
+        "status": "PASS_RETAINED_RAW_REPLAY",
+        "original_status": "PASS_BOUNDED_ZERO_START_PROTOCOL",
+        "result_sha256": "bc690fa12f39953c455f6410f02686d00d2d90b0e2f78882708e60fc17920751",
+        "independently_replayed_waves": [
+          "hbt_wcs_res_bcs_125_1.71",
+          "no_bias",
+          "swapped_output"
+        ],
+        "raw_native_failures_preserved": [],
+        "unretained_measurements_not_independently_replayed": true,
+        "producer_inputs_rehashed": 20,
+        "scope": "All retained raw logs/OP/flags and complete case identity checked; only explicitly listed retained waves were remeasured. No native simulation repeated."
+      }
+    }
+  ],
+  "findings": [
+    "124 actual zero-volt electrical-terminal probes contract exactly to the two original circuit sources. Their current sign is outgoing from original node into device; all external current-source directions are accounted for.",
+    "35 primitive leaves / 19 HBTs and all 29 electrical nodes are covered, with exact terminal ownership; native VBIC tail currents prove OFF is not a permanent disabled-device approximation.",
+    "KCL covers the last100 samples of a separate static 100ns source-ramp/1us transient. Native maximum time gap and initial OP zero bounds are now strict. No claim this replaces dynamic sampler validation.",
+    "Native OFF changes the initial solver flag; all independent voltage/current/clock sources begin at zero and ramp. Frozen device models, dimensions and physical functional thresholds remain unchanged; no IC/UIC or clamp added.",
+    "Reviewer raw OP bridge omission identified during review was corrected by the author. Both actual OP mutation strategies reject, including forged aggregate metadata.",
+    "Default-initialization and directly-powered OFF failures remain failures. Functional no-bias and swapped-output negative waveforms remain measured failures."
+  ],
+  "numerical_results": [
+    {
+      "path": "/dev/shm/nssoc-zero-v3-kcl-final47-02",
+      "analysis": {
+        "active_tail_minima_a": {
+          "xrx.xtail": 0.002905384316277,
+          "xsamp.xm.xt": 0.001926008259396,
+          "xsamp.xs.xt": 0.001926352671686
+        },
+        "pass_active": true,
+        "maximum_kcl_residual_a": 2.3246646628838602e-15,
+        "kcl_limit_a": 1e-09,
+        "last_kcl_a": {
+          "xsamp.xs.te": 3.642919299551295e-16,
+          "xsamp.xs.se": -2.881267273380228e-17,
+          "scp": -2.7759999377544847e-18,
+          "scn0": 0.0,
+          "xrx.tail": -9.990923019453923e-17,
+          "cm": -2.3958326913087885e-17,
+          "scp0": 2.7759999377544847e-18,
+          "qp": -4.808956584012704e-17,
+          "xsamp.mp": -8.486105461185615e-18,
+          "xsamp.xm.te": 7.112366251504909e-17,
+          "xsamp.ln": 5.861997390591792e-17,
+          "xsamp.xs.he": 6.022743068156977e-17,
+          "sp": 0.0,
+          "xsamp.xm.se": -5.001424621675632e-16,
+          "ref": -2.699663409488906e-17,
+          "ip": -1.9949319973733282e-17,
+          "scn": -9.994988777600744e-19,
+          "sr": 3.0899761915836876e-17,
+          "xsamp.xm.he": 7.860465750519907e-19,
+          "xsamp.mn": -9.167131200434403e-17,
+          "0": -6.008290121464015e-16,
+          "inn": 4.2934406030425976e-17,
+          "avdd": -1.1037178115902435e-16,
+          "op": -7.376678493843946e-17,
+          "savdd": 5.000340419503146e-16,
+          "on": 1.5663070770931696e-16,
+          "sn": 0.0,
+          "xsamp.lp": -4.604132288095475e-17,
+          "qn": 6.700160910298616e-16
+        },
+        "nodes": 29,
+        "native_terminal_probes": 124,
+        "settled_samples": 100,
+        "final_time_s": 1e-06,
+        "maximum_last_voltage_step_v": 5.7260001184999965e-09,
+        "pass_kcl": true,
+        "pass_settling": true
+      }
+    },
+    {
+      "path": "/dev/shm/nssoc-zero-v3-kcl-final42-02",
+      "analysis": {
+        "active_tail_minima_a": {
+          "xrx.xtail": 0.00290538431796,
+          "xsamp.xm.xt": 0.001926008259513,
+          "xsamp.xs.xt": 0.001926352671798
+        },
+        "pass_active": true,
+        "maximum_kcl_residual_a": 1.8863729186595756e-15,
+        "kcl_limit_a": 1e-09,
+        "last_kcl_a": {
+          "xsamp.xs.se": 5.8817967857338616e-18,
+          "sr": -2.3960868011929648e-17,
+          "xsamp.mn": -5.851422184245322e-16,
+          "scp": 2.774999876393908e-18,
+          "scn": -6.999880276109538e-18,
+          "scn0": 9.998376909389761e-18,
+          "savdd": -2.0079424234431542e-16,
+          "xsamp.xs.he": 4.403216073006755e-16,
+          "op": 1.2099467222986796e-17,
+          "qp": -4.626159916077959e-18,
+          "avdd": 4.698932215552176e-16,
+          "sn": 0.0,
+          "xrx.tail": 9.990923019453923e-17,
+          "cm": 1.1021592709672956e-17,
+          "ip": -4.0007060164715114e-17,
+          "xsamp.xm.te": -7.606762442158299e-16,
+          "xsamp.xm.se": -1.9989977555201488e-16,
+          "xsamp.ln": 3.6111238002937366e-17,
+          "xsamp.lp": -1.9022665929437077e-17,
+          "on": 1.0686026820918268e-17,
+          "xsamp.mp": -1.4671563558510143e-17,
+          "ref": 1.3986208025063007e-17,
+          "inn": 1.5937771935536915e-17,
+          "scp0": -2.7759999377544847e-18,
+          "0": -1.4543477757019127e-15,
+          "sp": 0.0,
+          "xsamp.xm.he": 6.315477654728063e-18,
+          "qn": -6.325777237455015e-16,
+          "xsamp.xs.te": -8.159705550125906e-16
+        },
+        "nodes": 29,
+        "native_terminal_probes": 124,
+        "settled_samples": 100,
+        "final_time_s": 1e-06,
+        "maximum_last_voltage_step_v": 3.81700004936647e-09,
+        "pass_kcl": true,
+        "pass_settling": true
+      }
+    }
+  ],
+  "mutation_evidence": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-startup-20261004/actual-op-output-mutations.json",
+    "bytes": 363,
+    "sha256": "94f43223917f56b9286de7f6a06c23d2472533b9e3093d7563194f728c5d998f"
+  },
+  "scope": [
+    "Read-only source review and existing raw replay; no simulator executions or source edits by reviewer.",
+    "The two complete 81-case campaigns were not independently remeasured in full by this reviewer. Only explicit raw_replays paths and retained waves listed by the replay are covered.",
+    "Zero-source OFF startup is a new bounded startup protocol. Old directly-powered solver failures are not declared repaired and a physical supply/bias sequencer has not been implemented."
+  ]
+}

@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# Real-codec, full-storage R1-R4 with asserted inductive invariants.
+# Includes both read implementations; no identity-code abstraction.
+[tasks]
+prove
+cover
+prove_synpre synpre
+cover_synpre synpre
+
+[options]
+prove: mode prove
+prove_synpre: mode prove
+prove: depth 3
+prove_synpre: depth 3
+cover: mode cover
+cover_synpre: mode cover
+cover: depth 40
+cover_synpre: depth 40
+timeout 600
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+read_verilog -formal secded_enc.v secded_dec.v ibex_regfile_secded.v
+synpre: chparam -set SYNPRE 1 ibex_register_file_ff
+prep -top ibex_register_file_ff -flatten
+opt -full
+
+[files]
+../../rtl/secded_enc.v
+../../rtl/secded_dec.v
+../rtl/ibex_regfile_secded.v
+ibex_regfile_contract_props.v
+ibex_regfile_secded_props.v regfile_scrub_complete_props.v

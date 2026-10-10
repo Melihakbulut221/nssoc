@@ -1,0 +1,199 @@
+{
+  "date": "2026-09-20",
+  "status": "Routing/antenna/connectivity PASS within scope; independent Magic pending",
+  "scope": "Interrupted original halo experiment recovered from completed drt-run-1. The original maximum eight antenna iterations and constraints were retained. Final raw routing finished after iteration6, followed by native obstruction removal, independent antenna check, connectivity checks and filler insertion. This candidate predates external IRQ and logic ROM, and has no new extracted timing or LVS acceptance.",
+  "supervisors": {
+    "halo-route-continuation-20260920": {
+      "command": [
+        "/home/hasanmelih/.local/opt/llbin/openroad",
+        "-exit",
+        "-no_splash",
+        "-metrics",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/halo-route-continuation/or_metrics_out.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/halo-route-continuation/continue.tcl"
+      ],
+      "environment": {},
+      "returncode": 0,
+      "stop_reason": null,
+      "elapsed_s": 1590.0386411509999,
+      "scope": "Continue the interrupted halo antenna repair from completed drt-run-1, at iteration2 of original maximum8. Same constraints/rules,12threads. No new Magic verdict."
+    },
+    "halo-recovered-finalize-20260920": {
+      "command": [
+        "bash",
+        "hw/soc/flow/pnr_soc_top.sh",
+        "halo-recovered-finalize-20260920",
+        "-j",
+        "4",
+        "-F",
+        "Odb.RemoveRoutingObstructions",
+        "-T",
+        "Odb.CellFrequencyTables",
+        "-i",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/halo-recovered-finalize-20260920.json"
+      ],
+      "environment": {
+        "SOC_INTERFACE_FLOW": "1",
+        "PNR_CONFIG": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config-fpeth256-halo-20260920.json",
+        "SYN_NETLIST": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/halo-route-continuation/soc_top.nl.v",
+        "PNR_STATE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/halo-recovered-finalize-20260920-seed.json"
+      },
+      "initial_free_bytes": 4174696448,
+      "minimum_free_bytes": 3281629184,
+      "disk_stop_threshold_bytes": 805306368,
+      "start_monotonic": 2296.473281507,
+      "status": "COMPLETED",
+      "pid": 25866,
+      "returncode": 0,
+      "elapsed_s": 195.01142916299978
+    },
+    "halo-recovered-magic-20260920": {
+      "command": [
+        "bash",
+        "hw/soc/flow/pnr_soc_top.sh",
+        "halo-recovered-magic-20260920",
+        "-F",
+        "Magic.DRC",
+        "-T",
+        "Magic.DRC",
+        "-i",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/halo-recovered-magic-20260920.json"
+      ],
+      "environment": {
+        "SOC_INTERFACE_FLOW": "1",
+        "PNR_CONFIG": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config-recovered-halo-magic-20260920.json",
+        "SYN_NETLIST": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.nl.v",
+        "PNR_STATE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/halo-recovered-magic-20260920-seed.json"
+      },
+      "initial_free_bytes": 2906640384,
+      "minimum_free_bytes": 2906636288,
+      "disk_stop_threshold_bytes": 805306368,
+      "start_monotonic": 2498.797508156,
+      "status": "STOPPED_OR_FAILED",
+      "pid": 27105,
+      "returncode": 1,
+      "elapsed_s": 15.002839080000285
+    }
+  },
+  "route_metrics": {
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "route__net": 93309,
+    "route__net__special": 2,
+    "route__drc_errors__iter:0": 1,
+    "route__wirelength__iter:0": 6518459,
+    "route__drc_errors__iter:1": 0,
+    "route__wirelength__iter:1": 6518460,
+    "route__drc_errors__iter:2": 50,
+    "route__wirelength__iter:2": 6518511,
+    "route__drc_errors__iter:3": 1,
+    "route__wirelength__iter:3": 6518428,
+    "route__drc_errors": 0,
+    "route__wirelength": 6518460,
+    "route__vias": 649411,
+    "route__vias__singlecut": 649411,
+    "route__vias__multicut": 0,
+    "route__drc_errors__iter:4": 0,
+    "route__wirelength__iter:4": 6518419,
+    "route__antenna_violation__count": 0,
+    "design__disconnected_pin__count": 256,
+    "design__critical_disconnected_pin__count": 0,
+    "route__wirelength__max": 3009.1
+  },
+  "postroute_connectivity": {
+    "status": "PASS within scope",
+    "scope": "Unpowered emitted netlists: original cells, masters, pins, ports, aliases and wires preserved; added antenna/filler/decap only. Does not compare extracted connectivity, geometry, power nets or timing. Separate LVS required.",
+    "original_instances": 93459,
+    "added_instances": {
+      "antenna": 1075
+    },
+    "before": "hw/soc/out/external-review-20260919/macro-halo-baseline/grt/soc_top.nl.v",
+    "before_sha256": "d30fdb18ac68ebfabc17daef93ebcb2c089a73c208f8982061b0d6416ccc110f",
+    "after": "hw/soc/out/external-review-20260919/halo-route-continuation/soc_top.nl.v",
+    "after_sha256": "1d68956d28378a5da916dccc044093374e037e786edadd9ec3ff5a3a21c7d78b"
+  },
+  "raw_drc_report_bytes": 0,
+  "magic_attempt": "First recovered Magic launch did not execute DRC: the framework required a gds view despite MAGIC_DRC_USE_GDS=false. Its failure is retained. Generate this candidate stream, then retry the same abstract DRC with a new tag. No borrowed GDS or false DRC result.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/halo-interruption-20260920.json": {
+      "bytes": 2522,
+      "sha256": "4942fe94fe593db5036ce9c8c4fc3173a28c287b4230f30b5b5324153106cd8e"
+    },
+    "hw/soc/out/external-review-20260919/prepare_halo_recovery.py": {
+      "bytes": 2033,
+      "sha256": "4370d44272e29829886044ca63c12cc207630e61aa78f9fe3333f88f38862a7e"
+    },
+    "hw/soc/out/external-review-20260919/prepare_halo_continuation.py": {
+      "bytes": 2345,
+      "sha256": "8700ab80aaf5a66aeebeec892f3914977449a0a3d799abfb4c202d82e0785fd2"
+    },
+    "hw/soc/out/external-review-20260919/run_halo_continuation.py": {
+      "bytes": 1521,
+      "sha256": "b95d5906bf4af93fe4957cfe6e063f350324f0d4b60b273aeba9843a180a4b6d"
+    },
+    "hw/soc/out/external-review-20260919/run_halo_finalize.py": {
+      "bytes": 2290,
+      "sha256": "c772d5937425e1f082f3afed8fad5b91436e067954d089a3952229c1be526150"
+    },
+    "hw/soc/out/external-review-20260919/prepare_recovered_halo_magic.py": {
+      "bytes": 2454,
+      "sha256": "c58d1d0f51e14e3c517c7266c52031d4041d3581a6e2255aabfb89f50c467f2d"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation-20260920.log": {
+      "bytes": 75123,
+      "sha256": "872cdf1057f0ab3bdbdad1a2f892df48218c7e51aee35f9d99446591757feeca"
+    },
+    "hw/soc/out/external-review-20260919/halo-recovered-magic-20260920.log": {
+      "bytes": 9559,
+      "sha256": "3754cf941b55e54e48dac335dc44e3f27416f9b1fbc50b47e097ce78217d9872"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation/continue.tcl": {
+      "bytes": 4798,
+      "sha256": "c2de985e8bdf60d9b037f31599f1cac7364d3652f0d66ac98414f9bc1165a7be"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation/_env.tcl": {
+      "bytes": 24023,
+      "sha256": "1a502099bd74fa81150bc485f836dc87baa6d3c9c955eb50054f1c8528bfc5f5"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation/or_metrics_out.json": {
+      "bytes": 4591,
+      "sha256": "3943e028dee04df2470bd15a1dca69b7e1265df1516a1815f3863856a8da5d0c"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation/soc_top.drc": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/halo-route-continuation/connectivity.json": {
+      "bytes": 701,
+      "sha256": "ad7ea90bb99ff9e6ce6e445e877cf481f3eb0b2d6eaac3fc3da03e6b6e6af375"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/09-odb-cellfrequencytables/state_out.json": {
+      "bytes": 4442,
+      "sha256": "54873e77f1661441f143bd0f9ed7a4d6d2bc409cf233404db16cb48b405564b0"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/resolved.json": {
+      "bytes": 40642,
+      "sha256": "8945d055c6c8ef3273b15308a7668d0cfc3cce1cae99a832a93daaea96e83d4e"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.nl.v": {
+      "bytes": 19850008,
+      "sha256": "7272d61ebe740f154ba3c585553a74d95ec6864ef89f9cb29a8569604ea41a72"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29513844,
+      "sha256": "d580bea71fc1397262f652077a346a7f23e19f115cbffe745051e8bb45d4783b"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/09-odb-cellfrequencytables/soc_top.odb": {
+      "bytes": 184053335,
+      "sha256": "c1742a32cf16092015e2dafa6b9088a81e617991de4742a5e3408535beb3977a"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/09-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 115874733,
+      "sha256": "76f1d15f248a3f5199370403605c509e82a0359041d5e51ae4449bb7fab9f9f2"
+    },
+    "hw/soc/pnr/runs/halo-recovered-finalize-20260920/08-openroad-fillinsertion/soc_top.sdc": {
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    }
+  }
+}

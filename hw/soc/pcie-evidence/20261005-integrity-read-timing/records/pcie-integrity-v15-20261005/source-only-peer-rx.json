@@ -1,0 +1,73 @@
+{
+  "status": "PASS_V15_BALANCED_READ_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T16:03:36.814262+00:00",
+  "source_freeze": {
+    "bytes": 2009,
+    "sha256": "5cbf5074df23efb6b713edd77425651e7612b5aa1ea458b9c8aa552cdb97b530"
+  },
+  "sources": {
+    "scripts/generate_pcie_integrity_read_v15.py": {
+      "bytes": 3221,
+      "sha256": "6976a209f7e9106469b325e9dd42cb827b235b55d1e062b7670af7dabfc935ca"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v15.py": {
+      "bytes": 11276,
+      "sha256": "5b8e3bcf2465a8b4c95ba980f454840287d17d5e5dbbd817ae2aaa7945347698"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v15.v": {
+      "bytes": 192201,
+      "sha256": "d81c6debbfb9f12cc7a398a319df292e0d3d86b0c471579141db662cd6e00b30"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v15.v": {
+      "bytes": 3324,
+      "sha256": "54946725963cedfe6996f65e96c54ee70f4161d8352bcf4b88456e897cc4a512"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v15.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v15": {
+      "bytes": 1528,
+      "sha256": "e30a52d2875d2460a8b5bf7b896fe2de5011b335ce20a894270b189c9ea98867"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v15_read.py": {
+      "bytes": 10456,
+      "sha256": "464d01032580c6998a12b56bf228e2f7467a1eb0fd290f8abba67c673244ead5"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v15_miter.py": {
+      "bytes": 9758,
+      "sha256": "48eb0e9e9e028b9013b4c222caa7206b5bea0248d82bac60515df28ccf3fe91a"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v15.py": {
+      "bytes": 4805,
+      "sha256": "fb5d4619873ad1cd2f4db1f425560e3791be788045126d8ddc294cacee4493d1"
+    }
+  },
+  "baseline": {
+    "bytes": 190744,
+    "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+  },
+  "reviewer": "/root/rx_route_resume",
+  "method": {
+    "bytes": 3857,
+    "sha256": "5132d5070abeadbc9307d78e72c6ddddb939fe6e7b2464ea2ad8269df70f097d"
+  },
+  "verified": [
+    "Generator output byte-equals frozen RTL; replacing only balanced read block and module version restores entire V11 framer exactly. Wrapper, cocotb serial oracle and Makefile inverse versions byte-equal V11. No writer, verdict cache, fault, pointer, epoch, commit or reset edits.",
+    "60-bit payload layout exactly matches data32/keep4/sop4/eop4/dllp4/sequence12. For each of four lanes, tree addresses cover an independent2N segment: unused index0 explicitly set, N leaves set, then N-1 internal nodes assigned bottom-up. Final maximum index8N-1 is within declared arrays.",
+    "Old masked read address is unchanged. Integer equality against constant slot plus procedural if turns unknown eligibility into known0; valid power-of-two ring guard remains inherited. At most one leaf eligible for each lane; unknown address yields no eligible leaf just as old dynamic-index predicate is not true.",
+    "Each internal flag is OR of known0/1 flags. Payload selection uses that known left flag and a mux, preserving literal selected X/Z. Zero or one eligible leaf induction yields zero or exact original payload; no duplicate contributions or payload OR conversion.",
+    "Final lane<count procedural gate preserves original unknown-count rejection; keep/verdict and unknown-count conjunction moves across only pure combinational logic with the same not-true masking. All output defaults remain zero.",
+    "Source controls compare literal old/new blocks for16/64/128 rings, all metadata and wrap; targeted59 X/Z/unknown/unselected cases plus actual payloadOR Z-conversion fault and10 select/tree mutants inspected. Full public miter still compares all named ports and occupied/committed metadata. Controls are authored evidence, not rerun or assumed complete by this peer."
+  ],
+  "issues_found": [],
+  "native_or_HDL_executed": false,
+  "controls_rerun": false,
+  "timing_claim": false,
+  "qualified_rc": false,
+  "physical_acceptance": false,
+  "limitations": [
+    "Logarithmic RTL tree shape is not proof of emitted gate depth or timing benefit. Fresh emitted-cone inspection, same4ns physical timing and complete saved execution controls remain required.",
+    "No fullchip, complete Gen3 PCS/PHY or production acceptance."
+  ]
+}

@@ -1,0 +1,389 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/review.py",
+      "bytes": 10655,
+      "sha256": "054b0baad7b29dea5fca1ca37a81ced5f960f557696cdb802c47252e218320e4"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair16one-peer/review.py",
+      "bytes": 10726,
+      "sha256": "1e2d063228ec00a5df6b6e98a8d771e68888ce0269911ee13f1e14f97ccf4a59"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Bounded read-only verification of completed RX14A outputs; no new native run.\"\"\"\n",
+        "after": "\"\"\"Bounded read-only verification of completed RX16ONE outputs; no new native run.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import gzip\nimport hashlib\nimport importlib.util\nimport json\nimport math\nimport os\nimport re\nimport resource\n",
+        "after": "import gzip\nimport hashlib\nimport importlib.util\nimport json\nimport math\nimport os\nimport re\nimport resource\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "import sys\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nresource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\nresource.setrlimit(resource.RLIMIT_CORE, (0, 0))\nos.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\nR = Path.cwd()\nB = R / \"hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004\"\n",
+        "after": "import xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nresource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\nresource.setrlimit(resource.RLIMIT_CORE, (0, 0))\nos.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\nR = Path.cwd()\nB = R / \"hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004\"\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "sys.path.insert(0, str(B))\n"
+      },
+      {
+        "tag": "equal",
+        "before": "O = Path(__file__).resolve().parent\nN = Path('/dev/shm')\n",
+        "after": "O = Path(__file__).resolve().parent\nN = Path('/dev/shm')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "D = N / 'nssoc-rx-prefetch-v2-repair14a-drt-01'\nX = N / 'nssoc-rx-prefetch-v2-repair14a-detailed-rc-01'\nP = N / 'nssoc-rx-prefetch-v2-postroute-repair-14a'\nE = N / 'nssoc-rx-prefetch-v2-repair14a-equivalence'\nT = N / 'nssoc-rx-prefetch-v2-repair14a-physical-replay-01'\n",
+        "after": "D = N / 'nssoc-rx-prefetch-v2-repair16one-drt-01'\nX = N / 'nssoc-rx-prefetch-v2-repair16one-detailed-rc-01'\nP = N / 'nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04'\nE = N / 'nssoc-rx-prefetch-v2-repair16one-equivalence'\nT = N / 'nssoc-rx-prefetch-v2-repair16one-physical-replay-01'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\ninputs = {}\nfor directory in (D, X):\n    result = j(directory / 'result.json')\n    assert result['returncode'] == 0 and result['status'].startswith('COMPLETE_')\n    for path, h in result['inputs'].items():\n        assert pin(path) == h\n        inputs[path] = h\n    for name, h in result['outputs'].items():\n        assert pin(directory / name) == h\n        inputs[str(directory / name)] = h\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'routed.v').read_bytes() == (P / 'repaired.v').read_bytes()\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert re.findall(r'Number of violations = (\\d+)', (D / 'native.log').read_text())[-1] == '0'\nassert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (D / 'native.log').read_text()\nlog = (X / 'native.log').read_text()\nassert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in log\nassert not re.search(r'\\[ERROR\\b|Error:', log)\nelectrical_report = log.split('tns max ', 1)[1].split('\\n', 1)[1].split('EXTRACTED_NOMINAL_RC_slow_max', 1)[0]\nelectrical_violations = electrical_report.count('(VIOLATED)')\nslacks = {}\npaths = []\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        cases = part.split('Startpoint:')[1:]\n        assert len(cases) == 6\n        for case in cases:\n            matches = re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((MET|VIOLATED)\\)', case)\n            assert len(matches) == 1\n            value = float(matches[0][0])\n            assert (value < 0) == (matches[0][1] == 'VIOLATED')\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n            if corner == 'slow' and kind == 'setup':\n                paths.append({'startpoint': case.splitlines()[0].strip(), 'endpoint': re.search(r'Endpoint: (\\S+)', case)[1], 'slack_ns': value, 'raw_path': case})\n    assert all(len(v) == 3 for v in values.values()) and len(values) == 4\n    slacks[corner] = {k: min(v) for k, v in values.items()}\n",
+        "after": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\ninputs = {}\nfor directory in (D, X):\n    result = j(directory / 'result.json')\n    assert result['returncode'] == 0 and result['status'].startswith('COMPLETE_')\n    for path, h in result['inputs'].items():\n        assert pin(path) == h\n        inputs[path] = h\n    for name, h in result['outputs'].items():\n        assert pin(directory / name) == h\n        inputs[str(directory / name)] = h\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'routed.v').read_bytes() == (P / 'repaired.v').read_bytes()\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert re.findall(r'Number of violations = (\\d+)', (D / 'native.log').read_text())[-1] == '0'\nassert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (D / 'native.log').read_text()\nlog = (X / 'native.log').read_text()\nassert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in log\nassert not re.search(r'\\[ERROR\\b|Error:', log)\nelectrical_report = log.split('tns max ', 1)[1].split('\\n', 1)[1].split('EXTRACTED_NOMINAL_RC_slow_max', 1)[0]\nelectrical_violations = electrical_report.count('(VIOLATED)')\nslacks = {}\npaths = []\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        cases = part.split('Startpoint:')[1:]\n        assert len(cases) == 6\n        for case in cases:\n            matches = re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((MET|VIOLATED)\\)', case)\n            assert len(matches) == 1\n            value = float(matches[0][0])\n            assert (value < 0) == (matches[0][1] == 'VIOLATED')\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n            if corner == 'slow' and kind == 'setup':\n                paths.append({'startpoint': case.splitlines()[0].strip(), 'endpoint': re.search(r'Endpoint: (\\S+)', case)[1], 'slack_ns': value, 'raw_path': case})\n    assert all(len(v) == 3 for v in values.values()) and len(values) == 4\n    slacks[corner] = {k: min(v) for k, v in values.items()}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "old = B / 'repair13-peer/review.json'\n",
+        "after": "old = B / 'repair14a-peer/review.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "delta = round(slacks['slow']['setup'] - j(old)['nominal_rc_cell_corner_slack_ns']['slow']['setup'], 6)\nall_timing_positive = all(value >= 0 for corner in slacks.values() for value in corner.values())\n\n# Every reported unannotated output belongs to an input-only CTS load.\nunannotated = log.split('Found 78 unannotated drivers.\\n')[1].split('Found 0 partially unannotated drivers.')[0].split()\nassert len(unannotated) == 78 and {p.split('/')[0] for p in unannotated} == {f'clkload{i}' for i in range(78)}\nnetlist = (D / 'routed.v').read_text()\nloads = {}\nfor output in unannotated:\n    inst, pinname = output.split('/')\n    match = re.search(r'\\b(sg13g2_(?:inv|buf)_\\d+)\\s+' + inst + r'\\s*\\((.*?)\\);', netlist, re.S)\n    assert match\n    connections = re.findall(r'\\.(\\w+)\\(([^()]*)\\)', match[2])\n    assert len(connections) == 1 and connections[0][0] == 'A'\n    assert pinname == ('Y' if '_inv_' in match[1] else 'X')\n    loads[inst] = {'master': match[1], 'unconnected_output': pinname, 'clock_input_net': connections[0][1]}\n\n# Stream the actual extracted SPEF; bind each dummy input to an annotated net.\nnames = {}\nstate = ''\nnet = None\nconnected = {}\ncount = {'nets': 0, 'capacitor_entries': 0, 'resistor_entries': 0, 'zero_resistors': 0}\nwith (X / 'routed.spef').open() as f:\n    for raw in f:\n        fields = raw.split()\n        if not fields:\n            continue\n        if fields[0] == '*NAME_MAP':\n            state = 'names'\n        elif fields[0] == '*PORTS':\n            state = 'ports'\n        elif fields[0] == '*D_NET':\n            net = names.get(fields[1], fields[1])\n            count['nets'] += 1\n            assert math.isfinite(float(fields[2])) and float(fields[2]) >= 0\n            state = 'net'\n        elif fields[0] in ('*CONN', '*CAP', '*RES', '*END'):\n            state = fields[0]\n        elif state == 'names':\n            assert len(fields) == 2 and fields[0] not in names\n            names[fields[0]] = fields[1]\n        elif state == '*CONN' and fields[0] == '*I':\n            number, terminal = fields[1].rsplit(':', 1)\n            instance = names.get(number, number)\n            if instance in loads:\n                assert terminal == 'A' and fields[2] == 'I' and net == loads[instance]['clock_input_net']\n                assert instance not in connected\n                connected[instance] = net\n        elif state in ('*CAP', '*RES'):\n            value = float(fields[-1])\n            assert math.isfinite(value) and value >= 0\n            key = 'capacitor_entries' if state == '*CAP' else 'resistor_entries'\n            count[key] += 1\n            if state == '*RES' and value == 0:\n                count['zero_resistors'] += 1\nassert set(connected) == set(loads)\n\n# Retained port XML and native-expanded proof payloads are checked again.\nports = j(T / 'result.json')\nassert ports['tests'] == {'passed': 6, 'failed': 0, 'skipped': 0}\ncases = list(ET.parse(T / 'results.xml').iter('testcase'))\nassert len(cases) == 6 and all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)\nfor path, h in {**ports['inputs'], **ports['runtime']}.items():\n    assert pin(path) == h\n    inputs[path] = h\nfor name, h in ports['outputs'].items():\n    assert pin(T / name) == h\nnormalization = j(E / 'normalization.json')\nfor path, h in normalization['inputs'].items():\n    assert pin(path) == h\n    inputs[path] = h\nfor run in normalization['runs']:\n    compressed = E / (run['name'] + '.json.gz')\n    assert pin(compressed)['sha256'] == run['expanded_json']['lossless_gzip_sha256']\n    with gzip.open(compressed, 'rb') as stream:\n        assert hashlib.file_digest(stream, 'sha256').hexdigest() == run['expanded_json']['sha256']\n\n# Preserve and revalidate actual completed proof execution. No repeated proof run.\n",
+        "after": "delta = round(slacks['slow']['setup'] - j(old)['nominal_rc_cell_corner_slack_ns']['slow']['setup'], 6)\nall_timing_positive = all(value >= 0 for corner in slacks.values() for value in corner.values())\n\n# Every reported unannotated output belongs to an input-only CTS load.\nunannotated = log.split('Found 78 unannotated drivers.\\n')[1].split('Found 0 partially unannotated drivers.')[0].split()\nassert len(unannotated) == 78 and {p.split('/')[0] for p in unannotated} == {f'clkload{i}' for i in range(78)}\nnetlist = (D / 'routed.v').read_text()\nloads = {}\nfor output in unannotated:\n    inst, pinname = output.split('/')\n    match = re.search(r'\\b(sg13g2_(?:inv|buf)_\\d+)\\s+' + inst + r'\\s*\\((.*?)\\);', netlist, re.S)\n    assert match\n    connections = re.findall(r'\\.(\\w+)\\(([^()]*)\\)', match[2])\n    assert len(connections) == 1 and connections[0][0] == 'A'\n    assert pinname == ('Y' if '_inv_' in match[1] else 'X')\n    loads[inst] = {'master': match[1], 'unconnected_output': pinname, 'clock_input_net': connections[0][1]}\n\n# Stream the actual extracted SPEF; bind each dummy input to an annotated net.\nnames = {}\nstate = ''\nnet = None\nconnected = {}\ncount = {'nets': 0, 'capacitor_entries': 0, 'resistor_entries': 0, 'zero_resistors': 0}\nwith (X / 'routed.spef').open() as f:\n    for raw in f:\n        fields = raw.split()\n        if not fields:\n            continue\n        if fields[0] == '*NAME_MAP':\n            state = 'names'\n        elif fields[0] == '*PORTS':\n            state = 'ports'\n        elif fields[0] == '*D_NET':\n            net = names.get(fields[1], fields[1])\n            count['nets'] += 1\n            assert math.isfinite(float(fields[2])) and float(fields[2]) >= 0\n            state = 'net'\n        elif fields[0] in ('*CONN', '*CAP', '*RES', '*END'):\n            state = fields[0]\n        elif state == 'names':\n            assert len(fields) == 2 and fields[0] not in names\n            names[fields[0]] = fields[1]\n        elif state == '*CONN' and fields[0] == '*I':\n            number, terminal = fields[1].rsplit(':', 1)\n            instance = names.get(number, number)\n            if instance in loads:\n                assert terminal == 'A' and fields[2] == 'I' and net == loads[instance]['clock_input_net']\n                assert instance not in connected\n                connected[instance] = net\n        elif state in ('*CAP', '*RES'):\n            value = float(fields[-1])\n            assert math.isfinite(value) and value >= 0\n            key = 'capacitor_entries' if state == '*CAP' else 'resistor_entries'\n            count[key] += 1\n            if state == '*RES' and value == 0:\n                count['zero_resistors'] += 1\nassert set(connected) == set(loads)\n\n# Retained port XML and native-expanded proof payloads are checked again.\nports = j(T / 'result.json')\nassert ports['tests'] == {'passed': 6, 'failed': 0, 'skipped': 0}\ncases = list(ET.parse(T / 'results.xml').iter('testcase'))\nassert len(cases) == 6 and all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)\nfor path, h in {**ports['inputs'], **ports['runtime']}.items():\n    assert pin(path) == h\n    inputs[path] = h\nfor name, h in ports['outputs'].items():\n    assert pin(T / name) == h\nnormalization = j(E / 'normalization.json')\nfor path, h in normalization['inputs'].items():\n    assert pin(path) == h\n    inputs[path] = h\nfor run in normalization['runs']:\n    compressed = E / (run['name'] + '.json.gz')\n    assert pin(compressed)['sha256'] == run['expanded_json']['lossless_gzip_sha256']\n    with gzip.open(compressed, 'rb') as stream:\n        assert hashlib.file_digest(stream, 'sha256').hexdigest() == run['expanded_json']['sha256']\n\n# Preserve and revalidate actual completed proof execution. No repeated proof run.\n"
+      },
+      {
+        "tag": "replace",
+        "before": "spec = importlib.util.spec_from_file_location('rx14a_saved_execution_gate', B / 'proof_gate_repair14a.py')\n",
+        "after": "spec = importlib.util.spec_from_file_location('rx16one_saved_execution_gate', B / 'proof_gate_repair16one.py')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "gate = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(gate)\nbinding = gate.verify_binding()\nrecomputed = j(E / 'equivalence.json')\nmutations = j(E / 'mutation-controls.json')\nassert recomputed['states'] == 1804 and recomputed['matched'] == recomputed['targets'] == 5443 and not recomputed['mismatches']\nassert len(mutations['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in mutations['controls'])\nfor path in gate.input_paths():\n    inputs[str(path)] = pin(path)\ninputs[str(E / 'proof-execution-binding.json')] = pin(E / 'proof-execution-binding.json')\nowned = j(T / 'owned-driver.json')\n",
+        "after": "gate = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(gate)\nbinding = gate.verify_binding()\nrecomputed = j(E / 'equivalence.json')\nmutations = j(E / 'mutation-controls.json')\nassert recomputed['states'] == 1804 and recomputed['matched'] == recomputed['targets'] == 5443 and not recomputed['mismatches']\nassert len(mutations['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in mutations['controls'])\nfor path in gate.input_paths():\n    inputs[str(path)] = pin(path)\ninputs[str(E / 'proof-execution-binding.json')] = pin(E / 'proof-execution-binding.json')\nowned = j(T / 'owned-driver.json')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert owned['status'] == 'PASS_EXACT_PROVED_RX14A_SIX_NATIVE_PORT_CASES'\n",
+        "after": "assert owned['status'] == 'PASS_EXACT_PROVED_RX16ONE_SIX_NATIVE_PORT_CASES'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert owned['inputs'] == {path: pin(path) for path in owned['inputs']}\ninputs.update(owned['inputs'])\ncompiled = T / 'sim/sim.vvp.gz'\nassert pin(compiled) == owned['lossless_closed_program']['gzip']\nwith gzip.open(compiled, 'rb') as stream:\n    h = hashlib.sha256()\n    size = 0\n    while data := stream.read(1024**2):\n        h.update(data)\n        size += len(data)\nassert {'bytes': size, 'sha256': h.hexdigest()} == owned['lossless_closed_program']['raw']\ninputs[str(compiled)] = pin(compiled)\ninputs[str(T / 'owned-driver.json')] = pin(T / 'owned-driver.json')\n\nsdc = (D / 'routed.sdc').read_text()\nassert 'create_clock -name development_clock -period 4.0000' in sdc\nassert not re.search(r'^set_(?:false_path|multicycle_path)', sdc, re.M)\nbefore = (P / 'repaired.sdc').read_text()\ndef constraint_lines(s):\n    return [l for l in s.splitlines() if l and not l.startswith('#')]\nassert constraint_lines(sdc) == constraint_lines(before)\nfor p in [Path(__file__), B / 'eco-proof/compare.py', E / 'equivalence.json', E / 'mutation-controls.json', E / 'normalization.json', T / 'result.json', old]:\n    inputs[str(p)] = pin(p)\nrecord = {\n",
+        "after": "assert owned['inputs'] == {path: pin(path) for path in owned['inputs']}\ninputs.update(owned['inputs'])\ncompiled = T / 'sim/sim.vvp.gz'\nassert pin(compiled) == owned['lossless_closed_program']['gzip']\nwith gzip.open(compiled, 'rb') as stream:\n    h = hashlib.sha256()\n    size = 0\n    while data := stream.read(1024**2):\n        h.update(data)\n        size += len(data)\nassert {'bytes': size, 'sha256': h.hexdigest()} == owned['lossless_closed_program']['raw']\ninputs[str(compiled)] = pin(compiled)\ninputs[str(T / 'owned-driver.json')] = pin(T / 'owned-driver.json')\n\nsdc = (D / 'routed.sdc').read_text()\nassert 'create_clock -name development_clock -period 4.0000' in sdc\nassert not re.search(r'^set_(?:false_path|multicycle_path)', sdc, re.M)\nbefore = (P / 'repaired.sdc').read_text()\ndef constraint_lines(s):\n    return [l for l in s.splitlines() if l and not l.startswith('#')]\nassert constraint_lines(sdc) == constraint_lines(before)\nfor p in [Path(__file__), B / 'eco-proof/compare.py', E / 'equivalence.json', E / 'mutation-controls.json', E / 'normalization.json', T / 'result.json', old]:\n    inputs[str(p)] = pin(p)\nrecord = {\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'status': 'REVIEWED_RX14A_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_' + ('PASS' if all_timing_positive else 'FAIL'),\n",
+        "after": "    'status': 'REVIEWED_RX16ONE_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_' + ('PASS' if all_timing_positive else 'FAIL'),\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    'all_nominal_cell_corner_timing_nonnegative': all_timing_positive,\n    'electrical_check_report': electrical_report, 'max_slew_cap_violations_reported': electrical_violations,\n",
+        "after": "    'all_nominal_cell_corner_timing_nonnegative': all_timing_positive,\n    'electrical_check_report': electrical_report, 'max_slew_cap_violations_reported': electrical_violations,\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'nominal_rc_cell_corner_slack_ns': slacks, 'SS_setup_improvement_vs13_ns': delta,\n",
+        "after": "    'nominal_rc_cell_corner_slack_ns': slacks, 'SS_setup_improvement_vs14a_ns': delta,\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    'unannotated_output_analysis': {'reported': 78, 'partially_unannotated': 0, 'all_output_pins_unconnected_CTS_loads': True, 'all78_input_pins_present_on_correct_extracted_clock_nets': True, 'instances': loads},\n    'spef_numeric_census': count, 'SS_three_worst_setup_paths': paths,\n    'saved_canonical_binary_kernel_receipt_revalidated': recomputed,\n    'preserved_original_fault_controls': 10, 'port_XML_cases_recounted': 6,\n    'inputs_rehashed': inputs,\n    'scope': 'Independent saved-output review, complete SPEF numeric/clock-load binding census, all declared DRT/RC inputs/outputs rehashed, six saved portXML cases, actual previous binary proof execution rebound to unchanged compressed/expanded native graphs and methods, compiled native program fully decompressed and checked. No repeated OpenROAD/Icarus/SAT/kernel execution by this review; saved mutation controls inspected, not rerun. Unchanged4ns/IO constraints. Nominal sameRC at all cell corners is unqualified; see actual timing flags. No fullchip/PDN/foundryDRC/PHY acceptance.',\n}\n(O / 'review.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint({'slacks': slacks, 'spef': count, 'review': pin(O / 'review.json')})\n",
+        "after": "    'unannotated_output_analysis': {'reported': 78, 'partially_unannotated': 0, 'all_output_pins_unconnected_CTS_loads': True, 'all78_input_pins_present_on_correct_extracted_clock_nets': True, 'instances': loads},\n    'spef_numeric_census': count, 'SS_three_worst_setup_paths': paths,\n    'saved_canonical_binary_kernel_receipt_revalidated': recomputed,\n    'preserved_original_fault_controls': 10, 'port_XML_cases_recounted': 6,\n    'inputs_rehashed': inputs,\n    'scope': 'Independent saved-output review, complete SPEF numeric/clock-load binding census, all declared DRT/RC inputs/outputs rehashed, six saved portXML cases, actual previous binary proof execution rebound to unchanged compressed/expanded native graphs and methods, compiled native program fully decompressed and checked. No repeated OpenROAD/Icarus/SAT/kernel execution by this review; saved mutation controls inspected, not rerun. Unchanged4ns/IO constraints. Nominal sameRC at all cell corners is unqualified; see actual timing flags. No fullchip/PDN/foundryDRC/PHY acceptance.',\n}\n(O / 'review.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint({'slacks': slacks, 'spef': count, 'review': pin(O / 'review.json')})\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-peer/seal.py",
+      "bytes": 7771,
+      "sha256": "69dcc785befcd3a3fc6c182fe49674245cc78361ab0eab543b2eebd614800b3d"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair16one-peer/seal.py",
+      "bytes": 8197,
+      "sha256": "8d960cfff6435e4897c1cce7f0843d3559cd18051ee9de1a56adab075d1dd84e"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Seal complete RX14A captures after independent read-only review.\"\"\"\n",
+        "after": "\"\"\"Seal complete RX16ONE captures after independent read-only review.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import gzip\nimport hashlib\nimport json\nimport shutil\nimport tarfile\nfrom pathlib import Path\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nO = Path(__file__).resolve().parent\n",
+        "after": "import gzip\nimport hashlib\nimport json\nimport shutil\nimport tarfile\nfrom pathlib import Path\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nO = Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "replace",
+        "before": "A = Path('/dev/shm/pcie-rx-repair14a-route-nominal-rc-and-peer-20261005.tar.xz')\n",
+        "after": "A = Path('/dev/shm/pcie-rx-repair16one-route-nominal-rc-and-peer-20261006.tar.xz')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert not A.exists()\nassert shutil.disk_usage('/dev/shm').free >= 640 * 1024**2\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\nreview = j(O / 'review.json')\n",
+        "after": "assert not A.exists()\nassert shutil.disk_usage('/dev/shm').free >= 640 * 1024**2\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\nreview = j(O / 'review.json')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert review['status'] in ('REVIEWED_RX14A_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_PASS', 'REVIEWED_RX14A_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_FAIL')\n",
+        "after": "assert review['status'] in ('REVIEWED_RX16ONE_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_PASS', 'REVIEWED_RX16ONE_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_TIMING_FAIL')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert review['inputs_rehashed'] == {p: pin(p) for p in review['inputs_rehashed']}\n",
+        "after": "assert review['inputs_rehashed'] == {p: pin(p) for p in review['inputs_rehashed']}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "compression_path = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-physical-replay-01/owned-driver.json')\n",
+        "after": "compression_path = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-physical-replay-01/owned-driver.json')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "compression = j(compression_path)['lossless_closed_program']\ncompiled = compression_path.parent / 'sim/sim.vvp.gz'\nassert pin(compiled) == compression['gzip']\nwith gzip.open(compiled, 'rb') as f:\n    h = hashlib.sha256()\n    size = 0\n    while data := f.read(1024**2):\n        h.update(data)\n        size += len(data)\nassert {'bytes': size, 'sha256': h.hexdigest()} == compression['raw'] == compression['full_decompressed_readback']\n\nvalidation = {\n    'status': review['status'],\n    'router_drc_violations': 0, 'same_logical_netlist_after_detailed_route': True,\n    'nominal_rc_cell_corner_slack_ns': review['nominal_rc_cell_corner_slack_ns'],\n",
+        "after": "compression = j(compression_path)['lossless_closed_program']\ncompiled = compression_path.parent / 'sim/sim.vvp.gz'\nassert pin(compiled) == compression['gzip']\nwith gzip.open(compiled, 'rb') as f:\n    h = hashlib.sha256()\n    size = 0\n    while data := f.read(1024**2):\n        h.update(data)\n        size += len(data)\nassert {'bytes': size, 'sha256': h.hexdigest()} == compression['raw'] == compression['full_decompressed_readback']\n\nvalidation = {\n    'status': review['status'],\n    'router_drc_violations': 0, 'same_logical_netlist_after_detailed_route': True,\n    'nominal_rc_cell_corner_slack_ns': review['nominal_rc_cell_corner_slack_ns'],\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'SS_setup_improvement_vs_published13_ns': review['SS_setup_improvement_vs13_ns'],\n",
+        "after": "    'SS_setup_improvement_vs_published14a_ns': review['SS_setup_improvement_vs14a_ns'],\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    'unannotated_drivers': 78, 'unannotated_classification': 'All78 unconnected outputs of input-only CTS dummy load cells; all78 clock-input pins independently located on correct extracted SPEF nets. Zero partially unannotated drivers.',\n    'saved_canonical_binary_kernel_receipt_revalidated': review['saved_canonical_binary_kernel_receipt_revalidated'],\n    'saved_native_port_XML_cases_recounted': 6, 'saved_actual_kernel_fault_controls': 10,\n    'full_compiled_program_gzip_readback': compression,\n    'peer': {'path': str(O / 'review.json'), **pin(O / 'review.json')},\n    'all_nominal_cell_corner_timing_nonnegative': review['all_nominal_cell_corner_timing_nonnegative'], 'max_slew_cap_violations_reported': review['max_slew_cap_violations_reported'], 'qualified_rc': False, 'physical_acceptance': False,\n    'constraints': 'Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagatedclock, no false/multicycle exceptions. Nominal extractedRC reused across three cell corners; not distinctRC process corners.',\n",
+        "after": "    'unannotated_drivers': 78, 'unannotated_classification': 'All78 unconnected outputs of input-only CTS dummy load cells; all78 clock-input pins independently located on correct extracted SPEF nets. Zero partially unannotated drivers.',\n    'saved_canonical_binary_kernel_receipt_revalidated': review['saved_canonical_binary_kernel_receipt_revalidated'],\n    'saved_native_port_XML_cases_recounted': 6, 'saved_actual_kernel_fault_controls': 10,\n    'full_compiled_program_gzip_readback': compression,\n    'peer': {'path': str(O / 'review.json'), **pin(O / 'review.json')},\n    'all_nominal_cell_corner_timing_nonnegative': review['all_nominal_cell_corner_timing_nonnegative'], 'max_slew_cap_violations_reported': review['max_slew_cap_violations_reported'], 'qualified_rc': False, 'physical_acceptance': False,\n    'constraints': 'Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagatedclock, no false/multicycle exceptions. Nominal extractedRC reused across three cell corners; not distinctRC process corners.',\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'scope': 'Default150 standalone byte receiver, not strictwidePCS/currentwidepacket receiver. Complete raw repair14a/GRT/proof/port/DRT/RC captures retained. Existing actual proof execution binding revalidated on saved expanded native graphs; proof fault controls inspected but not rerun. New DRT01 and RC01 native executions completed; originalgold expansion reused exactly from completedRX11; this packaging does not rerun tools, no fullchip/foundry/PDN/PHY signoff. Earlier failures and original sources remain unchanged.',\n",
+        "after": "    'scope': 'Default150 standalone byte receiver, not strictwidePCS/currentwidepacket receiver. Complete raw repair16one/GRT/proof/port/DRT/RC captures retained. Existing actual proof execution binding revalidated on saved expanded native graphs; proof fault controls inspected but not rerun. New DRT01 and RC01 native executions completed; originalgold expansion reused exactly from completedRX11; this packaging does not rerun tools, no fullchip/foundry/PDN/PHY signoff. Earlier failures and original sources remain unchanged.',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "}\n",
+        "after": "}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "V = O / 'pcie-rx-repair14a-finite-physical-validation-20261005.json'\n",
+        "after": "V = O / 'pcie-rx-repair16one-finite-physical-validation-20261006.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "V.write_text(json.dumps(validation, indent=2) + '\\n')\nfiles = {}\nroots = [\n",
+        "after": "V.write_text(json.dumps(validation, indent=2) + '\\n')\nfiles = {}\nroots = [\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    '/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair14a-equivalence',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair14a-physical-replay-01',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair14a-drt-01',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair14a-detailed-rc-01',\n",
+        "after": "    '/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair16one-equivalence',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair16one-physical-replay-01',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair16one-drt-01',\n    '/dev/shm/nssoc-rx-prefetch-v2-repair16one-detailed-rc-01',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "]\nfor name in roots:\n    directory = Path(name)\n    assert directory.is_dir(), f\"Missing required completed native capture: {directory}\"\n    for p in sorted(directory.rglob('*')):\n        if p.is_file() and '__pycache__' not in p.parts:\n            assert not p.is_symlink()\n            files['native/' + directory.name + '/' + str(p.relative_to(directory))] = p\n",
+        "after": "]\nfor name in roots:\n    directory = Path(name)\n    assert directory.is_dir(), f\"Missing required completed native capture: {directory}\"\n    for p in sorted(directory.rglob('*')):\n        if p.is_file() and '__pycache__' not in p.parts:\n            assert not p.is_symlink()\n            files['native/' + directory.name + '/' + str(p.relative_to(directory))] = p\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for name in ['postroute_repair14a.py', 'normalize_repair14a.py', 'proof_gate_repair14a.py', 'replay_repair14a.py', 'drt_repair14a.py', 'detailed_rc_repair14a.py', 'newtool-readonly-comparison.json', 'eco-proof/compare.py', 'eco-proof/mutations.py']:\n",
+        "after": "for name in ['postroute_repair16_one04.py', 'normalize_repair16one.py', 'proof_gate_repair16one.py', 'replay_repair16one.py', 'drt_repair16one.py', 'detailed_rc_repair16one.py', 'owned_lifecycle16.py', 'newtool-readonly-comparison.json', 'eco-proof/compare.py', 'eco-proof/mutations.py']:\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    files['method/' + name] = B / name\n",
+        "after": "    files['method/' + name] = B / name\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for p in sorted((B / 'repair14-source').glob('*')):\n    if p.is_file() and p.suffix in ('.py', '.json', '.log', '.txt', '.diff'):\n        files['preservation/repair14-source/' + p.name] = p\n",
+        "after": "for name in ['source-freeze04.json','source-only-peer04-vco.json','one04-rejection-review.json','route-trial-selection16one.json','proof-source-freeze16one.json','proof-source-bridge16one.json','proof-source-only-peer-root16one.json','launcher-source-only-peer-root16one.json','run_proof_ports16one.py','proof16one-lifecycle-control.json','route-rc-source-freeze16one.json','route-rc-source-bridge16one.json','pre-drt-proof-port-review16one.json']:\n    files['preservation/repair16-source/' + name] = B / 'repair16-source' / name\n"
+      },
+      {
+        "tag": "equal",
+        "before": "# Controller's live status/owner files are not static capsule inputs. Its final\n# dependent-stage binding is published after this seal completes.\nfor name in ('run.py', 'manifest.json'):\n",
+        "after": "# Controller's live status/owner files are not static capsule inputs. Its final\n# dependent-stage binding is published after this seal completes.\nfor name in ('run.py', 'manifest.json'):\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    files['controller/' + name] = B / 'repair14a-continuation01' / name\n",
+        "after": "    files['controller/' + name] = B / 'repair16one-continuation01' / name\n"
+      },
+      {
+        "tag": "equal",
+        "before": "for path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(Path('/dev/shm')) and p not in files.values():\n        assert p.is_file() and not p.is_symlink()\n        files['bound-input/' + str(p.relative_to('/dev/shm'))] = p\nfor path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(R) and p.suffix in ('.py', '.v') and 'tools' not in p.parts:\n        files['source/' + str(p.relative_to(R))] = p\nfor name in ['hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_prefetch_v2.v', 'LICENSES/CERN-OHL-W-2.0.txt', 'LICENSES/Apache-2.0.txt']:\n    files['source/' + name] = R / name\nfiles['prior-proved-native/routed.v'] = Path('/dev/shm/nssoc-rx-prefetch-v2-drt-01/routed.v')\nfiles['preservation/owned-driver.json'] = compression_path\n",
+        "after": "for path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(Path('/dev/shm')) and p not in files.values():\n        assert p.is_file() and not p.is_symlink()\n        files['bound-input/' + str(p.relative_to('/dev/shm'))] = p\nfor path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(R) and p.suffix in ('.py', '.v') and 'tools' not in p.parts:\n        files['source/' + str(p.relative_to(R))] = p\nfor name in ['hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_prefetch_v2.v', 'LICENSES/CERN-OHL-W-2.0.txt', 'LICENSES/Apache-2.0.txt']:\n    files['source/' + name] = R / name\nfiles['prior-proved-native/routed.v'] = Path('/dev/shm/nssoc-rx-prefetch-v2-drt-01/routed.v')\nfiles['preservation/owned-driver.json'] = compression_path\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for name in ['pcie-rx-repair13-finite-physical-validation-20261005.json', 'package.json', 'release.json', 'review.json']:\n    files['prior-published/repair13/' + name] = B / 'repair13-peer' / name\n",
+        "after": "for name in ['pcie-rx-repair14a-finite-physical-validation-20261005.json', 'package.json', 'release.json', 'review.json']:\n    files['prior-published/repair14a/' + name] = B / 'repair14a-peer' / name\n"
+      },
+      {
+        "tag": "equal",
+        "before": "for name in ['review.py', 'review.json', 'review.log', 'seal.py', 'source-bridge.json', 'source-freeze.json']:\n    files['peer/' + name] = O / name\nfiles['validation.json'] = V\nnotice = O / 'NOTICES.txt'\n",
+        "after": "for name in ['review.py', 'review.json', 'review.log', 'seal.py', 'source-bridge.json', 'source-freeze.json']:\n    files['peer/' + name] = O / name\nfiles['validation.json'] = V\nnotice = O / 'NOTICES.txt'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "notice.write_text('Finite standalone RX14A signal-routing evidence. Project source licences retained. Generated netlists refer to pinned IHP SG13G2 cells; upstream PDK libraries/models and tool binaries are hash-pinned, not redistributed. All complete RX14A output files are retained losslessly. Earlier routed13 inputs are bound through their prior public capsule manifest/release. Actual nominal timing status is recorded in validation; no qualified processRC, fullchip, foundryDRC, PDN or PCIe product acceptance.\\n')\n",
+        "after": "notice.write_text('Finite standalone RX16ONE signal-routing evidence. Project source licences retained. Generated netlists refer to pinned IHP SG13G2 cells; upstream PDK libraries/models and tool binaries are hash-pinned, not redistributed. All complete RX16ONE output files are retained losslessly. Earlier routed14a inputs are bound through their prior public capsule manifest/release. Actual nominal timing status is recorded in validation; no qualified processRC, fullchip, foundryDRC, PDN or PCIe product acceptance.\\n')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "files['NOTICES.txt'] = notice\nmembers = {n: pin(p) for n, p in files.items()}\nminimum = shutil.disk_usage('/dev/shm').free\nwith tarfile.open(A, 'x:xz', preset=3) as t:\n    for n, p in files.items():\n        free = shutil.disk_usage('/dev/shm').free\n        minimum = min(minimum, free)\n        assert free >= 528 * 1024**2\n        assert A.stat().st_size < 70 * 1024**2\n        t.add(p, arcname=n, recursive=False)\nassert members == {n: pin(p) for n, p in files.items()}\nwith tarfile.open(A, 'r|xz') as t:\n    actual = {}\n    for m in t:\n        assert m.isfile() and m.name not in actual\n        actual[m.name] = {'bytes': m.size, 'sha256': hashlib.file_digest(t.extractfile(m), 'sha256').hexdigest()}\nassert actual == members\nrecord = {'status': 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK', 'archive': {'path': str(A), **pin(A)}, 'validation': pin(V), 'member_count': len(members), 'members': members, 'minimum_shared_free_bytes_during_archive': minimum, 'files_unlinked': []}\n(O / 'package.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(record['archive'], record['member_count'], 'minimum_shared_free', minimum)\n",
+        "after": "files['NOTICES.txt'] = notice\nmembers = {n: pin(p) for n, p in files.items()}\nminimum = shutil.disk_usage('/dev/shm').free\nwith tarfile.open(A, 'x:xz', preset=3) as t:\n    for n, p in files.items():\n        free = shutil.disk_usage('/dev/shm').free\n        minimum = min(minimum, free)\n        assert free >= 528 * 1024**2\n        assert A.stat().st_size < 70 * 1024**2\n        t.add(p, arcname=n, recursive=False)\nassert members == {n: pin(p) for n, p in files.items()}\nwith tarfile.open(A, 'r|xz') as t:\n    actual = {}\n    for m in t:\n        assert m.isfile() and m.name not in actual\n        actual[m.name] = {'bytes': m.size, 'sha256': hashlib.file_digest(t.extractfile(m), 'sha256').hexdigest()}\nassert actual == members\nrecord = {'status': 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK', 'archive': {'path': str(A), **pin(A)}, 'validation': pin(V), 'member_count': len(members), 'members': members, 'minimum_shared_free_bytes_during_archive': minimum, 'files_unlinked': []}\n(O / 'package.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(record['archive'], record['member_count'], 'minimum_shared_free', minimum)\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair14a-continuation01/run.py",
+      "bytes": 11548,
+      "sha256": "930f0af141b8e1c6bae9caaafb45df6b204338b4a867f723144483ec89d324ee"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair16one-continuation01/run.py",
+      "bytes": 11717,
+      "sha256": "90bbb64943e7f979c49f506e81b7cf6e23dfed9db5d82419f027bc56d2a25594"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Observe an existing owned route; run exact dependent stages once, no timeout.\"\"\"\nimport ast\nimport datetime\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport threading\nimport time\n\nROOT = Path('/home/hasanmelih/Documents/ChatGPT/nnsoc')\nB = ROOT / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nHERE = Path(__file__).resolve().parent\nMANIFEST = HERE / 'manifest.json'\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Observe an existing owned route; run exact dependent stages once, no timeout.\"\"\"\nimport ast\nimport datetime\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport threading\nimport time\n\nROOT = Path('/home/hasanmelih/Documents/ChatGPT/nnsoc')\nB = ROOT / 'hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004'\nHERE = Path(__file__).resolve().parent\nMANIFEST = HERE / 'manifest.json'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "DRT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-drt-01')\nRC = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-detailed-rc-01')\nPEER = B / 'repair14a-peer'\n",
+        "after": "DRT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-drt-01')\nRC = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-detailed-rc-01')\nPEER = B / 'repair16one-peer'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "FLOOR = 528 * 1024**2\n\n\ndef pin(path):\n    path = Path(path)\n    with path.open('rb') as stream:\n        return {'bytes': path.stat().st_size,\n                'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef require(value, reason):\n    if not value:\n        raise ValueError(reason)\n\n\ndef atomic(path, record):\n    path = Path(path)\n    temporary = path.with_name(path.name + '.tmp')\n    with temporary.open('w') as out:\n        json.dump(record, out, indent=2)\n        out.write('\\n')\n        out.flush()\n        os.fsync(out.fileno())\n    os.replace(temporary, path)\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    os.sched_setaffinity(0, {8})\n\n\ndef read_live_result():\n    # Original DRT producer writes this receipt directly. A concurrent partial\n    # JSON write is retried while its exact owner identity still exists.\n    try:\n        return json.loads((DRT / 'result.json').read_text())\n    except json.JSONDecodeError:\n        return None\n\n\ndef main():\n    require(not (HERE / 'result.json').exists(), 'Fresh controller receipt')\n    manifest = json.loads(MANIFEST.read_text())\n    require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n            'Exact frozen continuation inputs')\n    require(sorted(os.sched_getaffinity(0)) == [8], 'Controller CPU8')\n    require(Path('/proc/sys/kernel/random/boot_id').read_text().strip() == manifest['boot_id'], 'Same recorded boot identity')\n    # Reuse only the exact previously tested lifecycle class/helpers. The outer\n    # failure grace is 15s so the RC wrapper can finish its own 5s group cleanup.\n    life_path = Path(manifest['lifecycle_source'])\n    tree = ast.parse(life_path.read_text())\n    names = {'Cancelled', 'process_identity', 'group_members', 'ProcessOwner'}\n    selected = [node for node in tree.body\n                if isinstance(node, (ast.FunctionDef, ast.ClassDef))\n                and node.name in names]\n    require(len(selected) == 4, 'Exact lifecycle definitions')\n    namespace = dict(os=os, Path=Path, threading=threading, signal=signal,\n                     subprocess=subprocess, time=time, atomic=atomic,\n                     require=require, FAILURE_GRACE_SECONDS=15.0)\n    exec(compile(ast.Module(body=selected, type_ignores=[]), str(life_path), 'exec'),\n         namespace)\n    identity = namespace['process_identity']\n",
+        "after": "FLOOR = 528 * 1024**2\n\n\ndef pin(path):\n    path = Path(path)\n    with path.open('rb') as stream:\n        return {'bytes': path.stat().st_size,\n                'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef require(value, reason):\n    if not value:\n        raise ValueError(reason)\n\n\ndef atomic(path, record):\n    path = Path(path)\n    temporary = path.with_name(path.name + '.tmp')\n    with temporary.open('w') as out:\n        json.dump(record, out, indent=2)\n        out.write('\\n')\n        out.flush()\n        os.fsync(out.fileno())\n    os.replace(temporary, path)\n\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    resource.setrlimit(resource.RLIMIT_AS, (int(2.5 * 1024**3),) * 2)\n    os.sched_setaffinity(0, {8})\n\n\ndef read_live_result():\n    # Original DRT producer writes this receipt directly. A concurrent partial\n    # JSON write is retried while its exact owner identity still exists.\n    try:\n        return json.loads((DRT / 'result.json').read_text())\n    except json.JSONDecodeError:\n        return None\n\n\ndef main():\n    require(not (HERE / 'result.json').exists(), 'Fresh controller receipt')\n    manifest = json.loads(MANIFEST.read_text())\n    require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n            'Exact frozen continuation inputs')\n    require(sorted(os.sched_getaffinity(0)) == [8], 'Controller CPU8')\n    require(Path('/proc/sys/kernel/random/boot_id').read_text().strip() == manifest['boot_id'], 'Same recorded boot identity')\n    # Reuse only the exact previously tested lifecycle class/helpers. The outer\n    # failure grace is 15s so the RC wrapper can finish its own 5s group cleanup.\n    life_path = Path(manifest['lifecycle_source'])\n    tree = ast.parse(life_path.read_text())\n    names = {'Cancelled', 'process_identity', 'group_members', 'ProcessOwner'}\n    selected = [node for node in tree.body\n                if isinstance(node, (ast.FunctionDef, ast.ClassDef))\n                and node.name in names]\n    require(len(selected) == 4, 'Exact lifecycle definitions')\n    namespace = dict(os=os, Path=Path, threading=threading, signal=signal,\n                     subprocess=subprocess, time=time, atomic=atomic,\n                     require=require, FAILURE_GRACE_SECONDS=15.0)\n    exec(compile(ast.Module(body=selected, type_ignores=[]), str(life_path), 'exec'),\n         namespace)\n    identity = namespace['process_identity']\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record = dict(status='WAITING_EXISTING_EXACT_RX14A_DRT01',\n",
+        "after": "    record = dict(status='WAITING_EXISTING_EXACT_RX16ONE_DRT01',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                  utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),\n                  controller_identity=identity(os.getpid()),\n                  manifest=pin(MANIFEST), inputs=manifest['inputs'], stages=[],\n                  original_DRT_owned_by_this_controller=False,\n                  elapsed_watchdog_seconds=None, qualified_rc=False,\n                  physical_acceptance=False)\n\n    def save():\n        atomic(HERE / 'result.json', record)\n\n    def sources_unchanged():\n        require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n                'Continuation source or runtime drift')\n\n    save()\n    with namespace['ProcessOwner'](HERE / 'owned-processes.json') as owner:\n        try:\n            missing_since = None\n            while True:\n                owner.check()\n                current = read_live_result()\n                if current:\n                    require(current['pid'] == manifest['route_native']['pid'],\n                            'Same native route PID in receipt')\n                observed = identity(manifest['route_owner']['pid'])\n                exact_owner = (observed is not None\n                               and str(observed['start_ticks'])\n                               == str(manifest['route_owner']['start_ticks'])\n                               and observed['state'] != 'Z')\n                if current and current['status'] != 'RUNNING':\n                    break\n                native = identity(manifest['route_native']['pid'])\n                if native is not None:\n                    require(str(native['start_ticks']) ==\n                            str(manifest['route_native']['start_ticks']),\n                            'Native route PID has not been reused')\n                if not exact_owner:\n                    if missing_since is None:\n                        missing_since = time.monotonic()\n                    # A dead/reused owner is failure; this is never an elapsed\n                    # limit on a healthy route and sends no signal to old PIDs.\n                    require(time.monotonic() - missing_since < 10,\n                            'Route owner gone without terminal result')\n                else:\n                    missing_since = None\n                owner.cancelled.wait(2)\n            require(current['status'] ==\n",
+        "after": "                  utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),\n                  controller_identity=identity(os.getpid()),\n                  manifest=pin(MANIFEST), inputs=manifest['inputs'], stages=[],\n                  original_DRT_owned_by_this_controller=False,\n                  elapsed_watchdog_seconds=None, qualified_rc=False,\n                  physical_acceptance=False)\n\n    def save():\n        atomic(HERE / 'result.json', record)\n\n    def sources_unchanged():\n        require(manifest['inputs'] == {p: pin(p) for p in manifest['inputs']},\n                'Continuation source or runtime drift')\n\n    save()\n    with namespace['ProcessOwner'](HERE / 'owned-processes.json') as owner:\n        try:\n            missing_since = None\n            while True:\n                owner.check()\n                current = read_live_result()\n                if current:\n                    require(current['pid'] == manifest['route_native']['pid'],\n                            'Same native route PID in receipt')\n                observed = identity(manifest['route_owner']['pid'])\n                exact_owner = (observed is not None\n                               and str(observed['start_ticks'])\n                               == str(manifest['route_owner']['start_ticks'])\n                               and observed['state'] != 'Z')\n                if current and current['status'] != 'RUNNING':\n                    break\n                native = identity(manifest['route_native']['pid'])\n                if native is not None:\n                    require(str(native['start_ticks']) ==\n                            str(manifest['route_native']['start_ticks']),\n                            'Native route PID has not been reused')\n                if not exact_owner:\n                    if missing_since is None:\n                        missing_since = time.monotonic()\n                    # A dead/reused owner is failure; this is never an elapsed\n                    # limit on a healthy route and sends no signal to old PIDs.\n                    require(time.monotonic() - missing_since < 10,\n                            'Route owner gone without terminal result')\n                else:\n                    missing_since = None\n                owner.cancelled.wait(2)\n            require(current['status'] ==\n"
+      },
+      {
+        "tag": "replace",
+        "before": "                    'COMPLETE_RX14A_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n",
+        "after": "                    'COMPLETE_RX16ONE_SIGNAL_DRT_ZERO_ROUTER_DRC_SAME_NETLIST__RC_REQUIRED'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                    and current['returncode'] == 0, 'Successful exact DRT required')\n            require(current['inputs'] == manifest['route_inputs'], 'Same route inputs')\n            require(current['inputs'] == {p: pin(p) for p in current['inputs']},\n                    'All route inputs unchanged')\n            require(current['outputs'] == {n: pin(DRT / n) for n in current['outputs']},\n                    'All route outputs unchanged')\n            require((DRT / 'router-drc.rpt').stat().st_size == 0, 'Zero router DRC')\n            require((DRT / 'routed.v').read_bytes() ==\n                    Path(manifest['candidate_netlist']).read_bytes(), 'Same proved netlist')\n            record['route_terminal'] = pin(DRT / 'result.json')\n            save()\n\n            def run_stage(name, command, log, kind='native'):\n                sources_unchanged()\n                require(shutil.disk_usage('/dev/shm').free >= 1024**3,\n                        '1GiB entry scratch floor')\n                record['status'] = 'RUNNING_' + name\n                stage = dict(name=name, command=command, log=str(log),\n                             source_pins_before=manifest['inputs'])\n                record['stages'].append(stage)\n                save()\n                with log.open('x') as output:\n                    process = owner.launch(kind, command, cwd=ROOT,\n",
+        "after": "                    and current['returncode'] == 0, 'Successful exact DRT required')\n            require(current['inputs'] == manifest['route_inputs'], 'Same route inputs')\n            require(current['inputs'] == {p: pin(p) for p in current['inputs']},\n                    'All route inputs unchanged')\n            require(current['outputs'] == {n: pin(DRT / n) for n in current['outputs']},\n                    'All route outputs unchanged')\n            require((DRT / 'router-drc.rpt').stat().st_size == 0, 'Zero router DRC')\n            require((DRT / 'routed.v').read_bytes() ==\n                    Path(manifest['candidate_netlist']).read_bytes(), 'Same proved netlist')\n            record['route_terminal'] = pin(DRT / 'result.json')\n            save()\n\n            def run_stage(name, command, log, kind='native'):\n                sources_unchanged()\n                require(shutil.disk_usage('/dev/shm').free >= 1024**3,\n                        '1GiB entry scratch floor')\n                record['status'] = 'RUNNING_' + name\n                stage = dict(name=name, command=command, log=str(log),\n                             source_pins_before=manifest['inputs'])\n                record['stages'].append(stage)\n                save()\n                with log.open('x') as output:\n                    process = owner.launch(kind, command, cwd=ROOT,\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "                                           env={k:v for k,v in os.environ.items() if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                                           stdout=output, stderr=subprocess.STDOUT,\n                                           preexec_fn=limits)\n                    stage['identity'] = identity(process.pid)\n                    save()\n                    while process.poll() is None:\n                        owner.check()\n                        require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                                '528MiB continuous scratch floor')\n                        owner.cancelled.wait(.5)\n                    stage['returncode'] = owner.complete(process)\n                    owner.check()\n                    require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                            '528MiB terminal scratch floor')\n                stage['log_pin'] = pin(log)\n                sources_unchanged()\n                stage['source_pins_after'] = manifest['inputs']\n                save()\n                require(stage['returncode'] == 0, name + ' nonzero exit')\n\n            python = manifest['python']\n            require(not RC.exists(), 'Fresh exact RC output')\n",
+        "after": "                                           stdout=output, stderr=subprocess.STDOUT,\n                                           preexec_fn=limits)\n                    stage['identity'] = identity(process.pid)\n                    save()\n                    while process.poll() is None:\n                        owner.check()\n                        require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                                '528MiB continuous scratch floor')\n                        owner.cancelled.wait(.5)\n                    stage['returncode'] = owner.complete(process)\n                    owner.check()\n                    require(shutil.disk_usage('/dev/shm').free >= FLOOR,\n                            '528MiB terminal scratch floor')\n                stage['log_pin'] = pin(log)\n                sources_unchanged()\n                stage['source_pins_after'] = manifest['inputs']\n                save()\n                require(stage['returncode'] == 0, name + ' nonzero exit')\n\n            python = manifest['python']\n            require(not RC.exists(), 'Fresh exact RC output')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            run_stage('RX14A_NOMINAL_RC',\n                      [python, str(B / 'detailed_rc_repair14a.py')],\n                      B / 'repair14-source/detailed-rc.log')\n",
+        "after": "            run_stage('RX16ONE_NOMINAL_RC',\n                      [python, str(B / 'detailed_rc_repair16one.py')],\n                      B / 'repair16-source/detailed-rc.log')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "            result = json.loads((RC / 'result.json').read_text())\n            require(result['status'] == 'COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED',\n                    'Actual complete RC required')\n            require(not (PEER / 'review.json').exists(), 'Fresh saved-output review')\n",
+        "after": "            result = json.loads((RC / 'result.json').read_text())\n            require(result['status'] == 'COMPLETE_UNQUALIFIED_NOMINAL_RC_REVIEW_REQUIRED',\n                    'Actual complete RC required')\n            require(not (PEER / 'review.json').exists(), 'Fresh saved-output review')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            run_stage('RX14A_SAVED_OUTPUT_REVIEW', [python, str(PEER / 'review.py')],\n",
+        "after": "            run_stage('RX16ONE_SAVED_OUTPUT_REVIEW', [python, str(PEER / 'review.py')],\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                      PEER / 'review.log')\n            require(not (PEER / 'package.json').exists(), 'Fresh full capsule')\n",
+        "after": "                      PEER / 'review.log')\n            require(not (PEER / 'package.json').exists(), 'Fresh full capsule')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            run_stage('RX14A_COMPLETE_CAPTURE_SEAL', [python, str(PEER / 'seal.py')],\n",
+        "after": "            run_stage('RX16ONE_COMPLETE_CAPTURE_SEAL', [python, str(PEER / 'seal.py')],\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                      PEER / 'seal.log')\n            package = json.loads((PEER / 'package.json').read_text())\n            require(package['status'] == 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK',\n                    'Complete archive/member readback')\n            archive = Path(package['archive']['path'])\n            require(pin(archive) == {k: package['archive'][k] for k in ('bytes', 'sha256')},\n                    'Sealed archive unchanged')\n",
+        "after": "                      PEER / 'seal.log')\n            package = json.loads((PEER / 'package.json').read_text())\n            require(package['status'] == 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK',\n                    'Complete archive/member readback')\n            archive = Path(package['archive']['path'])\n            require(pin(archive) == {k: package['archive'][k] for k in ('bytes', 'sha256')},\n                    'Sealed archive unchanged')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            binding = PEER / 'pcie-rx-repair14a-continuation-binding-20261005.json'\n",
+        "after": "            binding = PEER / 'pcie-rx-repair16one-continuation-binding-20261006.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "            require(not binding.exists(), 'Fresh immutable execution binding')\n            atomic(binding, dict(status='PASS_EXACT_DEPENDENT_STAGES_BEFORE_PUBLICATION',\n                                 controller=pin(Path(__file__)), manifest=manifest,\n                                 stages=record['stages'],\n                                 route_terminal=record['route_terminal'],\n                                 extraction=pin(RC / 'result.json'),\n                                 review=pin(PEER / 'review.json'),\n                                 package=pin(PEER / 'package.json'),\n                                 full_package_manifest=package,\n                                 physical_acceptance=False, qualified_rc=False))\n",
+        "after": "            require(not binding.exists(), 'Fresh immutable execution binding')\n            atomic(binding, dict(status='PASS_EXACT_DEPENDENT_STAGES_BEFORE_PUBLICATION',\n                                 controller=pin(Path(__file__)), manifest=manifest,\n                                 stages=record['stages'],\n                                 route_terminal=record['route_terminal'],\n                                 extraction=pin(RC / 'result.json'),\n                                 review=pin(PEER / 'review.json'),\n                                 package=pin(PEER / 'package.json'),\n                                 full_package_manifest=package,\n                                 physical_acceptance=False, qualified_rc=False))\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            validation = PEER / 'pcie-rx-repair14a-finite-physical-validation-20261005.json'\n",
+        "after": "            validation = PEER / 'pcie-rx-repair16one-finite-physical-validation-20261006.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "            release = PEER / 'release.json'\n",
+        "after": "            release = PEER / 'release.json'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            run_stage('RX14A_PUBLIC_IMMUTABLE_PRESERVATION',\n",
+        "after": "            run_stage('RX16ONE_PUBLIC_IMMUTABLE_PRESERVATION',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                      [python, str(ROOT / 'scripts/publish_pcie_native_capture_v3.py'),\n                       '--out', str(release), str(archive), str(validation), str(binding)],\n                      PEER / 'publication.log', kind='publisher')\n            public = json.loads(release.read_text())\n            require(public['status'] == 'PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n                    and len(public['assets']) == 3, 'All three public assets verified')\n",
+        "after": "                      [python, str(ROOT / 'scripts/publish_pcie_native_capture_v3.py'),\n                       '--out', str(release), str(archive), str(validation), str(binding)],\n                      PEER / 'publication.log', kind='publisher')\n            public = json.loads(release.read_text())\n            require(public['status'] == 'PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n                    and len(public['assets']) == 3, 'All three public assets verified')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            record.update(status='COMPLETE_RX14A_FINITE_ROUTE_RC_REVIEW_PUBLICATION',\n",
+        "after": "            record.update(status='COMPLETE_RX16ONE_FINITE_ROUTE_RC_REVIEW_PUBLICATION',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                          native_timing=json.loads((PEER / 'review.json').read_text())\n                          ['nominal_rc_cell_corner_slack_ns'], release=pin(release))\n            save()\n        except BaseException as error:\n            record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n            save()\n            raise\n    # A stop delivered during final complete/save/context teardown must propagate.\n    try:\n        owner.check()\n    except BaseException as error:\n        record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n        save()\n        raise\n    return 0\n\n\nif __name__ == '__main__':\n    raise SystemExit(main())\n",
+        "after": "                          native_timing=json.loads((PEER / 'review.json').read_text())\n                          ['nominal_rc_cell_corner_slack_ns'], release=pin(release))\n            save()\n        except BaseException as error:\n            record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n            save()\n            raise\n    # A stop delivered during final complete/save/context teardown must propagate.\n    try:\n        owner.check()\n    except BaseException as error:\n        record.update(status='FAILED_RETAINED_NO_DEPENDENT_BYPASS', error=repr(error))\n        save()\n        raise\n    return 0\n\n\nif __name__ == '__main__':\n    raise SystemExit(main())\n"
+      }
+    ]
+  }
+]

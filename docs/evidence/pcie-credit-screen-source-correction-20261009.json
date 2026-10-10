@@ -1,0 +1,26 @@
+{
+  "status": "INVALIDATE_TWO_WRONG_SOURCE_CANDIDATE_TIMING_SCREENS",
+  "corrections": [
+    {
+      "status": "INVALID_CANDIDATE_TIMING_WRONG_CREDIT_RTL_SOURCE",
+      "time_utc": "2026-10-09T20:42:22.740717+00:00",
+      "actual_credit": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v",
+      "required_credit": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-carrylookahead-20261009/candidate02/soc_pcie_credit_tx.v",
+      "recipe": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-carrylookahead-20261009/map01/soc_top_syn.ys",
+      "invalidate": "All claims that this mapping or six-slack screen measured the new credit implementation. The output actually repeats the reservation-prefetch baseline. Existing formal and simulation results remain separately pinned and valid.",
+      "canonical_adoption": false
+    },
+    {
+      "status": "INVALID_CANDIDATE_TIMING_WRONG_CREDIT_RTL_SOURCE",
+      "time_utc": "2026-10-09T20:42:22.741308+00:00",
+      "actual_credit": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v",
+      "required_credit": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-borrow-20261009/candidate04/soc_pcie_credit_tx.v",
+      "recipe": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-parallel-borrow-20261009/map05/soc_top_syn.ys",
+      "invalidate": "All claims that this mapping or six-slack screen measured the new credit implementation. The output actually repeats the reservation-prefetch baseline. Existing formal and simulation results remain separately pinned and valid.",
+      "canonical_adoption": false
+    }
+  ],
+  "preserved": "Original archives remain immutable. No canonical RTL or route was adopted from these screens.",
+  "rerun": "Fresh parallel-borrow map07 asserts unique candidate credit source and binds all available candidate PCIe RTL before launch.",
+  "earlier_scope": "Cached-credit preaddition recipe was separately checked and correctly reads its candidate credit implementation. Reservation-prefetch intentionally retains canonical credit RTL."
+}

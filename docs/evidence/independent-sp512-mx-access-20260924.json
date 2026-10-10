@@ -1,0 +1,110 @@
+{
+  "date": "2026-09-24",
+  "status": "PASS_MX_STANDALONE_ALL_SIGNAL_PIN_ACCESS",
+  "scope": "MirroredMX single placement at40,40um of the unchanged independentSP512LEF/GDS. No new normalization, geometry, timing, DRC/LVS or chip routing acceptance.",
+  "measurement": {
+    "status": "PASS_MX_ALL_SIGNAL_PIN_ACCESS",
+    "scope": "Real geometry-only TritonRoute pin access, MX standalone carrier. No Liberty/timing, full routing or SoC acceptance.",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512_mx_access.py": "1c028eed8c11f4b612a9bf7e84821d484444b4d550b0e662fca799cbcbcf3923",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512_mx_access_worker.py": "a85d0ad1fc1691aa1b05a2a2b8edb4b1c897f4d111507013772bd667b6992fc4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-physical-abstract-v4/SP6TSRAM512x64.lef": "1c34d1b55a8f1910393792cae329ecfe96056cda739f3168cd291c4e8cf9d024",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-physical-abstract-v4/SP6TSRAM512x64.gds": "6411e136d8c991733e5d2991d31e6251110348daf337ba482fe3171404f3b543",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-abstract-audit-v4/result.json": "497f61ebc3c9a2093e2256709f0b8fd1ac0374fe8af2f5e0b2f4fe0e7d699506",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/access.tcl": "dab19cde1c1aeee0a16119b14bda42044732ed2b45ff869ac844db778f0b8a33"
+    },
+    "cases": [
+      {
+        "orientation": "MX",
+        "steps": [
+          {
+            "mode": "create",
+            "command": [
+              "env",
+              "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX",
+              "NSSOC_DP_ACCESS_MODE=create",
+              "NSSOC_DP_ORIENT=MX",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-no_splash",
+              "-exit",
+              "-python",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512_mx_access_worker.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 4.086191105976468
+          },
+          {
+            "mode": "access",
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-no_splash",
+              "-exit",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/access.tcl"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 101.79671843798133
+          },
+          {
+            "mode": "audit",
+            "command": [
+              "env",
+              "NSSOC_DP_ACCESS_CASE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX",
+              "NSSOC_DP_ACCESS_MODE=audit",
+              "NSSOC_DP_ORIENT=MX",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-no_splash",
+              "-exit",
+              "-python",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512_mx_access_worker.py"
+            ],
+            "returncode": 0,
+            "elapsed_seconds": 4.450410802994156
+          }
+        ],
+        "audit": {
+          "status": "PASS_ALL_146_SIGNAL_TERMINALS_HAVE_ACCESS",
+          "scope": "Standalone placement at40,40um only; not complete routing, supply routing, antenna or SoC acceptance.",
+          "orientation": "MX",
+          "macro_signal_terminal_count": 146,
+          "macro_access_point_count": 2753,
+          "boundary_access_point_count": 146,
+          "minimum_points_per_signal_terminal": 3,
+          "odb_sha256": "c91bf01795e6fdf1fa6ead09bc1ab14bfd5efbb43c2109683acf1cfef4de6410"
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "MX orientation has2753access points, minimum3per146signalterminals; the earlierR0carrier had2826/minimum4. Do not infer identical access counts across orientation or track phase.",
+    "NoLiberty was supplied and no timing result is generated. Supplies, arbitrary placements, full routes and integration require separate checks.",
+    "Existing independent SRAM density/characterization/native integration and original full-chip LVS remain open."
+  ],
+  "archive": {
+    "path": "docs/evidence/independent-sp512-mx-access-20260924.tar.xz",
+    "sha256": "cbb0e5b764fec718ca5d0fb309e0cb412f0bbc65bcd664b56765f63a0ce6cf8c",
+    "bytes": 245252,
+    "members": {
+      "docs/evidence/independent-sp512-mx-access-20260924-NOTICES.txt": "1ce32fdd69228026659d4df0ff8b9fc217d96e4447d5dd17304b4095770c825b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/bounded_process.py": "c9e510ac6ebb215d4905c9593088d97afb13f6ee6e11195ddb2ff57107be5e48",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/check_sp512_mx_access.py": "1c028eed8c11f4b612a9bf7e84821d484444b4d550b0e662fca799cbcbcf3923",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/record_sp512_mx_access.py": "6dc743e8d30bcfe5e31b4a3e9987a3ded046f6df4314f0ef070b73cbc3f9974a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/access.log": "4074ae2dbbc65f7e141ef55f2d60a8270d772dbd2394f167b1ef478790907fa9",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/access.odb": "c91bf01795e6fdf1fa6ead09bc1ab14bfd5efbb43c2109683acf1cfef4de6410",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/access.tcl": "dab19cde1c1aeee0a16119b14bda42044732ed2b45ff869ac844db778f0b8a33",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/audit.log": "faff61563382c7ca76429912f8ff9002519d153633fb307cbfb738cf4da6415e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/carrier.def": "e1853f4452ac0ae0afce6f36661e88233ccc6db25b619fff6d130435966117af",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/carrier.json": "f1e8d136863a74d626a7955d1fac57aa6d3b39eceb49e4d1928cecae14fbca3c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/carrier.odb": "fc23b80e2a9daa336737a13fa85907dc8f7beec29e35b86ce908bd64c515e5f2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/create.log": "d663ab7d9da0d49aa3baa1f312f1e37f090b16b6d89e806f36033cec73617bf3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/MX/point-audit.json": "ce868b8cee1e782acaa09fbff2d4c4308ae296b2709612bfd70d14e31e11629b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512-pin-access-mx/result.json": "b07edc0f20b1b904588847412d982074e0872bd9725a864fce00c76f6a29bd87",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/sp512_mx_access_worker.py": "a85d0ad1fc1691aa1b05a2a2b8edb4b1c897f4d111507013772bd667b6992fc4"
+    }
+  }
+}

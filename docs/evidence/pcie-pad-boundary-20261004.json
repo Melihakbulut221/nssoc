@@ -1,0 +1,79 @@
+{
+  "status": "FROZEN_NATIVE_PAD_STRUCTURE_AND_MODEL_LOADING_ONLY",
+  "sources": {
+    "hw/soc/flow/make_pcie_pad_boundary.py": {
+      "sha256": "0e9eb5e5c66932412551e1efe0273ca6c5c063e4334d3316578e62c60e2c8bed",
+      "bytes": 11937
+    },
+    "hw/soc/flow/check_pcie_pad_boundary.py": {
+      "sha256": "ade5659b2960a32926b9b47d3b8501e4f964a56e2d801ba034be5b98e5ceaedd",
+      "bytes": 22148
+    },
+    "hw/soc/flow/check_pcie_esd_loading.py": {
+      "sha256": "3fc0f3628d8c73bb3bf21f2ce17a7c9646153c2fd76a29a26d104de9ac1d6148",
+      "bytes": 8264
+    },
+    "sw/tests/test_pcie_pad_boundary.py": {
+      "sha256": "747409134285e16dfafa9a6fb6fb25667f715d63d43461e750c5b149b403fcfb",
+      "bytes": 6059
+    }
+  },
+  "native_status": {
+    "layout": "GENERATED_REQUIRES_DRC_LVS_LOADING_AND_ESD_SYSTEM_VALIDATION",
+    "physical": "PASS_PAD_BOUNDARY_MAIN_DRC_STRICT_LVS_AND_SEVEN_NEGATIVES_NO_ESD_RF_APPROVAL",
+    "loading": "PASS_27_NATIVE_DIODE_LOADING_CASES_AND_TWO_CONTROLS_NOT_PAD_PEX_OR_ESD_QUALIFICATION"
+  },
+  "raw_roots": {
+    "layout": "/dev/shm/nssoc-pad-boundary-03",
+    "physical": "/dev/shm/nssoc-pad-check-final",
+    "loading": "/dev/shm/nssoc-pad-loading-final"
+  },
+  "raw_result_pins": {
+    "layout": "1798c472301e334c4db90a6a8fea8792697eae3c4624e27855ce4b764a53e6ee",
+    "physical": "ecb9395de1620837b2a6416562d0373180707d1ba67283990393c43ac79c4ec4",
+    "loading": "248c50405a6c7356885afae032af4424f112ebaaec1f2e734b6c180eac4a5f15"
+  },
+  "source_input_count": 270,
+  "output_counts": {
+    "layout": 4,
+    "physical": 63,
+    "loading": 145
+  },
+  "native_checks": {
+    "main_drc_markers": 0,
+    "main_drc_categories": 560,
+    "strict_lvs_devices": 4,
+    "strict_lvs_ports": 4,
+    "negative_controls": 7,
+    "physical_accesses": 6,
+    "unchanged_fixed_primitives": 4,
+    "exact_seven_layer_obstruction_union": true
+  },
+  "loading": {
+    "cases": 27,
+    "frequencies_per_case": 3,
+    "native_controls": 2,
+    "min_capacitance_f": 4.630193297216858e-14,
+    "max_capacitance_f": 5.360395633796778e-14,
+    "max_abs_leakage_a": 3.54327678309119e-12
+  },
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q sw/tests/test_pcie_pad_boundary.py sw/tests/test_pcie_analog_bank.py sw/tests/test_pcie_rx_cell.py -p no:cacheprovider",
+    "passed": 69,
+    "ruff": "PASS"
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pad-rc-20261004/pad-boundary-native.tar.xz",
+    "sha256": "1e349b34c1c2033e175c38c5658f70722d9a4ad93f349a27168c676adef1783f",
+    "bytes": 103652,
+    "members": 222,
+    "roundtrip_all_members": true
+  },
+  "limitations": [
+    "Separate two-pad physical boundary; no analog-bank/main-chip integration.",
+    "Native2kv cell name is not assembled-device HBM/CDM qualification; no rail clamp/package discharge path validation.",
+    "Model-only fixed diode voltage/bias/temperature sweep excludes bondpad/wire/package parasitics and has no native process-corner variants.",
+    "LVS writer raw C/B/E text is not passed to SPICE; literal source VDD/PAD/VSS model and actual named LVSDB terminals are checked.",
+    "No qualified PEX, RF/link eye/compliance or manufacturing approval."
+  ]
+}

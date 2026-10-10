@@ -1,0 +1,236 @@
+....................................................FFFF                 [100%]
+=================================== FAILURES ===================================
+_ test_only_exact_completed_pass_returns_cli_success[PASS_NATIVE_STREAM_FINITE_SCREEN-0] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x757ca659ac40>
+status = 'PASS_NATIVE_STREAM_FINITE_SCREEN', exitcode = 0
+
+    @pytest.mark.parametrize(
+        "status,exitcode",
+        [
+            ("PASS_NATIVE_STREAM_FINITE_SCREEN", 0),
+            ("FAIL_NATIVE_STREAM_FINITE_SCREEN", 1),
+            ("ERROR_NATIVE_OR_STREAM_CAPTURE", 1),
+            ("RUNNING", 1),
+        ],
+    )
+    def test_only_exact_completed_pass_returns_cli_success(monkeypatch, status, exitcode):
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "acquisition",
+                "--out",
+                "/never-created",
+                "--prefix",
+                "fixture",
+                "--step-ps",
+                "5",
+                "--reference",
+                "/never-read",
+                "--reference-sha",
+                "0" * 64,
+                "--prerequisites",
+                "/never-read",
+                "--prerequisites-sha",
+                "0" * 64,
+            ],
+        )
+        monkeypatch.setattr(m, "run", lambda *args: {"status": status})
+>       assert m.main() == exitcode
+               ^^^^^^^^
+
+sw/tests/test_pcie_pll_acquisition_v1.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_pll_acquisition_v1.py:550: in main
+    runtime.check_runtime(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+version = sys.version_info(major=3, minor=14, micro=7, releaselevel='final', serial=0)
+numpy_version = '2.5.3', has_trapezoid = True
+
+    def check_runtime(version, numpy_version, has_trapezoid):
+        if tuple(version[:2]) != (3, 12) or numpy_version != "2.5.3" or not has_trapezoid:
+>           raise RuntimeError(
+                "Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable"
+            )
+E           RuntimeError: Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable
+
+scripts/run_pcie_pll_loop_stream_v2.py:20: RuntimeError
+_ test_only_exact_completed_pass_returns_cli_success[FAIL_NATIVE_STREAM_FINITE_SCREEN-1] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x757ca659b6f0>
+status = 'FAIL_NATIVE_STREAM_FINITE_SCREEN', exitcode = 1
+
+    @pytest.mark.parametrize(
+        "status,exitcode",
+        [
+            ("PASS_NATIVE_STREAM_FINITE_SCREEN", 0),
+            ("FAIL_NATIVE_STREAM_FINITE_SCREEN", 1),
+            ("ERROR_NATIVE_OR_STREAM_CAPTURE", 1),
+            ("RUNNING", 1),
+        ],
+    )
+    def test_only_exact_completed_pass_returns_cli_success(monkeypatch, status, exitcode):
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "acquisition",
+                "--out",
+                "/never-created",
+                "--prefix",
+                "fixture",
+                "--step-ps",
+                "5",
+                "--reference",
+                "/never-read",
+                "--reference-sha",
+                "0" * 64,
+                "--prerequisites",
+                "/never-read",
+                "--prerequisites-sha",
+                "0" * 64,
+            ],
+        )
+        monkeypatch.setattr(m, "run", lambda *args: {"status": status})
+>       assert m.main() == exitcode
+               ^^^^^^^^
+
+sw/tests/test_pcie_pll_acquisition_v1.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_pll_acquisition_v1.py:550: in main
+    runtime.check_runtime(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+version = sys.version_info(major=3, minor=14, micro=7, releaselevel='final', serial=0)
+numpy_version = '2.5.3', has_trapezoid = True
+
+    def check_runtime(version, numpy_version, has_trapezoid):
+        if tuple(version[:2]) != (3, 12) or numpy_version != "2.5.3" or not has_trapezoid:
+>           raise RuntimeError(
+                "Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable"
+            )
+E           RuntimeError: Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable
+
+scripts/run_pcie_pll_loop_stream_v2.py:20: RuntimeError
+_ test_only_exact_completed_pass_returns_cli_success[ERROR_NATIVE_OR_STREAM_CAPTURE-1] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x757ca65e3e30>
+status = 'ERROR_NATIVE_OR_STREAM_CAPTURE', exitcode = 1
+
+    @pytest.mark.parametrize(
+        "status,exitcode",
+        [
+            ("PASS_NATIVE_STREAM_FINITE_SCREEN", 0),
+            ("FAIL_NATIVE_STREAM_FINITE_SCREEN", 1),
+            ("ERROR_NATIVE_OR_STREAM_CAPTURE", 1),
+            ("RUNNING", 1),
+        ],
+    )
+    def test_only_exact_completed_pass_returns_cli_success(monkeypatch, status, exitcode):
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "acquisition",
+                "--out",
+                "/never-created",
+                "--prefix",
+                "fixture",
+                "--step-ps",
+                "5",
+                "--reference",
+                "/never-read",
+                "--reference-sha",
+                "0" * 64,
+                "--prerequisites",
+                "/never-read",
+                "--prerequisites-sha",
+                "0" * 64,
+            ],
+        )
+        monkeypatch.setattr(m, "run", lambda *args: {"status": status})
+>       assert m.main() == exitcode
+               ^^^^^^^^
+
+sw/tests/test_pcie_pll_acquisition_v1.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_pll_acquisition_v1.py:550: in main
+    runtime.check_runtime(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+version = sys.version_info(major=3, minor=14, micro=7, releaselevel='final', serial=0)
+numpy_version = '2.5.3', has_trapezoid = True
+
+    def check_runtime(version, numpy_version, has_trapezoid):
+        if tuple(version[:2]) != (3, 12) or numpy_version != "2.5.3" or not has_trapezoid:
+>           raise RuntimeError(
+                "Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable"
+            )
+E           RuntimeError: Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable
+
+scripts/run_pcie_pll_loop_stream_v2.py:20: RuntimeError
+________ test_only_exact_completed_pass_returns_cli_success[RUNNING-1] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x757ca65cfdf0>
+status = 'RUNNING', exitcode = 1
+
+    @pytest.mark.parametrize(
+        "status,exitcode",
+        [
+            ("PASS_NATIVE_STREAM_FINITE_SCREEN", 0),
+            ("FAIL_NATIVE_STREAM_FINITE_SCREEN", 1),
+            ("ERROR_NATIVE_OR_STREAM_CAPTURE", 1),
+            ("RUNNING", 1),
+        ],
+    )
+    def test_only_exact_completed_pass_returns_cli_success(monkeypatch, status, exitcode):
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "acquisition",
+                "--out",
+                "/never-created",
+                "--prefix",
+                "fixture",
+                "--step-ps",
+                "5",
+                "--reference",
+                "/never-read",
+                "--reference-sha",
+                "0" * 64,
+                "--prerequisites",
+                "/never-read",
+                "--prerequisites-sha",
+                "0" * 64,
+            ],
+        )
+        monkeypatch.setattr(m, "run", lambda *args: {"status": status})
+>       assert m.main() == exitcode
+               ^^^^^^^^
+
+sw/tests/test_pcie_pll_acquisition_v1.py:458: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_pll_acquisition_v1.py:550: in main
+    runtime.check_runtime(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+version = sys.version_info(major=3, minor=14, micro=7, releaselevel='final', serial=0)
+numpy_version = '2.5.3', has_trapezoid = True
+
+    def check_runtime(version, numpy_version, has_trapezoid):
+        if tuple(version[:2]) != (3, 12) or numpy_version != "2.5.3" or not has_trapezoid:
+>           raise RuntimeError(
+                "Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable"
+            )
+E           RuntimeError: Native loop metrology requires validated Python3.12/NumPy2.5.3 with trapezoid; use the un-resolved cocotb-venv Python executable
+
+scripts/run_pcie_pll_loop_stream_v2.py:20: RuntimeError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_pll_acquisition_v1.py::test_only_exact_completed_pass_returns_cli_success[PASS_NATIVE_STREAM_FINITE_SCREEN-0]
+FAILED sw/tests/test_pcie_pll_acquisition_v1.py::test_only_exact_completed_pass_returns_cli_success[FAIL_NATIVE_STREAM_FINITE_SCREEN-1]
+FAILED sw/tests/test_pcie_pll_acquisition_v1.py::test_only_exact_completed_pass_returns_cli_success[ERROR_NATIVE_OR_STREAM_CAPTURE-1]
+FAILED sw/tests/test_pcie_pll_acquisition_v1.py::test_only_exact_completed_pass_returns_cli_success[RUNNING-1]
+4 failed, 52 passed in 2.32s

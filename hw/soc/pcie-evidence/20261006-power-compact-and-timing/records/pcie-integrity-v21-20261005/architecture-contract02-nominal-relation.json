@@ -1,0 +1,20 @@
+{
+  "status": "ADDITIVE_NOMINAL_RELATION_IMPLEMENTATION_GATE",
+  "contract": {
+    "bytes": 10798,
+    "sha256": "b547913785a996155405d5d9892a25f79d550654c965621652bbf5aaa9e2b39a"
+  },
+  "independent_peer": {
+    "bytes": 6172,
+    "sha256": "2a33267c8852ea106e48f949d0e7ea1d85df8c9f89d10b6c86fa11f0879767c2"
+  },
+  "scope": "Only reset-initialized aligned epochs with ready continuously1 and no fault/abort/flush/newstart; no general stall/fault equivalence.",
+  "predicates": [
+    "While both epochs remain active, descriptor_room is always true. Candidate ring-retire/read_ptr/parser state/CRC and accepted block cadence match V17 on every clock.",
+    "Candidate public valid and allmasked output data/metadata at edge n+1 equal V17 outputs at edge n after initial empty-stage boundary. Unknown literal payload bits may be preserved; no payload OR.",
+    "EDS completion/active deassertion may be delayed by descriptor drain; check explicit end-pulse latency and no after-end data, not active equality after one epoch completes.",
+    "No same-cycle output miter under stalls or faults. Independent ordered byte/event scoreboard enforces ready-held stability, ownership cancellation and epoch boundaries there."
+  ],
+  "tests_required": true,
+  "claims_completed": false
+}

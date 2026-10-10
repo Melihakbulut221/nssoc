@@ -1,0 +1,26 @@
+.F..........................................................             [100%]
+=================================== FAILURES ===================================
+____ test_compact_planner_preserves_graph_and_orders_with_separated_tracks _____
+
+    def test_compact_planner_preserves_graph_and_orders_with_separated_tracks():
+        import make_pcie_clock_div4_v7_power_v2 as old
+        rows = m.devices(ROOT)
+        assert rows == old.devices(ROOT)
+        plan, starts, nets = m.placement_plan(rows)
+        original, _, _ = old.placement_plan(rows)
+        assert set(plan) == set(original)
+        assert Counter(p[0] for p in plan.values()) == {0: 30, 1: 17, 2: 26}
+        assert len({(p[1], p[2]) for p in plan.values()}) == 73
+        assert max(p[1] for p in plan.values()) == 856
+>       assert starts == {0: 0.0, 1: 176.0, 2: 332.0}
+E       assert {0: 0.0, 1: 176.0, 2: 328.0} == {0: 0.0, 1: 176.0, 2: 332.0}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {2: 328.0} != {2: 332.0}
+E         Use -v to get more diff
+
+sw/tests/test_pcie_clock_div4_v7_compact_v1_layout.py:83: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_clock_div4_v7_compact_v1_layout.py::test_compact_planner_preserves_graph_and_orders_with_separated_tracks
+1 failed, 59 passed in 2.25s

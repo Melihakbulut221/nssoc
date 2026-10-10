@@ -1,0 +1,245 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: chip-supply-tiled
+on:
+  push:
+    paths:
+      - .github/workflows/chip-supply-tiled.yml
+  workflow_dispatch:
+    inputs:
+      resume_run_id:
+        description: Prior run containing the same completed prepared bundle and optional completed tiles
+        required: false
+        type: string
+      resume_bundle_sha256:
+        description: Independently checked bundle.json SHA256 from that prior run; required when resuming
+        required: false
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: chip-supply-tiled-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    outputs:
+      bundle_sha256: ${{ steps.identity.outputs.bundle_sha256 }}
+      tiles: ${{ steps.identity.outputs.tiles }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Gate coverage and immutable checkpoint contracts
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_cloud_supply_tiles.py sw/tests/test_chip_supply_probe_plan.py sw/tests/test_supply_checkpoint_plan.py sw/tests/test_chip_supply_connectivity.py
+      - name: Validate optional resume identity
+        env:
+          RESUME_RUN: ${{ inputs.resume_run_id }}
+          RESUME_SHA: ${{ inputs.resume_bundle_sha256 }}
+        run: |
+          python3 - <<'PY'
+          import os,re
+          run,sha=os.environ['RESUME_RUN'],os.environ['RESUME_SHA']
+          assert bool(run)==bool(sha), 'Both resume run ID and independent bundle hash are required'
+          if run:
+              assert re.fullmatch(r'[1-9][0-9]*',run)
+              assert re.fullmatch(r'[0-9a-f]{64}',sha)
+          PY
+      - name: Bootstrap pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Resume immutable completed geometry bundle
+        if: inputs.resume_run_id != ''
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: supply-tiles-prepared
+          path: hw/soc/out/github-supply-tiled/bundle
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+      - name: Fetch hash-verified GDS, native references and complete IO window plan
+        if: inputs.resume_run_id == ''
+        run: |
+          python3 scripts/run_chip_native_shard.py --group beol --prepare-only --manifest docs/evidence/chip-offset-filled-native-input-assets-20260929.json --output hw/soc/out/github-supply-tiled/prepared
+          python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/chip-filled-supply-recovery-assets-20260929.json --out hw/soc/out/github-supply-tiled/supply-assets
+          python3 scripts/fetch_evidence_assets.py --manifest docs/evidence/native-io-component-probes-assets-20260929.json --out hw/soc/out/github-supply-tiled/window-assets
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from run_chip_native_shard import restore
+          root=Path('hw/soc/out/github-supply-tiled')
+          restore(root/'supply-assets/chip-filled-supply-recovery-20260929.tar.xz',root/'supply-inputs')
+          restore(root/'window-assets/native-io-component-probes-20260929.tar.xz',root/'window-inputs')
+          PY
+      - name: Validate native seam, open, short and checkpoint controls
+        run: |
+          mkdir -p hw/soc/out/github-supply-tiled
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python sw/tests/cloud_supply_tiles_native.py hw/soc/out/github-supply-tiled/controls > hw/soc/out/github-supply-tiled/controls.log 2>&1
+      - name: Checkpoint all geometry in 64 independent overlapping tiles
+        if: inputs.resume_run_id == ''
+        run: |
+          set -o pipefail
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/cloud_supply_tiles.py prepare \
+            --gds hw/soc/out/github-supply-tiled/prepared/beol/bundle/input/chip.gds \
+            --plan hw/soc/out/github-supply-tiled/window-inputs/verification/all-io-supply-windows-v3.json \
+            --references hw/soc/out/github-supply-tiled/supply-inputs/native-reference \
+            --output hw/soc/out/github-supply-tiled/bundle --memory-gib 4 \
+            2>&1 | tee hw/soc/out/github-supply-tiled/prepare.log
+      - name: Pin complete geometry bundle and job inventory
+        id: identity
+        env:
+          RESUME_SHA: ${{ inputs.resume_bundle_sha256 }}
+        run: |
+          python3 - <<'PY'
+          import os,sys,json
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from cloud_supply_tiles import sha,validate_bundle
+          bundle=Path('hw/soc/out/github-supply-tiled/bundle')
+          actual=sha(bundle/'bundle.json')
+          if os.environ['RESUME_SHA']:
+              assert actual==os.environ['RESUME_SHA'],'Wrong resumed bundle identity'
+          manifest,plan=validate_bundle(bundle,actual)
+          assert manifest['production'] and len(manifest['grid']['tiles'])==64
+          assert plan['io_instances']==314 and plan['port_windows']==10526
+          with open(os.environ['GITHUB_OUTPUT'],'a') as target:
+              target.write('bundle_sha256='+actual+'\n')
+              target.write('tiles='+json.dumps([t['id'] for t in manifest['grid']['tiles']])+'\n')
+          PY
+      - name: Publish only a fully inventoried geometry checkpoint
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-tiles-prepared
+          path: hw/soc/out/github-supply-tiled/bundle/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain preparation/control failures separately
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-prepare-debug-attempt-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/github-supply-tiled/*.log
+            hw/soc/out/github-supply-tiled/controls/
+            hw/soc/out/github-supply-tiled/bundle/*.prepared.json
+          retention-days: 30
+  tile:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        id: ${{ fromJSON(needs.prepare.outputs.tiles) }}
+    env:
+      BUNDLE_SHA: ${{ needs.prepare.outputs.bundle_sha256 }}
+      TILE: ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: supply-tiles-prepared
+          path: hw/soc/out/github-supply-tiled/bundle
+      - name: Optional completed tile from the independently pinned prior bundle
+        if: inputs.resume_run_id != ''
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: supply-tile-${{ matrix.id }}-${{ needs.prepare.outputs.bundle_sha256 }}
+          path: hw/soc/out/github-supply-tiled/tile-${{ matrix.id }}
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+      - name: Bootstrap identical pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+      - name: Extract, exit, replay and measure one physical tile
+        run: |
+          set -o pipefail
+          ulimit -v 4194304
+          ulimit -c 0
+          tile_dir="hw/soc/out/github-supply-tiled/tile-${TILE}"
+          mkdir -p "$tile_dir"
+          export TILE_DIR="$tile_dir"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          path=Path(os.environ['TILE_DIR'])
+          receipt=dict(run_id=os.environ['GITHUB_RUN_ID'],attempt=os.environ['GITHUB_RUN_ATTEMPT'],commit=os.environ['GITHUB_SHA'],tile=int(os.environ['TILE']),bundle_sha256=os.environ['BUNDLE_SHA'])
+          (path/('job-attempt-'+os.environ['GITHUB_RUN_ATTEMPT']+'.json')).write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+          if [ ! -f "$tile_dir/checkpoint/manifest.json" ]; then
+            hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/cloud_supply_tiles.py extract --bundle hw/soc/out/github-supply-tiled/bundle --bundle-sha256 "$BUNDLE_SHA" --tile "$TILE" --output "$tile_dir/checkpoint" --memory-gib 4 2>&1 | tee "$tile_dir/extract.log"
+            prepared_sha=$(sha256sum "$tile_dir/checkpoint/prepared.json" | cut -d' ' -f1)
+            hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/supply_checkpoint_staged.py --checkpoint "$tile_dir/checkpoint" --prepared-sha256 "$prepared_sha" 2>&1 | tee "$tile_dir/verify.log"
+          fi
+          if [ -f "$tile_dir/measurement.json" ]; then
+            mv "$tile_dir/measurement.json" "$tile_dir/resumed-measurement-original.json"
+          fi
+          manifest_sha=$(sha256sum "$tile_dir/checkpoint/manifest.json" | cut -d' ' -f1)
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/cloud_supply_tiles.py measure --bundle hw/soc/out/github-supply-tiled/bundle --bundle-sha256 "$BUNDLE_SHA" --tile "$TILE" --checkpoint "$tile_dir/checkpoint" --manifest-sha256 "$manifest_sha" --output "$tile_dir/measurement.json" --memory-gib 4 2>&1 | tee "$tile_dir/measure.log"
+      - name: Publish completed tile and replayable native checkpoint
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-tile-${{ matrix.id }}-${{ needs.prepare.outputs.bundle_sha256 }}
+          path: hw/soc/out/github-supply-tiled/tile-${{ matrix.id }}/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve unfinished native output without accepting it
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-tile-debug-${{ matrix.id }}-attempt-${{ github.run_attempt }}
+          path: hw/soc/out/github-supply-tiled/tile-${{ matrix.id }}/
+          retention-days: 30
+  strict-aggregate:
+    needs: [prepare, tile]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    env:
+      BUNDLE_SHA: ${{ needs.prepare.outputs.bundle_sha256 }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: supply-tiles-prepared
+          path: hw/soc/out/github-supply-tiled/bundle
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: supply-tile-*-${{ needs.prepare.outputs.bundle_sha256 }}
+          path: hw/soc/out/github-supply-tiled/results
+      - name: Audit complete geometry, all 64 checkpoint chains and all 10526 windows
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          python3 scripts/bootstrap_flow.py --check
+          set -o pipefail
+          hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/cloud_supply_tiles.py combine --bundle hw/soc/out/github-supply-tiled/bundle --bundle-sha256 "$BUNDLE_SHA" --results hw/soc/out/github-supply-tiled/results --output hw/soc/out/github-supply-tiled/final.json --memory-gib 4 2>&1 | tee hw/soc/out/github-supply-tiled/aggregate.log
+      - name: Preserve strict audit including missing-shard failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: supply-tiled-final-attempt-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/github-supply-tiled/final.json
+            hw/soc/out/github-supply-tiled/aggregate.log
+          retention-days: 30

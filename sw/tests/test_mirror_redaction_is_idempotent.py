@@ -9,7 +9,10 @@ and in the mirror it is the other way round. The first version of this
 file did not account for that, shipped, and turned the mirror's own CI
 red on its first push -- a guard that fails where it is published is
 worse than the defect it was written for. `IN_MIRROR` decides which
-half applies, and each half is a real assertion rather than a skip.
+half applies, and the selected state is checked without skipping the other branch.
+
+Corrected 2026-09-19: the old public tests actually skipped the rejection
+and regeneration cases. Both now execute the production generator here too.
 
 WHY THIS GUARD EXISTS. `scripts/gen_public_mirror.py` asserted that
 every held fragment matched its pattern exactly once. Run against the
@@ -91,54 +94,22 @@ def _is_generated_mirror():
 IN_MIRROR = _is_generated_mirror()
 
 
-@pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
-@pytest.mark.skipif(IN_MIRROR, reason="this tree IS the generated mirror, where "
-                                      "the fragment is redacted by construction; "
-                                      "the mirror's own claim is the next test")
-def test_the_source_still_carries_the_fragment_and_not_the_marker():
-    """Upstream: the pattern matches once and the redaction is absent.
-
-    ONE test over every fragment and not one per fragment. The
-    parametrised version reads better upstream and becomes three
-    identical skips in the mirror, where the whole file is
-    inapplicable by construction; this repository's rule is that a skip
-    carries a reason worth reading, and the same reason three times is
-    one reason. Every fragment is still named on failure.
-    """
+def test_the_source_matches_its_declared_publication_state():
+    """Check the actual upstream/mirror state without skipping either checkout."""
+    assert FRAGMENTS, "the generator and its held-fragment inventory are required"
     for rel, pattern, _replacement, marker, _why in FRAGMENTS:
         src = ROOT / rel
-        if not src.exists():
-            continue
+        assert src.is_file(), rel
         text = src.read_text(encoding="utf-8")
         n = len(re.findall(pattern, text, flags=re.S))
-        assert n == 1, (
-            "%s: the held fragment matches %d times, not once. Either the "
-            "fragment was reworded -- in which case the generator is right "
-            "to fail and this pattern needs updating -- or a second copy of "
-            "it has appeared." % (rel, n))
-        assert marker not in text, (
-            "%s carries the REDACTION marker upstream. The marker is what "
-            "licenses a zero-match, so a source file containing it would "
-            "let a live fragment through as 'already redacted'." % rel)
+        if IN_MIRROR:
+            assert marker in text, f"{rel}: public redaction marker is missing"
+            assert n in (0, 1), f"{rel}: duplicate held fragment"
+        else:
+            assert n == 1, f"{rel}: upstream fragment was changed or duplicated"
+            assert marker not in text, f"{rel}: redaction marker present upstream"
 
 
-@pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
-def test_this_mirror_is_redacted():
-    """In the mirror the redaction is already present. That IS the claim."""
-    if not IN_MIRROR:
-        pytest.skip("this tree is the upstream repository, not the mirror")
-    for rel, _pattern, _replacement, marker, _why in FRAGMENTS:
-        src = ROOT / rel
-        if not src.exists():
-            continue
-        assert marker in src.read_text(encoding="utf-8"), (
-            "%s is in a generated mirror and does not carry the redaction "
-            "marker: the held fragment may have travelled." % rel)
-
-
-@pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
-@pytest.mark.skipif(IN_MIRROR, reason="generating a mirror needs the upstream "
-                                      "tree's git history and its held files")
 def test_the_generated_tree_is_redacted_and_regenerates_unchanged(tmp_path):
     """The mirror case: pattern gone, marker present, and running again is a no-op."""
     first = tmp_path / "m1"
@@ -183,28 +154,37 @@ def test_the_generated_tree_is_redacted_and_regenerates_unchanged(tmp_path):
         assert marker in b.decode("utf-8")
 
 
-@pytest.mark.skipif(not FRAGMENTS, reason="scripts/gen_public_mirror.py is not in this tree")
-@pytest.mark.skipif(IN_MIRROR, reason="the fragment is already redacted here, so "
-                                      "there is nothing left to reword")
 def test_a_reworded_fragment_is_not_mistaken_for_a_redacted_one():
-    """The guarantee: reworded upstream is NOT the same as already redacted.
+    """Exercise the production rejection on altered text in BOTH tree types.
 
-    This is the row the fix could have got wrong. It exercises the
-    generator's decision directly rather than through a whole build,
-    because building a tree whose ROADMAP has been tampered with would
-    mean writing a tampered tree to disk.
+    The former test skipped on the public mirror and, upstream, only checked
+    regex preconditions without invoking the generator. These assertions must
+    fail if its rejection is removed. Only in-memory text is altered.
     """
-    for rel, pattern, _replacement, marker, _why in FRAGMENTS:
-        src = ROOT / rel
-        if not src.exists():
-            continue
-        text = src.read_text(encoding="utf-8")
+    from gen_public_mirror import redact_fragment
+    assert FRAGMENTS
+    for rel, pattern, replacement, marker, why in FRAGMENTS:
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        reworded = re.sub(pattern, "REWORDED FRAGMENT", text, flags=re.S)
+        reworded = reworded.replace(marker, "REWORDED FRAGMENT")
+        assert reworded != text, rel
+        assert not re.search(pattern, reworded, flags=re.S), rel
+        assert marker not in reworded, rel
+        with pytest.raises(AssertionError, match="held fragment"):
+            redact_fragment(reworded, rel, pattern, replacement, marker, why)
 
-        # Reword it: the fragment is gone, but nothing redacted it.
-        reworded = re.sub(pattern, "SOMETHING ELSE ENTIRELY", text, flags=re.S)
-        assert reworded != text, "%s: the rewording did not take" % rel
-        assert len(re.findall(pattern, reworded, flags=re.S)) == 0
-        assert marker not in reworded, (
-            "a reworded %s must not contain the redaction marker, or the "
-            "generator would treat it as already redacted and ship it" % rel)
-    # n == 0 and marker absent is exactly the branch that raises.
+
+@pytest.mark.parametrize("source", ["held held", "held held [redacted]"])
+def test_duplicate_matches_fail_even_when_a_marker_is_present(source):
+    from gen_public_mirror import redact_fragment
+    with pytest.raises(AssertionError, match="matched 2 times"):
+        redact_fragment(source, "fixture.txt", r"held", "[redacted]",
+                        "[redacted]", "synthetic test fragment")
+
+
+def test_first_redaction_and_second_redaction_use_the_same_production_rule():
+    from gen_public_mirror import redact_fragment
+    args = ("fixture.txt", r"held", "[redacted]", "[redacted]", "test fragment")
+    once = redact_fragment("before held after", *args)
+    assert once == "before [redacted] after"
+    assert redact_fragment(once, *args) == once

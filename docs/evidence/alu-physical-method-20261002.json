@@ -1,0 +1,152 @@
+{
+  "status": "FROZEN_BLOCKED_BY_UNBOUND_FORMAL_AND_UNRESOLVED_BOOT",
+  "owned_sources": {
+    "scripts/run_cloud_alu_physical.py": {
+      "bytes": 32396,
+      "sha256": "089309970e529cc7b9308b32bd04719acff34147a3e69b427a837797700c7525"
+    },
+    "hw/soc/pnr/alu_physical_flow.py": {
+      "bytes": 3109,
+      "sha256": "3955abd944439d2bd4305eebbea2eaa250523fffb239f453cc3168c218e69306"
+    },
+    "hw/soc/pnr/alu_physical_geometry.tcl": {
+      "bytes": 2597,
+      "sha256": "64ca8e1419059aaf1be6e443bc19a6a04bc53ee945baf5d4a04d7b0948012e00"
+    },
+    "hw/soc/pnr/alu_physical_audit.tcl": {
+      "bytes": 3397,
+      "sha256": "4f36340558ee7bb4a6c9f26bfdc50752561a137dc9c380b78d9bad3b34c46885"
+    },
+    "sw/tests/test_cloud_alu_physical.py": {
+      "bytes": 13122,
+      "sha256": "c13df97d5b0e3e7091fe967824d99379f616285b81b91b6044c69cdf9bbc2eb8"
+    },
+    ".github/workflows/timing-alu-physical.yml": {
+      "bytes": 4169,
+      "sha256": "ee35610ff70016d71fbfa21a84b3f32d38b49628a44e5462c1897eeba20d4f3f"
+    },
+    "hw/soc/pnr/alu-physical-macro-witness.json": {
+      "bytes": 9254,
+      "sha256": "8a5136f7d8cdf3fd23e3b57023b5403d41cb2634072f406ee926a710b6573664"
+    }
+  },
+  "frozen_dependencies": {
+    "scripts/run_cloud_alu_prefix.py": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea",
+    "scripts/prepare_alu_prefix.py": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5",
+    "scripts/run_cloud_timing_experiment.py": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
+    "scripts/bootstrap_oss.py": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277",
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c",
+    "docs/evidence/timing-cloud-input-20260930.json": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+    "scripts/prove_alu_mapped_state.py": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335",
+    "scripts/replay_alu_state_counterexample.py": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c",
+    "scripts/prove_alu_state_repair.py": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5",
+    "scripts/run_cloud_hold_diagnostic.py": "61644cc59ae15f7a9166d0e5f8558c5c755581d69ae516725e7e3b768b69abe7",
+    "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6",
+    "scripts/prove_alu_state_partitions.py": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8",
+    "sw/tests/test_alu_state_partitions.py": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4",
+    ".github/workflows/timing-alu-state-partitions.yml": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542",
+    "hw/soc/pnr/alu-physical-macro-witness.json": "8a5136f7d8cdf3fd23e3b57023b5403d41cb2634072f406ee926a710b6573664"
+  },
+  "validation": [
+    {
+      "name": "pytest",
+      "command": [
+        "hw/soc/tools/cocotb-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "/dev/shm/nssoc-physical-refreeze-wnc10omr/pytest",
+        "sw/tests/test_cloud_alu_physical.py",
+        "sw/tests/test_alu_state_partitions.py"
+      ],
+      "returncode": 0,
+      "TMPDIR": "/dev/shm/nssoc-physical-refreeze-wnc10omr",
+      "log": {
+        "bytes": 179,
+        "sha256": "c9bba5e6427d9ffed2f5294897d455c3ec7acba25c7ded85832d0b21080baea9"
+      }
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "--no-cache",
+        "scripts/run_cloud_alu_physical.py",
+        "hw/soc/pnr/alu_physical_flow.py",
+        "sw/tests/test_cloud_alu_physical.py"
+      ],
+      "returncode": 0,
+      "log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      }
+    },
+    {
+      "name": "actionlint",
+      "command": [
+        "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+        ".github/workflows/timing-alu-physical.yml"
+      ],
+      "returncode": 0,
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "proof_binding": null,
+  "boot_failure": {
+    "run_id": 37002748526,
+    "source_commit": "622a1ae720ae727fde0cd7b9c070cf6b873c9da8",
+    "variant": "candidate",
+    "memory": "vendor",
+    "artifact_id": 11233351913,
+    "artifact": {
+      "bytes": 614871,
+      "sha256": "f94d5e9046a71adf536de24db530bc12d9435c8e72b6fe3bddc9cba71e57d3cb"
+    },
+    "unresolved": true
+  },
+  "workflow_manual_only": true,
+  "full_chip_native_execution": false,
+  "new_proof_execution": false,
+  "native_api_inspection": {
+    "bytes": 3050,
+    "sha256": "77abd993e8a9e19cf93354e53e7cc7c4cafcf9ed4960f2d22608d87d014413c1"
+  },
+  "runtime": {
+    "bytes": 1398053408,
+    "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+  },
+  "exact_32_native_names_previously_checked_against_independent_receipt": true,
+  "scope": "Matched fresh placement/CTS/GRT method only. Full partition proof AND actual diagnosis/qualification of the preserved four-state failure are required before physical execution. No timing, boot, transistor or manufacturing acceptance.",
+  "root_focused_tests": {
+    "passed": 73,
+    "scope": "Physical source gates and complete partition method controls; no full-chip native execution"
+  },
+  "independent_native_api_review": {
+    "status": "NATIVE_API_BLOCKER_RESOLVED_REFREEZE_VERIFIED",
+    "flow_sha256": "3955abd944439d2bd4305eebbea2eaa250523fffb239f453cc3168c218e69306",
+    "config_variable_count": 106,
+    "required_grt_variables": [
+      "GRT_ADJUSTMENT",
+      "GRT_ALLOW_CONGESTION",
+      "GRT_MACRO_EXTENSION",
+      "GRT_OVERFLOW_ITERS"
+    ],
+    "outputs": [
+      "odb",
+      "def",
+      "sdc",
+      "nl",
+      "pnl"
+    ],
+    "native_run_method_unchanged": true,
+    "normal_grt_and_audit_each_once": true,
+    "scope": "Pinned AppImage Python import and native API introspection only; no physical execution or proof/boot acceptance."
+  }
+}

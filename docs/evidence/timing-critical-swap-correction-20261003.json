@@ -1,0 +1,919 @@
+{
+  "schema": 1,
+  "status": "PASS_MIRRORED_SIZING_ANCHOR_CORRECTION",
+  "source_pins": {
+    "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+      "bytes": 15730,
+      "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+    },
+    "scripts/run_cloud_critical_followup.py": {
+      "bytes": 40276,
+      "sha256": "8f2a7d972adf8c8c38fd950efca234c9fd3037fc0a1797fd28b706acceeca898"
+    },
+    "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+      "bytes": 12581,
+      "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+    },
+    "hw/soc/pnr/timing_critical_followup_step.tcl": {
+      "bytes": 7164,
+      "sha256": "c19e4784f30c78ba718de32ede7fb97523f599ec7ebb210e157b411f40e02d88"
+    },
+    "hw/soc/pnr/timing_critical_hold_child.tcl": {
+      "bytes": 2895,
+      "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+    },
+    "sw/tests/timing_critical_followup_native.tcl": {
+      "bytes": 10303,
+      "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+    },
+    "sw/tests/test_cloud_critical_followup.py": {
+      "bytes": 32381,
+      "sha256": "4e73d226af0c3b0b73c148f425409c2ce52e34cd8c6a6ed915125c9f78d797df"
+    },
+    ".github/workflows/timing-critical-followup.yml": {
+      "bytes": 6319,
+      "sha256": "7a304569814e8c8aa1b154c7fd866f3f2ff44d402084b134c357ec80da867c80"
+    }
+  },
+  "failure": {
+    "run_id": 37075371532,
+    "source_commit": "555dc691f1cb4d8635bb0ed787729cb2ac710ded",
+    "artifact_id": 11256788649,
+    "artifact_pin": {
+      "bytes": 257976063,
+      "sha256": "175f47b952bea31761c212c6c053ae2da5b48e11eb90788db13b90ad60478940"
+    },
+    "error": "Native sizing changed connectivity, count or immediate placement",
+    "exact_native_target": {
+      "target": {
+        "instance": "fanout639",
+        "input_pin": "A",
+        "output_pin": "X",
+        "before_master": "sg13g2_buf_4",
+        "after_master": "sg13g2_buf_8",
+        "output_net": "net639"
+      },
+      "input_net": "_021480_",
+      "terminals": [
+        [
+          "_075682_",
+          "sg13g2_a221oi_1",
+          "A1"
+        ],
+        [
+          "_076184_",
+          "sg13g2_a22oi_1",
+          "A2"
+        ],
+        [
+          "_076577_",
+          "sg13g2_nand2_1",
+          "B"
+        ],
+        [
+          "_076606_",
+          "sg13g2_nor2_1",
+          "B"
+        ],
+        [
+          "_105061_",
+          "sg13g2_a21oi_1",
+          "A1"
+        ],
+        [
+          "_107671_",
+          "sg13g2_o21ai_1",
+          "A1"
+        ],
+        [
+          "_109388_",
+          "sg13g2_nand2_1",
+          "A"
+        ],
+        [
+          "_109393_",
+          "sg13g2_a221oi_1",
+          "A2"
+        ],
+        [
+          "fanout639",
+          "sg13g2_buf_4",
+          "X"
+        ]
+      ],
+      "native_placement": {
+        "instance": "fanout639",
+        "master": "sg13g2_buf_4",
+        "x_dbu": "2149920",
+        "y_dbu": "1126440",
+        "orientation": "MY",
+        "status": "PLACED"
+      },
+      "netlist": {
+        "bytes": 12124214,
+        "sha256": "861e12f60e2df67017949d95a51a6f437e8044f661727898d02eb03935549ef2"
+      },
+      "placement": {
+        "bytes": 5287445,
+        "sha256": "628bed4a0186a63f04d725c3e91900082f75c735831dcc42815d2ff0658a65d3"
+      }
+    },
+    "selected_review": {
+      "bytes": 39723,
+      "sha256": "b18aa79b9d5bd3505ce0835418f5a3f8869e953c4f6f5937a963d3300099e96b"
+    },
+    "scope": "Final immutable artifact selected 219 members CRC/capture-SHA checked and 56 method files Git-bound. Whole ZIP, full chip views and full endpoint tables not downloaded locally."
+  },
+  "diagnosis": {
+    "native_tiny_reproduction_before": {
+      "source_helper_sha256": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a",
+      "fixture_sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c",
+      "native_address_space_limit": 2147483648,
+      "records": {
+        "R0": {
+          "seconds": 0.8972413500014227,
+          "returncode": 0,
+          "observed": {
+            "failed": 0,
+            "message": "instance {\"driver\"} original_master {\"sg13g2_buf_4\"} replacement_master {\"sg13g2_buf_8\"} native_calls 1 instance_count 4 original_width 3840 replacement_width 6240 site_width 480 connectivity_preserved true immediate_placement_preserved true observed_input_net {\"d\"} observed_output_net {\"target\"} observed_output_terminals {[[\"driver\",\"sg13g2_buf_4\",\"X\"],[\"sink\",\"sg13g2_dfrbpq_1\",\"D\"],[\"sink2\",\"sg13g2_dfrbpq_1\",\"D\"]]} observed_placement {[\"20160\",\"15120\",\"R0\",\"PLACED\"]} observed_all_pin_nets {{\"A\":\"d\",\"VDD\":\"VDD\",\"VSS\":\"VSS\",\"X\":\"target\"}}",
+            "native_before": {
+              "master": "sg13g2_buf_4",
+              "location": "20160 15120",
+              "origin": "20160 15120",
+              "orient": "R0",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            },
+            "native_after": {
+              "master": "sg13g2_buf_8",
+              "location": "20160 15120",
+              "origin": "20160 15120",
+              "orient": "R0",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            }
+          }
+        },
+        "MY": {
+          "seconds": 0.8893991460063262,
+          "returncode": 0,
+          "observed": {
+            "failed": 1,
+            "message": "Native sizing changed connectivity, count or immediate placement",
+            "native_before": {
+              "master": "sg13g2_buf_4",
+              "location": "20160 15120",
+              "origin": "24000 15120",
+              "orient": "MY",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            },
+            "native_after": {
+              "master": "sg13g2_buf_8",
+              "location": "17760 15120",
+              "origin": "24000 15120",
+              "orient": "MY",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            }
+          }
+        },
+        "MX": {
+          "seconds": 0.9026899120071903,
+          "returncode": 0,
+          "observed": {
+            "failed": 0,
+            "message": "instance {\"driver\"} original_master {\"sg13g2_buf_4\"} replacement_master {\"sg13g2_buf_8\"} native_calls 1 instance_count 4 original_width 3840 replacement_width 6240 site_width 480 connectivity_preserved true immediate_placement_preserved true observed_input_net {\"d\"} observed_output_net {\"target\"} observed_output_terminals {[[\"driver\",\"sg13g2_buf_4\",\"X\"],[\"sink\",\"sg13g2_dfrbpq_1\",\"D\"],[\"sink2\",\"sg13g2_dfrbpq_1\",\"D\"]]} observed_placement {[\"20160\",\"18900\",\"MX\",\"PLACED\"]} observed_all_pin_nets {{\"A\":\"d\",\"VDD\":\"VDD\",\"VSS\":\"VSS\",\"X\":\"target\"}}",
+            "native_before": {
+              "master": "sg13g2_buf_4",
+              "location": "20160 18900",
+              "origin": "20160 22680",
+              "orient": "MX",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            },
+            "native_after": {
+              "master": "sg13g2_buf_8",
+              "location": "20160 18900",
+              "origin": "20160 22680",
+              "orient": "MX",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            }
+          }
+        },
+        "R180": {
+          "seconds": 0.8712650060042506,
+          "returncode": 0,
+          "observed": {
+            "failed": 1,
+            "message": "Native sizing changed connectivity, count or immediate placement",
+            "native_before": {
+              "master": "sg13g2_buf_4",
+              "location": "20160 18900",
+              "origin": "24000 22680",
+              "orient": "R180",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            },
+            "native_after": {
+              "master": "sg13g2_buf_8",
+              "location": "17760 18900",
+              "origin": "24000 22680",
+              "orient": "R180",
+              "status": "PLACED",
+              "pins": "{A d} {VDD VDD} {VSS VSS} {X target}",
+              "count": "4"
+            }
+          }
+        }
+      },
+      "full_chip_loaded": false
+    },
+    "cause": "The original guard incorrectly required unchanged lower-left immediately after an origin-preserving native master swap. In MY/R180 orientation, the verified width change3840\u21926240DBU deterministically shifts the lower-left\u22122400DBU. Original cloud target was MY and its before-swap baseline was exact. The four-cell same-runtime reproduction confirms this defect; the failed full-chip run did not export post-swap geometry.",
+    "correction": "Assert exact native origin/orientation/status and all pins/count, verify only the deterministic master-width transform, explicitly restore source lower-left with setLocation, then retain exact final placement/master/dimensions checks. Mandatory legalization/check_placement, fresh route/RC, all prior guards and two independent reloads remain unchanged.",
+    "hold_scope": "Separate hold child completed: selected sg13g2_dlygate4sd3_1, tentative hold22331, journal restore,0 retained insertions. All reported timing counts/metrics unchanged. Exact transient slew-vs-setup rollback predicate remains unobserved; no claim of hold closure."
+  },
+  "validation": {
+    "pytest": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest sw/tests/test_cloud_critical_followup.py sw/tests/test_cloud_residual_repair.py sw/tests/test_cloud_electrical_margin.py sw/tests/test_cloud_combined_repair.py -q --basetemp=/dev/shm/nssoc-critical-swap-final-tests -p no:cacheprovider",
+      "returncode": 0,
+      "passed": 457,
+      "reported_seconds": 0.74
+    },
+    "ruff_returncode": 0,
+    "actionlint_returncode": 0,
+    "git_diff_check_returncode": 0,
+    "all48_frozen_ancestor_methods_unchanged": true,
+    "actual_native_controls": {
+      "R0": {
+        "returncode": 0,
+        "elapsed_seconds": 0.8832247870013816,
+        "geometry": {
+          "orientation": "R0",
+          "raw_native_lower_left_delta_x_dbu": 0,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 0,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_control_count": 31,
+        "source_constraints_unchanged": true,
+        "all_three_corners_observed": true,
+        "placement_overlap_detected_and_repaired": true
+      },
+      "MY": {
+        "returncode": 0,
+        "elapsed_seconds": 0.9103005079959985,
+        "geometry": {
+          "orientation": "MY",
+          "raw_native_lower_left_delta_x_dbu": -2400,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 2400,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_control_count": 31,
+        "source_constraints_unchanged": true,
+        "all_three_corners_observed": true,
+        "placement_overlap_detected_and_repaired": true
+      },
+      "MX": {
+        "returncode": 0,
+        "elapsed_seconds": 0.9034452679916285,
+        "geometry": {
+          "orientation": "MX",
+          "raw_native_lower_left_delta_x_dbu": 0,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 0,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_control_count": 31,
+        "source_constraints_unchanged": true,
+        "all_three_corners_observed": true,
+        "placement_overlap_detected_and_repaired": true
+      },
+      "R180": {
+        "returncode": 0,
+        "elapsed_seconds": 0.9729890469898237,
+        "geometry": {
+          "orientation": "R180",
+          "raw_native_lower_left_delta_x_dbu": -2400,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 2400,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_control_count": 31,
+        "source_constraints_unchanged": true,
+        "all_three_corners_observed": true,
+        "placement_overlap_detected_and_repaired": true
+      }
+    },
+    "native_address_space_limit_bytes": 2147483648,
+    "source_files_unchanged_during_native_controls": true,
+    "native_output_files": {
+      "MX/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "824bb404b7ad916cd2bf427e961c51732e06ccac9153e173b1af715c58bc7025"
+      },
+      "MX/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "73ed7dce8f5a306cce6036769c89209cb7715b29d77c2efc32829a942f0b6019"
+      },
+      "MX/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "37853862f34b6e2f2d5f5d72716743ad0688791a739ecfd6c89d6d13d461a6b2"
+      },
+      "MX/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MX/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "MX/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MX/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "MX/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "MX/result.json": {
+        "bytes": 5615,
+        "sha256": "6afbbf3498de572176a13c6869a02d87b7bf198740207bd17d866898c6eb04fc"
+      },
+      "MX.log": {
+        "bytes": 5166,
+        "sha256": "244a9d6bd27812992437e1179ef5dfea95f617b98f7842bf300177853685e9ba"
+      },
+      "MY/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+      },
+      "MY/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+      },
+      "MY/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+      },
+      "MY/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MY/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "MY/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MY/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "MY/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "MY/result.json": {
+        "bytes": 5619,
+        "sha256": "c645f123b1d7fccd481c4ff6e506132069031b2bcb0123e0a23a9dc817f745be"
+      },
+      "MY.log": {
+        "bytes": 5166,
+        "sha256": "beedb0f267949ccab7b6ec49bd5e36a8dbf201157656e74274b028dd198d60a6"
+      },
+      "R0/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+      },
+      "R0/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+      },
+      "R0/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+      },
+      "R0/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R0/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "R0/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R0/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "R0/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "R0/result.json": {
+        "bytes": 5617,
+        "sha256": "af64d91172ba8709764d9a35117f8693cb2af06df349b9f3b17b551a9d8a09fa"
+      },
+      "R0.log": {
+        "bytes": 5166,
+        "sha256": "4559ca151a19fc969379a80d76d2c081f5b6d2e31257921f69b637ac93104f75"
+      },
+      "R180/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "824bb404b7ad916cd2bf427e961c51732e06ccac9153e173b1af715c58bc7025"
+      },
+      "R180/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "73ed7dce8f5a306cce6036769c89209cb7715b29d77c2efc32829a942f0b6019"
+      },
+      "R180/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "37853862f34b6e2f2d5f5d72716743ad0688791a739ecfd6c89d6d13d461a6b2"
+      },
+      "R180/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R180/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "R180/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R180/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "R180/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "R180/result.json": {
+        "bytes": 5627,
+        "sha256": "4fc33877eb1ee108b17b222170a4c1b28184ca57ed13fb86b7452fd818b620d2"
+      },
+      "R180.log": {
+        "bytes": 5166,
+        "sha256": "b6e398b67d4e23de13b602e764320fe4ba411e5a4db926ebf2b613067d93667f"
+      },
+      "methods/hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 12581,
+        "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+      },
+      "methods/sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 10303,
+        "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+      },
+      "receipt.json": {
+        "bytes": 31665,
+        "sha256": "5c5acac6ded0990b65427f8dc8e4b4a82ef939a2c68f00d279d6e1b12fff7ccf"
+      }
+    },
+    "full_chip_loaded_locally": false
+  },
+  "workflow": {
+    "all_four_orientations_mandatory_before_chip": true,
+    "all_tiny_physical_views_captured": true,
+    "own_path_change_for_single_retry": true,
+    "historical_reference_metrics_unchanged": {
+      "selected_c10": {
+        "setup_wns_ns": -4.710829,
+        "hold_wns_ns": -1.840329
+      },
+      "matched_c10": {
+        "setup_wns_ns": -4.909516349016485,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -4320.800144341774,
+        "hold_tns_ns": -26.461044910774945,
+        "setup_violating_endpoints": 1384,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1
+      },
+      "combined_parent": {
+        "setup_wns_ns": -4.209004700328478,
+        "hold_wns_ns": -0.15530043917522107,
+        "setup_tns_ns": -3554.9244330468355,
+        "hold_tns_ns": -2.117501507470365,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 66,
+        "slew_violations": 2,
+        "capacitance_violations": 3
+      },
+      "electrical_first": {
+        "setup_wns_ns": -4.255417351828328,
+        "hold_wns_ns": -0.1589801623680387,
+        "setup_tns_ns": -3598.960802264628,
+        "hold_tns_ns": -2.1187052112736637,
+        "setup_violating_endpoints": 1312,
+        "hold_violating_endpoints": 65,
+        "slew_violations": 0,
+        "capacitance_violations": 3
+      },
+      "electrical_margin_parent": {
+        "setup_wns_ns": -4.199984360298004,
+        "hold_wns_ns": -0.16056200813352461,
+        "setup_tns_ns": -3549.3283121468266,
+        "hold_tns_ns": -2.150905897835287,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 67,
+        "slew_violations": 0,
+        "capacitance_violations": 1
+      },
+      "residual_parent": {
+        "setup_wns_ns": -4.230063410659568,
+        "hold_wns_ns": -0.15798429231494993,
+        "setup_tns_ns": -3564.432972780196,
+        "hold_tns_ns": -2.0873311967761765,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 58,
+        "slew_violations": 0,
+        "capacitance_violations": 0
+      }
+    },
+    "hold_policy_unchanged": {
+      "setup_margin_seconds": 1e-10,
+      "hold_margin_seconds": 2e-11,
+      "allow_setup_violations": false,
+      "max_passes": 1,
+      "max_added_cells": 32
+    },
+    "runtime_recipe_unchanged": true,
+    "setup_hold_electrical_thresholds_changed": false,
+    "default_rtl_modified": false
+  },
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "independent_peer_review": {
+    "status": "NO_SWAP_CORRECTION_LAUNCH_BLOCKER",
+    "reviewed": "2026-10-03T06:05:44.926419+00:00",
+    "source_pins": {
+      "scripts/run_cloud_critical_followup.py": {
+        "bytes": 40276,
+        "sha256": "8f2a7d972adf8c8c38fd950efca234c9fd3037fc0a1797fd28b706acceeca898"
+      },
+      "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 12581,
+        "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+      },
+      "hw/soc/pnr/timing_critical_followup_step.tcl": {
+        "bytes": 7164,
+        "sha256": "c19e4784f30c78ba718de32ede7fb97523f599ec7ebb210e157b411f40e02d88"
+      },
+      "sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 10303,
+        "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+      },
+      "sw/tests/test_cloud_critical_followup.py": {
+        "bytes": 32381,
+        "sha256": "4e73d226af0c3b0b73c148f425409c2ce52e34cd8c6a6ed915125c9f78d797df"
+      },
+      ".github/workflows/timing-critical-followup.yml": {
+        "bytes": 6319,
+        "sha256": "7a304569814e8c8aa1b154c7fd866f3f2ff44d402084b134c357ec80da867c80"
+      }
+    },
+    "producer_receipt": {
+      "bytes": 31665,
+      "sha256": "5c5acac6ded0990b65427f8dc8e4b4a82ef939a2c68f00d279d6e1b12fff7ccf"
+    },
+    "orientations": {
+      "R0": {
+        "native_seconds": 0.8832247870013816,
+        "native_delta": 0,
+        "anchor_delta": 0,
+        "negative_controls": 31,
+        "native_control_validated": true
+      },
+      "MY": {
+        "native_seconds": 0.9103005079959985,
+        "native_delta": -2400,
+        "anchor_delta": 2400,
+        "negative_controls": 31,
+        "native_control_validated": true
+      },
+      "MX": {
+        "native_seconds": 0.9034452679916285,
+        "native_delta": 0,
+        "anchor_delta": 0,
+        "negative_controls": 31,
+        "native_control_validated": true
+      },
+      "R180": {
+        "native_seconds": 0.9729890469898237,
+        "native_delta": -2400,
+        "anchor_delta": 2400,
+        "negative_controls": 31,
+        "native_control_validated": true
+      }
+    },
+    "raw_files": {
+      "R180.log": {
+        "bytes": 5166,
+        "sha256": "b6e398b67d4e23de13b602e764320fe4ba411e5a4db926ebf2b613067d93667f"
+      },
+      "MY.log": {
+        "bytes": 5166,
+        "sha256": "beedb0f267949ccab7b6ec49bd5e36a8dbf201157656e74274b028dd198d60a6"
+      },
+      "receipt.json": {
+        "bytes": 31665,
+        "sha256": "5c5acac6ded0990b65427f8dc8e4b4a82ef939a2c68f00d279d6e1b12fff7ccf"
+      },
+      "MX.log": {
+        "bytes": 5166,
+        "sha256": "244a9d6bd27812992437e1179ef5dfea95f617b98f7842bf300177853685e9ba"
+      },
+      "R0.log": {
+        "bytes": 5166,
+        "sha256": "4559ca151a19fc969379a80d76d2c081f5b6d2e31257921f69b637ac93104f75"
+      },
+      "R180/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "R180/result.json": {
+        "bytes": 5627,
+        "sha256": "4fc33877eb1ee108b17b222170a4c1b28184ca57ed13fb86b7452fd818b620d2"
+      },
+      "R180/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "37853862f34b6e2f2d5f5d72716743ad0688791a739ecfd6c89d6d13d461a6b2"
+      },
+      "R180/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "R180/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "824bb404b7ad916cd2bf427e961c51732e06ccac9153e173b1af715c58bc7025"
+      },
+      "R180/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "R180/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R180/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "73ed7dce8f5a306cce6036769c89209cb7715b29d77c2efc32829a942f0b6019"
+      },
+      "R180/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MY/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "MY/result.json": {
+        "bytes": 5619,
+        "sha256": "c645f123b1d7fccd481c4ff6e506132069031b2bcb0123e0a23a9dc817f745be"
+      },
+      "MY/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+      },
+      "MY/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "MY/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+      },
+      "MY/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "MY/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MY/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+      },
+      "MY/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R0/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "R0/result.json": {
+        "bytes": 5617,
+        "sha256": "af64d91172ba8709764d9a35117f8693cb2af06df349b9f3b17b551a9d8a09fa"
+      },
+      "R0/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+      },
+      "R0/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "R0/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+      },
+      "R0/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "R0/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "R0/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+      },
+      "R0/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MX/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "MX/result.json": {
+        "bytes": 5615,
+        "sha256": "6afbbf3498de572176a13c6869a02d87b7bf198740207bd17d866898c6eb04fc"
+      },
+      "MX/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "37853862f34b6e2f2d5f5d72716743ad0688791a739ecfd6c89d6d13d461a6b2"
+      },
+      "MX/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "MX/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "824bb404b7ad916cd2bf427e961c51732e06ccac9153e173b1af715c58bc7025"
+      },
+      "MX/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "MX/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "MX/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "73ed7dce8f5a306cce6036769c89209cb7715b29d77c2efc32829a942f0b6019"
+      },
+      "MX/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "methods/hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 12581,
+        "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+      },
+      "methods/sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 10303,
+        "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+      }
+    },
+    "focused_tests": {
+      "passed": 245,
+      "seconds": 0.27
+    },
+    "checks": [
+      "Actual origin-preserving swap, not lower-left preservation, is the strict native intermediate invariant.",
+      "Only the exact8\u219213site width transform is accepted: MY/R180\u22122400DBU, R0/MX0.",
+      "Explicit source lower-left restoration is a real new physical operation, with exact final bbox/orientation/status/PG/pin/count checks.",
+      "All four real row-orientation controls execute before chip load and their physicalviews are captured.",
+      "DPL, check_placement, fresh global routing/RC, two fresh reloads and full protected/SRAM/endpoint/ECO guards remain mandatory."
+    ],
+    "source_edits": false,
+    "full_chip_loaded": false,
+    "independent_native_reexecution": false,
+    "candidate_adopted": false
+  },
+  "root_review": {
+    "verified_at": "2026-10-03T06:08:03.146052+00:00",
+    "source_pins_rehashed": {
+      "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+        "bytes": 15730,
+        "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+      },
+      "scripts/run_cloud_critical_followup.py": {
+        "bytes": 40276,
+        "sha256": "8f2a7d972adf8c8c38fd950efca234c9fd3037fc0a1797fd28b706acceeca898"
+      },
+      "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 12581,
+        "sha256": "62865abd5358e911799944c99801953d47cb6daa3ed4d44b07c94747176a0baf"
+      },
+      "hw/soc/pnr/timing_critical_followup_step.tcl": {
+        "bytes": 7164,
+        "sha256": "c19e4784f30c78ba718de32ede7fb97523f599ec7ebb210e157b411f40e02d88"
+      },
+      "hw/soc/pnr/timing_critical_hold_child.tcl": {
+        "bytes": 2895,
+        "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+      },
+      "sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 10303,
+        "sha256": "7c2a639ac05045144fe036e7fe34784d5cf6042058c960b734679b94a56e32d2"
+      },
+      "sw/tests/test_cloud_critical_followup.py": {
+        "bytes": 32381,
+        "sha256": "4e73d226af0c3b0b73c148f425409c2ce52e34cd8c6a6ed915125c9f78d797df"
+      },
+      ".github/workflows/timing-critical-followup.yml": {
+        "bytes": 6319,
+        "sha256": "7a304569814e8c8aa1b154c7fd866f3f2ff44d402084b134c357ec80da867c80"
+      }
+    },
+    "independent_actual_native": {
+      "R0": {
+        "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+        "geometry": {
+          "orientation": "R0",
+          "raw_native_lower_left_delta_x_dbu": 0,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 0,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_controls": 31
+      },
+      "MY": {
+        "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+        "geometry": {
+          "orientation": "MY",
+          "raw_native_lower_left_delta_x_dbu": -2400,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 2400,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_controls": 31
+      },
+      "MX": {
+        "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+        "geometry": {
+          "orientation": "MX",
+          "raw_native_lower_left_delta_x_dbu": 0,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 0,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_controls": 31
+      },
+      "R180": {
+        "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+        "geometry": {
+          "orientation": "R180",
+          "raw_native_lower_left_delta_x_dbu": -2400,
+          "native_origin_preserved": true,
+          "explicit_source_lower_left_restored": true,
+          "anchored_origin_delta_x_dbu": 2400,
+          "no_geometry_tolerance_applied": true
+        },
+        "negative_controls": 31
+      }
+    },
+    "native_execution_receipt": {
+      "path": "hw/soc/out/heartbeat-20261003-0547/critical/swap-root-native-final/receipt.json",
+      "bytes": 31660,
+      "sha256": "60a3c069c68411ba5f84971e591247c94365986b863555063be455558ac81aff"
+    },
+    "scope": "Independent four-cell native rerun and raw offline guard replay, at most2GiB per process. Actual full-chip sizing outcome still pending; no full-chip input loaded locally."
+  }
+}

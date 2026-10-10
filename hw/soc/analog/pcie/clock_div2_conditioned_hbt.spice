@@ -1,0 +1,10 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Separate native resistive clock common-mode conditioner prototype.
+.subckt nssoc_clock_div2_conditioned_hbt clkp clkn qp qn avdd avss sub
+XSP clkp ckp sub rppd w=4u l=3.6u b=0 sw_et=1
+XSN clkn ckn sub rppd w=4u l=3.6u b=0 sw_et=1
+XUP avdd ckp sub rppd w=1u l=8u b=0 sw_et=1
+XUN avdd ckn sub rppd w=1u l=8u b=0 sw_et=1
+XCORE ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt
+.ends nssoc_clock_div2_conditioned_hbt

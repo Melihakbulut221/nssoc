@@ -1,0 +1,35 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Actual native LVS device terminals and finite PDK contacts. No extracted wire RC.
+.subckt nssoc_pump30_compact_v1 sub vctrl div_avdd vco_avdd up avss down
+XD0001 vctrl avss n_1 rppd w=1.0u l=47.0u ps=0.0u b=0 m=1 sw_et=1
+XD0002 n_31 up avss n_1 sg13_hv_nmos l=0.45u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1
+XD0003 n_31 up div_avdd n_13 sg13_hv_pmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1
+XD0004 vctrl avss cap_cmim w=10.0u l=10.0u
+XD0005 n_47 n_37 div_avdd n_11 sg13_hv_pmos l=2u w=6.4u as=2.176p ad=2.176p ps=13.48u pd=13.48u rfmode=0 ng=1 m=1
+XD0006 n_37 n_37 div_avdd n_10 sg13_hv_pmos l=2u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1
+XD0007 n_37 n_26 avss n_1 sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1
+XD0008 n_42 n_26 avss n_1 sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1
+XD0009 n_26 n_26 avss n_1 sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1
+XD0010 vco_avdd vctrl n_1 rppd w=1.0u l=80.0u ps=0.0u b=0 m=1 sw_et=1
+XD0011 div_avdd n_26 n_1 rppd w=1.0u l=80.0u ps=0.0u b=0 m=1 sw_et=1
+XD0012 vctrl down n_42 n_1 sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1
+XD0013 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0014 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0015 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0016 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0017 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0018 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0019 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0020 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0021 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0022 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0023 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0024 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0025 sub n_1 ptap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0026 div_avdd n_12 ntap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0027 div_avdd n_11 ntap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0028 div_avdd n_13 ntap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0029 div_avdd n_10 ntap1 R=81.66666666666666666666666668 w=2u l=2u
+XD0030 vctrl n_31 n_47 n_12 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1
+.ends nssoc_pump30_compact_v1

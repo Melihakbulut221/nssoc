@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Actual 455-device loaded VCO/divider wire prerequisite, not closed full PEX.
+
+Both native metal networks are preserved. Each block's body and wire reference
+is independently exposed and grounded only by an explicit bench assumption.
+CMOS /20 feedback remains schematic; this is not a closed-loop PLL or PHY.
+"""
+
+import concurrent.futures
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import time
+from pathlib import Path
+import types
+import numpy as np
+
+import build_pcie_clock_div4_v7_hybrid_v1 as builder
+import characterize_pcie_vco_v6_feedback_bias_v2 as previous
+
+core = previous.core
+n, stream, require = core.n, core.stream, core.require
+ROOT = core.ROOT
+ANALOG = ROOT / "hw/soc/analog/pcie"
+TOP = "nssoc_pll_feedback_vco_v6_divider_wire_v1"
+CHAIN = ANALOG / "pll_feedback_vco_v6_divider_wire_v1.spice"
+DIVIDER = ROOT / "sw/tests/fixtures/pcie_clock_div4_v7_hybrid_v1"
+PREVIOUS_SHA = "f084eae8150533acd8d2f788fb6007155f88431610702fad1b7f40e4bb33f30e"
+BUILDER_SHA = "cb3e827b188cd6043302d549a16871c7efcefc4413f6c044fe628b85e7fb9a8a"
+DIVIDER_PINS = {'hybrid-open.spice': 'f7c92cc3b0953abf531770e763f926e278b45dffd87283bb76684ed64c416b89', 'composition.json': '7c8af0fc8aa596530decb6db5956bfa7c4451ba83b574a44da7e9f0a9e4bef28', 'source-native-bijection.json': '26f38704a7d132f69365462fac3ccd787789efd2cd5e38a873c94d0efd6917d8'}
+OBS = core.OBS
+physical, life = core.physical, core.life
+OWN_LIMIT, FLOOR, RECEIPT_RESERVE = core.OWN_LIMIT, core.FLOOR, core.RECEIPT_RESERVE
+HYBRID, PINS, SOURCE = core.HYBRID, core.PINS, CHAIN
+capture, native_limit = core.capture, core.native_limit
+
+
+def topology(text):
+    expected = [
+        f".subckt {TOP} vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref",
+        "XOSC vco_avdd avss clkn clkp sub vctrl body_substrate wire_cref nssoc_vco_local_hybrid_open_v2",
+        "XDIV avss clkn clkp div_avdd qn qp sub div_body_substrate div_wire_cref nssoc_clock_div4_v7_hybrid_open_v1",
+        "XFB qp qn clearb fb fbbar div_avdd core_vdd avss sub nssoc_pll_feedback_div20_v2",
+        f".ends {TOP}",
+    ]
+    require([x for x in text.splitlines() if x and not x.startswith("*")] == expected,
+            "Exact native VCO and divider wire topology")
+
+
+def source_correspondence(composition, binding, old_rows):
+    old = {r["path"]: r for r in old_rows if r["path"].startswith("xchain.xdiv.")}
+    require(len(old) == 73, "All73 original divider schematic primitives")
+    require(len(binding["devices"]) == 91 and len(composition["records"]) == 91,
+            "All91 actual divider devices")
+    by = {r["native_id"]: r for r in composition["records"]}
+    source_seen, contacts = set(), []
+    public = dict(CLKP="clkp", CLKN="clkn", QP="qp", QN="qn", DIV_AVDD="dvdd", AVSS="0", SUB="0", BULK="0")
+
+    def source_node(value):
+        # Compare the old schematic topology only. Actual body stays separate
+        # in every emitted native row and at the explicit external boundary.
+        return public.get(value, value.lower().replace("div__", "xchain.xdiv.", 1).replace("__", "."))
+
+    for item in binding["devices"]:
+        native = by[item["native_id"]]
+        require(native["model"] == item["model"], "Bound native model")
+        if item["model"] == "ptap1":
+            contacts.append(item["source_name"])
+            require(item["source_nets"] == ["SUB", "BULK"] and native["native_parameters"] == {"A":4.0,"P":8.0}, "Actual finite substrate contact")
+            continue
+        path = source_node(item["source_name"])
+        require(path in old and path not in source_seen, "Actual source identity bijection")
+        source_seen.add(path)
+        row = old[path]
+        require(row["model"] == native["model"].lower(), "Schematic/native model identity")
+        require([source_node(x) for x in item["source_nets"]] == row["nets"], "Original logical terminal topology")
+        params = {k.lower():v for k,v in native["simulator_parameters"].items()}
+        for k,v in row["params"].items():
+            require(k in params and builder.number(params[k]) == builder.number(v), "Original primitive geometry/value")
+        extras = {k:v for k,v in params.items() if k not in row["params"]}
+        allowed = ({"we":"0.07u","le":"0.9u"} if row["model"] == "npn13g2" else {"ps":"0u","m":"1"} if row["model"] == "rppd" else {})
+        require(set(extras) == set(allowed) and all(builder.number(v) == builder.number(allowed[k]) for k,v in extras.items()), "Only native explicit default parameters")
+    require(source_seen == set(old) and set(contacts) == {f"TAP{i}" for i in range(18)} and len(contacts) == 18, "Exact73 primitive plus18 contact source census")
+
+
+def config(vctrl=0.6, fault=""):
+    require(n.common.sha(previous.__file__) == PREVIOUS_SHA, "Frozen biasV2 capture")
+    require(n.common.sha(builder.__file__) == BUILDER_SHA, "Frozen divider composer")
+    require(set(DIVIDER_PINS) == {"hybrid-open.spice", "composition.json", "source-native-bijection.json"}, "Complete frozen divider inputs")
+    for name, digest in DIVIDER_PINS.items():
+        require(n.common.sha(DIVIDER/name) == digest, "Exact physical divider " + name)
+    # Nominal graph provides a strict 73-device source correspondence. The fault
+    # graph separately supplies the original real CMOS modulus mutation.
+    c, before, old_texts = previous.config(vctrl, fault)
+    _, nominal, _ = previous.config(vctrl, "")
+    comp = json.loads((DIVIDER/"composition.json").read_text())
+    binding = json.loads((DIVIDER/"source-native-bijection.json").read_text())
+    source_correspondence(comp, binding, nominal)
+    topology(CHAIN.read_text())
+    texts = {k:v for k,v in old_texts.items() if k != previous.CHAIN.name}
+    texts[CHAIN.name] = CHAIN.read_text()
+    texts["divider-hybrid-open.spice"] = (DIVIDER/"hybrid-open.spice").read_text()
+    if fault == "disconnect_divider_clock":
+        before_connection = "XDIV avss clkn clkp"
+        require(texts[CHAIN.name].count(before_connection) == 1, "Actual divider input fault")
+        texts[CHAIN.name] = texts[CHAIN.name].replace(before_connection, "XDIV avss clkp clkp")
+    rows = [r for r in before if not r["path"].startswith("xchain.xdiv.")]
+    expected_ports = ["AVSS", "CLKN", "CLKP", "DIV_AVDD", "QN", "QP", "SUB", "BODY_SUBSTRATE", "WIRE_CREF"]
+    require(comp["ports"] == expected_ports, "Native divider public/model port order")
+    ports = dict(zip([x.lower() for x in expected_ports], ["0", "clkp" if fault == "disconnect_divider_clock" else "clkn", "clkp", "dvdd", "qn", "qp", "0", "div_body_substrate", "div_wire_cref"]))
+    for item in comp["records"]:
+        words = item["line"].lower().split()
+        count = len(item["terminals"])
+        require(words[count+1] == item["model"].lower(), "Native divider model binding")
+        require(words[1:count+1] == [t["node"].lower() for t in item["terminals"]], "Native divider named-terminal row")
+        rows.append(dict(path="xchain.xdiv."+words[0], model=words[count+1], nets=[ports.get(x,"xchain.xdiv."+x) for x in words[1:count+1]], params=dict(x.split("=") for x in words[count+2:])))
+    require(len(rows) == len({r["path"] for r in rows}) == 455, "All455 actual devices")
+    require(sum(r["model"] == "npn13g2" for r in rows) == 64, "All64 HBT")
+    require(sum(r["model"] in ("ptap1","ntap1") for r in rows) == 31, "All31 finite contacts")
+    require(texts["hybrid-open.spice"] == old_texts["hybrid-open.spice"], "Unchanged physical VCO bytes")
+    wire_lines = texts["hybrid-open.spice"].splitlines() + texts["divider-hybrid-open.spice"].splitlines()
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+    c.update(case="loaded_physical_vco_v6_and_divider_v7_wire_div80", divider_schematic_records=0, divider_physical_records=91, feedback_schematic_records=302, contact_records=31, wire_resistors=1201, wire_capacitors=1383)
+    c["fixture"] += ["VDIVBODY div_body_substrate 0 0", "VDIVWREF div_wire_cref 0 0"]
+    c["extra_vectors"] += ["i(vdivbody)", "i(vdivwref)"]
+    c["extra_vectors"] = [x for x in c["extra_vectors"] if x not in {f"v({node})" for r in rows for node in r["nets"] if node != "0"}]
+    declared = set(n.vectors(rows,c["extra_vectors"]))
+    for name in OBS[1:]:
+        if name not in declared:
+            c["extra_vectors"].append(name)
+            declared.add(name)
+    model, name, old_ports = c["roots"][0]
+    require(model == previous.TOP, "Unchanged chain parent")
+    c["roots"] = [(TOP, name, old_ports+["div_body_substrate","div_wire_cref"])]
+    c["sources"] += [str(CHAIN),str(Path(__file__)),str(Path(builder.__file__)), *[str(DIVIDER/x) for x in DIVIDER_PINS]]
+    c["divider_body_boundary"] = "85 native body terminals retained; explicit grounded ideal bench boundary, not substrate-R qualification"
+    return c, rows, texts

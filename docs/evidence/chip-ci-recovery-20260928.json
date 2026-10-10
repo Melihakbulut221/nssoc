@@ -1,0 +1,37 @@
+{
+  "status": "CI_FAILURES_DIAGNOSED_FIX_VERIFIED_LOCALLY_REMOTE_PENDING",
+  "recorded": "2026-09-28T13:25:25.424367+03:00",
+  "failing_runs": [
+    36403650342,
+    36403645282
+  ],
+  "source_commit": "6218d0912ef3a7ed852a79ab09c07a2dd59b1e76",
+  "prior_pytest": {
+    "failed": 7,
+    "passed": 1826,
+    "skipped": 168
+  },
+  "causes": [
+    "checks job omitted required Icarus: six serial mailbox baseline/mutation tests failed before compilation",
+    "lexical inventory omitted generated nssoc_chip hierarchy: soc_status_serial falsely orphaned"
+  ],
+  "changes": [
+    "install Icarus in checks job; keep mandatory execution assertions",
+    "scan actual generated nssoc_chip as an inventory root; negative instance-removal control",
+    "disable cancel-in-progress so new evidence pushes do not interrupt active long proofs"
+  ],
+  "local_validation": {
+    "focused_pytest_passed": 40,
+    "ruff": "PASS",
+    "pre_commit_config": "PASS",
+    "workflow_yaml": "PASS"
+  },
+  "scope": "CI setup/inventory repair only; hosted rerun pending. No additional physical or manufacturing acceptance.",
+  "input_sha256": {
+    ".github/workflows/checks.yml": "40b2fbf640ddef3637807a8a3c930266487e93ade9a9ccfeaa1876d87f9a6527",
+    "sw/tests/test_no_orphan_modules.py": "bef4174460e386e02552c196fbaa54e8a771d9c2edbf63eccf7cb8f4dc582027",
+    "scripts/generate_chip_io.py": "eecf4d939327bd7ef0ba31e6a6ff542b110c78b663cb8672ec8474903517321c",
+    "hw/soc/chip-io-contract.json": "c14461e30ce73cedff6a55baeaf05831c51796e4dc56aa2213ddcce484d729e0"
+  },
+  "manufacturing_approval": false
+}

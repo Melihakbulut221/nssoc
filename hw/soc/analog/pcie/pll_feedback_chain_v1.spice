@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Open-loop feedback feasibility: actual VCO, HBT /4 and CMOS /20.
+* VCTRL is externally controlled in this prerequisite, not a locked-loop claim.
+* All referenced leaf circuits must be supplied unchanged by the source-bound bench.
+* Separate nominal rails: VCO_AVDD2.3V, DIV_AVDD2.5V, CORE_VDD1.2V.
+.subckt nssoc_pll_feedback_chain_v1 vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub
+XOSC clkp clkn vctrl vco_avdd avss sub nssoc_clock_vco_hbt_v4
+XDIV clkp clkn qp qn div_avdd avss sub nssoc_clock_div4_hbt_v5
+XFB qp qn clearb fb fbbar div_avdd core_vdd avss sub nssoc_pll_feedback_div20_v2
+.ends nssoc_pll_feedback_chain_v1

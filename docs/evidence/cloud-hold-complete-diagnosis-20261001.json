@@ -1,0 +1,229 @@
+{
+  "schema": 1,
+  "status": "COMPLETED_NATIVE_NOOP_DIAGNOSTIC_INDEPENDENT_ENDPOINT_REPLAY",
+  "source_run": 36813322010,
+  "source_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36813322010",
+  "source_commit": "ad4d8bb3a1294693f80e0e633d2312104f9899e3",
+  "source_event": "workflow_dispatch",
+  "producer_conclusion": "success",
+  "run_updated_utc": "2026-10-01T04:17:24Z",
+  "native_phase_elapsed_seconds": {
+    "native-controls": 15.003896818999976,
+    "native-diagnostic": 705.054255822
+  },
+  "original_artifact": {
+    "id": 11140519443,
+    "name": "hold-diagnostic-final-1",
+    "bytes": 478807891,
+    "sha256": "70781280d44cafabf634bd6907551deb184aaeca174136ba91829124207d2a3d",
+    "members": 144,
+    "expanded_bytes": 945676244,
+    "independent_full_zip_verification": "PASS_CLOUD_FULL_BYTE_MEMBER_NATIVE_VERIFIER_AND_LOCAL_RECEIPT_SOURCE_REPLAY",
+    "original_zip_downloaded_locally": false
+  },
+  "census": {
+    "native_endpoint_identities": 23527,
+    "endpoint_corner_rows_per_stage": 70581,
+    "corners": 3,
+    "constrained_per_corner": 17145,
+    "unconstrained_per_corner": 6382
+  },
+  "stages": [
+    "reload_no_parasitics",
+    "grt_rebuilt_before_dpl",
+    "matched_before",
+    "same_state_repeat",
+    "arrivals_recomputed",
+    "full_timing_recomputed",
+    "parasitics_reestimated",
+    "incremental_no_repair"
+  ],
+  "identical_post_grt_stages": [
+    "grt_rebuilt_before_dpl",
+    "matched_before",
+    "same_state_repeat",
+    "arrivals_recomputed",
+    "full_timing_recomputed",
+    "parasitics_reestimated",
+    "incremental_no_repair"
+  ],
+  "all_seven_post_grt_endpoint_exports_identical": true,
+  "all_seven_post_grt_five_fingerprints_identical": true,
+  "fingerprint_domains": [
+    "constraints",
+    "netlist",
+    "placement",
+    "routing",
+    "observable_pi_elmore"
+  ],
+  "post_grt_corner_metrics": {
+    "nom_fast_1p32V_m40C": {
+      "constrained": 17145,
+      "unconstrained": 6382,
+      "negative": 113,
+      "native_tns_ns": -26.461044910774945,
+      "wns_ns": -1.8409653801398915,
+      "independent_fsum_ns": -26.46104513281955,
+      "native_minus_fsum_fs": 0.22204460492503128,
+      "native_equals_round_once_binary32_fsum": true
+    },
+    "nom_slow_1p08V_125C": {
+      "constrained": 17145,
+      "unconstrained": 6382,
+      "negative": 10,
+      "native_tns_ns": -2.0742372264237474,
+      "wns_ns": -0.28238822391557505,
+      "independent_fsum_ns": -2.074237115401445,
+      "native_minus_fsum_fs": -0.11102230246251564,
+      "native_equals_round_once_binary32_fsum": true
+    },
+    "nom_typ_1p20V_25C": {
+      "constrained": 17145,
+      "unconstrained": 6382,
+      "negative": 31,
+      "native_tns_ns": -10.257279470238245,
+      "wns_ns": -0.925876930679692,
+      "independent_fsum_ns": -10.257279026149035,
+      "native_minus_fsum_fs": -0.44408920985006256,
+      "native_equals_round_once_binary32_fsum": true
+    }
+  },
+  "no_op_native_tns_delta_fs": 0.0,
+  "prior_comparison": {
+    "prior_before_native_tns_ns": -26.461044910774945,
+    "new_noop_native_tns_ns": -26.461044910774945,
+    "prior_before_matches_new_noop_exact_ns": true,
+    "prior_after_native_tns_ns": -26.46105912162966,
+    "prior_shared_tns_delta_fs": -14.210854715202004,
+    "prior_selected_c10_hold_wns_ns_reported": -1.840329,
+    "new_noop_hold_wns_ns": -1.8409653801398915,
+    "new_minus_selected_wns_fs": -636.3801398914237,
+    "old_after_full_endpoint_values_available": false,
+    "causal_conclusion": "The old 14.210854715fs TNS drift is not reproduced by no-op queries, cache invalidation, RC reestimation or no-repair incremental route in this single matched run. Repair-induced endpoint changes versus incremental TNS update arithmetic remain unresolved. Historical C10 producer RC state was not restored; the rounded source WNS discrepancy is not resolved."
+  },
+  "next_experiment": {
+    "status": "FAILED_NATIVE_JOURNAL_ASSERTION_NO_COMPLETED_REPAIR",
+    "purpose": "A new diagnostic-only matched setup experiment must export complete endpoint/corner rise/fall/min values before repair, immediately after repair, and after full timing recomputation; retain original native regression guards and compare deterministic math.fsum as additional evidence. No candidate adoption from this no-op run.",
+    "candidate_adoption_allowed": false,
+    "run_id": 36858091870,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36858091870",
+    "source_commit": "0e76a3a4d9b3234b4958ab9f5da6c5ab55ee246a",
+    "stages": [
+      "matched_before",
+      "after_repair_native",
+      "after_setup",
+      "after_full_update"
+    ],
+    "max_iterations": 1,
+    "max_passes": 1,
+    "max_repairs_per_pass": 4,
+    "post_loop_last_gasp_and_critical_vt_sweeps": false,
+    "required_available_memory_bytes": 9663676416,
+    "native_address_space_limit_bytes": 8589934592,
+    "local_native_work_launched": false,
+    "scope": "One global optimization iteration with four driver moves at most; each move may mutate multiple cells. after_repair_native is provisional before DPL/end-GRT/RC update. Same acceptance thresholds; no candidate adoption.",
+    "startup_evidence": "docs/evidence/cloud-setup-probe-startup-assets-20261001.json",
+    "native_controls_passed": 4,
+    "available_memory_before_native_bytes": 15690600448,
+    "native_controls_elapsed_seconds": 15.054464585999995,
+    "full_chip_native_started": true,
+    "failure_evidence": "docs/evidence/cloud-setup-probe-failure-20261001.json",
+    "corrected_retry": {
+      "run_id": 36901798029,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029",
+      "source_commit": "df3dd93fca89487dac46e6506c005713dd294430",
+      "status": "RUNNING_NATIVE_RESULT_PENDING",
+      "max_iterations": 1,
+      "max_passes": 2,
+      "effective_global_pass_budget": 1
+    }
+  },
+  "limits": [
+    "Pi/Elmore getter values do not distinguish absent from zero Elmore delays.",
+    "6382 endpoint identities per corner are exported as UNCONSTRAINED; coverage is export completeness, not proof every endpoint is timed.",
+    "Global-routing RC estimates and successful diagnostics are not final extracted timing/signoff."
+  ],
+  "source_sram_macros_preserved": 32,
+  "sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+  "timing_accepted": false,
+  "candidate_adopted": false,
+  "manufacturing_approval": false,
+  "thresholds_changed": false,
+  "evidence": [
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/hold-analysis/diagnosis.json",
+      "bytes": 88764,
+      "sha256": "4be7cb2b52a6570089ca8afcf67f52247d2d8a2c4d39bbde4548350df990dbcb"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/hold-analysis/analyze.py",
+      "bytes": 11980,
+      "sha256": "fb8162b003db40bd5766221f082ed9c565dc63baf721c657f84c0f2bc5bd4c4d"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/selected-final/result.json",
+      "bytes": 86600,
+      "sha256": "04684bc48b26c7c76c71d8bb870442a8c57075d90884ad2aeb98a94ac38a9054"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/selected-final/capture.json",
+      "bytes": 37556,
+      "sha256": "fea6b46cbb5f6132388f54df5215513da4e043cf80c265899f09819d106ea4e0"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/selected-final/zip-members.json",
+      "bytes": 22215,
+      "sha256": "290b9fc11f6fc4c74b40c9e889e2c44746c0258eea76db0375c6856ff87ac129"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/hold-run.json",
+      "bytes": 13474,
+      "sha256": "cd5118cd6b0e3111b61047c52fbcfeb1d07b968b48badfd80fa9bb070d133828"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/hold-artifacts.json",
+      "bytes": 2183,
+      "sha256": "0d2c69d8eba8ffc0b65328bafb99b39d4d47a393a125b20e9a017fd3c567ca42"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/archive-review/verified.json",
+      "bytes": 1178,
+      "sha256": "f077a924ea3f228d6a94689399ad08ba0f5d448a5ad4fa635de0820ddd0843c0"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/archive-review/verify_receipt.py",
+      "bytes": 3546,
+      "sha256": "ca2aeb5ed9268cdb513e4e915fd423b6181a5053032a0446a7763e1f3bdb0878"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-1428/hold-analysis/strict-matched-versus-full-update.json",
+      "bytes": 6830,
+      "sha256": "d989798f6fe594c926d80d3d6f4afc282b11977f7537e1bde3655d79621d71fe"
+    }
+  ],
+  "archive_workflow": {
+    "run_id": 36857496790,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36857496790",
+    "source_commit": "31cc27710867517ed5173d0a35ec0a19ded83217",
+    "conclusion": "success",
+    "receipt_artifact_id": 11160035222,
+    "receipt_bytes": 358076,
+    "receipt_sha256": "0d42403787acf883f77bbf43fb1a2b69ef0ce543d006e98c253a208998b670ec",
+    "local_receipt_review": "PASS_ALL_26_RECEIPT_MEMBERS_EXACT_SOURCES_AND_FRESH_RELEASE_API",
+    "native_diagnostic_reexecuted": false,
+    "asset": {
+      "name": "timing-hold-diagnostic-complete-20261001.zip",
+      "asset_id": 603149487,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/timing-hold-diagnostic-complete-20261001.zip",
+      "bytes": 478807891,
+      "sha256": "70781280d44cafabf634bd6907551deb184aaeca174136ba91829124207d2a3d",
+      "original_zip_unchanged": true,
+      "reused_existing_matching_asset": false,
+      "github_api_digest_verified": true,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true,
+      "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io"
+    }
+  },
+  "raw_followup_assets": "docs/evidence/cloud-hold-complete-and-io-topology-followup-assets-20261001.json"
+}

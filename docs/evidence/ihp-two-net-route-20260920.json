@@ -1,0 +1,207 @@
+{
+  "date": "2026-09-20",
+  "scope": "Original 24-macro halo candidate only; exactly two routed nets change. Not the new IRQ/logic-ROM image and not final product signoff. Independent Magic check pending.",
+  "route_drc": {
+    "command": "timeout 1800 ~/.local/opt/llbin/openroad -exit hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/check.tcl",
+    "returncode": 0,
+    "report_bytes": 0,
+    "violations": 0
+  },
+  "antenna": {
+    "command": "timeout 600 ~/.local/opt/llbin/openroad -exit hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/antenna.tcl",
+    "returncode": 0,
+    "net_violations": 0,
+    "pin_violations": 0
+  },
+  "structural": {
+    "status": "PASS",
+    "scope": "All instance masters, positions, orientations, ITerm/BTerm connections and top port geometry unchanged; only two signal-net shape sets differ. Not route continuity, short-circuit, antenna or timing acceptance.",
+    "before": {
+      "instances": 349841,
+      "nets": 93311,
+      "pins_placement_masters_sha256": "304801e5af2b2068e0fe5f6b568b946669a234b1f02d1938a2f3862ab627f2fe"
+    },
+    "after": {
+      "instances": 349841,
+      "nets": 93311,
+      "pins_placement_masters_sha256": "304801e5af2b2068e0fe5f6b568b946669a234b1f02d1938a2f3862ab627f2fe"
+    },
+    "changed_wire_nets": [
+      "net2854",
+      "net13560"
+    ],
+    "source_sha256": "c1742a32cf16092015e2dafa6b9088a81e617991de4742a5e3408535beb3977a",
+    "output_sha256": "e500c5cd4832c5a854ae5fea1c6e14a9bad350c57f391d60bf4a21b8700a3c83"
+  },
+  "geometry_controls": {
+    "scope": "Geometric conductor-overlap graph for exactly the two changed nets. Via routing layers are joined through their native PDK via; each cell port is a black box. Requires every pin and route shape in one component. Does not verify cell interiors or timing. Original and candidate positive controls plus one removed main wire negative control.",
+    "original": {
+      "net13560": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_DLY": 0,
+          "u_ram.g_ram_2048x64_ecc.u_b2_13561/L_HI": 0
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 6,
+        "removed_segments": 0
+      },
+      "net2854": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b3/A_ADDR[6]": 8,
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_ADDR[6]": 8,
+          "wire2855/X": 8
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 47,
+        "removed_segments": 0
+      }
+    },
+    "candidate": {
+      "net13560": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_DLY": 2,
+          "u_ram.g_ram_2048x64_ecc.u_b2_13561/L_HI": 2
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 16,
+        "removed_segments": 0
+      },
+      "net2854": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b3/A_ADDR[6]": 13,
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_ADDR[6]": 13,
+          "wire2855/X": 13
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 50,
+        "removed_segments": 0
+      }
+    },
+    "removed_wire_negative": {
+      "net13560": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_DLY": 2,
+          "u_ram.g_ram_2048x64_ecc.u_b2_13561/L_HI": 0
+        },
+        "all_pins_connected": false,
+        "all_route_shapes_connected": false,
+        "rectangles": 15,
+        "removed_segments": 1
+      },
+      "net2854": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b3/A_ADDR[6]": 13,
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_ADDR[6]": 13,
+          "wire2855/X": 13
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 50,
+        "removed_segments": 0
+      }
+    },
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/halo-recovered-finalize-20260920/09-odb-cellfrequencytables/soc_top.odb": "c1742a32cf16092015e2dafa6b9088a81e617991de4742a5e3408535beb3977a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/soc_top.odb": "e500c5cd4832c5a854ae5fea1c6e14a9bad350c57f391d60bf4a21b8700a3c83",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/check_halo_pin_paths.py": "9736a04babb9d46070308714abfc5e7d6ba64b48a2f484874059b5c419101dcc"
+    }
+  },
+  "versioned_checker": {
+    "scope": "Check geometric continuity of selected small signal nets in an OpenDB file.\n\nRun with OpenROAD's Python interpreter. Same-layer conductors must overlap\nwith positive area; a native via joins its routing-layer enclosures. Cell\nports are black boxes. This is not cross-net short detection, cell-interior\nLVS, antenna, timing or full-chip signoff. Top ports and special wires are\nexplicitly unsupported, rather than silently excluded.\n",
+    "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/soc_top.odb",
+    "source_sha256": "e500c5cd4832c5a854ae5fea1c6e14a9bad350c57f391d60bf4a21b8700a3c83",
+    "source_unchanged": true,
+    "nets": {
+      "net13560": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_DLY": 2,
+          "u_ram.g_ram_2048x64_ecc.u_b2_13561/L_HI": 2
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 16
+      },
+      "net2854": {
+        "pins": {
+          "u_ram.g_ram_2048x64_ecc.u_b3/A_ADDR[6]": 13,
+          "u_ram.g_ram_2048x64_ecc.u_b2/A_ADDR[6]": 13,
+          "wire2855/X": 13
+        },
+        "all_pins_connected": true,
+        "all_route_shapes_connected": true,
+        "rectangles": 50
+      }
+    },
+    "passed": true
+  },
+  "rejected_previous_candidate": {
+    "path": "hw/soc/out/external-review-20260919/halo-two-net-layer-lift2",
+    "native_drc_violations": 6,
+    "shorts": 2,
+    "minimum_area": 4,
+    "report_sha256": "43be649bda04e7fe507b8321067469a0d965e44b2cabfce386da4f9a8e92d96a",
+    "scope": "Retained failure; original no-op DEF import was independently rejected by unchanged-shape comparison before this candidate."
+  },
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/preparation.json": {
+      "bytes": 2370,
+      "sha256": "85f6bf5f53143f71806c91a1b216c257f77086537f825f9bc7a697c56c745ac8"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/connectivity.json": {
+      "bytes": 814,
+      "sha256": "7f2f7b88ecef21a84896107573e19d5fea433ff1f0701f8d7e2bf939dae4fb6c"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/geometric-connectivity.json": {
+      "bytes": 2792,
+      "sha256": "4ea6b48fa78cd9155d22b187922e01216846e3a3c222183598d26ab413002dff"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/committed-checker.json": {
+      "bytes": 1267,
+      "sha256": "3f72bbd618abc7024b6d28c84af497d0d00eb8736f956200aaa83fee9a5481d7"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/check.tcl": {
+      "bytes": 204,
+      "sha256": "be7ba527f1db19ef171d405267e4b3ecfd17146a0c99c058aea8f3d9028f22d2"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/native-drc.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/check.log": {
+      "bytes": 4144,
+      "sha256": "54d9e4fa78a10f5525fc0653b24726c916f1fc98ea87d0c1c3a40a1c3c2bef6d"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/antenna.tcl": {
+      "bytes": 327,
+      "sha256": "7f216a30993692e12b44197bfb7aeba36c97081e3808d379e1a2c4598ae22530"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/antenna.log": {
+      "bytes": 464,
+      "sha256": "b01bb0d65fbe999eb4954c732c6a084c95d901ab62ad3be7cd282ababb26b2e3"
+    },
+    "hw/soc/out/external-review-20260919/halo-two-net-layer-lift3/antenna.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/external-review-20260919/encode_halo_wire_patch3.py": {
+      "bytes": 2953,
+      "sha256": "203ebe78bb59373b1a53201ec99dcf8a00e189860b3e90e2a664a9ca3a045076"
+    },
+    "hw/soc/out/external-review-20260919/halo-layer-lift3-patch.def": {
+      "bytes": 2430,
+      "sha256": "d64d82e25c92aed6193c5c61821e8b137edf5b150edb5595970e540815b5badb"
+    },
+    "hw/soc/flow/check_routed_net_paths.py": {
+      "bytes": 5605,
+      "sha256": "6760b2e1c62b16cd7c2a47386cd86e06d42d2fb210f396c17418df9e984dd53c"
+    },
+    "hw/soc/out/external-review-20260919/halo-layer-lift3-stream-inputs.json": {
+      "bytes": 1914,
+      "sha256": "903abfd771898999581881083c094ea22b232c7da1074b112b0ac9a5a1303146"
+    }
+  }
+}

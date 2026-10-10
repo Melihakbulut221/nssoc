@@ -1,0 +1,65 @@
+{
+  "status": "PASS_SOURCE_ONLY_V24_PREFIX_CONTEXT_CONTRACT",
+  "contract": {
+    "bytes": 5778,
+    "sha256": "56fbfb6ebb1b0bcd8fffd9d4aa856a89509a6086e46c87b97d8e25f27b42fe04"
+  },
+  "findings": [],
+  "inputs": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v": {
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/candidate-decision.json": {
+      "bytes": 1549,
+      "sha256": "f00d05efaaa2279f3dc898698f6c1ea325486f8caed7455b9e889c03e4ef439f"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/critical-path-attribution.json": {
+      "bytes": 38512,
+      "sha256": "259aaec7f31351286db48c7795e6b9b721eba64c5af7f905b4096be975b61a37"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/measured-control-fanout01.json": {
+      "bytes": 41538,
+      "sha256": "556f289475461f44ef680f66013525c04783867305cf1d218cfbf49225a6a81e"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/native-saved-peer-vco.json": {
+      "bytes": 6039,
+      "sha256": "25cc42dd48b0eed29a9af62885e2f66b8adbb14578832a5b844c78f283a8dda2"
+    }
+  },
+  "exact_frozen_function_pins": {
+    "control_transition": {
+      "bytes": 735,
+      "sha256": "371ae6fe27654a53600c19e9b5daa3d5c37a364b0297dc393fdc0170f91f59f1"
+    },
+    "control_compose": {
+      "bytes": 714,
+      "sha256": "13566c4c1e767f147a5533d609aa1d1ad827a51943a91c091c2c463ca7e2776e"
+    },
+    "control_apply": {
+      "bytes": 635,
+      "sha256": "e715cc6f86cb763ec02b69e8a683f3246576e0d78dc4920f6a0ebb74d0345d46"
+    }
+  },
+  "bank_writer_scope_pin": {
+    "bytes": 1648,
+    "sha256": "e70831536fbbd2ed34864e460ac3b71ad8ccc54c4bae91616727e60ea07753df"
+  },
+  "reasoning": [
+    "Each noncarried transition destination is in {0,3,4,5,6,7}; no other column reaches mode1. A partially unknown ternary destination does not create a known1 in row1: the original indexed write into initializedzero must remain the actual HDL oracle.",
+    "T_i fixes carry_end=0, so column1 is e1 and every other column equals M_i. Replacing M by T is exact on any prefix starting in0,2,3 because those prefixes never enter1; mode7 is absorbing.",
+    "From initial e1, C0=c01 e1|c02 e2|c07 e7. Applying M1 gives c01 C1|c02 T1e2|c07e7. Applying M2 gives exactly the five terms declared for j3, because row7 absorbs and noncarried suffixes can use T. Bits9/17/57 are precisely destination1/2/7, source1.",
+    "Original matrices remain known0/1, even with unknown token/carry inputs, only if actual Verilog unknown-index write suppression is retained. Original equality-derived initial bits are0/1/X and the upperfour bits are0. On this domain the bitwise AND/OR distributive expansion is valid; it does not permit direct ternary-to-boolean replacement or two-state-only validation.",
+    "The context is attached to each accepted512bit bank, with four96bit beat records and no extra public latency. Context must shift96 when payload/predecode shift128, promote with next_valid, and preserve later same-edge acceptance override. Context capture belongs to the same quarantined contents writer, never a new validity/fault gate.",
+    "Zero-filled reset/shift context must be computed from exact zero-word predecode semantics, not allzero context. Absolute EDS qualification stays only word15; the pre-word1/2/3 prefixes consume words0/1/2 of each beat, while original word3 decode and EDS processing remain unchanged.",
+    "Review passes only this architecture contract. Actual literal HDL alphabet including X/Z indexed writes, all initial modes, context bank/shift/promotion/accept/reset/stall/EDS witnesses and meaningful negative controls remain implementation gates; no functional/native/timing result is asserted."
+  ],
+  "implementation_approved_as_proven": false,
+  "HDL_or_native_executed": false,
+  "timing_or_adoption_accepted": false,
+  "method": {
+    "bytes": 4682,
+    "sha256": "48243c23580569fb4ec8eb5e8f14ea77d8d4546b03f34c53468f6ad3d81986f6"
+  },
+  "utc": "2026-10-06T05:05:29.003208+00:00"
+}

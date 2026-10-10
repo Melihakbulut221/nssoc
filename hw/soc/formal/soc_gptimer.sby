@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+
+[tasks]
+bmc
+prove
+prove_full
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 24
+prove: mode prove
+prove_full: mode prove
+cover: mode cover
+cover: depth 24
+timeout 180
+
+[engines]
+prove: abc pdr
+prove_full: abc pdr
+bmc: abc bmc3
+cover: smtbmc yices
+
+[script]
+# Read implementation without FORMAL: the watchdog's own assumptions belong
+# to its own job, and must not constrain this APB master or either reset here.
+read_verilog soc_gptimer.v soc_wdog.v soc_tmr_bank.v tmr_voter.v
+read_verilog -formal soc_gptimer_props.v
+prove_full: chparam -set TW 32 -set SW 16 soc_gptimer_props
+prep -top soc_gptimer_props
+setattr -mod -unset keep_hierarchy
+flatten
+async2sync
+dffunmap
+
+[files]
+../rtl/soc_gptimer.v
+../rtl/soc_wdog.v
+../rtl/soc_tmr_bank.v
+../../rtl/tmr_voter.v
+soc_gptimer_props.v

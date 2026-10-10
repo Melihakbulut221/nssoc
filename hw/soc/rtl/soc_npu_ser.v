@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // soc_npu_ser: the serial host master that drives the frozen pilot.
 //
 // This is a TRANSPORT and nothing else. It carries one 32-bit register
@@ -424,3 +426,5 @@ module soc_npu_ser #(
 `endif
 
 endmodule
+
+`default_nettype wire

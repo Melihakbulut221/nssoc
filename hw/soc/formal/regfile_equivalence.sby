@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# Run `make soc-prepare` at the repository root first. Upstream is fetched
+# and converted from tools.soc.mk's pinned commit, never vendored here.
+
+[tasks]
+prove
+prove_noscrub
+prove_synpre
+prove_synpre_noscrub
+
+[options]
+mode prove
+depth 3
+timeout 600
+
+[engines]
+smtbmc bitwuzla
+
+[script]
+read_verilog -formal ibex_register_file_ff.v
+rename ibex_register_file_ff ibex_register_file_gold
+read_verilog -formal secded_enc.v secded_dec.v ibex_regfile_secded.v regfile_equivalence_props.v
+prove_noscrub: chparam -set SCRUB 0 regfile_equivalence_props
+prove_synpre: chparam -set SYNPRE 1 regfile_equivalence_props
+prove_synpre_noscrub: chparam -set SCRUB 0 -set SYNPRE 1 regfile_equivalence_props
+prep -top regfile_equivalence_props -flatten
+opt -full
+
+[files]
+../gen/ibex_register_file_ff.v
+../../rtl/secded_enc.v
+../../rtl/secded_dec.v
+../rtl/ibex_regfile_secded.v
+ibex_regfile_secded_props.v ibex_regfile_contract_props.v
+regfile_equivalence_props.v

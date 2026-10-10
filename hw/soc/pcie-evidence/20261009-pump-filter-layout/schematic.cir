@@ -1,0 +1,34 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+.subckt nssoc_pump_filter13_layout_v1 up down vctrl vco_avdd div_avdd avss sub
+RD0 div_avdd xloop.xdet.xcp.nb BULK rppd w=1u l=80u b=0 m=1
+RPTAP0 sub BULK ptap1 A=4p P=8u
+MD1 xloop.xdet.xcp.nb xloop.xdet.xcp.nb avss BULK sg13_hv_nmos w=2u l=2u ng=1 m=1
+RPTAP1 sub BULK ptap1 A=4p P=8u
+MD2 xloop.xdet.xcp.pb xloop.xdet.xcp.nb avss BULK sg13_hv_nmos w=2u l=2u ng=1 m=1
+RPTAP2 sub BULK ptap1 A=4p P=8u
+RNTAP3 div_avdd NWELL3 ntap1 A=4p P=8u
+MD3 xloop.xdet.xcp.pb xloop.xdet.xcp.pb div_avdd NWELL3 sg13_hv_pmos w=8u l=2u ng=1 m=1
+RPTAP3 sub BULK ptap1 A=4p P=8u
+RNTAP4 div_avdd NWELL4 ntap1 A=4p P=8u
+MD4 xloop.xdet.xcp.source xloop.xdet.xcp.pb div_avdd NWELL4 sg13_hv_pmos w=6.4u l=2u ng=1 m=1
+RPTAP4 sub BULK ptap1 A=4p P=8u
+RNTAP5 div_avdd NWELL5 ntap1 A=4p P=8u
+MD5 vctrl xloop.xdet.xcp.upb xloop.xdet.xcp.source NWELL5 sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+RPTAP5 sub BULK ptap1 A=4p P=8u
+MD6 vctrl down xloop.xdet.xcp.sink BULK sg13_hv_nmos w=8u l=0.45u ng=1 m=1
+RPTAP6 sub BULK ptap1 A=4p P=8u
+MD7 xloop.xdet.xcp.sink xloop.xdet.xcp.nb avss BULK sg13_hv_nmos w=2u l=2u ng=1 m=1
+RPTAP7 sub BULK ptap1 A=4p P=8u
+RNTAP8 div_avdd NWELL8 ntap1 A=4p P=8u
+MD8 xloop.xdet.xcp.upb up div_avdd NWELL8 sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+RPTAP8 sub BULK ptap1 A=4p P=8u
+MD9 xloop.xdet.xcp.upb up avss BULK sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+RPTAP9 sub BULK ptap1 A=4p P=8u
+RD10 vco_avdd vctrl BULK rppd w=1u l=80u b=0 m=1
+RPTAP10 sub BULK ptap1 A=4p P=8u
+RD11 vctrl avss BULK rppd w=1u l=47u b=0 m=1
+RPTAP11 sub BULK ptap1 A=4p P=8u
+CD12 vctrl avss cap_cmim w=10u l=10u m=1
+RPTAP12 sub BULK ptap1 A=4p P=8u
+.ends nssoc_pump_filter13_layout_v1

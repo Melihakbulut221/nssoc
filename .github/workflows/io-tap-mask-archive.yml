@@ -1,0 +1,97 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: io-tap-mask-archive
+on:
+  push:
+    paths:
+      - .github/workflows/io-tap-mask-archive.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: io-tap-mask-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Archive exact raw attribution bytes without native execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'scripts')
+          import archive_chip_run_artifacts as archive
+          plan = Path('docs/evidence/io-vss-mask-attribution-archive-plan-20261002.json')
+          output = Path(os.environ['RUNNER_TEMP']) / 'io-tap-mask-archive'
+          review = Path(os.environ['RUNNER_TEMP']) / 'io-tap-mask-archive-review'
+          review.mkdir(exist_ok=False)
+          expected = [dict(source_artifact_id=11210104433, artifact_name='io-tap-mask-probe-1',
+              name='io-vss-mask-attribution-20261002.zip', bytes=21232646,
+              sha256='84723c5e7fa4bdd09269433390b66d424e1f497288f76784bc7f7190862c81fc')]
+          sources = ('scripts/archive_chip_run_artifacts.py', 'scripts/archive_chip_fill.py',
+              '.github/workflows/io-tap-mask-archive.yml', str(plan), 'LICENSES/Apache-2.0.txt')
+          pins = {}
+          for name in sources:
+              raw = Path(name).read_bytes()
+              target = review / 'source' / name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(raw)
+              pins[name] = dict(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+          (review / 'source-pins.json').write_text(json.dumps(pins, indent=2) + '\n')
+          (review / 'expected-artifact.json').write_text(json.dumps(expected, indent=2) + '\n')
+          original_ready = archive.producer_ready
+          original_resolve = archive.resolve_artifacts
+          resolutions = []
+          def ready(source, requested):
+              (review / 'producer-run.json').write_text(json.dumps(source, indent=2) + '\n')
+              if source.get('run_attempt') != 1:
+                  raise ValueError('Unexpected producer rerun')
+              return original_ready(source, requested)
+          def resolve(listing, requested):
+              rows = original_resolve(listing, requested)
+              resolutions.append(listing)
+              (review / 'artifact-resolutions.json').write_text(json.dumps(resolutions, indent=2) + '\n')
+              if rows != expected:
+                  raise ValueError('Source artifact differs from fixed attribution bytes')
+              return rows
+          archive.producer_ready = ready
+          archive.resolve_artifacts = resolve
+          sys.argv = ['archive_chip_run_artifacts.py', '--plan', str(plan), '--output', str(output)]
+          try:
+              archive.main()
+          finally:
+              result = output / 'result.json'
+              if result.is_file():
+                  (review / 'result.json').write_bytes(result.read_bytes())
+              closure = {str(p.relative_to(review)): dict(bytes=p.stat().st_size,
+                  sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+                  for p in sorted(review.rglob('*')) if p.is_file()}
+              (review / 'review-digests.json').write_text(json.dumps(closure, indent=2) + '\n')
+          PY
+      - name: Preserve compact receipts and exact archive methods
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: io-tap-mask-archive-receipt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/io-tap-mask-archive-review/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

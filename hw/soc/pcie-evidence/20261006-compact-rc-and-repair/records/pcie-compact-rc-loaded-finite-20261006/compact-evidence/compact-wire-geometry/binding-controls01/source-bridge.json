@@ -1,0 +1,14 @@
+{
+  "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/binding-controls01/run.py",
+  "parent_pin": {
+    "bytes": 8608,
+    "sha256": "4f591e04cb3fe47803e23b2cd0373f69d380b7e9c2d3149299d0a6f6ff669b52"
+  },
+  "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/binding-controls01/run.py",
+  "new_pin": {
+    "bytes": 8614,
+    "sha256": "6a82905859bcff8d9b3ad10748d8bfe9fedfa41e8de954f31d9d800b13fccd92"
+  },
+  "full_unified_diff": "--- \n+++ \n@@ -17,8 +17,8 @@\n B = Path(__file__).resolve().parent\n W = B.parent\n ROOT = W.parents[3]\n-G = Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01')\n-T = Path('/dev/shm/nssoc-div4-v7-power-v2-binding-controls-01')\n+G = Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\n+T = Path('/dev/shm/nssoc-div4-v7-compact-v2-binding-controls-01')\n A = ROOT / 'hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage'\n CHECKER = ROOT / 'hw/soc/flow/check_pcie_clock_div4_v7_v2.py'\n CASES = ['positive', 'reference_clock_swap', 'reference_pullup_length',\n@@ -72,7 +72,7 @@\n     ns['guard_resources']()\n     T.mkdir()\n     source = (W / 'bind_source_ids.py').read_text()\n-    old_root = \"G=Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01')\"\n+    old_root = \"G=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\"\n     assert source.count(old_root) == 1\n     original_g = json.loads((G / 'result.json').read_text())\n     original_n = json.loads((W / 'device-location-geometry.json').read_text())\n",
+  "inverse_byte_exact": true
+}

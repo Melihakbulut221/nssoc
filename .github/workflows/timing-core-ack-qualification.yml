@@ -1,0 +1,175 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-core-ack-qualification
+on:
+  push:
+    paths:
+      - .github/workflows/timing-core-ack-qualification.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: timing-core-ack-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  synthesis-map:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted ceiling only; no native elapsed watchdog.
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # Bind completed actual-core methods to immutable Git blobs.
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check immutable recipe, protocol gates and snapshot rejection
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_core_ack_qualification.py sw/tests/test_alu_qualification.py sw/tests/test_alu_prefix_experiment.py
+      - name: Require corrected actual-core evidence, reproduce C10, synthesize ACK and map 32 SRAMs
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py synthesis-map \
+            --output "$GITHUB_WORKSPACE/ack-qualification-map" --work "$GITHUB_WORKSPACE/ack-map-work"
+      - name: Preserve original and candidate synthesis, mapping and any failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-qualification-map-${{ github.run_attempt }}
+          path: ack-qualification-map/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+  boot:
+    needs: synthesis-map
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [original, candidate]
+        memory: [vendor, independent]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      VARIANT: ${{ matrix.variant }}
+      MEMORY: ${{ matrix.memory }}
+      ACK_OUTPUT: ${{ github.workspace }}/ack-qualification-boot
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Retrieve exact same-source completed synthesis and mapping
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ack-qualification-map-${{ github.run_attempt }}
+          path: ack-mapped-input
+      - name: Check native cells and compile full SoC with immutable loader
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py boot-prepare --variant "$VARIANT" --memory "$MEMORY" \
+            --mapped "$GITHUB_WORKSPACE/ack-mapped-input" --output "$ACK_OUTPUT" --work "$GITHUB_WORKSPACE/ack-boot-work"
+      - name: Preserve real compiled startup evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-qualification-startup-${{ matrix.variant }}-${{ matrix.memory }}-${{ github.run_attempt }}
+          path: ack-qualification-boot/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+      - name: Start native four-state SoC boot and MBIST without an elapsed watchdog
+        id: launch
+        run: python3 scripts/run_cloud_core_ack_qualification.py boot-start --output "$ACK_OUTPUT"
+      - name: Observe first hour without stopping the worker
+        id: first
+        if: always() && steps.launch.outcome == 'success'
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py wait --output "$ACK_OUTPUT" \
+            --seconds 3600 --github-output "$GITHUB_OUTPUT"
+      - name: Copy first immutable compact progress snapshot
+        if: always() && steps.launch.outcome == 'success'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py capture --output "$ACK_OUTPUT" \
+            --destination ack-progress-first
+      - name: Upload first progress for independent live inspection
+        if: always() && steps.launch.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-progress-first-${{ matrix.variant }}-${{ matrix.memory }}-${{ github.run_attempt }}
+          path: ack-progress-first/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+      - name: Observe second hour without stopping the worker
+        id: second
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py wait --output "$ACK_OUTPUT" \
+            --seconds 3600 --github-output "$GITHUB_OUTPUT"
+      - name: Copy second immutable compact progress snapshot
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py capture --output "$ACK_OUTPUT" \
+            --destination ack-progress-second
+      - name: Upload second progress for independent live inspection
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-progress-second-${{ matrix.variant }}-${{ matrix.memory }}-${{ github.run_attempt }}
+          path: ack-progress-second/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+      - name: Observe third hour without stopping the worker
+        id: third
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py wait --output "$ACK_OUTPUT" \
+            --seconds 3600 --github-output "$GITHUB_OUTPUT"
+      - name: Copy third immutable compact progress snapshot
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        continue-on-error: true
+        run: |
+          python3 scripts/run_cloud_core_ack_qualification.py capture --output "$ACK_OUTPUT" \
+            --destination ack-progress-third
+      - name: Upload third progress for independent live inspection
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-progress-third-${{ matrix.variant }}-${{ matrix.memory }}-${{ github.run_attempt }}
+          path: ack-progress-third/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+      - name: Wait for remaining healthy native boot work
+        if: always() && steps.launch.outcome == 'success' && steps.first.outputs.terminal != 'true' && steps.second.outputs.terminal != 'true' && steps.third.outputs.terminal != 'true'
+        run: python3 scripts/run_cloud_core_ack_qualification.py wait --output "$ACK_OUTPUT"
+      - name: Require completed four-state MBIST and all 28 immutable firmware checks
+        if: always() && steps.launch.outcome == 'success'
+        run: python3 scripts/run_cloud_core_ack_qualification.py validate-boot --output "$ACK_OUTPUT"
+      - name: Preserve boot logs, controls, source pins and any failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ack-qualification-boot-${{ matrix.variant }}-${{ matrix.memory }}-${{ github.run_attempt }}
+          path: ack-qualification-boot/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30

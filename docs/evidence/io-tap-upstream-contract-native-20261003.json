@@ -1,0 +1,1636 @@
+{
+  "author": {
+    "actual_chip_native_run": false,
+    "all_input_pins_verified": 68,
+    "all_output_pins_verified": 104,
+    "io_lvs_accepted": false,
+    "lint": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "methods": {
+      "hw/soc/pnr/io-tap-upstream-contract.lock.json": {
+        "bytes": 3397,
+        "sha256": "92b6a13a3e7f29e6f4d9b215ea132fb64b415b89b6f011dd851f89d0ae80bc21"
+      },
+      "scripts/probe_io_tap_upstream_contract.py": {
+        "bytes": 17411,
+        "sha256": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658"
+      },
+      "sw/tests/test_io_tap_upstream_contract.py": {
+        "bytes": 7879,
+        "sha256": "1ff6ba6a21d3d6943e5e8739ffaa2b757d55617c96fd67a6ccaeec920609b7a5"
+      }
+    },
+    "native_bundle": {
+      "bytes": 143896,
+      "sha256": "4061cc202e11ea0e9daf0b8589e0115902d734f56b6da5805764bae6f577ea4a"
+    },
+    "native_result": {
+      "bytes": 58701,
+      "sha256": "c20011830c83cee73c6afefbf901a534130896582bf629c6abb824f49bb5cce9"
+    },
+    "native_scratch": "/dev/shm/nssoc-upstream-tap-contract-final-03",
+    "notes": [
+      "Five actual KLayout 0.30.7 cases; exact runtime image rehashed before execution and rechecked after.",
+      "Original fixture passes strict deck and exact four-port census with two literal non-square tap devices.",
+      "Wrong P and reversed ordered terminals fail deck; wrong unused top pin is missed by deck simplify but caught by explicit exact census.",
+      "Only seven marker shapes promoted; all 21 layer flat XORs zero, original contact/non-marker local shapes and every instance unchanged; both taps disappear and comparison fails.",
+      "No I/O reference parameter correction, chip mutation, or tap removal/waiver was performed."
+    ],
+    "qualified_deck_acceptance": false,
+    "status": "FROZEN_STRICT_UPSTREAM_TAP_DIAGNOSTIC",
+    "tests": {
+      "count": 47,
+      "log": {
+        "bytes": 99,
+        "sha256": "87917d2010511647c5c91dd73106df28ef98c885822cb751749bd8d73ec90e45"
+      }
+    }
+  },
+  "authority_assessment": {
+    "actual_new_findings": [
+      {
+        "finding": "Wrong tap perimeter and reversed ordered terminals are rejected by the native deck; extracted layout tap parameters are unchanged in both cases."
+      },
+      {
+        "case": "wrong_top_port",
+        "finding": "The default simplify phase removes an unused renamed schematic top port. The strict deck flag alone then returns success with three schematic ports versus four layout ports. The new wrapper retains that raw verdict and rejects it using the exact top-port census; this is a concrete verifier gap, not an I/O parameter fix."
+      },
+      {
+        "finding": "Moving only the seven native well/substrate markers to the parent preserves all 21 flattened layer masks (XOR=0), all non-marker cell-local shapes/contacts and every instance. Both taps disappear and native LVS fails. This confirms the known cell-local extraction limitation; device disappearance never counts as a repair.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/1074"
+      }
+    ],
+    "authoritative_observations": [
+      {
+        "finding": "The published independent deep-tap fixture passes the unchanged pinned 53-file deck with tap extraction enabled, strict port flag and independent exact top-port census. Native literal ptap A/P=21.276/141.84 and ntap=24.06/160.4 match the original upstream CDL; these are non-square parameters.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/lvs/testing/testcases/unit/tap_devices/netlist/test_ntap_ptap_ext_deep.cdl"
+      },
+      {
+        "finding": "The pinned reader already prioritizes explicit A and P/Perim with correct units. CustomTap preserves ordered terminals and enables A/P. The combiner sums A and P only for same ordered terminal nets. The fixture independently exercises that literal interpretation; it does not endorse a square normalization or R-only comparison.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs#L643-L647"
+      },
+      {
+        "finding": "Public PCell source generates rectangular active from its input W/L, and the generic symbol derives A/P accordingly. Existing original I/O CDL has 64 square W=L metadata rows with matching published R to printed precision. No arithmetic, unit or alias bug is demonstrated in generation or reading; the independent intended W/L or arbitrary-shape contract of those I/O instances is absent.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/ptap1_code.py"
+      },
+      {
+        "finding": "The simulation tap subcircuits consume only R; W/L are retained but unused. Changing LVS A/P alone would not update or validate the original electrical substrate resistance model.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib#L19-L35"
+      },
+      {
+        "finding": "The I/O library contributor describes arbitrary-shape and hierarchy-overlap ambiguity, not replacement numeric A/P values or a qualified general contract.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4352461493"
+      },
+      {
+        "finding": "The pinned I/O library publishes CDL/doc/GDS/LEF/Liberty/SPICE/Verilog views. Its current public directory inventory does not supply the original editable I/O schematic/CDF parameter-generation history. This inventory is not a claim about unavailable private upstream source.",
+        "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/tree/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.ref/sg13g2_io"
+      }
+    ],
+    "correction_decision": {
+      "automatic_io_reference_correction_justified": false,
+      "demonstrable_error": "The existing protected physical contact role cannot realize literal P87.9um under the witnessed enclosure branch (conditional bound140.4um). This establishes inconsistency of the pair, but not which independently intended library representation should replace it.",
+      "not_demonstrated": "No source-level formula, scaling, Perim alias or serialization defect explains the original I/O square parameters. The public non-square fixture does not supply intended parameter values for those different I/O masters.",
+      "required_independent_data": [
+        "Original I/O schematic/CDF generation inputs or an upstream intended geometry/model specification naming each tap and its contact ownership, including parent overlap/merging.",
+        "A coherent reference and electrical model for the same geometry, including resistance or qualified substrate RC behavior; copying measured extraction into expected CDL would not supply this.",
+        "Corrected consistent library views with strict isolated and actual-parent validation, retaining devices/contacts/ports and physical qualification obligations."
+      ]
+    },
+    "external_message_sent": false,
+    "full_chip_lvs_accepted": false,
+    "io_lvs_accepted": false,
+    "modified_engineering_files": [
+      "scripts/probe_io_tap_upstream_contract.py",
+      "sw/tests/test_io_tap_upstream_contract.py",
+      "hw/soc/pnr/io-tap-upstream-contract.lock.json"
+    ],
+    "next_actions": [
+      "The new strict fixture and explicit top-port negative are ready for permanent regression publication after peer review.",
+      "Use an explicit expected top-port census alongside native comparison for future diagnostic acceptance; existing immutable receipts must retain their original scope.",
+      "Retain the independently witnessed I/O contact-bound mismatch and native fixture packet as a precise upstream clarification/reproducer. No external message has been sent.",
+      "Do not replace I/O A/P/R, normalize perimeter, remove taps/contacts, weaken ports, or claim manufacturing closure without the missing independent intended contract."
+    ],
+    "qualified_deck_acceptance": false,
+    "scope": "Read-only authoritative-source investigation plus newly executed bounded upstream native controls; no actual I/O/chip source, reference, deck or layout mutation.",
+    "sources": [
+      {
+        "bytes": 46725,
+        "path": "docs/evidence/io-tap-reference-model-contract-20261003.json",
+        "sha256": "814c1ff8e0038600ad7647c3f5b090540f2eab2ff47d7cc6465ac2cd16030f0a"
+      },
+      {
+        "bytes": 58701,
+        "path": "hw/soc/out/heartbeat-20261003-0547/lvs-next-step/native-result.json",
+        "sha256": "c20011830c83cee73c6afefbf901a534130896582bf629c6abb824f49bb5cce9"
+      },
+      {
+        "bytes": 6638,
+        "path": "hw/soc/out/heartbeat-20261003-0547/lvs-next-step/io-source-inventory.json",
+        "sha256": "de9cdb5bb3d511592c8d0312b2b516c3901087b71505a6c7eb6a60d0693e83a6"
+      },
+      {
+        "bytes": 2599,
+        "path": "hw/soc/out/heartbeat-20261003-0547/lvs-next-step/io-documentation-tree.json",
+        "sha256": "40c3c7036a9f21c79d93e3ae30fe81a2d7bf9e4084300c92fea620b8ab8a7985"
+      },
+      {
+        "bytes": 38112,
+        "path": "hw/soc/out/heartbeat-20261003-0547/lvs-next-step/issue-955-comments.json",
+        "sha256": "e0e3582e7dd5ab9ef400c81923491bf144d5c8c190a3eb27fa034173cf87f81d"
+      },
+      {
+        "bytes": 6766,
+        "path": "hw/soc/out/heartbeat-20261003-0547/lvs-next-step/issue-1074.json",
+        "sha256": "2be0807e15f89eb91231e48bcdaefc80786e3160cd29729591db059ba67a0908"
+      }
+    ],
+    "status": "STRICT_NON_SQUARE_CONTROL_ESTABLISHED_NO_INDEPENDENT_IO_PARAMETER_CORRECTION",
+    "utc": "2026-10-03T06:40:31.478080+00:00"
+  },
+  "independent_review": {
+    "actual_native_reader": {
+      "address_space_limit_bytes": 2147483648,
+      "read_only_database_and_geometry_seconds": 0.691546664,
+      "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "scope": "Read existing five tiny LVS databases and two142KB fixture GDS files only; no extraction, chip layout or routing.",
+      "script": {
+        "bytes": 3363,
+        "sha256": "d2ea1792ade0afcaf72b65dc0f7693ffabd3078dfb28f11efc66a8417ad0047a"
+      }
+    },
+    "archive_members_rehashed": 105,
+    "author_validation": {
+      "bytes": 1990,
+      "sha256": "844908ac89897f835ef6f31f4e4d9a03dd4f6eed3d8a4ffe9f8396302c53570b"
+    },
+    "checked_at": "2026-10-03T06:41:22.812255+00:00",
+    "findings": [],
+    "full_chip_lvs_accepted": false,
+    "input_files_rehashed": 68,
+    "input_git_blob_and_sha256_checked": 4,
+    "io_lvs_accepted": false,
+    "limitations": [
+      "This is an independent upstream fixture under the pinned deck, not a corrected I/O reference or full-chip acceptance.",
+      "The geometry-identical hierarchy test intentionally remains a failure: all21 flattened layers have zero XOR, four MOS remain, and both tap devices disappear from extraction.",
+      "The exact top-port census closes the observed unused-port simplification hole in this isolated method only; no shared frozen audit/deck file was changed.",
+      "Native tap WELL names remain distinct nonempty substrate/well nets; no virtual connection, tap removal, A/P fitting or terminal-order waiver was introduced."
+    ],
+    "manufacturing_approval": false,
+    "native_bundle": {
+      "bytes": 143896,
+      "sha256": "4061cc202e11ea0e9daf0b8589e0115902d734f56b6da5805764bae6f577ea4a"
+    },
+    "native_result": {
+      "bytes": 58701,
+      "sha256": "c20011830c83cee73c6afefbf901a534130896582bf629c6abb824f49bb5cce9"
+    },
+    "output_files_rehashed": 104,
+    "qualified_deck_acceptance": false,
+    "raw_native_replay": {
+      "cases": {
+        "original": {
+          "deck": "PASS within comparison scope",
+          "layout_counts": {
+            "ntap1": 1,
+            "ptap1": 1,
+            "sg13_lv_nmos": 2,
+            "sg13_lv_pmos": 2
+          },
+          "layout_top_ports": [
+            "VDD",
+            "VSS",
+            "vin",
+            "vout"
+          ],
+          "ports_match": true,
+          "reference_top_ports": [
+            "VDD",
+            "VIN",
+            "VOUT",
+            "VSS"
+          ],
+          "strict": "PASS",
+          "taps": [
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ptap1",
+              "parameters": {
+                "A": 21.276,
+                "P": 141.84
+              },
+              "terminals": {
+                "TIE": "VSS",
+                "WELL": "$1"
+              }
+            },
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ntap1",
+              "parameters": {
+                "A": 24.060000000000002,
+                "P": 160.4
+              },
+              "terminals": {
+                "TIE": "VDD",
+                "WELL": "$I103"
+              }
+            }
+          ]
+        },
+        "promoted_markers": {
+          "deck": "FAIL",
+          "layout_counts": {
+            "sg13_lv_nmos": 2,
+            "sg13_lv_pmos": 2
+          },
+          "layout_top_ports": [
+            "VDD",
+            "VSS",
+            "vin",
+            "vout"
+          ],
+          "ports_match": true,
+          "reference_top_ports": [
+            "VDD",
+            "VIN",
+            "VOUT",
+            "VSS"
+          ],
+          "strict": "FAIL",
+          "taps": []
+        },
+        "reversed_terminals": {
+          "deck": "FAIL",
+          "layout_counts": {
+            "ntap1": 1,
+            "ptap1": 1,
+            "sg13_lv_nmos": 2,
+            "sg13_lv_pmos": 2
+          },
+          "layout_top_ports": [
+            "VDD",
+            "VSS",
+            "vin",
+            "vout"
+          ],
+          "ports_match": true,
+          "reference_top_ports": [
+            "VDD",
+            "VIN",
+            "VOUT",
+            "VSS"
+          ],
+          "strict": "FAIL",
+          "taps": [
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ptap1",
+              "parameters": {
+                "A": 21.276,
+                "P": 141.84
+              },
+              "terminals": {
+                "TIE": "VSS",
+                "WELL": "$1"
+              }
+            },
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ntap1",
+              "parameters": {
+                "A": 24.060000000000002,
+                "P": 160.4
+              },
+              "terminals": {
+                "TIE": "VDD",
+                "WELL": "$I103"
+              }
+            }
+          ]
+        },
+        "wrong_perimeter": {
+          "deck": "FAIL",
+          "layout_counts": {
+            "ntap1": 1,
+            "ptap1": 1,
+            "sg13_lv_nmos": 2,
+            "sg13_lv_pmos": 2
+          },
+          "layout_top_ports": [
+            "VDD",
+            "VSS",
+            "vin",
+            "vout"
+          ],
+          "ports_match": true,
+          "reference_top_ports": [
+            "VDD",
+            "VIN",
+            "VOUT",
+            "VSS"
+          ],
+          "strict": "FAIL",
+          "taps": [
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ptap1",
+              "parameters": {
+                "A": 21.276,
+                "P": 141.84
+              },
+              "terminals": {
+                "TIE": "VSS",
+                "WELL": "$1"
+              }
+            },
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ntap1",
+              "parameters": {
+                "A": 24.060000000000002,
+                "P": 160.4
+              },
+              "terminals": {
+                "TIE": "VDD",
+                "WELL": "$I103"
+              }
+            }
+          ]
+        },
+        "wrong_top_port": {
+          "deck": "PASS within comparison scope",
+          "layout_counts": {
+            "ntap1": 1,
+            "ptap1": 1,
+            "sg13_lv_nmos": 2,
+            "sg13_lv_pmos": 2
+          },
+          "layout_top_ports": [
+            "VDD",
+            "VSS",
+            "vin",
+            "vout"
+          ],
+          "ports_match": false,
+          "reference_top_ports": [
+            "VDD",
+            "VOUT",
+            "VSS"
+          ],
+          "strict": "FAIL",
+          "taps": [
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ptap1",
+              "parameters": {
+                "A": 21.276,
+                "P": 141.84
+              },
+              "terminals": {
+                "TIE": "VSS",
+                "WELL": "$1"
+              }
+            },
+            {
+              "circuit": "test_ntap_ptap_ext_deep",
+              "kind": "ntap1",
+              "parameters": {
+                "A": 24.060000000000002,
+                "P": 160.4
+              },
+              "terminals": {
+                "TIE": "VDD",
+                "WELL": "$I103"
+              }
+            }
+          ]
+        }
+      },
+      "instance_and_nonmarker_local_geometry_preserved": true,
+      "layer_flat_xor": {
+        "1/0": 0,
+        "10/0": 0,
+        "10/2": 0,
+        "10/25": 0,
+        "14/0": 0,
+        "19/0": 0,
+        "29/0": 0,
+        "30/0": 0,
+        "30/2": 0,
+        "30/25": 0,
+        "31/0": 0,
+        "32/0": 0,
+        "40/0": 0,
+        "5/0": 0,
+        "5/2": 0,
+        "51/0": 0,
+        "6/0": 0,
+        "63/0": 0,
+        "8/0": 0,
+        "8/2": 0,
+        "8/25": 0
+      },
+      "runtime_klayout": "0.30.7",
+      "status": "READ_ONLY_REPLAY_ALL_FIVE_NATIVE_DATABASES_AND_GEOMETRY_PASS",
+      "whole_chip_extraction_performed": false
+    },
+    "reference_audit": {
+      "all_five_schematics_rederived_exactly": true,
+      "explicit_top_port_census": "Exactly VDD VSS vin vout, using SPICE case normalization; native port attachment and circuit compare remain separate strict checks.",
+      "negative_perimeter_only": "RT1 P 141.84u to200u",
+      "negative_terminal_only": "RT1 VSS B_SUB to B_SUB VSS",
+      "negative_top_port_only": "vin to wrong_vin in header; four original header ports verified before simplify",
+      "original_literal_non_square_ap_retained": true,
+      "unused_port_deck_false_positive_preserved": true
+    },
+    "reviewer": "targeted_failure",
+    "source_files": {
+      "hw/soc/pnr/io-tap-upstream-contract.lock.json": {
+        "bytes": 3397,
+        "sha256": "92b6a13a3e7f29e6f4d9b215ea132fb64b415b89b6f011dd851f89d0ae80bc21"
+      },
+      "scripts/probe_io_tap_upstream_contract.py": {
+        "bytes": 17411,
+        "sha256": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658"
+      },
+      "sw/tests/test_io_tap_upstream_contract.py": {
+        "bytes": 7879,
+        "sha256": "1ff6ba6a21d3d6943e5e8739ffaa2b757d55617c96fd67a6ccaeec920609b7a5"
+      }
+    },
+    "status": "INDEPENDENT_STRICT_UPSTREAM_FIXTURE_REVIEW_PASS",
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/nssoc-peer-tap-20261003 sw/tests/test_io_tap_upstream_contract.py",
+      "passed": 47,
+      "seconds": 0.06
+    }
+  },
+  "native_result": {
+    "actual_chip_or_io_geometry_changed": false,
+    "cases": {
+      "original": {
+        "inspection": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+            "inspect",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/original"
+          ],
+          "elapsed_seconds": 0.7684330329939257,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "process": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds",
+            "-rd",
+            "schematic=/dev/shm/nssoc-upstream-tap-contract-final-03/original/schematic.cir",
+            "-rd",
+            "topcell=test_ntap_ptap_ext_deep",
+            "-rd",
+            "report=/dev/shm/nssoc-upstream-tap-contract-final-03/original/lvs.lvsdb.gz",
+            "-rd",
+            "log=/dev/shm/nssoc-upstream-tap-contract-final-03/original/deck.log",
+            "-rd",
+            "target_netlist=/dev/shm/nssoc-upstream-tap-contract-final-03/original/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1",
+            "-rd",
+            "disable_tap_extraction=false",
+            "-rd",
+            "ignore_top_ports_mismatch=false"
+          ],
+          "elapsed_seconds": 3.124294380992069,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "review": {
+          "audit": {
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "test_ntap_ptap_ext_deep",
+                "layout_devices_recursive": 6,
+                "schematic": "TEST_NTAP_PTAP_EXT_DEEP",
+                "schematic_devices_recursive": 6,
+                "status": "Match"
+              }
+            ],
+            "extraction_diagnostics": [],
+            "reasons": [],
+            "status": "PASS within comparison scope",
+            "top": "test_ntap_ptap_ext_deep"
+          },
+          "exact_top_ports_match": true,
+          "input_sha256": {
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/original/deck.log": "88fc85c21b9d719d3bbdd400f85b210b0750db5e2e96b5cb301ad12beea556a0",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/original/lvs.lvsdb.gz": "a0dae423b287263e19c8c98e89f979d7dda1352ac126e755326ae0d2c8e9e133"
+          },
+          "klayout_version": "0.30.7",
+          "layout": {
+            "circuits": [
+              "test_ntap_ptap_ext_deep"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "test_ntap_ptap_ext_deep": [
+                "VDD",
+                "VSS",
+                "vin",
+                "vout"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "$1"
+                }
+              },
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "$I103"
+                }
+              }
+            ]
+          },
+          "reference": {
+            "circuits": [
+              "TEST_NTAP_PTAP_EXT_DEEP"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "TEST_NTAP_PTAP_EXT_DEEP": [
+                "VDD",
+                "VIN",
+                "VOUT",
+                "VSS"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "B_SUB"
+                }
+              },
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "B_WELL"
+                }
+              }
+            ]
+          },
+          "strict_reasons": [],
+          "strict_status": "PASS"
+        }
+      },
+      "promoted_markers": {
+        "inspection": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+            "inspect",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers"
+          ],
+          "elapsed_seconds": 0.7187202099885326,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "process": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/promoted.gds",
+            "-rd",
+            "schematic=/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/schematic.cir",
+            "-rd",
+            "topcell=test_ntap_ptap_ext_deep",
+            "-rd",
+            "report=/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/lvs.lvsdb.gz",
+            "-rd",
+            "log=/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/deck.log",
+            "-rd",
+            "target_netlist=/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1",
+            "-rd",
+            "disable_tap_extraction=false",
+            "-rd",
+            "ignore_top_ports_mismatch=false"
+          ],
+          "elapsed_seconds": 3.0721341609896626,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "review": {
+          "audit": {
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "test_ntap_ptap_ext_deep",
+                "layout_devices_recursive": 4,
+                "schematic": "TEST_NTAP_PTAP_EXT_DEEP",
+                "schematic_devices_recursive": 6,
+                "status": "NoMatch"
+              }
+            ],
+            "extraction_diagnostics": [],
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "status": "FAIL",
+            "top": "test_ntap_ptap_ext_deep"
+          },
+          "exact_top_ports_match": true,
+          "input_sha256": {
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/deck.log": "af79991686444b409cf620d2898e55511dbce7a148af051b632c78f55437f719",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/promoted_markers/lvs.lvsdb.gz": "c861fb21e3d647635a0019f4714fce6238784e2ebac928e069cbd0315cc78d4e"
+          },
+          "klayout_version": "0.30.7",
+          "layout": {
+            "circuits": [
+              "test_ntap_ptap_ext_deep"
+            ],
+            "counts": {
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "test_ntap_ptap_ext_deep": [
+                "VDD",
+                "VSS",
+                "vin",
+                "vout"
+              ]
+            },
+            "taps": []
+          },
+          "reference": {
+            "circuits": [
+              "TEST_NTAP_PTAP_EXT_DEEP"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "TEST_NTAP_PTAP_EXT_DEEP": [
+                "VDD",
+                "VIN",
+                "VOUT",
+                "VSS"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "B_SUB"
+                }
+              },
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "B_WELL"
+                }
+              }
+            ]
+          },
+          "strict_reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "strict_status": "FAIL"
+        }
+      },
+      "reversed_terminals": {
+        "inspection": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+            "inspect",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals"
+          ],
+          "elapsed_seconds": 0.7671612040139735,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "process": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds",
+            "-rd",
+            "schematic=/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/schematic.cir",
+            "-rd",
+            "topcell=test_ntap_ptap_ext_deep",
+            "-rd",
+            "report=/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/lvs.lvsdb.gz",
+            "-rd",
+            "log=/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/deck.log",
+            "-rd",
+            "target_netlist=/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1",
+            "-rd",
+            "disable_tap_extraction=false",
+            "-rd",
+            "ignore_top_ports_mismatch=false"
+          ],
+          "elapsed_seconds": 3.1740136279986473,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "review": {
+          "audit": {
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "test_ntap_ptap_ext_deep",
+                "layout_devices_recursive": 6,
+                "schematic": "TEST_NTAP_PTAP_EXT_DEEP",
+                "schematic_devices_recursive": 6,
+                "status": "NoMatch"
+              }
+            ],
+            "extraction_diagnostics": [],
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "status": "FAIL",
+            "top": "test_ntap_ptap_ext_deep"
+          },
+          "exact_top_ports_match": true,
+          "input_sha256": {
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/deck.log": "00dd1c48ac89137c2db6035513cf4fccbdbecb28ab89178e6aa0b559596776e4",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/reversed_terminals/lvs.lvsdb.gz": "4e1c25733e10254f9d15a104f469bcbed575adf0d3c4f5f512c3fc61891b1545"
+          },
+          "klayout_version": "0.30.7",
+          "layout": {
+            "circuits": [
+              "test_ntap_ptap_ext_deep"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "test_ntap_ptap_ext_deep": [
+                "VDD",
+                "VSS",
+                "vin",
+                "vout"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "$1"
+                }
+              },
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "$I103"
+                }
+              }
+            ]
+          },
+          "reference": {
+            "circuits": [
+              "TEST_NTAP_PTAP_EXT_DEEP"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "TEST_NTAP_PTAP_EXT_DEEP": [
+                "VDD",
+                "VIN",
+                "VOUT",
+                "VSS"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "B_SUB",
+                  "WELL": "VSS"
+                }
+              },
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "B_WELL"
+                }
+              }
+            ]
+          },
+          "strict_reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "strict_status": "FAIL"
+        }
+      },
+      "wrong_perimeter": {
+        "inspection": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+            "inspect",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter"
+          ],
+          "elapsed_seconds": 0.7675943409994943,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "process": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds",
+            "-rd",
+            "schematic=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/schematic.cir",
+            "-rd",
+            "topcell=test_ntap_ptap_ext_deep",
+            "-rd",
+            "report=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/lvs.lvsdb.gz",
+            "-rd",
+            "log=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/deck.log",
+            "-rd",
+            "target_netlist=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1",
+            "-rd",
+            "disable_tap_extraction=false",
+            "-rd",
+            "ignore_top_ports_mismatch=false"
+          ],
+          "elapsed_seconds": 3.074751556996489,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "review": {
+          "audit": {
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "test_ntap_ptap_ext_deep",
+                "layout_devices_recursive": 6,
+                "schematic": "TEST_NTAP_PTAP_EXT_DEEP",
+                "schematic_devices_recursive": 6,
+                "status": "NoMatch"
+              }
+            ],
+            "extraction_diagnostics": [],
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "status": "FAIL",
+            "top": "test_ntap_ptap_ext_deep"
+          },
+          "exact_top_ports_match": true,
+          "input_sha256": {
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/deck.log": "ff027ae9139deec132388c1c363e4e1a47d3f73d9829b463dc6d8ccfea43ac3c",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_perimeter/lvs.lvsdb.gz": "31f34a6bdab48007dcff67fa2f5504d34676472968fedbefaf0102b659bc9f3a"
+          },
+          "klayout_version": "0.30.7",
+          "layout": {
+            "circuits": [
+              "test_ntap_ptap_ext_deep"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "test_ntap_ptap_ext_deep": [
+                "VDD",
+                "VSS",
+                "vin",
+                "vout"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "$1"
+                }
+              },
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "$I103"
+                }
+              }
+            ]
+          },
+          "reference": {
+            "circuits": [
+              "TEST_NTAP_PTAP_EXT_DEEP"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "TEST_NTAP_PTAP_EXT_DEEP": [
+                "VDD",
+                "VIN",
+                "VOUT",
+                "VSS"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 200.0
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "B_SUB"
+                }
+              },
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "B_WELL"
+                }
+              }
+            ]
+          },
+          "strict_reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "strict_status": "FAIL"
+        }
+      },
+      "wrong_top_port": {
+        "inspection": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "python",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+            "inspect",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port"
+          ],
+          "elapsed_seconds": 0.7697088779968908,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "process": {
+          "address_space_limit_bytes": 2147483648,
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds",
+            "-rd",
+            "schematic=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/schematic.cir",
+            "-rd",
+            "topcell=test_ntap_ptap_ext_deep",
+            "-rd",
+            "report=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/lvs.lvsdb.gz",
+            "-rd",
+            "log=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/deck.log",
+            "-rd",
+            "target_netlist=/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1",
+            "-rd",
+            "disable_tap_extraction=false",
+            "-rd",
+            "ignore_top_ports_mismatch=false"
+          ],
+          "elapsed_seconds": 3.0731426690035732,
+          "returncode": 0,
+          "watchdog_seconds": 120
+        },
+        "review": {
+          "audit": {
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "test_ntap_ptap_ext_deep",
+                "layout_devices_recursive": 6,
+                "schematic": "TEST_NTAP_PTAP_EXT_DEEP",
+                "schematic_devices_recursive": 6,
+                "status": "Match"
+              }
+            ],
+            "extraction_diagnostics": [],
+            "reasons": [],
+            "status": "PASS within comparison scope",
+            "top": "test_ntap_ptap_ext_deep"
+          },
+          "exact_top_ports_match": false,
+          "input_sha256": {
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/deck.log": "bfbf9a6bbdf37065412b43b48bac0aab67f665fb410f43431cbea8a8abe92853",
+            "/dev/shm/nssoc-upstream-tap-contract-final-03/wrong_top_port/lvs.lvsdb.gz": "eed46dd923661384feae63df6a2b5c062a7497a8b4f442c8e3821d73c5b73780"
+          },
+          "klayout_version": "0.30.7",
+          "layout": {
+            "circuits": [
+              "test_ntap_ptap_ext_deep"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "test_ntap_ptap_ext_deep": [
+                "VDD",
+                "VSS",
+                "vin",
+                "vout"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "$1"
+                }
+              },
+              {
+                "circuit": "test_ntap_ptap_ext_deep",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "$I103"
+                }
+              }
+            ]
+          },
+          "reference": {
+            "circuits": [
+              "TEST_NTAP_PTAP_EXT_DEEP"
+            ],
+            "counts": {
+              "ntap1": 1,
+              "ptap1": 1,
+              "sg13_lv_nmos": 2,
+              "sg13_lv_pmos": 2
+            },
+            "ports": {
+              "TEST_NTAP_PTAP_EXT_DEEP": [
+                "VDD",
+                "VOUT",
+                "VSS"
+              ]
+            },
+            "taps": [
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ptap1",
+                "parameters": {
+                  "A": 21.276,
+                  "P": 141.84
+                },
+                "terminals": {
+                  "TIE": "VSS",
+                  "WELL": "B_SUB"
+                }
+              },
+              {
+                "circuit": "TEST_NTAP_PTAP_EXT_DEEP",
+                "kind": "ntap1",
+                "parameters": {
+                  "A": 24.060000000000002,
+                  "P": 160.4
+                },
+                "terminals": {
+                  "TIE": "VDD",
+                  "WELL": "B_WELL"
+                }
+              }
+            ]
+          },
+          "strict_reasons": [
+            "Exact four-port top census mismatch"
+          ],
+          "strict_status": "FAIL"
+        }
+      }
+    },
+    "conclusion": "Untouched independent fixture passes strict LVS with literal non-square A/P. Geometry-identical parent promotion loses both taps and fails. The deck alone misses an unused renamed reference top port, which the additional exact port census rejects. This qualifies neither project I/O taps nor a general hierarchy contract; the unresolved I/O intended-geometry/reference contract remains open.",
+    "diagnostic_only": true,
+    "full_chip_lvs_accepted": false,
+    "input_sha256": {
+      "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/promoted.gds": "7abdbf874d964fd4e36f045ceb9a246c855ca564608623247f406827b517d341",
+      "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/run_regression.py": "5d5ac2bfea76d60712b84065b790ae7ccb81bd52042451f3bee90f4f0c79ac2d",
+      "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.cdl": "e25b5f5c0a74f73fd29bc85de247c8cf0399f27b983626a2ad07509b823bad81",
+      "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds": "171dd7dec790d86e6c193a8853a6f772270f960c10e9dc829a9042a2fe87b006",
+      "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.yaml": "2be1268e27b4c02b6bd5d865cfbda89b7e5c9b774cc8c9dec1605c9a39f5adc7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/prepare_ihp_drc.py": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/io-tap-upstream-contract.lock.json": "92b6a13a3e7f29e6f4d9b215ea132fb64b415b89b6f011dd851f89d0ae80bc21",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/bootstrap_flow.py": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/fetch_evidence_assets.py": "a64966f83fb041e8242486f391c5a381e8c558a086c459bf1f7c971d3a44b1bb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_io_parent_lvs.py": "567502ae8588f2bf773fdf038768d389cc45709397e4b7eb351596bccb2ecef8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_io_tap_upstream_contract.py": "1ff6ba6a21d3d6943e5e8739ffaa2b757d55617c96fd67a6ccaeec920609b7a5"
+    },
+    "io_lvs_accepted": false,
+    "manufacturing_approval": false,
+    "original_fixture_unchanged": true,
+    "output_sha256": {
+      "inputs/promoted.gds": "7abdbf874d964fd4e36f045ceb9a246c855ca564608623247f406827b517d341",
+      "inputs/run_regression.py": "5d5ac2bfea76d60712b84065b790ae7ccb81bd52042451f3bee90f4f0c79ac2d",
+      "inputs/test_ntap_ptap_ext_deep.cdl": "e25b5f5c0a74f73fd29bc85de247c8cf0399f27b983626a2ad07509b823bad81",
+      "inputs/test_ntap_ptap_ext_deep.gds": "171dd7dec790d86e6c193a8853a6f772270f960c10e9dc829a9042a2fe87b006",
+      "inputs/test_ntap_ptap_ext_deep.yaml": "2be1268e27b4c02b6bd5d865cfbda89b7e5c9b774cc8c9dec1605c9a39f5adc7",
+      "original/audit.json": "1994ef48d901ff34210aed89c43b126b7ebf5fcfbd6280e77161413dc129d7f5",
+      "original/deck.log": "88fc85c21b9d719d3bbdd400f85b210b0750db5e2e96b5cb301ad12beea556a0",
+      "original/extracted.cir": "5f7330dee59a050103cf6e5067af130958d850453cfb78573789fa70e4374420",
+      "original/inspect.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original/lvs.lvsdb.gz": "a0dae423b287263e19c8c98e89f979d7dda1352ac126e755326ae0d2c8e9e133",
+      "original/run.log": "32fa56b4790470394a809f74ba202769c877993582ab5b9765a9add205807937",
+      "original/schematic.cir": "e25b5f5c0a74f73fd29bc85de247c8cf0399f27b983626a2ad07509b823bad81",
+      "promoted_markers/audit.json": "fc8ab62fd90b7a9e72ad940c3bab3d88473cdbe92fbd4c4625d2ea4199ca334f",
+      "promoted_markers/deck.log": "af79991686444b409cf620d2898e55511dbce7a148af051b632c78f55437f719",
+      "promoted_markers/extracted.cir": "20f493616af77aeb9a1d1e4a96869c2badf803619b7736e850b7527260f542ff",
+      "promoted_markers/inspect.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "promoted_markers/lvs.lvsdb.gz": "c861fb21e3d647635a0019f4714fce6238784e2ebac928e069cbd0315cc78d4e",
+      "promoted_markers/run.log": "a32b426d2a3605a8964fd557b9a25c6f826d45c8e9822ac20ddb5e40062cafb0",
+      "promoted_markers/schematic.cir": "e25b5f5c0a74f73fd29bc85de247c8cf0399f27b983626a2ad07509b823bad81",
+      "promotion.json": "e6c00b1e44c0a21366f69fd2acc8db462d844384de1d5b939bc7339016599dd0",
+      "promotion.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reversed_terminals/audit.json": "393a14f7fc584a9568eec53e5a52b6197eaad4cbd57e77b95cd469947792030b",
+      "reversed_terminals/deck.log": "00dd1c48ac89137c2db6035513cf4fccbdbecb28ab89178e6aa0b559596776e4",
+      "reversed_terminals/extracted.cir": "5f7330dee59a050103cf6e5067af130958d850453cfb78573789fa70e4374420",
+      "reversed_terminals/inspect.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reversed_terminals/lvs.lvsdb.gz": "4e1c25733e10254f9d15a104f469bcbed575adf0d3c4f5f512c3fc61891b1545",
+      "reversed_terminals/run.log": "cb2a7cb2a6a3eef946b36eff6d8d41926c84ead8f2ff711b1df26b5484ea06bd",
+      "reversed_terminals/schematic.cir": "30260d5f1754a74d85c284f83d73fb2797fc5b6c2ad58bb5d44fd0e52e7280a2",
+      "sources/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+      "sources/hw/soc/flow/prepare_ihp_drc.py": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47",
+      "sources/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+      "sources/hw/soc/pnr/io-tap-upstream-contract.lock.json": "92b6a13a3e7f29e6f4d9b215ea132fb64b415b89b6f011dd851f89d0ae80bc21",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+      "sources/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10",
+      "sources/scripts/bootstrap_flow.py": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2",
+      "sources/scripts/fetch_evidence_assets.py": "a64966f83fb041e8242486f391c5a381e8c558a086c459bf1f7c971d3a44b1bb",
+      "sources/scripts/probe_io_tap_upstream_contract.py": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658",
+      "sources/scripts/run_io_parent_lvs.py": "567502ae8588f2bf773fdf038768d389cc45709397e4b7eb351596bccb2ecef8",
+      "sources/sw/tests/test_io_tap_upstream_contract.py": "1ff6ba6a21d3d6943e5e8739ffaa2b757d55617c96fd67a6ccaeec920609b7a5",
+      "wrong_perimeter/audit.json": "03da121b5e5f7b2ba4a3d98ff878928f17bb6724def68b31094e655b183b80e5",
+      "wrong_perimeter/deck.log": "ff027ae9139deec132388c1c363e4e1a47d3f73d9829b463dc6d8ccfea43ac3c",
+      "wrong_perimeter/extracted.cir": "5f7330dee59a050103cf6e5067af130958d850453cfb78573789fa70e4374420",
+      "wrong_perimeter/inspect.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wrong_perimeter/lvs.lvsdb.gz": "31f34a6bdab48007dcff67fa2f5504d34676472968fedbefaf0102b659bc9f3a",
+      "wrong_perimeter/run.log": "8945d6577fc85134d14d2d947fb6ac9734795661d4ffa4e6afea9927f5e0ffd9",
+      "wrong_perimeter/schematic.cir": "18adbbf564f943ea86c061bafc4861f7df61014cb50707115db56b7cd35ed492",
+      "wrong_top_port/audit.json": "6ec151f23ef80b46603f53d2c22b527b9224a36e9e21cdb7cdad972262a1369b",
+      "wrong_top_port/deck.log": "bfbf9a6bbdf37065412b43b48bac0aab67f665fb410f43431cbea8a8abe92853",
+      "wrong_top_port/extracted.cir": "5f7330dee59a050103cf6e5067af130958d850453cfb78573789fa70e4374420",
+      "wrong_top_port/inspect.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wrong_top_port/lvs.lvsdb.gz": "eed46dd923661384feae63df6a2b5c062a7497a8b4f442c8e3821d73c5b73780",
+      "wrong_top_port/run.log": "5f028d3fbe9a0fb9fdb3e414d2558f18ce8372148821bccc0a2e4f51964084c3",
+      "wrong_top_port/schematic.cir": "71db0ee4c94909aae50f72a5f0495acc4c98b83af7b967dea85ec2c0f23ccc10"
+    },
+    "promotion": {
+      "all_flat_geometry_preserved": true,
+      "klayout_version": "0.30.7",
+      "layer_xor_area_dbu2": {
+        "1/0": 0,
+        "10/0": 0,
+        "10/2": 0,
+        "10/25": 0,
+        "14/0": 0,
+        "19/0": 0,
+        "29/0": 0,
+        "30/0": 0,
+        "30/2": 0,
+        "30/25": 0,
+        "31/0": 0,
+        "32/0": 0,
+        "40/0": 0,
+        "5/0": 0,
+        "5/2": 0,
+        "51/0": 0,
+        "6/0": 0,
+        "63/0": 0,
+        "8/0": 0,
+        "8/2": 0,
+        "8/25": 0
+      },
+      "moved": [
+        {
+          "after": "(320,1470;320,4550;680,4550;680,1830;32700,1830;32700,4550;320,4550;320,4910;33060,4910;33060,1470)",
+          "before": "simple_polygon (-1040,-1220;-1040,1860;-680,1860;-680,-860;31340,-860;31340,1860;-1040,1860;-1040,2220;31700,2220;31700,-1220)",
+          "cell": "nmos",
+          "layer": "40/0",
+          "transform": "r0 *1 1360,2690"
+        },
+        {
+          "after": "(320,4550;320,4910;33060,4910;33060,4550)",
+          "before": "box (-1040,1860;31700,2220)",
+          "cell": "nmos",
+          "layer": "40/0",
+          "transform": "r0 *1 1360,2690"
+        },
+        {
+          "after": "(320,1830;320,4550;680,4550;680,1830)",
+          "before": "box (-1040,-860;-680,1860)",
+          "cell": "nmos",
+          "layer": "40/0",
+          "transform": "r0 *1 1360,2690"
+        },
+        {
+          "after": "(32700,1830;32700,4550;33060,4550;33060,1830)",
+          "before": "box (31340,-860;31700,1860)",
+          "cell": "nmos",
+          "layer": "40/0",
+          "transform": "r0 *1 1360,2690"
+        },
+        {
+          "after": "(1050,6460;1050,13080;32330,13080;32330,6460)",
+          "before": "box (-310,-310;30970,6310)",
+          "cell": "pmos",
+          "layer": "31/0",
+          "transform": "r0 *1 1360,6770"
+        },
+        {
+          "after": "(0,5410;0,14130;33380,14130;33380,5410)",
+          "before": "box (-1360,-1360;32020,7360)",
+          "cell": "pmos",
+          "layer": "31/0",
+          "transform": "r0 *1 1360,6770"
+        },
+        {
+          "after": "(31720,6770;31720,7070;32020,7070;32020,6770)",
+          "before": "box (30360,0;30660,300)",
+          "cell": "pmos",
+          "layer": "40/0",
+          "transform": "r0 *1 1360,6770"
+        }
+      ],
+      "non_marker_local_geometry_and_all_instances_preserved": true,
+      "original_sha256": "171dd7dec790d86e6c193a8853a6f772270f960c10e9dc829a9042a2fe87b006",
+      "promoted_sha256": "7abdbf874d964fd4e36f045ceb9a246c855ca564608623247f406827b517d341",
+      "status": "SEVEN_MARKERS_PROMOTED_ONLY"
+    },
+    "promotion_process": {
+      "address_space_limit_bytes": 2147483648,
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_io_tap_upstream_contract.py",
+        "promote",
+        "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/test_ntap_ptap_ext_deep.gds",
+        "/dev/shm/nssoc-upstream-tap-contract-final-03/inputs/promoted.gds",
+        "/dev/shm/nssoc-upstream-tap-contract-final-03/promotion.json"
+      ],
+      "elapsed_seconds": 0.8175184400024591,
+      "returncode": 0,
+      "watchdog_seconds": 120
+    },
+    "qualified_deck_acceptance": false,
+    "status": "PASS_STRICT_UPSTREAM_CONTROLS_WITH_REPRODUCED_HIERARCHY_FAILURE"
+  },
+  "root_review": {
+    "full_chip_lvs_accepted": false,
+    "methods": {
+      "hw/soc/pnr/io-tap-upstream-contract.lock.json": {
+        "bytes": 3397,
+        "sha256": "92b6a13a3e7f29e6f4d9b215ea132fb64b415b89b6f011dd851f89d0ae80bc21"
+      },
+      "scripts/probe_io_tap_upstream_contract.py": {
+        "bytes": 17411,
+        "sha256": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658"
+      },
+      "sw/tests/test_io_tap_upstream_contract.py": {
+        "bytes": 7879,
+        "sha256": "1ff6ba6a21d3d6943e5e8739ffaa2b757d55617c96fd67a6ccaeec920609b7a5"
+      }
+    },
+    "native_bundle": {
+      "bytes": 143896,
+      "sha256": "4061cc202e11ea0e9daf0b8589e0115902d734f56b6da5805764bae6f577ea4a"
+    },
+    "native_rerun_by_root": false,
+    "peer_receipt": {
+      "bytes": 8861,
+      "sha256": "202c60d6977de999b64c68dcbda3561406cea5530bc0e54e23fbd66f6d553389"
+    },
+    "publication_whitespace_cleanup": {
+      "change": "Remove one trailing ASCII space on line278 only.",
+      "native_executed_source": {
+        "bytes": 17411,
+        "sha256": "eeddd4c6e2357859ca8ce837b8c6c1af17972d3a86ac6131e0ad54578f17f658"
+      },
+      "native_results_still_bound_to_original_executed_source": true,
+      "path": "scripts/probe_io_tap_upstream_contract.py",
+      "published_source": {
+        "bytes": 17410,
+        "sha256": "d20ef9878ee88e445c6a7ce66f55949bf45f3b9bc49c733db839bd7c1da0735a"
+      },
+      "python_ast_identical": true
+    },
+    "qualified_deck_acceptance": false,
+    "raw_output_pins_rehashed": 104,
+    "source_review": "Exact native inputs, original and one-line negative CDL mutations, strict port/device census, complete audit and hierarchy-only mask/instance preservation reviewed. Independent peer reopens all five saved native databases.",
+    "status": "ROOT_FROZEN_SOURCE_AND_RAW_BUNDLE_REHASH_PASS",
+    "utc": "2026-10-03T06:43:19.192275+00:00"
+  },
+  "schema": 1,
+  "scope": "Exact upstream small fixture and strict observer controls, not project I/O or fullchip LVS acceptance."
+}

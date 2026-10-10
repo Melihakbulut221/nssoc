@@ -1,0 +1,127 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: timing-alu-state-partitions
+on:
+  push:
+    paths:
+      - .github/workflows/timing-alu-state-partitions.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: timing-alu-state-partitions-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Check exhaustive group coverage and unconstrained proof construction
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_alu_state_partitions.py sw/tests/test_alu_state_repair.py sw/tests/test_alu_state_counterexample.py sw/tests/test_alu_mapped_state.py
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Reproduce exact proposal JSON and build one source-bound common miter
+        run: |
+          python3 scripts/prove_alu_state_partitions.py prepare \
+            --output "$GITHUB_WORKSPACE/alu-partition-common" \
+            --work "$RUNNER_TEMP/alu-partition-prepare"
+      - name: Preserve common source-bound proof graph and preparation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-partition-common-${{ github.run_attempt }}
+          path: alu-partition-common/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+  prove:
+    needs: prepare
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-partition-common-${{ github.run_attempt }}
+          path: alu-partition-common
+      - name: Install AppImage prerequisite
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Prove every assigned group with all original inputs symbolic
+        run: |
+          python3 scripts/prove_alu_state_partitions.py shard \
+            --bundle "$GITHUB_WORKSPACE/alu-partition-common" --shard '${{ matrix.shard }}' \
+            --output "$GITHUB_WORKSPACE/alu-partition-shard-${{ matrix.shard }}" \
+            --work "$RUNNER_TEMP/alu-partition-shard-work"
+      - name: Preserve all native group proofs, timeouts and counterexamples
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-partition-shard-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: alu-partition-shard-${{ matrix.shard }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 1
+          retention-days: 30
+  aggregate:
+    needs: [prepare, prove]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: alu-partition-common-${{ github.run_attempt }}
+          path: alu-partition-common
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: alu-partition-shard-*-${{ github.run_attempt }}
+          path: shards
+      - name: Require every one of the 34321 original equations to have passed
+        run: |
+          python3 scripts/prove_alu_state_partitions.py aggregate \
+            --bundle alu-partition-common --output alu-partition-verdict.json \
+            --shard-dir 'shards/alu-partition-shard-0-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-partition-shard-1-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-partition-shard-2-${{ github.run_attempt }}' \
+            --shard-dir 'shards/alu-partition-shard-3-${{ github.run_attempt }}'
+      - name: Preserve complete acceptance decision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alu-partition-verdict-${{ github.run_attempt }}
+          path: alu-partition-verdict.json
+          if-no-files-found: error
+          retention-days: 30

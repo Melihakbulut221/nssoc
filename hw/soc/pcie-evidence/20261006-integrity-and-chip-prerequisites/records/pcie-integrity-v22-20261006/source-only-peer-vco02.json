@@ -1,0 +1,148 @@
+{
+  "status": "PASS_SOURCE_ONLY_V22_QUARANTINED_CACHE",
+  "freeze": {
+    "bytes": 2533,
+    "sha256": "fe7b6055e64f1498052da96b5e1d8da2bbe67667dbedf411cf94240b40ebc02d"
+  },
+  "findings": [],
+  "source_pins": {
+    "scripts/generate_pcie_integrity_cache_v22.py": {
+      "bytes": 1577,
+      "sha256": "dfb7d4d2700c772dbe68ddb0b865dd071a4f541617b9f8837eca96753e49c06a"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 11276,
+      "sha256": "c830431e7b194927d5a4956da0a2b459ebe93278475b17bd221f86e1cb513d2f"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v": {
+      "bytes": 194845,
+      "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v22.v": {
+      "bytes": 3324,
+      "sha256": "29495da25ca84bfff6c7dca6cb541c498debb64ac64e4cfdc863905abe854a01"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v22": {
+      "bytes": 1528,
+      "sha256": "606f14de8fc0f440bce0ad965032e361c41e9e55408cf9ca18c0c34625e510f8"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 29629,
+      "sha256": "1e3a67ed12a40333a1453a855a7c4b42f408d1e73eabee540f6bc0e988514c6d"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 6470,
+      "sha256": "69528fd9f87e698377f2eb62b96723ad008d19c943cd84609d2e2a77e402f538"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_cache.py": {
+      "bytes": 5535,
+      "sha256": "c8e98a352bea96aec33dfac4f7571a99381f09b9a57ca4ec452d6ac2521fefe6"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_miter.py": {
+      "bytes": 13624,
+      "sha256": "bf74c7cc0625a11ff6384498e00ccc005fe45343666668bd8d547cf59f8a266e"
+    }
+  },
+  "method": {
+    "bytes": 8276,
+    "sha256": "eb00ae494f4f650c7807a72ca459ecad2b895cbf1168d93a10ed72bf05acd789"
+  },
+  "launch_freeze": {
+    "bytes": 1391,
+    "sha256": "45ffbd3fc28d851d5cc5b4cf81a7aa82b8d9dfc288910b7b9ab2b9459db0e499"
+  },
+  "relation": {
+    "bytes": 3065,
+    "sha256": "2d48758a62252634910e24adf278906dbca6c327fa2a847929b127b19885e948"
+  },
+  "retained_finding": {
+    "bytes": 745,
+    "sha256": "5b9d62ba3daffdd712f80f5d9e50585c1ae179172ae3af9528d8c02189d9665a"
+  },
+  "entire_framer_forward_inverse": true,
+  "wrapper_makefile_checker_bridges": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v21.v": {
+      "old": {
+        "bytes": 3324,
+        "sha256": "05ba0d636c266422ddb24e1f8d2e46e6a54f011ba876fa7ae2df566ee188a3b2"
+      },
+      "new": {
+        "bytes": 3324,
+        "sha256": "29495da25ca84bfff6c7dca6cb541c498debb64ac64e4cfdc863905abe854a01"
+      }
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v21": {
+      "old": {
+        "bytes": 1528,
+        "sha256": "ad50551298e96e1a9ebe94348cfc058c57dd488cfe3966fca05e1b5f945712e1"
+      },
+      "new": {
+        "bytes": 1528,
+        "sha256": "606f14de8fc0f440bce0ad965032e361c41e9e55408cf9ca18c0c34625e510f8"
+      }
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v21.py": {
+      "old": {
+        "bytes": 11276,
+        "sha256": "29287ddf51991dd137c0b13ab46ea6532c3411dc5ed06ab14221df2fa4a5a35b"
+      },
+      "new": {
+        "bytes": 11276,
+        "sha256": "c830431e7b194927d5a4956da0a2b459ebe93278475b17bd221f86e1cb513d2f"
+      }
+    }
+  },
+  "original_oracle_cases": [
+    "sustained_minimum_packets_exceed_every_buffer",
+    "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+    "all65_partial_raw_abort_phases_restart_exactly",
+    "edb_quarantine_and_eds_release_drain",
+    "actual_full_ring_replacement_and_late_stall_overflow",
+    "malformed_tokens_and_headers_never_release_quarantine",
+    "bounded_stalls_preserve_all_wide_metadata",
+    "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+    "start_without_abort_reseeds_and_discards_prior_epoch",
+    "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+    "tlp_crc_coverage_residue_nullification_and_successor",
+    "incomplete_maximum_packet_cannot_release_any_byte",
+    "crc_candidates_cover_every_dword_start_and_cross_slice_seed",
+    "descriptor_empty_drain_under_held_output_and_eds",
+    "descriptor_epoch_controls_discard_owned_payload",
+    "descriptor_parser_fault_cancels_queue_after_sampling_edge"
+  ],
+  "new_oracle_cases": [
+    "sustained_minimum_packets_exceed_every_buffer",
+    "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+    "all65_partial_raw_abort_phases_restart_exactly",
+    "edb_quarantine_and_eds_release_drain",
+    "actual_full_ring_replacement_and_late_stall_overflow",
+    "malformed_tokens_and_headers_never_release_quarantine",
+    "bounded_stalls_preserve_all_wide_metadata",
+    "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+    "start_without_abort_reseeds_and_discards_prior_epoch",
+    "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+    "tlp_crc_coverage_residue_nullification_and_successor",
+    "incomplete_maximum_packet_cannot_release_any_byte",
+    "crc_candidates_cover_every_dword_start_and_cross_slice_seed",
+    "descriptor_empty_drain_under_held_output_and_eds",
+    "descriptor_epoch_controls_discard_owned_payload",
+    "descriptor_parser_fault_cancels_queue_after_sampling_edge",
+    "cache_fault_write_and_new_epoch_reuse"
+  ],
+  "public_case_inventory_correction": "Only saved16->17 assertion; no RTL or bench edit.",
+  "lifecycle": "Complete launcher/detacher reconstructed independently from reviewedV21; identical ProcessOwner wait/check/post-context checks, CPU6/2GiB, no healthy timeout. Immediate detached launch with exclusive once marker; progress separately required.",
+  "temporal_argument": [
+    "Enabled step excludes reset/flush/start/abort. Only a known fault-qualified step can add cache writes versusV21. Same unchanged fault branch clears ring pointers/retire+output validity and halts/deactivates at that edge.",
+    "All parser/main verdict/slot tag/content ownership writers are byte-identical. Differences are quarantined in unowned cache slots. Fresh slot ownership computes effective new tag from same write tags, initializes from common main verdict then same last-writer ordered four broadcasts.",
+    "Nonempty occupied-slot cache and owned descriptor payload compared in full old/new miter together with all17 public output ports; no invalid state equality or arbitrary-X control equivalence claimed."
+  ],
+  "mandatory_control_review": [
+    "4096 actual literal cache trials include step0/1/X/Z, selected X/Z payload, overlapping last-writer and actual fault-cache changes; six targeted mutants require semantic trial failure.",
+    "New fullproduct case pre-fills cache with badDLLP verdict0, goodDLLP and malformed token same step creates witnessed cache divergence and atomic cancellation; both token kinds x four recovery modes, wrap and stalls.",
+    "Miter actual6mutants and inherited12public mutants require named semantic failures and compiledsim; the current source count fix permits full17-case XML inventory."
+  ],
+  "expected_selected_pytest": 29,
+  "excluded_MAX4118": 2,
+  "native_or_controls_executed_by_peer": false,
+  "limits": "Source-only; actual RTL controls still mandatory before native mapping. No formal proof, timing, fullPHY, or unrestrictedX control equivalence claim."
+}

@@ -1,0 +1,102 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Independent saved raw zero-crossing brackets and source-terminal diagnosis."""
+from pathlib import Path
+import gzip,hashlib,json,os,resource
+import numpy as np
+os.sched_setaffinity(0,{10})
+resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)
+R=Path.cwd();B=Path(__file__).resolve().parent
+N=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-wire-06-01')
+F=R/'sw/tests/fixtures/pcie_clock_div4_v10_tail115_v1_hybrid_v1'
+def pin(p):
+ p=Path(p)
+ with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())
+r=json.loads((N/'result.json').read_text())
+assert pin(N/'result.json')['sha256']=='04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7'
+assert pin(N/'wave.raw.gz')['sha256']=='d9e004391d25273a08b8f86db7bcd5e7cf73a54c615e83c614fbae481520fe3c'
+raw=gzip.decompress((N/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']
+header,payload=raw.split(b'Binary:\n',1)
+names=[x.decode().split()[1] for x in header.split(b'Variables:\n')[1].splitlines()]
+assert len(names)==957 and len(set(names))==957
+size=r['rows']*957*8;assert payload[size:]==str(r['rows']).encode()
+a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all()
+d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0) and t[-1]==34e-9
+for p in [F/'composition.json',F/'source-native-bijection.json']:assert r['inputs'][str(p)]==pin(p)
+c=json.loads((F/'composition.json').read_text());j=json.loads((F/'source-native-bijection.json').read_text())
+records={v['native_id']:v for v in c['records']};devices={v['source_name']:v for v in j['devices']};witness={}
+def node(name,term):
+ dev=devices[name];i=dev['terminal_order'].index(term);rec=records[dev['native_id']];ep=rec['terminals'][i];assert ep['terminal']==term
+ col='v(xchain.xdiv.'+ep['node'].lower()+')';assert col in d
+ witness[name+'.'+term]=dict(native_id=dev['native_id'],source_net=dev['source_nets'][i],column=col)
+ return d[col]
+def current(name):
+ idx=devices[name]['native_id'];col=f'i(@q.xchain.xdiv.xd{int(idx):04d}.qnpn13g2[ic])';assert col in d
+ witness[name+'.IC']=dict(native_id=idx,column=col);return d[col]
+sig={'VCO_diff':d['v(clkp)']-d['v(clkn)'],'CML_diff':d['v(qp)']-d['v(qn)']}
+for stage,prefix in [('FIRST','DIV__XFIRST__XCORE'),('SECOND','DIV__XSECOND')]:
+ for latch in ['XM','XS']:
+  p=prefix+'__'+latch;k=stage+'_'+latch
+  cp=node(p+'__XCH','B');cn=node(p+'__XCS','B');qp=node(p+'__XDN','C');qn=node(p+'__XDP','C')
+  sig[k+'_clock_diff']=cp-cn;sig[k+'_clock_cm']=(cp+cn)/2
+  sig[k+'_collector_diff']=qp-qn;sig[k+'_collector_cm']=(qp+qn)/2
+  sig[k+'_tail_IC']=current(p+'__XT');sig[k+'_hold_IC']=current(p+'__XCH');sig[k+'_sample_IC']=current(p+'__XCS')
+  sig[k+'_regenerative_ICdiff']=current(p+'__XHP')-current(p+'__XHN')
+  sig[k+'_tail_VBE']=node(p+'__XT','B')-node(p+'__XT','E')
+for name in ['XLP','XLN','XLT','XLREF']:
+ sig[name+'_IC']=current('DIV__'+name)
+for name in ['XCP','XCN']:sig[name+'_V']=node('DIV__'+name,'mim_top')-node('DIV__'+name,'mim_btm')
+def crossing_records(v):
+ out=[]
+ for i in range(1,len(t)):
+  if v[i-1]<0<=v[i]:
+   e=float(t[i-1]+(t[i]-t[i-1])*(0-v[i-1])/(v[i]-v[i-1]))
+   out.append(dict(time_s=e,bracket_rows=[i-1,i],bracket_s=[float(t[i-1]),float(t[i])],bracket_v=[float(v[i-1]),float(v[i])],bracket_width_ps=float((t[i]-t[i-1])*1e12),slope_v_per_ns=float((v[i]-v[i-1])/(t[i]-t[i-1])*1e-9)))
+ return out
+left,right=r['config']['window_s']
+all_edges={k:crossing_records(v) for k,v in sig.items() if k.endswith('_diff')}
+edge={k:[x for x in es if left<=x['time_s']<right]for k,es in all_edges.items()}
+ce=edge['CML_diff'];ve=edge['VCO_diff'];ct=np.array([x['time_s']for x in ce]);vt=np.array([x['time_s']for x in ve])
+assert ct.tolist()==r['measurement']['edge_times']['cml']
+counts=[int(np.sum((vt>=x)&(vt<y)))for x,y in zip(ct[:-1],ct[1:])]
+assert counts==r['measurement']['actual_vco_period_counts']['native_hbt_div4']
+bad=[i for i,v in enumerate(counts)if v!=4];assert bad==[41]
+intervals=[]
+# Fixed ordinal mapping tests continuity independently of endpoint-bin assignment.
+first=int(np.argmin(abs(vt-ct[0])))
+for i,e in enumerate(ct):
+ nearest=int(np.argmin(abs(vt-e)));tracked=first+4*i
+ assert tracked<len(vt)
+ row=dict(cml_index=i,cml_edge=ce[i],nearest_vco_index=nearest,nearest_vco_edge=ve[nearest],nearest_phase_ps=float((e-vt[nearest])*1e12),fixed_ordinal_vco_index=tracked,fixed_ordinal_phase_ps=float((e-vt[tracked])*1e12))
+ if i<len(counts):row.update(next_period_ps=float((ct[i+1]-e)*1e12),actual_vco_count=counts[i],vco_indices_in_half_open_interval=np.where((vt>=e)&(vt<ct[i+1]))[0].tolist(),fixed_four_vco_period_ps=float((vt[tracked+4]-vt[tracked])*1e12))
+ intervals.append(row)
+lo,hi=ct[38],ct[45];mask=(t>=lo-20e-12)&(t<=hi+20e-12)
+local_edges={k:[x for x in es if lo<=x['time_s']<=hi] for k,es in all_edges.items()}
+for label,es in local_edges.items():
+ for e in es:
+  tt=e['time_s'];e['interpolated_signals']={k:float(np.interp(tt,t,v))for k,v in sig.items()}
+cycles=[]
+for i,(x,y) in enumerate(zip(ct[:-1],ct[1:])):
+ m=(t>=x)&(t<y)
+ cycles.append(dict(index=i,window_s=[float(x),float(y)],samples=int(m.sum()),signals={k:dict(min=float(v[m].min()),max=float(v[m].max()),mean=float(v[m].mean()),rms=float(np.sqrt(np.mean(v[m]**2)))) for k,v in sig.items()}))
+np.savetxt(B/'event-local-samples06.csv',np.column_stack([t[mask],*[v[mask]for v in sig.values()]]),delimiter=',',header=','.join(['time_s',*sig]),comments='')
+out=dict(status='INDEPENDENT_SAVED_TAIL115_EDGE_BOUNDARY_RECOUNT',native_status=r['status'],acceptance_changed=False,method=pin(__file__),inputs={str(p):pin(p)for p in [N/'result.json',N/'wave.raw.gz',F/'composition.json',F/'source-native-bijection.json',R/'scripts/characterize_pcie_pll_loop_v1.py',R/'scripts/characterize_pcie_pll_feedback_v1.py',R/'scripts/characterize_pcie_pll_pfd_cp_v1.py']},all_values=int(a.size),cml_edges=len(ce),vco_edges=len(ve),counts=counts,bad_intervals=bad,source_terminal_witnesses=witness,all_cml_boundaries=intervals,all_cycle_statistics=cycles,local_raw_edges=local_edges,local_samples=pin(B/'event-local-samples06.csv'),interpretation='Original half-open count and zero threshold reproduced exactly. Fixed ordinal pairing is descriptive only; it cannot override native_hbt_div4 failure. Reported brackets are saved time-step resolution, not rigorous interpolation error bounds; no smaller-step numerical convergence has been run.')
+(B/'event-boundary-diagnosis06.json').write_text(json.dumps(out,indent=2)+'\n')
+for row in intervals[37:47]:print(row['cml_index'],row['cml_edge']['time_s']*1e9,row.get('actual_vco_count'),row['nearest_phase_ps'],row['fixed_ordinal_phase_ps'],row.get('next_period_ps'))
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+fig,axs=plt.subplots(3,1,figsize=(13,11),layout='constrained')
+for k in ['VCO_diff','CML_diff','SECOND_XS_collector_diff']:axs[0].plot(t[mask]*1e9,sig[k][mask],label=k,lw=1)
+for e in ct[38:46]:axs[0].axvline(e*1e9,color='k',alpha=.15)
+axs[0].set_ylabel('Differential voltage (V)');axs[0].legend();axs[0].set_xlabel('Time (ns)')
+axs[1].plot(ct*1e9,[x['fixed_ordinal_phase_ps']for x in intervals],marker='.',label='CML minus fixed VCO ordinal (every fourth)')
+axs[1].axhline(0,color='k',lw=.8);axs[1].set_ylabel('Phase separation (ps)');axs[1].set_xlabel('Time (ns)');axs[1].legend()
+for ci in [41,42]:
+ e=ct[ci];m=(t>=e-12e-12)&(t<=e+12e-12)
+ for k in ['VCO_diff','CML_diff']:
+  axs[2].plot((t[m]-e)*1e12,sig[k][m],marker='o',label=f'CML {ci}: {k}')
+axs[2].axvline(0,color='k',lw=.8);axs[2].set_xlabel('Time relative to CML boundary (ps)');axs[2].set_ylabel('Differential voltage (V)');axs[2].legend()
+for ax in axs:ax.grid(alpha=.25)
+fig.suptitle('Tail115: original count failure retained; raw brackets and continuous phase drift')
+fig.savefig(B/'event-boundary-diagnosis06.png',dpi=140)

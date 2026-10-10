@@ -1,0 +1,84 @@
+{
+  "status": "SEALED_PUBLICATION_ONLY_SOURCE_AND_ACTUAL_PROCESS_CONTROLS",
+  "source_freeze": {
+    "bytes": 2174,
+    "sha256": "aa12a51d511d2f097010b83756996e43e7ffa8d11aa42e9c2947ce4e470442a5"
+  },
+  "sources": {
+    "scripts/characterize_pcie_pll_acquisition_v2.py": {
+      "bytes": 4294,
+      "sha256": "e902a71626fef5ad0727f52123a7ee5ce2e6fe6b91aaf223130f68e029ed9531"
+    },
+    "sw/tests/test_pcie_pll_acquisition_v2.py": {
+      "bytes": 7713,
+      "sha256": "ab4a32bb75b78259464ef254677ca96449ddf379daa49ad71e5ed63f0a130aac"
+    },
+    "scripts/publish_pcie_native_capture_v2.py": {
+      "bytes": 5014,
+      "sha256": "70ea108b29f1fcd07ec6d4759a3caac97db3da862a6d49d4e696154572509bf3"
+    }
+  },
+  "inherited_source": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v1.py",
+    "bytes": 22103,
+    "sha256": "ea34d89dc062a515727814b5549d28c4036ca030d39d966aacf605a8691ac649"
+  },
+  "bridges": {
+    "publisher": {
+      "original_sha256": "658c7dade1518627b1e134149524f45054f5b5007b3fa2a5c5982946c2410eec",
+      "modified_sha256": "f13bb3e1d22a3062697b4e526c6baa39ed63a31e57fb5337d0a1c7fa6155bf39",
+      "exact_replacements": [
+        [
+          "class OwnedPublisher:",
+          "class OwnedPublisherV2:"
+        ],
+        [
+          "== previous.PUBLISHER_SHA",
+          "== PUBLISHER_SHA"
+        ],
+        [
+          "str(Path(publication.__file__)),\n                    \"--out\",",
+          "str(Path(publication.__file__)),\n                    \"--tag\",\n                    RELEASE_TAG,\n                    \"--out\","
+        ]
+      ]
+    },
+    "run": {
+      "original_sha256": "1691c598ba632306d6ed94a4daf0fee6f72345e7cc26c0752079f896bd0a53e2",
+      "modified_sha256": "981f2bb4c3b5f2ba08717df9d96521a4fdfbed38b984b4d36f5569ba4b7f4e0d",
+      "exact_replacements": [
+        [
+          "life.OwnedPublisher(owner)",
+          "OwnedPublisherV2(owner)"
+        ]
+      ]
+    }
+  },
+  "tests": [
+    {
+      "runtime": "py314",
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-controls03.log",
+      "bytes": 99,
+      "sha256": "935a6f4748475d2488018753e1ee5a0e124f9ce591291750044aa8a8a913f036",
+      "tests": 15
+    },
+    {
+      "runtime": "py312",
+      "path": "/dev/shm/nssoc-pll-acquisition-v2-controls-py312.log",
+      "bytes": 99,
+      "sha256": "bf5d2f7cea5ba75e8d64563f131aa6b570b36126871c46eed9170ccdb3f38090",
+      "tests": 15
+    }
+  ],
+  "actual_network_owned_route": {
+    "bytes": 1111,
+    "sha256": "4856c622ef8a4de29d6040a48b28d85d70151448c5efeb8337a9848873dcfd09"
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-acquisition-20261004/publication-v2-source/pcie-pll-acquisition-v2-publication-controls-20261005.tar.xz",
+    "bytes": 116896,
+    "sha256": "65d61d6d4cf38aaf541a3e8e70324d3f6fc20ef4ea9e43da74f4fdadf33e746e"
+  },
+  "members": 95,
+  "history": "Initial6FAIL9PASS missing STOP main binding + invalid test process kind; second1FAIL14PASS inherited help doc mismatch; exact drafts/logs retained. Actual network publication/owned reaping succeeded; first ledger audit expected nonexistent COMPLETE instead of actual HEALTHY, preserved and corrected only in separate read-only audit. No producer change after final 15/15 controls.",
+  "scope": "Publication and source/runtime controls only; no fresh SPICE or analog acceptance. Original379ns ERROR immutable; full new2.5ps capture must start from time0 and receive complete safety/raw/pair review."
+}

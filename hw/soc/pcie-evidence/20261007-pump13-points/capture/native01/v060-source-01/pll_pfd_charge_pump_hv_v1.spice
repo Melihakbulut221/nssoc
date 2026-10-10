@@ -1,0 +1,79 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Original static HV-CMOS phase/frequency detector and switched mirror pump.
+* Nominal AVDD=2.5V. REF/FB/RESET are external full-swing logic inputs.
+* RESET is active high. UP/DOWN are active high; positive CP current charges
+* an external filter. No internal ideal sources, delay, switches or clocks.
+* This is a development primitive, not a closed PLL or a qualified interface.
+
+.subckt nssoc_pll_inv_hv_v1 a y vdd vss sub
+XP y a vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XN y a vss sub sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+.ends nssoc_pll_inv_hv_v1
+
+.subckt nssoc_pll_nand2_hv_v1 a b y vdd vss sub
+XPA y a vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XPB y b vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XNA y a n sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+XNB n b vss sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+.ends nssoc_pll_nand2_hv_v1
+
+.subckt nssoc_pll_nand3_hv_v1 a b c y vdd vss sub
+XPA y a vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XPB y b vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XPC y c vdd vdd sg13_hv_pmos w=4u l=0.45u ng=1 m=1
+XNA y a n1 sub sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+XNB n1 b n2 sub sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+XNC n2 c vss sub sg13_hv_nmos w=6u l=0.45u ng=1 m=1
+.ends nssoc_pll_nand3_hv_v1
+
+.subckt nssoc_pll_nor2_hv_v1 a b y vdd vss sub
+XPA n a vdd vdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XPB y b n vdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XNA y a vss sub sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+XNB y b vss sub sg13_hv_nmos w=2u l=0.45u ng=1 m=1
+.ends nssoc_pll_nor2_hv_v1
+
+* Rising-edge static master/slave DFF; active-low clear resets BOTH latches.
+* The clear also inhibits both set inputs, avoiding a clear/set contention.
+.subckt nssoc_pll_dff_hv_v1 d clk clearb q vdd vss sub
+XDC d db vdd vss sub nssoc_pll_inv_hv_v1
+XCC clk clkb vdd vss sub nssoc_pll_inv_hv_v1
+XMNS d clkb clearb mns vdd vss sub nssoc_pll_nand3_hv_v1
+XMNR db clkb mnr vdd vss sub nssoc_pll_nand2_hv_v1
+XMQ mns mqb mq vdd vss sub nssoc_pll_nand2_hv_v1
+XMQB mnr mq clearb mqb vdd vss sub nssoc_pll_nand3_hv_v1
+XSNS mq clk clearb sns vdd vss sub nssoc_pll_nand3_hv_v1
+XSNR mqb clk snr vdd vss sub nssoc_pll_nand2_hv_v1
+XSQ sns qb q vdd vss sub nssoc_pll_nand2_hv_v1
+XSQB snr q clearb qb vdd vss sub nssoc_pll_nand3_hv_v1
+.ends nssoc_pll_dff_hv_v1
+
+.subckt nssoc_pll_pfd_hv_v1 ref fb reset up down vdd vss sub
+XUP vdd ref clearb up vdd vss sub nssoc_pll_dff_hv_v1
+XDN vdd fb clearb down vdd vss sub nssoc_pll_dff_hv_v1
+XBOTH up down bothb vdd vss sub nssoc_pll_nand2_hv_v1
+XD0 bothb delay0 vdd vss sub nssoc_pll_inv_hv_v1
+XD1 delay0 delay1 vdd vss sub nssoc_pll_inv_hv_v1
+XD2 delay1 both vdd vss sub nssoc_pll_inv_hv_v1
+XCLR both reset clearb vdd vss sub nssoc_pll_nor2_hv_v1
+.ends nssoc_pll_pfd_hv_v1
+
+* One resistor-defined NMOS bias sets both the sink and mirrored PMOS source.
+* Actual series MOS switches gate the two output paths; compliance is measured.
+.subckt nssoc_pll_charge_pump_hv_v1 up down out vdd vss sub
+XRBIAS vdd nb sub rppd w=1u l=80u b=0 sw_et=1
+XNREF nb nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XNBIAS pb nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XPREF pb pb vdd vdd sg13_hv_pmos w=8u l=2u ng=1 m=1
+XPSOURCE source pb vdd vdd sg13_hv_pmos w=6.4u l=2u ng=1 m=1
+XPENABLE out upb source vdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XNENABLE out down sink sub sg13_hv_nmos w=8u l=0.45u ng=1 m=1
+XNSINK sink nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XUB up upb vdd vss sub nssoc_pll_inv_hv_v1
+.ends nssoc_pll_charge_pump_hv_v1
+
+.subckt nssoc_pll_pfd_cp_hv_v1 ref fb reset up down cp avdd avss sub
+XPFD ref fb reset up down avdd avss sub nssoc_pll_pfd_hv_v1
+XCP up down cp avdd avss sub nssoc_pll_charge_pump_hv_v1
+.ends nssoc_pll_pfd_cp_hv_v1

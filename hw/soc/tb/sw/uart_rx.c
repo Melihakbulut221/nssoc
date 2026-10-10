@@ -1,0 +1,62 @@
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: Apache-2.0
+// Real CPU/APB reception; GPIO is only the external peer's phase handshake.
+#include <stdint.h>
+#include "lib/soc_hal.h"
+#include "soc_reg_offsets.h"
+#include "soc_gpio.h"
+volatile uint32_t fi_phase, fi_sig, fi_mask, fi_rounds_done;
+extern volatile uint32_t irq_marker, irq_mcause, irq_count;
+#define wr soc_write32
+#define rd soc_read32
+static uint32_t mip(void) { uint32_t v; __asm__ volatile("csrr %0,mip":"=r"(v)); return v; }
+static void peer(uint32_t phase) {
+    wr(GPIO_OUTPUT, phase);
+    uint32_t n = 5000;
+    while ((rd(GPIO_DATA) & 15u) != phase && --n) {}
+    if (!n) fi_mask |= 0x100u;
+}
+static void check(uint32_t ok, uint32_t bit) { if (!ok) fi_mask |= bit; }
+#define putc_ soc_uart_putc
+static void hex(uint32_t value) { soc_uart_hex32(value, 0); }
+int main(void) {
+    wr(SOC_UART0_BASE + SOC_UART_SCALER_OFF, 0); wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF, 3); wr(GPIO_DIR, 15);
+    __asm__ volatile("csrc mstatus,%0; csrw mie,zero"::"r"(8u):"memory");
+    fi_phase=1;
+    peer(1);
+    check((rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&0x51u)==1 && !(mip()&0x10000u), 1);
+    check(rd(SOC_UART0_BASE + SOC_UART_DATA_OFF)==0x35 && rd(SOC_UART0_BASE + SOC_UART_DATA_OFF)==0, 1);
+    fi_rounds_done=1;
+
+    wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF, 7);
+    __asm__ volatile("csrs mie,%0; csrs mstatus,%1"::"r"(0x10000u),"r"(8u):"memory");
+    wr(GPIO_OUTPUT, 2);
+    __asm__ volatile("wfi":::"memory");
+    peer(2);
+    uint32_t n=5000;
+    while (irq_count!=1 && --n) {}
+    check(n && irq_marker==16 && irq_mcause==0x80000010u, 2);
+    check(rd(SOC_UART0_BASE + SOC_UART_DATA_OFF)==0x96 && !(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&1u), 2);
+    fi_rounds_done=2;
+
+    __asm__ volatile("csrc mstatus,%0; csrw mie,zero"::"r"(8u):"memory");
+    peer(3);
+    check((rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&0x51u)==0x11 && (mip()&0x10000u), 4);
+    check(rd(SOC_UART0_BASE + SOC_UART_DATA_OFF)==0xc3 && (mip()&0x10000u), 4);
+    wr(SOC_UART0_BASE + SOC_UART_STATUS_OFF, 0);
+    check(!(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&0x51u) && !(mip()&0x10000u), 4);
+    fi_rounds_done=3;
+
+    peer(4);
+    check((rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&0x51u)==0x40 && (mip()&0x10000u), 8);
+    check(rd(SOC_UART0_BASE + SOC_UART_DATA_OFF)==0, 8);
+    wr(SOC_UART0_BASE + SOC_UART_STATUS_OFF, 0);
+    check(!(mip()&0x10000u), 8);
+    fi_rounds_done=4;
+
+    wr(SOC_UART0_BASE + SOC_UART_CTRL_OFF, 2); peer(5);
+    check(!(rd(SOC_UART0_BASE + SOC_UART_STATUS_OFF)&0x51u) && irq_count==1, 16);
+    fi_rounds_done=5; fi_phase=2; fi_sig=0xa1170000u|irq_count;
+    putc_('S'); hex(fi_sig); putc_('M'); hex(fi_mask); putc_('\n');
+    return (int)fi_mask;
+}

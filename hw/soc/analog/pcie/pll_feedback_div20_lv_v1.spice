@@ -1,0 +1,103 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Original finite 2GHz CML-to-CMOS receiver and divide-by-20 prerequisite.
+* Two native toggles and a synchronous modulo-five feed a real HV level shifter.
+* 1.2V CMOS and 2.5V output supply; no ideal internal clock or divider.
+* Isolated schematic development only; no closed PLL, PVT or layout acceptance.
+* Original gate topology adapted from the frozen HV PFD; native LV MOS only.
+* No ideal internal clock, divider, voltage gain or source.
+.subckt nssoc_pll_inv_lv_fb_v1 a y vdd vss sub
+XP y a vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XN y a vss sub sg13_lv_nmos w=0.74u l=0.13u ng=1 m=1
+.ends nssoc_pll_inv_lv_fb_v1
+
+.subckt nssoc_pll_nand2_lv_fb_v1 a b y vdd vss sub
+XPA y a vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XPB y b vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XNA y a n sub sg13_lv_nmos w=1.12u l=0.13u ng=1 m=1
+XNB n b vss sub sg13_lv_nmos w=1.12u l=0.13u ng=1 m=1
+.ends nssoc_pll_nand2_lv_fb_v1
+
+.subckt nssoc_pll_nand3_lv_fb_v1 a b c y vdd vss sub
+XPA y a vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XPB y b vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XPC y c vdd vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XNA y a n1 sub sg13_lv_nmos w=1.68u l=0.13u ng=1 m=1
+XNB n1 b n2 sub sg13_lv_nmos w=1.68u l=0.13u ng=1 m=1
+XNC n2 c vss sub sg13_lv_nmos w=1.68u l=0.13u ng=1 m=1
+.ends nssoc_pll_nand3_lv_fb_v1
+
+.subckt nssoc_pll_dff_lv_fb_v1 d clk clearb q qb vdd vss sub
+XDC d db vdd vss sub nssoc_pll_inv_lv_fb_v1
+XCC clk clkb vdd vss sub nssoc_pll_inv_lv_fb_v1
+XMNS d clkb clearb mns vdd vss sub nssoc_pll_nand3_lv_fb_v1
+XMNR db clkb mnr vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XMQ mns mqb mq vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XMQB mnr mq clearb mqb vdd vss sub nssoc_pll_nand3_lv_fb_v1
+XSNS mq clk clearb sns vdd vss sub nssoc_pll_nand3_lv_fb_v1
+XSNR mqb clk snr vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XSQ sns qb q vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XSQB snr q clearb qb vdd vss sub nssoc_pll_nand3_lv_fb_v1
+.ends nssoc_pll_dff_lv_fb_v1
+
+.subckt nssoc_pll_cml_lv_receiver_v1 cp cn clk avdd cvdd avss sub
+* Native one-third-voltage passive bias matches the measured 2.39V CML CM.
+XRP cp ip sub rppd w=1u l=32u b=0 sw_et=1
+XRN cn inn sub rppd w=1u l=32u b=0 sw_et=1
+XDP ip avss sub rppd w=1u l=16u b=0 sw_et=1
+XDN inn avss sub rppd w=1u l=16u b=0 sw_et=1
+* Actual LV differential pair/current mirror, not a behavioral comparator.
+XRB cvdd bias sub rppd w=1u l=80u b=0 sw_et=1
+XREF bias bias avss sub sg13_lv_nmos w=0.74u l=0.13u ng=1 m=1
+XT tail bias avss sub sg13_lv_nmos w=2.96u l=0.13u ng=1 m=1
+XNP diode ip tail sub sg13_lv_nmos w=1.48u l=0.13u ng=1 m=1
+XNN gain inn tail sub sg13_lv_nmos w=1.48u l=0.13u ng=1 m=1
+XPP diode diode cvdd cvdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+XPN gain diode cvdd cvdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=1
+* Native AC coupling and resistive feedback set the actual inverter bias.
+XAC gain gate cap_cmim w=5u l=5u
+XRFB pre gate sub rppd w=1u l=80u b=0 sw_et=1
+XCORE gate pre cvdd avss sub nssoc_pll_inv_lv_fb_v1
+XBUF pre mid cvdd avss sub nssoc_pll_inv_lv_fb_v1
+XOUT mid clk cvdd avss sub nssoc_pll_inv_lv_fb_v1
+.ends nssoc_pll_cml_lv_receiver_v1
+
+.subckt nssoc_pll_feedback_toggle_v1 cp cn clearb q qb avdd cvdd avss sub
+XRX cp cn clk avdd cvdd avss sub nssoc_pll_cml_lv_receiver_v1
+XFF qb clk clearb q qb cvdd avss sub nssoc_pll_dff_lv_fb_v1
+.ends nssoc_pll_feedback_toggle_v1
+
+* Original synchronous modulo-five; all unused states recover to zero.
+.subckt nssoc_pll_mod5_lv_v1 clk clearb q2 q2b vdd vss sub
+XFF0 d0 clk clearb q0 q0b vdd vss sub nssoc_pll_dff_lv_fb_v1
+XFF1 d1 clk clearb q1 q1b vdd vss sub nssoc_pll_dff_lv_fb_v1
+XFF2 d2 clk clearb q2 q2b vdd vss sub nssoc_pll_dff_lv_fb_v1
+XD0N q2b q0b d0b vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XD0I d0b d0 vdd vss sub nssoc_pll_inv_lv_fb_v1
+XX0 q1 q0 xn0 vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XX1 q1 xn0 xn1 vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XX2 q0 xn0 xn2 vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XX3 xn1 xn2 xq vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XD1N q2b xq d1b vdd vss sub nssoc_pll_nand2_lv_fb_v1
+XD1I d1b d1 vdd vss sub nssoc_pll_inv_lv_fb_v1
+XD2N q2b q1 q0 d2b vdd vss sub nssoc_pll_nand3_lv_fb_v1
+XD2I d2b d2 vdd vss sub nssoc_pll_inv_lv_fb_v1
+.ends nssoc_pll_mod5_lv_v1
+
+.subckt nssoc_pll_lv_hv_clock_v1 d db q qb avdd avss sub
+* Real cross-coupled HV PMOS with LV-driven HV NMOS; no voltage gain source.
+XPL qb right avdd avdd sg13_hv_pmos w=2u l=0.45u ng=1 m=1
+XPR right qb avdd avdd sg13_hv_pmos w=2u l=0.45u ng=1 m=1
+XNL qb d avss sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+XNR right db avss sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+XPBUF q qb avdd avdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XNBUF q qb avss sub sg13_hv_nmos w=4u l=0.45u ng=1 m=1
+.ends nssoc_pll_lv_hv_clock_v1
+
+.subckt nssoc_pll_feedback_div20_v1 cp cn clearb fb fbbar avdd cvdd avss sub
+XRX cp cn clk avdd cvdd avss sub nssoc_pll_cml_lv_receiver_v1
+XFAST0 f0b clk clearb f0 f0b cvdd avss sub nssoc_pll_dff_lv_fb_v1
+XFAST1 f1b f0 clearb f1 f1b cvdd avss sub nssoc_pll_dff_lv_fb_v1
+XCOUNT f1 clearb count countb cvdd avss sub nssoc_pll_mod5_lv_v1
+XLEVEL count countb fb fbbar avdd avss sub nssoc_pll_lv_hv_clock_v1
+.ends nssoc_pll_feedback_div20_v1

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="124.493" timestamp="2026-10-08T06:55:14.954024+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_generated_frontier_is_exact_derivative" time="0.003" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[positive]" time="115.681" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[early_frontier]" time="1.421" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[missing_apply]" time="1.436" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[drop_ending]" time="1.780" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[restart_leak]" time="2.369"><failure message="AssertionError: assert (0 != 0)&#10; +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python', '/home/hasanmel...rols01/test_actual_public_frontier_cy4/rtl', '--test', 'command_pending_epoch_controls_and_fresh_reuse'], returncode=0).returncode">tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v27-20261008/controls01/test_actual_public_frontier_cy4')
+fault = 'restart_leak'
+
+    @pytest.mark.parametrize('fault', [None, *FAULTS], ids=['positive', *FAULTS])
+    def test_actual_public_frontier_cycles_and_fault_quarantine(tmp_path, fault):
+        helper = runpy.run_path(str(ROOT/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v26.py'))
+        result, record, cases, out = helper['run'](tmp_path, rtl=prepare(tmp_path/'rtl',fault),
+                                                case=FAULTS[fault][2] if fault else None)
+        log = (out/'simulation.log').read_text()
+        if fault:
+&gt;           assert result.returncode != 0 and record['status'] == 'FAIL'
+E           AssertionError: assert (0 != 0)
+E            +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python', '/home/hasanmel...rols01/test_actual_public_frontier_cy4/rtl', '--test', 'command_pending_epoch_controls_and_fresh_reuse'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_integrity_v27_frontier.py:113: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v27_frontier" name="test_actual_public_frontier_cycles_and_fault_quarantine[fault_epoch_alive]" time="1.716" /></testsuite></testsuites>

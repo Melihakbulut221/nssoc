@@ -1,0 +1,21 @@
+{
+  "status": "SOURCE_PEER_FINDINGS_BEFORE_NATIVE",
+  "freeze": {
+    "bytes": 69912,
+    "sha256": "13cae90e48bafa34b218e89d621b0e7b16c5e2688a6ec843e9d7715d29069768"
+  },
+  "findings": [
+    {
+      "source": "prepare_anchors.py",
+      "issue": "New PowerV2 GDS path still compared against old baseline SHA8484a6f3...; actual closed PowerV2 SHA663b60fc14cc9c8e2b4d9a5a758aee6bcd61bdf307c6b3a69a28e63bc470340c.",
+      "remedy": "Pin exact completed PowerV2 GDS, preserve old freeze/source/bridge."
+    },
+    {
+      "source": "probe_wire_components.py",
+      "issue": "Inherited six-active-metal and empty TopMetal2/TopVia2 assertions contradict actual new six TopMetal2 buses and TopVia2 power arrays.",
+      "remedy": "Declare all seven actual metal layers active and TopMetal2/TopVia2 nonempty, retain full union/bijection and exact conductor/cluster/terminal predicates."
+    }
+  ],
+  "native_or_test_executed": false,
+  "other_review": "Full seven bodies inspected; remaining diffs are path/top, actual leaf725/via634 census and prior closed native-peer gate. No device/terminal/net coverage waiver proposed."
+}

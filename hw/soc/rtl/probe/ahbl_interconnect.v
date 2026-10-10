@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // =====================================================================
 // COST PROBE -- NOT VERIFIED, NOT PART OF THE SOC
 //
@@ -185,3 +187,5 @@ module ahbl_interconnect #(
   assign hresp_o  = resp_mux;
 
 endmodule
+
+`default_nettype wire

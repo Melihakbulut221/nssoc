@@ -1,0 +1,309 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/normalize_repair14a.py",
+      "bytes": 5700,
+      "sha256": "71a7f9e3d4b0292e7aeee461a23e1ad05d206faec4da6ecd0d28992730f7cbfa"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/normalize_repair16one.py",
+      "bytes": 5332,
+      "sha256": "d4fe15a85b24258482ae9f5ef2a02968ea5eb6bb06aacfad5bcd7a5d5774e44d"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport hashlib,json,os,pathlib,resource,subprocess,time,signal,gzip,shutil\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport hashlib,json,os,pathlib,resource,subprocess,time,signal,gzip,shutil\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "from owned_lifecycle16 import owned_popen, stop_failed_group\n"
+      },
+      {
+        "tag": "equal",
+        "before": "def on_signal(signum,frame):raise InterruptedError(f'Parent signal {signum}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,on_signal)\nroot=pathlib.Path.cwd()\n",
+        "after": "def on_signal(signum,frame):raise InterruptedError(f'Parent signal {signum}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,on_signal)\nroot=pathlib.Path.cwd()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "out=pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-equivalence')\n",
+        "after": "out=pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-equivalence')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "while shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nout.mkdir(exist_ok=False)\nlib=pathlib.Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib')\nyosys=root/'hw/soc/tools/oss-cad-suite/bin/yosys'\n",
+        "after": "while shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nout.mkdir(exist_ok=False)\nlib=pathlib.Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib')\nyosys=root/'hw/soc/tools/oss-cad-suite/bin/yosys'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "inputs=[pathlib.Path(__file__).resolve(),lib,yosys,root/'hw/soc/tools/oss-cad-suite/libexec/yosys',pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-drt-01/routed.v'),pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a/repaired.v')]\n",
+        "after": "inputs=[pathlib.Path(__file__).resolve(),pathlib.Path(__file__).resolve().parent/'owned_lifecycle16.py',lib,yosys,root/'hw/soc/tools/oss-cad-suite/libexec/yosys',pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-drt-01/routed.v'),pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04/repaired.v')]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\n",
+        "after": "sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert {'bytes':inputs[-1].stat().st_size,'sha256':sha(inputs[-1])} == {'bytes': 2094864, 'sha256': 'cc489bb50c225189126b36d173cf786a7837f1e9a0cebc8a200c2d7b7a191f91'}\n",
+        "after": "assert {'bytes':inputs[-1].stat().st_size,'sha256':sha(inputs[-1])} == {'bytes': 2114587, 'sha256': '83ef02ab3354004a3c5f9978e74f7ff99e6d0e1b6d6fb32c6d2d653d9dc416c1'}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "# Reuse identical completed originalgold native expansion; only new gate is run.\nold_gold=pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-repair11-equivalence')\nold_normalization=json.loads((old_gold/'normalization.json').read_text())\nassert old_normalization['inputs']=={p:{'bytes':pathlib.Path(p).stat().st_size,'sha256':sha(pathlib.Path(p))} for p in old_normalization['inputs']}\ngoldrow=old_normalization['runs'][0]\nassert goldrow['name']=='gold' and goldrow['returncode']==0\nassert sha(old_gold/'gold.ys')==goldrow['script_sha256']\nassert sha(old_gold/'gold.log')==goldrow['log_sha256']\nassert sha(old_gold/'gold.json.gz')==goldrow['expanded_json']['lossless_gzip_sha256']\nwith gzip.open(old_gold/'gold.json.gz','rb') as stream:\n h=hashlib.sha256();size=0\n while data:=stream.read(1024**2):h.update(data);size+=len(data)\nassert {'bytes':size,'sha256':h.hexdigest()}=={k:goldrow['expanded_json'][k] for k in ('bytes','sha256')}\nfor suffix in ['.ys','.log','.json.gz']:\n source=old_gold/('gold'+suffix);target=out/('gold'+suffix)\n with source.open('rb') as a,target.open('xb') as z:shutil.copyfileobj(a,z,1024**2)\n assert sha(source)==sha(target)\ninputs += [old_gold/'normalization.json',old_gold/'gold.ys',old_gold/'gold.log',old_gold/'gold.json.gz',*(pathlib.Path(p) for p in old_normalization['inputs'])]\npins={str(p):{'bytes':p.stat().st_size,'sha256':sha(p)} for p in inputs}\nrecord={'inputs':pins,'scope':'Originalgold is byte-verified reuse of previously completed native expansion; fresh gate native Liberty functional expansion, no blackboxes or assumptions','runs':[dict(goldrow, reused_from=str(old_gold), native_reexecuted=False)],'reused_gold_normalization_pin':{'bytes':(old_gold/'normalization.json').stat().st_size,'sha256':sha(old_gold/'normalization.json')}}\ndef limits():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0))\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGINT,signal.SIGTERM})\n",
+        "after": "# Reuse identical completed originalgold native expansion; only new gate is run.\nold_gold=pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-repair11-equivalence')\nold_normalization=json.loads((old_gold/'normalization.json').read_text())\nassert old_normalization['inputs']=={p:{'bytes':pathlib.Path(p).stat().st_size,'sha256':sha(pathlib.Path(p))} for p in old_normalization['inputs']}\ngoldrow=old_normalization['runs'][0]\nassert goldrow['name']=='gold' and goldrow['returncode']==0\nassert sha(old_gold/'gold.ys')==goldrow['script_sha256']\nassert sha(old_gold/'gold.log')==goldrow['log_sha256']\nassert sha(old_gold/'gold.json.gz')==goldrow['expanded_json']['lossless_gzip_sha256']\nwith gzip.open(old_gold/'gold.json.gz','rb') as stream:\n h=hashlib.sha256();size=0\n while data:=stream.read(1024**2):h.update(data);size+=len(data)\nassert {'bytes':size,'sha256':h.hexdigest()}=={k:goldrow['expanded_json'][k] for k in ('bytes','sha256')}\nfor suffix in ['.ys','.log','.json.gz']:\n source=old_gold/('gold'+suffix);target=out/('gold'+suffix)\n with source.open('rb') as a,target.open('xb') as z:shutil.copyfileobj(a,z,1024**2)\n assert sha(source)==sha(target)\ninputs += [old_gold/'normalization.json',old_gold/'gold.ys',old_gold/'gold.log',old_gold/'gold.json.gz',*(pathlib.Path(p) for p in old_normalization['inputs'])]\npins={str(p):{'bytes':p.stat().st_size,'sha256':sha(p)} for p in inputs}\nrecord={'inputs':pins,'scope':'Originalgold is byte-verified reuse of previously completed native expansion; fresh gate native Liberty functional expansion, no blackboxes or assumptions','runs':[dict(goldrow, reused_from=str(old_gold), native_reexecuted=False)],'reused_gold_normalization_pin':{'bytes':(old_gold/'normalization.json').stat().st_size,'sha256':sha(old_gold/'normalization.json')}}\ndef limits():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0))\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGINT,signal.SIGTERM})\n"
+      },
+      {
+        "tag": "replace",
+        "before": "def stop_failed_group(process, grace_seconds=5.0):\n    try:\n        try:\n            os.killpg(process.pid, signal.SIGTERM)\n        except ProcessLookupError:\n            pass\n        deadline = time.monotonic() + grace_seconds\n        while time.monotonic() < deadline:\n            time.sleep(min(0.05, max(0, deadline - time.monotonic())))\n    finally:\n        try:\n            os.killpg(process.pid, signal.SIGKILL)\n        except ProcessLookupError:\n            pass\n        finally:\n            process.wait()\nfor name,net in [('gate',pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a/repaired.v'))]:\n",
+        "after": "for name,net in [('gate',pathlib.Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04/repaired.v'))]:\n"
+      },
+      {
+        "tag": "equal",
+        "before": " script=out/(name+'.ys')\n script.write_text(f'read_liberty -ignore_miss_func {lib}\\nread_verilog {net}\\nhierarchy -check -top soc_pcie_gen3_framer_rx\\nflatten\\nproc\\nopt_clean\\ncheck -assert\\nstat\\nwrite_json {out}/{name}.json\\n')\n started=time.monotonic()\n with (out/(name+'.log')).open('w') as f:\n  p=None;complete=False\n  try:\n   previous_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGINT,signal.SIGTERM})\n",
+        "after": " script=out/(name+'.ys')\n script.write_text(f'read_liberty -ignore_miss_func {lib}\\nread_verilog {net}\\nhierarchy -check -top soc_pcie_gen3_framer_rx\\nflatten\\nproc\\nopt_clean\\ncheck -assert\\nstat\\nwrite_json {out}/{name}.json\\n')\n started=time.monotonic()\n with (out/(name+'.log')).open('w') as f:\n  p=None;complete=False\n  try:\n   previous_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGINT,signal.SIGTERM})\n"
+      },
+      {
+        "tag": "replace",
+        "before": "   try:p=subprocess.Popen([str(yosys),'-T','-s',str(script)],stdout=f,stderr=subprocess.STDOUT,preexec_fn=limits,start_new_session=True,env={**os.environ,'YOSYS_MAX_THREADS':'1'})\n",
+        "after": "   try:p=owned_popen([str(yosys),'-T','-s',str(script)],stdout=f,stderr=subprocess.STDOUT,preexec_fn=limits,start_new_session=True,env={**os.environ,'YOSYS_MAX_THREADS':'1'})\n"
+      },
+      {
+        "tag": "equal",
+        "before": "   finally:signal.pthread_sigmask(signal.SIG_SETMASK,previous_mask)\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   p.wait()\n   if p.returncode!=0:raise RuntimeError(f'Native normalization exit {p.returncode}')\n   complete=True\n  finally:\n   if p is not None and not complete:stop_failed_group(p)\n record['runs'].append({'name':name,'returncode':p.returncode,'elapsed_seconds':time.monotonic()-started,'script_sha256':sha(script),'log_sha256':sha(out/(name+'.log'))})\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n assert p.returncode==0\n plain=out/(name+'.json');compressed=out/(name+'.json.gz')\n digest=sha(plain)\n with plain.open('rb') as a,gzip.open(compressed,'wb',compresslevel=1) as z:shutil.copyfileobj(a,z)\n with gzip.open(compressed,'rb') as z:assert hashlib.file_digest(z,'sha256').hexdigest()==digest\n record['runs'][-1]['expanded_json']={'bytes':plain.stat().st_size,'sha256':digest,'lossless_gzip_sha256':sha(compressed)}\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n plain.unlink()\n assert all(sha(pathlib.Path(p))==row['sha256'] for p,row in pins.items())\nprint(json.dumps(record,indent=2))\n",
+        "after": "   finally:signal.pthread_sigmask(signal.SIG_SETMASK,previous_mask)\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   p.wait()\n   if p.returncode!=0:raise RuntimeError(f'Native normalization exit {p.returncode}')\n   complete=True\n  finally:\n   if p is not None and not complete:stop_failed_group(p)\n record['runs'].append({'name':name,'returncode':p.returncode,'elapsed_seconds':time.monotonic()-started,'script_sha256':sha(script),'log_sha256':sha(out/(name+'.log'))})\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n assert p.returncode==0\n plain=out/(name+'.json');compressed=out/(name+'.json.gz')\n digest=sha(plain)\n with plain.open('rb') as a,gzip.open(compressed,'wb',compresslevel=1) as z:shutil.copyfileobj(a,z)\n with gzip.open(compressed,'rb') as z:assert hashlib.file_digest(z,'sha256').hexdigest()==digest\n record['runs'][-1]['expanded_json']={'bytes':plain.stat().st_size,'sha256':digest,'lossless_gzip_sha256':sha(compressed)}\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n plain.unlink()\n assert all(sha(pathlib.Path(p))==row['sha256'] for p,row in pins.items())\nprint(json.dumps(record,indent=2))\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/proof_gate_repair14a.py",
+      "bytes": 7693,
+      "sha256": "a141d032ed7a68a84c8d0068b268e17046f3f664cebfed25a96f5dcd17c8e5eb"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/proof_gate_repair16one.py",
+      "bytes": 7521,
+      "sha256": "d2d00899fd8ccc04f1e399df300fcb3a5331559d5f56bbcb019924391ff9f8cd"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Bind actual RX14A proof execution to exact native-expanded graphs and kernels.\"\"\"\n",
+        "after": "\"\"\"Bind actual RX16ONE proof execution to exact native-expanded graphs and kernels.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import ast\nimport gzip\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport signal\nimport subprocess\nimport sys\nimport time\nimport shutil\n",
+        "after": "import ast\nimport gzip\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport signal\nimport subprocess\nimport sys\nimport time\nimport shutil\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "from owned_lifecycle16 import owned_popen, stop_failed_group\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\nB = Path(__file__).resolve().parent\n",
+        "after": "\nB = Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "replace",
+        "before": "E = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-equivalence')\nNET = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a/repaired.v')\nEXPECTED_NET = {'bytes': 2094864, 'sha256': 'cc489bb50c225189126b36d173cf786a7837f1e9a0cebc8a200c2d7b7a191f91'}\n",
+        "after": "E = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-equivalence')\nNET = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04/repaired.v')\nEXPECTED_NET = {'bytes': 2114587, 'sha256': '83ef02ab3354004a3c5f9978e74f7ff99e6d0e1b6d6fb32c6d2d653d9dc416c1'}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "KINDS = ['invert_D', 'invert_clock', 'invert_reset', 'invert_output', 'missing_state', 'unknown_function', 'unknown_output', 'undriven_reset', 'duplicate_driver', 'changed_port_census']\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef load(p):\n    return json.loads(Path(p).read_text())\n\n\ndef graph_pins(directory=E):\n    normalization = load(directory / 'normalization.json')\n    assert normalization['inputs'][str(NET)] == EXPECTED_NET == pin(NET)\n    assert normalization['inputs'] == {p: pin(p) for p in normalization['inputs']}\n    answer = {}\n    assert [r['name'] for r in normalization['runs']] == ['gold', 'gate']\n    for row in normalization['runs']:\n        assert row['returncode'] == 0\n        name = row['name']\n        assert pin(directory / (name + '.ys'))['sha256'] == row['script_sha256']\n        assert pin(directory / (name + '.log'))['sha256'] == row['log_sha256']\n        p = directory / (name + '.json.gz')\n        assert pin(p)['sha256'] == row['expanded_json']['lossless_gzip_sha256']\n        digest = hashlib.sha256()\n        size = 0\n        with gzip.open(p, 'rb') as f:\n            while data := f.read(1024**2):\n                digest.update(data)\n                size += len(data)\n        actual = {'bytes': size, 'sha256': digest.hexdigest()}\n        assert actual == {k: row['expanded_json'][k] for k in ('bytes', 'sha256')}\n        answer[name] = {'compressed': pin(p), 'expanded': actual}\n    return answer\n\n\ndef input_paths(directory=E):\n",
+        "after": "KINDS = ['invert_D', 'invert_clock', 'invert_reset', 'invert_output', 'missing_state', 'unknown_function', 'unknown_output', 'undriven_reset', 'duplicate_driver', 'changed_port_census']\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef load(p):\n    return json.loads(Path(p).read_text())\n\n\ndef graph_pins(directory=E):\n    normalization = load(directory / 'normalization.json')\n    assert normalization['inputs'][str(NET)] == EXPECTED_NET == pin(NET)\n    assert normalization['inputs'] == {p: pin(p) for p in normalization['inputs']}\n    answer = {}\n    assert [r['name'] for r in normalization['runs']] == ['gold', 'gate']\n    for row in normalization['runs']:\n        assert row['returncode'] == 0\n        name = row['name']\n        assert pin(directory / (name + '.ys'))['sha256'] == row['script_sha256']\n        assert pin(directory / (name + '.log'))['sha256'] == row['log_sha256']\n        p = directory / (name + '.json.gz')\n        assert pin(p)['sha256'] == row['expanded_json']['lossless_gzip_sha256']\n        digest = hashlib.sha256()\n        size = 0\n        with gzip.open(p, 'rb') as f:\n            while data := f.read(1024**2):\n                digest.update(data)\n                size += len(data)\n        actual = {'bytes': size, 'sha256': digest.hexdigest()}\n        assert actual == {k: row['expanded_json'][k] for k in ('bytes', 'sha256')}\n        answer[name] = {'compressed': pin(p), 'expanded': actual}\n    return answer\n\n\ndef input_paths(directory=E):\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    return [Path(__file__), B / 'eco-proof/compare.py', B / 'eco-proof/mutations.py', B / 'postroute_repair14a.py', NET, directory / 'normalization.json', *(directory / (name + suffix) for name in ('gold', 'gate') for suffix in ('.json.gz', '.ys', '.log'))]\n",
+        "after": "    return [Path(__file__), B / 'eco-proof/compare.py', B / 'eco-proof/mutations.py', B / 'postroute_repair16_one04.py', B / 'owned_lifecycle16.py', NET, directory / 'normalization.json', *(directory / (name + suffix) for name in ('gold', 'gate') for suffix in ('.json.gz', '.ys', '.log'))]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef verify_binding(directory=E):\n    record = load(directory / 'proof-execution-binding.json')\n",
+        "after": "\n\ndef verify_binding(directory=E):\n    record = load(directory / 'proof-execution-binding.json')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    assert record['status'] == 'PASS_ACTUAL_RX14A_PROOF_AND_MUTATION_EXECUTION_BOUND'\n",
+        "after": "    assert record['status'] == 'PASS_ACTUAL_RX16ONE_PROOF_AND_MUTATION_EXECUTION_BOUND'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    assert record['before_inputs'] == record['after_inputs'] == {str(p): pin(p) for p in input_paths(directory)}\n    assert record['expanded_graphs_before'] == record['expanded_graphs_after'] == graph_pins(directory)\n    assert record['outputs'] == {name: pin(directory / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n    assert record['runtime_before'] == record['runtime_after']\n    assert record['runtime_before']['pin'] == pin(record['runtime_before']['path'])\n    assert [(x['method'], x['returncode']) for x in record['runs']] == [('compare.py', 0), ('mutations.py', 0)]\n    for row in record['runs']:\n        assert row['command'][0] == record['runtime_before']['path']\n        assert row['command'][1:] == [str(B / 'eco-proof' / row['method'])]\n    eq = load(directory / 'equivalence.json')\n    assert eq['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\n    assert eq['states'] == 1804 and eq['matched'] == eq['targets'] == 5443 and not eq['mismatches']\n    faults = load(directory / 'mutation-controls.json')\n    assert faults['status'] == 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS'\n    assert faults['positive']['matched'] == faults['positive']['targets'] == 5443 and not faults['positive']['mismatches']\n    assert [c['kind'] for c in faults['controls']] == KINDS\n    assert all(c['status'].startswith('REJECTED_') for c in faults['controls'])\n    return record\n\n\ndef run():\n    assert not (E / 'proof-execution-binding.json').exists()\n",
+        "after": "    assert record['before_inputs'] == record['after_inputs'] == {str(p): pin(p) for p in input_paths(directory)}\n    assert record['expanded_graphs_before'] == record['expanded_graphs_after'] == graph_pins(directory)\n    assert record['outputs'] == {name: pin(directory / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n    assert record['runtime_before'] == record['runtime_after']\n    assert record['runtime_before']['pin'] == pin(record['runtime_before']['path'])\n    assert [(x['method'], x['returncode']) for x in record['runs']] == [('compare.py', 0), ('mutations.py', 0)]\n    for row in record['runs']:\n        assert row['command'][0] == record['runtime_before']['path']\n        assert row['command'][1:] == [str(B / 'eco-proof' / row['method'])]\n    eq = load(directory / 'equivalence.json')\n    assert eq['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\n    assert eq['states'] == 1804 and eq['matched'] == eq['targets'] == 5443 and not eq['mismatches']\n    faults = load(directory / 'mutation-controls.json')\n    assert faults['status'] == 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS'\n    assert faults['positive']['matched'] == faults['positive']['targets'] == 5443 and not faults['positive']['mismatches']\n    assert [c['kind'] for c in faults['controls']] == KINDS\n    assert all(c['status'].startswith('REJECTED_') for c in faults['controls'])\n    return record\n\n\ndef run():\n    assert not (E / 'proof-execution-binding.json').exists()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record = {'status': 'RUNNING_BOUND_RX14A_PROOF', 'before_inputs': {str(p): pin(p) for p in input_paths()}, 'expanded_graphs_before': graph_pins(), 'runtime_before': {'path': sys.executable, 'pin': pin(sys.executable)}, 'runs': [], 'scope': 'Same canonical binary kernel and ten actual kernel faults; exact completed native-expanded graphs and all methods pinned before/after. No new normalization or physical timing claim.'}\n    tree = ast.parse((B / 'postroute_repair14a.py').read_text())\n    helper = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'stop_failed_group')\n    ns = {'os': os, 'signal': signal, 'time': time}\n    exec(compile(ast.Module(body=[helper], type_ignores=[]), str(B / 'postroute_repair14a.py'), 'exec'), ns)\n",
+        "after": "    record = {'status': 'RUNNING_BOUND_RX16ONE_PROOF', 'before_inputs': {str(p): pin(p) for p in input_paths()}, 'expanded_graphs_before': graph_pins(), 'runtime_before': {'path': sys.executable, 'pin': pin(sys.executable)}, 'runs': [], 'scope': 'Same canonical binary kernel and ten actual kernel faults; exact completed native-expanded graphs and all methods pinned before/after. No new normalization or physical timing claim.'}\n    ns = {'stop_failed_group': stop_failed_group}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n    def stop_signal(number, frame):\n        raise InterruptedError(f'Parent signal {number}')\n\n    def limits():\n        resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n        os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n        signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n    for sig in (signal.SIGINT, signal.SIGTERM):\n        signal.signal(sig, stop_signal)\n    try:\n        for method, logname in [('compare.py', 'bound-compare.log'), ('mutations.py', 'bound-mutations.log')]:\n            command = [sys.executable, str(B / 'eco-proof' / method)]\n            process = None\n            complete = False\n            with (E / logname).open('x') as log:\n                try:\n                    old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n                    try:\n",
+        "after": "\n    def stop_signal(number, frame):\n        raise InterruptedError(f'Parent signal {number}')\n\n    def limits():\n        resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n        os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n        signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n    for sig in (signal.SIGINT, signal.SIGTERM):\n        signal.signal(sig, stop_signal)\n    try:\n        for method, logname in [('compare.py', 'bound-compare.log'), ('mutations.py', 'bound-mutations.log')]:\n            command = [sys.executable, str(B / 'eco-proof' / method)]\n            process = None\n            complete = False\n            with (E / logname).open('x') as log:\n                try:\n                    old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n                    try:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "                        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, 'NSSOC_EQUIVALENCE_CAPTURE': str(E)}, start_new_session=True, preexec_fn=limits)\n",
+        "after": "                        process = owned_popen(command, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, 'NSSOC_EQUIVALENCE_CAPTURE': str(E)}, start_new_session=True, preexec_fn=limits)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "                    finally:\n                        signal.pthread_sigmask(signal.SIG_SETMASK, old)\n                    while process.poll() is None:\n                        if shutil.disk_usage('/dev/shm').free < 528 * 1024**2:\n                            raise RuntimeError('Shared scratch floor')\n                        time.sleep(.25)\n                    code = process.wait()\n                    record['runs'].append({'method': method, 'command': command, 'returncode': code})\n                    assert code == 0\n                    complete = True\n                finally:\n                    if process is not None and not complete:\n                        ns['stop_failed_group'](process)\n        record['after_inputs'] = {str(p): pin(p) for p in input_paths()}\n        record['expanded_graphs_after'] = graph_pins()\n        assert record['before_inputs'] == record['after_inputs'] and record['expanded_graphs_before'] == record['expanded_graphs_after']\n        record['outputs'] = {name: pin(E / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n        record['runtime_after'] = {'path': sys.executable, 'pin': pin(sys.executable)}\n",
+        "after": "                    finally:\n                        signal.pthread_sigmask(signal.SIG_SETMASK, old)\n                    while process.poll() is None:\n                        if shutil.disk_usage('/dev/shm').free < 528 * 1024**2:\n                            raise RuntimeError('Shared scratch floor')\n                        time.sleep(.25)\n                    code = process.wait()\n                    record['runs'].append({'method': method, 'command': command, 'returncode': code})\n                    assert code == 0\n                    complete = True\n                finally:\n                    if process is not None and not complete:\n                        ns['stop_failed_group'](process)\n        record['after_inputs'] = {str(p): pin(p) for p in input_paths()}\n        record['expanded_graphs_after'] = graph_pins()\n        assert record['before_inputs'] == record['after_inputs'] and record['expanded_graphs_before'] == record['expanded_graphs_after']\n        record['outputs'] = {name: pin(E / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n        record['runtime_after'] = {'path': sys.executable, 'pin': pin(sys.executable)}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "        record['status'] = 'PASS_ACTUAL_RX14A_PROOF_AND_MUTATION_EXECUTION_BOUND'\n",
+        "after": "        record['status'] = 'PASS_ACTUAL_RX16ONE_PROOF_AND_MUTATION_EXECUTION_BOUND'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    except BaseException as error:\n        record.update(status='FAIL_PROOF_BINDING_RETAINED', error=repr(error))\n        raise\n    finally:\n        (E / 'proof-execution-binding.json').write_text(json.dumps(record, indent=2) + '\\n')\n    verify_binding()\n    print(record['status'])\n\n\nif __name__ == '__main__':\n    run()\n",
+        "after": "    except BaseException as error:\n        record.update(status='FAIL_PROOF_BINDING_RETAINED', error=repr(error))\n        raise\n    finally:\n        (E / 'proof-execution-binding.json').write_text(json.dumps(record, indent=2) + '\\n')\n    verify_binding()\n    print(record['status'])\n\n\nif __name__ == '__main__':\n    run()\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/replay_repair14a.py",
+      "bytes": 6772,
+      "sha256": "9e1f98d0a9c7995274b875f711f8dd949ded8a4b7839459d5e6589a5c754cf45"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/replay_repair16one.py",
+      "bytes": 6430,
+      "sha256": "3247851d1d7f409518fe78a028a7a0570f2c2494c1416601b38f6efbce3e60fc"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Additive exact proof-binding gate; unchanged RX14A six ports and runtime.\"\"\"\n",
+        "after": "\"\"\"Additive exact proof-binding gate; unchanged RX16ONE six ports and runtime.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import ast\nimport gzip\nimport hashlib\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport time\n",
+        "after": "import ast\nimport gzip\nimport hashlib\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport time\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "from owned_lifecycle16 import owned_popen, stop_failed_group\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\nassert sys.version_info[:2] == (3, 12), 'Exact cocotb runtime requires Python3.12'\nR = Path.cwd()\nB = Path(__file__).resolve().parent\n",
+        "after": "\nassert sys.version_info[:2] == (3, 12), 'Exact cocotb runtime requires Python3.12'\nR = Path.cwd()\nB = Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "replace",
+        "before": "E = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-equivalence')\nOUT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair14a-physical-replay-01')\nNET = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-14a/repaired.v')\n",
+        "after": "E = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-equivalence')\nOUT = Path('/dev/shm/nssoc-rx-prefetch-v2-repair16one-physical-replay-01')\nNET = Path('/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-16-one-repair-04/repaired.v')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "MODEL = Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v')\nTOOLS = R / 'hw/soc/tools/oss-cad-suite/bin'\nDRIVER = R / 'scripts/check_pcie_gen3_receive.py'\nsys.path.insert(0, str(R / 'scripts'))\n\n\ndef pin(path):\n    with path.open('rb') as f:\n        return {'bytes': path.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef interrupted(number, frame):\n    raise InterruptedError(f'Parent signal {number}')\n\n\nfor sig in (signal.SIGINT, signal.SIGTERM):\n    signal.signal(sig, interrupted)\nassert not OUT.exists()\nproof = json.loads((E / 'equivalence.json').read_text())\nassert proof['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\nassert proof['states'] == 1804 and proof['matched'] == proof['targets'] == 5443 and not proof['mismatches']\ncontrols = json.loads((E / 'mutation-controls.json').read_text())\nassert len(controls['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in controls['controls'])\nnormalization = json.loads((E / 'normalization.json').read_text())\n",
+        "after": "MODEL = Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v')\nTOOLS = R / 'hw/soc/tools/oss-cad-suite/bin'\nDRIVER = R / 'scripts/check_pcie_gen3_receive.py'\nsys.path.insert(0, str(R / 'scripts'))\n\n\ndef pin(path):\n    with path.open('rb') as f:\n        return {'bytes': path.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef interrupted(number, frame):\n    raise InterruptedError(f'Parent signal {number}')\n\n\nfor sig in (signal.SIGINT, signal.SIGTERM):\n    signal.signal(sig, interrupted)\nassert not OUT.exists()\nproof = json.loads((E / 'equivalence.json').read_text())\nassert proof['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\nassert proof['states'] == 1804 and proof['matched'] == proof['targets'] == 5443 and not proof['mismatches']\ncontrols = json.loads((E / 'mutation-controls.json').read_text())\nassert len(controls['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in controls['controls'])\nnormalization = json.loads((E / 'normalization.json').read_text())\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert pin(NET) == normalization['inputs'][str(NET)] == {'bytes': 2094864, 'sha256': 'cc489bb50c225189126b36d173cf786a7837f1e9a0cebc8a200c2d7b7a191f91'}\ngate_spec = importlib.util.spec_from_file_location('rx14a_proof_gate', B / 'proof_gate_repair14a.py')\n",
+        "after": "assert pin(NET) == normalization['inputs'][str(NET)] == {'bytes': 2114587, 'sha256': '83ef02ab3354004a3c5f9978e74f7ff99e6d0e1b6d6fb32c6d2d653d9dc416c1'}\ngate_spec = importlib.util.spec_from_file_location('rx16one_proof_gate', B / 'proof_gate_repair16one.py')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "gate = importlib.util.module_from_spec(gate_spec)\ngate_spec.loader.exec_module(gate)\nbinding = gate.verify_binding()\n",
+        "after": "gate = importlib.util.module_from_spec(gate_spec)\ngate_spec.loader.exec_module(gate)\nbinding = gate.verify_binding()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "dependencies = [Path(__file__), B / 'proof_gate_repair14a.py', E / 'proof-execution-binding.json', *gate.input_paths(), DRIVER, B / 'postroute_repair14a.py', B / 'normalize_repair14a.py', NET, MODEL, E / 'normalization.json', E / 'equivalence.json', E / 'mutation-controls.json']\n",
+        "after": "dependencies = [Path(__file__), B / 'owned_lifecycle16.py', B / 'proof_gate_repair16one.py', E / 'proof-execution-binding.json', *gate.input_paths(), DRIVER, B / 'postroute_repair16_one04.py', B / 'normalize_repair16one.py', NET, MODEL, E / 'normalization.json', E / 'equivalence.json', E / 'mutation-controls.json']\n"
+      },
+      {
+        "tag": "equal",
+        "before": "before = {str(p): pin(p) for p in dependencies}\nwhile shutil.disk_usage('/dev/shm').free < 1024**3:\n    time.sleep(5)\n",
+        "after": "before = {str(p): pin(p) for p in dependencies}\nwhile shutil.disk_usage('/dev/shm').free < 1024**3:\n    time.sleep(5)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "record = {'status': 'RUNNING_EXACT_PROVED_NETLIST_PORT_REPLAY', 'inputs': before, 'entry_free_bytes': shutil.disk_usage('/dev/shm').free, 'elapsed_watchdog_seconds': None, 'address_space_limit_bytes': 2 * 1024**3, 'single_cpu': True, 'scope': 'Existing unchanged six-case native receive oracle/model on provedRX14A; only command lifecycle/resource runner replaced. No SDF, LCRC, physical/fullPHY acceptance.'}\n",
+        "after": "record = {'status': 'RUNNING_EXACT_PROVED_NETLIST_PORT_REPLAY', 'inputs': before, 'entry_free_bytes': shutil.disk_usage('/dev/shm').free, 'elapsed_watchdog_seconds': None, 'address_space_limit_bytes': 2 * 1024**3, 'single_cpu': True, 'scope': 'Existing unchanged six-case native receive oracle/model on provedRX16ONE; only command lifecycle/resource runner replaced. No SDF, LCRC, physical/fullPHY acceptance.'}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n    signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGTERM, signal.SIGINT})\n\n\n",
+        "after": "\n\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n    signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGTERM, signal.SIGINT})\n\n\n"
+      },
+      {
+        "tag": "delete",
+        "before": "# Reuse the exact tested helper body without executing the GRT producer.\ntree = ast.parse((B / 'postroute_repair14a.py').read_text())\nfn = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'stop_failed_group')\nhelper_namespace = {'os': os, 'signal': signal, 'time': time}\nexec(compile(ast.Module(body=[fn], type_ignores=[]), str(B / 'postroute_repair14a.py'), 'exec'), helper_namespace)\nstop_failed_group = helper_namespace['stop_failed_group']\n",
+        "after": ""
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef owned_execute(command, log_path, environment, timeout):\n    assert timeout is None\n    process = None\n    complete = False\n    record['minimum_shared_free_bytes'] = shutil.disk_usage('/dev/shm').free\n    with log_path.open('x') as log:\n        try:\n            old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGTERM, signal.SIGINT})\n            try:\n",
+        "after": "\n\ndef owned_execute(command, log_path, environment, timeout):\n    assert timeout is None\n    process = None\n    complete = False\n    record['minimum_shared_free_bytes'] = shutil.disk_usage('/dev/shm').free\n    with log_path.open('x') as log:\n        try:\n            old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGTERM, signal.SIGINT})\n            try:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "                process = subprocess.Popen(command, cwd=log_path.parent, env=environment, stdout=log, stderr=subprocess.STDOUT, preexec_fn=limits, start_new_session=True)\n",
+        "after": "                process = owned_popen(command, cwd=log_path.parent, env=environment, stdout=log, stderr=subprocess.STDOUT, preexec_fn=limits, start_new_session=True)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "            finally:\n                signal.pthread_sigmask(signal.SIG_SETMASK, old)\n            record['pid'] = process.pid\n            while process.poll() is None:\n                free = shutil.disk_usage('/dev/shm').free\n                record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], free)\n                if free < 528 * 1024**2:\n                    raise RuntimeError('Shared scratch floor')\n                time.sleep(.25)\n            code = process.wait()\n            if code != 0:\n                raise RuntimeError(f'Native compile/simulation exit {code}')\n            complete = True\n            return code\n        finally:\n            if process is not None and not complete:\n                stop_failed_group(process)\n\n\ntry:\n",
+        "after": "            finally:\n                signal.pthread_sigmask(signal.SIG_SETMASK, old)\n            record['pid'] = process.pid\n            while process.poll() is None:\n                free = shutil.disk_usage('/dev/shm').free\n                record['minimum_shared_free_bytes'] = min(record['minimum_shared_free_bytes'], free)\n                if free < 528 * 1024**2:\n                    raise RuntimeError('Shared scratch floor')\n                time.sleep(.25)\n            code = process.wait()\n            if code != 0:\n                raise RuntimeError(f'Native compile/simulation exit {code}')\n            complete = True\n            return code\n        finally:\n            if process is not None and not complete:\n                stop_failed_group(process)\n\n\ntry:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    spec = importlib.util.spec_from_file_location('rx14a_port_oracle', DRIVER)\n",
+        "after": "    spec = importlib.util.spec_from_file_location('rx16one_port_oracle', DRIVER)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    module = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(module)\n    module.execute_command = owned_execute\n    sys.argv = [str(DRIVER), '--out', str(OUT), '--iverilog-dir', str(TOOLS), '--netlist', str(NET), '--models', str(MODEL)]\n    assert module.main() == 0\n    result = json.loads((OUT / 'result.json').read_text())\n    assert result['tests'] == {'passed': 6, 'failed': 0, 'skipped': 0}\n    assert before == {str(p): pin(p) for p in dependencies}\n    assert gate.verify_binding() == binding\n    # Only a terminal program is compressed; every original byte is read back.\n    raw = OUT / 'sim/sim.vvp'\n    original = pin(raw)\n    zipped = raw.with_suffix('.vvp.gz')\n    with raw.open('rb') as source, gzip.open(zipped, 'xb', compresslevel=1) as dest:\n        shutil.copyfileobj(source, dest)\n    with gzip.open(zipped, 'rb') as stream:\n        digest = hashlib.sha256()\n        count = 0\n        while data := stream.read(1024**2):\n            count += len(data)\n            digest.update(data)\n    assert {'bytes': count, 'sha256': digest.hexdigest()} == original\n    record['lossless_closed_program'] = {'raw': original, 'gzip': pin(zipped), 'full_decompressed_readback': original}\n    assert pin(raw) == original\n    raw.unlink()\n",
+        "after": "    module = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(module)\n    module.execute_command = owned_execute\n    sys.argv = [str(DRIVER), '--out', str(OUT), '--iverilog-dir', str(TOOLS), '--netlist', str(NET), '--models', str(MODEL)]\n    assert module.main() == 0\n    result = json.loads((OUT / 'result.json').read_text())\n    assert result['tests'] == {'passed': 6, 'failed': 0, 'skipped': 0}\n    assert before == {str(p): pin(p) for p in dependencies}\n    assert gate.verify_binding() == binding\n    # Only a terminal program is compressed; every original byte is read back.\n    raw = OUT / 'sim/sim.vvp'\n    original = pin(raw)\n    zipped = raw.with_suffix('.vvp.gz')\n    with raw.open('rb') as source, gzip.open(zipped, 'xb', compresslevel=1) as dest:\n        shutil.copyfileobj(source, dest)\n    with gzip.open(zipped, 'rb') as stream:\n        digest = hashlib.sha256()\n        count = 0\n        while data := stream.read(1024**2):\n            count += len(data)\n            digest.update(data)\n    assert {'bytes': count, 'sha256': digest.hexdigest()} == original\n    record['lossless_closed_program'] = {'raw': original, 'gzip': pin(zipped), 'full_decompressed_readback': original}\n    assert pin(raw) == original\n    raw.unlink()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record['status'] = 'PASS_EXACT_PROVED_RX14A_SIX_NATIVE_PORT_CASES'\n",
+        "after": "    record['status'] = 'PASS_EXACT_PROVED_RX16ONE_SIX_NATIVE_PORT_CASES'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "except BaseException as error:\n    record.update(status='FAILED_RETAINED', error=repr(error))\n    raise\nfinally:\n",
+        "after": "except BaseException as error:\n    record.update(status='FAILED_RETAINED', error=repr(error))\n    raise\nfinally:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    target = OUT / 'owned-driver.json' if OUT.exists() else B / 'repair14-source/port-prelaunch-failure.json'\n",
+        "after": "    target = OUT / 'owned-driver.json' if OUT.exists() else B / 'repair16-source/port16one-prelaunch-failure.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    target.write_text(json.dumps(record, indent=2) + '\\n')\n",
+        "after": "    target.write_text(json.dumps(record, indent=2) + '\\n')\n"
+      }
+    ]
+  }
+]

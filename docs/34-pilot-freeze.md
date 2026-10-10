@@ -408,10 +408,12 @@ the netlist path:
    `pilot-signoff-gated` and `pilot-signoff-superseded`, split when
    `docs/80` was re-measured; there is no group called
    `pilot-signoff` any more, and this sentence named one.)*
+<!-- REUSE-IgnoreStart -->
 3. `tt/LICENSES/` held `Apache-2.0.txt` alone while every file in
    `tt/src/` carries `SPDX-License-Identifier: CERN-OHL-W-2.0`, so the
    published repository did not resolve its own tags. The text is now
    emitted at `tt/LICENSES/CERN-OHL-W-2.0.txt` as well as at `LICENSE`.
+<!-- REUSE-IgnoreEnd -->
 4. `tt/docs/info.md` told an operator that `FAULT_CLR` = `0x3F` clears
    everything and listed three pilot-only registers. The die decodes
    five and allocates clear bits 6 and 7, so that write clears six of

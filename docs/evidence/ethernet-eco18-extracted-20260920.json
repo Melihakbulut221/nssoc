@@ -1,0 +1,1369 @@
+{
+  "date": "2026-09-20",
+  "run": "eth256-eco18-clean-route-20260920",
+  "scope": "Completed detailed routing, native parasitic extraction, separate native STA processes for three corners, both GDS streams and rendering. Per-corner setup, hold and electrical metrics retained without waiver. No full independent DRC/XOR/LVS verdict for this new candidate.",
+  "commands": [
+    "SOC_INTERFACE_FLOW=1 PNR_CONFIG=\"$PWD/hw/soc/pnr/config-fpeth256-antfix-20260919.json\" SYN_NETLIST=\"$PWD/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v\" PNR_STATE=\"$PWD/hw/soc/pnr/state/eth256-eco18-clean-route-20260920-seed.json\" bash hw/soc/flow/pnr_soc_top.sh eth256-eco18-clean-route-20260920 -F OpenROAD.DetailedRouting -T KLayout.Render -i \"$PWD/hw/soc/pnr/state/eth256-eco18-clean-route-20260920.json\"",
+    "python3 hw/soc/out/external-review-20260919/record_eco18_extracted.py"
+  ],
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "design__max_slew_violation__count": 2,
+      "design__max_fanout_violation__count": 71,
+      "design__max_cap_violation__count": 8,
+      "clock__skew__worst_hold": -0.6018917756785434,
+      "clock__skew__worst_setup": 1.0064418472379704,
+      "timing__hold__ws": -0.03959899187305621,
+      "timing__setup__ws": 3.388567744534122,
+      "timing__hold__tns": -0.05295775079466991,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": -0.03959899187305621,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 4,
+      "timing__hold_r2r__ws": -0.039599,
+      "timing__hold_r2r_vio__count": 4,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 4.609921,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_typ_1p20V_25C": {
+      "design__max_slew_violation__count": 1,
+      "design__max_fanout_violation__count": 71,
+      "design__max_cap_violation__count": 8,
+      "clock__skew__worst_hold": -0.7190623855429418,
+      "clock__skew__worst_setup": 1.3845396332422544,
+      "timing__hold__ws": 0.12246914939927496,
+      "timing__setup__ws": 2.4856220008018033,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": 0,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": 0,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.122469,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 0,
+      "timing__setup_r2r__ws": 3.022254,
+      "timing__setup_r2r_vio__count": 0,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "design__max_slew_violation__count": 29,
+      "design__max_fanout_violation__count": 71,
+      "design__max_cap_violation__count": 7,
+      "clock__skew__worst_hold": 1.1483226916603042,
+      "clock__skew__worst_setup": 2.0514046597615976,
+      "timing__hold__ws": 0.2386020337732074,
+      "timing__setup__ws": -0.7853131700543088,
+      "timing__hold__tns": 0,
+      "timing__setup__tns": -1.4196857424822078,
+      "timing__hold__wns": 0,
+      "timing__setup__wns": -0.7853131700543088,
+      "timing__hold_vio__count": 0,
+      "timing__hold_r2r__ws": 0.238602,
+      "timing__hold_r2r_vio__count": 0,
+      "timing__setup_vio__count": 4,
+      "timing__setup_r2r__ws": -0.785313,
+      "timing__setup_r2r_vio__count": 4,
+      "timing__unannotated_net__count": 1106,
+      "timing__unannotated_net_filtered__count": 0
+    }
+  },
+  "gmii_output_paths": {
+    "nom_fast_1p32V_m40C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 3.388568,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 3.388568
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.443586
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 3.54372
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 3.549956
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 3.549993
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 3.550974
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 3.559827
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 3.633627
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 3.661518
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.684226
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 0.538319,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 0.538319
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.55949
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 0.584435
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 0.656791
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 0.662495
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 0.662944
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 0.663517
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.670789
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 0.748419
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.799387
+          }
+        ]
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 2.485622,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 2.485622
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.572188
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 2.712213
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 2.721524
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.722214
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 2.722503
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 2.736316
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.852028
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 2.894423
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.931148
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 1.132126,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.132126
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.170699
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 1.205552
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 1.327178
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 1.336532
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 1.336699
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 1.337795
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 1.348733
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.435387
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 1.525885
+          }
+        ]
+      }
+    },
+    "nom_slow_1p08V_125C": {
+      "max": {
+        "reported_paths": 10,
+        "worst_slack_ns": 0.831356,
+        "paths": [
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.831356
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 0.97764
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 1.193968
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 1.209441
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 1.209903
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 1.211557
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 1.223858
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 1.421862
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.488437
+          },
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 1.552143
+          }
+        ]
+      },
+      "min": {
+        "reported_paths": 10,
+        "worst_slack_ns": 2.224289,
+        "paths": [
+          {
+            "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.224289
+          },
+          {
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 2.291456
+          },
+          {
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.347098
+          },
+          {
+            "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+            "slack_ns": 2.546589
+          },
+          {
+            "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+            "slack_ns": 2.552776
+          },
+          {
+            "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+            "slack_ns": 2.555291
+          },
+          {
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.556225
+          },
+          {
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 2.572147
+          },
+          {
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.705726
+          },
+          {
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 2.852349
+          }
+        ]
+      }
+    }
+  },
+  "route": {
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "antenna_diodes_count": 562,
+    "design__disconnected_pin__count": 256,
+    "design__critical_disconnected_pin__count": 0,
+    "design__instance__count__class:macro": 24,
+    "design__instance__count__class:sequential_cell": 9352,
+    "design__instance__count__class:fill_cell": 251774
+  },
+  "artifacts": {
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/resolved.json": {
+      "bytes": 40645,
+      "sha256": "882df7e11de5383a990a0d8541edb6476c7a889e406736fce26928777a92a0a2"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/flow.log": {
+      "bytes": 12366,
+      "sha256": "0a5a81370a989b9df3c043ef0c6b7e9933a940688678360683cd69b50f763f78"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/01-openroad-detailedrouting/state_out.json": {
+      "bytes": 4358,
+      "sha256": "27428b3e52ec22ad28b6bfbfe43bb95fafef235457319597a0a3a0fd3206f4ae"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/03-openroad-checkantennas-1/state_out.json": {
+      "bytes": 4403,
+      "sha256": "cedf9004cca3920fb73570e223a2e3903ebfa211abf5b2907f3237c2153b127b"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/03-openroad-checkantennas-1/reports/antenna.rpt": {
+      "bytes": 80,
+      "sha256": "88ceef0b63031420e468a911f7c57fd68d4c409b45a681c14667323216ceb4fb"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/state_out.json": {
+      "bytes": 11371,
+      "sha256": "d550abb151a7868d99e03acedea6c0d07cc9aa568d19d20cc83e8bf89d3fe90f"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/summary.rpt": {
+      "bytes": 2770,
+      "sha256": "0ea8013f89738fd217033f7404646adb15a9cee75dd8e4f64547e5a34add69f3"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/16-klayout-render/state_out.json": {
+      "bytes": 13093,
+      "sha256": "463a172fb14b492b4f97f1d64bfe81b4c8a2fd181d30745ae7db7ea841cd5833"
+    },
+    "hw/soc/out/external-review-20260919/record_eco18_extracted.py": {
+      "bytes": 5549,
+      "sha256": "ad74c659cc617cab5576b2281b1d60cb477df9352910173ea2375cf257c3fae6"
+    },
+    "hw/soc/out/external-review-20260919/eco18-postroute-connectivity.json": {
+      "bytes": 797,
+      "sha256": "9db156fcedf7292bee8785ba49a868758b33187d3e9e550f193086b8adb658c7"
+    },
+    "hw/soc/sta/soc_interfaces.sdc": {
+      "bytes": 2236,
+      "sha256": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/eco.tcl": {
+      "bytes": 23371,
+      "sha256": "6b744f06cd6b700ef1ccbabd11e5e7aeaa2cdb5a74ab45e98c8972a4e2fd9e12"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/10-odb-cellfrequencytables/soc_top.odb": {
+      "bytes": 185308736,
+      "sha256": "ef163a3ad5a0c3a33421c5bdfc9529453b295c24bc88d757b18de915b3cbc54d"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/10-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 116794425,
+      "sha256": "aa987fd615022e9a7dc045280d7fe0dc4c2d6781cdf7e310bdfb11aba076ad82"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v": {
+      "bytes": 19981760,
+      "sha256": "da5cc604647e62c356f14a28ee389fa2df67f29df4fec3e968f750a21cd05d53"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29637322,
+      "sha256": "5f91821e73bfb6a959244f443a75279cba03f16531bb04430aa6142d91d744da"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/14-magic-streamout/soc_top.gds": {
+      "bytes": 174027486,
+      "sha256": "70d0447be4bd12a3d1134ba28c2fee81819bdf170ecb73dfbbdc217953719d60"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/14-magic-streamout/soc_top.magic.gds": {
+      "bytes": 174027486,
+      "sha256": "70d0447be4bd12a3d1134ba28c2fee81819bdf170ecb73dfbbdc217953719d60"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/15-klayout-streamout/soc_top.klayout.gds": {
+      "bytes": 96242756,
+      "sha256": "cc96dff7ff3e687e0dc4f70c43f5ce43892740154dc833499ec619a0977b3e9a"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/11-openroad-rcx/nom/soc_top.nom.spef": {
+      "bytes": 104975404,
+      "sha256": "75f4a6cdd83a997dc4180adf670cb2c2d86bb92c19fe28577e978c22784b66ad"
+    },
+    "hw/soc/pnr/state/eth256-eco18-clean-route-20260920.json": {
+      "bytes": 935,
+      "sha256": "b20d944bd2bd72b6f6aaa3e12a85f02c562f2ae0e779eeae887531a49a6a3bf1"
+    },
+    "hw/soc/out/external-review-20260919/eth256-eco18-clean-route-20260920-supervisor.json": {
+      "bytes": 971,
+      "sha256": "34c21463e62aaf3abe032017e64dde27642b89de4073b2fe37aba3498e2f9fd6"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/checks.rpt": {
+      "bytes": 73420,
+      "sha256": "b837066501f12e554051f3fde3c1712780625afd3c868e859500903aacc29704"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/clock.rpt": {
+      "bytes": 5162,
+      "sha256": "0c7788dfe01d2a01c8d7a9d0b8053c87083769badb1d57f633022aa9e6d373c8"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/max.rpt": {
+      "bytes": 39192905,
+      "sha256": "2645a6f09b4a54c0b46f06a1c090c98ae4e9e54cf7eb371da7d16fd90cd9eccf"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/min.rpt": {
+      "bytes": 24440683,
+      "sha256": "ad30fef5d8bf7e8387663264c6419f536350ed333e1d48a266ce2a5a1ba57bb6"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/power.rpt": {
+      "bytes": 1097,
+      "sha256": "559d061697875146c9f2469bd63f8fc21c6be68e5b6d5055745277c8cb549676"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/skew.max.rpt": {
+      "bytes": 879,
+      "sha256": "91e4609caeaaca819d42baabd03e85f469a07b5ee10213348e9df3c9c24df225"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/skew.min.rpt": {
+      "bytes": 860,
+      "sha256": "4d00a8d990cc8aad0e685d348a90837fe11bb576f5fa4e6ddf3dd8bfeeb81bb1"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/tns.max.rpt": {
+      "bytes": 208,
+      "sha256": "37bdc0909494acda2c807ba42abf7b15de60738b88c250577dc3a47bf696ffe2"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/tns.min.rpt": {
+      "bytes": 224,
+      "sha256": "faf47120d0632d902f9bd27b8bb7a01b3e67cd62ae6361e13b2aa206f45ea37b"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/violator_list.rpt": {
+      "bytes": 524,
+      "sha256": "6308e74ad6c81b962de83b70f634cf86d9f4d5ac0a97ee9797ef876702732852"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/wns.max.rpt": {
+      "bytes": 208,
+      "sha256": "37e951be5261239870df97551a4786abe41efeac6719ad6f99e91d0591d4df69"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/wns.min.rpt": {
+      "bytes": 224,
+      "sha256": "97521e93632c69d1a373eab0edb667206b3d83c7457e2bd6db8da021b623072d"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/ws.max.rpt": {
+      "bytes": 213,
+      "sha256": "334d06319367e60a549b481499166e314c30917d9b46be00b7829b63ce76faee"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_fast_1p32V_m40C/ws.min.rpt": {
+      "bytes": 215,
+      "sha256": "ef10dcbb1e179f6c3b0497cd7b89e646a448672d40d3b3dd737a3804df416d7f"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/checks.rpt": {
+      "bytes": 102673,
+      "sha256": "4a8b6d25053fb48454787dbbbb2b8db21d11b547be491a8d02e746ffcd14bf36"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/clock.rpt": {
+      "bytes": 5131,
+      "sha256": "b654ea87a140502d5b2a6ea7eddc7e8aedf6782d69d021f83635acc2bfbbfb64"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt": {
+      "bytes": 37557950,
+      "sha256": "1de926a76465c1039d91bae29a4bfff8ec69195134a698e858138d1f59cfcd49"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/min.rpt": {
+      "bytes": 24561241,
+      "sha256": "635b7c38f88c442178c66f9bd58e8d7617f6cceb8620023bc986398b6e69665c"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/power.rpt": {
+      "bytes": 1097,
+      "sha256": "8498b5a085cf1a10bae3f3873e936c77a117a904239a6101f48554bc819436f5"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/skew.max.rpt": {
+      "bytes": 849,
+      "sha256": "22231663a2b9a745d0519c3fcd3dddf5d991851d728f5383b01ebfb6a423df15"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/skew.min.rpt": {
+      "bytes": 880,
+      "sha256": "e2c88984c472b1610a3e14989f5c6770c0cc466cb64b0db96592ef2fc5026485"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/tns.max.rpt": {
+      "bytes": 224,
+      "sha256": "cc26449092cf0dad171ad53f6f97eeefff2410cc78d6b23b57812a1ee51132e9"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/tns.min.rpt": {
+      "bytes": 207,
+      "sha256": "69f1377a158760b68030e7daa27495bdfd21cac95ddb63942d3bb7baa085118d"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/violator_list.rpt": {
+      "bytes": 380,
+      "sha256": "6e75cca968acc1416e61daafad3837a6dda23ed3342fab14d72f72e2b0df8373"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/wns.max.rpt": {
+      "bytes": 224,
+      "sha256": "917f27048ab197ecb7c9e668332715d4cd5a7bda86f1a2d799ef56a0f10388bc"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/wns.min.rpt": {
+      "bytes": 205,
+      "sha256": "7fc691e74801f4e2e8d44f71368230d31da5c20de6fd4218dfe92b84f875a993"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/ws.max.rpt": {
+      "bytes": 215,
+      "sha256": "4788db68190a6cd0486f9a5b3e6c51fc7bd73eeaa81f48262093b534cc7abeec"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/ws.min.rpt": {
+      "bytes": 213,
+      "sha256": "e5c8ddf4cb2b2c4029823fc65bfbd965f4adaf6197980d023d3eb9b409d9a7c1"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/checks.rpt": {
+      "bytes": 80232,
+      "sha256": "9d776774d13fcdd58ffc0240e8feef3d22d4cb05fe0603514e66443067f76279"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/clock.rpt": {
+      "bytes": 5162,
+      "sha256": "344751a4a9578780897bfa99e9f0e39897e806134034e620cfb050d2c9449a39"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/max.rpt": {
+      "bytes": 38745443,
+      "sha256": "38101e74a0c8bd36c73c1c865d583b5b9d1d04a1058eb5e08f67fe3ab10c6752"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/min.rpt": {
+      "bytes": 24553547,
+      "sha256": "bbecb53e955aa3095c8e1f61dffe42418ee2725aff2f5e1a5c4578c8d362e04b"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/power.rpt": {
+      "bytes": 1095,
+      "sha256": "04d9aee84c6c7bbdd5355032dfc701c1d8a8e312b945b00b2780423a764c8cf2"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/skew.max.rpt": {
+      "bytes": 847,
+      "sha256": "d2d5317e9c74303965adb9a8f77a23ffe33d846a9982b8491a073d43e1df73c6"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/skew.min.rpt": {
+      "bytes": 858,
+      "sha256": "14517a55b64f5ca4619eb5b76bcd8e0f4b2bea3c52460aecf4e3cfe7e759bfb7"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/tns.max.rpt": {
+      "bytes": 206,
+      "sha256": "32a2dba6973bb9efb8782220996c2a6fe9d1804ae57aeff4854474c4e0acc032"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/tns.min.rpt": {
+      "bytes": 205,
+      "sha256": "5589e786bd8336380434f23b9d1bd04a0db8275692c7416278782fa5b4d9fe51"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/unpropagated.rpt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/violator_list.rpt": {
+      "bytes": 168,
+      "sha256": "ad509148993d884e4fbf3729f30640d97ff8d99713fef0ad5813096f1f83b9d7"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/wns.max.rpt": {
+      "bytes": 206,
+      "sha256": "91904e5490ecf3b353ddc3d11aef8f788438717768fd06c68c20f6e439899090"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/wns.min.rpt": {
+      "bytes": 203,
+      "sha256": "22f976f87e5735f4c3f6eed9daf443e69514a656c82ba88cfdda80894b0e3d3f"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/ws.max.rpt": {
+      "bytes": 212,
+      "sha256": "247883fabfc00bc1e7a8a1a76952af3798e457e07dcb0f9dd3c5127044b2917f"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_typ_1p20V_25C/ws.min.rpt": {
+      "bytes": 212,
+      "sha256": "bc5bbc3065ee66a9f1e0a5f897161f851cf79036754796ba63bfe7a946b24de1"
+    },
+    "hw/soc/flow/check_postroute_connectivity.py": {
+      "bytes": 3405,
+      "sha256": "167c637b96411e2415dfcd48308cfc054b82fe0fb18da8bf9ee21f103ade20ea"
+    },
+    "sw/tests/test_postroute_connectivity.py": {
+      "bytes": 2980,
+      "sha256": "b09d60c5b44762bdd8710c541aa7688a3f8906c0e414e91982943e79f8df3fa3"
+    },
+    "hw/soc/out/external-review-20260919/eco18-delivered-postroute-check.json": {
+      "bytes": 752,
+      "sha256": "2c3ac34d6a45f918528e709d4fba786b03d66b194ab415f0430bab99bce84dee"
+    },
+    "hw/soc/out/external-review-20260919/eco18-delivered-postroute-check.log": {
+      "bytes": 752,
+      "sha256": "2c3ac34d6a45f918528e709d4fba786b03d66b194ab415f0430bab99bce84dee"
+    },
+    "hw/soc/out/external-review-20260919/postroute-delivery-tests.log": {
+      "bytes": 99,
+      "sha256": "3d1115301a16d5f19f1ca224f7795d81dd6c5b0060fef2b2bc56413ebc13452d"
+    },
+    "hw/soc/out/external-review-20260919/attribute_eco18_fanout.py": {
+      "bytes": 2087,
+      "sha256": "c0f08748acd0693aca587072be7afb7e0b7ddb4c264c9c32207141a2125980a4"
+    },
+    "hw/soc/out/external-review-20260919/eco18-fanout-attribution.json": {
+      "bytes": 14663,
+      "sha256": "75ba7dbbb49ee0508bc111c3cc5c60a40ac09a8ec6a2374b607b765a45ecbc55"
+    }
+  },
+  "connectivity_comparison": {
+    "status": "PASS within scope",
+    "scope": "Unpowered emitted netlists: original instances, masters, pins, ports, aliases and wires preserved; added antenna/filler/decap only. Does not compare extracted connectivity, geometry, power nets or timing. Separate LVS required.",
+    "original_instances": 96584,
+    "added_instances": {
+      "filler_or_decap": 251774,
+      "antenna": 562
+    },
+    "before": "hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v",
+    "before_sha256": "9e23993e219675c425054c083b43977b9fb7844ec21ab57c61d2bfa0adadc29c",
+    "after": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v",
+    "after_sha256": "da5cc604647e62c356f14a28ee389fa2df67f29df4fec3e968f750a21cd05d53"
+  },
+  "connectivity_scope": "Exact original masters, pins, ports and assigns unchanged after routing versus the ECO18 seed; added cells are antenna and fill/decap only. This is a structural comparison, not independent LVS. Raw disconnected pins include unused SRAM outputs.",
+  "verdict": "Native flow completed; each corner and electrical check is recorded below. DRC/LVS/XOR from older geometry cannot be reused. No product release or complete signoff verdict.",
+  "eco_source_inventory": {
+    "actual_cleaned_seed": {
+      "json_h": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-20260919/01-yosys-jsonheader/soc_top.h.json",
+      "vh": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-20260919/21-odb-writeverilogheader/soc_top.vh",
+      "nl": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v",
+      "pnl": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.pnl.v",
+      "odb": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-clean-guides/soc_top.odb",
+      "def": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.def",
+      "sdc": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.sdc",
+      "metrics": {}
+    },
+    "candidate_before_guide_cleanup": {
+      "scope": "ECO18 native route seed; no stale SPEF/SDF/timing metrics inherited. Sizing/delay/clock tree chain retains ECO10 bounded Boolean proof and subsequent exact structural checks. Final outputs need new native timing, electrical, antenna, DRC/LVS/XOR validation.",
+      "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/eth256-eco18-route-20260920.json",
+      "seed_sha256": "88b8154b50cebba6d4fe93914a37266e81081aea9e1d9bf80697db056ba4f792",
+      "views": {
+        "json_h": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-20260919/01-yosys-jsonheader/soc_top.h.json",
+          "bytes": 25744837,
+          "sha256": "7ff525fe71b70f55c042b2e2833711b90762670c4f61f2dc7eead20641a983e7"
+        },
+        "vh": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/interfaces-eth256-20260919/21-odb-writeverilogheader/soc_top.vh",
+          "bytes": 1594,
+          "sha256": "b7adf473217a7998426a3fe20e6f2acf3c896e4f49435197255a768b22b42355"
+        },
+        "nl": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v",
+          "bytes": 11019572,
+          "sha256": "9e23993e219675c425054c083b43977b9fb7844ec21ab57c61d2bfa0adadc29c"
+        },
+        "pnl": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.pnl.v",
+          "bytes": 14111026,
+          "sha256": "f0712484b897a8460a0b10511dcc9607a2579ecf2e6fb26cd10d83ecca8992ce"
+        },
+        "odb": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.odb",
+          "bytes": 90250490,
+          "sha256": "d41d15ab5ec7cde06f9205c3dc84ea262d1ea805fa3faa7acc5fb33aa46168c0"
+        },
+        "def": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.def",
+          "bytes": 23288166,
+          "sha256": "adf54886bdc11cf320836f24890813206b142f77db7bdc75d826d2a3fd5e7f76"
+        },
+        "sdc": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.sdc",
+          "bytes": 29892,
+          "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+        }
+      },
+      "structural_check": {
+        "original_instances": 96584,
+        "added_stateless_positive_cells": 0,
+        "added_noninverting_buffers": 0,
+        "added_delay_cells": 0,
+        "equivalent_combinational_substitutions": 2,
+        "equivalent_sequential_substitutions": 0,
+        "state_definitions_compared_exactly": true,
+        "unchanged_ports_and_assigns": true,
+        "unchanged_original_wire_declarations": true,
+        "all_original_pin_connections_equal_after_buffer_contraction": true
+      },
+      "source_record": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/validation-inputs.json",
+      "source_record_sha256": "2e8d9f4bb93a459c72af8fb78a6973b00e7dd0b14b10c610c874888bca3258a3"
+    },
+    "cleanup": {
+      "status": "PASS",
+      "removed_guides": 6,
+      "affected_net": "net24735",
+      "unchanged_netlist_sha256": "9e23993e219675c425054c083b43977b9fb7844ec21ab57c61d2bfa0adadc29c",
+      "unchanged_def_sha256": "adf54886bdc11cf320836f24890813206b142f77db7bdc75d826d2a3fd5e7f76",
+      "odb_before_sha256": "d41d15ab5ec7cde06f9205c3dc84ea262d1ea805fa3faa7acc5fb33aa46168c0",
+      "odb_after_sha256": "ae6214f40ada55725f840d45f8c2738872c3c9a55fd6b133f72b8fe80043cd05",
+      "scope": "Identical OpenROAD-emitted netlist and DEF before and after; only six stale guides on a singleton output net with no external port removed. No cell/net/pin deleted."
+    }
+  },
+  "delivered_connectivity_checker": {
+    "command": ".venv/bin/python hw/soc/flow/check_postroute_connectivity.py hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v hw/soc/out/external-review-20260919/eco18-delivered-postroute-check.json",
+    "result": {
+      "status": "PASS within scope",
+      "scope": "Unpowered emitted netlists: original cells, masters, pins, ports, aliases and wires preserved; added antenna/filler/decap only. Does not compare extracted connectivity, geometry, power nets or timing. Separate LVS required.",
+      "original_instances": 96584,
+      "added_instances": {
+        "antenna": 562,
+        "filler_or_decap": 251774
+      },
+      "before": "hw/soc/out/external-review-20260919/timing-eco18-rx-enable-drive/soc_top.nl.v",
+      "before_sha256": "9e23993e219675c425054c083b43977b9fb7844ec21ab57c61d2bfa0adadc29c",
+      "after": "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v",
+      "after_sha256": "da5cc604647e62c356f14a28ee389fa2df67f29df4fec3e968f750a21cd05d53"
+    },
+    "test_command": ".venv/bin/python -m pytest -q sw/tests/test_postroute_connectivity.py sw/tests/test_physical_eco.py",
+    "test_result": "63 passed; 20 postroute and 43 sizing controls"
+  },
+  "fanout_attribution": {
+    "scope": "Attribute added antenna terminals on the 71 native slow-corner fanout violations. Subtraction is a simple terminal count diagnostic, not a recalculated STA verdict or permission to remove antenna cells. No original constraints or cells modified.",
+    "command": "python3 hw/soc/out/external-review-20260919/attribute_eco18_fanout.py",
+    "violations": [
+      {
+        "pin": "_111939_/Q",
+        "limit": 8,
+        "reported_fanout": 18,
+        "net": "\\u_apb.wdata_i [17]",
+        "antenna_loads": 11,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "max_cap24982/X",
+        "limit": 8,
+        "reported_fanout": 17,
+        "net": "net24981",
+        "antenna_loads": 10,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout27646/X",
+        "limit": 8,
+        "reported_fanout": 16,
+        "net": "net27645",
+        "antenna_loads": 8,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4490/X",
+        "limit": 8,
+        "reported_fanout": 15,
+        "net": "net4489",
+        "antenna_loads": 7,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "hold14036/X",
+        "limit": 8,
+        "reported_fanout": 15,
+        "net": "net14035",
+        "antenna_loads": 12,
+        "reported_fanout_minus_antenna_count": 3
+      },
+      {
+        "pin": "fanout27670/X",
+        "limit": 8,
+        "reported_fanout": 14,
+        "net": "net27669",
+        "antenna_loads": 7,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout302/X",
+        "limit": 8,
+        "reported_fanout": 14,
+        "net": "net301",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout3109/X",
+        "limit": 8,
+        "reported_fanout": 14,
+        "net": "net3108",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "_111936_/Q",
+        "limit": 8,
+        "reported_fanout": 13,
+        "net": "\\u_apb.wdata_i [14]",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout27644/X",
+        "limit": 8,
+        "reported_fanout": 13,
+        "net": "net27643",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27671/X",
+        "limit": 8,
+        "reported_fanout": 13,
+        "net": "net27670",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout6453/X",
+        "limit": 8,
+        "reported_fanout": 13,
+        "net": "net6452",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "wire4945/X",
+        "limit": 8,
+        "reported_fanout": 13,
+        "net": "net4944",
+        "antenna_loads": 10,
+        "reported_fanout_minus_antenna_count": 3
+      },
+      {
+        "pin": "_091021_/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "_041454_",
+        "antenna_loads": 9,
+        "reported_fanout_minus_antenna_count": 3
+      },
+      {
+        "pin": "_111923_/Q",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "\\u_apb.wdata_i [1]",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "_112192_/Q",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "\\u_apb.pstrb_o [1]",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout146/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net145",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27724/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net27723",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout27728/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net27727",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout2776/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net2775",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout3136/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net3135",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout3707/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net3706",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4442/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net4441",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4455/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net4454",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "max_cap27748/X",
+        "limit": 8,
+        "reported_fanout": 12,
+        "net": "net27747",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 6
+      },
+      {
+        "pin": "_069729_/X",
+        "limit": 8,
+        "reported_fanout": 11,
+        "net": "_022496_",
+        "antenna_loads": 8,
+        "reported_fanout_minus_antenna_count": 3
+      },
+      {
+        "pin": "eco_electrical_1125904/X",
+        "limit": 8,
+        "reported_fanout": 11,
+        "net": "\\u_ram.g_ram_2048x64_ecc.row_din [26]",
+        "antenna_loads": 8,
+        "reported_fanout_minus_antenna_count": 3
+      },
+      {
+        "pin": "_063645_/Y",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "_016609_",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "_111372_/Q",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "\\u_ibex.u_ibex_core.cs_registers_i.csr_pmp_cfg_o [9]",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "clkbuf_leaf_2_clk_i/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "clknet_leaf_2_clk_i",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 4
+      },
+      {
+        "pin": "fanout236/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net235",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout237/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net236",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout2457/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net2456",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27757/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net27756",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout27774/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net27773",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout336/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net335",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4009/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net4008",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout6156/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net6155",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 5
+      },
+      {
+        "pin": "rebuffer13644/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net13643",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 6
+      },
+      {
+        "pin": "wire25007/X",
+        "limit": 8,
+        "reported_fanout": 10,
+        "net": "net25006",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "_067311_/Y",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "_020150_",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 6
+      },
+      {
+        "pin": "_085905_/Y",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "_037230_",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "_111070_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_boot.crash_pc_i [27]",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "_111945_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_apb.wdata_i [23]",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "_112063_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_ram.g_ram_2048x64_ecc.bank_q [0]",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 5
+      },
+      {
+        "pin": "_112064_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_ram.g_ram_2048x64_ecc.bank_q [1]",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 5
+      },
+      {
+        "pin": "_112824_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_i2c.prescale [10]",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 4
+      },
+      {
+        "pin": "_115072_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_can.addr [2]",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "_119260_/Q",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "\\u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[13].rf_reg_q [22]",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout1046/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net1045",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout2355/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net2354",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout271/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net270",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27643/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27642",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27690/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27689",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27693/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27692",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout27760/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27759",
+        "antenna_loads": 4,
+        "reported_fanout_minus_antenna_count": 5
+      },
+      {
+        "pin": "fanout27785/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27784",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 6
+      },
+      {
+        "pin": "fanout27797/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net27796",
+        "antenna_loads": 2,
+        "reported_fanout_minus_antenna_count": 7
+      },
+      {
+        "pin": "fanout2821/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net2820",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout3295/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net3294",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout357/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net356",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4020/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4019",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4094/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4093",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4471/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4470",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4590/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4589",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4753/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4752",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout4901/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4900",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "fanout6505/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net6504",
+        "antenna_loads": 3,
+        "reported_fanout_minus_antenna_count": 6
+      },
+      {
+        "pin": "fanout892/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net891",
+        "antenna_loads": 1,
+        "reported_fanout_minus_antenna_count": 8
+      },
+      {
+        "pin": "max_cap1505/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net1504",
+        "antenna_loads": 5,
+        "reported_fanout_minus_antenna_count": 4
+      },
+      {
+        "pin": "wire4495/X",
+        "limit": 8,
+        "reported_fanout": 9,
+        "net": "net4494",
+        "antenna_loads": 6,
+        "reported_fanout_minus_antenna_count": 3
+      }
+    ],
+    "violating_nets_with_antenna": 71,
+    "violating_nets_without_antenna": 0,
+    "at_or_below_reported_limit_after_arithmetic_subtraction": 71,
+    "inputs": {
+      "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/checks.rpt": {
+        "sha256": "4a8b6d25053fb48454787dbbbb2b8db21d11b547be491a8d02e746ffcd14bf36",
+        "bytes": 102673
+      },
+      "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v": {
+        "sha256": "da5cc604647e62c356f14a28ee389fa2df67f29df4fec3e968f750a21cd05d53",
+        "bytes": 19981760
+      },
+      "hw/soc/out/external-review-20260919/attribute_eco18_fanout.py": {
+        "sha256": "c0f08748acd0693aca587072be7afb7e0b7ddb4c264c9c32207141a2125980a4",
+        "bytes": 2087
+      }
+    }
+  }
+}

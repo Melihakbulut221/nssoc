@@ -1,5 +1,9 @@
 # 11 — Verification Harness
 
+Dependency update, 20 September 2026: the native Tcl guard tests require
+`tclsh` (`apt install tcl` on Debian/Ubuntu). Only tests that execute Tcl
+skip when it is absent; parser and static checks still run. A skip is not a pass.
+
 Date: 25 August 2026
 Status: harness live across six RTL blocks and the pilot integration.
 Every command in section 8 was executed against the working tree of this

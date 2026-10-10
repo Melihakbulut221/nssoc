@@ -1,0 +1,1011 @@
+{
+  "scope": "Read-only source/capture/raw-result audits by a separate agent. No new native simulation or physical deck run; original failed sampler waveform remains failed.",
+  "reviews": [
+    {
+      "path": "hw/soc/out/pcie-replay-20261004/flow-independent-review.json",
+      "sha256": "c90ae1083a1a562c7509350e64357c8f32dc3d114b89c49929f373d703a20a8a",
+      "record": {
+        "status": "READ_ONLY_REVIEW_NO_BLOCKER",
+        "sources": {
+          "hw/soc/rtl/pcie/soc_pcie_credit_tx.v": {
+            "bytes": 4861,
+            "sha256": "7d01f9a423bdd4f141371c47465a8c718d1eb578373a00f6eb1590efaf1708d6"
+          },
+          "hw/soc/rtl/pcie/soc_pcie_flow_packets.v": {
+            "bytes": 5697,
+            "sha256": "9f90c5123ac4b82c832027af0e9ce79d5124cdf5dd502cde87c3f59c0729106a"
+          },
+          "hw/soc/tb/cocotb/test_soc_pcie_flow_packets.py": {
+            "bytes": 7562,
+            "sha256": "53f24d109212a1e1aa9e0c97bfda72fab3c6a088a4e3b2325201755e70ccdb53"
+          },
+          "hw/soc/tb/cocotb/Makefile.soc_pcie_flow_packets": {
+            "bytes": 1606,
+            "sha256": "67c1fc3c68056125be60b2404bb244a6fef72329735fe4248405dbc9187c3697"
+          },
+          "scripts/check_pcie_flow_packets.py": {
+            "bytes": 6558,
+            "sha256": "ec59e8ef8f6b2c1b2b68adff1c987761b9ee5b12e71c055bbd658fc71446084b"
+          },
+          "sw/tests/test_pcie_flow_packets.py": {
+            "bytes": 1590,
+            "sha256": "53d3608581696729c67c845ff1501b6b46420185539cf6837ab1d55617647038"
+          }
+        },
+        "runs": {
+          "nssoc-pcie-flow-packets-rtl-03": {
+            "result": {
+              "bytes": 7549,
+              "sha256": "4d2880d26c54636588b209ce1b58c88f44fa0c67a905d08d801dd967dcd01911"
+            },
+            "input_count": 25,
+            "output_count": 2,
+            "mapped_cells": null,
+            "counts": [
+              3,
+              0,
+              0
+            ]
+          },
+          "nssoc-pcie-flow-packets-native-02": {
+            "result": {
+              "bytes": 8012,
+              "sha256": "6bbb2b0422a1cdbd7e6adaf7a0c50ad719abf5de152bee0a2da6c786e875b5b4"
+            },
+            "input_count": 27,
+            "output_count": 6,
+            "mapped_cells": 12712,
+            "counts": [
+              3,
+              0,
+              0
+            ]
+          }
+        },
+        "mutations": [
+          {
+            "result": {
+              "bytes": 8328,
+              "sha256": "47ba11814a041c949e8d068c5d7e6e5c50f2ad1f9a0cf1a8c6cdd63837228d0a"
+            },
+            "counts": [
+              0,
+              3,
+              0
+            ]
+          },
+          {
+            "result": {
+              "bytes": 8326,
+              "sha256": "2134f1303cabcd3a337a390e54444170462d90b07d7e517192818f48c7b5047e"
+            },
+            "counts": [
+              2,
+              1,
+              0
+            ]
+          },
+          {
+            "result": {
+              "bytes": 8326,
+              "sha256": "2f1e75a6ae1fc40d8bf88705ff0e2514c9d514541b0db38af5833f245633b6ad"
+            },
+            "counts": [
+              2,
+              1,
+              0
+            ]
+          }
+        ],
+        "review": [
+          "Exact FC bit fields and valid pulse bind the CRC-checked decoder to the VC0 credit tracker.",
+          "Original reservations consume once; replay bypasses reservation; the three port tests check concrete emitted bytes and consumed counters.",
+          "Reset/link-down clears credits and packet ownership. local_init_done_i is explicitly external."
+        ],
+        "scope": "Independent raw receipt/XML/input/output/mapped-cell replay and source read; no new native simulation, full-link conformance or chip integration claim.",
+        "next_dependency": "Implement receive-credit ownership tied to finite admission/staging/retirement, plus actual InitFC1/InitFC2/UpdateFC transmitter and timers. This should replace the external local_init_done assumption with an observed protocol state, not constant advertisements."
+      }
+    },
+    {
+      "path": "hw/soc/out/pcie-pad-rc-20261004/peer/independent-review.json",
+      "sha256": "9e73897002e45e0857c77ca2b8a57248c0a19c3902a1d3cd2a30e98975f5509b",
+      "record": {
+        "status": "READ_ONLY_PAD_STRUCTURE_AND_LOADING_REVIEW_NO_BLOCKER",
+        "source_validation_sha256": "f7ed3d8acab95442e6552219ad0f45833a7efa2f263ecb4dc50ab5988a91f577",
+        "sources": {
+          "hw/soc/flow/make_pcie_pad_boundary.py": {
+            "sha256": "0e9eb5e5c66932412551e1efe0273ca6c5c063e4334d3316578e62c60e2c8bed",
+            "bytes": 11937
+          },
+          "hw/soc/flow/check_pcie_pad_boundary.py": {
+            "sha256": "ade5659b2960a32926b9b47d3b8501e4f964a56e2d801ba034be5b98e5ceaedd",
+            "bytes": 22148
+          },
+          "hw/soc/flow/check_pcie_esd_loading.py": {
+            "sha256": "3fc0f3628d8c73bb3bf21f2ce17a7c9646153c2fd76a29a26d104de9ac1d6148",
+            "bytes": 8264
+          },
+          "sw/tests/test_pcie_pad_boundary.py": {
+            "sha256": "747409134285e16dfafa9a6fb6fb25667f715d63d43461e750c5b149b403fcfb",
+            "bytes": 6059
+          }
+        },
+        "inputs_rehashed": 270,
+        "results": {
+          "layout": {
+            "status": "GENERATED_REQUIRES_DRC_LVS_LOADING_AND_ESD_SYSTEM_VALIDATION",
+            "outputs": 4,
+            "result_sha256": "1798c472301e334c4db90a6a8fea8792697eae3c4624e27855ce4b764a53e6ee"
+          },
+          "physical": {
+            "status": "PASS_PAD_BOUNDARY_MAIN_DRC_STRICT_LVS_AND_SEVEN_NEGATIVES_NO_ESD_RF_APPROVAL",
+            "outputs": 63,
+            "result_sha256": "ecb9395de1620837b2a6416562d0373180707d1ba67283990393c43ac79c4ec4"
+          },
+          "loading": {
+            "status": "PASS_27_NATIVE_DIODE_LOADING_CASES_AND_TWO_CONTROLS_NOT_PAD_PEX_OR_ESD_QUALIFICATION",
+            "outputs": 145,
+            "result_sha256": "248c50405a6c7356885afae032af4424f112ebaaec1f2e734b6c180eac4a5f15"
+          }
+        },
+        "native_db_receipt_sha256": "177e745a596ac1f2c4aa4c334599602c6454630d5feef14e4711386ef79d051f",
+        "capsule_sha256": "1e349b34c1c2033e175c38c5658f70722d9a4ad93f349a27168c676adef1783f",
+        "capsule_members_rehashed": {
+          "NOTICES.txt": "9165fff06f38fdc10e6c04cacd22837abf83f68c704f9327791b20d9764216b1",
+          "layout/model.spice": "4f320a10c0886016fb5a78bdbbde4e72328b995d13ab6ddeb281ec3a7addb7df",
+          "layout/nssoc_pcie_pad_boundary.gds": "2c504a7930ebf78a12d2d29747d71dc779759774cea607feaf661f04b8ac318e",
+          "layout/nssoc_pcie_pad_boundary.lef": "722c472eed68c34e345dcd420c050544620670d91e29b7afd6a15c9877db8711",
+          "layout/result.json": "1798c472301e334c4db90a6a8fea8792697eae3c4624e27855ce4b764a53e6ee",
+          "layout/schematic.cir": "5fdd71b2c2523fafab0e149b6db3b30e30c491fab35a5f307094a48cb7e093f3",
+          "loading/case00/bench.cir": "95627c077187bb0ac335a5bf483397f9f62c04d9c330c84798262f5e7fee7a9e",
+          "loading/case00/native.log": "8907581cd68f123f89bfe3a49228b8c756abf4108d8fd5a2cc3636ac5420ed44",
+          "loading/case00/y0.dat": "d1a3efe226c7c2f9f2b79a07c4451311889728865f8b6c99656a3f524832d382",
+          "loading/case00/y1.dat": "5d3708ae04a5ca86894c5338d166238bb54f0da02d5c6464f7027aa2d550fcee",
+          "loading/case00/y2.dat": "57a3063e12c976e57e992bca70a6dc9ce41b488366c814fb02044cc1e25b5e35",
+          "loading/case01/bench.cir": "ba0ec2b02b3dfdc6b30c4c2a3ce3f1103699c137fa33cb609385e5b570026d42",
+          "loading/case01/native.log": "bfe432fc33c162c628e6b521a1da124df884cd3d0d2c805821cef2483544dd7b",
+          "loading/case01/y0.dat": "4223aa72da758f8dffbe6c357b170d12e7c4dca038261fc8edc797b744342323",
+          "loading/case01/y1.dat": "197f3261359f4c401d1eb5b3c12126f68ca2f4e5e07433f25330e0f1d00ccb54",
+          "loading/case01/y2.dat": "e9836716f65037173a131dd0f2c245ab641ecb7448752d08a6d1ffa962d11d6a",
+          "loading/case02/bench.cir": "5a4cc3aba691c9fdda92215ed9bda47e9dc1f89a6414d15c74fa27fb09d2a81c",
+          "loading/case02/native.log": "e5fee81b1d36be6cfffe94a329c112a1256ef8facca83372e8c8cc782c9853ff",
+          "loading/case02/y0.dat": "403654140827311ae479e6c9cdc6d51c859bd6b1e4f535014257b28d73d71fdd",
+          "loading/case02/y1.dat": "855cee82872d1455baff68ce322fedc9d98ca9b83e307163fe337d442b0cac77",
+          "loading/case02/y2.dat": "ff3cf821b90c126abc84544a40e2d0cb3d3a1e6b2b911f504e75fdb16068986d",
+          "loading/case03/bench.cir": "afb403743344f049bfa81882d07126e762d80381a9c19bc5d6aae58719d01393",
+          "loading/case03/native.log": "144ee6e9b45327dd3276ce03432655cdd285c30ee1d23023ef804073033d247a",
+          "loading/case03/y0.dat": "5afcea3e4359f29b0bf52eaf5d5e03588819145d72624381da2330d34316150a",
+          "loading/case03/y1.dat": "9d95fe56c8d338fcf60b46cf0a02ed4c180b6b47b1e5f7ba158e015ab4d633f0",
+          "loading/case03/y2.dat": "e58886db0e494e1e9aeb6525b7f9124a4e2319e33c6bc4a06d072d2a08af67e7",
+          "loading/case04/bench.cir": "899e017930216efec85aa7da134c03af70e583432e3044a1508c5455eccb7669",
+          "loading/case04/native.log": "af96c1e2df9013eb395e2322abeb20e427955af63839efe4c0a216e20fe2bfdd",
+          "loading/case04/y0.dat": "7891b4637920b5e01b268898e7e5e09c6c207937b1959f59bb08def93187d76b",
+          "loading/case04/y1.dat": "732eb419d6e4f1337d00307d8db3e082ce6d395965ad288335746891ad97189d",
+          "loading/case04/y2.dat": "14e73c4e6d0ec7d1ce91bdbbf7be535046699904b1340bf2f75d5d234fad370e",
+          "loading/case05/bench.cir": "b339c1a6b3d401ff4bafeb393542617df1125740861b0802c74bf37b36d66776",
+          "loading/case05/native.log": "197f06ffb2fac874463542763af8f02fa8dbaa0625d651894ef3313d0bd7cbc9",
+          "loading/case05/y0.dat": "d07c127c30bc5164cb8837a087b26f299f3874541b435cc24d73bc4c901c287a",
+          "loading/case05/y1.dat": "b860c67d6707bfb211d4edea6b5dd82affda368646db47586f45f6b087e03461",
+          "loading/case05/y2.dat": "ca79af63394d4e5fc06650c13afbf85528b7ec580593557477f7d03bc7085c12",
+          "loading/case06/bench.cir": "9e224b0120f0e9c35b9f1005e0e4feb6d10d437ce35ef6fc7f410f81b7faf49a",
+          "loading/case06/native.log": "7a3ddf1a48c06387c7fd44a1cec41520d79324131faae1e37510dd6eefb273ab",
+          "loading/case06/y0.dat": "fdcf00652fa480382a31b517df2e6b053605e0d23c5841a203857e05ec75de21",
+          "loading/case06/y1.dat": "c0ce2b0bf297bc0aeaae701db237d24d75b9ea3c9efbf338eceaaf4dfb1c605e",
+          "loading/case06/y2.dat": "9711e15a42ed1fd2fb411ba14a35b442ac63aec383a5422a202f5023e5ee78b2",
+          "loading/case07/bench.cir": "da96cd48979299409211304fb68fc79c3da239f1f4bc98c3cf532e240d3f9391",
+          "loading/case07/native.log": "0212be6f38680582db160e3aeebc1921598bff25c0c611f3b453d24ea8ca942d",
+          "loading/case07/y0.dat": "aa12c55097682f62a82166c4f03d532228a444d68c819fee997d95ccdefe5984",
+          "loading/case07/y1.dat": "5fb5410ca046d141916d7190538dd04582f41be8105ee7f7b6b82414996e0d74",
+          "loading/case07/y2.dat": "a062a59975a65130a68028a99efa34f02ee8f0abb7369ae9bab4f282430d6ba1",
+          "loading/case08/bench.cir": "a435f4b3b9dfe21a3e80688f903dc9e2c5497c0d12913a8937f466caba7bbcaa",
+          "loading/case08/native.log": "19551e3985d5bf9e0a12ab04743afa23488f330d71a6748b34031e8f14a56767",
+          "loading/case08/y0.dat": "50c26188a11e3bc4e0b4646442ce68b8b6fd0239b87ca8c4fbb5265b62ba84e8",
+          "loading/case08/y1.dat": "cf5cc341ca63c293253fd65888a842522ea2364d2f49e7dbae89fd558ff4e593",
+          "loading/case08/y2.dat": "7c33d87b00b3fb7d0e1b29354de9872bd1524d40b34fbfc056170d7007ec1057",
+          "loading/case09/bench.cir": "035c9725afb36135f44fc7845c853fe48c048068a42faa44211b725a626dbd96",
+          "loading/case09/native.log": "c6981c40db61342f7bf8ecc89a3b03fd6a280d425a1f15aa2c9ce668b098e9f5",
+          "loading/case09/y0.dat": "0113d0655c88b629781d0d19fd1f09e5a4b0e1dd5df1313b0adf017311b8248a",
+          "loading/case09/y1.dat": "9cb578128f52fe628ce527aac22789bad3b376366c65e10f5f5b8cf1ff4d9537",
+          "loading/case09/y2.dat": "2b6b33fcac68bbdb51b3f18eada4e61dd4221eecb21f892575c51693c54f4fa1",
+          "loading/case10/bench.cir": "264def5423af4e0c398922aef8f19c5b193b148fa101aaa94a27bdffc67ce7bf",
+          "loading/case10/native.log": "551a81cf20c59a556735754e0297d2e8c705459afc356dd77f37d5e158a32274",
+          "loading/case10/y0.dat": "1754fccefcb9ceb419fd391a401ed24f4f87bef01f6a5cfeb55b58d129e7a276",
+          "loading/case10/y1.dat": "4955ad35a3723608f8b9cbbb203a2aaecb37c3154d0d85658fcd006dc13666bb",
+          "loading/case10/y2.dat": "0b5a3cf26937dd1c85d4f6002e5cce5dfbf69df6639eb6072599aee36b5c1852",
+          "loading/case11/bench.cir": "681aa6d2a2a589c8447f67d28fe073bbabd46607e2f4cc2d99857bf8223d9904",
+          "loading/case11/native.log": "afe671d65e15f8ab2b1bdbac516c812ba67319e9ccc02138281693c908a38a7d",
+          "loading/case11/y0.dat": "5dcc3256211be32a05170f97d0c74cace9809702a1105a1d933b1de5959d602a",
+          "loading/case11/y1.dat": "2fcd08d98b2822e8050c4cb4cf98c42a6195ce31c17d98ed3fc2795e3f07d874",
+          "loading/case11/y2.dat": "6cb9fa59b550a47aa3040a8a4e207be9ee7d54b7d077476ed9a499e3fe52f51f",
+          "loading/case12/bench.cir": "508846d5ede06f5aecd9956f43e5f1b9c3cff338a6d7d44dcb0edbb57184e2bf",
+          "loading/case12/native.log": "e869ff7471d54a8357902c6803416ded5425c09e4b24a1b4bcfb666615adc3b3",
+          "loading/case12/y0.dat": "8d6fb7a6b73d5d9d116a117592ff467ba4f56c03f4a9b54480379b1e1502d084",
+          "loading/case12/y1.dat": "d6973b1f3088b63e204e3f6360ac380c8c070aaf97e0397bbeb35e905be2d073",
+          "loading/case12/y2.dat": "245f88cc5d0f0820436adffa6d9660347a5c18f4da101705fa08228dddd548f8",
+          "loading/case13/bench.cir": "17695077805bf7b4510b241b98e0c9d9df8da0c44423f6ad2a5d7562c67debb9",
+          "loading/case13/native.log": "26fb1ae029a77f321cbe674cc999ec6f3c0ec86a11ee4a72ce1b3a888331a84c",
+          "loading/case13/y0.dat": "a64fa7005d2c60973a4c431fd5f4693b608d8ae147e92b5a44bffec24bd0963a",
+          "loading/case13/y1.dat": "24c73d617499ca686ba95b9172fb6d81ccead9cc292a3aaa799b51bf490f59ba",
+          "loading/case13/y2.dat": "3c85a2b2b44cb65b897d9701e8c085583880aa0f023d2c8f5f0258829a2a7a17",
+          "loading/case14/bench.cir": "034de957329d432fd6568132555dae9c2cae76db32d196f949d17877348a99ad",
+          "loading/case14/native.log": "7847521279031b203bdea409c88c4be68d0339bb788555a49b07fd866205da30",
+          "loading/case14/y0.dat": "ba0f38ec402c5e723abcbd8125c77813c9209ba58f870fb74062ba94e44c59ad",
+          "loading/case14/y1.dat": "ee6690d2f654cc3144e05ea8afdd949aad7ee7e06568d312bd56391d9c0e3e36",
+          "loading/case14/y2.dat": "8af789c9001371a755e77ab30fb672c8bd607e1181f0dc483322907f8ea49061",
+          "loading/case15/bench.cir": "38ae350acd8caa8158199781d5f81428b5598bb87e03b467a7e85e17596a517e",
+          "loading/case15/native.log": "31bf54864b62cb0827f563f856c555933813ce20887c07aac64e70671b3459d3",
+          "loading/case15/y0.dat": "6533b017463b0c1e77be48d442d938a01a9e6d03bfac5a512038f78eefdd4ff0",
+          "loading/case15/y1.dat": "c72cc2650127b881d48d2a7531bb7d48e966c3a3df3a73e078fa255077f23ed8",
+          "loading/case15/y2.dat": "de7b8d029b52f75dfecb5a0a89e2da5fafd4ae894a1cddc2ed92c9e8a5471a70",
+          "loading/case16/bench.cir": "c2442af126ff17b8258f37f18d28f0b57321fdfc095c319c1cbb2fcdfd2838ef",
+          "loading/case16/native.log": "efd8fa36ef6ca533145e4066ce97bb2563d77ffdb6a2ec2d9708f161eab52734",
+          "loading/case16/y0.dat": "b7e91e2e947e471a9096720275e5118c8bdfcb0a627a04eb63e653cce42b6fc9",
+          "loading/case16/y1.dat": "6a3310ccdcc293e52e19c2693028927504e4811189b74f1c10edb42deabcbcb4",
+          "loading/case16/y2.dat": "0d436063db3a278cf1027cba4ce7dea9e6093d9633fa331e369e8eac492e0299",
+          "loading/case17/bench.cir": "6f59e9241bd9821e0ec6829d001c328a6e5b2f9279a618078ac312da4c3986f0",
+          "loading/case17/native.log": "8ba45035fbb57a240d423722ad71ecad090ae108ca32d09aeee826948bc98895",
+          "loading/case17/y0.dat": "242bab534e4a4b2bbae4850f81af2c7b538cbf64d5ce9ea5751a070e94387b2e",
+          "loading/case17/y1.dat": "da12d272628a5035f25c2f0c01f19f89b27765b4dffa7ef482db8e6ae53f11f4",
+          "loading/case17/y2.dat": "e222238a94bb5dfbe6fb4065b60af4726164f6210c46315c3355f5ae73569d6d",
+          "loading/case18/bench.cir": "c3bfb93e1dcd754013bae4b8a29c1197480308964b286f23aff06f21cbafa3fd",
+          "loading/case18/native.log": "a6a18d6144b866a973f1253fedac7703bcf48b807195151bec028da9b2f698ef",
+          "loading/case18/y0.dat": "c800f14a378eec9cd79a59d48493bf137aca380477a24d5365b9e3bcaafc2253",
+          "loading/case18/y1.dat": "f5eedb690851284d348761aa349139424762cb80e6867b8a5d4aec710fc88986",
+          "loading/case18/y2.dat": "6967d78e91102b857f89514808bb9aee447a050db574439c9da766e8a50cb7d2",
+          "loading/case19/bench.cir": "6441095a7347e35ae6dc349eecda59140421e5df3a0fdbf6f9b17806c6b4549e",
+          "loading/case19/native.log": "c3c3e27f40f94abe6acfaa32db16707cc7c801fd685d1d86255a8a7768c3b7a0",
+          "loading/case19/y0.dat": "a9603ca77acdb98b7ac4d69de62eb1332cc335c52733d24acfe5c10dbf81964b",
+          "loading/case19/y1.dat": "19480f5350e7616e8fd0aefb3ef81e5674f35823cb484cdee903537f7edba598",
+          "loading/case19/y2.dat": "8647bda869a7da68bf433a426164bd9bae30b8fc48a7a9f4c924ce4e25016ef9",
+          "loading/case20/bench.cir": "aa16791f46232cfa0854172fc0e69dd8377758c6cf9a203286a2a755b1631740",
+          "loading/case20/native.log": "f427fddef03fe536b2c4365a6abf9108c13f11ec21017696255ec731105a03ba",
+          "loading/case20/y0.dat": "6d8a6b59d42cc7264cc83ce6327ba94efd1383f84793699e4db6fd1b6708cb7e",
+          "loading/case20/y1.dat": "2b4b7e8a2e419c4b0e0ee76476f76d58a9d9b5428c9500fa086e4a87be8b514a",
+          "loading/case20/y2.dat": "da91a1ae1716072caec52d418885e80d07382a69c654c142ca8bf16f3e0a082a",
+          "loading/case21/bench.cir": "eaebea5cd2591d754b5ce439c0e97934db0bb90f8ec1d468a8cf13478372975b",
+          "loading/case21/native.log": "7139a5d7d22b99236ef9ea3fa0b936f9242452cdff8258fbc79151982eab58e1",
+          "loading/case21/y0.dat": "db10d18162f7381875f524af91649eb4a2a5d8a912f7a707e069d6061c2f37f5",
+          "loading/case21/y1.dat": "e24420d710a65b918dafa65cd0a65ed60dd3efde305dc48d4bc372f0a8744ba3",
+          "loading/case21/y2.dat": "a9bc6fc98e7b319e403e3bfa60fbe2df0be2a3ebdc0a9c971bd339bfc94398db",
+          "loading/case22/bench.cir": "769b05a55f6511ac749fda4d9a155cf687e6e37abaa2beb385fcfbe8c436c8b1",
+          "loading/case22/native.log": "0b281270fe34f270d78ed0b862af69bd0e53d52153cacf90e1d5bbe739912a44",
+          "loading/case22/y0.dat": "0b3e7f75b76203a8c76b3040b7cfd099fae79c95a198e77af756e4ad19c86500",
+          "loading/case22/y1.dat": "44a4f62614d5e43a47a4b5c1ce955958d49e71e8da09d493c8406b955e1f42d1",
+          "loading/case22/y2.dat": "3ee6ea0c40a9cf37fef4481af4a437174054290ddc7ac3d380de03196a3c7877",
+          "loading/case23/bench.cir": "65e90d2c5f036111d527704e19201432c4a8b5aca49ad84aa6f8d6117c91b1fe",
+          "loading/case23/native.log": "c9d32f60ec19d2bc91cdc2a2262c810fc00d17640f7b14f5718807f3697ea18d",
+          "loading/case23/y0.dat": "a5d668dc4b8cc5e378d7d0feb8d31105e713c128118e48c037d37e1d8f2e76c6",
+          "loading/case23/y1.dat": "e91a12828935cdb3990ee00cc623e5cfc48016580897748b6269bb92ed4d3bea",
+          "loading/case23/y2.dat": "0be5480b2dd33395cc2608c323e7a9ec58a1e8a1c0b7dc41f9aa7a44eb893ede",
+          "loading/case24/bench.cir": "0c9a5f9a933940d9be8642479f88ccbd864698b6ed87cd5b83b35bcd7ba4e71b",
+          "loading/case24/native.log": "58cee9bbedfe6914fb5f8b64d6a7e714464030b0b5010cc10f7bf140a5e92b7a",
+          "loading/case24/y0.dat": "a87f29bab2d179072a5d171499dfa8733faccfb132ab8672d70704e05a274b63",
+          "loading/case24/y1.dat": "d7d5ed04e17d6f14719b75d7b19b18aad5c586cbe036d72c99099c45f3e77bac",
+          "loading/case24/y2.dat": "62ba6726a184d9cfba8fe54d7b02ee86997c4b7f62909d53fd4e5911f945a2cd",
+          "loading/case25/bench.cir": "e1d1593daec4137d6232b85e2c135f2def3f4e7104c4a9f5caf23845ec988efd",
+          "loading/case25/native.log": "41afae883c9f45699dcb8cb0669f43b72da5b93c7478945e93f049ec89f1fdd9",
+          "loading/case25/y0.dat": "c0e5aed816a5a9fc725aa3c293bf0124d3ac9dabb2324183d7fb1774bae18689",
+          "loading/case25/y1.dat": "a4a9428f8d22e46f8a20d3fc4cda79972cc0196b38dae4a18921fee298fba280",
+          "loading/case25/y2.dat": "dacaa39783a53b0cf6d655b81987eb7b08e69fa30532988a2cd77341290ff157",
+          "loading/case26/bench.cir": "3e63c22b8466719c377510fda328cd8b95771f8468da48a809d6f3063dfd5047",
+          "loading/case26/native.log": "fc1ff59ae5824940e99ca3e7692fbe1aefa8c4b21089aaee5d4c395cb3dbbb9b",
+          "loading/case26/y0.dat": "9d20ba1a2f3c71ec6efd47a764b2c129bab166acf55b4aabc88f8db556093786",
+          "loading/case26/y1.dat": "bed49d95b3399ab02d999da9fffb2ac2895411bf8e3f0c3cde5a055829704a0d",
+          "loading/case26/y2.dat": "567e8e148f7bc4d1280d154e51de0836ffc471910a159eaec9487f447ca57b65",
+          "loading/known_cap/bench.cir": "e8060de1801361b1f89c54a3bc308c3643813f113b1826ebe848e294f360d67e",
+          "loading/known_cap/native.log": "295772ace5488c3af46932f90e78f41ecfbe5c5fb0e3927c9b11bd76b711b2e6",
+          "loading/known_cap/y0.dat": "4925d2ef7956c7f401f15e68de78552d4518a1c2ba38df56293110c1abeb03e2",
+          "loading/known_cap/y1.dat": "cffbcbb211e2bd2c045c78c2b9337df6f548269720f521368d133c4fe0c7b80b",
+          "loading/known_cap/y2.dat": "27958d689e47af502147e1d46b2c05478dc1d5d605557c943733e00af4cb69a4",
+          "loading/result.json": "248c50405a6c7356885afae032af4424f112ebaaec1f2e734b6c180eac4a5f15",
+          "loading/wrong_rail/bench.cir": "644c7eda74fe971bc56d073dfc2e98d173ba5bc5602ce93fd0dc6b7115a35821",
+          "loading/wrong_rail/native.log": "4e87a2c4a4314f6246e907432047c19fa095bb86afecd99c9dd138d4ec94370a",
+          "loading/wrong_rail/y0.dat": "e8ce6793e6268f0fd9573aabdbb2b1fb01d78d6b14e419c9d8ea4ba35d387c41",
+          "loading/wrong_rail/y1.dat": "a3d933ed0d9b9a718e98a95004b98af5472e8b03d3c3cdb6a6677add6aa129d8",
+          "loading/wrong_rail/y2.dat": "4df379ad51575ace1fcebb3011dc6e29e99f254f55a966b5eb9b2fb3ed28bf8e",
+          "methods/hw/soc/flow/check_pcie_esd_loading.py": "3fc0f3628d8c73bb3bf21f2ce17a7c9646153c2fd76a29a26d104de9ac1d6148",
+          "methods/hw/soc/flow/check_pcie_pad_boundary.py": "ade5659b2960a32926b9b47d3b8501e4f964a56e2d801ba034be5b98e5ceaedd",
+          "methods/hw/soc/flow/make_pcie_pad_boundary.py": "0e9eb5e5c66932412551e1efe0273ca6c5c063e4334d3316578e62c60e2c8bed",
+          "methods/package_pad.py": "16d458f6cb69632623f25fd44da56c835ef15bee2201cfa67a4c065c129fd7e3",
+          "methods/sw/tests/test_pcie_pad_boundary.py": "747409134285e16dfafa9a6fb6fb25667f715d63d43461e750c5b149b403fcfb",
+          "native-model/sg13g2_esd.lib": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925",
+          "physical/drc/deck.log": "12208a1e446da13cda2681c4ee34bd78e06b964e51b21218aa2f2cd7e4e57899",
+          "physical/drc/drc.lyrdb": "c78ff3a2a80555b2943bfc6250e824060ac467f69406a21263cb94a140333a53",
+          "physical/drc/result.json": "a6640cdc06c212f45156e8db3c8dcd5aceac13c18f1f07d11e4a7c9da1a17590",
+          "physical/drc/run.log": "7d0d44f804119c99813c8852e2be396286ad3978040e8a01d41024a2e175eab4",
+          "physical/lef/inspect.tcl": "c6b669e07fe6c5e64b2874923c99bb49836d96314543d57bc387f6c793f01e03",
+          "physical/lef/native.log": "30c4632c3994c2dece4055b6b002e8a452796bda2fa3fb8d7234493abd6f02ca",
+          "physical/lef_missing_pin/inspect.tcl": "a3af7a0b0b5bdaa91c5da83c6ad655e7da08505383ac7ad0ca584957cd853f98",
+          "physical/lef_missing_pin/native.log": "88ce714486a0f63ed7287cc54299bb10573c92d6dd06c217b51ee4539d9bf114",
+          "physical/lef_missing_pin/wrong.lef": "f81f1aea5b9e9e046ea0b12aa722cb49951972e028feb5f343f7b363e8d2921e",
+          "physical/lvs/audit.json": "84b16292fa9019a1902d39add6e92f5b674c987fa839f747c55dcc2db89947bd",
+          "physical/lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+          "physical/lvs/deck.log": "27c9e88bed68f7aa59ab6feb1905abf226834c91c97ab86fcf1b0c4827b7977c",
+          "physical/lvs/extracted.cir": "7c0779c2276dc4950282962f91c413aa82d4afaf6c9812d99e065a05eb26bdb3",
+          "physical/lvs/result.lvsdb": "20b992597419a2f812d316b9037a0ea1a7b9383bf4243758a45530a813def419",
+          "physical/lvs/run.log": "e0b01a9be2f56ca7928028e06be40335c44cb5718e3a727d4d7638850752be65",
+          "physical/multiplicity/audit.json": "4b4944941fe5b139c88fb7bb76c02537baad445d8afd92403be03754e5ae067c",
+          "physical/multiplicity/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+          "physical/multiplicity/deck.log": "67560a6df5af491bf025ae07f126223f859d44230a74304643b61330b71659f8",
+          "physical/multiplicity/extracted.cir": "7c0779c2276dc4950282962f91c413aa82d4afaf6c9812d99e065a05eb26bdb3",
+          "physical/multiplicity/result.lvsdb": "48afc2120fa0d013ca10ac13edb25f3055c0fb41d5a42f77349bdecf2924c88a",
+          "physical/multiplicity/run.log": "62b1d9ace75ee84d2a91b245f011342b7ccb3d2a792a4c53906db72bcc6138d5",
+          "physical/multiplicity/wrong.cir": "4612e48296c1a3706e69b3f59da9bcb90feaf13c7518e74865055b2948a265c3",
+          "physical/native-geometry.json": "0e8a905ce1f5f461ea5f0b4696c7e576ddd9ecf2b045b8bb1548b49c10449216",
+          "physical/native-geometry.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "physical/offgrid/deck.log": "da7dee954d08d522c89d350f6116bd2de8c7619d3eb32ccb68476e7fd9ccd152",
+          "physical/offgrid/drc.lyrdb": "008a129ddc200ba7f09088f0c5d7d2ad1a6d00192b343b772a3f83d1e920c90a",
+          "physical/offgrid/mutate.py": "b85a0c8257eeeed438110ffa903608fbdd0ff7b554b35d2ca64fa9cf159e9001",
+          "physical/offgrid/mutation.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "physical/offgrid/result.json": "7783073dc862e403ec9695bfab589b65e9bd108ec1d4a5db44ffc59f000c88fd",
+          "physical/offgrid/run.log": "d42a6e3154c63025f2bc2b406be085c2d0b0ca0ff5484d52cc283c0fb30be005",
+          "physical/offgrid/wrong.gds": "1db59c218c0cdb1d74f43693182b8bbd5a6df435b4171d89674e4ac33de67ae3",
+          "physical/pad_open/audit.json": "94cc6089a8dc451c15567d2267928e4d35bb7f86d79e156535d2146337acc294",
+          "physical/pad_open/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+          "physical/pad_open/deck.log": "c19a924ae163402e043ed00b6c0dd602b40ad33a8e893195a5c5d91f3e9fdf59",
+          "physical/pad_open/extracted.cir": "752a9c87c66f0e5308eb7eee23c2f75e11f4bcf8383a3a3e094c8084afe9ceee",
+          "physical/pad_open/mutate.py": "d6a69dd78b368152f38721868a0d62bffbd13e6a1bdd35487751b13fd3a0437f",
+          "physical/pad_open/mutation.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "physical/pad_open/result.lvsdb": "46f4778391ea843c1836bd7b65b19f14a45c43ca1ae816743fc3d6c773b74cd5",
+          "physical/pad_open/run.log": "06ce79e1d6117ee31aa5402a3dfb729fc4b583181c76fbbe5fb5aa22c8633d6d",
+          "physical/pad_open/wrong.gds": "197806e00e1189b58e57116c15270ddf3e05b67fa5fbd0a7409ac964f24c9901",
+          "physical/pad_short/audit.json": "9f695c27a91eab72a695027fd4ad9ee226fcc46256de5fc96e4b4f876373595f",
+          "physical/pad_short/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+          "physical/pad_short/deck.log": "3114aeff1326ca7b1394576a348c93f7626812439b4c541ea660f2b7a8ad771b",
+          "physical/pad_short/extracted.cir": "ab3c471bcd6d20f6b7aba29ca2e41601a8f42b71af3329dc5d02dc0801496fc5",
+          "physical/pad_short/mutate.py": "5133690ae26ca56ce9bf505c134ea3f6ba27c6941ff3690b05db4ae9fd1a4597",
+          "physical/pad_short/mutation.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "physical/pad_short/result.lvsdb": "f4ed802b0e9e3c488d16014994f502175e8eb7777ada579e8c55b68f34a27ceb",
+          "physical/pad_short/run.log": "d52991b505d7a1f7b8dd312a19dee0896b97c629bbb2424fa7549ebbeaa58f40",
+          "physical/pad_short/wrong.gds": "1511af4ec54947faa438dfc64a0c6c87116dbe030e629bc53cfcdc38b8ee72ab",
+          "physical/result.json": "ecb9395de1620837b2a6416562d0373180707d1ba67283990393c43ac79c4ec4",
+          "physical/wrong_polarity/audit.json": "b29ffe2b323808c6f79b4c1c6423ba7af471a658aa28166e7a3c82bf42797caf",
+          "physical/wrong_polarity/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+          "physical/wrong_polarity/deck.log": "c02be32de45e3df0f132d45dbe1c4635bd670805abd556f89e6912d6047dc1ea",
+          "physical/wrong_polarity/extracted.cir": "7c0779c2276dc4950282962f91c413aa82d4afaf6c9812d99e065a05eb26bdb3",
+          "physical/wrong_polarity/result.lvsdb": "85344196270edccfbf76f9822d3ed902988705864ff5e820f78e67d9a6123831",
+          "physical/wrong_polarity/run.log": "be323f04c289048d97fee67f760d8a6c992d045fd70d81ece99751064ea9bfbb",
+          "physical/wrong_polarity/wrong.cir": "b416eb6d8651f3067dd5f77033be5ce00c890e2fb8d30cfa8ac4ac76cad472d7",
+          "physical/wrong_rail/audit.json": "f7561459813eb23bbfb9fbd7fad9a2981100981ae93d8a6872bcd2e53a2ab8e9",
+          "physical/wrong_rail/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+          "physical/wrong_rail/deck.log": "9fb67cad4002f5dd44b82d1b0b659b6262033b0b6934a54020e80ed9bc7c6aa5",
+          "physical/wrong_rail/extracted.cir": "7c0779c2276dc4950282962f91c413aa82d4afaf6c9812d99e065a05eb26bdb3",
+          "physical/wrong_rail/result.lvsdb": "3c8aeaa84e0fb8610c8820b07b8e8af18743030df52f9da2e254d0811b786b02",
+          "physical/wrong_rail/run.log": "8efad1d66b863775158b1c8dfc1acedff2b25844ceda6f0b6ac3e53b3c6b1549",
+          "physical/wrong_rail/wrong.cir": "732fc24dea5cfa8a0d18ae92067be19e2a21e0a0dbb7a4aea9e5509b811021de"
+        },
+        "modeled_capacitance_range_f": [
+          4.630193297216858e-14,
+          5.360395633796778e-14
+        ],
+        "checks": [
+          "Exact missing-only-PADP strict deck failure independently reparsed, with four devices retained.",
+          "Actual positive and negative LVSDBs opened with pinned KLayout; named C/B/E and top-port census verified.",
+          "27 raw ngspice cases/81 AC values and both controls reparsed; no SPICE repeated.",
+          "Source model subckt VDD/PAD/VSS order verified against fixed IHP model, distinct from C/B/E writer order.",
+          "Source inspected for exact primitive geometry, translations and seven-layer LEF obstruction union."
+        ],
+        "limitations": [
+          "DRC/extraction/geometry-XOR/native LEF were not executed anew by this reviewer; their raw artifacts/pins and checking source were verified.",
+          "No assembled ESD rating, bondpad/interconnect/package PEX, RF eye or main-chip/full-PHY acceptance."
+        ]
+      }
+    },
+    {
+      "path": "hw/soc/out/pcie-padded-bank-20261004/peer/independent-review.json",
+      "sha256": "5c585f1ca34f0af2b90cc5462ad9c9053530c7e4d00095624437e24f5d23f853",
+      "record": {
+        "status": "CLEAN_READ_ONLY_INDEPENDENT_PADDED_BANK_REVIEW",
+        "author_receipt": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pad-rc-20261004/padded-source-validation.json",
+          "bytes": 7167,
+          "sha256": "e718e24414a737efe488fd08679647af6ed29caf4dfecefe8c291b091a9738fd"
+        },
+        "sources": {
+          "hw/soc/flow/make_pcie_padded_bank.py": {
+            "sha256": "a6c1edd23b1685b846ad13ea07c55bd308669095b9c27bffbaf709e52ad3feef",
+            "bytes": 15783
+          },
+          "hw/soc/flow/check_pcie_padded_bank.py": {
+            "sha256": "47baac0d53daabb4a7c92a25a08a6f0a268a57b76efc8ae884557f7c19826dc6",
+            "bytes": 21360
+          },
+          "sw/tests/test_pcie_padded_bank.py": {
+            "sha256": "85a481cd94e0576c476d96d792b05c608374e3b1bb2242dc9f2a3544359a912c",
+            "bytes": 4167
+          }
+        },
+        "raw_results": {
+          "layout": {
+            "path": "/dev/shm/nssoc-padded-bank-final/result.json",
+            "bytes": 112218,
+            "sha256": "265afb3e6d93ba229251ada8cd7ac1341a50e3f5baeae537ea75e9d50545f836"
+          },
+          "physical": {
+            "path": "/dev/shm/nssoc-padded-check-final/result.json",
+            "bytes": 104921,
+            "sha256": "a0ea027dcd1a2ae53c76238528b74c7aa9a41fe3e5406f9f77a09916b28862b1"
+          }
+        },
+        "independent_checks": {
+          "unique_input_pins_rehashed": 353,
+          "physical_inputs": 353,
+          "complete_output_inventories": {
+            "/dev/shm/nssoc-padded-bank-final": 3,
+            "/dev/shm/nssoc-padded-check-final": 72
+          },
+          "capsule_members_read_and_hashed": 99,
+          "main_DRC_XML_categories": 560,
+          "main_DRC_XML_items": 0,
+          "strict_LVS_log_and_databases": "positive Match with 89 devices and 47 ports; six NoMatch cases; no extraction diagnostics",
+          "all_eight_negative_controls_bound": true,
+          "actual_native_readback": {
+            "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-padded-bank-20261004/peer/native-readback.json",
+            "bytes": 204722,
+            "sha256": "14dd2c0a3d866927af6b3ed04c657f1b82d0bc1f32d1295d48095d903dd83589"
+          },
+          "original120_device_rows_preserved_except_explicit_BULK_to_AVSS": true,
+          "literal64_tap_parameters_preserved": true,
+          "native_combined_tap": {
+            "TIE": "SUB",
+            "WELL": "AVSS",
+            "area_um2": 256,
+            "perimeter_um": 512
+          },
+          "actual_serial_open": "L2_RX_OUTN HBT base changes from L2_RX_INP to unnamed $415; 47 ports retained",
+          "actual_SUB_short": "46 ports; native AVSS,SUB combined net",
+          "actual_rail_short": "46 ports; native AVDD,AVSS combined net",
+          "source_geometry_and_transforms": "Independent nonlabel/nonpin layer XOR and exact nine transforms passed"
+        },
+        "capsule": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pad-rc-20261004/padded-bank4-native.tar.xz",
+          "bytes": 448912,
+          "sha256": "c4f8450de98bb25f7dc8166d0ca48b587673602e823624158d1d74f8c32cf114"
+        },
+        "source_review": "Reviewed entire generator/checker/tests, exact original-reference bridge, unchanged strict decks, native port direction/shape and seven-layer LEF OBS readback, preserved native C/B/E diode terminal order. No confirmed blocker.",
+        "tests_scope": {
+          "author_reports": {
+            "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q sw/tests/test_pcie_padded_bank.py sw/tests/test_pcie_pad_boundary.py sw/tests/test_pcie_analog_bank.py sw/tests/test_pcie_rx_cell.py -p no:cacheprovider",
+            "passed": 83,
+            "ruff": "PASS"
+          },
+          "reviewer_repeated_tests": false,
+          "reviewer_repeated_DRC_LVS_SPICE": false,
+          "reviewer_native_readonly_KLayout": true,
+          "native_readback_script": {
+            "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-padded-bank-20261004/peer/native-readback.py",
+            "bytes": 3481,
+            "sha256": "b1cd73e72450283ee56236b090417eb80a45654043f8736dcab645089e1d6048"
+          }
+        },
+        "limitations": [
+          "Standalone physical macro; not main SoC integration or complete PHY.",
+          "No combined-layout PEX, loading/eye/jitter, package/rail-clamp or ESD signoff.",
+          "BULK->AVSS is an explicit new substrate contract derived from actual existing ESD electrodes; it does not close unrelated old chip I/O tap reference mismatch.",
+          "Individual source pin labels cleared on copied root datatype2/25; conductive/device geometry XOR excludes only these metadata layers.",
+          "No independent visual-render rerun or manufacturing qualification."
+        ],
+        "no_source_edits": true,
+        "review_script": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-padded-bank-20261004/peer/review.py",
+          "bytes": 7419,
+          "sha256": "3b24fc0e13dfa9467676b9dc10ff4cb8dd26e86a04e9393d31366133981b628c"
+        }
+      }
+    },
+    {
+      "path": "hw/soc/out/pcie-sampler-20261004/peer/independent-worst-wave-boundaries.json",
+      "sha256": "7575a2dd6e368d2cc9aebad58d62ff5655ddf566fd391928dfb977ecfe0fd924",
+      "record": {
+        "status": "INDEPENDENT_REQUIRED_HOLD_MARGIN_FAILURE_CONFIRMED",
+        "producer_running_at_snapshot": false,
+        "case": {
+          "hbt": "hbt_wcs",
+          "resistor": "res_bcs",
+          "temp": 125,
+          "rx_supply": 1.71,
+          "supply": 2.375,
+          "reference_a": 0.0005,
+          "rx_reference_a": 0.00075,
+          "vcm": 1.36,
+          "amplitude_v": 0.08,
+          "cap_f": 1.5e-13,
+          "rx_cap_f": 5e-15,
+          "clock_vcm": 1.29,
+          "clock_amplitude_v": 0.15,
+          "clock_rise_s": 5e-12,
+          "clock_source_ohm": 10,
+          "phase_ui": 0.5,
+          "step_s": 1e-12,
+          "mode": "prbs",
+          "fault": null,
+          "role": "required",
+          "name": "hbt_wcs_res_bcs_125_1.71"
+        },
+        "wave_sha256": "e17b39ca1bb793396ceaaf3b6a9b73f1a93a217ba56576702b1df2c5134db8b3",
+        "raw_rows": 20211,
+        "native_clock_periods_checked": 110,
+        "continuous_hold_points": 9295,
+        "min_native_hold_margin_v": 0.10067535322599985,
+        "minimum_interpolated_boundary": {
+          "bit": 18,
+          "phase_ui": 0.9,
+          "time_s": 4.425438276426221e-09,
+          "signed_margin_v": 0.09985827388600033,
+          "neighbor_times_s": [
+            4.4245e-09,
+            4.4255e-09
+          ],
+          "neighbor_signed_values_v": [
+            0.10067535322599985,
+            0.09980452314100008
+          ]
+        },
+        "producer_minimum_margin_v": 0.09985827388600033,
+        "device_vce_bounds_v": {
+          "xrx.xp": [
+            0.8593551028096,
+            1.0907295059379
+          ],
+          "xrx.xn": [
+            0.8635916278524,
+            1.0930593044638
+          ],
+          "xrx.xtail": [
+            0.6041659737503,
+            0.6170508730641
+          ],
+          "xrx.xref": [
+            0.7944944537332,
+            0.7966097199114
+          ],
+          "xsamp.xref": [
+            0.7536366082844,
+            0.7760794888238
+          ],
+          "xsamp.xm.xdp": [
+            0.8364516229169998,
+            1.264596849825
+          ],
+          "xsamp.xm.xdn": [
+            0.8452904702790001,
+            1.264786642239
+          ],
+          "xsamp.xm.xlp": [
+            0.547388388543,
+            0.827169098682
+          ],
+          "xsamp.xm.xln": [
+            0.5523799581320001,
+            0.8285319255179997
+          ],
+          "xsamp.xm.xcs": [
+            0.44740416293959995,
+            0.8284183098369999
+          ],
+          "xsamp.xm.xch": [
+            0.8285223968564,
+            1.117559654815
+          ],
+          "xsamp.xm.xt": [
+            0.5827625860058,
+            0.6677352348536
+          ],
+          "xsamp.xs.xdp": [
+            0.5221339112329999,
+            0.8802522581329999
+          ],
+          "xsamp.xs.xdn": [
+            0.5260601917730001,
+            0.8807639474859998
+          ],
+          "xsamp.xs.xlp": [
+            0.521956610977,
+            0.8315034523779998
+          ],
+          "xsamp.xs.xln": [
+            0.526305352833,
+            0.8303929811369999
+          ],
+          "xsamp.xs.xcs": [
+            0.8285235626534,
+            1.1173466236651999
+          ],
+          "xsamp.xs.xch": [
+            0.8603698140856,
+            1.1231921140788002
+          ],
+          "xsamp.xs.xt": [
+            0.5833112558811,
+            0.6688559417634
+          ]
+        },
+        "scope": "One actual worst completed PVT waveform independently decoded; all19VCE node differences, continuous points and all330 linearly interpolated +0.3/+0.6/+0.9UI boundaries recomputed. No native simulation rerun; no full121-wave review claimed.",
+        "hold_window_ui": [
+          0.3,
+          0.9
+        ],
+        "operating_window_start_s": 4e-09
+      }
+    },
+    {
+      "path": "hw/soc/out/pcie-sampler-20261004/peer-v2/independent-review.json",
+      "sha256": "cd280303a720781215ca11fd5ebd1e897348d8af9f173e27258e6831551c7a7f",
+      "record": {
+        "status": "CLEAN_INDEPENDENT_SOURCE_CAPTURE_AND_FAILURE_CLASSIFICATION_REVIEW",
+        "source_freeze": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/source-freeze.json",
+          "bytes": 1646,
+          "sha256": "5dbb2805bdaebbba6d7ae03f5ad1ccdd696841362c3d16468f6965317244c7e8"
+        },
+        "frozen_sources": {
+          "hw/soc/analog/pcie/rx_sampler_hbt.spice": {
+            "bytes": 1604,
+            "sha256": "dd6d1c175466467b1195549617c1f432e7145af3f185113a4feb92be5f375d77"
+          },
+          "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": {
+            "bytes": 1604,
+            "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+          },
+          "scripts/characterize_pcie_sampler.py": {
+            "bytes": 22032,
+            "sha256": "b498ce88ebb70a1cac98069627b670bec915005f57f0a3b0f9e847760a1a8e71"
+          },
+          "scripts/characterize_pcie_sampler_v2.py": {
+            "bytes": 22262,
+            "sha256": "4c5f52d68012d79f0c08809d269f79d357955571630297aa62dbcbb9f5da7f67"
+          },
+          "scripts/review_pcie_sampler.py": {
+            "bytes": 11649,
+            "sha256": "dff9766ba381314f0154309fc1ea4800e02e14830575c2b2240fd1bcb8682cfe"
+          },
+          "scripts/review_pcie_sampler_v2.py": {
+            "bytes": 11652,
+            "sha256": "6f6fb48d05d12079e7f6a080b8ba21e3e0683c4d08cd6d651999e6b906208245"
+          },
+          "scripts/crosscheck_pcie_sampler_v2.py": {
+            "bytes": 13428,
+            "sha256": "c83b29674a611282e8439b3df491dfa6b4f092ac7c9f82e5476dbc2a3171ff70"
+          },
+          "scripts/diagnose_pcie_sampler_startup.py": {
+            "bytes": 8583,
+            "sha256": "8b1fbbcc5bf477dfeef92fd5cfb7025b690ee389e41e56c1c1fa703c36cf4d8b"
+          },
+          "scripts/project_pcie_sampler_trace.py": {
+            "bytes": 3370,
+            "sha256": "14b8910623eaea52613537ac65668333e706d5a07798e8465bc40f7cf49308f0"
+          },
+          "sw/tests/test_pcie_sampler.py": {
+            "bytes": 10090,
+            "sha256": "9792f1f38027e4e93131d7ba968a8b01b25cbfd45ea2a198377d36d8c2b59e56"
+          },
+          "sw/tests/test_pcie_sampler_v2.py": {
+            "bytes": 7707,
+            "sha256": "aded3f59ed412de636ef06ee9602b0ca22b9fd3a526e056b497439b8dbe0a19b"
+          }
+        },
+        "main_result": {
+          "path": "/dev/shm/nssoc-sampler-v2-full-ng47-20261004/result.json",
+          "bytes": 1841353,
+          "sha256": "798087437c6d043a0fd905474aa13624dd86a7244e0bf3ba3768d3775cd6c0c8"
+        },
+        "cross_result": {
+          "path": "/dev/shm/nssoc-sampler-v2-cross-ng42-final-20261004/result.json",
+          "bytes": 294274,
+          "sha256": "fe380b12ba1a1ef74cf75d329abc5748fa24a0bf7b9f1ed71b0ca5e3abf02c32"
+        },
+        "startup_result": {
+          "path": "/dev/shm/nssoc-sampler-startup-final-20261004/result.json",
+          "bytes": 74657,
+          "sha256": "19693fdde7d24caa96f479160571b5f037270f17779c4f11e1b09139c49b3ac3"
+        },
+        "independent_scope": {
+          "source_pins": 19,
+          "main_native_case_output_pins": 605,
+          "exact_regenerated_decks_and_circuit_pairs": 121,
+          "all_native_numerical_logs_reparsed": 121,
+          "main_waves_remeasured": 1,
+          "main_remeasured_case": "hbt_wcs_res_bcs_125_1.71",
+          "cross_capture_reviewer": {
+            "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/peer-v2/cross-capture-review.json",
+            "bytes": 4665,
+            "sha256": "04d16ae5ed5f8fd98809531966896156520dc8aef39338bb21b17bafd422b9a7"
+          },
+          "cross_waves_remeasured": 8,
+          "cross_failed_partial_wave_hash_only": 1,
+          "startup_waves_remeasured": 3,
+          "spice_executions": 0,
+          "source_edits": false,
+          "bounded_pure_tests": "64 passed in0.38s"
+        },
+        "facts": {
+          "PVT_pass": 81,
+          "PVT_total": 81,
+          "worst_margin_v": 0.10925165142618196,
+          "minimum_PVT_VCE_v": 0.42534430092240005,
+          "numerical_warning_case_count": 29,
+          "ng47_status": "SAMPLER_MEASUREMENT_PASS_NUMERICAL_RESIDUAL",
+          "ng42_positive_measured_pass": 3,
+          "ng42_functional_negative_measured_rejections": 5,
+          "ng42_native_failure": "no_regeneration timestep too small at10.2525ns; not a functional-negative pass",
+          "ng42_CLI_exit": 1,
+          "startup_measured_strategies": 3,
+          "startup_native_failure": "source_homotopy",
+          "startup_clean_strategies": [],
+          "startup_cli_exit_from_empty_clean_list": 2
+        },
+        "preserved_first_attempts": [
+          {
+            "result": {
+              "path": "/dev/shm/nssoc-sampler-v2-cross-ng42-20261004/result.json",
+              "bytes": 268422,
+              "sha256": "7237e28903fce3464cdeb80d3792809349483f1ed9635b6d7d1d90d462f2ed14"
+            },
+            "source": {
+              "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/cross-first-source/crosscheck_pcie_sampler_v2.py",
+              "bytes": 11809,
+              "sha256": "396b33375ab9a6970c00160801ce59a85b72bee95ffbee01c8c4dd4e9b9f6b25"
+            },
+            "error": "RuntimeError('Native process failed; inspect /dev/shm/nssoc-sampler-v2-cross-ng42-20261004/no_regeneration/run.log')"
+          },
+          {
+            "result": {
+              "path": "/dev/shm/nssoc-sampler-startup-20261004/result.json",
+              "bytes": 44101,
+              "sha256": "3fac2296e9683cb446eb5a8b5dd5df251c445f6de9ea38508ec06fd79de1af2f"
+            },
+            "source": {
+              "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/startup-first-source/diagnose_pcie_sampler_startup.py",
+              "bytes": 7577,
+              "sha256": "7afa1b4f99dcf9c33cf2727c340b2c7685826c5cc0e4a27629265b0df79f5360"
+            },
+            "error": "RuntimeError('Native process failed; inspect /dev/shm/nssoc-sampler-startup-20261004/source_homotopy/run.log')"
+          }
+        ],
+        "limits": {
+          "unchanged_from_failed_v1": true,
+          "exact_v2_change": "Only two collector resistor lengths2.04um->2.12um in childlatch source",
+          "external_clock": true,
+          "separate_2p5V_sampler_supply": true,
+          "hold_scope": "Actual clock+.3UI..+.9UI; not the entire edge-to-edge interval or exhaustive metastability/setup/hold qualification",
+          "partial_projection": "Seven columns at every original timepoint, not all64columns or a replacement for19-HBT voltage/current verification",
+          "full_121_wave_remeasurement_by_this_reviewer": false,
+          "full_ng42_campaign_repeated": false,
+          "numerical_clean": false,
+          "main_chip_or_full_PHY_qualification": false
+        },
+        "reviewer_script": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-sampler-20261004/peer-v2/audit.py",
+          "bytes": 8359,
+          "sha256": "1a777d76b68434492ee78d7c667dd42c8d71e2ad540807ec3afe7e85d3711924"
+        }
+      }
+    },
+    {
+      "path": "hw/soc/out/pcie-pad-rc-20261004/rc-peer/independent-review.json",
+      "sha256": "cbf4deb27d321aa406c0405d1344006a36519bb2442bcd2c4462ec9bcd040a23",
+      "record": {
+        "status": "CLEAN_WITH_EXPLICIT_COUPLED_EXCLUSION",
+        "sources": {
+          "scripts/patch_magic_intrinsic_cap_retirement.py": "724ef105e825797b0d2d6229e7891954ef09d6aca4c3fa6233bb16dd20b871f6",
+          "scripts/check_magic_intrinsic_cap_retirement.py": "3c1ff80133b3dc419a8e01536a2da0fc0d1d389f0fadb0842962214297053042",
+          "scripts/run_magic_intrinsic_cap_controls.py": "7dbf9b1f5aa7bb0bf5af96f97b842c33054381a97fa646c88341ffc58df88ebc",
+          "sw/tests/test_magic_intrinsic_cap_retirement.py": "49f2b4d48a6e3e04e9b63f87e4d8234240319937168f62af67b824bf5885bd15"
+        },
+        "author_receipt_sha256": "db45e0cd8846a26b578d08d95cbf4b5806308df32152f4d47048bec9a9093bb7",
+        "summary_receipt_sha256": "b44142765dce1587a66b00ee11e46a1e1245474b01c79f9d14c3bbcd67a6de1e",
+        "capsule": {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pad-rc-20261004/rc-intrinsic-retirement-native.tar.xz",
+          "sha256": "434076275e275a5dc58219ce073e79a618dcf4296d240f9d783b028d6b0b45c3",
+          "bytes": 235896,
+          "independently_rehashed_members": 181
+        },
+        "native_consumer": {
+          "input_pins_rehashed": 401,
+          "output_pins_rehashed": 39,
+          "exact_decks_regenerated": 8,
+          "raw_exports_reparsed": [
+            {
+              "name": "retained_name",
+              "actual_af": 100.0,
+              "expected_af": 100.0,
+              "conservation_pass": true
+            },
+            {
+              "name": "renamed_killnode",
+              "actual_af": 100.0,
+              "expected_af": 100.0,
+              "conservation_pass": true
+            },
+            {
+              "name": "repeated_rnode",
+              "actual_af": 100.0,
+              "expected_af": 100.0,
+              "conservation_pass": true
+            },
+            {
+              "name": "no_replacement",
+              "actual_af": 100.00000000000001,
+              "expected_af": 100.0,
+              "conservation_pass": true
+            },
+            {
+              "name": "reader_scale2",
+              "actual_af": 200.0,
+              "expected_af": 200.0,
+              "conservation_pass": true
+            },
+            {
+              "name": "omitted_retirement",
+              "actual_af": 200.00000000000003,
+              "expected_af": 100.0,
+              "conservation_pass": false
+            },
+            {
+              "name": "wrong_retirement",
+              "actual_af": 150.0,
+              "expected_af": 100.0,
+              "conservation_pass": false
+            },
+            {
+              "name": "duplicate_retirement",
+              "actual_af": 0.0,
+              "expected_af": 100.0,
+              "conservation_pass": false
+            }
+          ]
+        },
+        "actual_geometry_audits": {
+          "sheet_tm2": {
+            "status": "PASS_UNCOUPLED_CANONICAL_FLAT_CSCALE1_ONLY",
+            "expected_matrix_af": {
+              "B": {
+                "B": 1755.04
+              }
+            },
+            "actual_matrix_af": {
+              "B": {
+                "B": 1755.0400390625002
+              }
+            },
+            "distributed_intrinsic_af": {
+              "B": 1755.04
+            },
+            "ports": [
+              "A",
+              "B"
+            ],
+            "resistors_ohm": [
+              [
+                "A",
+                "B",
+                0.0495
+              ]
+            ],
+            "qualified_pex": false
+          },
+          "pad_tm2": {
+            "status": "PASS_UNCOUPLED_CANONICAL_FLAT_CSCALE1_ONLY",
+            "expected_matrix_af": {
+              "CORE_N": {
+                "CORE_N": 29768.5,
+                "CORE_P": 0.0
+              },
+              "CORE_P": {
+                "CORE_N": 0.0,
+                "CORE_P": 29768.5
+              }
+            },
+            "actual_matrix_af": {
+              "CORE_N": {
+                "CORE_N": 29768.539550781254,
+                "CORE_P": 0.0
+              },
+              "CORE_P": {
+                "CORE_N": 0.0,
+                "CORE_P": 29768.539550781254
+              }
+            },
+            "distributed_intrinsic_af": {
+              "CORE_N": 29768.539999999997,
+              "CORE_P": 29768.539999999997
+            },
+            "ports": [
+              "BOND_P",
+              "CORE_P",
+              "BOND_N",
+              "CORE_N"
+            ],
+            "resistors_ohm": [
+              [
+                "CORE_N",
+                "BOND_N",
+                0.338237
+              ],
+              [
+                "CORE_P",
+                "BOND_P",
+                0.338237
+              ]
+            ],
+            "qualified_pex": false
+          }
+        },
+        "actual_output_mutations_rejected": [
+          {
+            "name": "duplicate_export_ID",
+            "rejected": "Duplicate native SPICE element ID"
+          },
+          {
+            "name": "missing_ends",
+            "rejected": "Missing subcircuit/.ends"
+          },
+          {
+            "name": "negative_rnode_preserving_sum",
+            "rejected": "Invalid replacement node capacitance"
+          },
+          {
+            "name": "wrong_distribution_preserving_sum",
+            "rejected": "Per-node distributed ground C differs from native rnode"
+          },
+          {
+            "name": "wrong_cscale",
+            "rejected": "Only exact source cscale=1 and flat native units supported"
+          },
+          {
+            "name": "wrong_resistance",
+            "rejected": "Exported resistance/topology differs"
+          },
+          {
+            "name": "wrong_port",
+            "rejected": "Exported port order/identity changed"
+          },
+          {
+            "name": "omitted_retirement",
+            "rejected": "Each retained canonical node needs exactly one retirement"
+          }
+        ],
+        "coupled_exclusion": {
+          "rejected": "Unsupported nonzero inter-conductor coupling: matrix not qualified",
+          "expected_matrix_af": {
+            "B": {
+              "B": 2351.35,
+              "D": -1168.76
+            },
+            "D": {
+              "B": -1168.76,
+              "D": 2351.35
+            }
+          },
+          "actual_matrix_af": {
+            "B": {
+              "B": 3520.1201171875,
+              "D": -1168.7600097656252
+            },
+            "D": {
+              "B": -1168.7600097656252,
+              "D": 3520.1201171875
+            }
+          },
+          "mutual_term_retained": true,
+          "diagonal_conservation_failed": true
+        },
+        "prior_source_audits": {
+          "source-diagnosis.json": "f728748eba837a1348c53a25bdc0d3f76c32e55eaabbaf68da73f6221167e7da",
+          "patch-source-review.json": "f322760879ae83bc1e1a1700682102bf0405e1693a25ffcfe703fde65eba6626"
+        },
+        "tests": "40 focused pure tests passed independently in 0.13s; no native extraction/build rerun",
+        "independent_scope": "Read-only source/API analysis, exact source/runtime/control/capsule byte rehash, regeneration and raw SPICE/audit replay. Author and root own native execution; no new native process or heavy full-chip work.",
+        "limits": [
+          "Only canonical flat uncoupled cscale=1 source extraction is accepted.",
+          "Scale2 is tested only as extflat consumer behavior, not extresist producer qualification.",
+          "Actual coupled geometry retains mutual C but has excess diagonal C and remains rejected.",
+          "No foundry-qualified PEX, complete pad capacitance, package, extracted full analog circuit or main-chip acceptance."
+        ],
+        "qualified_pex": false
+      }
+    }
+  ],
+  "full_pcie_complete": false,
+  "main_chip_integrated": false
+}

@@ -1,0 +1,17 @@
+{
+  "status": "SOURCE_PEER_PRECONTROL_WITNESS_FINDING",
+  "freeze": {
+    "bytes": 2355,
+    "sha256": "b8d6754a4a28552f3f9090b4ddd822c7644e2b62a83c94ff3953b7d93f962577"
+  },
+  "findings": [
+    {
+      "source": "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v21.py",
+      "case": "descriptor_parser_fault_cancels_queue_after_sampling_edge",
+      "issue": "Requested accept_fault_edge flag can be recorded without demonstrating actual fault_now/public valid/ready at that sampling edge. ready derives prior old[5], but actual-error branch does not require old[5] or acceptance; completed packet delta alone is not accepted byte count.",
+      "required_fix": "Explicit real sampling-boundary witness and accepted keep-byte count for both accept/noaccept variants, preserve original13 oracle prefix and all existing assertions."
+    }
+  ],
+  "product_review_so_far": "Generator eight exact substitutions implement reviewed descriptor contract; whole V17 inverse is required. No product source finding so far.",
+  "execution": "No actual HDL or EDA executed by this source peer."
+}

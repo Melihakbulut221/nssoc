@@ -1,0 +1,188 @@
+{
+  "status": "PASS",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_apb_cdc.v": {
+      "bytes": 4511,
+      "sha256": "ea824ee8c154cb4190abfc37e5cb44da6ec57659f295e3290b6b75b2cccfed2d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v": {
+      "bytes": 3927,
+      "sha256": "829b274034bbfe3b1bd0fb8deab655c1d4ae77aa05963a794916620bdae4ea39"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog": {
+      "bytes": 60144,
+      "sha256": "12d296e5855b2b1800a64ac849d72a8cad07f041e02e5ebf138bc21bbdba35a2"
+    },
+    "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp": {
+      "bytes": 1412440,
+      "sha256": "42dc23e2f61fbeb330c4319598f664d0ebd51521e6b2d53ba6022b9776c0ca7c"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_apb_cdc_native.py": {
+      "bytes": 5741,
+      "sha256": "7f5a3d66ef7c977027a806336ebf3e3ae7ed16672bcdc9201b9ca0f4ad03b9cf"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    }
+  },
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2012",
+        "-s",
+        "tb_pcie_apb_cdc",
+        "-Ptb_pcie_apb_cdc.SOURCE_HALF=2",
+        "-Ptb_pcie_apb_cdc.DESTINATION_HALF=10",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/2-10.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/mapped.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+      ],
+      "returncode": 0,
+      "log": "2-10-compile.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/2-10.vvp"
+      ],
+      "returncode": 0,
+      "log": "2-10-run.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2012",
+        "-s",
+        "tb_pcie_apb_cdc",
+        "-Ptb_pcie_apb_cdc.SOURCE_HALF=11",
+        "-Ptb_pcie_apb_cdc.DESTINATION_HALF=3",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/11-3.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/mapped.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+      ],
+      "returncode": 0,
+      "log": "11-3-compile.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/11-3.vvp"
+      ],
+      "returncode": 0,
+      "log": "11-3-run.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2012",
+        "-s",
+        "tb_pcie_apb_cdc",
+        "-Ptb_pcie_apb_cdc.SOURCE_HALF=5",
+        "-Ptb_pcie_apb_cdc.DESTINATION_HALF=7",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/5-7.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/mapped.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+      ],
+      "returncode": 0,
+      "log": "5-7-compile.log"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-class-cdc-chip-20261008/cdc-native01/5-7.vvp"
+      ],
+      "returncode": 0,
+      "log": "5-7-run.log"
+    }
+  ],
+  "scope": "Actual mapped IHP cells, three clock ratios, reset and stalled APB. Functional simulation only; no metastability, SDF, CDC physical constraints, placement or chip acceptance.",
+  "mapped_cells": 416,
+  "clock_ratios": 3,
+  "transfers_per_ratio": 97,
+  "inputs_unchanged": true,
+  "outputs": {
+    "11-3.vvp": {
+      "bytes": 473395,
+      "sha256": "a33507f643e1e6051b1d648471d34b3f73320035569e0d95e94b3d4b68c219db"
+    },
+    "11-3-run.log": {
+      "bytes": 172,
+      "sha256": "a3a8b5e585874fe4051ee91783ceed3c3007530a3a963b720f0a2216c98587ea"
+    },
+    "mapped.v": {
+      "bytes": 92623,
+      "sha256": "d6b97251d76ecf2fb61618f026790ac404bac49ab913b9969e187151d447ecf8"
+    },
+    "2-10-compile.log": {
+      "bytes": 1632,
+      "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+    },
+    "mapped.json": {
+      "bytes": 353022,
+      "sha256": "9a536d088812f4c61680b969d36a2ba0c9cfcafacf00a63c59b0a2ce45cf6086"
+    },
+    "5-7-compile.log": {
+      "bytes": 1632,
+      "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+    },
+    "map.ys": {
+      "bytes": 1208,
+      "sha256": "56d7791d3edf32bbb348843fa758db9f2c75a2716aca677fc2ac04125238bfaa"
+    },
+    "2-10-run.log": {
+      "bytes": 172,
+      "sha256": "6d8c88bc95dd2f4286621ec8f6ac9a05747a5ac01ff7d03ce44482b00b2d5045"
+    },
+    "2-10.vvp": {
+      "bytes": 473395,
+      "sha256": "de54b520f985c9cc0b3407424ea4a75c9175d6a35f240a803a3e34243a231584"
+    },
+    "11-3-compile.log": {
+      "bytes": 1632,
+      "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+    },
+    "5-7-run.log": {
+      "bytes": 171,
+      "sha256": "82c26a4f447933ea687bd32f905dd1fbcbb778cf1ae7f018ef39d7eada94bdc7"
+    },
+    "map.log": {
+      "bytes": 41101,
+      "sha256": "109edbf5ca262c1d65786b2ac1a95dcd2681b927172908c74319344fb61c263f"
+    },
+    "5-7.vvp": {
+      "bytes": 473394,
+      "sha256": "6450a98165e33480a9a53f0dd664edcd44b35054fdd9bee607b145ce050f60c2"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "scope": "Thesis Make dependency graph and self-contained TeX source archive only. No regenerated PDF, typography, bibliography freshness or scientific-claim acceptance.",
+  "changes": [
+    "All chapter TeX files, figure PDF/PNG files and the Makefile are dependencies of main.pdf.",
+    "arxiv.tar.gz includes main.tex, main.bbl, all eight chapters and figures."
+  ],
+  "checks": {
+    "passed": 4,
+    "failed": 0,
+    "details": [
+      "A fresh PDF fixture stays up to date before input changes.",
+      "Touching a chapter, figure or Makefile schedules the actual compiler command.",
+      "The actual make arxiv output contains every recursively referenced literal TeX input and graphic, byte-identical to the sources."
+    ]
+  },
+  "inputs": {
+    "thesis/Makefile": {
+      "sha256": "11cf5012c4c7c89ea630fcbefe57c65d1b5d304ae303d48fe62b089bd3a7eaf9",
+      "bytes": 3990
+    },
+    "sw/tests/test_thesis_distribution.py": {
+      "sha256": "24f3f167ba142de3bcfed4d369f005289eacb3c1ca622f287f6ae9eca1811c9f",
+      "bytes": 2742
+    },
+    "hw/soc/out/external-review-20260919/thesis-distribution-tests.log": {
+      "sha256": "285a0fcb19d88aef8d3a8bf03456688755f33b03ab786144fe993e1bc0fc4738",
+      "bytes": 98
+    }
+  }
+}

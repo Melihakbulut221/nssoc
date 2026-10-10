@@ -180,7 +180,7 @@ trap_vectors:
   j     vec_spurious      //  8
   j     vec_spurious      //  9
   j     vec_spurious      // 10
-  j     vec_spurious      // 11  machine external: no PLIC, tied low
+  j     vec_mexternal     // 11  external active-high level input
   j     vec_spurious      // 12
   j     vec_spurious      // 13
   j     vec_spurious      // 14
@@ -208,17 +208,20 @@ trap_vectors_end:
 // ---------------------------------------------------------------------
 // Interrupt stubs.
 //
-// t0 carries the marker. Nothing else is touched before irq_common
-// saves, so the stub costs two instructions and no stack.
+// Corrected 2026-09-20: the earlier two-instruction/no-stack stub
+// overwrote interrupted t0 before saving it. Each stub now allocates the
+// common frame and saves t0 before loading the vector marker; irq_common
+// restores it together with its other scratch registers.
 // ---------------------------------------------------------------------
-vec_spurious: li t0, 0xFF ; j irq_common
-vec_msoft:    li t0, 3    ; j irq_common
-vec_mtimer:   li t0, 7    ; j irq_common
-vec_fast0:    li t0, 16   ; j irq_common
-vec_fast2:    li t0, 18   ; j irq_common
-vec_fast3:    li t0, 19   ; j irq_common
-vec_fast9:    li t0, 25   ; j irq_common
-vec_fast12:   li t0, 28   ; j irq_common
+vec_spurious: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,0xFF ; j irq_common
+vec_mexternal: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,11 ; j irq_common
+vec_msoft: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,3 ; j irq_common
+vec_mtimer: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,7 ; j irq_common
+vec_fast0: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,16 ; j irq_common
+vec_fast2: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,18 ; j irq_common
+vec_fast3: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,19 ; j irq_common
+vec_fast9: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,25 ; j irq_common
+vec_fast12: addi sp,sp,-32 ; sw t0,0(sp) ; li t0,28 ; j irq_common
 
 // ---------------------------------------------------------------------
 // Common maskable-interrupt handler.
@@ -240,7 +243,6 @@ vec_fast12:   li t0, 28   ; j irq_common
 // skip an instruction of the interrupted program.
 // ---------------------------------------------------------------------
 irq_common:
-  addi  sp, sp, -32
   sw    t1, 4(sp)
   sw    t2, 8(sp)
   sw    t3, 12(sp)
@@ -264,6 +266,7 @@ irq_common:
   sll   t3, t3, t2
   csrc  mie, t3
 
+  lw    t0, 0(sp)
   lw    t1, 4(sp)
   lw    t2, 8(sp)
   lw    t3, 12(sp)
@@ -332,6 +335,8 @@ vec_nmi:
   // No watchdog on the minimal platform of docs/38. The entry still
   // exists so the table is 32 entries wide and every offset is right.
 vec_nmi:
+  addi  sp, sp, -32
+  sw    t0, 0(sp)
   li    t0, 31
   j     irq_common
 #endif
