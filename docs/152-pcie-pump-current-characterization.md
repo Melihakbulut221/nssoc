@@ -1796,13 +1796,39 @@ late-credit-select experiment includes its RTL, three-step proof, ten expanded
 port tests, actual faults, full mapped netlist/JSON and unplaced timing.
 Active analog/physical simulations are excluded.
 
-The physical follower is now under a **290-device, 80 ns component simulation**
-using its four finite contacts and distributed RC. All other divider, receiver,
-counter and external input fixtures remain unchanged. Its first capture was
-rejected because four real macro-port voltages, no longer direct intrinsic
-terminals after RC insertion, were absent from the measurement observations.
-The second run adds those four voltages explicitly for 856 columns, retaining
-all prior observations and the failed prefix. Its outcome is still pending.
+The first **290-device physical component trial failed**. The initial prefix
+was rejected for four absent macro-port voltage observations; adding those
+ports produced a complete 161,886-row, 856-column native capture. That capture
+fails all seven functional checks and six HBT VCE screens, with minimum VCE
+-0.183668 V. Independent full-wave electrical and functional reviewers reproduce
+the failures. Native diagnostics, zero-source operating point and all 36 OFF
+readbacks are clean, so this is not accepted merely because ngspice completed.
+
+The integration fault is the parent `XIF` call: it used schematic pin order,
+whereas the actual extracted macro declares `avdd avss bn bp cn cp sub wire_cref`.
+The parent now binds by those declared names. A separate checker contracts only
+metal resistors and compares each intrinsic device's terminal connectivity
+against the intended two followers and two load resistors, retaining four
+finite substrate contacts explicitly. It rejects the actual prior misbound
+model and four further polarity, supply, body and size corruptions. Equality
+against the same incorrectly composed device list was insufficient; that older
+boundary result is retained as limited evidence. The corrected `native03` deck
+passes the new independent binding check and is under the same 80 ns electrical
+simulation. Its electrical verdict remains pending. Parent wiring, RF/substrate
+extraction and full PHY operation are still not accepted.
+
+The follower source and reproducible generator are now available in
+`hw/soc/analog/pcie/clock_cml_input_follower_v1.spice` and
+`hw/soc/flow/make_pcie_cml_input_follower_v1.py`. Supply `--pdk` and a fresh project
+`--out` directory in the pinned native environment. Its canonical generation
+matches every flattened polygon, recursively transformed label, device, route,
+public pin, native reference and LEF of the earlier macro. Fresh native DRC,
+hierarchical/flat eight-device LVS, five actual physical/reference corruptions,
+seven-pin native LEF checks and three LEF corruptions pass on that reproduced
+layout. Six source regression cases pass. The corresponding checkers are
+`check_pcie_cml_input_follower_v1.py` and `check_pcie_cml_input_follower_lef.py`.
+These are development component tools; their output explicitly leaves
+main-chip integration and full PHY acceptance false.
 
 A **739-device connected source trial is running** with the same followers
 between the two CML stages, the actual VCO and unchanged PFD, pump, reference,
