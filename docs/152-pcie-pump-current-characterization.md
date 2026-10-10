@@ -3018,3 +3018,22 @@ is **30,165 bytes**, SHA256
 All archive members and complete anonymous public downloads were verified.
 The [machine-readable record](evidence/pcie-metadata-late-select-20261010.json)
 distinguishes the passing logic checks from the unfinished physical work.
+
+
+### Metadata candidate: mapped timing measured, physical comparison queued (10 October, 22:54 TRT)
+
+The late metadata selection candidate completed whole-chip mapping, inherited register graph checks and five mapped fault controls. The all-group unplaced comparison gives the following six minima; negative values remain violations:
+
+| Corner | Setup slack (ns) | Hold slack (ns) |
+| --- | ---: | ---: |
+| SS | -1.361943 | -0.469247 |
+| TT | +0.362334 | -0.539480 |
+| FF | +1.238520 | -0.601382 |
+
+All six minima improve or remain equal against both the banked-prefetch and unate-credit candidates. SS setup improves **0.158287 ns** against banked prefetch and **0.060609 ns** against unate credit. The SS critical path now starts at `credit_data_consumed_o[26]` and ends at `credit_data_limit_o[26]`; the remaining hold paths include the Ethernet receive SRAM and transmit outputs. These measurements use the same constraints and are **unplaced timing**, not routed timing closure.
+
+The queued banked-only CTS controller was deferred before starting any native physical job. The stronger metadata candidate now waits for the same 16 GiB disk / 10 GiB available RAM gate; its physical trial preserves die, clocks, macros and placement settings and requires an independent all-group readback. No candidate has been adopted on the basis of these estimated delays.
+
+The [updated evidence record](evidence/pcie-metadata-late-select-20261010.json) links the **31-file mapped evidence capsule**, including actual mapped netlist/JSON, synthesis logs, constraints, STA outputs, comparison reader and physical launch method. All members and the complete anonymous public download were verified: **18,643,735 bytes**, SHA-256 `45d43a29dee1c5228bb370d1179f083d1a61153dfddd31dc079183c6f1218e04`.
+
+A separate carry-propagation experiment changes only the credit block's carry propagate terms from XOR to OR, retaining XOR sum parity and cycle behavior. Its full actual-module equivalence and eight integration tests passed; whole-chip mapping is running. No delay improvement is claimed for this second experiment. The repaired 753-device PLL transient and the seed-42 route trial remain active. Full serial Gen3 x4 PHY, main-chip routed integration and final setup/hold closure remain open.

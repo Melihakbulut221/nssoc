@@ -1,5 +1,5 @@
 {
-  "status": "VERIFIED_METADATA_EQUIVALENCE_AND_PORT_TESTS_NATIVE_MAPPING_IN_PROGRESS",
+  "status": "VERIFIED_EQUIVALENCE_PORT_TESTS_MAPPED_GRAPH_AND_UNPLACED_TIMING_PHYSICAL_QUEUED",
   "formal": {
     "status": "PASS_FULL_REPLAY_METADATA_LATE_SELECT_EQUIVALENCE",
     "cases": [
@@ -68,13 +68,210 @@
       "name": "nssoc-late-select-proof-records-20261010.tar.gz",
       "bytes": 30165,
       "sha256": "29a93b273400abc8be58ed939f97f9a566e92d6988ab54ea49b8e3a6c943d640"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-metadata-mapped-records-20261010.tar.gz",
+      "name": "nssoc-metadata-mapped-records-20261010.tar.gz",
+      "bytes": 18643735,
+      "sha256": "45d43a29dee1c5228bb370d1179f083d1a61153dfddd31dc079183c6f1218e04"
     }
   ],
   "source_binding_failure_preserved": "map05 rejected inherited old-candidate fault report in a new-candidate proof list before native synthesis. map07 checks the three actual new candidate reports and still verifies old fault evidence separately. The guard is unchanged.",
-  "timing_measured": false,
+  "timing_measured": true,
   "adopted": false,
   "first28_parent_transient": "RUNNING since22:34 with unchanged50ns/.3125ps8functionalchecks/all753bounds; no resultyet.",
   "full_phy_accepted": false,
   "main_chip_routed_accepted": false,
-  "final_setup_hold_accepted": false
+  "final_setup_hold_accepted": false,
+  "timing_scope": "Unplaced only, no routed parasitic extraction or final closure",
+  "slacks_ns": {
+    "slow_max": -1.361943,
+    "slow_min": -0.469247,
+    "typical_max": 0.362334,
+    "typical_min": -0.53948,
+    "fast_max": 1.23852,
+    "fast_min": -0.601382
+  },
+  "comparison_ns": {
+    "tx_egress": {
+      "slow_max": {
+        "old": -1.447427,
+        "new": -1.361943,
+        "delta": 0.08548400000000012
+      },
+      "slow_min": {
+        "old": -0.469247,
+        "new": -0.469247,
+        "delta": 0.0
+      },
+      "typical_max": {
+        "old": 0.179228,
+        "new": 0.362334,
+        "delta": 0.183106
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.120581,
+        "new": 1.23852,
+        "delta": 0.11793900000000002
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "refresh_width": {
+      "slow_max": {
+        "old": -1.526982,
+        "new": -1.361943,
+        "delta": 0.16503900000000016
+      },
+      "slow_min": {
+        "old": -0.494834,
+        "new": -0.469247,
+        "delta": 0.02558699999999997
+      },
+      "typical_max": {
+        "old": 0.214218,
+        "new": 0.362334,
+        "delta": 0.148116
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.143593,
+        "new": 1.23852,
+        "delta": 0.09492699999999998
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "unate_credit": {
+      "slow_max": {
+        "old": -1.422552,
+        "new": -1.361943,
+        "delta": 0.060609000000000135
+      },
+      "slow_min": {
+        "old": -0.504519,
+        "new": -0.469247,
+        "delta": 0.035272000000000026
+      },
+      "typical_max": {
+        "old": 0.204073,
+        "new": 0.362334,
+        "delta": 0.15826099999999999
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.13468,
+        "new": 1.23852,
+        "delta": 0.10384000000000015
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "banked_prefetch": {
+      "slow_max": {
+        "old": -1.52023,
+        "new": -1.361943,
+        "delta": 0.15828700000000007
+      },
+      "slow_min": {
+        "old": -0.530423,
+        "new": -0.469247,
+        "delta": 0.06117599999999995
+      },
+      "typical_max": {
+        "old": 0.128317,
+        "new": 0.362334,
+        "delta": 0.234017
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.084587,
+        "new": 1.23852,
+        "delta": 0.1539330000000001
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    }
+  },
+  "worst_paths": {
+    "slow_max": {
+      "group": "pcie_clk_i",
+      "corner": "slow",
+      "path_type": "max",
+      "startpoint": "$auto$ff.cc:337:slice$1165314",
+      "endpoint": "$auto$ff.cc:337:slice$1165574",
+      "slack_ns": -1.361943
+    },
+    "slow_min": {
+      "group": "eth_rx_clk_i",
+      "corner": "slow",
+      "path_type": "min",
+      "startpoint": "$auto$ff.cc:337:slice$1175620",
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem",
+      "slack_ns": -0.469247
+    },
+    "typical_max": {
+      "group": "pcie_clk_i",
+      "corner": "typical",
+      "path_type": "max",
+      "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+      "endpoint": "$auto$ff.cc:337:slice$1164640",
+      "slack_ns": 0.362334
+    },
+    "typical_min": {
+      "group": "eth_gtx",
+      "corner": "typical",
+      "path_type": "min",
+      "startpoint": "$auto$ff.cc:337:slice$1601004",
+      "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+      "slack_ns": -0.53948
+    },
+    "fast_max": {
+      "group": "pcie_clk_i",
+      "corner": "fast",
+      "path_type": "max",
+      "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+      "endpoint": "$auto$ff.cc:337:slice$1164640",
+      "slack_ns": 1.23852
+    },
+    "fast_min": {
+      "group": "eth_gtx",
+      "corner": "fast",
+      "path_type": "min",
+      "startpoint": "$auto$ff.cc:337:slice$1601004",
+      "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+      "slack_ns": -0.601382
+    }
+  },
+  "physical_trial": "Metadata start09 queued same16GiBdisk10GiBRAM. Earlier bankedstart08 waiting-only controller deferred, no nativeCTSstarted or stopped. Same die clocks macros and placement settings; independent all-group readback required."
 }
