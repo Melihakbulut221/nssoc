@@ -2648,3 +2648,74 @@ Original full waveforms are published separately. Only generated local copies
 with complete verified public retention may be evicted, with exact byte-level
 restoration manifests; failed results and all source records remain intact.
 Full serial PHY, routed main-chip integration and setup/hold closure are open.
+
+
+## 2026-10-10: compact parent routing, physical hot result and refresh-counter repair
+
+The new physical hot28 **302-device** component passes all seven functional
+checks and all 302 electrical bounds at **125 C**, with an ideal external
+2 GHz input over 80 ns at a 0.5 ps maximum step. Independent readers reproduce
+both results from the complete 888-column capture. The first electrical reader
+still expected 887 columns and failed before evaluation; reader07 checks the
+actual 888 columns and recomputes the same limits. The original reader,
+source, capture and failed attempt remain unchanged. This is not a PVT sweep
+of this new geometry, a loaded PLL result or serial-PHY qualification.
+
+The nine-macro parent has a new **2,983 by 1,880 um** routed development layout,
+compared with the previous 7,786.36 by 1,614.78 um envelope. Its extent fits
+within the current die dimensions; allocating it among the main-chip blocks
+and proving actual chip integration remain open. Native checks pass zero
+violations across 560 DRC categories, all nine hierarchical comparisons and
+strict unsimplified **753-device flat LVS**. All 61 macro reference planes
+and 78 parent metal probes are bound to the correct 24 conductors. Fresh
+parent extraction contains **91 resistors and 224 capacitors**. Rebinding
+preserves all 753 devices and 7,658 child wire elements, giving 7,973 total
+wire elements; six actual record corruptions are rejected.
+
+| Parent net | Previous incident C (fF) | Compact local-route C (fF) |
+| --- | ---: | ---: |
+| VCO clock positive | 212.766 | 132.565 |
+| VCO clock negative | 199.369 | 129.345 |
+| First-divider Q positive | 183.361 | 33.610 |
+| First-divider Q negative | 202.864 | 30.883 |
+| Second-divider Q positive | 197.993 | 211.083 |
+| Feedback `fb` | 105.688 | 313.871 |
+
+These are unqualified metal-RC measurements, not electrical acceptance.
+Some nets regress, so the compact layout has started the **same eight
+functional checks and all 753 device bounds** in a fresh loaded diagnostic.
+No passing loaded result is claimed. The ideal common-substrate boundary
+remains unqualified. Earlier failures are retained: an integer-overload
+placement error, three wide-metal spacing markers, an all-upper-bus compact
+variant with increased clock load, and two shorts in the first local-bus
+attempt. Actual escape/via geometry is now checked in addition to macro boxes;
+the corrected local08 geometry passes native DRC and both LVS modes.
+
+The TX-egress timing report identified `advertiser.refresh[9]` as the critical
+SS endpoint. The timer only needs to represent 0 through the default 128,
+but the RTL used 32 bits. A separate candidate uses eight stored bits at that
+setting, with safe width calculation at parameter boundaries. For **13
+parameter cases**, both actual modules separately prove the unsigned counter
+bound from reset; full cycle equivalence then uses only those proved bounds.
+Every output is compared, including invalid cycles. Three FC tests and five
+buffered-packet tests pass with no failures or skips. An independent 800-cycle
+Icarus comparison covers all 78 outputs, training pause and link-down recovery;
+three actual width/arithmetic/threshold faults produce observable mismatches.
+The early unproven width-matching and unknown-state proof attempts are retained.
+Whole-chip synthesis and timing comparison are running; no timing gain or
+main-RTL adoption is claimed yet.
+
+The TX-egress placement/CTS run has started after verified public waveform
+retention released disk space. The old prefetch setup-route attempt finished
+with **649 overflow**, so it failed. The separate 150-iteration routing attempt
+continues under unchanged congestion rules. Full serial Gen3 x4, routed
+main-chip integration and final setup/hold closure remain open.
+
+The [623-file evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-compact-hot-refresh-records-20261010.tar.gz)
+contains these physical sources, native reports, completed analog records,
+RTL candidates, proofs and failed attempts. All members and the entire public
+download were verified: **6,050,650 bytes**, SHA256
+`a0a2efe9b714a83e0a8d18d943dfe18417b617a1a1061d702b384e7755e82a43`.
+The [machine-readable record](evidence/pcie-compact-hot-refresh-20261010.json)
+contains the full capacitance comparison and scope. Large new waveforms remain
+local pending separate byte-for-byte publication; their hashes are recorded.
