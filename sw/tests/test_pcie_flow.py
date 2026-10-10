@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -34,4 +35,14 @@ def test_native_credit_port_checks_reject_real_faults(tmp_path, before, after):
                             capture_output=True, text=True, timeout=120)
     assert result.returncode == 1
     passed, failed, skipped = count_results([out / 'results.xml'])
-    assert passed + failed == 4 and failed > 0 and skipped == 0
+    expected_cases = {
+        'initialization_and_finite_atomic_reservations',
+        'infinite_pools_replay_and_link_reset',
+        'modulo_counters_random_credit_return_and_stalls',
+        'corrupt_credit_events_never_grant_or_reset_limits',
+        'same_cycle_update_debit_exhausts_exactly_once',
+    }
+    cases = ET.parse(out / 'results.xml').findall('.//testcase')
+    assert {case.get('name') for case in cases} == expected_cases
+    assert len(cases) == passed + failed == len(expected_cases)
+    assert failed > 0 and skipped == 0
