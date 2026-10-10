@@ -2932,3 +2932,54 @@ bytes remain local; their hashes are recorded, and this capsule does not
 claim to contain them. See the [machine-readable results](evidence/pcie-first91-compact-failure-20261010.json).
 Full serial Gen3 x4, routed main-chip integration and final setup/hold remain
 unaccepted.
+
+## New first-divider geometry and repaired parent reference (10 October, 22:27 TRT)
+
+The `first28` geometry completes native DRC, hierarchical and flat LVS, and
+five actual geometry/reference fault checks. Fresh component extraction
+produces **379 resistors and 646 capacitors** for its 91 devices. The binding
+retains 198 metal terminal references and records 85 unqualified body
+references. Thirteen corrupted raw-extraction cases and six model-composition
+faults are rejected. One original fault reader expected a later topology
+error after dropping a resistor; in this geometry that resistor is a bridge.
+The corrected reader proves that removing it increases the actual graph's
+component count by one and requires the earlier open-graph rejection. The
+original failed reader is retained.
+
+The **new extracted physical component**, rather than the old parameter-only
+wire model, passes the same isolated 8 GHz experiment. Its differential
+output spans -0.183856 to +0.181343 V, /4 operation passes, and all 91 device
+screens pass over 80,011 captured rows and 306 columns. Complete independent
+functional/startup and electrical readers reproduce the result. The source
+and load are still ideal experimental boundaries; this is not a loaded PLL,
+PVT, jitter or complete PHY qualification.
+
+The parent first fails LVS because the inherited route script copies the old
+schematic reference after placement has generated the new one. The failed
+native run is preserved. `retry02` propagates the current reference while
+keeping the same geometry. It then passes **DRC with zero markers across
+560 categories**, **all ten hierarchical circuit comparisons**, and strict
+**flat LVS with 753 devices**. All 61 macro reference planes match. Fresh
+parent extraction has 91 resistors and 224 capacitors; the assembled model
+has 7,967 wire elements. The other 662 devices and their child wire models
+remain unchanged. Six model-binding corruptions are rejected. The common
+substrate boundary remains an explicit, unqualified idealization.
+
+The corresponding full-parent 50 ns simulation is prepared with the same
+0.3125 ps step, eight functional checks and all 753 electrical screens.
+Five measurement, six boundary and four diagnostic-eligibility fault controls
+pass. It is queued behind a 14 GiB disk/7 GiB available-RAM gate; it has not
+passed a transient. The previously queued 25 °C component run is deferred
+until this parent capture and its independent reviews finish, to avoid
+simultaneous large captures. No native simulation was stopped for that change.
+
+The [305-file physical evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-first28-physical-parent-records-20261010.tar.gz)
+is **3,808,495 bytes**, SHA256
+`b8928e50f7476acab0648ff3158232bab347adcb82003d36dbe0bd6329b9d523`.
+All members and the complete anonymous public download were verified. It
+contains the actual geometry, native verification, extracted models, preserved
+failures and continuation methods. Waveform bytes are separately queued for
+publication; this capsule records their hashes. See the [machine-readable
+record](evidence/pcie-first28-physical-parent-20261010.json).
+This closes the stated component geometry checks, **not** full serial Gen3 x4,
+main-chip routing, final setup/hold or manufacturing acceptance.
