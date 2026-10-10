@@ -2864,3 +2864,71 @@ is separately queued for full publication; its original hash is recorded.
 The [machine-readable record](evidence/pcie-hold-prefetch-cold-20261010.json)
 contains the comparisons and source identities. Full serial Gen3 x4, routed
 main-chip integration and final setup/hold closure remain open.
+
+## Loaded compact PLL failure and first-divider repair experiment (10 October, 22:15 TRT)
+
+The compact physical parent completes its 50 ns capture with **all eight
+functional checks failing**. Two of 753 device screens fail: the first
+latch tail transistors `div1.xd0001` and `div1.xd0006` reach settled minimum
+VCE values of 0.392602 and 0.388133 V, below the unchanged 0.4 V limit.
+After 30 ns the VCO edge frequency is about 7.876 GHz, while the first
+“divided” output is about 7.775 GHz. This is a failed divider, not /4 operation.
+The independent complete-capture functional and electrical readers reproduce
+these failures. Their reader PASS records certify recomputation only.
+
+The separate causal phase reader first raises `Output edge lacks bracketing
+input edges`. Its original failure is retained. A new diagnostic reader
+records the full-window result as failed and unevaluable; it does not drop
+edges or shorten the window to obtain a pass. The saved actual first-divider
+input resistor terminals have 0.491875 V peak-to-peak differential swing.
+This observation alone does not establish the cause of the failure.
+
+Five smaller native experiments isolate the original 91-device divider and
+its 1,031 component wire elements. They use a stated **ideal** 8 GHz source
+(1.08 V common mode, 0.14 V amplitude per side) and a stated 50 fF load per
+output. These are experimental boundary conditions, **not the actual loaded
+parent**, at 27 °C with typical models, for 20 ns at 0.25 ps maximum step.
+Each capture retains all device screens, native startup checks and complete
+waveform integrity checks.
+
+| Parameter-only experiment | /4 and output swing | All 91 electrical screens |
+| --- | --- | --- |
+| Original first-clock pullups, L = 4 µm | Fail | Pass |
+| First-clock pullups, L = 3 µm | Fail | Pass |
+| First-clock pullups, L = 2 µm | Fail | Pass |
+| Original pullups; four first-latch loads L = 2.8 µm | Pass | Pass |
+| Original pullups; four first-latch loads L = 3.4 µm | Pass | Pass |
+
+The latch loads originally have L = 2.12 µm. The 2.8 µm candidate produces
+an output differential range of approximately -0.186591 to +0.183179 V.
+Complete independent readers reproduce all five results. Four deliberately
+incorrect measurement signals and four corrupted electrical records are
+rejected by their respective checks. These parameter screens retain the old
+wire model; they are not new-layout validation.
+
+A separate `first28` geometry implements only the four 2.12-to-2.8 µm
+collector changes and keeps the original 4 µm clock pullups. Its native DRC,
+hierarchical LVS and flat LVS have passed. The geometry/reference fault
+campaign and fresh distributed wire extraction continue. A subsequent
+transient with the new extracted model and an actual loaded-parent test are
+required before integrating this candidate into the parent.
+
+The earlier global-route origin experiment finishes with **85 overflow**.
+Inspection of the pinned OpenROAD implementation corrects its interpretation:
+`grid_origin_` offsets exported guide boxes in `saveGuides`; it does not move
+the actual routing grid. Thus it supplies no evidence for a successful grid
+relocation. A separate run uses seed 42 to change net ordering, with capacity
+perturbation explicitly zero, default origin and the same actual clocks,
+physical constraints and input database. It is still running.
+
+The [201-file diagnostic capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-first91-compact-failure-records-20261010.tar.gz)
+is **1,393,703 bytes**, SHA256
+`1d07e87aa73eab4d8d3e0ae0bd906610aea392cfd01e69d62bba59f09f3e46d4`.
+Every member and its complete anonymous public download were verified.
+It includes the original failures, independent readers, complete selected
+prefetch-cone comparison, source-code correction, five isolated experiments,
+and new physical methods. The compact-parent and isolated-divider waveform
+bytes remain local; their hashes are recorded, and this capsule does not
+claim to contain them. See the [machine-readable results](evidence/pcie-first91-compact-failure-20261010.json).
+Full serial Gen3 x4, routed main-chip integration and final setup/hold remain
+unaccepted.
