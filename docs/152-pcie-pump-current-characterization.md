@@ -2453,3 +2453,75 @@ Two explicitly port-targeted reports are listed separately, not treated as
 whole-design reports. Its 1,235,889 bytes have SHA256
 `33d66ed8ab6b672798e23e101ef4a2ef999fb06010f23f8925dbb978426f9ed0`;
 every archive member and the complete anonymous public download match.
+
+
+## October 10: verified hold repair and buffered-counter cold result
+
+The prefetch candidate's second hold repair now has positive **reported** hold
+slack in all three corners. A fresh process reading the saved ODB/SDC reproduces
+every reported final path group exactly. These are placement-RC results:
+
+| Corner | Worst reported setup (ns) | Worst reported hold (ns) |
+| --- | ---: | ---: |
+| Slow | -2.447202 | +0.216286 |
+| Typical | -0.498271 | +0.203643 |
+| Fast | +0.387915 | +0.100139 |
+
+Setup remains negative. Boolean comparison preserves all **12,330 state
+instances / 41,229 bits**, and four injected faults are rejected. The initial
+reload differed by at most 0.566 ps in the generated Ethernet clock group;
+that difference is recorded rather than called exact. Final reload is exact.
+The native report also lists one unconstrained endpoint and SRAM slew violations;
+these results do not constitute timing signoff.
+
+The physical buffered counter has **150 MOS devices**; the component chain has
+**302 devices and 2,613 wire-RC elements**. At **-40 C**, all seven functional
+checks and all 302 electrical checks pass over 80 ns at a 0.5 ps step. Independent
+full-capture electrical and functional reviews agree. This fixes the prior cold
+overshoot in this finite test. The same physical chain's 25 C test is running.
+Neither a full PVT campaign nor the parent PLL is accepted by this result.
+
+At +125 C, the separate parameter screen with 3.2 um first-latch collector
+resistors passes all seven functional checks, but **four NPN devices violate
+the unchanged 0.4 V minimum settled VCE**: 0.369325, 0.395275, 0.395067 and
+0.374222 V. It is rejected. A 2.8 um load screen is running. These parameter
+screens retain the earlier wire geometry; passing one would still require new
+geometry, DRC/LVS and RC extraction before physical acceptance.
+
+The physical753 baseline retains its original **FAIL** because the strict
+between-edge count reports adjacent 5/3 pairs. A separate causal phase review,
+anchored before the measurement window, associates all 80 observed output
+intervals with four input cycles and finds no cycle slip in that finite capture.
+The new [phase checker](../scripts/check_clock_division_phase.py) and its
+[regression tests](../sw/tests/test_clock_division_phase.py) exercise missing and
+extra edges, true incorrect division and phase jumps. Its half-cycle association
+is **not** a jitter mask, frequency-accuracy test, PLL-lock test or replacement
+of the original native failure. Together with the timing-parser tests, 24 tests
+pass. The parent-loaded753 transient continues as an explicitly unaccepted
+diagnostic; the original baseline acceptance gate remains intact.
+
+The original reserve10 global route ended with 428 overflow. A separate
+September OpenROAD tool comparison initially omitted SDC and read zero clock
+nets: route07 was invalidated and stopped, and earlier diagnostic03/04 cannot
+support clock-NDR conclusions either. The corrected route08 explicitly reads
+the checkpoint SDC, five clocks and 1,393 clock nets. It requires zero overflow
+and uses no congestion waiver. A different router build still requires fresh
+logical, physical and timing validation before adoption.
+
+The [369-member progress capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-hold-phase-cold302-records-20261010.tar.gz)
+contains saved repaired netlist/ODB/SDC, graph proofs, full native reports,
+phase-review code, cold302 and failed hot-screen records. All members and the
+complete anonymous public download were verified: **29,558,891 bytes**, SHA256
+`04889ff949b08c8016fb75b69f0e8db2d3afcb963d8bad42761b71beb7eb519b`.
+The [machine-readable record](evidence/pcie-hold-phase-cold302-20261010.json)
+keeps the failures and remaining qualifications explicit. New large waveforms
+remain local pending separate full publication; the capsule includes their hashes.
+
+Full waveforms and records for the earlier hot300 FAIL, cold300 FAIL and clean744
+PASS are now published and fully read back. Their delivery receipts contain an
+incorrect generic scope sentence about 300 passing devices: use their explicit
+native statuses and manifests, not that sentence. This erratum preserves the
+original receipts instead of silently rewriting historical evidence.
+
+Full serial Gen3 x4 PHY, routed main-chip integration, setup/hold signoff,
+qualified PEX and manufacturing approval remain open.
