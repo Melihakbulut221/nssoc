@@ -3,8 +3,7 @@
 [![checks](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml/badge.svg?branch=codex%2Fcomplete-open-work)](https://github.com/Melihakbulut221/nssoc/actions/workflows/checks.yml)
 
 **Our mission is to build an open-source counterpart to GR801 for space applications.**
-NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces. We are committed to completing this open-source GR801 counterpart, from RTL and software through
-physical implementation, silicon validation and qualification. The product acceptance gates below define when that goal is achieved.
+NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces. We are committed to completing this open-source GR801 counterpart, from RTL and software through physical implementation, silicon validation and qualification. The product acceptance gates below define when that goal is achieved.
 
 The current IHP SG13G2 implementation combines an Ibex RISC-V core, a spiking-neural-network accelerator, ECC-protected storage, memory scrubbing and TMR control. It forms the foundation for the product we are building.
 
@@ -18,8 +17,7 @@ GR801 is our product reference. NSSOC is an independent open-source design. Our 
 - Reproducible RTL, firmware, verification, physical flows and documentation under the [component licences](LICENSES.md).
 
 Completion means meeting the integrated design requirements and [product acceptance gates](docs/92-product-acceptance.md):
-functional verification, extracted setup/hold timing, full-chip DRC/LVS and antenna checks, manufacturing review,
-silicon testing and qualification. Each result below records progress toward that goal within its verified scope.
+functional verification, extracted setup/hold timing, full-chip DRC/LVS and antenna checks, manufacturing review, silicon testing and qualification. Each result below records progress toward that goal within its verified scope.
 
 ![SoC functional architecture](docs/img/soc-architecture.svg)
 

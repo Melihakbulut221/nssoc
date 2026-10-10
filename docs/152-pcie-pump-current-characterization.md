@@ -1457,7 +1457,97 @@ A separate 716-device connected-feedback experiment uses this physical counter,
 both physical divide-two toggles, and 6,953 wire records. Its named-port binding
 and 24 counter-boundary fault controls pass. A first positional-binding attempt
 was rejected before simulation and is retained. The corrected 50 ns experiment
-is still running at this publication; the feedback-duty criterion stays at
-17–23%. Neither full serial Gen3 x4 PHY nor final chip setup/hold is closed.
+now passes all 716 device electrical screens and all thirteen functional
+predicates. Three measured feedback intervals each contain exactly eighty VCO
+cycles; feedback duties are 21.0960%, 20.7924% and 21.3800%, within the unchanged
+17–23% range. Complete waveform remeasurement reproduces all functional results.
+Actual native PFD, level shifter, receiver, both toggles, counter and pump
+boundaries were checked, including four pump-boundary fault controls.
 
-The [complete 148-MOS physical and corner capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-mod5-strong148-native-and-corners-20261010.tar.gz) contains 295 members / 725,687,873 bytes, SHA256 `3317e5dc0597c6899393516c492774cb6855e860289e87d9f2b492fbe1f4860d`. Every public HTTP range was read and compared byte-for-byte with the complete hashed archive. The capsule retains all six full native waveforms, fast-corner failures, geometry and fault controls; it excludes the still-running connected-feedback experiment.
+This closes the finite nominal loaded-counter duty failure seen with 710
+devices. It does not qualify the fully routed parent, PLL acquisition, PVT,
+CDR, SERDES, x4 link or main-chip serial integration. An identical-circuit
+200 ns continuation is running with unchanged electrical and functional limits.
+Neither full serial Gen3 x4 PHY nor final chip setup/hold is closed.
+
+The [complete 148-MOS physical and corner capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-mod5-strong148-native-and-corners-20261010.tar.gz) contains 295 members / 725,687,873 bytes, SHA256 `3317e5dc0597c6899393516c492774cb6855e860289e87d9f2b492fbe1f4860d`. Every public HTTP range was read and compared byte-for-byte with the complete hashed archive. The capsule retains all six full native waveforms, fast-corner failures, geometry and fault controls; it excludes the separately captured connected-feedback experiment.
+
+
+### Completed routed timing reviews — 10 October 2026
+
+Both existing routing jobs reached final parasitic extraction and timing
+analysis. Independent OpenROAD reloads of their actual ODB, SDC and SPEF
+reproduce all six reported worst slacks within 0.0000011 ns.
+
+| Routed candidate | Slow setup / hold (ns) | Typical setup / hold (ns) | Fast setup / hold (ns) | Decision |
+| --- | --- | --- | --- | --- |
+| Paired buffers | -9.542062 / -0.352828 | -4.507071 / -0.577212 | -1.747716 / -0.711862 | Timing fails |
+| Registered RX | -6.689250 / +0.230760 | -3.399348 / +0.054740 | -1.452377 / -0.050784 | Timing fails |
+
+The [121-member compact timing review capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-two-routed-timing-reviews-20261010.tar.gz)
+is 694,918 bytes, SHA256
+`ccd0cec136d30fd6dabb0871a98764293f80cb02e05cd8c49fc148bffefcdd3c`.
+Its complete public bytes were compared with the local archive. It includes
+selected native reports and the independent readback methods/results. Large
+logs, reports, SDF and physical databases are retained locally and hash-pinned;
+this is explicitly not a complete physical database archive. These analyses
+use nominal wire RC with three library corners, not qualified multicorner RC.
+
+The TX-prefetch routing retry with 200 congestion iterations stopped at
+iteration 65 with 150 overflow units; it did not produce an accepted detailed
+route. A separate experiment gives the worst 30% of timing nets routing
+priority from the same original post-CTS state. It retains the zero-overflow
+requirement, clock periods, die and metal capacities.
+
+A balanced PMP comparison candidate passed binary output equivalence and
+actual mutant controls, but its unplaced slow setup worsened from -2.563230 ns
+to -2.614634 ns. It is not adopted. This preliminary comparison is separate
+from the routed results above.
+
+
+### Complete counter capture and next physical trial
+
+The [10 October GitHub progress record](https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/evidence/pcie-closure-progress-20261010.json)
+pins the measurements and retains all incomplete acceptance flags. The passed
+716-device capture is 2,347,437,724 bytes, SHA256
+`9e345de2055c6816130e9adacd838c07aafa514965e409fd8b1016eb3cbe3c83`.
+Concatenate the three parts in numeric order and verify that size and digest
+before decompressing. All four public assets were read completely and compared
+byte-for-byte with their local originals:
+
+- [Methods, circuits and native records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback716-physical-counter-records-20261010.tar.gz).
+- [Waveform part000](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback716-physical-counter-wave-20261010.part000).
+- [Waveform part001](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback716-physical-counter-wave-20261010.part001).
+- [Waveform part002](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-feedback716-physical-counter-wave-20261010.part002).
+
+A subsequent independent streaming calculation reproduces all 716 electrical
+records, including every terminal-voltage extremum, MOS/HBT current limit,
+settled HBT VCE minimum and geometry check. It rejects four forged result
+records. The [152-member supplemental records capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-closure-followup-records-20261010.tar.gz)
+contains this method and result, the rejected PMP candidate with nine binary
+equivalence cases and two counterexample controls, and the new combined
+RX/metadata preparation. It is 508,630 bytes, SHA256
+`d6e2cace539a0901a643f29800296802d38afccc50afd86e1f6e9e87ee889c73`.
+It also records a fast-corner timestep check: reducing 2 ps to 1 ps preserves
+the twenty failing devices, with maximum terminal difference 1.618966 V. All
+148 device records and both nominal/held-reset results were independently
+remeasured; this numerical check does not cure the electrical failure. The
+supplement excludes its large waveforms and running physical outputs.
+
+The registered RX plus precomputed replay metadata candidate passes eight
+packet/flow tests. Its actual mapped consumer pins bind to thirteen RX and
+thirteen metadata register outputs; four injected graph faults reject.
+Compared with registered RX alone, unplaced setup changes as follows:
+
+| Corner | Registered RX setup (ns) | Combined setup (ns) | Combined hold (ns) |
+| --- | ---: | ---: | ---: |
+| Slow | -2.563230 | -2.340676 | -0.481901 |
+| Typical | -0.253689 | -0.111405 | -0.539480 |
+| Fast | +0.772642 | +0.950002 | -0.601382 |
+
+Slow hold worsens by 0.012654 ns; typical and fast hold are unchanged. These are
+unplaced wire-load estimates, not the routed results in the earlier table.
+The combination is now undergoing fresh placement and routing with the same
+clocks, die, macro arrangement and physical settings as the registered RX
+baseline. Its final ODB/SDC/SPEF will require a fresh independent timing reload.
+No production RTL adoption, full serial PHY or final timing closure is claimed.
