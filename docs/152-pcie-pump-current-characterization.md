@@ -2787,3 +2787,80 @@ The [machine-readable record](evidence/pcie-credit-ethernet-closure-20261010.jso
 contains the comparisons, graph checks and full-wave delivery links.
 Full serial Gen3 x4, routed main-chip integration and final setup/hold closure
 remain open.
+
+
+## 2026-10-10: cold physical result, hold tradeoffs and replay prefetch cone
+
+The **same physical hot28 302-device geometry** also passes all seven
+functional checks and all 302 electrical bounds at **-40 C**, independently
+recomputed from the complete capture. The previously reported 125 C point
+uses this same geometry. The 25 C run is queued behind its disk reserve.
+These remain finite 80 ns component tests driven by an ideal external
+2 GHz source, not a full PVT, PLL, serial-PHY or chip qualification.
+
+Targeted physical hold repair was then evaluated on the separate rounded
+post-CTS development layout. Each stage has a complete graph audit: all
+original cells, pins and ports remain equivalent after collapsing only the
+new noninverting delay cells. Their functions are checked in all three
+Liberty files, and each audit rejects four actual graph corruptions.
+
+| Stage after the 20 Ethernet delay cells | Added cells in stage | SS setup (ns) | SS hold (ns) | TT hold (ns) | FF hold (ns) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| First short data branches | 112 | -2.291659 | +0.194372 | +0.083371 | -0.002558 |
+| Four remaining short branches | 4 | -2.291659 | +0.194372 | +0.083371 | -0.002470 |
+| Shared delay at the remaining launch register | 1 | -2.291659 | +0.194372 | +0.083371 | +0.000060 |
+| Wider register-branch margin trial | 325 | -2.925424 | +0.199815 | +0.091813 | +0.000997 |
+
+The 137-cell cumulative candidate reports positive hold at these three
+placement-based corners, but **60 fs is not a robust timing margin** and
+setup remains negative. Adding 325 more cells worsens SS setup by 0.633765 ns
+while leaving less than 1 ps minimum FF hold; that trial is rejected as a
+closure improvement. Its initial preparation missed one positive external
+input path and failed before producing a native run; the corrected generator
+and both missing-script launch logs are retained. No constraints were relaxed.
+These observations do not establish routed timing closure.
+
+The newer TX-egress candidate completed CTS and fresh analysis. Before
+post-CTS timing repair, SS setup is -3.364166 ns on the replay buffer's
+`read_pos` to prefetched-byte register path; FF hold is -0.688588 ns.
+This identifies a remaining variable slot multiplication and byte selection
+in the actual prefetch path. A new RTL candidate selects from constant bank
+bases. Its first proof passes two and four slots but leaves the three-slot
+case unproved. The corrected candidate retains the original expression for
+non-power-of-two depths and proves full-module, full-cycle equivalence without
+environmental assumptions for `(DEPTH, MAX_BYTES)` values `(4,38)`, `(2,18)`,
+`(3,38)` and `(8,64)`. Seven replay and five buffered tests pass. An actual
+current-byte/next-byte address corruption causes five of the seven replay
+tests to fail on packet bytes; the baseline passes all seven.
+
+Whole-chip mapping passes the inherited register and fault checks, but global
+unplaced SS setup regresses from -1.422552 to -1.520230 ns. A separate native
+readback of the actual pointer-to-prefetch register cone reproduces all six
+global setup/hold minima before comparing that selected cone:
+
+| Corner | Previous cone slack (ns) | Banked cone slack (ns) |
+| --- | ---: | ---: |
+| SS | -0.854928 | -0.123502 |
+| TT | +0.820927 | +1.295618 |
+| FF | +1.832937 | +2.124876 |
+
+The targeted SS cone improves by **0.731426 ns**, while the global result
+regresses. A separate physical placement/CTS comparison is queued with the
+same die, clocks, macros and constraints and a 16 GiB disk/10 GiB RAM gate;
+neither result justifies adopting the candidate yet. Its new physical outcome
+has not been measured.
+
+Five generated delivery-archive cache copies (1,175,453,070 bytes total) were
+removed only after complete prior public readback, fresh provider digest and
+size checks, new public first/last byte samples, and a full local SHA256 check.
+Their exact restoration manifest and helper are retained. Original source,
+native reports and waveforms were not removed by that cache operation.
+
+The [261-file cold, hold and proof capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-hold-prefetch-cold-records-20261010.tar.gz) is **100,088,886 bytes**,
+SHA256 `2c87763da84346178aeb4680c9bfffa4a911f8096616bcc23eb6dc5de90b21be`. The [54-file mapping and rejected margin capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-prefetch-map-hold-margin-records-20261010.tar.gz)
+is **43,150,545 bytes**, SHA256 `dda8f43e809549a606f05c71e86614f2a5e62fd02f2b27bc84f122a6ff06fb37`.
+All members and complete anonymous downloads were verified. The cold waveform
+is separately queued for full publication; its original hash is recorded.
+The [machine-readable record](evidence/pcie-hold-prefetch-cold-20261010.json)
+contains the comparisons and source identities. Full serial Gen3 x4, routed
+main-chip integration and final setup/hold closure remain open.
