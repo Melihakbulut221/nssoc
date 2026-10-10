@@ -1875,7 +1875,12 @@ captures expand only the row budget to 240,000, with unchanged electrical decks,
 observations and acceptance predicates independently checked. The baseline has
 now completed with 206,811 rows: only input-to-follower edge preservation passes;
 the other six functional predicates fail. Independent full-wave review confirms
-that failure. The gain-stage candidate remains pending. This is an ideal
+that failure. The gain-stage candidate completes the same 206,811 rows with
+852 columns and passes all seven functional predicates and all 291 electrical
+screens; independent full-wave reviewers reproduce those results, clean
+diagnostics, zero-source operating point and 38 native OFF readbacks. The
+baseline also passes its electrical screens, so the functional difference is
+not hidden by a relaxed electrical limit. This is an ideal
 external-fixture experiment, not the actual loaded upstream source; the new
 five-device stage has no extracted layout yet.
 
@@ -1889,3 +1894,70 @@ reset/equivalence proofs, 16 port tests, three actual RTL faults and all twenty
 mapped register bindings pass. Its unplaced setup WNS remains negative at SS
 -1.952128 ns and TT -0.057888 ns, so it has not been adopted as a timing fix.
 **Full serial Gen3 x4, main-chip PHY integration and final setup/hold remain open.**
+
+
+### Gain-stage layout and loaded follow-up — 10 October 2026
+
+The nine-device gain/follower core now has a 366 × 119.63 µm GDS/LEF macro:
+four native HBTs, five resistors and nine finite substrate contacts. All 560
+native DRC categories have zero markers; hierarchical and flat transistor LVS
+match all eighteen devices. Five actual physical/reference faults reject.
+Seven external LEF pins and three physical LEF faults pass. The first LEF
+outline-fault attempt retained the old 166 µm replacement string and therefore
+made no mutation; the harness rejected it. The corrected check verifies that
+every fault actually changes the 366 µm source before executing native checks.
+
+The ten-conductor metal graph binds all 49 intrinsic terminals: 31 metal
+terminals and 18 body/well terminals, plus seven external probes, for 38
+geometric references. Its exported model has 46 resistors and 98 capacitors.
+Thirteen raw-extraction corruption controls and six composition faults reject.
+A separate checker contracts only metal resistors and compares the resulting
+intrinsic graph to the intended nine-device source plus nine finite contacts,
+with public port identities fixed and substrate body kept distinct. Seven
+faults, including the earlier incorrect parent pin-order pattern, reject.
+This remains a component wire model, not qualified RF/substrate or parent PEX.
+
+The canonical source is `hw/soc/analog/pcie/clock_cml_gain_follower_v1.spice`.
+`make_pcie_cml_gain_follower_v1.py`, `check_pcie_cml_gain_follower_v1.py` and
+`check_pcie_cml_gain_follower_lef.py` under `hw/soc/flow` generate and check it.
+Fresh canonical generation matches every flattened polygon, recursively
+transformed label, device, route, public pin, native reference and LEF of the
+prototype. Fresh native DRC/LVS/fault and LEF checks pass on the reproduced
+layout. Seven new source regression cases pass; together with the previous
+follower source cases, 13 pass.
+
+Two further simulations are active with unchanged functional criteria:
+
+- **Connected 744-device trial:** the independently passed nine-device source
+  core replaces the earlier four-device interface in the actual VCO loop.
+  All 7,510 existing component wire records, PFD, pump, reference, reset and
+  supplies remain unchanged; there is no internal ideal clock or VCTRL clamp.
+  The 50 ns / 0.3125 ps run saves 2,110 columns and 102 HBT OFF readbacks. Its
+  actual frozen native source passes five boundary-fault controls. New gain-stage
+  and parent interconnect parasitics are excluded from this trial.
+- **Physical 300-device component trial:** the eighteen-device macro with
+  46 R / 98 C replaces the nine-device schematic core in the passed sinusoidal
+  fixture, leaving the other 282 devices and 2,436 wire records unchanged.
+  The 80 ns / 0.5 ps run saves 880 columns; actual declared macro ports are bound
+  by name. Four native-deck boundary faults reject. Actual upstream loading,
+  parent interconnect and PVT remain outside this component experiment.
+
+Neither active run is accepted before complete independent waveform review.
+The isolated TX-prefetch placement experiment stops after post-CTS repair for
+fresh three-corner comparison; no new route or RTL adoption is implied. A
+separate copy of the completed input-stage post-CTS database is also testing
+1,000 additional setup-repair iterations: the original flow stopped at 100
+while many endpoints still violated setup. Clock periods, SDC, 5% delay derates
+and three library corners remain fixed; only measured improvement can justify
+adoption. The existing RX/metadata and input-stage global routers continue.
+
+
+The [gain-stage source, comparison and physical-check records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-gain291-and-physical18-records-20261010.tar.gz)
+contain 524 evidence members plus the manifest: 3,805,847 bytes, SHA256
+`dfff7548c000a4dda01a2e8b83394690d472487316f879e410f81868185691cc`.
+All members and all anonymously downloaded public bytes were checked. This
+capsule includes complete result records, methods, circuits, layout and native
+physical checks. Four large native captures are explicitly excluded and
+hash-pinned in its exclusion manifest; their full originals remain local.
+For the active 744/300 trials, it includes only frozen preparation and boundary
+records, not a simulation-completion claim.
