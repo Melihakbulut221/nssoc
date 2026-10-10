@@ -2308,3 +2308,89 @@ component-chain run awaits that clean retry and its independent review; its
 model does not yet contain this new parent interconnect RC.
 
 [Machine-readable parent, RC, timing and delivery evidence](evidence/pcie-pll753-parent-rounded-credit-20261010.json).
+
+## 10 October continuation: parent supply repair and temperature failures
+
+The earlier running-temperature snapshot is superseded by two **failed**
+component results. Both completed full 80 ns captures (206,811 rows and 880
+columns), passed independent capture/readback review, and retained the same
+functional and device limits. These are temperature-only tests with nominal
+process models and supplies, not full PVT qualification.
+
+| Component condition | Functional checks | Electrical devices | Result |
+| --- | ---: | ---: | --- |
+| 125 Celsius | 1/7 | 299/300 | FAIL: input gain XAP minimum VCE 0.394786 V, below 0.4 V; downstream division also fails |
+| -40 Celsius | 7/7 | 299/300 | FAIL: counter MOS49 terminal span 1.541640 V, above 1.5 V |
+
+Full-wave stage diagnostics locate the hot functional failure at the first
+CML divider. In the 8–80 ns window, nominal first-stage output has 72 rising
+edges and approximately ±0.19 V differential swing; the hot output has 144
+small feedthrough crossings and only -0.0201 to +0.0065 V. Those crossings
+are diagnostic observations, not valid divided clocks. A four-resistor
+parameter screen changes the first clock pull-ups from 4 to 6 micrometres
+and gain loads from 1.5 to 1.3 micrometres. It retains the old wire RC to
+isolate the parameter effect and therefore **does not represent a new
+verified physical layout**. Its electrical result is pending.
+
+The cold overvoltage repeats in eight intervals, including settled operation;
+it is not merely a startup artifact. The offending node is a shared NAND
+source/drain diffusion without an existing metal contact. A separate physical
+counter candidate swaps the two inputs of XX0, preserving its Boolean function.
+Native DRC/LVS, eight-state next-state checking, fresh 148-device binding and
+336 R / 753 C extraction passed their corruption controls. Its complete
+300-device cold transient is running. Two preparation failures—changed formal
+pin order and missing renamed state probes—were detected before simulation;
+the corrected call uses named ports, and both state probes are bound to actual
+LVS cross-references and contact locations. No failed preparation was adopted.
+
+The **clean connected744 native05** run now passes all eight functional checks
+and all 744 electrical checks, with independent review. It covers 50 ns,
+160,079 rows and 2,110 columns. This finite nominal result still excludes the
+new routed parent interconnect. Physical753 native03 is running after an
+observability repair: QP/QN became wire-only nodes and must be saved explicitly.
+All 753 devices, 7,654 wire elements, stimulus and limits remain unchanged;
+actual deck/save-batch and full measurement-constructor preflights pass.
+
+The wider parent layout22 passes native **0/560 DRC** and hierarchical and
+flat **753-device LVS**. Parent metal extraction contains 91 R and 218 C.
+Measured VCO AVDD path resistance fell from 13.193224 to **2.904820 ohms**.
+Counter VDD fell from 55.781164 ohms in the first wide-rail version to
+**12.260764 ohms**, and VSS from 51.104008 to **15.156808 ohms**, after replacing
+long thin M1 escapes. No IR-drop result is inferred from resistance alone.
+
+The parent-to-child interface audit initially matched 59 of 61 points. The
+counter's two power ports were modeled at the rail centre, while the parent
+connects at the left edge. Fresh child extraction moves those two reference
+planes to their actual connection points, producing **338 R / 755 C**;
+13 raw-extraction and six composition corruption controls pass. All **61/61**
+reference planes now match. Parent simulation still needs the explicit common
+substrate model and independently checked complete composition; qualified
+substrate/RF extraction and loaded electrical acceptance remain open.
+
+Additional setup repair of the completed prefetch post-CTS database improves
+all three setup corners while preserving positive hold:
+
+| Corner | Before setup / hold | After setup / hold |
+| --- | ---: | ---: |
+| Slow | -1.922702 / +0.444266 ns | **-1.201482 / +0.257862 ns** |
+| Typical | -0.127145 / +0.240260 ns | **+0.385336 / +0.112162 ns** |
+| Fast | +0.958840 / +0.083382 ns | **+1.285024 / +0.021554 ns** |
+
+These use placement-estimated RC and propagated clocks. Netlist preservation
+is being checked before routing. The remaining slow setup violation and the
+need for fresh routed extraction prevent final timing acceptance.
+
+The [1,173-member repair and temperature records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parent-thermal-repairs-records-20261010.tar.gz)
+are 14,915,527 bytes, SHA256
+`04457ef9d596e43e86561051dbcfc8ced141304c9b45afa2e2dca6a3b5cfd748`.
+Every member and the complete anonymous public download were verified. This
+capsule includes the parent repair/reference-plane checks, failed thermal
+records, new counter geometry and checks, diagnostic scripts and clearly
+labeled running-test snapshots. It excludes the large thermal waveforms;
+their separate complete public transfer is still in progress. The later
+additional setup-repair result is captured in the machine-readable evidence
+below and awaits a subsequent source capsule.
+
+[Machine-readable thermal, parent and timing evidence](evidence/pcie-parent-thermal-repairs-20261010.json).
+Full serial Gen3 x4, routed main-chip PHY integration, final setup/hold closure
+and manufacturing approval remain open.
