@@ -2525,3 +2525,69 @@ original receipts instead of silently rewriting historical evidence.
 
 Full serial Gen3 x4 PHY, routed main-chip integration, setup/hold signoff,
 qualified PEX and manufacturing approval remain open.
+
+
+## 2026-10-10: isolated timing corners, hot screen and registered TX candidate
+
+The September OpenROAD build (`ff74620`, OpenSTA `779d4725`) produced an
+incorrect generated-clock insertion delay when these three timing corners
+were loaded together. For the same FF Ethernet output path, the old build
+reported **0.385097 ns** clock delay; the new multi-scene run used
+**0.866688 ns**. Separate single-FF processes reproduce every reported hold
+path exactly across the two builds. One positive setup report differs by
+1 fs; the reports are not described as wholly identical. Local source inspection
+finds the generated-clock source-path cache indexed by rise/fall and min/max
+without the scene. This is a local reproduction, not a claim of an upstream fix.
+The affected repair was stopped and its complete failure evidence retained.
+
+Setup repair at SS followed by hold repair in a separate FF process completed.
+Fresh independent per-corner reads of the final ODB/SDC report:
+
+| Corner | Worst reported setup (ns) | Worst reported hold (ns) |
+| --- | ---: | ---: |
+| SS | -2.935336 | +0.126703 |
+| TT | -1.006362 | +0.044966 |
+| FF | +0.083997 | -0.210999 |
+
+These are minima across all reported path groups, using placement-estimated
+RC and unchanged clock constraints. **Timing remains open; this checkpoint
+is not adopted.** The slow setup path still ends at PCIe TX data. A separate
+candidate adds one elastic byte/metadata stage after transmit arbitration:
+13 flops, one extra cycle, one byte/cycle throughput when ready. Five existing
+packet tests pass in a clean Icarus 12 environment, with no failed or skipped
+tests. The exact extracted stage passes a queue-order/occupancy induction
+proof with arbitrary data, flags, stalls and sampled reset; six actual RTL
+faults are rejected. An earlier removed reset-gating mutation was equivalent
+because the register already resets asynchronously; that failed test-design
+attempt remains in the records. This proves the stage, not the complete
+upstream protocol. Whole-chip mapping is running; no cycle-equivalence,
+physical timing improvement or main-RTL adoption is claimed yet.
+
+The physical buffered-counter **302-device nominal 25 C** capture passes all
+seven functional checks and all 302 electrical-device bounds. Independent
+readers reproduce both results. Before launch, the source check caught a
+copied engine still emitting `.temp -40`; it was corrected to `.temp 25` and
+the actual emitted deck was checked. The failed prelaunch check and correction
+are retained. Together with the earlier cold result, these are finite nominal
+and cold points, not a complete process/voltage/temperature qualification.
+
+At **125 C**, the parameter-only hot screen with first-stage latch collector
+loads of 2.8 um, clock pull-ups of 6 um and gain loads of 1.3 um passes all
+seven functional checks and all 300 electrical-device bounds. Its old wire RC
+was intentionally held fixed, so it does not validate the modified layout.
+The new gain geometry has separately passed zero violations across 560 DRC
+categories, strict hierarchical/flat 18-device LVS, five native fault controls,
+seven-pin LEF with three fault controls and fresh metal-RC extraction with
+raw and composition controls. The divider geometry, combined extracted
+model and new physical temperature runs still need completion.
+
+The [462-file evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-scene-hot28-egress-records-20261010.tar.gz)
+contains the exact reports, repaired timing checkpoint, candidate RTL, proofs,
+failed attempts, analog capture metadata and gain geometry/RC evidence.
+Every archived member and the entire anonymous public download were verified:
+**33,293,111 bytes**, SHA256
+`6340d768e5b7eb65e00b10705151767ca5645c641cca058eee2476f9aba5a9e7`.
+The [machine-readable progress record](evidence/pcie-scene-hot28-egress-20261010.json)
+keeps the acceptance limits explicit. Cold302 full-wave publication is complete;
+new nominal302/hot28 waveforms remain local pending separate publication.
+Full serial PHY, routed main-chip integration and setup/hold closure remain open.
