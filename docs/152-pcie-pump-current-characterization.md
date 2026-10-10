@@ -2983,3 +2983,38 @@ publication; this capsule records their hashes. See the [machine-readable
 record](evidence/pcie-first28-physical-parent-20261010.json).
 This closes the stated component geometry checks, **not** full serial Gen3 x4,
 main-chip routing, final setup/hold or manufacturing acceptance.
+
+## Live continuation and late metadata selection (10 October, 22:43 TRT)
+
+Complete publication and verified cache relocation of the cold 302-device
+capture released enough disk reserve for the repaired `first28` **753-device
+parent transient to start at 22:34 TRT**. Its 50 ns result and independent
+reviews are pending. Native jobs have no elapsed-time kill limit. The original
+failed compact-parent capture remains intact locally and is separately queued
+for complete public delivery before any cache relocation.
+
+A separate RTL candidate addresses the actual unplaced critical path from
+`pcie_link_up_i` to reservation payload metadata bit 9, previously measured
+at -1.520230 ns. It decodes current and next slot metadata separately before
+the late handshake selection. It adds no registers or latency. Full-module
+equivalence, with no environmental assumptions, passes `(DEPTH, MAX_BYTES)`
+values `(4,38)`, `(2,18)`, `(3,38)` and `(8,64)`. Seven replay and five buffered
+port tests pass with zero skips.
+
+The first synthesis launch is correctly rejected before Yosys because its
+proof list includes an inherited report binding only old candidate paths.
+The corrected launch supplies the three actual new-candidate proof reports
+and still verifies the inherited fault report separately. The source guard
+is unchanged. Whole-chip mapping and subsequent all-group timing comparison
+are running; this candidate is **not adopted**, and no timing gain is claimed.
+
+The [55-file source and test capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-late-select-continuation-records-20261010.tar.gz)
+is **545,330 bytes**, SHA256
+`e3a4dcf8a8bed05a61667b248cb3f938c354e740fe46c49bef560373b1f1b091`.
+Its conservatively labelled proof snapshot contains all four completed proof
+logs. The [11-file final proof and corrected launch capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-late-select-proof-records-20261010.tar.gz)
+is **30,165 bytes**, SHA256
+`29a93b273400abc8be58ed939f97f9a566e92d6988ab54ea49b8e3a6c943d640`.
+All archive members and complete anonymous public downloads were verified.
+The [machine-readable record](evidence/pcie-metadata-late-select-20261010.json)
+distinguishes the passing logic checks from the unfinished physical work.
