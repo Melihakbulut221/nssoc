@@ -1961,3 +1961,96 @@ physical checks. Four large native captures are explicitly excluded and
 hash-pinned in its exclusion manifest; their full originals remain local.
 For the active 744/300 trials, it includes only frozen preparation and boundary
 records, not a simulation-completion claim.
+
+
+### Extended post-CTS repair and storage recovery — 10 October 2026
+
+An isolated copy of the input-stage candidate now completes 1,000 additional
+setup-repair iterations followed by hold repair and native legal placement.
+The original four clocks, SDC, 5% early/late derates and three library corners
+are unchanged. Fresh placement-based parasitics give these worst slacks:
+
+| Corner | Original setup / hold (ns) | After setup + hold repair (ns) |
+| --- | --- | --- |
+| Slow | -2.554048 / -0.198767 | -2.347468 / +0.246712 |
+| Typical | -0.740006 / -0.176824 | -0.433754 / +0.149757 |
+| Fast | +0.258116 / -0.206581 | +0.568968 / +0.011281 |
+
+Setup repair alone regressed all three hold results; the follow-up repairs
+those regressions. These numbers are **placement estimates, not final routed
+timing**. Slow and typical setup remain negative. Exact Boolean comparison now preserves all 41,202 boundary bits: every top
+output and every data, reset, clock, enable and address input across 12,321
+flip-flop, clock-gate and SRAM instances. The original and repaired netlist
+exports reproduce byte-for-byte; six resized flip-flops retain identical
+parsed Liberty state functions. Four actual netlist faults (data, clock, SRAM
+address and state-function changes) reject. This is a two-state logical
+preservation proof, not electrical or SRAM qualification. A separate global
+routing experiment has started from the verified repaired database, with fresh
+final ODB/SDC/SPEF comparison queued. The original two routes remain active.
+
+A separate balanced TX data-selector candidate retains all existing handshake,
+packet-owner and framing logic. Two all-input combinational proofs, four actual
+logic faults, nine affected port tests, twenty mapped register bindings and four
+mapped-graph faults pass. Against the input-stage-plus-prefetch candidate, its
+unplaced setup WNS changes from -1.952128 to -1.911459 ns (slow), -0.057888
+to +0.140903 ns (typical), and +0.880184 to +0.880448 ns (fast). Slow hold
+regresses from -0.469247 to -0.496490 ns; typical and fast hold remain
+-0.539480 and -0.601382 ns. It is not adopted. Both this candidate and the
+original prefetch candidate have isolated placement/CTS comparisons in progress;
+neither automatically launches routing.
+
+The first 744-device connected and 300-device physical-component captures
+stopped at the SSD reserve guard. Their incomplete prefixes are retained and
+are not circuit pass/fail verdicts. Generated transfer copies were removed only
+after complete public readback receipts and matching hashes of every retained
+original were verified. No original waveform was deleted. The identical
+circuits are rerunning in fresh `native02` directories. Frozen decks, includes,
+device census, fixtures, timesteps and all measurement criteria match the first
+attempt. The connected driver's first retry preparation referenced a nonexistent
+provenance filename; it failed before launching ngspice, was retained separately,
+and the filename was corrected before the actual retry. Independent full-wave
+review is queued for both runs. Full serial Gen3 x4 PHY, parent/main-chip PHY
+integration and final setup/hold closure remain open.
+
+
+A prepared **753-device** connected candidate replaces the schematic nine-device
+gain/follower core with its eighteen-device physical model and 46 R / 98 C.
+All other 735 devices and 7,510 wire records remain identical; the total is
+7,654 wire records and 2,136 observation columns. Its first composition check
+rejected a floating capacitance-reference name copied from the isolated fixture.
+The corrected parent binds that reference explicitly to its declared `avss`.
+All eighteen devices and 144 wire elements now match the independent physical
+component under named port translation. Six actual connection/device/wire
+faults reject; an initial contact fault that changed no text was rejected by
+the harness and corrected to mutate the actual finite-contact value.
+**This candidate is prepared only.** No native run, parent routing or main-chip
+PHY integration is accepted; the running 744/300 trials must complete first.
+
+The failed 739-device capture is now fully public: 2,430,957,503 bytes, SHA256
+`f32a66fd3d9113bd3d70d21b82997b8b0ff83e8cfac0dfcb170d2dbaed3f0f96`,
+split into five ordered parts. The [739 source, result and reassembly records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower739-failed-20261010.records.tar.gz)
+are 642,358 bytes, SHA256
+`a6a0cc78baedc2e4e75881139919a0dc79691a86f48b337d8b4b5db22814a6aa`.
+Every public part and record archive was read back completely. The native
+functional failure is unchanged. The separate 716-device long-capture upload
+is still in progress and is not claimed delivered.
+
+
+The [post-CTS repair, Boolean proof and balanced-TX records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-postcts-repair-balanced-tx-records-20261010.tar.gz)
+contain 136 evidence members plus the manifest, 76,995,597 bytes, SHA256
+`835aa224bac640bf4804b29d622dab9a9ed05b860ea85520118e381a605bac7f`.
+Every archive member and the full anonymous public download were checked.
+The package contains original/repaired databases and netlists, parsed Boolean
+models, complete expression comparisons and actual fault controls. It also
+contains the prepared 753-device composition; its native driver was prepared
+after this package and is not included. No 753 simulation has started.
+
+Two redundant SAT diagnostics were active when this capsule was captured.
+After the complete exact-expression proof and four actual netlist-fault tests
+passed, both were stopped to release memory for routing and analog work. Their
+partial logs are retained locally and neither SAT run is counted as passed.
+The acceptance basis is the completed exact Boolean boundary comparison with
+state-function identity and independently repeated source bindings. Final
+routed timing, physical signoff and full serial PHY acceptance remain separate.
+
+Machine-readable status: [post-CTS preservation and open timing](evidence/pcie-postcts-preservation-20261010.json).
