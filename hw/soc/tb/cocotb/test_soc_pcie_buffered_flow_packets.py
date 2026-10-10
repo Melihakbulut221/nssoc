@@ -281,6 +281,34 @@ async def bounded_pressure_no_side_effect_before_release_and_dllp_progress(d):
     assert b.v("credit_header_limit_o") & 255 == 20
     assert len(b.releases) == 6 and not b.v("rx_recovery_o")
 
+    # Fill all replay slots without ACKing them. A fifth completion must retain
+    # its first byte while stalled, then drain exactly once after a cumulative ACK.
+    b = Bench(d)
+    await b.reset()
+    await b.initialize()
+    for seq in range(4):
+        await b.tlp(request(4, CID << 16, tag=seq), seq)
+        for _ in range(160):
+            await b.idle(1)
+            if len(b.completions()) == seq + 1:
+                break
+        else:
+            raise AssertionError("Completion did not reach the replay window")
+    expected = [
+        frame_bytes(tlp_bytes(response(data=0xFFFF, tag=seq)), seq)
+        for seq in range(5)
+    ]
+    assert b.completions() == expected[:4]
+    assert b.v("buffered_o") == 4 and b.v("outstanding_o") == 4
+    await b.tlp(request(4, CID << 16, tag=4), 4)
+    await b.idle(90)
+    assert b.completions() == expected[:4] and not b.v("source_error_o")
+    await b.wire(expected_dllp(0, 3), 1)
+    await b.idle(140)
+    assert b.completions() == expected
+    assert b.v("buffered_o") == 1 and b.v("outstanding_o") == 1
+    assert not b.v("source_error_o") and not b.v("retrain_request_o")
+
 
 @cocotb.test()
 async def unexpected_completions_are_quarantined_and_retraining_restarts_epoch(d):

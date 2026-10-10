@@ -1598,3 +1598,83 @@ captures per corner and the independent all-device reviewer:
 | [Fast, 1.32 V, -40 C](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-clockbuffer231-ffm40-20261010.tar.gz) | 398,105,632 | `a048fd002577528b0ebe6f65faa29eb499054d7c7e95b2464587b733ad16e7a5` |
 
 These are failed characterization records, not passing PVT qualification.
+
+### Replay input stage and local credit banks — 10 October
+
+The packet-path experiment now cuts the producer-index path into the replay
+length registers with an eleven-bit registered byte/SOP/EOP/valid stage.
+DLLPs retain their existing bypass. The stage accepts a replacement byte on
+the same edge that its previous byte drains; link/global reset cancels it.
+An inductive proof of the exact RTL span checks token conservation, byte and
+framing order, and stability during backpressure. Three actual corruptions
+produce counterexamples. The mapped IHP graph contains all eleven registers;
+all 24 replay-length input cones stop reaching the producer index, and an
+actual graph bypass is detected.
+
+Five buffered integration cases and four reliable-packet cases pass. A real
+overwrite-while-stalled mutant initially escaped the integration suite, despite
+being caught by formal verification. The existing pressure testcase now fills
+all four replay slots, holds a fifth completion, then retires the first four
+with a cumulative ACK. It requires all five exact completions, in order and
+without duplication. Both canonical RTL and the candidate pass this expanded
+five-case suite; the canonical design mapped with unmodified IHP native-cell
+models also passes all five.
+Three candidate RTL faults are rejected by the expanded suite. The canonical
+ownership/wiring regression passes all fifteen pytest cases without skips.
+The initial short-wait test attempt failed on both good implementations and is
+retained as a rejected harness attempt, not a valid negative control.
+
+The stage builds on a local-credit-bank experiment. Whole-module sequential
+equivalence proves all 285 matched points against the frozen serial reference,
+including explicit clock/reset events. All 36 mapped data-limit input cones
+use only their own bank's consumed counter. A cross-bank reconnection is
+detected. The credit tests also exercise a simultaneous debit at the modulo
+half-range boundary; ignoring that debit is rejected. Neither change adds
+clock exceptions or relaxes the original timing constraints.
+
+The table compares the worst reported path across **all path groups** under
+the same unplaced whole-chip repair screen. Values are slack in ns; negative
+values are violations. The first printed reset-recovery path was initially
+misread as the worst path; the saved analysis corrects that mistake. The
+limiting slow path was a PCIe credit data path, not that reset-recovery path.
+
+| Candidate | Slow setup | Typical setup | Fast setup | Slow hold | Typical hold | Fast hold |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| RX + metadata baseline | -2.340676 | -0.111405 | 0.950002 | -0.481901 | -0.539480 | -0.601382 |
+| Registered packet grant | -2.332383 | -0.251033 | 0.839703 | -0.481884 | -0.539480 | -0.601382 |
+| Grant + two-stage reset release | -2.090780 | 0.035042 | 1.298263 | -0.465004 | -0.539480 | -0.601382 |
+| Local credit banks | -2.162018 | -0.222710 | 0.860789 | -0.507282 | -0.539480 | -0.601382 |
+| Local banks + replay input stage | -1.743568 | 0.076574 | 0.900215 | -0.475942 | -0.539480 | -0.601382 |
+
+The last candidate improves slow setup by 0.597108 ns and typical setup by
+0.187979 ns against RX + metadata, while fast setup regresses by 0.049787 ns.
+It remains an isolated candidate, with a fresh full placement/routing run
+started under the same clocks, floorplan, macros and physical settings. Both
+the RX + metadata route and this new route require independent final
+ODB/SDC/SPEF reloads. **Unplaced improvement does not close setup or hold.**
+The separate TX-prefetch priority-30 global-route attempt ends with 132
+overflow units, compared with 150 before. It is rejected; detailed routing
+was not started. The native router's overflow-increase limit ended that trial,
+not an elapsed-time timeout.
+
+The [complete digital trial capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pcie-replay-input-stage-and-controls-20261010.tar.gz)
+contains 564 evidence members plus a member manifest: actual candidate RTL,
+mapped JSON/netlists, methods, tests, counterexamples, timing reports and
+retained failed attempts. Its 44,439,122 bytes have SHA256
+`08ffc5f42f67b90e5e68050eb4b60dbed977da0427e7808cdd32a04970f0b2b2`.
+All archive members were checked, and every public byte was downloaded
+anonymously and compared with the local archive. ODB files and simulation
+build products are omitted and hash-pinned; active physical/analog outputs
+are excluded. Historical benchmark bytes are preserved in named snapshots;
+the capsule identifies which failed harness results must not be used.
+
+On the analog side, a new connected 735-device source trial replaces the two
+36-device CMOS toggles with a second copy of the existing 91-device CML /4.
+The unchanged physical 43-device receiver then drives the physical 148-device
+modulo-five counter. The trial retains 98 HBT devices, 7,510 component wire-RC
+records and 2,091 saved columns. Its nominal 50 ns simulation uses the actual
+VCO and connected feedback, without an internal ideal clock or VCTRL clamp.
+This is a **pending source-composition experiment**: component RC is reused,
+but the new parent interconnect has neither layout nor extracted RC. It is
+not evidence of PLL acquisition, passing corners, full serial Gen3 x4, or
+main-chip PHY integration. The unchanged 716-device 200 ns run also continues.
