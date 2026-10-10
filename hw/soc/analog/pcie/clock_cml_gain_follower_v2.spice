@@ -1,0 +1,14 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Experimental 9-device gain/follower circuit; not PHY acceptance.
+.subckt nssoc_cml_gain_follower9 cp cn bp bn avdd avss sub
+XAP an cp atail sub npn13g2 nx=2 we=0.07u le=0.9u
+XAN ap cn atail sub npn13g2 nx=2 we=0.07u le=0.9u
+XRAP avdd ap sub rppd w=2.0u l=1.5u ps=0.0u b=0 m=1 sw_et=1
+XRAN avdd an sub rppd w=2.0u l=1.5u ps=0.0u b=0 m=1 sw_et=1
+XRAT atail avss sub rppd w=2.0u l=8.0u ps=0.0u b=0 m=1 sw_et=1
+XFP avdd ap bp sub npn13g2 nx=2 we=0.07u le=0.9u
+XFN avdd an bn sub npn13g2 nx=2 we=0.07u le=0.9u
+XRP bp avss sub rppd w=2.0u l=8.0u ps=0.0u b=0 m=1 sw_et=1
+XRN bn avss sub rppd w=2.0u l=8.0u ps=0.0u b=0 m=1 sw_et=1
+.ends nssoc_cml_gain_follower9

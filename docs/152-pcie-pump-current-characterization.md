@@ -2171,3 +2171,64 @@ Full serial PHY, parent/main-chip physical integration and final timing remain
 open.
 
 Machine-readable snapshot: [stream runtime and preserved credit arithmetic](evidence/pcie-stream-runtime-prefix-20261010.json).
+
+### V2 physical component passes; metal-only repair rejected
+
+The shorter-load **V2 physical component passes its complete finite-point
+experiment**: 80 ns, 206,811 rows and 880 columns, with all seven functional
+checks and all 300 electrical bounds passing independent full-capture review.
+The critical gain transistor's minimum VCE rises from **0.3980407425 V to
+0.4822830430 V**, above the unchanged **0.4 V** requirement. The two collector
+loads change from 2.0 to 1.5 micrometres; the remaining circuit values and
+external 160 mV / 2 GHz sinusoidal stimulus remain unchanged. This finite nominal
+component result does not establish PVT, actual upstream-drive performance,
+qualified RF/substrate extraction, PLL lock or a full Gen3 x4 PHY.
+
+The separate metal-only variant finishes the same complete experiment with
+seven functional passes but the same one-device electrical failure:
+**0.3976847018 V**. Removing those internal stubs alone does not repair the
+headroom, so it is not selected for integration.
+
+The [V2 circuit](../hw/soc/analog/pcie/clock_cml_gain_follower_v2.spice),
+[layout generator](../hw/soc/flow/make_pcie_cml_gain_follower_v2.py),
+[native physical checker](../hw/soc/flow/check_pcie_cml_gain_follower_v2.py) and
+[LEF checker](../hw/soc/flow/check_pcie_cml_gain_follower_v2_lef.py) retain V1 as a
+separate historical design. Fresh canonical regeneration is independently
+identical to the simulated V2 geometry, transformed labels, ports, routes, LEF
+and transistor reference. Canonical native DRC (zero violations across 560
+rules), hierarchical/flat eighteen-device LVS, five actual physical/reference
+faults, seven LEF pins and three LEF faults pass. Seven V2 source tests and
+Ruff also pass.
+
+A new 753-device parent preparation uses this validated eighteen-device V2
+component and its 46 R / 98 C; the other 735 devices and 7,510 wire records stay
+unchanged. Six actual parent-composition faults and five measurement faults
+reject. The native boundary checker now includes the two explicit clock-load
+capacitors in its fixture comparison. An actual launch attempt confirms that
+the guard rejects while the 744-device clean retry is pending. The watcher
+requires both that clean result and the independently passed V2 component before
+starting the connected physical-component simulation. Parent routing and
+main-chip PHY integration remain unvalidated.
+
+The first kept-prefix credit trial is **rejected for timing regression** despite
+passing equivalence and functional tests. Unplaced setup WNS changes from
+-1.911459 to -2.154857 ns (slow), +0.140903 to +0.009181 ns (typical) and
++0.880448 to +0.798386 ns (fast). Slow hold improves by 27.243 ps; the other hold
+results stay unchanged. The new critical path begins at packet-length bit 1.
+A separate candidate folds the DWORD-to-credit rounding carry into the parallel
+subtraction, preserving concurrent update/debit and half-range behavior.
+Its 402 equivalence cells, all-input arithmetic with four actual faults and ten
+unchanged port tests pass; whole-chip mapping and timing estimates are pending.
+Neither candidate is adopted into the main RTL.
+
+The original **failed** physical300 waveform is now fully public in three
+ordered parts: 1,333,512,690 bytes, SHA256
+`66cab6f6fe4a4dfd226a90c6b1e100d1b3d6a4ba726d0b33ee55d9e4239bdb93`.
+Its [120-member source/result and reassembly records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-physical300-failed-20261010.records.tar.gz)
+are 1,308,932 bytes, SHA256
+`79dc53a3651e0644332a46bba4e8f44c1dd642d5ca15703a21ae2030f44016f3`.
+All public bytes were read back. The passed V2 waveform and complete records are
+being published separately; delivery is not yet claimed. Original captures and
+failed verdicts remain intact.
+
+Machine-readable comparison: [V2 physical headroom and remaining integration](evidence/pcie-v2-physical300-20261010.json).
