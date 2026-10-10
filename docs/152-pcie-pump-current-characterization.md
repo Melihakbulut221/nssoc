@@ -2054,3 +2054,59 @@ state-function identity and independently repeated source bindings. Final
 routed timing, physical signoff and full serial PHY acceptance remain separate.
 
 Machine-readable status: [post-CTS preservation and open timing](evidence/pcie-postcts-preservation-20261010.json).
+
+
+### Physical headroom failure and isolated repairs — 10 October 2026
+
+The completed **300-device physical component fails acceptance**. All seven
+functional checks pass, but one of 300 devices violates the unchanged 0.4 V
+minimum collector-emitter voltage: `xtest.xif.xd0006` (gain transistor XAP)
+reaches **0.3980407425 V**. Independent review of the complete 80 ns capture
+reproduces both the functional results and all device limits. The violation
+repeats in 144 intervals, including 8,551 sampled points; it is not an isolated
+startup event. The original 753-device parent launch guard therefore exits
+without starting its native simulation.
+
+Two separate physical repairs are under test with the same external stimulus,
+80 ns duration, 0.5 ps maximum timestep and original acceptance criteria:
+
+- The shorter-load candidate changes only the two collector-load lengths from
+  2.0 to 1.5 micrometres. Native DRC, transistor LVS, LEF, 46 R / 98 C extraction
+  and actual fault controls pass.
+- The metal-trim candidate retains every device value and removes three internal
+  Metal5 stubs. Every other drawing layer, child geometry and external pin is
+  independently identical. Native DRC, transistor LVS, LEF, 46 R / 97 C extraction
+  and actual fault controls pass. Its first geometry checks mishandled origin
+  normalization/child overlaps and then string-box parsing; the retained fourth
+  checker validates the exact translated polygon differences. The first
+  composition harness expected the old capacitor count; the corrected checker
+  binds every actual extracted element and rejects six injected faults.
+
+Both candidates preserve the other 282 devices and 2,436 downstream wire
+records. Their native transient results are pending. The separate 744-device
+connected schematic simulation is also still running; none of these records
+establishes a qualified full serial PHY or its main-chip integration.
+
+The original RX-plus-metadata and replay-input routes have now **failed global
+routing**, with 1,151 and 535 overflow units respectively (`GRT-0116`). They
+finished native congestion repair rather than hitting an elapsed-time limit.
+Neither produced final detailed routing or final extracted timing. The extended
+setup/hold-repaired route continues. A separate experiment starts from the same
+Boolean-proven repaired database and changes only the global router's capacity
+reserve from 20% to 10%. This [OpenROAD adjustment](https://openroad.readthedocs.io/en/latest/main/src/grt/README.html)
+changes the tracks assumed available to global routing; it may increase the
+burden on detailed routing. Zero overflow, actual detailed DRC and independent
+extracted-RC timing remain required. No clocks, timing margins or physical
+acceptance checks were relaxed.
+
+The [physical300 failure and two physical repair records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-physical300-headroom-and-variants-20261010.tar.gz)
+contain **594 members plus the manifest**, 3,569,323 bytes, SHA256
+`fc2767b1378285c52c1b4c273454a60956aa0a415cb33d1f18199dd47730f526`.
+Every member and the full anonymous public download were verified. The package
+includes complete failed-component result/review records, physical sources,
+checks, fault cases, frozen candidate preparations and the two failed router
+logs. Large original300 captures are explicitly excluded, hash-pinned and
+retained locally; their full-wave publication is not claimed. Running candidate
+captures and final results are not included.
+
+Machine-readable snapshot: [physical headroom and open route status](evidence/pcie-physical-headroom-20261010.json).
