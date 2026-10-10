@@ -1782,8 +1782,8 @@ Five actual physical/reference corruptions and three LEF corruptions are
 rejected. The seven-conductor wire graph has 21 geometric terminal/port
 references and exports 21 resistors and 49 capacitors. All thirteen raw
 extraction-corruption controls pass. The eight native devices are bound to
-compact models with finite contacts; simulation with this new physical model
-is still required. The extraction is not qualified foundry/RF/substrate PEX.
+compact models with finite contacts; the corrected 290-device nominal
+component simulation described below passes. The extraction is not qualified foundry/RF/substrate PEX.
 The macro is not integrated into the main-chip layout.
 
 The [follower layout/RC and late-credit-select capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower8-layout-rc-and-late-credit-select-20261010.tar.gz)
@@ -1813,9 +1813,24 @@ finite substrate contacts explicitly. It rejects the actual prior misbound
 model and four further polarity, supply, body and size corruptions. Equality
 against the same incorrectly composed device list was insufficient; that older
 boundary result is retained as limited evidence. The corrected `native03` deck
-passes the new independent binding check and is under the same 80 ns electrical
-simulation. Its electrical verdict remains pending. Parent wiring, RF/substrate
-extraction and full PHY operation are still not accepted.
+passes the new independent binding check and completes the same 80 ns, 0.5 ps
+nominal simulation: all seven functional predicates and all 290 device electrical
+screens pass. Independent complete-wave reviewers reproduce both verdicts on
+161,886 rows and 856 columns, including clean diagnostics, zero-source operating
+point and 36 native OFF readbacks. The fixture uses an external ideal 2 GHz,
+250 mV differential square-wave input. Actual upstream loading, PVT, parent
+wiring, RF/substrate extraction and full PHY operation remain unaccepted.
+
+The [complete passing physical component capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower290-physical-interface-passed-20261010.tar.gz)
+contains 202 evidence members plus the manifest, including the full native
+capture and independently reproduced canonical layout checks. Its 1,012,436,165
+bytes have SHA256
+`457283c7b437db15f963bd7d47c4f0561789ad89c51a38808c47fc055bb89645`.
+All members and all anonymously downloaded public bytes were verified. The
+[complete earlier failed pin-order capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower290-failed-pin-order-20261010.tar.gz)
+is retained separately: 109 members plus manifest, 994,742,041 bytes, SHA256
+`11bee7b479953e2b841ef76de7d326095f09a8db243eb029d9adbaa5be487fe3`.
+Its public readback also passes.
 
 The follower source and reproducible generator are now available in
 `hw/soc/analog/pcie/clock_cml_input_follower_v1.spice` and
@@ -1830,11 +1845,47 @@ layout. Six source regression cases pass. The corresponding checkers are
 These are development component tools; their output explicitly leaves
 main-chip integration and full PHY acceptance false.
 
-A **739-device connected source trial is running** with the same followers
-between the two CML stages, the actual VCO and unchanged PFD, pump, reference,
-reset and supplies. It preserves all 7,510 existing component wire records,
-100 HBT devices and 2,100 saved columns. No internal ideal clock or VCTRL clamp
-is added. The new follower and parent interconnect are not yet extracted in
-that trial. The separate unchanged 716-device 200 ns run and both whole-chip
-physical candidates continue. **Full serial Gen3 x4, main-chip PHY integration
-and final setup/hold remain open.**
+The **739-device connected source trial failed all eight functional predicates**
+while all device electrical screens passed. It includes the same schematic
+followers between both CML stages, actual VCO and unchanged PFD, pump, reference,
+reset and supplies, preserving 7,510 existing component wire records, 100 HBTs
+and 2,100 saved columns. Independent complete-wave reviewers reproduce both
+verdicts. No internal ideal clock or VCTRL clamp is added. During 40–50 ns, the
+first CML output has 2.367–2.391 V common mode and -0.165 to +0.155 V differential
+swing; the second stage has only -0.085 to +0.077 V differential swing and the
+receiver stays around 0.150–0.155 V. This measured failure motivates a separate
+input-gain-stage experiment; it does not prove that gain alone will close the
+loaded loop. The new follower and parent wiring are not extracted in this trial.
+
+The unchanged **716-device 200 ns run also fails acceptance**, despite passing
+all electrical screens and 11 of 13 functional predicates. Every adjacent
+settled-stage division passes, but total received-to-feedback counts include
+19/21 instead of always 20 and VCO-to-feedback counts include 79/81 instead of
+always 80. The mean VCO is 7.745544 GHz and feedback 96.777425 MHz against the
+100 MHz reference. VCTRL spans 0.584108–0.864336 V over 160–200 ns. Independent
+complete-wave review does not establish PLL lock; accumulated edge delay and
+control ripple require further analysis. Neither failed verdict is relaxed.
+
+A paired nominal diagnostic uses identical external 2 GHz sinusoidal input,
+160 mV differential amplitude and 2.378 V common mode. It compares the existing
+286-device interface with a 291-device candidate adding two native HBTs and
+three finite resistors before the followers. Both first captures exceeded their
+180,000-row host capture bounds before 80 ns; those prefixes remain. The new
+captures expand only the row budget to 240,000, with unchanged electrical decks,
+observations and acceptance predicates independently checked. The baseline has
+now completed with 206,811 rows: only input-to-follower edge preservation passes;
+the other six functional predicates fail. Independent full-wave review confirms
+that failure. The gain-stage candidate remains pending. This is an ideal
+external-fixture experiment, not the actual loaded upstream source; the new
+five-device stage has no extracted layout yet.
+
+Both whole-chip physical candidates remain under routing. Fresh post-CTS,
+placement-RC readback of the replay input-stage candidate gives setup/hold WNS
+of SS -2.554048/-0.198767 ns, TT -0.740006/-0.176824 ns and FF
++0.258116/-0.206581 ns. These are not final routed results. Its slow critical path
+runs from replay read-position storage to the PCIe TX data output. A separate
+composition adds nine TX prefetch registers to the eleven input-stage registers;
+reset/equivalence proofs, 16 port tests, three actual RTL faults and all twenty
+mapped register bindings pass. Its unplaced setup WNS remains negative at SS
+-1.952128 ns and TT -0.057888 ns, so it has not been adopted as a timing fix.
+**Full serial Gen3 x4, main-chip PHY integration and final setup/hold remain open.**
