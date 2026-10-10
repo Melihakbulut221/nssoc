@@ -2110,3 +2110,64 @@ retained locally; their full-wave publication is not claimed. Running candidate
 captures and final results are not included.
 
 Machine-readable snapshot: [physical headroom and open route status](evidence/pcie-physical-headroom-20261010.json).
+
+### Streamed capture resource check and preserved credit arithmetic
+
+The 744-device connected schematic trial completed all 50 ns and 160,079 rows.
+Its eight functional checks and all 744 electrical bounds pass independent
+full-capture recomputation; 102 native OFF flags and the zero-source operating
+point also match. **Its original overall result remains
+`ERROR_NATIVE_OR_CAPTURE`**, because the strict startup checker rejects ngspice's
+physical-free-memory advisory. This is not a clean native acceptance or proof
+of PLL acquisition. No numerical convergence warning was found in the retained
+log after separately identifying that exact resource advisory; injected
+numerical-warning, missing-completion and changed-advisory records all reject.
+
+Increasing the process address-space limit from 2 to 3 GiB did not remove the
+advisory. That retry was stopped early after the same known startup prerequisite
+failed, and its prefix is retained. Hints to release only our completed wave and
+generated-site file caches changed no file contents and did not solve the free
+memory issue. A later free-memory-only launch wait was superseded before it
+started a solver.
+
+The [pinned ngspice-47 implementation](https://github.com/imr/ngspice/blob/a80f6e3e95d51534905b1f23410a951802666656/src/frontend/outitf.c)
+computes the advisory from saved-vector count times the full estimated number
+of timesteps. The capture driver streams those vectors to an SSD FIFO instead.
+A revised experimental driver uses the supported `no_mem_check` option for that
+estimate and explicitly enforces **4 GiB available RAM at entry, 2 GiB throughout,
+a 3 GiB native address-space limit**, and the existing row, file and SSD bounds.
+This is an explicit resource-policy correction. Numerical diagnostics,
+zero-source/OFF startup checks, all device limits and all functional measurement
+criteria are unchanged. Native positive and negative controls demonstrate that
+the resource advisory disappears while an actual singular-matrix warning still
+appears and rejects. A first control fixture did not trigger a transient memory
+estimate and was retained as a failed harness attempt; the corrected fixture
+runs a transient with a declared early stop. Low-memory guard injection rejects.
+
+The fresh `native05` connected run has started without the advisory. Its actual
+deck differs only by the resource-estimate option; all devices, includes,
+stimulus, 50 ns duration and 0.3125 ps maximum timestep remain identical. Its
+complete verdict and independent review are pending. Earlier errors have not
+been rewritten as passes.
+
+A separate credit-timing experiment retains intermediate parallel-prefix carry
+signals so synthesis can be measured against the long serial subtraction path.
+It preserves same-cycle credit update/debit and half-range behavior: **402
+sequential equivalence cells, an all-36-input arithmetic proof with three actual
+faults, five unchanged credit tests and five unchanged buffered-interface tests
+pass**. The whole-chip mapping and placement estimate are pending. An admission
+stall alternative was not implemented because it would change the existing
+valid simultaneous half-range case. No new clock exception or RTL adoption is
+claimed.
+
+The [stream-runtime and kept-prefix records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-stream-runtime-and-kept-prefix-records-20261010.tar.gz)
+contain **304 members plus the manifest**, 1,604,395 bytes, SHA256
+`6ac349c219b225c9b81e2f0822d4c3fcbd591ba2f72df3c352c298c6953dad47`.
+All members and all anonymous public-download bytes were checked. The archive
+contains completed diagnostic/fault records, immutable source preparations and
+explicit launch snapshots. Large earlier captures are excluded and hash-pinned;
+the active capture, active mapping outputs and their final verdicts are excluded.
+Full serial PHY, parent/main-chip physical integration and final timing remain
+open.
+
+Machine-readable snapshot: [stream runtime and preserved credit arithmetic](evidence/pcie-stream-runtime-prefix-20261010.json).
