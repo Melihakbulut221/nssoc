@@ -2719,3 +2719,71 @@ download were verified: **6,050,650 bytes**, SHA256
 The [machine-readable record](evidence/pcie-compact-hot-refresh-20261010.json)
 contains the full capacitance comparison and scope. Large new waveforms remain
 local pending separate byte-for-byte publication; their hashes are recorded.
+
+
+## 2026-10-10: credit timing comparison and physical Ethernet hold repair
+
+The mapped refresh-counter candidate has eight stored bits and passes its
+graph checks, but its SS setup/hold results regress to -1.526982/-0.494834 ns.
+It was not promoted as a timing improvement. Factoring the credit-update
+acceptance predicate in a separate candidate passes full-module equivalence
+without environmental assumptions, five credit and five buffered tests,
+and three actual RTL fault counterexamples. Whole-chip mapping preserves
+the inherited replay, TX-egress and eight timer registers. All-group
+unplaced timing is:
+
+| Candidate | SS setup / hold (ns) | TT setup / hold (ns) | FF setup / hold (ns) |
+| --- | --- | --- | --- |
+| TX-egress baseline | -1.447427 / -0.469247 | +0.179228 / -0.539480 | +1.120581 / -0.601382 |
+| Refresh width | -1.526982 / -0.494834 | +0.214218 / -0.539480 | +1.143593 / -0.601382 |
+| Credit predicate + refresh width | -1.422552 / -0.504519 | +0.204073 / -0.539480 | +1.134680 / -0.601382 |
+
+The final row improves setup slightly against the TX-egress baseline but
+regresses SS hold. These are development measurements before placement;
+no final timing closure or main-RTL adoption follows from them.
+
+The older rounded-credit candidate completed post-CTS repair and fresh
+three-corner analysis, with SS setup -2.281758 ns and FF hold -0.211069 ns.
+The worst fast hold path was an Ethernet output. A separate physical ECO
+adds **two noninverting delay cells to each of ten Ethernet outputs**,
+with unchanged SDC and clocks. After legalization and fresh timing, the
+Ethernet output group has positive setup and hold in every tested corner:
+
+| Corner | Ethernet setup (ns) | Ethernet hold (ns) |
+| --- | ---: | ---: |
+| SS | +2.292001 | +1.601952 |
+| TT | +3.409027 | +0.728141 |
+| FF | +4.016650 | +0.257726 |
+
+The graph audit preserves **111,997 original cells, 572,572 pins and 354
+ports** after collapsing only the 20 added identity delay cells. Their
+identity functions are checked in all three Liberty files; four corruptions,
+including a real ground short, are rejected. The first reader assumed exact
+requested cell names and rail names; OpenROAD appends numeric suffixes and
+uses VPWR/VGND. The corrected reader validates those actual names and rails;
+the original native layout and failed reader are retained.
+
+This fixes the sampled Ethernet hold group in this placement-based candidate,
+not full-chip timing. Whole-chip SS setup is still -2.291661 ns (9.903 ps worse
+after legalization), and FF hold is still -0.062701 ns on other paths.
+Routed parasitics and signoff are still required. The new TX-egress layout
+is a different candidate and does not inherit this ECO automatically.
+
+The 150-iteration global-route attempt stopped internally after extra
+iteration 61 because congestion stopped improving; it ended with **87
+overflow**, so the detailed-route gate rejected it. This was not an elapsed
+time limit. The separate grid-origin experiment remains unaccepted pending
+its own result.
+
+The complete hot physical302 waveform now has verified public part downloads
+and records, linked in the machine-readable evidence below. Its finite
+component pass remains distinct from PLL/serial-PHY qualification.
+
+The [471-file evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-credit-ethernet-closure-records-20261010.tar.gz) contains the completed RTL
+proofs, mapped designs, physical ECO, native reports and retained failures.
+All archive members and the complete public download were verified:
+**85,371,630 bytes**, SHA256 `0a6bd386828abe437e2d32139934e25775c3ba15ce503e55383ffa545d049f29`.
+The [machine-readable record](evidence/pcie-credit-ethernet-closure-20261010.json)
+contains the comparisons, graph checks and full-wave delivery links.
+Full serial Gen3 x4, routed main-chip integration and final setup/hold closure
+remain open.
