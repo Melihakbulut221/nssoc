@@ -2591,3 +2591,60 @@ The [machine-readable progress record](evidence/pcie-scene-hot28-egress-20261010
 keeps the acceptance limits explicit. Cold302 full-wave publication is complete;
 new nominal302/hot28 waveforms remain local pending separate publication.
 Full serial PHY, routed main-chip integration and setup/hold closure remain open.
+
+
+## 2026-10-10: fresh hot-divider geometry and completed parent-load failure
+
+The hot28 divider now has real regenerated GDS, zero violations across
+560 DRC categories, strict hierarchical/flat **91-device LVS**, and five
+native fault controls. Fresh extraction binds all 283 device terminals,
+205 metal reference probes and 37 conductors. Its **379 resistors and 646
+capacitors** pass native/export topology, point-capacitance and conductor
+checks, thirteen raw-export mutations and six composition mutations.
+This is still unqualified substrate/RF PEX. The early failed checker attempts
+are retained; binary64 database/text comparison allows only four ULP of
+serialization roundoff, without changing DRC/LVS or electrical limits.
+
+The new physical hot model combines gain18, divider91, receiver43 and
+buffered-counter150: **302 devices, 2,607 wire elements and 888 captured
+columns**. Four source-boundary faults and five measurement faults are rejected.
+The native 125 C run has started. Its divider uses the actual finite extracted
+taps/body model instead of the older pilot's externally clamped body boundary;
+it therefore requires a fresh native result. No passing result is claimed yet.
+
+The registered TX candidate maps to the expected **13 egress flops**, retaining
+20 existing replay/input registers; four mapped-graph faults are rejected.
+The initial graph checker expected an internal bus name that Yosys aliased
+to the ports. The recovered check follows the actual twelve payload/flag
+output bits and internal valid bit to their physical flop Q drivers.
+All-group unplaced timing reports SS **-1.447427/-0.469247 ns**, TT
+**+0.179228/-0.539480 ns**, FF **+1.120581/-0.601382 ns** (setup/hold).
+The critical SS endpoint is now an internal register reached from link-up.
+These are not routed timing results; a separate placement/CTS comparison is
+queued behind a 16 GiB disk and 10 GiB available-memory reserve.
+
+The parent-loaded753 diagnostic completed with **all eight functional checks
+failing and only 747/753 electrical-device bounds passing**. Independent
+full-capture readers reproduce the failure; the phase-only review fails too.
+The VCO oscillates, but the divider chain fails under the parent wiring load:
+the receiver has only its startup edge, and count/feedback have no edges.
+Six VCO NPN devices exceed the current bound. This result explicitly rejects
+parent integration; component-only successes do not override it. Parent
+floorplan/interconnect loading and downstream operation require repair.
+
+With the same checkpoint and constraints, the corrected September global
+router reduced overflow from **428 to 85**. That is still a failure, so
+its detailed-route continuation did not launch. A new 150-iteration attempt
+uses the same clocks and physical rules; detailed routing remains gated by
+zero overflow, with no congestion waiver.
+
+The [414-file evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-hot28-layout-egress-map-records-20261010.tar.gz)
+contains new divider GDS/RC, mapped netlist and graph proofs, timing reports,
+the full parent-failure records and original failed attempts. All members and
+the complete anonymous public download were verified: **21,339,319 bytes**,
+SHA256 `fafec4dcdcf0674af6732a2d209977c7b291442afd1bf5d4a2ce64f7d6ab3eb4`.
+See the [machine-readable result](evidence/pcie-hot28-layout-egress-map-20261010.json).
+Original full waveforms are published separately. Only generated local copies
+with complete verified public retention may be evicted, with exact byte-level
+restoration manifests; failed results and all source records remain intact.
+Full serial PHY, routed main-chip integration and setup/hold closure are open.
