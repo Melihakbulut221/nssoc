@@ -1668,13 +1668,147 @@ build products are omitted and hash-pinned; active physical/analog outputs
 are excluded. Historical benchmark bytes are preserved in named snapshots;
 the capsule identifies which failed harness results must not be used.
 
-On the analog side, a new connected 735-device source trial replaces the two
-36-device CMOS toggles with a second copy of the existing 91-device CML /4.
-The unchanged physical 43-device receiver then drives the physical 148-device
-modulo-five counter. The trial retains 98 HBT devices, 7,510 component wire-RC
-records and 2,091 saved columns. Its nominal 50 ns simulation uses the actual
-VCO and connected feedback, without an internal ideal clock or VCTRL clamp.
-This is a **pending source-composition experiment**: component RC is reused,
-but the new parent interconnect has neither layout nor extracted RC. It is
-not evidence of PLL acquisition, passing corners, full serial Gen3 x4, or
-main-chip PHY integration. The unchanged 716-device 200 ns run also continues.
+### Credit arithmetic follow-ups and CML interface repair — 10 October
+
+The replay-input candidate now also passes all five expanded buffered cases
+when mapped to the exact unmodified IHP native-cell models. This is component
+functional verification without SDF, not whole-chip timing acceptance.
+
+Three further credit changes passed their functional checks but regressed the
+same unplaced timing screen. All are rejected; none was dispatched to routing
+or adopted into canonical RTL.
+
+| Rejected candidate | Slow setup | Typical setup | Fast setup | Slow hold |
+| --- | ---: | ---: | ---: | ---: |
+| Local parallel borrow | -2.416934 | -0.166421 | 0.947327 | -0.500273 |
+| Four-bit carry select | -2.202024 | -0.026285 | 1.028134 | -0.471086 |
+| Registered redundant availability | -2.610124 | -0.295946 | 0.876541 | -0.492084 |
+
+Values are slack in ns, sorted across all reported groups. Typical and fast
+hold remain -0.539480 and -0.601382 ns. The replay-input baseline remains
+better in slow setup at -1.743568 ns. Carry-select mapping preserves eighteen
+named nets with 54 named bits, but unused upper results become tie-cell aliases;
+these are not 54 independent gates. A cross-bank graph corruption is rejected.
+
+The registered-availability design adds sixty redundant balance bits. Its
+direct proof against the serial reference left one output unproven and is not
+accepted. A separate 546-point proof against the already-proven local-bank
+implementation, joined by exact source hashes to that implementation's
+285-point serial-reference proof, establishes sequential equivalence including
+clock/reset events. Native-cell buffered tests pass five cases. Despite this,
+the new slow critical path runs from payload length to the cached balance and
+its timing is worse. A separate follow-up moves the late debit selection after
+both precomputed balance outcomes; its proof and ten RTL cases pass, but
+mapped timing also regresses: slow setup -2.607456 ns, typical setup
+-0.253394 ns and fast setup +0.916492 ns. It is rejected as well.
+
+A real mutant that subtracts one data credit for every payload initially
+escaped the credit bench. The existing fifth testcase now uses infinite header
+credit and a finite data pool, isolating multi-credit and zero-length payloads.
+It requires exhaustion, UpdateFC restoration and a five-DWORD reservation to
+consume exactly two data credits. Canonical RTL, canonical native cells and
+the candidate each pass all five credit cases. Three actual cache corruptions
+are rejected; the four canonical credit mutation pytest cases also pass without
+skips. The fourteen-line regression is pushed in commit `8973aa62`.
+
+The [credit follow-up capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pcie-credit-timing-trials-20261010.tar.gz)
+contains 322 evidence members plus the manifest, including these three rejected
+candidates, complete mapped JSON/netlists, proofs, timing, tests and retained
+failed attempts, plus the replay-input candidate's native-cell verification.
+Its 34,683,555 bytes have SHA256
+`f5f084669c82c1e073e19bb80b51cb481ddd143452edb4168d066bd375e19f73`.
+Every member was checked and every public byte was anonymously downloaded and
+compared. Simulation build products and ODBs are omitted and hash-pinned.
+Historical credit-bench bytes are preserved; older results are not retroactively
+claimed against the expanded vectors. Active physical and analog runs are
+excluded.
+
+The connected **735-device CML cascade failed** its complete 50 ns native run.
+All eight functional predicates fail; four clock-input HBTs in the second
+CML stage violate the 0.4 V minimum settled collector-emitter screen. The
+smallest value is 0.027226 V. Diagnostics are clean, the zero-source operating
+point and all 98 OFF readbacks pass, and the full 160,079-row, 2,091-column
+capture was independently remeasured for all 735 electrical devices and
+functional predicates. Clean simulator execution does not turn this into a
+passing circuit.
+
+The saved wave identifies the connection problem: the first CML output has a
+2.3604–2.3770 V common mode, whereas its original VCO input was approximately
+1.1094–1.1693 V. Directly driving the second stage saturates its clock-input
+transistors and loads the first stage. Noisy differential crossings are not
+accepted as functioning divided clocks.
+
+The complete failed wave is 2,416,551,255 bytes with SHA256
+`8070ac7f7be1b1f6ff735951130ce3979877436706007637e5624a2b40c5557d`.
+Concatenate [part 000](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-cml735-failed-wave-20261010.part000),
+[part 001](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-cml735-failed-wave-20261010.part001)
+and [part 002](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-cml735-failed-wave-20261010.part002)
+in order and verify the hash before decoding.
+The [source, methods and failed-result records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-cml735-failed-records-20261010.tar.gz)
+are 791,606 bytes, SHA256
+`d55942fc395c718ec610f9f2fa8cc5be7663f68a1324c30d95473d086b2d086a`.
+All public bytes were checked. Redundant local transfer-part copies were
+removed only after verification; the original complete native wave remains.
+
+A new interface uses two native `npn13g2` emitter followers and two `rppd`
+resistors. The standalone 286-device test includes these four devices, the
+existing 91-device CML divider, 43-device receiver and 148-device counter with
+their component wire RC. Its **external ideal 2 GHz differential input** ramps
+from the zero-source operating point around the measured first-stage common
+mode. The 80 ns, 0.5 ps nominal run passes seven functional predicates and all
+286 electrical screens; independent full-wave reviewers reproduce both
+verdicts, clean diagnostics and all 36 OFF readbacks. The capture has 161,886
+rows and 842 columns. The corresponding second-stage clock-input HBT now has
+minimum settled VCE 0.507770 V. This fixture does not prove actual upstream
+loading, closed-loop acquisition, corners or full PHY operation.
+
+The [complete component capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower286-external-interface-20261010.tar.gz)
+contains 113 evidence members plus the manifest, including the full native
+capture and retained failed prefix. Its 994,378,326 bytes have SHA256
+`cb15bb555fbb774e348441bc2506917841c81fafd8e9326b690f91c0830e0bf6`.
+All members and all public bytes were verified. The later follower layout and
+739-device full-loop experiment are excluded from this component capsule.
+
+The initial component capture rejected nine nonexistent PLL-specific observer
+names inherited from the larger fixture. That failed prefix is retained. The
+second run removes only those nonexistent observers; every actual component
+voltage and current remains in the 842-column capture. Seven actual deck
+boundary corruptions and five measurement corruptions are rejected.
+
+The new follower macro has GDS/LEF and seven external pins. Its four circuit
+devices plus four finite substrate contacts match eight devices in both
+hierarchical and flat native LVS; the full 560-category DRC has zero markers.
+Five actual physical/reference corruptions and three LEF corruptions are
+rejected. The seven-conductor wire graph has 21 geometric terminal/port
+references and exports 21 resistors and 49 capacitors. All thirteen raw
+extraction-corruption controls pass. The eight native devices are bound to
+compact models with finite contacts; simulation with this new physical model
+is still required. The extraction is not qualified foundry/RF/substrate PEX.
+The macro is not integrated into the main-chip layout.
+
+The [follower layout/RC and late-credit-select capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-follower8-layout-rc-and-late-credit-select-20261010.tar.gz)
+contains 234 evidence members plus the manifest. Its 10,961,637 bytes have
+SHA256 `5597f508fa6732a7c26d4bc2c3b9c0dfd91c7c257e000cb77b4a4d696bae06e1`.
+All members and all public bytes were verified. It includes the eight-device
+macro, GDS/LEF, native physical checks, geometry witnesses, raw RC, thirteen
+extraction and six composition corruption controls. The separate rejected
+late-credit-select experiment includes its RTL, three-step proof, ten expanded
+port tests, actual faults, full mapped netlist/JSON and unplaced timing.
+Active analog/physical simulations are excluded.
+
+The physical follower is now under a **290-device, 80 ns component simulation**
+using its four finite contacts and distributed RC. All other divider, receiver,
+counter and external input fixtures remain unchanged. Its first capture was
+rejected because four real macro-port voltages, no longer direct intrinsic
+terminals after RC insertion, were absent from the measurement observations.
+The second run adds those four voltages explicitly for 856 columns, retaining
+all prior observations and the failed prefix. Its outcome is still pending.
+
+A **739-device connected source trial is running** with the same followers
+between the two CML stages, the actual VCO and unchanged PFD, pump, reference,
+reset and supplies. It preserves all 7,510 existing component wire records,
+100 HBT devices and 2,100 saved columns. No internal ideal clock or VCTRL clamp
+is added. The new follower and parent interconnect are not yet extracted in
+that trial. The separate unchanged 716-device 200 ns run and both whole-chip
+physical candidates continue. **Full serial Gen3 x4, main-chip PHY integration
+and final setup/hold remain open.**
