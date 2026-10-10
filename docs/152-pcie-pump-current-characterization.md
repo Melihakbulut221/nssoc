@@ -2,6 +2,8 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+> **10 October timing correction:** several experimental placement summaries used the first path group rather than the worst of all reported groups. The latest prefetch result is slow setup **-2.438101 ns** and fast hold **-0.207602 ns**. Earlier positive-hold summaries are superseded by the correction near the end of this document; no final timing acceptance was achieved.
+
 ## Measured result — 7 October 2026
 
 The exact thirteen-device pump/filter slice from the connected 570-instance study now completes all **twelve nominal 34 ns simulations**: idle, source, sink and both commands at clamped control voltages of 0.5, 0.6 and 0.7 V. Each capture contains 108,811 samples and 28 columns. All thirteen device screens and the prescribed command/supply/clamp checks pass in each case. These are finite model screens, not device qualification or closed-loop operation.
@@ -2368,17 +2370,19 @@ substrate model and independently checked complete composition; qualified
 substrate/RF extraction and loaded electrical acceptance remain open.
 
 Additional setup repair of the completed prefetch post-CTS database improves
-all three setup corners while preserving positive hold:
+all three setup corners. Corrected minima across every reported path group are:
 
 | Corner | Before setup / hold | After setup / hold |
 | --- | ---: | ---: |
-| Slow | -1.922702 / +0.444266 ns | **-1.201482 / +0.257862 ns** |
-| Typical | -0.127145 / +0.240260 ns | **+0.385336 / +0.112162 ns** |
-| Fast | +0.958840 / +0.083382 ns | **+1.285024 / +0.021554 ns** |
+| Slow | -2.573899 / +0.177596 ns | **-2.438101 / +0.184681 ns** |
+| Typical | -0.730713 / +0.040083 ns | **-0.437021 / +0.039901 ns** |
+| Fast | +0.243377 / -0.208556 ns | **+0.443068 / -0.207602 ns** |
 
-These use placement-estimated RC and propagated clocks. Netlist preservation
-is being checked before routing. The remaining slow setup violation and the
-need for fresh routed extraction prevent final timing acceptance.
+These use placement-estimated RC and propagated clocks. Exact Boolean state-graph preservation now passes for 12,330 state instances
+and 41,229 bits, including four deliberate netlist faults. Routing is running
+as an unaccepted diagnostic. Slow and typical setup and fast hold remain
+negative; an additional hold-repair experiment uses the same clocks and
+constraints. Fresh routed extraction is still required.
 
 The [1,173-member repair and temperature records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parent-thermal-repairs-records-20261010.tar.gz)
 are 14,915,527 bytes, SHA256
@@ -2394,3 +2398,58 @@ below and awaits a subsequent source capsule.
 [Machine-readable thermal, parent and timing evidence](evidence/pcie-parent-thermal-repairs-20261010.json).
 Full serial Gen3 x4, routed main-chip PHY integration, final setup/hold closure
 and manufacturing approval remain open.
+
+
+## Parent model and timing correction — 10 October 2026
+
+The complete experimental PLL parent model retains **753 devices and all
+7,967 child plus parent metal R/C elements**. A native, unsimplified flat
+transistor LVS compares its collapsed intrinsic reference with the actual
+routed parent GDS; it passes, and six device/contact/geometry/bulk/reset faults
+are rejected. A separate exact record comparison verifies all wire endpoints,
+values and device parameters, with six corruption controls. All 61 macro
+reference planes match. The shared substrate is idealized at the counter VSS
+plane; this is not qualified substrate or RF extraction. The loaded parent
+transient is prepared and waits for the separate physical753 baseline and
+independent review. This is a PLL block, not a completed serial PHY or main chip.
+
+The [1,248-member parent and proof capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parent-loaded-proofs-records-20261010.tar.gz)
+is 43,300,024 bytes, SHA256
+`89f66b068ff73d467de630e5d1d9141cd079c082cfcadaa30af066de27bc47d6`.
+Every member and complete anonymous public download were verified.
+**Erratum:** its scope text and historical timing summaries retain the incorrect
+first-group values. The corrected table above and
+[machine-readable correction](evidence/pcie-parent-loaded-and-timing-correction-20261010.json)
+supersede those claims. Native timing reports and logical-preservation evidence
+are unchanged. The new parser scans every reported group inside each phase,
+rejects incomplete/ambiguous reports, and passes 12 regression tests.
+
+The NAND input-swap cold test failed: all seven functional checks pass, but
+one MOS device reaches **1.542164 V** against the unchanged 1.5 V screen.
+The four-parameter hot screen passes all 300 electrical screens but only one
+of seven functional checks; its first divider does not divide correctly.
+Neither variant is adopted. A new 150-transistor counter adds one inverter
+from the existing complemented Q0 signal to drive the affected NAND input.
+Its DRC, hierarchical/flat transistor LVS, five physical fault controls and
+LEF with three faults pass. Its fresh extraction has **344 R / 778 C** and
+600 terminal records, with 13 raw and six composition corruption controls.
+The complete 302-device cold test is running. A separate hot parameter screen
+raises the first latch's four collector loads; it is not a new physical layout.
+
+To retain space for CAD, only the old generated failed716 compressed waveform's
+local copy was evicted after all 18 public parts were fully read back and
+fresh provider SHA256/size checks matched. Sources, failure records and an
+exact-byte restoration script remain; six restoration controls pass. The
+capsule includes this restoration method and manifest. Old pip HTTP download
+cache was also removed without changing installed environments or evidence.
+
+Full serial Gen3 x4, routed main-chip PHY integration, final setup/hold closure
+and manufacturing approval remain open.
+
+The [86-member timing correction capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-timing-allgroups-correction-20261010.tar.gz)
+contains all 20 completed timing reports, their native result records and scripts,
+the corrected parser and regression tests, and the buffered counter LEF checks.
+Two explicitly port-targeted reports are listed separately, not treated as
+whole-design reports. Its 1,235,889 bytes have SHA256
+`33d66ed8ab6b672798e23e101ef4a2ef999fb06010f23f8925dbb978426f9ed0`;
+every archive member and the complete anonymous public download match.
