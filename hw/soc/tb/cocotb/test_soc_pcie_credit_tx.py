@@ -200,3 +200,17 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
         # Without another debit, advancing those balances to the half-range
         # boundary is invalid and must leave both advertised limits intact.
         await driver.tick(fc=(2, cls, 129, 2049))
+    # Isolate data exhaustion from header exhaustion. A multi-credit payload
+    # must debit ceil(DWORDs/4), while a zero-length payload debits no data.
+    for cls in range(3):
+        await driver.init(((0, 3), (0, 3), (0, 3)))
+        assert await driver.tick(request=(cls, 0, False))
+        assert await driver.tick(request=(cls, 8, False))
+        assert not await driver.tick(request=(cls, 8, False))
+        assert await driver.tick(request=(cls, 4, False))
+        assert not await driver.tick(request=(cls, 1, False))
+        assert await driver.tick(request=(cls, 0, False))
+        # Restoring two credits permits one five-DWORD packet, exactly once.
+        await driver.tick(fc=(2, cls, 0, 5))
+        assert await driver.tick(request=(cls, 5, False))
+        assert not await driver.tick(request=(cls, 1, False))
