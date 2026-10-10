@@ -192,3 +192,11 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
         assert not await driver.tick(request=(other, 4, False))
         assert await driver.tick(request=(cls, 4, False))
         assert not await driver.tick(request=(cls, 4, False))
+    # The half-range check uses the post-debit balance: 128-1 and 2048-1
+    # are legal, even though their pre-debit sign bits are both set.
+    for cls in range(3):
+        await driver.init(((4, 1), (4, 1), (4, 1)))
+        assert await driver.tick(fc=(2, cls, 128, 2048), request=(cls, 4, False))
+        # Without another debit, advancing those balances to the half-range
+        # boundary is invalid and must leave both advertised limits intact.
+        await driver.tick(fc=(2, cls, 129, 2049))

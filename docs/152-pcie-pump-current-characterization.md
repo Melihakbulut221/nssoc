@@ -1551,3 +1551,50 @@ The combination is now undergoing fresh placement and routing with the same
 clocks, die, macro arrangement and physical settings as the registered RX
 baseline. Its final ODB/SDC/SPEF will require a fresh independent timing reload.
 No production RTL adoption, full serial PHY or final timing closure is claimed.
+
+### Physical counter clock buffer — 10 October 2026
+
+A new physical divider places one eleven-transistor clock buffer between the
+second toggle and the modulo-five counter. Q1 remains the actual toggle output.
+The 231-MOS layout passes native DRC, hierarchical and flat LVS, five deliberate
+geometry/reference faults, and the eight-pin LEF check with three faults.
+Its metal model contains 516 resistors and 1,121 capacitors; thirteen corrupted
+extraction controls and six composition controls are rejected.
+
+At nominal voltage and temperature, the complete 80 ns, 2 GHz test passes all
+six functional checks and all 231 electrical screens. Q1's minimum high level
+is 1.186328 V against the unchanged 1.080 V floor. The maximum device terminal
+difference is 1.481664 V against the unchanged 1.500 V screen. An independent
+saved-data calculation reproduces every electrical and functional record;
+the held-reset negative control remains rejected.
+
+This is **not a corner-qualified divider**. At slow MOS, 1.08 V and 125 C,
+the first stage divides the verified 2 GHz input by five instead of two.
+Downstream rising-edge ratios become ten and fifty instead of four and twenty.
+Electrical screens pass, but the functional screen fails. The nominal repair
+therefore cannot be promoted as full PHY closure. The first stage needs a
+speed repair; extending the accepted timing windows would not fix its ratio.
+At fast MOS, 1.32 V and -40 C, all six functional checks pass, but seventeen
+devices fail the electrical screen; the maximum terminal difference is
+1.603413 V. Complete saved-capture remeasurement reproduces every device
+record and functional result at both corners, including held-reset controls.
+Both corners use fixed nominal metal RC, not qualified multicorner extraction.
+
+The [complete nominal capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-clockbuffer231-nominal-20261010.tar.gz)
+contains 259 members, including both complete raw captures, GDS/LEF, circuit
+sources, native checks and the saved-data reviewer. Its 401,281,485 bytes have
+SHA256 `f63af6bb3ded428b15fd7f88695988f9b60e8e2ad2a73c05017db2f261e23475`.
+Corner captures are excluded from this nominal capsule. External tools,
+PDK models and inherited helpers are hash-pinned rather than bundled.
+All capsule bytes were downloaded anonymously and compared with the local
+archive; the archive's member sizes and hashes were independently checked.
+
+The failed corner evidence is retained separately, with both complete raw
+captures per corner and the independent all-device reviewer:
+
+| Capsule | Bytes | SHA256 |
+| --- | ---: | --- |
+| [Slow, 1.08 V, 125 C](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-clockbuffer231-ss125-20261010.tar.gz) | 395,983,945 | `d017695e20d01b33680d9ed45239e195f93e6e5cdf848980288f1757c3f5437f` |
+| [Fast, 1.32 V, -40 C](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-clockbuffer231-ffm40-20261010.tar.gz) | 398,105,632 | `a048fd002577528b0ebe6f65faa29eb499054d7c7e95b2464587b733ad16e7a5` |
+
+These are failed characterization records, not passing PVT qualification.
