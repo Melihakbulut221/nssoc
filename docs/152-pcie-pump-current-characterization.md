@@ -2232,3 +2232,79 @@ being published separately; delivery is not yet claimed. Original captures and
 failed verdicts remain intact.
 
 Machine-readable comparison: [V2 physical headroom and remaining integration](evidence/pcie-v2-physical300-20261010.json).
+
+
+## Routed development PLL parent and folded-rounding credit trial, 10 October
+
+The first nine-macro analog parent has **zero native DRC markers across 560
+categories**, strict unsimplified hierarchical LVS with nine matching circuit
+types, and a separate flat **753-device / 17-port** LVS pass. The VCO and two
+instances of the HBT divide-by-four are restored from archived GDS files whose
+hashes match their earlier native checks. All eight unique source layouts,
+transformed labels and child polygons are preserved. The parent connects the
+VCO, first divider, V2 gain/follower, second divider, receiver, modulo-five,
+level shifter, PFD and pump. This is a development PLL assembly, not the complete
+serial PCIe PHY or an accepted main-chip macro.
+
+The initial parent reference incorrectly retained private substrate nodes from
+standalone child schematics. Parent extraction shows a common substrate that
+reaches `avss` through the counter's standard-cell substrate connection. The
+parent reference now explicitly passes that substrate into the seven analog
+cell types; no transistor parameter or physical polygon changes. Hierarchical
+LVS passes after this correction. For native flat LVS, only the 54 local macro
+interface labels are removed from a separate view; all physical polygons,
+primitive hierarchy and device-recognition annotations remain. Removing all
+annotations was rejected because it lost 261 tap devices. That failed method,
+the original reference mismatch, and the flat-port mismatch remain recorded.
+
+Five **actual native LVS faults** reject: an opened VCO clock wire, a supply
+short, a wrong parent pin label, a wrong substrate connection and a missing gain
+transistor. These controls do not substitute for electrical qualification.
+
+Parent-only metal extraction is bound to 24 native conductor nets at 78 physical
+reference points: 61 child pins and 17 parent pins. Its **86 R / 317 C** graph,
+all resistance edges, individual ground-capacitance locations and mutual
+attachments, and the full conductor capacitance matrix pass independent
+conservation checks. This is still unqualified extraction. The first generous
+routing channel adds about **365 fF per VCO clock conductor** and has supply
+paths as high as **122.04 ohm**; it needs routing/power optimization before loaded
+integration. The counter supply contact planes also require explicit model
+rebinding. No loaded-parent, PVT, PLL-lock, main-chip or full-PHY pass is claimed.
+
+The folded-rounding credit candidate passes 402 sequential equivalence cells,
+all-input arithmetic with four actual faults, the twenty-register mapped
+pipeline check with four graph faults, and 5 credit / 5 buffered / 4 replay tests.
+Its unchanged-clock, unplaced estimates are:
+
+| Corner | Setup WNS | Hold WNS | Setup change versus balanced selector |
+| --- | ---: | ---: | ---: |
+| Slow | -1.457093 ns | -0.469247 ns | +0.454366 ns |
+| Typical | +0.042130 ns | -0.539480 ns | -0.098773 ns |
+| Fast | +0.750268 ns | -0.601382 ns | -0.130180 ns |
+
+An isolated placement/CTS trial is running with fresh three-corner readback
+queued. It does not adopt the candidate or launch routing automatically.
+Final setup/hold closure remains open.
+
+The [677-member parent and credit evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pll753-parent-rounded-credit-records-20261010.tar.gz)
+is 26,692,374 bytes, SHA256
+`9bd534fc389506982c6d05f3fd5a94175e8e5a3dd8c9dae00648aca459d0f4b3`.
+Every archived member and the complete public download were verified. It
+contains the source GDS files, positive and failed native checks, five actual
+faults, parent wire extraction/audit, credit sources/proofs/tests/mapping and
+unplaced reports, plus an explicitly labeled physical-launch snapshot. The
+later resistance-path diagnostic is provided in the machine-readable record
+below and will accompany the routing optimization.
+
+The **passing V2 physical300** waveform is now fully public in three ordered
+parts (1,333,505,770 bytes, SHA256
+`1ee14150ac998992315d86f8bbf1e9855666b453f927bbe52575f476c12c944d`).
+Its [296-member records and reassembly manifest](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-gain-v2-physical300-passed-20261010.records.tar.gz)
+are 1,473,160 bytes, SHA256
+`9bffb6e3041db5b85305d4f96da5d1ca0c734999a17fd34b84db64b50e9f892d`;
+all public bytes were read back. Temperature-only -40/125 Celsius component
+trials and the clean connected744 retry are still running. The guarded753
+component-chain run awaits that clean retry and its independent review; its
+model does not yet contain this new parent interconnect RC.
+
+[Machine-readable parent, RC, timing and delivery evidence](evidence/pcie-pll753-parent-rounded-credit-20261010.json).
