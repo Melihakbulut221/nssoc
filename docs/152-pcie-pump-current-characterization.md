@@ -2,7 +2,57 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 13:32 TRT
+## Latest snapshot — 11 October, 14:38 TRT
+
+A physical reset-release macro now exists with **86 MOS fingers and two MIM
+capacitors**. Two falling-edge flip-flops delay reset release until two counter
+clock edges have occurred. The two 2 × 2 µm MIM devices suppress the internal
+NET9 undershoot found during reset reassertion. The corrected layout passes all
+560 native DRC categories, hierarchical and flat transistor LVS, and five
+actual reference/geometry fault controls. The first layout's six Metal1 spacing
+violations remain recorded.
+
+All 348 native device terminals are classified and bound to geometry. The
+component model includes 183 wire resistors and 389 wire capacitors; thirteen
+raw extraction mutations and six composition mutations are rejected. **This is
+an isolated development macro with unqualified wire RC**, not a complete PHY
+or a macro already connected into the 757-device parent.
+
+| Native 24 ns / 500 MHz case | Result |
+| --- | --- |
+| Nominal, 50 fF output load | Pass |
+| Reset held asserted | Pass |
+| Clock stopped before release | Pass |
+| Reset reassertion | Pass |
+| Earlier and later reset release | Both pass |
+| Heavy 200 fF output load | Fail: high rail settles too slowly |
+
+The reassertion test's largest terminal difference is **1.427629 V**, below the
+unchanged 1.5 V screen; the earlier 86-device wire model reached 1.590421 V and
+failed. Normal-load release leaves approximately **644.6 ps** before the next
+rising clock edge. The heavy-load failure is retained. A new 96-device layout
+adds a parallel physical output inverter; it requires its own extraction and
+simulation before adoption. PVT, statistical metastability, the actual parent
+load and parent-level reset phase remain unqualified.
+
+The [compact evidence record](evidence/pcie-reset-release-20261011.json) covers
+32 complete finite captures with independent electrical remeasurement,
+including failed input-buffer and clock-gate-loading alternatives. Its archive
+contains 784 members and 560,206,801 bytes (SHA-256
+`4e5a070d13f34a7e0f498724ae72574d317a4891dee47e57b842f9be85b68a4b`).
+The archive's [complete public download](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-release-and-grt-20261011.tar.gz)
+has been read back anonymously and its full byte count and SHA-256 verified. Both earlier 757-device full-wave publications have now completed;
+their original functional failures remain unchanged.
+
+The main chip has entered **detailed routing** after post-global-routing repair.
+The saved native mid-route report covers only the fast corner; its setup/hold
+slacks are −1.262906/−0.863248 ns. A separate explicit three-corner readback is
+being reconciled with the native reporting flow. These intermediate values do
+not establish final timing. The registered-credit-offer alternative continues
+its separate post-CTS repair. **Full serial PHY, completed main-chip routing,
+and final setup/hold acceptance remain open.**
+
+## Earlier snapshot — 11 October, 13:32 TRT
 
 The RX constant-slice candidate is **not adopted**. Its three full equivalence
 proofs, ten port tests and three real mutation controls pass, but the completed
