@@ -2,7 +2,7 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 16:58 TRT
+## Latest snapshot — 11 October, 17:47 TRT
 
 **Serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [updated evidence record](evidence/pcie-reset-pvt-and-odb-binding-20261011.json)
@@ -34,9 +34,14 @@ These are **placement estimates**, not routed signoff. The small SS gain does
 not close timing. The remaining worst path runs from receive-ownership queue
 read pointer to a cumulative advertised data-credit counter. A new constant-bank
 sum candidate moves addition before head selection without changing latency.
-Ten port tests and three actual mutants pass; full-module equivalence has passed
-its first configuration and continues for the other three. Full-chip mapping is
-gated on all four proofs; there is no physical adoption or timing-gain claim.
+Ten port tests and three actual mutants pass. Three full-module configurations,
+including both modes of the actual 2-slot/8-DWORD chip instance, are proven;
+the larger 3-slot/16-DWORD proof hit its 4 GiB address-space limit. An unchanged
+6 GiB retry has started after the available-memory check. Mapping the proven chip instance
+produces unplaced setup regressions of **583.922 ps SS, 323.756 ps TT and
+79.148 ps FF**. This candidate is rejected for physical adoption. A keep-only
+attribute experiment tests whether synthesis preserves the intended sum
+cutpoints; it needs its own mapping and timing evidence.
 
 The 107-device reset candidate passes native DRC/LVS and all seven nominal
 transients, but its 27-point PVT screen is **9 passes / 18 failures**: SS settling
@@ -46,8 +51,34 @@ internal inverted state to bypass two output stages. Its DRC/LVS, 384-terminal
 binding, 213 R / 455 C extraction and 13+6 fault controls pass. Six nominal cases
 pass; the 200 fF case fails the unchanged high-rail settling check, so PVT is held.
 All seven electrical screens pass and all seven captures were independently
-reviewed. A strengthened internal-inverter candidate is under physical checks.
-None is a qualified reset macro or a complete PHY.
+reviewed. The 100-device strengthened internal-inverter variant passes all seven
+nominal cases, but PVT is again **18 passes / 9 SS failures**; all captures have
+independent reviews. A still stronger 106-device variant fails the heavy-load
+nominal rail check. Neither is adopted.
+
+A new **physical clock-polarity change** uses two rising-edge synchronizer
+flops, allowing recovery before the following rising edge over a full cycle.
+The prior falling-edge failures are unchanged. New criteria were declared
+before simulation from both DFF sizes across the three pinned Liberty grids:
+maximum recovery is 803.284 ps and removal is 36.949 ps. The new component
+requires **900 ps recovery measured at the 90% rail**, **100 ps removal
+measured at the 10% rail**, and full settling within 1 ns. Asynchronous assertion
+retains its 600 ps bound; absolute electrical limits are unchanged. Seven
+positive synthetic cases and ten faults, including the old falling-edge
+phase, missing clock and delayed 90% rail, validate the new oracle.
+
+The rising-edge layout passes DRC/LVS and wire controls. All seven transistor
+functional cases pass, but **all seven electrical cases fail**: the now-unused
+clock inverter reaches about 1.520 V. Native LVS identifies the offending
+transistor as `CLKINV.X1_0`. Independent full-capture functional review uses
+conservative sample brackets rather than the primary interpolated edge
+algorithm and agrees. A fresh layout ties this unused inverter input to VSS;
+its 560-category DRC, hierarchical/flat LVS, wire controls and all seven
+nominal transistor cases pass. The PVT run has begun: the first SS reassertion
+case fails the unchanged 600 ps asynchronous-assertion bound, while the other
+completed functional checks in that case pass. Full matrix and independent
+review are pending. No reset, PHY or PEX qualification
+is claimed, and the loaded parent must be revalidated after a passing candidate.
 
 The [1,095-member completed evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset98-pvt106-and-replay-timer-20261011.tar.gz)
 is **969,582,911 bytes**, SHA-256
@@ -55,12 +86,21 @@ is **969,582,911 bytes**, SHA-256
 The full anonymous download matches. It contains all 41 reset98/reset106 captures,
 their independent reviews, rejected replay-timer mapping, and the independent
 853-device parent phase-boundary diagnosis. The latter explains raw 3/5 counts
-without accepting the original failed parent result. New reset107/direct98 and
-ODB-correction records are in a separate upload awaiting full public verification.
-The large 853-device wave publication also continues.
+without accepting the original failed parent result. The [841-member reset107/direct98 and ODB archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset107-direct98-and-odb-binding-20261011.tar.gz)
+is now fully anonymously verified: **1,112,238,792 bytes**, SHA-256
+`f47716b464f491ba8217827ed7318f7560cf10d0498188d95b884a10d468a1a9`.
+It contains all 41 additional complete captures and the actual stage-25
+database, corrected readback, graph audits and preserved failed experiments.
 
-Main-chip detailed routing is healthy at the second optimization iteration,
-70% with 23,230 intermediate violations at this snapshot; it has no elapsed-time
+The **complete 853-device parent capture** is also public: six verified parts
+total **2,860,751,595 bytes**, whole SHA-256
+`a0c85567289cd144c66f93c8a92665e7170d61e25160c9444d25567f870efa26`.
+The evidence record supplies every part URL/hash plus the independently
+verified [40-member methods and reviews archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset853-functional-failed-20261011.records.tar.gz).
+The parent's original failed functional verdict remains unchanged.
+
+Main-chip detailed routing has fallen to **18 intermediate violations**,
+concentrated in two small regions. The seventh repair iteration is active; it has no elapsed-time
 termination limit. Final extraction, routed timing and physical acceptance are
 still pending.
 
