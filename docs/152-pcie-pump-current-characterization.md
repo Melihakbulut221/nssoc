@@ -2,6 +2,78 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest snapshot — 11 October, 12:32 TRT
+
+The complete 757-device nominal 50 ns run is **FAIL: 5/8 original functional
+checks pass**. All 757 device geometry/electrical screens pass, and independent
+readers reproduce the result. The causal /4 phase check passes, while the
+original interval-count checks remain failed. The modulo-five counter misses
+its first clock at 3.165568 ns: actual reset terminals cross 0.6 V around
+3.05083–3.05090 ns, leaving a short recovery interval. All 18 later sampled
+states are one count behind the original oracle. A separate run gives the
+reset stimulus more recovery time by ending its ramp at 2.1 ns; this is a
+**fixture diagnostic, not a physical reset-release circuit or full PHY fix**.
+The original failed waveform and checks remain unchanged.
+
+The longer solver comparison also passes: every saved column and all three
+clock-edge checks agree over the first 8 ns of a complete 50 ns Sparse run
+and a complete 8 ns KLU run. Both full raw hashes and trailers are verified.
+
+A complete reset-path scan of the setup checkpoint found 82 violating loads.
+A separate layout experiment inserts 101 noninverting delay cells, selected
+per load. All 82 loads now pass removal and recovery at all three corners:
+
+| Corner | Worst removal (ns) | Worst recovery (ns) |
+| --- | ---: | ---: |
+| SS | +0.305930 | +1.199531 |
+| TT | +0.152534 | +1.856946 |
+| FF | +0.052000 | +2.245828 |
+
+The first graph audit rejected the experiment because eight cells inserted
+during setup repair had 16 unconnected power pins in the intermediate database.
+A fresh run explicitly completes global power connections before taking the
+baseline graph. The audit permits exactly those 16 `NONE`→`VPWR`/`VGND`
+connections and then proves the complete graph unchanged after collapsing the
+101 identity delay cells. Three Liberty function checks and four graph fault
+controls pass. **Global data hold and SS setup are still negative.** The main
+hold repair continues separately; a queued reader will inventory its actual
+remaining reset failures before another ECO is applied to that result.
+
+A registered credit-offer candidate breaks the late credit-accounting path
+across clock cycles. It can add one cycle of backpressure and accepts at most
+one ordinary debit per two clocks; replay bypass is unchanged. Inductive
+accepted-transaction refinement proves the credit counters, limits and status
+outputs match the canonical module and that the candidate cannot overgrant.
+Five port/oracle/progress cases, five buffered-flow cases and three real RTL
+fault counterexamples pass. The first proof-record writer and fault-reader
+errors, and a random test that failed to reach wrap coverage, are retained;
+fresh corrected runs pass without weakening the assertions or wrap criteria.
+
+Whole-chip **unplaced** timing improves at all setup corners:
+
+| Corner | Prior setup (ns) | Credit-offer setup (ns) | Credit-offer hold (ns) |
+| --- | ---: | ---: | ---: |
+| SS | -1.367352 | -1.099456 | -0.500955 |
+| TT | +0.367535 | +0.641544 | -0.539480 |
+| FF | +1.243015 | +1.415919 | -0.601382 |
+
+The joint CPU/PCIe/Ethernet test with 16 vendor SRAM models and POR MBIST is
+running on the actual candidate sources. Fresh placement/CTS/repair is queued
+behind a clean joint result and resource checks. The zero-latency cofactor
+candidate was not adopted: its SS setup remained worse at -1.392801 ns.
+
+The [reset-bank and offer evidence](evidence/pcie-reset-bank-20261011.json)
+links two fully verified public capsules: the offer sources/controls
+(140 members, 18,848,974 bytes) and completed reset, mapping, waveform-review
+and method records (63,856,630 bytes). The old failed 16 µm experiment's full
+waveform is also public; publication of the new failed 757-device waveform is
+in progress. To preserve routing space, 56 generated archive transfer copies
+were removed only after full local hashes, prior full anonymous public
+readbacks, current GitHub digests and fresh public byte samples agreed.
+The original sources and native captures remain; exact restoration scripts
+are retained. **Full serial PHY, routed main chip and final setup/hold remain
+open.**
+
 ## 11 October continuation: recovered runs and measured solver speed
 
 Earlier session-owned jobs stopped externally without a final transient footer
