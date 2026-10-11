@@ -1,0 +1,1187 @@
+{
+  "status": "PRE_HOLD_THREE_CORNER_READBACK_COMPLETE_NOT_ACCEPTED_TIMING",
+  "asset": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-successor-setup-checkpoint-20261012.tar.gz",
+    "name": "nssoc-successor-setup-checkpoint-20261012.tar.gz",
+    "bytes": 15423259,
+    "sha256": "e57590d37f236a048b5532d131a6597b4aeea9f7ac14234e135a256139c9ed29",
+    "members": 26
+  },
+  "readback": {
+    "status": "PASS_ALL_GROUP_PRE_HOLD_CHECKPOINT_READBACK_NOT_TIMING_ACCEPTANCE",
+    "clocks_ns": {
+      "clk_i": 20.0,
+      "pcie_clk_i": 4.0,
+      "eth_rx_clk_i": 8.0,
+      "eth_tx_clk_i": 8.0,
+      "eth_gtx": 8.0
+    },
+    "minima_ns": {
+      "slow_max": {
+        "asynchronous": -0.860541,
+        "clk_i": -0.853211,
+        "eth_gtx": 4.778298,
+        "eth_rx_clk_i": 0.793542,
+        "eth_tx_clk_i": 0.573467,
+        "path delay": 2.439489,
+        "pcie_clk_i": -1.519184
+      },
+      "slow_min": {
+        "asynchronous": -0.752283,
+        "clk_i": -0.400114,
+        "eth_gtx": -0.582473,
+        "eth_rx_clk_i": -0.374059,
+        "eth_tx_clk_i": -0.101018,
+        "pcie_clk_i": -0.798736
+      },
+      "typical_max": {
+        "asynchronous": 0.565565,
+        "clk_i": 6.815113,
+        "eth_gtx": 4.960759,
+        "eth_rx_clk_i": 3.619019,
+        "eth_tx_clk_i": 3.45628,
+        "path delay": 2.729428,
+        "pcie_clk_i": 0.029731
+      },
+      "typical_min": {
+        "asynchronous": -0.520972,
+        "clk_i": -0.409924,
+        "eth_gtx": -0.654661,
+        "eth_rx_clk_i": -0.157436,
+        "eth_tx_clk_i": -0.141028,
+        "pcie_clk_i": -0.542148
+      },
+      "fast_max": {
+        "asynchronous": 1.409467,
+        "clk_i": 10.657912,
+        "eth_gtx": 5.065835,
+        "eth_rx_clk_i": 4.47332,
+        "eth_tx_clk_i": 5.055291,
+        "path delay": 2.893696,
+        "pcie_clk_i": 0.75507
+      },
+      "fast_min": {
+        "asynchronous": -0.391101,
+        "clk_i": -0.428902,
+        "eth_gtx": -0.68865,
+        "eth_rx_clk_i": -0.172575,
+        "eth_tx_clk_i": -0.187335,
+        "pcie_clk_i": -0.395997
+      }
+    },
+    "paths": {
+      "slow_max": [
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.860541,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171834"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.860534,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171835"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.860529,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171836"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.439489,
+          "startpoint": "$auto$ff.cc:337:slice$1178140",
+          "endpoint": "$auto$ff.cc:337:slice$1178247"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.441064,
+          "startpoint": "$auto$ff.cc:337:slice$1178168",
+          "endpoint": "$auto$ff.cc:337:slice$1178275"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.443996,
+          "startpoint": "$auto$ff.cc:337:slice$1178138",
+          "endpoint": "$auto$ff.cc:337:slice$1178245"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.853211,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "g_clkgate.u_npu_cg.u_icg"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.755788,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459091"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.749376,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459094"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 4.778298,
+          "startpoint": "$auto$ff.cc:337:slice$1601390",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 4.782286,
+          "startpoint": "$auto$ff.cc:337:slice$1601345",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 4.848943,
+          "startpoint": "$auto$ff.cc:337:slice$1601393",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 0.793542,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1176965"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 0.795821,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1161006"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 0.852585,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1161019"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 0.573467,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171764"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 0.577471,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171589"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 0.584243,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171166"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -1.519184,
+          "startpoint": "$auto$ff.cc:337:slice$1171347",
+          "endpoint": "$auto$ff.cc:337:slice$1171407"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -1.515228,
+          "startpoint": "$auto$ff.cc:337:slice$1171347",
+          "endpoint": "$auto$ff.cc:337:slice$1171395"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -1.497557,
+          "startpoint": "$auto$ff.cc:337:slice$1171347",
+          "endpoint": "$auto$ff.cc:337:slice$1171403"
+        }
+      ],
+      "slow_min": [
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.752283,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252405"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.752217,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252406"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.722985,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1185846"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.400114,
+          "startpoint": "$auto$ff.cc:337:slice$1178682",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.39168,
+          "startpoint": "$auto$ff.cc:337:slice$1178676",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.390437,
+          "startpoint": "$auto$ff.cc:337:slice$1154734",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.582473,
+          "startpoint": "$auto$ff.cc:337:slice$1177218",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.581775,
+          "startpoint": "$auto$ff.cc:337:slice$1601392",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.575826,
+          "startpoint": "$auto$ff.cc:337:slice$1601389",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.374059,
+          "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434918"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.373533,
+          "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434919"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.36969,
+          "startpoint": "eth_rxd_i[5] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434923"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.101018,
+          "startpoint": "$auto$ff.cc:337:slice$1171130",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.083561,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.081014,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[1].u_mem"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.798736,
+          "startpoint": "pcie_rx_eop_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171299"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.686253,
+          "startpoint": "pcie_rx_data_i[7] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176726"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.679186,
+          "startpoint": "pcie_rx_data_i[7] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176760"
+        }
+      ],
+      "typical_max": [
+        {
+          "group": "asynchronous",
+          "slack_ns": 0.565565,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171834"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": 0.565571,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171835"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": 0.565576,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171836"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.729428,
+          "startpoint": "$auto$ff.cc:337:slice$1178140",
+          "endpoint": "$auto$ff.cc:337:slice$1178247"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.732361,
+          "startpoint": "$auto$ff.cc:337:slice$1178138",
+          "endpoint": "$auto$ff.cc:337:slice$1178245"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.733518,
+          "startpoint": "$auto$ff.cc:337:slice$1178168",
+          "endpoint": "$auto$ff.cc:337:slice$1178275"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 6.815113,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459091"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 6.830024,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459094"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 6.839135,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "g_clkgate.u_npu_cg.u_icg"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 4.960759,
+          "startpoint": "$auto$ff.cc:337:slice$1601390",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 4.963463,
+          "startpoint": "$auto$ff.cc:337:slice$1601345",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 5.003568,
+          "startpoint": "$auto$ff.cc:337:slice$1601393",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 3.619019,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1176965"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 3.619742,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1161006"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 3.629958,
+          "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1161019"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 3.45628,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171589"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 3.459793,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171166"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 3.474009,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171764"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 0.029731,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "pcie_tx_valid_o (output port clocked by pcie_clk_i)"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 0.244388,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1162298"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 0.245282,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1162295"
+        }
+      ],
+      "typical_min": [
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.520972,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252405"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.520902,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252406"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.49782,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1185846"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.409924,
+          "startpoint": "$auto$ff.cc:337:slice$1178682",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.393122,
+          "startpoint": "$auto$ff.cc:337:slice$1178677",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.385076,
+          "startpoint": "$auto$ff.cc:337:slice$1178676",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.654661,
+          "startpoint": "$auto$ff.cc:337:slice$1177218",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.654132,
+          "startpoint": "$auto$ff.cc:337:slice$1601392",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.650687,
+          "startpoint": "$auto$ff.cc:337:slice$1601389",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.157436,
+          "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434918"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.157166,
+          "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434919"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.154973,
+          "startpoint": "eth_rxd_i[5] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434923"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.141028,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.14059,
+          "startpoint": "$auto$ff.cc:337:slice$1171130",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.138452,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[1].u_mem"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.542148,
+          "startpoint": "pcie_rx_eop_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171299"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.479621,
+          "startpoint": "pcie_rx_data_i[7] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176726"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.475454,
+          "startpoint": "pcie_rx_data_i[7] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176760"
+        }
+      ],
+      "fast_max": [
+        {
+          "group": "asynchronous",
+          "slack_ns": 1.409467,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171853"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": 1.409585,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171834"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": 1.40959,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171835"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.893696,
+          "startpoint": "$auto$ff.cc:337:slice$1178168",
+          "endpoint": "$auto$ff.cc:337:slice$1178275"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.896902,
+          "startpoint": "$auto$ff.cc:337:slice$1178140",
+          "endpoint": "$auto$ff.cc:337:slice$1178247"
+        },
+        {
+          "group": "path delay",
+          "slack_ns": 2.898584,
+          "startpoint": "$auto$ff.cc:337:slice$1178138",
+          "endpoint": "$auto$ff.cc:337:slice$1178245"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 10.657912,
+          "startpoint": "$auto$ff.cc:337:slice$1459157",
+          "endpoint": "double_fault_seen_o (output port clocked by clk_i)"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 11.296396,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459091"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": 11.301872,
+          "startpoint": "$auto$ff.cc:337:slice$1182290",
+          "endpoint": "$auto$ff.cc:337:slice$1459094"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 5.065835,
+          "startpoint": "$auto$ff.cc:337:slice$1601390",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 5.067423,
+          "startpoint": "$auto$ff.cc:337:slice$1601345",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": 5.090317,
+          "startpoint": "$auto$ff.cc:337:slice$1601393",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 4.47332,
+          "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176816"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 4.523269,
+          "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1434963"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 4.590814,
+          "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1601359"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 5.055291,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171764"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 5.057006,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171589"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": 5.058942,
+          "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "endpoint": "$auto$ff.cc:337:slice$1171166"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 0.75507,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "pcie_tx_valid_o (output port clocked by pcie_clk_i)"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 1.012963,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": 1.167089,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "pcie_initialized_o (output port clocked by pcie_clk_i)"
+        }
+      ],
+      "fast_min": [
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.391101,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252405"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.391027,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1252406"
+        },
+        {
+          "group": "asynchronous",
+          "slack_ns": -0.371365,
+          "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1185846"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.428902,
+          "startpoint": "$auto$ff.cc:337:slice$1178682",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.412432,
+          "startpoint": "$auto$ff.cc:337:slice$1178677",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "clk_i",
+          "slack_ns": -0.405022,
+          "startpoint": "$auto$ff.cc:337:slice$1179223",
+          "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.68865,
+          "startpoint": "$auto$ff.cc:337:slice$1177218",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.688348,
+          "startpoint": "$auto$ff.cc:337:slice$1601392",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_gtx",
+          "slack_ns": -0.686182,
+          "startpoint": "$auto$ff.cc:337:slice$1601389",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.172575,
+          "startpoint": "$auto$ff.cc:337:slice$1162637",
+          "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.172455,
+          "startpoint": "$auto$ff.cc:337:slice$1162637",
+          "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[1].u_mem"
+        },
+        {
+          "group": "eth_rx_clk_i",
+          "slack_ns": -0.134995,
+          "startpoint": "$auto$ff.cc:337:slice$1440166",
+          "endpoint": "$auto$ff.cc:337:slice$1440167"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.187335,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.184154,
+          "startpoint": "$auto$ff.cc:337:slice$1171127",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[1].u_mem"
+        },
+        {
+          "group": "eth_tx_clk_i",
+          "slack_ns": -0.177382,
+          "startpoint": "$auto$ff.cc:337:slice$1171130",
+          "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.395997,
+          "startpoint": "pcie_rx_eop_i (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1171299"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.357461,
+          "startpoint": "pcie_rx_data_i[2] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176738"
+        },
+        {
+          "group": "pcie_clk_i",
+          "slack_ns": -0.356137,
+          "startpoint": "pcie_rx_data_i[7] (input port clocked by pcie_clk_i)",
+          "endpoint": "$auto$ff.cc:337:slice$1176726"
+        }
+      ]
+    },
+    "mapped_ff_aliases": {
+      "$auto$ff.cc:337:slice$1171834": [
+        {
+          "signal": "packet_paddr",
+          "index": 7
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171835": [
+        {
+          "signal": "packet_paddr",
+          "index": 8
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171836": [
+        {
+          "signal": "packet_paddr",
+          "index": 9
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178140": [
+        {
+          "signal": "u_pcie_cdc.response_payload",
+          "index": 4
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178247": [
+        {
+          "signal": "u_pcie_cdc.response",
+          "index": 4
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178168": [
+        {
+          "signal": "u_pcie_cdc.response_payload",
+          "index": 32
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178275": [
+        {
+          "signal": "u_pcie_cdc.response",
+          "index": 32
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178138": [
+        {
+          "signal": "u_pcie_cdc.response_payload",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178245": [
+        {
+          "signal": "u_pcie_cdc.response",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1182290": [
+        {
+          "signal": "u_ibex.gen_regfile_ff.register_file_i.raddr_b_i",
+          "index": 2
+        },
+        {
+          "signal": "u_ibex.u_ibex_core.cs_registers_i.csr_addr",
+          "index": 2
+        },
+        {
+          "signal": "u_ibex.u_ibex_core.id_stage_i.controller_i.instr_i",
+          "index": 22
+        }
+      ],
+      "$auto$ff.cc:337:slice$1459091": [
+        {
+          "signal": "u_clint.g_mtime_secded.u_mtime_dec.check_raw",
+          "index": 4
+        },
+        {
+          "signal": "u_clint.g_mtime_secded.u_mtime_dec.code_in",
+          "index": 68
+        }
+      ],
+      "$auto$ff.cc:337:slice$1459094": [
+        {
+          "signal": "u_clint.g_mtime_secded.u_mtime_dec.check_raw",
+          "index": 7
+        },
+        {
+          "signal": "u_clint.g_mtime_secded.u_mtime_dec.code_in",
+          "index": 71
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601390": [
+        {
+          "signal": "eth_txd_o",
+          "index": 3
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601345": [
+        {
+          "signal": "eth_tx_en_o",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601393": [
+        {
+          "signal": "eth_txd_o",
+          "index": 6
+        }
+      ],
+      "$auto$ff.cc:337:slice$1176965": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a_cross.compare_data",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1161006": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1161019": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q",
+          "index": 15
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171764": [
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.m_axis_pipe_reg[1]",
+          "index": 3
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171589": [
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b.response_q",
+          "index": 3
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171166": [
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b_cross.compare_data",
+          "index": 3
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171347": [
+        {
+          "signal": "u_pcie.receive_ownership.qread",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171407": [
+        {
+          "signal": "u_pcie.advertiser.data_limit_i",
+          "index": 23
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171395": [
+        {
+          "signal": "u_pcie.advertiser.data_limit_i",
+          "index": 11
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171403": [
+        {
+          "signal": "u_pcie.advertiser.data_limit_i",
+          "index": 19
+        }
+      ],
+      "$auto$ff.cc:337:slice$1252405": [
+        {
+          "signal": "u_pcie_cdc.destination_release",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1252406": [
+        {
+          "signal": "u_pcie_cdc.destination_release",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1185846": [
+        {
+          "signal": "u_pcie_cdc.destination_state",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178682": [
+        {
+          "signal": "u_ram.g_ram_2048x64_ecc.u_test_port.bist_addr",
+          "index": 7
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178676": [
+        {
+          "signal": "u_ram.g_ram_2048x64_ecc.u_test_port.bist_addr",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1154734": [
+        {
+          "signal": "u_ram.g_ram_2048x64_ecc.u_test_port.u_mbist.background_q",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1177218": [
+        {
+          "signal": "eth_tx_er_o",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601392": [
+        {
+          "signal": "eth_txd_o",
+          "index": 5
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601389": [
+        {
+          "signal": "eth_txd_o",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1434918": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.gmii_rxd_d0",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1434919": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.gmii_rxd_d0",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1434923": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.gmii_rxd_d0",
+          "index": 5
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171130": [
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bxa",
+          "index": 5
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171127": [
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bxa",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171299": [
+        {
+          "signal": "u_pcie.receive_ownership.input_active",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1176726": [
+        {
+          "signal": "u_pcie.receive_ownership.staging[0]",
+          "index": 7
+        }
+      ],
+      "$auto$ff.cc:337:slice$1176760": [
+        {
+          "signal": "u_pcie.receive_ownership.staging[2]",
+          "index": 7
+        }
+      ],
+      "$auto$ff.cc:337:slice$1162298": [
+        {
+          "signal": "u_pcie.receive_ownership.staging[35]",
+          "index": 7
+        }
+      ],
+      "$auto$ff.cc:337:slice$1162295": [
+        {
+          "signal": "u_pcie.receive_ownership.staging[35]",
+          "index": 4
+        }
+      ],
+      "$auto$ff.cc:337:slice$1178677": [
+        {
+          "signal": "u_ram.g_ram_2048x64_ecc.u_test_port.bist_addr",
+          "index": 2
+        }
+      ],
+      "$auto$ff.cc:337:slice$1171853": [
+        {
+          "signal": "packet_pwdata",
+          "index": 13
+        }
+      ],
+      "$auto$ff.cc:337:slice$1459157": [
+        {
+          "signal": "u_clint.g_mtime_secded.u_mtime_dec.code_in",
+          "index": 62
+        }
+      ],
+      "$auto$ff.cc:337:slice$1176816": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.error_bad_frame_reg",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1434963": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.m_axis_tuser",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1601359": [
+        {
+          "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.state_reg",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1179223": [
+        {
+          "signal": "u_ram.g_ram_2048x64_ecc.u_ecc.g_scrub.sptr",
+          "index": 8
+        }
+      ],
+      "$auto$ff.cc:337:slice$1162637": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.wr_ptr_reg",
+          "index": 4
+        }
+      ],
+      "$auto$ff.cc:337:slice$1440166": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.wp",
+          "index": 0
+        }
+      ],
+      "$auto$ff.cc:337:slice$1440167": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.rst_ni",
+          "index": 0
+        },
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.wp",
+          "index": 1
+        }
+      ],
+      "$auto$ff.cc:337:slice$1176738": [
+        {
+          "signal": "u_pcie.receive_ownership.staging[1]",
+          "index": 2
+        }
+      ]
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/review-setup30.py": "c450e760780329602fc06022a2a25c153a9ef7f34900fbb4e10ef541cabc3363",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/setup-read26/result.json": "82e5c319f7af18a93be307b032456e69ad8dc30b5333192cfb32212a7f2439bf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/setup-read26/screen.log": "13745ba3c81597d1c9d6f2194c5437a3c29e806ee3ab0050b936f45019777549",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/setup-snapshot24/capture.json": "1a8b4a2237d6355d3a69de35b8732f86faedaebd83947a936a3592959d49e3d1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/map04/soc_top.mapped.json": "965135a96d070cf7a8fb2e70a9c0d213cb8d93bb92f519a09d2b008f71c0397e"
+    },
+    "scope": "All7setupand6holdpathgroupsat3nativecorners onexactpostsetup/preholdODB withoriginalSDC andpropagatedclocks. Placement RC only, not routedSPEF/qualifiedSRAM/finaltiming. Activeholdrepaircontinues. No extra relaxations or omitted asynchronous groups."
+  },
+  "clock_reader_recovery": {
+    "status": "QUEUED_READER_REPLACED_BEFORE_NATIVE_DISPATCH",
+    "before": "MainPID=3103263\nActiveState=active\n",
+    "after": "MainPID=0\nActiveState=inactive\n",
+    "reason": "Native get_property returns unresolved generated clock period before clock expansion. Actual report_clock_properties resolves it; setup-read26 verifies unchanged20/4/8/8/8 periods on exact same ODB/SDC. Keep failedsetup25. Queuepostcts27 materializesgeneratedclocksbeforeassertion; physical13unchanged.",
+    "new_reader_sha256": "664e97819546e694f998aea9bc7df0a8253f3aa504d6b7d90831415ff8d3eebd",
+    "old_postcts14_dispatched": false,
+    "setup25_failure": [
+      "Error: screen.tcl, 14 Clock period drift eth_gtx"
+    ]
+  },
+  "short_proof_failure": {
+    "method": "equiv_simple -short, full unfiltered equiv_status, no assumptions or omitted outputs",
+    "status": "UNPROVEN_FULL_RX_CREDIT_CARRY_SELECT_EQUIVALENCE",
+    "cases": [
+      {
+        "slots": 3,
+        "max_tlp_dwords": 16,
+        "completer_only": 0,
+        "returncode": -6,
+        "passed": false
+      }
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/prove20.py": "2d5d5fd9b1cb54811648e8965a31f6a0755c77f615f2c57c5a29e4bf4cce6959",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_rx_credit.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/candidate08/soc_pcie_rx_credit.v": "30a626bad299ce86663cd96a063b0557bd13142c82b05a91181cba3fbac32bcd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal20/gold.v": "5a11b8be708078148fb0120d3ef79e1ef7ae8ac0738569234dc3e6f011b0a065",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal20/gate.v": "30a3a0bdfc30fc0df15c8073a1d5b347abc13f6c92056a6ab130e99d6c967840",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal20/proof-3-16-0.ys": "4b1b8add84267e422c87d72c56f3aff0d0660f05a2e5433dc55e6c28151d3a9d"
+    },
+    "assumptions": [],
+    "adopted": false,
+    "scope": "All outputs and state, unchanged latency; four explicit configurations only, not timing acceptance."
+  },
+  "all_three_goals_closed": false
+}

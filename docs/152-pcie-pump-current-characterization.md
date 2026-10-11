@@ -2,6 +2,85 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 02:48 TRT
+
+The fresh Ethernet/replay chip's durable **post-setup, pre-hold-repair** snapshot
+has an independent readback of all seven setup and six hold path groups at
+three native corners. It uses the original 20/4/8/8/8 ns constraints, propagated
+clocks and placement-estimated RC. It is not a routed or final timing result.
+
+| Path group, setup slack (ns) | SS | TT | FF |
+| --- | ---: | ---: | ---: |
+| PCIe | -1.519184 | +0.029731 | +0.755070 |
+| Main clock | -0.853211 | +6.815113 | +10.657912 |
+| Ethernet RX | +0.793542 | +3.619019 | +4.473320 |
+| Ethernet TX | +0.573467 | +3.456280 | +5.055291 |
+| Asynchronous recovery | -0.860541 | +0.565565 | +1.409467 |
+
+The worst PCIe setup path binds to **RX queue read index bit 1 → advertised
+data-credit bit 23**, confirming the path targeted by the two RX experiments.
+Hold remains negative before the ongoing native hold repair; all groups and
+endpoints are retained in the evidence. No asynchronous group is hidden.
+
+The first reader stopped because the generated Ethernet clock's period was
+queried before OpenSTA expanded generated clocks. The native Tcl implementation
+shows `report_clock_properties` calling `update_generated_clks`. A fresh reader
+calls that first and verifies all five unchanged periods. It passes on the
+exact same ODB and original SDC; no clock constraint was relaxed. Only the
+unstarted final reader was replaced; native placement/repair inputs are untouched.
+
+The [complete checkpoint and reader evidence](evidence/pcie-successor-setup-checkpoint-20261012.json)
+preserves **26 members / 15,423,259 bytes**, SHA-256
+`e57590d37f236a048b5532d131a6597b4aeea9f7ac14234e135a256139c9ed29`.
+It includes the actual ODB/netlist/SDC, failed and corrected readers, native API
+body, all-group paths and the carry proof's short-cone native memory failure.
+Every member and the complete anonymous download match. Ongoing hold repair,
+structural proof fallback and long analog acquisition are excluded.
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
+## Latest continuation — 12 October, 02:42 TRT
+
+The 865-device parent completes its **50 ns, 0.15625 ps maximum-step** run:
+320,071 finite samples, no native warnings/errors. Against the frozen 0.3125 ps
+reference prefix, the predeclared 35–50 ns window passes unchanged bounds:
+
+| Selected-probe comparison | Measured maximum | Limit |
+| --- | ---: | ---: |
+| Control voltage difference | 0.119855 mV | 5 mV |
+| Absolute crossing displacement | 0.551946 ps | 5 ps |
+
+All eight rising/falling crossing comparisons have equal, nonzero counts. An
+independent full-wave reader reproduces the measurements; 6 mV voltage and
+10 ps time perturbations fail its comparison. These are **in-memory reviewer
+controls**, not new transistor simulations. No phase fitting or tolerance
+relaxation is used. This closes the selected-probe numerical-convergence check;
+the ongoing 1 µs acquisition run, full-device/PVT and serial-PHY qualification
+remain separate. The earlier 1.25 ps coarse-step failure remains rejected.
+
+A second RX timing candidate captures packet class and data-credit units at
+TLP completion, retaining the original credit-return cycle. It passes **five
+RX plus five buffered-packet tests**, zero skips/runtime errors. Wrong-class
+and lost-units mutations each fail four of five RX cases. The first mutation
+wrapper expected a success-only JSON field and failed after the native tests;
+its original logs/XML are preserved and independently reviewed. Full sequential
+queue-ownership equivalence remains required; this candidate is not adopted.
+
+The portable carry-select candidate's largest proof also exhausts native memory.
+Its three smaller configurations pass. Its map controller correctly stops before
+CAD dispatch. The idle timing reader is replaced; fresh mapping still requires
+all four configurations to be proved. The short-cone retry also exhausts native
+memory; a structural-sharing fallback is running with every equivalence
+obligation retained. No failed result is
+relabelled as passing.
+
+The [full waves, tests, fault controls and recovery evidence](evidence/pcie-halfstep-and-return-metadata-20261012.json)
+are publicly preserved in two verified capsules: **16 members / 78,027,084 bytes**
+for the half-step comparison, and **115 members / 1,766,166 bytes** for the RX
+candidate and proof recovery. Every member and both complete anonymous downloads
+match. The combined physical run is in hold repair; a separate reader examines
+its durable setup checkpoint without changing the active run. **Full serial
+PHY, accepted routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 02:33 TRT
 
 The mapped replay address audit is now closed for this exact synthesized
