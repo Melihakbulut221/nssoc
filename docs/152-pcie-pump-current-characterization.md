@@ -2,7 +2,73 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 14:38 TRT
+## Latest snapshot — 11 October, 15:22 TRT
+
+The stronger reset-release macro (**94 MOS fingers + two MIM capacitors**) passes
+native DRC, hierarchical and flat transistor LVS, and all seven nominal reset
+and load tests, including the previously failing 200 fF case. Its complete
+wire model contains **205 R / 411 C**, with all 380 device terminals classified.
+The independent full-capture electrical review agrees with all seven results.
+
+The expanded PVT diagnostic is **12 passes / 15 failures** across 27 points:
+TT/1.20 V, SS/1.08 V and FF/1.32 V at −40, 27 and 125 °C, each with nominal,
+reassertion and heavy-load cases. SS fails settling/rail requirements; FF at
+−40 and 27 °C fails the unchanged 1.5 V device screen. The isolated PMOS NET7
+node reaches approximately 1.554 V while its other terminal is near zero.
+All 27 complete captures were independently remeasured. These are real open
+circuit issues; the macro is not PVT-qualified.
+
+The new **853-device PLL development layout** physically connects this reset
+macro between external reset and the modulo-five counter. It passes all 560
+native DRC categories and both hierarchical and flat transistor LVS. Its 25
+parent wire nets and 83 physical reference points pass the extracted wire graph
+and capacitance audit. Subsequent composition rebinds the reset macro's two
+supply contact points to their actual parent attachment positions; the full
+model has 8,638 wire elements. Its **50 ns loaded transient is running**, with
+an explicit actual-counter-reset phase oracle and the legacy fixed-phase
+measurement retained. This PLL development layout is not the routed main chip
+or a complete PCIe serial PHY.
+
+The [new evidence record](evidence/pcie-reset96-parent853-20261011.json) links the
+[666-member public archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset96-parent853-and-sta-20261011.tar.gz).
+All 786,316,107 bytes were anonymously downloaded and SHA-256 verified. It
+contains the 34 full component captures, including failures, and the physical
+parent checks. The newer parent composition and ongoing parent transient are
+outside this completed archive.
+
+Independent three-corner STA now restores the native flow's 15 metal RC and
+21 via resistance entries. The fast-corner result matches the native report
+exactly; earlier standalone runs omitted runtime-derived RC entries and are
+retained as incomplete comparisons. The actual post-global-route results are:
+
+| Corner | Setup slack (ns) | Hold slack (ns) |
+| --- | ---: | ---: |
+| SS | −6.547359 | −0.184963 |
+| TT | −3.120804 | −0.612679 |
+| FF | −1.262906 | −0.863248 |
+
+These are intermediate estimates. Main-chip detailed routing is still active.
+The worst SS setup path runs from the PCIe retry read pointer to its prefetched
+byte output. A parallel next-address register candidate passes full-module
+formal equivalence at four parameter points, all seven port tests, and three
+actual fault controls. Whole-chip mapping and timing comparison are queued
+behind the existing resource guard; no timing gain or adoption is claimed.
+The separate registered-credit-offer physical flow continues hold repair.
+
+Storage for the new parent transient was recovered by removing only the local
+replica of the previously published **26,944,620,741-byte failed 570-device
+capture**. All 26 part hashes, the ordered whole-file hash, current GitHub
+asset digests and sizes, and fresh public samples were verified first. The
+failure records and public waveform remain available. The
+[archive receipt](evidence/pcie-native-wave-archive-20261011.json) and
+[exact-byte restore script](evidence/pcie-native-wave-restore-20261011.py) preserve
+recovery. Pass an output filename as the script's first argument when restoring
+on a different checkout or machine.
+
+**Full serial PHY, completed main-chip routing and final setup/hold closure
+remain open.** Active native jobs have no elapsed-time termination limit.
+
+## Earlier snapshot — 11 October, 14:38 TRT
 
 A physical reset-release macro now exists with **86 MOS fingers and two MIM
 capacitors**. Two falling-edge flip-flops delay reset release until two counter
