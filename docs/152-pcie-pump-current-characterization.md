@@ -2,7 +2,79 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 18:35 TRT
+## Latest snapshot — 11 October, 19:17 TRT
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+The [new evidence record](evidence/pcie-reset865-and-credit-bank-20261011.json)
+binds the component repair, loaded-parent preparation and rejected timing
+experiment to their native receipts.
+
+The **108-device reset circuit now passes all seven nominal and all 27 PVT
+captures**, with full functional rereads and independently recomputed device
+extrema. The limits remain 900 ps recovery at 90% rail, 100 ps removal at 10%
+rail, 1 ns settling, 600 ps asynchronous assertion and 1.5 V absolute LV
+terminal difference. The two added contacts and MIM capacitors fix the two
+remaining FF internal-node voltage failures. The matrix covers native MOS
+TT/SS/FF, -40/27/125°C and nominal/reassertion/200 fF cases; typical CAP/RES
+models and unqualified wire RC remain limitations.
+
+The **865-device loaded-parent layout** passes all 560 native DRC categories
+with zero markers and both hierarchical and flattened transistor LVS. The
+original 757 devices and 61 prior macro reference planes are preserved. Its
+25 parent conductors and 83 probes yield **98 R / 242 C**; all twelve raw-export
+corruption controls pass. Rebinding the reset child to its actual parent
+reference planes yields **236 R / 529 C**, with thirteen RC and six composition
+controls. The assembled model contains **865 devices and 8,783 wire elements**;
+seven composition faults are rejected. A wrapper initially selected the first
+hierarchical child instead of the named top; the native checks passed and the
+corrected readback confirms the actual 865-device top. Two extraction-wrapper
+errors are also retained; the successful Magic output was audited without
+rerunning healthy CAD.
+
+A fresh **50 ns, 2,438-column loaded-parent transistor capture is running**.
+Before launch, eleven waveform fault controls and six boundary controls passed.
+The prospective measurement checks two rising edges at the reset cell and
+900 ps/100 ps margins at the destination counter's actual pins. The first /4
+uses the previously validated fixed input-phase anchor strictly before 8 ns;
+the other raw division and rail checks remain unchanged. The old fixed-3.1 ns
+measurement is retained as a diagnostic. Full-capture functional, electrical
+and independent phase rereads are queued. Component success does not establish
+PLL acquisition, jitter, serial PHY qualification or main-chip timing.
+
+The first antenna repair finishes its detailed-routing pass with **zero router
+violations**, down from the original 18. Antenna violations fall from
+**514 nets / 599 pins to 49 nets / 54 pins**. The second automatic repair is
+active. These are intermediate OpenROAD results, not final DRC or setup/hold
+acceptance; healthy CAD has no elapsed-time termination limit.
+
+The bounded data-unit metadata candidate passes three temporal equivalence
+configurations, ten port tests and three actual mutants. Synthesis reduces
+four active slot records from **36 to 8 flip-flops**; the two completion slots
+are optimized away in both the baseline and candidate. An incorrect wrapper
+expected six named storage arrays and literal zeros. The corrected audit
+checks all actual FF and tie-low drivers and rejects six corruptions.
+Nevertheless, the candidate is **rejected**: unplaced setup worsens by
+326.586 ps SS, 442.167 ps TT and 288.788 ps FF, and SS hold worsens by 84.005 ps.
+No physical adoption follows.
+
+The next candidate replaces dynamic sent-credit writes with three constant
+class banks while retaining the accepted-EOP cycle. Temporal equivalence passes
+for refresh settings 128, 0 and -1; eight original port tests pass. A new
+[stalled-EOP regression](../hw/soc/tb/cocotb/test_soc_pcie_fc_tx_eop.py)
+passes on both the golden design and candidate and catches wrong-class,
+unaccepted-EOP and early-byte snapshot mutations. It closes a real gap in the
+three original FC tests, which missed the unaccepted-EOP mutation. The original
+miss remains recorded. Whole-chip synthesis is active; timing is not accepted.
+The temporal proofs use equal-observation induction and are not an independent
+reset-reachability proof.
+
+The 68 complete gated106/gated108 captures and their methods are packaged into
+1,669,863,932 bytes, SHA-256
+`4ab66e6ac59cd7e4e1dec761e7406ce8cfb2a548043ee5a28727564e7e88b76d`.
+Upload has completed; full anonymous readback is still running. The two original
+106-device FF failures are preserved.
+
+## Earlier snapshot — 11 October, 18:35 TRT
 
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [new repair record](evidence/pcie-async-reset-and-credit-width-20261011.json)
