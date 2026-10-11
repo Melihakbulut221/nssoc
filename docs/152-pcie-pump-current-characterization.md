@@ -2,7 +2,7 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 19:17 TRT
+## Latest snapshot — 11 October, 19:47 TRT
 
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [new evidence record](evidence/pcie-reset865-and-credit-bank-20261011.json)
@@ -64,15 +64,52 @@ for refresh settings 128, 0 and -1; eight original port tests pass. A new
 passes on both the golden design and candidate and catches wrong-class,
 unaccepted-EOP and early-byte snapshot mutations. It closes a real gap in the
 three original FC tests, which missed the unaccepted-EOP mutation. The original
-miss remains recorded. Whole-chip synthesis is active; timing is not accepted.
+miss remains recorded. Whole-chip synthesis finishes, but setup regresses by 266.476 ps SS,
+244.538 ps TT and 150.227 ps FF. SS hold improves by 30.814 ps; this does not
+justify the setup regression. This candidate is also rejected before PnR.
 The temporal proofs use equal-observation induction and are not an independent
 reset-reachability proof.
 
 The 68 complete gated106/gated108 captures and their methods are packaged into
 1,669,863,932 bytes, SHA-256
 `4ab66e6ac59cd7e4e1dec761e7406ce8cfb2a548043ee5a28727564e7e88b76d`.
-Upload has completed; full anonymous readback is still running. The two original
-106-device FF failures are preserved.
+The [complete archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-gated106-gated108-full-captures-20261011.tar.gz)
+passes full anonymous download verification. The two original 106-device FF
+failures are preserved. The [865-device physical and rejected-credit records](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset865-physical-and-credit-rejections-20261011.tar.gz)
+also pass full verification: 473 members, 42,752,543 bytes, SHA-256
+`64759d83ed7156b8e8ccf85f1ca5eae466a3a6ea6198f2a520b7c5641dcaa14d`.
+The [rejected FC bank experiment and new EOP test](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-fc-sent-bank-rejection-and-eop-test-20261011.tar.gz)
+are fully verified too: 18,919,625 bytes, SHA-256
+`df0f14efc5393cbf2a98c56e431e507a6fc9a46a08d7d47e6c0067e4fe1e67a6`.
+
+The running loaded-parent capture has an **incomplete 18.525 ns diagnostic**.
+A 0.241 V power-ramp excursion crosses the fixed 10% level before 1 ns, while
+the actual reset release occurs later. The original new parent oracle counts
+both crossings globally and is therefore expected to reject this record.
+It remains unchanged. A separate reader associates rail crossings with the
+actual reset request, as the component oracle already does, retaining all raw
+edges, the low-rail check from 1 ns, every 50% glitch check and the same
+900 ps/100 ps limits. Thirteen waveform corruptions are rejected. The prefix
+shows 1.431 ns recovery and 493 ps request-associated removal; complete capture
+and independent electrical review are still required. This is not a revised
+native PASS or a power-up qualification.
+
+The next timing candidate changes only FC ready on EOP to use registered
+ownership. An exact copy of the actual FC, arbiter and registered egress is
+proved with arbitrary producer, peer, credit-limit and ready inputs. Joint
+state-range and ownership invariants close by reset-based digital induction;
+three real ownership/range faults produce counterexamples. A second assertion
+proves identical ready transfers whenever FC valid is asserted. The changed
+ready has one fanout, and that consumer reads it only under valid, establishing
+the compositional transition argument. Five buffered port tests and three
+actual ready mutants pass. Whole-chip mapping is active. No monolithic SoC
+miter, four-state startup or timing acceptance is claimed. The earlier
+incomplete induction attempts and out-of-range counterexamples are retained.
+
+The separate stalled-EOP regression now has its own
+[make target](../hw/soc/tb/cocotb/Makefile.soc_pcie_fc_tx_eop) and runs in the
+[PCIe workflow](../.github/workflows/pcie-buffered-soc.yml). Its canonical RTL
+run passes one test with zero skips.
 
 ## Earlier snapshot — 11 October, 18:35 TRT
 
