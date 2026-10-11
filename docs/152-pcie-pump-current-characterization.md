@@ -2,7 +2,47 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 13:12 TRT
+## Latest snapshot — 11 October, 13:24 TRT
+
+The combined placed-design experiment now has **nonnegative hold, reset
+recovery and reset removal in all three corners**. SS data setup remains
+negative, and the smallest margins are too small to treat as routed closure:
+
+| Corner | Setup (ns) | Hold (ns) | Reset recovery (ns) | Reset removal (ns) |
+| --- | ---: | ---: | ---: | ---: |
+| SS | -1.698460 | +0.162229 | +0.001118 | +0.377424 |
+| TT | +0.039251 | +0.104576 | +1.164570 | +0.161027 |
+| FF | +0.758207 | +0.000238 | +1.798518 | +0.048727 |
+
+This combines 176 data/output delay cells, using the smaller delay variant at
+internal data loads, with 165 reset-buffer drive changes. A full graph check
+binds the combined starting database to the already checked delay experiment.
+Only the specified buffer masters change; their Boolean functions pass at all
+three libraries and four graph fault controls are rejected. Placement of
+unsized cells is preserved. **These are placement-RC measurements, not final
+extracted timing, and the combined candidate is not adopted or routed.**
+
+The original main-chip route continues through antenna repair after zero
+global-routing overflow. The registered credit-offer candidate's real joint
+CPU/PCIe/Ethernet tests finish **2 passed, 0 failed, 0 skipped**, without runtime
+diagnostics. Its fresh placement/CTS flow has started. The RX constant-slice
+candidate completes full-chip mapping after all three equivalence proofs;
+independent three-corner timing is running.
+
+The 757-device reset-margin transient has reached its native completion
+footer; measurement and independent full-wave review still determine its
+verdict. Reset-stimulus changes remain diagnostic and do not constitute a
+physical reset-release circuit or a complete serial PHY.
+
+The [evidence record](evidence/pcie-postcts-rx-20261011.json) now links the two
+additional fully verified public capsules: 52 members / 54,111,336 bytes and
+21 members / 24,757,051 bytes. They contain the completed small-delay,
+165-buffer, combined-graph and joint-traffic evidence. A further 1,809,872,433
+bytes of fully verified public download caches were evicted; restoration
+methods and all original native captures are retained. **Full serial PHY,
+routed main-chip acceptance and final setup/hold remain open.**
+
+## Earlier snapshot — 11 October, 13:12 TRT
 
 The recovered main-chip post-CTS repair has returned. Independent STA of its
 saved database reports these minima across **every reported path group**:

@@ -1,6 +1,6 @@
 {
   "status": "INTERMEDIATE_REPAIRS_VALIDATED_FULL_PHY_ROUTE_TIMING_OPEN",
-  "at": "2026-10-11T13:11:54.431382+03:00",
+  "at": "2026-10-11T13:24:30.137348+03:00",
   "full_phy_accepted": false,
   "routed_mainchip_accepted": false,
   "final_timing_accepted": false,
@@ -18,6 +18,20 @@
       "name": "nssoc-postcts-eco-records-20261011.tar.gz",
       "bytes": 54136961,
       "sha256": "29f28e6358a8f13f5ac07554b3f9435d5d325bb19d24074c6a291b34f6ed92a9"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-posthold-pass-records-20261011.tar.gz",
+      "name": "nssoc-posthold-pass-records-20261011.tar.gz",
+      "bytes": 54111336,
+      "sha256": "0421589bd7a1f49308afd1432c0d22ab7f9240f8cc8fb5803b4ac7b70ebbc877"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-combined-eco-records-20261011.tar.gz",
+      "name": "nssoc-combined-eco-records-20261011.tar.gz",
+      "bytes": 24757051,
+      "sha256": "abdb41f859879da32c74c99d3ccaa0ff5744022f47ce9e059d255c58535d2243"
     }
   ],
   "records": {
@@ -289,8 +303,122 @@
           }
         ]
       }
+    },
+    "hw/soc/out/pcie-posthold-data-small-20261011/audit04.json": {
+      "sha256": "4b713ce8c818df836f5a8838b521e504d8c1e09bdcf622cfdb6e17af768ae795",
+      "summary": {
+        "status": "PASS_IDENTITY_DATA_DELAYS_AND_FOUR_GRAPH_FAULTS_TIMING_RECORDED",
+        "scope": "Exact whole-chip graph preserved after collapsing only the reported noninverting new delay cells; threeLiberty functions checked. No fullPHY/mainchip routed extraction/signoff.",
+        "comparison_ns": {
+          "slow_max": {
+            "old": -1.594565,
+            "new": -1.69846,
+            "delta": -0.10389500000000007,
+            "eth_gtx": 2.269702
+          },
+          "slow_min": {
+            "old": 0.162229,
+            "new": 0.162229,
+            "delta": 0.0,
+            "eth_gtx": 1.593469
+          },
+          "typical_max": {
+            "old": 0.039248,
+            "new": 0.039248,
+            "delta": 0.0,
+            "eth_gtx": 3.392803
+          },
+          "typical_min": {
+            "old": 0.019906,
+            "new": 0.104576,
+            "delta": 0.08467,
+            "eth_gtx": 0.724833
+          },
+          "fast_max": {
+            "old": 0.758207,
+            "new": 0.758207,
+            "delta": 0.0,
+            "eth_gtx": 4.002266
+          },
+          "fast_min": {
+            "old": -0.207803,
+            "new": 0.000238,
+            "delta": 0.20804099999999998,
+            "eth_gtx": 0.258565
+          }
+        },
+        "graph": {
+          "original_cells": 112588,
+          "original_pins": 576394,
+          "original_ports": 354,
+          "identity_delay_cells": 176,
+          "unchanged_existing_placed_cells": 112568
+        }
+      }
+    },
+    "hw/soc/out/pcie-posthold-reset-drive2-20261011/binding04.json": {
+      "sha256": "a15a9a0b1364941a9551f12ab6ceabaef55fa323cce05b1bc511647662e17df2",
+      "summary": {
+        "status": "PASS_EXACT_POSTHOLD_BASELINE_POWER_BINDING_AND_RESET_TIMING_READBACK",
+        "scope": "All cell/port/pin keys and existing nets match exact posthold database, allowing only explicitly listed NONE power connections before the161buffergraph audit. Asynchronous group includes recovery/removal; no final routing acceptance.",
+        "reset_group_slack_ns": {
+          "slow_max": 0.003851,
+          "slow_min": 0.374685,
+          "typical_max": 1.167096,
+          "typical_min": 0.15953,
+          "fast_max": 1.800292,
+          "fast_min": 0.047984
+        },
+        "all_reset_corners_nonnegative": true
+      }
+    },
+    "hw/soc/out/pcie-posthold-combined-20261011/binding04.json": {
+      "sha256": "55678368abb8b9c8d868bfc86ea3987162893441dd747c14103fc7880ba03d90",
+      "summary": {
+        "status": "PASS_EXACT_COMPOSITION_OF_DATA_DELAYS_AND_RESET_DRIVE",
+        "scope": "Exactly preserved full connection graph of mixed176data-delay baseline before proven165resetbuffer sizing. Same constraints, placedRC only. Global setup/hold/async minima preserved without waivers; no route orfullPHYsignoff.",
+        "reset_group_slack_ns": {
+          "slow_max": 0.001118,
+          "slow_min": 0.377424,
+          "typical_max": 1.16457,
+          "typical_min": 0.161027,
+          "fast_max": 1.798518,
+          "fast_min": 0.048727
+        },
+        "all_group_slack_ns": {
+          "slow_max": -1.69846,
+          "slow_min": 0.162229,
+          "typical_max": 0.039251,
+          "typical_min": 0.104576,
+          "fast_max": 0.758207,
+          "fast_min": 0.000238
+        },
+        "all_reset_corners_nonnegative": true,
+        "all_hold_corners_nonnegative": true
+      }
+    },
+    "hw/soc/out/pcie-credit-offer-stage-20261011/joint10/result.json": {
+      "sha256": "bfec0cbf624cc8f70b1fb908820b72d676111f385a29d040bd6488c9c93f773b",
+      "summary": {
+        "status": "PASS",
+        "scope": "Actual Ibex CPU, PCIe packet/GPIO and GMII Ethernet concurrent traffic. Base interface bundle; external loopback over independent 125 MHz clocks and 50 MHz APB. Optional 16 vendor functional FIFO SRAM instances with POR MBIST. No PCIe serial PHY, LTSSM, Ethernet PHY, full system SRAM mapping, layout, RC or timing qualification.",
+        "tests": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        },
+        "runtime_diagnostics": []
+      }
+    },
+    "hw/soc/out/pcie-public-archive-cache-20261010/manifest11.json": {
+      "sha256": "516f7397b0535052d9dd12a3db8965b02f0943de39b204a015bb17c840e38e1b",
+      "summary": {
+        "status": "COMPLETE_VERIFIED_PUBLIC_READBACK_RANGE_CACHE_EVICTION",
+        "scope": "Only generated HTTP download range cache bins from two completed loaded570 public readbacks. All source, native captures, original results, members and readback receipts retained. All local ranges and ordered full hash match previous complete public readback; current GitHub full size/digest and fresh first/last anonymous samples match. Restore exact cache bytes by provided script.",
+        "freed_bytes": 1809872433
+      }
     }
   },
-  "remaining": "SSsetup/recovery andFFhold inmainpostCTS; detailedroute/finalSTA; fullserialPHY. Isolated176delay closesholdbutworsenssetup;161resetbufs improveSSrecoveryto-.235278, noadoption. RXconstantclass3fullproofconfigs+10tests+3actualfaults pass, wholemappingactive. Fresh165resetbufferandsmallerdata-delayexperiments pending.",
+  "remaining": "Combined placement experiment has nonnegative hold/recovery/removal allcorners butSSsetup-1.698460 and margins only.238psFFhold/1.118psSSrecovery, unaccepted. Mainroute inantenna repair; registeredoffernewphysicalactive afterjoint2PASS0skip/runtimeclean. RXbanked mappingcomplete,STAactive. 757resetmargin50nstransient nativefinished, independentmeasurements pending; notfullPHY.",
   "evidence_policy": "Summaries here; full original records, waveforms as applicable, source inputs and native outputs remain in linked capsules. Local record hashes identify exact records, not summaries."
 }
