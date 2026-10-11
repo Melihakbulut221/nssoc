@@ -2,7 +2,56 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest continuation — 11 October, 23:17 TRT
+## Latest continuation — 11 October, 23:50 TRT
+
+The original unfilled routed digital core passes the independent IHP native
+antenna deck: **31 complete rule categories, zero markers** in
+[GitHub run 38170849296](https://github.com/Melihakbulut221/nssoc/actions/runs/38170849296).
+Downloaded report/log hashes, the exact original GDS and **108 input hashes**
+are checked again locally. This result belongs to that original core;
+it does not transfer to fill or ECO candidates and does not close full DRC,
+LVS, serial PHY or timing.
+
+The [combined repair and native-antenna record](evidence/pcie-conservative-combined-and-antenna-20261011.json)
+contains complete public capsules with successful local and anonymous
+readback. Twenty measured small buffers are sized, three shared PCIe input
+delay cells are removed, and one loaded NAND is sized. The first combination
+makes FF setup positive but reduces TT/FF hold margin. Adding delay only at
+three measured D endpoints recovers that loss. The final candidate contains
+**96 endpoint delays and two input-load buffers**, with **21 sized drivers**.
+Native placement, the restricted cell-equation proof and exact geometry/PG
+checks pass; **115,428 other cell geometries** are preserved.
+
+| Fresh placement estimate | SS | TT | FF |
+| --- | ---: | ---: | ---: |
+| Setup slack (ns) | -4.059812 | -0.966571 | +0.075600 |
+| Hold slack (ns) | +0.315223 | +0.190223 | +0.050119 |
+
+All six worst values are nonregressing against the conservative 95-cell
+parent under identical SDC and fresh layer-RC estimates, without SPEF.
+**These are not extracted timing results.** The parent is in detailed
+routing after global antenna repair reaches zero; the combined candidate
+waits for its actual routed readback, then runs fresh routing/extraction and
+independent three-corner STA. After native antenna repair, the parent's
+retained geometry and power geometry still match, although the tool changes
+18 fixed-placement flags. The strict flag audit failure remains recorded;
+later physical geometry must be checked again.
+
+The SS CPU path is traced from an Ibex register-file read-address flip-flop
+to a RAM command. A separate **REQ_REG=1, MEM_RDREG=0** experiment is now mapping
+and running the whole-CPU firmware test. It uses the existing request-stage
+option and leaves the memory response direct. Earlier protocol/formal inputs
+are hash-verified; new mapped connectivity, firmware cycle cost and physical
+measurements remain required. Default RTL parameters stay unchanged.
+
+Local whole-core DRC continues, full transistor LVS remains queued, and fill
+continues across 35 tiles. A new controller waits for complete fill and the
+full geometry-preservation check before running native density on the entire
+filled GDS. The 1 µs analog diagnostic remains active.
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
+## Previous continuation — 11 October, 23:17 TRT
 
 The [conservative placement and route record](evidence/pcie-conservative-placement-and-route-start-20261011.json)
 passes native placement legality and a restricted original-to-candidate
