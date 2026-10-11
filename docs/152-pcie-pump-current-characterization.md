@@ -2,6 +2,49 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## 11 October continuation: reset removal repair and registered read decode
+
+The persistent reset endpoint was traced to `pcie_retrain_done_i` driving
+`$auto$ff.cc:337:slice$1168519/RESET_B`. Separate experiments on the immutable
+pre-repair CTS database add one or two noninverting delay cells to that load.
+The reset checks become positive at all three corners:
+
+| Corner | Original removal (ns) | One cell: removal / recovery (ns) | Two cells: removal / recovery (ns) |
+| --- | ---: | ---: | ---: |
+| SS | -0.003806 | +0.553878 / +1.252034 | +1.092654 / +0.656597 |
+| TT | -0.097183 | +0.262343 / +1.926150 | +0.602160 / +1.550575 |
+| FF | -0.140944 | +0.110029 / +2.324147 | +0.343227 / +2.066408 |
+
+The complete chip connectivity matches after collapsing only the added
+identity delay cells. Each experiment checks the cell function in all three
+Liberty files and rejects four graph corruptions. The first reporting audit
+failed because it mixed appended reset reports with the all-group report;
+the original log is retained and a separate corrected reader passes.
+**Global setup/hold remain negative.** These results close this endpoint's
+checks on the experimental CTS copies, not on the still-running repaired
+chip or a routed layout. A fresh, source-bound trial is queued after that
+repair, with unchanged clocks and reset constraints.
+
+Combining the credit-prefix and shared one-hot decode changes passes 14
+port tests but worsens unplaced SS setup from -1.367352 to -1.460134 ns.
+TT and FF setup also regress. The combination is not adopted.
+
+A further candidate registers the redundant one-hot read pointer, moving
+its decode before the next-byte selection path without adding interface
+latency. Full-module equivalence passes for 4×38, 2×18 and 3×38 replay buffers;
+14 port tests pass, and deliberately freezing the pointer is rejected by a
+real transmit test. Its whole-chip mapping and timing measurements are
+pending. The full serial PHY, routed main-chip integration and final timing
+remain unaccepted.
+
+The [202-file source and native-record capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-decode-records-20261011.tar.gz)
+is 63,655,558 bytes, SHA256
+`5940e9cf698a50e052622afd86860130a5cd68a4322ef6c4eb8f1b9b54126f32`.
+All members and the complete anonymous public download were verified.
+The [result inventory](evidence/pcie-reset-decode-20261011.json) records the
+exact reset margins, failed combined candidate, proofs and remaining work.
+It excludes active mapping and simulation outputs.
+
 ## 11 October correction: model geometry and parallel feedback repair
 
 **The 16 µm single-transistor trial below is not an accepted model point.**
