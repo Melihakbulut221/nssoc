@@ -2,6 +2,36 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 02:01 TRT
+
+The registered replay candidate's **seven passing port tests and three rejected
+address mutations have now been replayed with zero runtime/GPI diagnostics**.
+The original captures did execute all seven tests, but their bundled launcher
+also reported an unexpected Python executable. They remain historical evidence;
+the new captures use the same native simulator through the existing direct
+loader wrapper. The three real mutations fail 6, 6 and 7 tests respectively,
+with no skipped cases or runtime errors. Three separate formal mutations also
+fail their native equivalence checks; a final string/path bug in their recorder
+is retained and independently reviewed. The reset-zero mutant differs only in
+an internal state bit, so it alone is not evidence of an external-port failure.
+
+The portable RX carry-select candidate passes **all 16,777,216 two-input
+arithmetic combinations**, both carry-error controls, **five RX tests and five
+buffered-packet tests**, with zero skips or GPI diagnostics. Full-module
+sequential equivalence is still running; the chip map and timing screen wait
+for all four parameter cases. It is not adopted. The original function-local
+attribute compile failure and the earlier five-pass run with a GPI error are
+preserved. No test bound or expected result was relaxed.
+
+The [complete clean-runtime and carry-control record](evidence/pcie-clean-runtime-carry-20261012.json)
+links **121 archive members, 559,151 bytes**, SHA-256
+`658b0ee567e7ed134ff3d273bd4d1a9cb8f02b39db134dc2277498a2288d06cc`.
+Every member and the complete anonymous public download match. Ongoing full
+module proofs, physical runs and analog captures are excluded. The fresh
+Ethernet/replay floorplan/placement/CTS experiment, earlier conservative route,
+full native DRC/LVS queue and both analog runs continue. **Full serial PHY,
+accepted main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 01:49 TRT
 
 The new Ethernet capture and registered PCIe successor address now have a
