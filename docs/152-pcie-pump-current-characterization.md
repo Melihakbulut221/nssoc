@@ -2,6 +2,25 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 02:52 TRT
+
+Structural sharing proves 6,459 local equivalence points, but the largest RX
+case still exhausts the native solver's 4 GiB address-space limit during
+induction. The full case remains **unproven**. A fresh run now retries exactly
+that case with an 8 GiB address-space limit, an available-memory launch guard
+and a 7 GiB physical-memory cap. It reuses the three unchanged, individually
+passed configurations only after checking their exact source/tool/log hashes.
+Every configuration must pass before new chip mapping starts; no port or
+proof obligation is waived. Only unstarted map/read controllers were replaced.
+
+The [complete failure and recovery record](evidence/pcie-carry-memory-recovery-20261012.json)
+contains **13 members / 2,036,807 bytes**, SHA-256
+`0cc03b17bbd95c0e89fab98df7a203b1908fb5a1cab459bf4b6dfa69e1888a7a`.
+All members and the complete anonymous download match. The active retry is
+excluded. Native hold repair, conservative routing, DRC/LVS work and the long
+PLL acquisition continue. **Full serial PHY, accepted main-chip routing and
+final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 02:48 TRT
 
 The fresh Ethernet/replay chip's durable **post-setup, pre-hold-repair** snapshot
