@@ -2,7 +2,89 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest continuation — 12 October, 00:34 TRT
+## Latest continuation — 12 October, 00:46 TRT
+
+Ethernet cross-port read capture is committed in `7ad40bde`: **32 unit tests,
+zero skips, four rejected checker mutations, and 37 real-PDK SRAM cases pass**.
+Tests cover every address/bit fault in the small oracle, the full 2,048-address
+sequence, unknown data, first-failure termination, captured-word authority,
+reset cancellation and invalid-state failure. Synthesis verifies the 64 added
+cross-read response bits alongside the 64 March response bits. The concurrent
+CPU/PCIe/Ethernet test has passed its first scenario; the link-loss scenario is
+still running. Routed timing of this RTL remains pending.
+
+The [complete capture and RX repair capsule](evidence/pcie-eth-cross-and-rx-input-20261012.json)
+is **142,225,940 bytes**, SHA-256
+`ffb7b0649ce4b1f8e3fdde37ba8bce7f812a4d5a040754ad355148102ee7858d`.
+Every member and the complete anonymous public download are verified. It retains
+the failed post-map alias guard and the corrected actual-driver audit, the
+initial RX hold failure and the endpoint repair. Active joint simulation and
+routing outputs are excluded.
+
+The measured PCIe RX-data path includes excessive shared hold delay. Removing
+three identity delays improves setup but creates a **-57.413 ps** FF hold path.
+Adding one delay only at that endpoint restores all six worst corner values
+to nonregression against the prior combined candidate. Native placement and
+restricted cell-equation equivalence pass; **115,449 retained cell geometries
+and all power geometry remain exact**. This final candidate contains 97 added
+endpoint delays, two load buffers, 21 sized drivers and six removed shared
+input delay cells in total.
+
+| Fresh placement estimate | SS | TT | FF |
+| --- | ---: | ---: | ---: |
+| Setup slack (ns) | -4.059812 | -0.832233 | +0.075600 |
+| Hold slack (ns) | +0.315223 | +0.190223 | +0.050119 |
+
+**These values use layer-RC placement estimates, not routed SPEF.** The older
+combined route and readback controllers were stopped while still waiting;
+their CAD run directory did not exist. The improved candidate now waits for
+the running conservative 95-cell route and its independent extracted readback.
+No healthy CAD process was interrupted. A new readback controller's initial
+missing-file race is retained; its replacement retries missing/partial JSON.
+
+The exact filled original core is being checked in
+[seven parallel GitHub native groups](https://github.com/Melihakbulut221/nssoc/actions/runs/38177044286).
+The [filled-core density and partial native record](evidence/pcie-filled-core-density-20261012.json)
+now verifies **37 native density rule executions and zero markers**. All 48
+native input hashes and all 45 locked rule dependencies match. The report has
+seven empty slit categories: upstream emits other density categories only on
+violations, so category count alone is not the coverage criterion. The new
+independent reviewer requires the full execution log, completion, exact GDS,
+locked dependencies, zero report items and the global-density summary. Its
+13 controls reject missing/repeated rules, native errors, wrong top/categories,
+added markers, missing item inventory and an out-of-range density summary.
+The complete native report/log, reviewer and tests are publicly archived and
+fully read back.
+
+| Global density | Measured | Native range |
+| --- | ---: | ---: |
+| Activ | 38.81% | 35–55% |
+| GatPoly | 26.12% | at least 15% |
+| Metal1 | 38.60% | 35–60% |
+| Metal2 | 35.94% | 35–60% |
+| Metal3 | 39.02% | 35–60% |
+| Metal4 | 48.62% | 35–60% |
+| Metal5 | 47.96% | 35–60% |
+| TopMetal1 | 41.32% | 25–70% |
+| TopMetal2 | 43.28% | 25–70% |
+| LBE | 0.00% | at most 20% |
+
+Two GitHub groups also pass independent local readback: **161 grid categories**
+and **20 pin/forbidden categories**, all with zero markers. Each review checks
+108 input hashes and the exact filled GDS. The remaining native groups are
+still running; **this is not full DRC closure**. Original full-core DRC continues
+locally; transistor LVS remains queued. Fill-aware RC/timing is not qualified.
+The fine-step 1 µs analog capture continues unchanged.
+A separate 50 ns, 1.25 ps-step experiment checks whether diagnostic runs can
+be accelerated: a fixed 35–50 ns window requires identical edge counts,
+no more than 5 ps absolute edge displacement and 5 mV VCTRL difference against
+an immutable complete-row prefix of the running 0.3125 ps reference. No phase
+fit or device-equation change is permitted. This is selected-probe convergence,
+not full electrical, PVT or serial-PHY qualification.
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
+## Previous continuation — 12 October, 00:34 TRT
 
 The original routed digital core now has **all 35 fill tiles generated**.
 The complete geometry audit passes: every original shape and instance in

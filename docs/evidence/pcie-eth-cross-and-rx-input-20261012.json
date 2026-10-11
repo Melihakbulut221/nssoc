@@ -1,0 +1,330 @@
+{
+  "time": "2026-10-12T00:46:39.775091+03:00",
+  "status": "ETH_CROSS_CAPTURE_DIGITAL_CHECKS_AND_RX_ECO_ESTIMATES_PASS_PHYSICAL_CLOSURE_PENDING",
+  "source_commit": "7ad40bdef398884c7f6e99033767d00b3745d49c",
+  "release_tag": "evidence-20261006-pcie-closure",
+  "assets": [
+    {
+      "name": "nssoc-eth-cross-read-and-rx-input-eco-20261012.tar.gz",
+      "bytes": 142225940,
+      "sha256": "ffb7b0649ce4b1f8e3fdde37ba8bce7f812a4d5a040754ad355148102ee7858d",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-eth-cross-read-and-rx-input-eco-20261012.tar.gz",
+      "local_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true,
+      "members": 169
+    }
+  ],
+  "scope": "Ethernetcross-readcapture:canonicalRTLmatchesisolatedcandidate;32canonicalunitcases0skips4mutationsrejected,37realPDKSRAMcasesPASS;nativechipmappingandactual128responsebitclockgraphPASS(64newcross+64March). First postmapread_data_qaliasKeyError retained; correctedcompare_dataactualQdriverauditPASS. MatchedunplacedETHRX/TXSSimproves1.596745/1.857131ns,mainclockregresses.472286ns;notphysicaltimingacceptance. ConcurrentCPU/PCIe/Ethernetjoint05ACTIVEEXCLUDED. SeparatePCIeRX ECO removes3shareddata[2]delaycells;first FFhold-.057413ns retained;oneendpoint-onlydlygate4sd2repair restoresall6globalworstslacksnonregression vscombinedparent;TTsetup+.134338ns,PCIeSSgroup+.182580ns. All115449retainedcellgeometry/PGexact,restrictedlogicproof/nativeplacementPASS. Total97endpointdelays+2loadbuffers/21sizeddrivers/6sharedremovals. Wait-onlyoldcombinedroute15/readback17superseded beforeanyCAD. Newroute12 waitsactual95parentreadback; first readback14 waitingcontroller FileNotFound race, replacement15 usesfile/JSONretry. Active route/readback,analog,density andnewreplayexperimentsEXCLUDED. FullserialPHY/mainchiprouting/finalsetupholdOPEN.",
+  "ethernet_capture": {
+    "status": "RTL_CAPTURE_ADOPTED_UNIT_NATIVE_AND_MAPPED_CHECKS_PASS_JOINT_AND_PHYSICAL_PENDING",
+    "time": "2026-10-12T00:34:21.774104+03:00",
+    "unit_tests": 32,
+    "skips": 0,
+    "mutations_rejected": 4,
+    "native_sram_cases": 37,
+    "mapped_cross_read_bits": 64,
+    "mapped_march_read_bits": 64,
+    "startup_nominal_ns": 7053312,
+    "startup_bound_ns": 7200000,
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/dft/soc_eth_fifo_sram.v": "4a07a36fe80a1d9a40a1e084f08bc1aa905e993c781774b66bc9ff4e276e0273",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/dft/soc_sram_zero_check.v": "d6c75802888357f2509a3c53e77833ae45ab006cf617851d979d76084731cbb8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_sram_zero_check.v": "686ec4724ab042565c98824ac4a92c236cedf2d4e6544149034aaa9fcd1c1a45",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_soc_sram_zero_check.py": "847628f24e541633e8370e884d86449ad7e735aaacabd25152ed0bead4a36aa7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_ethernet.py": "eb7c2433514ebb96674e76d39ba2d62bcfc780e2e0b3112acd19891260c1f8ad",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-cross-read-pipeline-20261012/native02/result.json": "8c5f1568eb839714c0b4491d44c975e2bae9f47645c18695b265046fad9fa71e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-cross-read-pipeline-20261012/audit06.json": "510daff79d50ce629b41269b787a234d955bbf7b103d7027fc637500a996dc46",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-cross-read-pipeline-20261012/comparison08.json": "1ffa5c48a9035930d42490e7812e5d686e1ed3d8e1a6f9d8310546e0666b5237",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/eth-cross-read-pipeline-20261012/canonical-tests11.log": "0c06477dbd76909000b3b03c59aa3d81bfec85242856c7aac6650679533f8671"
+    },
+    "scope": "Canonical RTL bytes match isolated candidate used by37nativeSRAMcases and mapped128bitclockgraph.32canonicalunitcasespass. Candidate input copies remain immutable for ongoing joint05. Historical failedmap aliasguard retained; corrected actual driver audit06 PASS. Wholechip placement/routing/extractedtiming/PHY not accepted. Main-clockunplacedsetupregresses0.472286ns whileETHRX/TX improves1.596745/1.857131ns."
+  },
+  "unplaced_ethernet_comparison": {
+    "slow_max": {
+      "asynchronous": {
+        "before_ns": 1.368379,
+        "after_ns": 1.343236,
+        "delta_ns": -0.025142999999999915
+      },
+      "path delay": {
+        "before_ns": 2.504547,
+        "after_ns": 2.505196,
+        "delta_ns": 0.0006490000000001217
+      },
+      "clk_i": {
+        "before_ns": 1.340249,
+        "after_ns": 0.867963,
+        "delta_ns": -0.472286
+      },
+      "eth_gtx": {
+        "before_ns": 4.901397,
+        "after_ns": 4.901397,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": 0.107261,
+        "after_ns": 1.704006,
+        "delta_ns": 1.5967449999999999
+      },
+      "eth_tx_clk_i": {
+        "before_ns": -0.178282,
+        "after_ns": 1.678849,
+        "delta_ns": 1.857131
+      },
+      "pcie_clk_i": {
+        "before_ns": -1.367352,
+        "after_ns": -1.359263,
+        "delta_ns": 0.00808899999999979
+      }
+    },
+    "slow_min": {
+      "asynchronous": {
+        "before_ns": 0.367771,
+        "after_ns": 0.367466,
+        "delta_ns": -0.0003049999999999997
+      },
+      "clk_i": {
+        "before_ns": -0.507171,
+        "after_ns": -0.479766,
+        "delta_ns": 0.027405000000000013
+      },
+      "eth_gtx": {
+        "before_ns": -0.43793,
+        "after_ns": -0.43793,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": -0.469247,
+        "after_ns": -0.469247,
+        "delta_ns": 0.0
+      },
+      "eth_tx_clk_i": {
+        "before_ns": -0.418785,
+        "after_ns": -0.425606,
+        "delta_ns": -0.006820999999999966
+      },
+      "pcie_clk_i": {
+        "before_ns": 0.04156,
+        "after_ns": 0.057926,
+        "delta_ns": 0.016366
+      }
+    },
+    "typical_max": {
+      "asynchronous": {
+        "before_ns": 1.957927,
+        "after_ns": 1.94022,
+        "delta_ns": -0.017706999999999917
+      },
+      "path delay": {
+        "before_ns": 2.754427,
+        "after_ns": 2.754967,
+        "delta_ns": 0.0005399999999999849
+      },
+      "clk_i": {
+        "before_ns": 8.039314,
+        "after_ns": 7.75229,
+        "delta_ns": -0.28702399999999884
+      },
+      "eth_gtx": {
+        "before_ns": 5.012421,
+        "after_ns": 5.012421,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": 3.152097,
+        "after_ns": 4.179398,
+        "delta_ns": 1.027301
+      },
+      "eth_tx_clk_i": {
+        "before_ns": 2.990236,
+        "after_ns": 4.162004,
+        "delta_ns": 1.1717679999999997
+      },
+      "pcie_clk_i": {
+        "before_ns": 0.367535,
+        "after_ns": 0.366104,
+        "delta_ns": -0.0014310000000000156
+      }
+    },
+    "typical_min": {
+      "asynchronous": {
+        "before_ns": 0.145894,
+        "after_ns": 0.146154,
+        "delta_ns": 0.0002600000000000102
+      },
+      "clk_i": {
+        "before_ns": -0.387096,
+        "after_ns": -0.387551,
+        "delta_ns": -0.0004549999999999832
+      },
+      "eth_gtx": {
+        "before_ns": -0.53948,
+        "after_ns": -0.53948,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": -0.372195,
+        "after_ns": -0.348509,
+        "delta_ns": 0.023685999999999985
+      },
+      "eth_tx_clk_i": {
+        "before_ns": -0.368793,
+        "after_ns": -0.371645,
+        "delta_ns": -0.002852000000000021
+      },
+      "pcie_clk_i": {
+        "before_ns": -0.04421,
+        "after_ns": -0.04421,
+        "delta_ns": 0.0
+      }
+    },
+    "fast_max": {
+      "asynchronous": {
+        "before_ns": 2.290277,
+        "after_ns": 2.277319,
+        "delta_ns": -0.012958000000000247
+      },
+      "path delay": {
+        "before_ns": 2.89721,
+        "after_ns": 2.897573,
+        "delta_ns": 0.00036300000000011323
+      },
+      "clk_i": {
+        "before_ns": 12.017055,
+        "after_ns": 11.815781,
+        "delta_ns": -0.20127399999999973
+      },
+      "eth_gtx": {
+        "before_ns": 5.083783,
+        "after_ns": 5.083783,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": 4.504903,
+        "after_ns": 4.507291,
+        "delta_ns": 0.002388000000000723
+      },
+      "eth_tx_clk_i": {
+        "before_ns": 4.712139,
+        "after_ns": 5.49298,
+        "delta_ns": 0.7808410000000006
+      },
+      "pcie_clk_i": {
+        "before_ns": 1.243015,
+        "after_ns": 1.241055,
+        "delta_ns": -0.0019599999999999618
+      }
+    },
+    "fast_min": {
+      "asynchronous": {
+        "before_ns": 0.01881,
+        "after_ns": 0.019194,
+        "delta_ns": 0.0003839999999999989
+      },
+      "clk_i": {
+        "before_ns": -0.366551,
+        "after_ns": -0.369971,
+        "delta_ns": -0.0034199999999999786
+      },
+      "eth_gtx": {
+        "before_ns": -0.601382,
+        "after_ns": -0.601382,
+        "delta_ns": 0.0
+      },
+      "eth_rx_clk_i": {
+        "before_ns": -0.355099,
+        "after_ns": -0.340864,
+        "delta_ns": 0.014234999999999998
+      },
+      "eth_tx_clk_i": {
+        "before_ns": -0.354529,
+        "after_ns": -0.357155,
+        "delta_ns": -0.002626000000000017
+      },
+      "pcie_clk_i": {
+        "before_ns": -0.109062,
+        "after_ns": -0.109062,
+        "delta_ns": 0.0
+      }
+    }
+  },
+  "rx_eco_comparison": {
+    "slow_max": {
+      "before_ns": -4.059812,
+      "after_ns": -4.059812,
+      "delta_ns": 0.0
+    },
+    "slow_min": {
+      "before_ns": 0.315223,
+      "after_ns": 0.315223,
+      "delta_ns": 0.0
+    },
+    "typical_max": {
+      "before_ns": -0.966571,
+      "after_ns": -0.832233,
+      "delta_ns": 0.13433799999999996
+    },
+    "typical_min": {
+      "before_ns": 0.190223,
+      "after_ns": 0.190223,
+      "delta_ns": 0.0
+    },
+    "fast_max": {
+      "before_ns": 0.0756,
+      "after_ns": 0.0756,
+      "delta_ns": 0.0
+    },
+    "fast_min": {
+      "before_ns": 0.050119,
+      "after_ns": 0.050119,
+      "delta_ns": 0.0
+    }
+  },
+  "rx_geometry": {
+    "status": "PASS_EXACT_RETAINED_GEOMETRY_PG_THREE_RX_REMOVALS_ONE_ENDPOINT_DELAY",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-input-delay-relocation-20261012/audit09.py": "16079a7f225892ebdb956e030745186807c7a3ad50c885b26bd2cf03a10fcb9e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-conservative-combined-20261011/screen12/placed.odb": "e6cf1d0f74da45ff10bbdb1147389c4c04713e8186f0d8ee06b441a814af9b2a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-input-delay-relocation-20261012/screen08/placed.odb": "5292522cb16e82100cef9a42e1d47a6043bf1ce9d4e3bff742783f671304c3de"
+    },
+    "unchanged_instances": 115449,
+    "added_instances": [
+      "nssoc_hold_rxinput_00"
+    ],
+    "removed_instances": [
+      "hold60049",
+      "hold60050",
+      "hold60051"
+    ],
+    "power_special_shape_signatures": {
+      "VPWR": {
+        "count": 52110,
+        "sha256": "9d783c4335c614d35ba9f4ebca5c79e282a6f256755936ca412582b0a6d774c2"
+      },
+      "VGND": {
+        "count": 53231,
+        "sha256": "8a145acd8a75b4b7c26749a539e56afb1f33fd0fdedb0f81c637c603cb1d25b4"
+      }
+    },
+    "remaining_route_objects": {
+      "regular": 0,
+      "global_wire": 0,
+      "guides": 0,
+      "tracks": 0
+    },
+    "scope": "Three specified positive identity delays removed and one D-only endpoint delay added. Every retained cell has exact master/orientation/origin/location/PG connections and is fixed. Exact special PG geometry. No signal/clock routes or guides retained. Not timing or routing acceptance."
+  },
+  "rx_logic_status": "PASS within scope",
+  "github_filled_native_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/38177044286",
+  "captured_records": {
+    "hw/soc/out/eth-cross-read-pipeline-20261012/adoption12.json": "1132f0f46eaa17eafac36ddc95720a3dee5fd834d191f414647bc865e6214edd",
+    "hw/soc/out/eth-cross-read-pipeline-20261012/native02/result.json": "8c5f1568eb839714c0b4491d44c975e2bae9f47645c18695b265046fad9fa71e",
+    "hw/soc/out/eth-cross-read-pipeline-20261012/audit06.json": "510daff79d50ce629b41269b787a234d955bbf7b103d7027fc637500a996dc46",
+    "hw/soc/out/eth-cross-read-pipeline-20261012/comparison08.json": "1ffa5c48a9035930d42490e7812e5d686e1ed3d8e1a6f9d8310546e0666b5237",
+    "hw/soc/out/pcie-rx-input-delay-relocation-20261012/proof10.json": "5d3007cec78ed6ef58e43862c76f2ca1008e126367572f9b8a34e23cfada185a",
+    "hw/soc/out/pcie-rx-input-delay-relocation-20261012/supersession12.json": "08b8980073b4da5eab168bb01e1af0c2a16441ab41af21ca26835ef8b0c71994"
+  },
+  "full_phy_accepted": false,
+  "route_accepted": false,
+  "timing_accepted": false
+}
