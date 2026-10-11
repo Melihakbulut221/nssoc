@@ -232,7 +232,9 @@ async def timeout_duplicate_ack_training_pause_exhaustion_and_recovery(dut):
     assert not any(e[1] for e in b.events)
     await b.idle(500, training_i=0)
     await b.ack(4095)  # duplicate does not restart the timer
-    await b.idle(530)
+    await b.idle(400)
+    assert not any(e[1] for e in b.events), "Training pause advanced replay timer"
+    await b.idle(130)
     assert sum(e[1] for e in b.events) == 1
     await b.until_frames(2)
     await b.idle(4000)
@@ -250,6 +252,25 @@ async def timeout_duplicate_ack_training_pause_exhaustion_and_recovery(dut):
     await b.tick(link_up_i=0)
     await b.tick(link_up_i=1)
     assert b.v("acknowledged_sequence_o") == 4095 and b.v("buffered_o") == 0
+
+    # A forward ACK restarts the timer while later packets remain outstanding.
+    # Check only ports: a missing restart otherwise passes the duplicate-ACK
+    # and final-ACK cases above because those retain or stop the timer.
+    await b.reset()
+    await b.send(packet(0))
+    await b.until_frames(1)
+    await b.send(packet(1))
+    await b.until_frames(2)
+    await b.idle(700)
+    await b.ack(0)
+    assert b.v("outstanding_o") == 1 and b.v("acknowledged_sequence_o") == 0
+    await b.idle(600)
+    assert not any(e[1] for e in b.events), "Forward ACK did not restart replay timer"
+    assert b.frames == [(0, packet(0)), (0, packet(1))]
+    await b.idle(430)
+    assert sum(e[1] for e in b.events) == 1
+    await b.until_frames(3)
+    assert b.frames[-1] == (1, packet(1))
 
 
 @cocotb.test()

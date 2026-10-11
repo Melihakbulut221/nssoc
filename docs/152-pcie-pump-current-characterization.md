@@ -2,7 +2,55 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 15:22 TRT
+## Latest snapshot — 11 October, 16:08 TRT
+
+The new reset-release candidate contains **94 MOS fingers and four MIM
+capacitors**. Adding contacts to the two previously isolated PMOS NET7 diffusion
+nodes required physical diffusion extensions and rerouting. The final candidate
+passes all **560 native DRC categories, hierarchical and flat 98-device LVS,
+and five actual geometry/reference fault controls**. Failed spacing and
+inter-layer short attempts remain in the evidence. No LVS mismatch was waived.
+
+All 384 device terminals are classified. The extracted metal model contains
+**211 R / 450 C**, with 169 geometric reference points, 31 conductors, thirteen
+raw-RC corruption controls and six composition controls. **All seven nominal
+24 ns reset/load simulations pass**, including 200 fF, and all seven complete
+captures were independently remeasured. The new 27-point PVT diagnostic completed **18 passes / 9 failures**.
+All fast-corner cases now pass, including the six previously failing electrical
+screens. All nine slow-corner cases still fail settling or rail requirements.
+Independent remeasurement of all 27 complete PVT captures agrees. Wire RC and intrinsic body models remain unqualified.
+
+The [new evidence record](evidence/pcie-reset98-and-replay-20261011.json) links the
+[359-member physical/composition archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset98-composition-and-replay-20261011.tar.gz).
+All **21,100,030 bytes** were anonymously downloaded and hash-verified. It also
+contains the complete 853-device parent composition, physical supply reference
+plane rebinding, seven composition fault controls and immutable native test
+inputs. The 853-device parent still uses the earlier reset96 macro. Its **50 ns
+transient completes with nine of ten functional checks passing and all 853
+electrical screens passing**. Physical counter-reset release and recovery,
+modulo-five state and the 80:1 VCO/feedback ratio pass. The first-divider
+interval check still reports 3/5 instead of 4 at some boundaries and fails;
+the parent is not accepted. Independent full-wave review is in progress. The newer reset98 nominal captures and active PVT results
+are outside this archive and await their own publication.
+
+The replay next-address register candidate passed four full-module equivalence
+configurations, seven port tests and three actual fault controls. Its whole-chip
+unplaced setup screen nevertheless regresses **294.871 ps at SS, 162.849 ps at TT
+and 90.166 ps at FF** against the same registered-credit-offer baseline. It is
+**rejected for physical adoption**. SS hold improves only 31.708 ps; TT and FF
+hold are unchanged. A separate ACK-to-replay-timer control candidate passes four full-module
+equivalence configurations and all seven port tests. The canonical regression
+now explicitly checks timer restart on a partial forward ACK and frozen timing
+during training. Two formerly undetected faults are caught; the three candidate
+mutants and two canonical mutation tests fail as intended. Full-chip mapping
+is running, without an adoption or timing-gain claim.
+
+Main-chip detailed routing and the registered-credit-offer hold repair remain
+active, without elapsed-time termination limits. The earlier three-corner
+post-global-route negative slacks remain the latest complete timing evidence.
+**Full serial PHY, routed main-chip acceptance and final setup/hold are open.**
+
+## Earlier snapshot — 11 October, 15:22 TRT
 
 The stronger reset-release macro (**94 MOS fingers + two MIM capacitors**) passes
 native DRC, hierarchical and flat transistor LVS, and all seven nominal reset

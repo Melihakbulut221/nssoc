@@ -84,6 +84,18 @@ from cocotb_results import count_results  # noqa: E402
         ),
         (
             "soc_pcie_replay_tx",
+            "retries<=0;timer<=0;timer_running<=sent_count!=ack_delta;",
+            "retries<=0;timer_running<=sent_count!=ack_delta;",
+            "timeout_duplicate",
+        ),
+        (
+            "soc_pcie_replay_tx",
+            "if(timer_running && !training_i && !halt)",
+            "if(timer_running && !halt)",
+            "timeout_duplicate",
+        ),
+        (
+            "soc_pcie_replay_tx",
             "wire ack_allowed=ack_observed ? ack_was_allowed : current_ack_allowed;",
             "wire ack_allowed=current_ack_allowed;",
             "early_ack_is_classified",
