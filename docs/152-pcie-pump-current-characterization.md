@@ -2,7 +2,55 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 20:19 TRT
+## Latest snapshot — 11 October, 21:01 TRT
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+The [routed-core evidence record](evidence/pcie-routed-core-sta-and-signoff-20261011.json)
+contains the exact result and source digests for this update.
+
+The digital PCIe packet / Ethernet SRAM core completes detailed routing with
+**zero router DRC errors and zero antenna nets/pins** after the third repair.
+The independent antenna check also reports zero. Critical disconnected pins
+are zero; three unused CAN/SpaceWire top-level inputs remain. These interfaces
+are not active in this core. The layout has 391,685 physical instances and
+20 SRAM macros. Its GDS streamout completes; it contains neither the complete
+serial PHY nor an integrated padframe.
+
+Nominal routed SPEF extraction completes. Native STA and an independent ODB /
+SPEF reader agree within 1 fs at all three library corners:
+
+| Corner | Setup slack (ns) | Setup violations | Hold slack (ns) | Hold violations |
+| --- | ---: | ---: | ---: | ---: |
+| SS | -7.875245 | 9,629 | +0.234352 | 0 |
+| TT | -3.833596 | 6,105 | +0.056391 | 0 |
+| FF | -1.402299 | 4,149 | -0.048270 | 36 |
+
+Slew violations remain 497 / 326 / 201 and capacitance violations 38 per
+corner. All 1,078 unannotated drivers are independently checked in the routed
+ODB: each has no load and no wire; no loaded driver has missing or partial
+annotation. Original netlist-reader warnings are retained. These results do
+not qualify the SRAM libraries or the nominal extraction model.
+
+Full native main DRC is running on the actual GDS with all 37 rule tables and
+recommended checks. Its elapsed-time cutoff is explicitly disabled; memory
+limits remain. The full transistor reference schematic is assembled from the
+powered implementation netlist and original vendor CDL, including SRAM
+interiors. Native LVS is queued behind DRC to limit concurrent memory use.
+Neither verification has yet passed on this routed layout.
+
+A general electrical repair adds 449 buffers and preserves the restricted
+cell-equation proof, but is **rejected**: a matched placement-estimated screen
+worsens setup by 1.599 ns / 0.728 ns / 0.489 ns. No reroute or adoption follows.
+A fresh, smaller experiment retains the two existing PCIe input delay cells
+and adds one load-isolation buffer after each; matched timing and logic
+checks are running. The refresh-lookahead RTL experiment is also **rejected**
+for setup regressions of 90.988 ps / 270.430 ps / 166.492 ps.
+
+The 1 µs, selected-probe 865-device acquisition diagnostic continues with the
+original 0.3125 ps step. It is not an all-device electrical or full-PHY approval.
+The full 50 ns result and independent reviews below remain unchanged.
+
+## Previous snapshot — 11 October, 20:19 TRT
 
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [full-capture and timing experiment record](evidence/pcie-parent865-full-readback-and-refresh-20261011.json)

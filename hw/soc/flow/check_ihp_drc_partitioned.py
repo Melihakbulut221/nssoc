@@ -159,11 +159,11 @@ def main():
     parser.add_argument("--klayout", default="klayout")
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--timeout-seconds", type=int, default=21600,
-                        help="Per-part process limit; a timeout is ERROR")
+                        help="Per-part process limit; 0 disables elapsed limit; a timeout is ERROR")
     args = parser.parse_args()
     if (not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", args.tag)
-            or args.threads < 1 or args.timeout_seconds < 1):
-        parser.error("Safe tag and positive threads/timeout required")
+            or args.threads < 1 or args.timeout_seconds < 0):
+        parser.error("Safe tag, positive threads and nonnegative timeout required")
     gds = args.gds.resolve(strict=True)
     if not gds.is_file() or not gds.stat().st_size:
         parser.error("A nonempty GDS is required")
@@ -186,7 +186,7 @@ def main():
     if version.returncode or not version.stdout.strip():
         parser.error("Cannot record KLayout version")
     output.mkdir(parents=True, exist_ok=False)
-    inputs = dict(top=args.top, deck_commit=lock["commit"], tables=groups,
+    inputs = dict(timeout_seconds=args.timeout_seconds, top=args.top, deck_commit=lock["commit"], tables=groups,
                   klayout_version=version.stdout.strip(), mode="tiling", recommended=True,
                   input_sha256={str(p): sha for p, sha in expected.items()},
                   scope="All 37 main tables in two sequential processes; antenna, density, LVS and other layouts require separate acceptance")
@@ -213,7 +213,7 @@ def main():
             with (folder / "run.log").open("w") as stream:
                 try:
                     rc = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT,
-                                        timeout=args.timeout_seconds).returncode
+                                        timeout=args.timeout_seconds or None).returncode
                 except subprocess.TimeoutExpired:
                     stream.write("\nPartition timed out; no acceptance.\n")
                     rc = 124

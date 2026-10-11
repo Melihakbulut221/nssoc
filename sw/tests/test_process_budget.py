@@ -6,14 +6,17 @@ import subprocess
 import sys
 import time
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'hw/soc/flow'))
 from bounded_process import bounded_run
 
 
-def test_normal_completion(tmp_path):
+@pytest.mark.parametrize("timeout", [2, None])
+def test_normal_completion(tmp_path, timeout):
     with (tmp_path/'log').open('w') as log:
         result = bounded_run([sys.executable, '-c', 'print("completed")'],
-                             stdout=log, timeout=2)
+                             stdout=log, timeout=timeout)
     assert result.returncode == 0
     assert (tmp_path/'log').read_text().strip() == 'completed'
 
