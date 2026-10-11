@@ -2,6 +2,85 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## 11 October continuation: recovered runs and measured solver speed
+
+Earlier session-owned jobs stopped externally without a final transient footer
+or a post-repair database. Their cause is unknown; stale `RUNNING` JSON files
+are not proof of a live calculation. The original incomplete outputs remain.
+Fresh runs now use independent user services with no elapsed-time deadline.
+The 757-device, geometry-valid model is running the original 50 ns test again.
+The chip repair resumes from the completed CTS database with the two
+connectivity-proved reset delay cells; it now saves a database after setup
+repair, before starting hold repair.
+
+Independent timing of that **intermediate, placed** setup checkpoint is:
+
+| Corner | Setup slack (ns) | Hold slack before hold repair (ns) |
+| --- | ---: | ---: |
+| SS | -1.614687 | -0.824862 |
+| TT | +0.028450 | -0.639819 |
+| FF | +0.751208 | -0.676601 |
+
+The slow setup path is traced in the actual placed netlist from
+`credit_data_consumed_o[29]` to `credit_header_limit_o[22]`. Hold repair is still
+running. These values use placement-estimated RC; routed extraction and final
+signoff are pending. The subsequent route is queued behind repair and resource
+checks.
+
+The registered replay decode candidate completed unplaced timing: SS setup
+-1.394221 ns and hold -0.512950 ns, both worse than the MBIST baseline.
+A further ACK expected-sequence comparison passes full-module proofs for
+4×38, 2×18 and 3×38, four unconstrained counter-width arithmetic proofs,
+14 port tests and an actual shifted-sequence fault. Its SS setup is worse again,
+-1.579711 ns, so neither candidate is adopted. The optional 8×64 proof of an
+earlier one-hot candidate exhausted its configured 4 GiB; that parameter case
+remains unproved despite the three smaller cases passing.
+
+The old 16 µm feedback-input experiment completed its full capture: six of eight
+functional checks pass; all 753 per-device electrical extrema pass, but two
+MOS width limits fail. A causal phase reader passes the /4 edge assignment;
+it does not override the original failed ratio checks or geometry screen.
+The new physical 757-device experiment uses separate 8 µm devices and remains
+pending. Completed evidence and exact source hashes are in the
+[continuation record](evidence/pcie-continuation-20261011.json).
+
+### Solver comparison and a credit regression gap
+
+The installed ngspice 47 build includes KLU; the
+[ngspice manual](https://ngspice.sourceforge.io/docs/ngspice-manual.pdf)
+documents explicit solver selection. Two fresh, complete 2 ns runs of the
+same 757-device model use the same 0.3125 ps maximum step, tolerances, startup
+procedure and all 2,142 saved columns. Only the matrix solver changes.
+Actual native logs confirm Sparse 1.3 and KLU respectively. On CPU 12, elapsed
+times are **367.633 s versus 139.489 s: 2.636× faster** for KLU.
+
+An independent reader verifies both complete raw hashes and sample trailers,
+then compares every column on a common time grid over 0.5–2 ns. All pass the
+predeclared numerical comparison limits of 5 mV, 5 µA and 1 fF; three clock
+edge sequences also agree within 2 ps. These are numerical comparison limits,
+not PCIe electrical specifications. The short benchmark deliberately cannot
+pass the full 50 ns functional gate. An 8 ns KLU run and comparison with the
+original full Sparse run are pending; the healthy Sparse run is preserved.
+
+The credit cofactor experiment exposed a test coverage gap: removing the
+reservation-valid guard escaped the old five port cases. The extended test
+leaves a nonzero request on the bus while valid is low, at the header/data
+half-range boundary, for every credit class. Neither credit pool may be
+debited; the identical update is then accepted with a real debit. The canonical
+and candidate RTL each pass all five extended cases; the mutant fails the new
+check. This regression is now in the canonical port bench. The first custom
+harness failed before RTL simulation because of mixed Python environments;
+that log is retained and the corrected cocotb-environment run passes.
+
+The [solver and regression record](evidence/pcie-solver-20261011.json)
+links the **98-member, 207,042,923-byte** capsule, including both complete
+short waveforms, independent comparisons, methods and failed controls. Its
+SHA-256 is `c297caa70432a34c1f6a11d3c6ca98f610c206e72c512484ef59fd2b1307e619`;
+all archive members and the full anonymous public download are verified.
+The separate continuation capsule has **274 members, 53,185,052 bytes**, SHA-256
+`f7f0936041818c743e43e458fe7dec19ee3956d5deba30db2d5a1e16e0cc56c5`, also fully
+verified. Full serial PHY, routed main chip and final setup/hold remain open.
+
 ## 11 October continuation: reset removal repair and registered read decode
 
 The persistent reset endpoint was traced to `pcie_retrain_done_i` driving

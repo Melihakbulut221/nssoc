@@ -19,7 +19,7 @@ class Driver:
         self.used = [[0, 0] for _ in range(3)]
         self.inf = [[False, False] for _ in range(3)]
 
-    async def tick(self, fc=None, request=None, reset=False, link=True, local=True, tlp=False):
+    async def tick(self, fc=None, request=None, reset=False, link=True, local=True, tlp=False, idle_request=None):
         d = self.dut
         d.clk_i.value = 0
         d.rst_ni.value = not reset
@@ -29,7 +29,7 @@ class Driver:
         d.fc_valid_i.value = fc is not None
         d.fc_phase_i.value, d.fc_class_i.value, d.fc_header_i.value, d.fc_data_i.value = fc or (0, 0, 0, 0)
         d.reserve_valid_i.value = request is not None
-        cls, dw, replay = request or (0, 0, False)
+        cls, dw, replay = request or idle_request or (0, 0, False)
         d.reserve_class_i.value = cls
         d.reserve_payload_dw_i.value = dw
         d.reserve_replay_i.value = replay
@@ -214,3 +214,15 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
         await driver.tick(fc=(2, cls, 0, 5))
         assert await driver.tick(request=(cls, 5, False))
         assert not await driver.tick(request=(cls, 1, False))
+
+    # An idle bus may carry a legal request while valid is low. Neither its
+    # header nor payload may rescue an otherwise invalid half-range UpdateFC.
+    for cls in range(3):
+        await driver.init(((4, 1), (4, 1), (4, 1)))
+        await driver.tick(fc=(2, cls, 128, 2048), idle_request=(cls, 4, False))
+        assert driver.used[cls] == [0, 0]
+        assert driver.limit[cls] == [4, 1]
+        # The identical advertised boundary is legal with a real debit.
+        assert await driver.tick(fc=(2, cls, 128, 2048), request=(cls, 4, False))
+        assert driver.used[cls] == [1, 1]
+        assert driver.limit[cls] == [128, 2048]
