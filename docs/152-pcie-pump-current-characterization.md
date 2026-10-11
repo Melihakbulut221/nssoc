@@ -2,6 +2,79 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## 11 October continuation: physical feedback repair and clean joint runtime
+
+**Full serial PHY, completed main-chip routing and final timing remain open.**
+The completed `rail80` 753-device, 50 ns capture passes five of the original
+eight functional checks and every finite electrical device screen. Both
+divide-by-four stages, receiver transfer, divide-by-five count and counter
+rails pass. Count-to-feedback, VCO-to-feedback and feedback swing still fail.
+The complete independent readers agree. Feedback only reaches 0.396988 V;
+this is a failed nominal point, not PLL acquisition or full-PHY acceptance.
+
+The loaded feedback shifter's two input HV NMOS devices were widened from
+8 to 16 µm. Their existing PWell taps were moved closer after the first
+geometry failed one LU.b rule. The corrected 15-device cell passes the
+unchanged 560-category DRC, hierarchical/flat transistor LVS and five actual
+fault controls. Fresh child extraction supplies 44 resistors and 79 capacitors.
+The unchanged sibling geometry, placements and macro port boxes are checked.
+The parent reference initially omitted the child's eighth, common-BULK formal
+pin; that failed LVS execution remains recorded. The new reference exposes
+the existing substrate node exactly as the previous parent did. It does not
+remove substrate devices or short geometric ports to make LVS pass.
+
+The corrected parent passes DRC and both hierarchical and flat **753-device
+LVS**, with 61 checked connection planes, 91 parent resistors and 224 parent
+capacitors. All 7,961 child/parent wire elements and all device terminals are
+bound into the new simulation model; six model-corruption controls fail as
+expected. Other 738 devices and their child interconnect are unchanged. A new
+full 50 ns native run retains all original eight criteria and all 753 device
+bounds. Its result was pending at this snapshot. Idealized common substrate
+and development metal extraction still prevent qualified PEX/PVT claims.
+
+The registered-MBIST joint SoC run originally passed both functional tests,
+but its log contained a cocotb `Unexpected sys.executable` startup error.
+The old result is preserved and is superseded by a clean repeat. The
+[runtime adapter](../scripts/cocotb_icarus_runtime.py) uses the installed OSS
+CAD Suite loader and native Icarus binary without overwriting cocotb's selected
+Python environment. It leaves the installed tools untouched. The joint driver
+now rejects GPI column-formatted errors as well as native `ERROR:` messages,
+and archives its launchers and pins the actual native executables.
+
+Eight runtime boundary controls and two real SoC fault tests pass. The clean
+repeat also passes **2 tests, 0 skipped**, including actual 16 vendor FIFO
+SRAM models, POR MBIST, independent 250 MHz packet and 50 MHz CPU clocks,
+Ethernet traffic and PCIe link loss. Five existing upstream AXIS constant-width
+elaboration warnings are listed explicitly in the record; they are not hidden
+as clean compilation. This is shipping-RTL functional validation, not a
+simulation of the physically mapped experimental PCIe netlist.
+
+The fresh main-chip CTS database is complete; timing repair is still running.
+The independent pre-repair all-group readback gives:
+
+| Corner | Setup (ns) | Hold (ns) |
+| --- | ---: | ---: |
+| SS | -2.580986 | -0.809392 |
+| TT | -0.360338 | -0.639953 |
+| FF | +0.505454 | -0.676574 |
+
+These values use placement-estimated RC, before repair or routing. The worst
+SS setup path is replay `read_pos[2]` to registered transmit data bit 7.
+A separate 36-bit available-credit cache passes formal equivalence, ten port
+tests and three real RTL fault controls, but worsens unplaced SS setup by
+0.720270 ns to -2.087622 ns. It is rejected. No reported failure is converted
+to a waiver or positive timing verdict.
+
+The [698-file source and native-record capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-level16-runtime-records-20261011.tar.gz)
+has 56,658,168 bytes and SHA256
+`057ff90898f251a796c935da330f94eb3638ee4e54158780591750b02bcb5367`.
+Every member and the complete anonymous public download were verified.
+It includes failed attempts, physical geometry, extracted models, clean and
+superseded joint records, the rejected cache candidate and actual CTS views.
+Active native captures are excluded. The
+[machine-readable result](evidence/pcie-level16-runtime-20261011.json) binds
+the completed evidence and identifies the continuing work.
+
 > **10 October timing correction:** several experimental placement summaries used the first path group rather than the worst of all reported groups. The latest prefetch result is slow setup **-2.438101 ns** and fast hold **-0.207602 ns**. Earlier positive-hold summaries are superseded by the correction near the end of this document; no final timing acceptance was achieved.
 
 ## Measured result — 7 October 2026

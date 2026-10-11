@@ -1,0 +1,323 @@
+{
+  "status": "LEVEL16_PHYSICAL_MODEL_AND_CLEAN_RUNTIME_VERIFIED_FULL_PHY_ROUTE_TIMING_OPEN",
+  "at": "2026-10-11T10:01:29.397026+03:00",
+  "rail80_completed": {
+    "status": "FAIL_NATIVE_PARENT753_FINITE_POINT",
+    "checks": {
+      "vco_first": true,
+      "first_second": true,
+      "second_received": true,
+      "received_count": true,
+      "count_feedback": false,
+      "vco_feedback": false,
+      "mod5_state_and_complement_rails": true,
+      "feedback_swing": false
+    },
+    "all753_electrical_pass": true,
+    "wave": {
+      "bytes": 2536928447,
+      "sha256": "e7ae6675238e10e774512b0498a33f5aeb96d38753654d0bf367d011db70480a"
+    },
+    "independent_reviews_complete": true,
+    "public_ranges": {
+      "v(fb)": [
+        0.023579325548175423,
+        0.39698797562969595
+      ],
+      "v(fbbar)": [
+        0.7972721987897385,
+        2.519453125938257
+      ],
+      "v(xloop.count)": [
+        -0.006320947056697404,
+        1.2070901376144092
+      ],
+      "v(xloop.countb)": [
+        -0.027923024602771136,
+        1.2720292960391582
+      ]
+    }
+  },
+  "level16": {
+    "cell_status": "PASS_NATIVE_LEVELSHIFT15_DRC_LVS_AND_FAULT_CONTROLS",
+    "drc_markers": 0,
+    "drc_categories": 560,
+    "cell_devices": 15,
+    "cell_R": 44,
+    "cell_C": 79,
+    "parent_drc": "PASS",
+    "parent_hierarchical_lvs": "PASS within comparison scope",
+    "parent_flat_lvs_devices": 753,
+    "counts": {
+      "devices": 753,
+      "wire_records": 7961,
+      "new_level_devices": 15,
+      "new_level_wires": 123,
+      "parent_R": 91,
+      "parent_C": 224
+    },
+    "binding_faults": [
+      "missing_device",
+      "changed_new_geometry",
+      "changed_kept_geometry",
+      "changed_new_terminal",
+      "changed_child_R",
+      "missing_parent_R"
+    ],
+    "original_LUb_failure_retained": true,
+    "original_parent_pin_count_error_retained": true,
+    "bulk_change": "Expose already-existing BULK as eighth child reference formal pin, matching old parent substrate connection; no geometric port short or substrate exclusion.",
+    "native_full753": "RUNNING level16-native753 native01 at this snapshot; original8criteria/all753bounds unchanged, no result yet"
+  },
+  "runtime": {
+    "joint11": "2 functional passes but GPI startup ERROR; superseded by clean repeat, original preserved",
+    "joint21_tests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "runtime_diagnostics": [],
+    "known_elaboration_warnings": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1165: warning: Port 11 (s_axis_tid) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1165: warning: Port 12 (s_axis_tdest) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 7 (s_axis_tkeep) of module axis_async_fifo_adapter expects 1 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 11 (s_axis_tid) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 12 (s_axis_tdest) of module axis_async_fifo_adapter expects 8 bit(s), given 32."
+    ],
+    "tests": 10,
+    "skipped": 0,
+    "native_identity_smoke_pass": true
+  },
+  "cts_before_repair": {
+    "slow_max": {
+      "path": {
+        "group": "pcie_clk_i",
+        "corner": "slow",
+        "path_type": "max",
+        "startpoint": "$auto$ff.cc:337:slice$1175303",
+        "endpoint": "$auto$ff.cc:337:slice$1175300",
+        "slack_ns": -2.580986
+      },
+      "aliases": {
+        "startpoint": [
+          [
+            "u_pcie.flow.packets.retry.read_pos",
+            2
+          ]
+        ],
+        "endpoint": [
+          [
+            "u_pcie.flow.packets.retry.tx_data_o",
+            7
+          ]
+        ]
+      }
+    },
+    "slow_min": {
+      "path": {
+        "group": "pcie_clk_i",
+        "corner": "slow",
+        "path_type": "min",
+        "startpoint": "pcie_rx_eop_i (input port clocked by pcie_clk_i)",
+        "endpoint": "$auto$ff.cc:337:slice$1169833",
+        "slack_ns": -0.809392
+      },
+      "aliases": {
+        "startpoint": [],
+        "endpoint": [
+          [
+            "u_pcie.receive_ownership.input_active",
+            0
+          ]
+        ]
+      }
+    },
+    "typical_max": {
+      "path": {
+        "group": "pcie_clk_i",
+        "corner": "typical",
+        "path_type": "max",
+        "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+        "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+        "slack_ns": -0.360338
+      },
+      "aliases": {
+        "startpoint": [],
+        "endpoint": []
+      }
+    },
+    "typical_min": {
+      "path": {
+        "group": "eth_gtx",
+        "corner": "typical",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1601026",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.639953
+      },
+      "aliases": {
+        "startpoint": [
+          [
+            "eth_tx_en_o",
+            0
+          ]
+        ],
+        "endpoint": []
+      }
+    },
+    "fast_max": {
+      "path": {
+        "group": "pcie_clk_i",
+        "corner": "fast",
+        "path_type": "max",
+        "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+        "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+        "slack_ns": 0.505454
+      },
+      "aliases": {
+        "startpoint": [],
+        "endpoint": []
+      }
+    },
+    "fast_min": {
+      "path": {
+        "group": "eth_gtx",
+        "corner": "fast",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1601026",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.676574
+      },
+      "aliases": {
+        "startpoint": [
+          [
+            "eth_tx_en_o",
+            0
+          ]
+        ],
+        "endpoint": []
+      }
+    }
+  },
+  "credit_cache_rejected": {
+    "slow_max": {
+      "old": -1.367352,
+      "new": -2.087622,
+      "delta": -0.7202700000000002
+    },
+    "slow_min": {
+      "old": -0.507171,
+      "new": -0.473657,
+      "delta": 0.033514000000000044
+    },
+    "typical_max": {
+      "old": 0.367535,
+      "new": 0.042739,
+      "delta": -0.324796
+    },
+    "typical_min": {
+      "old": -0.53948,
+      "new": -0.53948,
+      "delta": 0.0
+    },
+    "fast_max": {
+      "old": 1.243015,
+      "new": 1.224677,
+      "delta": -0.018337999999999965
+    },
+    "fast_min": {
+      "old": -0.601382,
+      "new": -0.601382,
+      "delta": 0.0
+    }
+  },
+  "publication": {
+    "capsule": {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-level16-runtime-records-20261011.tar.gz",
+      "name": "nssoc-level16-runtime-records-20261011.tar.gz",
+      "bytes": 56658168,
+      "sha256": "057ff90898f251a796c935da330f94eb3638ee4e54158780591750b02bcb5367"
+    },
+    "members": 698
+  },
+  "continuing": {
+    "chip": "Fresh MBIST floorplan/CTS complete; native timing repair/STA sequence running. route controller waits for fresh postCTS readback and cleanjoint prerequisites.",
+    "phy": "Fresh physicaldrive16 full753 nominal50ns capture running followed byindependentcomplete readers.",
+    "scope": "PLL development macro is not a complete serial PCIe PHY. CDR/SERDES/PCS, qualified PVT/PEX and mainchip routed signoff remain separate requirements."
+  },
+  "inputs": {
+    "hw/soc/out/pcie-level16-records-delivery-20261011/write-evidence02.py": {
+      "bytes": 3749,
+      "sha256": "20b1bd67ddb3725cbeaf041a7a7725a67851ebcb90a5c0c18dc66998b58e29c3"
+    },
+    "hw/soc/out/pcie-level16-records-delivery-20261011/delivery.json": {
+      "bytes": 366,
+      "sha256": "ac09fbf603f4f31b03f5034b6756741cb74de1b69e8e9de908ecd410053d6ea6"
+    },
+    "hw/soc/out/pcie-level16-records-delivery-20261011/archive.json": {
+      "bytes": 412,
+      "sha256": "9db4d7ac1066b8df0691f3410cb0f9e24494ab803249cec83563cec07ed16690"
+    },
+    "hw/soc/out/pcie-both28-rail80-native753-20261011/native01/closed-01/result.json": {
+      "bytes": 762238,
+      "sha256": "9d2006b7c70ac6d73855879d52440c44304b0277995e1f202c7bb213a7a91c35"
+    },
+    "hw/soc/out/pcie-both28-rail80-native753-20261011/launch02.json": {
+      "bytes": 383,
+      "sha256": "40ea4d01c950655d8c45b7722a60bdb3fdfdae51bfd8509c0cce560bebef11c8"
+    },
+    "hw/soc/out/pcie-feedback-loaded-repair-20261011/drive16-check05/result.json": {
+      "bytes": 75461,
+      "sha256": "932bc7ffdf2ff8af9890ea29dcd184d5d6297cff95e807e2ed4e5a7078ca49c2"
+    },
+    "hw/soc/out/pcie-feedback-loaded-repair-20261011/diagnosis01.json": {
+      "bytes": 5543,
+      "sha256": "bda7e32afb54b7e95df1ae9b768a4bb5d05cdd91cb77eb8ede2e9f6546bc5af3"
+    },
+    "hw/soc/out/pcie-feedback-loaded-repair-20261011/wire-pipeline06.json": {
+      "bytes": 4232,
+      "sha256": "31efa532e369e460f81c5b4286d0cbcde47bd73c2a244e182e6db75413fa859b"
+    },
+    "hw/soc/out/pcie-both28-parent753-20261011/level16bulk/pipeline01.json": {
+      "bytes": 276,
+      "sha256": "6d6cf418855804c872be9d83bbf761731adcb6b959796931e1d909014bbb2d4e"
+    },
+    "hw/soc/out/pcie-both28-parent753-20261011/level16bulk/check22/result.json": {
+      "bytes": 48431,
+      "sha256": "5acbf5f6ee0444e71d04683307f05e2d16fb5321f0dff85ad323fe8204fea3c5"
+    },
+    "hw/soc/out/pcie-both28-parent753-20261011/level16bulk/check23/lvs_flat/audit.json": {
+      "bytes": 949,
+      "sha256": "f8054b7646281dc7a35d8ebeb17f61259f71fff9facca5db1572d3f18f4dadad"
+    },
+    "hw/soc/out/pcie-both28-parent753-20261011/level16bulk/planes30.json": {
+      "bytes": 23248,
+      "sha256": "3f3a710f0462f683a1ab445fd00d3b6056499f0cf1df0987405ef13de75df5bf"
+    },
+    "hw/soc/out/pcie-both28-parent753-20261011/level16bulk/parent-model32/composition.json": {
+      "bytes": 1575863,
+      "sha256": "f8c4809f60245ef9a2464cdcce5d365efe7ecbd805e50b24fe6c1ff702b28cd8"
+    },
+    "hw/soc/out/pcie-mbist-pipeline-20261011/validation24.json": {
+      "bytes": 5279,
+      "sha256": "5baa15a6c8296e4de09e1ff8c2325b6f7b52e54ccb9c0b970539d134f163707b"
+    },
+    "hw/soc/out/pcie-mbist-pipeline-20261011/joint21/result.json": {
+      "bytes": 28834,
+      "sha256": "2968a8e7a87fff11c9d1bdc371b009682f25922b3195b6ca63a377b0748eedb0"
+    },
+    "hw/soc/out/pcie-credit-available-cache-20261011/comparison09.json": {
+      "bytes": 3860,
+      "sha256": "3e2f6ec43c4f8cd1468258c95b7703f620a6a5345858786c4b2eabf825ed981d"
+    },
+    "hw/soc/out/pcie-runtime-clean-20261011/tests02.log": {
+      "bytes": 111,
+      "sha256": "e9b30ab5a1df58853b4304cd5782e0ff6e937b2b2c99d7671eb73a8c39041be0"
+    }
+  },
+  "full_phy_accepted": false,
+  "main_chip_route_accepted": false,
+  "timing_accepted": false,
+  "manufacturing_accepted": false
+}

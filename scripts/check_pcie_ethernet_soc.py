@@ -15,6 +15,7 @@ import subprocess
 import sys
 from check_pcie_rx_flow import COMMON
 from cocotb_results import count_results
+from cocotb_icarus_runtime import prepare_runtime, runtime_diagnostics
 
 ROOT = Path(__file__).resolve().parents[1]
 SOC = ROOT / "hw/soc"
@@ -119,6 +120,7 @@ def main():
         bench.with_name("test_soc_pcie_soc.py"),
         ROOT / "scripts/check_pcie_rx_flow.py",
         ROOT / "scripts/cocotb_results.py",
+        ROOT / "scripts/cocotb_icarus_runtime.py",
         SOC / "flow/ibex_sources.sh",
         SOC / "flow/ibex_fault_port.py",
         SOC / "flow/interface_profile.py",
@@ -140,6 +142,10 @@ def main():
     out.mkdir(parents=True)
     rom = out / "rom.hex"
     rom.write_text(firmware())
+    selected_tools, launchers, runtime_files = prepare_runtime(
+        a.iverilog_dir, out / "runtime"
+    )
+    dependencies += launchers
     before = {str(f): pin(f) for f in [*files, *dependencies, rom]}
     # Preserve the actual generated bundles, ROM, models and experiment
     # sources before starting; a later source edit cannot erase this run.
@@ -163,8 +169,15 @@ def main():
         if not config:
             p.error("A Python 3.9-3.13 cocotb installation is required")
         python_dir = Path(config).parent
-    python = python_dir / "python"
     env = os.environ.copy()
+    for key in ("PYTHONPATH", "PYTHONHOME", "PYTHONEXECUTABLE"):
+        env.pop(key, None)
+    # Ask this installation which interpreter it actually uses. A relocated
+    # cocotb-config script can have a different shebang from python_dir/python.
+    python = Path(subprocess.check_output(
+        [str(python_dir / "cocotb-config"), "--python-bin"],
+        env=env, text=True,
+    ).strip())
     env.update(
         PYTHONDONTWRITEBYTECODE="1",
         PCIE_ROOT=str(ROOT),
@@ -173,12 +186,13 @@ def main():
         JOINT_ETH_MBIST="1" if a.eth_mbist_pdk else "0",
         PATH=str(python_dir)
         + os.pathsep
-        + str(a.iverilog_dir.resolve())
+        + str(selected_tools)
         + os.pathsep
         + env["PATH"],
     )
     paths = subprocess.check_output(
         [str(python), "-c", "import sys,os; print(os.pathsep.join(sys.path))"],
+        env=env,
         text=True,
     ).strip()
     env["PYTHONPATH"] = str(bench.parent) + os.pathsep + paths
@@ -192,12 +206,13 @@ def main():
         "VERILOG_SOURCES=" + " ".join(map(str, files)),
         f"SIM_BUILD={out}/sim",
         f"COCOTB_RESULTS_FILE={out}/results.xml",
+        f"PYTHON_BIN={python}",
+        f"ICARUS_BIN_DIR={selected_tools}",
     ]
     runtime = {
         str(x): pin(x)
         for x in [
-            a.iverilog_dir.resolve() / "iverilog",
-            a.iverilog_dir.resolve() / "vvp",
+            *runtime_files,
             python.resolve(),
         ]
     }
@@ -254,9 +269,8 @@ def main():
             raise ValueError(
                 "Incomplete, failed, skipped or source-drifting integration test"
             )
-        if any(
-            t in (out / "run.log").read_text() for t in ("WARNING:", "ERROR:", "FATAL:")
-        ):
+        record["runtime_diagnostics"] = runtime_diagnostics((out / "run.log").read_text())
+        if record["runtime_diagnostics"]:
             raise ValueError("Native elaboration/runtime diagnostic")
         record["status"] = "PASS"
     except BaseException as error:
