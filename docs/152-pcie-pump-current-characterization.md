@@ -2,7 +2,74 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 17:47 TRT
+## Latest snapshot — 11 October, 18:35 TRT
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+The [new repair record](evidence/pcie-async-reset-and-credit-width-20261011.json)
+binds the following intermediate results to their local native evidence.
+
+The rising-edge reset with its unused inverter tied to VSS completes **22/27
+PVT points**: three SS reassertion cases miss the 600 ps asynchronous bound,
+and two FF reassertion cases exceed the unchanged 1.5 V device limit. All
+34 nominal/PVT captures have independent functional and electrical reviews.
+A stale description in its PVT preparation metadata is retained and explicitly
+corrected: the actual pinned oracle and independent reader use 1 ns settling,
+900 ps recovery at 90% rail and 100 ps removal at 10% rail.
+
+A real NAND gate now makes assertion reach the parallel output drivers directly:
+`release_n = !(stage2 & RESET_B)`. Deassertion still waits for two rising clock
+edges. This **106-device layout** passes all 560 DRC categories, hierarchical
+and flat LVS, five actual fault controls, all 416 terminal bindings and wire
+controls. Its **229 R / 483 C** native model passes all seven nominal cases
+and **25/27 PVT points**. All three SS reassertion failures are fixed; FF -40°C
+and 27°C device-voltage failures remain. All 34 captures have independent reviews.
+
+Native LVS and complete waveforms identify the remaining overshoot at both
+synchronizers' internal `NET3` diffusion nodes. A fresh **108-device layout**
+adds actual contacts and two MIM capacitors to VDD. Inter-gate diffusion is
+extended below 20 µm without intersecting gates; existing MIM geometry above
+that partition remains unchanged. It passes all 560 DRC categories, both LVS
+forms and five fault controls. All **420 terminals, 187 unique probes,
+235 R / 528 C**, thirteen RC fault controls and six composition faults pass.
+All seven 295-column nominal transistor captures pass and have independent
+functional/electrical reviews. The 27-point PVT suite is active. This is not a
+qualified PEX result, loaded-parent validation or complete PHY acceptance.
+
+The kept-credit-presum experiment is also **rejected**: unplaced setup worsens
+by 502.436 ps SS, 279.360 ps TT and 19.282 ps FF relative to the same baseline.
+Actual chip equivalence and six retained 12-bit sum cutpoints pass, but that
+does not justify physical adoption. A fresh candidate instead narrows only
+per-slot data-unit metadata to the packet-size bound while retaining 12-bit
+advertised counters and cycle behavior. Ten port tests pass with zero skips;
+three actual boundary/corruption mutants are rejected. Full-module proofs
+gate mapping. The first proof attempt exhausted its 4 GiB address space;
+its result is retained. A forward-deduplicated retry also exhausts memory. Both failed proof results
+are retained and their mapping gates stop before native CAD. A fresh version
+keeps the original named 12-bit observation wires as actual zero extensions
+of bounded storage. It still requires full equivalence against the original
+golden module; no assumptions are added.
+
+The main chip's first route pass leaves 18 violations. Its automatic antenna
+check finds 514 net / 599 pin violations and starts repair; the incremental
+routing pass currently reports 4,487 violations at 40% of iteration zero.
+These intermediate counts are not final DRC or timing acceptance. Healthy
+native CAD continues without an elapsed-time termination limit.
+
+The completed rising98B records are [publicly available](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-rising98b-pvt-and-node-diagnosis-20261011.tar.gz):
+**583 members, 772,335,600 bytes**, SHA-256
+`db746f0e9abe325f692f69453afb2f6f7f865e71bdbb643cb13bbea7afd7aa1d`.
+The complete anonymous download was verified. All 34 native captures,
+independent reviews, physical checks and internal-node diagnoses are included;
+the five failed PVT verdicts remain unchanged.
+
+The [48-capture reset and rejected-credit archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-direct-rising-and-rx-presum-20261011.tar.gz)
+is also fully anonymously verified: **1,156 members, 1,152,296,493 bytes**,
+SHA-256 `b08180d8cf1b90534a2a200ac88c4499d602f80466669441d9b323bf216acbb2`.
+It preserves the direct106 review-wrapper failure caused by its old 250-column
+bound and the corrected independent reader of all seven 292-column captures.
+All native failed verdicts and both larger credit-proof memory failures remain.
+
+## Earlier snapshot — 11 October, 17:47 TRT
 
 **Serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [updated evidence record](evidence/pcie-reset-pvt-and-odb-binding-20261011.json)
