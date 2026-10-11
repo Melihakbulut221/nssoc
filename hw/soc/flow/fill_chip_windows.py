@@ -22,6 +22,8 @@ p.add_argument('output', type=Path)
 p.add_argument('--tile-size', type=float, default=500)
 p.add_argument('--max-tiles', type=int)
 p.add_argument('--resume', action='store_true')
+p.add_argument('--allow-layout-extent', action='store_true',
+               help='When prBoundary and EdgeSeal are absent, use the existing layout extent, as the native density deck does; add no boundary to the source layout')
 p.add_argument('--tool', type=Path, required=True)
 p.add_argument('--config', type=Path, required=True)
 p.add_argument('--audit', type=Path, required=True)
@@ -52,20 +54,30 @@ layout.read(str(source))
 assert len(layout.top_cells()) == 1
 top = layout.top_cell()
 boundary = db.Region(top.begin_shapes_rec(layout.layer(189, 0)))
-assert boundary.count() == 1 and boundary.is_box()
-area = boundary.bbox().to_dtype(layout.dbu)
+if boundary.is_empty() and a.allow_layout_extent:
+    seal = db.Region(top.begin_shapes_rec(layout.layer(39, 4)))
+    assert seal.is_empty(), 'EdgeSeal exists; layout extent would not match native density area'
+    area = top.bbox().to_dtype(layout.dbu)
+    assert area.width() > 0 and area.height() > 0, 'Empty layout extent'
+    boundary_source = 'layout_extent'
+else:
+    assert boundary.count() == 1 and boundary.is_box(), 'One rectangular prBoundary required (or explicit --allow-layout-extent with no boundary)'
+    area = boundary.bbox().to_dtype(layout.dbu)
+    boundary_source = 'prboundary'
 nx, ny = math.ceil(area.width()/a.tile_size), math.ceil(area.height()/a.tile_size)
 hashes = {str(x): sha(x) for x in [source, binary, config, Path(__file__).resolve(),
                                   audit_script]}
 record = dict(status='RUNNING', scope='Experimental clipped-input fill; no physical or timing acceptance.',
     expected_tiles=nx*ny, requested_tiles=a.max_tiles or nx*ny,
     tile_size_um=a.tile_size, halo_um=30, input_sha256=hashes,
-    completed_tiles=[], diearea_um=[area.left, area.bottom, area.right, area.top])
+    completed_tiles=[], diearea_um=[area.left, area.bottom, area.right, area.top],
+    boundary_source=boundary_source)
 if a.resume:
     previous = json.loads((out / 'progress.json').read_text())
     assert previous['input_sha256'] == hashes, 'Inputs changed; resume rejected'
     assert previous['tile_size_um'] == a.tile_size and previous['expected_tiles'] == nx*ny
     assert previous['diearea_um'] == record['diearea_um']
+    assert previous.get('boundary_source', 'prboundary') == boundary_source
     rows = previous['completed_tiles']
     assert [r['index'] for r in rows] == list(range(len(rows)))
     assert len(rows) <= record['requested_tiles']

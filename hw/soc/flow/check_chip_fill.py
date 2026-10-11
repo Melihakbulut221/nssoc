@@ -57,6 +57,44 @@ for defect in ('removed_source_shape', 'added_nonfill_shape', 'removed_source_in
     result = json.loads(report.read_text())
     assert code == 1 and result['status'] == 'FAIL' and result['errors']
     checks[defect] = dict(returncode=code, rejected=True, errors=result['errors'])
+# A routed core can have no prBoundary. The native density deck then uses
+# its existing extent; the explicit fallback must not add source geometry.
+extent = db.Layout()
+extent.read(str(source))
+extent.top_cell().shapes(extent.layer(189, 0)).clear()
+extent.top_cell().shapes(extent.layer(8, 0)).insert(db.Box(0, 0, 1000, 1000))
+extent.top_cell().shapes(extent.layer(8, 0)).insert(db.Box(199000, 99000, 200000, 100000))
+extent_source = out / 'extent-source.gds'
+extent.write(str(extent_source))
+extent_command = [sys.executable, str(a.fill), str(extent_source)]
+options = ['--tool', str(a.tool), '--config', str(a.config), '--audit', str(a.audit), '--tile-size', '100']
+with (out / 'missing-boundary.log').open('w') as log:
+    code = subprocess.run(extent_command + [str(out / 'missing-boundary')] + options,
+                          stdout=log, stderr=subprocess.STDOUT).returncode
+assert code != 0 and not (out / 'missing-boundary/checkpoint.gds').exists()
+extent.top_cell().shapes(extent.layer(39, 4)).insert(db.Box(10000, 10000, 190000, 90000))
+seal_source = out / 'seal-source.gds'
+extent.write(str(seal_source))
+with (out / 'ambiguous-extent.log').open('w') as log:
+    code = subprocess.run([sys.executable, str(a.fill), str(seal_source),
+                           str(out / 'ambiguous-extent')] + options + ['--allow-layout-extent'],
+                          stdout=log, stderr=subprocess.STDOUT).returncode
+assert code != 0 and not (out / 'ambiguous-extent/checkpoint.gds').exists()
+with (out / 'extent.log').open('w') as log:
+    subprocess.run(extent_command + [str(out / 'extent')] + options + ['--allow-layout-extent'],
+                   stdout=log, stderr=subprocess.STDOUT, check=True)
+extent_record = json.loads((out / 'extent/progress.json').read_text())
+assert extent_record['status'] == 'GENERATED_ALL_TILES'
+assert extent_record['boundary_source'] == 'layout_extent'
+assert extent_record['diearea_um'] == [0, 0, 200, 100]
+assert len(extent_record['completed_tiles']) == 2
+filled_extent = db.Layout()
+filled_extent.read(str(out / 'extent/checkpoint.gds'))
+assert db.Region(filled_extent.top_cell().begin_shapes_rec(filled_extent.layer(189, 0))).is_empty()
+assert not json.loads((out / 'extent/final-geometry.json').read_text())['errors']
 (out / 'result.json').write_text(json.dumps(dict(status='PASS_FILL_RESUME_AND_NEGATIVE_CONTROLS',
-    completed_tiles=2, controls=checks, physical_acceptance=False), indent=2) + '\n')
-print('PASS: real fill, resume, and three geometry-corruption controls')
+    completed_tiles=2, controls=checks, missing_boundary_rejected_by_default=True,
+    extent_with_edgeseal_rejected=True,
+    explicit_extent_tiles=2, source_boundary_not_added=True,
+    physical_acceptance=False), indent=2) + '\n')
+print('PASS: real fill, resume, three geometry-corruption controls, and explicit boundary-free extent')

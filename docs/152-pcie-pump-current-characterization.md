@@ -2,7 +2,69 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest continuation — 11 October, 21:14 TRT
+## Latest continuation — 11 October, 22:29 TRT
+
+The [endpoint hold and density repair record](evidence/pcie-endpoint-hold-and-density-repair-20261011.json)
+records a proved physical candidate, not timing closure. Independent expanded
+routed-SPEF reporting reproduces all six original worst slacks and all **36**
+FF hold violations: 35 in the PCIe clock domain and one in the main clock domain.
+Thirty-three are self-feedback paths. Only the affected D inputs receive
+positive delay cells; their other net loads remain connected as before.
+
+The first 36-cell candidate leaves one estimated negative endpoint. A 37th
+cell makes estimated hold positive, but with only 0.513 ps at FF. Adding
+56 cells at other endpoints below a 50 ps estimated margin gives **93 total
+delay cells**, alongside the already proved two input-load buffers:
+
+| Placement estimate | SS | TT | FF |
+| --- | ---: | ---: | ---: |
+| Setup slack (ns) | -4.506493 | -1.802632 | -0.572929 |
+| Hold slack (ns) | +0.315650 | +0.193966 | +0.050010 |
+
+All three worst setup values are unchanged from the two-buffer parent.
+Each side uses the same fresh layer-RC estimate, with no old SPEF loaded;
+clocks, uncertainty and exceptions are unchanged. Restricted cell-equation
+proofs pass for all three candidates. The 93-cell candidate is queued after
+the running two-buffer route and independent readback, followed by its own
+routing, extraction and independent STA. These estimates cannot establish
+routed hold closure or SRAM/RC qualification.
+
+A separate existing `REQ_REG=1 / MEM_RDREG=1` profile passes 17 bus tests,
+formal prove/BMC/cover, actual mapped register/clock checks and the 28-check
+whole-CPU firmware run. Its matching default-profile control also passes.
+However, firmware cycles increase from **430,231 to 647,534 (+50.508%)**;
+unplaced SS setup worsens by 195.446 ps. This alternate profile is **not
+adopted**, and its placed/routed impact remains unmeasured. Original defaults
+stay zero. The earlier optimized-alias audit error and post-simulation Python
+receipt error remain recorded separately from corrected successful checks.
+
+The original routed core's native density run completes with **152 markers**:
+Activ global density plus global/window density shortages in Metal2–5 and
+upper metals. This is a failure. Main native DRC remains active and full
+transistor LVS remains queued. The core has no prBoundary or EdgeSeal; the
+native density deck uses its exact existing layout extent. The fill runner
+now supports that same extent only through an explicit option, rejects an
+ambiguous EdgeSeal, and adds no boundary to the original geometry. Real fill,
+resume, three geometry-corruption controls and the explicit extent tests pass.
+A separate 35-tile fill candidate is queued behind resource guards; subsequent
+native density/DRC/LVS and **fill-aware extraction/timing** are still required.
+
+The 1 µs analog diagnostic stopped at 67.984531 ns when free disk crossed
+its 8 GiB safety floor. Its incomplete original raw capture is retained.
+A fresh, unchanged 865-device run is active after storage recovery; it saves
+25 columns and does not constitute full-device electrical characterization.
+There is no elapsed-time cutoff. The previous complete 50 ns capture remains
+separate and public.
+
+The [complete original routed-core capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-routed-core-extracted-sta-and-rejected-ecos-20261011.tar.gz)
+now passes complete anonymous readback: 1,182,255,535 bytes, SHA-256
+`54374f1772b0bdccffa4b6f1d9b4afff0e5e8b231ad7c995b30a0685db4970ed`.
+Original source files remain locally. The new endpoint/pipeline evidence
+capsule is being packaged separately; its public delivery is not yet claimed.
+
+**Full serial PHY, accepted full-chip routing and final setup/hold remain open.**
+
+## Previous continuation — 11 October, 21:14 TRT
 
 The [two-buffer proof and delivery record](evidence/pcie-two-buffer-routing-and-full-wave-20261011.json)
 adds a small, scoped timing candidate. It retains both original PCIe input
