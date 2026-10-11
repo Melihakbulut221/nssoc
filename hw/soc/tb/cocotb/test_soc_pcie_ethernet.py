@@ -202,11 +202,12 @@ class JointBench(Bench):
         # The real CPU keeps polling TX while destructive MBIST runs. Exercise
         # PCIe before release as well as during subsequent Ethernet traffic.
         await self.transact(request(0, BAR + 0x1C), response(data=0x1010F, lower=0x1C))
-        # Six backgrounds * 2048 words * (1 + 4*3 + 2) = 184320
+        # Registered comparison adds one idle clock after each read:
+        # six backgrounds * 2048 words * (1 + 4*4 + 3) = 245760
         # March clocks per port, plus 4096 cross-read clocks per port.
-        # 50 MHz + 125 MHz sequential phases take 5.275648 ms, excluding
-        # a few synchronizer/start cycles; 5.6 ms admits those explicitly.
-        for _ in range(280000 * 10 // self.half_ns):
+        # 50 MHz + 125 MHz sequential phases take 6.995968 ms, excluding
+        # synchronizer/start cycles; 7.2 ms admits those explicitly.
+        for _ in range(360000 * 10 // self.half_ns):
             if self.v("eth_mbist_done_o") == 3:
                 break
             await self.tick()

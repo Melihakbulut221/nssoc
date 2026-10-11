@@ -3,7 +3,7 @@
 `timescale 1ns/1ps
 `default_nettype none
 module tb_soc_sram_mbist;
-    parameter integer WIDTH=4, DEPTH=4, LATENCY=1;
+    parameter integer WIDTH=4, DEPTH=4, LATENCY=1, PIPELINE_COMPARE=0;
     localparam integer AW=(DEPTH>1)?$clog2(DEPTH):1;
     reg clk=0, reset_n=0, start=0, abort_test=0;
     always #5 clk=~clk;
@@ -13,9 +13,16 @@ module tb_soc_sram_mbist;
     wire [2:0] fail_phase;
     wire [7:0] fail_background;
     reg [WIDTH-1:0] mem[0:DEPTH-1], pipe[0:LATENCY-1];
-    soc_sram_mbist #(.WIDTH(WIDTH),.DEPTH(DEPTH),.READ_LATENCY(LATENCY)) dut (
+    reg poison_response=0;
+    soc_sram_mbist
+`ifndef MBIST_ENGINE_GATE
+        #(.WIDTH(WIDTH),.DEPTH(DEPTH),.READ_LATENCY(LATENCY),
+          .PIPELINE_COMPARE(PIPELINE_COMPARE))
+`endif
+    dut (
         .clk_i(clk),.rst_ni(reset_n),.start_i(start),.abort_i(abort_test),
-        .rdata_i(pipe[LATENCY-1]),.req_o(req),.we_o(we),.addr_o(addr),.wdata_o(wdata),
+        .rdata_i(poison_response ? ~pipe[LATENCY-1] : pipe[LATENCY-1]),
+        .req_o(req),.we_o(we),.addr_o(addr),.wdata_o(wdata),
         .busy_o(busy),.done_o(done),.failed_o(failed),.aborted_o(aborted),
         .fail_addr_o(fail_addr),.fail_expected_o(fail_expected),.fail_actual_o(fail_actual),
         .fail_phase_o(fail_phase),.fail_background_o(fail_background));
@@ -76,23 +83,34 @@ module tb_soc_sram_mbist;
         repeat(3) @(negedge clk);
         reset_n=1;
         launch();
-        if(mode==1 || mode==2 || mode==4) begin
+        if(mode==1 || mode==2 || mode==4 || mode==5 || mode==6) begin
             // Interrupt after a read request, with response still outstanding.
-            if(mode!=4) begin
+            if(mode==5 || mode==6) begin
+                if(!PIPELINE_COMPARE) $fatal(1,"registered mode required");
+                wait(dut.state_q==3'd4); @(negedge clk);
+            end else if(mode!=4) begin
                 wait(req && !we); @(posedge clk); @(negedge clk);
             end
             saved_requests=requests;
-            if(mode!=2) abort_test=1; else reset_n=0;
+            if(mode!=2 && mode!=6) abort_test=1; else reset_n=0;
             #1; if(req) $fatal(1,"interrupted request leaked");
             repeat(3) @(negedge clk);
             if(requests!=saved_requests || busy) $fatal(1,"interrupted access");
-            if(mode!=2 && (!done || !aborted || failed)) $fatal(1,"abort result");
-            if(mode==2 && (done || aborted || failed)) $fatal(1,"reset result");
+            if(mode!=2 && mode!=6 && (!done || !aborted || failed)) $fatal(1,"abort result");
+            if((mode==2 || mode==6) && (done || aborted || failed)) $fatal(1,"reset result");
             start=0; abort_test=0; reset_n=1;
             launch();
         end
         if(mode==3) begin
             start=0; repeat(2) @(negedge clk); start=1;
+        end
+        if(mode==7) begin
+            if(!PIPELINE_COMPARE) $fatal(1,"registered mode required");
+            wait(dut.state_q==3'd4); @(negedge clk);
+            // The returned word was already captured. A later bus change
+            // must not alter the comparison or first-failure diagnostics.
+            poison_response=1;
+            @(negedge clk); poison_response=0;
         end
         wait(done); @(negedge clk);
         $display("RESULT %0d %0d %0d %h %h %0d %0d",failed,aborted,fail_addr,

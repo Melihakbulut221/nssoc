@@ -51,7 +51,8 @@ module soc_eth_fifo_sram (
     wire [10:0] aa, ba, axa, bxa;
     wire [15:0] awd, bwd;
     wire [15:0] aq, bq;
-    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11)) u_a (
+    // Separate the slow SRAM + bank mux response from March state updates.
+    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .PIPELINE_COMPARE(1)) u_a (
         .clk_i(wclk_i), .rst_ni(wp[1]), .start_i(1'b1), .abort_i(1'b0),
         .rdata_i(aq), .req_o(areq), .we_o(awe), .addr_o(aa), .wdata_o(awd),
         .busy_o(), .done_o(adone), .failed_o(afail), .aborted_o(aabort),
@@ -59,7 +60,7 @@ module soc_eth_fifo_sram (
     soc_sram_zero_check u_b_cross (
         .clk_i(rclk_i), .rst_ni(rp[1]), .start_i(a_done_r[1] && !a_fail_r[1]),
         .rdata_i(bq), .req_o(bxreq), .addr_o(bxa), .done_o(bxdone), .failed_o(bxfail));
-    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11)) u_b (
+    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .PIPELINE_COMPARE(1)) u_b (
         .clk_i(rclk_i), .rst_ni(rp[1]), .start_i(bxdone && !bxfail), .abort_i(1'b0),
         .rdata_i(bq), .req_o(breq), .we_o(bwe), .addr_o(ba), .wdata_o(bwd),
         .busy_o(), .done_o(bdone), .failed_o(bfail), .aborted_o(babort),

@@ -3169,3 +3169,107 @@ stopped on a missing historical receipt filename without deleting data.
 **Full serial Gen3 x4 PHY, routed main-chip integration, final setup/hold and
 manufacturing acceptance remain open.** Component LVS/DRC and finite transient
 improvements do not close those gates.
+
+### Loaded divider failure and wider power routing (11 October, follow-up)
+
+The full both28 parent transient has now finished: **all eight original
+functional checks fail**, although all **753 device electrical screens pass**.
+The independent functional, electrical, startup and phase readers agree.
+The first divider produces approximately 3.994 GHz instead of the required
+quarter-rate output; passing the isolated second-divider tests did not imply
+that the loaded parent would work. The original failed capture is retained
+and its complete multipart publication is in progress.
+
+A full-capture terminal diagnostic found collapsed first-divider differential
+swing and local supply/return drops. The next physical candidate widens the
+parent's vertical power routes and moves the right macro column to preserve
+spacing. Geometry mistakes in the intermediate 40 µm variants are preserved:
+one trial overlapped a clock route, and two used the wrong integer translation
+constructor for metadata. The corrected 40 µm placement passes the physical
+checks; a subsequent stale model path required the preserved `compose33.py`
+recovery. None of these failed intermediate steps is counted as a pass.
+
+The **rail80** candidate uses 80 µm vertical `div_avdd`/`avss` routes, 40 µm
+other power routes and a 180 µm right-column displacement. It passes **0/560
+DRC**, **nine hierarchical LVS pairs**, **flat 753-device LVS**, **61 planes**,
+fresh **91 R / 224 C** parent extraction and six model-binding fault controls.
+The full model has **7,961 wire elements**. Measured parent-only resistance to
+the first divider is **2.4779065 Ω** on supply and **2.1548365 Ω** on return.
+A new **50 ns full-parent transistor transient is running**, with unchanged
+functional and electrical criteria followed by independent readers. This
+remains a development PLL block, with idealized common substrate and no
+qualified PEX, serial PHY or main-chip placement acceptance.
+
+### Timing experiments and registered Ethernet MBIST response
+
+The completed metadata post-CTS repair improves the earlier CTS measurements
+but does not close timing. Taking the minimum across every reported group:
+
+| Corner | Post-CTS setup (ns) | Post-CTS hold (ns) | Setup after 1,000-iteration continuation (ns) | Hold after continuation (ns) |
+| --- | ---: | ---: | ---: | ---: |
+| SS | -1.795591 | -0.251060 | -1.722623 | -0.248513 |
+| TT | -0.162070 | -0.211342 | -0.164523 | -0.209626 |
+| FF | +0.651847 | -0.215361 | +0.649319 | -0.214078 |
+
+The continuation runs setup repair only; its inherited result label mentions
+hold but the archived command and scope identify the actual operation.
+All values use placement-estimated RC and propagated clocks, not routed
+signoff extraction.
+
+The experiments also preserve the complete before/after connectivity graph
+and verify identity-cell functions against all three Liberty files, with
+four injected graph faults per experiment. Adding 253 delays at shared
+combinational loads worsens setup. Upsizing 42 measured critical-path buffers
+makes TT setup positive but worsens hold. Restricting delays to final data
+loads, Ethernet outputs and one remaining reset-removal endpoint produces:
+
+| Corner | Setup with 242 delays (ns) | Hold with 242 delays (ns) |
+| --- | ---: | ---: |
+| SS | -2.336161 | +0.150626 |
+| TT | -0.290166 | +0.123405 |
+| FF | +0.662277 | +0.000667 |
+
+**That candidate is not adopted:** positive placement-estimated hold, including
+only 0.667 ps FF margin, does not compensate for worse setup. The separate
+20-delay Ethernet experiment makes its output hold group positive in all
+three corners but leaves other groups negative. The readback also reports
+an unconstrained endpoint mapped to the first external-interrupt synchronizer;
+these summaries do not qualify or waive that endpoint.
+
+The measured slow-corner Ethernet path runs from an actual SRAM output through
+the bank selector, MBIST comparison and March-state update. The RTL now has an
+optional **registered read response**, enabled for both ports of each Ethernet
+FIFO. It separates the SRAM read from comparison/state advancement, adding
+one idle clock per read while retaining the memory transaction sequence and
+first-failure diagnostics. The default direct mode remains available; state
+encoding 3 remains invalid for corruption tests.
+
+**96 tests pass with zero skips**, covering both response modes, the independent
+March/fault oracle, interruption after capture, a changing input after capture,
+and nine synthesized registered-engine cases. The real PDK dual-port SRAM
+suite passes **37 cases**, including injected faults and post-test accesses.
+Fresh chip synthesis verifies **64 response flip-flop bits**, their actual
+clock domains and mapped CDC constraints. Fresh physical timing is still needed.
+
+The first joint CPU/PCIe/Ethernet run retained an obsolete 5.6 ms startup bound.
+The registered March sequence requires 245,760 clocks per port, plus 4,096
+cross-read clocks; sequential 50/125 MHz phases take **6.995968 ms** before
+synchronizer overhead. That unsuccessful run and its cancellation record are
+preserved. A fresh run uses the derived **7.2 ms** bound with the same traffic,
+fault and no-skip checks. It is pending; the new physical flow waits for this
+joint run before floorplan, placement, CTS, repair and fresh all-group STA.
+
+The [machine-readable repair record](evidence/pcie-rail80-mbist-20261011.json)
+links the complete verified records capsule, including the failed experiments,
+physical layouts/checks, native logs, netlists, graph audits and test results.
+The **557-file capsule** is 177,902,149 bytes, SHA-256
+`53624c77706dc1f8d1d18fbd7191bd6ae181ce4169077bb945453adbf6b4a7b2`;
+every member and the complete anonymous public download are verified.
+Active captures and physical outputs are excluded. Another **8,151,057,158
+bytes** of old HTTP download caches were removed only after complete hashes,
+current public asset digests and fresh anonymous samples matched; restoration
+methods and original native captures are retained.
+
+**Full serial Gen3 x4 PHY, routed main chip, final setup/hold and manufacturing
+acceptance remain open.** These repairs and intermediate checks do not close
+those gates.

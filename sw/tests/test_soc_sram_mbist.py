@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 RTL = ROOT / "hw/soc/rtl/dft/soc_sram_mbist.v"
 TB = ROOT / "hw/soc/tb/tb_soc_sram_mbist.v"
 MUTATIONS = {
-    "comparison": ("rdata_i !== expected", "1'b0"),
+    "comparison": ("actual !== expected", "1'b0"),
     "last_address": ("ADDR_WIDTH'(DEPTH-1)", "ADDR_WIDTH'(DEPTH-2)"),
     "descending": ("address_q <= address_q - 1'b1", "address_q <= address_q + 1'b1"),
     "background": ("background[bit_index] =", "background[0] ="),
@@ -54,15 +54,16 @@ def golden(width, depth):
                     yield operation, address, data, phase, bg_id
 
 
-@pytest.fixture(scope="module")
-def compile_rtl(tmp_path_factory):
+@pytest.fixture(scope="module", params=[0, 1], ids=["direct", "registered"])
+def compile_rtl(tmp_path_factory, request):
     compiler, runtime = shutil.which("iverilog"), shutil.which("vvp")
     if not compiler or not runtime:
         pytest.skip("Icarus Verilog is required for MBIST RTL verification")
     cache = {}
 
-    def compile_one(width=4, depth=4, latency=1, mutation=None):
-        key = width, depth, latency, mutation
+    def compile_one(width=4, depth=4, latency=1, mutation=None, pipeline=None):
+        pipeline = request.param if pipeline is None else pipeline
+        key = width, depth, latency, mutation, pipeline
         if key not in cache:
             folder = tmp_path_factory.mktemp("mbist")
             source, binary = folder / "mbist.v", folder / "run.vvp"
@@ -81,6 +82,7 @@ def compile_rtl(tmp_path_factory):
                     f"-Ptb_soc_sram_mbist.WIDTH={width}",
                     f"-Ptb_soc_sram_mbist.DEPTH={depth}",
                     f"-Ptb_soc_sram_mbist.LATENCY={latency}",
+                    f"-Ptb_soc_sram_mbist.PIPELINE_COMPARE={pipeline}",
                     "-o",
                     str(binary),
                     str(source),
@@ -227,6 +229,13 @@ def test_abort_reset_and_start_while_busy(compile_rtl, mode):
     assert "PASS protocol" in result.stdout and "RESULT 0 0" in result.stdout
 
 
+@pytest.mark.parametrize("mode", [5, 6, 7])
+def test_registered_response_ownership_and_interruption(compile_rtl, mode):
+    result = execute(compile_rtl(latency=3, pipeline=1), mode=mode)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "PASS protocol" in result.stdout and "RESULT 0 0" in result.stdout
+
+
 @pytest.mark.parametrize("mutation", MUTATIONS)
 def test_controller_mutations_are_detected(compile_rtl, mutation):
     result = execute(
@@ -318,3 +327,37 @@ def test_synthesized_port(synthesized_port, mode, fault):
     assert result.returncode == 0 and "PASS test-port" in result.stdout, (
         result.stdout + result.stderr
     )
+
+
+@pytest.fixture(scope="module")
+def synthesized_registered_engine(tmp_path_factory):
+    yosys, compiler, runtime = (
+        shutil.which(tool) for tool in ["yosys", "iverilog", "vvp"]
+    )
+    if not all([yosys, compiler, runtime]):
+        pytest.skip("Yosys and Icarus Verilog are required for registered MBIST replay")
+    folder = tmp_path_factory.mktemp("registered-mbist-synthesis")
+    netlist, binary = folder / "netlist.v", folder / "gate.vvp"
+    script = (
+        f"read_verilog -sv {RTL}; "
+        "chparam -set WIDTH 4 -set DEPTH 4 -set READ_LATENCY 3 "
+        "-set PIPELINE_COMPARE 1 soc_sram_mbist; "
+        "synth -top soc_sram_mbist -flatten; check -assert; "
+        f"write_verilog -noattr {netlist}"
+    )
+    p = subprocess.run([yosys, "-p", script], capture_output=True, text=True, timeout=120)
+    (folder / "synthesis.log").write_text(p.stdout + p.stderr)
+    assert p.returncode == 0, p.stdout + p.stderr
+    p = subprocess.run(
+        [compiler, "-g2012", "-DMBIST_ENGINE_GATE", "-s", "tb_soc_sram_mbist",
+         "-Ptb_soc_sram_mbist.LATENCY=3", "-Ptb_soc_sram_mbist.PIPELINE_COMPARE=1",
+         "-o", str(binary), str(netlist), str(TB)],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert p.returncode == 0, p.stdout + p.stderr
+    return [runtime, str(binary)]
+
+
+@pytest.mark.parametrize("fault", range(9))
+def test_synthesized_registered_march_and_faults(synthesized_registered_engine, fault):
+    audit(execute(synthesized_registered_engine, fault=fault), 4, 4, faulty=bool(fault))

@@ -13,7 +13,10 @@ module soc_sram_mbist #(
     parameter integer WIDTH = 16,
     parameter integer DEPTH = 256,
     parameter integer ADDR_WIDTH = (DEPTH > 1) ? $clog2(DEPTH) : 1,
-    parameter integer READ_LATENCY = 1
+    parameter integer READ_LATENCY = 1,
+    // Capture the response before comparing/advancing the March controller.
+    // Adds one idle cycle per read without changing memory request ordering.
+    parameter integer PIPELINE_COMPARE = 0
 ) (
     input wire clk_i,
     input wire rst_ni,
@@ -39,14 +42,16 @@ module soc_sram_mbist #(
     // port eight bits wide without an eight-bit carry chain on SRAM readback.
     localparam integer BACKGROUND_WIDTH = $clog2(PARTITIONS+2);
     localparam integer WAIT_WIDTH = (READ_LATENCY > 1) ? $clog2(READ_LATENCY) : 1;
-    localparam [1:0] IDLE = 0, ISSUE = 1, READ = 2;
-    reg [1:0] state_q;
+    // Keep encoding 3 invalid, including for state-corruption fault tests.
+    localparam [2:0] IDLE = 0, ISSUE = 1, READ = 2, COMPARE = 4;
+    reg [2:0] state_q;
     reg [2:0] phase_q;
     reg [BACKGROUND_WIDTH-1:0] background_q;
     reg [ADDR_WIDTH-1:0] address_q;
     reg [WAIT_WIDTH-1:0] wait_q;
     reg write_q, start_q;
     reg [WIDTH-1:0] background;
+    reg [WIDTH-1:0] response_q;
     integer bit_index;
 
     always @* begin
@@ -89,6 +94,27 @@ module soc_sram_mbist #(
         end
     endtask
 
+    task check_response;
+        input [WIDTH-1:0] actual;
+        begin
+            if (actual !== expected) begin
+                // Case inequality rejects X/Z in RTL simulation as well.
+                failed_o <= 1;
+                done_o <= 1;
+                state_q <= IDLE;
+                fail_addr_o <= address_q;
+                fail_expected_o <= expected;
+                fail_actual_o <= actual;
+                fail_phase_o <= phase_q;
+                fail_background_o <= 8'(background_q);
+            end else if (phase_q == 5) advance_word();
+            else begin
+                write_q <= 1;
+                state_q <= ISSUE;
+            end
+        end
+    endtask
+
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state_q <= IDLE;
@@ -106,6 +132,7 @@ module soc_sram_mbist #(
             fail_actual_o <= 0;
             fail_phase_o <= 0;
             fail_background_o <= 0;
+            response_q <= 0;
         end else begin
             start_q <= start_i;
             if (busy_o && abort_i) begin
@@ -134,22 +161,17 @@ module soc_sram_mbist #(
                            wait_q <= WAIT_WIDTH'(READ_LATENCY-1);
                        end
                 READ: if (wait_q != 0) wait_q <= wait_q - 1'b1;
-                      else if (rdata_i !== expected) begin
-                          // Case inequality also rejects X/Z in RTL simulation.
-                          // Silicon comparison remains a binary comparator.
-                          failed_o <= 1;
-                          done_o <= 1;
-                          state_q <= IDLE;
-                          fail_addr_o <= address_q;
-                          fail_expected_o <= expected;
-                          fail_actual_o <= rdata_i;
-                          fail_phase_o <= phase_q;
-                          fail_background_o <= 8'(background_q);
-                      end else if (phase_q == 5) advance_word();
-                      else begin
-                          write_q <= 1;
-                          state_q <= ISSUE;
+                      else if (PIPELINE_COMPARE) begin
+                          response_q <= rdata_i;
+                          state_q <= COMPARE;
                       end
+                      else check_response(rdata_i);
+                COMPARE: if (PIPELINE_COMPARE) check_response(response_q);
+                         else begin
+                             state_q <= IDLE;
+                             done_o <= 1;
+                             aborted_o <= 1;
+                         end
                 default: begin
                     state_q <= IDLE;
                     done_o <= 1;
@@ -162,6 +184,7 @@ module soc_sram_mbist #(
 `ifndef SYNTHESIS
     initial begin
         if (WIDTH < 1 || DEPTH < 1 || READ_LATENCY < 1 ||
+            (PIPELINE_COMPARE != 0 && PIPELINE_COMPARE != 1) ||
             ADDR_WIDTH < ((DEPTH > 1) ? $clog2(DEPTH) : 1))
             $fatal(1, "Invalid SRAM MBIST parameters");
     end
