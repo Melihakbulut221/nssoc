@@ -1,0 +1,175 @@
+{
+  "at": "2026-10-11T20:19:44.829847+03:00",
+  "status": "INTERMEDIATE_FULL_CAPTURE_REVIEW_AND_REFRESH_EXPERIMENT",
+  "full_serial_phy_complete": false,
+  "mainchip_route_accepted": false,
+  "final_timing_accepted": false,
+  "native865": {
+    "original_status": "FAIL_NATIVE_PARENT865_FINITE_POINT",
+    "original_verdict_preserved": true,
+    "rows": 160072,
+    "columns": 2438,
+    "stop_ns": 50,
+    "devices": 865,
+    "wire_elements": 8783,
+    "independent_electrical_pass": true,
+    "independent_fixed_phase_pass": true,
+    "updated_request_window_full_checks": {
+      "first_second": true,
+      "second_received": true,
+      "received_count": true,
+      "count_feedback": true,
+      "vco_feedback": true,
+      "mod5_state_and_complement_rails": true,
+      "feedback_swing": true,
+      "vco_first_fixed_pre_window_phase": true,
+      "one_physical_reset_release": true,
+      "two_rising_edge_release": true,
+      "destination_low_until_second_edge": true,
+      "destination_1ns_settle": true,
+      "minimum_900ps_90percent_recovery": true,
+      "minimum_100ps_10percent_removal": true,
+      "no_reset_output_glitches": true,
+      "finite_complete_capture": true
+    },
+    "recovery_90_s": 1.4309662917727935e-09,
+    "removal_10_s": 4.926161532015611e-10,
+    "original_compressed_wave": {
+      "bytes": 2894949617,
+      "sha256": "5be31643e7373f168c6b75cc9ed24883a5c7a0971a1ea199bdc657590eb14e0a"
+    },
+    "scope": "Nominal finite loaded-parent observation, not PLL acquisition, power-up/PVT/PEX or PHY qualification."
+  },
+  "rejected_eop_ownership": {
+    "slow_max": {
+      "old": -1.099456,
+      "new": -1.266252,
+      "delta": -0.16679599999999994
+    },
+    "slow_min": {
+      "old": -0.500955,
+      "new": -0.506098,
+      "delta": -0.005143000000000009
+    },
+    "typical_max": {
+      "old": 0.641544,
+      "new": 0.284835,
+      "delta": -0.356709
+    },
+    "typical_min": {
+      "old": -0.53948,
+      "new": -0.53948,
+      "delta": 0.0
+    },
+    "fast_max": {
+      "old": 1.415919,
+      "new": 1.198817,
+      "delta": -0.2171019999999999
+    },
+    "fast_min": {
+      "old": -0.601382,
+      "new": -0.601382,
+      "delta": 0.0
+    }
+  },
+  "refresh_lookahead": {
+    "proof": "PASS_RESET_BASED_REFRESH_LOOKAHEAD_FULL_STATE_EQUIVALENCE",
+    "cases": [
+      {
+        "parameter": "128",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "parameter": "0",
+        "passed": true,
+        "returncode": 0
+      },
+      {
+        "parameter": "32'shffffffff",
+        "passed": true,
+        "returncode": 0
+      }
+    ],
+    "existing_tests": {
+      "soc_pcie_fc_tx": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "soc_pcie_buffered_flow_packets": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "new_controls": {
+      "candidate": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      "sticky_flag": {
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      },
+      "wrong_class": {
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      },
+      "lost_stall": {
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    "scope": "Actual internal refresh_count plus ports compared for2400cycles; three real RTL mutants rejected. Earlier syntax/runtime errors and missed port-only mutants preserved. Wholechip mapping running; no adoption."
+  },
+  "main_route": {
+    "second_antenna_repair_router_violations": 0,
+    "antenna_nets": 10,
+    "antenna_pins": 10,
+    "third_repair": "Running detailed routing",
+    "elapsed_timeout": false,
+    "accepted": false
+  },
+  "long_capture": {
+    "stop_s": 1e-06,
+    "step_s": 3.125e-13,
+    "start": "2026-10-11T20:16:19+03:00",
+    "selected_columns": 25,
+    "unchanged_circuit_fixture_startup": true,
+    "full_electrical_characterization": false,
+    "criteria": "Existing 100ppm/50ps/no-slip/VCTRL screen, fixed final800-900ns/900-1000ns. No relaxed acceptance; selected-probe diagnostic only.",
+    "native_export_controls": 4
+  },
+  "publication": {
+    "completed_assets": [
+      {
+        "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parent865-full50ns-methods-and-eop-rejection-20261011.tar.gz",
+        "name": "nssoc-parent865-full50ns-methods-and-eop-rejection-20261011.tar.gz",
+        "bytes": 23061138,
+        "sha256": "47d418c90674cee14bac63e6b11143170e1c4f0461ae8ef110d5729b850d3508"
+      }
+    ],
+    "full_wave_parts": "Three lossless parts; full publication/readback ongoing, do not claim complete public delivery."
+  },
+  "inputs": {
+    "hw/soc/out/pcie-reset865-native-20261011/native01/closed-01/result.json": "0218375c3e27cb41701bd3074ec1482f277f96163b9a95053f17e99ed8047463",
+    "hw/soc/out/pcie-reset865-native-20261011/functional-review03.json": "611781dad70544ee8c30ef8a93a3dfa16527771cc05313e575babc9313bcf5dd",
+    "hw/soc/out/pcie-reset865-native-20261011/electrical-review03.json": "71bbd07cf831b501deb49ac88d209f4ea4971e09287635763585e7d8663bb819",
+    "hw/soc/out/pcie-reset865-native-20261011/phase-review03.json": "4fbf112802e4e2471eb3698982e0c8dfb81c09b6c28a6d4fba2cb52e4403c02b",
+    "hw/soc/out/pcie-parent865-prefix-20261011/full-review04.json": "6be27f959d49be3abc2155b656e86d4c5851ba04f8419daa03b4e12e7bb24c74",
+    "hw/soc/out/pcie-parent865-prefix-20261011/measurement-controls03.json": "fe36c62aac17c5e0ce6a9afc7748f636cdf627fd25b932abd50305bb22da6784",
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/comparison12.json": "1cb4cf7d3ac854063e10c2fd471ba42944c413d257d2e0c81223fe726517db9a",
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/decision13.json": "47b1baf74b7de14e2cb080c36389e814d89eb024822833daca00d1eb066981e2",
+    "hw/soc/out/pcie-fc-refresh-lookahead-20261011/formal04/result.json": "60fd6812d7c0b3f2baa9915effbe0ae64a0b23acdcb8beb092e059650a22f3c0",
+    "hw/soc/out/pcie-fc-refresh-lookahead-20261011/tests03.json": "a75891733a3d3d69998f52954b968c48e5dfe6d667d2a8d404e0ecaaca0e8a41",
+    "hw/soc/out/pcie-fc-refresh-lookahead-20261011/controls11/result.json": "c56829ee013fe49a423f344669e08a03f10e3dd5ab46f56c9c062e4795ec06b7",
+    "hw/soc/out/pcie-parent865-acquisition-20261011/preparation01.json": "b3a7b339d6a4d5867ea3016aa5df211a71a52654fcfa7c0d957b7f011020b2d9",
+    "hw/soc/out/pcie-parent865-acquisition-20261011/export-preflight/controls.json": "84fc7c57ab3dd11075565b73b4f9a6d4c56dfbb1b0accc05bcf0c94966847bdc"
+  }
+}

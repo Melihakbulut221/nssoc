@@ -2,7 +2,64 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 19:47 TRT
+## Latest snapshot — 11 October, 20:19 TRT
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+The [full-capture and timing experiment record](evidence/pcie-parent865-full-readback-and-refresh-20261011.json)
+binds this snapshot to its native results.
+
+The **865-device / 8,783-wire-element model finishes 50 ns** with 160,072 rows
+and 2,438 columns. Independent full-record functional/startup, all-device
+voltage-extrema and fixed-phase division rereads complete. Electrical and
+phase checks pass. The original native verdict remains **FAIL**: its global
+10% reset-edge count includes the 0.241 V power-ramp excursion before 1 ns.
+The unchanged raw record and failed verdict are retained.
+
+A separate full-record measurement associates rail crossings with the actual
+reset request, as the component measurement already does. All sixteen checks
+pass, including two rising-edge release, the 1 ns settling check and the
+unchanged **900 ps / 100 ps** limits: measured recovery is **1.431 ns** and
+removal is **492.616 ps**. All original crossings are retained; thirteen actual
+waveform corruptions are rejected. This is not a reclassification of the
+original native result or a power-up, PLL, PVT, qualified-PEX or PHY approval.
+
+![Actual reset pins, including the retained power-ramp excursion](img/pcie-parent865-reset-20261011.png)
+
+A fresh **1 µs selected-probe transistor diagnostic** starts at 20:16 TRT.
+The device equations, physical wire network, fixture and native startup are
+byte-preserved; only duration, saved probes and raw output destination change.
+It retains the 0.3125 ps maximum step and the existing 100 ppm / 50 ps / no-slip
+acquisition criteria in the final 800–900 ns and 900–1000 ns windows. Four
+actual native-export corruptions are rejected. This run observes 25 columns;
+it cannot establish all-device electrical safety over the longer interval.
+
+Main-chip antenna violations are down from **514 nets / 599 pins to
+10 nets / 10 pins** after the second repair, whose detailed routing reaches
+zero router violations. The third repair is routing. Final extracted STA and
+independent signoff remain pending; healthy CAD has no elapsed-time cutoff.
+
+The EOP ownership cofactor is **rejected** despite its logical proof and tests:
+whole-chip unplaced setup worsens by **166.796 ps SS, 356.709 ps TT and
+217.102 ps FF**; SS hold worsens by 5.143 ps. No physical adoption follows.
+The mapped critical endpoint is the FC refresh counter. A new candidate
+registers its final-byte decision one accepted byte early and retains it
+through EOP stalls. Reset-based induction proves all actual FC states and
+ports equal for refresh settings 128, 0 and -1. Eight original port tests pass;
+a 2,400-cycle internal-counter and port comparison catches three real RTL
+faults. Earlier port-only mutation misses and wrapper errors remain recorded.
+Whole-chip mapping has started; timing acceptance is pending.
+
+The [full-record methods and rejected EOP experiment](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parent865-full50ns-methods-and-eop-rejection-20261011.tar.gz)
+are publicly verified: 23,061,138 bytes, SHA-256
+`47d418c90674cee14bac63e6b11143170e1c4f0461ae8ef110d5729b850d3508`.
+The 2,894,949,617-byte original compressed waveform is being published as
+three lossless parts; full public readback is still in progress. Original
+captures stay local. A redundant, already-public 1.67 GB packaging archive
+was removed after checking its full local hash, previous anonymous readback,
+current GitHub digest and retained source members; this freed the timing run
+from its storage wait.
+
+## Earlier snapshot — 11 October, 19:47 TRT
 
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [new evidence record](evidence/pcie-reset865-and-credit-bank-20261011.json)
