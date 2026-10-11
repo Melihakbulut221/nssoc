@@ -2,7 +2,59 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## 11 October continuation: physical feedback repair and clean joint runtime
+## 11 October correction: model geometry and parallel feedback repair
+
+**The 16 µm single-transistor trial below is not an accepted model point.**
+Although its layout passes DRC/LVS, each widened HV NMOS exceeds the
+unchanged 10 µm single-device geometry limit in the simulation checker.
+That limit has not been relaxed. Its diagnostic capture and failed attempts
+are retained; electrical swing alone cannot override the geometry failure.
+
+The replacement uses two separate 8 µm, one-finger NMOS devices per input.
+The new 19-device feedback cell passes the native 560-category DRC,
+hierarchical/flat transistor LVS and five fault controls. Fresh extraction
+and binding produce 60 resistors and 95 capacitors; eight device-binding,
+thirteen extraction and six composition fault controls reject corruption.
+Its wider footprint fits the parent; existing external port boxes stay fixed.
+
+The integrated PLL development macro passes DRC, hierarchical LVS and
+**757-device flat transistor LVS**, with 61 connection planes, 91 parent
+resistors, 224 parent capacitors and 7,993 total interconnect elements.
+Six model-binding faults are rejected. The original geometry checks pass
+for all 757 devices, and a deliberate 16 µm mutation is rejected. These
+physical checks do not establish PLL lock or complete serial-PHY operation.
+
+The first simulation launch stopped on an inherited CPU10 affinity check
+when the new job was assigned CPU11; its owned process was reaped and the
+failed record retained. A fresh CPU11 run changes only this resource check,
+retaining the circuit, 50 ns duration, timestep, original eight functional
+criteria and all device bounds. Its complete independent reviews are pending.
+
+Two additional whole-chip mapping experiments are also unaccepted:
+
+| Candidate | SS setup / hold (ns) | TT setup / hold (ns) | FF setup / hold (ns) |
+| --- | ---: | ---: | ---: |
+| Remove 60 intermediate credit `keep` attributes | -1.225234 / -0.513911 | +0.371415 / -0.539480 | +1.237428 / -0.601382 |
+| Shared one-hot replay read decode | -1.422112 / -0.465004 | +0.453416 / -0.539480 | +1.339149 / -0.601382 |
+
+These are all-path-group, unplaced, three-corner measurements under the
+original clocks. The credit change passes full-module equivalence. Replay
+equivalence is complete for the actual chip's 4×38 configuration and the
+2×18 and 3×38 cases; the larger 8×64 proof is still pending. Real port tests
+pass, and a wrong next-byte decode is rejected. Mixed timing results do not
+justify adopting either change as a timing fix. A separately bound combined
+experiment is being measured. The current placed chip's timing repair and
+subsequent route queue continue independently.
+
+The [445-file physical and timing evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-parallel19-physical-records-20261011.tar.gz)
+contains 39,811,759 bytes with SHA256
+`6e20894239660c3e98e04f564eeedc928ad095eb6d0668e190d557acd2dcfa8e`.
+All members and the complete anonymous public download were verified.
+The [result inventory](evidence/pcie-parallel19-physical-20261011.json) binds
+the checks, retained failures and resource-only simulation recovery.
+Active waveforms and the unfinished 8×64 proof log are excluded.
+
+## Earlier 11 October snapshot: physical feedback repair and clean joint runtime
 
 **Full serial PHY, completed main-chip routing and final timing remain open.**
 The completed `rail80` 753-device, 50 ns capture passes five of the original
