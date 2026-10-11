@@ -38,6 +38,16 @@ its whole-chip synthesis and timing screen are underway. The conservative route 
 extracted readback remain active/queued, followed by the repaired RX candidate.
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 
+The [complete replay experiment archive](evidence/pcie-replay-successor-20261012.json)
+retains the rejected one-hot and stateless candidates, all mapped/STA outputs,
+the large 8×64 proof's native out-of-memory failure, and the distinct registered
+candidate's four completed proofs and seven tests. The stateless 2×65 case was
+not reached after the failure; it is not counted as passed. All **154 archive
+members**, **19,891,498 bytes**, and the complete anonymous download match
+SHA-256 `72e1a0bcafe03eccccf92bbaaa103524650351eb2a2e0699d2468383dcc376e5`.
+Active registered-candidate mapping and fault controls are excluded.
+
+
 ## Latest continuation — 12 October, 00:46 TRT
 
 Ethernet cross-port read capture is committed in `7ad40bde`: **32 unit tests,
