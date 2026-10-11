@@ -2,7 +2,42 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 13:24 TRT
+## Latest snapshot — 11 October, 13:32 TRT
+
+The RX constant-slice candidate is **not adopted**. Its three full equivalence
+proofs, ten port tests and three real mutation controls pass, but the completed
+whole-chip unplaced comparison worsens setup at every corner:
+
+| Corner | Registered-offer baseline (ns) | RX constant-slice candidate (ns) |
+| --- | ---: | ---: |
+| SS | -1.099456 | -1.251007 |
+| TT | +0.641544 | +0.446049 |
+| FF | +1.415919 | +1.293485 |
+
+No physical run is launched for this regression. The better registered-offer
+baseline continues in its fresh physical flow; the original main-chip route
+continues post-global-routing timing repair. Final routing and timing remain
+unaccepted.
+
+The 757-device reset-margin run finishes **FAIL: 7/9 checks pass**. This is
+6/8 of the unchanged original checks plus the new no-hidden-clock guard.
+The modulo-five state/complement check changes from failing to passing.
+`vco_first` and `vco_feedback` still fail. All 757 electrical/geometry screens
+pass, and independent functional, electrical and causal-phase readers complete.
+The causal phase result does not waive the two original raw-ratio failures.
+The reset ramp ends earlier in this fixture; **a physical reset-release circuit
+has not been added and full serial PHY is not complete**.
+
+The [evidence record](evidence/pcie-postcts-rx-20261011.json) adds the complete
+mapping/verdict and native-review capsule: 51 members, 19,054,197 bytes, with
+all archive members and all anonymous public-download bytes verified. The
+large native waveform has a separate queued full-publication job; it is not
+included in that capsule or claimed delivered early. Original failures,
+waveforms and acceptance checks remain preserved. The combined placed-design
+hold/reset results below remain intermediate; **SS setup and final extracted
+signoff are still open**.
+
+## Earlier snapshot — 11 October, 13:24 TRT
 
 The combined placed-design experiment now has **nonnegative hold, reset
 recovery and reset removal in all three corners**. SS data setup remains

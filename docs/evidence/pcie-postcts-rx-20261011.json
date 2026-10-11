@@ -1,6 +1,6 @@
 {
   "status": "INTERMEDIATE_REPAIRS_VALIDATED_FULL_PHY_ROUTE_TIMING_OPEN",
-  "at": "2026-10-11T13:24:30.137348+03:00",
+  "at": "2026-10-11T13:31:59.155759+03:00",
   "full_phy_accepted": false,
   "routed_mainchip_accepted": false,
   "final_timing_accepted": false,
@@ -32,6 +32,13 @@
       "name": "nssoc-combined-eco-records-20261011.tar.gz",
       "bytes": 24757051,
       "sha256": "abdb41f859879da32c74c99d3ccaa0ff5744022f47ce9e059d255c58535d2243"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rx-native-verdicts-20261011.tar.gz",
+      "name": "nssoc-rx-native-verdicts-20261011.tar.gz",
+      "bytes": 19054197,
+      "sha256": "4db8ed83061e6602750775dca668041dc6f42a72f9ca9c3bd1d06f24ae9da311"
     }
   ],
   "records": {
@@ -417,8 +424,100 @@
         "scope": "Only generated HTTP download range cache bins from two completed loaded570 public readbacks. All source, native captures, original results, members and readback receipts retained. All local ranges and ordered full hash match previous complete public readback; current GitHub full size/digest and fresh first/last anonymous samples match. Restore exact cache bytes by provided script.",
         "freed_bytes": 1809872433
       }
+    },
+    "hw/soc/out/pcie-rx-release-banked-20261011/comparison09.json": {
+      "sha256": "94865b7e2cf57989d756317f15b61cd06f94c2722c79bf344982bb3e0af2a068",
+      "summary": {
+        "status": "COMPLETE_RX_BANKED_ALLGROUP_UNPLACED_COMPARISON",
+        "scope": "Whole chip unplaced all-group three-corner minima under same clocks. No route or signoff. RX constant-slice credit-return candidate, cycle exact full module proof and port tests. Inherits separately proved latency-changing credit offer baseline. No physical adoption.",
+        "comparison_ns": {
+          "slow_max": {
+            "old": -1.099456,
+            "new": -1.251007,
+            "delta": -0.151551
+          },
+          "slow_min": {
+            "old": -0.500955,
+            "new": -0.481901,
+            "delta": 0.019054000000000015
+          },
+          "typical_max": {
+            "old": 0.641544,
+            "new": 0.446049,
+            "delta": -0.19549500000000003
+          },
+          "typical_min": {
+            "old": -0.53948,
+            "new": -0.53948,
+            "delta": 0.0
+          },
+          "fast_max": {
+            "old": 1.415919,
+            "new": 1.293485,
+            "delta": -0.12243399999999993
+          },
+          "fast_min": {
+            "old": -0.601382,
+            "new": -0.601382,
+            "delta": 0.0
+          }
+        }
+      }
+    },
+    "hw/soc/out/pcie-rx-release-banked-20261011/decision10.json": {
+      "sha256": "70e6ec838d3cb6a61fa5742a51f7fd99e8ef7976927e73fc69516315cb38e6b2",
+      "summary": {
+        "status": "NOT_ADOPTED_ALL_SETUP_CORNERS_REGRESS",
+        "scope": "Full3configequivalence/10porttests/3actualfaultsPASS but wholechipmappedSSsetup-.151551ns,TT-.195495ns,FF-.122434ns worse than registeredoffer baseline. No physical launch or canonicalRTLadoption."
+      }
+    },
+    "hw/soc/out/pcie-parent757-resetmargin-20261011/comparison03.json": {
+      "sha256": "fc139fe93792e95ee189441152cbcb8954e12f3f8f7f03a873661eed4662dc0e",
+      "summary": {
+        "status": "COMPLETE_RESET_RECOVERY_FIXTURE_COMPARISON_NOT_HARDWARE_FIX",
+        "scope": "Only reset ramp ends2.1ns vs3.1ns and validatedKLUsolver. Original8criteriaretained:6/8pass; addedguardpasses,total7/9. Mod5state/complementfailure removed, rawVCO/first andVCO/feedbackratiofailures remain. All757geometry/electricalbounds pass. Independentfullwave readers completed. No physicalreset-releasehardware orfullPHYclosure.",
+        "checks": {
+          "vco_first": {
+            "before": false,
+            "after": false
+          },
+          "first_second": {
+            "before": true,
+            "after": true
+          },
+          "second_received": {
+            "before": true,
+            "after": true
+          },
+          "received_count": {
+            "before": true,
+            "after": true
+          },
+          "count_feedback": {
+            "before": true,
+            "after": true
+          },
+          "vco_feedback": {
+            "before": false,
+            "after": false
+          },
+          "mod5_state_and_complement_rails": {
+            "before": false,
+            "after": true
+          },
+          "feedback_swing": {
+            "before": true,
+            "after": true
+          }
+        },
+        "added_no_hidden_clock_guard": true,
+        "all_device_bounds_pass": true,
+        "model_geometry_issues": [],
+        "physical_reset_release_circuit_added": false,
+        "native_status": "FAIL_NATIVE_PARENT757_FINITE_POINT"
+      }
     }
   },
-  "remaining": "Combined placement experiment has nonnegative hold/recovery/removal allcorners butSSsetup-1.698460 and margins only.238psFFhold/1.118psSSrecovery, unaccepted. Mainroute inantenna repair; registeredoffernewphysicalactive afterjoint2PASS0skip/runtimeclean. RXbanked mappingcomplete,STAactive. 757resetmargin50nstransient nativefinished, independentmeasurements pending; notfullPHY.",
+  "remaining": "FullserialPHY/mainchiproute/finalSTA OPEN. RXbanked rejected: allsetupcornersworse despitefullproof/tests; registeredofferphysicalcontinues. Resetfixture757native50ns FAIL7/9, allbounds/independentreviewcomplete, hardware-resetreleaseabsent andtwo rawVCOdivider checksstillFAIL. Mainroute postGRTtimingrepairactive. Combinedplacedhold/resetpass butSSsetup-1.69846 andverytinymargins,notadopted.",
   "evidence_policy": "Summaries here; full original records, waveforms as applicable, source inputs and native outputs remain in linked capsules. Local record hashes identify exact records, not summaries."
 }
