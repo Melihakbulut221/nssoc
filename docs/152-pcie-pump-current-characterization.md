@@ -2,6 +2,42 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 01:16 TRT
+
+The Ethernet capture now passes **both concurrent CPU/PCIe/Ethernet scenarios,
+zero skips**, using 16 vendor functional FIFO SRAM instances. The second drops
+PCIe link while Ethernet continues. Independent review checks native XML, all
+source/runtime/output hashes and equality with committed capture RTL. Each
+scenario transfers three Ethernet frames; the 7.2 ms startup bound is unchanged.
+This closes the joint functional check, not physical timing or serial PHY.
+
+Two more filled-core groups, **geometry_angle and supplemental_wide**, pass
+with zero markers and 108 independently rechecked input hashes each. Four of
+seven native groups now pass; BEOL, antenna and device groups remain pending.
+The separate 37-rule density check already passes.
+
+The 1.25 ps analog acceleration experiment is **rejected**. In the fixed
+35–50 ns window it differs from the frozen 0.3125 ps prefix by **55.148 mV**
+on VCTRL and **510.296 ps** on feedback edges; divider edge counts also differ.
+Limits remain 5 mV and 5 ps, with no phase fitting. The original 1 µs run
+continues unchanged. A separate **0.15625 ps** half-step run now checks numerical
+convergence. These are selected-probe checks, not full PHY qualification.
+
+The [joint and rejected-step evidence](evidence/pcie-joint-and-timestep-20261012.json)
+contains 41 archive members, **34,973,718 bytes**, SHA-256
+`e0d61accb4c70beb4fcf812cbf6b4d428325b9ad243bea1b2f1cb35d24c7f463`.
+Every member and complete anonymous download match. Failed analog waveforms
+are included; active captures are excluded.
+
+A stateless replay successor decoder passes full equivalence for actual 4×38
+and two smaller configurations, plus seven port tests. Whole-chip mapping
+succeeds, but matched unplaced PCIe setup worsens by **158.353 ps SS / 220.126 ps
+TT / 149.919 ps FF**. It is not adopted. A separate registered successor address
+candidate passes all four full-module equivalence cases and seven port tests;
+its whole-chip synthesis and timing screen are underway. The conservative route and its
+extracted readback remain active/queued, followed by the repaired RX candidate.
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 00:46 TRT
 
 Ethernet cross-port read capture is committed in `7ad40bde`: **32 unit tests,
