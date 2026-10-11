@@ -57,7 +57,7 @@ module soc_eth_fifo_sram (
         .rdata_i(aq), .req_o(areq), .we_o(awe), .addr_o(aa), .wdata_o(awd),
         .busy_o(), .done_o(adone), .failed_o(afail), .aborted_o(aabort),
         .fail_addr_o(), .fail_expected_o(), .fail_actual_o(), .fail_phase_o(), .fail_background_o());
-    soc_sram_zero_check u_b_cross (
+    soc_sram_zero_check #(.PIPELINE_COMPARE(1)) u_b_cross (
         .clk_i(rclk_i), .rst_ni(rp[1]), .start_i(a_done_r[1] && !a_fail_r[1]),
         .rdata_i(bq), .req_o(bxreq), .addr_o(bxa), .done_o(bxdone), .failed_o(bxfail));
     soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .PIPELINE_COMPARE(1)) u_b (
@@ -65,7 +65,7 @@ module soc_eth_fifo_sram (
         .rdata_i(bq), .req_o(breq), .we_o(bwe), .addr_o(ba), .wdata_o(bwd),
         .busy_o(), .done_o(bdone), .failed_o(bfail), .aborted_o(babort),
         .fail_addr_o(), .fail_expected_o(), .fail_actual_o(), .fail_phase_o(), .fail_background_o());
-    soc_sram_zero_check u_a_cross (
+    soc_sram_zero_check #(.PIPELINE_COMPARE(1)) u_a_cross (
         .clk_i(wclk_i), .rst_ni(wp[1]), .start_i(b_done_w[1] && !b_fail_w[1]),
         .rdata_i(aq), .req_o(axreq), .addr_o(axa), .done_o(axdone), .failed_o(axfail));
     wire am = areq || axreq || (a_functional && wen_i);

@@ -204,8 +204,8 @@ class JointBench(Bench):
         await self.transact(request(0, BAR + 0x1C), response(data=0x1010F, lower=0x1C))
         # Registered comparison adds one idle clock after each read:
         # six backgrounds * 2048 words * (1 + 4*4 + 3) = 245760
-        # March clocks per port, plus 4096 cross-read clocks per port.
-        # 50 MHz + 125 MHz sequential phases take 6.995968 ms, excluding
+        # March clocks per port, plus 6144 registered cross-read clocks per port.
+        # 50 MHz + 125 MHz sequential phases take 7.053312 ms, excluding
         # synchronizer/start cycles; 7.2 ms admits those explicitly.
         for _ in range(360000 * 10 // self.half_ns):
             if self.v("eth_mbist_done_o") == 3:

@@ -2,7 +2,54 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest continuation — 11 October, 23:50 TRT
+## Latest continuation — 12 October, 00:34 TRT
+
+The original routed digital core now has **all 35 fill tiles generated**.
+The complete geometry audit passes: every original shape and instance in
+423 cells is retained; 927,937 fill-shape definitions are added in 35 new cells.
+The exact filled GDS SHA-256 is
+`2b8fead5fa691588efa2754a85b156f77765ba6fd101b6eaee06ed063de3f525`.
+The unchanged native density deck is running on that entire filled GDS.
+**Geometry preservation does not establish density, DRC, LVS or timing closure.**
+
+The [fill and request-profile record](evidence/pcie-filled-core-and-request-profile-20261012.json)
+links a complete 719,195,732-byte capsule containing all fill tiles, checkpoints,
+logs, the interrupted first attempt and the separate request-only CPU experiment.
+All members and the full anonymous public download are verified. A separate
+[21,734,704-byte native-check bundle](evidence/pcie-filled-core-native-input-assets-20261012.json)
+pins that exact filled GDS and 84 native deck dependencies for parallel GitHub
+verification. The original unfilled antenna pass does not apply to this new GDS.
+
+The **REQ_REG=1, MEM_RDREG=0** profile passes mapped request connectivity and
+whole-CPU firmware checks. Execution increases from 430,231 to 537,006 cycles
+(**24.818%**). Matched unplaced main-clock SS setup improves by 0.775618 ns,
+but PCIe SS setup regresses by 0.192725 ns. This profile is **not adopted**;
+its CPU benefit and whole-chip tradeoff require physical measurement.
+
+A separate Ethernet repair registers the cross-port SRAM zero-check response,
+as the March engines already do. The isolated candidate passes 24 unit tests,
+four deliberate checker faults, and all 37 real-PDK SRAM scenarios. Mapped
+connectivity confirms 64 new cross-read response bits and the existing 64 March
+response bits in the correct domains. The original post-map audit failed on a
+removed signal alias; the native mapping succeeded, and a fresh audit checks
+actual Q drivers through the surviving alias. The failure remains recorded.
+Matched unplaced Ethernet RX/TX SS setup improves by 1.596745/1.857131 ns;
+main-clock setup regresses by 0.472286 ns, so this is not full timing acceptance.
+The concurrent CPU/PCIe/Ethernet test is still running. The derived startup
+sequence is 7.053312 ms plus synchronization overhead, within the unchanged
+7.2 ms test bound. Canonical RTL now includes this capture; physical integration
+and the remaining checks are pending.
+
+The conservative 95-cell candidate continues detailed routing. A subsequent
+RX-input experiment removes three shared delay cells, then repairs the single
+resulting FF hold violation with one endpoint-only delay. Its estimated six
+worst corner values are nonregressing; native geometry and logic proof are
+being checked before any routing dispatch. Whole-core native DRC, the queued
+transistor LVS and the 1 µs analog acquisition diagnostic continue.
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
+## Previous continuation — 11 October, 23:50 TRT
 
 The original unfilled routed digital core passes the independent IHP native
 antenna deck: **31 complete rule categories, zero markers** in
