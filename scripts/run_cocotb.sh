@@ -71,9 +71,48 @@ suite_total=0
 # environment; see the tt/test block at the bottom.
 EXTRA_MAKE_ARGS=""
 
+run_pcie_ethernet() {
+    # This bench needs generated firmware and an explicitly selected CPU/source
+    # bundle. Its guarded Makefile cannot be invoked as a standalone suite.
+    # The native driver requires an absent output directory, preventing stale
+    # XML from an earlier run from being counted here.
+    local name=soc_pcie_ethernet work compiler rc counts p f s
+    work=$(mktemp -d "$LOG_DIR/pcie-ethernet.XXXXXX") || return 1
+    compiler=$(command -v iverilog) || compiler=""
+    if [ -z "$compiler" ]; then
+        echo "Missing Icarus compiler" > "$LOG_DIR/$name.log"
+        rc=127
+    else
+        timeout 900 "$PY" "$ROOT/scripts/check_pcie_ethernet_soc.py" \
+            --out "$work/capture" --iverilog-dir "$(dirname "$compiler")" \
+            --async-pcie > "$LOG_DIR/$name.log" 2>&1
+        rc=$?
+    fi
+    if ! counts=$("$PY" "$ROOT/scripts/cocotb_results.py" \
+        "$work/capture/results.xml" 2>>"$LOG_DIR/$name.log"); then
+        printf '  %-28s INVALID/MISSING XML (driver rc=%s; %s)\n' "$name" "$rc" "$LOG_DIR/$name.log"
+        suite_fail=$((suite_fail + 1))
+        return
+    fi
+    read -r p f s <<< "$counts"
+    pass_total=$((pass_total + p))
+    fail_total=$((fail_total + f))
+    skip_total=$((skip_total + s))
+    if [ "$rc" != "0" ] || [ "$p" != "2" ] || [ "$f" != "0" ] || [ "$s" != "0" ]; then
+        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (driver rc=%s)\n' "$name" "$p" "$f" "$s" "$rc"
+        suite_fail=$((suite_fail + 1))
+    else
+        printf '  %-28s %s passed, %s skipped\n' "$name" "$p" "$s"
+    fi
+}
+
 run_one() {
     local dir=$1 mk=$2 name=$3
     suite_total=$((suite_total + 1))
+    if [ "$name" = "soc_pcie_ethernet" ]; then
+        run_pcie_ethernet || suite_fail=$((suite_fail + 1))
+        return
+    fi
     # The results-file glob. Every suite under hw/tb and hw/soc/tb/cocotb
     # writes results_<something>.xml, which is why that is the default.
     # tt/test does not: its Makefile is generated from the upstream Tiny

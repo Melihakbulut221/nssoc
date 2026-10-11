@@ -144,3 +144,46 @@ def test_native_suite_needs_a_live_external_driver_binding(tmp_path, binding):
         assert "1 skipped" in result.stdout
     else:
         assert "UNREACHED cocotb test modules" in result.stdout
+
+
+@pytest.mark.parametrize("mode", ["success", "partial", "missing", "skipped", "short"])
+def test_prepared_pcie_ethernet_driver_is_counted_fail_closed(tmp_path, mode):
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    for name in ("run_cocotb.sh", "cocotb_results.py"):
+        shutil.copy(ROOT / "scripts" / name, scripts / name)
+    bench = tmp_path / "hw/soc/tb/cocotb"
+    bench.mkdir(parents=True)
+    (bench / "Makefile.soc_pcie_ethernet").write_text(
+        "$(error Prepared driver required)\n"
+    )
+    compiler = tmp_path / "bin"
+    compiler.mkdir()
+    (compiler / "iverilog").write_text("#!/bin/sh\nexit 0\n")
+    (compiler / "iverilog").chmod(0o755)
+    xml = "<testsuites><testcase/><testcase/></testsuites>"
+    if mode == "skipped":
+        xml = "<testsuites><testcase/><testcase><skipped/></testcase></testsuites>"
+    elif mode == "short":
+        xml = "<testsuites><testcase/></testsuites>"
+    (scripts / "check_pcie_ethernet_soc.py").write_text(
+        "from pathlib import Path\nimport argparse\n"
+        "p=argparse.ArgumentParser();p.add_argument('--out',type=Path);"
+        "p.add_argument('--iverilog-dir',type=Path);"
+        "p.add_argument('--async-pcie',action='store_true');a=p.parse_args()\n"
+        "assert a.async_pcie and (a.iverilog_dir/'iverilog').is_file()\n"
+        "assert not a.out.exists();a.out.mkdir()\n"
+        + ("" if mode == "missing" else f"(a.out/'results.xml').write_text({xml!r})\n")
+        + f"raise SystemExit({1 if mode == 'partial' else 0})\n"
+    )
+    env = {**os.environ, "PY": sys.executable,
+           "PATH": str(compiler) + os.pathsep + os.environ["PATH"]}
+    # A second invocation must allocate a fresh capture instead of reusing XML.
+    for _ in range(2):
+        result = subprocess.run(
+            ["bash", scripts / "run_cocotb.sh", "soc_pcie_ethernet"],
+            env=env, capture_output=True, text=True, timeout=20,
+        )
+        assert (result.returncode == 0) == (mode == "success"), result.stdout + result.stderr
+    captures = list((tmp_path / "hw/soc/out/cocotb").glob("pcie-ethernet.*/capture"))
+    assert len(captures) == 2

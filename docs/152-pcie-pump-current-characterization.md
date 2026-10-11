@@ -3064,3 +3064,108 @@ The same evidence records the seed-42 routing failure: **78 overflow**, comprisi
 The [carry-OR candidate](evidence/pcie-carry-or-rejected-20261010.json) passed full-module equivalence and eight integration tests, but was **rejected**: SS setup regressed from -1.361943 to -1.427598 ns and SS hold from -0.469247 to -0.471067 ns. All six measured minima and the actual mapped sources/logs are published, including the 29-file result capsule (18,425,387 bytes; SHA-256 `4b4133e16db16e801f3a3366deb68e0f9c9e77f7348f875486042986a6087074`). The stronger metadata candidate's physical placement/CTS run is now active. Removing 4,090,592,586 bytes of verified, restorable old HTTP download-cache copies cleared its disk gate; original native captures and reports were preserved.
 
 Full serial Gen3 x4 PHY, its routed main-chip integration and final setup/hold closure remain open. None of these finite component or physical model checks is a production approval.
+
+### First divider recovered; second divider physically replaced (11 October)
+
+The complete wider-power 753-device capture now passes the first divide-by-four
+check and **all 753 electrical screens**. Its independent causal phase reader
+also passes. The overall native result remains **FAIL**: the other seven
+functional checks, including second division and feedback, fail. The preceding
+parent without wider power connections fails all eight functional checks and
+its electrical screen. Both complete original captures are retained.
+
+Reading the full wider-power capture at actual saved device terminals shows
+that the second divider receives a clock, but its output differential remains
+between approximately -7.630 and +1.321 mV. To separate input common mode from
+component behavior, the original second-divider geometry was tested at 2 GHz,
+0.12 V single-side input amplitude, 50 fF output load, 2.42 V supply and 0.08 V
+local ground. These are explicit idealized diagnostic boundaries, not a replay
+of the complete parent waveform.
+
+| Second-divider geometry | Input common mode | Output differential range | Division/swing | All 91 electrical screens |
+| --- | ---: | ---: | --- | --- |
+| Original | 1.50 V | -66.764 / +60.582 mV | FAIL | PASS |
+| Original | 1.20 V | -66.163 / +61.320 mV | FAIL | PASS |
+| Existing `first28` physical cell | 1.50 V | -180.415 / +178.825 mV | PASS | PASS |
+| Existing `first28` physical cell | 1.20 V | -180.322 / +178.755 mV | PASS | PASS |
+
+All four 20 ns captures were independently reread, including strict startup
+and every device bound. Four injected waveform faults confirm rejection of
+wrong division, stuck outputs, insufficient swing and missing input. Changing
+input common mode alone did not repair the original component. The replacement
+uses the already verified physical cell with four first-latch collector
+resistors lengthened from 2.12 to 2.8 µm; it is not a parameter-only substitute.
+
+The second divider in the wider-power PLL GDS was replaced with that cell.
+The first attempt stopped at a floating-point coordinate comparison before
+native verification. The preserved retry compares exact integer-nanometre
+coordinates and verifies unchanged parent shapes, bounding box and all seven
+child pin boxes. Fresh checks pass **0/560 DRC**, **nine hierarchical LVS
+pairs**, **flat 753-device LVS**, all **61 reference planes**, fresh **91 R /
+224 C** parent extraction and six physical-model binding fault controls.
+The two instances now share one verified cell type, explaining the reduced
+number of distinct hierarchical pairs. The complete composed model contains
+**7,961 wire elements**; the other 662 devices and their child RC remain
+unchanged by this second replacement.
+
+The new full 753-device, 50 ns transient is **running**, with the same eight
+functional criteria, all electrical screens, five measurement faults and six
+boundary faults. It is followed by independent functional, startup, electrical
+and causal-phase readers. It has no elapsed-time kill limit. The full-parent
+result must pass before this component improvement can be accepted at that
+level. Common substrate remains idealized; foundry PEX, acquisition, jitter,
+process/voltage corners and serial Gen3 x4 operation are not qualified.
+
+The pending 25 °C, 302-device component run also completed and passed both
+independent readers. Together with the earlier -40 and 125 °C runs, it covers
+three temperatures of that same geometry, **not full PVT qualification**.
+
+### Metadata CTS measured; timing repair and joint-test runner correction (11 October)
+
+The metadata candidate completed placement and CTS. A fresh legacy OpenROAD
+readback, taking the minimum across all reported path groups, gives:
+
+| Corner | Setup slack (ns) | Hold slack (ns) |
+| --- | ---: | ---: |
+| SS | -2.460221 | -0.573525 |
+| TT | -0.464065 | -0.644548 |
+| FF | +0.461130 | -0.683591 |
+
+These are placement-estimated delays with propagated clocks. The original
+constraints are retained. Setup/hold repair is running from this exact CTS
+checkpoint with the legacy native multi-corner flow; no final repaired
+readback or routed timing closure is claimed. The separate additional 15%
+Metal5 capacity reservation worsened route overflow from **78 to 129** and
+was rejected. No detailed route is accepted from that experiment.
+
+GitHub's older RTL job exposed a real runner integration error: the generic
+suite collector called the guarded PCIe–Ethernet Makefile without its generated
+ROM and actual CPU/source bundle. The runner now uses
+`check_pcie_ethernet_soc.py --async-pcie` in a fresh capture directory. It counts
+the exact output XML and requires successful driver completion, both tests
+and zero skips; stale, partial and missing results cannot pass. **21 runner
+checks pass**, and the actual concurrent CPU/PCIe/Ethernet suite passes **2
+tests with zero skips**. The outer runner separately reports one native-memory
+parity suite delegated to its mandatory CI job. This is RTL integration
+evidence, not a serial PCIe PHY or layout result.
+
+The [machine-readable continuation record](evidence/pcie-both28-followup-20261011.json)
+links the **426-file evidence capsule**, including completed native records,
+new physical layouts/checks, actual CTS ODB and STA logs, failed variants,
+runner validation and the prepared full-parent continuation. The capsule is
+25,762,296 bytes, SHA-256
+`c49d497cdfcc8b40465f459fe14a199e3b75aae129600e130e62291ce80f53df`.
+All members and the complete anonymous public download are verified.
+Waveforms are explicitly excluded: the prior four first28 boundary captures
+completed separate full public delivery; the wider-power capture's multipart
+publication is ongoing; the four new second-divider captures remain local.
+
+Another **4,063,587,094 bytes** of old HTTP range-download cache were removed
+only after complete local hashes, current GitHub asset digests and fresh
+anonymous samples matched. Exact restoration instructions are included.
+Original native captures and results remain intact. The first cache attempt
+stopped on a missing historical receipt filename without deleting data.
+
+**Full serial Gen3 x4 PHY, routed main-chip integration, final setup/hold and
+manufacturing acceptance remain open.** Component LVS/DRC and finite transient
+improvements do not close those gates.
