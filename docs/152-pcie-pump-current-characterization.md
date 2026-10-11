@@ -2,7 +2,80 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 12:32 TRT
+## Latest snapshot — 11 October, 13:12 TRT
+
+The recovered main-chip post-CTS repair has returned. Independent STA of its
+saved database reports these minima across **every reported path group**:
+
+| Corner | Setup (ns) | Hold (ns) |
+| --- | ---: | ---: |
+| SS | -1.594565 | +0.162229 |
+| TT | +0.039248 | +0.019906 |
+| FF | +0.758207 | -0.207803 |
+
+These are placement-RC estimates, not routed signoff. A removal-only scan finds
+zero negative reset endpoints in all three corners. The subsequent **recovery
+and removal** scan finds **846 SS recovery violations**, worst -1.560459 ns;
+therefore reset timing is not closed. The independent full negative-path
+inventory reports 5,376 SS maximum-delay paths and 166 FF minimum-delay paths.
+No individual group reaches the 5,000-path reporting cap.
+
+The main design has completed global routing with **zero overflow** and a
+saved output database. Detailed routing and final extracted STA remain open.
+Two separate experiments operate on copies of the completed post-CTS database:
+
+- 176 identity delay cells target the 166 actual failing data/output loads.
+  Existing placed-cell coordinates are frozen and checked; setup and hold are
+  remeasured in all corners and the complete connection graph is audited.
+- 161 overloaded reset buffers on the failed recovery paths change from
+  `sg13g2_buf_1` to `sg13g2_buf_4`. The experiment checks whether recovery improves
+  without creating removal failures. It does not change clock constraints.
+
+The 176-delay experiment passes whole-graph and three-Liberty identity checks,
+four graph fault controls, and preserves all 112,568 existing placed-cell
+coordinates. Hold becomes +0.162229 / +0.104576 / +0.000238 ns at SS/TT/FF,
+but setup becomes -2.089581 / -0.003025 / +0.758207 ns. **It is not adopted:**
+SS setup worsens by 0.495016 ns and the FF hold margin is only 0.238 ps.
+A fresh candidate uses the smaller `dlygate4sd1_1` at internal data loads.
+
+The 161-buffer experiment passes complete graph, three-Liberty function,
+four fault and original-database binding checks. Worst SS recovery improves
+from -1.560459 to -0.235278 ns; reset-removal margins remain positive at all
+corners, with FF +0.041767 ns. Global setup and hold are still negative.
+A fresh 165-buffer experiment also sizes the four remaining measured slow
+nodes. Neither reset candidate is accepted as final timing.
+
+The earlier queued
+reset-delay experiment correctly makes no edit when its removal-only input
+contains no negative endpoints; this is not a recovery-pass result.
+
+The RX metadata snapshot candidate passes ten port tests and rejects three
+actual RTL mutations, but its full-module induction leaves 77 equivalence
+cells unproven. It is **not adopted or mapped**. The failed proof and an initial
+mutation-result writer error are preserved; the corrected mutation reader
+counts the actual completed JUnit cases.
+
+A separate **combinational** candidate gives each receive-credit class its own
+constant counter slice, avoiding variable slice selection around the adders.
+It adds no RX latency. Ten port tests and three actual mutation rejections pass;
+full equivalence passes all three configurations `(4,1,0)`, `(8,2,1)` and
+`(5,3,0)`, with no input assumptions. Whole-chip mapping/timing is running.
+The tuple denotes maximum TLP DWORDs, slots per class and completer-only mode.
+The candidate inherits the separately documented registered credit-offer
+latency change; the RX proof does not erase that change.
+
+The [post-CTS and RX record](evidence/pcie-postcts-rx-20261011.json) identifies
+completed results and two immutable public evidence capsules: 322 members
+(72,310,810 bytes) and 59 members (54,136,961 bytes). Every archive member
+and every byte of both anonymous public downloads is verified. Another
+3,626,531,867 bytes of generated HTTP range caches were removed only after
+complete local/public readback hashes, current GitHub digests and fresh
+anonymous samples agreed. Original native captures and exact restoration
+methods remain. The 757-device reset-recovery fixture simulation continues
+with its original checks; **full serial PHY, routed main chip and final timing
+are still open**.
+
+## Earlier snapshot — 11 October, 12:32 TRT
 
 The complete 757-device nominal 50 ns run is **FAIL: 5/8 original functional
 checks pass**. All 757 device geometry/electrical screens pass, and independent
