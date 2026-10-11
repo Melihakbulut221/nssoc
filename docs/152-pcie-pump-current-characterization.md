@@ -2,6 +2,39 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 02:33 TRT
+
+The mapped replay address audit is now closed for this exact synthesized
+candidate. A reusable native-Liberty checker follows the actual current-address
+D cone, tries both inverted-state candidates and proves exactly one correct
+binding. All **12 physical flip-flops** share the intended PCIe clock/reset.
+Reset establishes current address zero and successor one; the mapped D logic
+preserves successor = current + 1 modulo 64 for arbitrary other boundary state.
+Both actual D-pin mutations produce counterexamples. Wrong-clock and missing-net
+controls fail before dispatching SAT. The earlier legal postfix-reset-notation
+reader rejection is preserved. This is a local state invariant, not full-chip
+functional equivalence, protocol progress, CDC or timing approval.
+
+The [complete mapped-state evidence](evidence/pcie-mapped-successor-invariant-20261012.json)
+contains **47 archive members, 1,638,356 bytes**, SHA-256
+`11f8741b4a570509cd6fcd709dda6a9c9d1ddf62225f0d45d844b5369866a2ad`.
+All archive members and the complete anonymous public download match. The
+[supported checker](../scripts/check_pcie_mapped_successor.py) requires the exact
+mapped JSON, native Liberty and Yosys executable; it does not rely on generated
+instance numbers.
+
+The combined Ethernet/replay physical run has completed placement and CTS;
+three-corner reporting and subsequent repair/readback remain active. Portable
+RX carry-select full-module equivalence has passed three configurations. The
+fourth is pending. The older function-local candidate's fourth configuration
+exhausted the solver's memory and is preserved as **unproven**, not a logic
+counterexample. A fresh trial uses Yosys
+[`equiv_simple -short`](https://yosyshq.readthedocs.io/projects/yosys/en/0.40/cmd/equiv_simple.html)
+to stop cones at shared nodes while retaining all equivalence obligations and
+the final unfiltered assertion. No output is removed or assumed correct.
+Ongoing proof/physical/analog outputs are excluded from the completed capsule.
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 02:01 TRT
 
 The registered replay candidate's **seven passing port tests and three rejected
