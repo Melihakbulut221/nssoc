@@ -2,6 +2,58 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 01:49 TRT
+
+The new Ethernet capture and registered PCIe successor address now have a
+**fresh whole-chip floorplan/placement/CTS experiment running**. It retains the
+same 20 ns CPU, 4 ns PCIe and 8 ns Ethernet targets, die, SRAM macros and repair
+policy. The earlier conservative route continues; its inputs are unchanged.
+An independent all-group, three-corner post-CTS reader is queued with explicit
+clock-period checks. These are development runs, not accepted routing/timing.
+
+Whole-chip mapping and unplaced measurement of the new candidate finish:
+
+| PCIe setup, unplaced | Prior Ethernet capture | Registered successor |
+| --- | ---: | ---: |
+| SS (ns) | -1.359263 | -1.262388 |
+| TT (ns) | +0.366104 | +0.330039 |
+| FF (ns) | +1.241055 | +1.211302 |
+
+SS improves by 96.875 ps, while TT/FF regress by 36.065/29.753 ps. The worst
+reported path is **RX queue read index to the advertised data-credit counter**,
+so this global change does not establish a direct replay-path timing gain.
+A separate three-nibble carry-select adder candidate now targets that RX path.
+Its complete 24-bit input-space SAT check passes, and two carry-error controls
+fail as expected. Full RX module/packet tests and mapping are separate gates. The first function-local
+attribute form fails Icarus parsing; its original compile failure is retained.
+The portable candidate moves the same kept intermediates to module scope and
+passes a fresh complete arithmetic proof plus both fault controls. New module
+proofs and port tests are running; only the unstarted map/read controllers were
+replaced. No healthy CAD run was interrupted.
+
+The original direct six-plus-six flip-flop audit stops on the successor LSB:
+Yosys keeps its physical state in a reset-zero, inverted-polarity implementation
+and leaves the old positive wire alias unused. The native pre-map circuit has
+LSB reset value one. Inventory records eleven direct Q bindings and the extra
+flip-bits state candidate with the same PCIe clock/reset; **full LSB equation
+binding is still open**. This audit failure is retained, not waived. Three
+actual address mutations fail 6, 6 and 7 of the seven external port cases.
+Their wrapper subsequently hit a string/path error; independent review verifies
+all completed native XML/logs and input hashes without rerunning or altering
+the failed captures.
+
+The filled original core additionally passes **31 native antenna categories
+and 52 device categories, zero markers**, with 108 input hashes independently
+rechecked for each. **Six of seven GitHub groups now pass; BEOL remains pending.**
+The independent 37-rule density check remains a pass for that same filled GDS.
+This does not close full-chip LVS, qualified RC, full serial PHY or final timing.
+
+The [complete mapping and native evidence](evidence/pcie-successor-map-and-native-20261012.json)
+is **18,587,349 bytes**, SHA-256 `134c3e6d52099b5c509d1f0bfcf961a5d09a5c985560898771558eab171a7441`. All
+71 archive members and the complete anonymous download match. It retains
+mapping/STA, the failed alias audit, the port-fault wrapper failure and native
+antenna/device reports. Active physical outputs and analog captures are excluded.
+
 ## Latest continuation — 12 October, 01:16 TRT
 
 The Ethernet capture now passes **both concurrent CPU/PCIe/Ethernet scenarios,
