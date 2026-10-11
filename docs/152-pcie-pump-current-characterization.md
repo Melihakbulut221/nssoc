@@ -2,7 +2,44 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest correction — 11 October, 23:10 TRT
+## Latest continuation — 11 October, 23:17 TRT
+
+The [conservative placement and route record](evidence/pcie-conservative-placement-and-route-start-20261011.json)
+passes native placement legality and a restricted original-to-candidate
+cell-equation proof. Exactly **115,357 retained cells** preserve their original
+master, orientation, origin, location and power-terminal connections. Their
+power-wire geometry and via identities also match. Only 95 added cells may
+move. All **113,778 old regular wires and 868,978 guides** are cleared before
+rerouting; the post-placement audit confirms zero remaining old route objects.
+
+| Fresh placement estimate | SS | TT | FF |
+| --- | ---: | ---: | ---: |
+| Original setup (ns) | -5.182930 | -2.385632 | -0.921397 |
+| Conservative candidate setup (ns) | -4.394085 | -1.794042 | -0.568617 |
+| Original hold (ns) | +0.239416 | +0.058583 | -0.046732 |
+| Conservative candidate hold (ns) | +0.315223 | +0.190223 | +0.046287 |
+
+These are matched layer-RC estimates, with unchanged SDC and no loaded SPEF.
+Setup remains negative. The candidate's fresh global/detail route and actual
+extraction have started; independent three-corner SPEF readback follows.
+No final timing acceptance follows from positive estimated hold.
+
+The complete **127,912,494-byte** preparation/proof/failure capsule passes
+local member verification and complete anonymous public readback, SHA-256
+`3dff641d9bcc75a9602839daa8b280197deb33b10bbac61f947a6aa07c3ae8d0`.
+It contains the earlier native route failure and geometry diagnosis as well
+as the conservative repair; live CAD output is excluded. All originals remain.
+
+The original unfilled core's independent **31-category native antenna run**
+is [active on GitHub](https://github.com/Melihakbulut221/nssoc/actions/runs/38170849296).
+Local full native DRC, the 35-tile fill candidate and the 1 µs analog capture
+continue; transistor LVS is queued behind DRC. A separate experiment sizes
+20 measured critical-path drivers while preserving all other cell geometry.
+It is not adopted and does not alter the running 95-cell route.
+
+**Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
+
+## Previous correction — 11 October, 23:10 TRT
 
 The two-buffer physical route **fails** natively with `DRT-1231` (a pin has
 no access point), returning code 2 at 22:53:55. The original routed core is
