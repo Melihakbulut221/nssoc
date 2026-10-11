@@ -9,6 +9,11 @@ on:
         type: choice
         default: beol
         options: [beol, antenna, feol_devices, geometry_pin_forbidden, geometry_grid, geometry_angle, supplemental_wide, all]
+      manifest:
+        description: 'Repository manifest pinning the exact layout and native input bundle'
+        type: string
+        required: false
+        default: docs/evidence/chip-native-parallel-input-v2-assets-20260928.json
 permissions:
   contents: read
 concurrency:
@@ -38,7 +43,8 @@ jobs:
       - name: Verify exact chip bundle and run unchanged native rules
         env:
           CHIP_GROUP: ${{ matrix.group }}
-        run: python3 scripts/run_chip_native_shard.py --group "$CHIP_GROUP"
+          CHIP_MANIFEST: ${{ inputs.manifest || 'docs/evidence/chip-native-parallel-input-v2-assets-20260928.json' }}
+        run: python3 scripts/run_chip_native_shard.py --group "$CHIP_GROUP" --manifest "$CHIP_MANIFEST"
       - name: Preserve measurements, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

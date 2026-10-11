@@ -121,7 +121,7 @@ def config_with_density():
     for value in ("input=@GDS@", "topcell=nssoc_chip", "report=@REPORT@", "threads=1",
                   "run_mode=deep", "precheck_drc=False", "no_recommended=False", "density_sanity=True"):
         command += ["-rd", value]
-    config = dict(commands={name: [] for name in runner.BASE_GROUPS},
+    config = dict(commands={name: ["-rd", "topcell=nssoc_chip"] for name in runner.BASE_GROUPS},
                   catalogs={name: {} for name in runner.BASE_GROUPS},
                   top="nssoc_chip", gds="input/chip.gds")
     config["commands"]["density"] = command
@@ -137,6 +137,30 @@ def test_optional_density_preserves_legacy_bundles(monkeypatch, include_density)
     if not include_density:
         del config["commands"]["density"]
     runner.validate_config(config)
+
+
+@pytest.mark.parametrize("include_density", [True, False])
+def test_exact_soc_core_top_is_supported_without_renaming_geometry(monkeypatch, include_density):
+    config = config_with_density()
+    monkeypatch.setattr(runner, "check_catalog", lambda name, cats: None)
+    if not include_density:
+        del config["commands"]["density"]
+    config["top"] = "soc_top"
+    for name, command in config["commands"].items():
+        config["commands"][name] = [x.replace("topcell=nssoc_chip", "topcell=soc_top") for x in command]
+    runner.validate_config(config)
+
+
+@pytest.mark.parametrize("defect", ["mismatch", "missing", "duplicate", "unknown_top"])
+def test_native_command_cannot_select_a_different_or_ambiguous_top(monkeypatch, defect):
+    config = config_with_density()
+    monkeypatch.setattr(runner, "check_catalog", lambda name, cats: None)
+    if defect == "mismatch": config["commands"]["antenna"][-1] = "topcell=soc_top"
+    elif defect == "missing": config["commands"]["antenna"] = []
+    elif defect == "duplicate": config["commands"]["antenna"] += ["-rd", "topcell=nssoc_chip"]
+    else: config["top"] = "unrelated_cell"
+    with pytest.raises(ValueError):
+        runner.validate_config(config)
 
 
 @pytest.mark.parametrize("defect", ["sanity", "mode", "recommended", "duplicate", "fixed_catalog", "missing_shard"])

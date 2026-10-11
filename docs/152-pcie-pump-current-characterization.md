@@ -2,7 +2,31 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest continuation — 11 October, 22:29 TRT
+## Latest correction — 11 October, 23:10 TRT
+
+The two-buffer physical route **fails** natively with `DRT-1231` (a pin has
+no access point), returning code 2 at 22:53:55. The original routed core is
+unchanged. A separate geometry audit finds **56,098 retained instances with
+changed orientations and eight with changed positions** in the candidate.
+Its placement database also retains **112,403 signal and 1,375 clock regular
+wire objects** from the old route. Power-terminal connectivity and the power
+special-wire shape counts match the original. These observations invalidate
+the earlier attribution of the estimated gain solely to two buffers; they
+do not yet prove which change caused each routing violation.
+
+The old Boolean proofs and estimates remain available, but neither this
+candidate nor its 93-delay descendant is physically accepted. The descendant's
+routing/readback queues were stopped while still waiting, before native CAD
+started. A fresh candidate restores the original geometry of retained cells,
+locks them during placement, and clears old signal/clock routes and guides.
+Only the 95 added cells may move. Its legality, fresh estimates, logic proof,
+routing and extracted timing must all be checked anew.
+
+The [failure and geometry audit record](evidence/pcie-conservative-eco-rebuild-20261011.json)
+preserves the native failure and exact local diagnostic paths. Full serial
+PHY, accepted main-chip routing and final setup/hold remain open.
+
+## Previous continuation — 11 October, 22:29 TRT
 
 The [endpoint hold and density repair record](evidence/pcie-endpoint-hold-and-density-repair-20261011.json)
 records a proved physical candidate, not timing closure. Independent expanded
@@ -59,8 +83,29 @@ separate and public.
 The [complete original routed-core capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-routed-core-extracted-sta-and-rejected-ecos-20261011.tar.gz)
 now passes complete anonymous readback: 1,182,255,535 bytes, SHA-256
 `54374f1772b0bdccffa4b6f1d9b4afff0e5e8b231ad7c995b30a0685db4970ed`.
-Original source files remain locally. The new endpoint/pipeline evidence
-capsule is being packaged separately; its public delivery is not yet claimed.
+Original source files remain locally. The
+[new endpoint/pipeline capsule](evidence/pcie-endpoint-hold-pipeline-assets-20261011.json)
+also passes complete anonymous readback: **664,823,458 bytes**, 464 members,
+SHA-256 `672d94470cbbbfa39020bf65619e5ddff97aadd2e22e3669b3d24225ef7c94cb`.
+
+**Subsequent execution update:** the fill controller was stopped under an
+incorrect assumption that it was still waiting for RAM; it had begun its
+first tile. That controller error interrupted about 115 CPU seconds, with
+zero completed tiles. Original inputs and partial outputs were retained.
+Native resume verifies the same hashes and uses a separate attempt directory;
+the resumed run has completed its first tile. No elapsed-time watchdog caused
+this interruption. The two-buffer routing run now reports many Metal1 errors
+in its initial iterations; an independent power-connection/geometry diagnosis
+is in progress. No final route verdict is inferred from those iterations.
+
+The [exact routed-core native input bundle](evidence/pcie-routed-core-native-input-assets-20261011.json)
+passes archive roundtrip, 84 native dependency checks and complete anonymous
+public readback. It preserves the original `soc_top` GDS byte-for-byte and all
+31 native antenna rule categories. The GitHub shard workflow can now select
+this explicit manifest; the runner verifies that every command targets the
+same approved top cell. **52 tests pass**, including mismatched, missing,
+duplicate and unsupported top-cell rejection. Independent native antenna
+execution is prepared; no antenna result is claimed yet.
 
 **Full serial PHY, accepted full-chip routing and final setup/hold remain open.**
 

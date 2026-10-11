@@ -98,10 +98,16 @@ def validate_config(config):
     if (set(config["commands"]) not in (set(BASE_GROUPS), set(GROUPS))
             or set(config["catalogs"]) != set(BASE_GROUPS)):
         raise ValueError("Missing or unexpected shard")
+    if config["top"] not in ("nssoc_chip", "soc_top") or config["gds"] != "input/chip.gds":
+        raise ValueError("Unexpected chip identity")
+    for command in config["commands"].values():
+        tops = [x for x in command if x.startswith("topcell=")]
+        if tops != ["topcell=" + config["top"]]:
+            raise ValueError("Native command top cell differs from verified layout identity")
     if "density" in config["commands"]:
         command = config["commands"]["density"]
         options = [command[i + 1] for i, value in enumerate(command) if value == "-rd"]
-        required = {"input=@GDS@", "topcell=nssoc_chip", "report=@REPORT@",
+        required = {"input=@GDS@", "topcell=" + config["top"], "report=@REPORT@",
                     "threads=1", "run_mode=deep", "precheck_drc=False",
                     "no_recommended=False", "density_sanity=True"}
         if (len(command) != 4 + 2 * len(required)
@@ -121,8 +127,6 @@ def validate_config(config):
     for name, count in [("antenna", 31), ("supplemental_wide", 11)]:
         if len(config["catalogs"][name]) != count:
             raise ValueError("Incomplete auxiliary catalog")
-    if config["top"] != "nssoc_chip" or config["gds"] != "input/chip.gds":
-        raise ValueError("Unexpected chip identity")
 
 
 def shard_coverage(group, config, output, returncode):
