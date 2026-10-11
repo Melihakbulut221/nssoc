@@ -2,7 +2,69 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 16:08 TRT
+## Latest snapshot — 11 October, 16:58 TRT
+
+**Serial PHY, accepted main-chip routing and final setup/hold remain open.**
+The [updated evidence record](evidence/pcie-reset-pvt-and-odb-binding-20261011.json)
+distinguishes verified results from rejected experiments and active work.
+
+A timing readback bug was found and reproduced against the actual archived logs:
+LibreLane's `read_current_odb` reads **`CURRENT_ODB`**, not `_ODB_IN`.
+The offer `readback14` and its 27-buffer experiment loaded stage 23 CTS rather
+than final stage 25. The subsequent 33-gate experiment also read stage 23 rather
+than its intended preceding ECO. Their numbers are **not valid final-stage or
+cumulative ECO evidence**. Original files and logs are retained. A new
+[loaded-input checker](../scripts/check_openroad_loaded_inputs.py) requires the
+actual ODB/SDC load messages and immutable input digests. It rejects the real
+stale readback, accepts the corrected one, and passes seven regression tests.
+
+Corrected `readback15` uses the saved stage-25 ODB/SDC, all 15 native layer RC
+and 21 via-resistance entries, three corners and propagated clocks. A new
+35-buffer experiment starts from that verified database. Its whole connectivity
+graph and three-library identity functions pass, including four actual graph
+fault controls; unmodified instances retain their locations and orientations.
+
+| Corner | Correct post-CTS setup / hold (ns) | Verified 35-buffer ECO setup / hold (ns) |
+| --- | ---: | ---: |
+| SS | -1.315444 / -0.241729 | -1.312653 / -0.241729 |
+| TT | +0.136184 / -0.228778 | +0.154086 / -0.228778 |
+| FF | +0.831007 / -0.276223 | +0.837943 / -0.276223 |
+
+These are **placement estimates**, not routed signoff. The small SS gain does
+not close timing. The remaining worst path runs from receive-ownership queue
+read pointer to a cumulative advertised data-credit counter. A new constant-bank
+sum candidate moves addition before head selection without changing latency.
+Ten port tests and three actual mutants pass; full-module equivalence has passed
+its first configuration and continues for the other three. Full-chip mapping is
+gated on all four proofs; there is no physical adoption or timing-gain claim.
+
+The 107-device reset candidate passes native DRC/LVS and all seven nominal
+transients, but its 27-point PVT screen is **9 passes / 18 failures**: SS settling
+and rails fail, and FF device voltage limits fail. Every complete capture was
+independently reviewed. A different 98-device layout taps the second synchronizer's
+internal inverted state to bypass two output stages. Its DRC/LVS, 384-terminal
+binding, 213 R / 455 C extraction and 13+6 fault controls pass. Six nominal cases
+pass; the 200 fF case fails the unchanged high-rail settling check, so PVT is held.
+All seven electrical screens pass and all seven captures were independently
+reviewed. A strengthened internal-inverter candidate is under physical checks.
+None is a qualified reset macro or a complete PHY.
+
+The [1,095-member completed evidence capsule](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset98-pvt106-and-replay-timer-20261011.tar.gz)
+is **969,582,911 bytes**, SHA-256
+`dbe48cc80a19b808a240afc95d8ad5919a4f0b3210b1e88bce1ca7d708a7e3ab`.
+The full anonymous download matches. It contains all 41 reset98/reset106 captures,
+their independent reviews, rejected replay-timer mapping, and the independent
+853-device parent phase-boundary diagnosis. The latter explains raw 3/5 counts
+without accepting the original failed parent result. New reset107/direct98 and
+ODB-correction records are in a separate upload awaiting full public verification.
+The large 853-device wave publication also continues.
+
+Main-chip detailed routing is healthy at the second optimization iteration,
+70% with 23,230 intermediate violations at this snapshot; it has no elapsed-time
+termination limit. Final extraction, routed timing and physical acceptance are
+still pending.
+
+## Earlier snapshot — 11 October, 16:08 TRT
 
 The new reset-release candidate contains **94 MOS fingers and four MIM
 capacitors**. Adding contacts to the two previously isolated PMOS NET7 diffusion
