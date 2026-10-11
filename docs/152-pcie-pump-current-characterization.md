@@ -2,7 +2,39 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
-## Latest snapshot — 11 October, 21:01 TRT
+## Latest continuation — 11 October, 21:14 TRT
+
+The [two-buffer proof and delivery record](evidence/pcie-two-buffer-routing-and-full-wave-20261011.json)
+adds a small, scoped timing candidate. It retains both original PCIe input
+delay cells and inserts one `buf_8` after each. With identical layer-RC
+placement estimates and no old SPEF on either side, setup improves by
+**676.437 ps SS, 583.000 ps TT and 348.468 ps FF**. Hold worsens by
+2.257 ps / 3.268 ps / 0.290 ps; FF hold remains negative. These are candidate
+selection measurements, not extracted timing closure.
+
+The first logic run rejects a cell/net identifier collision. A separate
+rename changes only the two net names; every cell master, pin connection,
+location, orientation and placement status is checked unchanged. The native
+restricted cell-equation proof then passes. Original failures are retained.
+
+The candidate is now routing in a fresh directory. Optional post-GRT design
+and timing optimization searches are disabled to isolate this two-buffer
+change. Original constraints, antenna repair, route checkers, extraction and
+three-corner STA remain enabled. An independent ODB/SPEF readback is queued
+after native completion. No result is accepted from estimated timing alone.
+Full native DRC on the previous routed core is still active; its complete
+transistor LVS remains queued behind it.
+
+The full 50 ns analog waveform's three lossless parts and metadata now all
+pass complete anonymous GitHub readback. Original captures remain locally.
+Only verified redundant packaging archives and rebuildable documentation
+caches were removed to make space. Byte-identical completed CAD outputs now
+share disk storage while preserving every original path and byte; receipts
+record all changes. Those completed evidence files must remain immutable.
+
+**Full serial PHY, final setup/hold and accepted full-chip signoff remain open.**
+
+## Routed-core snapshot — 11 October, 21:01 TRT
 
 **Full serial PHY, accepted main-chip routing and final setup/hold remain open.**
 The [routed-core evidence record](evidence/pcie-routed-core-sta-and-signoff-20261011.json)
