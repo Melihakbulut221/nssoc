@@ -2,6 +2,71 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 07:08 TRT
+
+The RHI140 parent completes both full **865-transistor, 2,438-column, 50 ns**
+captures. The original 0.3125 ps and diagnostic 0.625 ps runs both fail the
+unchanged feedback-high requirement: **2.218602461 V and 2.218669423 V**, below
+**2.25 V**. Independent full-device electrical readback passes both captures.
+The separately validated request-window reset measurement passes the reset
+checks; it does not remove the feedback failure or rewrite the native results.
+The larger timestep is **not adopted**: one device-extrema difference is
+**5.053995 mV**, exceeding the predeclared 5 mV comparison limit. The gated
+RHI140 long acquisition run correctly rejects these finite results and starts
+nothing. The original baseline acquisition remains a separate running case.
+Full-capture metadata is published; the byte-preserving binary chunks are
+still uploading and their complete public readback is pending.
+
+A physical feedback repair changes only the output PMOS from **8 to 10 µm**.
+The eight core devices become nineteen devices after native contact
+extraction. The new macro passes all **560 DRC categories**, hierarchical and
+flat transistor LVS, and five actual geometry/reference fault controls. Fresh
+geometry produces **60 resistors and 95 capacitors**, with native terminal
+binding, graph/conservation checks and thirteen raw-extraction fault controls.
+The integrated **865-device PLL parent** also passes DRC and hierarchical/flat
+LVS. Independent comparison preserves the other macros, parent routes, ports
+and boundary. The new component replaces all of its old devices and wires in
+the 865-device/8,783-wire model; seven composition faults are rejected.
+This is an unqualified RC model with the documented common-substrate
+assumption, not foundry signoff extraction.
+
+The [new SPICE source](../hw/soc/analog/pcie/pll_feedback_levelshift_parallel8_pbuf10_v1.spice)
+and [layout generator](../hw/soc/flow/make_pcie_feedback_levelshift8_pbuf10_v1.py)
+are reproducible repository sources. Regeneration matches the validated mask
+by independent per-layer polygon XOR, with byte-identical LEF and transistor
+reference. The corrected reset oracle is fixed prospectively before the new
+full capture; thirteen reset faults and six boundary faults pass their
+rejection controls. The **new 50 ns simulation is running**, not accepted.
+The original nested-AppImage failure, exact floating-point serialization
+mismatch, missing Python dependency and missing parent BULK reference pin
+are retained alongside their corrected attempts. The GDS did not change
+when restoring the eighth reference pin.
+
+The constant-bank FC-write candidate completes synthesis and all-group
+three-corner timing. Its slow PCIe setup regresses from **−1.132761 ns to
+−1.352307 ns** (219.546 ps worse), despite passing sequential equivalence and
+port tests. It is **rejected**, not adopted or dispatched to physical design.
+The prior combined-offer physical queue remains unchanged.
+
+The old unfilled-core DRC stops at `Gat.g`: **KLayout 0.28.16 lacks the
+`absolute` operation required by the locked deck**. Its 26 partial categories
+and zero markers are an error, not a pass. With **KLayout 0.30.7**, the exact
+hybrid runner completes all 560 categories on the small validated macro.
+The unchanged full-core GDS and unchanged rules are queued with this runtime
+after the active transistor LVS and resource gate. No elapsed-time cutoff is
+introduced. The earlier filled-core result concerns a different exact GDS.
+
+[Physical repair and rejected FC map/STA evidence](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-physical-and-fc-rejection-20261012.tar.gz)
+(21,579,208 bytes, SHA-256
+`8d2017c7b8e0e4bccff2bd67f1561567ebd61d2b23a0762abbaa7577e0907d64`)
+and [canonical regeneration and DRC-runtime evidence](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-canonical-and-drc-runtime-20261012.tar.gz)
+(70,704 bytes, SHA-256
+`6ff7c3d922341f8e50c82032460f9fa721a5bdb84d1cd7b6bf86a637157aed39`)
+have complete archive-member checks and anonymous full-byte public readback.
+The [machine-readable snapshot](evidence/pcie-pbuf10-physical-and-fc-rejection-20261012.json)
+retains the failures and acceptance limits. **Full serial PHY, an accepted
+routed integrated chip and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 05:57 TRT
 
 The combined **registered credit offer, RX return metadata, registered replay
