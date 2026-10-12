@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-12T23:50:56.348479+03:00",
+  "update_at": "2026-10-12T23:54:43.603594+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 15347,
-    "batch": 17,
-    "removed_bytes": 14934691383,
-    "uploaded_bytes": 12428397565
+    "next_index": 15675,
+    "batch": 19,
+    "removed_bytes": 15996366612,
+    "uploaded_bytes": 13479663715
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -105,7 +105,7 @@
       "sha256": "013bc0aadd255f6f7814c44c66fed67ebe67f1f85b159b5deff423a991f00d8c",
       "diagnosis": "Native preparation rejected resized rebuffer45563 because complete origin/location signature changed during master replacement. Revised candidate preserves its placement location explicitly and allows origin change only for the three declared resized cells; all other retained cell geometry remains exact. New hosted rerun required.",
       "replacement_run": 38306421942,
-      "replacement_result": "PASS_NATIVE_SCREEN_GEOMETRY_AND_LOGIC_CHECKS; report interpretation pending, no routed or final timing acceptance"
+      "replacement_result": "COMPLETE; exact routed baseline reproduced, restricted geometry and native logic proof passed, actual inverted-buffer control rejected. Fresh placement estimates do not improve worst slack; not adopted and no routed/final timing closure. See docs/evidence/cloud-routed-setup-screen-20261012.json."
     },
     "actual_output_restore": {
       "id": 38306519569,
@@ -115,6 +115,11 @@
       "verified_original_files": 13339,
       "verified_original_bytes": 11384788331,
       "receipt": "docs/evidence/cloud-output-restore-20261012.json"
+    },
+    "compact_evidence_summary": {
+      "id": 38307126218,
+      "status": "PASS",
+      "purpose": "Read full heavy CAD archive in cloud and publish small hash-bound result for local review without downloading the layout bundle."
     }
   },
   "cloud_backup": {
