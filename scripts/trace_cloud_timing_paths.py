@@ -27,6 +27,13 @@ def native():
     db = odb.dbDatabase.create()
     odb.read_db(db, str(SOURCE / 'global.odb'))
     block = db.getChip().getBlock()
+    # OpenSTA renders escaped bus brackets without OpenDB's escape character.
+    # Require a unique reversible spelling, rather than fuzzy name matching.
+    names = {}
+    for inst in block.getInsts():
+        rendered = re.sub(r'\\([\[\]])', r'\1', inst.getName())
+        assert rendered not in names, ('Ambiguous rendered instance', rendered)
+        names[rendered] = inst
     log = (SOURCE / 'native.log').read_text()
     paths = []
     for phase in re.split(r'(?m)^CORNER_', log)[1:]:
@@ -50,8 +57,10 @@ def native():
                 if not match:
                     continue
                 name, pin, master = match.groups()
-                inst = block.findInst(name)
-                assert inst and inst.getMaster().getName() == master, (name, master)
+                inst = names.get(name)
+                assert inst and inst.getMaster().getName() == master, (
+                    name, master, inst.getName() if inst else None,
+                    inst.getMaster().getName() if inst else None)
                 term = inst.findITerm(pin)
                 assert term, (name, pin)
                 pins = {}
@@ -69,7 +78,7 @@ def native():
                         drivers=sorted(peers),
                         terminals=len(net.getITerms()) if net else 0,
                         ports=sorted(t.getName() for t in net.getBTerms()) if net else [])
-                cells.append(dict(instance=name, master=master, pin=pin,
+                cells.append(dict(instance=name, odb_instance=inst.getName(), master=master, pin=pin,
                                   location=list(inst.getLocation()), pins=pins,
                                   reported_timing_line=line.strip()))
             assert cells, (phase_name, group[1])
