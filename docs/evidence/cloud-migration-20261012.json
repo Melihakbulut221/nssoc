@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-12T22:59:06.058208+03:00",
+  "update_at": "2026-10-12T23:16:12.246572+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 12238,
-    "batch": 4,
-    "removed_bytes": 1526416119,
-    "uploaded_bytes": 884409764
+    "next_index": 12303,
+    "batch": 8,
+    "removed_bytes": 5557530565,
+    "uploaded_bytes": 4910851348
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -76,8 +76,22 @@
       "result": "PASS; 3 tests for interrupted manifest retention/resume, external/symlink exclusion and changed-source retention"
     },
     "baseline_ACK_map_three_corner": {
-      "id": 38300790301,
-      "result": "QUEUED at snapshot; not yet a synthesis or timing result"
+      "failed_portability_run": 38300790301,
+      "reason": "Both mappings completed; AppImage exited127 because Ubuntu24 user namespace uid_map was denied. Both complete failure archives retained in release.",
+      "replacement_run": 38302150853,
+      "runner": "ubuntu-22.04",
+      "ACK_result": "COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE; slow PCIe setup slack -1.558253ns; other hold violations remain. Baseline paired result pending at snapshot. No candidate adoption."
+    },
+    "migration_safety_and_license_tests": {
+      "id": 38302154725,
+      "result": "PASS after correcting literal SPDX template scanner collisions; generated circuit text unchanged."
+    },
+    "existing_archive_catalog": {
+      "id": 38302888266,
+      "status": "IN_PROGRESS",
+      "archives": 1059,
+      "compressed_bytes": 75971220441,
+      "purpose": "Hash existing archive members on hosted runners so older identical captures can be removed locally without redundant upload. Index alone never authorizes deletion without matching original bytes."
     }
   },
   "cloud_backup": {
@@ -86,5 +100,29 @@
     "untracked_source_files_archived": 32,
     "local_deletion_complete": false
   },
-  "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled."
+  "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled.",
+  "older_container_cleanup": {
+    "status": "COMPLETE_VERIFIED_OLDER_UPLOAD_CONTAINER_CLEANUP",
+    "manifest_receipt": {
+      "name": "older-verified-upload-containers.json",
+      "bytes": 138759,
+      "sha256": "b1c421f46ce77b6e84961c9871b3696fa707934ca7cd3599b01dec0910c8005b",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/older-verified-upload-containers.json",
+      "id": 634858916
+    },
+    "files": 321,
+    "logical_bytes_removed": 2813501350
+  },
+  "direct_asset_cleanup": {
+    "status": "COMPLETE_DIRECT_ASSET_DUPLICATE_CLEANUP",
+    "recovery_manifest": {
+      "name": "direct-asset-matches.json",
+      "bytes": 180995,
+      "sha256": "174421e79e55774038d7456978f626fe65791e05187886d058beece43b3fff2b",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/direct-asset-matches.json",
+      "id": 634866545
+    },
+    "files": 386,
+    "logical_bytes_removed": 8086287346
+  }
 }
