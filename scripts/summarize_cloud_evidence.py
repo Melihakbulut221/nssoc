@@ -42,13 +42,20 @@ def main():
                 if member.name == args.member:
                     assert result is None and member.isfile() and member.size <= 10 * 1024 * 1024
                     with archive.extractfile(member) as stream:
-                        result = json.load(stream)
+                        member_bytes = stream.read()
+                        result = json.loads(member_bytes) if args.member.endswith('.json') else member_bytes.decode('utf-8')
         assert result is not None
-    out = Path(args.asset.removesuffix('.tar.gz') + '.summary.json')
+    member_id = hashlib.sha256(args.member.encode()).hexdigest()[:12]
+    out = Path(args.asset.removesuffix('.tar.gz') + '.' + member_id + '.summary.json')
     out.write_text(json.dumps(dict(archive_url=asset['browser_download_url'],
         archive_sha256=digest, archive_bytes=asset['size'], member=args.member,
+        member_sha256=hashlib.sha256(member_bytes).hexdigest(), member_bytes=len(member_bytes),
         result=result), indent=2) + '\n')
-    subprocess.run(['gh', 'release', 'upload', release, str(out), '-R', repo], check=True)
+    existing = [a for page in assets for a in page if a['name'] == out.name]
+    if existing:
+        assert len(existing) == 1 and existing[0]['digest'] == 'sha256:' + hashlib.sha256(out.read_bytes()).hexdigest()
+    else:
+        subprocess.run(['gh', 'release', 'upload', release, str(out), '-R', repo], check=True)
     print(out.read_text(), flush=True)
 
 
