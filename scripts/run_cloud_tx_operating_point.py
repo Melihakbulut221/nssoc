@@ -43,6 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
+    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup'), default='ideal')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')
     parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
@@ -198,6 +199,14 @@ def main():
         assert n1 == n2 == 6 and untouched_before == untouched_after
         if args.point == 'baseline':
             assert deck == baseline
+        driver_paths = []
+        if args.data_driver != 'ideal':
+            assert args.point == 'baseline' and args.kind == 'compact' and args.interconnect == 'actual'
+            assert args.layout_composition is None
+            import cloud_tx_data_driver as driver
+            deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl)
+            result['data_driver'] = driver_record
+            result['scope'] = driver_record['scope'] + ' Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.'
         run = out / 'native'
         run.mkdir()
         (run / 'bench.cir').write_text(deck)
@@ -207,6 +216,7 @@ def main():
         # unused compact netlist as if it were part of the wire simulation.
         paths = [p for p in inputs.rglob('*') if p.is_file()
                  and (not p.name.startswith('mux54-') or p == native.MUX)] + [tx, ng, Path(__file__), spec_path, run / 'bench.cir', run / 'spinit']
+        paths += driver_paths
         assert {p for p in paths if p.suffix == '.spice'} == {native.MUX, tx}
         pins = {str(p): sha(p) for p in paths}
         record = dict(status='RUNNING', config=config, inputs=pins,
@@ -247,6 +257,8 @@ def main():
                       measurement=native.measure(run / 'wave.dat', bindings, vectors, bits))
         record['inputs_unchanged'] = all(sha(p) == digest for p, digest in pins.items())
         assert record['inputs_unchanged']
+        if args.data_driver != 'ideal':
+            result['data_driver_review'] = driver.review(run, native)
         raw, packed = run / 'wave.dat', run / 'wave.dat.gz'
         raw_pin = dict(bytes=raw.stat().st_size, sha256=sha(raw))
         with raw.open('rb') as source, gzip.open(packed, 'xb', compresslevel=1) as dest:
