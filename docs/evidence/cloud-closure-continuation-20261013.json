@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T02:25:00.321358+03:00",
+  "as_of": "2026-10-13T02:29:11.699051+03:00",
   "turn_classification": "PROGRESS: exact39corner/group paths bound to native graph; newer existing physical state recovered and hosted routing launched.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -67,8 +67,8 @@
     "new_snapshot_readback_run": 38316589440,
     "new_snapshot_readback_status": "PASS all4groups57batches50994files43829824449logical bytes13hardlinks",
     "new_snapshot_evidence": "docs/evidence/cloud-output-restore-second-20261013.json",
-    "latest_license_migration_run": 38321669905,
-    "latest_license_migration_result": "PASS23 hosted safety tests plus SPDX/inventory/REUSE onb0612369; includes new PNR scope and source exclusion.",
+    "latest_license_migration_run": 38322172129,
+    "latest_license_migration_result": "PASS SPDX/inventory/REUSE and23 safety tests onb482e0f6.",
     "third_snapshot_readback_run": 38321449137,
     "third_snapshot_readback_status": "PASS_ALL_FOUR_HOSTED_BYTE_RECONSTRUCTION_GROUPS",
     "third_snapshot_readback_evidence": "docs/evidence/cloud-output-restore-third-20261013.json",
@@ -81,14 +81,14 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 179555,
-    "batch": 86,
-    "removed_bytes": 62767121900,
-    "uploaded_bytes": 46433593712
+    "next_index": 183195,
+    "batch": 87,
+    "removed_bytes": 63303913083,
+    "uploaded_bytes": 46863995717
   },
   "next_actions": [
     "Inspect new CMOS driver original-bit output screen and its hosted corruption tests. Preserve earlier failure evidence and do not equate actual-input-relative downstream oracle with end-to-end data validity.",
-    "Continue two verified output transfers using their existing separate state/plans; no local CAD/tests. Old restore38321449137 covers only main output batches; run updated restore after new PNR batches are published.",
+    "Continue two active verified output transfers using existing separate plans/state; no local CAD/tests. Main readback38321449137PASS83batches162263files61.24GB; PNRreadback38322169148PASScurrentpublishedsnapshot. Later batches still require final hosted readback.",
     "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
     "Use new delay diagnosis to develop clock-aware full serializer/PLL/CDR validation. Do not silently replace original failing integration screen or count fixed-delay alignment as PCIe compliance.",
     "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
@@ -179,12 +179,23 @@
     "release_prefix": "cloud-migration-pnr-20261013",
     "snapshot": {
       "status": "RUNNING",
-      "next_index": 487,
-      "batch": 3,
-      "removed_bytes": 1540710178,
-      "uploaded_bytes": 233500382
+      "next_index": 706,
+      "batch": 7,
+      "removed_bytes": 3543616910,
+      "uploaded_bytes": 675848985
     },
     "safety_tests_run": 38321669905,
-    "safety_tests": "PASS23 migration and byte reconstruction controls; SPDX/inventory/REUSE alsoPASS"
-  }
+    "safety_tests": "PASS23 migration and byte reconstruction controls; SPDX/inventory/REUSE alsoPASS",
+    "hosted_restore": {
+      "run": 38322169148,
+      "totals": {
+        "batches": 5,
+        "files": 587,
+        "logical_bytes": 2503719378,
+        "hardlinks": 0
+      },
+      "evidence": "docs/evidence/cloud-pnr-restore-20261013.json"
+    }
+  },
+  "resume_snapshot": "docs/evidence/cloud-resume-state-20261013.json"
 }

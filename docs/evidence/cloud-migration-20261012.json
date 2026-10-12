@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-13T02:25:00.321358+03:00",
+  "update_at": "2026-10-13T02:29:11.700063+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 179555,
-    "batch": 86,
-    "removed_bytes": 62767121900,
-    "uploaded_bytes": 46433593712
+    "next_index": 183195,
+    "batch": 87,
+    "removed_bytes": 63303913083,
+    "uploaded_bytes": 46863995717
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -167,7 +167,8 @@
       "files": 380589,
       "logical_bytes": 263865593327,
       "caution": "Earlier inventory snapshot; active deletion continues. Logical sizes are not filesystem allocated bytes."
-    }
+    },
+    "new_resume_receipt": "docs/evidence/cloud-resume-state-20261013.json"
   },
   "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled.",
   "older_container_cleanup": {
@@ -219,7 +220,14 @@
     "state": "hw/soc/out/cloud-migration-pnr-20261013",
     "source_guard": "Refuses scope if git ls-files hw/soc/pnr/runs is nonempty. Source PNR scripts/configs outside runs retained.",
     "hosted_validation_run": 38321669905,
-    "validation": "PASS23 safety tests plus SPDX/inventory/REUSE; no local tests run."
+    "validation": "PASS23 safety tests plus SPDX/inventory/REUSE; no local tests run.",
+    "hosted_restore_run": 38322169148,
+    "restore_totals": {
+      "batches": 5,
+      "files": 587,
+      "logical_bytes": 2503719378,
+      "hardlinks": 0
+    }
   },
   "verified_input_capsule_copy_cleanup": {
     "files": 4,
