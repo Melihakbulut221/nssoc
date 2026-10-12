@@ -50,5 +50,41 @@
   "new_cloud_workflow": ".github/workflows/pcie-closure-cloud.yml",
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
-  "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl"
+  "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
+  "update_at": "2026-10-12T22:59:06.058208+03:00",
+  "verified_duplicate_cleanup": {
+    "files": 693,
+    "logical_bytes_removed": 27234285735,
+    "method": "SHA-256 of complete local archive equals current GitHub release asset digest; original member bytes separately hash-match. Complete restore journal archived in cloud recovery capsule."
+  },
+  "transfer_progress_snapshot": {
+    "status": "RUNNING",
+    "next_index": 12238,
+    "batch": 4,
+    "removed_bytes": 1526416119,
+    "uploaded_bytes": 884409764
+  },
+  "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
+  "transfer_service": "nssoc-cloud-output-transfer-20261012",
+  "cloud_runs": {
+    "ACK_proof_and_ports": {
+      "id": 38299938442,
+      "result": "PASS; 7 replay + 4 reliable packet tests, all24 inputbits proof and two expected carry mutation failures; not physical closure"
+    },
+    "migration_safety_tests": {
+      "id": 38300238909,
+      "result": "PASS; 3 tests for interrupted manifest retention/resume, external/symlink exclusion and changed-source retention"
+    },
+    "baseline_ACK_map_three_corner": {
+      "id": 38300790301,
+      "result": "QUEUED at snapshot; not yet a synthesis or timing result"
+    }
+  },
+  "cloud_backup": {
+    "release": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-migration-20261012-000",
+    "recovery_receipt": "docs/evidence/cloud-recovery-public-20261012.json",
+    "untracked_source_files_archived": 32,
+    "local_deletion_complete": false
+  },
+  "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled."
 }
