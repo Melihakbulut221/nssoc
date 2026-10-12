@@ -2,6 +2,47 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 07:44 TRT
+
+The RX-return-metadata physical candidate finishes setup repair. Its immutable
+post-setup, pre-hold ODB/netlist/SDC snapshot receives independent three-corner
+readback, preserving **all seven setup and six hold groups** and the original
+20/4/8/8/8 ns clocks. Comparison with the previous replay/128-Ethernet-register
+candidate uses the same stage and placement-estimated parasitics:
+
+| Slow setup group | Previous (ns) | RX metadata (ns) | Change (ps) |
+| --- | ---: | ---: | ---: |
+| PCIe | -1.519184 | -1.282627 | +236.557 |
+| CPU | -0.853211 | -0.577256 | +275.955 |
+| Ethernet RX | +0.793542 | +0.669636 | -123.906 |
+| Ethernet TX | +0.573467 | +0.493408 | -80.059 |
+
+PCIe improves at all three setup corners; typical and fast reach +0.102501
+and +0.814123 ns. Slow PCIe, CPU and asynchronous setup still fail. Hold
+changes are mixed: fast PCIe improves by 62.782 ps, while fast Ethernet output
+clock hold regresses by 3.983 ps. These are **pre-hold values**, not final
+results. The active hold repair remains untouched and the combined credit-offer
+physical comparison stays queued. No candidate is adopted from this snapshot.
+
+The slow PCIe path is independently mapped from
+`credit_data_consumed_o[29]` to `credit_header_consumed_o[23]`; the registered
+credit-offer candidate targets that dependency. The remaining CPU critical
+path runs from instruction/CSR decoding to the NPU clock-gate enable. A new
+isolated experiment tests the existing `WAKE_GNT=1` option against zero. It
+removes direct request inputs from that enable but adds one wait cycle on the
+first NPU access after sleep. Defaults remain unchanged. Actual peripheral
+port suites and the combined PCIe/Ethernet/CPU configuration must pass before
+mapping or adoption; no new wake-option timing improvement is claimed yet.
+
+The [completed physical checkpoint and comparison](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rx-metadata-postsetup-comparison-20261012.tar.gz)
+contains the exact saved ODB, netlist, SDC, native logs and review methods
+(14,743,566 bytes, SHA-256
+`9b2a483a332910cd7a5fd7f7fd65c9f92970599e6088eb4ec30319f94ce38c16`).
+All archive members and anonymous public bytes are verified. The
+[machine-readable comparison](evidence/pcie-rx-metadata-setup-20261012.json)
+retains every group, including regressions. **Routed extraction, qualified
+SRAM/RC, full serial PHY and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 07:08 TRT
 
 The RHI140 parent completes both full **865-device, 2,438-column, 50 ns**
