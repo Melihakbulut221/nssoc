@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-12T23:45:02.786931+03:00",
+  "update_at": "2026-10-12T23:50:56.348479+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 13339,
-    "batch": 12,
-    "removed_bytes": 11384788331,
-    "uploaded_bytes": 10711518751
+    "next_index": 15347,
+    "batch": 17,
+    "removed_bytes": 14934691383,
+    "uploaded_bytes": 12428397565
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -84,8 +84,8 @@
       "replacement_result": "COMPLETE both profiles; equal runtime, input capsule, ports, parameters and20SRAM. ACK rejected for adoption because slow PCIe setup regressed143.555ps. Full paired measurements: docs/evidence/cloud-ack-screen-20261012.json."
     },
     "migration_safety_and_license_tests": {
-      "id": 38302154725,
-      "result": "PASS after correcting literal SPDX template scanner collisions; generated circuit text unchanged."
+      "id": 38306616683,
+      "result": "PASS: SPDX, inventory, REUSE and3 migration safety tests on latest cloud restore source."
     },
     "existing_archive_catalog": {
       "id": 38302888266,
@@ -103,14 +103,66 @@
       "adopted": false,
       "archive": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/routed-setup-cloud-38304835248-1.tar.gz",
       "sha256": "013bc0aadd255f6f7814c44c66fed67ebe67f1f85b159b5deff423a991f00d8c",
-      "diagnosis": "Native preparation rejected resized rebuffer45563 because complete origin/location signature changed during master replacement. Revised candidate preserves its placement location explicitly and allows origin change only for the three declared resized cells; all other retained cell geometry remains exact. New hosted rerun required."
+      "diagnosis": "Native preparation rejected resized rebuffer45563 because complete origin/location signature changed during master replacement. Revised candidate preserves its placement location explicitly and allows origin change only for the three declared resized cells; all other retained cell geometry remains exact. New hosted rerun required.",
+      "replacement_run": 38306421942,
+      "replacement_result": "PASS_NATIVE_SCREEN_GEOMETRY_AND_LOGIC_CHECKS; report interpretation pending, no routed or final timing acceptance"
+    },
+    "actual_output_restore": {
+      "id": 38306519569,
+      "status": "PASS_ALL_FOUR_GROUPS",
+      "method": "Four hosted groups download complete batch manifests and compressed assets; verify GitHub digests, then hash every tar member or concatenate decompressed gzip chunks and compare original file SHA256/length. No local CAD or validation run.",
+      "verified_complete_batches": 12,
+      "verified_original_files": 13339,
+      "verified_original_bytes": 11384788331,
+      "receipt": "docs/evidence/cloud-output-restore-20261012.json"
     }
   },
   "cloud_backup": {
     "release": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-migration-20261012-000",
     "recovery_receipt": "docs/evidence/cloud-recovery-public-20261012.json",
     "untracked_source_files_archived": 32,
-    "local_deletion_complete": false
+    "local_deletion_complete": false,
+    "latest_catalog_receipt": {
+      "status": "COMPLETE_FOUR_VERIFIED_CLOUD_CATALOGS",
+      "groups": [
+        {
+          "group": 0,
+          "archives": 264,
+          "members": 1976,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-0-38302888266-1.tar.gz",
+          "index_sha256": "sha256:b98278ee63dce5a88fb7413c3732b09567493e65ad7c8b84c5d78427f58408fb"
+        },
+        {
+          "group": 1,
+          "archives": 265,
+          "members": 1688,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-1-38302888266-1.tar.gz",
+          "index_sha256": "sha256:19df184e651e2be4936f55466e25fdb813bebd8f3fdeecae45a4f3ce6a01d954"
+        },
+        {
+          "group": 2,
+          "archives": 265,
+          "members": 2258,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-2-38302888266-1.tar.gz",
+          "index_sha256": "sha256:42514fbecb21920c7fdf4927eb1a31ad401d8989a7fdc04287783918869df029"
+        },
+        {
+          "group": 3,
+          "archives": 265,
+          "members": 2463,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-3-38302888266-1.tar.gz",
+          "index_sha256": "sha256:7177fbaeecfb1b3a29f0f8fd229d97dd951bac24fe701823d342ae46dc45281f"
+        }
+      ],
+      "members": 8385,
+      "member_bytes": 199209835777
+    },
+    "remaining_output_snapshot": {
+      "time": "2026-10-12T23:50:56.348479+03:00",
+      "files": 380589,
+      "logical_bytes": 263865593327,
+      "caution": "Earlier inventory snapshot; active deletion continues. Logical sizes are not filesystem allocated bytes."
+    }
   },
   "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled.",
   "older_container_cleanup": {
@@ -148,5 +200,11 @@
     },
     "files": 2531,
     "logical_bytes_removed": 109075580966
+  },
+  "continue_policy": {
+    "compute": "GitHub-hosted only; never restart historical local native units.",
+    "transfer": "Only active local nssoc service is nssoc-cloud-output-transfer-20261012. Preserve its state until all unique uploads are verified. Resume existing plan on interruption; do not regenerate it.",
+    "cleanup": "No source repository or tool deletion while scope question unanswered. All32 historical untracked source files additionally preserved in published recovery capsule.",
+    "acceptance": "No PHY, routed-ECO or final timing closure claimed. Current engineering candidates require their own proofs and physical checks."
   }
 }
