@@ -80,7 +80,15 @@ failures. Both simulations complete without numerical diagnostics. The
 wrong-sign samples. Its transistor bounds pass. It is not adopted. A DC
 diagnostic measures about **220 mV** ground difference between the reference
 and tail emitters in that layout; a fresh layout widens current-carrying
-metal and adds a local shared emitter connection. That repair is unverified.
+metal and adds a local shared emitter connection. The widened 706 µm repair passes native DRC/LVS and all five fault
+controls, but its 230 R / 301 C transient fails: **−283.715 mV**,
+**232/768 wrong-sign samples** and device-headroom violations. Grouping
+parallel devices reduces width to **322 µm**, with the same 54 native
+devices. This banked layout also passes 560-rule DRC, hierarchical/flat LVS
+and five fault controls; its 229 R / 301 C transient still fails:
+**−273.006 mV**, **128/768 wrong-sign samples** and device-headroom
+violations. Both compact references pass with 270.352 mV. Neither layout
+is accepted electrically. A fresh upper-metal routing trial is unverified.
 
 An 81-point HBT/resistor/temperature/common-supply matrix is active. Its
 **125 °C, 95%-supply typical-model point already fails data-pair VCE**, although
@@ -107,5 +115,12 @@ excluded from that archive. The original compact and 1,086 µm distributed-RC ca
 `01d7203032a7c9a22a9fd8aac58a6133bca1518675195bda29ee17ca03bd6d29`,
 with complete public byte/hash verification. It also includes the four
 positive CPU/NPU/PCIe/Ethernet tests and metadata for the failed hot PLL
-point. The later 706 µm transient and full hot-PLL waveform remain local
-pending their separate delivery.
+point. The 706 µm short and widened-power transient captures, new 322 µm
+physical checks, NPU wake controls and post-CTS report are now in the
+[325-member follow-up archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-layout-repairs-npu-wake-and-postcts-20261012.tar.gz):
+240,647,592 bytes, SHA-256
+`2f11ae1c69ee21a69710157475d57cccb35f4a3f7e9c7c5835169e6f181b3432`.
+Complete public download verification passes. The later 322 µm electrical
+captures and full hot-PLL waveform are excluded from that archive. The
+[updated evidence record](evidence/pcie-tx-wake-postcts-progress-20261012.json)
+binds the latest completed verdicts and their limitations.

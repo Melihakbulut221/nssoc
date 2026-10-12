@@ -2,6 +2,46 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Causal wake proof, post-CTS and full-core LVS — 12 October, 11:20 TRT
+
+The [updated evidence record](evidence/pcie-tx-wake-postcts-progress-20261012.json)
+and publicly verified 325-member TX/NPU/timing archive retain the new results.
+The initial disabled-wake test stopped on a generic PCIe timeout and remains
+inconclusive. A fresh paired test observes the actual CPU request at 0x19000:
+the candidate completes five NPU accesses in each of two cases with one
+sleeping cycle per wake; the sole disabled-wake mutation fails both cases
+with wake_q=0, wake_hold=0, clk_en=0 and no acceptance for 16 CPU cycles.
+The original full CPU/NPU/PCIe/Ethernet joint tests remain independently
+passed. Mapping and three-corner comparison of WAKE_GNT=1 are resource queued;
+shipping defaults are unchanged.
+
+The M candidate completed post-CTS repair. Independent same-clock checks
+cover seven setup and six hold groups in all three corners. Slow setup
+remains negative: PCIe **−1.275681 ns**, CPU **−0.589711 ns**, asynchronous
+**−0.916105 ns**. Fast hold is **−0.065767 ns** for PCIe,
+**−0.054434 ns** for CPU and **−0.227544 ns** for eth_gtx. This uses
+placement-estimated RC and does not establish routed timing closure.
+
+The complete locked-deck transistor LVS of the older routed native-SRAM
+core **fails**. Seventy-seven pairs match; five schematic-only pairs mismatch,
+two child circuits do not match and both SRAM macros plus soc_top are skipped.
+The dummy resistor and word-line driver reproduce the earlier vendor-view
+problems; the 256×16 macro differs by 34 devices, and sixteen instances
+account for the 544-device full-core difference. Top connectivity is not
+accepted. Upstream [SRAM issue #239](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/239)
+and [lvsres PR #1121](https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121)
+remain open when checked today. No alias, missing-device waiver or blackbox
+is introduced.
+
+The 322 µm grouped TX layout passes its physical checks but still fails
+extracted data and device limits; the [TX record](160-pcie-supported-tx-multiplexer.md)
+retains both failed repair geometries. A new upper-metal trial is active.
+Both one-microsecond PLL captures stopped at their existing 2 GiB available
+RAM floor. Fresh, sequential retries wait for 8 GiB RAM/10 GiB disk and can
+pause their owned simulator at the existing runtime resource floor, preserving
+its state until resources recover. Equations, timestep and acceptance criteria
+are unchanged. All three overall closure goals remain open.
+
 ## Extracted TX follow-up — 12 October, 10:32 TRT
 
 The 706 µm TX layout passes native DRC/LVS and faults but still fails its
