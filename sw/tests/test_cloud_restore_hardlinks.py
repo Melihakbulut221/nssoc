@@ -15,11 +15,12 @@ SCRIPT = Path(__file__).resolve().parents[2] / 'scripts/verify_cloud_output_rest
 
 
 @pytest.mark.parametrize('fault', [None, 'outside', 'forward', 'wrong_hash', 'wrong_size', 'symlink', 'duplicate'])
-def test_tar_hardlink_content_contract(tmp_path, fault):
+@pytest.mark.parametrize('scope', ['hw/soc/out', 'hw/soc/pnr/runs'])
+def test_tar_hardlink_content_contract(tmp_path, fault, scope):
     spec = importlib.util.spec_from_file_location('restore', SCRIPT)
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    first, second = 'hw/soc/out/first.raw', 'hw/soc/out/second.raw'
+    first, second = f'{scope}/first.raw', f'{scope}/second.raw'
     data = b'one captured waveform, two original hardlinked paths'
     digest = hashlib.sha256(data).hexdigest()
     packed = tmp_path / 'archive.tar.gz'
@@ -48,3 +49,13 @@ def test_tar_hardlink_content_contract(tmp_path, fault):
         else:
             assert m.audit(manifest, {packed.name: asset}, tmp_path) == dict(
                 files=2, restored_logical_bytes=2 * len(data), verified_hardlinks=1)
+
+
+@pytest.mark.parametrize('path', ['hw/soc/pnr/flow.py', 'hw/soc/pnr/runs/../flow.py',
+                                 '/hw/soc/pnr/runs/capture', 'hw/soc/pnr/runs//capture'])
+def test_added_scope_does_not_allow_source_or_noncanonical_paths(path):
+    spec = importlib.util.spec_from_file_location('restore', SCRIPT)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    with pytest.raises(AssertionError):
+        m.safe_name(path)

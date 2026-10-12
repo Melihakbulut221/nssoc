@@ -3,7 +3,8 @@
 
 Creates <=512 MiB payloads; verifies GitHub's SHA-256 digest; publishes a
 self-contained restore manifest before deleting any matching original bytes.
-Only hw/soc/out is in scope. Never follows symlinks or removes sources/tools.
+Only hw/soc/out or explicitly selected hw/soc/pnr/runs is in scope.
+Never follows symlinks or removes sources/tools.
 """
 import argparse
 import gzip
@@ -21,6 +22,7 @@ BASE = ROOT / 'hw/soc/out'
 STATE = BASE / 'cloud-migration-20261012'
 REPO = 'Melihakbulut221/nssoc'
 LIMIT = 512 * 1024 * 1024
+TAG_PREFIX = 'cloud-migration-20261012'
 
 
 def digest(path):
@@ -93,9 +95,18 @@ def restore_manifest(manifest, directory):
 
 
 def main():
+    global BASE, STATE, TAG_PREFIX
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
+    parser.add_argument('--scope', choices=['outputs', 'pnr-runs'], default='outputs')
     args = parser.parse_args()
+    if args.scope == 'pnr-runs':
+        BASE = ROOT / 'hw/soc/pnr/runs'
+        STATE = ROOT / 'hw/soc/out/cloud-migration-pnr-20261013'
+        TAG_PREFIX = 'cloud-migration-pnr-20261013'
+        tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', 'hw/soc/pnr/runs'], cwd=ROOT)
+        if tracked:
+            raise RuntimeError('PNR run scope contains tracked sources; refusing cleanup')
     STATE.mkdir(exist_ok=True)
     planpath = STATE / 'remaining-plan.json'
     if not planpath.exists():
@@ -123,7 +134,7 @@ def main():
         pending = STATE / f'batch-{progress["batch"]:06d}.manifest.json'
         if pending.exists():
             saved = json.loads(pending.read_text())
-            tag = f'cloud-migration-20261012-{progress["batch"] // 100:03d}'
+            tag = f'{TAG_PREFIX}-{progress["batch"] // 100:03d}'
             remote = {a['name']: a for a in release(tag)['assets']}
             for part in saved['parts']:
                 asset = remote.get(part['name'], {})
@@ -166,7 +177,7 @@ def main():
         if not selected:
             break
         batch = progress['batch']
-        tag = f'cloud-migration-20261012-{batch // 100:03d}'
+        tag = f'{TAG_PREFIX}-{batch // 100:03d}'
         prefix = f'batch-{batch:06d}'
         records = [dict(path=str(p.relative_to(ROOT)), bytes=p.stat().st_size,
                         mode=p.stat().st_mode & 0o777, sha256=digest(p)) for p in selected]

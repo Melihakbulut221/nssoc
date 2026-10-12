@@ -81,3 +81,39 @@ def test_changed_original_not_deleted_after_upload(tmp_path):
         with pytest.raises(RuntimeError, match='Input changed'):
             m.main()
     assert source.read_text() == 'changed after archive creation'
+
+
+def test_pnr_cleanup_separate_scope_retains_source_and_output_state(tmp_path):
+    m = load(tmp_path)
+    source = tmp_path / 'hw/soc/pnr/flow.py'
+    run = tmp_path / 'hw/soc/pnr/runs/history/result.log'
+    run.parent.mkdir(parents=True)
+    source.write_text('source must remain')
+    run.write_text('actual historical output')
+    old_state = m.STATE / 'transfer-progress.json'
+    old_state.write_text('{"batch":123}')
+    seen = []
+
+    def publish(path, tag):
+        seen.append(tag)
+        return dict(name=path.name, bytes=path.stat().st_size, sha256=m.digest(path))
+
+    def git(args, **kwargs):
+        return b'' if 'ls-files' in args else 'test-head'
+
+    with patch.object(m, 'publish', publish), patch.object(m.subprocess, 'check_output', git), \
+            patch.object(sys, 'argv', ['migrate', '--scope', 'pnr-runs', '--apply']):
+        m.main()
+    assert not run.exists()
+    assert source.read_text() == 'source must remain'
+    assert old_state.read_text() == '{"batch":123}'
+    assert seen and set(seen) == {'cloud-migration-pnr-20261013-000'}
+    assert not m.safe(source)
+
+
+def test_pnr_scope_refuses_tracked_sources(tmp_path):
+    m = load(tmp_path)
+    with patch.object(m.subprocess, 'check_output', return_value=b'hw/soc/pnr/runs/source.v\0'), \
+            patch.object(sys, 'argv', ['migrate', '--scope', 'pnr-runs', '--apply']):
+        with pytest.raises(RuntimeError, match='tracked sources'):
+            m.main()

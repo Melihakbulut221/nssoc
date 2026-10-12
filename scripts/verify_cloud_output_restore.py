@@ -38,7 +38,8 @@ def download(asset, destination):
 def safe_name(name):
     p = PurePosixPath(name)
     assert not p.is_absolute() and '..' not in p.parts
-    assert p.parts[:3] == ('hw', 'soc', 'out')
+    assert (p.parts[:3] == ('hw', 'soc', 'out') or
+            p.parts[:4] == ('hw', 'soc', 'pnr', 'runs'))
     assert str(p) == name
 
 
@@ -120,7 +121,7 @@ def main():
         releases = pages(f'repos/{REPO}/releases?per_page=100')
         worklist = []
         for release in releases:
-            if not release['tag_name'].startswith('cloud-migration-20261012-'):
+            if not release['tag_name'].startswith(('cloud-migration-20261012-', 'cloud-migration-pnr-20261013-')):
                 continue
             items = pages(f'repos/{REPO}/releases/{release["id"]}/assets?per_page=100')
             assets = {a['name']: a for a in items}

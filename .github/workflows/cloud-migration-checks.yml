@@ -5,6 +5,8 @@ on:
     paths:
       - scripts/migrate_outputs_to_cloud.py
       - sw/tests/test_cloud_output_migration.py
+      - scripts/verify_cloud_output_restore.py
+      - sw/tests/test_cloud_restore_hardlinks.py
       - .github/workflows/cloud-migration-checks.yml
   workflow_dispatch:
 permissions:
@@ -23,4 +25,4 @@ jobs:
       - run: python scripts/spdx_check.py
       - run: python scripts/licence_inventory.py --check
       - run: python -m reuse lint
-      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py
+      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py
