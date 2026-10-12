@@ -26,8 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        driver: [cmos_hv_light, cmos_hv_fast]
-        point: [baseline, clock_small]
+        condition: [nominal, quarter_step, hot_low, cold_high, mos_ss, mos_ff, lv_ss_hv_ff, lv_ff_hv_ss, mos_sf, mos_fs]
     permissions:
       contents: write
     steps:
@@ -49,13 +48,13 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py
       - name: Run fixed-oracle native study and independent complete-wave review
-        run: python3 scripts/run_cloud_tx_operating_point.py --point '${{ matrix.point }}' --kind compact --data-driver '${{ matrix.driver }}' --data-launch inactive_half_cycle
+        run: python3 scripts/run_cloud_tx_operating_point.py --point clock_small --kind compact --data-driver cmos_hv_fast --data-launch inactive_half_cycle --condition '${{ matrix.condition }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-cmos-driver-${{ matrix.driver }}-${{ matrix.point }}-inactive_half_cycle-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-cmos-driver-fast-corners-${{ matrix.condition }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-operating-point
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"

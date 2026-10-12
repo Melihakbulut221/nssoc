@@ -401,3 +401,21 @@ common mode to provide more selector headroom. It does not change any
 voltage, timing or sample acceptance limit. Both changes require measured
 results; real upstream serialization and actual clock generation remain
 required even if the nominal component screen eventually passes.
+
+
+The [selector headroom comparison](evidence/pcie-cmos-selector-headroom-20261013.json)
+completed in run 38323831698. With v5 and the 80 mV selector amplitude, all
+768 original output samples pass (minimum 226.386 mV), all selected-input
+samples exceed 150 mV (minimum 150.123 mV), and the independent 23-HBT
+review and all 32 MOS engineering voltage screens pass without diagnostics.
+The input margin exceeds its gate by only 0.123 mV, so this is not yet a
+robust operating point or a layout adoption.
+
+A follow-up campaign keeps the same source bits, launch contract, sample
+times and limits. It repeats the nominal case at 0.25 ps maximum step and
+screens slow/fast/skew CMOS combinations plus hot/low-supply and cold/high-
+supply combinations. Core and analog rail waveforms are checked against the
+requested voltages; MOS corners apply to the actual native models. These
+ten diagnostic conditions are not an exhaustive foundry PVT or Monte Carlo
+qualification. Actual upstream serialization, selector clock generation,
+PLL/CDR, frontend layout/extraction and main-chip integration remain open.

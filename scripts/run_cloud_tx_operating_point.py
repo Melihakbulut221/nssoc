@@ -19,6 +19,20 @@ import time
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+CONDITIONS = {
+    'nominal': {},
+    'quarter_step': {'step_ps': .25},
+    'hot_low': {'temperature_c': 125, 'supply_scale': .95, 'core_scale': .95,
+                'lv_corner': 'mos_ss', 'hv_corner': 'mos_ss', 'hbt': 'hbt_wcs', 'resistor': 'res_wcs'},
+    'cold_high': {'temperature_c': -40, 'supply_scale': 1.05, 'core_scale': 1.05,
+                  'lv_corner': 'mos_ff', 'hv_corner': 'mos_ff', 'hbt': 'hbt_bcs', 'resistor': 'res_bcs'},
+    'mos_ss': {'lv_corner': 'mos_ss', 'hv_corner': 'mos_ss'},
+    'mos_ff': {'lv_corner': 'mos_ff', 'hv_corner': 'mos_ff'},
+    'lv_ss_hv_ff': {'lv_corner': 'mos_ss', 'hv_corner': 'mos_ff'},
+    'lv_ff_hv_ss': {'lv_corner': 'mos_ff', 'hv_corner': 'mos_ss'},
+    'mos_sf': {'lv_corner': 'mos_sf', 'hv_corner': 'mos_sf'},
+    'mos_fs': {'lv_corner': 'mos_fs', 'hv_corner': 'mos_fs'},
+}
 
 
 def sha(path):
@@ -45,6 +59,7 @@ def main():
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
     parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct', 'cmos_hv_fast'), default='ideal')
     parser.add_argument('--data-launch', choices=('coincident', 'inactive_half_cycle'), default='coincident')
+    parser.add_argument('--condition', choices=tuple(CONDITIONS), default='nominal')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')
     parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
@@ -60,8 +75,14 @@ def main():
     inputs.mkdir()
     config_path = inputs / 'config.json'
     config = dict(name=args.point, hbt='hbt_typ', resistor='res_typ', temperature_c=27, supply_scale=1.0)
+    condition = dict(temperature_c=27, supply_scale=1., core_scale=1., lv_corner='mos_tt',
+                     hv_corner='mos_tt', hbt='hbt_typ', resistor='res_typ', step_ps=.5)
+    condition.update(CONDITIONS[args.condition])
+    for field in ('hbt', 'resistor', 'temperature_c', 'supply_scale'):
+        config[field] = condition[field]
     config_path.write_text(json.dumps(config, indent=2) + '\n')
     result = dict(status='RUNNING', point=args.point, kind=args.kind, interconnect=args.interconnect,
+                  condition_name=args.condition, condition=condition,
                   operating_point=dict(zip(spec['point_order'], values, strict=True)),
                   accepted=False, scope='Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.')
     try:
@@ -185,7 +206,8 @@ def main():
         native.MUX = inputs / f'mux54-{args.kind}01.spice'
         native.TX, native.NG, native.OSDI = tx, ng, inputs / 'r3_cmc.osdi'
         native.BIAS = .0005
-        baseline, _, _, _ = native.deck('nominal')
+        native_case = 'quarter_step' if condition['step_ps'] == .25 else 'nominal'
+        baseline, _, _, _ = native.deck(native_case)
         original_pwl = native.pwl
 
         def configured_pwl(bits, cm, amp, period, invert=False):
@@ -194,7 +216,7 @@ def main():
             return original_pwl(bits, cm, amp, period, invert)
 
         native.pwl = configured_pwl
-        deck, bindings, vectors, bits = native.deck('nominal')
+        deck, bindings, vectors, bits = native.deck(native_case)
         pattern = r'(?ms)^V[abs][pn] [^\n]+ PWL\(.*?\)'
         untouched_before, n1 = re.subn(pattern, '<prospective_input_source>', baseline)
         untouched_after, n2 = re.subn(pattern, '<prospective_input_source>', deck)
@@ -206,7 +228,7 @@ def main():
             assert args.point in ('baseline', 'clock_small') and args.kind == 'compact' and args.interconnect == 'actual'
             assert args.layout_composition is None
             import cloud_tx_data_driver as driver
-            deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl, args.data_launch)
+            deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl, args.data_launch, condition)
             result['data_driver'] = driver_record
             result['scope'] = driver_record['scope'] + ' Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.'
         run = out / 'native'
@@ -264,7 +286,7 @@ def main():
         record['inputs_unchanged'] = all(sha(p) == digest for p, digest in pins.items())
         assert record['inputs_unchanged']
         if args.data_driver != 'ideal':
-            result['data_driver_review'] = driver.review(run, native, args.data_driver)
+            result['data_driver_review'] = driver.review(run, native, args.data_driver, condition)
         raw, packed = run / 'wave.dat', run / 'wave.dat.gz'
         raw_pin = dict(bytes=raw.stat().st_size, sha256=sha(raw))
         with raw.open('rb') as source, gzip.open(packed, 'xb', compresslevel=1) as dest:
@@ -286,7 +308,7 @@ def main():
                       failed_devices={n: d for n, d in review['devices'].items() if not (d['post_passed'] and d['whole_upper_passed'])},
                       diagnostics=review['diagnostics'],
                       status='COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE')
-        if args.point == 'baseline' and args.kind == 'wire' and args.interconnect == 'actual' and args.layout_composition is None:
+        if args.condition == 'nominal' and args.point == 'baseline' and args.kind == 'wire' and args.interconnect == 'actual' and args.layout_composition is None:
             assert abs(review['signals']['minimum_margin_v'] - (-.26647000795532216)) < 1e-6
             assert review['signals']['wrong_sign_samples'] == 128
             result['previous_failed_wire_baseline_reproduced'] = True

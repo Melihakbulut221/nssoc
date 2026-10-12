@@ -65,9 +65,15 @@ def half_cycle_launch(pwl, start, stop, ui):
     return 'PWL(\n+ ' + '\n+ '.join(f'{t:.14g} {v:.14g}' for t, v in shifted) + ')'
 
 
-def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
+def prepare(deck, inputs, native, mode, pwl, launch='coincident', condition=None):
     assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct', 'cmos_hv_fast')
     assert launch in ('coincident', 'inactive_half_cycle')
+    condition = condition or {}
+    core_scale = condition.get('core_scale', 1.)
+    lv_corner, hv_corner = condition.get('lv_corner', 'mos_tt'), condition.get('hv_corner', 'mos_tt')
+    assert core_scale in (.95, 1., 1.05)
+    assert lv_corner in ('mos_tt', 'mos_ss', 'mos_ff', 'mos_sf', 'mos_fs')
+    assert hv_corner in ('mos_tt', 'mos_ss', 'mos_ff', 'mos_sf', 'mos_fs')
     hv = mode.startswith('cmos_hv_')
     direct = mode == 'cmos_hv_direct'
     circuit = {'cmos_hv_direct': DIRECT_CIRCUIT, 'cmos_hv_light': LIGHT_CIRCUIT,
@@ -95,7 +101,7 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
         # The HV common-source stage inverts. Complement the CMOS gate data
         # so that actual ap/an, bp/bn retain the original serial bit order.
         invert = (n[1] == 'n') != hv
-        stimulus = pwl(values, .6, .6, 2 * native.UI, invert)
+        stimulus = pwl(values, .6 * core_scale, .6 * core_scale, 2 * native.UI, invert)
         if launch == 'inactive_half_cycle' and n[0] == 'a':
             stimulus = half_cycle_launch(stimulus, native.START, native.STOP, native.UI)
         source = f'V{n} {n}0 0 ' + stimulus
@@ -106,16 +112,17 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
         rail = '0' if mode.endswith('no_pullup') else 'avdd'
         deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 {subckt}')
     additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{circuit}"',
-                 f'.lib "{dest / "models/cornerMOSlv.lib"}" mos_tt',
-                 'VDVDD dvdd 0 PWL(0 0 1n 1.2)']
+                 f'.lib "{dest / "models/cornerMOSlv.lib"}" {lv_corner}',
+                 f'VDVDD dvdd 0 PWL(0 0 1n {1.2 * core_scale:.12g})']
     if hv:
-        additions.append(f'.lib "{dest / "models/cornerMOShv.lib"}" mos_tt')
+        additions.append(f'.lib "{dest / "models/cornerMOShv.lib"}" {hv_corner}')
     deck = deck.replace('.control\n', '\n'.join(additions) + '\n.control\n' +
                         f'pre_osdi {dest / "psp103.osdi"}\npre_osdi {dest / "psp103_nqs.osdi"}\n' +
                         'save ' + ' '.join(vectors) + '\n', 1)
     deck = deck.replace('wrdata op.dat ', 'wrdata frontend-op.dat ' + ' '.join(vectors) + '\nwrdata op.dat ', 1)
     deck = deck.replace('wrdata wave.dat ', 'wrdata frontend-wave.dat ' + ' '.join(vectors) + '\nwrdata wave.dat ', 1)
     record = dict(mode=mode, source_sha256=sha(circuit), input_capsule_sha256=pin['sha256'],
+        lv_corner=lv_corner, hv_corner=hv_corner, core_supply_v=1.2 * core_scale,
         launch=launch, a_transition_advance_s=native.UI if launch == 'inactive_half_cycle' else 0,
         launch_scope='Prospective external gate-data availability contract, not an implemented upstream serializer/clock tree. A changes one serial UI before selection; B unchanged. Source bits and all final-output observation times unchanged.' if launch != 'coincident' else 'Historical coincident gate-data launch retained.',
         expected_devices=dict(lv_mos=16, hv_mos=16 if hv else 0, native_resistors=8 if direct else 12),
@@ -126,7 +133,8 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
     return deck, record, [Path(__file__), circuit, SPEC]
 
 
-def review(run, native, mode):
+def review(run, native, mode, condition=None):
+    condition = condition or {}
     hv = mode.startswith('cmos_hv_')
     direct = mode == 'cmos_hv_direct'
     vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv and not direct else [])
@@ -139,6 +147,9 @@ def review(run, native, mode):
     assert np.all(np.diff(t) > 0) and t[0] == 0 and t[-1] >= native.STOP - 1e-15
     v = dict(zip(vectors, data[:, 1:].T, strict=True))
     dvdd = v['v(dvdd)']
+    expected_core_v = 1.2 * condition.get('core_scale', 1.)
+    assert np.max(np.abs(dvdd - expected_core_v * np.clip(t / 1e-9, 0, 1))) < 1e-9
+    assert all(np.max(np.abs(v[f'v({name}0)'])) <= expected_core_v + 1e-9 for name in NAMES)
     devices = {}
     for name in NAMES:
         gate, drv, internal = (v[f'v({name}0)'], v[f'v(xad_{name}.drv)'], v[f'v(xad_{name}.xbuf.net1)'])
@@ -166,6 +177,7 @@ def review(run, native, mode):
     active = t >= native.START
     current = v['i(vdvdd)']
     report = dict(status='MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE', zero_source_op=True,
+        core_supply_wave_verified_v=expected_core_v,
         active_input_ranges_v={n: [float(v[f'v({n})'][active].min()), float(v[f'v({n})'][active].max())] for n in NAMES},
         devices=devices, samples=len(margins), minimum_margin_v=float(margins.min()),
         wrong_sign_samples=int((margins <= 0).sum()), below_150mv_samples=int((margins < .15).sum()),
@@ -181,7 +193,12 @@ def review(run, native, mode):
     with final_wave.open() as stream:
         header = stream.readline().split()
     assert header.count('v(op)') == header.count('v(on)') == 1
-    outputs = np.loadtxt(final_wave, skiprows=1, usecols=(0, header.index('v(op)'), header.index('v(on)')))
+    outputs = np.loadtxt(final_wave, skiprows=1, usecols=(0, header.index('v(op)'), header.index('v(on)'),
+                                                      header.index('v(avdd)'), header.index('v(tvdd)')))
+    supply_scale = condition.get('supply_scale', 1.)
+    for col, voltage in ((3, 2.5 * supply_scale), (4, 1.8 * supply_scale)):
+        assert np.max(np.abs(outputs[:, col] - voltage * np.clip(outputs[:, 0] / 1e-9, 0, 1))) < 1e-9
+    report['analog_supply_waves_verified_v'] = [2.5 * supply_scale, 1.8 * supply_scale]
     report['original_bit_output'] = original_bit_output_screen(
         outputs[:, 0], outputs[:, 1], outputs[:, 2], bits, native.START, native.UI)
     selected = []
