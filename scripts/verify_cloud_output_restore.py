@@ -50,6 +50,8 @@ def audit(manifest, assets, work):
     for name in expected:
         safe_name(name)
     seen = set()
+    verified_members = {}
+    hardlinks = 0
     total = 0
     single = manifest['encoding'] == 'concatenated-gzip-parts-single-file'
     assert single or manifest['encoding'] == 'tar-gzip'
@@ -74,22 +76,35 @@ def audit(manifest, assets, work):
             with tarfile.open(packed, 'r|gz') as archive:
                 for member in archive:
                     safe_name(member.name)
-                    assert member.isfile() and member.name not in seen
+                    assert member.name not in seen, ('Duplicate member', member.name)
                     record = expected[member.name]
-                    assert member.size == record['bytes']
                     assert member.mode & 0o777 == record['mode']
-                    with archive.extractfile(member) as stream:
-                        actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+                    if member.islnk():
+                        # tarfile preserves repeated inodes as backward hard links.
+                        # Resolve only already hashed archive members, never paths
+                        # in the runner filesystem or unverified forward targets.
+                        safe_name(member.linkname)
+                        assert member.size == 0
+                        assert member.linkname in verified_members, ('Unverified hardlink target', member.name, member.linkname)
+                        size, actual = verified_members[member.linkname]
+                        assert size == record['bytes'], ('Hardlink length differs', member.name)
+                        hardlinks += 1
+                    else:
+                        assert member.isfile(), ('Unsupported member type', member.name, member.type)
+                        assert member.size == record['bytes']
+                        with archive.extractfile(member) as stream:
+                            actual = hashlib.file_digest(stream, 'sha256').hexdigest()
                     assert actual == record['sha256'], member.name
+                    verified_members[member.name] = (record['bytes'], actual)
                     seen.add(member.name)
-                    total += member.size
+                    total += record['bytes']
         packed.unlink()
     if single:
         assert total == records[0]['bytes']
         assert combined.hexdigest() == records[0]['sha256']
     else:
         assert seen == set(expected)
-    return dict(files=len(records), restored_logical_bytes=total)
+    return dict(files=len(records), restored_logical_bytes=total, verified_hardlinks=hardlinks)
 
 
 def main():
