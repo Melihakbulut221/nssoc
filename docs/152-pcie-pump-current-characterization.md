@@ -2,6 +2,54 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 03:55 TRT
+
+The follow-up TX credit cofactor retains the original prefix attributes,
+isolating the logic change from the earlier combined trimming experiment.
+Full native credit-module equivalence, five credit plus five buffered tests,
+and a real missing-consume-guard control pass. Its actual whole-chip map also
+passes the cache/128 Ethernet register/20 SRAM audit and mapped replay invariant.
+However, matched three-corner timing **rejects this candidate**:
+
+| PCIe setup slack (ns), unplaced | RX metadata baseline | Kept-prefix cofactor |
+| --- | ---: | ---: |
+| SS | -1.240848 | -1.282595 |
+| TT | +0.373847 | +0.511070 |
+| FF | +1.246757 | +1.338103 |
+
+The SS PCIe path regresses **41.747 ps**, and main-clock setup regresses
+240.233 ps. All other groups, including small hold changes, remain in the
+comparison. TT/FF gains do not waive the SS failure; no physical run is
+launched for this candidate. A copied reader initially referenced the wrong
+root and failed before native STA. Its log and generated Tcl are retained;
+fresh reader 09 measures the actual map and constraints successfully.
+
+A separate combination now uses the previously verified registered credit
+offer with the new RX return metadata, replay successor and 128 Ethernet
+response registers. It can add **one clock cycle of readiness backpressure**
+and permits at most one ordinary debit per two cycles. Replay bypass remains
+unchanged. Fresh induction proves accepted-transaction refinement against the
+canonical credit module and no overgrant; five oracle/progress tests, five
+buffered cases and three actual RTL fault counterexamples pass. This is not
+cycle-identical readiness. The first test launcher failed before simulation
+with a Python SRE-version mismatch; an unchanged-test fresh run with the
+matching 3.12 interpreter passes.
+
+The actual **16-SRAM CPU/PCIe/Ethernet joint test is running**. A source audit
+matches all 24 PCIe and Ethernet capture source files against the planned map.
+Only this combined capture test can enable map 12; the simultaneously running
+canonical-Ethernet comparison is not its prerequisite. The prepared pipeline
+requires two clean joint cases, then actual mapped-successor proof and all
+three timing corners. No combined-candidate timing result is claimed yet.
+
+The [complete follow-up evidence](evidence/pcie-credit-followup-20261012.json)
+contains **193 members / 19,479,975 bytes**, SHA-256
+`c479d268474919eb8d79d5ab48c05540efa4af97bf5c24b6ec8632b7c91d0609`.
+All members and the full anonymous download match; active joint/map outputs
+are excluded. The original native hold repair, conservative route, DRC and
+1 µs analog acquisition remain active. **Full serial PHY, accepted main-chip
+routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 03:41 TRT
 
 The RX return-metadata candidate completes actual whole-chip mapping and the
