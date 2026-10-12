@@ -1,0 +1,294 @@
+{
+  "status": "COMPOSITIONAL_RX_PROOFS_WITH_ORIGINAL_NATIVE_FAILURES_PRESERVED",
+  "asset": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rx-compositional-proofs-20261012.tar.gz",
+    "name": "nssoc-rx-compositional-proofs-20261012.tar.gz",
+    "bytes": 4548637,
+    "sha256": "a445a593a1f9ba34bfacb8b4e6d565b77f829b2df9e1fa0d4df188243a3e15c0",
+    "members": 141
+  },
+  "carry": {
+    "path": "hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/result.json",
+    "sha256": "f53c81035d523a84d7e46818e2842f52012fd2c84f5a0951d7aad4960765e0fc",
+    "record": {
+      "status": "PASS_EXACT_SOURCE_IDENTITY_AND_EXHAUSTIVE_12BIT_REPLACEMENT",
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_rx_carry_replacement.py": "60af7a879fec5bc84b7cbabe39912c587a5d1344b1cd4b2c6e053f8cd66c2360",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_rx_credit.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/candidate08/soc_pcie_rx_credit.v": "30a626bad299ce86663cd96a063b0557bd13142c82b05a91181cba3fbac32bcd",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/projected-reference.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/actual-combinational-block.vh": "c33afd83c23e28793a758dd465bc0ce41cbc2db7eaa7675114a70597beffd5c2",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/baseline.v": "3f0c11cd42f86d903e0ec8216a17d9a7b6390311169bf7ff61b74965f185fdf1",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/baseline.ys": "71ad1ceb6883999589b06554174e427c0e8098d148e6ccaf896cc68b803ae5cb",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/lost_high_carry.v": "259de3eb83e5bf74d16bcd61dedcbd3c41a1f28c4da33f25bf241aa6999cfb11",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/lost_high_carry.ys": "b98a9e629b126bc65fa4464e390652815d9b0fbe847957ed2e6a05a7111655d6",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/lost_middle_carry.v": "dd5bea7e9530bc58c8ba5dd274cae0ce02f02a3e62609a6e32bbbca19b16dbea",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/canonical35/lost_middle_carry.ys": "c2a28c51543e0629f2d848065a009b066cf4381e89b13f7fa8da107706719421"
+      },
+      "inputs_unchanged": true,
+      "cases": [
+        {
+          "name": "baseline",
+          "passed": true,
+          "counterexample": false,
+          "returncode": 0,
+          "log_sha256": "f411e929588acfefd954c8c39f1c71d0aa56b50c4bc89aa77881338c1161b5ff"
+        },
+        {
+          "name": "lost_high_carry",
+          "passed": false,
+          "counterexample": true,
+          "returncode": 1,
+          "log_sha256": "0f714260743d9a7e49df483fb43f33b5b58311cd962d7764314cf97fd113b095"
+        },
+        {
+          "name": "lost_middle_carry",
+          "passed": false,
+          "counterexample": true,
+          "returncode": 1,
+          "log_sha256": "c8b14f70d9bf6d8eb893f0336fc2b29871cb677dac01b2847154b3c26824fc40"
+        }
+      ],
+      "source_guards": [
+        {
+          "name": "unrelated_state_change",
+          "rejected_before_solver": true
+        },
+        {
+          "name": "changed_operand",
+          "rejected_before_solver": true
+        }
+      ],
+      "operand_bits": 24,
+      "covered_binary_operand_combinations": 16777216,
+      "assumptions": [],
+      "projection_identical": true,
+      "additional_sequential_state": false,
+      "scope": "Compositional equivalence of this exact stateless RTL replacement: all12bitoperandpairs prove newwire equals original12bitaddition, bothoperandbindings and sole12bitdestinationverified; removingonlythecombblock/restoringexpression yieldsfullfrozenmodule byteforbyte including everyport,stateupdate,reset andparameter. Thus the replacement is equivalent wherever original RTL has defined binary behavior, independently of queue size. No claim native fullmodule largestcase equiv_induct passed (it exhausted memory); no serialPHY/protocolqualification or timingclaim. Earlier add-proof12 wrong_mid used undeclaredmid_zero; these new two mutations are declared actualcarrypaths and check-assert/default_nettype-none reject unresolvedsignals."
+    }
+  },
+  "metadata": {
+    "path": "hw/soc/out/pcie-rx-return-metadata-20261012/composed09.json",
+    "sha256": "b7b25a7bc2841ab8bfa7fc309da01b7d00b95b8cdfd21c99e3ce571e4f7e6dfa",
+    "record": {
+      "status": "PASS_COMPOSITIONAL_RESET_EQUIVALENCE_RETURN_METADATA_FOUR_CONFIGS",
+      "cases": [
+        {
+          "slots": 1,
+          "max_tlp_dwords": 4,
+          "completer_only": 0,
+          "passed": true
+        },
+        {
+          "slots": 2,
+          "max_tlp_dwords": 8,
+          "completer_only": 0,
+          "passed": true
+        },
+        {
+          "slots": 2,
+          "max_tlp_dwords": 8,
+          "completer_only": 1,
+          "passed": true
+        },
+        {
+          "slots": 3,
+          "max_tlp_dwords": 16,
+          "completer_only": 0,
+          "passed": true
+        }
+      ],
+      "native_invariant_checks": [
+        {
+          "configuration": [
+            3,
+            16,
+            0
+          ],
+          "assertions": 14,
+          "only_assumption": "rst_ni=0 at initstate; unconstrained afterwards",
+          "no_latches": true,
+          "base_and_induction_proven": true
+        },
+        {
+          "configuration": [
+            1,
+            4,
+            0
+          ],
+          "assertions": 8,
+          "only_assumption": "rst_ni=0 at initstate; unconstrained afterwards",
+          "no_latches": true,
+          "base_and_induction_proven": true
+        },
+        {
+          "configuration": [
+            2,
+            8,
+            1
+          ],
+          "assertions": 11,
+          "only_assumption": "rst_ni=0 at initstate; unconstrained afterwards",
+          "no_latches": true,
+          "base_and_induction_proven": true
+        },
+        {
+          "configuration": [
+            2,
+            8,
+            0
+          ],
+          "assertions": 11,
+          "only_assumption": "rst_ni=0 at initstate; unconstrained afterwards",
+          "no_latches": true,
+          "base_and_induction_proven": true
+        }
+      ],
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07.py": "67346908bfc9cf02f1c14e3ba71b84a4bbcd6e6e310620f547c2e903dcbe2fd5",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/candidate01/soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/instrumented.v": "be4604d3914f0e18c2b282b587b88fe2b365df6d1a1ef315c322eedeab408e17",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/3-16-0.v": "62d4684b41a39436c6e9926632c377d9375fe80c521365064278e1604a970d6a",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/3-16-0.ys": "6fb21abd1b5c504eb15e6926e4e82934f878e433a260a306ec1e4dfd5d65ea77",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/1-4-0.v": "b45cc1d269390745c5efc7d228668dbbc800be06ea9ef313c75b8e2504c0f45e",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/1-4-0.ys": "1ede0b719bd628b693e38dfd5b9db0fb4303c05187be9c138d59bcf7437be4f4",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-1.v": "a79d82bfa7e25115e2a333c119c1b0aeeaf079d81b379e04f5cbc732d099d094",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-1.ys": "d8f283ccac75c67dbefb4f2d45a66d2be74fd08d1076d27c2df2ed0c2737ba30",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-0.v": "23761c8dde30e3219ee6164050d56839fb88c4cdb9830a14b8959e631ee85a93",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-0.ys": "85adacef89a15e9dbed9fb24e87a58b632eafefb79d61b782046b00debae6505",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08.py": "5938460324def8f9b7e69484b7c39396cc5541a71617d38424aa709872f2c5ed",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_rx_credit.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/projected-reference.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/gold-accepted.txt": "525ac2fb8e98cfdbf948dcf3ddb432d018ab97387c812cfe7086d8e1dfd3d332",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/gate-accepted.txt": "ff0ba2e211c0a1cc2ec439a73a3467bee0769908f7a0b6894f237c0539fff518",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/1-4-0-baseline.v": "55ca5d7b6bc238d88fce327122ce15d046eb3499df57c02e09a2d8e735f03d33",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/1-4-0-baseline.ys": "4cd43d742beb45f18a8509afb77f8d7bd906032ac9fd951c7401114076f0bf18",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-baseline.v": "1483b0641756913df7a1a6dccc763ccb5b3978cf83a5b323e66b633bc0cd7c67",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-baseline.ys": "30603a3bd44f83059f2cc198740dd734509928ce1f24b1d807919fded3c06331",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-0-baseline.v": "1483b0641756913df7a1a6dccc763ccb5b3978cf83a5b323e66b633bc0cd7c67",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-0-baseline.ys": "9739ce02e27ff11d66cdc5818a5494ce9157f814a5a1b8d670d7dcdbd9c7b5ba",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/3-16-0-baseline.v": "8ae91b7ee2a3cbea8483c7e5c67b1f1990e0bdc8af4aba1c35584ca39dcbc908",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/3-16-0-baseline.ys": "75e1f7d0460b3a9b579708d09159fcdeaad91d1823305091c13b9beb5310b091",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-released_data_plus_one.v": "b4e100e6dd5df371b8a88bd80eb651c33c6b304afdc2c84aeab332c136f7aa19",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-released_data_plus_one.ys": "93bac5ea9f37f3d294dfdd18c0d5e86f778df64d763753b1da967b5d92a66342",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-wrong_released_class.v": "8173fb56cc37514e114c253b3b7d65edf70eecdb54d49b784f561f6dbd3975b0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-wrong_released_class.ys": "6d2a49837d838cb6463b985de3a8fcb641aacc90d59177277a58d2143935f1c3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/3-16-0.log": "f1e4eee1cb7bf89f37b844a3be64471e926ff426a328bd17393015a651042818",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/3-16-0-cone.json": "119826006129bdef918359332ea2db68ff6a0afedf4a92280450cb210333a778",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/1-4-0.log": "639585e0d079c31a92c1e8a172f7a5a560a78be52adaeecde948ff3bccf64789",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/1-4-0-cone.json": "6ede9d2ce9867c45329588060283d02a6b1d171b9c8ab3a3ee4f079ac90f3df1",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-1.log": "7c41c35a1d9f3c109c2b1d43898610835f6880eb598591eb3b58357e2e5c7f66",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-1-cone.json": "3b67bf4d5bbe2198434a0c17e84dd5544adf2a384c88e130b9254926b872aed0",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-0.log": "6b755e1618be283ae960574fa021ef4b10a0e34a182d6691429a6bf505d26541",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/2-8-0-cone.json": "04ef3ed20d0a051bf561944d1ede2999106d313de584f593c57e4a387b27a577",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/1-4-0-baseline.log": "ea8e7446b40d2c9dfa6060e0a00debac9a484e9d7c791b67ea0907795250b222",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-baseline.log": "ee323a9fa677804aa54b6d3aa78dbff8a3d743e5eb9f5b218f201a3da96d4e15",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-0-baseline.log": "6814abda6da12f6c19465bf193d28951c62d946051470b679f3c1ab070374552",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/3-16-0-baseline.log": "bd7258782e1c1601735e76c182ae7875dfc37274c348a6fc8ba20b9aa3046d7d",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-released_data_plus_one.log": "09a741ba5cda8cd3acf5bb625cfc7a3b411bddb36c1fd42772935b4917113fc5",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/2-8-1-wrong_released_class.log": "d75854d677170628349f706e3a412a2de568c683d382cb57742d60c9611dff86",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/compose09.py": "8699fb0b24e59c91ac363993c4c485ffdf1c641f28270083b3ad67d1332f8f01",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/ownership07/result.json": "4c15c1a1e9752fab76d9b771c0dac61854dcf53d2dfc141256292099ee7e3c1f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/substitution08/result.json": "b26f4da0a9fe7ae9cdd6e78e906172ebec60512b663a0ceff3103801046d5a97"
+      },
+      "inputs_unchanged": true,
+      "theorem": [
+        "Deleting only the new cache declarations/reset/capture and restoring the five changed assignments gives the frozen reference byte-for-byte; all existing ports, state transitions and clock/reset branches are identical otherwise.",
+        "Actual candidate RTL proves queue ownership and waiting implies captured metadata equals current owned head, by native reset base plus induction; only initial reset is assumed, with all later inputs arbitrary.",
+        "Native combinational SAT proves all five changed next-output assignments equal under that proven invariant for arbitrary old output values/units/inputs; two actual RHS mutations give counterexamples.",
+        "By induction on clocked transitions from corresponding common state after reset (unreset memory contents correspond, not forced to zero), the candidate and reference keep identical common state and every output. The added cache has no other read sites or effects, checked by exact source projection."
+      ],
+      "scope": "Compositional binary RTL cycle equivalence from reset for four explicit configurations, not a native monolithic equiv_status result or equivalence from unrelated unreset states. No valid-output mask, traffic assumptions or new latency. Not CDC, analog PHY, timing or protocol completeness qualification."
+    }
+  },
+  "carry_monolithic_retry": {
+    "path": "hw/soc/out/pcie-rx-credit-carry-select-20261012/formal26/result.json",
+    "sha256": "881b359af82f56ce98198089dcbcdc4cc5bf5ed142a203c88e415102ca5c6dd1",
+    "record": {
+      "status": "UNPROVEN_FULL_RX_CREDIT_CARRY_SELECT_EQUIVALENCE",
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/prove09.py": "e08f57f72f5019ab5ea20a0ef60a15a1a9d769403c29fff9d696203f2c0c8aa6",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_rx_credit.v": "9e4be63ab58b3f5038ad8634256b423bec9da89c553e93cf4e8facd6513e9e84",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/candidate08/soc_pcie_rx_credit.v": "30a626bad299ce86663cd96a063b0557bd13142c82b05a91181cba3fbac32bcd",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/gold.v": "5a11b8be708078148fb0120d3ef79e1ef7ae8ac0738569234dc3e6f011b0a065",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/gate.v": "30a3a0bdfc30fc0df15c8073a1d5b347abc13f6c92056a6ab130e99d6c967840",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-3-16-0.ys": "172c732c4e6bb8fb02977c1a939ec4a72a737c47ed78e1205111bd6a36cd9497",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-2-8-1.ys": "ab24709c35629b9ffb6f817f41a2d0d7684256fdfeb2b8030e8fbdbb4bbd9370",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-2-8-0.ys": "69f4711e3e73dbcbf4f80398d53053596722707b86415d994cbfe4370b15b15c",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-1-4-0.ys": "b07e8e8acd23f3575b140bbb9f7a84a57f30c94d8e39e484e5657d532d1b8237",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/prove26.py": "6da0a14881eef081c62e2783095f15599fd0d403c14ff3368af77f4d47e69fa5",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/result.json": "a2c8d0e89dd52d16ca42b1c1d2f246dad70d1c4764753e973745ffe9db27e2b2",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal24/result.json": "cf3a62b75766b15bb43b2540852aad7d3562bfcce6b9855d2249ab0ac8e5a858",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-2-8-1.log": "31ca0a2f68816ae67cdea920d8ec7fc9ecdda7fc032859bde1556a36bc732d5d",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-2-8-0.log": "36aa997bc6c84885f9a3d591c579c6f7412c676b9960c4ed2bb02f3f4e488ab3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal09/proof-1-4-0.log": "84d2bba14ce30af27c9979cb2ac5923a3f60d9ef312f79ff031240867c130975",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal26/proof-3-16-0.ys": "ec7b84265f4570c2d0ec5dd470a0445bfacb248eca723d088aa31c6bb883d76d",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal26/gold.v": "5a11b8be708078148fb0120d3ef79e1ef7ae8ac0738569234dc3e6f011b0a065",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/formal26/gate.v": "30a3a0bdfc30fc0df15c8073a1d5b347abc13f6c92056a6ab130e99d6c967840"
+      },
+      "cases": [
+        {
+          "slots": 2,
+          "max_tlp_dwords": 8,
+          "completer_only": 1,
+          "returncode": 0,
+          "passed": true
+        },
+        {
+          "slots": 2,
+          "max_tlp_dwords": 8,
+          "completer_only": 0,
+          "returncode": 0,
+          "passed": true
+        },
+        {
+          "slots": 1,
+          "max_tlp_dwords": 4,
+          "completer_only": 0,
+          "returncode": 0,
+          "passed": true
+        },
+        {
+          "slots": 3,
+          "max_tlp_dwords": 16,
+          "completer_only": 0,
+          "returncode": -6,
+          "passed": false,
+          "log_sha256": "cdfd96430a78e2e896d0a95609027890a68af11299e75926897a8800e6ca51ba"
+        }
+      ],
+      "scope": "Exact same portablecandidate and unchangedreference asformal09. Reuse3completednative fullmodulecases withinput/logpins; rerunonly3slots16dwordsnoncompleter under8GiBaddressspace, structuralshare/short/induct8/allremainingequivassert. No omittedoutputsorassumptions; no elapsedlimit; no physicaladoption.",
+      "inputs_unchanged": true
+    }
+  },
+  "alias_terminal": {
+    "path": "hw/soc/out/pcie-rx-credit-carry-select-20261012/alias-terminal36.json",
+    "sha256": "4b289ca05d03322ae96376204eda4fb2817e83399610f05a2cda077cf88c0cdd",
+    "record": {
+      "status": "ALIAS_CHAIN_TERMINAL_FAILED_LARGEST_IDENTITY_NATIVE_OOM",
+      "service": "MainPID=0\nExecMainStatus=1\nActiveState=failed\n",
+      "original_status": "RUNNING_TRANSPARENT_ALIAS_CHAIN_FULL_MODULE_EQUIVALENCE",
+      "passed_stages": 6,
+      "attempted_stages": 7,
+      "required_stages": 8,
+      "largest_candidate_stage_run": false,
+      "native_log_sha256": "9d61969bcf2286eea558a8e47ecdcfb1a9844bb469b36966236b2e42540eb417",
+      "scope": "Original partial result remains RUNNING because controller assertion stopped before its final status; live systemd state and native failure are authoritative. No full-chain PASS."
+    }
+  },
+  "superseded_implicit_net_control": {
+    "path": "hw/soc/out/pcie-rx-credit-carry-select-20261012/carry-control-review36.json",
+    "sha256": "87cf8766436ed33da611c316239e6d153d91a6ea181e5ef76e2d6f086a4aeb18",
+    "record": {
+      "status": "OLD_WRONG_MID_CONTROL_HAS_IMPLICIT_NET_SUPERSEDED_BY_TWO_DECLARED_CARRY_FAULTS",
+      "old_mutant_sha256": "a3225a69be9cc6c346d1ff80aa8a6fc6186e6941af4f80ee69a17d1c361e5890",
+      "old_log_sha256": "bd6ed35e4119d919061cf3c1f965c43ccc060b3560dad4e60109a21303126278",
+      "replacement": "composed31 and canonical35: default_nettype none, hierarchy-check/check-assert, actual credit_mid0 omission and actual high-carry omission; both native SAT counterexamples. Do not rely on old wrong_mid as declared carry-path control."
+    }
+  },
+  "scope": "Exact binary stateless replacement and four reset-reachable metadata configurations are separate compositional proofs. No claim that failed native full-module runs passed; no timing, route or PHY signoff."
+}

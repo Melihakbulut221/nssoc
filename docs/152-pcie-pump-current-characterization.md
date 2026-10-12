@@ -2,6 +2,84 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 03:41 TRT
+
+The RX return-metadata candidate completes actual whole-chip mapping and the
+matched three-corner unplaced timing screen. It preserves the original return
+cycle, 20 SRAM instances, 128 Ethernet response registers, ports and CPU
+parameters. The previous portable carry-select candidate is **rejected**:
+functional correctness does not compensate for its setup regression.
+
+| PCIe setup slack (ns), unplaced | Prior replay/Ethernet | Carry-select, rejected | Return metadata |
+| --- | ---: | ---: | ---: |
+| SS | -1.262388 | -1.547447 | -1.240848 |
+| TT | +0.330039 | +0.298894 | +0.373847 |
+| FF | +1.211302 | +1.194228 | +1.246757 |
+
+All seven setup and six hold groups are compared, including asynchronous and
+path-delay groups. The return-metadata gain is modest: **21.540 / 43.808 /
+35.455 ps** at SS/TT/FF. SS setup remains violated. Its new worst PCIe path
+binds to **TX consumed data-credit bit 29 → limit bit 29**. Other groups and
+small regressions remain visible in the complete comparison. Physical run 19
+and independent reader 20 are queued behind the current native repair and
+resource guards; they retain the original clocks, die, SRAM placement and
+repair policy. No active predecessor input was modified.
+
+The first mapping reader failed because it mistook native tie-zero net 209
+for a register. A separate corrected reader checks the real `sg13g2_tielo`
+Liberty function and driver, both class-register bits, ten units-register
+bits, their PCIe clocks/resets, all 128 Ethernet registers and 20 SRAMs.
+The original failure is retained; no missing driver is waived. The mapped
+replay-successor invariant and its two actual D-pin faults pass again on
+both new maps.
+
+The [complete mapped and timing evidence](evidence/pcie-rx-map-timing-20261012.json)
+contains **82 members / 37,758,701 bytes**, SHA-256
+`95f832d17e0d23bf31630e698904574f67449d7a8767c0e765dbba550aaf4688`.
+Every archive member and the complete anonymous download match. Active
+physical outputs are excluded. **Full serial PHY, accepted main-chip routing
+and final setup/hold remain open.**
+
+## Proof continuation — 12 October, 03:41 TRT
+
+The largest carry-select full-module proof still exhausts native memory at
+the increased 8 GiB address-space limit. The alias diagnostic also terminates:
+six stages pass, the seventh fails with native allocation exhaustion. Its
+stale RUNNING record is superseded by the actual terminal-service/log review;
+neither failed proof is reported as passed.
+
+A separate compositional proof verifies the actual stateless replacement:
+both 12-bit operands and the sole destination are bound, and reverting only
+that block produces the entire reference module byte for byte. Native SAT
+checks all **2^24 binary operand pairs** without assumptions. Two declared
+carry-path faults yield counterexamples; unrelated source and operand changes
+are rejected. This is parameter-independent stateless binary equivalence,
+not a success claim for the failed whole-queue induction. The earlier
+wrong-middle-carry control used an undeclared signal; it is explicitly
+superseded by the new declared controls with hierarchy/check assertions.
+The reusable checker is `scripts/check_pcie_rx_carry_replacement.py`.
+
+Return metadata requires a different proof because it adds state. Actual RTL
+reset-base and induction checks prove queue ownership and the cache/head
+relationship for **four configurations**. The compiled cones retain all 15
+inputs and have exactly one assumption: initial reset. There are no traffic
+assumptions or latch cells. Exact source projection plus native SAT on every
+changed accepted-return assignment establishes cycle equivalence from
+corresponding reset common state, including corresponding unreset memory.
+Two changed-output faults produce counterexamples.
+
+The separate monolithic metadata proof ends **UNPROVEN, 74 bits**; it is not
+an allocation failure or a reset-reachable counterexample trace. The
+compositional theorem is stated separately and does not relabel that result
+or claim equivalence from unrelated unreset states.
+
+The [complete compositional proof evidence](evidence/pcie-rx-compositional-proofs-20261012.json)
+contains **141 members / 4,548,637 bytes**, SHA-256
+`a445a593a1f9ba34bfacb8b4e6d565b77f829b2df9e1fa0d4df188243a3e15c0`.
+The archive preserves failed and successful methods, compiled proof cones,
+controls and source projections; all members and the full anonymous readback
+match. These results establish the stated digital transformations only.
+
 ## Latest continuation — 12 October, 02:52 TRT
 
 Structural sharing proves 6,459 local equivalence points, but the largest RX
