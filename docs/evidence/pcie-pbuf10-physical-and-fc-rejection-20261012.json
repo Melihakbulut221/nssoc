@@ -15,6 +15,13 @@
       "name": "nssoc-pbuf10-canonical-and-drc-runtime-20261012.tar.gz",
       "bytes": 70704,
       "sha256": "6ff7c3d922341f8e50c82032460f9fa721a5bdb84d1cd7b6bf86a637157aed39"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-acquisition-gate-20261012.tar.gz",
+      "name": "nssoc-pbuf10-acquisition-gate-20261012.tar.gz",
+      "bytes": 8611,
+      "sha256": "54901cd0d7aa00a98fb0d6a95e2516a2e7781368d61acc80da0597fe63c89fa2"
     }
   ],
   "canonical_regeneration": {
@@ -763,5 +770,28 @@
   "routed_core_drc_rerun": "WAITING_FOR_ACTIVE_LVS_AND_RESOURCES_SAME_GDS_UNCHANGED_RULES",
   "full_serial_phy_closed": false,
   "accepted_routed_chip_closed": false,
-  "final_timing_closed": false
+  "final_timing_closed": false,
+  "prospective_long_gate_failed_capture_control": {
+    "status": "PASS_ACTUAL_FAILED_FULL_CAPTURE_REJECTED_WITHOUT_DISPATCH",
+    "gate": {
+      "status": "REJECTED_FINITE_GATE_NO_LONG_RUN",
+      "functional_passed": false,
+      "independent_electrical_passed": true,
+      "native_safety_passed": true,
+      "dispatched": false,
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-acquisition-rejected-control-20261012/after-finite01.py": "a55a40d87ff603cc93429e7738c7adc53056d11a7b3e52eb5d4a6bf7c7ffa427",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rhi140-native865-20261012/functional-review03.json": "f3f977d3cd39eb3fc2f3c92d0d3a1871ce470df9647c7624b96afd95a63bab76",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rhi140-native865-20261012/electrical-review03.json": "8373cef55b9e312b47691f8c678ea096ab8870757cf94cb259990f0df93af749",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rhi140-native865-20261012/native01/closed-01/result.json": "288d3de7ddbc7e07a019fa2e0627eea4ab2330753bc4e2c0d3d999a4a030af50",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rhi140-native865-20261012/after-native03.json": "43927a6a5f4d523fc83958fb7d36d307fe6b7ccafd600554b0abf23373cc2493",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-acquisition-rejected-control-20261012/prepare04.py": "6476a240338484d9ccb580aa77876f9e7f05ec06953d321bc29501128b20f17c",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-acquisition-rejected-control-20261012/run05.py": "16ffdff360b485a8d6de8464362faf57f24b7ceb587cf5bbd25beeadf2078a85"
+      },
+      "step_s": 3.125e-13,
+      "scope": "Prospective gate on full865 PBUF10 native, independentfunctional andelectrical reviews. Sameequations/startup/.3125ps maxstep.1usselectedprobeacquisition diagnostic only, nofullelectrical/PVT/PHYacceptance. Originalbaseline1uscontinuesunchanged. No elapsed-time cutoff."
+    },
+    "source_sha256": "923188a87cf4f6f1a25a80ae7186d563ed0866556dafb2432eeb8023e25c54f3",
+    "only_test_substitution": "Change source capture root to the completed actual failed RHI140 full capture; preparation and run remain unchanged."
+  }
 }

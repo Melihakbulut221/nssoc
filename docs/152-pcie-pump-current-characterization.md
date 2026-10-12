@@ -4,7 +4,7 @@
 
 ## Latest continuation — 12 October, 07:08 TRT
 
-The RHI140 parent completes both full **865-transistor, 2,438-column, 50 ns**
+The RHI140 parent completes both full **865-device, 2,438-column, 50 ns**
 captures. The original 0.3125 ps and diagnostic 0.625 ps runs both fail the
 unchanged feedback-high requirement: **2.218602461 V and 2.218669423 V**, below
 **2.25 V**. Independent full-device electrical readback passes both captures.
@@ -37,6 +37,16 @@ by independent per-layer polygon XOR, with byte-identical LEF and transistor
 reference. The corrected reset oracle is fixed prospectively before the new
 full capture; thirteen reset faults and six boundary faults pass their
 rejection controls. The **new 50 ns simulation is running**, not accepted.
+The [prospective acquisition gate and failed-capture control](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-acquisition-gate-20261012.tar.gz)
+are also published (8,611 bytes, SHA-256
+`54901cd0d7aa00a98fb0d6a95e2516a2e7781368d61acc80da0597fe63c89fa2`).
+It requires the new native result and independent functional, electrical and
+safety checks to pass before preparing a 1 µs selected-probe diagnostic.
+A completed, actually failed capture is rejected without creating or launching
+the long run. The 0.3125 ps maximum step and the existing final-window
+100 ppm / 50 ps / no-slip criteria remain fixed; this does not replace
+full-device long-duration electrical, PVT or PHY qualification.
+
 The original nested-AppImage failure, exact floating-point serialization
 mismatch, missing Python dependency and missing parent BULK reference pin
 are retained alongside their corrected attempts. The GDS did not change
