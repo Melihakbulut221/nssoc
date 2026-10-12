@@ -306,3 +306,24 @@ warnings. Neither new geometry is adopted. Further validation must separate
 source latency from serial eye distortion while preserving the failed
 integration screen; these results do not close the full serializer, PLL/CDR,
 qualified RF PEX, main-chip routing or final timing.
+
+
+The [source-bound timing-path trace](evidence/cloud-timing-paths-20261013.json)
+resolves all 39 reported corner/group worst paths in the historical four-cell
+trial. Its worst CPU path runs from the Ibex register-file read address to
+a CLINT SECDED check bit; its PCIe path runs from replay read position to
+TX data. Ethernet SRAM outputs still reach cross-check addresses in the
+same cycle in that old physical database. The later source change 7ad40bde
+adds cross-read capture registers, so further old-layout-only buffering would
+miss an already implemented architectural repair.
+
+The [newer physical resume input](evidence/cloud-newer-postcts-input-20261013.json)
+therefore pins the completed `metadata-postcts19` chip database, original SDC
+and original three-corner reader. Hosted run 38317996877 first reproduces
+all reported saved slacks using nine hash-identical Liberty files, then
+performs fresh global routing with the existing pinned PDK RC model. The
+newer chip includes Ethernet cross-read capture, registered replay successor
+and RX-return metadata. This job has not yet returned at this checkpoint;
+it cannot establish detailed routing, qualified extraction or serial PHY
+acceptance. The locally queued credit-offer physical job had not started,
+so it is not represented as a completed physical checkpoint.

@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T01:33:44.646869+03:00",
-  "turn_classification": "PROGRESS: hosted restoration completed and exact timing-path connectivity probe launched.",
+  "as_of": "2026-10-13T01:42:12.122432+03:00",
+  "turn_classification": "PROGRESS: exact39corner/group paths bound to native graph; newer existing physical state recovered and hosted routing launched.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "9d0ecd9d",
+  "head": "14e42f0b",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -70,12 +70,13 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 51695,
-    "batch": 59,
-    "removed_bytes": 46700132861,
-    "uploaded_bytes": 35329633404
+    "next_index": 51696,
+    "batch": 60,
+    "removed_bytes": 49595082478,
+    "uploaded_bytes": 38225453548
   },
   "next_actions": [
+    "Inspect newer-postcts-cloud38317996877 and repair actual reported current paths. Do not resume old local credit-offer queue; its guard required10GiB RAM and it had not launched physical work. This cloud job uses already completed newer metadata chip state.",
     "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
     "Use new delay diagnosis to develop clock-aware full serializer/PLL/CDR validation. Do not silently replace original failing integration screen or count fixed-delay alignment as PCIe compliance.",
     "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
@@ -127,9 +128,25 @@
   },
   "timing_path_trace": {
     "run": 38317312074,
-    "status": "in_progress",
+    "status": "PASS_EXACT_REPORTED_PATH_CONNECTIVITY_BINDING_NOT_TIMING_CLOSURE",
     "previous_run": 38317122848,
     "previous_failure": "OpenSTA renders SRAM bus brackets without OpenDB backslash escapes. Strict unique rendered-name mapping added, native master identity remains required.",
-    "purpose": "Resolve current worst corner/group setup and hold paths to exact instance signal nets before choosing RTL or physical repairs."
+    "purpose": "Resolve current worst corner/group setup and hold paths to exact instance signal nets before choosing RTL or physical repairs.",
+    "evidence": "docs/evidence/cloud-timing-paths-20261013.json",
+    "findings": "Old CPU path: Ibex raddr_b_i[1] to CLINT check_raw[2]. PCIe: retry read_pos[3] to tx_data_o[0]. Ethernet: SRAM to cross-check address, lacking later cross-read pipeline in that historical layout."
+  },
+  "newer_postcts_cloud": {
+    "run": 38317996877,
+    "workflow": "newer-postcts-cloud.yml",
+    "status": "in_progress",
+    "input_spec": "docs/evidence/cloud-newer-postcts-input-20261013.json",
+    "task": "Restore exact completed metadata-postcts19 ODB, reproduce all saved corner/group placement slacks with hash-identical9Libertyfiles and original SDC; then actual global route and fitted RC estimate. No constraints relaxed.",
+    "source_review_runs": [
+      38317694182,
+      38317696895,
+      38317700308
+    ],
+    "scope": "Newer packet-profile design contains Ethernet cross-read pipeline, replay successor and RX-return metadata. Not full serial PHY or routed signoff.",
+    "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292"
   }
 }
