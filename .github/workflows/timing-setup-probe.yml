@@ -3,6 +3,9 @@
 name: timing-setup-probe
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-setup-probe.yml
   workflow_dispatch:

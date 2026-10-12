@@ -3,6 +3,9 @@
 name: timing-residual-repair (one cap net and ten source-bound hold pins)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-residual-repair.yml
   workflow_dispatch:

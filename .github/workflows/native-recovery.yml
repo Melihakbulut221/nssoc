@@ -3,6 +3,9 @@
 name: native-recovery
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/native-recovery.yml
       - hw/soc/rtl/soc_scrub.v

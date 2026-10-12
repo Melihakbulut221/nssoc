@@ -3,6 +3,9 @@
 name: timing-hold-diagnostic
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-hold-diagnostic.yml
   workflow_dispatch:

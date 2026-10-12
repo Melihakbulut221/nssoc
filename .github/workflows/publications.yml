@@ -3,6 +3,9 @@
 name: publications
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/publications.yml
       - paper-soc/**

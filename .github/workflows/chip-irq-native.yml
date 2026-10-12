@@ -3,6 +3,9 @@
 name: chip-irq-native
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/chip-irq-native.yml
       - docs/evidence/chip-irq-native-input-assets-20260928.json

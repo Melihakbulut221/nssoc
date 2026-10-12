@@ -3,6 +3,9 @@
 name: timing-alu-hard-bits (four exact equations through ABC; no candidate adoption)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-alu-hard-bits.yml
   workflow_dispatch:

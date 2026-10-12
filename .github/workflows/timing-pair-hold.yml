@@ -3,6 +3,9 @@
 name: timing-pair-hold (two existing-vacancy sd3 and strict original placement)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-pair-hold.yml
   workflow_dispatch:

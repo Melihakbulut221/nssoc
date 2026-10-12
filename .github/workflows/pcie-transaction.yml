@@ -3,6 +3,9 @@
 name: pcie-transaction
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths: &pcie_paths
       - .github/workflows/pcie-transaction.yml
       - hw/soc/rtl/pcie/**

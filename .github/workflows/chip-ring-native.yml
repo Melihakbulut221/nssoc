@@ -3,6 +3,9 @@
 name: chip-ring-native
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/chip-ring-native.yml
       - docs/evidence/chip-ring-native-input-assets-20260928.json

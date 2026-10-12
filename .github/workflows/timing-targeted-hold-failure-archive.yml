@@ -3,6 +3,9 @@
 name: timing-targeted-hold-failure-archive
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-targeted-hold-failure-archive.yml
   workflow_dispatch:

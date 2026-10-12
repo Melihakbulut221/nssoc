@@ -3,6 +3,9 @@
 name: timing-alu-remaining-abc (800 exact equations in 64 OR batches; no adoption)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-alu-remaining-abc.yml
   workflow_dispatch:

@@ -3,6 +3,9 @@
 name: timing-npu-evq-trace
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-npu-evq-trace.yml
   workflow_dispatch:

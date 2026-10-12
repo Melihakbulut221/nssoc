@@ -3,6 +3,9 @@
 name: timing-targeted-hold
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-targeted-hold.yml
   workflow_dispatch:

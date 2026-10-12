@@ -3,6 +3,9 @@
 name: soc-physical-resume
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/soc-physical-resume.yml
       - scripts/resume_physical.py

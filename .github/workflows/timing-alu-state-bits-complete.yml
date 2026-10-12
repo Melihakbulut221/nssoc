@@ -3,6 +3,9 @@
 name: timing-alu-state-bits-complete (800 untested equations; four hard bits remain)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-alu-state-bits-complete.yml
   workflow_dispatch:

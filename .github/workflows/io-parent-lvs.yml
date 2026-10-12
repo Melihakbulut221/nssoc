@@ -3,6 +3,9 @@
 name: io-parent-lvs
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/io-parent-lvs.yml
   workflow_dispatch:

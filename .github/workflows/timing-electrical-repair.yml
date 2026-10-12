@@ -3,6 +3,9 @@
 name: timing-electrical-repair (three native nets plus independent replay)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-electrical-repair.yml
   workflow_dispatch:

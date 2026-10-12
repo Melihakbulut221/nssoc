@@ -3,6 +3,9 @@
 name: chip-filled-supply-connectivity
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/chip-filled-supply-connectivity.yml
       - scripts/check_chip_supply_connectivity.py

@@ -3,6 +3,9 @@
 name: pcie-buffered-soc
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths: &paths
       - .github/workflows/pcie-buffered-soc.yml
       - hw/soc/rtl/pcie/**

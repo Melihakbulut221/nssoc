@@ -3,6 +3,9 @@
 name: chip-supply-inset-native
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/chip-supply-inset-native.yml
       - docs/evidence/chip-supply-inset-native-input-assets-20260929.json

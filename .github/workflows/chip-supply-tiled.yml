@@ -3,6 +3,9 @@
 name: chip-supply-tiled
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/chip-supply-tiled.yml
   workflow_dispatch:

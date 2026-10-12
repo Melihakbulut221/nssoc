@@ -3,6 +3,9 @@
 name: timing-critical-followup (four-orientation sizing controls and isolated hold journal)
 on:
   push:
+    # Storage migration tags must not launch unrelated engineering experiments.
+    branches: ['**']
+    tags-ignore: ['cloud-migration-*']
     paths:
       - .github/workflows/timing-critical-followup.yml
   workflow_dispatch:
