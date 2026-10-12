@@ -17,6 +17,7 @@ CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc'
 HV_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc'
 LIGHT_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v3.inc'
 DIRECT_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_current_input_v4.inc'
+FAST_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v5.inc'
 SPEC = ROOT / 'docs/evidence/pcie-cmos-data-driver-input-20261013.json'
 NAMES = ('ap', 'an', 'bp', 'bn')
 VECTORS = ['v(dvdd)', 'i(vdvdd)'] + [v for n in NAMES for v in
@@ -65,11 +66,15 @@ def half_cycle_launch(pwl, start, stop, ui):
 
 
 def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
-    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct')
+    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct', 'cmos_hv_fast')
     assert launch in ('coincident', 'inactive_half_cycle')
     hv = mode.startswith('cmos_hv_')
     direct = mode == 'cmos_hv_direct'
-    circuit = DIRECT_CIRCUIT if direct else LIGHT_CIRCUIT if mode == 'cmos_hv_light' else HV_CIRCUIT if hv else CIRCUIT
+    circuit = {'cmos_hv_direct': DIRECT_CIRCUIT, 'cmos_hv_light': LIGHT_CIRCUIT,
+               'cmos_hv_fast': FAST_CIRCUIT}.get(mode, HV_CIRCUIT if hv else CIRCUIT)
+    headers = [line.split() for line in circuit.read_text().splitlines() if line.startswith('.subckt ')]
+    assert len(headers) == 1 and headers[0][2:] == ['din', 'dout', 'avdd', 'dvdd', 'avss', 'sub']
+    subckt = headers[0][1]
     vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv and not direct else [])
     spec = json.loads(SPEC.read_text())
     pin = spec['receipt']
@@ -99,9 +104,6 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
         old = f'R{n} {n}0 {n} 25'
         assert deck.count(old) == 1
         rail = '0' if mode.endswith('no_pullup') else 'avdd'
-        subckt = ('nssoc_tx_cmos_hv_current_input_v4' if direct else
-                  'nssoc_tx_cmos_hv_resistive_input_v3' if mode == 'cmos_hv_light' else
-                  'nssoc_tx_cmos_hv_resistive_input_v2' if hv else 'nssoc_tx_cmos_resistive_input_v1')
         deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 {subckt}')
     additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{circuit}"',
                  f'.lib "{dest / "models/cornerMOSlv.lib"}" mos_tt',

@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
-    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct'), default='ideal')
+    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct', 'cmos_hv_fast'), default='ideal')
     parser.add_argument('--data-launch', choices=('coincident', 'inactive_half_cycle'), default='coincident')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')
@@ -203,7 +203,7 @@ def main():
             assert deck == baseline
         driver_paths = []
         if args.data_driver != 'ideal':
-            assert args.point == 'baseline' and args.kind == 'compact' and args.interconnect == 'actual'
+            assert args.point in ('baseline', 'clock_small') and args.kind == 'compact' and args.interconnect == 'actual'
             assert args.layout_composition is None
             import cloud_tx_data_driver as driver
             deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl, args.data_launch)
@@ -257,6 +257,10 @@ def main():
         assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$', body) == ['1'] for name, body in flags)
         record.update(zero_source_op=True, native_off_flags=[x[0] for x in flags],
                       measurement=native.measure(run / 'wave.dat', bindings, vectors, bits))
+        result['native_post_start_device_screen'] = dict(
+            bindings=bindings, failed=record['measurement']['failed_device_bounds'],
+            passed=record['measurement']['electrical_passed'],
+            scope='Original native post-start device screen, with exact current netlist bindings. Independent whole-startup review remains separate and may reject the input before evaluating devices.')
         record['inputs_unchanged'] = all(sha(p) == digest for p, digest in pins.items())
         assert record['inputs_unchanged']
         if args.data_driver != 'ideal':

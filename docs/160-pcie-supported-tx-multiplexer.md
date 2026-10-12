@@ -382,3 +382,22 @@ loaded data node, removing the intermediate resistor/drain RC node. Its
 four 4 um HV branches and two native rail-setting resistors per input still
 require native transient and device checks. The v3 control is retained; no
 limits, data sequence, or final-output sample phases are relaxed.
+
+
+The [direct-drain v4 study](evidence/pcie-cmos-direct-driver-20261013.json)
+completes native captures in run 38323278847 but is rejected. With early
+A launch its final output passes all 768 samples with 154.679 mV minimum,
+yet 511 selected-input samples fall below 150 mV and the unchanged independent
+input-ambiguity guard rejects the capture. The exact current native
+transistor bindings identify four **selector** HBTs with bases on `sp/sn`
+and minimum VCE 0.256488 V. The absence of a downstream failure list after
+the input guard aborts is not a passing device review. Device IDs from older
+layout revisions cannot substitute for the current netlist bindings.
+
+The next paired study retains v3 and changes only its series resistor from
+9.08 um to 6.92 um in v5. Separately, the `clock_small` operating point
+reduces the ideal selector amplitude from 300 mV to 80 mV at the same 1.23 V
+common mode to provide more selector headroom. It does not change any
+voltage, timing or sample acceptance limit. Both changes require measured
+results; real upstream serialization and actual clock generation remain
+required even if the nominal component screen eventually passes.
