@@ -112,7 +112,12 @@ def main():
         run.mkdir()
         (run / 'bench.cir').write_text(deck)
         (run / 'spinit').write_text('set num_threads=1\n')
-        paths = [p for p in inputs.rglob('*') if p.is_file()] + [tx, ng, Path(__file__), spec_path, run / 'bench.cir', run / 'spinit']
+        # Both candidate netlists are restored, but the frozen reviewer locates
+        # the simulated mux through the active input manifest. Do not bind the
+        # unused compact netlist as if it were part of the wire simulation.
+        paths = [p for p in inputs.rglob('*') if p.is_file()
+                 and (not p.name.startswith('mux54-') or p == native.MUX)] + [tx, ng, Path(__file__), spec_path, run / 'bench.cir', run / 'spinit']
+        assert {p for p in paths if p.suffix == '.spice'} == {native.MUX, tx}
         pins = {str(p): sha(p) for p in paths}
         record = dict(status='RUNNING', config=config, inputs=pins,
                       prospective_operating_point=result['operating_point'],
