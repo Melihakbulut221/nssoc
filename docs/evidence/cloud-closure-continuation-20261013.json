@@ -1,0 +1,77 @@
+{
+  "as_of": "2026-10-13T00:19:17.886809+03:00",
+  "turn_classification": "PROGRESS",
+  "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
+  "execution_policy": "User cloud-only instruction overrides historical local goal text. All CAD, simulation and tests on GitHub-hosted runners. Local transfer/cleanup service only.",
+  "head": "3af51038",
+  "global_route": {
+    "run": 38307868589,
+    "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
+    "slow_pcie_setup_before_ns": -6.146189,
+    "slow_pcie_setup_after_ns": -5.539688,
+    "slow_cpu_setup_after_ns": -6.465747,
+    "fast_pcie_hold_after_ns": -0.920199,
+    "unconstrained_endpoints": 1,
+    "unannotated_drivers": 1078,
+    "accepted": false,
+    "evidence": "docs/evidence/cloud-global-route-pair-20261013.json",
+    "native_report_reader_run": 38308806813
+  },
+  "tx_operating_points": {
+    "run": 38308907061,
+    "result": "Eight native captures and independent reviews complete. Original failed wire baseline exactly reproduced. Three compact points pass; all four wire points fail and are rejected.",
+    "evidence": "docs/evidence/pcie-tx-cloud-points-20261013.json",
+    "prior_failed_review_run": 38308601392,
+    "review_fix": "Active input manifest now contains only the actually simulated mux; frozen reviewer and all limits unchanged."
+  },
+  "tx_interconnect_diagnostic": {
+    "run": 38309293263,
+    "evidence": "docs/evidence/pcie-tx-cloud-rc-diagnostic-20261013.json",
+    "actual": {
+      "margin_v": -0.26647000795532216,
+      "wrong_samples": 128,
+      "device_failures": 19
+    },
+    "low_resistance_only": {
+      "margin_v": 0.09638203502216869,
+      "wrong_samples": 0,
+      "device_failures": 0
+    },
+    "no_capacitance_only": {
+      "margin_v": -0.11028368264390265,
+      "wrong_samples": 96,
+      "device_failures": 19
+    },
+    "low_resistance_no_capacitance": {
+      "margin_v": 0.2703327547439913,
+      "wrong_samples": 0,
+      "device_failures": 0
+    },
+    "interpretation": "Both wire effects matter; resistance reduction eliminates sign and device-bound failures but full capacitance still misses100mV. Artificial parasitic mutations are diagnostic, never a layout fix or acceptance."
+  },
+  "live_followup": {
+    "run": 38309700516,
+    "last_verified_status": "queued",
+    "task": "Seven hosted native cases: actual control plus individual supply/return/input/output/bias/internal metal resistance reduction; graph-derived component classes identify geometry for real repair.",
+    "workflow": "tx-interconnect-diagnostic-cloud.yml"
+  },
+  "validation": {
+    "previous_completed_run": 38308672412,
+    "result": "SPDX, inventory, REUSE and3 migration safety tests PASS",
+    "latest_run": 38309767042,
+    "latest_status": "dispatched"
+  },
+  "transfer_snapshot": {
+    "status": "RUNNING",
+    "next_index": 19577,
+    "batch": 26,
+    "removed_bytes": 20749714085,
+    "uploaded_bytes": 18142275549
+  },
+  "next_actions": [
+    "Inspect run38309700516 and exact waveform/graph records. Repair identified real geometry; rerun DRC, LVS, native extraction and unchanged full-wave checks before adoption.",
+    "Trace current CPU/PCIe critical flop nets to RTL; repair remaining long logic chain and high-capacitance NOR4 path. Paired estimates improve PCIe only, remain far from closure.",
+    "Audit1 unconstrained endpoint and1078 unannotated drivers before any comprehensive timing claim. Preserve original SDC and clocks.",
+    "Keep migration service and restoration maps; no deletion of unverified unique sources or outputs and no local CAD restart."
+  ]
+}
