@@ -43,6 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
+    parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap'), default='actual')
     args = parser.parse_args()
     spec_path = ROOT / 'docs/evidence/pcie-tx-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
@@ -54,7 +55,7 @@ def main():
     config_path = inputs / 'config.json'
     config = dict(name=args.point, hbt='hbt_typ', resistor='res_typ', temperature_c=27, supply_scale=1.0)
     config_path.write_text(json.dumps(config, indent=2) + '\n')
-    result = dict(status='RUNNING', point=args.point, kind=args.kind,
+    result = dict(status='RUNNING', point=args.point, kind=args.kind, interconnect=args.interconnect,
                   operating_point=dict(zip(spec['point_order'], values, strict=True)),
                   accepted=False, scope='Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.')
     try:
@@ -77,6 +78,32 @@ def main():
                     assert not target.exists()
                     target.write_bytes(data)
             archive.unlink()
+        if args.interconnect != 'actual':
+            assert args.point == 'baseline' and args.kind == 'wire'
+            wire = inputs / 'mux54-wire01.spice'
+            original = wire.read_text()
+            (inputs / 'original-wire.source').write_text(original)
+            changed, resistors, capacitors = [], 0, 0
+            for line in original.splitlines():
+                fields = line.split()
+                if fields and fields[0].lower().startswith(('r', 'c')):
+                    assert len(fields) == 4, line
+                    float(fields[3])
+                    if fields[0].lower().startswith('r'):
+                        resistors += 1
+                        if args.interconnect in ('low_r', 'low_r_no_cap'):
+                            fields[3] = '0.001'
+                            line = ' '.join(fields)
+                    else:
+                        capacitors += 1
+                        if args.interconnect in ('no_cap', 'low_r_no_cap'):
+                            continue
+                changed.append(line)
+            assert (resistors, capacitors) == (229, 301)
+            wire.write_text('\n'.join(changed) + '\n')
+            result['diagnostic_mutation'] = dict(resistors=resistors, capacitors=capacitors,
+                original_sha256=hashlib.sha256(original.encode()).hexdigest(), mutated_sha256=sha(wire),
+                note='Causal diagnostic only. Explicit metal resistors become1milliohm and/or metal capacitors are removed. Device models, layout and measurement limits unchanged. Mutated parasitics cannot be adopted or used as physical acceptance.')
         ng = Path(os.environ['CLOUD_NGSPICE'])
         assert sha(ng) == spec['native_runtime']['executable_sha256']
         tx = ROOT / 'hw/soc/analog/pcie/tx_cml_rsil.spice'
@@ -178,7 +205,7 @@ def main():
                       failed_devices={n: d for n, d in review['devices'].items() if not (d['post_passed'] and d['whole_upper_passed'])},
                       diagnostics=review['diagnostics'],
                       status='COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE')
-        if args.point == 'baseline' and args.kind == 'wire':
+        if args.point == 'baseline' and args.kind == 'wire' and args.interconnect == 'actual':
             assert abs(review['signals']['minimum_margin_v'] - (-.26647000795532216)) < 1e-6
             assert review['signals']['wrong_sign_samples'] == 128
             result['previous_failed_wire_baseline_reproduced'] = True
