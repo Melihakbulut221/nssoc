@@ -97,6 +97,40 @@ def main():
                 row[label + '_start_signed_v'] = float(a[0])
             transitions.append(row)
         result['transitions'] = transitions
+        # A separate latency diagnostic, never a replacement for the frozen gate.
+        # Estimate one constant delay from the first64 bits; do not select an
+        # optimum phase from the later evaluation samples or refit each bit.
+        training = [r for r in transitions if r['bit'] < 64]
+        assert len(training) >= 16
+        assert all(len(r['tx_0.0_crossings_ps']) == 1 for r in training)
+        delay_ps = float(np.median([r['tx_0.0_crossings_ps'][0] for r in training]))
+        delay = delay_ps * 1e-12
+        evaluation_bits = [i for i in range(64, 256)
+                           if start + (i + max(phases)) * ui + delay <= t[-1]]
+        assert len(evaluation_bits) >= 128
+        evaluation_times = np.array([start + (i + phase) * ui + delay
+                                     for i in evaluation_bits for phase in phases])
+        reference = np.repeat(signs[evaluation_bits], len(phases))
+        propagated = (v('op', evaluation_times) - v('on', evaluation_times)) * reference
+        assert np.any(propagated > 0)
+        # These controls show that a fixed delay cannot conceal a polarity
+        # inversion or a complete bit slip; they do not qualify a CDR model.
+        slip_bits = [i for i in evaluation_bits if start + (i + 1 + max(phases)) * ui + delay <= t[-1]]
+        slip_times = np.array([start + (i + 1 + phase) * ui + delay for i in slip_bits for phase in phases])
+        slipped = (v('op', slip_times) - v('on', slip_times)) * np.repeat(signs[slip_bits], len(phases))
+        assert np.any(slipped <= 0) and np.any(-propagated <= 0)
+        result['frozen_training_delay_diagnostic'] = dict(
+            training_bit_range=[0, 63], training_transitions=len(training),
+            constant_delay_ps=delay_ps, delay_refitted_on_evaluation=False,
+            evaluation_bit_range=[min(evaluation_bits), max(evaluation_bits)],
+            omitted_final_bits=[i for i in range(64, 256) if i not in evaluation_bits],
+            statistics=stats(propagated),
+            polarity_inversion_wrong_samples=int(np.sum(-propagated <= 0)),
+            one_ui_slip_wrong_samples=int(np.sum(slipped <= 0)),
+            source_referenced_gate_preserved=old,
+            implements_reference_cdr=False, compliance_pattern=False,
+            pci_sig_compliance=False, accepted=False,
+            interpretation='Latency-versus-distortion diagnosis only. Fixed delay from disjoint training data is not a standards CDR, jitter/BER test, or a replacement acceptance gate.')
         result['delay_groups'] = {}
         for label in ('mux', 'tx'):
             for threshold in (0., .1):
