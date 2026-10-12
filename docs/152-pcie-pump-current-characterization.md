@@ -2,6 +2,47 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 08:17 TRT
+
+The physical PBUF10 feedback repair passes its complete **865-device,
+2,438-column, 50 ns** nominal capture at the original **0.3125 ps** maximum
+step. All **16 functional checks** pass, including the fixed-phase divider
+chain, modulo-five state/complement rails, feedback swing and physical reset
+release. Feedback spans **0.008060–2.357598 V**; the preceding RHI140 candidate
+failed the unchanged 2.25 V high requirement at 2.218602 V. Reset recovery
+is **1,338.161 ps** against 900 ps, and removal is **495.208 ps** against 100 ps.
+
+Independent complete-capture functional, startup, fixed-phase and all-device
+electrical remeasurements pass. All three earlier diagnostic prefixes match
+the completed compressed stream and selected raw samples exactly. This is a
+**nominal finite clock-loop result**, not PLL lock, full PVT, eye/jitter,
+foundry SOA or serial-PHY qualification. The gated **1 µs acquisition run**
+has now launched. The first full-device MOS/temperature sensitivity run,
+**slow MOS at 125 °C**, has also launched; fast MOS at −40 °C follows it.
+Supplies, HBT/passive models and RC stay fixed, so these two cases cannot
+establish full PVT closure.
+
+For the measured CPU-to-NPU-clock-gate setup path, both `WAKE_GNT=0` and `1`
+pass the existing **36-case peripheral suite: 72 passes, zero skips**.
+The unsupported VPI function-introspection warnings remain in the original
+logs; this is not a clean-runtime claim. The isolated option keeps the clock
+enable registered and can add a first-wake request wait. The shipping default
+stays zero. Actual clock-gated CPU NPU reads/writes alongside PCIe/Ethernet
+traffic, a disabled-wake-register fault, fresh mapping, mapped enable-cone
+inspection and matched three-corner setup/hold comparison are still pending.
+Their methods are archived; no new wake-option timing result is asserted.
+
+The [complete finite review and wake methods archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-finite-and-wake-methods-20261012.tar.gz)
+contains **116 verified members**, including native logs, measurements,
+independent checks, unit results and prospective integration methods:
+1,604,494 bytes, SHA-256
+`7c224b3a8efbd5cf57b63a851d2cb8527ba9f78dc3686f07e08b759b6a500027`.
+The entire anonymous public download is verified. The separate
+2,897,045,112-byte waveform publication is pending; it is not included in this
+small archive. The [machine-readable result](evidence/pcie-pbuf10-finite-wake-20261012.json)
+retains the exact capture identity and scope. **Full serial Gen3 x4 PHY,
+main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 07:44 TRT
 
 The RX-return-metadata physical candidate finishes setup repair. Its immutable
