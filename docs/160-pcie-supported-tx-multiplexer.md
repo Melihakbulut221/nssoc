@@ -224,3 +224,23 @@ corruption controls. The cross-conductor mutation explicitly uses actual TX
 ports P_op/P_on instead of inherited PLL port names. No artificial resistance
 reduction is used in these geometry candidates. Full-wave acceptance, RF PEX
 qualification, full serial PHY and final chip timing remain open.
+
+The [new hosted extraction](evidence/pcie-tx-cloud-extraction-20261013.json)
+passes for all three actual layouts (run 38312857503). The original geometry
+produces 229 resistors and 301 capacitors; both thick-metal candidates produce
+173 resistors and 267 capacitors. All 112 physical anchors remain connected
+within the 17 original conductors. Exact native/export resistor edge values,
+per-point ground capacitance, mutual capacitance attachments and the collapsed
+capacitance matrix pass the frozen audit; all thirteen corruption controls are
+rejected. These counts alone do not establish better electrical behavior.
+The source-bound native-device composition and unchanged 8 GT/s full-wave
+review are running in 38313404684; electrical adoption remains false.
+
+The [cloud restore readback](evidence/cloud-output-restore-20261013.json)
+reconstructs 49 migration batches, 32,196 original files and 36,080,201,324
+logical bytes. This includes thirteen backward archive hard links, each
+verified against an already hashed target and its own original manifest.
+Ten safety tests per group reject unsafe or incorrect restore records and
+exercise deletion/resume gates. The first reader lacked hard-link support;
+its failed run is retained. Later uploads and the remaining local files are
+outside this completed snapshot; cleanup is still in progress.
