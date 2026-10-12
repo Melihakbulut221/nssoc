@@ -79,7 +79,11 @@ def prepare():
                 instance = block.findInst(name)
                 assert instance and instance.getMaster().getName() == before
                 instance.setPlacementStatus('PLACED')
+                anchor = instance.getLocation()
                 assert instance.swapMaster(db.findMaster(after))
+                # A mirrored cell's master width changes its origin/location
+                # relationship. Preserve the placement anchor before legalization.
+                instance.setLocation(*anchor)
             driver = block.findInst(DRIVER)
             assert driver and driver.getMaster().getName() == 'sg13g2_nand4_1'
             pin = driver.findITerm('Y')
@@ -107,9 +111,12 @@ def prepare():
                 expected = dict(old, pins=dict(old['pins']))
                 if name in SIZES:
                     expected['master'] = SIZES[name][1]
+                    assert {k: v for k, v in new.items() if k != 'origin'} == {
+                        k: v for k, v in expected.items() if k != 'origin'}, (name, old, new)
+                    continue
                 if name == DRIVER:
                     expected['pins']['Y'] = local.getName()
-                assert new == expected, name
+                assert new == expected, (name, old, new)
         clear_routes(block)
         assert power(block) == original_power
         odb.write_db(db, str(OUT / (label + '.odb')))

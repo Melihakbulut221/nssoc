@@ -34,7 +34,9 @@ def main():
                                  stdout=stream, stderr=subprocess.STDOUT)
         text = log.read_text(errors='replace')
         if expected_success:
-            assert rc == 0 and not re.search(r'(?m)^(?:Error:|\[ERROR)', text), str(log)
+            if rc != 0 or re.search(r'(?m)^(?:Error:|\[ERROR)', text):
+                print(f'Native command failed ({rc}); {log}:\n{text[-12000:]}', flush=True)
+                raise RuntimeError(f'Native command failed ({rc}): {log}')
         return rc, text
     save()
     try:

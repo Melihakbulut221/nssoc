@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-12T23:20:58.264790+03:00",
+  "update_at": "2026-10-12T23:45:02.786931+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 12303,
-    "batch": 8,
-    "removed_bytes": 5557530565,
-    "uploaded_bytes": 4910851348
+    "next_index": 13339,
+    "batch": 12,
+    "removed_bytes": 11384788331,
+    "uploaded_bytes": 10711518751
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -89,10 +89,21 @@
     },
     "existing_archive_catalog": {
       "id": 38302888266,
-      "status": "IN_PROGRESS",
+      "status": "COMPLETE_ALL_FOUR_HOSTED_GROUPS",
       "archives": 1059,
       "compressed_bytes": 75971220441,
-      "purpose": "Hash existing archive members on hosted runners so older identical captures can be removed locally without redundant upload. Index alone never authorizes deletion without matching original bytes."
+      "purpose": "Hash existing archive members on hosted runners so older identical captures can be removed locally without redundant upload. Index alone never authorizes deletion without matching original bytes.",
+      "members": 8385,
+      "logical_member_bytes": 199209835777,
+      "errors": []
+    },
+    "routed_four_cell_setup": {
+      "id": 38304835248,
+      "status": "FAIL_PREPARATION_AFTER_EXACT_ROUTED_BASELINE_REPRODUCED",
+      "adopted": false,
+      "archive": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/routed-setup-cloud-38304835248-1.tar.gz",
+      "sha256": "013bc0aadd255f6f7814c44c66fed67ebe67f1f85b159b5deff423a991f00d8c",
+      "diagnosis": "Native preparation rejected resized rebuffer45563 because complete origin/location signature changed during master replacement. Revised candidate preserves its placement location explicitly and allows origin change only for the three declared resized cells; all other retained cell geometry remains exact. New hosted rerun required."
     }
   },
   "cloud_backup": {
@@ -125,5 +136,17 @@
     },
     "files": 386,
     "logical_bytes_removed": 8086287346
+  },
+  "catalog_member_cleanup": {
+    "status": "COMPLETE_VERIFIED_ARCHIVE_MEMBER_CLEANUP",
+    "restoration_manifest": {
+      "name": "catalog-exact-matches.json",
+      "bytes": 1743489,
+      "sha256": "6006fab058813e1894cd74fcff179a88b9b2fe8f85fa80188e97f83fd4336af2",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/catalog-exact-matches.json",
+      "id": 634932148
+    },
+    "files": 2531,
+    "logical_bytes_removed": 109075580966
   }
 }
