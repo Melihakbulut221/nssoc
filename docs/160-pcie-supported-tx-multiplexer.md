@@ -296,8 +296,9 @@ replaced by the propagation-delay diagnostic.
 The [completed critical-bus trial](evidence/pcie-tx-cloud-critical-route-20261013.json)
 passes physical DRC/LVS, native wire extraction and source-bound composition
 for the paired control and both reordered geometries (run 38315447654).
-Each preserves 54 native devices and 173 wire resistors; the control has
-267 capacitors and each reordered variant has 270. The unchanged waveform
+Each preserves 54 native devices. The control has 173 wire resistors and
+267 capacitors, reordered buses have 173 resistors and 270 capacitors, and
+the wider-via variant has 781 resistors and 650 capacitors. The unchanged waveform
 screen still fails with 128 wrong signs: control −251.503 mV, reordered buses
 −242.423 mV, and reordered buses with wider via access −238.701 mV minimum
 margin. All three have zero HBT bound failures and no native diagnostic
