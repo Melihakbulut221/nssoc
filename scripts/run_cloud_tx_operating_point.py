@@ -43,6 +43,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
+    parser.add_argument('--layout-composition', type=Path,
+                        help='Hosted source-bound composition directory for a real layout candidate')
     parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
         'low_r_supply', 'low_r_return', 'low_r_inputs', 'low_r_internal', 'low_r_bias', 'low_r_outputs'), default='actual')
     args = parser.parse_args()
@@ -79,6 +81,21 @@ def main():
                     assert not target.exists()
                     target.write_bytes(data)
             archive.unlink()
+        if args.layout_composition is not None:
+            assert args.kind == 'wire' and args.interconnect == 'actual' and args.point == 'baseline'
+            source = args.layout_composition.resolve()
+            assert source.is_relative_to(ROOT)
+            composed = json.loads((source / 'result.json').read_text())
+            assert composed['status'] == 'PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT'
+            assert composed['composition']['counts']['devices'] == 54
+            assert all(sha(source / name) == digest for name, digest in composed['outputs'].items())
+            wire = inputs / 'mux54-wire01.spice'
+            wire.rename(inputs / 'original-wire.source')
+            shutil.copyfile(source / 'mux54-wire01.spice', wire)
+            shutil.copyfile(source / 'result.json', inputs / 'layout-composition.json')
+            result['actual_layout_composition'] = dict(variant=composed['variant'],
+                report_sha256=sha(source / 'result.json'), mux_sha256=sha(wire),
+                extraction_source=composed['source'], counts=composed['composition']['counts'])
         if args.interconnect != 'actual':
             assert args.point == 'baseline' and args.kind == 'wire'
             wire = inputs / 'mux54-wire01.spice'
@@ -251,7 +268,7 @@ def main():
                       failed_devices={n: d for n, d in review['devices'].items() if not (d['post_passed'] and d['whole_upper_passed'])},
                       diagnostics=review['diagnostics'],
                       status='COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE')
-        if args.point == 'baseline' and args.kind == 'wire' and args.interconnect == 'actual':
+        if args.point == 'baseline' and args.kind == 'wire' and args.interconnect == 'actual' and args.layout_composition is None:
             assert abs(review['signals']['minimum_margin_v'] - (-.26647000795532216)) < 1e-6
             assert review['signals']['wrong_sign_samples'] == 128
             result['previous_failed_wire_baseline_reproduced'] = True

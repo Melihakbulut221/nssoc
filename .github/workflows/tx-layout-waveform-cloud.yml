@@ -1,0 +1,109 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-layout-waveform-cloud
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/tx-layout-waveform-cloud.yml
+      - docs/evidence/pcie-tx-cloud-composition-input-20261013.json
+      - scripts/run_cloud_tx_layout_composition.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-layout-waveform-cloud-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  composition:
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact native runtime on hosted runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Bind native devices and actual candidate parasitics
+        run: python3 scripts/run_cloud_tx_layout_composition.py --variant '${{ matrix.variant }}'
+      - name: Keep composition for hosted transient job
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-layout-composition-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            cloud-tx-layout-composition/result.json
+            cloud-tx-layout-composition/*.spice
+          compression-level: 1
+          retention-days: 30
+          if-no-files-found: error
+      - name: Preserve complete evidence permanently
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-layout-composition-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-layout-composition hw/soc/out/cloud-tx-layout-repair
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-layout-composition/result.json "$summary"
+          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+  native-transient:
+    needs: composition
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Restore exact candidate composition from this hosted run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: tx-layout-composition-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-tx-layout-composition
+      - name: Run fixed-oracle native study and independent complete-wave review
+        run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind wire --layout-composition cloud-tx-layout-composition
+      - name: Preserve all successful and failed native captures permanently
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-layout-wave-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-operating-point
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-operating-point/result.json "$summary"
+          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
