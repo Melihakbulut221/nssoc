@@ -253,3 +253,41 @@ fails: the regular-bus variant gives −251.503 mV and the narrow-bus variant
 −253.319 mV, both with 128 wrong signs across the unchanged 768 samples.
 Successful workflow execution therefore does not mean electrical acceptance.
 Neither layout is adopted; actual interconnect delay still requires work.
+
+
+The [fixed-phase diagnosis](evidence/pcie-tx-cloud-phase-diagnostic-20261013.json)
+locates all 128 wrong signs at 0.3 UI (37.5 ps after the source bit boundary).
+For the thick-metal variant, the TX zero crossing occurs 45.06–58.40 ps
+after that boundary and reaches 100 mV in 52.01–67.23 ps. The mux contributes
+most of this delay. At 0.5 UI there are no wrong signs, but 96 samples fall
+below 100 mV. The 0.7 UI group has no failures.
+
+A [separate propagation-delay diagnosis](evidence/pcie-tx-cloud-latency-diagnostic-20261013.json)
+uses only the first 64 bits to estimate one constant delay, then freezes it.
+For the thick-metal geometry the estimate is 55.681 ps. Evaluation of bits
+64–254 gives 573 samples, no wrong signs and 249.106 mV minimum margin.
+Bit 255 is explicitly excluded because shifted samples exceed the captured
+time range. Polarity inversion creates 573 errors and a one-UI slip creates
+300. The narrow-bus variant gives 249.620 mV with the same evaluation coverage.
+The original 768-sample failed gates are preserved; no waveform, sample limit
+or adoption flag is changed. This diagnostic does not implement a CDR.
+
+This distinction matters for the requested PCIe product. The primary
+[Tektronix PCI Express measurement MOI, version 4.6](https://download.tek.com/document/PCIE_DPOJET_MOI.pdf),
+sections 5.12–5.13, measures data-dependent and uncorrelated jitter against a
+recovered data clock, using repeating compliance patterns and specified
+clock-recovery settings. Our inference is that source-referenced propagation
+delay and serial-data eye degradation require separate measurements. The
+existing short PRBS development captures and fixed-delay diagnostic implement
+neither that compliance method nor a physical CDR. They cannot establish
+PCI-SIG compliance, BER, channel/equalizer behavior, PVT coverage, or complete
+Gen3 x4 PHY acceptance. The source-referenced integration screen still fails.
+
+The next actual geometry trial prioritizes qn/qp, ea/eb, tail and selector
+buses near the devices, with a second variant increasing HBT access vias
+from four to eight columns. Both initially fail one TM2.bR marker in run
+38315004937. The unchanged PDK rule requires 5 µm next to a wide line over a
+long parallel span; the three gaps adjacent to reordered 16 µm supply buses
+are enlarged from 3 to 5 µm. Their repeated complete geometry-to-transient
+pipeline is run 38315447654. No rule is disabled and no failing result is
+replaced by the propagation-delay diagnostic.
