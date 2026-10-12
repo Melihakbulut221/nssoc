@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
-    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup'), default='ideal')
+    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup'), default='ideal')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')
     parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
@@ -258,7 +258,7 @@ def main():
         record['inputs_unchanged'] = all(sha(p) == digest for p, digest in pins.items())
         assert record['inputs_unchanged']
         if args.data_driver != 'ideal':
-            result['data_driver_review'] = driver.review(run, native)
+            result['data_driver_review'] = driver.review(run, native, args.data_driver)
         raw, packed = run / 'wave.dat', run / 'wave.dat.gz'
         raw_pin = dict(bytes=raw.stat().st_size, sha256=sha(raw))
         with raw.open('rb') as source, gzip.open(packed, 'xb', compresslevel=1) as dest:

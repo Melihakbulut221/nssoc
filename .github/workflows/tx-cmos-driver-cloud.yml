@@ -8,6 +8,7 @@ on:
       - .github/workflows/tx-cmos-driver-cloud.yml
       - scripts/cloud_tx_data_driver.py
       - hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc
+      - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        driver: [cmos_resistive, cmos_no_pullup]
+        driver: [cmos_hv_resistive, cmos_hv_no_pullup]
     permissions:
       contents: write
     steps:

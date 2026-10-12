@@ -14,6 +14,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc'
+HV_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc'
 SPEC = ROOT / 'docs/evidence/pcie-cmos-data-driver-input-20261013.json'
 NAMES = ('ap', 'an', 'bp', 'bn')
 VECTORS = ['v(dvdd)', 'i(vdvdd)'] + [v for n in NAMES for v in
@@ -26,7 +27,10 @@ def sha(path):
 
 
 def prepare(deck, inputs, native, mode, pwl):
-    assert mode in ('cmos_resistive', 'cmos_no_pullup')
+    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup')
+    hv = mode.startswith('cmos_hv_')
+    circuit = HV_CIRCUIT if hv else CIRCUIT
+    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv else [])
     spec = json.loads(SPEC.read_text())
     pin = spec['receipt']
     packed = inputs / 'frontend.tar.gz'
@@ -43,38 +47,47 @@ def prepare(deck, inputs, native, mode, pwl):
     bits = native.sequence()
     for n in NAMES:
         values = bits[0::2] if n[0] == 'a' else bits[1::2]
-        source = f'V{n} {n}0 0 ' + pwl(values, .6, .6, 2 * native.UI, n[1] == 'n')
+        # The HV common-source stage inverts. Complement the CMOS gate data
+        # so that actual ap/an, bp/bn retain the original serial bit order.
+        invert = (n[1] == 'n') != hv
+        source = f'V{n} {n}0 0 ' + pwl(values, .6, .6, 2 * native.UI, invert)
         deck, count = re.subn(r'(?ms)^V' + n + r' [^\n]+ PWL\(.*?\)', lambda _: source, deck)
         assert count == 1
         old = f'R{n} {n}0 {n} 25'
         assert deck.count(old) == 1
-        rail = 'avdd' if mode == 'cmos_resistive' else '0'
-        deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 nssoc_tx_cmos_resistive_input_v1')
-    additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{CIRCUIT}"',
+        rail = '0' if mode.endswith('no_pullup') else 'avdd'
+        subckt = 'nssoc_tx_cmos_hv_resistive_input_v2' if hv else 'nssoc_tx_cmos_resistive_input_v1'
+        deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 {subckt}')
+    additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{circuit}"',
                  f'.lib "{dest / "models/cornerMOSlv.lib"}" mos_tt',
                  'VDVDD dvdd 0 PWL(0 0 1n 1.2)']
+    if hv:
+        additions.append(f'.lib "{dest / "models/cornerMOShv.lib"}" mos_tt')
     deck = deck.replace('.control\n', '\n'.join(additions) + '\n.control\n' +
                         f'pre_osdi {dest / "psp103.osdi"}\npre_osdi {dest / "psp103_nqs.osdi"}\n' +
-                        'save ' + ' '.join(VECTORS) + '\n', 1)
-    deck = deck.replace('wrdata op.dat ', 'wrdata frontend-op.dat ' + ' '.join(VECTORS) + '\nwrdata op.dat ', 1)
-    deck = deck.replace('wrdata wave.dat ', 'wrdata frontend-wave.dat ' + ' '.join(VECTORS) + '\nwrdata wave.dat ', 1)
-    record = dict(mode=mode, source_sha256=sha(CIRCUIT), input_capsule_sha256=pin['sha256'],
-        expected_devices=dict(mos=16, native_resistors=12),
+                        'save ' + ' '.join(vectors) + '\n', 1)
+    deck = deck.replace('wrdata op.dat ', 'wrdata frontend-op.dat ' + ' '.join(vectors) + '\nwrdata op.dat ', 1)
+    deck = deck.replace('wrdata wave.dat ', 'wrdata frontend-wave.dat ' + ' '.join(vectors) + '\nwrdata wave.dat ', 1)
+    record = dict(mode=mode, source_sha256=sha(circuit), input_capsule_sha256=pin['sha256'],
+        expected_devices=dict(lv_mos=16, hv_mos=16 if hv else 0, native_resistors=12),
         prospective_screen=dict(mos_terminal_abs_limit_v=1.32, sampled_common_mode_v=[1.80, 2.05],
+                                hv_mos_terminal_abs_limit_v=2.75 if hv else None,
                                 minimum_sampled_differential_v=.15, input_source_rate_gbps=4.0),
         scope='Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim.')
-    return deck, record, [Path(__file__), CIRCUIT, SPEC]
+    return deck, record, [Path(__file__), circuit, SPEC]
 
 
-def review(run, native):
+def review(run, native, mode):
+    hv = mode.startswith('cmos_hv_')
+    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv else [])
     op = np.loadtxt(run / 'frontend-op.dat', skiprows=1)
-    assert op.size == len(VECTORS) + 1 and np.isfinite(op).all() and np.max(np.abs(op)) <= 1e-10
+    assert op.size == len(vectors) + 1 and np.isfinite(op).all() and np.max(np.abs(op)) <= 1e-10
     wave = run / 'frontend-wave.dat'
     data = np.loadtxt(wave, skiprows=1)
-    assert data.shape[1] == len(VECTORS) + 1 and np.isfinite(data).all()
+    assert data.shape[1] == len(vectors) + 1 and np.isfinite(data).all()
     t = data[:, 0]
     assert np.all(np.diff(t) > 0) and t[0] == 0 and t[-1] >= native.STOP - 1e-15
-    v = dict(zip(VECTORS, data[:, 1:].T, strict=True))
+    v = dict(zip(vectors, data[:, 1:].T, strict=True))
     dvdd = v['v(dvdd)']
     devices = {}
     for name in NAMES:
@@ -84,6 +97,12 @@ def review(run, native):
             peaks = {k: float(np.max(np.abs(a - b))) for k, a, b in
                      [('vds', drain, source), ('vgs', control, source), ('vgd', control, drain)]}
             devices[f'xad_{name}.xbuf.{label}'] = dict(peaks=peaks, passed=max(peaks.values()) <= 1.32)
+        if hv:
+            sink = v[f'v(xad_{name}.sink)']
+            peaks = dict(vds=float(np.max(np.abs(sink))), vgs=float(np.max(np.abs(drv))),
+                         vgd=float(np.max(np.abs(drv - sink))))
+            for index in range(4):
+                devices[f'xad_{name}.XHV_{index}'] = dict(peaks=peaks, passed=max(peaks.values()) <= 2.75)
     bits = native.sequence()
     observations = []
     for port, values in [('a', bits[0::2]), ('b', bits[1::2])]:
