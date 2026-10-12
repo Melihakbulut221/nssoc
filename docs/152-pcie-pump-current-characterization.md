@@ -2,6 +2,85 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 04:34 TRT
+
+The **exact filled packet-PCIe/Ethernet core** now passes the complete locked
+native main DRC, antenna and density scope. All seven
+[GitHub jobs](https://github.com/Melihakbulut221/nssoc/actions/runs/38177044286)
+completed successfully; local independent review checks the actual reports,
+catalogs, logs and input hashes against GDS
+`2b8fead5fa691588efa2754a85b156f77765ba6fd101b6eaee06ed063de3f525`.
+
+| Completed scope | Coverage | Markers |
+| --- | ---: | ---: |
+| Main native DRC | 560 categories | 0 |
+| Antenna | 31 categories | 0 |
+| Supplemental wide-metal checks | 11 categories | 0 |
+| Density | All 37 rule executions | 0 |
+
+The aggregate also rejects five deliberately corrupted records: a missing
+BEOL shard, wrong GDS, nonzero markers, missing category and incomplete density
+execution. These are record-validation controls, not new layout simulations.
+The [complete final DRC evidence](evidence/pcie-filled-native-final-20261012.json)
+contains 49 members / 161,792 bytes, SHA-256
+`2132b2a09e2023af0e3b8e2af9577b4aec4b4a3a773240055f5ace22bc6e0585`.
+This closes the listed DRC scope for that filled core snapshot. It does not
+validate the separate timing ECO, serial PHY, padframe, transistor LVS,
+fill-aware qualified extraction, final timing or manufacturing readiness.
+
+The unchanged 1 µs PLL reference run is still active. A read-only prefix
+through 300 ns, bound to its live process identity and read twice identically,
+shows why acquisition remains open. The original unfinished raw header is
+retained; no complete capture is fabricated. Independent crossing extraction
+finds the following behavior in the 200–300 ns diagnostic window:
+
+- VCO: **7.460146 GHz**; feedback: **93.353087 MHz** against 100 MHz.
+- Feedback error: **−66,469 ppm**; phase range: **5.696 ns**.
+- Individual divider stages preserve their ratios in this window, but total
+  VCO-to-feedback /80 fixed-phase validation fails. Intervals include 79 and
+  81 VCO edges; 13 fixed-anchor phase rows fail.
+
+![Unfinished original PLL capture through 300 ns](img/pcie-parent865-prefix300-20261012.png)
+
+The plot shows actual VCO frequency, control voltage and feedback phase. Later
+stage window anchors are diagnostic only. Final 800–900 ns and 900–1000 ns
+acquisition criteria remain unchanged at 100 ppm, 50 ps and no slips.
+
+A separate physical candidate increases only the upper pump-bias resistor
+from **80 to 140 µm**, keeping its 1 µm width. With the measured negative VCO
+control slope, lowering the passive bias is a testable frequency correction;
+its closed-loop benefit is **not yet established**. The candidate preserves
+the pump's seven pin shapes and bounding box. It passes native 560-category
+DRC, hierarchical and flat 30-device LVS, and all five actual geometry/reference
+fault controls. The first generation attempt failed because its output parent
+directory did not exist; that log remains in the evidence.
+
+The new pump is inserted into a fresh **865-device PLL layout**. Independent
+comparison preserves every parent route, via, port and other macro geometry;
+the reference differs only in the intended resistor length and cell names.
+Parent DRC and hierarchical/flat transistor LVS pass. Fresh pump extraction
+binds 52 metal terminals and 29 body terminals through 59 reference points,
+with **84 resistors and 155 capacitors**. Graph and capacitance-conservation
+checks and 13 actual corrupted-export controls pass. The parent composition
+contains all 865 devices and 8,783 wire elements; seven corrupted compositions
+are rejected. Only geometrically identical parent conductors reuse their old
+wire model. The changed pump uses its newly extracted model. Substrate spreading
+and RF extraction remain unqualified.
+
+A new nominal **50 ns, 0.3125 ps maximum-step** simulation is running with all
+**2,438 columns**, zero-source startup and the original electrical checks.
+Prospective measurement and boundary checks reject 11 waveform faults and six
+boundary faults before dispatch. Independent full-capture reviews run after
+completion. This candidate has no accepted transient result yet.
+
+The [physical candidate and prefix evidence](evidence/pcie-rhi140-physical-20261012.json)
+contains 171 members / 158,071,594 bytes, SHA-256
+`ccc6a2c1a2b333e930c23722172ed66981ea21c2c6a26a5f22b15b797e1992fa`.
+Both capsules have complete member and anonymous-download verification. Active
+captures are excluded. Main-chip hold repair, conservative routing and the
+combined credit-offer joint tests continue. **Full serial PHY, accepted main-chip
+routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 03:55 TRT
 
 The follow-up TX credit cofactor retains the original prefix attributes,
