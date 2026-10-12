@@ -2,6 +2,28 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Public full-core failure evidence — 12 October, 11:38 TRT
+
+The [complete additional public delivery](evidence/pcie-banked-full-core-lvs-public-20261012.json)
+contains the failed full-core transistor comparison database, extraction,
+reference and logs, plus the 322 µm TX native electrical captures. Complete
+anonymous download and hash verification pass. This is reproducible failure
+evidence, not LVS or PHY acceptance.
+
+The upper-metal TX variant now passes all physical checks. A stale Metal5 pin
+assumption in the extraction helper was corrected to the actual TopMetal2
+geometry; fresh extraction/graph/composition controls pass. Its RC-loaded
+transient is active. Earlier copied controller status filenames were reused;
+those shared root status files are not per-run evidence. Immutable native
+capture results, independent reviews and physical reports remain intact, and
+the fresh controller has unique output filenames.
+
+The fast-MOS/−40 °C full PLL case also stopped at the existing 2 GiB RAM
+floor. It has no complete electrical verdict and is not currently running.
+The fresh one-microsecond PBUF retry and NPU map are running; baseline PLL
+retry waits its turn. Full serial PHY, routed main-chip signoff and final
+setup/hold remain open.
+
 ## Causal wake proof, post-CTS and full-core LVS — 12 October, 11:20 TRT
 
 The [updated evidence record](evidence/pcie-tx-wake-postcts-progress-20261012.json)

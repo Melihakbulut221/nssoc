@@ -124,3 +124,15 @@ Complete public download verification passes. The later 322 µm electrical
 captures and full hot-PLL waveform are excluded from that archive. The
 [updated evidence record](evidence/pcie-tx-wake-postcts-progress-20261012.json)
 binds the latest completed verdicts and their limitations.
+
+The completed 322 µm compact/distributed captures and full failed routed-core
+LVS database, extracted circuit, independent reference and logs are now in a
+[separate public archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-banked-capture-and-full-core-lvs-20261012.tar.gz).
+Its 203,436,852 bytes have SHA-256
+`1044e318c216bb89b14df02fbb820629de29b3c008b4f4c9aa0ffe599e58ff22`;
+[complete public readback passes](evidence/pcie-banked-full-core-lvs-public-20261012.json).
+This also preserves the initial upper-metal spacing and subsequent connection
+failures, and the next trial's methods. The corrected upper-metal geometry
+passes DRC, hierarchical/flat LVS and five fault controls. Extraction initially
+stopped because its helper still expected Metal5 public pins; a fresh helper
+checks the actual TopMetal2 pin geometry. Its transient is not yet accepted.
