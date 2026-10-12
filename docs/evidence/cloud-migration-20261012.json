@@ -51,7 +51,7 @@
   "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
   "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
   "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
-  "update_at": "2026-10-12T23:54:43.603594+03:00",
+  "update_at": "2026-10-13T02:25:00.321358+03:00",
   "verified_duplicate_cleanup": {
     "files": 693,
     "logical_bytes_removed": 27234285735,
@@ -59,10 +59,10 @@
   },
   "transfer_progress_snapshot": {
     "status": "RUNNING",
-    "next_index": 15675,
-    "batch": 19,
-    "removed_bytes": 15996366612,
-    "uploaded_bytes": 13479663715
+    "next_index": 179555,
+    "batch": 86,
+    "removed_bytes": 62767121900,
+    "uploaded_bytes": 46433593712
   },
   "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
   "transfer_service": "nssoc-cloud-output-transfer-20261012",
@@ -208,8 +208,33 @@
   },
   "continue_policy": {
     "compute": "GitHub-hosted only; never restart historical local native units.",
-    "transfer": "Only active local nssoc service is nssoc-cloud-output-transfer-20261012. Preserve its state until all unique uploads are verified. Resume existing plan on interruption; do not regenerate it.",
+    "transfer": "Two local transfer/cleanup services only: nssoc-cloud-output-transfer-20261012 and nssoc-cloud-pnr-transfer-20261013. Preserve each separate state and frozen plan. No local CAD/tests. No duplicate transfer service.",
     "cleanup": "No source repository or tool deletion while scope question unanswered. All32 historical untracked source files additionally preserved in published recovery capsule.",
     "acceptance": "No PHY, routed-ECO or final timing closure claimed. Current engineering candidates require their own proofs and physical checks."
+  },
+  "pnr_expansion": {
+    "reason": "Latest read-only inventory found40GiB generated historical PNR runs outside original hw/soc/out plan.",
+    "command": "python3 scripts/migrate_outputs_to_cloud.py --scope pnr-runs --apply",
+    "service": "nssoc-cloud-pnr-transfer-20261013",
+    "state": "hw/soc/out/cloud-migration-pnr-20261013",
+    "source_guard": "Refuses scope if git ls-files hw/soc/pnr/runs is nonempty. Source PNR scripts/configs outside runs retained.",
+    "hosted_validation_run": 38321669905,
+    "validation": "PASS23 safety tests plus SPDX/inventory/REUSE; no local tests run."
+  },
+  "verified_input_capsule_copy_cleanup": {
+    "files": 4,
+    "logical_bytes_removed": 93958577,
+    "manifest_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/verified-cloud-input-copy-cleanup-20261013.json",
+    "manifest_sha256": "c3a8fc8a7e314b83bd3742cb4019927ceb10106c96527ff1cf2c50e639097ba4"
+  },
+  "generated_cache_cleanup": {
+    "files": 1072,
+    "logical_bytes_removed": 147324425,
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/generated-site-cache-cleanup-20261013.tar.gz",
+      "sha256": "c6ff781cc6e318a5b81db21439059fe66ff830aa89fdd46db8fc61dc9110cca6",
+      "bytes": 104877765
+    },
+    "manifest_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/generated-site-cache-cleanup-20261013.json"
   }
 }

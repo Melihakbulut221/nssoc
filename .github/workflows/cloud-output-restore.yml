@@ -9,6 +9,12 @@ on:
       - scripts/verify_cloud_output_restore.py
       - sw/tests/test_cloud_restore_hardlinks.py
   workflow_dispatch:
+    inputs:
+      archive_scope:
+        description: Published archive family to reconstruct
+        type: choice
+        options: [all, outputs, pnr-runs]
+        default: all
 permissions:
   contents: read
 jobs:
@@ -35,7 +41,7 @@ jobs:
       - name: Reconstruct every original byte from complete published batches
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/verify_cloud_output_restore.py --group '${{ matrix.group }}'
+        run: python3 scripts/verify_cloud_output_restore.py --group '${{ matrix.group }}' --archive-scope '${{ inputs.archive_scope || 'all' }}'
       - name: Preserve readback results
         if: always()
         env:

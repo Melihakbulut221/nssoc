@@ -353,3 +353,12 @@ incomplete-capture controls run on hosted workers. No fitted phase replaces
 the failed source-relative gate. Both supply-disconnection fault captures
 are retained. No full serializer, PLL/CDR, physical driver layout, PVT
 qualification, foundry SOA or full PHY acceptance is claimed.
+
+
+The additional original-bit screen completed in hosted run 38321423547.
+The powered HV candidate has 192 wrong signs among 768 final-output samples,
+with a minimum margin of −306.263 mV. The disconnected-pullup control has
+440 wrong signs and all 768 samples below 100 mV. All seven oracle corruption
+and coverage tests pass in both hosted jobs. These results confirm why the
+input-relative reviewer cannot stand in for the original source-bit check;
+the candidate remains rejected and no output phase or threshold is changed.

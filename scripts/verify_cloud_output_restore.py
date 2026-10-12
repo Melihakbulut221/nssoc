@@ -111,17 +111,21 @@ def audit(manifest, assets, work):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', type=int, required=True)
+    parser.add_argument('--archive-scope', choices=['all', 'outputs', 'pnr-runs'], default='all')
     args = parser.parse_args()
     assert 0 <= args.group < 4
     out = Path('cloud-output-restore')
     out.mkdir(exist_ok=False)
-    result = dict(status='RUNNING', group=args.group, batches=[],
+    result = dict(status='RUNNING', group=args.group, archive_scope=args.archive_scope, batches=[],
                   scope='Full compressed asset and reconstructed original-byte checks for complete published batch manifests at this run snapshot. Partial uploads and prior independent catalog cleanup are excluded.')
     try:
+        prefixes = {'outputs': ('cloud-migration-20261012-',),
+                    'pnr-runs': ('cloud-migration-pnr-20261013-',),
+                    'all': ('cloud-migration-20261012-', 'cloud-migration-pnr-20261013-')}
         releases = pages(f'repos/{REPO}/releases?per_page=100')
         worklist = []
         for release in releases:
-            if not release['tag_name'].startswith(('cloud-migration-20261012-', 'cloud-migration-pnr-20261013-')):
+            if not release['tag_name'].startswith(prefixes[args.archive_scope]):
                 continue
             items = pages(f'repos/{REPO}/releases/{release["id"]}/assets?per_page=100')
             assets = {a['name']: a for a in items}
