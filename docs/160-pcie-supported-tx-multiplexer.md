@@ -74,8 +74,13 @@ qualified. The compact 54-device model passes with **270.352 mV** signed margin.
 The distributed-RC model **fails**: minimum signed margin is **−84.941 mV**,
 with **365 wrong-sign samples out of 768** and four selector-device headroom
 failures. Both simulations complete without numerical diagnostics. The
-1,086 µm-wide layout is therefore not accepted for 8 GT/s operation. A fresh
-706 µm-wide placement with shorter port stubs is under verification.
+1,086 µm-wide layout is therefore not accepted for 8 GT/s operation. The
+706 µm-wide placement also passes DRC/LVS and fault checks but fails its
+173 R / 271 C transient: **−118.833 mV** minimum margin and **411/768**
+wrong-sign samples. Its transistor bounds pass. It is not adopted. A DC
+diagnostic measures about **220 mV** ground difference between the reference
+and tail emitters in that layout; a fresh layout widens current-carrying
+metal and adds a local shared emitter connection. That repair is unverified.
 
 An 81-point HBT/resistor/temperature/common-supply matrix is active. Its
 **125 °C, 95%-supply typical-model point already fails data-pair VCE**, although
@@ -96,5 +101,11 @@ is 616,153,397 bytes with SHA-256
 `135b634078a5c4e7134880163099f08b6bfb99ccce6063c2df2c74861cbd85ea`;
 all members and the complete anonymous public download are verified. Active
 full-matrix data and the later compact/extracted transient captures are
-excluded from that archive. The latter local results are identified separately
-in the manifest; their public waveform delivery is pending.
+excluded from that archive. The original compact and 1,086 µm distributed-RC captures are now in a
+[separate 122-member archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-mux2-wire-failure-and-joint-tests-20261012.tar.gz):
+102,762,559 bytes, SHA-256
+`01d7203032a7c9a22a9fd8aac58a6133bca1518675195bda29ee17ca03bd6d29`,
+with complete public byte/hash verification. It also includes the four
+positive CPU/NPU/PCIe/Ethernet tests and metadata for the failed hot PLL
+point. The later 706 µm transient and full hot-PLL waveform remain local
+pending their separate delivery.

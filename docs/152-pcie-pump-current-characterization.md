@@ -2,6 +2,19 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Extracted TX follow-up — 12 October, 10:32 TRT
+
+The 706 µm TX layout passes native DRC/LVS and faults but still fails its
+extracted transient. A measured reference-to-tail emitter ground difference
+of about 220 mV motivates wider current-carrying metal and a shared local
+emitter connection; that next geometry is unverified. See the
+[supported TX record](160-pcie-supported-tx-multiplexer.md).
+
+The original compact/distributed TX captures and both positive joint digital
+test suites now pass full public readback in the linked 122-member archive.
+The full hot PLL capture and the shorter TX transient are not included.
+Full serial PHY, routed main-chip acceptance and final timing remain open.
+
 ## Supported TX layout and integrated tests — 12 October, 10:16 TRT
 
 The [supported-device TX multiplexer](160-pcie-supported-tx-multiplexer.md)
