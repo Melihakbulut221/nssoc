@@ -11,6 +11,7 @@ on:
       - hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v3.inc
+      - hw/soc/analog/pcie/tx_cmos_hv_current_input_v4.inc
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        driver: [cmos_hv_resistive, cmos_hv_light]
+        driver: [cmos_hv_light, cmos_hv_direct]
         launch: [coincident, inactive_half_cycle]
     permissions:
       contents: write

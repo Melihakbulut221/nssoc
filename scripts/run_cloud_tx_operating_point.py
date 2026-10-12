@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
-    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light'), default='ideal')
+    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct'), default='ideal')
     parser.add_argument('--data-launch', choices=('coincident', 'inactive_half_cycle'), default='coincident')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')

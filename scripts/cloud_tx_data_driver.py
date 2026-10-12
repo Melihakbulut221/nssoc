@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc'
 HV_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc'
 LIGHT_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v3.inc'
+DIRECT_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_current_input_v4.inc'
 SPEC = ROOT / 'docs/evidence/pcie-cmos-data-driver-input-20261013.json'
 NAMES = ('ap', 'an', 'bp', 'bn')
 VECTORS = ['v(dvdd)', 'i(vdvdd)'] + [v for n in NAMES for v in
@@ -64,11 +65,12 @@ def half_cycle_launch(pwl, start, stop, ui):
 
 
 def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
-    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light')
+    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light', 'cmos_hv_direct')
     assert launch in ('coincident', 'inactive_half_cycle')
     hv = mode.startswith('cmos_hv_')
-    circuit = LIGHT_CIRCUIT if mode == 'cmos_hv_light' else HV_CIRCUIT if hv else CIRCUIT
-    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv else [])
+    direct = mode == 'cmos_hv_direct'
+    circuit = DIRECT_CIRCUIT if direct else LIGHT_CIRCUIT if mode == 'cmos_hv_light' else HV_CIRCUIT if hv else CIRCUIT
+    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv and not direct else [])
     spec = json.loads(SPEC.read_text())
     pin = spec['receipt']
     packed = inputs / 'frontend.tar.gz'
@@ -97,7 +99,8 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
         old = f'R{n} {n}0 {n} 25'
         assert deck.count(old) == 1
         rail = '0' if mode.endswith('no_pullup') else 'avdd'
-        subckt = ('nssoc_tx_cmos_hv_resistive_input_v3' if mode == 'cmos_hv_light' else
+        subckt = ('nssoc_tx_cmos_hv_current_input_v4' if direct else
+                  'nssoc_tx_cmos_hv_resistive_input_v3' if mode == 'cmos_hv_light' else
                   'nssoc_tx_cmos_hv_resistive_input_v2' if hv else 'nssoc_tx_cmos_resistive_input_v1')
         deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 {subckt}')
     additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{circuit}"',
@@ -113,7 +116,7 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
     record = dict(mode=mode, source_sha256=sha(circuit), input_capsule_sha256=pin['sha256'],
         launch=launch, a_transition_advance_s=native.UI if launch == 'inactive_half_cycle' else 0,
         launch_scope='Prospective external gate-data availability contract, not an implemented upstream serializer/clock tree. A changes one serial UI before selection; B unchanged. Source bits and all final-output observation times unchanged.' if launch != 'coincident' else 'Historical coincident gate-data launch retained.',
-        expected_devices=dict(lv_mos=16, hv_mos=16 if hv else 0, native_resistors=12),
+        expected_devices=dict(lv_mos=16, hv_mos=16 if hv else 0, native_resistors=8 if direct else 12),
         prospective_screen=dict(mos_terminal_abs_limit_v=1.32, sampled_common_mode_v=[1.80, 2.05],
                                 hv_mos_terminal_abs_limit_v=2.75 if hv else None,
                                 minimum_sampled_differential_v=.15, input_source_rate_gbps=4.0),
@@ -123,7 +126,8 @@ def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
 
 def review(run, native, mode):
     hv = mode.startswith('cmos_hv_')
-    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv else [])
+    direct = mode == 'cmos_hv_direct'
+    vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv and not direct else [])
     op = np.loadtxt(run / 'frontend-op.dat', skiprows=1)
     assert op.size == len(vectors) + 1 and np.isfinite(op).all() and np.max(np.abs(op)) <= 1e-10
     wave = run / 'frontend-wave.dat'
@@ -142,7 +146,7 @@ def review(run, native, mode):
                      [('vds', drain, source), ('vgs', control, source), ('vgd', control, drain)]}
             devices[f'xad_{name}.xbuf.{label}'] = dict(peaks=peaks, passed=max(peaks.values()) <= 1.32)
         if hv:
-            sink = v[f'v(xad_{name}.sink)']
+            sink = v[f'v({name})'] if direct else v[f'v(xad_{name}.sink)']
             peaks = dict(vds=float(np.max(np.abs(sink))), vgs=float(np.max(np.abs(drv))),
                          vgd=float(np.max(np.abs(drv - sink))))
             for index in range(4):

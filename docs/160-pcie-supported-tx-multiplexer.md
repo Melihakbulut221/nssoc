@@ -362,3 +362,23 @@ with a minimum margin of −306.263 mV. The disconnected-pullup control has
 and coverage tests pass in both hosted jobs. These results confirm why the
 input-relative reviewer cannot stand in for the original source-bit check;
 the candidate remains rejected and no output phase or threshold is changed.
+
+
+The [paired launch-contract study](evidence/pcie-cmos-launch-contract-20261013.json)
+in run 38322832591 retains all original final-output observation times and
+limits. Its prospective external interface presents A data 125 ps before
+selection, while B launch is unchanged. This is a separately declared
+upstream data-availability requirement; it does not implement the upstream
+serializer or move the output oracle. Both coincident-launch controls retain
+192 wrong signs. With the inactive-bank launch, both candidates have zero
+wrong signs and zero samples below 100 mV. The lighter v3 driver reaches
+210.161 mV minimum output margin, but still has four HBT headroom failures
+(minimum VCE 0.262526 V) and 128 selected-input samples below 150 mV. It is
+not adopted. Legacy half-rate input observations remain recorded, including
+unselected slots in which the next value is already being prepared.
+
+The following v4 candidate connects the native HV drains directly to the
+loaded data node, removing the intermediate resistor/drain RC node. Its
+four 4 um HV branches and two native rail-setting resistors per input still
+require native transient and device checks. The v3 control is retained; no
+limits, data sequence, or final-output sample phases are relaxed.
