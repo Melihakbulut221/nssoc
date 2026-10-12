@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T00:19:17.886809+03:00",
+  "as_of": "2026-10-13T00:24:06.779005+03:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "User cloud-only instruction overrides historical local goal text. All CAD, simulation and tests on GitHub-hosted runners. Local transfer/cleanup service only.",
-  "head": "3af51038",
+  "head": "e022235e",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -51,15 +51,17 @@
   },
   "live_followup": {
     "run": 38309700516,
-    "last_verified_status": "queued",
+    "last_verified_status": "completed",
     "task": "Seven hosted native cases: actual control plus individual supply/return/input/output/bias/internal metal resistance reduction; graph-derived component classes identify geometry for real repair.",
-    "workflow": "tx-interconnect-diagnostic-cloud.yml"
+    "workflow": "tx-interconnect-diagnostic-cloud.yml",
+    "result": "All7 native net-class diagnostics completed; all still fail unchanged signal margin. Internal-wire resistance reduction removes all19 device failures, supply reduction leaves6; input/output/bias/return reductions leave19. No geometry adopted.",
+    "evidence": "docs/evidence/pcie-tx-cloud-net-diagnostic-20261013.json"
   },
   "validation": {
     "previous_completed_run": 38308672412,
     "result": "SPDX, inventory, REUSE and3 migration safety tests PASS",
     "latest_run": 38309767042,
-    "latest_status": "dispatched"
+    "latest_status": "PASS_SPDX_INVENTORY_REUSE_AND_THREE_MIGRATION_TESTS"
   },
   "transfer_snapshot": {
     "status": "RUNNING",
@@ -69,9 +71,22 @@
     "uploaded_bytes": 18142275549
   },
   "next_actions": [
-    "Inspect run38309700516 and exact waveform/graph records. Repair identified real geometry; rerun DRC, LVS, native extraction and unchanged full-wave checks before adoption.",
+    "Restore latest layout91 generator and physical92 verification inputs in cloud from migration manifests. Inspect/widen or shorten the five internal metal networks while preserving legal separation, then regenerate actual layout, DRC/LVS, native extraction and unchanged full-wave verification. Artificial resistance floors are not a design fix.",
     "Trace current CPU/PCIe critical flop nets to RTL; repair remaining long logic chain and high-capacitance NOR4 path. Paired estimates improve PCIe only, remain far from closure.",
     "Audit1 unconstrained endpoint and1078 unannotated drivers before any comprehensive timing claim. Preserve original SDC and clocks.",
     "Keep migration service and restoration maps; no deletion of unverified unique sources or outputs and no local CAD restart."
-  ]
+  ],
+  "extraction_source_inspection": {
+    "runs": [
+      38310077378,
+      38310080674
+    ],
+    "status": "COMPLETE",
+    "findings": "Actual229R/301C graph derives from native Magic wire-only GDS extraction, not hand-entered parasitics. Runtime library is custom area-product-v4 hash e8f2d96121e704acee41e7a58c23feead887527e3bfc4f51da4d97aa8183970e, with pad-stack tech. Composition retains54 native devices and112metal anchors across17conductors. Magic extraction is still unqualified RFPEX.",
+    "source_members": [
+      "hw/soc/out/pcie-tx-mux2-20261012/wire96/run-rc01.py",
+      "hw/soc/out/pcie-tx-mux2-20261012/wire96/compose49.py"
+    ],
+    "archive": "batch-000023.tar.gz"
+  }
 }

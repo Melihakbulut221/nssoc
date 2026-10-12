@@ -195,6 +195,11 @@ the unchanged 100 mV requirement. Removing capacitance alone still produces
 96 wrong signs and 19 device failures. Removing both effects gives 270.333 mV,
 close to the compact model. These artificial parasitic mutations diagnose the
 interconnect mechanism only and cannot be used for layout or PHY acceptance.
-Follow-up runs isolate supply, return, input, output, bias and internal metal
-networks before deciding which physical geometry to repair. Full serial PHY, main-chip route
+The [seven net-class follow-ups](evidence/pcie-tx-cloud-net-diagnostic-20261013.json)
+also complete. Reducing only internal metal resistance removes all 19 device
+bound violations but still gives −140.752 mV and 128 wrong samples. Reducing
+only supply resistance leaves six device failures; reducing return, input,
+output or bias resistance alone leaves 19. All fail the unchanged output
+requirement. Real internal interconnect and RC coverage still need repair;
+no diagnostic source is substituted for the physical design. Full serial PHY, main-chip route
 acceptance and final setup/hold remain open. All compute runs on hosted runners.
