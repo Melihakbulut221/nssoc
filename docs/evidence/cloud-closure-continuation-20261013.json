@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T00:58:00.819178+03:00",
+  "as_of": "2026-10-13T01:01:36.333086+03:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "User cloud-only instruction overrides historical local goal text. All CAD, simulation and tests on GitHub-hosted runners. Local transfer/cleanup service only.",
-  "head": "f46289a5",
+  "head": "e852acbf",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -52,9 +52,10 @@
   "live_followup": {
     "run": 38313404684,
     "workflow": "tx-layout-waveform-cloud.yml",
-    "last_verified_status": "in_progress",
+    "last_verified_status": "completed",
     "task": "Restore validated candidate geometry and its native54 devices/RC, compose physical anchors, run unchanged8GT/s full-wave review on Ubuntu24 after Ubuntu22 composition. No artificial RC edits.",
-    "last_verified_jobs": "Topmetal and baseline composition passed; narrow bus composition running. Transients depend on all composition jobs."
+    "result": "All three native full-wave captures and reviews completed; all signal screens FAIL. Thick-metal geometries remove all19 native HBT bound failures, but retain128 wrong samples. Neither candidate adopted.",
+    "evidence": "docs/evidence/pcie-tx-cloud-layout-waveforms-20261013.json"
   },
   "validation": {
     "run": 38313504168,
@@ -73,7 +74,7 @@
     "uploaded_bytes": 26283724098
   },
   "next_actions": [
-    "Read all three complete-wave reports from38313404684; compare baseline reproduction and native transistor bounds. Reject failing geometries without weakening100mV or8GT/s gates.",
+    "Investigate phase-specific output delay and remaining actual interconnect RC in the two physically valid thick-metal candidates. All768samples and100mV/8GT limits remain unchanged. Native bounds are now clean but128wrong-sign samples remain. Do not adopt or call PHY complete.",
     "Keep transfer service active; originals removed only after exact hosted part and restore-map verification.49batches reconstructed independently; new later batches need later snapshot verification.",
     "Full serial PHY, chip route and final setup/hold remain OPEN; earlier paired global-route estimate is not final signoff.",
     "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published. Do not restart local CAD."

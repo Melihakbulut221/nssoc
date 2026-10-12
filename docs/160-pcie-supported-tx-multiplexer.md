@@ -234,7 +234,7 @@ per-point ground capacitance, mutual capacitance attachments and the collapsed
 capacitance matrix pass the frozen audit; all thirteen corruption controls are
 rejected. These counts alone do not establish better electrical behavior.
 The source-bound native-device composition and unchanged 8 GT/s full-wave
-review are running in 38313404684; electrical adoption remains false.
+review completed in 38313404684; electrical adoption remains false.
 
 The [cloud restore readback](evidence/cloud-output-restore-20261013.json)
 reconstructs 49 migration batches, 32,196 original files and 36,080,201,324
@@ -244,3 +244,12 @@ Ten safety tests per group reject unsafe or incorrect restore records and
 exercise deletion/resume gates. The first reader lacked hard-link support;
 its failed run is retained. Later uploads and the remaining local files are
 outside this completed snapshot; cleanup is still in progress.
+
+The [completed actual-layout waveform comparison](evidence/pcie-tx-cloud-layout-waveforms-20261013.json)
+reproduces the baseline margin within 1 µV and its 128 wrong-sign samples.
+Both thick-metal layouts eliminate all nineteen HBT operating/startup bound
+failures and emit no native diagnostic warnings. Their signal screen still
+fails: the regular-bus variant gives −251.503 mV and the narrow-bus variant
+−253.319 mV, both with 128 wrong signs across the unchanged 768 samples.
+Successful workflow execution therefore does not mean electrical acceptance.
+Neither layout is adopted; actual interconnect delay still requires work.
