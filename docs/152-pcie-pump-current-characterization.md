@@ -2,6 +2,31 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Supported TX layout and integrated tests — 12 October, 10:16 TRT
+
+The [supported-device TX multiplexer](160-pcie-supported-tx-multiplexer.md)
+passes three schematic points, strict timestep convergence, native 560-rule
+DRC and 54-device hierarchical/flat LVS with actual fault controls. Its
+layout-derived 173 R / 291 C simulation fails data and device screens, and
+the hot/low-supply corner still fails. A shorter layout is under verification;
+full PHY acceptance remains open.
+
+Both completed NPU wake integration suites pass **2/2 tests each, no skips**:
+the collateral CPU/PCIe/Ethernet test and the actual clock-gated NPU-traffic
+variant. Native vendor FIFO SRAMs and POR MBIST remain enabled. The latter
+records 6 NPU writes, 9 reads, 15 sleeping requests and 3 Ethernet frames.
+Five pre-existing AXI-width elaboration warnings remain; runtime diagnostics
+are empty. The disabled-wake fault and mapped all-group timing comparison
+are still pending, so the new option is not adopted for timing closure.
+
+The PBUF10 slow-MOS/125 °C full capture finishes **functionally failed**, with
+only the finite-complete-capture check passing out of sixteen checks. The
+independent reader reproduces that failure; all-device electrical screens
+pass. The fast-MOS/−40 °C run is active. A reader's “remeasurement PASS” must
+not be mistaken for functional acceptance. The [status record](evidence/pcie-joint-corner-status-20261012.json)
+binds these local completed results; their additional raw publication is
+pending. Routing, full-chip LVS and post-CTS hold repair remain active.
+
 ## TX model-domain correction — 12 October, 09:27 TRT
 
 The `Nx=12` TX multiplexer reported below is now **rejected as electrical

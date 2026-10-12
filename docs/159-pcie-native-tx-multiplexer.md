@@ -2,6 +2,10 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+The [supported-device replacement](160-pcie-supported-tx-multiplexer.md)
+passes three schematic points and new 54-device layout verification. Its
+post-layout electrical test fails; the replacement is also not PHY signoff.
+
 ## Model-domain rejection — 12 October, 09:27 TRT
 
 **The `Nx=12` circuit below is rejected as electrical evidence.** Inspection
