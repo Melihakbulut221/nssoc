@@ -2,6 +2,73 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 05:13 TRT
+
+The new **RHI140 physical pump/filter** completes all twelve nominal component
+points at **27 °C**, including its 30 native devices, finite contacts and
+84 R / 155 C metal network. Each 34 ns capture contains 108,811 rows and 80
+columns at 0.3125 ps maximum step. All original electrical screens, zero-source
+startup, fixed command/clamp boundaries, diagnostics and complete compressed
+waveform checks pass. Independent full-wave reconstruction recomputes every
+one of the 30 device extrema for every point.
+
+| Ideal VCTRL clamp | Idle current (µA) | Source (µA) | Sink (µA) | Both (µA) |
+| --- | ---: | ---: | ---: | ---: |
+| 0.5 V | +9.211444 | +43.381489 | -30.237938 | +3.983153 |
+| 0.6 V | -1.662872 | +32.512639 | -43.503529 | -9.258458 |
+| 0.7 V | -12.537165 | +21.643073 | -55.712558 | -21.449302 |
+
+These are mean currents delivered to the externally clamped VCTRL over the
+complete 4–34 ns window. Independent native inject/withdraw controls establish
+the sign. All four current windows are re-integrated from saved data; 36
+corrupted measurement records are rejected. Six actual component-source
+mutations also fail their binding check. Source and sink commands give opposite
+current signs at all three tested clamps. This establishes nominal component
+control authority at those points, not loaded PLL reachability.
+
+The matched old **30-device wire model** exists for idle/source/sink at 0.6 V.
+Compared with it, idle current changes from **+33.111677 to -1.662872 µA**,
+source current from +67.276185 to +32.512639 µA, and sink current from
+-8.723883 to -43.503529 µA. The changed bias is therefore measured directly.
+Its effect on acquisition and all-device safety in the loaded PLL is still
+pending in the original full 50 ns candidate simulation.
+
+The frozen original 300 ns prefix also receives a bounded control diagnostic.
+A period-versus-control fit produces no 8 GHz root within its observed
+0.606–0.938 V range; **the extrapolation is rejected as a tuning prescription**.
+The initial exploratory reader stopped on an unavailable NumPy `trapz` name;
+its method and failure note remain alongside the corrected `trapezoid` reader.
+Filter selection needs measured VCO gain, pump current and stability targets,
+as described in [Analog Devices' loop-filter guidance](https://www.analog.com/media/en/technical-documentation/data-sheets/ad9516-5.pdf).
+No numerical component value from that product is imported into this design.
+
+The already validated reset-request-window method has fresh thirteen waveform
+fault controls for the new PLL candidate. Its full-capture reader is queued
+with the same 900 ps recovery, 100 ps removal and rail/glitch limits. Original
+native measurements and verdicts are retained.
+
+A separate **0.625 ps** full-capture run tests a possible simulation speedup.
+Its generated deck differs only in the transient time step; all devices,
+stimuli, 50 ns stop time and electrical criteria remain identical. Before its
+result is available, the comparison requires both complete 865-device
+independent electrical reviews and corrected finite functional checks, a fixed
+35–50 ns comparison with at most 5 mV VCTRL and 5 ps edge displacement, and
+5 mV / 5 µA limits on the corresponding full-capture device extrema. These are
+prospective numerical-comparison limits, not PHY qualification. Neither a
+speedup nor adoption is claimed. The first comparison script's syntax failure
+occurred before execution and is preserved; the corrected reader is queued.
+
+The [complete characterization and prepared comparison records](evidence/pcie-rhi140-current-20261012.json)
+link the **171-member / 560,990,620-byte** capsule, SHA-256
+`80107c05d783071b35a1ffa3bf4f0d12eba2ecfd35878e0386d85a3afda9bbd7`,
+and the **10-member / 164,183-byte** step-comparison methods capsule, SHA-256
+`9e3cc48efd5bc3efbf1789f4076b7acb8781af48ec7e20a77ab5b7ce5eba288e`.
+Every member and each full anonymous public download match. Active captures
+are excluded. The combined-credit candidate's comparison of all seven setup
+and six hold groups in three corners is queued after its joint tests, mapping,
+mapped invariant proof and native timing screen. **Full serial PHY, accepted
+main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 04:34 TRT
 
 The **exact filled packet-PCIe/Ethernet core** now passes the complete locked
