@@ -2,6 +2,30 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Publication and parallel execution update — 12 October, 08:23 TRT
+
+Both rejected RHI140 full captures are now completely public: four reference
+chunks, two coarse-step chunks and their metadata. All **seven assets** pass
+complete anonymous byte/hash readback. The
+[capture manifest and receipts](evidence/pcie-rhi140-full-public-20261012.json)
+give each contiguous offset, size, SHA-256 and download URL. Concatenation
+restores the exact original compressed stream. The failures and rejection of
+the coarser timestep remain unchanged.
+
+After verifying the retained originals, every upload chunk and every public
+receipt, cleanup removes only **4,347,135,386 bytes of duplicate upload files**.
+Both original native waveforms remain locally available. The
+[31,090-byte receipt and reconstruction-method archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rhi140-complete-receipts-20261012.tar.gz)
+has SHA-256 `32e19f70e237f87b10f87917ea594f4c8f9b68728601a431c6e9f9d56b861961`
+and passes full member/public verification. PBUF10's separate full waveform
+publication is active, not yet complete.
+
+The actual gated NPU/CPU/PCIe/Ethernet traffic test now runs on CPU0 alongside
+the collateral test on CPU18. Only its original **waiting controller** was
+stopped, after confirming it owned no simulator and had created no output;
+the frozen simulation method and assertions are unchanged. This removes an
+unnecessary serial wait. Neither integrated test has a final result yet.
+
 ## Latest continuation — 12 October, 08:17 TRT
 
 The physical PBUF10 feedback repair passes its complete **865-device,
