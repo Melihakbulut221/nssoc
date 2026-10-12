@@ -2,6 +2,23 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Serializer and publication update — 12 October, 09:25 TRT
+
+The new [native final 2:1 TX multiplexer](159-pcie-native-tx-multiplexer.md)
+passes the nominal loaded 8 GT/s component screen, timestep convergence and
+standalone 560-category DRC / 32-device hierarchical and flat LVS. Actual
+fault controls are rejected. Its 81-point corner matrix has already exposed
+cold TX-tail and hot TX-pair headroom failures; it is **not adopted as a
+PVT-qualified serializer**. Full serial PHY, main-chip routing and final
+setup/hold remain open.
+
+PBUF10's full 2,897,045,112-byte nominal waveform is now public: all four
+chunks and the metadata archive pass full anonymous readback. The
+[complete manifest](evidence/pcie-pbuf10-full-public-20261012.json) records
+contiguous offsets and reconstruction hashes. Only verified duplicate upload
+chunks were removed locally; the original compressed waveform is retained.
+This publication does not add PLL lock or corner acceptance.
+
 ## Publication and parallel execution update — 12 October, 08:23 TRT
 
 Both rejected RHI140 full captures are now completely public: four reference
