@@ -146,3 +146,10 @@ are in the publicly verified
 SHA-256 `200190529af879819a6f2d73c77faa8a7124193ce5da4d61af73f3f220096f2f`.
 Later bias captures/PVT reviews are a separate delivery. See the
 [full latest measurement record](evidence/pcie-npu-topmetal-final-measurements-20261012.json).
+
+
+## Cloud-only continuation and cleanup (12 October 2026)
+
+At the user's request, local CAD controllers were stopped for migration. Subsequent replay proofs, mapping and timing screens run on GitHub-hosted runners. The [migration record](evidence/cloud-migration-20261012.json) distinguishes verified cloud-backed deletions, unique data still being uploaded and unfinished engineering work. Original bytes are removed only after their complete archive or file matches a GitHub release SHA-256, with a published restoration manifest. Local cleanup is not yet complete.
+
+The [paired hosted ACK measurement](evidence/cloud-ack-screen-20261012.json) reproduces all seven setup and six hold groups across three corners using the same source capsule, runtime, ports, parameters and twenty SRAM macros. Although the isolated replay/link tests and arithmetic identity proof pass, the ACK lookahead candidate worsens slow PCIe setup from −1.414698 ns to −1.558253 ns. Its CPU setup improvement does not compensate for that regression; the candidate is rejected for adoption. These are unplaced development-RC measurements, not routed timing closure or a full serial PHY result.

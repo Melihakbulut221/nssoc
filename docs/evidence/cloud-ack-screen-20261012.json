@@ -1,70 +1,1043 @@
 {
   "run": 38302150853,
-  "profile": "ack",
-  "status": "COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE",
-  "mapped_cells": 79478,
-  "macros": {
-    "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
-    "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
-  },
-  "archive": {
-    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/ack-map-ack-38302150853-1.tar.gz",
-    "sha256": "4f2d60f0f5d2621e50bc534e1ca62f9d104d50a00ddf49fd68bdaf8f791b1430",
-    "bytes": 16806994
-  },
-  "group_worst_slack_ns": {
-    "slow_max": {
-      "asynchronous": 1.396937,
-      "path": 2.505196,
-      "clk_i": 1.07425,
-      "eth_gtx": 4.901397,
-      "eth_rx_clk_i": 1.702089,
-      "eth_tx_clk_i": 1.684176,
-      "pcie_clk_i": -1.558253
+  "status": "COMPLETE_PAIRED_UNPLACED_COMPARISON_NOT_CLOSURE",
+  "adopted": false,
+  "baseline": {
+    "status": "COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE",
+    "runtime": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "ports": {
+      "clk_i": [
+        "input",
+        1
+      ],
+      "rst_ni": [
+        "input",
+        1
+      ],
+      "pcie_clk_i": [
+        "input",
+        1
+      ],
+      "pcie_link_up_i": [
+        "input",
+        1
+      ],
+      "pcie_training_i": [
+        "input",
+        1
+      ],
+      "pcie_retrain_done_i": [
+        "input",
+        1
+      ],
+      "pcie_function_id_i": [
+        "input",
+        16
+      ],
+      "pcie_rx_data_i": [
+        "input",
+        8
+      ],
+      "pcie_rx_sop_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_eop_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_error_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_valid_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_dllp_i": [
+        "input",
+        1
+      ],
+      "pcie_tx_ready_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_ready_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_data_o": [
+        "output",
+        8
+      ],
+      "pcie_tx_sop_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_eop_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_valid_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_dllp_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_replay_o": [
+        "output",
+        1
+      ],
+      "pcie_initialized_o": [
+        "output",
+        1
+      ],
+      "pcie_error_o": [
+        "output",
+        1
+      ],
+      "pcie_retrain_request_o": [
+        "output",
+        1
+      ],
+      "eth_mbist_done_o": [
+        "output",
+        2
+      ],
+      "eth_mbist_failed_o": [
+        "output",
+        2
+      ],
+      "mbist_busy_o": [
+        "output",
+        1
+      ],
+      "mbist_done_o": [
+        "output",
+        1
+      ],
+      "mbist_failed_o": [
+        "output",
+        1
+      ],
+      "mbist_fail_addr_o": [
+        "output",
+        13
+      ],
+      "mbist_fail_expected_o": [
+        "output",
+        64
+      ],
+      "mbist_fail_actual_o": [
+        "output",
+        64
+      ],
+      "mbist_fail_phase_o": [
+        "output",
+        3
+      ],
+      "mbist_fail_background_o": [
+        "output",
+        8
+      ],
+      "irq_external_i": [
+        "input",
+        1
+      ],
+      "wdog_dis_i": [
+        "input",
+        1
+      ],
+      "strap_i": [
+        "input",
+        4
+      ],
+      "uart_rx_i": [
+        "input",
+        1
+      ],
+      "uart_tx_o": [
+        "output",
+        1
+      ],
+      "uart_irq_o": [
+        "output",
+        1
+      ],
+      "gpio_i": [
+        "input",
+        16
+      ],
+      "gpio_o": [
+        "output",
+        16
+      ],
+      "gpio_oe_o": [
+        "output",
+        16
+      ],
+      "gpio_irq_o": [
+        "output",
+        1
+      ],
+      "qspi_sck_o": [
+        "output",
+        1
+      ],
+      "qspi_cs_no": [
+        "output",
+        2
+      ],
+      "qspi_io_o": [
+        "output",
+        4
+      ],
+      "qspi_io_oe_o": [
+        "output",
+        4
+      ],
+      "qspi_io_i": [
+        "input",
+        4
+      ],
+      "qspi_irq_o": [
+        "output",
+        1
+      ],
+      "eth_rx_clk_i": [
+        "input",
+        1
+      ],
+      "eth_tx_clk_i": [
+        "input",
+        1
+      ],
+      "eth_rxd_i": [
+        "input",
+        8
+      ],
+      "eth_rx_dv_i": [
+        "input",
+        1
+      ],
+      "eth_rx_er_i": [
+        "input",
+        1
+      ],
+      "eth_txd_o": [
+        "output",
+        8
+      ],
+      "eth_tx_en_o": [
+        "output",
+        1
+      ],
+      "eth_tx_er_o": [
+        "output",
+        1
+      ],
+      "eth_gtx_clk_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_i": [
+        "input",
+        1
+      ],
+      "eth_mdc_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_oe_o": [
+        "output",
+        1
+      ],
+      "eth_irq_o": [
+        "output",
+        1
+      ],
+      "spw_di_i": [
+        "input",
+        1
+      ],
+      "spw_si_i": [
+        "input",
+        1
+      ],
+      "spw_do_o": [
+        "output",
+        1
+      ],
+      "spw_so_o": [
+        "output",
+        1
+      ],
+      "spw_irq_o": [
+        "output",
+        1
+      ],
+      "i2c_scl_i": [
+        "input",
+        1
+      ],
+      "i2c_sda_i": [
+        "input",
+        1
+      ],
+      "i2c_scl_oe_o": [
+        "output",
+        1
+      ],
+      "i2c_sda_oe_o": [
+        "output",
+        1
+      ],
+      "i2c_irq_o": [
+        "output",
+        1
+      ],
+      "can_rx_i": [
+        "input",
+        1
+      ],
+      "can_tx_o": [
+        "output",
+        1
+      ],
+      "can_irq_o": [
+        "output",
+        1
+      ],
+      "can_bus_off_o": [
+        "output",
+        1
+      ],
+      "spi_miso_i": [
+        "input",
+        1
+      ],
+      "spi_sck_o": [
+        "output",
+        1
+      ],
+      "spi_mosi_o": [
+        "output",
+        1
+      ],
+      "spi_irq_o": [
+        "output",
+        1
+      ],
+      "spi_cs_no": [
+        "output",
+        2
+      ],
+      "wdog_no": [
+        "output",
+        1
+      ],
+      "wdog_rst_o": [
+        "output",
+        1
+      ],
+      "nmi_o": [
+        "output",
+        1
+      ],
+      "irq_timer_o": [
+        "output",
+        1
+      ],
+      "irq_soft_o": [
+        "output",
+        1
+      ],
+      "gptimer_irq_o": [
+        "output",
+        1
+      ],
+      "npu_irq_o": [
+        "output",
+        1
+      ],
+      "npu_ser_sck_o": [
+        "output",
+        1
+      ],
+      "npu_ser_cs_n_o": [
+        "output",
+        1
+      ],
+      "npu_ser_mosi_o": [
+        "output",
+        1
+      ],
+      "npu_ser_miso_o": [
+        "output",
+        1
+      ],
+      "npu_aer_in_stb_o": [
+        "output",
+        1
+      ],
+      "npu_aer_out_vld_o": [
+        "output",
+        1
+      ],
+      "alert_minor_o": [
+        "output",
+        1
+      ],
+      "alert_major_internal_o": [
+        "output",
+        1
+      ],
+      "alert_major_bus_o": [
+        "output",
+        1
+      ],
+      "double_fault_seen_o": [
+        "output",
+        1
+      ],
+      "core_sleep_o": [
+        "output",
+        1
+      ]
     },
-    "slow_min": {
-      "asynchronous": 0.35575,
-      "clk_i": -0.451111,
-      "eth_gtx": -0.43793,
-      "eth_rx_clk_i": -0.469247,
-      "eth_tx_clk_i": -0.408833,
-      "pcie_clk_i": 0.057682
+    "parameters": {
+      "APB_TIMEOUT": "00000000000000000000000100000000",
+      "BOOT_LIMIT": "00000000000000000000000000000011",
+      "BOOT_NSTRAP": "00000000000000000000000000000100",
+      "CLKGATE": "00000000000000000000000000000001",
+      "CORE_REQ_REG": "00000000000000000000000000000000",
+      "CORE_WB_STAGE": "00000000000000000000000000000000",
+      "GPIO_NBITS": "00000000000000000000000000010000",
+      "MEM_HARDEN": "00000000000000000000000000000001",
+      "MEM_RDREG": "0",
+      "QSPI_NCS": "00000000000000000000000000000010",
+      "REQ_REG": "00000000000000000000000000000000",
+      "ROM_HARDEN": "00000000000000000000000000000001",
+      "ROM_INIT": " ",
+      "SCRUB_IVL_RST": "0000000011111111",
+      "WAKE_GNT": "00000000000000000000000000000001"
     },
-    "typical_max": {
-      "asynchronous": 1.977393,
-      "path": 2.754967,
-      "clk_i": 7.870444,
-      "eth_gtx": 5.012421,
-      "eth_rx_clk_i": 4.178264,
-      "eth_tx_clk_i": 4.167008,
-      "pcie_clk_i": 0.37006
+    "macros": {
+      "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+      "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
     },
-    "typical_min": {
-      "asynchronous": 0.139519,
-      "clk_i": -0.387533,
-      "eth_gtx": -0.53948,
-      "eth_rx_clk_i": -0.360271,
-      "eth_tx_clk_i": -0.363205,
-      "pcie_clk_i": -0.04421
+    "mapped_cells": 79717,
+    "capsule": "e75ddaaab838334b29b424c2109062b6f6d7c9fc5e7c1268084d22d5655c0425",
+    "group_worst_slack_ns": {
+      "slow_max": {
+        "asynchronous": 1.281004,
+        "path": 2.505196,
+        "clk_i": 0.651836,
+        "eth_gtx": 4.901397,
+        "eth_rx_clk_i": 1.703762,
+        "eth_tx_clk_i": 1.671164,
+        "pcie_clk_i": -1.414698
+      },
+      "slow_min": {
+        "asynchronous": 0.36976,
+        "clk_i": -0.453752,
+        "eth_gtx": -0.43793,
+        "eth_rx_clk_i": -0.469247,
+        "eth_tx_clk_i": -0.418085,
+        "pcie_clk_i": 0.041096
+      },
+      "typical_max": {
+        "asynchronous": 1.903252,
+        "path": 2.754967,
+        "clk_i": 7.648798,
+        "eth_gtx": 5.012421,
+        "eth_rx_clk_i": 4.179185,
+        "eth_tx_clk_i": 4.157533,
+        "pcie_clk_i": 0.366618
+      },
+      "typical_min": {
+        "asynchronous": 0.147445,
+        "clk_i": -0.389447,
+        "eth_gtx": -0.53948,
+        "eth_rx_clk_i": -0.360271,
+        "eth_tx_clk_i": -0.369609,
+        "pcie_clk_i": -0.04421
+      },
+      "fast_max": {
+        "asynchronous": 2.253953,
+        "path": 2.897573,
+        "clk_i": 11.765461,
+        "eth_gtx": 5.083783,
+        "eth_rx_clk_i": 4.504826,
+        "eth_tx_clk_i": 5.490916,
+        "pcie_clk_i": 1.2454
+      },
+      "fast_min": {
+        "asynchronous": 0.01996,
+        "clk_i": -0.370352,
+        "eth_gtx": -0.601382,
+        "eth_rx_clk_i": -0.347499,
+        "eth_tx_clk_i": -0.356338,
+        "pcie_clk_i": -0.109062
+      }
     },
-    "fast_max": {
-      "asynchronous": 2.305037,
-      "path": 2.897573,
-      "clk_i": 11.904472,
-      "eth_gtx": 5.083783,
-      "eth_rx_clk_i": 4.507337,
-      "eth_tx_clk_i": 5.497493,
-      "pcie_clk_i": 1.343899
-    },
-    "fast_min": {
-      "asynchronous": 0.014005,
-      "clk_i": -0.367793,
-      "eth_gtx": -0.601382,
-      "eth_rx_clk_i": -0.347499,
-      "eth_tx_clk_i": -0.351037,
-      "pcie_clk_i": -0.109062
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/ack-map-baseline-38302150853-1.tar.gz",
+      "bytes": 16844117,
+      "sha256": "377a48655511eaadfd8c8c231ac62e5d4acc38149fa7679816851053b3218d48"
     }
   },
-  "adopted": false,
-  "scope": "Unplaced comparison only. Vendor SRAM models, original clocks. No routed timing, full PHY, qualified RC or production signoff."
+  "ack": {
+    "status": "COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE",
+    "runtime": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "ports": {
+      "clk_i": [
+        "input",
+        1
+      ],
+      "rst_ni": [
+        "input",
+        1
+      ],
+      "pcie_clk_i": [
+        "input",
+        1
+      ],
+      "pcie_link_up_i": [
+        "input",
+        1
+      ],
+      "pcie_training_i": [
+        "input",
+        1
+      ],
+      "pcie_retrain_done_i": [
+        "input",
+        1
+      ],
+      "pcie_function_id_i": [
+        "input",
+        16
+      ],
+      "pcie_rx_data_i": [
+        "input",
+        8
+      ],
+      "pcie_rx_sop_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_eop_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_error_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_valid_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_dllp_i": [
+        "input",
+        1
+      ],
+      "pcie_tx_ready_i": [
+        "input",
+        1
+      ],
+      "pcie_rx_ready_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_data_o": [
+        "output",
+        8
+      ],
+      "pcie_tx_sop_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_eop_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_valid_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_dllp_o": [
+        "output",
+        1
+      ],
+      "pcie_tx_replay_o": [
+        "output",
+        1
+      ],
+      "pcie_initialized_o": [
+        "output",
+        1
+      ],
+      "pcie_error_o": [
+        "output",
+        1
+      ],
+      "pcie_retrain_request_o": [
+        "output",
+        1
+      ],
+      "eth_mbist_done_o": [
+        "output",
+        2
+      ],
+      "eth_mbist_failed_o": [
+        "output",
+        2
+      ],
+      "mbist_busy_o": [
+        "output",
+        1
+      ],
+      "mbist_done_o": [
+        "output",
+        1
+      ],
+      "mbist_failed_o": [
+        "output",
+        1
+      ],
+      "mbist_fail_addr_o": [
+        "output",
+        13
+      ],
+      "mbist_fail_expected_o": [
+        "output",
+        64
+      ],
+      "mbist_fail_actual_o": [
+        "output",
+        64
+      ],
+      "mbist_fail_phase_o": [
+        "output",
+        3
+      ],
+      "mbist_fail_background_o": [
+        "output",
+        8
+      ],
+      "irq_external_i": [
+        "input",
+        1
+      ],
+      "wdog_dis_i": [
+        "input",
+        1
+      ],
+      "strap_i": [
+        "input",
+        4
+      ],
+      "uart_rx_i": [
+        "input",
+        1
+      ],
+      "uart_tx_o": [
+        "output",
+        1
+      ],
+      "uart_irq_o": [
+        "output",
+        1
+      ],
+      "gpio_i": [
+        "input",
+        16
+      ],
+      "gpio_o": [
+        "output",
+        16
+      ],
+      "gpio_oe_o": [
+        "output",
+        16
+      ],
+      "gpio_irq_o": [
+        "output",
+        1
+      ],
+      "qspi_sck_o": [
+        "output",
+        1
+      ],
+      "qspi_cs_no": [
+        "output",
+        2
+      ],
+      "qspi_io_o": [
+        "output",
+        4
+      ],
+      "qspi_io_oe_o": [
+        "output",
+        4
+      ],
+      "qspi_io_i": [
+        "input",
+        4
+      ],
+      "qspi_irq_o": [
+        "output",
+        1
+      ],
+      "eth_rx_clk_i": [
+        "input",
+        1
+      ],
+      "eth_tx_clk_i": [
+        "input",
+        1
+      ],
+      "eth_rxd_i": [
+        "input",
+        8
+      ],
+      "eth_rx_dv_i": [
+        "input",
+        1
+      ],
+      "eth_rx_er_i": [
+        "input",
+        1
+      ],
+      "eth_txd_o": [
+        "output",
+        8
+      ],
+      "eth_tx_en_o": [
+        "output",
+        1
+      ],
+      "eth_tx_er_o": [
+        "output",
+        1
+      ],
+      "eth_gtx_clk_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_i": [
+        "input",
+        1
+      ],
+      "eth_mdc_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_o": [
+        "output",
+        1
+      ],
+      "eth_mdio_oe_o": [
+        "output",
+        1
+      ],
+      "eth_irq_o": [
+        "output",
+        1
+      ],
+      "spw_di_i": [
+        "input",
+        1
+      ],
+      "spw_si_i": [
+        "input",
+        1
+      ],
+      "spw_do_o": [
+        "output",
+        1
+      ],
+      "spw_so_o": [
+        "output",
+        1
+      ],
+      "spw_irq_o": [
+        "output",
+        1
+      ],
+      "i2c_scl_i": [
+        "input",
+        1
+      ],
+      "i2c_sda_i": [
+        "input",
+        1
+      ],
+      "i2c_scl_oe_o": [
+        "output",
+        1
+      ],
+      "i2c_sda_oe_o": [
+        "output",
+        1
+      ],
+      "i2c_irq_o": [
+        "output",
+        1
+      ],
+      "can_rx_i": [
+        "input",
+        1
+      ],
+      "can_tx_o": [
+        "output",
+        1
+      ],
+      "can_irq_o": [
+        "output",
+        1
+      ],
+      "can_bus_off_o": [
+        "output",
+        1
+      ],
+      "spi_miso_i": [
+        "input",
+        1
+      ],
+      "spi_sck_o": [
+        "output",
+        1
+      ],
+      "spi_mosi_o": [
+        "output",
+        1
+      ],
+      "spi_irq_o": [
+        "output",
+        1
+      ],
+      "spi_cs_no": [
+        "output",
+        2
+      ],
+      "wdog_no": [
+        "output",
+        1
+      ],
+      "wdog_rst_o": [
+        "output",
+        1
+      ],
+      "nmi_o": [
+        "output",
+        1
+      ],
+      "irq_timer_o": [
+        "output",
+        1
+      ],
+      "irq_soft_o": [
+        "output",
+        1
+      ],
+      "gptimer_irq_o": [
+        "output",
+        1
+      ],
+      "npu_irq_o": [
+        "output",
+        1
+      ],
+      "npu_ser_sck_o": [
+        "output",
+        1
+      ],
+      "npu_ser_cs_n_o": [
+        "output",
+        1
+      ],
+      "npu_ser_mosi_o": [
+        "output",
+        1
+      ],
+      "npu_ser_miso_o": [
+        "output",
+        1
+      ],
+      "npu_aer_in_stb_o": [
+        "output",
+        1
+      ],
+      "npu_aer_out_vld_o": [
+        "output",
+        1
+      ],
+      "alert_minor_o": [
+        "output",
+        1
+      ],
+      "alert_major_internal_o": [
+        "output",
+        1
+      ],
+      "alert_major_bus_o": [
+        "output",
+        1
+      ],
+      "double_fault_seen_o": [
+        "output",
+        1
+      ],
+      "core_sleep_o": [
+        "output",
+        1
+      ]
+    },
+    "parameters": {
+      "APB_TIMEOUT": "00000000000000000000000100000000",
+      "BOOT_LIMIT": "00000000000000000000000000000011",
+      "BOOT_NSTRAP": "00000000000000000000000000000100",
+      "CLKGATE": "00000000000000000000000000000001",
+      "CORE_REQ_REG": "00000000000000000000000000000000",
+      "CORE_WB_STAGE": "00000000000000000000000000000000",
+      "GPIO_NBITS": "00000000000000000000000000010000",
+      "MEM_HARDEN": "00000000000000000000000000000001",
+      "MEM_RDREG": "0",
+      "QSPI_NCS": "00000000000000000000000000000010",
+      "REQ_REG": "00000000000000000000000000000000",
+      "ROM_HARDEN": "00000000000000000000000000000001",
+      "ROM_INIT": " ",
+      "SCRUB_IVL_RST": "0000000011111111",
+      "WAKE_GNT": "00000000000000000000000000000001"
+    },
+    "macros": {
+      "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+      "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+    },
+    "mapped_cells": 79478,
+    "capsule": "e75ddaaab838334b29b424c2109062b6f6d7c9fc5e7c1268084d22d5655c0425",
+    "group_worst_slack_ns": {
+      "slow_max": {
+        "asynchronous": 1.396937,
+        "path": 2.505196,
+        "clk_i": 1.07425,
+        "eth_gtx": 4.901397,
+        "eth_rx_clk_i": 1.702089,
+        "eth_tx_clk_i": 1.684176,
+        "pcie_clk_i": -1.558253
+      },
+      "slow_min": {
+        "asynchronous": 0.35575,
+        "clk_i": -0.451111,
+        "eth_gtx": -0.43793,
+        "eth_rx_clk_i": -0.469247,
+        "eth_tx_clk_i": -0.408833,
+        "pcie_clk_i": 0.057682
+      },
+      "typical_max": {
+        "asynchronous": 1.977393,
+        "path": 2.754967,
+        "clk_i": 7.870444,
+        "eth_gtx": 5.012421,
+        "eth_rx_clk_i": 4.178264,
+        "eth_tx_clk_i": 4.167008,
+        "pcie_clk_i": 0.37006
+      },
+      "typical_min": {
+        "asynchronous": 0.139519,
+        "clk_i": -0.387533,
+        "eth_gtx": -0.53948,
+        "eth_rx_clk_i": -0.360271,
+        "eth_tx_clk_i": -0.363205,
+        "pcie_clk_i": -0.04421
+      },
+      "fast_max": {
+        "asynchronous": 2.305037,
+        "path": 2.897573,
+        "clk_i": 11.904472,
+        "eth_gtx": 5.083783,
+        "eth_rx_clk_i": 4.507337,
+        "eth_tx_clk_i": 5.497493,
+        "pcie_clk_i": 1.343899
+      },
+      "fast_min": {
+        "asynchronous": 0.014005,
+        "clk_i": -0.367793,
+        "eth_gtx": -0.601382,
+        "eth_rx_clk_i": -0.347499,
+        "eth_tx_clk_i": -0.351037,
+        "pcie_clk_i": -0.109062
+      }
+    },
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/ack-map-ack-38302150853-1.tar.gz",
+      "bytes": 16806994,
+      "sha256": "4f2d60f0f5d2621e50bc534e1ca62f9d104d50a00ddf49fd68bdaf8f791b1430"
+    }
+  },
+  "ack_minus_baseline_ns": {
+    "slow_max": {
+      "asynchronous": 0.115933,
+      "path": 0.0,
+      "clk_i": 0.422414,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": -0.001673,
+      "eth_tx_clk_i": 0.013012,
+      "pcie_clk_i": -0.143555
+    },
+    "slow_min": {
+      "asynchronous": -0.01401,
+      "clk_i": 0.002641,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": 0.0,
+      "eth_tx_clk_i": 0.009252,
+      "pcie_clk_i": 0.016586
+    },
+    "typical_max": {
+      "asynchronous": 0.074141,
+      "path": 0.0,
+      "clk_i": 0.221646,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": -0.000921,
+      "eth_tx_clk_i": 0.009475,
+      "pcie_clk_i": 0.003442
+    },
+    "typical_min": {
+      "asynchronous": -0.007926,
+      "clk_i": 0.001914,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": 0.0,
+      "eth_tx_clk_i": 0.006404,
+      "pcie_clk_i": 0.0
+    },
+    "fast_max": {
+      "asynchronous": 0.051084,
+      "path": 0.0,
+      "clk_i": 0.139011,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": 0.002511,
+      "eth_tx_clk_i": 0.006577,
+      "pcie_clk_i": 0.098499
+    },
+    "fast_min": {
+      "asynchronous": -0.005955,
+      "clk_i": 0.002559,
+      "eth_gtx": 0.0,
+      "eth_rx_clk_i": 0.0,
+      "eth_tx_clk_i": 0.005301,
+      "pcie_clk_i": 0.0
+    }
+  },
+  "scope": "Same capsule, runtime, ports, parameters and20vendorSRAM. All7setup/6holdgroups in3corners. Development unplaced RC; no physical timing closure, full serial PHY, padframe or production signoff.",
+  "decision": "REJECT_ACK_LOOKAHEAD_FOR_TIMING_ADOPTION",
+  "reason": "Slow PCIe setup regresses143.555ps from -1.414698ns to -1.558253ns. CPU improves422.414ps, but this does not repair the limiting PCIe path. Hold violations also remain."
 }
