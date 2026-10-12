@@ -2,6 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 name: timing-paths-cloud
 on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/timing-paths-cloud.yml
+      - scripts/trace_cloud_timing_paths.py
   workflow_dispatch:
 permissions:
   contents: read
