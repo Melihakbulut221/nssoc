@@ -43,12 +43,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
-    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup'), default='ideal')
+    parser.add_argument('--data-driver', choices=('ideal', 'cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light'), default='ideal')
+    parser.add_argument('--data-launch', choices=('coincident', 'inactive_half_cycle'), default='coincident')
     parser.add_argument('--layout-composition', type=Path,
                         help='Hosted source-bound composition directory for a real layout candidate')
     parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
         'low_r_supply', 'low_r_return', 'low_r_inputs', 'low_r_internal', 'low_r_bias', 'low_r_outputs'), default='actual')
     args = parser.parse_args()
+    assert args.data_launch == 'coincident' or args.data_driver != 'ideal'
     spec_path = ROOT / 'docs/evidence/pcie-tx-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
     values = spec['points'][args.point]
@@ -204,7 +206,7 @@ def main():
             assert args.point == 'baseline' and args.kind == 'compact' and args.interconnect == 'actual'
             assert args.layout_composition is None
             import cloud_tx_data_driver as driver
-            deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl)
+            deck, driver_record, driver_paths = driver.prepare(deck, inputs, native, args.data_driver, original_pwl, args.data_launch)
             result['data_driver'] = driver_record
             result['scope'] = driver_record['scope'] + ' Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.'
         run = out / 'native'

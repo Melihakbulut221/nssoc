@@ -15,6 +15,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc'
 HV_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc'
+LIGHT_CIRCUIT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v3.inc'
 SPEC = ROOT / 'docs/evidence/pcie-cmos-data-driver-input-20261013.json'
 NAMES = ('ap', 'an', 'bp', 'bn')
 VECTORS = ['v(dvdd)', 'i(vdvdd)'] + [v for n in NAMES for v in
@@ -52,10 +53,21 @@ def original_bit_output_screen(t, positive, negative, bits, start, ui):
                 method='All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle.')
 
 
-def prepare(deck, inputs, native, mode, pwl):
-    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup')
+def half_cycle_launch(pwl, start, stop, ui):
+    """Explicit prospective A-bank input contract; output oracle is untouched."""
+    assert pwl.startswith('PWL(') and pwl.endswith(')')
+    pairs = [tuple(map(float, line.lstrip('+ ').split())) for line in pwl[4:-1].splitlines() if line.strip()]
+    assert all(len(pair) == 2 for pair in pairs)
+    shifted = [(t - ui if start <= t < stop else t, v) for t, v in pairs]
+    assert all(b[0] > a[0] for a, b in zip(shifted, shifted[1:]))
+    return 'PWL(\n+ ' + '\n+ '.join(f'{t:.14g} {v:.14g}' for t, v in shifted) + ')'
+
+
+def prepare(deck, inputs, native, mode, pwl, launch='coincident'):
+    assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup', 'cmos_hv_light')
+    assert launch in ('coincident', 'inactive_half_cycle')
     hv = mode.startswith('cmos_hv_')
-    circuit = HV_CIRCUIT if hv else CIRCUIT
+    circuit = LIGHT_CIRCUIT if mode == 'cmos_hv_light' else HV_CIRCUIT if hv else CIRCUIT
     vectors = VECTORS + ([f'v(xad_{n}.sink)' for n in NAMES] if hv else [])
     spec = json.loads(SPEC.read_text())
     pin = spec['receipt']
@@ -76,13 +88,17 @@ def prepare(deck, inputs, native, mode, pwl):
         # The HV common-source stage inverts. Complement the CMOS gate data
         # so that actual ap/an, bp/bn retain the original serial bit order.
         invert = (n[1] == 'n') != hv
-        source = f'V{n} {n}0 0 ' + pwl(values, .6, .6, 2 * native.UI, invert)
+        stimulus = pwl(values, .6, .6, 2 * native.UI, invert)
+        if launch == 'inactive_half_cycle' and n[0] == 'a':
+            stimulus = half_cycle_launch(stimulus, native.START, native.STOP, native.UI)
+        source = f'V{n} {n}0 0 ' + stimulus
         deck, count = re.subn(r'(?ms)^V' + n + r' [^\n]+ PWL\(.*?\)', lambda _: source, deck)
         assert count == 1
         old = f'R{n} {n}0 {n} 25'
         assert deck.count(old) == 1
         rail = '0' if mode.endswith('no_pullup') else 'avdd'
-        subckt = 'nssoc_tx_cmos_hv_resistive_input_v2' if hv else 'nssoc_tx_cmos_resistive_input_v1'
+        subckt = ('nssoc_tx_cmos_hv_resistive_input_v3' if mode == 'cmos_hv_light' else
+                  'nssoc_tx_cmos_hv_resistive_input_v2' if hv else 'nssoc_tx_cmos_resistive_input_v1')
         deck = deck.replace(old, f'XAD_{n} {n}0 {n} {rail} dvdd 0 0 {subckt}')
     additions = [f'.include "{dest / "buf16.inc"}"', f'.include "{circuit}"',
                  f'.lib "{dest / "models/cornerMOSlv.lib"}" mos_tt',
@@ -95,6 +111,8 @@ def prepare(deck, inputs, native, mode, pwl):
     deck = deck.replace('wrdata op.dat ', 'wrdata frontend-op.dat ' + ' '.join(vectors) + '\nwrdata op.dat ', 1)
     deck = deck.replace('wrdata wave.dat ', 'wrdata frontend-wave.dat ' + ' '.join(vectors) + '\nwrdata wave.dat ', 1)
     record = dict(mode=mode, source_sha256=sha(circuit), input_capsule_sha256=pin['sha256'],
+        launch=launch, a_transition_advance_s=native.UI if launch == 'inactive_half_cycle' else 0,
+        launch_scope='Prospective external gate-data availability contract, not an implemented upstream serializer/clock tree. A changes one serial UI before selection; B unchanged. Source bits and all final-output observation times unchanged.' if launch != 'coincident' else 'Historical coincident gate-data launch retained.',
         expected_devices=dict(lv_mos=16, hv_mos=16 if hv else 0, native_resistors=12),
         prospective_screen=dict(mos_terminal_abs_limit_v=1.32, sampled_common_mode_v=[1.80, 2.05],
                                 hv_mos_terminal_abs_limit_v=2.75 if hv else None,
@@ -142,6 +160,7 @@ def review(run, native, mode):
     active = t >= native.START
     current = v['i(vdvdd)']
     report = dict(status='MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE', zero_source_op=True,
+        active_input_ranges_v={n: [float(v[f'v({n})'][active].min()), float(v[f'v({n})'][active].max())] for n in NAMES},
         devices=devices, samples=len(margins), minimum_margin_v=float(margins.min()),
         wrong_sign_samples=int((margins <= 0).sum()), below_150mv_samples=int((margins < .15).sum()),
         common_mode_range_v=[float(common.min()), float(common.max())],
@@ -159,6 +178,18 @@ def review(run, native, mode):
     outputs = np.loadtxt(final_wave, skiprows=1, usecols=(0, header.index('v(op)'), header.index('v(on)')))
     report['original_bit_output'] = original_bit_output_screen(
         outputs[:, 0], outputs[:, 1], outputs[:, 2], bits, native.START, native.UI)
+    selected = []
+    for i, bit in enumerate(bits):
+        port = 'a' if i % 2 == 0 else 'b'
+        for phase in (.3, .5, .7):
+            time = native.START + (i + phase) * native.UI
+            p, n = (np.interp(time, t, v[f'v({port}{suffix})']) for suffix in ('p', 'n'))
+            selected.append(((p - n) * (1 if bit else -1), (p + n) / 2))
+    chosen_margin, chosen_cm = np.asarray(selected).T
+    report['selected_input_source_bits'] = dict(samples=len(selected), minimum_margin_v=float(chosen_margin.min()),
+        wrong_sign_samples=int((chosen_margin <= 0).sum()), below_150mv_samples=int((chosen_margin < .15).sum()),
+        common_mode_range_v=[float(chosen_cm.min()), float(chosen_cm.max())],
+        note='Original source bits while each input is selected. Legacy half-rate sample screen is retained separately above, including unselected time slots.')
     raw_pin = dict(sha256=sha(wave), bytes=wave.stat().st_size)
     packed = wave.with_suffix('.dat.gz')
     with wave.open('rb') as src, gzip.open(packed, 'xb', compresslevel=1) as dst:

@@ -57,3 +57,12 @@ def test_invalid_capture_never_silently_interpolates_to_pass(fault):
         t[100] = t[99]
     with pytest.raises(AssertionError):
         driver.original_bit_output_screen(t, diff / 2, -diff / 2, bits, 1, 1)
+
+
+def test_half_cycle_contract_preserves_startup_stop_levels_and_edge_slew():
+    source = 'PWL(\n+ 0 0\n+ 1e-9 1.2\n+ 2.25e-9 1.2\n+ 2.26e-9 0\n+ 34e-9 0)'
+    actual = driver.half_cycle_launch(source, 2e-9, 34e-9, 125e-12)
+    pairs = [tuple(map(float, line.lstrip('+ ').split())) for line in actual[4:-1].splitlines() if line.strip()]
+    assert np.asarray(pairs) == pytest.approx(np.asarray([
+        (0, 0), (1e-9, 1.2), (2.125e-9, 1.2), (2.135e-9, 0), (34e-9, 0)]), abs=1e-23)
+    assert pairs[3][0] - pairs[2][0] == pytest.approx(10e-12, abs=1e-23)

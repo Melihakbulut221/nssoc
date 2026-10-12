@@ -10,6 +10,7 @@ on:
       - sw/tests/test_cloud_tx_original_bits.py
       - hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc
+      - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v3.inc
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,7 +24,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        driver: [cmos_hv_resistive, cmos_hv_no_pullup]
+        driver: [cmos_hv_resistive, cmos_hv_light]
+        launch: [coincident, inactive_half_cycle]
     permissions:
       contents: write
     steps:
@@ -45,13 +47,13 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py
       - name: Run fixed-oracle native study and independent complete-wave review
-        run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind compact --data-driver '${{ matrix.driver }}'
+        run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind compact --data-driver '${{ matrix.driver }}' --data-launch '${{ matrix.launch }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-cmos-driver-${{ matrix.driver }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-cmos-driver-${{ matrix.driver }}-${{ matrix.launch }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-operating-point
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
