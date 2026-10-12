@@ -2,6 +2,27 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Model-domain rejection — 12 October, 09:27 TRT
+
+**The `Nx=12` circuit below is rejected as electrical evidence.** Inspection
+of the pinned foundry `sg13g2_hbt_mod.lib` header gives valid `npn13G2`
+multiplicities **1–10**, matching the PCell parameter range. The numerical
+results below were obtained outside that declared domain. DRC and LVS alone
+do not validate model applicability. The published circuit, geometry and
+captures are retained as rejected development history, not an accepted part.
+
+The out-of-domain 81-point matrix was explicitly stopped with its complete
+and partial captures retained. The first passive alternative also used
+`Nx=16/48`; at 48 the model's substrate-capacitance expression becomes
+negative, so its startup failures cannot characterize a supported circuit.
+Fresh candidates split oversized devices into separate native `Nx=6` or
+`Nx=8` instances. They require new simulation and physical verification;
+parallel splitting is not assumed electrically equivalent. The
+[domain audit](evidence/pcie-tx-mux2-domain-20261012.json) records the pinned
+model/PCell hashes and supersedes any nominal acceptance interpretation below.
+
+## Historical out-of-domain development results
+
 A new **2:1 HBT multiplexer and emitter-follower output** drives the existing
 native SG13G2 TX output pair in simulation. Its separate layout passes native
 DRC and transistor LVS. This supplies a missing serializer building block;
@@ -82,7 +103,7 @@ text labels, exact LEF and exact transistor reference. This does not establish
 post-layout electrical behavior: the transient uses schematic parasitics,
 and the existing TX driver has not been placed into this new macro.
 
-An 81-point matrix is running over three HBT corners, three resistor corners,
+An 81-point matrix was started over three HBT corners, three resistor corners,
 three temperatures and three common supply scales. All 81 generated decks
 are checked against the proven nominal fixture, allowing only the declared
 corner fields and an additional supply-voltage probe. Inputs, select levels,

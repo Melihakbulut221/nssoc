@@ -2,6 +2,16 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## TX model-domain correction — 12 October, 09:27 TRT
+
+The `Nx=12` TX multiplexer reported below is now **rejected as electrical
+evidence**: the pinned foundry HBT model specifies `Nx=1…10`. Its independent
+DRC/LVS result does not establish model-domain validity. The original captures
+are retained, the invalid-input matrix is stopped, and fresh parallel banks
+of supported devices are being tested. See the [correction and circuit
+history](159-pcie-native-tx-multiplexer.md). No PHY closure follows from the
+superseded nominal result.
+
 ## Serializer and publication update — 12 October, 09:25 TRT
 
 The new [native final 2:1 TX multiplexer](159-pcie-native-tx-multiplexer.md)
