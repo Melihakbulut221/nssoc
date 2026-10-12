@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tarfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +42,8 @@ def main():
             code = subprocess.call([str(x) for x in command], cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT)
         if code:
             print(log.read_text(errors='replace')[-16000:], flush=True)
+            for child in sorted((out / 'physical').glob('*/run.log')):
+                print(str(child) + '\n' + child.read_text(errors='replace')[-4000:], flush=True)
             raise RuntimeError(f'{name} failed with exit{code}')
 
     try:
@@ -103,7 +106,9 @@ def main():
         run([app, 'python', generator, '--pdk', ROOT / 'pdk', '--out', out / 'layout'], 'generation')
         generated = json.loads((out / 'layout/result.json').read_text())
         result['layout'] = generated
-        run([app, 'python', originals / 'physical92.py', '--layout', out / 'layout', '--out', out / 'physical', '--app', app], 'physical')
+        # The controller is standard Python; launching it inside the AppImage
+        # would make its native child invocations require a nested FUSE mount.
+        run([sys.executable, originals / 'physical92.py', '--layout', out / 'layout', '--out', out / 'physical', '--app', app], 'physical')
         physical = json.loads((out / 'physical/result.json').read_text())
         assert physical['status'] == 'PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS'
         result['physical'] = {k: v for k, v in physical.items() if k != 'inputs'}
