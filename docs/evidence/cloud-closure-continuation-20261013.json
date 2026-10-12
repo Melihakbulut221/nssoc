@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T01:26:25.802534+03:00",
-  "turn_classification": "PROGRESS",
+  "as_of": "2026-10-13T01:33:44.646869+03:00",
+  "turn_classification": "PROGRESS: hosted restoration completed and exact timing-path connectivity probe launched.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "1165cfb7",
+  "head": "9d0ecd9d",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -57,22 +57,23 @@
     "evidence": "docs/evidence/pcie-tx-cloud-critical-route-20261013.json"
   },
   "validation": {
-    "run": 38316186426,
-    "result": "PASS SPDX inventory REUSE and3 migration safety tests on1165cfb7.",
+    "run": 38316773176,
+    "result": "PASS SPDX inventory REUSE and3 migration safety tests on9497fd1b.",
     "hardlink_restore_run": 38313036762,
     "hardlink_result": "PASS all4 groups;10 safety tests each,49batches32196original files36080201324logical bytes including13actual archive hardlinks.",
     "evidence": "docs/evidence/cloud-output-restore-20261013.json",
     "prior_failed_restore_run": 38312200091,
     "fix": "Strict backward hardlink target content verification; unsafe/forward/symlink/duplicate/hash/size faults rejected.",
     "new_snapshot_readback_run": 38316589440,
-    "new_snapshot_readback_status": "dispatched; pending result, not claimed PASS"
+    "new_snapshot_readback_status": "PASS all4groups57batches50994files43829824449logical bytes13hardlinks",
+    "new_snapshot_evidence": "docs/evidence/cloud-output-restore-second-20261013.json"
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 51552,
-    "batch": 57,
-    "removed_bytes": 43829824449,
-    "uploaded_bytes": 32466170908
+    "next_index": 51695,
+    "batch": 59,
+    "removed_bytes": 46700132861,
+    "uploaded_bytes": 35329633404
   },
   "next_actions": [
     "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
@@ -123,5 +124,12 @@
     "run": 38315596493,
     "result": "Thick-metal median55.681ps trained on bits0-63 then frozen:573held-out samples,zero wrong signs,249.106mV minimum. Original768sample source-phase gate remains failed. Not physical CDR, compliance or adoption.",
     "evidence": "docs/evidence/pcie-tx-cloud-latency-diagnostic-20261013.json"
+  },
+  "timing_path_trace": {
+    "run": 38317312074,
+    "status": "in_progress",
+    "previous_run": 38317122848,
+    "previous_failure": "OpenSTA renders SRAM bus brackets without OpenDB backslash escapes. Strict unique rendered-name mapping added, native master identity remains required.",
+    "purpose": "Resolve current worst corner/group setup and hold paths to exact instance signal nets before choosing RTL or physical repairs."
   }
 }
