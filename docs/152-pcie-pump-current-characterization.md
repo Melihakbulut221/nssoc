@@ -37,6 +37,20 @@ by independent per-layer polygon XOR, with byte-identical LEF and transistor
 reference. The corrected reset oracle is fixed prospectively before the new
 full capture; thirteen reset faults and six boundary faults pass their
 rejection controls. The **new 50 ns simulation is running**, not accepted.
+A read-only **20.34484375 ns prefix** of the new running capture measures a
+first feedback peak of **2.354098 V**, compared with the completed prior
+candidate's 2.218602 V maximum. The first complete high pulse spans
+**2.760248 ns at 1.25 V** and **0.813737 ns above 2.25 V**. The earlier
+18.08765625 ns prefix ended before this peak and is retained; its lower
+maximum was not a completed-candidate failure. These are first-pulse
+measurements, not stable-high, eye, PLL-lock, full-capture or PVT acceptance.
+The [immutable selected-probe records and diagnostic methods](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-first-pulse-diagnostic-20261012.tar.gz)
+have full public readback (8,546,722 bytes, SHA-256
+`f5776c1852a0084d011fb3b99f41cd69d49b1564b66d0d30576c4820f79683c1`).
+The running compressed capture is excluded; each diagnostic records its
+bounded compressed-prefix length/hash and selected-probe identity. A later
+complete-wave comparison remains required.
+
 The [prospective acquisition gate and failed-capture control](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-acquisition-gate-20261012.tar.gz)
 are also published (8,611 bytes, SHA-256
 `54901cd0d7aa00a98fb0d6a95e2516a2e7781368d61acc80da0597fe63c89fa2`).

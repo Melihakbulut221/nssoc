@@ -29,6 +29,13 @@
       "name": "nssoc-pbuf10-corner-methods-20261012.tar.gz",
       "bytes": 30935,
       "sha256": "0b238a1dc98fa79e51fae10272377a030ef05b3b8d2c5202869f8936e3264991"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-first-pulse-diagnostic-20261012.tar.gz",
+      "name": "nssoc-pbuf10-first-pulse-diagnostic-20261012.tar.gz",
+      "bytes": 8546722,
+      "sha256": "f5776c1852a0084d011fb3b99f41cd69d49b1564b66d0d30576c4820f79683c1"
     }
   ],
   "canonical_regeneration": {
@@ -887,5 +894,65 @@
     "full_pvt_accepted": false,
     "scope": "Two prospective full865 MOS/temperature sensitivity points at nominal supply,HBT,passive and RC. Same50ns.3125ps,all2438columns,original division/rail/reset requirements. Exactinverse deck transformation. Not fullPVT/signoff or analogPHYacceptance. Insufficientcyclesat50ns are a failure, not waived."
   },
-  "corner_native_results": "NOT_STARTED_NOMINAL_AND_RESOURCE_GATES"
+  "corner_native_results": "NOT_STARTED_NOMINAL_AND_RESOURCE_GATES",
+  "partial_first_pulse_diagnostic": {
+    "status": "PARTIAL_FIRST_PULSE_TERMINAL_DIAGNOSIS_NOT_ACCEPTANCE",
+    "last_time_s": 2.034484374999441e-08,
+    "at_feedback_peak": {
+      "time": 1.8594843749985628e-08,
+      "v(fb)": 2.354098122643146,
+      "v(fbbar)": 1.084961634916451,
+      "v(vctrl)": 0.46501043796996344,
+      "v(xloop.count)": 0.02970228338742777,
+      "v(xloop.countb)": 1.201617968648666,
+      "v(xloop.xlevel.t001_d)": 2.3472622454078036,
+      "v(xloop.xlevel.t001_g)": 1.0833769225423138,
+      "v(xloop.xlevel.t001_s)": 0.051951416470128166,
+      "v(xloop.xlevel.t002_d)": 2.3590017458671033,
+      "v(xloop.xlevel.t002_g)": 1.0826569083095956,
+      "v(xloop.xlevel.t002_s)": 2.4820940248945527
+    },
+    "threshold_crossings": {
+      "v(fb):1.25": {
+        "rising_s": [
+          1.7058305303998498e-08
+        ],
+        "falling_s": [
+          1.981855312294303e-08
+        ],
+        "complete_high_widths_s": [
+          2.760247818944533e-09
+        ]
+      },
+      "v(fb):2.25": {
+        "rising_s": [
+          1.8149704897379056e-08
+        ],
+        "falling_s": [
+          1.8963442198211977e-08
+        ],
+        "complete_high_widths_s": [
+          8.137373008329218e-10
+        ]
+      },
+      "v(xloop.count):0.6": {
+        "rising_s": [
+          1.5068326842408446e-08
+        ],
+        "falling_s": [
+          1.7075966962910822e-08
+        ],
+        "complete_high_widths_s": [
+          2.007640120502376e-09
+        ]
+      }
+    },
+    "scope": "First partial pulse only. Peak voltage is not a stable-high/eye/PLL-lock/PVT qualification; full50ns and independentcompletecapture reviews remainrequired. No nativeinputs,limits orrunningprocess changed.",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-prefix-20261012/diagnose04.py": "8b787a23953cacbf209dd0f7d2a479712a9b975821b86d2e120b917bfc623d7a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-prefix-20261012/result03.json": "74d0646642d34a5dd29f40d8b2a20589b00f9823599d069a5782c5a4d01d05b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-prefix-20261012/probes03.npz": "dcbeaf390e67170ccc4b73b203cfe8db62e487b58e71b319d5765890c3899b20"
+    }
+  },
+  "partial_diagnostic_accepted": false
 }
