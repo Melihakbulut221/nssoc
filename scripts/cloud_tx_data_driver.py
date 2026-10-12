@@ -26,6 +26,32 @@ def sha(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def original_bit_output_screen(t, positive, negative, bits, start, ui):
+    """Compare final TX output to source bits, never to delayed mux inputs."""
+    t, positive, negative = (np.asarray(x, dtype=float) for x in (t, positive, negative))
+    bits = np.asarray(bits)
+    assert t.ndim == 1 and len(t) >= 2 and positive.shape == negative.shape == t.shape
+    assert np.isfinite(t).all() and np.isfinite(positive).all() and np.isfinite(negative).all()
+    assert np.all(np.diff(t) > 0)
+    assert bits.ndim == 1 and len(bits) and np.isin(bits, [0, 1]).all()
+    assert np.isfinite(start) and np.isfinite(ui) and ui > 0
+    phases = (.3, .5, .7)
+    times = start + (np.arange(len(bits))[:, None] + np.asarray(phases)) * ui
+    assert times.min() >= t[0] and times.max() <= t[-1], 'Incomplete original-bit output coverage'
+    measured = np.interp(times, t, positive) - np.interp(times, t, negative)
+    margins = measured * (2 * bits[:, None].astype(float) - 1)
+
+    def counts(values):
+        return dict(samples=int(values.size), minimum_margin_v=float(values.min()),
+                    wrong_sign_samples=int((values <= 0).sum()),
+                    below_100mv_samples=int((values < .1).sum()))
+
+    return dict(**counts(margins), phases={str(p): counts(margins[:, i]) for i, p in enumerate(phases)},
+                passed=bool((margins >= .1).all()),
+                source_bits_sha256=hashlib.sha256(bytes(int(b) for b in bits)).hexdigest(),
+                method='All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle.')
+
+
 def prepare(deck, inputs, native, mode, pwl):
     assert mode in ('cmos_resistive', 'cmos_no_pullup', 'cmos_hv_resistive', 'cmos_hv_no_pullup')
     hv = mode.startswith('cmos_hv_')
@@ -126,6 +152,13 @@ def review(run, native, mode):
         note='Engineering terminal-voltage screen only. Native model convergence and downstream HBT/signal screens remain separate. Reverse rail current is reported, not presumed supportable by a real regulator.')
     report['engineering_screen_passed'] = (all(d['passed'] for d in devices.values()) and
         report['below_150mv_samples'] == report['common_mode_outside_target_samples'] == 0)
+    final_wave = run / 'wave.dat'
+    with final_wave.open() as stream:
+        header = stream.readline().split()
+    assert header.count('v(op)') == header.count('v(on)') == 1
+    outputs = np.loadtxt(final_wave, skiprows=1, usecols=(0, header.index('v(op)'), header.index('v(on)')))
+    report['original_bit_output'] = original_bit_output_screen(
+        outputs[:, 0], outputs[:, 1], outputs[:, 2], bits, native.START, native.UI)
     raw_pin = dict(sha256=sha(wave), bytes=wave.stat().st_size)
     packed = wave.with_suffix('.dat.gz')
     with wave.open('rb') as src, gzip.open(packed, 'xb', compresslevel=1) as dst:

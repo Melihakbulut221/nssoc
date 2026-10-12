@@ -327,3 +327,29 @@ and RX-return metadata. This job has not yet returned at this checkpoint;
 it cannot establish detailed routing, qualified extraction or serial PHY
 acceptance. The locally queued credit-offer physical job had not started,
 so it is not represented as a completed physical checkpoint.
+
+
+The [native CMOS input-driver experiments](evidence/pcie-cmos-data-driver-20261013.json)
+replace four ideal mux data inputs with actual foundry `sg13g2_buf_16` cells
+and native resistors; the selector and bias sources remain ideal. Run
+38320024701 rejects the direct resistive level-shift candidate: the 2.5 V
+network backfeeds the 1.2 V CMOS outputs, eight of sixteen LV MOS devices
+exceed the prospective 1.32 V terminal-voltage screen, and the differential
+data become ambiguous. The supply absorbs 3.681 mW on average. This is a
+recorded circuit failure, not an accepted interface.
+
+Run 38320561121 inserts sixteen native HV NMOS devices so that the LV
+outputs drive only gates. All thirty-two MOS devices pass the engineering
+voltage screens and the CMOS supply now delivers 1.373 mW on average. The
+candidate is still rejected: 208 of 768 original input-bit samples have
+wrong signs, and four downstream HBT devices have insufficient VCE
+headroom (minima 0.201833 V and 0.303712 V versus the unchanged 0.4 V bound).
+The downstream reviewer reports zero wrong signs against the *actual mux
+inputs*; this does not prove that those inputs represent the correct source
+bits at the required time. A separate final-output comparison now uses the
+original PRBS bits at all 768 unchanged source-relative sample times and
+the original 100 mV limit. Its polarity, one-bit-delay, low-amplitude and
+incomplete-capture controls run on hosted workers. No fitted phase replaces
+the failed source-relative gate. Both supply-disconnection fault captures
+are retained. No full serializer, PLL/CDR, physical driver layout, PVT
+qualification, foundry SOA or full PHY acceptance is claimed.

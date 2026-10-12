@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/tx-cmos-driver-cloud.yml
       - scripts/cloud_tx_data_driver.py
+      - sw/tests/test_cloud_tx_original_bits.py
       - hw/soc/analog/pcie/tx_cmos_resistive_input_v1.inc
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v2.inc
   workflow_dispatch:
@@ -36,11 +37,13 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
-          python3 -m pip install numpy==2.3.3
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
           curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Reject source-bit corruption and incomplete output captures
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py
       - name: Run fixed-oracle native study and independent complete-wave review
         run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind compact --data-driver '${{ matrix.driver }}'
       - name: Preserve all successful and failed native captures permanently
