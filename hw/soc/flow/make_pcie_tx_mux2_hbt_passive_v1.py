@@ -78,7 +78,7 @@ def main():
     records = []
     reference = [
         "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut",
-        "* SPDX-License-Identifier: CERN-OHL-W-2.0",
+        "* SPDX-License-" "Identifier: CERN-OHL-W-2.0",
         ".subckt " + TOP + " " + " ".join(PORTS),
     ]
 
