@@ -17,13 +17,17 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--variant', required=True)
+    p.add_argument('--prepared-extraction', action='store_true',
+                   help='Consume source-bound native extraction from this same hosted job')
     args = p.parse_args()
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
     dest = ROOT / 'cloud-tx-layout-composition'
     dest.mkdir(exist_ok=False)
     archive = dest / 'input.tar.gz'
-    result = dict(status='RUNNING', variant=args.variant, adopted=False, source=spec['variants'][args.variant])
+    source = (dict(prepared_extraction_result_sha256=sha(out / 'extraction-result.json'),
+                   job_commit=os.environ.get('GITHUB_SHA')) if args.prepared_extraction else spec['variants'][args.variant])
+    result = dict(status='RUNNING', variant=args.variant, adopted=False, source=source)
 
     def restore(receipt, directory):
         fetch(receipt['url'], receipt['sha256'], archive)
@@ -40,14 +44,16 @@ def main():
             raise RuntimeError(f'{label}: exit {code}')
 
     try:
-        assert not out.exists()
-        restore(result['source'], ROOT)
+        if not args.prepared_extraction:
+            assert not out.exists()
+            restore(result['source'], ROOT)
         extraction = json.loads((out / 'extraction-result.json').read_text())
         assert extraction['variant'] == args.variant
         assert extraction['status'] == 'PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
         protected = {str(q): sha(q) for sub in ('layout', 'physical', 'wire96') for q in (out / sub).rglob('*') if q.is_file()}
         layout = json.loads((ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
-        restore(layout['receipt'], ROOT)
+        if not args.prepared_extraction:
+            restore(layout['receipt'], ROOT)
         manifest = json.loads((ROOT / 'manifest.json').read_text())
         assert all(sha(ROOT / n) == v['sha256'] for n, v in manifest['files'].items())
         electrical = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-input-20261013.json').read_text())

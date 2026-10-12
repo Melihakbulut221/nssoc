@@ -27,7 +27,8 @@ def fetch(url, digest, target):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus'), required=True)
+    parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
+                                             'critical_buses', 'critical_buses_wide_escape'), required=True)
     args = parser.parse_args()
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
@@ -93,6 +94,14 @@ def main():
             ]
             if args.variant == 'topmetal_trunks_narrow_bus':
                 changes.append(("width = 16 if net in ['avdd','avss'] else 4", "width = 16 if net in ['avdd','avss'] else 3"))
+            if args.variant.startswith('critical_buses'):
+                changes.append(('    for i, net in enumerate(sorted(terminals)):',
+                    "    ordered_nets = ['qn','qp','ea','eb','tail','sp','sn','op','on','ap','an','bp','bn','iref','avdd','avss','sub']\n"
+                    "    assert len(ordered_nets) == len(terminals) and set(ordered_nets) == set(terminals)\n"
+                    "    for i, net in enumerate(ordered_nets):"))
+            if args.variant == 'critical_buses_wide_escape':
+                changes.append(('escape(pin, met, net, lane, name, 4, off)',
+                                'escape(pin, met, net, lane, name, 8, off)'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)

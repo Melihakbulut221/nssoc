@@ -28,7 +28,9 @@
   "variants": [
     "baseline",
     "topmetal_trunks",
-    "topmetal_trunks_narrow_bus"
+    "topmetal_trunks_narrow_bus",
+    "critical_buses",
+    "critical_buses_wide_escape"
   ],
   "prospective_changes": {
     "vertical_metal": "Metal4 to TopMetal1",
@@ -53,7 +55,31 @@
       "topmetal_trunks": 4,
       "topmetal_trunks_narrow_bus": 3
     },
-    "kelvin_Metal5_bypass": "Removed in both candidates because its broad rectangle would contact new via stacks. Return remains connected through the new TopMetal1 trunks, subject to strict native LVS and subsequent electrical check."
+    "kelvin_Metal5_bypass": "Removed in both candidates because its broad rectangle would contact new via stacks. Return remains connected through the new TopMetal1 trunks, subject to strict native LVS and subsequent electrical check.",
+    "critical_bus_order": [
+      "qn",
+      "qp",
+      "ea",
+      "eb",
+      "tail",
+      "sp",
+      "sn",
+      "op",
+      "on",
+      "ap",
+      "an",
+      "bp",
+      "bn",
+      "iref",
+      "avdd",
+      "avss",
+      "sub"
+    ],
+    "critical_buses_wide_escape_hbt_via_columns": [
+      4,
+      8
+    ],
+    "critical_bus_reason": "Actual failed transitions reach100mV as late as67.23ps, after the unchanged37.5ps first sample. Place qn/qp/ea/eb/tail/select buses nearer native devices; compare an additional4-to8-column HBT access via variant. Real DRC/LVS/extracted full-wave gates required."
   },
   "unchanged": [
     "54device circuit",

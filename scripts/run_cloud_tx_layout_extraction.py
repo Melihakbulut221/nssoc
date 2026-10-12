@@ -16,12 +16,18 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', required=True)
+    parser.add_argument('--prepared-layout', action='store_true',
+                        help='Consume the verified layout generated in this same hosted job')
     args = parser.parse_args()
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
     runtime = json.loads((ROOT / 'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
-    receipt = spec['variants'][args.variant]
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
-    assert not out.exists()
+    if args.prepared_layout:
+        receipt = dict(prepared_layout_result_sha256=sha(out / 'result.json'),
+                       job_commit=os.environ.get('GITHUB_SHA'))
+    else:
+        receipt = spec['variants'][args.variant]
+        assert not out.exists()
     out.parent.mkdir(parents=True, exist_ok=True)
     archive = out.parent / 'cloud-extraction-input.tar.gz'
     result = dict(status='RUNNING', variant=args.variant, adopted=False,
@@ -39,11 +45,12 @@ def main():
             raise RuntimeError(f'{label}: exit {code}')
 
     try:
-        fetch(receipt['url'], receipt['sha256'], archive)
-        assert archive.stat().st_size == receipt['bytes']
-        with tarfile.open(archive) as tar:
-            tar.extractall(ROOT, filter='data')
-        archive.unlink()
+        if not args.prepared_layout:
+            fetch(receipt['url'], receipt['sha256'], archive)
+            assert archive.stat().st_size == receipt['bytes']
+            with tarfile.open(archive) as tar:
+                tar.extractall(ROOT, filter='data')
+            archive.unlink()
         physical = json.loads((out / 'result.json').read_text())
         assert physical['variant'] == args.variant
         assert physical['status'] == 'PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
