@@ -2,6 +2,84 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Latest continuation — 12 October, 05:57 TRT
+
+The combined **registered credit offer, RX return metadata, registered replay
+successor and 128 Ethernet response registers** completes both actual joint
+CPU/PCIe/Ethernet cases: **2 passed, 0 failed, 0 skipped**, with sixteen vendor
+Ethernet SRAM instances. Whole-chip synthesis, the unchanged twenty-SRAM/port
+inventory, response-register clock binding and mapped replay invariant pass.
+The canonical-Ethernet comparison also passes two cases; only the actual
+128-register candidate is used as the synthesis gate.
+
+| Unplaced PCIe setup | Before (ns) | Combined offer (ns) | Improvement (ps) |
+| --- | ---: | ---: | ---: |
+| Slow | -1.240848 | -1.132761 | 108.087 |
+| Typical | +0.373847 | +0.390053 | 16.206 |
+| Fast | +1.246757 | +1.259925 | 13.168 |
+
+All seven setup and six hold groups are retained at all three corners. This
+is not an unqualified improvement: slow CPU setup falls from **+1.125990 to
++0.164137 ns**, and several hold groups regress slightly. The existing single
+unconstrained D endpoint is independently bound to the same asynchronous
+`irq_external_i` first synchronizer stage in both maps. No timing exception is
+added. The offer contract allows one extra cycle of backpressure and at most
+one ordinary reservation per two clocks; replay is unchanged. Its physical
+comparison is queued behind the already running RX-metadata candidate, using
+the same clocks, die, macros and repair policy. It is not adopted.
+
+The earlier replay/Ethernet physical candidate completes its post-CTS repair
+and receives independent all-group readback with the original 20/4/8/8/8 ns
+clocks. **All eighteen hold group minima improve** over its pre-hold checkpoint,
+but timing still fails. The five corrupted-readback controls are rejected.
+
+| Completed post-CTS group | Slow setup (ns) | Fast hold (ns) |
+| --- | ---: | ---: |
+| PCIe | -1.506307 | -0.051789 |
+| CPU | -0.861254 | -0.067074 |
+| Ethernet generated output clock | +3.522529 | -0.224439 |
+| Asynchronous checks | -1.009025 | -0.046873 |
+
+These results use placement-estimated RC, not routed or qualified signoff
+extraction. Three worst paths per group are read; these are not full endpoint
+counts. The exact completed physical outputs and native logs are preserved.
+
+The combined offer's new critical path reaches advertised credit counters.
+A further candidate replaces variable part-select writes with three constant
+bank writes, preserving the class-3 no-write behavior. **Full-module sequential
+equivalence passes five refresh configurations**, including explicit clock
+and asynchronous-reset events, with no input-stability assumptions. Three FC,
+five buffered and one cycle-by-cycle accepted-EOP test pass. Real wrong-bank
+and premature-commit mutations fail their port oracles. This change adds no
+latency to the prior candidate. Its whole-chip map and timing comparison are
+running; no timing gain is claimed yet. The first fault collector assumed a
+missing result field after a failed make; the corrected collector reuses the
+complete first XML and checks actual source/runtime hashes. Both the failure
+and the pre-CAD map abort remain available.
+
+Runtime-only scheduling separates waveform capture threads from their two
+native solvers, and moves the unplaced STA process off a shared solver CPU.
+Process identities and circuit/input hashes remain unchanged. A 163-second
+observation confirms progress; no controlled speedup ratio is claimed. The
+first capture CPU calculation double-counted process totals and is explicitly
+superseded by the corrected aggregate calculation.
+
+The [complete evidence record](evidence/pcie-offer-and-postcts-20261012.json)
+links three anonymously downloaded and fully hash-verified public capsules:
+
+- Joint traffic and capture scheduling: 27 members, 2,803,001 bytes,
+  SHA-256 `81f0dd526981c5b8ff55964194a418a9ee17883cbe381fdca4b4cf21a4613af9`.
+- Complete map, post-CTS physical outputs and comparisons: 412 members,
+  306,334,368 bytes,
+  SHA-256 `f94552d51e4857ade38079ed9ee9e3f10229fbc7d9f0324d3795b73616fc8aa2`.
+- Static FC write proofs, port tests, actual fault cases and prepared methods:
+  130 members, 352,702 bytes,
+  SHA-256 `c6ebd39a4c9eda23c6cb37d2b7e5d51c79ce69302bea700faf0e256f9c184b3b`.
+
+Active captures and physical outputs are excluded. The loaded RHI140 PLL
+full-capture and timestep comparison continue. **Full serial PHY, accepted
+main-chip routing and final setup/hold remain open.**
+
 ## Latest continuation — 12 October, 05:13 TRT
 
 The new **RHI140 physical pump/filter** completes all twelve nominal component
