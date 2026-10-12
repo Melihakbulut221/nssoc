@@ -47,6 +47,21 @@ the long run. The 0.3125 ps maximum step and the existing final-window
 100 ppm / 50 ps / no-slip criteria remain fixed; this does not replace
 full-device long-duration electrical, PVT or PHY qualification.
 
+Two additional **MOS/temperature sensitivity points**, slow MOS at 125 °C
+and fast MOS at −40 °C, are prepared behind the same completed nominal gate.
+They retain nominal supplies, HBT/passive corners and geometry RC, all 865
+devices and 2,438 columns, the 50 ns duration, 0.3125 ps step and existing
+functional/electrical limits. These are not a complete PVT matrix.
+An exact inverse transformation verifies that only the two MOS model
+selectors and temperature differ; ten actual corrupted decks are rejected.
+Insufficient cycles in the fixed window remain a failure. Independent full
+functional/startup and device-electrical readbacks are queued after each
+native point. The [frozen methods and preflight evidence](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-corner-methods-20261012.tar.gz)
+are publicly verified (30,935 bytes, SHA-256
+`0b238a1dc98fa79e51fae10272377a030ef05b3b8d2c5202869f8936e3264991`).
+**Neither corner has a native result yet.** Resource gates serialize these
+captures; healthy existing jobs are not interrupted.
+
 The original nested-AppImage failure, exact floating-point serialization
 mismatch, missing Python dependency and missing parent BULK reference pin
 are retained alongside their corrected attempts. The GDS did not change

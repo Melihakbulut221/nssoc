@@ -22,6 +22,13 @@
       "name": "nssoc-pbuf10-acquisition-gate-20261012.tar.gz",
       "bytes": 8611,
       "sha256": "54901cd0d7aa00a98fb0d6a95e2516a2e7781368d61acc80da0597fe63c89fa2"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-pbuf10-corner-methods-20261012.tar.gz",
+      "name": "nssoc-pbuf10-corner-methods-20261012.tar.gz",
+      "bytes": 30935,
+      "sha256": "0b238a1dc98fa79e51fae10272377a030ef05b3b8d2c5202869f8936e3264991"
     }
   ],
   "canonical_regeneration": {
@@ -793,5 +800,92 @@
     },
     "source_sha256": "923188a87cf4f6f1a25a80ae7186d563ed0866556dafb2432eeb8023e25c54f3",
     "only_test_substitution": "Change source capture root to the completed actual failed RHI140 full capture; preparation and run remain unchanged."
-  }
+  },
+  "prospective_two_corner_preflight": {
+    "status": "PASS_TWO_CORNER_DECK_TRANSFORMS_AND_TEN_ACTUAL_DECK_FAULTS",
+    "plans": {
+      "ss125": {
+        "mos_corner": "mos_ss",
+        "temperature_c": 125,
+        "devices": 865,
+        "columns": 2438,
+        "step_s": 3.125e-13,
+        "stop_s": 5e-08,
+        "fixtures_unchanged": [
+          "VDD avdd 0 PWL(0 0 500p 2.3)",
+          "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+          "VCORE cvdd 0 PWL(0 0 500p 1.2)",
+          "VRST clearb 0 PWL(0 0 3n 0 3.1n 1.2)",
+          "VRESET reset 0 PWL(0 0 500p 2.5 8n 2.5 8.1n 0)",
+          "VREFERENCE reference 0 PULSE(0 2.5 14n 25p 25p 4.95n 10n)",
+          "VBODY body_substrate 0 0",
+          "VWREF wire_cref 0 0",
+          "CLOAD_CLKP clkp 0 50f",
+          "CLOAD_CLKN clkn 0 50f",
+          "VDIVBODY div_body_substrate 0 0",
+          "VDIVWREF div_wire_cref 0 0",
+          "VPUMPWREF pump_wire_cref 0 0",
+          "VPFDWREF pfd_wire_cref 0 0",
+          "VFBWREF feedback_wire_cref 0 0",
+          "VRXWREF receiver_wire_cref 0 0",
+          "VTGWREF toggle_wire_cref 0 0",
+          "VTG1WREF toggle1_wire_cref 0 0",
+          "VCOUNTERWREF counter_wire_cref 0 0"
+        ],
+        "deck_sha256": "17ee98c84efc79526621c36aee18d4e41398d21ca8a219b2f177518ba0ae3583"
+      },
+      "ffm40": {
+        "mos_corner": "mos_ff",
+        "temperature_c": -40,
+        "devices": 865,
+        "columns": 2438,
+        "step_s": 3.125e-13,
+        "stop_s": 5e-08,
+        "fixtures_unchanged": [
+          "VDD avdd 0 PWL(0 0 500p 2.3)",
+          "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+          "VCORE cvdd 0 PWL(0 0 500p 1.2)",
+          "VRST clearb 0 PWL(0 0 3n 0 3.1n 1.2)",
+          "VRESET reset 0 PWL(0 0 500p 2.5 8n 2.5 8.1n 0)",
+          "VREFERENCE reference 0 PULSE(0 2.5 14n 25p 25p 4.95n 10n)",
+          "VBODY body_substrate 0 0",
+          "VWREF wire_cref 0 0",
+          "CLOAD_CLKP clkp 0 50f",
+          "CLOAD_CLKN clkn 0 50f",
+          "VDIVBODY div_body_substrate 0 0",
+          "VDIVWREF div_wire_cref 0 0",
+          "VPUMPWREF pump_wire_cref 0 0",
+          "VPFDWREF pfd_wire_cref 0 0",
+          "VFBWREF feedback_wire_cref 0 0",
+          "VRXWREF receiver_wire_cref 0 0",
+          "VTGWREF toggle_wire_cref 0 0",
+          "VTG1WREF toggle1_wire_cref 0 0",
+          "VCOUNTERWREF counter_wire_cref 0 0"
+        ],
+        "deck_sha256": "50894020bbc35df3bbde350219a6df4ae014d5fd8625e3984aa40e2f76f99994"
+      }
+    },
+    "faults": [
+      "ss125:wrong_temperature",
+      "ss125:wrong_mos",
+      "ss125:changed_supply",
+      "ss125:coarse_timestep",
+      "ss125:missing_wire_model",
+      "ffm40:wrong_temperature",
+      "ffm40:wrong_mos",
+      "ffm40:changed_supply",
+      "ffm40:coarse_timestep",
+      "ffm40:missing_wire_model"
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-corners-20261012/check02.py": "c9a1ef82cfcb84e3206a443d2f6c5ac91283298abf12cd380d029e8a5f194a90",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-corners-20261012/driver01.py": "0e38806bc03ba69414e53d9a92d046bad649c72f4400752547eeb80e582846b8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-native865-20261012/run01.py": "01099090dd698adedd27856fe40551b7f4eb201d29adc9aa68bc8774e425a6c0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-native865-20261012/engine_parent753.py": "193a8d2036f197c796deca2f7b024700db5fe4aac5b39a74bddd85f9bae3615e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pbuf10-native865-20261012/measurement01.py": "f83fd5909645aa2b7b43395f2ee316d0882c0015761fe100186f99a66699ccb5"
+    },
+    "full_pvt_accepted": false,
+    "scope": "Two prospective full865 MOS/temperature sensitivity points at nominal supply,HBT,passive and RC. Same50ns.3125ps,all2438columns,original division/rail/reset requirements. Exactinverse deck transformation. Not fullPVT/signoff or analogPHYacceptance. Insufficientcyclesat50ns are a failure, not waived."
+  },
+  "corner_native_results": "NOT_STARTED_NOMINAL_AND_RESOURCE_GATES"
 }
