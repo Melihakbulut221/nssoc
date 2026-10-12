@@ -99,6 +99,11 @@ def main():
                     "    ordered_nets = ['qn','qp','ea','eb','tail','sp','sn','op','on','ap','an','bp','bn','iref','avdd','avss','sub']\n"
                     "    assert len(ordered_nets) == len(terminals) and set(ordered_nets) == set(terminals)\n"
                     "    for i, net in enumerate(ordered_nets):"))
+                # TM2.bR requires5um beside wide lines with>50um parallel run.
+                # These are exactly the three gaps adjacent to the two supply
+                # buses in the explicit critical-net order above.
+                changes.append(('cursor_y = y + half + 3',
+                                "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
             if args.variant == 'critical_buses_wide_escape':
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
