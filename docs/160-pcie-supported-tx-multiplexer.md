@@ -291,3 +291,17 @@ long parallel span; the three gaps adjacent to reordered 16 µm supply buses
 are enlarged from 3 to 5 µm. Their repeated complete geometry-to-transient
 pipeline is run 38315447654. No rule is disabled and no failing result is
 replaced by the propagation-delay diagnostic.
+
+
+The [completed critical-bus trial](evidence/pcie-tx-cloud-critical-route-20261013.json)
+passes physical DRC/LVS, native wire extraction and source-bound composition
+for the paired control and both reordered geometries (run 38315447654).
+Each preserves 54 native devices and 173 wire resistors; the control has
+267 capacitors and each reordered variant has 270. The unchanged waveform
+screen still fails with 128 wrong signs: control −251.503 mV, reordered buses
+−242.423 mV, and reordered buses with wider via access −238.701 mV minimum
+margin. All three have zero HBT bound failures and no native diagnostic
+warnings. Neither new geometry is adopted. Further validation must separate
+source latency from serial eye distortion while preserving the failed
+integration screen; these results do not close the full serializer, PLL/CDR,
+qualified RF PEX, main-chip routing or final timing.

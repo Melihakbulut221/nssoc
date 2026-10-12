@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T01:01:36.333086+03:00",
+  "as_of": "2026-10-13T01:26:25.802534+03:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
-  "execution_policy": "User cloud-only instruction overrides historical local goal text. All CAD, simulation and tests on GitHub-hosted runners. Local transfer/cleanup service only.",
-  "head": "e852acbf",
+  "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
+  "head": "1165cfb7",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -50,34 +50,35 @@
     "interpretation": "Both wire effects matter; resistance reduction eliminates sign and device-bound failures but full capacitance still misses100mV. Artificial parasitic mutations are diagnostic, never a layout fix or acceptance."
   },
   "live_followup": {
-    "run": 38313404684,
-    "workflow": "tx-layout-waveform-cloud.yml",
+    "run": 38315447654,
+    "workflow": "tx-critical-route-cloud.yml",
     "last_verified_status": "completed",
-    "task": "Restore validated candidate geometry and its native54 devices/RC, compose physical anchors, run unchanged8GT/s full-wave review on Ubuntu24 after Ubuntu22 composition. No artificial RC edits.",
-    "result": "All three native full-wave captures and reviews completed; all signal screens FAIL. Thick-metal geometries remove all19 native HBT bound failures, but retain128 wrong samples. Neither candidate adopted.",
-    "evidence": "docs/evidence/pcie-tx-cloud-layout-waveforms-20261013.json"
+    "result": "All three physical/native RC/composition chains passed. All fixed-phase signal reviews failed with128wrong signs. Zero HBT bound failures; no variant adopted.",
+    "evidence": "docs/evidence/pcie-tx-cloud-critical-route-20261013.json"
   },
   "validation": {
-    "run": 38313504168,
-    "result": "PASS SPDX inventory REUSE and3 migration safety tests on f46289a5.",
+    "run": 38316186426,
+    "result": "PASS SPDX inventory REUSE and3 migration safety tests on1165cfb7.",
     "hardlink_restore_run": 38313036762,
     "hardlink_result": "PASS all4 groups;10 safety tests each,49batches32196original files36080201324logical bytes including13actual archive hardlinks.",
     "evidence": "docs/evidence/cloud-output-restore-20261013.json",
     "prior_failed_restore_run": 38312200091,
-    "fix": "Strict backward hardlink target content verification; unsafe/forward/symlink/duplicate/hash/size faults rejected."
+    "fix": "Strict backward hardlink target content verification; unsafe/forward/symlink/duplicate/hash/size faults rejected.",
+    "new_snapshot_readback_run": 38316589440,
+    "new_snapshot_readback_status": "dispatched; pending result, not claimed PASS"
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 32334,
-    "batch": 51,
-    "removed_bytes": 37054300088,
-    "uploaded_bytes": 26283724098
+    "next_index": 51552,
+    "batch": 57,
+    "removed_bytes": 43829824449,
+    "uploaded_bytes": 32466170908
   },
   "next_actions": [
-    "Investigate phase-specific output delay and remaining actual interconnect RC in the two physically valid thick-metal candidates. All768samples and100mV/8GT limits remain unchanged. Native bounds are now clean but128wrong-sign samples remain. Do not adopt or call PHY complete.",
-    "Keep transfer service active; originals removed only after exact hosted part and restore-map verification.49batches reconstructed independently; new later batches need later snapshot verification.",
-    "Full serial PHY, chip route and final setup/hold remain OPEN; earlier paired global-route estimate is not final signoff.",
-    "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published. Do not restart local CAD."
+    "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
+    "Use new delay diagnosis to develop clock-aware full serializer/PLL/CDR validation. Do not silently replace original failing integration screen or count fixed-delay alignment as PCIe compliance.",
+    "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
+    "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -104,13 +105,23 @@
     "evidence": "docs/evidence/pcie-tx-cloud-extraction-20261013.json"
   },
   "transfer_remaining_snapshot": {
-    "existing_files": 361723,
-    "logical_bytes": 238196081570,
-    "as_of": "2026-10-13T00:55:00+03:00",
-    "note": "Counts move during live transfer. Not a claim of completion."
+    "existing_files": 342934,
+    "logical_bytes": 231420557209,
+    "as_of": "2026-10-13T01:26:25.802534+03:00",
+    "note": "Read-only live inventory; files may move during transfer. Logical bytes are not allocated disk usage. Excludes protected migration state, source checkout and tools."
   },
   "redundant_cancelled_run": {
     "run": 38313404658,
     "reason": "Old seven net-class artificial-R diagnostics were requeued by shared simulator-wrapper edit; same complete evidence already38309700516. Real geometry waveform run remains active."
+  },
+  "tx_phase_diagnosis": {
+    "run": 38314689488,
+    "result": "All128wrong signs at0.3UI. Source-relative propagation delay dominates this development screen.",
+    "evidence": "docs/evidence/pcie-tx-cloud-phase-diagnostic-20261013.json"
+  },
+  "tx_latency_diagnosis": {
+    "run": 38315596493,
+    "result": "Thick-metal median55.681ps trained on bits0-63 then frozen:573held-out samples,zero wrong signs,249.106mV minimum. Original768sample source-phase gate remains failed. Not physical CDR, compliance or adoption.",
+    "evidence": "docs/evidence/pcie-tx-cloud-latency-diagnostic-20261013.json"
   }
 }
