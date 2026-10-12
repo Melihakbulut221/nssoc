@@ -1,0 +1,54 @@
+{
+  "time": "2026-10-12T22:47:09.097303+03:00",
+  "policy": "User requires cloud-only compute and local cleanup. Local CAD stopped intentionally. Cleanup only when exact bytes are preserved in verified GitHub release assets. Repository and tools removal awaiting scope reply.",
+  "head_before_migration": "5f3a50e312aeafb8e5d8f31d2ca31843f71c8fe9",
+  "local_units": {
+    "time": "2026-10-12T22:42:49.762342+03:00",
+    "reason": "User requests all compute in cloud and local cleanup; not a CAD failure. Freeze before preserving restart inputs.",
+    "units": [
+      {
+        "unit": "nssoc-credit-offer-physical19-20261012.service",
+        "before": "MainPID=3266715\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 2,3 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-credit-offer-joint-20261012/physical19.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 05:43:49 +03] ; stop_time=[n/a] ; pid=3266715 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-credit-offer-physical19-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-credit-offer-read20-20261012.service",
+        "before": "MainPID=3266716\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 3 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-credit-offer-joint-20261012/wait-postcts20.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 05:43:49 +03] ; stop_time=[n/a] ; pid=3266716 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-credit-offer-read20-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-acquisition-retry01-20261012.service",
+        "before": "MainPID=3463360\nExecStart={ path=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python ; argv[]=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-acquisition-resource-recovery-20261012/retry01.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 11:04:10 +03] ; stop_time=[n/a] ; pid=3463360 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-acquisition-retry01-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-rx-input-readback15-20261012.service",
+        "before": "MainPID=3059365\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 6 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-rx-input-delay-relocation-20261012/wait-readback15.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 00:37:01 +03] ; stop_time=[n/a] ; pid=3059365 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-rx-input-readback15-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-rx-input-route12-20261012.service",
+        "before": "MainPID=3058723\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 6,7 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-rx-input-delay-relocation-20261012/route12.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 00:35:42 +03] ; stop_time=[n/a] ; pid=3058723 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-rx-input-route12-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pvt-raw-delivery02-20261012.service",
+        "before": "MainPID=3501440\nExecStart={ path=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python ; argv[]=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-pvt-full-raw-delivery-20261012/queue02.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 11:58:38 +03] ; stop_time=[n/a] ; pid=3501440 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pvt-raw-delivery02-20261012.service\n",
+        "freeze_rc": 0
+      }
+    ],
+    "stop_requested_at": "2026-10-12T22:46:03.703519+03:00",
+    "restart_policy": "Cloud-only. Local CAD intentionally interrupted for requested migration, never counted as PASS. Restore on hosted runner from last written checkpoint; in-memory solver state is not transferable."
+  },
+  "open_items": [
+    "Full serial Gen3 x4 PHY",
+    "Main chip routing",
+    "Final setup/hold",
+    "SRAM hierarchical transistor LVS"
+  ],
+  "ack_controller_correction": "Frozen ports03 incorrectly requires literal PASS although the checker returns PASS_PORT_ONLY_PCIE_REPLAY. Seven replay tests passed; reliable packets never started. Cloud controller checks exact documented status and counts.",
+  "new_cloud_workflow": ".github/workflows/pcie-closure-cloud.yml",
+  "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
+  "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
+  "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl"
+}
