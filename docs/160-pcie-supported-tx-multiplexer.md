@@ -153,3 +153,48 @@ Later bias captures/PVT reviews are a separate delivery. See the
 At the user's request, local CAD controllers were stopped for migration. Subsequent replay proofs, mapping and timing screens run on GitHub-hosted runners. The [migration record](evidence/cloud-migration-20261012.json) distinguishes verified cloud-backed deletions, unique data still being uploaded and unfinished engineering work. Original bytes are removed only after their complete archive or file matches a GitHub release SHA-256, with a published restoration manifest. Local cleanup is not yet complete.
 
 The [paired hosted ACK measurement](evidence/cloud-ack-screen-20261012.json) reproduces all seven setup and six hold groups across three corners using the same source capsule, runtime, ports, parameters and twenty SRAM macros. Although the isolated replay/link tests and arithmetic identity proof pass, the ACK lookahead candidate worsens slow PCIe setup from −1.414698 ns to −1.558253 ns. Its CPU setup improvement does not compensate for that regression; the candidate is rejected for adoption. These are unplaced development-RC measurements, not routed timing closure or a full serial PHY result.
+
+
+## Hosted routing and native TX follow-up (13 October 2026)
+
+The [paired global-routing experiment](evidence/cloud-global-route-pair-20261013.json)
+uses the same restored design, native runtime, original SDC and PDK RC settings.
+Three resized buffers and one inserted buffer improve slow PCIe setup from
+−6.146189 ns to −5.539688 ns in this global-route estimate. The CPU slow setup
+is still −6.465747 ns; fast PCIe hold is −0.920199 ns. Other groups regress,
+and the native report still lists one unconstrained endpoint and 1,078
+unannotated drivers. This candidate is **not adopted**. The earlier routed
+ODB/SPEF result is a separate measurement and must not be combined with these
+estimates. [OpenROAD parasitics documentation](https://openroad.readthedocs.io/en/latest/main/src/est/README.html)
+describes the distinction between placement and global-routing estimates;
+neither supplies final extracted timing acceptance here.
+
+The [eight hosted TX measurements](evidence/pcie-tx-cloud-points-20261013.json)
+restore the original device and wire models with SHA-256 checks. The unchanged
+independent reviewer checks all 768 output samples and the complete startup
+and operating bounds of 23 HBTs. Input common modes and amplitudes were declared
+before simulation; the 8 GT/s rate, sample phases, 100 mV margin, loads and
+native device limits remain unchanged.
+
+| Input operating point | Compact margin (mV) | Compact device failures | Wire margin (mV) | Wire wrong signs / 768 | Wire device failures |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Original baseline | 270.352 | 0 | −266.470 | 128 | 19 |
+| Smaller input swing | 240.652 | 0 | −259.576 | 144 | 15 |
+| Lower data common mode | 240.821 | 0 | −259.519 | 144 | 7 |
+| Further common-mode reduction | 239.925 | 2 | −259.031 | 144 | 5 |
+
+The original failed wire result reproduces within 1 µV with exactly 128 wrong
+sign samples. All new wire operating points fail and are rejected. The first
+hosted review attempt mistakenly selected the unused compact input file for
+wire captures; its native waveforms and failure are preserved. The repaired
+controller binds the review to the actually simulated mux. The frozen review
+algorithm and limits are unchanged. The [metal-R/metal-C diagnostic](evidence/pcie-tx-cloud-rc-diagnostic-20261013.json)
+is complete: setting all 229 explicit metal resistors to 1 mΩ removes wrong
+signs and all device-bound failures but leaves only 96.382 mV margin, below
+the unchanged 100 mV requirement. Removing capacitance alone still produces
+96 wrong signs and 19 device failures. Removing both effects gives 270.333 mV,
+close to the compact model. These artificial parasitic mutations diagnose the
+interconnect mechanism only and cannot be used for layout or PHY acceptance.
+Follow-up runs isolate supply, return, input, output, bias and internal metal
+networks before deciding which physical geometry to repair. Full serial PHY, main-chip route
+acceptance and final setup/hold remain open. All compute runs on hosted runners.

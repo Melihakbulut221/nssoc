@@ -43,7 +43,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--point', required=True)
     parser.add_argument('--kind', choices=('compact', 'wire'), required=True)
-    parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap'), default='actual')
+    parser.add_argument('--interconnect', choices=('actual', 'no_cap', 'low_r', 'low_r_no_cap',
+        'low_r_supply', 'low_r_return', 'low_r_inputs', 'low_r_internal', 'low_r_bias', 'low_r_outputs'), default='actual')
     args = parser.parse_args()
     spec_path = ROOT / 'docs/evidence/pcie-tx-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
@@ -83,7 +84,48 @@ def main():
             wire = inputs / 'mux54-wire01.spice'
             original = wire.read_text()
             (inputs / 'original-wire.source').write_text(original)
-            changed, resistors, capacitors = [], 0, 0
+            parent = {}
+
+            def root(node):
+                parent.setdefault(node, node)
+                if parent[node] != node:
+                    parent[node] = root(parent[node])
+                return parent[node]
+
+            edges = []
+            for line in original.splitlines():
+                fields = line.split()
+                if fields and fields[0].lower().startswith('r'):
+                    assert len(fields) == 4
+                    parent[root(fields[1])] = root(fields[2])
+                    edges.append(fields)
+            ports = next(l.split()[2:] for l in original.splitlines() if l.lower().startswith('.subckt'))
+            groups = {}
+            for fields in edges:
+                key = root(fields[1])
+                groups.setdefault(key, dict(ports=[], edges=[]))['edges'].append(fields)
+            for port in ports:
+                if root(port) in groups:
+                    groups[root(port)]['ports'].append(port)
+            classes = {}
+            for key, group in groups.items():
+                public = set(group['ports'])
+                labels = []
+                for name, names in dict(supply={'avdd'}, return_={'avss', 'sub'},
+                    inputs={'ap', 'an', 'bp', 'bn', 'sp', 'sn'}, bias={'iref'}, outputs={'op', 'on'}).items():
+                    if public & names:
+                        labels.append(name.removesuffix('_'))
+                if not public:
+                    labels = ['internal']
+                assert len(labels) == 1, group
+                classes[key] = labels[0]
+            components = [dict(category=classes[key], ports=g['ports'],
+                resistor_count=len(g['edges']), sum_resistance_ohm=sum(float(e[3]) for e in g['edges']),
+                largest_edges=sorted(g['edges'], key=lambda e:float(e[3]), reverse=True)[:5])
+                for key, g in groups.items()]
+            (out / 'wire-components.json').write_text(json.dumps(components, indent=2) + '\n')
+            result['wire_components'] = components
+            changed, resistors, capacitors, selected = [], 0, 0, 0
             for line in original.splitlines():
                 fields = line.split()
                 if fields and fields[0].lower().startswith(('r', 'c')):
@@ -91,17 +133,21 @@ def main():
                     float(fields[3])
                     if fields[0].lower().startswith('r'):
                         resistors += 1
-                        if args.interconnect in ('low_r', 'low_r_no_cap'):
+                        category = classes[root(fields[1])]
+                        if args.interconnect in ('low_r', 'low_r_no_cap') or args.interconnect == 'low_r_' + category:
                             fields[3] = '0.001'
                             line = ' '.join(fields)
+                            selected += 1
                     else:
                         capacitors += 1
                         if args.interconnect in ('no_cap', 'low_r_no_cap'):
                             continue
                 changed.append(line)
             assert (resistors, capacitors) == (229, 301)
+            if args.interconnect.startswith('low_r'):
+                assert selected > 0
             wire.write_text('\n'.join(changed) + '\n')
-            result['diagnostic_mutation'] = dict(resistors=resistors, capacitors=capacitors,
+            result['diagnostic_mutation'] = dict(resistors=resistors, capacitors=capacitors, selected_resistors=selected,
                 original_sha256=hashlib.sha256(original.encode()).hexdigest(), mutated_sha256=sha(wire),
                 note='Causal diagnostic only. Explicit metal resistors become1milliohm and/or metal capacitors are removed. Device models, layout and measurement limits unchanged. Mutated parasitics cannot be adopted or used as physical acceptance.')
         ng = Path(os.environ['CLOUD_NGSPICE'])
