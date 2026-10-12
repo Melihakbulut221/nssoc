@@ -203,3 +203,24 @@ output or bias resistance alone leaves 19. All fail the unchanged output
 requirement. Real internal interconnect and RC coverage still need repair;
 no diagnostic source is substituted for the physical design. Full serial PHY, main-chip route
 acceptance and final setup/hold remain open. All compute runs on hosted runners.
+
+
+The [hosted real-layout trial](evidence/pcie-tx-cloud-real-layout-20261013.json)
+regenerates the baseline and two actual thick-metal variants. Both variants
+move the vertical Metal4 trunks to TopMetal1, increase lane/bank spacing, and
+remove the broad Metal5 bypass that would intersect the new via stacks. One
+variant additionally narrows signal buses to 3 µm. All three pass all 560 DRC
+categories with zero markers and both hierarchical and flat 54-device native
+LVS. Wrong finger count, missing HBT, open output, supply short and off-grid
+geometry are each rejected. The first cloud attempt failed because a Python
+controller running inside the AppImage attempted a nested FUSE mount; running
+that controller outside the AppImage fixes the infrastructure without changing
+physical acceptance. The successful run is 38311705739 at a17f5e98.
+
+These layouts are not electrically adopted. The next hosted extraction uses
+the exact archived Magic area-product runtime, actual newly generated geometry,
+112 physical metal probes, the unchanged native RC graph audit, and thirteen
+corruption controls. The cross-conductor mutation explicitly uses actual TX
+ports P_op/P_on instead of inherited PLL port names. No artificial resistance
+reduction is used in these geometry candidates. Full-wave acceptance, RF PEX
+qualification, full serial PHY and final chip timing remain open.
