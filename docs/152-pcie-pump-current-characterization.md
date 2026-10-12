@@ -2,6 +2,49 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## Completed PVT, bias and wake measurements — 12 October, 12:10 TRT
+
+The [latest source-bound measurements](evidence/pcie-npu-topmetal-final-measurements-20261012.json)
+retain the completed reviews. All 81 schematic HBT/resistor/temperature/supply
+points are independently remeasured: **66 pass and 15 fail device bounds**.
+Output sign/margin samples pass at every point; this does not override failed
+transistor headroom. This is schematic screening with ideal drivers and bias,
+not full extracted PHY qualification. Full PVT waveforms remain local while
+their two-part publication waits for disk space; metadata/reviews and separate
+reduced-bias/STA captures are being published.
+
+At the unchanged TopMetal2 layout, four ideal reference-current settings
+(250, 300, 350 and 400 µA) all fail the original output sample test. At 250 µA
+all device limits pass, but **163/768 output samples have the wrong sign**.
+The 500 µA reference fails **128/768 samples**, minimum signed margin
+**−266.470 mV**, with device violations. No sample phase or limit was changed.
+
+The mapped NPU gate uses three hold-state FFs and one wake-state FF.
+Synthesis complemented the high hold bit and wake bit and removed their
+original aliases; the earlier name-only checker correctly stopped for review.
+The new check binds the exact RTL source blocks, actual clocks and resets,
+verifies all **16 logical state combinations**, and rejects **five actual
+mapped mutations**. This proves the mapped gate structure and combinational
+enable truth, not full mapped sequential equivalence.
+
+Its same-clock unplaced comparison improves slow CPU setup from +0.164137
+to **+0.651836 ns**, but worsens slow PCIe setup from −1.132761 to
+**−1.414698 ns**. All seven setup/six hold groups and all three corners are
+retained. It is not adopted as a combined timing fix. The new worst path
+starts at ACK sequence bit zero and ends in replay state. A fresh four-bit
+carry-group subtraction candidate preserves the 12-bit modular difference;
+SAT proves all **24 input bits**, and zeroed carry4/carry8 controls fail.
+Replay/link tests and mapping are separate pending gates, with defaults
+unchanged. The [candidate receipt](evidence/pcie-ack-delta-candidate-methods-20261012.json)
+and [source/proof/controller archive](evidence/pcie-ack-delta-candidate-methods-20261012.tar.gz)
+preserve the exact experiment without adopting it.
+
+The [complete TopMetal2 captures and mapped-wake proof archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-topmetal-tx-and-mapped-npu-wake-20261012.tar.gz)
+is publicly verified: 110,364,055 bytes, SHA-256
+`200190529af879819a6f2d73c77faa8a7124193ce5da4d61af73f3f220096f2f`.
+The later bias/PVT/STA supplement is excluded from that archive. Full serial
+PHY, routed-chip acceptance and final timing remain open.
+
 ## Public full-core failure evidence — 12 October, 11:38 TRT
 
 The [complete additional public delivery](evidence/pcie-banked-full-core-lvs-public-20261012.json)

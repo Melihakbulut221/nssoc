@@ -90,9 +90,10 @@ and five fault controls; its 229 R / 301 C transient still fails:
 violations. Both compact references pass with 270.352 mV. Neither layout
 is accepted electrically. A fresh upper-metal routing trial is unverified.
 
-An 81-point HBT/resistor/temperature/common-supply matrix is active. Its
-**125 °C, 95%-supply typical-model point already fails data-pair VCE**, although
-output samples pass. Full PVT acceptance is therefore open. Independent rail
+The 81-point HBT/resistor/temperature/common-supply matrix is complete and
+independently reviewed: **66 pass, 15 fail device bounds**. All output sample
+checks pass, including the failed **125 °C, 95%-supply typical-model point**.
+Full PVT acceptance is therefore open. Independent rail
 variation, mismatch, physical input/clock/bias drivers and full serial-chip
 integration also remain open.
 
@@ -135,4 +136,13 @@ This also preserves the initial upper-metal spacing and subsequent connection
 failures, and the next trial's methods. The corrected upper-metal geometry
 passes DRC, hierarchical/flat LVS and five fault controls. Extraction initially
 stopped because its helper still expected Metal5 public pins; a fresh helper
-checks the actual TopMetal2 pin geometry. Its transient is not yet accepted.
+checks the actual TopMetal2 pin geometry. Its 229 R / 301 C transient completes with **−266.470 mV** minimum
+signed margin and **128/768 wrong-sign samples**, plus device-bound
+violations. Four lower ideal current references also fail the unchanged
+output test; 250 µA clears device limits but has 163 wrong-sign samples.
+These are rejected electrical trials. The completed upper-metal captures
+are in the publicly verified
+[110,364,055-byte archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-topmetal-tx-and-mapped-npu-wake-20261012.tar.gz),
+SHA-256 `200190529af879819a6f2d73c77faa8a7124193ce5da4d61af73f3f220096f2f`.
+Later bias captures/PVT reviews are a separate delivery. See the
+[full latest measurement record](evidence/pcie-npu-topmetal-final-measurements-20261012.json).
