@@ -10,6 +10,17 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 test expectation corrected before native transient
+
+Runs38448644887/38448649226 andsourcecheck38448653603 are terminal failures
+BEFORE simulation. 128regressions passed; the new v9 emitter-count case still
+used the old v8-only per-device expectation and incorrectly expected Nx4 for
+v9selectors. Fix the expectation to selectorsNx6/dataNx2, matching exact
+source/native54 count contracts. No device, limit, phase or output criterion
+changed. Rerun hosted checks first, then distinct nominal/hot-cold studies;
+there are no v9 electrical captures from these failed launch runs.
+Mainroute seed13 run38448901835 is live on c19fc8b4; preserve it.
+
 ## Controlled main-route net-order trial and live v9 PVT
 
 Native routing candidate routing_seed=13 shuffles net order only, with

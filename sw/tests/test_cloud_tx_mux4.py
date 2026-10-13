@@ -493,7 +493,7 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     assert len(changed) == changed_count and all(name.startswith('xmux.') for name in changed)
     for name in changed:
         assert old['hbt'][name]['nx'] == 8
-        expected = 6 if version == 'v8' and new['hbt'][name]['terminals'][1] in ('sp','sn') else 4
+        expected = 6 if version in ('v8','v9') and new['hbt'][name]['terminals'][1] in ('sp','sn') else (2 if version == 'v9' else 4)
         assert new['hbt'][name]['nx'] == expected
         assert {k:v for k,v in old['hbt'][name].items() if k != 'nx'} == {k:v for k,v in new['hbt'][name].items() if k != 'nx'}
     assert Counter(row['nx'] for name,row in new['hbt'].items() if name.startswith('xmux.')) == expected_nx
