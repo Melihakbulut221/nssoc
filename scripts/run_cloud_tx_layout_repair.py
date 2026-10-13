@@ -31,10 +31,10 @@ def main():
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
-    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5','final_drive_v6','final_drive_v7'), default='baseline')
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
     args = parser.parse_args()
     if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
-        assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7')
+        assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8')
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
@@ -80,7 +80,7 @@ def main():
         source = (originals / 'layout91.py').read_text()
         edits = []
         physical_source=(originals/'physical92.py').read_text()
-        if args.circuit_profile in ('cascade14','final_drive_v5','final_drive_v6','final_drive_v7'):
+        if args.circuit_profile in ('cascade14','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'):
             if args.circuit_profile=='cascade14':
                 circuit=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
                 expected='c97692bcc4389c256479631e820a4293b79121d2225d767f5635429cd7dd0805'
@@ -94,6 +94,7 @@ def main():
                     'v5':('c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf','75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d'),
                     'v6':('2ef986b71a2b6b74d4b6b20f74048759c191a441d3bc58667259110b0b2a562f','03e40de12d6f1e340772476959abc823676766a16466bc465c2972954ba64c76'),
                     'v7':('55249822b97b01e8c5f9f90faa408fbf1a0cd34ce55f8f48a5cde87304c9217a','6f03f8557173a8528f3ad20a16c3102487cbcfe2ba0ac657190f2d46c95edc81'),
+                    'v8':('ece50f76c5c8a6bd9bb334498a958c14a2c7be93cb44d008786e8112608c005d','1cae9383cc799292e85c8e95ff641410a502c76b927d8729248ebef9758f0ed8'),
                 }[audit_profile]
                 assert sha(native)==native_digest
                 result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text(),profile=audit_profile)
@@ -109,7 +110,7 @@ def main():
             assert physical_source.count('nssoc_tx_mux2_passive_topmetal_layout_v1')==1
             physical_source=physical_source.replace('nssoc_tx_mux2_passive_topmetal_layout_v1',top)
             result['circuit_source']=dict(path=str(circuit.relative_to(ROOT)),sha256=expected)
-            result['scope']='Native '+args.circuit_profile+' circuit generated as54physical devices including27substrate contacts. Circuit equivalence is not electrical acceptance; v6/v7 require independent fresh electrical screening. Same560DRC rules, strict hierarchical/flat transistor LVS and five physical/reference faults. No extracted electrical acceptance, assembled serializer layout or fullPHY/chip acceptance.'
+            result['scope']='Native '+args.circuit_profile+' circuit generated as54physical devices including27substrate contacts. Circuit equivalence is not electrical acceptance; Each sizing candidate requires independent fresh electrical screening. Same560DRC rules, strict hierarchical/flat transistor LVS and five physical/reference faults. No extracted electrical acceptance, assembled serializer layout or fullPHY/chip acceptance.'
         if args.variant != 'baseline':
             changes = [
                 ('30+26*c,30+14*r', '30+28.8*c,30+14*r'),
@@ -171,7 +172,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7') and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
@@ -274,7 +275,7 @@ def main():
         run([app, 'python', generator, '--pdk', ROOT / 'pdk', '--out', out / 'layout'], 'generation')
         generated = json.loads((out / 'layout/result.json').read_text())
         result['layout'] = generated
-        if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7'):
+        if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'):
             result['generated_reference_equivalence']=audit(circuit.read_text(),native.read_text(),
                 (out/'layout/schematic.cir').read_text(),profile=audit_profile)
         # The controller is standard Python; launching it inside the AppImage

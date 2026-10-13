@@ -112,3 +112,34 @@ def test_v7_generated_reference_keeps_all_native_body_contacts():
     generated='\n'.join(rows+taps+['.ends native'])
     assert m.audit(CORE7,NATIVE7,generated,profile='v7')['generated_sha256']
     with pytest.raises(AssertionError):m.audit(CORE7,NATIVE7,generated.replace(taps[0]+'\n',''),profile='v7')
+
+
+CORE8=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v8_layout_core.spice').read_text()
+NATIVE8=(ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v8.spice').read_text()
+
+
+def test_v8_changes_only_four_selector_multiplicities_and_rejects_other_profiles():
+    assert m.audit(CORE8,NATIVE8,profile='v8')['profile']=='v8'
+    changes=[(a,b) for a,b in zip(m.parse(CORE7),m.parse(CORE8),strict=True) if a!=b]
+    assert len(changes)==4
+    for a,b in changes:
+        assert a[:2]==b[:2] and a[0]=='npn13g2' and a[1][1] in ('sp','sn')
+        assert a[2]['nx']=='8' and b[2]['nx']=='6'
+        assert {k:v for k,v in a[2].items() if k!='nx'}=={k:v for k,v in b[2].items() if k!='nx'}
+    for core,native,profile in [(CORE6,NATIVE6,'v8'),(CORE7,NATIVE7,'v8'),(CORE8,NATIVE8,'v7'),(CORE8,NATIVE8,'v6')]:
+        with pytest.raises(AssertionError):m.audit(core,native,profile=profile)
+    for before,after in [('Nx=6','Nx=8'),('Nx=4','Nx=6'),('Nx=8','Nx=6')]:
+        with pytest.raises(AssertionError):
+            m.audit(CORE8.replace(before,after),NATIVE8.replace(before.lower(),after.lower()),profile='v8')
+
+
+def test_v8_generated_reference_preserves_body_contacts_and_selector_size():
+    rows=['.subckt native '+' '.join(sorted(m.PORTS))]
+    for i,(model,nodes,params) in enumerate(m.parse(CORE8)):
+        nodes[-1]='BULK'
+        rows.append('X%d '%i+' '.join(nodes)+' '+model+' '+' '.join(k+'='+v for k,v in params.items()))
+    taps=[f'RPTAP{i} sub BULK ptap1 A=4p P=8u' for i in range(27)]
+    generated='\n'.join(rows+taps+['.ends native'])
+    assert m.audit(CORE8,NATIVE8,generated,profile='v8')['generated_sha256']
+    with pytest.raises(AssertionError):m.audit(CORE8,NATIVE8,generated.replace(taps[0]+'\n',''),profile='v8')
+    with pytest.raises(AssertionError):m.audit(CORE8,NATIVE8,generated.replace('nx=6','nx=8',1),profile='v8')

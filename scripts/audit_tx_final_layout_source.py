@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Bind the layout core and generated native reference to the explicit v5/v6/v7 circuit contract.
+"""Bind the layout core and generated native reference to the explicit v5/v6/v7/v8 circuit contract.
 
 Compare ordered terminals and device multiplicities, not instance names. Only
 lengths receive 1e-18 metre rounding (1e-12 um), to remove SPICE float-export
@@ -72,11 +72,11 @@ def signature(row, kind, profile='v5'):
         assert length(p.get('we','0.07u')) == length('0.07u')
         assert length(p.get('le','0.9u')) == length('0.9u')
         nx = number(p['nx'])
-        assert profile in ('v5','v6','v7')
+        assert profile in ('v5','v6','v7','v8')
         if profile == 'v5':
             assert nx in (1, 8)
         elif nodes[1] in ('ap','an','bp','bn','sp','sn'):
-            assert nx == (8 if profile == 'v7' and nodes[1] in ('sp','sn') else 4)
+            assert nx == ({'v6':4,'v7':8,'v8':6}[profile] if nodes[1] in ('sp','sn') else 4)
         else:
             assert nodes[1] == 'iref' and nodes[2] == 'avss'
             assert nx == (1 if nodes[0] == 'iref' else 8)
@@ -101,7 +101,7 @@ def signature(row, kind, profile='v5'):
 
 
 def audit(core, native, generated=None, *, profile='v5'):
-    assert profile in ('v5','v6','v7')
+    assert profile in ('v5','v6','v7','v8')
     core_rows, native_rows = parse(core), parse(native)
     assert Counter(r[0] for r in core_rows) == {'npn13g2': 19, 'rppd': 8}
     assert Counter(r[0] for r in native_rows) == {'npn13g2': 19, 'rppd': 8, 'ptap1': 27}
