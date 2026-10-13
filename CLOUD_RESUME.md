@@ -12,6 +12,13 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Preservation and local retirement
 
+**Completed on 13 October 2026:** the local workspace is empty and the
+NSSOC temporary output/controller directories have been removed. All nine
+final source/Git archive groups passed hosted per-member readback. The
+[retirement receipt](https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-final-checkout-20261013/retirement-progress.json)
+binds 36,067 final entries and 3,008,078,533 logical bytes. The preceding
+all-family reconstruction run 38364679770 passed all four groups.
+
 - Main output migration completed: 397,166 planned paths, 448 archive batches,
   274,984,789,765 logical original bytes removed after immutable remote receipt
   verification. This is a logical byte count, not an allocated disk-space claim.
@@ -20,7 +27,8 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
   have separate receipts under `docs/evidence/cloud-*-cleanup-20261013.json`.
 - Final all-family reconstruction:
   [38364679770](https://github.com/Melihakbulut221/nssoc/actions/runs/38364679770).
-  Inspect its actual outcome; dispatch is not acceptance.
+  All four groups completed successfully; this validates archival recovery,
+  not chip signoff.
 - Temporary `/dev/shm/nssoc*` and `/tmp/nssoc*` preservation uses release
   `cloud-migration-transients-20261013`. The first two batches had local full
   remote readback; subsequent batches use hosted per-member readback. Each
