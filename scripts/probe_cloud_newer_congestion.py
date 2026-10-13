@@ -4,6 +4,7 @@
 """Bind every failed global-route marker to the exact newer chip database."""
 from collections import Counter, defaultdict
 import argparse
+from bisect import bisect_left, bisect_right
 import hashlib
 import json
 import os
@@ -129,6 +130,69 @@ def native():
                   most_repeated_nets=counted.most_common(40), markers=markers,
                   all_congested_net_endpoints=endpoints, local_geometric_density=density,
                   density_note='Clipped standard-cell and macro area per100um tile, not routability or legal-site capacity.')
+    # Inspect actual abstract pin shapes/obstructions at the remaining macro
+    # hotspots before choosing another placement or routing experiment. A
+    # track center inside a pin rectangle is not a legal detailed-router AP.
+    tracks = {g.getTechLayer().getName(): (list(g.getGridX()), list(g.getGridY()))
+              for g in block.getTrackGrids()}
+    wanted = {m['name'] for row in markers for m in row['adjacent_macros']}
+    macro_access = {}
+    for inst in block.getInsts():
+        if inst.getName() not in wanted:
+            continue
+        transform = inst.getTransform()
+        def placed(shape):
+            rect = odb.Rect(shape.xMin(), shape.yMin(), shape.xMax(), shape.yMax())
+            transform.apply(rect)
+            return rect
+        pin_shapes = []
+        for term in inst.getITerms():
+            shapes = []
+            for pin in term.getMTerm().getMPins():
+                for shape in pin.getGeometry():
+                    assert shape.getTechLayer() is not None, 'Unmodeled native pin-via geometry'
+                    rect = placed(shape)
+                    layer = shape.getTechLayer().getName()
+                    xs, ys = tracks.get(layer, ([], []))
+                    row = dict(pin=term.getMTerm().getName(), layer=layer, bbox_um=box(rect),
+                        direction=str(term.getIoType()), signal_type=str(term.getSigType()),
+                        net=term.getNet().getName() if term.getNet() else None,
+                        x_track_centers=bisect_right(xs, rect.xMax())-bisect_left(xs, rect.xMin()),
+                        y_track_centers=bisect_right(ys, rect.yMax())-bisect_left(ys, rect.yMin()))
+                    shapes.append(row)
+            if shapes:
+                # Check every transformed pin against OpenDB's own placed bbox.
+                union = [min(s['bbox_um'][i] for s in shapes) if i < 2 else
+                         max(s['bbox_um'][i] for s in shapes) for i in range(4)]
+                assert union == box(term.getBBox()), (inst.getName(), term.getMTerm().getName())
+            pin_shapes.extend(shapes)
+        obstructions = []
+        for shape in inst.getMaster().getObstructions():
+            assert shape.getTechLayer() is not None, 'Unmodeled native obstruction-via geometry'
+            obstructions.append(dict(layer=shape.getTechLayer().getName(), bbox_um=box(placed(shape))))
+        nearby = []
+        bounds = box(inst.getBBox())
+        for index, marker in enumerate(markers):
+            area = marker['bbox_um']
+            if not intersects(bounds, area, 14.4):
+                continue
+            pins = [s for s in pin_shapes if intersects(s['bbox_um'], area, 7.2)]
+            obs = [s for s in obstructions if intersects(s['bbox_um'], area)]
+            macro_nets = {s['net'] for s in pin_shapes if s['net']}
+            involved = {n['net'] for n in marker['nets']}
+            nearby.append(dict(marker_index=index, bbox_um=area, overflow=marker['overflow'],
+                overlaps_macro=intersects(bounds, area),
+                nearby_pin_shapes=pins, intersecting_obstruction_boxes=obs,
+                involved_macro_terminal_nets=sorted(involved & macro_nets),
+                involved_nets_without_terminal_on_this_macro=sorted(involved-macro_nets)))
+        macro_access[inst.getName()] = dict(master=inst.getMaster().getName(),
+            orientation=str(inst.getOrient()), bbox_um=bounds, pin_shapes=pin_shapes,
+            obstruction_boxes=obstructions, nearby_markers=nearby)
+    assert set(macro_access) == wanted
+    report['macro_pin_access'] = macro_access
+    report['macro_pin_access_scope'] = ('Exact transformed native LEF pin and obstruction rectangles, '
+        'with every pin union checked against native ITerm bbox. Track-center counts are geometric '
+        'observations only, not legal via access, DRC, or routing acceptance. Obstructions remain unchanged.')
     (OUT / 'diagnosis.json').write_text(json.dumps(report, indent=2) + '\n')
 
 
