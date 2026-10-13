@@ -316,3 +316,15 @@ Separate **cascade16** changes only two native outputpulldown lengths14to16um
 under unchanged densegeometry. It targets hotCM while retaining cold2.05V
 maximum. This new circuit requires physical/RC/composition andalloriginal
 loaded gates; discover its existingphysicalrun before dispatch.
+
+## Latest verified gates
+
+Wider-tail loaded runs38398957797/38398961815 completed: nominal134.431mV
+andcold232.281mV pass allcomponentgates;hot has2wrong/128earlymarginfailures,
+two tailVCE andinputCMfailures. Overall rejected; allcaptures retained.
+Local-tail extraction **38400976763** passed with4000R/2643C and13controls.
+Compose its own exact devices next, then isolate its loadedwave effect with
+unchanged cascade14denseprestage before combining the newcircuit.
+Cascade16 physical **38400973160** passed560DRC/0markers,strict54deviceLVS
+andfivefaultcontrols. NewRC extraction is next. Discover existing composition/
+extraction runs before dispatch. Mainroute38395878470 remains live.
