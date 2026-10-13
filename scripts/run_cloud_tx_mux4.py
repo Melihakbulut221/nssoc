@@ -129,8 +129,15 @@ def build(inputs, condition, fault='none'):
             subckt, found = bind_devices(FRONT, 'xad_'+name, ports, {'sg13_hv_nmos'})
             assert len(found) == 4
             mos.update(found)
+            front_header = next(line.lower().split() for line in FRONT.read_text().splitlines()
+                                if line.lower().startswith('.subckt '))
+            portmap = dict(zip(front_header[2:], ports, strict=True))
+            buf = next(line.lower().split() for line in FRONT.read_text().splitlines()
+                       if line.lower().startswith('xbuf '))
+            assert len(buf) == 6 and buf[-1] == 'sg13g2_buf_16'
+            buf_ports = [portmap.get(n, 'xad_'+name+'.'+n) for n in buf[1:5]]
             _, found = bind_devices(frontend / 'buf16.inc', 'xad_'+name+'.xbuf',
-                ['xad_'+name+'.drv', source, 'dvdd', '0'], {'sg13_lv_nmos', 'sg13_lv_pmos'})
+                buf_ports, {'sg13_lv_nmos', 'sg13_lv_pmos'})
             assert len(found) == 4
             mos.update(found)
             lines.append('XAD_'+name+' '+' '.join(ports)+' '+subckt)
@@ -163,6 +170,7 @@ def build(inputs, condition, fault='none'):
             lines += [f'V{key} {key}0 0 '+stimulus, f'R{key} {key}0 {key} 25']
     lines += ['RLOAD op on 100','COP op 0 100f','CON on 0 100f']
     nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
+    nodes.update(f'd{i}{suffix}0' for i in range(4) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
     vectors += ['@q.'+n+'.qnpn13g2[ic]' for n in hbt]
     assert len(vectors) == len(set(vectors))
@@ -236,14 +244,21 @@ def review(run, contract):
 
 
 def main():
+    global PRE, FRONT
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias'),default='none')
+    parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
+    parser.add_argument('--frontend',choices=('direct','damped'),default='direct')
     args=parser.parse_args()
+    if args.prestage=='divider14':
+        PRE=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
+    if args.frontend=='damped':
+        FRONT=ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v6.inc'
     out=ROOT/'cloud-tx-mux4';out.mkdir(exist_ok=False)
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
-    result=dict(status='RUNNING',condition=args.condition,fault=args.fault,accepted=False,
+    result=dict(status='RUNNING',condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,accepted=False,
         scope='Actual 61-HBT/64-MOS two-level 4:1 schematic, ideal external clock phases and reference currents. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
     try:
         prepare_inputs(inputs)

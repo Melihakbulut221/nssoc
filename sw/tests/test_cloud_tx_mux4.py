@@ -89,3 +89,22 @@ XP0 net1 A VDD VDD sg13_lv_pmos w=6.72u l=130n
         for prefix in ('save ', 'wrdata op.dat ', 'wrdata wave.dat '):
             row=next(line for line in deck.splitlines() if line.startswith(prefix))
             assert vector in row.split()
+
+
+def test_damped_frontend_binds_actual_buffer_gate_after_native_resistor(tmp_path,monkeypatch):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+''')
+    monkeypatch.setattr(mux4,'FRONT',ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v6.inc')
+    deck,c=mux4.build(tmp_path,'cold_high')
+    assert c['mos']['xad_d0p.xbuf.xn1']['terminals'][1]=='xad_d0p.gate'
+    assert 'v(xad_d0p.gate)' in c['vectors'] and 'v(d0p0)' in c['vectors']
+    assert len(c['hbt'])==61 and len(c['mos'])==64
+    assert 'XGATE din gate sub rppd w=2u l=4.5u' in mux4.FRONT.read_text()
