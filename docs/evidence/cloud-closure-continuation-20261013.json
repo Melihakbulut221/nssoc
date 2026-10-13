@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T12:25:28.753906+00:00",
+  "as_of": "2026-10-13T12:45:41.299989+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect existing tail-path loaded runs38398957797(nominal),38398961815(hot/cold) on c24a39c6; sourcechecks38398965286. Matchedcompact/wire,denseprestage,actualnewfinal3939R/2619C. Also run paired native metalDC v8_tail_comparison on exact old/new v8 composition; useful diagnosis only,never substitute for actual loaded gates. Do not duplicate livejobs.",
+    "Tail-path nativewave runs38398957797(nominal),38398961815(hot/cold) remain LIVE,sourcec24a39c6. Allsource/gate regression steps passed;waitforactualwire results,do notduplicate. MetalDC38399268579 passed:worsttailpair15.511to13.815ohm,tailreturn improvements modest. Exactgeneratorreadback38399518025 is running;use if further localtopologyrepair needed. No physical/electrical/PHYadoption fromDC alone.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -9886,6 +9886,37 @@
     "streams": 4,
     "physical_final": "matched",
     "status": "LIVE_NO_ELECTRICAL_ACCEPTANCE",
-    "adopted": false
+    "adopted": false,
+    "source_checks_status": "PASS"
+  },
+  "final_v8_tail_paths_metal_comparison": {
+    "run": 38399268579,
+    "source_head": "14861f9ae3ce2887c435778b228b6c80d2ef5b47",
+    "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+    "old_summary_sha256": "388d398f130d1a8e41d95821a2a4b54d7ed601ea90a780f9c3f4071c54bfd315",
+    "new_summary_sha256": "4f979c634bf339237270a1bb809a3f402e5954d3c4a65731a739fedf5a03c890",
+    "worst_tail_pair": {
+      "terminals": [
+        "T007_C",
+        "T011_E"
+      ],
+      "old_ohms": 15.51102838428669,
+      "new_ohms": 13.815461940913181
+    },
+    "tail6_return_ohms": {
+      "old": 5.179600832340051,
+      "new": 5.0266605045331705
+    },
+    "tail7_return_ohms": {
+      "old": 5.7859058660348355,
+      "new": 5.56197709050029
+    },
+    "scope": "Actual native wire graph DC only. Modest real resistance improvement, not loaded acceptance. C and transistor effects remain for live full-wave runs."
+  },
+  "final_v8_tail_paths_generator_readback": {
+    "run": 38399518025,
+    "member": "hw/soc/out/cloud-tx-layout-repair/generate.py",
+    "status_at_dispatch": "LIVE",
+    "purpose": "Read exact native terminal routing source to understand remaining physical path resistance, without downloading CAD artifacts locally."
   }
 }

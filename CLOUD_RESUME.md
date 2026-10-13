@@ -75,8 +75,11 @@ final profile `v8_kelvin_tail_paths` binds its distinct receipt. Run original
 nominal andtemperature_voltage streams4 matchedcompact/wire with prestage
 `kelvin_dense_wide`. Existing loaded runs **38398957797** nominal and
 **38398961815** hot/cold are live on **c24a39c6**; sourcechecks38398965286.
-Native metal comparison `v8_tail_comparison` measures old/new actualgraph
-resistance, only as diagnosis. Discover existingruns first; no adoption.
+Native metal comparison **38399268579** passed:worsttailpair15.511to13.815ohm;
+return5.180to5.027ohm and5.786to5.562ohm. This is DCdiagnosis only. Loaded
+wire results still pending; sourcechecks38398965286passed. Exact generator
+readback **38399518025** is running for possible further topology repair.
+Discover existingruns first; no adoption.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
