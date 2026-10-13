@@ -477,4 +477,19 @@ native extraction with 2481R/1743C and thirteen fault controls in 38360318696,
 and exact device/wire composition in 38360575232. The combined study
 38360782776 now uses this new model for both prestages and the 2537R/1781C
 via-array model for the final MUX, keeping the source bits, sample times and
-all engineering gates fixed. Its electrical result is pending.
+all engineering gates fixed. Compact controls passed. The wire case remains
+rejected: 69 wrong signs, all 128 early samples below 100 mV and six HBT
+minimum-VCE failures. The final interface now passes every amplitude and
+common-mode gate, with minimum amplitude 152.842 mV and common mode
+1.804884–1.874046 V. No waveform is adopted.
+
+The dense final escape geometry passed native DRC, strict LVS and all five
+fault controls in 38362060912. Fresh extraction 38362407566 retains 2875 R /
+1986 C, with all thirteen corruption controls rejected; exact native-device
+composition 38364385250 passed with 54 devices. It increases physical via rows,
+widens nonpower M3 escapes and increases applicable resistor-pin via columns;
+model coefficients and signal acceptance gates remain unchanged. A fresh
+loaded-tree comparison against the verified via-array prestages is required.
+All CAD and tests now run on GitHub-hosted runners. See `CLOUD_RESUME.md` for
+cloud preservation and local checkout retirement; neither operation closes
+full serial PHY, main-chip routing or final timing.
