@@ -12,25 +12,31 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Current decision
 
-v8 physical38388166708, nativeRC38388631790 and composition38388917062 pass.
-Nominal loaded comparison **38389211866** is terminal: compact passes;
-wire output passes all768samples (123.903mV minimum), but **one HBT VCE is
-399.203137mV**, below the unchanged400mV gate. Another is400.101mV. v8 is
-**not accepted**. v6 and v7 failures remain preserved; do not relax limits.
+**Both workstreams remain open.** Main route **38371498733** is terminal
+FAILED (GRT-0116), with135native final overflow, after~2h45m. It was not a
+platform timeout. Exact failedODB/congestion report/guides are preserved in
+`cloud-local-optimize-buffers-route-failure-20261013.json`. Native marker/net
+probe **38392685463** is running; inspect it before changing route/placement.
+Do not rerun the identical candidate or waive congestion. No finalSTA exists.
 
-Before another sizing change, inspect the existing source-bound followups:
-- **38390326921**: compact/wire at0.25ps time step (`quarter_step`).
-- **38390345139**: compact/wire `hot_low` and `cold_high` native PVT cases.
-- **38390363372**: exact v8 native compact model member, to bind device roles.
-All three were dispatched on **f5644317**. These are engineering diagnostics;
-wire temperature/RF/body qualification is still absent. Use actual outcomes
-to select the next repair instead of optimizing only a marginal nominal case.
+v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
+one selectorVCE is399.203137mV, below400mV. Quarter-step **38390326921** and
+PVT **38390345139** completed; read exact cases in the continuation JSON.
+Hot_low wire has58wrong signs,128early margin failures and final-input common
+mode1.736968..1.781254V; compact hot_low input CM passes. Cold_high wire output
+passes but two selectorVCE gates fail. No limits/phases/oracle were changed.
+Native identity38390363372 and voltage/current diagnosis38391010440 passed;
+these are diagnostic proof, not acceptance. All failed captures remain.
 
-Distinct v8 RC, circuit and Nx6 emitter-accounting bindings are implemented.
-After unchanged engineering gates pass, full32:1 and remaining independent
-corners/real faults are required. Main routing38371498733 remains live.
-FullPHY, assembledlayout and finalSTA remain open. All work remains hosted;
-the local workspace is empty and must not be recreated.
+**Unchanged cascade14 prestage, new dense geometry:** physical **38392202181**
+passed nativeDRC/LVS/fault controls on **4a6a9a75**. Same19HBT/8R/27tap circuit;
+interleaved resistors, shortKelvin return and12-column/two-row via arrays.
+This targets measured upstream physical voltage loss. Fresh extraction comes
+next; discover the existing run before dispatching. Then bind its composition
+and a distinct prestage profile in the loaded tree, keeping finalv8 unchanged.
+No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
+assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
+local workspace remains empty.
 
 ## Preservation and local retirement
 

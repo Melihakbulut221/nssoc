@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T11:29:20.665475+00:00",
+  "as_of": "2026-10-13T11:50:04.044358+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect v8 followups38390326921 (quarter_step),38390345139 (hot_low/cold_high),38390363372 (exact native identity). Nominal v8 has one399.203mV VCE failure and another device at400.101mV; alloutput samples pass123.903mV. Use actual convergence/corner evidence to choose a robust repair, not a waived limit or shifted phase. Full32:1 remains required after engineering gates pass.",
+    "v8 nominal and quarter-step retain a selectorVCE failure; hot_low wire has58wrong signs and final-inputCM1.737..1.781V, below1.8V. Unchanged cascade14 prestage with dense via/Kelvin geometry passed physical38392202181; extract fresh RC, compose native devices, then add distinct prestage profile/receipt to compare with unchanged finalv8. Full32:1 remains open.",
     "Main route38371498733 is TERMINAL FAILED with nativeGRT-0116 and135finaloverflow, not timeout. Use new source_profile local_optimize_buffers in newer-congestion-probe-cloud to inspect exact failedODB/markers/net endpoints. Do not restart identical placement/route or waive congestion. FinalSTA remains unavailable.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -8668,11 +8668,461 @@
     "quarter_step_run": 38390326921,
     "temperature_voltage_run": 38390345139,
     "native_identity_run": 38390363372,
-    "status": "DISPATCHED_UNSCREENED",
-    "scope": "Actual same v8 geometry/circuit and wire model; native devices at two PVT cases and finer0.25ps simulation. No wire-temperature coefficient/RF/body qualification. Even a corner pass is not fullPHY acceptance."
+    "status": "COMPLETE_REJECTED_CONVERGENCE_AND_PVT_CASES_RETAINED",
+    "scope": "Actual same v8 geometry/circuit and wire model; native devices at two PVT cases and finer0.25ps simulation. No wire-temperature coefficient/RF/body qualification. Even a corner pass is not fullPHY acceptance.",
+    "native_identity_summary_sha256": "a29edb73cd631fe8471670c79cc730ca0aa9325f41e4fa50983a255a49a78fdb",
+    "native_identity_member_sha256": "69750bf995f1725cb4dcbc621316bf211186e9c425420fb8442717ebdf1f39cf",
+    "voltage_current_diagnosis_run": 38391010440,
+    "voltage_current_diagnosis_sha256": "43b62d6c27b270406db0f75c8f191114ded5c56f8f5954af06452033c6edf71c",
+    "cases": {
+      "quarter_step:physical_compact": {
+        "run": 38390326921,
+        "condition": "quarter_step",
+        "mode": "physical_compact",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390326921-1-tree-4-physical_compact-quarter_step-none/tx-tree-physical-4-physical_compact-quarter_step-none-38390326921-1.summary.json",
+        "summary_sha256": "d30d201f1bb9d1b6ea2092e49f32adb6cb4809063fa83a5d3514383abb234c6b",
+        "component_screen_passed": true,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2811338375377017,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2811338375377017,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2816104483151065,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.28158536868705397,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2667872906665707,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.889008516995509,
+              1.8986486171298407
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.28479805447163575,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9136672874094875,
+              1.9379398741359894
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      },
+      "quarter_step:physical_wire": {
+        "run": 38390326921,
+        "condition": "quarter_step",
+        "mode": "physical_wire",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390326921-1-tree-4-physical_wire-quarter_step-none/tx-tree-physical-4-physical_wire-quarter_step-none-38390326921-1.summary.json",
+        "summary_sha256": "7253c1969de75297d9fcd03618621f3f7e5a04640e8b080e586600a5cc57c102",
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.12396080332083836,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.12396080332083836,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.27434085929413343,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2714287990009374,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {
+          "xmux.xd0011": {
+            "min_post_vce_v": 0.3992065597129053,
+            "max_post_vce_v": 0.7814522037465655,
+            "max_whole_abs_vce_v": 0.7814522037465655,
+            "max_whole_abs_vbe_v": 0.875588666777233,
+            "max_whole_abs_ic_per_emitter_a": 0.0008500432509018387,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27191001660017045,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8954965609210581,
+              1.898621363570678
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2021259792253438,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8383984015344632,
+              1.870071522919107
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      },
+      "hot_low:physical_compact": {
+        "run": 38390345139,
+        "condition": "hot_low",
+        "mode": "physical_compact",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390345139-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38390345139-1.summary.json",
+        "summary_sha256": "1c36c4d0cd936cdf676665fb7bcc29be4187c89ad5e4c87f140a57c6150831d8",
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.22834235212352594,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.22834235212352594,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26406628979908064,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2648463299168895,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {
+          "xmux.xd0006": {
+            "min_post_vce_v": 0.3992713886239812,
+            "max_post_vce_v": 0.45584358600801606,
+            "max_whole_abs_vce_v": 0.501541365817958,
+            "max_whole_abs_vbe_v": 0.8137944667248183,
+            "max_whole_abs_ic_per_emitter_a": 0.0008799528320538824,
+            "passed": false
+          },
+          "xmux.xd0007": {
+            "min_post_vce_v": 0.3992713886239812,
+            "max_post_vce_v": 0.45584358600801606,
+            "max_whole_abs_vce_v": 0.501541365817958,
+            "max_whole_abs_vbe_v": 0.8137944667248183,
+            "max_whole_abs_ic_per_emitter_a": 0.0008799528320538693,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.18396916534276442,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8324117524889725,
+              1.8393783056904698
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2262173240978227,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.834811313095438,
+              1.8523640513886348
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      },
+      "hot_low:physical_wire": {
+        "run": 38390345139,
+        "condition": "hot_low",
+        "mode": "physical_wire",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390345139-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38390345139-1.summary.json",
+        "summary_sha256": "1732bcb06df0df113ea60c31de6d4229b40d7ac0322cc24841f708e17538765b",
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": -0.008758532503603922,
+          "wrong_sign_samples": 58,
+          "below_100mv_samples": 128,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": -0.008758532503603922,
+              "wrong_sign_samples": 58,
+              "below_100mv_samples": 128
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.23095269366128401,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26313450115603443,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {
+          "xmux.xd0006": {
+            "min_post_vce_v": 0.3610658774032266,
+            "max_post_vce_v": 0.4038777764685397,
+            "max_whole_abs_vce_v": 0.4038777764685397,
+            "max_whole_abs_vbe_v": 0.7913064411793016,
+            "max_whole_abs_ic_per_emitter_a": 0.0006275948448441247,
+            "passed": false
+          },
+          "xmux.xd0007": {
+            "min_post_vce_v": 0.35941399650031736,
+            "max_post_vce_v": 0.40222824712919314,
+            "max_whole_abs_vce_v": 0.40222824712919314,
+            "max_whole_abs_vbe_v": 0.7889405260283718,
+            "max_whole_abs_ic_per_emitter_a": 0.0006046135602199548,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.17872594170710454,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8368379191582576,
+              1.8418132392070135
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.17294580654231906,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.736968047456846,
+              1.7812537887846576
+            ],
+            "passed": false
+          }
+        },
+        "diagnostics": []
+      },
+      "cold_high:physical_compact": {
+        "run": 38390345139,
+        "condition": "cold_high",
+        "mode": "physical_compact",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390345139-1-tree-4-physical_compact-cold_high-none/tx-tree-physical-4-physical_compact-cold_high-none-38390345139-1.summary.json",
+        "summary_sha256": "ec2e665f2edbdf953896aa6276754c8483b84c4940d17e8cf8fb09b2ace0b61a",
+        "component_screen_passed": true,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2727406095175562,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2727406095175562,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.27490933337156553,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2750114512433153,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3017566879272664,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.964396152101622,
+              1.9792566156461455
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.34988768068656184,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.990296863005406,
+              2.0092024955338976
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      },
+      "cold_high:physical_wire": {
+        "run": 38390345139,
+        "condition": "cold_high",
+        "mode": "physical_wire",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38390345139-1-tree-4-physical_wire-cold_high-none/tx-tree-physical-4-physical_wire-cold_high-none-38390345139-1.summary.json",
+        "summary_sha256": "4355adadf2b45fe457edd3cd7c34a4d28e477943af6e66a74741c624f68d60d2",
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.22500054447762463,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.22500054447762463,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2619626383301803,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26055970656428995,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {
+          "xmux.xd0008": {
+            "min_post_vce_v": 0.3962625404954532,
+            "max_post_vce_v": 0.7700223163815374,
+            "max_whole_abs_vce_v": 0.7700223163815374,
+            "max_whole_abs_vbe_v": 0.9166016680077077,
+            "max_whole_abs_ic_per_emitter_a": 0.0008896310654879471,
+            "passed": false
+          },
+          "xmux.xd0011": {
+            "min_post_vce_v": 0.3953840929943083,
+            "max_post_vce_v": 0.7702442586621427,
+            "max_whole_abs_vce_v": 0.7702442586621427,
+            "max_whole_abs_vbe_v": 0.9161692810110299,
+            "max_whole_abs_ic_per_emitter_a": 0.0008812517779174604,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3121841528045337,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.973991829955236,
+              1.9762507979963515
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.207730785990224,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9366382762838892,
+              1.9599124385506335
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    }
   },
   "cascade14_dense_candidate": {
-    "status": "UNSCREENED_PHYSICAL_GEOMETRY",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "circuit_profile": "cascade14",
     "variant": "critical_buses_kelvin_dense_wide",
     "circuit_source": "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice",
@@ -8680,7 +9130,23 @@
     "change": "Keep every native transistor/resistor unchanged; apply interleaved resistor placement, short Kelvin return and12-column/two-row M3-to-TM1 arrays to the prestage. Existing power_trunks_vias geometry stays unchanged.",
     "reason": "v8 hot_low extracted tree has58wrong signs and prestage output common mode1.736968..1.781254V; compact hot_low common mode1.834811..1.852364V passes. Investigate native geometric voltage loss before tuning only final MUX size. Dense geometry is a hypothesis, not accepted for this circuit.",
     "adopted": false,
-    "physical_run": 38392202181
+    "physical_run": 38392202181,
+    "physical_receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38392202181-1-layout-cascade14-critical_buses_kelvin_dense_wide/tx-layout-repair-cloud-cascade14-critical_buses_kelvin_dense_wide-38392202181-1.tar.gz",
+      "bytes": 375899,
+      "sha256": "af12ee2c07a07922ab51a5074b84a0f07aee4a609db68ed9995edb79e2542af0"
+    },
+    "physical_summary_sha256": "9d4d979d52e408c181acfd12303727cc0f8bd8b6e2e8849eb497e7dc423f8975",
+    "physical_gates": {
+      "drc": "PASS",
+      "lvs": "PASS",
+      "lvs_flat": "PASS",
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   },
   "local_optimize_buffers_terminal": {
     "status": "FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION",
@@ -8732,6 +9198,7 @@
       "failed-route.guide": "dae7db6929480a34d2869e06be0d23cc29cc56e20813b425e77164c1883b1bb5"
     },
     "adopted": false,
-    "scope": "Terminal native global-route failure, not a timeout. Exact failed ODB, report and guides preserved. Placement invariants passed earlier; this does not establish routability or final STA."
+    "scope": "Terminal native global-route failure, not a timeout. Exact failed ODB, report and guides preserved. Placement invariants passed earlier; this does not establish routability or final STA.",
+    "diagnosis_run": 38392685463
   }
 }
