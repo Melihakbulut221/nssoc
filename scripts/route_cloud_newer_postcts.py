@@ -48,6 +48,7 @@ def execute(script, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread'], default='none')
     args = parser.parse_args()
     # The actual failed report has7.2um gcells. Half-cell offsets change only
     # partition alignment, never placement, routing capacity or physical rules.
@@ -55,7 +56,7 @@ def main():
                  'half_y': (0., 3.6), 'half_xy': (3.6, 3.6)}[args.grid_profile]
     OUT.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False,
-        grid_profile=args.grid_profile, grid_origin_um=origin_um,
+        grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -120,6 +121,27 @@ def main():
         result['postcts_reproduced'] = replay
         result['status'] = 'EXACT_POSTCTS_REPRODUCED_STARTING_FRESH_GLOBAL_ROUTE'
         save()
+        if args.placement_profile != 'none':
+            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-congestion-probe-38333836529-1.json',
+                  '1d19f4d2bdf24f865144b28c57060c3cfed96ac3d0a4a79b23ce23f12c0a027c',OUT/'endpoint-diagnosis.json')
+            def native_placement(mode):
+                with (OUT/f'placement-{mode}.log').open('w') as log:
+                    code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
+                                          str(ROOT/'scripts/repair_cloud_macro_channels.py')],
+                        env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode,NSSOC_PLACEMENT_PROFILE=args.placement_profile),
+                        stdout=log,stderr=subprocess.STDOUT)
+                assert code==0,(mode,code,(OUT/f'placement-{mode}.log').read_text()[-6000:])
+            native_placement('prepare')
+            execute(f'read_db {{{OUT/"proposed-placement.odb"}}}\n'
+                    'set_thread_count 2\ndetailed_placement -max_displacement {200 100}\n'
+                    'check_placement -verbose\n'
+                    f'write_db {{{OUT/"legalized-placement.odb"}}}\n','legalize-macro-channels')
+            native_placement('verify')
+            result['placement_repair']=json.loads((OUT/'placement-repair.json').read_text())
+            script=script.replace(str(inputs/'postcts.odb'),str(OUT/'relocated-placement.odb'))
+            result['relocated_placement_timing']=parse_phases(execute(script,'relocated-placement-sta'),'CORNER')
+            assert result['relocated_placement_timing'].keys()==replay.keys()
+            save()
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
         commands = [prefix, 'set_thread_count 2', 'check_placement -verbose',
