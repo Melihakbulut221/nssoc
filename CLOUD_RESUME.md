@@ -602,3 +602,24 @@ candidatelogSHA935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc.
 Baselinearchive638343458 SHA01f84410750b738a588590740a383c966d88f191c9e1fe657392baebf7857a20;
 candidatearchive638346608 SHAed43f52d14422ffb15c450350b5b697b61031ff50cee16d1e051a3e4374aa2be.
 Summaryassets638343730/638346820 preservecompletecurrentnativechecks.
+
+
+## Short-row composition passed; original loaded PVT next
+
+Composition38473990143 one22dce0403... PASSED54native devices/4047R/2663C.
+Summary638361292 SHAb278f40d11c45ae4b6ead5b8180d11dfac640f133a748fa798f563d1160fdca2;
+archive638361053,6679358bytes,SHA
+c9b1decbdc1a9802561933283299d27c48b8c5e097b418b29af7cc46868feaa0.
+New v8_kelvin_low_selects_rows profile binds this exact composition.
+Run matchedcompact/wire4:1 trees withcascade158_kelvin_supply_direct,stiff65,
+nominalandhot/cold, alloriginal256bits/768samples/native devicegates.
+No analogacceptance untilactualwavesreviewed.
+
+Pairedcreditmap criticalpath nowmoved toadvertisement transmitter:
+link_up input -> FF1165056 Q=u_pcie.advertiser.sent_data_o[4].
+Actual source soc_pcie_fc_tx SHA599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904
+inmetadata-late-select candidate02, differentfromcanonical6b5e82a0... .
+Arrival4.669152ns/required3.567396ns atslow. PriorstaticFC bankwrite
+experimentregressed219.546ps andmustnotberepeatedblindly. Inspectactual
+acceptedEOP/ready arbitration cone. Anychange mustretain EOPcommitsemantics
+andbackpressure, includecompletepositiveandactualnegativecontrols.
