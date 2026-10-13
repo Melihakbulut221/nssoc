@@ -418,3 +418,13 @@ Fresh extraction38469474319 is live on05ee0349c8555b86032d7758beeb8143af96e8f9.
 Do not duplicate it. Read extract-final_drive_v8-critical_buses_kelvin_low_selects_m3
 release; require full nativeRC graph and13fault controls before composition.
 Local workspace remains empty; all CAD/tests execute on hosted runners.
+
+
+Extraction38469474319 PASSED actual graph/13fault controls on the widerM3
+geometry:4331R,2817C,54native devices,17conductors,112geometry probes.
+Summary638284870 SHA04b5ad7021d5072fcd7ab5b69ebd9c8f52798aaf1b7daa286c17cbc3920caa8f;
+archive638284559,6297265bytes,SHA
+347b6944f05e7bcbc938b606818b376c4623febd4d2eb36e21a5f1447fdc0f45.
+This exact extraction is now pinned for composition underfinal_drive_v8 /
+critical_buses_kelvin_low_selects_m3. Native body/substrateR andRF qualification
+remain outside this metal model. No loaded amplitude or fullPHY acceptance.
