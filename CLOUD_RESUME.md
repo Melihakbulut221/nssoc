@@ -26,7 +26,7 @@ This concise checkpoint supersedes stale running/pending statements there.
 
 | Work | Exact source / runs | Verified boundary and next action |
 | --- | --- | --- |
-| Short selector buses on unchanged v8 | Physical38452058065, extraction38453131275, composition38453569616 | All native physical/RC/composition gates passed. Loaded nominal38454523127, hot/cold38454526301 dispatched ona45de762a05b9625fe9308aac90805544988c81d; inspect six original-gate summaries next. |
+| Short selector buses on unchanged v8 | Physical38452058065, extraction38453131275, composition38453569616 | All native physical/RC/composition gates passed. Loaded nominal38454523127 andhot/cold38454526301 completed ona45de762a05b9625fe9308aac90805544988c81d. Fiveof six engineering screens pass; hotwire fails128early samples, minimum20.841388mV. Allsix retained inpcie-final-v8-low-selects-loaded-tree-20261013.json. Native paired diagnosis is next; no adoption. |
 | Nx3 data-bank v10, original low-critical buses | Nominal38452808927, hot/cold38452812892 on7f95123097589d5edb304e9c0cdde52720a8ac2b | 6captures retained; complete=true; failed cases=[('hot_low', 'physical_wire')]. Check exact receipt before adopting anything. |
 | Main-chip alternative net ordering | 38448901835 on c19fc8b4c72e4db8ad20d6132ad73153f1ef856b | Latest live readback: in_progress/None. Seed13, capacity perturbation0, exact135-overflow buffer placement. Preserve native result; detailed routing/extraction/final STA still required. |
 | Bounded-save32:1 nominal | 38441895491 on26e3692a27cb4aea7faa877b8df3388ddc06024d | Latest readback: in_progress/None. Compact passed; extracted-wire companion must complete. Do not restart a live job after observation timeout. |
@@ -111,3 +111,19 @@ failed cases; never label workflow success as electrical acceptance. Migration
 finished with `COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE`; do not
 redo retirement or restore local CAD. The8hour cloud-only automation remains
 the continuation mechanism. No full goal completion or production approval.
+
+
+## Latest cloud-only follow-up
+
+The empty local workspace and absence of local CAD processes were rechecked.
+Low-selects hot wire has zero wrong-sign samples but128below100mV at0.3UI;
+later0.5/0.7UI samples and all HBT/MOS limits pass. Shorter selector buses alone
+do not close the amplitude failure. Preserve the compact/wire pair in
+pcie-final-v8-low-selects-hot-loaded-tree-20261013.json; diagnosis workflow
+study v8_low_selects_hot reads exact original archived waves with unchanged
+bit oracle and thresholds.
+
+buffer-timing-readback-cloud.yml restores the archived complete native STA
+log/Tcl from run38371498733, verifying archive size/hash and both member hashes.
+It publishes a small full-path log for setup/hold inspection while seed13
+routing continues. It does not rerun STA or claim routed timing closure.

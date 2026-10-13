@@ -98,7 +98,7 @@ def test_supply_feed_selection_rejects_wrong_corner_clock_run_and_native_models(
     changed(lambda e, r: e['combined_supply_feed_loaded_study']['cases'].append(copy.deepcopy(r[0])))
 
 
-@pytest.mark.parametrize('study', ['local_internal_hot', 'low_critical_hot', 'low_critical_cold', 'v9_cascade158_hot'])
+@pytest.mark.parametrize('study', ['local_internal_hot', 'low_critical_hot', 'low_critical_cold', 'v9_cascade158_hot', 'v8_low_selects_hot'])
 def test_routing_pair_rejects_foreign_wave_and_scope(study):
     import copy
     import json
