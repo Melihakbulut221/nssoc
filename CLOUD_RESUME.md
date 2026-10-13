@@ -10,6 +10,20 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v10 RC passed; compose while v9 hot transition diagnosis runs
+
+Native extraction38450839520 passed exactRC graph and13corruptioncontrols.
+Summary asset637958974 SHA9a558881b31890e564c938a1d5c7bde6133a75794b77b2b9794f319cc6885fb5.
+Exact6281731byte archive is bound in compositionregistry. Discover
+existing v10 low-critical compose_only run before dispatch. Next a distinct
+v10 loadedreceipt with actual Nx3 device accounting andall original PVT gates.
+
+Native v9 hot diagnosis38451366659 is running; source/license/capture checks
+38451370962 are its companion. Read actual clock-toMUX/output transition
+measurements before choosing another physical routing change. Allsix v9
+captures are preserved, including hotwire andcoldcompact failures. Mainchip
+route38448901835 and32wire38441895491 are independent live work. Localempty.
+
 ## v9 six captures complete: improvement still fails; native delay diagnosis next
 
 Runs38449429360/38449433433 completed. All six exact summaries are preserved
