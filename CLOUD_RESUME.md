@@ -645,3 +645,22 @@ No falsepath/clockexception. Must retainactual acceptedEOP commitsemantics,
 completebuffered/FC portscoreboards and realbad-owner negativecontrols;
 fullobservable sequentialequivalence required before mappedcomparison.
 Current exactFCsource is599755ec... in frozenACKcapsule; canonicaldiffers.
+
+
+## Full32:1 native-macroRC nominal study completed
+
+Old32wire run38441895491 is now TERMINAL/SUCCESS: 13877.539s native
+transient,69541rows,604nativeOFFflags,allcomponentengineeringgates PASS.
+All768originaloracle samples pass;minoutput158.150641mV,zero wrongsigns
+andzero below100mV. Allinterfacelimits/allHBT/allMOSpass,diagnosticsempty.
+Summary638367450 SHA5ecfa6f1b20e11cbcdfd9903405b00f5cb6b6cbdf9de05e41afb6864411a3e57;
+archive638365881,2136119128bytes,SHA
+4f5479f8be043bfa476d88ebc486ee0ceb8db29018959eb61fdc887e5f84aae5.
+Fullreceiptpcie-32-native-wire-nominal-20261014.json. Do not duplicate.
+
+Scope remains30cascade14 kelvin_supply_feed macros plusv8lowcritical final.
+Intermacro connectionsanddifferentialclockphases areideal; noassembledtree
+GDS/PEX,PLL/CDR,jitterBER/RFsubstrate/ESD/fullx4orchipacceptance. This is
+real32:1nominalmacroRC progress, notclosure. Currentnewshortrow4:1PVT
+38474355636/38474364222 remainsactive andusesdifferentcascade158prestage.
+Latestchecks38474375229 passed. Mainhalfgridroute38472175339 remainsactive.
