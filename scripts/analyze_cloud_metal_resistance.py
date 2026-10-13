@@ -285,7 +285,7 @@ def analyze(spec, circuit_profile="final_drive_v5"):
 def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted analysis only'
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths', 'v8-kelvin-local-tail', 'v8-kelvin-local-return', 'v8-kelvin-local-supply', 'cascade14-kelvin-dense-wide', 'cascade14-kelvin-supply-feed'), required=True)
+    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths', 'v8-kelvin-local-tail', 'v8-kelvin-local-return', 'v8-kelvin-local-supply', 'v8-kelvin-local-internal', 'cascade14-kelvin-dense-wide', 'cascade14-kelvin-supply-feed'), required=True)
     args = parser.parse_args()
     version = 'v8' if args.profile.startswith('v8-') else 'v5'
     geometry = args.profile.removeprefix('v8-')

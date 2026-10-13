@@ -105,7 +105,11 @@ hierarchical/flatLVS plusfivefaultcontrols. Electrical acceptance remains unprov
 Native extraction38421789099passed:54devices,4233R/2742C,112geometryprobes,
 all13corruptioncontrols. SummarySHAacb026e1b983eaa0765e80600137e789f02fffe9d646e3a0d87528cefc4364b8.
 Exact6307738byte archiveSHAfdc429e0d10f8f51657d07bd0f1e400f2c588215cd1f6621458a910475b804c4
-is nowbound fornativecomposition; next matchedloadedPVT requires its output.
+is bound to completed nativecomposition **38422346699**. Exact54devices/4233R/2742C
+passed; receipt is `pcie-final-v8-kelvin-local-internal-composition-20261013.json`.
+Next loaded comparison: streams4,kelvin_supply_feed prestage,matched final
+`v8_kelvin_local_internal`,offset75 clock,nominal andhot/cold. Also compare
+actual internal metal resistance; no acceptance from DRC/LVS/DC alone.
 Body/well resistance andRF/point-attachment qualification remain open.
 Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
