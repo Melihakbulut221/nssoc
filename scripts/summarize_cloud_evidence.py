@@ -15,10 +15,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--asset', required=True)
     parser.add_argument('--member', required=True)
+    parser.add_argument('--release', default='cloud-migration-20261012-000')
     args = parser.parse_args()
     assert Path(args.asset).name == args.asset and args.asset.endswith('.tar.gz')
     repo = 'Melihakbulut221/nssoc'
-    release = 'cloud-migration-20261012-000'
+    release = args.release
     pages = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
         f'repos/{repo}/releases/tags/{release}'], text=True))
     info = pages[0]

@@ -4,6 +4,10 @@ name: cloud-evidence-summary
 on:
   workflow_dispatch:
     inputs:
+      release:
+        description: Exact release containing the archive
+        default: cloud-migration-20261012-000
+        required: false
       asset:
         description: Exact archive asset name
         default: routed-setup-cloud-38306421942-1.tar.gz
@@ -31,4 +35,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
           MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER"
+          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
+        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
