@@ -10,6 +10,16 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Current decision
+
+v6 extracted output passes all768samples (140.606mV minimum), but two tail
+HBTs violate the400mV VCE limit; it is not accepted. v7 changes only four
+selector HBTs Nx4 to Nx8. Physical38386165678, nativeRC38386563813 and
+composition38386884254 passed, retaining54devices with3891R/2593C. Next is
+the original nominal streams4 compact/wire comparison using
+`v7_kelvin_dense_wide`; discover its run before dispatching. Main routing
+38371498733 remains live. FullPHY, assembledlayout and finalSTA remain open.
+
 ## Preservation and local retirement
 
 **Completed on 13 October 2026:** the local workspace is empty and the
