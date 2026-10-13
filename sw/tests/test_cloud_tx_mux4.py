@@ -205,3 +205,26 @@ XP0 net1 A VDD VDD sg13_lv_pmos
         assert f'v(prefeed_{reference})' in c['vectors']
     assert 'Imr avdd mr PWL(0 0 1n 0.001)' in deck
     assert 'rppd w=2u l=22u' in mux4.PRE_FEED.read_text()
+
+
+def test_native_clock_feed_removes_ideal_bias_without_changing_clock_phase(tmp_path):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+""")
+    before,b=mux4.build(tmp_path,'hbt_typ_res_wcs',clock_bias='native_vbe',pre_bias='native_res')
+    after,a=mux4.build(tmp_path,'hbt_typ_res_wcs',clock_bias='native_res',pre_bias='native_res')
+    assert 'ICLKBIAS' in before and 'ICLKBIAS' not in after
+    assert 'Vclkbias_feed avdd clkfeed 0' in after
+    assert 'XCLKFEED clkfeed clkbias 0 nssoc_tx_clock_bias_feed_v1' in after
+    assert a['hbt']==b['hbt'] and a['mos']==b['mos'] and a['bits']==b['bits']
+    assert {'i(vclkbias_feed)','v(clkfeed)'} <= set(a['vectors'])
+    for key in ('sap','san','sbp','sbn','sp','sn'):
+        stimulus=lambda text:text.split('V'+key+' ')[1].split('R'+key+' ')[0]
+        assert stimulus(before)==stimulus(after)
