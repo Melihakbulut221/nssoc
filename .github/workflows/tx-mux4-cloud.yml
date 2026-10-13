@@ -32,9 +32,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        streams: [4, 8, 32]
-        condition: [nominal]
-        fault: [none]
+        include:
+          - {streams: 32, condition: quarter_step, fault: none}
+          - {streams: 32, condition: hot_low, fault: none}
+          - {streams: 32, condition: cold_high, fault: none}
+          - {streams: 32, condition: hot_low_hbt_bcs, fault: none}
+          - {streams: 32, condition: cold_high_res_wcs, fault: none}
+          - {streams: 32, condition: hbt_typ_res_wcs, fault: none}
+          - {streams: 32, condition: nominal, fault: swap_leaf_select}
+          - {streams: 32, condition: nominal, fault: disable_pre_b_bias}
     permissions:
       contents: write
     steps:

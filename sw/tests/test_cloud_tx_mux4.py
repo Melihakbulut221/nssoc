@@ -302,3 +302,32 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     for reference in c['references']:
         assert f'i(vprebias_{reference})' in c['vectors']
     assert len([line for line in deck.splitlines() if line.startswith('xpre')])==streams-2
+
+
+@pytest.mark.parametrize('streams',[8,32])
+def test_deep_leaf_fault_changes_only_actual_selector_bases_and_not_oracle(tmp_path,streams):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+''')
+    before,b=mux4.build(tmp_path,'nominal',clock_bias='native_res',pre_bias='native_res',output_bias='native_res',streams=streams)
+    after,a=mux4.build(tmp_path,'nominal',fault='swap_leaf_select',clock_bias='native_res',pre_bias='native_res',output_bias='native_res',streams=streams)
+    assert a['bits']==b['bits']==mux4.sequence() and a['source_bits_sha256']==b['source_bits_sha256']
+    assert a['tree_plan']==b['tree_plan'] and a['mos']==b['mos'] and a['vectors']==b['vectors']
+    prefix='xprep'+str(streams//2)+'_'+str(streams//2-1)
+    changed={n for n in a['hbt'] if a['hbt'][n]!=b['hbt'][n]}
+    assert changed=={prefix+'.x'+side+'_'+str(i) for side in ('sa','sb') for i in (0,1)}
+    for name in changed:
+        previous=b['hbt'][name];actual=a['hbt'][name]
+        assert {k:v for k,v in previous.items() if k!='terminals'}=={k:v for k,v in actual.items() if k!='terminals'}
+        assert previous['terminals'][0]==actual['terminals'][0] and previous['terminals'][2:]==actual['terminals'][2:]
+        assert previous['terminals'][1][:-1]==actual['terminals'][1][:-1]
+        assert {previous['terminals'][1][-1],actual['terminals'][1][-1]}=={'p','n'}
+    changes=[(x,y) for x,y in zip(before.splitlines(),after.splitlines(),strict=True) if x!=y]
+    assert len(changes)==1 and changes[0][0].startswith(prefix+' ')

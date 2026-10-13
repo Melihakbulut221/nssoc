@@ -145,6 +145,7 @@ def tree_plan(streams):
 
 def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4):
     plan=tree_plan(streams)
+    assert fault in ('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select')
     references=[n['reference'] for n in plan['nodes']]
     assert output_bias in ('ideal','native_res')
     assert pre_bias in PRE_BIAS_MODES
@@ -205,6 +206,11 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         stages.append((PRE,'xpre'+node['label'],ports))
     if fault == 'swap_pre_a_select':
         stages[0][2][4:6] = ['san', 'sap']
+    if fault == 'swap_leaf_select':
+        # Corrupt an actual deepest-stage selector; source bits/clock phase and
+        # output oracle remain untouched. In32:1 this is the15/31 leaf pair.
+        assert all(name.startswith('d') for name in plan['nodes'][-1]['inputs'])
+        stages[-1][2][4:6] = stages[-1][2][4:6][::-1]
     formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
     public = dict(ap='ap',an='an',bp='bp',bn='bn',sp='sp',sn='sn',op='mp',on='mn',
                   avdd='avdd',avss='0',sub='0',iref='mr',wire_cref='0')
@@ -369,7 +375,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
-    parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias'),default='none')
+    parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
