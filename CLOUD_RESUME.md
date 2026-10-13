@@ -72,7 +72,10 @@ geometry and adds an8um TM2 low feed,8um external TM1 riser and nativevias.
 This is real parallel metal, with unchanged54devices/publicports/RCrules.
 Native physical **38412608409 passed**560DRC categories/0markers, strict
 hierarchical/flat54device LVS and all5faultcontrols. Exact geometry archive
-is bound for native RC extraction. Loaded waveform acceptance remains open.
+is bound for native RC extraction **38413237032** on423bbc8e. Inspect this
+existing job, then bind/compose and add a distinct supply-feed prestage
+profile only after native graph/13fault checks pass. No duplicate runs.
+Loaded waveform acceptance remains open.
 
 ### Exact physical sources for these studies
 
