@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T15:21:24.743862+00:00",
+  "as_of": "2026-10-13T15:40:13.280479+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "b93f626cf0f708b0c20ba6ebbe74c5fc7c582b57",
+  "head": "1c45df12c7b54196042ad469891bfe6a9d4a397c",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,9 +100,10 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect native local internal ea/eb geometry38421020866; preserve failures and require DRC/LVS before source-bound RC extraction/composition and loaded PVT.",
-    "Monitor existing exact-placement timing-priority route38420407838; do not duplicate or infer success from running status.",
-    "Full serial PHY, detailed main-chip routing and final setup/hold remain OPEN. All CAD/tests cloud-only; workspace empty."
+    "Read all exact matched localinternal loaded summaries from38423054999/38423088377; preserve failing gates.",
+    "Native extraction of direct supply physical38423419682, then composition and isolated prestage DC/loaded comparisons if native controls pass.",
+    "Existing main-chip timing-priority route38420407838 remains live; no duplicate dispatch.",
+    "All work stays cloud-only; fullserial PHY/detailedchiproute/finalSTA remainOPEN."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -56927,10 +56928,68 @@
   "local_internal_mux_candidate": {
     "run": 38421020866,
     "source_head": "b93f626cf0f708b0c20ba6ebbe74c5fc7c582b57",
-    "status": "in_progress",
+    "status": "PASS_PHYSICAL_NATIVE_RC_AND_COMPOSITION_LOADED_PVT_PENDING",
     "variant": "critical_buses_kelvin_local_internal",
     "circuit_profile": "final_drive_v8",
     "adopted": false,
-    "hypothesis": "Real local ea M4 at y16um and eb M5 at y20um shunts each join nine actual terminals. Preserve all54native devices and original routes including supply/return/tail additions. Measured selector collector loss motivates candidate; native DRC/LVS/fault checks first, then true RC and original-bit PVT."
+    "hypothesis": "Real local ea M4 at y16um and eb M5 at y20um shunts each join nine actual terminals. Preserve all54native devices and original routes including supply/return/tail additions. Measured selector collector loss motivates candidate; native DRC/LVS/fault checks first, then true RC and original-bit PVT.",
+    "physical_summary_sha256": "4f595f2018ed2e7c380cb1495fb23d661370185bd09e7d8a4059fbe4318612b3",
+    "extraction": {
+      "run": 38421789099,
+      "summary_sha256": "acb026e1b983eaa0765e80600137e789f02fffe9d646e3a0d87528cefc4364b8",
+      "R": 4233,
+      "C": 2742,
+      "native_fault_controls": 13
+    },
+    "composition": {
+      "run": 38422346699,
+      "evidence": "docs/evidence/pcie-final-v8-kelvin-local-internal-composition-20261013.json"
+    }
+  },
+  "local_internal_mux_loaded_tree": {
+    "source_head": "d4ea3df8521831488cfb292a9c771dc1470d1181",
+    "nominal_run": 38423054999,
+    "temperature_voltage_run": 38423088377,
+    "source_checks_run": 38423096036,
+    "status": "IN_PROGRESS",
+    "physical_profile": "kelvin_supply_feed",
+    "physical_final_profile": "v8_kelvin_local_internal",
+    "clock_reference": "offset75",
+    "streams": 4,
+    "physical_final": "matched",
+    "adopted": false
+  },
+  "local_internal_mux_dc": {
+    "run": 38423094670,
+    "summary_sha256": "eb98f857d2e276dd2dd9a3ae2c0696e10b2c24a96d74f4d7bd758b1c25c147a3",
+    "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+    "worst_terminal_pair_ohms": {
+      "ea": {
+        "old": 16.721556552219425,
+        "new": 13.624913559183204
+      },
+      "eb": {
+        "old": 16.875216552217864,
+        "new": 14.144950718441368
+      }
+    },
+    "scope": "Actual same circuit/source-bound nativegraphs. Tail,qp,qn unchanged. Resistance reduction alone doesnot establish loadedPVT orPHY acceptance."
+  },
+  "cascade14_direct_supply_candidate": {
+    "run": 38423419682,
+    "source_head": "1c45df12c7b54196042ad469891bfe6a9d4a397c",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+    "variant": "critical_buses_kelvin_supply_direct",
+    "circuit_profile": "cascade14",
+    "adopted": false,
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38423419682-1-layout-cascade14-critical_buses_kelvin_supply_direct/tx-layout-repair-cloud-cascade14-critical_buses_kelvin_supply_direct-38423419682-1.tar.gz",
+      "bytes": 379032,
+      "sha256": "43b2f513437b2fa05734f198459e7caa12b603eac2ef82b268b45720a134478c"
+    },
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38423419682-1-layout-cascade14-critical_buses_kelvin_supply_direct/tx-layout-repair-cloud-cascade14-critical_buses_kelvin_supply_direct-38423419682-1.summary.json",
+    "summary_sha256": "d8014cd3534abb56bb0ee972298b352c0e670e7e48b81e99c3db026f58d488d5",
+    "physical_status": "PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS",
+    "scope": "Direct native avdd resistor-pin M3-to-TM1 landing plus low-feed branch. All54devices preserved.560DRC/zero,strict hierarchical/flatLVS andfivefaults passed. NativeRC andloaded PVT required."
   }
 }

@@ -110,6 +110,9 @@ passed; receipt is `pcie-final-v8-kelvin-local-internal-composition-20261013.jso
 Next loaded comparison: streams4,kelvin_supply_feed prestage,matched final
 `v8_kelvin_local_internal`,offset75 clock,nominal andhot/cold. Also compare
 actual internal metal resistance; no acceptance from DRC/LVS/DC alone.
+Loaded runs **38423054999** nominal/**38423088377** PVT areactive ond4ea3df8.
+Source/licensechecks38423096036passed. DC38423094670passed: worst ea terminal
+pair16.722to13.625ohm,eb16.875to14.145ohm; tail/qp/qn unchanged.
 Body/well resistance andRF/point-attachment qualification remain open.
 Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
@@ -121,7 +124,9 @@ Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 feed andadds direct TM1 branches fromboth actual avdd resistor pin landings.
 Native8column M3-to-TM1 stacks bypass the oldM3escape; original routes and54
 devices are preserved. This targets measured7.034/8.203ohm supply paths and
-hotinputCM loss. DRC/LVS/physicalfault checks must pass before RC orPVT.
+hotinputCM loss. Native physical **38423419682** passed560DRC/zero,strict54device
+hierarchical/flatLVS andfivefaultcontrols. Exact physical archive is nowbound
+for nativeextraction; no electrical acceptance before trueRC/loaded PVT.
 Keep final localinternal loaded comparison isolated on the existing prestage
 `kelvin_supply_feed`; do not silently substitute this prospective candidate.
 
