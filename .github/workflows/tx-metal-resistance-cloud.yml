@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 name: tx-metal-resistance-cloud
 on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/tx-metal-resistance-cloud.yml
+      - scripts/analyze_cloud_metal_resistance.py
+      - sw/tests/test_cloud_metal_resistance.py
   workflow_dispatch:
 permissions:
   contents: read
