@@ -217,14 +217,16 @@ def native():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5'), default='baseline')
     args = parser.parse_args()
     url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
     odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
     report_sha = None
     archive_bytes = None
-    if args.source_profile == 'local_optimize':
-        evidence = json.loads((ROOT / 'docs/evidence/cloud-local-optimize-route-failure-20261013.json').read_text())
+    if args.source_profile in ('local_optimize', 'reserved_m5'):
+        evidence_name = {'local_optimize': 'cloud-local-optimize-route-failure-20261013.json',
+                         'reserved_m5': 'cloud-reserved-m5-route-failure-20261013.json'}[args.source_profile]
+        evidence = json.loads((ROOT / 'docs/evidence' / evidence_name).read_text())
         assert evidence['status'] == 'FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
         receipt = evidence['receipt']
         url, archive_sha, archive_bytes = receipt['url'], receipt['sha256'], receipt['bytes']

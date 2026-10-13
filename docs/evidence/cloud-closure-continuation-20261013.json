@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T07:37:08.394782+00:00",
+  "as_of": "2026-10-13T07:57:23.235065+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -95,7 +95,7 @@
     "Combined via-array tree38360782776 completed:69wrongsign samples,128early samples below100mV and6HBT fail. All interface amplitude/commonmode gates nowpass. No waveformadoption. InternalDC38361509259 shows maximum intrinsicconductor pairR23..29ohm, downfrom36..43ohm.",
     "Dense finalgeometry38362060912 passed physicalgates. It uses two lower-via rows andtwoTopVia1rows onlyforM3-to-TM1escapes, widens nonpowerM3escape0.4to0.6um, and increases non1umresistorpinviacolumns4to8. Devicecircuit/nativeRCcoefficients/bitgates unchanged. Runfresh extraction/composition then compare using previouslyverifiedvia-arrayprestages.",
     "Metal DC comparison38359571709 validates geometry-derived resistance decrease, not PHY or dynamic acceptance. Sourcebit phases and all device/interface limits remain unchanged.",
-    "Mainroute38347061685 and broadplacement38334595459 are live at last check; do not restartforage. New push52752ae3 also launched checks38359571641/38359580317, publications38359580321, pcie-buffered-soc38359580405 and pcie-transaction38359580424; inspect eventual results.",
+    "Mainroute38347061685 failed158overflow; exact reserved_m5 diagnostic required. Broadplacement38334595459 live at last check; do not restartforage. New push52752ae3 also launched checks38359571641/38359580317, publications38359580321, pcie-buffered-soc38359580405 and pcie-transaction38359580424; inspect eventual results.",
     "Keep all CAD/tests hosted. Verified local output migration/finalizer continue; cleanup incomplete until finalcloudreconstruction and final source/controlstate cleanup.",
     "Full serialGen3x4PHY, mainchipPCIe/Ethernetroute and finalsetup/hold remainOPEN. No component acceptance substitutes for assembledphysical/RF/body/clock/CDR/ESD/chipsignoff."
   ],
@@ -721,5 +721,17 @@
     "transient_transfer_service": "nssoc-cloud-transients-20261013",
     "finalizer": "nssoc-cloud-migration-finalize-20261013",
     "source_checkout_still_present": true
+  },
+  "latest_reserved_route": {
+    "run": 38347061685,
+    "status": "REJECTED_OVERFLOW_158",
+    "evidence": "docs/evidence/cloud-reserved-m5-route-failure-20261013.json",
+    "next_profile": "reserved_m5"
+  },
+  "dense_loaded_tree": {
+    "run": 38365522474,
+    "status": "RUNNING",
+    "resistors": 2875,
+    "capacitors": 1986
   }
 }

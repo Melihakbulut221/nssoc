@@ -52,8 +52,12 @@ setup/hold are **not complete**. Component screens are not full PHY, qualified
 RF/body extraction, assembled analog clock/CDR/ESD integration or foundry
 acceptance.
 
-- Main routing run `38347061685`: native SRAM M5 reservation plus combined
-  placement/hold candidate. Broader placement run `38334595459` is diagnostic.
+- Main routing run `38347061685` failed with GRT-0116: the native SRAM M5
+  reservation regressed total overflow from 147 to 158 (M5 itself fell from
+  108 to 94). Exact failure ODB and marker hashes are preserved in
+  `cloud-reserved-m5-route-failure-20261013.json`; use congestion probe
+  profile `reserved_m5` to diagnose it. Broader placement run `38334595459`
+  is diagnostic.
   Inspect the live outcomes; do not cancel healthy jobs based on age.
 - Combined via-array loaded tree `38360782776`: compact control passed; wire
   case rejected with 69 wrong signs, all 128 early samples below 100 mV, and
