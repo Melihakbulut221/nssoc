@@ -10,6 +10,19 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Source-bound collector-route PVT diagnosis
+
+Exact low_critical hot/cold compact/wire captures from38434462503 are now
+preserved in separate small evidence records with immutable archive sizes,
+SHA256, original summaries, complete reviews and raw-wave hashes.
+Studies low_critical_hot / low_critical_cold read these original waveforms
+without resimulation or oracle changes. They quantify source-reference loading
+and actual selector/tail headroom for comparison with the stiff65 experiment.
+The selector rejects foreign run, corner, clock, model, mode, bits and duplicate
+cases. Paired contracts now also compare native clock-feed hash and subcircuit
+when present; legacy captures retain explicit missing fields rather than
+inventing a feed hash. Discover diagnosis jobs before dispatching.
+
 ## Fixed native clock-reference candidate — not accepted
 
 Dispatched on source **2aad309c68dc536872839da987685902a6c4a455**:

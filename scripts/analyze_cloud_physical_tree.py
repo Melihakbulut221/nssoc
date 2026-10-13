@@ -122,7 +122,9 @@ def read_case(record, directory):
         contract_identity={k: contract[k] for k in ('streams', 'fault', 'bits', 'condition',
             'clock_bias', 'pre_bias', 'output_bias', 'final_drive', 'tree_plan')} |
             {'clock_reference':contract.get('clock_reference','baseline'),
-             'clock_reference_sha256':contract.get('clock_reference_sha256')},
+             'clock_reference_sha256':contract.get('clock_reference_sha256'),
+             'clock_feed_sha256':contract.get('clock_feed_sha256'),
+             'clock_feed_subckt':contract.get('clock_feed_subckt')},
         physical_sources={key:{field:result[key].get(field) for field in ('profile','source','source_sha256')}
                           for key in ('physical_prestage_scope','physical_final_scope') if key in result},
         devices=devices, transitions=transitions,
@@ -197,18 +199,22 @@ def supply_feed_records(evidence, study):
 
 ROUTING_STUDIES = {
     'local_internal_hot': (38423088377, 'kelvin_supply_feed', 'v8_kelvin_local_internal',
-                           'pcie-local-internal-hot-loaded-tree-20261013.json'),
+                           'pcie-local-internal-hot-loaded-tree-20261013.json', 'hot_low', 'offset75'),
+    'low_critical_hot': (38434462503, 'kelvin_supply_feed', 'v8_kelvin_low_critical',
+                         'pcie-low-critical-hot-loaded-tree-20261013.json', 'hot_low', 'offset75'),
+    'low_critical_cold': (38434462503, 'kelvin_supply_feed', 'v8_kelvin_low_critical',
+                          'pcie-low-critical-cold-loaded-tree-20261013.json', 'cold_high', 'offset75'),
 }
 
 
 def routing_records(evidence, study):
-    run, prestage_profile, final_profile, _ = ROUTING_STUDIES[study]
+    run, prestage_profile, final_profile, _, corner, clock_reference = ROUTING_STUDIES[study]
     records = evidence['cases']
     assert len(records) == 2
     assert {r['prestage'] for r in records} == {'physical_compact', 'physical_wire'}
     for r in records:
         assert r['run'] == run and r['streams'] == 4
-        assert r['condition'] == 'hot_low' and r['clock_reference'] == 'offset75'
+        assert r['condition'] == corner and r['clock_reference'] == clock_reference
         assert r['physical_prestage_scope']['profile'] == prestage_profile
         assert r['physical_final_scope']['profile'] == final_profile
         assert r['physical_prestage_scope']['mode'] == r['prestage']

@@ -98,11 +98,12 @@ def test_supply_feed_selection_rejects_wrong_corner_clock_run_and_native_models(
     changed(lambda e, r: e['combined_supply_feed_loaded_study']['cases'].append(copy.deepcopy(r[0])))
 
 
-def test_routing_pair_rejects_foreign_wave_and_scope():
+@pytest.mark.parametrize('study', ['local_internal_hot', 'low_critical_hot', 'low_critical_cold'])
+def test_routing_pair_rejects_foreign_wave_and_scope(study):
     import copy
     import json
-    evidence = json.loads((path.parents[1] / 'docs/evidence/pcie-local-internal-hot-loaded-tree-20261013.json').read_text())
-    assert len(m.routing_records(evidence, 'local_internal_hot')) == 2
+    evidence = json.loads((path.parents[1] / 'docs/evidence' / m.ROUTING_STUDIES[study][3]).read_text())
+    assert len(m.routing_records(evidence, study)) == 2
     corruptions = [
         lambda r: r[0].update(run=38417305677),
         lambda r: r[0].update(condition='nominal'),
@@ -118,4 +119,12 @@ def test_routing_pair_rejects_foreign_wave_and_scope():
         other = copy.deepcopy(evidence)
         corrupt(other['cases'])
         with pytest.raises(AssertionError):
-            m.routing_records(other, 'local_internal_hot')
+            m.routing_records(other, study)
+
+
+def test_paired_clock_feed_binding_rejects_changed_native_feed():
+    common={'clock_reference':'stiff65','clock_reference_sha256':'same-offset',
+            'clock_feed_sha256':'original-feed','clock_feed_subckt':'native-feed'}
+    changed=dict(common,clock_feed_sha256='different-native-feed')
+    with pytest.raises(AssertionError):
+        m.pair({'contract_identity':common},{'contract_identity':changed})
