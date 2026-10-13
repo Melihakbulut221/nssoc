@@ -223,6 +223,16 @@ def rename_physical_top(text, new_name):
     return '\n'.join(lines)+'\n'
 
 
+def native_save_commands(vectors):
+    # ngspice command-table limits: save LOTS=1000; wrdata NLOTS=10000.
+    # Preserve existing small-capture decks byte-for-byte. Large trees need
+    # bounded save commands, without omitting or reordering any observations.
+    assert vectors and len(vectors)==len(set(vectors))
+    assert len(vectors)+1 <= 10000, 'wrdata argument limit; never truncate capture'
+    size=len(vectors) if len(vectors)<=1000 else 128
+    return ['save '+' '.join(vectors[i:i+size]) for i in range(0,len(vectors),size)]
+
+
 def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline'):
     plan=tree_plan(streams)
     assert clock_reference in CLOCK_REFERENCES
@@ -381,7 +391,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     assert len(vectors) == len(set(vectors))
     lines += ['.control', f'pre_osdi {inputs / "r3_cmc.osdi"}',
               f'pre_osdi {frontend / "psp103.osdi"}', f'pre_osdi {frontend / "psp103_nqs.osdi"}',
-              'set wr_singlescale', 'set wr_vecnames', 'set numdgt=16', 'save '+' '.join(vectors)]
+              'set wr_singlescale', 'set wr_vecnames', 'set numdgt=16', *native_save_commands(vectors)]
     for name in hbt:
         device = 'q.' + name + '.qnpn13g2'
         lines += [f'alter @{device}[off] = 1', 'echo NSSOC_NATIVE_FLAG_BEGIN '+device,

@@ -297,6 +297,10 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     fanout=Counter(clock['reference'] for clock in c['tree_plan']['clocks'])
     assert sum(fanout.values())==streams-1 and max(fanout.values())<=3
     assert len(fanout)==len(c['clock_refs'])
+    saves=[line.split()[1:] for line in deck.splitlines() if line.startswith('save ')]
+    assert all(len(row)<=1000 for row in saves)
+    assert [name for row in saves for name in row]==c['vectors']
+    assert len(c['vectors'])+1<=10000
     assert not any(line.lower().startswith('i') for line in deck.splitlines())
     assert c['bits']==mux4.sequence() and len(set(c['vectors']))==len(c['vectors'])
     for reference in c['references']:
@@ -618,3 +622,21 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     assert 'XFEED avdd cm sub rppd w=4u l=14.5u b=0 sw_et=1' in feed
     with pytest.raises(AssertionError):
         mux4.build(tmp_path,condition,clock_reference='stiff65',clock_bias='ideal')
+
+
+@pytest.mark.parametrize('count',[1,999,1000,1001,4096,9999])
+def test_native_save_batches_preserve_every_observation_and_writer_limit(count):
+    vectors=[f'v(n{i})' for i in range(count)]
+    commands=mux4.native_save_commands(vectors)
+    assert [name for command in commands for name in command.split()[1:]]==vectors
+    assert all(command.startswith('save ') and len(command.split())-1<=1000 for command in commands)
+    if count<=1000:
+        assert commands==['save '+' '.join(vectors)]
+    else:
+        assert max(len(command.split())-1 for command in commands)<=128
+
+
+@pytest.mark.parametrize('vectors',[[],['v(a)','v(a)'],[f'v(n{i})' for i in range(10000)]])
+def test_native_capture_rejects_empty_duplicate_or_unwritable_census(vectors):
+    with pytest.raises(AssertionError):
+        mux4.native_save_commands(vectors)

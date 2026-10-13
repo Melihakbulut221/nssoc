@@ -10,6 +10,31 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Full32:1 capture command limit repair
+
+Code inspection during full-tree launch found one oversized save command for
+large observation lists. Native ngspice defines save maximum1000 arguments;
+wrdata has a separate10000 limit. The earlier PLL investigation in docs/150
+already preserves the runtime failure and bounded-command controls.
+Reference: https://raw.githubusercontent.com/imr/ngspice/master/src/include/ngspice/cpdefs.h
+and https://raw.githubusercontent.com/imr/ngspice/master/src/frontend/commands.c
+
+The source now keeps <=1000-vector decks unchanged, splits larger save lists
+into128-vector commands, and rejects duplicate/empty or >9999-vector captures
+instead of truncating. Original ordered wrdata columns, time steps, circuit,
+source bits and acceptance gates are unchanged. Boundary regressions and the
+complete4/8/16/32 tree census guard every requested observation. Real hosted
+full-tree capture is still required; do not infer simulation acceptance from
+these source checks. Discover the original32:1 run at bad18007 before retrying;
+preserve its native result and do not restart on an observation timeout.
+
+Stiff65 hot wire38437911585 completed: all HBT gates pass, but128early samples
+remain below100mV (minimum16.532mV) and final input CM1.762880..1.802513V fails.
+Summary asset637768394/SHAa33d039efe785d954dfbcea9ed3036b5eec91a35934b277e6de5e9c931627463.
+Nominal/cold wire and all three compact controls pass. Overall still rejected.
+Cascade158 extraction38440211022 is running; sourcechecks38440215123passed.
+Full PHY, assembled32:1/x4layout and final chip timing stayOPEN. Cloud-only.
+
 ## Cascade158 native layout passed; fresh extraction next
 
 Physical38439471582/source244c2006 passed560DRCcategories/0markers, strict
