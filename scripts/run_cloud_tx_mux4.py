@@ -52,7 +52,11 @@ PRE_BIAS_MODES = (*PRE_BIASES, 'native_res')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
 CLOCK_FEED = ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc'
 OUTPUT_FEEDS = ROOT / 'hw/soc/analog/pcie/tx_output_bias_feeds_v1.inc'
-CLOCK_REFERENCES = {'baseline': BIAS, 'offset75': ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v2.spice'}
+CLOCK_REFERENCES = {'baseline': BIAS, 'offset75': ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v2.spice',
+                    'stiff65': ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v3.spice'}
+CLOCK_FEEDS = {'baseline': CLOCK_FEED, 'offset75': CLOCK_FEED,
+               'stiff65': ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice'}
+assert CLOCK_REFERENCES.keys() == CLOCK_FEEDS.keys()
 
 
 def sequence():
@@ -224,6 +228,11 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     assert clock_reference in CLOCK_REFERENCES
     assert clock_reference == 'baseline' or clock_bias == 'native_res'
     bias_path=CLOCK_REFERENCES[clock_reference]
+    clock_feed_path=CLOCK_FEEDS[clock_reference]
+    feed_header=next(line.lower().split() for line in clock_feed_path.read_text().splitlines()
+                     if line.lower().startswith('.subckt '))
+    assert feed_header[2:]==['avdd','cm','sub']
+    clock_feed_subckt=feed_header[1]
     assert fault in ('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select')
     references=[n['reference'] for n in plan['nodes']]
     assert output_bias in ('ideal','native_res')
@@ -250,7 +259,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     if clock_bias!='ideal':
         lines.append(f'.include "{bias_path}"')
     if clock_bias=='native_res':
-        lines.append(f'.include "{CLOCK_FEED}"')
+        lines.append(f'.include "{clock_feed_path}"')
     if output_bias=='native_res':
         lines.append(f'.include "{OUTPUT_FEEDS}"')
     lines += [f'.temp {c["temperature_c"]}', '.options reltol=1e-4 abstol=1e-12']
@@ -322,7 +331,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         lines.append('XCLKBIAS'+suffix+' '+' '.join(ports)+' '+subckt)
         if clock_bias=='native_res':
             lines += [f'Vclkbias_feed{suffix} avdd clkfeed{suffix} 0',
-                      f'XCLKFEED{suffix} clkfeed{suffix} clkbias{suffix} 0 nssoc_tx_clock_bias_feed_v1']
+                      f'XCLKFEED{suffix} clkfeed{suffix} clkbias{suffix} 0 {clock_feed_subckt}']
         else:
             lines.append(f'ICLKBIAS{suffix} avdd clkbias{suffix} PWL(0 0 1n .00065)')
     for reference in [*references,'mr']:
@@ -380,7 +389,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     lines += ['op','wrdata op.dat '+' '.join(vectors),
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
               'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
-    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
+    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), clock_feed_sha256=sha(clock_feed_path), clock_feed_subckt=clock_feed_subckt, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
         rails=rails, vectors=vectors, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
@@ -540,7 +549,7 @@ def main():
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEEDS[args.clock_reference],OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}

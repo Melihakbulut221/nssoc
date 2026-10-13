@@ -10,6 +10,27 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Fixed native clock-reference candidate — not accepted
+
+New clock_reference=stiff65 uses native offset w4um/l6.5um and feed w4um/l14.5um,
+with the existing Nx1 reference HBT. Both dimensions are fixed across corners.
+This increases feed conductance and reduces offset resistance to test loaded
+common-mode stiffness and temperature tracking; no improvement is assumed.
+Source-bound hot diagnosis38427890875 measured reference current0.435141mA
+and feed0.522115mA in the wire case, with reference base1.243223..1.268764V.
+The changed aspect ratios are a circuit hypothesis, not a fitted waveform or
+artificial RC scale. Include actual PDK models and retain every startup,
+HBT VCE/VBE/current, input-CM, 256-bit and original sample-phase gate.
+
+Screen nominal/hot/cold with unchanged prestage kelvin_supply_feed and final
+v8_kelvin_low_critical, matched compact/wire, streams4. Discover runs first.
+Both reference and feed source hashes are now bound in each contract; native
+device count, all data-path instances and external clock waveforms stay fixed.
+Tests reject ideal-bias substitution and verify corner-invariant geometry.
+This clock reference remains schematic, without clock-tree GDS/PEX; assembled
+PLL/CDR/clock distribution, full PHY and final chip acceptance remain OPEN.
+No new main-route run;38420407838 continues separately. All execution is hosted.
+
 ## Current checkpoint — cloud handoff verified, collector-route trial rejected
 
 The local NSSOC workspace was checked again and is empty; no NSSOC entries

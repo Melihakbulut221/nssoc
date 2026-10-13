@@ -581,3 +581,40 @@ XP0 net1 A VDD VDD sg13_lv_pmos
         mux4.build(tmp_path,'hot_low',clock_reference='offset75',clock_bias='ideal')
     with pytest.raises(AssertionError):
         mux4.build(tmp_path,'hot_low',clock_reference='unknown',**args)
+
+@pytest.mark.parametrize('condition', ['nominal', 'hot_low', 'cold_high'])
+def test_stiff_reference_keeps_fixed_native_pair_and_original_clock_oracle(tmp_path, condition):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 net1 A VDD VDD sg13_lv_pmos
+XP0 X net1 VDD VDD sg13_lv_pmos
+.ends
+""")
+    args=dict(clock_bias='native_res', pre_bias='native_res', output_bias='native_res')
+    before,b=mux4.build(tmp_path,condition,clock_reference='offset75',**args)
+    after,a=mux4.build(tmp_path,condition,clock_reference='stiff65',**args)
+    for key in ('hbt','mos','bits','tree_plan','condition','rails','vectors','source_bits_sha256'):
+        assert a[key]==b[key]
+    assert a['clock_reference_sha256']!=b['clock_reference_sha256']
+    assert a['clock_feed_sha256']!=b['clock_feed_sha256']
+    assert a['clock_feed_sha256']==mux4.sha(mux4.CLOCK_FEEDS['stiff65'])
+    assert 'XCLKBIAS clkbias 0 0 nssoc_tx_clock_common_bias_v3' in after
+    assert 'XCLKFEED clkfeed clkbias 0 nssoc_tx_clock_bias_feed_v2' in after
+    assert 'nssoc_tx_clock_bias_feed_v1' not in after
+    assert not any(line.lower().startswith('i') for line in after.splitlines())
+    # Every stimulus, source resistor and all data-path instances remain exact.
+    def invariant_lines(deck):
+        return [line for line in deck.splitlines()
+                if not line.startswith(('.include ', 'XCLKBIAS', 'XCLKFEED'))]
+    assert invariant_lines(before)==invariant_lines(after)
+    offset=mux4.CLOCK_REFERENCES['stiff65'].read_text()
+    feed=mux4.CLOCK_FEEDS['stiff65'].read_text()
+    assert 'XREF cm cm er sub npn13G2 Nx=1' in offset
+    assert 'XOFFSET er avss sub rppd w=4u l=6.5u b=0 sw_et=1' in offset
+    assert 'XFEED avdd cm sub rppd w=4u l=14.5u b=0 sw_et=1' in feed
+    with pytest.raises(AssertionError):
+        mux4.build(tmp_path,condition,clock_reference='stiff65',clock_bias='ideal')
