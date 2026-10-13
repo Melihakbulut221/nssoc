@@ -12,28 +12,25 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Current decision
 
-v6 output passes140.606mV but two tail HBTs fail the400mV VCE limit.
-v7 output passes101.220mV and tail VCE improves to412.988mV, but four selector
-HBTs fail (minimum385.575mV). Both are rejected overall; all captures remain.
-The v7 exact native model reader38387898365 proves selector/tail roles.
+v8 physical38388166708, nativeRC38388631790 and composition38388917062 pass.
+Nominal loaded comparison **38389211866** is terminal: compact passes;
+wire output passes all768samples (123.903mV minimum), but **one HBT VCE is
+399.203137mV**, below the unchanged400mV gate. Another is400.101mV. v8 is
+**not accepted**. v6 and v7 failures remain preserved; do not relax limits.
 
-**v8 physical38388166708, nativeRC38388631790 and composition38388917062
-passed**, preserving54native devices and3891R/2593C. v8 changes only four
-selectors Nx8 to Nx6 relative to v7; twelve data HBTs stay Nx4, tails Nx8,
-reference Nx1, all resistors and27body contacts unchanged. Electrical closure
-is unproven. Distinct v8 source/geometry/RC bindings and emitter accounting
-are now implemented. Run the original nominal streams4 matched compact/wire
-comparison **38389211866**, source **ad01294b**, using `v8_kelvin_dense_wide`
-and prestage `power_trunks_vias`. Compact passed all gates (281.138mV
-minimum output); the actual wire job is still simulating. Do not duplicate it.
-Source checks **38389215320** passed. Never reuse v7RC as v8 evidence.
+Before another sizing change, inspect the existing source-bound followups:
+- **38390326921**: compact/wire at0.25ps time step (`quarter_step`).
+- **38390345139**: compact/wire `hot_low` and `cold_high` native PVT cases.
+- **38390363372**: exact v8 native compact model member, to bind device roles.
+All three were dispatched on **f5644317**. These are engineering diagnostics;
+wire temperature/RF/body qualification is still absent. Use actual outcomes
+to select the next repair instead of optimizing only a marginal nominal case.
 
-If the unchanged engineering screen passes, next are full32:1 and independent
-PVT/convergence/actual-fault studies. The workflow `study` selections are
-prepared but not yet exercised beyond nominal. They do not qualify RF/body/
-temperature-dependent wire RC. Main routing38371498733 remains live. FullPHY,
-assembledlayout and finalSTA remain open. All work stays on GitHub-hosted
-runners; local workspace is empty.
+Distinct v8 RC, circuit and Nx6 emitter-accounting bindings are implemented.
+After unchanged engineering gates pass, full32:1 and remaining independent
+corners/real faults are required. Main routing38371498733 remains live.
+FullPHY, assembledlayout and finalSTA remain open. All work remains hosted;
+the local workspace is empty and must not be recreated.
 
 ## Preservation and local retirement
 

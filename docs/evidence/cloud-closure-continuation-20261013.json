@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T11:23:33.830595+00:00",
+  "as_of": "2026-10-13T11:29:20.665475+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect existing v8 loaded-tree run38389211866 (sourcead01294b), nominal streams4 matched compact/wire. Physical38388166708, nativeRC38388631790 and composition38388917062 passed. No electrical acceptance yet. On full unchanged gate pass, continue full32:1 and independent PVT/convergence/fault studies; otherwise diagnose exact failed device roles from this model.",
+    "Inspect v8 followups38390326921 (quarter_step),38390345139 (hot_low/cold_high),38390363372 (exact native identity). Nominal v8 has one399.203mV VCE failure and another device at400.101mV; alloutput samples pass123.903mV. Use actual convergence/corner evidence to choose a robust repair, not a waived limit or shifted phase. Full32:1 remains required after engineering gates pass.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -8522,7 +8522,7 @@
   "final_v8_loaded_tree": {
     "run": 38389211866,
     "source_head": "ad01294b949962454d2db384c43963e783a53c47",
-    "status": "COMPACT_PASSED_WIRE_NATIVE_SIMULATION_IN_PROGRESS",
+    "status": "COMPLETE_OUTPUT_PASSED_ONE_VCE_FAILURE",
     "streams": 4,
     "condition": "nominal",
     "source_checks_run": 38389215320,
@@ -8589,6 +8589,86 @@
         }
       },
       "diagnostics": []
-    }
+    },
+    "wire": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38389211866-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38389211866-1.summary.json",
+      "summary_sha256": "ccc12e91c04ff997b7794b07d79955eb13633301cdb37bc687802c68b613b154",
+      "component_screen_passed": false,
+      "accepted": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.12390346812366904,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.12390346812366904,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2743353929070642,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2714293726477388,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "failed_hbts": {
+        "xmux.xd0011": {
+          "min_post_vce_v": 0.3992031370132183,
+          "max_post_vce_v": 0.7814596705860883,
+          "max_whole_abs_vce_v": 0.7814596705860883,
+          "max_whole_abs_vbe_v": 0.8755854221999699,
+          "max_whole_abs_ic_per_emitter_a": 0.000849996921327627,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2719087453357454,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8954961410447655,
+            1.8986189235659967
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.20211082356635024,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.838398546494365,
+            1.8700718289536744
+          ],
+          "passed": true
+        }
+      },
+      "diagnostics": []
+    },
+    "decision": "Reject v8 nominal overall: one device minVCE399.203137mV is below400mV, despite all768output samples passing123.903mV minimum. No tolerance or phase relaxation. Compare quarter-step and temperature/voltage runs before another sizing change."
+  },
+  "final_v8_followup": {
+    "source_head": "f5644317d7805fee520dc4474bbd08267266fa15",
+    "quarter_step_run": 38390326921,
+    "temperature_voltage_run": 38390345139,
+    "native_identity_run": 38390363372,
+    "status": "DISPATCHED_UNSCREENED",
+    "scope": "Actual same v8 geometry/circuit and wire model; native devices at two PVT cases and finer0.25ps simulation. No wire-temperature coefficient/RF/body qualification. Even a corner pass is not fullPHY acceptance."
   }
 }
