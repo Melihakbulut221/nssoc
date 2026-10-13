@@ -23,8 +23,9 @@ selectors Nx8 to Nx6 relative to v7; twelve data HBTs stay Nx4, tails Nx8,
 reference Nx1, all resistors and27body contacts unchanged. Electrical closure
 is unproven. Distinct v8 source/geometry/RC bindings and emitter accounting
 are now implemented. Run the original nominal streams4 matched compact/wire
-comparison using `v8_kelvin_dense_wide` and prestage `power_trunks_vias`;
-discover the existing run before dispatching. Never reuse v7RC as v8 evidence.
+comparison **38389211866**, source **ad01294b**, using `v8_kelvin_dense_wide`
+and prestage `power_trunks_vias`. It is running; do not duplicate it.
+Source checks: **38389215320**. Never reuse v7RC as v8 evidence.
 
 If the unchanged engineering screen passes, next are full32:1 and independent
 PVT/convergence/actual-fault studies. The workflow `study` selections are
