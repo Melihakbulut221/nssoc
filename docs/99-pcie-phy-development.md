@@ -30,12 +30,14 @@ fast HBT models fails six final-mux devices: minimum VCE is 0.399209 V against
 the unchanged 0.4 V bound. The 0.25 ps step job now passes; the eight-case campaign is complete.
 Candidate v5 widens only
 two final collector resistors from 17 to 18 micrometers to reduce voltage drop;
-run `38342231393` is running. Its nominal, cold/high, mixed resistor corners and the previously failing
-hot/low fast-HBT case pass. The latter now gives at least 0.4265 V VCE in the
-six previously failing final-data HBTs. The disabled intermediate-bias fault
-is rejected with 184 wrong source-bit samples.
-[The partial record](evidence/pcie-serializer32-margin-20261013.json) records six passing positive cases and two correctly rejected circuit
-faults. Only the 0.25 ps maximum-step case remains running. The earlier
+run `38342231393` is complete. All seven positive cases pass, including
+nominal, hot/low, cold/high, independent HBT/resistor corners and the 0.25 ps
+maximum simulation step. The six formerly failing final-data HBTs reach at
+least 0.4265 V VCE in the hot/fast case. Both actual faults are rejected:
+disabling the intermediate bias produces 184 wrong source-bit samples;
+swapping the deepest selector produces 27. The
+[complete record](evidence/pcie-serializer32-margin-20261013.json) preserves
+all captures and unchanged gates. The earlier
 pending run `38340862492` was superseded before execution by the newer source.
 All native computation and testing run on GitHub-hosted runners.
 
@@ -82,8 +84,18 @@ The next [supply/return-metal candidate](evidence/pcie-cascade14-supply-access-p
 widened only supply/return Metal3 escapes from 0.4 to 0.8 micrometers and
 TopMetal1 trunks from 1.64 to 2.0 micrometers, retaining eight-column HBT access
 vias and all circuit devices. Run `38345129500` passes strict native DRC/LVS
-and all five physical fault controls. Fresh extraction `38345525664` is
-running; electrical improvement is unproven.
+and all five physical fault controls. Fresh extraction and device composition
+passed; the [loaded 4:1 study](evidence/pcie-supply-access-loaded-tree-20261013.json)
+completed in run `38346082824`. Compact passes, wired fails: minimum interstage
+149.041 mV, 14 samples below 150 mV, common-mode minimum 1.798694 V and four
+final-selector VCE failures near 0.39635 V. The candidate remains rejected.
+
+The [larger power-trunk geometry](evidence/pcie-cascade14-power-trunks-physical-20261013.json)
+adds routing-lane spacing for 3.28 micrometer TopMetal1 power trunks and
+32 micrometer TopMetal2 power buses. Native DRC/LVS and five fault controls
+pass; its [fresh 781R/643C graph](evidence/pcie-cascade14-power-trunks-extraction-20261013.json)
+passes all thirteen corruption controls. Composition `38347455028` is running;
+loaded electrical acceptance remains unproven.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
@@ -98,7 +110,16 @@ closure**. Original local placement run `38335168863` now finished with
 binds 104 markers and 964 involved nets; 71 markers touch Ethernet FIFO SRAM
 banks 4/5. The native congestion viewer writes `-` for the marker layer,
 so those strings are not metal-layer identities. The combined GMII run
-and both broad-placement runs remain in progress. The [continuation record](evidence/cloud-closure-continuation-20261013.json)
+and both broad-placement runs remain in progress. Native
+[pin/obstruction diagnosis](evidence/cloud-sram-pin-access-20261013.json)
+now checks every transformed pin against OpenDB's placed pin bounds and passes
+nine orientation controls. All signal/clock pins on the four hot macros are
+Metal2; many congested paths pass across the macro without ending there.
+A [conservative Metal5 reservation experiment](evidence/cloud-sram-routing-reservation-20261013.json)
+is running as `38347061685`, retaining the proven GMII delay cells and exact
+macro geometry. It removes that routing resource only above those SRAM bodies,
+forcing another legal layer or a path around them. It changes neither native
+obstructions nor acceptance limits. The [continuation record](evidence/cloud-closure-continuation-20261013.json)
 is authoritative for subsequent results and open work.
 
 ## Latest development — 4 October 2026
