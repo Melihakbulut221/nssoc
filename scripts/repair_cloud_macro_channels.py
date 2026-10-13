@@ -138,7 +138,8 @@ def verify():
     check(block,before)
     path=OUT/'relocated-placement.odb';odb.write_db(db,str(path))
     report=dict(status='PASS_NATIVE_PLACEMENT_ONLY_INVARIANTS_REQUIRES_STA_AND_ROUTING',
-        profile=before['profile'],source_odb_sha256=SOURCE_SHA,output_odb_sha256=sha(path),
+        profile=before['profile'],source_odb_sha256=before['source_odb_sha256'],
+        original_odb_sha256=before.get('original_odb_sha256',SOURCE_SHA),output_odb_sha256=sha(path),
         connectivity_sha256=before['connectivity_sha256'],instances=len(actual),
         selected_count=len(before['selected']),changed_count=len(changed),changed=changed,
         native_fault_controls=['unselected_cell_displacement_rejected','disconnected_cell_pin_rejected'])
