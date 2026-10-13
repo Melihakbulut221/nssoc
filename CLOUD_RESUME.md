@@ -62,6 +62,16 @@ Continuation JSON now exceeds1MiB: if GitHub Contents API returns encoding
 none, read the same blob through git/blobs/<sha>. Do not treat empty inline
 content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
 
+### Next measured-loss repair — cascade14 physical supply feed
+
+DC comparison38411521005passed all three exact graphs. Local-return tail
+paths fell4.938to4.551ohm and5.448to4.929ohm; waveform gates still fail.
+Prestage avdd paths measure8.029/9.196ohm (final8.579/10.233ohm unchanged).
+A new `critical_buses_kelvin_supply_feed` candidate keeps cascade14 dense
+geometry and adds an8um TM2 low feed,8um external TM1 riser and nativevias.
+This is real parallel metal, with unchanged54devices/publicports/RCrules.
+Native DRC/LVS/fault proof is required before RC and any loaded simulation.
+
 ### Exact physical sources for these studies
 
 - Local-tail finalv8: physical **38400244543**, RC **38400976763**, composition

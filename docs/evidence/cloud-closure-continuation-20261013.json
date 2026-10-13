@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T14:12:58.383650+00:00",
+  "as_of": "2026-10-13T14:20:24.100193+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -100,7 +100,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Run new local_return_comparison DC diagnosis once: exact v8 local-tail/local-return graphs plus cascade14 dense prestage. Quantify public supply/return resistance and internal nets before further geometry/circuit edits. Both local-return and offset75 loaded studies are terminal and rejected; do not repeat unchanged. Fixed bias trades hot tail headroom for nominal/cold selector headroom.",
+    "Run fresh cascade14 critical_buses_kelvin_supply_feed geometry through native DRC/LVS and fivefault controls. Only if it passes, bind actual archive, extract nativeRC, compose, and compare source-bound loaded waves. Keep all baseline/local-return/clock-offset failures; do not infer electrical acceptance from DC resistance.",
     "Do not rerun the four completed local-tail studies unchanged. Read completed_local_tail_comparison and its exact immutable summaries. Neither candidate is accepted; hot wire and compact violations remain. Diagnose actual voltage/headroom and parasitic delay before selecting another source-bound circuit or geometry change.",
     "Inspect existing main route38395878470 before dispatching another route. Latest observed status:in_progress. Keep estimated eth_rx setup regression-4.524ps recorded; no routing or timing closure without native reports.",
     "All source edits through GitHub API; all CAD, simulation, tests and bulk artifacts on GitHub-hosted infrastructure. Local project and transient paths are empty; never recreate local checkout or CAD producers.",
@@ -42210,5 +42210,3408 @@
       }
     ],
     "finding": "All compact nominal/hot/cold gates pass. Actual wire hot has no HBT failures but22wrong signs/128low margins andlowinputCM; nominal andcold each fail four selector minVCE gates (minimum386.357mV and379.879mV). Candidate rejected, no physical clock-reference adoption."
+  },
+  "local_return_dc_comparison": {
+    "run": 38411521005,
+    "status": "PASS_SOURCE_BOUND_DC_NOT_WAVE_ACCEPTANCE",
+    "cases": [
+      {
+        "profile": "v8-kelvin-local-tail",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38411521005-1-metal-dc-v8-kelvin-local-tail/tx-metal-resistance-v8-kelvin-local-tail-38411521005-1.json",
+        "summary_sha256": "3a3a23f6bdfad480ba9fd92bcb66faeeabc0169e5fd6bdcd9e44523b28cd921e",
+        "source": {
+          "run": 38401482919,
+          "source_head": "434c437aa70ebc9e18d0bca4580614db0b9d9b32",
+          "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+          "variant": "critical_buses_kelvin_local_tail",
+          "receipt": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38401482919-1-compose-final_drive_v8-critical_buses_kelvin_local_tail/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_tail-38401482919-1.tar.gz",
+            "bytes": 6664193,
+            "sha256": "a5fd72cd6fa35e0762253082d7d7f1bdd12226e9a1c95a55ad407ce385a58c2d"
+          },
+          "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38401482919-1-compose-final_drive_v8-critical_buses_kelvin_local_tail/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_tail-38401482919-1.summary.json",
+          "summary_sha256": "8ccdaf068373fd2538847ed1e85de20bae529381c8999be8730bd277bb1e778d",
+          "outputs": {
+            "mux54-wire01.spice": "0b2479be39887235a23975f8e73d11592a1612461a607cc3607ad285cbf30f54",
+            "mux54-compact01.spice": "8c80493dbd768a0c502272b3c5341b272f695c95d15ac0cd1386f4a400053c1f"
+          },
+          "counts": {
+            "devices": 54,
+            "R": 4000,
+            "C": 2643
+          },
+          "extraction_source_sha256": "76e90a58ff6e365349fbab01c9137debefcc6d8471075cd10275c05525b9ed33",
+          "adopted": false,
+          "scope": "Unchanged finalv8 native54 devices with new4000R/2643C from real M4 local tail shunt and M5-to-TM1 ground return feed. Original loaded-wave gates required. No completePHY/body/RF/chip acceptance."
+        },
+        "ports": {
+          "avdd": {
+            "T053_rppd_1": {
+              "effective_ohms": 8.579361470162802,
+              "device_pins": [
+                {
+                  "device": "XD0053",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1",
+                  "nodes": [
+                    "P_avdd.n41",
+                    "P_avdd.n40"
+                  ],
+                  "ohms": 3.5373,
+                  "unit_current_power_w": 3.5373000000011716
+                },
+                {
+                  "name": "R31",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n53"
+                  ],
+                  "ohms": 1.5708,
+                  "unit_current_power_w": 1.5708000000003113
+                },
+                {
+                  "name": "R34",
+                  "nodes": [
+                    "P_avdd.n64",
+                    "P_avdd.n62"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224293407
+                },
+                {
+                  "name": "R41",
+                  "nodes": [
+                    "T053_rppd_1",
+                    "P_avdd.n64"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.6293218598766579
+                },
+                {
+                  "name": "R42",
+                  "nodes": [
+                    "P_avdd.n67",
+                    "P_avdd.n66"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2756443317889854
+                },
+                {
+                  "name": "R8",
+                  "nodes": [
+                    "P_avdd.n43",
+                    "P_avdd.n41"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065599986
+                },
+                {
+                  "name": "R26",
+                  "nodes": [
+                    "P_avdd.n57",
+                    "P_avdd.n43"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809006668
+                },
+                {
+                  "name": "R38",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n67"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.17248778012455457
+                }
+              ]
+            },
+            "T054_rppd_1": {
+              "effective_ohms": 10.232670435744485,
+              "device_pins": [
+                {
+                  "device": "XD0054",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R45",
+                  "nodes": [
+                    "P_avdd.n40",
+                    "P_avdd.n0"
+                  ],
+                  "ohms": 3.5241,
+                  "unit_current_power_w": 3.5241000000005833
+                },
+                {
+                  "name": "R83",
+                  "nodes": [
+                    "P_avdd.n38",
+                    "P_avdd.n28"
+                  ],
+                  "ohms": 2.31228,
+                  "unit_current_power_w": 2.3122800000000754
+                },
+                {
+                  "name": "R105",
+                  "nodes": [
+                    "P_avdd.n32",
+                    "P_avdd.n34"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771291
+                },
+                {
+                  "name": "R109",
+                  "nodes": [
+                    "P_avdd.n34",
+                    "T054_rppd_1"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.6238059834375675
+                },
+                {
+                  "name": "R82",
+                  "nodes": [
+                    "P_avdd.n39",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.94345,
+                  "unit_current_power_w": 0.3042342747347731
+                },
+                {
+                  "name": "R110",
+                  "nodes": [
+                    "P_avdd.n35",
+                    "P_avdd.n36"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2799601777206047
+                },
+                {
+                  "name": "R101",
+                  "nodes": [
+                    "P_avdd.n21",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.29835,
+                  "unit_current_power_w": 0.26452141823944764
+                },
+                {
+                  "name": "R93",
+                  "nodes": [
+                    "P_avdd.n14",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.29835,
+                  "unit_current_power_w": 0.26452141823944103
+                }
+              ]
+            }
+          },
+          "avss": {
+            "T001_rppd_2": {
+              "effective_ohms": 7.703031171404764,
+              "device_pins": [
+                {
+                  "device": "XD0001",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1435",
+                  "nodes": [
+                    "P_avss.n214",
+                    "P_avss.n213"
+                  ],
+                  "ohms": 3.70598,
+                  "unit_current_power_w": 3.705980000000348
+                },
+                {
+                  "name": "R1468",
+                  "nodes": [
+                    "P_avss.n237",
+                    "P_avss.n235"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224292714
+                },
+                {
+                  "name": "R1475",
+                  "nodes": [
+                    "T001_rppd_2",
+                    "P_avss.n237"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.6293218598765897
+                },
+                {
+                  "name": "R1465",
+                  "nodes": [
+                    "P_avss.n231",
+                    "P_avss.n226"
+                  ],
+                  "ohms": 0.4928,
+                  "unit_current_power_w": 0.4928000000000442
+                },
+                {
+                  "name": "R1476",
+                  "nodes": [
+                    "P_avss.n240",
+                    "P_avss.n239"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2756443317889561
+                },
+                {
+                  "name": "R1442",
+                  "nodes": [
+                    "P_avss.n216",
+                    "P_avss.n214"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065593524
+                },
+                {
+                  "name": "R1460",
+                  "nodes": [
+                    "P_avss.n230",
+                    "P_avss.n216"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809000976
+                },
+                {
+                  "name": "R1472",
+                  "nodes": [
+                    "P_avss.n231",
+                    "P_avss.n240"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.1724877801245352
+                }
+              ]
+            },
+            "T002_rppd_2": {
+              "effective_ohms": 8.400400434236436,
+              "device_pins": [
+                {
+                  "device": "XD0002",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1647",
+                  "nodes": [
+                    "P_avss.n110",
+                    "P_avss.n70"
+                  ],
+                  "ohms": 3.69938,
+                  "unit_current_power_w": 3.6993800000013644
+                },
+                {
+                  "name": "R1684",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n99"
+                  ],
+                  "ohms": 0.825379,
+                  "unit_current_power_w": 0.825379000000142
+                },
+                {
+                  "name": "R1687",
+                  "nodes": [
+                    "P_avss.n103",
+                    "P_avss.n98"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771889
+                },
+                {
+                  "name": "R1704",
+                  "nodes": [
+                    "P_avss.n98",
+                    "T002_rppd_2"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.6238059834376054
+                },
+                {
+                  "name": "R1712",
+                  "nodes": [
+                    "P_avss.n107",
+                    "P_avss.n106"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.27996017772062204
+                },
+                {
+                  "name": "R1708",
+                  "nodes": [
+                    "P_avss.n99",
+                    "P_avss.n107"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.2196034425570068
+                },
+                {
+                  "name": "R1654",
+                  "nodes": [
+                    "P_avss.n70",
+                    "P_avss.n72"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.20245926538035391
+                },
+                {
+                  "name": "R1681",
+                  "nodes": [
+                    "P_avss.n100",
+                    "P_avss.n101"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.18266514335821452
+                }
+              ]
+            },
+            "T003_rppd_2": {
+              "effective_ohms": 7.161094772176347,
+              "device_pins": [
+                {
+                  "device": "XD0003",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1715",
+                  "nodes": [
+                    "P_avss.n68",
+                    "P_avss.n41"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.5133400000008277
+                },
+                {
+                  "name": "R1748",
+                  "nodes": [
+                    "P_avss.n62",
+                    "P_avss.n64"
+                  ],
+                  "ohms": 1.91314,
+                  "unit_current_power_w": 0.6881092525224156
+                },
+                {
+                  "name": "R1755",
+                  "nodes": [
+                    "P_avss.n64",
+                    "T003_rppd_2"
+                  ],
+                  "ohms": 2.54428,
+                  "unit_current_power_w": 0.6295605757857953
+                },
+                {
+                  "name": "R1756",
+                  "nodes": [
+                    "P_avss.n67",
+                    "P_avss.n66"
+                  ],
+                  "ohms": 4.68822,
+                  "unit_current_power_w": 0.27564613134569416
+                },
+                {
+                  "name": "R1722",
+                  "nodes": [
+                    "P_avss.n41",
+                    "P_avss.n43"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065596255
+                },
+                {
+                  "name": "R1740",
+                  "nodes": [
+                    "P_avss.n43",
+                    "P_avss.n57"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809004134
+                },
+                {
+                  "name": "R1752",
+                  "nodes": [
+                    "P_avss.n58",
+                    "P_avss.n67"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.17248230528681197
+                },
+                {
+                  "name": "R1745",
+                  "nodes": [
+                    "P_avss.n53",
+                    "P_avss.n58"
+                  ],
+                  "ohms": 0.1628,
+                  "unit_current_power_w": 0.16280000000001565
+                }
+              ]
+            },
+            "T004_rppd_2": {
+              "effective_ohms": 7.560832739771304,
+              "device_pins": [
+                {
+                  "device": "XD0004",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1759",
+                  "nodes": [
+                    "P_avss.n40",
+                    "P_avss.n0"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.5133400000016235
+                },
+                {
+                  "name": "R1799",
+                  "nodes": [
+                    "P_avss.n33",
+                    "P_avss.n28"
+                  ],
+                  "ohms": 2.07231,
+                  "unit_current_power_w": 0.6732782342052795
+                },
+                {
+                  "name": "R1816",
+                  "nodes": [
+                    "P_avss.n28",
+                    "T004_rppd_2"
+                  ],
+                  "ohms": 2.54645,
+                  "unit_current_power_w": 0.6240454813529148
+                },
+                {
+                  "name": "R1796",
+                  "nodes": [
+                    "P_avss.n38",
+                    "P_avss.n29"
+                  ],
+                  "ohms": 0.370207,
+                  "unit_current_power_w": 0.37020700000003853
+                },
+                {
+                  "name": "R1824",
+                  "nodes": [
+                    "P_avss.n37",
+                    "P_avss.n36"
+                  ],
+                  "ohms": 4.68822,
+                  "unit_current_power_w": 0.27996067794267465
+                },
+                {
+                  "name": "R1820",
+                  "nodes": [
+                    "P_avss.n29",
+                    "P_avss.n37"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.21959829989672572
+                },
+                {
+                  "name": "R1766",
+                  "nodes": [
+                    "P_avss.n0",
+                    "P_avss.n2"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.20181284352105092
+                },
+                {
+                  "name": "R1793",
+                  "nodes": [
+                    "P_avss.n30",
+                    "P_avss.n31"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.18266363487034587
+                }
+              ]
+            },
+            "T009_E": {
+              "effective_ohms": 4.456796205434035,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1479",
+                  "nodes": [
+                    "P_avss.n213",
+                    "P_avss.n111"
+                  ],
+                  "ohms": 3.28664,
+                  "unit_current_power_w": 1.7828676673990929
+                },
+                {
+                  "name": "R1514",
+                  "nodes": [
+                    "P_avss.n135",
+                    "P_avss.n136"
+                  ],
+                  "ohms": 2.33381,
+                  "unit_current_power_w": 0.5343443248037959
+                },
+                {
+                  "name": "R1645",
+                  "nodes": [
+                    "P_avss.n134",
+                    "P_avss.n133"
+                  ],
+                  "ohms": 3.06218,
+                  "unit_current_power_w": 0.4714927918196537
+                },
+                {
+                  "name": "R1525",
+                  "nodes": [
+                    "P_avss.n211",
+                    "P_avss.n138"
+                  ],
+                  "ohms": 4.07083,
+                  "unit_current_power_w": 0.28260783116065363
+                },
+                {
+                  "name": "R1504",
+                  "nodes": [
+                    "P_avss.n133",
+                    "P_avss.n129"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.15002609763260233
+                },
+                {
+                  "name": "R1598",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n140"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 0.1385405467540373
+                },
+                {
+                  "name": "R1486",
+                  "nodes": [
+                    "P_avss.n111",
+                    "P_avss.n113"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.11408917760244254
+                },
+                {
+                  "name": "R1506",
+                  "nodes": [
+                    "P_avss.n113",
+                    "P_avss.n126"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.10547979751172595
+                }
+              ]
+            },
+            "T010_E": {
+              "effective_ohms": 4.938045193694291,
+              "device_pins": [
+                {
+                  "device": "XD0010",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1598",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n140"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 1.4288780811242565
+                },
+                {
+                  "name": "R1636",
+                  "nodes": [
+                    "T010_E",
+                    "P_avss.n207"
+                  ],
+                  "ohms": 2.31162,
+                  "unit_current_power_w": 0.531859209038427
+                },
+                {
+                  "name": "R1595",
+                  "nodes": [
+                    "P_avss.n209",
+                    "P_avss.n185"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 0.5009620552559025
+                },
+                {
+                  "name": "R1634",
+                  "nodes": [
+                    "P_avss.n202",
+                    "P_avss.n206"
+                  ],
+                  "ohms": 3.02209,
+                  "unit_current_power_w": 0.4652501097153991
+                },
+                {
+                  "name": "R1629",
+                  "nodes": [
+                    "P_avss.n201",
+                    "P_avss.n202"
+                  ],
+                  "ohms": 0.818891,
+                  "unit_current_power_w": 0.37293938035498836
+                },
+                {
+                  "name": "R1623",
+                  "nodes": [
+                    "P_avss.n206",
+                    "P_avss.n204"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14738305933471085
+                },
+                {
+                  "name": "R1527",
+                  "nodes": [
+                    "P_avss.n141",
+                    "P_avss.n208"
+                  ],
+                  "ohms": 4.46438,
+                  "unit_current_power_w": 0.1181830334973963
+                },
+                {
+                  "name": "R1526",
+                  "nodes": [
+                    "P_avss.n141",
+                    "P_avss.n142"
+                  ],
+                  "ohms": 4.46438,
+                  "unit_current_power_w": 0.11781252834015722
+                }
+              ]
+            },
+            "T011_E": {
+              "effective_ohms": 5.4479162846294535,
+              "device_pins": [
+                {
+                  "device": "XD0011",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1598",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n140"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 1.4191758532224534
+                },
+                {
+                  "name": "R1542",
+                  "nodes": [
+                    "P_avss.n210",
+                    "P_avss.n155"
+                  ],
+                  "ohms": 1.34666,
+                  "unit_current_power_w": 0.5406402555598274
+                },
+                {
+                  "name": "R1641",
+                  "nodes": [
+                    "P_avss.n155",
+                    "P_avss.n154"
+                  ],
+                  "ohms": 2.98177,
+                  "unit_current_power_w": 0.49873721378053415
+                },
+                {
+                  "name": "R1643",
+                  "nodes": [
+                    "T011_E",
+                    "P_avss.n152"
+                  ],
+                  "ohms": 2.30638,
+                  "unit_current_power_w": 0.4968111675325814
+                },
+                {
+                  "name": "R1596",
+                  "nodes": [
+                    "P_avss.n209",
+                    "P_avss.n184"
+                  ],
+                  "ohms": 1.17686,
+                  "unit_current_power_w": 0.47247107002387173
+                },
+                {
+                  "name": "R1529",
+                  "nodes": [
+                    "P_avss.n145",
+                    "P_avss.n148"
+                  ],
+                  "ohms": 4.46438,
+                  "unit_current_power_w": 0.1502145698432328
+                },
+                {
+                  "name": "R1528",
+                  "nodes": [
+                    "P_avss.n145",
+                    "P_avss.n146"
+                  ],
+                  "ohms": 4.46438,
+                  "unit_current_power_w": 0.14943116617158642
+                },
+                {
+                  "name": "R1539",
+                  "nodes": [
+                    "P_avss.n154",
+                    "P_avss.n151"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14493958776339472
+                }
+              ]
+            }
+          },
+          "iref": {
+            "T009_B": {
+              "effective_ohms": 8.12167800970752,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1075",
+                  "nodes": [
+                    "P_iref.n84",
+                    "P_iref.n83"
+                  ],
+                  "ohms": 3.73936,
+                  "unit_current_power_w": 3.7393600000002274
+                },
+                {
+                  "name": "R1105",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n96"
+                  ],
+                  "ohms": 0.769705,
+                  "unit_current_power_w": 0.7697050000000535
+                },
+                {
+                  "name": "R1108",
+                  "nodes": [
+                    "P_iref.n107",
+                    "P_iref.n105"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859321576196824
+                },
+                {
+                  "name": "R1115",
+                  "nodes": [
+                    "T009_B",
+                    "P_iref.n107"
+                  ],
+                  "ohms": 2.54167,
+                  "unit_current_power_w": 0.6275435766943103
+                },
+                {
+                  "name": "R1116",
+                  "nodes": [
+                    "P_iref.n110",
+                    "P_iref.n109"
+                  ],
+                  "ohms": 4.68675,
+                  "unit_current_power_w": 0.27671744181006425
+                },
+                {
+                  "name": "R1082",
+                  "nodes": [
+                    "P_iref.n86",
+                    "P_iref.n84"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723068307
+                },
+                {
+                  "name": "R1097",
+                  "nodes": [
+                    "P_iref.n100",
+                    "P_iref.n86"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113672392
+                },
+                {
+                  "name": "R1112",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n110"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170191021236134
+                }
+              ]
+            },
+            "T009_C": {
+              "effective_ohms": 8.786790307091424,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1119",
+                  "nodes": [
+                    "P_iref.n83",
+                    "P_iref.n56"
+                  ],
+                  "ohms": 3.70037,
+                  "unit_current_power_w": 3.700370000000371
+                },
+                {
+                  "name": "R1149",
+                  "nodes": [
+                    "P_iref.n68",
+                    "P_iref.n73"
+                  ],
+                  "ohms": 1.4737,
+                  "unit_current_power_w": 1.4737000000001597
+                },
+                {
+                  "name": "R1152",
+                  "nodes": [
+                    "P_iref.n77",
+                    "P_iref.n79"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859343798117908
+                },
+                {
+                  "name": "R1159",
+                  "nodes": [
+                    "P_iref.n79",
+                    "T009_C"
+                  ],
+                  "ohms": 2.54188,
+                  "unit_current_power_w": 0.6275963909419688
+                },
+                {
+                  "name": "R1160",
+                  "nodes": [
+                    "P_iref.n82",
+                    "P_iref.n81"
+                  ],
+                  "ohms": 4.68769,
+                  "unit_current_power_w": 0.276717613215562
+                },
+                {
+                  "name": "R1126",
+                  "nodes": [
+                    "P_iref.n56",
+                    "P_iref.n58"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.210083957230677
+                },
+                {
+                  "name": "R1141",
+                  "nodes": [
+                    "P_iref.n58",
+                    "P_iref.n72"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671062
+                },
+                {
+                  "name": "R1156",
+                  "nodes": [
+                    "P_iref.n73",
+                    "P_iref.n82"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170046093063247
+                }
+              ]
+            },
+            "T010_B": {
+              "effective_ohms": 8.811340886918392,
+              "device_pins": [
+                {
+                  "device": "XD0010",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.472499999999954
+                },
+                {
+                  "name": "R1238",
+                  "nodes": [
+                    "P_iref.n12",
+                    "P_iref.n17"
+                  ],
+                  "ohms": 1.71937,
+                  "unit_current_power_w": 1.719370000000088
+                },
+                {
+                  "name": "R1163",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n0"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 1.0999999999999335
+                },
+                {
+                  "name": "R1244",
+                  "nodes": [
+                    "P_iref.n21",
+                    "P_iref.n23"
+                  ],
+                  "ohms": 1.94846,
+                  "unit_current_power_w": 0.6859119428522806
+                },
+                {
+                  "name": "R1248",
+                  "nodes": [
+                    "P_iref.n23",
+                    "T010_B"
+                  ],
+                  "ohms": 2.54025,
+                  "unit_current_power_w": 0.6271859023100518
+                },
+                {
+                  "name": "R1249",
+                  "nodes": [
+                    "P_iref.n24",
+                    "P_iref.n25"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.27671533182272273
+                },
+                {
+                  "name": "R1215",
+                  "nodes": [
+                    "P_iref.n0",
+                    "P_iref.n2"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723064582
+                },
+                {
+                  "name": "R1230",
+                  "nodes": [
+                    "P_iref.n2",
+                    "P_iref.n16"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671684
+                }
+              ]
+            },
+            "T011_B": {
+              "effective_ohms": 9.854880623128818,
+              "device_pins": [
+                {
+                  "device": "XD0011",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1194",
+                  "nodes": [
+                    "P_iref.n40",
+                    "P_iref.n46"
+                  ],
+                  "ohms": 2.47427,
+                  "unit_current_power_w": 2.4742700000000437
+                },
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.472500000000063
+                },
+                {
+                  "name": "R1164",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n28"
+                  ],
+                  "ohms": 1.25366,
+                  "unit_current_power_w": 1.2536600000001004
+                },
+                {
+                  "name": "R1197",
+                  "nodes": [
+                    "P_iref.n50",
+                    "P_iref.n45"
+                  ],
+                  "ohms": 2.07224,
+                  "unit_current_power_w": 0.6732434047653885
+                },
+                {
+                  "name": "R1198",
+                  "nodes": [
+                    "P_iref.n45",
+                    "T011_B"
+                  ],
+                  "ohms": 2.54173,
+                  "unit_current_power_w": 0.6228622596553147
+                },
+                {
+                  "name": "R1206",
+                  "nodes": [
+                    "P_iref.n54",
+                    "P_iref.n53"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.2800932967709381
+                },
+                {
+                  "name": "R1202",
+                  "nodes": [
+                    "P_iref.n46",
+                    "P_iref.n54"
+                  ],
+                  "ohms": 9.07344,
+                  "unit_current_power_w": 0.21961147031872508
+                },
+                {
+                  "name": "R1172",
+                  "nodes": [
+                    "P_iref.n28",
+                    "P_iref.n30"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723067397
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "profile": "v8-kelvin-local-return",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38411521005-1-metal-dc-v8-kelvin-local-return/tx-metal-resistance-v8-kelvin-local-return-38411521005-1.json",
+        "summary_sha256": "e98c11390b3b75315e5c92bc13e068e27b3fb428f1978e4371a9e75dfff766c1",
+        "source": {
+          "run": 38408254672,
+          "source_head": "2aa90efceb4b1df8e33234774baff38ee8c7cf61",
+          "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+          "variant": "critical_buses_kelvin_local_return",
+          "receipt": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38408254672-1-compose-final_drive_v8-critical_buses_kelvin_local_return/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_return-38408254672-1.tar.gz",
+            "bytes": 6669661,
+            "sha256": "2c74a102fec3675c5450d4dcc3683ff3243f098a1df2de0802d74f0f9a4544f3"
+          },
+          "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38408254672-1-compose-final_drive_v8-critical_buses_kelvin_local_return/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_return-38408254672-1.summary.json",
+          "summary_sha256": "70ec5111a9504e3db974de4141b69d9888726b0c65abb4e668eb6eb5b9729872",
+          "outputs": {
+            "mux54-wire01.spice": "b73bfb87c4f9c4311aa4157e8442d07ac390c7711ea3b40c01cfceffb3230307",
+            "mux54-compact01.spice": "8c80493dbd768a0c502272b3c5341b272f695c95d15ac0cd1386f4a400053c1f"
+          },
+          "counts": {
+            "devices": 54,
+            "R": 4038,
+            "C": 2663
+          },
+          "extraction_source_sha256": "e2c68e252b9a7221c1a048500802274aa3e9a1affc3a5a14b77dfaacb4995c5c",
+          "adopted": false,
+          "scope": "Unchanged finalv8 native54 devices, including27body taps, with actual4038R/2663C from wider M5 local return and native via arrays. Original loaded-wave gates required; no fullPHY/body/RF/chip acceptance."
+        },
+        "ports": {
+          "avdd": {
+            "T053_rppd_1": {
+              "effective_ohms": 8.579361470162802,
+              "device_pins": [
+                {
+                  "device": "XD0053",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1",
+                  "nodes": [
+                    "P_avdd.n41",
+                    "P_avdd.n40"
+                  ],
+                  "ohms": 3.5373,
+                  "unit_current_power_w": 3.5373000000011716
+                },
+                {
+                  "name": "R31",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n53"
+                  ],
+                  "ohms": 1.5708,
+                  "unit_current_power_w": 1.5708000000003113
+                },
+                {
+                  "name": "R34",
+                  "nodes": [
+                    "P_avdd.n64",
+                    "P_avdd.n62"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224293407
+                },
+                {
+                  "name": "R41",
+                  "nodes": [
+                    "T053_rppd_1",
+                    "P_avdd.n64"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.6293218598766579
+                },
+                {
+                  "name": "R42",
+                  "nodes": [
+                    "P_avdd.n67",
+                    "P_avdd.n66"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2756443317889854
+                },
+                {
+                  "name": "R8",
+                  "nodes": [
+                    "P_avdd.n43",
+                    "P_avdd.n41"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065599986
+                },
+                {
+                  "name": "R26",
+                  "nodes": [
+                    "P_avdd.n57",
+                    "P_avdd.n43"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809006668
+                },
+                {
+                  "name": "R38",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n67"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.17248778012455457
+                }
+              ]
+            },
+            "T054_rppd_1": {
+              "effective_ohms": 10.232670435744485,
+              "device_pins": [
+                {
+                  "device": "XD0054",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R45",
+                  "nodes": [
+                    "P_avdd.n40",
+                    "P_avdd.n0"
+                  ],
+                  "ohms": 3.5241,
+                  "unit_current_power_w": 3.5241000000005833
+                },
+                {
+                  "name": "R83",
+                  "nodes": [
+                    "P_avdd.n38",
+                    "P_avdd.n28"
+                  ],
+                  "ohms": 2.31228,
+                  "unit_current_power_w": 2.3122800000000754
+                },
+                {
+                  "name": "R105",
+                  "nodes": [
+                    "P_avdd.n32",
+                    "P_avdd.n34"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771291
+                },
+                {
+                  "name": "R109",
+                  "nodes": [
+                    "P_avdd.n34",
+                    "T054_rppd_1"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.6238059834375675
+                },
+                {
+                  "name": "R82",
+                  "nodes": [
+                    "P_avdd.n39",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.94345,
+                  "unit_current_power_w": 0.3042342747347731
+                },
+                {
+                  "name": "R110",
+                  "nodes": [
+                    "P_avdd.n35",
+                    "P_avdd.n36"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2799601777206047
+                },
+                {
+                  "name": "R101",
+                  "nodes": [
+                    "P_avdd.n21",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.29835,
+                  "unit_current_power_w": 0.26452141823944764
+                },
+                {
+                  "name": "R93",
+                  "nodes": [
+                    "P_avdd.n14",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.29835,
+                  "unit_current_power_w": 0.26452141823944103
+                }
+              ]
+            }
+          },
+          "avss": {
+            "T001_rppd_2": {
+              "effective_ohms": 7.703028059572987,
+              "device_pins": [
+                {
+                  "device": "XD0001",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1435",
+                  "nodes": [
+                    "P_avss.n236",
+                    "P_avss.n235"
+                  ],
+                  "ohms": 3.70598,
+                  "unit_current_power_w": 3.7059800000010683
+                },
+                {
+                  "name": "R1468",
+                  "nodes": [
+                    "P_avss.n259",
+                    "P_avss.n257"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224292735
+                },
+                {
+                  "name": "R1475",
+                  "nodes": [
+                    "T001_rppd_2",
+                    "P_avss.n259"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.6293218598766048
+                },
+                {
+                  "name": "R1465",
+                  "nodes": [
+                    "P_avss.n253",
+                    "P_avss.n248"
+                  ],
+                  "ohms": 0.4928,
+                  "unit_current_power_w": 0.49280000000005486
+                },
+                {
+                  "name": "R1476",
+                  "nodes": [
+                    "P_avss.n262",
+                    "P_avss.n261"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.27564433178896086
+                },
+                {
+                  "name": "R1442",
+                  "nodes": [
+                    "P_avss.n238",
+                    "P_avss.n236"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.2103185006559682
+                },
+                {
+                  "name": "R1460",
+                  "nodes": [
+                    "P_avss.n252",
+                    "P_avss.n238"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809004267
+                },
+                {
+                  "name": "R1472",
+                  "nodes": [
+                    "P_avss.n253",
+                    "P_avss.n262"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.17248778012453717
+                }
+              ]
+            },
+            "T002_rppd_2": {
+              "effective_ohms": 8.40039965627827,
+              "device_pins": [
+                {
+                  "device": "XD0002",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1685",
+                  "nodes": [
+                    "P_avss.n110",
+                    "P_avss.n70"
+                  ],
+                  "ohms": 3.69938,
+                  "unit_current_power_w": 3.699380000001209
+                },
+                {
+                  "name": "R1722",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n99"
+                  ],
+                  "ohms": 0.825379,
+                  "unit_current_power_w": 0.825379000000142
+                },
+                {
+                  "name": "R1725",
+                  "nodes": [
+                    "P_avss.n103",
+                    "P_avss.n98"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771867
+                },
+                {
+                  "name": "R1742",
+                  "nodes": [
+                    "P_avss.n98",
+                    "T002_rppd_2"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.6238059834376045
+                },
+                {
+                  "name": "R1750",
+                  "nodes": [
+                    "P_avss.n107",
+                    "P_avss.n106"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2799601777206212
+                },
+                {
+                  "name": "R1746",
+                  "nodes": [
+                    "P_avss.n99",
+                    "P_avss.n107"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.21960344255700653
+                },
+                {
+                  "name": "R1692",
+                  "nodes": [
+                    "P_avss.n70",
+                    "P_avss.n72"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.20245926538033301
+                },
+                {
+                  "name": "R1719",
+                  "nodes": [
+                    "P_avss.n100",
+                    "P_avss.n101"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.18266514335821402
+                }
+              ]
+            },
+            "T003_rppd_2": {
+              "effective_ohms": 7.161094772175932,
+              "device_pins": [
+                {
+                  "device": "XD0003",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1753",
+                  "nodes": [
+                    "P_avss.n68",
+                    "P_avss.n41"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.513340000000182
+                },
+                {
+                  "name": "R1786",
+                  "nodes": [
+                    "P_avss.n62",
+                    "P_avss.n64"
+                  ],
+                  "ohms": 1.91314,
+                  "unit_current_power_w": 0.6881092525224178
+                },
+                {
+                  "name": "R1793",
+                  "nodes": [
+                    "P_avss.n64",
+                    "T003_rppd_2"
+                  ],
+                  "ohms": 2.54428,
+                  "unit_current_power_w": 0.6295605757857927
+                },
+                {
+                  "name": "R1794",
+                  "nodes": [
+                    "P_avss.n67",
+                    "P_avss.n66"
+                  ],
+                  "ohms": 4.68822,
+                  "unit_current_power_w": 0.27564613134569327
+                },
+                {
+                  "name": "R1760",
+                  "nodes": [
+                    "P_avss.n41",
+                    "P_avss.n43"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065591745
+                },
+                {
+                  "name": "R1778",
+                  "nodes": [
+                    "P_avss.n43",
+                    "P_avss.n57"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747808999555
+                },
+                {
+                  "name": "R1790",
+                  "nodes": [
+                    "P_avss.n58",
+                    "P_avss.n67"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.17248230528681244
+                },
+                {
+                  "name": "R1783",
+                  "nodes": [
+                    "P_avss.n53",
+                    "P_avss.n58"
+                  ],
+                  "ohms": 0.1628,
+                  "unit_current_power_w": 0.16280000000001743
+                }
+              ]
+            },
+            "T004_rppd_2": {
+              "effective_ohms": 7.5608327397709925,
+              "device_pins": [
+                {
+                  "device": "XD0004",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1797",
+                  "nodes": [
+                    "P_avss.n40",
+                    "P_avss.n0"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.5133400000010635
+                },
+                {
+                  "name": "R1837",
+                  "nodes": [
+                    "P_avss.n33",
+                    "P_avss.n28"
+                  ],
+                  "ohms": 2.07231,
+                  "unit_current_power_w": 0.6732782342052785
+                },
+                {
+                  "name": "R1854",
+                  "nodes": [
+                    "P_avss.n28",
+                    "T004_rppd_2"
+                  ],
+                  "ohms": 2.54645,
+                  "unit_current_power_w": 0.6240454813529078
+                },
+                {
+                  "name": "R1834",
+                  "nodes": [
+                    "P_avss.n38",
+                    "P_avss.n29"
+                  ],
+                  "ohms": 0.370207,
+                  "unit_current_power_w": 0.3702070000000403
+                },
+                {
+                  "name": "R1862",
+                  "nodes": [
+                    "P_avss.n37",
+                    "P_avss.n36"
+                  ],
+                  "ohms": 4.68822,
+                  "unit_current_power_w": 0.27996067794267077
+                },
+                {
+                  "name": "R1858",
+                  "nodes": [
+                    "P_avss.n29",
+                    "P_avss.n37"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.21959829989672572
+                },
+                {
+                  "name": "R1804",
+                  "nodes": [
+                    "P_avss.n0",
+                    "P_avss.n2"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.2018128435210244
+                },
+                {
+                  "name": "R1831",
+                  "nodes": [
+                    "P_avss.n30",
+                    "P_avss.n31"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.18266363487034637
+                }
+              ]
+            },
+            "T009_E": {
+              "effective_ohms": 4.101202071338001,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1479",
+                  "nodes": [
+                    "P_avss.n235",
+                    "P_avss.n111"
+                  ],
+                  "ohms": 3.28664,
+                  "unit_current_power_w": 1.4190900710450465
+                },
+                {
+                  "name": "R1525",
+                  "nodes": [
+                    "P_avss.n139",
+                    "P_avss.n135"
+                  ],
+                  "ohms": 3.06888,
+                  "unit_current_power_w": 0.385933516256028
+                },
+                {
+                  "name": "R1526",
+                  "nodes": [
+                    "P_avss.n138",
+                    "P_avss.n137"
+                  ],
+                  "ohms": 4.61851,
+                  "unit_current_power_w": 0.3124439545881289
+                },
+                {
+                  "name": "R1627",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n147"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 0.23464993213745072
+                },
+                {
+                  "name": "R1542",
+                  "nodes": [
+                    "P_avss.n232",
+                    "P_avss.n143"
+                  ],
+                  "ohms": 1.97821,
+                  "unit_current_power_w": 0.23260398687806477
+                },
+                {
+                  "name": "R1506",
+                  "nodes": [
+                    "P_avss.n137",
+                    "P_avss.n129"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.15132534620263688
+                },
+                {
+                  "name": "R1505",
+                  "nodes": [
+                    "P_avss.n136",
+                    "P_avss.n131"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14897574260674684
+                },
+                {
+                  "name": "R1504",
+                  "nodes": [
+                    "P_avss.n135",
+                    "P_avss.n133"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.145056273478542
+                }
+              ]
+            },
+            "T010_E": {
+              "effective_ohms": 4.551443357949998,
+              "device_pins": [
+                {
+                  "device": "XD0010",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1627",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n147"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 1.257650905399943
+                },
+                {
+                  "name": "R1671",
+                  "nodes": [
+                    "P_avss.n229",
+                    "P_avss.n226"
+                  ],
+                  "ohms": 3.02941,
+                  "unit_current_power_w": 0.3865861814447681
+                },
+                {
+                  "name": "R1624",
+                  "nodes": [
+                    "P_avss.n230",
+                    "P_avss.n202"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 0.374498491835595
+                },
+                {
+                  "name": "R1670",
+                  "nodes": [
+                    "P_avss.n219",
+                    "P_avss.n224"
+                  ],
+                  "ohms": 4.52714,
+                  "unit_current_power_w": 0.30892912002718853
+                },
+                {
+                  "name": "R1662",
+                  "nodes": [
+                    "P_avss.n218",
+                    "P_avss.n219"
+                  ],
+                  "ohms": 0.791913,
+                  "unit_current_power_w": 0.26960929469540007
+                },
+                {
+                  "name": "R1654",
+                  "nodes": [
+                    "P_avss.n224",
+                    "P_avss.n221"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14785613926388141
+                },
+                {
+                  "name": "R1655",
+                  "nodes": [
+                    "P_avss.n225",
+                    "P_avss.n222"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.1461720681960242
+                },
+                {
+                  "name": "R1656",
+                  "nodes": [
+                    "P_avss.n226",
+                    "P_avss.n223"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.1427284671066387
+                }
+              ]
+            },
+            "T011_E": {
+              "effective_ohms": 4.928570703952297,
+              "device_pins": [
+                {
+                  "device": "XD0011",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1627",
+                  "nodes": [
+                    "P_avss.n69",
+                    "P_avss.n147"
+                  ],
+                  "ohms": 1.99561,
+                  "unit_current_power_w": 1.2440229671275733
+                },
+                {
+                  "name": "R1681",
+                  "nodes": [
+                    "P_avss.n168",
+                    "P_avss.n169"
+                  ],
+                  "ohms": 3.02897,
+                  "unit_current_power_w": 0.36669579535238733
+                },
+                {
+                  "name": "R1569",
+                  "nodes": [
+                    "P_avss.n231",
+                    "P_avss.n172"
+                  ],
+                  "ohms": 1.27451,
+                  "unit_current_power_w": 0.3621497245308531
+                },
+                {
+                  "name": "R1680",
+                  "nodes": [
+                    "P_avss.n172",
+                    "P_avss.n171"
+                  ],
+                  "ohms": 4.50418,
+                  "unit_current_power_w": 0.33686764378488593
+                },
+                {
+                  "name": "R1625",
+                  "nodes": [
+                    "P_avss.n230",
+                    "P_avss.n201"
+                  ],
+                  "ohms": 1.17686,
+                  "unit_current_power_w": 0.3344026526363303
+                },
+                {
+                  "name": "R1566",
+                  "nodes": [
+                    "P_avss.n171",
+                    "P_avss.n164"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.1508677143607564
+                },
+                {
+                  "name": "R1479",
+                  "nodes": [
+                    "P_avss.n235",
+                    "P_avss.n111"
+                  ],
+                  "ohms": 3.28664,
+                  "unit_current_power_w": 0.1455708996162006
+                },
+                {
+                  "name": "R1565",
+                  "nodes": [
+                    "P_avss.n170",
+                    "P_avss.n165"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14357535873070232
+                }
+              ]
+            }
+          },
+          "iref": {
+            "T009_B": {
+              "effective_ohms": 8.12167800970752,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1075",
+                  "nodes": [
+                    "P_iref.n84",
+                    "P_iref.n83"
+                  ],
+                  "ohms": 3.73936,
+                  "unit_current_power_w": 3.7393600000002274
+                },
+                {
+                  "name": "R1105",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n96"
+                  ],
+                  "ohms": 0.769705,
+                  "unit_current_power_w": 0.7697050000000535
+                },
+                {
+                  "name": "R1108",
+                  "nodes": [
+                    "P_iref.n107",
+                    "P_iref.n105"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859321576196824
+                },
+                {
+                  "name": "R1115",
+                  "nodes": [
+                    "T009_B",
+                    "P_iref.n107"
+                  ],
+                  "ohms": 2.54167,
+                  "unit_current_power_w": 0.6275435766943103
+                },
+                {
+                  "name": "R1116",
+                  "nodes": [
+                    "P_iref.n110",
+                    "P_iref.n109"
+                  ],
+                  "ohms": 4.68675,
+                  "unit_current_power_w": 0.27671744181006425
+                },
+                {
+                  "name": "R1082",
+                  "nodes": [
+                    "P_iref.n86",
+                    "P_iref.n84"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723068307
+                },
+                {
+                  "name": "R1097",
+                  "nodes": [
+                    "P_iref.n100",
+                    "P_iref.n86"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113672392
+                },
+                {
+                  "name": "R1112",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n110"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170191021236134
+                }
+              ]
+            },
+            "T009_C": {
+              "effective_ohms": 8.786790307091424,
+              "device_pins": [
+                {
+                  "device": "XD0009",
+                  "model": "npn13g2",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1119",
+                  "nodes": [
+                    "P_iref.n83",
+                    "P_iref.n56"
+                  ],
+                  "ohms": 3.70037,
+                  "unit_current_power_w": 3.700370000000371
+                },
+                {
+                  "name": "R1149",
+                  "nodes": [
+                    "P_iref.n68",
+                    "P_iref.n73"
+                  ],
+                  "ohms": 1.4737,
+                  "unit_current_power_w": 1.4737000000001597
+                },
+                {
+                  "name": "R1152",
+                  "nodes": [
+                    "P_iref.n77",
+                    "P_iref.n79"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859343798117908
+                },
+                {
+                  "name": "R1159",
+                  "nodes": [
+                    "P_iref.n79",
+                    "T009_C"
+                  ],
+                  "ohms": 2.54188,
+                  "unit_current_power_w": 0.6275963909419688
+                },
+                {
+                  "name": "R1160",
+                  "nodes": [
+                    "P_iref.n82",
+                    "P_iref.n81"
+                  ],
+                  "ohms": 4.68769,
+                  "unit_current_power_w": 0.276717613215562
+                },
+                {
+                  "name": "R1126",
+                  "nodes": [
+                    "P_iref.n56",
+                    "P_iref.n58"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.210083957230677
+                },
+                {
+                  "name": "R1141",
+                  "nodes": [
+                    "P_iref.n58",
+                    "P_iref.n72"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671062
+                },
+                {
+                  "name": "R1156",
+                  "nodes": [
+                    "P_iref.n73",
+                    "P_iref.n82"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170046093063247
+                }
+              ]
+            },
+            "T010_B": {
+              "effective_ohms": 8.811340886918392,
+              "device_pins": [
+                {
+                  "device": "XD0010",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.472499999999954
+                },
+                {
+                  "name": "R1238",
+                  "nodes": [
+                    "P_iref.n12",
+                    "P_iref.n17"
+                  ],
+                  "ohms": 1.71937,
+                  "unit_current_power_w": 1.719370000000088
+                },
+                {
+                  "name": "R1163",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n0"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 1.0999999999999335
+                },
+                {
+                  "name": "R1244",
+                  "nodes": [
+                    "P_iref.n21",
+                    "P_iref.n23"
+                  ],
+                  "ohms": 1.94846,
+                  "unit_current_power_w": 0.6859119428522806
+                },
+                {
+                  "name": "R1248",
+                  "nodes": [
+                    "P_iref.n23",
+                    "T010_B"
+                  ],
+                  "ohms": 2.54025,
+                  "unit_current_power_w": 0.6271859023100518
+                },
+                {
+                  "name": "R1249",
+                  "nodes": [
+                    "P_iref.n24",
+                    "P_iref.n25"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.27671533182272273
+                },
+                {
+                  "name": "R1215",
+                  "nodes": [
+                    "P_iref.n0",
+                    "P_iref.n2"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723064582
+                },
+                {
+                  "name": "R1230",
+                  "nodes": [
+                    "P_iref.n2",
+                    "P_iref.n16"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671684
+                }
+              ]
+            },
+            "T011_B": {
+              "effective_ohms": 9.854880623128818,
+              "device_pins": [
+                {
+                  "device": "XD0011",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1194",
+                  "nodes": [
+                    "P_iref.n40",
+                    "P_iref.n46"
+                  ],
+                  "ohms": 2.47427,
+                  "unit_current_power_w": 2.4742700000000437
+                },
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.472500000000063
+                },
+                {
+                  "name": "R1164",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n28"
+                  ],
+                  "ohms": 1.25366,
+                  "unit_current_power_w": 1.2536600000001004
+                },
+                {
+                  "name": "R1197",
+                  "nodes": [
+                    "P_iref.n50",
+                    "P_iref.n45"
+                  ],
+                  "ohms": 2.07224,
+                  "unit_current_power_w": 0.6732434047653885
+                },
+                {
+                  "name": "R1198",
+                  "nodes": [
+                    "P_iref.n45",
+                    "T011_B"
+                  ],
+                  "ohms": 2.54173,
+                  "unit_current_power_w": 0.6228622596553147
+                },
+                {
+                  "name": "R1206",
+                  "nodes": [
+                    "P_iref.n54",
+                    "P_iref.n53"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.2800932967709381
+                },
+                {
+                  "name": "R1202",
+                  "nodes": [
+                    "P_iref.n46",
+                    "P_iref.n54"
+                  ],
+                  "ohms": 9.07344,
+                  "unit_current_power_w": 0.21961147031872508
+                },
+                {
+                  "name": "R1172",
+                  "nodes": [
+                    "P_iref.n28",
+                    "P_iref.n30"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723067397
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "profile": "cascade14-kelvin-dense-wide",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38411521005-1-metal-dc-cascade14-kelvin-dense-wide/tx-metal-resistance-cascade14-kelvin-dense-wide-38411521005-1.json",
+        "summary_sha256": "6e28c1cf795ee45e3270ab0eb21f41543e128a050067a75cb151922e5f45a698",
+        "source": {
+          "run": 38393689519,
+          "source_head": "37a89a6f918375cd2133b846e0ddbe08417f7a66",
+          "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+          "variant": "critical_buses_kelvin_dense_wide",
+          "receipt": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38393689519-1-compose-cascade14-critical_buses_kelvin_dense_wide/tx-layout-composition-cascade14-critical_buses_kelvin_dense_wide-38393689519-1.tar.gz",
+            "bytes": 6642387,
+            "sha256": "37882f3c8c4f6268fb821bfec868e6f2d337880c0d7ef6758098e5f2d202ee9d"
+          },
+          "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38393689519-1-compose-cascade14-critical_buses_kelvin_dense_wide/tx-layout-composition-cascade14-critical_buses_kelvin_dense_wide-38393689519-1.summary.json",
+          "summary_sha256": "95343381103a02425a695a593de33ec0ad0fe99b3a9869733f02e7929d38f960",
+          "outputs": {
+            "mux54-wire01.spice": "4c0e899f0ad200d4943e259a88463cd26386eec8a3519df1f022c6972d0d4c23",
+            "mux54-compact01.spice": "87be3543bf6ad60033ee1af271d8e777f38f2a83e967efd3a2e16b69bf4acd49"
+          },
+          "counts": {
+            "devices": 54,
+            "R": 3803,
+            "C": 2541
+          },
+          "extraction_source_sha256": "b4e0afc977bded08ea88247a3fdc6893404ecec18986886adecd1d564e54870f",
+          "adopted": false,
+          "scope": "Unchanged cascade14 circuit: 54 native devices with newly extracted 3803 R and 2541 C of the dense Kelvin geometry. Loaded original-oracle transient acceptance remains required. No assembled PHY, RF/body extraction, or chip timing qualification."
+        },
+        "ports": {
+          "avdd": {
+            "T006_rppd_1": {
+              "effective_ohms": 8.029361470162772,
+              "device_pins": [
+                {
+                  "device": "XD0006",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1",
+                  "nodes": [
+                    "P_avdd.n41",
+                    "P_avdd.n40"
+                  ],
+                  "ohms": 3.5373,
+                  "unit_current_power_w": 3.5373000000011814
+                },
+                {
+                  "name": "R31",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n53"
+                  ],
+                  "ohms": 1.0208,
+                  "unit_current_power_w": 1.0208000000002122
+                },
+                {
+                  "name": "R34",
+                  "nodes": [
+                    "P_avdd.n64",
+                    "P_avdd.n62"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224293449
+                },
+                {
+                  "name": "R41",
+                  "nodes": [
+                    "T006_rppd_1",
+                    "P_avdd.n64"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.6293218598766764
+                },
+                {
+                  "name": "R42",
+                  "nodes": [
+                    "P_avdd.n67",
+                    "P_avdd.n66"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.275644331788994
+                },
+                {
+                  "name": "R8",
+                  "nodes": [
+                    "P_avdd.n43",
+                    "P_avdd.n41"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065599725
+                },
+                {
+                  "name": "R26",
+                  "nodes": [
+                    "P_avdd.n57",
+                    "P_avdd.n43"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.1944474780900609
+                },
+                {
+                  "name": "R38",
+                  "nodes": [
+                    "P_avdd.n58",
+                    "P_avdd.n67"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.17248778012455554
+                }
+              ]
+            },
+            "T007_rppd_1": {
+              "effective_ohms": 9.196342245237227,
+              "device_pins": [
+                {
+                  "device": "XD0007",
+                  "model": "rppd",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R45",
+                  "nodes": [
+                    "P_avdd.n40",
+                    "P_avdd.n0"
+                  ],
+                  "ohms": 3.5241,
+                  "unit_current_power_w": 3.524100000000585
+                },
+                {
+                  "name": "R83",
+                  "nodes": [
+                    "P_avdd.n38",
+                    "P_avdd.n28"
+                  ],
+                  "ohms": 1.55366,
+                  "unit_current_power_w": 1.553660000000211
+                },
+                {
+                  "name": "R105",
+                  "nodes": [
+                    "P_avdd.n32",
+                    "P_avdd.n34"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771585
+                },
+                {
+                  "name": "R109",
+                  "nodes": [
+                    "P_avdd.n34",
+                    "T007_rppd_1"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.6238059834376098
+                },
+                {
+                  "name": "R110",
+                  "nodes": [
+                    "P_avdd.n35",
+                    "P_avdd.n36"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2799601777206238
+                },
+                {
+                  "name": "R106",
+                  "nodes": [
+                    "P_avdd.n28",
+                    "P_avdd.n35"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.21960344255699712
+                },
+                {
+                  "name": "R82",
+                  "nodes": [
+                    "P_avdd.n39",
+                    "P_avdd.n38"
+                  ],
+                  "ohms": 2.18483,
+                  "unit_current_power_w": 0.20588034028564292
+                },
+                {
+                  "name": "R52",
+                  "nodes": [
+                    "P_avdd.n0",
+                    "P_avdd.n2"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.2029226311658385
+                }
+              ]
+            }
+          },
+          "avss": {
+            "T001_rppd_2": {
+              "effective_ohms": 7.4308947495313875,
+              "device_pins": [
+                {
+                  "device": "XD0001",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1435",
+                  "nodes": [
+                    "P_avss.n179",
+                    "P_avss.n178"
+                  ],
+                  "ohms": 3.65384,
+                  "unit_current_power_w": 3.6538400000007796
+                },
+                {
+                  "name": "R1468",
+                  "nodes": [
+                    "P_avss.n202",
+                    "P_avss.n200"
+                  ],
+                  "ohms": 1.91312,
+                  "unit_current_power_w": 0.6880963224293045
+                },
+                {
+                  "name": "R1475",
+                  "nodes": [
+                    "T001_rppd_2",
+                    "P_avss.n202"
+                  ],
+                  "ohms": 2.54333,
+                  "unit_current_power_w": 0.629321859876618
+                },
+                {
+                  "name": "R1476",
+                  "nodes": [
+                    "P_avss.n205",
+                    "P_avss.n204"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2756443317889686
+                },
+                {
+                  "name": "R1465",
+                  "nodes": [
+                    "P_avss.n196",
+                    "P_avss.n191"
+                  ],
+                  "ohms": 0.2728,
+                  "unit_current_power_w": 0.27280000000002874
+                },
+                {
+                  "name": "R1442",
+                  "nodes": [
+                    "P_avss.n181",
+                    "P_avss.n179"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.2103185006559669
+                },
+                {
+                  "name": "R1460",
+                  "nodes": [
+                    "P_avss.n195",
+                    "P_avss.n181"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.19444747809003912
+                },
+                {
+                  "name": "R1472",
+                  "nodes": [
+                    "P_avss.n196",
+                    "P_avss.n205"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.17248778012454424
+                }
+              ]
+            },
+            "T002_rppd_2": {
+              "effective_ohms": 7.930521999062669,
+              "device_pins": [
+                {
+                  "device": "XD0002",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1644",
+                  "nodes": [
+                    "P_avss.n77",
+                    "P_avss.n37"
+                  ],
+                  "ohms": 3.64724,
+                  "unit_current_power_w": 3.6472400000003855
+                },
+                {
+                  "name": "R1684",
+                  "nodes": [
+                    "P_avss.n70",
+                    "P_avss.n65"
+                  ],
+                  "ohms": 2.07228,
+                  "unit_current_power_w": 0.6732650515771503
+                },
+                {
+                  "name": "R1701",
+                  "nodes": [
+                    "P_avss.n65",
+                    "T002_rppd_2"
+                  ],
+                  "ohms": 2.5455,
+                  "unit_current_power_w": 0.623805983437616
+                },
+                {
+                  "name": "R1681",
+                  "nodes": [
+                    "P_avss.n75",
+                    "P_avss.n66"
+                  ],
+                  "ohms": 0.521931,
+                  "unit_current_power_w": 0.5219310000000522
+                },
+                {
+                  "name": "R1709",
+                  "nodes": [
+                    "P_avss.n74",
+                    "P_avss.n73"
+                  ],
+                  "ohms": 4.68395,
+                  "unit_current_power_w": 0.2799601777206303
+                },
+                {
+                  "name": "R1705",
+                  "nodes": [
+                    "P_avss.n66",
+                    "P_avss.n74"
+                  ],
+                  "ohms": 9.07345,
+                  "unit_current_power_w": 0.21960344255699243
+                },
+                {
+                  "name": "R1651",
+                  "nodes": [
+                    "P_avss.n37",
+                    "P_avss.n39"
+                  ],
+                  "ohms": 0.842788,
+                  "unit_current_power_w": 0.20208711113986724
+                },
+                {
+                  "name": "R1678",
+                  "nodes": [
+                    "P_avss.n67",
+                    "P_avss.n68"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.1826651433582024
+                }
+              ]
+            },
+            "T003_rppd_2": {
+              "effective_ohms": 13.780702253997463,
+              "device_pins": [
+                {
+                  "device": "XD0003",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1767",
+                  "nodes": [
+                    "P_avss.n12",
+                    "T003_rppd_2"
+                  ],
+                  "ohms": 9.2926,
+                  "unit_current_power_w": 9.2926
+                },
+                {
+                  "name": "R1740",
+                  "nodes": [
+                    "P_avss.n17",
+                    "P_avss.n0"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.513340000000182
+                },
+                {
+                  "name": "R1747",
+                  "nodes": [
+                    "P_avss.n0",
+                    "P_avss.n2"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065592264
+                },
+                {
+                  "name": "R1762",
+                  "nodes": [
+                    "P_avss.n2",
+                    "P_avss.n16"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.1944474780900133
+                },
+                {
+                  "name": "R1752",
+                  "nodes": [
+                    "P_avss.n12",
+                    "P_avss.n1"
+                  ],
+                  "ohms": 4.52793,
+                  "unit_current_power_w": 0.061779203413104104
+                },
+                {
+                  "name": "R1746",
+                  "nodes": [
+                    "P_avss.n1",
+                    "P_avss.n10"
+                  ],
+                  "ohms": 2.30536,
+                  "unit_current_power_w": 0.0612557595004639
+                },
+                {
+                  "name": "R1753",
+                  "nodes": [
+                    "P_avss.n13",
+                    "P_avss.n11"
+                  ],
+                  "ohms": 4.5,
+                  "unit_current_power_w": 0.05141127385663959
+                },
+                {
+                  "name": "R1754",
+                  "nodes": [
+                    "P_avss.n14",
+                    "P_avss.n9"
+                  ],
+                  "ohms": 4.5,
+                  "unit_current_power_w": 0.04367579690253305
+                }
+              ]
+            },
+            "T004_rppd_2": {
+              "effective_ohms": 13.793902253997684,
+              "device_pins": [
+                {
+                  "device": "XD0004",
+                  "model": "rppd",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1739",
+                  "nodes": [
+                    "P_avss.n30",
+                    "T004_rppd_2"
+                  ],
+                  "ohms": 9.2926,
+                  "unit_current_power_w": 9.292600000000007
+                },
+                {
+                  "name": "R1712",
+                  "nodes": [
+                    "P_avss.n35",
+                    "P_avss.n18"
+                  ],
+                  "ohms": 3.51334,
+                  "unit_current_power_w": 3.513340000000579
+                },
+                {
+                  "name": "R1719",
+                  "nodes": [
+                    "P_avss.n18",
+                    "P_avss.n20"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.21031850065593607
+                },
+                {
+                  "name": "R1734",
+                  "nodes": [
+                    "P_avss.n20",
+                    "P_avss.n34"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.1944474780900133
+                },
+                {
+                  "name": "R1724",
+                  "nodes": [
+                    "P_avss.n30",
+                    "P_avss.n19"
+                  ],
+                  "ohms": 4.52793,
+                  "unit_current_power_w": 0.06177920341310276
+                },
+                {
+                  "name": "R1718",
+                  "nodes": [
+                    "P_avss.n19",
+                    "P_avss.n28"
+                  ],
+                  "ohms": 2.30536,
+                  "unit_current_power_w": 0.06125575950046955
+                },
+                {
+                  "name": "R1725",
+                  "nodes": [
+                    "P_avss.n31",
+                    "P_avss.n29"
+                  ],
+                  "ohms": 4.5,
+                  "unit_current_power_w": 0.05141127385663779
+                },
+                {
+                  "name": "R1726",
+                  "nodes": [
+                    "P_avss.n32",
+                    "P_avss.n27"
+                  ],
+                  "ohms": 4.5,
+                  "unit_current_power_w": 0.043675796902531296
+                }
+              ]
+            },
+            "T005_E": {
+              "effective_ohms": 4.86486393410961,
+              "device_pins": [
+                {
+                  "device": "XD0005",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1479",
+                  "nodes": [
+                    "P_avss.n178",
+                    "P_avss.n78"
+                  ],
+                  "ohms": 3.28664,
+                  "unit_current_power_w": 2.2535950614608184
+                },
+                {
+                  "name": "R1514",
+                  "nodes": [
+                    "P_avss.n102",
+                    "P_avss.n103"
+                  ],
+                  "ohms": 2.33381,
+                  "unit_current_power_w": 0.5294909245668579
+                },
+                {
+                  "name": "R1642",
+                  "nodes": [
+                    "P_avss.n101",
+                    "P_avss.n100"
+                  ],
+                  "ohms": 3.06218,
+                  "unit_current_power_w": 0.4770439054353781
+                },
+                {
+                  "name": "R1529",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n105"
+                  ],
+                  "ohms": 10.4742,
+                  "unit_current_power_w": 0.3096521255437802
+                },
+                {
+                  "name": "R1504",
+                  "nodes": [
+                    "P_avss.n100",
+                    "P_avss.n96"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.1497354138647658
+                },
+                {
+                  "name": "R1486",
+                  "nodes": [
+                    "P_avss.n78",
+                    "P_avss.n80"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.14421194119587535
+                },
+                {
+                  "name": "R1506",
+                  "nodes": [
+                    "P_avss.n80",
+                    "P_avss.n93"
+                  ],
+                  "ohms": 0.775695,
+                  "unit_current_power_w": 0.1333294417207583
+                },
+                {
+                  "name": "R1511",
+                  "nodes": [
+                    "P_avss.n94",
+                    "P_avss.n101"
+                  ],
+                  "ohms": 0.10711,
+                  "unit_current_power_w": 0.0734435676049314
+                }
+              ]
+            },
+            "T023_E": {
+              "effective_ohms": 5.78590586603483,
+              "device_pins": [
+                {
+                  "device": "XD0023",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1594",
+                  "nodes": [
+                    "P_avss.n36",
+                    "P_avss.n175"
+                  ],
+                  "ohms": 2.10978,
+                  "unit_current_power_w": 1.5334406582566802
+                },
+                {
+                  "name": "R1539",
+                  "nodes": [
+                    "P_avss.n176",
+                    "P_avss.n120"
+                  ],
+                  "ohms": 1.34666,
+                  "unit_current_power_w": 0.6769064154930976
+                },
+                {
+                  "name": "R1593",
+                  "nodes": [
+                    "P_avss.n175",
+                    "P_avss.n149"
+                  ],
+                  "ohms": 1.17686,
+                  "unit_current_power_w": 0.591555466218089
+                },
+                {
+                  "name": "R1637",
+                  "nodes": [
+                    "P_avss.n120",
+                    "P_avss.n119"
+                  ],
+                  "ohms": 2.98177,
+                  "unit_current_power_w": 0.5101821488375824
+                },
+                {
+                  "name": "R1639",
+                  "nodes": [
+                    "T023_E",
+                    "P_avss.n117"
+                  ],
+                  "ohms": 2.30638,
+                  "unit_current_power_w": 0.4877353531799434
+                },
+                {
+                  "name": "R1529",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n105"
+                  ],
+                  "ohms": 10.4742,
+                  "unit_current_power_w": 0.22775490478958
+                },
+                {
+                  "name": "R1536",
+                  "nodes": [
+                    "P_avss.n119",
+                    "P_avss.n116"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14401114505341364
+                },
+                {
+                  "name": "R1528",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n111"
+                  ],
+                  "ohms": 1.54055,
+                  "unit_current_power_w": 0.130471269897624
+                }
+              ]
+            },
+            "T024_E": {
+              "effective_ohms": 5.179600832339524,
+              "device_pins": [
+                {
+                  "device": "XD0024",
+                  "model": "npn13g2",
+                  "pin": 2
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1594",
+                  "nodes": [
+                    "P_avss.n36",
+                    "P_avss.n175"
+                  ],
+                  "ohms": 2.10978,
+                  "unit_current_power_w": 1.5343053947349188
+                },
+                {
+                  "name": "R1592",
+                  "nodes": [
+                    "P_avss.n175",
+                    "P_avss.n150"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 0.6139722712024092
+                },
+                {
+                  "name": "R1631",
+                  "nodes": [
+                    "T024_E",
+                    "P_avss.n173"
+                  ],
+                  "ohms": 2.31162,
+                  "unit_current_power_w": 0.527997125134184
+                },
+                {
+                  "name": "R1629",
+                  "nodes": [
+                    "P_avss.n167",
+                    "P_avss.n172"
+                  ],
+                  "ohms": 3.02209,
+                  "unit_current_power_w": 0.46963722541457265
+                },
+                {
+                  "name": "R1624",
+                  "nodes": [
+                    "P_avss.n166",
+                    "P_avss.n167"
+                  ],
+                  "ohms": 0.818891,
+                  "unit_current_power_w": 0.4570694246701632
+                },
+                {
+                  "name": "R1529",
+                  "nodes": [
+                    "P_avss.n108",
+                    "P_avss.n105"
+                  ],
+                  "ohms": 10.4742,
+                  "unit_current_power_w": 0.22701306398800716
+                },
+                {
+                  "name": "R1618",
+                  "nodes": [
+                    "P_avss.n172",
+                    "P_avss.n170"
+                  ],
+                  "ohms": 9.0,
+                  "unit_current_power_w": 0.14715083566817574
+                },
+                {
+                  "name": "R1601",
+                  "nodes": [
+                    "P_avss.n150",
+                    "P_avss.n152"
+                  ],
+                  "ohms": 0.881808,
+                  "unit_current_power_w": 0.11739066138508597
+                }
+              ]
+            }
+          },
+          "iref": {
+            "T005_B": {
+              "effective_ohms": 8.12167800970752,
+              "device_pins": [
+                {
+                  "device": "XD0005",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1075",
+                  "nodes": [
+                    "P_iref.n84",
+                    "P_iref.n83"
+                  ],
+                  "ohms": 3.73936,
+                  "unit_current_power_w": 3.7393600000002274
+                },
+                {
+                  "name": "R1105",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n96"
+                  ],
+                  "ohms": 0.769705,
+                  "unit_current_power_w": 0.7697050000000535
+                },
+                {
+                  "name": "R1108",
+                  "nodes": [
+                    "P_iref.n107",
+                    "P_iref.n105"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859321576196824
+                },
+                {
+                  "name": "R1115",
+                  "nodes": [
+                    "T005_B",
+                    "P_iref.n107"
+                  ],
+                  "ohms": 2.54167,
+                  "unit_current_power_w": 0.6275435766943103
+                },
+                {
+                  "name": "R1116",
+                  "nodes": [
+                    "P_iref.n110",
+                    "P_iref.n109"
+                  ],
+                  "ohms": 4.68675,
+                  "unit_current_power_w": 0.27671744181006425
+                },
+                {
+                  "name": "R1082",
+                  "nodes": [
+                    "P_iref.n86",
+                    "P_iref.n84"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723068307
+                },
+                {
+                  "name": "R1097",
+                  "nodes": [
+                    "P_iref.n100",
+                    "P_iref.n86"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113672392
+                },
+                {
+                  "name": "R1112",
+                  "nodes": [
+                    "P_iref.n101",
+                    "P_iref.n110"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170191021236134
+                }
+              ]
+            },
+            "T005_C": {
+              "effective_ohms": 8.786790307091424,
+              "device_pins": [
+                {
+                  "device": "XD0005",
+                  "model": "npn13g2",
+                  "pin": 0
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1119",
+                  "nodes": [
+                    "P_iref.n83",
+                    "P_iref.n56"
+                  ],
+                  "ohms": 3.70037,
+                  "unit_current_power_w": 3.700370000000371
+                },
+                {
+                  "name": "R1149",
+                  "nodes": [
+                    "P_iref.n68",
+                    "P_iref.n73"
+                  ],
+                  "ohms": 1.4737,
+                  "unit_current_power_w": 1.4737000000001597
+                },
+                {
+                  "name": "R1152",
+                  "nodes": [
+                    "P_iref.n77",
+                    "P_iref.n79"
+                  ],
+                  "ohms": 1.9485,
+                  "unit_current_power_w": 0.6859343798117908
+                },
+                {
+                  "name": "R1159",
+                  "nodes": [
+                    "P_iref.n79",
+                    "T005_C"
+                  ],
+                  "ohms": 2.54188,
+                  "unit_current_power_w": 0.6275963909419688
+                },
+                {
+                  "name": "R1160",
+                  "nodes": [
+                    "P_iref.n82",
+                    "P_iref.n81"
+                  ],
+                  "ohms": 4.68769,
+                  "unit_current_power_w": 0.276717613215562
+                },
+                {
+                  "name": "R1126",
+                  "nodes": [
+                    "P_iref.n56",
+                    "P_iref.n58"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.210083957230677
+                },
+                {
+                  "name": "R1141",
+                  "nodes": [
+                    "P_iref.n58",
+                    "P_iref.n72"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671062
+                },
+                {
+                  "name": "R1156",
+                  "nodes": [
+                    "P_iref.n73",
+                    "P_iref.n82"
+                  ],
+                  "ohms": 9.07347,
+                  "unit_current_power_w": 0.18170046093063247
+                }
+              ]
+            },
+            "T023_B": {
+              "effective_ohms": 9.854880623128818,
+              "device_pins": [
+                {
+                  "device": "XD0023",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1194",
+                  "nodes": [
+                    "P_iref.n40",
+                    "P_iref.n46"
+                  ],
+                  "ohms": 2.47427,
+                  "unit_current_power_w": 2.4742700000000437
+                },
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.472500000000063
+                },
+                {
+                  "name": "R1164",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n28"
+                  ],
+                  "ohms": 1.25366,
+                  "unit_current_power_w": 1.2536600000001004
+                },
+                {
+                  "name": "R1197",
+                  "nodes": [
+                    "P_iref.n50",
+                    "P_iref.n45"
+                  ],
+                  "ohms": 2.07224,
+                  "unit_current_power_w": 0.6732434047653885
+                },
+                {
+                  "name": "R1198",
+                  "nodes": [
+                    "P_iref.n45",
+                    "T023_B"
+                  ],
+                  "ohms": 2.54173,
+                  "unit_current_power_w": 0.6228622596553147
+                },
+                {
+                  "name": "R1206",
+                  "nodes": [
+                    "P_iref.n54",
+                    "P_iref.n53"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.2800932967709381
+                },
+                {
+                  "name": "R1202",
+                  "nodes": [
+                    "P_iref.n46",
+                    "P_iref.n54"
+                  ],
+                  "ohms": 9.07344,
+                  "unit_current_power_w": 0.21961147031872508
+                },
+                {
+                  "name": "R1172",
+                  "nodes": [
+                    "P_iref.n28",
+                    "P_iref.n30"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.21008395723067397
+                }
+              ]
+            },
+            "T024_B": {
+              "effective_ohms": 8.811340886918394,
+              "device_pins": [
+                {
+                  "device": "XD0024",
+                  "model": "npn13g2",
+                  "pin": 1
+                }
+              ],
+              "largest_power_edges": [
+                {
+                  "name": "R1165",
+                  "nodes": [
+                    "P_iref.n55",
+                    "P_iref.n27"
+                  ],
+                  "ohms": 2.4725,
+                  "unit_current_power_w": 2.4724999999999557
+                },
+                {
+                  "name": "R1238",
+                  "nodes": [
+                    "P_iref.n12",
+                    "P_iref.n17"
+                  ],
+                  "ohms": 1.71937,
+                  "unit_current_power_w": 1.7193700000000862
+                },
+                {
+                  "name": "R1163",
+                  "nodes": [
+                    "P_iref.n27",
+                    "P_iref.n0"
+                  ],
+                  "ohms": 1.1,
+                  "unit_current_power_w": 1.0999999999999353
+                },
+                {
+                  "name": "R1244",
+                  "nodes": [
+                    "P_iref.n21",
+                    "P_iref.n23"
+                  ],
+                  "ohms": 1.94846,
+                  "unit_current_power_w": 0.6859119428522806
+                },
+                {
+                  "name": "R1248",
+                  "nodes": [
+                    "P_iref.n23",
+                    "T024_B"
+                  ],
+                  "ohms": 2.54025,
+                  "unit_current_power_w": 0.6271859023100509
+                },
+                {
+                  "name": "R1249",
+                  "nodes": [
+                    "P_iref.n24",
+                    "P_iref.n25"
+                  ],
+                  "ohms": 4.68036,
+                  "unit_current_power_w": 0.27671533182272273
+                },
+                {
+                  "name": "R1215",
+                  "nodes": [
+                    "P_iref.n0",
+                    "P_iref.n2"
+                  ],
+                  "ohms": 0.881865,
+                  "unit_current_power_w": 0.2100839572306471
+                },
+                {
+                  "name": "R1230",
+                  "nodes": [
+                    "P_iref.n2",
+                    "P_iref.n16"
+                  ],
+                  "ohms": 0.779467,
+                  "unit_current_power_w": 0.19357371113671595
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "finding": "Tail return effective resistance fell4.938to4.551ohm and5.448to4.929ohm, but wave gates remain failed. avdd unchanged8.579/10.233ohm final and8.029/9.196ohm cascade14. Target real prestage supply geometry next, not another fixed bias offset."
+  },
+  "cascade14_supply_feed_candidate": {
+    "variant": "critical_buses_kelvin_supply_feed",
+    "status": "SOURCE_READY_REQUIRES_NATIVE_PHYSICAL_PROOF",
+    "adopted": false,
+    "change": "Retain cascade14 dense geometry; add8um TM2 feed at y=-10um joining actual avdd escape trunks,8um TM1 external riser x=-10um,TM2 bridge at actual avdd public-port Y and native TopVia2 connections. No device, port, rule, coefficient or gate changes."
   }
 }
