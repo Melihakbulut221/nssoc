@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T00:26:44.615114+00:00",
-  "turn_classification": "PROGRESS: realnativeCMOS/CMLnominalpoint passes alloriginalbit+selectedinput+device gates, then ten-conditioncampaign rejects PVT adoption; realnextarchitecture decision changed.",
+  "as_of": "2026-10-13T00:40:41.648690+00:00",
+  "turn_classification": "PROGRESS: actual61HBT64MOStwo-level4:1tree implemented and native captures completed; missing-rail review defect preserved and corrected in fresh hosted campaign. FullscopeOPEN.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "b3afd0259daa87083a54fa44f2634fe00e329a04",
+  "head": "cca6613b",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -215,7 +215,7 @@
   },
   "resume_snapshot": "docs/evidence/cloud-resume-state-20261013.json",
   "next_serial_prototype_requirements": {
-    "candidate": "Actual4:1CMLtree: two2:1prestages andexistingfinal2:1; CMOS data boundary becomes four2Gbpsstreams. Not yetimplemented.",
+    "candidate": "Implemented native61HBT64MOS4:1tree, actual prestage divider loading; no physical/PHY adoption. Failed first review retained; corrected capture run38328250971 follows oldrun completion.",
     "source_order": "PreA multiplexesbits0/2mod4, PreB bits1/3mod4; final interleavesA/B. Same256originalbits and768outputsampletimes.",
     "launch_contract": "PreA selectchanges125psbeforeevenfinalselections;PreB changes125psbeforeoddfinalselections. Each2Gbpsbank changesonlyduringitsunselectedprestagehalfcycle,250psbeforepreselection; preserve definedsourcebitordering.",
     "accounting": "Tentative61HBT(3x19mux+4TX) and64MOS(8nativefrontendchannels) beforeadditionalclock/biascircuits. Enumerateactualhierarchy, do notreuse23HBTfinalstageclaimforfulltree.",
@@ -247,13 +247,35 @@
     "pid": 4102991,
     "request_id": "final-migration-20261013",
     "current_snapshot_readback_run": 38327051743,
-    "snapshot_status": "IN_PROGRESS",
+    "snapshot_status": "PASS_223_BATCHES_252444_FILES_127609148362_LOGICAL_BYTES_238_HARDLINKS",
     "persistent_user_units": [
       "nssoc-cloud-output-transfer-20261012",
       "nssoc-cloud-pnr-transfer-20261013",
       "nssoc-cloud-migration-finalize-20261013"
     ],
     "restart_policy": "Persistent user unit files and default.target.wants links installed and systemd-analyze verified. Existing transfer PIDs 3817135/4035665 unchanged. Transient definitions remain active until shutdown; persistent versions resume frozen plans next user session. Finalizer uses file lock and durable unique hosted request; uncertain dispatch never blindly repeated.",
-    "scope": "Local transfer/cleanup and API orchestration only. Final full-byte reconstruction on GitHub after both selected file plans complete. Source checkout/tools and 32 historical source files retained; output cleanup not complete."
+    "scope": "Local transfer/cleanup and API orchestration only. Final full-byte reconstruction on GitHub after both selected file plans complete. Source checkout/tools and 32 historical source files retained; output cleanup not complete.",
+    "snapshot_evidence": "docs/evidence/cloud-output-pnr-restore-20261013.json"
+  },
+  "serial_tree_campaign": {
+    "source_head": "cca6613b",
+    "run": 38328250971,
+    "status": "PENDING_AFTER_OLD_CAPTURE",
+    "prior_run": 38328009752,
+    "prior_failure": "Native captures return0 without numerical diagnostics; review KeyError(v(avdd)) due resistor-fed rails absent from saved transistor-pin vectors. Full original waves preserved in hosted archives; no electrical conclusion.",
+    "fix": "Explicitly save avdd/tvdd/dvdd in addition to every HBT/MOS terminal and all HBT currents. Regression control added. No transistor, source phase, voltage limit or output oracle change.",
+    "cases": [
+      "nominal",
+      "quarter_step",
+      "hot_low",
+      "cold_high",
+      "swap_pre_a_select",
+      "disable_pre_b_bias"
+    ],
+    "source_files": [
+      "scripts/run_cloud_tx_mux4.py",
+      "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice",
+      "sw/tests/test_cloud_tx_mux4.py"
+    ]
   }
 }

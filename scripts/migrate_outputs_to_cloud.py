@@ -46,6 +46,34 @@ def safe(path):
             and not path.resolve().is_relative_to(STATE))
 
 
+
+def remove_verified_output(path, expected_sha256):
+    """Delete exact archived content; preserve read-only parent permissions.
+
+    Called only after the remote archive and restore manifest are verified.
+    Never broad chmod, follow an external parent, or touch source/tool scopes.
+    """
+    if not safe(path) or digest(path) != expected_sha256:
+        raise RuntimeError('Changed or unsafe output before deletion: ' + str(path))
+    try:
+        path.unlink()
+    except PermissionError:
+        parent = path.parent
+        st = parent.stat()
+        old_mode = st.st_mode & 0o7777
+        if (parent.is_symlink() or not parent.resolve().is_relative_to(BASE)
+                or st.st_uid != os.getuid() or old_mode & 0o200):
+            raise
+        parent.chmod(old_mode | 0o200)
+        try:
+            # Recheck after the narrowly scoped permission change as well.
+            if not safe(path) or digest(path) != expected_sha256:
+                raise RuntimeError('Changed output during permission repair: ' + str(path))
+            path.unlink()
+        finally:
+            parent.chmod(old_mode)
+
+
 def release(tag):
     found = subprocess.run(['gh', 'release', 'view', tag, '-R', REPO],
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -148,7 +176,7 @@ def main():
                     if safe(path):
                         if digest(path) != record['sha256']:
                             raise RuntimeError('Changed original during resume')
-                        path.unlink()
+                        remove_verified_output(path, record['sha256'])
                         progress['removed_bytes'] += record['bytes']
             index = saved['source_index'][1]
             progress.update(status='RUNNING', next_index=index, batch=progress['batch'] + 1)
@@ -228,7 +256,7 @@ def main():
         if args.apply:
             for path, record in zip(selected, records):
                 if safe(path) and digest(path) == record['sha256']:
-                    path.unlink()
+                    remove_verified_output(path, record['sha256'])
                     progress['removed_bytes'] += record['bytes']
         progress.update(status='RUNNING', next_index=index, batch=batch + 1)
         atomic(progresspath, progress)

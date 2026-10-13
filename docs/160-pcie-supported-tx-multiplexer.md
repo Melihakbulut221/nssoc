@@ -472,3 +472,45 @@ specifies the grid origin in database units; each run converts and prints
 its requested origin. Congestion remains an error. Failed partial databases
 and guides are diagnostic records, not completed routes. Native logs are
 also streamed so future long runs expose stage progress as it occurs.
+
+The first actual two-level four-to-one schematic is implemented by
+`hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice` and
+`scripts/run_cloud_tx_mux4.py`. Two first-stage HBT muxes drive the final
+mux data bases directly, including their native loading. Their output
+pull-down resistor length is 9.0 um instead of 4.5 um; the other 19 HBTs
+and eight-resistor topology are retained. This changes the physical divider
+network intended to supply the next mux's higher data common mode. There
+is no ideal voltage translation, gain or delay between these stages.
+
+Four 2 Gb/s CMOS input streams carry bits 0, 1, 2 and 3 modulo four.
+Prestage A selects streams 0/2 and B selects 1/3; the final mux interleaves
+A/B at 8 GT/s. The external A/B prestage clocks select each next input
+125 ps before its final selection. Each CMOS stream changes while its
+prestage input is unselected, 250 ps before its next prestage selection.
+These launch phases are explicit external source requirements, not yet
+an implemented upstream CMOS serializer or clock-distribution circuit.
+All 256 original bits are still checked at 0.3, 0.5 and 0.7 UI, without
+fitting output delay or deriving expectations from delayed internal inputs.
+
+Device accounting expands to all 61 HBTs and 64 MOS transistors in the
+actual instantiated tree. Every HBT's native startup flag is read back;
+zero-source operating point, complete waveform coverage, rail ramps,
+whole-capture upper voltage/current bounds and post-startup VCE minimum
+remain mandatory. The original 100 mV output gate and 150 mV selected-input
+gates remain unchanged. The 1.32/2.75 V MOS limits are engineering screens,
+not a foundry reliability qualification. The final-stage 54-device layout
+proof does not cover either new prestage or any CMOS frontend layout.
+
+Hosted run 38328009752 exposed a measurement implementation error: rails
+connected through resistors were absent from the saved transistor-terminal
+vector set. Completed native captures had no numerical diagnostics, but
+review raised `KeyError('v(avdd)')`; this run proves neither a passing nor a
+failing electrical candidate. Its source-bound complete captures remain
+published. Commit `cca6613b` explicitly saves all three rails and adds a
+regression control for this omission. Run 38328250971 repeats the actual
+capture with the corrected measurement contract; it does not fabricate
+missing samples or reinterpret the earlier run as passing. The campaign
+contains nominal, half-step, hot/low and cold/high cases and two actual
+circuit faults (swapped prestage-A select and disabled prestage-B bias).
+Full PHY, clock/bias integration, new layout/extraction and PVT acceptance
+remain open pending measured results.

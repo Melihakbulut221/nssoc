@@ -117,3 +117,43 @@ def test_pnr_scope_refuses_tracked_sources(tmp_path):
             patch.object(sys, 'argv', ['migrate', '--scope', 'pnr-runs', '--apply']):
         with pytest.raises(RuntimeError, match='tracked sources'):
             m.main()
+
+
+def test_archived_readonly_output_deletion_restores_parent_mode(tmp_path):
+    m=load(tmp_path)
+    directory=m.BASE/'frozen'
+    directory.mkdir()
+    source=directory/'capture.dat'
+    source.write_bytes(b'original native capture')
+    source.chmod(0o444)
+    directory.chmod(0o555)
+    try:
+        m.remove_verified_output(source,m.digest(source))
+        assert not source.exists()
+        assert directory.stat().st_mode & 0o777 == 0o555
+    finally:
+        directory.chmod(0o755)
+
+
+def test_changed_readonly_output_keeps_data_and_permissions(tmp_path):
+    m=load(tmp_path)
+    directory=m.BASE/'frozen'
+    directory.mkdir()
+    source=directory/'capture.dat'
+    source.write_bytes(b'changed native capture')
+    directory.chmod(0o555)
+    try:
+        with pytest.raises(RuntimeError,match='Changed or unsafe'):
+            m.remove_verified_output(source,'not-the-current-hash')
+        assert source.exists() and directory.stat().st_mode & 0o777 == 0o555
+    finally:
+        directory.chmod(0o755)
+
+
+def test_permission_repair_never_expands_scope(tmp_path):
+    m=load(tmp_path)
+    source=tmp_path/'source.v'
+    source.write_text('unique source')
+    with pytest.raises(RuntimeError,match='unsafe'):
+        m.remove_verified_output(source,m.digest(source))
+    assert source.read_text()=='unique source'
