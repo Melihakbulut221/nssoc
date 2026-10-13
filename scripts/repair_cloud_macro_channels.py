@@ -74,6 +74,7 @@ def prepare():
     instances={i.getName():i for i in block.getInsts()}
     seen={p['instance']:p for net in d['all_congested_net_endpoints'].values() for p in net['terminals']}
     selected={}
+    eligible_before_clock=[]
     requested_profile=os.environ['NSSOC_PLACEMENT_PROFILE']
     include_data_buffers=requested_profile=='local_optimize_buffers'
     for name,p in seen.items():
@@ -85,6 +86,7 @@ def prepare():
         upper_y=1750 if include_data_buffers else 1700
         if not(eligible and not p['macro'] and actual[0]>=2340 and 1180<=actual[1]<=upper_y):
             continue
+        eligible_before_clock.append(name)
         if include_data_buffers and any(t.getNet() and
                (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
                for t in inst.getITerms()):
@@ -96,9 +98,13 @@ def prepare():
             continue
         assert str(inst.getPlacementStatus())=='PLACED',name
         selected[name]=inst
-    assert 0<len(selected)<=932
+    # Exact spatial/master envelope from the frozen diagnosis, before native
+    # clock-connectivity exclusion. The old932bound described ABC-only cells.
+    expected_envelope=1563 if include_data_buffers else 932
+    assert len(eligible_before_clock)==expected_envelope
+    assert 0<len(selected)<=expected_envelope
     before=dict(connectivity_sha256=signature(block),source_odb_sha256=source_sha,original_odb_sha256=SOURCE_SHA,
-        selected=sorted(selected),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
+        selected=sorted(selected),eligible_before_clock_count=len(eligible_before_clock),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
         instances={n:dict(position=position(i),status=str(i.getPlacementStatus())) for n,i in instances.items()})
     profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize','local_optimize_buffers')
     xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.),'local_optimize_buffers':(0.,0.)}[profile]
@@ -150,7 +156,7 @@ def verify():
         profile=before['profile'],source_odb_sha256=before['source_odb_sha256'],
         original_odb_sha256=before.get('original_odb_sha256',SOURCE_SHA),output_odb_sha256=sha(path),
         connectivity_sha256=before['connectivity_sha256'],instances=len(actual),
-        selected_count=len(before['selected']),changed_count=len(changed),changed=changed,
+        selected_count=len(before['selected']),eligible_before_clock_count=before['eligible_before_clock_count'],changed_count=len(changed),changed=changed,
         native_fault_controls=['unselected_cell_displacement_rejected','disconnected_cell_pin_rejected'])
     (OUT/'placement-repair.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k!='changed'}),flush=True)

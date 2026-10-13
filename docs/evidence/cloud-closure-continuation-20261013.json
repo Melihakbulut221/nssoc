@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T08:41:55.446266+00:00",
+  "as_of": "2026-10-13T08:45:46.041154+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -955,6 +955,15 @@
     "hypothesis": "Native reserved-route diagnosis binds repeated standard-cell buffer nets crossing SRAM banks4/5. Prior local DPO selected only ABC cells and froze these buffer endpoints. Expand exact baseline endpoint selection to data buf/inv cells throughY1750um; preserve every clock-connected cell, all macros, all unselectedpositions, allcellmastersandconnectivity.",
     "acceptance": "Same two native corruption controls, legal placement, allgroupSTA then fresh uncongested native global route required. No routing capacity, SDC, LEF obstruction or timing criterion relaxation. New candidate uses20provenGMIIholdcells and no regressedM5reservation.",
     "run": 38370485282,
-    "status": "RUNNING"
+    "status": "FIRST_PREPARE_REJECTED_OLD_SELECTION_ENVELOPE_CORRECTED_FROM_EXACT_DIAGNOSIS",
+    "first_failed_run": 38370485282,
+    "old_abc_only_envelope": 932,
+    "new_envelope_before_clock_exclusion": 1563,
+    "non_abc_data_buffer_or_inverter_candidates": 574,
+    "correction": "Require exact1563eligibleinstances from frozenendpointdiagnosis before nativeclockexclusion; retain oldexact932envelope for baselineprofiles. Geometry, connectivity, clockprotection and timing/routingcriteria unchanged."
+  },
+  "dense_wide_physical": {
+    "run": 38371051654,
+    "status": "DISPATCHED_REQUIRES_NATIVE_GATES"
   }
 }
