@@ -402,3 +402,14 @@ Before repeating a static per-class credit-write optimization, inspect prior
 pcie-fc-static-commit-20261012 results: its earlier formal proof exists, while
 older published receipts still described mapping work as active. Preserve
 source/profile separation and all earlier failed audits.
+
+
+Layout38468734943 completed PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS:
+560DRC categories/zero markers,strict hierarchical/flat54device LVS andnative
+fault controls passed. Summary638274567 SHA
+86294df2695187b9548944e791d62d87c07b8038d682d9c8542db3fd38d58764.
+Archive638274392,394008bytes,SHA
+f10c0dea2b1b85c4f042442d0d0bfb434933e8a7fd8dd0be4a1f21c2a8360fd6.
+Exact geometry is now pinned in pcie-tx-cloud-extraction-input-20261013.json
+under final_drive_v8 /critical_buses_kelvin_low_selects_m3. Next extraction
+uses that profile; there is still no new RC/electrical or fullPHY acceptance.
