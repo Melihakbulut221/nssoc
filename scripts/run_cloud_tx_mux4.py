@@ -162,7 +162,7 @@ def build(inputs, condition, fault='none'):
             stimulus = pwl([int(i % 2 == 0) for i in range(BITS)], 1.23, .08, period, origin, invert)
             lines += [f'V{key} {key}0 0 '+stimulus, f'R{key} {key}0 {key} 25']
     lines += ['RLOAD op on 100','COP op 0 100f','CON on 0 100f']
-    nodes = {n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} - {'0'}
+    nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
     vectors += ['@q.'+n+'.qnpn13g2[ic]' for n in hbt]
     assert len(vectors) == len(set(vectors))

@@ -64,3 +64,28 @@ def test_all_native_pre_stage_devices_and_reference_are_bound():
     assert devices['xprea.xap_0']['terminals'][1]=='d0p'
     assert all(row['nx'] in (1,8) for row in devices.values())
     assert all(n.startswith('xprea.') for n in devices)
+
+
+def test_full_tree_capture_also_saves_rails_connected_only_through_resistors(tmp_path):
+    # Native rail avdd feeds resistors, so enumerating transistor pins alone
+    # misses it. tvdd is similarly absent from the TX HBT terminal set.
+    inputs=tmp_path
+    (inputs/'frontend').mkdir()
+    (inputs/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (inputs/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos w=4.44u l=130n
+XN0 X net1 VSS VSS sg13_lv_nmos w=11.84u l=130n
+XP1 X net1 VDD VDD sg13_lv_pmos w=17.92u l=130n
+XP0 net1 A VDD VDD sg13_lv_pmos w=6.72u l=130n
+.ends
+''')
+    deck,contract=mux4.build(inputs,'nominal')
+    assert len(contract['hbt'])==61 and len(contract['mos'])==64
+    assert set(contract['rails'])=={'avdd','tvdd','dvdd'}
+    for name in contract['rails']:
+        vector='v('+name+')'
+        assert vector in contract['vectors']
+        for prefix in ('save ', 'wrdata op.dat ', 'wrdata wave.dat '):
+            row=next(line for line in deck.splitlines() if line.startswith(prefix))
+            assert vector in row.split()
