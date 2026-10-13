@@ -101,6 +101,19 @@ pass; the 1.795959 V common-mode minimum and four selector VCE minima
 (0.389535–0.391603 V) fail unchanged limits. The compact control passes.
 Wider power metal alone did not close the loaded electrical gates.
 
+The [final v5 physical layout](evidence/pcie-final-v5-physical-20261013.json)
+now passes all 560 native DRC categories, strict hierarchical and flattened
+54-device transistor LVS, and five physical fault controls. Eighteen hosted
+source tests bind its 19 HBTs, eight resistors and 27 separate substrate contacts
+to the screened v5 circuit, including an independent check of the generated
+reference. The first two layouts failed actual LVS: one shorted an internal
+emitter node to supply; the next aligned signal and substrate trunks. Their
+failures remain archived. A 38.4 micrometer resistor bank pitch separates both
+accesses and trunks. Its [fresh extraction](evidence/pcie-final-v5-extraction-20261013.json) passed
+the native graph audit and thirteen raw corruption controls. Model composition
+is next; this macro has no extracted waveform, assembled serializer or
+main-chip acceptance yet.
+
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
 rejection. Two real delay cells per output improve the fast-corner placement

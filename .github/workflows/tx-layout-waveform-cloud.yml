@@ -7,7 +7,7 @@ on:
       circuit_profile:
         description: Exact physical circuit to bind
         type: choice
-        options: [baseline, cascade14]
+        options: [baseline, cascade14, final_drive_v5]
         default: baseline
       variant:
         description: Source-bound routing geometry
@@ -73,7 +73,7 @@ jobs:
           cp cloud-tx-layout-composition/result.json "$summary"
           python3 scripts/publish_cloud_results.py --group 'compose-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
   native-transient:
-    if: ${{ !inputs.compose_only && inputs.circuit_profile != 'cascade14' }}
+    if: ${{ !inputs.compose_only && (inputs.circuit_profile == 'baseline' || inputs.circuit_profile == '') }}
     needs: composition
     runs-on: ubuntu-24.04
     timeout-minutes: 360
