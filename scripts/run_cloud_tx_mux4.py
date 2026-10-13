@@ -429,6 +429,13 @@ def main():
         if args.prestage.startswith('physical_'):
             assert args.final_drive in ('double_taps_guard','double_taps_margin')
             PRE=physical_prestage(inputs,args.prestage)
+            result['physical_prestage_scope']=dict(mode=args.prestage,instances=args.streams-2,
+                native_devices_per_instance=54,substrate_contacts_per_instance=27,
+                metal_resistors_per_instance=173 if args.prestage=='physical_wire' else 0,
+                metal_capacitors_per_instance=270 if args.prestage=='physical_wire' else 0,
+                source='docs/evidence/pcie-cascade14-composition-20261013.json',
+                intermacro_connections_ideal=True,assembled_tree_gds=False,
+                qualified_substrate_resistance=False,qualified_rf_distribution=False)
         result['output_bias']=args.output_bias
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams)
         (run/'bench.cir').write_text(deck)
