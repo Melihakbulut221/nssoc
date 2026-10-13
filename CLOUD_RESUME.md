@@ -99,7 +99,12 @@ It inherits localreturn/supply/tailgeometry andall54devices unchanged.
 Native DRC/strictLVS/physicalfaults run **38421020866** onb93f626c
 passed; summarySHA4f595f2018ed2e7c380cb1495fb23d661370185bd09e7d8a4059fbe4318612b3.
 The407594byte physical archiveSHA8c389ea1e016eb090f2d3c760aebc53731ea7cdb10cf42a78a755dc74a4d2754
-is bound for fresh native RC extraction. Electrical acceptance remains unproven.
+is bound for fresh native RC extraction **38421789099** on5ebf5c2b.
+Physical report confirms560DRC categories/zero markers andstrict54device
+hierarchical/flatLVS plusfivefaultcontrols. Electrical acceptance remains unproven.
+Next: inspect that exact extraction andits13corruptioncontrols; onlythenbind
+its archive fornativecomposition andmatched loadedPVT. Do not repeat layout.
+Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 
