@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T08:33:46.081226+00:00",
+  "as_of": "2026-10-13T08:37:05.112041+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -930,6 +930,16 @@
     "jobs": [
       115091737235,
       115091737424
-    ]
+    ],
+    "verified_reason": "Both GitHub job annotations explicitly state maximum execution time of6h0m0s exceeded. Not a routing result; do not repeat these timing-rejected broad placements."
+  },
+  "dense4_physical": {
+    "run": 38370105586,
+    "status": "DISPATCHED_REQUIRES_NATIVE_GATES"
+  },
+  "targeted_buffer_placement": {
+    "profile": "local_optimize_buffers",
+    "hypothesis": "Native reserved-route diagnosis binds repeated standard-cell buffer nets crossing SRAM banks4/5. Prior local DPO selected only ABC cells and froze these buffer endpoints. Expand exact baseline endpoint selection to data buf/inv cells throughY1750um; preserve every clock-connected cell, all macros, all unselectedpositions, allcellmastersandconnectivity.",
+    "acceptance": "Same two native corruption controls, legal placement, allgroupSTA then fresh uncongested native global route required. No routing capacity, SDC, LEF obstruction or timing criterion relaxation. New candidate uses20provenGMIIholdcells and no regressedM5reservation."
   }
 }

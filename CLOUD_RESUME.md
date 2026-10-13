@@ -65,8 +65,11 @@ acceptance.
   108 to 94). Exact failure ODB and marker hashes are preserved in
   `cloud-reserved-m5-route-failure-20261013.json`; use congestion probe
   profile `reserved_m5` to diagnose it. Broader placement run `38334595459`
-  is diagnostic.
-  Inspect the live outcomes; do not cancel healthy jobs based on age.
+  is terminal: both jobs exceeded the six-hour hosted limit, verified in job
+  annotations. No route acceptance; do not repeat these broad placements.
+  A targeted `local_optimize_buffers` candidate expands the local endpoint
+  selection to data buffers/inverters while preserving all clock cells and
+  unchanged logical/physical invariants. Inspect the current checkpoint.
 - Combined via-array loaded tree `38360782776`: compact control passed; wire
   case rejected with 69 wrong signs, all 128 early samples below 100 mV, and
   six HBT minimum-VCE failures. All interface amplitude/common-mode gates

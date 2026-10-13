@@ -74,12 +74,21 @@ def prepare():
     instances={i.getName():i for i in block.getInsts()}
     seen={p['instance']:p for net in d['all_congested_net_endpoints'].values() for p in net['terminals']}
     selected={}
+    requested_profile=os.environ['NSSOC_PLACEMENT_PROFILE']
+    include_data_buffers=requested_profile=='local_optimize_buffers'
     for name,p in seen.items():
         inst=instances[name];b=inst.getBBox()
         actual=[v/scale for v in (b.xMin(),b.yMin(),b.xMax(),b.yMax())]
         assert actual==p['bbox_um'] and inst.getMaster().getName()==p['master']
-        if not(name.startswith('$abc$') and not p['macro'] and actual[0]>=2340 and 1180<=actual[1]<=1700):
+        eligible=name.startswith('$abc$') or (include_data_buffers and
+            p['master'].startswith(('sg13g2_buf_','sg13g2_inv_')))
+        upper_y=1750 if include_data_buffers else 1700
+        if not(eligible and not p['macro'] and actual[0]>=2340 and 1180<=actual[1]<=upper_y):
             continue
+        if include_data_buffers and any(t.getNet() and
+               (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
+               for t in inst.getITerms()):
+            continue  # Preserve every clock-connected cell, including clock buffers.
         # Guard against mapped combinational clock gating despite its ABC name.
         if any(str(t.getIoType())=='OUTPUT' and t.getNet() and
                (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
@@ -91,13 +100,13 @@ def prepare():
     before=dict(connectivity_sha256=signature(block),source_odb_sha256=source_sha,original_odb_sha256=SOURCE_SHA,
         selected=sorted(selected),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
         instances={n:dict(position=position(i),status=str(i.getPlacementStatus())) for n,i in instances.items()})
-    profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize')
-    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.)}[profile]
+    profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize','local_optimize_buffers')
+    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.),'local_optimize_buffers':(0.,0.)}[profile]
     for name,inst in instances.items():
         if name not in selected:
             if str(inst.getPlacementStatus())=='PLACED':inst.setPlacementStatus('FIRM')
         else:
-            if profile=='local_optimize':
+            if profile in ('local_optimize','local_optimize_buffers'):
                 continue  # Native DPO starts from the exact original positions.
             x,y=inst.getLocation()
             fraction=(x/scale-2340.)/(3266.4-2340.)

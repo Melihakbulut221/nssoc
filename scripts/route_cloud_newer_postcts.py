@@ -48,7 +48,7 @@ def execute(script, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
-    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize'], default='none')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5'], default='baseline')
     args = parser.parse_args()
@@ -168,7 +168,7 @@ def main():
                         stdout=log,stderr=subprocess.STDOUT)
                 assert code==0,(mode,code,(OUT/f'placement-{mode}.log').read_text()[-6000:])
             native_placement('prepare')
-            placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile=='local_optimize'
+            placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile in ('local_optimize','local_optimize_buffers')
                                else 'detailed_placement -max_displacement {200 100}')
             execute(f'read_db {{{OUT/"proposed-placement.odb"}}}\n'
                     f'set_thread_count 2\n{placement_command}\n'
