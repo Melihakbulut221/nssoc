@@ -66,12 +66,15 @@ acceptance.
 - Dense final MUX: native physical run `38362060912` passed DRC, strict LVS and
   five fault controls. Native extraction `38362407566` passed graph checks and
   13 corruption controls, producing **2875 R / 1986 C**. Exact composition
-  `38364385250` passed, retaining 54 native devices. These checks require the
-  new loaded-tree waveform comparison; they do not adopt the candidate.
+  `38364385250` passed, retaining 54 native devices. Loaded-tree run `38365522474` completed: compact passed; wire rejected.
+  Wrong signs fell to zero, but 128 early samples remain below 100 mV
+  (minimum 4.927 mV), and four HBT minimum-VCE gates fail. Both interface
+  gates pass. The candidate is not adopted.
 - Use `tx-tree-physical-cloud.yml` with `streams=4`,
   `physical_profile=power_trunks_vias`, `physical_final=matched`,
   `physical_final_profile=kelvin_dense`. Discover an existing run before
-  dispatching. Each compact/wire job publishes complete immutable captures.
+  dispatching. Run `38365522474` is the completed nominal comparison; do
+  not duplicate it. Each compact/wire job publishes complete immutable captures.
 
 Persist meaningful source fixes and evidence to the same branch; use release
 assets for large results. Do not download bulk CAD results onto this computer.

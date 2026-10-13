@@ -90,11 +90,13 @@ def remove_original(row):
     return True
 
 
-def transfer_batch(batch, rows):
+def transfer_batch(batch, rows, prefix='transients'):
+    if prefix not in ('transients', 'checkout'):
+        raise ValueError('Unsupported immutable archive prefix')
     selected = rows
-    archive = STATE / f'transients-{batch:03d}.tar.gz'
-    remote = STATE / f'transients-{batch:03d}.readback.tar.gz'
-    receiptfile = STATE / f'transients-{batch:03d}.receipt.json'
+    archive = STATE / f'{prefix}-{batch:03d}.tar.gz'
+    remote = STATE / f'{prefix}-{batch:03d}.readback.tar.gz'
+    receiptfile = STATE / f'{prefix}-{batch:03d}.receipt.json'
     if not receiptfile.exists():
         if not archive.exists():
             temporary = archive.with_suffix('.tmp')
@@ -110,11 +112,11 @@ def transfer_batch(batch, rows):
         verify_archive(archive, selected)
         atomic(receiptfile, publish(archive, TAG))
     receipt = json.loads(receiptfile.read_text())
-    manifest = STATE / f'transients-{batch:03d}.manifest.json'
+    manifest = STATE / f'{prefix}-{batch:03d}.manifest.json'
     atomic(manifest, dict(receipt=receipt, entries=selected))
     manifest_receipt = publish(manifest, TAG)
     from cloud_archive_readback import wait_verified_readback
-    proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'transients-{batch:03d}.hosted.json')
+    proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'{prefix}-{batch:03d}.hosted.json')
     # The complete restore manifest is durable before any deletion.
     for row in selected:
         remove_original(row)

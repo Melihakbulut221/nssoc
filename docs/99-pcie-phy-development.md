@@ -493,3 +493,11 @@ loaded-tree comparison against the verified via-array prestages is required.
 All CAD and tests now run on GitHub-hosted runners. See `CLOUD_RESUME.md` for
 cloud preservation and local checkout retirement; neither operation closes
 full serial PHY, main-chip routing or final timing.
+
+Dense geometry loaded-tree run 38365522474 completed in the cloud. Compact
+controls pass; the wire case remains rejected. Wrong signs fall from 69 to
+zero, but all 128 early transition samples remain below 100 mV (minimum
+4.927 mV). Four HBTs miss minimum VCE: xd0009, xd0010, xd0021 and xd0022,
+with minima 0.385784, 0.389226, 0.390086 and 0.384941 V. Both interface gates
+pass, including final amplitude 161.010 mV. This is progress in a component
+study, not closure of the full serial PHY or its parasitic qualification.

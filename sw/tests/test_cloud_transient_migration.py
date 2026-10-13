@@ -117,7 +117,7 @@ def test_independent_batches_keep_failed_original_and_resume(scope, monkeypatch)
         return dict(status='PASS')
     monkeypatch.setattr(hosted, 'wait_verified_readback', proof)
     with ThreadPoolExecutor(max_workers=3) as pool:
-        futures = [pool.submit(m.transfer_batch, i, [r]) for i, r in enumerate(rows)]
+        futures = [pool.submit(m.transfer_batch, i, [r], 'checkout' if i == 2 else 'transients') for i, r in enumerate(rows)]
         assert futures[0].result()['entries'] == 1
         with pytest.raises(ValueError, match='hosted proof failed'):
             futures[1].result()
@@ -126,5 +126,5 @@ def test_independent_batches_keep_failed_original_and_resume(scope, monkeypatch)
     fail[0] = False
     # Simulate ordered progress lost after another worker already finished.
     m.transfer_batch(1, [rows[1]])
-    m.transfer_batch(2, [rows[2]])
+    m.transfer_batch(2, [rows[2]], 'checkout')
     assert not any(p.exists() for p in paths)

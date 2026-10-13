@@ -104,38 +104,16 @@ def main():
         batches.append(current)
     statefile = STATE / 'retirement-progress.json'
     state = json.loads(statefile.read_text()) if statefile.exists() else dict(status='RUNNING', batches=[], inventory=inventory_receipt)
-    for i, rows in enumerate(batches):
-        if i < len(state['batches']):
-            continue
-        archive = STATE / f'checkout-{i:03d}.tar.gz'
-        downloaded = STATE / f'checkout-{i:03d}.readback.tar.gz'
-        receiptfile = STATE / f'checkout-{i:03d}.receipt.json'
-        if not receiptfile.exists():
-            if not archive.exists():
-                temporary = archive.with_suffix('.tmp')
-                with tarfile.open(temporary, 'w:gz', compresslevel=1, dereference=False) as packed:
-                    for row in rows:
-                        path = Path(row['path'])
-                        if transfer.record(path) != row:
-                            raise RuntimeError('Changed checkout file before packaging')
-                        packed.inodes.clear()
-                        packed.add(path, arcname=row['member'], recursive=False)
-                temporary.replace(archive)
-            transfer.verify_archive(archive, rows)
-            atomic(receiptfile, publish(archive, TAG))
-        receipt = json.loads(receiptfile.read_text())
-        manifest = STATE / f'checkout-{i:03d}.manifest.json'
-        atomic(manifest, dict(receipt=receipt, entries=rows))
-        manifest_receipt = publish(manifest, TAG)
-        from cloud_archive_readback import wait_verified_readback
-        proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'checkout-{i:03d}.hosted.json')
-        for row in rows:
-            transfer.remove_original(row)
-        state['batches'].append(dict(archive=receipt, manifest=manifest_receipt, hosted_proof=proof, files=len(rows), logical_bytes=sum(r.get('bytes', 0) for r in rows)))
-        atomic(statefile, state)
-        archive.unlink(missing_ok=True)
-        downloaded.unlink(missing_ok=True)
-        print(json.dumps(dict(batch=i, total_batches=len(batches))), flush=True)
+    # Reuse the same independently tested, per-manifest hosted deletion gate.
+    from concurrent.futures import ThreadPoolExecutor
+    transfer.STATE, transfer.TAG = STATE, TAG
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        pending = [(i, pool.submit(transfer.transfer_batch, i, rows, 'checkout'))
+                   for i, rows in enumerate(batches) if i >= len(state['batches'])]
+        for i, future in pending:
+            state['batches'].append(future.result())
+            atomic(statefile, state)
+            print(json.dumps(dict(batch=i, total_batches=len(batches))), flush=True)
     for directory, dirs, files in os.walk(ROOT, topdown=False, followlinks=False):
         if Path(directory) == ROOT:
             continue
