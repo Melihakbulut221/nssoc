@@ -37,32 +37,30 @@ remain OPEN.** All CAD/tests run in GitHub. The local workspace is empty.
   next circuit or geometry candidate. Full32:1, actual clocks/CDR, RF/body/ESD
   and assembled serial PHY remain unproven. All work stays cloud-only.
 
-### Current loaded comparison — local return and native clock reference
+### Latest completed loaded comparison — neither candidate accepted
 
-Local-return finalv8 now has a complete source-bound physical chain:
-**38406919993** native DRC560/0markers, strict hierarchical/flat54deviceLVS
-and5faultcontrols; **38407758550** native4038R/2663C and13corruptioncontrols;
-**38408254672** exact54device composition. Failed first geometry38406101139
-and its exact two M4/M5 markers remain preserved. No electrical acceptance.
+Local-return finalv8 physical chain passed:38406919993 nativeDRC560/0,
+strict hierarchical/flat54deviceLVS and5faultcontrols;38407758550 native
+4038R/2663C and13controls;38408254672 exact54device composition.
+First failed geometry38406101139 and its two M4/M5 markers are preserved.
 
-- Baseline clock, local-return finalv8 + cascade14 dense prestage:
-  **38408821480** nominal / **38408827819** hot-cold, source16378481.
-  Published hot wire still fails14wrong signs/128low margins,two tailVCE
-  minima372.080/368.592mV andinputCM1.758..1.801V. Keep rejected result.
-- Native clock-offset candidate: **38409336938** nominal /
-  **38409346107** hot-cold, sourcee10823cb. Only native XOFFSET resistor
-  length6.5to7.5um changes; width, loaded nativefeed, bits, clockphases and
-  every limit are unchanged. First compact hot result passes all original
-  gates with228.829mV minimum. Other actual wire/PVT results must be checked.
-  The changed clock reference is still schematic and requires its own
-  physical integration/PEX if electrical evidence supports it.
-- All six new source-bit/model regression steps passed; checks38409350848
-  are tracked in JSON. Do not duplicate these studies. Inspect each exact
-  summary and full gate failures, not green Actions. No adoption pending PVT.
+- Baseline clock38408821480/38408827819 completed: nominal andcold wire
+  pass, but hot wire fails14wrong signs/128low samples,two tailVCE minima
+  372.080/368.592mV and final-inputCM1.758..1.801V. Rejected.
+- Native XOFFSET length6.5to7.5um38409336938/38409346107: all three compact
+  conditions pass. Wire hot removes HBT violations but fails22wrong signs,
+  128low samples andinputCM. Nominal/cold wire each fail four selectorVCE
+  limits (worst386.357mV/379.879mV). Rejected. No physical clock-reference
+  integration claimed. Bits, clockphases and every limit stayed fixed.
+- Source checks38409350848passed. All12exact cases are in JSON fields
+  local_return_candidate and native_clock_offset75_candidate.
+- Next: local_return_comparison DC diagnosis of actual local-tail/local-return
+  andcascade14 dense prestage supply/return/internal paths. Never rerun these
+  unchanged failed waveforms or relax the acceptance contract.
 
-Read JSON `local_return_candidate` and `native_clock_offset75_candidate`
-for published cases and exact live handles. Full32:1, actual clock/CDR,
-qualified RF/body/ESD, assembled serial PHY and final chipSTA remain open.
+Continuation JSON now exceeds1MiB: if GitHub Contents API returns encoding
+none, read the same blob through git/blobs/<sha>. Do not treat empty inline
+content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
 
 ### Exact physical sources for these studies
 
