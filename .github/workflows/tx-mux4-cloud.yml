@@ -16,6 +16,7 @@ on:
       - hw/soc/analog/pcie/tx_mux2_hbt_passive_drive_v2.spice
       - hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice
       - hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice
+      - hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice
       - hw/soc/analog/pcie/tx_pre_bias_res_v1.inc
       - hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc
       - hw/soc/analog/pcie/tx_output_bias_feeds_v1.inc
@@ -33,6 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - {streams: 32, condition: nominal, fault: none}
           - {streams: 32, condition: quarter_step, fault: none}
           - {streams: 32, condition: hot_low, fault: none}
           - {streams: 32, condition: cold_high, fault: none}
@@ -62,7 +64,7 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage divider14 --frontend damped_strong --clock-bias native_res --final-drive double_taps_guard --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage divider14 --frontend damped_strong --clock-bias native_res --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:

@@ -331,3 +331,14 @@ XP0 net1 A VDD VDD sg13_lv_pmos
         assert {previous['terminals'][1][-1],actual['terminals'][1][-1]}=={'p','n'}
     changes=[(x,y) for x,y in zip(before.splitlines(),after.splitlines(),strict=True) if x!=y]
     assert len(changes)==1 and changes[0][0].startswith(prefix+' ')
+
+
+def test_final_margin_candidate_changes_only_two_actual_collector_widths():
+    text=mux4.MARGIN_FINAL.read_text().replace('nssoc_tx_mux54_passive_drive_v5','nssoc_tx_mux54_passive_drive_v4')
+    original=mux4.GUARDED_FINAL.read_text()
+    changed=[(a,b) for a,b in zip(original.splitlines(),text.splitlines(),strict=True) if a!=b]
+    assert len(changed)==2
+    for before,after in changed:
+        assert before.startswith(('XD0007 ','XD0008 '))
+        assert before.replace('w=17.0u','w=18.0u')==after
+    assert text.replace('w=18.0u','w=17.0u')==original

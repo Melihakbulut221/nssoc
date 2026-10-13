@@ -46,6 +46,7 @@ BIAS = ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v1.spice'
 FAST_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux2_hbt_passive_drive_v2.spice'
 TAPPED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice'
 GUARDED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice'
+MARGIN_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice'
 PRE_BIASES = {'baseline':.0005,'plus10':.00055,'plus20':.0006}
 PRE_BIAS_MODES = (*PRE_BIASES, 'native_res')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
@@ -149,14 +150,14 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     references=[n['reference'] for n in plan['nodes']]
     assert output_bias in ('ideal','native_res')
     assert pre_bias in PRE_BIAS_MODES
-    assert final_drive in ('baseline','double','double_taps','double_taps_guard')
+    assert final_drive in ('baseline','double','double_taps','double_taps_guard','double_taps_margin')
     assert clock_bias in ('ideal','native_vbe','native_res')
     bits = sequence()
     c = dict(temperature_c=27, supply_scale=1., core_scale=1., hbt='hbt_typ',
              resistor='res_typ', lv_corner='mos_tt', hv_corner='mos_tt', step_ps=.5)
     c.update(CONDITIONS[condition])
     frontend = inputs / 'frontend'
-    final = {'double':FAST_FINAL,'double_taps':TAPPED_FINAL,'double_taps_guard':GUARDED_FINAL}.get(final_drive,inputs / 'mux54-compact01.spice')
+    final = {'double':FAST_FINAL,'double_taps':TAPPED_FINAL,'double_taps_guard':GUARDED_FINAL,'double_taps_margin':MARGIN_FINAL}.get(final_drive,inputs / 'mux54-compact01.spice')
     lines = [f'NSSOC native full {streams}:1 tree, unchanged source-bit oracle']
     for kind, corner, directory in [('HBT', c['hbt'], inputs / 'models'),
         ('RES', c['resistor'], inputs / 'models'), ('MOSlv', c['lv_corner'], frontend / 'models'),
@@ -252,7 +253,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         bias = 0 if fault == 'disable_pre_b_bias' and reference == 'rb' else .0005
         if reference in references and not (fault=='disable_pre_b_bias' and reference=='rb'):
             bias=PRE_BIASES[pre_bias]
-        if reference=='mr' and final_drive in ('double','double_taps','double_taps_guard'):
+        if reference=='mr' and final_drive in ('double','double_taps','double_taps_guard','double_taps_margin'):
             bias=.001
         lines.append(f'I{reference} avdd {reference} PWL(0 0 1n {bias})')
     if output_bias=='native_res':
@@ -379,7 +380,7 @@ def main():
     parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
-    parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard'),default='baseline')
+    parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
     args=parser.parse_args()
@@ -401,7 +402,7 @@ def main():
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
