@@ -22,7 +22,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-tree-physical-cloud-${{ github.ref }}
+  group: tx-tree-physical-cloud-${{ github.ref }}-${{ inputs.physical_profile || 'baseline' }}
   cancel-in-progress: false
 jobs:
   native-transient:
