@@ -214,3 +214,31 @@ timeout. Read result.json in release cloud-results-38460825316-1-credit-prefix-e
 when published. Check all7output SAT proof and actual wrong-gate negative
 control, exact retained geometry/power audit, allcorner/group deltas and all
 remaining violations before any adoption. No accepted timing gain yet.
+
+
+## Completed credit-prefix screen: real proof, timing still open
+
+Run38460825316 PASSED its native work and controls. Exact full receipt:
+docs/evidence/cloud-credit-prefix-screen-20261013.json. Summaryasset638141166
+SHAa0413b69f0d2b827eedf1f74950bfd30e02cf004cb411eb7544c9553175b8b31;
+archive638140287,201763214bytes. CandidateODB
+SHAdc4d9bcaf7ca617b31ece0c7504a591d41ddff0e5558821e2a6cb7815940d074.
+14new AND gates,113791retained instances with exact original geometry/power.
+Actual Liberty SAT proves allseven original outputs at all256cutpoint inputs;
+actual final NAND-toAND negative control fails as required.
+
+Worst slow PCIe setup changes only -1.275681to-1.275034ns. No reported group
+worst slack regresses; fast PCIe hold remains-0.065767ns, CPUhold-0.054434ns.
+The previous header-consumed[23] endpoint drops out of the topthree paths, but
+its exact new slack has NOT been explicitly measured. Do not infer its closure.
+The next worst paths bind to credit_data_consumed_o[18] -> replay read_pos[2]
+and[1]. A third new endpoint1165551 is not in the prior505cell binding.
+
+Next: preserve all failures and inspect the newly critical control paths.
+Potential RTL change to evaluate: clear read_pos whenever replay is idle,
+instead of waiting for credit-grant/start. That can remove credit-grant timing
+from the reset-to-zero cone but changes invalid-cycle output values; it needs
+transaction-level equivalence and complete reset/ACK/replay/backpressure tests
+plus fresh native mapping/timing. It is a proposal, NOT implemented/adopted.
+Do not repeat the single-header ECO as though it closes all credit/control
+paths; whole-chip setup/hold, routing and fullserialPHY remain open.
