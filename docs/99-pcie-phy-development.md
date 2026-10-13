@@ -440,3 +440,17 @@ micrometres, above the final tail/reference banks. The native device circuit,
 M5 width, reference jog and via counts remain the same. Run 38357052327 passed
 560 DRC categories, strict hierarchical/flat LVS and all five injected faults.
 Its new parasitic extraction and electrical comparison remain required.
+
+The short-return wire study 38357948303 was also rejected: 128 early errors,
+19 HBT margin failures and 60 interstage samples below 150 mV (minimum
+136.696 mV); the compact control passed. Shortening that return alone does not
+close the physical circuit. The complete failed captures remain archived.
+
+A separate source inspection found that M3-to-TopMetal1 escapes still used
+the via helper's two-column default, despite eight columns at HBT pin access.
+The native coefficient table is unchanged. Candidate
+`critical_buses_kelvin_short_vias` increases only those lower-via arrays to
+eight columns; TopVia1/2 defaults are unchanged. Run 38358182094 passed native
+DRC, both strict LVS checks and all five fault controls. Fresh extraction and
+waveform comparison are required; this is not electrical adoption. See the
+[source hypothesis](evidence/pcie-upper-access-via-hypothesis-20261013.json).
