@@ -420,3 +420,10 @@ All CAD, simulations and tests now execute on hosted GitHub runners. Local
 activity is source editing and verified packaging, transfer and cleanup only.
 The full serial PHY, assembled analog layout, chip routing, qualified RF/body
 extraction and final setup/hold remain open.
+
+The fresh Kelvin-return loaded-tree run 38355959100 completed on hosted runners.
+Its compact control passed, but the extracted-wire case still failed 128 early
+samples (minimum signed margin -0.112321 V). It is rejected for electrical
+adoption; unchanged sample phases and device/interface gates remain enforced.
+Full reports and immutable artifact receipts are retained in the
+[Kelvin loaded-tree record](evidence/pcie-kelvin-macros-loaded-tree-20261013.json).
