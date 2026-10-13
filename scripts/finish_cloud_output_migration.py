@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""After both local transfers finish, run final reconstruction on GitHub only.
+"""After all selected local transfers finish, run final reconstruction on GitHub only.
 
 This controller performs transfer metadata packaging and API orchestration only.
 It never runs CAD/tests locally or deletes files. Its durable request identifier
@@ -20,7 +20,8 @@ REPO = 'Melihakbulut221/nssoc'
 BRANCH = 'codex/complete-open-work'
 TAG = 'cloud-migration-finalization-20261013'
 STATES = [ROOT / 'hw/soc/out/cloud-migration-20261012',
-          ROOT / 'hw/soc/out/cloud-migration-pnr-20261013']
+          ROOT / 'hw/soc/out/cloud-migration-pnr-20261013',
+          ROOT / 'hw/soc/out/cloud-migration-tools-20261013']
 DIRECTORY = ROOT / 'hw/soc/out/cloud-migration-finalization-20261013'
 REQUEST = 'final-migration-20261013'
 COMPLETE = 'COMPLETE_SELECTED_REGULAR_OUTPUT_FILES'
@@ -61,7 +62,7 @@ def main():
         if state.get('status') in ('PASS_FINAL_HOSTED_RECONSTRUCTION', 'FAIL_FINAL_HOSTED_RECONSTRUCTION'):
             return
         while not transfers_complete(current := snapshot()):
-            state.update(status='WAITING_BOTH_TRANSFERS', transfers=current)
+            state.update(status='WAITING_ALL_TRANSFERS', transfers=current)
             atomic(statefile, state)
             time.sleep(60)
         state.update(transfers=current, request_id=REQUEST)

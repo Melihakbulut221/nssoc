@@ -3,8 +3,8 @@
 
 Creates <=512 MiB payloads; verifies GitHub's SHA-256 digest; publishes a
 self-contained restore manifest before deleting any matching original bytes.
-Only hw/soc/out or explicitly selected hw/soc/pnr/runs is in scope.
-Never follows symlinks or removes sources/tools.
+Only explicitly selected project output or tool directories are in scope.
+Never follows symlinks or removes tracked project sources.
 """
 import argparse
 import gzip
@@ -51,7 +51,7 @@ def remove_verified_output(path, expected_sha256):
     """Delete exact archived content; preserve read-only parent permissions.
 
     Called only after the remote archive and restore manifest are verified.
-    Never broad chmod, follow an external parent, or touch source/tool scopes.
+    Never broad chmod or follow an external parent; stay inside selected scope.
     """
     if not safe(path) or digest(path) != expected_sha256:
         raise RuntimeError('Changed or unsafe output before deletion: ' + str(path))
@@ -126,15 +126,17 @@ def main():
     global BASE, STATE, TAG_PREFIX
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--scope', choices=['outputs', 'pnr-runs'], default='outputs')
+    parser.add_argument('--scope', choices=['outputs', 'pnr-runs', 'tools'], default='outputs')
     args = parser.parse_args()
-    if args.scope == 'pnr-runs':
-        BASE = ROOT / 'hw/soc/pnr/runs'
-        STATE = ROOT / 'hw/soc/out/cloud-migration-pnr-20261013'
-        TAG_PREFIX = 'cloud-migration-pnr-20261013'
-        tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', 'hw/soc/pnr/runs'], cwd=ROOT)
+    if args.scope in ('pnr-runs', 'tools'):
+        relative = {'pnr-runs': 'hw/soc/pnr/runs', 'tools': 'hw/soc/tools'}[args.scope]
+        family = {'pnr-runs': 'pnr', 'tools': 'tools'}[args.scope]
+        BASE = ROOT / relative
+        STATE = ROOT / ('hw/soc/out/cloud-migration-' + family + '-20261013')
+        TAG_PREFIX = 'cloud-migration-' + family + '-20261013'
+        tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', relative], cwd=ROOT)
         if tracked:
-            raise RuntimeError('PNR run scope contains tracked sources; refusing cleanup')
+            raise RuntimeError('Selected migration scope contains tracked sources; refusing cleanup')
     STATE.mkdir(exist_ok=True)
     planpath = STATE / 'remaining-plan.json'
     if not planpath.exists():

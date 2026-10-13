@@ -157,3 +157,46 @@ def test_permission_repair_never_expands_scope(tmp_path):
     with pytest.raises(RuntimeError,match='unsafe'):
         m.remove_verified_output(source,m.digest(source))
     assert source.read_text()=='unique source'
+
+
+@pytest.mark.parametrize('scope,relative,family', [
+    ('tools','hw/soc/tools','tools'),
+    ('pnr-runs','hw/soc/pnr/runs','pnr'),
+])
+def test_selected_scope_keeps_unique_neighbor_and_skips_external_link(tmp_path,scope,relative,family):
+    m=load(tmp_path)
+    selected=tmp_path/relative
+    selected.mkdir(parents=True)
+    original=selected/'locally_modified_tool.cpp'
+    original.write_bytes(b'unique tool patch, retain exact bytes remotely')
+    neighbor=tmp_path/'hw/soc/rtl/keep.v'
+    neighbor.parent.mkdir(parents=True)
+    neighbor.write_text('never migrate project RTL')
+    link=selected/'external'
+    link.symlink_to(neighbor)
+    seen=[]
+    def publish(path,tag):
+        seen.append((tag,path.read_bytes(),path.name))
+        return dict(name=path.name,bytes=path.stat().st_size,sha256=m.digest(path))
+    def git(args,**kwargs):
+        return b'' if 'ls-files' in args else 'test-head'
+    with patch.object(m,'publish',publish),patch.object(m.subprocess,'check_output',git), \
+            patch.object(sys,'argv',['migrate','--scope',scope,'--apply']):
+        m.main()
+    assert not original.exists()
+    assert neighbor.read_text()=='never migrate project RTL'
+    assert link.is_symlink()
+    assert {tag for tag,_,_ in seen}=={'cloud-migration-'+family+'-20261013-000'}
+    import io,tarfile
+    packed=next(data for _,data,name in seen if name.endswith('.tar.gz'))
+    with tarfile.open(fileobj=io.BytesIO(packed),mode='r:gz') as archive:
+        assert archive.getnames()==[relative+'/locally_modified_tool.cpp']
+        assert archive.extractfile(archive.getmembers()[0]).read()==b'unique tool patch, retain exact bytes remotely'
+
+
+def test_tool_scope_refuses_any_tracked_source(tmp_path):
+    m=load(tmp_path)
+    with patch.object(m.subprocess,'check_output',return_value=b'hw/soc/tools/important.py\0'), \
+            patch.object(sys,'argv',['migrate','--scope','tools','--apply']):
+        with pytest.raises(RuntimeError,match='tracked sources'):
+            m.main()

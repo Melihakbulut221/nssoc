@@ -12,7 +12,7 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 
-def test_both_finished_families_required():
+def test_all_three_finished_families_required():
     complete = {p.name: {'status': module.COMPLETE} for p in module.STATES}
     assert module.transfers_complete(complete)
     assert not module.transfers_complete({})

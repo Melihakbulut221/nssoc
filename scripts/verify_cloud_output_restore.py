@@ -39,7 +39,8 @@ def safe_name(name):
     p = PurePosixPath(name)
     assert not p.is_absolute() and '..' not in p.parts
     assert (p.parts[:3] == ('hw', 'soc', 'out') or
-            p.parts[:4] == ('hw', 'soc', 'pnr', 'runs'))
+            p.parts[:4] == ('hw', 'soc', 'pnr', 'runs') or
+            p.parts[:3] == ('hw', 'soc', 'tools'))
     assert str(p) == name
 
 
@@ -111,7 +112,7 @@ def audit(manifest, assets, work):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', type=int, required=True)
-    parser.add_argument('--archive-scope', choices=['all', 'outputs', 'pnr-runs'], default='all')
+    parser.add_argument('--archive-scope', choices=['all', 'outputs', 'pnr-runs', 'tools'], default='all')
     args = parser.parse_args()
     assert 0 <= args.group < 4
     out = Path('cloud-output-restore')
@@ -121,7 +122,9 @@ def main():
     try:
         prefixes = {'outputs': ('cloud-migration-20261012-',),
                     'pnr-runs': ('cloud-migration-pnr-20261013-',),
-                    'all': ('cloud-migration-20261012-', 'cloud-migration-pnr-20261013-')}
+                    'tools': ('cloud-migration-tools-20261013-',),
+                    'all': ('cloud-migration-20261012-', 'cloud-migration-pnr-20261013-',
+                            'cloud-migration-tools-20261013-')}
         releases = pages(f'repos/{REPO}/releases?per_page=100')
         worklist = []
         for release in releases:

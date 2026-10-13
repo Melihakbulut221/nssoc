@@ -15,7 +15,7 @@ SCRIPT = Path(__file__).resolve().parents[2] / 'scripts/verify_cloud_output_rest
 
 
 @pytest.mark.parametrize('fault', [None, 'outside', 'forward', 'wrong_hash', 'wrong_size', 'symlink', 'duplicate'])
-@pytest.mark.parametrize('scope', ['hw/soc/out', 'hw/soc/pnr/runs'])
+@pytest.mark.parametrize('scope', ['hw/soc/out', 'hw/soc/pnr/runs', 'hw/soc/tools'])
 def test_tar_hardlink_content_contract(tmp_path, fault, scope):
     spec = importlib.util.spec_from_file_location('restore', SCRIPT)
     m = importlib.util.module_from_spec(spec)
@@ -52,7 +52,8 @@ def test_tar_hardlink_content_contract(tmp_path, fault, scope):
 
 
 @pytest.mark.parametrize('path', ['hw/soc/pnr/flow.py', 'hw/soc/pnr/runs/../flow.py',
-                                 '/hw/soc/pnr/runs/capture', 'hw/soc/pnr/runs//capture'])
+                                 '/hw/soc/pnr/runs/capture', 'hw/soc/pnr/runs//capture',
+                                 'hw/soc/tools/../rtl/keep.v', 'hw/soc/rtl/keep.v'])
 def test_added_scope_does_not_allow_source_or_noncanonical_paths(path):
     spec = importlib.util.spec_from_file_location('restore', SCRIPT)
     m = importlib.util.module_from_spec(spec)
