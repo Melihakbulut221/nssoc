@@ -15,7 +15,9 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 Cascade158 loaded runs38442809617/38442814441 completed. All six native
 captures pass device/interface gates without diagnostics. Five component
 screens pass; hot wire still fails128 early amplitudes, zero wrong signs,
-minimum17.694mV. Hot final input CM now1.808354..1.846300V passes. This does
+minimum17.694mV. All six exact summaries and SHA receipts are in
+`docs/evidence/pcie-cascade158-stiff65-low-critical-loaded-tree-20261013.json`.
+Hot final input CM now1.808354..1.846300V passes. This does
 not close full serial PHY. Preserve the six immutable summaries separately.
 
 New final_drive_v9 changes ONLY twelve data HBTs Nx4 toNx2 fromv8. Selectors
