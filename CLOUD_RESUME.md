@@ -97,7 +97,9 @@ Candidate `critical_buses_kelvin_local_internal` on final_drive_v8 addsreal
 parallel eaM4 andebM5 local routes at16/20um, eachjoining nineactualterminals.
 It inherits localreturn/supply/tailgeometry andall54devices unchanged.
 Native DRC/strictLVS/physicalfaults run **38421020866** onb93f626c
-must pass before RC orloaded testing.
+passed; summarySHA4f595f2018ed2e7c380cb1495fb23d661370185bd09e7d8a4059fbe4318612b3.
+The407594byte physical archiveSHA8c389ea1e016eb090f2d3c760aebc53731ea7cdb10cf42a78a755dc74a4d2754
+is bound for fresh native RC extraction. Electrical acceptance remains unproven.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 
