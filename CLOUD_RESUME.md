@@ -10,6 +10,56 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Current checkpoint — cloud handoff verified, collector-route trial rejected
+
+The local NSSOC workspace was checked again and is empty; no NSSOC entries
+remain in /tmp or /dev/shm and no local OpenROAD/ngspice/KLayout/Yosys/Magic/
+Netgen process is running. The final-checkout retirement receipt was re-read
+and reports COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE.
+The existing eight-hour automation is ACTIVE and prohibits local recloning,
+CAD, simulation and tests. All engineering execution remains GitHub-hosted.
+
+Loaded nominal **38434457866** and hot/cold **38434462503** completed on
+source **a5bb5f708aace732232e3a01a98817e3e05c371f**. Configuration:
+streams4, prestage kelvin_supply_feed, final v8_kelvin_low_critical,
+matched compact/wire, offset75. All three compact controls pass.
+All three extracted-wire cases are rejected:
+- Nominal: output156.209mV passes; four selector VCE minima fail, worst397.182mV.
+- Hot/low: zero wrong signs but128early samples below100mV, minimum17.163mV;
+  input common mode1.763098..1.802645V fails. HBT gates pass.
+- Cold/high: output243.929mV passes; four selector VCE minima fail,
+  worst391.424mV. No simulator diagnostics in any of the six cases.
+Original bit sequence, sample phases, limits and source models are unchanged.
+Do not rerun these unchanged candidates or infer acceptance from green Actions.
+
+DC diagnosis **38434466411** passed; summary asset637668315,
+SHA256 1d645c01b8668a33e280011e0cd394d86315e074c10cc224d46c023dc5556146.
+Worst terminal-pair resistances: ea/eb15.564287ohm, tail11.179695ohm,
+qn17.571188ohm, qp17.395588ohm. Source checks **38434470352** passed.
+Next engineering step is source-bound diagnosis of remaining loaded delay,
+input common mode and selector/tail headroom before another physical candidate.
+No new bias or prestage redesign has been implemented at this checkpoint.
+
+Main route **38420407838**, job115375929807, is still in_progress.
+Do not duplicate it. Logs are unavailable until completion; status alone does
+not prove routing iteration progress. Preserve its exact native failure or
+routed timing evidence when terminal. Full serial PHY, main-chip detailed
+routing and final setup/hold remain OPEN.
+
+Exact immutable summary assets (GitHub API releases/assets/<id>, octet-stream):
+
+| Condition | Mode | Asset | Summary SHA256 |
+|---|---|---|---|
+| nominal | physical_wire | 637689973 | 32a2cdd61c6e06c9e0d700e2d19b27498fa586f152f45824aa3fa756521bd707 |
+| nominal | physical_compact | 637673743 | 0564387689a2bb12efa1ca6e7b88e8a2d5783fc16875d51086f9141e38b239a5 |
+| hot_low | physical_wire | 637683821 | f083288663c46ac362653a1cdeba0dea706f863916e7d2f1ac86b2c8f90964d5 |
+| cold_high | physical_wire | 637686033 | a3317e76c840482447a95362676433d771df4baa83e76fc47277ff0fda91784e |
+| hot_low | physical_compact | 637673861 | 920aecd9dc0d4d9887a67f81ab305fc7f176178cd17180bda3c4239ac919ce87 |
+| cold_high | physical_compact | 637672698 | 94008f48136ce95330ff46b74b54e5f17b959eb0b431bad93e962d6f62757303 |
+
+Earlier sections below are preserved history; this checkpoint supersedes their
+pending-status and dispatch instructions for these completed studies.
+
 ## Low collector-route composition ready for loaded validation
 
 Composition **38433905249** passed exact 54 devices / 4043 R / 2662 C.
