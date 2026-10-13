@@ -429,16 +429,15 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
-@pytest.mark.parametrize('version', ['v6','v7','v8','v9','v10'])
+@pytest.mark.parametrize('version,geometry', [('v6','kelvin_dense_wide'),('v7','kelvin_dense_wide'),('v8','kelvin_dense_wide'),('v8','kelvin_low_critical'),('v8','kelvin_low_selects'),('v9','kelvin_low_critical'),('v10','kelvin_low_critical')])
 @pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9', 'final_drive_v10'])
-@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_power_trunks_vias'])
-def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, reported_variant):
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_kelvin_low_selects', 'critical_buses_power_trunks_vias'])
+def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, geometry, reported_variant):
     import hashlib
     import io
     import json
     import shutil
     import tarfile
-    geometry = 'kelvin_low_critical' if version in ('v9','v10') else 'kelvin_dense_wide'
     expected_variant = 'critical_buses_'+geometry
     profile = mux4.physical_final_circuit_profile(version+'_'+geometry)
     assert profile == 'final_drive_'+version

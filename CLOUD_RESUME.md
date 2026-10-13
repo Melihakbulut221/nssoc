@@ -10,6 +10,21 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Short-selector exact composition ready for fixed-phase PVT
+
+Composition38453569616 passed54devices/4043R/2661C. Distinct v8 low-selects
+receipt binds summaryasset638003525 SHA
+91b3d4ce252c81e4c28b06b081d8ba10e05a3f91106ec3211a7d9ffdb9e84d14.
+Profile v8_kelvin_low_selects accepts only its own generatedgeometry/RC.
+Regression now tests validlyhashed foreigngeometries on the SAME v8circuit,
+including low-critical versuslow-selects, alongsideallversion corruptions.
+Hosted sourcechecks first; then discover/run streams4 matchedcompact/wire,
+cascade158_kelvin_supply_direct, stiff65, nominal andtemperature_voltage.
+No bit/phase/100mV/device/interface limit changes or model adoption.
+
+v10wire38452808927/38452812892 remains live. Sourcechecks38453573552 passed.
+Mainroute38448901835 and32wire38441895491 remain live. Allwork cloud-only.
+
 ## Short-selector native RC passed; v10 allcompact PVT gates pass
 
 v8low-selects extraction38453131275 passed actualRC graph and13corruptioncontrols.
