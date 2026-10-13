@@ -29,7 +29,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
-                                             'critical_buses_supply_escape', 'critical_buses_power_trunks',
+                                             'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5'), default='baseline')
     args = parser.parse_args()
@@ -135,10 +135,10 @@ def main():
                 # buses in the explicit critical-net order above.
                 changes.append(('cursor_y = y + half + 3',
                                 "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
-            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
+            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
-            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
+            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
                 # Actual measured tail-emitter lift differs from the reference
                 # return. Reduce native supply/return metal resistance in GDS;
                 # keep signal escape geometry and all circuit devices intact.
@@ -149,7 +149,7 @@ def main():
                 changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
                     "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
                     '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
-            if args.variant in ('critical_buses_power_trunks','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
+            if args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
                 # More room between routing lanes permits wider native power
                 # trunks without stealing spacing from adjacent signal metal.
                 # This is a new physical candidate, not a scaled RC surrogate.
@@ -166,7 +166,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if args.circuit_profile == 'final_drive_v5' and args.variant in ('critical_buses_power_trunks','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
+            if args.circuit_profile == 'final_drive_v5' and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
@@ -201,7 +201,7 @@ def main():
                     '        box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)\n'
                     '        box(5, lane-0.4, min(return_y,y)-0.4, lane+0.4, max(return_y,y)+0.4)\n'
                     '    box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)\n'))
-            if args.variant=='critical_buses_kelvin_short_vias':
+            if args.variant in ('critical_buses_kelvin_short_vias','critical_buses_power_trunks_vias'):
                 # Pin access already has8columns, but M3-to-TM1 escape retained
                 # the via helper default of2. Increase actual lower-via cuts;
                 # TopVia1/2 geometry and every extraction coefficient unchanged.
