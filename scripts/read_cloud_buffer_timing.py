@@ -33,7 +33,11 @@ def native():
             assert reported[name] == master, (name, reported[name], master)
         reported[name] = master
     assert reported
-    instances = {i.getName(): i for i in block.getInsts()}
+    instances = {}
+    for instance in block.getInsts():
+        rendered = instance.getName().replace(chr(92) + '[', '[').replace(chr(92) + ']', ']')
+        assert rendered not in instances, ('Ambiguous rendered instance', rendered)
+        instances[rendered] = instance
     cells, nets = {}, {}
     for name, master in sorted(reported.items()):
         assert name in instances, ('Unbound timing cell', name)
@@ -53,7 +57,7 @@ def native():
                                     pin=t.getMTerm().getName(), direction=str(t.getIoType()))
                                for t in net.getITerms()],
                     boundary_pins=[t.getName() for t in net.getBTerms()])
-        cells[name] = dict(master=master, pins=pins,
+        cells[name] = dict(native_name=inst.getName(), master=master, pins=pins,
                           bbox_um=[v/scale for v in (rect.xMin(),rect.yMin(),rect.xMax(),rect.yMax())])
     result = dict(status='COMPLETE_NATIVE_REPORTED_TIMING_CELL_BINDING', timing_accepted=False,
                   odb_sha256=sha(OUT / 'relocated-placement.odb'),
