@@ -163,3 +163,18 @@ Native extraction **38380642029** is **in_progress**, using source
 **21c8aac8** and the exact physical archive receipt. Inspect this existing
 run before dispatching anything else. A physical pass is not electrical
 acceptance: new native RC, composition and fixed-phase waveforms are required.
+
+## v6 physical continuation
+
+- Corrected v6 run **38383289620** passed all 560 DRC categories with zero
+  markers, strict hierarchical/flat 54-device LVS and native fault controls.
+  The first run **38382891663** failed an ea-to-avdd short because the resistor
+  spacing/interleaving condition omitted v6; **73cf305a** fixes that condition.
+- v6 reduces 16 data/selector HBTs from Nx8 to Nx4; the reference, tail HBTs,
+  eight resistors and 27 substrate contacts retain their original contracts.
+  It is an unscreened electrical candidate, not a completed serial PHY.
+- Extract the exact v6 receipt in the extraction input manifest, then compose
+  its native devices and fresh RC. The v6 composition manifest deliberately
+  has no extraction receipt yet; do not dispatch composition until it is bound.
+- The local workspace was checked again and remains empty. All CAD and tests
+  continue on GitHub-hosted runners. Routing run **38371498733** is still live.
