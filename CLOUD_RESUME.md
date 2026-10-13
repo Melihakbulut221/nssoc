@@ -413,3 +413,8 @@ f10c0dea2b1b85c4f042442d0d0bfb434933e8a7fd8dd0be4a1f21c2a8360fd6.
 Exact geometry is now pinned in pcie-tx-cloud-extraction-input-20261013.json
 under final_drive_v8 /critical_buses_kelvin_low_selects_m3. Next extraction
 uses that profile; there is still no new RC/electrical or fullPHY acceptance.
+
+Fresh extraction38469474319 is live on05ee0349c8555b86032d7758beeb8143af96e8f9.
+Do not duplicate it. Read extract-final_drive_v8-critical_buses_kelvin_low_selects_m3
+release; require full nativeRC graph and13fault controls before composition.
+Local workspace remains empty; all CAD/tests execute on hosted runners.
