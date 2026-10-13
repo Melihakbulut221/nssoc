@@ -404,20 +404,24 @@
     "original_result": "29 hosted source-oracle/topology controls passed in all three jobs. 32:1 hit explicit 4GiB native process memory limit. Shared release reached asset-count limit so 4:1/8:1 raw archive publication failed; do not claim full captures retained for those two jobs.",
     "corrected_run": 38337828584,
     "corrected_source_head": "ca74d6d5",
-    "status": "NATIVE_TRANSIENTS_RUNNING_LAST_VERIFIED",
+    "status": "4_AND_8_COMPONENT_SCREENS_PASS_32_RUNNING",
     "change": "Same original 256 bits and 768 fixed-phase output samples and device limits. Process memory cap increased to 8GiB for8 and12GiB for32, on hosted runners only. Result publication isolated and fallback retained.",
-    "adopted": false
+    "adopted": false,
+    "evidence": "docs/evidence/pcie-serializer-expanded-tree-20261013.json"
   },
   "ethernet_hold_eco": {
     "runs": [
       38336275309,
       38336760984
     ],
-    "status": "REJECTED_NOT_ADOPTED",
+    "status": "REPAIR_NATIVE_CHECKS_RUNNING_NOT_ADOPTED",
     "first_failure": "Old baseline capsule predates failure_outputs schema; exact archive/member hashes now bind replay.",
     "second_failure": "Native geometry and STA completed, but actual Liberty logic check rejects multiple drivers (bit25). Do not use this ECO as hold closure. Next inspect native writer/port connectivity, never disable equivalence guard.",
-    "diagnostic_run": 38338067273,
-    "adopted": false
+    "diagnostic_run": 38338417647,
+    "adopted": false,
+    "diagnosis_evidence": "docs/evidence/cloud-ethernet-hold-alias-diagnosis-20261013.json",
+    "repair_run": 38338630803,
+    "repair_source": "50fe1a9a"
   },
   "cloud_cleanup_live": {
     "checked_utc": "2026-10-13T02:42:37.811082+00:00",
