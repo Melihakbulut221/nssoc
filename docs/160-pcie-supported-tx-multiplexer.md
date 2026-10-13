@@ -556,3 +556,22 @@ schedule. This implements a loaded common-mode circuit, not a PLL/CDR or
 complete physical clock tree. Run 38329329431 screens all 62 HBTs and 64
 MOS devices at nominal, quarter-step, hot/low and cold/high conditions.
 Its result is required before accepting even this component change.
+
+The [loaded native clock-reference study](evidence/pcie-mux4-native-clock-bias-20261013.json)
+completed in run 38329329431 with 14 source-order, binding and oracle
+controls passing on each hosted job. Nominal and quarter-step complete
+component gates pass at output minima 218.823 and 218.878 mV. At cold/high,
+all 62 HBTs now pass: the six previous tail-headroom violations are removed
+by the real reference network under the same device limits. This is a
+measured circuit improvement, but cold/high still fails the 32 LV MOS
+voltage screens and interstage common mode reaches 2.061 V.
+
+The hot/low case remains rejected: twelve final data HBTs miss the minimum
+VCE and 128 output samples fall below 100 mV. All of these signal failures
+are at 0.3 UI; the 0.5-UI minimum is 311.263 mV. The unchanged 0.3-UI
+minimum is only 48.945 mV. Actual clock common mode varies by approximately
+49 mV under the switching loads, unlike an ideal fixed reference. This
+requires a stage-by-stage transient-delay and loading diagnosis; shifting
+the output sampling phase would hide the failure and is not a repair.
+The nominal result and cold HBT improvement therefore do not close PVT,
+full serial PHY, main-chip integration or final timing.
