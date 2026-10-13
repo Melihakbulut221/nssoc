@@ -519,3 +519,9 @@ failed geometry and report. The next candidate
 only the M3-to-TM1 lower-via array columns from eight to twelve (16 to 24 cuts).
 It targets the same measured series loss without the rejected row expansion.
 Native spacing, strict connectivity and waveform gates remain mandatory.
+
+The wider two-row geometry 38371051654 passed all 560 native DRC categories
+with zero markers, strict hierarchical and flat LVS, and all five physical
+fault controls. Its native 54-device circuit remains equivalent. A new
+source-bound RC extraction is required before composition and the unchanged
+loaded-tree waveform screen; this physical pass is not PHY acceptance.
