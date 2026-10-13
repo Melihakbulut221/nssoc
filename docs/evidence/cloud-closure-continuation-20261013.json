@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T05:29:59.717349+00:00",
+  "as_of": "2026-10-13T05:34:41.249498+00:00",
   "turn_classification": "PROGRESS: the final v5 core passed 18 source-equivalence tests. Two actual layout shorts were repaired; the resulting macro passed 560 DRC categories, strict hierarchical and flat LVS, and five fault controls. Fresh 781R/642C extraction and 13 corruption controls passed, followed by composition. The combined physical 4:1 tree passed its compact control but failed the wired screen on 128 early samples, seven HBT limits and common mode. New interleaved-resistor geometry run 38351576199 is in progress. All CAD and tests remain hosted; local main-output and tool transfers are live.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "24e424ec",
+  "head": "741dcfcf",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -87,7 +87,7 @@
     "uploaded_bytes": 71016775199
   },
   "next_actions": [
-    "Read native final-v5 interleaved-resistor layout run 38351576199. It keeps the exact 54-device circuit and places resistors below the HBT banks at Y=-50 um. If DRC, strict LVS and physical fault controls pass, bind that exact archive and perform fresh extraction and composition. Never reuse the previous geometry's RC.",
+    "Read final-v5 interleaved-resistor run 38352031533. Prior run 38351576199 passed 560 DRC categories and strict hierarchical/flat LVS, but its rail-short injection never executed because supply-bus x intervals no longer overlapped. The new run changes only that mutation to bridge verified actual pin centres; all verdict gates remain unchanged. If every fault is rejected, bind this exact new archive and run fresh extraction/composition before waveforms. Add interleaved variant to extraction/composition workflow choices; never reuse spacing38 RC.",
     "Combined physical 4:1 run 38350973496 was rejected: 128 wrong early samples, seven failing HBTs and minimum interstage common mode 1.762973 V. Source-bit and topology controls passed before simulation. Keep the original sampling phases and limits; a successful Actions run is not electrical acceptance.",
     "Main-chip Metal5-reservation run 38347061685 and broad-placement run 38334595459 are confirmed live. Do not restart based on age. Prior combined GMII/DPO run 38339178024 finished with 147 overflow and was rejected.",
     "Continue hash-verified main-output and tool migration; PNR regular-file migration is complete. The finalizer requires all three families to finish before hosted reconstruction. Preserve transfer state, unique project sources and unarchived links or Git metadata. Local cleanup is incomplete.",
@@ -588,7 +588,11 @@
     "loaded_tree_result": "COMPACT_PASS_WIRED_REJECTED128EARLYBITS_7HBTBOUNDS_CM1.762973V",
     "new_interleaved_geometry_run": 38351576199,
     "new_interleaved_geometry_source": "24e424ec",
-    "new_interleaved_geometry_status": "IN_PROGRESS",
-    "adopted": false
+    "new_interleaved_geometry_status": "POSITIVE_DRC_HIERARCHICAL_AND_FLAT_LVS_PASS; RAIL_SHORT_FIXTURE_ERROR",
+    "adopted": false,
+    "interleaved_fixture_evidence": "docs/evidence/pcie-final-v5-interleaved-fault-fixture-20261013.json",
+    "interleaved_fault_fixture_repair_run": 38352031533,
+    "interleaved_fault_fixture_repair_source": "741dcfcf",
+    "interleaved_fault_fixture_repair_status": "IN_PROGRESS"
   }
 }

@@ -116,9 +116,13 @@ also passed. The [combined physical-macro 4:1 study](evidence/pcie-both-physical
 passed the compact control but rejected the actual wired tree: 128 wrong source
 samples at 0.3 UI, seven HBT bound failures, and a 1.762973 V interstage
 common-mode minimum. The 0.5/0.7 UI samples passed; the acceptance phases remain
-unchanged. A new physical candidate (`38351576199`) places the same resistors
-below the HBT banks to reduce route span; its own DRC/LVS, fresh RC and waveform
-checks are required. No assembled serializer or main-chip acceptance follows.
+unchanged. An interleaved physical candidate places the same resistors below the HBT
+banks to reduce route span. Run `38351576199` passed DRC and both strict LVS
+comparisons, but its rail-short fault injection failed before adding the fault:
+the two supply buses no longer share an X interval. Run `38352031533` uses an
+explicit bridge between verified supply-pin centres; every fault still must
+be rejected. Fresh RC and waveform checks remain required. No assembled
+serializer or main-chip acceptance follows.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
