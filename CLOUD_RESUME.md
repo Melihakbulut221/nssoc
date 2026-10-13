@@ -62,20 +62,20 @@ Continuation JSON now exceeds1MiB: if GitHub Contents API returns encoding
 none, read the same blob through git/blobs/<sha>. Do not treat empty inline
 content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
 
-### Next measured-loss repair — cascade14 physical supply feed
+### Next combined loaded study — two real upper-metal supply feeds
 
-DC comparison38411521005passed all three exact graphs. Local-return tail
-paths fell4.938to4.551ohm and5.448to4.929ohm; waveform gates still fail.
-Prestage avdd paths measure8.029/9.196ohm (final8.579/10.233ohm unchanged).
-A new `critical_buses_kelvin_supply_feed` candidate keeps cascade14 dense
-geometry and adds an8um TM2 low feed,8um external TM1 riser and nativevias.
-This is real parallel metal, with unchanged54devices/publicports/RCrules.
-Native physical **38412608409 passed**560DRC categories/0markers, strict
-hierarchical/flat54device LVS and all5faultcontrols. Exact geometry archive
-is bound for native RC extraction **38413237032** on423bbc8e. Inspect this
-existing job, then bind/compose and add a distinct supply-feed prestage
-profile only after native graph/13fault checks pass. No duplicate runs.
-Loaded waveform acceptance remains open.
+- Cascade14 supply-feed chain passed: physical38412608409, nativeRC
+  38413237032(3810R/2545C), composition38414112027. Exact profile
+  `kelvin_supply_feed` is bound. DC38415351214 measured avdd7.034/8.203ohm
+  versus old8.029/9.196ohm. Native terminal numbering changed; bind roles
+  through the exact models rather than reusing old instance IDs.
+- Finalv8 local-return plus supply-feed chain passed: physical38414116532,
+  nativeRC38415063817(4043R/2666C), composition38415678520. Exact profile
+  `v8_kelvin_local_supply` is bound. Both54device circuits are unchanged.
+- Next original-bit loaded comparison: matched compact/wire, streams4,
+  prestage`kelvin_supply_feed`, final`v8_kelvin_local_supply`, native clock
+  reference`offset75`, nominal andhot/cold. Preserve every earlier failure.
+  Both feeds require actual electrical/PVT proof; no acceptance from DC.
 
 ### Exact physical sources for these studies
 
