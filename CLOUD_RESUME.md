@@ -12,6 +12,14 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Fixed native clock-reference candidate — not accepted
 
+Dispatched on source **2aad309c68dc536872839da987685902a6c4a455**:
+nominal **38437908191**, hot/cold **38437911585**, source/licence/migration
+checks **38437914986**. Source checks passed; all six analog jobs passed
+source-bit/capture regressions and are running native transient simulation.
+Inspect these exact runs and permanent captures before another dispatch.
+No electrical acceptance is established yet. Main route38420407838 remains
+in_progress, with terminal logs still unavailable. Local workspace stays empty.
+
 New clock_reference=stiff65 uses native offset w4um/l6.5um and feed w4um/l14.5um,
 with the existing Nx1 reference HBT. Both dimensions are fixed across corners.
 This increases feed conductance and reduces offset resistance to test loaded
