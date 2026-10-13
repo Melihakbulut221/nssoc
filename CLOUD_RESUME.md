@@ -198,3 +198,19 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
   bit/amplitude/device/interface violations and no simulator diagnostics.
   The wire job in **38384881419** is still actively simulating. Compact pass
   is not physical acceptance. Source/REUSE/migration checks **38384885565** passed.
+
+## v6 complete result and v7 continuation
+
+- v6 wire **38384881419** completed: all **768 output samples pass**, minimum
+  **140.606 mV**, no wrong signs, both interface gates pass and no numerical
+  diagnostics. Overall engineering screen still **fails**: tail HBTs
+  `xmux.xd0006` and `xmux.xd0007` reach **388.383 / 387.043 mV VCE**,
+  below the unchanged 400 mV limit. This supersedes the earlier live status.
+- Exact hosted native-model readback **38385901575** proves both failed
+  instances are Nx8 tail HBTs with collector `n_66`, base `iref`, emitter
+  `avss`. Do not infer roles from instance names across different extractions.
+- v7 keeps twelve data HBTs Nx4, reference/tails and all R/taps unchanged;
+  only the four selectors grow Nx4 to Nx8. Recovering tail headroom is a
+  hypothesis, not acceptance. Physical run **38386165678** is dispatched.
+  Follow exact physical -> new RC -> new composition -> unchanged loaded
+  compact/wire gates. v6 failed captures are retained; no limit is relaxed.

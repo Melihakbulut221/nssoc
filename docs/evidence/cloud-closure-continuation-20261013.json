@@ -8003,7 +8003,7 @@
   "final_v6_loaded_tree": {
     "run": 38384881419,
     "source_head": "03fd06b33fa3404a92e364e0e6d15133f7e367f9",
-    "status": "COMPACT_PASSED_WIRE_NATIVE_SIMULATION_IN_PROGRESS",
+    "status": "COMPLETE_SIGNAL_PASSED_TWO_TAIL_VCE_FAILURES",
     "physical_final_profile": "v6_kelvin_dense_wide",
     "prestage_profile": "power_trunks_vias",
     "streams": 4,
@@ -8079,7 +8079,106 @@
       "diagnostics": []
     },
     "source_checks_status": "PASS",
-    "next": "Inspect existing wire job in38384881419. If every unchanged gate passes, extend to full32:1 and independent corners/fault controls; actual analog clocks, assembled layout, RX/CDR/ESD and full-chip timing remain required. If it fails, preserve capture and diagnose exact failing devices/transition before changing geometry."
+    "next": "v6 is not accepted. v7 changes only four selector emitter areas, preserves v6 failure and requires native layout/extraction/composition plus unchanged waveform gates.",
+    "wire": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38384881419-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38384881419-1.summary.json",
+      "summary_sha256": "6b890c1782f707daf4651f171e6b5ba4a3802c96032897e47dd56663c538d216",
+      "component_screen_passed": false,
+      "accepted": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.14060620365179965,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.14060620365179965,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.27273890335905726,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2698306959271397,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "failed_hbts": {
+        "xmux.xd0006": {
+          "min_post_vce_v": 0.3883829172299069,
+          "max_post_vce_v": 0.43320362202343415,
+          "max_whole_abs_vce_v": 0.43320362202343415,
+          "max_whole_abs_vbe_v": 0.8620877593520538,
+          "max_whole_abs_ic_per_emitter_a": 0.0006630382755092622,
+          "passed": false
+        },
+        "xmux.xd0007": {
+          "min_post_vce_v": 0.38704305727846067,
+          "max_post_vce_v": 0.4319165292990627,
+          "max_whole_abs_vce_v": 0.4319165292990627,
+          "max_whole_abs_vbe_v": 0.859752320939531,
+          "max_whole_abs_ic_per_emitter_a": 0.0006329282229774121,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.27195793352849273,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8955094039302696,
+            1.8990223542038525
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.20545390035519406,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8420796123264411,
+            1.8701030678457249
+          ],
+          "passed": true
+        }
+      },
+      "diagnostics": []
+    },
+    "tail_identity_proof": {
+      "run": 38385901575,
+      "summary_sha256": "0058ca85c5bd02448b7e1eef452ae291a5e8839af08433591e9c72fccf7bedf3",
+      "member": "cloud-tx-layout-composition/mux54-compact01.spice",
+      "member_sha256": "4ac40d57e6ce07f4946e6430c1d068eefdb472a346acbe28cb5f6d579a30178f",
+      "tail_devices": {
+        "XD0006": [
+          "n_66",
+          "iref",
+          "avss",
+          "n_1"
+        ],
+        "XD0007": [
+          "n_66",
+          "iref",
+          "avss",
+          "n_1"
+        ]
+      }
+    }
   },
   "final_v7_candidate": {
     "status": "UNSCREENED",
@@ -8089,6 +8188,7 @@
       "tx_mux2_final_drive_v6_layout_core.spice": "55249822b97b01e8c5f9f90faa408fbf1a0cd34ce55f8f48a5cde87304c9217a",
       "tx_mux54_passive_drive_v6.spice": "6f03f8557173a8528f3ad20a16c3102487cbcfe2ba0ac657190f2d46c95edc81"
     },
-    "adopted": false
+    "adopted": false,
+    "physical_run": 38386165678
   }
 }
