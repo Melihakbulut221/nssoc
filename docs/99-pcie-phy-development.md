@@ -110,9 +110,15 @@ reference. The first two layouts failed actual LVS: one shorted an internal
 emitter node to supply; the next aligned signal and substrate trunks. Their
 failures remain archived. A 38.4 micrometer resistor bank pitch separates both
 accesses and trunks. Its [fresh extraction](evidence/pcie-final-v5-extraction-20261013.json) passed
-the native graph audit and thirteen raw corruption controls. Model composition
-is next; this macro has no extracted waveform, assembled serializer or
-main-chip acceptance yet.
+the native graph audit and thirteen raw corruption controls (781 R, 642 C).
+[Native device/wire composition](evidence/pcie-final-v5-composition-20261013.json)
+also passed. The [combined physical-macro 4:1 study](evidence/pcie-both-physical-macros-loaded-tree-20261013.json)
+passed the compact control but rejected the actual wired tree: 128 wrong source
+samples at 0.3 UI, seven HBT bound failures, and a 1.762973 V interstage
+common-mode minimum. The 0.5/0.7 UI samples passed; the acceptance phases remain
+unchanged. A new physical candidate (`38351576199`) places the same resistors
+below the HBT banks to reduce route span; its own DRC/LVS, fresh RC and waveform
+checks are required. No assembled serializer or main-chip acceptance follows.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter

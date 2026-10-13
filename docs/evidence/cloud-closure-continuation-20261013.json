@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T05:00:15.152060+00:00",
-  "turn_classification": "PROGRESS: expanded verified cloud-only cleanup to local CAD tools after54hostedtests passed. Main output transfer and Metal5-reserved chip routing continue. Loaded4powertrunk actualwire rejected on commonmode/fourHBTgates despite152.196mV differential pass. CombinedGMII+DPOwithoutreservation finished147overflow; not adopted.",
+  "as_of": "2026-10-13T05:29:59.717349+00:00",
+  "turn_classification": "PROGRESS: the final v5 core passed 18 source-equivalence tests. Two actual layout shorts were repaired; the resulting macro passed 560 DRC categories, strict hierarchical and flat LVS, and five fault controls. Fresh 781R/642C extraction and 13 corruption controls passed, followed by composition. The combined physical 4:1 tree passed its compact control but failed the wired screen on 128 early samples, seven HBT limits and common mode. New interleaved-resistor geometry run 38351576199 is in progress. All CAD and tests remain hosted; local main-output and tool transfers are live.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "2275048a",
+  "head": "24e424ec",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -87,10 +87,11 @@
     "uploaded_bytes": 71016775199
   },
   "next_actions": [
-    "Prioritize cloud migration: confirm tools worker progress and main output partial uploads; allthreefamilies must finish before final hosted reconstruction. Preserve transferstate/uniqueprojectsource; remove remaining links/emptydirectories only after exact metadata publication.",
-    "Read ongoing chip Metal5reservation38347061685 and broader placement38334595459; prior GMII+DPO38339178024 failed147overflow. No successfulroute/finaltiming claimed.",
-    "Powertrunks loaded4wire failed commonmode1.795959V andfourHBTminVCE.389535V despite differential152.196mVpass. No repeat unchanged. Finalv5layout core is an unvalidated draft awaiting independent54device adapter, realGDS/nativeDRC/LVS/freshRC/composition.",
-    "All fullserialPHY/actualmainchiprouting/finalsetuphold goals remain open. Latestcloudonly policy overrides olderlocalcomputegoal wording."
+    "Read native final-v5 interleaved-resistor layout run 38351576199. It keeps the exact 54-device circuit and places resistors below the HBT banks at Y=-50 um. If DRC, strict LVS and physical fault controls pass, bind that exact archive and perform fresh extraction and composition. Never reuse the previous geometry's RC.",
+    "Combined physical 4:1 run 38350973496 was rejected: 128 wrong early samples, seven failing HBTs and minimum interstage common mode 1.762973 V. Source-bit and topology controls passed before simulation. Keep the original sampling phases and limits; a successful Actions run is not electrical acceptance.",
+    "Main-chip Metal5-reservation run 38347061685 and broad-placement run 38334595459 are confirmed live. Do not restart based on age. Prior combined GMII/DPO run 38339178024 finished with 147 overflow and was rejected.",
+    "Continue hash-verified main-output and tool migration; PNR regular-file migration is complete. The finalizer requires all three families to finish before hosted reconstruction. Preserve transfer state, unique project sources and unarchived links or Git metadata. Local cleanup is incomplete.",
+    "Full serial PHY, main-chip routing and final setup/hold remain open. No assembled analog tree, qualified RF/body extraction, jitter/BER or ESD acceptance is claimed."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -252,7 +253,7 @@
       "nssoc-cloud-migration-finalize-20261013"
     ],
     "restart_policy": "Persistent user unit files and default.target.wants links installed and systemd-analyze verified. Existing transfer PIDs 3817135/4035665 unchanged. Transient definitions remain active until shutdown; persistent versions resume frozen plans next user session. Finalizer uses file lock and durable unique hosted request; uncertain dispatch never blindly repeated.",
-    "scope": "Local transfer/cleanup and API orchestration only. Final full-byte reconstruction on GitHub after both selected file plans complete. Source checkout/tools and 32 historical source files retained; output cleanup not complete.",
+    "scope": "Allthree selected regular-file families: mainoutputs, PNRruns, CADtools. All need complete status before hosted full-byte reconstruction. Sourcecheckout andhistorical32sourcefiles remain; toolslinks/Gitmetadata remain. Do not claim local cleanup complete.",
     "snapshot_evidence": "docs/evidence/cloud-output-pnr-restore-20261013.json",
     "readonly_recovery": "MaintransferfailedPermissionErrorunlinkunder0555outputparent. Failedrestartloopstopped; helperrehashesexactarchivedcontent, temporarilyaddsownerwriteonlytoownin-scopeparent,restoresmodefinally.28hostedtestspassedbeforemainresumePID4128374;currentprogresspastbatch151. PNRuninterruptedPID4035665."
   },
@@ -448,13 +449,13 @@
     "recommended_depth": 2
   },
   "cloud_cleanup_live": {
-    "checked_utc": "2026-10-13T05:00:15.152060+00:00",
+    "checked_utc": "2026-10-13T05:29:59.717349+00:00",
     "output": {
       "status": "RUNNING",
-      "next_index": 318215,
-      "batch": 333,
-      "removed_bytes": 199220871480,
-      "uploaded_bytes": 105886881041
+      "next_index": 318477,
+      "batch": 337,
+      "removed_bytes": 206182433399,
+      "uploaded_bytes": 112842640507
     },
     "pnr": {
       "status": "COMPLETE_SELECTED_REGULAR_OUTPUT_FILES",
@@ -474,13 +475,22 @@
       "remaining_logical_bytes": 75763918285,
       "scope": "Live metadata snapshot; not allocated disk usage; active transfer may advance."
     },
-    "verified_removed_logical_bytes": 267003233150,
+    "verified_removed_logical_bytes": 281915575657,
     "additional_empty_directories_removed": 3956,
     "tools": {
-      "status": "INVENTORY_OR_FIRST_BATCH_RUNNING"
+      "status": "RUNNING",
+      "next_index": 104246,
+      "batch": 16,
+      "removed_bytes": 7950780588,
+      "uploaded_bytes": 2647624669
     },
     "tools_service": "nssoc-cloud-tools-transfer-20261013 active persistent user unit; separate frozenplan/state/prefix;54hostedmigrationtestspassed38348926918 beforestart",
-    "scope_decision": "User already explicitly requested everything in cloud and local cleanup; no additional approval required for exact verified project-tool backup/deletion. Historical32uniqueprojectsourcefiles remain preserved in recoverycapsule and checkout."
+    "scope_decision": "User already explicitly requested everything in cloud and local cleanup; no additional approval required for exact verified project-tool backup/deletion. Historical32uniqueprojectsourcefiles remain preserved in recoverycapsule and checkout.",
+    "live_services_confirmed": [
+      "nssoc-cloud-output-transfer-20261012",
+      "nssoc-cloud-tools-transfer-20261013",
+      "nssoc-cloud-migration-finalize-20261013"
+    ]
   },
   "combined_gmii_hold_channel_route": {
     "run": 38339178024,
@@ -559,7 +569,26 @@
   "final_v5_layout_draft": {
     "path": "hw/soc/analog/pcie/tx_mux2_final_drive_v5_layout_core.spice",
     "sha256": "c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf",
-    "status": "UNVALIDATED_DRAFT_CORE_ONLY",
-    "next": "Independent native54device27substratetap equivalence adapter must precede actualGDS generation; no layout/profile/native results exist for this draft."
+    "status": "CORE_EQUIVALENCE_AND_POWERTRUNK_PHYSICAL_MACRO_VERIFIED",
+    "next": "See final_v5_physical_chain; new interleaved geometry is independent and must obtain ownphysical/RC/electricalproofs."
+  },
+  "final_v5_physical_chain": {
+    "source_audit_run": 38349537241,
+    "source_audit_tests": 18,
+    "failed_first_layout": 38349537241,
+    "failed_spacing28_layout": 38349972455,
+    "passed_spacing38_layout": 38350268350,
+    "physical_evidence": "docs/evidence/pcie-final-v5-physical-20261013.json",
+    "extraction_run": 38350576832,
+    "extraction_evidence": "docs/evidence/pcie-final-v5-extraction-20261013.json",
+    "composition_run": 38350733960,
+    "composition_evidence": "docs/evidence/pcie-final-v5-composition-20261013.json",
+    "loaded_tree_run": 38350973496,
+    "loaded_tree_evidence": "docs/evidence/pcie-both-physical-macros-loaded-tree-20261013.json",
+    "loaded_tree_result": "COMPACT_PASS_WIRED_REJECTED128EARLYBITS_7HBTBOUNDS_CM1.762973V",
+    "new_interleaved_geometry_run": 38351576199,
+    "new_interleaved_geometry_source": "24e424ec",
+    "new_interleaved_geometry_status": "IN_PROGRESS",
+    "adopted": false
   }
 }
