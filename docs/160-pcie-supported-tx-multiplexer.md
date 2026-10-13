@@ -419,3 +419,36 @@ requested voltages; MOS corners apply to the actual native models. These
 ten diagnostic conditions are not an exhaustive foundry PVT or Monte Carlo
 qualification. Actual upstream serialization, selector clock generation,
 PLL/CDR, frontend layout/extraction and main-chip integration remain open.
+
+
+The [ten-condition follow-up](evidence/pcie-cmos-driver-corners-20261013.json)
+completed in run 38324432662. The nominal result survives halving the step:
+selected-input minimum changes from 150.122620 to 150.117650 mV. Only the
+nominal, quarter-step, fast-MOS and `mos_fs` cases pass every declared
+selected-contract gate. The circuit is rejected for PVT adoption. At
+125 C with low supplies and slow models, 64 original output samples have
+wrong signs and 192 are below 100 mV. At -40 C with high supplies and fast
+models, two tail HBTs reach only 0.361612 V VCE and sixteen LV MOS devices
+exceed the engineering voltage bound; one internal CMOS node reaches
+1.362852 V. Other slow/mixed conditions also miss the input differential
+requirement. The slow-MOS and hot/low captures complete natively, then the
+independent input-validity guard rejects them. They are not simulator
+convergence failures or passing device reviews.
+
+These results motivate moving the CMOS-to-CML boundary earlier in the
+serializer and providing more real input settling time. A native four-to-one
+CML tree with lower-rate CMOS inputs is a next design candidate, not an
+implemented fix. Actual bias/clock circuits must also address cold tail
+headroom and CMOS overshoot; per-corner ideal voltage tuning cannot replace
+those circuits. The existing 54-device physical proof covers only the final
+two-to-one mux. Any added stage requires complete new device accounting,
+startup/whole-wave checks, physical connectivity, DRC/LVS and extraction.
+
+The primary [IHP MOS documentation](https://ihp-open-pdk-docs.readthedocs.io/en/latest/contents/device_libraries/mosfets.html)
+identifies the model and corner libraries and explains how total width and
+fingers map to extraction. The [I/O architecture documentation](https://ihp-open-pdk-docs.readthedocs.io/en/latest/contents/io_library/02_drive_strength.html)
+identifies its native level shifter and output stages. The pinned local
+`sg13g2_LevelUp` SPICE subcircuit was inspected as another possible input
+interface, but it has not been measured at the required rate here. Neither
+reference constitutes a high-speed qualification or permission to relax
+our voltage gates.

@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T02:29:11.699051+03:00",
-  "turn_classification": "PROGRESS: exact39corner/group paths bound to native graph; newer existing physical state recovered and hosted routing launched.",
+  "as_of": "2026-10-13T03:05:54.657896+03:00",
+  "turn_classification": "PROGRESS: realnativeCMOS/CMLnominalpoint passes alloriginalbit+selectedinput+device gates, then ten-conditioncampaign rejects PVT adoption; realnextarchitecture decision changed.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "b0612369",
+  "head": "9b8e1a45",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -67,8 +67,8 @@
     "new_snapshot_readback_run": 38316589440,
     "new_snapshot_readback_status": "PASS all4groups57batches50994files43829824449logical bytes13hardlinks",
     "new_snapshot_evidence": "docs/evidence/cloud-output-restore-second-20261013.json",
-    "latest_license_migration_run": 38322172129,
-    "latest_license_migration_result": "PASS SPDX/inventory/REUSE and23 safety tests onb482e0f6.",
+    "latest_license_migration_run": 38324432915,
+    "latest_license_migration_result": "PASS SPDX/inventory/REUSE and23migration safetytests on9b8e1a45; eightdriveroracle controlsPASSpernativejob.",
     "third_snapshot_readback_run": 38321449137,
     "third_snapshot_readback_status": "PASS_ALL_FOUR_HOSTED_BYTE_RECONSTRUCTION_GROUPS",
     "third_snapshot_readback_evidence": "docs/evidence/cloud-output-restore-third-20261013.json",
@@ -81,16 +81,16 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 183195,
-    "batch": 87,
-    "removed_bytes": 63303913083,
-    "uploaded_bytes": 46863995717
+    "next_index": 245219,
+    "batch": 125,
+    "removed_bytes": 81407209780,
+    "uploaded_bytes": 52099659861
   },
   "next_actions": [
-    "Inspect new CMOS driver original-bit output screen and its hosted corruption tests. Preserve earlier failure evidence and do not equate actual-input-relative downstream oracle with end-to-end data validity.",
+    "Develop actual faster/earlier CMOS-to-CML boundary; preferred next prototype4:1CMLtree with2GbpsCMOSinputs rather thanforcing4Gbpsconversion atslow/hot. AlladdednativeHBT/MOS mustbe bound/reviewed; currentfrozen23HBT gate isnotfulltreeproof. Actualclock/biastracking andLVovershoot remainrequired; do notfitidealbiaspercornerorrelaxlimits.",
     "Continue two active verified output transfers using existing separate plans/state; no local CAD/tests. Main readback38321449137PASS83batches162263files61.24GB; PNRreadback38322169148PASScurrentpublishedsnapshot. Later batches still require final hosted readback.",
     "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
-    "Use new delay diagnosis to develop clock-aware full serializer/PLL/CDR validation. Do not silently replace original failing integration screen or count fixed-delay alignment as PCIe compliance.",
+    "Full serial PHY, chip route and final setup/hold remainOPEN. Newnominalpass iscompact andrequires externalearlyinputcontract/idealclock. PVTcandidateREJECTED. Nativeglobalroute38317996877stillconfirmedlive; do notrestart.",
     "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
     "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published."
   ],
@@ -170,7 +170,12 @@
     "hv_result": "All32MOS voltage screensPASS;208wrong original inputbit samples;4HBT VCEmin0.201833/0.303712V below0.4V bound. Rejected.",
     "new_method": "Additional final-output comparison to originalPRBS sourcebits at unchanged768sampletimes and100mV; no phasefit. Independent actual-input-relative oracle retained and not equated to originalbit success.",
     "original_bit_run": 38321423547,
-    "original_bit_result": "PoweredHVcase finalTX192wrong/768, -306.263mV minimum; no-pullup440wrong/768, all768below100mV. Seven oracle fault/coverage controlsPASS ineachhostedjob. Both nativecaptures preserved, no candidateadoption."
+    "original_bit_result": "PoweredHVcase finalTX192wrong/768, -306.263mV minimum; no-pullup440wrong/768, all768below100mV. Seven oracle fault/coverage controlsPASS ineachhostedjob. Both nativecaptures preserved, no candidateadoption.",
+    "selector_headroom_run": 38323831698,
+    "selector_headroom_evidence": "docs/evidence/pcie-cmos-selector-headroom-20261013.json",
+    "corner_run": 38324432662,
+    "corner_evidence": "docs/evidence/pcie-cmos-driver-corners-20261013.json",
+    "corner_result": "4of10selectedcontractPASS. Hot/low64wrongoutput; cold/high2tailHBTand16MOSfail. Allnativecapturescomplete, noadoption."
   },
   "pnr_transfer": {
     "service": "nssoc-cloud-pnr-transfer-20261013",
@@ -179,10 +184,10 @@
     "release_prefix": "cloud-migration-pnr-20261013",
     "snapshot": {
       "status": "RUNNING",
-      "next_index": 706,
-      "batch": 7,
-      "removed_bytes": 3543616910,
-      "uploaded_bytes": 675848985
+      "next_index": 2264,
+      "batch": 57,
+      "removed_bytes": 26764268193,
+      "uploaded_bytes": 5316204216
     },
     "safety_tests_run": 38321669905,
     "safety_tests": "PASS23 migration and byte reconstruction controls; SPDX/inventory/REUSE alsoPASS",
