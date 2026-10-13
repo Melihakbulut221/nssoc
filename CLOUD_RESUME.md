@@ -36,9 +36,11 @@ these are diagnostic proof, not acceptance. All failed captures remain.
 passed nativeDRC/LVS/fault controls on **4a6a9a75**. Same19HBT/8R/27tap circuit;
 interleaved resistors, shortKelvin return and12-column/two-row via arrays.
 This targets measured upstream physical voltage loss. Native extraction
-**38392967695** passed; composition is next (discover the existing run).
-Then bind its composition
-and a distinct prestage profile in the loaded tree, keeping finalv8 unchanged.
+**38392967695** and native composition **38393689519** passed, retaining
+54 devices / 3803 R / 2541 C. The loaded-tree prestage profile
+`kelvin_dense_wide` binds its distinct immutable composition receipt.
+Compare matched compact/wire streams4, final `v8_kelvin_dense_wide`, nominal
+and temperature_voltage; discover existing runs before dispatch.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
@@ -86,7 +88,12 @@ all-family reconstruction run 38364679770 passed all four groups.
 The eight-hour task automation now reads cloud state and prohibits local CAD
 and recloning. It reports meaningful changes, not unchanged polling results.
 
-## Engineering state — still open
+## Historical engineering entries — superseded by Current decision
+
+Earlier live-status entries below are dated work history; they are not current
+run state. Read Current decision and the continuation JSON first.
+
+### Engineering state — still open
 
 Full serial PCIe Gen3 x4 PHY, main-chip PCIe/Ethernet detailed routing and final
 setup/hold are **not complete**. Component screens are not full PHY, qualified

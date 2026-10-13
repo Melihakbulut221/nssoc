@@ -406,6 +406,7 @@ def test_physical_top_rename_rejects_ambiguous_or_recursive_models(text):
 
 def test_physical_final_profiles_use_distinct_receipt_files():
     assert mux4.physical_spec_path('power_trunks_vias').name=='pcie-cascade14-power-vias-composition-20261013.json'
+    assert mux4.physical_spec_path('kelvin_dense_wide').name=='pcie-cascade14-kelvin-dense-wide-composition-20261013.json'
     assert mux4.physical_final_spec_path('power_trunks').name=='pcie-final-v5-composition-20261013.json'
     assert mux4.physical_final_spec_path('interleaved').name=='pcie-final-v5-interleaved-composition-20261013.json'
     assert mux4.physical_final_spec_path('kelvin_return').name=='pcie-final-v5-kelvin-composition-20261013.json'
@@ -420,7 +421,8 @@ def test_physical_final_profiles_use_distinct_receipt_files():
 
 @pytest.mark.parametrize('version', ['v6','v7','v8'])
 @pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8'])
-def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version):
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_power_trunks_vias'])
+def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, reported_variant):
     import hashlib
     import io
     import json
@@ -435,7 +437,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
     model = (ROOT/f'hw/soc/analog/pcie/tx_mux54_passive_drive_{version}.spice').read_bytes()
     outputs = {'mux54-compact01.spice': hashlib.sha256(model).hexdigest()}
     report = json.dumps(dict(circuit_profile=reported_profile, outputs=outputs,
-                             variant='critical_buses_kelvin_dense_wide')).encode()
+                             variant=reported_variant)).encode()
     archive = tmp_path/'source.tar.gz'
     with tarfile.open(archive, 'w:gz') as packed:
         for name, raw in [('result.json', report), ('mux54-compact01.spice', model)]:
@@ -449,7 +451,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
         summary_sha256=hashlib.sha256(report).hexdigest(), outputs=outputs,
         variant='critical_buses_kelvin_dense_wide')))
     monkeypatch.setattr(mux4, 'fetch', lambda url, digest, path: shutil.copyfile(archive, path))
-    if reported_profile != profile:
+    if reported_profile != profile or reported_variant != 'critical_buses_kelvin_dense_wide':
         with pytest.raises(AssertionError):
             mux4.physical_macro(tmp_path, 'physical_compact', spec, profile, 'restored')
     else:
