@@ -103,7 +103,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
     assert proof['source_profile']=='physical_replay'
     assert proof['proofs'][0]['passed'] and proof['proofs'][1]['negative_rejected']
     assert proof['source_sha256']==selected[replay]['sha256']
-    if profile=='physical_idle':
+    if profile in ('physical_idle','physical_idle_credit'):
         from run_cloud_replay_idle import candidate
         altered=candidate(Path(selected[replay]['path']).read_text())
         target=output/'candidate-soc_pcie_replay_tx.v'
@@ -111,6 +111,28 @@ def physical_recipe(inputs, manifest, output, profile, status):
         assert sha(target)==proof['candidate_sha256']=='1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc'
         assert recipe.count(replay)==1
         recipe=recipe.replace(replay,str(target))
+    if profile=='physical_idle_credit':
+        from run_cloud_credit_late_verdict import candidate as credit_candidate
+        credit_proof_path=output/'credit-source-bound-proof.json'
+        credit_proof_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471835755-1-credit-late-verdict/credit-late-verdict-38471835755-1.json'
+        subprocess.run(['curl','--fail','--location','--retry','4',credit_proof_url,'-o',str(credit_proof_path)],check=True)
+        assert sha(credit_proof_path)=='658337c2e7cb3455e29a88248a8d738489013b4848925e7688dfc0c49a3cda35'
+        credit_proof=json.loads(credit_proof_path.read_text())
+        assert credit_proof['status']=='PASS_PHYSICAL_CREDIT_VERDICT_EQUIVALENCE_AND_COMPLETE_CONTROLS_NOT_TIMING'
+        assert credit_proof['direct_proofs'][0]['passed'] and credit_proof['direct_proofs'][1]['negative_rejected']
+        assert all(p['returncode']==0 for p in credit_proof['reference_proofs'])
+        assert [p['actual_tests'] for p in credit_proof['ports']]==[
+            dict(passed=5,failed=0,skipped=0),dict(passed=5,failed=0,skipped=0),dict(passed=0,failed=5,skipped=0)]
+        assert credit_proof['source_binding']['source_sha256']==selected[credit]['sha256']
+        target=output/'candidate-soc_pcie_credit_tx.v'
+        target.write_text(credit_candidate(Path(selected[credit]['path']).read_text()))
+        assert sha(target)==credit_proof['source_binding']['candidate_sha256']=='7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a'
+        assert recipe.count(credit)==1
+        recipe=recipe.replace(credit,str(target))
+        status['credit_verdict_binding']=dict(proof_run=38471835755,
+            proof_sha256=sha(credit_proof_path),source_sha256=selected[credit]['sha256'],
+            candidate_path=str(target),candidate_sha256=sha(target),
+            scope='Isolated credit-verdict change on the same proved replay-idle physical RTL baseline; fresh paired mapping, not an adopted layout.')
     status['physical_source_binding']=dict(
         physical_result_sha256='616eee906f67d937bb29fa23b586626f7cb7df9f11c5103257fd22323ade7d17',
         original_mapping_status=mapping['status'], corrected_mapping_audit_status=audit['status'],
@@ -123,7 +145,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle'], required=True)
+    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit'], required=True)
     args = parser.parse_args()
     output = ROOT / 'cloud-ack-map' / args.profile
     output.mkdir(parents=True, exist_ok=False)
@@ -198,6 +220,9 @@ def main():
         assert all(sha(inputs / name) == pin['sha256'] for name, pin in manifest['files'].items())
         if args.profile.startswith('physical_'):
             assert all(sha(Path(pin['path']))==pin['sha256'] for pin in status['physical_source_binding']['selected'].values())
+        if args.profile=='physical_idle_credit':
+            pin=status['credit_verdict_binding']
+            assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
         status['status'] = 'COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
         status['screen_result'] = result
     except BaseException as error:

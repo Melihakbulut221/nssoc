@@ -10,7 +10,7 @@ on:
     inputs:
       study:
         type: choice
-        options: [ack, replay_idle]
+        options: [ack, replay_idle, credit_verdict]
         default: ack
 permissions:
   contents: read
@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        profile: ${{ fromJSON(inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
+        profile: ${{ fromJSON(inputs.study == 'credit_verdict' && '["physical_idle","physical_idle_credit"]' || inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
     permissions:
       contents: write
     steps:

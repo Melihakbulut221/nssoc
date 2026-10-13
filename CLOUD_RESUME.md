@@ -511,3 +511,23 @@ source/licensechecks already passed. Do not duplicate or adopt prematurely.
 WiderM3 compact nominal/cold/hot all component_screen_passed=true,
 minimum original-oracle margins281.361/272.648/229.882mV respectively.
 Three physical_wire captures stillrunning; no newphysicalacceptance.
+
+
+## Proved credit verdict and next paired mapping
+
+Run38471835755 on ea1a231dc4cc2d7bf8cc806a98d7913638fdb231 PASSED:
+direct physical-source2361/2361points; baseline andcandidate each285/285
+against frozen serial reference;5/5baseline and5/5candidate porttests,zero skips.
+Real complemented-verdict mutant fails3formalpoints andall5porttests.
+Summaryasset638322232 SHA 658337c2e7cb3455e29a88248a8d738489013b4848925e7688dfc0c49a3cda35;archive638321969,208341bytes.
+Exact candidateSHA7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a.
+No timing improvement claimed from equivalence proof.
+
+Existing pcie-ack-cloud-mapping workflow study=credit_verdict compares
+physical_idle versusphysical_idle_credit. Both use exact actualphysical
+map10recipe plus previouslyproved replayidle; onlycreditjointverdict differs.
+Proof hash and actual complete positive/negative controls pinned before synthesis.
+Review all3corner/5clock results,cellcount,SRAMs andendpoint cones. No adoption.
+
+Main-chip half_xy seed13 route38472175339 on45a0dd0a... is active.
+Do not restart on observationtimeouts. Allrunlogs/failures remain hosted.
