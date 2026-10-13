@@ -50,11 +50,13 @@ This targets measured upstream physical voltage loss. Native extraction
 Compare matched compact/wire streams4, final `v8_kelvin_dense_wide`, nominal
 and temperature_voltage; discover existing runs before dispatch.
 Loaded runs **38395107224** (nominal) and **38395110568** (hot/low and
-cold/high) are dispatched on **ad48b0d2**, with matched compact/wire models.
-Source checks: **38395113673**. Inspect these existing runs before dispatch.
-Cold/high actual-wire component screen now passes: **226.934 mV minimum**,
-zero bit/margin/device/interface failures. Compact hot/low still fails two
-tail-VCE gates; nominal and hot/low wire results remain pending at this check.
+cold/high) completed on **ad48b0d2**. Actual wire nominal and cold/high pass
+all component gates:130.820/226.934mVminimum,0signal/device/interface failures.
+Hot/low wire still fails128early output samples (minimum0.719mV), final-input
+CM1.761..1.802V and two tailVCEs355.635/357.261mV. Compact hot/low also fails
+two tailVCE gates399.271mV. No limits or phases were changed. Run read-only
+`dense_v8_hot` voltage/current diagnosis before the next circuit change;
+discover the existing diagnosis run before dispatch. Source checks38395113673pass.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.

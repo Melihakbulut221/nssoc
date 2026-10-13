@@ -146,7 +146,7 @@ def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Full native waveform analysis runs only on GitHub')
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal'),default='prestage_only')
+    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot'),default='prestage_only')
     args=parser.parse_args()
     evidence_path=ROOT/'docs/evidence'/dict(
         prestage_only='pcie-physical-prestage-tree-20261013.json',
@@ -154,7 +154,8 @@ def main():
         both_interleaved='pcie-interleaved-macros-loaded-tree-20261013.json',
         both_kelvin='pcie-kelvin-macros-loaded-tree-20261013.json',
         both_dense='pcie-kelvin-dense-loaded-tree-20261013.json',
-        v8_nominal='pcie-v8-nominal-loaded-tree-20261013.json')[args.study]
+        v8_nominal='pcie-v8-nominal-loaded-tree-20261013.json',
+        dense_v8_hot='pcie-dense-v8-hot-loaded-tree-20261013.json')[args.study]
     out = Path('cloud-physical-tree-diagnosis')
     out.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False, study=args.study, evidence=str(evidence_path.relative_to(ROOT)), evidence_sha256=sha(evidence_path),
