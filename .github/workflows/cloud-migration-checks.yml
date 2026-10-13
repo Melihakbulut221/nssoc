@@ -3,6 +3,8 @@ on:
   push:
     branches: ['codex/complete-open-work']
     paths:
+      - scripts/finish_cloud_output_migration.py
+      - sw/tests/test_cloud_migration_finalization.py
       - scripts/migrate_outputs_to_cloud.py
       - sw/tests/test_cloud_output_migration.py
       - scripts/verify_cloud_output_restore.py
@@ -25,4 +27,4 @@ jobs:
       - run: python scripts/spdx_check.py
       - run: python scripts/licence_inventory.py --check
       - run: python -m reuse lint
-      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py
+      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py sw/tests/test_cloud_migration_finalization.py

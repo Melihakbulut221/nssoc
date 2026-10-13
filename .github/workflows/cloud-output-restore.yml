@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 name: cloud-output-restore
+run-name: cloud-output-restore ${{ inputs.request_id || github.run_id }}
 on:
   push:
     branches: ['codex/complete-open-work']
@@ -10,6 +11,10 @@ on:
       - sw/tests/test_cloud_restore_hardlinks.py
   workflow_dispatch:
     inputs:
+      request_id:
+        description: Durable reconstruction request identifier
+        type: string
+        required: false
       archive_scope:
         description: Published archive family to reconstruct
         type: choice
