@@ -32,6 +32,10 @@ on:
       replay_idle:
         type: boolean
         default: false
+      replay_source:
+        type: choice
+        options: [canonical, physical_replay]
+        default: canonical
 permissions:
   contents: read
 jobs:
@@ -179,9 +183,11 @@ jobs:
           hw/.venv/bin/pip install -r hw/requirements.txt
 
       - name: Prove candidate observation equivalence and run complete replay controls
+        env:
+          REPLAY_SOURCE: ${{ inputs.replay_source }}
         run: |
           hw/.venv/bin/python -m py_compile scripts/run_cloud_replay_idle.py
-          hw/.venv/bin/python scripts/run_cloud_replay_idle.py
+          hw/.venv/bin/python scripts/run_cloud_replay_idle.py --source-profile "${REPLAY_SOURCE:-canonical}"
       - name: Preserve full passing and failing candidate evidence
         if: always()
         env:

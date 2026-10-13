@@ -2,12 +2,15 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Hosted isolated replay idle-clear candidate; no production RTL replacement."""
+import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import shutil
+import shlex
+import tarfile
 import subprocess
 import sys
 
@@ -69,14 +72,53 @@ def wrapped(text, name, rename_state=False):
     wrapper += 'assign tx_sop_o=tx_valid_o && ' + raw + 'tx_sop_o;\nassign tx_eop_o=tx_valid_o && ' + raw + 'tx_eop_o;\nendmodule\n'
     return core + '\n' + wrapper
 
+def physical_sources():
+    # Bind the real successor/prefetch replay revision, not the simpler
+    # canonical RTL. The capsule whole-chip top is a separate WAKE1 profile;
+    # this function asserts only module-source identity, never layout identity.
+    path = ROOT / 'docs/evidence/pcie-ack-map-cloud-input-20261012.tar.gz'
+    digest = 'e75ddaaab838334b29b424c2109062b6f6d7c9fc5e7c1268084d22d5655c0425'
+    assert sha(path) == digest
+    selected = {}
+    records = {}
+    with tarfile.open(path) as archive:
+        manifest = json.load(archive.extractfile('manifest.json'))
+        recipe = archive.extractfile(manifest['recipe']).read().decode()
+        for line in recipe.splitlines():
+            if not line.startswith('read_verilog '):
+                continue
+            for token in shlex.split(line)[1:]:
+                name = Path(token).name
+                if not name.startswith('soc_pcie_') or not name.endswith('.v'):
+                    continue
+                assert name not in selected and token.startswith(manifest['old_root'] + '/')
+                member = 'root/' + token[len(manifest['old_root']) + 1:]
+                raw = archive.extractfile(member).read()
+                expected = manifest['files'][member]['sha256']
+                assert hashlib.sha256(raw).hexdigest() == expected
+                selected[name] = raw
+                records[name] = dict(member=member, sha256=expected)
+    assert len(selected) == 21
+    assert records['soc_pcie_replay_tx.v']['sha256'] == 'ca334ee560f34a0d7484467d8a09ccbe7fc7b2113360f4bee7308f39bbac8e85'
+    review = json.loads((ROOT / 'docs/evidence/pcie-tx-wake-postcts-progress-20261012.json').read_text())
+    replay_hashes = [v for k,v in review['records']['npu_wake']['inputs'].items()
+                     if k.endswith('/soc_pcie_replay_tx.v')]
+    assert replay_hashes == [records['soc_pcie_replay_tx.v']['sha256']]
+    return selected, dict(capsule_sha256=digest, selected=records,
+        scope='Source-bound successor/prefetch replay and selected PCIe companions; not whole-chip source or physical equivalence.')
+
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-profile', choices=['canonical','physical_replay'], default='canonical')
+    args = parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS') == 'true'
     OUT.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False, production_rtl_modified=False,
                   scope='Isolated replay idle-clear RTL. Compare all handshake/control outputs at every clock, payload/SOP/EOP only while tx_valid. Preserve real internal feedback. Explicit clock/asynchronous-reset model, complete port scoreboards. No mapping, timing, route or PHY acceptance.')
     original = (ROOT / REL).read_text()
     source_hash = sha(ROOT / REL)
-    result['source_sha256'] = source_hash
+    result['canonical_source_sha256'] = source_hash
+    result['source_profile'] = args.source_profile
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     def execute(command, label, cwd=None):
@@ -84,12 +126,19 @@ def main():
             code = subprocess.call([str(v) for v in command], cwd=cwd, stdout=stream, stderr=subprocess.STDOUT)
         return code, (OUT / (label + '.log')).read_text(errors='replace')
     try:
+        selected = {}
+        if args.source_profile == 'physical_replay':
+            selected, result['source_binding'] = physical_sources()
+            original = selected['soc_pcie_replay_tx.v'].decode()
+        result['source_sha256'] = hashlib.sha256(original.encode()).hexdigest()
         altered = candidate(original)
         gold_dir, gate_dir, bad_dir = [OUT / n for n in ('baseline-rtl','candidate-rtl','negative-rtl')]
         for directory in (gold_dir,gate_dir,bad_dir):
             directory.mkdir()
             for file in (ROOT / 'hw/soc/rtl/pcie').glob('*.v'):
                 shutil.copyfile(file, directory / file.name)
+            for name, raw in selected.items():
+                (directory / name).write_bytes(raw)
         (gate_dir / 'soc_pcie_replay_tx.v').write_text(altered)
         assert altered.count('if(!sending) read_pos<=0;') == 1
         wrong = altered.replace('if(!sending) read_pos<=0;', "if(!sending) read_pos<=1;")
