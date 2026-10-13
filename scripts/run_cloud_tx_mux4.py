@@ -151,9 +151,16 @@ def physical_spec_path(profile):
 
 
 def physical_final_spec_path(profile):
+    if profile == 'v6_kelvin_dense_wide':
+        return ROOT/'docs/evidence/pcie-final-v6-kelvin-dense-wide-composition-20261013.json'
     assert profile in ('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10')
     middle={'power_trunks':'','interleaved':'interleaved-','kelvin_return':'kelvin-','kelvin_short':'kelvin-short-','kelvin_short_vias':'kelvin-short-vias-','kelvin_dense':'kelvin-dense-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_signal_trunks':'kelvin-signal-trunks-','kelvin_m3_10':'kelvin-m3-10-'}[profile]
     return ROOT/'docs/evidence'/('pcie-final-v5-'+middle+'composition-20261013.json')
+
+
+def physical_final_circuit_profile(profile):
+    physical_final_spec_path(profile)  # Reject unknown routing/circuit bindings.
+    return 'final_drive_v6' if profile == 'v6_kelvin_dense_wide' else 'final_drive_v5'
 
 
 def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
@@ -444,7 +451,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
-    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10'),default='power_trunks')
+    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
@@ -489,7 +496,8 @@ def main():
         if args.physical_final!='off':
             assert args.final_drive=='double_taps_margin'
             final_spec=physical_final_spec_path(args.physical_final_profile)
-            original=physical_macro(inputs,args.physical_final,final_spec,'final_drive_v5','physical-final')
+            final_circuit=physical_final_circuit_profile(args.physical_final_profile)
+            original=physical_macro(inputs,args.physical_final,final_spec,final_circuit,'physical-final')
             final_override=original.with_name('namespaced-final.spice')
             final_text = original.read_text()
             if args.diagnostic_final_r != 'actual':
@@ -498,9 +506,9 @@ def main():
                     original.with_name('mux54-compact01.spice').read_text(),
                     final_text, args.diagnostic_final_r)
                 result['diagnostic_mutation'] = mutation
-            final_override.write_text(rename_physical_top(final_text,'nssoc_physical_final_v5'))
+            final_override.write_text(rename_physical_top(final_text,'nssoc_physical_'+final_circuit))
             counts=json.loads(final_spec.read_text())['counts']
-            result['physical_final_scope']=dict(mode=args.physical_final,profile=args.physical_final_profile,instances=1,
+            result['physical_final_scope']=dict(mode=args.physical_final,profile=args.physical_final_profile,circuit_profile=final_circuit,instances=1,
                 source=str(final_spec.relative_to(ROOT)),source_sha256=sha(final_spec),
                 original_model_sha256=sha(original),namespaced_model_sha256=sha(final_override),
                 native_devices=counts['devices'],substrate_contacts=27,

@@ -416,3 +416,67 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     assert mux4.physical_final_spec_path('kelvin_signal_trunks').name=='pcie-final-v5-kelvin-signal-trunks-composition-20261013.json'
     assert mux4.physical_final_spec_path('kelvin_m3_10').name=='pcie-final-v5-kelvin-m3-10-composition-20261013.json'
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
+
+
+@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6'])
+def test_v6_physical_binding_rejects_a_validly_hashed_v5_archive(tmp_path, monkeypatch, reported_profile):
+    import hashlib
+    import io
+    import json
+    import shutil
+    import tarfile
+    profile = mux4.physical_final_circuit_profile('v6_kelvin_dense_wide')
+    assert profile == 'final_drive_v6'
+    assert mux4.physical_final_circuit_profile('kelvin_dense_wide') == 'final_drive_v5'
+    assert mux4.physical_final_spec_path('v6_kelvin_dense_wide').name == 'pcie-final-v6-kelvin-dense-wide-composition-20261013.json'
+    with pytest.raises(AssertionError):
+        mux4.physical_final_circuit_profile('unproven_geometry')
+    model = (ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v6.spice').read_bytes()
+    outputs = {'mux54-compact01.spice': hashlib.sha256(model).hexdigest()}
+    report = json.dumps(dict(circuit_profile=reported_profile, outputs=outputs,
+                             variant='critical_buses_kelvin_dense_wide')).encode()
+    archive = tmp_path/'source.tar.gz'
+    with tarfile.open(archive, 'w:gz') as packed:
+        for name, raw in [('result.json', report), ('mux54-compact01.spice', model)]:
+            info = tarfile.TarInfo('cloud-tx-layout-composition/'+name)
+            info.size = len(raw)
+            packed.addfile(info, io.BytesIO(raw))
+    spec = tmp_path/'receipt.json'
+    spec.write_text(json.dumps(dict(
+        status='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT',
+        receipt=dict(url='unused', sha256=hashlib.sha256(archive.read_bytes()).hexdigest(), bytes=archive.stat().st_size),
+        summary_sha256=hashlib.sha256(report).hexdigest(), outputs=outputs,
+        variant='critical_buses_kelvin_dense_wide')))
+    monkeypatch.setattr(mux4, 'fetch', lambda url, digest, path: shutil.copyfile(archive, path))
+    if reported_profile != profile:
+        with pytest.raises(AssertionError):
+            mux4.physical_macro(tmp_path, 'physical_compact', spec, profile, 'restored')
+    else:
+        bound = mux4.physical_macro(tmp_path, 'physical_compact', spec, profile, 'restored')
+        assert bound.read_bytes() == model
+
+
+def test_v6_final_override_keeps_original_oracle_and_accounts_for_actual_emitter_count(tmp_path):
+    from collections import Counter
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 net1 A VDD VDD sg13_lv_pmos
+XP0 X net1 VDD VDD sg13_lv_pmos
+.ends
+""")
+    args = dict(clock_bias='native_res', pre_bias='native_res', output_bias='native_res', final_drive='double_taps_margin')
+    before, old = mux4.build(tmp_path, 'nominal', **args)
+    final = ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v6.spice'
+    after, new = mux4.build(tmp_path, 'nominal', final_override=final, **args)
+    for key in ('bits','source_bits_sha256','tree_plan','mos','clock_refs','rails'):
+        assert new[key] == old[key]
+    changed = {name for name in new['hbt'] if new['hbt'][name] != old['hbt'][name]}
+    assert len(changed) == 16 and all(name.startswith('xmux.') for name in changed)
+    for name in changed:
+        assert old['hbt'][name]['nx'] == 8 and new['hbt'][name]['nx'] == 4
+        assert {k:v for k,v in old['hbt'][name].items() if k != 'nx'} == {k:v for k,v in new['hbt'][name].items() if k != 'nx'}
+    assert Counter(row['nx'] for name,row in new['hbt'].items() if name.startswith('xmux.')) == {1:1, 4:16, 8:2}
+    assert [l for l in before.splitlines() if l.startswith('V')] == [l for l in after.splitlines() if l.startswith('V')]
