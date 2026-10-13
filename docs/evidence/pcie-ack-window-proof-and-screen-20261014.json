@@ -307,6 +307,66 @@
     },
     "corrected_mapping_run": 38483062933,
     "corrected_mapping_source_head": "a8e69b9e64d5fff28b7436a96d2ed3503e44b93c",
-    "last_verified_status": "in_progress"
+    "last_verified_status": "completed",
+    "completed_result": {
+      "status": "IMPROVED_UNPLACED_PCIE_SETUP_NOT_FINAL_TIMING_OR_PHYSICAL_ADOPTION",
+      "run": 38483062933,
+      "source_head": "a8e69b9e64d5fff28b7436a96d2ed3503e44b93c",
+      "baseline_summary_asset_id": 638549205,
+      "baseline_summary_sha256": "d07e0f8756570226fd773890ca594a765f0939b37afab06016e3ba6c4649bb9c",
+      "baseline_screen_log_sha256": "935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc",
+      "candidate_summary_asset_id": 638551941,
+      "candidate_summary_sha256": "7cedfca44aa6594ac879685a7c21b813f6a9b8fae91bbccd4c122e9d360b15f2",
+      "candidate_archive_asset_id": 638551738,
+      "candidate_archive_bytes": 17154626,
+      "candidate_archive_sha256": "4fa63cd8dd1733b0a47c3e73b3676ce624e1f752b3dc6728eb5f4ee67329d520",
+      "candidate_screen_log_sha256": "20484e7663263f6d3a5828b2b414fafcef9b90ee0a30c0badca368af23c2d940",
+      "joint_controls": {
+        "baseline_passed": 16,
+        "combined_passed": 16,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": [
+        79578,
+        79065
+      ],
+      "slow_setup_ns": {
+        "baseline": {
+          "pcie_clk_i": -1.101756,
+          "clk_i": 1.251946,
+          "eth_rx_clk_i": 1.704158,
+          "eth_tx_clk_i": 1.678853
+        },
+        "combined": {
+          "pcie_clk_i": -0.9915,
+          "clk_i": 0.474044,
+          "eth_rx_clk_i": 1.702392,
+          "eth_tx_clk_i": 1.672676
+        }
+      },
+      "fast_hold_ns": {
+        "baseline": {
+          "pcie_clk_i": -0.109062,
+          "eth_rx_clk_i": -0.352538,
+          "eth_tx_clk_i": -0.351487
+        },
+        "combined": {
+          "pcie_clk_i": -0.109062,
+          "eth_rx_clk_i": -0.351181,
+          "eth_tx_clk_i": -0.353123
+        }
+      },
+      "critical_path": {
+        "start": "pcie_link_up_i",
+        "endpoint_cell": "$auto$ff.cc:337:slice$1304820",
+        "endpoint_source": "u_pcie.advertiser.refresh[0]",
+        "endpoint_q_bit": 14022,
+        "arrival_ns": 4.596929,
+        "required_ns": 3.605428,
+        "source_file_sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904"
+      },
+      "decision": "Keep as a source-bound optimization candidate: PCIe setup improves110.256ps with513 fewer cells. CPU setup loses777.902ps but stays positive474.044ps; PCIe hold unchanged, Ethernet RX improves1.357ps and TX loses1.636ps. All remain unplaced/vendor-SRAM screening; no final closure, route adoption or full-SoC mapped equivalence claim."
+    }
   }
 }

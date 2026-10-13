@@ -60,5 +60,68 @@
       "cause": "After14um X translation: the new avss lane150 plus1.64um half width leaves1.52um to existing avdd lane154.8 minus1.64um; insufficient native TM1 spacing.",
       "repair": "Move only the new avss lane from150.0 to149.6um. Resulting geometric gap to avdd is1.92um; gap to neighboring sub lane145.2 with0.82um half width is1.94um. Rerun all native decks and fault controls; these computed distances are not a DRC verdict."
     }
+  },
+  "loaded_screen": {
+    "status": "REJECTED_HOT_OUTPUT_MARGIN_WITH_DEVICE_GATES_PASSING",
+    "source_head": "22c0add34538c1c9c53ddb9caaeac220489b8217",
+    "hot_low_wire": {
+      "run": 38483554180,
+      "summary_asset_id": 638557224,
+      "summary_sha256": "2d2cdc5fd5f1213fa863d1ae2eedba6f82352a5839e68312e348ad25c2fa90d6",
+      "minimum_margin_v": 0.07695510428627772,
+      "wrong_sign_samples": 0,
+      "below100mV_samples": 64,
+      "failed_hbts": {},
+      "failed_mos": {},
+      "diagnostics": []
+    },
+    "other_cases": [
+      {
+        "run": 38483582548,
+        "condition": "nominal",
+        "mode": "physical_compact",
+        "summary_asset_id": 638546351,
+        "summary_sha256": "b1cc5ceeda2bd8e3941ce629b353112468d79a680f1aa930c5fa6b2435483564",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.2813612146771207
+      },
+      {
+        "run": 38483582548,
+        "condition": "nominal",
+        "mode": "physical_wire",
+        "summary_asset_id": 638559294,
+        "summary_sha256": "71a10a1d789c97ebb41796b192f618096d49609881c42bdc671cd2d582564b85",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.21419180385074532
+      },
+      {
+        "run": 38483554180,
+        "condition": "hot_low",
+        "mode": "physical_compact",
+        "summary_asset_id": 638545650,
+        "summary_sha256": "72ea825e5989492cf543da8e2e1c4a0a61dbcfef749d2ddec2f0f287f0f604bc",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.22988173910490173
+      },
+      {
+        "run": 38483554180,
+        "condition": "cold_high",
+        "mode": "physical_compact",
+        "summary_asset_id": 638545451,
+        "summary_sha256": "e4ca82ccc10f6635ce35aee783d1cca68b53778008890dea8b8426365e90d68e",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.272647608868114
+      },
+      {
+        "run": 38483554180,
+        "condition": "cold_high",
+        "mode": "physical_wire",
+        "summary_asset_id": 638557254,
+        "summary_sha256": "5bf0235390ada5f9d7b78b5682d0854e8c78c0585110bde13d2e8b9bd57688c5",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.26258367938301386
+      }
+    ],
+    "decision": "Load relocation alone gives only2.703mV hot margin gain over low_ports and still64failing samples. Not adopted. The independent shunt proximity candidate has unchanged low_ports loads; it does not inherit this geometry."
   }
 }
