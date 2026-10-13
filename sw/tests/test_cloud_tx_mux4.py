@@ -228,3 +228,23 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     for key in ('sap','san','sbp','sbn','sp','sn'):
         stimulus=lambda text:text.split('V'+key+' ')[1].split('R'+key+' ')[0]
         assert stimulus(before)==stimulus(after)
+
+
+def test_all_native_feeds_leave_no_ideal_reference_current_sources(tmp_path):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+""")
+    deck,c=mux4.build(tmp_path,'hot_low_hbt_bcs',clock_bias='native_res',pre_bias='native_res',output_bias='native_res')
+    assert not any(line.lower().startswith('i') for line in deck.splitlines())
+    assert 'XFINALFEED finalfeed mr 0 nssoc_tx_final_bias_feed_v1' in deck
+    assert 'XTXFEED txfeed tr 0 nssoc_tx_output_bias_feed_v1' in deck
+    assert len(c['hbt'])==62 and len(c['mos'])==64
+    assert {'i(vfinal_feed)','v(finalfeed)','i(vtx_feed)','v(txfeed)'} <= set(c['vectors'])
+    assert c['bits']==mux4.sequence()
