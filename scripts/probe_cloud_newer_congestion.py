@@ -217,18 +217,19 @@ def native():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers'), default='baseline')
     args = parser.parse_args()
     url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
     odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
     report_sha = None
     archive_bytes = None
-    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers'):
+    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers'):
         evidence_name = {'local_optimize': 'cloud-local-optimize-route-failure-20261013.json',
                          'reserved_m5': 'cloud-reserved-m5-route-failure-20261013.json',
                          'local_optimize_buffers': 'cloud-local-optimize-buffers-route-failure-20261013.json',
                          'local_data_endpoints': 'cloud-closure-continuation-20261013.json',
-                         'critical30_buffers': 'cloud-critical30-buffers-route-failure-20261013.json'}[args.source_profile]
+                         'critical30_buffers': 'cloud-critical30-buffers-route-failure-20261013.json',
+                         'seed13_buffers': 'cloud-seed13-buffers-route-failure-20261014.json'}[args.source_profile]
         evidence = json.loads((ROOT / 'docs/evidence' / evidence_name).read_text())
         if args.source_profile == 'local_data_endpoints':
             evidence = evidence['local_data_endpoints_terminal']
@@ -236,6 +237,10 @@ def main():
         if args.source_profile == 'critical30_buffers':
             assert evidence['run'] == 38420407838
             assert evidence['critical_nets_percentage'] == 30
+            assert evidence['placement_profile'] == 'local_optimize_buffers'
+        if args.source_profile == 'seed13_buffers':
+            assert evidence['run'] == 38448901835 and evidence['routing_seed'] == 13
+            assert evidence['routing_capacity_perturbation_percentage'] == 0
             assert evidence['placement_profile'] == 'local_optimize_buffers'
         assert evidence['status'] == 'FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
         receipt = evidence['receipt']

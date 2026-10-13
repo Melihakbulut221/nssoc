@@ -440,3 +440,24 @@ Run matched compact/wire4:1 trees with cascade158_kelvin_supply_direct and
 stiff65, nominal plushot_low/cold_high, original256bits/768samples and
 all unchanged native device/diagnostic limits. No acceptance until allwaves
 are actually reviewed. Main32wire38441895491 androute38448901835 remain separate.
+
+
+## Authoritative cloud continuation, 14 October
+
+Main-chip seed13 run38448901835 is terminal: actual GRT-0116,132 total
+overflow (M3=5,M4=20,M5=97,TM1=6,TM2=4). Not a timeout. Exact original
+buffer placement SHA660692b3... retained; seed13 changes only net order.
+Full failed native ODB, guide and congestion report preserved in receipt
+cloud-seed13-buffers-route-failure-20261014.json. Do not rerun blindly.
+Next inspect every marker/endpoint with registered congestion workflow
+source_profile=seed13_buffers before choosing a physical correction.
+
+WiderM3 loaded4:1 runs on661cb6c49e69e96524afd0d437e2ee7392c8896c:
+- nominal38471108761, matched compact/wire;
+- hot/cold38471122722, matched compact/wire;
+- source/license/restore checks38471139570.
+Exact v8_kelvin_low_selects_m3, cascade158_kelvin_supply_direct, stiff65.
+Keep these handles and original acceptance thresholds; no wave results yet.
+Older32wire38441895491 remains live at this readback, no duplicate.
+All work is cloud-only. Local workspace verified empty and no CAD processes.
+FullserialPHY, main-chip route and finalsetup/hold all remain OPEN.
