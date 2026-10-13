@@ -10,6 +10,27 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Cascade158 native layout passed; fresh extraction next
+
+Physical38439471582/source244c2006 passed560DRCcategories/0markers, strict
+hierarchical/flat54-deviceLVS andfivephysicalfaultcontrols. SummarySHA256
+36a5f13dd2610c274f44f77d152f088a436fc6730d146adc0041d9a92bfc32ed.
+The actual378779bytearchiveSHA256 01c49c76ecfe866f92d51432bb0d459fc5e399137f4d8ec55906805dbee9cdbf
+is now bound in the extraction registry for cascade158/direct-supply.
+Discover extraction run before dispatch; after graph and13corruptioncontrols,
+compose its own54devices and newRC, then run original loaded PVT. No adoption.
+
+Stiff65 final-wire nominal38437908191 now passes all component gates:
+156.432mVminimum, no wrong/low samples, lowestVCE408.677mV.
+Summary asset637755452/SHA73805fdc656508e5487bc743f28ac86041d5f096a075fb2d6bb26490b75ab93d.
+Cold wire38437911585 also passes:243.895mVminimum, lowestVCE417.116mV.
+Asset637751954/SHAa3c134f23aac7b5636b7c09aa55c64eadfa20645d767dca853d8280929090948.
+These repair the prior four nominal/cold selector-VCE failures. Hot wire is
+still running; three compact controls pass. Full PHY acceptance remainsOPEN.
+Native diagnoses38438856460/38438860154 and sourcechecks38438863474passed.
+New-prestage sourcechecks38439475710passed. Mainroute38420407838 remainslive.
+All CAD/tests remain hosted; localworkspace is empty.
+
 ## New physical prestage candidate — cascade158 with direct supply
 
 New cascade158 changes only XFPR/XFNR native output-divider lengths14to15.8um,
