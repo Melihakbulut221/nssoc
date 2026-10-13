@@ -290,8 +290,10 @@ def main():
                 # ground and final MUX delay grows9.47ps to22.28ps. Increase
                 # only the same-net local M5 return metal and its native via
                 # arrays; keep all54devices, tail M4 shunt and RC rules intact.
+                # Eight columns failed M4/M5 spacing at a native pin:0.190um.
+                # Six columns retain parallel cuts with more native clearance.
                 changes.extend([
-                    ('via(2, 5, x, y, 4)', 'via(2, 5, x, y, 8)'),
+                    ('via(2, 5, x, y, 4)', 'via(2, 5, x, y, 6)'),
                     ('box(5, min(x,lane)-0.8, y-0.8, max(x,lane)+0.8, y+0.8)',
                      'box(5, min(x,lane)-1.6, y-1.6, max(x,lane)+1.6, y+1.6)'),
                     ('box(5, lane-0.8, min(return_y,y)-0.8, lane+0.8, max(return_y,y)+0.8)',

@@ -47,7 +47,10 @@ emitter means remain32.898/34.767mV above ground. Exact summaries are bound
 in JSON `local_tail_hot_diagnosis`; no acceptance follows from diagnosis.
 
 New `critical_buses_kelvin_local_return` keeps finalv8 and local-tail routing,
-widens only local M5 return1.6to3.2um and doubles its native via columns4to8.
+widens only local M5 return1.6to3.2um. First native run38406101139
+failed two M4/M5 spacing markers at0.190um. Exact marker readback38406515628
+is retained. Revision uses6columns at M2-to-M5 pin stacks (original4),
+keeping8columns at the M5-to-TM1 return feed. Fresh DRC/LVS is required.
 First prove actual DRC/LVS and physical fault rejection, then extract native
 RC and test unchanged full-wave/PVT gates. This is an unverified candidate.
 Source/licence/migration checks38405171329passed on2b0afc09.
