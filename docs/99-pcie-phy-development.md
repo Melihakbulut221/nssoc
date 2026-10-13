@@ -501,3 +501,13 @@ zero, but all 128 early transition samples remain below 100 mV (minimum
 with minima 0.385784, 0.389226, 0.390086 and 0.384941 V. Both interface gates
 pass, including final amplitude 161.010 mV. This is progress in a component
 study, not closure of the full serial PHY or its parasitic qualification.
+
+Hosted diagnosis 38369613905 binds the complete dense compact/wire captures
+and original bit oracle. The four failing selector HBT collectors lose
+121–123 mV in time-mean voltage while their emitters rise 21–23 mV; their
+mean VCE loses about 143–144 mV. The actual transition-time distributions
+are recorded in the cloud continuation checkpoint, without phase adjustment.
+The next physical hypothesis, `critical_buses_kelvin_dense4`, increases only
+M3-to-TM1 lower-via and TopVia1 rows from two to four. All device parameters,
+wire coefficients and acceptance limits stay fixed. Native physical checks,
+fresh extraction and loaded waveforms must determine whether it helps.

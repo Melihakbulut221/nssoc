@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T08:26:48.210061+00:00",
+  "as_of": "2026-10-13T08:33:46.081226+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -93,7 +93,7 @@
   },
   "next_actions": [
     "Combined via-array tree38360782776 completed:69wrongsign samples,128early samples below100mV and6HBT fail. All interface amplitude/commonmode gates nowpass. No waveformadoption. InternalDC38361509259 shows maximum intrinsicconductor pairR23..29ohm, downfrom36..43ohm.",
-    "Dense final chain completed through loaded-tree38365522474:0wrong signs but128early samples below100mV and4HBTminVCE failures. Candidate rejected; investigate remainingactualwirelatency/deviceheadroom using exact savedcaptures. Do not repeat nominal baseline or changefixedoraclephases.",
+    "Dense nominal source-bound diagnosis38369613905 completed: wire selector collectors drop121..123mV and emitters rise21..23mV againstcompact; actual crossing summaries are retained. New dense4 physical variant changes only M3-to-TM1 lower-via andTopVia1rowcounts2to4. Nativephysicalgates/freshRC/composition/waveforms mustallpassbefore anyadoption.",
     "Metal DC comparison38359571709 validates geometry-derived resistance decrease, not PHY or dynamic acceptance. Sourcebit phases and all device/interface limits remain unchanged.",
     "Mainroute38347061685 failed158overflow; exact reserved_m5 diagnostic required. Broadplacement38334595459 live at last check; do not restartforage. New push52752ae3 also launched checks38359571641/38359580317, publications38359580321, pcie-buffered-soc38359580405 and pcie-transaction38359580424; inspect eventual results.",
     "Keep all CAD/tests hosted. All migration and checkout retirement complete; local workspace is empty. All four final hosted reconstruction groups passed. Continue solely through GitHub APIs and hosted workflows; do not recreate local checkout.",
@@ -785,5 +785,151 @@
     "below_100mv_samples": 128,
     "minimum_margin_v": 0.004927137858415032,
     "hbt_failures": 4
+  },
+  "dense_tree_diagnosis": {
+    "run": 38369613905,
+    "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38369613905-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38369613905-1.summary.json",
+    "summary_sha256": "3f7240f3d6325f2193133494f124b035cc376b5977d916a732293502dd1a6784",
+    "transition_summary": {
+      "physical_compact": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 8.346066839557476,
+          "median": 8.509053856512173,
+          "maximum": 8.600155210412536
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 4.3943514156285906,
+          "median": 4.529111314572955,
+          "maximum": 4.671491406305026
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 23.531724267241177,
+          "median": 23.733680397754487,
+          "maximum": 23.921876890731635
+        }
+      },
+      "physical_wire": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 21.251764055576057,
+          "median": 23.22133726465332,
+          "maximum": 24.646856511323563
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 4.502740075847437,
+          "median": 4.821318549325049,
+          "maximum": 5.2150542406693985
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 37.69852598083099,
+          "median": 40.140894201147205,
+          "maximum": 42.12180165469914
+        }
+      }
+    },
+    "failed_device_deltas": {
+      "xmux.xd0009": {
+        "compact_terminals": [
+          "xmux.n_19",
+          "sp",
+          "xmux.n_66",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t009_c",
+          "xmux.t009_b",
+          "xmux.t009_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.12092102724640474,
+          "base_v": 0.014462086912286454,
+          "emitter_v": 0.022625157314989264,
+          "vce_v": -0.14354618456139412,
+          "vbe_v": -0.008163070402702699,
+          "collector_current_a": -0.0015934424703214563
+        }
+      },
+      "xmux.xd0010": {
+        "compact_terminals": [
+          "xmux.n_17",
+          "sn",
+          "xmux.n_66",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t010_c",
+          "xmux.t010_b",
+          "xmux.t010_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.12266248182002437,
+          "base_v": 0.01444812775432558,
+          "emitter_v": 0.021112231775523682,
+          "vce_v": -0.1437747135955484,
+          "vbe_v": -0.006664104021198436,
+          "collector_current_a": -0.001595239339140843
+        }
+      },
+      "xmux.xd0021": {
+        "compact_terminals": [
+          "xmux.n_17",
+          "sn",
+          "xmux.n_66",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t021_c",
+          "xmux.t021_b",
+          "xmux.t021_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.12247601559934362,
+          "base_v": 0.014448411342198098,
+          "emitter_v": 0.020865042397331668,
+          "vce_v": -0.14334105799667518,
+          "vbe_v": -0.006416631055133681,
+          "collector_current_a": -0.001571997302215228
+        }
+      },
+      "xmux.xd0022": {
+        "compact_terminals": [
+          "xmux.n_19",
+          "sp",
+          "xmux.n_66",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t022_c",
+          "xmux.t022_b",
+          "xmux.t022_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.12111364843209205,
+          "base_v": 0.014461878470606981,
+          "emitter_v": 0.022860714607193966,
+          "vce_v": -0.14397436303928624,
+          "vbe_v": -0.008398836136587096,
+          "collector_current_a": -0.0016161361380827477
+        }
+      }
+    }
+  },
+  "broad_placement_terminal": {
+    "run": 38334595459,
+    "status": "CANCELLED_AFTER_ABOUT_SIX_HOURS_NO_ROUTE_ACCEPTANCE",
+    "jobs": [
+      115091737235,
+      115091737424
+    ]
   }
 }
