@@ -510,23 +510,27 @@ def test_cascade16_changes_only_two_native_output_pulldowns():
         assert new[name]==expected
 
 
-@pytest.mark.parametrize('reported_profile', ['cascade14','cascade16'])
-def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, reported_profile):
+@pytest.mark.parametrize('reported_profile', ['cascade14','cascade16','cascade158'])
+@pytest.mark.parametrize('requested,expected_profile,version,variant', [
+    ('cascade16_kelvin_dense_wide','cascade16','v3','critical_buses_kelvin_dense_wide'),
+    ('cascade158_kelvin_supply_direct','cascade158','v4','critical_buses_kelvin_supply_direct'),
+])
+def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, reported_profile,
+                                                       requested, expected_profile, version, variant):
     import hashlib
     import io
     import json
     import shutil
     import tarfile
-    requested='cascade16_kelvin_dense_wide'
-    assert mux4.physical_spec_path(requested).name=='pcie-cascade16-kelvin-dense-wide-composition-20261013.json'
-    assert mux4.physical_prestage_circuit_profile(requested)=='cascade16'
+    assert mux4.physical_spec_path(requested).name=='pcie-'+requested.replace('_','-')+'-composition-20261013.json'
+    assert mux4.physical_prestage_circuit_profile(requested)==expected_profile
     assert mux4.physical_prestage_circuit_profile('kelvin_dense_wide')=='cascade14'
     with pytest.raises(AssertionError):
         mux4.physical_prestage_circuit_profile('unproven_prestage')
-    model=(ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v3.spice').read_bytes()
+    model=(ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice').read_bytes()
     outputs={'mux54-compact01.spice':hashlib.sha256(model).hexdigest()}
     report=json.dumps(dict(circuit_profile=reported_profile,outputs=outputs,
-                           variant='critical_buses_kelvin_dense_wide')).encode()
+                           variant=variant)).encode()
     archive=tmp_path/'source.tar.gz'
     with tarfile.open(archive,'w:gz') as packed:
         for name,raw in [('result.json',report),('mux54-compact01.spice',model)]:
@@ -537,13 +541,13 @@ def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, 
         status='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT',
         receipt=dict(url='unused',sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),bytes=archive.stat().st_size),
         summary_sha256=hashlib.sha256(report).hexdigest(),outputs=outputs,
-        variant='critical_buses_kelvin_dense_wide')))
+        variant=variant)))
     def selected_spec(profile):
         assert profile==requested
         return spec
     monkeypatch.setattr(mux4,'physical_spec_path',selected_spec)
     monkeypatch.setattr(mux4,'fetch',lambda url,digest,path:shutil.copyfile(archive,path))
-    if reported_profile!='cascade16':
+    if reported_profile!=expected_profile:
         with pytest.raises(AssertionError):
             mux4.physical_prestage(tmp_path,'physical_compact',requested)
     else:

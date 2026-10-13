@@ -10,6 +10,24 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Cascade158 exact composition passed; loaded profile ready
+
+Composition38441886627 passed exact54devices/3870R/2579C, including both real
+15.8um output-divider resistors. Distinct immutable receipt:
+docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json.
+Loaded profile cascade158_kelvin_supply_direct binds only its own generated
+devices and RC. Regression rejects validly hashed old cascade14/16 reports
+when158is requested. All acceptance limits and original source bits stayfixed.
+
+Next run4:1 nominal andtemperature_voltage, matchedcompact/wire, stiff65,
+prestage cascade158_kelvin_supply_direct, final v8_kelvin_low_critical.
+Discover exact existing runs before dispatch. This tests the hot input-CM
+hypothesis after native physical/extraction/composition passes; no electrical
+adoption or full32/x4PHY acceptance follows from the component layout gates.
+Corrected old-prestage32:1 run38441895491 is pending behind38440472079;
+mainroute38420407838 remainslive. Source/capturechecks38441891276passed.
+All work remains hosted, local workspace empty, fullgoalOPEN.
+
 ## Active hosted jobs and tested capture repair
 
 Source **26e3692a27cb4aea7faa877b8df3388ddc06024d**:

@@ -150,6 +150,8 @@ def tree_plan(streams):
 
 
 def physical_spec_path(profile):
+    if profile == 'cascade158_kelvin_supply_direct':
+        return ROOT/'docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json'
     if profile == 'cascade16_kelvin_dense_wide':
         return ROOT/'docs/evidence/pcie-cascade16-kelvin-dense-wide-composition-20261013.json'
     assert profile in ('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct')
@@ -201,7 +203,8 @@ def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
 
 def physical_prestage_circuit_profile(profile):
     physical_spec_path(profile)  # Validate the explicit source/geometry binding.
-    return 'cascade16' if profile=='cascade16_kelvin_dense_wide' else 'cascade14'
+    return {'cascade16_kelvin_dense_wide':'cascade16',
+            'cascade158_kelvin_supply_direct':'cascade158'}.get(profile,'cascade14')
 
 
 def physical_prestage(inputs, mode, profile='baseline'):
@@ -488,7 +491,7 @@ def main():
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
     parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail','v8_kelvin_local_return','v8_kelvin_local_supply','v8_kelvin_local_internal','v8_kelvin_compact_internal','v8_kelvin_low_internal','v8_kelvin_low_critical'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
-    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct','cascade16_kelvin_dense_wide'),default='baseline')
+    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct','cascade16_kelvin_dense_wide','cascade158_kelvin_supply_direct'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
     parser.add_argument('--clock-reference',choices=tuple(CLOCK_REFERENCES),default='baseline')
