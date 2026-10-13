@@ -10,6 +10,31 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Active continuation after terminal chip-route and32:1 results
+
+Native congestion diagnosis **38443872244** was dispatched on
+**ec1320da9d0076c2449cb839ece808199e654002**; source/licence/migration/capture
+checks **38443875864 PASSED**. Inspect its exact153-overflow report before
+another route. Main route38420407838 is terminal FAILED, not still running.
+
+Original32:1 **38440472079** is terminal failure. Wire summary asset637780913,
+SHAaff364ea99392c6a901718e2b488cc796736ec42041b356d9dfb886de822259e,
+reports incomplete native capture with memory requirement42.522GB and malloc
+failure. This is NOT a measured electrical rejection. Compact capture asset
+637830054/SHA b348b17ba2b45cbae9029e72b2fd41beee9b4106585b4eca254feee5761abdd2
+completed; do not infer full-tree acceptance before capture-command/log audit.
+The previously identified oversized-save risk can cause unrequested recording;
+its contribution to this memory error still requires actual-log verification.
+Do not present that mechanism as already proven from the memory warning alone.
+Corrected bounded-save32:1 **38441895491** is now in_progress. Keep its source
+and original failed captures; never count missing/full-wave data as a pass.
+
+New-prestage4:1 nominal **38442809617** and hot/cold **38442814441** remain the
+next electrical evidence for cascade158/direct-supply plus stiff65 and the
+low-critical final macro. Source/binding/capture checks38442818351passed.
+All execution stays GitHub-hosted and local workspace remains empty. Full
+serialGen3x4, assembled main-chip routing and finalsetup/hold stayOPEN.
+
 ## Main route terminal: native congestion153, priority30 rejected
 
 Run38420407838/job115375929807 completed with native GRT-0116, after
