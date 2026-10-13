@@ -31,15 +31,17 @@ def main():
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
-    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
     args = parser.parse_args()
-    if args.circuit_profile == 'cascade16':
+    if args.circuit_profile in ('cascade16','cascade158'):
         assert args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',), 'New prestage keeps proven dense physical geometry'
     if args.variant in ('critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal'):
         assert args.circuit_profile == 'final_drive_v8', 'Tail-path experiment binds the measured v8 circuit only'
     if args.variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct'):
-        assert args.circuit_profile == 'cascade14', 'Supply-feed experiment binds measured cascade14 prestage'
-    dense_prestage = args.circuit_profile in ('cascade14','cascade16') and args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',)
+        assert args.circuit_profile in ('cascade14','cascade158'), 'Supply feed binds an explicitly generated prestage circuit'
+    if args.circuit_profile == 'cascade158':
+        assert args.variant == 'critical_buses_kelvin_supply_direct', 'New circuit requires its own direct-supply layout and fresh RC'
+    dense_prestage = args.circuit_profile in ('cascade14','cascade16','cascade158') and args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',)
     if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
         assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
@@ -87,11 +89,12 @@ def main():
         source = (originals / 'layout91.py').read_text()
         edits = []
         physical_source=(originals/'physical92.py').read_text()
-        if args.circuit_profile in ('cascade14','cascade16','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'):
-            if args.circuit_profile in ('cascade14','cascade16'):
+        if args.circuit_profile in ('cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'):
+            if args.circuit_profile in ('cascade14','cascade16','cascade158'):
                 version,expected={
                     'cascade14':('v2','c97692bcc4389c256479631e820a4293b79121d2225d767f5635429cd7dd0805'),
                     'cascade16':('v3','9cc69586dbe83af7d58ff1c1f15a58aac17958ada8916cd1dbe0554e2813cd39'),
+                    'cascade158':('v4','c24851159489e6947989738bc6859e6731326b77ca9e17acaac9f6bd2d7b1495'),
                 }[args.circuit_profile]
                 circuit=ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice'
                 top=f'nssoc_tx_mux2_{args.circuit_profile}_layout_v1'

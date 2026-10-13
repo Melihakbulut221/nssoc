@@ -10,6 +10,30 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## New physical prestage candidate — cascade158 with direct supply
+
+New cascade158 changes only XFPR/XFNR native output-divider lengths14to15.8um,
+retaining all nineteen HBTs and the other six resistors. It uses direct-supply
+routing, with a distinct new circuit hash and required fresh physical/RC
+evidence. No existing cascade14 or cascade16 RC is reused for this circuit.
+
+Motivation: the earlier16um compact cold case exceeded the2.05V input-CM
+maximum (2.051157V), while14um hot extracted cases fall below1.8V. Separately,
+actual direct-supply geometry reduced avdd-to-output-load resistance from
+7.034/8.203ohm to5.037/5.056ohm, but14um hot CM still failed. The intermediate
+fixed length plus real reduced supply drop is a testable hypothesis; do not
+interpolate these different circuits into a pass. No per-corner dimensions,
+model coefficients, phases or limits change. Native560-categoryDRC, strict
+54-device hierarchical/flatLVS andfivefaultcontrols come first, then fresh
+native RC/composition and all unchanged loaded PVT screens.
+
+Discover physical cascade158/critical_buses_kelvin_supply_direct run before
+dispatch. Stiff65 clock-reference runs38437908191/38437911585 continue independently;
+three compact controls pass, extracted-wire results remain pending. Diagnose
+the unchanged low_critical hot/cold captures in38438856460/38438860154.
+Source checks38438863474 were dispatched. Main route38420407838 remains live.
+Full serial PHY, assembled layout and final timing remain OPEN. Cloud-only.
+
 ## Source-bound collector-route PVT diagnosis
 
 Exact low_critical hot/cold compact/wire captures from38434462503 are now

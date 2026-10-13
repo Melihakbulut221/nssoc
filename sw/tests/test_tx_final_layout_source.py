@@ -143,3 +143,18 @@ def test_v8_generated_reference_preserves_body_contacts_and_selector_size():
     assert m.audit(CORE8,NATIVE8,generated,profile='v8')['generated_sha256']
     with pytest.raises(AssertionError):m.audit(CORE8,NATIVE8,generated.replace(taps[0]+'\n',''),profile='v8')
     with pytest.raises(AssertionError):m.audit(CORE8,NATIVE8,generated.replace('nx=6','nx=8',1),profile='v8')
+
+
+def test_cascade158_preserves_native_topology_and_only_changes_output_dividers():
+    def devices(version):
+        text=(ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice').read_text()
+        return {line.split()[0]:line.split()[1:] for line in text.splitlines() if line.startswith('X')}
+    old,new=devices('v2'),devices('v4')
+    assert old.keys()==new.keys() and len(new)==27
+    assert {name for name in old if old[name]!=new[name]}=={'XFPR','XFNR'}
+    for name in old:
+        expected=[('l=15.8u' if name in ('XFPR','XFNR') and value=='l=14.0u' else value)
+                  for value in old[name]]
+        assert new[name]==expected
+    assert sum('npn13G2' in row for row in new.values())==19
+    assert sum('rppd' in row for row in new.values())==8
