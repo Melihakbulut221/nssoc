@@ -173,8 +173,11 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
 - v6 reduces 16 data/selector HBTs from Nx8 to Nx4; the reference, tail HBTs,
   eight resistors and 27 substrate contacts retain their original contracts.
   It is an unscreened electrical candidate, not a completed serial PHY.
-- Extract the exact v6 receipt in the extraction input manifest, then compose
-  its native devices and fresh RC. The v6 composition manifest deliberately
-  has no extraction receipt yet; do not dispatch composition until it is bound.
+- v6 extraction **38384179434** passed native graph and 13 corruption controls
+  with **3893 R / 2594 C**. Composition **38384468517** passed, preserving all
+  54 devices. Its distinct receipt is `pcie-final-v6-kelvin-dense-wide-composition-20261013.json`.
+- Run the unchanged loaded-tree oracle using final profile `v6_kelvin_dense_wide`,
+  matched compact/wire, streams4 and prestage `power_trunks_vias`. Discover an
+  existing run before dispatching; electrical acceptance remains unproven.
 - The local workspace was checked again and remains empty. All CAD and tests
   continue on GitHub-hosted runners. Routing run **38371498733** is still live.

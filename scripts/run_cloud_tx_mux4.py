@@ -506,7 +506,7 @@ def main():
                     original.with_name('mux54-compact01.spice').read_text(),
                     final_text, args.diagnostic_final_r)
                 result['diagnostic_mutation'] = mutation
-            final_override.write_text(rename_physical_top(final_text,'nssoc_physical_'+final_circuit))
+            final_override.write_text(rename_physical_top(final_text,'nssoc_physical_final_'+final_circuit.rsplit('_',1)[1]))
             counts=json.loads(final_spec.read_text())['counts']
             result['physical_final_scope']=dict(mode=args.physical_final,profile=args.physical_final_profile,circuit_profile=final_circuit,instances=1,
                 source=str(final_spec.relative_to(ROOT)),source_sha256=sha(final_spec),
