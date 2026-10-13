@@ -427,3 +427,16 @@ samples (minimum signed margin -0.112321 V). It is rejected for electrical
 adoption; unchanged sample phases and device/interface gates remain enforced.
 Full reports and immutable artifact receipts are retained in the
 [Kelvin loaded-tree record](evidence/pcie-kelvin-macros-loaded-tree-20261013.json).
+
+The hosted crossing diagnosis 38357221710 located the main extra delay in the
+final MUX: median clock-to-MUX zero crossing increased from 8.509 ps in the
+compact control to 29.849 ps with physical wires. MUX-to-TX delay changed from
+4.529 ps to 4.848 ps. The wired 100 mV output crossing reached 47.404 ps median,
+after the unchanged first sample at 37.5 ps. All 128 changing-bit events were
+unambiguous; no oracle phase or acceptance limit was changed.
+
+A separate geometry moves the emitter-return crossbar from -92.4 to +64.8
+micrometres, above the final tail/reference banks. The native device circuit,
+M5 width, reference jog and via counts remain the same. Run 38357052327 passed
+560 DRC categories, strict hierarchical/flat LVS and all five injected faults.
+Its new parasitic extraction and electrical comparison remain required.
