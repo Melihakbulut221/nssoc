@@ -70,8 +70,10 @@ This addresses measured hot metal drops, with alldevices andgates unchanged.
 Physical DRC/LVS/fault controls, fresh RC and loaded waveforms must pass.
 Physical **38397735518** passed560DRCcategories/0markers,strict54deviceLVS
 andfivefaultcontrols on **2367c8c0**. Native extraction **38398237267** passed
-with3939R/2619C and13corruptioncontrols. Composition is next; discover the
-existing composition run before dispatch. Electrical acceptance pending.
+with3939R/2619C and13corruptioncontrols. Composition **38398613537** passed;
+final profile `v8_kelvin_tail_paths` binds its distinct receipt. Run original
+nominal andtemperature_voltage streams4 matchedcompact/wire with prestage
+`kelvin_dense_wide`. Discover existingruns first. Electrical acceptance pending.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
