@@ -367,6 +367,13 @@
         "source_file_sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904"
       },
       "decision": "Keep as a source-bound optimization candidate: PCIe setup improves110.256ps with513 fewer cells. CPU setup loses777.902ps but stays positive474.044ps; PCIe hold unchanged, Ethernet RX improves1.357ps and TX loses1.636ps. All remain unplaced/vendor-SRAM screening; no final closure, route adoption or full-SoC mapped equivalence claim."
+    },
+    "refresh_partition_hypothesis": {
+      "source_fc_sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+      "baseline": "physical_idle_credit_window_eop",
+      "candidate": "physical_idle_credit_window_eop_refresh",
+      "change": "Move refresh_count into its own sequential block, preserving reset, link-down, accepted update EOP clear, initialization saturation and increment priorities. Remove redundant rst/link terms only where the enclosing counter priority already forces zero. No extra pipeline cycle, timer change or observation mask.",
+      "required_proof": "Exact source-bound FC state/output equivalence at REFRESH_CYCLES0,1,2,127,128,255,1024,2147483647,-1; wrong-phase clear must fail. Then16baseline+16candidate public-port cases, fresh mapping and original three-corner STA. No adoption before these measurements."
     }
   }
 }
