@@ -10,6 +10,28 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Latest: hot interface repaired, new data-bank candidate pending native proof
+
+Cascade158 loaded runs38442809617/38442814441 completed. All six native
+captures pass device/interface gates without diagnostics. Five component
+screens pass; hot wire still fails128 early amplitudes, zero wrong signs,
+minimum17.694mV. Hot final input CM now1.808354..1.846300V passes. This does
+not close full serial PHY. Preserve the six immutable summaries separately.
+
+New final_drive_v9 changes ONLY twelve data HBTs Nx4 toNx2 fromv8. Selectors
+remainNx6; tails/reference, eight resistors and27contacts remain unchanged.
+It is an unverified loading/delay hypothesis, not adoption. Source regressions
+reject old profiles, changed selectors/tails and missing body contacts.
+Generate critical_buses_kelvin_low_critical on GitHub, then fresh native RC,
+composition and original loaded gates with cascade158/stiff65. Discover the
+existing physical workflow before dispatch; never substitute v8 RC.
+
+Congestion diagnosis38443872244 passed native connectivity readback:113
+markers,155 summed marker overflow,933 distinct congested nets. Layer-level
+153overflow is a different native report, not a discrepancy to suppress.
+Main route remains failed. Corrected bounded-save32:1 run38441895491 is live.
+Local workspace empty; all CAD/tests/cloud artifacts stay on GitHub.
+
 ## Active continuation after terminal chip-route and32:1 results
 
 Native congestion diagnosis **38443872244** was dispatched on

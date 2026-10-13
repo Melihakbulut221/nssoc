@@ -158,3 +158,34 @@ def test_cascade158_preserves_native_topology_and_only_changes_output_dividers()
         assert new[name]==expected
     assert sum('npn13G2' in row for row in new.values())==19
     assert sum('rppd' in row for row in new.values())==8
+
+
+CORE9=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v9_layout_core.spice').read_text()
+NATIVE9=(ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v9.spice').read_text()
+
+
+def test_v9_changes_only_twelve_data_multiplicities():
+    assert m.audit(CORE9,NATIVE9,profile='v9')['profile']=='v9'
+    changes=[(a,b) for a,b in zip(m.parse(CORE8),m.parse(CORE9),strict=True) if a!=b]
+    assert len(changes)==12
+    for a,b in changes:
+        assert a[:2]==b[:2] and a[0]=='npn13g2' and a[1][1] in ('ap','an','bp','bn')
+        assert a[2]['nx']=='4' and b[2]['nx']=='2'
+        assert {k:v for k,v in a[2].items() if k!='nx'}=={k:v for k,v in b[2].items() if k!='nx'}
+    for core,native,profile in [(CORE8,NATIVE8,'v9'),(CORE9,NATIVE9,'v8')]:
+        with pytest.raises(AssertionError):m.audit(core,native,profile=profile)
+    for before,after in [('Nx=2','Nx=4'),('Nx=6','Nx=8'),('Nx=8','Nx=6')]:
+        with pytest.raises(AssertionError):
+            m.audit(CORE9.replace(before,after),NATIVE9.replace(before.lower(),after.lower()),profile='v9')
+
+
+def test_v9_generated_reference_keeps_all_contacts_and_device_sizes():
+    rows=['.subckt native '+' '.join(sorted(m.PORTS))]
+    for i,(model,nodes,params) in enumerate(m.parse(CORE9)):
+        nodes[-1]='BULK'
+        rows.append('X%d '%i+' '.join(nodes)+' '+model+' '+' '.join(k+'='+v for k,v in params.items()))
+    taps=[f'RPTAP{i} sub BULK ptap1 A=4p P=8u' for i in range(27)]
+    generated='\n'.join(rows+taps+['.ends native'])
+    assert m.audit(CORE9,NATIVE9,generated,profile='v9')['generated_sha256']
+    with pytest.raises(AssertionError):m.audit(CORE9,NATIVE9,generated.replace(taps[0]+'\n',''),profile='v9')
+    with pytest.raises(AssertionError):m.audit(CORE9,NATIVE9,generated.replace('nx=2','nx=4',1),profile='v9')
