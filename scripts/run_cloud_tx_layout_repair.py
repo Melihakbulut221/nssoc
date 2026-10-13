@@ -163,6 +163,12 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
+            if args.circuit_profile == 'final_drive_v5' and args.variant == 'critical_buses_power_trunks':
+                # Actual first-layout extraction shorted ea to avdd: D20's
+                # 18um resistor contact via at x365.4 meets D21's ea escape
+                # lane x366 at the same y. DRC alone did not detect this.
+                # Move whole resistor banks, preserving every device value.
+                changes.append(('337.2+19.2*(i-19)', '337.2+28.8*(i-19)'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
