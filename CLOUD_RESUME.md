@@ -37,6 +37,21 @@ remain OPEN.** All CAD/tests run in GitHub. The local workspace is empty.
   next circuit or geometry candidate. Full32:1, actual clocks/CDR, RF/body/ESD
   and assembled serial PHY remain unproven. All work stays cloud-only.
 
+### Next physical repair — local M5 return and via arrays
+
+Full-wave diagnoses **38405000500** and **38405006454** passed source/capture
+binding and integration controls. Old-prestage local-tail hot capture has
+clock-to-MUX median9.473ps compact versus22.277ps wire; output reaches100mV
+at median41.717ps wire, after the unchanged37.5ps early observation. Tail
+emitter means remain32.898/34.767mV above ground. Exact summaries are bound
+in JSON `local_tail_hot_diagnosis`; no acceptance follows from diagnosis.
+
+New `critical_buses_kelvin_local_return` keeps finalv8 and local-tail routing,
+widens only local M5 return1.6to3.2um and doubles its native via columns4to8.
+First prove actual DRC/LVS and physical fault rejection, then extract native
+RC and test unchanged full-wave/PVT gates. This is an unverified candidate.
+Source/licence/migration checks38405171329passed on2b0afc09.
+
 ### Exact physical sources for these studies
 
 - Local-tail finalv8: physical **38400244543**, RC **38400976763**, composition

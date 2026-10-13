@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T13:22:54.624042+00:00",
+  "as_of": "2026-10-13T13:34:19.591785+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -83,7 +83,7 @@
       "source": "5f34370641b58f57c9e22bc2528e17bb0d1690ce",
       "status": "PASS_SPDX_INVENTORY_REUSE_AND_MIGRATION_REGRESSION"
     },
-    "latest_source_checks_run": 38396713550,
+    "latest_source_checks_run": 38405171329,
     "latest_source_checks_status": "PASS"
   },
   "transfer_snapshot": {
@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Dispatch source-bound full-wave diagnosis studies local_tail_hot and cascade16_local_tail_hot once, then inspect actual transistor voltages, currents and stage delays. These reuse the exact completed native captures; no resimulation or acceptance changes.",
+    "Run fresh local-return geometry through native DRC/LVS/fault controls before RC extraction or loaded waves. Existing local-tail and cascade16 candidates remain rejected. Diagnosis38405000500/38405006454 passed; exact records retained in local_tail_hot_diagnosis.",
     "Do not rerun the four completed local-tail studies unchanged. Read completed_local_tail_comparison and its exact immutable summaries. Neither candidate is accepted; hot wire and compact violations remain. Diagnose actual voltage/headroom and parasitic delay before selecting another source-bound circuit or geometry change.",
     "Inspect existing main route38395878470 before dispatching another route. Latest observed status:in_progress. Keep estimated eth_rx setup regression-4.524ps recorded; no routing or timing closure without native reports.",
     "All source edits through GitHub API; all CAD, simulation, tests and bulk artifacts on GitHub-hosted infrastructure. Local project and transient paths are empty; never recreate local checkout or CAD producers.",
@@ -25555,5 +25555,468 @@
     "local_cad_processes": 0,
     "receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
     "scope": "NSSOC project data; no unrelated user files or shared application configuration removed."
+  },
+  "local_tail_hot_diagnosis": [
+    {
+      "run": 38405000500,
+      "study": "local_tail_hot",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38405000500-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38405000500-1.summary.json",
+      "summary_sha256": "dc6f2c6f010a248f789b1d1574873223b53d09a1226ff0c881eaa63981f9beea",
+      "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+      "cases": {
+        "physical_compact": {
+          "transitions": {
+            "clock_to_mux_zero_ps": {
+              "count": 128,
+              "minimum": 9.313038104731664,
+              "median": 9.47332580841622,
+              "maximum": 9.559004789584824
+            },
+            "mux_to_tx_zero_ps": {
+              "count": 128,
+              "minimum": 5.862960307708883,
+              "median": 5.980251497519189,
+              "maximum": 6.10686616673917
+            },
+            "source_to_output_100mv_ps": {
+              "count": 128,
+              "minimum": 26.95509775412747,
+              "median": 27.187864330955733,
+              "maximum": 27.444413251135853
+            }
+          },
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38402059863-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38402059863-1.tar.gz",
+            "sha256": "1d63967dac48881783bb734d710d1ed02a15c817c082964d17fd38b449960ae4",
+            "bytes": 109738952
+          },
+          "tail_devices": {
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.n_66",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.3992713886239677,
+                "maximum": 0.4558435860080102,
+                "time_mean": 0.44256102884824267
+              },
+              "base_v": {
+                "minimum": 0.7949342896392815,
+                "maximum": 0.8107638563677565,
+                "time_mean": 0.804787755768054
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.3992713886239677,
+                "maximum": 0.4558435860080102,
+                "time_mean": 0.44256102884824267
+              },
+              "vbe_v": {
+                "minimum": 0.7949342896392815,
+                "maximum": 0.8107638563677565,
+                "time_mean": 0.804787755768054
+              },
+              "collector_current_a": {
+                "minimum": 0.005630506851566732,
+                "maximum": 0.006871056014180317,
+                "time_mean": 0.006490348907144555
+              },
+              "passed": false
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.n_66",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.3992713886239677,
+                "maximum": 0.4558435860080102,
+                "time_mean": 0.44256102884824267
+              },
+              "base_v": {
+                "minimum": 0.7949342896392815,
+                "maximum": 0.8107638563677565,
+                "time_mean": 0.804787755768054
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.3992713886239677,
+                "maximum": 0.4558435860080102,
+                "time_mean": 0.44256102884824267
+              },
+              "vbe_v": {
+                "minimum": 0.7949342896392815,
+                "maximum": 0.8107638563677565,
+                "time_mean": 0.804787755768054
+              },
+              "collector_current_a": {
+                "minimum": 0.005630506851566714,
+                "maximum": 0.006871056014180372,
+                "time_mean": 0.0064903489071445
+              },
+              "passed": false
+            }
+          }
+        },
+        "physical_wire": {
+          "transitions": {
+            "clock_to_mux_zero_ps": {
+              "count": 128,
+              "minimum": 20.737226565771852,
+              "median": 22.27685622873441,
+              "maximum": 23.991055604001783
+            },
+            "mux_to_tx_zero_ps": {
+              "count": 128,
+              "minimum": 5.8871462202414,
+              "median": 6.156279868818958,
+              "maximum": 6.4886421325375725
+            },
+            "source_to_output_100mv_ps": {
+              "count": 128,
+              "minimum": 39.73286064918556,
+              "median": 41.71662969369566,
+              "maximum": 44.21723461300217
+            }
+          },
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38402059863-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38402059863-1.tar.gz",
+            "sha256": "162282498169aa410831e521da5fbdc1927cc223daf378c959acee01006c5815",
+            "bytes": 232316524
+          },
+          "tail_devices": {
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.t010_c",
+                "xmux.t010_b",
+                "xmux.t010_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4090608495694601,
+                "maximum": 0.4594218203621415,
+                "time_mean": 0.44211627889501437
+              },
+              "base_v": {
+                "minimum": 0.8075287922948247,
+                "maximum": 0.8219134803533698,
+                "time_mean": 0.8164900316388911
+              },
+              "emitter_v": {
+                "minimum": 0.029892674877493263,
+                "maximum": 0.034247531024266684,
+                "time_mean": 0.0328984713751494
+              },
+              "vce_v": {
+                "minimum": 0.3776171768082536,
+                "maximum": 0.42674863508729044,
+                "time_mean": 0.409217807519865
+              },
+              "vbe_v": {
+                "minimum": 0.7776361174173314,
+                "maximum": 0.7877152129853453,
+                "time_mean": 0.7835915602637417
+              },
+              "collector_current_a": {
+                "minimum": 0.00418858767578882,
+                "maximum": 0.004814847598597168,
+                "time_mean": 0.004619395874021991
+              },
+              "passed": false
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.t011_c",
+                "xmux.t011_b",
+                "xmux.t011_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4072736639853299,
+                "maximum": 0.45793358261042216,
+                "time_mean": 0.4407142711140014
+              },
+              "base_v": {
+                "minimum": 0.8074117066610713,
+                "maximum": 0.8219074785874219,
+                "time_mean": 0.8164749318763078
+              },
+              "emitter_v": {
+                "minimum": 0.031574246159058114,
+                "maximum": 0.036194348666780826,
+                "time_mean": 0.03476702250420911
+              },
+              "vce_v": {
+                "minimum": 0.373981670520312,
+                "maximum": 0.42340534138488356,
+                "time_mean": 0.40594724860979226
+              },
+              "vbe_v": {
+                "minimum": 0.7758374605020132,
+                "maximum": 0.7857599310781437,
+                "time_mean": 0.7817079093720988
+              },
+              "collector_current_a": {
+                "minimum": 0.0040480798844098964,
+                "maximum": 0.004661303445232721,
+                "time_mean": 0.00447182649368381
+              },
+              "passed": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "run": 38405006454,
+      "study": "cascade16_local_tail_hot",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38405006454-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38405006454-1.summary.json",
+      "summary_sha256": "915fe81ee22fd153fa18e806943cc058f9a8be8e635d47a0e7361b1ce5c229e6",
+      "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+      "cases": {
+        "physical_compact": {
+          "transitions": {
+            "clock_to_mux_zero_ps": {
+              "count": 128,
+              "minimum": 9.283744431365262,
+              "median": 9.448539990414954,
+              "maximum": 9.531022323095454
+            },
+            "mux_to_tx_zero_ps": {
+              "count": 128,
+              "minimum": 5.859818191065853,
+              "median": 5.975498659428734,
+              "maximum": 6.098995451512794
+            },
+            "source_to_output_100mv_ps": {
+              "count": 128,
+              "minimum": 26.91369884046877,
+              "median": 27.130088109923193,
+              "maximum": 27.37679058639199
+            }
+          },
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38402511999-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38402511999-1.tar.gz",
+            "sha256": "a3836898cf56191deac5384ebb9b3ddc5809d9b0ad03adaf7e5e47f474cd5880",
+            "bytes": 109790357
+          },
+          "tail_devices": {
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.n_66",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.39944267019169843,
+                "maximum": 0.45607943305364584,
+                "time_mean": 0.4427211388524295
+              },
+              "base_v": {
+                "minimum": 0.7949364521822573,
+                "maximum": 0.810731501658933,
+                "time_mean": 0.804787761026143
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.39944267019169843,
+                "maximum": 0.45607943305364584,
+                "time_mean": 0.4427211388524295
+              },
+              "vbe_v": {
+                "minimum": 0.7949364521822573,
+                "maximum": 0.810731501658933,
+                "time_mean": 0.804787761026143
+              },
+              "collector_current_a": {
+                "minimum": 0.005630839666758092,
+                "maximum": 0.006867984877964652,
+                "time_mean": 0.0064904739064663925
+              },
+              "passed": false
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.n_66",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.39944267019169843,
+                "maximum": 0.45607943305364584,
+                "time_mean": 0.4427211388524295
+              },
+              "base_v": {
+                "minimum": 0.7949364521822573,
+                "maximum": 0.810731501658933,
+                "time_mean": 0.804787761026143
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.39944267019169843,
+                "maximum": 0.45607943305364584,
+                "time_mean": 0.4427211388524295
+              },
+              "vbe_v": {
+                "minimum": 0.7949364521822573,
+                "maximum": 0.810731501658933,
+                "time_mean": 0.804787761026143
+              },
+              "collector_current_a": {
+                "minimum": 0.005630839666757998,
+                "maximum": 0.00686798487796468,
+                "time_mean": 0.006490473906466334
+              },
+              "passed": false
+            }
+          }
+        },
+        "physical_wire": {
+          "transitions": {
+            "clock_to_mux_zero_ps": {
+              "count": 128,
+              "minimum": 20.6702355168969,
+              "median": 22.22238364441675,
+              "maximum": 23.954321044968083
+            },
+            "mux_to_tx_zero_ps": {
+              "count": 128,
+              "minimum": 5.886355334297459,
+              "median": 6.1549603590011355,
+              "maximum": 6.4846974887317845
+            },
+            "source_to_output_100mv_ps": {
+              "count": 128,
+              "minimum": 39.64308525383326,
+              "median": 41.64200918605297,
+              "maximum": 44.090888903320256
+            }
+          },
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38402511999-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38402511999-1.tar.gz",
+            "sha256": "0890089656aff39e751da3b21d58d5cdc08fd72256b7c953d64910c83c25e023",
+            "bytes": 232310642
+          },
+          "tail_devices": {
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.t010_c",
+                "xmux.t010_b",
+                "xmux.t010_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.40875405293377354,
+                "maximum": 0.4597412025722495,
+                "time_mean": 0.44228461804700986
+              },
+              "base_v": {
+                "minimum": 0.8074691871336014,
+                "maximum": 0.8219120588894118,
+                "time_mean": 0.816490053441057
+              },
+              "emitter_v": {
+                "minimum": 0.029872607475485053,
+                "maximum": 0.03425019040651227,
+                "time_mean": 0.03289896844722987
+              },
+              "vce_v": {
+                "minimum": 0.3773526262579503,
+                "maximum": 0.4270686394781417,
+                "time_mean": 0.40938564959977997
+              },
+              "vbe_v": {
+                "minimum": 0.7775955969810584,
+                "maximum": 0.787713883862647,
+                "time_mean": 0.783591084993827
+              },
+              "collector_current_a": {
+                "minimum": 0.0041857698530739125,
+                "maximum": 0.004815224930955597,
+                "time_mean": 0.004619457237662054
+              },
+              "passed": false
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.t011_c",
+                "xmux.t011_b",
+                "xmux.t011_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4069884182060271,
+                "maximum": 0.4582534981756645,
+                "time_mean": 0.44088260520437506
+              },
+              "base_v": {
+                "minimum": 0.8073512368883419,
+                "maximum": 0.8219060020960969,
+                "time_mean": 0.8164749536661824
+              },
+              "emitter_v": {
+                "minimum": 0.03155321907356445,
+                "maximum": 0.03619714948067641,
+                "time_mean": 0.03476753469721558
+              },
+              "vce_v": {
+                "minimum": 0.3737359949110738,
+                "maximum": 0.42372591827813955,
+                "time_mean": 0.4061150705071595
+              },
+              "vbe_v": {
+                "minimum": 0.7757973646652921,
+                "maximum": 0.7857585775056168,
+                "time_mean": 0.7817074189689669
+              },
+              "collector_current_a": {
+                "minimum": 0.004045427860553306,
+                "maximum": 0.004661667362328967,
+                "time_mean": 0.004471883130738855
+              },
+              "passed": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "local_return_candidate": {
+    "variant": "critical_buses_kelvin_local_return",
+    "circuit_profile": "final_drive_v8",
+    "status": "SOURCE_READY_NOT_PHYSICALLY_VERIFIED",
+    "accepted": false,
+    "change": "Same local-tail geometry; M5 return width1.6to3.2um, reference/tail M2-to-M5 via columns4to8 and return M5-to-TM1 feed columns4to8. All devices, other nets, source-bit gates and PDK RC coefficients unchanged. Actual DRC/LVS, extracted RC and loaded PVT required."
   }
 }
