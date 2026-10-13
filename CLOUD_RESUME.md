@@ -115,6 +115,16 @@ Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 
+### Independent prestage supply-access candidate
+
+`critical_buses_kelvin_supply_direct` oncascade14 retains the proven low TM2
+feed andadds direct TM1 branches fromboth actual avdd resistor pin landings.
+Native8column M3-to-TM1 stacks bypass the oldM3escape; original routes and54
+devices are preserved. This targets measured7.034/8.203ohm supply paths and
+hotinputCM loss. DRC/LVS/physicalfault checks must pass before RC orPVT.
+Keep final localinternal loaded comparison isolated on the existing prestage
+`kelvin_supply_feed`; do not silently substitute this prospective candidate.
+
 ### Exact physical sources for these studies
 
 - Local-tail finalv8: physical **38400244543**, RC **38400976763**, composition

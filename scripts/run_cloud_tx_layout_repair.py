@@ -30,17 +30,17 @@ def main():
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
-                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
+                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
     args = parser.parse_args()
     if args.circuit_profile == 'cascade16':
-        assert args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed',), 'New prestage keeps proven dense physical geometry'
+        assert args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',), 'New prestage keeps proven dense physical geometry'
     if args.variant in ('critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal'):
         assert args.circuit_profile == 'final_drive_v8', 'Tail-path experiment binds the measured v8 circuit only'
-    if args.variant == 'critical_buses_kelvin_supply_feed':
+    if args.variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct'):
         assert args.circuit_profile == 'cascade14', 'Supply-feed experiment binds measured cascade14 prestage'
-    dense_prestage = args.circuit_profile in ('cascade14','cascade16') and args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed',)
-    if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+    dense_prestage = args.circuit_profile in ('cascade14','cascade16') and args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',)
+    if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
         assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
@@ -151,10 +151,10 @@ def main():
                 # buses in the explicit critical-net order above.
                 changes.append(('cursor_y = y + half + 3',
                                 "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
-            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
-            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Actual measured tail-emitter lift differs from the reference
                 # return. Reduce native supply/return metal resistance in GDS;
                 # keep signal escape geometry and all circuit devices intact.
@@ -165,7 +165,7 @@ def main():
                 changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
                     "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
                     '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
-            if args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # More room between routing lanes permits wider native power
                 # trunks without stealing spacing from adjacent signal metal.
                 # This is a new physical candidate, not a scaled RC surrogate.
@@ -182,7 +182,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if (args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage) and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if (args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage) and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
@@ -190,14 +190,14 @@ def main():
                 # 28.8um would align the prior substrate trunk (+19.2)
                 # with the next signal lane (-9.6), also a real LVS short.
                 changes.append(('337.2+19.2*(i-19)', '337.2+38.4*(i-19)'))
-                if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                     # Place one resistor below each HBT bank, in dedicated
                     # inter-bank lanes. Long bleeders end below HBT tap row.
                     # Keep the same19HBT/8R/27tap circuit; actual LVS decides.
                     changes.append(('positions.update({i:(337.2+38.4*(i-19),30) for i in range(19,27)})',
                         'positions.update({19:(164.4,-50),20:(126.0,-50),21:(202.8,-50),22:(241.2,-50),23:(279.6,-50),24:(318.0,-50),25:(87.6,-50),26:(49.2,-50)})'))
 
-            if args.variant in ('critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.variant in ('critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # The original same-Y M5 strap crossed other via stacks. Put
                 # the common return below all PCells, with separate vertical
                 # M5 branches at the three actual ground-emitter pin centres.
@@ -207,7 +207,7 @@ def main():
                 # Jog the reference branch: x298.8 would intersect D23's
                 # substrate via at y~-69; strict LVS caught that actual short.
                 changes.append(('    # Return connections use the new thick trunks; omit the bypass.\n',
-                    ('    return_y = 64.8\n' if args.variant in ('critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4') else '    return_y = -92.4\n') +
+                    ('    return_y = 64.8\n' if args.variant in ('critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4') else '    return_y = -92.4\n') +
                     '    assert len(kelvin) == 3\n'
                     '    return_lanes = []\n'
                     '    for index, (x, y) in enumerate(kelvin):\n'
@@ -217,12 +217,12 @@ def main():
                     '        box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)\n'
                     '        box(5, lane-0.4, min(return_y,y)-0.4, lane+0.4, max(return_y,y)+0.4)\n'
                     '    box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)\n'))
-            if args.variant in ('critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4','critical_buses_power_trunks_vias'):
+            if args.variant in ('critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4','critical_buses_power_trunks_vias'):
                 # Pin access already has8columns, but M3-to-TM1 escape retained
                 # the via helper default of2. Increase actual lower-via cuts;
                 # TopVia1/2 geometry and every extraction coefficient unchanged.
-                changes.append(('via(3, 6, lane, y)', 'via(3, 6, lane, y, 12)' if args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10') else 'via(3, 6, lane, y, 8)'))
-            if args.variant in ('critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                changes.append(('via(3, 6, lane, y)', 'via(3, 6, lane, y, 12)' if args.variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10') else 'via(3, 6, lane, y, 8)'))
+            if args.variant in ('critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Increase actual via-array parallelism without changing any
                 # native extraction coefficients or device circuit parameters.
                 changes.extend([
@@ -307,7 +307,7 @@ def main():
                     ('via(5, 6, ground_trunk_x, return_y, 4)',
                      'via(5, 6, ground_trunk_x, return_y, 8)'),
                 ])
-            if args.variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal'):
+            if args.variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal'):
                 # Native DC38411521005 measured8.029/9.196ohm prestage
                 # and8.579/10.233ohm final avdd paths to load resistors. Add a real parallel
                 # low TM2 feed and wide external TM1 riser; keep original
@@ -328,6 +328,30 @@ def main():
                     '    via(6, 7, riser_x, avdd_y)\n'
                     '    for x in feed_xs: via(6, 7, x, feed_y)\n'
                     '    assert set(ports) == set(PORTS)\n'))
+            if args.variant == 'critical_buses_kelvin_supply_direct':
+                # The verified prestage still has7.034/8.203ohm from avdd to
+                # load pins and loses inputcommonmode in hot loaded operation.
+                # Connect the actual resistor M1->M3 landing directly to the
+                # existing low TM2 feed, bypassing the long M3 escape. Preserve
+                # the old paths and all devices; native DRC/LVS must pass.
+                changes.extend([
+                    ('    terminals = {}\n',
+                     '    terminals = {}\n    direct_avdd_pins = []\n'),
+                    ('        via(met, 3, x, y, cols)\n',
+                     '        via(met, 3, x, y, cols)\n'
+                     '        if net == "avdd":\n'
+                     '            assert met == 1\n'
+                     '            direct_avdd_pins.append((x,y))\n'
+                     '            via(3, 6, x, y, 8)\n'),
+                    ('    assert set(ports) == set(PORTS)\n',
+                     '    assert len(direct_avdd_pins) == 2\n'
+                     '    assert all(y < feed_y for x,y in direct_avdd_pins)\n'
+                     '    for x,y in direct_avdd_pins:\n'
+                     '        box(6, x-1.64, y-0.2, x+1.64, feed_y+0.2)\n'
+                     '        via(6, 7, x, feed_y)\n'
+                     '    box(7, riser_x-4, feed_y-4, max(x for x,y in direct_avdd_pins)+4, feed_y+4)\n'
+                     '    assert set(ports) == set(PORTS)\n'),
+                ])
             if args.variant == 'critical_buses_kelvin_local_internal':
                 # Source-bound hot/cold wave diagnosis38420038719/38420042839:
                 # final selector collectors lose86-103mV mean relative to the
@@ -349,7 +373,7 @@ def main():
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
                 edits.append(dict(before=before, after=after))
-        if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+        if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_local_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
             # Power buses no longer share an x interval. The frozen mutation
             # assumed they did and failed before injecting any physical fault.
             # Join the two verified actual pin centres using an L-shaped bridge.
