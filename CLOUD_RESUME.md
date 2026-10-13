@@ -156,3 +156,7 @@ assets for large results. Do not download bulk CAD results onto this computer.
 - Licence/inventory/REUSE and migration checks **38378864232** passed.
   Main-chip route **38371498733** isin_progress at this check.
   FullserialPHY,detailedmain-chiproute andfinalsetup/hold remainOPEN.
+
+M3-only physical38380208915 nowpassed560-categoryDRC/0markers,
+hierarchical/flatLVS andfivefaultcontrols. Nativeextraction isdispatched
+withtheexactreceipt; findtheexistingrun beforestartinganother.

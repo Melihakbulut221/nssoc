@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T10:01:03.938322+00:00",
+  "as_of": "2026-10-13T10:02:36.543353+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "b788a9753e12c09179f522730581499a871eb1c6",
+  "head": "faff0689fb7c50f69110c9b0ad08c3e231730484",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "InspectM3-onlyphysical38380208915; after fullnativeDRC/LVS/faultpasses, bindnewgeometry toextraction/composition andoriginalfixedphasewaveform. ParentTM1-onlywave38378858151isrejected(7.343mV,128earlyviolations,4HBTfails). M3sweep38379810177:0.8/1.0umlegal;1.2um16M3.bmarkers. Do not repeat unchanged or adoptartificialR.",
+    "M3-onlyphysical38380208915 passed560-categoryDRC/0markers, strict54-devicehierarchical/flatLVS and5faultcontrols. Nativeextractiondispatched afterbindingexactgeometry. Findtheexistingrun onthissourcehead; aftergraph/C+13faultcontrols pass, composeandrunoriginalfixedphasewaveforms. TM1-onlyparentremainsrejected; 1.2umM3alsoDRCrejected.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -6779,9 +6779,35 @@
   "m3_only_physical": {
     "run": 38380208915,
     "source": "b788a9753e12c09179f522730581499a871eb1c6",
-    "status": "in_progress",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "variant": "critical_buses_kelvin_m3_10",
     "change": "1.0um internal M3access with original1.64uminternalTM1 (instead of3um). Allnativecircuits, viaarrays, return/bias andPDKcoefficients unchanged.",
-    "accepted": false
+    "accepted": false,
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38380208915-1-layout-final_drive_v5-critical_buses_kelvin_m3_10/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_m3_10-38380208915-1.tar.gz",
+      "bytes": 375808,
+      "sha256": "e25b3a5734e51f8ea8a6453d3af828b59c802a5df89bf89ceebbba7ad2c0502b"
+    },
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38380208915-1-layout-final_drive_v5-critical_buses_kelvin_m3_10/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_m3_10-38380208915-1.summary.json",
+    "summary_sha256": "c07785aaec552a87914c680b52bad2fd8314117de24a8a2b2c331aab0b0715ac",
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+      "log_sha256": "387f68103528a30d14f7c0bdc01094ae6d4fc2483c7d37a3cd4003efe4b841f9"
+    },
+    "step_statuses": {
+      "drc": "PASS",
+      "lvs": "PASS",
+      "lvs_flat": "PASS",
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   }
 }
