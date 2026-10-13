@@ -10,6 +10,17 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Collector-route native RC passed
+
+Extraction **38433417084** passed actual native RC connectivity, geometry ownership,
+capacitance preservation and thirteen fault controls. Summary SHA256:
+`6db6df2336d019e812a65ec2ab20c992c0927418279438a8fd249b08f7ef9865`.
+The exact archive (6285358 bytes, SHA256 `b421e6a0bca5b60628abf4861abbb281d62a742a2d7eecd65d5ca26ccc836483`) is bound for composition.
+Discover the composition run before dispatching. Then create distinct final
+profile `v8_kelvin_low_critical` and compare with prestage `kelvin_supply_feed`,
+matched modes, streams4, offset75, nominal/hot/cold and original gates.
+No RF/body/full PHY or final chip acceptance follows from RC. Cloud-only.
+
 ## Collector-route geometry passed physical checks
 
 Physical run **38432737984**, source e05b3df4, passed **560 DRC categories with
