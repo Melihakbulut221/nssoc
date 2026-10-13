@@ -148,8 +148,8 @@ def tree_plan(streams):
 def physical_spec_path(profile):
     if profile == 'cascade16_kelvin_dense_wide':
         return ROOT/'docs/evidence/pcie-cascade16-kelvin-dense-wide-composition-20261013.json'
-    assert profile in ('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed')
-    prefix={'baseline':'','wide_access':'wide-access-','supply_access':'supply-access-','power_trunks':'power-trunks-','power_trunks_vias':'power-vias-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_supply_feed':'kelvin-supply-feed-'}[profile]
+    assert profile in ('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct')
+    prefix={'baseline':'','wide_access':'wide-access-','supply_access':'supply-access-','power_trunks':'power-trunks-','power_trunks_vias':'power-vias-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_supply_feed':'kelvin-supply-feed-','kelvin_supply_direct':'kelvin-supply-direct-'}[profile]
     return ROOT/'docs/evidence'/('pcie-cascade14-'+prefix+'composition-20261013.json')
 
 
@@ -159,7 +159,7 @@ def physical_final_spec_path(profile):
         geometry = geometry.replace('_', '-')
         return ROOT/'docs/evidence'/f'pcie-final-{version}-{geometry}-composition-20261013.json'
     assert profile in ('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10')
-    middle={'power_trunks':'','interleaved':'interleaved-','kelvin_return':'kelvin-','kelvin_short':'kelvin-short-','kelvin_short_vias':'kelvin-short-vias-','kelvin_dense':'kelvin-dense-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_supply_feed':'kelvin-supply-feed-','kelvin_signal_trunks':'kelvin-signal-trunks-','kelvin_m3_10':'kelvin-m3-10-'}[profile]
+    middle={'power_trunks':'','interleaved':'interleaved-','kelvin_return':'kelvin-','kelvin_short':'kelvin-short-','kelvin_short_vias':'kelvin-short-vias-','kelvin_dense':'kelvin-dense-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_supply_feed':'kelvin-supply-feed-','kelvin_supply_direct':'kelvin-supply-direct-','kelvin_signal_trunks':'kelvin-signal-trunks-','kelvin_m3_10':'kelvin-m3-10-'}[profile]
     return ROOT/'docs/evidence'/('pcie-final-v5-'+middle+'composition-20261013.json')
 
 
@@ -469,7 +469,7 @@ def main():
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
     parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail','v8_kelvin_local_return','v8_kelvin_local_supply','v8_kelvin_local_internal'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
-    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','cascade16_kelvin_dense_wide'),default='baseline')
+    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct','cascade16_kelvin_dense_wide'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
     parser.add_argument('--clock-reference',choices=tuple(CLOCK_REFERENCES),default='baseline')

@@ -10,6 +10,18 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## New hosted continuation: direct supply and compact internal routes
+
+Direct supply composition 38425811878 passed 54 devices / 3870 R / 2579 C.
+Receipt: `docs/evidence/pcie-cascade14-kelvin-supply-direct-composition-20261013.json`.
+Next isolate prestage kelvin_supply_direct with unchanged v8_kelvin_local_internal
+final, matched compact/wire, streams4, clock offset75, nominal and hot/cold;
+DC workflow profiles=prestage_supply_direct. Discover existing runs first.
+Compact internal RC 38425807688 passed native graph and thirteen fault controls;
+its exact archive is bound for composition. Discover the composition run first.
+Source checks 38425815606 passed. Main route 38420407838 is live. All work remains
+cloud-only; local workspace empty. Full serial PHY and final timing stay OPEN.
+
 ## Latest cloud checkpoint — supersedes older live labels
 
 Local NSSOC workspace and project temporary directories are empty; no local CAD
