@@ -10,6 +10,25 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Latest cloud checkpoint — supersedes older live labels
+
+Local NSSOC workspace and project temporary directories are empty; no local CAD
+process is running. All nine retirement archive groups have passing hosted
+readback proofs. Continue through GitHub-hosted jobs only.
+
+- Local-internal final MUX runs 38423054999/38423088377 completed. Compact
+  nominal/hot/cold pass. Wire nominal and cold pass their component screens
+  (131.005/234.560 mV minimum); hot wire fails 31 wrong signs, 128 low samples
+  and input common mode. This candidate remains rejected, not full PHY acceptance.
+- Compact-internal geometry 38424496850 passed native DRC/LVS/fault controls.
+  Its exact archive is now bound for fresh native extraction. Discover the
+  extraction run before dispatching another copy.
+- Direct prestage supply extraction 38424065649 passed native RC graph and
+  thirteen fault controls. Its exact archive is now bound for composition.
+  Discover the composition run before dispatching another copy.
+- Main-chip timing-priority route 38420407838 is still in progress. Preserve
+  its existing run; full serial PHY, chip routing and final setup/hold remain open.
+
 ## Current decision
 
 **Full serial Gen3 x4 PHY, assembled main-chip routing and final setup/hold
