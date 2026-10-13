@@ -13,7 +13,7 @@ on:
       profiles:
         description: Source-bound geometry comparison; avoid repeating prior studies
         type: choice
-        options: [legacy, dense_comparison, signal_comparison, m3_comparison]
+        options: [legacy, dense_comparison, signal_comparison, m3_comparison, v8_tail_comparison]
         default: legacy
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: ${{ fromJSON(inputs.profiles == 'm3_comparison' && '["kelvin-dense-wide","kelvin-m3-10"]' || inputs.profiles == 'signal_comparison' && '["kelvin-dense-wide","kelvin-signal-trunks"]' || inputs.profiles == 'dense_comparison' && '["kelvin-dense","kelvin-dense-wide"]' || '["kelvin","kelvin-short","kelvin-short-vias"]') }}
+        profile: ${{ fromJSON(inputs.profiles == 'v8_tail_comparison' && '["v8-kelvin-dense-wide","v8-kelvin-tail-paths"]' || inputs.profiles == 'm3_comparison' && '["kelvin-dense-wide","kelvin-m3-10"]' || inputs.profiles == 'signal_comparison' && '["kelvin-dense-wide","kelvin-signal-trunks"]' || inputs.profiles == 'dense_comparison' && '["kelvin-dense","kelvin-dense-wide"]' || '["kelvin","kelvin-short","kelvin-short-vias"]') }}
     permissions:
       contents: write
     steps:

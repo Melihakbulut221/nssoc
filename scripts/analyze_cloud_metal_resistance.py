@@ -234,7 +234,7 @@ def canonical_internal_roles(devices):
     return roles
 
 
-def analyze(spec):
+def analyze(spec, circuit_profile="final_drive_v5"):
     receipt = spec['receipt']
     raw = urllib.request.urlopen(receipt['url'], timeout=120).read()
     assert len(raw) == receipt['bytes'] and hashlib.sha256(raw).hexdigest() == receipt['sha256']
@@ -245,6 +245,7 @@ def analyze(spec):
         report = json.loads(report)
         assert report['status'] == 'PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT'
         assert report['outputs'] == spec['outputs'] and report['variant'] == spec['variant']
+        assert report['circuit_profile'] == circuit_profile, 'Wrong native circuit for metal comparison'
         for name, digest in spec['outputs'].items():
             data = archive.extractfile('cloud-tx-layout-composition/' + name).read()
             assert hashlib.sha256(data).hexdigest() == digest
@@ -284,15 +285,17 @@ def analyze(spec):
 def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted analysis only'
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10'), required=True)
+    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths'), required=True)
     args = parser.parse_args()
-    path = ROOT / 'docs/evidence' / f'pcie-final-v5-{args.profile}-composition-20261013.json'
+    version = 'v8' if args.profile.startswith('v8-') else 'v5'
+    geometry = args.profile.removeprefix('v8-')
+    path = ROOT / 'docs/evidence' / f'pcie-final-{version}-{geometry}-composition-20261013.json'
     output = Path('cloud-metal-resistance')
     output.mkdir(exist_ok=False)
     result = dict(status='RUNNING', profile=args.profile, adopted=False,
         scope='DC metal-only unit-current graph diagnosis. Capacitors open; devices excluded. No loaded waveform, RF/body or qualified PEX/PHY acceptance.')
     try:
-        result['measurement'] = analyze(json.loads(path.read_text()))
+        result['measurement'] = analyze(json.loads(path.read_text()), circuit_profile='final_drive_'+version)
         result['status'] = 'PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE'
     except BaseException as error:
         result.update(status='FAIL_DIAGNOSIS', error=repr(error))

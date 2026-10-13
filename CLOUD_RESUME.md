@@ -73,7 +73,10 @@ andfivefaultcontrols on **2367c8c0**. Native extraction **38398237267** passed
 with3939R/2619C and13corruptioncontrols. Composition **38398613537** passed;
 final profile `v8_kelvin_tail_paths` binds its distinct receipt. Run original
 nominal andtemperature_voltage streams4 matchedcompact/wire with prestage
-`kelvin_dense_wide`. Discover existingruns first. Electrical acceptance pending.
+`kelvin_dense_wide`. Existing loaded runs **38398957797** nominal and
+**38398961815** hot/cold are live on **c24a39c6**; sourcechecks38398965286.
+Native metal comparison `v8_tail_comparison` measures old/new actualgraph
+resistance, only as diagnosis. Discover existingruns first; no adoption.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
