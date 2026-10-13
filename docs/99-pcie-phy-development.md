@@ -454,3 +454,20 @@ eight columns; TopVia1/2 defaults are unchanged. Run 38358182094 passed native
 DRC, both strict LVS checks and all five fault controls. Fresh extraction and
 waveform comparison are required; this is not electrical adoption. See the
 [source hypothesis](evidence/pcie-upper-access-via-hypothesis-20261013.json).
+
+The via-array final macro passed fresh native extraction (2537R/1781C plus
+thirteen raw corruption controls) and composition. Hosted loaded-tree run
+38359379142 reduced wrong early samples from 128 to 96 and failing HBTs from
+19 to six; minimum signed output margin improved from -111.263 to -26.233 mV.
+It still fails: the final interface retains 60 samples below 150 mV and an
+out-of-range common mode. Compact controls pass. No candidate is adopted.
+
+Independent hosted DC metal-network analysis 38359571709 confirmed that the
+two supply-terminal path resistances fell from 20.224/20.210 ohms to
+13.493/13.480 ohms. It checks analytical series/parallel networks, corruption
+controls, KCL residual and unit-current energy conservation. Semiconductor
+devices are excluded and capacitors are open; this is not a loaded or RF
+acceptance test. All coefficients and original wire graphs are preserved.
+The same escape-via improvement is now under native physical validation for
+the two cascade14 prestages (38359973320), requiring its own fresh RC and
+composition before testing the combined tree.
