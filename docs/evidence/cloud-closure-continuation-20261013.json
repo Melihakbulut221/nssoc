@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Dense-prestage/v8 hot diagnosis38396710373 passed. It measures about66mVdrop between selector emitter andtailcollector plus34mVtailemitterlift. Wire hot retains128early failures,finalCM1.761..1.802V and two tailVCE failures. Nominal/cold wire allcomponentgatespass. Use actual terminal/layer loss to design local tail/return geometry or circuit repair; do not claim fullPHY, scalephysicalR, or alter samplephases.",
+    "Run finalv8 physical variant critical_buses_kelvin_tail_paths, then only if actual nativeDRC/LVS/faults pass bind its new extraction/composition and rerun original nominal/hot/cold loaded gates with denseprestage. Discover existing run first. Original denseprestage/v8 passes nominal/cold but hot retains128earlyfails,two tailVCE and commonmodefailures. Do not waive or claim fullPHY.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -578,7 +578,7 @@
     "power_trunks_composition_run": 38347455028,
     "power_trunks_composition_status": "RUNNING_LAST_VERIFIED"
   },
-  "previous_goal_turn_classification": "progress: dense prestage composition bound, nominal and temperature/voltage loaded-tree jobs dispatched, source checks passed; local workspace verified empty",
+  "previous_goal_turn_classification": "progress: new source-bound data-endpoint placement passed native invariants and started routing; dense prestage nominal/cold passed actual wave gates; hot waveform diagnosis identified real tail and return voltage loss.",
   "power_trunk_loaded_tree": {
     "run": 38347759822,
     "status": "COMPLETE_COMPACT_PASS_WIRED_REJECTED",
@@ -9787,5 +9787,28 @@
       "old_slack_ns": 0.023324,
       "new_slack_ns": -0.004524
     }
+  },
+  "final_v8_tail_paths_candidate": {
+    "variant": "critical_buses_kelvin_tail_paths",
+    "circuit_profile": "final_drive_v8",
+    "parent_geometry": "critical_buses_kelvin_dense_wide",
+    "hypothesis": "Reduce measured actual hot selector-to-tail and emitter-return voltage losses using local conductor geometry, without changing device sizes or source bits.",
+    "changes": {
+      "tail_m3_width_um": [
+        0.6,
+        1.0
+      ],
+      "tail_topmetal1_width_um": [
+        1.64,
+        3.0
+      ],
+      "local_kelvin_metal5_width_um": [
+        0.8,
+        1.6
+      ]
+    },
+    "unchanged": "All54devices, other signal/supply trunks, via arrays, native extraction coefficients, original wave gates. Dense prestage remains the loaded companion.",
+    "status": "SOURCE_ONLY_REQUIRES_NATIVE_DRC_LVS_NEW_RC_AND_LOADED_WAVEFORMS",
+    "adopted": false
   }
 }

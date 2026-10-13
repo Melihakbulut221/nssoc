@@ -64,6 +64,11 @@ show about66mVdrop between selector emitter andtailcollector, plus34mVtail
 emitter lift. Investigate local tail/return physical losses and the remaining
 input common-mode failure. No artificial RC or phase changes. Source checks
 **38396713550** passed.
+New final-v8 physical candidate `critical_buses_kelvin_tail_paths` widens
+only tail M3(0.6to1.0um), tailTM1(1.64to3.0um) andlocalM5return(0.8to1.6um).
+This addresses measured hot metal drops, with alldevices andgates unchanged.
+Physical DRC/LVS/fault controls, fresh RC and loaded waveforms must pass.
+Discover the existing physical run before dispatch.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
