@@ -143,3 +143,18 @@ def test_faster_final_stage_preserves_every_hbt_and_changes_real_passives_only()
         width=lambda row:float(next(x[2:-1] for x in row if x.startswith('w=')))
         assert width(after)==2*width(before)
     assert 'w=2u l=12u' in (ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc').read_text()
+
+
+def test_tapped_drive_preserves_exact_native_substrate_network_and_all_other_fields():
+    import hashlib
+    import re
+    text=mux4.TAPPED_FINAL.read_text()
+    assert len([line for line in text.splitlines() if ' ptap1 ' in line])==27
+    assert len([line for line in text.splitlines() if ' npn13g2 ' in line])==19
+    rows=[]
+    for line in text.splitlines(keepends=True):
+        if ' rppd ' in line:
+            line=re.sub(r'\bw=([0-9.]+)u',lambda m:'w='+format(float(m.group(1))/2,'.1f')+'u',line,count=1)
+        rows.append(line.replace('nssoc_tx_mux54_passive_drive_v3','nssoc_tx_mux54_compact_v1'))
+    # Reverse only the eight intended resistor-width changes and subckt rename.
+    assert hashlib.sha256(''.join(rows).encode()).hexdigest()=='bc22f8c7fefdf56187fcecd5fe056d4333c8b25f31934867dd6f5ee908950b09'

@@ -14,6 +14,7 @@ on:
       - hw/soc/analog/pcie/tx_clock_common_bias_v1.spice
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc
       - hw/soc/analog/pcie/tx_mux2_hbt_passive_drive_v2.spice
+      - hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,16 +29,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {condition: nominal, frontend: direct, drive: double}
-          - {condition: hot_low, frontend: direct, drive: double}
-          - {condition: cold_high, frontend: direct, drive: double}
+          - {condition: nominal, frontend: direct, drive: double_taps}
+          - {condition: hot_low, frontend: direct, drive: double_taps}
+          - {condition: cold_high, frontend: direct, drive: double_taps}
           - {condition: nominal, frontend: damped_strong, drive: baseline}
           - {condition: hot_low, frontend: damped_strong, drive: baseline}
           - {condition: cold_high, frontend: damped_strong, drive: baseline}
-          - {condition: nominal, frontend: damped_strong, drive: double}
-          - {condition: quarter_step, frontend: damped_strong, drive: double}
-          - {condition: hot_low, frontend: damped_strong, drive: double}
-          - {condition: cold_high, frontend: damped_strong, drive: double}
+          - {condition: nominal, frontend: damped_strong, drive: double_taps}
+          - {condition: quarter_step, frontend: damped_strong, drive: double_taps}
+          - {condition: hot_low, frontend: damped_strong, drive: double_taps}
+          - {condition: cold_high, frontend: damped_strong, drive: double_taps}
     permissions:
       contents: write
     steps:
