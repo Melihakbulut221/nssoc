@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T09:45:07.898868+00:00",
+  "as_of": "2026-10-13T10:01:03.938322+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "159e0efba3bd66d6fe0e5d2212a56dcf57a53655",
+  "head": "b788a9753e12c09179f522730581499a871eb1c6",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -79,8 +79,8 @@
       "hardlinks": 154
     },
     "latest_cloud_migration_checks": {
-      "run": 38376372112,
-      "source": "126bf5a64741fdc13bc4ea07552fdd479a182807",
+      "run": 38378864232,
+      "source": "5f34370641b58f57c9e22bc2528e17bb0d1690ce",
       "status": "PASS_SPDX_INVENTORY_REUSE_AND_MIGRATION_REGRESSION"
     }
   },
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Physicalsignaltrunk38377693620passed560DRCcategories/0markers, strict54devicehierarchical/flatLVSand5faultcontrols. Inspectnativeextraction38378229860; after fullgraph/Cproofand13controls pass, bindsourcehashes tocomposition andthenoriginalfixedphasewaveform. No acceptancefromgeometryorartificialR alone.",
+    "InspectM3-onlyphysical38380208915; after fullnativeDRC/LVS/faultpasses, bindnewgeometry toextraction/composition andoriginalfixedphasewaveform. ParentTM1-onlywave38378858151isrejected(7.343mV,128earlyviolations,4HBTfails). M3sweep38379810177:0.8/1.0umlegal;1.2um16M3.bmarkers. Do not repeat unchanged or adoptartificialR.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -6498,5 +6498,290 @@
       }
     },
     "controls_status": "PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS"
+  },
+  "signal_trunk_composition": {
+    "run": 38378560821,
+    "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+    "evidence": "docs/evidence/pcie-final-v5-kelvin-signal-trunks-composition-20261013.json",
+    "counts": {
+      "devices": 54,
+      "R": 3889,
+      "C": 2593
+    }
+  },
+  "signal_trunk_loaded_tree": {
+    "run": 38378858151,
+    "source": "5f34370641b58f57c9e22bc2528e17bb0d1690ce",
+    "status": "COMPLETE_COMPACT_PASS_WIRE_REJECTED",
+    "cases": [
+      {
+        "prestage": "physical_compact",
+        "streams": 4,
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38378858151-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38378858151-1.summary.json",
+        "summary_sha256": "f0a721b8b3661bfa98763035b99fa2da63bc5e72c63485baf8a2bf3ca360dbed",
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": true,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2807937878036999,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2807937878036999,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2808171176485712,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.28191128959112355,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2676677685524116,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8902927344237777,
+              1.898022233756252
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2369519812305254,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9134611766510718,
+              1.938079424730168
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "4780eea670136c6f5e46c485013cc1f80603b18c669770886035e84c357c9fc8"
+        },
+        "diagnostics": []
+      },
+      {
+        "prestage": "physical_wire",
+        "streams": 4,
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38378858151-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38378858151-1.summary.json",
+        "summary_sha256": "250c712670672ceedbc0075a8d3f666470fe823ce512d4b57b36b9c4b6043ce5",
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.007343186288262027,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.007343186288262027,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 128
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26802133015911656,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2743992678052898,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2712167760115143,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8941494781811872,
+              1.8981603802396205
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.16066192627628428,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8059129399898042,
+              1.8740012568422515
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.39641611853775083,
+            "max_post_vce_v": 0.8077327380706688,
+            "max_whole_abs_vce_v": 0.8203033243467012,
+            "max_whole_abs_vbe_v": 0.8583283933218452,
+            "max_whole_abs_ic_per_emitter_a": 0.0006155454194844914,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.3913015743887688,
+            "max_post_vce_v": 0.8049331161609226,
+            "max_whole_abs_vce_v": 0.8049331161609226,
+            "max_whole_abs_vbe_v": 0.8615560012579102,
+            "max_whole_abs_ic_per_emitter_a": 0.0006543131045633645,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.39690505328087333,
+            "max_post_vce_v": 0.8077551306644083,
+            "max_whole_abs_vce_v": 0.8203075453621598,
+            "max_whole_abs_vbe_v": 0.8586137333390969,
+            "max_whole_abs_ic_per_emitter_a": 0.0006191182349147409,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.39085039828160717,
+            "max_post_vce_v": 0.8050825064100687,
+            "max_whole_abs_vce_v": 0.8050825064100687,
+            "max_whole_abs_vbe_v": 0.8614887607189912,
+            "max_whole_abs_ic_per_emitter_a": 0.0006534308379533907,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "a9e4b016ad01e074f5a0b3c83455c90f6e14d1616394f9d186196cd843681a14"
+        },
+        "diagnostics": []
+      }
+    ],
+    "accepted": false,
+    "interpretation": "TM1 widening lowers staticinternalR by0.45to1.07ohm and slightly raises minimumHBT_VCE, but actualwave minimumdegrades14.320to7.343mV with128earlybelow100mV and4HBTfailures. Preserve asrejected, noadoption."
+  },
+  "signal_trunk_metal_comparison": {
+    "run": 38378860794,
+    "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+    "source": "5f34370641b58f57c9e22bc2528e17bb0d1690ce",
+    "source_native_res_nodes_run": 38379231148,
+    "source_native_res_nodes_sha256": "e77366606c68be9c59c19936a85eeecafd6d2404e613a84f4f6472a2e85f5360"
+  },
+  "signal_escape_physical_sweep": {
+    "run": 38379810177,
+    "source": "a129ff3d560b021da1eefe91bfd596c53259640d",
+    "cases": [
+      {
+        "width_um": 0.8,
+        "variant": "critical_buses_kelvin_signal_escape_08",
+        "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38379810177-1-layout-final_drive_v5-critical_buses_kelvin_signal_escape_08/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_signal_escape_08-38379810177-1.summary.json",
+        "summary_sha256": "6b23041ce506bfe6d7de400087c9c1e00b3dc70c3dcfe702869e3d7d7a1ddc50",
+        "drc": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 560,
+          "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+          "log_sha256": "5cf2d36b27a8868f4f81e4f202a01c06af6326742d5f87c00dffe5670eb20869"
+        },
+        "step_statuses": {
+          "drc": "PASS",
+          "lvs": "PASS",
+          "lvs_flat": "PASS",
+          "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+          "missing_hbt": "REJECTED_EXPECTED_FAULT",
+          "q_open": "REJECTED_EXPECTED_FAULT",
+          "rail_short": "REJECTED_EXPECTED_FAULT",
+          "offgrid": "REJECTED_EXPECTED_FAULT"
+        }
+      },
+      {
+        "width_um": 1.0,
+        "variant": "critical_buses_kelvin_signal_escape_10",
+        "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38379810177-1-layout-final_drive_v5-critical_buses_kelvin_signal_escape_10/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_signal_escape_10-38379810177-1.summary.json",
+        "summary_sha256": "1163027fc3e27887428dd2922f1607bb2a10043f5c3e38af6657576a4debb278",
+        "drc": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 560,
+          "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+          "log_sha256": "a41850d4c4c2c0424038f191fc17ee81b77116be3e3e80cff617b803fe18a812"
+        },
+        "step_statuses": {
+          "drc": "PASS",
+          "lvs": "PASS",
+          "lvs_flat": "PASS",
+          "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+          "missing_hbt": "REJECTED_EXPECTED_FAULT",
+          "q_open": "REJECTED_EXPECTED_FAULT",
+          "rail_short": "REJECTED_EXPECTED_FAULT",
+          "offgrid": "REJECTED_EXPECTED_FAULT"
+        }
+      },
+      {
+        "width_um": 1.2,
+        "variant": "critical_buses_kelvin_signal_escape_12",
+        "status": "FAIL_OR_ERROR",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38379810177-1-layout-final_drive_v5-critical_buses_kelvin_signal_escape_12/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_signal_escape_12-38379810177-1.summary.json",
+        "summary_sha256": "d8bcdb7878add1a3eb40223e4f219a4e47fb03abb0097a836d0f4736799baa3d",
+        "drc": {
+          "status": "FAIL",
+          "process_returncode": 0,
+          "markers": 16,
+          "categories": {
+            "'M3.b'": 16
+          },
+          "category_count": 560,
+          "report_sha256": "1aee7bc7168d465216c5d48220d1152f0b1c381f9618fceb06c50f12e8eed876",
+          "log_sha256": "a32a895d3bcb357ed46b345b84099c30bf8ff01f92fb8e2ef7647f9723c82fbb"
+        },
+        "step_statuses": {
+          "drc": null
+        }
+      }
+    ],
+    "scope": "RealM3widths with3.0umTM1 inheritedfromrejectedparent. Physical legality only; no electricaladoption."
+  },
+  "m3_only_physical": {
+    "run": 38380208915,
+    "source": "b788a9753e12c09179f522730581499a871eb1c6",
+    "status": "in_progress",
+    "variant": "critical_buses_kelvin_m3_10",
+    "change": "1.0um internal M3access with original1.64uminternalTM1 (instead of3um). Allnativecircuits, viaarrays, return/bias andPDKcoefficients unchanged.",
+    "accepted": false
   }
 }

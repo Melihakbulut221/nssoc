@@ -137,3 +137,22 @@ assets for large results. Do not download bulk CAD results onto this computer.
   and rerun original fixed-phase waveforms. No electrical adoption yet.
 - Source licence/inventory/REUSE and migration regression **38376372112**
   passed on126bf5a6. Local workspace remains empty; all CAD/tests are hosted.
+
+## Latest physical feedback
+
+- Signal-trunk native extraction **38378229860** and54-device composition
+  **38378560821** passed, retaining3889R/2593C.
+- Actual waveform **38378858151** rejects TM1-only widening: minimum
+  **7.343mV**,128early samples below100mV,fourHBTminimum-VCEfailures.
+  Compact control and both interfaces pass. No geometry adoption.
+- Static diagnosis **38378860794** measures0.45–1.07ohm less internalR,
+  so resistance improvement alone did not predict the loaded waveform.
+  Native resistor-node source inspection **38379231148** is preserved.
+- Actual M3 sweep **38379810177**:0.8um and1.0um pass560-categoryDRC,
+  strict54-deviceLVS andfivefaultcontrols;1.2um fails16M3.bmarkers.
+- New **M3-only** geometry **38380208915** retains1.0umM3 but restores
+  original1.64uminternalTM1 to separate the two changes. Source **b788a975**.
+  Native geometry gates must pass before new RC/composition/waveforms.
+- Licence/inventory/REUSE and migration checks **38378864232** passed.
+  Main-chip route **38371498733** isin_progress at this check.
+  FullserialPHY,detailedmain-chiproute andfinalsetup/hold remainOPEN.
