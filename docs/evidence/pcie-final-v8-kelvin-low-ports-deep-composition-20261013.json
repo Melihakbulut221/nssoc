@@ -86,5 +86,66 @@
     },
     "diagnostics": [],
     "decision": "Reject deeper-output geometry. The100mV output and0.4V HBT headroom gates remain unchanged. Preserve nominal/cold jobs until terminal. Next candidate starts from low_ports and moves only both physical collector-load resistors32um upward; separate fresh DRC/LVS/RC and PVT mandatory."
+  },
+  "loaded_pvt_summary": {
+    "status": "REJECTED_HOT_OUTPUT_AND_TWO_HBT_HEADROOM_GATES",
+    "source_head": "87d7100f3cc2ffc93e6b4ec498b88a3697d02bbd",
+    "cases": [
+      {
+        "run": 38481321168,
+        "condition": "nominal",
+        "mode": "physical_compact",
+        "summary_asset_id": 638501249,
+        "summary_sha256": "81a4e8b6c16438fc1bc70ce3cbfea75a76a5d6dbaec636b9dac3e8c2858bff09",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.2813612146771207
+      },
+      {
+        "run": 38481321168,
+        "condition": "nominal",
+        "mode": "physical_wire",
+        "summary_asset_id": 638512331,
+        "summary_sha256": "69caa9df30e3e1d3be70dac54db194f4c5222626b924e746d76502c28e28d970",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.2153433004808314
+      },
+      {
+        "run": 38481294234,
+        "condition": "hot_low",
+        "mode": "physical_compact",
+        "summary_asset_id": 638500740,
+        "summary_sha256": "e88b39279d008cb2d0f8c91b45bc962ad83aed8f58b1c27b996630fa956e3693",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.22988173910490173
+      },
+      {
+        "run": 38481294234,
+        "condition": "hot_low",
+        "mode": "physical_wire",
+        "summary_asset_id": 638506523,
+        "summary_sha256": "04074583806eb5f7ea324c20fe8eeb8952fe189da4af77df967437ec07447f4b",
+        "component_screen_passed": false,
+        "minimum_margin_v": 0.07690273576828899
+      },
+      {
+        "run": 38481294234,
+        "condition": "cold_high",
+        "mode": "physical_compact",
+        "summary_asset_id": 638500715,
+        "summary_sha256": "57134d03591337fbf566dc752962c3369bb70f6e4e42703bab0186e5d2806443",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.272647608868114
+      },
+      {
+        "run": 38481294234,
+        "condition": "cold_high",
+        "mode": "physical_wire",
+        "summary_asset_id": 638506955,
+        "summary_sha256": "d1e4e38c5cf40741ba7313084ab27e1d3526180820d0279bb58f78b8b038ca82",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.2624351982327282
+      }
+    ],
+    "scope": "All768 original-bit samples per case and unchanged device/interface gates. Five pass, one fails. No qualification or physical adoption."
   }
 }

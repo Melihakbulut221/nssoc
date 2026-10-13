@@ -21,5 +21,24 @@
   },
   "extraction_source_sha256": "45d52174b8bcb0fb399a3faf6a4c3d25885b5f36f1573e149a8431f57a23e8da",
   "adopted": false,
-  "scope": "Start from low_ports with op/on buses -32/-24um; move only load R19/R20 and their native substrate taps from y=-50 to -18um. Same circuit/device sizes and metal widths. 560-category DRC zero markers, strict hierarchical/flat LVS, five physical faults and thirteen raw RC corruption controls passed. Loaded original-bit PVT still required; no assembled serializer intermacro PEX, qualified substrate/RF extraction, PLL/CDR or PHY/chip acceptance."
+  "scope": "Start from low_ports with op/on buses -32/-24um; move only load R19/R20 and their native substrate taps from y=-50 to -18um. Same circuit/device sizes and metal widths. 560-category DRC zero markers, strict hierarchical/flat LVS, five physical faults and thirteen raw RC corruption controls passed. Loaded original-bit PVT still required; no assembled serializer intermacro PEX, qualified substrate/RF extraction, PLL/CDR or PHY/chip acceptance.",
+  "cloud_continuation": {
+    "execution": "GitHub hosted only; local workspace remains empty.",
+    "source_commit": "22c0add34538c1c9c53ddb9caaeac220489b8217",
+    "loaded_nominal_run": 38483582548,
+    "loaded_hot_cold_run": 38483554180,
+    "ack_combined_mapping_run": 38483062933,
+    "ack_mapping_source": "a8e69b9e64d5fff28b7436a96d2ed3503e44b93c",
+    "route_run": 38472175339,
+    "next": [
+      "Inspect every full-wave original-bit, device/interface and convergence gate in the six matched4:1 cases; Actions success is not electrical acceptance.",
+      "If gates pass, extend32:1 PVT and fault controls before assembled-tree clock/metal integration.",
+      "If gates fail, retain actual waveforms and inspect the remaining long output shunt branches; change physical geometry rather than RC values, sample times or thresholds.",
+      "Read joint baseline/combined32 port controls and three-corner mapping before adopting any ACK/EOP combination.",
+      "Preserve the confirmed live main-chip route; observation timeout is not a failed route."
+    ],
+    "full_serial_phy_complete": false,
+    "main_chip_route_complete": false,
+    "final_setup_hold_closed": false
+  }
 }
