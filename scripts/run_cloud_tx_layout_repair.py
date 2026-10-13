@@ -186,13 +186,19 @@ def main():
                 # the common return below all PCells, with separate vertical
                 # M5 branches at the three actual ground-emitter pin centres.
                 # Tail/reference ground imbalance was measured in native waves.
+                # Jog the reference branch: x298.8 would intersect D23's
+                # substrate via at y~-69; strict LVS caught that actual short.
                 changes.append(('    # Return connections use the new thick trunks; omit the bypass.\n',
                     '    return_y = -92.4\n'
                     '    assert len(kelvin) == 3\n'
-                    '    for x, y in kelvin:\n'
+                    '    return_lanes = []\n'
+                    '    for index, (x, y) in enumerate(kelvin):\n'
                     '        via(2, 5, x, y, 4)\n'
-                    '        box(5, x-0.4, return_y-0.4, x+0.4, y+0.4)\n'
-                    '    box(5, min(x for x,y in kelvin)-0.4, return_y-0.4, max(x for x,y in kelvin)+0.4, return_y+0.4)\n'))
+                    '        lane = x + (4.8 if index == 0 else 0)\n'
+                    '        return_lanes.append(lane)\n'
+                    '        box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)\n'
+                    '        box(5, lane-0.4, return_y-0.4, lane+0.4, y+0.4)\n'
+                    '    box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)\n'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
@@ -244,6 +250,16 @@ def main():
         report = out / 'physical/result.json'
         if report.exists():
             result['physical'] = json.loads(report.read_text())
+        # Preserve compact diagnostic text alongside the exact full archive.
+        # This avoids a separate hosted archive-read job for every native failure.
+        result['failure_reports']={}
+        for child in sorted((out/'physical').glob('*/*')):
+            if child.name not in ('extracted.cir','mutation.log') or not child.is_file():
+                continue
+            if child.stat().st_size<=256*1024:
+                result['failure_reports'][str(child.relative_to(out))]=dict(
+                    sha256=sha(child),bytes=child.stat().st_size,text=child.read_text(errors='replace'))
+
         raise
     finally:
         (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
