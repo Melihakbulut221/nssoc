@@ -2,6 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 name: ethernet-hold-diagnosis
 on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/ethernet-hold-diagnosis.yml
+      - scripts/diagnose_cloud_ethernet_hold.py
   workflow_dispatch:
 permissions:
   contents: read
