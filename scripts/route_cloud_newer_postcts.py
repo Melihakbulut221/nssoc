@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Resume the newer exact postCTS chip on hosted runners with fresh routing."""
+import argparse
 import hashlib
 import json
 import os
@@ -30,7 +31,13 @@ def execute(script, label):
     tcl.write_text(script)
     log = OUT / (label + '.log')
     with log.open('w') as stream:
-        code = subprocess.call([os.environ['CLOUD_APPIMAGE'], 'openroad', '-exit', str(tcl)], stdout=stream, stderr=subprocess.STDOUT)
+        process = subprocess.Popen([os.environ['CLOUD_APPIMAGE'], 'openroad', '-exit', str(tcl)],
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+        for line in process.stdout:
+            stream.write(line)
+            stream.flush()
+            print(f'[{label}] {line}', end='', flush=True)
+        code = process.wait()
     text = log.read_text(errors='replace')
     if code or re.search(r'(?m)^(Error:|\[ERROR)', text):
         print(text[-12000:], flush=True)
@@ -39,8 +46,16 @@ def execute(script, label):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
+    args = parser.parse_args()
+    # The actual failed report has7.2um gcells. Half-cell offsets change only
+    # partition alignment, never placement, routing capacity or physical rules.
+    origin_um = {'baseline': (0., 0.), 'half_x': (3.6, 0.),
+                 'half_y': (0., 3.6), 'half_xy': (3.6, 3.6)}[args.grid_profile]
     OUT.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False,
+        grid_profile=args.grid_profile, grid_origin_um=origin_um,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -117,7 +132,14 @@ def main():
             commands += [f'set_wire_rc -corner {corner} -signal -layer Metal2', f'set_wire_rc -corner {corner} -clock -layer Metal4']
         commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
                      f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}',
-                     f'global_route -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose',
+                     'set route_dbu [[ord::get_db_block] getDbUnitsPerMicron]',
+                     f'set route_origin [list [expr {{round({origin_um[0]} * $route_dbu)}}] [expr {{round({origin_um[1]} * $route_dbu)}}]]',
+                     'puts "NSSOC_ROUTING_GRID_ORIGIN_DBU $route_origin"',
+                     f'if {{[catch {{global_route -grid_origin $route_origin -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose}} route_error]}} {{',
+                     f'  write_db {{{OUT / "failed-global.odb"}}}',
+                     f'  catch {{write_guides {{{OUT / "failed-route.guide"}}}}}',
+                     '  puts stderr "NSSOC_FAILED_ROUTE_PARTIAL_STATE_ONLY $route_error"',
+                     '  exit 1', '}',
                      f'write_db {{{OUT / "global.odb"}}}', f'write_guides {{{OUT / "route.guide"}}}',
                      f'estimate_parasitics -global_routing -spef_file {{{OUT / "estimated"}}}',
                      'check_setup -verbose', 'report_parasitic_annotation -report_unannotated']
@@ -125,7 +147,9 @@ def main():
             for delay in ('max', 'min'):
                 commands += [f'puts CORNER_{corner}_{delay}', f'report_checks -corner {corner} -path_delay {delay} -group_path_count 20 -fields {{slew cap fanout}} -digits 6']
             commands += [f'puts ELECTRICAL_{corner}', f'report_check_types -corner {corner} -max_slew -max_capacitance -max_fanout -violators -digits 6']
-        routed = execute('\n'.join(commands) + '\n', 'global-route')
+        route_script = '\n'.join(commands) + '\n'
+        assert '-allow_congestion' not in route_script and '-infinite_cap' not in route_script
+        routed = execute(route_script, 'global-route')
         result['global_route'] = parse_phases(routed, 'CORNER')
         assert result['global_route'].keys() == replay.keys()
         for phase in replay:
@@ -135,6 +159,7 @@ def main():
         result['outputs'] = {p.name: sha(p) for p in OUT.iterdir() if p.is_file() and p.name != 'result.json'}
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR', error=repr(error))
+        result['failure_outputs'] = {p.name: sha(p) for p in OUT.iterdir() if p.is_file() and p.name != 'result.json'}
         raise
     finally:
         save()

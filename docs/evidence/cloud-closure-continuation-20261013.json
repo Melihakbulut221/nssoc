@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T03:05:54.657896+03:00",
+  "as_of": "2026-10-13T03:12:34.741660+03:00",
   "turn_classification": "PROGRESS: realnativeCMOS/CMLnominalpoint passes alloriginalbit+selectedinput+device gates, then ten-conditioncampaign rejects PVT adoption; realnextarchitecture decision changed.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -89,8 +89,8 @@
   "next_actions": [
     "Develop actual faster/earlier CMOS-to-CML boundary; preferred next prototype4:1CMLtree with2GbpsCMOSinputs rather thanforcing4Gbpsconversion atslow/hot. AlladdednativeHBT/MOS mustbe bound/reviewed; currentfrozen23HBT gate isnotfulltreeproof. Actualclock/biastracking andLVovershoot remainrequired; do notfitidealbiaspercornerorrelaxlimits.",
     "Continue two active verified output transfers using existing separate plans/state; no local CAD/tests. Main readback38321449137PASS83batches162263files61.24GB; PNRreadback38322169148PASScurrentpublishedsnapshot. Later batches still require final hosted readback.",
-    "Finish verified output transfer and hosted restoration38316589440. Preserve active plan/manifests and unique originals until exact hosted SHA/size verification. Do not restart local CAD.",
-    "Full serial PHY, chip route and final setup/hold remainOPEN. Newnominalpass iscompact andrequires externalearlyinputcontract/idealclock. PVTcandidateREJECTED. Nativeglobalroute38317996877stillconfirmedlive; do notrestart.",
+    "Inspect next three nativehalf-grid routingprofiles. Originalfailed38317996877 fullypreserved; probe38325970347binds108markers/allreportednets,71nearETHSRAM;allmarkersx2340..3182.4,y1238.4..1641.6um. No sourceplacement/clock/RC/capacityrelaxations. Ifgridprofilesfail, targetactuallocalplacement.",
+    "FullserialPHY/chiproute/finaltimingOPEN. Native chip route nowTERMINAL FAILURE, notlive. Exactplacementtiming reproduced; do notwait onoldroute or blindly restart unchanged.",
     "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
     "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published."
   ],
@@ -150,7 +150,7 @@
   "newer_postcts_cloud": {
     "run": 38317996877,
     "workflow": "newer-postcts-cloud.yml",
-    "status": "in_progress",
+    "status": "FAILED_GLOBAL_ROUTE_CONGESTION_AFTER_EXACT_REPRODUCTION",
     "input_spec": "docs/evidence/cloud-newer-postcts-input-20261013.json",
     "task": "Restore exact completed metadata-postcts19 ODB, reproduce all saved corner/group placement slacks with hash-identical9Libertyfiles and original SDC; then actual global route and fitted RC estimate. No constraints relaxed.",
     "source_review_runs": [
@@ -159,7 +159,18 @@
       38317700308
     ],
     "scope": "Newer packet-profile design contains Ethernet cross-read pipeline, replay successor and RX-return metadata. Not full serial PHY or routed signoff.",
-    "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292"
+    "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292",
+    "result_evidence": "docs/evidence/cloud-newer-route-failure-20261013.json",
+    "total_overflow": 153,
+    "congestion_probe": {
+      "run": 38325970347,
+      "status": "PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE",
+      "evidence": "docs/evidence/cloud-newer-congestion-probe-20261013.json",
+      "markers": 108,
+      "near_macros": 71,
+      "marker_overflow_sum": 156,
+      "final_layer_overflow": 153
+    }
   },
   "tx_cmos_driver": {
     "evidence": "docs/evidence/pcie-cmos-data-driver-20261013.json",
@@ -202,5 +213,13 @@
       "evidence": "docs/evidence/cloud-pnr-restore-20261013.json"
     }
   },
-  "resume_snapshot": "docs/evidence/cloud-resume-state-20261013.json"
+  "resume_snapshot": "docs/evidence/cloud-resume-state-20261013.json",
+  "next_serial_prototype_requirements": {
+    "candidate": "Actual4:1CMLtree: two2:1prestages andexistingfinal2:1; CMOS data boundary becomes four2Gbpsstreams. Not yetimplemented.",
+    "source_order": "PreA multiplexesbits0/2mod4, PreB bits1/3mod4; final interleavesA/B. Same256originalbits and768outputsampletimes.",
+    "launch_contract": "PreA selectchanges125psbeforeevenfinalselections;PreB changes125psbeforeoddfinalselections. Each2Gbpsbank changesonlyduringitsunselectedprestagehalfcycle,250psbeforepreselection; preserve definedsourcebitordering.",
+    "accounting": "Tentative61HBT(3x19mux+4TX) and64MOS(8nativefrontendchannels) beforeadditionalclock/biascircuits. Enumerateactualhierarchy, do notreuse23HBTfinalstageclaimforfulltree.",
+    "analog_interface": "ExistingmuxoutputcommonmodeistargetedatTXinput andcannotbedirectlyassumedcompatiblewithnextmuxdata. Designandmeasureactualnativecollector/divideroutputwithfinalstagebasecurrentload.",
+    "acceptance": "Wholecapturenativestartup/devicevoltages/currents,allsourcebits,selected-inputgatesandrealstagefaultcontrols;quarterstep andPVT. FullphysicalDRC/LVS/extractionlater. Fixactualclock/biastrackingandLVovershoot ratherthanpercorneridealbiasfitting."
+  }
 }

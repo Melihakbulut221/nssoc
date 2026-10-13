@@ -13,6 +13,10 @@ permissions:
   contents: read
 jobs:
   route:
+    strategy:
+      fail-fast: false
+      matrix:
+        grid_profile: [half_x, half_y, half_xy]
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -33,13 +37,13 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Reproduce exact newer postCTS then route all domains
-        run: python3 scripts/route_cloud_newer_postcts.py
+        run: python3 scripts/route_cloud_newer_postcts.py --grid-profile '${{ matrix.grid_profile }}'
       - name: Preserve complete source-bound routing and failures
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='newer-postcts-cloud-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='newer-postcts-cloud-${{ matrix.grid_profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-newer-postcts
           sha256sum "$archive" > "$archive.sha256"
           gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256"

@@ -452,3 +452,23 @@ identifies its native level shifter and output stages. The pinned local
 interface, but it has not been measured at the required rate here. Neither
 reference constitutes a high-speed qualification or permission to relax
 our voltage gates.
+
+
+The [newer chip route](evidence/cloud-newer-route-failure-20261013.json)
+reproduces every saved placement-timing group, then fails with `GRT-0116`
+and final layer overflow 153. This is a congestion failure, not a timeout
+or out-of-memory result. No routed timing closure was obtained. The
+[native congestion probe](evidence/cloud-newer-congestion-probe-20261013.json)
+binds all 108 DRC-viewer markers and their reported nets to the exact ODB.
+Seventy-one markers lie near macros; all markers are within x=2340–3182.4,
+y=1238.4–1641.6 um, around Ethernet SRAM rows 4/5. PCIe receive-ownership
+packet/staging nets also cross this region. The marker report sums to 156;
+it is retained separately from the final layer report of 153.
+
+The next three route attempts shift the 7.2 um global-routing grid by half
+a cell along x, y, or both axes. Placement, logic, SDC, RC and the 20 percent
+capacity adjustment stay unchanged. The [OpenROAD global-routing reference](https://openroad.readthedocs.io/en/latest/main/src/grt/README.html)
+specifies the grid origin in database units; each run converts and prints
+its requested origin. Congestion remains an error. Failed partial databases
+and guides are diagnostic records, not completed routes. Native logs are
+also streamed so future long runs expose stage progress as it occurs.
