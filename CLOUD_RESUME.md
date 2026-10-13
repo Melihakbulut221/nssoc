@@ -623,3 +623,25 @@ Arrival4.669152ns/required3.567396ns atslow. PriorstaticFC bankwrite
 experimentregressed219.546ps andmustnotberepeatedblindly. Inspectactual
 acceptedEOP/ready arbitration cone. Anychange mustretain EOPcommitsemantics
 andbackpressure, includecompletepositiveandactualnegativecontrols.
+
+
+Loadedshortrow runsdispatched onf7829dfe3fdc77c771667b9acd984b123d7dc466:
+nominal38474355636;hot/cold38474364222;sourcechecks38474375229.
+Keep exacthandles. Sameoriginalgates andmatchedcompact/wire4:1profile.
+Mainhalfgridroute38472175339 and32wire38441895491 remainseparate.
+
+Nextdigital diagnosis (proposal only, NOT implemented): physicalbufferedflow
+sourceSHA459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509
+already has registeredTXegress. Do not insert a duplicate stage blindly.
+Arbiter chosen=locked?owner:flow_valid&&(!advert_valid||prefer_flow);
+advert_ready=local_reset&&!chosen&&selected_ready. Late flow_valid from
+creditlogic reaches FCacceptedEOPsent_data update. For a reachable valid
+advertisement EOP (index5), firstbyte must already have acquiredadvertiser
+lock; investigate/prove invariant advert_valid&&advert_eop -> locked&&!owner.
+If proved with actualadvertiserandactualarbiter underarbitraryflowrequests,
+reset/linkdrop/backpressure, EOPready may use the establishedowner directly,
+removing unsensitizable flow-choice logic through an RTL refinement.
+No falsepath/clockexception. Must retainactual acceptedEOP commitsemantics,
+completebuffered/FC portscoreboards and realbad-owner negativecontrols;
+fullobservable sequentialequivalence required before mappedcomparison.
+Current exactFCsource is599755ec... in frozenACKcapsule; canonicaldiffers.
