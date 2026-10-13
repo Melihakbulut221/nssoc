@@ -452,7 +452,12 @@ def main():
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
+    parser.add_argument('--diagnostic-final-r', choices=('actual','all','supply','return','inputs','internal','bias','outputs'), default='actual')
     args=parser.parse_args()
+    if args.diagnostic_final_r != 'actual':
+        assert args.streams == 4 and args.condition == 'nominal' and args.fault == 'none'
+        assert args.prestage == args.physical_final == 'physical_wire'
+        assert args.physical_profile == 'power_trunks_vias' and args.physical_final_profile == 'kelvin_dense_wide'
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
     assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':
@@ -486,7 +491,14 @@ def main():
             final_spec=physical_final_spec_path(args.physical_final_profile)
             original=physical_macro(inputs,args.physical_final,final_spec,'final_drive_v5','physical-final')
             final_override=original.with_name('namespaced-final.spice')
-            final_override.write_text(rename_physical_top(original.read_text(),'nssoc_physical_final_v5'))
+            final_text = original.read_text()
+            if args.diagnostic_final_r != 'actual':
+                from analyze_cloud_metal_resistance import reduce_conductor_class
+                final_text, mutation = reduce_conductor_class(
+                    original.with_name('mux54-compact01.spice').read_text(),
+                    final_text, args.diagnostic_final_r)
+                result['diagnostic_mutation'] = mutation
+            final_override.write_text(rename_physical_top(final_text,'nssoc_physical_final_v5'))
             counts=json.loads(final_spec.read_text())['counts']
             result['physical_final_scope']=dict(mode=args.physical_final,profile=args.physical_final_profile,instances=1,
                 source=str(final_spec.relative_to(ROOT)),source_sha256=sha(final_spec),
@@ -503,7 +515,7 @@ def main():
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
         paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
-               ROOT/'scripts/run_cloud_tx_operating_point.py',Path(os.environ['CLOUD_NGSPICE']),
+               ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
         def limits():
@@ -538,6 +550,10 @@ def main():
         result['native_off_flags_count']=len(flags)
         result['status']='COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE'
         result['component_screen_passed']=result['review']['all_engineering_gates_passed'] and not result['diagnostics']
+        if args.diagnostic_final_r != 'actual':
+            result['diagnostic_screen_passed'] = result['component_screen_passed']
+            result['component_screen_passed'] = False
+            result['status'] = 'COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
         if args.fault!='none':
             result['fault_rejected_by_original_bits']=not result['review']['signals']['passed']
             assert result['fault_rejected_by_original_bits'], 'Actual stage fault escaped source-bit screen'

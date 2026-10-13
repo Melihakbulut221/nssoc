@@ -3,6 +3,12 @@
 name: tx-interconnect-diagnostic-cloud
 on:
   workflow_dispatch:
+    inputs:
+      study:
+        description: Frozen older component or current source-bound physical tree
+        type: choice
+        options: [original_component, dense_wide_tree]
+        default: original_component
 permissions:
   contents: read
 concurrency:
@@ -15,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        interconnect: [actual, low_r_supply, low_r_return, low_r_inputs, low_r_internal, low_r_bias, low_r_outputs]
+        interconnect: [actual, low_r, low_r_supply, low_r_return, low_r_inputs, low_r_internal, low_r_bias, low_r_outputs]
     permissions:
       contents: write
     steps:
@@ -29,15 +35,35 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
-          python3 -m pip install numpy==2.3.3
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
           curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Check graph ownership and unchanged source-bit gates
+        run: python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
       - name: Run fixed-oracle native study and independent complete-wave review
+        if: inputs.study != 'dense_wide_tree'
         run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind wire --interconnect '${{ matrix.interconnect }}'
+      - name: Run source-bound wide-via tree metal-R sensitivity
+        if: inputs.study == 'dense_wide_tree'
+        run: |
+          class='${{ matrix.interconnect }}'
+          if [ "$class" = low_r ]; then class=all; else class="${class#low_r_}"; fi
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition nominal --fault none --prestage physical_wire --physical-profile power_trunks_vias --physical-final physical_wire --physical-final-profile kelvin_dense_wide --frontend damped_strong --clock-bias native_res --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --diagnostic-final-r "$class"
+      - name: Preserve current tree sensitivity captures and all failures
+        if: always() && inputs.study == 'dense_wide_tree'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-tree-rc-${{ matrix.interconnect }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-mux4
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-mux4/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'tree-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
       - name: Preserve all successful and failed native captures permanently
-        if: always()
+        if: always() && inputs.study != 'dense_wide_tree' 
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

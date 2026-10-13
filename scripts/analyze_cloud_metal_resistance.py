@@ -48,6 +48,88 @@ def parse(text):
     return ports, devices, edges
 
 
+def reduce_conductor_class(compact_text, wire_text, category, factor=0.01):
+    """Causal experiment only: reduce actual metal R in one verified net class.
+
+    The original model must be retained by the caller. No C, device, terminal,
+    topology or simulation oracle changes. These artificial values are never
+    evidence of a physical implementation or acceptance.
+    """
+    assert category in ('all', 'supply', 'return', 'inputs', 'internal', 'bias', 'outputs')
+    assert np.isfinite(factor) and 0 < factor < 1
+    cp, cd, ce = parse(compact_text)
+    wp, wd, edges = parse(wire_text)
+    assert cp == wp and not ce and edges and set(cd) == set(wd)
+    parent = {}
+    def root(node):
+        parent.setdefault(node, node)
+        while parent[node] != node:
+            parent[node] = parent[parent[node]]
+            node = parent[node]
+        return node
+    for _, a, b, _ in edges:
+        parent[root(a)] = root(b)
+    owners = {}
+    logical_components = {}
+    def anchor(logical, node):
+        assert node in parent, ('Missing metal terminal', logical, node)
+        component = root(node)
+        owners.setdefault(component, set()).add(logical)
+        logical_components.setdefault(logical, set()).add(component)
+    for port in cp:
+        anchor(port, port)
+    for name, original in cd.items():
+        actual = wd[name]
+        assert (original['model'], original['parameters']) == (actual['model'], actual['parameters'])
+        n = {'npn13g2': 3, 'rppd': 2, 'ptap1': 1}[original['model']]
+        # Body/well aliases are not metal terminals. They must remain identical.
+        assert original['nodes'][n:] == actual['nodes'][n:]
+        for logical, node in zip(original['nodes'][:n], actual['nodes'][:n], strict=True):
+            anchor(logical, node)
+    assert set(owners) == {root(node) for node in parent}, 'Unanchored metal component'
+    assert all(len(v) == 1 for v in owners.values()), 'Cross-conductor short'
+    assert all(len(v) == 1 for v in logical_components.values()), 'Open conductor'
+    def classify(logical):
+        if logical == 'avdd': return 'supply'
+        if logical == 'avss': return 'return'
+        if logical == 'iref': return 'bias'
+        if logical in ('ap', 'an', 'bp', 'bn', 'sp', 'sn'): return 'inputs'
+        if logical in ('op', 'on'): return 'outputs'
+        if logical == 'sub': return 'substrate'
+        assert logical not in cp, ('Unknown external port', logical)
+        return 'internal'
+    mapping = {}
+    for name, a, b, value in edges:
+        assert root(a) == root(b)
+        logical = next(iter(owners[root(a)]))
+        mapping[name] = dict(conductor=logical, category=classify(logical), original_ohms=value)
+    lines, selected = [], {}
+    for line in wire_text.splitlines(keepends=True):
+        fields = line.split()
+        if fields and fields[0] in mapping:
+            item = mapping[fields[0]]
+            if category == 'all' or item['category'] == category:
+                value = item['original_ohms'] * factor
+                assert np.isfinite(value) and 0 < value < item['original_ohms']
+                selected[fields[0]] = dict(item, diagnostic_ohms=value)
+                fields[3] = format(value, '.17g')
+                line = ' '.join(fields) + ('\n' if line.endswith('\n') else '')
+        lines.append(line)
+    assert selected, 'No metal resistors selected'
+    mutated = ''.join(lines)
+    mp, md, me = parse(mutated)
+    assert mp == wp and md == wd and [e[:3] for e in me] == [e[:3] for e in edges]
+    # Exact preservation of C, native-device and other non-R lines.
+    non_r = lambda text: [line for line in text.splitlines(keepends=True)
+                          if not line.split() or line.split()[0] not in mapping]
+    assert non_r(mutated) == non_r(wire_text)
+    return mutated, dict(category=category, factor=factor,
+        original_sha256=hashlib.sha256(wire_text.encode()).hexdigest(),
+        mutated_sha256=hashlib.sha256(mutated.encode()).hexdigest(),
+        resistors=len(edges), conductors=len(owners), selected_resistors=selected,
+        scope='Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance.')
+
+
 def resistance(edges, reference, targets):
     """Solve one grounded component for all requested unit-current injections."""
     adjacency = {}
