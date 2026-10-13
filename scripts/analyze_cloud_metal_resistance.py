@@ -11,6 +11,7 @@ import hashlib
 import io
 import json
 import os
+import shlex
 from pathlib import Path
 import tarfile
 import urllib.request
@@ -234,7 +235,112 @@ def canonical_internal_roles(devices):
     return roles
 
 
-def analyze(spec, circuit_profile="final_drive_v5"):
+
+def bind_native_geometry(report, spec, wire_edges, compact_ports, measurement):
+    """Bind exported resistor terminals to raw Magic coordinates and paint.
+
+    Endpoint paint intersections locate candidate metal. They do not prove
+    that a lumped/resistance-solver edge is a straight physical wire segment.
+    """
+    receipt = report['source']
+    raw = urllib.request.urlopen(receipt['url'], timeout=120).read()
+    assert len(raw)==receipt['bytes'] and hashlib.sha256(raw).hexdigest()==receipt['sha256']
+    base='hw/soc/out/cloud-tx-layout-repair/'
+    with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
+        def read(name): return archive.extractfile(base+name).read()
+        extraction=read('extraction-result.json')
+        assert hashlib.sha256(extraction).hexdigest()==spec['extraction_source_sha256']
+        parsed=json.loads(extraction)
+        assert parsed['status']=='PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
+        assert parsed['variant']==spec['variant']
+        names=['wire96/anchors08.json','wire96/rc03/wires.spice',
+               'wire96/rc03/pump_wires.res.ext','wire96/rc03/pump_wires.ext','wire96/rc03/pump_wires.mag']
+        files={n:read(n) for n in names}
+    hashes={n:hashlib.sha256(v).hexdigest() for n,v in files.items()}
+    for suffix in ('wire96/anchors08.json','wire96/rc03/wires.spice'):
+        matches=[v for k,v in report['composition']['inputs'].items() if k.endswith('/'+suffix)]
+        assert matches==[hashes[suffix]]
+    _,_,exported=parse(files['wire96/rc03/wires.spice'].decode())
+    rename=lambda n:n[2:] if n in {'P_'+p for p in compact_ports} else n
+    assert [(n,rename(a),rename(b),r) for n,a,b,r in exported]==wire_edges
+    nodes={}
+    raw_edges={}
+    for line in files['wire96/rc03/pump_wires.res.ext'].decode().splitlines():
+        row=shlex.split(line)
+        if row and row[0]=='rnode':
+            assert len(row)==7 and row[1] not in nodes
+            nodes[row[1]]=[int(row[4]),int(row[5])]
+        elif row and row[0]=='resist':
+            key=tuple(sorted(row[1:3]))
+            raw_edges.setdefault(key,[]).append(float(row[3]))
+    native_ports={}
+    for line in files['wire96/rc03/pump_wires.ext'].decode().splitlines():
+        row=shlex.split(line)
+        if row and row[0]=='port':
+            native_ports[row[1]]=[int(row[3]),int(row[4])]
+    anchors={v['label']:v['point_dbu'] for v in json.loads(files['wire96/anchors08.json'])['anchors']}
+    assert set(native_ports)==set(anchors)
+    first=next(n for n,p in native_ports.items() if p[0] and anchors[n][0])
+    scale=anchors[first][0]/native_ports[first][0]
+    assert scale>0
+    def coordinate_gate(points):
+        assert set(points)==set(anchors)
+        errors=[abs(scale*x-y) for n,xy in points.items()
+                for x,y in zip(xy,anchors[n],strict=True)]
+        assert max(errors)<=scale/2+1e-9, ('Native terminal coordinates disagree',max(errors))
+        return max(errors)
+    maximum_error=coordinate_gate(native_ports)
+    shifted=dict(native_ports);shifted[first]=[native_ports[first][0]+10,native_ports[first][1]]
+    try: coordinate_gate(shifted)
+    except AssertionError: shifted_rejected=True
+    else: raise AssertionError('Shifted actual native terminal was accepted')
+    def resistor_gate(edges):
+        available={k:list(v) for k,v in raw_edges.items()}
+        for name,a,b,r in edges:
+            key=tuple(sorted((a,b)));values=available.get(key,[])
+            matches=[i for i,v in enumerate(values) if np.isclose(v,r,rtol=1e-6,atol=1e-10)]
+            assert matches,('Unbound native resistor',name,key,r)
+            values.pop(matches[0])
+        assert not any(available.values()),'Native resistors omitted from export'
+    resistor_gate(exported)
+    wrong=list(exported);name,a,b,r=wrong[0];wrong[0]=(name,a,b,r*1.01)
+    try: resistor_gate(wrong)
+    except AssertionError: altered_rejected=True
+    else: raise AssertionError('Altered actual exported resistor was accepted')
+    rectangles=[];layer=None
+    for line in files['wire96/rc03/pump_wires.mag'].decode().splitlines():
+        if line.startswith('<< '):layer=line[3:-3].strip()
+        row=line.split()
+        if row and row[0]=='rect' and layer not in ('checkpaint','labels','properties'):
+            rectangles.append((layer,*map(int,row[1:])))
+    assert rectangles
+    selected={}
+    for group in [*measurement['ports'].values(),*measurement['internal_conductors'].values()]:
+        for item in group['terminals'].values():
+            for edge in item['largest_power_edges']:
+                selected[edge['name']]=edge
+    original={n:(a,b,r) for n,a,b,r in exported}
+    located={}
+    for name,item in sorted(selected.items()):
+        a,b,r=original[name]
+        assert item['ohms']==r and item['nodes']==[rename(a),rename(b)]
+        endpoints=[]
+        for node in (a,b):
+            assert node in nodes,('Missing raw resistor-node coordinate',name,node)
+            x,y=nodes[node]
+            layers=sorted({l for l,x0,y0,x1,y1 in rectangles if x0<=x<=x1 and y0<=y<=y1})
+            assert layers,('No native paint at raw resistor terminal',name,node,x,y)
+            endpoints.append(dict(node=node,raw_xy=[x,y],anchor_dbu_xy=[x*scale,y*scale],paint_layers=layers))
+        located[name]=dict(ohms=r,endpoints=endpoints)
+    return dict(status='PASS_EXACT_NATIVE_RESISTOR_AND_ENDPOINT_PAINT_BINDING_NOT_EDGE_LAYER_PROOF',
+        extraction_receipt=receipt, hashes=hashes, native_resistors=len(exported),
+        located_dominant_resistors=located, raw_to_anchor_dbu_scale=scale,
+        maximum_anchor_quantization_error_dbu=maximum_error,
+        negative_controls=dict(shifted_native_port_rejected=shifted_rejected,changed_exported_resistor_rejected=altered_rejected),
+        scope='Native endpoint coordinates and overlapping paint only; raw solver edges are not asserted straight or uniquely assigned to a layer. No geometry mutation, RC scaling, RF qualification or loaded acceptance.')
+
+
+def analyze(spec, circuit_profile="final_drive_v5", geometry=False):
     receipt = spec['receipt']
     raw = urllib.request.urlopen(receipt['url'], timeout=120).read()
     assert len(raw) == receipt['bytes'] and hashlib.sha256(raw).hexdigest() == receipt['sha256']
@@ -279,13 +385,17 @@ def analyze(spec, circuit_profile="final_drive_v5"):
             internal[port]['device_pins'] = terminals
             internal[port]['grounded_calculation_node'] = ordered[0]
     assert {'avdd', 'avss', 'iref'} <= set(measured)
-    return dict(source=spec, ports=measured, internal_conductors=internal)
+    result = dict(source=spec, ports=measured, internal_conductors=internal)
+    if geometry:
+        result['native_geometry'] = bind_native_geometry(report, spec, edges, cp, result)
+    return result
 
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted analysis only'
     parser = argparse.ArgumentParser()
     parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths', 'v8-kelvin-local-tail', 'v8-kelvin-local-return', 'v8-kelvin-local-supply', 'v8-kelvin-local-internal', 'v8-kelvin-compact-internal', 'v8-kelvin-low-internal', 'v8-kelvin-low-critical', 'v8-kelvin-low-selects', 'cascade14-kelvin-dense-wide', 'cascade14-kelvin-supply-feed', 'cascade14-kelvin-supply-direct'), required=True)
+    parser.add_argument('--geometry', action='store_true')
     args = parser.parse_args()
     version = 'v8' if args.profile.startswith('v8-') else 'v5'
     geometry = args.profile.removeprefix('v8-')
@@ -299,7 +409,7 @@ def main():
     result = dict(status='RUNNING', profile=args.profile, adopted=False,
         scope='DC metal-only unit-current graph diagnosis. Capacitors open; devices excluded. No loaded waveform, RF/body or qualified PEX/PHY acceptance.')
     try:
-        result['measurement'] = analyze(json.loads(path.read_text()), circuit_profile=circuit_profile)
+        result['measurement'] = analyze(json.loads(path.read_text()), circuit_profile=circuit_profile, geometry=args.geometry)
         result['status'] = 'PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE'
     except BaseException as error:
         result.update(status='FAIL_DIAGNOSIS', error=repr(error))

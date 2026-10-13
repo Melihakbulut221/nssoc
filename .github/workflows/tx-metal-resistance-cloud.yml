@@ -15,6 +15,9 @@ on:
         type: choice
         options: [legacy, dense_comparison, signal_comparison, m3_comparison, v8_tail_comparison, local_return_comparison, prestage_supply_feed, final_supply_feed, final_internal_routes, prestage_supply_direct, final_compact_internal, final_low_internal, final_low_critical, final_low_selects]
         default: legacy
+      bind_geometry:
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -39,7 +42,12 @@ jobs:
           python3 -m pip install numpy==2.3.3 pytest==8.4.2
           python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py
       - name: Diagnose exact native metal graph
-        run: python3 scripts/analyze_cloud_metal_resistance.py --profile '${{ matrix.profile }}'
+        env:
+          BIND_GEOMETRY: ${{ inputs.bind_geometry }}
+        run: |
+          extra=()
+          if [ "$BIND_GEOMETRY" = "true" ]; then extra+=(--geometry); fi
+          python3 scripts/analyze_cloud_metal_resistance.py --profile '${{ matrix.profile }}' "${extra[@]}"
       - name: Preserve complete diagnosis and failures
         if: always()
         env:
