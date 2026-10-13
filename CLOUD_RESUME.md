@@ -16,8 +16,8 @@ v6 extracted output passes all768samples (140.606mV minimum), but two tail
 HBTs violate the400mV VCE limit; it is not accepted. v7 changes only four
 selector HBTs Nx4 to Nx8. Physical38386165678, nativeRC38386563813 and
 composition38386884254 passed, retaining54devices with3891R/2593C. Next is
-the original nominal streams4 compact/wire comparison using
-`v7_kelvin_dense_wide`; discover its run before dispatching. Main routing
+the original nominal streams4 compact/wire comparison **38387190660**,
+source **7dfbe10c**, using `v7_kelvin_dense_wide`; do not duplicate it. Main routing
 38371498733 remains live. FullPHY, assembledlayout and finalSTA remain open.
 
 ## Preservation and local retirement
@@ -224,3 +224,9 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
   hypothesis, not acceptance. Physical run **38386165678** is dispatched.
   Follow exact physical -> new RC -> new composition -> unchanged loaded
   compact/wire gates. v6 failed captures are retained; no limit is relaxed.
+
+- Physical-tree workflow now also supports distinct `study` selections for
+  temperature/voltage, 12 independent HBT/resistor corners, six MOS corners,
+  quarter-step convergence and three actual circuit faults. Defaults remain
+  nominal; expanded studies are available but have not yet run for v7. They
+  are engineering screens, not qualified RF/body/temperature wire extraction.
