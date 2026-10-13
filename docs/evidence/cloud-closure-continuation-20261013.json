@@ -427,7 +427,7 @@
     "recommended_depth": 2
   },
   "cloud_cleanup_live": {
-    "checked_utc": "2026-10-13T02:42:37.811082+00:00",
+    "checked_utc": "2026-10-13T02:56:45.838724+00:00",
     "output": {
       "status": "RUNNING",
       "next_index": 303363,
@@ -444,5 +444,15 @@
     },
     "finalizer": "nssoc-cloud-migration-finalize-20261013 active, waits for both transfers then dispatches hosted reconstruction",
     "scope": "All CAD/native simulation/testing on GitHub. Local transfer/hash/cleanup controller only. Source checkout, historical32untracked sources and tools retained; local cleanup incomplete. Do not delete unverified originals or claim disk is empty."
+  },
+  "combined_gmii_hold_channel_route": {
+    "run": 38339178024,
+    "source_head": "6744d764",
+    "status": "HOSTED_RUN_LIVE_RUNTIME_SETUP_LAST_VERIFIED",
+    "purpose": "Route the proven two-delay GMII ECO with bounded native macro-channel local placement. First reproduce original full-chip all-corner timing, then exact accepted-as-candidate hold estimate. Original113771cell positions and full connectivity plus20newdelaycells remain invariant except allowed932ABCchannelcells.",
+    "physical_adopted": false,
+    "evidence": "docs/evidence/cloud-ethernet-hold-estimate-20261013.json",
+    "provenance_note": "This running source still labels placement_repair.source_odb_sha256 with the original baseline SHA. Actual ECO input SHA is verified before native load and preserved in placement-before.json.source_odb_sha256 and result.ethernet_hold.evidence.candidate_odb_sha256. Future runs after0f01ef20 label original versus actual separately. Do not treat the legacy report label as actual source binding; retain all raw records.",
+    "next": "Inspect pre-route milestone and final routing result. No detail-route or extracted timing acceptance yet. Do not cancel/restart this healthy run just to change report field labels."
   }
 }
