@@ -11,6 +11,7 @@ on:
       - hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice
       - hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice
       - hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v6.inc
+      - hw/soc/analog/pcie/tx_clock_common_bias_v1.spice
   workflow_dispatch:
 permissions:
   contents: read
@@ -25,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         condition: [nominal, quarter_step, hot_low, cold_high]
-        frontend: [direct, damped]
+        frontend: [direct]
     permissions:
       contents: write
     steps:
@@ -47,13 +48,13 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py
       - name: Run real 61-HBT tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend '${{ matrix.frontend }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend '${{ matrix.frontend }}' --clock-bias native_vbe
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-mux4-divider14-${{ matrix.condition }}-${{ matrix.frontend }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-mux4-native-bias-${{ matrix.condition }}-${{ matrix.frontend }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-mux4
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"

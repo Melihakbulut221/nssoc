@@ -108,3 +108,24 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     assert 'v(xad_d0p.gate)' in c['vectors'] and 'v(d0p0)' in c['vectors']
     assert len(c['hbt'])==61 and len(c['mos'])==64
     assert 'XGATE din gate sub rppd w=2u l=4.5u' in mux4.FRONT.read_text()
+
+
+def test_native_bias_is_loaded_by_all_three_actual_clock_pairs(tmp_path):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+''')
+    deck,c=mux4.build(tmp_path,'cold_high',clock_bias='native_vbe')
+    assert len(c['hbt'])==62 and len(c['mos'])==64
+    assert c['hbt']['xclkbias.xref']['terminals']==['clkbias','clkbias','xclkbias.er','0']
+    assert 'v(clkbias)' in c['vectors'] and 'v(xclkbias.er)' in c['vectors']
+    for name in ('sap','san','sbp','sbn','sp','sn'):
+        assert f'V{name} {name}0 clkbias PWL(' in deck
+        assert f'R{name} {name}0 {name} 25' in deck
+    assert 'ICLKBIAS avdd clkbias PWL(0 0 1n .00065)' in deck

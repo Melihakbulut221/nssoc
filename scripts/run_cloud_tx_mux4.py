@@ -30,6 +30,7 @@ STOP = START + UI * BITS
 PRE = ROOT / 'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice'
 FRONT = ROOT / 'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v5.inc'
 TX = ROOT / 'hw/soc/analog/pcie/tx_cml_rsil.spice'
+BIAS = ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v1.spice'
 
 
 def sequence():
@@ -101,7 +102,8 @@ def prepare_inputs(inputs):
     return spec
 
 
-def build(inputs, condition, fault='none'):
+def build(inputs, condition, fault='none', clock_bias='ideal'):
+    assert clock_bias in ('ideal','native_vbe')
     bits = sequence()
     c = dict(temperature_c=27, supply_scale=1., core_scale=1., hbt='hbt_typ',
              resistor='res_typ', lv_corner='mos_tt', hv_corner='mos_tt', step_ps=.5)
@@ -114,6 +116,8 @@ def build(inputs, condition, fault='none'):
         ('MOShv', c['hv_corner'], frontend / 'models')]:
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
     lines += [f'.include "{p}"' for p in (PRE, FRONT, TX, final, frontend / 'buf16.inc')]
+    if clock_bias=='native_vbe':
+        lines.append(f'.include "{BIAS}"')
     lines += [f'.temp {c["temperature_c"]}', '.options reltol=1e-4 abstol=1e-12']
     rails = {'avdd': 2.5*c['supply_scale'], 'tvdd': 1.8*c['supply_scale'], 'dvdd': 1.2*c['core_scale']}
     lines += [f'V{name} {name} 0 PWL(0 0 1n {v:.12g})' for name, v in rails.items()]
@@ -159,6 +163,11 @@ def build(inputs, condition, fault='none'):
         hbt.update(found)
         lines.append(instance+' '+' '.join(ports)+' '+name)
     assert len(hbt) == 61 and len(mos) == 64
+    if clock_bias=='native_vbe':
+        subckt, found = bind_devices(BIAS, 'xclkbias', ['clkbias','0','0'], {'npn13g2'})
+        assert len(found)==1
+        hbt.update(found)
+        lines += ['XCLKBIAS clkbias 0 0 '+subckt, 'ICLKBIAS avdd clkbias PWL(0 0 1n .00065)']
     for reference in ('ra', 'rb', 'mr'):
         bias = 0 if fault == 'disable_pre_b_bias' and reference == 'rb' else .0005
         lines.append(f'I{reference} avdd {reference} PWL(0 0 1n {bias})')
@@ -166,8 +175,9 @@ def build(inputs, condition, fault='none'):
     for name, origin, period in [('sa', START-UI, 2*UI), ('sb', START, 2*UI), ('s', START, UI)]:
         for suffix, invert in [('p',False),('n',True)]:
             key = name + suffix
-            stimulus = pwl([int(i % 2 == 0) for i in range(BITS)], 1.23, .08, period, origin, invert)
-            lines += [f'V{key} {key}0 0 '+stimulus, f'R{key} {key}0 {key} 25']
+            stimulus = pwl([int(i % 2 == 0) for i in range(BITS)], 0 if clock_bias=='native_vbe' else 1.23, .08, period, origin, invert)
+            reference = 'clkbias' if clock_bias=='native_vbe' else '0'
+            lines += [f'V{key} {key}0 {reference} '+stimulus, f'R{key} {key}0 {key} 25']
     lines += ['RLOAD op on 100','COP op 0 100f','CON on 0 100f']
     nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
     nodes.update(f'd{i}{suffix}0' for i in range(4) for suffix in ('p','n'))
@@ -184,7 +194,7 @@ def build(inputs, condition, fault='none'):
     lines += ['op','wrdata op.dat '+' '.join(vectors),
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
               'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
-    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, bits=bits, hbt=hbt, mos=mos,
+    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, clock_bias=clock_bias, bits=bits, hbt=hbt, mos=mos,
         rails=rails, vectors=vectors, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
@@ -235,7 +245,8 @@ def review(run, contract):
             passed=bool((margin>=.15).all() and (cm>=1.8).all() and (cm<=2.05).all()))
     signal = original_bit_output_screen(t,volt('op'),volt('on'),contract['bits'],START,UI)
     interfaces = {name:interface(name) for name in ('cmos', 'final')}
-    return dict(zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
+    clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in ('sa','sb','s')}
+    return dict(clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
         signals=signal,hbt_devices=devices,mos_devices=mos,interfaces=interfaces,
         failed_hbts={n:r for n,r in devices.items() if not r['passed']},
         failed_mos={n:r for n,r in mos.items() if not r['passed']},
@@ -250,6 +261,7 @@ def main():
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
     parser.add_argument('--frontend',choices=('direct','damped'),default='direct')
+    parser.add_argument('--clock-bias',choices=('ideal','native_vbe'),default='ideal')
     args=parser.parse_args()
     if args.prestage=='divider14':
         PRE=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
@@ -258,15 +270,15 @@ def main():
     out=ROOT/'cloud-tx-mux4';out.mkdir(exist_ok=False)
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
-    result=dict(status='RUNNING',condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,accepted=False,
-        scope='Actual 61-HBT/64-MOS two-level 4:1 schematic, ideal external clock phases and reference currents. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
+    result=dict(status='RUNNING',condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,accepted=False,
+        scope='Actual 61-HBT/64-MOS two-level4:1 schematic; native_vbe adds one fully screened HBT and resistor for loaded clock common-mode generation. Differential clock phases and reference currents remain ideal external sources. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
     try:
         prepare_inputs(inputs)
-        deck,contract=build(inputs,args.condition,args.fault)
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias)
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
