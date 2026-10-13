@@ -1,0 +1,56 @@
+{
+  "status": "REJECTED_ISOLATED_ACK_WINDOW_FOR_TIMING_DESPITE_FORMAL_EQUIVALENCE",
+  "adopted": false,
+  "proof_run": 38479260742,
+  "proof_summary_asset_id": 638459151,
+  "proof_summary_sha256": "77e3d9cbd7682bc2ae485d6b30d6105a4a83163ff4ce4e784997de6a2b4ffd64",
+  "proof_candidate_sha256": "5a65cd18f765120555a193e1bacddb61e0bd5eb175350b41502c678a5ff5b47a",
+  "proof_scope": "All-input CW2..5 modulo-membership SAT, exact replay1771/1771,22 baseline/candidate public-port tests; wrong-page algebra/module counterexamples and six failing negative port cases retained.",
+  "mapping_run": 38479639977,
+  "mapping_source_head": "9ca3c5b838b6d3d3ad3789e2f0840c511ed9eccf",
+  "baseline": {
+    "profile": "physical_idle_credit",
+    "summary_asset_id": 638478000,
+    "summary_sha256": "d205dbc57134fd90c4985503e731f92548969798b7926315a37f8219fd68b0b8",
+    "archive_asset_id": 638477871,
+    "archive_bytes": 16843302,
+    "archive_sha256": "cd8d90235871581b5fb2594e89cc4761876c2a155c158d92cab13e199768a153",
+    "screen_log_sha256": "935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc",
+    "mapped_cells": 79578,
+    "slow_setup_ns": {
+      "pcie_clk_i": -1.101756,
+      "clk_i": 1.251946
+    },
+    "fast_hold_ns": {
+      "pcie_clk_i": -0.109062,
+      "eth_rx_clk_i": -0.352538
+    }
+  },
+  "candidate": {
+    "profile": "physical_idle_credit_window",
+    "summary_asset_id": 638478682,
+    "summary_sha256": "d6802d6f0adfad087329f7cf4a56647fcc3d35d99b14c8731c5fd82d9ab9d474",
+    "archive_asset_id": 638478432,
+    "archive_bytes": 16819492,
+    "archive_sha256": "c2eb1a824bf5d9663be8513c1603543ec13938756664089d4786aa66c81e88ea",
+    "screen_log_sha256": "c1dd9c16d89b7864bfa71140f10944c96e11f7893476058d85cb77587fbd5dd3",
+    "mapped_cells": 79055,
+    "slow_setup_ns": {
+      "pcie_clk_i": -1.393213,
+      "clk_i": 1.454369
+    },
+    "fast_hold_ns": {
+      "pcie_clk_i": -0.109062,
+      "eth_rx_clk_i": -0.388619
+    },
+    "critical_path": {
+      "start": "pcie_link_up_i",
+      "endpoint": "$auto$ff.cc:337:slice$1165078",
+      "arrival_ns": 4.96061,
+      "required_ns": 3.567396
+    }
+  },
+  "decision": "Reject standalone candidate:523 fewer cells do not compensate for291.457ps PCIe setup regression and36.081ps Ethernet RX hold regression. Baseline native timing log reproduced byte-for-byte.",
+  "next_hypothesis": "The EOP-only candidate made ACK-sequence to retry.timer critical, whereas ACK-window alone leaves link-up to advertiser critical. Test the two source-bound transformations together, preserving isolated failures and running exact baseline/combined public-port cases before paired mapping. No guarantee the combination improves timing.",
+  "scope": "Same20SRAM, original four clocks and three corners. Unplaced screening only; no route, calibrated RC, full PHY or final setup/hold acceptance."
+}
