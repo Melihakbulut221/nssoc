@@ -33,7 +33,7 @@ jobs:
       - name: Check nonuniform physical-time integration and mismatched input rejection
         run: |
           python3 -m pip install numpy==2.3.3 pytest==8.4.2
-          python3 -m pytest -q sw/tests/test_cloud_physical_tree_diagnosis.py
+          python3 -m pytest -q sw/tests/test_cloud_physical_tree_diagnosis.py sw/tests/test_cloud_tx_stage_delay.py
       - name: Compare actual compact and metal-RC device voltages and currents
         env:
           GH_TOKEN: ${{ github.token }}

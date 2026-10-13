@@ -87,7 +87,7 @@ def read_case(record, directory):
             size += len(block)
     assert size == record['raw_wave']['bytes'] and raw_hash.hexdigest() == record['raw_wave']['sha256']
     nodes = {n for row in contract['hbt'].values() for n in row['terminals']} - {'0'}
-    nodes |= {'avdd', 'tvdd', 'ap', 'an', 'bp', 'bn', 'ra', 'rb', 'mp', 'mn', 'mr', 'tr'}
+    nodes |= {'avdd', 'tvdd', 'ap', 'an', 'bp', 'bn', 'ra', 'rb', 'mp', 'mn', 'mr', 'tr', 'sp', 'sn', 'op', 'on'}
     names = ['time'] + ['v(' + n + ')' for n in sorted(nodes)]
     names += ['@q.' + n + '.qnpn13g2[ic]' for n in contract['hbt']]
     names += [v for v in contract['vectors'] if v.startswith('i(v')]
@@ -113,6 +113,8 @@ def read_case(record, directory):
             collector_v=stats(t, c), base_v=stats(t, b), emitter_v=stats(t, e),
             vce_v=stats(t, c-e), vbe_v=stats(t, b-e),
             collector_current_a=stats(t, current), passed=prior['passed'])
+    from analyze_cloud_tx_tree_wave import transition_table
+    transitions=transition_table(t,v('sp')-v('sn'),v('mp')-v('mn'),v('op')-v('on'),contract['bits'])
     return dict(mode=mode, source_archive=dict(url=asset['browser_download_url'],
         sha256=asset['digest'].removeprefix('sha256:'), bytes=asset['size']),
         summary_sha256=record['summary_sha256'], raw_wave=record['raw_wave'],
@@ -121,7 +123,7 @@ def read_case(record, directory):
             'clock_bias', 'pre_bias', 'output_bias', 'final_drive', 'tree_plan')},
         physical_sources={key:{field:result[key].get(field) for field in ('profile','source','source_sha256')}
                           for key in ('physical_prestage_scope','physical_final_scope') if key in result},
-        devices=devices,
+        devices=devices, transitions=transitions,
         public_nodes={n: stats(t, v(n)) for n in sorted(nodes) if '.' not in n},
         feed_current_a={n: stats(t, values[n]) for n in names if n.startswith('i(v')})
 
