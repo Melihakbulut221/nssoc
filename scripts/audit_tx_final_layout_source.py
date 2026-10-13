@@ -60,7 +60,7 @@ def parse(text):
     return rows
 
 
-def signature(row, kind):
+def signature(row, kind, profile='v5'):
     model, nodes, p = row
     nodes = [ALIASES.get(n, n) for n in nodes] if kind == 'native' else list(nodes)
     if kind == 'core':
@@ -72,7 +72,14 @@ def signature(row, kind):
         assert length(p.get('we','0.07u')) == length('0.07u')
         assert length(p.get('le','0.9u')) == length('0.9u')
         nx = number(p['nx'])
-        assert nx in (1, 8)
+        assert profile in ('v5','v6')
+        if profile == 'v5':
+            assert nx in (1, 8)
+        elif nodes[1] in ('ap','an','bp','bn','sp','sn'):
+            assert nx == 4
+        else:
+            assert nodes[1] == 'iref' and nodes[2] == 'avss'
+            assert nx == (1 if nodes[0] == 'iref' else 8)
         values = (nx,)
     elif model == 'rppd':
         assert {'w','l'} <= set(p) <= {'w','l','ps','b','m','sw_et'}
@@ -93,20 +100,21 @@ def signature(row, kind):
     return model, tuple(nodes), values
 
 
-def audit(core, native, generated=None):
+def audit(core, native, generated=None, *, profile='v5'):
+    assert profile in ('v5','v6')
     core_rows, native_rows = parse(core), parse(native)
     assert Counter(r[0] for r in core_rows) == {'npn13g2': 19, 'rppd': 8}
     assert Counter(r[0] for r in native_rows) == {'npn13g2': 19, 'rppd': 8, 'ptap1': 27}
-    expected = Counter(signature(r, 'native') for r in native_rows)
-    adapted = Counter(signature(r, 'core') for r in core_rows)
+    expected = Counter(signature(r, 'native', profile) for r in native_rows)
+    adapted = Counter(signature(r, 'core', profile) for r in core_rows)
     adapted[('ptap1', ('sub','bulk'), (length('2u'),length('2u')))] = 27
     assert adapted == expected, 'Core differs from screened native54 circuit'
     if generated is not None:
-        assert Counter(signature(r, 'generated') for r in parse(generated)) == expected, 'Generated reference differs from native54 circuit'
+        assert Counter(signature(r, 'generated', profile) for r in parse(generated)) == expected, 'Generated reference differs from native54 circuit'
     return dict(status='PASS_CORE_TO_NATIVE54_AND_GENERATED_REFERENCE' if generated is not None else 'PASS_CORE_TO_NATIVE54_GENERATOR_CONTRACT',
                 core_sha256=hashlib.sha256(core.encode()).hexdigest(),
                 native_sha256=hashlib.sha256(native.encode()).hexdigest(),
                 generated_sha256=hashlib.sha256(generated.encode()).hexdigest() if generated is not None else None,
-                hbts=19,resistors=8,substrate_contacts=27,body_port_separate=True,
+                profile=profile,hbts=19,resistors=8,substrate_contacts=27,body_port_separate=True,
                 length_rounding_metres='1e-18',
                 scope='Device connectivity, model parameters and contact geometry only. Native physical LVS/DRC and fresh extracted model remain required; contact resistance is checked in the input model, not extracted by this audit.')

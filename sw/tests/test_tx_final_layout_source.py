@@ -52,3 +52,30 @@ def test_generated_reference_and_missing_contact_control():
     assert m.audit(CORE,NATIVE,generated)['generated_sha256']
     with pytest.raises(AssertionError):m.audit(CORE,NATIVE,generated.replace(taps[0]+'\n',''))
     with pytest.raises(AssertionError):m.audit(CORE,NATIVE,generated.replace('A=4p','A=6p',1))
+
+
+CORE6=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v6_layout_core.spice').read_text()
+NATIVE6=(ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v6.spice').read_text()
+
+
+def test_v6_switching_size_is_explicit_and_old_profile_stays_strict():
+    assert m.audit(CORE6,NATIVE6,profile='v6')['profile']=='v6'
+    with pytest.raises(AssertionError):m.audit(CORE6,NATIVE6)
+    with pytest.raises(AssertionError):m.audit(CORE,NATIVE,profile='v6')
+    # Even equivalent changes on both sides cannot silently change the v6 size contract.
+    with pytest.raises(AssertionError):
+        m.audit(CORE6.replace('Nx=4','Nx=8'),NATIVE6.replace('nx=4','nx=8'),profile='v6')
+    with pytest.raises(AssertionError):
+        m.audit(CORE6.replace('Nx=8','Nx=4'),NATIVE6.replace('nx=8','nx=4'),profile='v6')
+
+
+def test_v6_generated_reference_preserves_all_27_body_contacts():
+    rows=['.subckt native '+' '.join(sorted(m.PORTS))]
+    for i,(model,nodes,params) in enumerate(m.parse(CORE6)):
+        nodes[-1]='BULK'
+        rows.append('X%d '%i+' '.join(nodes)+' '+model+' '+' '.join(k+'='+v for k,v in params.items()))
+    taps=[f'RPTAP{i} sub BULK ptap1 A=4p P=8u' for i in range(27)]
+    generated='\n'.join(rows+taps+['.ends native'])
+    assert m.audit(CORE6,NATIVE6,generated,profile='v6')['generated_sha256']
+    with pytest.raises(AssertionError):m.audit(CORE6,NATIVE6,generated.replace(taps[0]+'\n',''),profile='v6')
+    with pytest.raises(AssertionError):m.audit(CORE6,NATIVE6,generated.replace('nx=4','nx=8',1),profile='v6')

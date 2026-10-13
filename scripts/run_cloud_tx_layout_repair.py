@@ -31,10 +31,10 @@ def main():
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
-    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5'), default='baseline')
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5','final_drive_v6'), default='baseline')
     args = parser.parse_args()
     if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
-        assert args.circuit_profile=='final_drive_v5'
+        assert args.circuit_profile in ('final_drive_v5','final_drive_v6')
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
@@ -80,19 +80,23 @@ def main():
         source = (originals / 'layout91.py').read_text()
         edits = []
         physical_source=(originals/'physical92.py').read_text()
-        if args.circuit_profile in ('cascade14','final_drive_v5'):
+        if args.circuit_profile in ('cascade14','final_drive_v5','final_drive_v6'):
             if args.circuit_profile=='cascade14':
                 circuit=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
                 expected='c97692bcc4389c256479631e820a4293b79121d2225d767f5635429cd7dd0805'
                 top='nssoc_tx_mux2_cascade14_layout_v1'
             else:
                 from audit_tx_final_layout_source import audit
-                circuit=ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v5_layout_core.spice'
-                native=ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice'
-                expected='c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf'
-                assert sha(native)=='75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d'
-                result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text())
-                top='nssoc_tx_mux2_final_drive_v5_layout_v1'
+                audit_profile = 'v6' if args.circuit_profile == 'final_drive_v6' else 'v5'
+                circuit=ROOT/f'hw/soc/analog/pcie/tx_mux2_final_drive_{audit_profile}_layout_core.spice'
+                native=ROOT/f'hw/soc/analog/pcie/tx_mux54_passive_drive_{audit_profile}.spice'
+                expected,native_digest={
+                    'v5':('c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf','75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d'),
+                    'v6':('2ef986b71a2b6b74d4b6b20f74048759c191a441d3bc58667259110b0b2a562f','03e40de12d6f1e340772476959abc823676766a16466bc465c2972954ba64c76'),
+                }[audit_profile]
+                assert sha(native)==native_digest
+                result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text(),profile=audit_profile)
+                top=f'nssoc_tx_mux2_final_drive_{audit_profile}_layout_v1'
             assert sha(circuit)==expected
             for before,after in [
                 ('hw/soc/out/pcie-tx-mux2-20261012/tx_mux2_hbt_passive_fast_v1.spice',str(circuit.relative_to(ROOT))),
@@ -269,9 +273,9 @@ def main():
         run([app, 'python', generator, '--pdk', ROOT / 'pdk', '--out', out / 'layout'], 'generation')
         generated = json.loads((out / 'layout/result.json').read_text())
         result['layout'] = generated
-        if args.circuit_profile=='final_drive_v5':
+        if args.circuit_profile in ('final_drive_v5','final_drive_v6'):
             result['generated_reference_equivalence']=audit(circuit.read_text(),native.read_text(),
-                (out/'layout/schematic.cir').read_text())
+                (out/'layout/schematic.cir').read_text(),profile=audit_profile)
         # The controller is standard Python; launching it inside the AppImage
         # would make its native child invocations require a nested FUSE mount.
         run([sys.executable, physical_method, '--layout', out / 'layout', '--out', out / 'physical', '--app', app], 'physical')
