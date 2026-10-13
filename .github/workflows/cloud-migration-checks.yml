@@ -1,4 +1,5 @@
 name: cloud-migration-checks
+run-name: cloud-migration-checks ${{ inputs.request_id || github.run_id }}
 on:
   push:
     branches: ['codex/complete-open-work']
@@ -15,9 +16,32 @@ on:
       - sw/tests/test_cloud_restore_hardlinks.py
       - .github/workflows/cloud-migration-checks.yml
   workflow_dispatch:
+    inputs:
+      request_id:
+        type: string
+      verification_tag:
+        type: string
+      verification_manifest:
+        type: string
 permissions:
   contents: read
 jobs:
+  archive-readback:
+    if: ${{ inputs.verification_tag != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify every preserved byte without executing archive contents
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARCHIVE_TAG: ${{ inputs.verification_tag }}
+          ARCHIVE_MANIFEST: ${{ inputs.verification_manifest }}
+        run: python3 scripts/cloud_archive_readback.py --tag "$ARCHIVE_TAG" --manifest "$ARCHIVE_MANIFEST"
   deletion-and-resume:
     runs-on: ubuntu-24.04
     steps:

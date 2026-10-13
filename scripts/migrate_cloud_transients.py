@@ -148,17 +148,15 @@ def main():
                     packed.add(path, arcname=row['member'], recursive=False)
             atomic(receiptfile, publish(archive, TAG))
         receipt = json.loads(receiptfile.read_text())
-        subprocess.run(['curl', '--fail', '--location', '--retry', '4', '--silent', '--show-error', receipt['url'], '-o', str(remote)], check=True)
-        if remote.stat().st_size != receipt['bytes'] or digest(remote) != receipt['sha256']:
-            raise ValueError('Remote archive differs')
-        verify_archive(remote, selected)
         manifest = STATE / f'transients-{batch:03d}.manifest.json'
         atomic(manifest, dict(receipt=receipt, entries=selected))
         manifest_receipt = publish(manifest, TAG)
+        from cloud_archive_readback import wait_verified_readback
+        proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'transients-{batch:03d}.hosted.json')
         # The complete restore manifest is durable before any deletion.
         for row in selected:
             remove_original(row)
-        progress['batches'].append(dict(receipt=receipt, manifest=manifest_receipt, entries=len(selected), logical_bytes=sum(r.get('bytes', 0) for r in selected)))
+        progress['batches'].append(dict(receipt=receipt, manifest=manifest_receipt, hosted_proof=proof, entries=len(selected), logical_bytes=sum(r.get('bytes', 0) for r in selected)))
         progress['status'] = 'RUNNING'
         atomic(progressfile, progress)
         archive.unlink(missing_ok=True)

@@ -64,6 +64,21 @@ def main():
         remote = subprocess.check_output(['git', 'ls-remote', 'origin', 'refs/heads/codex/complete-open-work'], cwd=ROOT, text=True).split()[0]
         if head != remote:
             raise RuntimeError('Local HEAD differs from published branch')
+        # Keep a small restart controller outside the soon-to-be-empty checkout.
+        # Its copies are also published before deletion and removed on success.
+        runtime = STATE / 'runtime'
+        runtime.mkdir(exist_ok=True)
+        for name in ('retire_local_checkout.py', 'migrate_cloud_transients.py', 'migrate_outputs_to_cloud.py', 'cloud_archive_readback.py'):
+            shutil.copyfile(ROOT / 'scripts' / name, runtime / name)
+            publish(runtime / name, TAG)
+        launcher = STATE / 'resume.py'
+        launcher.write_text('import json,sys\nfrom pathlib import Path\n'
+                            'base=Path(__file__).resolve().parent\n'
+                            'sys.path.insert(0,str(base/"runtime"))\n'
+                            'import retire_local_checkout as controller\n'
+                            'controller.ROOT=Path(json.loads((base/"checkout-inventory.json").read_text())["root"])\n'
+                            'controller.main()\n')
+        publish(launcher, TAG)
         rows = []
         for directory, dirs, files in os.walk(ROOT, followlinks=False):
             rows += [transfer.record(Path(directory) / n) for n in files]
@@ -109,16 +124,14 @@ def main():
             transfer.verify_archive(archive, rows)
             atomic(receiptfile, publish(archive, TAG))
         receipt = json.loads(receiptfile.read_text())
-        subprocess.run(['curl', '--fail', '--location', '--retry', '4', '--silent', '--show-error', receipt['url'], '-o', str(downloaded)], check=True)
-        if downloaded.stat().st_size != receipt['bytes'] or digest(downloaded) != receipt['sha256']:
-            raise RuntimeError('Remote checkout archive differs')
-        transfer.verify_archive(downloaded, rows)
         manifest = STATE / f'checkout-{i:03d}.manifest.json'
         atomic(manifest, dict(receipt=receipt, entries=rows))
         manifest_receipt = publish(manifest, TAG)
+        from cloud_archive_readback import wait_verified_readback
+        proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'checkout-{i:03d}.hosted.json')
         for row in rows:
             transfer.remove_original(row)
-        state['batches'].append(dict(archive=receipt, manifest=manifest_receipt, files=len(rows), logical_bytes=sum(r.get('bytes', 0) for r in rows)))
+        state['batches'].append(dict(archive=receipt, manifest=manifest_receipt, hosted_proof=proof, files=len(rows), logical_bytes=sum(r.get('bytes', 0) for r in rows)))
         atomic(statefile, state)
         archive.unlink(missing_ok=True)
         downloaded.unlink(missing_ok=True)

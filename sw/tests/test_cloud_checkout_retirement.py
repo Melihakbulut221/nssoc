@@ -61,3 +61,14 @@ def test_scope_rejects_neighbor_and_symlink_ancestor(tmp_path, monkeypatch):
     assert not m.allowed(root / 'link' / 'unique')
     assert not m.allowed(neighbor / 'unique')
     assert not m.allowed(root / '..' / 'personal' / 'unique')
+
+
+@pytest.mark.parametrize('change', [{'status': 'FAIL'}, {'manifest_sha256': 'different'}, {'manifest_url': 'https://wrong'}])
+def test_hosted_success_must_bind_exact_manifest(change):
+    import cloud_archive_readback as readback
+    manifest = dict(sha256='exact-manifest-hash', url='https://exact')
+    proof = dict(status='PASS_EVERY_REMOTE_ARCHIVE_MEMBER', manifest_sha256=manifest['sha256'], manifest_url=manifest['url'])
+    readback.check_result(proof, manifest)
+    proof.update(change)
+    with pytest.raises(ValueError, match='exact manifest'):
+        readback.check_result(proof, manifest)
