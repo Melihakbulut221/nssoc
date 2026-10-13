@@ -10,6 +10,22 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Short-selector native RC passed; v10 allcompact PVT gates pass
+
+v8low-selects extraction38453131275 passed actualRC graph and13corruptioncontrols.
+Summaryasset637997019 SHA18a27ab3a0120fdda1f37606f34b7eee433d5fbc64c47981f983bc271b066cea.
+Exact6285904byte archive is bound for device/RC composition. Discover
+existing final_drive_v8/critical_buses_kelvin_low_selects compose_only run
+before dispatch. The v8 unchanged circuit needs a distinct low-selectsreceipt
+andloadedprofile; do not substitute low-criticalRC.
+
+v10 compact nominal/hot/cold allpass: minimum280.128/232.867/273.459mV,
+zero signal/device/interface failures andzero simulator diagnostics. The
+priorv9cold VBE/current issue is absent. Exactthree summaries are preserved
+in pcie-final-v10-loaded-tree-20261013.json. Wire companions38452808927/
+38452812892 remain running; no electrical adoption from compact alone.
+Mainroute38448901835 and32wire38441895491 remainlive. Allwork hosted.
+
 ## Short selector buses physically pass; v10 loaded PVT running
 
 v8 low-selects physical38452058065 on6c2f30e9b48f13e3828dae64dd36af50733c2a3b
