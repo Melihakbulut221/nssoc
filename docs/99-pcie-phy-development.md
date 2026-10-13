@@ -525,3 +525,9 @@ with zero markers, strict hierarchical and flat LVS, and all five physical
 fault controls. Its native 54-device circuit remains equivalent. A new
 source-bound RC extraction is required before composition and the unchanged
 loaded-tree waveform screen; this physical pass is not PHY acceptance.
+
+Wider two-row native extraction 38371728150 passed the actual wire graph
+audit and all thirteen corruption controls. The fresh model contains
+3889 resistors and 2593 capacitors, retaining the same 54 native devices.
+Exact composition and loaded waveform comparison follow; no old RC model
+is reused and no electrical acceptance is inferred from extraction alone.
