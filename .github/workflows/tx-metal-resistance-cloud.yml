@@ -13,7 +13,7 @@ on:
       profiles:
         description: Source-bound geometry comparison; avoid repeating prior studies
         type: choice
-        options: [legacy, dense_comparison, signal_comparison, m3_comparison, v8_tail_comparison, local_return_comparison, prestage_supply_feed, final_supply_feed, final_internal_routes, prestage_supply_direct]
+        options: [legacy, dense_comparison, signal_comparison, m3_comparison, v8_tail_comparison, local_return_comparison, prestage_supply_feed, final_supply_feed, final_internal_routes, prestage_supply_direct, final_compact_internal]
         default: legacy
 permissions:
   contents: read
@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: ${{ fromJSON(inputs.profiles == 'prestage_supply_direct' && '["cascade14-kelvin-supply-direct"]' || inputs.profiles == 'final_internal_routes' && '["v8-kelvin-local-internal"]' || inputs.profiles == 'final_supply_feed' && '["v8-kelvin-local-supply"]' || inputs.profiles == 'prestage_supply_feed' && '["cascade14-kelvin-supply-feed"]' || inputs.profiles == 'local_return_comparison' && '["v8-kelvin-local-tail","v8-kelvin-local-return","cascade14-kelvin-dense-wide"]' || inputs.profiles == 'v8_tail_comparison' && '["v8-kelvin-dense-wide","v8-kelvin-tail-paths"]' || inputs.profiles == 'm3_comparison' && '["kelvin-dense-wide","kelvin-m3-10"]' || inputs.profiles == 'signal_comparison' && '["kelvin-dense-wide","kelvin-signal-trunks"]' || inputs.profiles == 'dense_comparison' && '["kelvin-dense","kelvin-dense-wide"]' || '["kelvin","kelvin-short","kelvin-short-vias"]') }}
+        profile: ${{ fromJSON(inputs.profiles == 'final_compact_internal' && '["v8-kelvin-compact-internal"]' || inputs.profiles == 'prestage_supply_direct' && '["cascade14-kelvin-supply-direct"]' || inputs.profiles == 'final_internal_routes' && '["v8-kelvin-local-internal"]' || inputs.profiles == 'final_supply_feed' && '["v8-kelvin-local-supply"]' || inputs.profiles == 'prestage_supply_feed' && '["cascade14-kelvin-supply-feed"]' || inputs.profiles == 'local_return_comparison' && '["v8-kelvin-local-tail","v8-kelvin-local-return","cascade14-kelvin-dense-wide"]' || inputs.profiles == 'v8_tail_comparison' && '["v8-kelvin-dense-wide","v8-kelvin-tail-paths"]' || inputs.profiles == 'm3_comparison' && '["kelvin-dense-wide","kelvin-m3-10"]' || inputs.profiles == 'signal_comparison' && '["kelvin-dense-wide","kelvin-signal-trunks"]' || inputs.profiles == 'dense_comparison' && '["kelvin-dense","kelvin-dense-wide"]' || '["kelvin","kelvin-short","kelvin-short-vias"]') }}
     permissions:
       contents: write
     steps:

@@ -10,6 +10,25 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Latest isolated compact-internal study
+
+Compact-internal final MUX composition **38426740845** passed native54-device
+composition. Its distinct receipt is
+`docs/evidence/pcie-final-v8-kelvin-compact-internal-composition-20261013.json`.
+Next: final `v8_kelvin_compact_internal`, original prestage `kelvin_supply_feed`,
+matched compact/wire, streams4, offset75, nominal and temperature_voltage.
+This isolates removal of obsolete long ea/eb metal; do not substitute the new
+prestage silently. DC profiles=final_compact_internal. Discover existing runs.
+
+Direct prestage DC **38426736714** passed source-bound graph diagnosis:
+avdd-to-T053/T054 is **5.037323 / 5.056052 ohm**, down from **7.034372 / 8.202856**.
+Summary SHA256 `f450092a14a761a101b9e45e364e1f7ba7eafb69e458554335a9a6bdd5a29959`.
+This is metal-only DC, not electrical acceptance. Its actual loaded nominal and
+PVT runs **38426728316 / 38426732244** remain the required next evidence.
+Source/licensing checks **38426745906** passed on b1063c65. Main-chip route
+**38420407838** is live. Full serial PHY, route and final setup/hold stay OPEN.
+All work remains hosted; local workspace stays empty.
+
 ## New hosted continuation: direct supply and compact internal routes
 
 Dispatched on `b1063c65a52280f4454f26a711761502355c3b54`: direct supply
