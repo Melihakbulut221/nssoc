@@ -39,6 +39,10 @@ jobs:
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Resolve every marker and reported signal to native geometry
         run: python3 scripts/probe_cloud_newer_congestion.py --source-profile '${{ inputs.source_profile || 'baseline' }}'
+      - name: Check all eight orientations independently of native placed-bbox checks
+        run: |
+          python3 -m pip install pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_cloud_pin_geometry.py
       - name: Preserve diagnosis and complete failure inputs
         if: always()
         env:

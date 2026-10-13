@@ -29,6 +29,27 @@ def spelling(name):
     return re.sub(r'\\([\[\]])', r'\1', name)
 
 
+def transformed_rectangle(bounds, orientation, origin):
+    """OpenDB orientation followed by instance origin, in integer DBU.
+
+    The frozen runtime's Python dbTransform.apply rejects constructed Rect
+    wrappers. Use the eight documented orthogonal transforms and independently
+    compare every resulting pin union with OpenDB's native ITerm bbox below.
+    """
+    transforms = {
+        'R0': lambda x, y: (x, y), 'R90': lambda x, y: (-y, x),
+        'R180': lambda x, y: (-x, -y), 'R270': lambda x, y: (y, -x),
+        'MY': lambda x, y: (-x, y), 'MYR90': lambda x, y: (-y, -x),
+        'MX': lambda x, y: (x, -y), 'MXR90': lambda x, y: (y, x),
+    }
+    assert orientation in transforms
+    x0, y0, x1, y1 = bounds
+    assert x0 <= x1 and y0 <= y1
+    points = [transforms[orientation](x, y) for x in (x0, x1) for y in (y0, y1)]
+    return (min(x for x, y in points) + origin[0], min(y for x, y in points) + origin[1],
+            max(x for x, y in points) + origin[0], max(y for x, y in points) + origin[1])
+
+
 def native():
     import odb
     db = odb.dbDatabase.create()
@@ -140,11 +161,9 @@ def native():
     for inst in block.getInsts():
         if inst.getName() not in wanted:
             continue
-        transform = inst.getTransform()
         def placed(shape):
-            rect = odb.Rect(shape.xMin(), shape.yMin(), shape.xMax(), shape.yMax())
-            transform.apply(rect)
-            return rect
+            bounds = (shape.xMin(), shape.yMin(), shape.xMax(), shape.yMax())
+            return odb.Rect(*transformed_rectangle(bounds, str(inst.getOrient()), inst.getOrigin()))
         pin_shapes = []
         for term in inst.getITerms():
             shapes = []

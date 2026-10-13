@@ -1,7 +1,7 @@
 {
   "run": 38342231393,
   "source_head": "693a08cc",
-  "status": "EIGHT_CASES_COMPLETE_SIX_POSITIVE_PASS_TWO_FAULTS_REJECTED_QUARTER_STEP_RUNNING",
+  "status": "COMPLETE_SEVEN_POSITIVE_COMPONENT_SCREENS_PASS_AND_TWO_NATIVE_FAULTS_REJECTED",
   "cases": [
     {
       "streams": 32,
@@ -875,11 +875,112 @@
         "sha256": "2e862f996e9caf2c26355f71c72a9e28b08266409ec74dc90ee3c773c1090a5c"
       },
       "fault_rejected_by_original_bits": true
+    },
+    {
+      "streams": 32,
+      "prestage": "divider14",
+      "condition": "quarter_step",
+      "fault": "none",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38342231393-1-tx-32-quarter_step-none/tx-serializer-32-quarter_step-none-38342231393-1.summary.json",
+      "summary_sha256": "04b53d155d58e9d6664db215270d5d2277bb70b23eb7ded64d761452b5d0995b",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2808479994316522,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.280890584191666,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2808479994316522,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.28190282426981894,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.27533982537389123,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8951920778454154,
+            1.8964641996377896
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2295125140226293,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.912556568470474,
+            1.9377115147081732
+          ],
+          "passed": true
+        },
+        "level_4": {
+          "samples": 768,
+          "minimum_margin_v": 0.3134302788770462,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9146666506955436,
+            1.9262951092038763
+          ],
+          "passed": true
+        },
+        "level_8": {
+          "samples": 768,
+          "minimum_margin_v": 0.3204746444786204,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9128822990741694,
+            1.9253812549673714
+          ],
+          "passed": true
+        },
+        "level_16": {
+          "samples": 768,
+          "minimum_margin_v": 0.320962630068921,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9135032958342286,
+            1.9248093790524714
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "diagnostics": [],
+      "raw_wave": {
+        "bytes": 4684272274,
+        "sha256": "ca3a45269b6ad5db10e6fef16977fbf7a0822dd2317d05b5e04d65dbd7710dd7"
+      }
     }
   ],
   "adopted": false,
-  "scope": "Schematic32:1 transistor tree v5; widened two collector resistors only. Full PVT/fault campaign still running. No full serial PHY or physical-chip closure.",
-  "pending_cases": [
-    "native-transient (32, quarter_step, none)"
-  ]
+  "scope": "Schematic32:1 transistor tree v5; widened two collector resistors only. Full selected nine-case campaign complete, all seven positive cases pass and two real circuit faults rejected. Differential clocks remain ideal; one transmitter tree, not complete Gen3x4 PHY. No physical-chip or RF qualification.",
+  "pending_cases": []
 }
