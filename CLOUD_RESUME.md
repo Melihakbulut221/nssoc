@@ -10,6 +10,25 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Latest completed comparison and physical followup
+
+All12cases are source-bound in
+`docs/evidence/pcie-internal-routing-and-direct-supply-comparison-20261013.json`.
+Both candidates remain rejected. Direct supply wire nominal/cold pass
+130.666/234.705mV but hot fails32wrong/128low and inputCM. Compact internal
+wire nominal/cold pass output143.457/238.411mV but fail4selectorVCE limits;
+hot has0wrong yet128low,4.323mVminimum,2selectorVCEfailures and lowinputCM.
+Do not rerun these unchanged studies or combine them as accepted circuitry.
+
+Low upper-metal internal geometry **38428667535** passed all560DRCcategories
+with0markers,strict54devicehierarchical/flatLVS andfivephysicalfaultcontrols.
+SummarySHA `6cf35e4daf9fe7b13cfcce30f8a6f7a9293a247d3dc12b5befc9b1b0c1be043e`.
+Its actual393230bytearchiveSHA
+`23ee6682e6a05c6356ab92513257ff2b0712d11a674b683b5a6f7ee3775337f1`
+is bound for fresh native RC. Discover the extraction run before dispatching.
+Sourcechecks38428671855passed. Mainroute38420407838 remains live; no full PHY,
+main-chip routed acceptance or finalsetup/hold closure. Everything stays cloud-only.
+
 ## New low upper-metal internal-route candidate
 
 `critical_buses_kelvin_low_internal` inherits finalv8 local_supply geometry,
