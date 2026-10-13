@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T00:40:41.648690+00:00",
-  "turn_classification": "PROGRESS: actual61HBT64MOStwo-level4:1tree implemented and native captures completed; missing-rail review defect preserved and corrected in fresh hosted campaign. FullscopeOPEN.",
+  "as_of": "2026-10-13T00:54:12.352722+00:00",
+  "turn_classification": "PROGRESS: actual4:1tree and all61HBT64MOS reviewed; nativefaults rejected; divider14 closes nominal/quarterstep engineering gates buttruePVT stillfails. New62HBTloadedclockcommonmode study active. No fullPHY/routing/timing closure.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "cca6613b",
+  "head": "ad1ab826",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -67,8 +67,8 @@
     "new_snapshot_readback_run": 38316589440,
     "new_snapshot_readback_status": "PASS all4groups57batches50994files43829824449logical bytes13hardlinks",
     "new_snapshot_evidence": "docs/evidence/cloud-output-restore-second-20261013.json",
-    "latest_license_migration_run": 38327051618,
-    "latest_license_migration_result": "PASS: 25 hosted migration, restore and finalization controls; SPDX, licence inventory and REUSE passed on b3afd025. No tests ran locally.",
+    "latest_license_migration_run": 38328625608,
+    "latest_license_migration_result": "PASS28hostedmigrationcontrols+SPDX/inventory/REUSE; readonlyparentdeleteandmode-restorationtested; no local tests.",
     "third_snapshot_readback_run": 38321449137,
     "third_snapshot_readback_status": "PASS_ALL_FOUR_HOSTED_BYTE_RECONSTRUCTION_GROUPS",
     "third_snapshot_readback_evidence": "docs/evidence/cloud-output-restore-third-20261013.json",
@@ -81,13 +81,13 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 250690,
-    "batch": 144,
-    "removed_bytes": 91135635556,
-    "uploaded_bytes": 55237306962
+    "next_index": 252156,
+    "batch": 163,
+    "removed_bytes": 100342830496,
+    "uploaded_bytes": 57001402300
   },
   "next_actions": [
-    "Develop actual faster/earlier CMOS-to-CML boundary; preferred next prototype4:1CMLtree with2GbpsCMOSinputs rather thanforcing4Gbpsconversion atslow/hot. AlladdednativeHBT/MOS mustbe bound/reviewed; currentfrozen23HBT gate isnotfulltreeproof. Actualclock/biastracking andLVovershoot remainrequired; do notfitidealbiaspercornerorrelaxlimits.",
+    "Inspectnativeclockbiasrun38329329431;actual62HBT64MOSallcorners. Divider14nominal/quarterstepnowpassbuthotmargin/HBT,coldCM/HBT/MOSfail. Directv5retainedbecausev6inputresistordoesnotfixcoldovershoot. No layoutorPHYadoption.",
     "Continue two active verified output transfers using existing separate plans/state; no local CAD/tests. Main readback38321449137PASS83batches162263files61.24GB; PNRreadback38322169148PASScurrentpublishedsnapshot. Later batches still require final hosted readback.",
     "Inspect next three nativehalf-grid routingprofiles. Originalfailed38317996877 fullypreserved; probe38325970347binds108markers/allreportednets,71nearETHSRAM;allmarkersx2340..3182.4,y1238.4..1641.6um. No sourceplacement/clock/RC/capacityrelaxations. Ifgridprofilesfail, targetactuallocalplacement.",
     "FullserialPHY/chiproute/finaltimingOPEN. Native chip route nowTERMINAL FAILURE, notlive. Exactplacementtiming reproduced; do notwait onoldroute or blindly restart unchanged.",
@@ -224,10 +224,10 @@
   },
   "pnr_transfer_current_snapshot": {
     "status": "RUNNING",
-    "next_index": 2952,
-    "batch": 85,
-    "removed_bytes": 39299875988,
-    "uploaded_bytes": 7751903868
+    "next_index": 6084,
+    "batch": 129,
+    "removed_bytes": 59938343873,
+    "uploaded_bytes": 11543438939
   },
   "next_grid_route_run": {
     "run": 38326473503,
@@ -255,12 +255,13 @@
     ],
     "restart_policy": "Persistent user unit files and default.target.wants links installed and systemd-analyze verified. Existing transfer PIDs 3817135/4035665 unchanged. Transient definitions remain active until shutdown; persistent versions resume frozen plans next user session. Finalizer uses file lock and durable unique hosted request; uncertain dispatch never blindly repeated.",
     "scope": "Local transfer/cleanup and API orchestration only. Final full-byte reconstruction on GitHub after both selected file plans complete. Source checkout/tools and 32 historical source files retained; output cleanup not complete.",
-    "snapshot_evidence": "docs/evidence/cloud-output-pnr-restore-20261013.json"
+    "snapshot_evidence": "docs/evidence/cloud-output-pnr-restore-20261013.json",
+    "readonly_recovery": "MaintransferfailedPermissionErrorunlinkunder0555outputparent. Failedrestartloopstopped; helperrehashesexactarchivedcontent, temporarilyaddsownerwriteonlytoownin-scopeparent,restoresmodefinally.28hostedtestspassedbeforemainresumePID4128374;currentprogresspastbatch151. PNRuninterruptedPID4035665."
   },
   "serial_tree_campaign": {
     "source_head": "cca6613b",
     "run": 38328250971,
-    "status": "PENDING_AFTER_OLD_CAPTURE",
+    "status": "COMPLETE_NATIVE_CAPTURE_AND_SCREEN_NOT_PHY_ACCEPTANCE",
     "prior_run": 38328009752,
     "prior_failure": "Native captures return0 without numerical diagnostics; review KeyError(v(avdd)) due resistor-fed rails absent from saved transistor-pin vectors. Full original waves preserved in hosted archives; no electrical conclusion.",
     "fix": "Explicitly save avdd/tvdd/dvdd in addition to every HBT/MOS terminal and all HBT currents. Regression control added. No transistor, source phase, voltage limit or output oracle change.",
@@ -276,6 +277,21 @@
       "scripts/run_cloud_tx_mux4.py",
       "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice",
       "sw/tests/test_cloud_tx_mux4.py"
-    ]
+    ],
+    "result_evidence": "docs/evidence/pcie-mux4-native-tree-20261013.json",
+    "result": "Native allsixcapturescomplete; nominal/quarterstepbit+alltransistor gatespass butinterstageCMlow. Hot0wrongbut65mV/4HBTfails;cold6HBT32MOSfails. Bothactualstagefaults192wrong."
+  },
+  "serial_tree_divider_comparison": {
+    "run": 38328968244,
+    "status": "COMPLETE_PVT_ADOPTION_REJECTED",
+    "evidence": "docs/evidence/pcie-mux4-divider-damping-20261013.json",
+    "result": "14umprestagepull-downpassesallnominal/quarterstepsourcebit/interface/devicegates. Hot70.539mVand12finaldataHBTfail; coldCM2.072V/6tailHBT/32LVfail. Native inputseriesresistordamping doesnotresolveMOSovervoltage; retainv5direct fornextisolatedtest."
+  },
+  "serial_native_clock_bias": {
+    "run": 38329329431,
+    "source_head": "ad1ab826",
+    "status": "IN_PROGRESS",
+    "devices": "62HBT64MOS; addednativeVBEreference+resistorwithrealcurrentloadingofallthreeclockpairs. External650uAreferenceanddifferentialclockmodulationremain; notPLL/CDR/clocktree.",
+    "next": "Inspectallfournativeconditions beforechanges; fullsourcebitanddevicegatesunchanged. CheckactualclockCMandnewreferenceHBTbounds. Do notadoptonnominalalone."
   }
 }

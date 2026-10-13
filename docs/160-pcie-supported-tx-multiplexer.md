@@ -514,3 +514,45 @@ contains nominal, half-step, hot/low and cold/high cases and two actual
 circuit faults (swapped prestage-A select and disabled prestage-B bias).
 Full PHY, clock/bias integration, new layout/extraction and PVT acceptance
 remain open pending measured results.
+
+The corrected [complete 4:1 tree study](evidence/pcie-mux4-native-tree-20261013.json)
+finished in run 38328250971. Nominal and quarter-step output samples all
+pass with minima 234.611 and 234.669 mV; all 61 HBT and 64 MOS bounds also
+pass. The interstage common mode is only 1.784–1.800 V, so the complete
+component gate rejects both. Hot/low now has zero wrong output signs,
+compared with 64 in the earlier final-mux/4 Gb/s-boundary experiment, but
+its 65.209 mV output minimum fails the unchanged 100 mV gate. Four final
+selector HBTs also miss VCE. Cold/high still fails six tail HBTs and 32 LV
+MOS devices. Swapping prestage-A selection or disabling prestage-B bias
+each causes 192 wrong original output samples; both real faults are caught.
+
+A [matched divider/damping comparison](evidence/pcie-mux4-divider-damping-20261013.json)
+in run 38328968244 extends each prestage output pull-down resistor from
+9 to 14 um. Nominal and quarter-step now pass every declared source-bit,
+interface and transistor engineering gate. With the original CMOS frontend,
+nominal output minimum is 234.749 mV and interstage common mode is
+1.937–1.957 V. These are schematic component gates, not physical acceptance.
+Hot/low interstage common mode now passes (1.805–1.858 V), but output margin
+is only 70.539 mV and twelve final data HBTs reach approximately 0.396 V
+VCE. Cold/high interstage common mode reaches 2.072 V, exceeding 2.05 V;
+six tail HBTs and 32 LV MOS devices still fail. The candidate remains
+rejected for PVT adoption.
+
+The paired v6 frontend adds an actual `rppd` resistor in series with the
+buf16 input; no ideal source slew or source phase is changed. It does not
+remove the 32 cold/high MOS violations and is not accepted as that repair.
+The actual buffer gate is bound to the node after this resistor in the
+measurement contract; both that gate and the original source are captured.
+The direct v5 frontend is retained for the next isolated bias experiment.
+
+`tx_clock_common_bias_v1.spice` introduces a native diode-connected HBT
+and a substrate-connected resistor for clock common mode. An external
+650 uA reference feeds this node, and the real base-current loads of all
+three selector pairs draw from it. The prospective mechanism combines
+HBT VBE temperature tracking with a resistor voltage offset for tail
+headroom. Differential modulation still comes from external floating
+sources at the unchanged 80 mV amplitude, 10 ps edge slew and phase
+schedule. This implements a loaded common-mode circuit, not a PLL/CDR or
+complete physical clock tree. Run 38329329431 screens all 62 HBTs and 64
+MOS devices at nominal, quarter-step, hot/low and cold/high conditions.
+Its result is required before accepting even this component change.
