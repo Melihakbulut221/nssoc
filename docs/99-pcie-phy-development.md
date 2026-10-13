@@ -94,16 +94,20 @@ The [larger power-trunk geometry](evidence/pcie-cascade14-power-trunks-physical-
 adds routing-lane spacing for 3.28 micrometer TopMetal1 power trunks and
 32 micrometer TopMetal2 power buses. Native DRC/LVS and five fault controls
 pass; its [fresh 781R/643C graph](evidence/pcie-cascade14-power-trunks-extraction-20261013.json)
-passes all thirteen corruption controls. Composition `38347455028` is running;
-loaded electrical acceptance remains unproven.
+passes all thirteen corruption controls. Composition `38347455028` passed, but
+the [loaded 4:1 wire study](evidence/pcie-power-trunks-loaded-tree-20261013.json)
+remains rejected: all 768 bits and the 152.196 mV differential interface minimum
+pass; the 1.795959 V common-mode minimum and four selector VCE minima
+(0.389535–0.391603 V) fail unchanged limits. The compact control passes.
+Wider power metal alone did not close the loaded electrical gates.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
 rejection. Two real delay cells per output improve the fast-corner placement
 hold estimate from −0.227544 ns to +0.238373 ns, with slow-corner GMII setup
 remaining +2.308341 ns. Existing CPU/PCIe negative groups remain unchanged.
-Run `38339178024` combines that candidate with bounded channel placement and
-fresh full-chip routing. These are placement estimates, **not routed timing
+Run `38339178024` combined that candidate with bounded channel placement but
+failed fresh global routing with 147 overflow (Metal5: 108); it is rejected. These are placement estimates, **not routed timing
 closure**. Original local placement run `38335168863` now finished with
 136 global-route overflow, down from 153 but still rejected. The
 [exact native diagnosis](evidence/cloud-local-optimize-congestion-20261013.json)
