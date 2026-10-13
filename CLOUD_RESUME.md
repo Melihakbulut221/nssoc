@@ -12,83 +12,56 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Current decision
 
-**Both workstreams remain open.** Main route **38371498733** is terminal
-FAILED (GRT-0116), with135native final overflow, after~2h45m. It was not a
-platform timeout. Exact failedODB/congestion report/guides are preserved in
-`cloud-local-optimize-buffers-route-failure-20261013.json`. Native marker/net
-probe **38392685463** passed:107markers/135overflow,811involved nets.
-The largest remaining clusters touch EthernetRX SRAM banks4/5 (32/33markers).
-PCIe packet data flops also appear in endpoint paths. Existing placement
-repair excludes every clock-connected cell and binds an older coordinate
-diagnosis; do not widen its allowlist or reuse new coordinates blindly.
-Do not rerun the identical candidate or waive congestion. No finalSTA exists.
-New profile `local_data_endpoints` starts from the exact previous relocated
-ODB, verifies all failed-ODB positions/connectivity and replays previous STA.
-Its1821-cell source envelope includes227data DFFs; clock-output drivers,
-delay cells, macros and all unselected cells remain fixed. Native placement
-invariants, new STA and routing must pass; no acceptance yet.
-Run **38395878470** is live on **e18933ba**; syntax and source checks
-**38395882430** passed. Inspect its actual native replay/repair progress.
-Do not dispatch another identical candidate while this run is live.
-Native invariants and corruption controls passed:1747selected/744moved,
-including33of227dataDFFs. New placement-estimated eth_rx slow setup regresses
-+23.324ps to-4.524ps; retained as an open failure. StrictGRT is running.
+**Full serial Gen3 x4 PHY, assembled main-chip routing and final setup/hold
+remain OPEN.** All CAD/tests run in GitHub. The local workspace is empty.
 
-v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
-one selectorVCE is399.203137mV, below400mV. Quarter-step **38390326921** and
-PVT **38390345139** completed; read exact cases in the continuation JSON.
-Hot_low wire has58wrong signs,128early margin failures and final-input common
-mode1.736968..1.781254V; compact hot_low input CM passes. Cold_high wire output
-passes but two selectorVCE gates fail. No limits/phases/oracle were changed.
-Native identity38390363372 and voltage/current diagnosis38391010440 passed;
-these are diagnostic proof, not acceptance. All failed captures remain.
+### Live loaded native-wave studies — inspect, do not duplicate
 
-**Unchanged cascade14 prestage, new dense geometry:** physical **38392202181**
-passed nativeDRC/LVS/fault controls on **4a6a9a75**. Same19HBT/8R/27tap circuit;
-interleaved resistors, shortKelvin return and12-column/two-row via arrays.
-This targets measured upstream physical voltage loss. Native extraction
-**38392967695** and native composition **38393689519** passed, retaining
-54 devices / 3803 R / 2541 C. The loaded-tree prestage profile
-`kelvin_dense_wide` binds its distinct immutable composition receipt.
-Compare matched compact/wire streams4, final `v8_kelvin_dense_wide`, nominal
-and temperature_voltage; discover existing runs before dispatch.
-Loaded runs **38395107224** (nominal) and **38395110568** (hot/low and
-cold/high) completed on **ad48b0d2**. Actual wire nominal and cold/high pass
-all component gates:130.820/226.934mVminimum,0signal/device/interface failures.
-Hot/low wire still fails128early output samples (minimum0.719mV), final-input
-CM1.761..1.802V and two tailVCEs355.635/357.261mV. Compact hot/low also fails
-two tailVCE gates399.271mV. No limits or phases were changed. Run read-only
-`dense_v8_hot` voltage/current diagnosis before the next circuit change;
-Diagnosis **38396710373** passed on **899557cc**. Actual hot native waveforms
-show about66mVdrop between selector emitter andtailcollector, plus34mVtail
-emitter lift. Investigate local tail/return physical losses and the remaining
-input common-mode failure. No artificial RC or phase changes. Source checks
-**38396713550** passed.
-New final-v8 physical candidate `critical_buses_kelvin_tail_paths` widens
-only tail M3(0.6to1.0um), tailTM1(1.64to3.0um) andlocalM5return(0.8to1.6um).
-This addresses measured hot metal drops, with alldevices andgates unchanged.
-Physical DRC/LVS/fault controls, fresh RC and loaded waveforms must pass.
-Physical **38397735518** passed560DRCcategories/0markers,strict54deviceLVS
-andfivefaultcontrols on **2367c8c0**. Native extraction **38398237267** passed
-with3939R/2619C and13corruptioncontrols. Composition **38398613537** passed;
-final profile `v8_kelvin_tail_paths` binds its distinct receipt. Run original
-nominal andtemperature_voltage streams4 matchedcompact/wire with prestage
-`kelvin_dense_wide`. Existing loaded runs **38398957797** nominal and
-**38398961815** hot/cold are live on **c24a39c6**; sourcechecks38398965286.
-Native metal comparison **38399268579** passed:worsttailpair15.511to13.815ohm;
-return5.180to5.027ohm and5.786to5.562ohm. This is DCdiagnosis only. Loaded
-wire results still pending; sourcechecks38398965286passed. Exact generator
-readback **38399518025** is running for possible further topology repair.
-Discover existingruns first; no adoption.
-Exact generator readback38399518025passed. New physical-only variant
-`critical_buses_kelvin_local_tail` adds a six-endpointM4localtailstrap atY60
-and a nativeM5-to-TM1feed from theKelvinreturn to theexistingavsscolumn.
-It preserves all prior geometry anddevice values. NativeDRC/LVS/fault gates
-are mandatory before further extraction or electrical claims. Tail-path
-loaded runs remain independent andmustfinish; do notcancel orrepeat them.
-No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
-assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
-local workspace remains empty.
+- Isolated **local-tail finalv8 + unchanged cascade14 dense prestage**:
+  **38402054648** nominal, **38402059863** hot/low and cold/high, source
+  **e0831791**. Profiles `kelvin_dense_wide` and `v8_kelvin_local_tail`.
+- Combined **cascade16 dense prestage + local-tail finalv8**:
+  **38402506838** nominal, **38402511999** hot/low and cold/high, source
+  **378d85e8**. Profiles `cascade16_kelvin_dense_wide` and
+  `v8_kelvin_local_tail`. All six source-bit/model regressions passed;
+  native simulations are live. Source/licence/migration checks38402516715pass.
+- Each study compares actual compact and wire models, streams4, original
+  256 bits/768 sample gates. No phase, amplitude, CM or device-limit changes.
+  A green Actions run can preserve a rejected engineering result: read each
+  immutable summary. No adoption pending actual loaded results. Full32:1,
+  actual clocks/CDR, RF/body/ESD and assembled serial PHY remain unproven.
+
+### Exact physical sources for these studies
+
+- Local-tail finalv8: physical **38400244543**, RC **38400976763**, composition
+  **38401482919** passed;54native devices/4000R/2643C. Adds real M4 local
+  tail shunt and M5-to-TM1 return feed, preserving the circuit.
+- Cascade16: physical **38400973160**, RC **38401479870**, composition
+  **38402050497** passed;54native devices/3803R/2541C. Only two native
+  outputpulldown lengths change14to16um; other19HBT/6R and27taps unchanged.
+  Explicit circuit binding and regression reject a validlyhashed cascade14
+  report when cascade16 is requested. No electrical acceptance from LVS.
+- Prior wider-tail runs38398957797/38398961815 completed: nominal134.431mV
+  andcold232.281mV pass allcomponentgates;hot has2wrong signs,128early margins,
+  two tailVCE failures360.980/362.383mV andlowinputCM1.760..1.802V. Rejected;
+  all captures retained. Earlier metalDC showed widening alone insufficient.
+
+### Main-chip route — existing live repair
+
+**38395878470** on **e18933ba** is LIVE. `local_data_endpoints` resumed the
+exact prior placement and reproduced its STA. Native connectivity, fixed-cell
+positions and two fault controls passed:1747selected/744moved,including33of227
+data DFFs. Clock-output drivers, delay cells and macros stay fixed. Estimated
+eth_rx slow setup regressed+23.324ps to-4.524ps; this remains an open failure,
+not waived. Strict global routing is running; no final route/STA acceptance.
+
+Previous run38371498733 FAILED GRT-0116 with135overflow,not timeout. Exact
+failedODB/marker probe38392685463 found107markers/811nets near EthernetRX
+SRAM banks4/5. Do not attribute that old overflow to the live repair or rerun
+the same candidate. Detailed routing and final setup/hold still require proof.
+
+Earlier entries below are preserved work history; this section and the JSON
+continuation are authoritative for what to inspect next.
 
 ## Preservation and local retirement
 

@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T12:45:41.299989+00:00",
+  "as_of": "2026-10-13T13:11:20.917074+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -94,8 +94,8 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Isolated localtail loaded runs38402054648/38402059863 LIVE on e0831791 witholdcascade14denseprestage. Do notduplicate. Cascade16 composition38402050497 passed. New explicitprestageprofilecascade16_kelvin_dense_wide independentlybindsnewcircuit; wrongvalidhashcascade14regressionadded. Runcombinednewprestage+v8_kelvin_local_tail matchedstreams4nominal/hot/cold;discoverexistingjobsfirst.",
-    "Both isolatedlocaltail andcombinednewprestage loadedcases mustretainall failuresandoriginal thresholds,including1.8..2.05Vcommonmode. A pass at4:1/component isnotfull32:1,RF/body,actualclock/CDR/ESD,serialGen3x4orfinalchipacceptance.",
+    "Inspect fourexistingloadedstudies:isolatedlocaltail(oldprestage)38402054648nominal/38402059863hotcold,combinedcascade16+localtail38402506838nominal/38402511999hotcold. Combinedall6regressionsteps andsourcechecks38402516715passed;native simulationsLIVE. Readallactual gates fromimmutable summaries,notActionsgreen. No duplicatejobs,phasechanges,thresholdwaivers oracceptance withoutactualcompletePVT.",
+    "Currentmainroute38395878470 stillLIVE afternativeplacementinvariants;newestimatedeth_rxslowsetup-4.524ps remainsrecorded. WaitstrictnativeGRTterminalresult before next route/timing repair;previous135overflowbelongs38371498733,notcurrentrun. FullserialPHY,assembledrouting andfinalSTA remainOPEN.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -579,7 +579,7 @@
     "power_trunks_composition_run": 38347455028,
     "power_trunks_composition_status": "RUNNING_LAST_VERIFIED"
   },
-  "previous_goal_turn_classification": "progress: new source-bound data-endpoint placement passed native invariants and started routing; dense prestage nominal/cold passed actual wave gates; hot waveform diagnosis identified real tail and return voltage loss.",
+  "previous_goal_turn_classification": "progress: new local-tail native geometry and cascade16 circuit passed physical/extraction/composition; source-bound isolated and combined loaded corner jobs dispatched and regression checks passed; prior hot failures retained.",
   "power_trunk_loaded_tree": {
     "run": 38347759822,
     "status": "COMPLETE_COMPACT_PASS_WIRED_REJECTED",
@@ -4170,7 +4170,7 @@
     "accepted": false
   },
   "local_cleanup_last_verification": {
-    "checked_at": "2026-10-13T12:09:40.979953+00:00",
+    "checked_at": "2026-10-13T13:11:20.917074+00:00",
     "workspace_entries": 0,
     "nssoc_tmp_entries": 0,
     "nssoc_dev_shm_entries": 0,
@@ -10507,6 +10507,20 @@
     "streams": 4,
     "physical_final": "matched",
     "status": "LIVE_NO_ELECTRICAL_ACCEPTANCE",
+    "adopted": false
+  },
+  "cascade16_local_tail_loaded_tree": {
+    "source_head": "378d85e8bd3b45d1e38065402455d68b41a9fd48",
+    "nominal_run": 38402506838,
+    "temperature_voltage_run": 38402511999,
+    "source_checks_run": 38402516715,
+    "source_checks_status": "PASS",
+    "all_six_gate_regression_steps": "PASS",
+    "physical_profile": "cascade16_kelvin_dense_wide",
+    "physical_final_profile": "v8_kelvin_local_tail",
+    "streams": 4,
+    "physical_final": "matched",
+    "status": "LIVE_ALL_SIX_NATIVE_SIMULATIONS_NO_ACCEPTANCE_YET",
     "adopted": false
   }
 }
