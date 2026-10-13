@@ -80,6 +80,12 @@ return5.180to5.027ohm and5.786to5.562ohm. This is DCdiagnosis only. Loaded
 wire results still pending; sourcechecks38398965286passed. Exact generator
 readback **38399518025** is running for possible further topology repair.
 Discover existingruns first; no adoption.
+Exact generator readback38399518025passed. New physical-only variant
+`critical_buses_kelvin_local_tail` adds a six-endpointM4localtailstrap atY60
+and a nativeM5-to-TM1feed from theKelvinreturn to theexistingavsscolumn.
+It preserves all prior geometry anddevice values. NativeDRC/LVS/fault gates
+are mandatory before further extraction or electrical claims. Tail-path
+loaded runs remain independent andmustfinish; do notcancel orrepeat them.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.

@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Tail-path nativewave runs38398957797(nominal),38398961815(hot/cold) remain LIVE,sourcec24a39c6. Allsource/gate regression steps passed;waitforactualwire results,do notduplicate. MetalDC38399268579 passed:worsttailpair15.511to13.815ohm,tailreturn improvements modest. Exactgeneratorreadback38399518025 is running;use if further localtopologyrepair needed. No physical/electrical/PHYadoption fromDC alone.",
+    "Inspect live tail-path wave runs38398957797/38398961815; preserve results. In parallel physical-only local-tail candidate adds exact six-nodeM4shunt and avssM5toTM1feed to reduce remaining measured13.8ohm tailpath. Discover existing physicalrun; require unchangedDRC/LVS/faults before newRC/composition/waves. No adoption or threshold changes.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -9916,7 +9916,18 @@
   "final_v8_tail_paths_generator_readback": {
     "run": 38399518025,
     "member": "hw/soc/out/cloud-tx-layout-repair/generate.py",
-    "status_at_dispatch": "LIVE",
-    "purpose": "Read exact native terminal routing source to understand remaining physical path resistance, without downloading CAD artifacts locally."
+    "status_at_dispatch": "COMPLETE_SOURCE_BOUND_GENERATOR_READBACK",
+    "purpose": "Read exact native terminal routing source to understand remaining physical path resistance, without downloading CAD artifacts locally.",
+    "summary_sha256": "2a31f1ea1cfaa60ff421b2bb9f8b627fed99ed6a1a7d46842fd0e07e90b96762",
+    "member_sha256": "83a17ac39dd7dd04222ee063e0b9bf0d5c3857271b0291786ffec5a1934b3fd1"
+  },
+  "final_v8_local_tail_candidate": {
+    "variant": "critical_buses_kelvin_local_tail",
+    "circuit_profile": "final_drive_v8",
+    "parent_geometry": "critical_buses_kelvin_tail_paths",
+    "status": "SOURCE_ONLY_REQUIRES_NATIVE_PHYSICAL_GATES",
+    "adopted": false,
+    "hypothesis": "Measured tail pair resistance remains13.8ohm after widening. Join all six actual tail escape M4 landing metals locally atY60 with0.8umbranches/2umhorizontalbar, preserving original global route. Feed existing local M5 Kelvin return to proven avssTM1 trunk atx255.6,y64.8 via nativeM5toTM1stack. No circuit/port/PDK coefficient changes.",
+    "source_geometry_readback_run": 38399518025
   }
 }
