@@ -198,6 +198,8 @@ def supply_feed_records(evidence, study):
 
 
 ROUTING_STUDIES = {
+    'v8_low_ports_shunts_hot': (38486031136, 'cascade158_kelvin_supply_direct', 'v8_kelvin_low_ports_shunts',
+                              'pcie-v8-low-ports-shunts-loaded-rejection-20261014.json', 'hot_low', 'stiff65'),
     'v8_low_ports_hot': (38478337296, 'cascade158_kelvin_supply_direct', 'v8_kelvin_low_ports',
                        'pcie-v8-low-ports-loaded-rejection-20261014.json', 'hot_low', 'stiff65'),
     'v8_shortrows_hot': (38474364222, 'cascade158_kelvin_supply_direct', 'v8_kelvin_low_selects_rows',

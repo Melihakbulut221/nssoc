@@ -10,7 +10,7 @@ on:
     inputs:
       study:
         type: choice
-        options: [ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh]
+        options: [ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot]
         default: ack
 permissions:
   contents: read
@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        profile: ${{ fromJSON(inputs.study == 'fc_refresh' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_refresh"]' || inputs.study == 'ack_window_eop' && '["physical_idle_credit","physical_idle_credit_window_eop"]' || inputs.study == 'ack_window' && '["physical_idle_credit","physical_idle_credit_window"]' || inputs.study == 'advert_eop' && '["physical_idle_credit","physical_idle_credit_eop"]' || inputs.study == 'credit_verdict' && '["physical_idle","physical_idle_credit"]' || inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
+        profile: ${{ fromJSON(inputs.study == 'fc_snapshot' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_snapshot"]' || inputs.study == 'fc_refresh' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_refresh"]' || inputs.study == 'ack_window_eop' && '["physical_idle_credit","physical_idle_credit_window_eop"]' || inputs.study == 'ack_window' && '["physical_idle_credit","physical_idle_credit_window"]' || inputs.study == 'advert_eop' && '["physical_idle_credit","physical_idle_credit_eop"]' || inputs.study == 'credit_verdict' && '["physical_idle","physical_idle_credit"]' || inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
     permissions:
       contents: write
     steps:
@@ -48,14 +48,14 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Prepare consistent Python and cocotb for joint port controls
-        if: ${{ inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh' }}
+        if: ${{ inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh' || inputs.study == 'fc_snapshot' }}
         run: |
           python3 -m venv hw/.venv
           hw/.venv/bin/pip install -r hw/requirements.txt
       - name: Exact input mapping and original three-corner screening
         run: |
           python3 -m py_compile scripts/run_cloud_ack_mapping.py scripts/run_cloud_replay_idle.py
-          ${{ (inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh') && 'hw/.venv/bin/python' || 'python3' }} scripts/run_cloud_ack_mapping.py --profile '${{ matrix.profile }}'
+          ${{ (inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh' || inputs.study == 'fc_snapshot') && 'hw/.venv/bin/python' || 'python3' }} scripts/run_cloud_ack_mapping.py --profile '${{ matrix.profile }}'
       - name: Keep complete success or failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
