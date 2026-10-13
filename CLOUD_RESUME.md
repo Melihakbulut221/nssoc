@@ -556,3 +556,19 @@ Earlier staticFC experiment metadata readback completed from archive
 soc_pcie_fc_tx staticadvertisement writes regressedPCIeslowsetup219.546ps;
 rejected andnotadopted. It is a differentmodule from current
 soc_pcie_credit_tx peercreditverdict factoring; do not repeat orconflate.
+
+
+## Shorter vertical HBT bank candidate
+
+All widerM3 loadedcases reviewed and rejected for hot16.686602mV early
+margin; do not treat completed Actions as electricalpass. Next profile
+critical_buses_kelvin_low_selects_rows onfinal_drive_v8 restores original
+lowselects widths, same54devices andallresistor positions, horizontal38.4um
+bankpitch. Only verticalHBT rowpitch14to7.2um changes; pairedsubstrate taps
+follow their devices. This shortens verticalroutes withoutthe widerM3 change.
+No acceptance assumed: actual560categoryDRC,strictLVS,fivephysicalfaults
+then freshnativeRC/composition/originalloadedPVT allrequired. Keep anyfails.
+
+Existing jobs: pairedcreditmap38472422176, halfgridroute38472175339,
+32wire38441895491 andlatestsourcechecks38472705185 wereconfirmedlive.
+Do not duplicate them. Allwork remains cloud-only andlocalworkspaceempty.
