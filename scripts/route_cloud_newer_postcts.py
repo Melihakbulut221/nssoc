@@ -50,6 +50,7 @@ def main():
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
     parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
+    parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5'], default='baseline')
     args = parser.parse_args()
     # The actual failed report has7.2um gcells. Half-cell offsets change only
     # partition alignment, never placement, routing capacity or physical rules.
@@ -59,6 +60,7 @@ def main():
     result = dict(status='RUNNING', adopted=False,
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
         ethernet_hold_depth=args.ethernet_hold_depth,
+        macro_routing_profile=args.macro_routing_profile,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -197,7 +199,37 @@ def main():
             commands += [f'set_wire_rc -corner {corner} -signal -layer Metal2', f'set_wire_rc -corner {corner} -clock -layer Metal4']
         commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
                      f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}',
-                     'set route_dbu [[ord::get_db_block] getDbUnitsPerMicron]',
+                     'set route_dbu [[ord::get_db_block] getDbUnitsPerMicron]']
+        if args.macro_routing_profile == 'reserve_m5':
+            # Native diagnosis found through-nets over obstructed SRAM bodies,
+            # while actual macro signal pins are on Metal2, not Metal5. Reserve
+            # Metal5 only over these four exact macros so GRT must choose other
+            # legal layers or go around. Never inflate capacity or remove OBS.
+            evidence_path = ROOT/'docs/evidence/cloud-sram-pin-access-20261013.json'
+            evidence = json.loads(evidence_path.read_text())
+            assert evidence['status'] == 'PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE'
+            macros = evidence['macro_pin_access']
+            assert len(macros) == 4
+            regions = []
+            for name, macro in sorted(macros.items()):
+                assert '{' not in name and '}' not in name
+                assert macro['master'] == 'RM_IHPSG13_2P_256x16_c2_bm_bist'
+                assert {p['layer'] for p in macro['pin_shapes'] if p['signal_type']=='SIGNAL'} == {'Metal2'}
+                bounds = macro['bbox_um']
+                commands += [f'set hotspot_inst [[ord::get_db_block] findInst {{{name}}}]',
+                    f'if {{[[$hotspot_inst getMaster] getName] ne {{{macro["master"]}}}} {{error "SRAM master changed"}}',
+                    f'if {{[$hotspot_inst getOrient] ne {{{macro["orientation"]}}}} {{error "SRAM orientation changed"}}',
+                    'set hotspot_bbox [$hotspot_inst getBBox]']
+                for getter, value in zip(('xMin','yMin','xMax','yMax'), bounds, strict=True):
+                    commands.append(f'if {{[$hotspot_bbox {getter}] != round({value} * $route_dbu)}} {{error "SRAM region changed"}}')
+                commands.append('set_global_routing_region_adjustment {'+' '.join(map(str,bounds))+'} -layer Metal5 -adjustment 1.0')
+                regions.append(dict(instance=name, master=macro['master'], bbox_um=bounds,
+                                    layer='Metal5', adjustment=1.0))
+            result['macro_routing_reservation'] = dict(source_evidence_sha256=sha(evidence_path),
+                regions=regions, scope='Conservative GRT resource restriction only; native SRAM pin shapes, OBS, placement, connectivity, SDC and capacity on other layers unchanged. Full routing and timing acceptance still required.')
+            commands.append('puts "NSSOC_VERIFIED_FOUR_SRAM_METAL5_RESERVATIONS"')
+            save()
+        commands += [
                      f'set route_origin [list [expr {{round({origin_um[0]} * $route_dbu)}}] [expr {{round({origin_um[1]} * $route_dbu)}}]]',
                      'puts "NSSOC_ROUTING_GRID_ORIGIN_DBU $route_origin"',
                      f'if {{[catch {{global_route -grid_origin $route_origin -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose}} route_error]}} {{',
