@@ -83,3 +83,17 @@ def test_class_reduction_rejects_invalid_scale(factor):
 def test_class_reduction_rejects_missing_class():
     with pytest.raises(AssertionError, match='No metal resistors selected'):
         m.reduce_conductor_class(COMPACT, WIRE, 'outputs')
+
+
+def test_native_capacitance_reference_is_preserved_and_never_a_metal_anchor():
+    wire = WIRE.replace('.subckt cell avdd avss', '.subckt cell avdd avss wire_cref')
+    wire = wire.replace('C2 c avss 2e-15', 'C2 c wire_cref 2e-15')
+    changed, report = m.reduce_conductor_class(COMPACT, wire, 'internal')
+    assert 'C2 c wire_cref 2e-15' in changed
+    assert report['conductors'] == 3
+    for corrupted in [wire.replace('R3 d avss 30', 'R3 d wire_cref 30'),
+                      wire.replace('c d sub rppd', 'c d wire_cref rppd'),
+                      wire.replace('wire_cref', 'unrecognized_extra_port'),
+                      wire.replace('C2 c wire_cref 2e-15', 'C2 c avss 2e-15')]:
+        with pytest.raises(AssertionError):
+            m.reduce_conductor_class(COMPACT, corrupted, 'internal')

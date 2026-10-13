@@ -9,10 +9,15 @@ on:
         type: choice
         options: [original_component, dense_wide_tree]
         default: original_component
+      cases:
+        description: Run all cases or only failed sensitivity preparations
+        type: choice
+        options: [all, mutations_only]
+        default: all
 permissions:
   contents: read
 concurrency:
-  group: tx-interconnect-diagnostic-cloud-${{ github.ref }}
+  group: tx-interconnect-diagnostic-cloud-${{ github.ref }}-${{ inputs.study || 'original_component' }}-${{ inputs.cases || 'all' }}
   cancel-in-progress: false
 jobs:
   native-transient:
@@ -21,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        interconnect: [actual, low_r, low_r_supply, low_r_return, low_r_inputs, low_r_internal, low_r_bias, low_r_outputs]
+        interconnect: ${{ fromJSON(inputs.cases == 'mutations_only' && '["low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]' || '["actual","low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]') }}
     permissions:
       contents: write
     steps:

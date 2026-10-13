@@ -59,7 +59,22 @@ def reduce_conductor_class(compact_text, wire_text, category, factor=0.01):
     assert np.isfinite(factor) and 0 < factor < 1
     cp, cd, ce = parse(compact_text)
     wp, wd, edges = parse(wire_text)
-    assert cp == wp and not ce and edges and set(cd) == set(wd)
+    assert not ce and edges and set(cd) == set(wd)
+    # The native composer appends wire_cref for extracted shunt capacitance.
+    # It is not a metal conductor or a semiconductor/body terminal.
+    assert wp == cp or wp == cp + ['wire_cref'], (cp, wp)
+    if wp != cp:
+        cap_references = 0
+        for line in wire_text.splitlines():
+            row = line.split()
+            if not row or row[0].startswith(('*', '.')):
+                continue
+            if 'wire_cref' in row:
+                assert row[0][0].upper() == 'C' and len(row) == 4
+                assert 'wire_cref' in row[1:3]
+                cap_references += 1
+        assert cap_references > 0
+
     parent = {}
     def root(node):
         parent.setdefault(node, node)
