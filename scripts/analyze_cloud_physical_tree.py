@@ -142,11 +142,36 @@ def pair(compact, wire):
     return devices
 
 
+
+LOCAL_TAIL_STUDIES = {
+    'local_tail_hot': (38402059863, 'kelvin_dense_wide'),
+    'cascade16_local_tail_hot': (38402511999, 'cascade16_kelvin_dense_wide'),
+}
+
+
+def local_tail_records(evidence, study):
+    run, profile = LOCAL_TAIL_STUDIES[study]
+    selected = [r for r in evidence['completed_local_tail_comparison']['cases']
+                if r['run'] == run and r['corner'] == 'hot_low']
+    assert len(selected) == 2
+    assert {r['prestage'] for r in selected} == {'physical_compact', 'physical_wire'}
+    for r in selected:
+        assert r['streams'] == 4 and r['condition'] == 'hot_low'
+        assert r['prestage'] == 'physical_' + r['model']
+        assert r['physical_prestage_scope']['profile'] == profile
+        assert r['physical_final_scope']['profile'] == 'v8_kelvin_local_tail'
+        assert r['physical_prestage_scope']['mode'] == r['prestage']
+        assert r['physical_final_scope']['mode'] == r['prestage']
+        assert r['raw_wave']['bytes'] > 0 and len(r['raw_wave']['sha256']) == 64
+    assert len({source_bits_hash(r) for r in selected}) == 1
+    return selected
+
+
 def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Full native waveform analysis runs only on GitHub')
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot'),default='prestage_only')
+    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot',*LOCAL_TAIL_STUDIES),default='prestage_only')
     args=parser.parse_args()
     evidence_path=ROOT/'docs/evidence'/dict(
         prestage_only='pcie-physical-prestage-tree-20261013.json',
@@ -155,16 +180,18 @@ def main():
         both_kelvin='pcie-kelvin-macros-loaded-tree-20261013.json',
         both_dense='pcie-kelvin-dense-loaded-tree-20261013.json',
         v8_nominal='pcie-v8-nominal-loaded-tree-20261013.json',
-        dense_v8_hot='pcie-dense-v8-hot-loaded-tree-20261013.json')[args.study]
+        dense_v8_hot='pcie-dense-v8-hot-loaded-tree-20261013.json',
+        **{key:'cloud-closure-continuation-20261013.json' for key in LOCAL_TAIL_STUDIES})[args.study]
     out = Path('cloud-physical-tree-diagnosis')
     out.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False, study=args.study, evidence=str(evidence_path.relative_to(ROOT)), evidence_sha256=sha(evidence_path),
         scope='Read-only full-wave voltage/current comparison. Intermacro connections remain ideal; the source-bound case records identify which macros include actual metal RC. TX driver remains schematic. No new acceptance or RF/substrate extraction qualification.')
     try:
         evidence = json.loads(evidence_path.read_text())
+        records = local_tail_records(evidence,args.study) if args.study in LOCAL_TAIL_STUDIES else evidence['cases']
         cases = {}
         for mode in ('physical_compact', 'physical_wire'):
-            record = next(r for r in evidence['cases'] if r['streams'] == 4 and r['prestage'] == mode)
+            record = next(r for r in records if r['streams'] == 4 and r['prestage'] == mode)
             with tempfile.TemporaryDirectory() as tmp:
                 cases[mode] = read_case(record, Path(tmp))
             result['cases'] = cases
