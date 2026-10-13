@@ -131,7 +131,7 @@ routing continues. It does not rerun STA or claim routed timing closure.
 The new standalone readback workflow was not registered on the default branch
 (dispatch404, no native run started). The readback job now uses the existing
 registered cloud-migration-checks.yml workflow with timing_readback=true.
-Low-selector native diagnosis38457021311 is running on873a6350ca13c5d98981214033bc5b0af33d0add.
+Low-selector native diagnosis38457021311 completed successfully on873a6350ca13c5d98981214033bc5b0af33d0add.
 
 
 Native short-selector diagnosis38457021311 PASSED. Summaryasset638065261, SHA
@@ -147,3 +147,25 @@ SHA80055c3fb2022a1366d03f8a010d0c671fe603c57b3ca6ca64350b5a44668374.
 It includes one unconstrained endpoint and SRAM slew violations. PCIe worst
 setup contains a long logic chain; PCIe worst hold has justINV+O21AI.
 These are placement estimates; no constraint relaxation or closure.
+
+
+## Verified latest timing readback
+
+Corrected run38457514399 onbad1063138a4233ffca9b64b7c1e0f577558176a PASSED
+both source/license/model checks and exact archived timing readback. Optional
+archive-migration job was not requested and is skipped. Summaryasset638073464
+SHAe759439142daa150c9d12cbd8cc67cda55850f61afb81375b8b30619cdb9566d;
+complete original logasset638073598, SHA
+80055c3fb2022a1366d03f8a010d0c671fe603c57b3ca6ca64350b5a44668374.
+Allsix corners reproduce old placement estimates; slowmax -1.275681ns,
+fastmin -0.065767ns. Next inspect the full critical paths and bind synthesized
+cell names to actual RTL/netlist before selecting an ECO. PCIe setup includes
+six consecutive AND2 stages near its endpoint; hold includes INV+O21AI. The
+unconstrained endpoint and SRAM slew violations must also be resolved without
+weakening constraints. No new timing/layout acceptance.
+
+Main route38448901835 and32:1wire38441895491 remain in progress at last readback;
+do not duplicate them. Authoritative cloud-migration-final-checkout-20261013
+retirement-progress.json was reread and digest verified: status
+COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. Local directory remains
+empty. The existing8hour automation is ACTIVE and explicitly cloud-only.
