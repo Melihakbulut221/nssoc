@@ -156,7 +156,7 @@ def analyze(spec):
 def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted analysis only'
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias'), required=True)
+    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide'), required=True)
     args = parser.parse_args()
     path = ROOT / 'docs/evidence' / f'pcie-final-v5-{args.profile}-composition-20261013.json'
     output = Path('cloud-metal-resistance')
