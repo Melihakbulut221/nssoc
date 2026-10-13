@@ -107,14 +107,16 @@ Metal2=4,Metal3=120,Metal4=47,Metal5=213,TopMetal1=25,TopMetal2=11.
 Previous local_optimize_buffers had135; endpoint movement regressed congestion
 and eth_rx setup estimate (+23.324ps to-4.524ps). Not adopted; not a timeout.
 Exact failedODB/report/archive hashes are in JSON local_data_endpoints_terminal.
-Next: source_profile=local_data_endpoints native congestion diagnosis; compare
+Native congestion diagnosis **38419533968** is active; compare
 actual endpoints and marker locations before choosing another route change.
 
 Supply-feed loaded nominal/cold wire each still fail four selector VCE gates.
 Compact nominal/hot/cold pass. All available exact summaries are in JSON
-combined_supply_feed_loaded_study; remaining hot-wire review must be checked.
+combined_supply_feed_loaded_study; hot wire failed17wrong signs/128low samples andinputCM minimum1.759834V.
 Native DC38418508613 passed: final supply7.584/9.239ohm versus8.579/10.233.
 This modest improvement does not close the loaded failures or full PHY.
+Next loaded diagnosis: supply_feed_hot andsupply_feed_cold bind exact original
+compact/wire captures; no resimulation, phase shifting or acceptance changes.
 
 Earlier entries below are preserved work history; this section and the JSON
 continuation are authoritative for what to inspect next.

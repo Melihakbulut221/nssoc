@@ -74,3 +74,25 @@ def test_local_tail_selection_binds_exact_run_corner_model_and_sources(study):
     changed(lambda e, r: r[0]['physical_final_scope'].update(mode=r[1]['prestage']))
     changed(lambda e, r: r[0]['review']['signals'].update(source_bits_sha256='changed-bits'))
     changed(lambda e, r: e['completed_local_tail_comparison']['cases'].append(copy.deepcopy(r[0])))
+
+
+@pytest.mark.parametrize('study', ['supply_feed_hot', 'supply_feed_cold'])
+def test_supply_feed_selection_rejects_wrong_corner_clock_run_and_native_models(study):
+    import copy
+    import json
+    evidence = json.loads((path.parents[1] / 'docs/evidence/cloud-closure-continuation-20261013.json').read_text())
+    records = m.supply_feed_records(evidence, study)
+    assert len(records) == 2
+    def changed(mutator):
+        other = copy.deepcopy(evidence)
+        selected = m.supply_feed_records(other, study)
+        mutator(other, selected)
+        with pytest.raises(AssertionError):
+            m.supply_feed_records(other, study)
+    changed(lambda e, r: r[0].update(condition='nominal'))
+    changed(lambda e, r: r[0].update(run=38409346107))
+    changed(lambda e, r: r[0].update(clock_reference='baseline'))
+    changed(lambda e, r: r[0]['physical_prestage_scope'].update(profile='kelvin_dense_wide'))
+    changed(lambda e, r: r[0]['physical_final_scope'].update(profile='v8_kelvin_local_return'))
+    changed(lambda e, r: r[0]['review']['signals'].update(source_bits_sha256='changed-bits'))
+    changed(lambda e, r: e['combined_supply_feed_loaded_study']['cases'].append(copy.deepcopy(r[0])))
