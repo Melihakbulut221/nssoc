@@ -89,3 +89,19 @@ acceptance.
 
 Persist meaningful source fixes and evidence to the same branch; use release
 assets for large results. Do not download bulk CAD results onto this computer.
+
+## Latest cloud experiments
+
+- Wider two-row via geometry: physical 38371051654, native RC 38371728150
+  (3889 R / 2593 C) and exact 54-device composition 38372215192 passed.
+  Loaded-tree comparison **38372656723** is live at this checkpoint; inspect
+  its actual compact/wire review before drawing any electrical conclusion.
+- Data-buffer local placement route **38371498733** is live. Its exact source
+  envelope contains 1563 eligible endpoints before clock exclusion; 1505
+  cells are selected and 960 moved. Connectivity, masters, all unselected
+  positions and both native corruption controls passed. Placement-estimated
+  timing still has violations and is not routed timing closure.
+- Four-row via geometry 38370105586 is rejected with 38 M3 spacing markers.
+  No physical rule or waveform acceptance threshold was relaxed.
+- Source licence/inventory/REUSE and migration regression checks
+  38372661182 passed on b9091be1. No local checkout or test files were created.
