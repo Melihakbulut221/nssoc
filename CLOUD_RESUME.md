@@ -62,7 +62,7 @@ Continuation JSON now exceeds1MiB: if GitHub Contents API returns encoding
 none, read the same blob through git/blobs/<sha>. Do not treat empty inline
 content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
 
-### Next combined loaded study — two real upper-metal supply feeds
+### Active combined loaded study — two real upper-metal supply feeds
 
 - Cascade14 supply-feed chain passed: physical38412608409, nativeRC
   38413237032(3810R/2545C), composition38414112027. Exact profile
@@ -76,6 +76,14 @@ content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
   prestage`kelvin_supply_feed`, final`v8_kelvin_local_supply`, native clock
   reference`offset75`, nominal andhot/cold. Preserve every earlier failure.
   Both feeds require actual electrical/PVT proof; no acceptance from DC.
+- Dispatched on `aca3bac7193aa1957fd91295d126147f53b38166`: nominal **38417298237**,
+  hot/cold **38417305677**, source/migration checks **38417310283**.
+  Results pending; do not duplicate these studies. This dispatch record
+  supersedes the continuation JSON next-action to launch these same jobs.
+- Local retirement reverified: workspace and NSSOC temporary directories empty,
+  no local CAD processes; retirement receipt SHA256
+  `23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd`.
+
 
 ### Exact physical sources for these studies
 
