@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T08:37:05.112041+00:00",
+  "as_of": "2026-10-13T08:41:55.446266+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
@@ -93,7 +93,7 @@
   },
   "next_actions": [
     "Combined via-array tree38360782776 completed:69wrongsign samples,128early samples below100mV and6HBT fail. All interface amplitude/commonmode gates nowpass. No waveformadoption. InternalDC38361509259 shows maximum intrinsicconductor pairR23..29ohm, downfrom36..43ohm.",
-    "Dense nominal source-bound diagnosis38369613905 completed: wire selector collectors drop121..123mV and emitters rise21..23mV againstcompact; actual crossing summaries are retained. New dense4 physical variant changes only M3-to-TM1 lower-via andTopVia1rowcounts2to4. Nativephysicalgates/freshRC/composition/waveforms mustallpassbefore anyadoption.",
+    "Dense4 physical38370105586 rejected38M3.bspacingmarkers; no extraction/adoption. Dense_wide nextcandidate retains legal2rows but increases only upperescape lower-via columns8to12 (16to24cuts), preserving circuit, coefficients and allgates. Rununchangednativephysicalchecks before freshRC/composition/waveforms.",
     "Metal DC comparison38359571709 validates geometry-derived resistance decrease, not PHY or dynamic acceptance. Sourcebit phases and all device/interface limits remain unchanged.",
     "Mainroute38347061685 failed158overflow; exact reserved_m5 diagnostic required. Broadplacement38334595459 live at last check; do not restartforage. New push52752ae3 also launched checks38359571641/38359580317, publications38359580321, pcie-buffered-soc38359580405 and pcie-transaction38359580424; inspect eventual results.",
     "Keep all CAD/tests hosted. All migration and checkout retirement complete; local workspace is empty. All four final hosted reconstruction groups passed. Continue solely through GitHub APIs and hosted workflows; do not recreate local checkout.",
@@ -935,11 +935,26 @@
   },
   "dense4_physical": {
     "run": 38370105586,
-    "status": "DISPATCHED_REQUIRES_NATIVE_GATES"
+    "status": "REJECTED_38_M3_SPACING_MARKERS",
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38370105586-1-layout-final_drive_v5-critical_buses_kelvin_dense4/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_dense4-38370105586-1.summary.json",
+    "summary_sha256": "04ed1efca5106a399ef10c5da7e231cd4d07ff5a1a4b727f3bab1152baef400c",
+    "drc": {
+      "status": "FAIL",
+      "process_returncode": 0,
+      "markers": 38,
+      "categories": {
+        "'M3.b'": 38
+      },
+      "category_count": 560,
+      "report_sha256": "3e352ebe266d7cd1920851aad290824067de9111bcfa085cd571d96e616e3a03",
+      "log_sha256": "4067c4babb15840f36a00af9987eb965234e802218394d05a3e4461e5716e883"
+    }
   },
   "targeted_buffer_placement": {
     "profile": "local_optimize_buffers",
     "hypothesis": "Native reserved-route diagnosis binds repeated standard-cell buffer nets crossing SRAM banks4/5. Prior local DPO selected only ABC cells and froze these buffer endpoints. Expand exact baseline endpoint selection to data buf/inv cells throughY1750um; preserve every clock-connected cell, all macros, all unselectedpositions, allcellmastersandconnectivity.",
-    "acceptance": "Same two native corruption controls, legal placement, allgroupSTA then fresh uncongested native global route required. No routing capacity, SDC, LEF obstruction or timing criterion relaxation. New candidate uses20provenGMIIholdcells and no regressedM5reservation."
+    "acceptance": "Same two native corruption controls, legal placement, allgroupSTA then fresh uncongested native global route required. No routing capacity, SDC, LEF obstruction or timing criterion relaxation. New candidate uses20provenGMIIholdcells and no regressedM5reservation.",
+    "run": 38370485282,
+    "status": "RUNNING"
   }
 }

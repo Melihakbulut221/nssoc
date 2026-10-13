@@ -511,3 +511,11 @@ The next physical hypothesis, `critical_buses_kelvin_dense4`, increases only
 M3-to-TM1 lower-via and TopVia1 rows from two to four. All device parameters,
 wire coefficients and acceptance limits stay fixed. Native physical checks,
 fresh extraction and loaded waveforms must determine whether it helps.
+
+The four-row candidate 38370105586 failed native DRC with 38 `M3.b`
+spacing markers; LVS and electrical acceptance are not claimed. Preserve its
+failed geometry and report. The next candidate
+`critical_buses_kelvin_dense_wide` keeps the two-row arrangement and increases
+only the M3-to-TM1 lower-via array columns from eight to twelve (16 to 24 cuts).
+It targets the same measured series loss without the rejected row expansion.
+Native spacing, strict connectivity and waveform gates remain mandatory.
