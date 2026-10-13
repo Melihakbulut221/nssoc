@@ -29,9 +29,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
-                                             'critical_buses_supply_escape', 'critical_buses_power_trunks'), required=True)
+                                             'critical_buses_supply_escape', 'critical_buses_power_trunks',
+                                             'critical_buses_interleaved_resistors'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5'), default='baseline')
     args = parser.parse_args()
+    if args.variant=='critical_buses_interleaved_resistors':
+        assert args.circuit_profile=='final_drive_v5'
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
@@ -132,10 +135,10 @@ def main():
                 # buses in the explicit critical-net order above.
                 changes.append(('cursor_y = y + half + 3',
                                 "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
-            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks'):
+            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_interleaved_resistors'):
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
-            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks'):
+            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_interleaved_resistors'):
                 # Actual measured tail-emitter lift differs from the reference
                 # return. Reduce native supply/return metal resistance in GDS;
                 # keep signal escape geometry and all circuit devices intact.
@@ -146,7 +149,7 @@ def main():
                 changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
                     "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
                     '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
-            if args.variant == 'critical_buses_power_trunks':
+            if args.variant in ('critical_buses_power_trunks','critical_buses_interleaved_resistors'):
                 # More room between routing lanes permits wider native power
                 # trunks without stealing spacing from adjacent signal metal.
                 # This is a new physical candidate, not a scaled RC surrogate.
@@ -163,7 +166,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if args.circuit_profile == 'final_drive_v5' and args.variant == 'critical_buses_power_trunks':
+            if args.circuit_profile == 'final_drive_v5' and args.variant in ('critical_buses_power_trunks','critical_buses_interleaved_resistors'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
@@ -171,6 +174,13 @@ def main():
                 # 28.8um would align the prior substrate trunk (+19.2)
                 # with the next signal lane (-9.6), also a real LVS short.
                 changes.append(('337.2+19.2*(i-19)', '337.2+38.4*(i-19)'))
+                if args.variant=='critical_buses_interleaved_resistors':
+                    # Place one resistor below each HBT bank, in dedicated
+                    # inter-bank lanes. Long bleeders end below HBT tap row.
+                    # Keep the same19HBT/8R/27tap circuit; actual LVS decides.
+                    changes.append(('positions.update({i:(337.2+38.4*(i-19),30) for i in range(19,27)})',
+                        'positions.update({19:(164.4,-50),20:(126.0,-50),21:(202.8,-50),22:(241.2,-50),23:(279.6,-50),24:(318.0,-50),25:(87.6,-50),26:(49.2,-50)})'))
+
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
