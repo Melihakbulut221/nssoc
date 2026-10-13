@@ -37,32 +37,32 @@ remain OPEN.** All CAD/tests run in GitHub. The local workspace is empty.
   next circuit or geometry candidate. Full32:1, actual clocks/CDR, RF/body/ESD
   and assembled serial PHY remain unproven. All work stays cloud-only.
 
-### Next physical repair — local M5 return and via arrays
+### Current loaded comparison — local return and native clock reference
 
-Full-wave diagnoses **38405000500** and **38405006454** passed source/capture
-binding and integration controls. Old-prestage local-tail hot capture has
-clock-to-MUX median9.473ps compact versus22.277ps wire; output reaches100mV
-at median41.717ps wire, after the unchanged37.5ps early observation. Tail
-emitter means remain32.898/34.767mV above ground. Exact summaries are bound
-in JSON `local_tail_hot_diagnosis`; no acceptance follows from diagnosis.
+Local-return finalv8 now has a complete source-bound physical chain:
+**38406919993** native DRC560/0markers, strict hierarchical/flat54deviceLVS
+and5faultcontrols; **38407758550** native4038R/2663C and13corruptioncontrols;
+**38408254672** exact54device composition. Failed first geometry38406101139
+and its exact two M4/M5 markers remain preserved. No electrical acceptance.
 
-New `critical_buses_kelvin_local_return` keeps finalv8 and local-tail routing,
-widens only local M5 return1.6to3.2um. First native run38406101139
-failed two M4/M5 spacing markers at0.190um. Exact marker readback38406515628
-is retained. Revision uses6columns at M2-to-M5 pin stacks (original4),
-keeping8columns at the M5-to-TM1 return feed. Fresh DRC/LVS is required.
-First prove actual DRC/LVS and physical fault rejection, then extract native
-RC and test unchanged full-wave/PVT gates. Electrical acceptance remains unverified.
-Revised physical run **38406919993 passed** all560DRC categories with zero
-markers, strict hierarchical/flat54-device LVS and fivefaultcontrols. Exact
-archive is bound in the extraction input; native RC and loaded waves remain
-required. Source/licence/migration checks38405171329passed on2b0afc09.
+- Baseline clock, local-return finalv8 + cascade14 dense prestage:
+  **38408821480** nominal / **38408827819** hot-cold, source16378481.
+  Published hot wire still fails14wrong signs/128low margins,two tailVCE
+  minima372.080/368.592mV andinputCM1.758..1.801V. Keep rejected result.
+- Native clock-offset candidate: **38409336938** nominal /
+  **38409346107** hot-cold, sourcee10823cb. Only native XOFFSET resistor
+  length6.5to7.5um changes; width, loaded nativefeed, bits, clockphases and
+  every limit are unchanged. First compact hot result passes all original
+  gates with228.829mV minimum. Other actual wire/PVT results must be checked.
+  The changed clock reference is still schematic and requires its own
+  physical integration/PEX if electrical evidence supports it.
+- All six new source-bit/model regression steps passed; checks38409350848
+  are tracked in JSON. Do not duplicate these studies. Inspect each exact
+  summary and full gate failures, not green Actions. No adoption pending PVT.
 
-**Native RC extraction38407758550** runs on5a3d0d97 using the exact passing
-physical archive. Inspect this existing job before starting composition;
-never duplicate it. Source/licence checks38407819142 use the same source.
-Next: exact RC/13fault proof, composition, then distinct source-bound
-`v8_kelvin_local_return` loaded compact/wire nominal/hot/cold studies.
+Read JSON `local_return_candidate` and `native_clock_offset75_candidate`
+for published cases and exact live handles. Full32:1, actual clock/CDR,
+qualified RF/body/ESD, assembled serial PHY and final chipSTA remain open.
 
 ### Exact physical sources for these studies
 
