@@ -10,6 +10,21 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v10 exact composition ready for original loaded PVT
+
+Composition38451600151 passed54devices/4041R/2659C. Distinct receipt:
+pcie-final-v10-kelvin-low-critical-composition-20261013.json; summaryasset
+637971707 SHA9865cc0bf4fb5473cb62043f3097ff4b04c05b368d338f364dc7cd8385706023.
+Profile v10_kelvin_low_critical binds only this actual circuit andnewRC.
+Regression checks all12Nx3 data devices, fourNx6selectors, originaltails/ref,
+wrongvalidlyhashed circuits/geometries andunchanged sourcebit/sampleoracle.
+Run hosted sourcechecks first, then nominal/hot-cold streams4 matched with
+cascade158_kelvin_supply_direct andstiff65. Discover existingruns first.
+
+Independent v8 low-selects physical38452058065 is live; it isolates geometry
+on unchanged v8devices. Sourcechecks38452061899passed. Mainroute38448901835
+and32wire38441895491 remain live. None ofthese is fullPHY/mainchip acceptance.
+
 ## Native hot delay diagnosis complete; isolated selector-bus geometry candidate
 
 Read-only diagnosis38451366659 PASSED. Summaryasset637967168 SHA

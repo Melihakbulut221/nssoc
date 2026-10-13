@@ -429,8 +429,8 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
-@pytest.mark.parametrize('version', ['v6','v7','v8','v9'])
-@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9'])
+@pytest.mark.parametrize('version', ['v6','v7','v8','v9','v10'])
+@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9', 'final_drive_v10'])
 @pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_power_trunks_vias'])
 def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, reported_variant):
     import hashlib
@@ -438,7 +438,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
     import json
     import shutil
     import tarfile
-    geometry = 'kelvin_low_critical' if version == 'v9' else 'kelvin_dense_wide'
+    geometry = 'kelvin_low_critical' if version in ('v9','v10') else 'kelvin_dense_wide'
     expected_variant = 'critical_buses_'+geometry
     profile = mux4.physical_final_circuit_profile(version+'_'+geometry)
     assert profile == 'final_drive_'+version
@@ -471,7 +471,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
         assert bound.read_bytes() == model
 
 
-@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2}),('v9',16,{1:1,2:12,6:4,8:2})])
+@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2}),('v9',16,{1:1,2:12,6:4,8:2}),('v10',16,{1:1,3:12,6:4,8:2})])
 def test_final_override_keeps_original_oracle_and_accounts_for_actual_emitter_count(tmp_path,version,changed_count,expected_nx):
     from collections import Counter
     (tmp_path/'frontend').mkdir()
@@ -493,7 +493,7 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     assert len(changed) == changed_count and all(name.startswith('xmux.') for name in changed)
     for name in changed:
         assert old['hbt'][name]['nx'] == 8
-        expected = 6 if version in ('v8','v9') and new['hbt'][name]['terminals'][1] in ('sp','sn') else (2 if version == 'v9' else 4)
+        expected = 6 if version in ('v8','v9','v10') and new['hbt'][name]['terminals'][1] in ('sp','sn') else {'v9':2,'v10':3}.get(version,4)
         assert new['hbt'][name]['nx'] == expected
         assert {k:v for k,v in old['hbt'][name].items() if k != 'nx'} == {k:v for k,v in new['hbt'][name].items() if k != 'nx'}
     assert Counter(row['nx'] for name,row in new['hbt'].items() if name.startswith('xmux.')) == expected_nx
