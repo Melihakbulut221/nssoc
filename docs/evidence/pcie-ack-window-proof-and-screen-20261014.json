@@ -52,5 +52,13 @@
   },
   "decision": "Reject standalone candidate:523 fewer cells do not compensate for291.457ps PCIe setup regression and36.081ps Ethernet RX hold regression. Baseline native timing log reproduced byte-for-byte.",
   "next_hypothesis": "The EOP-only candidate made ACK-sequence to retry.timer critical, whereas ACK-window alone leaves link-up to advertiser critical. Test the two source-bound transformations together, preserving isolated failures and running exact baseline/combined public-port cases before paired mapping. No guarantee the combination improves timing.",
-  "scope": "Same20SRAM, original four clocks and three corners. Unplaced screening only; no route, calibrated RC, full PHY or final setup/hold acceptance."
+  "scope": "Same20SRAM, original four clocks and three corners. Unplaced screening only; no route, calibrated RC, full PHY or final setup/hold acceptance.",
+  "combined_followup": {
+    "run": 38481655736,
+    "source_head": "d31a4bf7c16116b90e314a689f6f992412f650ac",
+    "baseline": "physical_idle_credit",
+    "candidate": "physical_idle_credit_window_eop",
+    "required_joint_controls": "16 baseline plus16 combined public-port cases; exact21PCIe source bytes and both isolated proof digests pinned before mapping.",
+    "next": "Require joint controls and unchanged SRAM/clocks; compare all original corners against reproduced baseline and inspect critical source nets. No physical adoption until evidence improves and mapped/physical proof obligations pass."
+  }
 }
