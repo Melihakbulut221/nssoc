@@ -108,7 +108,7 @@ def main():
             assert physical_source.count('nssoc_tx_mux2_passive_topmetal_layout_v1')==1
             physical_source=physical_source.replace('nssoc_tx_mux2_passive_topmetal_layout_v1',top)
             result['circuit_source']=dict(path=str(circuit.relative_to(ROOT)),sha256=expected)
-            result['scope']='Native '+args.circuit_profile+' circuit used in32:1 schematic tree, now generated as54physical devices including27substrate contacts. Same560DRC rules, strict hierarchical/flat transistor LVS and five physical/reference faults. No extracted electrical acceptance, assembled serializer layout or fullPHY/chip acceptance.'
+            result['scope']='Native '+args.circuit_profile+' circuit generated as54physical devices including27substrate contacts. Circuit equivalence is not electrical acceptance; v6 is an unscreened sizing candidate. Same560DRC rules, strict hierarchical/flat transistor LVS and five physical/reference faults. No extracted electrical acceptance, assembled serializer layout or fullPHY/chip acceptance.'
         if args.variant != 'baseline':
             changes = [
                 ('30+26*c,30+14*r', '30+28.8*c,30+14*r'),
@@ -170,7 +170,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if args.circuit_profile == 'final_drive_v5' and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if args.circuit_profile in ('final_drive_v5','final_drive_v6') and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
