@@ -1,0 +1,61 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Candidate v7: only four selector HBTs grow Nx4 to Nx8 versus v6.
+* Data HBTs remain Nx4; reference, tails, resistors and all body taps unchanged.
+* Requires fresh native layout, RC, full-wave device bounds and PVT verification.
+.subckt nssoc_tx_mux54_passive_drive_v7 sub ap an bp bn iref sp sn on op avss avdd
+XD0001 n_42 on n_1 rppd w=8.0u l=1.8u ps=0.0u b=0 m=1 sw_et=1
+XD0002 n_46 op n_1 rppd w=8.0u l=1.8u ps=0.0u b=0 m=1 sw_et=1
+XD0003 on avss n_1 rppd w=8.0u l=4.5u ps=0.0u b=0 m=1 sw_et=1
+XD0004 op avss n_1 rppd w=8.0u l=4.5u ps=0.0u b=0 m=1 sw_et=1
+XD0005 n_40 avss n_1 rppd w=2.0u l=38.400000000000006u ps=0.0u b=0 m=1 sw_et=1
+XD0006 n_51 avss n_1 rppd w=2.0u l=38.400000000000006u ps=0.0u b=0 m=1 sw_et=1
+XD0007 avdd n_42 n_1 rppd w=18.0u l=1.1u ps=0.0u b=0 m=1 sw_et=1
+XD0008 avdd n_46 n_1 rppd w=18.0u l=1.1u ps=0.0u b=0 m=1 sw_et=1
+XD0009 iref iref avss n_1 npn13g2 nx=1 we=0.07u le=0.9u
+XD0010 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0011 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0012 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0013 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0014 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0015 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0016 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0017 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0018 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0019 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0020 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0021 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0022 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0023 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0024 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0025 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0026 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0027 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0028 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0029 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0030 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0031 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0032 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0033 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0034 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0035 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0036 sub n_1 ptap1 r=81.66666666666666666666666668 w=2u l=2u
+XD0037 n_42 ap n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0038 n_42 ap n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0039 n_46 an n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0040 n_46 bn n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0041 n_51 sn n_62 n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0042 n_42 bp n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0043 n_51 sn n_62 n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0044 n_46 bn n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0045 n_42 ap n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0046 n_40 sp n_62 n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0047 n_40 sp n_62 n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0048 n_46 bn n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0049 n_62 iref avss n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0050 n_42 bp n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0051 n_46 an n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0052 n_42 bp n_51 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+XD0053 n_62 iref avss n_1 npn13g2 nx=8 we=0.07u le=0.9u
+XD0054 n_46 an n_40 n_1 npn13g2 nx=4 we=0.07u le=0.9u
+.ends nssoc_tx_mux54_passive_drive_v7
