@@ -9,6 +9,12 @@ on:
       - scripts/analyze_cloud_physical_tree.py
       - sw/tests/test_cloud_physical_tree_diagnosis.py
   workflow_dispatch:
+    inputs:
+      study:
+        description: Exact source-bound compact and wire capture pair
+        type: choice
+        options: [prestage_only, both_power, both_interleaved]
+        default: prestage_only
 permissions:
   contents: read
 jobs:
@@ -31,7 +37,7 @@ jobs:
       - name: Compare actual compact and metal-RC device voltages and currents
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/analyze_cloud_physical_tree.py
+        run: python3 scripts/analyze_cloud_physical_tree.py --study '${{ inputs.study || 'prestage_only' }}'
       - name: Preserve successful and failed diagnosis
         if: always()
         env:

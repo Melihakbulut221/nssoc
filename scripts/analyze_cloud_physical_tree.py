@@ -6,6 +6,7 @@
 Reports actual device voltages and currents without changing a waveform,
 sampling phase, bit oracle or engineering acceptance criterion.
 """
+import argparse
 import gzip
 import hashlib
 import json
@@ -40,6 +41,13 @@ def stats(t, values):
                 time_mean=float(np.trapezoid(y, at) / (STOP - START)))
 
 
+def source_bits_hash(record):
+    candidates=[item['source_bits_sha256'] for item in
+                (record.get('signals'),record.get('review',{}).get('signals')) if item is not None]
+    assert candidates and len(set(candidates))==1
+    return candidates[0]
+
+
 def read_case(record, directory):
     mode = record['prestage']
     tag = record['summary_url'].split('/download/')[1].split('/')[0]
@@ -71,7 +79,7 @@ def read_case(record, directory):
     for name in ('contract.json', 'wave.dat.gz'):
         assert sha(directory / name) == result['outputs']['native/' + name]
     assert result['raw_wave'] == record['raw_wave']
-    assert hashlib.sha256(bytes(contract['bits'])).hexdigest() == record['signals']['source_bits_sha256']
+    assert hashlib.sha256(bytes(contract['bits'])).hexdigest() == source_bits_hash(record)
     raw_hash, size = hashlib.sha256(), 0
     with gzip.open(directory / 'wave.dat.gz', 'rb') as src:
         while block := src.read(1024**2):
@@ -111,6 +119,8 @@ def read_case(record, directory):
         original_component_screen_passed=record['component_screen_passed'],
         contract_identity={k: contract[k] for k in ('streams', 'fault', 'bits', 'condition',
             'clock_bias', 'pre_bias', 'output_bias', 'final_drive', 'tree_plan')},
+        physical_sources={key:{field:result[key].get(field) for field in ('profile','source','source_sha256')}
+                          for key in ('physical_prestage_scope','physical_final_scope') if key in result},
         devices=devices,
         public_nodes={n: stats(t, v(n)) for n in sorted(nodes) if '.' not in n},
         feed_current_a={n: stats(t, values[n]) for n in names if n.startswith('i(v')})
@@ -118,6 +128,7 @@ def read_case(record, directory):
 
 def pair(compact, wire):
     assert compact['contract_identity'] == wire['contract_identity']
+    assert compact.get('physical_sources') == wire.get('physical_sources')
     assert set(compact['devices']) == set(wire['devices'])
     devices = {}
     for name, first in compact['devices'].items():
@@ -132,12 +143,19 @@ def pair(compact, wire):
 def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Full native waveform analysis runs only on GitHub')
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved'),default='prestage_only')
+    args=parser.parse_args()
+    evidence_path=ROOT/'docs/evidence'/dict(
+        prestage_only='pcie-physical-prestage-tree-20261013.json',
+        both_power='pcie-both-physical-macros-loaded-tree-20261013.json',
+        both_interleaved='pcie-interleaved-macros-loaded-tree-20261013.json')[args.study]
     out = Path('cloud-physical-tree-diagnosis')
     out.mkdir(exist_ok=False)
-    result = dict(status='RUNNING', adopted=False,
-        scope='Read-only full-wave voltage/current comparison. Intermacro connections remain ideal; final mux/TX remain schematic. No new acceptance or RF/substrate extraction qualification.')
+    result = dict(status='RUNNING', adopted=False, study=args.study, evidence=str(evidence_path.relative_to(ROOT)), evidence_sha256=sha(evidence_path),
+        scope='Read-only full-wave voltage/current comparison. Intermacro connections remain ideal; the source-bound case records identify which macros include actual metal RC. TX driver remains schematic. No new acceptance or RF/substrate extraction qualification.')
     try:
-        evidence = json.loads((ROOT / 'docs/evidence/pcie-physical-prestage-tree-20261013.json').read_text())
+        evidence = json.loads(evidence_path.read_text())
         cases = {}
         for mode in ('physical_compact', 'physical_wire'):
             record = next(r for r in evidence['cases'] if r['streams'] == 4 and r['prestage'] == mode)

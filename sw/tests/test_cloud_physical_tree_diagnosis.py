@@ -40,3 +40,16 @@ def test_reject_changed_source_bits_or_device_inventory():
     with pytest.raises(AssertionError):
         m.pair({'contract_identity': [], 'devices': {'q': {}}},
                {'contract_identity': [], 'devices': {}})
+
+
+def test_two_evidence_schemas_bind_same_original_bits_and_reject_conflict():
+    a={'source_bits_sha256':'actual-source-digest'}
+    assert m.source_bits_hash({'signals':a})==m.source_bits_hash({'review':{'signals':a}})
+    with pytest.raises(AssertionError):m.source_bits_hash({})
+    with pytest.raises(AssertionError):m.source_bits_hash({'signals':a,'review':{'signals':{'source_bits_sha256':'different'}}})
+
+
+def test_reject_pair_from_different_physical_model_sources():
+    with pytest.raises(AssertionError):
+        m.pair({'contract_identity':[], 'physical_sources':{'final':'original'}},
+               {'contract_identity':[], 'physical_sources':{'final':'unrelated'}})
