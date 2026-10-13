@@ -381,3 +381,24 @@ inherits exact low-selects geometry and increases only qn/qp/ea/eb M3 access
 width0.6to1.0um. Tail already1.0um; all54devices and other routing unchanged.
 Requires actual560category DRC,strictLVS,fivephysical faults, freshRC and
 original loaded PVT. No RC scaling or acceptance claimed.
+
+
+Native layout candidate dispatched38468734943 on
+be7cc6a116619e8f9525f87a0af57cc045f385be; live job115542012002.
+The earlier dispatch returned422 before any run because the new input was not
+yet published; this is the sole actual native run, not a duplicate. Read the
+layout-final_drive_v8-critical_buses_kelvin_low_selects_m3 release when done.
+If native layout passes, bind its exact archive in extraction input before
+freshRC/composition/loaded tests. No result yet; do not reuse low-selects RC.
+
+Candidate mapping archive638250779 SHA256
+3b639453fc6b011703961c444b8a06e6f7823714d9b22db331017d3bcf8f53eb.
+Actual mapped FF1165499 hasQ u_pcie.credit_data_limit_o[2],D40788,Q14152;
+its input path starts at pcie_link_up_i with0.8ns input delay, passes roughly
+24logic/buffer stages and reachesD near4.725657ns against3.578509nsrequired.
+Input link_up has one immediate buffer sink, so this is not simply an unbuffered
+port fanout. The credit update/consume validation cone is the next RTL target.
+Before repeating a static per-class credit-write optimization, inspect prior
+pcie-fc-static-commit-20261012 results: its earlier formal proof exists, while
+older published receipts still described mapping work as active. Preserve
+source/profile separation and all earlier failed audits.
