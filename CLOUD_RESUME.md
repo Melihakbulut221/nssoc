@@ -169,3 +169,10 @@ do not duplicate them. Authoritative cloud-migration-final-checkout-20261013
 retirement-progress.json was reread and digest verified: status
 COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. Local directory remains
 empty. The existing8hour automation is ACTIVE and explicitly cloud-only.
+
+
+Next cloud timing readback also restores the exact placementODB and runs native
+OpenDB on the same pinned runtime to bind every reported timing cell to its
+actual master, placed bbox, pin nets and full incident-net endpoint census.
+The STA report and ODB hashes must remain unchanged. This gives RTL-facing
+net names before any ECO choice; no cell, clock or constraint is modified.
