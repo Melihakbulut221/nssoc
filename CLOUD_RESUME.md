@@ -85,6 +85,21 @@ content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
   `23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd`.
 
 
+### New native internal-route candidate
+
+Hot/cold full-wave diagnoses38420038719/38420042839 completed with exact
+source binding and corruption controls. Cold final selector collectors lose
+about103mV mean versuscompact, while emitter means rise17-21mV; allfour
+selector VCE minima fail. Hot clock-to-MUX transitions takeabout21-24ps,
+versusabout9.5ps compact; source-to100mV events reachabout40-44ps andmiss37.5ps.
+
+Candidate `critical_buses_kelvin_local_internal` on final_drive_v8 addsreal
+parallel eaM4 andebM5 local routes at16/20um, eachjoining nineactualterminals.
+It inherits localreturn/supply/tailgeometry andall54devices unchanged.
+Native DRC/strictLVS/physicalfaults must pass before RC orloaded testing.
+This is a physical hypothesis, not adopted circuitry or fullPHY completion.
+Main-chip timing-priority route **38420407838** is active ondb3a36b3.
+
 ### Exact physical sources for these studies
 
 - Local-tail finalv8: physical **38400244543**, RC **38400976763**, composition
