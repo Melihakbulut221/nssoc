@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T01:44:53.286972+00:00",
-  "turn_classification": "PROGRESS: all work runs in cloud. Same native resistor-biased compact4:1 passes four base conditions and six MOS corners, two actual faults detected. PNR transfer/readback complete, main transfer active. All three grid routing variants fail153overflow; no chip route currently running. No full PHY/routing/timing closure.",
+  "as_of": "2026-10-13T02:10:06.836850+00:00",
+  "turn_classification": "PROGRESS: all879congested net endpoints resolved; three real native placement candidates legalized and connectivity/fixed-cell checks plus two native corruption controls passed. Broad movement setup regresses; bounded433cellmovement preserves critical PCIe slacks and is routing. Independent native resistor/HBT corners expose5failures; real clock-resistor feed repairs tested six cases. All remaining ideal bias-current replacements queued on GitHub. Main verified transfer alive.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "d6d49b88",
+  "head": "cb2a50f1",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -81,16 +81,16 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 289427,
-    "batch": 250,
-    "removed_bytes": 143159840221,
-    "uploaded_bytes": 65146973027
+    "next_index": 289785,
+    "batch": 258,
+    "removed_bytes": 149037765187,
+    "uploaded_bytes": 71016775199
   },
   "next_actions": [
-    "Main output transfer remains active; inspect transfer-progress.json and controller state. PNR8022files67.782GB fully restored in38330635076. Finalizer dispatches final all-family hosted restoration only after both plans complete. Do not delete state until that finishes.",
-    "All CAD/simulation/tests hosted only. Local editing, metadata reads, packaging/upload/hash/cleanup only. Preserve32historical untracked sources and repository/tools while prior scope clarification remains unanswered.",
-    "All three grid profiles38326473503 completed with153overflow/GRT0116. Do not wait or rerun unchanged. Next actual placement/congestion repair runs on GitHub; source binding, original SDC/RC and all clock-domain timing screens remain required.",
-    "Use native resistor-biased compact4:1 as next component baseline:10positive screens and2actual fault controls passed across38332104799/38332663087. Independent HBT/RES mixed corners, newlayout/PEX, upstreamserializer/clocks/bias/fullPHY/mainchip integration remain open."
+    "Inspect actual all-native-feed9case38335350354; all prior knownfailedcorners included. Six realclockfeed screens38334717591pass; no inferenceto untestedPVT. Follow with remaining mixedcorners/faults andphysicalgeneration only on validated circuit. FullPHY remains open.",
+    "Inspect live native routing38334595459(broadplacements,alreadysetupregressed) and38335168863(boundedlocalDPO,433cells). Do not restart healthy jobs. Capture overflow/route and freshallgroupSTA; broad profiles not adopted. No detailed route/PEX/signoff yet.",
+    "Main verified output transfer4128374 active, large compressed files may hold next_index while verified parts advance. PNRcomplete/finalbyte restoration passed. Finalizerwaits main then all-family hosted readback. Preserve state and32historical sources; no localCAD/tests.",
+    "All CAD, simulation and tests on GitHub-hosted per latest user instruction, overriding old goal local preference. Local only edit/metadata/hash/package/upload/cleanup. Full serialPHY/mainchiproute/finalsetuphold allOPEN."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -359,5 +359,33 @@
       },
       "scope": "Only recorded output symlinks/FIFOs. All targets and regular files untouched."
     }
+  },
+  "macro_channel_placement": {
+    "runs": [
+      38334595459,
+      38335168863
+    ],
+    "status": "ROUTING_IN_PROGRESS_LAST_LIVE_VERIFIED",
+    "evidence": "docs/evidence/cloud-macro-channel-placement-20261013.json",
+    "endpoint_evidence": "docs/evidence/cloud-macro-channel-endpoints-20261013.json",
+    "local_optimize": "113771instances invariant;433selectedpositionschanged,allothersunchanged;slowsPCIe-1.275681ns/fastPCIehold-.065767ns remain open. No adoption."
+  },
+  "serial_independent_corners": {
+    "run": 38333919415,
+    "status": "COMPLETE_CANDIDATE_REJECTED_5_OF_12_FAIL",
+    "evidence": "docs/evidence/pcie-mux4-independent-corners-20261013.json"
+  },
+  "serial_native_clock_feed": {
+    "run": 38334717591,
+    "status": "PASS_SIX_COMPONENT_SCREENS",
+    "evidence": "docs/evidence/pcie-mux4-native-clock-feed-20261013.json",
+    "not_inferred": "Only tested six cases; does not prove remaining independent corners or fullPHY."
+  },
+  "serial_all_native_feeds": {
+    "run": 38335350354,
+    "source_head": "cb2a50f1",
+    "status": "QUEUED_LAST_VERIFIED",
+    "change": "New real rppd12umfinal and4.5umTX feeds remove remaining two ideal reference currents; all five bias feeds now native,62HBT64MOS unchanged. External clock modulation, upstream32:1/PLL/CDR/layout/PEX/fullPHY remain open.",
+    "next": "Read all nine originalPVT/known-failure screens; workflow completion is not engineering gate pass. Preserve failed full captures."
   }
 }
