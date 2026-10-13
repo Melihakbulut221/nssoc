@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T11:00:00.509559+00:00",
+  "as_of": "2026-10-13T11:09:34.069605+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "v7 physical run38386165678 passed native54 strict hierarchical/flat LVS,560DRC categories with zero markers and all5physical faults. Extract exact v7 receipt, validate13RC fault controls, compose actual devices, then compare nominal streams4 compact/wire using v7_kelvin_dense_wide. v6 output signal passes140.606mV but two tail VCE values fail400mV; v6 is not accepted.",
+    "Inspect existing v8 physical run38388166708; only four selector areas change Nx8to6 relative to rejected v7. If strict native gates pass, extend explicit v8 extraction/composition/mux4 profile bindings, use fresh RC and unchanged loaded waveform gates. Never reuse v7RC for v8 or mark v6/v7 accepted.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -8253,11 +8253,189 @@
   "final_v7_loaded_tree": {
     "run": 38387190660,
     "source_head": "7dfbe10c3c1af78f1ad9e533b0330c397ea663ac",
-    "status": "NATIVE_COMPACT_AND_WIRE_SIMULATIONS_IN_PROGRESS",
+    "status": "COMPLETE_OUTPUT_PASSED_FOUR_SELECTOR_VCE_FAILURES",
     "streams": 4,
     "condition": "nominal",
     "source_checks_run": 38387195894,
-    "adopted": false
+    "adopted": false,
+    "cases": {
+      "physical_compact": {
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38387190660-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38387190660-1.summary.json",
+        "summary_sha256": "5f22d8584ff03f195c754a8bdf57aea1797f5ea12095c86a8093d1a3f3923a37",
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "component_screen_passed": true,
+        "accepted": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2818984621018943,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2819211038427685,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.28198298247491893,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2818984621018943,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2666917607749879,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8880429975479225,
+              1.8987208727395888
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.28373440540184425,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9134237358063884,
+              1.9407811233362673
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      },
+      "physical_wire": {
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38387190660-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38387190660-1.summary.json",
+        "summary_sha256": "ed3548be191693a50a5baa4de11a7be1e53f55d60f3d08e7235f9d69aad5b7d6",
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "component_screen_passed": false,
+        "accepted": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.10122005500712872,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.10122005500712872,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.27482238126501257,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27200455780626887,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "failed_hbts": {
+          "xmux.xd0006": {
+            "min_post_vce_v": 0.38641686907395645,
+            "max_post_vce_v": 0.7681726732846714,
+            "max_whole_abs_vce_v": 0.7681726732846714,
+            "max_whole_abs_vbe_v": 0.8612969883379195,
+            "max_whole_abs_ic_per_emitter_a": 0.0006507575450108256,
+            "passed": false
+          },
+          "xmux.xd0009": {
+            "min_post_vce_v": 0.3911348207491717,
+            "max_post_vce_v": 0.769147847578903,
+            "max_whole_abs_vce_v": 0.8015438541595901,
+            "max_whole_abs_vbe_v": 0.8580844419326308,
+            "max_whole_abs_ic_per_emitter_a": 0.0006127548502072428,
+            "passed": false
+          },
+          "xmux.xd0010": {
+            "min_post_vce_v": 0.39202595811412144,
+            "max_post_vce_v": 0.7691941739189665,
+            "max_whole_abs_vce_v": 0.8015514281573155,
+            "max_whole_abs_vbe_v": 0.8586043430343214,
+            "max_whole_abs_ic_per_emitter_a": 0.0006192705783025052,
+            "passed": false
+          },
+          "xmux.xd0011": {
+            "min_post_vce_v": 0.385574608335841,
+            "max_post_vce_v": 0.768311760670729,
+            "max_whole_abs_vce_v": 0.768311760670729,
+            "max_whole_abs_vbe_v": 0.8609691473515646,
+            "max_whole_abs_ic_per_emitter_a": 0.0006465025494829254,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27183077071419803,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8951914817279227,
+              1.8983773609935852
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.19966529498466712,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8351763087817894,
+              1.8700508961729687
+            ],
+            "passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    },
+    "source_checks_status": "PASS",
+    "identity_proof": {
+      "run": 38387898365,
+      "summary_sha256": "234b77fea3f3326404222125e12f37a96f6c6036cb533a474365967b310e81d1",
+      "member_sha256": "f3feaf3f2b98c5b2cf630d3c62fda9988846aa1075c26f589290bc4d56bc1a24",
+      "selectors": [
+        "XD0006",
+        "XD0009",
+        "XD0010",
+        "XD0011"
+      ],
+      "tails": [
+        "XD0007",
+        "XD0008"
+      ]
+    },
+    "decision": "Reject v7 overall. Tail VCE improves but four selector VCE gates fail; fixed output screen only just passes101.220mV. Preserve all failed captures."
   },
   "physical_tree_followup_studies": {
     "workflow": "tx-tree-physical-cloud.yml",
@@ -8279,6 +8457,7 @@
       "hw/soc/analog/pcie/tx_mux2_final_drive_v8_layout_core.spice": "ece50f76c5c8a6bd9bb334498a958c14a2c7be93cb44d008786e8112608c005d",
       "hw/soc/analog/pcie/tx_mux54_passive_drive_v8.spice": "1cae9383cc799292e85c8e95ff641410a502c76b927d8729248ebef9758f0ed8"
     },
-    "adopted": false
+    "adopted": false,
+    "physical_run": 38388166708
   }
 }

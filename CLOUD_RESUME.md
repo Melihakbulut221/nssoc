@@ -12,13 +12,24 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Current decision
 
-v6 extracted output passes all768samples (140.606mV minimum), but two tail
-HBTs violate the400mV VCE limit; it is not accepted. v7 changes only four
-selector HBTs Nx4 to Nx8. Physical38386165678, nativeRC38386563813 and
-composition38386884254 passed, retaining54devices with3891R/2593C. Next is
-the original nominal streams4 compact/wire comparison **38387190660**,
-source **7dfbe10c**, using `v7_kelvin_dense_wide`; do not duplicate it. Main routing
-38371498733 remains live. FullPHY, assembledlayout and finalSTA remain open.
+v6 output passes140.606mV but two tail HBTs fail the400mV VCE limit.
+v7 output passes101.220mV and tail VCE improves to412.988mV, but four selector
+HBTs fail (minimum385.575mV). Both are rejected overall; all captures remain.
+The v7 exact native model reader38387898365 proves selector/tail roles.
+
+**v8 physical run38388166708** is dispatched. It changes only four selector
+HBTs Nx8 to Nx6 relative to v7; twelve data HBTs stay Nx4, tails Nx8, reference
+Nx1, all resistors and27body contacts unchanged. This is an unproven balance
+between the measured v6/v7 headroom failures, not interpolated acceptance.
+
+Inspect this existing run first. After a genuine physical pass, add distinct
+v8 bindings to extraction, composition and loaded-tree runners/workflows;
+those currently support through v7 only. Extract fresh v8RC; never substitute
+v7RC. Nominal streams4 must retain all original bits/phases/device limits.
+The new workflow study options for independent corners/faults are prepared
+but not yet exercised; they do not qualify RF/body/temperature-dependent RC.
+Main routing38371498733 remains live. FullPHY, assembledlayout and finalSTA
+remain open. All work stays in GitHub-hosted runners; local workspace is empty.
 
 ## Preservation and local retirement
 
