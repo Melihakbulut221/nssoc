@@ -32,6 +32,9 @@ on:
       credit_late_verdict:
         type: boolean
         default: false
+      ack_window:
+        type: boolean
+        default: false
       advert_eop:
         type: boolean
         default: false
@@ -277,3 +280,39 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           cp cloud-advert-eop/result.json "${archive%.tar.gz}.json"
           python3 scripts/publish_cloud_results.py --group advert-eop "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+  ack-window:
+    if: ${{ inputs.ack_window == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove bounded ACK-window identity and exact replay controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_ack_window.py
+          hw/.venv/bin/python scripts/run_cloud_ack_window.py
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="ack-window-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-ack-window
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-ack-window/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group ack-window "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
