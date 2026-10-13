@@ -10,6 +10,18 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Source-bound waveform diagnosis while loaded trials run
+
+New study `local_internal_hot` compares the exact completed compact/wire captures
+from 38423088377 (old prestage supply_feed, final local_internal, offset75).
+It reports real device headroom and transition delays without changing bits,
+phases or thresholds. Source/corner/profile/duplicate corruption tests guard the
+selection. Discover the diagnosis run before redispatching.
+Compact-internal DC 38427212034 passed graph diagnosis, not acceptance:
+worst internal pairs measured 24.753/25.693 ohm versus 13.625/14.145 with parallel
+long metal retained. Reduced capacitance must offset that resistance in actual
+waveforms; do not assume removing long metal improved timing.
+
 ## Latest isolated compact-internal study
 
 Dispatched on `014167fcf05da93e6d5dc1971a29c940347879a9`: compact-internal

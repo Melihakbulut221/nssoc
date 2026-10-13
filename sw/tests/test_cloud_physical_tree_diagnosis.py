@@ -96,3 +96,26 @@ def test_supply_feed_selection_rejects_wrong_corner_clock_run_and_native_models(
     changed(lambda e, r: r[0]['physical_final_scope'].update(profile='v8_kelvin_local_return'))
     changed(lambda e, r: r[0]['review']['signals'].update(source_bits_sha256='changed-bits'))
     changed(lambda e, r: e['combined_supply_feed_loaded_study']['cases'].append(copy.deepcopy(r[0])))
+
+
+def test_routing_pair_rejects_foreign_wave_and_scope():
+    import copy
+    import json
+    evidence = json.loads((path.parents[1] / 'docs/evidence/pcie-local-internal-hot-loaded-tree-20261013.json').read_text())
+    assert len(m.routing_records(evidence, 'local_internal_hot')) == 2
+    corruptions = [
+        lambda r: r[0].update(run=38417305677),
+        lambda r: r[0].update(condition='nominal'),
+        lambda r: r[0].update(streams=32),
+        lambda r: r[0].update(clock_reference='baseline'),
+        lambda r: r[0]['physical_prestage_scope'].update(profile='kelvin_supply_direct'),
+        lambda r: r[0]['physical_final_scope'].update(profile='v8_kelvin_compact_internal'),
+        lambda r: r[0]['physical_final_scope'].update(mode=r[1]['prestage']),
+        lambda r: r[0]['review']['signals'].update(source_bits_sha256='foreign-bits'),
+        lambda r: r.append(copy.deepcopy(r[0])),
+    ]
+    for corrupt in corruptions:
+        other = copy.deepcopy(evidence)
+        corrupt(other['cases'])
+        with pytest.raises(AssertionError):
+            m.routing_records(other, 'local_internal_hot')
