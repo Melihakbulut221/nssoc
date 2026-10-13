@@ -10,6 +10,29 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## New low upper-metal internal-route candidate
+
+`critical_buses_kelvin_low_internal` inherits finalv8 local_supply geometry,
+without the later M4/M5 internal shunts. It relocates only existing ea/eb
+TM2 buses to y=16/24 um with their native TM1 trunks and nine terminals each.
+The global bus cursor advances first, so other buses and public ports retain
+positions. All54devices, RC coefficients and acceptance limits stay unchanged.
+Native DRC/LVS/faults, fresh RC/composition and loaded PVT must judge it.
+
+Evidence motivating the change:
+- Direct supply hot wire38426732244 still fails32wrong/128low samples,
+  minmargin -10.926mV; final input CM1.769632..1.810824V, allHBT gatespass.
+  SHA2566a3b7711faa0663da94964b2c803d40096426d10f84084a49bdd5b75dd4c7242.
+  Nominalwire38426728316passes130.666mV. Coldwire capture still awaited.
+- Compact internal coldwire38427208302fails four selector VCE limits,
+  minima338.282/322.454/346.902/330.791mV, although outputs pass238.411mV.
+  SHA256574dc98fe898d555ede9bb0d558e1b2728c869111e99f50b35b4e6d1d4c3be0f.
+  This is rejected; preserve remaining scheduled nominal/hot captures.
+- Full-wave diagnosis38427890875passed with source controls. Hot localinternal
+  wire clock-to-MUXmedian22.608ps, output100mVmedian42.005ps/max44.399ps,
+  beyond37.5psfirstsample. SummarySHA0fd803ae4f20585acfab0b440db63845ed7feafbbb1fadda9a8f677bba51dbd5.
+  Source/migrationchecks38427894507passed. No criterion is relaxed.
+
 ## Source-bound waveform diagnosis while loaded trials run
 
 New study `local_internal_hot` compares the exact completed compact/wire captures
