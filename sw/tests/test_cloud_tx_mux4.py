@@ -129,3 +129,17 @@ XP0 net1 A VDD VDD sg13_lv_pmos
         assert f'V{name} {name}0 clkbias PWL(' in deck
         assert f'R{name} {name}0 {name} 25' in deck
     assert 'ICLKBIAS avdd clkbias PWL(0 0 1n .00065)' in deck
+
+
+def test_faster_final_stage_preserves_every_hbt_and_changes_real_passives_only():
+    original=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_passive_fast_v1.spice'
+    actual=mux4.FAST_FINAL
+    old=original.read_text().splitlines();new=actual.read_text().splitlines()
+    assert [s for s in old if ' npn13G2 ' in s]==[s for s in new if ' npn13G2 ' in s]
+    old_r=[s.split() for s in old if ' rppd ' in s];new_r=[s.split() for s in new if ' rppd ' in s]
+    assert len(old_r)==len(new_r)==8
+    for before,after in zip(old_r,new_r,strict=True):
+        assert [x for x in before if not x.startswith('w=')]==[x for x in after if not x.startswith('w=')]
+        width=lambda row:float(next(x[2:-1] for x in row if x.startswith('w=')))
+        assert width(after)==2*width(before)
+    assert 'w=2u l=12u' in (ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc').read_text()
