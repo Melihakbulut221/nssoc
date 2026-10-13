@@ -110,3 +110,19 @@ assets for large results. Do not download bulk CAD results onto this computer.
   No physical rule or waveform acceptance threshold was relaxed.
 - Source licence/inventory/REUSE and migration regression checks
   38372661182 passed on b9091be1. No local checkout or test files were created.
+
+## Conductor-loss diagnosis
+
+- Native metal comparison **38375278729** passed both dense profiles. Wider
+  via columns reduce the worst internal terminal-pair resistances by about
+  0.88–0.95 ohm; 15.93–18.82 ohm remains in the wider candidate. This is
+  static metal-only diagnosis, not loaded or RF acceptance.
+- Unmodified actual-wave control **38375733511** continues. Its seven
+  sensitivity preparations stopped before simulation because the diagnostic
+  required identical port lists; the native wire model appends `wire_cref`.
+  Source inspection proves this is the shunt-capacitance reference.
+- Corrected sensitivity run **38376209270** permits only that appended
+  capacitance-only reference and rejects its use by any resistor or device.
+  Original models, all C/device lines and original measurement gates are
+  preserved. Only the seven failed preparations are retried. Even a passing
+  artificial-R waveform cannot establish physical or PHY acceptance.

@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T09:14:56.993638+00:00",
+  "as_of": "2026-10-13T09:26:51.732359+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "e77c10388487d0eab9d9e3f3f607b5c6af300e37",
+  "head": "c50e554bc516e937f9faa5fcb3fc30c83ab07022",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Dense-wide loaded-tree38372656723 completed: compactPASS; actualwireFAIL with0wrong signs,127early samples below100mV (minimum14.320mV),4minimum-VCE failures. Use source-bound per-conductor resistance and actual waveform diagnosis to identify next physical repair; artificial RC mutations are diagnosis only. Do not repeat unchanged or move sample phases.",
+    "Inspect seven final-macro conductor-class sensitivity cases in38376209270 and unchangedactualcontrol38375733511. Bind actualcontrol to original38372656723 before causalcomparison. Use sensitivity only to select realgeometry repairs; never adopt artificialR. Staticmetaldiagnosis38375278729 iscomplete andshows smallgain fromwidercuts.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -4177,5 +4177,327 @@
     "retirement_receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
     "retirement_status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
     "local_services": "All four NSSOC transfer/retirement services verified inactive."
+  },
+  "dense_metal_diagnosis": {
+    "run": 38375278729,
+    "source": "83a709be6776ea0e5bef2260be636c075aadf395",
+    "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+    "cases": [
+      {
+        "profile": "kelvin-dense",
+        "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38375278729-1-metal-dc-kelvin-dense/tx-metal-resistance-kelvin-dense-38375278729-1.json",
+        "summary_sha256": "4e656bba608ef0e882c9f3dd93700c63026d369ea683272d63671c373f9059c5",
+        "source": {
+          "run": 38364385250,
+          "source_head": "c19f9dc6",
+          "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+          "variant": "critical_buses_kelvin_dense",
+          "receipt": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38364385250-1-compose-final_drive_v5-critical_buses_kelvin_dense/tx-layout-composition-final_drive_v5-critical_buses_kelvin_dense-38364385250-1.tar.gz",
+            "bytes": 6541206,
+            "sha256": "13ffffe423fb7392b2404c16123ae0e7bffef723ab6cefee0fea2ecb3be4f411"
+          },
+          "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38364385250-1-compose-final_drive_v5-critical_buses_kelvin_dense/tx-layout-composition-final_drive_v5-critical_buses_kelvin_dense-38364385250-1.summary.json",
+          "summary_sha256": "8f834aab58173b76c1036445d378ebc90d9c1e168b12d0ed968d9f822214aa60",
+          "outputs": {
+            "mux54-wire01.spice": "7fabec4b5c7b06a587a8767fa39fa7f8fed00e84f681d10cfa4c8379747fe4ac",
+            "mux54-compact01.spice": "2fc858e33ed84a45db065a207639d5be6f74c6bb068ea2ab3a725850339a8141"
+          },
+          "counts": {
+            "devices": 54,
+            "R": 2875,
+            "C": 1986
+          },
+          "extraction_source_sha256": "25b0e1334b0ccac4d45b536de514c86b8a500f9788a9699543c86298888a12b7",
+          "adopted": false,
+          "scope": "Actual54 device binding and actual candidate RC, without RF qualification or PHY acceptance."
+        },
+        "maximum_terminal_pair_by_conductor": {
+          "on": {
+            "nodes": [
+              "T001_rppd_1",
+              "T024_rppd_2"
+            ],
+            "effective_ohms": 19.027648607751637
+          },
+          "avss": {
+            "nodes": [
+              "T001_rppd_2",
+              "T002_rppd_2"
+            ],
+            "effective_ohms": 16.857163257915435
+          },
+          "op": {
+            "nodes": [
+              "T002_rppd_1",
+              "T025_rppd_2"
+            ],
+            "effective_ohms": 18.6627886077506
+          },
+          "iref": {
+            "nodes": [
+              "T005_C",
+              "T014_B"
+            ],
+            "effective_ohms": 19.572608883242815
+          },
+          "ap": {
+            "nodes": [
+              "T006_B",
+              "T011_B"
+            ],
+            "effective_ohms": 13.84067872685918
+          },
+          "an": {
+            "nodes": [
+              "T008_B",
+              "T017_B"
+            ],
+            "effective_ohms": 13.84067872685906
+          },
+          "sp": {
+            "nodes": [
+              "T009_B",
+              "T022_B"
+            ],
+            "effective_ohms": 13.687019726859113
+          },
+          "sn": {
+            "nodes": [
+              "T010_B",
+              "T021_B"
+            ],
+            "effective_ohms": 13.687019726858974
+          },
+          "bp": {
+            "nodes": [
+              "T016_B",
+              "T023_B"
+            ],
+            "effective_ohms": 13.840678726859203
+          },
+          "bn": {
+            "nodes": [
+              "T019_B",
+              "T020_B"
+            ],
+            "effective_ohms": 13.840678726858826
+          },
+          "sub": {
+            "nodes": [
+              "T026_TIE",
+              "T047_TIE"
+            ],
+            "effective_ohms": 22.67825291346096
+          },
+          "avdd": {
+            "nodes": [
+              "T053_rppd_1",
+              "T054_rppd_1"
+            ],
+            "effective_ohms": 19.614294506339103
+          },
+          "n_17": {
+            "nodes": [
+              "T003_rppd_1",
+              "T010_C"
+            ],
+            "effective_ohms": 18.024223505236254
+          },
+          "n_19": {
+            "nodes": [
+              "T004_rppd_1",
+              "T022_C"
+            ],
+            "effective_ohms": 17.870580393173064
+          },
+          "n_13": {
+            "nodes": [
+              "T006_C",
+              "T023_C"
+            ],
+            "effective_ohms": 19.623805523914868
+          },
+          "n_20": {
+            "nodes": [
+              "T008_C",
+              "T019_C"
+            ],
+            "effective_ohms": 19.77746552391343
+          },
+          "n_66": {
+            "nodes": [
+              "T014_C",
+              "T022_E"
+            ],
+            "effective_ohms": 16.880310285167226
+          }
+        }
+      },
+      {
+        "profile": "kelvin-dense-wide",
+        "status": "PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38375278729-1-metal-dc-kelvin-dense-wide/tx-metal-resistance-kelvin-dense-wide-38375278729-1.json",
+        "summary_sha256": "4787437c90a352593ce594695a1b31abe82e069a810c31f383cb376ad1b754c8",
+        "source": {
+          "run": 38372215192,
+          "source_head": "1ae778c3aee9485c0e10cb4defe4f7e531765326",
+          "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+          "variant": "critical_buses_kelvin_dense_wide",
+          "receipt": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38372215192-1-compose-final_drive_v5-critical_buses_kelvin_dense_wide/tx-layout-composition-final_drive_v5-critical_buses_kelvin_dense_wide-38372215192-1.tar.gz",
+            "bytes": 6655450,
+            "sha256": "2b0bc3a618b66947e9ed69cd65f4ac1596f8c7b72359cb3d52ed04220191ee6e"
+          },
+          "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38372215192-1-compose-final_drive_v5-critical_buses_kelvin_dense_wide/tx-layout-composition-final_drive_v5-critical_buses_kelvin_dense_wide-38372215192-1.summary.json",
+          "summary_sha256": "f4ccce755c8bab9481100cdff635db6d1b6224219d3bff4386bf429ad7933b59",
+          "outputs": {
+            "mux54-wire01.spice": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+            "mux54-compact01.spice": "50485a279c6cc30ea3c2eafbce1412cf13a835b37ca328459ac3c52e81ddde19"
+          },
+          "counts": {
+            "devices": 54,
+            "R": 3889,
+            "C": 2593
+          },
+          "extraction_source_sha256": "a1da16d0618101d084761bef093a8ac22e401d622a47f55bf4ca465b9d6c8606",
+          "adopted": false,
+          "scope": "Actual54 device binding and actual candidate RC, without RF qualification or PHY acceptance."
+        },
+        "maximum_terminal_pair_by_conductor": {
+          "on": {
+            "nodes": [
+              "T001_rppd_1",
+              "T024_rppd_2"
+            ],
+            "effective_ohms": 18.149970654729554
+          },
+          "avss": {
+            "nodes": [
+              "T001_rppd_2",
+              "T002_rppd_2"
+            ],
+            "effective_ohms": 16.047892798930263
+          },
+          "op": {
+            "nodes": [
+              "T002_rppd_1",
+              "T025_rppd_2"
+            ],
+            "effective_ohms": 17.78511065473024
+          },
+          "iref": {
+            "nodes": [
+              "T005_C",
+              "T008_B"
+            ],
+            "effective_ohms": 18.61967093022074
+          },
+          "ap": {
+            "nodes": [
+              "T007_B",
+              "T023_B"
+            ],
+            "effective_ohms": 12.963000773837354
+          },
+          "an": {
+            "nodes": [
+              "T011_B",
+              "T020_B"
+            ],
+            "effective_ohms": 12.963000773837408
+          },
+          "bp": {
+            "nodes": [
+              "T010_B",
+              "T021_B"
+            ],
+            "effective_ohms": 12.963000773837333
+          },
+          "bn": {
+            "nodes": [
+              "T012_B",
+              "T014_B"
+            ],
+            "effective_ohms": 12.963000773837427
+          },
+          "sn": {
+            "nodes": [
+              "T013_B",
+              "T016_B"
+            ],
+            "effective_ohms": 12.809341773837495
+          },
+          "sp": {
+            "nodes": [
+              "T015_B",
+              "T017_B"
+            ],
+            "effective_ohms": 12.809341773837161
+          },
+          "sub": {
+            "nodes": [
+              "T026_TIE",
+              "T045_TIE"
+            ],
+            "effective_ohms": 21.800574960440613
+          },
+          "avdd": {
+            "nodes": [
+              "T053_rppd_1",
+              "T054_rppd_1"
+            ],
+            "effective_ohms": 18.809281905906964
+          },
+          "n_17": {
+            "nodes": [
+              "T003_rppd_1",
+              "T013_C"
+            ],
+            "effective_ohms": 17.14654655221745
+          },
+          "n_19": {
+            "nodes": [
+              "T004_rppd_1",
+              "T017_C"
+            ],
+            "effective_ohms": 16.992886552220305
+          },
+          "n_66": {
+            "nodes": [
+              "T008_C",
+              "T017_E"
+            ],
+            "effective_ohms": 15.927378384286484
+          },
+          "n_13": {
+            "nodes": [
+              "T021_C",
+              "T023_C"
+            ],
+            "effective_ohms": 18.670867570891325
+          },
+          "n_20": {
+            "nodes": [
+              "T014_C",
+              "T020_C"
+            ],
+            "effective_ohms": 18.824527570892105
+          }
+        }
+      }
+    ],
+    "interpretation": "Wider lower-via columns lower worst internal terminal-pair resistance by about0.88 to0.95ohm. Remaining worst internal paths are15.93 to18.82ohm. Static metal-only measurement does not predict waveform success."
+  },
+  "tree_rc_sensitivity": {
+    "run": 38376209270,
+    "source": "c50e554bc516e937f9faa5fcb3fc30c83ab07022",
+    "status": "LIVE_LAST_VERIFIED",
+    "actual_control_run": 38375733511,
+    "failed_preparation_run": 38375733511,
+    "failed_preparation": "Seven diagnostic preparations rejected added wire_cref port before simulation; all65unit/source-bit tests passed. Native composition root proves wire_cref is the appended shunt-C reference, not metal. Preserved failed captures.",
+    "repair": "Allow only exact appended wire_cref, require it to appear in capacitance only, reject R/device/body use or any other extra port, preserve every C/non-R line exactly. Added positive and corruption controls. Rerun only seven mutations; healthy actual control continues.",
+    "scope": "Artificial final-macro R sensitivity only. Preserve unmodified3889R2593C source and all original device/bit/phase/voltage limits. No physical adoption even if diagnostic gates pass."
   }
 }
