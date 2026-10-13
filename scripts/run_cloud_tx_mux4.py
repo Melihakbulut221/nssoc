@@ -145,6 +145,8 @@ def tree_plan(streams):
 
 
 def physical_spec_path(profile):
+    if profile == 'cascade16_kelvin_dense_wide':
+        return ROOT/'docs/evidence/pcie-cascade16-kelvin-dense-wide-composition-20261013.json'
     assert profile in ('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide')
     prefix={'baseline':'','wide_access':'wide-access-','supply_access':'supply-access-','power_trunks':'power-trunks-','power_trunks_vias':'power-vias-','kelvin_dense_wide':'kelvin-dense-wide-'}[profile]
     return ROOT/'docs/evidence'/('pcie-cascade14-'+prefix+'composition-20261013.json')
@@ -192,8 +194,14 @@ def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
     return destination/('mux54-wire01.spice' if mode=='physical_wire' else 'mux54-compact01.spice')
 
 
+def physical_prestage_circuit_profile(profile):
+    physical_spec_path(profile)  # Validate the explicit source/geometry binding.
+    return 'cascade16' if profile=='cascade16_kelvin_dense_wide' else 'cascade14'
+
+
 def physical_prestage(inputs, mode, profile='baseline'):
-    return physical_macro(inputs,mode,physical_spec_path(profile),'cascade14','physical-prestage')
+    return physical_macro(inputs,mode,physical_spec_path(profile),
+                          physical_prestage_circuit_profile(profile),'physical-prestage')
 
 
 def rename_physical_top(text, new_name):
@@ -457,7 +465,7 @@ def main():
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
     parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
-    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide'),default='baseline')
+    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','cascade16_kelvin_dense_wide'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
@@ -490,6 +498,7 @@ def main():
             physical_spec=physical_spec_path(args.physical_profile)
             counts=json.loads(physical_spec.read_text())['counts']
             result['physical_prestage_scope']=dict(mode=args.prestage,profile=args.physical_profile,instances=args.streams-2,
+                circuit_profile=physical_prestage_circuit_profile(args.physical_profile),
                 native_devices_per_instance=counts['devices'],substrate_contacts_per_instance=27,
                 metal_resistors_per_instance=counts['R'] if args.prestage=='physical_wire' else 0,
                 metal_capacitors_per_instance=counts['C'] if args.prestage=='physical_wire' else 0,

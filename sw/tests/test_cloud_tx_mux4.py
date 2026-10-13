@@ -490,3 +490,56 @@ XP0 X net1 VDD VDD sg13_lv_pmos
         assert {k:v for k,v in old['hbt'][name].items() if k != 'nx'} == {k:v for k,v in new['hbt'][name].items() if k != 'nx'}
     assert Counter(row['nx'] for name,row in new['hbt'].items() if name.startswith('xmux.')) == expected_nx
     assert [l for l in before.splitlines() if l.startswith('V')] == [l for l in after.splitlines() if l.startswith('V')]
+
+
+def test_cascade16_changes_only_two_native_output_pulldowns():
+    def devices(version):
+        text=(ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice').read_text()
+        return {line.split()[0]:line.split()[1:] for line in text.splitlines() if line.startswith('X')}
+    old, new=devices('v2'), devices('v3')
+    assert len(old)==len(new)==27 and set(old)==set(new)
+    assert {name for name in old if old[name]!=new[name]}=={'XFPR','XFNR'}
+    for name in old:
+        expected=[('l=16.0u' if value=='l=14.0u' else value) for value in old[name]]
+        assert new[name]==expected
+
+
+@pytest.mark.parametrize('reported_profile', ['cascade14','cascade16'])
+def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, reported_profile):
+    import hashlib
+    import io
+    import json
+    import shutil
+    import tarfile
+    requested='cascade16_kelvin_dense_wide'
+    assert mux4.physical_spec_path(requested).name=='pcie-cascade16-kelvin-dense-wide-composition-20261013.json'
+    assert mux4.physical_prestage_circuit_profile(requested)=='cascade16'
+    assert mux4.physical_prestage_circuit_profile('kelvin_dense_wide')=='cascade14'
+    with pytest.raises(AssertionError):
+        mux4.physical_prestage_circuit_profile('unproven_prestage')
+    model=(ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v3.spice').read_bytes()
+    outputs={'mux54-compact01.spice':hashlib.sha256(model).hexdigest()}
+    report=json.dumps(dict(circuit_profile=reported_profile,outputs=outputs,
+                           variant='critical_buses_kelvin_dense_wide')).encode()
+    archive=tmp_path/'source.tar.gz'
+    with tarfile.open(archive,'w:gz') as packed:
+        for name,raw in [('result.json',report),('mux54-compact01.spice',model)]:
+            info=tarfile.TarInfo('cloud-tx-layout-composition/'+name)
+            info.size=len(raw);packed.addfile(info,io.BytesIO(raw))
+    spec=tmp_path/'receipt.json'
+    spec.write_text(json.dumps(dict(
+        status='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT',
+        receipt=dict(url='unused',sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),bytes=archive.stat().st_size),
+        summary_sha256=hashlib.sha256(report).hexdigest(),outputs=outputs,
+        variant='critical_buses_kelvin_dense_wide')))
+    def selected_spec(profile):
+        assert profile==requested
+        return spec
+    monkeypatch.setattr(mux4,'physical_spec_path',selected_spec)
+    monkeypatch.setattr(mux4,'fetch',lambda url,digest,path:shutil.copyfile(archive,path))
+    if reported_profile!='cascade16':
+        with pytest.raises(AssertionError):
+            mux4.physical_prestage(tmp_path,'physical_compact',requested)
+    else:
+        bound=mux4.physical_prestage(tmp_path,'physical_compact',requested)
+        assert bound.read_bytes()==model

@@ -338,3 +338,14 @@ streams4,nominal andtemperature_voltage. Discover existingruns first.
 Cascade16 extraction **38401479870** passed3803R/2541C/13controls. Compose
 its exact newdevices next, then add an explicitcascade16prestage binding
 before combined loaded PVT. No adoption from any of these component gates.
+
+## Combined native circuit experiment
+
+Isolated localtail loaded runs **38402054648** nominal and **38402059863**
+hot/cold are live on **e0831791**; sourcechecks38402063326passed.
+Cascade16 composition **38402050497** passed54devices/3803R/2541C.
+The distinct prestage profile`cascade16_kelvin_dense_wide` binds the actual
+newcircuit; regression rejects a validlyhashed oldcascade14 report. Run
+matchedcompact/wire streams4 with final`v8_kelvin_local_tail`,nominal and
+temperature_voltage,discovering existingjobs first. All original bit/phase,
+1.8..2.05V CM anddevice gates remain unchanged. No component adoption yet.
