@@ -10,6 +10,17 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Low upper-metal composition ready for loaded validation
+
+Composition **38429607596** passed exact54devices/4043R/2664C; distinct receipt
+`docs/evidence/pcie-final-v8-kelvin-low-internal-composition-20261013.json`.
+Next isolate final `v8_kelvin_low_internal` against prior final local_supply:
+prestage `kelvin_supply_feed`, matched compact/wire, streams4, offset75,
+nominal and temperature_voltage. All original gates stay fixed. A separate
+DC study `profiles=final_low_internal` measures actual internal resistance;
+it cannot establish electrical acceptance. Discover exact existing runs first.
+Full PHY, main-chip routing and final setup/hold remain OPEN. Cloud-only.
+
 ## Low internal upper-metal RC complete
 
 Native extraction **38429186148** passed actual RC connectivity, geometry ownership,
