@@ -405,6 +405,7 @@ def test_physical_top_rename_rejects_ambiguous_or_recursive_models(text):
 
 
 def test_physical_final_profiles_use_distinct_receipt_files():
+    assert mux4.physical_spec_path('power_trunks_vias').name=='pcie-cascade14-power-vias-composition-20261013.json'
     assert mux4.physical_final_spec_path('power_trunks').name=='pcie-final-v5-composition-20261013.json'
     assert mux4.physical_final_spec_path('interleaved').name=='pcie-final-v5-interleaved-composition-20261013.json'
     assert mux4.physical_final_spec_path('kelvin_return').name=='pcie-final-v5-kelvin-composition-20261013.json'
