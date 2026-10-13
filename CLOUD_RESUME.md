@@ -10,6 +10,19 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 extraction complete; compose actual devices and new RC next
+
+Native extraction38447494040 passed actualRC graph audit and13corruption
+controls. Source b745624ce4daa2d56436eb119dd8c513dc499bee; summary asset
+637902845/SHA52c407fa0c65a97a84cf49fc3dfcbebd3846e721a1c4677c4126d50db8f0c054.
+Exact6276368byte extraction archive is now bound in composition registry.
+Discover the final_drive_v9/critical_buses_kelvin_low_critical composition
+run before dispatch; compose_only=true. Then register a distinct v9 model
+receipt and test matched compact/wire4:1 with cascade158/stiff65 across the
+unchanged nominal/hot/cold gates. No electrical adoption or RF qualification.
+Source/license/capture checks38447497764passed. Corrected32:1 run38441895491
+remains live; don't restart on a polling timeout. Local workspace stays empty.
+
 ## v9 native physical pass; next fresh RC
 
 Physical run38446225406 on172e2f117eaaa4015f9e347b2a0339d0732534de passed

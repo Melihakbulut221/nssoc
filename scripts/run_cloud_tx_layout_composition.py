@@ -17,7 +17,7 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--variant', required=True)
-    p.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
+    p.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9'), default='baseline')
     p.add_argument('--prepared-extraction', action='store_true',
                    help='Consume source-bound native extraction from this same hosted job')
     args = p.parse_args()
