@@ -8,6 +8,17 @@ on:
       - .github/workflows/tx-tree-physical-cloud.yml
       - docs/evidence/pcie-cascade14-composition-20261013.json
   workflow_dispatch:
+    inputs:
+      streams:
+        description: Tree size for the actual physical macro experiment
+        type: choice
+        options: ['4', '32', both]
+        default: both
+      physical_profile:
+        description: Exact source-bound physical composition
+        type: choice
+        options: [baseline, wide_access]
+        default: baseline
 permissions:
   contents: read
 concurrency:
@@ -20,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        streams: [4, 32]
+        streams: ${{ fromJSON(inputs.streams == '4' && '[4]' || inputs.streams == '32' && '[32]' || '[4,32]') }}
         prestage: [physical_compact, physical_wire]
         condition: [nominal]
         fault: [none]
@@ -45,7 +56,7 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage '${{ matrix.prestage }}' --frontend damped_strong --clock-bias native_res --final-drive double_taps_guard --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage '${{ matrix.prestage }}' --physical-profile '${{ inputs.physical_profile || 'baseline' }}' --frontend damped_strong --clock-bias native_res --final-drive double_taps_guard --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
