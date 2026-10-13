@@ -16,7 +16,11 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 FAILED (GRT-0116), with135native final overflow, after~2h45m. It was not a
 platform timeout. Exact failedODB/congestion report/guides are preserved in
 `cloud-local-optimize-buffers-route-failure-20261013.json`. Native marker/net
-probe **38392685463** is running; inspect it before changing route/placement.
+probe **38392685463** passed:107markers/135overflow,811involved nets.
+The largest remaining clusters touch EthernetRX SRAM banks4/5 (32/33markers).
+PCIe packet data flops also appear in endpoint paths. Existing placement
+repair excludes every clock-connected cell and binds an older coordinate
+diagnosis; do not widen its allowlist or reuse new coordinates blindly.
 Do not rerun the identical candidate or waive congestion. No finalSTA exists.
 
 v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
@@ -31,8 +35,9 @@ these are diagnostic proof, not acceptance. All failed captures remain.
 **Unchanged cascade14 prestage, new dense geometry:** physical **38392202181**
 passed nativeDRC/LVS/fault controls on **4a6a9a75**. Same19HBT/8R/27tap circuit;
 interleaved resistors, shortKelvin return and12-column/two-row via arrays.
-This targets measured upstream physical voltage loss. Fresh extraction comes
-next; discover the existing run before dispatching. Then bind its composition
+This targets measured upstream physical voltage loss. Native extraction
+**38392967695** passed; composition is next (discover the existing run).
+Then bind its composition
 and a distinct prestage profile in the loaded tree, keeping finalv8 unchanged.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;

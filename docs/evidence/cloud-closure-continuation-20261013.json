@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T11:50:04.044358+00:00",
+  "as_of": "2026-10-13T11:56:14.911271+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -9200,5 +9200,37 @@
     "adopted": false,
     "scope": "Terminal native global-route failure, not a timeout. Exact failed ODB, report and guides preserved. Placement invariants passed earlier; this does not establish routability or final STA.",
     "diagnosis_run": 38392685463
+  },
+  "cascade14_dense_extraction": {
+    "run": 38392967695,
+    "source_head": "ec6f9cfa5f6a70824f336a6e74338b3f5908f4bd",
+    "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38392967695-1-extract-cascade14-critical_buses_kelvin_dense_wide/tx-layout-extraction-cloud-cascade14-critical_buses_kelvin_dense_wide-38392967695-1.tar.gz",
+      "bytes": 6275961,
+      "sha256": "778d7091f71bb9fad008277566f43f0ae31f8ac107421eb60e0c43bfd2ac3747"
+    },
+    "summary_sha256": "b4e0afc977bded08ea88247a3fdc6893404ecec18986886adecd1d564e54870f",
+    "resistors": 3803,
+    "capacitors": 2541,
+    "qualified_pex": false,
+    "adopted": false
+  },
+  "local_optimize_buffers_congestion": {
+    "run": 38392685463,
+    "status": "PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE",
+    "summary_sha256": "962bf2b58b82799d346cb48a45a5af1d88fac6c10a2b582a2c41fc445000917f",
+    "marker_count": 107,
+    "report_overflow_sum": 135,
+    "adjacent_macro_counts": {
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem": 32,
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[5\\].u_mem": 33,
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[5\\].u_mem": 6,
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem": 10
+    },
+    "congested_nets": 811,
+    "source_odb_sha256": "105f477c9bac12a739db3baf36a5b32ee97b3dae4d89b0ba7ddf533dc2243b3e",
+    "source_report_sha256": "0fc33514db73f313618c97fe877bbbc2e5d8c72dd6d21f479fd66239e59c55d7",
+    "next": "Inspect exact811net endpoint graph and107markers; packet data flops are present among remaining paths, but existing repair explicitly excludes every clock-connected cell and uses an older frozen coordinate diagnosis. Do not simply broaden the allowlist or feed the new coordinates to the old baseline assertions. Design a source-bound repair preserving clock cells/logical connectivity and recheck actual timing."
   }
 }
