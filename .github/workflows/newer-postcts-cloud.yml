@@ -11,6 +11,11 @@ on:
       - docs/evidence/cloud-newer-postcts-input-20261013.json
   workflow_dispatch:
     inputs:
+      critical_nets_percentage:
+        description: Native timing-critical net preference on exact saved buffer placement
+        type: choice
+        options: ['0', '30']
+        default: '0'
       placement_profile:
         description: Source-bound local placement repair selection
         type: choice
@@ -58,7 +63,7 @@ jobs:
       - name: Reproduce exact newer postCTS then route all domains
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}'
+        run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}'
       - name: Preserve complete source-bound routing and failures
         if: always()
         env:

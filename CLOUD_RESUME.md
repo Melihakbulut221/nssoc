@@ -107,8 +107,14 @@ Metal2=4,Metal3=120,Metal4=47,Metal5=213,TopMetal1=25,TopMetal2=11.
 Previous local_optimize_buffers had135; endpoint movement regressed congestion
 and eth_rx setup estimate (+23.324ps to-4.524ps). Not adopted; not a timeout.
 Exact failedODB/report/archive hashes are in JSON local_data_endpoints_terminal.
-Native congestion diagnosis **38419533968** is active; compare
-actual endpoints and marker locations before choosing another route change.
+Native congestion diagnosis **38419533968** completed:151markers/420sum,
+1034involvednets versus107markers/135sum/811nets before. Worst new bottlenecks
+cluster onx2340um (maximum31overflow versus4before);427nets newlyinvolved.
+The moved-endpoint candidate is rejected. Next isolated routing trial uses
+exact prior buffer-only placementSHA660692b3..., native critical-net priority30.
+PDK capacities, placement, SDC and zero-overflow gate remain unchanged; source
+ODB hash mismatch aborts. This changes routing order preference, not acceptance.
+Reference: https://openroad.readthedocs.io/en/latest/main/src/grt/README.html#global-route
 
 Supply-feed loaded nominal/cold wire each still fail four selector VCE gates.
 Compact nominal/hot/cold pass. All available exact summaries are in JSON
