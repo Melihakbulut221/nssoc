@@ -10,6 +10,18 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 native physical pass; next fresh RC
+
+Physical run38446225406 on172e2f117eaaa4015f9e347b2a0339d0732534de passed
+560DRC categories/zero markers, strict54device hierarchical/flat LVS and
+allfive actual fault controls. Summary asset637882860 SHA
+9455f1c1bbeac5a5ba998e6b726074e90f62fb7acfb7ae67f27ca95a1731b9bb.
+Source/capture/license checks38446230359 also passed. Exact388377byte archive
+is bound under final_drive_v9/critical_buses_kelvin_low_critical in the native
+extraction registry. Discover its extractionrun before dispatch. Native RC,
+composition and unchanged loaded PVT must precede any electrical adoption.
+The new six-capture cascade158 receipt is committed; hot amplitude staysOPEN.
+
 ## Latest: hot interface repaired, new data-bank candidate pending native proof
 
 Cascade158 loaded runs38442809617/38442814441 completed. All six native
