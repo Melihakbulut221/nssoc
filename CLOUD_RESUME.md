@@ -10,6 +10,20 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Low collector-route composition ready for loaded validation
+
+Composition **38433905249** passed exact 54 devices / 4043 R / 2662 C.
+Distinct receipt:
+`docs/evidence/pcie-final-v8-kelvin-low-critical-composition-20261013.json`.
+Next isolate final `v8_kelvin_low_critical` versus `v8_kelvin_low_internal`:
+prestage `kelvin_supply_feed`, matched compact/wire, streams4, offset75,
+nominal and temperature_voltage. All original gates remain fixed. DC study
+`profiles=final_low_critical` measures the changed collector paths separately.
+Discover existing runs before dispatching. Main route38420407838/job115375929807
+is still live; GitHub refuses job-log download until completion, so no iteration
+progress is inferred from its status alone. Full PHY and final chip timing stay
+OPEN. All CAD, simulation and tests remain hosted; local workspace is empty.
+
 ## Collector-route native RC passed
 
 Extraction **38433417084** passed actual native RC connectivity, geometry ownership,
