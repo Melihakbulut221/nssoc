@@ -22,6 +22,11 @@ PCIe packet data flops also appear in endpoint paths. Existing placement
 repair excludes every clock-connected cell and binds an older coordinate
 diagnosis; do not widen its allowlist or reuse new coordinates blindly.
 Do not rerun the identical candidate or waive congestion. No finalSTA exists.
+New profile `local_data_endpoints` starts from the exact previous relocated
+ODB, verifies all failed-ODB positions/connectivity and replays previous STA.
+Its1821-cell source envelope includes227data DFFs; clock-output drivers,
+delay cells, macros and all unselected cells remain fixed. Native placement
+invariants, new STA and routing must pass; no acceptance yet.
 
 v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
 one selectorVCE is399.203137mV, below400mV. Quarter-step **38390326921** and

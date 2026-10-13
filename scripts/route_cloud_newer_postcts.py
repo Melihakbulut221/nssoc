@@ -48,7 +48,7 @@ def execute(script, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
-    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers'], default='none')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5'], default='baseline')
     args = parser.parse_args()
@@ -157,8 +157,40 @@ def main():
             result['ethernet_hold']=dict(evidence=case,exact_placement_timing_reproduced=measured)
             save()
         if args.placement_profile != 'none':
-            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-congestion-probe-38333836529-1.json',
-                  '1d19f4d2bdf24f865144b28c57060c3cfed96ac3d0a4a79b23ce23f12c0a027c',OUT/'endpoint-diagnosis.json')
+            if args.placement_profile == 'local_data_endpoints':
+                assert args.ethernet_hold_depth==2 and args.macro_routing_profile=='baseline'
+                evidence=json.loads((ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())
+                assert evidence['status']=='FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
+                packed=OUT/'previous-placement.tar.gz'
+                pin=evidence['receipt'];fetch(pin['url'],pin['sha256'],packed)
+                assert packed.stat().st_size==pin['bytes']
+                with tarfile.open(packed) as archive:
+                    raw=archive.extractfile('cloud-newer-postcts/result.json').read()
+                    assert hashlib.sha256(raw).hexdigest()==evidence['summary_sha256']
+                    previous=json.loads(raw)
+                    assert previous['status']=='FAIL_OR_ERROR'
+                    assert previous['placement_profile']=='local_optimize_buffers' and previous['ethernet_hold_depth']==2
+                    for local,member in [('previous-relocated.odb','relocated-placement.odb'),
+                                         ('previous-failed-global.odb','failed-global.odb')]:
+                        raw=archive.extractfile('cloud-newer-postcts/'+member).read()
+                        assert hashlib.sha256(raw).hexdigest()==evidence['failure_outputs'][member]
+                        (inputs/local).write_bytes(raw);protected[str(inputs/local)]=sha(inputs/local)
+                packed.unlink()
+                script=script.replace(str(placement_source),str(inputs/'previous-relocated.odb'))
+                placement_source=inputs/'previous-relocated.odb'
+                measured=parse_phases(execute(script,'reproduced-previous-placement'),'CORNER')
+                expected=previous['relocated_placement_timing']
+                assert set(measured)==set(expected)
+                for phase,row in measured.items():
+                    assert set(row['groups'])==set(expected[phase]['groups'])
+                    for group,value in row['groups'].items():
+                        assert abs(value['worst_slack_ns']-expected[phase]['groups'][group]['worst_slack_ns'])<=1e-6,(phase,group)
+                result['incremental_source']=dict(failed_run=evidence['run'], source_odb_sha256=sha(placement_source), exact_placement_timing_reproduced=measured)
+                fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38392685463-1-congestion-local_optimize_buffers/newer-congestion-probe-38392685463-1.json',
+                      '962bf2b58b82799d346cb48a45a5af1d88fac6c10a2b582a2c41fc445000917f',OUT/'endpoint-diagnosis.json')
+            else:
+                fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-congestion-probe-38333836529-1.json',
+                      '1d19f4d2bdf24f865144b28c57060c3cfed96ac3d0a4a79b23ce23f12c0a027c',OUT/'endpoint-diagnosis.json')
             def native_placement(mode):
                 with (OUT/f'placement-{mode}.log').open('w') as log:
                     code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
@@ -168,7 +200,7 @@ def main():
                         stdout=log,stderr=subprocess.STDOUT)
                 assert code==0,(mode,code,(OUT/f'placement-{mode}.log').read_text()[-6000:])
             native_placement('prepare')
-            placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile in ('local_optimize','local_optimize_buffers')
+            placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile in ('local_optimize','local_optimize_buffers','local_data_endpoints')
                                else 'detailed_placement -max_displacement {200 100}')
             execute(f'read_db {{{OUT/"proposed-placement.odb"}}}\n'
                     f'set_thread_count 2\n{placement_command}\n'

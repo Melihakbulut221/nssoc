@@ -4,7 +4,8 @@
 """Native placement-only experiment for source-bound SRAM-channel congestion.
 
 Run by OpenROAD Python on hosted runners. Selected combinational endpoint
-cells move out of SRAM channels; every other cell is temporarily fixed. Exact
+cells, and explicitly selected data flip-flops in the incremental profile,
+may move near SRAM channels; every other cell is temporarily fixed. Exact
 connectivity, masters and all unselected positions are checked after native
 legalization. Nothing is an adopted design or timing/route signoff.
 """
@@ -68,29 +69,52 @@ def prepare():
         assert case['logic']['status']=='PASS within scope' and case['inversion_control']=='EXPECTED_FUNCTIONAL_CHANGE_REJECTED'
         source=OUT/'inputs/ethernet-hold.odb';source_sha=case['candidate_odb_sha256']
         assert sha(source)==source_sha
-    path=OUT/'endpoint-diagnosis.json';assert sha(path)==DIAGNOSIS_SHA
-    d=json.loads(path.read_text());assert d['source_odb_sha256']==SOURCE_SHA
+    requested_profile=os.environ['NSSOC_PLACEMENT_PROFILE']
+    incremental=requested_profile=='local_data_endpoints'
+    diagnosis_sha=DIAGNOSIS_SHA
+    diagnosis_odb_sha=SOURCE_SHA
+    if incremental:
+        assert depth==2, 'Incremental source includes the proven Ethernet hold ECO'
+        evidence=json.loads(Path('docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())
+        failure_outputs=evidence['failure_outputs']
+        source=OUT/'inputs/previous-relocated.odb'
+        source_sha=failure_outputs['relocated-placement.odb']
+        assert sha(source)==source_sha
+        diagnosis_odb_sha=failure_outputs['failed-global.odb']
+        diagnosis_sha='962bf2b58b82799d346cb48a45a5af1d88fac6c10a2b582a2c41fc445000917f'
+        failed_path=OUT/'inputs/previous-failed-global.odb'
+        assert sha(failed_path)==diagnosis_odb_sha
+        failed_db,failed_block=load(failed_path)
+        candidate_db,candidate_block=load(source)
+        assert signature(candidate_block)==signature(failed_block)
+        failed_instances={i.getName():i for i in failed_block.getInsts()}
+        assert all(position(i)==position(failed_instances[i.getName()]) for i in candidate_block.getInsts()), 'Failed-route diagnosis does not match resumed placement'
+        hold_db,hold_block=load(OUT/'inputs/ethernet-hold.odb')
+        assert signature(candidate_block)==signature(hold_block), 'Previous placement changed the proven hold-ECO connectivity'
+    path=OUT/'endpoint-diagnosis.json';assert sha(path)==diagnosis_sha
+    d=json.loads(path.read_text());assert d['source_odb_sha256']==diagnosis_odb_sha
     db,block=load(source);scale=block.getDbUnitsPerMicron()
     instances={i.getName():i for i in block.getInsts()}
     seen={p['instance']:p for net in d['all_congested_net_endpoints'].values() for p in net['terminals']}
     selected={}
     eligible_before_clock=[]
-    requested_profile=os.environ['NSSOC_PLACEMENT_PROFILE']
-    include_data_buffers=requested_profile=='local_optimize_buffers'
+    include_data_buffers=requested_profile in ('local_optimize_buffers','local_data_endpoints')
     for name,p in seen.items():
         inst=instances[name];b=inst.getBBox()
         actual=[v/scale for v in (b.xMin(),b.yMin(),b.xMax(),b.yMax())]
         assert actual==p['bbox_um'] and inst.getMaster().getName()==p['master']
-        eligible=name.startswith('$abc$') or (include_data_buffers and
+        data_flop=incremental and p['master']=='sg13g2_dfrbpq_1'
+        eligible=name.startswith('$abc$') or data_flop or (include_data_buffers and
             p['master'].startswith(('sg13g2_buf_','sg13g2_inv_')))
         upper_y=1750 if include_data_buffers else 1700
-        if not(eligible and not p['macro'] and actual[0]>=2340 and 1180<=actual[1]<=upper_y):
+        in_x=(2280<=actual[0]<=3300) if incremental else actual[0]>=2340
+        if not(eligible and not p['macro'] and in_x and 1180<=actual[1]<=upper_y):
             continue
         eligible_before_clock.append(name)
-        if include_data_buffers and any(t.getNet() and
+        if include_data_buffers and not data_flop and any(t.getNet() and
                (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
                for t in inst.getITerms()):
-            continue  # Preserve every clock-connected cell, including clock buffers.
+            continue  # Only explicit data flops may have clock input connections.
         # Guard against mapped combinational clock gating despite its ABC name.
         if any(str(t.getIoType())=='OUTPUT' and t.getNet() and
                (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
@@ -100,19 +124,23 @@ def prepare():
         selected[name]=inst
     # Exact spatial/master envelope from the frozen diagnosis, before native
     # clock-connectivity exclusion. The old932bound described ABC-only cells.
-    expected_envelope=1563 if include_data_buffers else 932
+    expected_envelope=1821 if incremental else (1563 if include_data_buffers else 932)
     assert len(eligible_before_clock)==expected_envelope
     assert 0<len(selected)<=expected_envelope
     before=dict(connectivity_sha256=signature(block),source_odb_sha256=source_sha,original_odb_sha256=SOURCE_SHA,
         selected=sorted(selected),eligible_before_clock_count=len(eligible_before_clock),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
+        diagnosis_sha256=diagnosis_sha, diagnosis_odb_sha256=diagnosis_odb_sha,
+        selected_data_flops=[n for n,i in selected.items() if i.getMaster().getName()=='sg13g2_dfrbpq_1'],
         instances={n:dict(position=position(i),status=str(i.getPlacementStatus())) for n,i in instances.items()})
-    profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize','local_optimize_buffers')
-    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.),'local_optimize_buffers':(0.,0.)}[profile]
+    if incremental:
+        assert len(before['selected_data_flops'])==227, 'Changed source-bound data-flop envelope'
+    profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints')
+    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.),'local_optimize_buffers':(0.,0.),'local_data_endpoints':(0.,0.)}[profile]
     for name,inst in instances.items():
         if name not in selected:
             if str(inst.getPlacementStatus())=='PLACED':inst.setPlacementStatus('FIRM')
         else:
-            if profile in ('local_optimize','local_optimize_buffers'):
+            if profile in ('local_optimize','local_optimize_buffers','local_data_endpoints'):
                 continue  # Native DPO starts from the exact original positions.
             x,y=inst.getLocation()
             fraction=(x/scale-2340.)/(3266.4-2340.)
@@ -156,6 +184,9 @@ def verify():
         profile=before['profile'],source_odb_sha256=before['source_odb_sha256'],
         original_odb_sha256=before.get('original_odb_sha256',SOURCE_SHA),output_odb_sha256=sha(path),
         connectivity_sha256=before['connectivity_sha256'],instances=len(actual),
+        diagnosis_sha256=before['diagnosis_sha256'], diagnosis_odb_sha256=before['diagnosis_odb_sha256'],
+        selected_data_flop_count=len(before['selected_data_flops']),
+        changed_data_flop_count=sum(n in changed for n in before['selected_data_flops']),
         selected_count=len(before['selected']),eligible_before_clock_count=before['eligible_before_clock_count'],changed_count=len(changed),changed=changed,
         native_fault_controls=['unselected_cell_displacement_rejected','disconnected_cell_pin_rejected'])
     (OUT/'placement-repair.json').write_text(json.dumps(report,indent=2)+'\n')
