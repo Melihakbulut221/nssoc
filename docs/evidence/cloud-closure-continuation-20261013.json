@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T09:39:27.243663+00:00",
+  "as_of": "2026-10-13T09:42:18.885717+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "e1903ed499344dc6025d9fde0b873d85bee1e7f2",
+  "head": "a7cff14c7a9741c35602bdc5a8fa242525f46ccf",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -5449,11 +5449,92 @@
   "signal_trunk_physical": {
     "run": 38377693620,
     "source": "e1903ed499344dc6025d9fde0b873d85bee1e7f2",
-    "status": "in_progress",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "variant": "critical_buses_kelvin_signal_trunks",
     "change": "ActualTM1trunkwidth1.64to3.0um only on qn,qp,ea,eb,tail. Inherit wider2rowvia baseline. Keep4.8umlanes, devices, viaarrays, sourcebits, limits andallPDKcoefficients unchanged.",
     "source_inspection_run": 38377234347,
     "source_generator_sha256": "948900be1ce02b72852a567dde3b9858e926cce81986538932308259c48e6aba",
-    "accepted": false
+    "accepted": false,
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38377693620-1-layout-final_drive_v5-critical_buses_kelvin_signal_trunks/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_signal_trunks-38377693620-1.tar.gz",
+      "bytes": 377295,
+      "sha256": "df218e73b83b4f7de13a1c9dffbbe73ad1337a994b7158f1410c57af00da987e"
+    },
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38377693620-1-layout-final_drive_v5-critical_buses_kelvin_signal_trunks/tx-layout-repair-cloud-final_drive_v5-critical_buses_kelvin_signal_trunks-38377693620-1.summary.json",
+    "summary_sha256": "6efdf6fc3a5f612c904384c3e2786801ff09256446cfe067a1ceac6d53c9acd5",
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+      "log_sha256": "0bd2b6b9df0e0c60f431ca244550588fbdb33b458c2d944e3ee1e9c9bc075235"
+    },
+    "lvs": {
+      "lvs": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V5_LAYOUT_V1",
+            "status": "Match",
+            "layout_devices_recursive": 54,
+            "schematic_devices_recursive": 54
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+            "bytes": 419575,
+            "sha256": "8fb970c104d43d67577f1ae2059037568066942e7d216e2d8ffd3fa76c762a00"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+            "bytes": 37173,
+            "sha256": "9e030e1b2d52cc6de8b6a8f7fd9ce8d9547f70b47a726d2dddbb5a57d8b82bad"
+          }
+        }
+      },
+      "lvs_flat": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V5_LAYOUT_V1",
+            "status": "Match",
+            "layout_devices_recursive": 54,
+            "schematic_devices_recursive": 54
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb": {
+            "bytes": 398109,
+            "sha256": "8b0cdb0bedc51f9fb81df50ae61bf370b4851ab30145b664054b724bccc5839a"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log": {
+            "bytes": 37171,
+            "sha256": "9a077a67aca279bfab3125b89c1a1f057ad2b6ad94effffcc78a65a660b051ec"
+          }
+        }
+      }
+    },
+    "faults": {
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   }
 }
