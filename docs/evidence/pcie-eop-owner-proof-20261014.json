@@ -180,5 +180,234 @@
     "Region equivalence and five complete buffered port tests, not whole SoC formal proof",
     "Final setup/hold not established",
     "No production adoption before mapped/physical timing comparison"
-  ]
+  ],
+  "paired_mapping": {
+    "run": 38477438440,
+    "source_commit": "ab8a983b3453267323cf41dcdfb392f77b8747bc",
+    "decision": "REJECT_FOR_TIMING_ADOPTION",
+    "adopted": false,
+    "cases": [
+      {
+        "profile": "physical_idle_credit",
+        "assets": [
+          {
+            "id": 638436550,
+            "name": "ack-map-physical_idle_credit-38477438440-1.json",
+            "size": 45541,
+            "digest": "sha256:88123ebef38b77501a0f7e47672e18f5627aa1ea44ed76abd43c7b9639419ff4"
+          },
+          {
+            "id": 638436271,
+            "name": "ack-map-physical_idle_credit-38477438440-1.tar.gz",
+            "size": 16843327,
+            "digest": "sha256:46a51d24ef7d43c969e7496bd53e9b99301010405d1667c2de364b499f068db1"
+          },
+          {
+            "id": 638436431,
+            "name": "ack-map-physical_idle_credit-38477438440-1.tar.gz.sha256",
+            "size": 116,
+            "digest": "sha256:49410ab2c53604a6f66df59a37f407ae351d9704fd79d43fadd88266f53857a6"
+          }
+        ],
+        "cells": 79578,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "native_log_sha256": "935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc",
+        "minimum_reported_slack_ns": {
+          "slow_max": {
+            "asynchronous": 1.232324,
+            "path delay": 2.505196,
+            "clk_i": 1.251946,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.704158,
+            "eth_tx_clk_i": 1.678853,
+            "pcie_clk_i": -1.101756
+          },
+          "slow_min": {
+            "asynchronous": 0.36976,
+            "clk_i": -0.439619,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.469247,
+            "eth_tx_clk_i": -0.409497,
+            "pcie_clk_i": 0.057926
+          },
+          "typical_max": {
+            "asynchronous": 1.872434,
+            "path delay": 2.754967,
+            "clk_i": 7.978282,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.179499,
+            "eth_tx_clk_i": 4.162005,
+            "pcie_clk_i": 0.407691
+          },
+          "typical_min": {
+            "asynchronous": 0.147445,
+            "clk_i": -0.387146,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.36806,
+            "eth_tx_clk_i": -0.36254,
+            "pcie_clk_i": -0.04421
+          },
+          "fast_max": {
+            "asynchronous": 2.232436,
+            "path delay": 2.897573,
+            "clk_i": 12.004487,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.507354,
+            "eth_tx_clk_i": 5.492982,
+            "pcie_clk_i": 1.265895
+          },
+          "fast_min": {
+            "asynchronous": 0.01996,
+            "clk_i": -0.367809,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.352538,
+            "eth_tx_clk_i": -0.351487,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "pcie_slow_paths": [
+          {
+            "start": "Startpoint: pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1165056",
+            "slack_ns": -1.101756
+          },
+          {
+            "start": "Startpoint: pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1165055",
+            "slack_ns": -1.101728
+          },
+          {
+            "start": "Startpoint: pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1165052",
+            "slack_ns": -1.101649
+          }
+        ]
+      },
+      {
+        "profile": "physical_idle_credit_eop",
+        "assets": [
+          {
+            "id": 638432082,
+            "name": "ack-map-physical_idle_credit_eop-38477438440-1.json",
+            "size": 46600,
+            "digest": "sha256:86dd9e3084b8ce2522f008f799cfbbdb7ccd4f0c568420fac8a909c8433cefaf"
+          },
+          {
+            "id": 638431964,
+            "name": "ack-map-physical_idle_credit_eop-38477438440-1.tar.gz",
+            "size": 16864424,
+            "digest": "sha256:8ec75dc649f9dd38db3985b56d1e4fe96363595494194fe2a868eebf3f380dbc"
+          },
+          {
+            "id": 638432030,
+            "name": "ack-map-physical_idle_credit_eop-38477438440-1.tar.gz.sha256",
+            "size": 120,
+            "digest": "sha256:fc0aed224813f188470ce499c58b014e9f48b22bb41da7425fa3e9b2b6002fe9"
+          }
+        ],
+        "cells": 79496,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "native_log_sha256": "95ba79a839ad803762e598be045345f6f0ea4c10e6812b987d90ec28227b37af",
+        "minimum_reported_slack_ns": {
+          "slow_max": {
+            "asynchronous": 1.225499,
+            "path delay": 2.505196,
+            "clk_i": 0.649932,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.702652,
+            "eth_tx_clk_i": 1.671106,
+            "pcie_clk_i": -1.525248
+          },
+          "slow_min": {
+            "asynchronous": 0.35614,
+            "clk_i": -0.437542,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.465004,
+            "eth_tx_clk_i": -0.408473,
+            "pcie_clk_i": 0.041545
+          },
+          "typical_max": {
+            "asynchronous": 1.867117,
+            "path delay": 2.754967,
+            "clk_i": 7.620631,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.178692,
+            "eth_tx_clk_i": 4.157496,
+            "pcie_clk_i": 0.259563
+          },
+          "typical_min": {
+            "asynchronous": 0.139795,
+            "clk_i": -0.380423,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.373261,
+            "eth_tx_clk_i": -0.362514,
+            "pcie_clk_i": -0.04421
+          },
+          "fast_max": {
+            "asynchronous": 2.229656,
+            "path delay": 2.897573,
+            "clk_i": 11.75797,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.507247,
+            "eth_tx_clk_i": 5.49089,
+            "pcie_clk_i": 1.174643
+          },
+          "fast_min": {
+            "asynchronous": 0.014209,
+            "clk_i": -0.366974,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.35716,
+            "eth_tx_clk_i": -0.349577,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "pcie_slow_paths": [
+          {
+            "start": "Startpoint: $auto$ff.cc:337:slice$1167398",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1295445",
+            "slack_ns": -1.525248
+          },
+          {
+            "start": "Startpoint: $auto$ff.cc:337:slice$1167398",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1295447",
+            "slack_ns": -1.524622
+          },
+          {
+            "start": "Startpoint: $auto$ff.cc:337:slice$1167398",
+            "end": "Endpoint: $auto$ff.cc:337:slice$1295448",
+            "slack_ns": -1.501993
+          }
+        ]
+      }
+    ],
+    "pcie_slow_setup_delta_ns": -0.423492,
+    "cpu_slow_setup_delta_ns": -0.602014,
+    "scope": "Same physical RTL recipe and20vendorSRAMs, original clocks, paired three-corner unplaced screening. Not routed setup/hold.",
+    "critical_candidate_path": {
+      "start": "u_pcie.flow.packets.ack_sequence[0]",
+      "end": "u_pcie.flow.packets.retry.timer[6]",
+      "start_cell": "$auto$ff.cc:337:slice$1167398",
+      "end_cell": "$auto$ff.cc:337:slice$1295445",
+      "arrival_ns": 5.092454,
+      "required_ns": 3.567206,
+      "slack_ns": -1.525248
+    }
+  },
+  "next_digital_investigation": {
+    "status": "PROSPECTIVE_NOT_IMPLEMENTED_OR_PROVED",
+    "distinction": "Prior12bit ACK-delta lookahead run38302150853 worsened slow PCIe143.555ps. Do not repeat or adopt that rejected expression.",
+    "hypothesis": "Compute bounded ACK-window membership directly from low-CW subtraction, low borrow, and high-page equality; avoid a full12bit delta followed by a comparator in current_ack_allowed. Preserve the original full delta for retirement counts and stale detection unless separately proved. Replace delta!=0 with direct sequence inequality only after all-input identity proof.",
+    "algebra": "For CW=clog2(DEPTH+1): low_diff={0,ack[CW-1:0]}-{0,base[CW-1:0]}; allowed=(low_diff[CW] ? ack[11:CW]==((base[11:CW]+1) truncated to12-CW bits) : ack[11:CW]==base[11:CW]) && low_diff[CW-1:0]<=sent_count. sent_count is CW bits, including all invalid-state encodings.",
+    "gates": [
+      "Source-bound all-input SAT identity including sequence wrap and bad carry control",
+      "Whole physical replay output equivalence with explicit clock/reset and complete replay/reliable port tests",
+      "Paired same-source mapping on non-EOP baseline; do not stack a timing-rejected EOP candidate blindly"
+    ]
+  }
 }
