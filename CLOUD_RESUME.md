@@ -486,3 +486,28 @@ and compare all clockgroups/corners, not only the target PCIe setup.
 
 WiderM3 wire jobs38471108761/38471122722 remain active at last readback;
 compact jobs ended but electrical summary still requires review.
+
+
+## Native132overflow diagnosis and controlled grid comparison
+
+Native probe38471402795 passed:105actual markers sum132overflow, all
+7.2um square gcells. Summaryasset638313529 SHA ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b.
+Metal5 final layer overflow97; marker report uses layer '-' and must not
+be relabeled as a unique metal layer. SRAM-region hotspots remain.
+
+Next registered newer-postcts-cloud inputgrid_profile=half_xy,
+routing_seed=13,placement_profile=local_optimize_buffers,ethernet_hold_depth=2,
+macro_routing_profile=baseline,critical_nets_percentage=0.
+Only grid origin changes3.6um peraxis relative to terminal seed13 run.
+Exact same placement SHA660692b3..., SDC, LEF OBS, RC and reduction settings.
+New native per-edge capacities follow shiftedpartition; no artificial increase.
+Every baseline diagnosis marker and savedODB/report hash is bound first.
+Requires zero globaloverflow, detailedrouting and actual extracted STA later.
+OpenROAD documents grid_origin units as DBU:
+https://openroad.readthedocs.io/en/latest/main/src/grt/README.html
+
+Credit verdict proof/control run38471835755 is active onea1a231d...;
+source/licensechecks already passed. Do not duplicate or adopt prematurely.
+WiderM3 compact nominal/cold/hot all component_screen_passed=true,
+minimum original-oracle margins281.361/272.648/229.882mV respectively.
+Three physical_wire captures stillrunning; no newphysicalacceptance.

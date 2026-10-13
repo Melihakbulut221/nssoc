@@ -58,11 +58,15 @@ def main():
         assert args.critical_nets_percentage == 0
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
-        assert args.grid_profile == 'baseline'
     if args.critical_nets_percentage:
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
         assert args.grid_profile == 'baseline'
+
+    if args.grid_profile != 'baseline':
+        assert args.routing_seed == 13 and args.critical_nets_percentage == 0
+        assert args.placement_profile == 'local_optimize_buffers'
+        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
 
     # The actual failed report has7.2um gcells. Half-cell offsets change only
     # partition alignment, never placement, routing capacity or physical rules.
@@ -242,6 +246,25 @@ def main():
             result['routing_order_source' if args.routing_seed else 'routing_priority_source'] = dict(run=evidence['run'],
                 placement_sha256=expected, source_evidence_sha256=sha(ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'),
                 scope=('Only native net ordering seed changes; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Only native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, capacity adjustment and zero-overflow gate. Requires actual routing and all-corner timing.')
+            save()
+        if args.grid_profile != 'baseline':
+            evidence_path=OUT/'seed13-congestion.json'
+            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471402795-1-congestion-seed13_buffers/newer-congestion-probe-38471402795-1.json',
+                  'ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b',evidence_path)
+            diagnosis=json.loads(evidence_path.read_text())
+            assert diagnosis['status']=='PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE'
+            source=json.loads((ROOT/'docs/evidence/cloud-seed13-buffers-route-failure-20261014.json').read_text())
+            assert diagnosis['source_odb_sha256']==source['failure_outputs']['failed-global.odb']
+            assert diagnosis['source_report_sha256']==source['failure_outputs']['congestion.rpt']
+            assert diagnosis['marker_count']==105 and diagnosis['report_overflow_sum']==132
+            for marker in diagnosis['markers']:
+                x0,y0,x1,y1=marker['bbox_um']
+                assert abs(x1-x0-7.2)<1e-6 and abs(y1-y0-7.2)<1e-6
+            assert sha(OUT/'relocated-placement.odb')==source['failure_outputs']['relocated-placement.odb']
+            result['grid_comparison']=dict(baseline_run=source['run'],
+                diagnosis_sha256=sha(evidence_path),native_gcell_um=7.2,
+                origin_um=origin_um,
+                scope='Only grid origin differs from seed13. Same exact placement, SDC, LEF obstructions, RC and layer resource-reduction settings. Native per-edge capacities are recomputed on the shifted partition, never artificially increased. No congestion waiver; fresh route and all-corner timing required.')
             save()
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]

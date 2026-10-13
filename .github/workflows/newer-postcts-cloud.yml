@@ -11,6 +11,11 @@ on:
       - docs/evidence/cloud-newer-postcts-input-20261013.json
   workflow_dispatch:
     inputs:
+      grid_profile:
+        description: Exact seed13 placement with native half-cell grid-origin comparison
+        type: choice
+        options: [baseline, half_x, half_y, half_xy]
+        default: baseline
       routing_seed:
         description: Native net ordering only; capacity perturbation remains zero
         type: choice
@@ -68,7 +73,7 @@ jobs:
       - name: Reproduce exact newer postCTS then route all domains
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}'
+        run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}' --grid-profile '${{ inputs.grid_profile || 'baseline' }}'
       - name: Preserve complete source-bound routing and failures
         if: always()
         env:
