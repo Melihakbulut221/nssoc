@@ -102,8 +102,11 @@ The407594byte physical archiveSHA8c389ea1e016eb090f2d3c760aebc53731ea7cdb10cf42a
 is bound for fresh native RC extraction **38421789099** on5ebf5c2b.
 Physical report confirms560DRC categories/zero markers andstrict54device
 hierarchical/flatLVS plusfivefaultcontrols. Electrical acceptance remains unproven.
-Next: inspect that exact extraction andits13corruptioncontrols; onlythenbind
-its archive fornativecomposition andmatched loadedPVT. Do not repeat layout.
+Native extraction38421789099passed:54devices,4233R/2742C,112geometryprobes,
+all13corruptioncontrols. SummarySHAacb026e1b983eaa0765e80600137e789f02fffe9d646e3a0d87528cefc4364b8.
+Exact6307738byte archiveSHAfdc429e0d10f8f51657d07bd0f1e400f2c588215cd1f6621458a910475b804c4
+is nowbound fornativecomposition; next matchedloadedPVT requires its output.
+Body/well resistance andRF/point-attachment qualification remain open.
 Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
