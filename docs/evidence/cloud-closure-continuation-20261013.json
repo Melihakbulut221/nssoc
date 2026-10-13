@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T08:57:38.396790+00:00",
+  "as_of": "2026-10-13T09:14:56.993638+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
-  "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "b9091be1ef86df1269a822c41304f3e7f9e7af57",
+  "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
+  "head": "e77c10388487d0eab9d9e3f3f607b5c6af300e37",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect live loaded-tree38372656723 for dense_wide actualfinal3889R2593C pluspower_trunks_viasprestages. Preserve compact/wire captures and everyoriginalsignal/device/interface gate. No electricaladoption from physical/modelpasses.",
+    "Dense-wide loaded-tree38372656723 completed: compactPASS; actualwireFAIL with0wrong signs,127early samples below100mV (minimum14.320mV),4minimum-VCE failures. Use source-bound per-conductor resistance and actual waveform diagnosis to identify next physical repair; artificial RC mutations are diagnosis only. Do not repeat unchanged or move sample phases.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -3953,9 +3953,229 @@
   "dense_wide_loaded_tree": {
     "run": 38372656723,
     "source_head": "b9091be1ef86df1269a822c41304f3e7f9e7af57",
-    "status": "LIVE_LAST_VERIFIED",
+    "status": "COMPLETE_COMPACT_PASS_WIRE_REJECTED",
     "prestage_profile": "power_trunks_vias",
     "final_profile": "kelvin_dense_wide",
-    "scope": "Matched compact and actual3889R2593C final-macro waveforms; original256bits and fixed0.3/0.5/0.7UI gates. No acceptance until returnedfullreview."
+    "scope": "Component nominal study only. Zero wrong signs, but127 early samples below100mV and4 HBT minimum-VCE failures reject actual wire candidate. Original source bits, phases and limits unchanged; no full PHY or chip acceptance.",
+    "cases": [
+      {
+        "mode": "physical_compact",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38372656723-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38372656723-1.summary.json",
+        "summary_sha256": "1d2fc628217a8f2317d76429def5bd8bf4fca7c85f9a9575fdf72aeaf6d9c771",
+        "summary_bytes": 59779,
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": true,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2807937878036999,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2807937878036999,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2808171176485712,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.28191128959112355,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2676677685524116,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8902927344237777,
+              1.898022233756252
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2369519812305254,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9134611766510718,
+              1.938079424730168
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true,
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "4780eea670136c6f5e46c485013cc1f80603b18c669770886035e84c357c9fc8"
+        },
+        "physical_final_scope": {
+          "mode": "physical_compact",
+          "profile": "kelvin_dense_wide",
+          "instances": 1,
+          "source": "docs/evidence/pcie-final-v5-kelvin-dense-wide-composition-20261013.json",
+          "source_sha256": "17f1d70c502961688d1b08bf6e5d82e0f5b3520eac474e8f065589ec5ed0103d",
+          "original_model_sha256": "50485a279c6cc30ea3c2eafbce1412cf13a835b37ca328459ac3c52e81ddde19",
+          "namespaced_model_sha256": "33ec5379f3950612f51197572c7c40d88ae075451992a01a82f9575d0ea2334d",
+          "native_devices": 54,
+          "substrate_contacts": 27,
+          "metal_resistors": 0,
+          "metal_capacitors": 0,
+          "intermacro_connections_ideal": true,
+          "assembled_tree_gds": false,
+          "qualified_substrate_resistance": false,
+          "qualified_rf_distribution": false
+        }
+      },
+      {
+        "mode": "physical_wire",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38372656723-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38372656723-1.summary.json",
+        "summary_sha256": "affe7d6f912a36caa218523887ceb8c4beaae724334deeba75c637f2e8f96964",
+        "summary_bytes": 61061,
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.014320226062285224,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 127,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.014320226062285224,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 127
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2690476667596835,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27409895086808356,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2712598186209081,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8942239655263584,
+              1.898145571771656
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1613196419645173,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8073119541110556,
+              1.8739116330345493
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.39213148175147994,
+            "max_post_vce_v": 0.809776226722602,
+            "max_whole_abs_vce_v": 0.8198867240244424,
+            "max_whole_abs_vbe_v": 0.8580071314053275,
+            "max_whole_abs_ic_per_emitter_a": 0.0006116942761815349,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.3881653523607811,
+            "max_post_vce_v": 0.807108994818872,
+            "max_whole_abs_vce_v": 0.807108994818872,
+            "max_whole_abs_vbe_v": 0.8613996925817864,
+            "max_whole_abs_ic_per_emitter_a": 0.0006522777802875188,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.39302198415128653,
+            "max_post_vce_v": 0.8098200622763521,
+            "max_whole_abs_vce_v": 0.8198944669333389,
+            "max_whole_abs_vbe_v": 0.8585265379481621,
+            "max_whole_abs_ic_per_emitter_a": 0.0006181998441704389,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.3873166747732135,
+            "max_post_vce_v": 0.807219719979416,
+            "max_whole_abs_vce_v": 0.807219719979416,
+            "max_whole_abs_vbe_v": 0.8610714593182286,
+            "max_whole_abs_ic_per_emitter_a": 0.0006480059089632866,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "all_engineering_gates_passed": false,
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "284e516d40882a291e314ce99be8778886228fecdf5350f8755bb9d82146b521"
+        },
+        "physical_final_scope": {
+          "mode": "physical_wire",
+          "profile": "kelvin_dense_wide",
+          "instances": 1,
+          "source": "docs/evidence/pcie-final-v5-kelvin-dense-wide-composition-20261013.json",
+          "source_sha256": "17f1d70c502961688d1b08bf6e5d82e0f5b3520eac474e8f065589ec5ed0103d",
+          "original_model_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "namespaced_model_sha256": "866c9a9d15298c3be1b3f5b4af770564632413f88caa45c26c6d64f2dcd6ca3e",
+          "native_devices": 54,
+          "substrate_contacts": 27,
+          "metal_resistors": 3889,
+          "metal_capacitors": 2593,
+          "intermacro_connections_ideal": true,
+          "assembled_tree_gds": false,
+          "qualified_substrate_resistance": false,
+          "qualified_rf_distribution": false
+        }
+      }
+    ],
+    "accepted": false
+  },
+  "local_cleanup_last_verification": {
+    "as_of": "2026-10-13T09:14:56.993638+00:00",
+    "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+    "workspace_entries": [],
+    "nssoc_temp_entries": {
+      "/tmp": [],
+      "/dev/shm": []
+    },
+    "retirement_receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
+    "retirement_status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
+    "local_services": "All four NSSOC transfer/retirement services verified inactive."
   }
 }

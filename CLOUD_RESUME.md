@@ -94,8 +94,13 @@ assets for large results. Do not download bulk CAD results onto this computer.
 
 - Wider two-row via geometry: physical 38371051654, native RC 38371728150
   (3889 R / 2593 C) and exact 54-device composition 38372215192 passed.
-  Loaded-tree comparison **38372656723** is live at this checkpoint; inspect
-  its actual compact/wire review before drawing any electrical conclusion.
+  Loaded-tree comparison **38372656723** completed: compact passed; actual
+  wire candidate rejected. There are zero wrong signs, but **127 early samples
+  below 100 mV** (minimum **14.320 mV**) and **four HBT minimum-VCE failures**.
+  Both interface gates pass. Original sample phases and limits are unchanged.
+  Source-bound summary hashes and exact failing-device values are in the
+  continuation JSON. Diagnose actual conductor losses before another geometry
+  change; artificial RC reductions are diagnostic only, never acceptance.
 - Data-buffer local placement route **38371498733** is live. Its exact source
   envelope contains 1563 eligible endpoints before clock exclusion; 1505
   cells are selected and 960 moved. Connectivity, masters, all unselected
