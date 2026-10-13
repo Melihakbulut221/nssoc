@@ -531,3 +531,28 @@ Review all3corner/5clock results,cellcount,SRAMs andendpoint cones. No adoption.
 
 Main-chip half_xy seed13 route38472175339 on45a0dd0a... is active.
 Do not restart on observationtimeouts. Allrunlogs/failures remain hosted.
+
+
+## WiderM3 loaded result: rejected, all six captures reviewed
+
+Both38471108761 and38471122722 completed. Five of six component screens
+pass; hot physicalwire fails128of768samples at0.3UI,minimum16.686602mV
+against unchanged100mVlimit. Later0.5/0.7phases pass; allHBT/MOS/interfaces
+pass anddiagnostics empty. Actions success means simulation finished only.
+Previouslowselects hot20.841388mV alsofailed: widerM3 is not the closure fix.
+Full per-case immutable summary/archive hashes are in
+pcie-v8-wider-m3-loaded-rejection-20261014.json. Keep every failed capture.
+Next analog choice needs to reduce real mux settling delay without phase
+fitting orRCscaling. WiderM3 alone is disproved; inspect shorter actual
+terminal/interconnect geometry and loadedclock path before another change.
+
+Creditpaired native mapping38472422176 ondb5369c1d... is active; compare
+physical_idle tophysical_idle_credit, not olderphysical/postCTS timing.
+Main-chip halfgrid route38472175339 andold32wire38441895491 remain live
+at lastreadback. No duplicatejobs. Allwork stays hosted; localfolderempty.
+
+Earlier staticFC experiment metadata readback completed from archive
+634829840 SHA213a563d... entirely inRAM. decision13/rejection14 show
+soc_pcie_fc_tx staticadvertisement writes regressedPCIeslowsetup219.546ps;
+rejected andnotadopted. It is a differentmodule from current
+soc_pcie_credit_tx peercreditverdict factoring; do not repeat orconflate.
