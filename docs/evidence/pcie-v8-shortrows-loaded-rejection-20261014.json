@@ -153,7 +153,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -338,7 +338,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -523,7 +523,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -708,7 +708,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -893,7 +893,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -1078,7 +1078,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -1241,7 +1241,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -1403,7 +1403,7 @@
         "rows": 69541,
         "coverage_s": [
           0,
-          3.4e-8
+          3.4e-08
         ],
         "signals": {
           "samples": 768,
@@ -1440,5 +1440,266 @@
       },
       "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38474364222-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38474364222-1.summary.json"
     }
-  ]
+  ],
+  "delay_diagnosis": {
+    "run": 38476178939,
+    "summary_asset": 638400016,
+    "summary_sha256": "a90f9d7a0215d46859bba9288800e58272291379dd380d27f66776aacb348395",
+    "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+    "transitions": {
+      "physical_compact": {
+        "summary": {
+          "clock_to_mux_zero_ps": {
+            "count": 128,
+            "minimum": 9.34302203436066,
+            "median": 9.491111200654228,
+            "maximum": 9.581434892876144
+          },
+          "mux_to_tx_zero_ps": {
+            "count": 128,
+            "minimum": 5.855782845254846,
+            "median": 5.97122009132631,
+            "maximum": 6.09829029383962
+          },
+          "source_to_output_100mv_ps": {
+            "count": 128,
+            "minimum": 26.961707918106384,
+            "median": 27.179796408673198,
+            "maximum": 27.4264716742218
+          }
+        },
+        "ambiguous_events": 0,
+        "original_03ui_below_100mv": 0,
+        "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+      },
+      "physical_wire": {
+        "summary": {
+          "clock_to_mux_zero_ps": {
+            "count": 128,
+            "minimum": 19.400954381092266,
+            "median": 20.769097169493662,
+            "maximum": 22.2960330912481
+          },
+          "mux_to_tx_zero_ps": {
+            "count": 128,
+            "minimum": 5.919670135479254,
+            "median": 6.183171513247036,
+            "maximum": 6.516272683224833
+          },
+          "source_to_output_100mv_ps": {
+            "count": 128,
+            "minimum": 37.98475956080847,
+            "median": 40.10995936431833,
+            "maximum": 42.4526733785734
+          }
+        },
+        "ambiguous_events": 0,
+        "original_03ui_below_100mv": 128,
+        "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+      }
+    },
+    "conclusion": "Native RC still adds about 11.28 ps median before final MUX zero; 100mV crossings remain later than the unchanged 37.5ps early sample. Shorter rows alone do not close hot margin."
+  },
+  "parallel_digital_candidate_checkpoint": {
+    "run": 38476024561,
+    "summary_asset": 638398785,
+    "summary_sha256": "dfe3e40729d20d43e303bbf2edb0f5aacfb6997a122f1b0ffcad5e2a44fabdce",
+    "status": "FAIL_OR_ERROR",
+    "adopted": false,
+    "source_binding": {
+      "archive_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38472422176-1-ack-map-physical_idle_credit/ack-map-physical_idle_credit-38472422176-1.tar.gz",
+      "archive_sha256": "ed43f52d14422ffb15c450350b5b697b61031ff50cee16d1e051a3e4374aa2be",
+      "selected": {
+        "soc_pcie_crc16_byte.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_crc16_byte.v",
+          "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+        },
+        "soc_pcie_acknak_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_acknak_tx.v",
+          "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+        },
+        "soc_pcie_packet_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_packet_tx.v",
+          "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+        },
+        "soc_pcie_crc32_byte.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_crc32_byte.v",
+          "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+        },
+        "soc_pcie_lcrc_rx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_lcrc_rx.v",
+          "sha256": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4"
+        },
+        "soc_pcie_sequence_rx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_sequence_rx.v",
+          "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+        },
+        "soc_pcie_lcrc_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_lcrc_tx.v",
+          "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+        },
+        "soc_pcie_packet_endpoint.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_packet_endpoint.v",
+          "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+        },
+        "soc_pcie_tlp_stream.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_tlp_stream.v",
+          "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+        },
+        "soc_pcie_tlp_regs.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_tlp_regs.v",
+          "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+        },
+        "soc_pcie_link_packets.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_link_packets.v",
+          "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+        },
+        "soc_pcie_dllp_rx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_dllp_rx.v",
+          "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+        },
+        "soc_pcie_replay_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/candidate-soc_pcie_replay_tx.v",
+          "sha256": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc"
+        },
+        "soc_pcie_reliable_packets.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_reliable_packets.v",
+          "sha256": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9"
+        },
+        "soc_pcie_credit_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/candidate-soc_pcie_credit_tx.v",
+          "sha256": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a"
+        },
+        "soc_pcie_flow_packets.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_flow_packets.v",
+          "sha256": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+        },
+        "soc_pcie_rx_credit.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-rx-return-metadata-20261012/candidate01/soc_pcie_rx_credit.v",
+          "sha256": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a"
+        },
+        "soc_pcie_fc_tx.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_fc_tx.v",
+          "sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904"
+        },
+        "soc_pcie_buffered_flow_packets.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_buffered_flow_packets.v",
+          "sha256": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509"
+        },
+        "soc_pcie_apb_arbiter.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_apb_arbiter.v",
+          "sha256": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef"
+        },
+        "soc_pcie_apb_cdc.v": {
+          "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_apb_cdc.v",
+          "sha256": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323"
+        }
+      },
+      "source_sha256": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509",
+      "candidate_sha256": "27168904071b6b66087fbbfc532e12a1ade1dcf1fd6b9078b0ad01472e17d942",
+      "negative_sha256": "cb0f94e8dccf1210fcd8ad88721537970521db2db65a68a0cd6d42dd942d01d0"
+    },
+    "proofs": [
+      {
+        "case": "candidate",
+        "refresh_cycles": 128,
+        "returncode": 1,
+        "counts": [
+          [
+            "321",
+            "155"
+          ]
+        ],
+        "passed": false,
+        "negative_rejected": true,
+        "log_sha256": "2ade20990ce5a5907cd64f21f451b7681fdb3f81b32389435bd03a7baacf9c1c"
+      },
+      {
+        "case": "candidate_refresh0",
+        "refresh_cycles": 0,
+        "returncode": 1,
+        "counts": [
+          [
+            "328",
+            "141"
+          ]
+        ],
+        "passed": false,
+        "negative_rejected": true,
+        "log_sha256": "dad623cf615606871d9a65aa15c48705dc68ed630c849f0de4931872864e0e2e"
+      },
+      {
+        "case": "candidate_refresh1",
+        "refresh_cycles": 1,
+        "returncode": 1,
+        "counts": [
+          [
+            "328",
+            "141"
+          ]
+        ],
+        "passed": false,
+        "negative_rejected": true,
+        "log_sha256": "cc1a4dce50f6084dca8cb0ce6c49c8b63fcaed93c6e2dca8ca96b9987638f643"
+      },
+      {
+        "case": "wrong_owner",
+        "refresh_cycles": 128,
+        "returncode": 1,
+        "counts": [
+          [
+            "321",
+            "155"
+          ]
+        ],
+        "passed": false,
+        "negative_rejected": true,
+        "log_sha256": "688f256519c74f87836a4078ec88c35657835be554f878c7c49246c9025849f4"
+      }
+    ],
+    "port_tests": [
+      {
+        "case": "baseline",
+        "returncode": 0,
+        "actual_tests": {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "case": "candidate",
+        "returncode": 0,
+        "actual_tests": {
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "case": "wrong_owner",
+        "returncode": 1,
+        "actual_tests": {
+          "passed": 0,
+          "failed": 5,
+          "skipped": 0
+        }
+      }
+    ],
+    "next_action": "Diagnose the remaining induction obligations and packet-ownership reachability. Do not adopt or map as a proven candidate until all observable outputs are established with explicit reset and actual bad-owner control; preserve first failure."
+  },
+  "cloud_resume": {
+    "local_checkout_retired": true,
+    "execution": "GitHub hosted only; do not recreate a local checkout or run local EDA/tests.",
+    "route_run": 38472175339,
+    "route_status_at_checkpoint": "in_progress",
+    "source_check_run": 38476301500,
+    "source_check_conclusion": "success",
+    "open": [
+      "Full serial Gen3 x4 PHY",
+      "Main chip completed route",
+      "Final setup and hold"
+    ],
+    "next_phy_action": "Use native per-device hot delay evidence to reduce final-stage internal RC; do not resample or scale native extraction. Completed 32:1 nominal run 38441895491 is evidence only, not full PHY closure."
+  }
 }
