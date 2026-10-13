@@ -48,7 +48,9 @@ def main():
         with tarfile.open(packed) as archive:archive.extractall(OUT/'source',filter='data')
         packed.unlink();source=OUT/'source/cloud-newer-postcts'
         old=json.loads((source/'result.json').read_text());script_path=source/'reproduced-postcts.tcl'
-        assert sha(script_path)==old['failure_outputs']['reproduced-postcts.tcl']
+        # This immutable first failure capsule predates failure_outputs metadata.
+        # Bind its actual member directly as well as the enclosing archive.
+        assert sha(script_path)=='ae6c7fb35aae7cf254f36269c9be1961f06b243f15c94b9849ebdd51d108c273'
         script=script_path.read_text()
         odb_paths=[p for p in old['source_inputs'] if p.endswith('/inputs/postcts.odb')]
         assert len(odb_paths)==1 and odb_paths[0] in script
