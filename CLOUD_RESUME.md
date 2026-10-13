@@ -10,6 +10,23 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Short selector buses physically pass; v10 loaded PVT running
+
+v8 low-selects physical38452058065 on6c2f30e9b48f13e3828dae64dd36af50733c2a3b
+passed560DRC/zero markers, strict54device hierarchical/flat LVS andallfive
+faultcontrols. Summaryasset637980768 SHA
+541e2b703524bf439112f4796b0fbe989ee21a282b2cfb73173da913583e661f.
+Actual sp/sn buses y32/40um retain v8Nx4/Nx6 devices andall other low-critical
+geometry. Exact392654byte archive is bound for fresh extraction. Discover
+existing final_drive_v8/critical_buses_kelvin_low_selects extraction before
+dispatch. No old low-criticalRC or electrical adoption is allowed.
+
+v10 nominal38452808927 andhot/cold38452812892 are running on
+7f95123097589d5edb304e9c0cdde52720a8ac2b after sourcechecks38452484468PASSED.
+This independently tests Nx3 data sizing, usingitsown low-criticalRC. Keep
+allfailures; don't combine the changes before measuring separate effects.
+Mainroute38448901835 and32wire38441895491 remain separate live work.
+
 ## v10 exact composition ready for original loaded PVT
 
 Composition38451600151 passed54devices/4041R/2659C. Distinct receipt:
