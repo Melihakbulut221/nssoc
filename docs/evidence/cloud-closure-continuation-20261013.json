@@ -94,7 +94,8 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect live tail-path wave runs38398957797/38398961815; preserve results. In parallel physical-only local-tail candidate adds exact six-nodeM4shunt and avssM5toTM1feed to reduce remaining measured13.8ohm tailpath. Discover existing physicalrun; require unchangedDRC/LVS/faults before newRC/composition/waves. No adoption or threshold changes.",
+    "Localtailphysical38400244543passed560DRC/0markers,strict54deviceLVS,5faults;extractnewRCandcompose beforewaves. Existing wider-tail loadedruns38398957797/38398961815 mustfinish;hot alreadyfails2signs/128earlymargins,two tailVCE andlowCM. Preserve failures, noadoption.",
+    "New cascade16changes only2nativepulldowns14to16um to targethotCM. Require actualdensegeometry physicalgates,newRC/composition,originalcold/hot/nominalgates. Cold2.05Vmax unchanged. Discover existingphysicalrun.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -9925,9 +9926,27 @@
     "variant": "critical_buses_kelvin_local_tail",
     "circuit_profile": "final_drive_v8",
     "parent_geometry": "critical_buses_kelvin_tail_paths",
-    "status": "SOURCE_ONLY_REQUIRES_NATIVE_PHYSICAL_GATES",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "adopted": false,
     "hypothesis": "Measured tail pair resistance remains13.8ohm after widening. Join all six actual tail escape M4 landing metals locally atY60 with0.8umbranches/2umhorizontalbar, preserving original global route. Feed existing local M5 Kelvin return to proven avssTM1 trunk atx255.6,y64.8 via nativeM5toTM1stack. No circuit/port/PDK coefficient changes.",
-    "source_geometry_readback_run": 38399518025
+    "source_geometry_readback_run": 38399518025,
+    "run": 38400244543,
+    "source_head": "ee050fe7ee7c2553af3b12dff7a3e0231fe86551",
+    "summary_sha256": "912a5253b1e8899d92dc9a6209451e00d87031bb30463c7c47957842362d9019",
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38400244543-1-layout-final_drive_v8-critical_buses_kelvin_local_tail/tx-layout-repair-cloud-final_drive_v8-critical_buses_kelvin_local_tail-38400244543-1.tar.gz",
+      "bytes": 386770,
+      "sha256": "d8c241b4c7ed996c2c5d77d1326557598a35c5762a410c42f8ec2d98227d7c63"
+    }
+  },
+  "cascade16_candidate": {
+    "circuit_profile": "cascade16",
+    "variant": "critical_buses_kelvin_dense_wide",
+    "source_file": "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v3.spice",
+    "source_sha256": "9cc69586dbe83af7d58ff1c1f15a58aac17958ada8916cd1dbe0554e2813cd39",
+    "changes": "Only XFPR/XFNR output-to-ground rppd lengths14to16um; all19HBT sizes and other6R unchanged. Same dense physical arrangement and27bodytaps.",
+    "reason": "Loadedhot final-inputCM1.760..1.802V fails1.8Vmin. Raise native divider output modestly; coldhigh2.05Vmax unchanged.",
+    "status": "UNSCREENED_NEW_NATIVE_CIRCUIT_REQUIRES_PHYSICAL_AND_LOADED_PVT",
+    "adopted": false
   }
 }

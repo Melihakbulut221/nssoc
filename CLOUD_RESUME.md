@@ -305,3 +305,14 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
   quarter-step convergence and three actual circuit faults. Defaults remain
   nominal; expanded studies are available but have not yet run for v7. They
   are engineering screens, not qualified RF/body/temperature wire extraction.
+
+## Current local-tail and prestage follow-up
+
+Local-tail physical **38400244543** on **ee050fe7** passed560DRC/0markers,
+strict54deviceLVS andfivefaultcontrols. Fresh nativeRC is next; discover the
+existing extractionrun before dispatch. Wider-tail hot waveform already
+fails2wrong signs,128early margins,two tailVCEs andlowinputCM; not adopted.
+Separate **cascade16** changes only two native outputpulldown lengths14to16um
+under unchanged densegeometry. It targets hotCM while retaining cold2.05V
+maximum. This new circuit requires physical/RC/composition andalloriginal
+loaded gates; discover its existingphysicalrun before dispatch.
