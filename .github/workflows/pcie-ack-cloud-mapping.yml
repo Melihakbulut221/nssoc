@@ -7,6 +7,11 @@ on:
       - scripts/run_cloud_ack_mapping.py
       - docs/evidence/pcie-ack-map-cloud-input-20261012.json
   workflow_dispatch:
+    inputs:
+      study:
+        type: choice
+        options: [ack, replay_idle]
+        default: ack
 permissions:
   contents: read
 concurrency:
@@ -20,7 +25,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        profile: [baseline, ack]
+        profile: ${{ fromJSON(inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
     permissions:
       contents: write
     steps:
@@ -43,7 +48,9 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Exact input mapping and original three-corner screening
-        run: python3 scripts/run_cloud_ack_mapping.py --profile '${{ matrix.profile }}'
+        run: |
+          python3 -m py_compile scripts/run_cloud_ack_mapping.py scripts/run_cloud_replay_idle.py
+          python3 scripts/run_cloud_ack_mapping.py --profile '${{ matrix.profile }}'
       - name: Keep complete success or failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -61,4 +68,5 @@ jobs:
           archive='ack-map-${{ matrix.profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-ack-map
           sha256sum "$archive" > "$archive.sha256"
-          gh release upload evidence-20261006-pcie-closure "$archive" "$archive.sha256"
+          cp 'cloud-ack-map/${{ matrix.profile }}/result.json' "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group 'ack-map-${{ matrix.profile }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"

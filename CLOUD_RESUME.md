@@ -307,3 +307,28 @@ Main-chip route38448901835 and bounded-save32 wire38441895491 were rechecked:
 both are still in progress. Preserve these handles and do not duplicate them.
 The eight-hour automation remains ACTIVE and already requires cloud-only work.
 Full serial PHY, main-chip routing and final setup/hold remain OPEN.
+
+
+## Physical replay proof and paired full-chip mapping
+
+The physical replay source differs materially from canonical RTL: it contains
+registered byte prefetch, registered metadata and the successor address.
+Run38465877636 on a1c6064078350d4834a9f933535e63e00bfbb372 passed1850/1850
+observable equivalence points,11 baseline and11 candidate port tests, zero
+skips. Actual wrong-idle-index mutation failed formal(2unproven) andall7ports.
+Summaryasset638224436,SHA554699985261db8de530b8eb1aeb0846deded73a7a506abf5616788da8f681d9.
+Sourceca334ee560f34a0d7484467d8a09ccbe7fc7b2113360f4bee7308f39bbac8e85,
+candidate1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc.
+Canonical proof is a separate result; neither proves mapped or routed timing.
+
+The old ACK capsule uses WAKE1 top and registered credit-offer RTL, differing
+from actual current physical19. New physical_baseline/physical_idle mapping
+profiles restore the real RX-return-metadata map10 recipe and bind every read
+source hash. Original top b782a7f... andcredit ba8adb6... must be used.
+The original map-result10 retained a KeyError audit failure despite synthesis
+returncode0. Its separately pinned map-audit14 is the corrected mapping audit,
+bound by physical-result19; do not relabel the earlier failed audit.
+Only the proved replay source changes in physical_idle. These are fresh paired
+whole-chip synthesis/unplaced screens, not old-placement or final timing proof.
+Use registered pcie-ack-cloud-mapping.yml with study=replay_idle. Preserve all
+success/failure receipts and do not adopt without measurements.
