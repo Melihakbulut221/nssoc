@@ -10,6 +10,29 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Complete stiff65 evidence and cascade158 composition next
+
+All six exact stiff65 cases are in
+docs/evidence/pcie-stiff65-low-critical-loaded-tree-20261013.json.
+Five component screens pass; hot wire fails128early amplitudes and input-CM,
+although every HBT passes. Neither full PVT nor full PHY is accepted.
+
+Cascade158 native extraction38440211022 passed actual graph/C preservation
+and13corruptioncontrols. SummarySHA256
+d80f27bfb2a35c257b4b9c7cc3407c39a9b2c7c35cd3e047276a6f53be79ac82.
+The6284930bytearchiveSHA256 44bab5f1d0b876e4d779fc4ed41b16d57def011e82111a4f9a407aa171c13872
+is bound for exact composition. Discover its composition run before dispatch.
+No old devices or RC may be substituted. Fresh loaded PVT is next afterward.
+
+Original32:1 run38440472079 was launched on bad18007 before the save-command
+repair. Preserve its complete/failed capture. A corrected run must use the
+bounded-save source (b44289f or later) and unchanged inputs: streams32, nominal,
+stiff65, kelvin_supply_feed, matched final v8_kelvin_low_critical. It may queue
+behind the original workflow; do not cancel or retry based on polling timeouts.
+Fast hosted source checks now include complete tree census and save boundaries,
+so these regressions need not wait for the long analog solver. Source-only
+checks establish no waveform acceptance. Mainroute38420407838 remains separate.
+
 ## Full32:1 capture command limit repair
 
 Code inspection during full-tree launch found one oversized save command for
