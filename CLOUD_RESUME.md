@@ -15,21 +15,27 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 **Full serial Gen3 x4 PHY, assembled main-chip routing and final setup/hold
 remain OPEN.** All CAD/tests run in GitHub. The local workspace is empty.
 
-### Live loaded native-wave studies — inspect, do not duplicate
+### Completed loaded native-wave studies — both candidates rejected
 
-- Isolated **local-tail finalv8 + unchanged cascade14 dense prestage**:
-  **38402054648** nominal, **38402059863** hot/low and cold/high, source
-  **e0831791**. Profiles `kelvin_dense_wide` and `v8_kelvin_local_tail`.
+- Isolated **local-tail finalv8 + cascade14 dense prestage**:
+  **38402054648** nominal and **38402059863** hot/low and cold/high completed.
+  Nominal and cold wire screens pass (132.196mV and231.217mV minimum).
+  Hot wire fails:19wrong signs,128samples below100mV,two HBT minimum-VCE
+  violations and low final-input common mode. Compact hot also fails two tails.
 - Combined **cascade16 dense prestage + local-tail finalv8**:
-  **38402506838** nominal, **38402511999** hot/low and cold/high, source
-  **378d85e8**. Profiles `cascade16_kelvin_dense_wide` and
-  `v8_kelvin_local_tail`. All six source-bit/model regressions passed;
-  native simulations are live. Source/licence/migration checks38402516715pass.
-- Each study compares actual compact and wire models, streams4, original
-  256 bits/768 sample gates. No phase, amplitude, CM or device-limit changes.
-  A green Actions run can preserve a rejected engineering result: read each
-  immutable summary. No adoption pending actual loaded results. Full32:1,
-  actual clocks/CDR, RF/body/ESD and assembled serial PHY remain unproven.
+  **38402506838** nominal and **38402511999** hot/cold completed.
+  Nominal and cold wire screens pass (132.700mV and231.437mV minimum).
+  Hot wire fails:10wrong signs,128samples below100mV,eight HBT minimum-VCE
+  violations; final-input CM minimum1.797377V is below1.8V. Compact hot tails
+  remain below0.4V; compact cold final-input CM maximum2.051158V exceeds2.05V.
+- All12 exact compact/wire summaries, source scopes and SHA256 values are
+  retained in JSON `completed_local_tail_comparison`. Original256bits,
+  768samples, phases and every acceptance limit remain unchanged.
+  Neither candidate is adopted. Green Actions denotes captured results,
+  not engineering acceptance. Do not duplicate these unchanged studies.
+- Diagnose actual voltage/headroom and propagation delay before selecting the
+  next circuit or geometry candidate. Full32:1, actual clocks/CDR, RF/body/ESD
+  and assembled serial PHY remain unproven. All work stays cloud-only.
 
 ### Exact physical sources for these studies
 
