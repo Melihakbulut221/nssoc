@@ -100,7 +100,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Native local-return RC38407758550 PASS4038R/2663C and13controls. Bind and run exact54device composition once using tx-layout-waveform-cloud.yml compose_only=true, final_drive_v8, critical_buses_kelvin_local_return; then source-bind its receipt and loaded compact/wire nominal/hot/cold studies. No component acceptance until actual unchanged waveform gates pass.",
+    "Dispatch local-return loaded studies once: nominal and temperature_voltage, streams4, physical_profile=kelvin_dense_wide, physical_final=matched, physical_final_profile=v8_kelvin_local_return. Read actual compact/wire gates; source summaries and archives retained. Finalv8 device circuit unchanged; compact hot is known to fail two tail VCE gates, so full closure still requires a bias/circuit fix even if wire improves.",
     "Do not rerun the four completed local-tail studies unchanged. Read completed_local_tail_comparison and its exact immutable summaries. Neither candidate is accepted; hot wire and compact violations remain. Diagnose actual voltage/headroom and parasitic delay before selecting another source-bound circuit or geometry change.",
     "Inspect existing main route38395878470 before dispatching another route. Latest observed status:in_progress. Keep estimated eth_rx setup regression-4.524ps recorded; no routing or timing closure without native reports.",
     "All source edits through GitHub API; all CAD, simulation, tests and bulk artifacts on GitHub-hosted infrastructure. Local project and transient paths are empty; never recreate local checkout or CAD producers.",
@@ -26020,7 +26020,7 @@
   "local_return_candidate": {
     "variant": "critical_buses_kelvin_local_return",
     "circuit_profile": "final_drive_v8",
-    "status": "PASS_PHYSICAL_REQUIRES_NATIVE_RC_AND_LOADED_WAVES",
+    "status": "PASS_PHYSICAL_RC_COMPOSITION_REQUIRES_LOADED_PVT",
     "accepted": false,
     "change": "Same local-tail geometry; M5 return width1.6to3.2um, reference/tail M2-to-M5 columns4to6 (eight failed native spacing), return M5-to-TM1 columns4to8. Fresh DRC/LVS pending; devices and all RC/acceptance limits unchanged.",
     "failed_first_physical": {
@@ -27116,6 +27116,31 @@
           "rejected_by": "Actual metal terminal witness changed"
         }
       ]
+    },
+    "composition": {
+      "run": 38408254672,
+      "source_head": "2aa90efceb4b1df8e33234774baff38ee8c7cf61",
+      "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+      "variant": "critical_buses_kelvin_local_return",
+      "receipt": {
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38408254672-1-compose-final_drive_v8-critical_buses_kelvin_local_return/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_return-38408254672-1.tar.gz",
+        "bytes": 6669661,
+        "sha256": "2c74a102fec3675c5450d4dcc3683ff3243f098a1df2de0802d74f0f9a4544f3"
+      },
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38408254672-1-compose-final_drive_v8-critical_buses_kelvin_local_return/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_return-38408254672-1.summary.json",
+      "summary_sha256": "70ec5111a9504e3db974de4141b69d9888726b0c65abb4e668eb6eb5b9729872",
+      "outputs": {
+        "mux54-wire01.spice": "b73bfb87c4f9c4311aa4157e8442d07ac390c7711ea3b40c01cfceffb3230307",
+        "mux54-compact01.spice": "8c80493dbd768a0c502272b3c5341b272f695c95d15ac0cd1386f4a400053c1f"
+      },
+      "counts": {
+        "devices": 54,
+        "R": 4038,
+        "C": 2663
+      },
+      "extraction_source_sha256": "e2c68e252b9a7221c1a048500802274aa3e9a1affc3a5a14b77dfaacb4995c5c",
+      "adopted": false,
+      "scope": "Unchanged finalv8 native54 devices, including27body taps, with actual4038R/2663C from wider M5 local return and native via arrays. Original loaded-wave gates required; no fullPHY/body/RF/chip acceptance."
     }
   }
 }
