@@ -100,19 +100,21 @@ content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
   two tailVCE failures360.980/362.383mV andlowinputCM1.760..1.802V. Rejected;
   all captures retained. Earlier metalDC showed widening alone insufficient.
 
-### Main-chip route — existing live repair
+### Main-chip route — incremental endpoint candidate rejected
 
-**38395878470** on **e18933ba** is LIVE. `local_data_endpoints` resumed the
-exact prior placement and reproduced its STA. Native connectivity, fixed-cell
-positions and two fault controls passed:1747selected/744moved,including33of227
-data DFFs. Clock-output drivers, delay cells and macros stay fixed. Estimated
-eth_rx slow setup regressed+23.324ps to-4.524ps; this remains an open failure,
-not waived. Strict global routing is running; no final route/STA acceptance.
+**38395878470** completed with native GRT-0116 and **420 overflow**:
+Metal2=4,Metal3=120,Metal4=47,Metal5=213,TopMetal1=25,TopMetal2=11.
+Previous local_optimize_buffers had135; endpoint movement regressed congestion
+and eth_rx setup estimate (+23.324ps to-4.524ps). Not adopted; not a timeout.
+Exact failedODB/report/archive hashes are in JSON local_data_endpoints_terminal.
+Next: source_profile=local_data_endpoints native congestion diagnosis; compare
+actual endpoints and marker locations before choosing another route change.
 
-Previous run38371498733 FAILED GRT-0116 with135overflow,not timeout. Exact
-failedODB/marker probe38392685463 found107markers/811nets near EthernetRX
-SRAM banks4/5. Do not attribute that old overflow to the live repair or rerun
-the same candidate. Detailed routing and final setup/hold still require proof.
+Supply-feed loaded nominal/cold wire each still fail four selector VCE gates.
+Compact nominal/hot/cold pass. All available exact summaries are in JSON
+combined_supply_feed_loaded_study; remaining hot-wire review must be checked.
+Native DC38418508613 passed: final supply7.584/9.239ohm versus8.579/10.233.
+This modest improvement does not close the loaded failures or full PHY.
 
 Earlier entries below are preserved work history; this section and the JSON
 continuation are authoritative for what to inspect next.

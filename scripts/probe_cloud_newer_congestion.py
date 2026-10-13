@@ -217,17 +217,21 @@ def native():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints'), default='baseline')
     args = parser.parse_args()
     url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
     odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
     report_sha = None
     archive_bytes = None
-    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers'):
+    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints'):
         evidence_name = {'local_optimize': 'cloud-local-optimize-route-failure-20261013.json',
                          'reserved_m5': 'cloud-reserved-m5-route-failure-20261013.json',
-                         'local_optimize_buffers': 'cloud-local-optimize-buffers-route-failure-20261013.json'}[args.source_profile]
+                         'local_optimize_buffers': 'cloud-local-optimize-buffers-route-failure-20261013.json',
+                         'local_data_endpoints': 'cloud-closure-continuation-20261013.json'}[args.source_profile]
         evidence = json.loads((ROOT / 'docs/evidence' / evidence_name).read_text())
+        if args.source_profile == 'local_data_endpoints':
+            evidence = evidence['local_data_endpoints_terminal']
+            assert evidence['run'] == 38395878470
         assert evidence['status'] == 'FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
         receipt = evidence['receipt']
         url, archive_sha, archive_bytes = receipt['url'], receipt['sha256'], receipt['bytes']
