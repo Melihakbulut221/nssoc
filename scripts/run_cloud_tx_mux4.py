@@ -52,6 +52,7 @@ PRE_BIAS_MODES = (*PRE_BIASES, 'native_res')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
 CLOCK_FEED = ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc'
 OUTPUT_FEEDS = ROOT / 'hw/soc/analog/pcie/tx_output_bias_feeds_v1.inc'
+CLOCK_REFERENCES = {'baseline': BIAS, 'offset75': ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v2.spice'}
 
 
 def sequence():
@@ -218,8 +219,11 @@ def rename_physical_top(text, new_name):
     return '\n'.join(lines)+'\n'
 
 
-def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None):
+def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline'):
     plan=tree_plan(streams)
+    assert clock_reference in CLOCK_REFERENCES
+    assert clock_reference == 'baseline' or clock_bias == 'native_res'
+    bias_path=CLOCK_REFERENCES[clock_reference]
     assert fault in ('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select')
     references=[n['reference'] for n in plan['nodes']]
     assert output_bias in ('ideal','native_res')
@@ -244,7 +248,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     if pre_bias=='native_res':
         lines.append(f'.include "{PRE_FEED}"')
     if clock_bias!='ideal':
-        lines.append(f'.include "{BIAS}"')
+        lines.append(f'.include "{bias_path}"')
     if clock_bias=='native_res':
         lines.append(f'.include "{CLOCK_FEED}"')
     if output_bias=='native_res':
@@ -312,7 +316,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         if clock_bias=='ideal':
             continue
         ports=[clock_refs[-1]['node'],'0','0']
-        subckt,found=bind_devices(BIAS,'xclkbias'+suffix,ports,{'npn13g2'})
+        subckt,found=bind_devices(bias_path,'xclkbias'+suffix,ports,{'npn13g2'})
         assert len(found)==1
         hbt.update(found)
         lines.append('XCLKBIAS'+suffix+' '+' '.join(ports)+' '+subckt)
@@ -376,7 +380,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     lines += ['op','wrdata op.dat '+' '.join(vectors),
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
               'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
-    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
+    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
         rails=rails, vectors=vectors, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
@@ -468,6 +472,7 @@ def main():
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','cascade16_kelvin_dense_wide'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
+    parser.add_argument('--clock-reference',choices=tuple(CLOCK_REFERENCES),default='baseline')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
@@ -488,7 +493,7 @@ def main():
     out=ROOT/'cloud-tx-mux4';out.mkdir(exist_ok=False)
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
-    result=dict(status='RUNNING',streams=args.streams,condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
+    result=dict(status='RUNNING',streams=args.streams,condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,clock_reference=args.clock_reference,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
         scope='Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.')
     try:
         prepare_inputs(inputs)
@@ -530,12 +535,12 @@ def main():
                 intermacro_connections_ideal=True,assembled_tree_gds=False,
                 qualified_substrate_resistance=False,qualified_rf_distribution=False)
         result['output_bias']=args.output_bias
-        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override)
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
 
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEED,OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}

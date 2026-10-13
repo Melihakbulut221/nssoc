@@ -545,3 +545,39 @@ def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, 
     else:
         bound=mux4.physical_prestage(tmp_path,'physical_compact',requested)
         assert bound.read_bytes()==model
+
+
+def test_offset_reference_changes_only_native_resistor_and_preserves_clock_oracle(tmp_path):
+    def devices(path):
+        return {f[0]:f for line in path.read_text().splitlines()
+                if (f:=line.lower().split()) and f[0].startswith('x')}
+    old=devices(mux4.CLOCK_REFERENCES['baseline'])
+    new=devices(mux4.CLOCK_REFERENCES['offset75'])
+    assert old.keys()==new.keys()=={'xref','xoffset'}
+    assert old['xref']==new['xref']
+    assert old['xoffset']==['l=6.5u' if f=='l=7.5u' else f for f in new['xoffset']]
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+""")
+    args=dict(clock_bias='native_res',pre_bias='native_res',output_bias='native_res')
+    before,b=mux4.build(tmp_path,'hot_low',**args)
+    after,a=mux4.build(tmp_path,'hot_low',clock_reference='offset75',**args)
+    for key in ('hbt','mos','bits','tree_plan','condition','rails','vectors','source_bits_sha256'):
+        assert a[key]==b[key]
+    assert a['clock_reference_sha256'] != b['clock_reference_sha256']
+    assert 'XCLKBIAS clkbias 0 0 nssoc_tx_clock_common_bias_v2' in after
+    assert 'ICLKBIAS' not in after
+    for key in ('sap','san','sbp','sbn','sp','sn'):
+        stimulus=lambda text:text.split('V'+key+' ')[1].split('R'+key+' ')[0]
+        assert stimulus(before)==stimulus(after)
+    with pytest.raises(AssertionError):
+        mux4.build(tmp_path,'hot_low',clock_reference='offset75',clock_bias='ideal')
+    with pytest.raises(AssertionError):
+        mux4.build(tmp_path,'hot_low',clock_reference='unknown',**args)

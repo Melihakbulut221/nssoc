@@ -120,7 +120,9 @@ def read_case(record, directory):
         summary_sha256=record['summary_sha256'], raw_wave=record['raw_wave'],
         original_component_screen_passed=record['component_screen_passed'],
         contract_identity={k: contract[k] for k in ('streams', 'fault', 'bits', 'condition',
-            'clock_bias', 'pre_bias', 'output_bias', 'final_drive', 'tree_plan')},
+            'clock_bias', 'pre_bias', 'output_bias', 'final_drive', 'tree_plan')} |
+            {'clock_reference':contract.get('clock_reference','baseline'),
+             'clock_reference_sha256':contract.get('clock_reference_sha256')},
         physical_sources={key:{field:result[key].get(field) for field in ('profile','source','source_sha256')}
                           for key in ('physical_prestage_scope','physical_final_scope') if key in result},
         devices=devices, transitions=transitions,
