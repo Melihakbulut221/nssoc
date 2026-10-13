@@ -332,3 +332,15 @@ Only the proved replay source changes in physical_idle. These are fresh paired
 whole-chip synthesis/unplaced screens, not old-placement or final timing proof.
 Use registered pcie-ack-cloud-mapping.yml with study=replay_idle. Preserve all
 success/failure receipts and do not adopt without measurements.
+
+
+Paired physical-source mapping dispatched as38466891418 on
+9044757dcf8b34281f8e22228a76c79c296ce870. Actual live jobs:
+115535880904 physical_idle;115535881391 physical_baseline. Both in progress.
+Keep these handles; do not duplicate on observation timeout. Each restores
+the same source-bound map10 recipe, same20SRAMs, five clocks and3corner
+unplaced screen. New releases use cloud-results-38466891418-1-ack-map-PROFILE
+with summary JSON plus full archive. Read actual status/errors before adoption.
+The baseline proof run38465877636 and source/license checks both passed.
+Main route38448901835 and32wire38441895491 remain live at this readback.
+All work continues cloud-only; the local workspace remains empty.
