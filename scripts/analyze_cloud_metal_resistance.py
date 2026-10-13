@@ -94,7 +94,19 @@ def resistance(edges, reference, targets):
         assert value > 0 and np.isclose(total, value, rtol=1e-7, atol=1e-10)
         reports[target] = dict(effective_ohms=value, dissipated_w_at_1a=total,
             largest_power_edges=sorted(energy, key=lambda e: e['unit_current_power_w'], reverse=True)[:8])
-    return dict(nodes=len(nodes)+1, edges=len(selected), kcl_residual_a=residual, terminals=reports)
+    # The same inverse-Laplacian columns also measure resistance between
+    # every terminal pair, without choosing an electrical reference for it.
+    green = voltage[[index[n] for n in targets], :]
+    assert np.allclose(green, green.T, rtol=1e-7, atol=1e-10)
+    pairs = []
+    for i, first in enumerate(targets):
+        pairs.append(dict(nodes=[reference, first], effective_ohms=reports[first]['effective_ohms']))
+        for j in range(i+1, len(targets)):
+            value = float(green[i, i]+green[j, j]-green[i, j]-green[j, i])
+            assert value > 0
+            pairs.append(dict(nodes=[first, targets[j]], effective_ohms=value))
+    return dict(nodes=len(nodes)+1, edges=len(selected), kcl_residual_a=residual, terminals=reports,
+                terminal_pairs=sorted(pairs, key=lambda p: p['effective_ohms'], reverse=True))
 
 
 def analyze(spec):
@@ -123,17 +135,22 @@ def analyze(spec):
         # Intrinsic body/well aliases are explicitly outside metal-only graph.
         count = {'npn13g2': 3, 'rppd': 2, 'ptap1': 1}[device['model']]
         for pin, (logical, node) in enumerate(zip(device['nodes'][:count], actual['nodes'][:count], strict=True)):
-            if logical in cp:
-                assert logical in wp
-                groups.setdefault(logical, {}).setdefault(node, []).append(dict(device=name, model=device['model'], pin=pin))
-    measured = {}
+            groups.setdefault(logical, {}).setdefault(node, []).append(dict(device=name, model=device['model'], pin=pin))
+    measured, internal = {}, {}
     for port, terminals in groups.items():
-        assert port not in terminals
-        measured[port] = resistance(edges, port, sorted(terminals))
-        for node, labels in terminals.items():
-            measured[port]['terminals'][node]['device_pins'] = labels
+        if port in cp:
+            assert port in wp and port not in terminals
+            measured[port] = resistance(edges, port, sorted(terminals))
+            for node, labels in terminals.items():
+                measured[port]['terminals'][node]['device_pins'] = labels
+        else:
+            ordered = sorted(terminals)
+            assert len(ordered) >= 2
+            internal[port] = resistance(edges, ordered[0], ordered[1:])
+            internal[port]['device_pins'] = terminals
+            internal[port]['grounded_calculation_node'] = ordered[0]
     assert {'avdd', 'avss', 'iref'} <= set(measured)
-    return dict(source=spec, ports=measured)
+    return dict(source=spec, ports=measured, internal_conductors=internal)
 
 
 def main():

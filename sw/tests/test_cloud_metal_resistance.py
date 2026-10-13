@@ -17,6 +17,12 @@ def test_shared_series_and_parallel_paths_obey_kcl_and_energy():
     assert result['terminals']['b']['effective_ohms'] == pytest.approx(4)
     assert result['terminals']['b']['dissipated_w_at_1a'] == pytest.approx(4)
     assert result['terminals']['b']['largest_power_edges'][0]['name'] == 'shared'
+    pair = next(p for p in result['terminal_pairs'] if p['nodes'] == ['a', 'b'])
+    assert pair['effective_ohms'] == pytest.approx(2)
+    # Moving the arbitrary calculation reference cannot change pair resistance.
+    reversed_reference = m.resistance(edges, 'a', ['g', 'b'])
+    pair = next(p for p in reversed_reference['terminal_pairs'] if p['nodes'] == ['g', 'b'])
+    assert pair['effective_ohms'] == pytest.approx(4)
 
 
 def test_open_and_parallel_faults_change_measured_resistance():
