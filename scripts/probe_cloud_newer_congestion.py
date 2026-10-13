@@ -45,11 +45,12 @@ def native():
         name = spelling(net.getName())
         assert name not in nets, ('Ambiguous net rendering', name)
         nets[name] = net
-    macros, bins = [], defaultdict(list)
+    macros, bins, cells = [], defaultdict(list), {}
     for inst in block.getInsts():
         bounds = box(inst.getBBox())
         row = dict(name=inst.getName(), master=inst.getMaster().getName(), bbox_um=bounds,
                    placement_status=str(inst.getPlacementStatus()))
+        cells[inst.getName()] = row
         if inst.getMaster().isBlock():
             macros.append(row)
         else:
@@ -87,12 +88,46 @@ def native():
                             nearby_standard_cells=len(nearby), nearby_masters=dict(Counter(r['master'] for r in nearby))))
     assert markers and len(markers) == source.count('violation type:')
     counted = Counter(n['net'] for m in markers for n in m['nets'])
+    # Report every endpoint of every involved net, not just its driver. This
+    # distinguishes pin escape over macros from logic density in nearby rows.
+    endpoints = {}
+    for name in sorted(counted):
+        net = nets[spelling(name)]
+        pins = []
+        for terminal in net.getITerms():
+            inst = terminal.getInst()
+            pins.append(dict(instance=inst.getName(), pin=terminal.getMTerm().getName(),
+                             direction=str(terminal.getIoType()),
+                             macro=inst.getMaster().isBlock(), **{
+                                 k: v for k, v in cells[inst.getName()].items() if k != 'name'}))
+        endpoints[name] = dict(signal_type=str(net.getSigType()), terminals=pins,
+                               boundary_pins=[p.getName() for p in net.getBTerms()])
+    tile_size = 100
+    density = []
+    # Geometric occupied area is intentionally not called legal row capacity.
+    # Macro obstructions and real rows must still be respected by legalization.
+    envelope = [min(m['bbox_um'][0] for m in markers)-200,
+                min(m['bbox_um'][1] for m in markers)-200,
+                max(m['bbox_um'][2] for m in markers)+200,
+                max(m['bbox_um'][3] for m in markers)+200]
+    def overlap(a, b):
+        return max(0, min(a[2], b[2])-max(a[0], b[0])) * max(0, min(a[3], b[3])-max(a[1], b[1]))
+    for x in range(int(envelope[0]//tile_size), int(envelope[2]//tile_size)+1):
+        for y in range(int(envelope[1]//tile_size), int(envelope[3]//tile_size)+1):
+            area = [x*tile_size,y*tile_size,(x+1)*tile_size,(y+1)*tile_size]
+            near = [r for bx in range(x*4-1,x*4+5) for by in range(y*4-1,y*4+5)
+                    for r in bins[(bx,by)] if intersects(r['bbox_um'],area)]
+            density.append(dict(bbox_um=area, standard_cell_area_um2=sum(overlap(r['bbox_um'],area) for r in near),
+                                intersecting_cells=len(near),
+                                macro_area_um2=sum(overlap(r['bbox_um'],area) for r in macros)))
     report = dict(status='PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE',
                   source_odb_sha256=sha(OUT / 'postcts.odb'), source_report_sha256=sha(OUT / 'congestion.rpt'),
                   die_um=box(block.getDieArea()), core_um=box(block.getCoreArea()), macros=macros,
                   marker_count=len(markers), report_overflow_sum=sum(m['overflow'] for m in markers),
                   note='DRC-viewer marker totals and layer-level final overflow totals are separate native reports; neither is waived.',
-                  most_repeated_nets=counted.most_common(40), markers=markers)
+                  most_repeated_nets=counted.most_common(40), markers=markers,
+                  all_congested_net_endpoints=endpoints, local_geometric_density=density,
+                  density_note='Clipped standard-cell and macro area per100um tile, not routability or legal-site capacity.')
     (OUT / 'diagnosis.json').write_text(json.dumps(report, indent=2) + '\n')
 
 
