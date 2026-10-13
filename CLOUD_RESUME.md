@@ -10,6 +10,22 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 six captures complete: improvement still fails; native delay diagnosis next
+
+Runs38449429360/38449433433 completed. All six exact summaries are preserved
+in pcie-final-v9-loaded-tree-20261013.json. Hotwire minimum improved17.694to
+41.723mV versusv8, early amplitude failures128to110, but still below100mV.
+Zero wrong signs, allwire device/interface gates pass; cold COMPACT still
+fails12HBT VBE/current. Four ofsix component screens pass; v9 is NOT adopted.
+
+Read-only diagnosis study v9_cascade158_hot binds the exact hotcompact/wire
+pair, sourcebits, stiff65 clock andnative models in its separate receipt.
+Its corruption tests reject foreignrun/corner/model/clock andmixedbit oracles.
+Discover existing diagnosisrun before dispatch; use actual source-clock to
+MUX/output transitions to identify remaining delay before further routing
+changes. v10fresh extraction38450839520 is live; do not substitute v9 RC.
+Chip seed13route38448901835 and32wire38441895491 remain live; fullgoal OPEN.
+
 ## v10 physical gates passed; exact native RC extraction is next
 
 Native physical 38450309882 on20dbe4ad23e20802ebe14d3763473bc7331f1fcf passed

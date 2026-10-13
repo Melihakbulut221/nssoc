@@ -198,6 +198,8 @@ def supply_feed_records(evidence, study):
 
 
 ROUTING_STUDIES = {
+    'v9_cascade158_hot': (38449433433, 'cascade158_kelvin_supply_direct', 'v9_kelvin_low_critical',
+                         'pcie-final-v9-hot-loaded-tree-20261013.json', 'hot_low', 'stiff65'),
     'local_internal_hot': (38423088377, 'kelvin_supply_feed', 'v8_kelvin_local_internal',
                            'pcie-local-internal-hot-loaded-tree-20261013.json', 'hot_low', 'offset75'),
     'low_critical_hot': (38434462503, 'kelvin_supply_feed', 'v8_kelvin_low_critical',
