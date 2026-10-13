@@ -48,6 +48,8 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Check controller syntax before native replay
+        run: python3 -m py_compile scripts/route_cloud_newer_postcts.py
       - name: Reproduce exact newer postCTS then route all domains
         env:
           GH_TOKEN: ${{ github.token }}
@@ -57,6 +59,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if [ ! -d cloud-newer-postcts ]; then
+            mkdir cloud-newer-postcts
+            cp scripts/route_cloud_newer_postcts.py cloud-newer-postcts/failed-source.py
+            python3 -c 'import json,os; from pathlib import Path; Path("cloud-newer-postcts/result.json").write_text(json.dumps(dict(status="FAILED_BEFORE_NATIVE_OUTPUT_DIRECTORY_CREATED", source_head=os.environ["GITHUB_SHA"], native_results_available=False))+"\n")'
+          fi
           archive='newer-postcts-placement-${{ matrix.placement_profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-newer-postcts
           sha256sum "$archive" > "$archive.sha256"

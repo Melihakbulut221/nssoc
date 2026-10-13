@@ -217,8 +217,8 @@ def main():
                 assert {p['layer'] for p in macro['pin_shapes'] if p['signal_type']=='SIGNAL'} == {'Metal2'}
                 bounds = macro['bbox_um']
                 commands += [f'set hotspot_inst [[ord::get_db_block] findInst {{{name}}}]',
-                    f'if {{[[$hotspot_inst getMaster] getName] ne {{{macro["master"]}}}} {{error "SRAM master changed"}}',
-                    f'if {{[$hotspot_inst getOrient] ne {{{macro["orientation"]}}}} {{error "SRAM orientation changed"}}',
+                    'if {[[$hotspot_inst getMaster] getName] ne {'+macro['master']+'}} {error "SRAM master changed"}',
+                    'if {[$hotspot_inst getOrient] ne {'+macro['orientation']+'}} {error "SRAM orientation changed"}',
                     'set hotspot_bbox [$hotspot_inst getBBox]']
                 for getter, value in zip(('xMin','yMin','xMax','yMax'), bounds, strict=True):
                     commands.append(f'if {{[$hotspot_bbox {getter}] != round({value} * $route_dbu)}} {{error "SRAM region changed"}}')
