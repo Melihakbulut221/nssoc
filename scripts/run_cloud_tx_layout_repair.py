@@ -30,11 +30,11 @@ def main():
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
-                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
+                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10'), default='baseline')
     args = parser.parse_args()
     geometry_variant = args.variant
-    if args.variant == 'critical_buses_kelvin_low_selects':
+    if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3'):
         assert args.circuit_profile == 'final_drive_v8', 'Isolate selector routing on the screened v8 circuit'
         geometry_variant = 'critical_buses_kelvin_low_critical'
     if args.circuit_profile in ('cascade16','cascade158'):
@@ -415,7 +415,7 @@ def main():
                     '            assert net not in PORTS\n'
                     '            assert len(terminals[net]) == (9 if net in ("ea", "eb") else 8)\n'
                     '            y = {"qn": 1.0, "qp": 9.0, "ea": 16.0, "eb": 24.0}[net]\n'))
-            if args.variant == 'critical_buses_kelvin_low_selects':
+            if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3'):
                 # Native hot trace: RC adds about11ps before the final mux zero,
                 # versus0.22ps in the following TX zero crossing. Test shorter
                 # selector clock buses on unchanged v8 devices. This hypothesis
@@ -426,6 +426,16 @@ def main():
                     '        elif net in ("sp", "sn"):\n'
                     '            assert net in PORTS and len(terminals[net]) == 2\n'
                     '            y = 32.0 if net == "sp" else 40.0\n'))
+            if args.variant == 'critical_buses_kelvin_low_selects_m3':
+                # Source-bound native R/coordinate diagnosis38467961171 locates
+                # long internal access branches between actual via landings.
+                # Isolate 0.6->1.0um horizontal M3 on qn/qp/ea/eb only. Tail
+                # already uses1.0um. Preserve all devices, buses and other nets;
+                # raw solver edges are not assumed uniquely assigned to M3.
+                # Native DRC/LVS, fresh RC and loaded PVT remain mandatory.
+                changes.append((
+                    "half_escape = 0.5 if net == 'tail' else (0.4 if net in ['avdd','avss'] else 0.3)",
+                    "half_escape = 0.5 if net in ['tail','qn','qp','ea','eb'] else (0.4 if net in ['avdd','avss'] else 0.3)"))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)

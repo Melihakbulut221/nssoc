@@ -344,3 +344,40 @@ with summary JSON plus full archive. Read actual status/errors before adoption.
 The baseline proof run38465877636 and source/license checks both passed.
 Main route38448901835 and32wire38441895491 remain live at this readback.
 All work continues cloud-only; the local workspace remains empty.
+
+
+## Measured paired mapping and physical-metal follow-up (14 October local time)
+
+Run38466891418 completed both physical profiles. Sources restored correctly:
+original map-audit14 status PASS_MAPPED_RETURN_METADATA_NATIVE_TIEZERO_AND_CLOCK_AUDIT.
+Both contain16dual-port ETH SRAMs and4main SRAMs. No physical adoption.
+Baseline79195mapped cells;idle79851(+656). Native unplaced slow PCIe setup
+-1.240848 -> -1.147148ns (93.700ps improvement), but slow CPU setup margin
+1.125990 ->0.251289ns. Typical RXhold -0.360791 ->-0.368361ns; fast RXhold
+-0.347760 ->-0.351201ns. Fast PCIe hold remains-0.109062ns. Other negative
+hold groups remain; this is unplaced before clock-tree/physical ECOs, not
+a regression comparison against the currently routed placement. Do not adopt
+or infer closure from the passing workflow. Candidate worst slow PCIe path
+starts at pcie_link_up_i, ends at FF1165499; map to actual RTL before next ECO.
+Baseline summary638249417 SHA817df9e748bbe9fe7a25180421feaae58840df41ba1d2a0cdf04fe700b9b46a4;
+archive638249192,16809418bytes,SHA3d13294ba8abeb24721e289af6a14e3e41b26006060787f825e0e6b59057bec3.
+Candidate summary638251056 SHAaccb288b74cf7c53529440c55bb7695d9e4e7038be6026764b417b22fc0ae372;
+archive638250779,16909757bytes,checksumasset638250939. Native screen logs
+SHAfe86ca5a5a4f179f8e8fe08fa830d663fae00c0a61fd64f2035a676ba3e01ee5
+andfeab9c60c6ff59366e208508ffe00523773d5ec70aa30c5f5fb2ee5fffdd9ff8.
+
+Native geometry binding38467961171 on9eb8abc869311b03d49a26ace606fd3157bf0cca PASSED.
+Summaryasset638255303,797500bytes,SHA
+6e769267cce4651d5428dd2d519045d7b87bfadd5b0411cc27c1226f07ad34aa.
+All4043native resistors bind to unchanged composed wire graph; dominant edge
+endpoints bind to native Magic coordinates and actual overlapping paint.
+Scale5anchor-DBU/raw-unit;max terminal quantization2DBU. Actual shifted-port
+and1percent-resistor-corruption controls rejected. Endpoint paint is NOT
+proof of a unique layer or a straight physical edge. Max terminal-pair R:
+ea/eb15.564287ohm,tail11.179695ohm,qn17.571188ohm,qp17.395588ohm.
+
+Next physical candidate critical_buses_kelvin_low_selects_m3 onfinal_drive_v8
+inherits exact low-selects geometry and increases only qn/qp/ea/eb M3 access
+width0.6to1.0um. Tail already1.0um; all54devices and other routing unchanged.
+Requires actual560category DRC,strictLVS,fivephysical faults, freshRC and
+original loaded PVT. No RC scaling or acceptance claimed.
