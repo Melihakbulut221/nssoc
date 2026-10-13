@@ -27,9 +27,11 @@ Hot/low and cold/high with worst resistors pass, and disabling the actual
 intermediate bias feed produces 184 wrong samples as expected. The deepest
 selector fault is also rejected by the original-bit oracle. Hot/low with
 fast HBT models fails six final-mux devices: minimum VCE is 0.399209 V against
-the unchanged 0.4 V bound. The 0.25 ps step job remains pending. Candidate v5 widens only
+the unchanged 0.4 V bound. The 0.25 ps step job now passes; the eight-case campaign is complete.
+Candidate v5 widens only
 two final collector resistors from 17 to 18 micrometers to reduce voltage drop;
-run `38340862492` is pending, and its success is not assumed.
+run `38342231393` is queued, and its success is not assumed. The earlier
+pending run `38340862492` was superseded before execution by the newer source.
 All native computation and testing run on GitHub-hosted runners.
 
 The [cascade14 prestage layout](evidence/pcie-cascade14-physical-20261013.json)
@@ -41,7 +43,13 @@ prestage, not the assembled serializer. Run `38341047720` now passes the actual
 controls; [the extraction record](evidence/pcie-cascade14-wire-extraction-20261013.json)
 retains its substrate-resistance and RF-distribution limitations. Run
 `38341559330` binds the real devices and wires for loaded-tree simulation.
-Electrical acceptance with those wires remains open.
+The composition passed; [loaded-tree results](evidence/pcie-physical-prestage-tree-20261013.json)
+show that the 4:1 compact-device control passes but the wired version fails
+54 interstage samples below 150 mV and four final-selector VCE bounds. Output
+bits still pass. This physical candidate is rejected electrically; 32:1 cases
+are running, and run `38342712337` tests wider native HBT access vias before
+any new extraction. Macro-to-macro wiring remains ideal and final/TX blocks
+remain schematic, so this is not complete routed-serializer acceptance.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter

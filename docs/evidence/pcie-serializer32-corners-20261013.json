@@ -1,7 +1,7 @@
 {
   "run": 38339670707,
   "source_head": "a0e3019e",
-  "status": "PARTIAL_RESULTS_CANDIDATE_REJECTED_HOT_FAST_HBT_HEADROOM",
+  "status": "COMPLETE_EIGHT_CASES_V4_REJECTED_HOT_FAST_HBT_HEADROOM",
   "cases": [
     {
       "condition": "hot_low",
@@ -806,17 +806,118 @@
         "bytes": 2368396274,
         "sha256": "64bb0885d9fd5a58379dcecc4e70e2768c9e553891e5dfb795e282b0bcc1883c"
       }
+    },
+    {
+      "condition": "quarter_step",
+      "fault": "none",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38339670707-1-tx-32-quarter_step-none/tx-serializer-32-quarter_step-none-38339670707-1.summary.json",
+      "summary_sha256": "955226ec8dccc51275f0a502607d21b3c8dcfd52e26cea0d467f533d50151b6a",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "fault_rejected_by_original_bits": null,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.28120763765686907,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.28286816327033604,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.28120763765686907,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2824431370077891,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.27533982321029615,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8951918764542168,
+            1.8964642790960535
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2252676427689111,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9125602477668202,
+            1.9377231436943474
+          ],
+          "passed": true
+        },
+        "level_4": {
+          "samples": 768,
+          "minimum_margin_v": 0.31330802578367467,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.914676529336316,
+            1.9263004039993485
+          ],
+          "passed": true
+        },
+        "level_8": {
+          "samples": 768,
+          "minimum_margin_v": 0.320470482026304,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9128844825739528,
+            1.9253859131223132
+          ],
+          "passed": true
+        },
+        "level_16": {
+          "samples": 768,
+          "minimum_margin_v": 0.3209616412609444,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9135021354675508,
+            1.9248089316360164
+          ],
+          "passed": true
+        }
+      },
+      "diagnostics": [],
+      "raw_wave": {
+        "bytes": 4684272274,
+        "sha256": "f7670e835e92e5be9353ce9fb5f78a655d8b58f272b30e0141bff8193e7e89d3"
+      }
     }
   ],
-  "pending_cases": [
-    "quarter_step"
-  ],
+  "pending_cases": [],
   "next_candidate": {
-    "source_head": "6da5770d",
-    "run": 38340862492,
+    "source_head": "693a08cc",
+    "run": 38342231393,
     "circuit": "hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice",
     "change": "Only collector widthsXD0007/XD0008 from17um to18um. All54device topology, other values, original source-bit oracle, source phases, limits and native models unchanged.",
-    "adopted": false
+    "adopted": false,
+    "superseded_before_start_run": 38340862492
   },
   "scope": "Native one-lane schematic serializer tree only. V4 fails six final-mux data HBTs in hot/low with fast HBT models; minimumVCE0.399209267V below unchanged0.4V bound, although bit/interface/MOS gates pass. Failure preserved; nofullPHY/layout/PEX/chip acceptance."
 }
