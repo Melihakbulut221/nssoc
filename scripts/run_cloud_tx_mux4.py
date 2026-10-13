@@ -144,6 +144,28 @@ def tree_plan(streams):
                 launch_offset=streams//2+(streams.bit_length()-2))
 
 
+def physical_prestage(inputs, mode):
+    spec=json.loads((ROOT/'docs/evidence/pcie-cascade14-composition-20261013.json').read_text())
+    assert spec['status']=='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT'
+    archive=inputs/'physical-prestage.tar.gz'
+    fetch(spec['receipt']['url'],spec['receipt']['sha256'],archive)
+    assert archive.stat().st_size==spec['receipt']['bytes']
+    destination=inputs/'physical-prestage';destination.mkdir()
+    with tarfile.open(archive) as packed:
+        raw=packed.extractfile('cloud-tx-layout-composition/result.json').read()
+        assert hashlib.sha256(raw).hexdigest()==spec['summary_sha256']
+        report=json.loads(raw)
+        assert report['circuit_profile']=='cascade14' and report['outputs']==spec['outputs']
+        (destination/'result.json').write_bytes(raw)
+        for name,digest in spec['outputs'].items():
+            assert name in ('mux54-wire01.spice','mux54-compact01.spice')
+            data=packed.extractfile('cloud-tx-layout-composition/'+name).read()
+            assert hashlib.sha256(data).hexdigest()==digest
+            (destination/name).write_bytes(data)
+    archive.unlink()
+    return destination/('mux54-wire01.spice' if mode=='physical_wire' else 'mux54-compact01.spice')
+
+
 def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4):
     plan=tree_plan(streams)
     assert fault in ('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select')
@@ -201,17 +223,21 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             lines.append('XAD_'+name+' '+' '.join(ports)+' '+subckt)
     # Actual port permutations implement interleaving, not an oracle permutation.
     stages=[]
-    for node in plan['nodes']:
-        ports=[p+suffix for p in node['inputs'] for suffix in ('p','n')]
-        ports += [node['clock']+'p',node['clock']+'n',node['label']+'p',node['label']+'n','avdd','0','0',node['reference']]
+    pre_formal=next(line.lower().split()[2:] for line in PRE.read_text().splitlines() if line.lower().startswith('.subckt '))
+    required={'ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref'}
+    assert len(pre_formal)==len(set(pre_formal)) and set(pre_formal) in (required,required|{'wire_cref'})
+    for index,node in enumerate(plan['nodes']):
+        a,b=node['inputs']
+        public=dict(ap=a+'p',an=a+'n',bp=b+'p',bn=b+'n',sp=node['clock']+'p',sn=node['clock']+'n',
+                    op=node['label']+'p',on=node['label']+'n',avdd='avdd',avss='0',sub='0',iref=node['reference'],wire_cref='0')
+        if (fault=='swap_pre_a_select' and index==0) or (fault=='swap_leaf_select' and index==len(plan['nodes'])-1):
+            public['sp'],public['sn']=public['sn'],public['sp']
+        ports=[public[name] for name in pre_formal]
         stages.append((PRE,'xpre'+node['label'],ports))
-    if fault == 'swap_pre_a_select':
-        stages[0][2][4:6] = ['san', 'sap']
     if fault == 'swap_leaf_select':
         # Corrupt an actual deepest-stage selector; source bits/clock phase and
         # output oracle remain untouched. In32:1 this is the15/31 leaf pair.
         assert all(name.startswith('d') for name in plan['nodes'][-1]['inputs'])
-        stages[-1][2][4:6] = stages[-1][2][4:6][::-1]
     formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
     public = dict(ap='ap',an='an',bp='bp',bn='bn',sp='sp',sn='sn',op='mp',on='mn',
                   avdd='avdd',avss='0',sub='0',iref='mr',wire_cref='0')
@@ -270,6 +296,9 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             lines += [f'V{key} {key}0 {reference} '+stimulus,f'R{key} {key}0 {key} 25']
     lines += ['RLOAD op on 100','COP op 0 100f','CON on 0 100f']
     nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
+    # Extracted metal can separate every public pin from its HBT terminal.
+    # Save real interface voltages explicitly, not just intrinsic device nodes.
+    nodes.update(node for _,_,ports in stages for node in ports if node!='0')
     nodes.update(f'd{i}{suffix}0' for i in range(streams) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
     if pre_bias=='native_res':
@@ -377,7 +406,7 @@ def main():
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
-    parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
+    parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
@@ -397,6 +426,9 @@ def main():
         scope='Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.')
     try:
         prepare_inputs(inputs)
+        if args.prestage.startswith('physical_'):
+            assert args.final_drive in ('double_taps_guard','double_taps_margin')
+            PRE=physical_prestage(inputs,args.prestage)
         result['output_bias']=args.output_bias
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams)
         (run/'bench.cir').write_text(deck)

@@ -342,3 +342,36 @@ def test_final_margin_candidate_changes_only_two_actual_collector_widths():
         assert before.startswith(('XD0007 ','XD0008 '))
         assert before.replace('w=17.0u','w=18.0u')==after
     assert text.replace('w=18.0u','w=17.0u')==original
+
+
+def test_reordered_physical_port_list_preserves_every_bound_device(tmp_path,monkeypatch):
+    (tmp_path/'frontend').mkdir()
+    original=mux4.PRE.read_text()
+    (tmp_path/'mux54-compact01.spice').write_text(original)
+    (tmp_path/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+''')
+    _,before=mux4.build(tmp_path,'nominal',streams=8,clock_bias='native_res',pre_bias='native_res',output_bias='native_res')
+    header=next(line for line in original.splitlines() if line.lower().startswith('.subckt '))
+    fields=header.split();reordered=' '.join(fields[:2]+list(reversed(fields[2:]))+['wire_cref'])
+    physical=tmp_path/'permuted.spice';physical.write_text(original.replace(header,reordered))
+    monkeypatch.setattr(mux4,'PRE',physical)
+    deck,after=mux4.build(tmp_path,'nominal',streams=8,clock_bias='native_res',pre_bias='native_res',output_bias='native_res')
+    assert after['hbt']==before['hbt'] and after['mos']==before['mos']
+    assert after['bits']==before['bits'] and after['tree_plan']==before['tree_plan']
+    assert after['vectors']==before['vectors']
+    # The actual source instance follows its declared ports, including explicit
+    # wire-capacitance reference, instead of the old hand-written position list.
+    instance=next(line.split() for line in deck.splitlines() if line.startswith('xprea '))
+    assert instance[1]=='ra' and instance[-2]=='0'
+    for node in after['tree_plan']['nodes']:
+        assert 'v('+node['label']+'p)' in after['vectors']
+        assert 'v('+node['label']+'n)' in after['vectors']
+    physical.write_text(original.replace(header,reordered.replace(' wire_cref',' unexpected_pin')))
+    with pytest.raises(AssertionError):
+        mux4.build(tmp_path,'nominal',streams=8)
