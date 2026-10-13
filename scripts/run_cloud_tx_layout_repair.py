@@ -483,7 +483,7 @@ def main():
                 changes.append(('23:(279.6,-50),24:(318.0,-50)',
                                 '23:(92.4,-82),24:(54.0,-82)'))
                 changes.append(('                escape(pin, 1, n[k], x - 9.6 + 4.8 * k, name, 1 if p["w"]=="1u" else 8)',
-                                '                lane = x - 9.6 + 4.8 * k\n                if i in (23,24) and k == 1:\n                    assert n[k] == "avss"\n                    lane = 150.0 if i == 23 else 34.8\n                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'))
+                                '                lane = x - 9.6 + 4.8 * k\n                if i in (23,24) and k == 1:\n                    assert n[k] == "avss"\n                    lane = 149.6 if i == 23 else 34.8\n                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
