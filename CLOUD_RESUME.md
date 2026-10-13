@@ -30,6 +30,9 @@ invariants, new STA and routing must pass; no acceptance yet.
 Run **38395878470** is live on **e18933ba**; syntax and source checks
 **38395882430** passed. Inspect its actual native replay/repair progress.
 Do not dispatch another identical candidate while this run is live.
+Native invariants and corruption controls passed:1747selected/744moved,
+including33of227dataDFFs. New placement-estimated eth_rx slow setup regresses
++23.324ps to-4.524ps; retained as an open failure. StrictGRT is running.
 
 v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
 one selectorVCE is399.203137mV, below400mV. Quarter-step **38390326921** and
@@ -56,7 +59,11 @@ Hot/low wire still fails128early output samples (minimum0.719mV), final-input
 CM1.761..1.802V and two tailVCEs355.635/357.261mV. Compact hot/low also fails
 two tailVCE gates399.271mV. No limits or phases were changed. Run read-only
 `dense_v8_hot` voltage/current diagnosis before the next circuit change;
-discover the existing diagnosis run before dispatch. Source checks38395113673pass.
+Diagnosis **38396710373** passed on **899557cc**. Actual hot native waveforms
+show about66mVdrop between selector emitter andtailcollector, plus34mVtail
+emitter lift. Investigate local tail/return physical losses and the remaining
+input common-mode failure. No artificial RC or phase changes. Source checks
+**38396713550** passed.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.

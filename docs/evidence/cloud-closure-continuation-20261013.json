@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T12:18:53.249221+00:00",
+  "as_of": "2026-10-13T12:25:28.753906+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -82,7 +82,9 @@
       "run": 38378864232,
       "source": "5f34370641b58f57c9e22bc2528e17bb0d1690ce",
       "status": "PASS_SPDX_INVENTORY_REUSE_AND_MIGRATION_REGRESSION"
-    }
+    },
+    "latest_source_checks_run": 38396713550,
+    "latest_source_checks_status": "PASS"
   },
   "transfer_snapshot": {
     "status": "COMPLETE_SELECTED_REGULAR_OUTPUT_FILES",
@@ -92,8 +94,8 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Denseprestage+finalv8 loaded runs38395107224/38395110568 completed. Wire nominal and cold_high all component gates pass(130.820/226.934mV). Hot_low wire:0wrong,128earlymarginfailures,min0.719mV,finalCM1.761..1.802V,two tailVCE failures355.635/357.261mV. Compact hot also fails two tails399.271mV. Run source-bound voltage/current diagnosis study=dense_v8_hot before next bias/circuit change; discover existing run first. No waiver or PHY acceptance.",
-    "Inspect existing route38395878470 on e18933ba, profilelocal_data_endpoints, holddepth2. Source/syntax checks passed. Must reproduce prior exactSTA and native failedODB coordinate/connectivity equivalence, then1821endpoint envelope/227dataFFs, native repair invariants and newSTA, strictGRT. Preserve all results and do not rerun identical source while live.",
+    "Dense-prestage/v8 hot diagnosis38396710373 passed. It measures about66mVdrop between selector emitter andtailcollector plus34mVtailemitterlift. Wire hot retains128early failures,finalCM1.761..1.802V and two tailVCE failures. Nominal/cold wire allcomponentgatespass. Use actual terminal/layer loss to design local tail/return geometry or circuit repair; do not claim fullPHY, scalephysicalR, or alter samplephases.",
+    "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
     "All work remainscloud-only. LocalworkspaceandNSSOCtemporarypaths wereverifiedempty aftercompletearchivalretirement; do notcloneorstartlocalCAD. UseGitHubAPIfor sourceeditsandhostedworkflowsfor tests.",
@@ -9726,7 +9728,24 @@
       }
     ],
     "source_checks_status": "PASS",
-    "diagnosis_study": "dense_v8_hot"
+    "diagnosis_study": "dense_v8_hot",
+    "hot_diagnosis": {
+      "run": 38396710373,
+      "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+      "summary_sha256": "64fb7c854dbf0a7ec673dd04909e432676976ff3b16f799581c26d06b6e4ab67",
+      "tail6": {
+        "compact_mean_vce_v": 0.4425610288482458,
+        "wire_mean_collector_v": 0.41845990109882397,
+        "wire_mean_emitter_v": 0.0341361437386567,
+        "wire_mean_vce_v": 0.3843237573601673,
+        "wire_mean_ic_a": 0.004509636508732268
+      },
+      "selector8": {
+        "wire_mean_emitter_v": 0.4844918710086426,
+        "wire_mean_vce_v": 0.6593933881905008
+      },
+      "scope": "Actual hot metal voltage loss: selector emitter to tail collector mean about66mV plus34mVtail emitter lift. Diagnose/reduce real local tail/return parasitics without artificial resistance scaling or changing original sample phases. Final-input common-mode failure also remains."
+    }
   },
   "incremental_data_endpoint_candidate": {
     "source_failed_run": 38371498733,
@@ -9745,12 +9764,28 @@
       20,
       8
     ],
-    "status": "NATIVE_REPLAY_AND_REPAIR_IN_PROGRESS",
+    "status": "NATIVE_PLACEMENT_INVARIANTS_AND_ESTIMATED_STA_COMPLETE_GLOBAL_ROUTE_LIVE",
     "adopted": false,
     "scope": "Resume exact previous relocated placement, prove failed ODB diagnosis matches every master/connection/position, reproduce previous timing. Allow explicitly bound data DFFs and combinational/data buffers; preserve clock-output cells, delay cells, macros and all unselected positions. Original hold ECO retained. No congestion or timing waiver.",
     "run": 38395878470,
     "source_head": "e18933ba278278e9033830c8a2f846fdac3d05b3",
     "source_checks_run": 38395882430,
-    "source_checks_status": "PASS"
+    "source_checks_status": "PASS",
+    "pre_route_summary_sha256": "3cdedf377987f3a51e1d0154c55af6827582798cd033d80552f0c3e2b7024150",
+    "selected_count": 1747,
+    "changed_count": 744,
+    "selected_data_flop_count": 227,
+    "changed_data_flop_count": 33,
+    "candidate_odb_sha256": "aa5cedff184f0638648122a43c41efa9c08c4ccfb530903176f7bd3ad02491e7",
+    "native_fault_controls": [
+      "unselected_cell_displacement_rejected",
+      "disconnected_cell_pin_rejected"
+    ],
+    "estimated_sta_regression": {
+      "corner": "slow_max",
+      "group": "eth_rx_clk_i",
+      "old_slack_ns": 0.023324,
+      "new_slack_ns": -0.004524
+    }
   }
 }
