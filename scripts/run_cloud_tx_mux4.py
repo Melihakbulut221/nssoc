@@ -150,6 +150,12 @@ def physical_spec_path(profile):
     return ROOT/'docs/evidence'/('pcie-cascade14-'+prefix+'composition-20261013.json')
 
 
+def physical_final_spec_path(profile):
+    assert profile in ('power_trunks','interleaved')
+    middle='' if profile=='power_trunks' else 'interleaved-'
+    return ROOT/'docs/evidence'/('pcie-final-v5-'+middle+'composition-20261013.json')
+
+
 def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
     assert mode in ('physical_compact','physical_wire')
     spec=json.loads(spec_path.read_text())
@@ -163,6 +169,8 @@ def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
         assert hashlib.sha256(raw).hexdigest()==spec['summary_sha256']
         report=json.loads(raw)
         assert report['circuit_profile']==circuit_profile and report['outputs']==spec['outputs']
+        if 'variant' in spec:
+            assert report['variant']==spec['variant']
         (destination/'result.json').write_bytes(raw)
         for name,digest in spec['outputs'].items():
             assert name in ('mux54-wire01.spice','mux54-compact01.spice')
@@ -436,6 +444,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
+    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
@@ -445,6 +454,7 @@ def main():
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
     args=parser.parse_args()
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
+    assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':
         PRE=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
     if args.frontend=='damped':
@@ -473,12 +483,12 @@ def main():
         final_override=None
         if args.physical_final!='off':
             assert args.final_drive=='double_taps_margin'
-            final_spec=ROOT/'docs/evidence/pcie-final-v5-composition-20261013.json'
+            final_spec=physical_final_spec_path(args.physical_final_profile)
             original=physical_macro(inputs,args.physical_final,final_spec,'final_drive_v5','physical-final')
             final_override=original.with_name('namespaced-final.spice')
             final_override.write_text(rename_physical_top(original.read_text(),'nssoc_physical_final_v5'))
             counts=json.loads(final_spec.read_text())['counts']
-            result['physical_final_scope']=dict(mode=args.physical_final,instances=1,
+            result['physical_final_scope']=dict(mode=args.physical_final,profile=args.physical_final_profile,instances=1,
                 source=str(final_spec.relative_to(ROOT)),source_sha256=sha(final_spec),
                 original_model_sha256=sha(original),namespaced_model_sha256=sha(final_override),
                 native_devices=counts['devices'],substrate_contacts=27,

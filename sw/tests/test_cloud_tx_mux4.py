@@ -402,3 +402,9 @@ def test_physical_top_renaming_preserves_native_device_text_and_formal_order():
 ])
 def test_physical_top_rename_rejects_ambiguous_or_recursive_models(text):
     with pytest.raises(AssertionError):mux4.rename_physical_top(text,'unique_final')
+
+
+def test_physical_final_profiles_use_distinct_receipt_files():
+    assert mux4.physical_final_spec_path('power_trunks').name=='pcie-final-v5-composition-20261013.json'
+    assert mux4.physical_final_spec_path('interleaved').name=='pcie-final-v5-interleaved-composition-20261013.json'
+    with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
