@@ -266,3 +266,44 @@ Do not promote overlay before reading sequential proof and all actual ports.
 The native metal-DC workflow now accepts final_low_selects, restoring the exact
 v8low-selects composition to identify remaining physical conductor resistance.
 This is a read-only DC diagnosis, not loaded acceptance or altered RC.
+
+
+## Cloud-only cleanup and authoritative continuation refresh
+
+The latest instruction remains cloud-only. On 2026-10-13 the main workspace
+was verified empty and no local CAD process was running. Two older checkouts
+of this same repository (Documents/nssoc-public and Documents/nssoc), plus six
+specific generated CAD temporary files outside the workspace, were archived
+in memory, uploaded, downloaded, and SHA-256 verified before deletion.
+All 2783 regular files were rehashed locally before deletion; 82721707 logical
+bytes were removed. No local archive or checkout was created. Other repositories
+and the user's original Downloads documents are outside this cleanup scope.
+
+Permanent backup in release cloud-migration-final-checkout-20261013:
+- asset638208020, legacy-nssoc-and-cad-residue-20261013.tar.gz
+- 44933911 bytes; SHA256
+  9fa1750273df0519c0e90f4cd14482bae75754056d18609bcc4777353ab0e203
+- cleanup-manifest.json inside the archive binds every retained file/path/hash.
+
+Replay idle-clear run38462752171 completed with a harness failure, not a pass.
+The corrected run38463387304 on c2df40e58c2d0a7ad5c9eb9e9d51e099b4c4f4d4
+passed its observable sequential equivalence and complete port controls.
+Summaryasset638181971,59757 bytes,SHA256
+96858095d6bb10040b8b40ac528d9b45f742bb97048fb4021524ad3777d5e2f3;
+status PASS_OBSERVABLE_REPLAY_EQUIVALENCE_AND_COMPLETE_PORT_CONTROLS_NOT_TIMING.
+Production RTL is unchanged. This result does not establish mapping or timing.
+Next bind the exact proved candidate and baseline to a native whole-chip mapping
+recipe; verify frozen capsule replay bytes before using any older synthesis
+capsule. Do not present an older full-chip baseline as current physical evidence.
+
+Metal DC run38463066637 completed with
+PASS_SOURCE_BOUND_METAL_DC_DIAGNOSIS_NOT_ACCEPTANCE.
+Summaryasset638172478,339654 bytes,SHA256
+68c5d1276b3df10a6d8396be2d2b7eb4f95672cb456e7de8e6516199681b2ffd.
+Use native resistor-to-geometry binding before selecting further metal changes;
+this read-only diagnosis does not close the hot loaded-wire amplitude failure.
+
+Main-chip route38448901835 and bounded-save32 wire38441895491 were rechecked:
+both are still in progress. Preserve these handles and do not duplicate them.
+The eight-hour automation remains ACTIVE and already requires cloud-only work.
+Full serial PHY, main-chip routing and final setup/hold remain OPEN.
