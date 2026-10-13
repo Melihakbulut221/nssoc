@@ -3,6 +3,17 @@
 name: tx-layout-repair-cloud
 on:
   workflow_dispatch:
+    inputs:
+      circuit_profile:
+        description: Exact circuit to realize with native PCells
+        type: choice
+        options: [baseline, cascade14]
+        default: baseline
+      variant:
+        description: Physical routing geometry
+        type: choice
+        options: [critical_buses, critical_buses_wide_escape, baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+        default: critical_buses
 permissions:
   contents: read
 concurrency:
@@ -13,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+        variant: ["${{ inputs.variant || 'critical_buses' }}"]
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -34,7 +45,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual layout and apply unchanged DRC LVS and physical fault controls
-        run: python3 scripts/run_cloud_tx_layout_repair.py --variant '${{ matrix.variant }}'
+        run: python3 scripts/run_cloud_tx_layout_repair.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}'
       - name: Keep full geometry, timing, proof and failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -49,9 +60,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-layout-repair-cloud-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-layout-repair-cloud-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" hw/soc/out/cloud-tx-layout-repair
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'layout-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
