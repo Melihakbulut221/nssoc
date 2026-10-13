@@ -12,6 +12,8 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Low upper-metal composition ready for loaded validation
 
+Hosted runs: nominal **38430178745**, hot/cold **38430182410**, DC **38430186548**, source checks **38430189891**. DC/checks passed; waveforms and main route **38420407838** remain live. Worst ea/eb metal resistance is15.564287ohm each versus24.753391/25.692816ohm for rejected M4/M5-only routes. DC summarySHA6ba92196ac61a57a86da3ee96b4241e4bbc4ef5b9517b6117cd2c2ae9e2229b9. All work remains hosted; do not duplicate live jobs after network observation errors. Full serial PHY and final timing remain OPEN.
+
 Composition **38429607596** passed exact54devices/4043R/2664C; distinct receipt
 `docs/evidence/pcie-final-v8-kelvin-low-internal-composition-20261013.json`.
 Next isolate final `v8_kelvin_low_internal` against prior final local_supply:
