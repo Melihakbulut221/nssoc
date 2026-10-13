@@ -70,7 +70,9 @@ Prestage avdd paths measure8.029/9.196ohm (final8.579/10.233ohm unchanged).
 A new `critical_buses_kelvin_supply_feed` candidate keeps cascade14 dense
 geometry and adds an8um TM2 low feed,8um external TM1 riser and nativevias.
 This is real parallel metal, with unchanged54devices/publicports/RCrules.
-Native DRC/LVS/fault proof is required before RC and any loaded simulation.
+Native physical **38412608409 passed**560DRC categories/0markers, strict
+hierarchical/flat54device LVS and all5faultcontrols. Exact geometry archive
+is bound for native RC extraction. Loaded waveform acceptance remains open.
 
 ### Exact physical sources for these studies
 

@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T14:20:24.100193+00:00",
+  "as_of": "2026-10-13T14:25:12.905636+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -100,7 +100,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Run fresh cascade14 critical_buses_kelvin_supply_feed geometry through native DRC/LVS and fivefault controls. Only if it passes, bind actual archive, extract nativeRC, compose, and compare source-bound loaded waves. Keep all baseline/local-return/clock-offset failures; do not infer electrical acceptance from DC resistance.",
+    "Cascade14 supply-feed physical38412608409 PASS560DRC/0markers, strict hierarchical/flat54device LVS, all5faultcontrols rejected. Exact archive bound for native RC extraction. Run that once; only after graph/13controls pass compose and source-bind loaded wave comparison. Earlier DC/PVT failures retained; no electrical adoption.",
     "Do not rerun the four completed local-tail studies unchanged. Read completed_local_tail_comparison and its exact immutable summaries. Neither candidate is accepted; hot wire and compact violations remain. Diagnose actual voltage/headroom and parasitic delay before selecting another source-bound circuit or geometry change.",
     "Inspect existing main route38395878470 before dispatching another route. Latest observed status:in_progress. Keep estimated eth_rx setup regression-4.524ps recorded; no routing or timing closure without native reports.",
     "All source edits through GitHub API; all CAD, simulation, tests and bulk artifacts on GitHub-hosted infrastructure. Local project and transient paths are empty; never recreate local checkout or CAD producers.",
@@ -45610,8 +45610,82 @@
   },
   "cascade14_supply_feed_candidate": {
     "variant": "critical_buses_kelvin_supply_feed",
-    "status": "SOURCE_READY_REQUIRES_NATIVE_PHYSICAL_PROOF",
+    "status": "PASS_PHYSICAL_REQUIRES_NATIVE_RC_AND_LOADED_WAVES",
     "adopted": false,
-    "change": "Retain cascade14 dense geometry; add8um TM2 feed at y=-10um joining actual avdd escape trunks,8um TM1 external riser x=-10um,TM2 bridge at actual avdd public-port Y and native TopVia2 connections. No device, port, rule, coefficient or gate changes."
+    "change": "Retain cascade14 dense geometry; add8um TM2 feed at y=-10um joining actual avdd escape trunks,8um TM1 external riser x=-10um,TM2 bridge at actual avdd public-port Y and native TopVia2 connections. No device, port, rule, coefficient or gate changes.",
+    "run": 38412608409,
+    "source": "a9d8c614da8aca608cec8ea1907c283e0f99e80d",
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38412608409-1-layout-cascade14-critical_buses_kelvin_supply_feed/tx-layout-repair-cloud-cascade14-critical_buses_kelvin_supply_feed-38412608409-1.summary.json",
+    "summary_sha256": "9fb0c47384b0ab8114272283938f0369fd2c9d925986934af6a56261f5668128",
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38412608409-1-layout-cascade14-critical_buses_kelvin_supply_feed/tx-layout-repair-cloud-cascade14-critical_buses_kelvin_supply_feed-38412608409-1.tar.gz",
+      "bytes": 379069,
+      "sha256": "1947603c01f8fc86429ecaec83c1b581e6999abf250db926594eb0d6c9188d99"
+    },
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "f5da28291e18b9ea211f05b5bd851da43934c407e73e05bac3099a93c144dbc5",
+      "log_sha256": "482566487a0c2dbeee79b206d989a762ef60f123dd2815027f6795b9d3a1499e"
+    },
+    "lvs": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_mux2_cascade14_layout_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_mux2_cascade14_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_CASCADE14_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+          "bytes": 419012,
+          "sha256": "1a0ea45397cc64cfff3e8641dee9a1d8248cbef08f6026ec42a897d5f0d07f6a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+          "bytes": 37168,
+          "sha256": "fe1e050b434ac5814fad62c3d6c516d215e1408b1a045c7960ecb8dbcd32590b"
+        }
+      }
+    },
+    "lvs_flat": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_mux2_cascade14_layout_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_mux2_cascade14_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_CASCADE14_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb": {
+          "bytes": 395608,
+          "sha256": "8dc83e58a9bb6821d2349a5a728c73895f4bc93c207c27059d58724f76755125"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log": {
+          "bytes": 37166,
+          "sha256": "c73fcb1204ec200a6adefa22f0289a8a2eca376a4f501e3c690816b586096446"
+        }
+      }
+    }
   }
 }
