@@ -41,6 +41,9 @@ This targets measured upstream physical voltage loss. Native extraction
 `kelvin_dense_wide` binds its distinct immutable composition receipt.
 Compare matched compact/wire streams4, final `v8_kelvin_dense_wide`, nominal
 and temperature_voltage; discover existing runs before dispatch.
+Loaded runs **38395107224** (nominal) and **38395110568** (hot/low and
+cold/high) are dispatched on **ad48b0d2**, with matched compact/wire models.
+Source checks: **38395113673**. Inspect these existing runs before dispatch.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
