@@ -176,3 +176,31 @@ OpenDB on the same pinned runtime to bind every reported timing cell to its
 actual master, placed bbox, pin nets and full incident-net endpoint census.
 The STA report and ODB hashes must remain unchanged. This gives RTL-facing
 net names before any ECO choice; no cell, clock or constraint is modified.
+
+
+## Native credit carry mapping and next candidate
+
+Native readback38459016095 onb1d25755562e391f27f934f237a8d339221c5faa
+PASSED all505reported cell/master bindings and complete incident-net census.
+Nativecells asset638101934,2051537bytes,
+SHA135e57abe41fc3323988677b4a81eac8f2a1e560be296ddfb84fcbce8ea7897f.
+Exact original ODB/STA hashes remain unchanged. Prior failed readers
+38458086604/38458327263/38458689640 remain in releases: escaping/import
+and rendered array spelling errors were reader failures, not chip failures.
+
+Worst setup: credit_data_consumed_o[29] to credit_header_consumed_o[23].
+Worst hold: replay next_store_sequence_plus_one[11] to next_store_sequence[11].
+Setup suffix is six AND2s then NAND2 passing the late credit enable through
+previous carries. All seven original output nets must remain equivalent.
+
+run_cloud_credit_prefix.py keeps those seven gates/outputs; inserts balanced
+AND prefixes of seven early data inputs and applies the unchanged late enable
+at each original gate. Actual Liberty SAT proves all seven outputs for all256
+assignments of eight cutpoints. Replacing final NAND byAND must fail proof.
+Existing instances are temporarily FIRM for added-cell legalization; audit
+requires exact original geometry, all non-target pins, boundary nets and power
+geometry, then restores statuses. Same archived3corner STA/SDC/libraries.
+No candidate adoption, route, final hold or fullPHY closure is claimed.
+
+Launch existing cloud-migration-checks.yml with credit_prefix_eco=true.
+All native work is hosted. Do not launch full routing until measurements exist.
