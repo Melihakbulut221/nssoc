@@ -1,7 +1,7 @@
 {
   "run": 38342231457,
   "source_head": "693a08cc",
-  "status": "FOUR_STREAM_WIRED_CANDIDATE_REJECTED_32_STREAM_CASES_RUNNING",
+  "status": "COMPACT4_AND32_PASS_WIRED4_FAIL_WIRED32_RUNNING",
   "cases": [
     {
       "streams": 4,
@@ -171,10 +171,115 @@
         "bytes": 452370985,
         "sha256": "8e10c5878e160c9600ebad6c757c31080a97aa67c93681c11dd30f6cc09d6a80"
       }
+    },
+    {
+      "streams": 32,
+      "prestage": "physical_compact",
+      "condition": "nominal",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38342231457-1-tree-32-physical_compact-nominal-none/tx-tree-physical-32-physical_compact-nominal-none-38342231457-1.summary.json",
+      "summary_sha256": "058e1657774363501c116e7193b59ca1e363634a5338c212b3edf207b0988a24",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2812067697876013,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.28287086330395383,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2812067697876013,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2824428638613914,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.27534070841149516,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8951977260193442,
+            1.8964627904724962
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.22525828763023892,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.912572572518871,
+            1.9377224271767668
+          ],
+          "passed": true
+        },
+        "level_4": {
+          "samples": 768,
+          "minimum_margin_v": 0.3133100036161711,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.914662881806747,
+            1.9263055396284794
+          ],
+          "passed": true
+        },
+        "level_8": {
+          "samples": 768,
+          "minimum_margin_v": 0.3204693126867224,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9129073721861025,
+            1.925375936765158
+          ],
+          "passed": true
+        },
+        "level_16": {
+          "samples": 768,
+          "minimum_margin_v": 0.32095910724977594,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9135186488876166,
+            1.9248086441181103
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "diagnostics": [],
+      "raw_wave": {
+        "bytes": 2418467174,
+        "sha256": "0aeb7e51274c9303de9ab07d072cdf171da9e0a7932a918975fd43734684832f"
+      }
     }
   ],
   "pending_streams": [
-    32
+    {
+      "streams": 32,
+      "prestage": "physical_wire"
+    }
   ],
   "scope": "All prestages use their actual native54devices. physical_wire retains all173R270C per macro; physical_compact retains same devices/contacts without metal RC. Macro-to-macro wiring remains ideal; final mux and TX remain schematic. Not assembled-tree GDS, full qualified PEX, PHY or chip acceptance. Engineering gates unchanged: wired4:1 output bits pass but54interstage samples fall below150mV and4final selector HBTs fall below0.4V.",
   "physical_followup_run": 38342712337,

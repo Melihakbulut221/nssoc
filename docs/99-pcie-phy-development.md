@@ -30,7 +30,12 @@ fast HBT models fails six final-mux devices: minimum VCE is 0.399209 V against
 the unchanged 0.4 V bound. The 0.25 ps step job now passes; the eight-case campaign is complete.
 Candidate v5 widens only
 two final collector resistors from 17 to 18 micrometers to reduce voltage drop;
-run `38342231393` is queued, and its success is not assumed. The earlier
+run `38342231393` is running. Its nominal, cold/high, mixed resistor corners and the previously failing
+hot/low fast-HBT case pass. The latter now gives at least 0.4265 V VCE in the
+six previously failing final-data HBTs. The disabled intermediate-bias fault
+is rejected with 184 wrong source-bit samples.
+[The partial record](evidence/pcie-serializer32-margin-20261013.json) does not
+assume success for the remaining cases. The earlier
 pending run `38340862492` was superseded before execution by the newer source.
 All native computation and testing run on GitHub-hosted runners.
 
@@ -46,10 +51,27 @@ retains its substrate-resistance and RF-distribution limitations. Run
 The composition passed; [loaded-tree results](evidence/pcie-physical-prestage-tree-20261013.json)
 show that the 4:1 compact-device control passes but the wired version fails
 54 interstage samples below 150 mV and four final-selector VCE bounds. Output
-bits still pass. This physical candidate is rejected electrically; 32:1 cases
-are running, and run `38342712337` tests wider native HBT access vias before
-any new extraction. Macro-to-macro wiring remains ideal and final/TX blocks
-remain schematic, so this is not complete routed-serializer acceptance.
+bits still pass. This physical candidate is rejected electrically. The 32:1
+compact-device control also passes; its metal-RC case remains in progress.
+[Full-wave diagnosis](evidence/pcie-physical-prestage-wire-loss-20261013.json)
+compares identical source bits and time-weighted device measurements. In the
+first prestage, the two tail emitter nodes rise by 41.84 and 42.00 mV, while
+the reference emitter rises by 9.81 mV. Tail VBE drops by about 31.7 mV and
+each tail collector current drops by about 2.52 mA. These are observed node
+changes in the wire model; the exact contribution of each physical segment
+still needs isolation. Seven hosted diagnosis controls passed.
+
+The [wider HBT access geometry](evidence/pcie-cascade14-wide-access-physical-20261013.json)
+passes the same native DRC/LVS and five fault controls. Its
+[fresh extraction](evidence/pcie-cascade14-wide-access-extraction-20261013.json)
+and [device/wire composition](evidence/pcie-cascade14-wide-access-composition-20261013.json)
+pass their structural checks, with 781 wire resistors and 650 capacitors.
+Run `38344474745` tests this new composition in loaded 4:1 compact and wire
+cases; no electrical improvement is assumed. The earlier request
+`38344233026` was cancelled while pending, before any job started, to allow
+this independent geometry to run alongside the original 32:1 study.
+Macro-to-macro wiring remains ideal and final/TX blocks remain schematic,
+so this is not complete routed-serializer acceptance.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
