@@ -248,3 +248,57 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     assert len(c['hbt'])==62 and len(c['mos'])==64
     assert {'i(vfinal_feed)','v(finalfeed)','i(vtx_feed)','v(txfeed)'} <= set(c['vectors'])
     assert c['bits']==mux4.sequence()
+
+
+@pytest.mark.parametrize('streams',[4,8,16,32])
+def test_complete_recursive_tree_selects_original_source_without_retiming(streams):
+    plan=mux4.tree_plan(streams);bits=mux4.sequence()
+    nodes={node['label']:node for node in plan['nodes']}
+    clocks={clock['name']:points(mux4.pwl([int(i%2==0) for i in range(256)],0,.08,
+            clock['period'],clock['origin'])) for clock in plan['clocks']}
+    sources=[points(mux4.pwl(bits[bank::streams],.6,.6,streams*mux4.UI,
+                mux4.START+(bank-plan['launch_offset'])*mux4.UI,invert=True)) for bank in range(streams)]
+    for index,bit in enumerate(bits):
+        for phase in (.3,.5,.7):
+            t=mux4.START+(index+phase)*mux4.UI
+            def choice(clock):
+                p=clocks[clock]
+                return 0 if np.interp(t,p[:,0],p[:,1])>0 else 1
+            selected=('a','b')[choice('s')]
+            visited=0
+            while selected in nodes:
+                node=nodes[selected];selected=node['inputs'][choice(node['clock'])];visited+=1
+            assert selected==f'd{index%streams}' and visited==streams.bit_length()-2
+            p=sources[index%streams]
+            assert np.interp(t,p[:,0],p[:,1])==pytest.approx(1.2*(1-bit),abs=1e-12)
+        # Leaf data is stable before the earliest selection on its actual path.
+        selected_at=mux4.START+(index-(streams.bit_length()-2))*mux4.UI
+        p=sources[index%streams]
+        assert np.interp(selected_at,p[:,0],p[:,1])==pytest.approx(1.2*(1-bit),abs=1e-12)
+
+
+@pytest.mark.parametrize('streams',[4,8,16,32])
+def test_complete_tree_binds_every_device_and_limits_actual_clock_reference_fanout(tmp_path,streams):
+    from collections import Counter
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+""")
+    deck,c=mux4.build(tmp_path,'nominal',clock_bias='native_res',pre_bias='native_res',output_bias='native_res',streams=streams)
+    assert len(c['hbt'])==19*(streams-1)+4+(streams+1)//3
+    assert len(c['mos'])==16*streams
+    assert len(c['references'])==streams-2
+    fanout=Counter(clock['reference'] for clock in c['tree_plan']['clocks'])
+    assert sum(fanout.values())==streams-1 and max(fanout.values())<=3
+    assert len(fanout)==len(c['clock_refs'])
+    assert not any(line.lower().startswith('i') for line in deck.splitlines())
+    assert c['bits']==mux4.sequence() and len(set(c['vectors']))==len(c['vectors'])
+    for reference in c['references']:
+        assert f'i(vprebias_{reference})' in c['vectors']
+    assert len([line for line in deck.splitlines() if line.startswith('xpre')])==streams-2

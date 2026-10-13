@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Native 4:1 serializer tree; all stages loaded by actual next-stage devices.
+"""Native 4/8/16/32:1 trees with every next-stage transistor actually connected.
 
-Four 2Gb/s CMOS streams feed two 2:1 HBT muxes, then the existing final mux
-and TX load at 8GT/s. Source clock phases and biases remain external ideal
-sources; this is not a complete 32:1 serializer, clock tree, PHY or layout.
+Input rate is 8Gb/s divided by stream count. The full source-bit oracle,
+physical device bounds and observation phases are unchanged. Clock modulation
+remains external; even a passing 32:1 tree is not a PLL/CDR, full PHY or layout.
 """
 import argparse
 import gzip
@@ -122,7 +122,30 @@ def prepare_inputs(inputs):
     return spec
 
 
-def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal'):
+def tree_plan(streams):
+    assert streams in (4,8,16,32)
+    def label(stride,offset):
+        return ('a','b')[offset] if stride==2 else f'p{stride}_{offset}'
+    nodes=[]
+    stride=2
+    while stride<streams:
+        for offset in range(stride):
+            name=label(stride,offset)
+            inputs=[f'd{i}' if 2*stride==streams else label(2*stride,i)
+                    for i in (offset,offset+stride)]
+            nodes.append(dict(label=name,inputs=inputs,clock='s'+name,reference='r'+name,
+                              stride=stride,offset=offset,origin=START+(offset-(stride.bit_length()-1))*UI))
+        stride*=2
+    clocks=[*(dict(name=n['clock'],origin=n['origin'],period=n['stride']*UI) for n in nodes[:2]),
+            dict(name='s',origin=START,period=UI),
+            *(dict(name=n['clock'],origin=n['origin'],period=n['stride']*UI) for n in nodes[2:])]
+    return dict(streams=streams,nodes=nodes,clocks=clocks,
+                launch_offset=streams//2+(streams.bit_length()-2))
+
+
+def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4):
+    plan=tree_plan(streams)
+    references=[n['reference'] for n in plan['nodes']]
     assert output_bias in ('ideal','native_res')
     assert pre_bias in PRE_BIAS_MODES
     assert final_drive in ('baseline','double','double_taps','double_taps_guard')
@@ -133,7 +156,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     c.update(CONDITIONS[condition])
     frontend = inputs / 'frontend'
     final = {'double':FAST_FINAL,'double_taps':TAPPED_FINAL,'double_taps_guard':GUARDED_FINAL}.get(final_drive,inputs / 'mux54-compact01.spice')
-    lines = ['NSSOC native full two-level 4:1 tree, unchanged source-bit oracle']
+    lines = [f'NSSOC native full {streams}:1 tree, unchanged source-bit oracle']
     for kind, corner, directory in [('HBT', c['hbt'], inputs / 'models'),
         ('RES', c['resistor'], inputs / 'models'), ('MOSlv', c['lv_corner'], frontend / 'models'),
         ('MOShv', c['hv_corner'], frontend / 'models')]:
@@ -151,12 +174,12 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     rails = {'avdd': 2.5*c['supply_scale'], 'tvdd': 1.8*c['supply_scale'], 'dvdd': 1.2*c['core_scale']}
     lines += [f'V{name} {name} 0 PWL(0 0 1n {v:.12g})' for name, v in rails.items()]
     hbt, mos = {}, {}
-    for bank in range(4):
+    for bank in range(streams):
         for suffix, invert in [('p', True), ('n', False)]:
             name = f'd{bank}{suffix}'
             source = name + '0'
-            gate_pwl = pwl(bits[bank::4], .6*c['core_scale'], .6*c['core_scale'],
-                           4*UI, START + (bank-3)*UI, invert)
+            gate_pwl = pwl(bits[bank::streams], .6*c['core_scale'], .6*c['core_scale'],
+                           streams*UI, START + (bank-plan['launch_offset'])*UI, invert)
             lines.append(f'V{name} {source} 0 ' + gate_pwl)
             ports = [source, name, 'avdd', 'dvdd', '0', '0']
             subckt, found = bind_devices(FRONT, 'xad_'+name, ports, {'sg13_hv_nmos'})
@@ -175,10 +198,11 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             mos.update(found)
             lines.append('XAD_'+name+' '+' '.join(ports)+' '+subckt)
     # Actual port permutations implement interleaving, not an oracle permutation.
-    stages = [
-        (PRE, 'xprea', ['d0p','d0n','d2p','d2n','sap','san','ap','an','avdd','0','0','ra']),
-        (PRE, 'xpreb', ['d1p','d1n','d3p','d3n','sbp','sbn','bp','bn','avdd','0','0','rb']),
-    ]
+    stages=[]
+    for node in plan['nodes']:
+        ports=[p+suffix for p in node['inputs'] for suffix in ('p','n')]
+        ports += [node['clock']+'p',node['clock']+'n',node['label']+'p',node['label']+'n','avdd','0','0',node['reference']]
+        stages.append((PRE,'xpre'+node['label'],ports))
     if fault == 'swap_pre_a_select':
         stages[0][2][4:6] = ['san', 'sap']
     formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
@@ -191,30 +215,36 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         assert len(found) == (4 if instance == 'xtx' else 19)
         hbt.update(found)
         lines.append(instance+' '+' '.join(ports)+' '+name)
-    assert len(hbt) == 61 and len(mos) == 64
-    if clock_bias!='ideal':
-        subckt, found = bind_devices(BIAS, 'xclkbias', ['clkbias','0','0'], {'npn13g2'})
+    assert len(hbt) == 19*(streams-1)+4 and len(mos) == 16*streams
+    clock_refs=[]
+    for group in range((len(plan['clocks'])+2)//3):
+        suffix='' if group==0 else f'_g{group}'
+        clock_refs.append(dict(node='clkbias'+suffix,feed='clkfeed'+suffix,probe='vclkbias_feed'+suffix))
+        if clock_bias=='ideal':
+            continue
+        ports=[clock_refs[-1]['node'],'0','0']
+        subckt,found=bind_devices(BIAS,'xclkbias'+suffix,ports,{'npn13g2'})
         assert len(found)==1
         hbt.update(found)
-        lines.append('XCLKBIAS clkbias 0 0 '+subckt)
+        lines.append('XCLKBIAS'+suffix+' '+' '.join(ports)+' '+subckt)
         if clock_bias=='native_res':
-            lines += ['Vclkbias_feed avdd clkfeed 0',
-                      'XCLKFEED clkfeed clkbias 0 nssoc_tx_clock_bias_feed_v1']
+            lines += [f'Vclkbias_feed{suffix} avdd clkfeed{suffix} 0',
+                      f'XCLKFEED{suffix} clkfeed{suffix} clkbias{suffix} 0 nssoc_tx_clock_bias_feed_v1']
         else:
-            lines.append('ICLKBIAS avdd clkbias PWL(0 0 1n .00065)')
-    for reference in ('ra', 'rb', 'mr'):
+            lines.append(f'ICLKBIAS{suffix} avdd clkbias{suffix} PWL(0 0 1n .00065)')
+    for reference in [*references,'mr']:
         if reference=='mr' and output_bias=='native_res':
             lines += ['Vfinal_feed avdd finalfeed 0',
                       'XFINALFEED finalfeed mr 0 nssoc_tx_final_bias_feed_v1']
             continue
-        if pre_bias=='native_res' and reference in ('ra','rb'):
+        if pre_bias=='native_res' and reference in references:
             # Zero-volt source is only a current probe, not a bias generator.
             lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
             if not (fault=='disable_pre_b_bias' and reference=='rb'):
                 lines.append(f'XPREBIAS_{reference} prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1')
             continue
         bias = 0 if fault == 'disable_pre_b_bias' and reference == 'rb' else .0005
-        if reference in ('ra','rb') and not (fault=='disable_pre_b_bias' and reference=='rb'):
+        if reference in references and not (fault=='disable_pre_b_bias' and reference=='rb'):
             bias=PRE_BIASES[pre_bias]
         if reference=='mr' and final_drive in ('double','double_taps','double_taps_guard'):
             bias=.001
@@ -223,21 +253,23 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         lines += ['Vtx_feed tvdd txfeed 0','XTXFEED txfeed tr 0 nssoc_tx_output_bias_feed_v1']
     else:
         lines.append('ITX tvdd tr PWL(0 0 1n .0015)')
-    for name, origin, period in [('sa', START-UI, 2*UI), ('sb', START, 2*UI), ('s', START, UI)]:
-        for suffix, invert in [('p',False),('n',True)]:
-            key = name + suffix
-            stimulus = pwl([int(i % 2 == 0) for i in range(BITS)], 1.23 if clock_bias=='ideal' else 0, .08, period, origin, invert)
-            reference = '0' if clock_bias=='ideal' else 'clkbias'
-            lines += [f'V{key} {key}0 {reference} '+stimulus, f'R{key} {key}0 {key} 25']
+    for index,clock in enumerate(plan['clocks']):
+        name,origin,period=clock['name'],clock['origin'],clock['period']
+        clock['reference']=clock_refs[index//3]['node']
+        for suffix,invert in [('p',False),('n',True)]:
+            key=name+suffix
+            stimulus=pwl([int(i%2==0) for i in range(BITS)],1.23 if clock_bias=='ideal' else 0,.08,period,origin,invert)
+            reference='0' if clock_bias=='ideal' else clock['reference']
+            lines += [f'V{key} {key}0 {reference} '+stimulus,f'R{key} {key}0 {key} 25']
     lines += ['RLOAD op on 100','COP op 0 100f','CON on 0 100f']
     nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
-    nodes.update(f'd{i}{suffix}0' for i in range(4) for suffix in ('p','n'))
+    nodes.update(f'd{i}{suffix}0' for i in range(streams) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
     if pre_bias=='native_res':
-        vectors += [f'i(vprebias_{reference})' for reference in ('ra','rb')]
-        vectors += [f'v(prefeed_{reference})' for reference in ('ra','rb')]
+        vectors += [f'i(vprebias_{reference})' for reference in references]
+        vectors += [f'v(prefeed_{reference})' for reference in references]
     if clock_bias=='native_res':
-        vectors += ['i(vclkbias_feed)','v(clkfeed)']
+        vectors += [vector for ref in clock_refs for vector in ('i('+ref['probe']+')','v('+ref['feed']+')')]
     if output_bias=='native_res':
         vectors += ['i(vfinal_feed)','v(finalfeed)','i(vtx_feed)','v(txfeed)']
     vectors += ['@q.'+n+'.qnpn13g2[ic]' for n in hbt]
@@ -252,7 +284,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     lines += ['op','wrdata op.dat '+' '.join(vectors),
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
               'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
-    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, clock_bias=clock_bias, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
+    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
         rails=rails, vectors=vectors, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
@@ -280,11 +312,12 @@ def review(run, contract):
             current=values[f'i({probe})'][active]
             bias_current[label]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
     if contract.get('clock_bias')=='native_res':
-        assert np.max(np.abs(volt('clkfeed')-volt('avdd'))) < 1e-12
-        current=values['i(vclkbias_feed)'][active]
-        bias_current['clock_feed']=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
+        for ref in contract.get('clock_refs',[dict(node='clkbias',feed='clkfeed',probe='vclkbias_feed')]):
+            assert np.max(np.abs(volt(ref['feed'])-volt('avdd'))) < 1e-12
+            current=values['i('+ref['probe']+')'][active]
+            bias_current[ref['node']]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
     if contract.get('pre_bias')=='native_res':
-        for reference in ('ra','rb'):
+        for reference in contract.get('references',['ra','rb']):
             assert np.max(np.abs(volt('prefeed_'+reference)-volt('avdd'))) < 1e-12
             current=values[f'i(vprebias_{reference})'][active]
             bias_current[reference]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
@@ -306,7 +339,7 @@ def review(run, contract):
     def interface(stage):
         samples = []
         for i,bit in enumerate(contract['bits']):
-            prefix = ('a' if i%2==0 else 'b') if stage=='final' else f'd{i%4}'
+            prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
             for phase in (.3,.5,.7):
                 at = START+(i+phase)*UI
                 p,n = (np.interp(at,t,volt(prefix+suffix)) for suffix in ('p','n'))
@@ -318,8 +351,12 @@ def review(run, contract):
             passed=bool((margin>=.15).all() and (cm>=1.8).all() and (cm<=2.05).all()))
     signal = original_bit_output_screen(t,volt('op'),volt('on'),contract['bits'],START,UI)
     interfaces = {name:interface(name) for name in ('cmos', 'final')}
-    clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in ('sa','sb','s')}
-    return dict(native_bias_current_a=bias_current, prestage_native_bias_current_a={k:v for k,v in bias_current.items() if k in ('ra','rb')},clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
+    stride=4
+    while stride<contract.get('streams',4):
+        interfaces['level_'+str(stride)]=interface(stride)
+        stride*=2
+    clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in [c['name'] for c in contract.get('tree_plan',dict(clocks=[dict(name=n) for n in ('sa','sb','s')]))['clocks']]}
+    return dict(native_bias_current_a=bias_current, prestage_native_bias_current_a={k:v for k,v in bias_current.items() if k in contract.get('references',['ra','rb'])},clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
         signals=signal,hbt_devices=devices,mos_devices=mos,interfaces=interfaces,
         failed_hbts={n:r for n,r in devices.items() if not r['passed']},
         failed_mos={n:r for n,r in mos.items() if not r['passed']},
@@ -330,6 +367,7 @@ def review(run, contract):
 def main():
     global PRE, FRONT
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14'),default='divider9')
@@ -348,12 +386,12 @@ def main():
     out=ROOT/'cloud-tx-mux4';out.mkdir(exist_ok=False)
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
-    result=dict(status='RUNNING',condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
-        scope='Actual 61-HBT/64-MOS two-level4:1 schematic; native_vbe adds one fully screened HBT and resistor for loaded clock common-mode generation. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces two prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
+    result=dict(status='RUNNING',streams=args.streams,condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
+        scope='Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.')
     try:
         prepare_inputs(inputs)
         result['output_bias']=args.output_bias
-        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias)
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams)
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
@@ -363,7 +401,7 @@ def main():
         result['inputs']={str(p):sha(p) for p in paths}
         def limits():
             resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,)*2)
-            resource.setrlimit(resource.RLIMIT_FSIZE,(2*1024**3,)*2)
+            resource.setrlimit(resource.RLIMIT_FSIZE,((2 if args.streams==4 else 8)*1024**3,)*2)
             resource.setrlimit(resource.RLIMIT_CORE,(0,0))
             os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
         env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
@@ -377,7 +415,7 @@ def main():
             diagnostics=[line for line in log.splitlines() if any(w in line.lower() for w in ('warning','error','nan','singular','stepping','too small','jmax','vmax'))])
         if code or not (run/'wave.dat').exists():
             print(log[-12000:],flush=True)
-            raise RuntimeError('Native4:1 tree capture did not finish')
+            raise RuntimeError('Native serializer tree capture did not finish')
         flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
         assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
         assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for name,body in flags)
