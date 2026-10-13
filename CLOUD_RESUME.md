@@ -10,6 +10,25 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Low upper-metal loaded result rejected; collector-route followup
+
+Runs38430178745/38430182410 completed. All six exact cases are in
+`docs/evidence/pcie-low-internal-loaded-tree-20261013.json`.
+Compact nominal/hot/cold pass. Wire nominal149.050mV and cold240.711mV output
+margins pass, but each fails four selector VCE minima (worst396.601/391.051mV).
+Hot wire has no wrong signs but128samples below100mV, minimum9.923mV,
+input common mode1.762518..1.802700V; HBT gates pass. Candidate remains rejected.
+Do not rerun unchanged or relax the400mV/100mV/input-CM acceptance thresholds.
+
+New geometry `critical_buses_kelvin_low_critical` retains low ea/eb TM2 buses
+and also relocates qn/qp to y=1/9um. Eight actual terminals per collector net
+and nine per ea/eb are asserted. Global cursor/public ports stay fixed;
+all54devices and native coefficients stay fixed. Supply feed top edge is-6um;
+qn lower edge is-1um, retaining a5um gap. Native DRC/LVS/faults then fresh
+RC/composition and unchanged loaded gates must validate this hypothesis.
+Discover its physical run before dispatching. Mainroute38420407838 remains live.
+All work stays cloud-only; full serial PHY and final timing remain OPEN.
+
 ## Low upper-metal composition ready for loaded validation
 
 Hosted runs: nominal **38430178745**, hot/cold **38430182410**, DC **38430186548**, source checks **38430189891**. DC/checks passed; waveforms and main route **38420407838** remain live. Worst ea/eb metal resistance is15.564287ohm each versus24.753391/25.692816ohm for rejected M4/M5-only routes. DC summarySHA6ba92196ac61a57a86da3ee96b4241e4bbc4ef5b9517b6117cd2c2ae9e2229b9. All work remains hosted; do not duplicate live jobs after network observation errors. Full serial PHY and final timing remain OPEN.
