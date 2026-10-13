@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T05:34:41.249498+00:00",
-  "turn_classification": "PROGRESS: the final v5 core passed 18 source-equivalence tests. Two actual layout shorts were repaired; the resulting macro passed 560 DRC categories, strict hierarchical and flat LVS, and five fault controls. Fresh 781R/642C extraction and 13 corruption controls passed, followed by composition. The combined physical 4:1 tree passed its compact control but failed the wired screen on 128 early samples, seven HBT limits and common mode. New interleaved-resistor geometry run 38351576199 is in progress. All CAD and tests remain hosted; local main-output and tool transfers are live.",
-  "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
+  "as_of": "2026-10-13T06:15:32.973611+00:00",
+  "turn_classification": "PROGRESS",
+  "goal_status": "OPEN",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "741dcfcf",
+  "head": "a87866263e096f363218aba95c06e197e4f70533",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -87,11 +87,11 @@
     "uploaded_bytes": 71016775199
   },
   "next_actions": [
-    "Read final-v5 interleaved-resistor run 38352031533. Prior run 38351576199 passed 560 DRC categories and strict hierarchical/flat LVS, but its rail-short injection never executed because supply-bus x intervals no longer overlapped. The new run changes only that mutation to bridge verified actual pin centres; all verdict gates remain unchanged. If every fault is rejected, bind this exact new archive and run fresh extraction/composition before waveforms. Add interleaved variant to extraction/composition workflow choices; never reuse spacing38 RC.",
-    "Combined physical 4:1 run 38350973496 was rejected: 128 wrong early samples, seven failing HBTs and minimum interstage common mode 1.762973 V. Source-bit and topology controls passed before simulation. Keep the original sampling phases and limits; a successful Actions run is not electrical acceptance.",
-    "Main-chip Metal5-reservation run 38347061685 and broad-placement run 38334595459 are confirmed live. Do not restart based on age. Prior combined GMII/DPO run 38339178024 finished with 147 overflow and was rejected.",
-    "Continue hash-verified main-output and tool migration; PNR regular-file migration is complete. The finalizer requires all three families to finish before hosted reconstruction. Preserve transfer state, unique project sources and unarchived links or Git metadata. Local cleanup is incomplete.",
-    "Full serial PHY, main-chip routing and final setup/hold remain open. No assembled analog tree, qualified RF/body extraction, jitter/BER or ESD acceptance is claimed."
+    "Cloud-only CAD/tests. Read Kelvin loaded4:1 run38355959100 (af6435b4), exactfresh837R681C finalmodel plusphysicalpowertrunkprestage, compactandwire. Sourcebit/phases/acceptancelimits unchanged. Actionsgreen isnot electricalpass.",
+    "Continue verified cloud migration and cleanup. Main outputs stilltransferring; PNRandtools complete withhostedreadback.32historicaluntracked sourcecopies removedafterremote-byteverification. Finishremainingignoredscratch, nestedGitmetadata, finalstate/sourcecleanup withoutlosinguniquecontent.",
+    "Read mainchipM5reservation38347061685 andbroadplacement38334595459; bothlastconfirmedlive. Do not restartforage. Broadplacementalreadytimingrejected.",
+    "Finalizer waitsfor3transferfamilies then dispatches finalhostedbytereconstruction. Preserveitsstateandrunningcontrollersuntilcompletion.",
+    "FullserialPHY, actualassembledtree/mainchiproute, qualifiedRF/bodyextraction andfinalsetup/hold remainOPEN."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -449,13 +449,13 @@
     "recommended_depth": 2
   },
   "cloud_cleanup_live": {
-    "checked_utc": "2026-10-13T05:29:59.717349+00:00",
+    "checked_utc": "2026-10-13T06:15:32.973611+00:00",
     "output": {
       "status": "RUNNING",
-      "next_index": 318477,
-      "batch": 337,
-      "removed_bytes": 206182433399,
-      "uploaded_bytes": 112842640507
+      "next_index": 334033,
+      "batch": 347,
+      "removed_bytes": 220117831886,
+      "uploaded_bytes": 124596129982
     },
     "pnr": {
       "status": "COMPLETE_SELECTED_REGULAR_OUTPUT_FILES",
@@ -475,22 +475,31 @@
       "remaining_logical_bytes": 75763918285,
       "scope": "Live metadata snapshot; not allocated disk usage; active transfer may advance."
     },
-    "verified_removed_logical_bytes": 281915575657,
+    "verified_removed_logical_bytes": 298885812852,
     "additional_empty_directories_removed": 3956,
     "tools": {
-      "status": "RUNNING",
-      "next_index": 104246,
-      "batch": 16,
-      "removed_bytes": 7950780588,
-      "uploaded_bytes": 2647624669
+      "status": "COMPLETE_SELECTED_REGULAR_OUTPUT_FILES",
+      "next_index": 111666,
+      "batch": 21,
+      "removed_bytes": 10985619296,
+      "uploaded_bytes": 4535513379
     },
-    "tools_service": "nssoc-cloud-tools-transfer-20261013 active persistent user unit; separate frozenplan/state/prefix;54hostedmigrationtestspassed38348926918 beforestart",
-    "scope_decision": "User already explicitly requested everything in cloud and local cleanup; no additional approval required for exact verified project-tool backup/deletion. Historical32uniqueprojectsourcefiles remain preserved in recoverycapsule and checkout.",
+    "tools_service": "Completed successfully, inactive. Hosted restoration38353198687 passedall4groups.",
+    "scope_decision": "Historical32untracked source copies now removed only after exact remote capsule and member-byte verification. Tracked sources, tool Git metadata and live migration state still remain.",
     "live_services_confirmed": [
       "nssoc-cloud-output-transfer-20261012",
-      "nssoc-cloud-tools-transfer-20261013",
       "nssoc-cloud-migration-finalize-20261013"
-    ]
+    ],
+    "tools_readback_evidence": "docs/evidence/cloud-tools-restoration-20261013.json",
+    "tool_links_cleanup_evidence": "docs/evidence/cloud-tool-links-cleanup-20261013.json",
+    "tool_links_removed": 19183,
+    "tool_empty_directories_removed": 12275,
+    "tool_empty_directory_permission_errors": 92,
+    "historical32_source_cleanup_evidence": "docs/evidence/cloud-historical-source-cleanup-20261013.json",
+    "scratch_cleanup_evidence": "docs/evidence/cloud-scratch-cleanup-20261013.json",
+    "scratch_entries_removed": 6115,
+    "scratch_regular_logical_bytes_removed": 223059317,
+    "remaining_local_scope": "Mainoutputtransfer, current sourcecheckout/.git and migrationstate remain. Toolmetadata and external dependency snapshots are being archived separately. No total-local-cleanup claim."
   },
   "combined_gmii_hold_channel_route": {
     "run": 38339178024,
@@ -593,6 +602,29 @@
     "interleaved_fixture_evidence": "docs/evidence/pcie-final-v5-interleaved-fault-fixture-20261013.json",
     "interleaved_fault_fixture_repair_run": 38352031533,
     "interleaved_fault_fixture_repair_source": "741dcfcf",
-    "interleaved_fault_fixture_repair_status": "IN_PROGRESS"
+    "interleaved_fault_fixture_repair_status": "PASS_NATIVE_DRC_STRICT_LVS_AND_ALL5FAULTS",
+    "interleaved_extraction_run": 38352300786,
+    "interleaved_composition_run": 38352557674,
+    "interleaved_loaded_tree_run": 38352789660,
+    "interleaved_loaded_tree_result": "COMPACT_PASS_WIRED_REJECTED128EARLYBITS_7HBTBOUNDS_CM1.766211V",
+    "interleaved_waveform_evidence": "docs/evidence/pcie-interleaved-macros-loaded-tree-20261013.json",
+    "power_wire_diagnosis_run": 38353069824,
+    "interleaved_wire_diagnosis_run": 38353682503,
+    "diagnostic_finding": "Observed final reference emitter rises15.6mV but tails57.8mV; tailVBE falls41.7mV and Ic4.66mA. Not qualified segment-levelRF proof.",
+    "kelvin_first_rejected_run": 38353911237,
+    "kelvin_short_diagnosis_run": 38354232866,
+    "kelvin_short_cause": "Reference M5 branch atx298.8crossedD23 substrate via stack. Branch jog4.8um tox303.6 avoids crossing.",
+    "kelvin_physical_run": 38354499415,
+    "kelvin_physical_status": "PASS560DRC_STRICT_HIERARCHICAL_FLAT54DEVICE_LVS_ALL5FAULTS",
+    "kelvin_physical_evidence": "docs/evidence/pcie-final-v5-kelvin-physical-20261013.json",
+    "kelvin_extraction_run": 38355262540,
+    "kelvin_extraction_status": "PASS837R681C_AND13FAULTCONTROLS",
+    "kelvin_extraction_evidence": "docs/evidence/pcie-final-v5-kelvin-extraction-20261013.json",
+    "kelvin_composition_run": 38355627011,
+    "kelvin_composition_evidence": "docs/evidence/pcie-final-v5-kelvin-composition-20261013.json",
+    "kelvin_composition_status": "PASS_SOURCE_BOUND54NATIVE_DEVICES_837R681C",
+    "kelvin_loaded_tree_run": 38355959100,
+    "kelvin_loaded_tree_source": "af6435b4",
+    "kelvin_loaded_tree_status": "IN_PROGRESS"
   }
 }

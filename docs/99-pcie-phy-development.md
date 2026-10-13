@@ -395,3 +395,28 @@ padframe, chip integration or PCIe qualification.
 tracks a clocked HBT receiver sampler, physical differential pad/ESD checks and
 their exact analog limitations. These experiments do not provide CDR/PLL or a
 complete main-chip PCIe PHY.
+
+## Cloud-only continuation, 13 October 2026: physical return path
+
+The interleaved final-v5 layout passed native DRC, strict hierarchical/flat
+54-device LVS and all five physical fault controls in run 38352031533. Fresh
+781R/646C extraction and composition passed, but the actual loaded 4:1 wire
+study 38352789660 still failed: 128 early sample errors, seven HBT headroom
+violations and a 1.766211 V minimum interstage common mode. Its compact control
+passed. These are rejected electrical results, not PHY acceptance.
+
+Hosted full-wave comparisons (38353069824 and 38353682503) observed about
+15.6 mV of reference-emitter rise versus 57.8 mV at the final-stage tails;
+tail VBE fell about 41.7 mV and collector current about 4.66 mA. A physical
+Metal5 emitter-return candidate initially shorted the substrate via stack.
+Moving only the reference branch 4.8 micrometres cleared that crossing.
+Run 38354499415 passed all 560 DRC categories, both strict LVS checks and
+five fault controls. Its fresh extraction 38355262540 passed with 837R/681C
+and thirteen corruption controls. Electrical waveform acceptance is pending.
+See the source-bound [physical](evidence/pcie-final-v5-kelvin-physical-20261013.json)
+and [extraction](evidence/pcie-final-v5-kelvin-extraction-20261013.json) records.
+
+All CAD, simulations and tests now execute on hosted GitHub runners. Local
+activity is source editing and verified packaging, transfer and cleanup only.
+The full serial PHY, assembled analog layout, chip routing, qualified RF/body
+extraction and final setup/hold remain open.
