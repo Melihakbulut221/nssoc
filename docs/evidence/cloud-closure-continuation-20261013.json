@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T09:43:11.610204+00:00",
+  "as_of": "2026-10-13T09:45:07.898868+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "fea63a531d468c5ab81e6320004edee48b634b49",
+  "head": "159e0efba3bd66d6fe0e5d2212a56dcf57a53655",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -5540,9 +5540,963 @@
   "signal_trunk_extraction": {
     "run": 38378229860,
     "source": "fea63a531d468c5ab81e6320004edee48b634b49",
-    "status": "in_progress",
-    "conclusion": null,
+    "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+    "conclusion": "success",
     "variant": "critical_buses_kelvin_signal_trunks",
-    "accepted": false
+    "accepted": false,
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38378229860-1-extract-final_drive_v5-critical_buses_kelvin_signal_trunks/tx-layout-extraction-cloud-final_drive_v5-critical_buses_kelvin_signal_trunks-38378229860-1.tar.gz",
+      "sha256": "edcfadf134ae6d29036d3f159b12ca4e905983120ee2ad05d74a8874b1931f06",
+      "bytes": 6281861
+    },
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38378229860-1-extract-final_drive_v5-critical_buses_kelvin_signal_trunks/tx-layout-extraction-cloud-final_drive_v5-critical_buses_kelvin_signal_trunks-38378229860-1.summary.json",
+    "summary_sha256": "5f43640e2af522d65631ba86a16c7f97bcbae65504a0e1c07dcad5023ae6c945",
+    "audit": {
+      "status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+      "original_devices": 54,
+      "public_ports": 12,
+      "physical_wire_components": 17,
+      "geometry_probes": 112,
+      "logical_metal_references": 100,
+      "metal_device_terminals": 100,
+      "unmodeled_body_well_terminals": 54,
+      "shared_diffusion_terminals": 0,
+      "actual_exported_resistors": 3889,
+      "actual_exported_capacitors": 2593,
+      "resistor_components": 17,
+      "connected_wire_components": 17,
+      "disconnected_probes": [],
+      "disconnected_by_kind": {},
+      "native_export_r_edge_value_multiset_exact": true,
+      "geometry_conductor_ownership_exact": true,
+      "every_native_point_ground_capacitance_preserved": true,
+      "every_native_mutual_attachment_and_value_preserved": true,
+      "collapsed_capacitance_edge_count": 93,
+      "collapsed_matrix_entries": 324,
+      "complete_collapsed_capacitance_conserved": true,
+      "per_conductor_intrinsic_ground_c_conserved": true,
+      "wrong_native_branch_witnesses": [],
+      "missing_capacitance_edges": [],
+      "extra_capacitance_edges": [],
+      "wrong_capacitance_values": [],
+      "wrong_intrinsic_ground_values": [],
+      "original_retained_node_subtractions": 17,
+      "original_node_deletions": 0,
+      "capacitor_ground_reference": "sub: extractor reference, not mapped to any intrinsic body or supply",
+      "original_port_short_warnings": 285,
+      "all_short_warnings_same_geometry_conductor": true,
+      "probes_native_grid_delta_nm_counts": {
+        "[0, 0]": 93,
+        "[0, -2]": 19
+      },
+      "no_intrinsic_alias_edges_inserted_in_resistance_graph": true,
+      "substrate_r_modeled": false,
+      "full_pex_qualified": false,
+      "point_attachment_or_rf_distribution_qualified": false,
+      "components": [
+        {
+          "component": 2,
+          "nodes": 58,
+          "probes": [
+            "P_on",
+            "T001_rppd_1",
+            "T024_rppd_2"
+          ]
+        },
+        {
+          "component": 15,
+          "nodes": 247,
+          "probes": [
+            "P_avss",
+            "T001_rppd_2",
+            "T002_rppd_2",
+            "T003_rppd_2",
+            "T004_rppd_2",
+            "T005_E",
+            "T006_E",
+            "T008_E"
+          ]
+        },
+        {
+          "component": 3,
+          "nodes": 58,
+          "probes": [
+            "P_op",
+            "T002_rppd_1",
+            "T025_rppd_2"
+          ]
+        },
+        {
+          "component": 13,
+          "nodes": 199,
+          "probes": [
+            "T003_rppd_1",
+            "T010_E",
+            "T012_E",
+            "T013_C",
+            "T014_E",
+            "T016_C",
+            "T018_E",
+            "T019_E",
+            "T021_E"
+          ]
+        },
+        {
+          "component": 12,
+          "nodes": 199,
+          "probes": [
+            "T004_rppd_1",
+            "T007_E",
+            "T009_E",
+            "T011_E",
+            "T015_C",
+            "T017_C",
+            "T020_E",
+            "T022_E",
+            "T023_E"
+          ]
+        },
+        {
+          "component": 11,
+          "nodes": 116,
+          "probes": [
+            "P_iref",
+            "T005_B",
+            "T005_C",
+            "T006_B",
+            "T008_B"
+          ]
+        },
+        {
+          "component": 14,
+          "nodes": 132,
+          "probes": [
+            "T006_C",
+            "T008_C",
+            "T013_E",
+            "T015_E",
+            "T016_E",
+            "T017_E"
+          ]
+        },
+        {
+          "component": 16,
+          "nodes": 230,
+          "probes": [
+            "T007_C",
+            "T010_C",
+            "T019_C",
+            "T021_C",
+            "T022_C",
+            "T023_C",
+            "T024_rppd_1",
+            "T054_rppd_2"
+          ]
+        },
+        {
+          "component": 5,
+          "nodes": 87,
+          "probes": [
+            "P_ap",
+            "T007_B",
+            "T022_B",
+            "T023_B"
+          ]
+        },
+        {
+          "component": 17,
+          "nodes": 230,
+          "probes": [
+            "T009_C",
+            "T011_C",
+            "T012_C",
+            "T014_C",
+            "T018_C",
+            "T020_C",
+            "T025_rppd_1",
+            "T053_rppd_2"
+          ]
+        },
+        {
+          "component": 6,
+          "nodes": 87,
+          "probes": [
+            "P_an",
+            "T009_B",
+            "T011_B",
+            "T020_B"
+          ]
+        },
+        {
+          "component": 7,
+          "nodes": 87,
+          "probes": [
+            "P_bp",
+            "T010_B",
+            "T019_B",
+            "T021_B"
+          ]
+        },
+        {
+          "component": 8,
+          "nodes": 87,
+          "probes": [
+            "P_bn",
+            "T012_B",
+            "T014_B",
+            "T018_B"
+          ]
+        },
+        {
+          "component": 10,
+          "nodes": 58,
+          "probes": [
+            "P_sn",
+            "T013_B",
+            "T016_B"
+          ]
+        },
+        {
+          "component": 9,
+          "nodes": 58,
+          "probes": [
+            "P_sp",
+            "T015_B",
+            "T017_B"
+          ]
+        },
+        {
+          "component": 4,
+          "nodes": 513,
+          "probes": [
+            "P_sub",
+            "T026_TIE",
+            "T027_TIE",
+            "T028_TIE",
+            "T029_TIE",
+            "T030_TIE",
+            "T031_TIE",
+            "T032_TIE",
+            "T033_TIE",
+            "T034_TIE",
+            "T035_TIE",
+            "T036_TIE",
+            "T037_TIE",
+            "T038_TIE",
+            "T039_TIE",
+            "T040_TIE",
+            "T041_TIE",
+            "T042_TIE",
+            "T043_TIE",
+            "T044_TIE",
+            "T045_TIE",
+            "T046_TIE",
+            "T047_TIE",
+            "T048_TIE",
+            "T049_TIE",
+            "T050_TIE",
+            "T051_TIE",
+            "T052_TIE"
+          ]
+        },
+        {
+          "component": 1,
+          "nodes": 71,
+          "probes": [
+            "P_avdd",
+            "T053_rppd_1",
+            "T054_rppd_1"
+          ]
+        }
+      ],
+      "capacitance_edges_af": [
+        {
+          "a": 0,
+          "b": 1,
+          "source": 36573.2,
+          "baseline": 36573.19921875,
+          "distributed": 36573.19988872111
+        },
+        {
+          "a": 0,
+          "b": 2,
+          "source": 32593.2,
+          "baseline": 32593.199218750007,
+          "distributed": 32593.199509620667
+        },
+        {
+          "a": 0,
+          "b": 3,
+          "source": 26219.0,
+          "baseline": 26219.000000000004,
+          "distributed": 26218.999725818634
+        },
+        {
+          "a": 0,
+          "b": 4,
+          "source": 331711.0,
+          "baseline": 331711.00000000006,
+          "distributed": 331710.99702358246
+        },
+        {
+          "a": 0,
+          "b": 5,
+          "source": 14689.5,
+          "baseline": 14689.500000000004,
+          "distributed": 14689.499988555908
+        },
+        {
+          "a": 0,
+          "b": 6,
+          "source": 12598.9,
+          "baseline": 12598.900390625,
+          "distributed": 12598.900270462038
+        },
+        {
+          "a": 0,
+          "b": 7,
+          "source": 12907.7,
+          "baseline": 12907.700195312502,
+          "distributed": 12907.700037002563
+        },
+        {
+          "a": 0,
+          "b": 8,
+          "source": 13140.1,
+          "baseline": 13140.099609375,
+          "distributed": 13140.09940004349
+        },
+        {
+          "a": 0,
+          "b": 9,
+          "source": 8210.83,
+          "baseline": 8210.830078125,
+          "distributed": 8210.829999923708
+        },
+        {
+          "a": 0,
+          "b": 10,
+          "source": 8305.05,
+          "baseline": 8305.0498046875,
+          "distributed": 8305.05001783371
+        },
+        {
+          "a": 0,
+          "b": 11,
+          "source": 23233.3,
+          "baseline": 23233.300781250004,
+          "distributed": 23233.300533294678
+        },
+        {
+          "a": 0,
+          "b": 12,
+          "source": 45431.1,
+          "baseline": 45431.1015625,
+          "distributed": 45431.10137271881
+        },
+        {
+          "a": 0,
+          "b": 13,
+          "source": 43241.3,
+          "baseline": 43241.30078125,
+          "distributed": 43241.300993680954
+        },
+        {
+          "a": 0,
+          "b": 14,
+          "source": 27697.5,
+          "baseline": 27697.500000000004,
+          "distributed": 27697.499641418457
+        },
+        {
+          "a": 0,
+          "b": 15,
+          "source": 106669.0,
+          "baseline": 106669.0,
+          "distributed": 106669.00173486769
+        },
+        {
+          "a": 0,
+          "b": 16,
+          "source": 47391.9,
+          "baseline": 47391.8984375,
+          "distributed": 47391.89853811264
+        },
+        {
+          "a": 0,
+          "b": 17,
+          "source": 41163.8,
+          "baseline": 41163.80078125001,
+          "distributed": 41163.80084180832
+        },
+        {
+          "a": 1,
+          "b": 2,
+          "source": 1035.55,
+          "baseline": 1035.550048828125,
+          "distributed": 1035.550048828125
+        },
+        {
+          "a": 1,
+          "b": 3,
+          "source": 1035.55,
+          "baseline": 1035.550048828125,
+          "distributed": 1035.550048828125
+        },
+        {
+          "a": 1,
+          "b": 4,
+          "source": 20750.2,
+          "baseline": 20750.199218750004,
+          "distributed": 20750.199218750004
+        },
+        {
+          "a": 1,
+          "b": 7,
+          "source": 151.537,
+          "baseline": 151.5370025634766,
+          "distributed": 151.5370025634766
+        },
+        {
+          "a": 1,
+          "b": 8,
+          "source": 151.537,
+          "baseline": 151.5370025634766,
+          "distributed": 151.5370025634766
+        },
+        {
+          "a": 1,
+          "b": 12,
+          "source": 949.52,
+          "baseline": 949.5200195312501,
+          "distributed": 949.5200195312501
+        },
+        {
+          "a": 1,
+          "b": 13,
+          "source": 1951.63,
+          "baseline": 1951.630004882813,
+          "distributed": 1951.630004882813
+        },
+        {
+          "a": 1,
+          "b": 16,
+          "source": 12505.7,
+          "baseline": 12505.7001953125,
+          "distributed": 12505.7001953125
+        },
+        {
+          "a": 1,
+          "b": 17,
+          "source": 13548.1,
+          "baseline": 13548.099609375002,
+          "distributed": 13548.099609375002
+        },
+        {
+          "a": 2,
+          "b": 3,
+          "source": 9006.29,
+          "baseline": 9006.290039062502,
+          "distributed": 9006.290039062502
+        },
+        {
+          "a": 2,
+          "b": 4,
+          "source": 14473.9,
+          "baseline": 14473.900390624998,
+          "distributed": 14473.900390624998
+        },
+        {
+          "a": 2,
+          "b": 5,
+          "source": 16.8647,
+          "baseline": 16.864700317382812,
+          "distributed": 16.864700317382812
+        },
+        {
+          "a": 2,
+          "b": 6,
+          "source": 378.391,
+          "baseline": 378.3909912109375,
+          "distributed": 378.3909912109375
+        },
+        {
+          "a": 2,
+          "b": 7,
+          "source": 356.884,
+          "baseline": 356.8840026855469,
+          "distributed": 356.8840026855469
+        },
+        {
+          "a": 2,
+          "b": 8,
+          "source": 356.884,
+          "baseline": 356.8840026855469,
+          "distributed": 356.8840026855469
+        },
+        {
+          "a": 2,
+          "b": 11,
+          "source": 909.38,
+          "baseline": 909.3800048828125,
+          "distributed": 909.3800048828125
+        },
+        {
+          "a": 2,
+          "b": 12,
+          "source": 437.513,
+          "baseline": 437.51300048828125,
+          "distributed": 437.51300048828125
+        },
+        {
+          "a": 2,
+          "b": 15,
+          "source": 13777.3,
+          "baseline": 13777.2998046875,
+          "distributed": 13777.2998046875
+        },
+        {
+          "a": 2,
+          "b": 16,
+          "source": 8272.33,
+          "baseline": 8272.330078125,
+          "distributed": 8272.330078125
+        },
+        {
+          "a": 2,
+          "b": 17,
+          "source": 28.0312,
+          "baseline": 28.031200408935547,
+          "distributed": 28.031200408935547
+        },
+        {
+          "a": 3,
+          "b": 4,
+          "source": 12656.7,
+          "baseline": 12656.7001953125,
+          "distributed": 12656.7001953125
+        },
+        {
+          "a": 3,
+          "b": 6,
+          "source": 16.8647,
+          "baseline": 16.864700317382812,
+          "distributed": 16.864700317382812
+        },
+        {
+          "a": 3,
+          "b": 7,
+          "source": 356.884,
+          "baseline": 356.8840026855469,
+          "distributed": 356.8840026855469
+        },
+        {
+          "a": 3,
+          "b": 8,
+          "source": 356.884,
+          "baseline": 356.8840026855469,
+          "distributed": 356.8840026855469
+        },
+        {
+          "a": 3,
+          "b": 10,
+          "source": 291.394,
+          "baseline": 291.3940124511719,
+          "distributed": 291.3940124511719
+        },
+        {
+          "a": 3,
+          "b": 11,
+          "source": 365.535,
+          "baseline": 365.53500366210943,
+          "distributed": 365.53500366210943
+        },
+        {
+          "a": 3,
+          "b": 12,
+          "source": 416.007,
+          "baseline": 416.0069885253907,
+          "distributed": 416.0069885253907
+        },
+        {
+          "a": 3,
+          "b": 14,
+          "source": 65.0879,
+          "baseline": 65.08789825439453,
+          "distributed": 65.08789825439453
+        },
+        {
+          "a": 3,
+          "b": 15,
+          "source": 13049.8,
+          "baseline": 13049.799804687502,
+          "distributed": 13049.799804687502
+        },
+        {
+          "a": 3,
+          "b": 16,
+          "source": 282.114,
+          "baseline": 282.11401367187506,
+          "distributed": 282.11401367187506
+        },
+        {
+          "a": 3,
+          "b": 17,
+          "source": 8631.88,
+          "baseline": 8631.879882812502,
+          "distributed": 8631.879882812502
+        },
+        {
+          "a": 4,
+          "b": 5,
+          "source": 41.8858,
+          "baseline": 41.88579940795899,
+          "distributed": 41.88579940795899
+        },
+        {
+          "a": 4,
+          "b": 6,
+          "source": 2723.9,
+          "baseline": 2723.89990234375,
+          "distributed": 2723.89990234375
+        },
+        {
+          "a": 4,
+          "b": 7,
+          "source": 2997.22,
+          "baseline": 2997.219970703125,
+          "distributed": 2997.219970703125
+        },
+        {
+          "a": 4,
+          "b": 8,
+          "source": 3133.99,
+          "baseline": 3133.989990234375,
+          "distributed": 3133.989990234375
+        },
+        {
+          "a": 4,
+          "b": 9,
+          "source": 849.959,
+          "baseline": 849.958984375,
+          "distributed": 849.958984375
+        },
+        {
+          "a": 4,
+          "b": 10,
+          "source": 984.107,
+          "baseline": 984.1069946289062,
+          "distributed": 984.1069946289062
+        },
+        {
+          "a": 4,
+          "b": 11,
+          "source": 8865.89,
+          "baseline": 8865.889648437502,
+          "distributed": 8865.889648437502
+        },
+        {
+          "a": 4,
+          "b": 12,
+          "source": 13646.0,
+          "baseline": 13646.000000000002,
+          "distributed": 13646.000000000002
+        },
+        {
+          "a": 4,
+          "b": 13,
+          "source": 18628.7,
+          "baseline": 18628.699218750004,
+          "distributed": 18628.699218750004
+        },
+        {
+          "a": 4,
+          "b": 14,
+          "source": 15224.2,
+          "baseline": 15224.200195312502,
+          "distributed": 15224.200195312502
+        },
+        {
+          "a": 4,
+          "b": 15,
+          "source": 96823.0,
+          "baseline": 96823.0,
+          "distributed": 96823.0
+        },
+        {
+          "a": 4,
+          "b": 16,
+          "source": 8996.55,
+          "baseline": 8996.5498046875,
+          "distributed": 8996.5498046875
+        },
+        {
+          "a": 4,
+          "b": 17,
+          "source": 16737.1,
+          "baseline": 16737.099609375,
+          "distributed": 16737.099609375
+        },
+        {
+          "a": 5,
+          "b": 12,
+          "source": 14736.1,
+          "baseline": 14736.099609375,
+          "distributed": 14736.099609375
+        },
+        {
+          "a": 5,
+          "b": 16,
+          "source": 4466.69,
+          "baseline": 4466.689941406251,
+          "distributed": 4466.689941406251
+        },
+        {
+          "a": 6,
+          "b": 12,
+          "source": 14838.0,
+          "baseline": 14838.0,
+          "distributed": 14838.0
+        },
+        {
+          "a": 6,
+          "b": 16,
+          "source": 264.563,
+          "baseline": 264.56298828125006,
+          "distributed": 264.56298828125006
+        },
+        {
+          "a": 6,
+          "b": 17,
+          "source": 4824.12,
+          "baseline": 4824.120117187501,
+          "distributed": 4824.120117187501
+        },
+        {
+          "a": 7,
+          "b": 12,
+          "source": 297.348,
+          "baseline": 297.3479919433594,
+          "distributed": 297.3479919433594
+        },
+        {
+          "a": 7,
+          "b": 13,
+          "source": 15100.8,
+          "baseline": 15100.799804687502,
+          "distributed": 15100.799804687502
+        },
+        {
+          "a": 7,
+          "b": 16,
+          "source": 4335.89,
+          "baseline": 4335.890136718751,
+          "distributed": 4335.890136718751
+        },
+        {
+          "a": 7,
+          "b": 17,
+          "source": 289.217,
+          "baseline": 289.2170104980469,
+          "distributed": 289.2170104980469
+        },
+        {
+          "a": 8,
+          "b": 12,
+          "source": 289.217,
+          "baseline": 289.2170104980469,
+          "distributed": 289.2170104980469
+        },
+        {
+          "a": 8,
+          "b": 13,
+          "source": 15240.5,
+          "baseline": 15240.500000000002,
+          "distributed": 15240.500000000002
+        },
+        {
+          "a": 8,
+          "b": 17,
+          "source": 4738.45,
+          "baseline": 4738.4501953125,
+          "distributed": 4738.4501953125
+        },
+        {
+          "a": 9,
+          "b": 12,
+          "source": 4753.32,
+          "baseline": 4753.319824218751,
+          "distributed": 4753.319824218751
+        },
+        {
+          "a": 9,
+          "b": 13,
+          "source": 297.348,
+          "baseline": 297.3479919433594,
+          "distributed": 297.3479919433594
+        },
+        {
+          "a": 9,
+          "b": 14,
+          "source": 11891.2,
+          "baseline": 11891.2001953125,
+          "distributed": 11891.2001953125
+        },
+        {
+          "a": 9,
+          "b": 15,
+          "source": 22.088,
+          "baseline": 22.08799934387207,
+          "distributed": 22.08799934387207
+        },
+        {
+          "a": 10,
+          "b": 13,
+          "source": 5155.88,
+          "baseline": 5155.8798828125,
+          "distributed": 5155.8798828125
+        },
+        {
+          "a": 10,
+          "b": 14,
+          "source": 11987.7,
+          "baseline": 11987.700195312502,
+          "distributed": 11987.700195312502
+        },
+        {
+          "a": 10,
+          "b": 15,
+          "source": 23.4581,
+          "baseline": 23.458099365234375,
+          "distributed": 23.458099365234375
+        },
+        {
+          "a": 11,
+          "b": 14,
+          "source": 5224.7,
+          "baseline": 5224.7001953125,
+          "distributed": 5224.7001953125
+        },
+        {
+          "a": 11,
+          "b": 15,
+          "source": 29484.8,
+          "baseline": 29484.800781250004,
+          "distributed": 29484.800781250004
+        },
+        {
+          "a": 12,
+          "b": 13,
+          "source": 5288.83,
+          "baseline": 5288.830078125,
+          "distributed": 5288.830078125
+        },
+        {
+          "a": 12,
+          "b": 14,
+          "source": 6533.72,
+          "baseline": 6533.72021484375,
+          "distributed": 6533.72021484375
+        },
+        {
+          "a": 12,
+          "b": 15,
+          "source": 8579.39,
+          "baseline": 8579.3896484375,
+          "distributed": 8579.3896484375
+        },
+        {
+          "a": 12,
+          "b": 16,
+          "source": 10144.2,
+          "baseline": 10144.200195312502,
+          "distributed": 10144.200195312502
+        },
+        {
+          "a": 12,
+          "b": 17,
+          "source": 14858.9,
+          "baseline": 14858.900390625002,
+          "distributed": 14858.900390625002
+        },
+        {
+          "a": 13,
+          "b": 14,
+          "source": 9672.64,
+          "baseline": 9672.6396484375,
+          "distributed": 9672.6396484375
+        },
+        {
+          "a": 13,
+          "b": 15,
+          "source": 9633.99,
+          "baseline": 9633.990234375,
+          "distributed": 9633.990234375
+        },
+        {
+          "a": 13,
+          "b": 16,
+          "source": 9313.32,
+          "baseline": 9313.320312500002,
+          "distributed": 9313.320312500002
+        },
+        {
+          "a": 13,
+          "b": 17,
+          "source": 9678.12,
+          "baseline": 9678.120117187502,
+          "distributed": 9678.120117187502
+        },
+        {
+          "a": 14,
+          "b": 15,
+          "source": 7450.49,
+          "baseline": 7450.490234375,
+          "distributed": 7450.490234375
+        },
+        {
+          "a": 16,
+          "b": 17,
+          "source": 4321.09,
+          "baseline": 4321.08984375,
+          "distributed": 4321.08984375
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/audit-rc48.py": {
+          "bytes": 12486,
+          "sha256": "81aa93681abcd87a65990667cd1bf7a0c0d04706babef03efce55dd238825638"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+          "bytes": 8291,
+          "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/anchors08.json": {
+          "bytes": 178283,
+          "sha256": "209ef20cc8617db846bcb72d0d023a99e7a69862dedf1e5f5ec9303ee8d20052"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/rc03/pump_wires.ext": {
+          "bytes": 12430,
+          "sha256": "1c1d8ff7ae7d8a1e4a0662274b5f87120265198658840d6dd418acb3285e854a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/rc03/pump_wires.res.ext": {
+          "bytes": 296918,
+          "sha256": "e77366606c68be9c59c19936a85eeecafd6d2404e613a84f4f6472a2e85f5360"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/rc03/native.log": {
+          "bytes": 23592,
+          "sha256": "ccbc1c0b30080328dd8cdb8fcc87521b2a098f9ea843ac100f7fd049cbbba572"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/rc03/wires.spice": {
+          "bytes": 255427,
+          "sha256": "f6b1bff6d651505668e63a8ce02c3c23d6281fdcca99d81ceee692054d00b213"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/wire96/rc03/baseline.spice": {
+          "bytes": 3732,
+          "sha256": "9b5651a8d5b258d36d554534d1546de9668e87405cbd43861611e5d8a6cb433f"
+        }
+      }
+    },
+    "controls_status": "PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS"
   }
 }
