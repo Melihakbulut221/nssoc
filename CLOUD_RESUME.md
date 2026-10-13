@@ -181,3 +181,15 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
   existing run before dispatching; electrical acceptance remains unproven.
 - The local workspace was checked again and remains empty. All CAD and tests
   continue on GitHub-hosted runners. Routing run **38371498733** is still live.
+
+## Loaded v6 and rejected M3-only geometry
+
+- M3-only widening **38381257427**: compact passed, extracted wire failed.
+  Zero wrong signs, **127 samples below 100 mV**, minimum **6.725 mV**, four
+  HBT minimum-VCE failures; both interface gates passed. It is rejected.
+- v6 loaded comparison **38384881419**, source **03fd06b3**, uses the actual
+  native v6 model and its own newly extracted RC. Nominal streams4 compact
+  and wire controls are running with the original bit/phase/device limits.
+  It has no electrical acceptance yet. Source checks: **38384885565**.
+- Profile-corruption regression rejects a validly hashed v5 report when v6
+  is requested. Device accounting uses the actual Nx4 emitter multiplicity.
