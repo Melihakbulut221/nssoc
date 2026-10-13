@@ -3,6 +3,21 @@
 name: tx-layout-waveform-cloud
 on:
   workflow_dispatch:
+    inputs:
+      circuit_profile:
+        description: Exact physical circuit to bind
+        type: choice
+        options: [baseline, cascade14]
+        default: baseline
+      variant:
+        description: Source-bound routing geometry
+        type: choice
+        options: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus, critical_buses]
+        default: baseline
+      compose_only:
+        description: Preserve device and wire composition for loaded tree simulation
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -13,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+        variant: ["${{ inputs.variant || 'baseline' }}"]
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -34,7 +49,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Bind native devices and actual candidate parasitics
-        run: python3 scripts/run_cloud_tx_layout_composition.py --variant '${{ matrix.variant }}'
+        run: python3 scripts/run_cloud_tx_layout_composition.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}'
       - name: Keep composition for hosted transient job
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -51,20 +66,21 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-layout-composition-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-layout-composition-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-layout-composition hw/soc/out/cloud-tx-layout-repair
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-layout-composition/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'compose-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
   native-transient:
+    if: ${{ !inputs.compose_only && inputs.circuit_profile != 'cascade14' }}
     needs: composition
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
-        variant: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus]
+        variant: ["${{ inputs.variant || 'baseline' }}"]
     permissions:
       contents: write
     steps:

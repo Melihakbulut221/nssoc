@@ -17,6 +17,7 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--variant', required=True)
+    p.add_argument('--circuit-profile', choices=('baseline','cascade14'), default='baseline')
     p.add_argument('--prepared-extraction', action='store_true',
                    help='Consume source-bound native extraction from this same hosted job')
     args = p.parse_args()
@@ -26,8 +27,9 @@ def main():
     dest.mkdir(exist_ok=False)
     archive = dest / 'input.tar.gz'
     source = (dict(prepared_extraction_result_sha256=sha(out / 'extraction-result.json'),
-                   job_commit=os.environ.get('GITHUB_SHA')) if args.prepared_extraction else spec['variants'][args.variant])
-    result = dict(status='RUNNING', variant=args.variant, adopted=False, source=source)
+                   job_commit=os.environ.get('GITHUB_SHA')) if args.prepared_extraction else
+              (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['variants'][args.variant])
+    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, adopted=False, source=source)
 
     def restore(receipt, directory):
         fetch(receipt['url'], receipt['sha256'], archive)
@@ -49,6 +51,7 @@ def main():
             restore(result['source'], ROOT)
         extraction = json.loads((out / 'extraction-result.json').read_text())
         assert extraction['variant'] == args.variant
+        assert extraction.get('circuit_profile','baseline') == args.circuit_profile
         assert extraction['status'] == 'PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
         protected = {str(q): sha(q) for sub in ('layout', 'physical', 'wire96') for q in (out / sub).rglob('*') if q.is_file()}
         layout = json.loads((ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
@@ -80,6 +83,9 @@ def main():
                 assert sha(target) == digest
                 original = target.read_text()
                 source = original.replace("'physical92/", "'physical/")
+                if args.circuit_profile!='baseline':
+                    source=source.replace('nssoc_tx_mux2_passive_topmetal_layout_v1',
+                        spec['circuits'][args.circuit_profile]['top'])
                 source = source.replace("Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2')", "R/'pdk'")
                 (binding / (target.name + '.original')).write_text(original)
                 target.write_text(source)
