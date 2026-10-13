@@ -1,5 +1,41 @@
 # 99 — Custom PCIe Gen3 x4 PHY development
 
+## Latest development — 13 October 2026
+
+The [hosted serializer study](evidence/pcie-serializer-expanded-tree-20261013.json)
+now contains an actual **32:1 transistor TX tree**, with 604 native HBTs and
+512 native MOS devices. Its nominal 8 GT/s stimulus screen passes all 768
+original source-bit samples at unchanged 0.3/0.5/0.7 UI phases, with zero wrong
+bits and a minimum differential output of 281.207 mV. All measured transistor
+and interstage voltage gates pass. The complete raw capture is preserved with
+its hash in GitHub Releases. The corresponding 4:1 and 8:1 trees also pass the
+nominal component screen.
+
+Each clock common-mode reference drives at most three selector pairs. Bias
+feeds use native resistors, and succeeding mux transistor inputs load their
+preceding stages directly. **Differential clock modulation still comes from
+external ideal sources.** This is one experimental transmitter tree, not four
+qualified PCIe lanes. It does not close PLL/CDR, physical tree layout, extracted
+RC, pad/ESD qualification, link training or full-chip integration. Older
+54-device mux layout results do not qualify the new 32:1 tree.
+
+Run `38339670707` exercises this same tree at hot/low and cold/high conditions,
+selected independent HBT/resistor corners, and a 0.25 ps maximum simulation
+step. Two actual circuit faults cover a disabled intermediate bias feed and
+an inverted deepest-stage selector for inputs 15/31. These jobs are pending;
+no corner or injected-fault success is inferred from the nominal result.
+All native computation and testing run on GitHub-hosted runners.
+
+The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
+passes the native Liberty logic-equivalence check and injected-inverter
+rejection. Two real delay cells per output improve the fast-corner placement
+hold estimate from −0.227544 ns to +0.238373 ns, with slow-corner GMII setup
+remaining +2.308341 ns. Existing CPU/PCIe negative groups remain unchanged.
+Run `38339178024` combines that candidate with bounded channel placement and
+fresh full-chip routing. These are placement estimates, **not routed timing
+closure**. The [continuation record](evidence/cloud-closure-continuation-20261013.json)
+is authoritative for subsequent results and open work.
+
 ## Latest development — 4 October 2026
 
 [The integrated packet and analog-bank record](108-pcie-packet-and-bank-integration.md)

@@ -404,10 +404,14 @@
     "original_result": "29 hosted source-oracle/topology controls passed in all three jobs. 32:1 hit explicit 4GiB native process memory limit. Shared release reached asset-count limit so 4:1/8:1 raw archive publication failed; do not claim full captures retained for those two jobs.",
     "corrected_run": 38337828584,
     "corrected_source_head": "ca74d6d5",
-    "status": "4_AND_8_COMPONENT_SCREENS_PASS_32_RUNNING",
+    "status": "PASS_NOMINAL_4_8_32_TRANSISTOR_COMPONENT_SCREENS_NOT_FULL_PHY",
     "change": "Same original 256 bits and 768 fixed-phase output samples and device limits. Process memory cap increased to 8GiB for8 and12GiB for32, on hosted runners only. Result publication isolated and fallback retained.",
     "adopted": false,
-    "evidence": "docs/evidence/pcie-serializer-expanded-tree-20261013.json"
+    "evidence": "docs/evidence/pcie-serializer-expanded-tree-20261013.json",
+    "expanded_conditions_run": 38339670707,
+    "expanded_conditions_source": "a0e3019e",
+    "expanded_conditions_status": "SIX_ENVIRONMENT_STEP_CASES_AND_TWO_NATIVE_FAULTS_RUNNING",
+    "next": "Read each engineering gate and fault rejection from full captures; complete physical tree layout/PEX and actual clock generation. Do not infer fullPHY or chip timing acceptance from nominal one-lane tree."
   },
   "ethernet_hold_eco": {
     "runs": [
@@ -454,5 +458,9 @@
     "evidence": "docs/evidence/cloud-ethernet-hold-estimate-20261013.json",
     "provenance_note": "This running source still labels placement_repair.source_odb_sha256 with the original baseline SHA. Actual ECO input SHA is verified before native load and preserved in placement-before.json.source_odb_sha256 and result.ethernet_hold.evidence.candidate_odb_sha256. Future runs after0f01ef20 label original versus actual separately. Do not treat the legacy report label as actual source binding; retain all raw records.",
     "next": "Inspect pre-route milestone and final routing result. No detail-route or extracted timing acceptance yet. Do not cancel/restart this healthy run just to change report field labels."
-  }
+  },
+  "physical_method_readback_runs": [
+    38339789494,
+    38339792160
+  ]
 }
