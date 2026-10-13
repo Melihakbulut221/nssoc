@@ -10,6 +10,29 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Main route terminal: native congestion153, priority30 rejected
+
+Run38420407838/job115375929807 completed with native GRT-0116, after
+GRT-0230 reported the maximum permitted overflow-increase attempts.
+This was NOT an elapsed timeout. Final layer overflow:
+M2=0,M3=21,M4=16,M5=107,TM1=7,TM2=2,total153. Same saved buffer placement
+previously had135, so critical-net priority30 is rejected and must not be
+rerun unchanged. Exact native failedODB, report, guide, logs and162694455byte
+archive are preserved in cloud-critical30-buffers-route-failure-20261013.json.
+
+New congestion source_profile=critical30_buffers binds that immutable
+failed-global.odb and congestion.rpt, rejects wrong run/placement/priority,
+and diagnoses every actual marker/net/placed pin. Discover its hosted job
+before dispatch; compare against135-overflow buffers and420-overflow endpoint
+candidates before selecting the next physical change. No capacity relaxation,
+overflow allowance, SDC waiver, detailed routing or final timing acceptance.
+
+PHY sourcechecks38442818351passed; new cascade158 nominal38442809617 and
+hot/cold38442814441 are running. Corrected32:1 run38441895491 remains pending
+behind38440472079. Local workspace stays empty; all jobs/evidence stayhosted.
+Full serial Gen3x4, final main-chip route and setup/hold remainOPEN.
+This section supersedes all older entries calling38420407838live.
+
 ## Cascade158 exact composition passed; loaded profile ready
 
 Hosted loaded runs on **7997d2d035497bb223ac661a8bf432d1a58d0d51**:
