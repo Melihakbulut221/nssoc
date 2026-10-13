@@ -75,14 +75,21 @@ def verify(source, crc, out):
                 gate = gate.replace('frame_class==2 && frame_phase==2',
                                     'frame_class==2 && frame_phase!=2')
             for name, text in [('gold', source.read_text()), ('gate', gate)]:
+                if value < 0:
+                    # Native chparam rejects a leading-minus token. Let the
+                    # Verilog frontend elaborate the original signed integer.
+                    parameter = 'parameter integer REFRESH_CYCLES=128'
+                    assert text.count(parameter) == 1
+                    text = text.replace(parameter, 'parameter integer REFRESH_CYCLES=' + str(value))
                 anchor = 'module soc_pcie_fc_tx #('
                 assert text.count(anchor) == 1
                 (directory / (name + '.v')).write_text(text.replace(anchor, 'module ' + name + ' #('))
             script = '\n'.join([
                 'read_verilog -sv ../crc.v gold.v gate.v',
-                'chparam -set REFRESH_CYCLES ' + str(value) + ' gold',
-                'chparam -set REFRESH_CYCLES ' + str(value) + ' gate',
+                ('chparam -set REFRESH_CYCLES ' + str(value) + ' gold') if value >= 0 else '# signed negative default in Verilog',
+                ('chparam -set REFRESH_CYCLES ' + str(value) + ' gate') if value >= 0 else '# signed negative default in Verilog',
                 'proc', 'flatten', 'memory_map', 'opt', 'clk2fflogic', 'opt',
+                'write_json elaborated.json',
                 'equiv_make gold gate equiv', 'hierarchy -top equiv',
                 'equiv_simple', 'equiv_induct -seq 4', 'equiv_status -assert', ''])
             (directory / 'proof.ys').write_text(script)
@@ -90,12 +97,18 @@ def verify(source, crc, out):
                 result = subprocess.run([yosys, '-s', 'proof.ys'], cwd=directory,
                                         stdout=log, stderr=subprocess.STDOUT)
             log = (directory / 'proof.log').read_text()
+            elaborated = json.loads((directory / 'elaborated.json').read_text())['modules']
+            parameter_bits = {name: elaborated[name]['parameter_default_values']['REFRESH_CYCLES'] for name in ('gold','gate')}
+            counter_widths = {name: len(elaborated[name]['netnames']['refresh_count']['bits']) for name in ('gold','gate')}
+            assert all(len(bits)==32 and int(bits,2)==(value & 0xffffffff) for bits in parameter_bits.values())
+            expected_width = 32 if value < 0 else max(1,value.bit_length())
+            assert set(counter_widths.values()) == {expected_width}
             counts = re.findall(r'Of those cells (\d+) are proven and (\d+) are unproven', log)
             passed = result.returncode == 0 and len(counts) == 1 and int(counts[0][0]) > 0 and int(counts[0][1]) == 0 and 'Equivalence successfully proven!' in log
             rejected = result.returncode != 0 and bool(counts) and int(counts[-1][1]) > 0
             record['proofs'].append(dict(refresh_cycles=value, negative=negative,
                 returncode=result.returncode, passed=passed, negative_rejected=rejected,
-                equiv_counts=counts, log_sha256=sha(directory / 'proof.log'),
+                equiv_counts=counts, parameter_bits=parameter_bits, counter_widths=counter_widths, log_sha256=sha(directory / 'proof.log'),
                 script_sha256=sha(directory / 'proof.ys')))
             save()
             assert rejected if negative else passed, label

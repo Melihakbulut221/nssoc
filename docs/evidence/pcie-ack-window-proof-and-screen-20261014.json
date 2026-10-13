@@ -373,7 +373,29 @@
       "baseline": "physical_idle_credit_window_eop",
       "candidate": "physical_idle_credit_window_eop_refresh",
       "change": "Move refresh_count into its own sequential block, preserving reset, link-down, accepted update EOP clear, initialization saturation and increment priorities. Remove redundant rst/link terms only where the enclosing counter priority already forces zero. No extra pipeline cycle, timer change or observation mask.",
-      "required_proof": "Exact source-bound FC state/output equivalence at REFRESH_CYCLES0,1,2,127,128,255,1024,2147483647,-1; wrong-phase clear must fail. Then16baseline+16candidate public-port cases, fresh mapping and original three-corner STA. No adoption before these measurements."
+      "required_proof": "Exact source-bound FC state/output equivalence at REFRESH_CYCLES0,1,2,127,128,255,1024,2147483647,-1; wrong-phase clear must fail. Then16baseline+16candidate public-port cases, fresh mapping and original three-corner STA. No adoption before these measurements.",
+      "first_attempt": {
+        "run": 38485433148,
+        "job": 115597815742,
+        "archive_asset_id": 638582301,
+        "archive_bytes": 1723367,
+        "archive_sha256": "ae0d7a8c05e4f2ec728fa5eafbf9ea7e26cb55f52a3fd59e3ed2a30907d7d424",
+        "candidate_sha256": "f76b16579640e281958f72fd4739f3c22e9d3c7b8fc7dcfa4bafac85344d20be",
+        "passed_parameter_values": [
+          0,
+          1,
+          2,
+          127,
+          128,
+          255,
+          1024,
+          2147483647
+        ],
+        "unproven_parameter": -1,
+        "cause": "Native chparam rejects the text -1 before elaboration: Cannot decode value. This is a command encoding error, not a failed equivalence result. Negative mutation, integration tests and mapping were not reached.",
+        "repair": "For the negative signed integer only, specialize the original Verilog parameter declaration identically in gold/gate. Verify elaborated32-bit parameter values and actual refresh_count width for every positive case before accepting native equivalence. Do not skip -1.",
+        "native_parser_source": "https://github.com/YosysHQ/yosys/blob/468ba27d9/passes/cmds/setattr.cc"
+      }
     }
   }
 }
