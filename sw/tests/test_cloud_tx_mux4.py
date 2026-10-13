@@ -158,3 +158,15 @@ def test_tapped_drive_preserves_exact_native_substrate_network_and_all_other_fie
         rows.append(line.replace('nssoc_tx_mux54_passive_drive_v3','nssoc_tx_mux54_compact_v1'))
     # Reverse only the eight intended resistor-width changes and subckt rename.
     assert hashlib.sha256(''.join(rows).encode()).hexdigest()=='bc22f8c7fefdf56187fcecd5fe056d4333c8b25f31934867dd6f5ee908950b09'
+
+
+def test_headroom_repair_changes_only_two_collector_resistor_widths():
+    text=mux4.GUARDED_FINAL.read_text().replace('nssoc_tx_mux54_passive_drive_v4','nssoc_tx_mux54_passive_drive_v3')
+    rows=[]
+    for line in text.splitlines(keepends=True):
+        if line.startswith(('XD0007 ','XD0008 ')):
+            assert 'w=17.0u' in line
+            line=line.replace('w=17.0u','w=16.0u')
+        rows.append(line)
+    assert ''.join(rows)==mux4.TAPPED_FINAL.read_text()
+    assert mux4.PRE_BIASES=={'baseline':.0005,'plus10':.00055,'plus20':.0006}
