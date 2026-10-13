@@ -38,8 +38,14 @@ def wrapped(text, name, rename_state=False):
     declaration = 'module soc_pcie_replay_tx #('
     assert text.count(declaration) == 1
     core = text.replace(declaration, 'module ' + name + '_core #(')
+    active_index = '    (* keep *) wire [BW-1:0] active_read_index = sending ? read_pos : {BW{1\'b0}};\n'
+    anchor = '    reg capturing,sending,sending_replay,replay_active,replay_pending,replay_first,halt;'
+    assert core.count(anchor) == 1
+    core = core.replace(anchor, anchor + '\n' + active_index)
     if rename_state:
         core = re.sub(r'\bread_pos\b', 'idle_read_pos', core)
+        for port in ('tx_data_o','tx_sop_o','tx_eop_o'):
+            core = re.sub(r'\b' + port + r'\b', 'idle_' + port, core)
     start = text.index(declaration)
     end = text.index('\n);', start) + len('\n);')
     header = text[start:end].replace(declaration, 'module ' + name + ' #(')
@@ -55,11 +61,12 @@ def wrapped(text, name, rename_state=False):
         names.extend(n.strip() for n in match[1].split(','))
     assert len(names) == len(set(names)) and {'tx_data_o','tx_sop_o','tx_eop_o','tx_valid_o'} <= set(names)
     masked = {'tx_data_o','tx_sop_o','tx_eop_o'}
-    connections = ','.join('.' + n + '(' + ('raw_' if n in masked else '') + n + ')' for n in names)
-    wrapper = header + '\nwire [7:0] raw_tx_data_o;\nwire raw_tx_sop_o,raw_tx_eop_o;\n'
+    raw = 'raw_gate_' if rename_state else 'raw_gold_'
+    connections = ','.join('.' + ('idle_' if rename_state and n in masked else '') + n + '(' + (raw if n in masked else '') + n + ')' for n in names)
+    wrapper = header + '\nwire [7:0] ' + raw + 'tx_data_o;\nwire ' + raw + 'tx_sop_o,' + raw + 'tx_eop_o;\n'
     wrapper += name + '_core #(.DEPTH(DEPTH),.MAX_BYTES(MAX_BYTES),.TIMEOUT_CYCLES(TIMEOUT_CYCLES),.MAX_REPLAYS(MAX_REPLAYS)) design(' + connections + ');\n'
-    wrapper += "assign tx_data_o=tx_valid_o ? raw_tx_data_o : 8'b0;\n"
-    wrapper += 'assign tx_sop_o=tx_valid_o && raw_tx_sop_o;\nassign tx_eop_o=tx_valid_o && raw_tx_eop_o;\nendmodule\n'
+    wrapper += "assign tx_data_o=tx_valid_o ? " + raw + "tx_data_o : 8'b0;\n"
+    wrapper += 'assign tx_sop_o=tx_valid_o && ' + raw + 'tx_sop_o;\nassign tx_eop_o=tx_valid_o && ' + raw + 'tx_eop_o;\nendmodule\n'
     return core + '\n' + wrapper
 
 def main():
@@ -113,6 +120,7 @@ def main():
             negative_rejected = code != 0 and bool(counts) and int(counts[-1][1])>0
             result['proofs'].append(dict(case=label,returncode=code,counts=counts,
                 passed=passed,negative_rejected=negative_rejected,
+                unproven_lines=[line for line in log.splitlines() if 'Unproven' in line or 'unproven' in line][-90:],
                 log_sha256=sha(OUT / ('proof-'+label+'.log'))))
             save()
         result['ports'] = []
@@ -129,8 +137,15 @@ def main():
                 result['ports'].append(dict(case=label,top=top,returncode=code,result=record))
                 save()
                 if label=='wrong_idle_index':
-                    assert code != 0 and record['tests']['failed']>0 and record['tests']['skipped']==0
-                    assert sum(record['tests'].values()) == record['expected_tests']
+                    from cocotb_results import count_results
+                    xml = out / 'results.xml'
+                    assert xml.is_file()
+                    passed, failed, skipped = count_results([xml])
+                    result['ports'][-1]['observed_tests'] = dict(passed=passed,failed=failed,skipped=skipped)
+                    result['ports'][-1]['observed_xml_sha256'] = sha(xml)
+                    assert code != 0 and failed > 0 and skipped == 0
+                    assert passed + failed == record['expected_tests']
+                    assert 'AssertionError' in (out / 'simulation.log').read_text(errors='replace')
                 else:
                     assert code == 0 and record['status']=='PASS_PORT_ONLY_PCIE_REPLAY'
                     assert record['tests']==dict(passed=record['expected_tests'],failed=0,skipped=0)
