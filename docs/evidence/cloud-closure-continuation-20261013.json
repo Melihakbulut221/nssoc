@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T01:21:49.611580+00:00",
-  "turn_classification": "PROGRESS: fullsourcewavecausaldiagnosis completed; native12umgateR removes32coldMOSfails; exacttap-preserved lower-impedancefinalmux improveshotsignal49to235mV atunchangedphase. Hot2mVHBTandcoldCMstillopen. Newfixedcross-cornerheadroomprofilesrunning; PNRmigrationandfinalhostedrestoreclosed.",
+  "as_of": "2026-10-13T01:42:45.857509+00:00",
+  "turn_classification": "PROGRESS: all work runs in cloud. Same native resistor-biased compact4:1 passes four base conditions and six MOS corners, two actual faults detected. PNR transfer/readback complete, main transfer active. Two grid routing variants fail153overflow; third active. No full PHY/routing/timing closure.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
-  "head": "ae113551",
+  "head": "d6d49b88",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -81,18 +81,16 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 261934,
-    "batch": 209,
-    "removed_bytes": 123076214675,
-    "uploaded_bytes": 61118792208
+    "next_index": 287140,
+    "batch": 247,
+    "removed_bytes": 141950447779,
+    "uploaded_bytes": 64873955616
   },
   "next_actions": [
-    "Readfixedcross-cornerheadroomrun38331516818. Exacttapv3 closesoutputspeedandv7 closesMOSovershoot; remaininghotHBT2mVandcoldCM20mV. Requireonefixedprofileacrossallcorners,thennewquarterstep/faults/widerPVT,physicalgeneration. No fullPHYacceptance.",
-    "Mainverifiedtransfer4128374continuesexistingplan; PNRplancompletedandfinalrestore38330635076PASSall8022files67.782GB. Finalizer4102991 waits main beforeall-familyfinalrestore. Preserve32historicaluntracked/repo/toolscopependinganswer; no localCAD/tests.",
-    "Inspect next three nativehalf-grid routingprofiles. Originalfailed38317996877 fullypreserved; probe38325970347binds108markers/allreportednets,71nearETHSRAM;allmarkersx2340..3182.4,y1238.4..1641.6um. No sourceplacement/clock/RC/capacityrelaxations. Ifgridprofilesfail, targetactuallocalplacement.",
-    "FullserialPHY/chiproute/finaltimingOPEN. Native chip route nowTERMINAL FAILURE, notlive. Exactplacementtiming reproduced; do notwait onoldroute or blindly restart unchanged.",
-    "Full serial PHY, chip route and final setup/hold remain OPEN. Latest critical-bus native simulations failed unchanged signal gate; no candidate adopted.",
-    "Preserve32historical untracked source files and project/tool checkout while cleanup scope question remains unanswered. Recovery capsule is published."
+    "Main output transfer remains active; inspect transfer-progress.json and controller state. PNR8022files67.782GB fully restored in38330635076. Finalizer dispatches final all-family hosted restoration only after both plans complete. Do not delete state until that finishes.",
+    "All CAD/simulation/tests hosted only. Local editing, metadata reads, packaging/upload/hash/cleanup only. Preserve32historical untracked sources and repository/tools while prior scope clarification remains unanswered.",
+    "Read remaining half_x run38326473503; y/xy both153overflow, no observed improvement. Next routing experiment must address actual placement/congestion, not repeat same grid profiles. Full detailed route and final timing remain open.",
+    "Use native resistor-biased compact4:1 as next component baseline:10positive screens and2actual fault controls passed across38332104799/38332663087. Independent HBT/RES mixed corners, newlayout/PEX, upstreamserializer/clocks/bias/fullPHY/mainchip integration remain open."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -311,9 +309,10 @@
   "serial_headroom_followup": {
     "run": 38331516818,
     "source_head": "ae113551",
-    "status": "IN_PROGRESS",
+    "status": "COMPLETE_NO_SINGLE_FIXED_BIAS_PASSES_ALL_PVT",
     "changes": "Exacttappedv4 only2collectorRwidth16->17um. v7frontend/nativeclockreference retained. Threefixedprebias500/550/600uAcandidates acrossnominal/hot/cold,quarterstep550. No percornerbiasfit orcriteriarelaxation.",
-    "next": "Readallconditions andrequireonefixedcandidatepassallcorners. Ifanyprofilepasses, independentlyrepeatquarterstepforselectedprofileandactualstagefaults before widerMOS/HBT/RES corners andlayout."
+    "next": "Superseded by same native resistor reference geometry passing base PVT and mixed MOS corners; keep failed fixed-current evidence.",
+    "evidence": "docs/evidence/pcie-mux4-fixed-bias-headroom-20261013.json"
   },
   "pnr_final_readback": {
     "run": 38330635076,
@@ -326,5 +325,38 @@
       "hardlinks": 63
     },
     "local_residual": "0regularfiles0symlinks;1283emptydirectoriesremoved. SourcePNRscriptsoutside runs unchanged. Mainoutputtransferstillrunning."
+  },
+  "serial_native_resistor_bias": {
+    "run": 38332104799,
+    "status": "PASS_FOUR_COMPONENT_SCREENS_NOT_FULL_PHY",
+    "evidence": "docs/evidence/pcie-mux4-native-res-bias-20261013.json",
+    "wider_mos_run": 38332663087,
+    "wider_mos_status": "PASS_SIX_MOS_CORNERS_AND_TWO_NATIVE_FAULT_CONTROLS",
+    "wider_mos_evidence": "docs/evidence/pcie-mux4-native-res-corners-20261013.json",
+    "next": "Independent HBT/RES corners, actual new layout/DRC/LVS/extraction and remaining external bias/clock implementation; full32:1/PLL/CDR/PHY/chip still open."
+  },
+  "half_grid_route_partial": {
+    "run": 38326473503,
+    "half_y": "FAIL_GRT0116_153_OVERFLOW",
+    "half_xy": "FAIL_GRT0116_153_OVERFLOW",
+    "half_x": "IN_PROGRESS_LAST_OBSERVED",
+    "evidence": "docs/evidence/cloud-half-grid-route-partial-20261013.json"
+  },
+  "output_link_cleanup": {
+    "validation_run": 38333023127,
+    "hosted_tests": 35,
+    "result": {
+      "status": "COMPLETE_RECORDED_LINK_FIFO_CLEANUP",
+      "removed_this_run": 1891,
+      "recorded_entries": 1891,
+      "receipt": {
+        "name": "output-links-and-fifos-20261013.json",
+        "bytes": 712560,
+        "sha256": "1ea65d3859afdf5bdb54da143d3a4311de4c8716f6c8dc20373d45f75cac291a",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/output-links-and-fifos-20261013.json",
+        "id": 635536213
+      },
+      "scope": "Only recorded output symlinks/FIFOs. All targets and regular files untouched."
+    }
   }
 }
