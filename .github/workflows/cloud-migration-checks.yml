@@ -29,6 +29,9 @@ on:
       credit_prefix_eco:
         type: boolean
         default: false
+      replay_idle:
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -152,3 +155,40 @@ jobs:
             files+=("${archive%.tar.gz}.native-cells.json")
           fi
           python3 scripts/publish_cloud_results.py --group credit-prefix-eco "${files[@]}"
+
+  replay-idle:
+    if: ${{ inputs.replay_idle == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove candidate observation equivalence and run complete replay controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_replay_idle.py
+          hw/.venv/bin/python scripts/run_cloud_replay_idle.py
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="replay-idle-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-replay-idle
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-replay-idle/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group replay-idle "$archive" "$archive.sha256" "${archive%.tar.gz}.json"

@@ -242,3 +242,20 @@ transaction-level equivalence and complete reset/ACK/replay/backpressure tests
 plus fresh native mapping/timing. It is a proposal, NOT implemented/adopted.
 Do not repeat the single-header ECO as though it closes all credit/control
 paths; whole-chip setup/hold, routing and fullserialPHY remain open.
+
+
+## Isolated replay idle-clear evaluation
+
+run_cloud_replay_idle.py creates a cloud-only source overlay. Production RTL
+is unchanged. It clears read_pos while !sending, removing its two start/grant
+reset assignments. The proposed observation contract compares all control,
+handshake and credit outputs every cycle; tx_data/SOP/EOP only while tx_valid.
+Independent wrappers apply that mask; actual internal tx_eop feedback remains
+unchanged. clk2fflogic preserves explicit clocks and asynchronous reset.
+
+The full baseline/candidate replay and reliable-packet scoreboards run with
+zero skipped tests. A real wrong-idle-index candidate must fail both sequential
+proof and actual replay scoreboards. Any incomplete proof is retained as FAIL.
+This does not prove mapping, timing, full parameter coverage or fullchip PHY.
+Workflow: cloud-migration-checks.yml input replay_idle=true. Do not promote
+the overlay or repeat existing native layout jobs before reading these results.
