@@ -49,8 +49,8 @@ def main():
                     found.add(member.name)
         assert found == set(wanted)
         packed.unlink()
-        phases = parse_phases((OUT / 'relocated-placement-sta.log').read_text())
-        assert phases
+        phases = parse_phases((OUT / 'relocated-placement-sta.log').read_text(), 'CORNER')
+        assert set(phases) == {corner + '_' + kind for corner in ('slow', 'typical', 'fast') for kind in ('min', 'max')}
         result.update(status='COMPLETE_EXACT_PLACEMENT_TIMING_REPORT_READBACK',
                       placement_odb_sha256=evidence['failure_outputs']['relocated-placement.odb'],
                       phases=phases, restored={name:sha(OUT / name) for name in names})

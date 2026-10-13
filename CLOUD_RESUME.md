@@ -132,3 +132,18 @@ The new standalone readback workflow was not registered on the default branch
 (dispatch404, no native run started). The readback job now uses the existing
 registered cloud-migration-checks.yml workflow with timing_readback=true.
 Low-selector native diagnosis38457021311 is running on873a6350ca13c5d98981214033bc5b0af33d0add.
+
+
+Native short-selector diagnosis38457021311 PASSED. Summaryasset638065261, SHA
+acf780035a06b3be15e51beca4f7b9fa4360edf8f0d85a9d3a8926ccc0d64465;
+all128 changing-bit events are unambiguous. Exact delay statistics(ps):
+{"physical_compact": {"clock_to_mux_zero_ps": {"maximum": 9.581434892876144, "median": 9.491111200654228}, "mux_to_tx_zero_ps": {"maximum": 6.09829029383962, "median": 5.97122009132631}, "source_to_output_100mv_ps": {"maximum": 27.4264716742218, "median": 27.179796408673198}}, "physical_wire": {"clock_to_mux_zero_ps": {"maximum": 22.614831331883618, "median": 21.050944335681756}, "mux_to_tx_zero_ps": {"maximum": 6.513847561199617, "median": 6.17929948213888}, "source_to_output_100mv_ps": {"maximum": 42.797680763914016, "median": 40.40026853520598}}}
+
+Timing readback38457177829 restored and verified both original files, then
+failed because the caller selected PHASE markers instead of actual CORNER
+markers. Failure retained. Corrected caller uses CORNER and requires allsix
+slow/typical/fast min/max phases. Raw fullSTA log remainsasset638067970
+SHA80055c3fb2022a1366d03f8a010d0c671fe603c57b3ca6ca64350b5a44668374.
+It includes one unconstrained endpoint and SRAM slew violations. PCIe worst
+setup contains a long logic chain; PCIe worst hold has justINV+O21AI.
+These are placement estimates; no constraint relaxation or closure.
