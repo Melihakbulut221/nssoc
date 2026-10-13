@@ -461,3 +461,28 @@ Keep these handles and original acceptance thresholds; no wave results yet.
 Older32wire38441895491 remains live at this readback, no duplicate.
 All work is cloud-only. Local workspace verified empty and no CAD processes.
 FullserialPHY, main-chip route and finalsetup/hold all remain OPEN.
+
+
+## Late credit update verdict candidate
+
+Source-bound congestion probe38471402795 andchecks38471414652 completed
+successfully; inspect native diagnosis release before further routing.
+
+New hosted run_cloud_credit_late_verdict.py restores exact ba8adb6... credit
+RTL from physical_idle mapping archive638250779 (SHA3b639453...).
+Only the joint header/data update verdict is factored:
+(A || consume*B)*(C || consume*D) becomes
+A*C || consume*((A||B)*(C||D)). Keeps early joint verdicts before late consume.
+Static bank writes, every clock/reset and port behavior remain the same by
+construction, but formal proof and complete tests are REQUIRED, not assumed.
+
+Workflow cloud-migration-checks.yml inputcredit_late_verdict=true runs direct
+physical-source equivalence, both baseline/candidate against frozen serial
+reference, all port tests for both, and actual complemented-verdict negative
+formal/port controls. All outputs compared; no validity masking in this proof.
+No production RTL edits, physical adoption or timing claim. If positive
+evidence passes, bind exact candidate into a paired native full-chip mapping
+and compare all clockgroups/corners, not only the target PCIe setup.
+
+WiderM3 wire jobs38471108761/38471122722 remain active at last readback;
+compact jobs ended but electrical summary still requires review.

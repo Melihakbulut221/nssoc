@@ -29,6 +29,9 @@ on:
       credit_prefix_eco:
         type: boolean
         default: false
+      credit_late_verdict:
+        type: boolean
+        default: false
       replay_idle:
         type: boolean
         default: false
@@ -198,3 +201,40 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           cp cloud-replay-idle/result.json "${archive%.tar.gz}.json"
           python3 scripts/publish_cloud_results.py --group replay-idle "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  credit-late-verdict:
+    if: ${{ inputs.credit_late_verdict == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove exact physical credit verdict and run complete controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_credit_late_verdict.py
+          hw/.venv/bin/python scripts/run_cloud_credit_late_verdict.py
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="credit-late-verdict-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-credit-late-verdict
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-credit-late-verdict/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group credit-late-verdict "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
