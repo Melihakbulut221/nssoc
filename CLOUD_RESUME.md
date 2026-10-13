@@ -27,6 +27,9 @@ ODB, verifies all failed-ODB positions/connectivity and replays previous STA.
 Its1821-cell source envelope includes227data DFFs; clock-output drivers,
 delay cells, macros and all unselected cells remain fixed. Native placement
 invariants, new STA and routing must pass; no acceptance yet.
+Run **38395878470** is live on **e18933ba**; syntax and source checks
+**38395882430** passed. Inspect its actual native replay/repair progress.
+Do not dispatch another identical candidate while this run is live.
 
 v8 nominal **38389211866** passes every output sample (123.903mV minimum) but
 one selectorVCE is399.203137mV, below400mV. Quarter-step **38390326921** and
@@ -49,6 +52,9 @@ and temperature_voltage; discover existing runs before dispatch.
 Loaded runs **38395107224** (nominal) and **38395110568** (hot/low and
 cold/high) are dispatched on **ad48b0d2**, with matched compact/wire models.
 Source checks: **38395113673**. Inspect these existing runs before dispatch.
+Cold/high actual-wire component screen now passes: **226.934 mV minimum**,
+zero bit/margin/device/interface failures. Compact hot/low still fails two
+tail-VCE gates; nominal and hot/low wire results remain pending at this check.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
