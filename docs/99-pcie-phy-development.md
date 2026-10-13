@@ -34,8 +34,8 @@ run `38342231393` is running. Its nominal, cold/high, mixed resistor corners and
 hot/low fast-HBT case pass. The latter now gives at least 0.4265 V VCE in the
 six previously failing final-data HBTs. The disabled intermediate-bias fault
 is rejected with 184 wrong source-bit samples.
-[The partial record](evidence/pcie-serializer32-margin-20261013.json) does not
-assume success for the remaining cases. The earlier
+[The partial record](evidence/pcie-serializer32-margin-20261013.json) records six passing positive cases and two correctly rejected circuit
+faults. Only the 0.25 ps maximum-step case remains running. The earlier
 pending run `38340862492` was superseded before execution by the newer source.
 All native computation and testing run on GitHub-hosted runners.
 
@@ -52,7 +52,9 @@ The composition passed; [loaded-tree results](evidence/pcie-physical-prestage-tr
 show that the 4:1 compact-device control passes but the wired version fails
 54 interstage samples below 150 mV and four final-selector VCE bounds. Output
 bits still pass. This physical candidate is rejected electrically. The 32:1
-compact-device control also passes; its metal-RC case remains in progress.
+compact-device control also passes. Its completed metal-RC case fails 58 HBT
+gates and 57 final-interstage samples below 150 mV, despite zero wrong output
+bits. Both original wired candidates remain rejected.
 [Full-wave diagnosis](evidence/pcie-physical-prestage-wire-loss-20261013.json)
 compares identical source bits and time-weighted device measurements. In the
 first prestage, the two tail emitter nodes rise by 41.84 and 42.00 mV, while
@@ -66,12 +68,22 @@ passes the same native DRC/LVS and five fault controls. Its
 [fresh extraction](evidence/pcie-cascade14-wide-access-extraction-20261013.json)
 and [device/wire composition](evidence/pcie-cascade14-wide-access-composition-20261013.json)
 pass their structural checks, with 781 wire resistors and 650 capacitors.
-Run `38344474745` tests this new composition in loaded 4:1 compact and wire
-cases; no electrical improvement is assumed. The earlier request
+Run `38344474745` completed both loaded 4:1 cases. The compact control passes.
+[The wired candidate](evidence/pcie-wide-access-loaded-tree-20261013.json)
+still fails: 32 samples below 150 mV, minimum common mode 1.799607 V against
+1.8 V, and four final-selector HBT VCE failures. Its 142.742 mV minimum
+interstage signal is improved but insufficient. No candidate adoption. The earlier request
 `38344233026` was cancelled while pending, before any job started, to allow
 this independent geometry to run alongside the original 32:1 study.
 Macro-to-macro wiring remains ideal and final/TX blocks remain schematic,
 so this is not complete routed-serializer acceptance.
+
+The next [supply/return-metal candidate](evidence/pcie-cascade14-supply-access-physical-20261013.json)
+widened only supply/return Metal3 escapes from 0.4 to 0.8 micrometers and
+TopMetal1 trunks from 1.64 to 2.0 micrometers, retaining eight-column HBT access
+vias and all circuit devices. Run `38345129500` passes strict native DRC/LVS
+and all five physical fault controls. Fresh extraction `38345525664` is
+running; electrical improvement is unproven.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
@@ -80,7 +92,13 @@ hold estimate from −0.227544 ns to +0.238373 ns, with slow-corner GMII setup
 remaining +2.308341 ns. Existing CPU/PCIe negative groups remain unchanged.
 Run `38339178024` combines that candidate with bounded channel placement and
 fresh full-chip routing. These are placement estimates, **not routed timing
-closure**. The [continuation record](evidence/cloud-closure-continuation-20261013.json)
+closure**. Original local placement run `38335168863` now finished with
+136 global-route overflow, down from 153 but still rejected. The
+[exact native diagnosis](evidence/cloud-local-optimize-congestion-20261013.json)
+binds 104 markers and 964 involved nets; 71 markers touch Ethernet FIFO SRAM
+banks 4/5. The native congestion viewer writes `-` for the marker layer,
+so those strings are not metal-layer identities. The combined GMII run
+and both broad-placement runs remain in progress. The [continuation record](evidence/cloud-closure-continuation-20261013.json)
 is authoritative for subsequent results and open work.
 
 ## Latest development — 4 October 2026
