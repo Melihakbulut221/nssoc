@@ -8450,7 +8450,7 @@
     "scope": "Independent native transistor/resistor/MOS and numerical/fault engineering screens; does not qualify wire-temperature/RF/body extraction or full serial PHY. Dispatch appropriate studies after actual nominal candidate is understood."
   },
   "final_v8_candidate": {
-    "status": "UNSCREENED",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "change": "Only four selector HBTs Nx8 to Nx6 versus v7; twelve data HBTs remain Nx4; reference/tails/R/taps unchanged.",
     "reason": "Measured v6 tail minimum387.043mV and selector minimum425.644mV; v7 tail minimum412.988mV and selector minimum385.575mV. Intermediate selector area is a headroom-balancing hypothesis, not predicted acceptance. Both output waveforms pass the unchanged100mV limit; v7 is marginal101.220mV.",
     "source_sha256": {
@@ -8458,6 +8458,24 @@
       "hw/soc/analog/pcie/tx_mux54_passive_drive_v8.spice": "1cae9383cc799292e85c8e95ff641410a502c76b927d8729248ebef9758f0ed8"
     },
     "adopted": false,
-    "physical_run": 38388166708
+    "physical_run": 38388166708,
+    "physical_receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38388166708-1-layout-final_drive_v8-critical_buses_kelvin_dense_wide/tx-layout-repair-cloud-final_drive_v8-critical_buses_kelvin_dense_wide-38388166708-1.tar.gz",
+      "bytes": 380388,
+      "sha256": "f2dbac4999b68aa0c96f6c19afcdbaf94a1753448c44fe5653bb0a20327e18d2"
+    },
+    "physical_summary_sha256": "e9cd558f1645405e03eaccd145b0246576feb2a675a1738ac42ec23a7fb2f31d",
+    "source_checks_run": 38388170394,
+    "source_checks_status": "PASS",
+    "physical_gates": {
+      "drc": "PASS",
+      "lvs": "PASS",
+      "lvs_flat": "PASS",
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   }
 }
