@@ -24,9 +24,10 @@ selected independent HBT/resistor corners, and a 0.25 ps maximum simulation
 step. Two actual circuit faults cover a disabled intermediate bias feed and
 an inverted deepest-stage selector for inputs 15/31. Initial results are in the [32:1 corner record](evidence/pcie-serializer32-corners-20261013.json).
 Hot/low and cold/high with worst resistors pass, and disabling the actual
-intermediate bias feed produces 184 wrong samples as expected. Hot/low with
+intermediate bias feed produces 184 wrong samples as expected. The deepest
+selector fault is also rejected by the original-bit oracle. Hot/low with
 fast HBT models fails six final-mux devices: minimum VCE is 0.399209 V against
-the unchanged 0.4 V bound. Other jobs remain pending. Candidate v5 widens only
+the unchanged 0.4 V bound. The 0.25 ps step job remains pending. Candidate v5 widens only
 two final collector resistors from 17 to 18 micrometers to reduce voltage drop;
 run `38340862492` is pending, and its success is not assumed.
 All native computation and testing run on GitHub-hosted runners.
@@ -35,8 +36,12 @@ The [cascade14 prestage layout](evidence/pcie-cascade14-physical-20261013.json)
 now passes 560 native DRC categories with zero markers, strict hierarchical
 and flat transistor LVS (54 devices including substrate contacts), and all
 five deliberate fault controls. Its 362.4 by 211.03 micrometer macro is one
-prestage, not the assembled serializer. Run `38341047720` extracts its actual
-wire RC; electrical acceptance with those wires remains open.
+prestage, not the assembled serializer. Run `38341047720` now passes the actual
+173-resistor/270-capacitor wire graph audit and all thirteen corruption
+controls; [the extraction record](evidence/pcie-cascade14-wire-extraction-20261013.json)
+retains its substrate-resistance and RF-distribution limitations. Run
+`38341559330` binds the real devices and wires for loaded-tree simulation.
+Electrical acceptance with those wires remains open.
 
 The separate [GMII output hold repair](evidence/cloud-ethernet-hold-estimate-20261013.json)
 passes the native Liberty logic-equivalence check and injected-inverter
