@@ -38,6 +38,8 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Reproduce exact newer postCTS then route all domains
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}'
       - name: Preserve complete source-bound routing and failures
         if: always()

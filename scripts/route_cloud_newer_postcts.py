@@ -141,7 +141,13 @@ def main():
             script=script.replace(str(inputs/'postcts.odb'),str(OUT/'relocated-placement.odb'))
             result['relocated_placement_timing']=parse_phases(execute(script,'relocated-placement-sta'),'CORNER')
             assert result['relocated_placement_timing'].keys()==replay.keys()
+            result['status']='PLACEMENT_INVARIANTS_AND_STA_COMPLETE_GLOBAL_ROUTE_PENDING'
             save()
+            if os.environ.get('GITHUB_ACTIONS')=='true':
+                checkpoint=OUT/(f'newer-postcts-placement-{args.placement_profile}-'
+                    f'{os.environ["GITHUB_RUN_ID"]}-{os.environ["GITHUB_RUN_ATTEMPT"]}.pre-route.json')
+                checkpoint.write_text(json.dumps(result,indent=2)+'\n')
+                subprocess.run(['gh','release','upload','cloud-migration-20261012-000',str(checkpoint)],check=True)
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
         commands = [prefix, 'set_thread_count 2', 'check_placement -verbose',

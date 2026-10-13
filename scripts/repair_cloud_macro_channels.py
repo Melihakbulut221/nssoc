@@ -106,11 +106,15 @@ def verify():
     # Two native in-memory corruption controls. Restore and recheck each before
     # writing the candidate: these do not alter the preserved source database.
     fixed=next(i for n,i in actual.items() if n not in before['selected'] and not i.getMaster().isBlock())
-    old=fixed.getLocation();fixed.setLocation(old[0]+block.getDbUnitsPerMicron(),old[1])
+    old=fixed.getLocation();fixed_status=str(fixed.getPlacementStatus())
+    # OpenDB itself forbids moving FIRM instances. Explicitly unlock only this
+    # in-memory negative-control victim, then restore its original status.
+    fixed.setPlacementStatus('PLACED')
+    fixed.setLocation(old[0]+block.getDbUnitsPerMicron(),old[1])
     try:check(block,before)
     except AssertionError:pass
     else:raise AssertionError('Fixed-cell displacement escaped verification')
-    fixed.setLocation(*old);check(block,before)
+    fixed.setLocation(*old);fixed.setPlacementStatus(fixed_status);check(block,before)
     pin=next(t for t in actual[before['selected'][0]].getITerms() if t.getNet())
     net=pin.getNet();pin.disconnect()
     try:check(block,before)
