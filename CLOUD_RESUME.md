@@ -157,6 +157,9 @@ assets for large results. Do not download bulk CAD results onto this computer.
   Main-chip route **38371498733** isin_progress at this check.
   FullserialPHY,detailedmain-chiproute andfinalsetup/hold remainOPEN.
 
-M3-only physical38380208915 nowpassed560-categoryDRC/0markers,
-hierarchical/flatLVS andfivefaultcontrols. Nativeextraction isdispatched
-withtheexactreceipt; findtheexistingrun beforestartinganother.
+M3-only physical run **38380208915** passed all 560 DRC categories with
+zero markers, strict hierarchical/flat LVS, and five fault controls.
+Native extraction **38380642029** is **in_progress**, using source
+**21c8aac8** and the exact physical archive receipt. Inspect this existing
+run before dispatching anything else. A physical pass is not electrical
+acceptance: new native RC, composition and fixed-phase waveforms are required.
