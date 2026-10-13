@@ -79,7 +79,7 @@ content as data loss or recreate a local checkout. FullPHY and finalSTA OPEN.
 - Dispatched on `aca3bac7193aa1957fd91295d126147f53b38166`: nominal **38417298237**,
   hot/cold **38417305677**, source/migration checks **38417310283**.
   Results pending; do not duplicate these studies. This dispatch record
-  supersedes the continuation JSON next-action to launch these same jobs.
+  is superseded by the completed summaries in continuation JSON.
 - Local retirement reverified: workspace and NSSOC temporary directories empty,
   no local CAD processes; retirement receipt SHA256
   `23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd`.
@@ -96,7 +96,8 @@ versusabout9.5ps compact; source-to100mV events reachabout40-44ps andmiss37.5ps.
 Candidate `critical_buses_kelvin_local_internal` on final_drive_v8 addsreal
 parallel eaM4 andebM5 local routes at16/20um, eachjoining nineactualterminals.
 It inherits localreturn/supply/tailgeometry andall54devices unchanged.
-Native DRC/strictLVS/physicalfaults must pass before RC orloaded testing.
+Native DRC/strictLVS/physicalfaults run **38421020866** onb93f626c
+must pass before RC orloaded testing.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 

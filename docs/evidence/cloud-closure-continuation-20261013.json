@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T15:08:35.214702+00:00",
+  "as_of": "2026-10-13T15:21:24.743862+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "a5cb9eff023e8733a60c25cb2effe0e30e4e4f7b",
+  "head": "b93f626cf0f708b0c20ba6ebbe74c5fc7c582b57",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,9 +100,9 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Run native congestion probe on exact local_data_endpoints failure; compare with previous135overflow before new routing.",
-    "Finish inspecting combined supply-feed hot wire result if pending; retain all failed gates. Diagnose remaining internal-net drop/delay before further native geometry changes.",
-    "Full serial PHY, main-chip detailed routing and final setup/hold remain OPEN; all work cloud-only."
+    "Inspect native local internal ea/eb geometry38421020866; preserve failures and require DRC/LVS before source-bound RC extraction/composition and loaded PVT.",
+    "Monitor existing exact-placement timing-priority route38420407838; do not duplicate or infer success from running status.",
+    "Full serial PHY, detailed main-chip routing and final setup/hold remain OPEN. All CAD/tests cloud-only; workspace empty."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -55543,5 +55543,1394 @@
       10.23267
     ],
     "note": "Native final-MUX supply paths improve about one ohm; loaded nominal/cold still fail four selector VCE gates. No adoption."
+  },
+  "supply_feed_full_wave_diagnosis": [
+    {
+      "run": 38420038719,
+      "study": "supply_feed_hot",
+      "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38420038719-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38420038719-1.summary.json",
+      "summary_sha256": "211f388434110aa7e4e3d3c8e18b0edd83f5bfa718ae39697d76b34b3248b745",
+      "cases": {
+        "physical_compact": {
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38417305677-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38417305677-1.tar.gz",
+            "sha256": "971c0fca5ac9ca96f755f2f58e6e5b2cecb80070d63194efca9165e9fa384f4a",
+            "bytes": 110239680
+          },
+          "summary_sha256": "b1db1cb4fcbb493af331e54d9c074633704e40435dd0ed4c745acb0a56067c37",
+          "raw_wave": {
+            "bytes": 278794153,
+            "sha256": "f37547ae3dcfd4391131fb84c1ea92f37590f9934a0a7cf590d819d965feaa6d"
+          },
+          "physical_sources": {
+            "physical_prestage_scope": {
+              "profile": "kelvin_supply_feed",
+              "source": "docs/evidence/pcie-cascade14-kelvin-supply-feed-composition-20261013.json",
+              "source_sha256": "61c6ceb98675a12c34dc5a80e9a8822ca3eb1884fd541e4fb888ae2d9cfba65b"
+            },
+            "physical_final_scope": {
+              "profile": "v8_kelvin_local_supply",
+              "source": "docs/evidence/pcie-final-v8-kelvin-local-supply-composition-20261013.json",
+              "source_sha256": "aab71fbba38d99e6a824e2d56ca4b2b04283c00534e110ef78b713e7b9560c73"
+            }
+          },
+          "transitions": {
+            "summary": {
+              "clock_to_mux_zero_ps": {
+                "count": 128,
+                "minimum": 9.34765012010771,
+                "median": 9.50050897703237,
+                "maximum": 9.589485515210527
+              },
+              "mux_to_tx_zero_ps": {
+                "count": 128,
+                "minimum": 5.861430687602342,
+                "median": 5.977783553007134,
+                "maximum": 6.1067266742804405
+              },
+              "source_to_output_100mv_ps": {
+                "count": 128,
+                "minimum": 26.99165659128597,
+                "median": 27.217180337027386,
+                "maximum": 27.47058182707882
+              }
+            },
+            "ambiguous_events": 0,
+            "original_03ui_below_100mv": 0,
+            "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+          },
+          "selected_devices": {
+            "xmux.xd0005": {
+              "terminals": [
+                "xmux.n_16",
+                "sn",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0054963847225165,
+                "maximum": 1.4063073819334542,
+                "time_mean": 1.2218595330505952
+              },
+              "base_v": {
+                "minimum": 1.1262330949756274,
+                "maximum": 1.3182870114880525,
+                "time_mean": 1.2281768273429465
+              },
+              "emitter_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vce_v": {
+                "minimum": 0.5457012619020738,
+                "maximum": 0.9480924940052377,
+                "time_mean": 0.7404860421293868
+              },
+              "vbe_v": {
+                "minimum": 0.6546104239477043,
+                "maximum": 0.8301778111710187,
+                "time_mean": 0.7468033364217382
+              },
+              "collector_current_a": {
+                "minimum": 0.00017412800389792626,
+                "maximum": 0.006676180827585852,
+                "time_mean": 0.003239430703054672
+              },
+              "passed": true
+            },
+            "xmux.xd0006": {
+              "terminals": [
+                "xmux.n_19",
+                "sp",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.005621063994716,
+                "maximum": 1.406007369600094,
+                "time_mean": 1.2218311827205486
+              },
+              "base_v": {
+                "minimum": 1.1265114524979825,
+                "maximum": 1.317544257002165,
+                "time_mean": 1.2282518104319862
+              },
+              "emitter_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vce_v": {
+                "minimum": 0.5449948723632874,
+                "maximum": 0.9476866379226669,
+                "time_mean": 0.7404576917993403
+              },
+              "vbe_v": {
+                "minimum": 0.6546522773717572,
+                "maximum": 0.8293167416938813,
+                "time_mean": 0.7468783195107777
+              },
+              "collector_current_a": {
+                "minimum": 0.00017469490046195156,
+                "maximum": 0.006684581833869084,
+                "time_mean": 0.0032476954677168202
+              },
+              "passed": true
+            },
+            "xmux.xd0007": {
+              "terminals": [
+                "xmux.n_16",
+                "sn",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0054963847225165,
+                "maximum": 1.4063073819334542,
+                "time_mean": 1.2218595330505952
+              },
+              "base_v": {
+                "minimum": 1.1262330949756274,
+                "maximum": 1.3182870114880525,
+                "time_mean": 1.2281768273429465
+              },
+              "emitter_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vce_v": {
+                "minimum": 0.5457012619020738,
+                "maximum": 0.9480924940052377,
+                "time_mean": 0.7404860421293868
+              },
+              "vbe_v": {
+                "minimum": 0.6546104239477043,
+                "maximum": 0.8301778111710187,
+                "time_mean": 0.7468033364217382
+              },
+              "collector_current_a": {
+                "minimum": 0.00017412800389790314,
+                "maximum": 0.006676180827585974,
+                "time_mean": 0.003239430703054668
+              },
+              "passed": true
+            },
+            "xmux.xd0008": {
+              "terminals": [
+                "xmux.n_19",
+                "sp",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.005621063994716,
+                "maximum": 1.406007369600094,
+                "time_mean": 1.2218311827205486
+              },
+              "base_v": {
+                "minimum": 1.1265114524979825,
+                "maximum": 1.317544257002165,
+                "time_mean": 1.2282518104319862
+              },
+              "emitter_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vce_v": {
+                "minimum": 0.5449948723632874,
+                "maximum": 0.9476866379226669,
+                "time_mean": 0.7404576917993403
+              },
+              "vbe_v": {
+                "minimum": 0.6546522773717572,
+                "maximum": 0.8293167416938813,
+                "time_mean": 0.7468783195107777
+              },
+              "collector_current_a": {
+                "minimum": 0.00017469490046194294,
+                "maximum": 0.006684581833869079,
+                "time_mean": 0.003247695467716828
+              },
+              "passed": true
+            },
+            "xmux.xd0009": {
+              "terminals": [
+                "mr",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 1,
+              "collector_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "base_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "vbe_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "collector_current_a": {
+                "minimum": 0.0007273942382672436,
+                "maximum": 0.000857985261179774,
+                "time_mean": 0.0008204280126736177
+              },
+              "passed": true
+            },
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.n_55",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "base_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vbe_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "collector_current_a": {
+                "minimum": 0.00567682558172471,
+                "maximum": 0.006887234467736585,
+                "time_mean": 0.0065178703571084325
+              },
+              "passed": true
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.n_55",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "base_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.4380428684212674,
+                "maximum": 0.4948830181601435,
+                "time_mean": 0.4813734909212083
+              },
+              "vbe_v": {
+                "minimum": 0.795076821397737,
+                "maximum": 0.810747911946567,
+                "time_mean": 0.8047574511316354
+              },
+              "collector_current_a": {
+                "minimum": 0.0056768255817245695,
+                "maximum": 0.00688723446773659,
+                "time_mean": 0.006517870357108359
+              },
+              "passed": true
+            }
+          }
+        },
+        "physical_wire": {
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38417305677-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38417305677-1.tar.gz",
+            "sha256": "03c42ef3175ec24d826f867ba0c2bae78bd756e609098408cd97106c904a0024",
+            "bytes": 232192146
+          },
+          "summary_sha256": "c2921bef38bacdd7c04577f771007facf9d6901f9d2e013068abc6fc1125817d",
+          "raw_wave": {
+            "bytes": 539159401,
+            "sha256": "cf979d016007cc218666c23400406949070a423f2ad8faf2745886f2d842b967"
+          },
+          "physical_sources": {
+            "physical_prestage_scope": {
+              "profile": "kelvin_supply_feed",
+              "source": "docs/evidence/pcie-cascade14-kelvin-supply-feed-composition-20261013.json",
+              "source_sha256": "61c6ceb98675a12c34dc5a80e9a8822ca3eb1884fd541e4fb888ae2d9cfba65b"
+            },
+            "physical_final_scope": {
+              "profile": "v8_kelvin_local_supply",
+              "source": "docs/evidence/pcie-final-v8-kelvin-local-supply-composition-20261013.json",
+              "source_sha256": "aab71fbba38d99e6a824e2d56ca4b2b04283c00534e110ef78b713e7b9560c73"
+            }
+          },
+          "transitions": {
+            "summary": {
+              "clock_to_mux_zero_ps": {
+                "count": 128,
+                "minimum": 20.619338611348454,
+                "median": 22.151419889640962,
+                "maximum": 23.849252339078014
+              },
+              "mux_to_tx_zero_ps": {
+                "count": 128,
+                "minimum": 5.888469779356474,
+                "median": 6.1539779504271515,
+                "maximum": 6.4920895880128215
+              },
+              "source_to_output_100mv_ps": {
+                "count": 128,
+                "minimum": 39.622908982803025,
+                "median": 41.593426737452674,
+                "maximum": 44.23507765685649
+              }
+            },
+            "ambiguous_events": 0,
+            "original_03ui_below_100mv": 128,
+            "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+          },
+          "selected_devices": {
+            "xmux.xd0005": {
+              "terminals": [
+                "xmux.t005_c",
+                "xmux.t005_b",
+                "xmux.t005_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 0.9669490346988439,
+                "maximum": 1.3088030964257809,
+                "time_mean": 1.1356494382144526
+              },
+              "base_v": {
+                "minimum": 1.1653900555511614,
+                "maximum": 1.3471559189377367,
+                "time_mean": 1.2572481497459544
+              },
+              "emitter_v": {
+                "minimum": 0.48346609107284677,
+                "maximum": 0.5475157896611617,
+                "time_mean": 0.5204152173689748
+              },
+              "vce_v": {
+                "minimum": 0.4404213445237529,
+                "maximum": 0.8023207577177427,
+                "time_mean": 0.6152342208454777
+              },
+              "vbe_v": {
+                "minimum": 0.6635607638548895,
+                "maximum": 0.8048780817773394,
+                "time_mean": 0.7368329323769796
+              },
+              "collector_current_a": {
+                "minimum": 0.00023112601030200448,
+                "maximum": 0.004665790805053757,
+                "time_mean": 0.0023711995213698766
+              },
+              "passed": true
+            },
+            "xmux.xd0006": {
+              "terminals": [
+                "xmux.t006_c",
+                "xmux.t006_b",
+                "xmux.t006_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 0.9699275941393244,
+                "maximum": 1.3138266585447256,
+                "time_mean": 1.1398593062787372
+              },
+              "base_v": {
+                "minimum": 1.1665318325506877,
+                "maximum": 1.3461105443465249,
+                "time_mean": 1.2573559770094977
+              },
+              "emitter_v": {
+                "minimum": 0.48221011582670326,
+                "maximum": 0.5452437691400062,
+                "time_mean": 0.5230090607728142
+              },
+              "vce_v": {
+                "minimum": 0.44123749602755635,
+                "maximum": 0.8019700870992034,
+                "time_mean": 0.6168502455059229
+              },
+              "vbe_v": {
+                "minimum": 0.6575569247500069,
+                "maximum": 0.8045665766193654,
+                "time_mean": 0.7343469162366838
+              },
+              "collector_current_a": {
+                "minimum": 0.00019674760801097573,
+                "maximum": 0.004715905835741968,
+                "time_mean": 0.002374086407677321
+              },
+              "passed": true
+            },
+            "xmux.xd0007": {
+              "terminals": [
+                "xmux.t007_c",
+                "xmux.t007_b",
+                "xmux.t007_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 0.9667164505616359,
+                "maximum": 1.3088310826773486,
+                "time_mean": 1.1355558696982841
+              },
+              "base_v": {
+                "minimum": 1.1653907272154924,
+                "maximum": 1.3471544462713025,
+                "time_mean": 1.2572475800284655
+              },
+              "emitter_v": {
+                "minimum": 0.4829838236427638,
+                "maximum": 0.5455268139523295,
+                "time_mean": 0.5193083285203223
+              },
+              "vce_v": {
+                "minimum": 0.4422584702262434,
+                "maximum": 0.8025532854407436,
+                "time_mean": 0.6162475411779619
+              },
+              "vbe_v": {
+                "minimum": 0.6637552185687262,
+                "maximum": 0.8069624074171456,
+                "time_mean": 0.737939251508143
+              },
+              "collector_current_a": {
+                "minimum": 0.0002329644687219646,
+                "maximum": 0.004807327674996643,
+                "time_mean": 0.0024392890308355605
+              },
+              "passed": true
+            },
+            "xmux.xd0008": {
+              "terminals": [
+                "xmux.t008_c",
+                "xmux.t008_b",
+                "xmux.t008_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 0.9699558149396132,
+                "maximum": 1.3137924014557827,
+                "time_mean": 1.1398466979487278
+              },
+              "base_v": {
+                "minimum": 1.1665327278731503,
+                "maximum": 1.3461108619389743,
+                "time_mean": 1.2573560961019654
+              },
+              "emitter_v": {
+                "minimum": 0.48248681895473616,
+                "maximum": 0.5467873360490023,
+                "time_mean": 0.5237651856288305
+              },
+              "vce_v": {
+                "minimum": 0.439691716944821,
+                "maximum": 0.8019743196491138,
+                "time_mean": 0.6160815123198976
+              },
+              "vbe_v": {
+                "minimum": 0.6576020403881728,
+                "maximum": 0.8029645457359239,
+                "time_mean": 0.733590910473135
+              },
+              "collector_current_a": {
+                "minimum": 0.0001965948087519646,
+                "maximum": 0.004606108989855335,
+                "time_mean": 0.002322882419097128
+              },
+              "passed": true
+            },
+            "xmux.xd0009": {
+              "terminals": [
+                "xmux.t009_c",
+                "xmux.t009_b",
+                "xmux.t009_e",
+                "xmux.n_1"
+              ],
+              "nx": 1,
+              "collector_v": {
+                "minimum": 0.8037255204962466,
+                "maximum": 0.8165074970642112,
+                "time_mean": 0.8114062937518886
+              },
+              "base_v": {
+                "minimum": 0.8104016705547652,
+                "maximum": 0.823838247165936,
+                "time_mean": 0.8185933193295495
+              },
+              "emitter_v": {
+                "minimum": 0.01185870817364504,
+                "maximum": 0.013344005893701563,
+                "time_mean": 0.012906159791975513
+              },
+              "vce_v": {
+                "minimum": 0.7918668123226015,
+                "maximum": 0.8032002529734225,
+                "time_mean": 0.7985001339599131
+              },
+              "vbe_v": {
+                "minimum": 0.7985429623811201,
+                "maximum": 0.8105309642376499,
+                "time_mean": 0.8056871595375739
+              },
+              "collector_current_a": {
+                "minimum": 0.0007670918211385886,
+                "maximum": 0.0008545785830233232,
+                "time_mean": 0.0008311973378835427
+              },
+              "passed": true
+            },
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.t010_c",
+                "xmux.t010_b",
+                "xmux.t010_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.4446955608279438,
+                "maximum": 0.49432801333315934,
+                "time_mean": 0.4765834336802605
+              },
+              "base_v": {
+                "minimum": 0.8099354771596947,
+                "maximum": 0.823803244891784,
+                "time_mean": 0.8184689731139358
+              },
+              "emitter_v": {
+                "minimum": 0.02960473114522994,
+                "maximum": 0.03361509882542939,
+                "time_mean": 0.03237868596700937
+              },
+              "vce_v": {
+                "minimum": 0.41367890152154346,
+                "maximum": 0.46215343579887114,
+                "time_mean": 0.44420474771325114
+              },
+              "vbe_v": {
+                "minimum": 0.7803255415047404,
+                "maximum": 0.7902676378616036,
+                "time_mean": 0.7860902871469264
+              },
+              "collector_current_a": {
+                "minimum": 0.004412230916488909,
+                "maximum": 0.0050260819608977485,
+                "time_mean": 0.004835354984871288
+              },
+              "passed": true
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.t011_c",
+                "xmux.t011_b",
+                "xmux.t011_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.44265454374220103,
+                "maximum": 0.49260225095966237,
+                "time_mean": 0.4749470523969964
+              },
+              "base_v": {
+                "minimum": 0.8098263044970815,
+                "maximum": 0.8237943855788399,
+                "time_mean": 0.8184518702902425
+              },
+              "emitter_v": {
+                "minimum": 0.03094325002243497,
+                "maximum": 0.03515663381859237,
+                "time_mean": 0.033860697206845744
+              },
+              "vce_v": {
+                "minimum": 0.4101612857085544,
+                "maximum": 0.45895583981452237,
+                "time_mean": 0.4410863551901506
+              },
+              "vbe_v": {
+                "minimum": 0.7788778048198537,
+                "maximum": 0.7887163557780197,
+                "time_mean": 0.7845911730833968
+              },
+              "collector_current_a": {
+                "minimum": 0.004293901553046133,
+                "maximum": 0.004900325440932547,
+                "time_mean": 0.004713604602232038
+              },
+              "passed": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "run": 38420042839,
+      "study": "supply_feed_cold",
+      "status": "COMPLETE_SOURCE_BOUND_PHYSICAL_TREE_COMPARISON_NOT_ACCEPTANCE",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38420042839-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38420042839-1.summary.json",
+      "summary_sha256": "7ff6bd731aeb7910b8dcf07bf71fa286f9476671bce111c76c89f5ae468f1556",
+      "cases": {
+        "physical_compact": {
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38417305677-1-tree-4-physical_compact-cold_high-none/tx-tree-physical-4-physical_compact-cold_high-none-38417305677-1.tar.gz",
+            "sha256": "7edd3b2c76c0fd29c0dc9eb8420046a58205ea49b1216fad0f309b5a50842c0d",
+            "bytes": 111248057
+          },
+          "summary_sha256": "8b2549b2884fae2a7c29080a8d52c6ec23ccca9914157fd72ed45057aa2ecb48",
+          "raw_wave": {
+            "bytes": 278794153,
+            "sha256": "e8d61adb0a349293e9f42a1cb347f01f11468ee16ea713d69cbe2d49859d108e"
+          },
+          "physical_sources": {
+            "physical_prestage_scope": {
+              "profile": "kelvin_supply_feed",
+              "source": "docs/evidence/pcie-cascade14-kelvin-supply-feed-composition-20261013.json",
+              "source_sha256": "61c6ceb98675a12c34dc5a80e9a8822ca3eb1884fd541e4fb888ae2d9cfba65b"
+            },
+            "physical_final_scope": {
+              "profile": "v8_kelvin_local_supply",
+              "source": "docs/evidence/pcie-final-v8-kelvin-local-supply-composition-20261013.json",
+              "source_sha256": "aab71fbba38d99e6a824e2d56ca4b2b04283c00534e110ef78b713e7b9560c73"
+            }
+          },
+          "transitions": {
+            "summary": {
+              "clock_to_mux_zero_ps": {
+                "count": 128,
+                "minimum": 4.869748071861149,
+                "median": 5.002172193234893,
+                "maximum": 5.083114765864529
+              },
+              "mux_to_tx_zero_ps": {
+                "count": 128,
+                "minimum": 3.1785897326896664,
+                "median": 3.298690951849485,
+                "maximum": 3.4138925022336064
+              },
+              "source_to_output_100mv_ps": {
+                "count": 128,
+                "minimum": 17.434462342975465,
+                "median": 17.573227917380578,
+                "maximum": 17.705311822228357
+              }
+            },
+            "ambiguous_events": 0,
+            "original_03ui_below_100mv": 0,
+            "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+          },
+          "selected_devices": {
+            "xmux.xd0005": {
+              "terminals": [
+                "xmux.n_16",
+                "sn",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0607595942292003,
+                "maximum": 1.4794179104464766,
+                "time_mean": 1.2999081025458221
+              },
+              "base_v": {
+                "minimum": 1.3649250825240242,
+                "maximum": 1.5816757584614103,
+                "time_mean": 1.4852694682486258
+              },
+              "emitter_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vce_v": {
+                "minimum": 0.4814952014455489,
+                "maximum": 0.9105440629480974,
+                "time_mean": 0.6811408065648918
+              },
+              "vbe_v": {
+                "minimum": 0.7708813993731826,
+                "maximum": 0.9529452417194763,
+                "time_mean": 0.8665021722676957
+              },
+              "collector_current_a": {
+                "minimum": -1.309780984763409e-07,
+                "maximum": 0.010572817131410995,
+                "time_mean": 0.004746671345018338
+              },
+              "passed": true
+            },
+            "xmux.xd0006": {
+              "terminals": [
+                "xmux.n_19",
+                "sp",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0604726338702906,
+                "maximum": 1.4792939846034392,
+                "time_mean": 1.3000596386509613
+              },
+              "base_v": {
+                "minimum": 1.3648160003460998,
+                "maximum": 1.5817204934922646,
+                "time_mean": 1.4853400057238377
+              },
+              "emitter_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vce_v": {
+                "minimum": 0.48042450659404745,
+                "maximum": 0.9102299389327428,
+                "time_mean": 0.6812923426700311
+              },
+              "vbe_v": {
+                "minimum": 0.7708172343289588,
+                "maximum": 0.9516511296160693,
+                "time_mean": 0.8665727097429073
+              },
+              "collector_current_a": {
+                "minimum": 1.0387914846282606e-06,
+                "maximum": 0.010577978601774066,
+                "time_mean": 0.004755267930761481
+              },
+              "passed": true
+            },
+            "xmux.xd0007": {
+              "terminals": [
+                "xmux.n_16",
+                "sn",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0607595942292003,
+                "maximum": 1.4794179104464766,
+                "time_mean": 1.2999081025458221
+              },
+              "base_v": {
+                "minimum": 1.3649250825240242,
+                "maximum": 1.5816757584614103,
+                "time_mean": 1.4852694682486258
+              },
+              "emitter_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vce_v": {
+                "minimum": 0.4814952014455489,
+                "maximum": 0.9105440629480974,
+                "time_mean": 0.6811408065648918
+              },
+              "vbe_v": {
+                "minimum": 0.7708813993731826,
+                "maximum": 0.9529452417194763,
+                "time_mean": 0.8665021722676957
+              },
+              "collector_current_a": {
+                "minimum": -1.3097809848558372e-07,
+                "maximum": 0.010572817131410873,
+                "time_mean": 0.004746671345018305
+              },
+              "passed": true
+            },
+            "xmux.xd0008": {
+              "terminals": [
+                "xmux.n_19",
+                "sp",
+                "xmux.n_55",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0604726338702906,
+                "maximum": 1.4792939846034392,
+                "time_mean": 1.3000596386509613
+              },
+              "base_v": {
+                "minimum": 1.3648160003460998,
+                "maximum": 1.5817204934922646,
+                "time_mean": 1.4853400057238377
+              },
+              "emitter_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vce_v": {
+                "minimum": 0.48042450659404745,
+                "maximum": 0.9102299389327428,
+                "time_mean": 0.6812923426700311
+              },
+              "vbe_v": {
+                "minimum": 0.7708172343289588,
+                "maximum": 0.9516511296160693,
+                "time_mean": 0.8665727097429073
+              },
+              "collector_current_a": {
+                "minimum": 1.0387914846127836e-06,
+                "maximum": 0.010577978601774037,
+                "time_mean": 0.004755267930761514
+              },
+              "passed": true
+            },
+            "xmux.xd0009": {
+              "terminals": [
+                "mr",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 1,
+              "collector_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "base_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "vbe_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "collector_current_a": {
+                "minimum": 0.001019372682132171,
+                "maximum": 0.0012789221833480473,
+                "time_mean": 0.0011858232387206614
+              },
+              "passed": true
+            },
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.n_55",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "base_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vbe_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "collector_current_a": {
+                "minimum": 0.007921770049414256,
+                "maximum": 0.010473947837735476,
+                "time_mean": 0.009506574005821935
+              },
+              "passed": true
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.n_55",
+                "mr",
+                "0",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "base_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "emitter_v": {
+                "minimum": 0.0,
+                "maximum": 0.0,
+                "time_mean": 0.0
+              },
+              "vce_v": {
+                "minimum": 0.5495016637638719,
+                "maximum": 0.6376743576552713,
+                "time_mean": 0.6187672959809302
+              },
+              "vbe_v": {
+                "minimum": 0.914243420799313,
+                "maximum": 0.9332762825328528,
+                "time_mean": 0.9243067374253717
+              },
+              "collector_current_a": {
+                "minimum": 0.00792177004941437,
+                "maximum": 0.010473947837735389,
+                "time_mean": 0.00950657400582185
+              },
+              "passed": true
+            }
+          }
+        },
+        "physical_wire": {
+          "source_archive": {
+            "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38417305677-1-tree-4-physical_wire-cold_high-none/tx-tree-physical-4-physical_wire-cold_high-none-38417305677-1.tar.gz",
+            "sha256": "2b8b75d01ae122ccccc9cce3c37699b7e663b2ca3b7f70ca1a5aedb6d4caec01",
+            "bytes": 232544711
+          },
+          "summary_sha256": "6d25ff5736afd59e81f265e0c81895d98420c79b34d3afdad078834b09f8c0ad",
+          "raw_wave": {
+            "bytes": 539159401,
+            "sha256": "2db9bbb87d300705203c880f7734119327fb979c1d55171651175525e6a56f55"
+          },
+          "physical_sources": {
+            "physical_prestage_scope": {
+              "profile": "kelvin_supply_feed",
+              "source": "docs/evidence/pcie-cascade14-kelvin-supply-feed-composition-20261013.json",
+              "source_sha256": "61c6ceb98675a12c34dc5a80e9a8822ca3eb1884fd541e4fb888ae2d9cfba65b"
+            },
+            "physical_final_scope": {
+              "profile": "v8_kelvin_local_supply",
+              "source": "docs/evidence/pcie-final-v8-kelvin-local-supply-composition-20261013.json",
+              "source_sha256": "aab71fbba38d99e6a824e2d56ca4b2b04283c00534e110ef78b713e7b9560c73"
+            }
+          },
+          "transitions": {
+            "summary": {
+              "clock_to_mux_zero_ps": {
+                "count": 128,
+                "minimum": 13.9427616449462,
+                "median": 14.804427990800704,
+                "maximum": 16.090765836250327
+              },
+              "mux_to_tx_zero_ps": {
+                "count": 128,
+                "minimum": 3.3854591332826005,
+                "median": 3.681712705293882,
+                "maximum": 4.030320371234331
+              },
+              "source_to_output_100mv_ps": {
+                "count": 128,
+                "minimum": 27.27812447067488,
+                "median": 28.60464270326106,
+                "maximum": 30.133678694307847
+              }
+            },
+            "ambiguous_events": 0,
+            "original_03ui_below_100mv": 0,
+            "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+          },
+          "selected_devices": {
+            "xmux.xd0005": {
+              "terminals": [
+                "xmux.t005_c",
+                "xmux.t005_b",
+                "xmux.t005_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0219705791478562,
+                "maximum": 1.3505291280221912,
+                "time_mean": 1.1974940959494393
+              },
+              "base_v": {
+                "minimum": 1.3955757189292912,
+                "maximum": 1.579786511550071,
+                "time_mean": 1.4906193688118294
+              },
+              "emitter_v": {
+                "minimum": 0.5793052392292644,
+                "maximum": 0.6652717412358242,
+                "time_mean": 0.6359929852197287
+              },
+              "vce_v": {
+                "minimum": 0.38092674584478403,
+                "maximum": 0.7413235306541827,
+                "time_mean": 0.5615011107297108
+              },
+              "vbe_v": {
+                "minimum": 0.7842875272469909,
+                "maximum": 0.9212207253136664,
+                "time_mean": 0.8546263835921009
+              },
+              "collector_current_a": {
+                "minimum": 2.8496559765058788e-05,
+                "maximum": 0.005829876669442826,
+                "time_mean": 0.002690855805207717
+              },
+              "passed": false
+            },
+            "xmux.xd0006": {
+              "terminals": [
+                "xmux.t006_c",
+                "xmux.t006_b",
+                "xmux.t006_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0283577922683758,
+                "maximum": 1.3537166860075502,
+                "time_mean": 1.1994134355966557
+              },
+              "base_v": {
+                "minimum": 1.3955602378711136,
+                "maximum": 1.5787900725826964,
+                "time_mean": 1.4907013739093402
+              },
+              "emitter_v": {
+                "minimum": 0.5810887251738577,
+                "maximum": 0.662753783361363,
+                "time_mean": 0.6392890102474856
+              },
+              "vce_v": {
+                "minimum": 0.3874744375609577,
+                "maximum": 0.7337609233229085,
+                "time_mean": 0.5601244253491701
+              },
+              "vbe_v": {
+                "minimum": 0.7760778654880905,
+                "maximum": 0.9206204916364482,
+                "time_mean": 0.8514123636618545
+              },
+              "collector_current_a": {
+                "minimum": 1.7773951957616804e-05,
+                "maximum": 0.005942320777179087,
+                "time_mean": 0.002772965082262366
+              },
+              "passed": false
+            },
+            "xmux.xd0007": {
+              "terminals": [
+                "xmux.t007_c",
+                "xmux.t007_b",
+                "xmux.t007_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0209466990468847,
+                "maximum": 1.3505319683046046,
+                "time_mean": 1.1970378763006835
+              },
+              "base_v": {
+                "minimum": 1.395575734780353,
+                "maximum": 1.5797859516505668,
+                "time_mean": 1.490619160785188
+              },
+              "emitter_v": {
+                "minimum": 0.5789233113576695,
+                "maximum": 0.663182671398717,
+                "time_mean": 0.6348689008877376
+              },
+              "vce_v": {
+                "minimum": 0.3822188055382002,
+                "maximum": 0.7414366242226751,
+                "time_mean": 0.562168975412946
+              },
+              "vbe_v": {
+                "minimum": 0.7843889975097696,
+                "maximum": 0.9235541990370172,
+                "time_mean": 0.8557502598974505
+              },
+              "collector_current_a": {
+                "minimum": 2.894316471415981e-05,
+                "maximum": 0.006115141181827167,
+                "time_mean": 0.0028201756266952455
+              },
+              "passed": false
+            },
+            "xmux.xd0008": {
+              "terminals": [
+                "xmux.t008_c",
+                "xmux.t008_b",
+                "xmux.t008_e",
+                "xmux.n_1"
+              ],
+              "nx": 6,
+              "collector_v": {
+                "minimum": 1.0289196348719425,
+                "maximum": 1.35371131991224,
+                "time_mean": 1.199658296878836
+              },
+              "base_v": {
+                "minimum": 1.3955612721667217,
+                "maximum": 1.5787911210458199,
+                "time_mean": 1.490701521618466
+              },
+              "emitter_v": {
+                "minimum": 0.5812674588082756,
+                "maximum": 0.664349165230985,
+                "time_mean": 0.6400271142966911
+              },
+              "vce_v": {
+                "minimum": 0.38632854285324325,
+                "maximum": 0.7339185905145761,
+                "time_mean": 0.5596311825821451
+              },
+              "vbe_v": {
+                "minimum": 0.7762298822954167,
+                "maximum": 0.9188865153980882,
+                "time_mean": 0.8506744073217748
+              },
+              "collector_current_a": {
+                "minimum": 1.7793839126237605e-05,
+                "maximum": 0.005727661988817239,
+                "time_mean": 0.0026754219059496524
+              },
+              "passed": false
+            },
+            "xmux.xd0009": {
+              "terminals": [
+                "xmux.t009_c",
+                "xmux.t009_b",
+                "xmux.t009_e",
+                "xmux.n_1"
+              ],
+              "nx": 1,
+              "collector_v": {
+                "minimum": 0.9207540545818906,
+                "maximum": 0.9374435798706975,
+                "time_mean": 0.9296414705748565
+              },
+              "base_v": {
+                "minimum": 0.9299668366678902,
+                "maximum": 0.9479978383003725,
+                "time_mean": 0.9398775272853762
+              },
+              "emitter_v": {
+                "minimum": 0.013914412893142571,
+                "maximum": 0.01665044909456589,
+                "time_mean": 0.015744051889485782
+              },
+              "vce_v": {
+                "minimum": 0.9068396416887481,
+                "maximum": 0.9207931307761316,
+                "time_mean": 0.9138974186853707
+              },
+              "vbe_v": {
+                "minimum": 0.9160524237747476,
+                "maximum": 0.9313473892058066,
+                "time_mean": 0.9241334753958903
+              },
+              "collector_current_a": {
+                "minimum": 0.0010551276437250473,
+                "maximum": 0.0012280644476588371,
+                "time_mean": 0.0011793164887793737
+              },
+              "passed": true
+            },
+            "xmux.xd0010": {
+              "terminals": [
+                "xmux.t010_c",
+                "xmux.t010_b",
+                "xmux.t010_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.5391885504313542,
+                "maximum": 0.6040840022816752,
+                "time_mean": 0.585630869233927
+              },
+              "base_v": {
+                "minimum": 0.9294415002240375,
+                "maximum": 0.9482985382277618,
+                "time_mean": 0.9399657647154422
+              },
+              "emitter_v": {
+                "minimum": 0.03268239630909528,
+                "maximum": 0.0400385085287937,
+                "time_mean": 0.03740187364419143
+              },
+              "vce_v": {
+                "minimum": 0.5033558071830209,
+                "maximum": 0.5674610689408429,
+                "time_mean": 0.5482289955897356
+              },
+              "vbe_v": {
+                "minimum": 0.8967591039149422,
+                "maximum": 0.9082600296989681,
+                "time_mean": 0.9025638910712508
+              },
+              "collector_current_a": {
+                "minimum": 0.004866823777510562,
+                "maximum": 0.005999063256410269,
+                "time_mean": 0.005592428480965076
+              },
+              "passed": true
+            },
+            "xmux.xd0011": {
+              "terminals": [
+                "xmux.t011_c",
+                "xmux.t011_b",
+                "xmux.t011_e",
+                "xmux.n_1"
+              ],
+              "nx": 8,
+              "collector_v": {
+                "minimum": 0.5370172541041497,
+                "maximum": 0.6025122860206688,
+                "time_mean": 0.584151957143014
+              },
+              "base_v": {
+                "minimum": 0.9293194268556417,
+                "maximum": 0.9483253098936522,
+                "time_mean": 0.9399641948498463
+              },
+              "emitter_v": {
+                "minimum": 0.03394361264930742,
+                "maximum": 0.04164523945286538,
+                "time_mean": 0.03887386741873629
+              },
+              "vce_v": {
+                "minimum": 0.4996287391141297,
+                "maximum": 0.5644518680688161,
+                "time_mean": 0.5452780897242778
+              },
+              "vbe_v": {
+                "minimum": 0.8953758142063343,
+                "maximum": 0.9066800704407868,
+                "time_mean": 0.90109032743111
+              },
+              "collector_current_a": {
+                "minimum": 0.004664378193004376,
+                "maximum": 0.005772386953240453,
+                "time_mean": 0.005371413353103352
+              },
+              "passed": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "local_data_endpoint_congestion": {
+    "run": 38419533968,
+    "status": "PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE",
+    "summary_sha256": "76e8b5a12cd17cc07f52aa0dc0cb14856827843f66d5e5d5e02bfa5564f90a2e",
+    "marker_count": 151,
+    "marker_overflow_sum": 420,
+    "congested_nets": 1034,
+    "previous_marker_count": 107,
+    "previous_overflow_sum": 135,
+    "previous_congested_nets": 811,
+    "newly_involved_nets": 427,
+    "worst_marker": {
+      "bbox_um": [
+        2340.0,
+        1368.0,
+        2347.2,
+        1375.2
+      ],
+      "capacity": 25,
+      "demand": 56,
+      "overflow": 31
+    },
+    "note": "Reported marker layer is a dash; use native final layer table separately. This is diagnosis, not route closure."
+  },
+  "timing_priority_route": {
+    "run": 38420407838,
+    "source_head": "db3a36b3e3e75fdca2e6608cd750f6fbe9c3dd4c",
+    "status": "in_progress",
+    "critical_nets_percentage": 30,
+    "placement_profile": "local_optimize_buffers",
+    "ethernet_hold_depth": 2,
+    "macro_routing_profile": "baseline",
+    "required_placement_sha256": "660692b3e59756186bb017a62823999db593fa9d77b6e4181be9625fa7bfb707",
+    "adopted": false,
+    "scope": "Native net timing priority only. Exact placement hash, same capacities and zero-overflow gate required. No acceptance before actual route and timing."
+  },
+  "local_internal_mux_candidate": {
+    "run": 38421020866,
+    "source_head": "b93f626cf0f708b0c20ba6ebbe74c5fc7c582b57",
+    "status": "in_progress",
+    "variant": "critical_buses_kelvin_local_internal",
+    "circuit_profile": "final_drive_v8",
+    "adopted": false,
+    "hypothesis": "Real local ea M4 at y16um and eb M5 at y20um shunts each join nine actual terminals. Preserve all54native devices and original routes including supply/return/tail additions. Measured selector collector loss motivates candidate; native DRC/LVS/fault checks first, then true RC and original-bit PVT."
   }
 }
