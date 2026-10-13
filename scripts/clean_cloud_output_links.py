@@ -5,13 +5,13 @@
 
 Regular output bytes use migrate_outputs_to_cloud.py. This companion preserves
 the link text and FIFO mode needed to recreate excluded filesystem entries.
-Run only after local producers are stopped. Source checkout and tools are out
-of scope. The default is inventory only; --apply requires a verified receipt.
+Run only after local producers are stopped. Source checkout is out of scope; tool links require --scope tools. The default is inventory only; --apply requires a verified receipt.
 """
 import argparse
 import os
 from pathlib import Path
 import stat
+import subprocess
 
 from migrate_outputs_to_cloud import ROOT, atomic, digest, publish
 
@@ -70,14 +70,23 @@ def remove_entry(base, expected):
 
 
 def main():
+    global BASE, STATE, TAG
     import json
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
+    parser.add_argument('--scope', choices=('outputs','tools'), default='outputs')
     args = parser.parse_args()
-    STATE.mkdir(exist_ok=True)
-    plan = STATE / 'output-links-and-fifos-20261013.json'
+    if args.scope=='tools':
+        tracked=subprocess.check_output(['git','ls-files','-z','--','hw/soc/tools'],cwd=ROOT)
+        if tracked:
+            raise RuntimeError('Tool scope contains tracked sources; refusing cleanup')
+        BASE=ROOT/'hw/soc/tools'
+        STATE=ROOT/'hw/soc/out/cloud-migration-tool-links-20261013'
+        TAG='cloud-migration-tool-links-20261013'
+    STATE.mkdir(parents=True,exist_ok=True)
+    plan = STATE / ('tool-links-and-fifos-20261013.json' if args.scope=='tools' else 'output-links-and-fifos-20261013.json')
     if not plan.exists():
-        atomic(plan, dict(format=1, base='hw/soc/out', entries=inventory(BASE)))
+        atomic(plan, dict(format=1, base=str(BASE.relative_to(ROOT)), entries=inventory(BASE)))
     rows = json.loads(plan.read_text())['entries']
     if not args.apply:
         print(json.dumps(dict(entries=len(rows), plan=str(plan))))
@@ -89,7 +98,7 @@ def main():
     removed = sum(remove_entry(BASE, row) for row in rows)
     result = dict(status='COMPLETE_RECORDED_LINK_FIFO_CLEANUP', removed_this_run=removed,
                   recorded_entries=len(rows), receipt=receipt,
-                  scope='Only recorded output symlinks/FIFOs. All targets and regular files untouched.')
+                  scope='Only recorded '+args.scope+' symlinks/FIFOs. All targets and regular files untouched.')
     atomic(STATE / 'result.json', result)
     print(json.dumps(result))
 

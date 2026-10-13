@@ -52,3 +52,32 @@ def test_regular_replacement_and_link_ancestor_rejected(tmp_path):
 def test_outside_and_protected_scopes_rejected(tmp_path, name):
     with pytest.raises(ValueError):
         cleanup.remove_entry(tmp_path, {'path': name})
+
+
+def test_tool_links_publish_verified_metadata_before_unlink(tmp_path,monkeypatch):
+    base=tmp_path/'hw/soc/tools';base.mkdir(parents=True)
+    outside=tmp_path/'keep';outside.write_text('preserve external target')
+    link=base/'tool';link.symlink_to(outside)
+    monkeypatch.setattr(cleanup,'ROOT',tmp_path)
+    monkeypatch.setattr(cleanup,'BASE',tmp_path/'hw/soc/out')
+    monkeypatch.setattr(cleanup,'STATE',tmp_path/'hw/soc/out/old-state')
+    monkeypatch.setattr(cleanup,'TAG','original')
+    monkeypatch.setattr(sys,'argv',['cleanup','--scope','tools','--apply'])
+    monkeypatch.setattr(cleanup.subprocess,'check_output',lambda *a,**k:b'')
+    def publish(path,tag):
+        assert link.is_symlink() and tag=='cloud-migration-tool-links-20261013'
+        import json
+        record=json.loads(path.read_text())
+        assert record['base']=='hw/soc/tools' and len(record['entries'])==1
+        return dict(sha256=cleanup.digest(path),bytes=path.stat().st_size)
+    monkeypatch.setattr(cleanup,'publish',publish)
+    cleanup.main()
+    assert not link.is_symlink() and outside.read_text()=='preserve external target'
+
+
+def test_tool_scope_refuses_tracked_files_before_metadata_or_deletion(tmp_path,monkeypatch):
+    monkeypatch.setattr(cleanup,'ROOT',tmp_path)
+    monkeypatch.setattr(sys,'argv',['cleanup','--scope','tools','--apply'])
+    monkeypatch.setattr(cleanup.subprocess,'check_output',lambda *a,**k:b'hw/soc/tools/unique-link\0')
+    with pytest.raises(RuntimeError,match='tracked sources'):cleanup.main()
+    assert list(tmp_path.iterdir())==[]
