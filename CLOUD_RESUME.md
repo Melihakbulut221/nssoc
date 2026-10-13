@@ -52,11 +52,17 @@ failed two M4/M5 spacing markers at0.190um. Exact marker readback38406515628
 is retained. Revision uses6columns at M2-to-M5 pin stacks (original4),
 keeping8columns at the M5-to-TM1 return feed. Fresh DRC/LVS is required.
 First prove actual DRC/LVS and physical fault rejection, then extract native
-RC and test unchanged full-wave/PVT gates. This is an unverified candidate.
+RC and test unchanged full-wave/PVT gates. Electrical acceptance remains unverified.
 Revised physical run **38406919993 passed** all560DRC categories with zero
 markers, strict hierarchical/flat54-device LVS and fivefaultcontrols. Exact
 archive is bound in the extraction input; native RC and loaded waves remain
 required. Source/licence/migration checks38405171329passed on2b0afc09.
+
+**Native RC extraction38407758550** runs on5a3d0d97 using the exact passing
+physical archive. Inspect this existing job before starting composition;
+never duplicate it. Source/licence checks38407819142 use the same source.
+Next: exact RC/13fault proof, composition, then distinct source-bound
+`v8_kelvin_local_return` loaded compact/wire nominal/hot/cold studies.
 
 ### Exact physical sources for these studies
 
