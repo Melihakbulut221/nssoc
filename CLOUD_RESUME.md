@@ -10,6 +10,22 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 cold device failure; new Nx3 candidate requires native proof
+
+Completed v9 compact captures: nominal/hot PASS, cold FAIL12HBTs. Cold maximum
+VBE1.021886V and emitter current3.676749mA exceed unchanged1V/3mA limits.
+All output samples/interfaces pass, which does not override device failures.
+Exact three summaries are in pcie-final-v9-loaded-tree-20261013.json; wire
+companions38449429360/38449433433 remain running and must be preserved.
+
+New final_drive_v10 changes only twelve data HBTs Nx2toNx3 fromv9. Four
+selectors remainNx6, tails/reference andall8R/27contacts unchanged. This is
+an unverified compromise between v8hotdelay andv9coldcurrent/VBE failures.
+Generate its own low-critical layout -> nativeRC -> composition -> original
+loadedPVT. Discover existingphysicalrun before dispatch. No accepted PHY.
+Mainchip seed13route38448901835 and32wire38441895491 remain live. Checks
+38449603779passed the prior compact32receipt. All execution remains hosted.
+
 ## Corrected v9 native PVT running; bounded32 compact completed
 
 Source/model-binding/original-bit/license checks38449170392 PASSED on

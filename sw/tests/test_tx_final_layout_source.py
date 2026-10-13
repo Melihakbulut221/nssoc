@@ -189,3 +189,34 @@ def test_v9_generated_reference_keeps_all_contacts_and_device_sizes():
     assert m.audit(CORE9,NATIVE9,generated,profile='v9')['generated_sha256']
     with pytest.raises(AssertionError):m.audit(CORE9,NATIVE9,generated.replace(taps[0]+'\n',''),profile='v9')
     with pytest.raises(AssertionError):m.audit(CORE9,NATIVE9,generated.replace('nx=2','nx=4',1),profile='v9')
+
+
+CORE10=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v10_layout_core.spice').read_text()
+NATIVE10=(ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v10.spice').read_text()
+
+
+def test_v10_changes_only_twelve_data_multiplicities():
+    assert m.audit(CORE10,NATIVE10,profile='v10')['profile']=='v10'
+    changes=[(a,b) for a,b in zip(m.parse(CORE9),m.parse(CORE10),strict=True) if a!=b]
+    assert len(changes)==12
+    for a,b in changes:
+        assert a[:2]==b[:2] and a[0]=='npn13g2' and a[1][1] in ('ap','an','bp','bn')
+        assert a[2]['nx']=='2' and b[2]['nx']=='3'
+        assert {k:v for k,v in a[2].items() if k!='nx'}=={k:v for k,v in b[2].items() if k!='nx'}
+    for core,native,profile in [(CORE9,NATIVE9,'v10'),(CORE10,NATIVE10,'v9'),(CORE8,NATIVE8,'v10')]:
+        with pytest.raises(AssertionError):m.audit(core,native,profile=profile)
+    for before,after in [('Nx=3','Nx=4'),('Nx=6','Nx=8'),('Nx=8','Nx=6')]:
+        with pytest.raises(AssertionError):
+            m.audit(CORE10.replace(before,after),NATIVE10.replace(before.lower(),after.lower()),profile='v10')
+
+
+def test_v10_generated_reference_keeps_all_contacts_and_device_sizes():
+    rows=['.subckt native '+' '.join(sorted(m.PORTS))]
+    for i,(model,nodes,params) in enumerate(m.parse(CORE10)):
+        nodes[-1]='BULK'
+        rows.append('X%d '%i+' '.join(nodes)+' '+model+' '+' '.join(k+'='+v for k,v in params.items()))
+    taps=[f'RPTAP{i} sub BULK ptap1 A=4p P=8u' for i in range(27)]
+    generated='\n'.join(rows+taps+['.ends native'])
+    assert m.audit(CORE10,NATIVE10,generated,profile='v10')['generated_sha256']
+    with pytest.raises(AssertionError):m.audit(CORE10,NATIVE10,generated.replace(taps[0]+'\n',''),profile='v10')
+    with pytest.raises(AssertionError):m.audit(CORE10,NATIVE10,generated.replace('nx=3','nx=4',1),profile='v10')
