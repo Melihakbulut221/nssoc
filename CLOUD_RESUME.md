@@ -10,6 +10,28 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Native hot delay diagnosis complete; isolated selector-bus geometry candidate
+
+Read-only diagnosis38451366659 PASSED. Summaryasset637967168 SHA
+024328b471f0d1ee06476f080849621df84af4d17bd1c1a593f620d9393058c6.
+All128changing-bit events unambiguous. Compact/wire clock-toMUX-zero median
+8.606881/19.656687ps; MUX-toTX-zero5.956289/6.178540ps. Source-to100mV
+median26.362079/39.053899ps, wiremaximum41.441851ps; firstsample37.5ps.
+The RC penalty is predominantly before the finalMUX zero crossing; the
+specific selector-wire contribution remains a physical experiment to test.
+
+New variant critical_buses_kelvin_low_selects inherits ALL low-critical
+geometry but places actual sp/sn TM2 buses at y32/40um, preserving global
+cursor/unrelated buses and all54devices. Explicitly requires final_drive_v8
+to isolate geometry from v9/v10 data sizing. Existing selector buses are
+relocated, not shorted to parallel ideal wires. Publicclock pins move with
+their real buses. Native DRC/LVS/5faults -> freshRC -> composition -> original
+loadedPVT mandatory. Discover existingphysicalrun before dispatch.
+
+v10 composition38451600151 is live, independently testing Nx3 data sizing.
+Checks38451370962passed. Mainroute38448901835 and32wire38441895491 remain
+live. No PHY, RF/ESD, assembled-chip routing or finaltiming acceptance.
+
 ## v10 RC passed; compose while v9 hot transition diagnosis runs
 
 Native extraction38450839520 passed exactRC graph and13corruptioncontrols.
