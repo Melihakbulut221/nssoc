@@ -16,6 +16,7 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', required=True)
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14'), default='baseline')
     parser.add_argument('--prepared-layout', action='store_true',
                         help='Consume the verified layout generated in this same hosted job')
     args = parser.parse_args()
@@ -26,11 +27,11 @@ def main():
         receipt = dict(prepared_layout_result_sha256=sha(out / 'result.json'),
                        job_commit=os.environ.get('GITHUB_SHA'))
     else:
-        receipt = spec['variants'][args.variant]
+        receipt = (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['variants'][args.variant]
         assert not out.exists()
     out.parent.mkdir(parents=True, exist_ok=True)
     archive = out.parent / 'cloud-extraction-input.tar.gz'
-    result = dict(status='RUNNING', variant=args.variant, adopted=False,
+    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, adopted=False,
                   qualified_pex=False, serial_phy_complete=False,
                   scope='Real wire geometry and native distributed RC graph; electrical waveform acceptance and RF qualification remain required.',
                   physical_source=receipt, runtime_source=runtime, method_source=spec)
@@ -53,6 +54,7 @@ def main():
             archive.unlink()
         physical = json.loads((out / 'result.json').read_text())
         assert physical['variant'] == args.variant
+        assert physical.get('circuit_profile','baseline') == args.circuit_profile
         assert physical['status'] == 'PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
         for name, digest in physical['layout']['outputs'].items():
             assert sha(out / 'layout' / name) == digest
@@ -85,6 +87,12 @@ def main():
                 assert sha(target) == digest
                 source = data.decode()
                 changes = []
+                if args.circuit_profile!='baseline':
+                    before='nssoc_tx_mux2_passive_topmetal_layout_v1'
+                    after=spec['circuits'][args.circuit_profile]['top']
+                    if before in source:
+                        changes.append(dict(before=before,after=after,count=source.count(before)))
+                        source=source.replace(before,after)
                 for before, after in (
                     ("/'layout91/", "/'layout/"),
                     ("/'physical92/", "/'physical/"),
