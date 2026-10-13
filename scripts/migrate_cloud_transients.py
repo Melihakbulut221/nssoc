@@ -21,6 +21,7 @@ from migrate_outputs_to_cloud import ROOT, atomic, digest, publish
 STATE = ROOT / 'hw/soc/out/cloud-migration-transients-20261013'
 TAG = 'cloud-migration-transients-20261013'
 BASES = (Path('/tmp'), Path('/dev/shm'))
+BATCH_SIZE = 4000
 
 
 def allowed(path):
@@ -89,6 +90,39 @@ def remove_original(row):
     return True
 
 
+def transfer_batch(batch, rows):
+    selected = rows
+    archive = STATE / f'transients-{batch:03d}.tar.gz'
+    remote = STATE / f'transients-{batch:03d}.readback.tar.gz'
+    receiptfile = STATE / f'transients-{batch:03d}.receipt.json'
+    if not receiptfile.exists():
+        if not archive.exists():
+            temporary = archive.with_suffix('.tmp')
+            with tarfile.open(temporary, 'w:gz', compresslevel=1, dereference=False) as packed:
+                for row in selected:
+                    path = Path(row['path'])
+                    if record(path) != row:
+                        raise ValueError('Original changed before packaging')
+                    # Each regular member has an independent hashed payload.
+                    packed.inodes.clear()
+                    packed.add(path, arcname=row['member'], recursive=False)
+            temporary.replace(archive)
+        verify_archive(archive, selected)
+        atomic(receiptfile, publish(archive, TAG))
+    receipt = json.loads(receiptfile.read_text())
+    manifest = STATE / f'transients-{batch:03d}.manifest.json'
+    atomic(manifest, dict(receipt=receipt, entries=selected))
+    manifest_receipt = publish(manifest, TAG)
+    from cloud_archive_readback import wait_verified_readback
+    proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'transients-{batch:03d}.hosted.json')
+    # The complete restore manifest is durable before any deletion.
+    for row in selected:
+        remove_original(row)
+    archive.unlink(missing_ok=True)
+    remote.unlink(missing_ok=True)
+    return dict(receipt=receipt, manifest=manifest_receipt, hosted_proof=proof, entries=len(selected), logical_bytes=sum(r.get('bytes', 0) for r in selected))
+
+
 def main():
     STATE.mkdir(parents=True, exist_ok=True)
     planpath = STATE / 'inventory.json'
@@ -128,40 +162,19 @@ def main():
     progress = json.loads(progressfile.read_text()) if progressfile.exists() else dict(batches=[])
     if progress.get('status') == 'COMPLETE_REMOTE_READBACK_AND_LOCAL_CLEANUP':
         return
-    # Fixed member count keeps restart boundaries independent of vanished files.
-    for batch, start in enumerate(range(0, len(rows), 4000)):
-        if batch < len(progress['batches']):
-            continue
-        selected = rows[start:start + 4000]
-        archive = STATE / f'transients-{batch:03d}.tar.gz'
-        remote = STATE / f'transients-{batch:03d}.readback.tar.gz'
-        receiptfile = STATE / f'transients-{batch:03d}.receipt.json'
-        if not receiptfile.exists():
-            with tarfile.open(archive, 'w:gz', compresslevel=1, dereference=False) as packed:
-                for row in selected:
-                    path = Path(row['path'])
-                    if record(path) != row:
-                        raise ValueError('Original changed before packaging')
-                    # Disable inode deduplication: every member has an independently
-                    # hashed payload; symlinks remain metadata-only.
-                    packed.inodes.clear()
-                    packed.add(path, arcname=row['member'], recursive=False)
-            atomic(receiptfile, publish(archive, TAG))
-        receipt = json.loads(receiptfile.read_text())
-        manifest = STATE / f'transients-{batch:03d}.manifest.json'
-        atomic(manifest, dict(receipt=receipt, entries=selected))
-        manifest_receipt = publish(manifest, TAG)
-        from cloud_archive_readback import wait_verified_readback
-        proof = wait_verified_readback(manifest_receipt, TAG, STATE / f'transients-{batch:03d}.hosted.json')
-        # The complete restore manifest is durable before any deletion.
-        for row in selected:
-            remove_original(row)
-        progress['batches'].append(dict(receipt=receipt, manifest=manifest_receipt, hosted_proof=proof, entries=len(selected), logical_bytes=sum(r.get('bytes', 0) for r in selected)))
-        progress['status'] = 'RUNNING'
-        atomic(progressfile, progress)
-        archive.unlink(missing_ok=True)
-        remote.unlink(missing_ok=True)
-        print(json.dumps(dict(batch=batch, entries=start + len(selected))), flush=True)
+    # Each worker owns disjoint immutable archive members and receipt files.
+    # Ordered progress commits preserve old restart boundaries; a later worker
+    # may finish first, but its exact archive/manifest/proof remains recoverable.
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        pending = [(batch, pool.submit(transfer_batch, batch, rows[start:start + BATCH_SIZE]))
+                   for batch, start in enumerate(range(0, len(rows), BATCH_SIZE))
+                   if batch >= len(progress['batches'])]
+        for batch, future in pending:
+            progress['batches'].append(future.result())
+            progress['status'] = 'RUNNING'
+            atomic(progressfile, progress)
+            print(json.dumps(dict(batch=batch, entries=sum(b['entries'] for b in progress['batches']))), flush=True)
     for root in map(Path, plan['roots']):
         if root.is_dir() and not root.is_symlink():
             for directory, dirs, files in os.walk(root, topdown=False, followlinks=False):

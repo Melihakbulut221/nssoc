@@ -86,3 +86,45 @@ def test_duplicate_and_missing_archive_members_rejected(scope):
         pass
     with pytest.raises(ValueError, match='missing'):
         m.verify_archive(archive, [row])
+
+
+def test_independent_batches_keep_failed_original_and_resume(scope, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    import json
+    import cloud_archive_readback as hosted
+    state = scope.parent / 'transfer-state'
+    state.mkdir()
+    monkeypatch.setattr(m, 'STATE', state)
+    paths = [scope / str(i) for i in range(3)]
+    for p in paths:
+        p.write_text('unique payload ' + p.name)
+    rows = [m.record(p) for p in paths]
+    remote = {}
+    def publish(path, tag):
+        remote[path.name] = path.read_bytes()
+        return dict(name=path.name, bytes=path.stat().st_size, sha256=m.digest(path), url='https://example/' + path.name)
+    monkeypatch.setattr(m, 'publish', publish)
+    fail = [True]
+    def proof(receipt, tag, destination):
+        manifest = json.loads((state / receipt['name']).read_text())
+        assert receipt['sha256'] == m.digest(state / receipt['name'])
+        download = state / (manifest['receipt']['name'] + '.remote')
+        download.write_bytes(remote[manifest['receipt']['name']])
+        m.verify_archive(download, manifest['entries'])
+        download.unlink()
+        if manifest['entries'][0]['path'] == str(paths[1]) and fail[0]:
+            raise ValueError('hosted proof failed')
+        return dict(status='PASS')
+    monkeypatch.setattr(hosted, 'wait_verified_readback', proof)
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        futures = [pool.submit(m.transfer_batch, i, [r]) for i, r in enumerate(rows)]
+        assert futures[0].result()['entries'] == 1
+        with pytest.raises(ValueError, match='hosted proof failed'):
+            futures[1].result()
+        assert futures[2].result()['entries'] == 1
+    assert [p.exists() for p in paths] == [False, True, False]
+    fail[0] = False
+    # Simulate ordered progress lost after another worker already finished.
+    m.transfer_batch(1, [rows[1]])
+    m.transfer_batch(2, [rows[2]])
+    assert not any(p.exists() for p in paths)
