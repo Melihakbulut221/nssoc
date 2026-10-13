@@ -384,8 +384,58 @@
   "serial_all_native_feeds": {
     "run": 38335350354,
     "source_head": "cb2a50f1",
-    "status": "QUEUED_LAST_VERIFIED",
+    "status": "PASS_NINE_COMPONENT_SCREENS_NOT_FULL_PHY",
     "change": "New real rppd12umfinal and4.5umTX feeds remove remaining two ideal reference currents; all five bias feeds now native,62HBT64MOS unchanged. External clock modulation, upstream32:1/PLL/CDR/layout/PEX/fullPHY remain open.",
-    "next": "Read all nine originalPVT/known-failure screens; workflow completion is not engineering gate pass. Preserve failed full captures."
+    "next": "Complete larger serializer tree and actual clocks; do not equate component screens with full PHY, PEX or chip acceptance.",
+    "evidence": "docs/evidence/pcie-mux4-all-native-feeds-20261013.json"
+  },
+  "cloud_publication_capacity_repair": {
+    "source_head": "ca74d6d5",
+    "hosted_safety_run": 38337826310,
+    "hosted_tests_passed": 42,
+    "status": "PASS_CLOUD_MIGRATION_AND_PUBLICATION_SAFETY_CHECKS",
+    "change": "Per-run/per-attempt/per-matrix-job releases replace shared saturated evidence destination. Simulator failure archives also have Actions fallback. Existing native archives keep their URLs; eleven checksum sidecars moved with verified copies and permanent relocation index to leave capacity for three already-running routing jobs.",
+    "relocation": "docs/evidence/cloud-checksum-relocation-20261013.json",
+    "finalizer_release": "cloud-migration-finalization-20261013"
+  },
+  "larger_serializer_tree": {
+    "source_head": "5279eec6",
+    "original_run": 38337134414,
+    "original_result": "29 hosted source-oracle/topology controls passed in all three jobs. 32:1 hit explicit 4GiB native process memory limit. Shared release reached asset-count limit so 4:1/8:1 raw archive publication failed; do not claim full captures retained for those two jobs.",
+    "corrected_run": 38337828584,
+    "corrected_source_head": "ca74d6d5",
+    "status": "NATIVE_TRANSIENTS_RUNNING_LAST_VERIFIED",
+    "change": "Same original 256 bits and 768 fixed-phase output samples and device limits. Process memory cap increased to 8GiB for8 and12GiB for32, on hosted runners only. Result publication isolated and fallback retained.",
+    "adopted": false
+  },
+  "ethernet_hold_eco": {
+    "runs": [
+      38336275309,
+      38336760984
+    ],
+    "status": "REJECTED_NOT_ADOPTED",
+    "first_failure": "Old baseline capsule predates failure_outputs schema; exact archive/member hashes now bind replay.",
+    "second_failure": "Native geometry and STA completed, but actual Liberty logic check rejects multiple drivers (bit25). Do not use this ECO as hold closure. Next inspect native writer/port connectivity, never disable equivalence guard.",
+    "diagnostic_run": 38338067273,
+    "adopted": false
+  },
+  "cloud_cleanup_live": {
+    "checked_utc": "2026-10-13T02:42:37.811082+00:00",
+    "output": {
+      "status": "RUNNING",
+      "next_index": 302925,
+      "batch": 299,
+      "removed_bytes": 169557961855,
+      "uploaded_bytes": 76569068014
+    },
+    "pnr": {
+      "status": "COMPLETE_SELECTED_REGULAR_OUTPUT_FILES",
+      "next_index": 8022,
+      "batch": 145,
+      "removed_bytes": 67782361670,
+      "uploaded_bytes": 12745796592
+    },
+    "finalizer": "nssoc-cloud-migration-finalize-20261013 active, waits for both transfers then dispatches hosted reconstruction",
+    "scope": "All CAD/native simulation/testing on GitHub. Local transfer/hash/cleanup controller only. Source checkout, historical32untracked sources and tools retained; local cleanup incomplete. Do not delete unverified originals or claim disk is empty."
   }
 }
