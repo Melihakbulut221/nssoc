@@ -218,7 +218,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
                 shutil.copyfile(actual,rtl/name)
             before={p.name:sha(p) for p in rtl.glob('*.v')}
             assert len(before)==21
-            for script,top,expected in (
+            for script,top,expected_tests in (
                 ('check_pcie_replay.py','soc_pcie_replay_tx',7),
                 ('check_pcie_replay.py','soc_pcie_reliable_packets',4),
                 ('check_pcie_rx_flow.py','soc_pcie_buffered_flow_packets',5)):
@@ -234,10 +234,10 @@ def physical_recipe(inputs, manifest, output, profile, status):
                 counts=count_results([xml]) if xml.is_file() else None
                 status['joint_controls'].append(dict(case=case,top=top,
                     returncode=result.returncode,source_sha256=before,
-                    expected_tests=expected,actual_tests=dict(zip(('passed','failed','skipped'),counts)) if counts is not None else None,
+                    expected_tests=expected_tests,actual_tests=dict(zip(('passed','failed','skipped'),counts)) if counts is not None else None,
                     result_sha256=sha(out/'result.json'),xml_sha256=sha(xml) if xml.is_file() else None,
                     log_sha256=sha(log)))
-                assert result.returncode==0 and counts==(expected,0,0)
+                assert result.returncode==0 and counts==(expected_tests,0,0)
                 assert before=={p.name:sha(p) for p in rtl.glob('*.v')}
         status['combined_scope']='Two isolated source-bound formal equivalences plus fresh baseline/combined32 public-port cases. Mapping hypothesis only: neither isolated candidate was timing-accepted; combined physical timing and full-SoC equivalence remain unproven.'
 
