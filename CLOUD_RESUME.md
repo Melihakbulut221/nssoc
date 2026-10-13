@@ -12,6 +12,11 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Latest isolated compact-internal study
 
+Dispatched on `014167fcf05da93e6d5dc1971a29c940347879a9`: compact-internal
+nominal **38427204177**, temperature/voltage **38427208302**, DC **38427212034**,
+source checks **38427215733**. These are isolated from direct-supply prestage
+runs 38426728316/38426732244. Inspect exact summary gates, not Actions colours.
+
 Compact-internal final MUX composition **38426740845** passed native54-device
 composition. Its distinct receipt is
 `docs/evidence/pcie-final-v8-kelvin-compact-internal-composition-20261013.json`.
