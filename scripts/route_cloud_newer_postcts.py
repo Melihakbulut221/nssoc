@@ -49,6 +49,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
     parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize'], default='none')
+    parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     args = parser.parse_args()
     # The actual failed report has7.2um gcells. Half-cell offsets change only
     # partition alignment, never placement, routing capacity or physical rules.
@@ -57,6 +58,7 @@ def main():
     OUT.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False,
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
+        ethernet_hold_depth=args.ethernet_hold_depth,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -121,6 +123,37 @@ def main():
         result['postcts_reproduced'] = replay
         result['status'] = 'EXACT_POSTCTS_REPRODUCED_STARTING_FRESH_GLOBAL_ROUTE'
         save()
+        placement_source=inputs/'postcts.odb'
+        if args.ethernet_hold_depth:
+            evidence=json.loads((ROOT/'docs/evidence/cloud-ethernet-hold-estimate-20261013.json').read_text())
+            case=next(c for c in evidence['cases'] if c['depth']==args.ethernet_hold_depth)
+            packed=OUT/'ethernet-hold-source.tar.gz'
+            fetch(case['archive']['url'],case['archive']['sha256'],packed)
+            assert packed.stat().st_size==case['archive']['bytes']
+            with tarfile.open(packed) as archive:
+                raw=archive.extractfile('cloud-ethernet-hold/result.json').read()
+                assert hashlib.sha256(raw).hexdigest()==case['summary_sha256']
+                hold=json.loads(raw)
+                assert hold['status']=='COMPLETE_NATIVE_GMII_HOLD_ECO_ESTIMATE_NOT_SIGNOFF'
+                assert hold['logic']['status']=='PASS within scope'
+                assert hold['inversion_control']=='EXPECTED_FUNCTIONAL_CHANGE_REJECTED'
+                assert hold['no_new_violation_or_worsened_existing_negative_group']
+                assert hold['all_corner_gmii_output_hold_nonnegative']
+                assert hold['geometry']['retained_instances']==113771 and hold['geometry']['added_instances']==20
+                raw=archive.extractfile('cloud-ethernet-hold/candidate.odb').read()
+                assert hashlib.sha256(raw).hexdigest()==case['candidate_odb_sha256']==hold['outputs']['candidate.odb']
+            packed.unlink()
+            placement_source=inputs/'ethernet-hold.odb';placement_source.write_bytes(raw)
+            protected[str(placement_source)]=sha(placement_source)
+            script=script.replace(str(inputs/'postcts.odb'),str(placement_source))
+            measured=parse_phases(execute(script,'reproduced-ethernet-hold'),'CORNER')
+            for phase,row in measured.items():
+                assert set(row['groups'])==set(case['candidate'][phase])
+                for group,value in row['groups'].items():
+                    assert abs(value['worst_slack_ns']-case['candidate'][phase][group])<=1e-6,(phase,group)
+                    assert abs(replay[phase]['groups'][group]['worst_slack_ns']-case['baseline'][phase][group])<=1e-6
+            result['ethernet_hold']=dict(evidence=case,exact_placement_timing_reproduced=measured)
+            save()
         if args.placement_profile != 'none':
             fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-congestion-probe-38333836529-1.json',
                   '1d19f4d2bdf24f865144b28c57060c3cfed96ac3d0a4a79b23ce23f12c0a027c',OUT/'endpoint-diagnosis.json')
@@ -128,7 +161,8 @@ def main():
                 with (OUT/f'placement-{mode}.log').open('w') as log:
                     code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
                                           str(ROOT/'scripts/repair_cloud_macro_channels.py')],
-                        env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode,NSSOC_PLACEMENT_PROFILE=args.placement_profile),
+                        env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode,NSSOC_PLACEMENT_PROFILE=args.placement_profile,
+                                 NSSOC_ETHERNET_HOLD_DEPTH=str(args.ethernet_hold_depth)),
                         stdout=log,stderr=subprocess.STDOUT)
                 assert code==0,(mode,code,(OUT/f'placement-{mode}.log').read_text()[-6000:])
             native_placement('prepare')
@@ -140,7 +174,7 @@ def main():
                     f'write_db {{{OUT/"legalized-placement.odb"}}}\n','legalize-macro-channels')
             native_placement('verify')
             result['placement_repair']=json.loads((OUT/'placement-repair.json').read_text())
-            script=script.replace(str(inputs/'postcts.odb'),str(OUT/'relocated-placement.odb'))
+            script=script.replace(str(placement_source),str(OUT/'relocated-placement.odb'))
             result['relocated_placement_timing']=parse_phases(execute(script,'relocated-placement-sta'),'CORNER')
             assert result['relocated_placement_timing'].keys()==replay.keys()
             result['status']='PLACEMENT_INVARIANTS_AND_STA_COMPLETE_GLOBAL_ROUTE_PENDING'

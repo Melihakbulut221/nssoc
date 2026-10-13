@@ -59,10 +59,18 @@ def check(block,before):
 
 
 def prepare():
+    source=SOURCE;source_sha=SOURCE_SHA
     assert sha(SOURCE)==SOURCE_SHA
+    depth=int(os.environ.get('NSSOC_ETHERNET_HOLD_DEPTH','0'));assert depth in (0,2)
+    if depth:
+        evidence=json.loads(Path('docs/evidence/cloud-ethernet-hold-estimate-20261013.json').read_text())
+        case=next(c for c in evidence['cases'] if c['depth']==depth)
+        assert case['logic']['status']=='PASS within scope' and case['inversion_control']=='EXPECTED_FUNCTIONAL_CHANGE_REJECTED'
+        source=OUT/'inputs/ethernet-hold.odb';source_sha=case['candidate_odb_sha256']
+        assert sha(source)==source_sha
     path=OUT/'endpoint-diagnosis.json';assert sha(path)==DIAGNOSIS_SHA
     d=json.loads(path.read_text());assert d['source_odb_sha256']==SOURCE_SHA
-    db,block=load(SOURCE);scale=block.getDbUnitsPerMicron()
+    db,block=load(source);scale=block.getDbUnitsPerMicron()
     instances={i.getName():i for i in block.getInsts()}
     seen={p['instance']:p for net in d['all_congested_net_endpoints'].values() for p in net['terminals']}
     selected={}
@@ -80,7 +88,7 @@ def prepare():
         assert str(inst.getPlacementStatus())=='PLACED',name
         selected[name]=inst
     assert 0<len(selected)<=932
-    before=dict(connectivity_sha256=signature(block),source_odb_sha256=SOURCE_SHA,
+    before=dict(connectivity_sha256=signature(block),source_odb_sha256=source_sha,original_odb_sha256=SOURCE_SHA,
         selected=sorted(selected),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
         instances={n:dict(position=position(i),status=str(i.getPlacementStatus())) for n,i in instances.items()})
     profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize')
@@ -98,7 +106,7 @@ def prepare():
     assert signature(block)==before['connectivity_sha256']
     (OUT/'placement-before.json').write_text(json.dumps(before,separators=(',',':'))+'\n')
     odb.write_db(db,str(OUT/'proposed-placement.odb'))
-    print(json.dumps(dict(selected=len(selected),profile=profile,source_sha256=SOURCE_SHA)),flush=True)
+    print(json.dumps(dict(selected=len(selected),profile=profile,source_sha256=source_sha)),flush=True)
 
 
 def verify():
