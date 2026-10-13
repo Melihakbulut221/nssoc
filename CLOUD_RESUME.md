@@ -10,6 +10,22 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Corrected v9 native PVT running; bounded32 compact completed
+
+Source/model-binding/original-bit/license checks38449170392 PASSED on
+2a8e1177aa7cd3ce914bac365a0103b35cea6c1b. Fresh v9 nominal38449429360 and
+hot/cold38449433433 are dispatched on that tested source; no duplicated live
+runs. Older38448644887/38448649226 were pre-simulation test failures only.
+
+Corrected bounded-save32:1 compact capture38441895491 completed with604
+native off flags,69541wave rows andall engineering gates passing without
+simulator diagnostics. Exact summaryasset637874261/SHA
+ e9423a26a42909dfeb088124e76e072f7701fcc6f37c617dd9c8eadd381739d8
+is preserved in pcie-bounded-save32-compact-20261013.json. Its extracted-wire
+companion is still live; this compact result is NOT full32/x4physicalPHY
+acceptance. Full external-clock, intermacro, substrate/RF/ESD limits remain.
+Mainchip seed13route38448901835 is live. Local workspace stays empty.
+
 ## v9 test expectation corrected before native transient
 
 Runs38448644887/38448649226 andsourcecheck38448653603 are terminal failures
