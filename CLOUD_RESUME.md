@@ -10,6 +10,18 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## v9 composition passed; loaded PVT is next
+
+Composition38448062307 on ce3dc44850e36f2c9f4ec80bd330ea28fd1730a4 passed
+54native devices/4043R/2660C. Its distinct receipt is
+pcie-final-v9-kelvin-low-critical-composition-20261013.json. New loadedprofile
+v9_kelvin_low_critical accepts only this circuit and its own RC. Regression
+rejects wrong validly-hashed circuits/geometries and verifies actual Nx2 data
+emitter counts. Discover existing nominal andtemperature_voltage runs before
+dispatch: streams4, matchedcompact/wire, cascade158_kelvin_supply_direct,
+stiff65. All original bits, samplephases, device/interface gates stayfixed.
+No electrical adoption yet. Full serialPHY, chiproute and finaltiming OPEN.
+
 ## v9 extraction complete; compose actual devices and new RC next
 
 Native extraction38447494040 passed actualRC graph audit and13corruption

@@ -429,19 +429,21 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
-@pytest.mark.parametrize('version', ['v6','v7','v8'])
-@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8'])
-@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_power_trunks_vias'])
+@pytest.mark.parametrize('version', ['v6','v7','v8','v9'])
+@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9'])
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_power_trunks_vias'])
 def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, reported_variant):
     import hashlib
     import io
     import json
     import shutil
     import tarfile
-    profile = mux4.physical_final_circuit_profile(version+'_kelvin_dense_wide')
+    geometry = 'kelvin_low_critical' if version == 'v9' else 'kelvin_dense_wide'
+    expected_variant = 'critical_buses_'+geometry
+    profile = mux4.physical_final_circuit_profile(version+'_'+geometry)
     assert profile == 'final_drive_'+version
     assert mux4.physical_final_circuit_profile('kelvin_dense_wide') == 'final_drive_v5'
-    assert mux4.physical_final_spec_path(version+'_kelvin_dense_wide').name == f'pcie-final-{version}-kelvin-dense-wide-composition-20261013.json'
+    assert mux4.physical_final_spec_path(version+'_'+geometry).name == 'pcie-final-'+version+'-'+geometry.replace('_','-')+'-composition-20261013.json'
     with pytest.raises(AssertionError):
         mux4.physical_final_circuit_profile('unproven_geometry')
     model = (ROOT/f'hw/soc/analog/pcie/tx_mux54_passive_drive_{version}.spice').read_bytes()
@@ -459,9 +461,9 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
         status='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT',
         receipt=dict(url='unused', sha256=hashlib.sha256(archive.read_bytes()).hexdigest(), bytes=archive.stat().st_size),
         summary_sha256=hashlib.sha256(report).hexdigest(), outputs=outputs,
-        variant='critical_buses_kelvin_dense_wide')))
+        variant=expected_variant)))
     monkeypatch.setattr(mux4, 'fetch', lambda url, digest, path: shutil.copyfile(archive, path))
-    if reported_profile != profile or reported_variant != 'critical_buses_kelvin_dense_wide':
+    if reported_profile != profile or reported_variant != expected_variant:
         with pytest.raises(AssertionError):
             mux4.physical_macro(tmp_path, 'physical_compact', spec, profile, 'restored')
     else:
@@ -469,7 +471,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
         assert bound.read_bytes() == model
 
 
-@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2})])
+@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2}),('v9',16,{1:1,2:12,6:4,8:2})])
 def test_final_override_keeps_original_oracle_and_accounts_for_actual_emitter_count(tmp_path,version,changed_count,expected_nx):
     from collections import Counter
     (tmp_path/'frontend').mkdir()
