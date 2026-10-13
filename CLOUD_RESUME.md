@@ -428,3 +428,15 @@ archive638284559,6297265bytes,SHA
 This exact extraction is now pinned for composition underfinal_drive_v8 /
 critical_buses_kelvin_low_selects_m3. Native body/substrateR andRF qualification
 remain outside this metal model. No loaded amplitude or fullPHY acceptance.
+
+
+Composition38470027901 PASSED with54devices/4331R/2817C.
+Receipt pcie-final-v8-kelvin-low-selects-m3-composition-20261013.json binds
+summary638291781 SHA0bae6871c5dc048e441321b13c9de9e16e46b0565f5c7ee72f8a43539d6324dc
+andarchive638291662,6700897bytes,SHA
+29d0952fd201fb376ec30f851b0fa04241fe72a7e6e78bdb6cd8d0d0f5608eab.
+New loaded profile v8_kelvin_low_selects_m3 uses this exact composition.
+Run matched compact/wire4:1 trees with cascade158_kelvin_supply_direct and
+stiff65, nominal plushot_low/cold_high, original256bits/768samples and
+all unchanged native device/diagnostic limits. No acceptance until allwaves
+are actually reviewed. Main32wire38441895491 androute38448901835 remain separate.
