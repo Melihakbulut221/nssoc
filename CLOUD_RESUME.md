@@ -17,19 +17,21 @@ v7 output passes101.220mV and tail VCE improves to412.988mV, but four selector
 HBTs fail (minimum385.575mV). Both are rejected overall; all captures remain.
 The v7 exact native model reader38387898365 proves selector/tail roles.
 
-**v8 physical run38388166708** is dispatched. It changes only four selector
-HBTs Nx8 to Nx6 relative to v7; twelve data HBTs stay Nx4, tails Nx8, reference
-Nx1, all resistors and27body contacts unchanged. This is an unproven balance
-between the measured v6/v7 headroom failures, not interpolated acceptance.
+**v8 physical38388166708, nativeRC38388631790 and composition38388917062
+passed**, preserving54native devices and3891R/2593C. v8 changes only four
+selectors Nx8 to Nx6 relative to v7; twelve data HBTs stay Nx4, tails Nx8,
+reference Nx1, all resistors and27body contacts unchanged. Electrical closure
+is unproven. Distinct v8 source/geometry/RC bindings and emitter accounting
+are now implemented. Run the original nominal streams4 matched compact/wire
+comparison using `v8_kelvin_dense_wide` and prestage `power_trunks_vias`;
+discover the existing run before dispatching. Never reuse v7RC as v8 evidence.
 
-Inspect this existing run first. After a genuine physical pass, add distinct
-v8 bindings to extraction, composition and loaded-tree runners/workflows;
-those currently support through v7 only. Extract fresh v8RC; never substitute
-v7RC. Nominal streams4 must retain all original bits/phases/device limits.
-The new workflow study options for independent corners/faults are prepared
-but not yet exercised; they do not qualify RF/body/temperature-dependent RC.
-Main routing38371498733 remains live. FullPHY, assembledlayout and finalSTA
-remain open. All work stays in GitHub-hosted runners; local workspace is empty.
+If the unchanged engineering screen passes, next are full32:1 and independent
+PVT/convergence/actual-fault studies. The workflow `study` selections are
+prepared but not yet exercised beyond nominal. They do not qualify RF/body/
+temperature-dependent wire RC. Main routing38371498733 remains live. FullPHY,
+assembledlayout and finalSTA remain open. All work stays on GitHub-hosted
+runners; local workspace is empty.
 
 ## Preservation and local retirement
 
