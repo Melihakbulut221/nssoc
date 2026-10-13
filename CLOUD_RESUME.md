@@ -10,6 +10,24 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Controlled main-route net-order trial and live v9 PVT
+
+Native routing candidate routing_seed=13 shuffles net order only, with
+capacities_perturbation_percentage=0. It requires the exact135-overflow saved
+buffer placement SHA660692b3e59756186bb017a62823999db593fa9d77b6e4181be9625fa7bfb707,
+Ethernet hold depth2, baseline grid/macro reservation and criticalpercentage0.
+No cell/connectivity/SDC/RC/physical capacity or zero-overflow gate changes.
+This is an alternative heuristic route, not an adopted closure. Native help
+and all scripts/logs/failure artifacts are preserved. Discover existing run
+before dispatch. Official command reference:
+https://openroad.readthedocs.io/en/latest/main/src/grt/README.html#set-global-routing-randomness
+
+v9 PVT nominal38448644887 andhot/cold38448649226 are running on
+39aaca65b9627eed8c32235c1768a3363663710c. Source checks38448653603 are the
+binding/license/original-bit gates. Old corrected32:1 run38441895491 remains
+separate. Full serialPHY, mainchip route and finalsetup/hold remain OPEN.
+All native execution is hosted; local workspace remains empty.
+
 ## v9 composition passed; loaded PVT is next
 
 Composition38448062307 on ce3dc44850e36f2c9f4ec80bd330ea28fd1730a4 passed

@@ -52,7 +52,13 @@ def main():
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
+    parser.add_argument('--routing-seed', type=int, choices=[0,13], default=0)
     args = parser.parse_args()
+    if args.routing_seed:
+        assert args.critical_nets_percentage == 0
+        assert args.placement_profile == 'local_optimize_buffers'
+        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
+        assert args.grid_profile == 'baseline'
     if args.critical_nets_percentage:
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
@@ -67,7 +73,8 @@ def main():
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
         ethernet_hold_depth=args.ethernet_hold_depth,
         macro_routing_profile=args.macro_routing_profile,
-        critical_nets_percentage=args.critical_nets_percentage,
+        critical_nets_percentage=args.critical_nets_percentage, routing_seed=args.routing_seed,
+        routing_capacity_perturbation_percentage=0,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -226,15 +233,15 @@ def main():
                 checkpoint.write_text(json.dumps(result,indent=2)+'\n')
                 from publish_cloud_results import publish_results
                 publish_results('route-'+args.placement_profile, [checkpoint])
-        if args.critical_nets_percentage:
+        if args.critical_nets_percentage or args.routing_seed:
             # Resume the same135overflow candidate, not the rejected420overflow
             # endpoint move. Reject any nondeterministic placement difference.
             evidence=json.loads((ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())
             expected=evidence['failure_outputs']['relocated-placement.odb']
-            assert sha(OUT/'relocated-placement.odb') == expected, 'Priority comparison changed placement'
-            result['routing_priority_source'] = dict(run=evidence['run'],
+            assert sha(OUT/'relocated-placement.odb') == expected, 'Routing comparison changed placement'
+            result['routing_order_source' if args.routing_seed else 'routing_priority_source'] = dict(run=evidence['run'],
                 placement_sha256=expected, source_evidence_sha256=sha(ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'),
-                scope='Only native timing-critical net preference changes. Same cells, placement, SDC, PDK RC, routing layers, capacity adjustment and zero-overflow gate. Requires actual routing and all-corner timing.')
+                scope=('Only native net ordering seed changes; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Only native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, capacity adjustment and zero-overflow gate. Requires actual routing and all-corner timing.')
             save()
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
@@ -278,6 +285,11 @@ def main():
                 regions=regions, scope='Conservative GRT resource restriction only; native SRAM pin shapes, OBS, placement, connectivity, SDC and capacity on other layers unchanged. Full routing and timing acceptance still required.')
             commands.append('puts "NSSOC_VERIFIED_FOUR_SRAM_METAL5_RESERVATIONS"')
             save()
+        if args.routing_seed:
+            # Net-order exploration only. Never randomize/inflate any edge capacity.
+            commands += ['help set_global_routing_random',
+                         f'set_global_routing_random -seed {args.routing_seed} -capacities_perturbation_percentage 0',
+                         'puts NSSOC_NET_ORDER_ONLY_ZERO_CAPACITY_PERTURBATION']
         priority_option = ''
         if args.critical_nets_percentage:
             commands += ['estimate_parasitics -placement',
