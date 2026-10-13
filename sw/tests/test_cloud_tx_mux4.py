@@ -14,6 +14,18 @@ mux4 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mux4)
 
 
+def test_independent_hbt_resistor_corners_do_not_change_circuit_or_shared_studies():
+    from run_cloud_tx_operating_point import CONDITIONS as shared
+    assert 'hbt_bcs_res_wcs' not in shared
+    assert mux4.CONDITIONS['hbt_bcs_res_wcs'] == {'hbt':'hbt_bcs','resistor':'res_wcs'}
+    assert mux4.CONDITIONS['hbt_wcs_res_bcs'] == {'hbt':'hbt_wcs','resistor':'res_bcs'}
+    for base, field, value in [('hot_low','resistor','res_bcs'), ('hot_low','hbt','hbt_bcs'),
+                               ('cold_high','resistor','res_wcs'), ('cold_high','hbt','hbt_wcs')]:
+        actual=mux4.CONDITIONS[base+'_'+value]
+        assert actual==dict(shared[base],**{field:value})
+        assert not any(key in actual for key in ('pre_bias','final_drive','prestage','phase'))
+
+
 def points(text):
     return np.asarray([tuple(map(float,line.lstrip('+ ').split()))
                        for line in text[4:-1].splitlines() if line.strip()])

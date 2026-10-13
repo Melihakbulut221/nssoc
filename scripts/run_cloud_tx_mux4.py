@@ -24,6 +24,18 @@ import numpy as np
 from cloud_tx_data_driver import original_bit_output_screen
 from run_cloud_tx_operating_point import CONDITIONS, fetch, sha
 
+# Independent device corners, using exactly the same circuit geometry and
+# source-bit timing. Copy the shared base table without altering other studies.
+CONDITIONS = dict(CONDITIONS)
+for _hbt in ('typ', 'bcs', 'wcs'):
+    for _res in ('typ', 'bcs', 'wcs'):
+        if (_hbt, _res) != ('typ', 'typ'):
+            CONDITIONS[f'hbt_{_hbt}_res_{_res}'] = dict(hbt='hbt_'+_hbt, resistor='res_'+_res)
+for _base, _field, _value in (
+    ('hot_low', 'resistor', 'res_bcs'), ('hot_low', 'hbt', 'hbt_bcs'),
+    ('cold_high', 'resistor', 'res_wcs'), ('cold_high', 'hbt', 'hbt_wcs')):
+    CONDITIONS[_base+'_'+_value] = dict(CONDITIONS[_base], **{_field: _value})
+
 ROOT = Path(__file__).resolve().parents[1]
 UI, START, BITS = 125e-12, 2e-9, 256
 STOP = START + UI * BITS

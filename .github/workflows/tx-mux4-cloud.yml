@@ -30,13 +30,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        condition: [mos_ss, mos_ff, lv_ss_hv_ff, lv_ff_hv_ss, mos_sf, mos_fs]
+        condition: [hbt_typ_res_bcs, hbt_typ_res_wcs, hbt_bcs_res_typ, hbt_bcs_res_bcs, hbt_bcs_res_wcs, hbt_wcs_res_typ, hbt_wcs_res_bcs, hbt_wcs_res_wcs, hot_low_res_bcs, hot_low_hbt_bcs, cold_high_res_wcs, cold_high_hbt_wcs]
         fault: [none]
-        include:
-          - condition: nominal
-            fault: swap_pre_a_select
-          - condition: nominal
-            fault: disable_pre_b_bias
     permissions:
       contents: write
     steps:
@@ -64,7 +59,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-mux4-res-corners-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-mux4-independent-corners-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-mux4
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
