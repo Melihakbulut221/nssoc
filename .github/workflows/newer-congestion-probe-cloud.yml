@@ -8,6 +8,12 @@ on:
       - scripts/probe_cloud_newer_congestion.py
       - .github/workflows/newer-congestion-probe-cloud.yml
   workflow_dispatch:
+    inputs:
+      source_profile:
+        description: Exact failed native route to diagnose
+        type: choice
+        options: [baseline, local_optimize]
+        default: baseline
 permissions:
   contents: read
 jobs:
@@ -32,7 +38,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Resolve every marker and reported signal to native geometry
-        run: python3 scripts/probe_cloud_newer_congestion.py
+        run: python3 scripts/probe_cloud_newer_congestion.py --source-profile '${{ inputs.source_profile || 'baseline' }}'
       - name: Preserve diagnosis and complete failure inputs
         if: always()
         env:
@@ -41,8 +47,9 @@ jobs:
           archive='newer-congestion-probe-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-congestion-probe
           sha256sum "$archive" > "$archive.sha256"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256"
           if [ -f cloud-congestion-probe/diagnosis.json ]; then
             cp cloud-congestion-probe/diagnosis.json "${archive%.tar.gz}.json"
-            gh release upload cloud-migration-20261012-000 "${archive%.tar.gz}.json"
+          else
+            cp cloud-congestion-probe/result.json "${archive%.tar.gz}.json"
           fi
+          python3 scripts/publish_cloud_results.py --group 'congestion-${{ inputs.source_profile || 'baseline' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"

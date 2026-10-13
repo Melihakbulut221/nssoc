@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Bind every failed global-route marker to the exact newer chip database."""
 from collections import Counter, defaultdict
+import argparse
 import hashlib
 import json
 import os
@@ -132,20 +133,39 @@ def native():
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize'), default='baseline')
+    args = parser.parse_args()
+    url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
+    odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
+    report_sha = None
+    archive_bytes = None
+    if args.source_profile == 'local_optimize':
+        evidence = json.loads((ROOT / 'docs/evidence/cloud-local-optimize-route-failure-20261013.json').read_text())
+        assert evidence['status'] == 'FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
+        receipt = evidence['receipt']
+        url, archive_sha, archive_bytes = receipt['url'], receipt['sha256'], receipt['bytes']
+        odb_sha = evidence['failure_outputs']['failed-global.odb']
+        report_sha = evidence['failure_outputs']['congestion.rpt']
+        odb_member = 'cloud-newer-postcts/failed-global.odb'
     OUT.mkdir(exist_ok=False)
-    result = dict(status='RUNNING', adopted=False, source_url=URL, source_archive_sha256=ARCHIVE_SHA)
+    result = dict(status='RUNNING', adopted=False, source_profile=args.source_profile,
+                  source_url=url, source_archive_sha256=archive_sha,
+                  source_odb_member=odb_member, source_odb_sha256=odb_sha)
     try:
         packed = OUT / 'source.tar.gz'
-        subprocess.run(['curl', '--fail', '--location', '--retry', '4', URL, '-o', str(packed)], check=True)
-        assert sha(packed) == ARCHIVE_SHA
+        subprocess.run(['curl', '--fail', '--location', '--retry', '4', url, '-o', str(packed)], check=True)
+        assert sha(packed) == archive_sha
+        assert archive_bytes is None or packed.stat().st_size == archive_bytes
         with tarfile.open(packed) as tar:
-            for local, member in [('postcts.odb', 'cloud-newer-postcts/inputs/postcts.odb'),
+            for local, member in [('postcts.odb', odb_member),
                                   ('congestion.rpt', 'cloud-newer-postcts/congestion.rpt')]:
                 item = tar.getmember(member)
                 assert item.isfile()
                 (OUT / local).write_bytes(tar.extractfile(item).read())
         packed.unlink()
-        assert sha(OUT / 'postcts.odb') == ODB_SHA
+        assert sha(OUT / 'postcts.odb') == odb_sha
+        assert report_sha is None or sha(OUT / 'congestion.rpt') == report_sha
         protected = {name: sha(OUT / name) for name in ['postcts.odb', 'congestion.rpt']}
         with (OUT / 'native.log').open('w') as log:
             code = subprocess.call([os.environ['CLOUD_APPIMAGE'], 'openroad', '-exit', '-python', str(Path(__file__).resolve())],
