@@ -199,7 +199,7 @@ def main():
                     '        lane = x + (4.8 if index == 0 else 0)\n'
                     '        return_lanes.append(lane)\n'
                     '        box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)\n'
-                    '        box(5, lane-0.4, return_y-0.4, lane+0.4, y+0.4)\n'
+                    '        box(5, lane-0.4, min(return_y,y)-0.4, lane+0.4, max(return_y,y)+0.4)\n'
                     '    box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)\n'))
             for before, after in changes:
                 assert source.count(before) == 1, before
