@@ -97,3 +97,41 @@ def test_native_capacitance_reference_is_preserved_and_never_a_metal_anchor():
                       wire.replace('C2 c wire_cref 2e-15', 'C2 c avss 2e-15')]:
         with pytest.raises(AssertionError):
             m.reduce_conductor_class(COMPACT, corrupted, 'internal')
+
+
+def mux_graph():
+    devices = {}
+    def add(base, collector, emitter, count):
+        for i in range(count):
+            devices[f'{base}-{i}'] = dict(model='npn13g2', nodes=[collector, base, emitter, 'body'])
+    add('ap', 'n_qn', 'n_ea', 3)
+    add('an', 'n_qp', 'n_ea', 3)
+    add('bp', 'n_qn', 'n_eb', 3)
+    add('bn', 'n_qp', 'n_eb', 3)
+    add('sp', 'n_ea', 'n_tail', 2)
+    add('sn', 'n_eb', 'n_tail', 2)
+    add('iref', 'n_tail', 'avss', 2)
+    devices['reference'] = dict(model='npn13g2', nodes=['iref','iref','avss','body'])
+    return devices
+
+
+def test_internal_roles_survive_extractor_node_and_device_renumbering():
+    devices = mux_graph()
+    original = m.canonical_internal_roles(devices)
+    rename = {node: f'n_{i+39}' for i, node in enumerate(reversed(sorted(original)))}
+    remapped = {f'X{i:04d}': dict(model=d['model'], nodes=[rename.get(n,n) for n in d['nodes']])
+                for i, d in enumerate(reversed(list(devices.values())))}
+    assert m.canonical_internal_roles(remapped) == {rename[n]: role for n, role in original.items()}
+    assert set(original.values()) == {'qn','qp','ea','eb','tail'}
+
+
+def test_internal_roles_reject_selector_crosswire_merged_net_and_missing_device():
+    import copy
+    graph = mux_graph()
+    crossed = copy.deepcopy(graph); crossed['sp-0']['nodes'][0] = 'n_eb'
+    merged = copy.deepcopy(graph)
+    for d in merged.values(): d['nodes'] = ['n_ea' if n=='n_eb' else n for n in d['nodes']]
+    missing = copy.deepcopy(graph); del missing['reference']
+    unknown = copy.deepcopy(graph); unknown['ap-0']['nodes'][1] = 'unbound_base'
+    for bad in [crossed, merged, missing, unknown]:
+        with pytest.raises(AssertionError): m.canonical_internal_roles(bad)

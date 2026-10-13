@@ -206,6 +206,34 @@ def resistance(edges, reference, targets):
                 terminal_pairs=sorted(pairs, key=lambda p: p['effective_ohms'], reverse=True))
 
 
+def canonical_internal_roles(devices):
+    """Bind five final-MUX nets by actual HBT topology, not extraction labels."""
+    roles, counts = {}, {}
+    data = {'ap': ('qn','ea'), 'an': ('qp','ea'),
+            'bp': ('qn','eb'), 'bn': ('qp','eb'),
+            'sp': ('ea','tail'), 'sn': ('eb','tail')}
+    def bind(node, role):
+        assert node not in roles or roles[node] == role, 'Conflicting internal conductor roles'
+        roles[node] = role
+    for device in devices.values():
+        if device['model'] != 'npn13g2':
+            continue
+        c, b, e, _ = device['nodes']
+        if b in data:
+            cr, er = data[b]
+            bind(c, cr)
+            bind(e, er)
+            key = b
+        else:
+            assert b == 'iref' and e == 'avss', 'Unrecognized final-MUX HBT topology'
+            key = 'reference' if c == 'iref' else 'tail'
+            if key == 'tail': bind(c, 'tail')
+        counts[key] = counts.get(key, 0) + 1
+    assert counts == dict(ap=3, an=3, bp=3, bn=3, sp=2, sn=2, tail=2, reference=1)
+    assert len(roles) == 5 and set(roles.values()) == {'qn','qp','ea','eb','tail'}
+    return roles
+
+
 def analyze(spec):
     receipt = spec['receipt']
     raw = urllib.request.urlopen(receipt['url'], timeout=120).read()
@@ -233,6 +261,8 @@ def analyze(spec):
         count = {'npn13g2': 3, 'rppd': 2, 'ptap1': 1}[device['model']]
         for pin, (logical, node) in enumerate(zip(device['nodes'][:count], actual['nodes'][:count], strict=True)):
             groups.setdefault(logical, {}).setdefault(node, []).append(dict(device=name, model=device['model'], pin=pin))
+    canonical_roles = canonical_internal_roles(cd)
+    assert set(canonical_roles) == set(groups) - set(cp)
     measured, internal = {}, {}
     for port, terminals in groups.items():
         if port in cp:
@@ -244,6 +274,7 @@ def analyze(spec):
             ordered = sorted(terminals)
             assert len(ordered) >= 2
             internal[port] = resistance(edges, ordered[0], ordered[1:])
+            internal[port]['canonical_net'] = canonical_roles[port]
             internal[port]['device_pins'] = terminals
             internal[port]['grounded_calculation_node'] = ordered[0]
     assert {'avdd', 'avss', 'iref'} <= set(measured)
