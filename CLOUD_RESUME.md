@@ -572,3 +572,14 @@ then freshnativeRC/composition/originalloadedPVT allrequired. Keep anyfails.
 Existing jobs: pairedcreditmap38472422176, halfgridroute38472175339,
 32wire38441895491 andlatestsourcechecks38472705185 wereconfirmedlive.
 Do not duplicate them. Allwork remains cloud-only andlocalworkspaceempty.
+
+
+Shortrow layout38473056743 on6bba98b5ade3a86cc3b214464fc3cc9682dc83a3
+PASSED actual560categoryDRC/0markers,strict hierarchicalandflat54device
+LVS andallfiveactualfaultcontrols. Summary638346326 SHA
+0fccdbf22b4c1dac693a9191e1a563b5cd9a0c8d7aa7470ef9ad4098035eb4b9;archive638346125,393868bytes,SHA
+402f298041bf5ff608b99c61a6ddd45061593b2f28adcbcd2b3ea1c196f116cc.
+The exact new geometry is pinned for nativeextraction underfinal_drive_v8 /
+critical_buses_kelvin_low_selects_rows. Freshgraph/13faultcontrols thencompositionand
+originalloadedPVT stillrequired. No oldRC reused.
+Pairedcreditmapbaseline completed;candidate remainslive atlastreadback.
