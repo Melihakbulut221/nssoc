@@ -471,3 +471,10 @@ acceptance test. All coefficients and original wire graphs are preserved.
 The same escape-via improvement is now under native physical validation for
 the two cascade14 prestages (38359973320), requiring its own fresh RC and
 composition before testing the combined tree.
+
+The cascade14 via-array prestage chain passed physical checks in 38359973320,
+native extraction with 2481R/1743C and thirteen fault controls in 38360318696,
+and exact device/wire composition in 38360575232. The combined study
+38360782776 now uses this new model for both prestages and the 2537R/1781C
+via-array model for the final MUX, keeping the source bits, sample times and
+all engineering gates fixed. Its electrical result is pending.
