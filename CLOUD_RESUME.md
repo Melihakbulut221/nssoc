@@ -123,7 +123,12 @@ pcie-final-v8-low-selects-hot-loaded-tree-20261013.json; diagnosis workflow
 study v8_low_selects_hot reads exact original archived waves with unchanged
 bit oracle and thresholds.
 
-buffer-timing-readback-cloud.yml restores the archived complete native STA
+cloud-migration-checks.yml with timing_readback=true restores the archived complete native STA
 log/Tcl from run38371498733, verifying archive size/hash and both member hashes.
 It publishes a small full-path log for setup/hold inspection while seed13
 routing continues. It does not rerun STA or claim routed timing closure.
+
+The new standalone readback workflow was not registered on the default branch
+(dispatch404, no native run started). The readback job now uses the existing
+registered cloud-migration-checks.yml workflow with timing_readback=true.
+Low-selector native diagnosis38457021311 is running on873a6350ca13c5d98981214033bc5b0af33d0add.
