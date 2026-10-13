@@ -575,3 +575,47 @@ requires a stage-by-stage transient-delay and loading diagnosis; shifting
 the output sampling phase would hide the failure and is not a repair.
 The nominal result and cold HBT improvement therefore do not close PVT,
 full serial PHY, main-chip integration or final timing.
+
+The [full-wave diagnosis](evidence/pcie-mux4-stage-diagnosis-20261013.json)
+reads the exact source-bound native archives on GitHub. All 128 changing-bit
+events have one unambiguous crossing at the clock, mux, TX and 100 mV
+threshold. At hot/low with the native clock reference, median clock-to-mux
+zero-crossing delay is 20.882 ps, versus 6.287 ps from mux to TX. The latest
+100 mV crossing is 40.100 ps after the original bit boundary, later than
+the unchanged 37.5 ps first observation. The cold buf16 internal node peaks
+at 1.362868 V during an input transition while the buffer output is still
+near ground, implicating input feedthrough. No acceptance phase is changed.
+
+The v7 frontend increases its actual input resistor length from 4.5 to
+12 um. The [first circuit comparison](evidence/pcie-mux4-drive-prototype-20261013.json)
+shows that this removes the cold/high 32-MOS voltage failures while
+preserving the original source edge and launch schedule. Independently,
+the prospective faster final mux doubles all eight resistor widths and
+its reference current (0.5 to 1 mA), preserving the intended divider and
+swing scale while lowering impedance. The first faster schematic lacked
+the compact baseline's 27 substrate taps, so it cannot establish a strictly
+matched physical-source comparison and is not adopted from that evidence.
+
+The [exact-tap repeat](evidence/pcie-mux4-drive-taps-20261013.json) in run
+38330772603 preserves all 27 native substrate taps, HBT dimensions and
+other parameters. Reversing just the eight resistor-width changes and the
+subcircuit rename reproduces the original compact netlist SHA-256 in a
+hosted control. With the v7 frontend, nominal and quarter-step complete
+component gates pass at 289.732 and 289.736 mV. The hot/low output minimum
+improves to 235.402 mV without changing observation times, and all MOS
+screens pass. Six final data HBTs still miss the 0.4 V minimum by about
+2 mV. Cold/high has no HBT or MOS failures but its interstage common mode
+reaches 2.069995 V, exceeding the unchanged 2.05 V upper gate. PVT adoption
+therefore remains rejected despite the signal-speed and MOS repairs.
+
+The next exact-native v4 candidate changes only the two final collector
+resistor widths from 16 to 17 um to create real headroom rather than round
+away a failing result. The eight-width transformation, native substrate
+network, full source-bit oracle and all device limits remain checked.
+Run 38331516818 compares fixed 0.5, 0.55 and 0.6 mA prestage reference
+choices, each across the same nominal, hot/low and cold/high conditions.
+The 0.55 mA choice also has a quarter-step case. A candidate must pass as
+one fixed circuit across corners; choosing a different bias for each
+corner is not acceptance. External references and differential clock
+modulation, new physical layout/extraction, full serialization/PLL/CDR and
+main-chip integration remain open.
