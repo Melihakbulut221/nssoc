@@ -70,6 +70,74 @@ def region(parent,fc,name,refresh,gate=False):
         body=body.replace('.tx_ready_i(eop_ready)','.gate_ready_i(eop_ready)')
     return fc+'\n'+header+body+'\nendmodule\n'
 
+def strengthened_region(parent,fc,name,refresh):
+    """Expose actual storage for induction, without modifying its transition logic."""
+    text=region(parent,fc,name,refresh,False)
+    anchor='    input wire tx_ready_i\n'
+    assert text.count(anchor)==1
+    text=text.replace(anchor,
+        '    output wire [255:0] proof_state_o,\n'
+        '    output wire proof_active_o,\n'
+        '    output wire [2:0] proof_index_o,\n'+anchor)
+    storage=['active','index','phase','class_index','frame_phase','frame_class',
+        'header','data_credit','crc','refresh_count','first_triplet','second_triplet',
+        'local_init_done_o','sent_header_o','sent_data_o','sent_valid_o',
+        'sent_phase_o','sent_class_o']
+    # Cross-check the original declarations. octet is a combinational reg.
+    declared=set()
+    for row in re.findall(r'^\s*(?:output\s+)?reg\s+(?:\[[^\]]+\]\s*)?([^;]+);',fc,re.M):
+        if '\n' not in row:
+            declared.update(n.strip() for n in row.split(','))
+    # ANSI output regs end in comma rather than semicolon; include them separately.
+    for row in re.findall(r'^\s*output reg\s+(?:\[[^\]]+\]\s*)?([^\n]+)',fc,re.M):
+        declared.update(n.strip() for n in row.rstrip(',').split(','))
+    assert declared==set(storage)|{'octet'},declared
+    pos=text.index('\nendmodule')
+    text=text[:pos]+('\n    assign proof_state_o={'+','.join(storage)+'};\n'
+        '    assign proof_active_o=active;\n    assign proof_index_o=index;\n')+text[pos:]
+    text=text.replace('    output wire flow_ready\n',
+        '    output wire [271:0] proof_storage_o,\n'
+        '    output wire proof_owner_ok_o,\n    output wire flow_ready\n')
+    anchor='    soc_pcie_fc_tx #(' # region already renamed this module.
+    anchor='    '+name+'_fc #('
+    assert text.count(anchor)==1
+    text=text.replace(anchor,'    wire [255:0] proof_fc_state;\n'
+        '    wire proof_fc_active;\n    wire [2:0] proof_fc_index;\n'+anchor)
+    anchor='.tx_valid_o(advert_valid),.tx_ready_i(advert_ready));'
+    assert text.count(anchor)==1
+    text=text.replace(anchor,
+        '.proof_state_o(proof_fc_state),.proof_active_o(proof_fc_active),\n'
+        '        .proof_index_o(proof_fc_index),'+anchor)
+    pos=text.rindex('\nendmodule')
+    text=text[:pos]+(
+        '\n    assign proof_storage_o={proof_fc_state,owner,locked,prefer_flow,tx_stage_valid,tx_stage_payload};\n'
+        '    assign proof_owner_ok_o=!local_reset || !proof_fc_active || proof_fc_index==0 || (locked && !owner);\n'
+    )+text[pos:]
+    return text
+
+def miter():
+    inputs=[
+        ('', 'clk_i'),('', 'rst_ni'),('', 'link_up_i'),('', 'training_i'),('', 'retrain_done_i'),
+        ('', 'peer_init1_done_o'),('', 'peer_init2_seen_o'),
+        ('[23:0]', 'rx_header_limit_o'),('[35:0]', 'rx_data_limit_o'),
+        ('[7:0]', 'flow_data'),('', 'flow_sop'),('', 'flow_eop'),
+        ('', 'flow_valid'),('', 'flow_dllp'),('', 'flow_replay'),('', 'tx_ready_i')]
+    outputs=[
+        ('','local_init_done_o'),('','local_init2_sent_o'),('','fc_sent_o'),
+        ('[23:0]','fc_sent_header_o'),('[35:0]','fc_sent_data_o'),
+        ('[1:0]','fc_sent_phase_o'),('[1:0]','fc_sent_class_o'),('[7:0]','tx_data_o'),
+        ('','tx_sop_o'),('','tx_eop_o'),('','tx_valid_o'),('','tx_dllp_o'),
+        ('','tx_replay_o'),('','flow_ready'),('[271:0]','proof_storage_o'),('','proof_owner_ok_o')]
+    lines=['module miter('+','.join('input wire '+w+' '+n for w,n in inputs)+',output wire proof_ok);']
+    for case in ['gold','gate']:
+        lines += ['wire '+w+' '+case+'_'+n+';' for w,n in outputs]
+        lines += [case+' '+case+'_inst('+','.join(
+            ['.'+n+'('+n+')' for _,n in inputs]+['.'+n+'('+case+'_'+n+')' for _,n in outputs])+');']
+    equal=['(gold_'+n+'==gate_'+n+')' for _,n in outputs if n!='proof_owner_ok_o']
+    lines+=['assign proof_ok='+' && '.join(equal+['gold_proof_owner_ok_o','gate_proof_owner_ok_o'])+';','endmodule']
+    return '\n'.join(lines)+'\n'
+
+
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
@@ -125,24 +193,29 @@ def main():
         yosys=shutil.which('yosys');iverilog=shutil.which('iverilog')
         assert yosys and iverilog
         record['proofs']=[]
+        record['proof_method']='Whole-region SAT temporal induction, explicit clock/asynchronous reset; all actual storage and outputs equal plus ownership invariant proved jointly, not assumed. Initial reset only; arbitrary subsequent inputs/clocks. Prior cutpoint failure retained in run 38476024561.'
+        record['runtime']=subprocess.check_output([yosys,'-V'],text=True).strip()
         fc=selected['soc_pcie_fc_tx.v'].decode()
         for case,text,refresh in [('candidate',altered,128),('candidate_refresh0',altered,0),('candidate_refresh1',altered,1),('wrong_owner',wrong,128)]:
             directory=OUT/('proof-'+case);directory.mkdir()
-            (directory/'gold.v').write_text(region(original,fc,'gold',refresh))
-            (directory/'gate.v').write_text(region(text,fc,'gate',refresh,True))
+            (directory/'gold.v').write_text(strengthened_region(original,fc,'gold',refresh))
+            (directory/'gate.v').write_text(strengthened_region(text,fc,'gate',refresh))
+            (directory/'miter.v').write_text(miter())
             (directory/'crc.v').write_bytes(selected['soc_pcie_crc16_byte.v'])
+            positive=case!='wrong_owner'
+            sat=('sat -tempinduct -seq 1 -maxsteps 12' if positive else 'sat -seq 24')
+            sat+=' -set-at 1 rst_ni 0 -prove proof_ok 1 -verify -timeout 120 -show-ports -dump_vcd counterexample.vcd -dump_json counterexample.json'
             (directory/'proof.ys').write_text('\n'.join([
-                'read_verilog -sv crc.v gold.v gate.v','hierarchy -check',
-                'proc','memory_map','opt','flatten gold gate','opt',
-                'clk2fflogic','opt','equiv_make gold gate equiv','hierarchy -top equiv',
-                'equiv_simple','equiv_induct -seq 12','equiv_status -assert','']))
+                'read_verilog -sv crc.v gold.v gate.v miter.v','hierarchy -check -top miter',
+                'proc','memory_map','flatten','opt','clk2fflogic','opt',
+                'check -assert',sat,'']))
             code,log=execute([yosys,'-s','proof.ys'],'proof-'+case,directory)
-            counts=re.findall(r'Of those cells (\d+) are proven and (\d+) are unproven',log)
-            passed=code==0 and len(counts)==1 and int(counts[0][0])>0 and int(counts[0][1])==0 and 'Equivalence successfully proven!' in log
-            rejected=code!=0 and bool(counts) and int(counts[-1][1])>0
-            record['proofs'].append(dict(case=case,refresh_cycles=refresh,returncode=code,counts=counts,
+            passed=positive and code==0 and 'Induction step proven: SUCCESS!' in log
+            rejected=not positive and code!=0 and 'SAT proof finished - model found: FAIL!' in log and (directory/'counterexample.vcd').is_file()
+            record['proofs'].append(dict(case=case,refresh_cycles=refresh,returncode=code,
                 passed=passed,negative_rejected=rejected,log_sha256=sha(OUT/('proof-'+case+'.log')),
-                unproven=[line for line in log.splitlines() if 'Unproven' in line][-60:]))
+                counterexample_sha256=sha(directory/'counterexample.vcd') if (directory/'counterexample.vcd').is_file() else None,
+                log_tail=log.splitlines()[-80:]))
             save()
         record['ports']=[]
         for case in ['baseline','candidate','wrong_owner']:
