@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Run finalv8 physical variant critical_buses_kelvin_tail_paths, then only if actual nativeDRC/LVS/faults pass bind its new extraction/composition and rerun original nominal/hot/cold loaded gates with denseprestage. Discover existing run first. Original denseprestage/v8 passes nominal/cold but hot retains128earlyfails,two tailVCE and commonmodefailures. Do not waive or claim fullPHY.",
+    "Tail-path physical38397735518 on2367c8c0 passed560DRCcategories/0markers,strict54deviceLVS,5faults. Extract its new nativeRC,bindcomposition andrerun original loaded nominal/hot/cold withdenseprestage. Existingruncheck required before each dispatch. No electrical adoption.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -9808,7 +9808,32 @@
       ]
     },
     "unchanged": "All54devices, other signal/supply trunks, via arrays, native extraction coefficients, original wave gates. Dense prestage remains the loaded companion.",
-    "status": "SOURCE_ONLY_REQUIRES_NATIVE_DRC_LVS_NEW_RC_AND_LOADED_WAVEFORMS",
-    "adopted": false
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+    "adopted": false,
+    "run": 38397735518,
+    "source_head": "2367c8c018a340194f424da3095f8554740440af",
+    "summary_sha256": "487ad9e2f736cfc79de45d5d95b5e6f5cce71f2153b35e9a213ab0030cf385b3",
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38397735518-1-layout-final_drive_v8-critical_buses_kelvin_tail_paths/tx-layout-repair-cloud-final_drive_v8-critical_buses_kelvin_tail_paths-38397735518-1.tar.gz",
+      "bytes": 380628,
+      "sha256": "54daba6f024845b8d990e1072ad3238fd4fbe36f7c340f1a183653d3e9ff858d"
+    },
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "9362644f1330028659c4b1ed944affff0a77bb6f62ee01a6a5709c1aa96a7ccf",
+      "log_sha256": "c86cf9263dbbfa8823af48f30e8ed2725e88f327a97bae66e3580c736411ae11"
+    },
+    "native_lvs_devices": 54,
+    "fault_controls": {
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   }
 }

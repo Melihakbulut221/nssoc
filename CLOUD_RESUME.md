@@ -68,7 +68,9 @@ New final-v8 physical candidate `critical_buses_kelvin_tail_paths` widens
 only tail M3(0.6to1.0um), tailTM1(1.64to3.0um) andlocalM5return(0.8to1.6um).
 This addresses measured hot metal drops, with alldevices andgates unchanged.
 Physical DRC/LVS/fault controls, fresh RC and loaded waveforms must pass.
-Discover the existing physical run before dispatch.
+Physical **38397735518** passed560DRCcategories/0markers,strict54deviceLVS
+andfivefaultcontrols on **2367c8c0**. Native RC extraction is next; discover
+the existing extraction run before dispatch. Electrical acceptance pending.
 No prestage dense electrical acceptance yet. Full32:1, actual clocks/CDR,
 assembled PHY/layout and final chipSTA remain open. All work stays in GitHub;
 local workspace remains empty.
