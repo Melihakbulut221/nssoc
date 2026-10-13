@@ -12,6 +12,11 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## New hosted continuation: direct supply and compact internal routes
 
+Dispatched on `b1063c65a52280f4454f26a711761502355c3b54`: direct supply
+nominal **38426728316**, temperature/voltage **38426732244**, DC **38426736714**;
+compact-internal composition **38426740845**; source checks **38426745906**.
+Poll these exact runs. No full PHY or timing closure has been established.
+
 Direct supply composition 38425811878 passed 54 devices / 3870 R / 2579 C.
 Receipt: `docs/evidence/pcie-cascade14-kelvin-supply-direct-composition-20261013.json`.
 Next isolate prestage kelvin_supply_direct with unchanged v8_kelvin_local_internal
