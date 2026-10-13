@@ -168,7 +168,9 @@ def main():
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
                 # Move whole resistor banks, preserving every device value.
-                changes.append(('337.2+19.2*(i-19)', '337.2+28.8*(i-19)'))
+                # 28.8um would align the prior substrate trunk (+19.2)
+                # with the next signal lane (-9.6), also a real LVS short.
+                changes.append(('337.2+19.2*(i-19)', '337.2+38.4*(i-19)'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
