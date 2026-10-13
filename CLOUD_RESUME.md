@@ -259,3 +259,10 @@ proof and actual replay scoreboards. Any incomplete proof is retained as FAIL.
 This does not prove mapping, timing, full parameter coverage or fullchip PHY.
 Workflow: cloud-migration-checks.yml input replay_idle=true. Do not promote
 the overlay or repeat existing native layout jobs before reading these results.
+
+
+Replay idle-clear run38462752171 is active on5a29ee88c0e88b6aa8fcab7a43ff0566d984deba.
+Do not promote overlay before reading sequential proof and all actual ports.
+The native metal-DC workflow now accepts final_low_selects, restoring the exact
+v8low-selects composition to identify remaining physical conductor resistance.
+This is a read-only DC diagnosis, not loaded acceptance or altered RC.
